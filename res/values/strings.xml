@@ -8,4 +8,6 @@
     <string name="humidity">Humidity</string>
 
     <string name="update">Update</string>
+
+    <string name="tab_roomList">Rooms</string>
 </resources>
