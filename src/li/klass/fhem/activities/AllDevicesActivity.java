@@ -1,20 +1,16 @@
 package li.klass.fhem.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.RoomDetailAdapter;
 import li.klass.fhem.dataprovider.FHEMService;
-import li.klass.fhem.domain.FS20Device;
 import li.klass.fhem.domain.RoomDeviceList;
 import li.klass.fhem.widget.NestedListView;
 
-public class RoomDetailActivity extends UpdateableActivity {
+public class AllDevicesActivity extends UpdateableActivity {
 
-    private String roomName;
     private RoomDetailAdapter roomDetailAdapter;
 
     @Override
@@ -25,12 +21,10 @@ public class RoomDetailActivity extends UpdateableActivity {
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
 
-        roomName = extras.getString("roomName");
+        String roomTitle = getResources().getString(R.string.allRoomsTitle);
+        setTitle(roomTitle);
 
-        String roomTitlePrefix = getResources().getString(R.string.roomTitlePrefix);
-        setTitle(roomTitlePrefix + " " + roomName);
-
-        roomDetailAdapter = new RoomDetailAdapter(this, new RoomDeviceList(roomName));
+        roomDetailAdapter = new RoomDetailAdapter(this, new RoomDeviceList("all"));
         NestedListView nestedListView = (NestedListView) findViewById(R.id.deviceMap);
         nestedListView.setAdapter(roomDetailAdapter);
 
@@ -39,7 +33,7 @@ public class RoomDetailActivity extends UpdateableActivity {
 
     @Override
     protected RoomDeviceList getCurrentRoomDeviceList(boolean refresh) {
-        return FHEMService.INSTANCE.deviceListForRoom(roomName, refresh);
+        return FHEMService.INSTANCE.deviceListForAllRooms(refresh);
     }
 
     @Override

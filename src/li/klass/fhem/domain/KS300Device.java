@@ -3,7 +3,9 @@ package li.klass.fhem.domain;
 import android.util.Log;
 import org.w3c.dom.Node;
 
-public class KS300Device extends Device implements Comparable<KS300Device> {
+import java.io.Serializable;
+
+public class KS300Device extends Device implements Comparable<KS300Device>, Serializable {
 
     private String temperature = "";
     private String wind = "";

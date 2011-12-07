@@ -3,7 +3,9 @@ package li.klass.fhem.domain;
 import li.klass.fhem.dataprovider.FHEMService;
 import org.w3c.dom.Node;
 
-public class FS20Device extends Device implements Comparable<FS20Device> {
+import java.io.Serializable;
+
+public class FS20Device extends Device implements Comparable<FS20Device>, Serializable {
 
     private FS20State fs20State;
 

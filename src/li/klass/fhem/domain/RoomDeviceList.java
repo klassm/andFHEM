@@ -2,14 +2,15 @@ package li.klass.fhem.domain;
 
 import android.util.Log;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class RoomDeviceList {
+public class RoomDeviceList implements Serializable {
     public static final String FS_20 = "FS20";
     public static final String KS_300 = "KS300";
 
     private String roomName;
-    private Map<String, ArrayList<? extends Device>> deviceMap = new HashMap<String, ArrayList<? extends Device>>();
+    private Map<String, ArrayList<Device>> deviceMap = new HashMap<String, ArrayList<Device>>();
 
     public RoomDeviceList(String roomName) {
         this.roomName = roomName;
@@ -32,6 +33,20 @@ public class RoomDeviceList {
         Log.e(RoomDeviceList.class.getName(), ks300Device.toString());
         getKS300Devices().add(ks300Device);
         Log.e(RoomDeviceList.class.getName(), getKS300Devices().get(0).toString());
+    }
+
+    public void addRoomDeviceList(RoomDeviceList roomDeviceList) {
+        Map<String, ArrayList<Device>> inputMap = roomDeviceList.deviceMap;
+
+        for (String key : inputMap.keySet()) {
+            ArrayList<Device> inputValue = inputMap.get(key);
+            if (! deviceMap.containsKey(key)) deviceMap.put(key, inputValue);
+            else {
+                for (Device device : inputValue) {
+                    deviceMap.get(key).add(device);
+                }
+            }
+        }
     }
 
     @SuppressWarnings("unchecked")

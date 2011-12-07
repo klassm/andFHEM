@@ -14,7 +14,7 @@ import java.util.List;
 
 public class ListDataAdapter<T extends Comparable<T>> extends BaseAdapter {
 
-    protected List<T> data;
+    protected volatile List<T> data;
     protected LayoutInflater inflater;
     protected int resource;
     protected Context context;
@@ -57,6 +57,7 @@ public class ListDataAdapter<T extends Comparable<T>> extends BaseAdapter {
         return i;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View view;
@@ -76,7 +77,8 @@ public class ListDataAdapter<T extends Comparable<T>> extends BaseAdapter {
             throw new IllegalStateException(errorText);
         }
 
-        text.setText(getItem(position).toString());
+        T item = (T) getItem(position);
+        text.setText(item.toString());
 
         return view;
     }

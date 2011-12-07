@@ -4,7 +4,9 @@ import android.util.Log;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-public abstract class Device {
+import java.io.Serializable;
+
+public abstract class Device implements Serializable {
 
     protected String name;
     protected String room;

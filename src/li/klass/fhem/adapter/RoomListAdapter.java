@@ -23,18 +23,12 @@ public class RoomListAdapter extends ListDataAdapter<String> {
     public View getView(int position, View convertView, ViewGroup parent) {
         String item = (String) getItem(position);
         Log.e(RoomListAdapter.class.getName(), position + " : " + item);
-        Holder roomHolder;
 
-        if (convertView == null) {
-            convertView = inflater.inflate(resource, null);
+        convertView = inflater.inflate(resource, null);
 
-            roomHolder = new Holder();
-            roomHolder.roomName = (TextView) convertView.findViewById(R.id.roomName);
-            roomHolder.roomName.setText(item);
-        } else {
-            roomHolder = (Holder) convertView.getTag();
-            if (roomHolder != null) roomHolder.roomName.setText(item);
-        }
+        Holder roomHolder = new Holder();
+        roomHolder.roomName = (TextView) convertView.findViewById(R.id.roomName);
+        roomHolder.roomName.setText(item);
 
         return convertView;
     }
