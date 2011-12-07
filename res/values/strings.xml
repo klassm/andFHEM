@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">FHEM</string>
+    <string name="roomTitlePrefix">Room</string>
+    <string name="temperature">Temperature</string>
+    <string name="wind">Wind</string>
+    <string name="rain">Rain</string>
+    <string name="humidity">Humidity</string>
+
+    <string name="update">Update</string>
+</resources>

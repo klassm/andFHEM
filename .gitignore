@@ -1,0 +1,12 @@
+gen
+bin
+bin/*
+gen/*
+log
+.idea
+*.iml
+*.class
+*.jar
+*.log
+*.txt
+out/

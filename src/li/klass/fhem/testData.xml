@@ -1,0 +1,1021 @@
+<FHZINFO>
+    <_internal__LIST>
+        <_internal_ name="global" state="&lt;no definition&gt;" sets=""
+                    attrs="room comment alias archivecmd allowfrom archivedir configfile lastinclude logfile modpath nrarchive pidfilename port statefile title userattr verbose:1,2,3,4,5 mseclog version nofork logdir holiday2we autoload_undefined_devices dupTimeout eventMap">
+            <INT key="DEF" value="&lt;no definition&gt;"/>
+            <INT key="NAME" value="global"/>
+            <INT key="NR" value="1"/>
+            <INT key="STATE" value="&lt;no definition&gt;"/>
+            <INT key="TYPE" value="_internal_"/>
+            <INT key="currentlogfile" value="./log/fhem-2011-12.log"/>
+            <INT key="logfile" value="./log/fhem-%Y-%m.log"/>
+            <ATTR key="autoload_undefined_devices" value="1"/>
+            <ATTR key="configfile" value="fhem.cfg"/>
+            <ATTR key="logfile" value="./log/fhem-%Y-%m.log"/>
+            <ATTR key="modpath" value="."/>
+            <ATTR key="port" value="7072 global"/>
+            <ATTR key="statefile" value="./log/fhem.save"/>
+            <ATTR key="verbose" value="3"/>
+            <ATTR key="version"
+                  value="5.1 from 2011-07-08 ($Id: fhem.pl,v 1.145 2011-07-07 08:46:28 rudolfkoenig Exp $)"/>
+        </_internal_>
+    </_internal__LIST>
+    <CUL_LIST>
+        <CUL name="CUL" state="Initialized"
+             sets="bWidth file freq hmPairForSec hmPairSerial led patable rAmpl raw sens time"
+             attrs="room comment alias do_not_notify:1,0 dummy:1,0 showtime:1,0 model:CUL,CUN,CUR loglevel:0,1,2,3,4,5,6 fhtsoftbuffer:1,0 sendpool addvaltrigger rfmode:SlowRF,HomeMatic hmId hmProtocolEvents eventMap">
+            <INT key="CUL_MSGCNT" value="19335"/>
+            <INT key="CUL_TIME" value="2011-12-05 16:33:11"/>
+            <INT key="Clients"
+                 value=":FS20:FHT:FHT8V:KS300:USF1000:BS:HMS: :CUL_EM:CUL_WS:CUL_FHTTK:CUL_RFR:CUL_HOERMANN: :ESA2000:CUL_IR:"/>
+            <INT key="DEF" value="/dev/ttyACM0 1234"/>
+            <INT key="DeviceName" value="/dev/ttyACM0"/>
+            <INT key="FD" value="6"/>
+            <INT key="FHTID" value="1234"/>
+            <INT key="NAME" value="CUL"/>
+            <INT key="NR" value="2"/>
+            <INT key="NR_CMD_LAST_H" value="1"/>
+            <INT key="PARTIAL" value=""/>
+            <INT key="RAWMSG" value="T194C00A600E5"/>
+            <INT key="RSSI" value="-87.5"/>
+            <INT key="STATE" value="Initialized"/>
+            <INT key="TYPE" value="CUL"/>
+            <INT key="VERSION" value="V 1.35 CUL868"/>
+            <INT key="initString" value="X21"/>
+        </CUL>
+    </CUL_LIST>
+    <FHEMWEB_LIST>
+        <FHEMWEB name="WEB" state="Initialized" sets=""
+                 attrs="room comment alias loglevel:0,1,2,3,4,5,6 webname fwmodpath fwcompress plotmode:gnuplot,gnuplot-scroll,SVG plotsize refresh touchpad smallscreen plotfork basicAuth basicAuthMsg HTTPS eventMap">
+            <INT key="DEF" value="8083 global"/>
+            <INT key="FD" value="8"/>
+            <INT key="NAME" value="WEB"/>
+            <INT key="NR" value="3"/>
+            <INT key="PORT" value="8083"/>
+            <INT key="STATE" value="Initialized"/>
+            <INT key="TYPE" value="FHEMWEB"/>
+        </FHEMWEB>
+        <FHEMWEB name="WEBphone" state="Initialized" sets=""
+                 attrs="room comment alias loglevel:0,1,2,3,4,5,6 webname fwmodpath fwcompress plotmode:gnuplot,gnuplot-scroll,SVG plotsize refresh touchpad smallscreen plotfork basicAuth basicAuthMsg HTTPS eventMap">
+            <INT key="DEF" value="8084 global"/>
+            <INT key="FD" value="9"/>
+            <INT key="NAME" value="WEBphone"/>
+            <INT key="NR" value="4"/>
+            <INT key="PORT" value="8084"/>
+            <INT key="STATE" value="Initialized"/>
+            <INT key="TYPE" value="FHEMWEB"/>
+            <ATTR key="smallscreen" value="1"/>
+        </FHEMWEB>
+        <FHEMWEB name="WEBtablet" state="Initialized" sets=""
+                 attrs="room comment alias loglevel:0,1,2,3,4,5,6 webname fwmodpath fwcompress plotmode:gnuplot,gnuplot-scroll,SVG plotsize refresh touchpad smallscreen plotfork basicAuth basicAuthMsg HTTPS eventMap">
+            <INT key="DEF" value="8085 global"/>
+            <INT key="FD" value="10"/>
+            <INT key="NAME" value="WEBtablet"/>
+            <INT key="NR" value="5"/>
+            <INT key="PORT" value="8085"/>
+            <INT key="STATE" value="Initialized"/>
+            <INT key="TYPE" value="FHEMWEB"/>
+            <ATTR key="touchpad" value="1"/>
+        </FHEMWEB>
+    </FHEMWEB_LIST>
+    <FS20_LIST>
+        <FS20 name="au_brunnen" state="???"
+              sets="dim06% dim100% dim12% dim18% dim25% dim31% dim37% dim43% dim50% dim56% dim62% dim68% dim75% dim81% dim87% dim93% dimdown dimup dimupdown off off-for-timer on on-100-for-timer-prev on-for-timer on-old-for-timer on-old-for-timer-prev on-till ramp-off-time ramp-on-time reset sendstate timer toggle"
+              attrs="room comment alias IODev follow-on-for-timer:1,0 do_not_notify:1,0 ignore:0,1 dummy:1,0 showtime:1,0 model;fs20hgs,fs20hgs,fs20pira,fs20piri,fs20s20,fs20s8,fs20s4,fs20s4a,fs20s4m,fs20s4u,fs20s4ub,fs20sd,fs20sn,fs20sr,fs20ss,fs20str,fs20tfk,fs20tfk,fs20tk,fs20uts,fs20ze,fs20as1,fs20as4,fs20di,fs20du,fs20ls,fs20ms2,fs20rst,fs20sa,fs20sig,fs20st,fs20sv,fs20usr loglevel:0,1,2,3,4,5,6 eventMap">
+            <INT key="BTN" value="aa"/>
+            <INT key="DEF" value="11111111 3333 gm 4444 lm 1144"/>
+            <INT key="NAME" value="au_brunnen"/>
+            <INT key="NR" value="39"/>
+            <INT key="STATE" value="???"/>
+            <INT key="TYPE" value="FS20"/>
+            <INT key="XMIT" value="0000"/>
+            <INT key="IODev" value="CUL"/>
+            <ATTR key="room" value="garten"/>
+        </FS20>
+        <FS20 name="au_holzterasse1" state="dimupdown"
+              sets="dim06% dim100% dim12% dim18% dim25% dim31% dim37% dim43% dim50% dim56% dim62% dim68% dim75% dim81% dim87% dim93% dimdown dimup dimupdown off off-for-timer on on-100-for-timer-prev on-for-timer on-old-for-timer on-old-for-timer-prev on-till ramp-off-time ramp-on-time reset sendstate timer toggle"
+              attrs="room comment alias IODev follow-on-for-timer:1,0 do_not_notify:1,0 ignore:0,1 dummy:1,0 showtime:1,0 model;fs20hgs,fs20hgs,fs20pira,fs20piri,fs20s20,fs20s8,fs20s4,fs20s4a,fs20s4m,fs20s4u,fs20s4ub,fs20sd,fs20sn,fs20sr,fs20ss,fs20str,fs20tfk,fs20tfk,fs20tk,fs20uts,fs20ze,fs20as1,fs20as4,fs20di,fs20du,fs20ls,fs20ms2,fs20rst,fs20sa,fs20sig,fs20st,fs20sv,fs20usr loglevel:0,1,2,3,4,5,6 eventMap">
+            <INT key="BTN" value="01"/>
+            <INT key="CUL_MSGCNT" value="5"/>
+            <INT key="CUL_RAWMSG" value="F00000115F7"/>
+            <INT key="CUL_RSSI" value="-78.5"/>
+            <INT key="CUL_TIME" value="2011-11-27 18:18:53"/>
+            <INT key="DEF" value="11111111 1112 gm 4444 lm 1144"/>
+            <INT key="LASTIODev" value="CUL"/>
+            <INT key="MSGCNT" value="5"/>
+            <INT key="NAME" value="au_holzterasse1"/>
+            <INT key="NR" value="40"/>
+            <INT key="STATE" value="dimupdown"/>
+            <INT key="TYPE" value="FS20"/>
+            <INT key="XMIT" value="0000"/>
+            <INT key="IODev" value="CUL"/>
+            <ATTR key="room" value="garten"/>
+            <STATE key="state" value="dimupdown" measured="2011-11-27 18:18:53"/>
+        </FS20>
+        <FS20 name="au_holzterasse2" state="off"
+              sets="dim06% dim100% dim12% dim18% dim25% dim31% dim37% dim43% dim50% dim56% dim62% dim68% dim75% dim81% dim87% dim93% dimdown dimup dimupdown off off-for-timer on on-100-for-timer-prev on-for-timer on-old-for-timer on-old-for-timer-prev on-till ramp-off-time ramp-on-time reset sendstate timer toggle"
+              attrs="room comment alias IODev follow-on-for-timer:1,0 do_not_notify:1,0 ignore:0,1 dummy:1,0 showtime:1,0 model;fs20hgs,fs20hgs,fs20pira,fs20piri,fs20s20,fs20s8,fs20s4,fs20s4a,fs20s4m,fs20s4u,fs20s4ub,fs20sd,fs20sn,fs20sr,fs20ss,fs20str,fs20tfk,fs20tfk,fs20tk,fs20uts,fs20ze,fs20as1,fs20as4,fs20di,fs20du,fs20ls,fs20ms2,fs20rst,fs20sa,fs20sig,fs20st,fs20sv,fs20usr loglevel:0,1,2,3,4,5,6 eventMap">
+            <INT key="BTN" value="00"/>
+            <INT key="CUL_MSGCNT" value="1"/>
+            <INT key="CUL_RAWMSG" value="F0000000024"/>
+            <INT key="CUL_RSSI" value="-56"/>
+            <INT key="CUL_TIME" value="2011-11-22 09:29:18"/>
+            <INT key="DEF" value="11111111 1111 gm 4444 lm 1144"/>
+            <INT key="LASTIODev" value="CUL"/>
+            <INT key="MSGCNT" value="1"/>
+            <INT key="NAME" value="au_holzterasse2"/>
+            <INT key="NR" value="41"/>
+            <INT key="STATE" value="off"/>
+            <INT key="TYPE" value="FS20"/>
+            <INT key="XMIT" value="0000"/>
+            <INT key="IODev" value="CUL"/>
+            <ATTR key="room" value="garten"/>
+            <STATE key="state" value="off" measured="2011-11-22 09:29:18"/>
+        </FS20>
+        <FS20 name="au_holzterasse3" state="???"
+              sets="dim06% dim100% dim12% dim18% dim25% dim31% dim37% dim43% dim50% dim56% dim62% dim68% dim75% dim81% dim87% dim93% dimdown dimup dimupdown off off-for-timer on on-100-for-timer-prev on-for-timer on-old-for-timer on-old-for-timer-prev on-till ramp-off-time ramp-on-time reset sendstate timer toggle"
+              attrs="room comment alias IODev follow-on-for-timer:1,0 do_not_notify:1,0 ignore:0,1 dummy:1,0 showtime:1,0 model;fs20hgs,fs20hgs,fs20pira,fs20piri,fs20s20,fs20s8,fs20s4,fs20s4a,fs20s4m,fs20s4u,fs20s4ub,fs20sd,fs20sn,fs20sr,fs20ss,fs20str,fs20tfk,fs20tfk,fs20tk,fs20uts,fs20ze,fs20as1,fs20as4,fs20di,fs20du,fs20ls,fs20ms2,fs20rst,fs20sa,fs20sig,fs20st,fs20sv,fs20usr loglevel:0,1,2,3,4,5,6 eventMap">
+            <INT key="BTN" value="02"/>
+            <INT key="DEF" value="11111111 1113 gm 4444 lm 1144"/>
+            <INT key="NAME" value="au_holzterasse3"/>
+            <INT key="NR" value="42"/>
+            <INT key="STATE" value="???"/>
+            <INT key="TYPE" value="FS20"/>
+            <INT key="XMIT" value="0000"/>
+            <INT key="IODev" value="CUL"/>
+            <ATTR key="room" value="garten"/>
+        </FS20>
+        <FS20 name="au_holzterasse4" state="dimupdown"
+              sets="dim06% dim100% dim12% dim18% dim25% dim31% dim37% dim43% dim50% dim56% dim62% dim68% dim75% dim81% dim87% dim93% dimdown dimup dimupdown off off-for-timer on on-100-for-timer-prev on-for-timer on-old-for-timer on-old-for-timer-prev on-till ramp-off-time ramp-on-time reset sendstate timer toggle"
+              attrs="room comment alias IODev follow-on-for-timer:1,0 do_not_notify:1,0 ignore:0,1 dummy:1,0 showtime:1,0 model;fs20hgs,fs20hgs,fs20pira,fs20piri,fs20s20,fs20s8,fs20s4,fs20s4a,fs20s4m,fs20s4u,fs20s4ub,fs20sd,fs20sn,fs20sr,fs20ss,fs20str,fs20tfk,fs20tfk,fs20tk,fs20uts,fs20ze,fs20as1,fs20as4,fs20di,fs20du,fs20ls,fs20ms2,fs20rst,fs20sa,fs20sig,fs20st,fs20sv,fs20usr loglevel:0,1,2,3,4,5,6 eventMap">
+            <INT key="BTN" value="03"/>
+            <INT key="CUL_MSGCNT" value="2"/>
+            <INT key="CUL_RAWMSG" value="F00000315E2"/>
+            <INT key="CUL_RSSI" value="-89"/>
+            <INT key="CUL_TIME" value="2011-11-21 19:53:39"/>
+            <INT key="DEF" value="11111111 1114 gm 4444 lm 1144"/>
+            <INT key="LASTIODev" value="CUL"/>
+            <INT key="MSGCNT" value="2"/>
+            <INT key="NAME" value="au_holzterasse4"/>
+            <INT key="NR" value="43"/>
+            <INT key="STATE" value="dimupdown"/>
+            <INT key="TYPE" value="FS20"/>
+            <INT key="XMIT" value="0000"/>
+            <INT key="IODev" value="CUL"/>
+            <ATTR key="room" value="garten"/>
+            <STATE key="state" value="dimupdown" measured="2011-11-21 19:53:39"/>
+        </FS20>
+        <FS20 name="au_licht" state="off"
+              sets="dim06% dim100% dim12% dim18% dim25% dim31% dim37% dim43% dim50% dim56% dim62% dim68% dim75% dim81% dim87% dim93% dimdown dimup dimupdown off off-for-timer on on-100-for-timer-prev on-for-timer on-old-for-timer on-old-for-timer-prev on-till ramp-off-time ramp-on-time reset sendstate timer toggle"
+              attrs="room comment alias IODev follow-on-for-timer:1,0 do_not_notify:1,0 ignore:0,1 dummy:1,0 showtime:1,0 model;fs20hgs,fs20hgs,fs20pira,fs20piri,fs20s20,fs20s8,fs20s4,fs20s4a,fs20s4m,fs20s4u,fs20s4ub,fs20sd,fs20sn,fs20sr,fs20ss,fs20str,fs20tfk,fs20tfk,fs20tk,fs20uts,fs20ze,fs20as1,fs20as4,fs20di,fs20du,fs20ls,fs20ms2,fs20rst,fs20sa,fs20sig,fs20st,fs20sv,fs20usr loglevel:0,1,2,3,4,5,6 eventMap">
+            <INT key="BTN" value="42"/>
+            <INT key="DEF" value="11111111 2113 gm 4444 lm 2144"/>
+            <INT key="NAME" value="au_licht"/>
+            <INT key="NR" value="38"/>
+            <INT key="STATE" value="off"/>
+            <INT key="TYPE" value="FS20"/>
+            <INT key="XMIT" value="0000"/>
+            <INT key="IODev" value="CUL"/>
+            <ATTR key="room" value="garten"/>
+            <STATE key="state" value="off" measured="2011-11-19 21:30:38"/>
+        </FS20>
+        <FS20 name="au_weihnachten" state="off"
+              sets="dim06% dim100% dim12% dim18% dim25% dim31% dim37% dim43% dim50% dim56% dim62% dim68% dim75% dim81% dim87% dim93% dimdown dimup dimupdown off off-for-timer on on-100-for-timer-prev on-for-timer on-old-for-timer on-old-for-timer-prev on-till ramp-off-time ramp-on-time reset sendstate timer toggle"
+              attrs="room comment alias IODev follow-on-for-timer:1,0 do_not_notify:1,0 ignore:0,1 dummy:1,0 showtime:1,0 model;fs20hgs,fs20hgs,fs20pira,fs20piri,fs20s20,fs20s8,fs20s4,fs20s4a,fs20s4m,fs20s4u,fs20s4ub,fs20sd,fs20sn,fs20sr,fs20ss,fs20str,fs20tfk,fs20tfk,fs20tk,fs20uts,fs20ze,fs20as1,fs20as4,fs20di,fs20du,fs20ls,fs20ms2,fs20rst,fs20sa,fs20sig,fs20st,fs20sv,fs20usr loglevel:0,1,2,3,4,5,6 eventMap">
+            <INT key="BTN" value="c2"/>
+            <INT key="CUL_MSGCNT" value="25"/>
+            <INT key="CUL_RAWMSG" value="FC848C20006"/>
+            <INT key="CUL_RSSI" value="-71"/>
+            <INT key="CUL_TIME" value="2011-12-04 20:30:19"/>
+            <INT key="DEF" value="41312131 4113"/>
+            <INT key="LASTIODev" value="CUL"/>
+            <INT key="MSGCNT" value="25"/>
+            <INT key="NAME" value="au_weihnachten"/>
+            <INT key="NR" value="37"/>
+            <INT key="STATE" value="off"/>
+            <INT key="TYPE" value="FS20"/>
+            <INT key="XMIT" value="c848"/>
+            <INT key="IODev" value="CUL"/>
+            <ATTR key="room" value="garten"/>
+            <STATE key="state" value="off" measured="2011-12-04 20:30:19"/>
+        </FS20>
+        <FS20 name="b_heizung" state="on"
+              sets="dim06% dim100% dim12% dim18% dim25% dim31% dim37% dim43% dim50% dim56% dim62% dim68% dim75% dim81% dim87% dim93% dimdown dimup dimupdown off off-for-timer on on-100-for-timer-prev on-for-timer on-old-for-timer on-old-for-timer-prev on-till ramp-off-time ramp-on-time reset sendstate timer toggle"
+              attrs="room comment alias IODev follow-on-for-timer:1,0 do_not_notify:1,0 ignore:0,1 dummy:1,0 showtime:1,0 model;fs20hgs,fs20hgs,fs20pira,fs20piri,fs20s20,fs20s8,fs20s4,fs20s4a,fs20s4m,fs20s4u,fs20s4ub,fs20sd,fs20sn,fs20sr,fs20ss,fs20str,fs20tfk,fs20tfk,fs20tk,fs20uts,fs20ze,fs20as1,fs20as4,fs20di,fs20du,fs20ls,fs20ms2,fs20rst,fs20sa,fs20sig,fs20st,fs20sv,fs20usr loglevel:0,1,2,3,4,5,6 eventMap">
+            <INT key="BTN" value="c3"/>
+            <INT key="DEF" value="41312131 4114 gm 4444 lm 4144"/>
+            <INT key="NAME" value="b_heizung"/>
+            <INT key="NR" value="9"/>
+            <INT key="STATE" value="on"/>
+            <INT key="TYPE" value="FS20"/>
+            <INT key="XMIT" value="c848"/>
+            <INT key="IODev" value="CUL"/>
+            <ATTR key="room" value="balkon"/>
+            <STATE key="state" value="on" measured="2011-11-19 21:34:03"/>
+        </FS20>
+        <FS20 name="bad_heizofen" state="on"
+              sets="dim06% dim100% dim12% dim18% dim25% dim31% dim37% dim43% dim50% dim56% dim62% dim68% dim75% dim81% dim87% dim93% dimdown dimup dimupdown off off-for-timer on on-100-for-timer-prev on-for-timer on-old-for-timer on-old-for-timer-prev on-till ramp-off-time ramp-on-time reset sendstate timer toggle"
+              attrs="room comment alias IODev follow-on-for-timer:1,0 do_not_notify:1,0 ignore:0,1 dummy:1,0 showtime:1,0 model;fs20hgs,fs20hgs,fs20pira,fs20piri,fs20s20,fs20s8,fs20s4,fs20s4a,fs20s4m,fs20s4u,fs20s4ub,fs20sd,fs20sn,fs20sr,fs20ss,fs20str,fs20tfk,fs20tfk,fs20tk,fs20uts,fs20ze,fs20as1,fs20as4,fs20di,fs20du,fs20ls,fs20ms2,fs20rst,fs20sa,fs20sig,fs20st,fs20sv,fs20usr loglevel:0,1,2,3,4,5,6 eventMap">
+            <INT key="BTN" value="60"/>
+            <INT key="CUL_MSGCNT" value="101"/>
+            <INT key="CUL_RAWMSG" value="F00006012DE"/>
+            <INT key="CUL_RSSI" value="-91"/>
+            <INT key="CUL_TIME" value="2011-12-05 08:32:26"/>
+            <INT key="DEF" value="11111111 2311 gm 4444 lm 2344"/>
+            <INT key="LASTIODev" value="CUL"/>
+            <INT key="MSGCNT" value="101"/>
+            <INT key="NAME" value="bad_heizofen"/>
+            <INT key="NR" value="35"/>
+            <INT key="STATE" value="on"/>
+            <INT key="TYPE" value="FS20"/>
+            <INT key="XMIT" value="0000"/>
+            <INT key="IODev" value="CUL"/>
+            <ATTR key="room" value="bad"/>
+            <STATE key="state" value="toggle" measured="2011-12-05 08:32:26"/>
+        </FS20>
+        <FS20 name="bad_waschtisch" state="???"
+              sets="dim06% dim100% dim12% dim18% dim25% dim31% dim37% dim43% dim50% dim56% dim62% dim68% dim75% dim81% dim87% dim93% dimdown dimup dimupdown off off-for-timer on on-100-for-timer-prev on-for-timer on-old-for-timer on-old-for-timer-prev on-till ramp-off-time ramp-on-time reset sendstate timer toggle"
+              attrs="room comment alias IODev follow-on-for-timer:1,0 do_not_notify:1,0 ignore:0,1 dummy:1,0 showtime:1,0 model;fs20hgs,fs20hgs,fs20pira,fs20piri,fs20s20,fs20s8,fs20s4,fs20s4a,fs20s4m,fs20s4u,fs20s4ub,fs20sd,fs20sn,fs20sr,fs20ss,fs20str,fs20tfk,fs20tfk,fs20tk,fs20uts,fs20ze,fs20as1,fs20as4,fs20di,fs20du,fs20ls,fs20ms2,fs20rst,fs20sa,fs20sig,fs20st,fs20sv,fs20usr loglevel:0,1,2,3,4,5,6 eventMap">
+            <INT key="BTN" value="62"/>
+            <INT key="DEF" value="11111111 2313 gm 4444 lm 2344"/>
+            <INT key="NAME" value="bad_waschtisch"/>
+            <INT key="NR" value="36"/>
+            <INT key="STATE" value="???"/>
+            <INT key="TYPE" value="FS20"/>
+            <INT key="XMIT" value="0000"/>
+            <INT key="IODev" value="CUL"/>
+            <ATTR key="room" value="bad"/>
+        </FS20>
+        <FS20 name="chr_h1_dimmer" state="on"
+              sets="dim06% dim100% dim12% dim18% dim25% dim31% dim37% dim43% dim50% dim56% dim62% dim68% dim75% dim81% dim87% dim93% dimdown dimup dimupdown off off-for-timer on on-100-for-timer-prev on-for-timer on-old-for-timer on-old-for-timer-prev on-till ramp-off-time ramp-on-time reset sendstate timer toggle"
+              attrs="room comment alias IODev follow-on-for-timer:1,0 do_not_notify:1,0 ignore:0,1 dummy:1,0 showtime:1,0 model;fs20hgs,fs20hgs,fs20pira,fs20piri,fs20s20,fs20s8,fs20s4,fs20s4a,fs20s4m,fs20s4u,fs20s4ub,fs20sd,fs20sn,fs20sr,fs20ss,fs20str,fs20tfk,fs20tfk,fs20tk,fs20uts,fs20ze,fs20as1,fs20as4,fs20di,fs20du,fs20ls,fs20ms2,fs20rst,fs20sa,fs20sig,fs20st,fs20sv,fs20usr loglevel:0,1,2,3,4,5,6 eventMap">
+            <INT key="BTN" value="01"/>
+            <INT key="CUL_MSGCNT" value="14"/>
+            <INT key="CUL_RAWMSG" value="FC8480112EF"/>
+            <INT key="CUL_RSSI" value="-82.5"/>
+            <INT key="CUL_TIME" value="2011-12-01 22:00:12"/>
+            <INT key="DEF" value="41312131 1112 gm 4444 lm 1144"/>
+            <INT key="LASTIODev" value="CUL"/>
+            <INT key="MSGCNT" value="14"/>
+            <INT key="NAME" value="chr_h1_dimmer"/>
+            <INT key="NR" value="23"/>
+            <INT key="STATE" value="on"/>
+            <INT key="TYPE" value="FS20"/>
+            <INT key="XMIT" value="c848"/>
+            <INT key="IODev" value="CUL"/>
+            <ATTR key="room" value="christian"/>
+            <STATE key="state" value="toggle" measured="2011-12-01 22:00:12"/>
+        </FS20>
+        <FS20 name="chr_h2_dimmer" state="on"
+              sets="dim06% dim100% dim12% dim18% dim25% dim31% dim37% dim43% dim50% dim56% dim62% dim68% dim75% dim81% dim87% dim93% dimdown dimup dimupdown off off-for-timer on on-100-for-timer-prev on-for-timer on-old-for-timer on-old-for-timer-prev on-till ramp-off-time ramp-on-time reset sendstate timer toggle"
+              attrs="room comment alias IODev follow-on-for-timer:1,0 do_not_notify:1,0 ignore:0,1 dummy:1,0 showtime:1,0 model;fs20hgs,fs20hgs,fs20pira,fs20piri,fs20s20,fs20s8,fs20s4,fs20s4a,fs20s4m,fs20s4u,fs20s4ub,fs20sd,fs20sn,fs20sr,fs20ss,fs20str,fs20tfk,fs20tfk,fs20tk,fs20uts,fs20ze,fs20as1,fs20as4,fs20di,fs20du,fs20ls,fs20ms2,fs20rst,fs20sa,fs20sig,fs20st,fs20sv,fs20usr loglevel:0,1,2,3,4,5,6 eventMap">
+            <INT key="BTN" value="02"/>
+            <INT key="CUL_MSGCNT" value="14"/>
+            <INT key="CUL_RAWMSG" value="FC8480212EE"/>
+            <INT key="CUL_RSSI" value="-83"/>
+            <INT key="CUL_TIME" value="2011-12-01 22:00:16"/>
+            <INT key="DEF" value="41312131 1113 gm 4444 lm 1144"/>
+            <INT key="LASTIODev" value="CUL"/>
+            <INT key="MSGCNT" value="14"/>
+            <INT key="NAME" value="chr_h2_dimmer"/>
+            <INT key="NR" value="24"/>
+            <INT key="STATE" value="on"/>
+            <INT key="TYPE" value="FS20"/>
+            <INT key="XMIT" value="c848"/>
+            <INT key="IODev" value="CUL"/>
+            <ATTR key="room" value="christian"/>
+            <STATE key="state" value="toggle" measured="2011-12-01 22:00:16"/>
+        </FS20>
+        <FS20 name="chr_h3_dimmer" state="on"
+              sets="dim06% dim100% dim12% dim18% dim25% dim31% dim37% dim43% dim50% dim56% dim62% dim68% dim75% dim81% dim87% dim93% dimdown dimup dimupdown off off-for-timer on on-100-for-timer-prev on-for-timer on-old-for-timer on-old-for-timer-prev on-till ramp-off-time ramp-on-time reset sendstate timer toggle"
+              attrs="room comment alias IODev follow-on-for-timer:1,0 do_not_notify:1,0 ignore:0,1 dummy:1,0 showtime:1,0 model;fs20hgs,fs20hgs,fs20pira,fs20piri,fs20s20,fs20s8,fs20s4,fs20s4a,fs20s4m,fs20s4u,fs20s4ub,fs20sd,fs20sn,fs20sr,fs20ss,fs20str,fs20tfk,fs20tfk,fs20tk,fs20uts,fs20ze,fs20as1,fs20as4,fs20di,fs20du,fs20ls,fs20ms2,fs20rst,fs20sa,fs20sig,fs20st,fs20sv,fs20usr loglevel:0,1,2,3,4,5,6 eventMap">
+            <INT key="BTN" value="04"/>
+            <INT key="CUL_MSGCNT" value="12"/>
+            <INT key="CUL_RAWMSG" value="FC8480412F3"/>
+            <INT key="CUL_RSSI" value="-80.5"/>
+            <INT key="CUL_TIME" value="2011-12-01 22:01:58"/>
+            <INT key="DEF" value="41312131 1121 gm 4444 lm 1144"/>
+            <INT key="LASTIODev" value="CUL"/>
+            <INT key="MSGCNT" value="12"/>
+            <INT key="NAME" value="chr_h3_dimmer"/>
+            <INT key="NR" value="25"/>
+            <INT key="STATE" value="on"/>
+            <INT key="TYPE" value="FS20"/>
+            <INT key="XMIT" value="c848"/>
+            <INT key="IODev" value="CUL"/>
+            <ATTR key="room" value="christian"/>
+            <STATE key="state" value="toggle" measured="2011-12-01 22:01:58"/>
+        </FS20>
+        <FS20 name="chr_lichtventilator" state="on"
+              sets="dim06% dim100% dim12% dim18% dim25% dim31% dim37% dim43% dim50% dim56% dim62% dim68% dim75% dim81% dim87% dim93% dimdown dimup dimupdown off off-for-timer on on-100-for-timer-prev on-for-timer on-old-for-timer on-old-for-timer-prev on-till ramp-off-time ramp-on-time reset sendstate timer toggle"
+              attrs="room comment alias IODev follow-on-for-timer:1,0 do_not_notify:1,0 ignore:0,1 dummy:1,0 showtime:1,0 model;fs20hgs,fs20hgs,fs20pira,fs20piri,fs20s20,fs20s8,fs20s4,fs20s4a,fs20s4m,fs20s4u,fs20s4ub,fs20sd,fs20sn,fs20sr,fs20ss,fs20str,fs20tfk,fs20tfk,fs20tk,fs20uts,fs20ze,fs20as1,fs20as4,fs20di,fs20du,fs20ls,fs20ms2,fs20rst,fs20sa,fs20sig,fs20st,fs20sv,fs20usr loglevel:0,1,2,3,4,5,6 eventMap">
+            <INT key="BTN" value="00"/>
+            <INT key="CUL_MSGCNT" value="69"/>
+            <INT key="CUL_RAWMSG" value="FC8480012EF"/>
+            <INT key="CUL_RSSI" value="-82.5"/>
+            <INT key="CUL_TIME" value="2011-12-02 17:26:54"/>
+            <INT key="DEF" value="41312131 1111 gm 4444 lm 1144"/>
+            <INT key="LASTIODev" value="CUL"/>
+            <INT key="MSGCNT" value="69"/>
+            <INT key="NAME" value="chr_lichtventilator"/>
+            <INT key="NR" value="22"/>
+            <INT key="STATE" value="on"/>
+            <INT key="TYPE" value="FS20"/>
+            <INT key="XMIT" value="c848"/>
+            <INT key="IODev" value="CUL"/>
+            <ATTR key="room" value="christian"/>
+            <STATE key="state" value="toggle" measured="2011-12-02 17:26:54"/>
+        </FS20>
+        <FS20 name="chr_ventilator" state="on"
+              sets="dim06% dim100% dim12% dim18% dim25% dim31% dim37% dim43% dim50% dim56% dim62% dim68% dim75% dim81% dim87% dim93% dimdown dimup dimupdown off off-for-timer on on-100-for-timer-prev on-for-timer on-old-for-timer on-old-for-timer-prev on-till ramp-off-time ramp-on-time reset sendstate timer toggle"
+              attrs="room comment alias IODev follow-on-for-timer:1,0 do_not_notify:1,0 ignore:0,1 dummy:1,0 showtime:1,0 model;fs20hgs,fs20hgs,fs20pira,fs20piri,fs20s20,fs20s8,fs20s4,fs20s4a,fs20s4m,fs20s4u,fs20s4ub,fs20sd,fs20sn,fs20sr,fs20ss,fs20str,fs20tfk,fs20tfk,fs20tk,fs20uts,fs20ze,fs20as1,fs20as4,fs20di,fs20du,fs20ls,fs20ms2,fs20rst,fs20sa,fs20sig,fs20st,fs20sv,fs20usr loglevel:0,1,2,3,4,5,6 eventMap">
+            <INT key="BTN" value="05"/>
+            <INT key="CUL_MSGCNT" value="6"/>
+            <INT key="CUL_RAWMSG" value="FC8480F12FA"/>
+            <INT key="CUL_RSSI" value="-77"/>
+            <INT key="CUL_TIME" value="2011-11-30 16:54:03"/>
+            <INT key="DEF" value="41312131 1122 gm 4444 lm 1144"/>
+            <INT key="LASTIODev" value="CUL"/>
+            <INT key="MSGCNT" value="6"/>
+            <INT key="NAME" value="chr_ventilator"/>
+            <INT key="NR" value="26"/>
+            <INT key="STATE" value="on"/>
+            <INT key="TYPE" value="FS20"/>
+            <INT key="XMIT" value="c848"/>
+            <INT key="IODev" value="CUL"/>
+            <ATTR key="room" value="christian"/>
+            <STATE key="state" value="toggle" measured="2011-11-30 16:54:03"/>
+        </FS20>
+        <FS20 name="chr_z_obenlinks" state="on"
+              sets="dim06% dim100% dim12% dim18% dim25% dim31% dim37% dim43% dim50% dim56% dim62% dim68% dim75% dim81% dim87% dim93% dimdown dimup dimupdown off off-for-timer on on-100-for-timer-prev on-for-timer on-old-for-timer on-old-for-timer-prev on-till ramp-off-time ramp-on-time reset sendstate timer toggle"
+              attrs="room comment alias IODev follow-on-for-timer:1,0 do_not_notify:1,0 ignore:0,1 dummy:1,0 showtime:1,0 model;fs20hgs,fs20hgs,fs20pira,fs20piri,fs20s20,fs20s8,fs20s4,fs20s4a,fs20s4m,fs20s4u,fs20s4ub,fs20sd,fs20sn,fs20sr,fs20ss,fs20str,fs20tfk,fs20tfk,fs20tk,fs20uts,fs20ze,fs20as1,fs20as4,fs20di,fs20du,fs20ls,fs20ms2,fs20rst,fs20sa,fs20sig,fs20st,fs20sv,fs20usr loglevel:0,1,2,3,4,5,6 eventMap">
+            <INT key="BTN" value="06"/>
+            <INT key="CUL_MSGCNT" value="1"/>
+            <INT key="CUL_RAWMSG" value="FC8480612F9"/>
+            <INT key="CUL_RSSI" value="-77.5"/>
+            <INT key="CUL_TIME" value="2011-11-30 16:54:05"/>
+            <INT key="DEF" value="41312131 1123 gm 4444"/>
+            <INT key="LASTIODev" value="CUL"/>
+            <INT key="MSGCNT" value="1"/>
+            <INT key="NAME" value="chr_z_obenlinks"/>
+            <INT key="NR" value="27"/>
+            <INT key="STATE" value="on"/>
+            <INT key="TYPE" value="FS20"/>
+            <INT key="XMIT" value="c848"/>
+            <INT key="IODev" value="CUL"/>
+            <ATTR key="room" value="christian"/>
+            <STATE key="state" value="toggle" measured="2011-11-30 16:54:05"/>
+        </FS20>
+        <FS20 name="chr_z_obenrechts" state="on"
+              sets="dim06% dim100% dim12% dim18% dim25% dim31% dim37% dim43% dim50% dim56% dim62% dim68% dim75% dim81% dim87% dim93% dimdown dimup dimupdown off off-for-timer on on-100-for-timer-prev on-for-timer on-old-for-timer on-old-for-timer-prev on-till ramp-off-time ramp-on-time reset sendstate timer toggle"
+              attrs="room comment alias IODev follow-on-for-timer:1,0 do_not_notify:1,0 ignore:0,1 dummy:1,0 showtime:1,0 model;fs20hgs,fs20hgs,fs20pira,fs20piri,fs20s20,fs20s8,fs20s4,fs20s4a,fs20s4m,fs20s4u,fs20s4ub,fs20sd,fs20sn,fs20sr,fs20ss,fs20str,fs20tfk,fs20tfk,fs20tk,fs20uts,fs20ze,fs20as1,fs20as4,fs20di,fs20du,fs20ls,fs20ms2,fs20rst,fs20sa,fs20sig,fs20st,fs20sv,fs20usr loglevel:0,1,2,3,4,5,6 eventMap">
+            <INT key="BTN" value="07"/>
+            <INT key="CUL_MSGCNT" value="1"/>
+            <INT key="CUL_RAWMSG" value="FC8480712F9"/>
+            <INT key="CUL_RSSI" value="-77.5"/>
+            <INT key="CUL_TIME" value="2011-11-30 16:54:07"/>
+            <INT key="DEF" value="41312131 1124 gm 4444"/>
+            <INT key="LASTIODev" value="CUL"/>
+            <INT key="MSGCNT" value="1"/>
+            <INT key="NAME" value="chr_z_obenrechts"/>
+            <INT key="NR" value="28"/>
+            <INT key="STATE" value="on"/>
+            <INT key="TYPE" value="FS20"/>
+            <INT key="XMIT" value="c848"/>
+            <INT key="IODev" value="CUL"/>
+            <ATTR key="room" value="christian"/>
+            <STATE key="state" value="toggle" measured="2011-11-30 16:54:07"/>
+        </FS20>
+        <FS20 name="cp_heizung_mama" state="???"
+              sets="dim06% dim100% dim12% dim18% dim25% dim31% dim37% dim43% dim50% dim56% dim62% dim68% dim75% dim81% dim87% dim93% dimdown dimup dimupdown off off-for-timer on on-100-for-timer-prev on-for-timer on-old-for-timer on-old-for-timer-prev on-till ramp-off-time ramp-on-time reset sendstate timer toggle"
+              attrs="room comment alias IODev follow-on-for-timer:1,0 do_not_notify:1,0 ignore:0,1 dummy:1,0 showtime:1,0 model;fs20hgs,fs20hgs,fs20pira,fs20piri,fs20s20,fs20s8,fs20s4,fs20s4a,fs20s4m,fs20s4u,fs20s4ub,fs20sd,fs20sn,fs20sr,fs20ss,fs20str,fs20tfk,fs20tfk,fs20tk,fs20uts,fs20ze,fs20as1,fs20as4,fs20di,fs20du,fs20ls,fs20ms2,fs20rst,fs20sa,fs20sig,fs20st,fs20sv,fs20usr loglevel:0,1,2,3,4,5,6 eventMap">
+            <INT key="BTN" value="c0"/>
+            <INT key="DEF" value="41312131 4111 gm 4444 lm 4144"/>
+            <INT key="NAME" value="cp_heizung_mama"/>
+            <INT key="NR" value="45"/>
+            <INT key="STATE" value="???"/>
+            <INT key="TYPE" value="FS20"/>
+            <INT key="XMIT" value="c848"/>
+            <INT key="IODev" value="CUL"/>
+            <ATTR key="room" value="carport"/>
+        </FS20>
+        <FS20 name="cp_heizung_matthias" state="???"
+              sets="dim06% dim100% dim12% dim18% dim25% dim31% dim37% dim43% dim50% dim56% dim62% dim68% dim75% dim81% dim87% dim93% dimdown dimup dimupdown off off-for-timer on on-100-for-timer-prev on-for-timer on-old-for-timer on-old-for-timer-prev on-till ramp-off-time ramp-on-time reset sendstate timer toggle"
+              attrs="room comment alias IODev follow-on-for-timer:1,0 do_not_notify:1,0 ignore:0,1 dummy:1,0 showtime:1,0 model;fs20hgs,fs20hgs,fs20pira,fs20piri,fs20s20,fs20s8,fs20s4,fs20s4a,fs20s4m,fs20s4u,fs20s4ub,fs20sd,fs20sn,fs20sr,fs20ss,fs20str,fs20tfk,fs20tfk,fs20tk,fs20uts,fs20ze,fs20as1,fs20as4,fs20di,fs20du,fs20ls,fs20ms2,fs20rst,fs20sa,fs20sig,fs20st,fs20sv,fs20usr loglevel:0,1,2,3,4,5,6 eventMap">
+            <INT key="BTN" value="c1"/>
+            <INT key="DEF" value="41312131 4112 gm 4444 lm 4144"/>
+            <INT key="NAME" value="cp_heizung_matthias"/>
+            <INT key="NR" value="46"/>
+            <INT key="STATE" value="???"/>
+            <INT key="TYPE" value="FS20"/>
+            <INT key="XMIT" value="c848"/>
+            <INT key="IODev" value="CUL"/>
+            <ATTR key="room" value="carport"/>
+        </FS20>
+        <FS20 name="gang_licht" state="off"
+              sets="dim06% dim100% dim12% dim18% dim25% dim31% dim37% dim43% dim50% dim56% dim62% dim68% dim75% dim81% dim87% dim93% dimdown dimup dimupdown off off-for-timer on on-100-for-timer-prev on-for-timer on-old-for-timer on-old-for-timer-prev on-till ramp-off-time ramp-on-time reset sendstate timer toggle"
+              attrs="room comment alias IODev follow-on-for-timer:1,0 do_not_notify:1,0 ignore:0,1 dummy:1,0 showtime:1,0 model;fs20hgs,fs20hgs,fs20pira,fs20piri,fs20s20,fs20s8,fs20s4,fs20s4a,fs20s4m,fs20s4u,fs20s4ub,fs20sd,fs20sn,fs20sr,fs20ss,fs20str,fs20tfk,fs20tfk,fs20tk,fs20uts,fs20ze,fs20as1,fs20as4,fs20di,fs20du,fs20ls,fs20ms2,fs20rst,fs20sa,fs20sig,fs20st,fs20sv,fs20usr loglevel:0,1,2,3,4,5,6 eventMap">
+            <INT key="BTN" value="40"/>
+            <INT key="CUL_MSGCNT" value="49"/>
+            <INT key="CUL_RAWMSG" value="F000040001E"/>
+            <INT key="CUL_RSSI" value="-59"/>
+            <INT key="CUL_TIME" value="2011-12-02 23:50:21"/>
+            <INT key="DEF" value="11111111 2111 gm 4444 lm 2144"/>
+            <INT key="LASTIODev" value="CUL"/>
+            <INT key="MSGCNT" value="49"/>
+            <INT key="NAME" value="gang_licht"/>
+            <INT key="NR" value="10"/>
+            <INT key="STATE" value="off"/>
+            <INT key="TYPE" value="FS20"/>
+            <INT key="XMIT" value="0000"/>
+            <INT key="IODev" value="CUL"/>
+            <ATTR key="room" value="hausgang"/>
+            <STATE key="state" value="off" measured="2011-12-02 23:50:21"/>
+        </FS20>
+        <FS20 name="gang_vitrine" state="dimdown"
+              sets="dim06% dim100% dim12% dim18% dim25% dim31% dim37% dim43% dim50% dim56% dim62% dim68% dim75% dim81% dim87% dim93% dimdown dimup dimupdown off off-for-timer on on-100-for-timer-prev on-for-timer on-old-for-timer on-old-for-timer-prev on-till ramp-off-time ramp-on-time reset sendstate timer toggle"
+              attrs="room comment alias IODev follow-on-for-timer:1,0 do_not_notify:1,0 ignore:0,1 dummy:1,0 showtime:1,0 model;fs20hgs,fs20hgs,fs20pira,fs20piri,fs20s20,fs20s8,fs20s4,fs20s4a,fs20s4m,fs20s4u,fs20s4ub,fs20sd,fs20sn,fs20sr,fs20ss,fs20str,fs20tfk,fs20tfk,fs20tk,fs20uts,fs20ze,fs20as1,fs20as4,fs20di,fs20du,fs20ls,fs20ms2,fs20rst,fs20sa,fs20sig,fs20st,fs20sv,fs20usr loglevel:0,1,2,3,4,5,6 eventMap">
+            <INT key="BTN" value="48"/>
+            <INT key="CUL_MSGCNT" value="2"/>
+            <INT key="CUL_RAWMSG" value="F0000481412"/>
+            <INT key="CUL_RSSI" value="-65"/>
+            <INT key="CUL_TIME" value="2011-11-25 16:17:30"/>
+            <INT key="DEF" value="11111111 2131 gm 4444 lm 2144"/>
+            <INT key="LASTIODev" value="CUL"/>
+            <INT key="MSGCNT" value="2"/>
+            <INT key="NAME" value="gang_vitrine"/>
+            <INT key="NR" value="11"/>
+            <INT key="STATE" value="dimdown"/>
+            <INT key="TYPE" value="FS20"/>
+            <INT key="XMIT" value="0000"/>
+            <INT key="IODev" value="CUL"/>
+            <ATTR key="room" value="hausgang"/>
+            <STATE key="state" value="dimdown" measured="2011-11-25 16:17:30"/>
+        </FS20>
+        <FS20 name="mat_computer" state="on"
+              sets="dim06% dim100% dim12% dim18% dim25% dim31% dim37% dim43% dim50% dim56% dim62% dim68% dim75% dim81% dim87% dim93% dimdown dimup dimupdown off off-for-timer on on-100-for-timer-prev on-for-timer on-old-for-timer on-old-for-timer-prev on-till ramp-off-time ramp-on-time reset sendstate timer toggle"
+              attrs="room comment alias IODev follow-on-for-timer:1,0 do_not_notify:1,0 ignore:0,1 dummy:1,0 showtime:1,0 model;fs20hgs,fs20hgs,fs20pira,fs20piri,fs20s20,fs20s8,fs20s4,fs20s4a,fs20s4m,fs20s4u,fs20s4ub,fs20sd,fs20sn,fs20sr,fs20ss,fs20str,fs20tfk,fs20tfk,fs20tk,fs20uts,fs20ze,fs20as1,fs20as4,fs20di,fs20du,fs20ls,fs20ms2,fs20rst,fs20sa,fs20sig,fs20st,fs20sv,fs20usr loglevel:0,1,2,3,4,5,6 eventMap">
+            <INT key="BTN" value="57"/>
+            <INT key="DEF" value="11111111 2224 gm 4444 lm 2244"/>
+            <INT key="NAME" value="mat_computer"/>
+            <INT key="NR" value="13"/>
+            <INT key="STATE" value="on"/>
+            <INT key="TYPE" value="FS20"/>
+            <INT key="XMIT" value="0000"/>
+            <INT key="IODev" value="CUL"/>
+            <ATTR key="room" value="matthias"/>
+            <STATE key="state" value="on" measured="2011-11-21 18:29:26"/>
+        </FS20>
+        <FS20 name="mat_dachfensterled" state="off"
+              sets="dim06% dim100% dim12% dim18% dim25% dim31% dim37% dim43% dim50% dim56% dim62% dim68% dim75% dim81% dim87% dim93% dimdown dimup dimupdown off off-for-timer on on-100-for-timer-prev on-for-timer on-old-for-timer on-old-for-timer-prev on-till ramp-off-time ramp-on-time reset sendstate timer toggle"
+              attrs="room comment alias IODev follow-on-for-timer:1,0 do_not_notify:1,0 ignore:0,1 dummy:1,0 showtime:1,0 model;fs20hgs,fs20hgs,fs20pira,fs20piri,fs20s20,fs20s8,fs20s4,fs20s4a,fs20s4m,fs20s4u,fs20s4ub,fs20sd,fs20sn,fs20sr,fs20ss,fs20str,fs20tfk,fs20tfk,fs20tk,fs20uts,fs20ze,fs20as1,fs20as4,fs20di,fs20du,fs20ls,fs20ms2,fs20rst,fs20sa,fs20sig,fs20st,fs20sv,fs20usr loglevel:0,1,2,3,4,5,6 eventMap">
+            <INT key="BTN" value="50"/>
+            <INT key="CUL_MSGCNT" value="2"/>
+            <INT key="CUL_RAWMSG" value="F00005012EA"/>
+            <INT key="CUL_RSSI" value="-85"/>
+            <INT key="CUL_TIME" value="2011-11-30 22:07:37"/>
+            <INT key="DEF" value="11111111 2211 gm 4444 lm 2244"/>
+            <INT key="LASTIODev" value="CUL"/>
+            <INT key="MSGCNT" value="2"/>
+            <INT key="NAME" value="mat_dachfensterled"/>
+            <INT key="NR" value="16"/>
+            <INT key="STATE" value="off"/>
+            <INT key="TYPE" value="FS20"/>
+            <INT key="XMIT" value="0000"/>
+            <INT key="IODev" value="CUL"/>
+            <ATTR key="room" value="matthias"/>
+            <STATE key="state" value="off" measured="2011-12-01 23:07:50"/>
+        </FS20>
+        <FS20 name="mat_halogen" state="on"
+              sets="dim06% dim100% dim12% dim18% dim25% dim31% dim37% dim43% dim50% dim56% dim62% dim68% dim75% dim81% dim87% dim93% dimdown dimup dimupdown off off-for-timer on on-100-for-timer-prev on-for-timer on-old-for-timer on-old-for-timer-prev on-till ramp-off-time ramp-on-time reset sendstate timer toggle"
+              attrs="room comment alias IODev follow-on-for-timer:1,0 do_not_notify:1,0 ignore:0,1 dummy:1,0 showtime:1,0 model;fs20hgs,fs20hgs,fs20pira,fs20piri,fs20s20,fs20s8,fs20s4,fs20s4a,fs20s4m,fs20s4u,fs20s4ub,fs20sd,fs20sn,fs20sr,fs20ss,fs20str,fs20tfk,fs20tfk,fs20tk,fs20uts,fs20ze,fs20as1,fs20as4,fs20di,fs20du,fs20ls,fs20ms2,fs20rst,fs20sa,fs20sig,fs20st,fs20sv,fs20usr loglevel:0,1,2,3,4,5,6 eventMap">
+            <INT key="BTN" value="56"/>
+            <INT key="CUL_MSGCNT" value="122"/>
+            <INT key="CUL_RAWMSG" value="F00005612E8"/>
+            <INT key="CUL_RSSI" value="-86"/>
+            <INT key="CUL_TIME" value="2011-12-04 22:23:26"/>
+            <INT key="DEF" value="11111111 2223 gm 4444 lm 2244"/>
+            <INT key="LASTIODev" value="CUL"/>
+            <INT key="MSGCNT" value="122"/>
+            <INT key="NAME" value="mat_halogen"/>
+            <INT key="NR" value="12"/>
+            <INT key="STATE" value="on"/>
+            <INT key="TYPE" value="FS20"/>
+            <INT key="XMIT" value="0000"/>
+            <INT key="IODev" value="CUL"/>
+            <ATTR key="room" value="matthias"/>
+            <STATE key="state" value="on" measured="2011-12-05 16:31:35"/>
+        </FS20>
+        <FS20 name="mat_licht" state="on"
+              sets="dim06% dim100% dim12% dim18% dim25% dim31% dim37% dim43% dim50% dim56% dim62% dim68% dim75% dim81% dim87% dim93% dimdown dimup dimupdown off off-for-timer on on-100-for-timer-prev on-for-timer on-old-for-timer on-old-for-timer-prev on-till ramp-off-time ramp-on-time reset sendstate timer toggle"
+              attrs="room comment alias IODev follow-on-for-timer:1,0 do_not_notify:1,0 ignore:0,1 dummy:1,0 showtime:1,0 model;fs20hgs,fs20hgs,fs20pira,fs20piri,fs20s20,fs20s8,fs20s4,fs20s4a,fs20s4m,fs20s4u,fs20s4ub,fs20sd,fs20sn,fs20sr,fs20ss,fs20str,fs20tfk,fs20tfk,fs20tk,fs20uts,fs20ze,fs20as1,fs20as4,fs20di,fs20du,fs20ls,fs20ms2,fs20rst,fs20sa,fs20sig,fs20st,fs20sv,fs20usr loglevel:0,1,2,3,4,5,6 eventMap">
+            <INT key="BTN" value="5a"/>
+            <INT key="CUL_MSGCNT" value="11"/>
+            <INT key="CUL_RAWMSG" value="F00005A12E7"/>
+            <INT key="CUL_RSSI" value="-86.5"/>
+            <INT key="CUL_TIME" value="2011-12-01 21:58:40"/>
+            <INT key="DEF" value="11111111 2233 gm 4444 lm 2244"/>
+            <INT key="LASTIODev" value="CUL"/>
+            <INT key="MSGCNT" value="11"/>
+            <INT key="NAME" value="mat_licht"/>
+            <INT key="NR" value="14"/>
+            <INT key="STATE" value="on"/>
+            <INT key="TYPE" value="FS20"/>
+            <INT key="XMIT" value="0000"/>
+            <INT key="IODev" value="CUL"/>
+            <ATTR key="room" value="matthias"/>
+            <STATE key="state" value="toggle" measured="2011-12-01 21:58:40"/>
+        </FS20>
+        <FS20 name="mat_ventilator" state="on"
+              sets="dim06% dim100% dim12% dim18% dim25% dim31% dim37% dim43% dim50% dim56% dim62% dim68% dim75% dim81% dim87% dim93% dimdown dimup dimupdown off off-for-timer on on-100-for-timer-prev on-for-timer on-old-for-timer on-old-for-timer-prev on-till ramp-off-time ramp-on-time reset sendstate timer toggle"
+              attrs="room comment alias IODev follow-on-for-timer:1,0 do_not_notify:1,0 ignore:0,1 dummy:1,0 showtime:1,0 model;fs20hgs,fs20hgs,fs20pira,fs20piri,fs20s20,fs20s8,fs20s4,fs20s4a,fs20s4m,fs20s4u,fs20s4ub,fs20sd,fs20sn,fs20sr,fs20ss,fs20str,fs20tfk,fs20tfk,fs20tk,fs20uts,fs20ze,fs20as1,fs20as4,fs20di,fs20du,fs20ls,fs20ms2,fs20rst,fs20sa,fs20sig,fs20st,fs20sv,fs20usr loglevel:0,1,2,3,4,5,6 eventMap">
+            <INT key="BTN" value="5b"/>
+            <INT key="CUL_MSGCNT" value="7"/>
+            <INT key="CUL_RAWMSG" value="F00005B12E3"/>
+            <INT key="CUL_RSSI" value="-88.5"/>
+            <INT key="CUL_TIME" value="2011-11-27 21:19:46"/>
+            <INT key="DEF" value="11111111 2234 gm 4444 lm 2244"/>
+            <INT key="LASTIODev" value="CUL"/>
+            <INT key="MSGCNT" value="7"/>
+            <INT key="NAME" value="mat_ventilator"/>
+            <INT key="NR" value="15"/>
+            <INT key="STATE" value="on"/>
+            <INT key="TYPE" value="FS20"/>
+            <INT key="XMIT" value="0000"/>
+            <INT key="IODev" value="CUL"/>
+            <ATTR key="room" value="matthias"/>
+            <STATE key="state" value="toggle" measured="2011-11-27 21:19:46"/>
+        </FS20>
+        <FS20 name="sz_licht" state="dimupdown"
+              sets="dim06% dim100% dim12% dim18% dim25% dim31% dim37% dim43% dim50% dim56% dim62% dim68% dim75% dim81% dim87% dim93% dimdown dimup dimupdown off off-for-timer on on-100-for-timer-prev on-for-timer on-old-for-timer on-old-for-timer-prev on-till ramp-off-time ramp-on-time reset sendstate timer toggle"
+              attrs="room comment alias IODev follow-on-for-timer:1,0 do_not_notify:1,0 ignore:0,1 dummy:1,0 showtime:1,0 model;fs20hgs,fs20hgs,fs20pira,fs20piri,fs20s20,fs20s8,fs20s4,fs20s4a,fs20s4m,fs20s4u,fs20s4ub,fs20sd,fs20sn,fs20sr,fs20ss,fs20str,fs20tfk,fs20tfk,fs20tk,fs20uts,fs20ze,fs20as1,fs20as4,fs20di,fs20du,fs20ls,fs20ms2,fs20rst,fs20sa,fs20sig,fs20st,fs20sv,fs20usr loglevel:0,1,2,3,4,5,6 eventMap">
+            <INT key="BTN" value="01"/>
+            <INT key="CUL_MSGCNT" value="240"/>
+            <INT key="CUL_RAWMSG" value="F897A011523"/>
+            <INT key="CUL_RSSI" value="-56.5"/>
+            <INT key="CUL_TIME" value="2011-12-04 15:53:08"/>
+            <INT key="DEF" value="31322433 1112 gm 4444 lm 1144"/>
+            <INT key="LASTIODev" value="CUL"/>
+            <INT key="MSGCNT" value="240"/>
+            <INT key="NAME" value="sz_licht"/>
+            <INT key="NR" value="18"/>
+            <INT key="STATE" value="dimupdown"/>
+            <INT key="TYPE" value="FS20"/>
+            <INT key="XMIT" value="897a"/>
+            <INT key="IODev" value="CUL"/>
+            <ATTR key="room" value="schlafzimmer"/>
+            <STATE key="state" value="dimupdown" measured="2011-12-04 15:53:08"/>
+        </FS20>
+        <FS20 name="sz_lichtmama" state="off"
+              sets="dim06% dim100% dim12% dim18% dim25% dim31% dim37% dim43% dim50% dim56% dim62% dim68% dim75% dim81% dim87% dim93% dimdown dimup dimupdown off off-for-timer on on-100-for-timer-prev on-for-timer on-old-for-timer on-old-for-timer-prev on-till ramp-off-time ramp-on-time reset sendstate timer toggle"
+              attrs="room comment alias IODev follow-on-for-timer:1,0 do_not_notify:1,0 ignore:0,1 dummy:1,0 showtime:1,0 model;fs20hgs,fs20hgs,fs20pira,fs20piri,fs20s20,fs20s8,fs20s4,fs20s4a,fs20s4m,fs20s4u,fs20s4ub,fs20sd,fs20sn,fs20sr,fs20ss,fs20str,fs20tfk,fs20tfk,fs20tk,fs20uts,fs20ze,fs20as1,fs20as4,fs20di,fs20du,fs20ls,fs20ms2,fs20rst,fs20sa,fs20sig,fs20st,fs20sv,fs20usr loglevel:0,1,2,3,4,5,6 eventMap">
+            <INT key="BTN" value="03"/>
+            <INT key="CUL_MSGCNT" value="234"/>
+            <INT key="CUL_RAWMSG" value="F897AFF0023"/>
+            <INT key="CUL_RSSI" value="-56.5"/>
+            <INT key="CUL_TIME" value="2011-12-02 17:27:07"/>
+            <INT key="DEF" value="31322433 1114 gm 4444 lm 1144"/>
+            <INT key="LASTIODev" value="CUL"/>
+            <INT key="MSGCNT" value="234"/>
+            <INT key="NAME" value="sz_lichtmama"/>
+            <INT key="NR" value="20"/>
+            <INT key="STATE" value="off"/>
+            <INT key="TYPE" value="FS20"/>
+            <INT key="XMIT" value="897a"/>
+            <INT key="IODev" value="CUL"/>
+            <ATTR key="room" value="schlafzimmer"/>
+            <STATE key="state" value="off" measured="2011-12-02 17:27:07"/>
+        </FS20>
+        <FS20 name="sz_lichtpapa" state="off"
+              sets="dim06% dim100% dim12% dim18% dim25% dim31% dim37% dim43% dim50% dim56% dim62% dim68% dim75% dim81% dim87% dim93% dimdown dimup dimupdown off off-for-timer on on-100-for-timer-prev on-for-timer on-old-for-timer on-old-for-timer-prev on-till ramp-off-time ramp-on-time reset sendstate timer toggle"
+              attrs="room comment alias IODev follow-on-for-timer:1,0 do_not_notify:1,0 ignore:0,1 dummy:1,0 showtime:1,0 model;fs20hgs,fs20hgs,fs20pira,fs20piri,fs20s20,fs20s8,fs20s4,fs20s4a,fs20s4m,fs20s4u,fs20s4ub,fs20sd,fs20sn,fs20sr,fs20ss,fs20str,fs20tfk,fs20tfk,fs20tk,fs20uts,fs20ze,fs20as1,fs20as4,fs20di,fs20du,fs20ls,fs20ms2,fs20rst,fs20sa,fs20sig,fs20st,fs20sv,fs20usr loglevel:0,1,2,3,4,5,6 eventMap">
+            <INT key="BTN" value="02"/>
+            <INT key="CUL_MSGCNT" value="138"/>
+            <INT key="CUL_RAWMSG" value="F897AFF0023"/>
+            <INT key="CUL_RSSI" value="-56.5"/>
+            <INT key="CUL_TIME" value="2011-12-02 17:27:07"/>
+            <INT key="DEF" value="31322433 1113 gm 4444 lm 1144"/>
+            <INT key="LASTIODev" value="CUL"/>
+            <INT key="MSGCNT" value="138"/>
+            <INT key="NAME" value="sz_lichtpapa"/>
+            <INT key="NR" value="19"/>
+            <INT key="STATE" value="off"/>
+            <INT key="TYPE" value="FS20"/>
+            <INT key="XMIT" value="897a"/>
+            <INT key="IODev" value="CUL"/>
+            <ATTR key="room" value="schlafzimmer"/>
+            <STATE key="state" value="off" measured="2011-12-02 17:27:07"/>
+        </FS20>
+        <FS20 name="sz_ventilator" state="off"
+              sets="dim06% dim100% dim12% dim18% dim25% dim31% dim37% dim43% dim50% dim56% dim62% dim68% dim75% dim81% dim87% dim93% dimdown dimup dimupdown off off-for-timer on on-100-for-timer-prev on-for-timer on-old-for-timer on-old-for-timer-prev on-till ramp-off-time ramp-on-time reset sendstate timer toggle"
+              attrs="room comment alias IODev follow-on-for-timer:1,0 do_not_notify:1,0 ignore:0,1 dummy:1,0 showtime:1,0 model;fs20hgs,fs20hgs,fs20pira,fs20piri,fs20s20,fs20s8,fs20s4,fs20s4a,fs20s4m,fs20s4u,fs20s4ub,fs20sd,fs20sn,fs20sr,fs20ss,fs20str,fs20tfk,fs20tfk,fs20tk,fs20uts,fs20ze,fs20as1,fs20as4,fs20di,fs20du,fs20ls,fs20ms2,fs20rst,fs20sa,fs20sig,fs20st,fs20sv,fs20usr loglevel:0,1,2,3,4,5,6 eventMap">
+            <INT key="BTN" value="04"/>
+            <INT key="CUL_MSGCNT" value="113"/>
+            <INT key="CUL_RAWMSG" value="F897AFF0023"/>
+            <INT key="CUL_RSSI" value="-56.5"/>
+            <INT key="CUL_TIME" value="2011-12-02 17:27:07"/>
+            <INT key="DEF" value="31322433 1121 gm 4444 lm 1144"/>
+            <INT key="LASTIODev" value="CUL"/>
+            <INT key="MSGCNT" value="113"/>
+            <INT key="NAME" value="sz_ventilator"/>
+            <INT key="NR" value="21"/>
+            <INT key="STATE" value="off"/>
+            <INT key="TYPE" value="FS20"/>
+            <INT key="XMIT" value="897a"/>
+            <INT key="IODev" value="CUL"/>
+            <ATTR key="room" value="schlafzimmer"/>
+            <STATE key="state" value="off" measured="2011-12-02 17:27:07"/>
+        </FS20>
+        <FS20 name="sz_ventlicht" state="off"
+              sets="dim06% dim100% dim12% dim18% dim25% dim31% dim37% dim43% dim50% dim56% dim62% dim68% dim75% dim81% dim87% dim93% dimdown dimup dimupdown off off-for-timer on on-100-for-timer-prev on-for-timer on-old-for-timer on-old-for-timer-prev on-till ramp-off-time ramp-on-time reset sendstate timer toggle"
+              attrs="room comment alias IODev follow-on-for-timer:1,0 do_not_notify:1,0 ignore:0,1 dummy:1,0 showtime:1,0 model;fs20hgs,fs20hgs,fs20pira,fs20piri,fs20s20,fs20s8,fs20s4,fs20s4a,fs20s4m,fs20s4u,fs20s4ub,fs20sd,fs20sn,fs20sr,fs20ss,fs20str,fs20tfk,fs20tfk,fs20tk,fs20uts,fs20ze,fs20as1,fs20as4,fs20di,fs20du,fs20ls,fs20ms2,fs20rst,fs20sa,fs20sig,fs20st,fs20sv,fs20usr loglevel:0,1,2,3,4,5,6 eventMap">
+            <INT key="BTN" value="00"/>
+            <INT key="CUL_MSGCNT" value="112"/>
+            <INT key="CUL_RAWMSG" value="F897AFF0023"/>
+            <INT key="CUL_RSSI" value="-56.5"/>
+            <INT key="CUL_TIME" value="2011-12-02 17:27:07"/>
+            <INT key="DEF" value="31322433 1111 gm 4444 lm 1144"/>
+            <INT key="LASTIODev" value="CUL"/>
+            <INT key="MSGCNT" value="112"/>
+            <INT key="NAME" value="sz_ventlicht"/>
+            <INT key="NR" value="17"/>
+            <INT key="STATE" value="off"/>
+            <INT key="TYPE" value="FS20"/>
+            <INT key="XMIT" value="897a"/>
+            <INT key="IODev" value="CUL"/>
+            <ATTR key="room" value="schlafzimmer"/>
+            <STATE key="state" value="off" measured="2011-12-02 17:27:07"/>
+        </FS20>
+        <FS20 name="wg_licht" state="off-for-timer"
+              sets="dim06% dim100% dim12% dim18% dim25% dim31% dim37% dim43% dim50% dim56% dim62% dim68% dim75% dim81% dim87% dim93% dimdown dimup dimupdown off off-for-timer on on-100-for-timer-prev on-for-timer on-old-for-timer on-old-for-timer-prev on-till ramp-off-time ramp-on-time reset sendstate timer toggle"
+              attrs="room comment alias IODev follow-on-for-timer:1,0 do_not_notify:1,0 ignore:0,1 dummy:1,0 showtime:1,0 model;fs20hgs,fs20hgs,fs20pira,fs20piri,fs20s20,fs20s8,fs20s4,fs20s4a,fs20s4m,fs20s4u,fs20s4ub,fs20sd,fs20sn,fs20sr,fs20ss,fs20str,fs20tfk,fs20tfk,fs20tk,fs20uts,fs20ze,fs20as1,fs20as4,fs20di,fs20du,fs20ls,fs20ms2,fs20rst,fs20sa,fs20sig,fs20st,fs20sv,fs20usr loglevel:0,1,2,3,4,5,6 eventMap">
+            <INT key="BTN" value="4a"/>
+            <INT key="CUL_MSGCNT" value="26"/>
+            <INT key="CUL_RAWMSG" value="F00004A18F9"/>
+            <INT key="CUL_RSSI" value="-77.5"/>
+            <INT key="CUL_TIME" value="2011-12-02 18:04:04"/>
+            <INT key="DEF" value="11111111 2133 gm 4444 lm 2144"/>
+            <INT key="LASTIODev" value="CUL"/>
+            <INT key="MSGCNT" value="26"/>
+            <INT key="NAME" value="wg_licht"/>
+            <INT key="NR" value="31"/>
+            <INT key="STATE" value="off-for-timer"/>
+            <INT key="TYPE" value="FS20"/>
+            <INT key="XMIT" value="0000"/>
+            <INT key="IODev" value="CUL"/>
+            <ATTR key="room" value="wintergarten"/>
+            <STATE key="state" value="off-for-timer" measured="2011-12-02 18:04:04"/>
+        </FS20>
+        <FS20 name="wg_ventilator" state="off"
+              sets="dim06% dim100% dim12% dim18% dim25% dim31% dim37% dim43% dim50% dim56% dim62% dim68% dim75% dim81% dim87% dim93% dimdown dimup dimupdown off off-for-timer on on-100-for-timer-prev on-for-timer on-old-for-timer on-old-for-timer-prev on-till ramp-off-time ramp-on-time reset sendstate timer toggle"
+              attrs="room comment alias IODev follow-on-for-timer:1,0 do_not_notify:1,0 ignore:0,1 dummy:1,0 showtime:1,0 model;fs20hgs,fs20hgs,fs20pira,fs20piri,fs20s20,fs20s8,fs20s4,fs20s4a,fs20s4m,fs20s4u,fs20s4ub,fs20sd,fs20sn,fs20sr,fs20ss,fs20str,fs20tfk,fs20tfk,fs20tk,fs20uts,fs20ze,fs20as1,fs20as4,fs20di,fs20du,fs20ls,fs20ms2,fs20rst,fs20sa,fs20sig,fs20st,fs20sv,fs20usr loglevel:0,1,2,3,4,5,6 eventMap">
+            <INT key="BTN" value="4b"/>
+            <INT key="CUL_MSGCNT" value="80"/>
+            <INT key="CUL_RAWMSG" value="F00004B001B"/>
+            <INT key="CUL_RSSI" value="-60.5"/>
+            <INT key="CUL_TIME" value="2011-12-02 08:01:18"/>
+            <INT key="DEF" value="11111111 2134 gm 4444 lm 2144"/>
+            <INT key="LASTIODev" value="CUL"/>
+            <INT key="MSGCNT" value="80"/>
+            <INT key="NAME" value="wg_ventilator"/>
+            <INT key="NR" value="33"/>
+            <INT key="STATE" value="off"/>
+            <INT key="TYPE" value="FS20"/>
+            <INT key="XMIT" value="0000"/>
+            <INT key="IODev" value="CUL"/>
+            <ATTR key="room" value="wintergarten"/>
+            <STATE key="state" value="off" measured="2011-12-02 08:01:18"/>
+        </FS20>
+        <FS20 name="wg_weihnachten" state="off"
+              sets="dim06% dim100% dim12% dim18% dim25% dim31% dim37% dim43% dim50% dim56% dim62% dim68% dim75% dim81% dim87% dim93% dimdown dimup dimupdown off off-for-timer on on-100-for-timer-prev on-for-timer on-old-for-timer on-old-for-timer-prev on-till ramp-off-time ramp-on-time reset sendstate timer toggle"
+              attrs="room comment alias IODev follow-on-for-timer:1,0 do_not_notify:1,0 ignore:0,1 dummy:1,0 showtime:1,0 model;fs20hgs,fs20hgs,fs20pira,fs20piri,fs20s20,fs20s8,fs20s4,fs20s4a,fs20s4m,fs20s4u,fs20s4ub,fs20sd,fs20sn,fs20sr,fs20ss,fs20str,fs20tfk,fs20tfk,fs20tk,fs20uts,fs20ze,fs20as1,fs20as4,fs20di,fs20du,fs20ls,fs20ms2,fs20rst,fs20sa,fs20sig,fs20st,fs20sv,fs20usr loglevel:0,1,2,3,4,5,6 eventMap">
+            <INT key="BTN" value="49"/>
+            <INT key="CUL_MSGCNT" value="28"/>
+            <INT key="CUL_RAWMSG" value="F0000491410"/>
+            <INT key="CUL_RSSI" value="-66"/>
+            <INT key="CUL_TIME" value="2011-11-27 21:47:08"/>
+            <INT key="DEF" value="11111111 2132 gm 4444 lm 2144"/>
+            <INT key="LASTIODev" value="CUL"/>
+            <INT key="MSGCNT" value="28"/>
+            <INT key="NAME" value="wg_weihnachten"/>
+            <INT key="NR" value="34"/>
+            <INT key="STATE" value="off"/>
+            <INT key="TYPE" value="FS20"/>
+            <INT key="XMIT" value="0000"/>
+            <INT key="IODev" value="CUL"/>
+            <ATTR key="room" value="wintergarten"/>
+            <STATE key="state" value="off" measured="2011-12-01 20:55:12"/>
+        </FS20>
+        <FS20 name="wz_brunnen" state="off"
+              sets="dim06% dim100% dim12% dim18% dim25% dim31% dim37% dim43% dim50% dim56% dim62% dim68% dim75% dim81% dim87% dim93% dimdown dimup dimupdown off off-for-timer on on-100-for-timer-prev on-for-timer on-old-for-timer on-old-for-timer-prev on-till ramp-off-time ramp-on-time reset sendstate timer toggle"
+              attrs="room comment alias IODev follow-on-for-timer:1,0 do_not_notify:1,0 ignore:0,1 dummy:1,0 showtime:1,0 model;fs20hgs,fs20hgs,fs20pira,fs20piri,fs20s20,fs20s8,fs20s4,fs20s4a,fs20s4m,fs20s4u,fs20s4ub,fs20sd,fs20sn,fs20sr,fs20ss,fs20str,fs20tfk,fs20tfk,fs20tk,fs20uts,fs20ze,fs20as1,fs20as4,fs20di,fs20du,fs20ls,fs20ms2,fs20rst,fs20sa,fs20sig,fs20st,fs20sv,fs20usr loglevel:0,1,2,3,4,5,6 eventMap">
+            <INT key="BTN" value="44"/>
+            <INT key="CUL_MSGCNT" value="8"/>
+            <INT key="CUL_RAWMSG" value="F000044140E"/>
+            <INT key="CUL_RSSI" value="-67"/>
+            <INT key="CUL_TIME" value="2011-11-27 21:47:05"/>
+            <INT key="DEF" value="11111111 2121 gm 4444 lm 2144"/>
+            <INT key="LASTIODev" value="CUL"/>
+            <INT key="MSGCNT" value="8"/>
+            <INT key="NAME" value="wz_brunnen"/>
+            <INT key="NR" value="32"/>
+            <INT key="STATE" value="off"/>
+            <INT key="TYPE" value="FS20"/>
+            <INT key="XMIT" value="0000"/>
+            <INT key="IODev" value="CUL"/>
+            <ATTR key="room" value="wohnzimmer"/>
+            <STATE key="state" value="off" measured="2011-11-30 19:28:49"/>
+        </FS20>
+        <FS20 name="wz_fernseher" state="off"
+              sets="dim06% dim100% dim12% dim18% dim25% dim31% dim37% dim43% dim50% dim56% dim62% dim68% dim75% dim81% dim87% dim93% dimdown dimup dimupdown off off-for-timer on on-100-for-timer-prev on-for-timer on-old-for-timer on-old-for-timer-prev on-till ramp-off-time ramp-on-time reset sendstate timer toggle"
+              attrs="room comment alias IODev follow-on-for-timer:1,0 do_not_notify:1,0 ignore:0,1 dummy:1,0 showtime:1,0 model;fs20hgs,fs20hgs,fs20pira,fs20piri,fs20s20,fs20s8,fs20s4,fs20s4a,fs20s4m,fs20s4u,fs20s4ub,fs20sd,fs20sn,fs20sr,fs20ss,fs20str,fs20tfk,fs20tfk,fs20tk,fs20uts,fs20ze,fs20as1,fs20as4,fs20di,fs20du,fs20ls,fs20ms2,fs20rst,fs20sa,fs20sig,fs20st,fs20sv,fs20usr loglevel:0,1,2,3,4,5,6 eventMap">
+            <INT key="BTN" value="41"/>
+            <INT key="CUL_MSGCNT" value="37"/>
+            <INT key="CUL_RAWMSG" value="F000041001D"/>
+            <INT key="CUL_RSSI" value="-59.5"/>
+            <INT key="CUL_TIME" value="2011-12-04 22:02:28"/>
+            <INT key="DEF" value="11111111 2112 gm 4444 lm 2144"/>
+            <INT key="LASTIODev" value="CUL"/>
+            <INT key="MSGCNT" value="37"/>
+            <INT key="NAME" value="wz_fernseher"/>
+            <INT key="NR" value="29"/>
+            <INT key="STATE" value="off"/>
+            <INT key="TYPE" value="FS20"/>
+            <INT key="XMIT" value="0000"/>
+            <INT key="IODev" value="CUL"/>
+            <ATTR key="room" value="wohnzimmer"/>
+            <STATE key="state" value="off" measured="2011-12-04 22:02:28"/>
+        </FS20>
+        <FS20 name="wz_schranklicht" state="off"
+              sets="dim06% dim100% dim12% dim18% dim25% dim31% dim37% dim43% dim50% dim56% dim62% dim68% dim75% dim81% dim87% dim93% dimdown dimup dimupdown off off-for-timer on on-100-for-timer-prev on-for-timer on-old-for-timer on-old-for-timer-prev on-till ramp-off-time ramp-on-time reset sendstate timer toggle"
+              attrs="room comment alias IODev follow-on-for-timer:1,0 do_not_notify:1,0 ignore:0,1 dummy:1,0 showtime:1,0 model;fs20hgs,fs20hgs,fs20pira,fs20piri,fs20s20,fs20s8,fs20s4,fs20s4a,fs20s4m,fs20s4u,fs20s4ub,fs20sd,fs20sn,fs20sr,fs20ss,fs20str,fs20tfk,fs20tfk,fs20tk,fs20uts,fs20ze,fs20as1,fs20as4,fs20di,fs20du,fs20ls,fs20ms2,fs20rst,fs20sa,fs20sig,fs20st,fs20sv,fs20usr loglevel:0,1,2,3,4,5,6 eventMap">
+            <INT key="BTN" value="43"/>
+            <INT key="DEF" value="11111111 2114 gm 4444 lm 2144"/>
+            <INT key="NAME" value="wz_schranklicht"/>
+            <INT key="NR" value="30"/>
+            <INT key="STATE" value="off"/>
+            <INT key="TYPE" value="FS20"/>
+            <INT key="XMIT" value="0000"/>
+            <INT key="IODev" value="CUL"/>
+            <ATTR key="room" value="wohnzimmer"/>
+            <STATE key="state" value="off" measured="2011-11-30 19:28:48"/>
+        </FS20>
+    </FS20_LIST>
+    <FHT_LIST>
+        <FHT name="FHT_194c" state="???"
+             sets="day day-temp desired-temp fri-from1 fri-from2 fri-to1 fri-to2 holiday1 holiday2 hour lowtemp-offset manu-temp minute mode mon-from1 mon-from2 mon-to1 mon-to2 month night-temp report1 report2 sat-from1 sat-from2 sat-to1 sat-to2 sun-from1 sun-from2 sun-to1 sun-to2 thu-from1 thu-from2 thu-to1 thu-to2 tue-from1 tue-from2 tue-to1 tue-to2 wed-from1 wed-from2 wed-to1 wed-to2 windowopen-temp year"
+             attrs="room comment alias IODev do_not_notify:0,1 model;fht80b dummy:0,1 showtime:0,1 loglevel:0,1,2,3,4,5,6 retrycount minfhtbuffer lazy tmpcorr ignore:0,1 eventMap">
+            <INT key="CODE" value="194c"/>
+            <INT key="CUL_MSGCNT" value="11290"/>
+            <INT key="CUL_RAWMSG" value="T194C00A600E5"/>
+            <INT key="CUL_RSSI" value="-87.5"/>
+            <INT key="CUL_TIME" value="2011-12-05 16:33:11"/>
+            <INT key="DEF" value="194c"/>
+            <INT key="LASTIODev" value="CUL"/>
+            <INT key="MSGCNT" value="11290"/>
+            <INT key="NAME" value="FHT_194c"/>
+            <INT key="NR" value="47"/>
+            <INT key="STATE" value="???"/>
+            <INT key="TYPE" value="FHT"/>
+            <INT key="IODev" value="CUL"/>
+            <ATTR key="retrycount" value="3"/>
+            <ATTR key="room" value="unknown"/>
+            <STATE key="actuator" value="0%" measured="2011-12-05 16:33:11"/>
+        </FHT>
+    </FHT_LIST>
+    <KS300_LIST>
+        <KS300 name="KS300" state="T: 2.0  H: 74  W: 2.2  R: 24.5  IR: no" sets=""
+               attrs="room comment alias IODev do_not_notify:0,1 showtime:0,1 model:ks300 loglevel:0,1 rainadjustment:0,1 ignore:0,1 eventMap">
+            <INT key="CODE" value="1234"/>
+            <INT key="CUL_MSGCNT" value="7010"/>
+            <INT key="CUL_RAWMSG" value="K1720402702601010"/>
+            <INT key="CUL_RSSI" value="-66"/>
+            <INT key="CUL_TIME" value="2011-12-05 16:29:47"/>
+            <INT key="DEF" value="1234"/>
+            <INT key="LASTIODev" value="CUL"/>
+            <INT key="MSGCNT" value="7010"/>
+            <INT key="NAME" value="KS300"/>
+            <INT key="NR" value="50"/>
+            <INT key="RAINUNIT" value="255"/>
+            <INT key="STATE" value="T: 2.0  H: 74  W: 2.2  R: 24.5  IR: no"/>
+            <INT key="TYPE" value="KS300"/>
+            <INT key="WINDUNIT" value="1"/>
+            <INT key="IODev" value="CUL"/>
+            <ATTR key="room" value="unknown"/>
+            <STATE key="avg_day" value="T: 4.8  H: 78  W: 6.6  R: 5.1" measured="2011-12-05 16:29:47"/>
+            <STATE key="avg_month" value="T: 6.7  H: 38  W: 42.4  R: 10.2" measured="2011-12-05 00:01:01"/>
+            <STATE key="cum_day" value="2011-12-05 00:01:01 T: 283802.8  H: 4657934  W: 390585  R: 19.4"
+                   measured="2011-12-05 16:29:47"/>
+            <STATE key="cum_month" value="4 T: 26.7  H: 152  W: 169.6  R: 10.2" measured="2011-12-05 00:01:01"/>
+            <STATE key="humidity" value="74 (%)" measured="2011-12-05 16:29:47"/>
+            <STATE key="israining" value="no (yes/no)" measured="2011-12-05 16:29:47"/>
+            <STATE key="rain" value="24.5 (l/m2)" measured="2011-12-05 16:29:47"/>
+            <STATE key="rain_raw" value="96 (counter)" measured="2011-12-05 16:29:47"/>
+            <STATE key="rain_raw_adj" value="96" measured="2011-12-05 16:29:47"/>
+            <STATE key="temperature" value="2.0 (Celsius)" measured="2011-12-05 16:29:47"/>
+            <STATE key="tsecs" value="1323098987" measured="2011-12-05 16:29:47"/>
+            <STATE key="unknown1" value="1 " measured="2011-12-05 16:29:47"/>
+            <STATE key="unknown2" value="7 " measured="2011-12-05 16:29:47"/>
+            <STATE key="unknown3" value="1 " measured="2011-12-05 16:29:47"/>
+            <STATE key="wind" value="2.2 (km/h)" measured="2011-12-05 16:29:47"/>
+        </KS300>
+        <KS300 name="Wetterstation" state="???" sets=""
+               attrs="room comment alias IODev do_not_notify:0,1 showtime:0,1 model:ks300 loglevel:0,1 rainadjustment:0,1 ignore:0,1 eventMap">
+            <INT key="CODE" value="1234"/>
+            <INT key="DEF" value="1234"/>
+            <INT key="NAME" value="Wetterstation"/>
+            <INT key="NR" value="44"/>
+            <INT key="RAINUNIT" value="255"/>
+            <INT key="STATE" value="???"/>
+            <INT key="TYPE" value="KS300"/>
+            <INT key="WINDUNIT" value="1"/>
+            <INT key="IODev" value="CUL"/>
+            <ATTR key="room" value="garten"/>
+        </KS300>
+    </KS300_LIST>
+    <CUL_WS_LIST>
+        <CUL_WS name="CUL_WS_1" state="???" sets=""
+                attrs="room comment alias IODev do_not_notify:0,1 showtime:0,1 model:S300TH,KS300 loglevel ignore:0,1 eventMap">
+            <INT key="CODE" value="1"/>
+            <INT key="DEF" value="1"/>
+            <INT key="NAME" value="CUL_WS_1"/>
+            <INT key="NR" value="87"/>
+            <INT key="STATE" value="???"/>
+            <INT key="TYPE" value="CUL_WS"/>
+            <INT key="corr1" value="0"/>
+            <INT key="corr2" value="0"/>
+            <INT key="corr3" value="0"/>
+            <INT key="corr4" value="0"/>
+            <INT key="IODev" value="CUL"/>
+            <ATTR key="room" value="unknown"/>
+        </CUL_WS>
+        <CUL_WS name="CUL_WS_2" state="???" sets=""
+                attrs="room comment alias IODev do_not_notify:0,1 showtime:0,1 model:S300TH,KS300 loglevel ignore:0,1 eventMap">
+            <INT key="CODE" value="2"/>
+            <INT key="DEF" value="2"/>
+            <INT key="NAME" value="CUL_WS_2"/>
+            <INT key="NR" value="235"/>
+            <INT key="STATE" value="???"/>
+            <INT key="TYPE" value="CUL_WS"/>
+            <INT key="corr1" value="0"/>
+            <INT key="corr2" value="0"/>
+            <INT key="corr3" value="0"/>
+            <INT key="corr4" value="0"/>
+            <INT key="IODev" value="CUL"/>
+            <ATTR key="room" value="unknown"/>
+        </CUL_WS>
+    </CUL_WS_LIST>
+    <notify_LIST>
+        <notify name="setStateOnToggle" state="active" sets="" attrs="room comment alias disable:0,1 eventMap">
+            <INT key="DEF"
+                 value=".*:toggle {&lt;br&gt;#09;if ($value{@} eq &quot;on&quot;) {&lt;br&gt;#09;  fhem &quot;setstate @ off&quot;;&lt;br&gt;#09;} else { &lt;br&gt;#09;  fhem &quot;setstate @ on&quot;; &lt;br&gt;#09;} &lt;br&gt;}"/>
+            <INT key="NAME" value="setStateOnToggle"/>
+            <INT key="NR" value="7"/>
+            <INT key="REGEXP" value=".*:toggle"/>
+            <INT key="STATE" value="active"/>
+            <INT key="TYPE" value="notify"/>
+        </notify>
+    </notify_LIST>
+    <FileLog_LIST>
+        <FileLog name="FileLog_CUL_WS_1" state="active" sets="reopen"
+                 attrs="room comment alias disable:0,1 logtype nrarchive archivedir archivecmd eventMap">
+            <INT key="DEF" value="./log/CUL_WS_1-%Y.log CUL_WS_1"/>
+            <INT key="NAME" value="FileLog_CUL_WS_1"/>
+            <INT key="NR" value="88"/>
+            <INT key="REGEXP" value="CUL_WS_1"/>
+            <INT key="STATE" value="active"/>
+            <INT key="TYPE" value="FileLog"/>
+            <INT key="currentlogfile" value="./log/CUL_WS_1-2011.log"/>
+            <INT key="logfile" value="./log/CUL_WS_1-%Y.log"/>
+            <ATTR key="logtype" value="hms:Temp/Hum,text"/>
+            <ATTR key="room" value="unknown"/>
+        </FileLog>
+        <FileLog name="FileLog_CUL_WS_2" state="active" sets="reopen"
+                 attrs="room comment alias disable:0,1 logtype nrarchive archivedir archivecmd eventMap">
+            <INT key="DEF" value="./log/CUL_WS_2-%Y.log CUL_WS_2"/>
+            <INT key="NAME" value="FileLog_CUL_WS_2"/>
+            <INT key="NR" value="236"/>
+            <INT key="REGEXP" value="CUL_WS_2"/>
+            <INT key="STATE" value="active"/>
+            <INT key="TYPE" value="FileLog"/>
+            <INT key="currentlogfile" value="./log/CUL_WS_2-2011.log"/>
+            <INT key="logfile" value="./log/CUL_WS_2-%Y.log"/>
+            <ATTR key="logtype" value="hms:Temp/Hum,text"/>
+            <ATTR key="room" value="unknown"/>
+        </FileLog>
+        <FileLog name="FileLog_FHT_194c" state="active" sets="reopen"
+                 attrs="room comment alias disable:0,1 logtype nrarchive archivedir archivecmd eventMap">
+            <INT key="DEF" value="./log/FHT_194c-%Y.log FHT_194c"/>
+            <INT key="NAME" value="FileLog_FHT_194c"/>
+            <INT key="NR" value="48"/>
+            <INT key="REGEXP" value="FHT_194c"/>
+            <INT key="STATE" value="active"/>
+            <INT key="TYPE" value="FileLog"/>
+            <INT key="currentlogfile" value="./log/FHT_194c-2011.log"/>
+            <INT key="logfile" value="./log/FHT_194c-%Y.log"/>
+            <ATTR key="logtype" value="fht:Temp/Act,text"/>
+            <ATTR key="room" value="unknown"/>
+        </FileLog>
+        <FileLog name="FileLog_KS300" state="active" sets="reopen"
+                 attrs="room comment alias disable:0,1 logtype nrarchive archivedir archivecmd eventMap">
+            <INT key="DEF" value="./log/KS300-%Y.log KS300:T:.*"/>
+            <INT key="NAME" value="FileLog_KS300"/>
+            <INT key="NR" value="51"/>
+            <INT key="REGEXP" value="KS300:T:.*"/>
+            <INT key="STATE" value="active"/>
+            <INT key="TYPE" value="FileLog"/>
+            <INT key="currentlogfile" value="./log/KS300-2011.log"/>
+            <INT key="logfile" value="./log/KS300-%Y.log"/>
+            <ATTR key="logtype" value="ks300:Temp/Rain,ks300_2:Wind/Hum,text"/>
+            <ATTR key="room" value="unknown"/>
+        </FileLog>
+        <FileLog name="Logfile" state="active" sets="reopen"
+                 attrs="room comment alias disable:0,1 logtype nrarchive archivedir archivecmd eventMap">
+            <INT key="DEF" value="./log/fhem-%Y-%m.log fakelog"/>
+            <INT key="NAME" value="Logfile"/>
+            <INT key="NR" value="6"/>
+            <INT key="REGEXP" value="fakelog"/>
+            <INT key="STATE" value="active"/>
+            <INT key="TYPE" value="FileLog"/>
+            <INT key="currentlogfile" value="./log/fhem-2011-11.log"/>
+            <INT key="logfile" value="./log/fhem-%Y-%m.log"/>
+        </FileLog>
+    </FileLog_LIST>
+    <autocreate_LIST>
+        <autocreate name="autocreate" state="active" sets=""
+                    attrs="room comment alias loglevel:0,1,2,3,4,5,6 autosave filelog device_room weblink weblink_room disable ignoreTypes eventMap">
+            <INT key="NAME" value="autocreate"/>
+            <INT key="NR" value="8"/>
+            <INT key="STATE" value="active"/>
+            <INT key="TYPE" value="autocreate"/>
+            <ATTR key="autosave" value="1"/>
+            <ATTR key="device_room" value="unknown"/>
+            <ATTR key="filelog" value="./log/%NAME-%Y.log"/>
+            <ATTR key="room" value="unknown"/>
+            <ATTR key="weblink" value="1"/>
+            <ATTR key="weblink_room" value="Plots"/>
+        </autocreate>
+    </autocreate_LIST>
+    <weblink_LIST>
+        <weblink name="weblink_CUL_WS_1" state="initial" sets=""
+                 attrs="room comment alias fixedrange plotmode plotsize label title eventMap">
+            <INT key="DEF" value="fileplot FileLog_CUL_WS_1:hms:CURRENT"/>
+            <INT key="LINK" value="FileLog_CUL_WS_1:hms:CURRENT"/>
+            <INT key="NAME" value="weblink_CUL_WS_1"/>
+            <INT key="NR" value="89"/>
+            <INT key="STATE" value="initial"/>
+            <INT key="TYPE" value="weblink"/>
+            <INT key="WLTYPE" value="fileplot"/>
+            <ATTR key="label" value="&quot;CUL_WS_1 Min $data{min1}, Max $data{max1}, Last $data{currval1}&quot;"/>
+            <ATTR key="room" value="Plots"/>
+        </weblink>
+        <weblink name="weblink_CUL_WS_2" state="initial" sets=""
+                 attrs="room comment alias fixedrange plotmode plotsize label title eventMap">
+            <INT key="DEF" value="fileplot FileLog_CUL_WS_2:hms:CURRENT"/>
+            <INT key="LINK" value="FileLog_CUL_WS_2:hms:CURRENT"/>
+            <INT key="NAME" value="weblink_CUL_WS_2"/>
+            <INT key="NR" value="237"/>
+            <INT key="STATE" value="initial"/>
+            <INT key="TYPE" value="weblink"/>
+            <INT key="WLTYPE" value="fileplot"/>
+            <ATTR key="label" value="&quot;CUL_WS_2 Min $data{min1}, Max $data{max1}, Last $data{currval1}&quot;"/>
+            <ATTR key="room" value="Plots"/>
+        </weblink>
+        <weblink name="weblink_FHT_194c" state="initial" sets=""
+                 attrs="room comment alias fixedrange plotmode plotsize label title eventMap">
+            <INT key="DEF" value="fileplot FileLog_FHT_194c:fht:CURRENT"/>
+            <INT key="LINK" value="FileLog_FHT_194c:fht:CURRENT"/>
+            <INT key="NAME" value="weblink_FHT_194c"/>
+            <INT key="NR" value="49"/>
+            <INT key="STATE" value="initial"/>
+            <INT key="TYPE" value="weblink"/>
+            <INT key="WLTYPE" value="fileplot"/>
+            <ATTR key="label" value="&quot;FHT_194c Min $data{min1}, Max $data{max1}, Last $data{currval1}&quot;"/>
+            <ATTR key="room" value="Plots"/>
+        </weblink>
+        <weblink name="weblink_KS300" state="initial" sets=""
+                 attrs="room comment alias fixedrange plotmode plotsize label title eventMap">
+            <INT key="DEF" value="fileplot FileLog_KS300:ks300:CURRENT"/>
+            <INT key="LINK" value="FileLog_KS300:ks300:CURRENT"/>
+            <INT key="NAME" value="weblink_KS300"/>
+            <INT key="NR" value="52"/>
+            <INT key="STATE" value="initial"/>
+            <INT key="TYPE" value="weblink"/>
+            <INT key="WLTYPE" value="fileplot"/>
+            <ATTR key="label" value="&quot;KS300 Min $data{min1}, Max $data{max1}, Last $data{currval1}&quot;"/>
+            <ATTR key="room" value="Plots"/>
+        </weblink>
+        <weblink name="weblink_KS300_2" state="initial" sets=""
+                 attrs="room comment alias fixedrange plotmode plotsize label title eventMap">
+            <INT key="DEF" value="fileplot FileLog_KS300:ks300_2:CURRENT"/>
+            <INT key="LINK" value="FileLog_KS300:ks300_2:CURRENT"/>
+            <INT key="NAME" value="weblink_KS300_2"/>
+            <INT key="NR" value="53"/>
+            <INT key="STATE" value="initial"/>
+            <INT key="TYPE" value="weblink"/>
+            <INT key="WLTYPE" value="fileplot"/>
+            <ATTR key="label" value="&quot;KS300 Min $data{min1}, Max $data{max1}, Last $data{currval1}&quot;"/>
+            <ATTR key="room" value="Plots"/>
+        </weblink>
+    </weblink_LIST>
+</FHZINFO>
