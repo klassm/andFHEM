@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@drawable/ekg" android:state_selected="true" />
-    <item android:drawable="@drawable/ekg_unselected" />
+    <!--colorized using gimp einfaerben, #ffb400-->
+    <item android:drawable="@drawable/favorites_selected" android:state_selected="true" />
+    <item android:drawable="@drawable/favorites" />
 </selector>

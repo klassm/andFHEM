@@ -26,6 +26,8 @@ public class AllDevicesActivity extends UpdateableActivity {
         NestedListView nestedListView = (NestedListView) findViewById(R.id.deviceMap);
         nestedListView.setAdapter(roomDetailAdapter);
 
+        registerForContextMenu(nestedListView);
+        
         update(false);
     }
 
