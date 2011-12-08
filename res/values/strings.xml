@@ -13,6 +13,11 @@
     <string name="update">Update</string>
     <string name="updating">Updating ...</string>
 
+    <string name="context_addtofavorites">Add to favorites</string>
+    <string name="context_removefavorite">Remove favorite</string>
+    <string name="context_favoriteadded">Favorite was added!</string>
+    <string name="context_favoriteremoved">Favorite was removed!</string>
+
 
     <string name="tab_roomList">Rooms</string>
     <string name="tab_favorites">Favorites</string>

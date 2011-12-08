@@ -2,9 +2,11 @@ package li.klass.fhem.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.RoomDetailAdapter;
 import li.klass.fhem.dataprovider.FHEMService;
@@ -34,7 +36,10 @@ public class RoomDetailActivity extends UpdateableActivity {
         NestedListView nestedListView = (NestedListView) findViewById(R.id.deviceMap);
         nestedListView.setAdapter(roomDetailAdapter);
 
+        registerForContextMenu(nestedListView);
+
         update(false);
+
     }
 
     @Override

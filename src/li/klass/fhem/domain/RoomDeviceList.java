@@ -26,13 +26,13 @@ public class RoomDeviceList implements Serializable {
     }
 
     public void addFS20Device(FS20Device fs20Device) {
+        if (fs20Device == null) return;
         getFs20Devices().add(fs20Device);
     }
 
     public void addKS300Device(KS300Device ks300Device) {
-        Log.e(RoomDeviceList.class.getName(), ks300Device.toString());
+        if (ks300Device == null) return;
         getKS300Devices().add(ks300Device);
-        Log.e(RoomDeviceList.class.getName(), getKS300Devices().get(0).toString());
     }
 
     public void addRoomDeviceList(RoomDeviceList roomDeviceList) {
@@ -41,7 +41,7 @@ public class RoomDeviceList implements Serializable {
         for (String key : inputMap.keySet()) {
             ArrayList<Device> inputValue = inputMap.get(key);
             for (Device device : inputValue) {
-                ArrayList<Device> devices = deviceMap.get(key);
+                List<Device> devices = getOrCreateDeviceList(key);
                 if (! devices.contains(device)) {
                     devices.add(device);
                 }

@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.ToggleButton;
+import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.domain.Device;
 import li.klass.fhem.domain.FS20Device;
@@ -84,6 +85,8 @@ public class RoomDetailAdapter extends NestedListViewAdapter<String, Device> {
 
         deviceHolder.switchButton.setTag(child);
 
+        view.setTag(child);
+
         return view;
     }
 
@@ -102,6 +105,8 @@ public class RoomDetailAdapter extends NestedListViewAdapter<String, Device> {
         deviceHolder.temperature.setText(child.getTemperature());
         deviceHolder.humidity.setText(child.getHumidity());
         deviceHolder.rain.setText(child.getRain());
+
+        view.setTag(child);
 
         return view;
     }
@@ -126,12 +131,12 @@ public class RoomDetailAdapter extends NestedListViewAdapter<String, Device> {
         TextView deviceName;
     }
 
-    private static class FS20Holder {
+    static class FS20Holder {
         TextView deviceName;
         ToggleButton switchButton;
     }
 
-    private static class KS300Holder {
+    static class KS300Holder {
         TextView deviceName;
         TextView wind;
         TextView temperature;
