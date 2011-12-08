@@ -6,7 +6,6 @@ log
 .idea
 *.iml
 *.class
-*.jar
 *.log
 *.txt
 out/
