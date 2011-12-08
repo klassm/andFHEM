@@ -43,7 +43,10 @@ public class RoomDeviceList implements Serializable {
             if (! deviceMap.containsKey(key)) deviceMap.put(key, inputValue);
             else {
                 for (Device device : inputValue) {
-                    deviceMap.get(key).add(device);
+                    ArrayList<Device> devices = deviceMap.get(key);
+                    if (! devices.contains(device)) {
+                        devices.add(device);
+                    }
                 }
             }
         }
@@ -52,7 +55,7 @@ public class RoomDeviceList implements Serializable {
     @SuppressWarnings("unchecked")
     public <T extends Device> List<T> getDevicesForType(String type) {
         if (deviceMap.containsKey(type)) {
-            return (List<T>) deviceMap.get(type);
+            return deviceMap.get(type);
         }
         return null;
     }
@@ -62,7 +65,7 @@ public class RoomDeviceList implements Serializable {
         if (! deviceMap.containsKey(typeName)) {
             deviceMap.put(typeName, new ArrayList<Device>());
         }
-        return (List<T>) deviceMap.get(typeName);
+        return deviceMap.get(typeName);
     }
 
     public String getRoomName() {

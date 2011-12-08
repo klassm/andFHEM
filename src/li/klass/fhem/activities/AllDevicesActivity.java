@@ -18,8 +18,6 @@ public class AllDevicesActivity extends UpdateableActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.room_detail);
-        Intent intent = getIntent();
-        Bundle extras = intent.getExtras();
 
         String roomTitle = getResources().getString(R.string.allRoomsTitle);
         setTitle(roomTitle);
