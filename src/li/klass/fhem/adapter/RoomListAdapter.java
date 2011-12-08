@@ -29,6 +29,7 @@ public class RoomListAdapter extends ListDataAdapter<String> {
         Holder roomHolder = new Holder();
         roomHolder.roomName = (TextView) convertView.findViewById(R.id.roomName);
         roomHolder.roomName.setText(item);
+        convertView.setTag(item);
 
         return convertView;
     }

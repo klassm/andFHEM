@@ -47,7 +47,7 @@ public class RoomListActivity extends ListActivity {
 
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
-        String roomName = roomList.get(position);
+        String roomName = String.valueOf(v.getTag());
         Intent intent = new Intent();
         intent.setClass(this, RoomDetailActivity.class);
         intent.putExtras(new Bundle());
