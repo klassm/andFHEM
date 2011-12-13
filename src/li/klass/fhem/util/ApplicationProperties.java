@@ -17,7 +17,7 @@ public class ApplicationProperties {
     
     public void setProperty(String key, boolean value) {
         SharedPreferences preferences = getPreferences();
-        preferences.edit().putBoolean(key, value);
+        preferences.edit().putBoolean(key, value).commit();
     }
 
     private SharedPreferences getPreferences() {

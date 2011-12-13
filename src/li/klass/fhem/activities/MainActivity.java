@@ -47,7 +47,6 @@ public class MainActivity extends TabActivity {
         boolean isFirstStart = ApplicationProperties.INSTANCE.getProperty("FIRST_START", true);
         if (isFirstStart) {
             onFirstStart();
-            ApplicationProperties.INSTANCE.setProperty("FIRST_START", false);
         }
     }
 
@@ -58,6 +57,7 @@ public class MainActivity extends TabActivity {
         alertDialog.setButton(getResources().getString(R.string.okButton), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+                ApplicationProperties.INSTANCE.setProperty("FIRST_START", false);
                 alertDialog.hide();
             }
         });
