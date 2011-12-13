@@ -19,7 +19,7 @@
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
                   android:layout_weight="0"
-                  android:onClick="onFS20Click"
+                  android:onClick="onSISPMSClick"
                   android:focusable="false"
             />
 

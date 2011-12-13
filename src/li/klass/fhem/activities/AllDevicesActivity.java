@@ -1,15 +1,13 @@
 package li.klass.fhem.activities;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.RoomDetailAdapter;
-import li.klass.fhem.dataprovider.FHEMService;
+import li.klass.fhem.data.FHEMService;
 import li.klass.fhem.domain.RoomDeviceList;
 import li.klass.fhem.widget.NestedListView;
 
-public class AllDevicesActivity extends UpdateableActivity {
+public class AllDevicesActivity extends UpdateableActivity<RoomDeviceList> {
 
     private RoomDetailAdapter roomDetailAdapter;
 
@@ -32,7 +30,7 @@ public class AllDevicesActivity extends UpdateableActivity {
     }
 
     @Override
-    protected RoomDeviceList getCurrentRoomDeviceList(boolean refresh) {
+    protected RoomDeviceList getCurrentData(boolean refresh) {
         return FHEMService.INSTANCE.deviceListForAllRooms(refresh);
     }
 

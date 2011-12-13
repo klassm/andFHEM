@@ -16,8 +16,9 @@
         <activity android:name=".activities.RoomDetailActivity" android:theme="@android:style/Theme.Light" />
         <activity android:name=".activities.AllDevicesActivity" />
         <activity android:name=".activities.FavoritesActivity" />
+        <activity android:name=".activities.PreferencesActivity" />
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.SET_DEBUG_APP" />
-</manifest> 
+</manifest>

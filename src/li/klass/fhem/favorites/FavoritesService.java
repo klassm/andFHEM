@@ -1,11 +1,11 @@
-package li.klass.fhem.dataprovider;
+package li.klass.fhem.favorites;
 
 import android.content.Context;
 import android.util.Log;
 import li.klass.fhem.AndFHEMApplication;
+import li.klass.fhem.data.FHEMService;
 import li.klass.fhem.domain.Device;
-import li.klass.fhem.domain.FS20Device;
-import li.klass.fhem.domain.KS300Device;
+import li.klass.fhem.domain.DeviceType;
 import li.klass.fhem.domain.RoomDeviceList;
 
 import java.io.ObjectInputStream;
@@ -37,22 +37,26 @@ public class FavoritesService {
         }
     }
 
-    public RoomDeviceList getFavorites() {
+    public RoomDeviceList getFavorites(boolean refresh) {
         RoomDeviceList deviceList = new RoomDeviceList("favorites");
 
         List<Device> toRemove = new ArrayList<Device>();
         for (String key : getFavoritesMap().keySet()) {
-            RoomDeviceList roomDeviceList = FHEMService.INSTANCE.deviceListForRoom(key, false);
+            RoomDeviceList roomDeviceList = FHEMService.INSTANCE.deviceListForRoom(key, refresh);
             Set<Device> favoriteDevices = favorites.get(key);
 
             for (Device favoriteDevice : favoriteDevices) {
-                FS20Device fs20Device = findDeviceFor(favoriteDevice.getName(), roomDeviceList.getFs20Devices());
-                deviceList.addFS20Device(fs20Device);
-                
-                KS300Device ks300Device = findDeviceFor(favoriteDevice.getName(), roomDeviceList.getKS300Devices());
-                deviceList.addKS300Device(ks300Device);
+                Device foundDevice = null;
+                for (DeviceType deviceType : DeviceType.values()) {
+                    Collection<Device> roomDevices = roomDeviceList.getDevicesOfType(deviceType);
+                    foundDevice = findDeviceFor(favoriteDevice.getName(), roomDevices);
+                    deviceList.addDevice(deviceType, foundDevice);
 
-                if (fs20Device == null && ks300Device == null) {
+                    if (foundDevice != null) break;
+                }
+
+
+                if (foundDevice == null) {
                     toRemove.add(favoriteDevice);
                 }
 
@@ -70,12 +74,14 @@ public class FavoritesService {
         if (favorites != null) {
             return favorites;
         }
-        
+
         favorites = getStoredDataFromFile();
         return favorites;
     }
 
-    private <T extends Device> T findDeviceFor(String deviceName, List<T> roomDevices) {
+    private <T extends Device> T findDeviceFor(String deviceName, Collection<T> roomDevices) {
+        if (roomDevices == null) return null;
+        
         for (T device : roomDevices) {
             if (deviceName.equals(device.getName())) {
                 return device;

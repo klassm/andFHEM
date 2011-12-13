@@ -783,8 +783,95 @@
             <STATE key="actuator" value="0%" measured="2011-12-05 16:33:11"/>
         </FHT>
     </FHT_LIST>
+
+    <HMS_LIST>
+        <HMS name="Pool" state="T: 12.6  Bat: ok" sets="" attrs="room comment alias IODev do_not_notify:0,1 showtime:0,1 model;hms100-t,hms100-tf,hms100-wd,hms100-mg,hms100-tfk,rm100-2,hms100-co,hms100-fit loglevel:0,1,2,3,4,5,6 ignore:0,1 1 advent bundle structexclude">
+            <INT key="CODE" value="1362"/>
+            <INT key="CUL_MSGCNT" value="1133"/>
+            <INT key="CUL_RAWMSG" value="H136201870000DA"/>
+            <INT key="CUL_RSSI" value="-93"/>
+            <INT key="CUL_TIME" value="2010-03-29 21:30:17"/>
+            <INT key="CUN_MSGCNT" value="2544"/>
+            <INT key="CUN_RAWMSG" value="H136201260100DB"/>
+            <INT key="CUN_RSSI" value="-92.5"/>
+            <INT key="CUN_TIME" value="2010-04-05 14:06:52"/>
+            <INT key="DEF" value="1362"/>
+            <INT key="LASTIODev" value="CUN"/>
+            <INT key="MSGCNT" value="3168"/>
+            <INT key="NAME" value="Pool"/>
+            <INT key="NR" value="14"/>
+            <INT key="STATE" value="T: 12.6  Bat: ok"/>
+            <INT key="TYPE" value="HMS"/>
+            <INT key="IODev" value="CUN"/>
+            <ATTR key="room" value="garten"/>
+            <STATE key="battery" value="ok" measured="2010-04-05 14:06:52"/>
+            <STATE key="temperature" value="12.6 (Celsius)" measured="2010-04-05 14:06:52"/>
+            <STATE key="type" value="HMS100T" measured="2010-04-05 14:06:52"/>
+        </HMS>
+    </HMS_LIST>
+
+    <OWTEMP_LIST>
+        <OWTEMP name="Hz.Ruecklauf" state="T: 24.1250  L: 15  H: 35  P: 1  A: 0  W: none" sets="set needs one parameter" attrs="room comment alias IODev do_not_notify:0,1 showtime:0,1 model:DS18S20 loglevel:0,1,2,3,4,5 1 advent bundle structexclude">
+            <INT key="ALARM" value="0"/>
+            <INT key="DEF" value="E09538020000 300 300"/>
+            <INT key="INTERVAL" value="300"/>
+            <INT key="INTV_ALARM" value="300"/>
+            <INT key="INTV_CHECK" value="300"/>
+            <INT key="NAME" value="Hz.Ruecklauf"/>
+            <INT key="NR" value="29"/>
+            <INT key="OW_FAMILY" value="28"/>
+            <INT key="OW_ID" value="E09538020000"/>
+            <INT key="OW_PATH" value="28.E09538020000"/>
+            <INT key="OW_SCALE" value="Celsius"/>
+            <INT key="PRESENT" value="1"/>
+            <INT key="STATE" value="T: 24.1250  L: 15  H: 35  P: 1  A: 0  W: none"/>
+            <INT key="TYPE" value="OWTEMP"/>
+            <INT key="IODev" value="DS9490R"/>
+            <ATTR key="room" value="garten"/>
+            <STATE key="present" value="1" measured="2010-04-05 14:06:49"/>
+            <STATE key="temperature" value="24.1250 (Celsius)" measured="2010-04-05 14:06:49"/>
+            <STATE key="temphigh" value="35" measured="2010-04-05 14:06:49"/>
+            <STATE key="templow" value="15" measured="2010-04-05 14:06:49"/>
+            <STATE key="warnings" value="none" measured="2010-04-05 14:06:49"/>
+        </OWTEMP>
+    </OWTEMP_LIST>
+
+    <SIS_PMS_LIST>
+        <SIS_PMS name="HLQ_rechts" state="off" sets="off on on-till off-till toggle" attrs="room comment IODev model:sis_pms,fs20st loglevel:0,1,2,3,4,5,6">
+            <INT key="DEF" value="01:0b:52:00:94 3"/>
+            <INT key="LASTIODev" value="Wohnz_PMS"/>
+            <INT key="MSGCNT" value="17570"/>
+            <INT key="NAME" value="HLQ_rechts"/>
+            <INT key="NR" value="92"/>
+            <INT key="SERIAL" value="01:0b:52:00:94"/>
+            <INT key="SOCKET" value="3"/>
+            <INT key="STATE" value="off"/>
+            <INT key="TYPE" value="SIS_PMS"/>
+            <INT key="Wohnz_PMS_MSGCNT" value="17570"/>
+            <INT key="Wohnz_PMS_TIME" value="2011-12-11 19:22:42"/>
+            <INT key="IODev" value="Wohnz_PMS"/>
+            <ATTR key="room" value="wohnzimmer"/>
+            <STATE key="PREVSTATE" value="on" measured="2011-12-11 18:30:00"/>
+            <STATE key="state" value="off" measured="2011-12-11 19:22:42"/>
+        </SIS_PMS>
+    </SIS_PMS_LIST>
+
+    <LGTV_LIST>
+        <LGTV name="47LG7000" state="off" sets="power input audio" attrs="room comment dummy:1,0 model:LGTV loglevel:0,1,2,3,4,5 TIMER:30">
+            <INT key="NAME" value="47LG7000"/>
+            <INT key="NR" value="4"/>
+            <INT key="STATE" value="off"/>
+            <INT key="TYPE" value="LGTV"/>
+            <INT key="IODev" value="myLG7k"/>
+            <ATTR key="TIMER" value="10"/>
+            <ATTR key="room" value="wohnzimmer"/>
+            <STATE key="input" value="HDMI1" measured="2011-12-11 16:43:31"/>
+            <STATE key="power" value="off" measured="2011-12-11 16:52:47"/>
+        </LGTV>
+    </LGTV_LIST>
+
     <KS300_LIST>
-        <KS300 name="KS300" state="T: 2.0  H: 74  W: 2.2  R: 24.5  IR: no" sets=""
+        <KS300 name="wetterstation" state="T: 2.0  H: 74  W: 2.2  R: 24.5  IR: no" sets=""
                attrs="room comment alias IODev do_not_notify:0,1 showtime:0,1 model:ks300 loglevel:0,1 rainadjustment:0,1 ignore:0,1 eventMap">
             <INT key="CODE" value="1234"/>
             <INT key="CUL_MSGCNT" value="7010"/>
@@ -794,14 +881,14 @@
             <INT key="DEF" value="1234"/>
             <INT key="LASTIODev" value="CUL"/>
             <INT key="MSGCNT" value="7010"/>
-            <INT key="NAME" value="KS300"/>
+            <INT key="NAME" value="wetterstation"/>
             <INT key="NR" value="50"/>
             <INT key="RAINUNIT" value="255"/>
             <INT key="STATE" value="T: 2.0  H: 74  W: 2.2  R: 24.5  IR: no"/>
             <INT key="TYPE" value="KS300"/>
             <INT key="WINDUNIT" value="1"/>
             <INT key="IODev" value="CUL"/>
-            <ATTR key="room" value="unknown"/>
+            <ATTR key="room" value="garten"/>
             <STATE key="avg_day" value="T: 4.8  H: 78  W: 6.6  R: 5.1" measured="2011-12-05 16:29:47"/>
             <STATE key="avg_month" value="T: 6.7  H: 38  W: 42.4  R: 10.2" measured="2011-12-05 00:01:01"/>
             <STATE key="cum_day" value="2011-12-05 00:01:01 T: 283802.8  H: 4657934  W: 390585  R: 19.4"
@@ -819,50 +906,33 @@
             <STATE key="unknown3" value="1 " measured="2011-12-05 16:29:47"/>
             <STATE key="wind" value="2.2 (km/h)" measured="2011-12-05 16:29:47"/>
         </KS300>
-        <KS300 name="Wetterstation" state="???" sets=""
-               attrs="room comment alias IODev do_not_notify:0,1 showtime:0,1 model:ks300 loglevel:0,1 rainadjustment:0,1 ignore:0,1 eventMap">
-            <INT key="CODE" value="1234"/>
-            <INT key="DEF" value="1234"/>
-            <INT key="NAME" value="Wetterstation"/>
-            <INT key="NR" value="44"/>
-            <INT key="RAINUNIT" value="255"/>
-            <INT key="STATE" value="???"/>
-            <INT key="TYPE" value="KS300"/>
-            <INT key="WINDUNIT" value="1"/>
-            <INT key="IODev" value="CUL"/>
-            <ATTR key="room" value="garten"/>
-        </KS300>
     </KS300_LIST>
+
     <CUL_WS_LIST>
-        <CUL_WS name="CUL_WS_1" state="???" sets=""
-                attrs="room comment alias IODev do_not_notify:0,1 showtime:0,1 model:S300TH,KS300 loglevel ignore:0,1 eventMap">
-            <INT key="CODE" value="1"/>
-            <INT key="DEF" value="1"/>
-            <INT key="NAME" value="CUL_WS_1"/>
-            <INT key="NR" value="87"/>
-            <INT key="STATE" value="???"/>
+        <CUL_WS name="CUL_WS" state="T: 13.6  H: 45.8" sets="" attrs="room comment alias IODev do_not_notify:0,1 showtime:0,1 model:S300TH,KS300 loglevel ignore:0,1 month day hz_month hz_day eventMap">
+            <INT key="CODE" value="4"/>
+            <INT key="CUL_MSGCNT" value="1876"/>
+            <INT key="CUL_RAWMSG" value="K31368145E0"/>
+            <INT key="CUL_RSSI" value="-90"/>
+            <INT key="CUL_TIME" value="2011-12-11 22:16:39"/>
+            <INT key="DEF" value="4"/>
+            <INT key="LASTIODev" value="CUL"/>
+            <INT key="MSGCNT" value="1876"/>
+            <INT key="NAME" value="Katze"/>
+            <INT key="NR" value="27"/>
+            <INT key="STATE" value="T: 13.6  H: 45.8"/>
             <INT key="TYPE" value="CUL_WS"/>
             <INT key="corr1" value="0"/>
             <INT key="corr2" value="0"/>
             <INT key="corr3" value="0"/>
             <INT key="corr4" value="0"/>
             <INT key="IODev" value="CUL"/>
-            <ATTR key="room" value="unknown"/>
-        </CUL_WS>
-        <CUL_WS name="CUL_WS_2" state="???" sets=""
-                attrs="room comment alias IODev do_not_notify:0,1 showtime:0,1 model:S300TH,KS300 loglevel ignore:0,1 eventMap">
-            <INT key="CODE" value="2"/>
-            <INT key="DEF" value="2"/>
-            <INT key="NAME" value="CUL_WS_2"/>
-            <INT key="NR" value="235"/>
-            <INT key="STATE" value="???"/>
-            <INT key="TYPE" value="CUL_WS"/>
-            <INT key="corr1" value="0"/>
-            <INT key="corr2" value="0"/>
-            <INT key="corr3" value="0"/>
-            <INT key="corr4" value="0"/>
-            <INT key="IODev" value="CUL"/>
-            <ATTR key="room" value="unknown"/>
+            <STATE key="DEVFAMILY" value="WS300" measured="2011-12-11 22:16:39"/>
+            <STATE key="DEVTYPE" value="S300TH" measured="2011-12-11 22:16:39"/>
+            <STATE key="humidity" value="45.8" measured="2011-12-11 22:16:39"/>
+            <STATE key="state" value="T: 13.6  H: 45.8" measured="2011-12-11 22:16:39"/>
+            <STATE key="temperature" value="13.6" measured="2011-12-11 22:16:39"/>
+            <ATTR key="room" value="garten"/>
         </CUL_WS>
     </CUL_WS_LIST>
     <notify_LIST>

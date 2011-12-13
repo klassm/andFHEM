@@ -1,4 +1,4 @@
-package li.klass.fhem.dataprovider;
+package li.klass.fhem.data;
 
 import android.content.Context;
 import android.util.Log;
@@ -10,13 +10,11 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class FHEMService {
     public static final FHEMService INSTANCE = new FHEMService();
     public static final String CACHE_FILENAME = "cache.obj";
 
-    private TelnetFHEM telnetFHEM = TelnetFHEM.INSTANCE;
     private Map<String,RoomDeviceList> deviceListMap;
 
     private FHEMService() {}
@@ -57,13 +55,13 @@ public class FHEMService {
     }
 
     private Map<String, RoomDeviceList> updateDeviceListMap() {
-        Map<String, RoomDeviceList> newList = FHEMDeviceListProvider.INSTANCE.listDevices();
+        Map<String, RoomDeviceList> newList = DeviceListProvider.INSTANCE.listDevices();
         cacheRoomDeviceListMap(newList);
         return newList;
     }
 
     public void executeCommand(String command) {
-        telnetFHEM.executeCommand(command);
+        DataProviderSwitch.INSTANCE.getCurrentProvider().executeCommand(command);
     }
 
     private void cacheRoomDeviceListMap(Map<String, RoomDeviceList> content) {
@@ -79,12 +77,16 @@ public class FHEMService {
     @SuppressWarnings("unchecked")
     private Map<String, RoomDeviceList> getStoredDataFromFile() {
         try {
-            Context context = AndFHEMApplication.getContext();
-            ObjectInputStream objectInputStream = new ObjectInputStream(context.openFileInput(CACHE_FILENAME));
-            return (Map<String, RoomDeviceList>) objectInputStream.readObject();
+            ObjectInputStream objectInputStream = new ObjectInputStream(AndFHEMApplication.getContext().openFileInput(CACHE_FILENAME));
+            Map<String, RoomDeviceList> roomDeviceListMap = (Map<String, RoomDeviceList>) objectInputStream.readObject();
+
+            if (roomDeviceListMap != null) {
+                return roomDeviceListMap;
+            }
         } catch (Exception e) {
             Log.e(FHEMService.class.getName(), "error occurred while de-serializing mensa data", e);
         }
         return updateDeviceListMap();
     }
+
 }

@@ -9,7 +9,9 @@
               android:layout_width="wrap_content"
               android:id="@+id/deviceType"
               android:textColor="#b84100"
-              android:textSize="15dp"
-              android:padding="10dp"
+              android:textSize="20dp"
+              android:padding="3dp"
+              android:text="parent"
+              android:layout_marginBottom="3dp"
             />
 </LinearLayout>

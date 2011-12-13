@@ -1,16 +1,19 @@
 package li.klass.fhem.domain;
 
 import android.util.Log;
-import org.w3c.dom.Node;
 
 import java.io.Serializable;
 
-public class KS300Device extends Device implements Comparable<KS300Device>, Serializable {
+public class KS300Device extends Device<KS300Device> implements Serializable {
 
     private String temperature = "";
     private String wind = "";
     private String humidity = "";
     private String rain = "";
+
+    public KS300Device() {
+        type = DeviceType.KS300;
+    }
 
     @Override
     public int compareTo(KS300Device ks300Device) {
@@ -19,7 +22,6 @@ public class KS300Device extends Device implements Comparable<KS300Device>, Seri
 
     @Override
     public void onChildItemRead(String keyValue, String nodeContent) {
-        Log.e(KS300Device.class.getName(), keyValue + " - " + nodeContent);
         if (keyValue.equals("TEMPERATURE")) {
             this.temperature = nodeContent;
         } else if (keyValue.equals("WIND")) {

@@ -84,6 +84,7 @@ public class ListDataAdapter<T extends Comparable<T>> extends BaseAdapter {
     }
 
     private void sortData() {
+        if (data == null || data.size() == 0) return;
         if (comparator != null) {
             Collections.sort(data, comparator);
         } else {

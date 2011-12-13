@@ -2,19 +2,13 @@ package li.klass.fhem.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.ContextMenu;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.RoomDetailAdapter;
-import li.klass.fhem.dataprovider.FHEMService;
-import li.klass.fhem.domain.FS20Device;
+import li.klass.fhem.data.FHEMService;
 import li.klass.fhem.domain.RoomDeviceList;
 import li.klass.fhem.widget.NestedListView;
 
-public class RoomDetailActivity extends UpdateableActivity {
+public class RoomDetailActivity extends UpdateableActivity<RoomDeviceList> {
 
     private String roomName;
     private RoomDetailAdapter roomDetailAdapter;
@@ -43,7 +37,7 @@ public class RoomDetailActivity extends UpdateableActivity {
     }
 
     @Override
-    protected RoomDeviceList getCurrentRoomDeviceList(boolean refresh) {
+    protected RoomDeviceList getCurrentData(boolean refresh) {
         return FHEMService.INSTANCE.deviceListForRoom(roomName, refresh);
     }
 

@@ -9,7 +9,12 @@
     <string name="wind">Wind</string>
     <string name="rain">Rain</string>
     <string name="humidity">Humidity</string>
+    <string name="actuator">Actuator</string>
+    <string name="state">State</string>
+    <string name="battery">Battery</string>
+    <string name="warnings">Warnings</string>
 
+    <string name="preferences">Preferences</string>
     <string name="update">Update</string>
     <string name="updating">Updating ...</string>
 
@@ -22,4 +27,16 @@
     <string name="tab_roomList">Rooms</string>
     <string name="tab_favorites">Favorites</string>
     <string name="tab_alldevices">All Devices</string>
+
+    <string name="prefUrlSummary">URL to FHEM server</string>
+    <string name="prefUrl">URL</string>
+    <string name="prefPortSummary">Port of FHEM server</string>
+    <string name="prefPort">Port</string>
+    <string name="prefUseDummyData">Use dummy data</string>
+    <string name="prefShowHiddenDevices">Show hidden devices</string>
+
+    <string name="updateError">Error while updating.</string>
+    <string name="updateErrorConnectionRefused">Cannot connect to host. Connection refused.</string>
+
+
 </resources>

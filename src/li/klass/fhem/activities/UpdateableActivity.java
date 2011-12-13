@@ -3,34 +3,40 @@ package li.klass.fhem.activities;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.*;
 import android.widget.AdapterView;
 import android.widget.Toast;
 import li.klass.fhem.R;
-import li.klass.fhem.dataprovider.FHEMService;
-import li.klass.fhem.dataprovider.FavoritesService;
+import li.klass.fhem.data.FHEMService;
+import li.klass.fhem.domain.SISPMSDevice;
+import li.klass.fhem.favorites.FavoritesService;
 import li.klass.fhem.domain.Device;
 import li.klass.fhem.domain.FS20Device;
-import li.klass.fhem.domain.RoomDeviceList;
 
-public abstract class UpdateableActivity extends Activity {
-    protected static final int OPTION_UPDATE = 1;
-    protected static final int DIALOG_UPDATE = 1;
+import java.net.ConnectException;
+
+public abstract class UpdateableActivity <T>  extends Activity {
+    public static final int OPTION_UPDATE = 1;
+    public static final int OPTION_PREFERENCES = 2;
+
+    public static final int DIALOG_UPDATE = 1;
+
     public static final int CONTEXT_MENU_FAVORITES_ADD = 1;
     public static final int CONTEXT_MENU_FAVORITES_DELETE = 2;
 
     protected Handler updateHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            updateData(roomDeviceList);
+            updateData(currentData);
         }
     };
-
-    protected RoomDeviceList roomDeviceList;
+    protected T currentData;
     protected Device contextMenuClickedDevice;
 
     @SuppressWarnings("unchecked")
@@ -40,7 +46,7 @@ public abstract class UpdateableActivity extends Activity {
     }
 
     protected void updateContent(boolean refresh) {
-        roomDeviceList = getCurrentRoomDeviceList(refresh);
+        currentData = getCurrentData(refresh);
         updateHandler.sendMessage(Message.obtain());
     }
 
@@ -58,7 +64,11 @@ public abstract class UpdateableActivity extends Activity {
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
 
-        menu.add(0, OPTION_UPDATE, 0, getResources().getString(R.string.update));
+        MenuItem updateItem = menu.add(0, OPTION_UPDATE, 0, getResources().getString(R.string.update));
+        updateItem.setIcon(R.drawable.ic_menu_refresh);
+
+        MenuItem preferencesItem = menu.add(0, OPTION_PREFERENCES, 0, getResources().getString(R.string.preferences));
+        preferencesItem.setIcon(android.R.drawable.ic_menu_preferences);
 
         return true;
     }
@@ -73,22 +83,55 @@ public abstract class UpdateableActivity extends Activity {
             case OPTION_UPDATE:
                 update(true);
                 break;
+            case OPTION_PREFERENCES:
+                Intent intent = new Intent(this, PreferencesActivity.class);
+                startActivity(intent);
         }
 
         return true;
     }
 
 
-    public void onFS20Click(View view) {
-        FS20Device device = (FS20Device) view.getTag();
-        device.toggleState();
-        update(false);
+    public void onFS20Click(final View view) {
+        new AsyncTask<Void, Void, Void>() {
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+                FS20Device device = (FS20Device) view.getTag();
+                device.toggleState();
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                update(false);
+            }
+        }.execute(null);
+
+    }
+    
+    public void onSISPMSClick(final View view) {
+        new AsyncTask<Void, Void, Void>() {
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+                SISPMSDevice device = (SISPMSDevice) view.getTag();
+                device.toggleState();
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                update(false);
+            }
+        }.execute(null);
     }
 
 
     class UpdateAction extends AsyncTask<Void, Void, Void> {
 
         private boolean refresh;
+        private volatile Throwable occurredException = null;
 
         public UpdateAction(boolean refresh) {
             this.refresh = refresh;
@@ -99,7 +142,8 @@ public abstract class UpdateableActivity extends Activity {
             try {
                 UpdateableActivity.this.updateContent(refresh);
             } catch (Exception e) {
-                e.printStackTrace();
+                occurredException = e.getCause();
+                Log.e(UpdateableActivity.class.getName(), "an error occurred while updating", e);
             }
             return null;
         }
@@ -107,6 +151,14 @@ public abstract class UpdateableActivity extends Activity {
         @Override
         protected void onPostExecute(Void aVoid) {
             UpdateableActivity.this.dismissDialog(DIALOG_UPDATE);
+            if (occurredException != null) {
+                Throwable cause = occurredException.getCause();
+                int stringId = R.string.updateError;
+                if (cause instanceof ConnectException) {
+                    stringId = R.string.updateErrorConnectionRefused;
+                }
+                Toast.makeText(UpdateableActivity.this, stringId, Toast.LENGTH_LONG).show();
+            }
         }
     }
 
@@ -149,6 +201,6 @@ public abstract class UpdateableActivity extends Activity {
         return false;
     }
 
-    protected abstract RoomDeviceList getCurrentRoomDeviceList(boolean refresh);
-    protected abstract void updateData(RoomDeviceList roomDeviceList);
+    protected abstract T getCurrentData(boolean refresh);
+    protected abstract void updateData(T data);
 }

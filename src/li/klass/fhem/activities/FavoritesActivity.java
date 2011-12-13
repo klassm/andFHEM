@@ -9,12 +9,12 @@ import android.widget.AdapterView;
 import android.widget.Toast;
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.RoomDetailAdapter;
-import li.klass.fhem.dataprovider.FavoritesService;
+import li.klass.fhem.favorites.FavoritesService;
 import li.klass.fhem.domain.Device;
 import li.klass.fhem.domain.RoomDeviceList;
 import li.klass.fhem.widget.NestedListView;
 
-public class FavoritesActivity extends UpdateableActivity {
+public class FavoritesActivity extends UpdateableActivity<RoomDeviceList> {
 
     private RoomDetailAdapter roomDetailAdapter;
 
@@ -37,8 +37,8 @@ public class FavoritesActivity extends UpdateableActivity {
     }
 
     @Override
-    protected RoomDeviceList getCurrentRoomDeviceList(boolean refresh) {
-        return FavoritesService.INSTANCE.getFavorites();
+    protected RoomDeviceList getCurrentData(boolean refresh) {
+        return FavoritesService.INSTANCE.getFavorites(refresh);
     }
 
     @Override

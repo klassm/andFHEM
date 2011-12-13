@@ -1,33 +1,40 @@
 package li.klass.fhem.domain;
 
-import li.klass.fhem.dataprovider.FHEMService;
-import org.w3c.dom.Node;
+import li.klass.fhem.data.FHEMService;
 
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.List;
 
-public class FS20Device extends Device implements Comparable<FS20Device>, Serializable {
+public class FS20Device extends Device<FS20Device> implements Comparable<FS20Device>, Serializable {
 
+    private List<Integer> dimStates = Arrays.asList(0, 6, 100, 12, 18, 25, 31, 37, 43, 50, 56, 62, 68, 75, 81, 87, 93);
+    
     private FS20State fs20State;
 
     public enum FS20State {
         ON, OFF
     }
 
+    public FS20Device() {
+        type = DeviceType.FS20;
+    }
+
     @Override
     public void onChildItemRead(String keyValue, String nodeContent) {
         if (keyValue.equals("STATE")) {
-            if (equalsAny(nodeContent, "off", "off-for-timer", "reset", "timer")) {
-                fs20State = FS20State.OFF;
-            } else {
-                fs20State = FS20State.ON;
-            }
+            setFs20State(nodeContent);
         }
     }
 
-    public int compareTo(FS20Device device) {
-        return device.getName().compareTo(getName());
+    private void setFs20State(String state) {
+        if (equalsAny(state, "off", "off-for-timer", "reset", "timer")) {
+            fs20State = FS20State.OFF;
+        } else {
+            fs20State = FS20State.ON;
+        }
     }
-
+    
     public boolean isOn() {
         return fs20State.equals(FS20State.ON);
     }
@@ -47,7 +54,48 @@ public class FS20Device extends Device implements Comparable<FS20Device>, Serial
         FHEMService.INSTANCE.executeCommand(command);
     }
 
+    public boolean isDimDevice() {
+        return name.contains("dim");
+    }
 
-    // sets="dim06% dim100% dim12% dim18% dim25% dim31% dim37% dim43% dim50% dim56% dim62% dim68% dim75% dim81% dim87% dim93% dimdown dimup dimupdown off off-for-timer on
-    // on-100-for-timer-prev on-for-timer on-old-for-timer on-old-for-timer-prev on-till ramp-off-time ramp-on-time reset sendstate timer toggle"
+    public void dim(int dimProgress) {
+
+        if (! isDimDevice()) return;
+
+        int bestMatch = -1;
+        int smallestDiff = 100;
+        for (Integer dimState : dimStates) {
+            int diff = dimProgress - dimState;
+            if (diff < 0) diff *= -1;
+            
+            if (bestMatch == -1 || diff < smallestDiff ) {
+                bestMatch = dimState;
+                smallestDiff = diff;
+            }
+        }
+
+        String newState;
+        if (bestMatch == 0)
+            newState = "off";
+        else {
+            newState = "dim" + String.format("%02d", bestMatch) + "%";
+        }
+        state = newState;
+        setFs20State(newState);
+
+        FHEMService.INSTANCE.executeCommand("set " + name + " " + newState);
+    }
+    
+    public int getFS20DimState() {
+        if (fs20State == FS20State.OFF) {
+            return 0;
+        }
+        
+        if (state.startsWith("dim")) {
+            String dimProgress = state.substring("dim".length(), state.length() - 1);
+            return Integer.valueOf(dimProgress);
+        }
+
+        return 100;
+    }
 }

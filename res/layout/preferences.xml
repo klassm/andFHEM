@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:key="first_preferencescreen"
+        android:layout_height="fill_parent"
+        android:layout_width="fill_parent">
+
+    <EditTextPreference
+            android:summary="@string/prefUrlSummary"
+            android:defaultValue="192.168.0.1"
+            android:title="@string/prefUrl"
+            android:key="URL"
+            android:id="@+id/prefUrl"/>
+
+    <EditTextPreference
+            android:summary="@string/prefPortSummary"
+            android:defaultValue="7072"
+            android:title="@string/prefPort"
+            android:key="PORT"
+            android:id="@+id/prefPort"
+            android:singleLine="true" />
+
+    <CheckBoxPreference
+            android:key="prefUseDummyData"
+            android:title="@string/prefUseDummyData"
+            android:defaultValue="true"
+            />
+
+    <CheckBoxPreference
+            android:key="prefShowHiddenDevices"
+            android:title="@string/prefShowHiddenDevices"
+            android:defaultValue="false"
+            />
+
+
+</PreferenceScreen>

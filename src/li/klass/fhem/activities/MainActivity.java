@@ -39,7 +39,6 @@ public class MainActivity extends TabActivity {
                 .setContent(allDevices);
         tabHost.addTab(allDevicesTabSpec);
 
-        tabHost.setCurrentTab(0);
-
+        tabHost.setCurrentTab(1);
     }
 }

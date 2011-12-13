@@ -1,0 +1,788 @@
+<FHZINFO>
+	<_internal__LIST>
+		<_internal_ name="global" state="<no definition>" sets="" attrs="room comment alias archivecmd allowfrom archivedir configfile lastinclude logfile modpath nrarchive pidfilename port statefile title userattr verbose:1,2,3,4,5 mseclog version nofork logdir holiday2we autoload_undefined_devices dupTimeout month day hz_month hz_day eventMap">
+			<INT key="DEF" value="<no definition>"/>
+			<INT key="NAME" value="global"/>
+			<INT key="NR" value="1"/>
+			<INT key="STATE" value="<no definition>"/>
+			<INT key="TYPE" value="_internal_"/>
+			<INT key="currentlogfile" value="/opt/fhem/fhem-2011-12.log"/>
+			<INT key="logfile" value="-"/>
+			<ATTR key="autoload_undefined_devices" value="1"/>
+			<ATTR key="configfile" value="/etc/fhem.cfg"/>
+			<ATTR key="lastinclude" value="/opt/fhem/fhem.include"/>
+			<ATTR key="logfile" value="/opt/fhem/fhem-%Y-%m.log"/>
+			<ATTR key="modpath" value="/usr/share/fhem"/>
+			<ATTR key="port" value="7072 global"/>
+			<ATTR key="statefile" value="/opt/fhem/fhem.save"/>
+			<ATTR key="userattr" value="month day hz_month hz_day"/>
+			<ATTR key="verbose" value="3"/>
+			<ATTR key="version" value="5.0-tuxradio.20110409014700 from 2011-04-09 ($Id: fhem.pl,v 1.136 2011-03-10 17:42:01 rudolfkoenig Exp $)"/>
+		</_internal_>
+	</_internal__LIST>
+	<CUL_LIST>
+		<CUL name="CUL" state="Initialized" sets="bWidth file freq hmPairForSec hmPairSerial led patable rAmpl raw sens time" attrs="room comment alias do_not_notify:1,0 dummy:1,0 showtime:1,0 model:CUL,CUN,CUR loglevel:0,1,2,3,4,5,6 fhtsoftbuffer:1,0 sendpool addvaltrigger rfmode:SlowRF,HomeMatic hmId hmProtocolEvents month day hz_month hz_day eventMap">
+			<INT key="CUL_MSGCNT" value="22434"/>
+			<INT key="CUL_TIME" value="2011-12-11 22:17:48"/>
+			<INT key="Clients" value=":FS20:FHT:FHT8V:KS300:USF1000:BS:HMS:CUL_EM:CUL_WS:CUL_FHTTK:CUL_RFR:CUL_HOERMANN:ESA2000:CUL_IR:"/>
+			<INT key="DEF" value="/dev/ttySP1@38400 1234"/>
+			<INT key="DeviceName" value="/dev/ttySP1@38400"/>
+			<INT key="FD" value="7"/>
+			<INT key="FHTID" value="1234"/>
+			<INT key="NAME" value="CUL"/>
+			<INT key="NR" value="2"/>
+			<INT key="NR_CMD_LAST_H" value="6"/>
+			<INT key="PARTIAL" value=""/>
+			<INT key="RAWMSG" value="T163200A60A04"/>
+			<INT key="RSSI" value="-72"/>
+			<INT key="STATE" value="Initialized"/>
+			<INT key="TYPE" value="CUL"/>
+			<INT key="VERSION" value="V 1.43 CSM868"/>
+			<INT key="initString" value="X21"/>
+			<STATE key="raw" value="02" measured="2011-12-06 00:21:53"/>
+		</CUL>
+	</CUL_LIST>
+	<FHEMWEB_LIST>
+		<FHEMWEB name="FHEMWEB:188.102.201.37:50702" state="Connected" sets="" attrs="room comment alias loglevel:0,1,2,3,4,5,6 webname fwmodpath fwcompress plotmode:gnuplot,gnuplot-scroll,SVG plotsize refresh smallscreen plotfork basicAuth basicAuthMsg HTTPS month day hz_month hz_day eventMap">
+			<INT key="BUF" value=""/>
+			<INT key="FD" value="32"/>
+			<INT key="NAME" value="FHEMWEB:188.102.201.37:50702"/>
+			<INT key="NR" value="223"/>
+			<INT key="SNAME" value="WEB"/>
+			<INT key="STATE" value="Connected"/>
+			<INT key="TEMPORARY" value="1"/>
+			<INT key="TYPE" value="FHEMWEB"/>
+			<ATTR key="room" value="hidden"/>
+		</FHEMWEB>
+		<FHEMWEB name="FHEMWEB:188.102.201.37:50703" state="Connected" sets="" attrs="room comment alias loglevel:0,1,2,3,4,5,6 webname fwmodpath fwcompress plotmode:gnuplot,gnuplot-scroll,SVG plotsize refresh smallscreen plotfork basicAuth basicAuthMsg HTTPS month day hz_month hz_day eventMap">
+			<INT key="BUF" value=""/>
+			<INT key="FD" value="33"/>
+			<INT key="NAME" value="FHEMWEB:188.102.201.37:50703"/>
+			<INT key="NR" value="224"/>
+			<INT key="SNAME" value="WEB"/>
+			<INT key="STATE" value="Connected"/>
+			<INT key="TEMPORARY" value="1"/>
+			<INT key="TYPE" value="FHEMWEB"/>
+			<ATTR key="room" value="hidden"/>
+		</FHEMWEB>
+		<FHEMWEB name="FHEMWEB:188.102.201.37:50704" state="Connected" sets="" attrs="room comment alias loglevel:0,1,2,3,4,5,6 webname fwmodpath fwcompress plotmode:gnuplot,gnuplot-scroll,SVG plotsize refresh smallscreen plotfork basicAuth basicAuthMsg HTTPS month day hz_month hz_day eventMap">
+			<INT key="BUF" value=""/>
+			<INT key="FD" value="34"/>
+			<INT key="NAME" value="FHEMWEB:188.102.201.37:50704"/>
+			<INT key="NR" value="225"/>
+			<INT key="SNAME" value="WEB"/>
+			<INT key="STATE" value="Connected"/>
+			<INT key="TEMPORARY" value="1"/>
+			<INT key="TYPE" value="FHEMWEB"/>
+			<ATTR key="room" value="hidden"/>
+		</FHEMWEB>
+		<FHEMWEB name="FHEMWEB:188.102.201.37:50705" state="Connected" sets="" attrs="room comment alias loglevel:0,1,2,3,4,5,6 webname fwmodpath fwcompress plotmode:gnuplot,gnuplot-scroll,SVG plotsize refresh smallscreen plotfork basicAuth basicAuthMsg HTTPS month day hz_month hz_day eventMap">
+			<INT key="BUF" value=""/>
+			<INT key="FD" value="35"/>
+			<INT key="NAME" value="FHEMWEB:188.102.201.37:50705"/>
+			<INT key="NR" value="226"/>
+			<INT key="SNAME" value="WEB"/>
+			<INT key="STATE" value="Connected"/>
+			<INT key="TEMPORARY" value="1"/>
+			<INT key="TYPE" value="FHEMWEB"/>
+			<ATTR key="room" value="hidden"/>
+		</FHEMWEB>
+		<FHEMWEB name="FHEMWEB:188.102.201.37:50706" state="Connected" sets="" attrs="room comment alias loglevel:0,1,2,3,4,5,6 webname fwmodpath fwcompress plotmode:gnuplot,gnuplot-scroll,SVG plotsize refresh smallscreen plotfork basicAuth basicAuthMsg HTTPS month day hz_month hz_day eventMap">
+			<INT key="BUF" value=""/>
+			<INT key="FD" value="36"/>
+			<INT key="NAME" value="FHEMWEB:188.102.201.37:50706"/>
+			<INT key="NR" value="227"/>
+			<INT key="SNAME" value="WEB"/>
+			<INT key="STATE" value="Connected"/>
+			<INT key="TEMPORARY" value="1"/>
+			<INT key="TYPE" value="FHEMWEB"/>
+			<ATTR key="room" value="hidden"/>
+		</FHEMWEB>
+		<FHEMWEB name="FHEMWEB:188.102.201.37:50707" state="Connected" sets="" attrs="room comment alias loglevel:0,1,2,3,4,5,6 webname fwmodpath fwcompress plotmode:gnuplot,gnuplot-scroll,SVG plotsize refresh smallscreen plotfork basicAuth basicAuthMsg HTTPS month day hz_month hz_day eventMap">
+			<INT key="BUF" value=""/>
+			<INT key="FD" value="37"/>
+			<INT key="NAME" value="FHEMWEB:188.102.201.37:50707"/>
+			<INT key="NR" value="228"/>
+			<INT key="SNAME" value="WEB"/>
+			<INT key="STATE" value="Connected"/>
+			<INT key="TEMPORARY" value="1"/>
+			<INT key="TYPE" value="FHEMWEB"/>
+			<ATTR key="room" value="hidden"/>
+		</FHEMWEB>
+		<FHEMWEB name="FHEMWEB:188.102.232.238:61976" state="Connected" sets="" attrs="room comment alias loglevel:0,1,2,3,4,5,6 webname fwmodpath fwcompress plotmode:gnuplot,gnuplot-scroll,SVG plotsize refresh smallscreen plotfork basicAuth basicAuthMsg HTTPS month day hz_month hz_day eventMap">
+			<INT key="BUF" value=""/>
+			<INT key="FD" value="4"/>
+			<INT key="NAME" value="FHEMWEB:188.102.232.238:61976"/>
+			<INT key="NR" value="99"/>
+			<INT key="SNAME" value="WEB"/>
+			<INT key="STATE" value="Connected"/>
+			<INT key="TEMPORARY" value="1"/>
+			<INT key="TYPE" value="FHEMWEB"/>
+			<ATTR key="room" value="hidden"/>
+		</FHEMWEB>
+		<FHEMWEB name="FHEMWEB:188.102.232.238:61977" state="Connected" sets="" attrs="room comment alias loglevel:0,1,2,3,4,5,6 webname fwmodpath fwcompress plotmode:gnuplot,gnuplot-scroll,SVG plotsize refresh smallscreen plotfork basicAuth basicAuthMsg HTTPS month day hz_month hz_day eventMap">
+			<INT key="BUF" value=""/>
+			<INT key="FD" value="6"/>
+			<INT key="NAME" value="FHEMWEB:188.102.232.238:61977"/>
+			<INT key="NR" value="100"/>
+			<INT key="SNAME" value="WEB"/>
+			<INT key="STATE" value="Connected"/>
+			<INT key="TEMPORARY" value="1"/>
+			<INT key="TYPE" value="FHEMWEB"/>
+			<ATTR key="room" value="hidden"/>
+		</FHEMWEB>
+		<FHEMWEB name="FHEMWEB:188.102.232.238:61978" state="Connected" sets="" attrs="room comment alias loglevel:0,1,2,3,4,5,6 webname fwmodpath fwcompress plotmode:gnuplot,gnuplot-scroll,SVG plotsize refresh smallscreen plotfork basicAuth basicAuthMsg HTTPS month day hz_month hz_day eventMap">
+			<INT key="BUF" value=""/>
+			<INT key="FD" value="16"/>
+			<INT key="NAME" value="FHEMWEB:188.102.232.238:61978"/>
+			<INT key="NR" value="101"/>
+			<INT key="SNAME" value="WEB"/>
+			<INT key="STATE" value="Connected"/>
+			<INT key="TEMPORARY" value="1"/>
+			<INT key="TYPE" value="FHEMWEB"/>
+			<ATTR key="room" value="hidden"/>
+		</FHEMWEB>
+		<FHEMWEB name="FHEMWEB:188.102.232.238:61979" state="Connected" sets="" attrs="room comment alias loglevel:0,1,2,3,4,5,6 webname fwmodpath fwcompress plotmode:gnuplot,gnuplot-scroll,SVG plotsize refresh smallscreen plotfork basicAuth basicAuthMsg HTTPS month day hz_month hz_day eventMap">
+			<INT key="BUF" value=""/>
+			<INT key="FD" value="17"/>
+			<INT key="NAME" value="FHEMWEB:188.102.232.238:61979"/>
+			<INT key="NR" value="102"/>
+			<INT key="SNAME" value="WEB"/>
+			<INT key="STATE" value="Connected"/>
+			<INT key="TEMPORARY" value="1"/>
+			<INT key="TYPE" value="FHEMWEB"/>
+			<ATTR key="room" value="hidden"/>
+		</FHEMWEB>
+		<FHEMWEB name="FHEMWEB:188.102.232.238:61980" state="Connected" sets="" attrs="room comment alias loglevel:0,1,2,3,4,5,6 webname fwmodpath fwcompress plotmode:gnuplot,gnuplot-scroll,SVG plotsize refresh smallscreen plotfork basicAuth basicAuthMsg HTTPS month day hz_month hz_day eventMap">
+			<INT key="BUF" value=""/>
+			<INT key="FD" value="18"/>
+			<INT key="NAME" value="FHEMWEB:188.102.232.238:61980"/>
+			<INT key="NR" value="103"/>
+			<INT key="SNAME" value="WEB"/>
+			<INT key="STATE" value="Connected"/>
+			<INT key="TEMPORARY" value="1"/>
+			<INT key="TYPE" value="FHEMWEB"/>
+			<ATTR key="room" value="hidden"/>
+		</FHEMWEB>
+		<FHEMWEB name="FHEMWEB:188.102.232.238:61981" state="Connected" sets="" attrs="room comment alias loglevel:0,1,2,3,4,5,6 webname fwmodpath fwcompress plotmode:gnuplot,gnuplot-scroll,SVG plotsize refresh smallscreen plotfork basicAuth basicAuthMsg HTTPS month day hz_month hz_day eventMap">
+			<INT key="BUF" value=""/>
+			<INT key="FD" value="19"/>
+			<INT key="NAME" value="FHEMWEB:188.102.232.238:61981"/>
+			<INT key="NR" value="104"/>
+			<INT key="SNAME" value="WEB"/>
+			<INT key="STATE" value="Connected"/>
+			<INT key="TEMPORARY" value="1"/>
+			<INT key="TYPE" value="FHEMWEB"/>
+			<ATTR key="room" value="hidden"/>
+		</FHEMWEB>
+		<FHEMWEB name="FHEMWEB:188.102.234.215:61642" state="Connected" sets="" attrs="room comment alias loglevel:0,1,2,3,4,5,6 webname fwmodpath fwcompress plotmode:gnuplot,gnuplot-scroll,SVG plotsize refresh smallscreen plotfork basicAuth basicAuthMsg HTTPS month day hz_month hz_day eventMap">
+			<INT key="BUF" value=""/>
+			<INT key="FD" value="20"/>
+			<INT key="NAME" value="FHEMWEB:188.102.234.215:61642"/>
+			<INT key="NR" value="186"/>
+			<INT key="SNAME" value="WEB"/>
+			<INT key="STATE" value="Connected"/>
+			<INT key="TEMPORARY" value="1"/>
+			<INT key="TYPE" value="FHEMWEB"/>
+			<ATTR key="room" value="hidden"/>
+		</FHEMWEB>
+		<FHEMWEB name="FHEMWEB:188.102.234.215:61643" state="Connected" sets="" attrs="room comment alias loglevel:0,1,2,3,4,5,6 webname fwmodpath fwcompress plotmode:gnuplot,gnuplot-scroll,SVG plotsize refresh smallscreen plotfork basicAuth basicAuthMsg HTTPS month day hz_month hz_day eventMap">
+			<INT key="BUF" value=""/>
+			<INT key="FD" value="21"/>
+			<INT key="NAME" value="FHEMWEB:188.102.234.215:61643"/>
+			<INT key="NR" value="187"/>
+			<INT key="SNAME" value="WEB"/>
+			<INT key="STATE" value="Connected"/>
+			<INT key="TEMPORARY" value="1"/>
+			<INT key="TYPE" value="FHEMWEB"/>
+			<ATTR key="room" value="hidden"/>
+		</FHEMWEB>
+		<FHEMWEB name="FHEMWEB:188.102.234.215:61644" state="Connected" sets="" attrs="room comment alias loglevel:0,1,2,3,4,5,6 webname fwmodpath fwcompress plotmode:gnuplot,gnuplot-scroll,SVG plotsize refresh smallscreen plotfork basicAuth basicAuthMsg HTTPS month day hz_month hz_day eventMap">
+			<INT key="BUF" value=""/>
+			<INT key="FD" value="22"/>
+			<INT key="NAME" value="FHEMWEB:188.102.234.215:61644"/>
+			<INT key="NR" value="188"/>
+			<INT key="SNAME" value="WEB"/>
+			<INT key="STATE" value="Connected"/>
+			<INT key="TEMPORARY" value="1"/>
+			<INT key="TYPE" value="FHEMWEB"/>
+			<ATTR key="room" value="hidden"/>
+		</FHEMWEB>
+		<FHEMWEB name="FHEMWEB:188.102.234.215:61645" state="Connected" sets="" attrs="room comment alias loglevel:0,1,2,3,4,5,6 webname fwmodpath fwcompress plotmode:gnuplot,gnuplot-scroll,SVG plotsize refresh smallscreen plotfork basicAuth basicAuthMsg HTTPS month day hz_month hz_day eventMap">
+			<INT key="BUF" value=""/>
+			<INT key="FD" value="23"/>
+			<INT key="NAME" value="FHEMWEB:188.102.234.215:61645"/>
+			<INT key="NR" value="189"/>
+			<INT key="SNAME" value="WEB"/>
+			<INT key="STATE" value="Connected"/>
+			<INT key="TEMPORARY" value="1"/>
+			<INT key="TYPE" value="FHEMWEB"/>
+			<ATTR key="room" value="hidden"/>
+		</FHEMWEB>
+		<FHEMWEB name="FHEMWEB:188.102.234.215:61646" state="Connected" sets="" attrs="room comment alias loglevel:0,1,2,3,4,5,6 webname fwmodpath fwcompress plotmode:gnuplot,gnuplot-scroll,SVG plotsize refresh smallscreen plotfork basicAuth basicAuthMsg HTTPS month day hz_month hz_day eventMap">
+			<INT key="BUF" value=""/>
+			<INT key="FD" value="24"/>
+			<INT key="NAME" value="FHEMWEB:188.102.234.215:61646"/>
+			<INT key="NR" value="190"/>
+			<INT key="SNAME" value="WEB"/>
+			<INT key="STATE" value="Connected"/>
+			<INT key="TEMPORARY" value="1"/>
+			<INT key="TYPE" value="FHEMWEB"/>
+			<ATTR key="room" value="hidden"/>
+		</FHEMWEB>
+		<FHEMWEB name="FHEMWEB:188.102.234.215:61647" state="Connected" sets="" attrs="room comment alias loglevel:0,1,2,3,4,5,6 webname fwmodpath fwcompress plotmode:gnuplot,gnuplot-scroll,SVG plotsize refresh smallscreen plotfork basicAuth basicAuthMsg HTTPS month day hz_month hz_day eventMap">
+			<INT key="BUF" value=""/>
+			<INT key="FD" value="25"/>
+			<INT key="NAME" value="FHEMWEB:188.102.234.215:61647"/>
+			<INT key="NR" value="191"/>
+			<INT key="SNAME" value="WEB"/>
+			<INT key="STATE" value="Connected"/>
+			<INT key="TEMPORARY" value="1"/>
+			<INT key="TYPE" value="FHEMWEB"/>
+			<ATTR key="room" value="hidden"/>
+		</FHEMWEB>
+		<FHEMWEB name="FHEMWEB:194.95.194.117:49386" state="Connected" sets="" attrs="room comment alias loglevel:0,1,2,3,4,5,6 webname fwmodpath fwcompress plotmode:gnuplot,gnuplot-scroll,SVG plotsize refresh smallscreen plotfork basicAuth basicAuthMsg HTTPS month day hz_month hz_day eventMap">
+			<INT key="BUF" value=""/>
+			<INT key="FD" value="26"/>
+			<INT key="NAME" value="FHEMWEB:194.95.194.117:49386"/>
+			<INT key="NR" value="217"/>
+			<INT key="SNAME" value="WEB"/>
+			<INT key="STATE" value="Connected"/>
+			<INT key="TEMPORARY" value="1"/>
+			<INT key="TYPE" value="FHEMWEB"/>
+			<ATTR key="room" value="hidden"/>
+		</FHEMWEB>
+		<FHEMWEB name="FHEMWEB:194.95.194.117:49387" state="Connected" sets="" attrs="room comment alias loglevel:0,1,2,3,4,5,6 webname fwmodpath fwcompress plotmode:gnuplot,gnuplot-scroll,SVG plotsize refresh smallscreen plotfork basicAuth basicAuthMsg HTTPS month day hz_month hz_day eventMap">
+			<INT key="BUF" value=""/>
+			<INT key="FD" value="27"/>
+			<INT key="NAME" value="FHEMWEB:194.95.194.117:49387"/>
+			<INT key="NR" value="218"/>
+			<INT key="SNAME" value="WEB"/>
+			<INT key="STATE" value="Connected"/>
+			<INT key="TEMPORARY" value="1"/>
+			<INT key="TYPE" value="FHEMWEB"/>
+			<ATTR key="room" value="hidden"/>
+		</FHEMWEB>
+		<FHEMWEB name="FHEMWEB:194.95.194.117:49388" state="Connected" sets="" attrs="room comment alias loglevel:0,1,2,3,4,5,6 webname fwmodpath fwcompress plotmode:gnuplot,gnuplot-scroll,SVG plotsize refresh smallscreen plotfork basicAuth basicAuthMsg HTTPS month day hz_month hz_day eventMap">
+			<INT key="BUF" value=""/>
+			<INT key="FD" value="29"/>
+			<INT key="NAME" value="FHEMWEB:194.95.194.117:49388"/>
+			<INT key="NR" value="220"/>
+			<INT key="SNAME" value="WEB"/>
+			<INT key="STATE" value="Connected"/>
+			<INT key="TEMPORARY" value="1"/>
+			<INT key="TYPE" value="FHEMWEB"/>
+			<ATTR key="room" value="hidden"/>
+		</FHEMWEB>
+		<FHEMWEB name="FHEMWEB:194.95.194.117:49389" state="Connected" sets="" attrs="room comment alias loglevel:0,1,2,3,4,5,6 webname fwmodpath fwcompress plotmode:gnuplot,gnuplot-scroll,SVG plotsize refresh smallscreen plotfork basicAuth basicAuthMsg HTTPS month day hz_month hz_day eventMap">
+			<INT key="BUF" value=""/>
+			<INT key="FD" value="28"/>
+			<INT key="NAME" value="FHEMWEB:194.95.194.117:49389"/>
+			<INT key="NR" value="219"/>
+			<INT key="SNAME" value="WEB"/>
+			<INT key="STATE" value="Connected"/>
+			<INT key="TEMPORARY" value="1"/>
+			<INT key="TYPE" value="FHEMWEB"/>
+			<ATTR key="room" value="hidden"/>
+		</FHEMWEB>
+		<FHEMWEB name="FHEMWEB:194.95.194.117:49390" state="Connected" sets="" attrs="room comment alias loglevel:0,1,2,3,4,5,6 webname fwmodpath fwcompress plotmode:gnuplot,gnuplot-scroll,SVG plotsize refresh smallscreen plotfork basicAuth basicAuthMsg HTTPS month day hz_month hz_day eventMap">
+			<INT key="BUF" value=""/>
+			<INT key="FD" value="30"/>
+			<INT key="NAME" value="FHEMWEB:194.95.194.117:49390"/>
+			<INT key="NR" value="221"/>
+			<INT key="SNAME" value="WEB"/>
+			<INT key="STATE" value="Connected"/>
+			<INT key="TEMPORARY" value="1"/>
+			<INT key="TYPE" value="FHEMWEB"/>
+			<ATTR key="room" value="hidden"/>
+		</FHEMWEB>
+		<FHEMWEB name="FHEMWEB:194.95.194.117:49391" state="Connected" sets="" attrs="room comment alias loglevel:0,1,2,3,4,5,6 webname fwmodpath fwcompress plotmode:gnuplot,gnuplot-scroll,SVG plotsize refresh smallscreen plotfork basicAuth basicAuthMsg HTTPS month day hz_month hz_day eventMap">
+			<INT key="BUF" value=""/>
+			<INT key="FD" value="31"/>
+			<INT key="NAME" value="FHEMWEB:194.95.194.117:49391"/>
+			<INT key="NR" value="222"/>
+			<INT key="SNAME" value="WEB"/>
+			<INT key="STATE" value="Connected"/>
+			<INT key="TEMPORARY" value="1"/>
+			<INT key="TYPE" value="FHEMWEB"/>
+			<ATTR key="room" value="hidden"/>
+		</FHEMWEB>
+		<FHEMWEB name="FHEMWEB:201.55.140.38:48345" state="Connected" sets="" attrs="room comment alias loglevel:0,1,2,3,4,5,6 webname fwmodpath fwcompress plotmode:gnuplot,gnuplot-scroll,SVG plotsize refresh smallscreen plotfork basicAuth basicAuthMsg HTTPS month day hz_month hz_day eventMap">
+			<INT key="BUF" value=""/>
+			<INT key="FD" value="38"/>
+			<INT key="NAME" value="FHEMWEB:201.55.140.38:48345"/>
+			<INT key="NR" value="264"/>
+			<INT key="SNAME" value="WEB"/>
+			<INT key="STATE" value="Connected"/>
+			<INT key="TEMPORARY" value="1"/>
+			<INT key="TYPE" value="FHEMWEB"/>
+			<ATTR key="room" value="hidden"/>
+		</FHEMWEB>
+		<FHEMWEB name="FHEMWEB:94.222.235.190:55152" state="Connected" sets="" attrs="room comment alias loglevel:0,1,2,3,4,5,6 webname fwmodpath fwcompress plotmode:gnuplot,gnuplot-scroll,SVG plotsize refresh smallscreen plotfork basicAuth basicAuthMsg HTTPS month day hz_month hz_day eventMap">
+			<INT key="BUF" value=""/>
+			<INT key="FD" value="39"/>
+			<INT key="INUSE" value="1"/>
+			<INT key="NAME" value="FHEMWEB:94.222.235.190:55152"/>
+			<INT key="NR" value="296"/>
+			<INT key="SNAME" value="WEB"/>
+			<INT key="STATE" value="Connected"/>
+			<INT key="TEMPORARY" value="1"/>
+			<INT key="TYPE" value="FHEMWEB"/>
+			<ATTR key="room" value="hidden"/>
+		</FHEMWEB>
+		<FHEMWEB name="WEB" state="Initialized" sets="" attrs="room comment alias loglevel:0,1,2,3,4,5,6 webname fwmodpath fwcompress plotmode:gnuplot,gnuplot-scroll,SVG plotsize refresh smallscreen plotfork basicAuth basicAuthMsg HTTPS month day hz_month hz_day eventMap">
+			<INT key="DEF" value="8083 global"/>
+			<INT key="FD" value="8"/>
+			<INT key="NAME" value="WEB"/>
+			<INT key="NR" value="3"/>
+			<INT key="PORT" value="8083"/>
+			<INT key="STATE" value="Initialized"/>
+			<INT key="TYPE" value="FHEMWEB"/>
+		</FHEMWEB>
+		<FHEMWEB name="WEBS" state="Initialized" sets="" attrs="room comment alias loglevel:0,1,2,3,4,5,6 webname fwmodpath fwcompress plotmode:gnuplot,gnuplot-scroll,SVG plotsize refresh smallscreen plotfork basicAuth basicAuthMsg HTTPS month day hz_month hz_day eventMap">
+			<INT key="DEF" value="8084 global"/>
+			<INT key="FD" value="9"/>
+			<INT key="NAME" value="WEBS"/>
+			<INT key="NR" value="4"/>
+			<INT key="PORT" value="8084"/>
+			<INT key="STATE" value="Initialized"/>
+			<INT key="TYPE" value="FHEMWEB"/>
+			<ATTR key="smallscreen" value="1"/>
+		</FHEMWEB>
+	</FHEMWEB_LIST>
+	<FHEMRENDERER_LIST>
+		<FHEMRENDERER name="pgm5_renderer" state="Initialized" sets="" attrs="room comment alias loglevel:0,1,2,3,4,5,6 plotmode:gnuplot,gnuplot-scroll plotsize refresh tmpfile status multiprocess month day hz_month hz_day eventMap">
+			<INT key="NAME" value="pgm5_renderer"/>
+			<INT key="NR" value="23"/>
+			<INT key="STATE" value="Initialized"/>
+			<INT key="TYPE" value="FHEMRENDERER"/>
+			<ATTR key="multiprocess" value="on"/>
+			<ATTR key="plotmode" value="gnuplot"/>
+			<ATTR key="plotsize" value="800,200"/>
+			<ATTR key="refresh" value="00:15:00"/>
+			<ATTR key="status" value="off"/>
+			<ATTR key="tmpfile" value="/opt/fhem/images/pgm5-"/>
+		</FHEMRENDERER>
+	</FHEMRENDERER_LIST>
+	<CUL_IR_LIST>
+		<CUL_IR name="IR_CUL" state="Initialized" sets="irLearnForSec" attrs="room comment alias do_not_notify:1,0 ignore:0,1 loglevel:0,1,2,3,4,5,6 learnprefix learncount Button.* Group.* irRecieve:OFF,ON,ON_NR month day hz_month hz_day eventMap">
+			<INT key="DEF" value="CUL"/>
+			<INT key="NAME" value="IR_CUL"/>
+			<INT key="NR" value="26"/>
+			<INT key="STATE" value="Initialized"/>
+			<INT key="TYPE" value="CUL_IR"/>
+			<INT key="irRecieve" value="ON_NR"/>
+			<INT key="IODev" value="CUL"/>
+			<ATTR key="Button001" value="I02029A000000 set WZ_Lampe on"/>
+			<ATTR key="Button002" value="I02029A000100 set WZ_Lampe off"/>
+			<ATTR key="Button003" value="I02029A000200 set CUL raw is000000000F11"/>
+			<ATTR key="Button004" value="I02029A000300 set CUL raw is000000000F00"/>
+			<ATTR key="Button005" value="I02029A000400 "echo 1 > /sys/class/gpio/gpio60/value""/>
+			<ATTR key="Button006" value="I02029A000500 "echo 0 > /sys/class/gpio/gpio60/value""/>
+			<ATTR key="Button007" value="I02029A000600 "echo 1 > /sys/class/gpio/gpio60/value""/>
+			<ATTR key="Button008" value="I02029A000700 "echo 0 > /sys/class/gpio/gpio60/value""/>
+			<ATTR key="Button009" value="I02029A000800"/>
+			<ATTR key="Button010" value="I02029A000900"/>
+			<ATTR key="Button011" value="I02029A000A00"/>
+			<ATTR key="Button012" value="I02029A000B00"/>
+			<ATTR key="Button013" value="I02029A000C00"/>
+			<ATTR key="Button014" value="I02029A000D00"/>
+			<ATTR key="Button015" value="I02029A000E00"/>
+			<ATTR key="Button016" value="I02029A000F00"/>
+			<ATTR key="Button017" value="I02029A001000"/>
+			<ATTR key="Button018" value="I02029A001100"/>
+			<ATTR key="Button019" value="I02029A001200 set SZ_Schrank on"/>
+			<ATTR key="Button020" value="I02029A001300 set SZ_Schrank off"/>
+			<ATTR key="Button021" value="I02029A001400"/>
+			<ATTR key="Button022" value="I02029A001500"/>
+			<ATTR key="Button023" value="I02029A001600"/>
+			<ATTR key="Button024" value="I02029A001700"/>
+			<ATTR key="Button025" value="I02029A001800"/>
+			<ATTR key="Button026" value="I02029A001900"/>
+			<ATTR key="Button027" value="I02029A001A00"/>
+			<ATTR key="Button028" value="I02029A001B00"/>
+			<ATTR key="Button029" value="I02029A001C00"/>
+			<ATTR key="Button030" value="I02029A001D00"/>
+			<ATTR key="Button031" value="I02029A001E00"/>
+			<ATTR key="Button032" value="I02029A001F00"/>
+			<ATTR key="Button033" value="I02029A004000"/>
+			<ATTR key="Button034" value="I02029A004100"/>
+			<ATTR key="Button035" value="I02029A004200"/>
+			<ATTR key="Button036" value="I02029A004300"/>
+			<ATTR key="Button037" value="I02029A004400"/>
+			<ATTR key="Button038" value="I02029A004500"/>
+			<ATTR key="Button039" value="I02029A004600"/>
+			<ATTR key="Button040" value="I02029A004700"/>
+			<ATTR key="irRecieve" value="ON_NR"/>
+			<ATTR key="learncount" value="41"/>
+			<ATTR key="learnprefix" value="A"/>
+		</CUL_IR>
+	</CUL_IR_LIST>
+	<FS20_LIST>
+		<FS20 name="KL_Waschmaschine" state="off" sets="dim06% dim100% dim12% dim18% dim25% dim31% dim37% dim43% dim50% dim56% dim62% dim68% dim75% dim81% dim87% dim93% dimdown dimup dimupdown off off-for-timer on on-100-for-timer-prev on-for-timer on-old-for-timer on-old-for-timer-prev on-till ramp-off-time ramp-on-time reset sendstate timer toggle" attrs="room comment alias IODev follow-on-for-timer:1,0 do_not_notify:1,0 ignore:0,1 dummy:1,0 showtime:1,0 model;fs20hgs,fs20hgs,fs20pira,fs20piri,fs20s20,fs20s8,fs20s4,fs20s4a,fs20s4m,fs20s4u,fs20s4ub,fs20sd,fs20sn,fs20sr,fs20ss,fs20str,fs20tfk,fs20tfk,fs20tk,fs20uts,fs20ze,fs20as1,fs20as4,fs20di,fs20du,fs20ls,fs20ms2,fs20rst,fs20sa,fs20sig,fs20st,fs20sv,fs20usr loglevel:0,1,2,3,4,5,6 month day hz_month hz_day eventMap">
+			<INT key="BTN" value="50"/>
+			<INT key="CUL_MSGCNT" value="4"/>
+			<INT key="CUL_RAWMSG" value="FDAC95000D9"/>
+			<INT key="CUL_RSSI" value="-93.5"/>
+			<INT key="CUL_TIME" value="2011-12-06 21:56:38"/>
+			<INT key="DEF" value="42334132 50"/>
+			<INT key="LASTIODev" value="CUL"/>
+			<INT key="MSGCNT" value="4"/>
+			<INT key="NAME" value="KL_Waschmaschine"/>
+			<INT key="NR" value="22"/>
+			<INT key="STATE" value="off"/>
+			<INT key="TYPE" value="FS20"/>
+			<INT key="XMIT" value="dac9"/>
+			<INT key="IODev" value="CUL"/>
+			<STATE key="state" value="off" measured="2011-12-06 21:56:38"/>
+		</FS20>
+		<FS20 name="SZ_Schrank" state="dimdown" sets="dim06% dim100% dim12% dim18% dim25% dim31% dim37% dim43% dim50% dim56% dim62% dim68% dim75% dim81% dim87% dim93% dimdown dimup dimupdown off off-for-timer on on-100-for-timer-prev on-for-timer on-old-for-timer on-old-for-timer-prev on-till ramp-off-time ramp-on-time reset sendstate timer toggle" attrs="room comment alias IODev follow-on-for-timer:1,0 do_not_notify:1,0 ignore:0,1 dummy:1,0 showtime:1,0 model;fs20hgs,fs20hgs,fs20pira,fs20piri,fs20s20,fs20s8,fs20s4,fs20s4a,fs20s4m,fs20s4u,fs20s4ub,fs20sd,fs20sn,fs20sr,fs20ss,fs20str,fs20tfk,fs20tfk,fs20tk,fs20uts,fs20ze,fs20as1,fs20as4,fs20di,fs20du,fs20ls,fs20ms2,fs20rst,fs20sa,fs20sig,fs20st,fs20sv,fs20usr loglevel:0,1,2,3,4,5,6 month day hz_month hz_day eventMap">
+			<INT key="BTN" value="35"/>
+			<INT key="CUL_MSGCNT" value="28"/>
+			<INT key="CUL_RAWMSG" value="FDAC935142E"/>
+			<INT key="CUL_RSSI" value="-51"/>
+			<INT key="CUL_TIME" value="2011-12-11 19:15:06"/>
+			<INT key="DEF" value="42334132 35"/>
+			<INT key="LASTIODev" value="CUL"/>
+			<INT key="MSGCNT" value="28"/>
+			<INT key="NAME" value="SZ_Schrank"/>
+			<INT key="NR" value="19"/>
+			<INT key="STATE" value="dimdown"/>
+			<INT key="TYPE" value="FS20"/>
+			<INT key="XMIT" value="dac9"/>
+			<INT key="IODev" value="CUL"/>
+			<ATTR key="room" value="Schlafzimmer"/>
+			<STATE key="state" value="dimdown" measured="2011-12-11 19:15:06"/>
+		</FS20>
+		<FS20 name="SZ_TV" state="???" sets="dim06% dim100% dim12% dim18% dim25% dim31% dim37% dim43% dim50% dim56% dim62% dim68% dim75% dim81% dim87% dim93% dimdown dimup dimupdown off off-for-timer on on-100-for-timer-prev on-for-timer on-old-for-timer on-old-for-timer-prev on-till ramp-off-time ramp-on-time reset sendstate timer toggle" attrs="room comment alias IODev follow-on-for-timer:1,0 do_not_notify:1,0 ignore:0,1 dummy:1,0 showtime:1,0 model;fs20hgs,fs20hgs,fs20pira,fs20piri,fs20s20,fs20s8,fs20s4,fs20s4a,fs20s4m,fs20s4u,fs20s4ub,fs20sd,fs20sn,fs20sr,fs20ss,fs20str,fs20tfk,fs20tfk,fs20tk,fs20uts,fs20ze,fs20as1,fs20as4,fs20di,fs20du,fs20ls,fs20ms2,fs20rst,fs20sa,fs20sig,fs20st,fs20sv,fs20usr loglevel:0,1,2,3,4,5,6 month day hz_month hz_day eventMap">
+			<INT key="BTN" value="20"/>
+			<INT key="DEF" value="42334132 20"/>
+			<INT key="NAME" value="SZ_TV"/>
+			<INT key="NR" value="20"/>
+			<INT key="STATE" value="???"/>
+			<INT key="TYPE" value="FS20"/>
+			<INT key="XMIT" value="dac9"/>
+			<INT key="IODev" value="CUL"/>
+			<ATTR key="IODev" value="CUL"/>
+			<ATTR key="dummy" value="1"/>
+			<ATTR key="room" value="Schlafzimmer"/>
+		</FS20>
+		<FS20 name="WZ_Lampe" state="on" sets="dim06% dim100% dim12% dim18% dim25% dim31% dim37% dim43% dim50% dim56% dim62% dim68% dim75% dim81% dim87% dim93% dimdown dimup dimupdown off off-for-timer on on-100-for-timer-prev on-for-timer on-old-for-timer on-old-for-timer-prev on-till ramp-off-time ramp-on-time reset sendstate timer toggle" attrs="room comment alias IODev follow-on-for-timer:1,0 do_not_notify:1,0 ignore:0,1 dummy:1,0 showtime:1,0 model;fs20hgs,fs20hgs,fs20pira,fs20piri,fs20s20,fs20s8,fs20s4,fs20s4a,fs20s4m,fs20s4u,fs20s4ub,fs20sd,fs20sn,fs20sr,fs20ss,fs20str,fs20tfk,fs20tfk,fs20tk,fs20uts,fs20ze,fs20as1,fs20as4,fs20di,fs20du,fs20ls,fs20ms2,fs20rst,fs20sa,fs20sig,fs20st,fs20sv,fs20usr loglevel:0,1,2,3,4,5,6 month day hz_month hz_day eventMap">
+			<INT key="BTN" value="00"/>
+			<INT key="DEF" value="42334132 00"/>
+			<INT key="NAME" value="WZ_Lampe"/>
+			<INT key="NR" value="21"/>
+			<INT key="STATE" value="on"/>
+			<INT key="TYPE" value="FS20"/>
+			<INT key="XMIT" value="dac9"/>
+			<INT key="IODev" value="CUL"/>
+			<ATTR key="room" value="Wohnzimmer"/>
+			<STATE key="state" value="on" measured="2011-12-11 21:02:52"/>
+		</FS20>
+	</FS20_LIST>
+	<FHT_LIST>
+		<FHT name="bd_hzg" state="measured-temp: 23.5 (Celsius)" sets="day day-temp desired-temp fri-from1 fri-from2 fri-to1 fri-to2 holiday1 holiday2 hour lowtemp-offset manu-temp minute mode mon-from1 mon-from2 mon-to1 mon-to2 month night-temp report1 report2 sat-from1 sat-from2 sat-to1 sat-to2 sun-from1 sun-from2 sun-to1 sun-to2 thu-from1 thu-from2 thu-to1 thu-to2 tue-from1 tue-from2 tue-to1 tue-to2 wed-from1 wed-from2 wed-to1 wed-to2 windowopen-temp year" attrs="room comment alias IODev do_not_notify:0,1 model;fht80b dummy:0,1 showtime:0,1 loglevel:0,1,2,3,4,5,6 retrycount minfhtbuffer lazy tmpcorr ignore:0,1 month day hz_month hz_day eventMap">
+			<INT key="CODE" value="1632"/>
+			<INT key="CUL_MSGCNT" value="5657"/>
+			<INT key="CUL_RAWMSG" value="T163200A60A04"/>
+			<INT key="CUL_RSSI" value="-72"/>
+			<INT key="CUL_TIME" value="2011-12-11 22:17:48"/>
+			<INT key="DEF" value="1632"/>
+			<INT key="LASTIODev" value="CUL"/>
+			<INT key="MSGCNT" value="5657"/>
+			<INT key="NAME" value="bd_hzg"/>
+			<INT key="NR" value="13"/>
+			<INT key="STATE" value="measured-temp: 23.5 (Celsius)"/>
+			<INT key="TYPE" value="FHT"/>
+			<INT key="IODev" value="CUL"/>
+			<ATTR key="IODev" value="CUL"/>
+			<ATTR key="retrycount" value="3"/>
+			<ATTR key="room" value="Bad"/>
+			<STATE key="actuator" value="4%" measured="2011-12-11 22:17:48"/>
+			<STATE key="battery" value="ok" measured="2011-12-11 22:02:22"/>
+			<STATE key="desired-temp" value="23.5" measured="2011-12-09 21:32:37"/>
+			<STATE key="lowtemp" value="ok" measured="2011-12-11 22:02:22"/>
+			<STATE key="measured-high" value="0" measured="2011-12-11 22:02:21"/>
+			<STATE key="measured-low" value="235" measured="2011-12-11 22:02:21"/>
+			<STATE key="measured-temp" value="23.5 (Celsius)" measured="2011-12-11 22:02:21"/>
+			<STATE key="warnings" value="none" measured="2011-12-11 22:02:22"/>
+			<STATE key="window" value="closed" measured="2011-12-11 22:02:22"/>
+			<STATE key="windowsensor" value="ok" measured="2011-12-11 22:02:22"/>
+		</FHT>
+		<FHT name="sz_hzg" state="measured-temp: 27.0 (Celsius)" sets="day day-temp desired-temp fri-from1 fri-from2 fri-to1 fri-to2 holiday1 holiday2 hour lowtemp-offset manu-temp minute mode mon-from1 mon-from2 mon-to1 mon-to2 month night-temp report1 report2 sat-from1 sat-from2 sat-to1 sat-to2 sun-from1 sun-from2 sun-to1 sun-to2 thu-from1 thu-from2 thu-to1 thu-to2 tue-from1 tue-from2 tue-to1 tue-to2 wed-from1 wed-from2 wed-to1 wed-to2 windowopen-temp year" attrs="room comment alias IODev do_not_notify:0,1 model;fht80b dummy:0,1 showtime:0,1 loglevel:0,1,2,3,4,5,6 retrycount minfhtbuffer lazy tmpcorr ignore:0,1 month day hz_month hz_day eventMap">
+			<INT key="CODE" value="3360"/>
+			<INT key="CUL_MSGCNT" value="5616"/>
+			<INT key="CUL_RAWMSG" value="T336000A60027"/>
+			<INT key="CUL_RSSI" value="-54.5"/>
+			<INT key="CUL_TIME" value="2011-12-11 22:17:26"/>
+			<INT key="DEF" value="3360"/>
+			<INT key="LASTIODev" value="CUL"/>
+			<INT key="MSGCNT" value="5616"/>
+			<INT key="NAME" value="sz_hzg"/>
+			<INT key="NR" value="7"/>
+			<INT key="STATE" value="measured-temp: 27.0 (Celsius)"/>
+			<INT key="TYPE" value="FHT"/>
+			<INT key="IODev" value="CUL"/>
+			<ATTR key="IODev" value="CUL"/>
+			<ATTR key="retrycount" value="3"/>
+			<ATTR key="room" value="Schlafzimmer"/>
+			<STATE key="actuator" value="0%" measured="2011-12-11 22:17:26"/>
+			<STATE key="battery" value="ok" measured="2011-12-11 22:02:13"/>
+			<STATE key="desired-temp" value="19.5" measured="2011-12-09 16:28:21"/>
+			<STATE key="lowtemp" value="ok" measured="2011-12-11 22:02:13"/>
+			<STATE key="measured-high" value="1" measured="2011-12-11 22:02:13"/>
+			<STATE key="measured-low" value="14" measured="2011-12-11 22:02:12"/>
+			<STATE key="measured-temp" value="27.0 (Celsius)" measured="2011-12-11 22:02:13"/>
+			<STATE key="warnings" value="none" measured="2011-12-11 22:02:13"/>
+			<STATE key="window" value="closed" measured="2011-12-11 22:02:13"/>
+			<STATE key="windowsensor" value="ok" measured="2011-12-11 22:02:13"/>
+		</FHT>
+		<FHT name="wz_hzg" state="measured-temp: 23.4 (Celsius)" sets="day day-temp desired-temp fri-from1 fri-from2 fri-to1 fri-to2 holiday1 holiday2 hour lowtemp-offset manu-temp minute mode mon-from1 mon-from2 mon-to1 mon-to2 month night-temp report1 report2 sat-from1 sat-from2 sat-to1 sat-to2 sun-from1 sun-from2 sun-to1 sun-to2 thu-from1 thu-from2 thu-to1 thu-to2 tue-from1 tue-from2 tue-to1 tue-to2 wed-from1 wed-from2 wed-to1 wed-to2 windowopen-temp year" attrs="room comment alias IODev do_not_notify:0,1 model;fht80b dummy:0,1 showtime:0,1 loglevel:0,1,2,3,4,5,6 retrycount minfhtbuffer lazy tmpcorr ignore:0,1 month day hz_month hz_day eventMap">
+			<INT key="CODE" value="3612"/>
+			<INT key="CUL_MSGCNT" value="4971"/>
+			<INT key="CUL_RAWMSG" value="T361200A62326"/>
+			<INT key="CUL_RSSI" value="-55"/>
+			<INT key="CUL_TIME" value="2011-12-11 22:17:27"/>
+			<INT key="DEF" value="3612"/>
+			<INT key="LASTIODev" value="CUL"/>
+			<INT key="MSGCNT" value="4971"/>
+			<INT key="NAME" value="wz_hzg"/>
+			<INT key="NR" value="10"/>
+			<INT key="STATE" value="measured-temp: 23.4 (Celsius)"/>
+			<INT key="TYPE" value="FHT"/>
+			<INT key="IODev" value="CUL"/>
+			<ATTR key="IODev" value="CUL"/>
+			<ATTR key="retrycount" value="3"/>
+			<ATTR key="room" value="Wohnzimmer"/>
+			<STATE key="actuator" value="14%" measured="2011-12-11 22:17:27"/>
+			<STATE key="battery" value="ok" measured="2011-12-11 21:09:49"/>
+			<STATE key="desired-temp" value="23.5" measured="2011-12-11 18:54:28"/>
+			<STATE key="lowtemp" value="ok" measured="2011-12-11 21:09:49"/>
+			<STATE key="measured-high" value="0" measured="2011-12-11 21:27:12"/>
+			<STATE key="measured-low" value="234" measured="2011-12-11 22:09:44"/>
+			<STATE key="measured-temp" value="23.4 (Celsius)" measured="2011-12-11 21:27:12"/>
+			<STATE key="warnings" value="none" measured="2011-12-11 21:09:49"/>
+			<STATE key="window" value="closed" measured="2011-12-11 21:09:49"/>
+			<STATE key="windowsensor" value="ok" measured="2011-12-11 21:09:49"/>
+		</FHT>
+	</FHT_LIST>
+	<CUL_WS_LIST>
+		<CUL_WS name="Aussen" state="T: 1  H: 70.7" sets="" attrs="room comment alias IODev do_not_notify:0,1 showtime:0,1 model:S300TH,KS300 loglevel ignore:0,1 month day hz_month hz_day eventMap">
+			<INT key="CODE" value="2"/>
+			<INT key="CUL_MSGCNT" value="2069"/>
+			<INT key="CUL_RAWMSG" value="K111070702F"/>
+			<INT key="CUL_RSSI" value="-50.5"/>
+			<INT key="CUL_TIME" value="2011-12-11 22:15:11"/>
+			<INT key="DEF" value="2"/>
+			<INT key="LASTIODev" value="CUL"/>
+			<INT key="MSGCNT" value="2069"/>
+			<INT key="NAME" value="Aussen"/>
+			<INT key="NR" value="16"/>
+			<INT key="STATE" value="T: 1  H: 70.7"/>
+			<INT key="TYPE" value="CUL_WS"/>
+			<INT key="corr1" value="0"/>
+			<INT key="corr2" value="0"/>
+			<INT key="corr3" value="0"/>
+			<INT key="corr4" value="0"/>
+			<INT key="IODev" value="CUL"/>
+			<STATE key="DEVFAMILY" value="WS300" measured="2011-12-11 22:15:11"/>
+			<STATE key="DEVTYPE" value="S300TH" measured="2011-12-11 22:15:11"/>
+			<STATE key="humidity" value="70.7" measured="2011-12-11 22:15:11"/>
+			<STATE key="state" value="T: 1  H: 70.7" measured="2011-12-11 22:15:11"/>
+			<STATE key="temperature" value="1" measured="2011-12-11 22:15:11"/>
+		</CUL_WS>
+		<CUL_WS name="Katze" state="T: 13.6  H: 45.8" sets="" attrs="room comment alias IODev do_not_notify:0,1 showtime:0,1 model:S300TH,KS300 loglevel ignore:0,1 month day hz_month hz_day eventMap">
+			<INT key="CODE" value="4"/>
+			<INT key="CUL_MSGCNT" value="1876"/>
+			<INT key="CUL_RAWMSG" value="K31368145E0"/>
+			<INT key="CUL_RSSI" value="-90"/>
+			<INT key="CUL_TIME" value="2011-12-11 22:16:39"/>
+			<INT key="DEF" value="4"/>
+			<INT key="LASTIODev" value="CUL"/>
+			<INT key="MSGCNT" value="1876"/>
+			<INT key="NAME" value="Katze"/>
+			<INT key="NR" value="27"/>
+			<INT key="STATE" value="T: 13.6  H: 45.8"/>
+			<INT key="TYPE" value="CUL_WS"/>
+			<INT key="corr1" value="0"/>
+			<INT key="corr2" value="0"/>
+			<INT key="corr3" value="0"/>
+			<INT key="corr4" value="0"/>
+			<INT key="IODev" value="CUL"/>
+			<STATE key="DEVFAMILY" value="WS300" measured="2011-12-11 22:16:39"/>
+			<STATE key="DEVTYPE" value="S300TH" measured="2011-12-11 22:16:39"/>
+			<STATE key="humidity" value="45.8" measured="2011-12-11 22:16:39"/>
+			<STATE key="state" value="T: 13.6  H: 45.8" measured="2011-12-11 22:16:39"/>
+			<STATE key="temperature" value="13.6" measured="2011-12-11 22:16:39"/>
+		</CUL_WS>
+	</CUL_WS_LIST>
+	<notify_LIST>
+		<notify name="act_on_kl_wm" state="active" sets="" attrs="room comment alias disable:0,1 month day hz_month hz_day eventMap">
+			<INT key="DEF" value="KL_Waschmaschine { if ("%" eq "off") { fhem("define kl_wm_trigger at +00:10:00 { fhem(\"set pgm5_renderer on\") ;; \"/usr/local/bin/imhere.sh\" ") } else { fhem ("delete kl_wm_trigger ; set pgm5_renderer off") } }"/>
+			<INT key="NAME" value="act_on_kl_wm"/>
+			<INT key="NR" value="24"/>
+			<INT key="REGEXP" value="KL_Waschmaschine"/>
+			<INT key="STATE" value="active"/>
+			<INT key="TYPE" value="notify"/>
+		</notify>
+		<notify name="switch_sz_tv" state="active" sets="" attrs="room comment alias disable:0,1 month day hz_month hz_day eventMap">
+			<INT key="DEF" value="SZ_TV {if("%" ne "off") {fhem ("set CUL raw if ;; sleep 0.1 ;; set CUL raw is00000fff0f11 ;; sleep 0.5 ;; set CUL raw ix")} else {fhem  ("set CUL raw if ;; sleep 0.1 ;; set CUL raw is00000fff0f00 ;; sleep 0.5 ;; set CUL raw ix")}}"/>
+			<INT key="NAME" value="switch_sz_tv"/>
+			<INT key="NR" value="25"/>
+			<INT key="REGEXP" value="SZ_TV"/>
+			<INT key="STATE" value="active"/>
+			<INT key="TYPE" value="notify"/>
+		</notify>
+	</notify_LIST>
+	<FileLog_LIST>
+		<FileLog name="Logfile" state="active" sets="reopen" attrs="room comment alias disable:0,1 logtype nrarchive archivedir archivecmd month day hz_month hz_day eventMap">
+			<INT key="DEF" value="/opt/fhem/fhem-%Y-%m.log fakelog"/>
+			<INT key="NAME" value="Logfile"/>
+			<INT key="NR" value="5"/>
+			<INT key="REGEXP" value="fakelog"/>
+			<INT key="STATE" value="active"/>
+			<INT key="TYPE" value="FileLog"/>
+			<INT key="currentlogfile" value="/opt/fhem/fhem-2011-12.log"/>
+			<INT key="logfile" value="/opt/fhem/fhem-%Y-%m.log"/>
+		</FileLog>
+		<FileLog name="aussenlog" state="active" sets="reopen" attrs="room comment alias disable:0,1 logtype nrarchive archivedir archivecmd month day hz_month hz_day eventMap">
+			<INT key="DEF" value="/opt/fhem/aulog-%Y.log Aussen"/>
+			<INT key="NAME" value="aussenlog"/>
+			<INT key="NR" value="17"/>
+			<INT key="REGEXP" value="Aussen"/>
+			<INT key="STATE" value="active"/>
+			<INT key="TYPE" value="FileLog"/>
+			<INT key="currentlogfile" value="/opt/fhem/aulog-2011.log"/>
+			<INT key="logfile" value="/opt/fhem/aulog-%Y.log"/>
+			<ATTR key="archivedir" value="/opt/fhem/old_logs"/>
+			<ATTR key="logtype" value="hms"/>
+			<ATTR key="nrarchive" value="1"/>
+		</FileLog>
+		<FileLog name="bdlog" state="active" sets="reopen" attrs="room comment alias disable:0,1 logtype nrarchive archivedir archivecmd month day hz_month hz_day eventMap">
+			<INT key="DEF" value="/opt/fhem/bdlog-%Y.log bd_hzg"/>
+			<INT key="NAME" value="bdlog"/>
+			<INT key="NR" value="14"/>
+			<INT key="REGEXP" value="bd_hzg"/>
+			<INT key="STATE" value="active"/>
+			<INT key="TYPE" value="FileLog"/>
+			<INT key="currentlogfile" value="/opt/fhem/bdlog-2011.log"/>
+			<INT key="logfile" value="/opt/fhem/bdlog-%Y.log"/>
+			<ATTR key="archivedir" value="/opt/fhem/old_logs"/>
+			<ATTR key="logtype" value="fht:Temp/Act,text"/>
+			<ATTR key="nrarchive" value="1"/>
+			<ATTR key="room" value="Bad"/>
+		</FileLog>
+		<FileLog name="katzenlog" state="active" sets="reopen" attrs="room comment alias disable:0,1 logtype nrarchive archivedir archivecmd month day hz_month hz_day eventMap">
+			<INT key="DEF" value="/opt/fhem/kalog-%Y.log Katze"/>
+			<INT key="NAME" value="katzenlog"/>
+			<INT key="NR" value="28"/>
+			<INT key="REGEXP" value="Katze"/>
+			<INT key="STATE" value="active"/>
+			<INT key="TYPE" value="FileLog"/>
+			<INT key="currentlogfile" value="/opt/fhem/kalog-2011.log"/>
+			<INT key="logfile" value="/opt/fhem/kalog-%Y.log"/>
+			<ATTR key="archivedir" value="/opt/fhem/old_logs"/>
+			<ATTR key="logtype" value="hms"/>
+			<ATTR key="nrarchive" value="1"/>
+		</FileLog>
+		<FileLog name="szlog" state="active" sets="reopen" attrs="room comment alias disable:0,1 logtype nrarchive archivedir archivecmd month day hz_month hz_day eventMap">
+			<INT key="DEF" value="/opt/fhem/szlog-%Y.log sz_hzg"/>
+			<INT key="NAME" value="szlog"/>
+			<INT key="NR" value="8"/>
+			<INT key="REGEXP" value="sz_hzg"/>
+			<INT key="STATE" value="active"/>
+			<INT key="TYPE" value="FileLog"/>
+			<INT key="currentlogfile" value="/opt/fhem/szlog-2011.log"/>
+			<INT key="logfile" value="/opt/fhem/szlog-%Y.log"/>
+			<ATTR key="archivedir" value="/opt/fhem/old_logs"/>
+			<ATTR key="logtype" value="fht:Temp/Act,text"/>
+			<ATTR key="nrarchive" value="1"/>
+			<ATTR key="room" value="Schlafzimmer"/>
+		</FileLog>
+		<FileLog name="wzlog" state="active" sets="reopen" attrs="room comment alias disable:0,1 logtype nrarchive archivedir archivecmd month day hz_month hz_day eventMap">
+			<INT key="DEF" value="/opt/fhem/wzlog-%Y.log wz_hzg"/>
+			<INT key="NAME" value="wzlog"/>
+			<INT key="NR" value="11"/>
+			<INT key="REGEXP" value="wz_hzg"/>
+			<INT key="STATE" value="active"/>
+			<INT key="TYPE" value="FileLog"/>
+			<INT key="currentlogfile" value="/opt/fhem/wzlog-2011.log"/>
+			<INT key="logfile" value="/opt/fhem/wzlog-%Y.log"/>
+			<ATTR key="archivedir" value="/opt/fhem/old_logs"/>
+			<ATTR key="logtype" value="fht:Temp/Act,text"/>
+			<ATTR key="nrarchive" value="1"/>
+			<ATTR key="room" value="Wohnzimmer"/>
+		</FileLog>
+	</FileLog_LIST>
+	<autocreate_LIST>
+		<autocreate name="autocreate" state="active" sets="" attrs="room comment alias loglevel:0,1,2,3,4,5,6 autosave filelog device_room weblink weblink_room disable ignoreTypes month day hz_month hz_day eventMap">
+			<INT key="NAME" value="autocreate"/>
+			<INT key="NR" value="6"/>
+			<INT key="STATE" value="active"/>
+			<INT key="TYPE" value="autocreate"/>
+			<ATTR key="autosave" value="1"/>
+			<ATTR key="device_room" value="%TYPE"/>
+			<ATTR key="disable" value="1"/>
+			<ATTR key="filelog" value="/opt/fhem/%NAME-%Y.log"/>
+			<ATTR key="weblink" value="1"/>
+			<ATTR key="weblink_room" value="Plots"/>
+		</autocreate>
+	</autocreate_LIST>
+	<weblink_LIST>
+		<weblink name="weblink_au" state="initial" sets="" attrs="room comment alias fixedrange plotmode plotsize label title month day hz_month hz_day eventMap">
+			<INT key="DEF" value="fileplot aussenlog:hms:CURRENT"/>
+			<INT key="LINK" value="aussenlog:hms:CURRENT"/>
+			<INT key="NAME" value="weblink_au"/>
+			<INT key="NR" value="18"/>
+			<INT key="STATE" value="initial"/>
+			<INT key="TYPE" value="weblink"/>
+			<INT key="WLTYPE" value="fileplot"/>
+			<ATTR key="label" value=""Draussen Min $data{min1}, Max $data{max1}, Last $data{currval1}""/>
+			<ATTR key="room" value="Plots"/>
+		</weblink>
+		<weblink name="weblink_bd" state="initial" sets="" attrs="room comment alias fixedrange plotmode plotsize label title month day hz_month hz_day eventMap">
+			<INT key="DEF" value="fileplot bdlog:fht:CURRENT"/>
+			<INT key="LINK" value="bdlog:fht:CURRENT"/>
+			<INT key="NAME" value="weblink_bd"/>
+			<INT key="NR" value="15"/>
+			<INT key="STATE" value="initial"/>
+			<INT key="TYPE" value="weblink"/>
+			<INT key="WLTYPE" value="fileplot"/>
+			<ATTR key="label" value=""Bad Min $data{min1}, Max $data{max1}, Last $data{currval1}""/>
+			<ATTR key="room" value="Plots"/>
+		</weblink>
+		<weblink name="weblink_ka" state="initial" sets="" attrs="room comment alias fixedrange plotmode plotsize label title month day hz_month hz_day eventMap">
+			<INT key="DEF" value="fileplot katzenlog:hms:CURRENT"/>
+			<INT key="LINK" value="katzenlog:hms:CURRENT"/>
+			<INT key="NAME" value="weblink_ka"/>
+			<INT key="NR" value="29"/>
+			<INT key="STATE" value="initial"/>
+			<INT key="TYPE" value="weblink"/>
+			<INT key="WLTYPE" value="fileplot"/>
+			<ATTR key="label" value=""Katze Min $data{min1}, Max $data{max1}, Last $data{currval1}""/>
+			<ATTR key="room" value="Plots"/>
+		</weblink>
+		<weblink name="weblink_sz" state="initial" sets="" attrs="room comment alias fixedrange plotmode plotsize label title month day hz_month hz_day eventMap">
+			<INT key="DEF" value="fileplot szlog:fht:CURRENT"/>
+			<INT key="LINK" value="szlog:fht:CURRENT"/>
+			<INT key="NAME" value="weblink_sz"/>
+			<INT key="NR" value="9"/>
+			<INT key="STATE" value="initial"/>
+			<INT key="TYPE" value="weblink"/>
+			<INT key="WLTYPE" value="fileplot"/>
+			<ATTR key="label" value=""Schlafzimmer Min $data{min1}, Max $data{max1}, Last $data{currval1}""/>
+			<ATTR key="room" value="Plots"/>
+		</weblink>
+		<weblink name="weblink_wz" state="initial" sets="" attrs="room comment alias fixedrange plotmode plotsize label title month day hz_month hz_day eventMap">
+			<INT key="DEF" value="fileplot wzlog:fht:CURRENT"/>
+			<INT key="LINK" value="wzlog:fht:CURRENT"/>
+			<INT key="NAME" value="weblink_wz"/>
+			<INT key="NR" value="12"/>
+			<INT key="STATE" value="initial"/>
+			<INT key="TYPE" value="weblink"/>
+			<INT key="WLTYPE" value="fileplot"/>
+			<ATTR key="label" value=""Wohnzimmer Min $data{min1}, Max $data{max1}, Last $data{currval1}""/>
+			<ATTR key="room" value="Plots"/>
+		</weblink>
+	</weblink_LIST>
+</FHZINFO>

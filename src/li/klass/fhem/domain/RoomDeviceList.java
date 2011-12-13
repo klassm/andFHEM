@@ -1,48 +1,45 @@
 package li.klass.fhem.domain;
 
-import android.util.Log;
+import android.content.Context;
+import android.preference.PreferenceManager;
+import li.klass.fhem.AndFHEMApplication;
 
 import java.io.Serializable;
 import java.util.*;
 
 public class RoomDeviceList implements Serializable {
-    public static final String FS_20 = "FS20";
-    public static final String KS_300 = "KS300";
 
     private String roomName;
-    private Map<String, ArrayList<Device>> deviceMap = new HashMap<String, ArrayList<Device>>();
+    private Map<DeviceType, HashSet<Device>> deviceMap = new HashMap<DeviceType, HashSet<Device>>();
 
     public RoomDeviceList(String roomName) {
         this.roomName = roomName;
     }
 
-    public List<FS20Device> getFs20Devices() {
-        return getOrCreateDeviceList(FS_20);
+    public <T extends Device> Collection<T> getDevicesOfType(DeviceType type) {
+        Set<T> deviceSet = getOrCreateDeviceList(type);
+        List<T> deviceList = new ArrayList<T>(deviceSet);
+        Collections.sort(deviceList);
+        return deviceList;
     }
 
-
-    public List<KS300Device> getKS300Devices() {
-        return getOrCreateDeviceList(KS_300);
-    }
-
-    public void addFS20Device(FS20Device fs20Device) {
-        if (fs20Device == null) return;
-        getFs20Devices().add(fs20Device);
-    }
-
-    public void addKS300Device(KS300Device ks300Device) {
-        if (ks300Device == null) return;
-        getKS300Devices().add(ks300Device);
+    public <T extends Device> void addDevice(DeviceType type, T device) {
+        if (device == null) return;
+        getOrCreateDeviceList(type).add(device);
     }
 
     public void addRoomDeviceList(RoomDeviceList roomDeviceList) {
-        Map<String, ArrayList<Device>> inputMap = roomDeviceList.deviceMap;
+        Context context = AndFHEMApplication.getContext();
+        boolean showHiddenDevices = PreferenceManager.getDefaultSharedPreferences(context).getBoolean("prefShowHiddenDevices", false);
 
-        for (String key : inputMap.keySet()) {
-            ArrayList<Device> inputValue = inputMap.get(key);
+        Map<DeviceType, HashSet<Device>> inputMap = roomDeviceList.deviceMap;
+
+        for (DeviceType deviceType : inputMap.keySet()) {
+            Set<Device> inputValue = inputMap.get(deviceType);
             for (Device device : inputValue) {
-                List<Device> devices = getOrCreateDeviceList(key);
-                if (! devices.contains(device)) {
+                boolean isHiddenDevice = device.isHiddenDevice() && ! showHiddenDevices;
+                Set<Device> devices = getOrCreateDeviceList(deviceType);
+                if (! devices.contains(device) && ! isHiddenDevice) {
                     devices.add(device);
                 }
             }
@@ -50,22 +47,10 @@ public class RoomDeviceList implements Serializable {
     }
 
     @SuppressWarnings("unchecked")
-    public <T extends Device> List<T> getDevicesForType(String type) {
-        if (deviceMap.containsKey(type)) {
-            return (List<T>) deviceMap.get(type);
+    private <T extends Device> Set<T> getOrCreateDeviceList(DeviceType deviceType) {
+        if (! deviceMap.containsKey(deviceType)) {
+            deviceMap.put(deviceType, new HashSet<Device>());
         }
-        return null;
-    }
-
-    @SuppressWarnings("unchecked")
-    private <T extends Device> List<T> getOrCreateDeviceList(String typeName) {
-        if (! deviceMap.containsKey(typeName)) {
-            deviceMap.put(typeName, new ArrayList<Device>());
-        }
-        return (List<T>) deviceMap.get(typeName);
-    }
-
-    public String getRoomName() {
-        return roomName;
+        return (Set<T>) deviceMap.get(deviceType);
     }
 }

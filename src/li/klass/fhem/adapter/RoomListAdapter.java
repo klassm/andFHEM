@@ -1,13 +1,13 @@
 package li.klass.fhem.adapter;
 
 import android.content.Context;
-import android.util.Log;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import li.klass.fhem.R;
 
-import java.util.Comparator;
+import java.util.ArrayList;
 import java.util.List;
 
 public class RoomListAdapter extends ListDataAdapter<String> {
@@ -15,14 +15,9 @@ public class RoomListAdapter extends ListDataAdapter<String> {
         super(context, resource, data);
     }
 
-    public RoomListAdapter(Context context, int resource, List<String> data, Comparator<String> stringComparator) {
-        super(context, resource, data, stringComparator);
-    }
-
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         String item = (String) getItem(position);
-        Log.e(RoomListAdapter.class.getName(), position + " : " + item);
 
         convertView = inflater.inflate(resource, null);
 
@@ -36,5 +31,20 @@ public class RoomListAdapter extends ListDataAdapter<String> {
 
     private static class Holder {
         TextView roomName;
+    }
+
+    @Override
+    public void updateData(List<String> newData) {
+
+        boolean showHiddenDevices = PreferenceManager.getDefaultSharedPreferences(context).getBoolean("prefShowHiddenDevices", false);
+        if (! showHiddenDevices) {
+            for (String roomName : new ArrayList<String>(newData)) {
+                if (roomName.equalsIgnoreCase("hidden")) {
+                    newData.remove(roomName);
+                }
+            }
+        }
+
+        super.updateData(newData);
     }
 }

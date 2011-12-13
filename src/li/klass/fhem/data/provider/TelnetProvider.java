@@ -1,22 +1,27 @@
-package li.klass.fhem.dataprovider;
+package li.klass.fhem.data.provider;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
+import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.util.CloseableUtil;
 import thor.net.DefaultTelnetTerminalHandler;
 import thor.net.TelnetURLConnection;
 
-import java.io.*;
-import java.net.MalformedURLException;
+import java.io.BufferedOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.net.URL;
 import java.net.URLConnection;
 
-public class TelnetFHEM {
-    private static final String host = "192.168.0.1";
-    private static final int port = 7072;
+public class TelnetProvider implements FHEMDataProvider {
+    private static final String DEFAULT_HOST = "";
+    private static final int DEFAULT_PORT = 0;
 
-    public static final TelnetFHEM INSTANCE = new TelnetFHEM();
+    public static final TelnetProvider INSTANCE = new TelnetProvider();
 
-    private TelnetFHEM() {}
+    private TelnetProvider() {}
 
     public String xmllist() {
         return request("xmllist", "</FHZINFO>");
@@ -33,7 +38,7 @@ public class TelnetFHEM {
         InputStream inputStream = null;
         
         try {
-            URL url = new URL("telnet", host, port, "", new thor.net.URLStreamHandler());
+            URL url = new URL("telnet", getHost(), getPort(), "", new thor.net.URLStreamHandler());
             URLConnection urlConnection=url.openConnection();
             urlConnection.connect();
 
@@ -66,7 +71,7 @@ public class TelnetFHEM {
                         stopPointer = 0;
                     }
                 } while(stopPointer < delimiter.length());
-                Log.e(TelnetFHEM.class.getName(), "done");
+                Log.e(TelnetProvider.class.getName(), "done");
                 result = buffer.toString();
             }
 
@@ -75,12 +80,20 @@ public class TelnetFHEM {
             }
 
             return result;
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         } finally {
             CloseableUtil.close(printWriter, bufferedOutputStream, outputStream, inputStream);
         }
+    }
+
+    private String getHost() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(AndFHEMApplication.getContext());
+        return sharedPreferences.getString("URL", DEFAULT_HOST);
+    }
+
+    private int getPort() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(AndFHEMApplication.getContext());
+        return Integer.valueOf(sharedPreferences.getString("PORT", String.valueOf(DEFAULT_PORT)));
     }
 }
