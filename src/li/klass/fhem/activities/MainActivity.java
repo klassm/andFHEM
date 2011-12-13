@@ -1,11 +1,14 @@
 package li.klass.fhem.activities;
 
+import android.app.AlertDialog;
 import android.app.TabActivity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.widget.TabHost;
 import li.klass.fhem.R;
+import li.klass.fhem.util.ApplicationProperties;
 
 public class MainActivity extends TabActivity {
     public static MainActivity INSTANCE;
@@ -40,5 +43,24 @@ public class MainActivity extends TabActivity {
         tabHost.addTab(allDevicesTabSpec);
 
         tabHost.setCurrentTab(1);
+
+        boolean isFirstStart = ApplicationProperties.INSTANCE.getProperty("FIRST_START", true);
+        if (isFirstStart) {
+            onFirstStart();
+            ApplicationProperties.INSTANCE.setProperty("FIRST_START", false);
+        }
+    }
+
+    private void onFirstStart() {
+        final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        alertDialog.setTitle(R.string.welcomeMessageTitle);
+        alertDialog.setMessage(getResources().getString(R.string.welcomeMessage));
+        alertDialog.setButton(getResources().getString(R.string.okButton), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                alertDialog.hide();
+            }
+        });
+        alertDialog.show();
     }
 }

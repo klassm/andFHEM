@@ -38,5 +38,13 @@
     <string name="updateError">Error while updating.</string>
     <string name="updateErrorConnectionRefused">Cannot connect to host. Connection refused.</string>
 
+    <string name="okButton">OK</string>
+
+    <string name="welcomeMessageTitle">Get Started</string>
+    <string name="welcomeMessage">
+        Go to preferences and insert your FHEM server details.
+        \n\nLong click on any item in the device list to add a favorite.
+    </string>
+
 
 </resources>
