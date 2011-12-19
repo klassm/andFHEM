@@ -1,0 +1,2806 @@
+
+<FHZINFO>
+<_internal__LIST>
+<_internal_ name="global" state="&lt;no definition&gt;" sets="" attrs="room comment archivecmd allowfrom archivedir configfile lastinclude logfile modpath nrarchive pidfilename port statefile title userattr verbose:1,2,3,4,5 mseclog version nofork logdir holiday2we autoload_undefined_devices DarkPeriod">
+    <INT key="DEF" value="&lt;no definition&gt;"/>
+    <INT key="NAME" value="global"/>
+    <INT key="NR" value="1"/>
+    <INT key="STATE" value="&lt;no definition&gt;"/>
+    <INT key="TYPE" value="_internal_"/>
+    <INT key="currentlogfile" value="/var/log/fhem/fhem-2011-12.log"/>
+    <INT key="logfile" value="-"/>
+    <ATTR key="autoload_undefined_devices" value="1"/>
+    <ATTR key="configfile" value="/var/log/fhem/fhem.cfg"/>
+    <ATTR key="logfile" value="/var/log/fhem/fhem-%Y-%m.log"/>
+    <ATTR key="modpath" value="/usr/local/lib"/>
+    <ATTR key="port" value="7072 global"/>
+    <ATTR key="statefile" value="/var/log/fhem/fhem.save"/>
+    <ATTR key="userattr" value="DarkPeriod"/>
+    <ATTR key="verbose" value="3"/>
+    <ATTR key="version" value="=VERS= from =DATE= ($Id: fhem.pl,v 1.97 2010/01/01 15:18:09 rudolfkoenig Exp $)"/>
+</_internal_>
+</_internal__LIST>
+<CUL_LIST>
+<CUL name="CUL" state="Initialized" sets="bWidth file freq led patable rAmpl raw sens time verbose" attrs="room comment do_not_notify:1,0 dummy:1,0 showtime:1,0 model:CUL,CUN,CUR loglevel:0,1,2,3,4,5,6 fhtsoftbuffer:1,0 DarkPeriod">
+    <INT key="CUL_MSGCNT" value="51057"/>
+    <INT key="CUL_TIME" value="2011-12-16 14:57:10"/>
+    <INT key="DEF" value="/dev/busware_cul 3e06"/>
+    <INT key="DeviceName" value="/dev/busware_cul"/>
+    <INT key="FD" value="8"/>
+    <INT key="FHTID" value="3E06"/>
+    <INT key="NAME" value="CUL"/>
+    <INT key="NR" value="13"/>
+    <INT key="NR_CMD_LAST_H" value="3"/>
+    <INT key="PARTIAL" value=""/>
+    <INT key="RAWMSG" value="K21466081F0"/>
+    <INT key="RSSI" value="-82"/>
+    <INT key="STATE" value="Initialized"/>
+    <INT key="TYPE" value="CUL"/>
+    <INT key="VERSION" value="V 1.40 CUL868#0d;#0a;"/>
+    <ATTR key="loglevel" value="3"/>
+    <ATTR key="room" value="Wohnen"/>
+    <STATE key="version" value="V 1.40 CUL868" measured="2011-12-16 14:57:51"/>
+</CUL>
+</CUL_LIST>
+<FHEMWEB_LIST>
+<FHEMWEB name="FHEMWEB:127.0.0.1:32937" state="Connected" sets="" attrs="room comment loglevel:0,1,2,3,4,5,6 webname plotmode:gnuplot,gnuplot-scroll,SVG plotsize refresh DarkPeriod">
+    <INT key="BUF" value=""/>
+    <INT key="FD" value="72"/>
+    <INT key="NAME" value="FHEMWEB:127.0.0.1:32937"/>
+    <INT key="NR" value="38313"/>
+    <INT key="SNAME" value="WEB"/>
+    <INT key="STATE" value="Connected"/>
+    <INT key="TEMPORARY" value="1"/>
+    <INT key="TYPE" value="FHEMWEB"/>
+    <ATTR key="room" value="hidden"/>
+</FHEMWEB>
+<FHEMWEB name="FHEMWEB:127.0.0.1:32939" state="Connected" sets="" attrs="room comment loglevel:0,1,2,3,4,5,6 webname plotmode:gnuplot,gnuplot-scroll,SVG plotsize refresh DarkPeriod">
+    <INT key="BUF" value=""/>
+    <INT key="FD" value="74"/>
+    <INT key="NAME" value="FHEMWEB:127.0.0.1:32939"/>
+    <INT key="NR" value="38314"/>
+    <INT key="SNAME" value="WEB"/>
+    <INT key="STATE" value="Connected"/>
+    <INT key="TEMPORARY" value="1"/>
+    <INT key="TYPE" value="FHEMWEB"/>
+    <ATTR key="room" value="hidden"/>
+</FHEMWEB>
+<FHEMWEB name="FHEMWEB:127.0.0.1:48878" state="Connected" sets="" attrs="room comment loglevel:0,1,2,3,4,5,6 webname plotmode:gnuplot,gnuplot-scroll,SVG plotsize refresh DarkPeriod">
+    <INT key="BUF" value=""/>
+    <INT key="FD" value="76"/>
+    <INT key="NAME" value="FHEMWEB:127.0.0.1:48878"/>
+    <INT key="NR" value="47434"/>
+    <INT key="SNAME" value="WEB"/>
+    <INT key="STATE" value="Connected"/>
+    <INT key="TEMPORARY" value="1"/>
+    <INT key="TYPE" value="FHEMWEB"/>
+    <ATTR key="room" value="hidden"/>
+</FHEMWEB>
+<FHEMWEB name="FHEMWEB:127.0.0.1:52707" state="Connected" sets="" attrs="room comment loglevel:0,1,2,3,4,5,6 webname plotmode:gnuplot,gnuplot-scroll,SVG plotsize refresh DarkPeriod">
+    <INT key="BUF" value=""/>
+    <INT key="FD" value="78"/>
+    <INT key="NAME" value="FHEMWEB:127.0.0.1:52707"/>
+    <INT key="NR" value="46870"/>
+    <INT key="SNAME" value="WEB"/>
+    <INT key="STATE" value="Connected"/>
+    <INT key="TEMPORARY" value="1"/>
+    <INT key="TYPE" value="FHEMWEB"/>
+    <ATTR key="room" value="hidden"/>
+</FHEMWEB>
+<FHEMWEB name="FHEMWEB:127.0.0.1:52709" state="Connected" sets="" attrs="room comment loglevel:0,1,2,3,4,5,6 webname plotmode:gnuplot,gnuplot-scroll,SVG plotsize refresh DarkPeriod">
+    <INT key="BUF" value=""/>
+    <INT key="FD" value="79"/>
+    <INT key="NAME" value="FHEMWEB:127.0.0.1:52709"/>
+    <INT key="NR" value="46871"/>
+    <INT key="SNAME" value="WEB"/>
+    <INT key="STATE" value="Connected"/>
+    <INT key="TEMPORARY" value="1"/>
+    <INT key="TYPE" value="FHEMWEB"/>
+    <ATTR key="room" value="hidden"/>
+</FHEMWEB>
+<FHEMWEB name="FHEMWEB:127.0.0.1:52711" state="Connected" sets="" attrs="room comment loglevel:0,1,2,3,4,5,6 webname plotmode:gnuplot,gnuplot-scroll,SVG plotsize refresh DarkPeriod">
+    <INT key="BUF" value=""/>
+    <INT key="FD" value="80"/>
+    <INT key="NAME" value="FHEMWEB:127.0.0.1:52711"/>
+    <INT key="NR" value="46872"/>
+    <INT key="SNAME" value="WEB"/>
+    <INT key="STATE" value="Connected"/>
+    <INT key="TEMPORARY" value="1"/>
+    <INT key="TYPE" value="FHEMWEB"/>
+    <ATTR key="room" value="hidden"/>
+</FHEMWEB>
+<FHEMWEB name="FHEMWEB:127.0.0.1:54097" state="Connected" sets="" attrs="room comment loglevel:0,1,2,3,4,5,6 webname plotmode:gnuplot,gnuplot-scroll,SVG plotsize refresh DarkPeriod">
+    <INT key="BUF" value=""/>
+    <INT key="FD" value="73"/>
+    <INT key="NAME" value="FHEMWEB:127.0.0.1:54097"/>
+    <INT key="NR" value="32965"/>
+    <INT key="SNAME" value="WEB"/>
+    <INT key="STATE" value="Connected"/>
+    <INT key="TEMPORARY" value="1"/>
+    <INT key="TYPE" value="FHEMWEB"/>
+    <ATTR key="room" value="hidden"/>
+</FHEMWEB>
+<FHEMWEB name="FHEMWEB:127.0.0.1:58703" state="Connected" sets="" attrs="room comment loglevel:0,1,2,3,4,5,6 webname plotmode:gnuplot,gnuplot-scroll,SVG plotsize refresh DarkPeriod">
+    <INT key="BUF" value=""/>
+    <INT key="FD" value="75"/>
+    <INT key="NAME" value="FHEMWEB:127.0.0.1:58703"/>
+    <INT key="NR" value="47319"/>
+    <INT key="SNAME" value="WEB"/>
+    <INT key="STATE" value="Connected"/>
+    <INT key="TEMPORARY" value="1"/>
+    <INT key="TYPE" value="FHEMWEB"/>
+    <ATTR key="room" value="hidden"/>
+</FHEMWEB>
+<FHEMWEB name="FHEMWEB:127.0.0.1:59674" state="Connected" sets="" attrs="room comment loglevel:0,1,2,3,4,5,6 webname plotmode:gnuplot,gnuplot-scroll,SVG plotsize refresh DarkPeriod">
+    <INT key="BUF" value=""/>
+    <INT key="FD" value="77"/>
+    <INT key="NAME" value="FHEMWEB:127.0.0.1:59674"/>
+    <INT key="NR" value="45054"/>
+    <INT key="SNAME" value="WEB"/>
+    <INT key="STATE" value="Connected"/>
+    <INT key="TEMPORARY" value="1"/>
+    <INT key="TYPE" value="FHEMWEB"/>
+    <ATTR key="room" value="hidden"/>
+</FHEMWEB>
+<FHEMWEB name="WEB" state="Initialized" sets="" attrs="room comment loglevel:0,1,2,3,4,5,6 webname plotmode:gnuplot,gnuplot-scroll,SVG plotsize refresh DarkPeriod">
+    <INT key="DEF" value="8883 global"/>
+    <INT key="FD" value="9"/>
+    <INT key="NAME" value="WEB"/>
+    <INT key="NR" value="14"/>
+    <INT key="PORT" value="8883"/>
+    <INT key="STATE" value="Initialized"/>
+    <INT key="TYPE" value="FHEMWEB"/>
+    <ATTR key="plotmode" value="SVG"/>
+    <ATTR key="plotsize" value="800,160"/>
+</FHEMWEB>
+</FHEMWEB_LIST>
+<CUL_FHTTK_LIST>
+<CUL_FHTTK name="CUL_FHTTK_9dbf85" state="???" sets="" attrs="room comment IODev do_not_notify:1,0 ignore:0,1 showtime:0,1 model:FHT80TF loglevel:0,1,2,3,4,5,6 DarkPeriod">
+    <INT key="CODE" value="9dbf85"/>
+    <INT key="DEF" value="9dbf85"/>
+    <INT key="NAME" value="CUL_FHTTK_9dbf85"/>
+    <INT key="NR" value="176"/>
+    <INT key="STATE" value="???"/>
+    <INT key="TYPE" value="CUL_FHTTK"/>
+    <INT key="IODev" value="CUL"/>
+    <ATTR key="room" value="CUL_FHTTK"/>
+</CUL_FHTTK>
+<CUL_FHTTK name="Fenster_Arbeit" state="Closed" sets="" attrs="room comment IODev do_not_notify:1,0 ignore:0,1 showtime:0,1 model:FHT80TF loglevel:0,1,2,3,4,5,6 DarkPeriod">
+    <INT key="CUL_MSGCNT" value="3734"/>
+    <INT key="CUL_RAWMSG" value="T124AB202DE"/>
+    <INT key="CUL_RSSI" value="-91"/>
+    <INT key="CUL_TIME" value="2011-12-16 14:53:05"/>
+    <INT key="LASTIODev" value="CUL"/>
+    <INT key="MSGCNT" value="3734"/>
+    <INT key="NAME" value="Fenster_Arbeit"/>
+    <INT key="NR" value="132"/>
+    <INT key="OPEN" value=""/>
+    <INT key="PREVSTATE" value="Closed"/>
+    <INT key="PREVTIMESTAMP" value="1324043333"/>
+    <INT key="STATE" value="Closed"/>
+    <INT key="TYPE" value="CUL_FHTTK"/>
+    <INT key="IODev" value="CUL"/>
+    <ATTR key="room" value="CUL_FHTTK"/>
+    <STATE key="Battery" value="ok" measured="2011-12-16 14:53:05"/>
+    <STATE key="Reliability" value="ok" measured="2011-12-16 14:53:05"/>
+    <STATE key="Window" value="Closed" measured="2011-12-16 14:53:05"/>
+</CUL_FHTTK>
+<CUL_FHTTK name="Fenster_Bad" state="Open" sets="" attrs="room comment IODev do_not_notify:1,0 ignore:0,1 showtime:0,1 model:FHT80TF loglevel:0,1,2,3,4,5,6 DarkPeriod">
+    <INT key="CUL_MSGCNT" value="2496"/>
+    <INT key="CUL_RAWMSG" value="T8670E881DC"/>
+    <INT key="CUL_RSSI" value="-92"/>
+    <INT key="CUL_TIME" value="2011-12-16 14:55:12"/>
+    <INT key="LASTIODev" value="CUL"/>
+    <INT key="MSGCNT" value="2496"/>
+    <INT key="NAME" value="Fenster_Bad"/>
+    <INT key="NR" value="133"/>
+    <INT key="OPEN" value="1"/>
+    <INT key="PREVSTATE" value="Open"/>
+    <INT key="PREVTIMESTAMP" value="1324043455"/>
+    <INT key="STATE" value="Open"/>
+    <INT key="TYPE" value="CUL_FHTTK"/>
+    <INT key="IODev" value="CUL"/>
+    <ATTR key="room" value="Bad"/>
+    <STATE key="Battery" value="ok" measured="2011-12-16 14:55:12"/>
+    <STATE key="Reliability" value="ok" measured="2011-12-16 14:55:12"/>
+    <STATE key="Window" value="Open" measured="2011-12-16 14:55:12"/>
+</CUL_FHTTK>
+<CUL_FHTTK name="TFK_EG" state="Open" sets="" attrs="room comment IODev do_not_notify:1,0 ignore:0,1 showtime:0,1 model:FHT80TF loglevel:0,1,2,3,4,5,6 DarkPeriod">
+    <INT key="CUL_MSGCNT" value="4038"/>
+    <INT key="CUL_RAWMSG" value="T965AB0011B"/>
+    <INT key="CUL_RSSI" value="-60.5"/>
+    <INT key="CUL_TIME" value="2011-12-16 14:56:41"/>
+    <INT key="LASTIODev" value="CUL"/>
+    <INT key="MSGCNT" value="4038"/>
+    <INT key="NAME" value="TFK_EG"/>
+    <INT key="NR" value="134"/>
+    <INT key="OPEN" value="1"/>
+    <INT key="PREVSTATE" value="Open"/>
+    <INT key="PREVTIMESTAMP" value="1324043544"/>
+    <INT key="STATE" value="Open"/>
+    <INT key="TYPE" value="CUL_FHTTK"/>
+    <INT key="IODev" value="CUL"/>
+    <ATTR key="room" value="Wohnen"/>
+    <STATE key="Battery" value="ok" measured="2011-12-16 14:56:41"/>
+    <STATE key="Reliability" value="ok" measured="2011-12-16 14:56:41"/>
+    <STATE key="Window" value="Open" measured="2011-12-16 14:56:41"/>
+</CUL_FHTTK>
+</CUL_FHTTK_LIST>
+<FS20_LIST>
+<FS20 name="DVD_ST" state="off" sets="off off-for-timer on on-for-timer on-till reset timer toggle" attrs="room comment IODev follow-on-for-timer:1,0 do_not_notify:1,0 ignore:0,1 dummy:1,0 showtime:1,0 model;fs20hgs,fs20hgs,fs20pira,fs20piri,fs20s20,fs20s8,fs20s4,fs20s4a,fs20s4m,fs20s4u,fs20s4ub,fs20sd,fs20sn,fs20sr,fs20ss,fs20str,fs20tfk,fs20tfk,fs20tk,fs20uts,fs20ze,fs20as1,fs20as4,fs20di,fs20du,fs20ls,fs20ms2,fs20rst,fs20sa,fs20sig,fs20st,fs20sv,fs20usr loglevel:0,1,2,3,4,5,6 DarkPeriod">
+    <INT key="BTN" value="04"/>
+    <INT key="DEF" value="0000 04"/>
+    <INT key="NAME" value="DVD_ST"/>
+    <INT key="NR" value="65"/>
+    <INT key="STATE" value="off"/>
+    <INT key="TYPE" value="FS20"/>
+    <INT key="XMIT" value="0000"/>
+    <INT key="IODev" value="CUL"/>
+    <ATTR key="model" value="fs20st"/>
+    <ATTR key="room" value="Wohnen"/>
+    <STATE key="state" value="off" measured="2011-07-18 22:01:42"/>
+</FS20>
+<FS20 name="FS20_0fefed" state="???" sets="dim06% dim100% dim12% dim18% dim25% dim31% dim37% dim43% dim50% dim56% dim62% dim68% dim75% dim81% dim87% dim93% dimdown dimup dimupdown off off-for-timer on on-100-for-timer-prev on-for-timer on-old-for-timer on-old-for-timer-prev on-till ramp-off-time ramp-on-time reset sendstate timer toggle" attrs="room comment IODev follow-on-for-timer:1,0 do_not_notify:1,0 ignore:0,1 dummy:1,0 showtime:1,0 model;fs20hgs,fs20hgs,fs20pira,fs20piri,fs20s20,fs20s8,fs20s4,fs20s4a,fs20s4m,fs20s4u,fs20s4ub,fs20sd,fs20sn,fs20sr,fs20ss,fs20str,fs20tfk,fs20tfk,fs20tk,fs20uts,fs20ze,fs20as1,fs20as4,fs20di,fs20du,fs20ls,fs20ms2,fs20rst,fs20sa,fs20sig,fs20st,fs20sv,fs20usr loglevel:0,1,2,3,4,5,6 DarkPeriod">
+    <INT key="BTN" value="ed"/>
+    <INT key="DEF" value="0fef ed"/>
+    <INT key="NAME" value="FS20_0fefed"/>
+    <INT key="NR" value="184"/>
+    <INT key="STATE" value="???"/>
+    <INT key="TYPE" value="FS20"/>
+    <INT key="XMIT" value="0fef"/>
+    <INT key="IODev" value="CUL"/>
+    <ATTR key="room" value="FS20"/>
+</FS20>
+<FS20 name="FS20_3acafb" state="???" sets="dim06% dim100% dim12% dim18% dim25% dim31% dim37% dim43% dim50% dim56% dim62% dim68% dim75% dim81% dim87% dim93% dimdown dimup dimupdown off off-for-timer on on-100-for-timer-prev on-for-timer on-old-for-timer on-old-for-timer-prev on-till ramp-off-time ramp-on-time reset sendstate timer toggle" attrs="room comment IODev follow-on-for-timer:1,0 do_not_notify:1,0 ignore:0,1 dummy:1,0 showtime:1,0 model;fs20hgs,fs20hgs,fs20pira,fs20piri,fs20s20,fs20s8,fs20s4,fs20s4a,fs20s4m,fs20s4u,fs20s4ub,fs20sd,fs20sn,fs20sr,fs20ss,fs20str,fs20tfk,fs20tfk,fs20tk,fs20uts,fs20ze,fs20as1,fs20as4,fs20di,fs20du,fs20ls,fs20ms2,fs20rst,fs20sa,fs20sig,fs20st,fs20sv,fs20usr loglevel:0,1,2,3,4,5,6 DarkPeriod">
+    <INT key="BTN" value="fb"/>
+    <INT key="DEF" value="3aca fb"/>
+    <INT key="NAME" value="FS20_3acafb"/>
+    <INT key="NR" value="179"/>
+    <INT key="STATE" value="???"/>
+    <INT key="TYPE" value="FS20"/>
+    <INT key="XMIT" value="3aca"/>
+    <INT key="IODev" value="CUL"/>
+    <ATTR key="room" value="FS20"/>
+</FS20>
+<FS20 name="FS20_8082fb" state="???" sets="dim06% dim100% dim12% dim18% dim25% dim31% dim37% dim43% dim50% dim56% dim62% dim68% dim75% dim81% dim87% dim93% dimdown dimup dimupdown off off-for-timer on on-100-for-timer-prev on-for-timer on-old-for-timer on-old-for-timer-prev on-till ramp-off-time ramp-on-time reset sendstate timer toggle" attrs="room comment IODev follow-on-for-timer:1,0 do_not_notify:1,0 ignore:0,1 dummy:1,0 showtime:1,0 model;fs20hgs,fs20hgs,fs20pira,fs20piri,fs20s20,fs20s8,fs20s4,fs20s4a,fs20s4m,fs20s4u,fs20s4ub,fs20sd,fs20sn,fs20sr,fs20ss,fs20str,fs20tfk,fs20tfk,fs20tk,fs20uts,fs20ze,fs20as1,fs20as4,fs20di,fs20du,fs20ls,fs20ms2,fs20rst,fs20sa,fs20sig,fs20st,fs20sv,fs20usr loglevel:0,1,2,3,4,5,6 DarkPeriod">
+    <INT key="BTN" value="fb"/>
+    <INT key="DEF" value="8082 fb"/>
+    <INT key="NAME" value="FS20_8082fb"/>
+    <INT key="NR" value="174"/>
+    <INT key="STATE" value="???"/>
+    <INT key="TYPE" value="FS20"/>
+    <INT key="XMIT" value="8082"/>
+    <INT key="IODev" value="CUL"/>
+    <ATTR key="room" value="FS20"/>
+</FS20>
+<FS20 name="FS20_833bfa" state="???" sets="dim06% dim100% dim12% dim18% dim25% dim31% dim37% dim43% dim50% dim56% dim62% dim68% dim75% dim81% dim87% dim93% dimdown dimup dimupdown off off-for-timer on on-100-for-timer-prev on-for-timer on-old-for-timer on-old-for-timer-prev on-till ramp-off-time ramp-on-time reset sendstate timer toggle" attrs="room comment IODev follow-on-for-timer:1,0 do_not_notify:1,0 ignore:0,1 dummy:1,0 showtime:1,0 model;fs20hgs,fs20hgs,fs20pira,fs20piri,fs20s20,fs20s8,fs20s4,fs20s4a,fs20s4m,fs20s4u,fs20s4ub,fs20sd,fs20sn,fs20sr,fs20ss,fs20str,fs20tfk,fs20tfk,fs20tk,fs20uts,fs20ze,fs20as1,fs20as4,fs20di,fs20du,fs20ls,fs20ms2,fs20rst,fs20sa,fs20sig,fs20st,fs20sv,fs20usr loglevel:0,1,2,3,4,5,6 DarkPeriod">
+    <INT key="BTN" value="fa"/>
+    <INT key="DEF" value="833b fa"/>
+    <INT key="NAME" value="FS20_833bfa"/>
+    <INT key="NR" value="200"/>
+    <INT key="STATE" value="???"/>
+    <INT key="TYPE" value="FS20"/>
+    <INT key="XMIT" value="833b"/>
+    <INT key="IODev" value="CUL"/>
+    <ATTR key="room" value="FS20"/>
+</FS20>
+<FS20 name="Flur_LED" state="off" sets="off off-for-timer on on-for-timer on-till reset timer toggle" attrs="room comment IODev follow-on-for-timer:1,0 do_not_notify:1,0 ignore:0,1 dummy:1,0 showtime:1,0 model;fs20hgs,fs20hgs,fs20pira,fs20piri,fs20s20,fs20s8,fs20s4,fs20s4a,fs20s4m,fs20s4u,fs20s4ub,fs20sd,fs20sn,fs20sr,fs20ss,fs20str,fs20tfk,fs20tfk,fs20tk,fs20uts,fs20ze,fs20as1,fs20as4,fs20di,fs20du,fs20ls,fs20ms2,fs20rst,fs20sa,fs20sig,fs20st,fs20sv,fs20usr loglevel:0,1,2,3,4,5,6 DarkPeriod">
+    <INT key="BTN" value="02"/>
+    <INT key="DEF" value="0000 02"/>
+    <INT key="NAME" value="Flur_LED"/>
+    <INT key="NR" value="52"/>
+    <INT key="STATE" value="off"/>
+    <INT key="TYPE" value="FS20"/>
+    <INT key="XMIT" value="0000"/>
+    <INT key="IODev" value="CUL"/>
+    <ATTR key="model" value="fs20st"/>
+    <ATTR key="room" value="Kinder"/>
+    <STATE key="state" value="off" measured="2011-12-16 08:07:21"/>
+</FS20>
+<FS20 name="HGS1" state="off" sets="" attrs="room comment IODev follow-on-for-timer:1,0 do_not_notify:1,0 ignore:0,1 dummy:1,0 showtime:1,0 model;fs20hgs,fs20hgs,fs20pira,fs20piri,fs20s20,fs20s8,fs20s4,fs20s4a,fs20s4m,fs20s4u,fs20s4ub,fs20sd,fs20sn,fs20sr,fs20ss,fs20str,fs20tfk,fs20tfk,fs20tk,fs20uts,fs20ze,fs20as1,fs20as4,fs20di,fs20du,fs20ls,fs20ms2,fs20rst,fs20sa,fs20sig,fs20st,fs20sv,fs20usr loglevel:0,1,2,3,4,5,6 DarkPeriod">
+    <INT key="BTN" value="00"/>
+    <INT key="DEF" value="0000 1111"/>
+    <INT key="NAME" value="HGS1"/>
+    <INT key="NR" value="28"/>
+    <INT key="STATE" value="off"/>
+    <INT key="TYPE" value="FS20"/>
+    <INT key="XMIT" value="40c6"/>
+    <INT key="IODev" value="CUL"/>
+    <ATTR key="model" value="fs20hgs"/>
+    <ATTR key="room" value="Arbeit"/>
+    <STATE key="state" value="off" measured="2011-09-13 14:05:45"/>
+</FS20>
+<FS20 name="PS3_ST" state="on" sets="off off-for-timer on on-for-timer on-till reset timer toggle" attrs="room comment IODev follow-on-for-timer:1,0 do_not_notify:1,0 ignore:0,1 dummy:1,0 showtime:1,0 model;fs20hgs,fs20hgs,fs20pira,fs20piri,fs20s20,fs20s8,fs20s4,fs20s4a,fs20s4m,fs20s4u,fs20s4ub,fs20sd,fs20sn,fs20sr,fs20ss,fs20str,fs20tfk,fs20tfk,fs20tk,fs20uts,fs20ze,fs20as1,fs20as4,fs20di,fs20du,fs20ls,fs20ms2,fs20rst,fs20sa,fs20sig,fs20st,fs20sv,fs20usr loglevel:0,1,2,3,4,5,6 DarkPeriod">
+    <INT key="BTN" value="08"/>
+    <INT key="DEF" value="12433443 1131"/>
+    <INT key="NAME" value="PS3_ST"/>
+    <INT key="NR" value="71"/>
+    <INT key="STATE" value="on"/>
+    <INT key="TYPE" value="FS20"/>
+    <INT key="XMIT" value="0000"/>
+    <INT key="IODev" value="CUL"/>
+    <ATTR key="model" value="fs20st"/>
+    <ATTR key="room" value="Wohnen"/>
+    <STATE key="state" value="on" measured="2011-12-06 19:31:42"/>
+</FS20>
+<FS20 name="TV_FMS" state="off" sets="off off-for-timer on on-for-timer on-till reset timer toggle" attrs="room comment IODev follow-on-for-timer:1,0 do_not_notify:1,0 ignore:0,1 dummy:1,0 showtime:1,0 model;fs20hgs,fs20hgs,fs20pira,fs20piri,fs20s20,fs20s8,fs20s4,fs20s4a,fs20s4m,fs20s4u,fs20s4ub,fs20sd,fs20sn,fs20sr,fs20ss,fs20str,fs20tfk,fs20tfk,fs20tk,fs20uts,fs20ze,fs20as1,fs20as4,fs20di,fs20du,fs20ls,fs20ms2,fs20rst,fs20sa,fs20sig,fs20st,fs20sv,fs20usr loglevel:0,1,2,3,4,5,6 DarkPeriod">
+    <INT key="BTN" value="00"/>
+    <INT key="DEF" value="0000 1111"/>
+    <INT key="NAME" value="TV_FMS"/>
+    <INT key="NR" value="73"/>
+    <INT key="STATE" value="off"/>
+    <INT key="TYPE" value="FS20"/>
+    <INT key="XMIT" value="0000"/>
+    <INT key="IODev" value="CUL"/>
+    <ATTR key="model" value="fs20st"/>
+    <ATTR key="room" value="Wohnen"/>
+    <STATE key="state" value="off" measured="2011-12-16 08:07:21"/>
+</FS20>
+<FS20 name="TV_LED" state="off" sets="off off-for-timer on on-for-timer on-till reset timer toggle" attrs="room comment IODev follow-on-for-timer:1,0 do_not_notify:1,0 ignore:0,1 dummy:1,0 showtime:1,0 model;fs20hgs,fs20hgs,fs20pira,fs20piri,fs20s20,fs20s8,fs20s4,fs20s4a,fs20s4m,fs20s4u,fs20s4ub,fs20sd,fs20sn,fs20sr,fs20ss,fs20str,fs20tfk,fs20tfk,fs20tk,fs20uts,fs20ze,fs20as1,fs20as4,fs20di,fs20du,fs20ls,fs20ms2,fs20rst,fs20sa,fs20sig,fs20st,fs20sv,fs20usr loglevel:0,1,2,3,4,5,6 DarkPeriod">
+    <INT key="BTN" value="00"/>
+    <INT key="DEF" value="0000 00"/>
+    <INT key="NAME" value="TV_LED"/>
+    <INT key="NR" value="69"/>
+    <INT key="STATE" value="off"/>
+    <INT key="TYPE" value="FS20"/>
+    <INT key="XMIT" value="0000"/>
+    <INT key="IODev" value="CUL"/>
+    <ATTR key="DarkPeriod" value="1"/>
+    <ATTR key="IODev" value="CUL"/>
+    <ATTR key="model" value="fs20st"/>
+    <ATTR key="room" value="Wohnen"/>
+    <STATE key="state" value="off" measured="2011-12-16 08:07:21"/>
+</FS20>
+<FS20 name="VCR_ST" state="off" sets="off off-for-timer on on-for-timer on-till reset timer toggle" attrs="room comment IODev follow-on-for-timer:1,0 do_not_notify:1,0 ignore:0,1 dummy:1,0 showtime:1,0 model;fs20hgs,fs20hgs,fs20pira,fs20piri,fs20s20,fs20s8,fs20s4,fs20s4a,fs20s4m,fs20s4u,fs20s4ub,fs20sd,fs20sn,fs20sr,fs20ss,fs20str,fs20tfk,fs20tfk,fs20tk,fs20uts,fs20ze,fs20as1,fs20as4,fs20di,fs20du,fs20ls,fs20ms2,fs20rst,fs20sa,fs20sig,fs20st,fs20sv,fs20usr loglevel:0,1,2,3,4,5,6 DarkPeriod">
+    <INT key="BTN" value="01"/>
+    <INT key="DEF" value="0000 01"/>
+    <INT key="NAME" value="VCR_ST"/>
+    <INT key="NR" value="67"/>
+    <INT key="STATE" value="off"/>
+    <INT key="TYPE" value="FS20"/>
+    <INT key="XMIT" value="0000"/>
+    <INT key="IODev" value="CUL"/>
+    <ATTR key="model" value="fs20st"/>
+    <ATTR key="room" value="Wohnen"/>
+    <STATE key="state" value="off" measured="2011-04-19 22:30:13"/>
+</FS20>
+<FS20 name="Wii_ST" state="off" sets="off off-for-timer on on-for-timer on-till reset timer toggle" attrs="room comment IODev follow-on-for-timer:1,0 do_not_notify:1,0 ignore:0,1 dummy:1,0 showtime:1,0 model;fs20hgs,fs20hgs,fs20pira,fs20piri,fs20s20,fs20s8,fs20s4,fs20s4a,fs20s4m,fs20s4u,fs20s4ub,fs20sd,fs20sn,fs20sr,fs20ss,fs20str,fs20tfk,fs20tfk,fs20tk,fs20uts,fs20ze,fs20as1,fs20as4,fs20di,fs20du,fs20ls,fs20ms2,fs20rst,fs20sa,fs20sig,fs20st,fs20sv,fs20usr loglevel:0,1,2,3,4,5,6 DarkPeriod">
+    <INT key="BTN" value="09"/>
+    <INT key="DEF" value="12433443 1132"/>
+    <INT key="NAME" value="Wii_ST"/>
+    <INT key="NR" value="72"/>
+    <INT key="STATE" value="off"/>
+    <INT key="TYPE" value="FS20"/>
+    <INT key="XMIT" value="0000"/>
+    <INT key="IODev" value="CUL"/>
+    <ATTR key="model" value="fs20st"/>
+    <ATTR key="room" value="Wohnen"/>
+    <STATE key="state" value="off" measured="2011-12-15 23:00:00"/>
+</FS20>
+</FS20_LIST>
+<FHT_LIST>
+<FHT name="Arbeit_FHT" state="measured-temp: 28.1 (Celsius)" sets="actuator actuator1 actuator2 actuator3 actuator4 actuator5 actuator6 actuator7 actuator8 day day-temp desired-temp fri-from1 fri-from2 fri-to1 fri-to2 holiday1 holiday2 hour lowtemp-offset manu-temp minute mode mon-from1 mon-from2 mon-to1 mon-to2 month night-temp report1 report2 sat-from1 sat-from2 sat-to1 sat-to2 sun-from1 sun-from2 sun-to1 sun-to2 thu-from1 thu-from2 thu-to1 thu-to2 tue-from1 tue-from2 tue-to1 tue-to2 wed-from1 wed-from2 wed-to1 wed-to2 windowopen-temp year" attrs="room comment IODev do_not_notify:0,1 model;fht80b dummy:0,1 showtime:0,1 loglevel:0,1,2,3,4,5,6 retrycount minfhtbuffer lazy tmpcorr ignore:0,1 DarkPeriod">
+    <INT key="NAME" value="Arbeit_FHT"/>
+    <INT key="NR" value="19"/>
+    <INT key="STATE" value="measured-temp: 28.1 (Celsius)"/>
+    <INT key="TYPE" value="FHT"/>
+    <INT key="IODev" value="CUL"/>
+    <ATTR key="retrycount" value="3"/>
+    <ATTR key="room" value="Arbeit"/>
+    <STATE key="actuator" value="lime-protection" measured="2011-04-27 03:07:33"/>
+    <STATE key="desired-temp" value="12.0" measured="2010-08-08 06:02:18"/>
+    <STATE key="measured-high" value="1" measured="2010-08-08 15:23:21"/>
+    <STATE key="measured-low" value="25" measured="2010-08-08 15:23:21"/>
+    <STATE key="measured-temp" value="28.1 (Celsius)" measured="2010-08-08 15:23:21"/>
+    <STATE key="start-xmit" value="100" measured="2010-07-13 19:25:21"/>
+    <STATE key="warnings" value="Window open" measured="2010-08-08 15:23:22"/>
+</FHT>
+<FHT name="FHT_1f0b" state="???" sets="actuator actuator1 actuator2 actuator3 actuator4 actuator5 actuator6 actuator7 actuator8 day day-temp desired-temp fri-from1 fri-from2 fri-to1 fri-to2 holiday1 holiday2 hour lowtemp-offset manu-temp minute mode mon-from1 mon-from2 mon-to1 mon-to2 month night-temp report1 report2 sat-from1 sat-from2 sat-to1 sat-to2 sun-from1 sun-from2 sun-to1 sun-to2 thu-from1 thu-from2 thu-to1 thu-to2 tue-from1 tue-from2 tue-to1 tue-to2 wed-from1 wed-from2 wed-to1 wed-to2 windowopen-temp year" attrs="room comment IODev do_not_notify:0,1 model;fht80b dummy:0,1 showtime:0,1 loglevel:0,1,2,3,4,5,6 retrycount minfhtbuffer lazy tmpcorr ignore:0,1 DarkPeriod">
+    <INT key="CODE" value="1f0b"/>
+    <INT key="DEF" value="1f0b"/>
+    <INT key="NAME" value="FHT_1f0b"/>
+    <INT key="NR" value="171"/>
+    <INT key="STATE" value="???"/>
+    <INT key="TYPE" value="FHT"/>
+    <INT key="IODev" value="CUL"/>
+    <ATTR key="retrycount" value="3"/>
+    <ATTR key="room" value="FHT"/>
+</FHT>
+<FHT name="FHT_2592" state="???" sets="actuator actuator1 actuator2 actuator3 actuator4 actuator5 actuator6 actuator7 actuator8 day day-temp desired-temp fri-from1 fri-from2 fri-to1 fri-to2 holiday1 holiday2 hour lowtemp-offset manu-temp minute mode mon-from1 mon-from2 mon-to1 mon-to2 month night-temp report1 report2 sat-from1 sat-from2 sat-to1 sat-to2 sun-from1 sun-from2 sun-to1 sun-to2 thu-from1 thu-from2 thu-to1 thu-to2 tue-from1 tue-from2 tue-to1 tue-to2 wed-from1 wed-from2 wed-to1 wed-to2 windowopen-temp year" attrs="room comment IODev do_not_notify:0,1 model;fht80b dummy:0,1 showtime:0,1 loglevel:0,1,2,3,4,5,6 retrycount minfhtbuffer lazy tmpcorr ignore:0,1 DarkPeriod">
+    <INT key="CODE" value="2592"/>
+    <INT key="DEF" value="2592"/>
+    <INT key="NAME" value="FHT_2592"/>
+    <INT key="NR" value="168"/>
+    <INT key="STATE" value="???"/>
+    <INT key="TYPE" value="FHT"/>
+    <INT key="IODev" value="CUL"/>
+    <ATTR key="retrycount" value="3"/>
+    <ATTR key="room" value="FHT"/>
+</FHT>
+<FHT name="FHT_3202" state="???" sets="actuator actuator1 actuator2 actuator3 actuator4 actuator5 actuator6 actuator7 actuator8 day day-temp desired-temp fri-from1 fri-from2 fri-to1 fri-to2 holiday1 holiday2 hour lowtemp-offset manu-temp minute mode mon-from1 mon-from2 mon-to1 mon-to2 month night-temp report1 report2 sat-from1 sat-from2 sat-to1 sat-to2 sun-from1 sun-from2 sun-to1 sun-to2 thu-from1 thu-from2 thu-to1 thu-to2 tue-from1 tue-from2 tue-to1 tue-to2 wed-from1 wed-from2 wed-to1 wed-to2 windowopen-temp year" attrs="room comment IODev do_not_notify:0,1 model;fht80b dummy:0,1 showtime:0,1 loglevel:0,1,2,3,4,5,6 retrycount minfhtbuffer lazy tmpcorr ignore:0,1 DarkPeriod">
+    <INT key="CODE" value="3202"/>
+    <INT key="CUL_MSGCNT" value="4298"/>
+    <INT key="CUL_RAWMSG" value="T320200A600DA"/>
+    <INT key="CUL_RSSI" value="-93"/>
+    <INT key="CUL_TIME" value="2011-12-16 14:47:42"/>
+    <INT key="DEF" value="3202"/>
+    <INT key="LASTIODev" value="CUL"/>
+    <INT key="MSGCNT" value="4298"/>
+    <INT key="NAME" value="FHT_3202"/>
+    <INT key="NR" value="162"/>
+    <INT key="STATE" value="???"/>
+    <INT key="TYPE" value="FHT"/>
+    <INT key="IODev" value="CUL"/>
+    <ATTR key="retrycount" value="3"/>
+    <ATTR key="room" value="FHT"/>
+    <STATE key="actuator" value="0%" measured="2011-12-16 14:47:42"/>
+</FHT>
+<FHT name="FHT_4c1f" state="???" sets="actuator actuator1 actuator2 actuator3 actuator4 actuator5 actuator6 actuator7 actuator8 day day-temp desired-temp fri-from1 fri-from2 fri-to1 fri-to2 holiday1 holiday2 hour lowtemp-offset manu-temp minute mode mon-from1 mon-from2 mon-to1 mon-to2 month night-temp report1 report2 sat-from1 sat-from2 sat-to1 sat-to2 sun-from1 sun-from2 sun-to1 sun-to2 thu-from1 thu-from2 thu-to1 thu-to2 tue-from1 tue-from2 tue-to1 tue-to2 wed-from1 wed-from2 wed-to1 wed-to2 windowopen-temp year" attrs="room comment IODev do_not_notify:0,1 model;fht80b dummy:0,1 showtime:0,1 loglevel:0,1,2,3,4,5,6 retrycount minfhtbuffer lazy tmpcorr ignore:0,1 DarkPeriod">
+    <INT key="CODE" value="4c1f"/>
+    <INT key="DEF" value="4c1f"/>
+    <INT key="NAME" value="FHT_4c1f"/>
+    <INT key="NR" value="186"/>
+    <INT key="STATE" value="???"/>
+    <INT key="TYPE" value="FHT"/>
+    <INT key="IODev" value="CUL"/>
+    <ATTR key="retrycount" value="3"/>
+    <ATTR key="room" value="FHT"/>
+</FHT>
+<FHT name="FHT_9a9e" state="???" sets="actuator actuator1 actuator2 actuator3 actuator4 actuator5 actuator6 actuator7 actuator8 day day-temp desired-temp fri-from1 fri-from2 fri-to1 fri-to2 holiday1 holiday2 hour lowtemp-offset manu-temp minute mode mon-from1 mon-from2 mon-to1 mon-to2 month night-temp report1 report2 sat-from1 sat-from2 sat-to1 sat-to2 sun-from1 sun-from2 sun-to1 sun-to2 thu-from1 thu-from2 thu-to1 thu-to2 tue-from1 tue-from2 tue-to1 tue-to2 wed-from1 wed-from2 wed-to1 wed-to2 windowopen-temp year" attrs="room comment IODev do_not_notify:0,1 model;fht80b dummy:0,1 showtime:0,1 loglevel:0,1,2,3,4,5,6 retrycount minfhtbuffer lazy tmpcorr ignore:0,1 DarkPeriod">
+    <INT key="CODE" value="9a9e"/>
+    <INT key="DEF" value="9a9e"/>
+    <INT key="NAME" value="FHT_9a9e"/>
+    <INT key="NR" value="181"/>
+    <INT key="STATE" value="???"/>
+    <INT key="TYPE" value="FHT"/>
+    <INT key="IODev" value="CUL"/>
+    <ATTR key="retrycount" value="3"/>
+    <ATTR key="room" value="FHT"/>
+</FHT>
+</FHT_LIST>
+<HMS_LIST>
+<HMS name="Arbeit_TF" state="T: 22  H: 41.7  Bat: ok" sets="" attrs="room comment IODev do_not_notify:0,1 showtime:0,1 model;hms100-t,hms100-tf,hms100-wd,hms100-mg,hms100-tfk,rm100-2,hms100-co,hms100-fit loglevel:0,1,2,3,4,5,6 ignore:0,1 DarkPeriod">
+    <INT key="CUL_MSGCNT" value="1949"/>
+    <INT key="CUL_RAWMSG" value="H07BF00207241DB"/>
+    <INT key="CUL_RSSI" value="-92.5"/>
+    <INT key="CUL_TIME" value="2011-12-16 14:57:01"/>
+    <INT key="LASTIODev" value="CUL"/>
+    <INT key="MSGCNT" value="1949"/>
+    <INT key="NAME" value="Arbeit_TF"/>
+    <INT key="NR" value="25"/>
+    <INT key="STATE" value="T: 22  H: 41.7  Bat: ok"/>
+    <INT key="TYPE" value="HMS"/>
+    <INT key="IODev" value="CUL"/>
+    <ATTR key="model" value="hms100-tf"/>
+    <ATTR key="room" value="Arbeit"/>
+    <STATE key="battery" value="ok" measured="2011-12-16 14:57:01"/>
+    <STATE key="humidity" value="41.7 (%)" measured="2011-12-16 14:57:01"/>
+    <STATE key="temperature" value="22 (Celsius)" measured="2011-12-16 14:57:01"/>
+    <STATE key="type" value="HMS100TF" measured="2011-12-16 14:57:01"/>
+</HMS>
+<HMS name="HMS100TFK_e07e" state="Switch Detect: on" sets="" attrs="room comment IODev do_not_notify:0,1 showtime:0,1 model;hms100-t,hms100-tf,hms100-wd,hms100-mg,hms100-tfk,rm100-2,hms100-co,hms100-fit loglevel:0,1,2,3,4,5,6 ignore:0,1 DarkPeriod">
+    <INT key="CODE" value="e07e"/>
+    <INT key="CUL_MSGCNT" value="35"/>
+    <INT key="CUL_RAWMSG" value="HE07E0401FF00DA"/>
+    <INT key="CUL_RSSI" value="-93"/>
+    <INT key="CUL_TIME" value="2011-12-14 20:09:23"/>
+    <INT key="DEF" value="e07e"/>
+    <INT key="LASTIODev" value="CUL"/>
+    <INT key="MSGCNT" value="35"/>
+    <INT key="NAME" value="HMS100TFK_e07e"/>
+    <INT key="NR" value="165"/>
+    <INT key="STATE" value="Switch Detect: on"/>
+    <INT key="TYPE" value="HMS"/>
+    <INT key="IODev" value="CUL"/>
+    <ATTR key="room" value="HMS"/>
+    <STATE key="battery" value="ok" measured="2011-12-14 20:09:23"/>
+    <STATE key="switch_detect" value="on" measured="2011-12-14 20:09:23"/>
+    <STATE key="type" value="HMS100TFK" measured="2011-12-14 20:09:23"/>
+</HMS>
+<HMS name="Kinder_TF" state="T: 22.2  H: 40  Bat: ok" sets="" attrs="room comment IODev do_not_notify:0,1 showtime:0,1 model;hms100-t,hms100-tf,hms100-wd,hms100-mg,hms100-tfk,rm100-2,hms100-co,hms100-fit loglevel:0,1,2,3,4,5,6 ignore:0,1 DarkPeriod">
+    <INT key="NAME" value="Kinder_TF"/>
+    <INT key="NR" value="49"/>
+    <INT key="STATE" value="T: 22.2  H: 40  Bat: ok"/>
+    <INT key="TYPE" value="HMS"/>
+    <INT key="IODev" value="CUL"/>
+    <ATTR key="model" value="hms100-tf"/>
+    <ATTR key="room" value="Kinder"/>
+    <STATE key="battery" value="ok" measured="2010-04-05 18:52:31"/>
+    <STATE key="humidity" value="40 (%)" measured="2010-04-05 18:52:31"/>
+    <STATE key="temperature" value="22.2 (Celsius)" measured="2010-04-05 18:52:31"/>
+    <STATE key="type" value="HMS100TF" measured="2010-04-05 18:52:31"/>
+</HMS>
+</HMS_LIST>
+<CUL_WS_LIST>
+<CUL_WS name="Bad_TH" state="T: 21.5  H: 45.6" sets="" attrs="room comment IODev do_not_notify:0,1 showtime:0,1 model:S300TH,KS300 loglevel ignore:0,1 DarkPeriod">
+    <INT key="CODE" value="7"/>
+    <INT key="CUL_MSGCNT" value="1144"/>
+    <INT key="CUL_RAWMSG" value="K61156245DA"/>
+    <INT key="CUL_RSSI" value="-93"/>
+    <INT key="CUL_TIME" value="2011-12-15 16:30:26"/>
+    <INT key="DEF" value="7"/>
+    <INT key="LASTIODev" value="CUL"/>
+    <INT key="MSGCNT" value="1144"/>
+    <INT key="NAME" value="Bad_TH"/>
+    <INT key="NR" value="31"/>
+    <INT key="STATE" value="T: 21.5  H: 45.6"/>
+    <INT key="TYPE" value="CUL_WS"/>
+    <INT key="corr1" value=""/>
+    <INT key="corr2" value=""/>
+    <INT key="corr3" value=""/>
+    <INT key="corr4" value=""/>
+    <INT key="IODev" value="CUL"/>
+    <ATTR key="room" value="Bad"/>
+    <STATE key="DEVFAMILY" value="WS300" measured="2011-12-15 16:30:26"/>
+    <STATE key="DEVTYPE" value="S300TH" measured="2011-12-15 16:30:26"/>
+    <STATE key="humidity" value="45.6" measured="2011-12-15 16:30:26"/>
+    <STATE key="state" value="T: 21.5  H: 45.6" measured="2011-12-15 16:30:26"/>
+    <STATE key="temperature" value="21.5" measured="2011-12-15 16:30:26"/>
+</CUL_WS>
+<CUL_WS name="Brightness" state="???" sets="" attrs="room comment IODev do_not_notify:0,1 showtime:0,1 model:S300TH,KS300 loglevel ignore:0,1 DarkPeriod">
+    <INT key="CODE" value="8"/>
+    <INT key="DEF" value="8"/>
+    <INT key="NAME" value="Brightness"/>
+    <INT key="NR" value="74"/>
+    <INT key="STATE" value="???"/>
+    <INT key="TYPE" value="CUL_WS"/>
+    <INT key="corr1" value=""/>
+    <INT key="corr2" value=""/>
+    <INT key="corr3" value=""/>
+    <INT key="corr4" value=""/>
+    <INT key="IODev" value="CUL"/>
+    <ATTR key="room" value="EnvSens"/>
+</CUL_WS>
+<CUL_WS name="Essz_TH" state="T: 4  H: 44.6" sets="" attrs="room comment IODev do_not_notify:0,1 showtime:0,1 model:S300TH,KS300 loglevel ignore:0,1 DarkPeriod">
+    <INT key="CODE" value="1"/>
+    <INT key="CUL_MSGCNT" value="2506"/>
+    <INT key="CUL_RAWMSG" value="K01406044E6"/>
+    <INT key="CUL_RSSI" value="-87"/>
+    <INT key="CUL_TIME" value="2011-12-16 14:55:24"/>
+    <INT key="DEF" value="1"/>
+    <INT key="LASTIODev" value="CUL"/>
+    <INT key="MSGCNT" value="2506"/>
+    <INT key="NAME" value="Essz_TH"/>
+    <INT key="NR" value="34"/>
+    <INT key="STATE" value="T: 4  H: 44.6"/>
+    <INT key="TYPE" value="CUL_WS"/>
+    <INT key="corr1" value=""/>
+    <INT key="corr2" value=""/>
+    <INT key="corr3" value=""/>
+    <INT key="corr4" value=""/>
+    <INT key="IODev" value="CUL"/>
+    <ATTR key="room" value="Essen"/>
+    <STATE key="DEVFAMILY" value="WS300" measured="2011-12-16 14:55:24"/>
+    <STATE key="DEVTYPE" value="S300TH" measured="2011-12-16 14:55:24"/>
+    <STATE key="humidity" value="44.6" measured="2011-12-16 14:55:24"/>
+    <STATE key="state" value="T: 4  H: 44.6" measured="2011-12-16 14:55:24"/>
+    <STATE key="temperature" value="4" measured="2011-12-16 14:55:24"/>
+</CUL_WS>
+<CUL_WS name="Flur_TH" state="T: 21.2  H: 44.5" sets="" attrs="room comment IODev do_not_notify:0,1 showtime:0,1 model:S300TH,KS300 loglevel ignore:0,1 DarkPeriod">
+    <INT key="CODE" value="2"/>
+    <INT key="CUL_MSGCNT" value="2218"/>
+    <INT key="CUL_RAWMSG" value="K11125244F4"/>
+    <INT key="CUL_RSSI" value="-80"/>
+    <INT key="CUL_TIME" value="2011-12-16 14:55:30"/>
+    <INT key="DEF" value="2"/>
+    <INT key="LASTIODev" value="CUL"/>
+    <INT key="MSGCNT" value="2218"/>
+    <INT key="NAME" value="Flur_TH"/>
+    <INT key="NR" value="37"/>
+    <INT key="STATE" value="T: 21.2  H: 44.5"/>
+    <INT key="TYPE" value="CUL_WS"/>
+    <INT key="corr1" value=""/>
+    <INT key="corr2" value=""/>
+    <INT key="corr3" value=""/>
+    <INT key="corr4" value=""/>
+    <INT key="IODev" value="CUL"/>
+    <ATTR key="room" value="Flur"/>
+    <STATE key="DEVFAMILY" value="WS300" measured="2011-12-16 14:55:30"/>
+    <STATE key="DEVTYPE" value="S300TH" measured="2011-12-16 14:55:30"/>
+    <STATE key="humidity" value="44.5" measured="2011-12-16 14:55:30"/>
+    <STATE key="state" value="T: 21.2  H: 44.5" measured="2011-12-16 14:55:30"/>
+    <STATE key="temperature" value="21.2" measured="2011-12-16 14:55:30"/>
+</CUL_WS>
+<CUL_WS name="Huette_TH" state="T: 4.6  H: 81.6" sets="" attrs="room comment IODev do_not_notify:0,1 showtime:0,1 model:S300TH,KS300 loglevel ignore:0,1 DarkPeriod">
+    <INT key="CODE" value="3"/>
+    <INT key="CUL_MSGCNT" value="2660"/>
+    <INT key="CUL_RAWMSG" value="K21466081F0"/>
+    <INT key="CUL_RSSI" value="-82"/>
+    <INT key="CUL_TIME" value="2011-12-16 14:57:10"/>
+    <INT key="DEF" value="3"/>
+    <INT key="LASTIODev" value="CUL"/>
+    <INT key="MSGCNT" value="2660"/>
+    <INT key="NAME" value="Huette_TH"/>
+    <INT key="NR" value="43"/>
+    <INT key="STATE" value="T: 4.6  H: 81.6"/>
+    <INT key="TYPE" value="CUL_WS"/>
+    <INT key="corr1" value=""/>
+    <INT key="corr2" value=""/>
+    <INT key="corr3" value=""/>
+    <INT key="corr4" value=""/>
+    <INT key="IODev" value="CUL"/>
+    <ATTR key="room" value="Garten"/>
+    <STATE key="DEVFAMILY" value="WS300" measured="2011-12-16 14:57:10"/>
+    <STATE key="DEVTYPE" value="S300TH" measured="2011-12-16 14:57:10"/>
+    <STATE key="humidity" value="81.6" measured="2011-12-16 14:57:10"/>
+    <STATE key="state" value="T: 4.6  H: 81.6" measured="2011-12-16 14:57:10"/>
+    <STATE key="temperature" value="4.6" measured="2011-12-16 14:57:10"/>
+</CUL_WS>
+<CUL_WS name="Kammer_TH" state="T: 22.7  H: 39.1" sets="" attrs="room comment IODev do_not_notify:0,1 showtime:0,1 model:S300TH,KS300 loglevel ignore:0,1 DarkPeriod">
+    <INT key="CODE" value="6"/>
+    <INT key="CUL_MSGCNT" value="3465"/>
+    <INT key="CUL_RAWMSG" value="K51271239FC"/>
+    <INT key="CUL_RSSI" value="-76"/>
+    <INT key="CUL_TIME" value="2011-12-16 14:56:17"/>
+    <INT key="DEF" value="6"/>
+    <INT key="LASTIODev" value="CUL"/>
+    <INT key="MSGCNT" value="3465"/>
+    <INT key="NAME" value="Kammer_TH"/>
+    <INT key="NR" value="46"/>
+    <INT key="STATE" value="T: 22.7  H: 39.1"/>
+    <INT key="TYPE" value="CUL_WS"/>
+    <INT key="corr1" value=""/>
+    <INT key="corr2" value=""/>
+    <INT key="corr3" value=""/>
+    <INT key="corr4" value=""/>
+    <INT key="IODev" value="CUL"/>
+    <ATTR key="room" value="Kammer"/>
+    <STATE key="DEVFAMILY" value="WS300" measured="2011-12-16 14:56:17"/>
+    <STATE key="DEVTYPE" value="S300TH" measured="2011-12-16 14:56:17"/>
+    <STATE key="humidity" value="39.1" measured="2011-12-16 14:56:17"/>
+    <STATE key="state" value="T: 22.7  H: 39.1" measured="2011-12-16 14:56:17"/>
+    <STATE key="temperature" value="22.7" measured="2011-12-16 14:56:17"/>
+</CUL_WS>
+<CUL_WS name="Keller_TH" state="T: 19.6  H: 39.9" sets="" attrs="room comment IODev do_not_notify:0,1 showtime:0,1 model:S300TH,KS300 loglevel ignore:0,1 DarkPeriod">
+    <INT key="CODE" value="8"/>
+    <INT key="CUL_MSGCNT" value="1460"/>
+    <INT key="CUL_RAWMSG" value="K71969139E8"/>
+    <INT key="CUL_RSSI" value="-86"/>
+    <INT key="CUL_TIME" value="2011-12-16 14:47:39"/>
+    <INT key="DEF" value="8"/>
+    <INT key="LASTIODev" value="CUL"/>
+    <INT key="MSGCNT" value="1460"/>
+    <INT key="NAME" value="Keller_TH"/>
+    <INT key="NR" value="85"/>
+    <INT key="STATE" value="T: 19.6  H: 39.9"/>
+    <INT key="TYPE" value="CUL_WS"/>
+    <INT key="corr1" value=""/>
+    <INT key="corr2" value=""/>
+    <INT key="corr3" value=""/>
+    <INT key="corr4" value=""/>
+    <INT key="IODev" value="CUL"/>
+    <ATTR key="room" value="Keller"/>
+    <STATE key="DEVFAMILY" value="WS300" measured="2011-12-16 14:47:39"/>
+    <STATE key="DEVTYPE" value="PS50" measured="2011-12-16 14:47:39"/>
+    <STATE key="humidity" value="39.9" measured="2011-12-16 14:47:39"/>
+    <STATE key="state" value="T: 19.6  H: 39.9" measured="2011-12-16 14:47:39"/>
+    <STATE key="temperature" value="19.6" measured="2011-12-16 14:47:39"/>
+</CUL_WS>
+<CUL_WS name="Parkplatz_TH" state="T: 2.8  H: 88.5" sets="" attrs="room comment IODev do_not_notify:0,1 showtime:0,1 model:S300TH,KS300 loglevel ignore:0,1 DarkPeriod">
+    <INT key="CODE" value="4"/>
+    <INT key="CUL_MSGCNT" value="1948"/>
+    <INT key="CUL_RAWMSG" value="K31285088E1"/>
+    <INT key="CUL_RSSI" value="-89.5"/>
+    <INT key="CUL_TIME" value="2011-12-16 08:47:12"/>
+    <INT key="DEF" value="4"/>
+    <INT key="LASTIODev" value="CUL"/>
+    <INT key="MSGCNT" value="1948"/>
+    <INT key="NAME" value="Parkplatz_TH"/>
+    <INT key="NR" value="40"/>
+    <INT key="STATE" value="T: 2.8  H: 88.5"/>
+    <INT key="TYPE" value="CUL_WS"/>
+    <INT key="corr1" value=""/>
+    <INT key="corr2" value=""/>
+    <INT key="corr3" value=""/>
+    <INT key="corr4" value=""/>
+    <INT key="IODev" value="CUL"/>
+    <ATTR key="room" value="Garten"/>
+    <STATE key="DEVFAMILY" value="WS300" measured="2011-12-16 08:47:12"/>
+    <STATE key="DEVTYPE" value="S300TH" measured="2011-12-16 08:47:12"/>
+    <STATE key="humidity" value="88.5" measured="2011-12-16 08:47:12"/>
+    <STATE key="state" value="T: 2.8  H: 88.5" measured="2011-12-16 08:47:12"/>
+    <STATE key="temperature" value="2.8" measured="2011-12-16 08:47:12"/>
+</CUL_WS>
+<CUL_WS name="Terrarium_TH" state="T: 28.4  H: 53.7" sets="" attrs="room comment IODev do_not_notify:0,1 showtime:0,1 model:S300TH,KS300 loglevel ignore:0,1 DarkPeriod">
+    <INT key="CODE" value="5"/>
+    <INT key="CUL_MSGCNT" value="4169"/>
+    <INT key="CUL_RAWMSG" value="K418472532A"/>
+    <INT key="CUL_RSSI" value="-53"/>
+    <INT key="CUL_TIME" value="2011-12-16 14:53:42"/>
+    <INT key="DEF" value="5"/>
+    <INT key="LASTIODev" value="CUL"/>
+    <INT key="MSGCNT" value="4169"/>
+    <INT key="NAME" value="Terrarium_TH"/>
+    <INT key="NR" value="62"/>
+    <INT key="STATE" value="T: 28.4  H: 53.7"/>
+    <INT key="TYPE" value="CUL_WS"/>
+    <INT key="corr1" value=""/>
+    <INT key="corr2" value=""/>
+    <INT key="corr3" value=""/>
+    <INT key="corr4" value=""/>
+    <INT key="IODev" value="CUL"/>
+    <ATTR key="room" value="Terrarium"/>
+    <STATE key="DEVFAMILY" value="WS300" measured="2011-12-16 14:53:42"/>
+    <STATE key="DEVTYPE" value="S300TH" measured="2011-12-16 14:53:42"/>
+    <STATE key="humidity" value="53.7" measured="2011-12-16 14:53:42"/>
+    <STATE key="state" value="T: 28.4  H: 53.7" measured="2011-12-16 14:53:42"/>
+    <STATE key="temperature" value="28.4" measured="2011-12-16 14:53:42"/>
+</CUL_WS>
+</CUL_WS_LIST>
+<WSx_LIST>
+<WSx name="WS3600_DP" state="0.0" sets="" attrs="room comment IODev do_not_notify:0,1 showtime:0,1 model:S300TH,KS300,WS3600 loglevel ignore:0,1 DarkPeriod">
+    <INT key="CODE" value="WS_WS3600_DP"/>
+    <INT key="DEF" value="WS_WS3600_DP"/>
+    <INT key="LASTIODev" value="WS3600"/>
+    <INT key="MSGCNT" value="14191"/>
+    <INT key="NAME" value="WS3600_DP"/>
+    <INT key="NR" value="114"/>
+    <INT key="SENSTYPE" value="WSx"/>
+    <INT key="STATE" value="0.0"/>
+    <INT key="TYPE" value="WSx"/>
+    <INT key="WS3600_MSGCNT" value="14191"/>
+    <INT key="WS3600_TIME" value="2011-12-16 14:57:53"/>
+    <INT key="IODev" value="WS3600"/>
+    <ATTR key="room" value="Garten"/>
+    <STATE key="DEVFAMILY" value="WS3600" measured="2011-12-16 14:57:53"/>
+    <STATE key="DEVTYPE" value="temp" measured="2011-12-16 14:57:53"/>
+    <STATE key="temperature" value="0.0" measured="2011-12-16 14:57:53"/>
+</WSx>
+<WSx name="WS3600_Forecast" state="Rainy" sets="" attrs="room comment IODev do_not_notify:0,1 showtime:0,1 model:S300TH,KS300,WS3600 loglevel ignore:0,1 DarkPeriod">
+    <INT key="CODE" value="WS_WS3600_Forecast"/>
+    <INT key="DEF" value="WS_WS3600_Forecast"/>
+    <INT key="LASTIODev" value="WS3600"/>
+    <INT key="MSGCNT" value="14191"/>
+    <INT key="NAME" value="WS3600_Forecast"/>
+    <INT key="NR" value="128"/>
+    <INT key="SENSTYPE" value="WSx"/>
+    <INT key="STATE" value="Rainy"/>
+    <INT key="TYPE" value="WSx"/>
+    <INT key="WS3600_MSGCNT" value="14191"/>
+    <INT key="WS3600_TIME" value="2011-12-16 14:57:53"/>
+    <INT key="IODev" value="WS3600"/>
+    <ATTR key="room" value="Wohnen"/>
+    <STATE key="DEVFAMILY" value="WS3600" measured="2011-12-16 14:57:53"/>
+    <STATE key="DEVTYPE" value="forecast" measured="2011-12-16 14:57:53"/>
+    <STATE key="forecast" value="Rainy" measured="2011-12-16 14:57:53"/>
+</WSx>
+<WSx name="WS3600_RHi" state="42" sets="" attrs="room comment IODev do_not_notify:0,1 showtime:0,1 model:S300TH,KS300,WS3600 loglevel ignore:0,1 DarkPeriod">
+    <INT key="CODE" value="WS_WS3600_RHi"/>
+    <INT key="DEF" value="WS_WS3600_RHi"/>
+    <INT key="LASTIODev" value="WS3600"/>
+    <INT key="MSGCNT" value="14191"/>
+    <INT key="NAME" value="WS3600_RHi"/>
+    <INT key="NR" value="116"/>
+    <INT key="SENSTYPE" value="WSx"/>
+    <INT key="STATE" value="42"/>
+    <INT key="TYPE" value="WSx"/>
+    <INT key="WS3600_MSGCNT" value="14191"/>
+    <INT key="WS3600_TIME" value="2011-12-16 14:57:53"/>
+    <INT key="IODev" value="WS3600"/>
+    <ATTR key="room" value="Wohnen"/>
+    <STATE key="DEVFAMILY" value="WS3600" measured="2011-12-16 14:57:53"/>
+    <STATE key="DEVTYPE" value="humidity" measured="2011-12-16 14:57:53"/>
+    <STATE key="humidity" value="42" measured="2011-12-16 14:57:53"/>
+</WSx>
+<WSx name="WS3600_RHo" state="91" sets="" attrs="room comment IODev do_not_notify:0,1 showtime:0,1 model:S300TH,KS300,WS3600 loglevel ignore:0,1 DarkPeriod">
+    <INT key="CODE" value="WS_WS3600_RHo"/>
+    <INT key="DEF" value="WS_WS3600_RHo"/>
+    <INT key="LASTIODev" value="WS3600"/>
+    <INT key="MSGCNT" value="14191"/>
+    <INT key="NAME" value="WS3600_RHo"/>
+    <INT key="NR" value="118"/>
+    <INT key="SENSTYPE" value="WSx"/>
+    <INT key="STATE" value="91"/>
+    <INT key="TYPE" value="WSx"/>
+    <INT key="WS3600_MSGCNT" value="14191"/>
+    <INT key="WS3600_TIME" value="2011-12-16 14:57:53"/>
+    <INT key="IODev" value="WS3600"/>
+    <ATTR key="loglevel" value="5"/>
+    <ATTR key="room" value="Garten"/>
+    <STATE key="DEVFAMILY" value="WS3600" measured="2011-12-16 14:57:53"/>
+    <STATE key="DEVTYPE" value="humidity" measured="2011-12-16 14:57:53"/>
+    <STATE key="humidity" value="91" measured="2011-12-16 14:57:53"/>
+</WSx>
+<WSx name="WS3600_RP" state="956.100" sets="" attrs="room comment IODev do_not_notify:0,1 showtime:0,1 model:S300TH,KS300,WS3600 loglevel ignore:0,1 DarkPeriod">
+    <INT key="CODE" value="WS_WS3600_RP"/>
+    <INT key="DEF" value="WS_WS3600_RP"/>
+    <INT key="LASTIODev" value="WS3600"/>
+    <INT key="MSGCNT" value="14191"/>
+    <INT key="NAME" value="WS3600_RP"/>
+    <INT key="NR" value="124"/>
+    <INT key="SENSTYPE" value="WSx"/>
+    <INT key="STATE" value="956.100"/>
+    <INT key="TYPE" value="WSx"/>
+    <INT key="WS3600_MSGCNT" value="14191"/>
+    <INT key="WS3600_TIME" value="2011-12-16 14:57:53"/>
+    <INT key="IODev" value="WS3600"/>
+    <ATTR key="room" value="Wohnen"/>
+    <STATE key="DEVFAMILY" value="WS3600" measured="2011-12-16 14:57:53"/>
+    <STATE key="DEVTYPE" value="pressure" measured="2011-12-16 14:57:53"/>
+    <STATE key="pressure" value="956.100" measured="2011-12-16 14:57:53"/>
+</WSx>
+<WSx name="WS3600_Rain" state="R1h 0.51 R24h 19.16 R1w 15.54 R1m 0.00" sets="" attrs="room comment IODev do_not_notify:0,1 showtime:0,1 model:S300TH,KS300,WS3600 loglevel ignore:0,1 DarkPeriod">
+    <INT key="CODE" value="WS_WS3600_Rain"/>
+    <INT key="DEF" value="WS_WS3600_Rain"/>
+    <INT key="LASTIODev" value="WS3600"/>
+    <INT key="MSGCNT" value="14191"/>
+    <INT key="NAME" value="WS3600_Rain"/>
+    <INT key="NR" value="130"/>
+    <INT key="SENSTYPE" value="WSx"/>
+    <INT key="STATE" value="R1h 0.51 R24h 19.16 R1w 15.54 R1m 0.00"/>
+    <INT key="TYPE" value="WSx"/>
+    <INT key="WS3600_MSGCNT" value="14191"/>
+    <INT key="WS3600_TIME" value="2011-12-16 14:57:53"/>
+    <INT key="IODev" value="WS3600"/>
+    <ATTR key="room" value="Garten"/>
+    <STATE key="DEVFAMILY" value="WS3600" measured="2011-12-16 14:57:53"/>
+    <STATE key="DEVTYPE" value="rain" measured="2011-12-16 14:57:53"/>
+    <STATE key="rain" value="R1h 0.51 R24h 19.16 R1w 15.54 R1m 0.00" measured="2011-12-16 14:57:53"/>
+</WSx>
+<WSx name="WS3600_Tendency" state="Falling" sets="" attrs="room comment IODev do_not_notify:0,1 showtime:0,1 model:S300TH,KS300,WS3600 loglevel ignore:0,1 DarkPeriod">
+    <INT key="CODE" value="WS_WS3600_Tendency"/>
+    <INT key="DEF" value="WS_WS3600_Tendency"/>
+    <INT key="LASTIODev" value="WS3600"/>
+    <INT key="MSGCNT" value="14191"/>
+    <INT key="NAME" value="WS3600_Tendency"/>
+    <INT key="NR" value="126"/>
+    <INT key="SENSTYPE" value="WSx"/>
+    <INT key="STATE" value="Falling"/>
+    <INT key="TYPE" value="WSx"/>
+    <INT key="WS3600_MSGCNT" value="14191"/>
+    <INT key="WS3600_TIME" value="2011-12-16 14:57:53"/>
+    <INT key="IODev" value="WS3600"/>
+    <ATTR key="room" value="Wohnen"/>
+    <STATE key="DEVFAMILY" value="WS3600" measured="2011-12-16 14:57:53"/>
+    <STATE key="DEVTYPE" value="tendency" measured="2011-12-16 14:57:53"/>
+    <STATE key="tendency" value="Falling" measured="2011-12-16 14:57:53"/>
+</WSx>
+<WSx name="WS3600_Ti" state="21.6" sets="" attrs="room comment IODev do_not_notify:0,1 showtime:0,1 model:S300TH,KS300,WS3600 loglevel ignore:0,1 DarkPeriod">
+    <INT key="CODE" value="WS_WS3600_Ti"/>
+    <INT key="DEF" value="WS_WS3600_Ti"/>
+    <INT key="LASTIODev" value="WS3600"/>
+    <INT key="MSGCNT" value="14191"/>
+    <INT key="NAME" value="WS3600_Ti"/>
+    <INT key="NR" value="108"/>
+    <INT key="SENSTYPE" value="WSx"/>
+    <INT key="STATE" value="21.6"/>
+    <INT key="TYPE" value="WSx"/>
+    <INT key="WS3600_MSGCNT" value="14191"/>
+    <INT key="WS3600_TIME" value="2011-12-16 14:57:52"/>
+    <INT key="IODev" value="WS3600"/>
+    <ATTR key="loglevel" value="5"/>
+    <ATTR key="room" value="Wohnen"/>
+    <STATE key="DEVFAMILY" value="WS3600" measured="2011-12-16 14:57:52"/>
+    <STATE key="DEVTYPE" value="temp" measured="2011-12-16 14:57:52"/>
+    <STATE key="temperature" value="21.6" measured="2011-12-16 14:57:52"/>
+</WSx>
+<WSx name="WS3600_To" state="1.4" sets="" attrs="room comment IODev do_not_notify:0,1 showtime:0,1 model:S300TH,KS300,WS3600 loglevel ignore:0,1 DarkPeriod">
+    <INT key="CODE" value="WS_WS3600_To"/>
+    <INT key="DEF" value="WS_WS3600_To"/>
+    <INT key="LASTIODev" value="WS3600"/>
+    <INT key="MSGCNT" value="14191"/>
+    <INT key="NAME" value="WS3600_To"/>
+    <INT key="NR" value="111"/>
+    <INT key="SENSTYPE" value="WSx"/>
+    <INT key="STATE" value="1.4"/>
+    <INT key="TYPE" value="WSx"/>
+    <INT key="WS3600_MSGCNT" value="14191"/>
+    <INT key="WS3600_TIME" value="2011-12-16 14:57:53"/>
+    <INT key="IODev" value="WS3600"/>
+    <ATTR key="loglevel" value="5"/>
+    <ATTR key="room" value="Garten"/>
+    <STATE key="DEVFAMILY" value="WS3600" measured="2011-12-16 14:57:53"/>
+    <STATE key="DEVTYPE" value="temp" measured="2011-12-16 14:57:53"/>
+    <STATE key="temperature" value="1.4" measured="2011-12-16 14:57:53"/>
+</WSx>
+<WSx name="WS3600_Wind" state="0.0 WSW" sets="" attrs="room comment IODev do_not_notify:0,1 showtime:0,1 model:S300TH,KS300,WS3600 loglevel ignore:0,1 DarkPeriod">
+    <INT key="CODE" value="WS_WS3600_Wind"/>
+    <INT key="DEF" value="WS_WS3600_Wind"/>
+    <INT key="LASTIODev" value="WS3600"/>
+    <INT key="MSGCNT" value="14191"/>
+    <INT key="NAME" value="WS3600_Wind"/>
+    <INT key="NR" value="120"/>
+    <INT key="SENSTYPE" value="WSx"/>
+    <INT key="STATE" value="0.0 WSW"/>
+    <INT key="TYPE" value="WSx"/>
+    <INT key="WS3600_MSGCNT" value="14191"/>
+    <INT key="WS3600_TIME" value="2011-12-16 14:57:53"/>
+    <INT key="IODev" value="WS3600"/>
+    <ATTR key="room" value="Garten"/>
+    <STATE key="DEVFAMILY" value="WS3600" measured="2011-12-16 14:57:53"/>
+    <STATE key="DEVTYPE" value="wind" measured="2011-12-16 14:57:53"/>
+    <STATE key="wind" value="0.0 WSW" measured="2011-12-16 14:57:53"/>
+</WSx>
+<WSx name="WS3600_WindChill" state="1.4" sets="" attrs="room comment IODev do_not_notify:0,1 showtime:0,1 model:S300TH,KS300,WS3600 loglevel ignore:0,1 DarkPeriod">
+    <INT key="CODE" value="WS_WS3600_WC"/>
+    <INT key="DEF" value="WS_WS3600_WC"/>
+    <INT key="LASTIODev" value="WS3600"/>
+    <INT key="MSGCNT" value="14191"/>
+    <INT key="NAME" value="WS3600_WindChill"/>
+    <INT key="NR" value="122"/>
+    <INT key="SENSTYPE" value="WSx"/>
+    <INT key="STATE" value="1.4"/>
+    <INT key="TYPE" value="WSx"/>
+    <INT key="WS3600_MSGCNT" value="14191"/>
+    <INT key="WS3600_TIME" value="2011-12-16 14:57:53"/>
+    <INT key="IODev" value="WS3600"/>
+    <ATTR key="room" value="Garten"/>
+    <STATE key="DEVFAMILY" value="WS3600" measured="2011-12-16 14:57:53"/>
+    <STATE key="DEVTYPE" value="temp" measured="2011-12-16 14:57:53"/>
+    <STATE key="temperature" value="1.4" measured="2011-12-16 14:57:53"/>
+</WSx>
+</WSx_LIST>
+<CUL_EM_LIST>
+<CUL_EM name="Arbeit_EM" state="CNT: 92 CUM: 2559.439  5MIN: 0.180  TOP: 0.220" sets="" attrs="room comment IODev do_not_notify:0,1 showtime:0,1 model:EMEM,EMWZ,EMGZ loglevel ignore:0,1 DarkPeriod">
+    <INT key="BasicFeePerMonth" value=""/>
+    <INT key="CODE" value="5"/>
+    <INT key="CUL_MSGCNT" value="9"/>
+    <INT key="CUL_RAWMSG" value="E02055CCF0D12001600D9"/>
+    <INT key="CUL_RSSI" value="-93.5"/>
+    <INT key="CUL_TIME" value="2011-12-09 06:28:42"/>
+    <INT key="CostPerUnit" value=""/>
+    <INT key="DEF" value="5"/>
+    <INT key="LASTIODev" value="CUL"/>
+    <INT key="MSGCNT" value="9"/>
+    <INT key="NAME" value="Arbeit_EM"/>
+    <INT key="NR" value="22"/>
+    <INT key="STATE" value="CNT: 92 CUM: 2559.439  5MIN: 0.180  TOP: 0.220"/>
+    <INT key="TYPE" value="CUL_EM"/>
+    <INT key="corr1" value="0.01"/>
+    <INT key="corr2" value="0.001"/>
+    <INT key="IODev" value="CUL"/>
+    <ATTR key="model" value="EMEM"/>
+    <ATTR key="room" value="Arbeit"/>
+    <STATE key="RAW" value="CNT: 92 CUM: 3535  5MIN: 18  TOP: 22" measured="2011-12-09 06:28:42"/>
+    <STATE key="basis" value="2555904" measured="2011-12-08 22:28:43"/>
+    <STATE key="cum_day" value="CUM_DAY: 1.388 CUM: 2559.395 COST: 0.00" measured="2011-12-09 06:13:41"/>
+    <STATE key="cum_month" value="CUM_MONTH: 72.531 CUM: 2525.724 COST: 0.00" measured="2011-12-01 00:04:22"/>
+    <STATE key="current" value="0.18" measured="2011-12-09 06:28:42"/>
+    <STATE key="current_cnt" value="18" measured="2011-12-09 06:28:42"/>
+    <STATE key="peak" value="0.22" measured="2011-12-09 06:28:42"/>
+    <STATE key="peak_cnt" value="22" measured="2011-12-09 06:28:42"/>
+    <STATE key="seqno" value="92" measured="2011-12-09 06:28:42"/>
+    <STATE key="total" value="2559.439" measured="2011-12-09 06:28:42"/>
+    <STATE key="total_cnt" value="3535" measured="2011-12-09 06:28:42"/>
+    <STATE key="tsecs" value="1323408522" measured="2011-12-09 06:28:42"/>
+</CUL_EM>
+</CUL_EM_LIST>
+<Pw_Circle_LIST>
+<Pw_Circle name="Circle_1" state="dead" sets="on off" attrs="room comment dummy:1,0 model:Circle,Circle+ loglevel:0,1,2,3,4,5 TIMER:300 DarkPeriod">
+    <INT key="DEF" value="4be246"/>
+    <INT key="ID" value="4be246"/>
+    <INT key="LASTSEEN_T" value=""/>
+    <INT key="NAME" value="Circle_1"/>
+    <INT key="NR" value="5"/>
+    <INT key="STATE" value="dead"/>
+    <INT key="STATUS" value="dead"/>
+    <INT key="TYPE" value="Pw_Circle"/>
+    <ATTR key="TIMER" value="300"/>
+    <ATTR key="room" value="Wohnen"/>
+    <STATE key="state" value="dead" measured="2011-12-04 17:37:07"/>
+    <STATE key="usage" value="0.03600" measured="2011-01-11 12:35:07"/>
+</Pw_Circle>
+<Pw_Circle name="Circle_Sheeva" state="dead" sets="on off" attrs="room comment dummy:1,0 model:Circle,Circle+ loglevel:0,1,2,3,4,5 TIMER:300 DarkPeriod">
+    <INT key="DEF" value="59af7f"/>
+    <INT key="ID" value="59af7f"/>
+    <INT key="LASTSEEN_T" value=""/>
+    <INT key="NAME" value="Circle_Sheeva"/>
+    <INT key="NR" value="8"/>
+    <INT key="STATE" value="dead"/>
+    <INT key="STATUS" value="dead"/>
+    <INT key="TYPE" value="Pw_Circle"/>
+    <ATTR key="TIMER" value="300"/>
+    <ATTR key="room" value="Wohnen"/>
+    <STATE key="state" value="dead" measured="2011-12-04 17:37:08"/>
+    <STATE key="usage" value="0.01837" measured="2011-01-11 12:35:14"/>
+</Pw_Circle>
+</Pw_Circle_LIST>
+<CUL_EM_LIST>
+<CUL_EM name="Media_EM" state="CNT: 68 CUM: 1043.499  5MIN: 0.060  TOP: 0.060" sets="" attrs="room comment IODev do_not_notify:0,1 showtime:0,1 model:EMEM,EMWZ,EMGZ loglevel ignore:0,1 DarkPeriod">
+    <INT key="BasicFeePerMonth" value=""/>
+    <INT key="CODE" value="6"/>
+    <INT key="CUL_MSGCNT" value="3401"/>
+    <INT key="CUL_RAWMSG" value="E0206442BEC060006002B"/>
+    <INT key="CUL_RSSI" value="-52.5"/>
+    <INT key="CUL_TIME" value="2011-12-16 14:53:53"/>
+    <INT key="CostPerUnit" value=""/>
+    <INT key="DEF" value="6"/>
+    <INT key="LASTIODev" value="CUL"/>
+    <INT key="MSGCNT" value="3401"/>
+    <INT key="NAME" value="Media_EM"/>
+    <INT key="NR" value="59"/>
+    <INT key="STATE" value="CNT: 68 CUM: 1043.499  5MIN: 0.060  TOP: 0.060"/>
+    <INT key="TYPE" value="CUL_EM"/>
+    <INT key="corr1" value="0.01"/>
+    <INT key="corr2" value="0.001"/>
+    <INT key="IODev" value="CUL"/>
+    <ATTR key="room" value="Wohnen"/>
+    <STATE key="RAW" value="CNT: 68 CUM: 60459  5MIN: 6  TOP: 6" measured="2011-12-16 14:53:53"/>
+    <STATE key="basis" value="983040" measured="2011-11-24 03:50:21"/>
+    <STATE key="cum_day" value="CUM_DAY: 2.022 CUM: 1042.588 COST: 0.00" measured="2011-12-16 00:03:57"/>
+    <STATE key="cum_month" value="CUM_MONTH: 46.688 CUM: 1002.309 COST: 0.00" measured="2011-12-01 00:04:54"/>
+    <STATE key="current" value="0.06" measured="2011-12-16 14:53:53"/>
+    <STATE key="current_cnt" value="6" measured="2011-12-16 14:53:53"/>
+    <STATE key="peak" value="0.06" measured="2011-12-16 14:53:53"/>
+    <STATE key="peak_cnt" value="6" measured="2011-12-16 14:53:53"/>
+    <STATE key="seqno" value="68" measured="2011-12-16 14:53:53"/>
+    <STATE key="total" value="1043.499" measured="2011-12-16 14:53:53"/>
+    <STATE key="total_cnt" value="60459" measured="2011-12-16 14:53:53"/>
+    <STATE key="tsecs" value="1324043633" measured="2011-12-16 14:53:53"/>
+</CUL_EM>
+<CUL_EM name="TerSrv_EM" state="CNT: 71 CUM: 2488.153  5MIN: 0.250  TOP: 0.300" sets="" attrs="room comment IODev do_not_notify:0,1 showtime:0,1 model:EMEM,EMWZ,EMGZ loglevel ignore:0,1 DarkPeriod">
+    <INT key="BasicFeePerMonth" value=""/>
+    <INT key="CODE" value="8"/>
+    <INT key="CUL_MSGCNT" value="3405"/>
+    <INT key="CUL_RAWMSG" value="E02084759F719001E0044"/>
+    <INT key="CUL_RSSI" value="-40"/>
+    <INT key="CUL_TIME" value="2011-12-16 14:55:45"/>
+    <INT key="CostPerUnit" value=""/>
+    <INT key="DEF" value="8"/>
+    <INT key="LASTIODev" value="CUL"/>
+    <INT key="MSGCNT" value="3405"/>
+    <INT key="NAME" value="TerSrv_EM"/>
+    <INT key="NR" value="54"/>
+    <INT key="STATE" value="CNT: 71 CUM: 2488.153  5MIN: 0.250  TOP: 0.300"/>
+    <INT key="TYPE" value="CUL_EM"/>
+    <INT key="corr1" value="0.01"/>
+    <INT key="corr2" value="0.001"/>
+    <INT key="IODev" value="CUL"/>
+    <ATTR key="room" value="Wohnen"/>
+    <STATE key="RAW" value="CNT: 71 CUM: 63321  5MIN: 25  TOP: 30" measured="2011-12-16 14:55:45"/>
+    <STATE key="basis" value="2424832" measured="2011-12-04 17:41:44"/>
+    <STATE key="cum_day" value="CUM_DAY: 4.575 CUM: 2485.276 COST: 0.00" measured="2011-12-16 00:00:48"/>
+    <STATE key="cum_month" value="CUM_MONTH: 82.790 CUM: 2419.561 COST: 0.00" measured="2011-12-01 00:02:00"/>
+    <STATE key="current" value="0.25" measured="2011-12-16 14:55:45"/>
+    <STATE key="current_cnt" value="25" measured="2011-12-16 14:55:45"/>
+    <STATE key="peak" value="0.3" measured="2011-12-16 14:55:45"/>
+    <STATE key="peak_cnt" value="30" measured="2011-12-16 14:55:45"/>
+    <STATE key="seqno" value="71" measured="2011-12-16 14:55:45"/>
+    <STATE key="total" value="2488.153" measured="2011-12-16 14:55:45"/>
+    <STATE key="total_cnt" value="63321" measured="2011-12-16 14:55:45"/>
+    <STATE key="tsecs" value="1324043745" measured="2011-12-16 14:55:45"/>
+</CUL_EM>
+</CUL_EM_LIST>
+<SIS_PMS_LIST>
+<SIS_PMS name="CanonLaser" state="on" sets="off on on-till off-till toggle" attrs="room comment IODev model:sis_pms,fs20st loglevel:0,1,2,3,4,5,6 DarkPeriod">
+    <INT key="DEF" value="01:0b:52:00:94 2"/>
+    <INT key="LASTIODev" value="Wohnz_PMS"/>
+    <INT key="MSGCNT" value="29560"/>
+    <INT key="NAME" value="CanonLaser"/>
+    <INT key="NR" value="90"/>
+    <INT key="SERIAL" value="01:0b:52:00:94"/>
+    <INT key="SOCKET" value="2"/>
+    <INT key="STATE" value="on"/>
+    <INT key="TYPE" value="SIS_PMS"/>
+    <INT key="Wohnz_PMS_MSGCNT" value="29560"/>
+    <INT key="Wohnz_PMS_TIME" value="2011-12-16 14:57:41"/>
+    <INT key="IODev" value="Wohnz_PMS"/>
+    <ATTR key="loglevel" value="5"/>
+    <ATTR key="room" value="Wohnen"/>
+    <STATE key="PREVSTATE" value="off" measured="2011-01-26 07:30:00"/>
+    <STATE key="state" value="on" measured="2011-12-16 14:57:41"/>
+</SIS_PMS>
+<SIS_PMS name="HLQ_links" state="on" sets="off on on-till off-till toggle" attrs="room comment IODev model:sis_pms,fs20st loglevel:0,1,2,3,4,5,6 DarkPeriod">
+    <INT key="DEF" value="01:0b:52:00:94 4"/>
+    <INT key="LASTIODev" value="Wohnz_PMS"/>
+    <INT key="MSGCNT" value="29560"/>
+    <INT key="NAME" value="HLQ_links"/>
+    <INT key="NR" value="94"/>
+    <INT key="SERIAL" value="01:0b:52:00:94"/>
+    <INT key="SOCKET" value="4"/>
+    <INT key="STATE" value="on"/>
+    <INT key="TYPE" value="SIS_PMS"/>
+    <INT key="Wohnz_PMS_MSGCNT" value="29560"/>
+    <INT key="Wohnz_PMS_TIME" value="2011-12-16 14:57:41"/>
+    <INT key="IODev" value="Wohnz_PMS"/>
+    <ATTR key="room" value="Terrarium"/>
+    <STATE key="PREVSTATE" value="off" measured="2011-12-16 07:30:00"/>
+    <STATE key="state" value="on" measured="2011-12-16 14:57:41"/>
+</SIS_PMS>
+<SIS_PMS name="HLQ_rechts" state="on" sets="off on on-till off-till toggle" attrs="room comment IODev model:sis_pms,fs20st loglevel:0,1,2,3,4,5,6 DarkPeriod">
+    <INT key="DEF" value="01:0b:52:00:94 3"/>
+    <INT key="LASTIODev" value="Wohnz_PMS"/>
+    <INT key="MSGCNT" value="29560"/>
+    <INT key="NAME" value="HLQ_rechts"/>
+    <INT key="NR" value="92"/>
+    <INT key="SERIAL" value="01:0b:52:00:94"/>
+    <INT key="SOCKET" value="3"/>
+    <INT key="STATE" value="on"/>
+    <INT key="TYPE" value="SIS_PMS"/>
+    <INT key="Wohnz_PMS_MSGCNT" value="29560"/>
+    <INT key="Wohnz_PMS_TIME" value="2011-12-16 14:57:41"/>
+    <INT key="IODev" value="Wohnz_PMS"/>
+    <ATTR key="room" value="Terrarium"/>
+    <STATE key="PREVSTATE" value="off" measured="2011-12-16 08:30:00"/>
+    <STATE key="state" value="on" measured="2011-12-16 14:57:41"/>
+</SIS_PMS>
+<SIS_PMS name="SIS_PMS_01_01_38_fc_98.1" state="on" sets="off on on-till off-till toggle" attrs="room comment IODev model:sis_pms,fs20st loglevel:0,1,2,3,4,5,6 DarkPeriod">
+    <INT key="DEF" value="01:01:38:fc:98 1"/>
+    <INT key="NAME" value="SIS_PMS_01_01_38_fc_98.1"/>
+    <INT key="NR" value="77"/>
+    <INT key="SERIAL" value="01:01:38:fc:98"/>
+    <INT key="SOCKET" value="1"/>
+    <INT key="STATE" value="on"/>
+    <INT key="TYPE" value="SIS_PMS"/>
+    <INT key="IODev" value="Wohnz_PMS"/>
+    <ATTR key="room" value="SIS_PMS"/>
+    <STATE key="PREVSTATE" value="???" measured="2010-03-30 16:05:40"/>
+    <STATE key="state" value="on" measured="2010-07-18 11:53:15"/>
+</SIS_PMS>
+<SIS_PMS name="SIS_PMS_01_01_38_fc_98.2" state="on" sets="off on on-till off-till toggle" attrs="room comment IODev model:sis_pms,fs20st loglevel:0,1,2,3,4,5,6 DarkPeriod">
+    <INT key="DEF" value="01:01:38:fc:98 2"/>
+    <INT key="NAME" value="SIS_PMS_01_01_38_fc_98.2"/>
+    <INT key="NR" value="79"/>
+    <INT key="SERIAL" value="01:01:38:fc:98"/>
+    <INT key="SOCKET" value="2"/>
+    <INT key="STATE" value="on"/>
+    <INT key="TYPE" value="SIS_PMS"/>
+    <INT key="IODev" value="Wohnz_PMS"/>
+    <ATTR key="room" value="SIS_PMS"/>
+    <STATE key="PREVSTATE" value="???" measured="2010-03-30 16:05:40"/>
+    <STATE key="state" value="on" measured="2010-07-18 11:53:15"/>
+</SIS_PMS>
+<SIS_PMS name="SIS_PMS_01_01_38_fc_98.3" state="off" sets="off on on-till off-till toggle" attrs="room comment IODev model:sis_pms,fs20st loglevel:0,1,2,3,4,5,6 DarkPeriod">
+    <INT key="DEF" value="01:01:38:fc:98 3"/>
+    <INT key="NAME" value="SIS_PMS_01_01_38_fc_98.3"/>
+    <INT key="NR" value="81"/>
+    <INT key="SERIAL" value="01:01:38:fc:98"/>
+    <INT key="SOCKET" value="3"/>
+    <INT key="STATE" value="off"/>
+    <INT key="TYPE" value="SIS_PMS"/>
+    <INT key="IODev" value="Wohnz_PMS"/>
+    <ATTR key="room" value="SIS_PMS"/>
+    <STATE key="PREVSTATE" value="on" measured="2010-07-17 23:18:20"/>
+    <STATE key="state" value="off" measured="2010-07-18 11:53:15"/>
+</SIS_PMS>
+<SIS_PMS name="SIS_PMS_01_01_38_fc_98.4" state="off" sets="off on on-till off-till toggle" attrs="room comment IODev model:sis_pms,fs20st loglevel:0,1,2,3,4,5,6 DarkPeriod">
+    <INT key="DEF" value="01:01:38:fc:98 4"/>
+    <INT key="NAME" value="SIS_PMS_01_01_38_fc_98.4"/>
+    <INT key="NR" value="83"/>
+    <INT key="SERIAL" value="01:01:38:fc:98"/>
+    <INT key="SOCKET" value="4"/>
+    <INT key="STATE" value="off"/>
+    <INT key="TYPE" value="SIS_PMS"/>
+    <INT key="IODev" value="Wohnz_PMS"/>
+    <ATTR key="room" value="SIS_PMS"/>
+    <STATE key="PREVSTATE" value="on" measured="2010-07-17 23:25:41"/>
+    <STATE key="state" value="off" measured="2010-07-18 11:53:15"/>
+</SIS_PMS>
+<SIS_PMS name="SIS_PMS_7a_b7_70_e9_db.1" state="???" sets="off on on-till off-till toggle" attrs="room comment IODev model:sis_pms,fs20st loglevel:0,1,2,3,4,5,6 DarkPeriod">
+    <INT key="DEF" value="7a:b7:70:e9:db 1"/>
+    <INT key="NAME" value="SIS_PMS_7a_b7_70_e9_db.1"/>
+    <INT key="NR" value="137"/>
+    <INT key="SERIAL" value="7a:b7:70:e9:db"/>
+    <INT key="SOCKET" value="1"/>
+    <INT key="STATE" value="???"/>
+    <INT key="TYPE" value="SIS_PMS"/>
+    <INT key="IODev" value="Wohnz_PMS"/>
+    <ATTR key="room" value="SIS_PMS"/>
+</SIS_PMS>
+<SIS_PMS name="SIS_PMS_7a_b7_70_e9_db.2" state="???" sets="off on on-till off-till toggle" attrs="room comment IODev model:sis_pms,fs20st loglevel:0,1,2,3,4,5,6 DarkPeriod">
+    <INT key="DEF" value="7a:b7:70:e9:db 2"/>
+    <INT key="NAME" value="SIS_PMS_7a_b7_70_e9_db.2"/>
+    <INT key="NR" value="139"/>
+    <INT key="SERIAL" value="7a:b7:70:e9:db"/>
+    <INT key="SOCKET" value="2"/>
+    <INT key="STATE" value="???"/>
+    <INT key="TYPE" value="SIS_PMS"/>
+    <INT key="IODev" value="Wohnz_PMS"/>
+    <ATTR key="room" value="SIS_PMS"/>
+</SIS_PMS>
+<SIS_PMS name="SIS_PMS_7a_b7_70_e9_db.3" state="???" sets="off on on-till off-till toggle" attrs="room comment IODev model:sis_pms,fs20st loglevel:0,1,2,3,4,5,6 DarkPeriod">
+    <INT key="DEF" value="7a:b7:70:e9:db 3"/>
+    <INT key="NAME" value="SIS_PMS_7a_b7_70_e9_db.3"/>
+    <INT key="NR" value="141"/>
+    <INT key="SERIAL" value="7a:b7:70:e9:db"/>
+    <INT key="SOCKET" value="3"/>
+    <INT key="STATE" value="???"/>
+    <INT key="TYPE" value="SIS_PMS"/>
+    <INT key="IODev" value="Wohnz_PMS"/>
+    <ATTR key="room" value="SIS_PMS"/>
+</SIS_PMS>
+<SIS_PMS name="SIS_PMS_7a_b7_70_e9_db.4" state="???" sets="off on on-till off-till toggle" attrs="room comment IODev model:sis_pms,fs20st loglevel:0,1,2,3,4,5,6 DarkPeriod">
+    <INT key="DEF" value="7a:b7:70:e9:db 4"/>
+    <INT key="NAME" value="SIS_PMS_7a_b7_70_e9_db.4"/>
+    <INT key="NR" value="143"/>
+    <INT key="SERIAL" value="7a:b7:70:e9:db"/>
+    <INT key="SOCKET" value="4"/>
+    <INT key="STATE" value="???"/>
+    <INT key="TYPE" value="SIS_PMS"/>
+    <INT key="IODev" value="Wohnz_PMS"/>
+    <ATTR key="room" value="SIS_PMS"/>
+</SIS_PMS>
+<SIS_PMS name="SIS_PMS_80_b7_b0_85_b8.1" state="???" sets="off on on-till off-till toggle" attrs="room comment IODev model:sis_pms,fs20st loglevel:0,1,2,3,4,5,6 DarkPeriod">
+    <INT key="DEF" value="80:b7:b0:85:b8 1"/>
+    <INT key="NAME" value="SIS_PMS_80_b7_b0_85_b8.1"/>
+    <INT key="NR" value="145"/>
+    <INT key="SERIAL" value="80:b7:b0:85:b8"/>
+    <INT key="SOCKET" value="1"/>
+    <INT key="STATE" value="???"/>
+    <INT key="TYPE" value="SIS_PMS"/>
+    <INT key="IODev" value="Wohnz_PMS"/>
+    <ATTR key="room" value="SIS_PMS"/>
+</SIS_PMS>
+<SIS_PMS name="SIS_PMS_80_b7_b0_85_b8.2" state="???" sets="off on on-till off-till toggle" attrs="room comment IODev model:sis_pms,fs20st loglevel:0,1,2,3,4,5,6 DarkPeriod">
+    <INT key="DEF" value="80:b7:b0:85:b8 2"/>
+    <INT key="NAME" value="SIS_PMS_80_b7_b0_85_b8.2"/>
+    <INT key="NR" value="147"/>
+    <INT key="SERIAL" value="80:b7:b0:85:b8"/>
+    <INT key="SOCKET" value="2"/>
+    <INT key="STATE" value="???"/>
+    <INT key="TYPE" value="SIS_PMS"/>
+    <INT key="IODev" value="Wohnz_PMS"/>
+    <ATTR key="room" value="SIS_PMS"/>
+</SIS_PMS>
+<SIS_PMS name="SIS_PMS_80_b7_b0_85_b8.3" state="???" sets="off on on-till off-till toggle" attrs="room comment IODev model:sis_pms,fs20st loglevel:0,1,2,3,4,5,6 DarkPeriod">
+    <INT key="DEF" value="80:b7:b0:85:b8 3"/>
+    <INT key="NAME" value="SIS_PMS_80_b7_b0_85_b8.3"/>
+    <INT key="NR" value="149"/>
+    <INT key="SERIAL" value="80:b7:b0:85:b8"/>
+    <INT key="SOCKET" value="3"/>
+    <INT key="STATE" value="???"/>
+    <INT key="TYPE" value="SIS_PMS"/>
+    <INT key="IODev" value="Wohnz_PMS"/>
+    <ATTR key="room" value="SIS_PMS"/>
+</SIS_PMS>
+<SIS_PMS name="SIS_PMS_80_b7_b0_85_b8.4" state="???" sets="off on on-till off-till toggle" attrs="room comment IODev model:sis_pms,fs20st loglevel:0,1,2,3,4,5,6 DarkPeriod">
+    <INT key="DEF" value="80:b7:b0:85:b8 4"/>
+    <INT key="NAME" value="SIS_PMS_80_b7_b0_85_b8.4"/>
+    <INT key="NR" value="151"/>
+    <INT key="SERIAL" value="80:b7:b0:85:b8"/>
+    <INT key="SOCKET" value="4"/>
+    <INT key="STATE" value="???"/>
+    <INT key="TYPE" value="SIS_PMS"/>
+    <INT key="IODev" value="Wohnz_PMS"/>
+    <ATTR key="room" value="SIS_PMS"/>
+</SIS_PMS>
+<SIS_PMS name="cam_serv2" state="off" sets="off on on-till off-till toggle" attrs="room comment IODev model:sis_pms,fs20st loglevel:0,1,2,3,4,5,6 DarkPeriod">
+    <INT key="DEF" value="01:0b:52:00:94 1"/>
+    <INT key="LASTIODev" value="Wohnz_PMS"/>
+    <INT key="MSGCNT" value="29560"/>
+    <INT key="NAME" value="cam_serv2"/>
+    <INT key="NR" value="88"/>
+    <INT key="SERIAL" value="01:0b:52:00:94"/>
+    <INT key="SOCKET" value="1"/>
+    <INT key="STATE" value="off"/>
+    <INT key="TYPE" value="SIS_PMS"/>
+    <INT key="Wohnz_PMS_MSGCNT" value="29560"/>
+    <INT key="Wohnz_PMS_TIME" value="2011-12-16 14:57:41"/>
+    <INT key="IODev" value="Wohnz_PMS"/>
+    <ATTR key="room" value="Wohnen"/>
+    <STATE key="PREVSTATE" value="on" measured="2011-12-16 02:56:19"/>
+    <STATE key="state" value="off" measured="2011-12-16 14:57:41"/>
+</SIS_PMS>
+</SIS_PMS_LIST>
+<WS3600_LIST>
+<WS3600 name="WS3600" state=" Pabs: 959.800" sets="" attrs="room comment model:WS3600,WS2300 loglevel:0,1,2,3,4,5,6 nativemode:on,off DarkPeriod">
+    <INT key="DEF" value="/usr/local/bin/fetch3600.real"/>
+    <INT key="DeviceName" value="/usr/local/bin/fetch3600.real |"/>
+    <INT key="NAME" value="WS3600"/>
+    <INT key="NR" value="2"/>
+    <INT key="STATE" value=" Pabs: 959.800"/>
+    <INT key="TMPSTATE" value=""/>
+    <INT key="TYPE" value="WS3600"/>
+    <INT key="Timer" value="64"/>
+    <INT key="pipeopentime" value="1324043869"/>
+    <INT key="rainTEMP" value=""/>
+    <INT key="windTEMP" value=""/>
+    <ATTR key="nativemode" value="off"/>
+    <ATTR key="room" value="Wohnen"/>
+    <STATE key="Date" value="16-Dec-2011" measured="2011-12-16 14:57:52"/>
+    <STATE key="Dew-Point-max" value="23.1" measured="2011-12-16 14:57:52"/>
+    <STATE key="Dew-Point-min" value="-17.2" measured="2011-12-16 14:57:52"/>
+    <STATE key="Dew-Point-min-Date" value="26-08-2011" measured="2011-12-16 14:57:52"/>
+    <STATE key="Dew-Point-min-Time" value="13:26" measured="2011-12-16 14:57:52"/>
+    <STATE key="Rain-1M-max" value="178.71" measured="2011-12-16 14:57:52"/>
+    <STATE key="Rain-1M-max-Date" value="01-09-2010" measured="2011-12-16 14:57:52"/>
+    <STATE key="Rain-1M-max-Time" value="00:00" measured="2011-12-16 14:57:52"/>
+    <STATE key="Rain-1h-hmax" value="24.34" measured="2011-12-16 14:57:52"/>
+    <STATE key="Rain-1h-hmax-Date" value="07-10-2009" measured="2011-12-16 14:57:52"/>
+    <STATE key="Rain-1h-hmax-Time" value="22:34" measured="2011-12-16 14:57:52"/>
+    <STATE key="Rain-1w-max" value="95.83" measured="2011-12-16 14:57:52"/>
+    <STATE key="Rain-1w-max-Date" value="12-10-2009" measured="2011-12-16 14:57:52"/>
+    <STATE key="Rain-1w-max-Time" value="00:00" measured="2011-12-16 14:57:52"/>
+    <STATE key="Rain-24-hmax" value="55.42" measured="2011-12-16 14:57:52"/>
+    <STATE key="Rain-24h-max-Date" value="08-10-2009" measured="2011-12-16 14:57:52"/>
+    <STATE key="Rain-24h-max-Time" value="07:11" measured="2011-12-16 14:57:52"/>
+    <STATE key="Rain-total-Date" value="18-09-2005" measured="2011-12-16 14:57:52"/>
+    <STATE key="Rain-total-Time" value="03:29" measured="2011-12-16 14:57:52"/>
+    <STATE key="Temp-inside-max" value="30.3" measured="2011-12-16 14:57:52"/>
+    <STATE key="Temp-inside-max-Date" value="11-07-2010" measured="2011-12-16 14:57:52"/>
+    <STATE key="Temp-inside-max-Time" value="17:44" measured="2011-12-16 14:57:52"/>
+    <STATE key="Temp-inside-min" value="19.6" measured="2011-12-16 14:57:52"/>
+    <STATE key="Temp-inside-min-Date" value="19-12-2009" measured="2011-12-16 14:57:52"/>
+    <STATE key="Temp-inside-min-Time" value="12:42" measured="2011-12-16 14:57:52"/>
+    <STATE key="Temp-outside-max" value="35.6" measured="2011-12-16 14:57:52"/>
+    <STATE key="Temp-outside-max-Date" value="20-08-2009" measured="2011-12-16 14:57:52"/>
+    <STATE key="Temp-outside-max-Time" value="16:52" measured="2011-12-16 14:57:52"/>
+    <STATE key="Temp-outside-min" value="-14.7" measured="2011-12-16 14:57:52"/>
+    <STATE key="Temp-outside-min-Date" value="20-12-2009" measured="2011-12-16 14:57:52"/>
+    <STATE key="Temp-outside-min-Time" value="00:42" measured="2011-12-16 14:57:52"/>
+    <STATE key="Time" value="15:01:18" measured="2011-12-16 14:57:52"/>
+    <STATE key="Wind-Chill-max" value="35.6" measured="2011-12-16 14:57:52"/>
+    <STATE key="Wind-Chill-max-Date" value="20-08-2009" measured="2011-12-16 14:57:52"/>
+    <STATE key="Wind-Chill-max-Time" value="16:52" measured="2011-12-16 14:57:52"/>
+    <STATE key="Wind-Chill-min" value="-14.7" measured="2011-12-16 14:57:52"/>
+    <STATE key="Wind-Chill-min-Date" value="20-12-2009" measured="2011-12-16 14:57:52"/>
+    <STATE key="Wind-Chill-min-Time" value="00:42" measured="2011-12-16 14:57:52"/>
+    <STATE key="Wind-DIR0" value="247.5" measured="2011-12-16 14:57:52"/>
+    <STATE key="Wind-DIR1" value="247.5" measured="2011-12-16 14:57:52"/>
+    <STATE key="Wind-DIR2" value="247.5" measured="2011-12-16 14:57:52"/>
+    <STATE key="Wind-DIR3" value="247.5" measured="2011-12-16 14:57:52"/>
+    <STATE key="Wind-DIR4" value="247.5" measured="2011-12-16 14:57:52"/>
+    <STATE key="Wind-DIR5" value="247.5" measured="2011-12-16 14:57:52"/>
+    <STATE key="Wind-Speed-max" value="39.4" measured="2011-12-16 14:57:52"/>
+    <STATE key="Wind-Speed-max-Date" value="09-04-2011" measured="2011-12-16 14:57:52"/>
+    <STATE key="Wind-Speed-max-Time" value="10:04" measured="2011-12-16 14:57:52"/>
+    <STATE key="Wind-Speed-min" value="0.0" measured="2011-12-16 14:57:52"/>
+    <STATE key="Wind-Speed-min-Date" value="16-12-2011" measured="2011-12-16 14:57:52"/>
+    <STATE key="Wind-Speed-min-Time" value="14:59" measured="2011-12-16 14:57:52"/>
+    <STATE key="abs-Pressure" value="959.800" measured="2011-12-16 14:57:52"/>
+    <STATE key="rel-Humidity-inside-max" value="63" measured="2011-12-16 14:57:52"/>
+    <STATE key="rel-Humidity-inside-max-Date" value="10-09-2011" measured="2011-12-16 14:57:52"/>
+    <STATE key="rel-Humidity-inside-max-Time" value="23:48" measured="2011-12-16 14:57:52"/>
+    <STATE key="rel-Humidity-inside-min" value="18" measured="2011-12-16 14:57:52"/>
+    <STATE key="rel-Humidity-inside-min-Date" value="19-12-2009" measured="2011-12-16 14:57:52"/>
+    <STATE key="rel-Humidity-inside-min-Time" value="12:37" measured="2011-12-16 14:57:52"/>
+    <STATE key="rel-Humidity-outside-max" value="96" measured="2011-12-16 14:57:52"/>
+    <STATE key="rel-Humidity-outside-max-Date" value="08-01-2011" measured="2011-12-16 14:57:52"/>
+    <STATE key="rel-Humidity-outside-max-Time" value="06:57" measured="2011-12-16 14:57:52"/>
+    <STATE key="rel-Humidity-outside-min" value="24" measured="2011-12-16 14:57:52"/>
+    <STATE key="rel-Humidity-outside-min-Date" value="09-05-2011" measured="2011-12-16 14:57:52"/>
+    <STATE key="rel-Humidity-outside-min-Time" value="16:04" measured="2011-12-16 14:57:52"/>
+    <STATE key="rel-Pressure-max" value="1028.000" measured="2011-12-16 14:57:52"/>
+    <STATE key="rel-Pressure-max-Date" value="26-01-2010" measured="2011-12-16 14:57:52"/>
+    <STATE key="rel-Pressure-max-Time" value="19:43" measured="2011-12-16 14:57:52"/>
+    <STATE key="rel-Pressure-min" value="951.200" measured="2011-12-16 14:57:52"/>
+    <STATE key="rel-Pressure-min-Date" value="16-12-2011" measured="2011-12-16 14:57:52"/>
+    <STATE key="rel-Pressure-min-Time" value="12:47" measured="2011-12-16 14:57:52"/>
+</WS3600>
+</WS3600_LIST>
+<SISPM_LIST>
+<SISPM name="Wohnz_PMS" state="read" sets="" attrs="room comment model:SISPM loglevel:0,1,2,3,4,5,6 nativemode:on,off DarkPeriod">
+    <INT key="DEF" value="/usr/bin/sispmctl"/>
+    <INT key="DeviceName" value="/usr/bin/sispmctl"/>
+    <INT key="NAME" value="Wohnz_PMS"/>
+    <INT key="NR" value="11"/>
+    <INT key="NUMUNITS" value="1"/>
+    <INT key="STATE" value="read"/>
+    <INT key="TYPE" value="SISPM"/>
+    <INT key="Timer" value="30"/>
+    <INT key="pipeopentime" value="1324043859"/>
+    <ATTR key="loglevel" value="5"/>
+    <ATTR key="nativemode" value="on"/>
+    <ATTR key="room" value="Wohnen"/>
+</SISPM>
+</SISPM_LIST>
+<xxLG7000_LIST>
+<xxLG7000 name="myLG7k" state="Initialized" sets="" attrs="room comment SetID:1,2,... loglevel:0,1,2,3,4,5 DarkPeriod">
+    <INT key="DEF" value="/dev/LG_47LG700"/>
+    <INT key="DeviceName" value="/dev/LG_47LG700"/>
+    <INT key="NAME" value="myLG7k"/>
+    <INT key="NR" value="3"/>
+    <INT key="STATE" value="Initialized"/>
+    <INT key="TYPE" value="xxLG7000"/>
+    <ATTR key="SetID" value="1"/>
+</xxLG7000>
+</xxLG7000_LIST>
+<LGTV_LIST>
+<LGTV name="47LG7000" state="off" sets="power input audio" attrs="room comment dummy:1,0 model:LGTV loglevel:0,1,2,3,4,5 TIMER:30 DarkPeriod">
+    <INT key="NAME" value="47LG7000"/>
+    <INT key="NR" value="4"/>
+    <INT key="STATE" value="off"/>
+    <INT key="TYPE" value="LGTV"/>
+    <INT key="IODev" value="myLG7k"/>
+    <ATTR key="TIMER" value="10"/>
+    <ATTR key="room" value="Wohnen"/>
+    <STATE key="input" value="HDMI3" measured="2011-12-15 15:35:48"/>
+    <STATE key="power" value="off" measured="2011-12-15 18:57:58"/>
+</LGTV>
+</LGTV_LIST>
+<at_LIST>
+<at name="HLQ_links_till" state="Next: 17:30:00" sets="" attrs="room comment disable:0,1 skip_next:0,1 loglevel:0,1,2,3,4,5,6 DarkPeriod">
+    <INT key="DEF" value="17:30:00 set HLQ_links off"/>
+    <INT key="NAME" value="HLQ_links_till"/>
+    <INT key="NR" value="53666"/>
+    <INT key="STATE" value="Next: 17:30:00"/>
+    <INT key="TRIGGERTIME" value="1324053000.01369"/>
+    <INT key="TYPE" value="at"/>
+    <INT key="VOLATILE" value="1"/>
+</at>
+<at name="HLQ_rechts_till" state="Next: 18:30:00" sets="" attrs="room comment disable:0,1 skip_next:0,1 loglevel:0,1,2,3,4,5,6 DarkPeriod">
+    <INT key="DEF" value="18:30:00 set HLQ_rechts off"/>
+    <INT key="NAME" value="HLQ_rechts_till"/>
+    <INT key="NR" value="53862"/>
+    <INT key="STATE" value="Next: 18:30:00"/>
+    <INT key="TRIGGERTIME" value="1324056600.31726"/>
+    <INT key="TYPE" value="at"/>
+    <INT key="VOLATILE" value="1"/>
+</at>
+<at name="at_FlurLED_off" state="Next: 07:00:00" sets="" attrs="room comment disable:0,1 skip_next:0,1 loglevel:0,1,2,3,4,5,6 DarkPeriod">
+    <INT key="DEF" value="*07:00:00 &lt;br&gt;        set Flur_LED off"/>
+    <INT key="NAME" value="at_FlurLED_off"/>
+    <INT key="NR" value="53569"/>
+    <INT key="REP" value="-1"/>
+    <INT key="STATE" value="Next: 07:00:00"/>
+    <INT key="TRIGGERTIME" value="1324101600.82851"/>
+    <INT key="TYPE" value="at"/>
+</at>
+<at name="at_FlurLED_on" state="Next: 23:00:00" sets="" attrs="room comment disable:0,1 skip_next:0,1 loglevel:0,1,2,3,4,5,6 DarkPeriod">
+    <INT key="DEF" value="*23:00:00 &lt;br&gt;        set Flur_LED on"/>
+    <INT key="NAME" value="at_FlurLED_on"/>
+    <INT key="NR" value="52031"/>
+    <INT key="REP" value="-1"/>
+    <INT key="STATE" value="Next: 23:00:00"/>
+    <INT key="TRIGGERTIME" value="1324072800.78867"/>
+    <INT key="TYPE" value="at"/>
+</at>
+<at name="at_Spar2" state="Next: 23:00:00" sets="" attrs="room comment disable:0,1 skip_next:0,1 loglevel:0,1,2,3,4,5,6 DarkPeriod">
+    <INT key="DEF" value="*23:00:00 &lt;br&gt;        set Wii_ST off"/>
+    <INT key="NAME" value="at_Spar2"/>
+    <INT key="NR" value="52032"/>
+    <INT key="REP" value="-1"/>
+    <INT key="STATE" value="Next: 23:00:00"/>
+    <INT key="TRIGGERTIME" value="1324072800.87555"/>
+    <INT key="TYPE" value="at"/>
+</at>
+<at name="at_Terrarium_UV_li" state="Next: 07:30:00" sets="" attrs="room comment disable:0,1 skip_next:0,1 loglevel:0,1,2,3,4,5,6 DarkPeriod">
+    <INT key="DEF" value="*07:30:00 &lt;br&gt;        set HLQ_links on-till 17:30"/>
+    <INT key="NAME" value="at_Terrarium_UV_li"/>
+    <INT key="NR" value="53667"/>
+    <INT key="REP" value="-1"/>
+    <INT key="STATE" value="Next: 07:30:00"/>
+    <INT key="TRIGGERTIME" value="1324103400.1067"/>
+    <INT key="TYPE" value="at"/>
+</at>
+<at name="at_Terrarium_UV_re" state="Next: 08:30:00" sets="" attrs="room comment disable:0,1 skip_next:0,1 loglevel:0,1,2,3,4,5,6 DarkPeriod">
+    <INT key="DEF" value="*08:30:00 &lt;br&gt;        set HLQ_rechts on-till 18:30"/>
+    <INT key="NAME" value="at_Terrarium_UV_re"/>
+    <INT key="NR" value="53863"/>
+    <INT key="REP" value="-1"/>
+    <INT key="STATE" value="Next: 08:30:00"/>
+    <INT key="TRIGGERTIME" value="1324107000.82042"/>
+    <INT key="TYPE" value="at"/>
+</at>
+<at name="at_TriggerDarkPeriodOff" state="Next: 08:08:04" sets="" attrs="room comment disable:0,1 skip_next:0,1 loglevel:0,1,2,3,4,5,6 DarkPeriod">
+    <INT key="DEF" value="+*{sunrise_rel(+1800)} { &lt;br&gt;       fhem(&quot;deleteattr TV_LED DarkPeriod&quot;); &lt;br&gt;       fhem(&quot;set Flur_LED on&quot;); &lt;br&gt;       fhem(&quot;set TV_LED off&quot;); &lt;br&gt;       fhem(&quot;set Flur_LED off&quot;); &lt;br&gt;}"/>
+    <INT key="NAME" value="at_TriggerDarkPeriodOff"/>
+    <INT key="NR" value="53786"/>
+    <INT key="NTM" value="08:08:04"/>
+    <INT key="REP" value="-1"/>
+    <INT key="STATE" value="Next: 08:08:04"/>
+    <INT key="TRIGGERTIME" value="1324105684.51086"/>
+    <INT key="TYPE" value="at"/>
+</at>
+<at name="at_TriggerDarkPeriodOn" state="Next: 01:54:30" sets="" attrs="room comment disable:0,1 skip_next:0,1 loglevel:0,1,2,3,4,5,6 DarkPeriod">
+    <INT key="DEF" value="+*17:26 { &lt;br&gt;        fhem(&quot;attr TV_LED DarkPeriod&quot;); &lt;br&gt;#09;fhem(&quot;set TV_LED on&quot;) if ($defs{&quot;47LG7000&quot;}{READINGS}{power}{VAL} eq &quot;on&quot;); &lt;br&gt;}"/>
+    <INT key="NAME" value="at_TriggerDarkPeriodOn"/>
+    <INT key="NR" value="53854"/>
+    <INT key="NTM" value="01:54:30"/>
+    <INT key="REP" value="-1"/>
+    <INT key="STATE" value="Next: 01:54:30"/>
+    <INT key="TRIGGERTIME" value="1324083270.41847"/>
+    <INT key="TYPE" value="at"/>
+</at>
+<at name="at_get_CUL433_version" state="Next: 14:58:51" sets="" attrs="room comment disable:0,1 skip_next:0,1 loglevel:0,1,2,3,4,5,6 DarkPeriod">
+    <INT key="DEF" value="+*00:01 { &lt;br&gt;   fhem(&quot;get CUL433 version&quot;); &lt;br&gt;}"/>
+    <INT key="NAME" value="at_get_CUL433_version"/>
+    <INT key="NR" value="55103"/>
+    <INT key="NTM" value="14:58:51"/>
+    <INT key="REP" value="-1"/>
+    <INT key="STATE" value="Next: 14:58:51"/>
+    <INT key="TRIGGERTIME" value="1324043931.24642"/>
+    <INT key="TYPE" value="at"/>
+</at>
+<at name="at_get_CUL_version" state="Next: 14:58:51" sets="" attrs="room comment disable:0,1 skip_next:0,1 loglevel:0,1,2,3,4,5,6 DarkPeriod">
+    <INT key="DEF" value="+*00:01 { &lt;br&gt;   fhem(&quot;get CUL version&quot;); &lt;br&gt;}"/>
+    <INT key="NAME" value="at_get_CUL_version"/>
+    <INT key="NR" value="55104"/>
+    <INT key="NTM" value="14:58:51"/>
+    <INT key="REP" value="-1"/>
+    <INT key="STATE" value="Next: 14:58:51"/>
+    <INT key="TRIGGERTIME" value="1324043931.94939"/>
+    <INT key="TYPE" value="at"/>
+</at>
+<at name="at_get_CUN_version" state="Next: 14:58:51" sets="" attrs="room comment disable:0,1 skip_next:0,1 loglevel:0,1,2,3,4,5,6 DarkPeriod">
+    <INT key="DEF" value="+*00:01 { &lt;br&gt;   fhem(&quot;get CUN version&quot;); &lt;br&gt;}"/>
+    <INT key="NAME" value="at_get_CUN_version"/>
+    <INT key="NR" value="55102"/>
+    <INT key="NTM" value="14:58:51"/>
+    <INT key="REP" value="-1"/>
+    <INT key="STATE" value="Next: 14:58:51"/>
+    <INT key="TRIGGERTIME" value="1324043931.22111"/>
+    <INT key="TYPE" value="at"/>
+</at>
+<at name="at_get_serial" state="Next: 14:59:14" sets="" attrs="room comment disable:0,1 skip_next:0,1 loglevel:0,1,2,3,4,5,6 DarkPeriod">
+    <INT key="DEF" value="+*00:05 { &lt;br&gt;   fhem(&quot;get FHZ1350 serial&quot;); &lt;br&gt;   my $st = time_str2num($defs{FHZ1}{READINGS}{serial}{TIME}); &lt;br&gt;   fhem(&quot;set FHZ1350 reopen&quot;) if(time() - $st &gt; 5); &lt;br&gt;}"/>
+    <INT key="NAME" value="at_get_serial"/>
+    <INT key="NR" value="55092"/>
+    <INT key="NTM" value="14:59:14"/>
+    <INT key="REP" value="-1"/>
+    <INT key="STATE" value="Next: 14:59:14"/>
+    <INT key="TRIGGERTIME" value="1324043954.54359"/>
+    <INT key="TYPE" value="at"/>
+</at>
+</at_LIST>
+<notify_LIST>
+<notify name="InfoFrameA" state="active" sets="" attrs="room comment disable:0,1 DarkPeriod">
+    <INT key="DEF" value=".*_TH:T.* &quot;/var/log/fhem/update_InfoFrame.sh &quot;%NAME&quot; &quot;%TYPE&quot; &quot;%EVENT&quot;&quot;"/>
+    <INT key="NAME" value="InfoFrameA"/>
+    <INT key="NR" value="155"/>
+    <INT key="REGEXP" value=".*_TH:T.*"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="notify"/>
+</notify>
+<notify name="InfoFrameB" state="active" sets="" attrs="room comment disable:0,1 DarkPeriod">
+    <INT key="DEF" value="WS3600_RH.*:.* &quot;/var/log/fhem/update_InfoFrame.sh &quot;%NAME&quot; &quot;%TYPE&quot; &quot;%EVENT&quot;&quot;"/>
+    <INT key="NAME" value="InfoFrameB"/>
+    <INT key="NR" value="156"/>
+    <INT key="REGEXP" value="WS3600_RH.*:.*"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="notify"/>
+</notify>
+<notify name="InfoFrameC" state="active" sets="" attrs="room comment disable:0,1 DarkPeriod">
+    <INT key="DEF" value="WS3600_T.*:.* &quot;/var/log/fhem/update_InfoFrame.sh &quot;%NAME&quot; &quot;%TYPE&quot; &quot;%EVENT&quot;&quot;"/>
+    <INT key="NAME" value="InfoFrameC"/>
+    <INT key="NR" value="157"/>
+    <INT key="REGEXP" value="WS3600_T.*:.*"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="notify"/>
+</notify>
+<notify name="InfoFrameD" state="active" sets="" attrs="room comment disable:0,1 DarkPeriod">
+    <INT key="DEF" value="WS3600_Forecast:.* &quot;/var/log/fhem/update_InfoFrame.sh &quot;%NAME&quot; &quot;%TYPE&quot; &quot;%EVENT&quot;&quot;"/>
+    <INT key="NAME" value="InfoFrameD"/>
+    <INT key="NR" value="158"/>
+    <INT key="REGEXP" value="WS3600_Forecast:.*"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="notify"/>
+</notify>
+<notify name="InfoFrameE" state="active" sets="" attrs="room comment disable:0,1 DarkPeriod">
+    <INT key="DEF" value="WS3600_Rain:.* &quot;/var/log/fhem/update_InfoFrame.sh &quot;%NAME&quot; &quot;%TYPE&quot; &quot;%EVENT&quot;&quot;"/>
+    <INT key="NAME" value="InfoFrameE"/>
+    <INT key="NR" value="159"/>
+    <INT key="REGEXP" value="WS3600_Rain:.*"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="notify"/>
+</notify>
+<notify name="InfoFrameF" state="active" sets="" attrs="room comment disable:0,1 DarkPeriod">
+    <INT key="DEF" value="WS3600_Tendency:.* &quot;/var/log/fhem/update_InfoFrame.sh &quot;%NAME&quot; &quot;%TYPE&quot; &quot;%EVENT&quot;&quot;"/>
+    <INT key="NAME" value="InfoFrameF"/>
+    <INT key="NR" value="160"/>
+    <INT key="REGEXP" value="WS3600_Tendency:.*"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="notify"/>
+</notify>
+<notify name="InfoFrameG" state="active" sets="" attrs="room comment disable:0,1 DarkPeriod">
+    <INT key="DEF" value="WS3600_RP:.* &quot;/var/log/fhem/update_InfoFrame.sh &quot;%NAME&quot; &quot;%TYPE&quot; &quot;%EVENT&quot;&quot;"/>
+    <INT key="NAME" value="InfoFrameG"/>
+    <INT key="NR" value="161"/>
+    <INT key="REGEXP" value="WS3600_RP:.*"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="notify"/>
+</notify>
+<notify name="WCamNotify1" state="active" sets="" attrs="room comment disable:0,1 DarkPeriod">
+    <INT key="DEF" value="Huette_TH &quot;/bin/echo &quot;%EVENT&quot; &gt;/tmp/WeatherCam-%NAME&quot;"/>
+    <INT key="NAME" value="WCamNotify1"/>
+    <INT key="NR" value="96"/>
+    <INT key="REGEXP" value="Huette_TH"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="notify"/>
+</notify>
+<notify name="WCamNotify2" state="active" sets="" attrs="room comment disable:0,1 DarkPeriod">
+    <INT key="DEF" value="Parkplatz_TH &quot;/bin/echo &quot;%EVENT&quot; &gt;/tmp/WeatherCam-%NAME&quot;"/>
+    <INT key="NAME" value="WCamNotify2"/>
+    <INT key="NR" value="97"/>
+    <INT key="REGEXP" value="Parkplatz_TH"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="notify"/>
+</notify>
+<notify name="at_Pw_tst1" state="active" sets="" attrs="room comment disable:0,1 DarkPeriod">
+    <INT key="DEF" value="Circle_1 &quot;logger &quot;%NAME %EVENT&quot;&quot;"/>
+    <INT key="NAME" value="at_Pw_tst1"/>
+    <INT key="NR" value="105"/>
+    <INT key="REGEXP" value="Circle_1"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="notify"/>
+</notify>
+<notify name="at_Pw_tst2" state="active" sets="" attrs="room comment disable:0,1 DarkPeriod">
+    <INT key="DEF" value="Circle_Sheeva &quot;logger &quot;%NAME %EVENT&quot;&quot;"/>
+    <INT key="NAME" value="at_Pw_tst2"/>
+    <INT key="NR" value="106"/>
+    <INT key="REGEXP" value="Circle_Sheeva"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="notify"/>
+</notify>
+<notify name="at_TV_DVD" state="active" sets="" attrs="room comment disable:0,1 DarkPeriod">
+    <INT key="DEF" value="47LG7000:.*AV2 set DVD_ST on"/>
+    <INT key="NAME" value="at_TV_DVD"/>
+    <INT key="NR" value="102"/>
+    <INT key="REGEXP" value="47LG7000:.*AV2"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="notify"/>
+</notify>
+<notify name="at_TV_Off" state="active" sets="" attrs="room comment disable:0,1 DarkPeriod">
+    <INT key="DEF" value="47LG7000:power:.off { &lt;br&gt;       fhem(&quot;set Flur_LED on&quot;); &lt;br&gt;       sleep 1 ; &lt;br&gt;       fhem(&quot;set TV_LED off&quot;); &lt;br&gt;       sleep 1 ; &lt;br&gt;       fhem(&quot;set Flur_LED off&quot;); &lt;br&gt;}"/>
+    <INT key="NAME" value="at_TV_Off"/>
+    <INT key="NR" value="98"/>
+    <INT key="REGEXP" value="47LG7000:power:.off"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="notify"/>
+</notify>
+<notify name="at_TV_On" state="active" sets="" attrs="room comment disable:0,1 DarkPeriod">
+    <INT key="DEF" value="47LG7000:power:.on { fhem(&quot;set TV_LED on&quot;) if($attr{TV_LED}{DarkPeriod})}"/>
+    <INT key="NAME" value="at_TV_On"/>
+    <INT key="NR" value="99"/>
+    <INT key="REGEXP" value="47LG7000:power:.on"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="notify"/>
+</notify>
+<notify name="at_TV_PS3" state="active" sets="" attrs="room comment disable:0,1 DarkPeriod">
+    <INT key="DEF" value="47LG7000:.*HDMI2.* set PS3_ST on"/>
+    <INT key="NAME" value="at_TV_PS3"/>
+    <INT key="NR" value="103"/>
+    <INT key="REGEXP" value="47LG7000:.*HDMI2.*"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="notify"/>
+</notify>
+<notify name="at_TV_VCR" state="active" sets="" attrs="room comment disable:0,1 DarkPeriod">
+    <INT key="DEF" value="47LG7000:.*AV2 set VCR_ST on"/>
+    <INT key="NAME" value="at_TV_VCR"/>
+    <INT key="NR" value="101"/>
+    <INT key="REGEXP" value="47LG7000:.*AV2"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="notify"/>
+</notify>
+<notify name="at_TV_Wii" state="active" sets="" attrs="room comment disable:0,1 DarkPeriod">
+    <INT key="DEF" value="47LG7000:.*AV1 set Wii_ST on"/>
+    <INT key="NAME" value="at_TV_Wii"/>
+    <INT key="NR" value="100"/>
+    <INT key="REGEXP" value="47LG7000:.*AV1"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="notify"/>
+</notify>
+<notify name="at_TV_tst" state="active" sets="" attrs="room comment disable:0,1 DarkPeriod">
+    <INT key="DEF" value="47LG7000 &quot;logger &quot;%NAME %EVENT&quot;&quot;"/>
+    <INT key="NAME" value="at_TV_tst"/>
+    <INT key="NR" value="104"/>
+    <INT key="REGEXP" value="47LG7000"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="notify"/>
+</notify>
+<notify name="motion_x" state="active" sets="" attrs="room comment disable:0,1 DarkPeriod">
+    <INT key="DEF" value="WS3600_To:temp.* &quot;/var/log/fhem/update_motion.sh &quot;%EVENT&quot;&quot;"/>
+    <INT key="NAME" value="motion_x"/>
+    <INT key="NR" value="153"/>
+    <INT key="REGEXP" value="WS3600_To:temp.*"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="notify"/>
+</notify>
+<notify name="motion_y" state="active" sets="" attrs="room comment disable:0,1 DarkPeriod">
+    <INT key="DEF" value="Parkplatz_TH:T.*  &quot;/var/log/fhem/update_motion-TH.sh &quot;%EVENT&quot;&quot;"/>
+    <INT key="NAME" value="motion_y"/>
+    <INT key="NR" value="154"/>
+    <INT key="REGEXP" value="Parkplatz_TH:T.*"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="notify"/>
+</notify>
+</notify_LIST>
+<FileLog_LIST>
+<FileLog name="FileLog_Arbeit_EM" state="active" sets="reopen" attrs="room comment disable:0,1 logtype nrarchive archivedir archivecmd DarkPeriod">
+    <INT key="DEF" value="/var/log/fhem/Arbeit_EM-%Y.log Arbeit_EM:CNT:.*"/>
+    <INT key="NAME" value="FileLog_Arbeit_EM"/>
+    <INT key="NR" value="23"/>
+    <INT key="REGEXP" value="Arbeit_EM:CNT:.*"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="FileLog"/>
+    <INT key="currentlogfile" value="/var/log/fhem/Arbeit_EM-2011.log"/>
+    <INT key="logfile" value="/var/log/fhem/Arbeit_EM-%Y.log"/>
+    <ATTR key="logtype" value="cul_em:Power,text"/>
+    <ATTR key="room" value="Wohnen"/>
+</FileLog>
+<FileLog name="FileLog_Arbeit_FHT" state="active" sets="reopen" attrs="room comment disable:0,1 logtype nrarchive archivedir archivecmd DarkPeriod">
+    <INT key="DEF" value="/var/log/fhem/Arbeit_FHT-%Y.log Arbeit_FHT"/>
+    <INT key="NAME" value="FileLog_Arbeit_FHT"/>
+    <INT key="NR" value="20"/>
+    <INT key="REGEXP" value="Arbeit_FHT"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="FileLog"/>
+    <INT key="currentlogfile" value="/var/log/fhem/Arbeit_FHT-2011.log"/>
+    <INT key="logfile" value="/var/log/fhem/Arbeit_FHT-%Y.log"/>
+    <ATTR key="logtype" value="fht:Temp/Act,text"/>
+    <ATTR key="room" value="Arbeit"/>
+</FileLog>
+<FileLog name="FileLog_Arbeit_TF" state="active" sets="reopen" attrs="room comment disable:0,1 logtype nrarchive archivedir archivecmd DarkPeriod">
+    <INT key="DEF" value="/var/log/fhem/Arbeit_TF-%Y.log Arbeit_TF:T:.*"/>
+    <INT key="NAME" value="FileLog_Arbeit_TF"/>
+    <INT key="NR" value="26"/>
+    <INT key="REGEXP" value="Arbeit_TF:T:.*"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="FileLog"/>
+    <INT key="currentlogfile" value="/var/log/fhem/Arbeit_TF-2011.log"/>
+    <INT key="logfile" value="/var/log/fhem/Arbeit_TF-%Y.log"/>
+    <ATTR key="logtype" value="hms:Temp/Hum,text"/>
+    <ATTR key="room" value="Arbeit"/>
+</FileLog>
+<FileLog name="FileLog_Bad_TH" state="active" sets="reopen" attrs="room comment disable:0,1 logtype nrarchive archivedir archivecmd DarkPeriod">
+    <INT key="DEF" value="/var/log/fhem/Bad_TH-%Y.log Bad_TH"/>
+    <INT key="NAME" value="FileLog_Bad_TH"/>
+    <INT key="NR" value="32"/>
+    <INT key="REGEXP" value="Bad_TH"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="FileLog"/>
+    <INT key="currentlogfile" value="/var/log/fhem/Bad_TH-2011.log"/>
+    <INT key="logfile" value="/var/log/fhem/Bad_TH-%Y.log"/>
+    <ATTR key="logtype" value="hms:Temp/Hum,text"/>
+    <ATTR key="room" value="CUL_WS"/>
+</FileLog>
+<FileLog name="FileLog_Brightness" state="active" sets="reopen" attrs="room comment disable:0,1 logtype nrarchive archivedir archivecmd DarkPeriod">
+    <INT key="DEF" value="/var/log/fhem/Brightness-%Y.log Brightness"/>
+    <INT key="NAME" value="FileLog_Brightness"/>
+    <INT key="NR" value="75"/>
+    <INT key="REGEXP" value="Brightness"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="FileLog"/>
+    <INT key="currentlogfile" value="/var/log/fhem/Brightness-2011.log"/>
+    <INT key="logfile" value="/var/log/fhem/Brightness-%Y.log"/>
+    <ATTR key="logtype" value="hms:Temp/Hum,text"/>
+    <ATTR key="room" value="EnvSens"/>
+</FileLog>
+<FileLog name="FileLog_CUL_FHTTK_9dbf85" state="active" sets="reopen" attrs="room comment disable:0,1 logtype nrarchive archivedir archivecmd DarkPeriod">
+    <INT key="DEF" value="/var/log/fhem/CUL_FHTTK_9dbf85-%Y.log CUL_FHTTK_9dbf85"/>
+    <INT key="NAME" value="FileLog_CUL_FHTTK_9dbf85"/>
+    <INT key="NR" value="177"/>
+    <INT key="REGEXP" value="CUL_FHTTK_9dbf85"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="FileLog"/>
+    <INT key="currentlogfile" value="/var/log/fhem/CUL_FHTTK_9dbf85-2011.log"/>
+    <INT key="logfile" value="/var/log/fhem/CUL_FHTTK_9dbf85-%Y.log"/>
+    <ATTR key="logtype" value="fht80tf:Window,text"/>
+    <ATTR key="room" value="CUL_FHTTK"/>
+</FileLog>
+<FileLog name="FileLog_CanonLaser" state="active" sets="reopen" attrs="room comment disable:0,1 logtype nrarchive archivedir archivecmd DarkPeriod">
+    <INT key="DEF" value="/var/log/fhem/CanonLaser-%Y.log CanonLaser"/>
+    <INT key="NAME" value="FileLog_CanonLaser"/>
+    <INT key="NR" value="91"/>
+    <INT key="REGEXP" value="CanonLaser"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="FileLog"/>
+    <INT key="currentlogfile" value="/var/log/fhem/CanonLaser-2011.log"/>
+    <INT key="logfile" value="/var/log/fhem/CanonLaser-%Y.log"/>
+    <ATTR key="logtype" value="text"/>
+    <ATTR key="room" value="Wohnen"/>
+</FileLog>
+<FileLog name="FileLog_Circle_1" state="active" sets="reopen" attrs="room comment disable:0,1 logtype nrarchive archivedir archivecmd DarkPeriod">
+    <INT key="DEF" value="/var/log/fhem/Circle_1-%Y.log Circle_1"/>
+    <INT key="NAME" value="FileLog_Circle_1"/>
+    <INT key="NR" value="6"/>
+    <INT key="REGEXP" value="Circle_1"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="FileLog"/>
+    <INT key="currentlogfile" value="/var/log/fhem/Circle_1-2011.log"/>
+    <INT key="logfile" value="/var/log/fhem/Circle_1-%Y.log"/>
+    <ATTR key="logtype" value="text"/>
+</FileLog>
+<FileLog name="FileLog_Circle_Sheeva" state="active" sets="reopen" attrs="room comment disable:0,1 logtype nrarchive archivedir archivecmd DarkPeriod">
+    <INT key="DEF" value="/var/log/fhem/Circle_Sheva-%Y.log Circle_Sheeva"/>
+    <INT key="NAME" value="FileLog_Circle_Sheeva"/>
+    <INT key="NR" value="9"/>
+    <INT key="REGEXP" value="Circle_Sheeva"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="FileLog"/>
+    <INT key="currentlogfile" value="/var/log/fhem/Circle_Sheva-2011.log"/>
+    <INT key="logfile" value="/var/log/fhem/Circle_Sheva-%Y.log"/>
+    <ATTR key="logtype" value="text"/>
+</FileLog>
+<FileLog name="FileLog_DVD_ST" state="active" sets="reopen" attrs="room comment disable:0,1 logtype nrarchive archivedir archivecmd DarkPeriod">
+    <INT key="DEF" value="/var/log/fhem/DVD_ST-%Y.log DVD_ST"/>
+    <INT key="NAME" value="FileLog_DVD_ST"/>
+    <INT key="NR" value="66"/>
+    <INT key="REGEXP" value="DVD_ST"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="FileLog"/>
+    <INT key="currentlogfile" value="/var/log/fhem/DVD_ST-2011.log"/>
+    <INT key="logfile" value="/var/log/fhem/DVD_ST-%Y.log"/>
+    <ATTR key="logtype" value="text"/>
+    <ATTR key="room" value="FS20"/>
+</FileLog>
+<FileLog name="FileLog_Essz_TH" state="active" sets="reopen" attrs="room comment disable:0,1 logtype nrarchive archivedir archivecmd DarkPeriod">
+    <INT key="DEF" value="/var/log/fhem/Essz_TH-%Y.log Essz_TH"/>
+    <INT key="NAME" value="FileLog_Essz_TH"/>
+    <INT key="NR" value="35"/>
+    <INT key="REGEXP" value="Essz_TH"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="FileLog"/>
+    <INT key="currentlogfile" value="/var/log/fhem/Essz_TH-2011.log"/>
+    <INT key="logfile" value="/var/log/fhem/Essz_TH-%Y.log"/>
+    <ATTR key="logtype" value="hms:Temp/Hum,text"/>
+    <ATTR key="room" value="Essen"/>
+</FileLog>
+<FileLog name="FileLog_FHT_1f0b" state="active" sets="reopen" attrs="room comment disable:0,1 logtype nrarchive archivedir archivecmd DarkPeriod">
+    <INT key="DEF" value="/var/log/fhem/FHT_1f0b-%Y.log FHT_1f0b"/>
+    <INT key="NAME" value="FileLog_FHT_1f0b"/>
+    <INT key="NR" value="172"/>
+    <INT key="REGEXP" value="FHT_1f0b"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="FileLog"/>
+    <INT key="currentlogfile" value="/var/log/fhem/FHT_1f0b-2011.log"/>
+    <INT key="logfile" value="/var/log/fhem/FHT_1f0b-%Y.log"/>
+    <ATTR key="logtype" value="fht:Temp/Act,text"/>
+    <ATTR key="room" value="FHT"/>
+</FileLog>
+<FileLog name="FileLog_FHT_2592" state="active" sets="reopen" attrs="room comment disable:0,1 logtype nrarchive archivedir archivecmd DarkPeriod">
+    <INT key="DEF" value="/var/log/fhem/FHT_2592-%Y.log FHT_2592"/>
+    <INT key="NAME" value="FileLog_FHT_2592"/>
+    <INT key="NR" value="169"/>
+    <INT key="REGEXP" value="FHT_2592"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="FileLog"/>
+    <INT key="currentlogfile" value="/var/log/fhem/FHT_2592-2011.log"/>
+    <INT key="logfile" value="/var/log/fhem/FHT_2592-%Y.log"/>
+    <ATTR key="logtype" value="fht:Temp/Act,text"/>
+    <ATTR key="room" value="FHT"/>
+</FileLog>
+<FileLog name="FileLog_FHT_3202" state="active" sets="reopen" attrs="room comment disable:0,1 logtype nrarchive archivedir archivecmd DarkPeriod">
+    <INT key="DEF" value="/var/log/fhem/FHT_3202-%Y.log FHT_3202"/>
+    <INT key="NAME" value="FileLog_FHT_3202"/>
+    <INT key="NR" value="163"/>
+    <INT key="REGEXP" value="FHT_3202"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="FileLog"/>
+    <INT key="currentlogfile" value="/var/log/fhem/FHT_3202-2011.log"/>
+    <INT key="logfile" value="/var/log/fhem/FHT_3202-%Y.log"/>
+    <ATTR key="logtype" value="fht:Temp/Act,text"/>
+    <ATTR key="room" value="FHT"/>
+</FileLog>
+<FileLog name="FileLog_FHT_4c1f" state="active" sets="reopen" attrs="room comment disable:0,1 logtype nrarchive archivedir archivecmd DarkPeriod">
+    <INT key="DEF" value="/var/log/fhem/FHT_4c1f-%Y.log FHT_4c1f"/>
+    <INT key="NAME" value="FileLog_FHT_4c1f"/>
+    <INT key="NR" value="187"/>
+    <INT key="REGEXP" value="FHT_4c1f"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="FileLog"/>
+    <INT key="currentlogfile" value="/var/log/fhem/FHT_4c1f-2011.log"/>
+    <INT key="logfile" value="/var/log/fhem/FHT_4c1f-%Y.log"/>
+    <ATTR key="logtype" value="fht:Temp/Act,text"/>
+    <ATTR key="room" value="FHT"/>
+</FileLog>
+<FileLog name="FileLog_FHT_9a9e" state="active" sets="reopen" attrs="room comment disable:0,1 logtype nrarchive archivedir archivecmd DarkPeriod">
+    <INT key="DEF" value="/var/log/fhem/FHT_9a9e-%Y.log FHT_9a9e"/>
+    <INT key="NAME" value="FileLog_FHT_9a9e"/>
+    <INT key="NR" value="182"/>
+    <INT key="REGEXP" value="FHT_9a9e"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="FileLog"/>
+    <INT key="currentlogfile" value="/var/log/fhem/FHT_9a9e-2011.log"/>
+    <INT key="logfile" value="/var/log/fhem/FHT_9a9e-%Y.log"/>
+    <ATTR key="logtype" value="fht:Temp/Act,text"/>
+    <ATTR key="room" value="FHT"/>
+</FileLog>
+<FileLog name="FileLog_FS20_0fefed" state="active" sets="reopen" attrs="room comment disable:0,1 logtype nrarchive archivedir archivecmd DarkPeriod">
+    <INT key="DEF" value="/var/log/fhem/FS20_0fefed-%Y.log FS20_0fefed"/>
+    <INT key="NAME" value="FileLog_FS20_0fefed"/>
+    <INT key="NR" value="185"/>
+    <INT key="REGEXP" value="FS20_0fefed"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="FileLog"/>
+    <INT key="currentlogfile" value="/var/log/fhem/FS20_0fefed-2011.log"/>
+    <INT key="logfile" value="/var/log/fhem/FS20_0fefed-%Y.log"/>
+    <ATTR key="logtype" value="text"/>
+    <ATTR key="room" value="FS20"/>
+</FileLog>
+<FileLog name="FileLog_FS20_3acafb" state="active" sets="reopen" attrs="room comment disable:0,1 logtype nrarchive archivedir archivecmd DarkPeriod">
+    <INT key="DEF" value="/var/log/fhem/FS20_3acafb-%Y.log FS20_3acafb"/>
+    <INT key="NAME" value="FileLog_FS20_3acafb"/>
+    <INT key="NR" value="180"/>
+    <INT key="REGEXP" value="FS20_3acafb"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="FileLog"/>
+    <INT key="currentlogfile" value="/var/log/fhem/FS20_3acafb-2011.log"/>
+    <INT key="logfile" value="/var/log/fhem/FS20_3acafb-%Y.log"/>
+    <ATTR key="logtype" value="text"/>
+    <ATTR key="room" value="FS20"/>
+</FileLog>
+<FileLog name="FileLog_FS20_8082fb" state="active" sets="reopen" attrs="room comment disable:0,1 logtype nrarchive archivedir archivecmd DarkPeriod">
+    <INT key="DEF" value="/var/log/fhem/FS20_8082fb-%Y.log FS20_8082fb"/>
+    <INT key="NAME" value="FileLog_FS20_8082fb"/>
+    <INT key="NR" value="175"/>
+    <INT key="REGEXP" value="FS20_8082fb"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="FileLog"/>
+    <INT key="currentlogfile" value="/var/log/fhem/FS20_8082fb-2011.log"/>
+    <INT key="logfile" value="/var/log/fhem/FS20_8082fb-%Y.log"/>
+    <ATTR key="logtype" value="text"/>
+    <ATTR key="room" value="FS20"/>
+</FileLog>
+<FileLog name="FileLog_FS20_833bfa" state="active" sets="reopen" attrs="room comment disable:0,1 logtype nrarchive archivedir archivecmd DarkPeriod">
+    <INT key="DEF" value="/var/log/fhem/FS20_833bfa-%Y.log FS20_833bfa"/>
+    <INT key="NAME" value="FileLog_FS20_833bfa"/>
+    <INT key="NR" value="201"/>
+    <INT key="REGEXP" value="FS20_833bfa"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="FileLog"/>
+    <INT key="currentlogfile" value="/var/log/fhem/FS20_833bfa-2011.log"/>
+    <INT key="logfile" value="/var/log/fhem/FS20_833bfa-%Y.log"/>
+    <ATTR key="logtype" value="text"/>
+    <ATTR key="room" value="FS20"/>
+</FileLog>
+<FileLog name="FileLog_Fenster_Arbeit" state="active" sets="reopen" attrs="room comment disable:0,1 logtype nrarchive archivedir archivecmd DarkPeriod">
+    <INT key="DEF" value="/var/log/fhem/Fenster_Arbeit-%Y.log Fenster_Arbeit"/>
+    <INT key="NAME" value="FileLog_Fenster_Arbeit"/>
+    <INT key="NR" value="17"/>
+    <INT key="REGEXP" value="Fenster_Arbeit"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="FileLog"/>
+    <INT key="currentlogfile" value="/var/log/fhem/Fenster_Arbeit-2011.log"/>
+    <INT key="logfile" value="/var/log/fhem/Fenster_Arbeit-%Y.log"/>
+    <ATTR key="logtype" value="fht80tf:Window,text"/>
+    <ATTR key="room" value="Arbeit"/>
+</FileLog>
+<FileLog name="FileLog_Fenster_Bad" state="active" sets="reopen" attrs="room comment disable:0,1 logtype nrarchive archivedir archivecmd DarkPeriod">
+    <INT key="DEF" value="/var/log/fhem/Fenster_Bad-%Y.log Fenster_Bad"/>
+    <INT key="NAME" value="FileLog_Fenster_Bad"/>
+    <INT key="NR" value="29"/>
+    <INT key="REGEXP" value="Fenster_Bad"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="FileLog"/>
+    <INT key="currentlogfile" value="/var/log/fhem/Fenster_Bad-2011.log"/>
+    <INT key="logfile" value="/var/log/fhem/Fenster_Bad-%Y.log"/>
+    <ATTR key="logtype" value="fht80tf:Window,text"/>
+    <ATTR key="room" value="Bad"/>
+</FileLog>
+<FileLog name="FileLog_Fenster_Kueche" state="active" sets="reopen" attrs="room comment disable:0,1 logtype nrarchive archivedir archivecmd DarkPeriod">
+    <INT key="DEF" value="/var/log/fhem/Fenster_Kueche-%Y.log Fenster_Kueche"/>
+    <INT key="NAME" value="FileLog_Fenster_Kueche"/>
+    <INT key="NR" value="57"/>
+    <INT key="REGEXP" value="Fenster_Kueche"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="FileLog"/>
+    <INT key="currentlogfile" value="/var/log/fhem/Fenster_Kueche-2011.log"/>
+    <INT key="logfile" value="/var/log/fhem/Fenster_Kueche-%Y.log"/>
+    <ATTR key="logtype" value="fht80tf:Window,text"/>
+    <ATTR key="room" value="Wohnen"/>
+</FileLog>
+<FileLog name="FileLog_Flur_LED" state="active" sets="reopen" attrs="room comment disable:0,1 logtype nrarchive archivedir archivecmd DarkPeriod">
+    <INT key="DEF" value="/var/log/fhem/Flur_LED-%Y.log Flur_LED"/>
+    <INT key="NAME" value="FileLog_Flur_LED"/>
+    <INT key="NR" value="53"/>
+    <INT key="REGEXP" value="Flur_LED"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="FileLog"/>
+    <INT key="currentlogfile" value="/var/log/fhem/Flur_LED-2011.log"/>
+    <INT key="logfile" value="/var/log/fhem/Flur_LED-%Y.log"/>
+    <ATTR key="logtype" value="text"/>
+    <ATTR key="room" value="FS20"/>
+</FileLog>
+<FileLog name="FileLog_Flur_TH" state="active" sets="reopen" attrs="room comment disable:0,1 logtype nrarchive archivedir archivecmd DarkPeriod">
+    <INT key="DEF" value="/var/log/fhem/Flur_TH-%Y.log Flur_TH"/>
+    <INT key="NAME" value="FileLog_Flur_TH"/>
+    <INT key="NR" value="38"/>
+    <INT key="REGEXP" value="Flur_TH"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="FileLog"/>
+    <INT key="currentlogfile" value="/var/log/fhem/Flur_TH-2011.log"/>
+    <INT key="logfile" value="/var/log/fhem/Flur_TH-%Y.log"/>
+    <ATTR key="logtype" value="hms:Temp/Hum,text"/>
+    <ATTR key="room" value="Flur"/>
+</FileLog>
+<FileLog name="FileLog_HLQ_links" state="active" sets="reopen" attrs="room comment disable:0,1 logtype nrarchive archivedir archivecmd DarkPeriod">
+    <INT key="DEF" value="/var/log/fhem/HLQ_links-%Y.log HLQ_links"/>
+    <INT key="NAME" value="FileLog_HLQ_links"/>
+    <INT key="NR" value="95"/>
+    <INT key="REGEXP" value="HLQ_links"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="FileLog"/>
+    <INT key="currentlogfile" value="/var/log/fhem/HLQ_links-2011.log"/>
+    <INT key="logfile" value="/var/log/fhem/HLQ_links-%Y.log"/>
+    <ATTR key="logtype" value="text"/>
+    <ATTR key="room" value="Terrarium"/>
+</FileLog>
+<FileLog name="FileLog_HLQ_rechts" state="active" sets="reopen" attrs="room comment disable:0,1 logtype nrarchive archivedir archivecmd DarkPeriod">
+    <INT key="DEF" value="/var/log/fhem/HLQ_rechts-%Y.log HLQ_rechts"/>
+    <INT key="NAME" value="FileLog_HLQ_rechts"/>
+    <INT key="NR" value="93"/>
+    <INT key="REGEXP" value="HLQ_rechts"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="FileLog"/>
+    <INT key="currentlogfile" value="/var/log/fhem/HLQ_rechts-2011.log"/>
+    <INT key="logfile" value="/var/log/fhem/HLQ_rechts-%Y.log"/>
+    <ATTR key="logtype" value="text"/>
+    <ATTR key="room" value="Terrarium"/>
+</FileLog>
+<FileLog name="FileLog_HMS100TFK_e07e" state="active" sets="reopen" attrs="room comment disable:0,1 logtype nrarchive archivedir archivecmd DarkPeriod">
+    <INT key="DEF" value="/var/log/fhem/HMS100TFK_e07e-%Y.log HMS100TFK_e07e"/>
+    <INT key="NAME" value="FileLog_HMS100TFK_e07e"/>
+    <INT key="NR" value="166"/>
+    <INT key="REGEXP" value="HMS100TFK_e07e"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="FileLog"/>
+    <INT key="currentlogfile" value="/var/log/fhem/HMS100TFK_e07e-2011.log"/>
+    <INT key="logfile" value="/var/log/fhem/HMS100TFK_e07e-%Y.log"/>
+    <ATTR key="logtype" value="fht80tf:Contact,text"/>
+    <ATTR key="room" value="HMS"/>
+</FileLog>
+<FileLog name="FileLog_Huette_TH" state="active" sets="reopen" attrs="room comment disable:0,1 logtype nrarchive archivedir archivecmd DarkPeriod">
+    <INT key="DEF" value="/var/log/fhem/Huette_TH-%Y.log Huette_TH"/>
+    <INT key="NAME" value="FileLog_Huette_TH"/>
+    <INT key="NR" value="44"/>
+    <INT key="REGEXP" value="Huette_TH"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="FileLog"/>
+    <INT key="currentlogfile" value="/var/log/fhem/Huette_TH-2011.log"/>
+    <INT key="logfile" value="/var/log/fhem/Huette_TH-%Y.log"/>
+    <ATTR key="logtype" value="hms:Temp/Hum,text"/>
+    <ATTR key="room" value="Garten"/>
+</FileLog>
+<FileLog name="FileLog_Kammer_TH" state="active" sets="reopen" attrs="room comment disable:0,1 logtype nrarchive archivedir archivecmd DarkPeriod">
+    <INT key="DEF" value="/var/log/fhem/Kammer_TH-%Y.log Kammer_TH"/>
+    <INT key="NAME" value="FileLog_Kammer_TH"/>
+    <INT key="NR" value="47"/>
+    <INT key="REGEXP" value="Kammer_TH"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="FileLog"/>
+    <INT key="currentlogfile" value="/var/log/fhem/Kammer_TH-2011.log"/>
+    <INT key="logfile" value="/var/log/fhem/Kammer_TH-%Y.log"/>
+    <ATTR key="logtype" value="hms:Temp/Hum,text"/>
+    <ATTR key="room" value="Kammer"/>
+</FileLog>
+<FileLog name="FileLog_Keller_TH" state="active" sets="reopen" attrs="room comment disable:0,1 logtype nrarchive archivedir archivecmd DarkPeriod">
+    <INT key="DEF" value="/var/log/fhem/Keller_TH-%Y.log Keller_TH"/>
+    <INT key="NAME" value="FileLog_Keller_TH"/>
+    <INT key="NR" value="86"/>
+    <INT key="REGEXP" value="Keller_TH"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="FileLog"/>
+    <INT key="currentlogfile" value="/var/log/fhem/Keller_TH-2011.log"/>
+    <INT key="logfile" value="/var/log/fhem/Keller_TH-%Y.log"/>
+    <ATTR key="logtype" value="hms:Temp/Hum,text"/>
+    <ATTR key="room" value="EnvSens"/>
+</FileLog>
+<FileLog name="FileLog_Kinder_TF" state="active" sets="reopen" attrs="room comment disable:0,1 logtype nrarchive archivedir archivecmd DarkPeriod">
+    <INT key="DEF" value="/var/log/fhem/Kinder_TF-%Y.log Kinder_TF:T:.*"/>
+    <INT key="NAME" value="FileLog_Kinder_TF"/>
+    <INT key="NR" value="50"/>
+    <INT key="REGEXP" value="Kinder_TF:T:.*"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="FileLog"/>
+    <INT key="currentlogfile" value="/var/log/fhem/Kinder_TF-2011.log"/>
+    <INT key="logfile" value="/var/log/fhem/Kinder_TF-%Y.log"/>
+    <ATTR key="logtype" value="hms:Temp/Hum,text"/>
+    <ATTR key="room" value="Kinder"/>
+</FileLog>
+<FileLog name="FileLog_Media_EM" state="active" sets="reopen" attrs="room comment disable:0,1 logtype nrarchive archivedir archivecmd DarkPeriod">
+    <INT key="DEF" value="/var/log/fhem/Media_EM-%Y.log Media_EM:CNT:.*"/>
+    <INT key="NAME" value="FileLog_Media_EM"/>
+    <INT key="NR" value="60"/>
+    <INT key="REGEXP" value="Media_EM:CNT:.*"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="FileLog"/>
+    <INT key="currentlogfile" value="/var/log/fhem/Media_EM-2011.log"/>
+    <INT key="logfile" value="/var/log/fhem/Media_EM-%Y.log"/>
+    <ATTR key="logtype" value="cul_em:Power,text"/>
+    <ATTR key="room" value="Wohnen"/>
+</FileLog>
+<FileLog name="FileLog_Parkplatz_TH" state="active" sets="reopen" attrs="room comment disable:0,1 logtype nrarchive archivedir archivecmd DarkPeriod">
+    <INT key="DEF" value="/var/log/fhem/Parkplatz_TH-%Y.log Parkplatz_TH"/>
+    <INT key="NAME" value="FileLog_Parkplatz_TH"/>
+    <INT key="NR" value="41"/>
+    <INT key="REGEXP" value="Parkplatz_TH"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="FileLog"/>
+    <INT key="currentlogfile" value="/var/log/fhem/Parkplatz_TH-2011.log"/>
+    <INT key="logfile" value="/var/log/fhem/Parkplatz_TH-%Y.log"/>
+    <ATTR key="logtype" value="hms:Temp/Hum,text"/>
+    <ATTR key="room" value="Garten"/>
+</FileLog>
+<FileLog name="FileLog_SIS_PMS_01_01_38_fc_98.1" state="active" sets="reopen" attrs="room comment disable:0,1 logtype nrarchive archivedir archivecmd DarkPeriod">
+    <INT key="DEF" value="/var/log/fhem/SIS_PMS_01_01_38_fc_98.1-%Y.log SIS_PMS_01_01_38_fc_98.1"/>
+    <INT key="NAME" value="FileLog_SIS_PMS_01_01_38_fc_98.1"/>
+    <INT key="NR" value="78"/>
+    <INT key="REGEXP" value="SIS_PMS_01_01_38_fc_98.1"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="FileLog"/>
+    <INT key="currentlogfile" value="/var/log/fhem/SIS_PMS_01_01_38_fc_98.1-2011.log"/>
+    <INT key="logfile" value="/var/log/fhem/SIS_PMS_01_01_38_fc_98.1-%Y.log"/>
+    <ATTR key="logtype" value="text"/>
+    <ATTR key="room" value="SIS_PMS"/>
+</FileLog>
+<FileLog name="FileLog_SIS_PMS_01_01_38_fc_98.2" state="active" sets="reopen" attrs="room comment disable:0,1 logtype nrarchive archivedir archivecmd DarkPeriod">
+    <INT key="DEF" value="/var/log/fhem/SIS_PMS_01_01_38_fc_98.2-%Y.log SIS_PMS_01_01_38_fc_98.2"/>
+    <INT key="NAME" value="FileLog_SIS_PMS_01_01_38_fc_98.2"/>
+    <INT key="NR" value="80"/>
+    <INT key="REGEXP" value="SIS_PMS_01_01_38_fc_98.2"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="FileLog"/>
+    <INT key="currentlogfile" value="/var/log/fhem/SIS_PMS_01_01_38_fc_98.2-2011.log"/>
+    <INT key="logfile" value="/var/log/fhem/SIS_PMS_01_01_38_fc_98.2-%Y.log"/>
+    <ATTR key="logtype" value="text"/>
+    <ATTR key="room" value="SIS_PMS"/>
+</FileLog>
+<FileLog name="FileLog_SIS_PMS_01_01_38_fc_98.3" state="active" sets="reopen" attrs="room comment disable:0,1 logtype nrarchive archivedir archivecmd DarkPeriod">
+    <INT key="DEF" value="/var/log/fhem/SIS_PMS_01_01_38_fc_98.3-%Y.log SIS_PMS_01_01_38_fc_98.3"/>
+    <INT key="NAME" value="FileLog_SIS_PMS_01_01_38_fc_98.3"/>
+    <INT key="NR" value="82"/>
+    <INT key="REGEXP" value="SIS_PMS_01_01_38_fc_98.3"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="FileLog"/>
+    <INT key="currentlogfile" value="/var/log/fhem/SIS_PMS_01_01_38_fc_98.3-2011.log"/>
+    <INT key="logfile" value="/var/log/fhem/SIS_PMS_01_01_38_fc_98.3-%Y.log"/>
+    <ATTR key="logtype" value="text"/>
+    <ATTR key="room" value="SIS_PMS"/>
+</FileLog>
+<FileLog name="FileLog_SIS_PMS_01_01_38_fc_98.4" state="active" sets="reopen" attrs="room comment disable:0,1 logtype nrarchive archivedir archivecmd DarkPeriod">
+    <INT key="DEF" value="/var/log/fhem/SIS_PMS_01_01_38_fc_98.4-%Y.log SIS_PMS_01_01_38_fc_98.4"/>
+    <INT key="NAME" value="FileLog_SIS_PMS_01_01_38_fc_98.4"/>
+    <INT key="NR" value="84"/>
+    <INT key="REGEXP" value="SIS_PMS_01_01_38_fc_98.4"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="FileLog"/>
+    <INT key="currentlogfile" value="/var/log/fhem/SIS_PMS_01_01_38_fc_98.4-2011.log"/>
+    <INT key="logfile" value="/var/log/fhem/SIS_PMS_01_01_38_fc_98.4-%Y.log"/>
+    <ATTR key="logtype" value="text"/>
+    <ATTR key="room" value="SIS_PMS"/>
+</FileLog>
+<FileLog name="FileLog_SIS_PMS_7a_b7_70_e9_db.1" state="active" sets="reopen" attrs="room comment disable:0,1 logtype nrarchive archivedir archivecmd DarkPeriod">
+    <INT key="DEF" value="/var/log/fhem/SIS_PMS_7a_b7_70_e9_db.1-%Y.log SIS_PMS_7a_b7_70_e9_db.1"/>
+    <INT key="NAME" value="FileLog_SIS_PMS_7a_b7_70_e9_db.1"/>
+    <INT key="NR" value="138"/>
+    <INT key="REGEXP" value="SIS_PMS_7a_b7_70_e9_db.1"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="FileLog"/>
+    <INT key="currentlogfile" value="/var/log/fhem/SIS_PMS_7a_b7_70_e9_db.1-2011.log"/>
+    <INT key="logfile" value="/var/log/fhem/SIS_PMS_7a_b7_70_e9_db.1-%Y.log"/>
+    <ATTR key="logtype" value="text"/>
+    <ATTR key="room" value="SIS_PMS"/>
+</FileLog>
+<FileLog name="FileLog_SIS_PMS_7a_b7_70_e9_db.2" state="active" sets="reopen" attrs="room comment disable:0,1 logtype nrarchive archivedir archivecmd DarkPeriod">
+    <INT key="DEF" value="/var/log/fhem/SIS_PMS_7a_b7_70_e9_db.2-%Y.log SIS_PMS_7a_b7_70_e9_db.2"/>
+    <INT key="NAME" value="FileLog_SIS_PMS_7a_b7_70_e9_db.2"/>
+    <INT key="NR" value="140"/>
+    <INT key="REGEXP" value="SIS_PMS_7a_b7_70_e9_db.2"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="FileLog"/>
+    <INT key="currentlogfile" value="/var/log/fhem/SIS_PMS_7a_b7_70_e9_db.2-2011.log"/>
+    <INT key="logfile" value="/var/log/fhem/SIS_PMS_7a_b7_70_e9_db.2-%Y.log"/>
+    <ATTR key="logtype" value="text"/>
+    <ATTR key="room" value="SIS_PMS"/>
+</FileLog>
+<FileLog name="FileLog_SIS_PMS_7a_b7_70_e9_db.3" state="active" sets="reopen" attrs="room comment disable:0,1 logtype nrarchive archivedir archivecmd DarkPeriod">
+    <INT key="DEF" value="/var/log/fhem/SIS_PMS_7a_b7_70_e9_db.3-%Y.log SIS_PMS_7a_b7_70_e9_db.3"/>
+    <INT key="NAME" value="FileLog_SIS_PMS_7a_b7_70_e9_db.3"/>
+    <INT key="NR" value="142"/>
+    <INT key="REGEXP" value="SIS_PMS_7a_b7_70_e9_db.3"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="FileLog"/>
+    <INT key="currentlogfile" value="/var/log/fhem/SIS_PMS_7a_b7_70_e9_db.3-2011.log"/>
+    <INT key="logfile" value="/var/log/fhem/SIS_PMS_7a_b7_70_e9_db.3-%Y.log"/>
+    <ATTR key="logtype" value="text"/>
+    <ATTR key="room" value="SIS_PMS"/>
+</FileLog>
+<FileLog name="FileLog_SIS_PMS_7a_b7_70_e9_db.4" state="active" sets="reopen" attrs="room comment disable:0,1 logtype nrarchive archivedir archivecmd DarkPeriod">
+    <INT key="DEF" value="/var/log/fhem/SIS_PMS_7a_b7_70_e9_db.4-%Y.log SIS_PMS_7a_b7_70_e9_db.4"/>
+    <INT key="NAME" value="FileLog_SIS_PMS_7a_b7_70_e9_db.4"/>
+    <INT key="NR" value="144"/>
+    <INT key="REGEXP" value="SIS_PMS_7a_b7_70_e9_db.4"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="FileLog"/>
+    <INT key="currentlogfile" value="/var/log/fhem/SIS_PMS_7a_b7_70_e9_db.4-2011.log"/>
+    <INT key="logfile" value="/var/log/fhem/SIS_PMS_7a_b7_70_e9_db.4-%Y.log"/>
+    <ATTR key="logtype" value="text"/>
+    <ATTR key="room" value="SIS_PMS"/>
+</FileLog>
+<FileLog name="FileLog_SIS_PMS_80_b7_b0_85_b8.1" state="active" sets="reopen" attrs="room comment disable:0,1 logtype nrarchive archivedir archivecmd DarkPeriod">
+    <INT key="DEF" value="/var/log/fhem/SIS_PMS_80_b7_b0_85_b8.1-%Y.log SIS_PMS_80_b7_b0_85_b8.1"/>
+    <INT key="NAME" value="FileLog_SIS_PMS_80_b7_b0_85_b8.1"/>
+    <INT key="NR" value="146"/>
+    <INT key="REGEXP" value="SIS_PMS_80_b7_b0_85_b8.1"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="FileLog"/>
+    <INT key="currentlogfile" value="/var/log/fhem/SIS_PMS_80_b7_b0_85_b8.1-2011.log"/>
+    <INT key="logfile" value="/var/log/fhem/SIS_PMS_80_b7_b0_85_b8.1-%Y.log"/>
+    <ATTR key="logtype" value="text"/>
+    <ATTR key="room" value="SIS_PMS"/>
+</FileLog>
+<FileLog name="FileLog_SIS_PMS_80_b7_b0_85_b8.2" state="active" sets="reopen" attrs="room comment disable:0,1 logtype nrarchive archivedir archivecmd DarkPeriod">
+    <INT key="DEF" value="/var/log/fhem/SIS_PMS_80_b7_b0_85_b8.2-%Y.log SIS_PMS_80_b7_b0_85_b8.2"/>
+    <INT key="NAME" value="FileLog_SIS_PMS_80_b7_b0_85_b8.2"/>
+    <INT key="NR" value="148"/>
+    <INT key="REGEXP" value="SIS_PMS_80_b7_b0_85_b8.2"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="FileLog"/>
+    <INT key="currentlogfile" value="/var/log/fhem/SIS_PMS_80_b7_b0_85_b8.2-2011.log"/>
+    <INT key="logfile" value="/var/log/fhem/SIS_PMS_80_b7_b0_85_b8.2-%Y.log"/>
+    <ATTR key="logtype" value="text"/>
+    <ATTR key="room" value="SIS_PMS"/>
+</FileLog>
+<FileLog name="FileLog_SIS_PMS_80_b7_b0_85_b8.3" state="active" sets="reopen" attrs="room comment disable:0,1 logtype nrarchive archivedir archivecmd DarkPeriod">
+    <INT key="DEF" value="/var/log/fhem/SIS_PMS_80_b7_b0_85_b8.3-%Y.log SIS_PMS_80_b7_b0_85_b8.3"/>
+    <INT key="NAME" value="FileLog_SIS_PMS_80_b7_b0_85_b8.3"/>
+    <INT key="NR" value="150"/>
+    <INT key="REGEXP" value="SIS_PMS_80_b7_b0_85_b8.3"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="FileLog"/>
+    <INT key="currentlogfile" value="/var/log/fhem/SIS_PMS_80_b7_b0_85_b8.3-2011.log"/>
+    <INT key="logfile" value="/var/log/fhem/SIS_PMS_80_b7_b0_85_b8.3-%Y.log"/>
+    <ATTR key="logtype" value="text"/>
+    <ATTR key="room" value="SIS_PMS"/>
+</FileLog>
+<FileLog name="FileLog_SIS_PMS_80_b7_b0_85_b8.4" state="active" sets="reopen" attrs="room comment disable:0,1 logtype nrarchive archivedir archivecmd DarkPeriod">
+    <INT key="DEF" value="/var/log/fhem/SIS_PMS_80_b7_b0_85_b8.4-%Y.log SIS_PMS_80_b7_b0_85_b8.4"/>
+    <INT key="NAME" value="FileLog_SIS_PMS_80_b7_b0_85_b8.4"/>
+    <INT key="NR" value="152"/>
+    <INT key="REGEXP" value="SIS_PMS_80_b7_b0_85_b8.4"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="FileLog"/>
+    <INT key="currentlogfile" value="/var/log/fhem/SIS_PMS_80_b7_b0_85_b8.4-2011.log"/>
+    <INT key="logfile" value="/var/log/fhem/SIS_PMS_80_b7_b0_85_b8.4-%Y.log"/>
+    <ATTR key="logtype" value="text"/>
+    <ATTR key="room" value="SIS_PMS"/>
+</FileLog>
+<FileLog name="FileLog_TFK_EG" state="active" sets="reopen" attrs="room comment disable:0,1 logtype nrarchive archivedir archivecmd DarkPeriod">
+    <INT key="DEF" value="/var/log/fhem/TFK_EG-%Y.log TFK_EG"/>
+    <INT key="NAME" value="FileLog_TFK_EG"/>
+    <INT key="NR" value="135"/>
+    <INT key="REGEXP" value="TFK_EG"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="FileLog"/>
+    <INT key="currentlogfile" value="/var/log/fhem/TFK_EG-2011.log"/>
+    <INT key="logfile" value="/var/log/fhem/TFK_EG-%Y.log"/>
+    <ATTR key="logtype" value="fht80tf:Window,text"/>
+    <ATTR key="room" value="Wohnen"/>
+</FileLog>
+<FileLog name="FileLog_TV_LED" state="active" sets="reopen" attrs="room comment disable:0,1 logtype nrarchive archivedir archivecmd DarkPeriod">
+    <INT key="DEF" value="/var/log/fhem/TV_LED-%Y.log TV_LED"/>
+    <INT key="NAME" value="FileLog_TV_LED"/>
+    <INT key="NR" value="70"/>
+    <INT key="REGEXP" value="TV_LED"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="FileLog"/>
+    <INT key="currentlogfile" value="/var/log/fhem/TV_LED-2011.log"/>
+    <INT key="logfile" value="/var/log/fhem/TV_LED-%Y.log"/>
+    <ATTR key="logtype" value="text"/>
+    <ATTR key="room" value="FS20"/>
+</FileLog>
+<FileLog name="FileLog_TerSrv_EM" state="active" sets="reopen" attrs="room comment disable:0,1 logtype nrarchive archivedir archivecmd DarkPeriod">
+    <INT key="DEF" value="/var/log/fhem/TerSrv_EM-%Y.log TerSrv_EM:CNT:.*"/>
+    <INT key="NAME" value="FileLog_TerSrv_EM"/>
+    <INT key="NR" value="55"/>
+    <INT key="REGEXP" value="TerSrv_EM:CNT:.*"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="FileLog"/>
+    <INT key="currentlogfile" value="/var/log/fhem/TerSrv_EM-2011.log"/>
+    <INT key="logfile" value="/var/log/fhem/TerSrv_EM-%Y.log"/>
+    <ATTR key="logtype" value="cul_em:Power,text"/>
+    <ATTR key="room" value="Wohnen"/>
+</FileLog>
+<FileLog name="FileLog_Terrarium_TH" state="active" sets="reopen" attrs="room comment disable:0,1 logtype nrarchive archivedir archivecmd DarkPeriod">
+    <INT key="DEF" value="/var/log/fhem/Terrarium_TH-%Y.log Terrarium_TH"/>
+    <INT key="NAME" value="FileLog_Terrarium_TH"/>
+    <INT key="NR" value="63"/>
+    <INT key="REGEXP" value="Terrarium_TH"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="FileLog"/>
+    <INT key="currentlogfile" value="/var/log/fhem/Terrarium_TH-2011.log"/>
+    <INT key="logfile" value="/var/log/fhem/Terrarium_TH-%Y.log"/>
+    <ATTR key="logtype" value="hms:Temp/Hum,text"/>
+    <ATTR key="room" value="Wohnen"/>
+</FileLog>
+<FileLog name="FileLog_VCR_ST" state="active" sets="reopen" attrs="room comment disable:0,1 logtype nrarchive archivedir archivecmd DarkPeriod">
+    <INT key="DEF" value="/var/log/fhem/VCR_ST-%Y.log VCR_ST"/>
+    <INT key="NAME" value="FileLog_VCR_ST"/>
+    <INT key="NR" value="68"/>
+    <INT key="REGEXP" value="VCR_ST"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="FileLog"/>
+    <INT key="currentlogfile" value="/var/log/fhem/VCR_ST-2011.log"/>
+    <INT key="logfile" value="/var/log/fhem/VCR_ST-%Y.log"/>
+    <ATTR key="logtype" value="text"/>
+    <ATTR key="room" value="FS20"/>
+</FileLog>
+<FileLog name="FileLog_WS3600_DP" state="active" sets="reopen" attrs="room comment disable:0,1 logtype nrarchive archivedir archivecmd DarkPeriod">
+    <INT key="DEF" value="/var/log/fhem/WS3600_DP-%Y.log WS3600_DP"/>
+    <INT key="NAME" value="FileLog_WS3600_DP"/>
+    <INT key="NR" value="115"/>
+    <INT key="REGEXP" value="WS3600_DP"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="FileLog"/>
+    <INT key="currentlogfile" value="/var/log/fhem/WS3600_DP-2011.log"/>
+    <INT key="logfile" value="/var/log/fhem/WS3600_DP-%Y.log"/>
+    <ATTR key="logtype" value="text"/>
+    <ATTR key="room" value="EnvSens"/>
+</FileLog>
+<FileLog name="FileLog_WS3600_Forecast" state="active" sets="reopen" attrs="room comment disable:0,1 logtype nrarchive archivedir archivecmd DarkPeriod">
+    <INT key="DEF" value="/var/log/fhem/WS3600_Forecast-%Y.log WS3600_Forecast"/>
+    <INT key="NAME" value="FileLog_WS3600_Forecast"/>
+    <INT key="NR" value="129"/>
+    <INT key="REGEXP" value="WS3600_Forecast"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="FileLog"/>
+    <INT key="currentlogfile" value="/var/log/fhem/WS3600_Forecast-2011.log"/>
+    <INT key="logfile" value="/var/log/fhem/WS3600_Forecast-%Y.log"/>
+    <ATTR key="logtype" value="text"/>
+    <ATTR key="room" value="EnvSens"/>
+</FileLog>
+<FileLog name="FileLog_WS3600_RHi" state="active" sets="reopen" attrs="room comment disable:0,1 logtype nrarchive archivedir archivecmd DarkPeriod">
+    <INT key="DEF" value="/var/log/fhem/WS3600_RHi-%Y.log WS3600_RHi"/>
+    <INT key="NAME" value="FileLog_WS3600_RHi"/>
+    <INT key="NR" value="117"/>
+    <INT key="REGEXP" value="WS3600_RHi"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="FileLog"/>
+    <INT key="currentlogfile" value="/var/log/fhem/WS3600_RHi-2011.log"/>
+    <INT key="logfile" value="/var/log/fhem/WS3600_RHi-%Y.log"/>
+    <ATTR key="logtype" value="text"/>
+    <ATTR key="room" value="EnvSens"/>
+</FileLog>
+<FileLog name="FileLog_WS3600_RHo" state="active" sets="reopen" attrs="room comment disable:0,1 logtype nrarchive archivedir archivecmd DarkPeriod">
+    <INT key="DEF" value="/var/log/fhem/WS3600_RHo-%Y.log WS3600_RHo"/>
+    <INT key="NAME" value="FileLog_WS3600_RHo"/>
+    <INT key="NR" value="119"/>
+    <INT key="REGEXP" value="WS3600_RHo"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="FileLog"/>
+    <INT key="currentlogfile" value="/var/log/fhem/WS3600_RHo-2011.log"/>
+    <INT key="logfile" value="/var/log/fhem/WS3600_RHo-%Y.log"/>
+    <ATTR key="logtype" value="text"/>
+    <ATTR key="room" value="EnvSens"/>
+</FileLog>
+<FileLog name="FileLog_WS3600_RP" state="active" sets="reopen" attrs="room comment disable:0,1 logtype nrarchive archivedir archivecmd DarkPeriod">
+    <INT key="DEF" value="/var/log/fhem/WS3600_RP-%Y.log WS3600_RP"/>
+    <INT key="NAME" value="FileLog_WS3600_RP"/>
+    <INT key="NR" value="125"/>
+    <INT key="REGEXP" value="WS3600_RP"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="FileLog"/>
+    <INT key="currentlogfile" value="/var/log/fhem/WS3600_RP-2011.log"/>
+    <INT key="logfile" value="/var/log/fhem/WS3600_RP-%Y.log"/>
+    <ATTR key="logtype" value="text"/>
+    <ATTR key="room" value="EnvSens"/>
+</FileLog>
+<FileLog name="FileLog_WS3600_Rain" state="active" sets="reopen" attrs="room comment disable:0,1 logtype nrarchive archivedir archivecmd DarkPeriod">
+    <INT key="DEF" value="/var/log/fhem/WS3600_Rain-%Y.log WS3600_Rain"/>
+    <INT key="NAME" value="FileLog_WS3600_Rain"/>
+    <INT key="NR" value="131"/>
+    <INT key="REGEXP" value="WS3600_Rain"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="FileLog"/>
+    <INT key="currentlogfile" value="/var/log/fhem/WS3600_Rain-2011.log"/>
+    <INT key="logfile" value="/var/log/fhem/WS3600_Rain-%Y.log"/>
+    <ATTR key="logtype" value="text"/>
+    <ATTR key="room" value="EnvSens"/>
+</FileLog>
+<FileLog name="FileLog_WS3600_Tendency" state="active" sets="reopen" attrs="room comment disable:0,1 logtype nrarchive archivedir archivecmd DarkPeriod">
+    <INT key="DEF" value="/var/log/fhem/WS3600_Tendency-%Y.log WS3600_Tendency"/>
+    <INT key="NAME" value="FileLog_WS3600_Tendency"/>
+    <INT key="NR" value="127"/>
+    <INT key="REGEXP" value="WS3600_Tendency"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="FileLog"/>
+    <INT key="currentlogfile" value="/var/log/fhem/WS3600_Tendency-2011.log"/>
+    <INT key="logfile" value="/var/log/fhem/WS3600_Tendency-%Y.log"/>
+    <ATTR key="logtype" value="text"/>
+    <ATTR key="room" value="EnvSens"/>
+</FileLog>
+<FileLog name="FileLog_WS3600_Ti" state="active" sets="reopen" attrs="room comment disable:0,1 logtype nrarchive archivedir archivecmd DarkPeriod">
+    <INT key="DEF" value="/var/log/fhem/WS3600_Ti-%Y.log WS3600_Ti"/>
+    <INT key="NAME" value="FileLog_WS3600_Ti"/>
+    <INT key="NR" value="109"/>
+    <INT key="REGEXP" value="WS3600_Ti"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="FileLog"/>
+    <INT key="currentlogfile" value="/var/log/fhem/WS3600_Ti-2011.log"/>
+    <INT key="logfile" value="/var/log/fhem/WS3600_Ti-%Y.log"/>
+    <ATTR key="logtype" value="text"/>
+    <ATTR key="room" value="WSx"/>
+</FileLog>
+<FileLog name="FileLog_WS3600_To" state="active" sets="reopen" attrs="room comment disable:0,1 logtype nrarchive archivedir archivecmd DarkPeriod">
+    <INT key="DEF" value="/var/log/fhem/WS3600_To-%Y.log WS3600_To"/>
+    <INT key="NAME" value="FileLog_WS3600_To"/>
+    <INT key="NR" value="112"/>
+    <INT key="REGEXP" value="WS3600_To"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="FileLog"/>
+    <INT key="currentlogfile" value="/var/log/fhem/WS3600_To-2011.log"/>
+    <INT key="logfile" value="/var/log/fhem/WS3600_To-%Y.log"/>
+    <ATTR key="logtype" value="text"/>
+    <ATTR key="room" value="EnvSens"/>
+</FileLog>
+<FileLog name="FileLog_WS3600_Wind" state="active" sets="reopen" attrs="room comment disable:0,1 logtype nrarchive archivedir archivecmd DarkPeriod">
+    <INT key="DEF" value="/var/log/fhem/WS3600_Wind-%Y.log WS3600_Wind"/>
+    <INT key="NAME" value="FileLog_WS3600_Wind"/>
+    <INT key="NR" value="121"/>
+    <INT key="REGEXP" value="WS3600_Wind"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="FileLog"/>
+    <INT key="currentlogfile" value="/var/log/fhem/WS3600_Wind-2011.log"/>
+    <INT key="logfile" value="/var/log/fhem/WS3600_Wind-%Y.log"/>
+    <ATTR key="logtype" value="text"/>
+    <ATTR key="room" value="EnvSens"/>
+</FileLog>
+<FileLog name="FileLog_WS3600_WindChill" state="active" sets="reopen" attrs="room comment disable:0,1 logtype nrarchive archivedir archivecmd DarkPeriod">
+    <INT key="DEF" value="/var/log/fhem/WS3600_WindChill-%Y.log WS3600_WindChill"/>
+    <INT key="NAME" value="FileLog_WS3600_WindChill"/>
+    <INT key="NR" value="123"/>
+    <INT key="REGEXP" value="WS3600_WindChill"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="FileLog"/>
+    <INT key="currentlogfile" value="/var/log/fhem/WS3600_WindChill-2011.log"/>
+    <INT key="logfile" value="/var/log/fhem/WS3600_WindChill-%Y.log"/>
+    <ATTR key="logtype" value="text"/>
+    <ATTR key="room" value="EnvSens"/>
+</FileLog>
+<FileLog name="FileLog_cam_serv2" state="active" sets="reopen" attrs="room comment disable:0,1 logtype nrarchive archivedir archivecmd DarkPeriod">
+    <INT key="DEF" value="/var/log/fhem/cam_serv2-%Y.log cam_serv2"/>
+    <INT key="NAME" value="FileLog_cam_serv2"/>
+    <INT key="NR" value="89"/>
+    <INT key="REGEXP" value="cam_serv2"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="FileLog"/>
+    <INT key="currentlogfile" value="/var/log/fhem/cam_serv2-2011.log"/>
+    <INT key="logfile" value="/var/log/fhem/cam_serv2-%Y.log"/>
+    <ATTR key="logtype" value="text"/>
+    <ATTR key="room" value="SIS_PMS"/>
+</FileLog>
+<FileLog name="Logfile" state="active" sets="reopen" attrs="room comment disable:0,1 logtype nrarchive archivedir archivecmd DarkPeriod">
+    <INT key="DEF" value="/var/log/fhem/fhem-%Y-%m.log fakelog"/>
+    <INT key="NAME" value="Logfile"/>
+    <INT key="NR" value="15"/>
+    <INT key="REGEXP" value="fakelog"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="FileLog"/>
+    <INT key="currentlogfile" value="/var/log/fhem/fhem-2011-12.log"/>
+    <INT key="logfile" value="/var/log/fhem/fhem-%Y-%m.log"/>
+</FileLog>
+</FileLog_LIST>
+<autocreate_LIST>
+<autocreate name="autocreate" state="active" sets="" attrs="room comment loglevel:0,1,2,3,4,5,6 autosave filelog device_room weblink weblink_room DarkPeriod">
+    <INT key="NAME" value="autocreate"/>
+    <INT key="NR" value="16"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="autocreate"/>
+    <ATTR key="autosave" value="1"/>
+    <ATTR key="device_room" value="%TYPE"/>
+    <ATTR key="filelog" value="/var/log/fhem/%NAME-%Y.log"/>
+    <ATTR key="weblink" value="1"/>
+    <ATTR key="weblink_room" value="Plots"/>
+</autocreate>
+</autocreate_LIST>
+<weblink_LIST>
+<weblink name="weblink_Arbeit_FHT" state="initial" sets="" attrs="room comment fixedrange plotmode plotsize label title DarkPeriod">
+    <INT key="DEF" value="fileplot FileLog_Arbeit_FHT:fht:CURRENT"/>
+    <INT key="LINK" value="FileLog_Arbeit_FHT:fht:CURRENT"/>
+    <INT key="NAME" value="weblink_Arbeit_FHT"/>
+    <INT key="NR" value="21"/>
+    <INT key="STATE" value="initial"/>
+    <INT key="TYPE" value="weblink"/>
+    <INT key="WLTYPE" value="fileplot"/>
+    <ATTR key="label" value="&quot;Arbeit_FHT Min $data{min1}, Max $data{max1}, Last $data{currval1}&quot;"/>
+    <ATTR key="room" value="Arbeit"/>
+</weblink>
+<weblink name="weblink_Arbeit_TF" state="initial" sets="" attrs="room comment fixedrange plotmode plotsize label title DarkPeriod">
+    <INT key="DEF" value="fileplot FileLog_Arbeit_TF:hms:CURRENT"/>
+    <INT key="LINK" value="FileLog_Arbeit_TF:hms:CURRENT"/>
+    <INT key="NAME" value="weblink_Arbeit_TF"/>
+    <INT key="NR" value="27"/>
+    <INT key="STATE" value="initial"/>
+    <INT key="TYPE" value="weblink"/>
+    <INT key="WLTYPE" value="fileplot"/>
+    <ATTR key="label" value="&quot;Arbeit_TF Min $data{min1}, Max $data{max1}, Last $data{currval1}&quot;"/>
+    <ATTR key="room" value="Arbeit"/>
+</weblink>
+<weblink name="weblink_Bad_TH" state="initial" sets="" attrs="room comment fixedrange plotmode plotsize label title DarkPeriod">
+    <INT key="DEF" value="fileplot FileLog_Bad_TH:hms:CURRENT"/>
+    <INT key="LINK" value="FileLog_Bad_TH:hms:CURRENT"/>
+    <INT key="NAME" value="weblink_Bad_TH"/>
+    <INT key="NR" value="33"/>
+    <INT key="STATE" value="initial"/>
+    <INT key="TYPE" value="weblink"/>
+    <INT key="WLTYPE" value="fileplot"/>
+    <ATTR key="label" value="&quot;Bad_TH Min $data{min1}, Max $data{max1}, Last $data{currval1}&quot;"/>
+    <ATTR key="room" value="Plots"/>
+</weblink>
+<weblink name="weblink_Brightness" state="initial" sets="" attrs="room comment fixedrange plotmode plotsize label title DarkPeriod">
+    <INT key="DEF" value="fileplot FileLog_Brightness:hms:CURRENT"/>
+    <INT key="LINK" value="FileLog_Brightness:hms:CURRENT"/>
+    <INT key="NAME" value="weblink_Brightness"/>
+    <INT key="NR" value="76"/>
+    <INT key="STATE" value="initial"/>
+    <INT key="TYPE" value="weblink"/>
+    <INT key="WLTYPE" value="fileplot"/>
+    <ATTR key="label" value="&quot;Brightness Min $data{min1}, Max $data{max1}, Last $data{currval1}&quot;"/>
+    <ATTR key="room" value="Plots"/>
+</weblink>
+<weblink name="weblink_CUL_FHTTK_9dbf85" state="initial" sets="" attrs="room comment fixedrange plotmode plotsize label title DarkPeriod">
+    <INT key="DEF" value="fileplot FileLog_CUL_FHTTK_9dbf85:fht80tf:CURRENT"/>
+    <INT key="LINK" value="FileLog_CUL_FHTTK_9dbf85:fht80tf:CURRENT"/>
+    <INT key="NAME" value="weblink_CUL_FHTTK_9dbf85"/>
+    <INT key="NR" value="178"/>
+    <INT key="STATE" value="initial"/>
+    <INT key="TYPE" value="weblink"/>
+    <INT key="WLTYPE" value="fileplot"/>
+    <ATTR key="label" value="&quot;CUL_FHTTK_9dbf85 Min $data{min1}, Max $data{max1}, Last $data{currval1}&quot;"/>
+    <ATTR key="room" value="Plots"/>
+</weblink>
+<weblink name="weblink_Circle_1" state="initial" sets="" attrs="room comment fixedrange plotmode plotsize label title DarkPeriod">
+    <INT key="DEF" value="fileplot FileLog_Circle_1:pw_circle:CURRENT"/>
+    <INT key="LINK" value="FileLog_Circle_1:pw_circle:CURRENT"/>
+    <INT key="NAME" value="weblink_Circle_1"/>
+    <INT key="NR" value="7"/>
+    <INT key="STATE" value="initial"/>
+    <INT key="TYPE" value="weblink"/>
+    <INT key="WLTYPE" value="fileplot"/>
+    <ATTR key="label" value="&quot;Circle_1 Min $data{min1}, Max $data{max1}, Last $data{currval1}&quot;"/>
+    <ATTR key="room" value="Wohnen"/>
+</weblink>
+<weblink name="weblink_Circle_Sheeva" state="initial" sets="" attrs="room comment fixedrange plotmode plotsize label title DarkPeriod">
+    <INT key="DEF" value="fileplot FileLog_Circle_Sheeva:pw_circle:CURRENT"/>
+    <INT key="LINK" value="FileLog_Circle_Sheeva:pw_circle:CURRENT"/>
+    <INT key="NAME" value="weblink_Circle_Sheeva"/>
+    <INT key="NR" value="10"/>
+    <INT key="STATE" value="initial"/>
+    <INT key="TYPE" value="weblink"/>
+    <INT key="WLTYPE" value="fileplot"/>
+    <ATTR key="label" value="&quot;Circle_Sheeva Min $data{min1}, Max $data{max1}, Last $data{currval1}&quot;"/>
+    <ATTR key="room" value="Wohnen"/>
+</weblink>
+<weblink name="weblink_EM_Arbeit" state="initial" sets="" attrs="room comment fixedrange plotmode plotsize label title DarkPeriod">
+    <INT key="DEF" value="fileplot FileLog_Arbeit_EM:cul_em:CURRENT"/>
+    <INT key="LINK" value="FileLog_Arbeit_EM:cul_em:CURRENT"/>
+    <INT key="NAME" value="weblink_EM_Arbeit"/>
+    <INT key="NR" value="24"/>
+    <INT key="STATE" value="initial"/>
+    <INT key="TYPE" value="weblink"/>
+    <INT key="WLTYPE" value="fileplot"/>
+    <ATTR key="label" value="&quot;Arbeit_EM Min $data{min1}, Max $data{max1}, Last $data{currval1}&quot;"/>
+    <ATTR key="room" value="Arbeit"/>
+</weblink>
+<weblink name="weblink_EM_Media" state="initial" sets="" attrs="room comment fixedrange plotmode plotsize label title DarkPeriod">
+    <INT key="DEF" value="fileplot FileLog_Media_EM:cul_em:CURRENT"/>
+    <INT key="LINK" value="FileLog_Media_EM:cul_em:CURRENT"/>
+    <INT key="NAME" value="weblink_EM_Media"/>
+    <INT key="NR" value="61"/>
+    <INT key="STATE" value="initial"/>
+    <INT key="TYPE" value="weblink"/>
+    <INT key="WLTYPE" value="fileplot"/>
+    <ATTR key="label" value="&quot;Media_EM Min $data{min1}, Max $data{max1}, Last $data{currval1}&quot;"/>
+    <ATTR key="room" value="Wohnen"/>
+</weblink>
+<weblink name="weblink_EM_TerSrv" state="initial" sets="" attrs="room comment fixedrange plotmode plotsize label title DarkPeriod">
+    <INT key="DEF" value="fileplot FileLog_TerSrv_EM:cul_em:CURRENT"/>
+    <INT key="LINK" value="FileLog_TerSrv_EM:cul_em:CURRENT"/>
+    <INT key="NAME" value="weblink_EM_TerSrv"/>
+    <INT key="NR" value="56"/>
+    <INT key="STATE" value="initial"/>
+    <INT key="TYPE" value="weblink"/>
+    <INT key="WLTYPE" value="fileplot"/>
+    <ATTR key="label" value="&quot;TerSrv_EM Min $data{min1}, Max $data{max1}, Last $data{currval1}&quot;"/>
+    <ATTR key="room" value="Wohnen"/>
+</weblink>
+<weblink name="weblink_Essz_TH" state="initial" sets="" attrs="room comment fixedrange plotmode plotsize label title DarkPeriod">
+    <INT key="DEF" value="fileplot FileLog_Essz_TH:hms:CURRENT"/>
+    <INT key="LINK" value="FileLog_Essz_TH:hms:CURRENT"/>
+    <INT key="NAME" value="weblink_Essz_TH"/>
+    <INT key="NR" value="36"/>
+    <INT key="STATE" value="initial"/>
+    <INT key="TYPE" value="weblink"/>
+    <INT key="WLTYPE" value="fileplot"/>
+    <ATTR key="label" value="&quot;Essz_TH Min $data{min1}, Max $data{max1}, Last $data{currval1}&quot;"/>
+    <ATTR key="room" value="Essen"/>
+</weblink>
+<weblink name="weblink_FHT_1f0b" state="initial" sets="" attrs="room comment fixedrange plotmode plotsize label title DarkPeriod">
+    <INT key="DEF" value="fileplot FileLog_FHT_1f0b:fht:CURRENT"/>
+    <INT key="LINK" value="FileLog_FHT_1f0b:fht:CURRENT"/>
+    <INT key="NAME" value="weblink_FHT_1f0b"/>
+    <INT key="NR" value="173"/>
+    <INT key="STATE" value="initial"/>
+    <INT key="TYPE" value="weblink"/>
+    <INT key="WLTYPE" value="fileplot"/>
+    <ATTR key="label" value="&quot;FHT_1f0b Min $data{min1}, Max $data{max1}, Last $data{currval1}&quot;"/>
+    <ATTR key="room" value="Plots"/>
+</weblink>
+<weblink name="weblink_FHT_2592" state="initial" sets="" attrs="room comment fixedrange plotmode plotsize label title DarkPeriod">
+    <INT key="DEF" value="fileplot FileLog_FHT_2592:fht:CURRENT"/>
+    <INT key="LINK" value="FileLog_FHT_2592:fht:CURRENT"/>
+    <INT key="NAME" value="weblink_FHT_2592"/>
+    <INT key="NR" value="170"/>
+    <INT key="STATE" value="initial"/>
+    <INT key="TYPE" value="weblink"/>
+    <INT key="WLTYPE" value="fileplot"/>
+    <ATTR key="label" value="&quot;FHT_2592 Min $data{min1}, Max $data{max1}, Last $data{currval1}&quot;"/>
+    <ATTR key="room" value="Plots"/>
+</weblink>
+<weblink name="weblink_FHT_3202" state="initial" sets="" attrs="room comment fixedrange plotmode plotsize label title DarkPeriod">
+    <INT key="DEF" value="fileplot FileLog_FHT_3202:fht:CURRENT"/>
+    <INT key="LINK" value="FileLog_FHT_3202:fht:CURRENT"/>
+    <INT key="NAME" value="weblink_FHT_3202"/>
+    <INT key="NR" value="164"/>
+    <INT key="STATE" value="initial"/>
+    <INT key="TYPE" value="weblink"/>
+    <INT key="WLTYPE" value="fileplot"/>
+    <ATTR key="label" value="&quot;FHT_3202 Min $data{min1}, Max $data{max1}, Last $data{currval1}&quot;"/>
+    <ATTR key="room" value="Plots"/>
+</weblink>
+<weblink name="weblink_FHT_4c1f" state="initial" sets="" attrs="room comment fixedrange plotmode plotsize label title DarkPeriod">
+    <INT key="DEF" value="fileplot FileLog_FHT_4c1f:fht:CURRENT"/>
+    <INT key="LINK" value="FileLog_FHT_4c1f:fht:CURRENT"/>
+    <INT key="NAME" value="weblink_FHT_4c1f"/>
+    <INT key="NR" value="188"/>
+    <INT key="STATE" value="initial"/>
+    <INT key="TYPE" value="weblink"/>
+    <INT key="WLTYPE" value="fileplot"/>
+    <ATTR key="label" value="&quot;FHT_4c1f Min $data{min1}, Max $data{max1}, Last $data{currval1}&quot;"/>
+    <ATTR key="room" value="Plots"/>
+</weblink>
+<weblink name="weblink_FHT_9a9e" state="initial" sets="" attrs="room comment fixedrange plotmode plotsize label title DarkPeriod">
+    <INT key="DEF" value="fileplot FileLog_FHT_9a9e:fht:CURRENT"/>
+    <INT key="LINK" value="FileLog_FHT_9a9e:fht:CURRENT"/>
+    <INT key="NAME" value="weblink_FHT_9a9e"/>
+    <INT key="NR" value="183"/>
+    <INT key="STATE" value="initial"/>
+    <INT key="TYPE" value="weblink"/>
+    <INT key="WLTYPE" value="fileplot"/>
+    <ATTR key="label" value="&quot;FHT_9a9e Min $data{min1}, Max $data{max1}, Last $data{currval1}&quot;"/>
+    <ATTR key="room" value="Plots"/>
+</weblink>
+<weblink name="weblink_Fenster_Arbeit" state="initial" sets="" attrs="room comment fixedrange plotmode plotsize label title DarkPeriod">
+    <INT key="DEF" value="fileplot FileLog_Fenster_Arbeit:fht80tf:CURRENT"/>
+    <INT key="LINK" value="FileLog_Fenster_Arbeit:fht80tf:CURRENT"/>
+    <INT key="NAME" value="weblink_Fenster_Arbeit"/>
+    <INT key="NR" value="18"/>
+    <INT key="STATE" value="initial"/>
+    <INT key="TYPE" value="weblink"/>
+    <INT key="WLTYPE" value="fileplot"/>
+    <ATTR key="label" value="&quot;Fenster_Arbeit Min $data{min1}, Max $data{max1}, Last $data{currval1}&quot;"/>
+    <ATTR key="room" value="Arbeit"/>
+</weblink>
+<weblink name="weblink_Fenster_Bad" state="initial" sets="" attrs="room comment fixedrange plotmode plotsize label title DarkPeriod">
+    <INT key="DEF" value="fileplot FileLog_Fenster_Bad:fht80tf:CURRENT"/>
+    <INT key="LINK" value="FileLog_Fenster_Bad:fht80tf:CURRENT"/>
+    <INT key="NAME" value="weblink_Fenster_Bad"/>
+    <INT key="NR" value="30"/>
+    <INT key="STATE" value="initial"/>
+    <INT key="TYPE" value="weblink"/>
+    <INT key="WLTYPE" value="fileplot"/>
+    <ATTR key="label" value="&quot;Fenster_Bad Min $data{min1}, Max $data{max1}, Last $data{currval1}&quot;"/>
+    <ATTR key="room" value="Bad"/>
+</weblink>
+<weblink name="weblink_Fenster_Kueche" state="initial" sets="" attrs="room comment fixedrange plotmode plotsize label title DarkPeriod">
+    <INT key="DEF" value="fileplot FileLog_Fenster_Kueche:fht80tf:CURRENT"/>
+    <INT key="LINK" value="FileLog_Fenster_Kueche:fht80tf:CURRENT"/>
+    <INT key="NAME" value="weblink_Fenster_Kueche"/>
+    <INT key="NR" value="58"/>
+    <INT key="STATE" value="initial"/>
+    <INT key="TYPE" value="weblink"/>
+    <INT key="WLTYPE" value="fileplot"/>
+    <ATTR key="label" value="&quot;Fenster_Kueche Min $data{min1}, Max $data{max1}, Last $data{currval1}&quot;"/>
+    <ATTR key="room" value="Wohnen"/>
+</weblink>
+<weblink name="weblink_Flur_TH" state="initial" sets="" attrs="room comment fixedrange plotmode plotsize label title DarkPeriod">
+    <INT key="DEF" value="fileplot FileLog_Flur_TH:hms:CURRENT"/>
+    <INT key="LINK" value="FileLog_Flur_TH:hms:CURRENT"/>
+    <INT key="NAME" value="weblink_Flur_TH"/>
+    <INT key="NR" value="39"/>
+    <INT key="STATE" value="initial"/>
+    <INT key="TYPE" value="weblink"/>
+    <INT key="WLTYPE" value="fileplot"/>
+    <ATTR key="label" value="&quot;Flur_TH Min $data{min1}, Max $data{max1}, Last $data{currval1}&quot;"/>
+    <ATTR key="room" value="Flur"/>
+</weblink>
+<weblink name="weblink_HMS100TFK_e07e" state="initial" sets="" attrs="room comment fixedrange plotmode plotsize label title DarkPeriod">
+    <INT key="DEF" value="fileplot FileLog_HMS100TFK_e07e:fht80tf:CURRENT"/>
+    <INT key="LINK" value="FileLog_HMS100TFK_e07e:fht80tf:CURRENT"/>
+    <INT key="NAME" value="weblink_HMS100TFK_e07e"/>
+    <INT key="NR" value="167"/>
+    <INT key="STATE" value="initial"/>
+    <INT key="TYPE" value="weblink"/>
+    <INT key="WLTYPE" value="fileplot"/>
+    <ATTR key="label" value="&quot;HMS100TFK_e07e Min $data{min1}, Max $data{max1}, Last $data{currval1}&quot;"/>
+    <ATTR key="room" value="Plots"/>
+</weblink>
+<weblink name="weblink_Huette_TH" state="initial" sets="" attrs="room comment fixedrange plotmode plotsize label title DarkPeriod">
+    <INT key="DEF" value="fileplot FileLog_Huette_TH:hms:CURRENT"/>
+    <INT key="LINK" value="FileLog_Huette_TH:hms:CURRENT"/>
+    <INT key="NAME" value="weblink_Huette_TH"/>
+    <INT key="NR" value="45"/>
+    <INT key="STATE" value="initial"/>
+    <INT key="TYPE" value="weblink"/>
+    <INT key="WLTYPE" value="fileplot"/>
+    <ATTR key="label" value="&quot;Huette_TH Min $data{min1}, Max $data{max1}, Last $data{currval1}&quot;"/>
+    <ATTR key="room" value="Garten"/>
+</weblink>
+<weblink name="weblink_Kammer_TH" state="initial" sets="" attrs="room comment fixedrange plotmode plotsize label title DarkPeriod">
+    <INT key="DEF" value="fileplot FileLog_Kammer_TH:hms:CURRENT"/>
+    <INT key="LINK" value="FileLog_Kammer_TH:hms:CURRENT"/>
+    <INT key="NAME" value="weblink_Kammer_TH"/>
+    <INT key="NR" value="48"/>
+    <INT key="STATE" value="initial"/>
+    <INT key="TYPE" value="weblink"/>
+    <INT key="WLTYPE" value="fileplot"/>
+    <ATTR key="label" value="&quot;Kammer_TH Min $data{min1}, Max $data{max1}, Last $data{currval1}&quot;"/>
+    <ATTR key="room" value="Kammer"/>
+</weblink>
+<weblink name="weblink_Keller_TH" state="initial" sets="" attrs="room comment fixedrange plotmode plotsize label title DarkPeriod">
+    <INT key="DEF" value="fileplot FileLog_Keller_TH:hms:CURRENT"/>
+    <INT key="LINK" value="FileLog_Keller_TH:hms:CURRENT"/>
+    <INT key="NAME" value="weblink_Keller_TH"/>
+    <INT key="NR" value="87"/>
+    <INT key="STATE" value="initial"/>
+    <INT key="TYPE" value="weblink"/>
+    <INT key="WLTYPE" value="fileplot"/>
+    <ATTR key="label" value="&quot;Keller_TH Min $data{min1}, Max $data{max1}, Last $data{currval1}&quot;"/>
+    <ATTR key="room" value="Plots"/>
+</weblink>
+<weblink name="weblink_Kinder_TF" state="initial" sets="" attrs="room comment fixedrange plotmode plotsize label title DarkPeriod">
+    <INT key="DEF" value="fileplot FileLog_Kinder_TF:hms:CURRENT"/>
+    <INT key="LINK" value="FileLog_Kinder_TF:hms:CURRENT"/>
+    <INT key="NAME" value="weblink_Kinder_TF"/>
+    <INT key="NR" value="51"/>
+    <INT key="STATE" value="initial"/>
+    <INT key="TYPE" value="weblink"/>
+    <INT key="WLTYPE" value="fileplot"/>
+    <ATTR key="label" value="&quot;Kinder_TF Min $data{min1}, Max $data{max1}, Last $data{currval1}&quot;"/>
+    <ATTR key="room" value="Kinder"/>
+</weblink>
+<weblink name="weblink_Kueche_TFK" state="initial" sets="" attrs="room comment fixedrange plotmode plotsize label title DarkPeriod">
+    <INT key="DEF" value="fileplot FileLog_Kueche_TFK:fht80tf:CURRENT"/>
+    <INT key="LINK" value="FileLog_Kueche_TFK:fht80tf:CURRENT"/>
+    <INT key="NAME" value="weblink_Kueche_TFK"/>
+    <INT key="NR" value="107"/>
+    <INT key="STATE" value="initial"/>
+    <INT key="TYPE" value="weblink"/>
+    <INT key="WLTYPE" value="fileplot"/>
+    <ATTR key="label" value="&quot;Kueche_TFK Min $data{min1}, Max $data{max1}, Last $data{currval1}&quot;"/>
+    <ATTR key="room" value="Plots"/>
+</weblink>
+<weblink name="weblink_Parkplatz_TH" state="initial" sets="" attrs="room comment fixedrange plotmode plotsize label title DarkPeriod">
+    <INT key="DEF" value="fileplot FileLog_Parkplatz_TH:hms:CURRENT"/>
+    <INT key="LINK" value="FileLog_Parkplatz_TH:hms:CURRENT"/>
+    <INT key="NAME" value="weblink_Parkplatz_TH"/>
+    <INT key="NR" value="42"/>
+    <INT key="STATE" value="initial"/>
+    <INT key="TYPE" value="weblink"/>
+    <INT key="WLTYPE" value="fileplot"/>
+    <ATTR key="label" value="&quot;Parkplatz_TH Min $data{min1}, Max $data{max1}, Last $data{currval1}&quot;"/>
+    <ATTR key="room" value="Garten"/>
+</weblink>
+<weblink name="weblink_TFK_EG" state="initial" sets="" attrs="room comment fixedrange plotmode plotsize label title DarkPeriod">
+    <INT key="DEF" value="fileplot FileLog_TFK_EG:fht80tf:CURRENT"/>
+    <INT key="LINK" value="FileLog_TFK_EG:fht80tf:CURRENT"/>
+    <INT key="NAME" value="weblink_TFK_EG"/>
+    <INT key="NR" value="136"/>
+    <INT key="STATE" value="initial"/>
+    <INT key="TYPE" value="weblink"/>
+    <INT key="WLTYPE" value="fileplot"/>
+    <ATTR key="label" value="&quot;TFK_EG Min $data{min1}, Max $data{max1}, Last $data{currval1}&quot;"/>
+    <ATTR key="room" value="Wohnen"/>
+</weblink>
+<weblink name="weblink_Terrarium_TH" state="initial" sets="" attrs="room comment fixedrange plotmode plotsize label title DarkPeriod">
+    <INT key="DEF" value="fileplot FileLog_Terrarium_TH:hms:CURRENT"/>
+    <INT key="LINK" value="FileLog_Terrarium_TH:hms:CURRENT"/>
+    <INT key="NAME" value="weblink_Terrarium_TH"/>
+    <INT key="NR" value="64"/>
+    <INT key="STATE" value="initial"/>
+    <INT key="TYPE" value="weblink"/>
+    <INT key="WLTYPE" value="fileplot"/>
+    <ATTR key="label" value="&quot;Terrarium_TH Min $data{min1}, Max $data{max1}, Last $data{currval1}&quot;"/>
+    <ATTR key="room" value="Wohnen"/>
+</weblink>
+<weblink name="weblink_WS3000_Ti" state="initial" sets="" attrs="room comment fixedrange plotmode plotsize label title DarkPeriod">
+    <INT key="DEF" value="fileplot FileLog_WS3600_Ti:wsx_t:CURRENT"/>
+    <INT key="LINK" value="FileLog_WS3600_Ti:wsx_t:CURRENT"/>
+    <INT key="NAME" value="weblink_WS3000_Ti"/>
+    <INT key="NR" value="110"/>
+    <INT key="STATE" value="initial"/>
+    <INT key="TYPE" value="weblink"/>
+    <INT key="WLTYPE" value="fileplot"/>
+</weblink>
+<weblink name="weblink_WS3000_To" state="initial" sets="" attrs="room comment fixedrange plotmode plotsize label title DarkPeriod">
+    <INT key="DEF" value="fileplot FileLog_WS3600_To:wsx_t:CURRENT"/>
+    <INT key="LINK" value="FileLog_WS3600_To:wsx_t:CURRENT"/>
+    <INT key="NAME" value="weblink_WS3000_To"/>
+    <INT key="NR" value="113"/>
+    <INT key="STATE" value="initial"/>
+    <INT key="TYPE" value="weblink"/>
+    <INT key="WLTYPE" value="fileplot"/>
+</weblink>
+</weblink_LIST>
+        </FHZINFO>

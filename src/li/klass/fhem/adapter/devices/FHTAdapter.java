@@ -7,7 +7,7 @@ import li.klass.fhem.R;
 import li.klass.fhem.domain.Device;
 import li.klass.fhem.domain.FHTDevice;
 
-public class FHTAdapter extends DeviceAdapter<FHTDevice> {
+public class FHTAdapter extends DeviceListOnlyAdapter<FHTDevice> {
     @Override
     public View getDeviceView(LayoutInflater layoutInflater, FHTDevice device) {
         View view = layoutInflater.inflate(R.layout.room_detail_fht, null);
@@ -21,6 +21,11 @@ public class FHTAdapter extends DeviceAdapter<FHTDevice> {
         actuator.setText(device.getActuator());
 
         return view;
+    }
+
+    @Override
+    protected View getDeviceDetailView(LayoutInflater layoutInflater, FHTDevice device) {
+        return null;
     }
 
     @Override

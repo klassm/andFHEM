@@ -1,8 +1,6 @@
 package li.klass.fhem.domain;
 
-import android.content.Context;
-import android.preference.PreferenceManager;
-import li.klass.fhem.AndFHEMApplication;
+import li.klass.fhem.data.FileLog;
 
 import java.io.Serializable;
 import java.util.*;
@@ -10,7 +8,11 @@ import java.util.*;
 public class RoomDeviceList implements Serializable {
 
     private String roomName;
+    private boolean containsOnlyLogDevices = true;
+
     private Map<DeviceType, HashSet<Device>> deviceMap = new HashMap<DeviceType, HashSet<Device>>();
+    
+    public static final String ALL_DEVICES_ROOM = "ALL_DEVICES_LIST";
 
     public RoomDeviceList(String roomName) {
         this.roomName = roomName;
@@ -23,27 +25,37 @@ public class RoomDeviceList implements Serializable {
         return deviceList;
     }
 
-    public <T extends Device> void addDevice(DeviceType type, T device) {
+    public <T extends Device> void addDevice(T device) {
         if (device == null) return;
-        getOrCreateDeviceList(type).add(device);
+        getOrCreateDeviceList(device.getDeviceType()).add(device);
+        
+        if (! (device instanceof FileLog)) {
+            containsOnlyLogDevices = false;
+        }
+    }
+    
+    public Set<Device> getAllDevices() {
+        Set<Device> devices = new HashSet<Device>();
+        Collection<HashSet<Device>> devicesCollection = deviceMap.values();
+        for (HashSet<Device> deviceHashSet : devicesCollection) {
+            devices.addAll(deviceHashSet);
+        }
+        return Collections.unmodifiableSet(devices);
     }
 
-    public void addRoomDeviceList(RoomDeviceList roomDeviceList) {
-        Context context = AndFHEMApplication.getContext();
-        boolean showHiddenDevices = PreferenceManager.getDefaultSharedPreferences(context).getBoolean("prefShowHiddenDevices", false);
-
-        Map<DeviceType, HashSet<Device>> inputMap = roomDeviceList.deviceMap;
-
-        for (DeviceType deviceType : inputMap.keySet()) {
-            Set<Device> inputValue = inputMap.get(deviceType);
-            for (Device device : inputValue) {
-                boolean isHiddenDevice = device.isHiddenDevice() && ! showHiddenDevices;
-                Set<Device> devices = getOrCreateDeviceList(deviceType);
-                if (! devices.contains(device) && ! isHiddenDevice) {
-                    devices.add(device);
-                }
+    @SuppressWarnings("unchecked")
+    public <D extends Device> D getDeviceFor(String deviceName) {
+        Set<Device> allDevices = getAllDevices();
+        for (Device allDevice : allDevices) {
+            if (allDevice.getName().equals(deviceName)) {
+                return (D) allDevice;
             }
         }
+        return null;
+    }
+
+    public boolean isOnlyLogDeviceRoom() {
+        return containsOnlyLogDevices;
     }
 
     @SuppressWarnings("unchecked")
@@ -52,5 +64,9 @@ public class RoomDeviceList implements Serializable {
             deviceMap.put(deviceType, new HashSet<Device>());
         }
         return (Set<T>) deviceMap.get(deviceType);
+    }
+
+    public String getRoomName() {
+        return roomName;
     }
 }

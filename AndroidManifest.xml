@@ -13,10 +13,12 @@
         </activity>
 
         <activity android:name=".activities.RoomListActivity" />
-        <activity android:name=".activities.RoomDetailActivity" android:theme="@android:style/Theme.Light" />
-        <activity android:name=".activities.AllDevicesActivity" />
-        <activity android:name=".activities.FavoritesActivity" />
+        <activity android:name=".activities.devicelist.RoomDetailActivity" android:theme="@android:style/Theme.Light" />
+        <activity android:name=".activities.devicelist.AllDevicesActivity" />
+        <activity android:name=".activities.devicelist.FavoritesActivity" />
         <activity android:name=".activities.PreferencesActivity" />
+
+        <activity android:name=".activities.deviceDetail.KS300DetailActivity" android:theme="@android:style/Theme.Light" />
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />

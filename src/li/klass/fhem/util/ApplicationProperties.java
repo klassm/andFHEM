@@ -2,6 +2,7 @@ package li.klass.fhem.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import li.klass.fhem.AndFHEMApplication;
 
 public class ApplicationProperties {
@@ -23,5 +24,9 @@ public class ApplicationProperties {
     private SharedPreferences getPreferences() {
         Context context = AndFHEMApplication.getContext();
         return context.getSharedPreferences(AndFHEMApplication.class.getName(), Context.MODE_PRIVATE);
+    }
+
+    public boolean isDummyMode() {
+        return PreferenceManager.getDefaultSharedPreferences(AndFHEMApplication.getContext()).getBoolean("prefUseDummyData", true);
     }
 }

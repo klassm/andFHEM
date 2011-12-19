@@ -7,7 +7,7 @@ import li.klass.fhem.R;
 import li.klass.fhem.domain.Device;
 import li.klass.fhem.domain.OwtempDevice;
 
-public class OwtempAdapter extends DeviceAdapter<OwtempDevice> {
+public class OwtempAdapter extends DeviceListOnlyAdapter<OwtempDevice> {
     @Override
     public View getDeviceView(LayoutInflater layoutInflater, OwtempDevice device) {
         View view = layoutInflater.inflate(R.layout.room_detail_owtemp, null);
@@ -28,4 +28,5 @@ public class OwtempAdapter extends DeviceAdapter<OwtempDevice> {
     public Class<? extends Device> getSupportedDeviceClass() {
         return OwtempDevice.class;
     }
+
 }

@@ -16,8 +16,8 @@ public class NestedListView extends ListView {
 
     private Drawable childDivider;
 
-    public interface OnExtendableListClickObserver {
-        void onItemClick(View view, int parentPosition, int childPosition);
+    public interface NestedListViewOnClickObserver {
+        void onItemClick(View view, Object parent, Object child, int parentPosition, int childPosition);
     }
 
     public NestedListView(Context context) {
@@ -77,9 +77,12 @@ public class NestedListView extends ListView {
 
     @SuppressWarnings("unchecked")
     private void performParentChildItemClick(View view, int parentPosition, int childPosition) {
-        Set<OnExtendableListClickObserver> parentChildClickObservers = getNestedListViewAdapter().parentChildClickObservers;
-        for (OnExtendableListClickObserver parentChildClickObserver : parentChildClickObservers) {
-            parentChildClickObserver.onItemClick(view, parentPosition, childPosition);
+        Set<NestedListViewOnClickObserver> parentChildClickObservers = getNestedListViewAdapter().parentChildClickObservers;
+        for (NestedListViewOnClickObserver parentChildClickObserver : parentChildClickObservers) {
+            Object parent = getNestedListViewAdapter().getParents().get(parentPosition);
+            Object child = getNestedListViewAdapter().getChildForParentAndChildPosition(parent, childPosition);
+
+            parentChildClickObserver.onItemClick(view, parent, child, parentPosition, childPosition);
         }
     }
 

@@ -8,7 +8,7 @@ import li.klass.fhem.R;
 import li.klass.fhem.domain.Device;
 import li.klass.fhem.domain.SISPMSDevice;
 
-public class SISPMSAdapter extends DeviceAdapter<SISPMSDevice> {
+public class SISPMSAdapter extends DeviceListOnlyAdapter<SISPMSDevice> {
 
     @Override
     public View getDeviceView(LayoutInflater layoutInflater, SISPMSDevice device) {

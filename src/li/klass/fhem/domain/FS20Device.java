@@ -1,6 +1,7 @@
 package li.klass.fhem.domain;
 
 import li.klass.fhem.data.FHEMService;
+import org.w3c.dom.NamedNodeMap;
 
 import java.io.Serializable;
 import java.util.Arrays;
@@ -9,22 +10,27 @@ import java.util.List;
 public class FS20Device extends Device<FS20Device> implements Comparable<FS20Device>, Serializable {
 
     private List<Integer> dimStates = Arrays.asList(0, 6, 100, 12, 18, 25, 31, 37, 43, 50, 56, 62, 68, 75, 81, 87, 93);
+    private static final List<String> dimModels = Arrays.asList("FS20DI", "FS20DI10", "FS20DU");
     
+    private String model = "";
     private FS20State fs20State;
 
     public enum FS20State {
         ON, OFF
     }
 
-    public FS20Device() {
-        type = DeviceType.FS20;
+    @Override
+    public void onChildItemRead(String keyValue, String nodeContent, NamedNodeMap attributes) {
+        if (keyValue.equals("STATE")) {
+            setFs20State(nodeContent);
+        } else if (keyValue.equalsIgnoreCase("MODEL")) {
+            this.model = nodeContent.toUpperCase();
+        }
     }
 
     @Override
-    public void onChildItemRead(String keyValue, String nodeContent) {
-        if (keyValue.equals("STATE")) {
-            setFs20State(nodeContent);
-        }
+    public DeviceType getDeviceType() {
+        return DeviceType.FS20;
     }
 
     private void setFs20State(String state) {
@@ -55,7 +61,7 @@ public class FS20Device extends Device<FS20Device> implements Comparable<FS20Dev
     }
 
     public boolean isDimDevice() {
-        return name.contains("dim");
+        return dimModels.contains(model);
     }
 
     public void dim(int dimProgress) {

@@ -11,7 +11,7 @@ import java.util.*;
 
 public abstract class NestedListViewAdapter<P, C> extends BaseAdapter implements ListAdapter {
 
-    public Set<NestedListView.OnExtendableListClickObserver> parentChildClickObservers = new HashSet<NestedListView.OnExtendableListClickObserver>();
+    public Set<NestedListView.NestedListViewOnClickObserver> parentChildClickObservers = new HashSet<NestedListView.NestedListViewOnClickObserver>();
 
     private Map<Integer, P> parentPositions = new HashMap<Integer, P>();
     private int totalItems = 0;
@@ -118,11 +118,11 @@ public abstract class NestedListViewAdapter<P, C> extends BaseAdapter implements
     }
 
 
-    public void addParentChildObserver(NestedListView.OnExtendableListClickObserver observer) {
+    public void addParentChildObserver(NestedListView.NestedListViewOnClickObserver observer) {
         parentChildClickObservers.add(observer);
     }
 
-    public void removeParentChildObserver(NestedListView.OnExtendableListClickObserver observer) {
+    public void removeParentChildObserver(NestedListView.NestedListViewOnClickObserver observer) {
         parentChildClickObservers.remove(observer);
     }
 

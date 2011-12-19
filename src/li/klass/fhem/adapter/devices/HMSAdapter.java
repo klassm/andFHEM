@@ -7,7 +7,7 @@ import li.klass.fhem.R;
 import li.klass.fhem.domain.Device;
 import li.klass.fhem.domain.HMSDevice;
 
-public class HMSAdapter extends DeviceAdapter<HMSDevice> {
+public class HMSAdapter extends DeviceListOnlyAdapter<HMSDevice> {
     @Override
     public View getDeviceView(LayoutInflater layoutInflater, HMSDevice device) {
         View view = layoutInflater.inflate(R.layout.room_detail_hms, null);

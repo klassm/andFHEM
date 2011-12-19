@@ -1,25 +1,18 @@
 package li.klass.fhem.data;
 
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
-import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.data.provider.DummyDataProvider;
 import li.klass.fhem.data.provider.FHEMDataProvider;
 import li.klass.fhem.data.provider.TelnetProvider;
+import li.klass.fhem.util.ApplicationProperties;
 
 public class DataProviderSwitch {
     public static final DataProviderSwitch INSTANCE = new DataProviderSwitch();
 
     private DataProviderSwitch() {
     }
-    private SharedPreferences getPreferences() {
-
-        return PreferenceManager.getDefaultSharedPreferences(AndFHEMApplication.getContext());
-    }
 
     public FHEMDataProvider getCurrentProvider() {
-        boolean useDummyData = getPreferences().getBoolean("prefUseDummyData", true);
-        if (useDummyData) {
+        if (ApplicationProperties.INSTANCE.isDummyMode()) {
             return DummyDataProvider.INSTANCE;
         } else {
             return TelnetProvider.INSTANCE;

@@ -1,8 +1,11 @@
 package li.klass.fhem.domain;
 
 import android.util.Log;
+import org.w3c.dom.NamedNodeMap;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 public class KS300Device extends Device<KS300Device> implements Serializable {
 
@@ -11,17 +14,13 @@ public class KS300Device extends Device<KS300Device> implements Serializable {
     private String humidity = "";
     private String rain = "";
 
-    public KS300Device() {
-        type = DeviceType.KS300;
-    }
-
     @Override
     public int compareTo(KS300Device ks300Device) {
         return getName().compareTo(ks300Device.getName());
     }
 
     @Override
-    public void onChildItemRead(String keyValue, String nodeContent) {
+    public void onChildItemRead(String keyValue, String nodeContent, NamedNodeMap attributes) {
         if (keyValue.equals("TEMPERATURE")) {
             this.temperature = nodeContent;
         } else if (keyValue.equals("WIND")) {
@@ -49,7 +48,7 @@ public class KS300Device extends Device<KS300Device> implements Serializable {
     public String getRain() {
         return rain;
     }
-
+    
     @Override
     public String toString() {
         return "KS300Device{" +
@@ -58,5 +57,18 @@ public class KS300Device extends Device<KS300Device> implements Serializable {
                 ", humidity='" + humidity + '\'' +
                 ", rain='" + rain + '\'' +
                 "} " + super.toString();
+    }
+
+    @Override
+    public DeviceType getDeviceType() {
+        return DeviceType.KS300;
+    }
+
+    @Override
+    public Map<String, String> getFileLogColumns() {
+        Map<String, String> columnSpecification = new HashMap<String, String>();
+        columnSpecification.put("temperature", "4:IR:");
+
+        return columnSpecification;
     }
 }

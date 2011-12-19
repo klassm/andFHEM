@@ -1,5 +1,6 @@
 package li.klass.fhem.activities;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.TabActivity;
 import android.content.DialogInterface;
@@ -8,6 +9,8 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.widget.TabHost;
 import li.klass.fhem.R;
+import li.klass.fhem.activities.devicelist.AllDevicesActivity;
+import li.klass.fhem.activities.devicelist.FavoritesActivity;
 import li.klass.fhem.util.ApplicationProperties;
 
 public class MainActivity extends TabActivity {
@@ -21,33 +24,28 @@ public class MainActivity extends TabActivity {
 
         setContentView(R.layout.tablayout);
 
-        Resources res = getResources();
-        TabHost tabHost = getTabHost();
+        addTab(FavoritesActivity.class, "favorites", R.string.tab_favorites, R.drawable.favorites_tab);
+        addTab(RoomListActivity.class, "roomList", R.string.tab_roomList, R.drawable.roomlist_tab);
+        addTab(AllDevicesActivity.class, "allDevices", R.string.tab_alldevices, R.drawable.alldevices_tab);
 
-        Intent favoritesIntent = new Intent().setClass(this, FavoritesActivity.class);
-        TabHost.TabSpec favoritesTabSpec = tabHost.newTabSpec("favorites")
-                .setIndicator(res.getString(R.string.tab_favorites), res.getDrawable(R.drawable.favorites_tab))
-                .setContent(favoritesIntent);
-        tabHost.addTab(favoritesTabSpec);
-
-        Intent roomListIntent = new Intent().setClass(this, RoomListActivity.class);
-        TabHost.TabSpec roomListTabSpec = tabHost.newTabSpec("roomList")
-                .setIndicator(res.getString(R.string.tab_roomList), res.getDrawable(R.drawable.roomlist_tab))
-                .setContent(roomListIntent);
-        tabHost.addTab(roomListTabSpec);
-
-        Intent allDevices = new Intent().setClass(this, AllDevicesActivity.class);
-        TabHost.TabSpec allDevicesTabSpec = tabHost.newTabSpec("allDevices")
-                .setIndicator(res.getString(R.string.tab_alldevices), res.getDrawable(R.drawable.alldevices_tab))
-                .setContent(allDevices);
-        tabHost.addTab(allDevicesTabSpec);
-
-        tabHost.setCurrentTab(1);
+        getTabHost().setCurrentTab(0);
 
         boolean isFirstStart = ApplicationProperties.INSTANCE.getProperty("FIRST_START", true);
         if (isFirstStart) {
             onFirstStart();
         }
+    }
+    
+    private void addTab(Class<? extends Activity> tabActivityClass, String tabTag, int tabCaption, int tabDrawable) {
+        Resources resources = getResources();
+        TabHost tabHost = getTabHost();
+
+        Intent intent = new Intent().setClass(this, tabActivityClass);
+        TabHost.TabSpec tabSpec = tabHost.newTabSpec(tabTag)
+                .setIndicator(resources.getString(tabCaption), resources.getDrawable(tabDrawable))
+                .setContent(intent);
+
+        tabHost.addTab(tabSpec);
     }
 
     private void onFirstStart() {

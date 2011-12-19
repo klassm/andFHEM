@@ -1,40 +1,17 @@
-package li.klass.fhem.activities;
+package li.klass.fhem.activities.devicelist;
 
 import android.content.res.Resources;
-import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Toast;
 import li.klass.fhem.R;
-import li.klass.fhem.adapter.RoomDetailAdapter;
-import li.klass.fhem.favorites.FavoritesService;
 import li.klass.fhem.domain.Device;
 import li.klass.fhem.domain.RoomDeviceList;
-import li.klass.fhem.widget.NestedListView;
+import li.klass.fhem.data.provider.favorites.FavoritesService;
 
-public class FavoritesActivity extends UpdateableActivity<RoomDeviceList> {
-
-    private RoomDetailAdapter roomDetailAdapter;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        setContentView(R.layout.room_detail);
-
-        String roomTitle = getResources().getString(R.string.allRoomsTitle);
-        setTitle(roomTitle);
-
-        roomDetailAdapter = new RoomDetailAdapter(this, new RoomDeviceList("favorites"));
-        NestedListView nestedListView = (NestedListView) findViewById(R.id.deviceMap);
-        nestedListView.setAdapter(roomDetailAdapter);
-
-        registerForContextMenu(nestedListView);
-
-        update(false);
-    }
+public class FavoritesActivity extends DeviceListActivity {
 
     @Override
     protected RoomDeviceList getCurrentData(boolean refresh) {
@@ -42,11 +19,6 @@ public class FavoritesActivity extends UpdateableActivity<RoomDeviceList> {
     }
 
     @Override
-    protected void updateData(RoomDeviceList roomDeviceList) {
-        roomDetailAdapter.updateData(roomDeviceList);
-    }
-
-        @Override
     public void onCreateContextMenu(ContextMenu menu, View view, ContextMenu.ContextMenuInfo menuInfo) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
         Object tag = info.targetView.getTag();

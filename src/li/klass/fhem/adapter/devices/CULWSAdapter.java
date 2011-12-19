@@ -7,7 +7,7 @@ import li.klass.fhem.R;
 import li.klass.fhem.domain.CULWSDevice;
 import li.klass.fhem.domain.Device;
 
-public class CULWSAdapter extends DeviceAdapter<CULWSDevice> {
+public class CULWSAdapter extends DeviceListOnlyAdapter<CULWSDevice> {
 
     @Override
     public View getDeviceView(LayoutInflater layoutInflater, CULWSDevice device) {

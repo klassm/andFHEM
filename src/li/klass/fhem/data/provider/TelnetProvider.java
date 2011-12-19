@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import li.klass.fhem.AndFHEMApplication;
+import li.klass.fhem.exception.HostConnectionException;
 import li.klass.fhem.util.CloseableUtil;
 import thor.net.DefaultTelnetTerminalHandler;
 import thor.net.TelnetURLConnection;
@@ -14,6 +15,8 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.URL;
 import java.net.URLConnection;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class TelnetProvider implements FHEMDataProvider {
     private static final String DEFAULT_HOST = "";
@@ -27,11 +30,24 @@ public class TelnetProvider implements FHEMDataProvider {
         return request("xmllist", "</FHZINFO>");
     }
 
+    @Override
+    public String fileLogData(String logName, Date fromDate, Date toDate, String columnSpec) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String command = new StringBuilder().append("get ").append(logName).append(" - - ")
+                .append(dateFormat.format(fromDate)).append(" ")
+                .append(dateFormat.format(toDate)).append(" ")
+                .append(columnSpec).toString();
+
+        return request(command, "#" + columnSpec);
+    }
+
     public void executeCommand(String command) {
         request(command, null);
     }
 
     private String request(String command, String delimiter) {
+        Log.e(TelnetProvider.class.getName(), "execute command " + command + " with delimiter " + delimiter);
+        
         OutputStream outputStream = null;
         BufferedOutputStream bufferedOutputStream = null;
         PrintWriter printWriter = null;
@@ -59,9 +75,8 @@ public class TelnetProvider implements FHEMDataProvider {
             int stopPointer = 0;
             if (delimiter != null) {
                 StringBuilder buffer = new StringBuilder();
-                int ch;
                 do {
-                    ch = inputStream.read();
+                    int ch = inputStream.read();
                     buffer.append((char) ch);
 
                     if (ch == delimiter.charAt(stopPointer)) {
@@ -71,7 +86,6 @@ public class TelnetProvider implements FHEMDataProvider {
                         stopPointer = 0;
                     }
                 } while(stopPointer < delimiter.length());
-                Log.e(TelnetProvider.class.getName(), "done");
                 result = buffer.toString();
             }
 
@@ -81,7 +95,7 @@ public class TelnetProvider implements FHEMDataProvider {
 
             return result;
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new HostConnectionException(e);
         } finally {
             CloseableUtil.close(printWriter, bufferedOutputStream, outputStream, inputStream);
         }

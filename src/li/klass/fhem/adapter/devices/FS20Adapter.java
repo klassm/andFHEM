@@ -10,7 +10,7 @@ import li.klass.fhem.R;
 import li.klass.fhem.domain.Device;
 import li.klass.fhem.domain.FS20Device;
 
-public class FS20Adapter extends DeviceAdapter<FS20Device> {
+public class FS20Adapter extends DeviceListOnlyAdapter<FS20Device> {
 
     @Override
     public View getDeviceView(LayoutInflater layoutInflater, FS20Device device) {

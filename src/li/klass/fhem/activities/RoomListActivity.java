@@ -6,28 +6,28 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import li.klass.fhem.R;
+import li.klass.fhem.activities.base.BaseActivity;
+import li.klass.fhem.activities.devicelist.RoomDetailActivity;
 import li.klass.fhem.adapter.RoomListAdapter;
 import li.klass.fhem.data.FHEMService;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class RoomListActivity extends UpdateableActivity<List<String>> {
-
-    private RoomListAdapter adapter;
+public class RoomListActivity extends BaseActivity<List<String>, RoomListAdapter> {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        update(false);
+    }
 
-        setContentView(R.layout.room_list);
-
+    @Override
+    protected RoomListAdapter initializeLayoutAndReturnAdapter() {
         ListView roomList = (ListView) findViewById(R.id.roomList);
 
-        adapter = new RoomListAdapter(this, R.layout.room, new ArrayList<String>());
+        RoomListAdapter adapter = new RoomListAdapter(this, R.layout.room, new ArrayList<String>());
         roomList.setAdapter(adapter);
-
-        update(false);
 
         roomList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -42,6 +42,13 @@ public class RoomListActivity extends UpdateableActivity<List<String>> {
                 startActivity(intent);
             }
         });
+
+        return adapter;
+    }
+
+    @Override
+    protected void setLayout() {
+        setContentView(R.layout.room_list);
     }
 
     @Override

@@ -6,6 +6,7 @@ import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Date;
 
 public class DummyDataProvider implements FHEMDataProvider {
     public static final DummyDataProvider INSTANCE = new DummyDataProvider();
@@ -28,6 +29,11 @@ public class DummyDataProvider implements FHEMDataProvider {
         } finally {
             CloseableUtil.close(inputStream);
         }
+    }
+
+    @Override
+    public String fileLogData(String logName, Date fromDate, Date toDate, String columnSpec) {
+        return "";
     }
 
     @Override

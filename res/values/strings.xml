@@ -4,6 +4,7 @@
 
     <string name="roomTitlePrefix">Room</string>
     <string name="allRoomsTitle">All Rooms</string>
+    <string name="deviceDetailPrefix">Details for</string>
 
     <string name="temperature">Temperature</string>
     <string name="wind">Wind</string>
@@ -12,6 +13,7 @@
     <string name="actuator">Actuator</string>
     <string name="state">State</string>
     <string name="battery">Battery</string>
+    <string name="measured">Measured</string>
     <string name="warnings">Warnings</string>
 
     <string name="preferences">Preferences</string>
@@ -36,7 +38,8 @@
     <string name="prefShowHiddenDevices">Show hidden devices</string>
 
     <string name="updateError">Error while updating.</string>
-    <string name="updateErrorConnectionRefused">Cannot connect to host. Connection refused.</string>
+    <string name="updateErrorHostConnection">Cannot connect to host.</string>
+    <string name="updateErrorDeviceListParse">Could not parse xml device list.</string>
 
     <string name="okButton">OK</string>
 

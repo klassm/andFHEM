@@ -1,16 +1,20 @@
 package li.klass.fhem.domain;
 
+import li.klass.fhem.data.FileLog;
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 public abstract class Device<T extends Device> implements Serializable, Comparable<T> {
 
     protected String name;
     protected String room = "unknown";
     protected String state;
-    protected DeviceType type;
+    protected FileLog fileLog;
 
     public void loadXML(Node xml) {
         NodeList childNodes = xml.getChildNodes();
@@ -32,7 +36,7 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
                 state = nodeContent;
             }
 
-            onChildItemRead(keyValue, nodeContent);
+            onChildItemRead(keyValue, nodeContent, item.getAttributes());
         }
     }
 
@@ -45,7 +49,7 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
         return room;
     }
 
-    public abstract void onChildItemRead(String keyValue, String nodeContent);
+    public abstract void onChildItemRead(String keyValue, String nodeContent, NamedNodeMap attributes);
 
     @Override
     public String toString() {
@@ -80,6 +84,8 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
 
     }
 
+    public abstract DeviceType getDeviceType();
+
     @Override
     public int hashCode() {
         return name != null ? name.hashCode() : 0;
@@ -88,5 +94,21 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
     @Override
     public int compareTo(T t) {
         return getName().compareTo(t.getName());
+    }
+
+    public FileLog getFileLog() {
+        return fileLog;
+    }
+
+    public void setFileLog(FileLog fileLog) {
+        this.fileLog = fileLog;
+    }
+
+    public Map<String, String> getFileLogColumns() {
+        return new HashMap<String, String> ();
+    }
+
+    public String getState() {
+        return state;
     }
 }

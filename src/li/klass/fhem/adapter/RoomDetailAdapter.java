@@ -1,11 +1,13 @@
 package li.klass.fhem.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import li.klass.fhem.R;
-import li.klass.fhem.adapter.devices.*;
+import li.klass.fhem.adapter.devices.DeviceAdapter;
+import li.klass.fhem.adapter.devices.DeviceAdapterProvider;
 import li.klass.fhem.domain.Device;
 import li.klass.fhem.domain.DeviceType;
 import li.klass.fhem.domain.RoomDeviceList;
@@ -19,29 +21,21 @@ import static li.klass.fhem.domain.DeviceType.*;
 
 public class RoomDetailAdapter extends NestedListViewAdapter<DeviceType, Device> {
     private RoomDeviceList roomDeviceList;
-    private List<DeviceType> deviceTypes;
-    private final List<DeviceAdapter<? extends Device<?>>> deviceAdapters;
+    private List<DeviceType> deviceTypeOrderList;
 
     public RoomDetailAdapter(Context context, RoomDeviceList roomDeviceList) {
         super(context);
-        this.deviceTypes = Arrays.asList(KS300, FHT, HMS, OWTEMP, CUL_WS, FS20, SIS_PMS);
+        this.deviceTypeOrderList = Arrays.asList(KS300, FHT, HMS, OWTEMP, CUL_WS, FS20, SIS_PMS, CUL_FHTTK);
 
         if (roomDeviceList != null) {
             updateData(roomDeviceList);
         }
-
-        deviceAdapters = new ArrayList<DeviceAdapter<? extends Device<?>>>();
-        deviceAdapters.add(new FS20Adapter());
-        deviceAdapters.add(new CULWSAdapter());
-        deviceAdapters.add(new HMSAdapter());
-        deviceAdapters.add(new OwtempAdapter());
-        deviceAdapters.add(new KS300Adapter());
-        deviceAdapters.add(new FHTAdapter());
-        deviceAdapters.add(new SISPMSAdapter());
     }
 
     @Override
     protected Device getChildForParentAndChildPosition(DeviceType parent, int childPosition) {
+        if (childPosition == -1) return null;
+
         return getChildrenForDeviceType(parent).get(childPosition);
     }
 
@@ -70,21 +64,27 @@ public class RoomDetailAdapter extends NestedListViewAdapter<DeviceType, Device>
     }
 
     @Override
-    protected View getChildView(Device child, View view, ViewGroup viewGroup) {
-        for (DeviceAdapter<? extends Device<?>> deviceAdapter : deviceAdapters) {
-            if (deviceAdapter.supports(child.getClass())) {
-                view = deviceAdapter.getView(layoutInflater, child);
-                view.setTag(child);
-                return view;
-            }
+    protected View getChildView(final Device child, View view, ViewGroup viewGroup) {
+        final DeviceAdapter<? extends Device<?>> deviceAdapter = DeviceAdapterProvider.INSTANCE.getAdapterFor(child);
+        if (deviceAdapter == null) {
+            Log.e(RoomDetailAdapter.class.getName(), "unsupported device type " + child);
+            throw new IllegalArgumentException("unsupported device type " + child);
         }
-        throw new IllegalArgumentException("unsupported device type " + child);
+
+        if (! deviceAdapter.supports(child.getClass())) {
+            Log.e(RoomDetailAdapter.class.getName(), "adapter was found for device type, but it will not support the device: " + child);
+            throw new IllegalArgumentException("adapter was found for device type, but it will not support the device: " + child);
+        }
+        view = deviceAdapter.getView(layoutInflater, view, child);
+        view.setTag(child);
+
+        return view;
     }
 
     @Override
     protected List<DeviceType> getParents() {
         List<DeviceType> parents = new ArrayList<DeviceType>();
-        for (DeviceType deviceType : deviceTypes) {
+        for (DeviceType deviceType : deviceTypeOrderList) {
             if (getChildrenCountForParent(deviceType) > 0) {
                 parents.add(deviceType);
             }

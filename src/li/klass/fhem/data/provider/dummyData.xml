@@ -83,7 +83,7 @@
               sets="dim06% dim100% dim12% dim18% dim25% dim31% dim37% dim43% dim50% dim56% dim62% dim68% dim75% dim81% dim87% dim93% dimdown dimup dimupdown off off-for-timer on on-100-for-timer-prev on-for-timer on-old-for-timer on-old-for-timer-prev on-till ramp-off-time ramp-on-time reset sendstate timer toggle"
               attrs="room comment alias IODev follow-on-for-timer:1,0 do_not_notify:1,0 ignore:0,1 dummy:1,0 showtime:1,0 model;fs20hgs,fs20hgs,fs20pira,fs20piri,fs20s20,fs20s8,fs20s4,fs20s4a,fs20s4m,fs20s4u,fs20s4ub,fs20sd,fs20sn,fs20sr,fs20ss,fs20str,fs20tfk,fs20tfk,fs20tk,fs20uts,fs20ze,fs20as1,fs20as4,fs20di,fs20du,fs20ls,fs20ms2,fs20rst,fs20sa,fs20sig,fs20st,fs20sv,fs20usr loglevel:0,1,2,3,4,5,6 eventMap">
             <INT key="BTN" value="aa"/>
-            <INT key="DEF" value="11111111 3333 gm 4444 lm 1144"/>
+            <INT key="DEF" value="12345678 3333 gm 4444 lm 1144"/>
             <INT key="NAME" value="au_brunnen"/>
             <INT key="NR" value="39"/>
             <INT key="STATE" value="???"/>
@@ -100,7 +100,7 @@
             <INT key="CUL_RAWMSG" value="F00000115F7"/>
             <INT key="CUL_RSSI" value="-78.5"/>
             <INT key="CUL_TIME" value="2011-11-27 18:18:53"/>
-            <INT key="DEF" value="11111111 1112 gm 4444 lm 1144"/>
+            <INT key="DEF" value="12345678 1112 gm 4444 lm 1144"/>
             <INT key="LASTIODev" value="CUL"/>
             <INT key="MSGCNT" value="5"/>
             <INT key="NAME" value="au_holzterasse1"/>
@@ -120,7 +120,7 @@
             <INT key="CUL_RAWMSG" value="F0000000024"/>
             <INT key="CUL_RSSI" value="-56"/>
             <INT key="CUL_TIME" value="2011-11-22 09:29:18"/>
-            <INT key="DEF" value="11111111 1111 gm 4444 lm 1144"/>
+            <INT key="DEF" value="12345678 1111 gm 4444 lm 1144"/>
             <INT key="LASTIODev" value="CUL"/>
             <INT key="MSGCNT" value="1"/>
             <INT key="NAME" value="au_holzterasse2"/>
@@ -136,7 +136,7 @@
               sets="dim06% dim100% dim12% dim18% dim25% dim31% dim37% dim43% dim50% dim56% dim62% dim68% dim75% dim81% dim87% dim93% dimdown dimup dimupdown off off-for-timer on on-100-for-timer-prev on-for-timer on-old-for-timer on-old-for-timer-prev on-till ramp-off-time ramp-on-time reset sendstate timer toggle"
               attrs="room comment alias IODev follow-on-for-timer:1,0 do_not_notify:1,0 ignore:0,1 dummy:1,0 showtime:1,0 model;fs20hgs,fs20hgs,fs20pira,fs20piri,fs20s20,fs20s8,fs20s4,fs20s4a,fs20s4m,fs20s4u,fs20s4ub,fs20sd,fs20sn,fs20sr,fs20ss,fs20str,fs20tfk,fs20tfk,fs20tk,fs20uts,fs20ze,fs20as1,fs20as4,fs20di,fs20du,fs20ls,fs20ms2,fs20rst,fs20sa,fs20sig,fs20st,fs20sv,fs20usr loglevel:0,1,2,3,4,5,6 eventMap">
             <INT key="BTN" value="02"/>
-            <INT key="DEF" value="11111111 1113 gm 4444 lm 1144"/>
+            <INT key="DEF" value="12345678 1113 gm 4444 lm 1144"/>
             <INT key="NAME" value="au_holzterasse3"/>
             <INT key="NR" value="42"/>
             <INT key="STATE" value="???"/>
@@ -153,7 +153,7 @@
             <INT key="CUL_RAWMSG" value="F00000315E2"/>
             <INT key="CUL_RSSI" value="-89"/>
             <INT key="CUL_TIME" value="2011-11-21 19:53:39"/>
-            <INT key="DEF" value="11111111 1114 gm 4444 lm 1144"/>
+            <INT key="DEF" value="12345678 1114 gm 4444 lm 1144"/>
             <INT key="LASTIODev" value="CUL"/>
             <INT key="MSGCNT" value="2"/>
             <INT key="NAME" value="au_holzterasse4"/>
@@ -169,7 +169,7 @@
               sets="dim06% dim100% dim12% dim18% dim25% dim31% dim37% dim43% dim50% dim56% dim62% dim68% dim75% dim81% dim87% dim93% dimdown dimup dimupdown off off-for-timer on on-100-for-timer-prev on-for-timer on-old-for-timer on-old-for-timer-prev on-till ramp-off-time ramp-on-time reset sendstate timer toggle"
               attrs="room comment alias IODev follow-on-for-timer:1,0 do_not_notify:1,0 ignore:0,1 dummy:1,0 showtime:1,0 model;fs20hgs,fs20hgs,fs20pira,fs20piri,fs20s20,fs20s8,fs20s4,fs20s4a,fs20s4m,fs20s4u,fs20s4ub,fs20sd,fs20sn,fs20sr,fs20ss,fs20str,fs20tfk,fs20tfk,fs20tk,fs20uts,fs20ze,fs20as1,fs20as4,fs20di,fs20du,fs20ls,fs20ms2,fs20rst,fs20sa,fs20sig,fs20st,fs20sv,fs20usr loglevel:0,1,2,3,4,5,6 eventMap">
             <INT key="BTN" value="42"/>
-            <INT key="DEF" value="11111111 2113 gm 4444 lm 2144"/>
+            <INT key="DEF" value="12345678 2113 gm 4444 lm 2144"/>
             <INT key="NAME" value="au_licht"/>
             <INT key="NR" value="38"/>
             <INT key="STATE" value="off"/>
@@ -187,7 +187,7 @@
             <INT key="CUL_RAWMSG" value="FC848C20006"/>
             <INT key="CUL_RSSI" value="-71"/>
             <INT key="CUL_TIME" value="2011-12-04 20:30:19"/>
-            <INT key="DEF" value="41312131 4113"/>
+            <INT key="DEF" value="12345678 4113"/>
             <INT key="LASTIODev" value="CUL"/>
             <INT key="MSGCNT" value="25"/>
             <INT key="NAME" value="au_weihnachten"/>
@@ -203,7 +203,7 @@
               sets="dim06% dim100% dim12% dim18% dim25% dim31% dim37% dim43% dim50% dim56% dim62% dim68% dim75% dim81% dim87% dim93% dimdown dimup dimupdown off off-for-timer on on-100-for-timer-prev on-for-timer on-old-for-timer on-old-for-timer-prev on-till ramp-off-time ramp-on-time reset sendstate timer toggle"
               attrs="room comment alias IODev follow-on-for-timer:1,0 do_not_notify:1,0 ignore:0,1 dummy:1,0 showtime:1,0 model;fs20hgs,fs20hgs,fs20pira,fs20piri,fs20s20,fs20s8,fs20s4,fs20s4a,fs20s4m,fs20s4u,fs20s4ub,fs20sd,fs20sn,fs20sr,fs20ss,fs20str,fs20tfk,fs20tfk,fs20tk,fs20uts,fs20ze,fs20as1,fs20as4,fs20di,fs20du,fs20ls,fs20ms2,fs20rst,fs20sa,fs20sig,fs20st,fs20sv,fs20usr loglevel:0,1,2,3,4,5,6 eventMap">
             <INT key="BTN" value="c3"/>
-            <INT key="DEF" value="41312131 4114 gm 4444 lm 4144"/>
+            <INT key="DEF" value="12345678 4114 gm 4444 lm 4144"/>
             <INT key="NAME" value="b_heizung"/>
             <INT key="NR" value="9"/>
             <INT key="STATE" value="on"/>
@@ -221,7 +221,7 @@
             <INT key="CUL_RAWMSG" value="F00006012DE"/>
             <INT key="CUL_RSSI" value="-91"/>
             <INT key="CUL_TIME" value="2011-12-05 08:32:26"/>
-            <INT key="DEF" value="11111111 2311 gm 4444 lm 2344"/>
+            <INT key="DEF" value="12345678 2311 gm 4444 lm 2344"/>
             <INT key="LASTIODev" value="CUL"/>
             <INT key="MSGCNT" value="101"/>
             <INT key="NAME" value="bad_heizofen"/>
@@ -237,7 +237,7 @@
               sets="dim06% dim100% dim12% dim18% dim25% dim31% dim37% dim43% dim50% dim56% dim62% dim68% dim75% dim81% dim87% dim93% dimdown dimup dimupdown off off-for-timer on on-100-for-timer-prev on-for-timer on-old-for-timer on-old-for-timer-prev on-till ramp-off-time ramp-on-time reset sendstate timer toggle"
               attrs="room comment alias IODev follow-on-for-timer:1,0 do_not_notify:1,0 ignore:0,1 dummy:1,0 showtime:1,0 model;fs20hgs,fs20hgs,fs20pira,fs20piri,fs20s20,fs20s8,fs20s4,fs20s4a,fs20s4m,fs20s4u,fs20s4ub,fs20sd,fs20sn,fs20sr,fs20ss,fs20str,fs20tfk,fs20tfk,fs20tk,fs20uts,fs20ze,fs20as1,fs20as4,fs20di,fs20du,fs20ls,fs20ms2,fs20rst,fs20sa,fs20sig,fs20st,fs20sv,fs20usr loglevel:0,1,2,3,4,5,6 eventMap">
             <INT key="BTN" value="62"/>
-            <INT key="DEF" value="11111111 2313 gm 4444 lm 2344"/>
+            <INT key="DEF" value="12345678 2313 gm 4444 lm 2344"/>
             <INT key="NAME" value="bad_waschtisch"/>
             <INT key="NR" value="36"/>
             <INT key="STATE" value="???"/>
@@ -254,10 +254,11 @@
             <INT key="CUL_RAWMSG" value="FC8480112EF"/>
             <INT key="CUL_RSSI" value="-82.5"/>
             <INT key="CUL_TIME" value="2011-12-01 22:00:12"/>
-            <INT key="DEF" value="41312131 1112 gm 4444 lm 1144"/>
+            <INT key="DEF" value="12345678 1112 gm 4444 lm 1144"/>
             <INT key="LASTIODev" value="CUL"/>
             <INT key="MSGCNT" value="14"/>
             <INT key="NAME" value="chr_h1_dimmer"/>
+            <ATTR key="model" value="fs20di"/>
             <INT key="NR" value="23"/>
             <INT key="STATE" value="on"/>
             <INT key="TYPE" value="FS20"/>
@@ -274,10 +275,11 @@
             <INT key="CUL_RAWMSG" value="FC8480212EE"/>
             <INT key="CUL_RSSI" value="-83"/>
             <INT key="CUL_TIME" value="2011-12-01 22:00:16"/>
-            <INT key="DEF" value="41312131 1113 gm 4444 lm 1144"/>
+            <INT key="DEF" value="12345678 1113 gm 4444 lm 1144"/>
             <INT key="LASTIODev" value="CUL"/>
             <INT key="MSGCNT" value="14"/>
             <INT key="NAME" value="chr_h2_dimmer"/>
+            <ATTR key="model" value="fs20di"/>
             <INT key="NR" value="24"/>
             <INT key="STATE" value="on"/>
             <INT key="TYPE" value="FS20"/>
@@ -294,10 +296,11 @@
             <INT key="CUL_RAWMSG" value="FC8480412F3"/>
             <INT key="CUL_RSSI" value="-80.5"/>
             <INT key="CUL_TIME" value="2011-12-01 22:01:58"/>
-            <INT key="DEF" value="41312131 1121 gm 4444 lm 1144"/>
+            <INT key="DEF" value="12345678 1121 gm 4444 lm 1144"/>
             <INT key="LASTIODev" value="CUL"/>
             <INT key="MSGCNT" value="12"/>
             <INT key="NAME" value="chr_h3_dimmer"/>
+            <ATTR key="model" value="fs20di"/>
             <INT key="NR" value="25"/>
             <INT key="STATE" value="on"/>
             <INT key="TYPE" value="FS20"/>
@@ -314,7 +317,7 @@
             <INT key="CUL_RAWMSG" value="FC8480012EF"/>
             <INT key="CUL_RSSI" value="-82.5"/>
             <INT key="CUL_TIME" value="2011-12-02 17:26:54"/>
-            <INT key="DEF" value="41312131 1111 gm 4444 lm 1144"/>
+            <INT key="DEF" value="12345678 1111 gm 4444 lm 1144"/>
             <INT key="LASTIODev" value="CUL"/>
             <INT key="MSGCNT" value="69"/>
             <INT key="NAME" value="chr_lichtventilator"/>
@@ -334,7 +337,7 @@
             <INT key="CUL_RAWMSG" value="FC8480F12FA"/>
             <INT key="CUL_RSSI" value="-77"/>
             <INT key="CUL_TIME" value="2011-11-30 16:54:03"/>
-            <INT key="DEF" value="41312131 1122 gm 4444 lm 1144"/>
+            <INT key="DEF" value="12345678 1122 gm 4444 lm 1144"/>
             <INT key="LASTIODev" value="CUL"/>
             <INT key="MSGCNT" value="6"/>
             <INT key="NAME" value="chr_ventilator"/>
@@ -354,7 +357,7 @@
             <INT key="CUL_RAWMSG" value="FC8480612F9"/>
             <INT key="CUL_RSSI" value="-77.5"/>
             <INT key="CUL_TIME" value="2011-11-30 16:54:05"/>
-            <INT key="DEF" value="41312131 1123 gm 4444"/>
+            <INT key="DEF" value="12345678 1123 gm 4444"/>
             <INT key="LASTIODev" value="CUL"/>
             <INT key="MSGCNT" value="1"/>
             <INT key="NAME" value="chr_z_obenlinks"/>
@@ -374,7 +377,7 @@
             <INT key="CUL_RAWMSG" value="FC8480712F9"/>
             <INT key="CUL_RSSI" value="-77.5"/>
             <INT key="CUL_TIME" value="2011-11-30 16:54:07"/>
-            <INT key="DEF" value="41312131 1124 gm 4444"/>
+            <INT key="DEF" value="12345678 1124 gm 4444"/>
             <INT key="LASTIODev" value="CUL"/>
             <INT key="MSGCNT" value="1"/>
             <INT key="NAME" value="chr_z_obenrechts"/>
@@ -390,7 +393,7 @@
               sets="dim06% dim100% dim12% dim18% dim25% dim31% dim37% dim43% dim50% dim56% dim62% dim68% dim75% dim81% dim87% dim93% dimdown dimup dimupdown off off-for-timer on on-100-for-timer-prev on-for-timer on-old-for-timer on-old-for-timer-prev on-till ramp-off-time ramp-on-time reset sendstate timer toggle"
               attrs="room comment alias IODev follow-on-for-timer:1,0 do_not_notify:1,0 ignore:0,1 dummy:1,0 showtime:1,0 model;fs20hgs,fs20hgs,fs20pira,fs20piri,fs20s20,fs20s8,fs20s4,fs20s4a,fs20s4m,fs20s4u,fs20s4ub,fs20sd,fs20sn,fs20sr,fs20ss,fs20str,fs20tfk,fs20tfk,fs20tk,fs20uts,fs20ze,fs20as1,fs20as4,fs20di,fs20du,fs20ls,fs20ms2,fs20rst,fs20sa,fs20sig,fs20st,fs20sv,fs20usr loglevel:0,1,2,3,4,5,6 eventMap">
             <INT key="BTN" value="c0"/>
-            <INT key="DEF" value="41312131 4111 gm 4444 lm 4144"/>
+            <INT key="DEF" value="12345678 4111 gm 4444 lm 4144"/>
             <INT key="NAME" value="cp_heizung_mama"/>
             <INT key="NR" value="45"/>
             <INT key="STATE" value="???"/>
@@ -403,7 +406,7 @@
               sets="dim06% dim100% dim12% dim18% dim25% dim31% dim37% dim43% dim50% dim56% dim62% dim68% dim75% dim81% dim87% dim93% dimdown dimup dimupdown off off-for-timer on on-100-for-timer-prev on-for-timer on-old-for-timer on-old-for-timer-prev on-till ramp-off-time ramp-on-time reset sendstate timer toggle"
               attrs="room comment alias IODev follow-on-for-timer:1,0 do_not_notify:1,0 ignore:0,1 dummy:1,0 showtime:1,0 model;fs20hgs,fs20hgs,fs20pira,fs20piri,fs20s20,fs20s8,fs20s4,fs20s4a,fs20s4m,fs20s4u,fs20s4ub,fs20sd,fs20sn,fs20sr,fs20ss,fs20str,fs20tfk,fs20tfk,fs20tk,fs20uts,fs20ze,fs20as1,fs20as4,fs20di,fs20du,fs20ls,fs20ms2,fs20rst,fs20sa,fs20sig,fs20st,fs20sv,fs20usr loglevel:0,1,2,3,4,5,6 eventMap">
             <INT key="BTN" value="c1"/>
-            <INT key="DEF" value="41312131 4112 gm 4444 lm 4144"/>
+            <INT key="DEF" value="12345678 4112 gm 4444 lm 4144"/>
             <INT key="NAME" value="cp_heizung_matthias"/>
             <INT key="NR" value="46"/>
             <INT key="STATE" value="???"/>
@@ -420,7 +423,7 @@
             <INT key="CUL_RAWMSG" value="F000040001E"/>
             <INT key="CUL_RSSI" value="-59"/>
             <INT key="CUL_TIME" value="2011-12-02 23:50:21"/>
-            <INT key="DEF" value="11111111 2111 gm 4444 lm 2144"/>
+            <INT key="DEF" value="12345678 2111 gm 4444 lm 2144"/>
             <INT key="LASTIODev" value="CUL"/>
             <INT key="MSGCNT" value="49"/>
             <INT key="NAME" value="gang_licht"/>
@@ -440,7 +443,7 @@
             <INT key="CUL_RAWMSG" value="F0000481412"/>
             <INT key="CUL_RSSI" value="-65"/>
             <INT key="CUL_TIME" value="2011-11-25 16:17:30"/>
-            <INT key="DEF" value="11111111 2131 gm 4444 lm 2144"/>
+            <INT key="DEF" value="12345678 2131 gm 4444 lm 2144"/>
             <INT key="LASTIODev" value="CUL"/>
             <INT key="MSGCNT" value="2"/>
             <INT key="NAME" value="gang_vitrine"/>
@@ -456,7 +459,7 @@
               sets="dim06% dim100% dim12% dim18% dim25% dim31% dim37% dim43% dim50% dim56% dim62% dim68% dim75% dim81% dim87% dim93% dimdown dimup dimupdown off off-for-timer on on-100-for-timer-prev on-for-timer on-old-for-timer on-old-for-timer-prev on-till ramp-off-time ramp-on-time reset sendstate timer toggle"
               attrs="room comment alias IODev follow-on-for-timer:1,0 do_not_notify:1,0 ignore:0,1 dummy:1,0 showtime:1,0 model;fs20hgs,fs20hgs,fs20pira,fs20piri,fs20s20,fs20s8,fs20s4,fs20s4a,fs20s4m,fs20s4u,fs20s4ub,fs20sd,fs20sn,fs20sr,fs20ss,fs20str,fs20tfk,fs20tfk,fs20tk,fs20uts,fs20ze,fs20as1,fs20as4,fs20di,fs20du,fs20ls,fs20ms2,fs20rst,fs20sa,fs20sig,fs20st,fs20sv,fs20usr loglevel:0,1,2,3,4,5,6 eventMap">
             <INT key="BTN" value="57"/>
-            <INT key="DEF" value="11111111 2224 gm 4444 lm 2244"/>
+            <INT key="DEF" value="12345678 2224 gm 4444 lm 2244"/>
             <INT key="NAME" value="mat_computer"/>
             <INT key="NR" value="13"/>
             <INT key="STATE" value="on"/>
@@ -474,7 +477,7 @@
             <INT key="CUL_RAWMSG" value="F00005012EA"/>
             <INT key="CUL_RSSI" value="-85"/>
             <INT key="CUL_TIME" value="2011-11-30 22:07:37"/>
-            <INT key="DEF" value="11111111 2211 gm 4444 lm 2244"/>
+            <INT key="DEF" value="12345678 2211 gm 4444 lm 2244"/>
             <INT key="LASTIODev" value="CUL"/>
             <INT key="MSGCNT" value="2"/>
             <INT key="NAME" value="mat_dachfensterled"/>
@@ -494,7 +497,7 @@
             <INT key="CUL_RAWMSG" value="F00005612E8"/>
             <INT key="CUL_RSSI" value="-86"/>
             <INT key="CUL_TIME" value="2011-12-04 22:23:26"/>
-            <INT key="DEF" value="11111111 2223 gm 4444 lm 2244"/>
+            <INT key="DEF" value="12345678 2223 gm 4444 lm 2244"/>
             <INT key="LASTIODev" value="CUL"/>
             <INT key="MSGCNT" value="122"/>
             <INT key="NAME" value="mat_halogen"/>
@@ -514,7 +517,7 @@
             <INT key="CUL_RAWMSG" value="F00005A12E7"/>
             <INT key="CUL_RSSI" value="-86.5"/>
             <INT key="CUL_TIME" value="2011-12-01 21:58:40"/>
-            <INT key="DEF" value="11111111 2233 gm 4444 lm 2244"/>
+            <INT key="DEF" value="12345678 2233 gm 4444 lm 2244"/>
             <INT key="LASTIODev" value="CUL"/>
             <INT key="MSGCNT" value="11"/>
             <INT key="NAME" value="mat_licht"/>
@@ -534,7 +537,7 @@
             <INT key="CUL_RAWMSG" value="F00005B12E3"/>
             <INT key="CUL_RSSI" value="-88.5"/>
             <INT key="CUL_TIME" value="2011-11-27 21:19:46"/>
-            <INT key="DEF" value="11111111 2234 gm 4444 lm 2244"/>
+            <INT key="DEF" value="12345678 2234 gm 4444 lm 2244"/>
             <INT key="LASTIODev" value="CUL"/>
             <INT key="MSGCNT" value="7"/>
             <INT key="NAME" value="mat_ventilator"/>
@@ -554,7 +557,7 @@
             <INT key="CUL_RAWMSG" value="F897A011523"/>
             <INT key="CUL_RSSI" value="-56.5"/>
             <INT key="CUL_TIME" value="2011-12-04 15:53:08"/>
-            <INT key="DEF" value="31322433 1112 gm 4444 lm 1144"/>
+            <INT key="DEF" value="12345678 1112 gm 4444 lm 1144"/>
             <INT key="LASTIODev" value="CUL"/>
             <INT key="MSGCNT" value="240"/>
             <INT key="NAME" value="sz_licht"/>
@@ -574,7 +577,7 @@
             <INT key="CUL_RAWMSG" value="F897AFF0023"/>
             <INT key="CUL_RSSI" value="-56.5"/>
             <INT key="CUL_TIME" value="2011-12-02 17:27:07"/>
-            <INT key="DEF" value="31322433 1114 gm 4444 lm 1144"/>
+            <INT key="DEF" value="12345678 1114 gm 4444 lm 1144"/>
             <INT key="LASTIODev" value="CUL"/>
             <INT key="MSGCNT" value="234"/>
             <INT key="NAME" value="sz_lichtmama"/>
@@ -594,7 +597,7 @@
             <INT key="CUL_RAWMSG" value="F897AFF0023"/>
             <INT key="CUL_RSSI" value="-56.5"/>
             <INT key="CUL_TIME" value="2011-12-02 17:27:07"/>
-            <INT key="DEF" value="31322433 1113 gm 4444 lm 1144"/>
+            <INT key="DEF" value="12345678 1113 gm 4444 lm 1144"/>
             <INT key="LASTIODev" value="CUL"/>
             <INT key="MSGCNT" value="138"/>
             <INT key="NAME" value="sz_lichtpapa"/>
@@ -614,7 +617,7 @@
             <INT key="CUL_RAWMSG" value="F897AFF0023"/>
             <INT key="CUL_RSSI" value="-56.5"/>
             <INT key="CUL_TIME" value="2011-12-02 17:27:07"/>
-            <INT key="DEF" value="31322433 1121 gm 4444 lm 1144"/>
+            <INT key="DEF" value="12345678 1121 gm 4444 lm 1144"/>
             <INT key="LASTIODev" value="CUL"/>
             <INT key="MSGCNT" value="113"/>
             <INT key="NAME" value="sz_ventilator"/>
@@ -634,7 +637,7 @@
             <INT key="CUL_RAWMSG" value="F897AFF0023"/>
             <INT key="CUL_RSSI" value="-56.5"/>
             <INT key="CUL_TIME" value="2011-12-02 17:27:07"/>
-            <INT key="DEF" value="31322433 1111 gm 4444 lm 1144"/>
+            <INT key="DEF" value="12345678 1111 gm 4444 lm 1144"/>
             <INT key="LASTIODev" value="CUL"/>
             <INT key="MSGCNT" value="112"/>
             <INT key="NAME" value="sz_ventlicht"/>
@@ -654,7 +657,7 @@
             <INT key="CUL_RAWMSG" value="F00004A18F9"/>
             <INT key="CUL_RSSI" value="-77.5"/>
             <INT key="CUL_TIME" value="2011-12-02 18:04:04"/>
-            <INT key="DEF" value="11111111 2133 gm 4444 lm 2144"/>
+            <INT key="DEF" value="12345678 2133 gm 4444 lm 2144"/>
             <INT key="LASTIODev" value="CUL"/>
             <INT key="MSGCNT" value="26"/>
             <INT key="NAME" value="wg_licht"/>
@@ -674,7 +677,7 @@
             <INT key="CUL_RAWMSG" value="F00004B001B"/>
             <INT key="CUL_RSSI" value="-60.5"/>
             <INT key="CUL_TIME" value="2011-12-02 08:01:18"/>
-            <INT key="DEF" value="11111111 2134 gm 4444 lm 2144"/>
+            <INT key="DEF" value="12345678 2134 gm 4444 lm 2144"/>
             <INT key="LASTIODev" value="CUL"/>
             <INT key="MSGCNT" value="80"/>
             <INT key="NAME" value="wg_ventilator"/>
@@ -694,7 +697,7 @@
             <INT key="CUL_RAWMSG" value="F0000491410"/>
             <INT key="CUL_RSSI" value="-66"/>
             <INT key="CUL_TIME" value="2011-11-27 21:47:08"/>
-            <INT key="DEF" value="11111111 2132 gm 4444 lm 2144"/>
+            <INT key="DEF" value="12345678 2132 gm 4444 lm 2144"/>
             <INT key="LASTIODev" value="CUL"/>
             <INT key="MSGCNT" value="28"/>
             <INT key="NAME" value="wg_weihnachten"/>
@@ -714,7 +717,7 @@
             <INT key="CUL_RAWMSG" value="F000044140E"/>
             <INT key="CUL_RSSI" value="-67"/>
             <INT key="CUL_TIME" value="2011-11-27 21:47:05"/>
-            <INT key="DEF" value="11111111 2121 gm 4444 lm 2144"/>
+            <INT key="DEF" value="12345678 2121 gm 4444 lm 2144"/>
             <INT key="LASTIODev" value="CUL"/>
             <INT key="MSGCNT" value="8"/>
             <INT key="NAME" value="wz_brunnen"/>
@@ -734,7 +737,7 @@
             <INT key="CUL_RAWMSG" value="F000041001D"/>
             <INT key="CUL_RSSI" value="-59.5"/>
             <INT key="CUL_TIME" value="2011-12-04 22:02:28"/>
-            <INT key="DEF" value="11111111 2112 gm 4444 lm 2144"/>
+            <INT key="DEF" value="12345678 2112 gm 4444 lm 2144"/>
             <INT key="LASTIODev" value="CUL"/>
             <INT key="MSGCNT" value="37"/>
             <INT key="NAME" value="wz_fernseher"/>
@@ -750,7 +753,7 @@
               sets="dim06% dim100% dim12% dim18% dim25% dim31% dim37% dim43% dim50% dim56% dim62% dim68% dim75% dim81% dim87% dim93% dimdown dimup dimupdown off off-for-timer on on-100-for-timer-prev on-for-timer on-old-for-timer on-old-for-timer-prev on-till ramp-off-time ramp-on-time reset sendstate timer toggle"
               attrs="room comment alias IODev follow-on-for-timer:1,0 do_not_notify:1,0 ignore:0,1 dummy:1,0 showtime:1,0 model;fs20hgs,fs20hgs,fs20pira,fs20piri,fs20s20,fs20s8,fs20s4,fs20s4a,fs20s4m,fs20s4u,fs20s4ub,fs20sd,fs20sn,fs20sr,fs20ss,fs20str,fs20tfk,fs20tfk,fs20tk,fs20uts,fs20ze,fs20as1,fs20as4,fs20di,fs20du,fs20ls,fs20ms2,fs20rst,fs20sa,fs20sig,fs20st,fs20sv,fs20usr loglevel:0,1,2,3,4,5,6 eventMap">
             <INT key="BTN" value="43"/>
-            <INT key="DEF" value="11111111 2114 gm 4444 lm 2144"/>
+            <INT key="DEF" value="12345678 2114 gm 4444 lm 2144"/>
             <INT key="NAME" value="wz_schranklicht"/>
             <INT key="NR" value="30"/>
             <INT key="STATE" value="off"/>
@@ -1010,6 +1013,20 @@
             <INT key="currentlogfile" value="./log/fhem-2011-11.log"/>
             <INT key="logfile" value="./log/fhem-%Y-%m.log"/>
         </FileLog>
+
+        <FileLog name="FileLog_wetterstation" state="active" sets="reopen" attrs="room comment alias disable:0,1 logtype nrarchive archivedir archivecmd eventMap">
+            <INT key="DEF" value="./log/wetterstation-%Y.log wetterstation:T:.*"/>
+            <INT key="NAME" value="FileLog_wetterstation"/>
+            <INT key="NR" value="49"/>
+            <INT key="REGEXP" value="wetterstation:T:.*"/>
+            <INT key="STATE" value="active"/>
+            <INT key="TYPE" value="FileLog"/>
+            <INT key="currentlogfile" value="./log/wetterstation-2011.log"/>
+            <INT key="logfile" value="./log/wetterstation-%Y.log"/>
+            <ATTR key="logtype" value="wetterstation:Temp/Rain,wetterstation:Wind/Hum,text"/>
+            <ATTR key="room" value="unknown"/>
+        </FileLog>
+
     </FileLog_LIST>
     <autocreate_LIST>
         <autocreate name="autocreate" state="active" sets=""

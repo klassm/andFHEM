@@ -5,6 +5,14 @@
               android:layout_height="fill_parent"
               android:orientation="vertical">
 
+
+    <TextView android:layout_height="fill_parent"
+              android:layout_width="wrap_content"
+              android:gravity="center_vertical"
+              android:layout_weight="1"
+              android:textSize="15dp"
+              android:id="@+id/deviceName"
+              android:text="deviceName"/>
         <li.klass.fhem.widget.NestedListView
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
