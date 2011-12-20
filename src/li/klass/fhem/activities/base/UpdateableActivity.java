@@ -14,12 +14,14 @@ import li.klass.fhem.exception.HostConnectionException;
 
 public abstract class UpdateableActivity<T> extends Activity {
     public static final int DIALOG_UPDATE = 1;
-    protected Handler updateHandler = new Handler() {
+
+    protected volatile Handler updateHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             updateData(currentData);
         }
     };
+
     protected T currentData;
 
     @SuppressWarnings("unchecked")
