@@ -4,9 +4,7 @@ import li.klass.fhem.data.DataProviderSwitch;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class GraphProvider {
     public static final GraphProvider INSTANCE = new GraphProvider();
@@ -30,12 +28,13 @@ public class GraphProvider {
         List<String> parts = splitIntoParts(result, yesterdayFormat, todayFormat);
 
         List<GraphEntry> graphEntries = partsToGraphEntries(parts);
-        return filterGraphEntriesForHour(graphEntries);
-//        return graphEntries;
+//        return filterGraphEntriesForHour(graphEntries);
+        return graphEntries;
     }
 
     private List<GraphEntry> partsToGraphEntries(List<String> parts) {
-        List<GraphEntry> entries = new ArrayList<GraphEntry>();
+        SortedSet<GraphEntry> entries = new TreeSet<GraphEntry> ();
+
         SimpleDateFormat providedDateFormat = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
 
         Date currentDate = null;
@@ -53,11 +52,12 @@ public class GraphProvider {
                 }
             } else {
                 currentValue = Float.valueOf(part);
-                entries.add(new GraphEntry(currentDate, currentValue));
+                GraphEntry graphEntry = new GraphEntry(currentDate, currentValue);
+                entries.add(graphEntry);
             }
         }
 
-        return entries;
+        return new ArrayList<GraphEntry>(entries);
     }
 
     private List<String> splitIntoParts(String result, String yesterdayFormat, String todayFormat) {

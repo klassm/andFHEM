@@ -7,4 +7,10 @@
               android:id="@+id/layout"
               android:orientation="vertical"
         >
+
+    <com.androidplot.xy.XYPlot
+            android:id="@+id/mySimpleXYPlot"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            title="A Simple XYPlot Example"/>
 </LinearLayout>
