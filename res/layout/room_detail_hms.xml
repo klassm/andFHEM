@@ -20,9 +20,9 @@
     </TableRow>
 
     <TableRow>
-        <TextView android:text="@string/battery"
+        <TextView android:text="@string/humidity"
                   android:layout_column="1" />
-        <TextView android:id="@+id/battery"
+        <TextView android:id="@+id/humidity"
                   android:gravity="right"/>
     </TableRow>
 </TableLayout>

@@ -1,5 +1,6 @@
 package li.klass.fhem.data.provider.graph;
 
+import android.util.Log;
 import li.klass.fhem.data.DataProviderSwitch;
 
 import java.text.ParseException;
@@ -21,15 +22,13 @@ public class GraphProvider {
 
         String result = DataProviderSwitch.INSTANCE.getCurrentProvider().fileLogData(fileLogName, yesterday, today, columnSpec);
         result = result.replace("#" + columnSpec, "");
-        
+
         String yesterdayFormat = dateFormat.format(yesterday);
         String todayFormat = dateFormat.format(today);
 
         List<String> parts = splitIntoParts(result, yesterdayFormat, todayFormat);
 
-        List<GraphEntry> graphEntries = partsToGraphEntries(parts);
-//        return filterGraphEntriesForHour(graphEntries);
-        return graphEntries;
+        return partsToGraphEntries(parts);
     }
 
     private List<GraphEntry> partsToGraphEntries(List<String> parts) {
@@ -44,16 +43,20 @@ public class GraphProvider {
                 continue;
             }
 
-            if (part.length() >= 18) {
+            if (part.contains("-") && part.contains("_")) {
                 try {
                     currentDate = providedDateFormat.parse(part);
                 } catch (ParseException e) {
-                    e.printStackTrace();
+                    Log.e(GraphProvider.class.getName(), "cannot parse date " + part, e);
                 }
-            } else {
-                currentValue = Float.valueOf(part);
-                GraphEntry graphEntry = new GraphEntry(currentDate, currentValue);
-                entries.add(graphEntry);
+            } else if (! part.substring(1).contains("-") && currentDate != null) {
+                try {
+                    currentValue = Float.valueOf(part);
+                    GraphEntry graphEntry = new GraphEntry(currentDate, currentValue);
+                    entries.add(graphEntry);
+                } catch (NumberFormatException e) {
+                    Log.e(GraphProvider.class.getName(), "cannot format " + part, e);
+                }
             }
         }
 
@@ -77,18 +80,5 @@ public class GraphProvider {
             }
         }
         return parts;
-    }
-    
-    private List<GraphEntry> filterGraphEntriesForHour(List<GraphEntry> entries) {
-        List<GraphEntry> result = new ArrayList<GraphEntry>();
-
-        int counter = 0;
-        for (GraphEntry entry : entries) {
-            if (counter % 60 == 0) {
-                result.add(entry);
-            }
-            counter ++;
-        }
-        return result;
     }
 }

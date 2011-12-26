@@ -26,7 +26,7 @@ public class RoomListActivity extends BaseActivity<List<String>, RoomListAdapter
     protected RoomListAdapter initializeLayoutAndReturnAdapter() {
         ListView roomList = (ListView) findViewById(R.id.roomList);
 
-        RoomListAdapter adapter = new RoomListAdapter(this, R.layout.room, new ArrayList<String>());
+        RoomListAdapter adapter = new RoomListAdapter(this, R.layout.room_list_name, new ArrayList<String>());
         roomList.setAdapter(adapter);
 
         roomList.setOnItemClickListener(new AdapterView.OnItemClickListener() {

@@ -1,6 +1,8 @@
 package li.klass.fhem.adapter.devices;
 
-import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -8,6 +10,11 @@ import li.klass.fhem.R;
 import li.klass.fhem.domain.Device;
 
 public abstract class DeviceAdapter<D extends Device> {
+
+
+    public static final String INTENT_DEVICE_NAME = "deviceName";
+    public static final String INTENT_ROOM = "room";
+
     public boolean supports(Class<? extends Device> deviceClass) {
         return getSupportedDeviceClass().isAssignableFrom(deviceClass);
     }
@@ -24,19 +31,36 @@ public abstract class DeviceAdapter<D extends Device> {
     }
 
     @SuppressWarnings("unchecked")
-    public View getDetailView(LayoutInflater layoutInflater, Device device) {
+    public View getDetailView(Context context, LayoutInflater layoutInflater, Device device) {
         if (supportsDetailView()) {
-            return getDeviceDetailView(layoutInflater, (D) device);
+            return getDeviceDetailView(context, layoutInflater, (D) device);
         }
         return null;
     }
 
+    public void gotoDetailView(Context context, Device device) {
+        if (! supportsDetailView()) {
+            return;
+        }
+
+        Intent intent = new Intent();
+        intent.putExtras(new Bundle());
+        intent.putExtra(INTENT_DEVICE_NAME, device.getName());
+        intent.putExtra(INTENT_ROOM, device.getRoom());
+
+        intent = onFillDeviceDetailIntent(context, device, intent);
+        if (intent != null) {
+            context.startActivity(intent);
+        }
+    }
+
+
     public abstract int getDetailViewLayout();
     public abstract boolean supportsDetailView();
-    public abstract Class<? extends Activity> getDetailActivityClass();
-    protected abstract View getDeviceDetailView(LayoutInflater layoutInflater, D device);
+    protected abstract View getDeviceDetailView(Context context, LayoutInflater layoutInflater, D device);
+    protected abstract Intent onFillDeviceDetailIntent(Context context, Device device, Intent intent);
 
     public abstract Class<? extends Device> getSupportedDeviceClass();
     protected abstract View getDeviceView(LayoutInflater layoutInflater, D device);
-    
+
 }

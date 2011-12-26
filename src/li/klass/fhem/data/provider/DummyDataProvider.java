@@ -18,7 +18,7 @@ public class DummyDataProvider implements FHEMDataProvider {
     public String xmllist() {
         InputStream inputStream = null;
         try {
-            inputStream = DummyDataProvider.class.getResource("dummyData.xml").openStream();
+            inputStream = DummyDataProvider.class.getResource("kai.xml").openStream();
             String content = IOUtils.toString(inputStream);
             content = content.replaceAll("\n", "");
             content = content.replaceAll("  ", "");
@@ -33,7 +33,21 @@ public class DummyDataProvider implements FHEMDataProvider {
 
     @Override
     public String fileLogData(String logName, Date fromDate, Date toDate, String columnSpec) {
-        return "";
+        return "2011-12-23_00:16:48 4.2" +
+                "2011-12-23_01:19:21 5.2" +
+                "2011-12-23_02:21:53 5.2" +
+                "2011-12-23_03:24:26 6.2" +
+                "2011-12-23_04:26:58 7.3" +
+                "2011-12-23_05:32:03 8.2" +
+                "2011-12-23_06:37:08 9.3" +
+                "2011-12-23_07:39:41 8.3" +
+                "2011-12-23_08:42:13 6.3" +
+                "2011-12-23_09:44:46 5.3" +
+                "2011-12-23_10:49:51 4.3" +
+                "2011-12-23_11:52:23 3.3" +
+                "2011-12-23_12:54:56 2.3" +
+                "2011-12-23_13:57:28 1.3" +
+                "#" + columnSpec;
     }
 
     @Override

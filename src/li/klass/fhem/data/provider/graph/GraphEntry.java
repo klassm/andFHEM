@@ -3,31 +3,28 @@ package li.klass.fhem.data.provider.graph;
 import java.util.Date;
 
 public class GraphEntry implements Comparable<GraphEntry> {
-    private int hour;
     private float value;
 
+    private Date date;
+
     public GraphEntry(Date date, float value) {
-        this(date.getHours(), value);
-    }
-
-    public GraphEntry(int hour, float value) {
-        this.hour = hour;
         this.value = value;
-    }
-
-    public int getHour() {
-        return hour;
+        this.date = date;
     }
 
     public float getValue() {
         return value;
     }
 
+    public Date getDate() {
+        return date;
+    }
+
     @Override
     public String toString() {
         return "GraphEntry{" +
-                "hour=" + hour +
-                ", value=" + value +
+                "value=" + value +
+                ", date=" + date +
                 '}';
     }
 
@@ -38,16 +35,19 @@ public class GraphEntry implements Comparable<GraphEntry> {
 
         GraphEntry that = (GraphEntry) o;
 
-        return hour == that.hour;
+        return Float.compare(that.value, value) == 0 && !(date != null ? !date.equals(that.date) : that.date != null);
+
     }
 
     @Override
     public int hashCode() {
-        return hour;
+        int result = (value != +0.0f ? Float.floatToIntBits(value) : 0);
+        result = 31 * result + (date != null ? date.hashCode() : 0);
+        return result;
     }
 
     @Override
     public int compareTo(GraphEntry graphEntry) {
-        return ((Integer) hour).compareTo(graphEntry.getHour());
+        return (date).compareTo(graphEntry.getDate());
     }
 }

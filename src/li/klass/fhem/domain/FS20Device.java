@@ -2,9 +2,11 @@ package li.klass.fhem.domain;
 
 import li.klass.fhem.data.FHEMService;
 import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class FS20Device extends Device<FS20Device> implements Comparable<FS20Device>, Serializable {
@@ -13,7 +15,8 @@ public class FS20Device extends Device<FS20Device> implements Comparable<FS20Dev
     private static final List<String> dimModels = Arrays.asList("FS20DI", "FS20DI10", "FS20DU");
     
     private String model = "";
-    private FS20State fs20State;
+    private List<String> setOptions = Collections.emptyList();
+    private String measureDate = "";
 
     public enum FS20State {
         ON, OFF
@@ -22,9 +25,22 @@ public class FS20Device extends Device<FS20Device> implements Comparable<FS20Dev
     @Override
     public void onChildItemRead(String keyValue, String nodeContent, NamedNodeMap attributes) {
         if (keyValue.equals("STATE")) {
-            setFs20State(nodeContent);
+            Node measured = attributes.getNamedItem("measured");
+            if (measured != null) {
+                this.measureDate = measured.getTextContent();
+            }
         } else if (keyValue.equalsIgnoreCase("MODEL")) {
             this.model = nodeContent.toUpperCase();
+        }
+    }
+
+    @Override
+    protected void onAttributeRead(String attributeKey, String attributeValue) {
+        super.onAttributeRead(attributeKey, attributeValue);
+
+        if (attributeKey.equals("SETS")) {
+            setOptions = Arrays.asList(attributeValue.split(" "));
+            Collections.sort(setOptions);
         }
     }
 
@@ -33,31 +49,22 @@ public class FS20Device extends Device<FS20Device> implements Comparable<FS20Dev
         return DeviceType.FS20;
     }
 
-    private void setFs20State(String state) {
-        if (equalsAny(state, "off", "off-for-timer", "reset", "timer")) {
-            fs20State = FS20State.OFF;
-        } else {
-            fs20State = FS20State.ON;
-        }
-    }
     
     public boolean isOn() {
-        return fs20State.equals(FS20State.ON);
+        return getFs20State().equals(FS20State.ON);
     }
 
+    public void setState(String state) {
+        this.state = state;
+        FHEMService.INSTANCE.executeCommand("set " + getName() + " " + state);
+    }
+    
     public void toggleState() {
-        String command = "set " + getName() + " ";
         if (isOn()) {
-            fs20State = FS20State.OFF;
-            state = "off";
-            command += "off";
+            setState("off");
         } else {
-            fs20State = FS20State.ON;
-            state = "on";
-            command += "on";
+            setState("on");
         }
-
-        FHEMService.INSTANCE.executeCommand(command);
     }
 
     public boolean isDimDevice() {
@@ -87,13 +94,19 @@ public class FS20Device extends Device<FS20Device> implements Comparable<FS20Dev
             newState = "dim" + String.format("%02d", bestMatch) + "%";
         }
         state = newState;
-        setFs20State(newState);
 
-        FHEMService.INSTANCE.executeCommand("set " + name + " " + newState);
+        setState(newState);
     }
-    
+
+    public FS20State getFs20State() {
+        if (equalsAny(state, "off", "off-for-timer", "reset", "timer")) {
+            return FS20State.OFF;
+        }
+        return FS20State.ON;
+    }
+
     public int getFS20DimState() {
-        if (fs20State == FS20State.OFF) {
+        if (getFs20State() == FS20State.OFF) {
             return 0;
         }
         
@@ -103,5 +116,13 @@ public class FS20Device extends Device<FS20Device> implements Comparable<FS20Dev
         }
 
         return 100;
+    }
+
+    public String getMeasureDate() {
+        return measureDate;
+    }
+
+    public List<String> getSetOptions() {
+        return setOptions;
     }
 }

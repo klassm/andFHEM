@@ -15,10 +15,19 @@
     <string name="battery">Battery</string>
     <string name="measured">Measured</string>
     <string name="warnings">Warnings</string>
+    <string name="time">Zeit</string>
+    <string name="avgDay">Average Day</string>
+    <string name="avgMonth">Average Month</string>
+    <string name="isRaining">Is Raining?</string>
+    <string name="desiredTemperature">Desired Temperature</string>
 
+    <string name="switchDevice">Switch</string>
     <string name="preferences">Preferences</string>
     <string name="update">Update</string>
     <string name="updating">Updating ...</string>
+    <string name="loading">Loading ...</string>
+    <string name="switching">Switching ...</string>
+    <string name="help">Help</string>
 
     <string name="context_addtofavorites">Add to favorites</string>
     <string name="context_removefavorite">Remove favorite</string>
@@ -40,6 +49,7 @@
     <string name="updateError">Error while updating.</string>
     <string name="updateErrorHostConnection">Cannot connect to host.</string>
     <string name="updateErrorDeviceListParse">Could not parse xml device list.</string>
+    <string name="graphLoadError">Error while loading graph data.</string>
 
     <string name="okButton">OK</string>
 
@@ -48,6 +58,22 @@
         Go to preferences and insert your FHEM server details.
         \n\nLong click on any item in the device list to add a favorite.
     </string>
+
+    <string name="temperatureGraph">Temperature Graph</string>
+    <string name="rainGraph">Rain Graph</string>
+    <string name="humidityGraph">Humidity Graph</string>
+    <string name="windGraph">Wind Graph</string>
+    <string name="actuatorGraph">Actuator Graph</string>
+
+    <string name="yAxisWind">wind (km/h)</string>
+    <string name="yAxisHumidity">humidity (%)</string>
+    <string name="yAxisTemperature">temperature (°C)</string>
+    <string name="yAxisRain">rain (l/m2)</string>
+    <string name="yAxisActuator">actuator (%)</string>
+
+    <string name="generalDetails">General Details</string>
+    <string name="plots">Plots</string>
+    <string name="switchSetOptions">Switch Set Options</string>
 
 
 </resources>

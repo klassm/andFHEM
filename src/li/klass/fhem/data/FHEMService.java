@@ -65,18 +65,16 @@ public class FHEMService {
     }
 
     @SuppressWarnings("unchecked")
-    public Map<String, List<GraphEntry>> getGraphData(Device device) {
+    public Map<String, List<GraphEntry>> getGraphData(Device device, List<String> columnSpecifications) {
         if (device.getFileLog() == null) return null;
 
         Map<String, List<GraphEntry>> data = new HashMap<String, List<GraphEntry>>();
-        Map columnSpecifications = device.getFileLogColumns();
-        Set<String> keys = columnSpecifications.keySet();
 
         GraphProvider graphProvider = GraphProvider.INSTANCE;
-        for (String key : keys) {
+        for (String columnSpec : columnSpecifications) {
             String fileLogDeviceName = device.getFileLog().getName();
-            List<GraphEntry> valueEntries = graphProvider.getCurrentGraphEntriesFor(fileLogDeviceName, (String) columnSpecifications.get(key));
-            data.put(key, valueEntries);
+            List<GraphEntry> valueEntries = graphProvider.getCurrentGraphEntriesFor(fileLogDeviceName, columnSpec);
+            data.put(columnSpec, valueEntries);
         }
 
         return data;

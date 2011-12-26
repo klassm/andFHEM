@@ -37,10 +37,23 @@ public abstract class DeviceDetailActivity<D extends Device> extends Activity {
             return;
         }
 
-        DeviceAdapter<D> adapter = (DeviceAdapter<D>) DeviceAdapterProvider.INSTANCE.getAdapterFor(device);
-        setContentView(adapter.getDetailView(LayoutInflater.from(this), device));
+        update();
 
         String deviceDetailPrefix = getResources().getString(R.string.deviceDetailPrefix);
         setTitle(deviceDetailPrefix + " " + deviceName);
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        update();
+    }
+
+    @SuppressWarnings("unchecked")
+    protected void update() {
+        DeviceAdapter<D> adapter = (DeviceAdapter<D>) DeviceAdapterProvider.INSTANCE.getAdapterFor(device);
+        setContentView(adapter.getDetailView(this, LayoutInflater.from(this), device));
+    }
+
 }

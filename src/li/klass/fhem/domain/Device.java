@@ -38,6 +38,12 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
 
             onChildItemRead(keyValue, nodeContent, item.getAttributes());
         }
+
+        NamedNodeMap attributes = xml.getAttributes();
+        for (int i = 0; i < attributes.getLength(); i++) {
+            Node attributeNode = attributes.item(i);
+            onAttributeRead(attributeNode.getNodeName().toUpperCase(), attributeNode.getTextContent());
+        }
     }
 
 
@@ -49,13 +55,16 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
         return room;
     }
 
-    public abstract void onChildItemRead(String keyValue, String nodeContent, NamedNodeMap attributes);
+    protected abstract void onChildItemRead(String keyValue, String nodeContent, NamedNodeMap attributes);
+    
+    protected void onAttributeRead(String attributeKey, String attributeValue) {
+    }
 
     @Override
     public String toString() {
         return "Device{" +
                 "name='" + name + '\'' +
-                ", room='" + room + '\'' +
+                ", room_list_name='" + room + '\'' +
                 ", state='" + state + '\'' +
                 '}';
     }
@@ -104,8 +113,8 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
         this.fileLog = fileLog;
     }
 
-    public Map<String, String> getFileLogColumns() {
-        return new HashMap<String, String> ();
+    public Map<Integer, String> getFileLogColumns() {
+        return new HashMap<Integer, String> ();
     }
 
     public String getState() {

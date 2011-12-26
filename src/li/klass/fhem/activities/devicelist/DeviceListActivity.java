@@ -1,6 +1,5 @@
 package li.klass.fhem.activities.devicelist;
 
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -38,14 +37,7 @@ public abstract class DeviceListActivity extends BaseActivity<RoomDeviceList, Ro
                     Device device = (Device) child;
                     DeviceAdapter<? extends Device<?>> adapter = DeviceAdapterProvider.INSTANCE.getAdapterFor(device);
                     if (adapter != null && adapter.supportsDetailView()) {
-                        Intent intent = new Intent();
-                        intent.setClass(DeviceListActivity.this, adapter.getDetailActivityClass());
-
-                        intent.putExtras(new Bundle());
-                        intent.putExtra("deviceName", device.getName());
-                        intent.putExtra("room", device.getRoom());
-
-                        startActivity(intent);
+                        adapter.gotoDetailView(DeviceListActivity.this, device);
                     }
                 }
             }

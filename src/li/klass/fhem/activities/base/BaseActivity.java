@@ -2,6 +2,7 @@ package li.klass.fhem.activities.base;
 
 import android.content.Intent;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.*;
@@ -10,8 +11,8 @@ import android.widget.Toast;
 import li.klass.fhem.R;
 import li.klass.fhem.activities.PreferencesActivity;
 import li.klass.fhem.data.FHEMService;
-import li.klass.fhem.domain.Device;
 import li.klass.fhem.data.provider.favorites.FavoritesService;
+import li.klass.fhem.domain.Device;
 
 public abstract class BaseActivity<DOMAIN, ADAPTER> extends UpdateableActivity<DOMAIN> {
     public static final int OPTION_UPDATE = 1;
@@ -19,10 +20,11 @@ public abstract class BaseActivity<DOMAIN, ADAPTER> extends UpdateableActivity<D
 
     public static final int CONTEXT_MENU_FAVORITES_ADD = 1;
     public static final int CONTEXT_MENU_FAVORITES_DELETE = 2;
+    public static final int OPTION_HELP = 3;
 
     protected Device contextMenuClickedDevice;
-    private long backPressStart;
 
+    private long backPressStart;
     protected ADAPTER adapter;
 
     @Override
@@ -43,6 +45,9 @@ public abstract class BaseActivity<DOMAIN, ADAPTER> extends UpdateableActivity<D
         MenuItem preferencesItem = menu.add(0, OPTION_PREFERENCES, 0, getResources().getString(R.string.preferences));
         preferencesItem.setIcon(android.R.drawable.ic_menu_preferences);
 
+        MenuItem helpItem = menu.add(0, OPTION_HELP, 0, getResources().getString(R.string.help));
+        helpItem.setIcon(android.R.drawable.ic_menu_help);
+
         return true;
     }
 
@@ -57,8 +62,14 @@ public abstract class BaseActivity<DOMAIN, ADAPTER> extends UpdateableActivity<D
                 update(true);
                 break;
             case OPTION_PREFERENCES:
-                Intent intent = new Intent(this, PreferencesActivity.class);
-                startActivity(intent);
+                Intent preferencesIntent = new Intent(this, PreferencesActivity.class);
+                startActivity(preferencesIntent);
+                break;
+            case OPTION_HELP:
+                Uri helpUri = Uri.parse("http://andFHEM.klass.li");
+                Intent helpIntent = new Intent(Intent.ACTION_VIEW, helpUri);
+                startActivity(helpIntent);
+                break;
         }
 
         return true;

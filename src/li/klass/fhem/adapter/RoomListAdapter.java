@@ -17,20 +17,16 @@ public class RoomListAdapter extends ListDataAdapter<String> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        String item = (String) getItem(position);
+        String roomName = (String) getItem(position);
 
         convertView = inflater.inflate(resource, null);
 
-        Holder roomHolder = new Holder();
-        roomHolder.roomName = (TextView) convertView.findViewById(R.id.roomName);
-        roomHolder.roomName.setText(item);
-        convertView.setTag(item);
+        TextView roomNameTextView = (TextView) convertView.findViewById(R.id.roomName);
+        roomNameTextView.setText(roomName);
+
+        convertView.setTag(roomName);
 
         return convertView;
-    }
-
-    private static class Holder {
-        TextView roomName;
     }
 
     @Override
