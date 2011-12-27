@@ -22,6 +22,7 @@
         <activity android:name=".activities.deviceDetail.FHTDeviceDetailActivity" android:theme="@android:style/Theme.Light" />
         <activity android:name=".activities.deviceDetail.HMSDeviceDetailActivity" android:theme="@android:style/Theme.Light" />
         <activity android:name=".activities.deviceDetail.FS20DeviceDetailActivity" android:theme="@android:style/Theme.Light" />
+        <activity android:name=".activities.deviceDetail.CULWSDeviceDetailActivity" android:theme="@android:style/Theme.Light" />
 
         <activity android:name="org.achartengine.GraphicalActivity"/>
     </application>

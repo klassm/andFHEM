@@ -15,7 +15,7 @@
     <string name="battery">Battery</string>
     <string name="measured">Measured</string>
     <string name="warnings">Warnings</string>
-    <string name="time">Zeit</string>
+    <string name="time">Time</string>
     <string name="avgDay">Average Day</string>
     <string name="avgMonth">Average Month</string>
     <string name="isRaining">Is Raining?</string>
@@ -34,6 +34,11 @@
     <string name="context_favoriteadded">Favorite was added!</string>
     <string name="context_favoriteremoved">Favorite was removed!</string>
 
+    <string name="context_rename">Rename device</string>
+    <string name="context_delete">Delete device</string>
+
+    <string name="areYouSure">Are you sure?</string>
+
 
     <string name="tab_roomList">Rooms</string>
     <string name="tab_favorites">Favorites</string>
@@ -47,11 +52,13 @@
     <string name="prefShowHiddenDevices">Show hidden devices</string>
 
     <string name="updateError">Error while updating.</string>
+    <string name="executeError">Error while executing command.</string>
     <string name="updateErrorHostConnection">Cannot connect to host.</string>
     <string name="updateErrorDeviceListParse">Could not parse xml device list.</string>
     <string name="graphLoadError">Error while loading graph data.</string>
 
     <string name="okButton">OK</string>
+    <string name="cancelButton">Cancel</string>
 
     <string name="welcomeMessageTitle">Get Started</string>
     <string name="welcomeMessage">
@@ -74,6 +81,9 @@
     <string name="generalDetails">General Details</string>
     <string name="plots">Plots</string>
     <string name="switchSetOptions">Switch Set Options</string>
+
+    <string name="deviceRenameSuccess">Device was renamed.</string>
+    <string name="deviceDeleteSuccess">Device was deleted.</string>
 
 
 </resources>

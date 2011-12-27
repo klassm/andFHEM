@@ -34,6 +34,10 @@ public class RoomDeviceList implements Serializable {
         }
     }
     
+    public <T extends Device> void removeDevice(T device) {
+        deviceMap.get(device.getDeviceType()).remove(device);
+    }
+    
     public Set<Device> getAllDevices() {
         Set<Device> devices = new HashSet<Device>();
         Collection<HashSet<Device>> devicesCollection = deviceMap.values();

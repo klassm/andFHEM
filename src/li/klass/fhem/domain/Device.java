@@ -55,6 +55,14 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
         return room;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setRoom(String room) {
+        this.room = room;
+    }
+
     protected abstract void onChildItemRead(String keyValue, String nodeContent, NamedNodeMap attributes);
     
     protected void onAttributeRead(String attributeKey, String attributeValue) {

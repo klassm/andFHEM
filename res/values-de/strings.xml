@@ -1,0 +1,88 @@
+<resources>
+    <string name="app_name">andFHEM</string>
+
+    <string name="roomTitlePrefix">Raum</string>
+    <string name="allRoomsTitle">Alle Räume</string>
+    <string name="deviceDetailPrefix">Details für</string>
+
+    <string name="temperature">Temperatur</string>
+    <string name="wind">Wind</string>
+    <string name="rain">Regen</string>
+    <string name="humidity">Luftfeuchtigkeit</string>
+    <string name="actuator">Regler</string>
+    <string name="state">Zustand</string>
+    <string name="battery">Batterie</string>
+    <string name="measured">Messzeit</string>
+    <string name="warnings">Warnungen</string>
+    <string name="time">Zeit</string>
+    <string name="avgDay">Tagesschnitt</string>
+    <string name="avgMonth">Monatsschnitt</string>
+    <string name="isRaining">Regnet es?</string>
+    <string name="desiredTemperature">Wunschtemperatur</string>
+
+    <string name="switchDevice">Schalte</string>
+    <string name="preferences">Einstellungen</string>
+    <string name="update">Aktualisieren</string>
+    <string name="updating">Aktualisieren ...</string>
+    <string name="loading">Laden ...</string>
+    <string name="switching">Schalten ...</string>
+    <string name="help">Hilfe</string>
+
+    <string name="context_addtofavorites">Zu Favoriten hinzufügen</string>
+    <string name="context_removefavorite">Aus Favoriten entfernen</string>
+    <string name="context_favoriteadded">Favorit wurde hinzugefügt!</string>
+    <string name="context_favoriteremoved">Favorit wurde gelöscht!</string>
+
+    <string name="context_rename">Gerät umbenennen</string>
+    <string name="context_delete">Gerät löschen</string>
+
+    <string name="areYouSure">Sind Sie sicher?</string>
+
+
+    <string name="tab_roomList">Räume</string>
+    <string name="tab_favorites">Favoriten</string>
+    <string name="tab_alldevices">Alle Geräte</string>
+
+    <string name="prefUrlSummary">URL / IP des FHEM servers</string>
+    <string name="prefUrl">URL</string>
+    <string name="prefPortSummary">Port des FHEM servers</string>
+    <string name="prefPort">Port</string>
+    <string name="prefUseDummyData">Nütze Dummy Daten</string>
+    <string name="prefShowHiddenDevices">Zeige versteckte Geräte</string>
+
+    <string name="updateError">Error während Update Vorgang.</string>
+    <string name="executeError">Error während Kommando Ausführung.</string>
+    <string name="updateErrorHostConnection">Keine Verbindung zum FHEM Server.</string>
+    <string name="updateErrorDeviceListParse">Konnte xml Geräte Liste nicht lesen.</string>
+    <string name="graphLoadError">Graph Daten konnten nicht geladen werden.</string>
+
+    <string name="okButton">OK</string>
+    <string name="cancelButton">Abbrechen</string>
+
+    <string name="welcomeMessageTitle">Erster Start</string>
+    <string name="welcomeMessage">
+        Einstellungsmenü aufrufen und FHEM server Details eingeben.
+        \n\nUm ein Gerät zu den Favoriten hinzuzufügen, lange darauf klicken
+    </string>
+
+    <string name="temperatureGraph">Temperatur Graph</string>
+    <string name="rainGraph">Regen Graph</string>
+    <string name="humidityGraph">Luftfeuchtigkeit Graph</string>
+    <string name="windGraph">Wind Graph</string>
+    <string name="actuatorGraph">Regler Graph</string>
+
+    <string name="yAxisWind">Wind (km/h)</string>
+    <string name="yAxisHumidity">Luftfeuchtigkeit (%)</string>
+    <string name="yAxisTemperature">Temperatur (°C)</string>
+    <string name="yAxisRain">Regen (l/m2)</string>
+    <string name="yAxisActuator">Regler (%)</string>
+
+    <string name="generalDetails">Allgemeine Informationen</string>
+    <string name="plots">Graphen</string>
+    <string name="switchSetOptions">Schaltoptionen</string>
+
+    <string name="deviceRenameSuccess">Gerät wurde umbenannt.</string>
+    <string name="deviceDeleteSuccess">Gerät wurde gelöscht.</string>
+
+
+</resources>

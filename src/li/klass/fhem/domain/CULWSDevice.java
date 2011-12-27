@@ -12,13 +12,14 @@ public class CULWSDevice extends Device<CULWSDevice> {
     private String temperature;
 
     public static final Integer COLUMN_SPEC_TEMPERATURE = R.string.temperature;
+    public static final Integer COLUMN_SPEC_HUMIDITY = R.string.humidity;
 
     @Override
     public void onChildItemRead(String keyValue, String nodeContent, NamedNodeMap attributes) {
         if (keyValue.equals("HUMIDITY")) {
             humidity = nodeContent + " (%)";
-        } else if (keyValue.equals("COLUMN_SPEC_TEMPERATURE")) {
-            temperature = nodeContent + " (° Celsius)";
+        } else if (keyValue.equals("TEMPERATURE")) {
+            temperature = nodeContent + " (Celsius)";
         }
     }
 
@@ -39,6 +40,7 @@ public class CULWSDevice extends Device<CULWSDevice> {
     public Map<Integer, String> getFileLogColumns() {
         Map<Integer, String> columnSpecification = new HashMap<Integer, String>();
         columnSpecification.put(COLUMN_SPEC_TEMPERATURE, "4::0:");
+        columnSpecification.put(COLUMN_SPEC_HUMIDITY, "6::0:");
 
         return columnSpecification;
     }

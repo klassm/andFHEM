@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.*;
 import li.klass.fhem.R;
 import li.klass.fhem.activities.deviceDetail.FS20DeviceDetailActivity;
+import li.klass.fhem.data.FHEMService;
 import li.klass.fhem.domain.Device;
 import li.klass.fhem.domain.FS20Device;
 
@@ -41,7 +42,7 @@ public class FS20Adapter extends DeviceAdapter<FS20Device> {
 
                 @Override
                 protected Void doInBackground(Void... voids) {
-                    FS20Device device = (FS20Device) seekBar.getTag();
+                    FS20Device device = FHEMService.INSTANCE.deviceListForAllRooms(false).getDeviceFor((String) seekBar.getTag());
                     device.dim(progress);
                     return null;
                 }
@@ -82,12 +83,12 @@ public class FS20Adapter extends DeviceAdapter<FS20Device> {
             int initialProgress = device.getFS20DimState();
             seekBar.setProgress(initialProgress);
             seekBar.setOnSeekBarChangeListener(new SeekBarChangeListener(device.getFS20DimState()));
-            seekBar.setTag(device);
+            seekBar.setTag(device.getName());
 
             toggleButtonRow.setVisibility(View.GONE);
         } else {
             switchButton.setChecked(device.isOn());
-            switchButton.setTag(device);
+            switchButton.setTag(device.getName());
 
             seekBarRow.setVisibility(View.GONE);
         }
@@ -140,7 +141,7 @@ public class FS20Adapter extends DeviceAdapter<FS20Device> {
 
         ToggleButton switchButton = (ToggleButton) view.findViewById(R.id.switchButton);
         switchButton.setChecked(child.isOn());
-        switchButton.setTag(child);
+        switchButton.setTag(child.getName());
 
         return view;
     }
@@ -154,6 +155,7 @@ public class FS20Adapter extends DeviceAdapter<FS20Device> {
         SeekBar seekBar = (SeekBar) view.findViewById(R.id.seekBar);
         final int initialProgress = child.getFS20DimState();
         seekBar.setProgress(initialProgress);
+        seekBar.setTag(child.getName());
 
         seekBar.setOnSeekBarChangeListener(new SeekBarChangeListener(child.getFS20DimState()));
 

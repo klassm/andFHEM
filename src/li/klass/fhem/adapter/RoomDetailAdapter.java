@@ -75,6 +75,7 @@ public class RoomDetailAdapter extends NestedListViewAdapter<DeviceType, Device>
             Log.e(RoomDetailAdapter.class.getName(), "adapter was found for device type, but it will not support the device: " + child);
             throw new IllegalArgumentException("adapter was found for device type, but it will not support the device: " + child);
         }
+
         view = deviceAdapter.getView(layoutInflater, view, child);
         view.setTag(child);
 

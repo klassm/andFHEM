@@ -93,7 +93,6 @@ public class FS20Device extends Device<FS20Device> implements Comparable<FS20Dev
         else {
             newState = "dim" + String.format("%02d", bestMatch) + "%";
         }
-        state = newState;
 
         setState(newState);
     }

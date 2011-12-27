@@ -13,6 +13,7 @@ import li.klass.fhem.activities.PreferencesActivity;
 import li.klass.fhem.data.FHEMService;
 import li.klass.fhem.data.provider.favorites.FavoritesService;
 import li.klass.fhem.domain.Device;
+import li.klass.fhem.util.device.DeviceActionUtil;
 
 public abstract class BaseActivity<DOMAIN, ADAPTER> extends UpdateableActivity<DOMAIN> {
     public static final int OPTION_UPDATE = 1;
@@ -20,10 +21,12 @@ public abstract class BaseActivity<DOMAIN, ADAPTER> extends UpdateableActivity<D
 
     public static final int CONTEXT_MENU_FAVORITES_ADD = 1;
     public static final int CONTEXT_MENU_FAVORITES_DELETE = 2;
+    private static final int CONTEXT_MENU_RENAME = 3;
+    private static final int CONTEXT_MENU_DELETE = 4;
+    private static final int CONTEXT_MENU_MOVE = 5;
+
     public static final int OPTION_HELP = 3;
-
     protected Device contextMenuClickedDevice;
-
     private long backPressStart;
     protected ADAPTER adapter;
 
@@ -99,6 +102,8 @@ public abstract class BaseActivity<DOMAIN, ADAPTER> extends UpdateableActivity<D
             contextMenuClickedDevice = (Device) tag;
             Resources resources = getResources();
             menu.add(0, CONTEXT_MENU_FAVORITES_ADD, 0, resources.getString(R.string.context_addtofavorites));
+            menu.add(0, CONTEXT_MENU_RENAME, 0, resources.getString(R.string.context_rename));
+            menu.add(0, CONTEXT_MENU_DELETE, 0, resources.getString(R.string.context_delete));
         }
     }
 
@@ -133,6 +138,12 @@ public abstract class BaseActivity<DOMAIN, ADAPTER> extends UpdateableActivity<D
             case CONTEXT_MENU_FAVORITES_ADD:
                 FavoritesService.INSTANCE.addFavorite(contextMenuClickedDevice);
                 Toast.makeText(this, R.string.context_favoriteadded, Toast.LENGTH_SHORT).show();
+                return true;
+            case CONTEXT_MENU_RENAME:
+                DeviceActionUtil.renameDevice(this, contextMenuClickedDevice);
+                return true;
+            case CONTEXT_MENU_DELETE:
+                DeviceActionUtil.deleteDevice(this, contextMenuClickedDevice);
                 return true;
         }
         return false;

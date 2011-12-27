@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import li.klass.fhem.R;
 import li.klass.fhem.activities.deviceDetail.HMSDeviceDetailActivity;
@@ -51,6 +52,11 @@ public class HMSAdapter extends DeviceAdapter<HMSDevice> {
 
         TextView humidity = (TextView) view.findViewById(R.id.humidity);
         humidity.setText(device.getHumidity());
+
+        if (device.getFileLog() == null) {
+            LinearLayout graphLayout = (LinearLayout) view.findViewById(R.id.graphLayout);
+            graphLayout.setVisibility(View.INVISIBLE);
+        }
 
         Button temperatureGraph = (Button) view.findViewById(R.id.temperatureGraph);
         temperatureGraph.setOnClickListener(new View.OnClickListener() {

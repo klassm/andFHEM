@@ -8,6 +8,7 @@ import li.klass.fhem.activities.base.BaseActivity;
 import li.klass.fhem.adapter.RoomDetailAdapter;
 import li.klass.fhem.adapter.devices.DeviceAdapter;
 import li.klass.fhem.adapter.devices.DeviceAdapterProvider;
+import li.klass.fhem.data.FHEMService;
 import li.klass.fhem.domain.Device;
 import li.klass.fhem.domain.FS20Device;
 import li.klass.fhem.domain.RoomDeviceList;
@@ -61,7 +62,8 @@ public abstract class DeviceListActivity extends BaseActivity<RoomDeviceList, Ro
 
             @Override
             protected Void doInBackground(Void... voids) {
-                FS20Device device = (FS20Device) view.getTag();
+                String deviceName = (String) view.getTag();
+                FS20Device device = FHEMService.INSTANCE.deviceListForAllRooms(false).getDeviceFor(deviceName);
                 device.toggleState();
                 return null;
             }
