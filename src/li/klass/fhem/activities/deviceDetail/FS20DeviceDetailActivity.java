@@ -24,7 +24,7 @@ public class FS20DeviceDetailActivity extends DeviceDetailActivity<FS20Device> {
             protected Void doInBackground(Void... voids) {
                 String deviceName = (String) view.getTag();
                 FS20Device device = FHEMService.INSTANCE.deviceListForAllRooms(false).getDeviceFor(deviceName);
-                device.toggleState();
+                device.toggleState(FS20DeviceDetailActivity.this);
                 return null;
             }
 

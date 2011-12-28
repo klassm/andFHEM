@@ -64,7 +64,7 @@ public abstract class DeviceListActivity extends BaseActivity<RoomDeviceList, Ro
             protected Void doInBackground(Void... voids) {
                 String deviceName = (String) view.getTag();
                 FS20Device device = FHEMService.INSTANCE.deviceListForAllRooms(false).getDeviceFor(deviceName);
-                device.toggleState();
+                device.toggleState(DeviceListActivity.this);
                 return null;
             }
 
@@ -82,7 +82,7 @@ public abstract class DeviceListActivity extends BaseActivity<RoomDeviceList, Ro
             @Override
             protected Void doInBackground(Void... voids) {
                 SISPMSDevice device = (SISPMSDevice) view.getTag();
-                device.toggleState();
+                device.toggleState(DeviceListActivity.this);
                 return null;
             }
 

@@ -1,5 +1,6 @@
 package li.klass.fhem.domain;
 
+import android.content.Context;
 import li.klass.fhem.data.FHEMService;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -54,16 +55,16 @@ public class FS20Device extends Device<FS20Device> implements Comparable<FS20Dev
         return getFs20State().equals(FS20State.ON);
     }
 
-    public void setState(String state) {
+    public void setState(Context context, String state) {
         this.state = state;
-        FHEMService.INSTANCE.executeCommand("set " + getName() + " " + state);
+        FHEMService.INSTANCE.executeSafely(context, "set " + getName() + " " + state);
     }
     
-    public void toggleState() {
+    public void toggleState(Context context) {
         if (isOn()) {
-            setState("off");
+            setState(context, "off");
         } else {
-            setState("on");
+            setState(context, "on");
         }
     }
 
@@ -71,7 +72,7 @@ public class FS20Device extends Device<FS20Device> implements Comparable<FS20Dev
         return dimModels.contains(model);
     }
 
-    public void dim(int dimProgress) {
+    public void dim(Context context, int dimProgress) {
 
         if (! isDimDevice()) return;
 
@@ -94,7 +95,7 @@ public class FS20Device extends Device<FS20Device> implements Comparable<FS20Dev
             newState = "dim" + String.format("%02d", bestMatch) + "%";
         }
 
-        setState(newState);
+        setState(context, newState);
     }
 
     public FS20State getFs20State() {

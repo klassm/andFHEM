@@ -8,6 +8,7 @@ import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.*;
+import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.activities.deviceDetail.FS20DeviceDetailActivity;
 import li.klass.fhem.data.FHEMService;
@@ -43,7 +44,7 @@ public class FS20Adapter extends DeviceAdapter<FS20Device> {
                 @Override
                 protected Void doInBackground(Void... voids) {
                     FS20Device device = FHEMService.INSTANCE.deviceListForAllRooms(false).getDeviceFor((String) seekBar.getTag());
-                    device.dim(progress);
+                    device.dim(AndFHEMApplication.getContext(), progress);
                     return null;
                 }
             }.execute(null);
@@ -110,7 +111,7 @@ public class FS20Adapter extends DeviceAdapter<FS20Device> {
                 contextMenu.setItems(setOptions.toArray(new CharSequence[setOptions.size()]), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int item) {
                         String option = setOptions.get(item);
-                        device.setState(option);
+                        device.setState(AndFHEMApplication.getContext(), option);
                         dialog.dismiss();
                     }
                 });
