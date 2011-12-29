@@ -27,6 +27,7 @@
     <string name="loading">Laden ...</string>
     <string name="switching">Schalten ...</string>
     <string name="help">Hilfe</string>
+    <string name="donate">Helfen</string>
 
     <string name="context_addtofavorites">Zu Favoriten hinzufügen</string>
     <string name="context_removefavorite">Aus Favoriten entfernen</string>

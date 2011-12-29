@@ -8,21 +8,22 @@
 
     <TableRow>
         <TextView android:id="@+id/deviceName"
-                  android:layout_column="1"
-                  android:textStyle="bold" />
+                  style="@style/deviceOverviewCaption"/>
     </TableRow>
 
     <TableRow>
         <TextView android:text="@string/temperature"
-                  android:layout_column="1" />
+                  style="@style/deviceOverviewDescription" />
         <TextView android:id="@+id/temperature"
-                  android:gravity="right"/>
+                  style="@style/deviceOverviewContent"
+                  android:text="xx (Celsius)"/>
     </TableRow>
 
     <TableRow>
         <TextView android:text="@string/humidity"
-                  android:layout_column="1" />
+                  style="@style/deviceOverviewDescription" />
         <TextView android:id="@+id/humidity"
-                  android:gravity="right"/>
+                  style="@style/deviceOverviewContent"
+                  android:text="xx (%)"/>
     </TableRow>
 </TableLayout>

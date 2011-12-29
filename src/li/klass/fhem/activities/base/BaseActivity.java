@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.*;
 import android.widget.AdapterView;
 import android.widget.Toast;
+import li.klass.fhem.ApplicationUrls;
 import li.klass.fhem.R;
 import li.klass.fhem.activities.PreferencesActivity;
 import li.klass.fhem.data.FHEMService;
@@ -23,7 +24,7 @@ public abstract class BaseActivity<DOMAIN, ADAPTER> extends UpdateableActivity<D
     public static final int CONTEXT_MENU_FAVORITES_DELETE = 2;
     private static final int CONTEXT_MENU_RENAME = 3;
     private static final int CONTEXT_MENU_DELETE = 4;
-    private static final int CONTEXT_MENU_MOVE = 5;
+    private static final int OPTION_DONATE = 5;
 
     public static final int OPTION_HELP = 3;
     protected Device contextMenuClickedDevice;
@@ -51,6 +52,9 @@ public abstract class BaseActivity<DOMAIN, ADAPTER> extends UpdateableActivity<D
         MenuItem helpItem = menu.add(0, OPTION_HELP, 0, getResources().getString(R.string.help));
         helpItem.setIcon(android.R.drawable.ic_menu_help);
 
+        MenuItem donateItem = menu.add(0, OPTION_DONATE, 0, getResources().getString(R.string.donate));
+        donateItem.setIcon(android.R.drawable.ic_menu_agenda);
+
         return true;
     }
 
@@ -69,9 +73,14 @@ public abstract class BaseActivity<DOMAIN, ADAPTER> extends UpdateableActivity<D
                 startActivity(preferencesIntent);
                 break;
             case OPTION_HELP:
-                Uri helpUri = Uri.parse("http://andFHEM.klass.li");
+                Uri helpUri = Uri.parse(ApplicationUrls.HELP_PAGE);
                 Intent helpIntent = new Intent(Intent.ACTION_VIEW, helpUri);
                 startActivity(helpIntent);
+                break;
+            case OPTION_DONATE:
+                Uri donateUri = Uri.parse(ApplicationUrls.DONATE_PAGE);
+                Intent donateIntent = new Intent(Intent.ACTION_VIEW, donateUri);
+                startActivity(donateIntent);
                 break;
         }
 

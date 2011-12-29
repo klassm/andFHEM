@@ -13,7 +13,8 @@
               android:textSize="15dp"
               android:id="@+id/deviceName"
               android:text="deviceName"/>
-        <li.klass.fhem.widget.NestedListView
+
+    <li.klass.fhem.widget.NestedListView
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:id="@+id/deviceMap"

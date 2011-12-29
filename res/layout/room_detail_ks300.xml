@@ -1,45 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:layout_width="fill_parent"
-             android:layout_height="fill_parent"
-             android:stretchColumns="1"
-             android:padding="5dp"
-             android:paddingLeft="20dp"
-             android:paddingRight="20dp"
+             style="@style/deviceOverviewTable"
              android:background="@drawable/ks300_background">
 
     <TableRow>
         <TextView android:id="@+id/deviceName"
-                  android:layout_column="1"
-                  android:textStyle="bold" />
+                  style="@style/deviceOverviewCaption" />
     </TableRow>
 
     <TableRow>
         <TextView android:text="@string/temperature"
-                  android:layout_column="1" />
+                  style="@style/deviceOverviewDescription"/>
         <TextView android:id="@+id/temperature"
-                  android:text="xx °C"/>
+                  android:text="xx (Celsius)"
+                  style="@style/deviceOverviewContent"/>
     </TableRow>
 
     <TableRow>
         <TextView android:text="@string/wind"
-                  android:layout_column="1" />
+                  style="@style/deviceOverviewDescription"/>
         <TextView android:id="@+id/wind"
-                  android:text="xx km/h"/>
+                  style="@style/deviceOverviewContent"
+                  android:text="xx (km/h)"/>
     </TableRow>
 
     <TableRow>
         <TextView android:text="@string/rain"
-                  android:layout_column="1" />
+                  style="@style/deviceOverviewDescription"/>
         <TextView android:id="@+id/rain"
-                  android:text="xx l" />
+                  style="@style/deviceOverviewContent"
+                  android:text="xx (l)" />
     </TableRow>
 
     <TableRow>
         <TextView android:text="@string/humidity"
-                  android:layout_column="1" />
+                  style="@style/deviceOverviewDescription"/>
         <TextView android:id="@+id/humidity"
-                  android:text="xx %"/>
+                  style="@style/deviceOverviewContent"
+                  android:text="xx (%)"/>
     </TableRow>
 </TableLayout>

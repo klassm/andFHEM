@@ -1,5 +1,6 @@
 package li.klass.fhem.data;
 
+import android.util.Log;
 import li.klass.fhem.domain.*;
 import li.klass.fhem.exception.DeviceListParseException;
 import li.klass.fhem.exception.HostConnectionException;
@@ -10,17 +11,18 @@ import org.xml.sax.InputSource;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.IOException;
 import java.io.StringReader;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import static li.klass.fhem.domain.DeviceType.*;
+import static li.klass.fhem.domain.DeviceType.FILE_LOG;
 
 public class DeviceListProvider {
 
     public static final DeviceListProvider INSTANCE = new DeviceListProvider();
-
+    
     private DeviceListProvider() {}
 
     public Map<String, RoomDeviceList> listDevices() {
@@ -34,7 +36,11 @@ public class DeviceListProvider {
             xmlList = xmlList.replaceAll("<notify_LIST[\\s\\S]*</notify_LIST>", "");
             xmlList = xmlList.replaceAll("<CUL_IR_LIST>[\\s\\S]*</CUL_IR_LIST>", "");
             xmlList = xmlList.replaceAll("value=\"\"[A-Za-z0-9 ${},]*\"\"", "");
+            xmlList = xmlList.replaceAll("</>", "");
+            xmlList = xmlList.replaceAll("< [a-zA-Z\"=0-9 ]*>", "");
 
+            Log.e(DeviceListProvider.class.getName(), xmlList);
+            
             DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
             Document document = docBuilder.parse(new InputSource(new StringReader(xmlList)));
@@ -54,6 +60,8 @@ public class DeviceListProvider {
             return roomDeviceListMap;
         } catch (HostConnectionException e) {
             throw e;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         } catch (Exception e) {
             throw new DeviceListParseException(e);
         }
@@ -61,7 +69,7 @@ public class DeviceListProvider {
 
     private <T extends Device> void devicesFromDocument(Class<T> deviceClass, Map<String,
             RoomDeviceList> roomDeviceListMap, Document document, String tagName) throws IllegalAccessException, InstantiationException {
-        
+
         NodeList nodes = document.getElementsByTagName(tagName);
         for (int i = 0; i < nodes.getLength(); i++) {
             Node item = nodes.item(i);
@@ -102,7 +110,7 @@ public class DeviceListProvider {
 
     private void addFileLogToDevices(FileLog fileLogDevice, Collection<Device> devices) {
         for (Device device : devices) {
-            if (device.getName().equals(fileLogDevice.getConcerningDevice())) {
+            if (device.getName().equals(fileLogDevice.getConcerningDeviceName())) {
                 device.setFileLog(fileLogDevice);
                 return;
             }

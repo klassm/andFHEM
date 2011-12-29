@@ -6,12 +6,12 @@ import org.w3c.dom.NamedNodeMap;
 
 public class FileLog extends Device<FileLog> {
 
-    private String concerningDevice;
+    private String concerningDeviceName;
 
     @Override
     public void onChildItemRead(String keyValue, String nodeContent, NamedNodeMap attributes) {
         if (keyValue.equals("REGEXP")) {
-            this.concerningDevice = extractConcerningDeviceNameFromDefinition(nodeContent);
+            this.concerningDeviceName = extractConcerningDeviceNameFromDefinition(nodeContent);
         }
     }
 
@@ -29,7 +29,7 @@ public class FileLog extends Device<FileLog> {
         return definition;
     }
 
-    public String getConcerningDevice() {
-        return concerningDevice;
+    public String getConcerningDeviceName() {
+        return concerningDeviceName;
     }
 }

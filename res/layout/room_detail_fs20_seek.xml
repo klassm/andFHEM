@@ -1,28 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="horizontal"
-              android:layout_width="fill_parent"
-              android:layout_height="fill_parent"
-              android:paddingTop="5dp"
-              android:paddingLeft="10dp"
-              android:paddingRight="10dp"
-              android:paddingBottom="5dp">
+                style="@style/deviceOverviewLayout"
+              android:orientation="horizontal">
 
-    <TextView android:layout_height="fill_parent"
-              android:layout_width="wrap_content"
-              android:gravity="center_vertical"
-              android:textSize="15dp"
+    <TextView style="@style/deviceOverviewLayoutDeviceName"
               android:id="@+id/deviceName"
               android:text="deviceName"/>
 
     <SeekBar
             android:id="@+id/seekBar"
-            android:layout_width="70dip"
-            android:layout_height="wrap_content"
-            android:max="100"
-            android:focusable="false"
-            android:layout_alignParentRight="true"
-            />
+            style="@style/deviceOverviewSeekBar"/>
 
 </RelativeLayout>

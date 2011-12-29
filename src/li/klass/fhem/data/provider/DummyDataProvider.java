@@ -18,7 +18,7 @@ public class DummyDataProvider implements FHEMDataProvider {
     public String xmllist() {
         InputStream inputStream = null;
         try {
-            inputStream = DummyDataProvider.class.getResource("kai.xml").openStream();
+            inputStream = DummyDataProvider.class.getResource("dummyData.xml").openStream();
             String content = IOUtils.toString(inputStream);
             content = content.replaceAll("\n", "");
             content = content.replaceAll("  ", "");

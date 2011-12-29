@@ -92,7 +92,7 @@ public class KS300Device extends Device<KS300Device> implements Serializable {
     @Override
     public Map<Integer, String> getFileLogColumns() {
         Map<Integer, String> columnSpecification = new HashMap<Integer, String>();
-        columnSpecification.put(COLUMN_SPEC_TEMPERATURE, "4:IR:");
+        columnSpecification.put(COLUMN_SPEC_TEMPERATURE, "4:IR\\x3a:0:");
         columnSpecification.put(COLUMN_SPEC_HUMIDITY, "6:IR:");
         columnSpecification.put(COLUMN_SPEC_WIND, "8:IR:");
         columnSpecification.put(COLUMN_SPEC_RAIN, "10:IR:");
