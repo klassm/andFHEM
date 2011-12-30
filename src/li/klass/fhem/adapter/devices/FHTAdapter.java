@@ -23,7 +23,7 @@ public class FHTAdapter extends DeviceAdapter<FHTDevice> {
         TextView actuator = (TextView) view.findViewById(R.id.actuator);
 
 
-        deviceName.setText(device.getName());
+        deviceName.setText(device.getAliasOrName());
         temperature.setText(device.getTemperature());
         actuator.setText(device.getActuator());
 

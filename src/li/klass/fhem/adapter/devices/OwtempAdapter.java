@@ -13,7 +13,7 @@ public class OwtempAdapter extends DeviceListOnlyAdapter<OwtempDevice> {
         View view = layoutInflater.inflate(R.layout.room_detail_owtemp, null);
 
         TextView deviceName = (TextView) view.findViewById(R.id.deviceName);
-        deviceName.setText(device.getName());
+        deviceName.setText(device.getAliasOrName());
 
         TextView temperature = (TextView) view.findViewById(R.id.temperature);
         temperature.setText(device.getTemperature());

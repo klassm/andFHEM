@@ -67,6 +67,132 @@
 </CUL_FHTTK>
 </CUL_FHTTK_LIST>
 
+
+<CUL_EM_LIST>
+<CUL_EM name="CUL_EM_5" state="CNT: 62 CUM: 1254.521  5MIN: 0.000  TOP: 0.000" sets="" attrs="room comment alias IODev do_not_notify:0,1 showtime:0,1 model:EMEM,EMWZ,EMGZ loglevel ignore:0,1 eventMap">
+    <INT key="BasicFeePerMonth" value="0"/>
+    <INT key="CODE" value="5"/>
+    <INT key="CUL_MSGCNT" value="3111"/>
+    <INT key="CUL_RSSI" value="-76.5"/>
+    <INT key="CUL_TIME" value="2011-12-29 21:46:16"/>
+    <INT key="CostPerUnit" value="0"/>
+    <INT key="DEF" value="5"/>
+    <INT key="LASTIODev" value="CUL"/>
+    <INT key="MSGCNT" value="3111"/>
+    <INT key="NAME" value="CUL_EM_5"/>
+    <INT key="NR" value="45"/>
+    <INT key="STATE" value="CNT: 62 CUM: 1254.521  5MIN: 0.000  TOP: 0.000"/>
+    <INT key="TYPE" value="CUL_EM"/>
+    <INT key="corr1" value="0.01"/>
+    <INT key="corr2" value="0.001"/>
+    <INT key="IODev" value="CUL"/>
+    <ATTR key="room" value="CUL_EM"/>
+    <STATE key="RAW" value="CNT: 62 CUM: 9337  5MIN: 0  TOP: 0" measured="2011-12-29 21:46:16"/>
+    <STATE key="basis" value="1245184" measured="2011-12-28 11:31:19"/>
+    <STATE key="cum_day" value="CUM_DAY: 9.490 CUM: 1254.521 COST: 0.00" measured="2011-12-29 00:01:18"/>
+    <STATE key="cum_month" value="CUM_MONTH: 60.385 CUM: 1198.963 COST: 0.00" measured="2011-12-01 00:02:18"/>
+    <STATE key="current" value="0" measured="2011-12-29 21:46:16"/>
+    <STATE key="current_cnt" value="0" measured="2011-12-29 21:46:16"/>
+    <STATE key="peak" value="0" measured="2011-12-29 21:46:16"/>
+    <STATE key="peak_cnt" value="0" measured="2011-12-29 21:46:16"/>
+    <STATE key="seqno" value="62" measured="2011-12-29 21:46:16"/>
+    <STATE key="total" value="1254.521" measured="2011-12-29 21:46:16"/>
+    <STATE key="total_cnt" value="9337" measured="2011-12-29 21:46:16"/>
+    <STATE key="tsecs" value="1325191576" measured="2011-12-29 21:46:16"/>
+</CUL_EM>
+</CUL_EM_LIST>
+
+<OWFS_LIST>
+<OWFS name="DS9490R" state="Initialized" sets="" attrs="room comment alias IODev do_not_notify:1,0 dummy:1,0 temp-scale:C,F,K,R showtime:1,0 loglevel:0,1,2,3,4,5,6 eventMap">
+    <INT key="DEF" value="192.168.169.195:4301 DS1420"/>
+    <INT key="DeviceName" value="192.168.169.195:4301"/>
+    <INT key="NAME" value="DS9490R"/>
+    <INT key="NR" value="123"/>
+    <INT key="STATE" value="Initialized"/>
+    <INT key="TYPE" value="OWFS"/>
+    <ATTR key="temp-scale" value="C"/>
+</OWFS>
+</OWFS_LIST>
+
+<OWCOUNT_LIST>
+<OWCOUNT name="COUNTER" state="C1: 131134.5  C2: 7884  P: 1  " sets="set needs one parameter" attrs="room comment alias IODev do_not_notify:0,1 showtime:0,1 model:DS18S20 loglevel:0,1,2,3,4,5 eventMap">
+    <INT key="ALARM" value="0"/>
+    <INT key="DEF" value="A9EB09000000 0.1 0.1"/>
+    <INT key="INTERVAL" value="300"/>
+    <INT key="INTV_ALARM" value="300"/>
+    <INT key="INTV_CHECK" value="300"/>
+    <INT key="NAME" value="COUNTER"/>
+    <INT key="NR" value="124"/>
+    <INT key="OW_FAMILY" value="1D"/>
+    <INT key="OW_ID" value="A9EB09000000"/>
+    <INT key="OW_PATH" value="1D.A9EB09000000"/>
+    <INT key="PRESENT" value="1"/>
+    <INT key="STATE" value="C1: 131134.5  C2: 7884  P: 1  "/>
+    <INT key="TYPE" value="OWCOUNT"/>
+    <INT key="corr1" value="0.1"/>
+    <INT key="corr2" value="0.1"/>
+    <INT key="IODev" value="DS9490R"/>
+    <STATE key="counters.A" value="131134.5" measured="2011-12-29 21:49:48"/>
+    <STATE key="counters.B" value="7884" measured="2011-12-29 21:49:48"/>
+    <STATE key="present" value="1" measured="2011-12-29 21:49:48"/>
+    <STATE key="warnings" value="none" measured="2011-12-29 21:49:48"/>
+</OWCOUNT>
+</OWCOUNT_LIST>
+<RFXCOM_LIST>
+<RFXCOM name="RFXCOM" state="Initialized" sets="RFXCOM =&gt; No Set function (?) implemented" attrs="room comment alias do_not_notify:1,0 do_not_init:1:0 loglevel:0,1,2,3,4,5,6 eventMap">
+    <INT key="DEF" value="/dev/rfxcom"/>
+    <INT key="DeviceName" value="/dev/rfxcom"/>
+    <INT key="FD" value="7"/>
+    <INT key="NAME" value="RFXCOM"/>
+    <INT key="NR" value="4"/>
+    <INT key="PARTIAL" value=""/>
+    <INT key="RAWMSG" value="`Zm#00;#f3;t @E#90;9Y#93;"/>
+    <INT key="RFXCOM_MSGCNT" value="367502"/>
+    <INT key="RFXCOM_TIME" value="2011-12-29 21:50:07"/>
+    <INT key="STATE" value="Initialized"/>
+    <INT key="TYPE" value="RFXCOM"/>
+    <INT key="socket" value="0"/>
+    <ATTR key="loglevel" value="4"/>
+</RFXCOM>
+</RFXCOM_LIST>
+
+<OREGON_LIST>
+<OREGON name="oregon1" state="T: 15.9  H: 46" sets="" attrs="room comment alias IODev do_not_notify:1,0 loglevel:0,1,2,3,4,5,6 eventMap">
+    <INT key="CODE" value="BTHR918_6f"/>
+    <INT key="DEF" value="BTHR918_6f"/>
+    <INT key="NAME" value="oregon1"/>
+    <INT key="NR" value="91"/>
+    <INT key="STATE" value="T: 15.9  H: 46"/>
+    <INT key="TIME" value="2011-12-29 21:49:47"/>
+    <INT key="TYPE" value="OREGON"/>
+    <INT key="IODev" value="RFXCOM"/>
+    <ATTR key="room" value="OREGON"/>
+    <STATE key="battery" value="90" measured="2011-12-29 21:49:47"/>
+    <STATE key="dew2" value="8.3" measured="2011-02-13 17:56:16"/>
+    <STATE key="dewpoint" value="4.3" measured="2011-12-29 21:49:47"/>
+    <STATE key="forecast" value="rain" measured="2011-12-29 21:49:47"/>
+    <STATE key="humidity" value="46" measured="2011-12-29 21:49:47"/>
+    <STATE key="pressure" value="1000" measured="2011-12-29 21:49:47"/>
+    <STATE key="temperature" value="15.9" measured="2011-12-29 21:49:47"/>
+</OREGON>
+<OREGON name="oregon2" state="T: 6.4  H: 78" sets="" attrs="room comment alias IODev do_not_notify:1,0 loglevel:0,1,2,3,4,5,6 eventMap">
+    <INT key="CODE" value="WTGR800_T_4c"/>
+    <INT key="DEF" value="WTGR800_T_4c"/>
+    <INT key="NAME" value="oregon2"/>
+    <INT key="NR" value="82"/>
+    <INT key="STATE" value="T: 6.4  H: 78"/>
+    <INT key="TIME" value="2011-12-29 21:50:06"/>
+    <INT key="TYPE" value="OREGON"/>
+    <INT key="IODev" value="RFXCOM"/>
+    <ATTR key="room" value="OREGON"/>
+    <STATE key="battery" value="60" measured="2011-12-29 21:50:06"/>
+    <STATE key="dew2" value="3.0" measured="2011-02-13 17:56:17"/>
+    <STATE key="dewpoint" value="2.9" measured="2011-12-29 21:50:06"/>
+    <STATE key="humidity" value="78" measured="2011-12-29 21:50:06"/>
+    <STATE key="temperature" value="6.4" measured="2011-12-29 21:50:06"/>
+</OREGON>
+</OREGON_LIST>
+
 <CUL_LIST>
 <CUL name="CUL" state="Initialized"
      sets="bWidth file freq hmPairForSec hmPairSerial led patable rAmpl raw sens time"
@@ -138,6 +264,7 @@
     <INT key="XMIT" value="0000"/>
     <INT key="IODev" value="CUL"/>
     <ATTR key="room" value="garten"/>
+    <ATTR key="alias" value="brunnen"/>
 </FS20>
 <FS20 name="au_holzterasse1" state="dimupdown"
       sets="dim06% dim100% dim12% dim18% dim25% dim31% dim37% dim43% dim50% dim56% dim62% dim68% dim75% dim81% dim87% dim93% dimdown dimup dimupdown off off-for-timer on on-100-for-timer-prev on-for-timer on-old-for-timer on-old-for-timer-prev on-till ramp-off-time ramp-on-time reset sendstate timer toggle"
@@ -224,6 +351,20 @@
     <INT key="XMIT" value="0000"/>
     <INT key="IODev" value="CUL"/>
     <ATTR key="room" value="garten"/>
+    <STATE key="state" value="off" measured="2011-11-19 21:30:38"/>
+</FS20>
+<FS20 name="dummy1" state="off"
+      sets="dim06% dim100% dim12% dim18% dim25% dim31% dim37% dim43% dim50% dim56% dim62% dim68% dim75% dim81% dim87% dim93% dimdown dimup dimupdown off off-for-timer on on-100-for-timer-prev on-for-timer on-old-for-timer on-old-for-timer-prev on-till ramp-off-time ramp-on-time reset sendstate timer toggle"
+      attrs="room comment alias IODev follow-on-for-timer:1,0 do_not_notify:1,0 ignore:0,1 dummy:1,0 showtime:1,0 model;fs20hgs,fs20hgs,fs20pira,fs20piri,fs20s20,fs20s8,fs20s4,fs20s4a,fs20s4m,fs20s4u,fs20s4ub,fs20sd,fs20sn,fs20sr,fs20ss,fs20str,fs20tfk,fs20tfk,fs20tk,fs20uts,fs20ze,fs20as1,fs20as4,fs20di,fs20du,fs20ls,fs20ms2,fs20rst,fs20sa,fs20sig,fs20st,fs20sv,fs20usr loglevel:0,1,2,3,4,5,6 eventMap">
+    <INT key="BTN" value="42"/>
+    <INT key="DEF" value="12345678 2113 gm 4444 lm 2144"/>
+    <INT key="NAME" value="au_licht"/>
+    <INT key="NR" value="38"/>
+    <INT key="STATE" value="off"/>
+    <INT key="TYPE" value="FS20"/>
+    <INT key="XMIT" value="0000"/>
+    <INT key="IODev" value="CUL"/>
+    <ATTR key="room" value="#fc;#e4;#f6;#df;"/>
     <STATE key="state" value="off" measured="2011-11-19 21:30:38"/>
 </FS20>
 <FS20 name="au_weihnachten" state="off"

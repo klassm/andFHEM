@@ -15,7 +15,7 @@ public class SISPMSAdapter extends DeviceListOnlyAdapter<SISPMSDevice> {
         View view = layoutInflater.inflate(R.layout.room_detail_sispms, null);
 
         TextView deviceName = (TextView) view.findViewById(R.id.deviceName);
-        deviceName.setText(device.getName());
+        deviceName.setText(device.getAliasOrName());
 
         ToggleButton switchButton = (ToggleButton) view.findViewById(R.id.switchButton);
         switchButton.setChecked(device.isOn());

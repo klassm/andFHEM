@@ -1,59 +1,63 @@
 package li.klass.fhem.activities.deviceDetail;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import li.klass.fhem.R;
+import li.klass.fhem.activities.base.BaseActivity;
 import li.klass.fhem.adapter.devices.DeviceAdapter;
 import li.klass.fhem.adapter.devices.DeviceAdapterProvider;
 import li.klass.fhem.data.FHEMService;
 import li.klass.fhem.domain.Device;
-import li.klass.fhem.domain.RoomDeviceList;
 
-public abstract class DeviceDetailActivity<D extends Device> extends Activity {
+public abstract class DeviceDetailActivity<D extends Device> extends BaseActivity<D, DeviceAdapter<D>> {
 
     protected String deviceName;
     protected String room;
     
-    protected D device;
-
     @Override
     @SuppressWarnings("unchecked")
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
 
-        deviceName = extras.getString("deviceName");
-        room = extras.getString("room");
+        this.deviceName = extras.getString("deviceName");
+        this.room = extras.getString("room");
 
-        RoomDeviceList roomDeviceList = FHEMService.INSTANCE.deviceListForRoom(room, false);
-        device = roomDeviceList.getDeviceFor(deviceName);
-        
-        if (device == null) {
-            setResult(RESULT_CANCELED);
-            return;
-        }
-
-        update();
+        super.onCreate(savedInstanceState);
 
         String deviceDetailPrefix = getResources().getString(R.string.deviceDetailPrefix);
         setTitle(deviceDetailPrefix + " " + deviceName);
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-
-        update();
-    }
-
     @SuppressWarnings("unchecked")
-    protected void update() {
+    protected DeviceAdapter<D> initializeLayoutAndReturnAdapter() {
+        D device = getCurrentData(false);
+
         DeviceAdapter<D> adapter = (DeviceAdapter<D>) DeviceAdapterProvider.INSTANCE.getAdapterFor(device);
         setContentView(adapter.getDetailView(this, LayoutInflater.from(this), device));
+
+        return adapter;
     }
 
+    @Override
+    protected void setLayout() {
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    protected D getCurrentData(boolean refresh) {
+        Device foundDevice = FHEMService.INSTANCE.deviceListForAllRooms(refresh).getDeviceFor(deviceName);
+        if (foundDevice == null) {
+            setResult(RESULT_OK);
+            finish();
+        }
+        return (D) foundDevice;
+    }
+
+    @Override
+    protected void updateData(D data) {
+        setContentView(adapter.getDetailView(this, LayoutInflater.from(this), data));
+    }
 }

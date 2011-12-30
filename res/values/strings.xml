@@ -20,6 +20,9 @@
     <string name="avgMonth">Average Month</string>
     <string name="isRaining">Is Raining?</string>
     <string name="desiredTemperature">Desired Temperature</string>
+    <string name="forecast">Forecast</string>
+    <string name="pressure">Pressure</string>
+    <string name="dewpoint">Dewpoint</string>
 
     <string name="switchDevice">Switch</string>
     <string name="preferences">Preferences</string>
@@ -72,12 +75,14 @@
     <string name="humidityGraph">Humidity Graph</string>
     <string name="windGraph">Wind Graph</string>
     <string name="actuatorGraph">Actuator Graph</string>
+    <string name="pressureGraph">Pressure Graph</string>
 
     <string name="yAxisWind">wind (km/h)</string>
     <string name="yAxisHumidity">humidity (%)</string>
     <string name="yAxisTemperature">temperature (°C)</string>
     <string name="yAxisRain">rain (l/m2)</string>
     <string name="yAxisActuator">actuator (%)</string>
+    <string name="yAxisPressure">pressure (hPa)</string>
 
     <string name="generalDetails">General Details</string>
     <string name="plots">Plots</string>

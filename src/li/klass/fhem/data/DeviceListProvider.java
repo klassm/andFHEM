@@ -54,6 +54,7 @@ public class DeviceListProvider {
             devicesFromDocument(SISPMSDevice.class, roomDeviceListMap, document, "SIS_PMS");
             devicesFromDocument(FileLog.class, roomDeviceListMap, document, "FileLog");
             devicesFromDocument(CULFHTTKDevice.class, roomDeviceListMap, document, "CUL_FHTTK");
+            devicesFromDocument(OregonDevice.class, roomDeviceListMap, document, "OREGON");
 
             addFileLogsToDevices(roomDeviceListMap);
 

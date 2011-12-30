@@ -25,7 +25,7 @@ public class KS300Adapter extends DeviceAdapter<KS300Device> {
         TextView rain = (TextView) view.findViewById(R.id.rain);
         TextView temperature = (TextView) view.findViewById(R.id.temperature);
 
-        deviceName.setText(device.getName());
+        deviceName.setText(device.getAliasOrName());
         wind.setText(device.getWind());
         temperature.setText(device.getTemperature());
         humidity.setText(device.getHumidity());

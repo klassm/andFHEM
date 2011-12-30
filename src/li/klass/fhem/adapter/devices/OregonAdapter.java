@@ -8,15 +8,21 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import li.klass.fhem.R;
-import li.klass.fhem.activities.deviceDetail.HMSDeviceDetailActivity;
+import li.klass.fhem.activities.deviceDetail.OregonDeviceDetailActivity;
 import li.klass.fhem.domain.Device;
-import li.klass.fhem.domain.HMSDevice;
+import li.klass.fhem.domain.OregonDevice;
 import li.klass.fhem.graph.TimePlot;
 
-public class HMSAdapter extends DeviceAdapter<HMSDevice> {
+public class OregonAdapter extends DeviceAdapter<OregonDevice> {
     @Override
-    public View getDeviceView(LayoutInflater layoutInflater, HMSDevice device) {
-        View view = layoutInflater.inflate(R.layout.room_detail_hms, null);
+    public Class<? extends Device> getSupportedDeviceClass() {
+        return OregonDevice.class;
+    }
+
+    @Override
+    protected View getDeviceView(LayoutInflater layoutInflater, OregonDevice device) {
+
+        View view = layoutInflater.inflate(R.layout.room_detail_oregon, null);
 
         TextView deviceName = (TextView) view.findViewById(R.id.deviceName);
         deviceName.setText(device.getAliasOrName());
@@ -27,12 +33,16 @@ public class HMSAdapter extends DeviceAdapter<HMSDevice> {
         TextView humidity = (TextView) view.findViewById(R.id.humidity);
         humidity.setText(device.getHumidity());
 
+        TextView forecast = (TextView) view.findViewById(R.id.forecast);
+        forecast.setText(device.getForecast());
+
         return view;
     }
 
+
     @Override
     public int getDetailViewLayout() {
-        return R.layout.device_detail_hms;
+        return R.layout.device_detail_oregon;
     }
 
     @Override
@@ -41,17 +51,28 @@ public class HMSAdapter extends DeviceAdapter<HMSDevice> {
     }
 
     @Override
-    protected View getDeviceDetailView(final Context context, LayoutInflater layoutInflater, final HMSDevice device) {
+    protected View getDeviceDetailView(final Context context, LayoutInflater layoutInflater, final OregonDevice device) {
         View view = layoutInflater.inflate(getDetailViewLayout(), null);
 
         TextView temperature = (TextView) view.findViewById(R.id.temperature);
         temperature.setText(device.getTemperature());
 
+        TextView humidity = (TextView) view.findViewById(R.id.humidity);
+        humidity.setText(device.getHumidity());
+
+        TextView forecast = (TextView) view.findViewById(R.id.forecast);
+        forecast.setText(device.getForecast());
+
+        TextView pressure = (TextView) view.findViewById(R.id.pressure);
+        pressure.setText(device.getPressure());
+
+        TextView dewpoint = (TextView) view.findViewById(R.id.dewpoint);
+        dewpoint.setText(device.getDewpoint());
+
         TextView battery = (TextView) view.findViewById(R.id.battery);
         battery.setText(device.getBattery());
 
-        TextView humidity = (TextView) view.findViewById(R.id.humidity);
-        humidity.setText(device.getHumidity());
+
 
         if (device.getFileLog() == null) {
             LinearLayout graphLayout = (LinearLayout) view.findViewById(R.id.graphLayout);
@@ -63,7 +84,7 @@ public class HMSAdapter extends DeviceAdapter<HMSDevice> {
             @Override
             public void onClick(View view) {
                 String yTitle = context.getResources().getString(R.string.yAxisTemperature);
-                TimePlot.INSTANCE.execute(context, device, yTitle, HMSDevice.COLUMN_SPEC_TEMPERATURE);
+                TimePlot.INSTANCE.execute(context, device, yTitle, OregonDevice.COLUMN_SPEC_TEMPERATURE);
             }
         });
 
@@ -72,7 +93,16 @@ public class HMSAdapter extends DeviceAdapter<HMSDevice> {
             @Override
             public void onClick(View view) {
                 String yTitle = context.getResources().getString(R.string.yAxisHumidity);
-                TimePlot.INSTANCE.execute(context, device, yTitle, HMSDevice.COLUMN_SPEC_HUMIDITY);
+                TimePlot.INSTANCE.execute(context, device, yTitle, OregonDevice.COLUMN_SPEC_HUMIDITY);
+            }
+        });
+
+        Button pressureGraph = (Button) view.findViewById(R.id.pressureGraph);
+        pressureGraph.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String yTitle = context.getResources().getString(R.string.yAxisPressure);
+                TimePlot.INSTANCE.execute(context, device, yTitle, OregonDevice.COLUMN_SPEC_PRESSURE);
             }
         });
 
@@ -81,12 +111,8 @@ public class HMSAdapter extends DeviceAdapter<HMSDevice> {
 
     @Override
     protected Intent onFillDeviceDetailIntent(Context context, Device device, Intent intent) {
-        intent.setClass(context, HMSDeviceDetailActivity.class);
+        intent.setClass(context, OregonDeviceDetailActivity.class);
         return intent;
     }
 
-    @Override
-    public Class<? extends Device> getSupportedDeviceClass() {
-        return HMSDevice.class;
-    }
 }

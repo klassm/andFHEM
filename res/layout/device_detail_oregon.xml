@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:orientation="vertical">
+
+
+    <TextView style="@style/deviceDetailSectionCaption"
+              android:text="@string/generalDetails" />
+
+    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                 style="@style/deviceDetailTable">
+
+        <TableRow>
+            <TextView android:text="@string/temperature"
+                      style="@style/deviceDetailDescription" />
+            <TextView android:id="@+id/temperature"
+                      style="@style/deviceDetailContent"
+                      android:text="xx (Celsius)"/>
+        </TableRow>
+
+        <TableRow>
+            <TextView android:text="@string/humidity"
+                      style="@style/deviceDetailDescription" />
+            <TextView android:id="@+id/humidity"
+                      style="@style/deviceDetailContent"
+                      android:text="xx (%)"/>
+        </TableRow>
+
+        <TableRow>
+            <TextView android:text="@string/pressure"
+                      style="@style/deviceDetailDescription" />
+            <TextView android:id="@+id/pressure"
+                      style="@style/deviceDetailContent"
+                      android:text="xx (hPa)"/>
+        </TableRow>
+
+        <TableRow>
+            <TextView android:text="@string/forecast"
+                      style="@style/deviceDetailDescription" />
+            <TextView android:id="@+id/forecast"
+                      style="@style/deviceDetailContent"
+                      android:text="xxxx"/>
+        </TableRow>
+
+        <TableRow>
+            <TextView android:text="@string/dewpoint"
+                      style="@style/deviceDetailDescription" />
+            <TextView android:id="@+id/dewpoint"
+                      style="@style/deviceDetailContent"
+                      android:text="xx (Celsius)"/>
+        </TableRow>
+
+        <TableRow>
+            <TextView android:text="@string/battery"
+                      style="@style/deviceDetailDescription" />
+            <TextView android:id="@+id/battery"
+                      style="@style/deviceDetailContent"
+                      android:text="xx"/>
+        </TableRow>
+    </TableLayout>
+
+    <LinearLayout android:layout_width="fill_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_marginTop="20dp"
+                  android:orientation="vertical"
+                  android:id="@+id/graphLayout">
+
+
+        <TextView style="@style/deviceDetailSectionCaption"
+                  android:text="@string/plots" />
+
+        <Button android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/temperatureGraph"
+                android:id="@+id/temperatureGraph"
+                android:layout_marginLeft="10dp"/>
+        <Button android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/humidityGraph"
+                android:id="@+id/humidityGraph"
+                android:layout_marginLeft="10dp"/>
+        <Button android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/pressureGraph"
+                android:id="@+id/pressureGraph"
+                android:layout_marginLeft="10dp"/>
+    </LinearLayout>
+</LinearLayout>

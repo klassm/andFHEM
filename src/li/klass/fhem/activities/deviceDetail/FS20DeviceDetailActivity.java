@@ -30,7 +30,7 @@ public class FS20DeviceDetailActivity extends DeviceDetailActivity<FS20Device> {
 
             @Override
             protected void onPostExecute(Void aVoid) {
-                update();
+                update(false);
                 progressDialog.dismiss();
             }
         }.execute(null);

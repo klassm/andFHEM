@@ -23,7 +23,7 @@ public abstract class DeviceAdapter<D extends Device> {
     public View getView(LayoutInflater layoutInflater, View convertView, Device device) {
         if (convertView != null) {
             TextView deviceName = (TextView) convertView.findViewById(R.id.deviceName);
-            if (deviceName != null && deviceName.getText().equals(device.getName())) {
+            if (deviceName != null && deviceName.getText().equals(device.getAliasOrName())) {
                 return convertView;
             }
         }

@@ -138,7 +138,7 @@ public class FS20Adapter extends DeviceAdapter<FS20Device> {
         View view = layoutInflater.inflate(R.layout.room_detail_fs20, null);
 
         TextView deviceName = (TextView) view.findViewById(R.id.deviceName);
-        deviceName.setText(child.getName());
+        deviceName.setText(child.getAliasOrName());
 
         ToggleButton switchButton = (ToggleButton) view.findViewById(R.id.switchButton);
         switchButton.setChecked(child.isOn());

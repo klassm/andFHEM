@@ -110,7 +110,7 @@ public class TimePlot extends AbstractDemoChart {
             seriesRenderer.setPointStyle(PointStyle.POINT);
         }
 
-        String title = device.getName();
+        String title = device.getAliasOrName();
         String xTitle = context.getResources().getString(R.string.time);
 
         setChartSettings(renderer, title, xTitle, yTitle, xMin.getTime(), xMax.getTime(), yMin - 5, yMax + 5,

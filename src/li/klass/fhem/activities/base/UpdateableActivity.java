@@ -71,7 +71,7 @@ public abstract class UpdateableActivity<T> extends Activity {
 
         @Override
         protected void onPostExecute(Void aVoid) {
-            UpdateableActivity.this.dismissDialog(DIALOG_UPDATE);
+            UpdateableActivity.this.removeDialog(DIALOG_UPDATE);
             if (occurredException != null) {
                 int messageId = R.string.updateError;
                 if (occurredException instanceof HostConnectionException) {

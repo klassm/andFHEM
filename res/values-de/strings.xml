@@ -19,6 +19,9 @@
     <string name="avgMonth">Monatsschnitt</string>
     <string name="isRaining">Regnet es?</string>
     <string name="desiredTemperature">Wunschtemperatur</string>
+    <string name="forecast">Vorhersage</string>
+    <string name="pressure">Luftdruck</string>
+    <string name="dewpoint">Taupunkt</string>
 
     <string name="switchDevice">Schalte</string>
     <string name="preferences">Einstellungen</string>
@@ -71,12 +74,14 @@
     <string name="humidityGraph">Luftfeuchtigkeit Graph</string>
     <string name="windGraph">Wind Graph</string>
     <string name="actuatorGraph">Regler Graph</string>
+    <string name="pressureGraph">Luftdruck Graph</string>
 
     <string name="yAxisWind">Wind (km/h)</string>
     <string name="yAxisHumidity">Luftfeuchtigkeit (%)</string>
     <string name="yAxisTemperature">Temperatur (°C)</string>
     <string name="yAxisRain">Regen (l/m2)</string>
     <string name="yAxisActuator">Regler (%)</string>
+    <string name="yAxisPressure">Luftdruck (hPa)</string>
 
     <string name="generalDetails">Allgemeine Informationen</string>
     <string name="plots">Graphen</string>

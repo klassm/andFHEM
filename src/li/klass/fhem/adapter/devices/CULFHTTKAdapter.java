@@ -18,7 +18,7 @@ public class CULFHTTKAdapter extends DeviceListOnlyAdapter<CULFHTTKDevice> {
         View view = layoutInflater.inflate(R.layout.room_detail_culfhttk, null);
 
         TextView deviceName = (TextView) view.findViewById(R.id.deviceName);
-        deviceName.setText(device.getName());
+        deviceName.setText(device.getAliasOrName());
 
         TextView state = (TextView) view.findViewById(R.id.state);
         state.setText(device.getState());

@@ -20,7 +20,7 @@ public class CULWSAdapter extends DeviceAdapter<CULWSDevice> {
         View view = layoutInflater.inflate(R.layout.room_detail_culws, null);
 
         TextView deviceName = (TextView) view.findViewById(R.id.deviceName);
-        deviceName.setText(device.getName());
+        deviceName.setText(device.getAliasOrName());
 
         TextView temperature = (TextView) view.findViewById(R.id.temperature);
         temperature.setText(device.getTemperature());
@@ -44,9 +44,6 @@ public class CULWSAdapter extends DeviceAdapter<CULWSDevice> {
     @Override
     protected View getDeviceDetailView(final Context context, LayoutInflater layoutInflater, final CULWSDevice device) {
         View view = layoutInflater.inflate(getDetailViewLayout(), null);
-
-        TextView deviceName = (TextView) view.findViewById(R.id.deviceName);
-        deviceName.setText(device.getName());
 
         TextView temperature = (TextView) view.findViewById(R.id.temperature);
         temperature.setText(device.getTemperature());

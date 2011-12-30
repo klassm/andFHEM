@@ -25,6 +25,7 @@ public class DeviceAdapterProvider {
         deviceAdapters.put(FHT, new FHTAdapter());
         deviceAdapters.put(SIS_PMS, new SISPMSAdapter());
         deviceAdapters.put(CUL_FHTTK, new CULFHTTKAdapter());
+        deviceAdapters.put(OREGON, new OregonAdapter());
     }
     
     public Collection<DeviceAdapter<? extends Device<?>>> getAllAdapters() {

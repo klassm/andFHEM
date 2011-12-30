@@ -1,6 +1,7 @@
 package li.klass.fhem.domain;
 
 import li.klass.fhem.data.FileLog;
+import li.klass.fhem.util.StringEscapeUtils;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -14,6 +15,7 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
     protected String name;
     protected String room = "unknown";
     protected String state;
+    protected String alias = null;
     protected FileLog fileLog;
 
     public void loadXML(Node xml) {
@@ -27,6 +29,7 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
 
             String keyValue = keyAttribute.getTextContent().toUpperCase().trim();
             String nodeContent = item.getAttributes().getNamedItem("value").getTextContent().trim();
+            nodeContent = StringEscapeUtils.unescapeHtml(nodeContent);
 
             if (keyValue.equals("ROOM")) {
                 room = nodeContent;
@@ -34,6 +37,8 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
                 name = nodeContent;
             } else if (keyValue.equals("STATE")) {
                 state = nodeContent;
+            } else if (keyValue.equals("ALIAS")) {
+                alias = nodeContent;
             }
 
             onChildItemRead(keyValue, nodeContent, item.getAttributes());
@@ -46,6 +51,12 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
         }
     }
 
+    public String getAliasOrName() {
+        if (alias != null) {
+            return alias;
+        }
+        return getName();
+    }
 
     public String getName() {
         return name;
