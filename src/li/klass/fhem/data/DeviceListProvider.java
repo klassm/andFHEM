@@ -1,7 +1,9 @@
 package li.klass.fhem.data;
 
-import android.util.Log;
-import li.klass.fhem.domain.*;
+import li.klass.fhem.domain.Device;
+import li.klass.fhem.domain.DeviceType;
+import li.klass.fhem.domain.FileLog;
+import li.klass.fhem.domain.RoomDeviceList;
 import li.klass.fhem.exception.DeviceListParseException;
 import li.klass.fhem.exception.HostConnectionException;
 import org.w3c.dom.Document;
@@ -39,22 +41,14 @@ public class DeviceListProvider {
             xmlList = xmlList.replaceAll("</>", "");
             xmlList = xmlList.replaceAll("< [a-zA-Z\"=0-9 ]*>", "");
 
-            Log.e(DeviceListProvider.class.getName(), xmlList);
-            
             DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
             Document document = docBuilder.parse(new InputSource(new StringReader(xmlList)));
 
-            devicesFromDocument(FS20Device.class, roomDeviceListMap, document, "FS20");
-            devicesFromDocument(KS300Device.class, roomDeviceListMap, document, "KS300");
-            devicesFromDocument(FHTDevice.class, roomDeviceListMap, document, "FHT");
-            devicesFromDocument(HMSDevice.class, roomDeviceListMap, document, "HMS");
-            devicesFromDocument(OwtempDevice.class, roomDeviceListMap, document, "OWTEMP");
-            devicesFromDocument(CULWSDevice.class, roomDeviceListMap, document, "CUL_WS");
-            devicesFromDocument(SISPMSDevice.class, roomDeviceListMap, document, "SIS_PMS");
-            devicesFromDocument(FileLog.class, roomDeviceListMap, document, "FileLog");
-            devicesFromDocument(CULFHTTKDevice.class, roomDeviceListMap, document, "CUL_FHTTK");
-            devicesFromDocument(OregonDevice.class, roomDeviceListMap, document, "OREGON");
+            DeviceType[] deviceTypes = DeviceType.values();
+            for (DeviceType deviceType : deviceTypes) {
+                devicesFromDocument(deviceType.getDeviceClass(), roomDeviceListMap, document, deviceType.getXmllistTag());
+            }
 
             addFileLogsToDevices(roomDeviceListMap);
 

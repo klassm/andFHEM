@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.DeviceAdapter;
-import li.klass.fhem.adapter.devices.DeviceAdapterProvider;
 import li.klass.fhem.domain.Device;
 import li.klass.fhem.domain.DeviceType;
 import li.klass.fhem.domain.RoomDeviceList;
@@ -25,7 +24,7 @@ public class RoomDetailAdapter extends NestedListViewAdapter<DeviceType, Device>
 
     public RoomDetailAdapter(Context context, RoomDeviceList roomDeviceList) {
         super(context);
-        this.deviceTypeOrderList = Arrays.asList(KS300, FHT, HMS, OWTEMP, CUL_FHTTK, OREGON, CUL_WS, FS20, SIS_PMS);
+        this.deviceTypeOrderList = Arrays.asList(KS300, FHT, HMS, OWTEMP, CUL_FHTTK, RFXX10REC, OREGON, USBWX, CUL_WS, FS20, SIS_PMS);
 
         if (roomDeviceList != null) {
             updateData(roomDeviceList);
@@ -65,7 +64,7 @@ public class RoomDetailAdapter extends NestedListViewAdapter<DeviceType, Device>
 
     @Override
     protected View getChildView(final Device child, View view, ViewGroup viewGroup) {
-        final DeviceAdapter<? extends Device<?>> deviceAdapter = DeviceAdapterProvider.INSTANCE.getAdapterFor(child);
+        final DeviceAdapter<? extends Device<?>> deviceAdapter =  child.getDeviceType().getAdapter();
         if (deviceAdapter == null) {
             Log.e(RoomDetailAdapter.class.getName(), "unsupported device type " + child);
             throw new IllegalArgumentException("unsupported device type " + child);

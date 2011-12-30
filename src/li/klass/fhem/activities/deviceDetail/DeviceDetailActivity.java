@@ -6,9 +6,8 @@ import android.view.LayoutInflater;
 import li.klass.fhem.R;
 import li.klass.fhem.activities.base.BaseActivity;
 import li.klass.fhem.adapter.devices.DeviceAdapter;
-import li.klass.fhem.adapter.devices.DeviceAdapterProvider;
-import li.klass.fhem.data.FHEMService;
 import li.klass.fhem.domain.Device;
+import li.klass.fhem.service.RoomListService;
 
 public abstract class DeviceDetailActivity<D extends Device> extends BaseActivity<D, DeviceAdapter<D>> {
 
@@ -35,7 +34,7 @@ public abstract class DeviceDetailActivity<D extends Device> extends BaseActivit
     protected DeviceAdapter<D> initializeLayoutAndReturnAdapter() {
         D device = getCurrentData(false);
 
-        DeviceAdapter<D> adapter = (DeviceAdapter<D>) DeviceAdapterProvider.INSTANCE.getAdapterFor(device);
+        DeviceAdapter<D> adapter = device.getDeviceType().getAdapter();
         setContentView(adapter.getDetailView(this, LayoutInflater.from(this), device));
 
         return adapter;
@@ -48,7 +47,7 @@ public abstract class DeviceDetailActivity<D extends Device> extends BaseActivit
     @Override
     @SuppressWarnings("unchecked")
     protected D getCurrentData(boolean refresh) {
-        Device foundDevice = FHEMService.INSTANCE.deviceListForAllRooms(refresh).getDeviceFor(deviceName);
+        Device foundDevice = RoomListService.INSTANCE.deviceListForAllRooms(refresh).getDeviceFor(deviceName);
         if (foundDevice == null) {
             setResult(RESULT_OK);
             finish();

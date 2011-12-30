@@ -11,9 +11,10 @@ import android.widget.Toast;
 import li.klass.fhem.ApplicationUrls;
 import li.klass.fhem.R;
 import li.klass.fhem.activities.PreferencesActivity;
-import li.klass.fhem.data.FHEMService;
 import li.klass.fhem.data.provider.favorites.FavoritesService;
 import li.klass.fhem.domain.Device;
+import li.klass.fhem.service.ExecuteOnSuccess;
+import li.klass.fhem.service.RoomListService;
 import li.klass.fhem.util.device.DeviceActionUtil;
 
 public abstract class BaseActivity<DOMAIN, ADAPTER> extends UpdateableActivity<DOMAIN> {
@@ -30,6 +31,13 @@ public abstract class BaseActivity<DOMAIN, ADAPTER> extends UpdateableActivity<D
     protected Device contextMenuClickedDevice;
     private long backPressStart;
     protected ADAPTER adapter;
+
+    protected ExecuteOnSuccess updateOnSuccessAction = new ExecuteOnSuccess() {
+        @Override
+        public void onSuccess() {
+            update(false);
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,7 +104,7 @@ public abstract class BaseActivity<DOMAIN, ADAPTER> extends UpdateableActivity<D
     @Override
     protected void onStop() {
         super.onStop();
-        FHEMService.INSTANCE.storeDeviceListMap();
+        RoomListService.INSTANCE.storeDeviceListMap();
     }
 
     @Override

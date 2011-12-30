@@ -1,6 +1,5 @@
 package li.klass.fhem.domain;
 
-import li.klass.fhem.data.FileLog;
 import li.klass.fhem.util.StringEscapeUtils;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -138,5 +137,9 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
 
     public String getState() {
         return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
     }
 }

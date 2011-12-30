@@ -1,39 +1,18 @@
 package li.klass.fhem.activities.deviceDetail;
 
 import android.app.ProgressDialog;
-import android.os.AsyncTask;
 import android.view.View;
-import li.klass.fhem.R;
-import li.klass.fhem.data.FHEMService;
 import li.klass.fhem.domain.FS20Device;
+import li.klass.fhem.service.FS20Service;
+import li.klass.fhem.service.RoomListService;
 
 public class FS20DeviceDetailActivity extends DeviceDetailActivity<FS20Device> {
 
     private volatile ProgressDialog progressDialog;
 
     public void onFS20Click(final View view) {
-        new AsyncTask<Void, Void, Void>() {
-
-            @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-                progressDialog = ProgressDialog.show(FS20DeviceDetailActivity.this, "", getResources().getString(R.string.switching));
-            }
-
-            @Override
-            protected Void doInBackground(Void... voids) {
-                String deviceName = (String) view.getTag();
-                FS20Device device = FHEMService.INSTANCE.deviceListForAllRooms(false).getDeviceFor(deviceName);
-                device.toggleState(FS20DeviceDetailActivity.this);
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Void aVoid) {
-                update(false);
-                progressDialog.dismiss();
-            }
-        }.execute(null);
-
+        String deviceName = (String) view.getTag();
+        FS20Device device = RoomListService.INSTANCE.deviceListForAllRooms(false).getDeviceFor(deviceName);
+        FS20Service.INSTANCE.toggleState(FS20DeviceDetailActivity.this, device, updateOnSuccessAction);
     }
 }

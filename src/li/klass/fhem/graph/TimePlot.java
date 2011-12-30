@@ -10,7 +10,7 @@ import android.util.Log;
 import android.widget.Toast;
 import li.klass.fhem.R;
 import li.klass.fhem.activities.base.BaseActivity;
-import li.klass.fhem.data.FHEMService;
+import li.klass.fhem.service.FHEMService;
 import li.klass.fhem.data.provider.graph.GraphEntry;
 import li.klass.fhem.domain.Device;
 import li.klass.fhem.exception.DeviceListParseException;

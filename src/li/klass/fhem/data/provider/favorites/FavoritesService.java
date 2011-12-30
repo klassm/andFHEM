@@ -3,9 +3,9 @@ package li.klass.fhem.data.provider.favorites;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import li.klass.fhem.AndFHEMApplication;
-import li.klass.fhem.data.FHEMService;
 import li.klass.fhem.domain.Device;
 import li.klass.fhem.domain.RoomDeviceList;
+import li.klass.fhem.service.RoomListService;
 
 import java.util.Set;
 
@@ -30,7 +30,7 @@ public class FavoritesService {
 
     public RoomDeviceList getFavorites(boolean refresh) {
         RoomDeviceList deviceList = new RoomDeviceList("favorites");
-        RoomDeviceList roomDeviceList = FHEMService.INSTANCE.deviceListForAllRooms(refresh);
+        RoomDeviceList roomDeviceList = RoomListService.INSTANCE.deviceListForAllRooms(refresh);
 
         Set<String> favoriteDeviceNames = getPreferences().getAll().keySet();
         for (String favoriteDeviceName : favoriteDeviceNames) {

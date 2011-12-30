@@ -39,7 +39,8 @@
             <TextView android:text="@string/switchDevice"
                       style="@style/deviceDetailDescription" />
             <ToggleButton android:id="@+id/switchButton"
-                          style="@style/deviceDetailContentToggle"/>
+                          style="@style/deviceDetailContentToggle"
+                          android:onClick="onFS20Click"/>
         </TableRow>
 
         <Button android:layout_width="fill_parent"

@@ -9,7 +9,7 @@ import li.klass.fhem.R;
 import li.klass.fhem.activities.base.BaseActivity;
 import li.klass.fhem.activities.devicelist.RoomDetailActivity;
 import li.klass.fhem.adapter.RoomListAdapter;
-import li.klass.fhem.data.FHEMService;
+import li.klass.fhem.service.RoomListService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +53,7 @@ public class RoomListActivity extends BaseActivity<List<String>, RoomListAdapter
 
     @Override
     protected List<String> getCurrentData(boolean refresh) {
-        return FHEMService.INSTANCE.getRoomList(refresh);
+        return RoomListService.INSTANCE.getRoomList(refresh);
     }
 
     @Override

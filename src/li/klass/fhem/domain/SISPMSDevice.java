@@ -1,7 +1,5 @@
 package li.klass.fhem.domain;
 
-import android.content.Context;
-import li.klass.fhem.data.FHEMService;
 import org.w3c.dom.NamedNodeMap;
 
 public class SISPMSDevice extends Device<SISPMSDevice> {
@@ -16,15 +14,5 @@ public class SISPMSDevice extends Device<SISPMSDevice> {
 
     public boolean isOn() {
         return state.equalsIgnoreCase("on");
-    }
-
-    public void toggleState(Context context) {
-        if (isOn()) {
-            FHEMService.INSTANCE.executeSafely(context, "set " + getName() + " off");
-            state = "off";
-        } else {
-            FHEMService.INSTANCE.executeSafely(context, "set " + getName() + " on");
-            state = "on";
-        }
     }
 }

@@ -1,29 +1,25 @@
-package li.klass.fhem.data;
+package li.klass.fhem.service;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
 import li.klass.fhem.AndFHEMApplication;
-import li.klass.fhem.R;
-import li.klass.fhem.data.provider.graph.GraphEntry;
-import li.klass.fhem.data.provider.graph.GraphProvider;
-import li.klass.fhem.domain.Device;
+import li.klass.fhem.data.DeviceListProvider;
 import li.klass.fhem.domain.RoomDeviceList;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class FHEMService {
-    public static final FHEMService INSTANCE = new FHEMService();
-    public static final String CACHE_FILENAME = "cache.obj";
+public class RoomListService {
+    public static final RoomListService INSTANCE = new RoomListService();
 
     private Map<String,RoomDeviceList> deviceListMap;
+    public static final String CACHE_FILENAME = "cache.obj";
 
-    private FHEMService() {}
+    private RoomListService() {
+    }
 
     public List<String> getRoomList(boolean refresh) {
         Map<String, RoomDeviceList> deviceListMap = getRoomDeviceListMap(refresh);
@@ -65,52 +61,6 @@ public class FHEMService {
         return newList;
     }
 
-    public boolean renameDevice(Context context, Device device, String newName) {
-        if (FHEMService.INSTANCE.executeSafely(context, "rename " + device.getName() + " " + newName)) {
-            device.setName(newName);
-            return true;
-        }
-        return false;
-    }
-
-    public boolean deleteDevice(Context context, Device device) {
-        if (FHEMService.INSTANCE.executeSafely(context, "delete " + device.getName())) {
-            deviceListForAllRooms(false).removeDevice(device);
-            deviceListForRoom(device.getRoom(), false).removeDevice(device);
-            return true;
-        }
-        return false;
-    }
-
-    public void executeCommand(String command) {
-        DataProviderSwitch.INSTANCE.getCurrentProvider().executeCommand(command);
-    }
-
-    public boolean executeSafely(Context context, String command) {
-        try {
-            executeCommand(command);
-            return true;
-        } catch (Exception e) {
-            Toast.makeText(context, R.string.executeError, Toast.LENGTH_SHORT).show();
-            return false;
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    public Map<String, List<GraphEntry>> getGraphData(Device device, List<String> columnSpecifications) {
-        if (device.getFileLog() == null) return null;
-
-        Map<String, List<GraphEntry>> data = new HashMap<String, List<GraphEntry>>();
-
-        GraphProvider graphProvider = GraphProvider.INSTANCE;
-        for (String columnSpec : columnSpecifications) {
-            String fileLogDeviceName = device.getFileLog().getName();
-            List<GraphEntry> valueEntries = graphProvider.getCurrentGraphEntriesFor(fileLogDeviceName, columnSpec);
-            data.put(columnSpec, valueEntries);
-        }
-
-        return data;
-    }
 
     private void cacheRoomDeviceListMap(Map<String, RoomDeviceList> content) {
         Context context = AndFHEMApplication.getContext();

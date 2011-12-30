@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             style="@style/deviceOverviewTable">
+
+    <TableRow>
+        <TextView android:id="@+id/deviceName"
+                  style="@style/deviceOverviewCaption"/>
+    </TableRow>
+
+    <TableRow>
+        <TextView android:text="@string/temperature"
+                  style="@style/deviceOverviewDescription" />
+        <TextView android:id="@+id/temperature"
+                  style="@style/deviceOverviewContent"
+                  android:text="xx (Celsius)"/>
+    </TableRow>
+
+    <TableRow>
+        <TextView android:text="@string/dewpoint"
+                  style="@style/deviceOverviewDescription" />
+        <TextView android:id="@+id/dewpoint"
+                  style="@style/deviceOverviewContent"
+                  android:text="xx (Celsius)"/>
+    </TableRow>
+
+    <TableRow>
+        <TextView android:text="@string/humidity"
+                  style="@style/deviceOverviewDescription" />
+        <TextView android:id="@+id/humidity"
+                  style="@style/deviceOverviewContent"
+                  android:text="xx (%)"/>
+    </TableRow>
+
+</TableLayout>

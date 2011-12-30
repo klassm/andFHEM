@@ -1,7 +1,5 @@
-package li.klass.fhem.data;
+package li.klass.fhem.domain;
 
-import li.klass.fhem.domain.Device;
-import li.klass.fhem.domain.DeviceType;
 import org.w3c.dom.NamedNodeMap;
 
 public class FileLog extends Device<FileLog> {

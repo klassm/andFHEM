@@ -1,7 +1,5 @@
 package li.klass.fhem.domain;
 
-import li.klass.fhem.data.FileLog;
-
 import java.io.Serializable;
 import java.util.*;
 

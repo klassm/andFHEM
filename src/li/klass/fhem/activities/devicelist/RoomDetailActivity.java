@@ -3,8 +3,8 @@ package li.klass.fhem.activities.devicelist;
 import android.content.Intent;
 import android.os.Bundle;
 import li.klass.fhem.R;
-import li.klass.fhem.data.FHEMService;
 import li.klass.fhem.domain.RoomDeviceList;
+import li.klass.fhem.service.RoomListService;
 
 public class RoomDetailActivity extends DeviceListActivity {
 
@@ -25,6 +25,6 @@ public class RoomDetailActivity extends DeviceListActivity {
 
     @Override
     protected RoomDeviceList getCurrentData(boolean refresh) {
-        return FHEMService.INSTANCE.deviceListForRoom(roomName, refresh);
+        return RoomListService.INSTANCE.deviceListForRoom(roomName, refresh);
     }
 }

@@ -28,7 +28,7 @@
     <string name="update">Aktualisieren</string>
     <string name="updating">Aktualisieren ...</string>
     <string name="loading">Laden ...</string>
-    <string name="switching">Schalten ...</string>
+    <string name="executing">Ausführend ...</string>
     <string name="help">Hilfe</string>
     <string name="donate">Helfen</string>
 

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             style="@style/deviceOverviewTable">
+
+    <TableRow>
+        <TextView android:id="@+id/deviceName"
+                  style="@style/deviceOverviewCaption"/>
+    </TableRow>
+
+    <TableRow>
+        <TextView android:text="@string/state"
+                  style="@style/deviceOverviewDescription" />
+        <TextView android:id="@+id/state"
+                  style="@style/deviceOverviewContent"
+                  android:text="xxx"/>
+    </TableRow>
+
+    <TableRow>
+        <TextView android:text="@string/measured"
+                  style="@style/deviceOverviewDescription" />
+        <TextView android:id="@+id/measured"
+                  style="@style/deviceOverviewContent"
+                  android:text="xx.xx.xxxx xx:xx:xx"/>
+    </TableRow>
+</TableLayout>

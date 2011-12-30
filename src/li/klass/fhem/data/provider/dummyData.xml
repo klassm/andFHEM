@@ -251,6 +251,109 @@
     <ATTR key="touchpad" value="1"/>
 </FHEMWEB>
 </FHEMWEB_LIST>
+
+<RFXX10REC_LIST>
+<RFXX10REC name="RFXX10REC_0bbd" state="Open" sets="" attrs="room comment alias IODev do_not_notify:1,0 loglevel:0,1,2,3,4,5,6 eventMap">
+    <INT key="DEF" value="ds10a 0bbd Window"/>
+    <INT key="NAME" value="RFXX10REC_0bbd"/>
+    <INT key="NR" value="213"/>
+    <INT key="RFXX10REC_deviceid" value="0bbd"/>
+    <INT key="RFXX10REC_devicelog" value="Window"/>
+    <INT key="RFXX10REC_type" value="ds10a"/>
+    <INT key="STATE" value="Open"/>
+    <INT key="TIME" value="2011-12-29 21:25:42"/>
+    <INT key="TYPE" value="RFXX10REC"/>
+    <INT key="IODev" value="RFXCOM"/>
+    <ATTR key="room" value="RFXX10REC"/>
+    <STATE key="Window" value="Open" measured="2011-12-29 21:25:42"/>
+    <STATE key="battery" value="ok" measured="2011-12-29 21:25:42"/>
+    <STATE key="delay" value="min" measured="2011-12-29 21:25:42"/>
+    <STATE key="statechange" value="Open" measured="2011-09-25 22:12:11"/>
+</RFXX10REC>
+<RFXX10REC name="RFXX10REC_17a1" state="Open" sets="" attrs="room comment alias IODev do_not_notify:1,0 loglevel:0,1,2,3,4,5,6 eventMap">
+    <INT key="DEF" value="ds10a 17a1 Window"/>
+    <INT key="NAME" value="RFXX10REC_17a1"/>
+    <INT key="NR" value="209"/>
+    <INT key="RFXX10REC_deviceid" value="17a1"/>
+    <INT key="RFXX10REC_devicelog" value="Window"/>
+    <INT key="RFXX10REC_type" value="ds10a"/>
+    <INT key="STATE" value="Open"/>
+    <INT key="TIME" value="2011-12-29 21:38:30"/>
+    <INT key="TYPE" value="RFXX10REC"/>
+    <INT key="IODev" value="RFXCOM"/>
+    <ATTR key="room" value="RFXX10REC"/>
+    <STATE key="Window" value="Open" measured="2011-12-29 21:38:30"/>
+    <STATE key="battery" value="ok" measured="2011-12-29 21:38:30"/>
+    <STATE key="delay" value="max" measured="2011-12-29 21:38:30"/>
+    <STATE key="statechange" value="Open" measured="2011-11-22 19:30:27"/>
+</RFXX10REC>
+</RFXX10REC_LIST>
+
+
+
+<ECMD_LIST>
+<ECMD name="EMCD1" state="Initialized" sets="Usage: set AVRNETIO classdef &lt;classname&gt; &lt;filename&gt; " attrs="room comment alias classdefs loglevel:0,1,2,3,4,5 eventMap">
+    <INT key="DEF" value="telnet 192.168.169.181:2701"/>
+    <INT key="DeviceName" value="192.168.169.181:2701"/>
+    <INT key="FD" value="9"/>
+    <INT key="NAME" value="EMCD1"/>
+    <INT key="NR" value="6"/>
+    <INT key="PARTIAL" value=""/>
+    <INT key="Protocol" value="telnet"/>
+    <INT key="STATE" value="Initialized"/>
+    <INT key="TYPE" value="ECMD"/>
+    <INT key="VERSION" value="0.2 (522cb5b)"/>
+    <ATTR key="classdefs" value="WATER=/var/log/fhem/Water.class"/>
+    <STATE key="classdef" value="WATER /var/log/fhem/Water.class" measured="2011-02-04 21:14:01"/>
+</ECMD>
+</ECMD_LIST>
+<ECMDDevice_LIST>
+
+<ECMDDevice name="EMCD2" state="pinstate: on" sets="Wasser error: unknown command ?" attrs="room comment alias loglevel 0,1,2,3,4,5 eventMap">
+    <INT key="DEF" value="WATER 2"/>
+    <INT key="NAME" value="EMCD2"/>
+    <INT key="NR" value="8"/>
+    <INT key="STATE" value="pinstate: on"/>
+    <INT key="TYPE" value="ECMDDevice"/>
+    <INT key="IODev" value="EMCD2"/>
+    <STATE key="pinstate" value="on" measured="2011-12-29 21:49:35"/>
+    <STATE key="resetstate" value="off" measured="2011-12-02 08:16:03"/>
+    <STATE key="setstate" value="on" measured="2011-11-21 20:33:45"/>
+</ECMDDevice>
+<ECMDDevice name="WasserLED" state="pinstate: on" sets="WasserLED error: unknown command ?" attrs="room comment alias loglevel 0,1,2,3,4,5 eventMap">
+    <INT key="DEF" value="WATER 1"/>
+    <INT key="NAME" value="WasserLED"/>
+    <INT key="NR" value="7"/>
+    <INT key="STATE" value="pinstate: on"/>
+    <INT key="TYPE" value="ECMDDevice"/>
+    <INT key="IODev" value="AVRNETIO"/>
+    <STATE key="pinstate" value="on" measured="2011-12-29 21:47:46"/>
+    <STATE key="resetstate" value="off" measured="2011-12-02 08:16:10"/>
+</ECMDDevice>
+</ECMDDevice_LIST>
+
+
+<USBWX_LIST>
+<USBWX name="USBWX_1" state="T: 18.2  H: 60  " sets="USBWX_1 =&gt; No Set function (?) implemented" attrs="room comment alias loglevel:0,1,2,3,4,5,6 eventMap">
+    <INT key="CODE" value="1"/>
+    <INT key="DEF" value="1 0 0"/>
+    <INT key="NAME" value="USBWX_1"/>
+    <INT key="NR" value="219"/>
+    <INT key="STATE" value="T: 18.2  H: 60  "/>
+    <INT key="TIME" value="2011-12-29 21:47:24"/>
+    <INT key="TYPE" value="USBWX"/>
+    <INT key="corr1" value="0"/>
+    <INT key="corr2" value="0"/>
+    <INT key="corr3" value="0"/>
+    <INT key="corr4" value="0"/>
+    <ATTR key="room" value="USBWX"/>
+    <STATE key="dewpoint" value="10.3" measured="2011-12-29 21:47:24"/>
+    <STATE key="dewpoint2" value="8.9" measured="2011-03-21 19:27:07"/>
+    <STATE key="humidity" value="60" measured="2011-12-29 21:47:24"/>
+    <STATE key="temperature" value="18.2" measured="2011-12-29 21:47:24"/>
+</USBWX>
+</USBWX_LIST>
+
 <FS20_LIST>
 <FS20 name="au_brunnen" state="???"
       sets="dim06% dim100% dim12% dim18% dim25% dim31% dim37% dim43% dim50% dim56% dim62% dim68% dim75% dim81% dim87% dim93% dimdown dimup dimupdown off off-for-timer on on-100-for-timer-prev on-for-timer on-old-for-timer on-old-for-timer-prev on-till ramp-off-time ramp-on-time reset sendstate timer toggle"
