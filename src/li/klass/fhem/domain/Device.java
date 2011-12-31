@@ -1,5 +1,7 @@
 package li.klass.fhem.domain;
 
+import li.klass.fhem.AndFHEMApplication;
+import li.klass.fhem.R;
 import li.klass.fhem.util.StringEscapeUtils;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -11,8 +13,9 @@ import java.util.Map;
 
 public abstract class Device<T extends Device> implements Serializable, Comparable<T> {
 
+    protected String room = AndFHEMApplication.getContext().getResources().getString(R.string.defaultRoomName);
+
     protected String name;
-    protected String room;
     protected String state;
     protected String alias;
     protected FileLog fileLog;

@@ -5,6 +5,8 @@
     <string name="allRoomsTitle">Alle Räume</string>
     <string name="deviceDetailPrefix">Details für</string>
 
+    <string name="defaultRoomName">unbekannt</string>
+
     <string name="temperature">Temperatur</string>
     <string name="wind">Wind</string>
     <string name="rain">Regen</string>

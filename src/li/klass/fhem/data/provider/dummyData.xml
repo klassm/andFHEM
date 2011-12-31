@@ -806,7 +806,6 @@
     <INT key="TYPE" value="FS20"/>
     <INT key="XMIT" value="0000"/>
     <INT key="IODev" value="CUL"/>
-    <ATTR key="room" value="matthias"/>
     <STATE key="state" value="off" measured="2011-12-01 23:07:50"/>
 </FS20>
 <FS20 name="mat_halogen" state="on"
