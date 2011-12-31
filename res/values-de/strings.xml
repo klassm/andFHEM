@@ -22,6 +22,13 @@
     <string name="forecast">Vorhersage</string>
     <string name="pressure">Luftdruck</string>
     <string name="dewpoint">Taupunkt</string>
+    <string name="rainRate">Regenstärke</string>
+    <string name="rainTotal">Regenmenge</string>
+    <string name="windAvgSpeed">Wind Durchschnitt</string>
+    <string name="windSpeed">Windgeschwindigkeit</string>
+    <string name="windDirection">Windrichtung</string>
+    <string name="uvValue">UV Wert</string>
+    <string name="uvRisk">UV Risiko</string>
 
     <string name="switchDevice">Schalte</string>
     <string name="preferences">Einstellungen</string>
@@ -75,6 +82,9 @@
     <string name="windGraph">Wind Graph</string>
     <string name="actuatorGraph">Regler Graph</string>
     <string name="pressureGraph">Luftdruck Graph</string>
+    <string name="rainRateGraph">Regenstärke Graph</string>
+    <string name="rainTotalGraph">Regenmenge Graph</string>
+    <string name="windSpeedGraph">Windgeschwindigkeit Graph</string>
 
     <string name="yAxisWind">Wind (km/h)</string>
     <string name="yAxisHumidity">Luftfeuchtigkeit (%)</string>
@@ -82,6 +92,9 @@
     <string name="yAxisRain">Regen (l/m2)</string>
     <string name="yAxisActuator">Regler (%)</string>
     <string name="yAxisPressure">Luftdruck (hPa)</string>
+    <string name="yAxisRainRate">Regenstärke (mm/hr)</string>
+    <string name="yAxisRainTotal">Regenmenge (l/m2)</string>
+    <string name="yAxisWindSpeed">Windgeschwindigkeit (km/h)</string>
 
     <string name="generalDetails">Allgemeine Informationen</string>
     <string name="plots">Graphen</string>

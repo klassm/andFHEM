@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.*;
-import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.activities.deviceDetail.FS20DeviceDetailActivity;
 import li.klass.fhem.domain.Device;
@@ -40,7 +39,7 @@ public class FS20Adapter extends DeviceAdapter<FS20Device> {
         @Override
         public void onStopTrackingTouch(final SeekBar seekBar) {
             FS20Device device = RoomListService.INSTANCE.deviceListForAllRooms(false).getDeviceFor((String) seekBar.getTag());
-            FS20Service.INSTANCE.dim(null, device, progress, null);
+            FS20Service.INSTANCE.dim(seekBar.getContext(), device, progress, null);
         }
     }
 
@@ -87,11 +86,9 @@ public class FS20Adapter extends DeviceAdapter<FS20Device> {
             seekBarRow.setVisibility(View.GONE);
         }
 
-        TextView measured = (TextView) view.findViewById(R.id.measured);
-        measured.setText(device.getMeasureDate());
 
-        TextView state = (TextView) view.findViewById(R.id.state);
-        state.setText(device.getState());
+        setTextViewOrHideTableRow(view, R.id.tableRowMeasured, R.id.measured, device.getMeasureDate());
+        setTextViewOrHideTableRow(view, R.id.tableRowState, R.id.state, device.getState());
 
         Button switchSetOptions = (Button) view.findViewById(R.id.switchSetOptions);
         switchSetOptions.setOnClickListener(new View.OnClickListener() {
@@ -104,7 +101,7 @@ public class FS20Adapter extends DeviceAdapter<FS20Device> {
                 contextMenu.setItems(setOptions.toArray(new CharSequence[setOptions.size()]), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int item) {
                         String option = setOptions.get(item);
-                        FS20Service.INSTANCE.setState(AndFHEMApplication.getContext(), device, option, null);
+                        FS20Service.INSTANCE.setState(context, device, option, null);
                         dialog.dismiss();
                     }
                 });
@@ -130,8 +127,7 @@ public class FS20Adapter extends DeviceAdapter<FS20Device> {
     private View getFS20ToggleView(LayoutInflater layoutInflater, FS20Device child) {
         View view = layoutInflater.inflate(R.layout.room_detail_fs20, null);
 
-        TextView deviceName = (TextView) view.findViewById(R.id.deviceName);
-        deviceName.setText(child.getAliasOrName());
+        setTextView(view, R.id.deviceName, child.getAliasOrName());
 
         ToggleButton switchButton = (ToggleButton) view.findViewById(R.id.switchButton);
         switchButton.setChecked(child.isOn());
@@ -143,8 +139,7 @@ public class FS20Adapter extends DeviceAdapter<FS20Device> {
     private View getFS20SeekView(LayoutInflater layoutInflater, final FS20Device child) {
         View view = layoutInflater.inflate(R.layout.room_detail_fs20_seek, null);
 
-        TextView deviceName = (TextView) view.findViewById(R.id.deviceName);
-        deviceName.setText(child.getName());
+        setTextView(view, R.id.deviceName, child.getAliasOrName());
 
         SeekBar seekBar = (SeekBar) view.findViewById(R.id.seekBar);
         final int initialProgress = child.getFS20DimState();

@@ -10,9 +10,9 @@ import java.util.Map;
 public class FHTDevice extends Device<FHTDevice> implements Serializable {
 
     private String actuator;
-    private String desiredTemp = "???";
+    private String desiredTemp;
     private String warnings;
-    private String temperature = "???";
+    private String temperature;
 
     public static final Integer COLUMN_SPEC_TEMPERATURE = R.string.temperature;
     public static final Integer COLUMN_SPEC_ACTUATOR = R.string.actuator;

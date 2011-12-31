@@ -5,9 +5,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
+import android.widget.TableRow;
 import android.widget.TextView;
 import li.klass.fhem.R;
 import li.klass.fhem.domain.Device;
+import li.klass.fhem.graph.TimePlot;
 
 public abstract class DeviceAdapter<D extends Device> {
 
@@ -62,5 +65,53 @@ public abstract class DeviceAdapter<D extends Device> {
 
     public abstract Class<? extends Device> getSupportedDeviceClass();
     protected abstract View getDeviceView(LayoutInflater layoutInflater, D device);
+
+    
+    protected void setTextViewOrHideTableRow(View view, int tableRowId, int textFieldLayoutId, String value) {
+        TableRow tableRow = (TableRow) view.findViewById(tableRowId);
+
+        if (hideIfNull(tableRow, value)) {
+            return;
+        }
+
+        setTextView(view, textFieldLayoutId, value);
+    }
+    
+    protected void setTextView(View view, int textFieldLayoutId, String value) {
+        TextView textView = (TextView) view.findViewById(textFieldLayoutId);
+        textView.setText(value);
+    }
+
+    protected boolean hideIfNull(View view, int id, Object valueToCheck) {
+        View layoutElement = view.findViewById(id);
+        return hideIfNull(layoutElement, valueToCheck);
+    }
+    
+    protected boolean hideIfNull(View layoutElement, Object valueToCheck) {
+        if (valueToCheck == null || valueToCheck instanceof String && ((String) valueToCheck).isEmpty()) {
+            layoutElement.setVisibility(View.GONE);
+            return true;
+        }
+        return false;
+    }
+
+    protected boolean createPlotButton(final Context context, View view, int buttonLayoutId, Object hideButtonIfNull,
+                                       final D device, final int yTitleId, final int columnSpec) {
+
+        if (! hideIfNull(view, buttonLayoutId, hideButtonIfNull)) {
+            Button button = (Button) view.findViewById(buttonLayoutId);
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String yTitle = context.getResources().getString(yTitleId);
+                    TimePlot.INSTANCE.execute(context, device, yTitle, columnSpec);
+                }
+            });
+
+            return false;
+        } else {
+            return true;
+        }
+    }
 
 }

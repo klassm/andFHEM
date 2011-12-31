@@ -8,7 +8,7 @@
                   style="@style/deviceOverviewCaption"/>
     </TableRow>
 
-    <TableRow>
+    <TableRow android:id="@+id/tableRowTemperature">
         <TextView android:text="@string/temperature"
                   style="@style/deviceOverviewDescription" />
         <TextView android:id="@+id/temperature"
@@ -16,7 +16,7 @@
                   android:text="xx (Celsius)"/>
     </TableRow>
 
-    <TableRow>
+    <TableRow android:id="@+id/tableRowHumidity">
         <TextView android:text="@string/humidity"
                   style="@style/deviceOverviewDescription" />
         <TextView android:id="@+id/humidity"
@@ -24,10 +24,66 @@
                   android:text="xx (%)"/>
     </TableRow>
 
-    <TableRow>
+    <TableRow android:id="@+id/tableRowForecast">
         <TextView android:text="@string/forecast"
                   style="@style/deviceOverviewDescription" />
         <TextView android:id="@+id/forecast"
+                  style="@style/deviceOverviewContent"
+                  android:text="xxxx"/>
+    </TableRow>
+
+    <TableRow android:id="@+id/tableRowRainRate">
+        <TextView android:text="@string/rainRate"
+                  style="@style/deviceOverviewDescription" />
+        <TextView android:id="@+id/rainRate"
+                  style="@style/deviceOverviewContent"
+                  android:text="xxxx"/>
+    </TableRow>
+
+    <TableRow android:id="@+id/tableRowRainTotal">
+        <TextView android:text="@string/rainTotal"
+                  style="@style/deviceOverviewDescription" />
+        <TextView android:id="@+id/rainTotal"
+                  style="@style/deviceOverviewContent"
+                  android:text="xxxx"/>
+    </TableRow>
+
+    <TableRow android:id="@+id/tableRowWindAvg">
+        <TextView android:text="@string/windAvgSpeed"
+                  style="@style/deviceOverviewDescription" />
+        <TextView android:id="@+id/windAvgSpeed"
+                  style="@style/deviceOverviewContent"
+                  android:text="xxxx"/>
+    </TableRow>
+
+    <TableRow android:id="@+id/tableRowWindDirection">
+        <TextView android:text="@string/windDirection"
+                  style="@style/deviceOverviewDescription" />
+        <TextView android:id="@+id/windDirection"
+                  style="@style/deviceOverviewContent"
+                  android:text="xxxx"/>
+    </TableRow>
+
+    <TableRow android:id="@+id/tableRowWindSpeed">
+        <TextView android:text="@string/windSpeed"
+                  style="@style/deviceOverviewDescription" />
+        <TextView android:id="@+id/windSpeed"
+                  style="@style/deviceOverviewContent"
+                  android:text="xxxx"/>
+    </TableRow>
+
+    <TableRow android:id="@+id/tableRowUVValue">
+        <TextView android:text="@string/uvValue"
+                  style="@style/deviceOverviewDescription" />
+        <TextView android:id="@+id/uvValue"
+                  style="@style/deviceOverviewContent"
+                  android:text="xxxx"/>
+    </TableRow>
+
+    <TableRow android:id="@+id/tableRowUVRisk">
+        <TextView android:text="@string/uvRisk"
+                  style="@style/deviceOverviewDescription" />
+        <TextView android:id="@+id/uvRisk"
                   style="@style/deviceOverviewContent"
                   android:text="xxxx"/>
     </TableRow>

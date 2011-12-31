@@ -11,7 +11,7 @@
     <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
                  style="@style/deviceDetailTable">
 
-        <TableRow>
+        <TableRow android:id="@+id/tableRowTemperature">
             <TextView android:text="@string/temperature"
                       style="@style/deviceDetailDescription" />
             <TextView android:id="@+id/temperature"
@@ -19,7 +19,7 @@
                       style="@style/deviceDetailContent" />
         </TableRow>
 
-        <TableRow>
+        <TableRow android:id="@+id/tableRowWind">
             <TextView android:text="@string/wind"
                       style="@style/deviceDetailDescription" />
             <TextView android:id="@+id/wind"
@@ -28,7 +28,7 @@
                       style="@style/deviceDetailContent" />
         </TableRow>
 
-        <TableRow>
+        <TableRow android:id="@+id/tableRowRain">
             <TextView android:text="@string/rain"
                       style="@style/deviceDetailDescription" />
             <TextView android:id="@+id/rain"
@@ -36,7 +36,7 @@
                       style="@style/deviceDetailContent" />
         </TableRow>
 
-        <TableRow>
+        <TableRow android:id="@+id/tableRowHumidity">
             <TextView android:text="@string/humidity"
                       style="@style/deviceDetailDescription" />
             <TextView android:id="@+id/humidity"
@@ -44,7 +44,7 @@
                       style="@style/deviceDetailContent" />
         </TableRow>
 
-        <TableRow>
+        <TableRow android:id="@+id/tableRowIsRaining">
             <TextView android:text="@string/isRaining"
                       style="@style/deviceDetailDescription" />
             <TextView android:id="@+id/isRaining"
@@ -52,7 +52,7 @@
                       style="@style/deviceDetailContent" />
         </TableRow>
 
-        <TableRow>
+        <TableRow android:id="@+id/tableRowAvgDay">
             <TextView android:text="@string/avgDay"
                       style="@style/deviceDetailDescription" />
             <TextView android:id="@+id/avgDay"
@@ -60,7 +60,7 @@
                       style="@style/deviceDetailContent" />
         </TableRow>
 
-        <TableRow>
+        <TableRow android:id="@+id/tableRowAvgMonth">
             <TextView android:text="@string/avgMonth"
                       style="@style/deviceDetailDescription" />
             <TextView android:id="@+id/avgMonth"

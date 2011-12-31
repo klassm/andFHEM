@@ -1,6 +1,7 @@
 package li.klass.fhem.widget;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,7 +51,7 @@ public abstract class NestedListViewAdapter<P, C> extends BaseAdapter implements
                 return getChildView(child, view, viewGroup);
             }
         }catch (Exception e) {
-            e.printStackTrace();
+            Log.e(NestedListViewAdapter.class.getName(), "error occurred", e);
             return null;
         }
     }

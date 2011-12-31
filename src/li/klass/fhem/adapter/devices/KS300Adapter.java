@@ -4,14 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import li.klass.fhem.R;
 import li.klass.fhem.activities.deviceDetail.KS300DetailActivity;
 import li.klass.fhem.domain.Device;
 import li.klass.fhem.domain.KS300Device;
-import li.klass.fhem.graph.TimePlot;
 
 public class KS300Adapter extends DeviceAdapter<KS300Device> {
 
@@ -19,17 +15,11 @@ public class KS300Adapter extends DeviceAdapter<KS300Device> {
     public View getDeviceView(LayoutInflater layoutInflater, KS300Device device) {
         View view = layoutInflater.inflate(R.layout.room_detail_ks300, null);
 
-        TextView deviceName = (TextView) view.findViewById(R.id.deviceName);
-        TextView wind = (TextView) view.findViewById(R.id.wind);
-        TextView humidity = (TextView) view.findViewById(R.id.humidity);
-        TextView rain = (TextView) view.findViewById(R.id.rain);
-        TextView temperature = (TextView) view.findViewById(R.id.temperature);
-
-        deviceName.setText(device.getAliasOrName());
-        wind.setText(device.getWind());
-        temperature.setText(device.getTemperature());
-        humidity.setText(device.getHumidity());
-        rain.setText(device.getRain());
+        setTextView(view, R.id.deviceName, device.getAliasOrName());
+        setTextViewOrHideTableRow(view, R.id.tableRowTemperature, R.id.temperature, device.getTemperature());
+        setTextViewOrHideTableRow(view, R.id.tableRowWind, R.id.wind, device.getWind());
+        setTextViewOrHideTableRow(view, R.id.tableRowHumidity, R.id.humidity, device.getHumidity());
+        setTextViewOrHideTableRow(view, R.id.tableRowRain, R.id.rain, device.getRain());
 
         return view;
     }
@@ -53,63 +43,28 @@ public class KS300Adapter extends DeviceAdapter<KS300Device> {
     protected View getDeviceDetailView(final Context context, LayoutInflater layoutInflater, final KS300Device device) {
         View view = layoutInflater.inflate(getDetailViewLayout(), null);
 
-        TextView wind = (TextView) view.findViewById(R.id.wind);
-        TextView humidity = (TextView) view.findViewById(R.id.humidity);
-        TextView rain = (TextView) view.findViewById(R.id.rain);
-        TextView temperature = (TextView) view.findViewById(R.id.temperature);
-        TextView isRaining = (TextView) view.findViewById(R.id.isRaining);
-        TextView avgDay = (TextView) view.findViewById(R.id.avgDay);
-        TextView avgMonth = (TextView) view.findViewById(R.id.avgMonth);
+        setTextViewOrHideTableRow(view, R.id.tableRowTemperature, R.id.temperature, device.getTemperature());
+        setTextViewOrHideTableRow(view, R.id.tableRowWind, R.id.wind, device.getWind());
+        setTextViewOrHideTableRow(view, R.id.tableRowHumidity, R.id.humidity, device.getHumidity());
+        setTextViewOrHideTableRow(view, R.id.tableRowRain, R.id.rain, device.getRain());
+        setTextViewOrHideTableRow(view, R.id.tableRowIsRaining, R.id.isRaining, device.getRaining());
+        setTextViewOrHideTableRow(view, R.id.tableRowAvgDay, R.id.avgDay, device.getAverageDay());
+        setTextViewOrHideTableRow(view, R.id.tableRowAvgMonth, R.id.avgMonth, device.getAverageMonth());
 
-        temperature.setText(device.getTemperature());
-        wind.setText(device.getWind());
-        isRaining.setText(device.getRaining());
-        humidity.setText(device.getHumidity());
-        rain.setText(device.getRain());
-        avgDay.setText(device.getAverageDay());
-        avgMonth.setText(device.getAverageMonth());
+        hideIfNull(view, R.id.graphLayout, device.getFileLog());
 
-        
-        if (device.getFileLog() == null) {
-            LinearLayout graphLayout = (LinearLayout) view.findViewById(R.id.graphLayout);
-            graphLayout.setVisibility(View.INVISIBLE);
-        }
+        createPlotButton(context, view, R.id.temperatureGraph, device.getTemperature(),
+                device, R.string.yAxisTemperature, KS300Device.COLUMN_SPEC_TEMPERATURE);
 
-        Button temperatureGraph = (Button) view.findViewById(R.id.temperatureGraph);
-        temperatureGraph.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String yTitle = context.getResources().getString(R.string.yAxisTemperature);
-                TimePlot.INSTANCE.execute(context, device, yTitle, KS300Device.COLUMN_SPEC_TEMPERATURE);
-            }
-        });
+        createPlotButton(context, view, R.id.humidityGraph, device.getHumidity(),
+                device, R.string.yAxisHumidity, KS300Device.COLUMN_SPEC_HUMIDITY);
 
-        Button humidityGraph = (Button) view.findViewById(R.id.humidityGraph);
-        humidityGraph.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String yTitle = context.getResources().getString(R.string.yAxisHumidity);
-                TimePlot.INSTANCE.execute(context, device, yTitle, KS300Device.COLUMN_SPEC_HUMIDITY);
-            }
-        });
+        createPlotButton(context, view, R.id.windGraph, device.getWind(),
+                device, R.string.yAxisWind, KS300Device.COLUMN_SPEC_WIND);
 
-        Button windGraph = (Button) view.findViewById(R.id.windGraph);
-        windGraph.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String yTitle = context.getResources().getString(R.string.yAxisWind);
-                TimePlot.INSTANCE.execute(context, device, yTitle, KS300Device.COLUMN_SPEC_WIND);
-            }
-        });
+        createPlotButton(context, view, R.id.rainGraph, device.getRain(),
+                device, R.string.yAxisRain, KS300Device.COLUMN_SPEC_RAIN);
 
-        Button rainGraph = (Button) view.findViewById(R.id.rainGraph);
-        rainGraph.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String yTitle = context.getResources().getString(R.string.yAxisRain);
-                TimePlot.INSTANCE.execute(context, device, yTitle, KS300Device.COLUMN_SPEC_RAIN);
-            }
-        });
 
         return view;
     }

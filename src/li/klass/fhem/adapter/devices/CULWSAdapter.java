@@ -4,14 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import li.klass.fhem.R;
 import li.klass.fhem.activities.deviceDetail.CULWSDeviceDetailActivity;
 import li.klass.fhem.domain.CULWSDevice;
 import li.klass.fhem.domain.Device;
-import li.klass.fhem.graph.TimePlot;
 
 public class CULWSAdapter extends DeviceAdapter<CULWSDevice> {
 
@@ -19,14 +15,9 @@ public class CULWSAdapter extends DeviceAdapter<CULWSDevice> {
     public View getDeviceView(LayoutInflater layoutInflater, CULWSDevice device) {
         View view = layoutInflater.inflate(R.layout.room_detail_culws, null);
 
-        TextView deviceName = (TextView) view.findViewById(R.id.deviceName);
-        deviceName.setText(device.getAliasOrName());
-
-        TextView temperature = (TextView) view.findViewById(R.id.temperature);
-        temperature.setText(device.getTemperature());
-
-        TextView battery = (TextView) view.findViewById(R.id.humidity);
-        battery.setText(device.getHumidity());
+        setTextView(view, R.id.deviceName, device.getAliasOrName());
+        setTextViewOrHideTableRow(view, R.id.tableRowTemperature, R.id.temperature, device.getTemperature());
+        setTextViewOrHideTableRow(view, R.id.tableRowHumidity, R.id.humidity, device.getHumidity());
 
         return view;
     }
@@ -45,34 +36,15 @@ public class CULWSAdapter extends DeviceAdapter<CULWSDevice> {
     protected View getDeviceDetailView(final Context context, LayoutInflater layoutInflater, final CULWSDevice device) {
         View view = layoutInflater.inflate(getDetailViewLayout(), null);
 
-        TextView temperature = (TextView) view.findViewById(R.id.temperature);
-        temperature.setText(device.getTemperature());
+        setTextViewOrHideTableRow(view, R.id.tableRowTemperature, R.id.temperature, device.getTemperature());
+        setTextViewOrHideTableRow(view, R.id.tableRowHumidity, R.id.humidity, device.getHumidity());
 
-        TextView battery = (TextView) view.findViewById(R.id.humidity);
-        battery.setText(device.getHumidity());
+        hideIfNull(view, R.id.graphLayout, device.getFileLog());
 
-        if (device.getFileLog() == null) {
-            LinearLayout graphLayout = (LinearLayout) view.findViewById(R.id.graphLayout);
-            graphLayout.setVisibility(View.INVISIBLE);
-        }
-
-        Button temperatureGraph = (Button) view.findViewById(R.id.temperatureGraph);
-        temperatureGraph.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String yTitle = context.getResources().getString(R.string.yAxisTemperature);
-                TimePlot.INSTANCE.execute(context, device, yTitle, CULWSDevice.COLUMN_SPEC_TEMPERATURE);
-            }
-        });
-
-        Button humidityGraph = (Button) view.findViewById(R.id.humidityGraph);
-        humidityGraph.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String yTitle = context.getResources().getString(R.string.yAxisActuator);
-                TimePlot.INSTANCE.execute(context, device, yTitle, CULWSDevice.COLUMN_SPEC_HUMIDITY);
-            }
-        });
+        createPlotButton(context, view, R.id.temperatureGraph, device.getTemperature(),
+                device, R.string.yAxisTemperature, CULWSDevice.COLUMN_SPEC_TEMPERATURE);
+        createPlotButton(context, view, R.id.humidityGraph, device.getHumidity(),
+                device, R.string.yAxisHumidity, CULWSDevice.COLUMN_SPEC_HUMIDITY);
 
         return view;
     }

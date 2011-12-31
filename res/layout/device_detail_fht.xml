@@ -12,7 +12,7 @@
     <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
                  style="@style/deviceDetailTable">
 
-        <TableRow>
+        <TableRow android:id="@+id/tableRowActuator">
             <TextView android:text="@string/actuator"
                       style="@style/deviceDetailDescription" />
             <TextView android:id="@+id/actuator"
@@ -20,7 +20,7 @@
                       android:text="xx (%)"/>
         </TableRow>
 
-        <TableRow>
+        <TableRow android:id="@+id/tableRowTemperature">
             <TextView android:text="@string/temperature"
                       style="@style/deviceDetailDescription" />
             <TextView android:id="@+id/temperature"
@@ -28,7 +28,7 @@
                       android:text="xx.x (Celsius)"/>
         </TableRow>
 
-        <TableRow>
+        <TableRow android:id="@+id/tableRowDesiredTemperature">
             <TextView android:text="@string/desiredTemperature"
                       style="@style/deviceDetailDescription" />
             <TextView android:id="@+id/desiredTemperature"
@@ -36,7 +36,7 @@
                       style="@style/deviceDetailContent" />
         </TableRow>
 
-        <TableRow>
+        <TableRow android:id="@+id/tableRowWarnings">
             <TextView android:text="@string/warnings"
                       style="@style/deviceDetailDescription" />
             <TextView android:id="@+id/warnings"

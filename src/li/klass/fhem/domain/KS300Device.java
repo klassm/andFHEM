@@ -14,13 +14,13 @@ public class KS300Device extends Device<KS300Device> implements Serializable {
     public static final int COLUMN_SPEC_WIND = R.string.wind;
     public static final int COLUMN_SPEC_RAIN = R.string.rain;
 
-    private String temperature = "";
-    private String wind = "";
-    private String humidity = "";
-    private String rain = "";
-    private String averageDay = "";
-    private String averageMonth = "";
-    private String isRaining = "";
+    private String temperature;
+    private String wind;
+    private String humidity;
+    private String rain;
+    private String averageDay;
+    private String averageMonth;
+    private String isRaining;
 
     @Override
     public int compareTo(KS300Device ks300Device) {

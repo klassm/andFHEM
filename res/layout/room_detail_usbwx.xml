@@ -8,7 +8,7 @@
                   style="@style/deviceOverviewCaption"/>
     </TableRow>
 
-    <TableRow>
+    <TableRow android:id="@+id/tableRowTemperature">
         <TextView android:text="@string/temperature"
                   style="@style/deviceOverviewDescription" />
         <TextView android:id="@+id/temperature"
@@ -16,7 +16,7 @@
                   android:text="xx (Celsius)"/>
     </TableRow>
 
-    <TableRow>
+    <TableRow android:id="@+id/tableRowDewpoint">
         <TextView android:text="@string/dewpoint"
                   style="@style/deviceOverviewDescription" />
         <TextView android:id="@+id/dewpoint"
@@ -24,7 +24,7 @@
                   android:text="xx (Celsius)"/>
     </TableRow>
 
-    <TableRow>
+    <TableRow android:id="@+id/tableRowHumidity">
         <TextView android:text="@string/humidity"
                   style="@style/deviceOverviewDescription" />
         <TextView android:id="@+id/humidity"

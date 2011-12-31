@@ -11,7 +11,7 @@
     <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
                  style="@style/deviceDetailTable">
 
-        <TableRow>
+        <TableRow android:id="@+id/tableRowState">
             <TextView android:text="@string/state"
                       style="@style/deviceDetailDescription" />
             <TextView android:id="@+id/state"
@@ -19,7 +19,7 @@
                       android:text="xx"/>
         </TableRow>
 
-        <TableRow>
+        <TableRow android:id="@+id/tableRowMeasured">
             <TextView android:text="@string/measured"
                       style="@style/deviceDetailDescription" />
             <TextView android:id="@+id/measured"

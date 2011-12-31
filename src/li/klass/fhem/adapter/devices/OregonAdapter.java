@@ -4,14 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import li.klass.fhem.R;
 import li.klass.fhem.activities.deviceDetail.OregonDeviceDetailActivity;
 import li.klass.fhem.domain.Device;
 import li.klass.fhem.domain.OregonDevice;
-import li.klass.fhem.graph.TimePlot;
 
 public class OregonAdapter extends DeviceAdapter<OregonDevice> {
     @Override
@@ -24,17 +20,17 @@ public class OregonAdapter extends DeviceAdapter<OregonDevice> {
 
         View view = layoutInflater.inflate(R.layout.room_detail_oregon, null);
 
-        TextView deviceName = (TextView) view.findViewById(R.id.deviceName);
-        deviceName.setText(device.getAliasOrName());
-
-        TextView temperature = (TextView) view.findViewById(R.id.temperature);
-        temperature.setText(device.getTemperature());
-
-        TextView humidity = (TextView) view.findViewById(R.id.humidity);
-        humidity.setText(device.getHumidity());
-
-        TextView forecast = (TextView) view.findViewById(R.id.forecast);
-        forecast.setText(device.getForecast());
+        setTextView(view, R.id.deviceName, device.getAliasOrName());
+        setTextViewOrHideTableRow(view, R.id.tableRowTemperature, R.id.temperature, device.getTemperature());
+        setTextViewOrHideTableRow(view, R.id.tableRowHumidity, R.id.humidity, device.getHumidity());
+        setTextViewOrHideTableRow(view, R.id.tableRowForecast, R.id.forecast, device.getForecast());
+        setTextViewOrHideTableRow(view, R.id.tableRowRainRate, R.id.rainRate, device.getRainRate());
+        setTextViewOrHideTableRow(view, R.id.tableRowRainTotal, R.id.rainTotal, device.getRainTotal());
+        setTextViewOrHideTableRow(view, R.id.tableRowWindAvg, R.id.windAvgSpeed, device.getWindAvgSpeed());
+        setTextViewOrHideTableRow(view, R.id.tableRowWindDirection, R.id.windDirection, device.getWindDirection());
+        setTextViewOrHideTableRow(view, R.id.tableRowWindSpeed, R.id.windSpeed, device.getWindSpeed());
+        setTextViewOrHideTableRow(view, R.id.tableRowUVValue, R.id.uvValue, device.getUvValue());
+        setTextViewOrHideTableRow(view, R.id.tableRowUVRisk, R.id.uvRisk, device.getUvRisk());
 
         return view;
     }
@@ -54,57 +50,40 @@ public class OregonAdapter extends DeviceAdapter<OregonDevice> {
     protected View getDeviceDetailView(final Context context, LayoutInflater layoutInflater, final OregonDevice device) {
         View view = layoutInflater.inflate(getDetailViewLayout(), null);
 
-        TextView temperature = (TextView) view.findViewById(R.id.temperature);
-        temperature.setText(device.getTemperature());
-
-        TextView humidity = (TextView) view.findViewById(R.id.humidity);
-        humidity.setText(device.getHumidity());
-
-        TextView forecast = (TextView) view.findViewById(R.id.forecast);
-        forecast.setText(device.getForecast());
-
-        TextView pressure = (TextView) view.findViewById(R.id.pressure);
-        pressure.setText(device.getPressure());
-
-        TextView dewpoint = (TextView) view.findViewById(R.id.dewpoint);
-        dewpoint.setText(device.getDewpoint());
-
-        TextView battery = (TextView) view.findViewById(R.id.battery);
-        battery.setText(device.getBattery());
+        setTextViewOrHideTableRow(view, R.id.tableRowTemperature, R.id.temperature, device.getTemperature());
+        setTextViewOrHideTableRow(view, R.id.tableRowHumidity, R.id.humidity, device.getHumidity());
+        setTextViewOrHideTableRow(view, R.id.tableRowForecast, R.id.forecast, device.getForecast());
+        setTextViewOrHideTableRow(view, R.id.tableRowPressure, R.id.pressure, device.getPressure());
+        setTextViewOrHideTableRow(view, R.id.tableRowDewpoint, R.id.pressure, device.getDewpoint());
+        setTextViewOrHideTableRow(view, R.id.tableRowBattery, R.id.battery, device.getBattery());
+        setTextViewOrHideTableRow(view, R.id.tableRowRainRate, R.id.rainRate, device.getRainRate());
+        setTextViewOrHideTableRow(view, R.id.tableRowRainTotal, R.id.rainTotal, device.getRainTotal());
+        setTextViewOrHideTableRow(view, R.id.tableRowWindAvg, R.id.windAvgSpeed, device.getWindAvgSpeed());
+        setTextViewOrHideTableRow(view, R.id.tableRowWindDirection, R.id.windDirection, device.getWindDirection());
+        setTextViewOrHideTableRow(view, R.id.tableRowWindSpeed, R.id.windSpeed, device.getWindSpeed());
+        setTextViewOrHideTableRow(view, R.id.tableRowUVValue, R.id.uvValue, device.getUvValue());
+        setTextViewOrHideTableRow(view, R.id.tableRowUVRisk, R.id.uvRisk, device.getUvRisk());
 
 
+        hideIfNull(view, R.id.graphLayout, device.getFileLog());
 
-        if (device.getFileLog() == null) {
-            LinearLayout graphLayout = (LinearLayout) view.findViewById(R.id.graphLayout);
-            graphLayout.setVisibility(View.INVISIBLE);
-        }
+        createPlotButton(context, view, R.id.temperatureGraph, device.getTemperature(),
+                device, R.string.yAxisTemperature, OregonDevice.COLUMN_SPEC_TEMPERATURE);
 
-        Button temperatureGraph = (Button) view.findViewById(R.id.temperatureGraph);
-        temperatureGraph.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String yTitle = context.getResources().getString(R.string.yAxisTemperature);
-                TimePlot.INSTANCE.execute(context, device, yTitle, OregonDevice.COLUMN_SPEC_TEMPERATURE);
-            }
-        });
+        createPlotButton(context, view, R.id.humidityGraph, device.getHumidity(),
+                device, R.string.yAxisHumidity, OregonDevice.COLUMN_SPEC_HUMIDITY);
 
-        Button humidityGraph = (Button) view.findViewById(R.id.humidityGraph);
-        humidityGraph.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String yTitle = context.getResources().getString(R.string.yAxisHumidity);
-                TimePlot.INSTANCE.execute(context, device, yTitle, OregonDevice.COLUMN_SPEC_HUMIDITY);
-            }
-        });
+        createPlotButton(context, view, R.id.pressureGraph, device.getPressure(),
+                device, R.string.yAxisPressure, OregonDevice.COLUMN_SPEC_PRESSURE);
 
-        Button pressureGraph = (Button) view.findViewById(R.id.pressureGraph);
-        pressureGraph.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String yTitle = context.getResources().getString(R.string.yAxisPressure);
-                TimePlot.INSTANCE.execute(context, device, yTitle, OregonDevice.COLUMN_SPEC_PRESSURE);
-            }
-        });
+        createPlotButton(context, view, R.id.rainRateGraph, device.getRainRate(),
+                device, R.string.yAxisRainRate, OregonDevice.COLUMN_SPEC_RAIN_RATE);
+
+        createPlotButton(context, view, R.id.rainTotalGraph, device.getRainTotal(),
+                device, R.string.yAxisRainTotal, OregonDevice.COLUMN_SPEC_RAIN_TOTAL);
+
+        createPlotButton(context, view, R.id.windSpeedGraph, device.getWindSpeed(),
+                device, R.string.yAxisWindSpeed, OregonDevice.COLUMN_SPEC_WIND_SPEED);
 
         return view;
     }

@@ -13,9 +13,9 @@ public class FS20Device extends Device<FS20Device> implements Comparable<FS20Dev
     private List<Integer> dimStates = Arrays.asList(0, 6, 100, 12, 18, 25, 31, 37, 43, 50, 56, 62, 68, 75, 81, 87, 93);
     private static final List<String> dimModels = Arrays.asList("FS20DI", "FS20DI10", "FS20DU");
     
-    private String model = "";
+    private String model;
     private List<String> setOptions = Collections.emptyList();
-    private String measureDate = "";
+    private String measureDate;
 
     public enum FS20State {
         ON, OFF

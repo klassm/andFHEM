@@ -8,7 +8,7 @@
                   style="@style/deviceOverviewCaption"/>
     </TableRow>
 
-    <TableRow>
+    <TableRow android:id="@+id/tableRowState">
         <TextView android:text="@string/state"
                   style="@style/deviceOverviewDescription" />
         <TextView android:id="@+id/state"
@@ -16,7 +16,7 @@
                   android:text="xxx"/>
     </TableRow>
 
-    <TableRow>
+    <TableRow android:id="@+id/tableRowMeasured">
         <TextView android:text="@string/measured"
                   style="@style/deviceOverviewDescription" />
         <TextView android:id="@+id/measured"

@@ -12,9 +12,9 @@ import java.util.Map;
 public abstract class Device<T extends Device> implements Serializable, Comparable<T> {
 
     protected String name;
-    protected String room = "unknown";
+    protected String room;
     protected String state;
-    protected String alias = null;
+    protected String alias;
     protected FileLog fileLog;
 
     public void loadXML(Node xml) {
@@ -29,6 +29,10 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
             String keyValue = keyAttribute.getTextContent().toUpperCase().trim();
             String nodeContent = item.getAttributes().getNamedItem("value").getTextContent().trim();
             nodeContent = StringEscapeUtils.unescapeHtml(nodeContent);
+
+            if (nodeContent.isEmpty()) {
+                continue;
+            }
 
             if (keyValue.equals("ROOM")) {
                 room = nodeContent;

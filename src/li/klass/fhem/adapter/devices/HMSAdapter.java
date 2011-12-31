@@ -4,28 +4,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import li.klass.fhem.R;
 import li.klass.fhem.activities.deviceDetail.HMSDeviceDetailActivity;
 import li.klass.fhem.domain.Device;
 import li.klass.fhem.domain.HMSDevice;
-import li.klass.fhem.graph.TimePlot;
 
 public class HMSAdapter extends DeviceAdapter<HMSDevice> {
     @Override
     public View getDeviceView(LayoutInflater layoutInflater, HMSDevice device) {
         View view = layoutInflater.inflate(R.layout.room_detail_hms, null);
 
-        TextView deviceName = (TextView) view.findViewById(R.id.deviceName);
-        deviceName.setText(device.getAliasOrName());
-
-        TextView temperature = (TextView) view.findViewById(R.id.temperature);
-        temperature.setText(device.getTemperature());
-
-        TextView humidity = (TextView) view.findViewById(R.id.humidity);
-        humidity.setText(device.getHumidity());
+        setTextView(view, R.id.deviceName, device.getAliasOrName());
+        setTextViewOrHideTableRow(view, R.id.tableRowTemperature, R.id.temperature, device.getTemperature());
+        setTextViewOrHideTableRow(view, R.id.tableRowHumidity, R.id.humidity, device.getHumidity());
 
         return view;
     }
@@ -44,37 +35,17 @@ public class HMSAdapter extends DeviceAdapter<HMSDevice> {
     protected View getDeviceDetailView(final Context context, LayoutInflater layoutInflater, final HMSDevice device) {
         View view = layoutInflater.inflate(getDetailViewLayout(), null);
 
-        TextView temperature = (TextView) view.findViewById(R.id.temperature);
-        temperature.setText(device.getTemperature());
+        setTextViewOrHideTableRow(view, R.id.tableRowTemperature, R.id.temperature, device.getTemperature());
+        setTextViewOrHideTableRow(view, R.id.tableRowHumidity, R.id.humidity, device.getHumidity());
+        setTextViewOrHideTableRow(view, R.id.tableRowBattery, R.id.battery, device.getBattery());
 
-        TextView battery = (TextView) view.findViewById(R.id.battery);
-        battery.setText(device.getBattery());
+        hideIfNull(view, R.id.graphLayout, device.getFileLog());
 
-        TextView humidity = (TextView) view.findViewById(R.id.humidity);
-        humidity.setText(device.getHumidity());
+        createPlotButton(context, view, R.id.temperatureGraph, device.getTemperature(),
+                device, R.string.yAxisTemperature, HMSDevice.COLUMN_SPEC_TEMPERATURE);
 
-        if (device.getFileLog() == null) {
-            LinearLayout graphLayout = (LinearLayout) view.findViewById(R.id.graphLayout);
-            graphLayout.setVisibility(View.INVISIBLE);
-        }
-
-        Button temperatureGraph = (Button) view.findViewById(R.id.temperatureGraph);
-        temperatureGraph.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String yTitle = context.getResources().getString(R.string.yAxisTemperature);
-                TimePlot.INSTANCE.execute(context, device, yTitle, HMSDevice.COLUMN_SPEC_TEMPERATURE);
-            }
-        });
-
-        Button humidityGraph = (Button) view.findViewById(R.id.humidityGraph);
-        humidityGraph.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String yTitle = context.getResources().getString(R.string.yAxisHumidity);
-                TimePlot.INSTANCE.execute(context, device, yTitle, HMSDevice.COLUMN_SPEC_HUMIDITY);
-            }
-        });
+        createPlotButton(context, view, R.id.humidityGraph, device.getHumidity(),
+                device, R.string.yAxisHumidity, HMSDevice.COLUMN_SPEC_HUMIDITY);
 
         return view;
     }

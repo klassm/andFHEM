@@ -7,8 +7,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class HMSDevice extends Device<HMSDevice> {
-    private String temperature = "";
-    private String battery = "";
+    private String temperature;
+    private String battery;
     private String humidity;
     
     public static final Integer COLUMN_SPEC_TEMPERATURE = R.string.temperature;

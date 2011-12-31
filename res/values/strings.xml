@@ -23,6 +23,13 @@
     <string name="forecast">Forecast</string>
     <string name="pressure">Pressure</string>
     <string name="dewpoint">Dewpoint</string>
+    <string name="rainRate">Rain Rate</string>
+    <string name="rainTotal">Rain Total</string>
+    <string name="windAvgSpeed">Wind Avg. Speed</string>
+    <string name="windSpeed">Wind Speed</string>
+    <string name="windDirection">Wind Direction</string>
+    <string name="uvValue">UV Value</string>
+    <string name="uvRisk">UV Risk</string>
 
     <string name="switchDevice">Switch</string>
     <string name="preferences">Preferences</string>
@@ -76,6 +83,9 @@
     <string name="windGraph">Wind Graph</string>
     <string name="actuatorGraph">Actuator Graph</string>
     <string name="pressureGraph">Pressure Graph</string>
+    <string name="rainRateGraph">Rain Rate Graph</string>
+    <string name="rainTotalGraph">Rain Total Graph</string>
+    <string name="windSpeedGraph">Wind Speed Graph</string>
 
     <string name="yAxisWind">wind (km/h)</string>
     <string name="yAxisHumidity">humidity (%)</string>
@@ -83,6 +93,9 @@
     <string name="yAxisRain">rain (l/m2)</string>
     <string name="yAxisActuator">actuator (%)</string>
     <string name="yAxisPressure">pressure (hPa)</string>
+    <string name="yAxisRainRate">rain rate (mm/hr)</string>
+    <string name="yAxisRainTotal">rain toal (l/m2)</string>
+    <string name="yAxisWindSpeed">wind speed (km/h)</string>
 
     <string name="generalDetails">General Details</string>
     <string name="plots">Plots</string>
