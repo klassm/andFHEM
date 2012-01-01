@@ -33,11 +33,6 @@ public class OwcountDevice extends Device<OwcountDevice> {
         }
     }
 
-    @Override
-    public DeviceType getDeviceType() {
-        return DeviceType.OWCOUNT;
-    }
-
     public float getCounterA() {
         return counterA;
     }

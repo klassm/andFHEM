@@ -16,11 +16,6 @@ public class OwtempDevice extends Device<OwtempDevice> {
         }
     }
 
-    @Override
-    public DeviceType getDeviceType() {
-        return DeviceType.OWTEMP;
-    }
-
     public String getTemperature() {
         return temperature;
     }

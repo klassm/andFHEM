@@ -6,6 +6,7 @@ import li.klass.fhem.R;
 import li.klass.fhem.activities.base.BaseActivity;
 import li.klass.fhem.adapter.devices.core.DeviceAdapter;
 import li.klass.fhem.domain.Device;
+import li.klass.fhem.domain.DeviceType;
 import li.klass.fhem.service.RoomListService;
 
 public abstract class DeviceDetailActivity<D extends Device> extends BaseActivity<D, DeviceAdapter<D>> {
@@ -33,7 +34,7 @@ public abstract class DeviceDetailActivity<D extends Device> extends BaseActivit
     protected DeviceAdapter<D> initializeLayoutAndReturnAdapter() {
         D device = getCurrentData(false);
 
-        DeviceAdapter<D> adapter = device.getDeviceType().getAdapter();
+        DeviceAdapter<D> adapter = DeviceType.getAdapterFor(device);
         setContentView(adapter.getDetailView(this, device));
 
         return adapter;

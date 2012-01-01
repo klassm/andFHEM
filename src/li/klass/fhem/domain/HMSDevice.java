@@ -25,11 +25,6 @@ public class HMSDevice extends Device<HMSDevice> {
         }
     }
 
-    @Override
-    public DeviceType getDeviceType() {
-        return DeviceType.HMS;
-    }
-
     public String getTemperature() {
         return temperature;
     }

@@ -6,10 +6,7 @@ import li.klass.fhem.R;
 import li.klass.fhem.activities.base.BaseActivity;
 import li.klass.fhem.adapter.devices.core.DeviceAdapter;
 import li.klass.fhem.adapter.rooms.RoomDetailAdapter;
-import li.klass.fhem.domain.Device;
-import li.klass.fhem.domain.FS20Device;
-import li.klass.fhem.domain.RoomDeviceList;
-import li.klass.fhem.domain.SISPMSDevice;
+import li.klass.fhem.domain.*;
 import li.klass.fhem.service.FS20Service;
 import li.klass.fhem.service.RoomListService;
 import li.klass.fhem.service.SISPMSService;
@@ -35,8 +32,8 @@ public abstract class DeviceListActivity extends BaseActivity<RoomDeviceList, Ro
             @Override
             public void onItemClick(View view, Object parent, Object child, int parentPosition, int childPosition) {
                 if (child != null) {
-                    Device device = (Device) child;
-                    DeviceAdapter<? extends Device<?>> adapter = device.getDeviceType().getAdapter();
+                    Device<?> device = (Device<?>) child;
+                    DeviceAdapter<? extends Device<?>> adapter = DeviceType.getAdapterFor(device);
                     if (adapter != null && adapter.supportsDetailView()) {
                         adapter.gotoDetailView(DeviceListActivity.this, device);
                     }

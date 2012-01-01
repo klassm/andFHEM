@@ -23,11 +23,6 @@ public class CULWSDevice extends Device<CULWSDevice> {
         }
     }
 
-    @Override
-    public DeviceType getDeviceType() {
-        return DeviceType.CUL_WS;
-    }
-
     public String getHumidity() {
         return humidity;
     }

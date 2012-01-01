@@ -41,11 +41,6 @@ public class FHTDevice extends Device<FHTDevice> implements Serializable {
                 "} " + super.toString();
     }
 
-    @Override
-    public DeviceType getDeviceType() {
-        return DeviceType.FHT;
-    }
-
     public String getTemperature() {
         return temperature;
     }

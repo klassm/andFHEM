@@ -29,11 +29,6 @@ public class USBWXDevice extends Device<USBWXDevice> {
         }
     }
 
-    @Override
-    public DeviceType getDeviceType() {
-        return DeviceType.USBWX;
-    }
-
     public String getHumidity() {
         return humidity;
     }

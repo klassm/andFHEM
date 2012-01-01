@@ -18,14 +18,14 @@ import java.util.List;
 
 import static li.klass.fhem.domain.DeviceType.*;
 
-public class RoomDetailAdapter extends NestedListViewAdapter<DeviceType, Device> {
+public class RoomDetailAdapter extends NestedListViewAdapter<DeviceType, Device<?>> {
     private RoomDeviceList roomDeviceList;
     private List<DeviceType> deviceTypeOrderList;
 
     public RoomDetailAdapter(Context context, RoomDeviceList roomDeviceList) {
         super(context);
         this.deviceTypeOrderList = Arrays.asList(KS300, FHT, HMS, OWTEMP, CUL_FHTTK, RFXX10REC, OREGON, CUL_EM, OWCOUNT,
-                USBWX, CUL_WS, FS20, SIS_PMS);
+                OWFS, USBWX, CUL_WS, FS20, SIS_PMS);
 
         if (roomDeviceList != null) {
             updateData(roomDeviceList);
@@ -64,8 +64,8 @@ public class RoomDetailAdapter extends NestedListViewAdapter<DeviceType, Device>
     }
 
     @Override
-    protected View getChildView(final Device child, View view, ViewGroup viewGroup) {
-        final DeviceAdapter<? extends Device<?>> deviceAdapter =  child.getDeviceType().getAdapter();
+    protected View getChildView(final Device<?> child, View view, ViewGroup viewGroup) {
+        final DeviceAdapter<? extends Device<?>> deviceAdapter =  DeviceType.getAdapterFor(child);
         if (deviceAdapter == null) {
             Log.e(RoomDetailAdapter.class.getName(), "unsupported device type " + child);
             throw new IllegalArgumentException("unsupported device type " + child);

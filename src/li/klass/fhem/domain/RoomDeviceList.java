@@ -25,7 +25,7 @@ public class RoomDeviceList implements Serializable {
 
     public <T extends Device> void addDevice(T device) {
         if (device == null) return;
-        getOrCreateDeviceList(device.getDeviceType()).add(device);
+        getOrCreateDeviceList(DeviceType.getDeviceTypeFor(device)).add(device);
         
         if (! (device instanceof FileLog)) {
             containsOnlyLogDevices = false;
@@ -33,7 +33,7 @@ public class RoomDeviceList implements Serializable {
     }
     
     public <T extends Device> void removeDevice(T device) {
-        deviceMap.get(device.getDeviceType()).remove(device);
+        deviceMap.get(DeviceType.getDeviceTypeFor(device)).remove(device);
     }
     
     public Set<Device> getAllDevices() {

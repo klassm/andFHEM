@@ -19,7 +19,8 @@ public class RFXX10RECAdapter extends DeviceListOnlyAdapter<RFXX10RECDevice> {
 
         setTextView(view, R.id.deviceName, device.getAliasOrName());
         setTextViewOrHideTableRow(view, R.id.tableRowState, R.id.state, device.getState());
-        setTextViewOrHideTableRow(view, R.id.tableRowMeasured, R.id.measured, device.getMeasured());
+        setTextViewOrHideTableRow(view, R.id.tableRowLastStateChange, R.id.lastStateChange, device.getLastStateChangedTime());
+        setTextViewOrHideTableRow(view, R.id.tableRowLastState, R.id.lastState, device.getLastState());
 
         return view;
     }

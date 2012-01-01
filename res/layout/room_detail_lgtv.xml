@@ -8,27 +8,27 @@
                   style="@style/deviceOverviewCaption"/>
     </TableRow>
 
-    <TableRow android:id="@+id/tableRowState">
-        <TextView android:text="@string/state"
+    <TableRow android:id="@+id/tableRowPower">
+        <TextView android:text="@string/power"
                   style="@style/deviceOverviewDescription" />
-        <TextView android:id="@+id/state"
+        <TextView android:id="@+id/power"
                   style="@style/deviceOverviewContent"
                   android:text="xxx"/>
     </TableRow>
 
-    <TableRow android:id="@+id/tableRowLastState">
-        <TextView android:text="@string/lastState"
+    <TableRow android:id="@+id/tableRowAudio">
+        <TextView android:text="@string/audio"
                   style="@style/deviceOverviewDescription" />
-        <TextView android:id="@+id/lastState"
+        <TextView android:id="@+id/audio"
                   style="@style/deviceOverviewContent"
-                  android:text="xx.xx.xxxx xx:xx:xx"/>
+                  android:text="xxx"/>
     </TableRow>
 
-    <TableRow android:id="@+id/tableRowLastStateChange">
-        <TextView android:text="@string/lastStateChange"
+    <TableRow android:id="@+id/tableRowInput">
+        <TextView android:text="@string/input"
                   style="@style/deviceOverviewDescription" />
-        <TextView android:id="@+id/lastStateChange"
+        <TextView android:id="@+id/input"
                   style="@style/deviceOverviewContent"
-                  android:text="xx.xx.xxxx xx:xx:xx"/>
+                  android:text="xxx"/>
     </TableRow>
 </TableLayout>

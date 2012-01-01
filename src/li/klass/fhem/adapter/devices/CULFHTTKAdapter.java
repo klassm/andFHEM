@@ -19,7 +19,8 @@ public class CULFHTTKAdapter extends DeviceListOnlyAdapter<CULFHTTKDevice> {
 
         setTextView(view, R.id.deviceName, device.getAliasOrName());
         setTextViewOrHideTableRow(view, R.id.tableRowState, R.id.state, device.getState());
-        setTextViewOrHideTableRow(view, R.id.tableRowMeasured, R.id.measured, device.getMeasured());
+        setTextViewOrHideTableRow(view, R.id.tableRowLastStateChange, R.id.lastStateChange, device.getLastStateChangeTime());
+        setTextViewOrHideTableRow(view, R.id.tableRowLastState, R.id.lastState, device.getLastState());
         
         return view;
     }

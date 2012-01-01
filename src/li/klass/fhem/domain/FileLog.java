@@ -13,11 +13,6 @@ public class FileLog extends Device<FileLog> {
         }
     }
 
-    @Override
-    public DeviceType getDeviceType() {
-        return DeviceType.FILE_LOG;
-    }
-
     private String extractConcerningDeviceNameFromDefinition(String definition) {
         int firstColonPosition = definition.indexOf(":");
         if (firstColonPosition != -1) {

@@ -62,11 +62,6 @@ public class OregonDevice extends Device<OregonDevice> {
         }
     }
 
-    @Override
-    public DeviceType getDeviceType() {
-        return DeviceType.OREGON;
-    }
-
     public String getHumidity() {
         return humidity;
     }

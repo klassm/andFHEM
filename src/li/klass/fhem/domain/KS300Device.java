@@ -85,11 +85,6 @@ public class KS300Device extends Device<KS300Device> implements Serializable {
     }
 
     @Override
-    public DeviceType getDeviceType() {
-        return DeviceType.KS300;
-    }
-
-    @Override
     public Map<Integer, String> getFileLogColumns() {
         Map<Integer, String> columnSpecification = new HashMap<Integer, String>();
         columnSpecification.put(COLUMN_SPEC_TEMPERATURE, "4:IR\\x3a:0:");

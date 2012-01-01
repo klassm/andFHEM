@@ -118,8 +118,6 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
 
     }
 
-    public abstract DeviceType getDeviceType();
-
     @Override
     public int hashCode() {
         return name != null ? name.hashCode() : 0;

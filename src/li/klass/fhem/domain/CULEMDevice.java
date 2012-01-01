@@ -19,11 +19,6 @@ public class CULEMDevice extends Device<CULEMDevice> {
         }
     }
 
-    @Override
-    public DeviceType getDeviceType() {
-        return DeviceType.CUL_EM;
-    }
-
     public String getCurrentUsage() {
         return currentUsage;
     }

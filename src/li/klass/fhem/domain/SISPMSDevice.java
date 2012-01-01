@@ -10,11 +10,6 @@ public class SISPMSDevice extends Device<SISPMSDevice> {
         }
     }
 
-    @Override
-    public DeviceType getDeviceType() {
-        return DeviceType.SIS_PMS;
-    }
-
     public boolean isOn() {
         return state.equalsIgnoreCase("on");
     }

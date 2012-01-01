@@ -42,12 +42,6 @@ public class FS20Device extends Device<FS20Device> implements Comparable<FS20Dev
         }
     }
 
-    @Override
-    public DeviceType getDeviceType() {
-        return DeviceType.FS20;
-    }
-
-    
     public boolean isOn() {
         return getFs20State() == FS20State.ON;
     }

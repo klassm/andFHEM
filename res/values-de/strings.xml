@@ -38,6 +38,11 @@
     <string name="currentUsage">Aktueller Verbrauch</string>
     <string name="dayUsage">Tagesverbrauch</string>
     <string name="monthUsage">Monatsverbrauch</string>
+    <string name="lastStateChange">Letzte Zustandsänderung</string>
+    <string name="lastState">Letzter Zustand</string>
+    <string name="power">Strom</string>
+    <string name="audio">Audio</string>
+    <string name="input">Eingang</string>
 
     <string name="switchDevice">Schalte</string>
     <string name="preferences">Einstellungen</string>

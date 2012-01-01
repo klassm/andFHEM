@@ -17,6 +17,8 @@ public enum DeviceType {
     OREGON("OREGON", OregonDevice.class, new OregonAdapter()),
     USBWX("USBWX", USBWXDevice.class, new USBWXAdapter()),
     CUL_EM("CUL_EM", CULEMDevice.class, new CULEMAdapter()),
+    OWFS("OWFS", OWFSDevice.class, new OWFSAdapter()),
+    LGTV("LGTV", LGTVDevice.class, new LGTVAdapter()),
     OWCOUNT("OWCOUNT", OwcountDevice.class, new OwcountAdapter());
 
     
@@ -41,5 +43,26 @@ public enum DeviceType {
     @SuppressWarnings("unchecked")
     public <T extends Device> DeviceAdapter<T> getAdapter() {
         return (DeviceAdapter<T>) adapter;
+    }
+
+
+
+    public static <T extends Device> DeviceAdapter<T> getAdapterFor(T device) {
+        DeviceType deviceType = getDeviceTypeFor(device);
+        if (deviceType == null) {
+            return null;
+        } else {
+            return deviceType.getAdapter();
+        }
+    }
+
+    public static <T extends Device> DeviceType getDeviceTypeFor(T device) {
+        DeviceType[] deviceTypes = DeviceType.values();
+        for (DeviceType deviceType : deviceTypes) {
+            if (deviceType.getDeviceClass().isAssignableFrom(device.getClass())) {
+                return deviceType;
+            }
+        }
+        return null;
     }
 }
