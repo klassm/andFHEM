@@ -19,6 +19,7 @@ public enum DeviceType {
     CUL_EM("CUL_EM", CULEMDevice.class, new CULEMAdapter()),
     OWFS("OWFS", OWFSDevice.class, new OWFSAdapter()),
     LGTV("LGTV", LGTVDevice.class, new LGTVAdapter()),
+    RFXCOM("RFXCOM", RFXCOMDevice.class, new RFXCOMAdapter()),
     OWCOUNT("OWCOUNT", OwcountDevice.class, new OwcountAdapter());
 
     
