@@ -32,6 +32,12 @@
     <string name="uvValue">UV Wert</string>
     <string name="uvRisk">UV Risiko</string>
     <string name="room">Raum</string>
+    <string name="counterA">Zähler A</string>
+    <string name="counterB">Zähler B</string>
+    <string name="present">Sendend</string>
+    <string name="currentUsage">Aktueller Verbrauch</string>
+    <string name="dayUsage">Tagesverbrauch</string>
+    <string name="monthUsage">Monatsverbrauch</string>
 
     <string name="switchDevice">Schalte</string>
     <string name="preferences">Einstellungen</string>
@@ -106,5 +112,7 @@
     <string name="deviceRenameSuccess">Gerät wurde umbenannt.</string>
     <string name="deviceDeleteSuccess">Gerät wurde gelöscht.</string>
 
+    <string name="yes">ja</string>
+    <string name="no">nein</string>
 
 </resources>

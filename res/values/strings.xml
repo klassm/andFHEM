@@ -33,6 +33,12 @@
     <string name="uvValue">UV Value</string>
     <string name="uvRisk">UV Risk</string>
     <string name="room">Room</string>
+    <string name="counterA">Counter A</string>
+    <string name="counterB">Counter B</string>
+    <string name="present">Present</string>
+    <string name="currentUsage">Current Usage</string>
+    <string name="dayUsage">Day Usage</string>
+    <string name="monthUsage">Month Usage</string>
 
     <string name="switchDevice">Switch</string>
     <string name="preferences">Preferences</string>
@@ -106,6 +112,9 @@
 
     <string name="deviceRenameSuccess">Device was renamed.</string>
     <string name="deviceDeleteSuccess">Device was deleted.</string>
+
+    <string name="yes">yes</string>
+    <string name="no">no</string>
 
 
 </resources>

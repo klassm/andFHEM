@@ -15,7 +15,9 @@ public enum DeviceType {
     FILE_LOG("FileLog", FileLog.class, null),
     RFXX10REC("RFXX10REC", RFXX10RECDevice.class, new RFXX10RECAdapter()),
     OREGON("OREGON", OregonDevice.class, new OregonAdapter()),
-    USBWX("USBWX", USBWXDevice.class, new USBWXAdapter());
+    USBWX("USBWX", USBWXDevice.class, new USBWXAdapter()),
+    CUL_EM("CUL_EM", CULEMDevice.class, new CULEMAdapter()),
+    OWCOUNT("OWCOUNT", OwcountDevice.class, new OwcountAdapter());
 
     
     private String xmllistTag;

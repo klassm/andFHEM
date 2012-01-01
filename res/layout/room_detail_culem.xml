@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             style="@style/deviceOverviewTable">
+
+    <TableRow>
+        <TextView android:id="@+id/deviceName"
+                  style="@style/deviceOverviewCaption"/>
+    </TableRow>
+
+    <TableRow android:id="@+id/tableRowCurrentUsage">
+        <TextView android:text="@string/currentUsage"
+                  style="@style/deviceOverviewDescription" />
+        <TextView android:id="@+id/currentUsage"
+                  style="@style/deviceOverviewContent"
+                  android:text="xx (kwh)"/>
+    </TableRow>
+
+    <TableRow android:id="@+id/tableRowDayUsage">
+        <TextView android:text="@string/dayUsage"
+                  style="@style/deviceOverviewDescription" />
+        <TextView android:id="@+id/dayUsage"
+                  style="@style/deviceOverviewContent"
+                  android:text="xx (kwh)"/>
+    </TableRow>
+
+    <TableRow android:id="@+id/tableRowMonthUsage">
+        <TextView android:text="@string/monthUsage"
+                  style="@style/deviceOverviewDescription" />
+        <TextView android:id="@+id/monthUsage"
+                  style="@style/deviceOverviewContent"
+                  android:text="xx (kwh)"/>
+    </TableRow>
+</TableLayout>

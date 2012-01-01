@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             style="@style/deviceOverviewTable">
+
+    <TableRow>
+        <TextView android:id="@+id/deviceName"
+                  style="@style/deviceOverviewCaption"/>
+    </TableRow>
+
+    <TableRow android:id="@+id/tableRowCounterA">
+        <TextView android:text="@string/counterA"
+                  style="@style/deviceOverviewDescription" />
+        <TextView android:id="@+id/counterA"
+                  style="@style/deviceOverviewContent"
+                  android:text="xx (xx)"/>
+    </TableRow>
+
+    <TableRow android:id="@+id/tableRowCounterB">
+        <TextView android:text="@string/counterB"
+                  style="@style/deviceOverviewDescription" />
+        <TextView android:id="@+id/counterB"
+                  style="@style/deviceOverviewContent"
+                  android:text="xx (xx)"/>
+    </TableRow>
+
+    <TableRow android:id="@+id/tableRowPresent">
+        <TextView android:text="@string/present"
+                  style="@style/deviceOverviewDescription" />
+        <TextView android:id="@+id/present"
+                  style="@style/deviceOverviewContent"
+                  android:text="yes"/>
+    </TableRow>
+</TableLayout>
