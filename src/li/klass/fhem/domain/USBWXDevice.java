@@ -3,6 +3,9 @@ package li.klass.fhem.domain;
 import li.klass.fhem.R;
 import org.w3c.dom.NamedNodeMap;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class USBWXDevice extends Device<USBWXDevice> {
     
     private String humidity;
@@ -21,6 +24,8 @@ public class USBWXDevice extends Device<USBWXDevice> {
             this.humidity = nodeContent + " (%)";
         } else if (keyValue.equals("DEWPOINT")) {
             this.dewpoint = nodeContent + " (Celsius)";
+        } else if (keyValue.equals("TIME")) {
+            measured = nodeContent;
         }
     }
 
@@ -41,12 +46,12 @@ public class USBWXDevice extends Device<USBWXDevice> {
         return dewpoint;
     }
 
-//    @Override
-//    public Map<Integer, String> getFileLogColumns() {
-//        Map<Integer, String> columnSpecification = new HashMap<Integer, String>();
-//        columnSpecification.put(COLUMN_SPEC_TEMPERATURE, "4:temperature:0:");
-//        columnSpecification.put(COLUMN_SPEC_HUMIDITY, "4:humidity:0:");
-//
-//        return columnSpecification;
-//    }
+    @Override
+    public Map<Integer, String> getFileLogColumns() {
+        Map<Integer, String> columnSpecification = new HashMap<Integer, String>();
+        columnSpecification.put(COLUMN_SPEC_TEMPERATURE, "4:temperature:0:");
+        columnSpecification.put(COLUMN_SPEC_HUMIDITY, "4:humidity:0:");
+
+        return columnSpecification;
+    }
 }

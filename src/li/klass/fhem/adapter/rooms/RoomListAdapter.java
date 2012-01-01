@@ -1,4 +1,4 @@
-package li.klass.fhem.adapter;
+package li.klass.fhem.adapter.rooms;
 
 import android.content.Context;
 import android.preference.PreferenceManager;
@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import li.klass.fhem.R;
+import li.klass.fhem.adapter.ListDataAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

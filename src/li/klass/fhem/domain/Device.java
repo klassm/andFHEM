@@ -18,7 +18,9 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
     protected String name;
     protected String state;
     protected String alias;
-    protected FileLog fileLog;
+    protected String measured;
+
+    protected volatile FileLog fileLog;
 
     public void loadXML(Node xml) {
         NodeList childNodes = xml.getChildNodes();
@@ -45,6 +47,8 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
                 state = nodeContent;
             } else if (keyValue.equals("ALIAS")) {
                 alias = nodeContent;
+            } else if (keyValue.equals("CUL_TIME")) {
+                measured = nodeContent;
             }
 
             onChildItemRead(keyValue, nodeContent, item.getAttributes());
@@ -76,8 +80,8 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
         this.name = name;
     }
 
-    public void setRoom(String room) {
-        this.room = room;
+    public String getMeasured() {
+        return measured;
     }
 
     protected abstract void onChildItemRead(String keyValue, String nodeContent, NamedNodeMap attributes);
@@ -101,10 +105,6 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
             }
         }
         return false;
-    }
-
-    public boolean isHiddenDevice() {
-        return room.equalsIgnoreCase("hidden");
     }
 
     @Override

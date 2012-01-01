@@ -1413,6 +1413,18 @@
     <ATTR key="room" value="unknown"/>
 </FileLog>
 
+<FileLog name="FileLog_oregon1" state="active" sets="reopen" attrs="room comment alias disable:0,1 logtype nrarchive archivedir archivecmd eventMap">
+    <INT key="DEF" value="./log/wetterstation-%Y.log wetterstation:T:.*"/>
+    <INT key="NAME" value="FileLog_oregon1"/>
+    <INT key="NR" value="49"/>
+    <INT key="REGEXP" value="oregon1:T:.*"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="FileLog"/>
+    <INT key="currentlogfile" value="./log/wetterstation-2011.log"/>
+    <INT key="logfile" value="./log/wetterstation-%Y.log"/>
+    <ATTR key="logtype" value="wetterstation:Temp/Rain,wetterstation:Wind/Hum,text"/>
+    <ATTR key="room" value="unknown"/>
+</FileLog>
 </FileLog_LIST>
 <autocreate_LIST>
 <autocreate name="autocreate" state="active" sets=""

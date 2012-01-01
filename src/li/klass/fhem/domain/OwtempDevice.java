@@ -12,6 +12,7 @@ public class OwtempDevice extends Device<OwtempDevice> {
             this.temperature = nodeContent;
         } else if (keyValue.equals("WARNINGS")) {
             this.warnings = nodeContent;
+            measured = attributes.getNamedItem("measured").getTextContent();
         }
     }
 

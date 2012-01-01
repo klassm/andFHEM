@@ -1,4 +1,4 @@
-package li.klass.fhem.adapter;
+package li.klass.fhem.adapter.rooms;
 
 import android.content.Context;
 import android.util.Log;
@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import li.klass.fhem.R;
-import li.klass.fhem.adapter.devices.DeviceAdapter;
+import li.klass.fhem.adapter.devices.core.DeviceAdapter;
 import li.klass.fhem.domain.Device;
 import li.klass.fhem.domain.DeviceType;
 import li.klass.fhem.domain.RoomDeviceList;

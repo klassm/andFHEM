@@ -1,4 +1,4 @@
-package li.klass.fhem.adapter.devices;
+package li.klass.fhem.adapter.devices.core;
 
 import android.content.Context;
 import android.content.Intent;
@@ -34,9 +34,9 @@ public abstract class DeviceAdapter<D extends Device> {
     }
 
     @SuppressWarnings("unchecked")
-    public View getDetailView(Context context, LayoutInflater layoutInflater, Device device) {
+    public View getDetailView(Context context, Device device) {
         if (supportsDetailView()) {
-            return getDeviceDetailView(context, layoutInflater, (D) device);
+            return getDeviceDetailView(context, (D) device);
         }
         return null;
     }
@@ -60,13 +60,13 @@ public abstract class DeviceAdapter<D extends Device> {
 
     public abstract int getDetailViewLayout();
     public abstract boolean supportsDetailView();
-    protected abstract View getDeviceDetailView(Context context, LayoutInflater layoutInflater, D device);
+    protected abstract View getDeviceDetailView(Context context, D device);
     protected abstract Intent onFillDeviceDetailIntent(Context context, Device device, Intent intent);
 
     public abstract Class<? extends Device> getSupportedDeviceClass();
     protected abstract View getDeviceView(LayoutInflater layoutInflater, D device);
 
-    
+
     protected void setTextViewOrHideTableRow(View view, int tableRowId, int textFieldLayoutId, String value) {
         TableRow tableRow = (TableRow) view.findViewById(tableRowId);
 
@@ -76,17 +76,19 @@ public abstract class DeviceAdapter<D extends Device> {
 
         setTextView(view, textFieldLayoutId, value);
     }
-    
+
     protected void setTextView(View view, int textFieldLayoutId, String value) {
         TextView textView = (TextView) view.findViewById(textFieldLayoutId);
-        textView.setText(value);
+        if (textView != null) {
+            textView.setText(value);
+        }
     }
 
     protected boolean hideIfNull(View view, int id, Object valueToCheck) {
         View layoutElement = view.findViewById(id);
-        return hideIfNull(layoutElement, valueToCheck);
+        return layoutElement != null && hideIfNull(layoutElement, valueToCheck);
     }
-    
+
     protected boolean hideIfNull(View layoutElement, Object valueToCheck) {
         if (valueToCheck == null || valueToCheck instanceof String && ((String) valueToCheck).isEmpty()) {
             layoutElement.setVisibility(View.GONE);

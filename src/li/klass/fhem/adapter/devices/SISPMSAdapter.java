@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ToggleButton;
 import li.klass.fhem.R;
+import li.klass.fhem.adapter.devices.core.DeviceListOnlyAdapter;
 import li.klass.fhem.domain.Device;
 import li.klass.fhem.domain.SISPMSDevice;
 

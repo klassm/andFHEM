@@ -1,8 +1,7 @@
-package li.klass.fhem.adapter.devices;
+package li.klass.fhem.adapter.devices.core;
 
 import android.content.Context;
 import android.content.Intent;
-import android.view.LayoutInflater;
 import android.view.View;
 import li.klass.fhem.domain.Device;
 
@@ -19,7 +18,7 @@ public abstract class DeviceListOnlyAdapter<D extends Device> extends DeviceAdap
     }
 
     @Override
-    protected View getDeviceDetailView(Context context, LayoutInflater layoutInflater, D device) {
+    protected View getDeviceDetailView(Context context, D device) {
         return null;
     }
 

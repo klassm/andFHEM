@@ -42,7 +42,7 @@ public class OregonDevice extends Device<OregonDevice> {
         } else if (keyValue.equals("PRESSURE")) {
             this.pressure = nodeContent + " (hPa)";
         } else if (keyValue.equals("BATTERY")) {
-            this.battery = nodeContent;
+            this.battery = nodeContent + " (%)";
         } else if (keyValue.equals("RAIN_RATE")) {
             this.rainRate = nodeContent + " (mm/hr)";
         } else if (keyValue.equals("RAIN_TOTAL")) {
@@ -57,6 +57,8 @@ public class OregonDevice extends Device<OregonDevice> {
             this.uvValue = nodeContent;
         } else if (keyValue.equals("UV_RISK")) {
             this.uvRisk = nodeContent;
+        } else if (keyValue.equals("TIME")) {
+            this.measured = nodeContent;
         }
     }
 

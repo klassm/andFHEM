@@ -15,7 +15,6 @@ public class FS20Device extends Device<FS20Device> implements Comparable<FS20Dev
     
     private String model;
     private List<String> setOptions = Collections.emptyList();
-    private String measureDate;
 
     public enum FS20State {
         ON, OFF
@@ -26,7 +25,7 @@ public class FS20Device extends Device<FS20Device> implements Comparable<FS20Dev
         if (keyValue.equals("STATE")) {
             Node measured = attributes.getNamedItem("measured");
             if (measured != null) {
-                this.measureDate = measured.getTextContent();
+                this.measured = measured.getTextContent();
             }
         } else if (keyValue.equalsIgnoreCase("MODEL")) {
             this.model = nodeContent.toUpperCase();
@@ -50,7 +49,7 @@ public class FS20Device extends Device<FS20Device> implements Comparable<FS20Dev
 
     
     public boolean isOn() {
-        return getFs20State().equals(FS20State.ON);
+        return getFs20State() == FS20State.ON;
     }
 
     public void setState(String state) {
@@ -95,10 +94,6 @@ public class FS20Device extends Device<FS20Device> implements Comparable<FS20Dev
         }
 
         return 100;
-    }
-
-    public String getMeasureDate() {
-        return measureDate;
     }
 
     public List<String> getSetOptions() {

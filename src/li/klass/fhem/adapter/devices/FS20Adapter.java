@@ -1,23 +1,42 @@
 package li.klass.fhem.adapter.devices;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.*;
+import android.widget.Button;
+import android.widget.SeekBar;
+import android.widget.TableRow;
+import android.widget.ToggleButton;
 import li.klass.fhem.R;
+import li.klass.fhem.activities.CurrentActivityProvider;
+import li.klass.fhem.activities.base.BaseActivity;
 import li.klass.fhem.activities.deviceDetail.FS20DeviceDetailActivity;
+import li.klass.fhem.adapter.devices.core.DeviceDetailAvailableAdapter;
 import li.klass.fhem.domain.Device;
 import li.klass.fhem.domain.FS20Device;
+import li.klass.fhem.service.ExecuteOnSuccess;
 import li.klass.fhem.service.FS20Service;
 import li.klass.fhem.service.RoomListService;
 
 import java.util.List;
 
-public class FS20Adapter extends DeviceAdapter<FS20Device> {
+public class FS20Adapter extends DeviceDetailAvailableAdapter<FS20Device> {
 
+    private class UpdateCurrentActivityOnSuccess implements ExecuteOnSuccess {
+
+        @Override
+        public void onSuccess() {
+            BaseActivity<?,?> currentActivity = CurrentActivityProvider.INSTANCE.getCurrentActivity();
+            if (currentActivity != null) {
+                currentActivity.update(false);
+            }
+        }
+    }
+    
     private class SeekBarChangeListener implements SeekBar.OnSeekBarChangeListener {
 
         public int progress;
@@ -39,7 +58,7 @@ public class FS20Adapter extends DeviceAdapter<FS20Device> {
         @Override
         public void onStopTrackingTouch(final SeekBar seekBar) {
             FS20Device device = RoomListService.INSTANCE.deviceListForAllRooms(false).getDeviceFor((String) seekBar.getTag());
-            FS20Service.INSTANCE.dim(seekBar.getContext(), device, progress, null);
+            FS20Service.INSTANCE.dim(seekBar.getContext(), device, progress, new UpdateCurrentActivityOnSuccess());
         }
     }
 
@@ -53,18 +72,8 @@ public class FS20Adapter extends DeviceAdapter<FS20Device> {
     }
 
     @Override
-    public int getDetailViewLayout() {
-        return R.layout.device_detail_fs20;
-    }
-
-    @Override
-    public boolean supportsDetailView() {
-        return true;
-    }
-
-    @Override
-    protected View getDeviceDetailView(final Context context, LayoutInflater layoutInflater, final FS20Device device) {
-        View view = layoutInflater.inflate(getDetailViewLayout(), null);
+    protected void fillDeviceDetailView(final Context context, View view, final FS20Device device) {
+        setTextViewOrHideTableRow(view, R.id.tableRowState, R.id.state, device.getState());
 
         TableRow seekBarRow = (TableRow) view.findViewById(R.id.switchSeekBarRow);
         TableRow toggleButtonRow = (TableRow) view.findViewById(R.id.switchToggleButtonRow);
@@ -86,10 +95,6 @@ public class FS20Adapter extends DeviceAdapter<FS20Device> {
             seekBarRow.setVisibility(View.GONE);
         }
 
-
-        setTextViewOrHideTableRow(view, R.id.tableRowMeasured, R.id.measured, device.getMeasureDate());
-        setTextViewOrHideTableRow(view, R.id.tableRowState, R.id.state, device.getState());
-
         Button switchSetOptions = (Button) view.findViewById(R.id.switchSetOptions);
         switchSetOptions.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,7 +106,7 @@ public class FS20Adapter extends DeviceAdapter<FS20Device> {
                 contextMenu.setItems(setOptions.toArray(new CharSequence[setOptions.size()]), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int item) {
                         String option = setOptions.get(item);
-                        FS20Service.INSTANCE.setState(context, device, option, null);
+                        FS20Service.INSTANCE.setState(context, device, option, new UpdateCurrentActivityOnSuccess());
                         dialog.dismiss();
                     }
                 });
@@ -109,19 +114,12 @@ public class FS20Adapter extends DeviceAdapter<FS20Device> {
 
             }
         });
-
-        return view;
     }
 
     @Override
     protected Intent onFillDeviceDetailIntent(Context context, Device device, Intent intent) {
         intent.setClass(context, FS20DeviceDetailActivity.class);
         return intent;
-    }
-
-    @Override
-    public Class<? extends Device> getSupportedDeviceClass() {
-        return FS20Device.class;
     }
 
     private View getFS20ToggleView(LayoutInflater layoutInflater, FS20Device child) {
@@ -149,5 +147,20 @@ public class FS20Adapter extends DeviceAdapter<FS20Device> {
         seekBar.setOnSeekBarChangeListener(new SeekBarChangeListener(child.getFS20DimState()));
 
         return view;
+    }
+
+    @Override
+    public int getDetailViewLayout() {
+        return R.layout.device_detail_fs20;
+    }
+
+    @Override
+    public Class<? extends Device> getSupportedDeviceClass() {
+        return FS20Device.class;
+    }
+
+    @Override
+    protected Class<? extends Activity> getDeviceDetailActivity() {
+        return FS20DeviceDetailActivity.class;
     }
 }

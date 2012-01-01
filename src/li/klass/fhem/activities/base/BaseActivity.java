@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.Toast;
 import li.klass.fhem.ApplicationUrls;
 import li.klass.fhem.R;
+import li.klass.fhem.activities.CurrentActivityProvider;
 import li.klass.fhem.activities.PreferencesActivity;
 import li.klass.fhem.data.provider.favorites.FavoritesService;
 import li.klass.fhem.domain.Device;
@@ -42,6 +43,8 @@ public abstract class BaseActivity<DOMAIN, ADAPTER> extends UpdateableActivity<D
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        CurrentActivityProvider.INSTANCE.setCurrentActivity(this);
 
         setLayout();
         adapter = initializeLayoutAndReturnAdapter();
@@ -98,6 +101,9 @@ public abstract class BaseActivity<DOMAIN, ADAPTER> extends UpdateableActivity<D
     @Override
     protected void onResume() {
         super.onResume();
+
+        CurrentActivityProvider.INSTANCE.setCurrentActivity(this);
+
         update(false);
     }
 

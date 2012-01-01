@@ -8,7 +8,7 @@ import android.widget.ListView;
 import li.klass.fhem.R;
 import li.klass.fhem.activities.base.BaseActivity;
 import li.klass.fhem.activities.devicelist.RoomDetailActivity;
-import li.klass.fhem.adapter.RoomListAdapter;
+import li.klass.fhem.adapter.rooms.RoomListAdapter;
 import li.klass.fhem.service.RoomListService;
 
 import java.util.ArrayList;

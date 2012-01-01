@@ -3,6 +3,7 @@ package li.klass.fhem.adapter.devices;
 import android.view.LayoutInflater;
 import android.view.View;
 import li.klass.fhem.R;
+import li.klass.fhem.adapter.devices.core.DeviceListOnlyAdapter;
 import li.klass.fhem.domain.CULFHTTKDevice;
 import li.klass.fhem.domain.Device;
 

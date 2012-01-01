@@ -5,6 +5,7 @@
               android:layout_height="fill_parent"
               android:orientation="vertical">
 
+
     <TextView style="@style/deviceDetailSectionCaption"
               android:text="@string/generalDetails" />
 
@@ -31,16 +32,24 @@
             <TextView android:text="@string/temperature"
                       style="@style/deviceDetailDescription" />
             <TextView android:id="@+id/temperature"
-                      android:text="xx (Celsius)"
-                      style="@style/deviceDetailContent" />
+                      style="@style/deviceDetailContent"
+                      android:text="xx (Celsius)"/>
+        </TableRow>
+
+        <TableRow android:id="@+id/tableRowDewpoint">
+            <TextView android:text="@string/dewpoint"
+                      style="@style/deviceDetailDescription" />
+            <TextView android:id="@+id/dewpoint"
+                      style="@style/deviceDetailContent"
+                      android:text="xx (Celsius)"/>
         </TableRow>
 
         <TableRow android:id="@+id/tableRowHumidity">
             <TextView android:text="@string/humidity"
                       style="@style/deviceDetailDescription" />
             <TextView android:id="@+id/humidity"
-                      android:text="xx (%)"
-                      style="@style/deviceDetailContent" />
+                      style="@style/deviceDetailContent"
+                      android:text="xx (%)"/>
         </TableRow>
 
     </TableLayout>
@@ -50,6 +59,7 @@
                   android:layout_marginTop="20dp"
                   android:orientation="vertical"
                   android:id="@+id/graphLayout">
+
 
         <TextView style="@style/deviceDetailSectionCaption"
                   android:text="@string/plots" />

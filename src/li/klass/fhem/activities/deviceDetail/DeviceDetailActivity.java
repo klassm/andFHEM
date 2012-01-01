@@ -2,10 +2,9 @@ package li.klass.fhem.activities.deviceDetail;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import li.klass.fhem.R;
 import li.klass.fhem.activities.base.BaseActivity;
-import li.klass.fhem.adapter.devices.DeviceAdapter;
+import li.klass.fhem.adapter.devices.core.DeviceAdapter;
 import li.klass.fhem.domain.Device;
 import li.klass.fhem.service.RoomListService;
 
@@ -35,7 +34,7 @@ public abstract class DeviceDetailActivity<D extends Device> extends BaseActivit
         D device = getCurrentData(false);
 
         DeviceAdapter<D> adapter = device.getDeviceType().getAdapter();
-        setContentView(adapter.getDetailView(this, LayoutInflater.from(this), device));
+        setContentView(adapter.getDetailView(this, device));
 
         return adapter;
     }
@@ -57,6 +56,6 @@ public abstract class DeviceDetailActivity<D extends Device> extends BaseActivit
 
     @Override
     protected void updateData(D data) {
-        setContentView(adapter.getDetailView(this, LayoutInflater.from(this), data));
+        setContentView(adapter.getDetailView(this, data));
     }
 }

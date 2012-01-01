@@ -11,6 +11,22 @@
     <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
                  style="@style/deviceDetailTable">
 
+        <TableRow android:id="@+id/tableRowRoom">
+            <TextView android:text="@string/room"
+                      style="@style/deviceDetailDescription" />
+            <TextView android:id="@+id/room"
+                      android:text="xxxxx"
+                      style="@style/deviceDetailContent" />
+        </TableRow>
+
+        <TableRow android:id="@+id/tableRowMeasured">
+            <TextView android:text="@string/measured"
+                      style="@style/deviceDetailDescription" />
+            <TextView android:id="@+id/measured"
+                      android:text="xx.xx.xxxx xx:xx"
+                      style="@style/deviceDetailContent" />
+        </TableRow>
+
         <TableRow android:id="@+id/tableRowTemperature">
             <TextView android:text="@string/temperature"
                       style="@style/deviceDetailDescription" />

@@ -1,5 +1,6 @@
 package li.klass.fhem.domain;
 
+import li.klass.fhem.adapter.devices.core.DeviceAdapter;
 import li.klass.fhem.adapter.devices.*;
 
 public enum DeviceType {
