@@ -32,6 +32,23 @@ public class RoomListService {
         roomNames.remove(RoomDeviceList.ALL_DEVICES_ROOM);
         return roomNames;
     }
+    
+    public RoomDeviceList getOrCreateDeviceListForRoom(String roomName, boolean update) {
+        Map<String, RoomDeviceList> deviceListMap = getRoomDeviceListMap(update);
+        RoomDeviceList roomDeviceList = deviceListMap.get(roomName);
+        
+        if (roomDeviceList == null) {
+            roomDeviceList = new RoomDeviceList(roomName);
+            deviceListMap.put(roomName, roomDeviceList);
+        }
+        return roomDeviceList;
+    }
+    
+    public void removeDeviceListForRoom(String roomName) {
+        Map<String, RoomDeviceList> roomDeviceListMap = getRoomDeviceListMap(false);
+        roomDeviceListMap.remove(roomName);
+    }
+    
 
     public RoomDeviceList deviceListForRoom(String roomName, boolean update) {
         Map<String, RoomDeviceList> deviceListMap = getRoomDeviceListMap(update);

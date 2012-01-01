@@ -39,4 +39,19 @@ public class DeviceActionUtil {
         }).show();
     }
 
+    public static void moveDevice(final  Context context,final Device device) {
+        final EditText input = new EditText(context);
+        new AlertDialog.Builder(context)
+                .setTitle(R.string.context_move)
+                .setView(input)
+                .setPositiveButton(R.string.okButton, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        String newRoom = input.getText().toString();
+                        DeviceService.INSTANCE.moveDevice(context, device, newRoom);
+                    }
+                }).setNegativeButton(R.string.cancelButton, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+            }
+        }).show();
+    }
 }

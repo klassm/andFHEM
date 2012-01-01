@@ -36,7 +36,12 @@ public class RoomDetailAdapter extends NestedListViewAdapter<DeviceType, Device<
     protected Device getChildForParentAndChildPosition(DeviceType parent, int childPosition) {
         if (childPosition == -1) return null;
 
-        return getChildrenForDeviceType(parent).get(childPosition);
+        List<Device> childrenForDeviceType = getChildrenForDeviceType(parent);
+        if (childPosition >= childrenForDeviceType.size()) {
+            return null;
+        } else {
+            return childrenForDeviceType.get(childPosition);
+        }
     }
 
     @Override

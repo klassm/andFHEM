@@ -60,6 +60,7 @@
 
     <string name="context_rename">Gerät umbenennen</string>
     <string name="context_delete">Gerät löschen</string>
+    <string name="context_move">Gerät verschieben</string>
 
     <string name="areYouSure">Sind Sie sicher?</string>
 
@@ -116,6 +117,7 @@
 
     <string name="deviceRenameSuccess">Gerät wurde umbenannt.</string>
     <string name="deviceDeleteSuccess">Gerät wurde gelöscht.</string>
+    <string name="deviceMoveSuccess">Geräte wurde verschoben.</string>
 
     <string name="yes">ja</string>
     <string name="no">nein</string>

@@ -21,14 +21,17 @@ import li.klass.fhem.util.device.DeviceActionUtil;
 public abstract class BaseActivity<DOMAIN, ADAPTER> extends UpdateableActivity<DOMAIN> {
     public static final int OPTION_UPDATE = 1;
     public static final int OPTION_PREFERENCES = 2;
+    public static final int OPTION_HELP = 3;
+    public static final int OPTION_DONATE = 4;
 
     public static final int CONTEXT_MENU_FAVORITES_ADD = 1;
     public static final int CONTEXT_MENU_FAVORITES_DELETE = 2;
-    private static final int CONTEXT_MENU_RENAME = 3;
-    private static final int CONTEXT_MENU_DELETE = 4;
-    private static final int OPTION_DONATE = 5;
+    public static final int CONTEXT_MENU_RENAME = 3;
+    public static final int CONTEXT_MENU_DELETE = 4;
+    public static final int CONTEXT_MENU_MOVE = 5;
 
-    public static final int OPTION_HELP = 3;
+
+
     protected Device contextMenuClickedDevice;
     private long backPressStart;
     protected ADAPTER adapter;
@@ -127,6 +130,7 @@ public abstract class BaseActivity<DOMAIN, ADAPTER> extends UpdateableActivity<D
             menu.add(0, CONTEXT_MENU_FAVORITES_ADD, 0, resources.getString(R.string.context_addtofavorites));
             menu.add(0, CONTEXT_MENU_RENAME, 0, resources.getString(R.string.context_rename));
             menu.add(0, CONTEXT_MENU_DELETE, 0, resources.getString(R.string.context_delete));
+            menu.add(0, CONTEXT_MENU_MOVE, 0, resources.getString(R.string.context_move));
         }
     }
 
@@ -167,6 +171,9 @@ public abstract class BaseActivity<DOMAIN, ADAPTER> extends UpdateableActivity<D
                 return true;
             case CONTEXT_MENU_DELETE:
                 DeviceActionUtil.deleteDevice(this, contextMenuClickedDevice);
+                return true;
+            case CONTEXT_MENU_MOVE:
+                DeviceActionUtil.moveDevice(this, contextMenuClickedDevice);
                 return true;
         }
         return false;

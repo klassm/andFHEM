@@ -3,7 +3,9 @@ package li.klass.fhem.service;
 import android.content.Context;
 import android.widget.Toast;
 import li.klass.fhem.R;
+import li.klass.fhem.activities.CurrentActivityProvider;
 import li.klass.fhem.domain.Device;
+import li.klass.fhem.domain.RoomDeviceList;
 
 public class DeviceService {
     public static final DeviceService INSTANCE = new DeviceService();
@@ -30,5 +32,30 @@ public class DeviceService {
                 Toast.makeText(context, R.string.deviceDeleteSuccess, Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    public void moveDevice(final Context context, final Device device, final String newRoom) {
+        FHEMService.INSTANCE.executeSafely(context, "attr " + device.getName() + " room " + newRoom, new ExecuteOnSuccess() {
+            @Override
+            public void onSuccess() {
+                String oldRoom = device.getRoom();
+                device.setRoom(newRoom);
+
+                RoomDeviceList oldRoomDeviceList = RoomListService.INSTANCE.deviceListForRoom(oldRoom, false);
+                oldRoomDeviceList.removeDevice(device);
+
+                RoomDeviceList newRoomList = RoomListService.INSTANCE.getOrCreateDeviceListForRoom(newRoom, false);
+                newRoomList.addDevice(device);
+
+                if (oldRoomDeviceList.getAllDevices().size() == 0) {
+                    RoomListService.INSTANCE.removeDeviceListForRoom(oldRoom);
+                }
+
+
+                CurrentActivityProvider.INSTANCE.getCurrentActivity().update(false);
+                Toast.makeText(context, R.string.deviceMoveSuccess, Toast.LENGTH_LONG).show();
+            }
+        });
+
     }
 }

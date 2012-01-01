@@ -147,4 +147,8 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
     public void setState(String state) {
         this.state = state;
     }
+
+    public void setRoom(String room) {
+        this.room = room;
+    }
 }

@@ -58,6 +58,8 @@ public enum DeviceType {
     }
 
     public static <T extends Device> DeviceType getDeviceTypeFor(T device) {
+        if (device == null) return null;
+
         DeviceType[] deviceTypes = DeviceType.values();
         for (DeviceType deviceType : deviceTypes) {
             if (deviceType.getDeviceClass().isAssignableFrom(device.getClass())) {
