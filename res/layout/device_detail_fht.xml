@@ -44,6 +44,14 @@
                       android:text="xx.x (Celsius)"/>
         </TableRow>
 
+        <TableRow android:id="@+id/tableRowWarnings">
+            <TextView android:text="@string/warnings"
+                      style="@style/deviceDetailDescription" />
+            <TextView android:id="@+id/warnings"
+                      style="@style/deviceDetailContent"
+                      android:text="Window xxxxx"/>
+        </TableRow>
+
         <TableRow android:id="@+id/tableRowDesiredTemperature">
             <TextView android:text="@string/desiredTemperature"
                       style="@style/deviceDetailDescription" />
@@ -52,12 +60,27 @@
                       style="@style/deviceDetailContent" />
         </TableRow>
 
-        <TableRow android:id="@+id/tableRowWarnings">
-            <TextView android:text="@string/warnings"
+        <TableRow>
+            <TextView android:id="@+id/tableRowDesiredTemperatureSeek"
+                      android:text=""
                       style="@style/deviceDetailDescription" />
-            <TextView android:id="@+id/warnings"
-                      style="@style/deviceDetailContent"
-                      android:text="Window xxxxx"/>
+            <SeekBar android:id="@+id/desiredTemperatureSeek"
+                    style="@style/deviceDetailContentSeek"
+                    android:max="250"
+                    android:progress="@+id/desiredTemperature"
+                    android:layout_marginRight="10dp"/>
+
+        </TableRow>
+
+        <TableRow android:id="@+id/tableRowMode">
+            <TextView android:text="@string/mode"
+                      style="@style/deviceDetailDescription" />
+            <Spinner
+                    android:id="@+id/mode"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:prompt="@string/setMode"
+                    />
         </TableRow>
 
     </TableLayout>

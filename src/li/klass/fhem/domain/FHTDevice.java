@@ -1,6 +1,8 @@
 package li.klass.fhem.domain;
 
 import li.klass.fhem.R;
+import li.klass.fhem.util.ValueDescriptionUtil;
+import li.klass.fhem.util.ValueExtractUtil;
 import org.w3c.dom.NamedNodeMap;
 
 import java.io.Serializable;
@@ -9,8 +11,14 @@ import java.util.Map;
 
 public class FHTDevice extends Device<FHTDevice> implements Serializable {
 
+
+
+    public enum FHTMode {
+        AUTO, MANUAL, HOLIDAY, HOLIDAY_SHORT
+    }
     private String actuator;
-    private String desiredTemp;
+    private FHTMode mode;
+    private double desiredTemp;
     private String warnings;
     private String temperature;
 
@@ -24,9 +32,11 @@ public class FHTDevice extends Device<FHTDevice> implements Serializable {
         } else if (keyValue.equalsIgnoreCase("MEASURED-TEMP")) {
             temperature = nodeContent;
         } else if (keyValue.equals("DESIRED-TEMP")) {
-            desiredTemp = nodeContent;
+            desiredTemp = ValueExtractUtil.extractLeadingDouble(nodeContent);
         } else if (keyValue.equals("WARNINGS")) {
             warnings = nodeContent;
+        } else if (keyValue.equals("MODE")) {
+            this.mode = FHTMode.valueOf(nodeContent.toUpperCase());
         }
     }
 
@@ -45,12 +55,28 @@ public class FHTDevice extends Device<FHTDevice> implements Serializable {
         return temperature;
     }
 
-    public String getDesiredTemp() {
+    public void setDesiredTemp(double desiredTemp) {
+        this.desiredTemp = desiredTemp;
+    }
+
+    public String getDesiredTempDesc() {
+        return desiredTemperatureToString(desiredTemp);
+    }
+
+    public double getDesiredTemp() {
         return desiredTemp;
     }
 
-    public String getWarnings() {
+    public String getWarningsDesc() {
         return warnings;
+    }
+
+    public FHTMode getMode() {
+        return mode;
+    }
+
+    public void setMode(FHTMode mode) {
+        this.mode = mode;
     }
 
     @Override
@@ -60,5 +86,15 @@ public class FHTDevice extends Device<FHTDevice> implements Serializable {
         columnSpecification.put(COLUMN_SPEC_ACTUATOR, "4:actuator.*[0-9]+%:0:int");
 
         return columnSpecification;
+    }
+    
+    public static String desiredTemperatureToString(double temperature) {
+        if (temperature == 5.5) {
+            return "off";
+        } else if (temperature == 30.5) {
+            return "on";
+        } else {
+            return ValueDescriptionUtil.appendTemperature(temperature);
+        }
     }
 }

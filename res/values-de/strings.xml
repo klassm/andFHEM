@@ -43,6 +43,7 @@
     <string name="power">Strom</string>
     <string name="audio">Audio</string>
     <string name="input">Eingang</string>
+    <string name="mode">Modus</string>
 
     <string name="switchDevice">Schalte</string>
     <string name="preferences">Einstellungen</string>
@@ -64,6 +65,7 @@
     <string name="context_move">Gerät verschieben</string>
 
     <string name="areYouSure">Sind Sie sicher?</string>
+    <string name="setMode">Modus setzen</string>
 
 
     <string name="tab_roomList">Räume</string>

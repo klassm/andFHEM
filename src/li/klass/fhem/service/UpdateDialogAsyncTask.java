@@ -55,6 +55,7 @@ public abstract class UpdateDialogAsyncTask extends AsyncTask<Void, Void, Except
     protected void onPostExecute(Exception exception) {
         super.onPostExecute(exception);
         if (exception != null) {
+            Log.e(UpdateDialogAsyncTask.class.getName(), "error occurred while updating", exception);
             int messageId = R.string.updateError;
             if (exception instanceof HostConnectionException) {
                 messageId = R.string.updateErrorHostConnection;
