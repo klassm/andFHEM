@@ -45,6 +45,19 @@ public class DeviceService {
             }
         });
     }
+    
+    
+
+    public void setAlias(final Context context, final Device device, final String alias) {
+        CommandExecutionService.INSTANCE.executeSafely(context, "attr " + device.getName() + " alias " + alias, new ExecuteOnSuccess() {
+            @Override
+            public void onSuccess() {
+                device.setAlias(alias);
+                CurrentActivityProvider.INSTANCE.getCurrentActivity().update(false);
+                Toast.makeText(context, R.string.deviceAliasSuccess, Toast.LENGTH_LONG).show();
+            }
+        });
+    }
 
     public void moveDevice(final Context context, final Device device, final String newRoom) {
         CommandExecutionService.INSTANCE.executeSafely(context, "attr " + device.getName() + " room " + newRoom, new ExecuteOnSuccess() {

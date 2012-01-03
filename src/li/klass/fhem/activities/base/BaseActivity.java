@@ -30,6 +30,7 @@ public abstract class BaseActivity<ADAPTER> extends Activity implements Updateab
     public static final int CONTEXT_MENU_RENAME = 3;
     public static final int CONTEXT_MENU_DELETE = 4;
     public static final int CONTEXT_MENU_MOVE = 5;
+    public static final int CONTEXT_MENU_ALIAS = 6;
 
 
 
@@ -131,6 +132,7 @@ public abstract class BaseActivity<ADAPTER> extends Activity implements Updateab
             menu.add(0, CONTEXT_MENU_RENAME, 0, resources.getString(R.string.context_rename));
             menu.add(0, CONTEXT_MENU_DELETE, 0, resources.getString(R.string.context_delete));
             menu.add(0, CONTEXT_MENU_MOVE, 0, resources.getString(R.string.context_move));
+            menu.add(0, CONTEXT_MENU_ALIAS, 0, resources.getString(R.string.context_alias));
         }
     }
 
@@ -174,6 +176,9 @@ public abstract class BaseActivity<ADAPTER> extends Activity implements Updateab
                 return true;
             case CONTEXT_MENU_MOVE:
                 DeviceActionUtil.moveDevice(this, contextMenuClickedDevice);
+                return true;
+            case CONTEXT_MENU_ALIAS:
+                DeviceActionUtil.setAlias(this, contextMenuClickedDevice);
                 return true;
         }
         return false;

@@ -56,4 +56,21 @@ public class DeviceActionUtil {
             }
         }).show();
     }
+
+    public static void setAlias(final Context context, final Device device) {
+        final EditText input = new EditText(context);
+        input.setText(device.getAlias());
+        new AlertDialog.Builder(context)
+                .setTitle(R.string.context_alias)
+                .setView(input)
+                .setPositiveButton(R.string.okButton, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        String newAlias = input.getText().toString();
+                        DeviceService.INSTANCE.setAlias(context, device, newAlias);
+                    }
+                }).setNegativeButton(R.string.cancelButton, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+            }
+        }).show();
+    }
 }

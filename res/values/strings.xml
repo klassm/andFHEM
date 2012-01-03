@@ -60,6 +60,7 @@
     <string name="context_favoriteremoved">Favorite was removed!</string>
 
     <string name="context_rename">Rename device</string>
+    <string name="context_alias">Set alias</string>
     <string name="context_delete">Delete device</string>
     <string name="context_move">Move device</string>
 
@@ -119,6 +120,7 @@
     <string name="deviceRenameSuccess">Device was renamed.</string>
     <string name="deviceDeleteSuccess">Device was deleted.</string>
     <string name="deviceMoveSuccess">Device was moved.</string>
+    <string name="deviceAliasSuccess">Alias was set.</string>
 
     <string name="yes">yes</string>
     <string name="no">no</string>

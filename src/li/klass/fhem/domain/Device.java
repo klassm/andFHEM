@@ -63,7 +63,7 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
     }
 
     public String getAliasOrName() {
-        if (alias != null) {
+        if (alias != null && alias.length() != 0) {
             return alias;
         }
         return getName();
@@ -151,5 +151,13 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
 
     public void setRoom(String room) {
         this.room = room;
+    }
+
+    public void setAlias(String alias) {
+        this.alias = alias;
+    }
+
+    public String getAlias() {
+        return alias;
     }
 }

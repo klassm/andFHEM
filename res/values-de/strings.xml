@@ -59,6 +59,7 @@
     <string name="context_favoriteremoved">Favorit wurde gelöscht!</string>
 
     <string name="context_rename">Gerät umbenennen</string>
+    <string name="context_alias">Setze Alias</string>
     <string name="context_delete">Gerät löschen</string>
     <string name="context_move">Gerät verschieben</string>
 
@@ -118,6 +119,7 @@
     <string name="deviceRenameSuccess">Gerät wurde umbenannt.</string>
     <string name="deviceDeleteSuccess">Gerät wurde gelöscht.</string>
     <string name="deviceMoveSuccess">Geräte wurde verschoben.</string>
+    <string name="deviceAliasSuccess">Alias wurde gesetzt.</string>
 
     <string name="yes">ja</string>
     <string name="no">nein</string>
