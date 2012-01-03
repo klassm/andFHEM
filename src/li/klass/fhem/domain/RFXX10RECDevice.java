@@ -8,7 +8,7 @@ public class RFXX10RECDevice extends Device<RFXX10RECDevice> {
     private String lastState;
 
     @Override
-    protected void onChildItemRead(String keyValue, String nodeContent, NamedNodeMap attributes) {
+    protected void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {
         if (keyValue.equals("TIME")) {
             measured = nodeContent;
         } else if (keyValue.equals("STATECHANGE")) {

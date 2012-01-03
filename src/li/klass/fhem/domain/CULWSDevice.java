@@ -15,7 +15,7 @@ public class CULWSDevice extends Device<CULWSDevice> {
     public static final Integer COLUMN_SPEC_HUMIDITY = R.string.humidity;
 
     @Override
-    public void onChildItemRead(String keyValue, String nodeContent, NamedNodeMap attributes) {
+    public void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {
         if (keyValue.equals("HUMIDITY")) {
             humidity = nodeContent + " (%)";
         } else if (keyValue.equals("TEMPERATURE")) {

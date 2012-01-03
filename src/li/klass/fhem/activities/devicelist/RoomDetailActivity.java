@@ -4,7 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import li.klass.fhem.R;
 import li.klass.fhem.domain.RoomDeviceList;
-import li.klass.fhem.service.RoomListService;
+import li.klass.fhem.service.room.RoomDeviceListListener;
+import li.klass.fhem.service.room.RoomListService;
 
 public class RoomDetailActivity extends DeviceListActivity {
 
@@ -24,7 +25,13 @@ public class RoomDetailActivity extends DeviceListActivity {
     }
 
     @Override
-    protected RoomDeviceList getCurrentData(boolean refresh) {
-        return RoomListService.INSTANCE.deviceListForRoom(roomName, refresh);
+    public void update(boolean doUpdate) {
+        RoomListService.INSTANCE.getRoomDeviceList(this, roomName, doUpdate, new RoomDeviceListListener() {
+
+            @Override
+            public void onRoomListRefresh(RoomDeviceList roomDeviceList) {
+                adapter.updateData(roomDeviceList);
+            }
+        });
     }
 }

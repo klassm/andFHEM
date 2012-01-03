@@ -11,10 +11,10 @@ public class CULFHTTKDevice extends Device<CULFHTTKDevice> {
     private String lastState;
     
     @Override
-    public void onChildItemRead(String keyValue, String nodeContent, NamedNodeMap attributes) {
+    public void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {
         if (keyValue.equals("PREVSTATE")) {
             lastState = nodeContent;
-        } else if (keyValue.equals("PREVTIMESTAMP") && ! nodeContent.isEmpty()) {
+        } else if (keyValue.equals("PREVTIMESTAMP") && nodeContent.length() != 0) {
             long timestamp = Long.valueOf(nodeContent);
             Date date = new Date(timestamp * 1000L);
 

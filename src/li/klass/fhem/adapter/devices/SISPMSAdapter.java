@@ -18,7 +18,7 @@ public class SISPMSAdapter extends DeviceListOnlyAdapter<SISPMSDevice> {
 
         ToggleButton switchButton = (ToggleButton) view.findViewById(R.id.switchButton);
         switchButton.setChecked(device.isOn());
-        switchButton.setTag(device);
+        switchButton.setTag(device.getName());
 
         return view;
     }

@@ -21,8 +21,10 @@ public class FS20Device extends Device<FS20Device> implements Comparable<FS20Dev
     }
 
     @Override
-    public void onChildItemRead(String keyValue, String nodeContent, NamedNodeMap attributes) {
-        if (keyValue.equals("STATE")) {
+    public void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {
+        if (keyValue.equals("STATE") && tagName.equals("INT")) {
+            this.state = nodeContent;
+        } else if (keyValue.equals("STATE") && tagName.equals("STATE")) {
             Node measured = attributes.getNamedItem("measured");
             if (measured != null) {
                 this.measured = measured.getTextContent();

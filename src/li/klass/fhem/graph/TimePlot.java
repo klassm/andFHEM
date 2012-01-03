@@ -10,11 +10,11 @@ import android.util.Log;
 import android.widget.Toast;
 import li.klass.fhem.R;
 import li.klass.fhem.activities.base.BaseActivity;
-import li.klass.fhem.service.FHEMService;
-import li.klass.fhem.data.provider.graph.GraphEntry;
 import li.klass.fhem.domain.Device;
 import li.klass.fhem.exception.DeviceListParseException;
 import li.klass.fhem.exception.HostConnectionException;
+import li.klass.fhem.service.graph.GraphEntry;
+import li.klass.fhem.service.graph.GraphService;
 import org.achartengine.ChartFactory;
 import org.achartengine.chart.PointStyle;
 import org.achartengine.model.TimeSeries;
@@ -65,7 +65,7 @@ public class TimePlot extends AbstractDemoChart {
 
         XYMultipleSeriesDataset dataSet = new XYMultipleSeriesDataset();
 
-        Map<String, List<GraphEntry>> graphData = FHEMService.INSTANCE.getGraphData(device, columnList);
+        Map<String, List<GraphEntry>> graphData = GraphService.INSTANCE.getGraphData(device, columnList);
 
         Date xMin = new Date();
         Date xMax = null;

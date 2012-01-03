@@ -9,14 +9,10 @@ import android.widget.Toast;
 import li.klass.fhem.R;
 import li.klass.fhem.domain.Device;
 import li.klass.fhem.domain.RoomDeviceList;
-import li.klass.fhem.data.provider.favorites.FavoritesService;
+import li.klass.fhem.service.favorites.FavoritesService;
+import li.klass.fhem.service.room.RoomDeviceListListener;
 
 public class FavoritesActivity extends DeviceListActivity {
-
-    @Override
-    protected RoomDeviceList getCurrentData(boolean refresh) {
-        return FavoritesService.INSTANCE.getFavorites(refresh);
-    }
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View view, ContextMenu.ContextMenuInfo menuInfo) {
@@ -41,5 +37,16 @@ public class FavoritesActivity extends DeviceListActivity {
                 return true;
         }
         return false;
+    }
+
+    @Override
+    public void update(boolean doUpdate) {
+        FavoritesService.INSTANCE.getFavorites(this, doUpdate, new RoomDeviceListListener() {
+
+            @Override
+            public void onRoomListRefresh(RoomDeviceList roomDeviceList) {
+                adapter.updateData(roomDeviceList);
+            }
+        });
     }
 }

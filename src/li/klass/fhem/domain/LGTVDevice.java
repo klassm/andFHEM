@@ -8,7 +8,7 @@ public class LGTVDevice extends Device<LGTVDevice> {
     private String input;
 
     @Override
-    protected void onChildItemRead(String keyValue, String nodeContent, NamedNodeMap attributes) {
+    protected void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {
         if (keyValue.equals("POWER")) {
             this.power = nodeContent;
         } else if (keyValue.equals("AUDIO")) {

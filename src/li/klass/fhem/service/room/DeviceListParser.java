@@ -1,4 +1,4 @@
-package li.klass.fhem.data;
+package li.klass.fhem.service.room;
 
 import li.klass.fhem.domain.Device;
 import li.klass.fhem.domain.DeviceType;
@@ -6,6 +6,7 @@ import li.klass.fhem.domain.FileLog;
 import li.klass.fhem.domain.RoomDeviceList;
 import li.klass.fhem.exception.DeviceListParseException;
 import li.klass.fhem.exception.HostConnectionException;
+import li.klass.fhem.fhem.DataConnectionSwitch;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -21,17 +22,17 @@ import java.util.Map;
 
 import static li.klass.fhem.domain.DeviceType.FILE_LOG;
 
-public class DeviceListProvider {
+public class DeviceListParser {
 
-    public static final DeviceListProvider INSTANCE = new DeviceListProvider();
+    public static final DeviceListParser INSTANCE = new DeviceListParser();
     
-    private DeviceListProvider() {}
+    private DeviceListParser() {}
 
     public Map<String, RoomDeviceList> listDevices() {
 
         Map<String, RoomDeviceList> roomDeviceListMap = new HashMap<String, RoomDeviceList>();
         try {
-            String xmlList = DataProviderSwitch.INSTANCE.getCurrentProvider().xmllist();
+            String xmlList = DataConnectionSwitch.INSTANCE.getCurrentProvider().xmllist();
             xmlList = xmlList.replaceAll("\"<", "\"&lt;");
             xmlList = xmlList.replaceAll(">\"", "&gt;\"");
             xmlList = xmlList.replaceAll("_internal_", "internal");

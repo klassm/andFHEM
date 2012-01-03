@@ -6,7 +6,7 @@ import android.content.DialogInterface;
 import android.widget.EditText;
 import li.klass.fhem.R;
 import li.klass.fhem.domain.Device;
-import li.klass.fhem.service.DeviceService;
+import li.klass.fhem.service.device.DeviceService;
 
 public class DeviceActionUtil {
     public static void renameDevice(final Context context, final Device device) {

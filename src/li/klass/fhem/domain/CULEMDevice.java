@@ -9,7 +9,7 @@ public class CULEMDevice extends Device<CULEMDevice> {
     private String monthUsage;
 
     @Override
-    protected void onChildItemRead(String keyValue, String nodeContent, NamedNodeMap attributes) {
+    protected void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {
         if (keyValue.equals("CURRENT")) {
             currentUsage = nodeContent + " (kwh)";
         } else if (keyValue.equals("CUM_DAY")) {

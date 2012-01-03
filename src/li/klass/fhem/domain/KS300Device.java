@@ -28,7 +28,7 @@ public class KS300Device extends Device<KS300Device> implements Serializable {
     }
 
     @Override
-    public void onChildItemRead(String keyValue, String nodeContent, NamedNodeMap attributes) {
+    public void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {
         if (keyValue.equals("TEMPERATURE")) {
             this.temperature = nodeContent;
         } else if (keyValue.equals("WIND")) {

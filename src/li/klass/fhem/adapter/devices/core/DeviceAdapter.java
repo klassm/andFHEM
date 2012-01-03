@@ -90,7 +90,7 @@ public abstract class DeviceAdapter<D extends Device> {
     }
 
     protected boolean hideIfNull(View layoutElement, Object valueToCheck) {
-        if (valueToCheck == null || valueToCheck instanceof String && ((String) valueToCheck).isEmpty()) {
+        if (valueToCheck == null || valueToCheck instanceof String && ((String) valueToCheck).length() == 0) {
             layoutElement.setVisibility(View.GONE);
             return true;
         }

@@ -4,6 +4,6 @@ import org.w3c.dom.NamedNodeMap;
 
 public class RFXCOMDevice extends Device<RFXCOMDevice> {
     @Override
-    protected void onChildItemRead(String keyValue, String nodeContent, NamedNodeMap attributes) {
+    protected void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {
     }
 }

@@ -1,5 +1,6 @@
 package li.klass.fhem.activities.base;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.net.Uri;
@@ -12,13 +13,13 @@ import li.klass.fhem.ApplicationUrls;
 import li.klass.fhem.R;
 import li.klass.fhem.activities.CurrentActivityProvider;
 import li.klass.fhem.activities.PreferencesActivity;
-import li.klass.fhem.data.provider.favorites.FavoritesService;
+import li.klass.fhem.service.favorites.FavoritesService;
+import li.klass.fhem.service.room.RoomListService;
 import li.klass.fhem.domain.Device;
 import li.klass.fhem.service.ExecuteOnSuccess;
-import li.klass.fhem.service.RoomListService;
 import li.klass.fhem.util.device.DeviceActionUtil;
 
-public abstract class BaseActivity<DOMAIN, ADAPTER> extends UpdateableActivity<DOMAIN> {
+public abstract class BaseActivity<ADAPTER> extends Activity implements Updateable {
     public static final int OPTION_UPDATE = 1;
     public static final int OPTION_PREFERENCES = 2;
     public static final int OPTION_HELP = 3;
@@ -106,7 +107,6 @@ public abstract class BaseActivity<DOMAIN, ADAPTER> extends UpdateableActivity<D
         super.onResume();
 
         CurrentActivityProvider.INSTANCE.setCurrentActivity(this);
-
         update(false);
     }
 

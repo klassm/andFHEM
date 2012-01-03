@@ -1,7 +1,9 @@
-package li.klass.fhem.service;
+package li.klass.fhem.service.device;
 
 import android.content.Context;
 import li.klass.fhem.domain.FS20Device;
+import li.klass.fhem.service.CommandExecutionService;
+import li.klass.fhem.service.ExecuteOnSuccess;
 
 public class FS20Service {
     public static final FS20Service INSTANCE = new FS20Service();
@@ -10,7 +12,7 @@ public class FS20Service {
     }
     
     public void setState(Context context, FS20Device device, String newState, ExecuteOnSuccess executeOnSuccess) {
-        FHEMService.INSTANCE.executeSafely(context, "set " + device.getName() + " " + newState, executeOnSuccess);
+        CommandExecutionService.INSTANCE.executeSafely(context, "set " + device.getName() + " " + newState, executeOnSuccess);
         device.setState(newState);
     }
 

@@ -15,7 +15,7 @@ public class HMSDevice extends Device<HMSDevice> {
     public static final Integer COLUMN_SPEC_HUMIDITY = R.string.humidity;
 
     @Override
-    public void onChildItemRead(String keyValue, String nodeContent, NamedNodeMap attributes) {
+    public void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {
         if (keyValue.equals("TEMPERATURE")) {
             temperature = nodeContent;
         } else if (keyValue.equals("BATTERY")) {

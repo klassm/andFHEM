@@ -18,7 +18,7 @@ public class FHTDevice extends Device<FHTDevice> implements Serializable {
     public static final Integer COLUMN_SPEC_ACTUATOR = R.string.actuator;
 
     @Override
-    public void onChildItemRead(String keyValue, String nodeContent, NamedNodeMap nodeAttributes) {
+    public void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap nodeAttributes) {
         if (keyValue.startsWith("ACTUATOR") && ! nodeContent.equalsIgnoreCase("pair")) {
             actuator = nodeContent;
         } else if (keyValue.equalsIgnoreCase("MEASURED-TEMP")) {

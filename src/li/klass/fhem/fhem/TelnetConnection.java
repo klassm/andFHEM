@@ -1,4 +1,4 @@
-package li.klass.fhem.data.provider;
+package li.klass.fhem.fhem;
 
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -18,13 +18,13 @@ import java.net.URLConnection;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class TelnetProvider implements FHEMDataProvider {
+public class TelnetConnection implements FHEMConnection {
     private static final String DEFAULT_HOST = "";
     private static final int DEFAULT_PORT = 0;
 
-    public static final TelnetProvider INSTANCE = new TelnetProvider();
+    public static final TelnetConnection INSTANCE = new TelnetConnection();
 
-    private TelnetProvider() {}
+    private TelnetConnection() {}
 
     public String xmllist() {
         return request("xmllist", "</FHZINFO>");
@@ -46,7 +46,7 @@ public class TelnetProvider implements FHEMDataProvider {
     }
 
     private String request(String command, String delimiter) {
-        Log.e(TelnetProvider.class.getName(), "execute command " + command + " with delimiter " + delimiter);
+        Log.e(TelnetConnection.class.getName(), "executeTask command " + command + " with delimiter " + delimiter);
         
         OutputStream outputStream = null;
         BufferedOutputStream bufferedOutputStream = null;

@@ -1,4 +1,4 @@
-package li.klass.fhem.data.provider.graph;
+package li.klass.fhem.service.graph;
 
 import java.util.Date;
 

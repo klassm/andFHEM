@@ -1,16 +1,33 @@
-package li.klass.fhem.data.provider.graph;
+package li.klass.fhem.service.graph;
 
 import android.util.Log;
-import li.klass.fhem.data.DataProviderSwitch;
+import li.klass.fhem.domain.Device;
+import li.klass.fhem.fhem.DataConnectionSwitch;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class GraphProvider {
-    public static final GraphProvider INSTANCE = new GraphProvider();
+public class GraphService {
+    public static final GraphService INSTANCE = new GraphService();
 
-    private GraphProvider() {
+    private GraphService() {
+    }
+
+
+    public Map<String, List<GraphEntry>> getGraphData(Device device, List<String> columnSpecifications) {
+        if (device.getFileLog() == null) return null;
+
+        Map<String, List<GraphEntry>> data = new HashMap<String, List<GraphEntry>>();
+
+        GraphService graphProvider = GraphService.INSTANCE;
+        for (String columnSpec : columnSpecifications) {
+            String fileLogDeviceName = device.getFileLog().getName();
+            List<GraphEntry> valueEntries = graphProvider.getCurrentGraphEntriesFor(fileLogDeviceName, columnSpec);
+            data.put(columnSpec, valueEntries);
+        }
+
+        return data;
     }
 
     public List<GraphEntry> getCurrentGraphEntriesFor(String fileLogName, String columnSpec) {
@@ -20,7 +37,7 @@ public class GraphProvider {
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM");
 
-        String result = DataProviderSwitch.INSTANCE.getCurrentProvider().fileLogData(fileLogName, yesterday, today, columnSpec);
+        String result = DataConnectionSwitch.INSTANCE.getCurrentProvider().fileLogData(fileLogName, yesterday, today, columnSpec);
         result = result.replace("#" + columnSpec, "");
 
         String yesterdayFormat = dateFormat.format(yesterday);
@@ -39,7 +56,7 @@ public class GraphProvider {
         Date currentDate = null;
         float currentValue;
         for (String part : parts) {
-            if (part.trim().isEmpty()) {
+            if (part.trim().length() == 0) {
                 continue;
             }
 
@@ -47,7 +64,7 @@ public class GraphProvider {
                 try {
                     currentDate = providedDateFormat.parse(part);
                 } catch (ParseException e) {
-                    Log.e(GraphProvider.class.getName(), "cannot parse date " + part, e);
+                    Log.e(GraphService.class.getName(), "cannot parse date " + part, e);
                 }
             } else if (! part.substring(1).contains("-") && currentDate != null) {
                 try {
@@ -55,7 +72,7 @@ public class GraphProvider {
                     GraphEntry graphEntry = new GraphEntry(currentDate, currentValue);
                     entries.add(graphEntry);
                 } catch (NumberFormatException e) {
-                    Log.e(GraphProvider.class.getName(), "cannot format " + part, e);
+                    Log.e(GraphService.class.getName(), "cannot format " + part, e);
                 }
             }
         }

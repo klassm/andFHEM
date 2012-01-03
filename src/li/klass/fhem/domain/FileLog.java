@@ -7,7 +7,7 @@ public class FileLog extends Device<FileLog> {
     private String concerningDeviceName;
 
     @Override
-    public void onChildItemRead(String keyValue, String nodeContent, NamedNodeMap attributes) {
+    public void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {
         if (keyValue.equals("REGEXP")) {
             this.concerningDeviceName = extractConcerningDeviceNameFromDefinition(nodeContent);
         }

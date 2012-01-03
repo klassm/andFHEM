@@ -35,7 +35,7 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
             String nodeContent = item.getAttributes().getNamedItem("value").getTextContent().trim();
             nodeContent = StringEscapeUtils.unescapeHtml(nodeContent);
 
-            if (nodeContent.isEmpty()) {
+            if (nodeContent.length() == 0) {
                 continue;
             }
 
@@ -43,7 +43,7 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
                 room = nodeContent;
             } else if (keyValue.equals("NAME")) {
                 name = nodeContent;
-            } else if (keyValue.equals("STATE")) {
+            } else if (state == null && keyValue.equals("STATE")) {
                 state = nodeContent;
             } else if (keyValue.equals("ALIAS")) {
                 alias = nodeContent;
@@ -51,7 +51,8 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
                 measured = nodeContent;
             }
 
-            onChildItemRead(keyValue, nodeContent, item.getAttributes());
+            String tagName = item.getNodeName().toUpperCase();
+            onChildItemRead(tagName, keyValue, nodeContent, item.getAttributes());
         }
 
         NamedNodeMap attributes = xml.getAttributes();
@@ -84,7 +85,7 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
         return measured;
     }
 
-    protected abstract void onChildItemRead(String keyValue, String nodeContent, NamedNodeMap attributes);
+    protected abstract void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes);
     
     protected void onAttributeRead(String attributeKey, String attributeValue) {
     }

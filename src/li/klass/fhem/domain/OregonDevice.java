@@ -30,7 +30,7 @@ public class OregonDevice extends Device<OregonDevice> {
     public static final Integer COLUMN_SPEC_WIND_SPEED = R.string.windSpeed;
 
     @Override
-    protected void onChildItemRead(String keyValue, String nodeContent, NamedNodeMap attributes) {
+    protected void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {
         if (keyValue.equals("TEMPERATURE")) {
             this.temperature = nodeContent + " (Celsius)";
         } else if (keyValue.equals("HUMIDITY")) {

@@ -17,7 +17,7 @@ public class USBWXDevice extends Device<USBWXDevice> {
 
     
     @Override
-    protected void onChildItemRead(String keyValue, String nodeContent, NamedNodeMap attributes) {
+    protected void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {
         if (keyValue.equals("TEMPERATURE")) {
             this.temperature = nodeContent + " (Celsius)";
         } else if (keyValue.equals("HUMIDITY")) {

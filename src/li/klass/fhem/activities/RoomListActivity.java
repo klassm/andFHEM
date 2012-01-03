@@ -9,12 +9,13 @@ import li.klass.fhem.R;
 import li.klass.fhem.activities.base.BaseActivity;
 import li.klass.fhem.activities.devicelist.RoomDetailActivity;
 import li.klass.fhem.adapter.rooms.RoomListAdapter;
-import li.klass.fhem.service.RoomListService;
+import li.klass.fhem.service.room.RoomListListener;
+import li.klass.fhem.service.room.RoomListService;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class RoomListActivity extends BaseActivity<List<String>, RoomListAdapter> {
+public class RoomListActivity extends BaseActivity<RoomListAdapter> {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,12 +53,13 @@ public class RoomListActivity extends BaseActivity<List<String>, RoomListAdapter
     }
 
     @Override
-    protected List<String> getCurrentData(boolean refresh) {
-        return RoomListService.INSTANCE.getRoomList(refresh);
-    }
+    public void update(boolean doUpdate) {
+        RoomListService.INSTANCE.getRoomList(this, doUpdate, new RoomListListener() {
 
-    @Override
-    protected void updateData(List<String> data) {
-        adapter.updateData(data);
+            @Override
+            public void onRoomListRefresh(List<String> rooms) {
+                adapter.updateData(rooms);
+            }
+        });
     }
 }

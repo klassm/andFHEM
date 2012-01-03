@@ -7,7 +7,7 @@ public class OwtempDevice extends Device<OwtempDevice> {
     private String warnings;
 
     @Override
-    public void onChildItemRead(String keyValue, String nodeContent, NamedNodeMap attributes) {
+    public void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {
         if (keyValue.equals("TEMPERATURE")) {
             this.temperature = nodeContent;
         } else if (keyValue.equals("WARNINGS")) {

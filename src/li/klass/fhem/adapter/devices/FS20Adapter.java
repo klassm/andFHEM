@@ -18,9 +18,11 @@ import li.klass.fhem.activities.deviceDetail.FS20DeviceDetailActivity;
 import li.klass.fhem.adapter.devices.core.DeviceDetailAvailableAdapter;
 import li.klass.fhem.domain.Device;
 import li.klass.fhem.domain.FS20Device;
+import li.klass.fhem.domain.RoomDeviceList;
 import li.klass.fhem.service.ExecuteOnSuccess;
-import li.klass.fhem.service.FS20Service;
-import li.klass.fhem.service.RoomListService;
+import li.klass.fhem.service.room.RoomDeviceListListener;
+import li.klass.fhem.service.room.RoomListService;
+import li.klass.fhem.service.device.FS20Service;
 
 import java.util.List;
 
@@ -30,7 +32,7 @@ public class FS20Adapter extends DeviceDetailAvailableAdapter<FS20Device> {
 
         @Override
         public void onSuccess() {
-            BaseActivity<?,?> currentActivity = CurrentActivityProvider.INSTANCE.getCurrentActivity();
+            BaseActivity<?> currentActivity = CurrentActivityProvider.INSTANCE.getCurrentActivity();
             if (currentActivity != null) {
                 currentActivity.update(false);
             }
@@ -57,8 +59,15 @@ public class FS20Adapter extends DeviceDetailAvailableAdapter<FS20Device> {
 
         @Override
         public void onStopTrackingTouch(final SeekBar seekBar) {
-            FS20Device device = RoomListService.INSTANCE.deviceListForAllRooms(false).getDeviceFor((String) seekBar.getTag());
-            FS20Service.INSTANCE.dim(seekBar.getContext(), device, progress, new UpdateCurrentActivityOnSuccess());
+            final Context context = seekBar.getContext();
+            RoomListService.INSTANCE.getAllRoomsDeviceList(context, false, new RoomDeviceListListener() {
+                @Override
+                public void onRoomListRefresh(RoomDeviceList roomDeviceList) {
+                    String deviceName = (String) seekBar.getTag();
+                    FS20Device device = roomDeviceList.getDeviceFor(deviceName);
+                    FS20Service.INSTANCE.dim(context, device, progress, new UpdateCurrentActivityOnSuccess());
+                }
+            });
         }
     }
 

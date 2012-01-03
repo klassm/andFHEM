@@ -16,7 +16,7 @@ public class OwcountDevice extends Device<OwcountDevice> {
 
     
     @Override
-    protected void onChildItemRead(String keyValue, String nodeContent, NamedNodeMap attributes) {
+    protected void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {
         if (keyValue.equals("COUNTERS.A")) {
             this.counterA = Float.valueOf(nodeContent);
         } else if (keyValue.equals("COUNTERS.B")) {

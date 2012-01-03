@@ -7,12 +7,13 @@ import li.klass.fhem.activities.base.BaseActivity;
 import li.klass.fhem.adapter.devices.core.DeviceAdapter;
 import li.klass.fhem.adapter.rooms.RoomDetailAdapter;
 import li.klass.fhem.domain.*;
-import li.klass.fhem.service.FS20Service;
-import li.klass.fhem.service.RoomListService;
-import li.klass.fhem.service.SISPMSService;
+import li.klass.fhem.service.room.RoomDeviceListListener;
+import li.klass.fhem.service.room.RoomListService;
+import li.klass.fhem.service.device.FS20Service;
+import li.klass.fhem.service.device.SISPMSService;
 import li.klass.fhem.widget.NestedListView;
 
-public abstract class DeviceListActivity extends BaseActivity<RoomDeviceList, RoomDetailAdapter> {
+public abstract class DeviceListActivity extends BaseActivity<RoomDetailAdapter> {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,21 +50,34 @@ public abstract class DeviceListActivity extends BaseActivity<RoomDeviceList, Ro
         setContentView(R.layout.room_detail);
     }
 
-    @Override
-    protected void updateData(RoomDeviceList roomDeviceList) {
-        adapter.updateData(roomDeviceList);
-    }
-
     public void onFS20Click(final View view) {
-        String deviceName = (String) view.getTag();
-        FS20Device device = RoomListService.INSTANCE.deviceListForAllRooms(false).getDeviceFor(deviceName);
-        FS20Service.INSTANCE.toggleState(DeviceListActivity.this, device, updateOnSuccessAction);
+
+        RoomListService.INSTANCE.getAllRoomsDeviceList(this, false, new RoomDeviceListListener() {
+            @Override
+            public void onRoomListRefresh(RoomDeviceList roomDeviceList) {
+
+                String deviceName = (String) view.getTag();
+                FS20Device device = roomDeviceList.getDeviceFor(deviceName);
+                FS20Service.INSTANCE.toggleState(DeviceListActivity.this, device, updateOnSuccessAction);
+
+                update(false);
+            }
+        });
+
 
     }
 
     public void onSISPMSClick(final View view) {
-        SISPMSDevice device = (SISPMSDevice) view.getTag();
-        SISPMSService.INSTANCE.toggleState(DeviceListActivity.this, device, updateOnSuccessAction);
-        update(false);
+        RoomListService.INSTANCE.getAllRoomsDeviceList(this, false, new RoomDeviceListListener() {
+            @Override
+            public void onRoomListRefresh(RoomDeviceList roomDeviceList) {
+
+                String deviceName = (String) view.getTag();
+                SISPMSDevice device = roomDeviceList.getDeviceFor(deviceName);
+                SISPMSService.INSTANCE.toggleState(DeviceListActivity.this, device, updateOnSuccessAction);
+
+                update(false);
+            }
+        });
     }
 }
