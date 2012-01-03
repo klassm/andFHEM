@@ -11,6 +11,7 @@ import li.klass.fhem.service.device.DeviceService;
 public class DeviceActionUtil {
     public static void renameDevice(final Context context, final Device device) {
         final EditText input = new EditText(context);
+        input.setText(device.getName());
         new AlertDialog.Builder(context)
                 .setTitle(R.string.context_rename)
                 .setView(input)
@@ -41,6 +42,7 @@ public class DeviceActionUtil {
 
     public static void moveDevice(final  Context context,final Device device) {
         final EditText input = new EditText(context);
+        input.setText(device.getRoom());
         new AlertDialog.Builder(context)
                 .setTitle(R.string.context_move)
                 .setView(input)

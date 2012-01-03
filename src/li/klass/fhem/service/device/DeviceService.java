@@ -70,6 +70,7 @@ public class DeviceService {
                     @Override
                     public void onRoomListRefresh(RoomDeviceList newRoomDeviceList) {
                         newRoomDeviceList.addDevice(device);
+                        CurrentActivityProvider.INSTANCE.getCurrentActivity().update(false);
                     }
                 });
             }
