@@ -39,13 +39,13 @@ public class FHTAdapter extends DeviceDetailAvailableAdapter<FHTDevice> {
         setTextViewOrHideTableRow(view, R.id.tableRowWarnings, R.id.warnings, device.getWarningsDesc());
 
         final SeekBar desiredTempSeekBar = (SeekBar) view.findViewById(R.id.desiredTemperatureSeek);
-        desiredTempSeekBar.setProgress((int) ((device.getDesiredTemp() - 5.5) * 10));
+        desiredTempSeekBar.setProgress((int) ((device.getDesiredTemp() - 5.5) / 0.5));
         desiredTempSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             private double value;
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean byUser) {
-                this.value = progress / 10 + 5.5;
+                this.value = 5.5 + (progress * 0.5);
                 setTextViewOrHideTableRow(view, R.id.tableRowDesiredTemperature, R.id.desiredTemperature, desiredTemperatureToString(value));
             }
 

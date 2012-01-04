@@ -66,7 +66,7 @@
                       style="@style/deviceDetailDescription" />
             <SeekBar android:id="@+id/desiredTemperatureSeek"
                     style="@style/deviceDetailContentSeek"
-                    android:max="250"
+                    android:max="50"
                     android:progress="@+id/desiredTemperature"
                     android:layout_marginRight="10dp"/>
 

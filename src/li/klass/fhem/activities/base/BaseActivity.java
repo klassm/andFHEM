@@ -32,8 +32,6 @@ public abstract class BaseActivity<ADAPTER> extends Activity implements Updateab
     public static final int CONTEXT_MENU_MOVE = 5;
     public static final int CONTEXT_MENU_ALIAS = 6;
 
-
-
     protected Device contextMenuClickedDevice;
     private long backPressStart;
     protected ADAPTER adapter;
@@ -141,7 +139,7 @@ public abstract class BaseActivity<ADAPTER> extends Activity implements Updateab
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             if (event.getRepeatCount() == 0) {
                 backPressStart = System.currentTimeMillis();
-                Log.e(BaseActivity.class.getName(), "back press start " + backPressStart);
+                Log.d(BaseActivity.class.getName(), "back press start " + backPressStart);
             }
             return true;
         }
@@ -152,7 +150,7 @@ public abstract class BaseActivity<ADAPTER> extends Activity implements Updateab
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             long diff = System.currentTimeMillis() - backPressStart;
-            Log.e(BaseActivity.class.getName(), "back press up " + diff);
+            Log.d(BaseActivity.class.getName(), "back press up " + diff);
             if (diff < 200) {
                 super.onBackPressed();
             }
