@@ -2,17 +2,18 @@ package li.klass.fhem.adapter.devices;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.SeekBar;
-import android.widget.Spinner;
+import android.widget.*;
 import li.klass.fhem.R;
 import li.klass.fhem.activities.deviceDetail.FHTDeviceDetailActivity;
+import li.klass.fhem.activities.fhtControl.FHTControlListActivity;
 import li.klass.fhem.adapter.devices.core.DeviceDetailAvailableAdapter;
 import li.klass.fhem.domain.Device;
 import li.klass.fhem.domain.FHTDevice;
+import li.klass.fhem.domain.fht.FHTMode;
 import li.klass.fhem.service.device.FHTService;
 
 import static li.klass.fhem.domain.FHTDevice.*;
@@ -82,6 +83,17 @@ public class FHTAdapter extends DeviceDetailAvailableAdapter<FHTDevice> {
 
         createPlotButton(context, view, R.id.actuatorGraph, device.getActuator(),
                 device, R.string.yAxisActuator, COLUMN_SPEC_ACTUATOR);
+
+        Button timetableButton = (Button) view.findViewById(R.id.timetableButton);
+        timetableButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, FHTControlListActivity.class);
+                intent.putExtras(new Bundle());
+                intent.putExtra("deviceName", device.getName());
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override

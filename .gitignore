@@ -9,3 +9,4 @@ log
 *.log
 *.txt
 out/
+local.properties

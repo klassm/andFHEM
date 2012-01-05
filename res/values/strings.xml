@@ -87,6 +87,7 @@
 
     <string name="okButton">OK</string>
     <string name="cancelButton">Cancel</string>
+    <string name="save">Save</string>
 
     <string name="welcomeMessageTitle">Get Started</string>
     <string name="welcomeMessage">
@@ -126,5 +127,20 @@
     <string name="yes">yes</string>
     <string name="no">no</string>
 
+    <string name="monday">Monday</string>
+    <string name="tuesday">Tuesday</string>
+    <string name="wednesday">Wednesday</string>
+    <string name="thursday">Thursday</string>
+    <string name="friday">Friday</string>
+    <string name="saturday">Saturday</string>
+    <string name="sunday">Sunday</string>
+
+    <string name="manage">Manage</string>
+    <string name="timetable">Timetable</string>
+    <string name="from1">(1) From</string>
+    <string name="from2">(2) From</string>
+    <string name="to1">(1) To</string>
+    <string name="to2">(2) To</string>
+    <string name="change">change</string>
 
 </resources>

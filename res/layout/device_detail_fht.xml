@@ -65,10 +65,10 @@
                       android:text=""
                       style="@style/deviceDetailDescription" />
             <SeekBar android:id="@+id/desiredTemperatureSeek"
-                    style="@style/deviceDetailContentSeek"
-                    android:max="50"
-                    android:progress="@+id/desiredTemperature"
-                    android:layout_marginRight="10dp"/>
+                     style="@style/deviceDetailContentSeek"
+                     android:max="50"
+                     android:progress="@+id/desiredTemperature"
+                     android:layout_marginRight="10dp"/>
 
         </TableRow>
 
@@ -104,6 +104,23 @@
                 android:layout_height="wrap_content"
                 android:text="@string/actuatorGraph"
                 android:id="@+id/actuatorGraph"
+                android:layout_marginLeft="10dp"/>
+    </LinearLayout>
+
+    <LinearLayout android:layout_width="fill_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_marginTop="20dp"
+                  android:orientation="vertical"
+                  android:id="@+id/timetable">
+
+
+        <TextView style="@style/deviceDetailSectionCaption"
+                  android:text="@string/manage" />
+
+        <Button android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/timetable"
+                android:id="@+id/timetableButton"
                 android:layout_marginLeft="10dp"/>
     </LinearLayout>
 </LinearLayout>

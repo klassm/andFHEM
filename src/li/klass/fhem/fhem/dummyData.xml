@@ -1102,6 +1102,35 @@
     <INT key="IODev" value="CUL"/>
     <ATTR key="retrycount" value="3"/>
     <ATTR key="room" value="unknown"/>
+    <STATE key="sun-from1" value="10:00" measured="2011-12-24 13:21:17"/>
+    <STATE key="sun-from2" value="24:00" measured="2011-12-24 13:21:18"/>
+    <STATE key="sun-to1" value="17:00" measured="2011-12-24 13:21:18"/>
+    <STATE key="sun-to2" value="24:00" measured="2011-12-24 13:21:18"/>
+    <STATE key="sat-from1" value="10:00" measured="2011-12-24 13:21:17"/>
+    <STATE key="sat-from2" value="24:00" measured="2011-12-24 13:21:18"/>
+    <STATE key="sat-to1" value="17:00" measured="2011-12-24 13:21:18"/>
+    <STATE key="sat-to2" value="24:00" measured="2011-12-24 13:21:18"/>
+    <STATE key="fri-from1" value="10:00" measured="2011-12-24 13:21:17"/>
+    <STATE key="fri-from2" value="24:00" measured="2011-12-24 13:21:18"/>
+    <STATE key="fri-to1" value="17:00" measured="2011-12-24 13:21:18"/>
+    <STATE key="fri-to2" value="24:00" measured="2011-12-24 13:21:18"/>
+    <STATE key="thu-from1" value="10:00" measured="2011-12-24 13:21:17"/>
+    <STATE key="thu-from2" value="24:00" measured="2011-12-24 13:21:18"/>
+    <STATE key="thu-to1" value="17:00" measured="2011-12-24 13:21:18"/>
+    <STATE key="thu-to2" value="24:00" measured="2011-12-24 13:21:18"/>
+    <STATE key="wed-from1" value="10:00" measured="2011-12-24 13:21:17"/>
+    <STATE key="wed-from2" value="24:00" measured="2011-12-24 13:21:18"/>
+    <STATE key="wed-to1" value="17:00" measured="2011-12-24 13:21:18"/>
+    <STATE key="wed-to2" value="24:00" measured="2011-12-24 13:21:18"/>
+    <STATE key="tue-from1" value="10:00" measured="2011-12-24 13:21:17"/>
+    <STATE key="tue-from2" value="24:00" measured="2011-12-24 13:21:18"/>
+    <STATE key="tue-to1" value="17:00" measured="2011-12-24 13:21:18"/>
+    <STATE key="tue-to2" value="24:00" measured="2011-12-24 13:21:18"/>
+    <STATE key="mon-from1" value="10:00" measured="2011-12-24 13:21:17"/>
+    <STATE key="mon-from2" value="24:00" measured="2011-12-24 13:21:18"/>
+    <STATE key="mon-to1" value="17:00" measured="2011-12-24 13:21:18"/>
+    <STATE key="mon-to2" value="24:00" measured="2011-12-24 13:21:18"/>
+
     <STATE key="actuator" value="0%" measured="2011-12-05 16:33:11"/>
 </FHT>
 

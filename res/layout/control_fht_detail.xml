@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent">
+
+    <TableRow>
+        <TextView android:text="from1"
+                  style="@style/deviceDetailDescription" />
+        <TextView android:text="HH:MM"
+                  style="@style/deviceDetailContent" />
+        <Button android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="set" />
+    </TableRow>
+
+    <TableRow>
+        <TextView android:text="to1"
+                  style="@style/deviceDetailDescription" />
+        <TextView android:text="HH:MM"
+                  style="@style/deviceDetailContent" />
+        <Button android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="set" />
+    </TableRow>
+
+    <TableRow>
+        <TextView android:text="from2"
+                  style="@style/deviceDetailDescription" />
+        <TextView android:text="HH:MM"
+                  style="@style/deviceDetailContent" />
+        <Button android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="set" />
+    </TableRow>
+    <TableRow>
+
+        <TextView android:text="to2"
+                  style="@style/deviceDetailDescription" />
+        <TextView android:text="HH:MM"
+                  style="@style/deviceDetailContent" />
+        <Button android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="set" />
+    </TableRow>
+
+</TableLayout>

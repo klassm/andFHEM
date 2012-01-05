@@ -1,29 +1,35 @@
 package li.klass.fhem.domain;
 
 import li.klass.fhem.R;
+import li.klass.fhem.domain.fht.FHTDayControl;
+import li.klass.fhem.domain.fht.FHTMode;
+import li.klass.fhem.util.DayUtil;
 import li.klass.fhem.util.ValueDescriptionUtil;
 import li.klass.fhem.util.ValueExtractUtil;
 import org.w3c.dom.NamedNodeMap;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 public class FHTDevice extends Device<FHTDevice> implements Serializable {
-
-
-
-    public enum FHTMode {
-        AUTO, MANUAL, HOLIDAY, HOLIDAY_SHORT
-    }
     private String actuator;
     private FHTMode mode;
     private double desiredTemp;
     private String warnings;
     private String temperature;
+    
+    private Map<Integer, FHTDayControl> dayControlMap = new HashMap<Integer, FHTDayControl>();
 
     public static final Integer COLUMN_SPEC_TEMPERATURE = R.string.temperature;
     public static final Integer COLUMN_SPEC_ACTUATOR = R.string.actuator;
+
+    public FHTDevice() {
+        for (Integer dayId : DayUtil.getSortedDayStringIdList()) {
+            dayControlMap.put(dayId, new FHTDayControl(dayId));
+        }
+    }
 
     @Override
     public void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap nodeAttributes) {
@@ -37,6 +43,14 @@ public class FHTDevice extends Device<FHTDevice> implements Serializable {
             warnings = nodeContent;
         } else if (keyValue.equals("MODE")) {
             this.mode = FHTMode.valueOf(nodeContent.toUpperCase());
+        } else if (keyValue.endsWith("FROM1") || keyValue.endsWith("FROM2") || keyValue.endsWith("TO1") || keyValue.endsWith("TO2")) {
+            String shortName = keyValue.substring(0, 3);
+            FHTDayControl dayControl = dayControlMap.get(DayUtil.getDayStringIdForShortName(shortName));
+
+            if (keyValue.endsWith("FROM1")) dayControl.setFrom1(nodeContent);
+            if (keyValue.endsWith("FROM2")) dayControl.setFrom2(nodeContent);
+            if (keyValue.endsWith("TO1")) dayControl.setTo1(nodeContent);
+            if (keyValue.endsWith("TO2")) dayControl.setTo2(nodeContent);
         }
     }
 
@@ -79,6 +93,10 @@ public class FHTDevice extends Device<FHTDevice> implements Serializable {
         this.mode = mode;
     }
 
+    public Map<Integer, FHTDayControl> getDayControlMap() {
+        return Collections.unmodifiableMap(dayControlMap);
+    }
+
     @Override
     public Map<Integer, String> getFileLogColumns() {
         Map<Integer, String> columnSpecification = new HashMap<Integer, String>();
@@ -96,5 +114,14 @@ public class FHTDevice extends Device<FHTDevice> implements Serializable {
         } else {
             return ValueDescriptionUtil.appendTemperature(temperature);
         }
+    }
+
+    public boolean hasChangedDayControlMapValues() {
+        for (FHTDayControl fhtDayControl : dayControlMap.values()) {
+            if (fhtDayControl.hasChangedValues()) {
+                return true;
+            }
+        }
+        return false;
     }
 }

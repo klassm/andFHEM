@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="fill_parent"
+             android:layout_height="fill_parent">
+    <TableRow android:id="@+id/tableRowFrom1">
+        <TextView android:text="@string/from1"
+                  style="@style/deviceDetailDescription" />
+        <TextView android:text="HH:MM"
+                  android:id="@+id/from1"
+                  style="@style/deviceDetailContent" />
+    </TableRow>
+    <TableRow android:id="@+id/tableRowTo1">
+        <TextView android:text="@string/to1"
+                  style="@style/deviceDetailDescription" />
+        <TextView android:text="HH:MM"
+                  android:id="@+id/to1"
+                  style="@style/deviceDetailContent" />
+    </TableRow>
+    <TableRow android:id="@+id/tableRowFrom2">
+        <TextView android:text="@string/from2"
+                  style="@style/deviceDetailDescription" />
+        <TextView android:text="HH:MM"
+                  android:id="@+id/from2"
+                  android:layout_column="2"
+                  style="@style/deviceDetailContent" />
+    </TableRow>
+    <TableRow android:id="@+id/tableRowTo2">
+        <TextView android:text="@string/to2"
+                  style="@style/deviceDetailDescription" />
+        <TextView android:text="HH:MM"
+                  android:id="@+id/to2"
+                  style="@style/deviceDetailContent" />
+    </TableRow>
+    <!--<TableRow>-->
+        <!--<TextView android:text=""-->
+                  <!--style="@style/deviceDetailDescription" />-->
+        <!--<Button android:id="@+id/set"-->
+                <!--android:text="@string/change"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_width="fill_parent"-->
+                <!--/>-->
+    <!--</TableRow>-->
+
+</TableLayout>
