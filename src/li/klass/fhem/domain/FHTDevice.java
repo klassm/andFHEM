@@ -124,4 +124,16 @@ public class FHTDevice extends Device<FHTDevice> implements Serializable {
         }
         return false;
     }
+
+    public void resetDayControlMapValues() {
+        for (FHTDayControl fhtDayControl : dayControlMap.values()) {
+            fhtDayControl.reset();
+        }
+    }
+
+    public void setChangedDayControlMapValuesAsCurrent() {
+        for (FHTDayControl fhtDayControl : dayControlMap.values()) {
+            fhtDayControl.setChangedAsCurrent();
+        }
+    }
 }

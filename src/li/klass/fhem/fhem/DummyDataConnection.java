@@ -57,6 +57,6 @@ public class DummyDataConnection implements FHEMConnection {
 
     @Override
     public void executeCommand(String command) {
-        Log.d(DummyDataConnection.class.getName(), "execute command " + command);
+        Log.e(DummyDataConnection.class.getName(), "execute command " + command);
     }
 }

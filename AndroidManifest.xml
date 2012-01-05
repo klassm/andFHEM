@@ -28,7 +28,7 @@
         <activity android:name=".activities.deviceDetail.OregonDeviceDetailActivity" android:theme="@android:style/Theme.Light" />
         <activity android:name=".activities.deviceDetail.USBWXDeviceDetailActivity" android:theme="@android:style/Theme.Light" />
 
-        <activity android:name=".activities.fhtControl.FHTControlListActivity" android:theme="@android:style/Theme.Light" />
+        <activity android:name=".activities.fhtControl.FHTTimetableControlListActivity" android:theme="@android:style/Theme.Light" />
 
         <activity android:name="org.achartengine.GraphicalActivity"/>
     </application>

@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.*;
 import li.klass.fhem.R;
 import li.klass.fhem.activities.deviceDetail.FHTDeviceDetailActivity;
-import li.klass.fhem.activities.fhtControl.FHTControlListActivity;
+import li.klass.fhem.activities.fhtControl.FHTTimetableControlListActivity;
 import li.klass.fhem.adapter.devices.core.DeviceDetailAvailableAdapter;
 import li.klass.fhem.domain.Device;
 import li.klass.fhem.domain.FHTDevice;
@@ -88,7 +88,7 @@ public class FHTAdapter extends DeviceDetailAvailableAdapter<FHTDevice> {
         timetableButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, FHTControlListActivity.class);
+                Intent intent = new Intent(context, FHTTimetableControlListActivity.class);
                 intent.putExtras(new Bundle());
                 intent.putExtra("deviceName", device.getName());
                 context.startActivity(intent);

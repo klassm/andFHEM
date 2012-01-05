@@ -48,6 +48,11 @@ public abstract class DeviceDetailActivity<D extends Device> extends BaseActivit
             @Override
             public void onRoomListRefresh(RoomDeviceList roomDeviceList) {
                 D device = roomDeviceList.getDeviceFor(deviceName);
+                if (device == null) {
+                    finish();
+                    return;
+                }
+                
                 DeviceAdapter<D> adapter = DeviceType.getAdapterFor(device);
                 setContentView(adapter.getDetailView(DeviceDetailActivity.this, device));
             }

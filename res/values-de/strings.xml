@@ -88,6 +88,7 @@
     <string name="okButton">OK</string>
     <string name="cancelButton">Abbrechen</string>
     <string name="save">Speichern</string>
+    <string name="reset">Zurücksetzen</string>
 
     <string name="welcomeMessageTitle">Erster Start</string>
     <string name="welcomeMessage">
@@ -142,6 +143,9 @@
     <string name="to1">(1) Bis</string>
     <string name="to2">(2) Bis</string>
     <string name="change">Ändern</string>
+    <string name="on">an</string>
+    <string name="off">aus</string>
+
 
 
 

@@ -5,11 +5,27 @@
               android:layout_height="fill_parent"
               android:orientation="vertical">
 
-    <Button android:layout_height="wrap_content"
-            android:layout_width="fill_parent"
-            android:id="@+id/save"
-            android:text="@string/save"
-            android:visibility="gone"/>
+    <TableLayout android:layout_height="wrap_content"
+                 android:layout_width="fill_parent"
+                 android:orientation="horizontal"
+                 android:id="@+id/changeValueButtonHolder">
+        <TableRow>
+            <Button android:layout_height="wrap_content"
+                    android:layout_width="fill_parent"
+                    android:id="@+id/save"
+                    android:text="@string/save"
+                    android:layout_weight="2"
+                    />
+            <Button android:layout_height="wrap_content"
+                    android:layout_width="fill_parent"
+                    android:id="@+id/reset"
+                    android:text="@string/reset"
+                    android:layout_weight="1"
+                    />
+        </TableRow>
+
+
+    </TableLayout>
 
     <li.klass.fhem.widget.NestedListView
             android:layout_width="fill_parent"

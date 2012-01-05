@@ -9,6 +9,10 @@
         <TextView android:text="HH:MM"
                   android:id="@+id/from1"
                   style="@style/deviceDetailContent" />
+        <Button android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:id="@+id/from1Set"
+                android:text="@string/change" />
     </TableRow>
     <TableRow android:id="@+id/tableRowTo1">
         <TextView android:text="@string/to1"
@@ -16,6 +20,10 @@
         <TextView android:text="HH:MM"
                   android:id="@+id/to1"
                   style="@style/deviceDetailContent" />
+        <Button android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:id="@+id/to1Set"
+                android:text="@string/change" />
     </TableRow>
     <TableRow android:id="@+id/tableRowFrom2">
         <TextView android:text="@string/from2"
@@ -24,6 +32,10 @@
                   android:id="@+id/from2"
                   android:layout_column="2"
                   style="@style/deviceDetailContent" />
+        <Button android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:id="@+id/from2Set"
+                android:text="@string/change" />
     </TableRow>
     <TableRow android:id="@+id/tableRowTo2">
         <TextView android:text="@string/to2"
@@ -31,15 +43,10 @@
         <TextView android:text="HH:MM"
                   android:id="@+id/to2"
                   style="@style/deviceDetailContent" />
+        <Button android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:id="@+id/to2Set"
+                android:text="@string/change" />
     </TableRow>
-    <!--<TableRow>-->
-        <!--<TextView android:text=""-->
-                  <!--style="@style/deviceDetailDescription" />-->
-        <!--<Button android:id="@+id/set"-->
-                <!--android:text="@string/change"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_width="fill_parent"-->
-                <!--/>-->
-    <!--</TableRow>-->
 
 </TableLayout>

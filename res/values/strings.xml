@@ -88,6 +88,7 @@
     <string name="okButton">OK</string>
     <string name="cancelButton">Cancel</string>
     <string name="save">Save</string>
+    <string name="reset">Reset</string>
 
     <string name="welcomeMessageTitle">Get Started</string>
     <string name="welcomeMessage">
@@ -142,5 +143,7 @@
     <string name="to1">(1) To</string>
     <string name="to2">(2) To</string>
     <string name="change">change</string>
+    <string name="on">on</string>
+    <string name="off">off</string>
 
 </resources>
