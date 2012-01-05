@@ -19,6 +19,33 @@ import li.klass.fhem.service.device.FHTService;
 import static li.klass.fhem.domain.FHTDevice.*;
 
 public class FHTAdapter extends DeviceDetailAvailableAdapter<FHTDevice> {
+
+    private interface TemperatureValueSeekBarChangeListener {
+        void onSeekBarValueChanged(double newTemperature);
+    }
+
+    private abstract class TemperatureViewSeekBarChangeListener implements SeekBar.OnSeekBarChangeListener {
+        protected double value;
+        protected View view;
+        protected int updateTextFieldId;
+        private int tableRowUpdateTextFieldId;
+
+        protected TemperatureViewSeekBarChangeListener(View view, int tableRowUpdateTextFieldId, int updateTextFieldId) {
+            this.view = view;
+            this.updateTextFieldId = updateTextFieldId;
+            this.tableRowUpdateTextFieldId = tableRowUpdateTextFieldId;
+        }
+
+        @Override
+        public void onProgressChanged(SeekBar seekBar, int progress, boolean byUser) {
+            this.value = 5.5 + (progress * 0.5);
+            setTextViewOrHideTableRow(view, tableRowUpdateTextFieldId, updateTextFieldId, temperatureToString(value));
+        }
+        @Override
+        public void onStartTrackingTouch(SeekBar seekBar) {
+        }
+    }
+    
     @Override
     public View getDeviceView(LayoutInflater layoutInflater, FHTDevice device) {
         View view = layoutInflater.inflate(R.layout.room_detail_fht, null);
@@ -37,23 +64,46 @@ public class FHTAdapter extends DeviceDetailAvailableAdapter<FHTDevice> {
         setTextViewOrHideTableRow(view, R.id.tableRowTemperature, R.id.temperature, device.getTemperature());
         setTextViewOrHideTableRow(view, R.id.tableRowActuator, R.id.actuator, device.getActuator());
         setTextViewOrHideTableRow(view, R.id.tableRowDesiredTemperature, R.id.desiredTemperature, device.getDesiredTempDesc());
-        setTextViewOrHideTableRow(view, R.id.tableRowWarnings, R.id.warnings, device.getWarningsDesc());
+        setTextViewOrHideTableRow(view, R.id.tableRowDayTemp, R.id.dayTemperature, device.getDayTemperatureDesc());
+        setTextViewOrHideTableRow(view, R.id.tableRowNightTemp, R.id.nightTemperature, device.getNightTemperatureDesc());
+        setTextViewOrHideTableRow(view, R.id.tableRowWindowOpenTemp, R.id.windowOpenTemp, device.getWindowOpenTempDesc());
+        setTextViewOrHideTableRow(view, R.id.tableRowWarnings, R.id.warnings, device.getWarnings());
+
+        createSeekBar(view, R.id.desiredTemperatureSeek, R.id.tableRowDesiredTemperature, R.id.desiredTemperature, device.getDesiredTemp(),
+                new TemperatureValueSeekBarChangeListener() {
+            @Override
+            public void onSeekBarValueChanged(double newTemperature) {
+                FHTService.INSTANCE.setDesiredTemperature(context, device, newTemperature);
+            }
+        });
+
+        createSeekBar(view, R.id.dayTemperatureSeek, R.id.tableRowDayTemp, R.id.dayTemperature, device.getDayTemperature(),
+                new TemperatureValueSeekBarChangeListener() {
+            @Override
+            public void onSeekBarValueChanged(double newTemperature) {
+                FHTService.INSTANCE.setDayTemp(context, device, newTemperature);
+            }
+        });
+
+        createSeekBar(view, R.id.nightTemperatureSeek, R.id.tableRowNightTemp, R.id.nightTemperature, device.getNightTemperature(),
+                new TemperatureValueSeekBarChangeListener() {
+            @Override
+            public void onSeekBarValueChanged(double newTemperature) {
+                FHTService.INSTANCE.setNightTemp(context, device, newTemperature);
+            }
+        });
+
+        createSeekBar(view, R.id.windowOpenTempSeek, R.id.tableRowWindowOpenTemp, R.id.windowOpenTemp, device.getWindowOpenTemp(),
+                new TemperatureValueSeekBarChangeListener() {
+            @Override
+            public void onSeekBarValueChanged(double newTemperature) {
+                FHTService.INSTANCE.setWindowOpenTemp(context, device, newTemperature);
+            }
+        });
 
         final SeekBar desiredTempSeekBar = (SeekBar) view.findViewById(R.id.desiredTemperatureSeek);
         desiredTempSeekBar.setProgress((int) ((device.getDesiredTemp() - 5.5) / 0.5));
-        desiredTempSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            private double value;
-
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean byUser) {
-                this.value = 5.5 + (progress * 0.5);
-                setTextViewOrHideTableRow(view, R.id.tableRowDesiredTemperature, R.id.desiredTemperature, desiredTemperatureToString(value));
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-            }
-
+        desiredTempSeekBar.setOnSeekBarChangeListener(new TemperatureViewSeekBarChangeListener(view, R.id.tableRowDesiredTemperature, R.id.desiredTemperature) {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 FHTService.INSTANCE.setDesiredTemperature(seekBar.getContext(), device, value);
@@ -109,5 +159,18 @@ public class FHTAdapter extends DeviceDetailAvailableAdapter<FHTDevice> {
     @Override
     protected Class<? extends Activity> getDeviceDetailActivity() {
         return FHTDeviceDetailActivity.class;
+    }
+
+    private void createSeekBar(View view, int seekBarLayoutId, int tableRowUpdateTextFieldId, int updateTextFieldId,
+                               double initialTemperature, final TemperatureValueSeekBarChangeListener listener) {
+        final SeekBar desiredTempSeekBar = (SeekBar) view.findViewById(seekBarLayoutId);
+        desiredTempSeekBar.setProgress((int) ((initialTemperature - 5.5) / 0.5));
+        desiredTempSeekBar.setOnSeekBarChangeListener(new TemperatureViewSeekBarChangeListener(view, tableRowUpdateTextFieldId, updateTextFieldId) {
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                listener.onSeekBarValueChanged(value);
+            }
+        });
+
     }
 }

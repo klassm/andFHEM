@@ -17,9 +17,12 @@ public class FHTDevice extends Device<FHTDevice> implements Serializable {
     private String actuator;
     private FHTMode mode;
     private double desiredTemp;
+    private double dayTemperature;
+    private double nightTemperature;
+    private double windowOpenTemp;
     private String warnings;
     private String temperature;
-    
+
     private Map<Integer, FHTDayControl> dayControlMap = new HashMap<Integer, FHTDayControl>();
 
     public static final Integer COLUMN_SPEC_TEMPERATURE = R.string.temperature;
@@ -43,7 +46,13 @@ public class FHTDevice extends Device<FHTDevice> implements Serializable {
             warnings = nodeContent;
         } else if (keyValue.equals("MODE")) {
             this.mode = FHTMode.valueOf(nodeContent.toUpperCase());
-        } else if (keyValue.endsWith("FROM1") || keyValue.endsWith("FROM2") || keyValue.endsWith("TO1") || keyValue.endsWith("TO2")) {
+        } else if (keyValue.equals("DAY-TEMP")) {
+            dayTemperature = ValueExtractUtil.extractLeadingDouble(nodeContent);
+        } else if (keyValue.equals("NIGHT-TEMP")) {
+            nightTemperature = ValueExtractUtil.extractLeadingDouble(nodeContent);
+        } else if (keyValue.equals("WINDOWOPEN-TEMP")) {
+            windowOpenTemp = ValueExtractUtil.extractLeadingDouble(nodeContent);
+        }else if (keyValue.endsWith("FROM1") || keyValue.endsWith("FROM2") || keyValue.endsWith("TO1") || keyValue.endsWith("TO2")) {
             String shortName = keyValue.substring(0, 3);
             FHTDayControl dayControl = dayControlMap.get(DayUtil.getDayStringIdForShortName(shortName));
 
@@ -74,14 +83,50 @@ public class FHTDevice extends Device<FHTDevice> implements Serializable {
     }
 
     public String getDesiredTempDesc() {
-        return desiredTemperatureToString(desiredTemp);
+        return temperatureToString(desiredTemp);
     }
 
     public double getDesiredTemp() {
         return desiredTemp;
     }
 
-    public String getWarningsDesc() {
+    public String getDayTemperatureDesc() {
+        return temperatureToString(dayTemperature);
+    }
+
+    public double getDayTemperature() {
+        return dayTemperature;
+    }
+
+    public void setDayTemperature(double dayTemperature) {
+        this.dayTemperature = dayTemperature;
+    }
+
+    public String getNightTemperatureDesc() {
+        return temperatureToString(nightTemperature);
+    }
+
+    public double getNightTemperature() {
+        return nightTemperature;
+    }
+
+    public void setNightTemperature(double nightTemperature) {
+        this.nightTemperature = nightTemperature;
+    }
+
+    public String getWindowOpenTempDesc() {
+        return temperatureToString(windowOpenTemp);
+    }
+
+    public double getWindowOpenTemp() {
+        return windowOpenTemp;
+    }
+
+    public void setWindowOpenTemp(double windowOpenTemp) {
+        this.windowOpenTemp = windowOpenTemp;
+    }
+
+    public String getWarnings() {
         return warnings;
     }
 
@@ -106,7 +151,7 @@ public class FHTDevice extends Device<FHTDevice> implements Serializable {
         return columnSpecification;
     }
     
-    public static String desiredTemperatureToString(double temperature) {
+    public static String temperatureToString(double temperature) {
         if (temperature == 5.5) {
             return "off";
         } else if (temperature == 30.5) {

@@ -145,5 +145,8 @@
     <string name="change">change</string>
     <string name="on">on</string>
     <string name="off">off</string>
+    <string name="dayTemperature">Day Temperature</string>
+    <string name="nightTemperature">Night Temperature</string>
+    <string name="windowOpenTemp">Window Open Temp.</string>
 
 </resources>

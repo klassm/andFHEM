@@ -41,6 +41,42 @@ public class FHTService {
         }
     }
 
+    public void setDayTemp(Context context, final FHTDevice device, final double dayTemperature) {
+        if (device.getDayTemperature() != dayTemperature) {
+            String command = "set " + device.getName() + " day-temp " + dayTemperature;
+            CommandExecutionService.INSTANCE.executeSafely(context, command, new ExecuteOnSuccess() {
+                @Override
+                public void onSuccess() {
+                    device.setDayTemperature(dayTemperature);
+                }
+            });
+        }
+    }
+
+    public void setNightTemp(Context context, final FHTDevice device, final double nightTemperature) {
+        if (device.getNightTemperature() != nightTemperature) {
+            String command = "set " + device.getName() + " day-temp " + nightTemperature;
+            CommandExecutionService.INSTANCE.executeSafely(context, command, new ExecuteOnSuccess() {
+                @Override
+                public void onSuccess() {
+                    device.setNightTemperature(nightTemperature);
+                }
+            });
+        }
+    }
+
+    public void setWindowOpenTemp(Context context, final FHTDevice device, final double windowOpenTemp) {
+        if (device.getNightTemperature() != windowOpenTemp) {
+            String command = "set " + device.getName() + " windowopen-temp " + windowOpenTemp;
+            CommandExecutionService.INSTANCE.executeSafely(context, command, new ExecuteOnSuccess() {
+                @Override
+                public void onSuccess() {
+                    device.setWindowOpenTemp(windowOpenTemp);
+                }
+            });
+        }
+    }
+
     public void setTimetableFor(Context context, final FHTDevice fhtDevice) {
         if (! fhtDevice.hasChangedDayControlMapValues()) {
             return;
