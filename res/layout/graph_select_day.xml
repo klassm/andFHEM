@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent">
+
+    <TableLayout android:layout_height="wrap_content"
+                 android:layout_width="fill_parent"
+                 android:layout_marginTop="10dp">
+        <TableRow>
+            <TextView android:text="@string/startDate"
+                      style="@style/deviceDetailDescription" />
+            <TextView android:id="@+id/startDate"
+                      android:text="01.01.2012"
+                      style="@style/deviceDetailContent" />
+            <Button android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:id="@+id/startDateSet"
+                    android:text="@string/change" />
+        </TableRow>
+
+        <TableRow>
+            <TextView android:text="@string/endDate"
+                      style="@style/deviceDetailDescription" />
+            <TextView android:id="@+id/endDate"
+                      android:text="02.01.2012"
+                      style="@style/deviceDetailContent" />
+            <Button android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:id="@+id/endDateSet"
+                    android:text="@string/change" />
+        </TableRow>
+        <Button android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:id="@+id/okButton"
+                android:text="@string/okButton"
+                android:layout_marginTop="20dp"/>
+
+    </TableLayout>
+
+</LinearLayout>

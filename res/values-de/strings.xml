@@ -116,6 +116,11 @@
     <string name="yAxisRainTotal">Regenmenge (l/m2)</string>
     <string name="yAxisWindSpeed">Windgeschwindigkeit (km/h)</string>
 
+    <string name="startDate">Start-Datum</string>
+    <string name="endDate">End-Datum</string>
+    <string name="startDateAfterEndDateMsg">Start-Datum muss vor End-Datum sein.</string>
+    <string name="optionChangeStartEndDate">Start- /End-Datum ändern</string>
+
     <string name="generalDetails">Allgemeine Informationen</string>
     <string name="plots">Graphen</string>
     <string name="switchSetOptions">Schaltoptionen</string>

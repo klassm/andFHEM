@@ -1,12 +1,18 @@
 package li.klass.fhem.service.graph;
 
+import android.content.Context;
 import android.util.Log;
 import li.klass.fhem.domain.Device;
 import li.klass.fhem.fhem.DataConnectionSwitch;
+import li.klass.fhem.service.ExecuteOnSuccess;
+import li.klass.fhem.service.UpdateDialogAsyncTask;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class GraphService {
     public static final GraphService INSTANCE = new GraphService();
@@ -14,88 +20,67 @@ public class GraphService {
     private GraphService() {
     }
 
-
-    public Map<String, List<GraphEntry>> getGraphData(Device device, List<String> columnSpecifications) {
-        if (device.getFileLog() == null) return null;
+    public void getGraphData(Context context, final Device device, final List<String> columnSpecifications, final Calendar startDate, final Calendar endDate, final GraphDataReceivedListener listener) {
+        if (device.getFileLog() == null) return;
 
         Map<String, List<GraphEntry>> data = new HashMap<String, List<GraphEntry>>();
+        final AtomicReference<Map<String, List<GraphEntry>>> dataReference = new AtomicReference<Map<String, List<GraphEntry>>>(data);
 
-        GraphService graphProvider = GraphService.INSTANCE;
-        for (String columnSpec : columnSpecifications) {
-            String fileLogDeviceName = device.getFileLog().getName();
-            List<GraphEntry> valueEntries = graphProvider.getCurrentGraphEntriesFor(fileLogDeviceName, columnSpec);
-            data.put(columnSpec, valueEntries);
-        }
+        ExecuteOnSuccess executeOnSuccess = new ExecuteOnSuccess() {
+            @Override
+            public void onSuccess() {
+                listener.graphDataReceived(dataReference.get());
+            }
+        };
 
-        return data;
+        new UpdateDialogAsyncTask(context, executeOnSuccess) {
+
+            @Override
+            protected void executeCommand() {
+                for (String columnSpec : columnSpecifications) {
+                    String fileLogDeviceName = device.getFileLog().getName();
+                    List<GraphEntry> valueEntries = getCurrentGraphEntriesFor(fileLogDeviceName, columnSpec, startDate, endDate);
+                    dataReference.get().put(columnSpec, valueEntries);
+                }
+
+            }
+        }.executeTask();
     }
 
-    public List<GraphEntry> getCurrentGraphEntriesFor(String fileLogName, String columnSpec) {
-        Date now = new Date();
-        Date today = new Date(now.getYear(), now.getMonth(), now.getDate());
-        Date yesterday = new Date(today.getTime() - 24 * 60 * 60 * 1000);
-
+    public List<GraphEntry> getCurrentGraphEntriesFor(String fileLogName, String columnSpec, Calendar startDate, Calendar endDate) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM");
 
-        String result = DataConnectionSwitch.INSTANCE.getCurrentProvider().fileLogData(fileLogName, yesterday, today, columnSpec);
+        String startDateFormat = dateFormat.format(startDate.getTime());
+        String endDateFormat = dateFormat.format(endDate.getTime());
+
+        String result = DataConnectionSwitch.INSTANCE.getCurrentProvider().fileLogData(fileLogName, startDate.getTime(), endDate.getTime(), columnSpec);
         result = result.replace("#" + columnSpec, "");
 
-        String yesterdayFormat = dateFormat.format(yesterday);
-        String todayFormat = dateFormat.format(today);
-
-        List<String> parts = splitIntoParts(result, yesterdayFormat, todayFormat);
-
-        return partsToGraphEntries(parts);
+        return findGraphEntries(result);
     }
 
-    private List<GraphEntry> partsToGraphEntries(List<String> parts) {
-        SortedSet<GraphEntry> entries = new TreeSet<GraphEntry> ();
+    private List<GraphEntry> findGraphEntries(String content) {
+        Pattern pattern = Pattern.compile("([\\d]{4}-[\\d]{2}-[\\d]{2}_[\\d]{2}:[\\d]{2}:[\\d]{2}) ([\\d\\.]+(?=[\\d]{4}))");
+        Matcher matcher = pattern.matcher(content);
 
+        List<GraphEntry> result = new ArrayList<GraphEntry>();
         SimpleDateFormat providedDateFormat = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
 
-        Date currentDate = null;
-        float currentValue;
-        for (String part : parts) {
-            if (part.trim().length() == 0) {
-                continue;
-            }
+        while(matcher.find()) {
+            String entryTime = matcher.group(1);
+            String entryValue = matcher.group(2);
 
-            if (part.contains("-") && part.contains("_")) {
-                try {
-                    currentDate = providedDateFormat.parse(part);
-                } catch (ParseException e) {
-                    Log.e(GraphService.class.getName(), "cannot parse date " + part, e);
-                }
-            } else if (! part.substring(1).contains("-") && currentDate != null) {
-                try {
-                    currentValue = Float.valueOf(part);
-                    GraphEntry graphEntry = new GraphEntry(currentDate, currentValue);
-                    entries.add(graphEntry);
-                } catch (NumberFormatException e) {
-                    Log.e(GraphService.class.getName(), "cannot format " + part, e);
-                }
+            try {
+
+                result.add(new GraphEntry(providedDateFormat.parse(entryTime), Float.valueOf(entryValue)));
+            } catch (ParseException e) {
+                Log.e(GraphService.class.getName(), "cannot parse date " + entryTime, e);
+            } catch (NumberFormatException e) {
+                Log.e(GraphService.class.getName(), "cannot parse number " + entryValue, e);
             }
         }
 
-        return new ArrayList<GraphEntry>(entries);
+        return result;
     }
 
-    private List<String> splitIntoParts(String result, String yesterdayFormat, String todayFormat) {
-        List<String> parts = new ArrayList<String>();
-        String[] split = result.split(" ");
-        for (String s : split) {
-            if (s.contains(yesterdayFormat)) {
-                String[] split1 = s.split(yesterdayFormat);
-                parts.add(split1[0]);
-                parts.add(yesterdayFormat + split1[1]);
-            } else if (s.contains(todayFormat)) {
-                String[] split1 = s.split(todayFormat);
-                parts.add(split1[0]);
-                parts.add(todayFormat + split1[1]);
-            } else {
-                parts.add(s);
-            }
-        }
-        return parts;
-    }
 }

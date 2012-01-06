@@ -30,7 +30,8 @@
 
         <activity android:name=".activities.fhtControl.FHTTimetableControlListActivity" android:theme="@android:style/Theme.Light" />
 
-        <activity android:name="org.achartengine.GraphicalActivity"/>
+        <activity android:name=".activities.graph.ChartingActivity"/>
+        <activity android:name=".activities.graph.ChartingDateSelectionActivity"/>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />

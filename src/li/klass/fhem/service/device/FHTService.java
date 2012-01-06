@@ -66,7 +66,7 @@ public class FHTService {
     }
 
     public void setWindowOpenTemp(Context context, final FHTDevice device, final double windowOpenTemp) {
-        if (device.getNightTemperature() != windowOpenTemp) {
+        if (device.getWindowOpenTemp() != windowOpenTemp) {
             String command = "set " + device.getName() + " windowopen-temp " + windowOpenTemp;
             CommandExecutionService.INSTANCE.executeSafely(context, command, new ExecuteOnSuccess() {
                 @Override

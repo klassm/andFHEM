@@ -9,8 +9,8 @@ import android.widget.Button;
 import android.widget.TableRow;
 import android.widget.TextView;
 import li.klass.fhem.R;
+import li.klass.fhem.activities.graph.ChartingActivity;
 import li.klass.fhem.domain.Device;
-import li.klass.fhem.graph.TimePlot;
 
 public abstract class DeviceAdapter<D extends Device> {
 
@@ -106,7 +106,7 @@ public abstract class DeviceAdapter<D extends Device> {
                 @Override
                 public void onClick(View view) {
                     String yTitle = context.getResources().getString(yTitleId);
-                    TimePlot.INSTANCE.execute(context, device, yTitle, columnSpec);
+                    ChartingActivity.showChart(context, device, yTitle, columnSpec);
                 }
             });
 
