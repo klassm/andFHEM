@@ -38,19 +38,35 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Map;
 
+/**
+ * Class containing all the functionality for managing room and device lists.
+ */
 public class RoomListService {
-    public static final RoomListService INSTANCE = new RoomListService();
 
+    /**
+     * Currently loaded device list map.
+     */
     private volatile Map<String,RoomDeviceList> deviceListMap;
+
+    /**
+     * file name of the current cache object.
+     */
     public static final String CACHE_FILENAME = "cache.obj";
 
-    private RoomListService() {
-    }
+    public static final RoomListService INSTANCE = new RoomListService();
+
+    private RoomListService() {}
 
     private interface RoomDeviceListMapListener {
         void onRoomDeviceListRefresh(Map<String,RoomDeviceList> deviceListMap);
     }
 
+    /**
+     * Retrieves a list of all room names.
+     * @param context context in which the action was started.
+     * @param refresh should the underlying {@link RoomDeviceList} be refreshed by asking FHEM for new values?
+     * @param listener listener to notify when the room list has been retrieved
+     */
     public void getRoomList(Context context, boolean refresh, final RoomListListener listener) {
         getRoomDeviceListMap(context, refresh, new RoomDeviceListMapListener() {
             @Override
@@ -66,7 +82,14 @@ public class RoomListService {
             }
         });
     }
-    
+
+    /**
+     * Gets or creates a new device list for a given room.
+     * @param context context in which the action was started.
+     * @param roomName room name used for searching
+     * @param update should the underlying {@link RoomDeviceList} be refreshed by asking FHEM for new values?
+     * @param listener listener to notify when the room list has been retrieved
+     */
     public void getOrCreateRoomDeviceList(Context context, final String roomName, boolean update,
                                                     final RoomDeviceListListener listener) {
 
@@ -84,6 +107,12 @@ public class RoomListService {
         });
     }
 
+    /**
+     * Retrieves a {@link RoomDeviceList} containing all devices, not only the devices of a specific room.
+     * @param context context in which the action was started.
+     * @param update should the underlying {@link RoomDeviceList} be refreshed by asking FHEM for new values?
+     * @param listener listener to notify when the room device list has been retrieved.
+     */
     public void getAllRoomsDeviceList(Context context, boolean update, final RoomDeviceListListener listener) {
         getRoomDeviceListMap(context, update, new RoomDeviceListMapListener() {
             @Override
@@ -93,7 +122,13 @@ public class RoomListService {
         });
     }
 
-
+    /**
+     * Retrieves the {@link RoomDeviceList} for a specific room name.
+     * @param context context context in which the action was started.
+     * @param roomName room name used for searching.
+     * @param update should the underlying {@link RoomDeviceList} be refreshed by asking FHEM for new values?
+     * @param listener listener to notify when the room device list has been retrieved.
+     */
     public void getRoomDeviceList(Context context, final String roomName, boolean update, final RoomDeviceListListener listener) {
         getRoomDeviceListMap(context, update, new RoomDeviceListMapListener() {
             @Override
@@ -103,6 +138,11 @@ public class RoomListService {
         });
     }
 
+    /**
+     * Removes the {@link RoomDeviceList} being associated to the given room name.
+     * @param context context context in which the action was started.
+     * @param roomName room name used for searching the room
+     */
     public void removeDeviceListForRoom(Context context, final String roomName) {
         getRoomDeviceListMap(context, false, new RoomDeviceListMapListener() {
             @Override
@@ -112,6 +152,13 @@ public class RoomListService {
         });
     }
 
+    /**
+     * Switch method deciding whether a FHEM has to be contacted, the cached list can be used or the map already has
+     * been loaded to the deviceListMap attribute.
+     * @param context context context context in which the action was started.
+     * @param update update should the underlying {@link RoomDeviceList} be refreshed by asking FHEM for new values?
+     * @param listener listener listener to notify when the room device list map has been retrieved.
+     */
     private void getRoomDeviceListMap(Context context, boolean update, RoomDeviceListMapListener listener) {
         if (update) {
             updateDeviceListMap(context, listener);
@@ -122,10 +169,11 @@ public class RoomListService {
         }
     }
 
-    public void storeDeviceListMap() {
-        cacheRoomDeviceListMap(deviceListMap);
-    }
-
+    /**
+     * Loads the most current room device list map from FHEM and saves it to the cache.
+     * @param context context context context in which the action was started.
+     * @param listener listener listener to notify when the room device list map has been retrieved.
+     */
     private void updateDeviceListMap(Context context, final RoomDeviceListMapListener listener) {
         ExecuteOnSuccess executeOnSuccess = new ExecuteOnSuccess() {
             @Override
@@ -138,7 +186,7 @@ public class RoomListService {
             @Override
             protected void executeCommand() {
                 deviceListMap = DeviceListParser.INSTANCE.listDevices();
-                cacheRoomDeviceListMap(deviceListMap);
+                storeDeviceListMap();
             }
 
             @Override
@@ -148,17 +196,24 @@ public class RoomListService {
         }.executeTask();
     }
 
-
-    private void cacheRoomDeviceListMap(Map<String, RoomDeviceList> content) {
+    /**
+     * Stores the currently loaded room device list map to the cache file.
+     */
+    public void storeDeviceListMap() {
         Context context = AndFHEMApplication.getContext();
         try {
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(context.openFileOutput(CACHE_FILENAME, Context.MODE_PRIVATE));
-            objectOutputStream.writeObject(content);
+            objectOutputStream.writeObject(deviceListMap);
         } catch (Exception e) {
             Log.e(CommandExecutionService.class.getName(), "error occurred while serializing data", e);
         }
     }
 
+    /**
+     * Loads the currently cached room device list map data from the file storage.
+     * @param context context context context in which the action was started.
+     * @param listener listener listener to notify when the room device list map has been retrieved.
+     */
     @SuppressWarnings("unchecked")
     private void loadStoredDataFromFile(Context context, RoomDeviceListMapListener listener) {
         try {

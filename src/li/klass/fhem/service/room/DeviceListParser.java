@@ -26,7 +26,7 @@ package li.klass.fhem.service.room;
 
 import li.klass.fhem.domain.Device;
 import li.klass.fhem.domain.DeviceType;
-import li.klass.fhem.domain.FileLog;
+import li.klass.fhem.domain.FileLogDevice;
 import li.klass.fhem.domain.RoomDeviceList;
 import li.klass.fhem.exception.DeviceListParseException;
 import li.klass.fhem.exception.HostConnectionException;
@@ -46,17 +46,29 @@ import java.util.Map;
 
 import static li.klass.fhem.domain.DeviceType.FILE_LOG;
 
+/**
+ * Class responsible for reading the current xml list from FHEM.
+ */
 public class DeviceListParser {
 
     public static final DeviceListParser INSTANCE = new DeviceListParser();
-    
+
     private DeviceListParser() {}
 
+    /**
+     * Reads the current device list, validates it by applying some regular expression replaces and extracts
+     * {@link RoomDeviceList} objects.
+     * @return Map of room names to their included devices.
+     * @throws HostConnectionException if the current FHEM server cannot be contacted
+     * @throws DeviceListParseException if the read xml content cannot be parsed
+     * @throws RuntimeException if some other exception occurred.
+     */
     public Map<String, RoomDeviceList> listDevices() {
 
         Map<String, RoomDeviceList> roomDeviceListMap = new HashMap<String, RoomDeviceList>();
         try {
             String xmlList = DataConnectionSwitch.INSTANCE.getCurrentProvider().xmllist();
+
             xmlList = xmlList.replaceAll("\"<", "\"&lt;");
             xmlList = xmlList.replaceAll(">\"", "&gt;\"");
             xmlList = xmlList.replaceAll("_internal_", "internal");
@@ -87,8 +99,17 @@ public class DeviceListParser {
         }
     }
 
+    /**
+     *
+     * @param deviceClass class of the device to read
+     * @param roomDeviceListMap room device list map to read the device into.
+     * @param document xml document to read
+     * @param tagName current tag name to read
+     * @param <T> type of device
+     * @throws Exception if something went utterly wrong
+     */
     private <T extends Device> void devicesFromDocument(Class<T> deviceClass, Map<String,
-            RoomDeviceList> roomDeviceListMap, Document document, String tagName) throws IllegalAccessException, InstantiationException {
+            RoomDeviceList> roomDeviceListMap, Document document, String tagName) throws Exception {
 
         NodeList nodes = document.getElementsByTagName(tagName);
         for (int i = 0; i < nodes.getLength(); i++) {
@@ -97,8 +118,17 @@ public class DeviceListParser {
         }
     }
 
+    /**
+     * Instantiates a new device from the given device class. The current {@link Node} to read will be provided to
+     * the device, so that it can extract any values.
+     * @param deviceClass class to instantiate
+     * @param roomDeviceListMap map used for saving the device
+     * @param node current xml node
+     * @param <T> specific device type
+     * @throws Exception if something went utterly wrong
+     */
     private <T extends Device> void deviceFromNode(Class<T> deviceClass, Map<String, RoomDeviceList> roomDeviceListMap, Node node)
-            throws InstantiationException, IllegalAccessException {
+            throws Exception {
 
         T device = deviceClass.newInstance();
         device.loadXML(node);
@@ -109,6 +139,13 @@ public class DeviceListParser {
         allRoomDeviceList.addDevice(device);
     }
 
+    /**
+     * Returns the {@link RoomDeviceList} if it is already included within the room-device list map. Otherwise,
+     * the appropriate list will be created, put into the map and returned.
+     * @param roomName room name to look for
+     * @param roomDeviceListMap current map including room names and associated device lists.
+     * @return matching {@link RoomDeviceList}
+     */
     private RoomDeviceList getOrCreateRoomDeviceList(String roomName, Map<String, RoomDeviceList> roomDeviceListMap) {
         if (roomDeviceListMap.containsKey(roomName)) {
             return roomDeviceListMap.get(roomName);
@@ -118,17 +155,27 @@ public class DeviceListParser {
         return roomDeviceList;
     }
 
+    /**
+     * Walks through all {@link li.klass.fhem.domain.FileLogDevice}s and tries to find the matching {@link Device} it
+     * is associated to.
+     * @param roomDeviceListMap map of room -> device
+     */
     private void addFileLogsToDevices(Map<String, RoomDeviceList> roomDeviceListMap) {
         RoomDeviceList allDevicesRoom = roomDeviceListMap.get(RoomDeviceList.ALL_DEVICES_ROOM);
         Collection<Device> devices = allDevicesRoom.getAllDevices();
 
-        Collection<FileLog> fileLogDevices = allDevicesRoom.getDevicesOfType(FILE_LOG);
-        for (FileLog fileLogDevice : fileLogDevices) {
+        Collection<FileLogDevice> fileLogDevices = allDevicesRoom.getDevicesOfType(FILE_LOG);
+        for (FileLogDevice fileLogDevice : fileLogDevices) {
             addFileLogToDevices(fileLogDevice, devices);
         }
     }
 
-    private void addFileLogToDevices(FileLog fileLogDevice, Collection<Device> devices) {
+    /**
+     * Walks through all devices and tries to find the matching {@link Device} for one given {@link FileLogDevice}.
+     * @param fileLogDevice {@link FileLogDevice}, of which the matching {@link Device} is searched
+     * @param devices devices to walk through.
+     */
+    private void addFileLogToDevices(FileLogDevice fileLogDevice, Collection<Device> devices) {
         for (Device device : devices) {
             if (device.getName().equals(fileLogDevice.getConcerningDeviceName())) {
                 device.setFileLog(fileLogDevice);

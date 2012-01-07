@@ -38,13 +38,30 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Class with the responsibility to provide {@link GraphEntry} objects for given column specifications. They will be
+ * used to retrieve FileLog entries within FHEM.
+ */
 public class GraphService {
     public static final GraphService INSTANCE = new GraphService();
 
     private GraphService() {
     }
 
-    public void getGraphData(Context context, final Device device, final List<String> columnSpecifications, final Calendar startDate, final Calendar endDate, final GraphDataReceivedListener listener) {
+    /**
+     * Retrieves {@link GraphEntry} objects from FHEM. When the entries are available, the given listener object will
+     * be notified.
+     * @param context context in which the action was started.
+     * @param device concerned device
+     * @param columnSpecifications column specifications to retrieve
+     * @param startDate read FileLog entries from the given date
+     * @param endDate read FileLog entries up to the given date
+     * @param listener listener to notify
+     */
+    public void getGraphData(Context context, final Device device, final List<String> columnSpecifications,
+                             final Calendar startDate, final Calendar endDate,
+                             final GraphDataReceivedListener listener) {
+
         if (device.getFileLog() == null) return;
 
         Map<String, List<GraphEntry>> data = new HashMap<String, List<GraphEntry>>();
@@ -71,18 +88,28 @@ public class GraphService {
         }.executeTask();
     }
 
+    /**
+     * Collects FileLog entries from FHEM matching a given column specification. The results will be turned into
+     * {@link GraphEntry} objects and be returned.
+     * @param fileLogName name of the fileLog. This usually equals to "FileLog_${deviceName}".
+     * @param columnSpec column specification to read.
+     * @param startDate read FileLog entries from the given date
+     * @param endDate read FileLog entries up to the given date
+     * @return read fileLog entries converted to {@link GraphEntry} objects.
+     */
     public List<GraphEntry> getCurrentGraphEntriesFor(String fileLogName, String columnSpec, Calendar startDate, Calendar endDate) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM");
-
-        String startDateFormat = dateFormat.format(startDate.getTime());
-        String endDateFormat = dateFormat.format(endDate.getTime());
-
         String result = DataConnectionSwitch.INSTANCE.getCurrentProvider().fileLogData(fileLogName, startDate.getTime(), endDate.getTime(), columnSpec);
         result = result.replace("#" + columnSpec, "");
 
         return findGraphEntries(result);
     }
 
+    /**
+     * Looks for any {@link GraphEntry} objects within the returned String. Unfortunately, FHEM does not return any
+     * line delimiters, to that a pretty complicated regular expression has to be applied.
+     * @param content content to parse
+     * @return found {@link GraphEntry} objects.
+     */
     private List<GraphEntry> findGraphEntries(String content) {
         Pattern pattern = Pattern.compile("([\\d]{4}-[\\d]{2}-[\\d]{2}_[\\d]{2}:[\\d]{2}:[\\d]{2}) ([\\d\\.]+(?=[\\d]{4}))");
         Matcher matcher = pattern.matcher(content);
@@ -106,5 +133,4 @@ public class GraphService {
 
         return result;
     }
-
 }

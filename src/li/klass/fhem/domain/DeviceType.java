@@ -36,7 +36,7 @@ public enum DeviceType {
     CUL_WS("CUL_WS", CULWSDevice.class, new CULWSAdapter()),
     SIS_PMS("SIS_PMS", SISPMSDevice.class, new SISPMSAdapter()),
     CUL_FHTTK("CUL_FHTTK", CULFHTTKDevice.class, new CULFHTTKAdapter()),
-    FILE_LOG("FileLog", FileLog.class, null),
+    FILE_LOG("FileLog", FileLogDevice.class, null),
     RFXX10REC("RFXX10REC", RFXX10RECDevice.class, new RFXX10RECAdapter()),
     OREGON("OREGON", OregonDevice.class, new OregonAdapter()),
     USBWX("USBWX", USBWXDevice.class, new USBWXAdapter()),

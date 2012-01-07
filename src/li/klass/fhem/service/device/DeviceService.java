@@ -35,12 +35,22 @@ import li.klass.fhem.service.ExecuteOnSuccess;
 import li.klass.fhem.service.room.RoomDeviceListListener;
 import li.klass.fhem.service.room.RoomListService;
 
+/**
+ * Class accumulating all device actions like renaming, moving or deleting.
+ */
 public class DeviceService {
+
     public static final DeviceService INSTANCE = new DeviceService();
 
     private DeviceService() {
     }
 
+    /**
+     * Rename a device.
+     * @param context context in which rename action was started.
+     * @param device concerned device
+     * @param newName new device name
+     */
     public void renameDevice(final Context context, final Device device, final String newName) {
         CommandExecutionService.INSTANCE.executeSafely(context, "rename " + device.getName() + " " + newName, new ExecuteOnSuccess() {
             @Override
@@ -51,6 +61,11 @@ public class DeviceService {
         });
     }
 
+    /**
+     * Deletes a device.
+     * @param context context in which rename action was started.
+     * @param device concerned device
+     */
     public void deleteDevice(final Context context, final Device device) {
         CommandExecutionService.INSTANCE.executeSafely(context, "delete " + device.getName(), new ExecuteOnSuccess() {
             @Override
@@ -69,9 +84,13 @@ public class DeviceService {
             }
         });
     }
-    
-    
 
+    /**
+     * Sets an alias for a device.
+     * @param context context in which rename action was started.
+     * @param device concerned device
+     * @param alias new alias to set
+     */
     public void setAlias(final Context context, final Device device, final String alias) {
         CommandExecutionService.INSTANCE.executeSafely(context, "attr " + device.getName() + " alias " + alias, new ExecuteOnSuccess() {
             @Override
@@ -83,6 +102,12 @@ public class DeviceService {
         });
     }
 
+    /**
+     * Moves a device.
+     * @param context context in which rename action was started.
+     * @param device concerned device
+     * @param newRoom new room to move the concerned device to.
+     */
     public void moveDevice(final Context context, final Device device, final String newRoom) {
         CommandExecutionService.INSTANCE.executeSafely(context, "attr " + device.getName() + " room " + newRoom, new ExecuteOnSuccess() {
             @Override
@@ -112,6 +137,5 @@ public class DeviceService {
                 });
             }
         });
-
     }
 }

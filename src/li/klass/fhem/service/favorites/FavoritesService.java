@@ -35,25 +35,40 @@ import li.klass.fhem.service.room.RoomListService;
 
 import java.util.Set;
 
+/**
+ * Class accumulating all methods to store and read favorites.
+ */
 public class FavoritesService {
 
     public static final FavoritesService INSTANCE = new FavoritesService();
     private static final String PREFERENCES_NAME = "favorites";
 
-    private FavoritesService() {
-    }
+    private FavoritesService() {}
 
+    /**
+     * Adds a new favorite device.
+     * @param device device to add.
+     */
     public void addFavorite(Device device) {
-        getPreferences()
-                .edit().
-                putString(device.getName(), device.getName())
-                .commit();
+        SharedPreferences.Editor editor = getPreferences().edit();
+        editor.putString(device.getName(), device.getName()).commit();
     }
 
+    /**
+     * Removes a favorite.
+     * @param device favorite to remove.
+     */
     public void removeFavorite(Device device) {
-        getPreferences().edit().remove(device.getName()).commit();
+        SharedPreferences.Editor editor = getPreferences().edit();
+        editor.remove(device.getName()).commit();
     }
 
+    /**
+     * Reads all saved favorite devices. The result will be provided to the given listener.
+     * @param context context in which the action was started.
+     * @param refresh should the underlying {@link RoomDeviceList} be refreshed by asking FHEM for new values?
+     * @param listener listener to notify when the favorites list has been retireved.
+     */
     public void getFavorites(Context context, boolean refresh, final RoomDeviceListListener listener) {
 
         RoomListService.INSTANCE.getAllRoomsDeviceList(context, refresh, new RoomDeviceListListener() {
@@ -74,6 +89,9 @@ public class FavoritesService {
         });
     }
 
+    /**
+     * @return the {@link SharedPreferences} object.
+     */
     private SharedPreferences getPreferences() {
         return AndFHEMApplication.getContext().getSharedPreferences(PREFERENCES_NAME, Activity.MODE_PRIVATE);
     }

@@ -105,7 +105,7 @@ public class FHTAdapter extends DeviceDetailAvailableAdapter<FHTDevice> {
                 new TemperatureValueSeekBarChangeListener() {
             @Override
             public void onSeekBarValueChanged(double newTemperature) {
-                FHTService.INSTANCE.setDayTemp(context, device, newTemperature);
+                FHTService.INSTANCE.setDayTemperature(context, device, newTemperature);
             }
         });
 

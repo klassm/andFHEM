@@ -26,9 +26,11 @@ package li.klass.fhem.service.graph;
 
 import java.util.Date;
 
+/**
+ * Transfer object representing one dot within a future graph.
+ */
 public class GraphEntry implements Comparable<GraphEntry> {
     private float value;
-
     private Date date;
 
     public GraphEntry(Date date, float value) {

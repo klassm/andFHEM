@@ -44,7 +44,7 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
     protected String alias;
     protected String measured;
 
-    protected volatile FileLog fileLog;
+    protected volatile FileLogDevice fileLog;
 
     public void loadXML(Node xml) {
         NodeList childNodes = xml.getChildNodes();
@@ -153,11 +153,11 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
         return getName().compareTo(t.getName());
     }
 
-    public FileLog getFileLog() {
+    public FileLogDevice getFileLog() {
         return fileLog;
     }
 
-    public void setFileLog(FileLog fileLog) {
+    public void setFileLog(FileLogDevice fileLog) {
         this.fileLog = fileLog;
     }
 

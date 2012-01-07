@@ -51,7 +51,7 @@ public class RoomDeviceList implements Serializable {
         if (device == null) return;
         getOrCreateDeviceList(DeviceType.getDeviceTypeFor(device)).add(device);
         
-        if (! (device instanceof FileLog)) {
+        if (! (device instanceof FileLogDevice)) {
             containsOnlyLogDevices = false;
         }
     }

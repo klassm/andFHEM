@@ -29,28 +29,52 @@ import li.klass.fhem.domain.FS20Device;
 import li.klass.fhem.service.CommandExecutionService;
 import li.klass.fhem.service.ExecuteOnSuccess;
 
+/**
+ * Class accumulating FS20 specific operations. Changes will be executed using FHEM.
+ */
 public class FS20Service {
     public static final FS20Service INSTANCE = new FS20Service();
 
     private FS20Service() {
     }
-    
+
+    /**
+     * Sets a specific state for the FS20 device.
+     * @param context context in which rename action was started.
+     * @param device concerned device
+     * @param newState state to set
+     * @param executeOnSuccess action, which will be performed on success.
+     */
     public void setState(Context context, FS20Device device, String newState, ExecuteOnSuccess executeOnSuccess) {
         CommandExecutionService.INSTANCE.executeSafely(context, "set " + device.getName() + " " + newState, executeOnSuccess);
         device.setState(newState);
     }
 
-    public void toggleState(Context context, FS20Device fs20Device, ExecuteOnSuccess executeOnSuccess) {
-        if (fs20Device.isOn()) {
-            setState(context, fs20Device, "off", executeOnSuccess);
+    /**
+     * Toggles the state of an FS20 device.
+     * @param context context in which the action was started.
+     * @param device concerned device
+     * @param executeOnSuccess action, which will be performed on success.
+     */
+    public void toggleState(Context context, FS20Device device, ExecuteOnSuccess executeOnSuccess) {
+        if (device.isOn()) {
+            setState(context, device, "off", executeOnSuccess);
         } else {
-            setState(context, fs20Device, "on", executeOnSuccess);
+            setState(context, device, "on", executeOnSuccess);
         }
     }
 
-    public void dim(Context context, FS20Device fs20Device, int dimProgress, ExecuteOnSuccess executeOnSuccess) {
-        if (! fs20Device.isDimDevice()) return;
-        int bestMatch = fs20Device.getBestDimMatchFor(dimProgress);
+    /**
+     * Dims an FS20 device.
+     * @param context context in which the action was started.
+     * @param device concerned device
+     * @param dimProgress dim state to set. The progress will be matched against the available FS20 dim options.
+     *                    The best match will be used for dimming.
+     * @param executeOnSuccess action, which will be performed on success.
+     */
+    public void dim(Context context, FS20Device device, int dimProgress, ExecuteOnSuccess executeOnSuccess) {
+        if (! device.isDimDevice()) return;
+        int bestMatch = device.getBestDimMatchFor(dimProgress);
 
         String newState;
         if (bestMatch == 0)
@@ -59,6 +83,6 @@ public class FS20Service {
             newState = "dim" + String.format("%02d", bestMatch) + "%";
         }
 
-        setState(context, fs20Device, newState, executeOnSuccess);
+        setState(context, device, newState, executeOnSuccess);
     }
 }

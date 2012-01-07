@@ -26,7 +26,7 @@ package li.klass.fhem.domain;
 
 import org.w3c.dom.NamedNodeMap;
 
-public class FileLog extends Device<FileLog> {
+public class FileLogDevice extends Device<FileLogDevice> {
 
     private String concerningDeviceName;
 

@@ -56,10 +56,22 @@ public abstract class BaseActivity<ADAPTER> extends Activity implements Updateab
     public static final int CONTEXT_MENU_MOVE = 5;
     public static final int CONTEXT_MENU_ALIAS = 6;
 
+    /**
+     * Attribute is set whenever a context menu concerning a device is clicked. This is the only way to actually get
+     * the concerned device.
+     */
     protected Device contextMenuClickedDevice;
+
+    /**
+     * Time when the back button was hit.
+     */
     private long backPressStart;
+
     protected ADAPTER adapter;
 
+    /**
+     * Whenever a service action is executed, this action should be given to be executed after succeeding the action.
+     */
     protected ExecuteOnSuccess updateOnSuccessAction = new ExecuteOnSuccess() {
         @Override
         public void onSuccess() {

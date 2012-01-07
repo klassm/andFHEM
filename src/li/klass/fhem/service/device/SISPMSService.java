@@ -29,12 +29,21 @@ import li.klass.fhem.domain.SISPMSDevice;
 import li.klass.fhem.service.CommandExecutionService;
 import li.klass.fhem.service.ExecuteOnSuccess;
 
+/**
+ * Class accumulating SIS_PMS specific operations.
+ */
 public class SISPMSService {
     public static final SISPMSService INSTANCE = new SISPMSService();
 
     private SISPMSService() {
     }
 
+    /**
+     * Toggles the state of a SIS_PMS device.
+     * @param context context in which the action was started.
+     * @param device concerned device
+     * @param executeOnSuccess action, which will be performed on success.
+     */
     public void toggleState(Context context, SISPMSDevice device, ExecuteOnSuccess executeOnSuccess) {
         if (device.isOn()) {
             CommandExecutionService.INSTANCE.executeSafely(context, "set " + device.getName() + " off", executeOnSuccess);
