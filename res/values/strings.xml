@@ -179,4 +179,7 @@
     <string name="nightTemperature">Night Temperature</string>
     <string name="windowOpenTemp">Window Open Temp.</string>
 
+    <string name="widgetToggle">AndFHEM Toggle</string>
+
+
 </resources>
