@@ -24,14 +24,16 @@
   ~   Boston, MA  02110-1301  USA
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="fill_parent"
-              android:layout_height="fill_parent"
-              android:layout_margin="5dp">
-
-    <Button android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:id="@+id/switchButton"
-            android:text="switch me!"
-            android:background="@drawable/toggle_widget_background"/>
-</LinearLayout>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--<stroke android:width="1dp"-->
+            <!--android:color="#ff5e00" />-->
+    <padding android:left="2dp"
+             android:top="4dp"
+             android:right="2dp"
+             android:bottom="4dp" />
+    <corners android:radius="4dp"/>
+    <gradient android:startColor="#ffffdd00"
+              android:endColor="#aaffdd00"
+              android:angle="270"
+              android:type="linear" />
+</shape>
