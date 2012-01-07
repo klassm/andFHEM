@@ -153,6 +153,7 @@
     <string name="deviceDeleteSuccess">Device was deleted.</string>
     <string name="deviceMoveSuccess">Device was moved.</string>
     <string name="deviceAliasSuccess">Alias was set.</string>
+    <string name="deviceSwitchSuccess">Device %1$s was switched.</string>
 
     <string name="yes">yes</string>
     <string name="no">no</string>
