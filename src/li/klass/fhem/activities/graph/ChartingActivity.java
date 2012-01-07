@@ -1,3 +1,27 @@
+/*
+ * AndFHEM - Open Source Android application to control a FHEM home automation
+ * server.
+ *
+ * Copyright (c) 2011, Matthias Klass or third-party contributors as
+ * indicated by the @author tags or express copyright attribution
+ * statements applied by the authors.  All third-party contributions are
+ * distributed under license by Red Hat Inc.
+ *
+ * This copyrighted material is made available to anyone wishing to use, modify,
+ * copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+ * for more details.
+ *
+ * You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+ * along with this distribution; if not, write to:
+ *   Free Software Foundation, Inc.
+ *   51 Franklin Street, Fifth Floor
+ *   Boston, MA  02110-1301  USA
+ */
+
 package li.klass.fhem.activities.graph;
 
 import android.app.Activity;
@@ -29,7 +53,10 @@ import org.achartengine.renderer.XYSeriesRenderer;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class ChartingActivity extends Activity implements Updateable{
+/**
+ * Shows a chart.
+ */
+public class ChartingActivity extends Activity implements Updateable {
 
     private static final int OPTION_CHANGE_DATA = 1;
 
@@ -41,7 +68,7 @@ public class ChartingActivity extends Activity implements Updateable{
     private String deviceName;
     private String yTitle;
     private int[] columnSpecificationIds;
-    
+
     private Calendar startDate = Calendar.getInstance();
     private Calendar endDate = Calendar.getInstance();
 
@@ -82,7 +109,7 @@ public class ChartingActivity extends Activity implements Updateable{
         super.onOptionsItemSelected(item);
 
         int itemId = item.getItemId();
-        switch(itemId) {
+        switch (itemId) {
             case OPTION_CHANGE_DATA:
                 Intent intent = new Intent(this, ChartingDateSelectionActivity.class);
                 intent.putExtras(new Bundle());
@@ -99,9 +126,10 @@ public class ChartingActivity extends Activity implements Updateable{
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent resultIntent) {
         super.onActivityResult(requestCode, resultCode, resultIntent);
-        Bundle bundle = resultIntent.getExtras();
-        if (resultCode == RESULT_OK) {
-            switch(requestCode) {
+
+        if (resultIntent != null && resultCode == RESULT_OK) {
+            Bundle bundle = resultIntent.getExtras();
+            switch (requestCode) {
                 case REQUEST_TIME_CHANGE:
                     startDate.setTime((Date) bundle.getSerializable(ChartingDateSelectionActivity.INTENT_START_DATE));
                     endDate.setTime((Date) bundle.getSerializable(ChartingDateSelectionActivity.INTENT_END_DATE));
@@ -121,6 +149,11 @@ public class ChartingActivity extends Activity implements Updateable{
         });
     }
 
+    /**
+     * Reads all the charting data for a given date and the column specifications set as attribute.
+     *
+     * @param device concerned device
+     */
     @SuppressWarnings("unchecked")
     private void readDataAndCreateChart(final Device device) {
         if (device == null) return;
@@ -140,6 +173,12 @@ public class ChartingActivity extends Activity implements Updateable{
         });
     }
 
+    /**
+     * Actually creates the charting view by using the newly read charting data.
+     *
+     * @param device    concerned device
+     * @param graphData used graph data
+     */
     @SuppressWarnings("unchecked")
     private void createChart(Device device, Map<String, List<GraphEntry>> graphData) {
         if (device == null) return;
@@ -180,7 +219,7 @@ public class ChartingActivity extends Activity implements Updateable{
 
         if (xMax == null) xMax = new Date();
 
-        int[] availableColors = new int[] { Color.RED, Color.BLUE, Color.CYAN, Color.GREEN, Color.GRAY};
+        int[] availableColors = new int[]{Color.RED, Color.BLUE, Color.CYAN, Color.GREEN, Color.GRAY};
 
         XYMultipleSeriesRenderer renderer = buildRenderer(graphData.size(), PointStyle.CIRCLE);
         int length = renderer.getSeriesRendererCount();
@@ -202,8 +241,8 @@ public class ChartingActivity extends Activity implements Updateable{
         renderer.setXLabelsAlign(Paint.Align.CENTER);
         renderer.setYLabelsAlign(Paint.Align.CENTER);
         renderer.setZoomButtonsVisible(true);
-        renderer.setPanLimits(new double[] { xMin.getTime(), xMax.getTime(), yMin, yMax });
-        renderer.setZoomLimits(new double[] { xMin.getTime(), xMax.getTime(), yMin, yMax });
+        renderer.setPanLimits(new double[]{xMin.getTime(), xMax.getTime(), yMin, yMax});
+        renderer.setZoomLimits(new double[]{xMin.getTime(), xMax.getTime(), yMin, yMax});
 
 
         GraphicalView timeChartView = ChartFactory.getTimeChartView(this, dataSet, renderer, "MM-dd HH:mm");
@@ -223,7 +262,7 @@ public class ChartingActivity extends Activity implements Updateable{
         renderer.setLabelsTextSize(15);
         renderer.setLegendTextSize(15);
         renderer.setPointSize(5f);
-        renderer.setMargins(new int[] { 20, 30, 15, 20 });
+        renderer.setMargins(new int[]{20, 30, 15, 20});
         for (int i = 0; i < numberOfSeries; i++) {
             XYSeriesRenderer r = new XYSeriesRenderer();
             r.setPointStyle(pointStyle);
@@ -245,6 +284,13 @@ public class ChartingActivity extends Activity implements Updateable{
         renderer.setLabelsColor(labelsColor);
     }
 
+    /**
+     * Finds the first key matching for a given value in a map.
+     *
+     * @param map   map to search
+     * @param value value to find
+     * @return first found key matching the value
+     */
     private Integer findKeyForValue(Map<Integer, String> map, String value) {
         for (Map.Entry<Integer, String> entry : map.entrySet()) {
             if (entry.getValue().equals(value)) {
@@ -254,6 +300,14 @@ public class ChartingActivity extends Activity implements Updateable{
         return null;
     }
 
+    /**
+     * Goes to the charting activity.
+     *
+     * @param context                  calling intent
+     * @param device                   concerned device
+     * @param yTitle                   description of the values (only one!)
+     * @param columnSpecificationNames column specifications off all graph series.
+     */
     @SuppressWarnings("unchecked")
     public static void showChart(Context context, Device device, String yTitle, int... columnSpecificationNames) {
 
