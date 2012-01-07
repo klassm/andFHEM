@@ -24,78 +24,81 @@
   ~   Boston, MA  02110-1301  USA
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="fill_parent"
-              android:layout_height="fill_parent"
-              android:orientation="vertical">
-
-
-    <TextView style="@style/deviceDetailSectionCaption"
-              android:text="@string/generalDetails" />
-
-    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                 style="@style/deviceDetailTable">
-
-        <TableRow android:id="@+id/tableRowRoom">
-            <TextView android:text="@string/room"
-                      style="@style/deviceDetailDescription" />
-            <TextView android:id="@+id/room"
-                      android:text="xxxxx"
-                      style="@style/deviceDetailContent" />
-        </TableRow>
-
-        <TableRow android:id="@+id/tableRowMeasured">
-            <TextView android:text="@string/measured"
-                      style="@style/deviceDetailDescription" />
-            <TextView android:id="@+id/measured"
-                      android:text="xx.xx.xxxx xx:xx"
-                      style="@style/deviceDetailContent" />
-        </TableRow>
-
-        <TableRow android:id="@+id/tableRowTemperature">
-            <TextView android:text="@string/temperature"
-                      style="@style/deviceDetailDescription" />
-            <TextView android:id="@+id/temperature"
-                      style="@style/deviceDetailContent"
-                      android:text="xx (Celsius)"/>
-        </TableRow>
-
-        <TableRow android:id="@+id/tableRowHumidity">
-            <TextView android:text="@string/humidity"
-                      style="@style/deviceDetailDescription" />
-            <TextView android:id="@+id/humidity"
-                      style="@style/deviceDetailContent"
-                      android:text="xx (%)"/>
-        </TableRow>
-
-        <TableRow android:id="@+id/tableRowBattery">
-            <TextView android:text="@string/battery"
-                      style="@style/deviceDetailDescription" />
-            <TextView android:id="@+id/battery"
-                      style="@style/deviceDetailContent"
-                      android:text="xx"/>
-        </TableRow>
-    </TableLayout>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_height="wrap_content" android:layout_width="fill_parent">
 
     <LinearLayout android:layout_width="fill_parent"
-                  android:layout_height="wrap_content"
-                  android:layout_marginTop="20dp"
-                  android:orientation="vertical"
-                  android:id="@+id/graphLayout">
+                  android:layout_height="fill_parent"
+                  android:orientation="vertical">
 
 
         <TextView style="@style/deviceDetailSectionCaption"
-                  android:text="@string/plots" />
+                  android:text="@string/generalDetails" />
 
-        <Button android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/temperatureGraph"
-                android:id="@+id/temperatureGraph"
-                android:layout_marginLeft="10dp"/>
-        <Button android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/humidityGraph"
-                android:id="@+id/humidityGraph"
-                android:layout_marginLeft="10dp"/>
+        <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                     style="@style/deviceDetailTable">
+
+            <TableRow android:id="@+id/tableRowRoom">
+                <TextView android:text="@string/room"
+                          style="@style/deviceDetailDescription" />
+                <TextView android:id="@+id/room"
+                          android:text="xxxxx"
+                          style="@style/deviceDetailContent" />
+            </TableRow>
+
+            <TableRow android:id="@+id/tableRowMeasured">
+                <TextView android:text="@string/measured"
+                          style="@style/deviceDetailDescription" />
+                <TextView android:id="@+id/measured"
+                          android:text="xx.xx.xxxx xx:xx"
+                          style="@style/deviceDetailContent" />
+            </TableRow>
+
+            <TableRow android:id="@+id/tableRowTemperature">
+                <TextView android:text="@string/temperature"
+                          style="@style/deviceDetailDescription" />
+                <TextView android:id="@+id/temperature"
+                          style="@style/deviceDetailContent"
+                          android:text="xx (Celsius)"/>
+            </TableRow>
+
+            <TableRow android:id="@+id/tableRowHumidity">
+                <TextView android:text="@string/humidity"
+                          style="@style/deviceDetailDescription" />
+                <TextView android:id="@+id/humidity"
+                          style="@style/deviceDetailContent"
+                          android:text="xx (%)"/>
+            </TableRow>
+
+            <TableRow android:id="@+id/tableRowBattery">
+                <TextView android:text="@string/battery"
+                          style="@style/deviceDetailDescription" />
+                <TextView android:id="@+id/battery"
+                          style="@style/deviceDetailContent"
+                          android:text="xx"/>
+            </TableRow>
+        </TableLayout>
+
+        <LinearLayout android:layout_width="fill_parent"
+                      android:layout_height="wrap_content"
+                      android:layout_marginTop="20dp"
+                      android:orientation="vertical"
+                      android:id="@+id/graphLayout">
+
+
+            <TextView style="@style/deviceDetailSectionCaption"
+                      android:text="@string/plots" />
+
+            <Button android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/temperatureGraph"
+                    android:id="@+id/temperatureGraph"
+                    android:layout_marginLeft="10dp"/>
+            <Button android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/humidityGraph"
+                    android:id="@+id/humidityGraph"
+                    android:layout_marginLeft="10dp"/>
+        </LinearLayout>
     </LinearLayout>
-</LinearLayout>
+</ScrollView>
