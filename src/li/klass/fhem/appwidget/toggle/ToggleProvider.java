@@ -82,7 +82,11 @@ public class ToggleProvider extends AppWidgetProvider {
                 @Override
                 public void onRoomListRefresh(RoomDeviceList roomDeviceList) {
                     Device device = roomDeviceList.getDeviceFor(deviceName);
-                    if (device == null) return;
+                    if (device == null) {
+                        String errorMsg = context.getString(R.string.deviceNotFound);
+                        Toast.makeText(context, String.format(errorMsg, deviceName), Toast.LENGTH_SHORT).show();
+                        return;
+                    }
 
                     if (device instanceof FS20Device) {
                         FS20Service.INSTANCE.toggleState(null, (FS20Device) device, executeOnSuccess);

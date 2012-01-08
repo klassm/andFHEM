@@ -180,6 +180,7 @@
     <string name="windowOpenTemp">Window Open Temp.</string>
 
     <string name="widgetToggle">AndFHEM Toggle</string>
+    <string name="deviceNotFound">Device %1$s was not found.</string>
 
 
 </resources>

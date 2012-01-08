@@ -181,6 +181,7 @@
     <string name="windowOpenTemp">Fenster geöffnet</string>
 
     <string name="widgetToggle">AndFHEM Toggle</string>
+    <string name="deviceNotFound">Gerät %1$s wurde nicht gefunden.</string>
 
 
 

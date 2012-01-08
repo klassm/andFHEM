@@ -24,6 +24,7 @@
 
 package li.klass.fhem.service.room;
 
+import android.util.Log;
 import li.klass.fhem.domain.Device;
 import li.klass.fhem.domain.DeviceType;
 import li.klass.fhem.domain.FileLogDevice;
@@ -69,18 +70,38 @@ public class DeviceListParser {
         try {
             String xmlList = DataConnectionSwitch.INSTANCE.getCurrentProvider().xmllist();
 
+            // if a newline happens after a set followed by an attrs, both attributes are appended together without
+            // adding a whitespace
+            xmlList = xmlList.replaceAll("=\"\"attrs", "=\"\" attrs");
+
+            // remove double ""
+            xmlList = xmlList.replaceAll(" +(?= )", "");
+
+            // replace double quotes if not followed by a space or slash
+            xmlList = xmlList.replaceAll("\"\"+(?![ /])", "\"");
+
+            xmlList = xmlList.replaceAll("</>", "");
+
+            //replace values with an unset tag
+            xmlList = xmlList.replaceAll("< name=[a-zA-Z\"=0-9 ]+>", "");
+
+            //xmlList = xmlList.replaceAll("<_internal__LIST>[\\s\\S]*</_internal__LIST>", "");
+            xmlList = xmlList.replaceAll("<notify_LIST[\\s\\S]*</notify_LIST>", "");
+            xmlList = xmlList.replaceAll("<CUL_IR_LIST>[\\s\\S]*</CUL_IR_LIST>", "");
+            xmlList = xmlList.replaceAll("<at_LIST>[\\s\\S]*</at_LIST>", "");
+
             xmlList = xmlList.replaceAll("\"<", "\"&lt;");
             xmlList = xmlList.replaceAll(">\"", "&gt;\"");
             xmlList = xmlList.replaceAll("_internal_", "internal");
-            xmlList = xmlList.replaceAll("<notify_LIST[\\s\\S]*</notify_LIST>", "");
-            xmlList = xmlList.replaceAll("<CUL_IR_LIST>[\\s\\S]*</CUL_IR_LIST>", "");
-            xmlList = xmlList.replaceAll("value=\"\"[A-Za-z0-9 ${},]*\"\"", "");
-            xmlList = xmlList.replaceAll("</>", "");
-            xmlList = xmlList.replaceAll("< [a-zA-Z\"=0-9 ]*>", "");
-            xmlList = xmlList.replaceAll("<at_LIST>[\\s\\S]*</at_LIST>", "");
+
+            // fix for invalid umlauts
             xmlList = xmlList.replaceAll("&#[\\s\\S]*;", "");
-            xmlList = xmlList.replaceAll("\"\"+(?![ /])", "\"");
+
+            // remove "" not being preceded by an =
             xmlList = xmlList.replaceAll("(?:[^=])\"\"+", "\"");
+
+
+            Log.e(DeviceListParser.class.getName(), xmlList);
 
             DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
@@ -187,4 +208,5 @@ public class DeviceListParser {
             }
         }
     }
+
 }

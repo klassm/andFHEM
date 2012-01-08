@@ -38,7 +38,6 @@ import li.klass.fhem.exception.HostConnectionException;
  */
 public abstract class UpdateDialogAsyncTask extends AsyncTask<Void, Void, Exception> {
 
-    private volatile Throwable occurredException = null;
     private Context context;
 
     private volatile ProgressDialog progressDialog;
@@ -83,7 +82,7 @@ public abstract class UpdateDialogAsyncTask extends AsyncTask<Void, Void, Except
             int messageId;
             if (exception instanceof HostConnectionException) {
                 messageId = R.string.updateErrorHostConnection;
-            } else if (occurredException instanceof DeviceListParseException) {
+            } else if (exception instanceof DeviceListParseException) {
                 messageId = R.string.updateErrorDeviceListParse;
             } else {
                 throw new RuntimeException(exception);
