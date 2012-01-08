@@ -80,11 +80,13 @@ public abstract class UpdateDialogAsyncTask extends AsyncTask<Void, Void, Except
         super.onPostExecute(exception);
         if (exception != null) {
             Log.e(UpdateDialogAsyncTask.class.getName(), "error occurred while updating", exception);
-            int messageId = R.string.updateError;
+            int messageId;
             if (exception instanceof HostConnectionException) {
                 messageId = R.string.updateErrorHostConnection;
             } else if (occurredException instanceof DeviceListParseException) {
                 messageId = R.string.updateErrorDeviceListParse;
+            } else {
+                throw new RuntimeException(exception);
             }
             Toast.makeText(context, messageId, Toast.LENGTH_LONG).show();
         } else if (executeOnSuccess != null) {

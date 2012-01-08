@@ -35,10 +35,10 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
+import org.xml.sax.SAXParseException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import java.io.IOException;
 import java.io.StringReader;
 import java.util.Collection;
 import java.util.HashMap;
@@ -77,6 +77,10 @@ public class DeviceListParser {
             xmlList = xmlList.replaceAll("value=\"\"[A-Za-z0-9 ${},]*\"\"", "");
             xmlList = xmlList.replaceAll("</>", "");
             xmlList = xmlList.replaceAll("< [a-zA-Z\"=0-9 ]*>", "");
+            xmlList = xmlList.replaceAll("<at_LIST>[\\s\\S]*</at_LIST>", "");
+            xmlList = xmlList.replaceAll("&#[\\s\\S]*;", "");
+            xmlList = xmlList.replaceAll("\"\"+(?![ /])", "\"");
+            xmlList = xmlList.replaceAll("(?:[^=])\"\"+", "\"");
 
             DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
@@ -92,10 +96,10 @@ public class DeviceListParser {
             return roomDeviceListMap;
         } catch (HostConnectionException e) {
             throw e;
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (Exception e) {
+        } catch (SAXParseException e) {
             throw new DeviceListParseException(e);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 

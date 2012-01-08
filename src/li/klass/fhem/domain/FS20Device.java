@@ -108,7 +108,7 @@ public class FS20Device extends Device<FS20Device> implements Comparable<FS20Dev
             return 0;
         }
         
-        if (state.startsWith("dim")) {
+        if (state.startsWith("dim") && state.endsWith("%")) {
             String dimProgress = state.substring("dim".length(), state.length() - 1);
             return Integer.valueOf(dimProgress);
         }
