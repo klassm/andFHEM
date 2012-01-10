@@ -36,9 +36,9 @@ import android.widget.AdapterView;
 import android.widget.Toast;
 import li.klass.fhem.R;
 import li.klass.fhem.constants.Actions;
+import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.Device;
 import li.klass.fhem.domain.RoomDeviceList;
-import li.klass.fhem.service.favorites.FavoritesService;
 
 import static li.klass.fhem.constants.BundleExtraKeys.*;
 
@@ -61,9 +61,16 @@ public class FavoritesActivity extends DeviceListActivity {
     public boolean onContextItemSelected(MenuItem item) {
         switch(item.getItemId()) {
             case CONTEXT_MENU_FAVORITES_DELETE:
-                FavoritesService.INSTANCE.removeFavorite(contextMenuClickedDevice);
-                update(false);
-                Toast.makeText(this, R.string.context_favoriteremoved, Toast.LENGTH_SHORT).show();
+                Intent favoriteAddIntent = new Intent(Actions.FAVORITE_REMOVE);
+                favoriteAddIntent.putExtra(BundleExtraKeys.DEVICE, contextMenuClickedDevice);
+                favoriteAddIntent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
+                    @Override
+                    protected void onReceiveResult(int resultCode, Bundle resultData) {
+                        Toast.makeText(FavoritesActivity.this, R.string.context_favoriteremoved, Toast.LENGTH_SHORT).show();
+                        update(false);
+                    }
+                });
+                startService(favoriteAddIntent);
                 return true;
         }
         return false;

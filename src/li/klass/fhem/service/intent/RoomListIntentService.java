@@ -22,13 +22,14 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.serv;
+package li.klass.fhem.service.intent;
 
 import android.content.Intent;
 import android.os.ResultReceiver;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.domain.Device;
 import li.klass.fhem.domain.RoomDeviceList;
+import li.klass.fhem.service.room.RoomListService;
 
 import java.util.ArrayList;
 
@@ -43,12 +44,9 @@ public class RoomListIntentService extends ConvenientIntentService {
     }
 
     @Override
-    protected void onHandleIntent(Intent intent) {
+    protected STATE handleIntent(Intent intent, boolean doRefresh, ResultReceiver resultReceiver) {
 
-        boolean doRefresh = intent.getBooleanExtra(DO_REFRESH, false);
-        ResultReceiver resultReceiver = intent.getParcelableExtra(RESULT_RECEIVER);
-
-        RoomListSyncService roomListService = RoomListSyncService.INSTANCE;
+        RoomListService roomListService = RoomListService.INSTANCE;
         if (intent.getAction().equals(GET_ALL_ROOMS_DEVICE_LIST)) {
             RoomDeviceList allRoomsDeviceList = roomListService.getAllRoomsDeviceList(doRefresh);
             sendSingleExtraResult(resultReceiver, ResultCodes.SUCCESS, DEVICE_LIST, allRoomsDeviceList);
@@ -64,5 +62,7 @@ public class RoomListIntentService extends ConvenientIntentService {
             Device device = roomListService.getDeviceForName(deviceName, doRefresh);
             sendSingleExtraResult(resultReceiver, ResultCodes.SUCCESS, DEVICE, device);
         }
+
+        return STATE.DONE;
     }
 }

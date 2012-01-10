@@ -39,6 +39,7 @@ import li.klass.fhem.util.ApplicationProperties;
 
 public class MainActivity extends TabActivity {
     public static MainActivity INSTANCE;
+    public static final String FIRST_START = "FIRST_START";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +55,7 @@ public class MainActivity extends TabActivity {
 
         getTabHost().setCurrentTab(0);
 
-        boolean isFirstStart = ApplicationProperties.INSTANCE.getProperty("FIRST_START", true);
+        boolean isFirstStart = ApplicationProperties.INSTANCE.getProperty(FIRST_START, true);
         if (isFirstStart) {
             onFirstStart();
         }
@@ -79,7 +80,7 @@ public class MainActivity extends TabActivity {
         alertDialog.setButton(getResources().getString(R.string.okButton), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                ApplicationProperties.INSTANCE.setProperty("FIRST_START", false);
+                ApplicationProperties.INSTANCE.setProperty(FIRST_START, false);
                 alertDialog.hide();
             }
         });

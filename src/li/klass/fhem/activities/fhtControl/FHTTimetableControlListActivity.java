@@ -36,10 +36,6 @@ import li.klass.fhem.adapter.fhtControl.FHTTimetableControlListAdapter;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.FHTDevice;
-import li.klass.fhem.domain.RoomDeviceList;
-import li.klass.fhem.service.device.FHTService;
-import li.klass.fhem.service.room.RoomDeviceListListener;
-import li.klass.fhem.service.room.RoomListService;
 import li.klass.fhem.widget.NestedListView;
 
 public class FHTTimetableControlListActivity extends BaseActivity<FHTTimetableControlListAdapter> {
@@ -48,7 +44,7 @@ public class FHTTimetableControlListActivity extends BaseActivity<FHTTimetableCo
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Bundle extras = getIntent().getExtras();
-        this.deviceName = extras.getString("deviceName");
+        this.deviceName = extras.getString(BundleExtraKeys.DEVICE_NAME);
 
         setTitle(getResources().getString(R.string.timetable) + " " + deviceName);
         super.onCreate(savedInstanceState);
@@ -72,29 +68,16 @@ public class FHTTimetableControlListActivity extends BaseActivity<FHTTimetableCo
 
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Actions.GET_DEVICE_FOR_NAME);
-                intent.putExtras(new Bundle());
-                intent.putExtra(BundleExtraKeys.DO_REFRESH, false);
+                Intent intent = new Intent(Actions.DEVICE_SET_TIMETABLE);
                 intent.putExtra(BundleExtraKeys.DEVICE_NAME, deviceName);
                 intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
                     @Override
                     protected void onReceiveResult(int resultCode, Bundle resultData) {
                         super.onReceiveResult(resultCode, resultData);
-                        FHTDevice device = (FHTDevice) resultData.getSerializable(BundleExtraKeys.DEVICE);
-                        FHTService.INSTANCE.setTimetableFor(FHTTimetableControlListActivity.this, device);
+                        update(false);
                     }
                 });
                 startService(intent);
-//
-//
-//                RoomDeviceListListener listener = new RoomDeviceListListener() {
-//                    @Override
-//                    public void onRoomListRefresh(RoomDeviceList roomDeviceList) {
-//                        FHTDevice device = roomDeviceList.getDeviceFor(deviceName);
-//                        FHTService.INSTANCE.setTimetableFor(FHTTimetableControlListActivity.this, device);
-//                    }
-//                };
-//                RoomListService.INSTANCE.getAllRoomsDeviceList(FHTTimetableControlListActivity.this, false, listener);
             }
         });
 
@@ -102,15 +85,16 @@ public class FHTTimetableControlListActivity extends BaseActivity<FHTTimetableCo
         resetButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                RoomDeviceListListener listener = new RoomDeviceListListener() {
+                Intent intent = new Intent(Actions.DEVICE_RESET_TIMETABLE);
+                intent.putExtra(BundleExtraKeys.DEVICE_NAME, deviceName);
+                intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
                     @Override
-                    public void onRoomListRefresh(RoomDeviceList roomDeviceList) {
-                        FHTDevice device = roomDeviceList.getDeviceFor(deviceName);
-                        device.resetDayControlMapValues();
+                    protected void onReceiveResult(int resultCode, Bundle resultData) {
+                        super.onReceiveResult(resultCode, resultData);
                         update(false);
                     }
-                };
-                RoomListService.INSTANCE.getAllRoomsDeviceList(FHTTimetableControlListActivity.this, false, listener);
+                });
+                startService(intent);
             }
         });
     }
@@ -120,10 +104,15 @@ public class FHTTimetableControlListActivity extends BaseActivity<FHTTimetableCo
 
         if (adapter == null) return;
 
-        RoomListService.INSTANCE.getAllRoomsDeviceList(this, doUpdate, new RoomDeviceListListener() {
+        Intent intent = new Intent(Actions.GET_DEVICE_FOR_NAME);
+        intent.putExtras(new Bundle());
+        intent.putExtra(BundleExtraKeys.DO_REFRESH, false);
+        intent.putExtra(BundleExtraKeys.DEVICE_NAME, deviceName);
+        intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
             @Override
-            public void onRoomListRefresh(RoomDeviceList roomDeviceList) {
-                FHTDevice fhtDevice = roomDeviceList.getDeviceFor(deviceName);
+            protected void onReceiveResult(int resultCode, Bundle resultData) {
+                super.onReceiveResult(resultCode, resultData);
+                FHTDevice fhtDevice = (FHTDevice) resultData.getSerializable(BundleExtraKeys.DEVICE);
                 adapter.updateData(fhtDevice.getDayControlMap());
 
                 View holder = findViewById(R.id.changeValueButtonHolder);
@@ -134,7 +123,6 @@ public class FHTTimetableControlListActivity extends BaseActivity<FHTTimetableCo
                 }
             }
         });
-
-
+        startService(intent);
     }
 }

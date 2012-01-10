@@ -24,16 +24,12 @@
 
 package li.klass.fhem.service.device;
 
-import android.content.Context;
-import android.widget.Toast;
-import li.klass.fhem.R;
-import li.klass.fhem.activities.CurrentActivityProvider;
+import android.content.Intent;
+import li.klass.fhem.AndFHEMApplication;
+import li.klass.fhem.constants.Actions;
 import li.klass.fhem.domain.Device;
 import li.klass.fhem.domain.RoomDeviceList;
-import li.klass.fhem.serv.RoomListSyncService;
 import li.klass.fhem.service.CommandExecutionService;
-import li.klass.fhem.service.ExecuteOnSuccess;
-import li.klass.fhem.service.room.RoomDeviceListListener;
 import li.klass.fhem.service.room.RoomListService;
 
 /**
@@ -48,86 +44,52 @@ public class DeviceService {
 
     /**
      * Rename a device.
-     * @param context context in which rename action was started.
      * @param device concerned device
      * @param newName new device name
      */
-    public void renameDevice(final Context context, final Device device, final String newName) {
-        CommandExecutionService.INSTANCE.executeSafely(context, "rename " + device.getName() + " " + newName, new ExecuteOnSuccess() {
-            @Override
-            public void onSuccess() {
-                device.setName(newName);
-                Toast.makeText(context, R.string.deviceRenameSuccess, Toast.LENGTH_LONG).show();
-            }
-        });
+    public void renameDevice(final Device device, final String newName) {
+        CommandExecutionService.INSTANCE.executeSafely("rename " + device.getName() + " " + newName);
+        device.setName(newName);
     }
 
     /**
      * Deletes a device.
-     * @param context context in which rename action was started.
      * @param device concerned device
      */
-    public void deleteDevice(final Context context, final Device device) {
-        CommandExecutionService.INSTANCE.executeSafely(context, "delete " + device.getName(), new ExecuteOnSuccess() {
-            @Override
-            public void onSuccess() {
-
-                RoomDeviceListListener deleteListener = new RoomDeviceListListener() {
-
-                    @Override
-                    public void onRoomListRefresh(RoomDeviceList roomDeviceList) {
-                        roomDeviceList.removeDevice(device);
-                    }
-                };
-                RoomListService.INSTANCE.getRoomDeviceList(context, device.getRoom(), false, deleteListener);
-                RoomListService.INSTANCE.getAllRoomsDeviceList(context, false, deleteListener);
-                Toast.makeText(context, R.string.deviceDeleteSuccess, Toast.LENGTH_LONG).show();
-            }
-        });
+    public void deleteDevice(final Device device) {
+        CommandExecutionService.INSTANCE.executeSafely("delete " + device.getName());
+        RoomListService.INSTANCE.getAllRoomsDeviceList(false).removeDevice(device);
     }
 
     /**
      * Sets an alias for a device.
-     * @param context context in which rename action was started.
      * @param device concerned device
      * @param alias new alias to set
      */
-    public void setAlias(final Context context, final Device device, final String alias) {
-        CommandExecutionService.INSTANCE.executeSafely(context, "attr " + device.getName() + " alias " + alias, new ExecuteOnSuccess() {
-            @Override
-            public void onSuccess() {
-                device.setAlias(alias);
-                CurrentActivityProvider.INSTANCE.getCurrentActivity().update(false);
-                Toast.makeText(context, R.string.deviceAliasSuccess, Toast.LENGTH_LONG).show();
-            }
-        });
+    public void setAlias(final Device device, final String alias) {
+        CommandExecutionService.INSTANCE.executeSafely("attr " + device.getName() + " alias " + alias);
+        device.setAlias(alias);
     }
 
     /**
      * Moves a device.
-     * @param context context in which rename action was started.
      * @param device concerned device
      * @param newRoom new room to move the concerned device to.
      */
-    public void moveDevice(final Context context, final Device device, final String newRoom) {
-        CommandExecutionService.INSTANCE.executeSafely(context, "attr " + device.getName() + " room " + newRoom, new ExecuteOnSuccess() {
-            @Override
-            public void onSuccess() {
-                final String oldRoom = device.getRoom();
-                device.setRoom(newRoom);
+    public void moveDevice(final Device device, final String newRoom) {
+        CommandExecutionService.INSTANCE.executeSafely("attr " + device.getName() + " room " + newRoom);
+        String oldRoom = device.getRoom();
+        device.setRoom(newRoom);
 
-                RoomDeviceList oldRoomDeviceList = RoomListSyncService.INSTANCE.getDeviceListForRoom(oldRoom, false);
-                oldRoomDeviceList.removeDevice(device);
-                if (oldRoomDeviceList.getAllDevices().size() == 0) {
-                    RoomListService.INSTANCE.removeDeviceListForRoom(context, oldRoom);
-                    CurrentActivityProvider.INSTANCE.getCurrentActivity().update(false);
-                    Toast.makeText(context, R.string.deviceMoveSuccess, Toast.LENGTH_LONG).show();
-                }
+        RoomDeviceList oldRoomDeviceList = RoomListService.INSTANCE.getDeviceListForRoom(oldRoom, false);
+        oldRoomDeviceList.removeDevice(device);
+        if (oldRoomDeviceList.getAllDevices().size() == 0) {
+            RoomListService.INSTANCE.removeDeviceListForRoom(oldRoom);
+        }
 
-                RoomDeviceList newRoomDeviceList = RoomListSyncService.INSTANCE.getOrCreateRoomDeviceList(newRoom, false);
-                newRoomDeviceList.addDevice(device);
-                CurrentActivityProvider.INSTANCE.getCurrentActivity().update(false);
-            }
-        });
+        AndFHEMApplication.getContext().sendBroadcast(new Intent(Actions.DO_UPDATE));
+
+        RoomDeviceList newRoomDeviceList = RoomListService.INSTANCE.getOrCreateRoomDeviceList(newRoom, false);
+        newRoomDeviceList.addDevice(device);
     }
 }

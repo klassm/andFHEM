@@ -22,7 +22,7 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.serv;
+package li.klass.fhem.service.room;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
@@ -32,10 +32,10 @@ import li.klass.fhem.domain.RoomDeviceList;
 
 import java.util.Set;
 
-public class FavoritesSyncService {
-    public static final FavoritesSyncService INSTANCE = new FavoritesSyncService();
+public class FavoritesService {
+    public static final FavoritesService INSTANCE = new FavoritesService();
 
-    private FavoritesSyncService() {
+    private FavoritesService() {
     }
 
     private static final String PREFERENCES_NAME = "favorites";
@@ -65,7 +65,7 @@ public class FavoritesSyncService {
      */
     public RoomDeviceList getFavorites(boolean refresh) {
 
-        RoomDeviceList allRoomsDeviceList = RoomListSyncService.INSTANCE.getAllRoomsDeviceList(refresh);
+        RoomDeviceList allRoomsDeviceList = RoomListService.INSTANCE.getAllRoomsDeviceList(refresh);
         RoomDeviceList favoritesList = new RoomDeviceList("favorites");
         Set<String> favoriteDeviceNames = getPreferences().getAll().keySet();
         for (String favoriteDeviceName : favoriteDeviceNames) {

@@ -30,7 +30,20 @@ public class BundleExtraKeys {
     public static final String ROOM_LIST = "roomList";
     public static final String DEVICE = "device";
     public static final String DEVICE_NAME = "deviceName";
+    public static final String DEVICE_NEW_NAME = "deviceNewName";
+    public static final String DEVICE_NEW_ROOM = "deviceNewRoom";
+    public static final String DEVICE_NEW_ALIAS = "deviceNewAlias";
+    public static final String DEVICE_TYPE = "deviceType";
     public static final String DEVICE_LIST = "deviceList";
     public static final String RESULT_RECEIVER = "resultReceiver";
 
+    public static final String DEVICE_GRAPH_ENTRY_MAP = "graphEntryMap";
+    public static final String DEVICE_GRAPH_Y_TITLE = "graphYTitle";
+    public static final String DEVICE_GRAPH_COLUMN_SPECIFICATION_IDS = "columnSpecificationsIds";
+    public static final String START_DATE = "startDate";
+    public static final String END_DATE = "endDate";
+    public static final String DEVICE_DIM_PROGRESS = "dimProgress";
+    public static final String DEVICE_TARGET_STATE = "targetState";
+    public static final String DEVICE_TEMPERATURE = "temperature";
+    public static final String DEVICE_MODE = "deviceMode";
 }

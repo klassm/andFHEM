@@ -42,16 +42,13 @@ import android.widget.AdapterView;
 import android.widget.Toast;
 import li.klass.fhem.ApplicationUrls;
 import li.klass.fhem.R;
-import li.klass.fhem.activities.CurrentActivityProvider;
 import li.klass.fhem.activities.PreferencesActivity;
-import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.Device;
-import li.klass.fhem.serv.RoomListSyncService;
-import li.klass.fhem.service.ExecuteOnSuccess;
-import li.klass.fhem.service.favorites.FavoritesService;
 import li.klass.fhem.service.room.RoomListService;
 import li.klass.fhem.util.device.DeviceActionUtil;
+
+import static li.klass.fhem.constants.Actions.*;
 
 public abstract class BaseActivity<ADAPTER> extends Activity implements Updateable {
     public static final int OPTION_UPDATE = 1;
@@ -67,12 +64,16 @@ public abstract class BaseActivity<ADAPTER> extends Activity implements Updateab
     public static final int CONTEXT_MENU_ALIAS = 6;
 
     public static final int DIALOG_UPDATING = 1;
+    public static final int DIALOG_EXECUTING = 2;
 
     /**
      * Attribute is set whenever a context menu concerning a device is clicked. This is the only way to actually get
      * the concerned device.
      */
     protected Device contextMenuClickedDevice;
+
+    protected BroadcastReceiver broadcastReceiver;
+    private final IntentFilter intentFilter = new IntentFilter();
 
     /**
      * Time when the back button was hit.
@@ -81,40 +82,44 @@ public abstract class BaseActivity<ADAPTER> extends Activity implements Updateab
 
     protected ADAPTER adapter;
 
-    /**
-     * Whenever a service action is executed, this action should be given to be executed after succeeding the action.
-     */
-    protected ExecuteOnSuccess updateOnSuccessAction = new ExecuteOnSuccess() {
-        @Override
-        public void onSuccess() {
-            update(false);
-        }
-    };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        BroadcastReceiver updateBroadcastReceiver = new BroadcastReceiver() {
+        broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                if (intent.getAction().equals(Actions.SHOW_UPDATING_DIALOG)) {
+                String action = intent.getAction();
+                if (action.equals(SHOW_UPDATING_DIALOG)) {
                     showDialog(DIALOG_UPDATING);
-                } else if (intent.getAction().equals(Actions.DISMISS_UPDATING_DIALOG)) {
+                } else if (action.equals(DISMISS_UPDATING_DIALOG)) {
                     dismissDialog(DIALOG_UPDATING);
+                } else if (action.equals(SHOW_EXECUTING_DIALOG)) {
+                    showDialog(DIALOG_EXECUTING);
+                } else if (action.equals(DISMISS_EXECUTING_DIALOG)) {
+                    dismissDialog(DIALOG_EXECUTING);
+                } else if (action.equals(DO_UPDATE)) {
+                    boolean doUpdate = intent.getBooleanExtra(BundleExtraKeys.DO_REFRESH, false);
+                    update(doUpdate);
                 }
             }
         };
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(Actions.SHOW_UPDATING_DIALOG);
-        filter.addAction(Actions.DISMISS_UPDATING_DIALOG);
-        registerReceiver(updateBroadcastReceiver, filter);
 
-        CurrentActivityProvider.INSTANCE.setCurrentActivity(this);
+        intentFilter.addAction(SHOW_UPDATING_DIALOG);
+        intentFilter.addAction(DISMISS_UPDATING_DIALOG);
+        intentFilter.addAction(SHOW_EXECUTING_DIALOG);
+        intentFilter.addAction(DISMISS_EXECUTING_DIALOG);
+        intentFilter.addAction(DO_UPDATE);
+
+        registerReceiver(broadcastReceiver, intentFilter);
 
         setLayout();
         adapter = initializeLayoutAndReturnAdapter();
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -167,16 +172,15 @@ public abstract class BaseActivity<ADAPTER> extends Activity implements Updateab
     @Override
     protected void onResume() {
         super.onResume();
-
-        CurrentActivityProvider.INSTANCE.setCurrentActivity(this);
+        registerReceiver(broadcastReceiver, intentFilter);
         update(false);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        RoomListSyncService.INSTANCE.storeDeviceListMap();
         RoomListService.INSTANCE.storeDeviceListMap();
+        unregisterReceiver(broadcastReceiver);
     }
 
     @Override
@@ -227,7 +231,7 @@ public abstract class BaseActivity<ADAPTER> extends Activity implements Updateab
     public boolean onContextItemSelected(MenuItem item) {
         switch(item.getItemId()) {
             case CONTEXT_MENU_FAVORITES_ADD:
-                Intent favoriteAddIntent = new Intent(Actions.FAVORITE_ADD);
+                Intent favoriteAddIntent = new Intent(FAVORITE_ADD);
                 favoriteAddIntent.putExtra(BundleExtraKeys.DEVICE, contextMenuClickedDevice);
                 favoriteAddIntent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
                     @Override
@@ -236,7 +240,6 @@ public abstract class BaseActivity<ADAPTER> extends Activity implements Updateab
                     }
                 });
                 startService(favoriteAddIntent);
-                FavoritesService.INSTANCE.addFavorite(contextMenuClickedDevice);
 
                 return true;
             case CONTEXT_MENU_RENAME:
@@ -262,6 +265,8 @@ public abstract class BaseActivity<ADAPTER> extends Activity implements Updateab
         switch (id) {
             case DIALOG_UPDATING:
                 return ProgressDialog.show(this, "", getResources().getString(R.string.updating));
+            case DIALOG_EXECUTING:
+                return ProgressDialog.show(this, "", getResources().getString(R.string.executing));
         }
         return null;
     }

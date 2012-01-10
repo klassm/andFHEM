@@ -67,33 +67,49 @@
         <receiver android:name=".appwidget.toggle.ToggleProvider" android:label="@string/widgetToggle">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-                <action android:name="li.klass.fhem.appwidget.TOGGLE" />
             </intent-filter>
             <meta-data android:name="android.appwidget.provider" android:resource="@xml/appwidgetprovider_switch" />
         </receiver>
 
-        <service android:name=".serv.RoomListIntentService">
+        <service android:name=".service.intent.RoomListIntentService">
             <intent-filter>
-                <action android:name="allRoomsDeviceList" />
-                <action android:name="getRoomNameList" />
-                <action android:name="getRoomDeviceList" />
-                <action android:name="getDeviceForName" />
+                <action android:name="li.klass.fhem.constants.Actions.ALL_ROOMS_DEVICE_LIST" />
+                <action android:name="li.klass.fhem.constants.Actions.GET_ROOM_NAME_LIST" />
+                <action android:name="li.klass.fhem.constants.Actions.GET_ROOM_DEVICE_LIST" />
+                <action android:name="li.klass.fhem.constants.Actions.GET_DEVICE_FOR_NAME" />
             </intent-filter>
         </service>
 
-        <service android:name=".serv.FavoritesIntentService">
+        <service android:name=".service.intent.FavoritesIntentService">
             <intent-filter>
-                <action android:name="getFavoriteList" />
-                <action android:name="addFavorite" />
-                <action android:name="removeFavorite" />
+                <action android:name="li.klass.fhem.constants.Actions.GET_FAVORITE_LIST" />
+                <action android:name="li.klass.fhem.constants.Actions.ADD_FAVORITE" />
+                <action android:name="li.klass.fhem.constants.Actions.REMOVE_FAVORITE" />
+            </intent-filter>
+        </service>
+
+        <service android:name=".service.intent.DeviceIntentService">
+            <intent-filter>
+                <action android:name="li.klass.fhem.constants.Actions.DEVICE_GRAPH"/>
+                <action android:name="li.klass.fhem.constants.Actions.TOGGLE_STATE" />
+                <action android:name="li.klass.fhem.constants.Actions.SET_STATE" />
+                <action android:name="li.klass.fhem.constants.Actions.DEVICE_DIM" />
+                <action android:name="li.klass.fhem.constants.Actions.DEVICE_SET_MODE" />
+                <action android:name="li.klass.fhem.constants.Actions.DEVICE_SET_DAY_TEMPERATURE" />
+                <action android:name="li.klass.fhem.constants.Actions.DEVICE_SET_NIGHT_TEMPERATURE" />
+                <action android:name="li.klass.fhem.constants.Actions.DEVICE_SET_WINDOW_OPEN_TEMPERATURE" />
+                <action android:name="li.klass.fhem.constants.Actions.DEVICE_SET_TIMETABLE" />
+                <action android:name="li.klass.fhem.constants.Actions.DEVICE_RESET_TIMETABLE" />
+                <action android:name="li.klass.fhem.constants.Actions.DEVICE_SET_DESIRED_TEMPERATURE" />
+                <action android:name="li.klass.fhem.constants.Actions.DEVICE_RENAME" />
+                <action android:name="li.klass.fhem.constants.Actions.DEVICE_DELETE" />
+                <action android:name="li.klass.fhem.constants.Actions.DEVICE_MOVE_ROOM" />
+                <action android:name="li.klass.fhem.constants.Actions.DEVICE_SET_ALIAS" />
             </intent-filter>
         </service>
     </application>
 
-
-
     <uses-permission android:name="android.permission.INTERNET" />
-    <!--<uses-permission android:name="android.permission.SET_DEBUG_APP" />-->
 
     <supports-screens android:xlargeScreens="true"
                       android:anyDensity="true"

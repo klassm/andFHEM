@@ -25,23 +25,25 @@
 package li.klass.fhem.activities.graph;
 
 import android.app.Activity;
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.ResultReceiver;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
 import li.klass.fhem.R;
 import li.klass.fhem.activities.base.Updateable;
+import li.klass.fhem.constants.Actions;
+import li.klass.fhem.constants.BundleExtraKeys;
+import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.domain.Device;
-import li.klass.fhem.domain.RoomDeviceList;
-import li.klass.fhem.service.graph.GraphDataReceivedListener;
 import li.klass.fhem.service.graph.GraphEntry;
-import li.klass.fhem.service.graph.GraphService;
-import li.klass.fhem.service.room.RoomDeviceListListener;
-import li.klass.fhem.service.room.RoomListService;
 import org.achartengine.ChartFactory;
 import org.achartengine.GraphicalView;
 import org.achartengine.chart.PointStyle;
@@ -59,17 +61,16 @@ import java.util.*;
 public class ChartingActivity extends Activity implements Updateable {
 
     private static final int OPTION_CHANGE_DATA = 1;
-
-    public static final String INTENT_DEVICE_NAME = "DEVICE_NAME";
-    public static final String INTENT_Y_TITLE = "Y_TITLE";
-    public static final String INTENT_COLUMN_SPECIFICATION_IDS = "COL_SPECS";
     public static final int REQUEST_TIME_CHANGE = 1;
+
+    public static final int DIALOG_EXECUTING = 2;
 
     private String deviceName;
     private String yTitle;
-    private int[] columnSpecificationIds;
 
+    private int[] columnSpecificationIds;
     private Calendar startDate = Calendar.getInstance();
+
     private Calendar endDate = Calendar.getInstance();
 
     @Override
@@ -78,9 +79,9 @@ public class ChartingActivity extends Activity implements Updateable {
 
         Bundle extras = getIntent().getExtras();
 
-        deviceName = extras.getString(INTENT_DEVICE_NAME);
-        yTitle = extras.getString(INTENT_Y_TITLE);
-        columnSpecificationIds = extras.getIntArray(INTENT_COLUMN_SPECIFICATION_IDS);
+        deviceName = extras.getString(BundleExtraKeys.DEVICE_NAME);
+        yTitle = extras.getString(BundleExtraKeys.DEVICE_GRAPH_Y_TITLE);
+        columnSpecificationIds = extras.getIntArray(BundleExtraKeys.DEVICE_GRAPH_COLUMN_SPECIFICATION_IDS);
 
         startDate.roll(Calendar.DAY_OF_MONTH, -1);
         endDate.roll(Calendar.DAY_OF_MONTH, 1);
@@ -140,50 +141,56 @@ public class ChartingActivity extends Activity implements Updateable {
     }
 
     @Override
-    public void update(boolean doUpdate) {
-        RoomListService.INSTANCE.getAllRoomsDeviceList(this, doUpdate, new RoomDeviceListListener() {
+    public void update(final boolean doUpdate) {
+        Intent intent = new Intent(Actions.GET_DEVICE_FOR_NAME);
+        intent.putExtra(BundleExtraKeys.DEVICE_NAME, deviceName);
+        intent.putExtra(BundleExtraKeys.DO_REFRESH, doUpdate);
+        intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
             @Override
-            public void onRoomListRefresh(RoomDeviceList roomDeviceList) {
-                readDataAndCreateChart(roomDeviceList.getDeviceFor(deviceName));
+            protected void onReceiveResult(int resultCode, Bundle resultData) {
+                Device device = (Device) resultData.getSerializable(BundleExtraKeys.DEVICE);
+                readDataAndCreateChart(doUpdate, device);
             }
         });
+        startService(intent);
     }
 
     /**
      * Reads all the charting data for a given date and the column specifications set as attribute.
-     *
+     * @param doRefresh should the underlying room device list be refreshed?
      * @param device concerned device
      */
     @SuppressWarnings("unchecked")
-    private void readDataAndCreateChart(final Device device) {
-        if (device == null) return;
-
-        Map<Integer, String> fileLogColumns = device.getFileLogColumns();
-        ArrayList<String> columnList = new ArrayList<String>();
-        for (Integer columnSpecificationStringsId : columnSpecificationIds) {
-            columnList.add(fileLogColumns.get(columnSpecificationStringsId));
-        }
-
-        GraphService.INSTANCE.getGraphData(this, device, columnList, startDate, endDate, new GraphDataReceivedListener() {
-
+    private void readDataAndCreateChart(boolean doRefresh, final Device device) {
+        showDialog(DIALOG_EXECUTING);
+        Intent intent = new Intent(Actions.DEVICE_GRAPH);
+        intent.putExtra(BundleExtraKeys.DO_REFRESH, doRefresh);
+        intent.putExtra(BundleExtraKeys.DEVICE_NAME, deviceName);
+        intent.putExtra(BundleExtraKeys.START_DATE, startDate);
+        intent.putExtra(BundleExtraKeys.END_DATE, endDate);
+        intent.putExtra(BundleExtraKeys.DEVICE_GRAPH_COLUMN_SPECIFICATION_IDS, columnSpecificationIds);
+        intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
             @Override
-            public void graphDataReceived(Map<String, List<GraphEntry>> graphData) {
-                createChart(device, graphData);
+            protected void onReceiveResult(int resultCode, Bundle resultData) {
+                super.onReceiveResult(resultCode, resultData);
+                if (resultCode == ResultCodes.SUCCESS) {
+                    Map<Integer, List<GraphEntry>> graphData = (Map<Integer, List<GraphEntry>>) resultData.get(BundleExtraKeys.DEVICE_GRAPH_ENTRY_MAP);
+                    createChart(device, graphData);
+                }
+
+                dismissDialog(DIALOG_EXECUTING);
             }
         });
+        startService(intent);
     }
 
     /**
      * Actually creates the charting view by using the newly read charting data.
-     *
-     * @param device    concerned device
+     * @param device concerned device
      * @param graphData used graph data
      */
     @SuppressWarnings("unchecked")
-    private void createChart(Device device, Map<String, List<GraphEntry>> graphData) {
-        if (device == null) return;
-
-        Map<Integer, String> fileLogColumns = device.getFileLogColumns();
+    private void createChart(Device device, Map<Integer, List<GraphEntry>> graphData) {
 
         XYMultipleSeriesDataset dataSet = new XYMultipleSeriesDataset();
 
@@ -193,13 +200,12 @@ public class ChartingActivity extends Activity implements Updateable {
         double yMin = 1000;
         double yMax = -1000;
 
-        for (String columnSpecification : graphData.keySet()) {
+        for (Integer dataSetNameId : graphData.keySet()) {
 
-            Integer dataSetNameId = findKeyForValue(fileLogColumns, columnSpecification);
             String dataSetName = getResources().getString(dataSetNameId);
 
             TimeSeries seriesName = new TimeSeries(dataSetName);
-            List<GraphEntry> data = graphData.get(columnSpecification);
+            List<GraphEntry> data = graphData.get(dataSetNameId);
 
             for (GraphEntry graphEntry : data) {
                 Date date = graphEntry.getDate();
@@ -283,21 +289,17 @@ public class ChartingActivity extends Activity implements Updateable {
         renderer.setLabelsColor(labelsColor);
     }
 
-    /**
-     * Finds the first key matching for a given value in a map.
-     *
-     * @param map   map to search
-     * @param value value to find
-     * @return first found key matching the value
-     */
-    private Integer findKeyForValue(Map<Integer, String> map, String value) {
-        for (Map.Entry<Integer, String> entry : map.entrySet()) {
-            if (entry.getValue().equals(value)) {
-                return entry.getKey();
-            }
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        super.onCreateDialog(id);
+
+        switch (id) {
+            case DIALOG_EXECUTING:
+                return ProgressDialog.show(this, "", getResources().getString(R.string.executing));
         }
         return null;
     }
+
 
     /**
      * Goes to the charting activity.
@@ -312,9 +314,9 @@ public class ChartingActivity extends Activity implements Updateable {
 
         Intent timeChartIntent = new Intent(context, ChartingActivity.class);
         timeChartIntent.putExtras(new Bundle());
-        timeChartIntent.putExtra(ChartingActivity.INTENT_DEVICE_NAME, device.getName());
-        timeChartIntent.putExtra(ChartingActivity.INTENT_Y_TITLE, yTitle);
-        timeChartIntent.putExtra(ChartingActivity.INTENT_COLUMN_SPECIFICATION_IDS, columnSpecificationNames);
+        timeChartIntent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
+        timeChartIntent.putExtra(BundleExtraKeys.DEVICE_GRAPH_Y_TITLE, yTitle);
+        timeChartIntent.putExtra(BundleExtraKeys.DEVICE_GRAPH_COLUMN_SPECIFICATION_IDS, columnSpecificationNames);
 
         context.startActivity(timeChartIntent);
     }

@@ -22,13 +22,19 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.serv;
+package li.klass.fhem.service.intent;
 
 import android.app.IntentService;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.ResultReceiver;
+import android.util.Log;
+import li.klass.fhem.constants.BundleExtraKeys;
+import li.klass.fhem.constants.ResultCodes;
 
 import java.io.Serializable;
+
+import static li.klass.fhem.constants.BundleExtraKeys.RESULT_RECEIVER;
 
 /**
  * Abstract class extending {@link IntentService} to provide some more convenience methods.
@@ -38,13 +44,41 @@ public abstract class ConvenientIntentService extends IntentService {
         super(name);
     }
 
+    protected enum STATE {
+        SUCCESS, ERROR, DONE
+    }
+
     protected void sendNoResult(ResultReceiver receiver, int resultCode) {
-        receiver.send(resultCode, null);
+        if (receiver != null) {
+            receiver.send(resultCode, null);
+        }
     }
 
     protected void sendSingleExtraResult(ResultReceiver receiver, int resultCode, String bundleExtrasKey, Serializable value) {
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(bundleExtrasKey, value);
-        receiver.send(resultCode, bundle);
+        if (receiver != null) {
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(bundleExtrasKey, value);
+            receiver.send(resultCode, bundle);
+        }
     }
+
+    @Override
+    protected void onHandleIntent(Intent intent) {
+        ResultReceiver resultReceiver = intent.getParcelableExtra(RESULT_RECEIVER);
+        boolean doRefresh = intent.getBooleanExtra(BundleExtraKeys.DO_REFRESH, false);
+
+        try {
+            STATE state = handleIntent(intent, doRefresh, resultReceiver);
+            if (state == STATE.SUCCESS) {
+                sendNoResult(resultReceiver, ResultCodes.SUCCESS);
+            } else if (state == STATE.ERROR) {
+                sendNoResult(resultReceiver, ResultCodes.ERROR);
+            }
+        } catch (Exception e) {
+            Log.e(ConvenientIntentService.class.getName(), "An error occurred while processing an intent", e);
+            sendNoResult(resultReceiver, ResultCodes.ERROR);
+        }
+    }
+    
+    protected abstract STATE handleIntent(Intent intent, boolean doRefresh, ResultReceiver resultReceiver);
 }

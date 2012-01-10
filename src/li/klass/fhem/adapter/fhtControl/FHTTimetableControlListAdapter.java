@@ -26,6 +26,7 @@ package li.klass.fhem.adapter.fhtControl;
 
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.view.View;
@@ -34,7 +35,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import li.klass.fhem.R;
-import li.klass.fhem.activities.CurrentActivityProvider;
+import li.klass.fhem.constants.Actions;
 import li.klass.fhem.domain.fht.FHTDayControl;
 import li.klass.fhem.util.DayUtil;
 import li.klass.fhem.widget.NestedListViewAdapter;
@@ -152,7 +153,7 @@ public class FHTTimetableControlListAdapter extends NestedListViewAdapter<Intege
 
                         String newTime = String.format("%02d", hourOfDay) + ":" + String.format("%02d", minutes);
                         listener.onTimeChanged(newTime);
-                        CurrentActivityProvider.INSTANCE.getCurrentActivity().update(false);
+                        context.sendBroadcast(new Intent(Actions.DO_UPDATE));
                     }
                 }, hours, minutes, true);
 

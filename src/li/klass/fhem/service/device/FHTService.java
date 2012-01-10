@@ -24,13 +24,10 @@
 
 package li.klass.fhem.service.device;
 
-import android.content.Context;
-import li.klass.fhem.activities.CurrentActivityProvider;
 import li.klass.fhem.domain.FHTDevice;
 import li.klass.fhem.domain.fht.FHTDayControl;
 import li.klass.fhem.domain.fht.FHTMode;
 import li.klass.fhem.service.CommandExecutionService;
-import li.klass.fhem.service.ExecuteOnSuccess;
 import li.klass.fhem.util.DayUtil;
 
 import java.util.ArrayList;
@@ -48,106 +45,74 @@ public class FHTService {
     /**
      * Sets the desired temperature. The action will only be executed if the new desired temperature is different to
      * the already set one.
-     * @param context context in which the action was started.
      * @param device concerned device
      * @param desiredTemperatureToSet new desired temperature value
      */
-    public void setDesiredTemperature(Context context, final FHTDevice device, final double desiredTemperatureToSet) {
+    public void setDesiredTemperature(FHTDevice device, double desiredTemperatureToSet) {
         String command = "set " + device.getName() + " desired-temp " + desiredTemperatureToSet;
         if (desiredTemperatureToSet != device.getDesiredTemp()) {
-            CommandExecutionService.INSTANCE.executeSafely(context, command, new ExecuteOnSuccess() {
-                @Override
-                public void onSuccess() {
-                    device.setDesiredTemp(desiredTemperatureToSet);
-                    CurrentActivityProvider.INSTANCE.getCurrentActivity().update(false);
-                }
-            });
+            CommandExecutionService.INSTANCE.executeSafely(command);
         }
     }
 
     /**
      * Sets the mode attribute of a given FHT device. The action will only be executed if the new mode is different to
      * the already set one.
-     * @param context context in which the action was started.
      * @param device concerned device
      * @param mode new mode to set.
      */
-    public void setMode(Context context, final FHTDevice device, final FHTMode mode) {
+    public void setMode(FHTDevice device, FHTMode mode) {
         if (device.getMode() != mode) {
             String command = "set " + device.getName() + " mode " + mode.name().toLowerCase();
-            CommandExecutionService.INSTANCE.executeSafely(context, command, new ExecuteOnSuccess() {
-                @Override
-                public void onSuccess() {
-                    device.setMode(mode);
-                }
-            });
+            CommandExecutionService.INSTANCE.executeSafely(command);
         }
     }
 
     /**
      * Sets the day temperature. The action will only be executed if the new day temperature is different to
      * the already set one.
-     * @param context context in which the action was started.
      * @param device concerned device
      * @param dayTemperature new day temperature to set
      */
-    public void setDayTemperature(Context context, final FHTDevice device, final double dayTemperature) {
+    public void setDayTemperature(FHTDevice device, double dayTemperature) {
         if (device.getDayTemperature() != dayTemperature) {
             String command = "set " + device.getName() + " day-temp " + dayTemperature;
-            CommandExecutionService.INSTANCE.executeSafely(context, command, new ExecuteOnSuccess() {
-                @Override
-                public void onSuccess() {
-                    device.setDayTemperature(dayTemperature);
-                }
-            });
+            CommandExecutionService.INSTANCE.executeSafely(command);
         }
     }
 
     /**
      * Sets the night temperature. The action will only be executed if the new night temperature is different to
      * the already set one.
-     * @param context context in which the action was started.
      * @param device concerned device
      * @param nightTemperature new night temperature to set
      */
-    public void setNightTemp(Context context, final FHTDevice device, final double nightTemperature) {
+    public void setNightTemperature(FHTDevice device, double nightTemperature) {
         if (device.getNightTemperature() != nightTemperature) {
             String command = "set " + device.getName() + " night-temp " + nightTemperature;
-            CommandExecutionService.INSTANCE.executeSafely(context, command, new ExecuteOnSuccess() {
-                @Override
-                public void onSuccess() {
-                    device.setNightTemperature(nightTemperature);
-                }
-            });
+            CommandExecutionService.INSTANCE.executeSafely(command);
         }
     }
 
     /**
      * Sets the window open temperature. The action will only be executed if the new window open temperature is
      * different to the already set one.
-     * @param context context in which the action was started.
      * @param device concerned device
      * @param windowOpenTemp new window open temperature to set
      */
-    public void setWindowOpenTemp(Context context, final FHTDevice device, final double windowOpenTemp) {
+    public void setWindowOpenTemp(FHTDevice device, double windowOpenTemp) {
         if (device.getWindowOpenTemp() != windowOpenTemp) {
             String command = "set " + device.getName() + " windowopen-temp " + windowOpenTemp;
-            CommandExecutionService.INSTANCE.executeSafely(context, command, new ExecuteOnSuccess() {
-                @Override
-                public void onSuccess() {
-                    device.setWindowOpenTemp(windowOpenTemp);
-                }
-            });
+            CommandExecutionService.INSTANCE.executeSafely(command);
         }
     }
 
     /**
      * Sets a new timetable for a given device. The action will only be executed if the new timetable is
      * different to the already set one.
-     * @param context context in which the action was started.
      * @param device concerned device
      */
-    public void setTimetableFor(Context context, final FHTDevice device) {
+    public void setTimetableFor(FHTDevice device) {
         if (! device.hasChangedDayControlMapValues()) {
             return;
         }
@@ -171,14 +136,9 @@ public class FHTService {
         }
 
         for (String command : generateTimetableCommands(device, changeParts)) {
-            CommandExecutionService.INSTANCE.executeSafely(context, command, new ExecuteOnSuccess() {
-                @Override
-                public void onSuccess() {
-                    device.setChangedDayControlMapValuesAsCurrent();
-                    CurrentActivityProvider.INSTANCE.getCurrentActivity().update(false);
-                }
-            });
+            CommandExecutionService.INSTANCE.executeSafely(command);
         }
+        device.setChangedDayControlMapValuesAsCurrent();
     }
 
     /**
@@ -209,5 +169,13 @@ public class FHTService {
         }
 
         return commands;
+    }
+
+    /**
+     * Reset the changed timetable values to defaults
+     * @param device device to change
+     */
+    public void resetTimetable(FHTDevice device) {
+        device.resetDayControlMapValues();
     }
 }

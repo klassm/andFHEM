@@ -25,17 +25,41 @@
 package li.klass.fhem.constants;
 
 public class Actions {
-    public static final String SHOW_UPDATING_DIALOG = "showUpdatingDialog";
-    public static final String DISMISS_UPDATING_DIALOG = "dismissUpdatingDialog";
+    private static final String prefix = Actions.class.getName() + ".";
+    
+    public static final String SHOW_UPDATING_DIALOG = prefix + "SHOW_UPDATING_DIALOG";
+    public static final String DISMISS_UPDATING_DIALOG = prefix + "DISMISS_UPDATING_DIALOG";
+    public static final String SHOW_EXECUTING_DIALOG = prefix + "SHOW_EXECUTING_DIALOG";
+    public static final String DISMISS_EXECUTING_DIALOG = prefix + "DISMISS_EXECUTING_DIALOG";
 
-    public static final String GET_ALL_ROOMS_DEVICE_LIST = "allRoomsDeviceList";
-    public static final String GET_ROOM_DEVICE_LIST = "getRoomDeviceList";
-    public static final String GET_ROOM_NAME_LIST = "getRoomNameList";
+    public static final String GET_ALL_ROOMS_DEVICE_LIST = prefix + "ALL_ROOMS_DEVICE_LIST";
+    public static final String GET_ROOM_DEVICE_LIST = prefix + "GET_ROOM_DEVICE_LIST";
+    public static final String GET_ROOM_NAME_LIST = prefix + "GET_ROOM_NAME_LIST";
+    public static final String GET_DEVICE_FOR_NAME = prefix + "GET_DEVICE_FOR_NAME";
 
-    public static final String GET_DEVICE_FOR_NAME = "getDeviceForName";
+    public static final String FAVORITE_ROOM_LIST = prefix + "GET_FAVORITE_LIST";
+    public static final String FAVORITE_ADD = prefix + "ADD_FAVORITE";
+    public static final String FAVORITE_REMOVE = prefix + "REMOVE_FAVORITE";
 
-    public static final String FAVORITE_ROOM_LIST = "getFavoriteList";
-    public static final String FAVORITE_ADD = "addFavorite";
-    public static final String FAVORITE_REMOVE = "removeFavorite";
+    public static final String DEVICE_GRAPH = prefix + "DEVICE_GRAPH";
+    public static final String DEVICE_TOGGLE_STATE = prefix + "TOGGLE_STATE";
+    public static final String DEVICE_SET_STATE = prefix + "SET_STATE";
+    public static final String DEVICE_DIM = prefix + "DEVICE_DIM";
+    public static final String DEVICE_SET_MODE = prefix + "DEVICE_SET_MODE";
+    public static final String DEVICE_SET_DAY_TEMPERATURE = prefix + "DEVICE_SET_DAY_TEMPERATURE";
+    public static final String DEVICE_SET_NIGHT_TEMPERATURE = prefix + "DEVICE_SET_NIGHT_TEMPERATURE";
+    public static final String DEVICE_SET_WINDOW_OPEN_TEMPERATURE = prefix + "DEVICE_SET_WINDOW_OPEN_TEMPERATURE";
+    public static final String DEVICE_SET_TIMETABLE = prefix + "DEVICE_SET_TIMETABLE";
+    public static final String DEVICE_RESET_TIMETABLE = prefix + "DEVICE_RESET_TIMETABLE";
+    public static final String DEVICE_SET_DESIRED_TEMPERATURE = prefix + "DEVICE_SET_DESIRED_TEMPERATURE";
+    public static final String DEVICE_RENAME = prefix + "DEVICE_RENAME";
+    public static final String DEVICE_DELETE = prefix + "DEVICE_DELETE";
+    public static final String DEVICE_MOVE_ROOM = prefix + "DEVICE_MOVE_ROOM";
+    public static final String DEVICE_SET_ALIAS = prefix + "DEVICE_SET_ALIAS";
+
+
+    public static final String DO_UPDATE = prefix + "DO_UPDATE";
+
+
 
 }

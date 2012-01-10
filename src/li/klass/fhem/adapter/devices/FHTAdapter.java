@@ -35,10 +35,11 @@ import li.klass.fhem.R;
 import li.klass.fhem.activities.deviceDetail.FHTDeviceDetailActivity;
 import li.klass.fhem.activities.fhtControl.FHTTimetableControlListActivity;
 import li.klass.fhem.adapter.devices.core.DeviceDetailAvailableAdapter;
+import li.klass.fhem.constants.Actions;
+import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.Device;
 import li.klass.fhem.domain.FHTDevice;
 import li.klass.fhem.domain.fht.FHTMode;
-import li.klass.fhem.service.device.FHTService;
 
 import static li.klass.fhem.domain.FHTDevice.*;
 
@@ -97,7 +98,8 @@ public class FHTAdapter extends DeviceDetailAvailableAdapter<FHTDevice> {
                 new TemperatureValueSeekBarChangeListener() {
             @Override
             public void onSeekBarValueChanged(double newTemperature) {
-                FHTService.INSTANCE.setDesiredTemperature(context, device, newTemperature);
+                String action = Actions.DEVICE_SET_DESIRED_TEMPERATURE;
+                sendTemperatureIntent(newTemperature, action, device, context);
             }
         });
 
@@ -105,7 +107,8 @@ public class FHTAdapter extends DeviceDetailAvailableAdapter<FHTDevice> {
                 new TemperatureValueSeekBarChangeListener() {
             @Override
             public void onSeekBarValueChanged(double newTemperature) {
-                FHTService.INSTANCE.setDayTemperature(context, device, newTemperature);
+                String action = Actions.DEVICE_SET_DAY_TEMPERATURE;
+                sendTemperatureIntent(newTemperature, action, device, context);
             }
         });
 
@@ -113,7 +116,8 @@ public class FHTAdapter extends DeviceDetailAvailableAdapter<FHTDevice> {
                 new TemperatureValueSeekBarChangeListener() {
             @Override
             public void onSeekBarValueChanged(double newTemperature) {
-                FHTService.INSTANCE.setNightTemp(context, device, newTemperature);
+                String action = Actions.DEVICE_SET_NIGHT_TEMPERATURE;
+                sendTemperatureIntent(newTemperature, action, device, context);
             }
         });
 
@@ -121,19 +125,10 @@ public class FHTAdapter extends DeviceDetailAvailableAdapter<FHTDevice> {
                 new TemperatureValueSeekBarChangeListener() {
             @Override
             public void onSeekBarValueChanged(double newTemperature) {
-                FHTService.INSTANCE.setWindowOpenTemp(context, device, newTemperature);
+                String action = Actions.DEVICE_SET_WINDOW_OPEN_TEMPERATURE;
+                sendTemperatureIntent(newTemperature, action, device, context);
             }
         });
-
-        final SeekBar desiredTempSeekBar = (SeekBar) view.findViewById(R.id.desiredTemperatureSeek);
-        desiredTempSeekBar.setProgress((int) ((device.getDesiredTemp() - 5.5) / 0.5));
-        desiredTempSeekBar.setOnSeekBarChangeListener(new TemperatureViewSeekBarChangeListener(view, R.id.tableRowDesiredTemperature, R.id.desiredTemperature) {
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                FHTService.INSTANCE.setDesiredTemperature(seekBar.getContext(), device, value);
-            }
-        });
-
 
         Spinner modeSpinner = (Spinner) view.findViewById(R.id.mode);
 
@@ -144,7 +139,10 @@ public class FHTAdapter extends DeviceDetailAvailableAdapter<FHTDevice> {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
                 FHTMode mode = FHTMode.values()[position];
-                FHTService.INSTANCE.setMode(context, device, mode);
+                Intent intent = new Intent(Actions.DEVICE_SET_MODE);
+                intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
+                intent.putExtra(BundleExtraKeys.DEVICE_MODE, mode);
+                context.startService(intent);
             }
 
             @Override
@@ -164,10 +162,17 @@ public class FHTAdapter extends DeviceDetailAvailableAdapter<FHTDevice> {
             public void onClick(View view) {
                 Intent intent = new Intent(context, FHTTimetableControlListActivity.class);
                 intent.putExtras(new Bundle());
-                intent.putExtra("deviceName", device.getName());
+                intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
                 context.startActivity(intent);
             }
         });
+    }
+
+    private void sendTemperatureIntent(double newTemperature, String action, FHTDevice device, Context context) {
+        Intent intent = new Intent(action);
+        intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
+        intent.putExtra(BundleExtraKeys.DEVICE_TEMPERATURE, newTemperature);
+        context.startService(intent);
     }
 
     @Override

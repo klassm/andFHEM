@@ -26,4 +26,5 @@ package li.klass.fhem.constants;
 
 public class ResultCodes {
     public static final int SUCCESS = 1;
+    public static final int ERROR = 2;
 }

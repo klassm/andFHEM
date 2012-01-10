@@ -26,66 +26,61 @@ package li.klass.fhem.service.graph;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
+import li.klass.fhem.AndFHEMApplication;
+import li.klass.fhem.R;
 import li.klass.fhem.domain.Device;
+import li.klass.fhem.exception.HostConnectionException;
 import li.klass.fhem.fhem.DataConnectionSwitch;
-import li.klass.fhem.service.ExecuteOnSuccess;
-import li.klass.fhem.service.UpdateDialogAsyncTask;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * Class with the responsibility to provide {@link GraphEntry} objects for given column specifications. They will be
- * used to retrieve FileLog entries within FHEM.
- */
-public class GraphService {
-    public static final GraphService INSTANCE = new GraphService();
+public class GraphSyncService {
+    public static final GraphSyncService INSTANCE = new GraphSyncService();
 
-    private GraphService() {
+    private GraphSyncService() {
     }
 
     /**
      * Retrieves {@link GraphEntry} objects from FHEM. When the entries are available, the given listener object will
      * be notified.
-     * @param context context in which the action was started.
+     *
+     *
      * @param device concerned device
-     * @param columnSpecifications column specifications to retrieve
+     * @param columnSpecificationIds ids of the columns for reading the data
      * @param startDate read FileLog entries from the given date
      * @param endDate read FileLog entries up to the given date
-     * @param listener listener to notify
+     * @return read graph data or null (if the device does not have a FileLog device)
      */
-    public void getGraphData(Context context, final Device device, final List<String> columnSpecifications,
-                             final Calendar startDate, final Calendar endDate,
-                             final GraphDataReceivedListener listener) {
+    @SuppressWarnings("unchecked")
+    public HashMap<Integer, List<GraphEntry>> getGraphData(Device device, int[] columnSpecificationIds,
+                                                           final Calendar startDate, final Calendar endDate) {
 
-        if (device.getFileLog() == null) return;
+        Context context = AndFHEMApplication.getContext();
 
-        Map<String, List<GraphEntry>> data = new HashMap<String, List<GraphEntry>>();
-        final AtomicReference<Map<String, List<GraphEntry>>> dataReference = new AtomicReference<Map<String, List<GraphEntry>>>(data);
+        if (device.getFileLog() == null) return null;
 
-        ExecuteOnSuccess executeOnSuccess = new ExecuteOnSuccess() {
-            @Override
-            public void onSuccess() {
-                listener.graphDataReceived(dataReference.get());
+        Map<Integer, String> fileLogColumns = device.getFileLogColumns();
+        HashMap<Integer, List<GraphEntry>> data = new HashMap<Integer, List<GraphEntry>>();
+
+        try {
+            for (Integer columnSpecificationStringsId : columnSpecificationIds) {
+                String columnSpec = fileLogColumns.get(columnSpecificationStringsId);
+                String fileLogDeviceName = device.getFileLog().getName();
+
+                List<GraphEntry> valueEntries = getCurrentGraphEntriesFor(fileLogDeviceName, columnSpec, startDate, endDate);
+
+                data.put(columnSpecificationStringsId, valueEntries);
             }
-        };
+        } catch (HostConnectionException e) {
+            Toast.makeText(context, R.string.updateErrorHostConnection, Toast.LENGTH_LONG).show();
+        }
 
-        new UpdateDialogAsyncTask(context, executeOnSuccess) {
-
-            @Override
-            protected void executeCommand() {
-                for (String columnSpec : columnSpecifications) {
-                    String fileLogDeviceName = device.getFileLog().getName();
-                    List<GraphEntry> valueEntries = getCurrentGraphEntriesFor(fileLogDeviceName, columnSpec, startDate, endDate);
-                    dataReference.get().put(columnSpec, valueEntries);
-                }
-
-            }
-        }.executeTask();
+        return data;
     }
 
     /**
@@ -97,7 +92,7 @@ public class GraphService {
      * @param endDate read FileLog entries up to the given date
      * @return read fileLog entries converted to {@link GraphEntry} objects.
      */
-    public List<GraphEntry> getCurrentGraphEntriesFor(String fileLogName, String columnSpec, Calendar startDate, Calendar endDate) {
+    private List<GraphEntry> getCurrentGraphEntriesFor(String fileLogName, String columnSpec, Calendar startDate, Calendar endDate) {
         String result = DataConnectionSwitch.INSTANCE.getCurrentProvider().fileLogData(fileLogName, startDate.getTime(), endDate.getTime(), columnSpec);
         result = result.replace("#" + columnSpec, "");
 
@@ -125,9 +120,9 @@ public class GraphService {
 
                 result.add(new GraphEntry(providedDateFormat.parse(entryTime), Float.valueOf(entryValue)));
             } catch (ParseException e) {
-                Log.e(GraphService.class.getName(), "cannot parse date " + entryTime, e);
+                Log.e(GraphSyncService.class.getName(), "cannot parse date " + entryTime, e);
             } catch (NumberFormatException e) {
-                Log.e(GraphService.class.getName(), "cannot parse number " + entryValue, e);
+                Log.e(GraphSyncService.class.getName(), "cannot parse number " + entryValue, e);
             }
         }
 

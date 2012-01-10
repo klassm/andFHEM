@@ -81,6 +81,8 @@ public class RoomListActivity extends BaseActivity<RoomListAdapter> {
     @Override
     @SuppressWarnings("unchecked")
     public void update(boolean doUpdate) {
+        adapter.updateData(new ArrayList<String>());
+
         Intent intent = new Intent(Actions.GET_ROOM_NAME_LIST);
         intent.putExtras(new Bundle());
         intent.putExtra(BundleExtraKeys.DO_REFRESH, doUpdate);

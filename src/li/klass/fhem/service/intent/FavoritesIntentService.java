@@ -22,7 +22,7 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.serv;
+package li.klass.fhem.service.intent;
 
 import android.content.Intent;
 import android.os.ResultReceiver;
@@ -30,13 +30,10 @@ import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.domain.Device;
 import li.klass.fhem.domain.RoomDeviceList;
+import li.klass.fhem.service.room.FavoritesService;
 
-import static li.klass.fhem.constants.Actions.FAVORITE_ADD;
-import static li.klass.fhem.constants.Actions.FAVORITE_REMOVE;
-import static li.klass.fhem.constants.Actions.FAVORITE_ROOM_LIST;
+import static li.klass.fhem.constants.Actions.*;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE;
-import static li.klass.fhem.constants.BundleExtraKeys.DO_REFRESH;
-import static li.klass.fhem.constants.BundleExtraKeys.RESULT_RECEIVER;
 
 public class FavoritesIntentService extends ConvenientIntentService {
     public FavoritesIntentService() {
@@ -44,12 +41,9 @@ public class FavoritesIntentService extends ConvenientIntentService {
     }
 
     @Override
-    protected void onHandleIntent(Intent intent) {
-        FavoritesSyncService service = FavoritesSyncService.INSTANCE;
+    protected STATE handleIntent(Intent intent, boolean doRefresh, ResultReceiver resultReceiver) {
+        FavoritesService service = FavoritesService.INSTANCE;
 
-        boolean doRefresh = intent.getBooleanExtra(DO_REFRESH, false);
-        ResultReceiver resultReceiver = intent.getParcelableExtra(RESULT_RECEIVER);
-        
         if (intent.getAction().equals(FAVORITE_ROOM_LIST)) {
             RoomDeviceList favorites = service.getFavorites(doRefresh);
             sendSingleExtraResult(resultReceiver, ResultCodes.SUCCESS, BundleExtraKeys.DEVICE_LIST, favorites);
@@ -62,5 +56,7 @@ public class FavoritesIntentService extends ConvenientIntentService {
             service.removeFavorite(device);
             if (resultReceiver != null) sendNoResult(resultReceiver, ResultCodes.SUCCESS);
         }
+
+        return STATE.DONE;
     }
 }

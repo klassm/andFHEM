@@ -97,7 +97,7 @@ public class RoomDetailAdapter extends NestedListViewAdapter<DeviceType, Device<
         final DeviceAdapter<? extends Device<?>> deviceAdapter =  DeviceType.getAdapterFor(child);
         if (deviceAdapter == null) {
             Log.e(RoomDetailAdapter.class.getName(), "unsupported device type " + child);
-            throw new IllegalArgumentException("unsupported device type " + child);
+            return layoutInflater.inflate(android.R.layout.simple_list_item_1, null);
         }
 
         if (! deviceAdapter.supports(child.getClass())) {

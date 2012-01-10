@@ -25,24 +25,22 @@
 package li.klass.fhem.service.room;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import li.klass.fhem.AndFHEMApplication;
-import li.klass.fhem.R;
+import li.klass.fhem.constants.Actions;
+import li.klass.fhem.domain.Device;
 import li.klass.fhem.domain.RoomDeviceList;
 import li.klass.fhem.service.CommandExecutionService;
-import li.klass.fhem.service.ExecuteOnSuccess;
-import li.klass.fhem.service.UpdateDialogAsyncTask;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Map;
 
-/**
- * Class containing all the functionality for managing room and device lists.
- */
 public class RoomListService {
-
+    public static final RoomListService INSTANCE = new RoomListService();
+    
     /**
      * Currently loaded device list map.
      */
@@ -52,148 +50,108 @@ public class RoomListService {
      * file name of the current cache object.
      */
     public static final String CACHE_FILENAME = "cache.obj";
+    
+    private RoomListService() {
+    }
 
-    public static final RoomListService INSTANCE = new RoomListService();
-
-    private RoomListService() {}
-
-    private interface RoomDeviceListMapListener {
-        void onRoomDeviceListRefresh(Map<String,RoomDeviceList> deviceListMap);
+    /**
+     * Looks for a device with a given name.
+     * @param deviceName name of the device
+     * @param refresh refresh device list
+     * @return found device or null
+     */
+    public Device getDeviceForName(String deviceName, boolean refresh) {
+        return getAllRoomsDeviceList(refresh).getDeviceFor(deviceName);
     }
 
     /**
      * Retrieves a list of all room names.
-     * @param context context in which the action was started.
      * @param refresh should the underlying {@link RoomDeviceList} be refreshed by asking FHEM for new values?
-     * @param listener listener to notify when the room list has been retrieved
+     * @return list of all room names
      */
-    public void getRoomList(Context context, boolean refresh, final RoomListListener listener) {
-        getRoomDeviceListMap(context, refresh, new RoomDeviceListMapListener() {
-            @Override
-            public void onRoomDeviceListRefresh(Map<String, RoomDeviceList> deviceListMap) {
-                ArrayList<String> roomNames = new ArrayList<String>(deviceListMap.keySet());
-                for (RoomDeviceList roomDeviceList : deviceListMap.values()) {
-                    if (roomDeviceList.isOnlyLogDeviceRoom()) {
-                        roomNames.remove(roomDeviceList.getRoomName());
-                    }
-                }
-                roomNames.remove(RoomDeviceList.ALL_DEVICES_ROOM);
-                listener.onRoomListRefresh(roomNames);
+    public ArrayList<String> getRoomNameList(boolean refresh) {
+        Map<String, RoomDeviceList> map = getRoomDeviceListMap(refresh);
+        ArrayList<String> roomNames = new ArrayList<String>(map.keySet());
+        for (RoomDeviceList roomDeviceList : map.values()) {
+            if (roomDeviceList.isOnlyLogDeviceRoom()) {
+                roomNames.remove(roomDeviceList.getRoomName());
+            } else if (roomDeviceList.getRoomName().equals(RoomDeviceList.ALL_DEVICES_ROOM)) {
+                roomNames.remove(roomDeviceList.getRoomName());
             }
-        });
+        }
+        return roomNames;
     }
 
     /**
      * Gets or creates a new device list for a given room.
-     * @param context context in which the action was started.
      * @param roomName room name used for searching
-     * @param update should the underlying {@link RoomDeviceList} be refreshed by asking FHEM for new values?
-     * @param listener listener to notify when the room list has been retrieved
+     * @param refresh should the underlying {@link RoomDeviceList} be refreshed by asking FHEM for new values?
+     * @return {@link RoomDeviceList} for a room
      */
-    public void getOrCreateRoomDeviceList(Context context, final String roomName, boolean update,
-                                                    final RoomDeviceListListener listener) {
+    public RoomDeviceList getOrCreateRoomDeviceList(final String roomName, boolean refresh) {
+        Map<String, RoomDeviceList> map = getRoomDeviceListMap(refresh);
+        RoomDeviceList roomDeviceList = map.get(roomName);
+        if (roomDeviceList == null) {
+            roomDeviceList = new RoomDeviceList(roomName);
+            map.put(roomName, roomDeviceList);
+        }
 
-        getRoomDeviceListMap(context, update, new RoomDeviceListMapListener() {
-            @Override
-            public void onRoomDeviceListRefresh(Map<String, RoomDeviceList> deviceListMap) {
-                RoomDeviceList roomDeviceList = deviceListMap.get(roomName);
-
-                if (roomDeviceList == null) {
-                    roomDeviceList = new RoomDeviceList(roomName);
-                    deviceListMap.put(roomName, roomDeviceList);
-                }
-                listener.onRoomListRefresh(roomDeviceList);
-            }
-        });
+        return roomDeviceList;
     }
 
     /**
      * Retrieves a {@link RoomDeviceList} containing all devices, not only the devices of a specific room.
-     * @param context context in which the action was started.
-     * @param update should the underlying {@link RoomDeviceList} be refreshed by asking FHEM for new values?
-     * @param listener listener to notify when the room device list has been retrieved.
+     * @param refresh should the underlying {@link RoomDeviceList} be refreshed by asking FHEM for new values?
+     * @return {@link RoomDeviceList} containing all devices
      */
-    public void getAllRoomsDeviceList(Context context, boolean update, final RoomDeviceListListener listener) {
-        getRoomDeviceListMap(context, update, new RoomDeviceListMapListener() {
-            @Override
-            public void onRoomDeviceListRefresh(Map<String, RoomDeviceList> deviceListMap) {
-                listener.onRoomListRefresh(deviceListMap.get(RoomDeviceList.ALL_DEVICES_ROOM));
-            }
-        });
+    public RoomDeviceList getAllRoomsDeviceList(boolean refresh) {
+        return getRoomDeviceListMap(refresh).get(RoomDeviceList.ALL_DEVICES_ROOM);
     }
 
     /**
      * Retrieves the {@link RoomDeviceList} for a specific room name.
-     * @param context context context in which the action was started.
      * @param roomName room name used for searching.
-     * @param update should the underlying {@link RoomDeviceList} be refreshed by asking FHEM for new values?
-     * @param listener listener to notify when the room device list has been retrieved.
+     * @param refresh should the underlying {@link RoomDeviceList} be refreshed by asking FHEM for new values?
+     * @return found {@link RoomDeviceList} or null
      */
-    public void getRoomDeviceList(Context context, final String roomName, boolean update, final RoomDeviceListListener listener) {
-        getRoomDeviceListMap(context, update, new RoomDeviceListMapListener() {
-            @Override
-            public void onRoomDeviceListRefresh(Map<String, RoomDeviceList> deviceListMap) {
-                listener.onRoomListRefresh(deviceListMap.get(roomName));
-            }
-        });
+    public RoomDeviceList getDeviceListForRoom(String roomName, boolean refresh) {
+        return getRoomDeviceListMap(refresh).get(roomName);
     }
 
     /**
      * Removes the {@link RoomDeviceList} being associated to the given room name.
-     * @param context context context in which the action was started.
      * @param roomName room name used for searching the room
      */
-    public void removeDeviceListForRoom(Context context, final String roomName) {
-        getRoomDeviceListMap(context, false, new RoomDeviceListMapListener() {
-            @Override
-            public void onRoomDeviceListRefresh(Map<String, RoomDeviceList> deviceListMap) {
-                deviceListMap.remove(roomName);
-            }
-        });
+    public void removeDeviceListForRoom(String roomName) {
+        getRoomDeviceListMap(false).remove(roomName);
     }
 
     /**
      * Switch method deciding whether a FHEM has to be contacted, the cached list can be used or the map already has
      * been loaded to the deviceListMap attribute.
-     * @param context context context context in which the action was started.
-     * @param update update should the underlying {@link RoomDeviceList} be refreshed by asking FHEM for new values?
-     * @param listener listener listener to notify when the room device list map has been retrieved.
+     * @param refresh refresh should the underlying {@link RoomDeviceList} be refreshed by asking FHEM for new values?
+     * @return current room device list map
      */
-    private void getRoomDeviceListMap(Context context, boolean update, RoomDeviceListMapListener listener) {
-        if (update) {
-            updateDeviceListMap(context, listener);
-        } else if (deviceListMap == null) {
-            loadStoredDataFromFile(context, listener);
-        } else {
-            listener.onRoomDeviceListRefresh(deviceListMap);
+    private Map<String, RoomDeviceList> getRoomDeviceListMap(boolean refresh) {
+        if (! refresh && deviceListMap == null) {
+            deviceListMap = getCachedRoomDeviceListMap();
         }
+
+        if (refresh || deviceListMap == null) {
+            sendBroadcastWithAction(Actions.SHOW_UPDATING_DIALOG);
+            deviceListMap = getRemoteRoomDeviceListMap();
+            sendBroadcastWithAction(Actions.DISMISS_UPDATING_DIALOG);
+        }
+
+        return deviceListMap;
     }
 
     /**
      * Loads the most current room device list map from FHEM and saves it to the cache.
-     * @param context context context context in which the action was started.
-     * @param listener listener listener to notify when the room device list map has been retrieved.
+     * @return remotely loaded room device list map
      */
-    private void updateDeviceListMap(Context context, final RoomDeviceListMapListener listener) {
-        ExecuteOnSuccess executeOnSuccess = new ExecuteOnSuccess() {
-            @Override
-            public void onSuccess() {
-                listener.onRoomDeviceListRefresh(deviceListMap);
-            }
-        };
-
-        new UpdateDialogAsyncTask(context, executeOnSuccess) {
-            @Override
-            protected void executeCommand() {
-                deviceListMap = DeviceListParser.INSTANCE.listDevices();
-                storeDeviceListMap();
-            }
-
-            @Override
-            protected int getExecuteDialogMessage() {
-                return R.string.updating;
-            }
-        }.executeTask();
+    private Map<String, RoomDeviceList> getRemoteRoomDeviceListMap() {
+        return DeviceListParser.INSTANCE.listDevices();
     }
 
     /**
@@ -211,23 +169,25 @@ public class RoomListService {
 
     /**
      * Loads the currently cached room device list map data from the file storage.
-     * @param context context context context in which the action was started.
-     * @param listener listener listener to notify when the room device list map has been retrieved.
+     * @return cached room device list map
      */
     @SuppressWarnings("unchecked")
-    private void loadStoredDataFromFile(Context context, RoomDeviceListMapListener listener) {
+    private Map<String, RoomDeviceList> getCachedRoomDeviceListMap() {
         try {
             ObjectInputStream objectInputStream = new ObjectInputStream(AndFHEMApplication.getContext().openFileInput(CACHE_FILENAME));
-            Map<String, RoomDeviceList> roomDeviceListMap = (Map<String, RoomDeviceList>) objectInputStream.readObject();
-
-            if (roomDeviceListMap != null) {
-                this.deviceListMap = roomDeviceListMap;
-                listener.onRoomDeviceListRefresh(roomDeviceListMap);
-                return;
-            }
+            return (Map<String, RoomDeviceList>) objectInputStream.readObject();
         } catch (Exception e) {
             Log.d(CommandExecutionService.class.getName(), "error occurred while de-serializing data", e);
+            return null;
         }
-        updateDeviceListMap(context, listener);
+    }
+
+    /**
+     * Sends a broadcast message containing a specified action. Context is the application context.
+     * @param action action to use for sending the broadcast intent.
+     */
+    private void sendBroadcastWithAction(String action) {
+        Intent broadcastIntent = new Intent(action);
+        AndFHEMApplication.getContext().sendBroadcast(broadcastIntent);
     }
 }

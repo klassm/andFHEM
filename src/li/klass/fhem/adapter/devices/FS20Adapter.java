@@ -29,6 +29,9 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.ResultReceiver;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -36,33 +39,17 @@ import android.widget.SeekBar;
 import android.widget.TableRow;
 import android.widget.ToggleButton;
 import li.klass.fhem.R;
-import li.klass.fhem.activities.CurrentActivityProvider;
-import li.klass.fhem.activities.base.BaseActivity;
 import li.klass.fhem.activities.deviceDetail.FS20DeviceDetailActivity;
 import li.klass.fhem.adapter.devices.core.DeviceDetailAvailableAdapter;
+import li.klass.fhem.constants.Actions;
+import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.Device;
 import li.klass.fhem.domain.FS20Device;
-import li.klass.fhem.domain.RoomDeviceList;
-import li.klass.fhem.service.ExecuteOnSuccess;
-import li.klass.fhem.service.room.RoomDeviceListListener;
-import li.klass.fhem.service.room.RoomListService;
-import li.klass.fhem.service.device.FS20Service;
 
 import java.util.List;
 
 public class FS20Adapter extends DeviceDetailAvailableAdapter<FS20Device> {
 
-    private class UpdateCurrentActivityOnSuccess implements ExecuteOnSuccess {
-
-        @Override
-        public void onSuccess() {
-            BaseActivity<?> currentActivity = CurrentActivityProvider.INSTANCE.getCurrentActivity();
-            if (currentActivity != null) {
-                currentActivity.update(false);
-            }
-        }
-    }
-    
     private class SeekBarChangeListener implements SeekBar.OnSeekBarChangeListener {
 
         public int progress;
@@ -74,7 +61,6 @@ public class FS20Adapter extends DeviceDetailAvailableAdapter<FS20Device> {
         @Override
         public void onProgressChanged(SeekBar seekBar, final int progress, boolean fromUser) {
             this.progress = progress;
-
         }
 
         @Override
@@ -84,14 +70,19 @@ public class FS20Adapter extends DeviceDetailAvailableAdapter<FS20Device> {
         @Override
         public void onStopTrackingTouch(final SeekBar seekBar) {
             final Context context = seekBar.getContext();
-            RoomListService.INSTANCE.getAllRoomsDeviceList(context, false, new RoomDeviceListListener() {
+            String deviceName = (String) seekBar.getTag();
+
+            Intent intent = new Intent(Actions.DEVICE_DIM);
+            intent.putExtra(BundleExtraKeys.DEVICE_DIM_PROGRESS, progress);
+            intent.putExtra(BundleExtraKeys.DEVICE_NAME, deviceName);
+            intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
                 @Override
-                public void onRoomListRefresh(RoomDeviceList roomDeviceList) {
-                    String deviceName = (String) seekBar.getTag();
-                    FS20Device device = roomDeviceList.getDeviceFor(deviceName);
-                    FS20Service.INSTANCE.dim(context, device, progress, new UpdateCurrentActivityOnSuccess());
+                protected void onReceiveResult(int resultCode, Bundle resultData) {
+                    context.sendBroadcast(new Intent(Actions.DO_UPDATE));
                 }
             });
+
+            context.startService(intent);
         }
     }
 
@@ -139,7 +130,19 @@ public class FS20Adapter extends DeviceDetailAvailableAdapter<FS20Device> {
                 contextMenu.setItems(setOptions.toArray(new CharSequence[setOptions.size()]), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int item) {
                         String option = setOptions.get(item);
-                        FS20Service.INSTANCE.setState(context, device, option, new UpdateCurrentActivityOnSuccess());
+
+                        Intent intent = new Intent(Actions.DEVICE_SET_STATE);
+                        intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
+                        intent.putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, option);
+                        intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
+                            @Override
+                            protected void onReceiveResult(int resultCode, Bundle resultData) {
+                                super.onReceiveResult(resultCode, resultData);
+                                context.sendBroadcast(new Intent(Actions.DO_UPDATE));
+                            }
+                        });
+                        context.startService(intent);
+                        
                         dialog.dismiss();
                     }
                 });

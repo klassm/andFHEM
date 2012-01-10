@@ -25,7 +25,15 @@
 package li.klass.fhem.service;
 
 import android.content.Context;
+import android.content.Intent;
+import android.widget.Toast;
+import li.klass.fhem.AndFHEMApplication;
+import li.klass.fhem.R;
+import li.klass.fhem.exception.HostConnectionException;
 import li.klass.fhem.fhem.DataConnectionSwitch;
+
+import static li.klass.fhem.constants.Actions.DISMISS_EXECUTING_DIALOG;
+import static li.klass.fhem.constants.Actions.SHOW_EXECUTING_DIALOG;
 
 /**
  * Service serving as central interface to FHEM.
@@ -47,56 +55,19 @@ public class CommandExecutionService {
     /**
      * Executes a command safely by catching exceptions. Shows an update dialog during execution. Shows an update
      * dialog.
-     * @param context execution context
      * @param command command to execute
-     * @param executeOnSuccess called if the action succeeds
+     * 
      */
-    public void executeSafely(Context context, String command, ExecuteOnSuccess executeOnSuccess) {
-        new CommandExecuteTask(context, executeOnSuccess, command).executeTask();
-    }
+    public void executeSafely(String command) {
+        Context context = AndFHEMApplication.getContext();
+        context.sendBroadcast(new Intent(SHOW_EXECUTING_DIALOG));
 
-    /**
-     * Executes a command safely by catching exceptions. Shows an update dialog during execution. Shows an update
-     * dialog.
-     * @param context execution context
-     * @param command command to execute
-     * @param executeOnSuccess called if the action succeeds
-     * @param updateMessageId string id of the update dialog message
-     */
-    public void executeSafely(Context context, String command, ExecuteOnSuccess executeOnSuccess, int updateMessageId) {
-        new CommandExecuteTask(context, executeOnSuccess, command, updateMessageId).executeTask();
-    }
-
-    /**
-     * Executes a command asynchronously while showing an  update dialog.
-     */
-    class CommandExecuteTask extends UpdateDialogAsyncTask {
-
-        private String command;
-        private int updateMessageId = -1;
-
-        public CommandExecuteTask(Context context, ExecuteOnSuccess executeOnSuccess, String command) {
-            super(context, executeOnSuccess);
-            this.command = command;
-        }
-
-        public CommandExecuteTask(Context context, ExecuteOnSuccess executeOnSuccess, String command, int updateMessageId) {
-            this(context, executeOnSuccess, command);
-            this.updateMessageId = updateMessageId;
-        }
-
-        @Override
-        protected void executeCommand() {
-            CommandExecutionService.this.executeUnsafeCommand(command);
-        }
-
-        @Override
-        protected int getExecuteDialogMessage() {
-            if (updateMessageId == -1) {
-                return super.getExecuteDialogMessage();
-            } else {
-                return updateMessageId;
-            }
+        try {
+            executeUnsafeCommand(command);
+        } catch (HostConnectionException e) {
+            Toast.makeText(context, R.string.updateErrorHostConnection, Toast.LENGTH_LONG).show();
+        } finally {
+            context.sendBroadcast(new Intent(DISMISS_EXECUTING_DIALOG));
         }
     }
 }
