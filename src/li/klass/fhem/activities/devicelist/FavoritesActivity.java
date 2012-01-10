@@ -24,17 +24,23 @@
 
 package li.klass.fhem.activities.devicelist;
 
+import android.content.Intent;
 import android.content.res.Resources;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.ResultReceiver;
 import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Toast;
 import li.klass.fhem.R;
+import li.klass.fhem.constants.Actions;
 import li.klass.fhem.domain.Device;
 import li.klass.fhem.domain.RoomDeviceList;
 import li.klass.fhem.service.favorites.FavoritesService;
-import li.klass.fhem.service.room.RoomDeviceListListener;
+
+import static li.klass.fhem.constants.BundleExtraKeys.*;
 
 public class FavoritesActivity extends DeviceListActivity {
 
@@ -65,12 +71,17 @@ public class FavoritesActivity extends DeviceListActivity {
 
     @Override
     public void update(boolean doUpdate) {
-        FavoritesService.INSTANCE.getFavorites(this, doUpdate, new RoomDeviceListListener() {
-
+        Intent intent = new Intent(Actions.FAVORITE_ROOM_LIST);
+        intent.putExtras(new Bundle());
+        intent.putExtra(DO_REFRESH, doUpdate);
+        intent.putExtra(RESULT_RECEIVER, new ResultReceiver(new Handler()) {
             @Override
-            public void onRoomListRefresh(RoomDeviceList roomDeviceList) {
-                adapter.updateData(roomDeviceList);
+            protected void onReceiveResult(int resultCode, Bundle resultData) {
+                super.onReceiveResult(resultCode, resultData);
+                RoomDeviceList deviceList = (RoomDeviceList) resultData.getSerializable(DEVICE_LIST);
+                adapter.updateData(deviceList);
             }
         });
+        startService(intent);
     }
 }

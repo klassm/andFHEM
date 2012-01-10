@@ -24,13 +24,18 @@
 
 package li.klass.fhem.activities.devicelist;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.ResultReceiver;
 import li.klass.fhem.R;
+import li.klass.fhem.constants.Actions;
+import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.RoomDeviceList;
-import li.klass.fhem.service.room.RoomDeviceListListener;
-import li.klass.fhem.service.room.RoomListService;
 
 public class AllDevicesActivity extends DeviceListActivity {
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,15 +43,25 @@ public class AllDevicesActivity extends DeviceListActivity {
 
         String roomTitle = getResources().getString(R.string.allRoomsTitle);
         setTitle(roomTitle);
+
+
     }
 
     @Override
     public void update(boolean doUpdate) {
-        RoomListService.INSTANCE.getAllRoomsDeviceList(this, doUpdate, new RoomDeviceListListener() {
+        Intent intent = new Intent(Actions.GET_ALL_ROOMS_DEVICE_LIST);
+        intent.putExtras(new Bundle());
+        intent.putExtra(BundleExtraKeys.DO_REFRESH, doUpdate);
+        intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
             @Override
-            public void onRoomListRefresh(RoomDeviceList roomDeviceList) {
-                adapter.updateData(roomDeviceList);
+            protected void onReceiveResult(int resultCode, Bundle resultData) {
+                super.onReceiveResult(resultCode, resultData);
+                RoomDeviceList deviceList = (RoomDeviceList) resultData.getSerializable(BundleExtraKeys.DEVICE_LIST);
+                adapter.updateData(deviceList);
             }
         });
+        startService(intent);
     }
+
+
 }

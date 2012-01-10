@@ -30,6 +30,7 @@ import li.klass.fhem.R;
 import li.klass.fhem.activities.CurrentActivityProvider;
 import li.klass.fhem.domain.Device;
 import li.klass.fhem.domain.RoomDeviceList;
+import li.klass.fhem.serv.RoomListSyncService;
 import li.klass.fhem.service.CommandExecutionService;
 import li.klass.fhem.service.ExecuteOnSuccess;
 import li.klass.fhem.service.room.RoomDeviceListListener;
@@ -115,26 +116,17 @@ public class DeviceService {
                 final String oldRoom = device.getRoom();
                 device.setRoom(newRoom);
 
-                RoomListService.INSTANCE.getRoomDeviceList(context, oldRoom, false, new RoomDeviceListListener() {
+                RoomDeviceList oldRoomDeviceList = RoomListSyncService.INSTANCE.getDeviceListForRoom(oldRoom, false);
+                oldRoomDeviceList.removeDevice(device);
+                if (oldRoomDeviceList.getAllDevices().size() == 0) {
+                    RoomListService.INSTANCE.removeDeviceListForRoom(context, oldRoom);
+                    CurrentActivityProvider.INSTANCE.getCurrentActivity().update(false);
+                    Toast.makeText(context, R.string.deviceMoveSuccess, Toast.LENGTH_LONG).show();
+                }
 
-                    @Override
-                    public void onRoomListRefresh(RoomDeviceList oldRoomDeviceList) {
-                        oldRoomDeviceList.removeDevice(device);
-                        if (oldRoomDeviceList.getAllDevices().size() == 0) {
-                            RoomListService.INSTANCE.removeDeviceListForRoom(context, oldRoom);
-                            CurrentActivityProvider.INSTANCE.getCurrentActivity().update(false);
-                            Toast.makeText(context, R.string.deviceMoveSuccess, Toast.LENGTH_LONG).show();
-                        }
-                    }
-                });
-
-                RoomListService.INSTANCE.getOrCreateRoomDeviceList(context, newRoom, false, new RoomDeviceListListener() {
-                    @Override
-                    public void onRoomListRefresh(RoomDeviceList newRoomDeviceList) {
-                        newRoomDeviceList.addDevice(device);
-                        CurrentActivityProvider.INSTANCE.getCurrentActivity().update(false);
-                    }
-                });
+                RoomDeviceList newRoomDeviceList = RoomListSyncService.INSTANCE.getOrCreateRoomDeviceList(newRoom, false);
+                newRoomDeviceList.addDevice(device);
+                CurrentActivityProvider.INSTANCE.getCurrentActivity().update(false);
             }
         });
     }

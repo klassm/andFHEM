@@ -25,10 +25,17 @@
 package li.klass.fhem.activities.base;
 
 import android.app.Activity;
+import android.app.Dialog;
+import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.ResultReceiver;
 import android.util.Log;
 import android.view.*;
 import android.widget.AdapterView;
@@ -37,10 +44,13 @@ import li.klass.fhem.ApplicationUrls;
 import li.klass.fhem.R;
 import li.klass.fhem.activities.CurrentActivityProvider;
 import li.klass.fhem.activities.PreferencesActivity;
+import li.klass.fhem.constants.Actions;
+import li.klass.fhem.constants.BundleExtraKeys;
+import li.klass.fhem.domain.Device;
+import li.klass.fhem.serv.RoomListSyncService;
+import li.klass.fhem.service.ExecuteOnSuccess;
 import li.klass.fhem.service.favorites.FavoritesService;
 import li.klass.fhem.service.room.RoomListService;
-import li.klass.fhem.domain.Device;
-import li.klass.fhem.service.ExecuteOnSuccess;
 import li.klass.fhem.util.device.DeviceActionUtil;
 
 public abstract class BaseActivity<ADAPTER> extends Activity implements Updateable {
@@ -55,6 +65,8 @@ public abstract class BaseActivity<ADAPTER> extends Activity implements Updateab
     public static final int CONTEXT_MENU_DELETE = 4;
     public static final int CONTEXT_MENU_MOVE = 5;
     public static final int CONTEXT_MENU_ALIAS = 6;
+
+    public static final int DIALOG_UPDATING = 1;
 
     /**
      * Attribute is set whenever a context menu concerning a device is clicked. This is the only way to actually get
@@ -82,6 +94,21 @@ public abstract class BaseActivity<ADAPTER> extends Activity implements Updateab
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        BroadcastReceiver updateBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if (intent.getAction().equals(Actions.SHOW_UPDATING_DIALOG)) {
+                    showDialog(DIALOG_UPDATING);
+                } else if (intent.getAction().equals(Actions.DISMISS_UPDATING_DIALOG)) {
+                    dismissDialog(DIALOG_UPDATING);
+                }
+            }
+        };
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Actions.SHOW_UPDATING_DIALOG);
+        filter.addAction(Actions.DISMISS_UPDATING_DIALOG);
+        registerReceiver(updateBroadcastReceiver, filter);
 
         CurrentActivityProvider.INSTANCE.setCurrentActivity(this);
 
@@ -148,6 +175,7 @@ public abstract class BaseActivity<ADAPTER> extends Activity implements Updateab
     @Override
     protected void onStop() {
         super.onStop();
+        RoomListSyncService.INSTANCE.storeDeviceListMap();
         RoomListService.INSTANCE.storeDeviceListMap();
     }
 
@@ -199,8 +227,17 @@ public abstract class BaseActivity<ADAPTER> extends Activity implements Updateab
     public boolean onContextItemSelected(MenuItem item) {
         switch(item.getItemId()) {
             case CONTEXT_MENU_FAVORITES_ADD:
+                Intent favoriteAddIntent = new Intent(Actions.FAVORITE_ADD);
+                favoriteAddIntent.putExtra(BundleExtraKeys.DEVICE, contextMenuClickedDevice);
+                favoriteAddIntent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
+                    @Override
+                    protected void onReceiveResult(int resultCode, Bundle resultData) {
+                        Toast.makeText(BaseActivity.this, R.string.context_favoriteadded, Toast.LENGTH_SHORT).show();
+                    }
+                });
+                startService(favoriteAddIntent);
                 FavoritesService.INSTANCE.addFavorite(contextMenuClickedDevice);
-                Toast.makeText(this, R.string.context_favoriteadded, Toast.LENGTH_SHORT).show();
+
                 return true;
             case CONTEXT_MENU_RENAME:
                 DeviceActionUtil.renameDevice(this, contextMenuClickedDevice);
@@ -216,6 +253,17 @@ public abstract class BaseActivity<ADAPTER> extends Activity implements Updateab
                 return true;
         }
         return false;
+    }
+
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        super.onCreateDialog(id);
+
+        switch (id) {
+            case DIALOG_UPDATING:
+                return ProgressDialog.show(this, "", getResources().getString(R.string.updating));
+        }
+        return null;
     }
 
     protected abstract ADAPTER initializeLayoutAndReturnAdapter();

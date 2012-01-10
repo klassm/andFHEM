@@ -26,20 +26,21 @@ package li.klass.fhem.activities.deviceDetail;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.ResultReceiver;
 import li.klass.fhem.R;
 import li.klass.fhem.activities.base.BaseActivity;
 import li.klass.fhem.adapter.devices.core.DeviceAdapter;
+import li.klass.fhem.constants.Actions;
+import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.Device;
 import li.klass.fhem.domain.DeviceType;
-import li.klass.fhem.domain.RoomDeviceList;
-import li.klass.fhem.service.room.RoomDeviceListListener;
-import li.klass.fhem.service.room.RoomListService;
 
 public abstract class DeviceDetailActivity<D extends Device> extends BaseActivity<DeviceAdapter<D>> {
 
     protected String deviceName;
     protected String room;
-    
+
     @Override
     @SuppressWarnings("unchecked")
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,19 +68,26 @@ public abstract class DeviceDetailActivity<D extends Device> extends BaseActivit
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public void update(boolean doUpdate) {
-        RoomListService.INSTANCE.getAllRoomsDeviceList(this, doUpdate, new RoomDeviceListListener() {
+        Intent intent = new Intent(Actions.GET_DEVICE_FOR_NAME);
+        intent.putExtras(new Bundle());
+        intent.putExtra(BundleExtraKeys.DO_REFRESH, doUpdate);
+        intent.putExtra(BundleExtraKeys.DEVICE_NAME, deviceName);
+        intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
             @Override
-            public void onRoomListRefresh(RoomDeviceList roomDeviceList) {
-                D device = roomDeviceList.getDeviceFor(deviceName);
+            protected void onReceiveResult(int resultCode, Bundle resultData) {
+                super.onReceiveResult(resultCode, resultData);
+                D device = (D) resultData.getSerializable(BundleExtraKeys.DEVICE);
                 if (device == null) {
                     finish();
                     return;
                 }
-                
+
                 DeviceAdapter<D> adapter = DeviceType.getAdapterFor(device);
                 setContentView(adapter.getDetailView(DeviceDetailActivity.this, device));
             }
         });
+        startService(intent);
     }
 }

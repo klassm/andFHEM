@@ -71,6 +71,23 @@
             </intent-filter>
             <meta-data android:name="android.appwidget.provider" android:resource="@xml/appwidgetprovider_switch" />
         </receiver>
+
+        <service android:name=".serv.RoomListIntentService">
+            <intent-filter>
+                <action android:name="allRoomsDeviceList" />
+                <action android:name="getRoomNameList" />
+                <action android:name="getRoomDeviceList" />
+                <action android:name="getDeviceForName" />
+            </intent-filter>
+        </service>
+
+        <service android:name=".serv.FavoritesIntentService">
+            <intent-filter>
+                <action android:name="getFavoriteList" />
+                <action android:name="addFavorite" />
+                <action android:name="removeFavorite" />
+            </intent-filter>
+        </service>
     </application>
 
 

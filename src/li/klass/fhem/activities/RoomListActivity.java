@@ -26,6 +26,8 @@ package li.klass.fhem.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.ResultReceiver;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -33,8 +35,8 @@ import li.klass.fhem.R;
 import li.klass.fhem.activities.base.BaseActivity;
 import li.klass.fhem.activities.devicelist.RoomDetailActivity;
 import li.klass.fhem.adapter.rooms.RoomListAdapter;
-import li.klass.fhem.service.room.RoomListListener;
-import li.klass.fhem.service.room.RoomListService;
+import li.klass.fhem.constants.Actions;
+import li.klass.fhem.constants.BundleExtraKeys;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,7 +64,7 @@ public class RoomListActivity extends BaseActivity<RoomListAdapter> {
                 Intent intent = new Intent();
                 intent.setClass(RoomListActivity.this, RoomDetailActivity.class);
                 intent.putExtras(new Bundle());
-                intent.putExtra("roomName", roomName);
+                intent.putExtra(BundleExtraKeys.ROOM_NAME, roomName);
 
                 startActivity(intent);
             }
@@ -77,13 +79,19 @@ public class RoomListActivity extends BaseActivity<RoomListAdapter> {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public void update(boolean doUpdate) {
-        RoomListService.INSTANCE.getRoomList(this, doUpdate, new RoomListListener() {
-
+        Intent intent = new Intent(Actions.GET_ROOM_NAME_LIST);
+        intent.putExtras(new Bundle());
+        intent.putExtra(BundleExtraKeys.DO_REFRESH, doUpdate);
+        intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
             @Override
-            public void onRoomListRefresh(List<String> rooms) {
-                adapter.updateData(rooms);
+            protected void onReceiveResult(int resultCode, Bundle resultData) {
+                super.onReceiveResult(resultCode, resultData);
+                List<String> roomList = (ArrayList<String>) resultData.getSerializable(BundleExtraKeys.ROOM_LIST);
+                adapter.updateData(roomList);
             }
         });
+        startService(intent);
     }
 }

@@ -24,15 +24,18 @@
 
 package li.klass.fhem.activities.devicelist;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.ResultReceiver;
 import android.view.View;
 import li.klass.fhem.R;
 import li.klass.fhem.activities.base.BaseActivity;
 import li.klass.fhem.adapter.devices.core.DeviceAdapter;
 import li.klass.fhem.adapter.rooms.RoomDetailAdapter;
+import li.klass.fhem.constants.Actions;
+import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.*;
-import li.klass.fhem.service.room.RoomDeviceListListener;
-import li.klass.fhem.service.room.RoomListService;
 import li.klass.fhem.service.device.FS20Service;
 import li.klass.fhem.service.device.SISPMSService;
 import li.klass.fhem.widget.NestedListView;
@@ -42,6 +45,7 @@ public abstract class DeviceListActivity extends BaseActivity<RoomDetailAdapter>
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         update(false);
     }
 
@@ -75,33 +79,38 @@ public abstract class DeviceListActivity extends BaseActivity<RoomDetailAdapter>
     }
 
     public void onFS20Click(final View view) {
+        String deviceName = (String) view.getTag();
 
-        RoomListService.INSTANCE.getAllRoomsDeviceList(this, false, new RoomDeviceListListener() {
+        Intent intent = new Intent(Actions.GET_DEVICE_FOR_NAME);
+        intent.putExtras(new Bundle());
+        intent.putExtra(BundleExtraKeys.DEVICE_NAME, deviceName);
+        intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
             @Override
-            public void onRoomListRefresh(RoomDeviceList roomDeviceList) {
-
-                String deviceName = (String) view.getTag();
-                FS20Device device = roomDeviceList.getDeviceFor(deviceName);
+            protected void onReceiveResult(int resultCode, Bundle resultData) {
+                super.onReceiveResult(resultCode, resultData);
+                FS20Device device = (FS20Device) resultData.getSerializable(BundleExtraKeys.DEVICE);
                 FS20Service.INSTANCE.toggleState(DeviceListActivity.this, device, updateOnSuccessAction);
-
-                update(false);
             }
         });
 
-
+        startService(intent);
     }
 
     public void onSISPMSClick(final View view) {
-        RoomListService.INSTANCE.getAllRoomsDeviceList(this, false, new RoomDeviceListListener() {
+        String deviceName = (String) view.getTag();
+
+        Intent intent = new Intent(Actions.GET_DEVICE_FOR_NAME);
+        intent.putExtras(new Bundle());
+        intent.putExtra(BundleExtraKeys.DEVICE_NAME, deviceName);
+        intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
             @Override
-            public void onRoomListRefresh(RoomDeviceList roomDeviceList) {
-
-                String deviceName = (String) view.getTag();
-                SISPMSDevice device = roomDeviceList.getDeviceFor(deviceName);
+            protected void onReceiveResult(int resultCode, Bundle resultData) {
+                super.onReceiveResult(resultCode, resultData);
+                SISPMSDevice device = (SISPMSDevice) resultData.getSerializable(BundleExtraKeys.DEVICE);
                 SISPMSService.INSTANCE.toggleState(DeviceListActivity.this, device, updateOnSuccessAction);
-
-                update(false);
             }
         });
+
+        startService(intent);
     }
 }

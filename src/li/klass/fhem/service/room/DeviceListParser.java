@@ -101,7 +101,7 @@ public class DeviceListParser {
             xmlList = xmlList.replaceAll("(?:[^=])\"\"+", "\"");
 
 
-            Log.e(DeviceListParser.class.getName(), xmlList);
+            Log.d(DeviceListParser.class.getName(), xmlList);
 
             DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();

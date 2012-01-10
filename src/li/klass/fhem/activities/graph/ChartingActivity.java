@@ -244,7 +244,6 @@ public class ChartingActivity extends Activity implements Updateable {
         renderer.setPanLimits(new double[]{xMin.getTime(), xMax.getTime(), yMin, yMax});
         renderer.setZoomLimits(new double[]{xMin.getTime(), xMax.getTime(), yMin, yMax});
 
-
         GraphicalView timeChartView = ChartFactory.getTimeChartView(this, dataSet, renderer, "MM-dd HH:mm");
         setContentView(timeChartView);
     }

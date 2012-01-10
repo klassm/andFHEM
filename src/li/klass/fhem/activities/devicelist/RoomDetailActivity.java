@@ -26,10 +26,13 @@ package li.klass.fhem.activities.devicelist;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.ResultReceiver;
 import li.klass.fhem.R;
+import li.klass.fhem.constants.Actions;
 import li.klass.fhem.domain.RoomDeviceList;
-import li.klass.fhem.service.room.RoomDeviceListListener;
-import li.klass.fhem.service.room.RoomListService;
+
+import static li.klass.fhem.constants.BundleExtraKeys.*;
 
 public class RoomDetailActivity extends DeviceListActivity {
 
@@ -42,7 +45,7 @@ public class RoomDetailActivity extends DeviceListActivity {
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
 
-        roomName = extras.getString("roomName");
+        roomName = extras.getString(ROOM_NAME);
 
         String roomTitlePrefix = getResources().getString(R.string.roomTitlePrefix);
         setTitle(roomTitlePrefix + " " + roomName);
@@ -50,12 +53,18 @@ public class RoomDetailActivity extends DeviceListActivity {
 
     @Override
     public void update(boolean doUpdate) {
-        RoomListService.INSTANCE.getRoomDeviceList(this, roomName, doUpdate, new RoomDeviceListListener() {
-
+        Intent intent = new Intent(Actions.GET_ROOM_DEVICE_LIST);
+        intent.putExtras(new Bundle());
+        intent.putExtra(DO_REFRESH, doUpdate);
+        intent.putExtra(ROOM_NAME, roomName);
+        intent.putExtra(RESULT_RECEIVER, new ResultReceiver(new Handler()) {
             @Override
-            public void onRoomListRefresh(RoomDeviceList roomDeviceList) {
-                adapter.updateData(roomDeviceList);
+            protected void onReceiveResult(int resultCode, Bundle resultData) {
+                super.onReceiveResult(resultCode, resultData);
+                RoomDeviceList deviceList = (RoomDeviceList) resultData.getSerializable(DEVICE_LIST);
+                adapter.updateData(deviceList);
             }
         });
+        startService(intent);
     }
 }
