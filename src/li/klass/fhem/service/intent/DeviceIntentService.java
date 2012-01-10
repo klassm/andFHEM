@@ -29,15 +29,9 @@ import android.os.ResultReceiver;
 import android.util.Log;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
-import li.klass.fhem.domain.Device;
-import li.klass.fhem.domain.FHTDevice;
-import li.klass.fhem.domain.FS20Device;
-import li.klass.fhem.domain.SISPMSDevice;
+import li.klass.fhem.domain.*;
 import li.klass.fhem.domain.fht.FHTMode;
-import li.klass.fhem.service.device.DeviceService;
-import li.klass.fhem.service.device.FHTService;
-import li.klass.fhem.service.device.FS20Service;
-import li.klass.fhem.service.device.SISPMSService;
+import li.klass.fhem.service.device.*;
 import li.klass.fhem.service.graph.GraphEntry;
 import li.klass.fhem.service.graph.GraphSyncService;
 import li.klass.fhem.service.room.RoomListService;
@@ -118,6 +112,8 @@ public class DeviceIntentService extends ConvenientIntentService {
         if (device instanceof FS20Device) {
             FS20Service.INSTANCE.dim((FS20Device) device, dimProgress);
             return STATE.SUCCESS;
+        } else if (device instanceof CULHMDevice && ((CULHMDevice) device).isDimDevice()) {
+            CULHMService.INSTANCE.dim((CULHMDevice) device, dimProgress);
         }
         return STATE.ERROR;
     }
@@ -150,6 +146,9 @@ public class DeviceIntentService extends ConvenientIntentService {
             return SUCCESS;
         } else if (device instanceof SISPMSDevice) {
             SISPMSService.INSTANCE.toggleState((SISPMSDevice) device);
+            return SUCCESS;
+        } else if (device instanceof CULHMDevice && ((CULHMDevice) device).isSwitchDevice()) {
+            CULHMService.INSTANCE.toggleState((CULHMDevice) device);
             return SUCCESS;
         } else {
             return ERROR;

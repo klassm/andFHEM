@@ -38,7 +38,7 @@ public class RFXCOMAdapter extends DeviceListOnlyAdapter<RFXCOMDevice> {
     }
 
     @Override
-    protected View getDeviceView(LayoutInflater layoutInflater, RFXCOMDevice device) {
+    protected View getOverviewView(LayoutInflater layoutInflater, RFXCOMDevice device) {
         View view = layoutInflater.inflate(R.layout.room_detail_rfxcom, null);
         
         setTextView(view, R.id.deviceName, device.getAliasOrName());

@@ -25,13 +25,22 @@
 package li.klass.fhem.util;
 
 public class ValueExtractUtil {
-    public static float extractLeadingDouble(String text) {
+    public static double extractLeadingDouble(String text) {
+        text = extractContentBeforeSpace(text);
+        return Double.valueOf(text);
+    }
+
+    public static int extractLeadingInt(String text) {
+        text = extractContentBeforeSpace(text);
+        return Integer.valueOf(text);
+    }
+
+    private static String extractContentBeforeSpace(String text) {
         text = text.trim();
         int spacePosition = text.indexOf(" ");
         if (spacePosition != -1) {
             text = text.substring(0, spacePosition);
         }
-
-        return Float.valueOf(text);
+        return text;
     }
 }

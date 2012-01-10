@@ -92,17 +92,22 @@ public abstract class BaseActivity<ADAPTER> extends Activity implements Updateab
             @Override
             public void onReceive(Context context, Intent intent) {
                 String action = intent.getAction();
-                if (action.equals(SHOW_UPDATING_DIALOG)) {
-                    showDialog(DIALOG_UPDATING);
-                } else if (action.equals(DISMISS_UPDATING_DIALOG)) {
-                    dismissDialog(DIALOG_UPDATING);
-                } else if (action.equals(SHOW_EXECUTING_DIALOG)) {
-                    showDialog(DIALOG_EXECUTING);
-                } else if (action.equals(DISMISS_EXECUTING_DIALOG)) {
-                    dismissDialog(DIALOG_EXECUTING);
-                } else if (action.equals(DO_UPDATE)) {
-                    boolean doUpdate = intent.getBooleanExtra(BundleExtraKeys.DO_REFRESH, false);
-                    update(doUpdate);
+
+                try {
+                    if (action.equals(SHOW_UPDATING_DIALOG)) {
+                        showDialog(DIALOG_UPDATING);
+                    } else if (action.equals(DISMISS_UPDATING_DIALOG)) {
+                        dismissDialog(DIALOG_UPDATING);
+                    } else if (action.equals(SHOW_EXECUTING_DIALOG)) {
+                        showDialog(DIALOG_EXECUTING);
+                    } else if (action.equals(DISMISS_EXECUTING_DIALOG)) {
+                        dismissDialog(DIALOG_EXECUTING);
+                    } else if (action.equals(DO_UPDATE)) {
+                        boolean doUpdate = intent.getBooleanExtra(BundleExtraKeys.DO_REFRESH, false);
+                        update(doUpdate);
+                    }
+                } catch (Exception e) {
+                    Log.e(BaseActivity.class.getName(), "error occurred", e);
                 }
             }
         };

@@ -36,7 +36,7 @@ import li.klass.fhem.domain.USBWXDevice;
 
 public class USBWXAdapter extends DeviceDetailAvailableAdapter<USBWXDevice> {
     @Override
-    protected View getDeviceView(LayoutInflater layoutInflater, USBWXDevice device) {
+    protected View getOverviewView(LayoutInflater layoutInflater, USBWXDevice device) {
 
         View view = layoutInflater.inflate(R.layout.room_detail_usbwx, null);
 

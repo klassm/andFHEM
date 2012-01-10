@@ -36,7 +36,7 @@ import li.klass.fhem.domain.HMSDevice;
 
 public class HMSAdapter extends DeviceDetailAvailableAdapter<HMSDevice> {
     @Override
-    public View getDeviceView(LayoutInflater layoutInflater, HMSDevice device) {
+    public View getOverviewView(LayoutInflater layoutInflater, HMSDevice device) {
         View view = layoutInflater.inflate(R.layout.room_detail_hms, null);
 
         setTextView(view, R.id.deviceName, device.getAliasOrName());

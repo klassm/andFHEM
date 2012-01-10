@@ -38,7 +38,7 @@ public class CULEMAdapter extends DeviceListOnlyAdapter<CULEMDevice> {
     }
 
     @Override
-    protected View getDeviceView(LayoutInflater layoutInflater, CULEMDevice device) {
+    protected View getOverviewView(LayoutInflater layoutInflater, CULEMDevice device) {
         View view = layoutInflater.inflate(R.layout.room_detail_culem, null);
         
         setTextView(view, R.id.deviceName, device.getAliasOrName());

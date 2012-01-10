@@ -38,7 +38,7 @@ public class CULFHTTKAdapter extends DeviceListOnlyAdapter<CULFHTTKDevice> {
     }
 
     @Override
-    protected View getDeviceView(LayoutInflater layoutInflater, CULFHTTKDevice device) {
+    protected View getOverviewView(LayoutInflater layoutInflater, CULFHTTKDevice device) {
         View view = layoutInflater.inflate(R.layout.room_detail_culfhttk, null);
 
         setTextView(view, R.id.deviceName, device.getAliasOrName());

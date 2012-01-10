@@ -38,7 +38,7 @@ public class RFXX10RECAdapter extends DeviceListOnlyAdapter<RFXX10RECDevice> {
     }
 
     @Override
-    protected View getDeviceView(LayoutInflater layoutInflater, RFXX10RECDevice device) {
+    protected View getOverviewView(LayoutInflater layoutInflater, RFXX10RECDevice device) {
         View view = layoutInflater.inflate(R.layout.room_detail_rfxx10rec, null);
 
         setTextView(view, R.id.deviceName, device.getAliasOrName());

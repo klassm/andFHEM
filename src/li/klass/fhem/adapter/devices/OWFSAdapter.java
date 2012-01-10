@@ -38,7 +38,7 @@ public class OWFSAdapter extends DeviceListOnlyAdapter<OWFSDevice> {
     }
 
     @Override
-    protected View getDeviceView(LayoutInflater layoutInflater, OWFSDevice device) {
+    protected View getOverviewView(LayoutInflater layoutInflater, OWFSDevice device) {
         View view = layoutInflater.inflate(R.layout.room_detail_owfs, null);
         
         setTextView(view, R.id.deviceName, device.getAliasOrName());

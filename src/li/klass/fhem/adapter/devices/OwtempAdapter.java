@@ -33,7 +33,7 @@ import li.klass.fhem.domain.OwtempDevice;
 
 public class OwtempAdapter extends DeviceListOnlyAdapter<OwtempDevice> {
     @Override
-    public View getDeviceView(LayoutInflater layoutInflater, OwtempDevice device) {
+    public View getOverviewView(LayoutInflater layoutInflater, OwtempDevice device) {
         View view = layoutInflater.inflate(R.layout.room_detail_owtemp, null);
 
         setTextView(view, R.id.deviceName, device.getAliasOrName());

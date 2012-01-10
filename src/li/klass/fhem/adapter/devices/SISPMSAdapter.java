@@ -35,7 +35,7 @@ import li.klass.fhem.domain.SISPMSDevice;
 public class SISPMSAdapter extends DeviceListOnlyAdapter<SISPMSDevice> {
 
     @Override
-    public View getDeviceView(LayoutInflater layoutInflater, SISPMSDevice device) {
+    public View getOverviewView(LayoutInflater layoutInflater, SISPMSDevice device) {
         View view = layoutInflater.inflate(R.layout.room_detail_sispms, null);
 
         setTextView(view, R.id.deviceName, device.getAliasOrName());

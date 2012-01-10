@@ -37,7 +37,7 @@ import li.klass.fhem.domain.Device;
 public class CULWSAdapter extends DeviceDetailAvailableAdapter<CULWSDevice> {
 
     @Override
-    public View getDeviceView(LayoutInflater layoutInflater, CULWSDevice device) {
+    public View getOverviewView(LayoutInflater layoutInflater, CULWSDevice device) {
         View view = layoutInflater.inflate(R.layout.room_detail_culws, null);
 
         setTextView(view, R.id.deviceName, device.getAliasOrName());

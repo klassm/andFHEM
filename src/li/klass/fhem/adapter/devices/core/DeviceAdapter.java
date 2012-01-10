@@ -54,7 +54,7 @@ public abstract class DeviceAdapter<D extends Device> {
                 return convertView;
             }
         }
-        return getDeviceView(layoutInflater, (D) device);
+        return getOverviewView(layoutInflater, (D) device);
     }
 
     @SuppressWarnings("unchecked")
@@ -88,7 +88,7 @@ public abstract class DeviceAdapter<D extends Device> {
     protected abstract Intent onFillDeviceDetailIntent(Context context, Device device, Intent intent);
 
     public abstract Class<? extends Device> getSupportedDeviceClass();
-    protected abstract View getDeviceView(LayoutInflater layoutInflater, D device);
+    protected abstract View getOverviewView(LayoutInflater layoutInflater, D device);
 
 
     protected void setTextViewOrHideTableRow(View view, int tableRowId, int textFieldLayoutId, String value) {

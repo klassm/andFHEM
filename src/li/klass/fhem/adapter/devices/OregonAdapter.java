@@ -36,7 +36,7 @@ import li.klass.fhem.domain.OregonDevice;
 
 public class OregonAdapter extends DeviceDetailAvailableAdapter<OregonDevice> {
     @Override
-    protected View getDeviceView(LayoutInflater layoutInflater, OregonDevice device) {
+    protected View getOverviewView(LayoutInflater layoutInflater, OregonDevice device) {
 
         View view = layoutInflater.inflate(R.layout.room_detail_oregon, null);
 

@@ -87,7 +87,7 @@ public class FS20Adapter extends DeviceDetailAvailableAdapter<FS20Device> {
     }
 
     @Override
-    public View getDeviceView(LayoutInflater layoutInflater, FS20Device device) {
+    public View getOverviewView(LayoutInflater layoutInflater, FS20Device device) {
         if (device.isDimDevice()) {
             return getFS20SeekView(layoutInflater, device);
         } else {

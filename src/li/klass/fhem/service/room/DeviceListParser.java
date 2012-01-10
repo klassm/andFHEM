@@ -160,8 +160,10 @@ public class DeviceListParser {
         RoomDeviceList roomDeviceList = getOrCreateRoomDeviceList(device.getRoom(), roomDeviceListMap);
         RoomDeviceList allRoomDeviceList = getOrCreateRoomDeviceList(RoomDeviceList.ALL_DEVICES_ROOM, roomDeviceListMap);
 
-        roomDeviceList.addDevice(device);
-        allRoomDeviceList.addDevice(device);
+        if (device.isSupported()) {
+            roomDeviceList.addDevice(device);
+            allRoomDeviceList.addDevice(device);
+        }
     }
 
     /**

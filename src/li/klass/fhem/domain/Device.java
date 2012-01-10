@@ -184,4 +184,8 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
     public String getAlias() {
         return alias;
     }
+
+    public boolean isSupported() {
+        return true;
+    }
 }

@@ -37,7 +37,7 @@ import li.klass.fhem.domain.KS300Device;
 public class KS300Adapter extends DeviceDetailAvailableAdapter<KS300Device> {
 
     @Override
-    public View getDeviceView(LayoutInflater layoutInflater, KS300Device device) {
+    public View getOverviewView(LayoutInflater layoutInflater, KS300Device device) {
         View view = layoutInflater.inflate(R.layout.room_detail_ks300, null);
 
         setTextView(view, R.id.deviceName, device.getAliasOrName());

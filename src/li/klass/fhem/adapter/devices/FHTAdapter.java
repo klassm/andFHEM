@@ -72,7 +72,7 @@ public class FHTAdapter extends DeviceDetailAvailableAdapter<FHTDevice> {
     }
     
     @Override
-    public View getDeviceView(LayoutInflater layoutInflater, FHTDevice device) {
+    public View getOverviewView(LayoutInflater layoutInflater, FHTDevice device) {
         View view = layoutInflater.inflate(R.layout.room_detail_fht, null);
 
         setTextView(view, R.id.deviceName, device.getAliasOrName());
