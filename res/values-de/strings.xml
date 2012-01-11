@@ -100,7 +100,7 @@
     <string name="prefUrl">URL</string>
     <string name="prefPortSummary">Port des FHEM servers</string>
     <string name="prefPort">Port</string>
-    <string name="prefUseDummyData">Nütze Dummy Daten</string>
+    <string name="prefUseDummyData">Nutze Dummy Daten</string>
     <string name="prefShowHiddenDevices">Zeige versteckte Geräte</string>
 
     <string name="updateError">Error während Update Vorgang.</string>
