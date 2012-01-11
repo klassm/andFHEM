@@ -34,7 +34,7 @@ import li.klass.fhem.domain.Device;
 
 public abstract class DeviceDetailAvailableAdapter<D extends Device<D>> extends DeviceAdapter<D> {
     @Override
-    public boolean supportsDetailView() {
+    public boolean supportsDetailView(Device device) {
         return true;
     }
 

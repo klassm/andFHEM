@@ -59,14 +59,14 @@ public abstract class DeviceAdapter<D extends Device> {
 
     @SuppressWarnings("unchecked")
     public View getDetailView(Context context, Device device) {
-        if (supportsDetailView()) {
+        if (supportsDetailView(device)) {
             return getDeviceDetailView(context, (D) device);
         }
         return null;
     }
 
     public void gotoDetailView(Context context, Device device) {
-        if (! supportsDetailView()) {
+        if (! supportsDetailView(device)) {
             return;
         }
 
@@ -83,7 +83,7 @@ public abstract class DeviceAdapter<D extends Device> {
 
 
     public abstract int getDetailViewLayout();
-    public abstract boolean supportsDetailView();
+    public abstract boolean supportsDetailView(Device device);
     protected abstract View getDeviceDetailView(Context context, D device);
     protected abstract Intent onFillDeviceDetailIntent(Context context, Device device, Intent intent);
 

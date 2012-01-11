@@ -25,7 +25,11 @@
 package li.klass.fhem.util;
 
 public class ValueDescriptionUtil {
-    public static String appendTemperature(double text) {
+    public static String appendTemperature(Object text) {
         return text + " (Celsius)";
+    }
+
+    public static String appendPercent(Object text) {
+        return text + " (%)";
     }
 }

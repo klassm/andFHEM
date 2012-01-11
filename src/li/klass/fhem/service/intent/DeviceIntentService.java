@@ -112,7 +112,7 @@ public class DeviceIntentService extends ConvenientIntentService {
         if (device instanceof FS20Device) {
             FS20Service.INSTANCE.dim((FS20Device) device, dimProgress);
             return STATE.SUCCESS;
-        } else if (device instanceof CULHMDevice && ((CULHMDevice) device).isDimDevice()) {
+        } else if (device instanceof CULHMDevice && ((CULHMDevice) device).getSubType() == CULHMDevice.SubType.DIMMER) {
             CULHMService.INSTANCE.dim((CULHMDevice) device, dimProgress);
         }
         return STATE.ERROR;
@@ -147,7 +147,7 @@ public class DeviceIntentService extends ConvenientIntentService {
         } else if (device instanceof SISPMSDevice) {
             SISPMSService.INSTANCE.toggleState((SISPMSDevice) device);
             return SUCCESS;
-        } else if (device instanceof CULHMDevice && ((CULHMDevice) device).isSwitchDevice()) {
+        } else if (device instanceof CULHMDevice && ((CULHMDevice) device).getSubType() == CULHMDevice.SubType.SWITCH) {
             CULHMService.INSTANCE.toggleState((CULHMDevice) device);
             return SUCCESS;
         } else {

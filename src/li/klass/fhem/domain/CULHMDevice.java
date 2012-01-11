@@ -24,30 +24,47 @@
 
 package li.klass.fhem.domain;
 
+import li.klass.fhem.util.ValueDescriptionUtil;
 import li.klass.fhem.util.ValueExtractUtil;
 import org.w3c.dom.NamedNodeMap;
 
 public class CULHMDevice extends Device<CULHMDevice> {
 
     public enum SubType {
-        DIMMER, BLINDACTUATOR, SWITCH
+        DIMMER, SWITCH, HEATING
     }
 
+    private String measured;
     private SubType subType = null;
-    private int dimProgress;
+    private int dimProgress = -1;
+    private String desiredTemp;
+    private String measuredTemp;
+    private String actuator;
+    private String humidity;
 
     @Override
     protected void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {
         if (keyValue.equals("SUBTYPE")) {
-            try {
-                subType = SubType.valueOf(nodeContent.toUpperCase());
-            } catch (IllegalArgumentException e) {
-                subType = null;
+            if (nodeContent.equalsIgnoreCase("DIMMER") || nodeContent.equalsIgnoreCase("BLINDACTUATOR")) {
+                subType = SubType.DIMMER;
+            } else if (nodeContent.equalsIgnoreCase("SWITCH")) {
+                subType = SubType.SWITCH;
             }
         } else if (keyValue.equals("STATE")) {
             if (nodeContent.endsWith("%")) {
                 dimProgress = ValueExtractUtil.extractLeadingInt(nodeContent);
             }
+        } else if (keyValue.equals("DESIRED-TEMP")) {
+            subType = SubType.HEATING;
+            desiredTemp = ValueDescriptionUtil.appendTemperature(nodeContent);
+        } else if (keyValue.equals("MEASURED-TEMP")) {
+            measuredTemp = ValueDescriptionUtil.appendTemperature(nodeContent);
+        } else if (keyValue.equals("ACTUATOR")) {
+            actuator = nodeContent;
+        } else if (keyValue.equals("CUL_TIME")) {
+            measured = nodeContent;
+        } else if (keyValue.equals("HUMIDITY")) {
+            humidity = ValueDescriptionUtil.appendPercent(nodeContent);
         }
     }
 
@@ -56,23 +73,42 @@ public class CULHMDevice extends Device<CULHMDevice> {
         return subType != null;
     }
 
-    public boolean isDimDevice() {
-        return subType == SubType.DIMMER || subType == SubType.BLINDACTUATOR;
-    }
-
-    public boolean isSwitchDevice() {
-        return subType == SubType.SWITCH;
-    }
-
     public boolean isOn() {
         return state.equalsIgnoreCase("on") || state.equalsIgnoreCase("on-for-timer");
     }
 
     public int getDimProgress() {
+        if (dimProgress == -1) {
+            return isOn() ? 100 : 0;
+        }
         return dimProgress;
     }
 
     public void setDimProgress(int dimProgress) {
         this.dimProgress = dimProgress;
+    }
+
+    public String getMeasured() {
+        return measured;
+    }
+
+    public String getDesiredTemp() {
+        return desiredTemp;
+    }
+
+    public String getMeasuredTemp() {
+        return measuredTemp;
+    }
+
+    public String getActuator() {
+        return actuator;
+    }
+
+    public SubType getSubType() {
+        return subType;
+    }
+
+    public String getHumidity() {
+        return humidity;
     }
 }

@@ -61,7 +61,7 @@ public abstract class DeviceListActivity extends BaseActivity<RoomDetailAdapter>
                 if (child != null) {
                     Device<?> device = (Device<?>) child;
                     DeviceAdapter<? extends Device<?>> adapter = DeviceType.getAdapterFor(device);
-                    if (adapter != null && adapter.supportsDetailView()) {
+                    if (adapter != null && adapter.supportsDetailView(device)) {
                         adapter.gotoDetailView(DeviceListActivity.this, device);
                     }
                 }

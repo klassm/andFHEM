@@ -24,6 +24,7 @@
 
 package li.klass.fhem.adapter.devices;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -35,13 +36,15 @@ import android.widget.SeekBar;
 import android.widget.ToggleButton;
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
-import li.klass.fhem.adapter.devices.core.DeviceListOnlyAdapter;
+import li.klass.fhem.activities.deviceDetail.CULHMDeviceDetailActivity;
+import li.klass.fhem.adapter.devices.core.DeviceDetailAvailableAdapter;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.CULHMDevice;
 import li.klass.fhem.domain.Device;
 
-public class CULHMAdapter extends DeviceListOnlyAdapter<CULHMDevice> {
+public class CULHMAdapter extends DeviceDetailAvailableAdapter<CULHMDevice> {
+
     private class SeekBarChangeListener implements SeekBar.OnSeekBarChangeListener {
 
         public int progress;
@@ -80,10 +83,16 @@ public class CULHMAdapter extends DeviceListOnlyAdapter<CULHMDevice> {
     @Override
     protected View getOverviewView(LayoutInflater layoutInflater, CULHMDevice device) {
         View view = null;
-        if (device.isDimDevice()) {
-            view = getDimOverview(layoutInflater, device);
-        } else if (device.isSwitchDevice()) {
-            view = getSwitchOverview(layoutInflater, device);
+        switch (device.getSubType()) {
+            case DIMMER:
+                view = getDimOverview(layoutInflater, device);
+                break;
+            case SWITCH:
+                view = getSwitchOverview(layoutInflater, device);
+                break;
+            case HEATING:
+                view = getHeatingOverview(layoutInflater, device);
+                break;
         }
 
         if (view == null) {
@@ -132,5 +141,38 @@ public class CULHMAdapter extends DeviceListOnlyAdapter<CULHMDevice> {
         return view;
     }
 
+    private View getHeatingOverview(LayoutInflater layoutInflater, CULHMDevice device) {
+        View view = layoutInflater.inflate(R.layout.room_detail_culhm_heating, null);
 
+        setTextViewOrHideTableRow(view, R.id.tableRowActuator, R.id.actuator, device.getActuator());
+        setTextViewOrHideTableRow(view, R.id.tableRowTemperature, R.id.temperature, device.getMeasuredTemp());
+
+        return view;
+    }
+
+
+    @Override
+    public boolean supportsDetailView(Device device) {
+        CULHMDevice culhmDevice = (CULHMDevice) device;
+        return culhmDevice.getSubType() == CULHMDevice.SubType.HEATING;
+    }
+
+    @Override
+    public int getDetailViewLayout() {
+        return R.layout.device_detail_culhm_heating;
+    }
+
+
+    @Override
+    protected void fillDeviceDetailView(Context context, View view, CULHMDevice device) {
+        setTextViewOrHideTableRow(view, R.id.tableRowActuator, R.id.actuator, device.getActuator());
+        setTextViewOrHideTableRow(view, R.id.tableRowTemperature, R.id.temperature, device.getMeasuredTemp());
+        setTextViewOrHideTableRow(view, R.id.tableRowDesiredTemperature, R.id.desiredTemperature, device.getDesiredTemp());
+        setTextViewOrHideTableRow(view, R.id.tableRowHumidity, R.id.humidity, device.getHumidity());
+    }
+
+    @Override
+    protected Class<? extends Activity> getDeviceDetailActivity() {
+        return CULHMDeviceDetailActivity.class;
+    }
 }

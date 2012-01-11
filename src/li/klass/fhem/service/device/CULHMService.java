@@ -49,7 +49,7 @@ public class CULHMService {
      * @param dimProgress dim state to set (0-100)
      */
     public void dim(CULHMDevice device, int dimProgress) {
-        if (! device.isDimDevice()) {
+        if (device.getSubType() != CULHMDevice.SubType.DIMMER) {
             return;
         }
         setState(device, String.valueOf(dimProgress));
@@ -61,7 +61,7 @@ public class CULHMService {
      * @param device concerned device
      */
     public void toggleState(CULHMDevice device) {
-        if (device.isSwitchDevice()) {
+        if (device.getSubType() != CULHMDevice.SubType.DIMMER) {
             return;
         }
         if (device.isOn()) {
