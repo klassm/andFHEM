@@ -27,10 +27,14 @@ package li.klass.fhem.service.room;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import android.widget.Toast;
 import li.klass.fhem.AndFHEMApplication;
+import li.klass.fhem.R;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.domain.Device;
 import li.klass.fhem.domain.RoomDeviceList;
+import li.klass.fhem.exception.DeviceListParseException;
+import li.klass.fhem.exception.HostConnectionException;
 import li.klass.fhem.service.CommandExecutionService;
 
 import java.io.ObjectInputStream;
@@ -40,7 +44,7 @@ import java.util.Map;
 
 public class RoomListService {
     public static final RoomListService INSTANCE = new RoomListService();
-    
+
     /**
      * Currently loaded device list map.
      */
@@ -50,7 +54,7 @@ public class RoomListService {
      * file name of the current cache object.
      */
     public static final String CACHE_FILENAME = "cache.obj";
-    
+
     private RoomListService() {
     }
 
@@ -136,11 +140,22 @@ public class RoomListService {
         if (! refresh && deviceListMap == null) {
             deviceListMap = getCachedRoomDeviceListMap();
         }
+        
+        Context context = AndFHEMApplication.getContext();
 
         if (refresh || deviceListMap == null) {
             sendBroadcastWithAction(Actions.SHOW_UPDATING_DIALOG);
-            deviceListMap = getRemoteRoomDeviceListMap();
-            sendBroadcastWithAction(Actions.DISMISS_UPDATING_DIALOG);
+            try {
+                deviceListMap = getRemoteRoomDeviceListMap();
+            }  catch (HostConnectionException e) {
+                Toast.makeText(context, R.string.updateErrorHostConnection, Toast.LENGTH_LONG).show();
+                Log.e(RoomListService.class.getName(), "error occurred", e);
+            } catch (DeviceListParseException e) {
+                Toast.makeText(context, R.string.updateErrorDeviceListParse, Toast.LENGTH_LONG).show();
+                Log.e(RoomListService.class.getName(), "error occurred", e);
+            } finally {
+                sendBroadcastWithAction(Actions.DISMISS_UPDATING_DIALOG);
+            }
         }
 
         return deviceListMap;

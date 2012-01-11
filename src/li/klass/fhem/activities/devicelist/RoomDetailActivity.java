@@ -30,6 +30,7 @@ import android.os.Handler;
 import android.os.ResultReceiver;
 import li.klass.fhem.R;
 import li.klass.fhem.constants.Actions;
+import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.domain.RoomDeviceList;
 
 import static li.klass.fhem.constants.BundleExtraKeys.*;
@@ -60,9 +61,11 @@ public class RoomDetailActivity extends DeviceListActivity {
         intent.putExtra(RESULT_RECEIVER, new ResultReceiver(new Handler()) {
             @Override
             protected void onReceiveResult(int resultCode, Bundle resultData) {
-                super.onReceiveResult(resultCode, resultData);
-                RoomDeviceList deviceList = (RoomDeviceList) resultData.getSerializable(DEVICE_LIST);
-                adapter.updateData(deviceList);
+                if (resultCode == ResultCodes.SUCCESS) {
+                    super.onReceiveResult(resultCode, resultData);
+                    RoomDeviceList deviceList = (RoomDeviceList) resultData.getSerializable(DEVICE_LIST);
+                    adapter.updateData(deviceList);
+                }
             }
         });
         startService(intent);

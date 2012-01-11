@@ -35,6 +35,7 @@ import li.klass.fhem.activities.base.BaseActivity;
 import li.klass.fhem.adapter.fhtControl.FHTTimetableControlListAdapter;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
+import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.domain.FHTDevice;
 import li.klass.fhem.widget.NestedListView;
 
@@ -112,14 +113,16 @@ public class FHTTimetableControlListActivity extends BaseActivity<FHTTimetableCo
             @Override
             protected void onReceiveResult(int resultCode, Bundle resultData) {
                 super.onReceiveResult(resultCode, resultData);
-                FHTDevice fhtDevice = (FHTDevice) resultData.getSerializable(BundleExtraKeys.DEVICE);
-                adapter.updateData(fhtDevice.getDayControlMap());
+                if (resultCode == ResultCodes.SUCCESS) {
+                    FHTDevice fhtDevice = (FHTDevice) resultData.getSerializable(BundleExtraKeys.DEVICE);
+                    adapter.updateData(fhtDevice.getDayControlMap());
 
-                View holder = findViewById(R.id.changeValueButtonHolder);
-                if (fhtDevice.hasChangedDayControlMapValues()) {
-                    holder.setVisibility(View.VISIBLE);
-                } else {
-                    holder.setVisibility(View.GONE);
+                    View holder = findViewById(R.id.changeValueButtonHolder);
+                    if (fhtDevice.hasChangedDayControlMapValues()) {
+                        holder.setVisibility(View.VISIBLE);
+                    } else {
+                        holder.setVisibility(View.GONE);
+                    }
                 }
             }
         });

@@ -33,6 +33,7 @@ import li.klass.fhem.activities.base.BaseActivity;
 import li.klass.fhem.adapter.devices.core.DeviceAdapter;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
+import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.domain.Device;
 import li.klass.fhem.domain.DeviceType;
 
@@ -78,14 +79,16 @@ public abstract class DeviceDetailActivity<D extends Device> extends BaseActivit
             @Override
             protected void onReceiveResult(int resultCode, Bundle resultData) {
                 super.onReceiveResult(resultCode, resultData);
-                D device = (D) resultData.getSerializable(BundleExtraKeys.DEVICE);
-                if (device == null) {
-                    finish();
-                    return;
-                }
+                if (resultCode == ResultCodes.SUCCESS) {
+                    D device = (D) resultData.getSerializable(BundleExtraKeys.DEVICE);
+                    if (device == null) {
+                        finish();
+                        return;
+                    }
 
-                DeviceAdapter<D> adapter = DeviceType.getAdapterFor(device);
-                setContentView(adapter.getDetailView(DeviceDetailActivity.this, device));
+                    DeviceAdapter<D> adapter = DeviceType.getAdapterFor(device);
+                    setContentView(adapter.getDetailView(DeviceDetailActivity.this, device));
+                }
             }
         });
         startService(intent);

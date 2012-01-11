@@ -71,12 +71,12 @@ public class TelnetConnection implements FHEMConnection {
 
     private String request(String command, String delimiter) {
         Log.e(TelnetConnection.class.getName(), "executeTask command " + command + " with delimiter " + delimiter);
-        
+
         OutputStream outputStream = null;
         BufferedOutputStream bufferedOutputStream = null;
         PrintWriter printWriter = null;
         InputStream inputStream = null;
-        
+
         try {
             URL url = new URL("telnet", getHost(), getPort(), "", new thor.net.URLStreamHandler());
             URLConnection urlConnection=url.openConnection();
@@ -119,6 +119,7 @@ public class TelnetConnection implements FHEMConnection {
 
             return result;
         } catch (Exception e) {
+            Log.e(TelnetConnection.class.getName(), "error occurred", e);
             throw new HostConnectionException(e);
         } finally {
             CloseableUtil.close(printWriter, bufferedOutputStream, outputStream, inputStream);

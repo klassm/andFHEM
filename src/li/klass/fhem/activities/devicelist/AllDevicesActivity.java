@@ -31,6 +31,7 @@ import android.os.ResultReceiver;
 import li.klass.fhem.R;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
+import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.domain.RoomDeviceList;
 
 public class AllDevicesActivity extends DeviceListActivity {
@@ -56,8 +57,10 @@ public class AllDevicesActivity extends DeviceListActivity {
             @Override
             protected void onReceiveResult(int resultCode, Bundle resultData) {
                 super.onReceiveResult(resultCode, resultData);
-                RoomDeviceList deviceList = (RoomDeviceList) resultData.getSerializable(BundleExtraKeys.DEVICE_LIST);
-                adapter.updateData(deviceList);
+                if (resultCode == ResultCodes.SUCCESS) {
+                    RoomDeviceList deviceList = (RoomDeviceList) resultData.getSerializable(BundleExtraKeys.DEVICE_LIST);
+                    adapter.updateData(deviceList);
+                }
             }
         });
         startService(intent);
