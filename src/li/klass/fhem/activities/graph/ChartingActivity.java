@@ -34,13 +34,13 @@ import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
 import li.klass.fhem.R;
 import li.klass.fhem.activities.base.Updateable;
 import li.klass.fhem.constants.Actions;
-import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.domain.Device;
 import li.klass.fhem.service.graph.GraphEntry;
@@ -53,7 +53,12 @@ import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import org.achartengine.renderer.XYSeriesRenderer;
 
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+import static li.klass.fhem.constants.BundleExtraKeys.*;
 
 /**
  * Shows a chart.
@@ -69,22 +74,30 @@ public class ChartingActivity extends Activity implements Updateable {
     private String yTitle;
 
     private int[] columnSpecificationIds;
-    private Calendar startDate = Calendar.getInstance();
 
+    private Calendar startDate = Calendar.getInstance();
     private Calendar endDate = Calendar.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        if (savedInstanceState != null && savedInstanceState.containsKey(START_DATE)) {
+            startDate = (Calendar) savedInstanceState.getSerializable(START_DATE);
+        } else {
+            startDate.roll(Calendar.DAY_OF_MONTH, -1);
+        }
+
+        if (savedInstanceState != null && savedInstanceState.containsKey(END_DATE)) {
+            endDate = (Calendar) savedInstanceState.getSerializable(END_DATE);
+        } else {
+            endDate.roll(Calendar.DAY_OF_MONTH, 1);
+        }
+
         Bundle extras = getIntent().getExtras();
-
-        deviceName = extras.getString(BundleExtraKeys.DEVICE_NAME);
-        yTitle = extras.getString(BundleExtraKeys.DEVICE_GRAPH_Y_TITLE);
-        columnSpecificationIds = extras.getIntArray(BundleExtraKeys.DEVICE_GRAPH_COLUMN_SPECIFICATION_IDS);
-
-        startDate.roll(Calendar.DAY_OF_MONTH, -1);
-        endDate.roll(Calendar.DAY_OF_MONTH, 1);
+        deviceName = extras.getString(DEVICE_NAME);
+        yTitle = extras.getString(DEVICE_GRAPH_Y_TITLE);
+        columnSpecificationIds = extras.getIntArray(DEVICE_GRAPH_COLUMN_SPECIFICATION_IDS);
 
         String title = extras.getString(ChartFactory.TITLE);
         if (title == null) {
@@ -114,9 +127,9 @@ public class ChartingActivity extends Activity implements Updateable {
             case OPTION_CHANGE_DATA:
                 Intent intent = new Intent(this, ChartingDateSelectionActivity.class);
                 intent.putExtras(new Bundle());
-                intent.putExtra(ChartingDateSelectionActivity.INTENT_DEVICE_NAME, deviceName);
-                intent.putExtra(ChartingDateSelectionActivity.INTENT_START_DATE, startDate.getTime());
-                intent.putExtra(ChartingDateSelectionActivity.INTENT_END_DATE, endDate.getTime());
+                intent.putExtra(DEVICE_NAME, deviceName);
+                intent.putExtra(START_DATE, startDate.getTime());
+                intent.putExtra(END_DATE, endDate.getTime());
                 startActivityForResult(intent, REQUEST_TIME_CHANGE);
                 return true;
         }
@@ -132,8 +145,9 @@ public class ChartingActivity extends Activity implements Updateable {
             Bundle bundle = resultIntent.getExtras();
             switch (requestCode) {
                 case REQUEST_TIME_CHANGE:
-                    startDate.setTime((Date) bundle.getSerializable(ChartingDateSelectionActivity.INTENT_START_DATE));
-                    endDate.setTime((Date) bundle.getSerializable(ChartingDateSelectionActivity.INTENT_END_DATE));
+                    startDate.setTime((Date) bundle.getSerializable(START_DATE));
+                    endDate.setTime((Date) bundle.getSerializable(END_DATE));
+
 
                     update(false);
             }
@@ -141,14 +155,21 @@ public class ChartingActivity extends Activity implements Updateable {
     }
 
     @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable(START_DATE, startDate);
+        outState.putSerializable(END_DATE, endDate);
+    }
+
+    @Override
     public void update(final boolean doUpdate) {
         Intent intent = new Intent(Actions.GET_DEVICE_FOR_NAME);
-        intent.putExtra(BundleExtraKeys.DEVICE_NAME, deviceName);
-        intent.putExtra(BundleExtraKeys.DO_REFRESH, doUpdate);
-        intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
+        intent.putExtra(DEVICE_NAME, deviceName);
+        intent.putExtra(DO_REFRESH, doUpdate);
+        intent.putExtra(RESULT_RECEIVER, new ResultReceiver(new Handler()) {
             @Override
             protected void onReceiveResult(int resultCode, Bundle resultData) {
-                Device device = (Device) resultData.getSerializable(BundleExtraKeys.DEVICE);
+                Device device = (Device) resultData.getSerializable(DEVICE);
                 readDataAndCreateChart(doUpdate, device);
             }
         });
@@ -164,21 +185,25 @@ public class ChartingActivity extends Activity implements Updateable {
     private void readDataAndCreateChart(boolean doRefresh, final Device device) {
         showDialog(DIALOG_EXECUTING);
         Intent intent = new Intent(Actions.DEVICE_GRAPH);
-        intent.putExtra(BundleExtraKeys.DO_REFRESH, doRefresh);
-        intent.putExtra(BundleExtraKeys.DEVICE_NAME, deviceName);
-        intent.putExtra(BundleExtraKeys.START_DATE, startDate);
-        intent.putExtra(BundleExtraKeys.END_DATE, endDate);
-        intent.putExtra(BundleExtraKeys.DEVICE_GRAPH_COLUMN_SPECIFICATION_IDS, columnSpecificationIds);
-        intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
+        intent.putExtra(DO_REFRESH, doRefresh);
+        intent.putExtra(DEVICE_NAME, deviceName);
+        intent.putExtra(START_DATE, startDate);
+        intent.putExtra(END_DATE, endDate);
+        intent.putExtra(DEVICE_GRAPH_COLUMN_SPECIFICATION_IDS, columnSpecificationIds);
+        intent.putExtra(RESULT_RECEIVER, new ResultReceiver(new Handler()) {
             @Override
             protected void onReceiveResult(int resultCode, Bundle resultData) {
                 super.onReceiveResult(resultCode, resultData);
                 if (resultCode == ResultCodes.SUCCESS) {
-                    Map<Integer, List<GraphEntry>> graphData = (Map<Integer, List<GraphEntry>>) resultData.get(BundleExtraKeys.DEVICE_GRAPH_ENTRY_MAP);
+                    Map<Integer, List<GraphEntry>> graphData = (Map<Integer, List<GraphEntry>>) resultData.get(DEVICE_GRAPH_ENTRY_MAP);
                     createChart(device, graphData);
                 }
 
-                dismissDialog(DIALOG_EXECUTING);
+                try {
+                    dismissDialog(DIALOG_EXECUTING);
+                } catch (Exception e) {
+                    Log.e(ChartingActivity.class.getName(), "error while hiding dialog", e);
+                }
             }
         });
         startService(intent);
@@ -249,7 +274,6 @@ public class ChartingActivity extends Activity implements Updateable {
         renderer.setZoomButtonsVisible(true);
         renderer.setPanLimits(new double[]{xMin.getTime(), xMax.getTime(), yMin, yMax});
         renderer.setZoomLimits(new double[]{xMin.getTime(), xMax.getTime(), yMin, yMax});
-
         GraphicalView timeChartView = ChartFactory.getTimeChartView(this, dataSet, renderer, "MM-dd HH:mm");
         setContentView(timeChartView);
     }
@@ -314,9 +338,9 @@ public class ChartingActivity extends Activity implements Updateable {
 
         Intent timeChartIntent = new Intent(context, ChartingActivity.class);
         timeChartIntent.putExtras(new Bundle());
-        timeChartIntent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
-        timeChartIntent.putExtra(BundleExtraKeys.DEVICE_GRAPH_Y_TITLE, yTitle);
-        timeChartIntent.putExtra(BundleExtraKeys.DEVICE_GRAPH_COLUMN_SPECIFICATION_IDS, columnSpecificationNames);
+        timeChartIntent.putExtra(DEVICE_NAME, device.getName());
+        timeChartIntent.putExtra(DEVICE_GRAPH_Y_TITLE, yTitle);
+        timeChartIntent.putExtra(DEVICE_GRAPH_COLUMN_SPECIFICATION_IDS, columnSpecificationNames);
 
         context.startActivity(timeChartIntent);
     }

@@ -34,18 +34,13 @@ import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Toast;
 import li.klass.fhem.R;
+import li.klass.fhem.constants.BundleExtraKeys;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
 public class ChartingDateSelectionActivity extends Activity{
-    
-    public static final String INTENT_DEVICE_NAME = "deviceName";
-    public static final String INTENT_START_DATE = "startDate";
-    public static final String INTENT_END_DATE = "endDate";
-
-
 
     private String deviceName;
     
@@ -61,9 +56,9 @@ public class ChartingDateSelectionActivity extends Activity{
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
 
-        deviceName = extras.getString(INTENT_DEVICE_NAME);
-        startDate.setTime((Date) extras.getSerializable(INTENT_START_DATE));
-        endDate.setTime((Date) extras.getSerializable(INTENT_END_DATE));
+        deviceName = extras.getString(BundleExtraKeys.DEVICE_NAME);
+        startDate.setTime((Date) extras.getSerializable(BundleExtraKeys.START_DATE));
+        endDate.setTime((Date) extras.getSerializable(BundleExtraKeys.END_DATE));
 
         setContentView(R.layout.graph_select_day);
 
@@ -110,8 +105,8 @@ public class ChartingDateSelectionActivity extends Activity{
             @Override
             public void onClick(View view) {
                 setResult(RESULT_OK, getIntent());
-                getIntent().putExtra(INTENT_START_DATE, startDate.getTime());
-                getIntent().putExtra(INTENT_END_DATE, endDate.getTime());
+                getIntent().putExtra(BundleExtraKeys.START_DATE, startDate.getTime());
+                getIntent().putExtra(BundleExtraKeys.END_DATE, endDate.getTime());
 
                 finish();
             }

@@ -52,6 +52,7 @@ public class FHTService {
         String command = "set " + device.getName() + " desired-temp " + desiredTemperatureToSet;
         if (desiredTemperatureToSet != device.getDesiredTemp()) {
             CommandExecutionService.INSTANCE.executeSafely(command);
+            device.setDesiredTemp(desiredTemperatureToSet);
         }
     }
 
@@ -65,6 +66,7 @@ public class FHTService {
         if (device.getMode() != mode) {
             String command = "set " + device.getName() + " mode " + mode.name().toLowerCase();
             CommandExecutionService.INSTANCE.executeSafely(command);
+            device.setMode(mode);
         }
     }
 
@@ -78,6 +80,7 @@ public class FHTService {
         if (device.getDayTemperature() != dayTemperature) {
             String command = "set " + device.getName() + " day-temp " + dayTemperature;
             CommandExecutionService.INSTANCE.executeSafely(command);
+            device.setDayTemperature(dayTemperature);
         }
     }
 
@@ -91,6 +94,7 @@ public class FHTService {
         if (device.getNightTemperature() != nightTemperature) {
             String command = "set " + device.getName() + " night-temp " + nightTemperature;
             CommandExecutionService.INSTANCE.executeSafely(command);
+            device.setNightTemperature(nightTemperature);
         }
     }
 
@@ -104,6 +108,7 @@ public class FHTService {
         if (device.getWindowOpenTemp() != windowOpenTemp) {
             String command = "set " + device.getName() + " windowopen-temp " + windowOpenTemp;
             CommandExecutionService.INSTANCE.executeSafely(command);
+            device.setWindowOpenTemp(windowOpenTemp);
         }
     }
 

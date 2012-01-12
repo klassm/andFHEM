@@ -143,7 +143,7 @@
     <string name="startDate">Start Date</string>
     <string name="endDate">End Date</string>
     <string name="startDateAfterEndDateMsg">Start date has to be before end date</string>
-    <string name="contextChangeStartEndDate">Change start or end date</string>
+    <string name="optionChangeStartEndDate">Change start or end date</string>
 
     <string name="generalDetails">General Details</string>
     <string name="plots">Plots</string>

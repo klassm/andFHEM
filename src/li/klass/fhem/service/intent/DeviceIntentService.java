@@ -56,7 +56,7 @@ public class DeviceIntentService extends ConvenientIntentService {
 
         String deviceName = intent.getStringExtra(BundleExtraKeys.DEVICE_NAME);
         Device device = RoomListService.INSTANCE.getDeviceForName(deviceName, doRefresh);
-        Log.e(DeviceIntentService.class.getName(), intent.getAction());
+        Log.d(DeviceIntentService.class.getName(), intent.getAction());
         String action = intent.getAction();
         if (action.equals(DEVICE_GRAPH)) {
             return graphIntent(intent, device, resultReceiver);
