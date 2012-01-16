@@ -68,6 +68,7 @@
     <string name="audio">Audio</string>
     <string name="input">Eingang</string>
     <string name="mode">Modus</string>
+    <string name="definition">Definition</string>
 
     <string name="switchDevice">Schalte</string>
     <string name="preferences">Einstellungen</string>

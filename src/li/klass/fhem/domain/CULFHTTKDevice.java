@@ -42,7 +42,7 @@ public class CULFHTTKDevice extends Device<CULFHTTKDevice> {
             long timestamp = Long.valueOf(nodeContent);
             Date date = new Date(timestamp * 1000L);
 
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy hh:mm");
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm");
             lastStateChangeTime = simpleDateFormat.format(date);
         }
     }

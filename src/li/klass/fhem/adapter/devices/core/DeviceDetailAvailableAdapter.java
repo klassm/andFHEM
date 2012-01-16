@@ -50,6 +50,7 @@ public abstract class DeviceDetailAvailableAdapter<D extends Device<D>> extends 
         View view = layoutInflater.inflate(getDetailViewLayout(), null);
         fillDeviceDetailView(context, view, device);
 
+        setTextViewOrHideTableRow(view, R.id.tableRowDef, R.id.def, device.getDefinition());
         setTextViewOrHideTableRow(view, R.id.tableRowRoom, R.id.room, device.getRoom());
         setTextViewOrHideTableRow(view, R.id.tableRowMeasured, R.id.measured, device.getMeasured());
 

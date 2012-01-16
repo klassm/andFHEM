@@ -106,7 +106,7 @@ public class GraphSyncService {
      * @return found {@link GraphEntry} objects.
      */
     private List<GraphEntry> findGraphEntries(String content) {
-        Pattern pattern = Pattern.compile("([\\d]{4}-[\\d]{2}-[\\d]{2}_[\\d]{2}:[\\d]{2}:[\\d]{2}) ([\\d\\.]+(?=[\\d]{4}))");
+        Pattern pattern = Pattern.compile("([\\d]{4}-[\\d]{2}-[\\d]{2}_[\\d]{2}:[\\d]{2}:[\\d]{2}) ([-]?[\\d\\.]+(?=[\\d]{4}))");
         Matcher matcher = pattern.matcher(content);
 
         List<GraphEntry> result = new ArrayList<GraphEntry>();

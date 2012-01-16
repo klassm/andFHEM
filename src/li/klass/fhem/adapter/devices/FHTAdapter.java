@@ -149,6 +149,7 @@ public class FHTAdapter extends DeviceDetailAvailableAdapter<FHTDevice> {
             public void onNothingSelected(AdapterView<?> adapterView) {
             }
         });
+        modeSpinner.setSelection(FHTMode.positionOf(device.getMode()));
 
         createPlotButton(context, view, R.id.temperatureGraph, device.getTemperature(),
                 device, R.string.yAxisTemperature, COLUMN_SPEC_TEMPERATURE);

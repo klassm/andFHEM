@@ -107,7 +107,7 @@ public class FHTTimetableControlListActivity extends BaseActivity<FHTTimetableCo
 
         Intent intent = new Intent(Actions.GET_DEVICE_FOR_NAME);
         intent.putExtras(new Bundle());
-        intent.putExtra(BundleExtraKeys.DO_REFRESH, false);
+        intent.putExtra(BundleExtraKeys.DO_REFRESH, doUpdate);
         intent.putExtra(BundleExtraKeys.DEVICE_NAME, deviceName);
         intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
             @Override

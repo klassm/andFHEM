@@ -48,6 +48,14 @@
                           style="@style/deviceDetailContent" />
             </TableRow>
 
+            <TableRow android:id="@+id/tableRowDef">
+                <TextView android:text="@string/definition"
+                          style="@style/deviceDetailDescription" />
+                <TextView android:id="@+id/def"
+                          android:text="xxxxx"
+                          style="@style/deviceDetailContent" />
+            </TableRow>
+
             <TableRow android:id="@+id/tableRowMeasured">
                 <TextView android:text="@string/measured"
                           style="@style/deviceDetailDescription" />

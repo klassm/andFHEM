@@ -25,5 +25,16 @@
 package li.klass.fhem.domain.fht;
 
 public enum FHTMode {
-    AUTO, MANUAL, HOLIDAY, HOLIDAY_SHORT
+    AUTO, MANUAL, HOLIDAY, HOLIDAY_SHORT;
+    
+    public static int positionOf(FHTMode mode) {
+        FHTMode[] values = FHTMode.values();
+        for (int i = 0; i < values.length; i++) {
+            FHTMode value = values[i];
+            if (value == mode) {
+                return i;
+            }
+        }
+        return -1;
+    }
 }

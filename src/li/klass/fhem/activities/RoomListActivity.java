@@ -37,6 +37,7 @@ import li.klass.fhem.activities.devicelist.RoomDetailActivity;
 import li.klass.fhem.adapter.rooms.RoomListAdapter;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
+import li.klass.fhem.constants.ResultCodes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -89,9 +90,11 @@ public class RoomListActivity extends BaseActivity<RoomListAdapter> {
         intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
             @Override
             protected void onReceiveResult(int resultCode, Bundle resultData) {
-                super.onReceiveResult(resultCode, resultData);
-                List<String> roomList = (ArrayList<String>) resultData.getSerializable(BundleExtraKeys.ROOM_LIST);
-                adapter.updateData(roomList);
+                if (resultCode == ResultCodes.SUCCESS) {
+                    super.onReceiveResult(resultCode, resultData);
+                    List<String> roomList = (ArrayList<String>) resultData.getSerializable(BundleExtraKeys.ROOM_LIST);
+                    adapter.updateData(roomList);
+                }
             }
         });
         startService(intent);

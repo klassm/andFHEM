@@ -41,6 +41,7 @@ import android.widget.TextView;
 import li.klass.fhem.R;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
+import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.domain.Device;
 import li.klass.fhem.domain.DeviceType;
 import li.klass.fhem.domain.RoomDeviceList;
@@ -116,30 +117,32 @@ public class ToggleConfigurationActivity extends ListActivity {
 
     public static void updateWidget(final AppWidgetManager appWidgetManager, final Context context, final int appWidgetId) {
         final String deviceName = getWidgetDeviceName(context, appWidgetId);
-        
+
         if (deviceName == null) return;
-        
+
         Intent deviceIntent = new Intent(Actions.GET_DEVICE_FOR_NAME);
         deviceIntent.putExtra(BundleExtraKeys.DEVICE_NAME, deviceName);
         deviceIntent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
             @Override
             protected void onReceiveResult(int resultCode, Bundle resultData) {
-                Device device = (Device) resultData.get(BundleExtraKeys.DEVICE);
-                
-                RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.appwidget_switch);
+                if (resultCode == ResultCodes.SUCCESS) {
+                    Device device = (Device) resultData.get(BundleExtraKeys.DEVICE);
 
-                views.setTextViewText(R.id.switchButton, device.getAliasOrName());
+                    RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.appwidget_switch);
 
-                Intent intent = new Intent(Actions.DEVICE_TOGGLE_STATE);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    views.setTextViewText(R.id.switchButton, device.getAliasOrName());
 
-                intent.putExtra(BundleExtraKeys.DEVICE_NAME, deviceName);
+                    Intent intent = new Intent(Actions.DEVICE_TOGGLE_STATE);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-                PendingIntent pendingIntent = PendingIntent.getService(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
-                views.setOnClickPendingIntent(R.id.switchButton, pendingIntent);
+                    intent.putExtra(BundleExtraKeys.DEVICE_NAME, deviceName);
+
+                    PendingIntent pendingIntent = PendingIntent.getService(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+                    views.setOnClickPendingIntent(R.id.switchButton, pendingIntent);
 
 
-                appWidgetManager.updateAppWidget(appWidgetId, views);
+                    appWidgetManager.updateAppWidget(appWidgetId, views);
+                }
             }
         });
         context.startService(deviceIntent);

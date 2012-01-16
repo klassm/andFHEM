@@ -43,6 +43,7 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
     protected String state;
     protected String alias;
     protected String measured;
+    protected String definition;
 
     protected volatile FileLogDevice fileLog;
 
@@ -73,6 +74,8 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
                 alias = nodeContent;
             } else if (keyValue.equals("CUL_TIME")) {
                 measured = nodeContent;
+            } else if (keyValue.equals("DEF")) {
+                definition = nodeContent;
             }
 
             String tagName = item.getNodeName().toUpperCase();
@@ -183,6 +186,10 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
 
     public String getAlias() {
         return alias;
+    }
+
+    public String getDefinition() {
+        return definition;
     }
 
     public boolean isSupported() {

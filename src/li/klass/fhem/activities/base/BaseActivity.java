@@ -81,6 +81,8 @@ public abstract class BaseActivity<ADAPTER> extends Activity implements Updateab
     private long backPressStart;
 
     protected ADAPTER adapter;
+    
+    private int currentDialog = -1;
 
 
 
@@ -95,13 +97,13 @@ public abstract class BaseActivity<ADAPTER> extends Activity implements Updateab
 
                 try {
                     if (action.equals(SHOW_UPDATING_DIALOG)) {
-                        showDialog(DIALOG_UPDATING);
+                        showDialogSafely(DIALOG_UPDATING);
                     } else if (action.equals(DISMISS_UPDATING_DIALOG)) {
-                        dismissDialog(DIALOG_UPDATING);
+                        dismissDialogSafely(DIALOG_UPDATING);
                     } else if (action.equals(SHOW_EXECUTING_DIALOG)) {
-                        showDialog(DIALOG_EXECUTING);
+                        showDialogSafely(DIALOG_EXECUTING);
                     } else if (action.equals(DISMISS_EXECUTING_DIALOG)) {
-                        dismissDialog(DIALOG_EXECUTING);
+                        dismissDialogSafely(DIALOG_EXECUTING);
                     } else if (action.equals(DO_UPDATE)) {
                         boolean doUpdate = intent.getBooleanExtra(BundleExtraKeys.DO_REFRESH, false);
                         update(doUpdate);
@@ -124,7 +126,17 @@ public abstract class BaseActivity<ADAPTER> extends Activity implements Updateab
         adapter = initializeLayoutAndReturnAdapter();
     }
 
-
+    public void showDialogSafely(int dialogId) {
+        if (!isFinishing()) {
+            showDialog(dialogId);
+            currentDialog = dialogId;
+        }
+    }
+    
+    public void dismissDialogSafely(int dialogId) {
+        dismissDialog(dialogId);
+        if (dialogId == currentDialog) currentDialog = -1;
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -214,6 +226,11 @@ public abstract class BaseActivity<ADAPTER> extends Activity implements Updateab
                 backPressStart = System.currentTimeMillis();
                 Log.d(BaseActivity.class.getName(), "back press start " + backPressStart);
             }
+
+            if (currentDialog != -1) {
+                dismissDialogSafely(currentDialog);
+            }
+
             return true;
         }
         return super.onKeyDown(keyCode, event);
@@ -278,5 +295,4 @@ public abstract class BaseActivity<ADAPTER> extends Activity implements Updateab
 
     protected abstract ADAPTER initializeLayoutAndReturnAdapter();
     protected abstract void setLayout();
-
 }
