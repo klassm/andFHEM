@@ -50,6 +50,7 @@ public class FHTDevice extends Device<FHTDevice> implements Serializable {
     private Map<Integer, FHTDayControl> dayControlMap = new HashMap<Integer, FHTDayControl>();
 
     public static final Integer COLUMN_SPEC_TEMPERATURE = R.string.temperature;
+    public static final Integer COLUMN_SPEC_DESIRED_TEMPERATURE = R.string.desiredTemperature;
     public static final Integer COLUMN_SPEC_ACTUATOR = R.string.actuator;
 
     public FHTDevice() {
@@ -170,6 +171,7 @@ public class FHTDevice extends Device<FHTDevice> implements Serializable {
     public Map<Integer, String> getFileLogColumns() {
         Map<Integer, String> columnSpecification = new HashMap<Integer, String>();
         columnSpecification.put(COLUMN_SPEC_TEMPERATURE, "4:measured:0:");
+        columnSpecification.put(COLUMN_SPEC_DESIRED_TEMPERATURE, "4:desired-temp:0:");
         columnSpecification.put(COLUMN_SPEC_ACTUATOR, "4:actuator.*[0-9]+%:0:int");
 
         return columnSpecification;

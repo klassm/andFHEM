@@ -43,6 +43,7 @@ import li.klass.fhem.activities.base.Updateable;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.domain.Device;
+import li.klass.fhem.service.graph.ChartSeriesDescription;
 import li.klass.fhem.service.graph.GraphEntry;
 import org.achartengine.ChartFactory;
 import org.achartengine.GraphicalView;
@@ -53,10 +54,7 @@ import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import org.achartengine.renderer.XYSeriesRenderer;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static li.klass.fhem.constants.BundleExtraKeys.*;
 
@@ -73,7 +71,7 @@ public class ChartingActivity extends Activity implements Updateable {
     private String deviceName;
     private String yTitle;
 
-    private int[] columnSpecificationIds;
+    private ArrayList<ChartSeriesDescription> seriesDescriptions = new ArrayList<ChartSeriesDescription>();
 
     private Calendar startDate = Calendar.getInstance();
     private Calendar endDate = Calendar.getInstance();
@@ -97,7 +95,9 @@ public class ChartingActivity extends Activity implements Updateable {
         Bundle extras = getIntent().getExtras();
         deviceName = extras.getString(DEVICE_NAME);
         yTitle = extras.getString(DEVICE_GRAPH_Y_TITLE);
-        columnSpecificationIds = extras.getIntArray(DEVICE_GRAPH_COLUMN_SPECIFICATION_IDS);
+
+
+        seriesDescriptions = extras.getParcelableArrayList(DEVICE_GRAPH_SERIES_DESCRIPTIONS);
 
         String title = extras.getString(ChartFactory.TITLE);
         if (title == null) {
@@ -189,13 +189,13 @@ public class ChartingActivity extends Activity implements Updateable {
         intent.putExtra(DEVICE_NAME, deviceName);
         intent.putExtra(START_DATE, startDate);
         intent.putExtra(END_DATE, endDate);
-        intent.putExtra(DEVICE_GRAPH_COLUMN_SPECIFICATION_IDS, columnSpecificationIds);
+        intent.putExtra(DEVICE_GRAPH_SERIES_DESCRIPTIONS, seriesDescriptions);
         intent.putExtra(RESULT_RECEIVER, new ResultReceiver(new Handler()) {
             @Override
             protected void onReceiveResult(int resultCode, Bundle resultData) {
                 super.onReceiveResult(resultCode, resultData);
                 if (resultCode == ResultCodes.SUCCESS) {
-                    Map<Integer, List<GraphEntry>> graphData = (Map<Integer, List<GraphEntry>>) resultData.get(DEVICE_GRAPH_ENTRY_MAP);
+                    Map<ChartSeriesDescription, List<GraphEntry>> graphData = (Map<ChartSeriesDescription, List<GraphEntry>>) resultData.get(DEVICE_GRAPH_ENTRY_MAP);
                     createChart(device, graphData);
                 }
 
@@ -215,22 +215,35 @@ public class ChartingActivity extends Activity implements Updateable {
      * @param graphData used graph data
      */
     @SuppressWarnings("unchecked")
-    private void createChart(Device device, Map<Integer, List<GraphEntry>> graphData) {
+    private void createChart(Device device, Map<ChartSeriesDescription, List<GraphEntry>> graphData) {
 
         XYMultipleSeriesDataset dataSet = new XYMultipleSeriesDataset();
 
+        List<ChartSeriesDescription> graphSeries = new ArrayList<ChartSeriesDescription>(graphData.keySet());
+        Collections.sort(graphSeries, new Comparator<ChartSeriesDescription>() {
+            @Override
+            public int compare(ChartSeriesDescription seriesDescription, ChartSeriesDescription otherSeriesDescription) {
+                return ((Boolean) seriesDescription.isShowDiscreteValues()).compareTo(otherSeriesDescription.isShowDiscreteValues());
+            }
+        });
+        
         Date xMin = new Date();
         Date xMax = null;
 
         double yMin = 1000;
         double yMax = -1000;
 
-        for (Integer dataSetNameId : graphData.keySet()) {
+        for (ChartSeriesDescription series : graphSeries) {
 
-            String dataSetName = getResources().getString(dataSetNameId);
+            String dataSetName = getResources().getString(series.getColumnSpecification());
 
             TimeSeries seriesName = new TimeSeries(dataSetName);
-            List<GraphEntry> data = graphData.get(dataSetNameId);
+            List<GraphEntry> data = graphData.get(series);
+            if (series.isShowDiscreteValues() && data.size() > 0) {
+                data = addDiscreteValueEntriesForSeries(data);
+                data.get(0).setDate(xMin);
+                data.get(data.size() - 1).setDate(xMax);
+            }
 
             for (GraphEntry graphEntry : data) {
                 Date date = graphEntry.getDate();
@@ -250,7 +263,7 @@ public class ChartingActivity extends Activity implements Updateable {
 
         if (xMax == null) xMax = new Date();
 
-        int[] availableColors = new int[]{Color.RED, Color.BLUE, Color.CYAN, Color.GREEN, Color.GRAY};
+        int[] availableColors = new int[]{Color.RED, Color.GREEN, Color.BLUE, Color.CYAN, Color.GRAY};
 
         XYMultipleSeriesRenderer renderer = buildRenderer(graphData.size(), PointStyle.CIRCLE);
         int length = renderer.getSeriesRendererCount();
@@ -276,6 +289,23 @@ public class ChartingActivity extends Activity implements Updateable {
         renderer.setZoomLimits(new double[]{xMin.getTime(), xMax.getTime(), yMin, yMax});
         GraphicalView timeChartView = ChartFactory.getTimeChartView(this, dataSet, renderer, "MM-dd HH:mm");
         setContentView(timeChartView);
+    }
+    
+    protected List<GraphEntry> addDiscreteValueEntriesForSeries(List<GraphEntry> entries) {
+        float previousValue = -1;
+        List<GraphEntry> result = new ArrayList<GraphEntry>();
+
+        for (GraphEntry entry : entries) {
+            if (previousValue == -1) {
+                previousValue = entry.getValue();
+            }
+
+            result.add(new GraphEntry(new Date(entry.getDate().getTime() - 1000), previousValue));
+            result.add(entry);
+            previousValue = entry.getValue();
+        }
+
+        return result;
     }
 
 
@@ -331,16 +361,17 @@ public class ChartingActivity extends Activity implements Updateable {
      * @param context                  calling intent
      * @param device                   concerned device
      * @param yTitle                   description of the values (only one!)
-     * @param columnSpecificationNames column specifications off all graph series.
+     * @param seriesDescriptions       series descriptions each representing one series in the resulting chart
      */
     @SuppressWarnings("unchecked")
-    public static void showChart(Context context, Device device, String yTitle, int... columnSpecificationNames) {
+    public static void showChart(Context context, Device device, String yTitle, ChartSeriesDescription... seriesDescriptions) {
 
+        ArrayList<ChartSeriesDescription> seriesList = new ArrayList<ChartSeriesDescription>(Arrays.asList(seriesDescriptions));
         Intent timeChartIntent = new Intent(context, ChartingActivity.class);
         timeChartIntent.putExtras(new Bundle());
         timeChartIntent.putExtra(DEVICE_NAME, device.getName());
         timeChartIntent.putExtra(DEVICE_GRAPH_Y_TITLE, yTitle);
-        timeChartIntent.putExtra(DEVICE_GRAPH_COLUMN_SPECIFICATION_IDS, columnSpecificationNames);
+        timeChartIntent.putExtra(DEVICE_GRAPH_SERIES_DESCRIPTIONS, seriesList);
 
         context.startActivity(timeChartIntent);
     }

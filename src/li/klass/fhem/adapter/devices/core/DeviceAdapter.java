@@ -35,6 +35,7 @@ import android.widget.TextView;
 import li.klass.fhem.R;
 import li.klass.fhem.activities.graph.ChartingActivity;
 import li.klass.fhem.domain.Device;
+import li.klass.fhem.service.graph.ChartSeriesDescription;
 
 public abstract class DeviceAdapter<D extends Device> {
 
@@ -122,15 +123,27 @@ public abstract class DeviceAdapter<D extends Device> {
     }
 
     protected boolean createPlotButton(final Context context, View view, int buttonLayoutId, Object hideButtonIfNull,
-                                       final D device, final int yTitleId, final int columnSpec) {
+                                       final D device, int yTitleId, int... columnSpecifications) {
+        ChartSeriesDescription[] descriptions = new ChartSeriesDescription[columnSpecifications.length];
 
+        for (int i = 0; i < columnSpecifications.length; i++) {
+            int columnSpecification = columnSpecifications[i];
+            descriptions[i] = new ChartSeriesDescription(columnSpecification, false);
+        }
+        return createPlotButton(context, view, buttonLayoutId, hideButtonIfNull, device, yTitleId, descriptions);
+    }
+
+
+
+    protected boolean createPlotButton(final Context context, View view, int buttonLayoutId, Object hideButtonIfNull,
+                                       final D device, final int yTitleId, final ChartSeriesDescription... seriesDescriptions) {
         if (! hideIfNull(view, buttonLayoutId, hideButtonIfNull)) {
             Button button = (Button) view.findViewById(buttonLayoutId);
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     String yTitle = context.getResources().getString(yTitleId);
-                    ChartingActivity.showChart(context, device, yTitle, columnSpec);
+                    ChartingActivity.showChart(context, device, yTitle, seriesDescriptions);
                 }
             });
 

@@ -142,8 +142,6 @@ public class RoomListService {
             deviceListMap = getCachedRoomDeviceListMap();
         }
 
-        Context context = AndFHEMApplication.getContext();
-
         if (refresh || deviceListMap == null) {
             sendBroadcastWithAction(Actions.SHOW_UPDATING_DIALOG, null);
             try {

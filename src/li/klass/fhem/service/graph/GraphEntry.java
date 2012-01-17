@@ -38,6 +38,10 @@ public class GraphEntry implements Comparable<GraphEntry> {
         this.date = date;
     }
 
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
     public float getValue() {
         return value;
     }

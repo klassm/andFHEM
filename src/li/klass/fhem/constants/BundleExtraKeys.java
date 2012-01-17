@@ -40,7 +40,7 @@ public class BundleExtraKeys {
 
     public static final String DEVICE_GRAPH_ENTRY_MAP = "graphEntryMap";
     public static final String DEVICE_GRAPH_Y_TITLE = "graphYTitle";
-    public static final String DEVICE_GRAPH_COLUMN_SPECIFICATION_IDS = "columnSpecificationsIds";
+    public static final String DEVICE_GRAPH_SERIES_DESCRIPTIONS = "deviceGraphSeriesDescriptions";
     public static final String START_DATE = "startDate";
     public static final String END_DATE = "endDate";
     public static final String DEVICE_DIM_PROGRESS = "dimProgress";

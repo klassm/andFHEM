@@ -32,10 +32,12 @@ import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.domain.*;
 import li.klass.fhem.domain.fht.FHTMode;
 import li.klass.fhem.service.device.*;
+import li.klass.fhem.service.graph.ChartSeriesDescription;
 import li.klass.fhem.service.graph.GraphEntry;
-import li.klass.fhem.service.graph.GraphSyncService;
+import li.klass.fhem.service.graph.GraphService;
 import li.klass.fhem.service.room.RoomListService;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -163,11 +165,11 @@ public class DeviceIntentService extends ConvenientIntentService {
      * @return success?
      */
     private STATE graphIntent(Intent intent, Device device, ResultReceiver resultReceiver) {
-        int[] columnSpecifications = intent.getIntArrayExtra(BundleExtraKeys.DEVICE_GRAPH_COLUMN_SPECIFICATION_IDS);
+        ArrayList<ChartSeriesDescription> seriesDescriptions = intent.getParcelableArrayListExtra(BundleExtraKeys.DEVICE_GRAPH_SERIES_DESCRIPTIONS);
         Calendar startDate = (Calendar) intent.getSerializableExtra(BundleExtraKeys.START_DATE);
         Calendar endDate = (Calendar) intent.getSerializableExtra(BundleExtraKeys.END_DATE);
 
-        HashMap<Integer, List<GraphEntry>> graphData = GraphSyncService.INSTANCE.getGraphData(device, columnSpecifications, startDate, endDate);
+        HashMap<ChartSeriesDescription, List<GraphEntry>> graphData = GraphService.INSTANCE.getGraphData(device, seriesDescriptions, startDate, endDate);
         sendSingleExtraResult(resultReceiver, ResultCodes.SUCCESS, DEVICE_GRAPH_ENTRY_MAP, graphData);
         return STATE.DONE;
     }

@@ -39,10 +39,10 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class GraphSyncService {
-    public static final GraphSyncService INSTANCE = new GraphSyncService();
+public class GraphService {
+    public static final GraphService INSTANCE = new GraphService();
 
-    private GraphSyncService() {
+    private GraphService() {
     }
 
     /**
@@ -51,13 +51,13 @@ public class GraphSyncService {
      *
      *
      * @param device concerned device
-     * @param columnSpecificationIds ids of the columns for reading the data
+     * @param seriesDescriptions series descriptions each representing one series in the resulting chart
      * @param startDate read FileLog entries from the given date
      * @param endDate read FileLog entries up to the given date
      * @return read graph data or null (if the device does not have a FileLog device)
      */
     @SuppressWarnings("unchecked")
-    public HashMap<Integer, List<GraphEntry>> getGraphData(Device device, int[] columnSpecificationIds,
+    public HashMap<ChartSeriesDescription, List<GraphEntry>> getGraphData(Device device, ArrayList<ChartSeriesDescription> seriesDescriptions,
                                                            final Calendar startDate, final Calendar endDate) {
 
         Context context = AndFHEMApplication.getContext();
@@ -65,16 +65,16 @@ public class GraphSyncService {
         if (device.getFileLog() == null) return null;
 
         Map<Integer, String> fileLogColumns = device.getFileLogColumns();
-        HashMap<Integer, List<GraphEntry>> data = new HashMap<Integer, List<GraphEntry>>();
+        HashMap<ChartSeriesDescription, List<GraphEntry>> data = new HashMap<ChartSeriesDescription, List<GraphEntry>>();
 
         try {
-            for (Integer columnSpecificationStringsId : columnSpecificationIds) {
-                String columnSpec = fileLogColumns.get(columnSpecificationStringsId);
+            for (ChartSeriesDescription seriesDescription : seriesDescriptions) {
+                String columnSpec = fileLogColumns.get(seriesDescription.getColumnSpecification());
                 String fileLogDeviceName = device.getFileLog().getName();
 
                 List<GraphEntry> valueEntries = getCurrentGraphEntriesFor(fileLogDeviceName, columnSpec, startDate, endDate);
 
-                data.put(columnSpecificationStringsId, valueEntries);
+                data.put(seriesDescription, valueEntries);
             }
         } catch (HostConnectionException e) {
             Toast.makeText(context, R.string.updateErrorHostConnection, Toast.LENGTH_LONG).show();
@@ -86,13 +86,15 @@ public class GraphSyncService {
     /**
      * Collects FileLog entries from FHEM matching a given column specification. The results will be turned into
      * {@link GraphEntry} objects and be returned.
+     *
      * @param fileLogName name of the fileLog. This usually equals to "FileLog_${deviceName}".
      * @param columnSpec column specification to read.
      * @param startDate read FileLog entries from the given date
      * @param endDate read FileLog entries up to the given date
      * @return read fileLog entries converted to {@link GraphEntry} objects.
      */
-    private List<GraphEntry> getCurrentGraphEntriesFor(String fileLogName, String columnSpec, Calendar startDate, Calendar endDate) {
+    private List<GraphEntry> getCurrentGraphEntriesFor(String fileLogName, String columnSpec,
+                                                       Calendar startDate, Calendar endDate) {
         String result = DataConnectionSwitch.INSTANCE.getCurrentProvider().fileLogData(fileLogName, startDate.getTime(), endDate.getTime(), columnSpec);
         result = result.replace("#" + columnSpec, "");
 
@@ -102,6 +104,8 @@ public class GraphSyncService {
     /**
      * Looks for any {@link GraphEntry} objects within the returned String. Unfortunately, FHEM does not return any
      * line delimiters, to that a pretty complicated regular expression has to be applied.
+     *
+     *
      * @param content content to parse
      * @return found {@link GraphEntry} objects.
      */
@@ -114,15 +118,16 @@ public class GraphSyncService {
 
         while(matcher.find()) {
             String entryTime = matcher.group(1);
-            String entryValue = matcher.group(2);
+            float entryValue = Float.valueOf(matcher.group(2));
 
             try {
-
-                result.add(new GraphEntry(providedDateFormat.parse(entryTime), Float.valueOf(entryValue)));
+                Date entryDate = providedDateFormat.parse(entryTime);
+                result.add(new GraphEntry(entryDate, entryValue));
+                
             } catch (ParseException e) {
-                Log.e(GraphSyncService.class.getName(), "cannot parse date " + entryTime, e);
+                Log.e(GraphService.class.getName(), "cannot parse date " + entryTime, e);
             } catch (NumberFormatException e) {
-                Log.e(GraphSyncService.class.getName(), "cannot parse number " + entryValue, e);
+                Log.e(GraphService.class.getName(), "cannot parse number " + entryValue, e);
             }
         }
 

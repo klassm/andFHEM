@@ -72,7 +72,6 @@ public class OregonAdapter extends DeviceDetailAvailableAdapter<OregonDevice> {
         setTextViewOrHideTableRow(view, R.id.tableRowUVValue, R.id.uvValue, device.getUvValue());
         setTextViewOrHideTableRow(view, R.id.tableRowUVRisk, R.id.uvRisk, device.getUvRisk());
 
-
         createPlotButton(context, view, R.id.temperatureGraph, device.getTemperature(),
                 device, R.string.yAxisTemperature, OregonDevice.COLUMN_SPEC_TEMPERATURE);
 
