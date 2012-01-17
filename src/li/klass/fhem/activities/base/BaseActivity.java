@@ -82,10 +82,6 @@ public abstract class BaseActivity<ADAPTER> extends Activity implements Updateab
 
     protected ADAPTER adapter;
     
-    private int currentDialog = -1;
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,11 +95,11 @@ public abstract class BaseActivity<ADAPTER> extends Activity implements Updateab
                     if (action.equals(SHOW_UPDATING_DIALOG)) {
                         showDialogSafely(DIALOG_UPDATING);
                     } else if (action.equals(DISMISS_UPDATING_DIALOG)) {
-                        dismissDialogSafely(DIALOG_UPDATING);
+                        dismissDialog(DIALOG_UPDATING);
                     } else if (action.equals(SHOW_EXECUTING_DIALOG)) {
                         showDialogSafely(DIALOG_EXECUTING);
                     } else if (action.equals(DISMISS_EXECUTING_DIALOG)) {
-                        dismissDialogSafely(DIALOG_EXECUTING);
+                        dismissDialog(DIALOG_EXECUTING);
                     } else if (action.equals(DO_UPDATE)) {
                         boolean doUpdate = intent.getBooleanExtra(BundleExtraKeys.DO_REFRESH, false);
                         update(doUpdate);
@@ -132,15 +128,9 @@ public abstract class BaseActivity<ADAPTER> extends Activity implements Updateab
     public void showDialogSafely(int dialogId) {
         if (!isFinishing()) {
             showDialog(dialogId);
-            currentDialog = dialogId;
         }
     }
     
-    public void dismissDialogSafely(int dialogId) {
-        dismissDialog(dialogId);
-        if (dialogId == currentDialog) currentDialog = -1;
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
@@ -229,14 +219,20 @@ public abstract class BaseActivity<ADAPTER> extends Activity implements Updateab
                 backPressStart = System.currentTimeMillis();
                 Log.d(BaseActivity.class.getName(), "back press start " + backPressStart);
             }
-
-            if (currentDialog != -1) {
-                dismissDialogSafely(currentDialog);
-            }
+            dismissDialogNoMatterWhetherShowing(DIALOG_EXECUTING);
+            dismissDialogNoMatterWhetherShowing(DIALOG_UPDATING);
 
             return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    private void dismissDialogNoMatterWhetherShowing(int dialogId) {
+        try {
+            dismissDialog(dialogId);
+        } catch (Exception notInteresting) {
+            Log.d(BaseActivity.class.getName(), "not interesting exception occurred ...", notInteresting);
+        }
     }
 
     @Override
