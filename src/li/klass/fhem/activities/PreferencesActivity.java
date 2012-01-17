@@ -25,16 +25,94 @@
 package li.klass.fhem.activities;
 
 import android.os.Bundle;
-import android.preference.PreferenceActivity;
+import android.preference.*;
+import android.text.method.PasswordTransformationMethod;
 import li.klass.fhem.R;
+import li.klass.fhem.fhem.DataConnectionSwitch;
+
+import static li.klass.fhem.fhem.FHEMWebConnection.*;
+import static li.klass.fhem.fhem.TelnetConnection.TELNET_PORT;
+import static li.klass.fhem.fhem.TelnetConnection.TELNET_URL;
 
 public class PreferencesActivity extends PreferenceActivity {
-
+    
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         addPreferencesFromResource(R.layout.preferences);
+
+        ListPreference dataOriginPreference = (ListPreference) findPreference(DataConnectionSwitch.CONNECTION_TYPE);
+        setDataOriginOptionsForValue(dataOriginPreference.getValue());
+        dataOriginPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object o) {
+                setDataOriginOptionsForValue((String) o);
+                return true;
+            }
+        });
+
+    }
+    
+    private void setDataOriginOptionsForValue(String value) {
+        removeAllDateOriginOptions();
+        if (value.equals("TELNET")) {
+            addTelnetPreferences();
+        } else if (value.equals("FHEMWEB")) {
+            addFHEMWEBPreferences();
+        }
+    }
+    
+    private void removeAllDateOriginOptions() {
+        removePreferenceIfNotNull(TELNET_URL);
+        removePreferenceIfNotNull(TELNET_PORT);
+        removePreferenceIfNotNull(FHEMWEB_URL);
+        removePreferenceIfNotNull(FHEMWEB_USERNAME);
+        removePreferenceIfNotNull(FHEMWEB_PASSWORD);
+
+    }
+    
+    private void removePreferenceIfNotNull(String preferenceKey) {
+        Preference preference = findPreference(preferenceKey);
+        if (preference != null) {
+            getDataOriginCategory().removePreference(preference);
+        }
     }
 
+    private void addTelnetPreferences() {
+        EditTextPreference urlPreference = new EditTextPreference(this);
+        urlPreference.setTitle(R.string.prefTelnetUrl);
+        urlPreference.setSummary(R.string.prefTelnetUrlSummary);
+        urlPreference.setKey(TELNET_URL);
+        getDataOriginCategory().addPreference(urlPreference);
+
+        EditTextPreference portPreference = new EditTextPreference(this);
+        portPreference.setTitle(R.string.prefTelnetPort);
+        portPreference.setSummary(R.string.prefTelnetPortSummary);
+        portPreference.setKey(TELNET_PORT);
+        getDataOriginCategory().addPreference(portPreference);
+    }
+
+    private void addFHEMWEBPreferences() {
+        EditTextPreference urlPreference = new EditTextPreference(this);
+        urlPreference.setTitle(R.string.prefFHEMWEBUrl);
+        urlPreference.setSummary(R.string.prefFHEMWEBUrlSummary);
+        urlPreference.setKey(FHEMWEB_URL);
+        getDataOriginCategory().addPreference(urlPreference);
+
+        EditTextPreference usernamePreference = new EditTextPreference(this);
+        usernamePreference.setTitle(R.string.prefUsername);
+        usernamePreference.setKey(FHEMWEB_USERNAME);
+        getDataOriginCategory().addPreference(usernamePreference);
+
+        EditTextPreference passwordPreference = new EditTextPreference(this);
+        passwordPreference.setTitle(R.string.prefPassword);
+        passwordPreference.setKey(FHEMWEB_PASSWORD);
+        passwordPreference.getEditText().setTransformationMethod(PasswordTransformationMethod.getInstance());
+        getDataOriginCategory().addPreference(passwordPreference);
+    }
+
+    private PreferenceCategory getDataOriginCategory() {
+        return (PreferenceCategory) findPreference("DATAORIGINCATEGORY");
+    }
 }

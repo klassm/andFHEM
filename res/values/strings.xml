@@ -97,11 +97,17 @@
     <string name="tab_favorites">Favorites</string>
     <string name="tab_alldevices">All Devices</string>
 
-    <string name="prefUrlSummary">URL to FHEM server</string>
-    <string name="prefUrl">URL</string>
-    <string name="prefPortSummary">Port of FHEM server</string>
-    <string name="prefPort">Port</string>
-    <string name="prefUseDummyData">Use dummy data</string>
+    <string name="prefDataSourceCategory">Data Source</string>
+    <string name="prefDataSource">Data Source</string>
+    <string name="prefOtherPreferencesCategory">Other Preferences</string>
+    <string name="prefTelnetUrlSummary">IP of Telnet FHEM </string>
+    <string name="prefTelnetUrl">IP</string>
+    <string name="prefTelnetPortSummary">Port of Telnet FHEM</string>
+    <string name="prefTelnetPort">Port</string>
+    <string name="prefFHEMWEBUrl">URL</string>
+    <string name="prefFHEMWEBUrlSummary">URL of FHEMWEB interface</string>
+    <string name="prefUsername">Username</string>
+    <string name="prefPassword">Password</string>
     <string name="prefShowHiddenDevices">Show hidden devices</string>
 
     <string name="updateError">Error while updating.</string>

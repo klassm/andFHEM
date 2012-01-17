@@ -107,6 +107,8 @@ public abstract class BaseActivity<ADAPTER> extends Activity implements Updateab
                     } else if (action.equals(DO_UPDATE)) {
                         boolean doUpdate = intent.getBooleanExtra(BundleExtraKeys.DO_REFRESH, false);
                         update(doUpdate);
+                    } else if (action.equals(SHOW_TOAST)) {
+                        Toast.makeText(BaseActivity.this, intent.getIntExtra(BundleExtraKeys.TOAST_STRING_ID, 0), Toast.LENGTH_SHORT).show();
                     }
                 } catch (Exception e) {
                     Log.e(BaseActivity.class.getName(), "error occurred", e);
@@ -118,6 +120,7 @@ public abstract class BaseActivity<ADAPTER> extends Activity implements Updateab
         intentFilter.addAction(DISMISS_UPDATING_DIALOG);
         intentFilter.addAction(SHOW_EXECUTING_DIALOG);
         intentFilter.addAction(DISMISS_EXECUTING_DIALOG);
+        intentFilter.addAction(SHOW_TOAST);
         intentFilter.addAction(DO_UPDATE);
 
         registerReceiver(broadcastReceiver, intentFilter);

@@ -24,24 +24,6 @@
 
 package li.klass.fhem.fhem;
 
-import li.klass.fhem.util.ApplicationProperties;
-
-public class DataConnectionSwitch {
-    public static final DataConnectionSwitch INSTANCE = new DataConnectionSwitch();
-
-    public static final String CONNECTION_TYPE = "CONNECTION_TYPE";
-
-    private DataConnectionSwitch() {
-    }
-
-    public FHEMConnection getCurrentProvider() {
-        switch (ApplicationProperties.INSTANCE.getConnectionType()) {
-            case TELNET:
-                return TelnetConnection.INSTANCE;
-            case FHEMWEB:
-                return FHEMWebConnection.INSTANCE;
-            default:
-                return DummyDataConnection.INSTANCE;
-        }
-    }
+public enum ConnectionType {
+    DUMMYDATA, TELNET, FHEMWEB
 }

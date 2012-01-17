@@ -26,11 +26,12 @@ package li.klass.fhem.service.room;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.constants.Actions;
+import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.Device;
 import li.klass.fhem.domain.RoomDeviceList;
 import li.klass.fhem.exception.DeviceListParseException;
@@ -140,21 +141,27 @@ public class RoomListService {
         if (! refresh && deviceListMap == null) {
             deviceListMap = getCachedRoomDeviceListMap();
         }
-        
+
         Context context = AndFHEMApplication.getContext();
 
         if (refresh || deviceListMap == null) {
-            sendBroadcastWithAction(Actions.SHOW_UPDATING_DIALOG);
+            sendBroadcastWithAction(Actions.SHOW_UPDATING_DIALOG, null);
             try {
                 deviceListMap = getRemoteRoomDeviceListMap();
             }  catch (HostConnectionException e) {
-                Toast.makeText(context, R.string.updateErrorHostConnection, Toast.LENGTH_LONG).show();
+                Bundle bundle = new Bundle();
+                bundle.putInt(BundleExtraKeys.TOAST_STRING_ID, R.string.updateError);
+                sendBroadcastWithAction(Actions.SHOW_TOAST, bundle);
+
                 Log.e(RoomListService.class.getName(), "error occurred", e);
             } catch (DeviceListParseException e) {
-                Toast.makeText(context, R.string.updateErrorDeviceListParse, Toast.LENGTH_LONG).show();
+                Bundle bundle = new Bundle();
+                bundle.putInt(BundleExtraKeys.TOAST_STRING_ID, R.string.updateErrorDeviceListParse);
+                sendBroadcastWithAction(Actions.SHOW_TOAST, bundle);
+
                 Log.e(RoomListService.class.getName(), "error occurred", e);
             } finally {
-                sendBroadcastWithAction(Actions.DISMISS_UPDATING_DIALOG);
+                sendBroadcastWithAction(Actions.DISMISS_UPDATING_DIALOG, null);
             }
         }
 
@@ -200,9 +207,13 @@ public class RoomListService {
     /**
      * Sends a broadcast message containing a specified action. Context is the application context.
      * @param action action to use for sending the broadcast intent.
+     * @param bundle parameters to set
      */
-    private void sendBroadcastWithAction(String action) {
+    private void sendBroadcastWithAction(String action, Bundle bundle) {
+        if (bundle == null) bundle = new Bundle();
+
         Intent broadcastIntent = new Intent(action);
+        broadcastIntent.putExtras(bundle);
         AndFHEMApplication.getContext().sendBroadcast(broadcastIntent);
     }
 }

@@ -29,32 +29,25 @@
         android:layout_height="fill_parent"
         android:layout_width="fill_parent">
 
-    <EditTextPreference
-            android:summary="@string/prefUrlSummary"
-            android:defaultValue="192.168.0.1"
-            android:title="@string/prefUrl"
-            android:key="URL"
-            android:id="@+id/prefUrl"/>
+    <PreferenceCategory android:title="@string/prefDataSourceCategory" android:key="DATAORIGINCATEGORY">
 
-    <EditTextPreference
-            android:summary="@string/prefPortSummary"
-            android:defaultValue="7072"
-            android:title="@string/prefPort"
-            android:key="PORT"
-            android:id="@+id/prefPort"
-            android:singleLine="true" />
+        <ListPreference
+                android:title="@string/prefDataSource"
+                android:id="@+id/dataOriginSelector"
+                android:summary=""
+                android:key="CONNECTION_TYPE"
+                android:defaultValue=""
+                android:entries="@array/dataOriginEntries"
+                android:entryValues="@array/dataOriginValues" />
+    </PreferenceCategory>
 
-    <CheckBoxPreference
-            android:key="prefUseDummyData"
-            android:title="@string/prefUseDummyData"
-            android:defaultValue="true"
-            />
-
-    <CheckBoxPreference
-            android:key="prefShowHiddenDevices"
-            android:title="@string/prefShowHiddenDevices"
-            android:defaultValue="false"
-            />
+    <PreferenceCategory android:title="@string/prefOtherPreferencesCategory">
+        <CheckBoxPreference
+                android:key="prefShowHiddenDevices"
+                android:title="@string/prefShowHiddenDevices"
+                android:defaultValue="false"
+                />
+    </PreferenceCategory>
 
 
 </PreferenceScreen>

@@ -43,6 +43,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class TelnetConnection implements FHEMConnection {
+    public static final String TELNET_URL = "TELNET_URL";
+    public static final String TELNET_PORT = "TELNET_PORT";
+
+
     private static final String DEFAULT_HOST = "";
     private static final int DEFAULT_PORT = 0;
 
@@ -128,11 +132,11 @@ public class TelnetConnection implements FHEMConnection {
 
     private String getHost() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(AndFHEMApplication.getContext());
-        return sharedPreferences.getString("URL", DEFAULT_HOST);
+        return sharedPreferences.getString(TELNET_URL, DEFAULT_HOST);
     }
 
     private int getPort() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(AndFHEMApplication.getContext());
-        return Integer.valueOf(sharedPreferences.getString("PORT", String.valueOf(DEFAULT_PORT)));
+        return Integer.valueOf(sharedPreferences.getString(TELNET_PORT, String.valueOf(DEFAULT_PORT)));
     }
 }

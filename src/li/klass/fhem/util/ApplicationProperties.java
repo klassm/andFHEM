@@ -28,6 +28,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import li.klass.fhem.AndFHEMApplication;
+import li.klass.fhem.fhem.ConnectionType;
+import li.klass.fhem.fhem.DataConnectionSwitch;
 
 public class ApplicationProperties {
     public static final ApplicationProperties INSTANCE = new ApplicationProperties();
@@ -50,7 +52,13 @@ public class ApplicationProperties {
         return context.getSharedPreferences(AndFHEMApplication.class.getName(), Context.MODE_PRIVATE);
     }
 
-    public boolean isDummyMode() {
-        return PreferenceManager.getDefaultSharedPreferences(AndFHEMApplication.getContext()).getBoolean("prefUseDummyData", true);
+    public ConnectionType getConnectionType() {
+        try {
+            String connectionType = PreferenceManager.getDefaultSharedPreferences(AndFHEMApplication.getContext())
+                    .getString(DataConnectionSwitch.CONNECTION_TYPE, null);
+            return ConnectionType.valueOf(connectionType.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            return ConnectionType.DUMMYDATA;
+        }
     }
 }

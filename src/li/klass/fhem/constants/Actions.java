@@ -32,6 +32,8 @@ public class Actions {
     public static final String SHOW_EXECUTING_DIALOG = prefix + "SHOW_EXECUTING_DIALOG";
     public static final String DISMISS_EXECUTING_DIALOG = prefix + "DISMISS_EXECUTING_DIALOG";
 
+    public static final String SHOW_TOAST = prefix + "SHOW_TOAST";
+
     public static final String GET_ALL_ROOMS_DEVICE_LIST = prefix + "ALL_ROOMS_DEVICE_LIST";
     public static final String GET_ROOM_DEVICE_LIST = prefix + "GET_ROOM_DEVICE_LIST";
     public static final String GET_ROOM_NAME_LIST = prefix + "GET_ROOM_NAME_LIST";

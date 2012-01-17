@@ -97,11 +97,17 @@
     <string name="tab_favorites">Favoriten</string>
     <string name="tab_alldevices">Alle Geräte</string>
 
-    <string name="prefUrlSummary">URL / IP des FHEM servers</string>
-    <string name="prefUrl">URL</string>
-    <string name="prefPortSummary">Port des FHEM servers</string>
-    <string name="prefPort">Port</string>
-    <string name="prefUseDummyData">Nutze Dummy Daten</string>
+    <string name="prefDataSourceCategory">Datenquelle</string>
+    <string name="prefDataSource">Datenquelle</string>
+    <string name="prefOtherPreferencesCategory">Andere Einstellungen</string>
+    <string name="prefTelnetUrlSummary">IP des FHEM Telnet Servers </string>
+    <string name="prefTelnetUrl">IP</string>
+    <string name="prefTelnetPortSummary">Port des Telnet FHEM Servers</string>
+    <string name="prefTelnetPort">Port</string>
+    <string name="prefFHEMWEBUrl">URL</string>
+    <string name="prefUsername">Benutzername</string>
+    <string name="prefPassword">Passwort</string>
+    <string name="prefFHEMWEBUrlSummary">URL der FHEMWEB Webseite</string>
     <string name="prefShowHiddenDevices">Zeige versteckte Geräte</string>
 
     <string name="updateError">Error während Update Vorgang.</string>
@@ -117,7 +123,7 @@
 
     <string name="welcomeMessageTitle">Erster Start</string>
     <string name="welcomeMessage">
-        Einstellungsmenü aufrufen und FHEM server Details eingeben.
+        Einstellungsmenü aufrufen und FHEM Server Details eingeben.
         \n\nUm ein Gerät zu den Favoriten hinzuzufügen, lange darauf klicken
     </string>
 

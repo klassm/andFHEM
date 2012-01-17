@@ -36,6 +36,7 @@ public class BundleExtraKeys {
     public static final String DEVICE_TYPE = "deviceType";
     public static final String DEVICE_LIST = "deviceList";
     public static final String RESULT_RECEIVER = "resultReceiver";
+    public static final String TOAST_STRING_ID = "toastStringID";
 
     public static final String DEVICE_GRAPH_ENTRY_MAP = "graphEntryMap";
     public static final String DEVICE_GRAPH_Y_TITLE = "graphYTitle";
