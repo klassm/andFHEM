@@ -93,6 +93,9 @@ public class CULHMAdapter extends DeviceDetailAvailableAdapter<CULHMDevice> {
             case HEATING:
                 view = getHeatingOverview(layoutInflater, device);
                 break;
+            case SMOKE_DETECTOR:
+                view = getSmokeDetectorView(layoutInflater, device);
+                break;
         }
 
         if (view == null) {
@@ -100,6 +103,14 @@ public class CULHMAdapter extends DeviceDetailAvailableAdapter<CULHMDevice> {
         }
 
         setTextView(view, R.id.deviceName, device.getAliasOrName());
+        return view;
+    }
+
+    private View getSmokeDetectorView(LayoutInflater layoutInflater, CULHMDevice device) {
+        View view = layoutInflater.inflate(R.layout.room_detail_culhm_smoke, null);
+
+        setTextViewOrHideTableRow(view, R.id.tableRowState, R.id.state, device.getState());
+
         return view;
     }
 

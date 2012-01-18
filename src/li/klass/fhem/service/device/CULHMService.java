@@ -61,7 +61,7 @@ public class CULHMService {
      * @param device concerned device
      */
     public void toggleState(CULHMDevice device) {
-        if (device.getSubType() != CULHMDevice.SubType.DIMMER) {
+        if (device.getSubType() != CULHMDevice.SubType.SWITCH) {
             return;
         }
         if (device.isOn()) {

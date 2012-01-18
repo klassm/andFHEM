@@ -53,7 +53,7 @@ room structexclude webCmd eventMap">
             <ATTR key="firmware" value="1.5"/>
             <ATTR key="hmClass" value="receiver"/>
             <ATTR key="model" value="HM-LC-BL1-FM"/>
-            <ATTR key="room" value="Bügelzimmer"/>
+            <ATTR key="room" value="bügelzimmer"/>
             <ATTR key="serialNr" value="IEQ0496916"/>
             <ATTR key="subType" value="blindActuator"/>
             <STATE key="CommandAccepted" value="yes" measured="2012-01-09
@@ -62,6 +62,79 @@ room structexclude webCmd eventMap">
                    measured="2012-01-09 07:30:09"/>
             <STATE key="state" value="75 %" measured="2012-01-09 07:30:09"/>
         </CUL_HM>
+
+        <CUL_HM name="rauch3" state="NACK" sets="pair raw reset sign
+statusRequest unpair " attrs="room comment alias IODev do_not_notify:
+1,0 ignore:0,1 showtime:1,0 loglevel:0,1,2,3,4,5,6 model
+subType:switch,dimmer,blindActuator,remote,sensor,swi,pushButton,threeStateSensor,motionDetector,keyMatic,winMatic,smokeDetector
+hmClass:receiver,sender serialNr firmware devInfo rawToReadable unit
+webCmd eventMap">
+            <INT key="CUL1_MSGCNT" value="11"/>
+            <INT key="CUL1_RAWMSG"
+                 value="A1005A0011656541656340102165654010040"/>
+            <INT key="CUL1_RSSI" value="-42"/>
+            <INT key="CUL1_TIME" value="2012-01-17 14:59:09"/>
+            <INT key="DEF" value="165654"/>
+            <INT key="LASTIODev" value="CUL1"/>
+            <INT key="MSGCNT" value="11"/>
+            <INT key="NAME" value="rauch3"/>
+            <INT key="NR" value="21"/>
+            <INT key="STATE" value="NACK"/>
+            <INT key="TYPE" value="CUL_HM"/>
+            <INT key="lastMsg" value="1005A00116565416563401021656540100"/>
+            <INT key="IODev" value="CUL1"/>
+            <ATTR key="devInfo" value="000100"/>
+            <ATTR key="firmware" value="1.0"/>
+            <ATTR key="hmClass" value="sender"/>
+            <ATTR key="model" value="HM-SEC-SD"/>
+            <ATTR key="room" value="wohnzimmer"/>
+            <ATTR key="serialNr" value="IEQ0082711"/>
+            <ATTR key="subType" value="smokeDetector"/>
+            <STATE key="CommandAccepted" value="yes" measured="2012-01-17
+14:59:08"/>
+            <STATE key="state" value="NACK" measured="2012-01-17 14:59:07"/>
+            <STATE key="unknownMsg" value="01021656540100" measured="2012-01-17
+14:59:09"/>
+        </CUL_HM>
+        <CUL_HM name="wz_temp" state="T: 19.8 H: 49" sets="pair raw reset
+sign statusRequest unpair  day-temp desired-temp night-temp party-temp
+tempListFri tempListMon tempListSat tempListSun tempListThu
+tempListTue tempListWed" attrs="room comment alias IODev do_not_notify:
+1,0 ignore:0,1 showtime:1,0 loglevel:0,1,2,3,4,5,6 model
+subType:switch,dimmer,blindActuator,remote,sensor,swi,pushButton,threeStateSensor,motionDetector,keyMatic,winMatic,smokeDetector
+hmClass:receiver,sender serialNr firmware devInfo rawToReadable unit
+webCmd eventMap">
+            <INT key="CUL1_MSGCNT" value="478"/>
+            <INT key="CUL1_RAWMSG" value="A0BC3A258186C5D186105020058"/>
+            <INT key="CUL1_RSSI" value="-30"/>
+            <INT key="CUL1_TIME" value="2012-01-17 17:19:54"/>
+            <INT key="DEF" value="186C5D"/>
+            <INT key="LASTIODev" value="CUL1"/>
+            <INT key="MSGCNT" value="478"/>
+            <INT key="NAME" value="wz_temp"/>
+            <INT key="NR" value="14"/>
+            <INT key="STATE" value="T: 19.8 H: 49"/>
+            <INT key="TYPE" value="CUL_HM"/>
+            <INT key="lastMsg" value="0BC3A258186C5D1861050200"/>
+            <INT key="IODev" value="CUL1"/>
+            <ATTR key="devInfo" value="00FFFF"/>
+            <ATTR key="firmware" value="2.0"/>
+            <ATTR key="hmClass" value="unknown"/>
+            <ATTR key="model" value="HM-CC-TC"/>
+            <ATTR key="room" value="wohnzimmer"/>
+            <ATTR key="serialNr" value="IEQ0527592"/>
+            <ATTR key="subType" value="unknown"/>
+            <STATE key="actuator" value="0 %" measured="2012-01-17 17:19:54"/>
+            <STATE key="humidity" value="49" measured="2012-01-17 17:19:34"/>
+            <STATE key="measured-temp" value="19.8" measured="2012-01-17
+17:19:34"/>
+            <STATE key="state" value="T: 19.8 H: 49" measured="2012-01-17
+17:19:34"/>
+            <STATE key="temperature" value="19.8" measured="2012-01-17
+17:19:34"/>
+        </CUL_HM>
+
+
         <CUL_HM name="Bz_RoloRechts" state="75 %" sets="pair raw reset sign
 statusRequest unpair off on on-for-timer 0 1 2 3 4 5 6 7 8 9 10 11 12
 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35
@@ -125,7 +198,7 @@ room structexclude webCmd eventMap">
             <ATTR key="firmware" value="1.9"/>
             <ATTR key="hmClass" value="receiver"/>
             <ATTR key="model" value="HM-LC-SW1-PL"/>
-            <ATTR key="room" value="Haus"/>
+            <ATTR key="room" value="hausgang"/>
             <ATTR key="serialNr" value="IEQ0378008"/>
             <ATTR key="subType" value="switch"/>
             <STATE key="CommandAccepted" value="yes" measured="2012-01-08
@@ -209,7 +282,7 @@ room structexclude webCmd eventMap">
             <INT key="STATE" value="Open"/>
             <INT key="TYPE" value="CUL_FHTTK"/>
             <INT key="IODev" value="CUL"/>
-            <ATTR key="room" value="Büro"/>
+            <ATTR key="room" value="büro"/>
             <STATE key="Battery" value="ok" measured="2011-12-16 14:53:05"/>
             <STATE key="Reliability" value="ok" measured="2011-12-16 14:53:05"/>
             <STATE key="Window" value="Closed" measured="2011-12-16 14:53:05"/>
@@ -230,7 +303,7 @@ room structexclude webCmd eventMap">
             <INT key="STATE" value="Closed"/>
             <INT key="TYPE" value="CUL_FHTTK"/>
             <INT key="IODev" value="CUL"/>
-            <ATTR key="room" value="Bad"/>
+            <ATTR key="room" value="bad"/>
             <STATE key="Battery" value="ok" measured="2011-12-16 14:53:05"/>
             <STATE key="Reliability" value="ok" measured="2011-12-16 14:53:05"/>
             <STATE key="Window" value="Closed" measured="2011-12-16 14:53:05"/>

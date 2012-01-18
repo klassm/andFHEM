@@ -24,27 +24,19 @@
   ~   Boston, MA  02110-1301  USA
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="fill_parent"
-              android:layout_height="fill_parent"
-              android:orientation="vertical">
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             style="@style/deviceOverviewTable">
 
+    <TableRow>
+        <TextView android:id="@+id/deviceName"
+                  style="@style/deviceOverviewCaption"/>
+    </TableRow>
 
-    <TextView android:layout_height="fill_parent"
-              android:layout_width="wrap_content"
-              android:gravity="center_vertical"
-              android:layout_weight="1"
-              android:textSize="15dp"
-              android:id="@+id/deviceName"
-              android:text="deviceName"/>
-
-    <li.klass.fhem.widget.NestedListView
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:id="@+id/deviceMap"
-                android:padding="5dp"
-                android:dividerHeight="0dp"
-                android:divider="@drawable/empty"
-                android:fastScrollEnabled="true"
-                />
-</LinearLayout>
+    <TableRow android:id="@+id/tableRowState">
+        <TextView android:text="@string/state"
+                  style="@style/deviceOverviewDescription" />
+        <TextView android:id="@+id/state"
+                  style="@style/deviceOverviewContent"
+                  android:text="NACK"/>
+    </TableRow>
+</TableLayout>
