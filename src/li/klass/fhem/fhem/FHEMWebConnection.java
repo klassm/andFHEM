@@ -35,6 +35,9 @@ import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
 
 import java.net.URI;
 import java.net.URLEncoder;
@@ -43,7 +46,7 @@ import java.util.Date;
 
 public class FHEMWebConnection implements FHEMConnection {
 
-    private DefaultHttpClient client = new DefaultHttpClient();
+    private DefaultHttpClient client;
 
     public static final String FHEMWEB_URL = "FHEMWEB_URL";
     public static final String FHEMWEB_USERNAME = "FHEMWEB_USERNAME";
@@ -52,6 +55,10 @@ public class FHEMWebConnection implements FHEMConnection {
     public static final FHEMWebConnection INSTANCE = new FHEMWebConnection();
 
     private FHEMWebConnection() {
+        HttpParams httpParams = new BasicHttpParams();
+        HttpConnectionParams.setConnectionTimeout(httpParams, 3000);
+        HttpConnectionParams.setSoTimeout(httpParams, 10000);
+        client = new DefaultHttpClient(httpParams);
     }
 
     @Override
@@ -103,7 +110,7 @@ public class FHEMWebConnection implements FHEMConnection {
         int preEnd = content.indexOf(end);
 
         if (preStart == -1 || preEnd == -1) {
-            return "";
+            throw new HostConnectionException();
         }
 
         content = content.substring(preStart + start.length(), preEnd);

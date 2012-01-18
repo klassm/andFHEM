@@ -148,7 +148,7 @@ public class RoomListService {
                 deviceListMap = getRemoteRoomDeviceListMap();
             }  catch (HostConnectionException e) {
                 Bundle bundle = new Bundle();
-                bundle.putInt(BundleExtraKeys.TOAST_STRING_ID, R.string.updateError);
+                bundle.putInt(BundleExtraKeys.TOAST_STRING_ID, R.string.updateErrorHostConnection);
                 sendBroadcastWithAction(Actions.SHOW_TOAST, bundle);
 
                 Log.e(RoomListService.class.getName(), "error occurred", e);

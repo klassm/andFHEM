@@ -90,6 +90,7 @@ public class TelnetConnection implements FHEMConnection {
                 ((TelnetURLConnection)urlConnection).
                         setTelnetTerminalHandler(new DefaultTelnetTerminalHandler());
             }
+            urlConnection.setConnectTimeout(3000);
 
             inputStream = urlConnection.getInputStream();
 
