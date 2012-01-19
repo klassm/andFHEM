@@ -32,30 +32,21 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TableRow;
 import android.widget.TextView;
-import li.klass.fhem.R;
 import li.klass.fhem.activities.graph.ChartingActivity;
+import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.Device;
 import li.klass.fhem.service.graph.ChartSeriesDescription;
 
 public abstract class DeviceAdapter<D extends Device> {
 
 
-    public static final String INTENT_DEVICE_NAME = "deviceName";
-    public static final String INTENT_ROOM = "room";
-
     public boolean supports(Class<? extends Device> deviceClass) {
         return getSupportedDeviceClass().isAssignableFrom(deviceClass);
     }
 
     @SuppressWarnings("unchecked")
-    public View getView(LayoutInflater layoutInflater, View convertView, Device device) {
-        if (convertView != null) {
-            TextView deviceName = (TextView) convertView.findViewById(R.id.deviceName);
-            if (deviceName != null && deviceName.getText().equals(device.getAliasOrName())) {
-                return convertView;
-            }
-        }
-        return getOverviewView(layoutInflater, (D) device);
+    public View getOverviewView(LayoutInflater layoutInflater, Device device) {
+        return getDeviceOverviewView(layoutInflater, (D) device);
     }
 
     @SuppressWarnings("unchecked")
@@ -73,8 +64,8 @@ public abstract class DeviceAdapter<D extends Device> {
 
         Intent intent = new Intent();
         intent.putExtras(new Bundle());
-        intent.putExtra(INTENT_DEVICE_NAME, device.getName());
-        intent.putExtra(INTENT_ROOM, device.getRoom());
+        intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
+        intent.putExtra(BundleExtraKeys.ROOM_NAME, device.getRoom());
 
         intent = onFillDeviceDetailIntent(context, device, intent);
         if (intent != null) {
@@ -89,7 +80,7 @@ public abstract class DeviceAdapter<D extends Device> {
     protected abstract Intent onFillDeviceDetailIntent(Context context, Device device, Intent intent);
 
     public abstract Class<? extends Device> getSupportedDeviceClass();
-    protected abstract View getOverviewView(LayoutInflater layoutInflater, D device);
+    protected abstract View getDeviceOverviewView(LayoutInflater layoutInflater, D device);
 
 
     protected void setTextViewOrHideTableRow(View view, int tableRowId, int textFieldLayoutId, String value) {

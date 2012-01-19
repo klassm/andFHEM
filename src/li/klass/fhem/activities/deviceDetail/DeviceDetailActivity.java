@@ -48,8 +48,8 @@ public abstract class DeviceDetailActivity<D extends Device> extends BaseActivit
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
 
-        this.deviceName = extras.getString("deviceName");
-        this.room = extras.getString("room");
+        this.deviceName = extras.getString(BundleExtraKeys.DEVICE_NAME);
+        this.room = extras.getString(BundleExtraKeys.ROOM_NAME);
 
         super.onCreate(savedInstanceState);
 

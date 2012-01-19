@@ -38,7 +38,7 @@ public class OwcountAdapter extends DeviceListOnlyAdapter<OwcountDevice> {
     }
 
     @Override
-    protected View getOverviewView(LayoutInflater layoutInflater, OwcountDevice device) {
+    protected View getDeviceOverviewView(LayoutInflater layoutInflater, OwcountDevice device) {
         View view = layoutInflater.inflate(R.layout.room_detail_owcount, null);
 
         String counterAState = "";

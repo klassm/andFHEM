@@ -33,11 +33,12 @@ import li.klass.fhem.activities.deviceDetail.CULWSDeviceDetailActivity;
 import li.klass.fhem.adapter.devices.core.DeviceDetailAvailableAdapter;
 import li.klass.fhem.domain.CULWSDevice;
 import li.klass.fhem.domain.Device;
+import li.klass.fhem.service.graph.ChartSeriesDescription;
 
 public class CULWSAdapter extends DeviceDetailAvailableAdapter<CULWSDevice> {
 
     @Override
-    public View getOverviewView(LayoutInflater layoutInflater, CULWSDevice device) {
+    public View getDeviceOverviewView(LayoutInflater layoutInflater, CULWSDevice device) {
         View view = layoutInflater.inflate(R.layout.room_detail_culws, null);
 
         setTextView(view, R.id.deviceName, device.getAliasOrName());
@@ -59,7 +60,7 @@ public class CULWSAdapter extends DeviceDetailAvailableAdapter<CULWSDevice> {
         setTextViewOrHideTableRow(view, R.id.tableRowHumidity, R.id.humidity, device.getHumidity());
 
         createPlotButton(context, view, R.id.temperatureGraph, device.getTemperature(),
-                device, R.string.yAxisTemperature, CULWSDevice.COLUMN_SPEC_TEMPERATURE);
+                device, R.string.yAxisTemperature, new ChartSeriesDescription(CULWSDevice.COLUMN_SPEC_TEMPERATURE, false, true));
         createPlotButton(context, view, R.id.humidityGraph, device.getHumidity(),
                 device, R.string.yAxisHumidity, CULWSDevice.COLUMN_SPEC_HUMIDITY);
     }

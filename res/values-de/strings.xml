@@ -69,6 +69,8 @@
     <string name="input">Eingang</string>
     <string name="mode">Modus</string>
     <string name="definition">Definition</string>
+    <string name="optional">optional</string>
+    <string name="regression">Regression</string>
 
     <string name="switchDevice">Schalte</string>
     <string name="preferences">Einstellungen</string>
@@ -100,14 +102,14 @@
     <string name="prefDataSourceCategory">Datenquelle</string>
     <string name="prefDataSource">Datenquelle</string>
     <string name="prefOtherPreferencesCategory">Andere Einstellungen</string>
-    <string name="prefTelnetUrlSummary">IP des FHEM Telnet Servers </string>
+    <string name="prefTelnetUrlSummary">z.B. 192.168.0.1 </string>
     <string name="prefTelnetUrl">IP</string>
-    <string name="prefTelnetPortSummary">Port des Telnet FHEM Servers</string>
+    <string name="prefTelnetPortSummary">z.B. 7072</string>
     <string name="prefTelnetPort">Port</string>
     <string name="prefFHEMWEBUrl">URL</string>
     <string name="prefUsername">Benutzername</string>
     <string name="prefPassword">Passwort</string>
-    <string name="prefFHEMWEBUrlSummary">URL der FHEMWEB Webseite</string>
+    <string name="prefFHEMWEBUrlSummary">z.B.. http://192.168.0.1:8083/fhem</string>
     <string name="prefShowHiddenDevices">Zeige versteckte Geräte</string>
 
     <string name="updateError">Error während Update Vorgang.</string>

@@ -33,10 +33,11 @@ import li.klass.fhem.activities.deviceDetail.USBWXDeviceDetailActivity;
 import li.klass.fhem.adapter.devices.core.DeviceDetailAvailableAdapter;
 import li.klass.fhem.domain.Device;
 import li.klass.fhem.domain.USBWXDevice;
+import li.klass.fhem.service.graph.ChartSeriesDescription;
 
 public class USBWXAdapter extends DeviceDetailAvailableAdapter<USBWXDevice> {
     @Override
-    protected View getOverviewView(LayoutInflater layoutInflater, USBWXDevice device) {
+    protected View getDeviceOverviewView(LayoutInflater layoutInflater, USBWXDevice device) {
 
         View view = layoutInflater.inflate(R.layout.room_detail_usbwx, null);
 
@@ -57,7 +58,7 @@ public class USBWXAdapter extends DeviceDetailAvailableAdapter<USBWXDevice> {
         hideIfNull(view, R.id.graphLayout, device.getFileLog());
 
         createPlotButton(context, view, R.id.temperatureGraph, device.getTemperature(),
-                device, R.string.yAxisTemperature, USBWXDevice.COLUMN_SPEC_TEMPERATURE);
+                device, R.string.yAxisTemperature, new ChartSeriesDescription(USBWXDevice.COLUMN_SPEC_TEMPERATURE, false, true));
 
         createPlotButton(context, view, R.id.humidityGraph, device.getHumidity(),
                 device, R.string.yAxisHumidity, USBWXDevice.COLUMN_SPEC_HUMIDITY);

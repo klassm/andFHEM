@@ -62,7 +62,6 @@ import static li.klass.fhem.constants.BundleExtraKeys.*;
  * Shows a chart.
  */
 public class ChartingActivity extends Activity implements Updateable {
-
     private static final int OPTION_CHANGE_DATA = 1;
     public static final int REQUEST_TIME_CHANGE = 1;
 
@@ -226,24 +225,27 @@ public class ChartingActivity extends Activity implements Updateable {
                 return ((Boolean) seriesDescription.isShowDiscreteValues()).compareTo(otherSeriesDescription.isShowDiscreteValues());
             }
         });
-        
+
         Date xMin = new Date();
         Date xMax = null;
 
         double yMin = 1000;
         double yMax = -1000;
 
-        for (ChartSeriesDescription series : graphSeries) {
+        Map<Integer, ChartSeriesDescription> regressionSeriesMapping = new HashMap<Integer, ChartSeriesDescription>();
 
+        for (ChartSeriesDescription series : graphSeries) {
             String dataSetName = getResources().getString(series.getColumnSpecification());
 
-            TimeSeries seriesName = new TimeSeries(dataSetName);
             List<GraphEntry> data = graphData.get(series);
+
             if (series.isShowDiscreteValues() && data.size() > 0) {
                 data = addDiscreteValueEntriesForSeries(data);
                 data.get(0).setDate(xMin);
                 data.get(data.size() - 1).setDate(xMax);
             }
+
+            TimeSeries seriesName = new TimeSeries(dataSetName);
 
             for (GraphEntry graphEntry : data) {
                 Date date = graphEntry.getDate();
@@ -259,19 +261,31 @@ public class ChartingActivity extends Activity implements Updateable {
             }
 
             dataSet.addSeries(seriesName);
+
+            if (series.isShowRegression()) {
+                TimeSeries regressionSeries = new TimeSeries(getResources().getString(R.string.regression) + " " + dataSetName);
+                createRegressionForSeries(regressionSeries, data);
+                dataSet.addSeries(regressionSeries);
+                regressionSeriesMapping.put(dataSet.getSeriesCount() - 1, series);
+            }
         }
 
         if (xMax == null) xMax = new Date();
 
         int[] availableColors = new int[]{Color.RED, Color.GREEN, Color.BLUE, Color.CYAN, Color.GRAY};
 
-        XYMultipleSeriesRenderer renderer = buildRenderer(graphData.size(), PointStyle.CIRCLE);
-        int length = renderer.getSeriesRendererCount();
-        for (int i = 0; i < length; i++) {
+        XYMultipleSeriesRenderer renderer = buildRenderer(dataSet.getSeriesCount(), PointStyle.CIRCLE);
+        for (int i = 0; i < renderer.getSeriesRendererCount(); i++) {
             XYSeriesRenderer seriesRenderer = (XYSeriesRenderer) renderer.getSeriesRendererAt(i);
             seriesRenderer.setFillPoints(false);
             seriesRenderer.setColor(availableColors[i]);
             seriesRenderer.setPointStyle(PointStyle.POINT);
+
+            if (regressionSeriesMapping.containsKey(i)) {
+                seriesRenderer.setLineWidth(1);
+            } else {
+                seriesRenderer.setLineWidth(2);
+            }
         }
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -279,7 +293,7 @@ public class ChartingActivity extends Activity implements Updateable {
                 dateFormat.format(startDate.getTime()) + " - " + dateFormat.format(endDate.getTime());
         String xTitle = getResources().getString(R.string.time);
 
-        setChartSettings(renderer, title, xTitle, yTitle, xMin.getTime(), xMax.getTime(), yMin - 5, yMax + 5,
+        setChartSettings(renderer, title, xTitle, yTitle, yMin - 5, yMax + 5,
                 Color.LTGRAY, Color.LTGRAY);
         renderer.setShowGrid(true);
         renderer.setXLabelsAlign(Paint.Align.CENTER);
@@ -290,8 +304,8 @@ public class ChartingActivity extends Activity implements Updateable {
         GraphicalView timeChartView = ChartFactory.getTimeChartView(this, dataSet, renderer, "MM-dd HH:mm");
         setContentView(timeChartView);
     }
-    
-    protected List<GraphEntry> addDiscreteValueEntriesForSeries(List<GraphEntry> entries) {
+
+    private List<GraphEntry> addDiscreteValueEntriesForSeries(List<GraphEntry> entries) {
         float previousValue = -1;
         List<GraphEntry> result = new ArrayList<GraphEntry>();
 
@@ -302,20 +316,50 @@ public class ChartingActivity extends Activity implements Updateable {
 
             result.add(new GraphEntry(new Date(entry.getDate().getTime() - 1000), previousValue));
             result.add(entry);
+            result.add(new GraphEntry(new Date(entry.getDate().getTime() + 1000), entry.getValue()));
             previousValue = entry.getValue();
         }
 
         return result;
     }
 
+    private void createRegressionForSeries(TimeSeries resultSeries, List<GraphEntry> entries) {
+        float xSum = 0;
+        float ySum = 0;
+        for (GraphEntry entry : entries) {
+            xSum += entry.getDate().getTime();
+            ySum += entry.getValue();
+        }
 
-    protected XYMultipleSeriesRenderer buildRenderer(int numberOfSeries, PointStyle pointStyle) {
+        float xAvg = xSum / entries.size();
+        float yAvg = ySum / entries.size();
+
+        float b1Numerator = 0;
+        float b1Denominator = 0;
+
+        for (GraphEntry entry : entries) {
+            b1Numerator += (entry.getValue() - yAvg) * (entry.getDate().getTime() - xAvg);
+            b1Denominator += Math.pow(entry.getDate().getTime() - xAvg, 2);
+        }
+
+        float b1 = b1Numerator / b1Denominator;
+        float b0 = yAvg - b1 * xAvg;
+
+
+        for (GraphEntry entry : entries) {
+            float y = b0 + b1 * entry.getDate().getTime();
+            resultSeries.add(entry.getDate(), y);
+        }
+    }
+
+
+    private XYMultipleSeriesRenderer buildRenderer(int numberOfSeries, PointStyle pointStyle) {
         XYMultipleSeriesRenderer renderer = new XYMultipleSeriesRenderer();
         setRenderer(renderer, numberOfSeries, pointStyle);
         return renderer;
     }
 
-    protected void setRenderer(XYMultipleSeriesRenderer renderer, int numberOfSeries, PointStyle pointStyle) {
+    private void setRenderer(XYMultipleSeriesRenderer renderer, int numberOfSeries, PointStyle pointStyle) {
         renderer.setAxisTitleTextSize(16);
         renderer.setChartTitleTextSize(20);
         renderer.setLabelsTextSize(15);
@@ -329,14 +373,12 @@ public class ChartingActivity extends Activity implements Updateable {
         }
     }
 
-    protected void setChartSettings(XYMultipleSeriesRenderer renderer, String title, String xTitle,
-                                    String yTitle, double xMin, double xMax, double yMin, double yMax, int axesColor,
-                                    int labelsColor) {
+    private void setChartSettings(XYMultipleSeriesRenderer renderer, String title, String xTitle,
+                                  String yTitle, double yMin, double yMax, int axesColor,
+                                  int labelsColor) {
         renderer.setChartTitle(title);
         renderer.setXTitle(xTitle);
         renderer.setYTitle(yTitle);
-        renderer.setXAxisMin(xMin);
-        renderer.setXAxisMax(xMax);
         renderer.setYAxisMin(yMin);
         renderer.setYAxisMax(yMax);
         renderer.setAxesColor(axesColor);

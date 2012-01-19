@@ -31,6 +31,7 @@ import android.os.Parcelable;
 public class ChartSeriesDescription implements Parcelable {
     private int columnSpecification;
     private boolean showDiscreteValues;
+    private boolean showRegression = false;
 
     public static final Creator<ChartSeriesDescription> CREATOR = new Creator<ChartSeriesDescription>() {
 
@@ -46,6 +47,12 @@ public class ChartSeriesDescription implements Parcelable {
         }
     };
 
+    public ChartSeriesDescription(int columnSpecification, boolean showDiscreteValues, boolean showRegression) {
+        this.columnSpecification = columnSpecification;
+        this.showDiscreteValues = showDiscreteValues;
+        this.showRegression = showRegression;
+    }
+
     public ChartSeriesDescription(int columnSpecification, boolean showDiscreteValues) {
         this.columnSpecification = columnSpecification;
         this.showDiscreteValues = showDiscreteValues;
@@ -54,6 +61,7 @@ public class ChartSeriesDescription implements Parcelable {
     private ChartSeriesDescription(Bundle bundle) {
         this.columnSpecification = bundle.getInt("COLUMN_SPECIFICATION");
         this.showDiscreteValues = bundle.getBoolean("SHOW_DISCRETE_VALUES");
+        this.showRegression = bundle.getBoolean("SHOW_REGRESSION");
     }
 
     public int getColumnSpecification() {
@@ -90,7 +98,12 @@ public class ChartSeriesDescription implements Parcelable {
         Bundle bundle = new Bundle();
         bundle.putInt("COLUMN_SPECIFICATION", columnSpecification);
         bundle.putBoolean("SHOW_DISCRETE_VALUES", showDiscreteValues);
+        bundle.putBoolean("SHOW_REGRESSION", showRegression);
         parcel.writeBundle(bundle);
+    }
+
+    public boolean isShowRegression() {
+        return showRegression;
     }
 
     public static ChartSeriesDescription[] toArray(Parcelable[] parcelables) {

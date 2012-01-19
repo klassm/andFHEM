@@ -103,11 +103,13 @@ public class PreferencesActivity extends PreferenceActivity {
         EditTextPreference usernamePreference = new EditTextPreference(this);
         usernamePreference.setTitle(R.string.prefUsername);
         usernamePreference.setKey(FHEMWEB_USERNAME);
+        usernamePreference.setSummary(R.string.optional);
         getDataOriginCategory().addPreference(usernamePreference);
 
         EditTextPreference passwordPreference = new EditTextPreference(this);
         passwordPreference.setTitle(R.string.prefPassword);
         passwordPreference.setKey(FHEMWEB_PASSWORD);
+        passwordPreference.setSummary(R.string.optional);
         passwordPreference.getEditText().setTransformationMethod(PasswordTransformationMethod.getInstance());
         getDataOriginCategory().addPreference(passwordPreference);
     }

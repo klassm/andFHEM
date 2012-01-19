@@ -33,10 +33,11 @@ import li.klass.fhem.activities.deviceDetail.HMSDeviceDetailActivity;
 import li.klass.fhem.adapter.devices.core.DeviceDetailAvailableAdapter;
 import li.klass.fhem.domain.Device;
 import li.klass.fhem.domain.HMSDevice;
+import li.klass.fhem.service.graph.ChartSeriesDescription;
 
 public class HMSAdapter extends DeviceDetailAvailableAdapter<HMSDevice> {
     @Override
-    public View getOverviewView(LayoutInflater layoutInflater, HMSDevice device) {
+    public View getDeviceOverviewView(LayoutInflater layoutInflater, HMSDevice device) {
         View view = layoutInflater.inflate(R.layout.room_detail_hms, null);
 
         setTextView(view, R.id.deviceName, device.getAliasOrName());
@@ -54,7 +55,7 @@ public class HMSAdapter extends DeviceDetailAvailableAdapter<HMSDevice> {
         setTextViewOrHideTableRow(view, R.id.tableRowBattery, R.id.battery, device.getBattery());
 
         createPlotButton(context, view, R.id.temperatureGraph, device.getTemperature(),
-                device, R.string.yAxisTemperature, HMSDevice.COLUMN_SPEC_TEMPERATURE);
+                device, R.string.yAxisTemperature, new ChartSeriesDescription(HMSDevice.COLUMN_SPEC_TEMPERATURE, false, true));
 
         createPlotButton(context, view, R.id.humidityGraph, device.getHumidity(),
                 device, R.string.yAxisHumidity, HMSDevice.COLUMN_SPEC_HUMIDITY);

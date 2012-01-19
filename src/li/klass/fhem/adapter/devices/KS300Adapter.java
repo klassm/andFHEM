@@ -33,11 +33,12 @@ import li.klass.fhem.activities.deviceDetail.KS300DeviceDetailActivity;
 import li.klass.fhem.adapter.devices.core.DeviceDetailAvailableAdapter;
 import li.klass.fhem.domain.Device;
 import li.klass.fhem.domain.KS300Device;
+import li.klass.fhem.service.graph.ChartSeriesDescription;
 
 public class KS300Adapter extends DeviceDetailAvailableAdapter<KS300Device> {
 
     @Override
-    public View getOverviewView(LayoutInflater layoutInflater, KS300Device device) {
+    public View getDeviceOverviewView(LayoutInflater layoutInflater, KS300Device device) {
         View view = layoutInflater.inflate(R.layout.room_detail_ks300, null);
 
         setTextView(view, R.id.deviceName, device.getAliasOrName());
@@ -61,7 +62,7 @@ public class KS300Adapter extends DeviceDetailAvailableAdapter<KS300Device> {
         setTextViewOrHideTableRow(view, R.id.tableRowAvgMonth, R.id.avgMonth, device.getAverageMonth());
 
         createPlotButton(context, view, R.id.temperatureGraph, device.getTemperature(),
-                device, R.string.yAxisTemperature, KS300Device.COLUMN_SPEC_TEMPERATURE);
+                device, R.string.yAxisTemperature, new ChartSeriesDescription(KS300Device.COLUMN_SPEC_TEMPERATURE, false, true));
 
         createPlotButton(context, view, R.id.humidityGraph, device.getHumidity(),
                 device, R.string.yAxisHumidity, KS300Device.COLUMN_SPEC_HUMIDITY);

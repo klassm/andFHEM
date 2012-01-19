@@ -81,7 +81,7 @@ public class CULHMAdapter extends DeviceDetailAvailableAdapter<CULHMDevice> {
     }
 
     @Override
-    protected View getOverviewView(LayoutInflater layoutInflater, CULHMDevice device) {
+    protected View getDeviceOverviewView(LayoutInflater layoutInflater, CULHMDevice device) {
         View view = null;
         switch (device.getSubType()) {
             case DIMMER:

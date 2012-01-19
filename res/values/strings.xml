@@ -70,6 +70,8 @@
     <string name="input">Input</string>
     <string name="mode">Mode</string>
     <string name="definition">Definition</string>
+    <string name="optional">optional</string>
+    <string name="regression">regression</string>
 
     <string name="switchDevice">Switch</string>
     <string name="preferences">Preferences</string>
@@ -100,12 +102,12 @@
     <string name="prefDataSourceCategory">Data Source</string>
     <string name="prefDataSource">Data Source</string>
     <string name="prefOtherPreferencesCategory">Other Preferences</string>
-    <string name="prefTelnetUrlSummary">IP of Telnet FHEM </string>
+    <string name="prefTelnetUrlSummary">i.e. 192.168.0.1 </string>
     <string name="prefTelnetUrl">IP</string>
-    <string name="prefTelnetPortSummary">Port of Telnet FHEM</string>
+    <string name="prefTelnetPortSummary">i.e. 7072</string>
     <string name="prefTelnetPort">Port</string>
     <string name="prefFHEMWEBUrl">URL</string>
-    <string name="prefFHEMWEBUrlSummary">URL of FHEMWEB interface</string>
+    <string name="prefFHEMWEBUrlSummary">i.e. http://192.168.0.1:8083/fhem</string>
     <string name="prefUsername">Username</string>
     <string name="prefPassword">Password</string>
     <string name="prefShowHiddenDevices">Show hidden devices</string>

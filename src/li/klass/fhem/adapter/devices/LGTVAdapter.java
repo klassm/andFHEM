@@ -38,7 +38,7 @@ public class LGTVAdapter extends DeviceListOnlyAdapter<LGTVDevice> {
     }
 
     @Override
-    protected View getOverviewView(LayoutInflater layoutInflater, LGTVDevice device) {
+    protected View getDeviceOverviewView(LayoutInflater layoutInflater, LGTVDevice device) {
         View view = layoutInflater.inflate(R.layout.room_detail_lgtv, null);
 
         setTextView(view, R.id.deviceName, device.getAliasOrName());

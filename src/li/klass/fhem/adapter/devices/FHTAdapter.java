@@ -73,7 +73,7 @@ public class FHTAdapter extends DeviceDetailAvailableAdapter<FHTDevice> {
     }
     
     @Override
-    public View getOverviewView(LayoutInflater layoutInflater, FHTDevice device) {
+    public View getDeviceOverviewView(LayoutInflater layoutInflater, FHTDevice device) {
         View view = layoutInflater.inflate(R.layout.room_detail_fht, null);
 
         setTextView(view, R.id.deviceName, device.getAliasOrName());
@@ -154,7 +154,7 @@ public class FHTAdapter extends DeviceDetailAvailableAdapter<FHTDevice> {
 
         createPlotButton(context, view, R.id.temperatureGraph, device.getTemperature(),
                 device, R.string.yAxisTemperature, new ChartSeriesDescription(COLUMN_SPEC_DESIRED_TEMPERATURE, true),
-                new ChartSeriesDescription(COLUMN_SPEC_TEMPERATURE, false));
+                new ChartSeriesDescription(COLUMN_SPEC_TEMPERATURE, false, true));
 
         createPlotButton(context, view, R.id.actuatorGraph, device.getActuator(),
                 device, R.string.yAxisActuator, COLUMN_SPEC_ACTUATOR);
