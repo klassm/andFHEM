@@ -48,7 +48,7 @@ public class RoomDetailAdapter extends NestedListViewAdapter<DeviceType, Device<
 
     public RoomDetailAdapter(Context context, RoomDeviceList roomDeviceList) {
         super(context);
-        this.deviceTypeOrderList = Arrays.asList(KS300, FHT, HMS, OWTEMP, CUL_FHTTK, RFXX10REC, OREGON, CUL_EM, OWCOUNT,
+        this.deviceTypeOrderList = Arrays.asList(KS300, FHT, HMS, WOL, OWTEMP, CUL_FHTTK, RFXX10REC, OREGON, CUL_EM, OWCOUNT,
                 LGTV, RFXCOM, OWFS, USBWX, CUL_WS, FS20, SIS_PMS, CUL_HM);
 
         if (roomDeviceList != null) {

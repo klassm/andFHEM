@@ -110,6 +110,8 @@ public class GraphService {
      * @return found {@link GraphEntry} objects.
      */
     private List<GraphEntry> findGraphEntries(String content) {
+        content += "0000"; //dummy for easy regexp matching
+
         Pattern pattern = Pattern.compile("([\\d]{4}-[\\d]{2}-[\\d]{2}_[\\d]{2}:[\\d]{2}:[\\d]{2}) ([-]?[\\d\\.]+(?=[\\d]{4}))");
         Matcher matcher = pattern.matcher(content);
 

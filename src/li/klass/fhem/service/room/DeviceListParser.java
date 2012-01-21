@@ -157,11 +157,15 @@ public class DeviceListParser {
 
         T device = deviceClass.newInstance();
         device.loadXML(node);
-        RoomDeviceList roomDeviceList = getOrCreateRoomDeviceList(device.getRoom(), roomDeviceListMap);
-        RoomDeviceList allRoomDeviceList = getOrCreateRoomDeviceList(RoomDeviceList.ALL_DEVICES_ROOM, roomDeviceListMap);
-
+        String roomConcatenated = device.getRoom();
+        String[] roomParts = roomConcatenated.split(",");
         if (device.isSupported()) {
-            roomDeviceList.addDevice(device);
+            for (String room : roomParts) {
+                RoomDeviceList roomDeviceList = getOrCreateRoomDeviceList(room, roomDeviceListMap);
+                roomDeviceList.addDevice(device);
+            }
+
+            RoomDeviceList allRoomDeviceList = getOrCreateRoomDeviceList(RoomDeviceList.ALL_DEVICES_ROOM, roomDeviceListMap);
             allRoomDeviceList.addDevice(device);
         }
     }

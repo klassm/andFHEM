@@ -251,8 +251,10 @@ public class ChartingActivity extends Activity implements Updateable {
                 Date date = graphEntry.getDate();
                 float value = graphEntry.getValue();
 
-                if (date != null && (xMin.after(date))) xMin = date;
-                if (date != null && (xMax == null || xMax.before(date))) xMax = date;
+                if (date == null) continue;
+
+                if ((xMin.after(date))) xMin = date;
+                if ((xMax == null || xMax.before(date))) xMax = date;
 
                 if (yMin > value) yMin = value;
                 if (yMax < value) yMax = value;
@@ -318,6 +320,10 @@ public class ChartingActivity extends Activity implements Updateable {
             result.add(entry);
             result.add(new GraphEntry(new Date(entry.getDate().getTime() + 1000), entry.getValue()));
             previousValue = entry.getValue();
+        }
+
+        for (GraphEntry graphEntry : result) {
+            Log.e(ChartingActivity.class.getName(), graphEntry.toString());
         }
 
         return result;

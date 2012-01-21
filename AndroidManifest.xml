@@ -25,8 +25,8 @@
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="li.klass.fhem"
-          android:versionCode="28"
-          android:versionName="1.2.7">
+          android:versionCode="29"
+          android:versionName="1.2.8">
 
     <application android:label="@string/app_name" android:icon="@drawable/icon" android:name="AndFHEMApplication"
                  android:theme="@android:style/Theme.Light.NoTitleBar">
@@ -52,6 +52,7 @@
         <activity android:name=".activities.deviceDetail.OregonDeviceDetailActivity" android:theme="@android:style/Theme.Light" />
         <activity android:name=".activities.deviceDetail.USBWXDeviceDetailActivity" android:theme="@android:style/Theme.Light" />
         <activity android:name=".activities.deviceDetail.CULHMDeviceDetailActivity" android:theme="@android:style/Theme.Light" />
+        <activity android:name=".activities.deviceDetail.WOLDeviceDetailActivity" android:theme="@android:style/Theme.Light" />
 
         <activity android:name=".activities.fhtControl.FHTTimetableControlListActivity" android:theme="@android:style/Theme.Light" />
 
@@ -106,6 +107,8 @@
                 <action android:name="li.klass.fhem.constants.Actions.DEVICE_DELETE" />
                 <action android:name="li.klass.fhem.constants.Actions.DEVICE_MOVE_ROOM" />
                 <action android:name="li.klass.fhem.constants.Actions.DEVICE_SET_ALIAS" />
+                <action android:name="li.klass.fhem.constants.Actions.DEVICE_WAKE" />
+                <action android:name="li.klass.fhem.constants.Actions.DEVICE_REFRESH_STATE" />
             </intent-filter>
         </service>
     </application>

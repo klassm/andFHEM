@@ -58,6 +58,8 @@ public class Actions {
     public static final String DEVICE_DELETE = prefix + "DEVICE_DELETE";
     public static final String DEVICE_MOVE_ROOM = prefix + "DEVICE_MOVE_ROOM";
     public static final String DEVICE_SET_ALIAS = prefix + "DEVICE_SET_ALIAS";
+    public static final String DEVICE_WAKE = prefix + "DEVICE_WAKE";
+    public static final String DEVICE_REFRESH_STATE = prefix + "DEVICE_REFRESH_STATE";
 
 
     public static final String DO_UPDATE = prefix + "DO_UPDATE";

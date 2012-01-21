@@ -29,7 +29,9 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.exception.HostConnectionException;
+import li.klass.fhem.exception.TimeoutException;
 import li.klass.fhem.util.CloseableUtil;
+import org.apache.http.conn.ConnectTimeoutException;
 import thor.net.DefaultTelnetTerminalHandler;
 import thor.net.TelnetURLConnection;
 
@@ -90,7 +92,7 @@ public class TelnetConnection implements FHEMConnection {
                 ((TelnetURLConnection)urlConnection).
                         setTelnetTerminalHandler(new DefaultTelnetTerminalHandler());
             }
-            urlConnection.setConnectTimeout(3000);
+            urlConnection.setConnectTimeout(4000);
 
             inputStream = urlConnection.getInputStream();
 
@@ -123,6 +125,8 @@ public class TelnetConnection implements FHEMConnection {
             }
 
             return result;
+        } catch (ConnectTimeoutException e) {
+            throw new TimeoutException(e);
         } catch (Exception e) {
             Log.e(TelnetConnection.class.getName(), "error occurred", e);
             throw new HostConnectionException(e);

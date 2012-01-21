@@ -29,11 +29,13 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.exception.HostConnectionException;
+import li.klass.fhem.exception.TimeoutException;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.conn.ConnectTimeoutException;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
@@ -57,7 +59,7 @@ public class FHEMWebConnection implements FHEMConnection {
     private FHEMWebConnection() {
         HttpParams httpParams = new BasicHttpParams();
         HttpConnectionParams.setConnectionTimeout(httpParams, 3000);
-        HttpConnectionParams.setSoTimeout(httpParams, 10000);
+        HttpConnectionParams.setSoTimeout(httpParams, 20000);
         client = new DefaultHttpClient(httpParams);
     }
 
@@ -99,6 +101,8 @@ public class FHEMWebConnection implements FHEMConnection {
 
             HttpResponse response = client.execute(request);
             content = IOUtils.toString(response.getEntity().getContent());
+        } catch (ConnectTimeoutException e) {
+            throw new TimeoutException(e);
         } catch (Exception e) {
             throw new HostConnectionException(e);
         }
@@ -110,7 +114,7 @@ public class FHEMWebConnection implements FHEMConnection {
         int preEnd = content.indexOf(end);
 
         if (preStart == -1 || preEnd == -1) {
-            throw new HostConnectionException();
+            return "";
         }
 
         content = content.substring(preStart + start.length(), preEnd);

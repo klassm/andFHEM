@@ -25,7 +25,6 @@
 package li.klass.fhem.service.room;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import li.klass.fhem.AndFHEMApplication;
@@ -36,6 +35,8 @@ import li.klass.fhem.domain.Device;
 import li.klass.fhem.domain.RoomDeviceList;
 import li.klass.fhem.exception.DeviceListParseException;
 import li.klass.fhem.exception.HostConnectionException;
+import li.klass.fhem.exception.TimeoutException;
+import li.klass.fhem.service.AbstractService;
 import li.klass.fhem.service.CommandExecutionService;
 
 import java.io.ObjectInputStream;
@@ -43,7 +44,7 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Map;
 
-public class RoomListService {
+public class RoomListService extends AbstractService {
     public static final RoomListService INSTANCE = new RoomListService();
 
     /**
@@ -146,6 +147,12 @@ public class RoomListService {
             sendBroadcastWithAction(Actions.SHOW_UPDATING_DIALOG, null);
             try {
                 deviceListMap = getRemoteRoomDeviceListMap();
+            } catch (TimeoutException e) {
+                Bundle bundle = new Bundle();
+                bundle.putInt(BundleExtraKeys.TOAST_STRING_ID, R.string.timeoutError);
+                sendBroadcastWithAction(Actions.SHOW_TOAST, bundle);
+
+                Log.e(RoomListService.class.getName(), "error occurred", e);
             }  catch (HostConnectionException e) {
                 Bundle bundle = new Bundle();
                 bundle.putInt(BundleExtraKeys.TOAST_STRING_ID, R.string.updateErrorHostConnection);
@@ -200,18 +207,5 @@ public class RoomListService {
             Log.d(CommandExecutionService.class.getName(), "error occurred while de-serializing data", e);
             return null;
         }
-    }
-
-    /**
-     * Sends a broadcast message containing a specified action. Context is the application context.
-     * @param action action to use for sending the broadcast intent.
-     * @param bundle parameters to set
-     */
-    private void sendBroadcastWithAction(String action, Bundle bundle) {
-        if (bundle == null) bundle = new Bundle();
-
-        Intent broadcastIntent = new Intent(action);
-        broadcastIntent.putExtras(bundle);
-        AndFHEMApplication.getContext().sendBroadcast(broadcastIntent);
     }
 }

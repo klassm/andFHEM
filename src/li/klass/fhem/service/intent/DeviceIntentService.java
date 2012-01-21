@@ -98,6 +98,10 @@ public class DeviceIntentService extends ConvenientIntentService {
         } else if (action.equals(DEVICE_SET_ALIAS)) {
             String newAlias = intent.getStringExtra(BundleExtraKeys.DEVICE_NEW_ALIAS);
             DeviceService.INSTANCE.setAlias(device, newAlias);
+        } else if (action.equals(DEVICE_WAKE)) {
+            WOLService.INSTANCE.wake((WOLDevice) device);
+        } else if (action.equals(DEVICE_REFRESH_STATE)) {
+            WOLService.INSTANCE.requestRefreshState((WOLDevice) device);
         }
         return SUCCESS;
     }

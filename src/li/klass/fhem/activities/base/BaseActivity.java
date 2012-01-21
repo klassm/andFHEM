@@ -88,27 +88,32 @@ public abstract class BaseActivity<ADAPTER> extends Activity implements Updateab
 
         broadcastReceiver = new BroadcastReceiver() {
             @Override
-            public void onReceive(Context context, Intent intent) {
-                String action = intent.getAction();
+            public void onReceive(Context context, final Intent intent) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        String action = intent.getAction();
 
-                try {
-                    if (action.equals(SHOW_UPDATING_DIALOG)) {
-                        showDialogSafely(DIALOG_UPDATING);
-                    } else if (action.equals(DISMISS_UPDATING_DIALOG)) {
-                        dismissDialog(DIALOG_UPDATING);
-                    } else if (action.equals(SHOW_EXECUTING_DIALOG)) {
-                        showDialogSafely(DIALOG_EXECUTING);
-                    } else if (action.equals(DISMISS_EXECUTING_DIALOG)) {
-                        dismissDialog(DIALOG_EXECUTING);
-                    } else if (action.equals(DO_UPDATE)) {
-                        boolean doUpdate = intent.getBooleanExtra(BundleExtraKeys.DO_REFRESH, false);
-                        update(doUpdate);
-                    } else if (action.equals(SHOW_TOAST)) {
-                        Toast.makeText(BaseActivity.this, intent.getIntExtra(BundleExtraKeys.TOAST_STRING_ID, 0), Toast.LENGTH_SHORT).show();
+                        try {
+                            if (action.equals(SHOW_UPDATING_DIALOG)) {
+                                showDialogSafely(DIALOG_UPDATING);
+                            } else if (action.equals(DISMISS_UPDATING_DIALOG)) {
+                                dismissDialog(DIALOG_UPDATING);
+                            } else if (action.equals(SHOW_EXECUTING_DIALOG)) {
+                                showDialogSafely(DIALOG_EXECUTING);
+                            } else if (action.equals(DISMISS_EXECUTING_DIALOG)) {
+                                dismissDialog(DIALOG_EXECUTING);
+                            } else if (action.equals(DO_UPDATE)) {
+                                boolean doUpdate = intent.getBooleanExtra(BundleExtraKeys.DO_REFRESH, false);
+                                update(doUpdate);
+                            } else if (action.equals(SHOW_TOAST)) {
+                                Toast.makeText(BaseActivity.this, intent.getIntExtra(BundleExtraKeys.TOAST_STRING_ID, 0), Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (Exception e) {
+                            Log.e(BaseActivity.class.getName(), "error occurred", e);
+                        }
                     }
-                } catch (Exception e) {
-                    Log.e(BaseActivity.class.getName(), "error occurred", e);
-                }
+                });
             }
         };
 

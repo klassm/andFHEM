@@ -71,6 +71,9 @@
     <string name="definition">Definition</string>
     <string name="optional">optional</string>
     <string name="regression">Regression</string>
+    <string name="mac">MAC Adresse</string>
+    <string name="ip">IP Adresse</string>
+    <string name="wake">Wecken</string>
 
     <string name="switchDevice">Schalte</string>
     <string name="preferences">Einstellungen</string>
@@ -113,6 +116,7 @@
     <string name="prefShowHiddenDevices">Zeige versteckte Geräte</string>
 
     <string name="updateError">Error während Update Vorgang.</string>
+    <string name="timeoutError">Zeitüberschreitung der Anforderung.</string>
     <string name="executeError">Error während Kommando Ausführung.</string>
     <string name="updateErrorHostConnection">Keine Verbindung zum FHEM Server.</string>
     <string name="updateErrorDeviceListParse">Konnte xml Geräte Liste nicht lesen.</string>

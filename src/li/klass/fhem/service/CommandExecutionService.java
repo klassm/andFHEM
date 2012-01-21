@@ -26,10 +26,14 @@ package li.klass.fhem.service;
 
 import android.content.Context;
 import android.content.Intent;
-import android.widget.Toast;
+import android.os.Bundle;
+import android.util.Log;
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
+import li.klass.fhem.constants.Actions;
+import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.exception.HostConnectionException;
+import li.klass.fhem.exception.TimeoutException;
 import li.klass.fhem.fhem.DataConnectionSwitch;
 
 import static li.klass.fhem.constants.Actions.DISMISS_EXECUTING_DIALOG;
@@ -38,7 +42,7 @@ import static li.klass.fhem.constants.Actions.SHOW_EXECUTING_DIALOG;
 /**
  * Service serving as central interface to FHEM.
  */
-public class CommandExecutionService {
+public class CommandExecutionService extends AbstractService {
 
     public static final CommandExecutionService INSTANCE = new CommandExecutionService();
 
@@ -64,8 +68,18 @@ public class CommandExecutionService {
 
         try {
             executeUnsafeCommand(command);
+        } catch (TimeoutException e) {
+            Bundle bundle = new Bundle();
+            bundle.putInt(BundleExtraKeys.TOAST_STRING_ID, R.string.timeoutError);
+            sendBroadcastWithAction(Actions.SHOW_TOAST, bundle);
+            
+            Log.e(CommandExecutionService.class.getName(), "error occurred while executing command " + command, e);
         } catch (HostConnectionException e) {
-            Toast.makeText(context, R.string.updateErrorHostConnection, Toast.LENGTH_LONG).show();
+            Bundle bundle = new Bundle();
+            bundle.putInt(BundleExtraKeys.TOAST_STRING_ID, R.string.updateErrorHostConnection);
+            sendBroadcastWithAction(Actions.SHOW_TOAST, bundle);
+
+            Log.e(CommandExecutionService.class.getName(), "error occurred while executing command " + command, e);
         } finally {
             context.sendBroadcast(new Intent(DISMISS_EXECUTING_DIALOG));
         }
