@@ -59,6 +59,11 @@ public class DeviceService {
     public void deleteDevice(final Device device) {
         CommandExecutionService.INSTANCE.executeSafely("delete " + device.getName());
         RoomListService.INSTANCE.getAllRoomsDeviceList(false).removeDevice(device);
+
+        RoomDeviceList deviceListForRoom = RoomListService.INSTANCE.getDeviceListForRoom(device.getRoom(), false);
+        if (deviceListForRoom != null) {
+            deviceListForRoom.removeDevice(device);
+        }
     }
 
     /**
