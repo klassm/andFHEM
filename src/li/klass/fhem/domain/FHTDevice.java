@@ -32,12 +32,11 @@ import li.klass.fhem.util.ValueDescriptionUtil;
 import li.klass.fhem.util.ValueExtractUtil;
 import org.w3c.dom.NamedNodeMap;
 
-import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-public class FHTDevice extends Device<FHTDevice> implements Serializable {
+public class FHTDevice extends Device<FHTDevice> {
     private String actuator;
     private FHTMode mode;
     private double desiredTemp;

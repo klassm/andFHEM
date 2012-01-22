@@ -322,10 +322,6 @@ public class ChartingActivity extends Activity implements Updateable {
             previousValue = entry.getValue();
         }
 
-        for (GraphEntry graphEntry : result) {
-            Log.e(ChartingActivity.class.getName(), graphEntry.toString());
-        }
-
         return result;
     }
 

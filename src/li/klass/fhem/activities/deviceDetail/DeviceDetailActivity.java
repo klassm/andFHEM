@@ -60,7 +60,6 @@ public abstract class DeviceDetailActivity<D extends Device> extends BaseActivit
     @Override
     @SuppressWarnings("unchecked")
     protected DeviceAdapter<D> initializeLayoutAndReturnAdapter() {
-        update(false);
         return adapter;
     }
 

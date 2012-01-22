@@ -71,7 +71,7 @@ public class FHTAdapter extends DeviceDetailAvailableAdapter<FHTDevice> {
         public void onStartTrackingTouch(SeekBar seekBar) {
         }
     }
-    
+
     @Override
     public View getDeviceOverviewView(LayoutInflater layoutInflater, FHTDevice device) {
         View view = layoutInflater.inflate(R.layout.room_detail_fht, null);
@@ -97,44 +97,45 @@ public class FHTAdapter extends DeviceDetailAvailableAdapter<FHTDevice> {
 
         createSeekBar(view, R.id.desiredTemperatureSeek, R.id.tableRowDesiredTemperature, R.id.desiredTemperature, device.getDesiredTemp(),
                 new TemperatureValueSeekBarChangeListener() {
-            @Override
-            public void onSeekBarValueChanged(double newTemperature) {
-                String action = Actions.DEVICE_SET_DESIRED_TEMPERATURE;
-                sendTemperatureIntent(newTemperature, action, device, context);
-            }
-        });
+                    @Override
+                    public void onSeekBarValueChanged(double newTemperature) {
+                        String action = Actions.DEVICE_SET_DESIRED_TEMPERATURE;
+                        sendTemperatureIntent(newTemperature, action, device, context);
+                    }
+                });
 
         createSeekBar(view, R.id.dayTemperatureSeek, R.id.tableRowDayTemp, R.id.dayTemperature, device.getDayTemperature(),
                 new TemperatureValueSeekBarChangeListener() {
-            @Override
-            public void onSeekBarValueChanged(double newTemperature) {
-                String action = Actions.DEVICE_SET_DAY_TEMPERATURE;
-                sendTemperatureIntent(newTemperature, action, device, context);
-            }
-        });
+                    @Override
+                    public void onSeekBarValueChanged(double newTemperature) {
+                        String action = Actions.DEVICE_SET_DAY_TEMPERATURE;
+                        sendTemperatureIntent(newTemperature, action, device, context);
+                    }
+                });
 
         createSeekBar(view, R.id.nightTemperatureSeek, R.id.tableRowNightTemp, R.id.nightTemperature, device.getNightTemperature(),
                 new TemperatureValueSeekBarChangeListener() {
-            @Override
-            public void onSeekBarValueChanged(double newTemperature) {
-                String action = Actions.DEVICE_SET_NIGHT_TEMPERATURE;
-                sendTemperatureIntent(newTemperature, action, device, context);
-            }
-        });
+                    @Override
+                    public void onSeekBarValueChanged(double newTemperature) {
+                        String action = Actions.DEVICE_SET_NIGHT_TEMPERATURE;
+                        sendTemperatureIntent(newTemperature, action, device, context);
+                    }
+                });
 
         createSeekBar(view, R.id.windowOpenTempSeek, R.id.tableRowWindowOpenTemp, R.id.windowOpenTemp, device.getWindowOpenTemp(),
                 new TemperatureValueSeekBarChangeListener() {
-            @Override
-            public void onSeekBarValueChanged(double newTemperature) {
-                String action = Actions.DEVICE_SET_WINDOW_OPEN_TEMPERATURE;
-                sendTemperatureIntent(newTemperature, action, device, context);
-            }
-        });
+                    @Override
+                    public void onSeekBarValueChanged(double newTemperature) {
+                        String action = Actions.DEVICE_SET_WINDOW_OPEN_TEMPERATURE;
+                        sendTemperatureIntent(newTemperature, action, device, context);
+                    }
+                });
 
         Spinner modeSpinner = (Spinner) view.findViewById(R.id.mode);
 
         ArrayAdapter adapter = new ArrayAdapter(context, R.layout.spinnercontent, FHTMode.values());
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
         modeSpinner.setAdapter(adapter);
         modeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -150,7 +151,10 @@ public class FHTAdapter extends DeviceDetailAvailableAdapter<FHTDevice> {
             public void onNothingSelected(AdapterView<?> adapterView) {
             }
         });
-        modeSpinner.setSelection(FHTMode.positionOf(device.getMode()));
+
+        if (device.getMode() != null) {
+            modeSpinner.setSelection(FHTMode.positionOf(device.getMode()));
+        }
 
         createPlotButton(context, view, R.id.temperatureGraph, device.getTemperature(),
                 device, R.string.yAxisTemperature, new ChartSeriesDescription(COLUMN_SPEC_DESIRED_TEMPERATURE, true),

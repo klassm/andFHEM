@@ -24,8 +24,10 @@
 
 package li.klass.fhem.domain.fht;
 
-public enum FHTMode {
-    AUTO, MANUAL, HOLIDAY, HOLIDAY_SHORT;
+import java.io.Serializable;
+
+public enum FHTMode implements Serializable {
+    UNKNOWN, AUTO, MANUAL, HOLIDAY, HOLIDAY_SHORT;
     
     public static int positionOf(FHTMode mode) {
         FHTMode[] values = FHTMode.values();

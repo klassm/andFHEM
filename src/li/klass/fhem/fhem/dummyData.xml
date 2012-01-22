@@ -1371,6 +1371,7 @@ room structexclude webCmd eventMap">
             <INT key="STATE" value="???"/>
             <INT key="TYPE" value="FHT"/>
             <INT key="IODev" value="CUL"/>
+            <ATTR key="mode" value="auto"/>
             <ATTR key="retrycount" value="3"/>
             <ATTR key="room" value="unknown"/>
             <STATE key="sun-from1" value="10:00" measured="2011-12-24 13:21:17"/>

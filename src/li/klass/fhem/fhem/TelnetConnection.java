@@ -76,7 +76,7 @@ public class TelnetConnection implements FHEMConnection {
     }
 
     private String request(String command, String delimiter) {
-        Log.e(TelnetConnection.class.getName(), "executeTask command " + command + " with delimiter " + delimiter);
+        Log.i(TelnetConnection.class.getName(), "executeTask command " + command + " with delimiter " + delimiter);
 
         OutputStream outputStream = null;
         BufferedOutputStream bufferedOutputStream = null;

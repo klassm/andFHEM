@@ -91,7 +91,7 @@ public class FHEMWebConnection implements FHEMConnection {
         try {
             HttpGet request = new HttpGet();
             String urlString = getURL() + "?cmd=" + URLEncoder.encode(command);
-            Log.e(FHEMWebConnection.class.getName(), "accessing URL " + urlString);
+            Log.i(FHEMWebConnection.class.getName(), "accessing URL " + urlString);
             URI uri = new URI(urlString);
 
             client.getCredentialsProvider().setCredentials(new AuthScope(uri.getHost(), uri.getPort()),

@@ -24,6 +24,7 @@
 
 package li.klass.fhem.service.device;
 
+import android.util.Log;
 import li.klass.fhem.domain.FHTDevice;
 import li.klass.fhem.domain.fht.FHTDayControl;
 import li.klass.fhem.domain.fht.FHTMode;
@@ -63,7 +64,10 @@ public class FHTService {
      * @param mode new mode to set.
      */
     public void setMode(FHTDevice device, FHTMode mode) {
-        if (device.getMode() != mode) {
+        if (mode != FHTMode.UNKNOWN && device.getMode() != mode) {
+            Log.e(FHTService.class.getName(), "changing mode for device " + device.getName() +
+                    " from " + device.getMode() + " to " + mode);
+
             String command = "set " + device.getName() + " mode " + mode.name().toLowerCase();
             CommandExecutionService.INSTANCE.executeSafely(command);
             device.setMode(mode);
