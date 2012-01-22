@@ -44,7 +44,8 @@ public class WOLAdapter extends DeviceDetailAvailableAdapter<WOLDevice> {
         View view = layoutInflater.inflate(R.layout.room_detail_wol, null);
 
         setTextView(view, R.id.deviceName, device.getAliasOrName());
-        setTextViewOrHideTableRow(view, R.id.tableRowState, R.id.state, device.getState());
+        int isRunningText = device.isRunning() ? R.string.on : R.string.off;
+        setTextViewOrHideTableRow(view, R.id.tableRowState, R.id.state, isRunningText);
 
         return view;
     }
@@ -56,7 +57,8 @@ public class WOLAdapter extends DeviceDetailAvailableAdapter<WOLDevice> {
 
     @Override
     protected void fillDeviceDetailView(final Context context, View view, final WOLDevice device) {
-        setTextViewOrHideTableRow(view, R.id.tableRowState, R.id.state, device.getState());
+        int isRunningText = device.isRunning() ? R.string.on : R.string.off;
+        setTextViewOrHideTableRow(view, R.id.tableRowState, R.id.state, isRunningText);
         setTextViewOrHideTableRow(view, R.id.tableRowMac, R.id.mac, device.getMac());
         setTextViewOrHideTableRow(view, R.id.tableRowIP, R.id.ip, device.getIp());
 

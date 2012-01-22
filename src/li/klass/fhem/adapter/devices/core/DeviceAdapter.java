@@ -32,6 +32,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TableRow;
 import android.widget.TextView;
+import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.activities.graph.ChartingActivity;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.Device;
@@ -83,6 +84,11 @@ public abstract class DeviceAdapter<D extends Device> {
     protected abstract View getDeviceOverviewView(LayoutInflater layoutInflater, D device);
 
 
+    protected void setTextViewOrHideTableRow(View view, int tableRowId, int textFieldLayoutId, int stringId) {
+        String value = AndFHEMApplication.getContext().getString(stringId);
+        setTextViewOrHideTableRow(view, tableRowId, textFieldLayoutId, value);
+    }
+    
     protected void setTextViewOrHideTableRow(View view, int tableRowId, int textFieldLayoutId, String value) {
         TableRow tableRow = (TableRow) view.findViewById(tableRowId);
 
