@@ -24,7 +24,6 @@
 
 package li.klass.fhem.adapter.devices;
 
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ToggleButton;
 import li.klass.fhem.R;
@@ -35,16 +34,17 @@ import li.klass.fhem.domain.SISPMSDevice;
 public class SISPMSAdapter extends DeviceListOnlyAdapter<SISPMSDevice> {
 
     @Override
-    public View getDeviceOverviewView(LayoutInflater layoutInflater, SISPMSDevice device) {
-        View view = layoutInflater.inflate(R.layout.room_detail_sispms, null);
-
+    public void fillDeviceOverviewView(View view, SISPMSDevice device) {
         setTextView(view, R.id.deviceName, device.getAliasOrName());
 
         ToggleButton switchButton = (ToggleButton) view.findViewById(R.id.switchButton);
         switchButton.setChecked(device.isOn());
         switchButton.setTag(device.getName());
+    }
 
-        return view;
+    @Override
+    public int getOverviewLayout(SISPMSDevice device) {
+        return R.layout.room_detail_sispms;
     }
 
     @Override

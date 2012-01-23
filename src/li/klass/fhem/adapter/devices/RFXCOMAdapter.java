@@ -24,7 +24,6 @@
 
 package li.klass.fhem.adapter.devices;
 
-import android.view.LayoutInflater;
 import android.view.View;
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.DeviceListOnlyAdapter;
@@ -33,17 +32,18 @@ import li.klass.fhem.domain.RFXCOMDevice;
 
 public class RFXCOMAdapter extends DeviceListOnlyAdapter<RFXCOMDevice> {
     @Override
+    public int getOverviewLayout(RFXCOMDevice device) {
+        return R.layout.room_detail_rfxcom;
+    }
+
+    @Override
     public Class<? extends Device> getSupportedDeviceClass() {
         return RFXCOMDevice.class;
     }
 
     @Override
-    protected View getDeviceOverviewView(LayoutInflater layoutInflater, RFXCOMDevice device) {
-        View view = layoutInflater.inflate(R.layout.room_detail_rfxcom, null);
-        
+    protected void fillDeviceOverviewView(View view, RFXCOMDevice device) {
         setTextView(view, R.id.deviceName, device.getAliasOrName());
         setTextViewOrHideTableRow(view, R.id.tableRowState, R.id.state, device.getState());
-
-        return view;
     }
 }

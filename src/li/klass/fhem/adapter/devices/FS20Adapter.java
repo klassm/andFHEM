@@ -32,12 +32,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TableRow;
 import android.widget.ToggleButton;
+import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.activities.deviceDetail.FS20DeviceDetailActivity;
 import li.klass.fhem.adapter.devices.core.DeviceDetailAvailableAdapter;
@@ -87,16 +87,27 @@ public class FS20Adapter extends DeviceDetailAvailableAdapter<FS20Device> {
     }
 
     @Override
-    public View getDeviceOverviewView(LayoutInflater layoutInflater, FS20Device device) {
+    public int getOverviewLayout(FS20Device device) {
         if (device.isDimDevice()) {
-            return getFS20SeekView(layoutInflater, device);
+            return R.layout.room_detail_fs20_seek;
         } else {
-            return getFS20ToggleView(layoutInflater, device);
+            return R.layout.room_detail_fs20;
+        }
+    }
+
+    @Override
+    public void fillDeviceOverviewView(View view, FS20Device device) {
+        if (device.isDimDevice()) {
+            fillFS20SeekView(view, device);
+        } else {
+            fillFS20ToggleView(view, device);
         }
     }
 
     @Override
     protected void fillDeviceDetailView(final Context context, View view, final FS20Device device) {
+
+
         setTextViewOrHideTableRow(view, R.id.tableRowState, R.id.state, device.getState());
 
         TableRow seekBarRow = (TableRow) view.findViewById(R.id.switchSeekBarRow);
@@ -123,6 +134,8 @@ public class FS20Adapter extends DeviceDetailAvailableAdapter<FS20Device> {
         switchSetOptions.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                final Context context = AndFHEMApplication.getContext();
+
                 AlertDialog.Builder contextMenu = new AlertDialog.Builder(context);
                 contextMenu.setTitle(context.getResources().getString(R.string.switchDevice));
                 final List<String> setOptions = device.getSetOptions();
@@ -142,7 +155,7 @@ public class FS20Adapter extends DeviceDetailAvailableAdapter<FS20Device> {
                             }
                         });
                         context.startService(intent);
-                        
+
                         dialog.dismiss();
                     }
                 });
@@ -158,21 +171,15 @@ public class FS20Adapter extends DeviceDetailAvailableAdapter<FS20Device> {
         return intent;
     }
 
-    private View getFS20ToggleView(LayoutInflater layoutInflater, FS20Device child) {
-        View view = layoutInflater.inflate(R.layout.room_detail_fs20, null);
-
+    private void fillFS20ToggleView(View view, FS20Device child) {
         setTextView(view, R.id.deviceName, child.getAliasOrName());
 
         ToggleButton switchButton = (ToggleButton) view.findViewById(R.id.switchButton);
         switchButton.setChecked(child.isOn());
         switchButton.setTag(child.getName());
-
-        return view;
     }
 
-    private View getFS20SeekView(LayoutInflater layoutInflater, final FS20Device child) {
-        View view = layoutInflater.inflate(R.layout.room_detail_fs20_seek, null);
-
+    private void fillFS20SeekView(View view, final FS20Device child) {
         setTextView(view, R.id.deviceName, child.getAliasOrName());
 
         SeekBar seekBar = (SeekBar) view.findViewById(R.id.seekBar);
@@ -181,8 +188,6 @@ public class FS20Adapter extends DeviceDetailAvailableAdapter<FS20Device> {
         seekBar.setTag(child.getName());
 
         seekBar.setOnSeekBarChangeListener(new SeekBarChangeListener(child.getFS20DimState()));
-
-        return view;
     }
 
     @Override

@@ -86,7 +86,7 @@ public abstract class DeviceDetailActivity<D extends Device> extends BaseActivit
                     }
 
                     DeviceAdapter<D> adapter = DeviceType.getAdapterFor(device);
-                    setContentView(adapter.getDetailView(DeviceDetailActivity.this, device));
+                    setContentView(adapter.createDetailView(DeviceDetailActivity.this, device));
                 }
             }
         });

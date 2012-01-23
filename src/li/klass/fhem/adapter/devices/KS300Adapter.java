@@ -26,7 +26,6 @@ package li.klass.fhem.adapter.devices;
 
 import android.app.Activity;
 import android.content.Context;
-import android.view.LayoutInflater;
 import android.view.View;
 import li.klass.fhem.R;
 import li.klass.fhem.activities.deviceDetail.KS300DeviceDetailActivity;
@@ -38,16 +37,12 @@ import li.klass.fhem.service.graph.ChartSeriesDescription;
 public class KS300Adapter extends DeviceDetailAvailableAdapter<KS300Device> {
 
     @Override
-    public View getDeviceOverviewView(LayoutInflater layoutInflater, KS300Device device) {
-        View view = layoutInflater.inflate(R.layout.room_detail_ks300, null);
-
+    public void fillDeviceOverviewView(View view, KS300Device device) {
         setTextView(view, R.id.deviceName, device.getAliasOrName());
         setTextViewOrHideTableRow(view, R.id.tableRowTemperature, R.id.temperature, device.getTemperature());
         setTextViewOrHideTableRow(view, R.id.tableRowWind, R.id.wind, device.getWind());
         setTextViewOrHideTableRow(view, R.id.tableRowHumidity, R.id.humidity, device.getHumidity());
         setTextViewOrHideTableRow(view, R.id.tableRowRain, R.id.rain, device.getRain());
-
-        return view;
     }
 
     @Override
@@ -73,6 +68,11 @@ public class KS300Adapter extends DeviceDetailAvailableAdapter<KS300Device> {
         createPlotButton(context, view, R.id.rainGraph, device.getRain(),
                 device, R.string.yAxisRain, KS300Device.COLUMN_SPEC_RAIN);
 
+    }
+
+    @Override
+    public int getOverviewLayout(KS300Device device) {
+        return R.layout.room_detail_ks300;
     }
 
     @Override

@@ -26,7 +26,6 @@ package li.klass.fhem.adapter.devices;
 
 import android.app.Activity;
 import android.content.Context;
-import android.view.LayoutInflater;
 import android.view.View;
 import li.klass.fhem.R;
 import li.klass.fhem.activities.deviceDetail.CULWSDeviceDetailActivity;
@@ -38,14 +37,15 @@ import li.klass.fhem.service.graph.ChartSeriesDescription;
 public class CULWSAdapter extends DeviceDetailAvailableAdapter<CULWSDevice> {
 
     @Override
-    public View getDeviceOverviewView(LayoutInflater layoutInflater, CULWSDevice device) {
-        View view = layoutInflater.inflate(R.layout.room_detail_culws, null);
-
+    public void fillDeviceOverviewView(View view, CULWSDevice device) {
         setTextView(view, R.id.deviceName, device.getAliasOrName());
         setTextViewOrHideTableRow(view, R.id.tableRowTemperature, R.id.temperature, device.getTemperature());
         setTextViewOrHideTableRow(view, R.id.tableRowHumidity, R.id.humidity, device.getHumidity());
+    }
 
-        return view;
+    @Override
+    public int getOverviewLayout(CULWSDevice device) {
+        return R.layout.room_detail_culws;
     }
 
     @Override

@@ -24,7 +24,6 @@
 
 package li.klass.fhem.adapter.devices;
 
-import android.view.LayoutInflater;
 import android.view.View;
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.DeviceListOnlyAdapter;
@@ -33,19 +32,20 @@ import li.klass.fhem.domain.Device;
 
 public class CULEMAdapter extends DeviceListOnlyAdapter<CULEMDevice> {
     @Override
+    public int getOverviewLayout(CULEMDevice device) {
+        return R.layout.room_detail_culem;
+    }
+
+    @Override
     public Class<? extends Device> getSupportedDeviceClass() {
         return CULEMDevice.class;
     }
 
     @Override
-    protected View getDeviceOverviewView(LayoutInflater layoutInflater, CULEMDevice device) {
-        View view = layoutInflater.inflate(R.layout.room_detail_culem, null);
-        
+    protected void fillDeviceOverviewView(View view, CULEMDevice device) {
         setTextView(view, R.id.deviceName, device.getAliasOrName());
         setTextViewOrHideTableRow(view, R.id.tableRowCurrentUsage, R.id.currentUsage, device.getCurrentUsage());
         setTextViewOrHideTableRow(view, R.id.tableRowDayUsage, R.id.dayUsage, device.getDayUsage());
         setTextViewOrHideTableRow(view, R.id.tableRowMonthUsage, R.id.monthUsage, device.getMonthUsage());
-
-        return view;
     }
 }

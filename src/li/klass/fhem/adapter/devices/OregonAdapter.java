@@ -26,7 +26,6 @@ package li.klass.fhem.adapter.devices;
 
 import android.app.Activity;
 import android.content.Context;
-import android.view.LayoutInflater;
 import android.view.View;
 import li.klass.fhem.R;
 import li.klass.fhem.activities.deviceDetail.OregonDeviceDetailActivity;
@@ -37,10 +36,7 @@ import li.klass.fhem.service.graph.ChartSeriesDescription;
 
 public class OregonAdapter extends DeviceDetailAvailableAdapter<OregonDevice> {
     @Override
-    protected View getDeviceOverviewView(LayoutInflater layoutInflater, OregonDevice device) {
-
-        View view = layoutInflater.inflate(R.layout.room_detail_oregon, null);
-
+    protected void fillDeviceOverviewView(View view, OregonDevice device) {
         setTextView(view, R.id.deviceName, device.getAliasOrName());
         setTextViewOrHideTableRow(view, R.id.tableRowTemperature, R.id.temperature, device.getTemperature());
         setTextViewOrHideTableRow(view, R.id.tableRowHumidity, R.id.humidity, device.getHumidity());
@@ -52,8 +48,6 @@ public class OregonAdapter extends DeviceDetailAvailableAdapter<OregonDevice> {
         setTextViewOrHideTableRow(view, R.id.tableRowWindSpeed, R.id.windSpeed, device.getWindSpeed());
         setTextViewOrHideTableRow(view, R.id.tableRowUVValue, R.id.uvValue, device.getUvValue());
         setTextViewOrHideTableRow(view, R.id.tableRowUVRisk, R.id.uvRisk, device.getUvRisk());
-
-        return view;
     }
 
     @Override
@@ -96,6 +90,11 @@ public class OregonAdapter extends DeviceDetailAvailableAdapter<OregonDevice> {
     @Override
     public Class<? extends Device> getSupportedDeviceClass() {
         return OregonDevice.class;
+    }
+
+    @Override
+    public int getOverviewLayout(OregonDevice device) {
+        return R.layout.room_detail_oregon;
     }
 
     @Override

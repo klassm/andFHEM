@@ -27,7 +27,6 @@ package li.klass.fhem.adapter.devices;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import li.klass.fhem.R;
@@ -40,14 +39,10 @@ import li.klass.fhem.domain.WOLDevice;
 
 public class WOLAdapter extends DeviceDetailAvailableAdapter<WOLDevice> {
     @Override
-    protected View getDeviceOverviewView(LayoutInflater layoutInflater, WOLDevice device) {
-        View view = layoutInflater.inflate(R.layout.room_detail_wol, null);
-
+    protected void fillDeviceOverviewView(View view, WOLDevice device) {
         setTextView(view, R.id.deviceName, device.getAliasOrName());
         int isRunningText = device.isRunning() ? R.string.on : R.string.off;
         setTextViewOrHideTableRow(view, R.id.tableRowState, R.id.state, isRunningText);
-
-        return view;
     }
 
     @Override
@@ -81,6 +76,11 @@ public class WOLAdapter extends DeviceDetailAvailableAdapter<WOLDevice> {
                 context.startService(intent);
             }
         });
+    }
+
+    @Override
+    public int getOverviewLayout(WOLDevice device) {
+        return R.layout.room_detail_wol;
     }
 
     @Override

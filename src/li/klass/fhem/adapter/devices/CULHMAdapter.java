@@ -30,7 +30,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.SeekBar;
 import android.widget.ToggleButton;
@@ -81,42 +80,46 @@ public class CULHMAdapter extends DeviceDetailAvailableAdapter<CULHMDevice> {
     }
 
     @Override
-    protected View getDeviceOverviewView(LayoutInflater layoutInflater, CULHMDevice device) {
-        View view = null;
+    public int getOverviewLayout(CULHMDevice device) {
         switch (device.getSubType()) {
             case DIMMER:
-                view = getDimOverview(layoutInflater, device);
+                return R.layout.room_detail_culhm_seek;
+            case SWITCH:
+                return R.layout.room_detail_culhm_switch;
+            case HEATING:
+                return R.layout.room_detail_culhm_heating;
+            case SMOKE_DETECTOR:
+                return R.layout.room_detail_culhm_smoke;
+            default:
+                return android.R.layout.simple_list_item_1;
+        }
+    }
+
+    @Override
+    protected void fillDeviceOverviewView(View view, CULHMDevice device) {
+        switch (device.getSubType()) {
+            case DIMMER:
+                fillDimOverview(view, device);
                 break;
             case SWITCH:
-                view = getSwitchOverview(layoutInflater, device);
+                fillSwitchOverview(view, device);
                 break;
             case HEATING:
-                view = getHeatingOverview(layoutInflater, device);
+                fillHeatingOverview(view, device);
                 break;
             case SMOKE_DETECTOR:
-                view = getSmokeDetectorView(layoutInflater, device);
+                fillSmokeDetectorOverview(view, device);
                 break;
-        }
-
-        if (view == null) {
-            return layoutInflater.inflate(android.R.layout.simple_list_item_1, null);
         }
 
         setTextView(view, R.id.deviceName, device.getAliasOrName());
-        return view;
     }
 
-    private View getSmokeDetectorView(LayoutInflater layoutInflater, CULHMDevice device) {
-        View view = layoutInflater.inflate(R.layout.room_detail_culhm_smoke, null);
-
+    private void fillSmokeDetectorOverview(View view, CULHMDevice device) {
         setTextViewOrHideTableRow(view, R.id.tableRowState, R.id.state, device.getState());
-
-        return view;
     }
 
-    private View getSwitchOverview(LayoutInflater layoutInflater, final CULHMDevice device) {
-        View view = layoutInflater.inflate(R.layout.room_detail_culhm_switch, null);
-        
+    private void fillSwitchOverview(View view, final CULHMDevice device) {
         ToggleButton button = (ToggleButton) view.findViewById(R.id.switchButton);
         button.setChecked(device.isOn());
         button.setOnClickListener(new View.OnClickListener() {
@@ -135,32 +138,22 @@ public class CULHMAdapter extends DeviceDetailAvailableAdapter<CULHMDevice> {
                 AndFHEMApplication.getContext().startService(intent);
             }
         });
-
-        return view;
     }
 
-    private View getDimOverview(LayoutInflater layoutInflater, CULHMDevice device) {
-        View view = layoutInflater.inflate(R.layout.room_detail_culhm_seek, null);
-
+    private void fillDimOverview(View view, CULHMDevice device) {
         SeekBar seekBar = (SeekBar) view.findViewById(R.id.seekBar);
         final int initialProgress = device.getDimProgress();
         seekBar.setProgress(initialProgress);
         seekBar.setTag(device.getName());
 
         seekBar.setOnSeekBarChangeListener(new SeekBarChangeListener(device.getDimProgress()));
-
-        return view;
     }
 
-    private View getHeatingOverview(LayoutInflater layoutInflater, CULHMDevice device) {
-        View view = layoutInflater.inflate(R.layout.room_detail_culhm_heating, null);
 
+    private void fillHeatingOverview(View view, CULHMDevice device) {
         setTextViewOrHideTableRow(view, R.id.tableRowActuator, R.id.actuator, device.getActuator());
         setTextViewOrHideTableRow(view, R.id.tableRowTemperature, R.id.temperature, device.getMeasuredTemp());
-
-        return view;
     }
-
 
     @Override
     public boolean supportsDetailView(Device device) {

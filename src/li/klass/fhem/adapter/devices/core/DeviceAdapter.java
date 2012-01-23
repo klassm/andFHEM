@@ -40,18 +40,52 @@ import li.klass.fhem.service.graph.ChartSeriesDescription;
 
 public abstract class DeviceAdapter<D extends Device> {
 
-
+    /**
+     * Indicates whether the current adapter supports the given device class.
+     * @param deviceClass class to check
+     * @return true if device class is supported
+     */
     public boolean supports(Class<? extends Device> deviceClass) {
         return getSupportedDeviceClass().isAssignableFrom(deviceClass);
     }
 
+    /**
+     * Creates an overview view for the given device. The device has to match the adapter device type, otherwise
+     * a cast exception occurs.
+     * @param layoutInflater layoutInflater to create the view
+     * @param rawDevice device used for filling the view
+     * @return overview view
+     */
     @SuppressWarnings("unchecked")
-    public View getOverviewView(LayoutInflater layoutInflater, Device device) {
-        return getDeviceOverviewView(layoutInflater, (D) device);
+    public View createOverviewView(LayoutInflater layoutInflater, Device rawDevice) {
+        D device = (D) rawDevice;
+        View view = layoutInflater.inflate(getOverviewLayout(device), null);
+        fillDeviceOverviewView(view, device);
+        return view;
     }
 
+    /**
+     * Gets the overview layout id for the given device.
+     * @param device device
+     * @return layout id
+     */
+    protected abstract int getOverviewLayout(D device);
+
+    /**
+     * Fills a given device view.
+     * @param view view to fill
+     * @param device content provider
+     */
+    protected abstract void fillDeviceOverviewView(View view, D device);
+
+    /**
+     * Creates a filled detail view for a given device.
+     * @param context context used for inflating the layout.
+     * @param device device used for filling.
+     * @return filled view.
+     */
     @SuppressWarnings("unchecked")
-    public View getDetailView(Context context, Device device) {
+    public View createDetailView(Context context, Device device) {
         if (supportsDetailView(device)) {
             return getDeviceDetailView(context, (D) device);
         }
@@ -75,13 +109,13 @@ public abstract class DeviceAdapter<D extends Device> {
     }
 
 
-    public abstract int getDetailViewLayout();
     public abstract boolean supportsDetailView(Device device);
+    public abstract int getDetailViewLayout();
     protected abstract View getDeviceDetailView(Context context, D device);
     protected abstract Intent onFillDeviceDetailIntent(Context context, Device device, Intent intent);
 
     public abstract Class<? extends Device> getSupportedDeviceClass();
-    protected abstract View getDeviceOverviewView(LayoutInflater layoutInflater, D device);
+
 
 
     protected void setTextViewOrHideTableRow(View view, int tableRowId, int textFieldLayoutId, int stringId) {

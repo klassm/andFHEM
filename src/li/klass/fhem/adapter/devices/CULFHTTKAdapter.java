@@ -24,7 +24,6 @@
 
 package li.klass.fhem.adapter.devices;
 
-import android.view.LayoutInflater;
 import android.view.View;
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.DeviceListOnlyAdapter;
@@ -33,19 +32,21 @@ import li.klass.fhem.domain.Device;
 
 public class CULFHTTKAdapter extends DeviceListOnlyAdapter<CULFHTTKDevice> {
     @Override
+    public int getOverviewLayout(CULFHTTKDevice device) {
+        return R.layout.room_detail_culfhttk;
+    }
+
+    @Override
     public Class<? extends Device> getSupportedDeviceClass() {
         return CULFHTTKDevice.class;
     }
 
     @Override
-    protected View getDeviceOverviewView(LayoutInflater layoutInflater, CULFHTTKDevice device) {
-        View view = layoutInflater.inflate(R.layout.room_detail_culfhttk, null);
+    protected void fillDeviceOverviewView(View view, CULFHTTKDevice device) {
 
         setTextView(view, R.id.deviceName, device.getAliasOrName());
         setTextViewOrHideTableRow(view, R.id.tableRowState, R.id.state, device.getState());
         setTextViewOrHideTableRow(view, R.id.tableRowLastStateChange, R.id.lastStateChange, device.getLastStateChangeTime());
         setTextViewOrHideTableRow(view, R.id.tableRowLastState, R.id.lastState, device.getLastState());
-        
-        return view;
     }
 }
