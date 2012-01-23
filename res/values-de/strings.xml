@@ -118,6 +118,7 @@
     <string name="updateError">Error während Update Vorgang.</string>
     <string name="timeoutError">Zeitüberschreitung der Anforderung.</string>
     <string name="executeError">Error während Kommando Ausführung.</string>
+    <string name="authenticationError">Falscher Benutzer / Passwort.</string>
     <string name="updateErrorHostConnection">Keine Verbindung zum FHEM Server.</string>
     <string name="updateErrorDeviceListParse">Konnte xml Geräte Liste nicht lesen.</string>
     <string name="graphLoadError">Graph Daten konnten nicht geladen werden.</string>

@@ -24,27 +24,21 @@
 
 package li.klass.fhem.exception;
 
-import li.klass.fhem.R;
-
-public class DeviceListParseException extends AndFHEMException {
-
-    public DeviceListParseException() {
+public abstract class AndFHEMException extends RuntimeException {
+    public AndFHEMException() {
     }
 
-    public DeviceListParseException(String detailMessage) {
+    public AndFHEMException(String detailMessage) {
         super(detailMessage);
     }
 
-    public DeviceListParseException(String detailMessage, Throwable throwable) {
+    public AndFHEMException(String detailMessage, Throwable throwable) {
         super(detailMessage, throwable);
     }
 
-    public DeviceListParseException(Throwable throwable) {
+    public AndFHEMException(Throwable throwable) {
         super(throwable);
     }
-
-    @Override
-    public int getErrorMessageStringId() {
-        return R.string.updateErrorDeviceListParse;
-    }
+    
+    public abstract int getErrorMessageStringId();
 }

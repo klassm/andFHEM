@@ -28,14 +28,11 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import li.klass.fhem.AndFHEMApplication;
-import li.klass.fhem.R;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.Device;
 import li.klass.fhem.domain.RoomDeviceList;
-import li.klass.fhem.exception.DeviceListParseException;
-import li.klass.fhem.exception.HostConnectionException;
-import li.klass.fhem.exception.TimeoutException;
+import li.klass.fhem.exception.AndFHEMException;
 import li.klass.fhem.service.AbstractService;
 import li.klass.fhem.service.CommandExecutionService;
 
@@ -147,21 +144,9 @@ public class RoomListService extends AbstractService {
             sendBroadcastWithAction(Actions.SHOW_UPDATING_DIALOG, null);
             try {
                 deviceListMap = getRemoteRoomDeviceListMap();
-            } catch (TimeoutException e) {
+            } catch (AndFHEMException e) {
                 Bundle bundle = new Bundle();
-                bundle.putInt(BundleExtraKeys.TOAST_STRING_ID, R.string.timeoutError);
-                sendBroadcastWithAction(Actions.SHOW_TOAST, bundle);
-
-                Log.e(RoomListService.class.getName(), "error occurred", e);
-            }  catch (HostConnectionException e) {
-                Bundle bundle = new Bundle();
-                bundle.putInt(BundleExtraKeys.TOAST_STRING_ID, R.string.updateErrorHostConnection);
-                sendBroadcastWithAction(Actions.SHOW_TOAST, bundle);
-
-                Log.e(RoomListService.class.getName(), "error occurred", e);
-            } catch (DeviceListParseException e) {
-                Bundle bundle = new Bundle();
-                bundle.putInt(BundleExtraKeys.TOAST_STRING_ID, R.string.updateErrorDeviceListParse);
+                bundle.putInt(BundleExtraKeys.TOAST_STRING_ID, e.getErrorMessageStringId());
                 sendBroadcastWithAction(Actions.SHOW_TOAST, bundle);
 
                 Log.e(RoomListService.class.getName(), "error occurred", e);

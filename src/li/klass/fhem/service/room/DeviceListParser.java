@@ -29,6 +29,7 @@ import li.klass.fhem.domain.Device;
 import li.klass.fhem.domain.DeviceType;
 import li.klass.fhem.domain.FileLogDevice;
 import li.klass.fhem.domain.RoomDeviceList;
+import li.klass.fhem.exception.AndFHEMException;
 import li.klass.fhem.exception.DeviceListParseException;
 import li.klass.fhem.exception.HostConnectionException;
 import li.klass.fhem.fhem.DataConnectionSwitch;
@@ -116,12 +117,12 @@ public class DeviceListParser {
             addFileLogsToDevices(roomDeviceListMap);
 
             return roomDeviceListMap;
-        } catch (HostConnectionException e) {
+        } catch (AndFHEMException e) {
             throw e;
         } catch (SAXParseException e) {
             throw new DeviceListParseException(e);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new DeviceListParseException(e);
         }
     }
 

@@ -28,6 +28,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import li.klass.fhem.AndFHEMApplication;
+import li.klass.fhem.exception.AuthenticationException;
 import li.klass.fhem.exception.HostConnectionException;
 import li.klass.fhem.exception.TimeoutException;
 import org.apache.commons.io.IOUtils;
@@ -100,9 +101,14 @@ public class FHEMWebConnection implements FHEMConnection {
             request.setURI(uri);
 
             HttpResponse response = client.execute(request);
+            if (response.getStatusLine().getStatusCode() == 401) {
+                throw new AuthenticationException(response.getStatusLine().toString());
+            }
             content = IOUtils.toString(response.getEntity().getContent());
         } catch (ConnectTimeoutException e) {
             throw new TimeoutException(e);
+        } catch (AuthenticationException e) {
+            throw e;
         } catch (Exception e) {
             throw new HostConnectionException(e);
         }

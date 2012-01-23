@@ -120,6 +120,7 @@
     <string name="executeError">Error while executing command.</string>
     <string name="updateErrorHostConnection">Cannot connect to host.</string>
     <string name="updateErrorDeviceListParse">Could not parse xml device list.</string>
+    <string name="authenticationError">Invalid username or password.</string>
     <string name="graphLoadError">Error while loading graph data.</string>
 
     <string name="okButton">OK</string>

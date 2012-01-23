@@ -29,11 +29,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import li.klass.fhem.AndFHEMApplication;
-import li.klass.fhem.R;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.exception.HostConnectionException;
-import li.klass.fhem.exception.TimeoutException;
+import li.klass.fhem.exception.AndFHEMException;
 import li.klass.fhem.fhem.DataConnectionSwitch;
 
 import static li.klass.fhem.constants.Actions.DISMISS_EXECUTING_DIALOG;
@@ -68,17 +66,11 @@ public class CommandExecutionService extends AbstractService {
 
         try {
             executeUnsafeCommand(command);
-        } catch (TimeoutException e) {
+        } catch (AndFHEMException e) {
             Bundle bundle = new Bundle();
-            bundle.putInt(BundleExtraKeys.TOAST_STRING_ID, R.string.timeoutError);
+            bundle.putInt(BundleExtraKeys.TOAST_STRING_ID, e.getErrorMessageStringId());
             sendBroadcastWithAction(Actions.SHOW_TOAST, bundle);
             
-            Log.e(CommandExecutionService.class.getName(), "error occurred while executing command " + command, e);
-        } catch (HostConnectionException e) {
-            Bundle bundle = new Bundle();
-            bundle.putInt(BundleExtraKeys.TOAST_STRING_ID, R.string.updateErrorHostConnection);
-            sendBroadcastWithAction(Actions.SHOW_TOAST, bundle);
-
             Log.e(CommandExecutionService.class.getName(), "error occurred while executing command " + command, e);
         } finally {
             context.sendBroadcast(new Intent(DISMISS_EXECUTING_DIALOG));

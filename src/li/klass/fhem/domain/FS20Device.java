@@ -55,6 +55,11 @@ public class FS20Device extends Device<FS20Device> implements Comparable<FS20Dev
             }
         } else if (keyValue.equalsIgnoreCase("MODEL")) {
             this.model = nodeContent.toUpperCase();
+        } else if (keyValue.equals("DEF")) {
+            String[] parts = nodeContent.split(" ");
+            if (parts.length == 2 && parts[0].length() == 4 && parts[1].length() == 2) {
+                definition = transformHexTo4System(parts[0]) + " " + transformHexTo4System(parts[1]);
+            }
         }
     }
 
@@ -118,5 +123,19 @@ public class FS20Device extends Device<FS20Device> implements Comparable<FS20Dev
 
     public List<String> getSetOptions() {
         return setOptions;
+    }
+    
+    private String transformHexTo4System(String input) {
+        int value = Integer.decode("0x" + input);
+        StringBuilder result = new StringBuilder();
+        do {
+            value = value  / 4;
+            result.append((value % 4) + 1);
+        } while (value > 0);
+
+        while (result.length() < 4) {
+            result.insert(0, "1");
+        }
+        return result.reverse().toString();
     }
 }

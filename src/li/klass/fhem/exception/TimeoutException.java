@@ -24,7 +24,9 @@
 
 package li.klass.fhem.exception;
 
-public class TimeoutException extends RuntimeException {
+import li.klass.fhem.R;
+
+public class TimeoutException extends AndFHEMException {
     public TimeoutException() {
     }
 
@@ -38,5 +40,10 @@ public class TimeoutException extends RuntimeException {
 
     public TimeoutException(Throwable throwable) {
         super(throwable);
+    }
+
+    @Override
+    public int getErrorMessageStringId() {
+        return R.string.timeoutError;
     }
 }

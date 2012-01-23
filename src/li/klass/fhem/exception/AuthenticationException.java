@@ -26,25 +26,24 @@ package li.klass.fhem.exception;
 
 import li.klass.fhem.R;
 
-public class DeviceListParseException extends AndFHEMException {
-
-    public DeviceListParseException() {
+public class AuthenticationException extends AndFHEMException {
+    public AuthenticationException() {
     }
 
-    public DeviceListParseException(String detailMessage) {
+    public AuthenticationException(String detailMessage) {
         super(detailMessage);
     }
 
-    public DeviceListParseException(String detailMessage, Throwable throwable) {
+    public AuthenticationException(String detailMessage, Throwable throwable) {
         super(detailMessage, throwable);
     }
 
-    public DeviceListParseException(Throwable throwable) {
+    public AuthenticationException(Throwable throwable) {
         super(throwable);
     }
 
     @Override
     public int getErrorMessageStringId() {
-        return R.string.updateErrorDeviceListParse;
+        return R.string.authenticationError;
     }
 }

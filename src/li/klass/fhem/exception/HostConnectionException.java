@@ -24,7 +24,9 @@
 
 package li.klass.fhem.exception;
 
-public class HostConnectionException extends RuntimeException {
+import li.klass.fhem.R;
+
+public class HostConnectionException extends AndFHEMException {
     public HostConnectionException() {
     }
 
@@ -38,5 +40,10 @@ public class HostConnectionException extends RuntimeException {
 
     public HostConnectionException(Throwable throwable) {
         super(throwable);
+    }
+
+    @Override
+    public int getErrorMessageStringId() {
+        return R.string.updateErrorHostConnection;
     }
 }
