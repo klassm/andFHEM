@@ -90,6 +90,8 @@ public class CULHMAdapter extends DeviceDetailAvailableAdapter<CULHMDevice> {
                 return R.layout.room_detail_culhm_heating;
             case SMOKE_DETECTOR:
                 return R.layout.room_detail_culhm_smoke;
+            case THREE_STATE:
+                return R.layout.room_detail_culhm_threestate;
             default:
                 return android.R.layout.simple_list_item_1;
         }
@@ -110,9 +112,16 @@ public class CULHMAdapter extends DeviceDetailAvailableAdapter<CULHMDevice> {
             case SMOKE_DETECTOR:
                 fillSmokeDetectorOverview(view, device);
                 break;
+            case THREE_STATE:
+                fillThreeStateOverview(view, device);
+                break;
         }
 
         setTextView(view, R.id.deviceName, device.getAliasOrName());
+    }
+
+    private void fillThreeStateOverview(View view, CULHMDevice device) {
+        setTextViewOrHideTableRow(view, R.id.tableRowState, R.id.state, device.getState());
     }
 
     private void fillSmokeDetectorOverview(View view, CULHMDevice device) {

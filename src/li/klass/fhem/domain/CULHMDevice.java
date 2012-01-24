@@ -31,7 +31,7 @@ import org.w3c.dom.NamedNodeMap;
 public class CULHMDevice extends Device<CULHMDevice> {
 
     public enum SubType {
-        DIMMER, SWITCH, HEATING, SMOKE_DETECTOR
+        DIMMER, SWITCH, HEATING, SMOKE_DETECTOR, THREE_STATE
     }
 
     private String measured;
@@ -51,6 +51,8 @@ public class CULHMDevice extends Device<CULHMDevice> {
                 subType = SubType.SWITCH;
             } else if (nodeContent.equalsIgnoreCase("SMOKEDETECTOR")) {
                 subType = SubType.SMOKE_DETECTOR;
+            } else if (nodeContent.equalsIgnoreCase("THREESTATESENSOR")) {
+                subType = SubType.THREE_STATE;
             }
         } else if (keyValue.equals("STATE")) {
             if (nodeContent.endsWith("%")) {
