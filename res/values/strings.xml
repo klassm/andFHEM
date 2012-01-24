@@ -75,6 +75,7 @@
     <string name="mac">MAC address</string>
     <string name="ip">IP address</string>
     <string name="wake">Wake</string>
+    <string name="howLong">How long?</string>
 
     <string name="switchDevice">Switch</string>
     <string name="preferences">Preferences</string>
@@ -115,6 +116,7 @@
     <string name="prefPassword">Password</string>
     <string name="prefShowHiddenDevices">Show hidden devices</string>
 
+    <string name="notNumericError">Not numeric!</string>
     <string name="updateError">Error while updating.</string>
     <string name="timeoutError">Connection timed out.</string>
     <string name="executeError">Error while executing command.</string>

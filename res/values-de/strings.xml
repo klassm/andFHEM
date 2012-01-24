@@ -74,6 +74,7 @@
     <string name="mac">MAC Adresse</string>
     <string name="ip">IP Adresse</string>
     <string name="wake">Wecken</string>
+    <string name="howLong">Wie lange?</string>
 
     <string name="switchDevice">Schalte</string>
     <string name="preferences">Einstellungen</string>
@@ -115,6 +116,7 @@
     <string name="prefFHEMWEBUrlSummary">z.B.. http://192.168.0.1:8083/fhem</string>
     <string name="prefShowHiddenDevices">Zeige versteckte Geräte</string>
 
+    <string name="notNumericError">Nicht numerisch!</string>
     <string name="updateError">Error während Update Vorgang.</string>
     <string name="timeoutError">Zeitüberschreitung der Anforderung.</string>
     <string name="executeError">Error während Kommando Ausführung.</string>

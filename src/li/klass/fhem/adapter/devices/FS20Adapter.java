@@ -33,11 +33,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
 import android.view.View;
-import android.widget.Button;
-import android.widget.SeekBar;
-import android.widget.TableRow;
-import android.widget.ToggleButton;
-import li.klass.fhem.AndFHEMApplication;
+import android.widget.*;
 import li.klass.fhem.R;
 import li.klass.fhem.activities.deviceDetail.FS20DeviceDetailActivity;
 import li.klass.fhem.adapter.devices.core.DeviceDetailAvailableAdapter;
@@ -134,35 +130,59 @@ public class FS20Adapter extends DeviceDetailAvailableAdapter<FS20Device> {
         switchSetOptions.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final Context context = AndFHEMApplication.getContext();
-
                 AlertDialog.Builder contextMenu = new AlertDialog.Builder(context);
                 contextMenu.setTitle(context.getResources().getString(R.string.switchDevice));
                 final List<String> setOptions = device.getSetOptions();
 
                 contextMenu.setItems(setOptions.toArray(new CharSequence[setOptions.size()]), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int item) {
-                        String option = setOptions.get(item);
+                        final String option = setOptions.get(item);
 
-                        Intent intent = new Intent(Actions.DEVICE_SET_STATE);
-                        intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
-                        intent.putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, option);
-                        intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
-                            @Override
-                            protected void onReceiveResult(int resultCode, Bundle resultData) {
-                                super.onReceiveResult(resultCode, resultData);
-                                context.sendBroadcast(new Intent(Actions.DO_UPDATE));
-                            }
-                        });
-                        context.startService(intent);
-
+                        if (option.equals("off-for-timer") || option.equals("on-for-timer")) {
+                            final EditText input = new EditText(context);
+                            new AlertDialog.Builder(context)
+                                    .setTitle(R.string.howLong)
+                                    .setView(input)
+                                    .setPositiveButton(R.string.okButton, new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int whichButton) {
+                                            String time = input.getText().toString();
+                                            try {
+                                                Integer.valueOf(time);
+                                                switchDeviceState(option + " " + time, device, context);
+                                            } catch (NumberFormatException e) {
+                                                Toast.makeText(context, R.string.notNumericError, Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                    }).setNegativeButton(R.string.cancelButton, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int whichButton) {
+                                }
+                            }).show();
+                        } else {
+                            switchDeviceState(option, device, context);
+                        }
                         dialog.dismiss();
                     }
+
+
                 });
                 contextMenu.show();
 
             }
         });
+    }
+
+    private void switchDeviceState(String newState, FS20Device device, final Context context) {
+        Intent intent = new Intent(Actions.DEVICE_SET_STATE);
+        intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
+        intent.putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, newState);
+        intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
+            @Override
+            protected void onReceiveResult(int resultCode, Bundle resultData) {
+                super.onReceiveResult(resultCode, resultData);
+                context.sendBroadcast(new Intent(Actions.DO_UPDATE));
+            }
+        });
+        context.startService(intent);
     }
 
     @Override
