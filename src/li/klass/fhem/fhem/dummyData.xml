@@ -1796,6 +1796,19 @@ room structexclude webCmd eventMap">
             <ATTR key="room" value="unknown"/>
         </FileLog>
 
+        <FileLog name="FileLog_CUL_EM_5" state="active" sets="reopen" attrs="room comment alias disable:0,1 logtype nrarchive archivedir archivecmd eventMap">
+            <INT key="DEF" value="./log/wetterstation-%Y.log wetterstation:T:.*"/>
+            <INT key="NAME" value="FileLog_CUL_EM_5"/>
+            <INT key="NR" value="49"/>
+            <INT key="REGEXP" value="CUL_EM_5:T:.*"/>
+            <INT key="STATE" value="active"/>
+            <INT key="TYPE" value="FileLog"/>
+            <INT key="currentlogfile" value="./log/CUL_EM_5-2011.log"/>
+            <INT key="logfile" value="./log/CUL_EM_5-%Y.log"/>
+            <ATTR key="logtype" value="CUL_EM_5:Temp/Rain,wetterstation:Wind/Hum,text"/>
+            <ATTR key="room" value="unknown"/>
+        </FileLog>
+
         <FileLog name="FileLog_oregon1" state="active" sets="reopen" attrs="room comment alias disable:0,1 logtype nrarchive archivedir archivecmd eventMap">
             <INT key="DEF" value="./log/wetterstation-%Y.log wetterstation:T:.*"/>
             <INT key="NAME" value="FileLog_oregon1"/>

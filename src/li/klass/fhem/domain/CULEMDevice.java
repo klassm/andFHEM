@@ -24,13 +24,18 @@
 
 package li.klass.fhem.domain;
 
+import li.klass.fhem.R;
 import org.w3c.dom.NamedNodeMap;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class CULEMDevice extends Device<CULEMDevice> {
 
     private String currentUsage;
     private String dayUsage;
     private String monthUsage;
+    public static final int COLUMN_SPEC_CURRENT_USAGE = R.string.currentUsage;
 
     @Override
     protected void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {
@@ -58,5 +63,13 @@ public class CULEMDevice extends Device<CULEMDevice> {
     private String extractCumUsage(String cumString, String cumToken) {
         cumToken = cumToken + ": ";
         return cumString.substring(cumToken.length(), cumString.indexOf(" ", cumToken.length() + 1));
+    }
+
+    @Override
+    public Map<Integer, String> getFileLogColumns() {
+        Map<Integer, String> columnSpecification = new HashMap<Integer, String>();
+        columnSpecification.put(COLUMN_SPEC_CURRENT_USAGE, "4:current:0:");
+
+        return columnSpecification;
     }
 }

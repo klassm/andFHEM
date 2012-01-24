@@ -22,31 +22,9 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.adapter.devices;
+package li.klass.fhem.activities.deviceDetail;
 
-import android.view.View;
-import li.klass.fhem.R;
-import li.klass.fhem.adapter.devices.core.DeviceListOnlyAdapter;
-import li.klass.fhem.domain.CULFHTTKDevice;
-import li.klass.fhem.domain.Device;
+import li.klass.fhem.domain.CULEMDevice;
 
-public class CULFHTTKAdapter extends DeviceListOnlyAdapter<CULFHTTKDevice> {
-    @Override
-    public int getOverviewLayout(CULFHTTKDevice device) {
-        return R.layout.room_detail_culfhttk;
-    }
-
-    @Override
-    public Class<? extends Device> getSupportedDeviceClass() {
-        return CULFHTTKDevice.class;
-    }
-
-    @Override
-    protected void fillDeviceOverviewView(View view, CULFHTTKDevice device) {
-
-        setTextView(view, R.id.deviceName, device.getAliasOrName());
-        setTextViewOrHideTableRow(view, R.id.tableRowState, R.id.state, device.getWindowState());
-        setTextViewOrHideTableRow(view, R.id.tableRowLastStateChange, R.id.lastStateChange, device.getLastStateChangeTime());
-        setTextViewOrHideTableRow(view, R.id.tableRowLastState, R.id.lastState, device.getLastWindowState());
-    }
+public class CULEMDeviceDetailActivity extends DeviceDetailActivity<CULEMDevice> {
 }

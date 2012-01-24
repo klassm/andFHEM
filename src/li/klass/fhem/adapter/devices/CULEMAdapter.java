@@ -24,13 +24,16 @@
 
 package li.klass.fhem.adapter.devices;
 
+import android.app.Activity;
+import android.content.Context;
 import android.view.View;
 import li.klass.fhem.R;
-import li.klass.fhem.adapter.devices.core.DeviceListOnlyAdapter;
+import li.klass.fhem.activities.deviceDetail.CULEMDeviceDetailActivity;
+import li.klass.fhem.adapter.devices.core.DeviceDetailAvailableAdapter;
 import li.klass.fhem.domain.CULEMDevice;
 import li.klass.fhem.domain.Device;
 
-public class CULEMAdapter extends DeviceListOnlyAdapter<CULEMDevice> {
+public class CULEMAdapter extends DeviceDetailAvailableAdapter<CULEMDevice> {
     @Override
     public int getOverviewLayout(CULEMDevice device) {
         return R.layout.room_detail_culem;
@@ -47,5 +50,25 @@ public class CULEMAdapter extends DeviceListOnlyAdapter<CULEMDevice> {
         setTextViewOrHideTableRow(view, R.id.tableRowCurrentUsage, R.id.currentUsage, device.getCurrentUsage());
         setTextViewOrHideTableRow(view, R.id.tableRowDayUsage, R.id.dayUsage, device.getDayUsage());
         setTextViewOrHideTableRow(view, R.id.tableRowMonthUsage, R.id.monthUsage, device.getMonthUsage());
+    }
+
+    @Override
+    public int getDetailViewLayout() {
+        return R.layout.device_detail_culem;
+    }
+
+    @Override
+    protected void fillDeviceDetailView(Context context, View view, CULEMDevice device) {
+        setTextViewOrHideTableRow(view, R.id.tableRowCurrentUsage, R.id.currentUsage, device.getCurrentUsage());
+        setTextViewOrHideTableRow(view, R.id.tableRowDayUsage, R.id.dayUsage, device.getDayUsage());
+        setTextViewOrHideTableRow(view, R.id.tableRowMonthUsage, R.id.monthUsage, device.getMonthUsage());
+
+        createPlotButton(context, view, R.id.usageGraph, device.getCurrentUsage(),
+                device, R.string.yAxisUsage, CULEMDevice.COLUMN_SPEC_CURRENT_USAGE);
+    }
+
+    @Override
+    protected Class<? extends Activity> getDeviceDetailActivity() {
+        return CULEMDeviceDetailActivity.class;
     }
 }

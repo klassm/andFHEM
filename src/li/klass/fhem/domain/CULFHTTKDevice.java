@@ -32,14 +32,16 @@ import java.util.Date;
 public class CULFHTTKDevice extends Device<CULFHTTKDevice> {
 
     private String lastStateChangeTime;
-    private String lastState;
+    private String lastWindowState;
+    private String windowState;
     
     @Override
     public void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {
-        if (keyValue.equals("PREVSTATE")) {
-            lastState = nodeContent;
-        } else if (keyValue.equals("PREVTIMESTAMP") && nodeContent.length() != 0) {
-            long timestamp = Long.valueOf(nodeContent);
+        if (keyValue.equals("WINDOW")) {
+            windowState = nodeContent;
+        } else if (keyValue.equals("PREVIOUSWINDOW")) {
+            lastWindowState = nodeContent;
+            long timestamp = Long.valueOf(attributes.getNamedItem("measured").getNodeValue());
             Date date = new Date(timestamp * 1000L);
 
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm");
@@ -51,7 +53,11 @@ public class CULFHTTKDevice extends Device<CULFHTTKDevice> {
         return lastStateChangeTime;
     }
 
-    public String getLastState() {
-        return lastState;
+    public String getLastWindowState() {
+        return lastWindowState;
+    }
+
+    public String getWindowState() {
+        return windowState;
     }
 }

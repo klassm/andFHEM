@@ -144,6 +144,7 @@
     <string name="pressureGraph">Luftdruck Graph</string>
     <string name="rainRateGraph">Regenstärke Graph</string>
     <string name="rainTotalGraph">Regenmenge Graph</string>
+    <string name="usageGraph">Verbrauch Graph</string>
     <string name="windSpeedGraph">Windgeschwindigkeit Graph</string>
 
     <string name="yAxisWind">Wind (km/h)</string>
@@ -155,6 +156,7 @@
     <string name="yAxisRainRate">Regenstärke (mm/hr)</string>
     <string name="yAxisRainTotal">Regenmenge (l/m2)</string>
     <string name="yAxisWindSpeed">Windgeschwindigkeit (km/h)</string>
+    <string name="yAxisUsage">Verbrauch</string>
 
     <string name="startDate">Start-Datum</string>
     <string name="endDate">End-Datum</string>
