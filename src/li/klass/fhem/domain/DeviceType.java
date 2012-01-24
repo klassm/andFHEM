@@ -28,35 +28,43 @@ import li.klass.fhem.adapter.devices.core.DeviceAdapter;
 import li.klass.fhem.adapter.devices.*;
 
 public enum DeviceType {
-    FS20("FS20", FS20Device.class, new FS20Adapter()),
-    FHT("FHT", FHTDevice.class, new FHTAdapter()),
     KS300("KS300", KS300Device.class, new KS300Adapter()),
+    FHT("FHT", FHTDevice.class, new FHTAdapter()),
     HMS("HMS", HMSDevice.class, new HMSAdapter()),
+    WOL("WOL", WOLDevice.class, new WOLAdapter()),
     OWTEMP("OWTEMP", OwtempDevice.class, new OwtempAdapter()),
-    CUL_WS("CUL_WS", CULWSDevice.class, new CULWSAdapter()),
-    SIS_PMS("SIS_PMS", SISPMSDevice.class, new SISPMSAdapter()),
     CUL_FHTTK("CUL_FHTTK", CULFHTTKDevice.class, new CULFHTTKAdapter()),
-    FILE_LOG("FileLog", FileLogDevice.class, null),
     RFXX10REC("RFXX10REC", RFXX10RECDevice.class, new RFXX10RECAdapter()),
     OREGON("OREGON", OregonDevice.class, new OregonAdapter()),
-    USBWX("USBWX", USBWXDevice.class, new USBWXAdapter()),
     CUL_EM("CUL_EM", CULEMDevice.class, new CULEMAdapter()),
+    OWCOUNT("OWCOUNT", OwcountDevice.class, new OwcountAdapter()),
+    SIS_PMS("SIS_PMS", SISPMSDevice.class, new SISPMSAdapter()),
+    USBWX("USBWX", USBWXDevice.class, new USBWXAdapter()),
+    CUL_WS("CUL_WS", CULWSDevice.class, new CULWSAdapter()),
+    FS20("FS20", FS20Device.class, new FS20Adapter()),
+    FILE_LOG("FileLog", FileLogDevice.class, null, false),
     OWFS("OWFS", OWFSDevice.class, new OWFSAdapter()),
     LGTV("LGTV", LGTVDevice.class, new LGTVAdapter()),
     RFXCOM("RFXCOM", RFXCOMDevice.class, new RFXCOMAdapter()),
-    OWCOUNT("OWCOUNT", OwcountDevice.class, new OwcountAdapter()),
-    CUL_HM("CUL_HM", CULHMDevice.class, new CULHMAdapter()),
-    WOL("WOL", WOLDevice.class, new WOLAdapter());
+    CUL_HM("CUL_HM", CULHMDevice.class, new CULHMAdapter());
 
     
     private String xmllistTag;
     private Class<? extends Device> deviceClass;
     private DeviceAdapter<? extends Device<?>> adapter;
+    private boolean doShowInDeviceList = true;
 
     DeviceType(String xmllistTag, Class<? extends Device> deviceClass, DeviceAdapter<? extends Device<?>> adapter) {
         this.xmllistTag = xmllistTag;
         this.deviceClass = deviceClass;
         this.adapter = adapter;
+    }
+
+    DeviceType(String xmllistTag, Class<? extends Device> deviceClass, DeviceAdapter<? extends Device<?>> adapter, boolean doShow) {
+        this.xmllistTag = xmllistTag;
+        this.deviceClass = deviceClass;
+        this.adapter = adapter;
+        doShowInDeviceList = doShow;
     }
 
     public String getXmllistTag() {
@@ -72,7 +80,9 @@ public enum DeviceType {
         return (DeviceAdapter<T>) adapter;
     }
 
-
+    public boolean isDoShowInDeviceList() {
+        return doShowInDeviceList;
+    }
 
     public static <T extends Device> DeviceAdapter<T> getAdapterFor(T device) {
         DeviceType deviceType = getDeviceTypeFor(device);

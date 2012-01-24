@@ -37,20 +37,13 @@ import li.klass.fhem.domain.RoomDeviceList;
 import li.klass.fhem.widget.NestedListViewAdapter;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-
-import static li.klass.fhem.domain.DeviceType.*;
 
 public class RoomDetailAdapter extends NestedListViewAdapter<DeviceType, Device<?>> {
     private RoomDeviceList roomDeviceList;
-    private List<DeviceType> deviceTypeOrderList;
 
     public RoomDetailAdapter(Context context, RoomDeviceList roomDeviceList) {
         super(context);
-        this.deviceTypeOrderList = Arrays.asList(KS300, FHT, HMS, WOL, OWTEMP, CUL_FHTTK, RFXX10REC, OREGON, CUL_EM, OWCOUNT,
-                LGTV, RFXCOM, OWFS, USBWX, CUL_WS, FS20, SIS_PMS, CUL_HM);
-
         if (roomDeviceList != null) {
             updateData(roomDeviceList);
         }
@@ -114,8 +107,8 @@ public class RoomDetailAdapter extends NestedListViewAdapter<DeviceType, Device<
     @Override
     protected List<DeviceType> getParents() {
         List<DeviceType> parents = new ArrayList<DeviceType>();
-        for (DeviceType deviceType : deviceTypeOrderList) {
-            if (getChildrenCountForParent(deviceType) > 0) {
+        for (DeviceType deviceType : DeviceType.values()) {
+            if (deviceType.isDoShowInDeviceList() && getChildrenCountForParent(deviceType) > 0) {
                 parents.add(deviceType);
             }
         }
