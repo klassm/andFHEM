@@ -40,16 +40,8 @@
                   android:text="xxx"/>
     </TableRow>
 
-    <TableRow android:id="@+id/tableRowLastState">
-        <TextView android:text="@string/lastState"
-                  style="@style/deviceOverviewDescription" />
-        <TextView android:id="@+id/lastState"
-                  style="@style/deviceOverviewContent"
-                  android:text="xx.xx.xxxx xx:xx:xx"/>
-    </TableRow>
-
     <TableRow android:id="@+id/tableRowLastStateChange">
-        <TextView android:text="@string/lastStateChange"
+        <TextView android:text=""
                   style="@style/deviceOverviewDescription" />
         <TextView android:id="@+id/lastStateChange"
                   style="@style/deviceOverviewContent"

@@ -112,6 +112,13 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
         return measured;
     }
 
+    /**
+     * Called for each device node in the <i>xmllist</i>.
+     * @param tagName contains the current tag name (i.e. STATE, ATTR or INT)
+     * @param keyValue name of the key (i.e. ROOM)
+     * @param nodeContent value of the tag
+     * @param attributes additional tag attributes
+     */
     protected abstract void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes);
     
     protected void onAttributeRead(String attributeKey, String attributeValue) {
