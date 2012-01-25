@@ -68,7 +68,7 @@ public class CULEMDevice extends Device<CULEMDevice> {
     @Override
     public Map<Integer, String> getFileLogColumns() {
         Map<Integer, String> columnSpecification = new HashMap<Integer, String>();
-        columnSpecification.put(COLUMN_SPEC_CURRENT_USAGE, "4:current:0:");
+        columnSpecification.put(COLUMN_SPEC_CURRENT_USAGE, "8::0:");
 
         return columnSpecification;
     }
