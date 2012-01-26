@@ -83,6 +83,7 @@ public class DeviceListParser {
             xmlList = xmlList.replaceAll("\"\"+(?![ /])", "\"");
 
             xmlList = xmlList.replaceAll("</>", "");
+            xmlList = xmlList.replaceAll("< [^>]*>", "");
 
             //replace values with an unset tag
             xmlList = xmlList.replaceAll("< name=[a-zA-Z\"=0-9 ]+>", "");

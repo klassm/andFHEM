@@ -273,6 +273,9 @@ public class ChartingActivity extends Activity implements Updateable {
         }
 
         if (xMax == null) xMax = new Date();
+        
+        double yMaxAbsolute = absolute(yMax);
+        double yOffset = yMaxAbsolute * 0.1;
 
         int[] availableColors = new int[]{Color.RED, Color.GREEN, Color.BLUE, Color.CYAN, Color.GRAY};
 
@@ -295,16 +298,20 @@ public class ChartingActivity extends Activity implements Updateable {
                 dateFormat.format(startDate.getTime()) + " - " + dateFormat.format(endDate.getTime());
         String xTitle = getResources().getString(R.string.time);
 
-        setChartSettings(renderer, title, xTitle, yTitle, yMin - 5, yMax + 5,
+        setChartSettings(renderer, title, xTitle, yTitle, yMin - yOffset, yMax + yOffset,
                 Color.LTGRAY, Color.LTGRAY);
         renderer.setShowGrid(true);
         renderer.setXLabelsAlign(Paint.Align.CENTER);
-        renderer.setYLabelsAlign(Paint.Align.CENTER);
+        renderer.setYLabelsAlign(Paint.Align.RIGHT);
         renderer.setZoomButtonsVisible(true);
         renderer.setPanLimits(new double[]{xMin.getTime(), xMax.getTime(), yMin, yMax});
         renderer.setZoomLimits(new double[]{xMin.getTime(), xMax.getTime(), yMin, yMax});
         GraphicalView timeChartView = ChartFactory.getTimeChartView(this, dataSet, renderer, "MM-dd HH:mm");
         setContentView(timeChartView);
+    }
+
+    private double absolute(double val) {
+        return val < 0 ? val * -1 : val;
     }
 
     private List<GraphEntry> addDiscreteValueEntriesForSeries(List<GraphEntry> entries) {
@@ -316,9 +323,9 @@ public class ChartingActivity extends Activity implements Updateable {
                 previousValue = entry.getValue();
             }
 
-            result.add(new GraphEntry(new Date(entry.getDate().getTime() - 1000), previousValue));
+            result.add(new GraphEntry(new Date(entry.getDate().getTime() - 100), previousValue));
             result.add(entry);
-            result.add(new GraphEntry(new Date(entry.getDate().getTime() + 1000), entry.getValue()));
+            result.add(new GraphEntry(new Date(entry.getDate().getTime() + 100), entry.getValue()));
             previousValue = entry.getValue();
         }
 
