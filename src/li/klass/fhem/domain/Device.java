@@ -60,7 +60,7 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
             String nodeContent = item.getAttributes().getNamedItem("value").getTextContent().trim();
             nodeContent = StringEscapeUtils.unescapeHtml(nodeContent);
 
-            if (nodeContent.length() == 0) {
+            if (nodeContent == null || nodeContent.length() == 0) {
                 continue;
             }
 

@@ -26,26 +26,19 @@ package li.klass.fhem.domain;
 
 import org.w3c.dom.NamedNodeMap;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 public class CULFHTTKDevice extends Device<CULFHTTKDevice> {
 
     private String lastStateChangeTime;
     private String lastWindowState;
-    private String windowState;
+    private String windowState = "???";
     
     @Override
     public void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {
         if (keyValue.equals("WINDOW")) {
             windowState = nodeContent;
-        } else if (keyValue.equals("PREVIOUSWINDOW")) {
+        } else if (keyValue.equals("PREVIOUS")) {
             lastWindowState = nodeContent;
-            long timestamp = Long.valueOf(attributes.getNamedItem("measured").getNodeValue());
-            Date date = new Date(timestamp * 1000L);
-
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm");
-            lastStateChangeTime = simpleDateFormat.format(date);
+            lastStateChangeTime = attributes.getNamedItem("measured").getNodeValue();
         }
     }
 

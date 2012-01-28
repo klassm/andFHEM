@@ -24,6 +24,7 @@
 
 package li.klass.fhem.fhem;
 
+import android.util.Log;
 import li.klass.fhem.util.ApplicationProperties;
 
 public class DataConnectionSwitch {
@@ -35,13 +36,18 @@ public class DataConnectionSwitch {
     }
 
     public FHEMConnection getCurrentProvider() {
+        FHEMConnection currentConnection;
         switch (ApplicationProperties.INSTANCE.getConnectionType()) {
             case TELNET:
-                return TelnetConnection.INSTANCE;
+                currentConnection = TelnetConnection.INSTANCE;
+                break;
             case FHEMWEB:
-                return FHEMWebConnection.INSTANCE;
+                currentConnection = FHEMWebConnection.INSTANCE;
+                break;
             default:
-                return DummyDataConnection.INSTANCE;
+                currentConnection = DummyDataConnection.INSTANCE;
         }
+        Log.i(DataConnectionSwitch.class.getName(), "current connection provider: " + currentConnection.getClass().getName());
+        return currentConnection;
     }
 }

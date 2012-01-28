@@ -70,6 +70,11 @@ public class DeviceListParser {
         Map<String, RoomDeviceList> roomDeviceListMap = new HashMap<String, RoomDeviceList>();
         try {
             String xmlList = DataConnectionSwitch.INSTANCE.getCurrentProvider().xmllist();
+            if (xmlList == null) {
+                Log.e(DeviceListParser.class.getName(), "xmlList is null");
+                return roomDeviceListMap;
+            }
+
             xmlList = new String(xmlList.getBytes(), "UTF8");
 
             // if a newline happens after a set followed by an attrs, both attributes are appended together without

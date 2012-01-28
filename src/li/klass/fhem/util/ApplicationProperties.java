@@ -27,6 +27,7 @@ package li.klass.fhem.util;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.fhem.ConnectionType;
 import li.klass.fhem.fhem.DataConnectionSwitch;
@@ -56,8 +57,10 @@ public class ApplicationProperties {
         try {
             String connectionType = PreferenceManager.getDefaultSharedPreferences(AndFHEMApplication.getContext())
                     .getString(DataConnectionSwitch.CONNECTION_TYPE, null);
+            Log.i(ApplicationProperties.class.getName(), "returning " + connectionType + " as current connection type");
             return ConnectionType.valueOf(connectionType.toUpperCase());
-        } catch (IllegalArgumentException e) {
+        } catch (Exception e) {
+            Log.e(ApplicationProperties.class.getName(), "error occurred while loading connection type", e);
             return ConnectionType.DUMMYDATA;
         }
     }

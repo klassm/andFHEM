@@ -1907,6 +1907,7 @@ room structexclude webCmd eventMap">
             <INT key="TYPE" value="weblink"/>
             <INT key="WLTYPE" value="fileplot"/>
             <ATTR key="label" value="&quot;KS300 Min $data{min1}, Max $data{max1}, Last $data{currval1}&quot;"/>
+            <ATTR key="label" value="Gasverbrauch Summe $data{sum1} m³, Min $data{min1}, Max $data{max1}, Last $data{currval1} m³"/>
             <ATTR key="room" value="Plots"/>
         </weblink>
     </weblink_LIST>

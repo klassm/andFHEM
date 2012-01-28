@@ -137,7 +137,8 @@ public class ToggleConfigurationActivity extends ListActivity {
 
                     intent.putExtra(BundleExtraKeys.DEVICE_NAME, deviceName);
 
-                    PendingIntent pendingIntent = PendingIntent.getService(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+
+                    PendingIntent pendingIntent = PendingIntent.getService(context, appWidgetId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
                     views.setOnClickPendingIntent(R.id.switchButton, pendingIntent);
 
 
