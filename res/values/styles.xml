@@ -171,10 +171,12 @@
         <item name="actionBarTabStyle">@style/ApplicationActionBarTabStyle</item>
         <item name="selectableItemBackground">@drawable/actionbar_item_selectable</item>
         <item name="abBackground">@drawable/actionbar_background</item>
+        <item name="abDivider">@drawable/abs__action_item_divider</item>
     </style>
 
     <style name="ApplicationActionBarTabStyle">
         <item name="android:background">@drawable/actionbar_tab_bg</item>
+        <item name="android:padding">10dp</item>
     </style>
 
 
