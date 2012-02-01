@@ -32,6 +32,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -67,6 +69,9 @@ public abstract class FragmentBaseActivity extends FragmentActivity implements A
     private Stack<Fragment> stack = new Stack<Fragment>();
 
     private Receiver broadcastReceiver;
+    private Menu optionsMenu;
+    
+    private Handler updateHandler;
 
     private class Receiver extends BroadcastReceiver {
 
@@ -75,6 +80,8 @@ public abstract class FragmentBaseActivity extends FragmentActivity implements A
         private Receiver() {
             intentFilter = new IntentFilter();
             intentFilter.addAction(Actions.SHOW_FRAGMENT);
+            intentFilter.addAction(Actions.DISMISS_UPDATING_DIALOG);
+            intentFilter.addAction(Actions.DO_UPDATE);
         }
 
         @Override
@@ -86,6 +93,12 @@ public abstract class FragmentBaseActivity extends FragmentActivity implements A
                     Constructor<?> constructor = Class.forName(fragmentName).getConstructor(Bundle.class);
                     Fragment fragment = (Fragment) constructor.newInstance(intent.getExtras());
                     switchToFragment(fragment);
+                } else if (action.equals(Actions.DISMISS_UPDATING_DIALOG)) {
+                    optionsMenu.findItem(R.id.menu_refresh).setVisible(true);
+                    optionsMenu.findItem(R.id.menu_refresh_progress).setVisible(false);
+                } else if (action.equals(Actions.DO_UPDATE) && intent.getBooleanExtra(BundleExtraKeys.DO_REFRESH, false)) {
+                    optionsMenu.findItem(R.id.menu_refresh).setVisible(false);
+                    optionsMenu.findItem(R.id.menu_refresh_progress).setVisible(true);
                 }
             } catch (Exception e) {
                 Log.e(FragmentBaseActivity.class.getName(), "exception occurred while receiving broadcast", e);
@@ -101,6 +114,31 @@ public abstract class FragmentBaseActivity extends FragmentActivity implements A
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        updateHandler = new Handler();
+        updateHandler.postDelayed(new Runnable() {
+            boolean firstRun = true;
+            @Override
+            public void run() {
+                String updateTime = PreferenceManager.getDefaultSharedPreferences(FragmentBaseActivity.this).getString("AUTO_UPDATE_TIME", "-1");
+                Long millis = Long.valueOf(updateTime);
+                
+                if (! firstRun && millis != -1) {
+                    Intent updateIntent = new Intent(Actions.DO_UPDATE);
+                    updateIntent.putExtra(BundleExtraKeys.DO_REFRESH, true);
+                    sendBroadcast(updateIntent);
+
+                    Log.d(FragmentBaseActivity.class.getName(), "update");
+                }
+
+                if (millis == -1) {
+                    millis = 30 * 1000L;
+                }
+                updateHandler.postDelayed(this, millis);
+
+                firstRun = false;
+            }
+        }, 0);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
@@ -172,6 +210,7 @@ public abstract class FragmentBaseActivity extends FragmentActivity implements A
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
+        this.optionsMenu = menu;
         return super.onCreateOptionsMenu(menu);
     }
 

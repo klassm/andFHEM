@@ -170,7 +170,7 @@
     <style name="ApplicationTheme" parent="@style/Theme.Sherlock.Light">
         <item name="actionBarTabStyle">@style/ApplicationActionBarTabStyle</item>
         <item name="selectableItemBackground">@drawable/actionbar_item_selectable</item>
-        <item name="abBackground">@color/navigationBarBackground</item>
+        <item name="abBackground">@drawable/actionbar_background</item>
     </style>
 
     <style name="ApplicationActionBarTabStyle">

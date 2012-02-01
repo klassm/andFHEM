@@ -67,9 +67,9 @@ public class UIBroadcastReceiver extends BroadcastReceiver {
 
                 try {
                     if (action.equals(SHOW_UPDATING_DIALOG)) {
-                        activity.showDialogSafely(FragmentBaseActivity.DIALOG_UPDATING);
+//                        activity.showDialogSafely(FragmentBaseActivity.DIALOG_UPDATING);
                     } else if (action.equals(DISMISS_UPDATING_DIALOG)) {
-                        activity.dismissDialog(FragmentBaseActivity.DIALOG_UPDATING);
+//                        activity.dismissDialog(FragmentBaseActivity.DIALOG_UPDATING);
                     } else if (action.equals(SHOW_EXECUTING_DIALOG)) {
                         activity.showDialogSafely(FragmentBaseActivity.DIALOG_EXECUTING);
                     } else if (action.equals(DISMISS_EXECUTING_DIALOG)) {
@@ -88,12 +88,10 @@ public class UIBroadcastReceiver extends BroadcastReceiver {
     }
 
     public void attach() {
-        Log.e(UIBroadcastReceiver.class.getName(), "attach");
         activity.registerReceiver(this, intentFilter);
     }
 
     public void detach() {
-        Log.e(UIBroadcastReceiver.class.getName(), "detach");
         try {
             activity.unregisterReceiver(this);
         } catch (IllegalArgumentException e) {

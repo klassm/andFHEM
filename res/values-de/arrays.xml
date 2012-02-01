@@ -24,9 +24,19 @@
 
 <resources>
     <string-array name="graphDefaultTimespanEntries">
+        <item>4 Stunden</item>
+        <item>8 Stunden</item>
         <item>12 Stunden</item>
         <item>24 Stunden</item>
         <item>36 Stunden</item>
         <item>48 Stunden</item>
+    </string-array>
+
+    <string-array name="updateRoomListTimeEntries">
+        <item>nie</item>
+        <item>1 Minute</item>
+        <item>5 Minuten</item>
+        <item>30 Minuten</item>
+        <item>1 Stunde</item>
     </string-array>
 </resources>

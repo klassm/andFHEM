@@ -35,15 +35,34 @@
     </string-array>
 
     <string-array name="graphDefaultTimespanEntries">
+        <item>4 hours</item>
+        <item>8 hours</item>
         <item>12 hours</item>
         <item>24 hours</item>
         <item>36 hours</item>
         <item>48 hours</item>
     </string-array>
     <string-array name="graphDefaultTimespanValues">
+        <item>4</item>
+        <item>8</item>
         <item>12</item>
         <item>24</item>
         <item>36</item>
         <item>48</item>
+    </string-array>
+
+    <string-array name="updateRoomListTimeEntries">
+        <item>nie</item>
+        <item>1 Minute</item>
+        <item>5 Minuten</item>
+        <item>30 Minuten</item>
+        <item>1 Stunde</item>
+    </string-array>
+    <string-array name="updateRoomListTimeValues">
+        <item>-1</item>
+        <item>60000</item>
+        <item>300000</item>
+        <item>1800000</item>
+        <item>3600000</item>
     </string-array>
 </resources>

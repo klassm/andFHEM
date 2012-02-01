@@ -25,6 +25,7 @@
 package li.klass.fhem.domain;
 
 import li.klass.fhem.R;
+import li.klass.fhem.util.ValueDescriptionUtil;
 import org.w3c.dom.NamedNodeMap;
 
 import java.util.HashMap;
@@ -41,9 +42,9 @@ public class CULWSDevice extends Device<CULWSDevice> {
     @Override
     public void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {
         if (keyValue.equals("HUMIDITY")) {
-            humidity = nodeContent + " (%)";
+            humidity = ValueDescriptionUtil.appendPercent(nodeContent);
         } else if (keyValue.equals("TEMPERATURE")) {
-            temperature = nodeContent + " (Celsius)";
+            temperature = ValueDescriptionUtil.appendTemperature(nodeContent);
         }
     }
 

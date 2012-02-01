@@ -107,7 +107,8 @@
             <SeekBar android:id="@+id/desiredTemperatureSeek"
                      style="@style/deviceDetailContentSeek"
                      android:max="50"
-                     android:layout_marginRight="10dp"/>
+                     android:layout_marginRight="10dp"
+                     android:layout_width="100dp"/>
 
         </TableRow>
 
@@ -185,7 +186,8 @@
                 <SeekBar android:id="@+id/dayTemperatureSeek"
                          style="@style/deviceDetailContentSeek"
                          android:max="50"
-                         android:layout_marginRight="10dp"/>
+                         android:layout_marginRight="10dp"
+                         android:layout_width="100dp"/>
 
             </TableRow>
 
@@ -204,7 +206,8 @@
                          style="@style/deviceDetailContentSeek"
                          android:max="50"
                          android:progress="@+id/desiredTemperature"
-                         android:layout_marginRight="10dp"/>
+                         android:layout_marginRight="10dp"
+                         android:layout_width="100dp"/>
 
             </TableRow>
 
@@ -223,7 +226,8 @@
                          style="@style/deviceDetailContentSeek"
                          android:max="50"
                          android:progress="@+id/windowOpen"
-                         android:layout_marginRight="10dp"/>
+                         android:layout_marginRight="10dp"
+                         android:layout_width="100dp"/>
 
             </TableRow>
         </TableLayout>

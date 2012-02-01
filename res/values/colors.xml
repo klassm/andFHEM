@@ -25,6 +25,6 @@
 
 <resources>
 	<color name="android_green">#FFA4C639</color>
-    <color name="navigationBarBackground">#FFF6F6F6</color>
+    <color name="navigationBarBackground">#FFE1F3E3</color>
     <color name="tabPressGrey">#FFD9D9D9</color>
 </resources>

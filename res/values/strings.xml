@@ -118,6 +118,8 @@
     <string name="prefPassword">Password</string>
     <string name="prefShowHiddenDevices">Show hidden devices</string>
     <string name="prefDefaultTimespan">Graph Timespan</string>
+    <string name="prefAutoUpdate">Auto Update</string>
+    <string name="prefAutoUpdateSummary">only when application is running</string>
 
     <string name="notNumericError">Not numeric!</string>
     <string name="updateError">Error while updating.</string>

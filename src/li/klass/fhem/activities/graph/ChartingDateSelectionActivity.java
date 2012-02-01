@@ -29,6 +29,7 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.*;
 import li.klass.fhem.R;
@@ -53,15 +54,18 @@ public class ChartingDateSelectionActivity extends Activity{
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
 
+
         startDate.setTime((Date) extras.getSerializable(BundleExtraKeys.START_DATE));
         endDate.setTime((Date) extras.getSerializable(BundleExtraKeys.END_DATE));
 
+        Log.e(ChartingDateSelectionActivity.class.getName(), "start date " + dateFormat.format(startDate.getTime()) + " " + timeFormat.format(startDate.getTime()));
+        Log.e(ChartingDateSelectionActivity.class.getName(), "end date " + dateFormat.format(endDate.getTime()) + " " + timeFormat.format(endDate.getTime()));
         setContentView(R.layout.graph_select_day);
 
         updateDateTextField(R.id.startDate, startDate);
         updateDateTextField(R.id.endDate, endDate);
         updateTimeTextField(R.id.startTime, startDate);
-        updateTimeTextField(R.id.endTime, startDate);
+        updateTimeTextField(R.id.endTime, endDate);
 
         updateOkButtonVisibility();
 

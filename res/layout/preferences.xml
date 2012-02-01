@@ -55,6 +55,17 @@
                 android:defaultValue="24"
                 android:entries="@array/graphDefaultTimespanEntries"
                 android:entryValues="@array/graphDefaultTimespanValues" />
+        <ListPreference
+                android:title="@string/prefAutoUpdate"
+                android:summary="@string/prefAutoUpdateSummary"
+                android:id="@+id/autoUpdateTime"
+                android:key="AUTO_UPDATE_TIME"
+                android:defaultValue="-1"
+                android:entries="@array/updateRoomListTimeEntries"
+                android:entryValues="@array/updateRoomListTimeValues" />
+
+
+
     </PreferenceCategory>
 
 

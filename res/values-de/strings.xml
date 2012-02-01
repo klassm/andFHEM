@@ -118,6 +118,8 @@
     <string name="prefFHEMWEBUrlSummary">z.B.. http://192.168.0.1:8083/fhem</string>
     <string name="prefShowHiddenDevices">Zeige versteckte Geräte</string>
     <string name="prefDefaultTimespan">Graph Zeitspanne</string>
+    <string name="prefAutoUpdate">Automatischer Update</string>
+    <string name="prefAutoUpdateSummary">nur wenn Applikation läuft</string>
 
     <string name="notNumericError">Nicht numerisch!</string>
     <string name="updateError">Error während Update Vorgang.</string>
