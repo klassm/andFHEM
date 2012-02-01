@@ -176,7 +176,6 @@
 
     <style name="ApplicationActionBarTabStyle">
         <item name="android:background">@drawable/actionbar_tab_bg</item>
-        <item name="android:padding">10dp</item>
     </style>
 
 

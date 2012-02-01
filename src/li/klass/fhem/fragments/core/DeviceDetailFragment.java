@@ -69,13 +69,15 @@ public class DeviceDetailFragment extends BaseFragment {
             @Override
             protected void onReceiveResult(int resultCode, Bundle resultData) {
                 super.onReceiveResult(resultCode, resultData);
-                if (resultCode == ResultCodes.SUCCESS) {
+                if (resultCode == ResultCodes.SUCCESS && getView() != null) {
                     Device device = (Device) resultData.getSerializable(BundleExtraKeys.DEVICE);
 
                     DeviceAdapter adapter = DeviceType.getAdapterFor(device);
                     ScrollView scrollView = (ScrollView) getView().findViewById(R.id.deviceDetailView);
-                    scrollView.removeAllViews();
-                    scrollView.addView(adapter.createDetailView(getActivity(), device));
+                    if (scrollView != null) {
+                        scrollView.removeAllViews();
+                        scrollView.addView(adapter.createDetailView(getActivity(), device));
+                    }
                 }
             }
         });

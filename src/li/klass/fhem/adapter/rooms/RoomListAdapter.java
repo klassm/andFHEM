@@ -56,6 +56,7 @@ public class RoomListAdapter extends ListDataAdapter<String> {
 
     @Override
     public void updateData(List<String> newData) {
+        if (newData == null) return;
 
         boolean showHiddenDevices = PreferenceManager.getDefaultSharedPreferences(context).getBoolean("prefShowHiddenDevices", false);
         if (! showHiddenDevices) {

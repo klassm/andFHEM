@@ -116,6 +116,7 @@ public class RoomDetailAdapter extends NestedListViewAdapter<DeviceType, Device<
     }
 
     public void updateData(RoomDeviceList roomDeviceList) {
+        if (roomDeviceList == null) return;
         this.roomDeviceList = roomDeviceList;
         super.updateData();
     }
