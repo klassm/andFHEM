@@ -34,6 +34,7 @@ import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -82,13 +83,11 @@ public class ChartingActivity extends Activity implements Updateable {
         if (savedInstanceState != null && savedInstanceState.containsKey(START_DATE)) {
             startDate = (Calendar) savedInstanceState.getSerializable(START_DATE);
         } else {
-            startDate.add(Calendar.DAY_OF_MONTH, -1);
+            startDate.add(Calendar.HOUR, getChartingDefaultTimespan() * (-1));
         }
 
         if (savedInstanceState != null && savedInstanceState.containsKey(END_DATE)) {
             endDate = (Calendar) savedInstanceState.getSerializable(END_DATE);
-        } else {
-            endDate.add(Calendar.DAY_OF_MONTH, 1);
         }
 
         Bundle extras = getIntent().getExtras();
@@ -405,7 +404,11 @@ public class ChartingActivity extends Activity implements Updateable {
         return null;
     }
 
-
+    private int getChartingDefaultTimespan() {
+        String timeSpan = PreferenceManager.getDefaultSharedPreferences(this).getString("GRAPH_DEFAULT_TIMESPAN", "24");
+        return Integer.valueOf(timeSpan.trim());
+    }
+    
     /**
      * Goes to the charting activity.
      *
@@ -426,4 +429,5 @@ public class ChartingActivity extends Activity implements Updateable {
 
         context.startActivity(timeChartIntent);
     }
+    
 }

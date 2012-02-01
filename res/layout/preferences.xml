@@ -47,6 +47,14 @@
                 android:title="@string/prefShowHiddenDevices"
                 android:defaultValue="false"
                 />
+        <ListPreference
+                android:title="@string/prefDefaultTimespan"
+                android:id="@+id/graphDefaultTimespanSelector"
+                android:summary=""
+                android:key="GRAPH_DEFAULT_TIMESPAN"
+                android:defaultValue="24"
+                android:entries="@array/graphDefaultTimespanEntries"
+                android:entryValues="@array/graphDefaultTimespanValues" />
     </PreferenceCategory>
 
 

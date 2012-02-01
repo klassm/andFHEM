@@ -8,7 +8,7 @@
   ~ distributed under license by Red Hat Inc.
   ~
   ~ This copyrighted material is made available to anyone wishing to use, modify,
-  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLICLICENSE, as published by the Free Software Foundation.
   ~
   ~ This program is distributed in the hope that it will be useful,
   ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
@@ -23,27 +23,10 @@
   -->
 
 <resources>
-    <string-array name="dataOriginEntries">
-        <item>Dummy Data</item>
-        <item>Telnet</item>
-        <item>FHEMWEB</item>
-    </string-array>
-    <string-array name="dataOriginValues">
-        <item>DUMMYDATA</item>
-        <item>TELNET</item>
-        <item>FHEMWEB</item>
-    </string-array>
-
     <string-array name="graphDefaultTimespanEntries">
-        <item>12 hours</item>
-        <item>24 hours</item>
-        <item>36 hours</item>
-        <item>48 hours</item>
-    </string-array>
-    <string-array name="graphDefaultTimespanValues">
-        <item>12</item>
-        <item>24</item>
-        <item>36</item>
-        <item>48</item>
+        <item>12 Stunden</item>
+        <item>24 Stunden</item>
+        <item>36 Stunden</item>
+        <item>48 Stunden</item>
     </string-array>
 </resources>
