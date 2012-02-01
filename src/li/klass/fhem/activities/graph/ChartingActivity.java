@@ -82,13 +82,13 @@ public class ChartingActivity extends Activity implements Updateable {
         if (savedInstanceState != null && savedInstanceState.containsKey(START_DATE)) {
             startDate = (Calendar) savedInstanceState.getSerializable(START_DATE);
         } else {
-            startDate.roll(Calendar.DAY_OF_MONTH, -1);
+            startDate.add(Calendar.DAY_OF_MONTH, -1);
         }
 
         if (savedInstanceState != null && savedInstanceState.containsKey(END_DATE)) {
             endDate = (Calendar) savedInstanceState.getSerializable(END_DATE);
         } else {
-            endDate.roll(Calendar.DAY_OF_MONTH, 1);
+            endDate.add(Calendar.DAY_OF_MONTH, 1);
         }
 
         Bundle extras = getIntent().getExtras();
