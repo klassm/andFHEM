@@ -32,7 +32,6 @@
               android:text="deviceName"/>
 
     <ToggleButton android:id="@+id/switchButton"
-                  android:onClick="onSISPMSClick"
                   style="@style/deviceOverviewToggleButton"
             />
 

@@ -135,7 +135,7 @@ public abstract class BaseActivity<ADAPTER> extends Activity implements Updateab
             showDialog(dialogId);
         }
     }
-    
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
@@ -199,25 +199,6 @@ public abstract class BaseActivity<ADAPTER> extends Activity implements Updateab
     }
 
     @Override
-    public void onCreateContextMenu(ContextMenu menu, View view, ContextMenu.ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, view, menuInfo);
-
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
-        Object tag = info.targetView.getTag();
-
-        if (tag == null) return;
-        if (tag instanceof Device) {
-            contextMenuClickedDevice = (Device) tag;
-            Resources resources = getResources();
-            menu.add(0, CONTEXT_MENU_FAVORITES_ADD, 0, resources.getString(R.string.context_addtofavorites));
-            menu.add(0, CONTEXT_MENU_RENAME, 0, resources.getString(R.string.context_rename));
-            menu.add(0, CONTEXT_MENU_DELETE, 0, resources.getString(R.string.context_delete));
-            menu.add(0, CONTEXT_MENU_MOVE, 0, resources.getString(R.string.context_move));
-            menu.add(0, CONTEXT_MENU_ALIAS, 0, resources.getString(R.string.context_alias));
-        }
-    }
-
-    @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             if (event.getRepeatCount() == 0) {
@@ -254,7 +235,28 @@ public abstract class BaseActivity<ADAPTER> extends Activity implements Updateab
     }
 
     @Override
-    public boolean onContextItemSelected(MenuItem item) {
+    public void onCreateContextMenu(ContextMenu menu, View view, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, view, menuInfo);
+
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+        Object tag = info.targetView.getTag();
+
+        if (tag == null) return;
+        if (tag instanceof Device) {
+            contextMenuClickedDevice = (Device) tag;
+            Resources resources = getResources();
+            menu.add(0, CONTEXT_MENU_FAVORITES_ADD, 0, resources.getString(R.string.context_addtofavorites));
+            menu.add(0, CONTEXT_MENU_RENAME, 0, resources.getString(R.string.context_rename));
+            menu.add(0, CONTEXT_MENU_DELETE, 0, resources.getString(R.string.context_delete));
+            menu.add(0, CONTEXT_MENU_MOVE, 0, resources.getString(R.string.context_move));
+            menu.add(0, CONTEXT_MENU_ALIAS, 0, resources.getString(R.string.context_alias));
+        }
+    }
+
+    @Override
+    public boolean onContextItemSelected(android.view.MenuItem item) {
+        super.onContextItemSelected(item);
+
         switch(item.getItemId()) {
             case CONTEXT_MENU_FAVORITES_ADD:
                 Intent favoriteAddIntent = new Intent(FAVORITE_ADD);

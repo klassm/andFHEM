@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <!--
   ~ AndFHEM - Open Source Android application to control a FHEM home automation
   ~ server.
@@ -10,7 +9,7 @@
   ~ distributed under license by Red Hat Inc.
   ~
   ~ This copyrighted material is made available to anyone wishing to use, modify,
-  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLICLICENSE, as published by the Free Software Foundation.
   ~
   ~ This program is distributed in the hope that it will be useful,
   ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
@@ -24,15 +23,11 @@
   ~   Boston, MA  02110-1301  USA
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              style="@style/deviceOverviewLayout">
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <TextView style="@style/deviceOverviewLayoutDeviceName"
-              android:id="@+id/deviceName"
-              android:text="deviceName"/>
+    <item android:state_focused="false" android:state_selected="false" android:state_pressed="false" android:drawable="@drawable/actionbar_tab_unselected" />
+    <item android:state_focused="false" android:state_selected="true"  android:state_pressed="false" android:drawable="@drawable/actionbar_tab_selected" />
+    <item android:state_selected="false" android:state_pressed="true" android:drawable="@drawable/actionbar_tab_pressed" />
+    <item android:state_selected="true"  android:state_pressed="true" android:drawable="@drawable/actionbar_tab_pressed" />
 
-    <ToggleButton android:id="@+id/switchButton"
-                  style="@style/deviceOverviewToggleButton"
-            />
-
-</LinearLayout>
+</selector>

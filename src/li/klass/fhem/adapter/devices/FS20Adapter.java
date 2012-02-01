@@ -24,7 +24,6 @@
 
 package li.klass.fhem.adapter.devices;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -34,8 +33,8 @@ import android.os.Handler;
 import android.os.ResultReceiver;
 import android.view.View;
 import android.widget.*;
+import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
-import li.klass.fhem.activities.deviceDetail.FS20DeviceDetailActivity;
 import li.klass.fhem.adapter.devices.core.DeviceDetailAvailableAdapter;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
@@ -185,18 +184,20 @@ public class FS20Adapter extends DeviceDetailAvailableAdapter<FS20Device> {
         context.startService(intent);
     }
 
-    @Override
-    protected Intent onFillDeviceDetailIntent(Context context, Device device, Intent intent) {
-        intent.setClass(context, FS20DeviceDetailActivity.class);
-        return intent;
-    }
-
-    private void fillFS20ToggleView(View view, FS20Device child) {
+    private void fillFS20ToggleView(View view, final FS20Device child) {
         setTextView(view, R.id.deviceName, child.getAliasOrName());
 
         ToggleButton switchButton = (ToggleButton) view.findViewById(R.id.switchButton);
         switchButton.setChecked(child.isOn());
-        switchButton.setTag(child.getName());
+        switchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Actions.DEVICE_TOGGLE_STATE);
+                intent.putExtras(new Bundle());
+                intent.putExtra(BundleExtraKeys.DEVICE_NAME, child.getName());
+                AndFHEMApplication.getContext().startService(intent);
+            }
+        });
     }
 
     private void fillFS20SeekView(View view, final FS20Device child) {
@@ -218,10 +219,5 @@ public class FS20Adapter extends DeviceDetailAvailableAdapter<FS20Device> {
     @Override
     public Class<? extends Device> getSupportedDeviceClass() {
         return FS20Device.class;
-    }
-
-    @Override
-    protected Class<? extends Activity> getDeviceDetailActivity() {
-        return FS20DeviceDetailActivity.class;
     }
 }

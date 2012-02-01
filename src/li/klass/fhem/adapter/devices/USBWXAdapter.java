@@ -24,11 +24,9 @@
 
 package li.klass.fhem.adapter.devices;
 
-import android.app.Activity;
 import android.content.Context;
 import android.view.View;
 import li.klass.fhem.R;
-import li.klass.fhem.activities.deviceDetail.USBWXDeviceDetailActivity;
 import li.klass.fhem.adapter.devices.core.DeviceDetailAvailableAdapter;
 import li.klass.fhem.domain.Device;
 import li.klass.fhem.domain.USBWXDevice;
@@ -66,11 +64,6 @@ public class USBWXAdapter extends DeviceDetailAvailableAdapter<USBWXDevice> {
     @Override
     public int getDetailViewLayout() {
         return R.layout.device_detail_usbwx;
-    }
-
-    @Override
-    protected Class<? extends Activity> getDeviceDetailActivity() {
-        return USBWXDeviceDetailActivity.class;
     }
 
     @Override

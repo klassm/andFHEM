@@ -24,7 +24,6 @@
 
 package li.klass.fhem.adapter.devices;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -35,7 +34,6 @@ import android.widget.SeekBar;
 import android.widget.ToggleButton;
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
-import li.klass.fhem.activities.deviceDetail.CULHMDeviceDetailActivity;
 import li.klass.fhem.adapter.devices.core.DeviceDetailAvailableAdapter;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
@@ -182,10 +180,5 @@ public class CULHMAdapter extends DeviceDetailAvailableAdapter<CULHMDevice> {
         setTextViewOrHideTableRow(view, R.id.tableRowTemperature, R.id.temperature, device.getMeasuredTemp());
         setTextViewOrHideTableRow(view, R.id.tableRowDesiredTemperature, R.id.desiredTemperature, device.getDesiredTemp());
         setTextViewOrHideTableRow(view, R.id.tableRowHumidity, R.id.humidity, device.getHumidity());
-    }
-
-    @Override
-    protected Class<? extends Activity> getDeviceDetailActivity() {
-        return CULHMDeviceDetailActivity.class;
     }
 }

@@ -24,11 +24,9 @@
 
 package li.klass.fhem.adapter.devices;
 
-import android.app.Activity;
 import android.content.Context;
 import android.view.View;
 import li.klass.fhem.R;
-import li.klass.fhem.activities.deviceDetail.CULEMDeviceDetailActivity;
 import li.klass.fhem.adapter.devices.core.DeviceDetailAvailableAdapter;
 import li.klass.fhem.domain.CULEMDevice;
 import li.klass.fhem.domain.Device;
@@ -65,10 +63,5 @@ public class CULEMAdapter extends DeviceDetailAvailableAdapter<CULEMDevice> {
 
         createPlotButton(context, view, R.id.usageGraph, device.getCurrentUsage(),
                 device, R.string.yAxisUsage, CULEMDevice.COLUMN_SPEC_CURRENT_USAGE);
-    }
-
-    @Override
-    protected Class<? extends Activity> getDeviceDetailActivity() {
-        return CULEMDeviceDetailActivity.class;
     }
 }

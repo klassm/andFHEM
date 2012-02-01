@@ -34,8 +34,10 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.activities.graph.ChartingActivity;
+import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.Device;
+import li.klass.fhem.fragments.core.DeviceDetailFragment;
 import li.klass.fhem.service.graph.ChartSeriesDescription;
 
 public abstract class DeviceAdapter<D extends Device> {
@@ -97,14 +99,15 @@ public abstract class DeviceAdapter<D extends Device> {
             return;
         }
 
-        Intent intent = new Intent();
+        Intent intent = new Intent(Actions.SHOW_FRAGMENT);
         intent.putExtras(new Bundle());
+        intent.putExtra(BundleExtraKeys.FRAGMENT_NAME, DeviceDetailFragment.class.getName());
         intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
         intent.putExtra(BundleExtraKeys.ROOM_NAME, device.getRoom());
 
         intent = onFillDeviceDetailIntent(context, device, intent);
         if (intent != null) {
-            context.startActivity(intent);
+            context.sendBroadcast(intent);
         }
     }
 

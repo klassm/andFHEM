@@ -25,6 +25,8 @@
 package li.klass.fhem.constants;
 
 public class BundleExtraKeys {
+    public static final String TAB_TARGET = "tabTarget";
+
     public static final String DO_REFRESH = "doRefresh";
     public static final String ROOM_NAME = "roomName";
     public static final String ROOM_LIST = "roomList";
@@ -47,4 +49,6 @@ public class BundleExtraKeys {
     public static final String DEVICE_TARGET_STATE = "targetState";
     public static final String DEVICE_TEMPERATURE = "temperature";
     public static final String DEVICE_MODE = "deviceMode";
+
+    public static final String FRAGMENT_NAME = "fragmentName";
 }

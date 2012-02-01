@@ -24,11 +24,9 @@
 
 package li.klass.fhem.adapter.devices;
 
-import android.app.Activity;
 import android.content.Context;
 import android.view.View;
 import li.klass.fhem.R;
-import li.klass.fhem.activities.deviceDetail.OregonDeviceDetailActivity;
 import li.klass.fhem.adapter.devices.core.DeviceDetailAvailableAdapter;
 import li.klass.fhem.domain.Device;
 import li.klass.fhem.domain.OregonDevice;
@@ -101,10 +99,4 @@ public class OregonAdapter extends DeviceDetailAvailableAdapter<OregonDevice> {
     public int getDetailViewLayout() {
         return R.layout.device_detail_oregon;
     }
-
-    @Override
-    protected Class<? extends Activity> getDeviceDetailActivity() {
-        return OregonDeviceDetailActivity.class;
-    }
-
 }

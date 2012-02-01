@@ -24,11 +24,9 @@
 
 package li.klass.fhem.adapter.devices;
 
-import android.app.Activity;
 import android.content.Context;
 import android.view.View;
 import li.klass.fhem.R;
-import li.klass.fhem.activities.deviceDetail.CULWSDeviceDetailActivity;
 import li.klass.fhem.adapter.devices.core.DeviceDetailAvailableAdapter;
 import li.klass.fhem.domain.CULWSDevice;
 import li.klass.fhem.domain.Device;
@@ -68,10 +66,5 @@ public class CULWSAdapter extends DeviceDetailAvailableAdapter<CULWSDevice> {
     @Override
     public Class<? extends Device> getSupportedDeviceClass() {
         return CULWSDevice.class;
-    }
-
-    @Override
-    protected Class<? extends Activity> getDeviceDetailActivity() {
-        return CULWSDeviceDetailActivity.class;
     }
 }

@@ -25,200 +25,203 @@
   ~   Boston, MA  02110-1301  USA
   -->
 
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_height="wrap_content" android:layout_width="fill_parent">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:orientation="vertical">
 
+    <TextView style="@style/deviceDetailSectionCaption"
+              android:text="@string/generalDetails" />
+
+    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                 style="@style/deviceDetailTable">
+
+        <TableRow android:id="@+id/tableRowDeviceName">
+            <TextView android:text="@string/deviceName"
+                      style="@style/deviceDetailDescription" />
+            <TextView android:id="@+id/deviceName"
+                      android:text="xxxxxxxx"
+                      style="@style/deviceDetailContent"/>
+        </TableRow>
+
+        <TableRow android:id="@+id/tableRowRoom">
+            <TextView android:text="@string/room"
+                      style="@style/deviceDetailDescription" />
+            <TextView android:id="@+id/room"
+                      android:text="xxxxx"
+                      style="@style/deviceDetailContent" />
+        </TableRow>
+
+        <TableRow android:id="@+id/tableRowDef">
+            <TextView android:text="@string/definition"
+                      style="@style/deviceDetailDescription" />
+            <TextView android:id="@+id/def"
+                      android:text="xxxxx"
+                      style="@style/deviceDetailContent" />
+        </TableRow>
+
+        <TableRow android:id="@+id/tableRowMeasured">
+            <TextView android:text="@string/measured"
+                      style="@style/deviceDetailDescription" />
+            <TextView android:id="@+id/measured"
+                      android:text="xx.xx.xxxx xx:xx"
+                      style="@style/deviceDetailContent" />
+        </TableRow>
+
+        <TableRow android:id="@+id/tableRowActuator">
+            <TextView android:text="@string/actuator"
+                      style="@style/deviceDetailDescription" />
+            <TextView android:id="@+id/actuator"
+                      style="@style/deviceDetailContent"
+                      android:text="xx (%)"/>
+        </TableRow>
+
+        <TableRow android:id="@+id/tableRowTemperature">
+            <TextView android:text="@string/temperature"
+                      style="@style/deviceDetailDescription" />
+            <TextView android:id="@+id/temperature"
+                      style="@style/deviceDetailContent"
+                      android:text="xx.x (Celsius)"/>
+        </TableRow>
+
+        <TableRow android:id="@+id/tableRowWarnings">
+            <TextView android:text="@string/warnings"
+                      style="@style/deviceDetailDescription" />
+            <TextView android:id="@+id/warnings"
+                      style="@style/deviceDetailContent"
+                      android:text="Window xxxxx"/>
+        </TableRow>
+
+        <TableRow android:id="@+id/tableRowDesiredTemperature">
+            <TextView android:text="@string/desiredTemperature"
+                      style="@style/deviceDetailDescription" />
+            <TextView android:id="@+id/desiredTemperature"
+                      android:text="xx.x (Celsius)"
+                      style="@style/deviceDetailContent" />
+        </TableRow>
+
+        <TableRow android:id="@+id/tableRowDesiredTemperatureSeek">
+            <TextView
+                    android:text=""
+                    style="@style/deviceDetailDescription" />
+            <SeekBar android:id="@+id/desiredTemperatureSeek"
+                     style="@style/deviceDetailContentSeek"
+                     android:max="50"
+                     android:layout_marginRight="10dp"/>
+
+        </TableRow>
+
+        <TableRow android:id="@+id/tableRowMode">
+            <TextView android:text="@string/mode"
+                      style="@style/deviceDetailDescription" />
+            <Spinner
+                    android:id="@+id/mode"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:prompt="@string/setMode"
+                    />
+        </TableRow>
+
+    </TableLayout>
 
     <LinearLayout android:layout_width="fill_parent"
-                  android:layout_height="fill_parent"
-                  android:orientation="vertical">
+                  android:layout_height="wrap_content"
+                  android:layout_marginTop="20dp"
+                  android:orientation="vertical"
+                  android:id="@+id/graphLayout">
 
 
         <TextView style="@style/deviceDetailSectionCaption"
-                  android:text="@string/generalDetails" />
+                  android:text="@string/plots" />
+
+        <Button android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/temperatureGraph"
+                android:id="@+id/temperatureGraph"
+                android:layout_marginLeft="10dp"/>
+        <Button android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/actuatorGraph"
+                android:id="@+id/actuatorGraph"
+                android:layout_marginLeft="10dp"/>
+    </LinearLayout>
+
+    <LinearLayout android:layout_width="fill_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_marginTop="20dp"
+                  android:orientation="vertical"
+                  android:id="@+id/timetable">
+
+
+        <TextView style="@style/deviceDetailSectionCaption"
+                  android:text="@string/manage" />
+
+        <Button android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/timetable"
+                android:id="@+id/timetableButton"
+                android:layout_marginLeft="10dp"/>
 
         <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
                      style="@style/deviceDetailTable">
 
-            <TableRow android:id="@+id/tableRowRoom">
-                <TextView android:text="@string/room"
+            <TableRow android:id="@+id/tableRowDayTemp">
+                <TextView android:text="@string/dayTemperature"
                           style="@style/deviceDetailDescription" />
-                <TextView android:id="@+id/room"
-                          android:text="xxxxx"
-                          style="@style/deviceDetailContent" />
-            </TableRow>
-
-            <TableRow android:id="@+id/tableRowDef">
-                <TextView android:text="@string/definition"
-                          style="@style/deviceDetailDescription" />
-                <TextView android:id="@+id/def"
-                          android:text="xxxxx"
-                          style="@style/deviceDetailContent" />
-            </TableRow>
-
-            <TableRow android:id="@+id/tableRowMeasured">
-                <TextView android:text="@string/measured"
-                          style="@style/deviceDetailDescription" />
-                <TextView android:id="@+id/measured"
-                          android:text="xx.xx.xxxx xx:xx"
-                          style="@style/deviceDetailContent" />
-            </TableRow>
-
-            <TableRow android:id="@+id/tableRowActuator">
-                <TextView android:text="@string/actuator"
-                          style="@style/deviceDetailDescription" />
-                <TextView android:id="@+id/actuator"
-                          style="@style/deviceDetailContent"
-                          android:text="xx (%)"/>
-            </TableRow>
-
-            <TableRow android:id="@+id/tableRowTemperature">
-                <TextView android:text="@string/temperature"
-                          style="@style/deviceDetailDescription" />
-                <TextView android:id="@+id/temperature"
-                          style="@style/deviceDetailContent"
-                          android:text="xx.x (Celsius)"/>
-            </TableRow>
-
-            <TableRow android:id="@+id/tableRowWarnings">
-                <TextView android:text="@string/warnings"
-                          style="@style/deviceDetailDescription" />
-                <TextView android:id="@+id/warnings"
-                          style="@style/deviceDetailContent"
-                          android:text="Window xxxxx"/>
-            </TableRow>
-
-            <TableRow android:id="@+id/tableRowDesiredTemperature">
-                <TextView android:text="@string/desiredTemperature"
-                          style="@style/deviceDetailDescription" />
-                <TextView android:id="@+id/desiredTemperature"
+                <TextView android:id="@+id/dayTemperature"
                           android:text="xx.x (Celsius)"
                           style="@style/deviceDetailContent" />
             </TableRow>
 
-            <TableRow android:id="@+id/tableRowDesiredTemperatureSeek">
-                <TextView
-                        android:text=""
-                        style="@style/deviceDetailDescription" />
-                <SeekBar android:id="@+id/desiredTemperatureSeek"
+            <TableRow>
+                <TextView android:text=""
+                          style="@style/deviceDetailDescription" />
+                <SeekBar android:id="@+id/dayTemperatureSeek"
                          style="@style/deviceDetailContentSeek"
                          android:max="50"
                          android:layout_marginRight="10dp"/>
 
             </TableRow>
 
-            <TableRow android:id="@+id/tableRowMode">
-                <TextView android:text="@string/mode"
+            <TableRow android:id="@+id/tableRowNightTemp">
+                <TextView android:text="@string/nightTemperature"
                           style="@style/deviceDetailDescription" />
-                <Spinner
-                        android:id="@+id/mode"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:prompt="@string/setMode"
-                        />
+                <TextView android:id="@+id/nightTemperature"
+                          android:text="xx.x (Celsius)"
+                          style="@style/deviceDetailContent" />
             </TableRow>
 
+            <TableRow>
+                <TextView android:text=""
+                          style="@style/deviceDetailDescription" />
+                <SeekBar android:id="@+id/nightTemperatureSeek"
+                         style="@style/deviceDetailContentSeek"
+                         android:max="50"
+                         android:progress="@+id/desiredTemperature"
+                         android:layout_marginRight="10dp"/>
+
+            </TableRow>
+
+            <TableRow android:id="@+id/tableRowWindowOpenTemp">
+                <TextView android:text="@string/windowOpenTemp"
+                          style="@style/deviceDetailDescription" />
+                <TextView android:id="@+id/windowOpenTemp"
+                          android:text="xx.x (Celsius)"
+                          style="@style/deviceDetailContent" />
+            </TableRow>
+
+            <TableRow>
+                <TextView android:text=""
+                          style="@style/deviceDetailDescription" />
+                <SeekBar android:id="@+id/windowOpenTempSeek"
+                         style="@style/deviceDetailContentSeek"
+                         android:max="50"
+                         android:progress="@+id/windowOpen"
+                         android:layout_marginRight="10dp"/>
+
+            </TableRow>
         </TableLayout>
 
-        <LinearLayout android:layout_width="fill_parent"
-                      android:layout_height="wrap_content"
-                      android:layout_marginTop="20dp"
-                      android:orientation="vertical"
-                      android:id="@+id/graphLayout">
 
-
-            <TextView style="@style/deviceDetailSectionCaption"
-                      android:text="@string/plots" />
-
-            <Button android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/temperatureGraph"
-                    android:id="@+id/temperatureGraph"
-                    android:layout_marginLeft="10dp"/>
-            <Button android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/actuatorGraph"
-                    android:id="@+id/actuatorGraph"
-                    android:layout_marginLeft="10dp"/>
-        </LinearLayout>
-
-        <LinearLayout android:layout_width="fill_parent"
-                      android:layout_height="wrap_content"
-                      android:layout_marginTop="20dp"
-                      android:orientation="vertical"
-                      android:id="@+id/timetable">
-
-
-            <TextView style="@style/deviceDetailSectionCaption"
-                      android:text="@string/manage" />
-
-            <Button android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/timetable"
-                    android:id="@+id/timetableButton"
-                    android:layout_marginLeft="10dp"/>
-
-            <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                         style="@style/deviceDetailTable">
-
-                <TableRow android:id="@+id/tableRowDayTemp">
-                    <TextView android:text="@string/dayTemperature"
-                              style="@style/deviceDetailDescription" />
-                    <TextView android:id="@+id/dayTemperature"
-                              android:text="xx.x (Celsius)"
-                              style="@style/deviceDetailContent" />
-                </TableRow>
-
-                <TableRow>
-                    <TextView android:text=""
-                              style="@style/deviceDetailDescription" />
-                    <SeekBar android:id="@+id/dayTemperatureSeek"
-                             style="@style/deviceDetailContentSeek"
-                             android:max="50"
-                             android:layout_marginRight="10dp"/>
-
-                </TableRow>
-
-                <TableRow android:id="@+id/tableRowNightTemp">
-                    <TextView android:text="@string/nightTemperature"
-                              style="@style/deviceDetailDescription" />
-                    <TextView android:id="@+id/nightTemperature"
-                              android:text="xx.x (Celsius)"
-                              style="@style/deviceDetailContent" />
-                </TableRow>
-
-                <TableRow>
-                    <TextView android:text=""
-                              style="@style/deviceDetailDescription" />
-                    <SeekBar android:id="@+id/nightTemperatureSeek"
-                             style="@style/deviceDetailContentSeek"
-                             android:max="50"
-                             android:progress="@+id/desiredTemperature"
-                             android:layout_marginRight="10dp"/>
-
-                </TableRow>
-
-                <TableRow android:id="@+id/tableRowWindowOpenTemp">
-                    <TextView android:text="@string/windowOpenTemp"
-                              style="@style/deviceDetailDescription" />
-                    <TextView android:id="@+id/windowOpenTemp"
-                              android:text="xx.x (Celsius)"
-                              style="@style/deviceDetailContent" />
-                </TableRow>
-
-                <TableRow>
-                    <TextView android:text=""
-                              style="@style/deviceDetailDescription" />
-                    <SeekBar android:id="@+id/windowOpenTempSeek"
-                             style="@style/deviceDetailContentSeek"
-                             android:max="50"
-                             android:progress="@+id/windowOpen"
-                             android:layout_marginRight="10dp"/>
-
-                </TableRow>
-            </TableLayout>
-
-
-        </LinearLayout>
     </LinearLayout>
-</ScrollView>
+</LinearLayout>

@@ -25,77 +25,79 @@
   ~   Boston, MA  02110-1301  USA
   -->
 
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_height="wrap_content" android:layout_width="fill_parent">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:orientation="vertical">
 
 
-    <LinearLayout android:layout_width="fill_parent"
-                  android:layout_height="fill_parent"
-                  android:orientation="vertical">
+    <TextView style="@style/deviceDetailSectionCaption"
+              android:text="@string/generalDetails" />
+
+    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                 style="@style/deviceDetailTable">
+
+        <TableRow android:id="@+id/tableRowDeviceName">
+            <TextView android:text="@string/deviceName"
+                      style="@style/deviceDetailDescription" />
+            <TextView android:id="@+id/deviceName"
+                      android:text="xxxxxxxx"
+                      style="@style/deviceDetailContent"/>
+        </TableRow>
+
+        <TableRow android:id="@+id/tableRowRoom">
+            <TextView android:text="@string/room"
+                      style="@style/deviceDetailDescription" />
+            <TextView android:id="@+id/room"
+                      android:text="xxxxx"
+                      style="@style/deviceDetailContent" />
+        </TableRow>
+
+        <TableRow android:id="@+id/tableRowMeasured">
+            <TextView android:text="@string/measured"
+                      style="@style/deviceDetailDescription" />
+            <TextView android:id="@+id/measured"
+                      android:text="xx.xx.xxxx xx:xx"
+                      style="@style/deviceDetailContent" />
+        </TableRow>
+
+        <TableRow android:id="@+id/tableRowMac">
+            <TextView android:text="@string/mac"
+                      style="@style/deviceDetailDescription" />
+            <TextView android:id="@+id/mac"
+                      style="@style/deviceDetailContent"
+                      android:text="xx:xx:xx:xx:xx:xx"/>
+        </TableRow>
+
+        <TableRow android:id="@+id/tableRowIP">
+            <TextView android:text="@string/ip"
+                      style="@style/deviceDetailDescription" />
+            <TextView android:id="@+id/ip"
+                      style="@style/deviceDetailContent"
+                      android:text="xxx.xxx.x.xx"/>
+        </TableRow>
+
+        <TableRow android:id="@+id/tableRowState">
+            <TextView android:text="@string/state"
+                      style="@style/deviceDetailDescription" />
+            <TextView android:id="@+id/state"
+                      style="@style/deviceDetailContent"
+                      android:text="xx"/>
+        </TableRow>
+
+    </TableLayout>
 
 
-        <TextView style="@style/deviceDetailSectionCaption"
-                  android:text="@string/generalDetails" />
+    <Button android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/wake"
+            android:id="@+id/wakeButton"
+            android:layout_marginLeft="10dp"/>
 
-        <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                     style="@style/deviceDetailTable">
+    <Button android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/update"
+            android:id="@+id/refreshButton"
+            android:layout_marginLeft="10dp"/>
 
-            <TableRow android:id="@+id/tableRowRoom">
-                <TextView android:text="@string/room"
-                          style="@style/deviceDetailDescription" />
-                <TextView android:id="@+id/room"
-                          android:text="xxxxx"
-                          style="@style/deviceDetailContent" />
-            </TableRow>
-
-            <TableRow android:id="@+id/tableRowMeasured">
-                <TextView android:text="@string/measured"
-                          style="@style/deviceDetailDescription" />
-                <TextView android:id="@+id/measured"
-                          android:text="xx.xx.xxxx xx:xx"
-                          style="@style/deviceDetailContent" />
-            </TableRow>
-
-            <TableRow android:id="@+id/tableRowMac">
-                <TextView android:text="@string/mac"
-                          style="@style/deviceDetailDescription" />
-                <TextView android:id="@+id/mac"
-                          style="@style/deviceDetailContent"
-                          android:text="xx:xx:xx:xx:xx:xx"/>
-            </TableRow>
-
-            <TableRow android:id="@+id/tableRowIP">
-                <TextView android:text="@string/ip"
-                          style="@style/deviceDetailDescription" />
-                <TextView android:id="@+id/ip"
-                          style="@style/deviceDetailContent"
-                          android:text="xxx.xxx.x.xx"/>
-            </TableRow>
-
-            <TableRow android:id="@+id/tableRowState">
-                <TextView android:text="@string/state"
-                          style="@style/deviceDetailDescription" />
-                <TextView android:id="@+id/state"
-                          style="@style/deviceDetailContent"
-                          android:text="xx"/>
-            </TableRow>
-
-        </TableLayout>
-
-
-        <Button android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/wake"
-                android:id="@+id/wakeButton"
-                android:layout_marginLeft="10dp"/>
-
-        <Button android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/update"
-                android:id="@+id/refreshButton"
-                android:layout_marginLeft="10dp"/>
-
-
-
-    </LinearLayout>
-</ScrollView>
+</LinearLayout>

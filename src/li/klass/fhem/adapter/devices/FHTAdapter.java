@@ -24,7 +24,6 @@
 
 package li.klass.fhem.adapter.devices;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -32,7 +31,6 @@ import android.view.View;
 import android.widget.*;
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
-import li.klass.fhem.activities.deviceDetail.FHTDeviceDetailActivity;
 import li.klass.fhem.activities.fhtControl.FHTTimetableControlListActivity;
 import li.klass.fhem.adapter.devices.core.DeviceDetailAvailableAdapter;
 import li.klass.fhem.constants.Actions;
@@ -192,11 +190,6 @@ public class FHTAdapter extends DeviceDetailAvailableAdapter<FHTDevice> {
     @Override
     public int getDetailViewLayout() {
         return R.layout.device_detail_fht;
-    }
-
-    @Override
-    protected Class<? extends Activity> getDeviceDetailActivity() {
-        return FHTDeviceDetailActivity.class;
     }
 
     private void createSeekBar(View view, int seekBarLayoutId, int tableRowUpdateTextFieldId, int updateTextFieldId,

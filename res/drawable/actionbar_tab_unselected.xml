@@ -10,7 +10,7 @@
   ~ distributed under license by Red Hat Inc.
   ~
   ~ This copyrighted material is made available to anyone wishing to use, modify,
-  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLICLICENSE, as published by the Free Software Foundation.
   ~
   ~ This program is distributed in the hope that it will be useful,
   ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
@@ -24,8 +24,18 @@
   ~   Boston, MA  02110-1301  USA
   -->
 
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <!--colorized using gimp einfaerben, #ffb400-->
-    <item android:drawable="@drawable/favorites_selected" android:state_selected="true" />
-    <item android:drawable="@drawable/favorites" />
-</selector>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- This is the main color -->
+
+    <!-- This is the line -->
+    <item>
+        <shape>
+            <solid android:color="@color/android_green" />
+        </shape>
+    </item>
+    <item android:bottom="2dp">
+        <shape>
+            <solid android:color="@color/navigationBarBackground" />
+        </shape>
+    </item>
+</layer-list>

@@ -107,6 +107,16 @@
     <!--       DEVICE DETAIL            -->
     <!-- #############################  -->
 
+    <style name="deviceDetailCaption">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:background">@color/navigationBarBackground</item>
+        <item name="android:textSize">20dp</item>
+        <item name="android:padding">6dp</item>
+        <item name="android:gravity">center_horizontal</item>
+        <!--<item name="android:layout_marginBottom">10dp</item>-->
+    </style>
+
     <style name="deviceDetailSectionCaption">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
@@ -153,4 +163,19 @@
         <item name="android:paddingLeft">20dp</item>
         <item name="android:paddingRight">20dp</item>
     </style>
+
+
+
+    <!-- the theme applied to the application or activity -->
+    <style name="ApplicationTheme" parent="@style/Theme.Sherlock.Light">
+        <item name="actionBarTabStyle">@style/ApplicationActionBarTabStyle</item>
+        <item name="selectableItemBackground">@drawable/actionbar_item_selectable</item>
+        <item name="abBackground">@color/navigationBarBackground</item>
+    </style>
+
+    <style name="ApplicationActionBarTabStyle">
+        <item name="android:background">@drawable/actionbar_tab_bg</item>
+    </style>
+
+
 </resources>

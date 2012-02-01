@@ -27,6 +27,8 @@ package li.klass.fhem.constants;
 public class Actions {
     private static final String prefix = Actions.class.getName() + ".";
     
+    public static final String SHOW_FRAGMENT = prefix + "SHOW_FRAGMENT";
+
     public static final String SHOW_UPDATING_DIALOG = prefix + "SHOW_UPDATING_DIALOG";
     public static final String DISMISS_UPDATING_DIALOG = prefix + "DISMISS_UPDATING_DIALOG";
     public static final String SHOW_EXECUTING_DIALOG = prefix + "SHOW_EXECUTING_DIALOG";

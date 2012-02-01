@@ -24,11 +24,9 @@
 
 package li.klass.fhem.adapter.devices;
 
-import android.app.Activity;
 import android.content.Context;
 import android.view.View;
 import li.klass.fhem.R;
-import li.klass.fhem.activities.deviceDetail.KS300DeviceDetailActivity;
 import li.klass.fhem.adapter.devices.core.DeviceDetailAvailableAdapter;
 import li.klass.fhem.domain.Device;
 import li.klass.fhem.domain.KS300Device;
@@ -83,10 +81,5 @@ public class KS300Adapter extends DeviceDetailAvailableAdapter<KS300Device> {
     @Override
     public Class<? extends Device> getSupportedDeviceClass() {
         return KS300Device.class;
-    }
-
-    @Override
-    protected Class<? extends Activity> getDeviceDetailActivity() {
-        return KS300DeviceDetailActivity.class;
     }
 }

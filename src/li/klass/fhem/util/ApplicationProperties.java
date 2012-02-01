@@ -56,7 +56,7 @@ public class ApplicationProperties {
     public ConnectionType getConnectionType() {
         try {
             String connectionType = PreferenceManager.getDefaultSharedPreferences(AndFHEMApplication.getContext())
-                    .getString(DataConnectionSwitch.CONNECTION_TYPE, null);
+                    .getString(DataConnectionSwitch.CONNECTION_TYPE, "DUMMYDATA");
             Log.i(ApplicationProperties.class.getName(), "returning " + connectionType + " as current connection type");
             return ConnectionType.valueOf(connectionType.toUpperCase());
         } catch (Exception e) {

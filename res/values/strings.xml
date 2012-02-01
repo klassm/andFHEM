@@ -32,6 +32,7 @@
 
     <string name="defaultRoomName">unknown</string>
 
+    <string name="deviceName">Name</string>
     <string name="temperature">Temperature</string>
     <string name="wind">Wind</string>
     <string name="rain">Rain</string>

@@ -25,78 +25,83 @@
   ~   Boston, MA  02110-1301  USA
   -->
 
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_height="wrap_content" android:layout_width="fill_parent">
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:orientation="vertical">
 
 
-    <LinearLayout android:layout_width="fill_parent"
-                  android:layout_height="fill_parent"
-                  android:orientation="vertical">
+    <TextView style="@style/deviceDetailSectionCaption"
+              android:text="@string/generalDetails" />
+
+    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                 style="@style/deviceDetailTable">
+
+        <TableRow android:id="@+id/tableRowDeviceName">
+            <TextView android:text="@string/deviceName"
+                      style="@style/deviceDetailDescription" />
+            <TextView android:id="@+id/deviceName"
+                      android:text="xxxxxxxx"
+                      style="@style/deviceDetailContent"/>
+        </TableRow>
+
+        <TableRow android:id="@+id/tableRowRoom">
+            <TextView android:text="@string/room"
+                      style="@style/deviceDetailDescription" />
+            <TextView android:id="@+id/room"
+                      android:text="xxxxx"
+                      style="@style/deviceDetailContent" />
+        </TableRow>
+
+        <TableRow android:id="@+id/tableRowDef">
+            <TextView android:text="@string/definition"
+                      style="@style/deviceDetailDescription" />
+            <TextView android:id="@+id/def"
+                      android:text="xxxxx"
+                      style="@style/deviceDetailContent" />
+        </TableRow>
+
+        <TableRow android:id="@+id/tableRowMeasured">
+            <TextView android:text="@string/measured"
+                      style="@style/deviceDetailDescription" />
+            <TextView android:id="@+id/measured"
+                      android:text="xx.xx.xxxx xx:xx"
+                      style="@style/deviceDetailContent" />
+        </TableRow>
+
+        <TableRow android:id="@+id/tableRowActuator">
+            <TextView android:text="@string/actuator"
+                      style="@style/deviceDetailDescription" />
+            <TextView android:id="@+id/actuator"
+                      style="@style/deviceDetailContent"
+                      android:text="xx (%)"/>
+        </TableRow>
+
+        <TableRow android:id="@+id/tableRowTemperature">
+            <TextView android:text="@string/temperature"
+                      style="@style/deviceDetailDescription" />
+            <TextView android:id="@+id/temperature"
+                      style="@style/deviceDetailContent"
+                      android:text="xx.x (Celsius)"/>
+        </TableRow>
+
+        <TableRow android:id="@+id/tableRowDesiredTemperature">
+            <TextView android:text="@string/desiredTemperature"
+                      style="@style/deviceDetailDescription" />
+            <TextView android:id="@+id/desiredTemperature"
+                      android:text="xx.x (Celsius)"
+                      style="@style/deviceDetailContent" />
+        </TableRow>
+
+        <TableRow android:id="@+id/tableRowHumidity">
+            <TextView android:text="@string/humidity"
+                      style="@style/deviceDetailDescription" />
+            <TextView android:id="@+id/humidity"
+                      style="@style/deviceDetailContent"
+                      android:text="xx (%)"/>
+        </TableRow>
 
 
-        <TextView style="@style/deviceDetailSectionCaption"
-                  android:text="@string/generalDetails" />
-
-        <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                     style="@style/deviceDetailTable">
-
-            <TableRow android:id="@+id/tableRowRoom">
-                <TextView android:text="@string/room"
-                          style="@style/deviceDetailDescription" />
-                <TextView android:id="@+id/room"
-                          android:text="xxxxx"
-                          style="@style/deviceDetailContent" />
-            </TableRow>
-
-            <TableRow android:id="@+id/tableRowDef">
-                <TextView android:text="@string/definition"
-                          style="@style/deviceDetailDescription" />
-                <TextView android:id="@+id/def"
-                          android:text="xxxxx"
-                          style="@style/deviceDetailContent" />
-            </TableRow>
-
-            <TableRow android:id="@+id/tableRowMeasured">
-                <TextView android:text="@string/measured"
-                          style="@style/deviceDetailDescription" />
-                <TextView android:id="@+id/measured"
-                          android:text="xx.xx.xxxx xx:xx"
-                          style="@style/deviceDetailContent" />
-            </TableRow>
-
-            <TableRow android:id="@+id/tableRowActuator">
-                <TextView android:text="@string/actuator"
-                          style="@style/deviceDetailDescription" />
-                <TextView android:id="@+id/actuator"
-                          style="@style/deviceDetailContent"
-                          android:text="xx (%)"/>
-            </TableRow>
-
-            <TableRow android:id="@+id/tableRowTemperature">
-                <TextView android:text="@string/temperature"
-                          style="@style/deviceDetailDescription" />
-                <TextView android:id="@+id/temperature"
-                          style="@style/deviceDetailContent"
-                          android:text="xx.x (Celsius)"/>
-            </TableRow>
-
-            <TableRow android:id="@+id/tableRowDesiredTemperature">
-                <TextView android:text="@string/desiredTemperature"
-                          style="@style/deviceDetailDescription" />
-                <TextView android:id="@+id/desiredTemperature"
-                          android:text="xx.x (Celsius)"
-                          style="@style/deviceDetailContent" />
-            </TableRow>
-
-            <TableRow android:id="@+id/tableRowHumidity">
-                <TextView android:text="@string/humidity"
-                          style="@style/deviceDetailDescription" />
-                <TextView android:id="@+id/humidity"
-                          style="@style/deviceDetailContent"
-                          android:text="xx (%)"/>
-            </TableRow>
-
-
-        </TableLayout>
-    </LinearLayout>
-</ScrollView>
+    </TableLayout>
+</LinearLayout>

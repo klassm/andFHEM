@@ -8,7 +8,7 @@
  * distributed under license by Red Hat Inc.
  *
  * This copyrighted material is made available to anyone wishing to use, modify,
- * copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+ * copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLICLICENSE, as published by the Free Software Foundation.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
@@ -22,9 +22,7 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.activities.deviceDetail;
+package li.klass.fhem.fragments.core;
 
-import li.klass.fhem.domain.FHTDevice;
-
-public class FHTDeviceDetailActivity extends DeviceDetailActivity<FHTDevice> {
+public interface ActionBarShowTabs {
 }

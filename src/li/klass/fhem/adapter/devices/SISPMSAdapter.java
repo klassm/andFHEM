@@ -24,22 +24,35 @@
 
 package li.klass.fhem.adapter.devices;
 
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.ToggleButton;
+import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.DeviceListOnlyAdapter;
+import li.klass.fhem.constants.Actions;
+import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.Device;
 import li.klass.fhem.domain.SISPMSDevice;
 
 public class SISPMSAdapter extends DeviceListOnlyAdapter<SISPMSDevice> {
 
     @Override
-    public void fillDeviceOverviewView(View view, SISPMSDevice device) {
+    public void fillDeviceOverviewView(View view, final SISPMSDevice device) {
         setTextView(view, R.id.deviceName, device.getAliasOrName());
 
         ToggleButton switchButton = (ToggleButton) view.findViewById(R.id.switchButton);
+        switchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Actions.DEVICE_TOGGLE_STATE);
+                intent.putExtras(new Bundle());
+                intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
+                AndFHEMApplication.getContext().startService(intent);
+            }
+        });
         switchButton.setChecked(device.isOn());
-        switchButton.setTag(device.getName());
     }
 
     @Override

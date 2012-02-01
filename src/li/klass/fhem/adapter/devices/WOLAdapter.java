@@ -24,13 +24,11 @@
 
 package li.klass.fhem.adapter.devices;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
 import li.klass.fhem.R;
-import li.klass.fhem.activities.deviceDetail.WOLDeviceDetailActivity;
 import li.klass.fhem.adapter.devices.core.DeviceDetailAvailableAdapter;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
@@ -43,11 +41,6 @@ public class WOLAdapter extends DeviceDetailAvailableAdapter<WOLDevice> {
         setTextView(view, R.id.deviceName, device.getAliasOrName());
         int isRunningText = device.isRunning() ? R.string.on : R.string.off;
         setTextViewOrHideTableRow(view, R.id.tableRowState, R.id.state, isRunningText);
-    }
-
-    @Override
-    protected Class<? extends Activity> getDeviceDetailActivity() {
-        return WOLDeviceDetailActivity.class;
     }
 
     @Override

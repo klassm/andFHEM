@@ -24,7 +24,6 @@
 
 package li.klass.fhem.adapter.devices.core;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -40,7 +39,6 @@ public abstract class DeviceDetailAvailableAdapter<D extends Device<D>> extends 
 
     @Override
     protected Intent onFillDeviceDetailIntent(Context context, Device device, Intent intent) {
-        intent.setClass(context, getDeviceDetailActivity());
         return intent;
     }
 
@@ -50,6 +48,7 @@ public abstract class DeviceDetailAvailableAdapter<D extends Device<D>> extends 
         View view = layoutInflater.inflate(getDetailViewLayout(), null);
         fillDeviceDetailView(context, view, device);
 
+        setTextViewOrHideTableRow(view, R.id.tableRowDeviceName, R.id.deviceName, device.getAliasOrName());
         setTextViewOrHideTableRow(view, R.id.tableRowDef, R.id.def, device.getDefinition());
         setTextViewOrHideTableRow(view, R.id.tableRowRoom, R.id.room, device.getRoom());
         setTextViewOrHideTableRow(view, R.id.tableRowMeasured, R.id.measured, device.getMeasured());
@@ -60,5 +59,4 @@ public abstract class DeviceDetailAvailableAdapter<D extends Device<D>> extends 
     }
     
     protected abstract void fillDeviceDetailView(Context context, View view, D device);
-    protected abstract Class<? extends Activity> getDeviceDetailActivity();
 }

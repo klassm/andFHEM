@@ -24,11 +24,9 @@
 
 package li.klass.fhem.adapter.devices;
 
-import android.app.Activity;
 import android.content.Context;
 import android.view.View;
 import li.klass.fhem.R;
-import li.klass.fhem.activities.deviceDetail.HMSDeviceDetailActivity;
 import li.klass.fhem.adapter.devices.core.DeviceDetailAvailableAdapter;
 import li.klass.fhem.domain.Device;
 import li.klass.fhem.domain.HMSDevice;
@@ -64,12 +62,6 @@ public class HMSAdapter extends DeviceDetailAvailableAdapter<HMSDevice> {
     @Override
     public int getDetailViewLayout() {
         return R.layout.device_detail_hms;
-    }
-
-
-    @Override
-    protected Class<? extends Activity> getDeviceDetailActivity() {
-        return HMSDeviceDetailActivity.class;
     }
 
     @Override
