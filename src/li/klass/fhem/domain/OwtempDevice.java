@@ -24,6 +24,7 @@
 
 package li.klass.fhem.domain;
 
+import li.klass.fhem.util.ValueUtil;
 import org.w3c.dom.NamedNodeMap;
 
 public class OwtempDevice extends Device<OwtempDevice> {
@@ -33,7 +34,7 @@ public class OwtempDevice extends Device<OwtempDevice> {
     @Override
     public void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {
         if (keyValue.equals("TEMPERATURE")) {
-            this.temperature = nodeContent;
+            this.temperature = ValueUtil.formatTemperature(nodeContent);
         } else if (keyValue.equals("WARNINGS")) {
             this.warnings = nodeContent;
             measured = attributes.getNamedItem("measured").getNodeValue();

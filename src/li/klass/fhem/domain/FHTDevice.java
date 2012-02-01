@@ -30,6 +30,7 @@ import li.klass.fhem.domain.fht.FHTMode;
 import li.klass.fhem.util.DayUtil;
 import li.klass.fhem.util.ValueDescriptionUtil;
 import li.klass.fhem.util.ValueExtractUtil;
+import li.klass.fhem.util.ValueUtil;
 import org.w3c.dom.NamedNodeMap;
 
 import java.util.Collections;
@@ -63,7 +64,7 @@ public class FHTDevice extends Device<FHTDevice> {
         if (keyValue.startsWith("ACTUATOR") && ! nodeContent.equalsIgnoreCase("pair")) {
             actuator = nodeContent;
         } else if (keyValue.equalsIgnoreCase("MEASURED-TEMP")) {
-            temperature = nodeContent;
+            temperature = ValueUtil.formatTemperature(nodeContent);
         } else if (keyValue.equals("DESIRED-TEMP")) {
             desiredTemp = ValueExtractUtil.extractLeadingDouble(nodeContent);
         } else if (keyValue.equals("WARNINGS")) {

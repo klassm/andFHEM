@@ -25,6 +25,7 @@
 package li.klass.fhem.domain;
 
 import li.klass.fhem.R;
+import li.klass.fhem.util.ValueUtil;
 import org.w3c.dom.NamedNodeMap;
 
 import java.util.HashMap;
@@ -41,7 +42,7 @@ public class HMSDevice extends Device<HMSDevice> {
     @Override
     public void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {
         if (keyValue.equals("TEMPERATURE")) {
-            temperature = nodeContent;
+            temperature = ValueUtil.formatTemperature(nodeContent);
         } else if (keyValue.equals("BATTERY")) {
             battery = nodeContent;
         } else if (keyValue.equals("HUMIDITY")) {

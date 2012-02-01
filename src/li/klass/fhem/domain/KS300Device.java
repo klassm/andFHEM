@@ -25,6 +25,7 @@
 package li.klass.fhem.domain;
 
 import li.klass.fhem.R;
+import li.klass.fhem.util.ValueUtil;
 import org.w3c.dom.NamedNodeMap;
 
 import java.io.Serializable;
@@ -54,7 +55,7 @@ public class KS300Device extends Device<KS300Device> implements Serializable {
     @Override
     public void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {
         if (keyValue.equals("TEMPERATURE")) {
-            this.temperature = nodeContent;
+            this.temperature = ValueUtil.formatTemperature(nodeContent);
         } else if (keyValue.equals("WIND")) {
             this.wind = nodeContent;
         } else if (keyValue.equals("HUMIDITY")) {

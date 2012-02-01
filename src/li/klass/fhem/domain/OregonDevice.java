@@ -25,6 +25,7 @@
 package li.klass.fhem.domain;
 
 import li.klass.fhem.R;
+import li.klass.fhem.util.ValueDescriptionUtil;
 import org.w3c.dom.NamedNodeMap;
 
 import java.util.HashMap;
@@ -56,9 +57,9 @@ public class OregonDevice extends Device<OregonDevice> {
     @Override
     protected void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {
         if (keyValue.equals("TEMPERATURE")) {
-            this.temperature = nodeContent + " (Celsius)";
+            this.temperature = ValueDescriptionUtil.appendTemperature(nodeContent);
         } else if (keyValue.equals("HUMIDITY")) {
-            this.humidity = nodeContent + " (%)";
+            this.humidity = ValueDescriptionUtil.appendPercent(nodeContent);
         } else if (keyValue.equals("FORECAST")) {
             this.forecast = nodeContent;
         } else if (keyValue.equals("DEWPOINT")) {

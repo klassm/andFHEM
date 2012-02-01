@@ -429,5 +429,4 @@ public class ChartingActivity extends Activity implements Updateable {
 
         context.startActivity(timeChartIntent);
     }
-    
 }
