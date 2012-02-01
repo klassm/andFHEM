@@ -51,7 +51,7 @@ public class FS20Device extends Device<FS20Device> implements Comparable<FS20Dev
         } else if (keyValue.equals("STATE") && tagName.equals("STATE")) {
             Node measured = attributes.getNamedItem("measured");
             if (measured != null) {
-                this.measured = measured.getTextContent();
+                this.measured = measured.getNodeValue();
             }
         } else if (keyValue.equalsIgnoreCase("MODEL")) {
             this.model = nodeContent.toUpperCase();

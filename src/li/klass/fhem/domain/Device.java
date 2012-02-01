@@ -57,7 +57,7 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
             if (keyAttribute == null) continue;
 
             String keyValue = keyAttribute.getNodeValue().toUpperCase().trim();
-            String nodeContent = item.getAttributes().getNamedItem("value").getTextContent().trim();
+            String nodeContent = item.getAttributes().getNamedItem("value").getNodeValue().trim();
             nodeContent = StringEscapeUtils.unescapeHtml(nodeContent);
 
             if (nodeContent == null || nodeContent.length() == 0) {
@@ -85,7 +85,7 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
         NamedNodeMap attributes = xml.getAttributes();
         for (int i = 0; i < attributes.getLength(); i++) {
             Node attributeNode = attributes.item(i);
-            onAttributeRead(attributeNode.getNodeName().toUpperCase(), attributeNode.getTextContent());
+            onAttributeRead(attributeNode.getNodeName().toUpperCase(), attributeNode.getNodeValue());
         }
     }
 

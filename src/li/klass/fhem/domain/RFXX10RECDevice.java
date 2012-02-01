@@ -36,7 +36,7 @@ public class RFXX10RECDevice extends Device<RFXX10RECDevice> {
         if (keyValue.equals("TIME")) {
             measured = nodeContent;
         } else if (keyValue.equals("STATECHANGE")) {
-            lastStateChangeTime = attributes.getNamedItem("measured").getTextContent();
+            lastStateChangeTime = attributes.getNamedItem("measured").getNodeValue();
             lastState = nodeContent;
         }
     }
