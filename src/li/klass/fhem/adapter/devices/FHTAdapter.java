@@ -28,7 +28,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.*;
 import li.klass.fhem.AndFHEMApplication;
@@ -184,9 +183,18 @@ public class FHTAdapter extends DeviceDetailAvailableAdapter<FHTDevice> {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, FHTTimetableControlListActivity.class);
-                intent.putExtras(new Bundle());
                 intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
                 context.startActivity(intent);
+            }
+        });
+
+        Button updateValuesButton = (Button) view.findViewById(R.id.updateValuesButton);
+        updateValuesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Actions.DEVICE_REFRESH_VALUES);
+                intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
+                context.startService(intent);
             }
         });
     }

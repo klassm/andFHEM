@@ -187,4 +187,8 @@ public class FHTService {
     public void resetTimetable(FHTDevice device) {
         device.resetDayControlMapValues();
     }
+
+    public void refreshValues(FHTDevice device) {
+        CommandExecutionService.INSTANCE.executeSafely("set " + device.getName() + " refreshvalues");
+    }
 }

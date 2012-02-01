@@ -56,6 +56,7 @@ public class Actions {
     public static final String DEVICE_SET_TIMETABLE = prefix + "DEVICE_SET_TIMETABLE";
     public static final String DEVICE_RESET_TIMETABLE = prefix + "DEVICE_RESET_TIMETABLE";
     public static final String DEVICE_SET_DESIRED_TEMPERATURE = prefix + "DEVICE_SET_DESIRED_TEMPERATURE";
+    public static final String DEVICE_REFRESH_VALUES = prefix + "DEVICE_REFRESH_VALUES";
     public static final String DEVICE_RENAME = prefix + "DEVICE_RENAME";
     public static final String DEVICE_DELETE = prefix + "DEVICE_DELETE";
     public static final String DEVICE_MOVE_ROOM = prefix + "DEVICE_MOVE_ROOM";

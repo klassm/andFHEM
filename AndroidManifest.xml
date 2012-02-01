@@ -95,6 +95,7 @@
                 <action android:name="li.klass.fhem.constants.Actions.DEVICE_SET_ALIAS" />
                 <action android:name="li.klass.fhem.constants.Actions.DEVICE_WAKE" />
                 <action android:name="li.klass.fhem.constants.Actions.DEVICE_REFRESH_STATE" />
+                <action android:name="li.klass.fhem.constants.Actions.DEVICE_REFRESH_VALUES" />
             </intent-filter>
         </service>
     </application>

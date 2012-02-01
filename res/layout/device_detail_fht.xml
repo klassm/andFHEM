@@ -162,6 +162,12 @@
                 android:id="@+id/timetableButton"
                 android:layout_marginLeft="10dp"/>
 
+        <Button android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/requestRefresh"
+                android:id="@+id/updateValuesButton"
+                android:layout_marginLeft="10dp"/>
+
         <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
                      style="@style/deviceDetailTable">
 

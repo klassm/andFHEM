@@ -87,6 +87,8 @@ public class DeviceIntentService extends ConvenientIntentService {
             FHTService.INSTANCE.setDesiredTemperature((FHTDevice) device, temperature);
         } else if (action.equals(DEVICE_RESET_TIMETABLE)) {
             FHTService.INSTANCE.resetTimetable((FHTDevice) device);
+        } else if (action.equals(DEVICE_REFRESH_VALUES)) {
+            FHTService.INSTANCE.refreshValues((FHTDevice) device);
         } else if (action.equals(DEVICE_RENAME)) {
             String newName = intent.getStringExtra(BundleExtraKeys.DEVICE_NEW_NAME);
             DeviceService.INSTANCE.renameDevice(device, newName);
