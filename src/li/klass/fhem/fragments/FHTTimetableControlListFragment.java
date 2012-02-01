@@ -115,7 +115,7 @@ public class FHTTimetableControlListFragment extends BaseFragment {
             protected void onReceiveResult(int resultCode, Bundle resultData) {
                 super.onReceiveResult(resultCode, resultData);
 
-                if (resultCode == ResultCodes.SUCCESS) {
+                if (resultCode == ResultCodes.SUCCESS && getView() != null) {
                     FHTDevice fhtDevice = (FHTDevice) resultData.getSerializable(BundleExtraKeys.DEVICE);
                     adapter.updateData(fhtDevice.getDayControlMap());
 
