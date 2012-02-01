@@ -47,6 +47,8 @@ public class DeviceDetailFragment extends BaseFragment {
         this.deviceName = bundle.getString(BundleExtraKeys.DEVICE_NAME);
     }
 
+    public DeviceDetailFragment() {}
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);

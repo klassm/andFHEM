@@ -50,6 +50,8 @@ public class RoomListFragment extends BaseFragment implements Updateable, Action
 
     private RoomListAdapter adapter;
 
+    public RoomListFragment() {}
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         adapter = new RoomListAdapter(getActivity(), R.layout.room_list_name, new ArrayList<String>());

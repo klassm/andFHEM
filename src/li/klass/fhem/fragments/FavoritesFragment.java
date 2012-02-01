@@ -42,6 +42,9 @@ import li.klass.fhem.fragments.core.DeviceListFragment;
 import li.klass.fhem.fragments.core.TopLevelFragment;
 
 public class FavoritesFragment extends DeviceListFragment implements TopLevelFragment, ActionBarShowTabs {
+
+    public FavoritesFragment() {}
+
     @Override
     protected String getUpdateAction() {
         return Actions.FAVORITE_ROOM_LIST;

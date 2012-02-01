@@ -31,6 +31,8 @@ import li.klass.fhem.fragments.core.TopLevelFragment;
 
 public class AllDevicesFragment extends DeviceListFragment implements TopLevelFragment, ActionBarShowTabs {
 
+    public AllDevicesFragment() {}
+
     @Override
     protected String getUpdateAction() {
         return Actions.GET_ALL_ROOMS_DEVICE_LIST;

@@ -33,8 +33,10 @@ import li.klass.fhem.fragments.core.DeviceListFragment;
 import static li.klass.fhem.constants.BundleExtraKeys.ROOM_NAME;
 
 public class RoomDetailFragment extends DeviceListFragment {
-    
+
     private String roomName;
+
+    public RoomDetailFragment() {}
 
     public RoomDetailFragment(Bundle bundle) {
         this.roomName = bundle.getString(BundleExtraKeys.ROOM_NAME);
