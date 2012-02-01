@@ -41,6 +41,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.Menu;
 import android.support.v4.view.MenuItem;
 import android.util.Log;
+import android.widget.Toast;
 import li.klass.fhem.ApplicationUrls;
 import li.klass.fhem.R;
 import li.klass.fhem.activities.PreferencesActivity;
@@ -57,6 +58,8 @@ import li.klass.fhem.service.room.RoomListService;
 import java.lang.reflect.Constructor;
 import java.util.Stack;
 
+import static li.klass.fhem.constants.Actions.*;
+
 public abstract class FragmentBaseActivity extends FragmentActivity implements ActionBar.TabListener, Updateable {
     public static final int DIALOG_UPDATING = 1;
     public static final int DIALOG_EXECUTING = 2;
@@ -70,7 +73,7 @@ public abstract class FragmentBaseActivity extends FragmentActivity implements A
 
     private Receiver broadcastReceiver;
     private Menu optionsMenu;
-    
+
     private Handler updateHandler;
 
     private class Receiver extends BroadcastReceiver {
@@ -82,6 +85,10 @@ public abstract class FragmentBaseActivity extends FragmentActivity implements A
             intentFilter.addAction(Actions.SHOW_FRAGMENT);
             intentFilter.addAction(Actions.DISMISS_UPDATING_DIALOG);
             intentFilter.addAction(Actions.DO_UPDATE);
+            intentFilter.addAction(SHOW_EXECUTING_DIALOG);
+            intentFilter.addAction(DISMISS_EXECUTING_DIALOG);
+            intentFilter.addAction(SHOW_TOAST);
+            intentFilter.addAction(DO_UPDATE);
         }
 
         @Override
@@ -100,6 +107,13 @@ public abstract class FragmentBaseActivity extends FragmentActivity implements A
                     optionsMenu.findItem(R.id.menu_refresh).setVisible(false);
                     optionsMenu.findItem(R.id.menu_refresh_progress).setVisible(true);
                 }
+                else if (action.equals(SHOW_EXECUTING_DIALOG)) {
+                    showDialogSafely(FragmentBaseActivity.DIALOG_EXECUTING);
+                } else if (action.equals(DISMISS_EXECUTING_DIALOG)) {
+                    dismissDialog(FragmentBaseActivity.DIALOG_EXECUTING);
+                } else if (action.equals(SHOW_TOAST)) {
+                    Toast.makeText(FragmentBaseActivity.this, intent.getIntExtra(BundleExtraKeys.TOAST_STRING_ID, 0), Toast.LENGTH_SHORT).show();
+                }
             } catch (Exception e) {
                 Log.e(FragmentBaseActivity.class.getName(), "exception occurred while receiving broadcast", e);
             }
@@ -114,7 +128,7 @@ public abstract class FragmentBaseActivity extends FragmentActivity implements A
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
+
         updateHandler = new Handler();
         updateHandler.postDelayed(new Runnable() {
             boolean firstRun = true;
@@ -122,7 +136,7 @@ public abstract class FragmentBaseActivity extends FragmentActivity implements A
             public void run() {
                 String updateTime = PreferenceManager.getDefaultSharedPreferences(FragmentBaseActivity.this).getString("AUTO_UPDATE_TIME", "-1");
                 Long millis = Long.valueOf(updateTime);
-                
+
                 if (! firstRun && millis != -1) {
                     Intent updateIntent = new Intent(Actions.DO_UPDATE);
                     updateIntent.putExtra(BundleExtraKeys.DO_REFRESH, true);
