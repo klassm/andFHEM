@@ -40,8 +40,6 @@
 
         <activity android:name=".activities.PreferencesActivity" />
 
-        <activity android:name=".activities.fhtControl.FHTTimetableControlListActivity" android:theme="@android:style/Theme.Light" />
-
         <activity android:name=".activities.graph.ChartingActivity"/>
         <activity android:name=".activities.graph.ChartingDateSelectionActivity"/>
 

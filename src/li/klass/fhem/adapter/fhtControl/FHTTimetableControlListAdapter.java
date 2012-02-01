@@ -168,6 +168,7 @@ public class FHTTimetableControlListAdapter extends NestedListViewAdapter<Intege
     }
 
     public void updateData(Map<Integer, FHTDayControl> fhtDayControlMap) {
+        if (fhtDayControlMap == null) return;
         this.controlMap = fhtDayControlMap;
         super.updateData();
     }

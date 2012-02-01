@@ -22,49 +22,43 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.activities.fhtControl;
+package li.klass.fhem.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import li.klass.fhem.R;
-import li.klass.fhem.activities.base.BaseActivity;
 import li.klass.fhem.adapter.fhtControl.FHTTimetableControlListAdapter;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.domain.FHTDevice;
+import li.klass.fhem.fragments.core.BaseFragment;
 import li.klass.fhem.widget.NestedListView;
 
-public class FHTTimetableControlListActivity extends BaseActivity<FHTTimetableControlListAdapter> {
+public class FHTTimetableControlListFragment extends BaseFragment {
     private String deviceName;
+    private volatile FHTTimetableControlListAdapter adapter;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        Bundle extras = getIntent().getExtras();
-        this.deviceName = extras.getString(BundleExtraKeys.DEVICE_NAME);
-
-        setTitle(getResources().getString(R.string.timetable) + " " + deviceName);
-        super.onCreate(savedInstanceState);
+    public FHTTimetableControlListFragment(Bundle bundle) {
+        deviceName = bundle.getString(BundleExtraKeys.DEVICE_NAME);
     }
 
-    @Override
-    protected FHTTimetableControlListAdapter initializeLayoutAndReturnAdapter() {
-        FHTTimetableControlListAdapter fhtControlListAdapter = new FHTTimetableControlListAdapter(this);
-        NestedListView nestedListView = (NestedListView) findViewById(R.id.control_fht_list);
-        nestedListView.setAdapter(fhtControlListAdapter);
-
-        return fhtControlListAdapter;
-    }
+    public FHTTimetableControlListFragment() {}
 
     @Override
-    protected void setLayout() {
-        setContentView(R.layout.control_fht_list);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
+        adapter = new FHTTimetableControlListAdapter(getActivity());
+        
+        View view = inflater.inflate(R.layout.control_fht_list, container, false);
 
-        Button saveButton = (Button) findViewById(R.id.save);
+        Button saveButton = (Button) view.findViewById(R.id.save);
         saveButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -78,11 +72,11 @@ public class FHTTimetableControlListActivity extends BaseActivity<FHTTimetableCo
                         update(false);
                     }
                 });
-                startService(intent);
+                getActivity().startService(intent);
             }
         });
 
-        Button resetButton = (Button) findViewById(R.id.reset);
+        Button resetButton = (Button) view.findViewById(R.id.reset);
         resetButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -95,9 +89,16 @@ public class FHTTimetableControlListActivity extends BaseActivity<FHTTimetableCo
                         update(false);
                     }
                 });
-                startService(intent);
+                getActivity().startService(intent);
             }
         });
+
+        NestedListView nestedListView = (NestedListView) view.findViewById(R.id.control_fht_list);
+        nestedListView.setAdapter(adapter);
+
+        update(false);
+
+        return view;
     }
 
     @Override
@@ -113,11 +114,13 @@ public class FHTTimetableControlListActivity extends BaseActivity<FHTTimetableCo
             @Override
             protected void onReceiveResult(int resultCode, Bundle resultData) {
                 super.onReceiveResult(resultCode, resultData);
+
                 if (resultCode == ResultCodes.SUCCESS) {
                     FHTDevice fhtDevice = (FHTDevice) resultData.getSerializable(BundleExtraKeys.DEVICE);
                     adapter.updateData(fhtDevice.getDayControlMap());
 
-                    View holder = findViewById(R.id.changeValueButtonHolder);
+                    View holder = getView().findViewById(R.id.changeValueButtonHolder);
+                    if (holder == null) return;
                     if (fhtDevice.hasChangedDayControlMapValues()) {
                         holder.setVisibility(View.VISIBLE);
                     } else {
@@ -126,6 +129,6 @@ public class FHTTimetableControlListActivity extends BaseActivity<FHTTimetableCo
                 }
             }
         });
-        startService(intent);
+        getActivity().startService(intent);
     }
 }

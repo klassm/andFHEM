@@ -56,7 +56,7 @@ public class UIBroadcastReceiver extends BroadcastReceiver {
             @Override
             public void run() {
 
-                Log.e(UIBroadcastReceiver.class.getName(), "received action " + action);
+                Log.d(UIBroadcastReceiver.class.getName(), "received action " + action);
 
                 try {
                     if (action.equals(DO_UPDATE)) {
