@@ -92,31 +92,36 @@ public abstract class FragmentBaseActivity extends FragmentActivity implements A
         }
 
         @Override
-        public void onReceive(Context context, Intent intent) {
-            try {
-                String action = intent.getAction();
-                if (action.equals(Actions.SHOW_FRAGMENT)) {
-                    String fragmentName = intent.getStringExtra(BundleExtraKeys.FRAGMENT_NAME);
-                    Constructor<?> constructor = Class.forName(fragmentName).getConstructor(Bundle.class);
-                    Fragment fragment = (Fragment) constructor.newInstance(intent.getExtras());
-                    switchToFragment(fragment);
-                } else if (action.equals(Actions.DISMISS_UPDATING_DIALOG)) {
-                    optionsMenu.findItem(R.id.menu_refresh).setVisible(true);
-                    optionsMenu.findItem(R.id.menu_refresh_progress).setVisible(false);
-                } else if (action.equals(Actions.DO_UPDATE) && intent.getBooleanExtra(BundleExtraKeys.DO_REFRESH, false)) {
-                    optionsMenu.findItem(R.id.menu_refresh).setVisible(false);
-                    optionsMenu.findItem(R.id.menu_refresh_progress).setVisible(true);
+        public void onReceive(Context context, final Intent intent) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        String action = intent.getAction();
+                        if (action.equals(Actions.SHOW_FRAGMENT)) {
+                            String fragmentName = intent.getStringExtra(BundleExtraKeys.FRAGMENT_NAME);
+                            Constructor<?> constructor = Class.forName(fragmentName).getConstructor(Bundle.class);
+                            Fragment fragment = (Fragment) constructor.newInstance(intent.getExtras());
+                            switchToFragment(fragment);
+                        } else if (action.equals(Actions.DISMISS_UPDATING_DIALOG)) {
+                            optionsMenu.findItem(R.id.menu_refresh).setVisible(true);
+                            optionsMenu.findItem(R.id.menu_refresh_progress).setVisible(false);
+                        } else if (action.equals(Actions.DO_UPDATE) && intent.getBooleanExtra(BundleExtraKeys.DO_REFRESH, false)) {
+                            optionsMenu.findItem(R.id.menu_refresh).setVisible(false);
+                            optionsMenu.findItem(R.id.menu_refresh_progress).setVisible(true);
+                        }
+                        else if (action.equals(SHOW_EXECUTING_DIALOG)) {
+                            showDialogSafely(FragmentBaseActivity.DIALOG_EXECUTING);
+                        } else if (action.equals(DISMISS_EXECUTING_DIALOG)) {
+                            dismissDialog(FragmentBaseActivity.DIALOG_EXECUTING);
+                        } else if (action.equals(SHOW_TOAST)) {
+                            Toast.makeText(FragmentBaseActivity.this, intent.getIntExtra(BundleExtraKeys.TOAST_STRING_ID, 0), Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (Exception e) {
+                        Log.e(FragmentBaseActivity.class.getName(), "exception occurred while receiving broadcast", e);
+                    }
                 }
-                else if (action.equals(SHOW_EXECUTING_DIALOG)) {
-                    showDialogSafely(FragmentBaseActivity.DIALOG_EXECUTING);
-                } else if (action.equals(DISMISS_EXECUTING_DIALOG)) {
-                    dismissDialog(FragmentBaseActivity.DIALOG_EXECUTING);
-                } else if (action.equals(SHOW_TOAST)) {
-                    Toast.makeText(FragmentBaseActivity.this, intent.getIntExtra(BundleExtraKeys.TOAST_STRING_ID, 0), Toast.LENGTH_SHORT).show();
-                }
-            } catch (Exception e) {
-                Log.e(FragmentBaseActivity.class.getName(), "exception occurred while receiving broadcast", e);
-            }
+            });
         }
 
         public IntentFilter getIntentFilter() {
