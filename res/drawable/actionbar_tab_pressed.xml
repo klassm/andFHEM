@@ -31,7 +31,7 @@
             <solid android:color="@color/android_green" />
         </shape>
     </item>
-    <item android:bottom="4dp">
+    <item android:bottom="6dp">
         <shape>
             <solid android:color="@color/tabPressGrey" />
         </shape>
