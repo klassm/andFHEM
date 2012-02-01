@@ -44,6 +44,18 @@
         </TableRow>
 
         <TableRow>
+            <TextView android:text="@string/startTime"
+                      style="@style/deviceDetailDescription" />
+            <TextView android:id="@+id/startTime"
+                      android:text="11:11"
+                      style="@style/deviceDetailContent" />
+            <Button android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:id="@+id/startTimeSet"
+                    android:text="@string/change" />
+        </TableRow>
+
+        <TableRow>
             <TextView android:text="@string/endDate"
                       style="@style/deviceDetailDescription" />
             <TextView android:id="@+id/endDate"
@@ -52,6 +64,18 @@
             <Button android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     android:id="@+id/endDateSet"
+                    android:text="@string/change" />
+        </TableRow>
+
+        <TableRow>
+            <TextView android:text="@string/endTime"
+                      style="@style/deviceDetailDescription" />
+            <TextView android:id="@+id/endTime"
+                      android:text="22:22"
+                      style="@style/deviceDetailContent" />
+            <Button android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:id="@+id/endTimeSet"
                     android:text="@string/change" />
         </TableRow>
         <Button android:layout_height="wrap_content"

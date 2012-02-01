@@ -161,6 +161,8 @@
 
     <string name="startDate">Start Date</string>
     <string name="endDate">End Date</string>
+    <string name="startTime">Start Time</string>
+    <string name="endTime">End Time</string>
     <string name="startDateAfterEndDateMsg">Start date has to be before end date</string>
     <string name="optionChangeStartEndDate">Change start or end date</string>
 
