@@ -45,7 +45,7 @@ public class DeviceActionUtil {
             AndFHEMApplication.getContext().sendBroadcast(new Intent(Actions.DO_UPDATE));
         }
     };
-    
+
     public static void renameDevice(final Context context, final Device device) {
         final EditText input = new EditText(context);
         input.setText(device.getName());
@@ -69,20 +69,14 @@ public class DeviceActionUtil {
     }
 
     public static void deleteDevice(final Context context, final Device device) {
-        new AlertDialog.Builder(context)
-                .setTitle(R.string.context_delete)
-                .setMessage(R.string.areYouSure)
-                .setPositiveButton(R.string.okButton, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        Intent intent = new Intent(Actions.DEVICE_DELETE);
-                        intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
-                        intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, updateReceiver);
-                        context.startService(intent);
-                    }
-                }).setNegativeButton(R.string.cancelButton, new DialogInterface.OnClickListener() {
+        showConfirmation(context, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
+                Intent intent = new Intent(Actions.DEVICE_DELETE);
+                intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
+                intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, updateReceiver);
+                context.startService(intent);
             }
-        }).show();
+        });
     }
 
     public static void moveDevice(final  Context context,final Device device) {
@@ -127,5 +121,16 @@ public class DeviceActionUtil {
             public void onClick(DialogInterface dialog, int whichButton) {
             }
         }).show();
+    }
+
+    public static void showConfirmation(final Context context, DialogInterface.OnClickListener positiveOnClickListener) {
+        new AlertDialog.Builder(context)
+                .setMessage(R.string.areYouSure)
+                .setPositiveButton(R.string.okButton, positiveOnClickListener)
+                .setNegativeButton(R.string.cancelButton, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        context.sendBroadcast(new Intent(Actions.DO_UPDATE));
+                    }
+                }).show();
     }
 }

@@ -24,7 +24,9 @@
 
 package li.klass.fhem.adapter.devices;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -39,6 +41,7 @@ import li.klass.fhem.domain.Device;
 import li.klass.fhem.domain.FHTDevice;
 import li.klass.fhem.domain.fht.FHTMode;
 import li.klass.fhem.service.graph.ChartSeriesDescription;
+import li.klass.fhem.util.device.DeviceActionUtil;
 
 import static li.klass.fhem.domain.FHTDevice.*;
 
@@ -101,27 +104,46 @@ public class FHTAdapter extends DeviceDetailAvailableAdapter<FHTDevice> {
         createSeekBar(view, R.id.dayTemperatureSeek, R.id.tableRowDayTemp, R.id.dayTemperature, device.getDayTemperature(),
                 new TemperatureValueSeekBarChangeListener() {
                     @Override
-                    public void onSeekBarValueChanged(double newTemperature) {
-                        String action = Actions.DEVICE_SET_DAY_TEMPERATURE;
-                        sendTemperatureIntent(newTemperature, action, device);
+                    public void onSeekBarValueChanged(final double newTemperature) {
+                        DeviceActionUtil.showConfirmation(context, new Dialog.OnClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                String action = Actions.DEVICE_SET_DAY_TEMPERATURE;
+                                sendTemperatureIntent(newTemperature, action, device);
+                            }
+                        });
+
                     }
                 });
 
         createSeekBar(view, R.id.nightTemperatureSeek, R.id.tableRowNightTemp, R.id.nightTemperature, device.getNightTemperature(),
                 new TemperatureValueSeekBarChangeListener() {
                     @Override
-                    public void onSeekBarValueChanged(double newTemperature) {
-                        String action = Actions.DEVICE_SET_NIGHT_TEMPERATURE;
-                        sendTemperatureIntent(newTemperature, action, device);
+                    public void onSeekBarValueChanged(final double newTemperature) {
+                        DeviceActionUtil.showConfirmation(context, new Dialog.OnClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                String action = Actions.DEVICE_SET_NIGHT_TEMPERATURE;
+                                sendTemperatureIntent(newTemperature, action, device);
+                            }
+                        });
                     }
                 });
 
         createSeekBar(view, R.id.windowOpenTempSeek, R.id.tableRowWindowOpenTemp, R.id.windowOpenTemp, device.getWindowOpenTemp(),
                 new TemperatureValueSeekBarChangeListener() {
                     @Override
-                    public void onSeekBarValueChanged(double newTemperature) {
-                        String action = Actions.DEVICE_SET_WINDOW_OPEN_TEMPERATURE;
-                        sendTemperatureIntent(newTemperature, action, device);
+                    public void onSeekBarValueChanged(final double newTemperature) {
+                        DeviceActionUtil.showConfirmation(context, new Dialog.OnClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                String action = Actions.DEVICE_SET_WINDOW_OPEN_TEMPERATURE;
+                                sendTemperatureIntent(newTemperature, action, device);
+                            }
+                        });
                     }
                 });
 
