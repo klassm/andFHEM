@@ -61,6 +61,8 @@ public abstract class FragmentBaseActivity extends FragmentActivity implements A
     private static final int ALL_DEVICES_TAB = 3;
 
     private Fragment currentFragment;
+    private Bundle currentFragmentBundle;
+
     private Stack<Fragment> stack = new Stack<Fragment>();
 
     private Receiver broadcastReceiver;
@@ -93,7 +95,10 @@ public abstract class FragmentBaseActivity extends FragmentActivity implements A
                         if (action.equals(Actions.SHOW_FRAGMENT)) {
                             String fragmentName = intent.getStringExtra(BundleExtraKeys.FRAGMENT_NAME);
                             Constructor<?> constructor = Class.forName(fragmentName).getConstructor(Bundle.class);
+
                             Fragment fragment = (Fragment) constructor.newInstance(intent.getExtras());
+                            currentFragmentBundle = intent.getExtras();
+
                             switchToFragment(fragment);
                         } else if (action.equals(Actions.DISMISS_UPDATING_DIALOG)) {
                             setShowRefreshProgressIcon(false);
@@ -120,8 +125,8 @@ public abstract class FragmentBaseActivity extends FragmentActivity implements A
         }
     }
 
-
     @Override
+    @SuppressWarnings("unchecked")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -176,6 +181,21 @@ public abstract class FragmentBaseActivity extends FragmentActivity implements A
 
         broadcastReceiver = new Receiver();
         registerReceiver(broadcastReceiver, broadcastReceiver.getIntentFilter());
+
+        if (savedInstanceState != null) {
+            if (stack != null) {
+                stack = (Stack<Fragment>) savedInstanceState.getSerializable(BundleExtraKeys.FRAGMENT_STACK);
+                if (! stack.isEmpty()) {
+                    stack.pop();
+                }
+            }
+            actionBar.setSelectedNavigationItem(savedInstanceState.getInt(BundleExtraKeys.CURRENT_TAB));
+
+            Intent intent = new Intent(Actions.SHOW_FRAGMENT);
+            Bundle currentFragmentBundle = savedInstanceState.getBundle(BundleExtraKeys.CURRENT_FRAGMENT_BUNDLE);
+            intent.putExtras(currentFragmentBundle);
+            sendBroadcast(intent);
+        }
     }
 
     @Override
@@ -270,6 +290,14 @@ public abstract class FragmentBaseActivity extends FragmentActivity implements A
         super.onPause();
         removeDialog();
         setShowRefreshProgressIcon(false);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBundle(BundleExtraKeys.CURRENT_FRAGMENT_BUNDLE, currentFragmentBundle);
+        outState.putSerializable(BundleExtraKeys.FRAGMENT_STACK, stack);
+        outState.putInt(BundleExtraKeys.CURRENT_TAB, getSupportActionBar().getSelectedTab().getPosition());
     }
 
     /**

@@ -25,8 +25,6 @@
 package li.klass.fhem.constants;
 
 public class BundleExtraKeys {
-    public static final String TAB_TARGET = "tabTarget";
-
     public static final String DO_REFRESH = "doRefresh";
     public static final String ROOM_NAME = "roomName";
     public static final String ROOM_LIST = "roomList";
@@ -35,7 +33,6 @@ public class BundleExtraKeys {
     public static final String DEVICE_NEW_NAME = "deviceNewName";
     public static final String DEVICE_NEW_ROOM = "deviceNewRoom";
     public static final String DEVICE_NEW_ALIAS = "deviceNewAlias";
-    public static final String DEVICE_TYPE = "deviceType";
     public static final String DEVICE_LIST = "deviceList";
     public static final String RESULT_RECEIVER = "resultReceiver";
     public static final String TOAST_STRING_ID = "toastStringID";
@@ -51,6 +48,9 @@ public class BundleExtraKeys {
     public static final String DEVICE_MODE = "deviceMode";
 
     public static final String FRAGMENT_NAME = "fragmentName";
+    public static final String FRAGMENT_STACK = "fragmentStack";
+    public static final String CURRENT_TAB = "currentTab";
+    public static final String CURRENT_FRAGMENT_BUNDLE = "currentFragmentBundle";
 
     public static final String TITLE = "title";
     public static final String CONTENT = "content";
