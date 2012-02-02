@@ -62,7 +62,7 @@ public class TelnetConnection implements FHEMConnection {
 
     @Override
     public String fileLogData(String logName, Date fromDate, Date toDate, String columnSpec) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH:mm");
         String command = new StringBuilder().append("get ").append(logName).append(" - - ")
                 .append(dateFormat.format(fromDate)).append(" ")
                 .append(dateFormat.format(toDate)).append(" ")

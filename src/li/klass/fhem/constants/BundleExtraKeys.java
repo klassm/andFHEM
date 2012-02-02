@@ -51,4 +51,7 @@ public class BundleExtraKeys {
     public static final String DEVICE_MODE = "deviceMode";
 
     public static final String FRAGMENT_NAME = "fragmentName";
+
+    public static final String TITLE = "title";
+    public static final String CONTENT = "content";
 }

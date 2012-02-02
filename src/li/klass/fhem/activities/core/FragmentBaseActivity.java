@@ -24,8 +24,6 @@
 
 package li.klass.fhem.activities.core;
 
-import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -34,10 +32,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.support.v4.app.ActionBar;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.*;
 import android.support.v4.view.Menu;
 import android.support.v4.view.MenuItem;
 import android.util.Log;
@@ -104,16 +99,15 @@ public abstract class FragmentBaseActivity extends FragmentActivity implements A
                             Fragment fragment = (Fragment) constructor.newInstance(intent.getExtras());
                             switchToFragment(fragment);
                         } else if (action.equals(Actions.DISMISS_UPDATING_DIALOG)) {
-                            optionsMenu.findItem(R.id.menu_refresh).setVisible(true);
-                            optionsMenu.findItem(R.id.menu_refresh_progress).setVisible(false);
+                            setShowRefreshProgressIcon(false);
                         } else if (action.equals(Actions.DO_UPDATE) && intent.getBooleanExtra(BundleExtraKeys.DO_REFRESH, false)) {
-                            optionsMenu.findItem(R.id.menu_refresh).setVisible(false);
-                            optionsMenu.findItem(R.id.menu_refresh_progress).setVisible(true);
-                        }
-                        else if (action.equals(SHOW_EXECUTING_DIALOG)) {
-                            showDialogSafely(FragmentBaseActivity.DIALOG_EXECUTING);
+                            setShowRefreshProgressIcon(true);
+                        } else if (action.equals(SHOW_EXECUTING_DIALOG)) {
+                            Bundle bundle = new Bundle();
+                            bundle.putInt(BundleExtraKeys.CONTENT, R.string.executing);
+                            showDialog(bundle);
                         } else if (action.equals(DISMISS_EXECUTING_DIALOG)) {
-                            dismissDialog(FragmentBaseActivity.DIALOG_EXECUTING);
+                            removeDialog();
                         } else if (action.equals(SHOW_TOAST)) {
                             Toast.makeText(FragmentBaseActivity.this, intent.getIntExtra(BundleExtraKeys.TOAST_STRING_ID, 0), Toast.LENGTH_SHORT).show();
                         }
@@ -264,12 +258,6 @@ public abstract class FragmentBaseActivity extends FragmentActivity implements A
         return super.onOptionsItemSelected(item);
     }
 
-    public void showDialogSafely(int dialogId) {
-        if (!isFinishing()) {
-            showDialog(dialogId);
-        }
-    }
-
     @Override
     public void onBackPressed() {
         if (! stack.empty()) {
@@ -281,18 +269,11 @@ public abstract class FragmentBaseActivity extends FragmentActivity implements A
     }
 
     @Override
-    protected Dialog onCreateDialog(int id) {
-        super.onCreateDialog(id);
-
-        switch (id) {
-            case DIALOG_UPDATING:
-                return ProgressDialog.show(this, "", getResources().getString(R.string.updating));
-            case DIALOG_EXECUTING:
-                return ProgressDialog.show(this, "", getResources().getString(R.string.executing));
-        }
-        return null;
+    protected void onPause() {
+        super.onPause();
+        removeDialog();
+        setShowRefreshProgressIcon(false);
     }
-
 
     /**
      * Shows the given fragment in the main content section.
@@ -328,5 +309,34 @@ public abstract class FragmentBaseActivity extends FragmentActivity implements A
                     .replace(android.R.id.content, fragment)
                     .commit();
         }
+    }
+
+    private void showDialog(Bundle bundle) {
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        Fragment prev = getSupportFragmentManager().findFragmentByTag("dialog");
+        if (prev != null) {
+            fragmentTransaction.remove(prev);
+        }
+        fragmentTransaction.addToBackStack(null);
+
+        DialogFragment newFragment = new ProgressFragment(bundle);
+        newFragment.show(fragmentTransaction, "dialog");
+
+        fragmentTransaction.commit();
+    }
+
+    private void removeDialog() {
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        Fragment prev = getSupportFragmentManager().findFragmentByTag("dialog");
+        if (prev != null) {
+            fragmentTransaction.remove(prev);
+        }
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+    }
+
+    private void setShowRefreshProgressIcon(boolean show) {
+        optionsMenu.findItem(R.id.menu_refresh).setVisible(! show);
+        optionsMenu.findItem(R.id.menu_refresh_progress).setVisible(show);
     }
 }

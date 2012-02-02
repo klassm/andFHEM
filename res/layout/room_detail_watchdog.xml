@@ -24,18 +24,14 @@
   ~   Boston, MA  02110-1301  USA
   -->
 
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- This is the main color -->
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             style="@style/deviceOverviewTable">
 
-    <!-- This is the line -->
-    <item>
-        <shape>
-            <solid android:color="#ffa4c639" />
-        </shape>
-    </item>
-    <item android:bottom="6dp">
-        <shape>
-            <solid android:color="@color/tabBackgroundGrey" />
-        </shape>
-    </item>
-</layer-list>
+    <TableRow>
+        <TextView android:id="@+id/deviceName"
+                  style="@style/deviceOverviewCaption"/>
+        <TextView android:id="@+id/triggered"
+                  style="@style/deviceOverviewContent"
+                  android:text="xxx"/>
+    </TableRow>
+</TableLayout>

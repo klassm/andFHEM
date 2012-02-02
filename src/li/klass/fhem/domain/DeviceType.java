@@ -46,7 +46,8 @@ public enum DeviceType {
     OWFS("OWFS", OWFSDevice.class, new OWFSAdapter()),
     LGTV("LGTV", LGTVDevice.class, new LGTVAdapter()),
     RFXCOM("RFXCOM", RFXCOMDevice.class, new RFXCOMAdapter()),
-    CUL_HM("CUL_HM", CULHMDevice.class, new CULHMAdapter());
+    CUL_HM("CUL_HM", CULHMDevice.class, new CULHMAdapter()),
+    WATCHDOG("watchdog", WatchdogDevice.class, new WatchdogAdapter());
 
     
     private String xmllistTag;
