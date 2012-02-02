@@ -80,6 +80,23 @@ public class FS20Adapter extends DeviceDetailAvailableAdapter<FS20Device> {
             context.startService(intent);
         }
     }
+    
+    private class SwitchButtonListener implements View.OnClickListener {
+
+        private String deviceName;
+
+        public SwitchButtonListener(String deviceName) {
+            this.deviceName = deviceName;
+        }
+
+        @Override
+        public void onClick(View view) {
+            Intent intent = new Intent(Actions.DEVICE_TOGGLE_STATE);
+            intent.putExtras(new Bundle());
+            intent.putExtra(BundleExtraKeys.DEVICE_NAME, deviceName);
+            AndFHEMApplication.getContext().startService(intent);
+        }
+    }
 
     @Override
     public int getOverviewLayout(FS20Device device) {
@@ -120,6 +137,7 @@ public class FS20Adapter extends DeviceDetailAvailableAdapter<FS20Device> {
             toggleButtonRow.setVisibility(View.GONE);
         } else {
             switchButton.setChecked(device.isOn());
+            switchButton.setOnClickListener(new SwitchButtonListener(device.getName()));
             switchButton.setTag(device.getName());
 
             seekBarRow.setVisibility(View.GONE);
@@ -189,15 +207,7 @@ public class FS20Adapter extends DeviceDetailAvailableAdapter<FS20Device> {
 
         ToggleButton switchButton = (ToggleButton) view.findViewById(R.id.switchButton);
         switchButton.setChecked(child.isOn());
-        switchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Actions.DEVICE_TOGGLE_STATE);
-                intent.putExtras(new Bundle());
-                intent.putExtra(BundleExtraKeys.DEVICE_NAME, child.getName());
-                AndFHEMApplication.getContext().startService(intent);
-            }
-        });
+        switchButton.setOnClickListener(new SwitchButtonListener(child.getName()));
     }
 
     private void fillFS20SeekView(View view, final FS20Device child) {
