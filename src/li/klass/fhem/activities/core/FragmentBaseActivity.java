@@ -320,8 +320,6 @@ public abstract class FragmentBaseActivity extends FragmentActivity implements A
 
         DialogFragment newFragment = new ProgressFragment(bundle);
         newFragment.show(fragmentTransaction, "dialog");
-
-        fragmentTransaction.commit();
     }
 
     private void removeDialog() {
