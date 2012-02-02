@@ -51,7 +51,7 @@ import li.klass.fhem.fragments.core.TopLevelFragment;
 import li.klass.fhem.service.room.RoomListService;
 
 import java.lang.reflect.Constructor;
-import java.util.Stack;
+import java.util.ArrayList;
 
 import static li.klass.fhem.constants.Actions.*;
 
@@ -61,7 +61,7 @@ public abstract class FragmentBaseActivity extends FragmentActivity implements A
     private static final int ALL_DEVICES_TAB = 3;
 
     private Intent currentFragmentIntent = null;
-    private Stack<Intent> fragmentHistoryStack = new Stack<Intent>();
+    private ArrayList<Intent> intentHistoryStack = new ArrayList<Intent>();
 
     private Receiver broadcastReceiver;
     private Menu optionsMenu;
@@ -190,21 +190,18 @@ public abstract class FragmentBaseActivity extends FragmentActivity implements A
 
     @SuppressWarnings("unchecked")
     private void restoreSavedInstance(Bundle savedInstanceState, ActionBar actionBar) {
-        Stack<Intent> previousIntentStack = (Stack<Intent>) savedInstanceState.getSerializable(BundleExtraKeys.FRAGMENT_HISTORY_STACK);
+        ArrayList<Intent> previousIntentStack = (ArrayList<Intent>) savedInstanceState.getSerializable(BundleExtraKeys.FRAGMENT_HISTORY_STACK);
+
         if (previousIntentStack != null) {
-            if (! previousIntentStack.isEmpty()) {
-                previousIntentStack.pop();
-            }
-            fragmentHistoryStack = previousIntentStack;
+            removeLastHistoryIntent(previousIntentStack);
+            intentHistoryStack = previousIntentStack;
         }
 
         if (savedInstanceState.containsKey(BundleExtraKeys.CURRENT_TAB)) {
             actionBar.setSelectedNavigationItem(savedInstanceState.getInt(BundleExtraKeys.CURRENT_TAB));
         }
 
-        Intent intent = new Intent(Actions.SHOW_FRAGMENT);
-        Bundle currentFragmentBundle = savedInstanceState.getBundle(BundleExtraKeys.CURRENT_FRAGMENT_INTENT);
-        intent.putExtras(currentFragmentBundle);
+        Intent intent = savedInstanceState.getParcelable(BundleExtraKeys.CURRENT_FRAGMENT_INTENT);
         sendBroadcast(intent);
     }
 
@@ -290,8 +287,8 @@ public abstract class FragmentBaseActivity extends FragmentActivity implements A
 
     @Override
     public void onBackPressed() {
-        if (! fragmentHistoryStack.empty()) {
-            Intent previousFragmentIntent = fragmentHistoryStack.pop();
+        if (! intentHistoryStack.isEmpty()) {
+            Intent previousFragmentIntent = removeLastHistoryIntent(intentHistoryStack);
             previousFragmentIntent.putExtra(BundleExtraKeys.FRAGMENT_ADD_TO_STACK, false);
             sendBroadcast(previousFragmentIntent);
         } else {
@@ -310,7 +307,7 @@ public abstract class FragmentBaseActivity extends FragmentActivity implements A
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putParcelable(BundleExtraKeys.CURRENT_FRAGMENT_INTENT, currentFragmentIntent);
-        outState.putSerializable(BundleExtraKeys.FRAGMENT_HISTORY_STACK, fragmentHistoryStack);
+        outState.putSerializable(BundleExtraKeys.FRAGMENT_HISTORY_STACK, intentHistoryStack);
         outState.putInt(BundleExtraKeys.CURRENT_TAB, getSupportActionBar().getSelectedTab().getPosition());
     }
 
@@ -321,8 +318,12 @@ public abstract class FragmentBaseActivity extends FragmentActivity implements A
      * @param putToStack put the fragment to history. Usually true, except when back is pressed (history)
      */
     private void switchToFragment(Intent callingIntent, Fragment fragment, boolean putToStack) {
-        if (fragment != null && fragmentHistoryStack.size() < 10) {
-            if (currentFragmentIntent != null && putToStack) fragmentHistoryStack.add(currentFragmentIntent);
+        if (fragment != null && intentHistoryStack.size() < 10) {
+            if (currentFragmentIntent != null&& putToStack &&
+                    ! currentFragmentIntent.getStringExtra(BundleExtraKeys.FRAGMENT_NAME)
+                            .equals(callingIntent.getStringExtra(BundleExtraKeys.FRAGMENT_NAME))) {
+                intentHistoryStack.add(currentFragmentIntent);
+            }
 
             currentFragmentIntent = callingIntent;
 
@@ -331,7 +332,7 @@ public abstract class FragmentBaseActivity extends FragmentActivity implements A
                 navigationMode = ActionBar.NAVIGATION_MODE_TABS;
             }
             if (fragment instanceof TopLevelFragment) {
-                fragmentHistoryStack.clear();
+                intentHistoryStack.clear();
             }
 
             if (getSupportActionBar().getNavigationMode() != navigationMode) {
@@ -368,7 +369,15 @@ public abstract class FragmentBaseActivity extends FragmentActivity implements A
     }
 
     private void setShowRefreshProgressIcon(boolean show) {
+        if (optionsMenu == null) return;
         optionsMenu.findItem(R.id.menu_refresh).setVisible(! show);
         optionsMenu.findItem(R.id.menu_refresh_progress).setVisible(show);
+    }
+
+    private Intent removeLastHistoryIntent(ArrayList<Intent> previousIntentStack) {
+        if (! previousIntentStack.isEmpty()) {
+            return previousIntentStack.remove(previousIntentStack.size() - 1);
+        }
+        return null;
     }
 }
