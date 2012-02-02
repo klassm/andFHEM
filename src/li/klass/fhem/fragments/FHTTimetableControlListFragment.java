@@ -45,10 +45,12 @@ public class FHTTimetableControlListFragment extends BaseFragment {
     private String deviceName;
     private volatile FHTTimetableControlListAdapter adapter;
 
+    @SuppressWarnings("unused")
     public FHTTimetableControlListFragment(Bundle bundle) {
         deviceName = bundle.getString(BundleExtraKeys.DEVICE_NAME);
     }
 
+    @SuppressWarnings("unused")
     public FHTTimetableControlListFragment() {}
 
     @Override

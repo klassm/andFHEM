@@ -35,6 +35,9 @@ public class ProgressFragment extends DialogFragment {
     private int title;
     private int content;
 
+    @SuppressWarnings("unused")
+    public ProgressFragment() {}
+
     public ProgressFragment(Bundle bundle) {
         title = bundle.getInt(BundleExtraKeys.TITLE);
         content = bundle.getInt(BundleExtraKeys.CONTENT);

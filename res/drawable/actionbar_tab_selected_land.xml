@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <!--
   ~ AndFHEM - Open Source Android application to control a FHEM home automation
   ~ server.
@@ -23,11 +24,18 @@
   ~   Boston, MA  02110-1301  USA
   -->
 
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- This is the main color -->
 
-    <item android:state_focused="false" android:state_selected="false" android:state_pressed="false" android:drawable="@drawable/actionbar_tab_unselected_land" />
-    <item android:state_focused="false" android:state_selected="true"  android:state_pressed="false" android:drawable="@drawable/actionbar_tab_selected_land" />
-    <item android:state_selected="false" android:state_pressed="true" android:drawable="@drawable/actionbar_tab_pressed" />
-    <item android:state_selected="true"  android:state_pressed="true" android:drawable="@drawable/actionbar_tab_pressed" />
-
-</selector>
+    <!-- This is the line -->
+    <item>
+        <shape>
+            <solid android:color="#ffa4c639" />
+        </shape>
+    </item>
+    <item android:bottom="6dp">
+        <shape>
+            <solid android:color="@color/navigationBarBackground" />
+        </shape>
+    </item>
+</layer-list>

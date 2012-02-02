@@ -43,10 +43,12 @@ import li.klass.fhem.domain.DeviceType;
 public class DeviceDetailFragment extends BaseFragment {
     private String deviceName;
 
+    @SuppressWarnings("unused")
     public DeviceDetailFragment(Bundle bundle) {
         this.deviceName = bundle.getString(BundleExtraKeys.DEVICE_NAME);
     }
 
+    @SuppressWarnings("unused")
     public DeviceDetailFragment() {}
 
     @Override
