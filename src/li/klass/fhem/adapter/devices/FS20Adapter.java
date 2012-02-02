@@ -179,8 +179,6 @@ public class FS20Adapter extends DeviceDetailAvailableAdapter<FS20Device> {
                         }
                         dialog.dismiss();
                     }
-
-
                 });
                 contextMenu.show();
 

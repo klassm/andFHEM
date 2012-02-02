@@ -56,9 +56,6 @@ import java.util.Stack;
 import static li.klass.fhem.constants.Actions.*;
 
 public abstract class FragmentBaseActivity extends FragmentActivity implements ActionBar.TabListener, Updateable {
-    public static final int DIALOG_UPDATING = 1;
-    public static final int DIALOG_EXECUTING = 2;
-
     private static final int FAVORITES_TAB = 1;
     private static final int ROOM_LIST_TAB = 2;
     private static final int ALL_DEVICES_TAB = 3;
@@ -289,7 +286,7 @@ public abstract class FragmentBaseActivity extends FragmentActivity implements A
      * @param putToStack put the fragment to history. Usually true, except when back is pressed (history)
      */
     private void switchToFragment(Fragment fragment, boolean putToStack) {
-        if (fragment != null) {
+        if (fragment != null && stack.size() < 10) {
             if (currentFragment != null && putToStack) stack.add(currentFragment);
 
             int navigationMode = ActionBar.NAVIGATION_MODE_STANDARD;
@@ -300,7 +297,9 @@ public abstract class FragmentBaseActivity extends FragmentActivity implements A
                 stack.clear();
             }
 
-            getSupportActionBar().setNavigationMode(navigationMode);
+            if (getSupportActionBar().getNavigationMode() != navigationMode) {
+                getSupportActionBar().setNavigationMode(navigationMode);
+            }
 
             currentFragment = fragment;
 
