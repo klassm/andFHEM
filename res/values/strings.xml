@@ -99,6 +99,7 @@
     <string name="context_move">Move device</string>
 
     <string name="areYouSure">Are you sure?</string>
+    <string name="areYouSureText">Are you sure you want to set %1$s to %2$s?</string>
     <string name="setMode">Set Mode</string>
 
     <string name="tab_roomList">Rooms</string>

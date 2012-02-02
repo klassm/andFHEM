@@ -28,6 +28,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.view.View;
 import android.widget.*;
 import li.klass.fhem.AndFHEMApplication;
@@ -40,6 +41,7 @@ import li.klass.fhem.domain.Device;
 import li.klass.fhem.domain.FHTDevice;
 import li.klass.fhem.domain.fht.FHTMode;
 import li.klass.fhem.service.graph.ChartSeriesDescription;
+import li.klass.fhem.util.ValueDescriptionUtil;
 import li.klass.fhem.util.device.DeviceActionUtil;
 
 import static li.klass.fhem.domain.FHTDevice.*;
@@ -104,6 +106,7 @@ public class FHTAdapter extends DeviceDetailAvailableAdapter<FHTDevice> {
                 new TemperatureValueSeekBarChangeListener() {
                     @Override
                     public void onSeekBarValueChanged(final double newTemperature) {
+                        String confirmationMessage = createConfirmationText(R.string.dayTemperature, newTemperature);
                         DeviceActionUtil.showConfirmation(context, new Dialog.OnClickListener() {
 
                             @Override
@@ -111,7 +114,7 @@ public class FHTAdapter extends DeviceDetailAvailableAdapter<FHTDevice> {
                                 String action = Actions.DEVICE_SET_DAY_TEMPERATURE;
                                 sendTemperatureIntent(newTemperature, action, device);
                             }
-                        });
+                        }, confirmationMessage);
 
                     }
                 });
@@ -120,6 +123,7 @@ public class FHTAdapter extends DeviceDetailAvailableAdapter<FHTDevice> {
                 new TemperatureValueSeekBarChangeListener() {
                     @Override
                     public void onSeekBarValueChanged(final double newTemperature) {
+                        String confirmationMessage = createConfirmationText(R.string.nightTemperature, newTemperature);
                         DeviceActionUtil.showConfirmation(context, new Dialog.OnClickListener() {
 
                             @Override
@@ -127,7 +131,7 @@ public class FHTAdapter extends DeviceDetailAvailableAdapter<FHTDevice> {
                                 String action = Actions.DEVICE_SET_NIGHT_TEMPERATURE;
                                 sendTemperatureIntent(newTemperature, action, device);
                             }
-                        });
+                        }, confirmationMessage);
                     }
                 });
 
@@ -135,6 +139,7 @@ public class FHTAdapter extends DeviceDetailAvailableAdapter<FHTDevice> {
                 new TemperatureValueSeekBarChangeListener() {
                     @Override
                     public void onSeekBarValueChanged(final double newTemperature) {
+                        String confirmationMessage = createConfirmationText(R.string.windowOpenTemp, newTemperature);
                         DeviceActionUtil.showConfirmation(context, new Dialog.OnClickListener() {
 
                             @Override
@@ -142,7 +147,7 @@ public class FHTAdapter extends DeviceDetailAvailableAdapter<FHTDevice> {
                                 String action = Actions.DEVICE_SET_WINDOW_OPEN_TEMPERATURE;
                                 sendTemperatureIntent(newTemperature, action, device);
                             }
-                        });
+                        }, confirmationMessage);
                     }
                 });
 
@@ -233,6 +238,16 @@ public class FHTAdapter extends DeviceDetailAvailableAdapter<FHTDevice> {
                 listener.onSeekBarValueChanged(value);
             }
         });
+    }
+    
+    private String createConfirmationText(int attributeStringId, double newTemperature) {
+        Context context = AndFHEMApplication.getContext();
+        Resources resources = context.getResources();
 
+        String attributeText = resources.getString(attributeStringId);
+        String temperatureText = ValueDescriptionUtil.appendTemperature(newTemperature);
+
+        String text = resources.getString(R.string.areYouSureText);
+        return String.format(text, attributeText, temperatureText);
     }
 }

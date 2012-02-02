@@ -124,8 +124,13 @@ public class DeviceActionUtil {
     }
 
     public static void showConfirmation(final Context context, DialogInterface.OnClickListener positiveOnClickListener) {
+        showConfirmation(context, positiveOnClickListener, null);
+    }
+
+    public static void showConfirmation(final Context context, DialogInterface.OnClickListener positiveOnClickListener, String text) {
         new AlertDialog.Builder(context)
-                .setMessage(R.string.areYouSure)
+                .setTitle(R.string.areYouSure)
+                .setMessage(text)
                 .setPositiveButton(R.string.okButton, positiveOnClickListener)
                 .setNegativeButton(R.string.cancelButton, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {

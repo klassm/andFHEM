@@ -98,6 +98,7 @@
     <string name="context_move">Gerät verschieben</string>
 
     <string name="areYouSure">Sind Sie sicher?</string>
+    <string name="areYouSureText">Möchten Sie wirklich %1$s auf %2$s setzen?</string>
     <string name="setMode">Modus setzen</string>
 
 
