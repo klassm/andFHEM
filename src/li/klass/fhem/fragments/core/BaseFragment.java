@@ -27,8 +27,8 @@ package li.klass.fhem.fragments.core;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.SupportActivity;
-import li.klass.fhem.activities.core.FragmentBaseActivity;
 import li.klass.fhem.activities.base.Updateable;
+import li.klass.fhem.activities.core.FragmentBaseActivity;
 import li.klass.fhem.util.UIBroadcastReceiver;
 
 public abstract class BaseFragment extends Fragment implements Updateable {

@@ -50,6 +50,10 @@ public class RoomListFragment extends BaseFragment implements Updateable, Action
 
     private RoomListAdapter adapter;
 
+    @SuppressWarnings("unused")
+    public RoomListFragment(Bundle bundle) {}
+
+    @SuppressWarnings("unused")
     public RoomListFragment() {}
 
     @Override

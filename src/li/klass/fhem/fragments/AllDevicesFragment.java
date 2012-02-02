@@ -24,6 +24,7 @@
 
 package li.klass.fhem.fragments;
 
+import android.os.Bundle;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.fragments.core.ActionBarShowTabs;
 import li.klass.fhem.fragments.core.DeviceListFragment;
@@ -31,6 +32,10 @@ import li.klass.fhem.fragments.core.TopLevelFragment;
 
 public class AllDevicesFragment extends DeviceListFragment implements TopLevelFragment, ActionBarShowTabs {
 
+    @SuppressWarnings("unused")
+    public AllDevicesFragment(Bundle bundle) {}
+
+    @SuppressWarnings("unused")
     public AllDevicesFragment() {}
 
     @Override

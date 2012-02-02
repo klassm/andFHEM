@@ -37,12 +37,12 @@ public class RoomDetailFragment extends DeviceListFragment {
     private String roomName;
 
     @SuppressWarnings("unused")
-    public RoomDetailFragment() {}
-
-    @SuppressWarnings("unused")
     public RoomDetailFragment(Bundle bundle) {
         this.roomName = bundle.getString(BundleExtraKeys.ROOM_NAME);
     }
+
+    @SuppressWarnings("unused")
+    public RoomDetailFragment() {}
 
     @Override
     protected void fillIntent(Intent intent) {
