@@ -67,6 +67,30 @@ public abstract class FragmentBaseActivity extends FragmentActivity implements A
     private Menu optionsMenu;
 
     private Handler autoUpdateHandler;
+    private final Runnable autoUpdateCallback = new Runnable() {
+        boolean firstRun = true;
+
+        @Override
+        public void run() {
+            String updateTime = PreferenceManager.getDefaultSharedPreferences(FragmentBaseActivity.this).getString("AUTO_UPDATE_TIME", "-1");
+            Long millis = Long.valueOf(updateTime);
+
+            if (!firstRun && millis != -1) {
+                Intent updateIntent = new Intent(Actions.DO_UPDATE);
+                updateIntent.putExtra(BundleExtraKeys.DO_REFRESH, true);
+                sendBroadcast(updateIntent);
+
+                Log.d(FragmentBaseActivity.class.getName(), "update");
+            }
+
+            if (millis == -1) {
+                millis = 30 * 1000L;
+            }
+            autoUpdateHandler.postDelayed(this, millis);
+
+            firstRun = false;
+        }
+    };
 
     private class Receiver extends BroadcastReceiver {
 
@@ -127,30 +151,7 @@ public abstract class FragmentBaseActivity extends FragmentActivity implements A
         super.onCreate(savedInstanceState);
 
         autoUpdateHandler = new Handler();
-        autoUpdateHandler.postDelayed(new Runnable() {
-            boolean firstRun = true;
-
-            @Override
-            public void run() {
-                String updateTime = PreferenceManager.getDefaultSharedPreferences(FragmentBaseActivity.this).getString("AUTO_UPDATE_TIME", "-1");
-                Long millis = Long.valueOf(updateTime);
-
-                if (!firstRun && millis != -1) {
-                    Intent updateIntent = new Intent(Actions.DO_UPDATE);
-                    updateIntent.putExtra(BundleExtraKeys.DO_REFRESH, true);
-                    sendBroadcast(updateIntent);
-
-                    Log.d(FragmentBaseActivity.class.getName(), "update");
-                }
-
-                if (millis == -1) {
-                    millis = 30 * 1000L;
-                }
-                autoUpdateHandler.postDelayed(this, millis);
-
-                firstRun = false;
-            }
-        }, 0);
+        autoUpdateHandler.postDelayed(autoUpdateCallback, 0);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
@@ -216,6 +217,10 @@ public abstract class FragmentBaseActivity extends FragmentActivity implements A
         super.onStop();
         RoomListService.INSTANCE.storeDeviceListMap();
         unregisterReceiver(broadcastReceiver);
+
+        autoUpdateHandler.removeCallbacks(autoUpdateCallback);
+//        removeDialog();
+        setShowRefreshProgressIcon(false);
     }
 
     @Override
@@ -297,18 +302,17 @@ public abstract class FragmentBaseActivity extends FragmentActivity implements A
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-        removeDialog();
-        setShowRefreshProgressIcon(false);
-    }
-
-    @Override
     protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
         outState.putParcelable(BundleExtraKeys.CURRENT_FRAGMENT_INTENT, currentFragmentIntent);
         outState.putSerializable(BundleExtraKeys.FRAGMENT_HISTORY_STACK, intentHistoryStack);
-        outState.putInt(BundleExtraKeys.CURRENT_TAB, getSupportActionBar().getSelectedTab().getPosition());
+
+        if (getSupportActionBar().getSelectedTab() != null) {
+            outState.putInt(BundleExtraKeys.CURRENT_TAB, getSupportActionBar().getSelectedTab().getPosition());
+        }
+
+        removeDialog();
+
+        super.onSaveInstanceState(outState);
     }
 
     /**
