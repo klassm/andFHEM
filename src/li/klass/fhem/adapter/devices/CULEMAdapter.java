@@ -30,6 +30,7 @@ import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.DeviceDetailAvailableAdapter;
 import li.klass.fhem.domain.CULEMDevice;
 import li.klass.fhem.domain.Device;
+import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 
 public class CULEMAdapter extends DeviceDetailAvailableAdapter<CULEMDevice> {
     @Override
@@ -62,6 +63,6 @@ public class CULEMAdapter extends DeviceDetailAvailableAdapter<CULEMDevice> {
         setTextViewOrHideTableRow(view, R.id.tableRowMonthUsage, R.id.monthUsage, device.getMonthUsage());
 
         createPlotButton(context, view, R.id.usageGraph, device.getCurrentUsage(),
-                device, R.string.yAxisUsage, CULEMDevice.COLUMN_SPEC_CURRENT_USAGE);
+                device, R.string.yAxisUsage, new ChartSeriesDescription(CULEMDevice.COLUMN_SPEC_CURRENT_USAGE, false, false, true));
     }
 }

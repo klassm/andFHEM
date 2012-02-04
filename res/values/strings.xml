@@ -73,6 +73,7 @@
     <string name="definition">Definition</string>
     <string name="optional">optional</string>
     <string name="regression">regression</string>
+    <string name="sum">Sum</string>
     <string name="mac">MAC address</string>
     <string name="ip">IP address</string>
     <string name="wake">Wake</string>

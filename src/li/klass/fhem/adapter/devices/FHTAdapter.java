@@ -40,7 +40,7 @@ import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.Device;
 import li.klass.fhem.domain.FHTDevice;
 import li.klass.fhem.domain.fht.FHTMode;
-import li.klass.fhem.service.graph.ChartSeriesDescription;
+import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ValueDescriptionUtil;
 import li.klass.fhem.util.device.DeviceActionUtil;
 
@@ -178,7 +178,7 @@ public class FHTAdapter extends DeviceDetailAvailableAdapter<FHTDevice> {
 
         createPlotButton(context, view, R.id.temperatureGraph, device.getTemperature(),
                 device, R.string.yAxisTemperature, new ChartSeriesDescription(COLUMN_SPEC_DESIRED_TEMPERATURE, true),
-                new ChartSeriesDescription(COLUMN_SPEC_TEMPERATURE, false, true));
+                new ChartSeriesDescription(COLUMN_SPEC_TEMPERATURE, false, true, false));
 
         createPlotButton(context, view, R.id.actuatorGraph, device.getActuator(),
                 device, R.string.yAxisActuator, COLUMN_SPEC_ACTUATOR);

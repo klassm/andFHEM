@@ -30,7 +30,7 @@ import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.DeviceDetailAvailableAdapter;
 import li.klass.fhem.domain.Device;
 import li.klass.fhem.domain.OregonDevice;
-import li.klass.fhem.service.graph.ChartSeriesDescription;
+import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 
 public class OregonAdapter extends DeviceDetailAvailableAdapter<OregonDevice> {
     @Override
@@ -66,7 +66,7 @@ public class OregonAdapter extends DeviceDetailAvailableAdapter<OregonDevice> {
         setTextViewOrHideTableRow(view, R.id.tableRowUVRisk, R.id.uvRisk, device.getUvRisk());
 
         createPlotButton(context, view, R.id.temperatureGraph, device.getTemperature(),
-                device, R.string.yAxisTemperature, new ChartSeriesDescription(OregonDevice.COLUMN_SPEC_TEMPERATURE, false, true));
+                device, R.string.yAxisTemperature, new ChartSeriesDescription(OregonDevice.COLUMN_SPEC_TEMPERATURE, false, true, false));
 
         createPlotButton(context, view, R.id.humidityGraph, device.getHumidity(),
                 device, R.string.yAxisHumidity, OregonDevice.COLUMN_SPEC_HUMIDITY);

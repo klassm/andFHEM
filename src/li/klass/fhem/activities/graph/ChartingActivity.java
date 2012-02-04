@@ -44,13 +44,15 @@ import li.klass.fhem.activities.base.Updateable;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.domain.Device;
-import li.klass.fhem.service.graph.ChartSeriesDescription;
+import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.service.graph.GraphEntry;
+import li.klass.fhem.service.graph.description.SeriesType;
 import org.achartengine.ChartFactory;
 import org.achartengine.GraphicalView;
 import org.achartengine.chart.PointStyle;
 import org.achartengine.model.TimeSeries;
 import org.achartengine.model.XYMultipleSeriesDataset;
+import org.achartengine.model.XYSeries;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import org.achartengine.renderer.XYSeriesRenderer;
 
@@ -63,6 +65,18 @@ import static li.klass.fhem.constants.BundleExtraKeys.*;
  * Shows a chart.
  */
 public class ChartingActivity extends Activity implements Updateable {
+
+    private class SeriesMapping {
+        private ChartSeriesDescription chartSeriesDescription;
+        private SeriesType seriesType;
+
+        private SeriesMapping(ChartSeriesDescription chartSeriesDescription, SeriesType seriesType) {
+            this.chartSeriesDescription = chartSeriesDescription;
+            this.seriesType = seriesType;
+        }
+    }
+
+
     private static final int OPTION_CHANGE_DATA = 1;
     public static final int REQUEST_TIME_CHANGE = 1;
 
@@ -228,10 +242,9 @@ public class ChartingActivity extends Activity implements Updateable {
         Date xMin = new Date();
         Date xMax = null;
 
-        double yMin = 1000;
-        double yMax = -1000;
 
-        Map<Integer, ChartSeriesDescription> regressionSeriesMapping = new HashMap<Integer, ChartSeriesDescription>();
+
+        Map<Integer, SeriesMapping> seriesMapping = new HashMap<Integer, SeriesMapping>();
 
         for (ChartSeriesDescription series : graphSeries) {
             String dataSetName = getResources().getString(series.getColumnSpecification());
@@ -255,9 +268,6 @@ public class ChartingActivity extends Activity implements Updateable {
                 if ((xMin.after(date))) xMin = date;
                 if ((xMax == null || xMax.before(date))) xMax = date;
 
-                if (yMin > value) yMin = value;
-                if (yMax < value) yMax = value;
-
                 seriesName.add(date, value);
             }
 
@@ -267,8 +277,25 @@ public class ChartingActivity extends Activity implements Updateable {
                 TimeSeries regressionSeries = new TimeSeries(getResources().getString(R.string.regression) + " " + dataSetName);
                 createRegressionForSeries(regressionSeries, data);
                 dataSet.addSeries(regressionSeries);
-                regressionSeriesMapping.put(dataSet.getSeriesCount() - 1, series);
+                seriesMapping.put(dataSet.getSeriesCount() - 1, new SeriesMapping(series, SeriesType.REGRESSION));
             }
+            
+            if (series.isShowSum()) {
+                TimeSeries sumSeries = new TimeSeries(getResources().getString(R.string.sum) + " " + dataSetName);
+                createSumForSeries(sumSeries, data);
+                dataSet.addSeries(sumSeries);
+                seriesMapping.put(dataSet.getSeriesCount() - 1, new SeriesMapping(series, SeriesType.SUM));
+            }
+        }
+
+        double yMin = 1000;
+        double yMax = -1000;
+        for (XYSeries series : dataSet.getSeries()) {
+            double seriesYMax = series.getMaxY();
+            if (seriesYMax > yMax) yMax = seriesYMax;
+            
+            double seriesYMin = series.getMinY();
+            if (seriesYMin < yMin) yMin = seriesYMin;
         }
 
         if (xMax == null) xMax = new Date();
@@ -285,8 +312,17 @@ public class ChartingActivity extends Activity implements Updateable {
             seriesRenderer.setColor(availableColors[i]);
             seriesRenderer.setPointStyle(PointStyle.POINT);
 
-            if (regressionSeriesMapping.containsKey(i)) {
-                seriesRenderer.setLineWidth(1);
+            if (seriesMapping.containsKey(i)) {
+                SeriesMapping mapping = seriesMapping.get(i);
+                switch (mapping.seriesType) {
+                    case REGRESSION:
+                        seriesRenderer.setLineWidth(1);
+                        break;
+                    case SUM:
+                        seriesRenderer.setFillBelowLine(true);
+                        break;
+                }
+
             } else {
                 seriesRenderer.setLineWidth(2);
             }
@@ -357,6 +393,14 @@ public class ChartingActivity extends Activity implements Updateable {
         for (GraphEntry entry : entries) {
             float y = b0 + b1 * entry.getDate().getTime();
             resultSeries.add(entry.getDate(), y);
+        }
+    }
+    
+    private void createSumForSeries(TimeSeries resultSeries, List<GraphEntry> entries) {
+        float ySum = 0;
+        for (GraphEntry entry : entries) {
+            ySum += entry.getValue();
+            resultSeries.add(entry.getDate(), ySum);
         }
     }
 

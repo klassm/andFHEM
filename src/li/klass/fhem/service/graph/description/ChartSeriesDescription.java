@@ -22,16 +22,18 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.service.graph;
+package li.klass.fhem.service.graph.description;
 
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 public class ChartSeriesDescription implements Parcelable {
+
     private int columnSpecification;
     private boolean showDiscreteValues;
     private boolean showRegression = false;
+    private boolean showSum = false;
 
     public static final Creator<ChartSeriesDescription> CREATOR = new Creator<ChartSeriesDescription>() {
 
@@ -47,10 +49,11 @@ public class ChartSeriesDescription implements Parcelable {
         }
     };
 
-    public ChartSeriesDescription(int columnSpecification, boolean showDiscreteValues, boolean showRegression) {
+    public ChartSeriesDescription(int columnSpecification, boolean showDiscreteValues, boolean showRegression, boolean showSum) {
         this.columnSpecification = columnSpecification;
         this.showDiscreteValues = showDiscreteValues;
         this.showRegression = showRegression;
+        this.showSum = showSum;
     }
 
     public ChartSeriesDescription(int columnSpecification, boolean showDiscreteValues) {
@@ -62,6 +65,7 @@ public class ChartSeriesDescription implements Parcelable {
         this.columnSpecification = bundle.getInt("COLUMN_SPECIFICATION");
         this.showDiscreteValues = bundle.getBoolean("SHOW_DISCRETE_VALUES");
         this.showRegression = bundle.getBoolean("SHOW_REGRESSION");
+        this.showSum = bundle.getBoolean("SHOW_SUM");
     }
 
     public int getColumnSpecification() {
@@ -70,6 +74,10 @@ public class ChartSeriesDescription implements Parcelable {
 
     public boolean isShowDiscreteValues() {
         return showDiscreteValues;
+    }
+
+    public boolean isShowSum() {
+        return showSum;
     }
 
     @Override
@@ -98,6 +106,7 @@ public class ChartSeriesDescription implements Parcelable {
         Bundle bundle = new Bundle();
         bundle.putInt("COLUMN_SPECIFICATION", columnSpecification);
         bundle.putBoolean("SHOW_DISCRETE_VALUES", showDiscreteValues);
+        bundle.putBoolean("SHOW_SUM", showSum);
         bundle.putBoolean("SHOW_REGRESSION", showRegression);
         parcel.writeBundle(bundle);
     }

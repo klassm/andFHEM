@@ -38,7 +38,7 @@ import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.Device;
 import li.klass.fhem.fragments.core.DeviceDetailFragment;
-import li.klass.fhem.service.graph.ChartSeriesDescription;
+import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 
 public abstract class DeviceAdapter<D extends Device> {
 

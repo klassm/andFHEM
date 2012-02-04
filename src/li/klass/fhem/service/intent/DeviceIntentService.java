@@ -32,7 +32,7 @@ import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.domain.*;
 import li.klass.fhem.domain.fht.FHTMode;
 import li.klass.fhem.service.device.*;
-import li.klass.fhem.service.graph.ChartSeriesDescription;
+import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.service.graph.GraphEntry;
 import li.klass.fhem.service.graph.GraphService;
 import li.klass.fhem.service.room.RoomListService;

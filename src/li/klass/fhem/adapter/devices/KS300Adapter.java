@@ -30,7 +30,7 @@ import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.DeviceDetailAvailableAdapter;
 import li.klass.fhem.domain.Device;
 import li.klass.fhem.domain.KS300Device;
-import li.klass.fhem.service.graph.ChartSeriesDescription;
+import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 
 public class KS300Adapter extends DeviceDetailAvailableAdapter<KS300Device> {
 
@@ -55,7 +55,7 @@ public class KS300Adapter extends DeviceDetailAvailableAdapter<KS300Device> {
         setTextViewOrHideTableRow(view, R.id.tableRowAvgMonth, R.id.avgMonth, device.getAverageMonth());
 
         createPlotButton(context, view, R.id.temperatureGraph, device.getTemperature(),
-                device, R.string.yAxisTemperature, new ChartSeriesDescription(KS300Device.COLUMN_SPEC_TEMPERATURE, false, true));
+                device, R.string.yAxisTemperature, new ChartSeriesDescription(KS300Device.COLUMN_SPEC_TEMPERATURE, false, true, false));
 
         createPlotButton(context, view, R.id.humidityGraph, device.getHumidity(),
                 device, R.string.yAxisHumidity, KS300Device.COLUMN_SPEC_HUMIDITY);
