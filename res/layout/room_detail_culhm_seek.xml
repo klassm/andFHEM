@@ -26,7 +26,8 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 style="@style/deviceOverviewLayout"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingBottom="15dp" android:paddingTop="15dp">
 
     <TextView style="@style/deviceOverviewLayoutDeviceName"
               android:id="@+id/deviceName"

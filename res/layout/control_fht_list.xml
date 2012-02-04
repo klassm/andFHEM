@@ -39,12 +39,14 @@
                     android:id="@+id/save"
                     android:text="@string/save"
                     android:layout_weight="2"
+                    style="@style/button"
                     />
             <Button android:layout_height="wrap_content"
                     android:layout_width="fill_parent"
                     android:id="@+id/reset"
                     android:text="@string/reset"
                     android:layout_weight="1"
+                    style="@style/button"
                     />
         </TableRow>
 

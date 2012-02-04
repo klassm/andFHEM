@@ -192,32 +192,38 @@
                 android:layout_height="wrap_content"
                 android:text="@string/temperatureGraph"
                 android:id="@+id/temperatureGraph"
-                android:layout_marginLeft="10dp"/>
+                android:layout_marginLeft="10dp"
+                style="@style/button"/>
         <Button android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/humidityGraph"
                 android:id="@+id/humidityGraph"
-                android:layout_marginLeft="10dp"/>
+                android:layout_marginLeft="10dp"
+                style="@style/button"/>
         <Button android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/pressureGraph"
                 android:id="@+id/pressureGraph"
-                android:layout_marginLeft="10dp"/>
+                android:layout_marginLeft="10dp"
+                style="@style/button"/>
 
         <Button android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/temperatureGraph"
                 android:id="@+id/rainRateGraph"
-                android:layout_marginLeft="10dp"/>
+                android:layout_marginLeft="10dp"
+                style="@style/button"/>
         <Button android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/humidityGraph"
                 android:id="@+id/rainTotalGraph"
-                android:layout_marginLeft="10dp"/>
+                android:layout_marginLeft="10dp"
+                style="@style/button"/>
         <Button android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/pressureGraph"
                 android:id="@+id/windSpeedGraph"
-                android:layout_marginLeft="10dp"/>
+                android:layout_marginLeft="10dp"
+                style="@style/button"/>
     </LinearLayout>
 </LinearLayout>

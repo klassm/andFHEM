@@ -40,7 +40,8 @@
             <Button android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     android:id="@+id/startDateSet"
-                    android:text="@string/change" />
+                    android:text="@string/change"
+                    style="@style/button"/>
         </TableRow>
 
         <TableRow>
@@ -52,7 +53,8 @@
             <Button android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     android:id="@+id/startTimeSet"
-                    android:text="@string/change" />
+                    android:text="@string/change"
+                    style="@style/button"/>
         </TableRow>
 
         <TableRow>
@@ -64,7 +66,8 @@
             <Button android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     android:id="@+id/endDateSet"
-                    android:text="@string/change" />
+                    android:text="@string/change"
+                    style="@style/button"/>
         </TableRow>
 
         <TableRow>
@@ -76,13 +79,15 @@
             <Button android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     android:id="@+id/endTimeSet"
-                    android:text="@string/change" />
+                    android:text="@string/change"
+                    style="@style/button"/>
         </TableRow>
         <Button android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:id="@+id/okButton"
                 android:text="@string/okButton"
-                android:layout_marginTop="20dp"/>
+                android:layout_marginTop="20dp"
+                style="@style/button"/>
 
     </TableLayout>
 

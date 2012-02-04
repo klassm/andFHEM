@@ -97,6 +97,7 @@
                 android:text="@string/switchSetOptions"
                 android:id="@+id/switchSetOptions"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="30dp"/>
+                android:layout_marginTop="30dp"
+                style="@style/button"/>
     </TableLayout>
 </LinearLayout>

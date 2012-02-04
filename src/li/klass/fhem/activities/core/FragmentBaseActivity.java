@@ -180,9 +180,12 @@ public abstract class FragmentBaseActivity extends FragmentActivity implements A
         broadcastReceiver = new Receiver();
         registerReceiver(broadcastReceiver, broadcastReceiver.getIntentFilter());
 
+        boolean restoreResult = false;
         if (savedInstanceState != null) {
-            restoreSavedInstance(savedInstanceState, actionBar);
-        } else {
+            restoreResult = restoreSavedInstance(savedInstanceState, actionBar);
+        }
+
+        if (savedInstanceState == null || ! restoreResult)  {
             Intent intent = new Intent(Actions.SHOW_FRAGMENT);
             intent.putExtra(BundleExtraKeys.FRAGMENT_NAME, FavoritesFragment.class.getName());
             sendBroadcast(intent);
@@ -190,7 +193,7 @@ public abstract class FragmentBaseActivity extends FragmentActivity implements A
     }
 
     @SuppressWarnings("unchecked")
-    private void restoreSavedInstance(Bundle savedInstanceState, ActionBar actionBar) {
+    private boolean restoreSavedInstance(Bundle savedInstanceState, ActionBar actionBar) {
         ArrayList<Intent> previousIntentStack = (ArrayList<Intent>) savedInstanceState.getSerializable(BundleExtraKeys.FRAGMENT_HISTORY_STACK);
 
         if (previousIntentStack != null) {
@@ -203,13 +206,19 @@ public abstract class FragmentBaseActivity extends FragmentActivity implements A
         }
 
         Intent intent = savedInstanceState.getParcelable(BundleExtraKeys.CURRENT_FRAGMENT_INTENT);
-        sendBroadcast(intent);
+        if (intent != null) {
+            sendBroadcast(intent);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         registerReceiver(broadcastReceiver, broadcastReceiver.getIntentFilter());
+        removeDialog();
     }
 
     @Override
@@ -219,7 +228,6 @@ public abstract class FragmentBaseActivity extends FragmentActivity implements A
         unregisterReceiver(broadcastReceiver);
 
         autoUpdateHandler.removeCallbacks(autoUpdateCallback);
-//        removeDialog();
         setShowRefreshProgressIcon(false);
     }
 
@@ -292,25 +300,26 @@ public abstract class FragmentBaseActivity extends FragmentActivity implements A
 
     @Override
     public void onBackPressed() {
-        if (! intentHistoryStack.isEmpty()) {
-            Intent previousFragmentIntent = removeLastHistoryIntent(intentHistoryStack);
+        Intent previousFragmentIntent = removeLastHistoryIntent(intentHistoryStack);
+
+        if (previousFragmentIntent != null) {
             previousFragmentIntent.putExtra(BundleExtraKeys.FRAGMENT_ADD_TO_STACK, false);
             sendBroadcast(previousFragmentIntent);
         } else {
-            super.onBackPressed();
+            finish();
         }
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
+        removeDialog();
+
         outState.putParcelable(BundleExtraKeys.CURRENT_FRAGMENT_INTENT, currentFragmentIntent);
         outState.putSerializable(BundleExtraKeys.FRAGMENT_HISTORY_STACK, intentHistoryStack);
 
         if (getSupportActionBar().getSelectedTab() != null) {
             outState.putInt(BundleExtraKeys.CURRENT_TAB, getSupportActionBar().getSelectedTab().getPosition());
         }
-
-        removeDialog();
 
         super.onSaveInstanceState(outState);
     }

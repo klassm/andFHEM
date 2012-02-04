@@ -36,7 +36,8 @@
         <Button android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:id="@+id/from1Set"
-                android:text="@string/change" />
+                android:text="@string/change"
+                style="@style/button"/>
     </TableRow>
     <TableRow android:id="@+id/tableRowTo1">
         <TextView android:text="@string/to1"
@@ -47,7 +48,8 @@
         <Button android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:id="@+id/to1Set"
-                android:text="@string/change" />
+                android:text="@string/change"
+                style="@style/button"/>
     </TableRow>
     <TableRow android:id="@+id/tableRowFrom2">
         <TextView android:text="@string/from2"
@@ -59,7 +61,8 @@
         <Button android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:id="@+id/from2Set"
-                android:text="@string/change" />
+                android:text="@string/change"
+                style="@style/button"/>
     </TableRow>
     <TableRow android:id="@+id/tableRowTo2">
         <TextView android:text="@string/to2"
@@ -70,7 +73,8 @@
         <Button android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:id="@+id/to2Set"
-                android:text="@string/change" />
+                android:text="@string/change"
+                style="@style/button"/>
     </TableRow>
 
 </TableLayout>

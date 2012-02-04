@@ -24,9 +24,10 @@
 
 <resources>
     <style name="toggleButton">
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:layout_width">60dp</item>
         <item name="android:focusable">false</item>
+        <item name="android:background">@drawable/theme_toggle_button</item>
     </style>
 
     <style name="seekBar">
@@ -34,6 +35,17 @@
         <item name="android:layout_width">70dip</item>
         <item name="android:max">100</item>
         <item name="android:focusable">false</item>
+        <item name="android:progressDrawable">@drawable/theme_seekbar</item>
+        <item name="android:thumb">@drawable/theme_seekbar_thumb_selector</item>
+    </style>
+
+    <style name="button" parent="android:style/Widget.Button">
+    </style>
+
+    <style name="spinner" parent="android:style/Widget.Spinner">
+        <item name="android:background">@drawable/theme_spinner_selector</item>
+        <item name="android:layout_margin">3dp</item>
+        <item name="android:padding">3dp</item>
     </style>
 
 
@@ -65,7 +77,9 @@
         <item name="android:layout_weight">1</item>
         <item name="android:layout_gravity">right</item>
         <item name="android:maxWidth">150dp</item>
+        <item name="android:minWidth">100dp</item>
         <item name="android:paddingRight">5dp</item>
+        <item name="android:gravity">right</item>
     </style>
 
     <style name="deviceOverviewTable">
@@ -115,7 +129,6 @@
         <item name="android:textSize">20dp</item>
         <item name="android:padding">6dp</item>
         <item name="android:gravity">center_horizontal</item>
-        <!--<item name="android:layout_marginBottom">10dp</item>-->
     </style>
 
     <style name="deviceDetailSectionCaption">
@@ -151,7 +164,7 @@
         <item name="android:layout_column">2</item>
     </style>
 
-    <style name="deviceDetailContentToggle">
+    <style name="deviceDetailContentToggle" parent="toggleButton">
         <item name="android:layout_weight">0</item>
         <item name="android:layout_column">2</item>
     </style>
@@ -173,11 +186,12 @@
         <item name="selectableItemBackground">@drawable/actionbar_item_selectable</item>
         <item name="abBackground">@drawable/actionbar_background</item>
         <item name="abDivider">@drawable/abs__action_item_divider</item>
+        <!--<item name="android:buttonStyle">@style/button</item>-->
     </style>
 
     <style name="ApplicationActionBarTabStyle">
+        <item name="android:gravity">center_horizontal</item>
         <item name="android:background">@drawable/actionbar_tab_bg</item>
     </style>
-
 
 </resources>

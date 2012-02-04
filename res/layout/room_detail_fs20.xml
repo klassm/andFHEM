@@ -33,6 +33,7 @@
 
     <ToggleButton android:id="@+id/switchButton"
                   style="@style/deviceOverviewToggleButton"
+                  android:background="@drawable/theme_toggle_button"
             />
 
 </LinearLayout>

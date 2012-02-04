@@ -106,7 +106,8 @@
                 android:layout_height="wrap_content"
                 android:text="@string/usageGraph"
                 android:id="@+id/usageGraph"
-                android:layout_marginLeft="10dp"/>
+                android:layout_marginLeft="10dp"
+                style="@style/button"/>
     </LinearLayout>
 
 
