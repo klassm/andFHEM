@@ -178,8 +178,6 @@
         <item name="android:paddingRight">20dp</item>
     </style>
 
-
-
     <!-- the theme applied to the application or activity -->
     <style name="ApplicationTheme" parent="@style/Theme.Sherlock.Light">
         <item name="actionBarTabStyle">@style/ApplicationActionBarTabStyle</item>

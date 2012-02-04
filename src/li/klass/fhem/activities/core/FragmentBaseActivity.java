@@ -194,22 +194,26 @@ public abstract class FragmentBaseActivity extends FragmentActivity implements A
 
     @SuppressWarnings("unchecked")
     private boolean restoreSavedInstance(Bundle savedInstanceState, ActionBar actionBar) {
-        ArrayList<Intent> previousIntentStack = (ArrayList<Intent>) savedInstanceState.getSerializable(BundleExtraKeys.FRAGMENT_HISTORY_STACK);
+        try {
+            ArrayList<Intent> previousIntentStack = (ArrayList<Intent>) savedInstanceState.getSerializable(BundleExtraKeys.FRAGMENT_HISTORY_STACK);
 
-        if (previousIntentStack != null) {
-            removeLastHistoryIntent(previousIntentStack);
-            intentHistoryStack = previousIntentStack;
-        }
+            if (previousIntentStack != null) {
+                removeLastHistoryIntent(previousIntentStack);
+                intentHistoryStack = previousIntentStack;
+            }
 
-        if (savedInstanceState.containsKey(BundleExtraKeys.CURRENT_TAB)) {
-            actionBar.setSelectedNavigationItem(savedInstanceState.getInt(BundleExtraKeys.CURRENT_TAB));
-        }
+            if (savedInstanceState.containsKey(BundleExtraKeys.CURRENT_TAB)) {
+                actionBar.setSelectedNavigationItem(savedInstanceState.getInt(BundleExtraKeys.CURRENT_TAB));
+            }
 
-        Intent intent = savedInstanceState.getParcelable(BundleExtraKeys.CURRENT_FRAGMENT_INTENT);
-        if (intent != null) {
-            sendBroadcast(intent);
-            return true;
-        } else {
+            Intent intent = savedInstanceState.getParcelable(BundleExtraKeys.CURRENT_FRAGMENT_INTENT);
+            if (intent != null) {
+                sendBroadcast(intent);
+                return true;
+            } else {
+                return false;
+            }
+        } catch(Exception e) {
             return false;
         }
     }
@@ -293,6 +297,14 @@ public abstract class FragmentBaseActivity extends FragmentActivity implements A
                 startActivity(helpIntent);
 
                 return true;
+
+            case R.id.menu_donate:
+                Uri donateUri = Uri.parse(ApplicationUrls.DONATE_PAGE);
+                Intent donateIntent = new Intent(Intent.ACTION_VIEW, donateUri);
+                startActivity(donateIntent);
+
+                return true;
+
         }
 
         return super.onOptionsItemSelected(item);

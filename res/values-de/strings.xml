@@ -85,7 +85,7 @@
     <string name="loading">Laden ...</string>
     <string name="executing">Ausführend ...</string>
     <string name="help">Hilfe</string>
-    <string name="donate">Helfen</string>
+    <string name="donate">Spenden</string>
 
     <string name="context_addtofavorites">Zu Favoriten hinzufügen</string>
     <string name="context_removefavorite">Aus Favoriten entfernen</string>

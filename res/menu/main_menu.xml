@@ -35,5 +35,7 @@
           android:title="@string/update" android:icon="@android:drawable/ic_menu_preferences" />
     <item android:id="@+id/menu_help" android:showAsAction="ifRoom"
           android:title="@string/help" android:icon="@android:drawable/ic_menu_help" />
+    <item android:id="@+id/menu_donate" android:showAsAction="ifRoom"
+          android:title="@string/donate" android:icon="@android:drawable/ic_menu_agenda" />
 
 </menu>
