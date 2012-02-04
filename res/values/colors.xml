@@ -33,4 +33,5 @@
     <color name="darkGrey">#FFD9D9D9</color>
 
     <color name="focusedColor">#FFFFE748</color>
+    <color name="thumbOuterColor">#55FFE748</color>
 </resources>
