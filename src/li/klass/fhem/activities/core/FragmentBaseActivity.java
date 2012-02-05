@@ -384,13 +384,17 @@ public abstract class FragmentBaseActivity extends FragmentActivity implements A
     }
 
     private void removeDialog() {
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        Fragment prev = getSupportFragmentManager().findFragmentByTag("dialog");
-        if (prev != null) {
-            fragmentTransaction.remove(prev);
+        try {
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            Fragment prev = getSupportFragmentManager().findFragmentByTag("dialog");
+            if (prev != null) {
+                fragmentTransaction.remove(prev);
+            }
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
+        } catch (Exception e) {
+            Log.e(FragmentBaseActivity.class.getName(), "error while removing dialog", e);
         }
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
     }
 
     private void setShowRefreshProgressIcon(boolean show) {
