@@ -34,6 +34,19 @@ public class ChartSeriesDescription implements Parcelable {
     private boolean showDiscreteValues;
     private boolean showRegression = false;
     private boolean showSum = false;
+    private double sumDivisionFactor;
+
+    public static ChartSeriesDescription getDiscreteValuesInstance(int columnSpecification) {
+        return new ChartSeriesDescription(columnSpecification, true, false, false, 0);
+    }
+
+    public static ChartSeriesDescription getRegressionValuesInstance(int columnSpecification) {
+        return new ChartSeriesDescription(columnSpecification, false, true, false, 0);
+    }
+
+    public static ChartSeriesDescription getSumInstance(int columnSpecification, double divisionFactor) {
+        return new ChartSeriesDescription(columnSpecification, false, false, true, divisionFactor);
+    }
 
     public static final Creator<ChartSeriesDescription> CREATOR = new Creator<ChartSeriesDescription>() {
 
@@ -49,16 +62,16 @@ public class ChartSeriesDescription implements Parcelable {
         }
     };
 
-    public ChartSeriesDescription(int columnSpecification, boolean showDiscreteValues, boolean showRegression, boolean showSum) {
+    public ChartSeriesDescription(int columnSpecification, boolean showDiscreteValues, boolean showRegression, boolean showSum, double sumDivisionFactor) {
         this.columnSpecification = columnSpecification;
         this.showDiscreteValues = showDiscreteValues;
         this.showRegression = showRegression;
         this.showSum = showSum;
+        this.sumDivisionFactor = sumDivisionFactor;
     }
 
-    public ChartSeriesDescription(int columnSpecification, boolean showDiscreteValues) {
-        this.columnSpecification = columnSpecification;
-        this.showDiscreteValues = showDiscreteValues;
+    public ChartSeriesDescription(int columnSpecification) {
+        this(columnSpecification, false, false, false, 0);
     }
 
     private ChartSeriesDescription(Bundle bundle) {
@@ -66,6 +79,7 @@ public class ChartSeriesDescription implements Parcelable {
         this.showDiscreteValues = bundle.getBoolean("SHOW_DISCRETE_VALUES");
         this.showRegression = bundle.getBoolean("SHOW_REGRESSION");
         this.showSum = bundle.getBoolean("SHOW_SUM");
+        this.sumDivisionFactor = bundle.getDouble("SUM_DIVISION_FACTOR");
     }
 
     public int getColumnSpecification() {
@@ -78,6 +92,14 @@ public class ChartSeriesDescription implements Parcelable {
 
     public boolean isShowSum() {
         return showSum;
+    }
+
+    public boolean isShowRegression() {
+        return showRegression;
+    }
+
+    public double getSumDivisionFactor() {
+        return sumDivisionFactor;
     }
 
     @Override
@@ -108,11 +130,8 @@ public class ChartSeriesDescription implements Parcelable {
         bundle.putBoolean("SHOW_DISCRETE_VALUES", showDiscreteValues);
         bundle.putBoolean("SHOW_SUM", showSum);
         bundle.putBoolean("SHOW_REGRESSION", showRegression);
+        bundle.putDouble("SUM_DIVISION_FACTOR", sumDivisionFactor);
         parcel.writeBundle(bundle);
-    }
-
-    public boolean isShowRegression() {
-        return showRegression;
     }
 
     public static ChartSeriesDescription[] toArray(Parcelable[] parcelables) {

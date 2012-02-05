@@ -4,7 +4,7 @@
   ~ AndFHEM - Open Source Android application to control a FHEM home automation
   ~ server.
   ~
-  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ Copyright (c) 2012, Matthias Klass or third-party contributors as
   ~ indicated by the @author tags or express copyright attribution
   ~ statements applied by the authors.  All third-party contributions are
   ~ distributed under license by Red Hat Inc.
@@ -21,21 +21,9 @@
   ~ along with this distribution; if not, write to:
   ~   Free Software Foundation, Inc.
   ~   51 Franklin Street, Fifth Floor
-  ~   Boston, MA  02110-1301  USA
   -->
 
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/menu_refresh" android:showAsAction="always"
-          android:title="@string/update" android:icon="@drawable/ic_menu_refresh"/>
-    <item android:id="@+id/menu_refresh_progress"
-          android:actionLayout="@layout/progress"
-          android:showAsAction="always"
-          android:visible="false" />
-    <item android:id="@+id/menu_settings" android:showAsAction="ifRoom"
-          android:title="@string/update" android:icon="@android:drawable/ic_menu_preferences" />
-    <item android:id="@+id/menu_help" android:showAsAction="ifRoom"
-          android:title="@string/help" android:icon="@android:drawable/ic_menu_help" />
-    <item android:id="@+id/menu_donate" android:showAsAction="ifRoom"
-          android:title="@string/donate" android:icon="@android:drawable/ic_menu_agenda" />
-
-</menu>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true" android:drawable="@color/focusedColor" />
+    <item android:drawable="@android:color/white" />
+</selector>

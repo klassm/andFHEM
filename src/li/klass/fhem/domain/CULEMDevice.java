@@ -35,6 +35,7 @@ public class CULEMDevice extends Device<CULEMDevice> {
     private String currentUsage;
     private String dayUsage;
     private String monthUsage;
+    private double sumGraphDivisionFactor = 1d;
     public static final int COLUMN_SPEC_CURRENT_USAGE = R.string.currentUsage;
 
     @Override
@@ -45,6 +46,8 @@ public class CULEMDevice extends Device<CULEMDevice> {
             dayUsage = extractCumUsage(nodeContent, "CUM_DAY") + " (kwh)";
         } else if (keyValue.equals("CUM_MONTH")) {
             monthUsage = extractCumUsage(nodeContent, "CUM_MONTH") + " (kwh)";
+        } else if (keyValue.equals("SUM_GRAPH_DIVISION_FACTOR")) {
+            sumGraphDivisionFactor = Double.valueOf(nodeContent);
         }
     }
 
@@ -59,7 +62,11 @@ public class CULEMDevice extends Device<CULEMDevice> {
     public String getMonthUsage() {
         return monthUsage;
     }
-    
+
+    public double getSumGraphDivisionFactor() {
+        return sumGraphDivisionFactor;
+    }
+
     private String extractCumUsage(String cumString, String cumToken) {
         cumToken = cumToken + ": ";
         return cumString.substring(cumToken.length(), cumString.indexOf(" ", cumToken.length() + 1));

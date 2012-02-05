@@ -248,14 +248,7 @@ public class ChartingActivity extends Activity implements Updateable {
 
         for (ChartSeriesDescription series : graphSeries) {
             String dataSetName = getResources().getString(series.getColumnSpecification());
-
             List<GraphEntry> data = graphData.get(series);
-
-            if (series.isShowDiscreteValues() && data.size() > 0) {
-                data = addDiscreteValueEntriesForSeries(data);
-                data.get(0).setDate(xMin);
-                data.get(data.size() - 1).setDate(xMax);
-            }
 
             TimeSeries seriesName = new TimeSeries(dataSetName);
 
@@ -272,6 +265,17 @@ public class ChartingActivity extends Activity implements Updateable {
             }
 
             dataSet.addSeries(seriesName);
+        }
+
+        for (ChartSeriesDescription series : graphSeries) {
+            String dataSetName = getResources().getString(series.getColumnSpecification());
+            List<GraphEntry> data = graphData.get(series);
+
+            if (series.isShowDiscreteValues() && data.size() > 0) {
+                data = addDiscreteValueEntriesForSeries(data);
+                data.get(0).setDate(xMin);
+                data.get(data.size() - 1).setDate(xMax);
+            }
 
             if (series.isShowRegression()) {
                 TimeSeries regressionSeries = new TimeSeries(getResources().getString(R.string.regression) + " " + dataSetName);
@@ -279,10 +283,10 @@ public class ChartingActivity extends Activity implements Updateable {
                 dataSet.addSeries(regressionSeries);
                 seriesMapping.put(dataSet.getSeriesCount() - 1, new SeriesMapping(series, SeriesType.REGRESSION));
             }
-            
+
             if (series.isShowSum()) {
                 TimeSeries sumSeries = new TimeSeries(getResources().getString(R.string.sum) + " " + dataSetName);
-                createSumForSeries(sumSeries, data);
+                createSumForSeries(sumSeries, data, xMin, xMax, series.getSumDivisionFactor());
                 dataSet.addSeries(sumSeries);
                 seriesMapping.put(dataSet.getSeriesCount() - 1, new SeriesMapping(series, SeriesType.SUM));
             }
@@ -396,11 +400,14 @@ public class ChartingActivity extends Activity implements Updateable {
         }
     }
     
-    private void createSumForSeries(TimeSeries resultSeries, List<GraphEntry> entries) {
+    private void createSumForSeries(TimeSeries resultSeries, List<GraphEntry> entries, Date xMin, Date xMax, double sumDivisionFactor) {
+        double hourDiff = (xMax.getTime() - xMin.getTime()) / 1000 / 60 / 60d;
+        double divisionFactor = hourDiff * sumDivisionFactor;
+
         float ySum = 0;
         for (GraphEntry entry : entries) {
             ySum += entry.getValue();
-            resultSeries.add(entry.getDate(), ySum);
+            resultSeries.add(entry.getDate(), ySum / divisionFactor);
         }
     }
 

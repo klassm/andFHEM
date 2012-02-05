@@ -48,7 +48,7 @@ public class HMSAdapter extends DeviceDetailAvailableAdapter<HMSDevice> {
         setTextViewOrHideTableRow(view, R.id.tableRowBattery, R.id.battery, device.getBattery());
 
         createPlotButton(context, view, R.id.temperatureGraph, device.getTemperature(),
-                device, R.string.yAxisTemperature, new ChartSeriesDescription(HMSDevice.COLUMN_SPEC_TEMPERATURE, false, true, false));
+                device, R.string.yAxisTemperature, ChartSeriesDescription.getRegressionValuesInstance(HMSDevice.COLUMN_SPEC_TEMPERATURE));
 
         createPlotButton(context, view, R.id.humidityGraph, device.getHumidity(),
                 device, R.string.yAxisHumidity, HMSDevice.COLUMN_SPEC_HUMIDITY);

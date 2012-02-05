@@ -63,6 +63,6 @@ public class CULEMAdapter extends DeviceDetailAvailableAdapter<CULEMDevice> {
         setTextViewOrHideTableRow(view, R.id.tableRowMonthUsage, R.id.monthUsage, device.getMonthUsage());
 
         createPlotButton(context, view, R.id.usageGraph, device.getCurrentUsage(),
-                device, R.string.yAxisUsage, new ChartSeriesDescription(CULEMDevice.COLUMN_SPEC_CURRENT_USAGE, false, false, true));
+                device, R.string.yAxisUsage, ChartSeriesDescription.getSumInstance(CULEMDevice.COLUMN_SPEC_CURRENT_USAGE, device.getSumGraphDivisionFactor()));
     }
 }

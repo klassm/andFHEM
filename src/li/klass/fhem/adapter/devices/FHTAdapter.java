@@ -177,8 +177,8 @@ public class FHTAdapter extends DeviceDetailAvailableAdapter<FHTDevice> {
         }
 
         createPlotButton(context, view, R.id.temperatureGraph, device.getTemperature(),
-                device, R.string.yAxisTemperature, new ChartSeriesDescription(COLUMN_SPEC_DESIRED_TEMPERATURE, true),
-                new ChartSeriesDescription(COLUMN_SPEC_TEMPERATURE, false, true, false));
+                device, R.string.yAxisTemperature, ChartSeriesDescription.getDiscreteValuesInstance(COLUMN_SPEC_DESIRED_TEMPERATURE),
+                ChartSeriesDescription.getRegressionValuesInstance(COLUMN_SPEC_TEMPERATURE));
 
         createPlotButton(context, view, R.id.actuatorGraph, device.getActuator(),
                 device, R.string.yAxisActuator, COLUMN_SPEC_ACTUATOR);

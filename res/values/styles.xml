@@ -186,7 +186,8 @@
         <item name="selectableItemBackground">@drawable/actionbar_item_selectable</item>
         <item name="abBackground">@drawable/actionbar_background</item>
         <item name="abDivider">@drawable/abs__action_item_divider</item>
-        <!--<item name="android:buttonStyle">@style/button</item>-->
+
+        <item name="android:listChoiceBackgroundIndicator">@drawable/theme_press_selector</item>
     </style>
 
     <style name="ApplicationActionBarTabStyle">

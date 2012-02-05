@@ -50,7 +50,7 @@ public class USBWXAdapter extends DeviceDetailAvailableAdapter<USBWXDevice> {
         hideIfNull(view, R.id.graphLayout, device.getFileLog());
 
         createPlotButton(context, view, R.id.temperatureGraph, device.getTemperature(),
-                device, R.string.yAxisTemperature, new ChartSeriesDescription(USBWXDevice.COLUMN_SPEC_TEMPERATURE, false, true, false));
+                device, R.string.yAxisTemperature, ChartSeriesDescription.getRegressionValuesInstance(USBWXDevice.COLUMN_SPEC_TEMPERATURE));
 
         createPlotButton(context, view, R.id.humidityGraph, device.getHumidity(),
                 device, R.string.yAxisHumidity, USBWXDevice.COLUMN_SPEC_HUMIDITY);

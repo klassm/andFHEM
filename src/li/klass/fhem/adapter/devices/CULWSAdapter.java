@@ -58,7 +58,7 @@ public class CULWSAdapter extends DeviceDetailAvailableAdapter<CULWSDevice> {
         setTextViewOrHideTableRow(view, R.id.tableRowHumidity, R.id.humidity, device.getHumidity());
 
         createPlotButton(context, view, R.id.temperatureGraph, device.getTemperature(),
-                device, R.string.yAxisTemperature, new ChartSeriesDescription(CULWSDevice.COLUMN_SPEC_TEMPERATURE, false, true, false));
+                device, R.string.yAxisTemperature, ChartSeriesDescription.getRegressionValuesInstance(CULWSDevice.COLUMN_SPEC_TEMPERATURE));
         createPlotButton(context, view, R.id.humidityGraph, device.getHumidity(),
                 device, R.string.yAxisHumidity, CULWSDevice.COLUMN_SPEC_HUMIDITY);
     }

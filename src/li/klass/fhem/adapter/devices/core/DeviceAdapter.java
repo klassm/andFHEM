@@ -162,7 +162,7 @@ public abstract class DeviceAdapter<D extends Device> {
 
         for (int i = 0; i < columnSpecifications.length; i++) {
             int columnSpecification = columnSpecifications[i];
-            descriptions[i] = new ChartSeriesDescription(columnSpecification, false);
+            descriptions[i] = new ChartSeriesDescription(columnSpecification);
         }
         return createPlotButton(context, view, buttonLayoutId, hideButtonIfNull, device, yTitleId, descriptions);
     }

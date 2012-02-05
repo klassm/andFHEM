@@ -55,7 +55,7 @@ public class KS300Adapter extends DeviceDetailAvailableAdapter<KS300Device> {
         setTextViewOrHideTableRow(view, R.id.tableRowAvgMonth, R.id.avgMonth, device.getAverageMonth());
 
         createPlotButton(context, view, R.id.temperatureGraph, device.getTemperature(),
-                device, R.string.yAxisTemperature, new ChartSeriesDescription(KS300Device.COLUMN_SPEC_TEMPERATURE, false, true, false));
+                device, R.string.yAxisTemperature, ChartSeriesDescription.getRegressionValuesInstance(KS300Device.COLUMN_SPEC_TEMPERATURE));
 
         createPlotButton(context, view, R.id.humidityGraph, device.getHumidity(),
                 device, R.string.yAxisHumidity, KS300Device.COLUMN_SPEC_HUMIDITY);
