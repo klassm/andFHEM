@@ -70,7 +70,11 @@ public class FHTDevice extends Device<FHTDevice> {
         } else if (keyValue.equals("WARNINGS")) {
             warnings = nodeContent;
         } else if (keyValue.equals("MODE")) {
-            this.mode = FHTMode.valueOf(nodeContent.toUpperCase());
+            try {
+                this.mode = FHTMode.valueOf(nodeContent.toUpperCase());
+            } catch (IllegalArgumentException e) {
+                this.mode = FHTMode.UNKNOWN;
+            }
         } else if (keyValue.equals("DAY-TEMP")) {
             dayTemperature = ValueExtractUtil.extractLeadingDouble(nodeContent);
         } else if (keyValue.equals("NIGHT-TEMP")) {
@@ -176,7 +180,7 @@ public class FHTDevice extends Device<FHTDevice> {
 
         return columnSpecification;
     }
-    
+
     public static String temperatureToString(double temperature) {
         if (temperature == 5.5) {
             return "off";
