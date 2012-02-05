@@ -119,10 +119,12 @@ public class FHTTimetableControlListFragment extends BaseFragment {
 
                 if (resultCode == ResultCodes.SUCCESS && getView() != null) {
                     FHTDevice fhtDevice = (FHTDevice) resultData.getSerializable(BundleExtraKeys.DEVICE);
+                    View holder = getView().findViewById(R.id.changeValueButtonHolder);
+
+                    if (holder == null || fhtDevice == null) return;
+
                     adapter.updateData(fhtDevice.getDayControlMap());
 
-                    View holder = getView().findViewById(R.id.changeValueButtonHolder);
-                    if (holder == null) return;
                     if (fhtDevice.hasChangedDayControlMapValues()) {
                         holder.setVisibility(View.VISIBLE);
                     } else {
