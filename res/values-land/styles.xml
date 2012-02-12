@@ -27,4 +27,9 @@
         <item name="android:background">@drawable/actionbar_tab_bg_land</item>
         <item name="android:padding">10dp</item>
     </style>
+
+    <style name="deviceOverviewSeekBar" parent="seekBar">
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:layout_weight">3</item>
+    </style>
 </resources>

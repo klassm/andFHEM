@@ -24,18 +24,15 @@
   ~   Boston, MA  02110-1301  USA
   -->
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                style="@style/deviceOverviewLayout"
-                android:orientation="horizontal"
-                android:paddingBottom="15dp" android:paddingTop="15dp">
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              style="@style/deviceOverviewLayout">
 
     <TextView style="@style/deviceOverviewLayoutDeviceName"
               android:id="@+id/deviceName"
               android:text="deviceName"/>
 
-    <SeekBar
-            android:id="@+id/seekBar"
-            android:max="100"
-            style="@style/deviceOverviewSeekBar"/>
+    <SeekBar android:id="@+id/seekBar"
+             style="@style/deviceOverviewSeekBar"/>
 
-</RelativeLayout>
+</LinearLayout>

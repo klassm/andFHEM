@@ -117,7 +117,7 @@
 
     <style name="deviceOverviewSeekBar" parent="seekBar">
         <item name="android:layout_alignParentRight">true</item>
-        <item name="android:layout_width">80dp</item>
+        <item name="android:layout_weight">2</item>
     </style>
 
     <!-- #############################  -->
