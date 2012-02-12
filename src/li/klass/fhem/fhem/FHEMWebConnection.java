@@ -103,7 +103,7 @@ public class FHEMWebConnection implements FHEMConnection {
         String content;
         try {
             HttpGet request = new HttpGet();
-            String urlString = getURL() + "?cmd=" + URLEncoder.encode(command);
+            String urlString = getURL() + "?XHR=1&cmd=" + URLEncoder.encode(command);
             Log.i(FHEMWebConnection.class.getName(), "accessing URL " + urlString);
             URI uri = new URI(urlString);
 
@@ -125,24 +125,7 @@ public class FHEMWebConnection implements FHEMConnection {
             throw new HostConnectionException(e);
         }
 
-        String start = "<pre>";
-        String end = "</pre>";
-
-        int preStart = content.indexOf(start);
-        int preEnd = content.indexOf(end);
-
-        if (preStart == -1 || preEnd == -1) {
-            return "";
-        }
-
-        content = content.substring(preStart + start.length(), preEnd);
-        content = content.replaceAll("&lt;", "<");
-        content = content.replaceAll("&gt;", ">");
-        content = content.replaceAll("&quot;", "");
-
         return content;
-
-
     }
 
     private String getURL() {
