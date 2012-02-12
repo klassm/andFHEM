@@ -32,7 +32,7 @@
 
     <style name="seekBar">
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">70dip</item>
+        <item name="android:layout_width">fill_parent</item>
         <item name="android:paddingTop">5dp</item>
         <item name="android:paddingBottom">5dp</item>
         <item name="android:max">100</item>
@@ -109,6 +109,7 @@
         <item name="android:layout_weight">1</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:textSize">15dp</item>
+        <item name="android:minWidth">200dp</item>
     </style>
 
     <style name="deviceOverviewToggleButton" parent="toggleButton">
@@ -163,7 +164,11 @@
 
     <style name="deviceDetailContentSeek" parent="seekBar">
         <item name="android:layout_alignParentRight">true</item>
-        <item name="android:layout_column">2</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_span">2</item>
+        <item name="android:layout_marginLeft">50dp</item>
+        <item name="android:layout_marginRight">10dp</item>
     </style>
 
     <style name="deviceDetailContentToggle" parent="toggleButton">

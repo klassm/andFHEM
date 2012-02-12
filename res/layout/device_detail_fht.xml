@@ -34,7 +34,7 @@
               android:text="@string/generalDetails" />
 
     <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                 style="@style/deviceDetailTable">
+                 style="@style/deviceDetailTable" android:stretchColumns="*">
 
         <TableRow android:id="@+id/tableRowDeviceName">
             <TextView android:text="@string/deviceName"
@@ -101,14 +101,10 @@
         </TableRow>
 
         <TableRow android:id="@+id/tableRowDesiredTemperatureSeek">
-            <TextView
-                    android:text=""
-                    style="@style/deviceDetailDescription" />
             <SeekBar android:id="@+id/desiredTemperatureSeek"
                      style="@style/deviceDetailContentSeek"
                      android:max="50"
-                     android:layout_marginRight="10dp"
-                     android:layout_width="100dp"/>
+                     />
 
         </TableRow>
 
@@ -187,14 +183,9 @@
             </TableRow>
 
             <TableRow>
-                <TextView android:text=""
-                          style="@style/deviceDetailDescription" />
                 <SeekBar android:id="@+id/dayTemperatureSeek"
                          style="@style/deviceDetailContentSeek"
-                         android:max="50"
-                         android:layout_marginRight="10dp"
-                         android:layout_width="100dp"/>
-
+                         android:max="50" />
             </TableRow>
 
             <TableRow android:id="@+id/tableRowNightTemp">
@@ -206,14 +197,9 @@
             </TableRow>
 
             <TableRow>
-                <TextView android:text=""
-                          style="@style/deviceDetailDescription" />
                 <SeekBar android:id="@+id/nightTemperatureSeek"
                          style="@style/deviceDetailContentSeek"
-                         android:max="50"
-                         android:progress="@+id/desiredTemperature"
-                         android:layout_marginRight="10dp"
-                         android:layout_width="100dp"/>
+                         android:max="50"/>
 
             </TableRow>
 
@@ -226,15 +212,9 @@
             </TableRow>
 
             <TableRow>
-                <TextView android:text=""
-                          style="@style/deviceDetailDescription" />
                 <SeekBar android:id="@+id/windowOpenTempSeek"
                          style="@style/deviceDetailContentSeek"
-                         android:max="50"
-                         android:progress="@+id/windowOpen"
-                         android:layout_marginRight="10dp"
-                         android:layout_width="100dp"/>
-
+                         android:max="50"/>
             </TableRow>
         </TableLayout>
 
