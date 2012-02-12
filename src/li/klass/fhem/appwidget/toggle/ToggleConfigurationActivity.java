@@ -127,6 +127,7 @@ public class ToggleConfigurationActivity extends ListActivity {
             protected void onReceiveResult(int resultCode, Bundle resultData) {
                 if (resultCode == ResultCodes.SUCCESS) {
                     Device device = (Device) resultData.get(BundleExtraKeys.DEVICE);
+                    if (device == null) return;
 
                     RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.appwidget_switch);
 
