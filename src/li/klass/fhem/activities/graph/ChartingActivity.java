@@ -248,46 +248,54 @@ public class ChartingActivity extends Activity implements Updateable {
             String dataSetName = getResources().getString(series.getColumnSpecification());
             List<GraphEntry> data = graphData.get(series);
 
-            TimeSeries seriesName = new TimeSeries(dataSetName);
+            TimeSeries resultSeries = new TimeSeries(dataSetName);
+            float previousValue = -1;
 
-            for (GraphEntry graphEntry : data) {
-                Date date = graphEntry.getDate();
-                float value = graphEntry.getValue();
+            for (GraphEntry entry : data) {
+                Date date = entry.getDate();
+                float value = entry.getValue();
+
+                if (previousValue == -1) {
+                    previousValue = value;
+                }
 
                 if (date == null) continue;
 
                 if ((xMin.after(date))) xMin = date;
                 if ((xMax.before(date))) xMax = date;
 
-                seriesName.add(date, value);
+                if (series.isShowDiscreteValues()) {
+                    resultSeries.add(new Date(date.getTime() - 1), previousValue);
+                    resultSeries.add(date, value);
+                    resultSeries.add(new Date(date.getTime() + 1), value);
+                }  else {
+                    resultSeries.add(date, value);
+                }
+
+                previousValue = value;
             }
 
-            dataSet.addSeries(seriesName);
+            dataSet.addSeries(resultSeries);
         }
 
-        for (ChartSeriesDescription series : graphSeries) {
-            String dataSetName = getResources().getString(series.getColumnSpecification());
-            List<GraphEntry> data = graphData.get(series);
+        for (ChartSeriesDescription seriesDescription : graphSeries) {
+            String dataSetName = getResources().getString(seriesDescription.getColumnSpecification());
+            List<GraphEntry> data = graphData.get(seriesDescription);
 
-            if (series.isShowDiscreteValues() && data.size() > 0) {
-                data = addDiscreteValueEntriesForSeries(data);
-                data.get(0).setDate(xMin);
-                data.get(data.size() - 1).setDate(xMax);
-            }
-
-            if (series.isShowRegression()) {
+            if (seriesDescription.isShowRegression()) {
                 TimeSeries regressionSeries = new TimeSeries(getResources().getString(R.string.regression) + " " + dataSetName);
                 createRegressionForSeries(regressionSeries, data);
                 dataSet.addSeries(regressionSeries);
-                seriesMapping.put(dataSet.getSeriesCount() - 1, new SeriesMapping(series, SeriesType.REGRESSION));
+                seriesMapping.put(dataSet.getSeriesCount() - 1, new SeriesMapping(seriesDescription, SeriesType.REGRESSION));
             }
 
-            if (series.isShowSum()) {
+            if (seriesDescription.isShowSum()) {
                 TimeSeries sumSeries = new TimeSeries(getResources().getString(R.string.sum) + " " + dataSetName);
-                createSumForSeries(sumSeries, data, xMin, xMax, series.getSumDivisionFactor());
+                createSumForSeries(sumSeries, data, xMin, xMax, seriesDescription.getSumDivisionFactor());
                 dataSet.addSeries(sumSeries);
-                seriesMapping.put(dataSet.getSeriesCount() - 1, new SeriesMapping(series, SeriesType.SUM));
+                seriesMapping.put(dataSet.getSeriesCount() - 1, new SeriesMapping(seriesDescription, SeriesType.SUM));
             }
+
         }
 
         double yMin = 1000;
@@ -295,11 +303,11 @@ public class ChartingActivity extends Activity implements Updateable {
         for (XYSeries series : dataSet.getSeries()) {
             double seriesYMax = series.getMaxY();
             if (seriesYMax > yMax) yMax = seriesYMax;
-            
+
             double seriesYMin = series.getMinY();
             if (seriesYMin < yMin) yMin = seriesYMin;
         }
-        
+
         double yMaxAbsolute = absolute(yMax);
         double yOffset = yMaxAbsolute * 0.1;
 
@@ -349,24 +357,6 @@ public class ChartingActivity extends Activity implements Updateable {
         return val < 0 ? val * -1 : val;
     }
 
-    private List<GraphEntry> addDiscreteValueEntriesForSeries(List<GraphEntry> entries) {
-        float previousValue = -1;
-        List<GraphEntry> result = new ArrayList<GraphEntry>();
-
-        for (GraphEntry entry : entries) {
-            if (previousValue == -1) {
-                previousValue = entry.getValue();
-            }
-
-            result.add(new GraphEntry(new Date(entry.getDate().getTime() - 100), previousValue));
-            result.add(entry);
-            result.add(new GraphEntry(new Date(entry.getDate().getTime() + 100), entry.getValue()));
-            previousValue = entry.getValue();
-        }
-
-        return result;
-    }
-
     private void createRegressionForSeries(TimeSeries resultSeries, List<GraphEntry> entries) {
         float xSum = 0;
         float ySum = 0;
@@ -395,7 +385,7 @@ public class ChartingActivity extends Activity implements Updateable {
             resultSeries.add(entry.getDate(), y);
         }
     }
-    
+
     private void createSumForSeries(TimeSeries resultSeries, List<GraphEntry> entries, Date xMin, Date xMax, double sumDivisionFactor) {
         double hourDiff = (xMax.getTime() - xMin.getTime()) / 1000 / 60 / 60d;
         double divisionFactor = hourDiff * sumDivisionFactor;
@@ -455,7 +445,7 @@ public class ChartingActivity extends Activity implements Updateable {
         String timeSpan = PreferenceManager.getDefaultSharedPreferences(this).getString("GRAPH_DEFAULT_TIMESPAN", "24");
         return Integer.valueOf(timeSpan.trim());
     }
-    
+
     /**
      * Goes to the charting activity.
      *
