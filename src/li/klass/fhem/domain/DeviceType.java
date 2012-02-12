@@ -26,6 +26,7 @@ package li.klass.fhem.domain;
 
 import li.klass.fhem.adapter.devices.core.DeviceAdapter;
 import li.klass.fhem.adapter.devices.*;
+import li.klass.fhem.adapter.devices.core.HOLDevice;
 
 public enum DeviceType {
     KS300("KS300", KS300Device.class, new KS300Adapter()),
@@ -47,9 +48,9 @@ public enum DeviceType {
     LGTV("LGTV", LGTVDevice.class, new LGTVAdapter()),
     RFXCOM("RFXCOM", RFXCOMDevice.class, new RFXCOMAdapter()),
     CUL_HM("CUL_HM", CULHMDevice.class, new CULHMAdapter()),
-    WATCHDOG("watchdog", WatchdogDevice.class, new WatchdogAdapter());
+    WATCHDOG("watchdog", WatchdogDevice.class, new WatchdogAdapter()),
+    HOLIDAY("HOL", HOLDevice.class, new HOLAdapter());
 
-    
     private String xmllistTag;
     private Class<? extends Device> deviceClass;
     private DeviceAdapter<? extends Device<?>> adapter;

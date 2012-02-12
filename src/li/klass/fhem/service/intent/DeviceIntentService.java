@@ -27,6 +27,7 @@ package li.klass.fhem.service.intent;
 import android.content.Intent;
 import android.os.ResultReceiver;
 import android.util.Log;
+import li.klass.fhem.adapter.devices.core.HOLDevice;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.domain.*;
@@ -157,6 +158,9 @@ public class DeviceIntentService extends ConvenientIntentService {
             return SUCCESS;
         } else if (device instanceof CULHMDevice && ((CULHMDevice) device).getSubType() == CULHMDevice.SubType.SWITCH) {
             CULHMService.INSTANCE.toggleState((CULHMDevice) device);
+            return SUCCESS;
+        } else if (device instanceof HOLDevice) {
+            HOLService.INSTANCE.toggleState((HOLDevice) device);
             return SUCCESS;
         } else {
             return ERROR;
