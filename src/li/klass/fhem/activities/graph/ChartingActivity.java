@@ -240,9 +240,7 @@ public class ChartingActivity extends Activity implements Updateable {
         });
 
         Date xMin = new Date();
-        Date xMax = null;
-
-
+        Date xMax = new Date(0L);
 
         Map<Integer, SeriesMapping> seriesMapping = new HashMap<Integer, SeriesMapping>();
 
@@ -259,7 +257,7 @@ public class ChartingActivity extends Activity implements Updateable {
                 if (date == null) continue;
 
                 if ((xMin.after(date))) xMin = date;
-                if ((xMax == null || xMax.before(date))) xMax = date;
+                if ((xMax.before(date))) xMax = date;
 
                 seriesName.add(date, value);
             }
@@ -301,8 +299,6 @@ public class ChartingActivity extends Activity implements Updateable {
             double seriesYMin = series.getMinY();
             if (seriesYMin < yMin) yMin = seriesYMin;
         }
-
-        if (xMax == null) xMax = new Date();
         
         double yMaxAbsolute = absolute(yMax);
         double yOffset = yMaxAbsolute * 0.1;
