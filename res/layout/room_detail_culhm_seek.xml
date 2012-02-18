@@ -25,14 +25,15 @@
   -->
 
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              style="@style/deviceOverviewLayout">
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             style="@style/deviceOverviewLayout">
 
-    <TextView style="@style/deviceOverviewLayoutDeviceName"
-              android:id="@+id/deviceName"
-              android:text="deviceName"/>
+    <TableRow>
+        <TextView style="@style/deviceOverviewLayoutDeviceName"
+                  android:id="@+id/deviceName"
+                  android:text="deviceName"/>
 
-    <SeekBar android:id="@+id/seekBar"
-             style="@style/deviceOverviewSeekBar"/>
-
-</LinearLayout>
+        <SeekBar android:id="@+id/seekBar"
+                 style="@style/deviceOverviewSeekBar"/>
+    </TableRow>
+</TableLayout>
