@@ -65,6 +65,8 @@ public abstract class FragmentBaseActivity extends FragmentActivity implements A
 
     private Receiver broadcastReceiver;
     private Menu optionsMenu;
+    
+    private static final String INTENT_IS_TOPLEVEL = "isTopLevelIntent";
 
     private Handler autoUpdateHandler;
     private final Runnable autoUpdateCallback = new Runnable() {
@@ -116,10 +118,12 @@ public abstract class FragmentBaseActivity extends FragmentActivity implements A
                         String action = intent.getAction();
                         if (action.equals(Actions.SHOW_FRAGMENT)) {
                             String fragmentName = intent.getStringExtra(BundleExtraKeys.FRAGMENT_NAME);
-                            Constructor<?> constructor = Class.forName(fragmentName).getConstructor(Bundle.class);
+                            Class<?> fragmentClass = Class.forName(fragmentName);
+                            intent.putExtra(INTENT_IS_TOPLEVEL, fragmentClass.isAssignableFrom(TopLevelFragment.class));
 
+                            Constructor<?> constructor = fragmentClass.getConstructor(Bundle.class);
                             Fragment fragment = (Fragment) constructor.newInstance(intent.getExtras());
-
+                            
                             switchToFragment(intent, fragment, intent.getBooleanExtra(BundleExtraKeys.FRAGMENT_ADD_TO_STACK, true));
                         } else if (action.equals(Actions.DISMISS_UPDATING_DIALOG)) {
                             setShowRefreshProgressIcon(false);
