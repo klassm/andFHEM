@@ -131,6 +131,7 @@
     <string name="updateErrorHostConnection">Keine Verbindung zum FHEM Server.</string>
     <string name="updateErrorDeviceListParse">Konnte xml Geräte Liste nicht lesen.</string>
     <string name="graphLoadError">Graph Daten konnten nicht geladen werden.</string>
+    <string name="fhemUpdateRequiredError">Aktualisiere bitte deinen FHEM Server (updatefhem)</string>
 
     <string name="okButton">OK</string>
     <string name="cancelButton">Abbrechen</string>
