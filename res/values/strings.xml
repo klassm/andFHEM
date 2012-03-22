@@ -79,6 +79,7 @@
     <string name="wake">Wake</string>
     <string name="howLong">How long?</string>
     <string name="requestRefresh">Request refresh</string>
+    <string name="delta">Delta</string>
 
     <string name="switchDevice">Switch</string>
     <string name="preferences">Preferences</string>

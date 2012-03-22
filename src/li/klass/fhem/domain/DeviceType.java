@@ -51,6 +51,7 @@ public enum DeviceType {
     CUL_HM("CUL_HM", CULHMDevice.class, new CULHMAdapter()),
     WATCHDOG("watchdog", WatchdogDevice.class, new WatchdogAdapter()),
     HOLIDAY("HOL", HOLDevice.class, new HOLAdapter()),
+    PID("PID", PIDDevice.class, new PIDAdapter()),
     FHT8V("FHT8V", FHT8VDevice.class, new FHT8VAdapter());
 
     private String xmllistTag;

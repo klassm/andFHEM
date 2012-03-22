@@ -78,6 +78,7 @@
     <string name="wake">Wecken</string>
     <string name="howLong">Wie lange?</string>
     <string name="requestRefresh">Update anfordern</string>
+    <string name="delta">Delta</string>
 
     <string name="switchDevice">Schalte</string>
     <string name="preferences">Einstellungen</string>

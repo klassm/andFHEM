@@ -65,6 +65,32 @@
 </FHT8V>
 </FHT8V_LIST>
 
+<PID_LIST>
+<PID name="SchlafzimmerTemp2" state="16.8 (delta -0.800000000000001)" sets="factors desired" attrs="room comment alias disable:0,1 loglevel:0,1,2,3,4,5,6 armed fm_fav fm_groups fm_name fm_order icon triggered webCmd eventMap">
+    <INT key="DEF" value="tempslaap:temperature:([\d\.]*) thermostaat_slaap"/>
+    <INT key="NAME" value="SchlafzimmerTemp2"/>
+    <INT key="NR" value="91"/>
+    <INT key="NTFY_ORDER" value="50-thermostaat_slaapkamer"/>
+    <INT key="STATE" value="16.8 (delta -0.800000000000001)"/>
+    <INT key="TYPE" value="PID"/>
+    <INT key="actor" value="thermostaat_slaap"/>
+    <INT key="command" value="valve"/>
+    <INT key="dFactor" value="5.88235294117647"/>
+    <INT key="iFactor" value="3.05882352941176"/>
+    <INT key="pFactor" value="25.4901960784314"/>
+    <INT key="reading" value="temperature"/>
+    <INT key="regexp" value="([\d\.]*)"/>
+    <INT key="satMax" value="100"/>
+    <INT key="satMin" value="0"/>
+    <INT key="sensor" value="tempslaap"/>
+    <ATTR key="room" value="schlafzimmer"/>
+    <STATE key="actuation" value="0" measured="2012-03-20 20:39:02"/>
+    <STATE key="delta" value="-0.800000000000001" measured="2012-03-20 20:39:02"/>
+    <STATE key="desired" value="16" measured="2012-03-20 18:00:00"/>
+    <STATE key="integrator" value="0" measured="2012-03-20 20:39:02"/>
+</PID>
+</PID_LIST>
+
 <CUL_HM_LIST>
 <CUL_HM name="CUL_HM_threeStateSensor_1638BB" state="open (to broadcast)" sets="pair raw reset sign statusRequest unpair " attrs="room comment alias IODev do_not_notify:1,0 ignore:0,1 showtime:1,0 loglevel:0,1,2,3,4,5,6 model subType:switch,dimmer,blindActuator,remote,sensor,swi,pushButton,threeStateSensor,motionDetector,keyMatic,winMatic,smokeDetector hmClass:receiver,sender serialNr firmware devInfo rawToReadable unit webCmd eventMap">
     <INT key="DEF" value="1638BB"/>
