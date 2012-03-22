@@ -335,8 +335,8 @@ public abstract class FragmentBaseActivity extends FragmentActivity implements A
         outState.putSerializable(BundleExtraKeys.CURRENT_FRAGMENT, currentFragment);
         outState.putSerializable(BundleExtraKeys.FRAGMENT_HISTORY_STACK, fragmentHistoryStack);
 
-        if (getActionBar().getSelectedTab() != null) {
-            outState.putInt(BundleExtraKeys.CURRENT_TAB, getActionBar().getSelectedTab().getPosition());
+        if (getSupportActionBar().getSelectedTab() != null) {
+            outState.putInt(BundleExtraKeys.CURRENT_TAB, getSupportActionBar().getSelectedTab().getPosition());
         }
 
         super.onSaveInstanceState(outState);
@@ -366,8 +366,8 @@ public abstract class FragmentBaseActivity extends FragmentActivity implements A
             navigationMode = ActionBar.NAVIGATION_MODE_TABS;
         }
 
-        if (getActionBar().getNavigationMode() != navigationMode) {
-            getActionBar().setNavigationMode(navigationMode);
+        if (getSupportActionBar().getNavigationMode() != navigationMode) {
+            getSupportActionBar().setNavigationMode(navigationMode);
         }
 
         getSupportFragmentManager()
