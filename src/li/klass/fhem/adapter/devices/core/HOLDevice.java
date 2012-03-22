@@ -32,6 +32,6 @@ public class HOLDevice extends Device<HOLDevice> {
     }
 
     public boolean isOn() {
-        return ! state.equals("off");
+        return ! getInternalState().equals("off");
     }
 }

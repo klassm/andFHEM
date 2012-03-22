@@ -78,7 +78,8 @@ public class CULHMDevice extends Device<CULHMDevice> {
     }
 
     public boolean isOn() {
-        return state.equalsIgnoreCase("on") || state.equalsIgnoreCase("on-for-timer");
+        String internalState = getInternalState();
+        return internalState.equalsIgnoreCase("on") || internalState.equalsIgnoreCase("on-for-timer");
     }
 
     public int getDimProgress() {

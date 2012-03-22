@@ -818,6 +818,7 @@ room structexclude webCmd eventMap">
     <INT key="IODev" value="CUL"/>
     <ATTR key="room" value="unknown"/>
     <STATE key="state" value="on" measured="2012-01-23 17:45:56"/>
+    <ATTR key="eventMap" value="on:open off:closed"/>
 </FS20>
 <FS20 name="au_brunnen" state="???"
       sets="dim06% dim100% dim12% dim18% dim25% dim31% dim37% dim43% dim50% dim56% dim62% dim68% dim75% dim81% dim87% dim93% dimdown dimup dimupdown off off-for-timer on on-100-for-timer-prev on-for-timer on-old-for-timer on-old-for-timer-prev on-till ramp-off-time ramp-on-time reset sendstate timer toggle"
@@ -832,6 +833,7 @@ room structexclude webCmd eventMap">
     <INT key="IODev" value="CUL"/>
     <ATTR key="room" value="garten"/>
     <ATTR key="alias" value="brunnen"/>
+    <ATTR key="eventMap" value="on:open off:closed"/>
 </FS20>
 <FS20 name="au_holzterasse1" state="dimupdown"
       sets="dim06% dim100% dim12% dim18% dim25% dim31% dim37% dim43% dim50% dim56% dim62% dim68% dim75% dim81% dim87% dim93% dimdown dimup dimupdown off off-for-timer on on-100-for-timer-prev on-for-timer on-old-for-timer on-old-for-timer-prev on-till ramp-off-time ramp-on-time reset sendstate timer toggle"

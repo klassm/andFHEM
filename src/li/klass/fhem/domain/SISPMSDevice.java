@@ -35,6 +35,6 @@ public class SISPMSDevice extends Device<SISPMSDevice> {
     }
 
     public boolean isOn() {
-        return state.equalsIgnoreCase("on");
+        return getInternalState().equalsIgnoreCase("on");
     }
 }

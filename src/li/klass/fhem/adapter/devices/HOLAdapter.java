@@ -46,6 +46,7 @@ public class HOLAdapter extends DeviceListOnlyAdapter<HOLDevice> {
         setTextView(view, R.id.deviceName, device.getAliasOrName());
 
         ToggleButton switchButton = (ToggleButton) view.findViewById(R.id.switchButton);
+        setToogleButtonText(device, switchButton);
         switchButton.setChecked(device.isOn());
         switchButton.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -118,8 +118,6 @@ public class FS20Adapter extends DeviceDetailAvailableAdapter<FS20Device> {
 
     @Override
     protected void fillDeviceDetailView(final Context context, View view, final FS20Device device) {
-
-
         setTextViewOrHideTableRow(view, R.id.tableRowState, R.id.state, device.getState());
 
         TableRow seekBarRow = (TableRow) view.findViewById(R.id.switchSeekBarRow);
@@ -136,6 +134,8 @@ public class FS20Adapter extends DeviceDetailAvailableAdapter<FS20Device> {
 
             toggleButtonRow.setVisibility(View.GONE);
         } else {
+            setToogleButtonText(device, switchButton);
+
             switchButton.setChecked(device.isOn());
             switchButton.setOnClickListener(new SwitchButtonListener(device.getName()));
             switchButton.setTag(device.getName());
@@ -200,12 +200,13 @@ public class FS20Adapter extends DeviceDetailAvailableAdapter<FS20Device> {
         context.startService(intent);
     }
 
-    private void fillFS20ToggleView(View view, final FS20Device child) {
-        setTextView(view, R.id.deviceName, child.getAliasOrName());
+    private void fillFS20ToggleView(View view, final FS20Device device) {
+        setTextView(view, R.id.deviceName, device.getAliasOrName());
 
         ToggleButton switchButton = (ToggleButton) view.findViewById(R.id.switchButton);
-        switchButton.setChecked(child.isOn());
-        switchButton.setOnClickListener(new SwitchButtonListener(child.getName()));
+        setToogleButtonText(device, switchButton);
+        switchButton.setChecked(device.isOn());
+        switchButton.setOnClickListener(new SwitchButtonListener(device.getName()));
     }
 
     private void fillFS20SeekView(View view, final FS20Device child) {

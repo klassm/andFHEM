@@ -128,6 +128,7 @@ public class CULHMAdapter extends DeviceDetailAvailableAdapter<CULHMDevice> {
 
     private void fillSwitchOverview(View view, final CULHMDevice device) {
         ToggleButton button = (ToggleButton) view.findViewById(R.id.switchButton);
+        setToogleButtonText(device, button);
         button.setChecked(device.isOn());
         button.setOnClickListener(new View.OnClickListener() {
             @Override

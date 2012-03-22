@@ -40,10 +40,12 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
     protected String room = AndFHEMApplication.getContext().getResources().getString(R.string.defaultRoomName);
 
     protected String name;
-    protected String state;
+    private String state;
     protected String alias;
     protected String measured;
     protected String definition;
+    protected Map<String, String> eventMapReverse;
+    protected Map<String, String> eventMap;
 
     protected volatile FileLogDevice fileLog;
 
@@ -76,6 +78,15 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
                 measured = nodeContent;
             } else if (keyValue.equals("DEF")) {
                 definition = nodeContent;
+            } else if (keyValue.equals("EVENTMAP")) {
+                eventMap = new HashMap<String, String>();
+                eventMapReverse = new HashMap<String, String>();
+                String[] events = nodeContent.split(" ");
+                for (String event : events) {
+                    String[] eventParts = event.split(":");
+                    eventMap.put(eventParts[0], eventParts[1]);
+                    eventMapReverse.put(eventParts[1], eventParts[0]);
+                }
             }
 
             String tagName = item.getNodeName().toUpperCase();
@@ -182,6 +193,12 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
     public void setState(String state) {
         this.state = state;
     }
+    
+    public String getInternalState() {
+        String state = getState();
+        if (eventMapReverse == null || ! eventMapReverse.containsKey(state)) return state;
+        return eventMapReverse.get(state);
+    }
 
     public void setRoom(String room) {
         this.room = room;
@@ -201,5 +218,9 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
 
     public boolean isSupported() {
         return true;
+    }
+
+    public Map<String, String> getEventMap() {
+        return eventMap;
     }
 }

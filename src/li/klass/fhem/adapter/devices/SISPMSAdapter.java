@@ -43,6 +43,7 @@ public class SISPMSAdapter extends DeviceListOnlyAdapter<SISPMSDevice> {
         setTextView(view, R.id.deviceName, device.getAliasOrName());
 
         ToggleButton switchButton = (ToggleButton) view.findViewById(R.id.switchButton);
+        setToogleButtonText(device, switchButton);
         switchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

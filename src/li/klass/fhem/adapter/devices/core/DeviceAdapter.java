@@ -32,6 +32,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.activities.graph.ChartingActivity;
 import li.klass.fhem.constants.Actions;
@@ -39,6 +40,8 @@ import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.Device;
 import li.klass.fhem.fragments.core.DeviceDetailFragment;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
+
+import java.util.Map;
 
 public abstract class DeviceAdapter<D extends Device> {
 
@@ -187,4 +190,17 @@ public abstract class DeviceAdapter<D extends Device> {
         }
     }
 
+    @SuppressWarnings("unchecked")
+    protected void setToogleButtonText(Device device, ToggleButton toggleButton) {
+        Map<String, String> eventMap = device.getEventMap();
+        if (eventMap == null) return;
+
+        if (eventMap.containsKey("on")) {
+            toggleButton.setTextOn(eventMap.get("on"));
+        }
+
+        if (eventMap.containsKey("off")) {
+            toggleButton.setTextOff(eventMap.get("off"));
+        }
+    }
 }

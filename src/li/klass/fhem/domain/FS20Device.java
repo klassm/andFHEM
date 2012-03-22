@@ -47,7 +47,7 @@ public class FS20Device extends Device<FS20Device> implements Comparable<FS20Dev
     @Override
     public void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {
         if (keyValue.equals("STATE") && tagName.equals("INT")) {
-            this.state = nodeContent;
+            setState(nodeContent);
         } else if (keyValue.equals("STATE") && tagName.equals("STATE")) {
             Node measured = attributes.getNamedItem("measured");
             if (measured != null) {
@@ -77,10 +77,6 @@ public class FS20Device extends Device<FS20Device> implements Comparable<FS20Dev
         return getFs20State() == FS20State.ON;
     }
 
-    public void setState(String state) {
-        this.state = state;
-    }
-
     public boolean isDimDevice() {
         return dimModels.contains(model);
     }
@@ -102,7 +98,7 @@ public class FS20Device extends Device<FS20Device> implements Comparable<FS20Dev
     }
 
     public FS20State getFs20State() {
-        if (equalsAny(state, "off", "off-for-timer", "reset", "timer")) {
+        if (equalsAny(getInternalState(), "off", "off-for-timer", "reset", "timer")) {
             return FS20State.OFF;
         }
         return FS20State.ON;
@@ -113,8 +109,10 @@ public class FS20Device extends Device<FS20Device> implements Comparable<FS20Dev
             return 0;
         }
         
-        if (state.startsWith("dim") && state.endsWith("%")) {
-            String dimProgress = state.substring("dim".length(), state.length() - 1);
+        String internalState = getInternalState();
+        
+        if (internalState.startsWith("dim") && internalState.endsWith("%")) {
+            String dimProgress = internalState.substring("dim".length(), internalState.length() - 1);
             return Integer.valueOf(dimProgress);
         }
 
