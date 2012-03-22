@@ -116,7 +116,7 @@ public class FHEMWebConnection implements FHEMConnection {
             }
             content = IOUtils.toString(response.getEntity().getContent());
 
-            if (content.contains("<title>")) {
+            if (content.contains("<title>") || content.contains("<div id=")) {
                 throw new FHEMUpdateRequiredException();
             }
         } catch (AndFHEMException e) {
