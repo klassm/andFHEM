@@ -51,7 +51,7 @@ import static li.klass.fhem.constants.BundleExtraKeys.*;
 
 public abstract class DeviceListFragment extends BaseFragment {
 
-    private RoomDetailAdapter adapter;
+    private transient RoomDetailAdapter adapter;
 
     /**
      * Attribute is set whenever a context menu concerning a device is clicked. This is the only way to actually get
@@ -68,6 +68,9 @@ public abstract class DeviceListFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View superView = super.onCreateView(inflater, container, savedInstanceState);
+        if (superView != null) return superView;
+
         View view = inflater.inflate(R.layout.room_detail, container, false);
         adapter = new RoomDetailAdapter(getActivity(), new RoomDeviceList(""));
 

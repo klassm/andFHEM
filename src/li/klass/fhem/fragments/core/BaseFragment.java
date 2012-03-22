@@ -27,17 +27,35 @@ package li.klass.fhem.fragments.core;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.SupportActivity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import li.klass.fhem.activities.base.Updateable;
 import li.klass.fhem.activities.core.FragmentBaseActivity;
 import li.klass.fhem.util.UIBroadcastReceiver;
 
-public abstract class BaseFragment extends Fragment implements Updateable {
+import java.io.Serializable;
 
-    private UIBroadcastReceiver broadcastReceiver;
+public abstract class BaseFragment extends Fragment implements Updateable, Serializable {
+
+    private transient UIBroadcastReceiver broadcastReceiver;
+    private transient View contentView;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return contentView;
+    }
+
+    @Override
+    public void onPause() {
+        contentView = getView();
+        super.onPause();
     }
 
     @Override

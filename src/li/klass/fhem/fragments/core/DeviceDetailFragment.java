@@ -53,7 +53,9 @@ public class DeviceDetailFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
+        View superView = super.onCreateView(inflater, container, savedInstanceState);
+        if (superView != null) return superView;
+
         View view = inflater.inflate(R.layout.device_detail_view, container, false);
 
         update(false);

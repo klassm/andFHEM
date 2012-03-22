@@ -43,7 +43,7 @@ import li.klass.fhem.widget.NestedListView;
 
 public class FHTTimetableControlListFragment extends BaseFragment {
     private String deviceName;
-    private volatile FHTTimetableControlListAdapter adapter;
+    private transient volatile FHTTimetableControlListAdapter adapter;
 
     @SuppressWarnings("unused")
     public FHTTimetableControlListFragment(Bundle bundle) {
@@ -55,7 +55,9 @@ public class FHTTimetableControlListFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
+        View superView = super.onCreateView(inflater, container, savedInstanceState);
+        if (superView != null) return superView;
+
         adapter = new FHTTimetableControlListAdapter(getActivity());
         
         View view = inflater.inflate(R.layout.control_fht_list, container, false);

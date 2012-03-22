@@ -48,7 +48,7 @@ import java.util.List;
 
 public class RoomListFragment extends BaseFragment implements Updateable, ActionBarShowTabs, TopLevelFragment {
 
-    private RoomListAdapter adapter;
+    private transient RoomListAdapter adapter;
 
     @SuppressWarnings("unused")
     public RoomListFragment(Bundle bundle) {}
@@ -58,6 +58,9 @@ public class RoomListFragment extends BaseFragment implements Updateable, Action
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View superView = super.onCreateView(inflater, container, savedInstanceState);
+        if (superView != null) return superView;
+
         adapter = new RoomListAdapter(getActivity(), R.layout.room_list_name, new ArrayList<String>());
         View view = inflater.inflate(R.layout.room_list, container, false);
 
