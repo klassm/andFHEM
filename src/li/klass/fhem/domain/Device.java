@@ -79,14 +79,7 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
             } else if (keyValue.equals("DEF")) {
                 definition = nodeContent;
             } else if (keyValue.equals("EVENTMAP")) {
-                eventMap = new HashMap<String, String>();
-                eventMapReverse = new HashMap<String, String>();
-                String[] events = nodeContent.split(" ");
-                for (String event : events) {
-                    String[] eventParts = event.split(":");
-                    eventMap.put(eventParts[0], eventParts[1]);
-                    eventMapReverse.put(eventParts[1], eventParts[0]);
-                }
+                parseEventMap(nodeContent);
             }
 
             String tagName = item.getNodeName().toUpperCase();
@@ -98,6 +91,39 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
             Node attributeNode = attributes.item(i);
             onAttributeRead(attributeNode.getNodeName().toUpperCase(), attributeNode.getNodeValue());
         }
+    }
+
+    private void parseEventMap(String content) {
+        eventMap = new HashMap<String, String>();
+        eventMapReverse = new HashMap<String, String>();
+
+        if (content.startsWith("/")) {
+            parseSlashesEventMap(content);
+        } else {
+            parseSpacesEventMap(content);
+        }
+    }
+
+    private void parseSpacesEventMap(String content) {
+        String[] events = content.split(" ");
+        for (String event : events) {
+            String[] eventParts = event.split(":");
+            putEventToEventMap(eventParts[0], eventParts[1]);
+        }
+    }
+
+    private void parseSlashesEventMap(String content) {
+        String[] events = content.split("/");
+        for (int i = 1; i < events.length; i++) {
+            String event = events[i];
+            String[] eventParts = event.split(":");
+            putEventToEventMap(eventParts[0], eventParts[1]);
+        }
+    }
+
+    private void putEventToEventMap(String key, String value) {
+        eventMap.put(key, value);
+        eventMapReverse.put(value, key);
     }
 
     public String getAliasOrName() {
@@ -131,7 +157,7 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
      * @param attributes additional tag attributes
      */
     protected abstract void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes);
-    
+
     protected void onAttributeRead(String attributeKey, String attributeValue) {
     }
 
@@ -193,7 +219,7 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
     public void setState(String state) {
         this.state = state;
     }
-    
+
     public String getInternalState() {
         String state = getState();
         if (eventMapReverse == null || ! eventMapReverse.containsKey(state)) return state;
