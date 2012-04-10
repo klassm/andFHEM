@@ -1681,7 +1681,53 @@ room structexclude webCmd eventMap">
     <STATE key="type" value="HMS100TF" measured="2010-04-05 18:52:31"/>
 </HMS>
 </HMS_LIST>
-
+<TRX_LIST>
+<TRX name="RFXTRXUSB" state="opened" sets="RFXTRXUSB => No Set function (?) implemented" attrs="room comment alias do_not_notify:1,0 dummy:1,0 do_not_init:1:0 addvaltrigger:1:0 longids loglevel:0,1,2,3,4,5,6 icon webCmd eventMap">
+    <INT key="DEF" value="COM3@38400 noinit"/>
+    <INT key="DeviceName" value="COM3@38400"/>
+    <INT key="NAME" value="RFXTRXUSB"/>
+    <INT key="NR" value="18"/>
+    <INT key="PARTIAL" value=""/>
+    <INT key="RAWMSG" value="085005682f00003c59"/>
+    <INT key="RFXTRXUSB_MSGCNT" value="2409"/>
+    <INT key="RFXTRXUSB_TIME" value="2012-04-10 16:29:48"/>
+    <INT key="STATE" value="opened"/>
+    <INT key="TYPE" value="TRX"/>
+    <ATTR key="do_not_init" value="1"/>
+    <ATTR key="longids" value="TX3_T"/>
+    <ATTR key="room" value="Wohnzimmer"/>
+</TRX>
+</TRX_LIST>
+<TRX_WEATHER_LIST>
+<TRX_WEATHER name="TX3_T_05" state="T: 21.1 BAT: ok" sets="" attrs="room comment alias IODev do_not_notify:1,0 loglevel:0,1,2,3,4,5,6 icon webCmd eventMap">
+    <INT key="CODE" value="TX3_T_05"/>
+    <INT key="DEF" value="TX3_T_05"/>
+    <INT key="NAME" value="TX3_T_05"/>
+    <INT key="NR" value="31"/>
+    <INT key="STATE" value="T: 21.1 BAT: ok"/>
+    <INT key="TIME" value="2012-04-10 16:29:33"/>
+    <INT key="TYPE" value="TRX_WEATHER"/>
+    <INT key="IODev" value="RFXTRXUSB"/>
+    <ATTR key="alias" value="Außentemperatur"/>
+    <ATTR key="room" value="Balkon"/>
+    <STATE key="battery" value="ok" measured="2012-04-10 16:29:33"/>
+    <STATE key="temperature" value="21.1" measured="2012-04-10 16:29:33"/>
+</TRX_WEATHER>
+<TRX_WEATHER name="TX3_T_2f" state="T: 6 BAT: ok" sets="" attrs="room comment alias IODev do_not_notify:1,0 loglevel:0,1,2,3,4,5,6 icon webCmd eventMap">
+    <INT key="CODE" value="TX3_T_2f"/>
+    <INT key="DEF" value="TX3_T_2f"/>
+    <INT key="NAME" value="TX3_T_2f"/>
+    <INT key="NR" value="28"/>
+    <INT key="STATE" value="T: 6 BAT: ok"/>
+    <INT key="TIME" value="2012-04-10 16:29:48"/>
+    <INT key="TYPE" value="TRX_WEATHER"/>
+    <INT key="IODev" value="RFXTRXUSB"/>
+    <ATTR key="alias" value="Innentemperatur"/>
+    <ATTR key="room" value="Küche"/>
+    <STATE key="battery" value="ok" measured="2012-04-10 16:29:48"/>
+    <STATE key="temperature" value="6" measured="2012-04-10 16:29:48"/>
+</TRX_WEATHER>
+</TRX_WEATHER_LIST>
 <OWTEMP_LIST>
 <OWTEMP name="Hz.Ruecklauf" state="T: 24.1250  L: 15  H: 35  P: 1  A: 0  W: none" sets="set needs one parameter" attrs="room comment alias IODev do_not_notify:0,1 showtime:0,1 model:DS18S20 loglevel:0,1,2,3,4,5 1 advent bundle structexclude">
     <INT key="ALARM" value="0"/>

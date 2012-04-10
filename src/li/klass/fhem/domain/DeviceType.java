@@ -52,7 +52,9 @@ public enum DeviceType {
     WATCHDOG("watchdog", WatchdogDevice.class, new WatchdogAdapter()),
     HOLIDAY("HOL", HOLDevice.class, new HOLAdapter()),
     PID("PID", PIDDevice.class, new PIDAdapter()),
-    FHT8V("FHT8V", FHT8VDevice.class, new FHT8VAdapter());
+    FHT8V("FHT8V", FHT8VDevice.class, new FHT8VAdapter()),
+    TRX_WEATHER("TRX_WEATHER", TRXWeatherDevice.class, new TRXWeatherAdapter()),
+    TRX("TRX", TRXDevice.class, new TRXAdapter());
 
     private String xmllistTag;
     private Class<? extends Device> deviceClass;

@@ -318,6 +318,7 @@ public abstract class FragmentBaseActivity extends FragmentActivity implements A
 
     @Override
     public void onBackPressed() {
+        removeDialog();
         BaseFragment previousFragment = removeLastHistoryFragment(fragmentHistoryStack);
 
         if (previousFragment != null) {
@@ -330,8 +331,6 @@ public abstract class FragmentBaseActivity extends FragmentActivity implements A
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        removeDialog();
-
         outState.putSerializable(BundleExtraKeys.CURRENT_FRAGMENT, currentFragment);
         outState.putSerializable(BundleExtraKeys.FRAGMENT_HISTORY_STACK, fragmentHistoryStack);
 
@@ -348,6 +347,8 @@ public abstract class FragmentBaseActivity extends FragmentActivity implements A
      * @param putToStack put the fragment to history. Usually true, except when back is pressed (history)
      */
     private void switchToFragment(BaseFragment fragment, boolean putToStack) {
+        removeDialog();
+
         if (fragment == null || (currentFragment != null && currentFragment.getClass().equals(fragment.getClass()))) return;
 
         if (fragment instanceof TopLevelFragment) {
