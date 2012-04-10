@@ -228,7 +228,6 @@ public abstract class FragmentBaseActivity extends FragmentActivity implements A
     protected void onResume() {
         super.onResume();
         registerReceiver(broadcastReceiver, broadcastReceiver.getIntentFilter());
-        removeDialog();
     }
 
     @Override
@@ -376,7 +375,6 @@ public abstract class FragmentBaseActivity extends FragmentActivity implements A
                 .replace(android.R.id.content, fragment)
                 .commit();
     }
-
 
     private void showDialog(Bundle bundle) {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
