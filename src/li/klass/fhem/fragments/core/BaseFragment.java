@@ -53,6 +53,14 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        if (contentView != null) {
+            contentView.clearFocus();
+        }
+    }
+
+    @Override
     public void onPause() {
         contentView = getView();
         super.onPause();
