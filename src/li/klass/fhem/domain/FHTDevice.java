@@ -66,6 +66,9 @@ public class FHTDevice extends Device<FHTDevice> {
         } else if (keyValue.equalsIgnoreCase("MEASURED-TEMP")) {
             temperature = ValueUtil.formatTemperature(nodeContent);
         } else if (keyValue.equals("DESIRED-TEMP")) {
+            if (nodeContent.equalsIgnoreCase("off")) nodeContent = "5.5";
+            if (nodeContent.equalsIgnoreCase("on")) nodeContent = "30.5";
+
             desiredTemp = ValueExtractUtil.extractLeadingDouble(nodeContent);
         } else if (keyValue.equals("WARNINGS")) {
             warnings = nodeContent;
