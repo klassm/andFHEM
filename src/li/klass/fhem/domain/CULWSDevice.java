@@ -59,8 +59,8 @@ public class CULWSDevice extends Device<CULWSDevice> {
     @Override
     public Map<Integer, String> getFileLogColumns() {
         Map<Integer, String> columnSpecification = new HashMap<Integer, String>();
-        columnSpecification.put(COLUMN_SPEC_TEMPERATURE, "4:temperature:0:");
-        columnSpecification.put(COLUMN_SPEC_HUMIDITY, "4:humidity:0:");
+        columnSpecification.put(COLUMN_SPEC_TEMPERATURE, "4:T:0:");
+        columnSpecification.put(COLUMN_SPEC_HUMIDITY, "6:H:0:");
 
         return columnSpecification;
     }
