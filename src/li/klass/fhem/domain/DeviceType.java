@@ -31,6 +31,7 @@ import li.klass.fhem.domain.fht.FHT8VDevice;
 
 public enum DeviceType {
     KS300("KS300", KS300Device.class, new KS300Adapter()),
+    WEATHER("Weather", WeatherDevice.class, new WeatherAdapter()),
     FHT("FHT", FHTDevice.class, new FHTAdapter()),
     HMS("HMS", HMSDevice.class, new HMSAdapter()),
     WOL("WOL", WOLDevice.class, new WOLAdapter()),
