@@ -23,14 +23,20 @@
 
 package li.klass.fhem.domain;
 
+import android.util.Log;
+import li.klass.fhem.R;
 import li.klass.fhem.util.ValueDescriptionUtil;
 import org.w3c.dom.NamedNodeMap;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class WeatherDevice extends Device<WeatherDevice> {
-    class WeatherDeviceForecast {
-        private String prefix;
+    public static class WeatherDeviceForecast implements Comparable<WeatherDeviceForecast> {
+        private static final SimpleDateFormat forecastDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+        private String date;
 
         private String condition;
         private String dayOfWeek;
@@ -38,12 +44,46 @@ public class WeatherDevice extends Device<WeatherDevice> {
         private String lowTemperature;
         private String icon;
 
-        WeatherDeviceForecast(String prefix) {
-            this.prefix = prefix;
+        WeatherDeviceForecast(String date) {
+            this.date = date;
+        }
+
+        @Override
+        public int compareTo(WeatherDeviceForecast weatherDeviceForecast) {
+            return date.compareTo(weatherDeviceForecast.date);
+        }
+
+        public String getDate() {
+            return date;
+        }
+
+        public String getCondition() {
+            return condition;
+        }
+
+        public String getDayOfWeek() {
+            return dayOfWeek;
+        }
+
+        public String getHighTemperature() {
+            return highTemperature;
+        }
+
+        public String getLowTemperature() {
+            return lowTemperature;
+        }
+
+        public String getIcon() {
+            return icon;
         }
     }
 
+    public static final int COLUMN_SPEC_TEMPERATURE = R.string.temperature;
+    public static final int COLUMN_SPEC_HUMIDITY = R.string.humidity;
+
     public static final String IMAGE_URL_PREFIX = "http://www.google.de";
+
+    private static final SimpleDateFormat parseDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     private String condition;
     private String humidity;
@@ -56,6 +96,7 @@ public class WeatherDevice extends Device<WeatherDevice> {
     protected void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {
         if (keyValue.equalsIgnoreCase("CONDITION")) {
             this.condition = nodeContent;
+            this.measured = attributes.getNamedItem("measured").getTextContent();
         } else if (keyValue.equalsIgnoreCase("HUMIDITY")) {
             this.humidity = ValueDescriptionUtil.appendPercent(nodeContent);
         } else if (keyValue.equalsIgnoreCase("ICON")) {
@@ -64,14 +105,27 @@ public class WeatherDevice extends Device<WeatherDevice> {
             this.temperature = ValueDescriptionUtil.appendTemperature(nodeContent);
         } else if (keyValue.equalsIgnoreCase("WIND_CONDITION")) {
             this.wind = nodeContent.replaceAll("Wind: ", "").trim();
-        } else if (keyValue.startsWith("fc")) {
-            int underscorePosition = keyValue.indexOf("_");
+        } else if (keyValue.startsWith("FC")) {
+            parseForecast(keyValue, nodeContent);
+        }
+    }
 
-            String prefix = keyValue.substring(0, underscorePosition);
+    private void parseForecast(String keyValue, String nodeContent) {
+        try {
+            int underscorePosition = keyValue.indexOf("_");
             String name = keyValue.substring(underscorePosition + 1);
 
+            String prefix = keyValue.substring(2, underscorePosition);
+
             if (! forecastMap.containsKey(prefix)) {
-                forecastMap.put(prefix, new WeatherDeviceForecast(prefix));
+                Calendar forecastDate = Calendar.getInstance();
+
+                Date measuredDate = parseDateFormat.parse(measured);
+                forecastDate.setTime(measuredDate);
+                forecastDate.add(Calendar.DAY_OF_YEAR, Integer.valueOf(prefix));
+                String forecastTimeString = WeatherDeviceForecast.forecastDateFormat.format(forecastDate.getTime());
+
+                forecastMap.put(prefix, new WeatherDeviceForecast(forecastTimeString));
             }
 
             WeatherDeviceForecast forecast = forecastMap.get(prefix);
@@ -87,6 +141,8 @@ public class WeatherDevice extends Device<WeatherDevice> {
             } else if (name.equalsIgnoreCase("ICON")) {
                 forecast.icon = nodeContent;
             }
+        } catch (ParseException e) {
+            Log.e(WeatherDevice.class.getName(), "cannot parse forecast", e);
         }
     }
 
@@ -111,14 +167,16 @@ public class WeatherDevice extends Device<WeatherDevice> {
     }
 
     public List<WeatherDeviceForecast> getForecasts() {
-        List<String> keys = Arrays.asList(forecastMap.keySet().toArray(new String[forecastMap.size()]));
-        Collections.sort(keys);
+        Collection<WeatherDeviceForecast> values = forecastMap.values();
+        return new ArrayList<WeatherDeviceForecast>(values);
+    }
 
-        List<WeatherDeviceForecast> result = new ArrayList<WeatherDeviceForecast>();
-        for (String key : keys) {
-            result.add(forecastMap.get(key));
-        }
+    @Override
+    public Map<Integer, String> getFileLogColumns() {
+        Map<Integer, String> columnSpecification = new HashMap<Integer, String>();
+        columnSpecification.put(COLUMN_SPEC_TEMPERATURE, "4:temp_c:");
+        columnSpecification.put(COLUMN_SPEC_HUMIDITY, "4:humidity:0:");
 
-        return result;
+        return columnSpecification;
     }
 }

@@ -80,6 +80,8 @@
     <string name="requestRefresh">Update anfordern</string>
     <string name="delta">Delta</string>
     <string name="weather">Wetter</string>
+    <string name="currentWeather">Aktuelles Wetter</string>
+    <string name="weatherForecast">Wetter Vorhersage</string>
 
     <string name="switchDevice">Schalte</string>
     <string name="preferences">Einstellungen</string>

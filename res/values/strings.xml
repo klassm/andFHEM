@@ -81,6 +81,8 @@
     <string name="requestRefresh">Request refresh</string>
     <string name="delta">Delta</string>
     <string name="weather">Weather</string>
+    <string name="currentWeather">Current Weather</string>
+    <string name="weatherForecast">Weather Forecast</string>
 
     <string name="switchDevice">Switch</string>
     <string name="preferences">Preferences</string>

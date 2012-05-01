@@ -46,8 +46,6 @@
         </TableRow>
 
         <TableRow android:id="@+id/tableRowTemperature">
-
-
             <TextView android:text="@string/temperature"
                       style="@style/deviceOverviewDescription"/>
             <TextView android:id="@+id/temperature"

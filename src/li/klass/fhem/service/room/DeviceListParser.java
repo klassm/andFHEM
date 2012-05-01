@@ -128,6 +128,7 @@ public class DeviceListParser {
         } catch (SAXParseException e) {
             throw new DeviceListParseException(e);
         } catch (Exception e) {
+            Log.e(DeviceListParser.class.getName(), "error parsing device list", e);
             throw new DeviceListParseException(e);
         }
     }

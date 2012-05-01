@@ -23,6 +23,54 @@
 </_internal_>
 </_internal__LIST>
 
+<Weather_LIST>
+<Weather name="Augsburg" state="T: 19  H: 43  W: 11" sets="" attrs="room comment alias loglevel:0,1,2,3,4,5 event-on-update-reading event-on-change-reading fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon webCmd eventMap">
+    <INT key="DEF" value="Augsburg 3000 de"/>
+    <INT key="INTERVAL" value="3000"/>
+    <INT key="LANG" value="de"/>
+    <INT key="LOCATION" value="Augsburg"/>
+    <INT key="NAME" value="Augsburg"/>
+    <INT key="NR" value="20"/>
+    <INT key="STATE" value="T: 19  H: 43  W: 11"/>
+    <INT key="TYPE" value="Weather"/>
+    <ATTR key="room" value="wetter"/>
+    <STATE key="city" value="Augsburg, Bavaria" measured="2012-05-01 14:56:22"/>
+    <STATE key="condition" value="Bewölkt" measured="2012-05-01 14:56:22"/>
+    <STATE key="current_date_time" value="1970-01-01 00:00:00 +0000" measured="2012-05-01 14:56:22"/>
+    <STATE key="fc1_condition" value="Klar" measured="2012-05-01 14:56:22"/>
+    <STATE key="fc1_day_of_week" value="Di." measured="2012-05-01 14:56:22"/>
+    <STATE key="fc1_high_c" value="22" measured="2012-05-01 14:56:22"/>
+    <STATE key="fc1_icon" value="/ig/images/weather/sunny.gif" measured="2012-05-01 14:56:22"/>
+    <STATE key="fc1_low_c" value="13" measured="2012-05-01 14:56:22"/>
+    <STATE key="fc2_condition" value="Vereinzelt Regen" measured="2012-05-01 14:56:22"/>
+    <STATE key="fc2_day_of_week" value="Mi." measured="2012-05-01 14:56:22"/>
+    <STATE key="fc2_high_c" value="20" measured="2012-05-01 14:56:22"/>
+    <STATE key="fc2_icon" value="/ig/images/weather/chance_of_rain.gif" measured="2012-05-01 14:56:22"/>
+    <STATE key="fc2_low_c" value="9" measured="2012-05-01 14:56:22"/>
+    <STATE key="fc3_condition" value="Meist sonnig" measured="2012-05-01 14:56:22"/>
+    <STATE key="fc3_day_of_week" value="Do." measured="2012-05-01 14:56:22"/>
+    <STATE key="fc3_high_c" value="19" measured="2012-05-01 14:56:22"/>
+    <STATE key="fc3_icon" value="/ig/images/weather/mostly_sunny.gif" measured="2012-05-01 14:56:22"/>
+    <STATE key="fc3_low_c" value="8" measured="2012-05-01 14:56:22"/>
+    <STATE key="fc4_condition" value="Klar" measured="2012-05-01 14:56:22"/>
+    <STATE key="fc4_day_of_week" value="Fr." measured="2012-05-01 14:56:22"/>
+    <STATE key="fc4_high_c" value="19" measured="2012-05-01 14:56:22"/>
+    <STATE key="fc4_icon" value="/ig/images/weather/sunny.gif" measured="2012-05-01 14:56:22"/>
+    <STATE key="fc4_low_c" value="10" measured="2012-05-01 14:56:22"/>
+    <STATE key="forecast_date" value="2012-05-01" measured="2012-05-01 14:56:22"/>
+    <STATE key="humidity" value="43" measured="2012-05-01 14:56:22"/>
+    <STATE key="icon" value="/ig/images/weather/cloudy.gif" measured="2012-05-01 14:56:22"/>
+    <STATE key="latitude_e6" value="" measured="2012-05-01 14:56:22"/>
+    <STATE key="longitude_e6" value="" measured="2012-05-01 14:56:22"/>
+    <STATE key="postal_code" value="Augsburg" measured="2012-05-01 14:56:22"/>
+    <STATE key="temp_c" value="19" measured="2012-05-01 14:56:22"/>
+    <STATE key="temp_f" value="67" measured="2012-05-01 14:56:22"/>
+    <STATE key="temperature" value="19" measured="2012-05-01 14:56:22"/>
+    <STATE key="unit_system" value="SI" measured="2012-05-01 14:56:22"/>
+    <STATE key="wind" value="11" measured="2012-05-01 14:56:22"/>
+    <STATE key="wind_condition" value="Wind: NW mit 11 km/h" measured="2012-05-01 14:56:22"/>
+</Weather>
+</Weather_LIST>
 <watchdog_LIST>
 <watchdog name="bad_fenster_open" state="defined" sets="" attrs="room comment alias disable:0,1 regexp1WontReactivate:0,1 webCmd eventMap">
     <INT key="CMD" value="{ fhem &quot;set gang_licht on&quot;; fhem &quot;setstate bad_fenster_open defined&quot; }"/>
