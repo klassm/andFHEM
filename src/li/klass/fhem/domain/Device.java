@@ -108,6 +108,7 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
         String[] events = content.split(" ");
         for (String event : events) {
             String[] eventParts = event.split(":");
+            if (eventParts.length < 2) continue;
             putEventToEventMap(eventParts[0], eventParts[1]);
         }
     }
