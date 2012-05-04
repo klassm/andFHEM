@@ -34,7 +34,6 @@ import li.klass.fhem.domain.Device;
 import li.klass.fhem.domain.RoomDeviceList;
 import li.klass.fhem.exception.AndFHEMException;
 import li.klass.fhem.service.AbstractService;
-import li.klass.fhem.service.CommandExecutionService;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -170,12 +169,13 @@ public class RoomListService extends AbstractService {
      * Stores the currently loaded room device list map to the cache file.
      */
     public void storeDeviceListMap() {
+        Log.i(RoomListService.class.getName(), "storing device list to cache");
         Context context = AndFHEMApplication.getContext();
         try {
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(context.openFileOutput(CACHE_FILENAME, Context.MODE_PRIVATE));
             objectOutputStream.writeObject(deviceListMap);
         } catch (Exception e) {
-            Log.e(CommandExecutionService.class.getName(), "error occurred while serializing data", e);
+            Log.e(RoomListService.class.getName(), "error occurred while serializing data", e);
         }
     }
 
@@ -185,11 +185,20 @@ public class RoomListService extends AbstractService {
      */
     @SuppressWarnings("unchecked")
     private Map<String, RoomDeviceList> getCachedRoomDeviceListMap() {
+
         try {
+            Thread.sleep(2000);
+            Log.i(RoomListService.class.getName(), "loading device list from cache");
+            long startLoad = System.currentTimeMillis();
+
             ObjectInputStream objectInputStream = new ObjectInputStream(AndFHEMApplication.getContext().openFileInput(CACHE_FILENAME));
-            return (Map<String, RoomDeviceList>) objectInputStream.readObject();
+            Map<String, RoomDeviceList> roomDeviceListMap = (Map<String, RoomDeviceList>) objectInputStream.readObject();
+            Log.i(RoomListService.class.getName(), "loading device list from cache completed after "
+                    + ( System.currentTimeMillis() - startLoad) + "ms");
+
+            return roomDeviceListMap;
         } catch (Exception e) {
-            Log.d(CommandExecutionService.class.getName(), "error occurred while de-serializing data", e);
+            Log.d(RoomListService.class.getName(), "error occurred while de-serializing data", e);
             return null;
         }
     }

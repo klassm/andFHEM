@@ -28,12 +28,13 @@ import li.klass.fhem.R;
 import li.klass.fhem.util.ValueDescriptionUtil;
 import org.w3c.dom.NamedNodeMap;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class WeatherDevice extends Device<WeatherDevice> {
-    public static class WeatherDeviceForecast implements Comparable<WeatherDeviceForecast> {
+    public static class WeatherDeviceForecast implements Comparable<WeatherDeviceForecast>, Serializable {
         private static final SimpleDateFormat forecastDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
         private String date;
