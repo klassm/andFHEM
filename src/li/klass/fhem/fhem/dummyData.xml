@@ -2166,5 +2166,18 @@ room structexclude webCmd eventMap">
     <ATTR key="label" value="Gasverbrauch Summe $data{sum1} m³, Min $data{min1}, Max $data{max1}, Last $data{currval1} m³"/>
     <ATTR key="room" value="Plots"/>
 </weblink>
+<weblink name="Wetter" state="initial" sets="" attrs="room group comment alias eventMap fixedrange plotmode plotsize label title htmlattr Geschoss Haus fp_Lindenhof icon structexclude webCmd">
+    <INT key="DEF" value="iframe http://www.wetteronline.de/cgi-bin/hpweather?PLZ=15749"/>
+    <INT key="LINK" value="http://www.wetteronline.de/cgi-bin/hpweather?PLZ=15749"/>
+    <INT key="NAME" value="Wetter"/>
+    <INT key="NR" value="26"/>
+    <INT key="STATE" value="initial"/>
+    <INT key="TYPE" value="weblink"/>
+    <INT key="WLTYPE" value="iframe"/>
+    <ATTR key="fp_Lindenhof" value="420,25"/>
+    <ATTR key="htmlattr" value="width="220" height="330" frameborder="0" marginheight="0" marginwidth="0""/>
+    <ATTR key="room" value="Plots"/>
+
+</weblink>
 </weblink_LIST>
         </FHZINFO>

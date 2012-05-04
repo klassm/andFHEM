@@ -81,6 +81,9 @@ public class DeviceListParser {
             // adding a whitespace
             xmlList = xmlList.replaceAll("=\"\"attrs", "=\"\" attrs");
 
+            // replace html attribute
+            xmlList = xmlList.replaceAll("<ATTR key=\"htmlattr\"[ A-Za-z0-9=\"]*/>", "");
+
             // remove double ""
             xmlList = xmlList.replaceAll(" +(?= )", "");
 
