@@ -34,7 +34,11 @@ import java.util.List;
 
 public class FS20Device extends Device<FS20Device> implements Comparable<FS20Device>, Serializable {
 
-    private List<Integer> dimStates = Arrays.asList(0, 6, 100, 12, 18, 25, 31, 37, 43, 50, 56, 62, 68, 75, 81, 87, 93);
+    /**
+     * List of dim states available for FS20 devices. Careful: this list has to be ordered, to make dim up and
+     * down work!
+     */
+    private List<Integer> dimStates = Arrays.asList(0, 6, 12, 18, 25, 31, 37, 43, 50, 56, 62, 68, 75, 81, 87, 93, 100);
     private static final List<String> dimModels = Arrays.asList("FS20DI", "FS20DI10", "FS20DU");
     private static final List<String> offStates = Arrays.asList("off", "off-for-timer", "reset", "timer");
     
@@ -105,6 +109,28 @@ public class FS20Device extends Device<FS20Device> implements Comparable<FS20Dev
             }
         }
         return FS20State.ON;
+    }
+
+    public int getDimUpProgress() {
+        return getDimProgressInIndexDirection(1);
+    }
+
+    public int getDimDownProgress() {
+        return getDimProgressInIndexDirection(-1);
+    }
+
+    private int getDimProgressInIndexDirection(int indexDirection) {
+        if (! isDimDevice()) return -1;
+
+        int dimState = getFS20DimState();
+
+        int currentIndex = dimStates.indexOf(dimState);
+        int newIndex = currentIndex + indexDirection;
+
+        if (newIndex >= 0 && dimStates.size() > newIndex) {
+            return dimStates.get(newIndex);
+        }
+        return dimState;
     }
 
     public int getFS20DimState() {

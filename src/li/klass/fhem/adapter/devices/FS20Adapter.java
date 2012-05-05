@@ -45,6 +45,32 @@ import java.util.List;
 
 public class FS20Adapter extends DeviceDetailAvailableAdapter<FS20Device> {
 
+    private class DimButtonListener implements Button.OnClickListener {
+
+        private int targetDimState;
+
+        public DimButtonListener(int targetDimState) {
+            this.targetDimState = targetDimState;
+        }
+        @Override
+        public void onClick(View view) {
+            final Context context = view.getContext();
+            String deviceName = (String) view.getTag();
+
+            Intent intent = new Intent(Actions.DEVICE_DIM);
+            intent.putExtra(BundleExtraKeys.DEVICE_DIM_PROGRESS, targetDimState);
+            intent.putExtra(BundleExtraKeys.DEVICE_NAME, deviceName);
+            intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
+                @Override
+                protected void onReceiveResult(int resultCode, Bundle resultData) {
+                    context.sendBroadcast(new Intent(Actions.DO_UPDATE));
+                }
+            });
+
+            context.startService(intent);
+        }
+    }
+
     private class SeekBarChangeListener implements SeekBar.OnSeekBarChangeListener {
 
         public int progress;
@@ -121,9 +147,12 @@ public class FS20Adapter extends DeviceDetailAvailableAdapter<FS20Device> {
         setTextViewOrHideTableRow(view, R.id.tableRowState, R.id.state, device.getState());
 
         TableRow seekBarRow = (TableRow) view.findViewById(R.id.switchSeekBarRow);
+        TableRow dimButtonRow = (TableRow) view.findViewById(R.id.dimButtonRow);
         TableRow toggleButtonRow = (TableRow) view.findViewById(R.id.switchToggleButtonRow);
 
         SeekBar seekBar = (SeekBar) view.findViewById(R.id.seekBar);
+        Button dimUpButton = (Button) view.findViewById(R.id.dimUp);
+        Button dimDownButton = (Button) view.findViewById(R.id.dimDown);
         ToggleButton switchButton = (ToggleButton) view.findViewById(R.id.switchButton);
 
         if (device.isDimDevice()) {
@@ -131,6 +160,11 @@ public class FS20Adapter extends DeviceDetailAvailableAdapter<FS20Device> {
             seekBar.setProgress(initialProgress);
             seekBar.setOnSeekBarChangeListener(new SeekBarChangeListener(device.getFS20DimState()));
             seekBar.setTag(device.getName());
+
+            dimUpButton.setTag(device.getName());
+            dimDownButton.setTag(device.getName());
+            dimUpButton.setOnClickListener(new DimButtonListener(device.getDimUpProgress()));
+            dimDownButton.setOnClickListener(new DimButtonListener(device.getDimDownProgress()));
 
             toggleButtonRow.setVisibility(View.GONE);
         } else {
@@ -141,6 +175,7 @@ public class FS20Adapter extends DeviceDetailAvailableAdapter<FS20Device> {
             switchButton.setTag(device.getName());
 
             seekBarRow.setVisibility(View.GONE);
+            dimButtonRow.setVisibility(View.GONE);
         }
 
         Button switchSetOptions = (Button) view.findViewById(R.id.switchSetOptions);

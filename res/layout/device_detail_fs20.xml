@@ -84,6 +84,26 @@
 
         </TableRow>
 
+        <TableRow android:id="@+id/dimButtonRow">
+            <LinearLayout android:gravity="right"
+                          android:layout_column="2"
+                          android:layout_width="fill_parent"
+                          android:layout_height="wrap_content"
+                          android:layout_span="2">
+                <Button android:id="@+id/dimDown"
+                        android:text="@string/dimDown"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:background="@drawable/theme_button"/>
+                <Button android:id="@+id/dimUp"
+                        android:layout_marginLeft="10dp"
+                        android:text="@string/dimUp"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:background="@drawable/theme_button"/>
+            </LinearLayout>
+        </TableRow>
+
         <TableRow android:id="@+id/switchToggleButtonRow">
             <TextView android:text="@string/switchDevice"
                       style="@style/deviceDetailDescription" />

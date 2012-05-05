@@ -83,6 +83,8 @@
     <string name="weather">Weather</string>
     <string name="currentWeather">Current Weather</string>
     <string name="weatherForecast">Weather Forecast</string>
+    <string name="dimUp">Dim +</string>
+    <string name="dimDown">Dim -</string>
 
     <string name="switchDevice">Switch</string>
     <string name="preferences">Preferences</string>
