@@ -187,7 +187,6 @@ public class RoomListService extends AbstractService {
     private Map<String, RoomDeviceList> getCachedRoomDeviceListMap() {
 
         try {
-            Thread.sleep(2000);
             Log.i(RoomListService.class.getName(), "loading device list from cache");
             long startLoad = System.currentTimeMillis();
 

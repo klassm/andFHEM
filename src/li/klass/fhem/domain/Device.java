@@ -44,8 +44,8 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
     protected String alias;
     protected String measured;
     protected String definition;
-    protected Map<String, String> eventMapReverse;
-    protected Map<String, String> eventMap;
+    protected Map<String, String> eventMapReverse = new HashMap<String, String>();
+    protected Map<String, String> eventMap = new HashMap<String, String>();
 
     protected volatile FileLogDevice fileLog;
 

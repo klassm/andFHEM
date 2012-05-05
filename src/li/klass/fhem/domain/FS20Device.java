@@ -36,6 +36,7 @@ public class FS20Device extends Device<FS20Device> implements Comparable<FS20Dev
 
     private List<Integer> dimStates = Arrays.asList(0, 6, 100, 12, 18, 25, 31, 37, 43, 50, 56, 62, 68, 75, 81, 87, 93);
     private static final List<String> dimModels = Arrays.asList("FS20DI", "FS20DI10", "FS20DU");
+    private static final List<String> offStates = Arrays.asList("off", "off-for-timer", "reset", "timer");
     
     private String model;
     private List<String> setOptions = Collections.emptyList();
@@ -98,8 +99,10 @@ public class FS20Device extends Device<FS20Device> implements Comparable<FS20Dev
     }
 
     public FS20State getFs20State() {
-        if (equalsAny(getInternalState(), "off", "off-for-timer", "reset", "timer")) {
-            return FS20State.OFF;
+        for (String offState : offStates) {
+            if (getInternalState().equals(offState) || getInternalState().equals(eventMap.get(offState))) {
+                return FS20State.OFF;
+            }
         }
         return FS20State.ON;
     }
