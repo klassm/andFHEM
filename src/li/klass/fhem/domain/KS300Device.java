@@ -25,6 +25,7 @@
 package li.klass.fhem.domain;
 
 import li.klass.fhem.R;
+import li.klass.fhem.util.ValueDescriptionUtil;
 import li.klass.fhem.util.ValueUtil;
 import org.w3c.dom.NamedNodeMap;
 
@@ -57,11 +58,11 @@ public class KS300Device extends Device<KS300Device> implements Serializable {
         if (keyValue.equals("TEMPERATURE")) {
             this.temperature = ValueUtil.formatTemperature(nodeContent);
         } else if (keyValue.equals("WIND")) {
-            this.wind = nodeContent;
+            this.wind = ValueDescriptionUtil.appendKmH(nodeContent);
         } else if (keyValue.equals("HUMIDITY")) {
-            this.humidity = nodeContent;
+            this.humidity = ValueDescriptionUtil.appendPercent(nodeContent);
         } else if (keyValue.equals("RAIN")) {
-            this.rain = nodeContent;
+            this.rain = ValueDescriptionUtil.appendLm2(nodeContent);
         } else if (keyValue.equals("AVG_DAY")) {
             this.averageDay = nodeContent;
         } else if (keyValue.equals("AVG_MONTH")) {

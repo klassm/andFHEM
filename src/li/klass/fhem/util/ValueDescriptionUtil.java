@@ -32,4 +32,12 @@ public class ValueDescriptionUtil {
     public static String appendPercent(Object text) {
         return text + " (%)";
     }
+
+    public static String appendKmH(Object text) {
+        return text + " (km/h)";
+    }
+
+    public static String appendLm2(Object text) {
+        return text + " (l/m2)";
+    }
 }
