@@ -31,6 +31,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.HeaderViewListAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
@@ -65,10 +66,14 @@ public class NestedListView extends ListView {
     }
 
     public NestedListViewAdapter getNestedListViewAdapter() {
-        return (NestedListViewAdapter) getAdapter();
+        ListAdapter adapter = getAdapter();
+        if (adapter instanceof HeaderViewListAdapter) {
+            adapter = ((HeaderViewListAdapter) adapter).getWrappedAdapter();
+        }
+        return (NestedListViewAdapter) adapter;
     }
 
-    // the method override drawDivider in ListView
+    // the method overrides drawDivider in ListView
     void drawDivider(Canvas canvas, Rect bounds, int childIndex) {
         if (childIndex == -1) return;
         int position = childIndex + getFirstVisiblePosition();

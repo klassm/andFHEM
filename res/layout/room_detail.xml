@@ -24,19 +24,24 @@
   ~   Boston, MA  02110-1301  USA
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="fill_parent"
-              android:layout_height="fill_parent"
-              android:orientation="vertical">
+              android:layout_height="fill_parent">
 
     <li.klass.fhem.widget.NestedListView
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:id="@+id/deviceMap"
-                android:padding="5dp"
+                android:id="@+id/deviceMap1"
                 android:dividerHeight="0dp"
                 android:divider="@drawable/empty"
                 android:fastScrollEnabled="true"
                 android:listSelector="@drawable/theme_listview_item"
+                android:layout_alignParentTop="true"
+                android:layout_above="@+id/adContainer"
                 />
-</LinearLayout>
+
+    <LinearLayout android:layout_width="fill_parent"
+                  android:layout_height="wrap_content"
+                  android:id="@+id/adContainer"
+                  android:layout_alignParentBottom="true" />
+</RelativeLayout>

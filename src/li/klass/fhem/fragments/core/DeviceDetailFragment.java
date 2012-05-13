@@ -39,6 +39,7 @@ import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.domain.Device;
 import li.klass.fhem.domain.DeviceType;
+import li.klass.fhem.util.advertisement.AdvertisementUtil;
 
 public class DeviceDetailFragment extends BaseFragment {
     private String deviceName;
@@ -57,6 +58,7 @@ public class DeviceDetailFragment extends BaseFragment {
         if (superView != null) return superView;
 
         View view = inflater.inflate(R.layout.device_detail_view, container, false);
+        AdvertisementUtil.addAd(view, getActivity());
 
         update(false);
 

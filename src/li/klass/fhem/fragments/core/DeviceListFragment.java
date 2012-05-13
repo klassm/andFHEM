@@ -43,6 +43,7 @@ import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.domain.Device;
 import li.klass.fhem.domain.DeviceType;
 import li.klass.fhem.domain.RoomDeviceList;
+import li.klass.fhem.util.advertisement.AdvertisementUtil;
 import li.klass.fhem.util.device.DeviceActionUtil;
 import li.klass.fhem.widget.NestedListView;
 
@@ -72,9 +73,10 @@ public abstract class DeviceListFragment extends BaseFragment {
         if (superView != null) return superView;
 
         View view = inflater.inflate(R.layout.room_detail, container, false);
-        adapter = new RoomDetailAdapter(getActivity(), new RoomDeviceList(""));
+        AdvertisementUtil.addAd(view, getActivity());
 
-        NestedListView nestedListView = (NestedListView) view.findViewById(R.id.deviceMap);
+        NestedListView nestedListView = (NestedListView) view.findViewById(R.id.deviceMap1);
+        adapter = new RoomDetailAdapter(getActivity(), new RoomDeviceList(""));
         nestedListView.setAdapter(adapter);
 
         registerForContextMenu(nestedListView);

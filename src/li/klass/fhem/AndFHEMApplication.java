@@ -26,10 +26,15 @@ package li.klass.fhem;
 
 import android.app.Application;
 import android.content.Context;
+import li.klass.fhem.license.LicenseManager;
 
 public class AndFHEMApplication extends Application {
     private static Context context;
     public static Application INSTANCE;
+
+    public static final String AD_UNIT_ID = "a14fae70fa236de";
+    public static final String PUBLIC_KEY_ENCODED = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA1umqueNUDXDqFzXEsRi/kvum6VcI8qiF0OWE7ME6Lm3mHsYHH4W/XIpLWXyh/7FeVpGl36c1UJfBhWCjjLi3d0qechVr/+0RJmXX+r5QZYzE6ZR9jr1g+BUCZj8bB2h+kGL6068pWJJMgzP0mvUBwCxHJioSpdIaBUK4FFyJDz/Nuu8PnThxLJsYEzB6ppyZ8gWYYyeSwg1oNdqcTafLPsh4rAyLJAMOBa9m8cQ7dyEqFXrrM+shYB1JDOJICM6fBNEUDh6kY12QEvh5m6vrAiB7q2eO11rCjZQqSzUEg2Qnd8PFR27ZBQ7CF9mF8VTL71bFOCoM6l/6rIe83SfKWQIDAQAB";
+    public static final String PRODUCT_PREMIUM_ID ="android.test.purchased";
 
     @Override
     public void onCreate() {
@@ -37,6 +42,7 @@ public class AndFHEMApplication extends Application {
 
         context = getApplicationContext();
         INSTANCE = this;
+        LicenseManager.INSTANCE.isPro();
     }
 
     public static Context getContext() {

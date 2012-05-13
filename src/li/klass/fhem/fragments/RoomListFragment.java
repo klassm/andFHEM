@@ -42,6 +42,7 @@ import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.fragments.core.ActionBarShowTabs;
 import li.klass.fhem.fragments.core.BaseFragment;
 import li.klass.fhem.fragments.core.TopLevelFragment;
+import li.klass.fhem.util.advertisement.AdvertisementUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,9 +63,10 @@ public class RoomListFragment extends BaseFragment implements Updateable, Action
         if (superView != null) return superView;
 
         adapter = new RoomListAdapter(getActivity(), R.layout.room_list_name, new ArrayList<String>());
-        View view = inflater.inflate(R.layout.room_list, container, false);
+        View layout = inflater.inflate(R.layout.room_list, container, false);
+        AdvertisementUtil.addAd(layout, getActivity());
 
-        ListView roomList = (ListView) view.findViewById(R.id.roomList);
+        ListView roomList = (ListView) layout.findViewById(R.id.roomList);
         roomList.setAdapter(adapter);
 
         roomList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -72,7 +74,7 @@ public class RoomListFragment extends BaseFragment implements Updateable, Action
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 String roomName = String.valueOf(view.getTag());
-                
+
                 Intent intent = new Intent(Actions.SHOW_FRAGMENT);
                 intent.putExtra(BundleExtraKeys.FRAGMENT_NAME, RoomDetailFragment.class.getName());
                 intent.putExtra(BundleExtraKeys.ROOM_NAME, roomName);
@@ -83,7 +85,7 @@ public class RoomListFragment extends BaseFragment implements Updateable, Action
 
         update(false);
 
-        return view;
+        return layout;
     }
 
     @Override

@@ -216,6 +216,13 @@
     <string name="widgetToggle">AndFHEM Toggle</string>
     <string name="deviceNotFound">Device %1$s was not found.</string>
 
+    <string name="billing_notSupported">Cannot connect to Google Billing.</string>
+    <string name="billing_restoringTransactions">Restoring transactions ...</string>
+    <string name="billing_state_pending">Waiting for the current transaction to complete ...</string>
+    <string name="billing_state_bought">Thanks for buying andFHEM Premium!</string>
+    <string name="premium">AndFHEM Premium</string>
+    <string name="premium_desc">AndFHEM Premium includes the shutdown of advertisements within the app!</string>
+    <string name="shop_buyPemium">Buy andFHEM Premium</string>
 
 
 </resources>

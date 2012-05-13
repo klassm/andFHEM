@@ -89,6 +89,8 @@
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">fill_parent</item>
         <item name="android:stretchColumns">1</item>
+
+        <item name="android:layout_marginLeft">5dp</item>
         <item name="android:padding">5dp</item>
         <item name="android:paddingLeft">20dp</item>
         <item name="android:paddingRight">20dp</item>

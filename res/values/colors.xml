@@ -34,4 +34,6 @@
 
     <color name="focusedColor">#FFFFE748</color>
     <color name="thumbOuterColor">#55FFE748</color>
+
+    <color name="lightBlue">#B5C5FF</color>
 </resources>

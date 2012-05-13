@@ -45,6 +45,7 @@ import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.fragments.AllDevicesFragment;
 import li.klass.fhem.fragments.FavoritesFragment;
+import li.klass.fhem.fragments.PremiumFragment;
 import li.klass.fhem.fragments.RoomListFragment;
 import li.klass.fhem.fragments.core.ActionBarShowTabs;
 import li.klass.fhem.fragments.core.BaseFragment;
@@ -303,13 +304,12 @@ public abstract class FragmentBaseActivity extends FragmentActivity implements A
 
                 return true;
 
-            case R.id.menu_donate:
-                Uri donateUri = Uri.parse(ApplicationUrls.DONATE_PAGE);
-                Intent donateIntent = new Intent(Intent.ACTION_VIEW, donateUri);
-                startActivity(donateIntent);
+            case R.id.menu_premium:
+                Intent premiumIntent = new Intent(Actions.SHOW_FRAGMENT);
+                premiumIntent.putExtra(BundleExtraKeys.FRAGMENT_NAME, PremiumFragment.class.getName());
+                sendBroadcast(premiumIntent);
 
                 return true;
-
         }
 
         return super.onOptionsItemSelected(item);
