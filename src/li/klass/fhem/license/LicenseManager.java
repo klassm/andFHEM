@@ -23,8 +23,15 @@
 
 package li.klass.fhem.license;
 
+import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
+import android.util.Log;
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.billing.PurchaseDatabase;
+
+import javax.security.cert.X509Certificate;
 
 public class LicenseManager {
     public static final LicenseManager INSTANCE = new LicenseManager();
@@ -34,6 +41,19 @@ public class LicenseManager {
         purchaseDatabase = new PurchaseDatabase(AndFHEMApplication.getContext());
     }
     public boolean isPro() {
+        try {
+        Context context = AndFHEMApplication.getContext();
+        PackageInfo pkgInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), PackageManager.GET_SIGNATURES);
+
+        for (Signature appSignature : pkgInfo.signatures) {
+            X509Certificate appCertificate = X509Certificate.getInstance(appSignature.toByteArray());
+            if (appCertificate.getSubjectDN().getName().contains("Android Debug")) {
+                return true;
+            }
+        }
+        } catch (Exception e) {
+            Log.e(LicenseManager.class.getName(), "some exception occurred during reading of app signatures", e);
+        }
         return purchaseDatabase.getOwnedItems().contains(AndFHEMApplication.PRODUCT_PREMIUM_ID);
     }
 }
