@@ -31,7 +31,7 @@
               android:id="@+id/deviceName"
               android:text="deviceName"/>
 
-    <ToggleButton android:id="@+id/switchButton"
+    <ToggleButton android:id="@+id/switchButton1"
                   style="@style/deviceOverviewToggleButton"
                   android:background="@drawable/theme_toggle_button"
             />

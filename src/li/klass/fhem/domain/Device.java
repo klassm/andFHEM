@@ -26,13 +26,17 @@ package li.klass.fhem.domain;
 
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
+import li.klass.fhem.domain.genericview.DeviceChart;
+import li.klass.fhem.domain.genericview.ShowInDetail;
 import li.klass.fhem.util.StringEscapeUtils;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public abstract class Device<T extends Device> implements Serializable, Comparable<T> {
@@ -40,9 +44,15 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
     protected String room = AndFHEMApplication.getContext().getResources().getString(R.string.defaultRoomName);
 
     protected String name;
+
     private String state;
+
     protected String alias;
+
+    @ShowInDetail(description = R.string.measured)
     protected String measured;
+
+    @ShowInDetail(description = R.string.definition)
     protected String definition;
     protected Map<String, String> eventMapReverse = new HashMap<String, String>();
     protected Map<String, String> eventMap = new HashMap<String, String>();
@@ -211,6 +221,10 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
 
     public Map<Integer, String> getFileLogColumns() {
         return new HashMap<Integer, String> ();
+    }
+
+    public List<DeviceChart> getFileLogColumnsListForGenericViews() {
+        return new ArrayList<DeviceChart>();
     }
 
     public String getState() {

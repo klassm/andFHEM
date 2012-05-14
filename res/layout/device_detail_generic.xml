@@ -4,13 +4,13 @@
   ~ AndFHEM - Open Source Android application to control a FHEM home automation
   ~ server.
   ~
-  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ Copyright (c) 2012, Matthias Klass or third-party contributors as
   ~ indicated by the @author tags or express copyright attribution
   ~ statements applied by the authors.  All third-party contributions are
   ~ distributed under license by Red Hat Inc.
   ~
   ~ This copyrighted material is made available to anyone wishing to use, modify,
-  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLICLICENSE, as published by the Free Software Foundation.
   ~
   ~ This program is distributed in the hope that it will be useful,
   ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
@@ -21,21 +21,20 @@
   ~ along with this distribution; if not, write to:
   ~   Free Software Foundation, Inc.
   ~   51 Franklin Street, Fifth Floor
-  ~   Boston, MA  02110-1301  USA
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="fill_parent"
-              android:layout_height="fill_parent"
-              android:orientation="vertical">
-
+<LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+               android:layout_width="fill_parent"
+               android:layout_height="fill_parent"
+               android:orientation="vertical">
 
     <TextView style="@style/deviceDetailSectionCaption"
-              android:text="@string/generalDetails" />
+              android:text="@string/generalDetails">
+    </TextView>
 
     <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                 android:id="@+id/generic"
                  style="@style/deviceDetailTable">
-
         <TableRow android:id="@+id/tableRowDeviceName">
             <TextView android:text="@string/deviceName"
                       style="@style/deviceDetailDescription" />
@@ -67,53 +66,15 @@
                       android:text="xx.xx.xxxx xx:xx"
                       style="@style/deviceDetailContent" />
         </TableRow>
-
-        <TableRow android:id="@+id/tableRowTemperature">
-            <TextView android:text="@string/temperature"
-                      style="@style/deviceDetailDescription" />
-            <TextView android:id="@+id/temperature"
-                      style="@style/deviceDetailContent"
-                      android:text="xx (Celsius)"/>
-        </TableRow>
-
-        <TableRow android:id="@+id/tableRowHumidity">
-            <TextView android:text="@string/humidity"
-                      style="@style/deviceDetailDescription" />
-            <TextView android:id="@+id/humidity"
-                      style="@style/deviceDetailContent"
-                      android:text="xx (%)"/>
-        </TableRow>
-
-        <TableRow android:id="@+id/tableRowBattery">
-            <TextView android:text="@string/battery"
-                      style="@style/deviceDetailDescription" />
-            <TextView android:id="@+id/battery"
-                      style="@style/deviceDetailContent"
-                      android:text="xx"/>
-        </TableRow>
     </TableLayout>
 
     <LinearLayout android:layout_width="fill_parent"
                   android:layout_height="wrap_content"
                   android:layout_marginTop="20dp"
                   android:orientation="vertical"
-                  android:id="@+id/graphLayout">
-
+                  android:id="@+id/graphButtons">
 
         <TextView style="@style/deviceDetailSectionCaption"
                   android:text="@string/plots" />
-
-        <Button android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/temperatureGraph"
-                android:id="@+id/temperatureGraph"
-                android:layout_marginLeft="10dp"
-                style="@style/button"/>
-        <Button android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/humidityGraph"
-                android:id="@+id/humidityGraph"
-                android:layout_marginLeft="10dp"
-                style="@style/button"/>
     </LinearLayout>
 </LinearLayout>

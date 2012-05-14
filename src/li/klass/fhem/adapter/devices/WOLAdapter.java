@@ -67,7 +67,6 @@ public class WOLAdapter extends DeviceDetailAvailableAdapter<WOLDevice> {
                 Intent intent = new Intent(Actions.DEVICE_REFRESH_STATE);
                 intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
                 context.startService(intent);
-                
                 context.startService(new Intent(Actions.DO_UPDATE));
             }
         });

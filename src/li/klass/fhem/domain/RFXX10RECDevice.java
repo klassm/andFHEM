@@ -24,11 +24,20 @@
 
 package li.klass.fhem.domain;
 
+import li.klass.fhem.R;
+import li.klass.fhem.domain.genericview.ShowInDetail;
+import li.klass.fhem.domain.genericview.ShowInOverview;
+import li.klass.fhem.domain.genericview.ViewSettings;
 import org.w3c.dom.NamedNodeMap;
 
+@ViewSettings(showState = true)
 public class RFXX10RECDevice extends Device<RFXX10RECDevice> {
-    
+    @ShowInOverview(description = R.string.lastStateChange)
+    @ShowInDetail(description = R.string.lastStateChange)
     private String lastStateChangeTime;
+
+    @ShowInOverview(description = R.string.lastState)
+    @ShowInDetail(description = R.string.lastState)
     private String lastState;
 
     @Override

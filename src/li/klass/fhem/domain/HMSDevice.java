@@ -25,17 +25,30 @@
 package li.klass.fhem.domain;
 
 import li.klass.fhem.R;
+import li.klass.fhem.domain.genericview.DeviceChart;
+import li.klass.fhem.domain.genericview.ShowInDetail;
+import li.klass.fhem.domain.genericview.ShowInOverview;
+import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ValueUtil;
 import org.w3c.dom.NamedNodeMap;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
+@SuppressWarnings("unused")
 public class HMSDevice extends Device<HMSDevice> {
+    @ShowInOverview(description = R.string.temperature)
+    @ShowInDetail(description = R.string.temperature)
     private String temperature;
+
+    @ShowInOverview(description = R.string.battery)
+    @ShowInDetail(description = R.string.battery)
     private String battery;
+
+    @ShowInOverview(description = R.string.humidity)
+    @ShowInDetail(description = R.string.humidity)
     private String humidity;
-    
+
     public static final Integer COLUMN_SPEC_TEMPERATURE = R.string.temperature;
     public static final Integer COLUMN_SPEC_HUMIDITY = R.string.humidity;
 
@@ -50,24 +63,13 @@ public class HMSDevice extends Device<HMSDevice> {
         }
     }
 
-    public String getTemperature() {
-        return temperature;
-    }
-
-    public String getBattery() {
-        return battery;
-    }
-
-    public String getHumidity() {
-        return humidity;
-    }
-
     @Override
-    public Map<Integer, String> getFileLogColumns() {
-        Map<Integer, String> columnSpecification = new HashMap<Integer, String>();
-        columnSpecification.put(COLUMN_SPEC_TEMPERATURE, "4:T\\x3a:0:");
-        columnSpecification.put(COLUMN_SPEC_HUMIDITY, "6:H\\x3a:0:");
-
-        return columnSpecification;
+    public List<DeviceChart> getFileLogColumnsListForGenericViews() {
+        List<DeviceChart> charts = new ArrayList<DeviceChart>();
+        if (temperature != null)
+        charts.add(new DeviceChart(R.string.temperatureGraph, R.string.yAxisTemperature, ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature), "4:T\\x3a:0:"));
+        if (humidity != null)
+            charts.add(new DeviceChart(R.string.humidityGraph, R.string.yAxisHumidity, new ChartSeriesDescription(R.string.humidity), "6:H\\x3a:0:"));
+        return charts;
     }
 }

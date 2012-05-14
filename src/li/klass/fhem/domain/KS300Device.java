@@ -25,27 +25,46 @@
 package li.klass.fhem.domain;
 
 import li.klass.fhem.R;
+import li.klass.fhem.domain.genericview.DeviceChart;
+import li.klass.fhem.domain.genericview.ShowInDetail;
+import li.klass.fhem.domain.genericview.ShowInOverview;
+import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ValueDescriptionUtil;
 import li.klass.fhem.util.ValueUtil;
 import org.w3c.dom.NamedNodeMap;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+@SuppressWarnings("unused")
 public class KS300Device extends Device<KS300Device> implements Serializable {
 
-    public static final int COLUMN_SPEC_TEMPERATURE = R.string.temperature;
-    public static final int COLUMN_SPEC_HUMIDITY = R.string.humidity;
-    public static final int COLUMN_SPEC_WIND = R.string.wind;
-    public static final int COLUMN_SPEC_RAIN = R.string.rain;
-
+    @ShowInOverview(description = R.string.temperature)
+    @ShowInDetail(description = R.string.temperature)
     private String temperature;
+
+    @ShowInOverview(description = R.string.wind)
+    @ShowInDetail(description = R.string.wind)
     private String wind;
+
+    @ShowInOverview(description = R.string.humidity)
+    @ShowInDetail(description = R.string.humidity)
     private String humidity;
+
+    @ShowInOverview(description = R.string.rain)
+    @ShowInDetail(description = R.string.rain)
     private String rain;
+
+    @ShowInDetail(description = R.string.avgDay)
     private String averageDay;
+
+    @ShowInDetail(description = R.string.avgMonth)
     private String averageMonth;
+
+    @ShowInDetail(description = R.string.isRaining)
     private String isRaining;
 
     @Override
@@ -72,34 +91,6 @@ public class KS300Device extends Device<KS300Device> implements Serializable {
         }
     }
 
-    public String getTemperature() {
-        return temperature;
-    }
-
-    public String getWind() {
-        return wind;
-    }
-
-    public String getHumidity() {
-        return humidity;
-    }
-
-    public String getRain() {
-        return rain;
-    }
-
-    public String getAverageDay() {
-        return averageDay;
-    }
-
-    public String getAverageMonth() {
-        return averageMonth;
-    }
-
-    public String getRaining() {
-        return isRaining;
-    }
-
     @Override
     public String toString() {
         return "KS300Device{" +
@@ -111,13 +102,12 @@ public class KS300Device extends Device<KS300Device> implements Serializable {
     }
 
     @Override
-    public Map<Integer, String> getFileLogColumns() {
-        Map<Integer, String> columnSpecification = new HashMap<Integer, String>();
-        columnSpecification.put(COLUMN_SPEC_TEMPERATURE, "4:IR:");
-        columnSpecification.put(COLUMN_SPEC_HUMIDITY, "6:IR:");
-        columnSpecification.put(COLUMN_SPEC_WIND, "8:IR:");
-        columnSpecification.put(COLUMN_SPEC_RAIN, "10:IR:");
-
-        return columnSpecification;
+    public List<DeviceChart> getFileLogColumnsListForGenericViews() {
+        List<DeviceChart> charts = new ArrayList<DeviceChart>();
+        charts.add(new DeviceChart(R.string.temperatureGraph, R.string.yAxisTemperature, ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature), "4:IR:"));
+        charts.add(new DeviceChart(R.string.humidityGraph, R.string.yAxisHumidity, new ChartSeriesDescription(R.string.humidity), "6:IR:"));
+        charts.add(new DeviceChart(R.string.windGraph, R.string.yAxisWind, new ChartSeriesDescription(R.string.wind), "8:IR:"));
+        charts.add(new DeviceChart(R.string.rainGraph, R.string.yAxisRain, new ChartSeriesDescription(R.string.rain), "10:IR:"));
+        return charts;
     }
 }

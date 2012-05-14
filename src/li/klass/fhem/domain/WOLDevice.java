@@ -31,6 +31,7 @@ public class WOLDevice extends Device<WOLDevice> {
     private boolean isRunning = false;
     private String ip;
     private String mac;
+    private String state;
 
     @Override
     protected void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {
@@ -41,6 +42,8 @@ public class WOLDevice extends Device<WOLDevice> {
             ip = nodeContent;
         } else if (keyValue.equals("MAC")) {
             mac = nodeContent.toUpperCase();
+        } else if(keyValue.equals("STATE")) {
+            state = nodeContent;
         }
     }
 

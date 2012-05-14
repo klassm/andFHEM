@@ -26,19 +26,20 @@ package li.klass.fhem.domain;
 
 import li.klass.fhem.adapter.devices.core.DeviceAdapter;
 import li.klass.fhem.adapter.devices.*;
+import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
 import li.klass.fhem.adapter.devices.core.HOLDevice;
 import li.klass.fhem.domain.fht.FHT8VDevice;
 
 public enum DeviceType {
-    KS300("KS300", KS300Device.class, new KS300Adapter()),
+    KS300("KS300", KS300Device.class, new GenericDeviceAdapter<KS300Device>(KS300Device.class)),
     WEATHER("Weather", WeatherDevice.class, new WeatherAdapter()),
     FHT("FHT", FHTDevice.class, new FHTAdapter()),
-    HMS("HMS", HMSDevice.class, new HMSAdapter()),
+    HMS("HMS", HMSDevice.class, new GenericDeviceAdapter<HMSDevice>(HMSDevice.class)),
     WOL("WOL", WOLDevice.class, new WOLAdapter()),
-    OWTEMP("OWTEMP", OwtempDevice.class, new OwtempAdapter()),
+    OWTEMP("OWTEMP", OwtempDevice.class, new GenericDeviceAdapter<OwtempDevice>(OwtempDevice.class)),
     CUL_FHTTK("CUL_FHTTK", CULFHTTKDevice.class, new CULFHTTKAdapter()),
-    RFXX10REC("RFXX10REC", RFXX10RECDevice.class, new RFXX10RECAdapter()),
-    OREGON("OREGON", OregonDevice.class, new OregonAdapter()),
+    RFXX10REC("RFXX10REC", RFXX10RECDevice.class, new GenericDeviceAdapter<RFXX10RECDevice>(RFXX10RECDevice.class)),
+    OREGON("OREGON", OregonDevice.class, new GenericDeviceAdapter<OregonDevice>(OregonDevice.class)),
     CUL_EM("CUL_EM", CULEMDevice.class, new CULEMAdapter()),
     OWCOUNT("OWCOUNT", OwcountDevice.class, new OwcountAdapter()),
     SIS_PMS("SIS_PMS", SISPMSDevice.class, new SISPMSAdapter()),

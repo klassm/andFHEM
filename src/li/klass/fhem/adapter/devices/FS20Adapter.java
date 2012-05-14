@@ -238,7 +238,7 @@ public class FS20Adapter extends DeviceDetailAvailableAdapter<FS20Device> {
     private void fillFS20ToggleView(View view, final FS20Device device) {
         setTextView(view, R.id.deviceName, device.getAliasOrName());
 
-        ToggleButton switchButton = (ToggleButton) view.findViewById(R.id.switchButton);
+        ToggleButton switchButton = (ToggleButton) view.findViewById(R.id.switchButton1);
         setToogleButtonText(device, switchButton);
         switchButton.setChecked(device.isOn());
         switchButton.setOnClickListener(new SwitchButtonListener(device.getName()));

@@ -139,6 +139,10 @@ public abstract class DeviceAdapter<D extends Device> {
         setTextView(view, textFieldLayoutId, value);
     }
 
+    protected void setTextView(View view, int textFieldLayoutId, int value) {
+        setTextView(view, textFieldLayoutId, view.getContext().getString(value));
+    }
+
     protected void setTextView(View view, int textFieldLayoutId, String value) {
         TextView textView = (TextView) view.findViewById(textFieldLayoutId);
         if (textView != null) {
