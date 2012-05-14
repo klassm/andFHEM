@@ -339,26 +339,30 @@ public class BillingService extends Service implements ServiceConnection {
      * @param startId an identifier for the invocation instance of this service
      */
     public void handleCommand(Intent intent, int startId) {
-        String action = intent.getAction();
-        if (DEBUG) {
-            Log.i(TAG, "handleCommand() action: " + action);
-        }
-        if (ACTION_CONFIRM_NOTIFICATION.equals(action)) {
-            String[] notifyIds = intent.getStringArrayExtra(NOTIFICATION_ID);
-            confirmNotifications(startId, notifyIds);
-        } else if (ACTION_GET_PURCHASE_INFORMATION.equals(action)) {
-            String notifyId = intent.getStringExtra(NOTIFICATION_ID);
-            getPurchaseInformation(startId, new String[] { notifyId });
-        } else if (ACTION_PURCHASE_STATE_CHANGED.equals(action)) {
-            String signedData = intent.getStringExtra(INAPP_SIGNED_DATA);
-            String signature = intent.getStringExtra(INAPP_SIGNATURE);
-            purchaseStateChanged(startId, signedData, signature);
-        } else if (ACTION_RESPONSE_CODE.equals(action)) {
-            long requestId = intent.getLongExtra(INAPP_REQUEST_ID, -1);
-            int responseCodeIndex = intent.getIntExtra(INAPP_RESPONSE_CODE,
-                    ResponseCode.RESULT_ERROR.ordinal());
-            ResponseCode responseCode = ResponseCode.valueOf(responseCodeIndex);
-            checkResponseCode(requestId, responseCode);
+        try {
+            String action = intent.getAction();
+            if (DEBUG) {
+                Log.i(TAG, "handleCommand() action: " + action);
+            }
+            if (ACTION_CONFIRM_NOTIFICATION.equals(action)) {
+                String[] notifyIds = intent.getStringArrayExtra(NOTIFICATION_ID);
+                confirmNotifications(startId, notifyIds);
+            } else if (ACTION_GET_PURCHASE_INFORMATION.equals(action)) {
+                String notifyId = intent.getStringExtra(NOTIFICATION_ID);
+                getPurchaseInformation(startId, new String[] { notifyId });
+            } else if (ACTION_PURCHASE_STATE_CHANGED.equals(action)) {
+                String signedData = intent.getStringExtra(INAPP_SIGNED_DATA);
+                String signature = intent.getStringExtra(INAPP_SIGNATURE);
+                purchaseStateChanged(startId, signedData, signature);
+            } else if (ACTION_RESPONSE_CODE.equals(action)) {
+                long requestId = intent.getLongExtra(INAPP_REQUEST_ID, -1);
+                int responseCodeIndex = intent.getIntExtra(INAPP_RESPONSE_CODE,
+                        ResponseCode.RESULT_ERROR.ordinal());
+                ResponseCode responseCode = ResponseCode.valueOf(responseCodeIndex);
+                checkResponseCode(requestId, responseCode);
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "an exception occurred while handling a billing intent", e);
         }
     }
 
