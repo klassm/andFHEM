@@ -32,6 +32,7 @@ import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.billing.PurchaseDatabase;
 
 import javax.security.cert.X509Certificate;
+import java.util.Set;
 
 public class LicenseManager {
     public static final LicenseManager INSTANCE = new LicenseManager();
@@ -54,6 +55,7 @@ public class LicenseManager {
         } catch (Exception e) {
             Log.e(LicenseManager.class.getName(), "some exception occurred during reading of app signatures", e);
         }
-        return purchaseDatabase.getOwnedItems().contains(AndFHEMApplication.PRODUCT_PREMIUM_ID);
+        Set<String> ownedItems = purchaseDatabase.getOwnedItems();
+        return ownedItems.contains(AndFHEMApplication.PRODUCT_PREMIUM_ID) || ownedItems.contains(AndFHEMApplication.PRODUCT_PREMIUM_DONATOR_ID);
     }
 }
