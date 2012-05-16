@@ -38,6 +38,7 @@ import li.klass.fhem.activities.graph.ChartingActivity;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.Device;
+import li.klass.fhem.domain.genericview.DeviceChart;
 import li.klass.fhem.fragments.core.DeviceDetailFragment;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 
@@ -128,7 +129,7 @@ public abstract class DeviceAdapter<D extends Device> {
         String value = AndFHEMApplication.getContext().getString(stringId);
         setTextViewOrHideTableRow(view, tableRowId, textFieldLayoutId, value);
     }
-    
+
     protected void setTextViewOrHideTableRow(View view, int tableRowId, int textFieldLayoutId, String value) {
         TableRow tableRow = (TableRow) view.findViewById(tableRowId);
 
@@ -163,19 +164,7 @@ public abstract class DeviceAdapter<D extends Device> {
         return false;
     }
 
-    protected boolean createPlotButton(final Context context, View view, int buttonLayoutId, Object hideButtonIfNull,
-                                       final D device, int yTitleId, int... columnSpecifications) {
-        ChartSeriesDescription[] descriptions = new ChartSeriesDescription[columnSpecifications.length];
-
-        for (int i = 0; i < columnSpecifications.length; i++) {
-            int columnSpecification = columnSpecifications[i];
-            descriptions[i] = new ChartSeriesDescription(columnSpecification);
-        }
-        return createPlotButton(context, view, buttonLayoutId, hideButtonIfNull, device, yTitleId, descriptions);
-    }
-
-
-
+    @Deprecated
     protected boolean createPlotButton(final Context context, View view, int buttonLayoutId, Object hideButtonIfNull,
                                        final D device, final int yTitleId, final ChartSeriesDescription... seriesDescriptions) {
         if (! hideIfNull(view, buttonLayoutId, hideButtonIfNull)) {
@@ -192,6 +181,36 @@ public abstract class DeviceAdapter<D extends Device> {
         } else {
             return true;
         }
+    }
+
+    @Deprecated
+    protected boolean fillGraphButtonAndHideIfNull(final Context context, View view, int buttonLayoutId,
+                                                   final D device, final DeviceChart deviceChart) {
+        if (deviceChart != null) {
+            fillGraphButton(context, view, buttonLayoutId, device, deviceChart);
+            return true;
+        } else {
+            view.findViewById(buttonLayoutId).setVisibility(View.GONE);
+            return false;
+        }
+    }
+
+    protected void fillGraphButton(final Context context, View view, int buttonLayoutId, final D device, final DeviceChart deviceChart) {
+        Button button = (Button) view.findViewById(buttonLayoutId);
+        fillGraphButton(context, device, deviceChart, button);
+    }
+
+    protected void fillGraphButton(final Context context, final D device, final DeviceChart deviceChart, Button button) {
+        if (deviceChart == null) return;
+
+        button.setText(deviceChart.buttonText);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String yTitle = context.getResources().getString(deviceChart.yTitleId);
+                ChartingActivity.showChart(context, device, yTitle, deviceChart.chartSeriesDescriptions);
+            }
+        });
     }
 
     @SuppressWarnings("unchecked")

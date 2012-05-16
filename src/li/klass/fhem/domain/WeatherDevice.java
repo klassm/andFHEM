@@ -25,6 +25,8 @@ package li.klass.fhem.domain;
 
 import android.util.Log;
 import li.klass.fhem.R;
+import li.klass.fhem.domain.genericview.DeviceChart;
+import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ValueDescriptionUtil;
 import org.w3c.dom.NamedNodeMap;
 
@@ -173,11 +175,10 @@ public class WeatherDevice extends Device<WeatherDevice> {
     }
 
     @Override
-    public Map<Integer, String> getFileLogColumns() {
-        Map<Integer, String> columnSpecification = new HashMap<Integer, String>();
-        columnSpecification.put(COLUMN_SPEC_TEMPERATURE, "4:temp_c:");
-        columnSpecification.put(COLUMN_SPEC_HUMIDITY, "4:humidity:0:");
-
-        return columnSpecification;
+    protected void fillDeviceCharts(List<DeviceChart> chartSeries) {
+        addDeviceChartIfNotNull(temperature, new DeviceChart(R.string.temperatureGraph, R.string.yAxisTemperature,
+                ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:temp_c:")));
+        addDeviceChartIfNotNull(humidity, new DeviceChart(R.string.humidityGraph, R.string.yAxisHumidity,
+                new ChartSeriesDescription(R.string.temperature, "4:humidity:0:")));
     }
 }

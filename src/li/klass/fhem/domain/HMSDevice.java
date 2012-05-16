@@ -32,7 +32,6 @@ import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ValueUtil;
 import org.w3c.dom.NamedNodeMap;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("unused")
@@ -64,12 +63,10 @@ public class HMSDevice extends Device<HMSDevice> {
     }
 
     @Override
-    public List<DeviceChart> getFileLogColumnsListForGenericViews() {
-        List<DeviceChart> charts = new ArrayList<DeviceChart>();
-        if (temperature != null)
-        charts.add(new DeviceChart(R.string.temperatureGraph, R.string.yAxisTemperature, ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature), "4:T\\x3a:0:"));
-        if (humidity != null)
-            charts.add(new DeviceChart(R.string.humidityGraph, R.string.yAxisHumidity, new ChartSeriesDescription(R.string.humidity), "6:H\\x3a:0:"));
-        return charts;
+    protected void fillDeviceCharts(List<DeviceChart> chartSeries) {
+        addDeviceChartIfNotNull(temperature, new DeviceChart(R.string.temperatureGraph, R.string.yAxisTemperature,
+                ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:T\\x3a:0:")));
+        addDeviceChartIfNotNull(humidity, new DeviceChart(R.string.humidityGraph, R.string.yAxisHumidity,
+                new ChartSeriesDescription(R.string.temperature, "6:H\\x3a:0:")));
     }
 }

@@ -27,6 +27,8 @@ package li.klass.fhem.domain;
 import li.klass.fhem.R;
 import li.klass.fhem.domain.fht.FHTDayControl;
 import li.klass.fhem.domain.fht.FHTMode;
+import li.klass.fhem.domain.genericview.DeviceChart;
+import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.DayUtil;
 import li.klass.fhem.util.ValueDescriptionUtil;
 import li.klass.fhem.util.ValueExtractUtil;
@@ -35,6 +37,7 @@ import org.w3c.dom.NamedNodeMap;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class FHTDevice extends Device<FHTDevice> {
@@ -174,16 +177,6 @@ public class FHTDevice extends Device<FHTDevice> {
         return Collections.unmodifiableMap(dayControlMap);
     }
 
-    @Override
-    public Map<Integer, String> getFileLogColumns() {
-        Map<Integer, String> columnSpecification = new HashMap<Integer, String>();
-        columnSpecification.put(COLUMN_SPEC_TEMPERATURE, "4:measured:0:");
-        columnSpecification.put(COLUMN_SPEC_DESIRED_TEMPERATURE, "4:desired-temp:0:");
-        columnSpecification.put(COLUMN_SPEC_ACTUATOR, "4:actuator.*[0-9]+%:0:int");
-
-        return columnSpecification;
-    }
-
     public static String temperatureToString(double temperature) {
         if (temperature == 5.5) {
             return "off";
@@ -213,5 +206,14 @@ public class FHTDevice extends Device<FHTDevice> {
         for (FHTDayControl fhtDayControl : dayControlMap.values()) {
             fhtDayControl.setChangedAsCurrent();
         }
+    }
+
+    @Override
+    protected void fillDeviceCharts(List<DeviceChart> chartSeries) {
+        addDeviceChartIfNotNull(temperature, new DeviceChart(R.string.temperatureGraph, R.string.yAxisTemperature,
+                ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:measured:0"),
+                ChartSeriesDescription.getDiscreteValuesInstance(R.string.desiredTemperature, "4:desired-temp:0:")));
+        addDeviceChartIfNotNull(actuator, new DeviceChart(R.string.actuatorGraph, R.string.yAxisActuator,
+                new ChartSeriesDescription(R.string.actuator, "4:actuator.*[0-9]+%:0:int")));
     }
 }

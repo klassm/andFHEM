@@ -33,18 +33,17 @@ import android.view.View;
 import android.widget.*;
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
-import li.klass.fhem.fragments.FHTTimetableControlListFragment;
 import li.klass.fhem.adapter.devices.core.DeviceDetailAvailableAdapter;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.Device;
 import li.klass.fhem.domain.FHTDevice;
 import li.klass.fhem.domain.fht.FHTMode;
-import li.klass.fhem.service.graph.description.ChartSeriesDescription;
+import li.klass.fhem.fragments.FHTTimetableControlListFragment;
 import li.klass.fhem.util.ValueDescriptionUtil;
 import li.klass.fhem.util.device.DeviceActionUtil;
 
-import static li.klass.fhem.domain.FHTDevice.*;
+import static li.klass.fhem.domain.FHTDevice.temperatureToString;
 
 public class FHTAdapter extends DeviceDetailAvailableAdapter<FHTDevice> {
 
@@ -176,12 +175,10 @@ public class FHTAdapter extends DeviceDetailAvailableAdapter<FHTDevice> {
             modeSpinner.setSelection(FHTMode.positionOf(device.getMode()));
         }
 
-        createPlotButton(context, view, R.id.temperatureGraph, device.getTemperature(),
-                device, R.string.yAxisTemperature, ChartSeriesDescription.getDiscreteValuesInstance(COLUMN_SPEC_DESIRED_TEMPERATURE),
-                ChartSeriesDescription.getRegressionValuesInstance(COLUMN_SPEC_TEMPERATURE));
-
-        createPlotButton(context, view, R.id.actuatorGraph, device.getActuator(),
-                device, R.string.yAxisActuator, COLUMN_SPEC_ACTUATOR);
+        fillGraphButtonAndHideIfNull(context, view, R.id.temperatureGraph, device,
+                device.getDeviceChartForButtonStringId(R.string.temperatureGraph));
+        fillGraphButtonAndHideIfNull(context, view, R.id.actuatorGraph, device,
+                device.getDeviceChartForButtonStringId(R.string.actuatorGraph));
 
         Button timetableButton = (Button) view.findViewById(R.id.timetableButton);
         timetableButton.setOnClickListener(new View.OnClickListener() {

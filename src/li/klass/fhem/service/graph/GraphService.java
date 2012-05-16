@@ -65,12 +65,11 @@ public class GraphService {
 
         if (device.getFileLog() == null) return null;
 
-        Map<Integer, String> fileLogColumns = device.getFileLogColumns();
         HashMap<ChartSeriesDescription, List<GraphEntry>> data = new HashMap<ChartSeriesDescription, List<GraphEntry>>();
 
         try {
             for (ChartSeriesDescription seriesDescription : seriesDescriptions) {
-                String columnSpec = fileLogColumns.get(seriesDescription.getColumnSpecification());
+                String columnSpec = seriesDescription.getColumnSpecification();
                 String fileLogDeviceName = device.getFileLog().getName();
 
                 List<GraphEntry> valueEntries = getCurrentGraphEntriesFor(fileLogDeviceName, columnSpec, startDate, endDate);

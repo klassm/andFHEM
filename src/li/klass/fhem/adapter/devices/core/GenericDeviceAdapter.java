@@ -111,10 +111,10 @@ public class GenericDeviceAdapter<T extends Device<T>> extends DeviceDetailAvail
         }
 
         LinearLayout graphLayout = (LinearLayout) view.findViewById(R.id.graphButtons);
-        if (device.getFileLogColumnsListForGenericViews().size() == 0 || device.getFileLog() == null) {
+        if (device.getDeviceCharts().size() == 0 || device.getFileLog() == null) {
             graphLayout.setVisibility(View.GONE);
         }
-        for (DeviceChart deviceChart : device.getFileLogColumnsListForGenericViews()) {
+        for (DeviceChart deviceChart : device.getDeviceCharts()) {
             addGraphButton(context, graphLayout, inflater, device, deviceChart);
         }
     }
@@ -151,8 +151,7 @@ public class GenericDeviceAdapter<T extends Device<T>> extends DeviceDetailAvail
     private void addGraphButton(final Context context, LinearLayout graphLayout, LayoutInflater inflater, final T device,
                                 final DeviceChart chart) {
         Button button = (Button) inflater.inflate(R.layout.device_detail_generic_plotbutton, null);
-        button.setText(chart.buttonText);
-        createPlotButton(context, button, R.id.button, "notNull", device, chart.yTitleId, chart.chartSeriesDescription);
+        fillGraphButton(context, device, chart, button);
         graphLayout.addView(button);
     }
 

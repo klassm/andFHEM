@@ -59,6 +59,8 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
 
     protected volatile FileLogDevice fileLog;
 
+    private List<DeviceChart> deviceCharts = new ArrayList<DeviceChart>();
+
     public void loadXML(Node xml) {
         NodeList childNodes = xml.getChildNodes();
         for (int i = 0; i < childNodes.getLength(); i++) {
@@ -101,6 +103,8 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
             Node attributeNode = attributes.item(i);
             onAttributeRead(attributeNode.getNodeName().toUpperCase(), attributeNode.getNodeValue());
         }
+
+        fillDeviceCharts(deviceCharts);
     }
 
     private void parseEventMap(String content) {
@@ -181,15 +185,6 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
                 '}';
     }
 
-    public boolean equalsAny(String key, String... values) {
-        for (String value : values) {
-            if (key.equals(value)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -219,12 +214,31 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
         this.fileLog = fileLog;
     }
 
-    public Map<Integer, String> getFileLogColumns() {
-        return new HashMap<Integer, String> ();
+    public List<DeviceChart> getDeviceCharts() {
+        return deviceCharts;
     }
 
-    public List<DeviceChart> getFileLogColumnsListForGenericViews() {
-        return new ArrayList<DeviceChart>();
+    /**
+     * Override me if you want to provide charts for a device
+     * @param chartSeries fill me with chart descriptions
+     */
+    protected void fillDeviceCharts(List<DeviceChart> chartSeries) {
+    }
+
+    protected void addDeviceChartIfNotNull(Object notNull, DeviceChart holder) {
+        if (notNull != null) {
+            deviceCharts.add(holder);
+        }
+    }
+
+    @Deprecated
+    public DeviceChart getDeviceChartForButtonStringId(int stringId) {
+        for (DeviceChart deviceChart : deviceCharts) {
+            if (deviceChart.buttonText == stringId) {
+                return deviceChart;
+            }
+        }
+        return null;
     }
 
     public String getState() {

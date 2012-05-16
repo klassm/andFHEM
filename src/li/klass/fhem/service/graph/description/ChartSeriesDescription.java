@@ -30,22 +30,23 @@ import android.os.Parcelable;
 
 public class ChartSeriesDescription implements Parcelable {
 
-    private int columnSpecification;
+    private int columnName;
+    private String columnSpecification;
     private boolean showDiscreteValues;
     private boolean showRegression = false;
     private boolean showSum = false;
     private double sumDivisionFactor;
 
-    public static ChartSeriesDescription getDiscreteValuesInstance(int columnSpecification) {
-        return new ChartSeriesDescription(columnSpecification, true, false, false, 0);
+    public static ChartSeriesDescription getDiscreteValuesInstance(int columnName, String columnSpecification) {
+        return new ChartSeriesDescription(columnName, columnSpecification, true, false, false, 0);
     }
 
-    public static ChartSeriesDescription getRegressionValuesInstance(int columnSpecification) {
-        return new ChartSeriesDescription(columnSpecification, false, true, false, 0);
+    public static ChartSeriesDescription getRegressionValuesInstance(int columnName, String columnSpecification) {
+        return new ChartSeriesDescription(columnName, columnSpecification, false, true, false, 0);
     }
 
-    public static ChartSeriesDescription getSumInstance(int columnSpecification, double divisionFactor) {
-        return new ChartSeriesDescription(columnSpecification, false, false, true, divisionFactor);
+    public static ChartSeriesDescription getSumInstance(int columnName, String columnSpecification, double divisionFactor) {
+        return new ChartSeriesDescription(columnName, columnSpecification, false, false, true, divisionFactor);
     }
 
     public static final Creator<ChartSeriesDescription> CREATOR = new Creator<ChartSeriesDescription>() {
@@ -62,7 +63,8 @@ public class ChartSeriesDescription implements Parcelable {
         }
     };
 
-    public ChartSeriesDescription(int columnSpecification, boolean showDiscreteValues, boolean showRegression, boolean showSum, double sumDivisionFactor) {
+    public ChartSeriesDescription(int columnName, String columnSpecification, boolean showDiscreteValues, boolean showRegression, boolean showSum, double sumDivisionFactor) {
+        this.columnName = columnName;
         this.columnSpecification = columnSpecification;
         this.showDiscreteValues = showDiscreteValues;
         this.showRegression = showRegression;
@@ -70,20 +72,21 @@ public class ChartSeriesDescription implements Parcelable {
         this.sumDivisionFactor = sumDivisionFactor;
     }
 
-    public ChartSeriesDescription(int columnSpecification) {
-        this(columnSpecification, false, false, false, 0);
+    public ChartSeriesDescription(int columnName, String columnSpecification) {
+        this(columnName, columnSpecification, false, false, false, 0);
     }
 
     private ChartSeriesDescription(Bundle bundle) {
-        this.columnSpecification = bundle.getInt("COLUMN_SPECIFICATION");
+        this.columnName = bundle.getInt("COLUMN_NAME");
+        this.columnSpecification = bundle.getString("COLUMN_SPEC");
         this.showDiscreteValues = bundle.getBoolean("SHOW_DISCRETE_VALUES");
         this.showRegression = bundle.getBoolean("SHOW_REGRESSION");
         this.showSum = bundle.getBoolean("SHOW_SUM");
         this.sumDivisionFactor = bundle.getDouble("SUM_DIVISION_FACTOR");
     }
 
-    public int getColumnSpecification() {
-        return columnSpecification;
+    public int getColumnName() {
+        return columnName;
     }
 
     public boolean isShowDiscreteValues() {
@@ -102,6 +105,10 @@ public class ChartSeriesDescription implements Parcelable {
         return sumDivisionFactor;
     }
 
+    public String getColumnSpecification() {
+        return columnSpecification;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -109,13 +116,13 @@ public class ChartSeriesDescription implements Parcelable {
 
         ChartSeriesDescription that = (ChartSeriesDescription) o;
 
-        return columnSpecification == that.columnSpecification;
+        return columnName == that.columnName;
 
     }
 
     @Override
     public int hashCode() {
-        return columnSpecification;
+        return columnName;
     }
 
     @Override
@@ -126,7 +133,8 @@ public class ChartSeriesDescription implements Parcelable {
     @Override
     public void writeToParcel(Parcel parcel, int flags) {
         Bundle bundle = new Bundle();
-        bundle.putInt("COLUMN_SPECIFICATION", columnSpecification);
+        bundle.putInt("COLUMN_NAME", columnName);
+        bundle.putString("COLUMN_SPEC", columnSpecification);
         bundle.putBoolean("SHOW_DISCRETE_VALUES", showDiscreteValues);
         bundle.putBoolean("SHOW_SUM", showSum);
         bundle.putBoolean("SHOW_REGRESSION", showRegression);

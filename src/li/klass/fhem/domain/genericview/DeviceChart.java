@@ -28,13 +28,11 @@ import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 public class DeviceChart {
     public final int buttonText;
     public final int yTitleId;
-    public final ChartSeriesDescription chartSeriesDescription;
-    public final String columnSpec;
+    public final ChartSeriesDescription[] chartSeriesDescriptions;
 
-    public DeviceChart(int buttonText, int yTitleId, ChartSeriesDescription chartSeriesDescription, String columnSpec) {
+    public DeviceChart(int buttonText, int yTitleId, ChartSeriesDescription... chartSeriesDescriptions) {
         this.buttonText = buttonText;
         this.yTitleId = yTitleId;
-        this.chartSeriesDescription = chartSeriesDescription;
-        this.columnSpec = columnSpec;
+        this.chartSeriesDescriptions = chartSeriesDescriptions;
     }
 }

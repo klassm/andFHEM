@@ -37,7 +37,6 @@ import li.klass.fhem.adapter.ListDataAdapter;
 import li.klass.fhem.adapter.devices.core.DeviceDetailAvailableAdapter;
 import li.klass.fhem.domain.Device;
 import li.klass.fhem.domain.WeatherDevice;
-import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ListViewUtil;
 
 import java.io.IOException;
@@ -77,11 +76,10 @@ public class WeatherAdapter extends DeviceDetailAvailableAdapter<WeatherDevice> 
 
         setWeatherIconIn((ImageView) view.findViewById(R.id.currentWeatherImage), device.getIcon());
 
-        createPlotButton(context, view, R.id.temperatureGraph, device.getTemperature(),
-                device, R.string.yAxisTemperature, ChartSeriesDescription.getRegressionValuesInstance(WeatherDevice.COLUMN_SPEC_TEMPERATURE));
-
-        createPlotButton(context, view, R.id.humidityGraph, device.getHumidity(),
-                device, R.string.yAxisHumidity, WeatherDevice.COLUMN_SPEC_HUMIDITY);
+        fillGraphButtonAndHideIfNull(context, view, R.id.temperatureGraph, device,
+                device.getDeviceChartForButtonStringId(R.string.temperatureGraph));
+        fillGraphButtonAndHideIfNull(context, view, R.id.humidityGraph, device,
+                device.getDeviceChartForButtonStringId(R.string.humidityGraph));
 
         final ListView weatherForecastList = (ListView) view.findViewById(R.id.weatherForecast);
         ListDataAdapter<WeatherDevice.WeatherDeviceForecast> forecastAdapter = new ListDataAdapter<WeatherDevice.WeatherDeviceForecast>(

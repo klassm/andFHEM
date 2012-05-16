@@ -30,7 +30,6 @@ import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.DeviceDetailAvailableAdapter;
 import li.klass.fhem.domain.Device;
 import li.klass.fhem.domain.OregonDevice;
-import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 
 public class OregonAdapter extends DeviceDetailAvailableAdapter<OregonDevice> {
     @Override
@@ -65,23 +64,18 @@ public class OregonAdapter extends DeviceDetailAvailableAdapter<OregonDevice> {
         setTextViewOrHideTableRow(view, R.id.tableRowUVValue, R.id.uvValue, device.getUvValue());
         setTextViewOrHideTableRow(view, R.id.tableRowUVRisk, R.id.uvRisk, device.getUvRisk());
 
-        createPlotButton(context, view, R.id.temperatureGraph, device.getTemperature(),
-                device, R.string.yAxisTemperature, ChartSeriesDescription.getRegressionValuesInstance(OregonDevice.COLUMN_SPEC_TEMPERATURE));
-
-        createPlotButton(context, view, R.id.humidityGraph, device.getHumidity(),
-                device, R.string.yAxisHumidity, OregonDevice.COLUMN_SPEC_HUMIDITY);
-
-        createPlotButton(context, view, R.id.pressureGraph, device.getPressure(),
-                device, R.string.yAxisPressure, OregonDevice.COLUMN_SPEC_PRESSURE);
-
-        createPlotButton(context, view, R.id.rainRateGraph, device.getRainRate(),
-                device, R.string.yAxisRainRate, OregonDevice.COLUMN_SPEC_RAIN_RATE);
-
-        createPlotButton(context, view, R.id.rainTotalGraph, device.getRainTotal(),
-                device, R.string.yAxisRainTotal, OregonDevice.COLUMN_SPEC_RAIN_TOTAL);
-
-        createPlotButton(context, view, R.id.windSpeedGraph, device.getWindSpeed(),
-                device, R.string.yAxisWindSpeed, OregonDevice.COLUMN_SPEC_WIND_SPEED);
+        fillGraphButtonAndHideIfNull(context, view, R.id.temperatureGraph, device,
+                device.getDeviceChartForButtonStringId(R.string.temperatureGraph));
+        fillGraphButtonAndHideIfNull(context, view, R.id.humidityGraph, device,
+                device.getDeviceChartForButtonStringId(R.string.humidityGraph));
+        fillGraphButtonAndHideIfNull(context, view, R.id.pressureGraph, device,
+                device.getDeviceChartForButtonStringId(R.string.pressureGraph));
+        fillGraphButtonAndHideIfNull(context, view, R.id.rainRateGraph, device,
+                device.getDeviceChartForButtonStringId(R.string.rainRateGraph));
+        fillGraphButtonAndHideIfNull(context, view, R.id.rainTotalGraph, device,
+                device.getDeviceChartForButtonStringId(R.string.rainTotal));
+        fillGraphButtonAndHideIfNull(context, view, R.id.windSpeedGraph, device,
+                device.getDeviceChartForButtonStringId(R.string.windSpeed));
     }
 
 

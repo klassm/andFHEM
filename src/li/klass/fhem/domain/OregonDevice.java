@@ -32,10 +32,7 @@ import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ValueDescriptionUtil;
 import org.w3c.dom.NamedNodeMap;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class OregonDevice extends Device<OregonDevice> {
 
@@ -169,32 +166,18 @@ public class OregonDevice extends Device<OregonDevice> {
     }
 
     @Override
-    public Map<Integer, String> getFileLogColumns() {
-        Map<Integer, String> columnSpecification = new HashMap<Integer, String>();
-        columnSpecification.put(COLUMN_SPEC_TEMPERATURE, "4:temperature:0:");
-        columnSpecification.put(COLUMN_SPEC_HUMIDITY, "4:humidity:0:");
-        columnSpecification.put(COLUMN_SPEC_PRESSURE, "4:pressure:0:");
-        columnSpecification.put(COLUMN_SPEC_RAIN_RATE, "4:rain_rate:0:");
-        columnSpecification.put(COLUMN_SPEC_RAIN_TOTAL, "4:rain_total:0:");
-        columnSpecification.put(COLUMN_SPEC_WIND_SPEED, "4:wind_speed:0:");
-
-        return columnSpecification;
-    }
-
-    public List<DeviceChart> getFileLogColumnsListForGenericViews() {
-        List<DeviceChart> charts = new ArrayList<DeviceChart>();
-        if (temperature != null)
-            charts.add(new DeviceChart(R.string.temperatureGraph, R.string.yAxisTemperature, ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature), "4:temperature:0:"));
-        if (humidity != null)
-            charts.add(new DeviceChart(R.string.humidityGraph, R.string.yAxisHumidity, new ChartSeriesDescription(R.string.humidity), "4:humidity:0:"));
-        if (pressure != null)
-            charts.add(new DeviceChart(R.string.pressureGraph, R.string.yAxisPressure, new ChartSeriesDescription(R.string.pressure), "4:pressure:0:"));
-        if (rainRate != null)
-            charts.add(new DeviceChart(R.string.rainRateGraph, R.string.yAxisRainRate, new ChartSeriesDescription(R.string.wind), "4:rain_rate:0:"));
-        if (rainTotal != null)
-            charts.add(new DeviceChart(R.string.rainGraph, R.string.yAxisRain, new ChartSeriesDescription(R.string.wind), "4:rain_total:0:"));
-        if (windSpeed != null)
-            charts.add(new DeviceChart(R.string.windGraph, R.string.yAxisWindSpeed, new ChartSeriesDescription(R.string.windSpeed), "4:wind_speed:0:"));
-        return charts;
+    protected void fillDeviceCharts(List<DeviceChart> chartSeries) {
+        addDeviceChartIfNotNull(temperature, new DeviceChart(R.string.temperatureGraph, R.string.yAxisTemperature,
+                ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:temperature:0:")));
+        addDeviceChartIfNotNull(humidity, new DeviceChart(R.string.humidityGraph, R.string.yAxisHumidity,
+                new ChartSeriesDescription(R.string.temperature, "4:humidity:0:")));
+        addDeviceChartIfNotNull(pressure, new DeviceChart(R.string.pressureGraph, R.string.yAxisPressure,
+                new ChartSeriesDescription(R.string.pressure, "4:pressure:0:")));
+        addDeviceChartIfNotNull(rainRate, new DeviceChart(R.string.rainRate, R.string.yAxisRainRate,
+                new ChartSeriesDescription(R.string.rainRate, "4:rain_rate:0:")));
+        addDeviceChartIfNotNull(rainTotal, new DeviceChart(R.string.rainTotal, R.string.yAxisRainTotal,
+                new ChartSeriesDescription(R.string.rainRate, "4:rain_total:0:")));
+        addDeviceChartIfNotNull(windSpeed, new DeviceChart(R.string.windSpeed, R.string.yAxisWindSpeed,
+                new ChartSeriesDescription(R.string.rainRate, "4:wind_speed:0:")));
     }
 }

@@ -25,11 +25,12 @@
 package li.klass.fhem.domain;
 
 import li.klass.fhem.R;
+import li.klass.fhem.domain.genericview.DeviceChart;
+import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ValueDescriptionUtil;
 import org.w3c.dom.NamedNodeMap;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 public class CULWSDevice extends Device<CULWSDevice> {
     
@@ -57,11 +58,10 @@ public class CULWSDevice extends Device<CULWSDevice> {
     }
 
     @Override
-    public Map<Integer, String> getFileLogColumns() {
-        Map<Integer, String> columnSpecification = new HashMap<Integer, String>();
-        columnSpecification.put(COLUMN_SPEC_TEMPERATURE, "4:T:0:");
-        columnSpecification.put(COLUMN_SPEC_HUMIDITY, "6:H:0:");
-
-        return columnSpecification;
+    protected void fillDeviceCharts(List<DeviceChart> chartSeries) {
+        addDeviceChartIfNotNull(temperature, new DeviceChart(R.string.temperatureGraph, R.string.yAxisTemperature,
+                ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:T:0")));
+        addDeviceChartIfNotNull(humidity, new DeviceChart(R.string.humidityGraph, R.string.yAxisHumidity,
+                new ChartSeriesDescription(R.string.temperature, "6:H:0")));
     }
 }

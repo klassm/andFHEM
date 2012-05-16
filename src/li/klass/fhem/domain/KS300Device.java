@@ -34,10 +34,7 @@ import li.klass.fhem.util.ValueUtil;
 import org.w3c.dom.NamedNodeMap;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @SuppressWarnings("unused")
 public class KS300Device extends Device<KS300Device> implements Serializable {
@@ -102,12 +99,14 @@ public class KS300Device extends Device<KS300Device> implements Serializable {
     }
 
     @Override
-    public List<DeviceChart> getFileLogColumnsListForGenericViews() {
-        List<DeviceChart> charts = new ArrayList<DeviceChart>();
-        charts.add(new DeviceChart(R.string.temperatureGraph, R.string.yAxisTemperature, ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature), "4:IR:"));
-        charts.add(new DeviceChart(R.string.humidityGraph, R.string.yAxisHumidity, new ChartSeriesDescription(R.string.humidity), "6:IR:"));
-        charts.add(new DeviceChart(R.string.windGraph, R.string.yAxisWind, new ChartSeriesDescription(R.string.wind), "8:IR:"));
-        charts.add(new DeviceChart(R.string.rainGraph, R.string.yAxisRain, new ChartSeriesDescription(R.string.rain), "10:IR:"));
-        return charts;
+    protected void fillDeviceCharts(List<DeviceChart> chartSeries) {
+        addDeviceChartIfNotNull(temperature, new DeviceChart(R.string.temperatureGraph, R.string.yAxisTemperature,
+                ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:IR:")));
+        addDeviceChartIfNotNull(humidity, new DeviceChart(R.string.humidityGraph, R.string.yAxisHumidity,
+                new ChartSeriesDescription(R.string.temperature, "6:IR:")));
+        addDeviceChartIfNotNull(wind, new DeviceChart(R.string.windGraph, R.string.yAxisWind,
+                new ChartSeriesDescription(R.string.wind, "8:IR:")));
+        addDeviceChartIfNotNull(rain, new DeviceChart(R.string.rainGraph, R.string.yAxisRain,
+                new ChartSeriesDescription(R.string.rain, "10:IR:")));
     }
 }

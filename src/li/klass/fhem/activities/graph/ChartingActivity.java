@@ -44,8 +44,8 @@ import li.klass.fhem.activities.base.Updateable;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.domain.Device;
-import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.service.graph.GraphEntry;
+import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.service.graph.description.SeriesType;
 import org.achartengine.ChartFactory;
 import org.achartengine.GraphicalView;
@@ -245,7 +245,7 @@ public class ChartingActivity extends Activity implements Updateable {
         Map<Integer, SeriesMapping> seriesMapping = new HashMap<Integer, SeriesMapping>();
 
         for (ChartSeriesDescription series : graphSeries) {
-            String dataSetName = getResources().getString(series.getColumnSpecification());
+            String dataSetName = getResources().getString(series.getColumnName());
             List<GraphEntry> data = graphData.get(series);
 
             TimeSeries resultSeries = new TimeSeries(dataSetName);
@@ -279,7 +279,7 @@ public class ChartingActivity extends Activity implements Updateable {
         }
 
         for (ChartSeriesDescription seriesDescription : graphSeries) {
-            String dataSetName = getResources().getString(seriesDescription.getColumnSpecification());
+            String dataSetName = getResources().getString(seriesDescription.getColumnName());
             List<GraphEntry> data = graphData.get(seriesDescription);
 
             if (seriesDescription.isShowRegression()) {

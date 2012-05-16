@@ -25,10 +25,11 @@
 package li.klass.fhem.domain;
 
 import li.klass.fhem.R;
+import li.klass.fhem.domain.genericview.DeviceChart;
+import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import org.w3c.dom.NamedNodeMap;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 public class CULEMDevice extends Device<CULEMDevice> {
 
@@ -36,7 +37,6 @@ public class CULEMDevice extends Device<CULEMDevice> {
     private String dayUsage;
     private String monthUsage;
     private double sumGraphDivisionFactor = 1d;
-    public static final int COLUMN_SPEC_CURRENT_USAGE = R.string.currentUsage;
 
     @Override
     protected void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {
@@ -73,10 +73,8 @@ public class CULEMDevice extends Device<CULEMDevice> {
     }
 
     @Override
-    public Map<Integer, String> getFileLogColumns() {
-        Map<Integer, String> columnSpecification = new HashMap<Integer, String>();
-        columnSpecification.put(COLUMN_SPEC_CURRENT_USAGE, "8::0:");
-
-        return columnSpecification;
+    protected void fillDeviceCharts(List<DeviceChart> chartSeries) {
+        addDeviceChartIfNotNull(currentUsage, new DeviceChart(R.string.usageGraph, R.string.yAxisUsage,
+                ChartSeriesDescription.getSumInstance(R.string.currentUsage, "8::0:", getSumGraphDivisionFactor())));
     }
 }
