@@ -52,8 +52,8 @@ public class FS20Adapter extends GenericDeviceAdapter<FS20Device> {
 
     private class FS20DimUpDownRow extends UpDownButtonRow<FS20Device> {
 
-        public FS20DimUpDownRow(FS20Device device) {
-            super(device.getName());
+        public FS20DimUpDownRow() {
+            super("");
         }
 
         @Override
@@ -104,7 +104,7 @@ public class FS20Adapter extends GenericDeviceAdapter<FS20Device> {
                 if (device.isDimDevice()) {
                     tableLayout.addView(new SeekBarActionRow<FS20Device>(device.getFS20DimState(), R.string.blank, SeekBarActionRow.LAYOUT_DETAIL)
                             .createRow(inflater, device));
-                    tableLayout.addView(new FS20DimUpDownRow(device)
+                    tableLayout.addView(new FS20DimUpDownRow()
                             .createRow(context, inflater, device));
                 } else {
                     tableLayout.addView(new ToggleActionRow<FS20Device>(device.getName(), ToggleActionRow.LAYOUT_DETAIL, device.isOn())

@@ -86,6 +86,12 @@ public class SendCommandFragment extends BaseFragment {
         return view;
     }
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        update(false);
+    }
+
     private void sendCommandIntent(String command) {
         Intent intent = new Intent(Actions.EXECUTE_COMMAND);
         intent.putExtra(BundleExtraKeys.COMMAND, command);
