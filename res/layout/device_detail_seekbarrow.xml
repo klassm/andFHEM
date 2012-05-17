@@ -23,28 +23,13 @@
   ~   51 Franklin Street, Fifth Floor
   -->
 
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             style="@style/deviceOverviewTable">
+<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+          android:layout_width="fill_parent"
+          android:layout_height="fill_parent">
+    <TextView style="@style/deviceDetailDescription"
+              android:id="@+id/description"
+              android:text="text"/>
 
-    <TableRow>
-        <TextView android:id="@+id/deviceName"
-                  style="@style/deviceOverviewCaption"/>
-    </TableRow>
-
-    <TableRow android:id="@+id/tableRowTemperature">
-        <TextView android:text="@string/temperature"
-                  style="@style/deviceOverviewDescription" />
-        <TextView android:id="@+id/temperature"
-                  style="@style/deviceOverviewContent"
-                  android:text="xx (°C)"/>
-    </TableRow>
-
-    <TableRow android:id="@+id/tableRowDelta">
-        <TextView android:text="@string/delta"
-                  style="@style/deviceOverviewDescription" />
-        <TextView android:id="@+id/delta"
-                  style="@style/deviceOverviewContent"
-                  android:text="xx.xxxxx"/>
-    </TableRow>
-
-</TableLayout>
+    <SeekBar android:id="@+id/seekBar"
+             style="@style/deviceDetailContentSeek"/>
+</TableRow>

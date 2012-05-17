@@ -21,29 +21,14 @@
  *   51 Franklin Street, Fifth Floor
  */
 
-package li.klass.fhem.adapter.devices;
+package li.klass.fhem.domain.genericview;
 
-import android.view.View;
-import li.klass.fhem.R;
-import li.klass.fhem.adapter.devices.core.DeviceListOnlyAdapter;
-import li.klass.fhem.domain.Device;
-import li.klass.fhem.domain.PIDDevice;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
-public class PIDAdapter extends DeviceListOnlyAdapter<PIDDevice> {
-    @Override
-    protected int getOverviewLayout(PIDDevice device) {
-        return R.layout.room_detail_pid;
-    }
-
-    @Override
-    protected void fillDeviceOverviewView(View view, PIDDevice device) {
-        setTextView(view, R.id.deviceName, device.getAliasOrName());
-        setTextViewOrHideTableRow(view, R.id.tableRowTemperature, R.id.temperature, device.getTemperature());
-        setTextViewOrHideTableRow(view, R.id.tableRowDelta, R.id.delta, device.getDelta());
-    }
-
-    @Override
-    public Class<? extends Device> getSupportedDeviceClass() {
-        return PIDDevice.class;
-    }
+@Retention(RetentionPolicy.RUNTIME)
+public @interface ShowField {
+    int description();
+    boolean showInOverview() default false;
+    boolean showInDetail() default true;
 }

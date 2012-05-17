@@ -23,10 +23,15 @@
 
 package li.klass.fhem.domain.genericview;
 
+import li.klass.fhem.R;
+
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ViewSettings {
-    boolean showState();
+    boolean showState() default false;
+    boolean showMeasured() default false;
+    int stateStringId() default R.string.state;
+    int measuredStringId() default R.string.measured;
 }

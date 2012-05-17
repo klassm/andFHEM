@@ -26,6 +26,7 @@ package li.klass.fhem.domain;
 
 import li.klass.fhem.R;
 import li.klass.fhem.domain.genericview.DeviceChart;
+import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ValueDescriptionUtil;
 import org.w3c.dom.NamedNodeMap;
@@ -33,14 +34,13 @@ import org.w3c.dom.NamedNodeMap;
 import java.util.List;
 
 public class USBWXDevice extends Device<USBWXDevice> {
-    
+
+    @ShowField(description = R.string.humidity, showInOverview = true)
     private String humidity;
+    @ShowField(description = R.string.temperature, showInOverview = true)
     private String temperature;
+    @ShowField(description = R.string.dewpoint, showInOverview = true)
     private String dewpoint;
-
-    public static final Integer COLUMN_SPEC_TEMPERATURE = R.string.temperature;
-    public static final Integer COLUMN_SPEC_HUMIDITY = R.string.humidity;
-
     
     @Override
     protected void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {

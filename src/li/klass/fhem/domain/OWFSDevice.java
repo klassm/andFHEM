@@ -24,11 +24,12 @@
 
 package li.klass.fhem.domain;
 
+import li.klass.fhem.domain.genericview.ViewSettings;
 import org.w3c.dom.NamedNodeMap;
 
+@ViewSettings(showState = true)
 public class OWFSDevice extends Device<OWFSDevice> {
     @Override
     protected void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {
     }
-
 }

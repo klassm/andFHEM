@@ -24,8 +24,10 @@
 package li.klass.fhem.adapter.devices.core;
 
 import li.klass.fhem.domain.Device;
+import li.klass.fhem.domain.genericview.ViewSettings;
 import org.w3c.dom.NamedNodeMap;
 
+@ViewSettings(showState = true)
 public class HOLDevice extends Device<HOLDevice> {
     @Override
     protected void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {

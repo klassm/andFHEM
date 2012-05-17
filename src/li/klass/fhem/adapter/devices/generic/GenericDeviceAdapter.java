@@ -21,7 +21,7 @@
  *   51 Franklin Street, Fifth Floor
  */
 
-package li.klass.fhem.adapter.devices.core;
+package li.klass.fhem.adapter.devices.generic;
 
 import android.content.Context;
 import android.util.Log;
@@ -33,22 +33,33 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
+import li.klass.fhem.adapter.devices.core.DeviceDetailAvailableAdapter;
 import li.klass.fhem.domain.Device;
 import li.klass.fhem.domain.genericview.DeviceChart;
-import li.klass.fhem.domain.genericview.ShowInDetail;
-import li.klass.fhem.domain.genericview.ShowInOverview;
+import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.domain.genericview.ViewSettings;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class GenericDeviceAdapter<T extends Device<T>> extends DeviceDetailAvailableAdapter<T> {
     private static final String TAG = GenericDeviceAdapter.class.getName();
 
     private Class<T> deviceClass;
+    protected List<DeviceDetailViewAction<T>> detailActions = new ArrayList<DeviceDetailViewAction<T>>();
+    protected Map<String, FieldNameAddedToDetailListener<T>> fieldNameAddedListeners = new HashMap<String, FieldNameAddedToDetailListener<T>>();
+    protected final LayoutInflater inflater;
 
     public GenericDeviceAdapter(Class<T> deviceClass) {
         this.deviceClass = deviceClass;
+        inflater = (LayoutInflater) AndFHEMApplication.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        afterPropertiesSet();
     }
+
+    protected void afterPropertiesSet() {}
 
     @Override
     protected int getOverviewLayout(T device) {
@@ -57,23 +68,24 @@ public class GenericDeviceAdapter<T extends Device<T>> extends DeviceDetailAvail
 
     @Override
     protected void fillDeviceOverviewView(View view, T device) {
-        Context context = AndFHEMApplication.getContext();
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
         TableLayout layout = (TableLayout) view.findViewById(R.id.device_overview_generic);
         setTextView(view, R.id.deviceName, device.getAliasOrName());
 
         try {
             if (device.getClass().isAnnotationPresent(ViewSettings.class)) {
-                if (device.getClass().getAnnotation(ViewSettings.class).showState()) {
-                    createTableRow(inflater, layout, R.string.state, device.getState(), R.layout.device_overview_generic_table_row);
+                ViewSettings annotation = device.getClass().getAnnotation(ViewSettings.class);
+                if (annotation.showState()) {
+                    createTableRow(inflater, layout, R.layout.device_overview_generic_table_row, device.getState(), annotation.stateStringId());
+                }
+                if (annotation.showMeasured()) {
+                    createTableRow(inflater, layout, R.layout.device_overview_generic_table_row, device.getMeasured(), annotation.measuredStringId());
                 }
             }
             Field[] declaredFields = device.getClass().getDeclaredFields();
             for (Field declaredField : declaredFields) {
                 declaredField.setAccessible(true);
-                if (declaredField.isAnnotationPresent(ShowInOverview.class)) {
-                    addOverviewField(device, inflater, layout, declaredField);
+                if (declaredField.isAnnotationPresent(ShowField.class) && declaredField.getAnnotation(ShowField.class).showInOverview()) {
+                    createTableRow(device, inflater, layout, declaredField, R.layout.device_overview_generic_table_row);
                 }
             }
         } catch (Exception e) {
@@ -96,20 +108,36 @@ public class GenericDeviceAdapter<T extends Device<T>> extends DeviceDetailAvail
         try {
             if (device.getClass().isAnnotationPresent(ViewSettings.class)) {
                 if (device.getClass().getAnnotation(ViewSettings.class).showState()) {
-                    createTableRow(inflater, layout, R.string.state, device.getState(), R.layout.device_detail_generic_table_row);
+                    TableRow row = createTableRow(inflater, layout, R.layout.device_detail_generic_table_row, device.getState(), R.string.state);
+                    notifyFieldListeners(context, device, layout, "state", row);
                 }
             }
             Field[] declaredFields = device.getClass().getDeclaredFields();
             for (Field declaredField : declaredFields) {
                 declaredField.setAccessible(true);
-                if (declaredField.isAnnotationPresent(ShowInDetail.class)) {
-                    addDetailField(device, inflater, layout, declaredField);
+                if (declaredField.isAnnotationPresent(ShowField.class) && declaredField.getAnnotation(ShowField.class).showInDetail()) {
+                    TableRow row = createTableRow(device, inflater, layout, declaredField, R.layout.device_detail_generic_table_row);
+                    notifyFieldListeners(context, device, layout, declaredField.getName(), row);
                 }
             }
         } catch (Exception e) {
             Log.e(TAG, "exception occurred while setting device overview values", e);
         }
 
+        addDetailGraphButtons(context, view, device, inflater);
+        addDetailActionhButtons(context, view, device, inflater);
+        fillOtherStuffLayout(context, (LinearLayout) view.findViewById(R.id.otherStuff), device, inflater);
+    }
+
+    protected void fillOtherStuffLayout(Context context, LinearLayout layout, T device, LayoutInflater inflater) {}
+
+    private void notifyFieldListeners(Context context, T device, TableLayout layout, String fieldName, TableRow fieldTableRow) {
+        if (fieldNameAddedListeners.containsKey(fieldName)) {
+            fieldNameAddedListeners.get(fieldName).onFieldNameAdded(context, layout, fieldName, device, fieldTableRow);
+        }
+    }
+
+    private void addDetailGraphButtons(Context context, View view, T device, LayoutInflater inflater) {
         LinearLayout graphLayout = (LinearLayout) view.findViewById(R.id.graphButtons);
         if (device.getDeviceCharts().size() == 0 || device.getFileLog() == null) {
             graphLayout.setVisibility(View.GONE);
@@ -119,24 +147,28 @@ public class GenericDeviceAdapter<T extends Device<T>> extends DeviceDetailAvail
         }
     }
 
-    private void addOverviewField(T device, LayoutInflater inflater, TableLayout layout, Field declaredField) throws IllegalAccessException {
-        int description = declaredField.getAnnotation(ShowInOverview.class).description();
-        Object value = declaredField.get(device);
-
-        createTableRow(inflater, layout, description, value, R.layout.device_overview_generic_table_row);
+    private void addDetailActionhButtons(Context context, View view, T device, LayoutInflater inflater) {
+        LinearLayout actionLyout = (LinearLayout) view.findViewById(R.id.actionButtons);
+        if (detailActions.size() == 0) {
+            actionLyout.setVisibility(View.GONE);
+        }
+        for (DeviceDetailViewAction<T> action : detailActions) {
+            actionLyout.addView(action.createButton(context, inflater, device));
+        }
     }
 
-    private void addDetailField(T device, LayoutInflater inflater, TableLayout layout, Field declaredField) throws IllegalAccessException {
-        int description = declaredField.getAnnotation(ShowInDetail.class).description();
+    private TableRow createTableRow(T device, LayoutInflater inflater, TableLayout layout, Field declaredField, int resource) throws IllegalAccessException {
         Object value = declaredField.get(device);
+        int description = declaredField.getAnnotation(ShowField.class).description();
 
-        createTableRow(inflater, layout, description, value, R.layout.device_detail_generic_table_row);
+        return createTableRow(inflater, layout, resource, value, description);
     }
 
-    private void createTableRow(LayoutInflater inflater, TableLayout layout, int description, Object value, int resource) {
+    private TableRow createTableRow(LayoutInflater inflater, TableLayout layout, int resource, Object value, int description) {
         TableRow tableRow = (TableRow) inflater.inflate(resource, null);
         fillTableRow(description, value, tableRow);
         layout.addView(tableRow);
+        return tableRow;
     }
 
     private void fillTableRow(int description, Object value, TableRow tableRow) {
@@ -150,7 +182,7 @@ public class GenericDeviceAdapter<T extends Device<T>> extends DeviceDetailAvail
 
     private void addGraphButton(final Context context, LinearLayout graphLayout, LayoutInflater inflater, final T device,
                                 final DeviceChart chart) {
-        Button button = (Button) inflater.inflate(R.layout.device_detail_generic_plotbutton, null);
+        Button button = (Button) inflater.inflate(R.layout.button, null);
         fillGraphButton(context, device, chart, button);
         graphLayout.addView(button);
     }

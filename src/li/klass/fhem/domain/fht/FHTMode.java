@@ -25,10 +25,20 @@
 package li.klass.fhem.domain.fht;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public enum FHTMode implements Serializable {
     UNKNOWN, AUTO, MANUAL, HOLIDAY, HOLIDAY_SHORT;
-    
+
+    public static List<String> toStringList() {
+        List<String> result = new ArrayList<String>();
+        for (FHTMode fhtMode : values()) {
+            result.add(fhtMode.name());
+        }
+        return result;
+    }
+
     public static int positionOf(FHTMode mode) {
         FHTMode[] values = FHTMode.values();
         for (int i = 0; i < values.length; i++) {

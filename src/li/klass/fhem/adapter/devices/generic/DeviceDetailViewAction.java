@@ -21,31 +21,37 @@
  *   51 Franklin Street, Fifth Floor
  */
 
-package li.klass.fhem.adapter.devices;
+package li.klass.fhem.adapter.devices.generic;
 
+import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import li.klass.fhem.R;
-import li.klass.fhem.adapter.devices.core.DeviceListOnlyAdapter;
-import li.klass.fhem.domain.CULFHTTKDevice;
 import li.klass.fhem.domain.Device;
-import li.klass.fhem.domain.TRXDevice;
 
-public class TRXAdapter extends DeviceListOnlyAdapter<TRXDevice> {
-    @Override
-    public int getOverviewLayout(TRXDevice device) {
-        return R.layout.room_detail_trx;
+public abstract class DeviceDetailViewAction<T extends Device> {
+    private int buttonText;
+
+    protected DeviceDetailViewAction(int buttonText) {
+        this.buttonText = buttonText;
     }
 
-    @Override
-    public Class<? extends Device> getSupportedDeviceClass() {
-        return TRXDevice.class;
+    public Button createButton(Context context, LayoutInflater inflater, T device) {
+        Button button = (Button) inflater.inflate(R.layout.button, null).findViewById(R.id.button);
+        button.setOnClickListener(createListener(context, device));
+        button.setText(buttonText);
+
+        return button;
     }
 
-    @Override
-    protected void fillDeviceOverviewView(View view, TRXDevice device) {
-
-        setTextView(view, R.id.deviceName, device.getAliasOrName());
-
-        setTextViewOrHideTableRow(view, R.id.tableRowState, R.id.state, device.getState());
+    private Button.OnClickListener createListener(final Context context, final T device) {
+        return new Button.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onButtonClick(context, device);
+            }
+        };
     }
+    public abstract void onButtonClick(Context context, T device);
 }

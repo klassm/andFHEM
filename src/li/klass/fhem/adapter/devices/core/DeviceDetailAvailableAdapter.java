@@ -53,8 +53,6 @@ public abstract class DeviceDetailAvailableAdapter<D extends Device<D>> extends 
         setTextViewOrHideTableRow(view, R.id.tableRowRoom, R.id.room, device.getRoom());
         setTextViewOrHideTableRow(view, R.id.tableRowMeasured, R.id.measured, device.getMeasured());
 
-        hideIfNull(view, R.id.graphLayout, device.getFileLog());
-
         return view;
     }
     

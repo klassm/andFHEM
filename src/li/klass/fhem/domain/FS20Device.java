@@ -24,6 +24,9 @@
 
 package li.klass.fhem.domain;
 
+import li.klass.fhem.R;
+import li.klass.fhem.domain.genericview.ShowField;
+import li.klass.fhem.domain.genericview.ViewSettings;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
@@ -32,6 +35,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+@ViewSettings(showState = true)
 public class FS20Device extends Device<FS20Device> implements Comparable<FS20Device>, Serializable {
 
     /**
@@ -41,7 +45,8 @@ public class FS20Device extends Device<FS20Device> implements Comparable<FS20Dev
     private List<Integer> dimStates = Arrays.asList(0, 6, 12, 18, 25, 31, 37, 43, 50, 56, 62, 68, 75, 81, 87, 93, 100);
     private static final List<String> dimModels = Arrays.asList("FS20DI", "FS20DI10", "FS20DU");
     private static final List<String> offStates = Arrays.asList("off", "off-for-timer", "reset", "timer");
-    
+
+    @ShowField(description = R.string.model)
     private String model;
     private List<String> setOptions = Collections.emptyList();
 

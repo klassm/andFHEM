@@ -27,15 +27,20 @@ package li.klass.fhem.domain;
 import android.content.res.Resources;
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
+import li.klass.fhem.domain.genericview.ShowField;
 import org.w3c.dom.NamedNodeMap;
 
 public class OwcountDevice extends Device<OwcountDevice> {
-    
+
+    @ShowField(description = R.string.counterA, showInOverview = true)
     private float counterA;
+    @ShowField(description = R.string.counterB, showInOverview = true)
     private float counterB;
     private float correlationA;
     private float correlationB;
+    @ShowField(description = R.string.present, showInOverview = true)
     private String present;
+    @ShowField(description = R.string.warnings)
     private String warnings;
 
     

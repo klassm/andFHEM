@@ -26,6 +26,7 @@ package li.klass.fhem.domain;
 
 import li.klass.fhem.R;
 import li.klass.fhem.domain.genericview.DeviceChart;
+import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import org.w3c.dom.NamedNodeMap;
 
@@ -33,8 +34,11 @@ import java.util.List;
 
 public class CULEMDevice extends Device<CULEMDevice> {
 
+    @ShowField(description = R.string.currentUsage, showInOverview = true)
     private String currentUsage;
+    @ShowField(description = R.string.dayUsage, showInOverview = true)
     private String dayUsage;
+    @ShowField(description = R.string.monthUsage, showInOverview = true)
     private String monthUsage;
     private double sumGraphDivisionFactor = 1d;
 

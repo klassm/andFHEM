@@ -24,18 +24,28 @@
 
 package li.klass.fhem.domain;
 
+import android.content.Context;
+import li.klass.fhem.AndFHEMApplication;
+import li.klass.fhem.R;
+import li.klass.fhem.domain.genericview.ShowField;
 import org.w3c.dom.NamedNodeMap;
 
+@SuppressWarnings("unused")
 public class WOLDevice extends Device<WOLDevice> {
 
-    private boolean isRunning = false;
+    @ShowField(description = R.string.state, showInOverview = true)
+    private String isRunning;
+    @ShowField(description = R.string.ip)
     private String ip;
+    @ShowField(description = R.string.mac)
     private String mac;
 
     @Override
     protected void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {
         if (keyValue.equals("ISRUNNING")) {
-            isRunning = Boolean.valueOf(nodeContent);
+            Context context = AndFHEMApplication.getContext();
+            int isRunningId = Boolean.valueOf(nodeContent) ? R.string.on : R.string.off;
+            isRunning = context.getString(isRunningId);
             measured = attributes.getNamedItem("measured").getNodeValue();
         } else if (keyValue.equals("IP")) {
             ip = nodeContent;
@@ -44,7 +54,7 @@ public class WOLDevice extends Device<WOLDevice> {
         }
     }
 
-    public boolean isRunning() {
+    public String isRunning() {
         return isRunning;
     }
 

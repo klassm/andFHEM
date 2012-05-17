@@ -24,45 +24,59 @@
 
 package li.klass.fhem.adapter.devices;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ToggleButton;
+import android.widget.TableLayout;
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
-import li.klass.fhem.adapter.devices.core.DeviceListOnlyAdapter;
+import li.klass.fhem.adapter.devices.generic.FieldNameAddedToDetailListener;
+import li.klass.fhem.adapter.devices.generic.GenericDeviceAdapter;
+import li.klass.fhem.adapter.devices.generic.ToggleActionRow;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.domain.Device;
 import li.klass.fhem.domain.SISPMSDevice;
 
-public class SISPMSAdapter extends DeviceListOnlyAdapter<SISPMSDevice> {
+import static li.klass.fhem.adapter.devices.generic.ToggleActionRow.LAYOUT_DETAIL;
+import static li.klass.fhem.adapter.devices.generic.ToggleActionRow.LAYOUT_OVERVIEW;
+
+public class SISPMSAdapter extends GenericDeviceAdapter<SISPMSDevice> {
+
+    public SISPMSAdapter() {
+        super(SISPMSDevice.class);
+    }
+
+    private class TableRow extends ToggleActionRow<SISPMSDevice> {
+
+        public TableRow(SISPMSDevice device, int layout) {
+            super(device.getAliasOrName(), layout, device.isOn());
+        }
+
+        @Override
+        public void onButtonClick(Context context, SISPMSDevice device) {
+            Intent intent = new Intent(Actions.DEVICE_TOGGLE_STATE);
+            intent.putExtras(new Bundle());
+            intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
+            AndFHEMApplication.getContext().startService(intent);
+        }
+    }
 
     @Override
     public void fillDeviceOverviewView(View view, final SISPMSDevice device) {
-        setTextView(view, R.id.deviceName, device.getAliasOrName());
+        TableLayout layout = (TableLayout) view.findViewById(R.id.device_overview_generic);
+        layout.findViewById(R.id.deviceName).setVisibility(View.GONE);
+        layout.addView(new TableRow(device, LAYOUT_OVERVIEW).createRow(view.getContext(), inflater, device));
+    }
 
-        ToggleButton switchButton = (ToggleButton) view.findViewById(R.id.switchButton);
-        setToogleButtonText(device, switchButton);
-        switchButton.setOnClickListener(new View.OnClickListener() {
+    @Override
+    protected void afterPropertiesSet() {
+        fieldNameAddedListeners.put("state", new FieldNameAddedToDetailListener<SISPMSDevice>() {
             @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Actions.DEVICE_TOGGLE_STATE);
-                intent.putExtras(new Bundle());
-                intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
-                AndFHEMApplication.getContext().startService(intent);
+            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, SISPMSDevice device, android.widget.TableRow fieldTableRow) {
+                tableLayout.addView(new TableRow(device, LAYOUT_DETAIL)
+                        .createRow(tableLayout.getContext(), inflater, device));
             }
         });
-        switchButton.setChecked(device.isOn());
-    }
-
-    @Override
-    public int getOverviewLayout(SISPMSDevice device) {
-        return R.layout.room_detail_sispms;
-    }
-
-    @Override
-    public Class<? extends Device> getSupportedDeviceClass() {
-        return SISPMSDevice.class;
     }
 }

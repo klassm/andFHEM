@@ -24,23 +24,35 @@
 
 package li.klass.fhem.domain;
 
+import li.klass.fhem.R;
+import li.klass.fhem.domain.genericview.ShowField;
+import li.klass.fhem.domain.genericview.ViewSettings;
 import li.klass.fhem.util.ValueDescriptionUtil;
 import li.klass.fhem.util.ValueExtractUtil;
 import org.w3c.dom.NamedNodeMap;
 
+@SuppressWarnings("unused")
+@ViewSettings(showState = true)
 public class CULHMDevice extends Device<CULHMDevice> {
 
     public enum SubType {
         DIMMER, SWITCH, HEATING, SMOKE_DETECTOR, THREE_STATE
     }
-
-    private String measured;
     private SubType subType = null;
     private int dimProgress = -1;
+
+    @ShowField(description = R.string.measured)
+    private String measured;
+    @ShowField(description = R.string.desiredTemperature)
     private String desiredTemp;
+    @ShowField(description = R.string.temperature)
     private String measuredTemp;
+    @ShowField(description = R.string.actuator, showInOverview = true)
     private String actuator;
+    @ShowField(description = R.string.humidity, showInOverview = true)
     private String humidity;
+    @ShowField(description = R.string.model)
+    private String subTypeRaw;
 
     @Override
     protected void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {
@@ -54,6 +66,7 @@ public class CULHMDevice extends Device<CULHMDevice> {
             } else if (nodeContent.equalsIgnoreCase("THREESTATESENSOR")) {
                 subType = SubType.THREE_STATE;
             }
+            subTypeRaw = nodeContent;
         } else if (keyValue.equals("STATE")) {
             if (nodeContent.endsWith("%")) {
                 dimProgress = ValueExtractUtil.extractLeadingInt(nodeContent);
@@ -115,5 +128,9 @@ public class CULHMDevice extends Device<CULHMDevice> {
 
     public String getHumidity() {
         return humidity;
+    }
+
+    public String getSubTypeRaw() {
+        return subTypeRaw;
     }
 }

@@ -26,8 +26,7 @@ package li.klass.fhem.domain;
 
 import li.klass.fhem.R;
 import li.klass.fhem.domain.genericview.DeviceChart;
-import li.klass.fhem.domain.genericview.ShowInDetail;
-import li.klass.fhem.domain.genericview.ShowInOverview;
+import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ValueDescriptionUtil;
 import li.klass.fhem.util.ValueUtil;
@@ -39,34 +38,58 @@ import java.util.List;
 @SuppressWarnings("unused")
 public class KS300Device extends Device<KS300Device> implements Serializable {
 
-    @ShowInOverview(description = R.string.temperature)
-    @ShowInDetail(description = R.string.temperature)
+    @ShowField(description = R.string.temperature, showInOverview = true)
     private String temperature;
 
-    @ShowInOverview(description = R.string.wind)
-    @ShowInDetail(description = R.string.wind)
+    @ShowField(description = R.string.wind, showInOverview = true)
     private String wind;
 
-    @ShowInOverview(description = R.string.humidity)
-    @ShowInDetail(description = R.string.humidity)
+    @ShowField(description = R.string.humidity, showInOverview = true)
     private String humidity;
 
-    @ShowInOverview(description = R.string.rain)
-    @ShowInDetail(description = R.string.rain)
+    @ShowField(description = R.string.rain, showInOverview = true)
     private String rain;
 
-    @ShowInDetail(description = R.string.avgDay)
+    @ShowField(description = R.string.avgDay)
     private String averageDay;
 
-    @ShowInDetail(description = R.string.avgMonth)
+    @ShowField(description = R.string.avgMonth)
     private String averageMonth;
 
-    @ShowInDetail(description = R.string.isRaining)
+    @ShowField(description = R.string.isRaining)
     private String isRaining;
 
     @Override
     public int compareTo(KS300Device ks300Device) {
         return getName().compareTo(ks300Device.getName());
+    }
+
+    public String getTemperature() {
+        return temperature;
+    }
+
+    public String getWind() {
+        return wind;
+    }
+
+    public String getHumidity() {
+        return humidity;
+    }
+
+    public String getRain() {
+        return rain;
+    }
+
+    public String getAverageDay() {
+        return averageDay;
+    }
+
+    public String getAverageMonth() {
+        return averageMonth;
+    }
+
+    public String getRaining() {
+        return isRaining;
     }
 
     @Override

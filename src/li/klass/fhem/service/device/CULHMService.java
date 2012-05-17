@@ -40,7 +40,7 @@ public class CULHMService {
      */
     public void setState(CULHMDevice device, String newState) {
         CommandExecutionService.INSTANCE.executeSafely("set " + device.getName() + " " + newState);
-        device.setState(newState);
+        device.setState(newState + " %");
     }
 
     /**

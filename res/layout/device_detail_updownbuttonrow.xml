@@ -23,27 +23,25 @@
   ~   51 Franklin Street, Fifth Floor
   -->
 
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             style="@style/deviceOverviewTable">
-
-    <TableRow>
-        <TextView android:id="@+id/deviceName"
-                  style="@style/deviceOverviewCaption"/>
-    </TableRow>
-
-    <TableRow android:id="@+id/tableRowTemperature">
-        <TextView android:text="@string/temperature"
-                  style="@style/deviceOverviewDescription" />
-        <TextView android:id="@+id/temperature"
-                  style="@style/deviceOverviewContent"
-                  android:text="xxx °C"/>
-    </TableRow>
-
-    <TableRow android:id="@+id/tableRowBattery">
-        <TextView android:text="@string/battery"
-                  style="@style/deviceOverviewDescription" />
-        <TextView android:id="@+id/battery"
-                  style="@style/deviceOverviewContent"
-                  android:text="xxx"/>
-    </TableRow>
-</TableLayout>
+<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+          android:layout_height="wrap_content"
+          android:layout_width="fill_parent">
+    <TextView style="@style/deviceDetailDescription"
+              android:id="@+id/description"
+              android:text="text"/>
+    <LinearLayout android:gravity="right"
+                  android:layout_column="2"
+                  android:layout_width="fill_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_span="2">
+        <Button android:id="@+id/dimDown"
+                android:text="@string/dimDown"
+                style="@style/button"
+                android:background="@drawable/theme_button"/>
+        <Button android:id="@+id/dimUp"
+                android:layout_marginLeft="10dp"
+                android:text="@string/dimUp"
+                style="@style/button"
+                android:background="@drawable/theme_button"/>
+    </LinearLayout>
+</TableRow>

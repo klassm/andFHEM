@@ -26,8 +26,7 @@ package li.klass.fhem.domain;
 
 import li.klass.fhem.R;
 import li.klass.fhem.domain.genericview.DeviceChart;
-import li.klass.fhem.domain.genericview.ShowInDetail;
-import li.klass.fhem.domain.genericview.ShowInOverview;
+import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ValueDescriptionUtil;
 import org.w3c.dom.NamedNodeMap;
@@ -36,49 +35,32 @@ import java.util.List;
 
 public class OregonDevice extends Device<OregonDevice> {
 
-    @ShowInOverview(description = R.string.humidity)
-    @ShowInDetail(description = R.string.humidity)
+    @ShowField(description = R.string.humidity, showInOverview = true)
     private String humidity;
-    @ShowInOverview(description = R.string.temperature)
-    @ShowInDetail(description = R.string.temperature)
+    @ShowField(description = R.string.temperature, showInOverview = true)
     private String temperature;
-    @ShowInOverview(description = R.string.forecast)
-    @ShowInDetail(description = R.string.forecast)
+    @ShowField(description = R.string.forecast, showInOverview = true)
     private String forecast;
-    @ShowInDetail(description = R.string.dewpoint)
+    @ShowField(description = R.string.dewpoint)
     private String dewpoint;
-    @ShowInDetail(description = R.string.pressure)
+    @ShowField(description = R.string.pressure)
     private String pressure;
-    @ShowInDetail(description = R.string.battery)
+    @ShowField(description = R.string.battery)
     private String battery;
-    @ShowInOverview(description = R.string.rainRate)
-    @ShowInDetail(description = R.string.rainRate)
+    @ShowField(description = R.string.rainRate, showInOverview = true)
     private String rainRate;
-    @ShowInOverview(description = R.string.rainTotal)
-    @ShowInDetail(description = R.string.rainTotal)
+    @ShowField(description = R.string.rainTotal, showInOverview = true)
     private String rainTotal;
-    @ShowInOverview(description = R.string.windAvgSpeed)
-    @ShowInDetail(description = R.string.windAvgSpeed)
+    @ShowField(description = R.string.windAvgSpeed, showInOverview = true)
     private String windAvgSpeed;
-    @ShowInOverview(description = R.string.windDirection)
-    @ShowInDetail(description = R.string.windDirection)
+    @ShowField(description = R.string.windDirection, showInOverview = true)
     private String windDirection;
-    @ShowInOverview(description = R.string.windSpeed)
-    @ShowInDetail(description = R.string.windSpeed)
+    @ShowField(description = R.string.windSpeed, showInOverview = true)
     private String windSpeed;
-    @ShowInOverview(description = R.string.uvValue)
-    @ShowInDetail(description = R.string.uvValue)
+    @ShowField(description = R.string.uvValue, showInOverview = true)
     private String uvValue;
-    @ShowInOverview(description = R.string.uvRisk)
-    @ShowInDetail(description = R.string.uvRisk)
+    @ShowField(description = R.string.uvRisk, showInOverview = true)
     private String uvRisk;
-
-    public static final Integer COLUMN_SPEC_TEMPERATURE = R.string.temperature;
-    public static final Integer COLUMN_SPEC_HUMIDITY = R.string.humidity;
-    public static final Integer COLUMN_SPEC_PRESSURE = R.string.pressure;
-    public static final Integer COLUMN_SPEC_RAIN_RATE = R.string.rainRate;
-    public static final Integer COLUMN_SPEC_RAIN_TOTAL = R.string.rainTotal;
-    public static final Integer COLUMN_SPEC_WIND_SPEED = R.string.windSpeed;
 
     @Override
     protected void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {

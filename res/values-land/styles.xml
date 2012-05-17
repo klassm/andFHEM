@@ -45,5 +45,6 @@
 
     <style name="deviceDetailDescription" parent="@android:style/TextAppearance.Small">
         <item name="android:layout_weight">1</item>
+        <item name="android:textColor">@android:color/black</item>
     </style>
 </resources>

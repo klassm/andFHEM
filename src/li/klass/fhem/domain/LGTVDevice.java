@@ -24,11 +24,16 @@
 
 package li.klass.fhem.domain;
 
+import li.klass.fhem.R;
+import li.klass.fhem.domain.genericview.ShowField;
 import org.w3c.dom.NamedNodeMap;
 
 public class LGTVDevice extends Device<LGTVDevice> {
+    @ShowField(description = R.string.power, showInOverview = true)
     private String power;
+    @ShowField(description = R.string.audio, showInOverview = true)
     private String audio;
+    @ShowField(description = R.string.input, showInOverview = true)
     private String input;
 
     @Override

@@ -28,7 +28,9 @@ import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class ChartSeriesDescription implements Parcelable {
+import java.io.Serializable;
+
+public class ChartSeriesDescription implements Parcelable, Serializable {
 
     private int columnName;
     private String columnSpecification;

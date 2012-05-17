@@ -23,44 +23,63 @@
 
 package li.klass.fhem.adapter.devices;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ToggleButton;
+import android.widget.TableLayout;
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
-import li.klass.fhem.adapter.devices.core.DeviceListOnlyAdapter;
 import li.klass.fhem.adapter.devices.core.HOLDevice;
+import li.klass.fhem.adapter.devices.generic.FieldNameAddedToDetailListener;
+import li.klass.fhem.adapter.devices.generic.GenericDeviceAdapter;
+import li.klass.fhem.adapter.devices.generic.ToggleActionRow;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.domain.Device;
 
-public class HOLAdapter extends DeviceListOnlyAdapter<HOLDevice> {
-    @Override
-    protected int getOverviewLayout(HOLDevice device) {
-        return R.layout.room_detail_hol;
+import static li.klass.fhem.adapter.devices.generic.ToggleActionRow.LAYOUT_DETAIL;
+import static li.klass.fhem.adapter.devices.generic.ToggleActionRow.LAYOUT_OVERVIEW;
+
+public class HOLAdapter extends GenericDeviceAdapter<HOLDevice> {
+
+    private final LayoutInflater inflater;
+
+    public HOLAdapter() {
+        super(HOLDevice.class);
+        inflater = (LayoutInflater) AndFHEMApplication.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    }
+
+    private class TableRow extends ToggleActionRow<HOLDevice> {
+
+        public TableRow(HOLDevice device, int layout) {
+            super(device.getAliasOrName(), layout, device.isOn());
+        }
+
+        @Override
+        public void onButtonClick(Context context, HOLDevice device) {
+            Intent intent = new Intent(Actions.DEVICE_TOGGLE_STATE);
+            intent.putExtras(new Bundle());
+            intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
+            AndFHEMApplication.getContext().startService(intent);
+        }
     }
 
     @Override
-    protected void fillDeviceOverviewView(View view, final HOLDevice device) {
-        setTextView(view, R.id.deviceName, device.getAliasOrName());
+    public void fillDeviceOverviewView(View view, final HOLDevice device) {
+        TableLayout layout = (TableLayout) view.findViewById(R.id.device_overview_generic);
+        layout.findViewById(R.id.deviceName).setVisibility(View.GONE);
+        layout.addView(new TableRow(device, LAYOUT_OVERVIEW).createRow(view.getContext(), inflater, device));
+    }
 
-        ToggleButton switchButton = (ToggleButton) view.findViewById(R.id.switchButton);
-        setToogleButtonText(device, switchButton);
-        switchButton.setChecked(device.isOn());
-        switchButton.setOnClickListener(new View.OnClickListener() {
+    @Override
+    protected void afterPropertiesSet() {
+        fieldNameAddedListeners.put("state", new FieldNameAddedToDetailListener<HOLDevice>() {
             @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Actions.DEVICE_TOGGLE_STATE);
-                intent.putExtras(new Bundle());
-                intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
-                AndFHEMApplication.getContext().startService(intent);
+            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, HOLDevice device, android.widget.TableRow fieldTableRow) {
+                tableLayout.addView(new TableRow(device, LAYOUT_DETAIL)
+                        .createRow(tableLayout.getContext(), inflater, device));
             }
         });
-    }
-
-    @Override
-    public Class<? extends Device> getSupportedDeviceClass() {
-        return HOLDevice.class;
     }
 }

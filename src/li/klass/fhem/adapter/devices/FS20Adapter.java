@@ -32,34 +32,45 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
 import android.view.View;
-import android.widget.*;
-import li.klass.fhem.AndFHEMApplication;
+import android.widget.EditText;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.Toast;
 import li.klass.fhem.R;
-import li.klass.fhem.adapter.devices.core.DeviceDetailAvailableAdapter;
+import li.klass.fhem.adapter.devices.generic.*;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.domain.Device;
 import li.klass.fhem.domain.FS20Device;
 
 import java.util.List;
 
-public class FS20Adapter extends DeviceDetailAvailableAdapter<FS20Device> {
+public class FS20Adapter extends GenericDeviceAdapter<FS20Device> {
 
-    private class DimButtonListener implements Button.OnClickListener {
+    public FS20Adapter() {
+        super(FS20Device.class);
+    }
 
-        private int targetDimState;
+    private class FS20DimUpDownRow extends UpDownButtonRow<FS20Device> {
 
-        public DimButtonListener(int targetDimState) {
-            this.targetDimState = targetDimState;
+        public FS20DimUpDownRow(FS20Device device) {
+            super(device.getName());
         }
+
         @Override
-        public void onClick(View view) {
-            final Context context = view.getContext();
-            String deviceName = (String) view.getTag();
+        public void onUpButtonClick(Context context, FS20Device device) {
+            sendTargetDimState(context, device, device.getDimUpProgress());
+        }
+
+        @Override
+        public void onDownButtonClick(Context context, FS20Device device) {
+            sendTargetDimState(context, device, device.getDimDownProgress());
+        }
+
+        private void sendTargetDimState(final Context context, FS20Device device, int target) {
 
             Intent intent = new Intent(Actions.DEVICE_DIM);
-            intent.putExtra(BundleExtraKeys.DEVICE_DIM_PROGRESS, targetDimState);
-            intent.putExtra(BundleExtraKeys.DEVICE_NAME, deviceName);
+            intent.putExtra(BundleExtraKeys.DEVICE_DIM_PROGRESS, target);
+            intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
             intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
                 @Override
                 protected void onReceiveResult(int resultCode, Bundle resultData) {
@@ -71,154 +82,80 @@ public class FS20Adapter extends DeviceDetailAvailableAdapter<FS20Device> {
         }
     }
 
-    private class SeekBarChangeListener implements SeekBar.OnSeekBarChangeListener {
+    @Override
+    public void fillDeviceOverviewView(View view, final FS20Device device) {
+        TableLayout layout = (TableLayout) view.findViewById(R.id.device_overview_generic);
+        layout.findViewById(R.id.deviceName).setVisibility(View.GONE);
 
-        public int progress;
-
-        private SeekBarChangeListener(int progress) {
-            this.progress = progress;
-        }
-
-        @Override
-        public void onProgressChanged(SeekBar seekBar, final int progress, boolean fromUser) {
-            this.progress = progress;
-        }
-
-        @Override
-        public void onStartTrackingTouch(SeekBar seekBar) {
-        }
-
-        @Override
-        public void onStopTrackingTouch(final SeekBar seekBar) {
-            final Context context = seekBar.getContext();
-            String deviceName = (String) seekBar.getTag();
-
-            Intent intent = new Intent(Actions.DEVICE_DIM);
-            intent.putExtra(BundleExtraKeys.DEVICE_DIM_PROGRESS, progress);
-            intent.putExtra(BundleExtraKeys.DEVICE_NAME, deviceName);
-            intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
-                @Override
-                protected void onReceiveResult(int resultCode, Bundle resultData) {
-                    context.sendBroadcast(new Intent(Actions.DO_UPDATE));
-                }
-            });
-
-            context.startService(intent);
-        }
-    }
-    
-    private class SwitchButtonListener implements View.OnClickListener {
-
-        private String deviceName;
-
-        public SwitchButtonListener(String deviceName) {
-            this.deviceName = deviceName;
-        }
-
-        @Override
-        public void onClick(View view) {
-            Intent intent = new Intent(Actions.DEVICE_TOGGLE_STATE);
-            intent.putExtras(new Bundle());
-            intent.putExtra(BundleExtraKeys.DEVICE_NAME, deviceName);
-            AndFHEMApplication.getContext().startService(intent);
+        if (device.isDimDevice()) {
+            layout.addView(new SeekBarActionRow<FS20Device>(device.getFS20DimState(), device.getName(), SeekBarActionRow.LAYOUT_OVERVIEW)
+                    .createRow(inflater, device));
+        } else {
+            layout.addView(new ToggleActionRow<FS20Device>(device.getName(), ToggleActionRow.LAYOUT_OVERVIEW, device.isOn())
+                    .createRow(view.getContext(), inflater, device));
         }
     }
 
     @Override
-    public int getOverviewLayout(FS20Device device) {
-        if (device.isDimDevice()) {
-            return R.layout.room_detail_fs20_seek;
-        } else {
-            return R.layout.room_detail_fs20;
-        }
-    }
-
-    @Override
-    public void fillDeviceOverviewView(View view, FS20Device device) {
-        if (device.isDimDevice()) {
-            fillFS20SeekView(view, device);
-        } else {
-            fillFS20ToggleView(view, device);
-        }
-    }
-
-    @Override
-    protected void fillDeviceDetailView(final Context context, View view, final FS20Device device) {
-        setTextViewOrHideTableRow(view, R.id.tableRowState, R.id.state, device.getState());
-
-        TableRow seekBarRow = (TableRow) view.findViewById(R.id.switchSeekBarRow);
-        TableRow dimButtonRow = (TableRow) view.findViewById(R.id.dimButtonRow);
-        TableRow toggleButtonRow = (TableRow) view.findViewById(R.id.switchToggleButtonRow);
-
-        SeekBar seekBar = (SeekBar) view.findViewById(R.id.seekBar);
-        Button dimUpButton = (Button) view.findViewById(R.id.dimUp);
-        Button dimDownButton = (Button) view.findViewById(R.id.dimDown);
-        ToggleButton switchButton = (ToggleButton) view.findViewById(R.id.switchButton);
-
-        if (device.isDimDevice()) {
-            int initialProgress = device.getFS20DimState();
-            seekBar.setProgress(initialProgress);
-            seekBar.setOnSeekBarChangeListener(new SeekBarChangeListener(device.getFS20DimState()));
-            seekBar.setTag(device.getName());
-
-            dimUpButton.setTag(device.getName());
-            dimDownButton.setTag(device.getName());
-            dimUpButton.setOnClickListener(new DimButtonListener(device.getDimUpProgress()));
-            dimDownButton.setOnClickListener(new DimButtonListener(device.getDimDownProgress()));
-
-            toggleButtonRow.setVisibility(View.GONE);
-        } else {
-            setToogleButtonText(device, switchButton);
-
-            switchButton.setChecked(device.isOn());
-            switchButton.setOnClickListener(new SwitchButtonListener(device.getName()));
-            switchButton.setTag(device.getName());
-
-            seekBarRow.setVisibility(View.GONE);
-            dimButtonRow.setVisibility(View.GONE);
-        }
-
-        Button switchSetOptions = (Button) view.findViewById(R.id.switchSetOptions);
-        switchSetOptions.setOnClickListener(new View.OnClickListener() {
+    protected void afterPropertiesSet() {
+        fieldNameAddedListeners.put("state", new FieldNameAddedToDetailListener<FS20Device>() {
             @Override
-            public void onClick(View view) {
-                AlertDialog.Builder contextMenu = new AlertDialog.Builder(context);
-                contextMenu.setTitle(context.getResources().getString(R.string.switchDevice));
-                final List<String> setOptions = device.getSetOptions();
-
-                contextMenu.setItems(setOptions.toArray(new CharSequence[setOptions.size()]), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int item) {
-                        final String option = setOptions.get(item);
-
-                        if (option.equals("off-for-timer") || option.equals("on-for-timer")) {
-                            final EditText input = new EditText(context);
-                            new AlertDialog.Builder(context)
-                                    .setTitle(R.string.howLong)
-                                    .setView(input)
-                                    .setPositiveButton(R.string.okButton, new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int whichButton) {
-                                            String time = input.getText().toString();
-                                            try {
-                                                Integer.valueOf(time);
-                                                switchDeviceState(option + " " + time, device, context);
-                                            } catch (NumberFormatException e) {
-                                                Toast.makeText(context, R.string.notNumericError, Toast.LENGTH_SHORT).show();
-                                            }
-                                        }
-                                    }).setNegativeButton(R.string.cancelButton, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int whichButton) {
-                                }
-                            }).show();
-                        } else {
-                            switchDeviceState(option, device, context);
-                        }
-                        dialog.dismiss();
-                    }
-                });
-                contextMenu.show();
-
+            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FS20Device device, TableRow fieldTableRow) {
+                if (device.isDimDevice()) {
+                    tableLayout.addView(new SeekBarActionRow<FS20Device>(device.getFS20DimState(), R.string.blank, SeekBarActionRow.LAYOUT_DETAIL)
+                            .createRow(inflater, device));
+                    tableLayout.addView(new FS20DimUpDownRow(device)
+                            .createRow(context, inflater, device));
+                } else {
+                    tableLayout.addView(new ToggleActionRow<FS20Device>(device.getName(), ToggleActionRow.LAYOUT_DETAIL, device.isOn())
+                            .createRow(context, inflater, device));
+                }
             }
         });
+
+        detailActions.add(new DeviceDetailViewAction<FS20Device>(R.string.switchSetOptions) {
+            @Override
+            public void onButtonClick(final Context context, final FS20Device device) {
+                showSwitchOptionsMenu(context, device);
+            }
+        });
+    }
+
+    private void showSwitchOptionsMenu(final Context context, final FS20Device device) {
+        AlertDialog.Builder contextMenu = new AlertDialog.Builder(context);
+        contextMenu.setTitle(context.getResources().getString(R.string.switchDevice));
+        final List<String> setOptions = device.getSetOptions();
+
+        contextMenu.setItems(setOptions.toArray(new CharSequence[setOptions.size()]), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int item) {
+                final String option = setOptions.get(item);
+
+                if (option.equals("off-for-timer") || option.equals("on-for-timer")) {
+                    final EditText input = new EditText(context);
+                    new AlertDialog.Builder(context)
+                            .setTitle(R.string.howLong)
+                            .setView(input)
+                            .setPositiveButton(R.string.okButton, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int whichButton) {
+                                    String time = input.getText().toString();
+                                    try {
+                                        Integer.valueOf(time);
+                                        switchDeviceState(option + " " + time, device, context);
+                                    } catch (NumberFormatException e) {
+                                        Toast.makeText(context, R.string.notNumericError, Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            }).setNegativeButton(R.string.cancelButton, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                        }
+                    }).show();
+                } else {
+                    switchDeviceState(option, device, context);
+                }
+                dialog.dismiss();
+            }
+        });
+        contextMenu.show();
     }
 
     private void switchDeviceState(String newState, FS20Device device, final Context context) {
@@ -233,35 +170,5 @@ public class FS20Adapter extends DeviceDetailAvailableAdapter<FS20Device> {
             }
         });
         context.startService(intent);
-    }
-
-    private void fillFS20ToggleView(View view, final FS20Device device) {
-        setTextView(view, R.id.deviceName, device.getAliasOrName());
-
-        ToggleButton switchButton = (ToggleButton) view.findViewById(R.id.switchButton1);
-        setToogleButtonText(device, switchButton);
-        switchButton.setChecked(device.isOn());
-        switchButton.setOnClickListener(new SwitchButtonListener(device.getName()));
-    }
-
-    private void fillFS20SeekView(View view, final FS20Device child) {
-        setTextView(view, R.id.deviceName, child.getAliasOrName());
-
-        SeekBar seekBar = (SeekBar) view.findViewById(R.id.seekBar);
-        final int initialProgress = child.getFS20DimState();
-        seekBar.setProgress(initialProgress);
-        seekBar.setTag(child.getName());
-
-        seekBar.setOnSeekBarChangeListener(new SeekBarChangeListener(child.getFS20DimState()));
-    }
-
-    @Override
-    public int getDetailViewLayout() {
-        return R.layout.device_detail_fs20;
-    }
-
-    @Override
-    public Class<? extends Device> getSupportedDeviceClass() {
-        return FS20Device.class;
     }
 }

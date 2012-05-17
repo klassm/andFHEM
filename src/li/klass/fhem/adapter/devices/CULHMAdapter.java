@@ -25,161 +25,60 @@
 package li.klass.fhem.adapter.devices;
 
 import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.ResultReceiver;
 import android.view.View;
-import android.widget.SeekBar;
-import android.widget.ToggleButton;
-import li.klass.fhem.AndFHEMApplication;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import li.klass.fhem.R;
-import li.klass.fhem.adapter.devices.core.DeviceDetailAvailableAdapter;
-import li.klass.fhem.constants.Actions;
-import li.klass.fhem.constants.BundleExtraKeys;
+import li.klass.fhem.adapter.devices.generic.FieldNameAddedToDetailListener;
+import li.klass.fhem.adapter.devices.generic.GenericDeviceAdapter;
+import li.klass.fhem.adapter.devices.generic.SeekBarActionRow;
+import li.klass.fhem.adapter.devices.generic.ToggleActionRow;
 import li.klass.fhem.domain.CULHMDevice;
-import li.klass.fhem.domain.Device;
 
-public class CULHMAdapter extends DeviceDetailAvailableAdapter<CULHMDevice> {
+public class CULHMAdapter extends GenericDeviceAdapter<CULHMDevice> {
 
-    private class SeekBarChangeListener implements SeekBar.OnSeekBarChangeListener {
-
-        public int progress;
-
-        private SeekBarChangeListener(int progress) {
-            this.progress = progress;
-        }
-
-        @Override
-        public void onProgressChanged(SeekBar seekBar, final int progress, boolean fromUser) {
-            this.progress = progress;
-        }
-
-        @Override
-        public void onStartTrackingTouch(SeekBar seekBar) {
-        }
-
-        @Override
-        public void onStopTrackingTouch(final SeekBar seekBar) {
-            final Context context = seekBar.getContext();
-            String deviceName = (String) seekBar.getTag();
-
-            Intent intent = new Intent(Actions.DEVICE_DIM);
-            intent.putExtra(BundleExtraKeys.DEVICE_DIM_PROGRESS, progress);
-            intent.putExtra(BundleExtraKeys.DEVICE_NAME, deviceName);
-
-            context.startService(intent);
-        }
+    public CULHMAdapter() {
+        super(CULHMDevice.class);
     }
 
     @Override
-    public Class<? extends Device> getSupportedDeviceClass() {
-        return CULHMDevice.class;
-    }
+    public void fillDeviceOverviewView(View view, final CULHMDevice device) {
+        TableLayout layout = (TableLayout) view.findViewById(R.id.device_overview_generic);
+        View deviceNameView = layout.findViewById(R.id.deviceName);
+        deviceNameView.setVisibility(View.GONE);
 
-    @Override
-    public int getOverviewLayout(CULHMDevice device) {
         switch (device.getSubType()) {
             case DIMMER:
-                return R.layout.room_detail_culhm_seek;
+                layout.addView(new SeekBarActionRow<CULHMDevice>(device.getDimProgress(), device.getName(), SeekBarActionRow.LAYOUT_OVERVIEW)
+                        .createRow(inflater, device));
+                break;
             case SWITCH:
-                return R.layout.room_detail_culhm_switch;
-            case HEATING:
-                return R.layout.room_detail_culhm_heating;
-            case SMOKE_DETECTOR:
-                return R.layout.room_detail_culhm_smoke;
-            case THREE_STATE:
-                return R.layout.room_detail_culhm_threestate;
+                layout.addView(new ToggleActionRow<CULHMDevice>(device.getName(), ToggleActionRow.LAYOUT_OVERVIEW, device.isOn())
+                        .createRow(view.getContext(), inflater, device));
+                break;
             default:
-                return android.R.layout.simple_list_item_1;
+                super.fillDeviceOverviewView(view, device);
+                deviceNameView.setVisibility(View.VISIBLE);
+                break;
         }
     }
 
     @Override
-    protected void fillDeviceOverviewView(View view, CULHMDevice device) {
-        switch (device.getSubType()) {
-            case DIMMER:
-                fillDimOverview(view, device);
-                break;
-            case SWITCH:
-                fillSwitchOverview(view, device);
-                break;
-            case HEATING:
-                fillHeatingOverview(view, device);
-                break;
-            case SMOKE_DETECTOR:
-                fillSmokeDetectorOverview(view, device);
-                break;
-            case THREE_STATE:
-                fillThreeStateOverview(view, device);
-                break;
-        }
-
-        setTextView(view, R.id.deviceName, device.getAliasOrName());
-    }
-
-    private void fillThreeStateOverview(View view, CULHMDevice device) {
-        setTextViewOrHideTableRow(view, R.id.tableRowState, R.id.state, device.getState());
-    }
-
-    private void fillSmokeDetectorOverview(View view, CULHMDevice device) {
-        setTextViewOrHideTableRow(view, R.id.tableRowState, R.id.state, device.getState());
-    }
-
-    private void fillSwitchOverview(View view, final CULHMDevice device) {
-        ToggleButton button = (ToggleButton) view.findViewById(R.id.switchButton);
-        setToogleButtonText(device, button);
-        button.setChecked(device.isOn());
-        button.setOnClickListener(new View.OnClickListener() {
+    protected void afterPropertiesSet() {
+        fieldNameAddedListeners.put("state", new FieldNameAddedToDetailListener<CULHMDevice>() {
             @Override
-            public void onClick(View view) {
-
-                Intent intent = new Intent(Actions.DEVICE_TOGGLE_STATE);
-                intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
-                intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
-                    @Override
-                    protected void onReceiveResult(int resultCode, Bundle resultData) {
-                        AndFHEMApplication.getContext().sendBroadcast(new Intent(Actions.DO_UPDATE));
-                    }
-                });
-
-                AndFHEMApplication.getContext().startService(intent);
+            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, CULHMDevice device, TableRow fieldTableRow) {
+                switch (device.getSubType()) {
+                    case DIMMER:
+                        tableLayout.addView(new SeekBarActionRow<CULHMDevice>(device.getDimProgress(), R.string.blank, SeekBarActionRow.LAYOUT_DETAIL)
+                                .createRow(inflater, device));
+                        break;
+                    case SWITCH:
+                        tableLayout.addView(new ToggleActionRow<CULHMDevice>(device.getName(), ToggleActionRow.LAYOUT_DETAIL, device.isOn())
+                                .createRow(tableLayout.getContext(), inflater, device));
+                        break;
+                }
             }
         });
-    }
-
-    private void fillDimOverview(View view, CULHMDevice device) {
-        SeekBar seekBar = (SeekBar) view.findViewById(R.id.seekBar);
-        final int initialProgress = device.getDimProgress();
-        seekBar.setProgress(initialProgress);
-        seekBar.setTag(device.getName());
-
-        seekBar.setOnSeekBarChangeListener(new SeekBarChangeListener(device.getDimProgress()));
-    }
-
-
-    private void fillHeatingOverview(View view, CULHMDevice device) {
-        setTextViewOrHideTableRow(view, R.id.tableRowActuator, R.id.actuator, device.getActuator());
-        setTextViewOrHideTableRow(view, R.id.tableRowTemperature, R.id.temperature, device.getMeasuredTemp());
-    }
-
-    @Override
-    public boolean supportsDetailView(Device device) {
-        CULHMDevice culhmDevice = (CULHMDevice) device;
-        return culhmDevice.getSubType() == CULHMDevice.SubType.HEATING;
-    }
-
-    @Override
-    public int getDetailViewLayout() {
-        return R.layout.device_detail_culhm_heating;
-    }
-
-
-    @Override
-    protected void fillDeviceDetailView(Context context, View view, CULHMDevice device) {
-        setTextViewOrHideTableRow(view, R.id.tableRowActuator, R.id.actuator, device.getActuator());
-        setTextViewOrHideTableRow(view, R.id.tableRowTemperature, R.id.temperature, device.getMeasuredTemp());
-        setTextViewOrHideTableRow(view, R.id.tableRowDesiredTemperature, R.id.desiredTemperature, device.getDesiredTemp());
-        setTextViewOrHideTableRow(view, R.id.tableRowHumidity, R.id.humidity, device.getHumidity());
     }
 }

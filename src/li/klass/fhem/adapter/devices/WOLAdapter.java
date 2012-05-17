@@ -26,64 +26,37 @@ package li.klass.fhem.adapter.devices;
 
 import android.content.Context;
 import android.content.Intent;
-import android.view.View;
-import android.widget.Button;
 import li.klass.fhem.R;
-import li.klass.fhem.adapter.devices.core.DeviceDetailAvailableAdapter;
+import li.klass.fhem.adapter.devices.generic.DeviceDetailViewAction;
+import li.klass.fhem.adapter.devices.generic.GenericDeviceAdapter;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.domain.Device;
 import li.klass.fhem.domain.WOLDevice;
 
-public class WOLAdapter extends DeviceDetailAvailableAdapter<WOLDevice> {
-    @Override
-    protected void fillDeviceOverviewView(View view, WOLDevice device) {
-        setTextView(view, R.id.deviceName, device.getAliasOrName());
-        int isRunningText = device.isRunning() ? R.string.on : R.string.off;
-        setTextViewOrHideTableRow(view, R.id.tableRowState, R.id.state, isRunningText);
+public class WOLAdapter extends GenericDeviceAdapter<WOLDevice> {
+    public WOLAdapter() {
+        super(WOLDevice.class);
     }
 
     @Override
-    protected void fillDeviceDetailView(final Context context, View view, final WOLDevice device) {
-        int isRunningText = device.isRunning() ? R.string.on : R.string.off;
-        setTextViewOrHideTableRow(view, R.id.tableRowState, R.id.state, isRunningText);
-        setTextViewOrHideTableRow(view, R.id.tableRowMac, R.id.mac, device.getMac());
-        setTextViewOrHideTableRow(view, R.id.tableRowIP, R.id.ip, device.getIp());
-
-        Button wakeButton = (Button) view.findViewById(R.id.wakeButton);
-        wakeButton.setOnClickListener(new View.OnClickListener() {
+    protected void afterPropertiesSet() {
+        detailActions.add(new DeviceDetailViewAction<WOLDevice>(R.string.wake) {
             @Override
-            public void onClick(View view) {
+            public void onButtonClick(Context context, WOLDevice device) {
                 Intent intent = new Intent(Actions.DEVICE_WAKE);
                 intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
                 context.startService(intent);
             }
         });
-
-        Button refreshButton = (Button) view.findViewById(R.id.refreshButton);
-        refreshButton.setOnClickListener(new View.OnClickListener() {
+        detailActions.add(new DeviceDetailViewAction<WOLDevice>(R.string.requestRefresh) {
             @Override
-            public void onClick(View view) {
+            public void onButtonClick(Context context, WOLDevice device) {
                 Intent intent = new Intent(Actions.DEVICE_REFRESH_STATE);
                 intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
                 context.startService(intent);
+
                 context.startService(new Intent(Actions.DO_UPDATE));
             }
         });
-    }
-
-    @Override
-    public int getOverviewLayout(WOLDevice device) {
-        return R.layout.room_detail_wol;
-    }
-
-    @Override
-    public int getDetailViewLayout() {
-        return R.layout.device_detail_wol;
-    }
-
-    @Override
-    public Class<? extends Device> getSupportedDeviceClass() {
-        return WOLDevice.class;
     }
 }

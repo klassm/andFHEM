@@ -32,17 +32,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.ToggleButton;
-import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.activities.graph.ChartingActivity;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.Device;
 import li.klass.fhem.domain.genericview.DeviceChart;
 import li.klass.fhem.fragments.core.DeviceDetailFragment;
-import li.klass.fhem.service.graph.description.ChartSeriesDescription;
-
-import java.util.Map;
 
 public abstract class DeviceAdapter<D extends Device> {
 
@@ -123,13 +118,6 @@ public abstract class DeviceAdapter<D extends Device> {
 
     public abstract Class<? extends Device> getSupportedDeviceClass();
 
-
-
-    protected void setTextViewOrHideTableRow(View view, int tableRowId, int textFieldLayoutId, int stringId) {
-        String value = AndFHEMApplication.getContext().getString(stringId);
-        setTextViewOrHideTableRow(view, tableRowId, textFieldLayoutId, value);
-    }
-
     protected void setTextViewOrHideTableRow(View view, int tableRowId, int textFieldLayoutId, String value) {
         TableRow tableRow = (TableRow) view.findViewById(tableRowId);
 
@@ -151,53 +139,12 @@ public abstract class DeviceAdapter<D extends Device> {
         }
     }
 
-    protected boolean hideIfNull(View view, int id, Object valueToCheck) {
-        View layoutElement = view.findViewById(id);
-        return layoutElement != null && hideIfNull(layoutElement, valueToCheck);
-    }
-
     protected boolean hideIfNull(View layoutElement, Object valueToCheck) {
         if (valueToCheck == null || valueToCheck instanceof String && ((String) valueToCheck).length() == 0) {
             layoutElement.setVisibility(View.GONE);
             return true;
         }
         return false;
-    }
-
-    @Deprecated
-    protected boolean createPlotButton(final Context context, View view, int buttonLayoutId, Object hideButtonIfNull,
-                                       final D device, final int yTitleId, final ChartSeriesDescription... seriesDescriptions) {
-        if (! hideIfNull(view, buttonLayoutId, hideButtonIfNull)) {
-            Button button = (Button) view.findViewById(buttonLayoutId);
-            button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    String yTitle = context.getResources().getString(yTitleId);
-                    ChartingActivity.showChart(context, device, yTitle, seriesDescriptions);
-                }
-            });
-
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    @Deprecated
-    protected boolean fillGraphButtonAndHideIfNull(final Context context, View view, int buttonLayoutId,
-                                                   final D device, final DeviceChart deviceChart) {
-        if (deviceChart != null) {
-            fillGraphButton(context, view, buttonLayoutId, device, deviceChart);
-            return true;
-        } else {
-            view.findViewById(buttonLayoutId).setVisibility(View.GONE);
-            return false;
-        }
-    }
-
-    protected void fillGraphButton(final Context context, View view, int buttonLayoutId, final D device, final DeviceChart deviceChart) {
-        Button button = (Button) view.findViewById(buttonLayoutId);
-        fillGraphButton(context, device, deviceChart, button);
     }
 
     protected void fillGraphButton(final Context context, final D device, final DeviceChart deviceChart, Button button) {
@@ -211,19 +158,5 @@ public abstract class DeviceAdapter<D extends Device> {
                 ChartingActivity.showChart(context, device, yTitle, deviceChart.chartSeriesDescriptions);
             }
         });
-    }
-
-    @SuppressWarnings("unchecked")
-    protected void setToogleButtonText(Device device, ToggleButton toggleButton) {
-        Map<String, String> eventMap = device.getEventMap();
-        if (eventMap == null) return;
-
-        if (eventMap.containsKey("on")) {
-            toggleButton.setTextOn(eventMap.get("on"));
-        }
-
-        if (eventMap.containsKey("off")) {
-            toggleButton.setTextOff(eventMap.get("off"));
-        }
     }
 }

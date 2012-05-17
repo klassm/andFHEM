@@ -21,31 +21,13 @@
  *   51 Franklin Street, Fifth Floor
  */
 
-package li.klass.fhem.adapter.devices;
+package li.klass.fhem.adapter.devices.generic;
 
-import android.view.View;
-import li.klass.fhem.R;
-import li.klass.fhem.adapter.devices.core.DeviceListOnlyAdapter;
+import android.content.Context;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import li.klass.fhem.domain.Device;
-import li.klass.fhem.domain.TRXWeatherDevice;
 
-public class TRXWeatherAdapter extends DeviceListOnlyAdapter<TRXWeatherDevice> {
-    @Override
-    public int getOverviewLayout(TRXWeatherDevice device) {
-        return R.layout.room_detail_trxweather;
-    }
-
-    @Override
-    public Class<? extends Device> getSupportedDeviceClass() {
-        return TRXWeatherDevice.class;
-    }
-
-    @Override
-    protected void fillDeviceOverviewView(View view, TRXWeatherDevice device) {
-
-        setTextView(view, R.id.deviceName, device.getAliasOrName());
-
-        setTextViewOrHideTableRow(view, R.id.tableRowTemperature, R.id.temperature, device.getTemperature());
-        setTextViewOrHideTableRow(view, R.id.tableRowBattery, R.id.battery, device.getBattery());
-    }
+public interface FieldNameAddedToDetailListener<T extends Device> {
+    void onFieldNameAdded(Context context, TableLayout tableLayout, String field, T device, TableRow fieldTableRow);
 }

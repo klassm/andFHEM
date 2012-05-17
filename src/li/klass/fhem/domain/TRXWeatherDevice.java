@@ -23,11 +23,15 @@
 
 package li.klass.fhem.domain;
 
+import li.klass.fhem.R;
+import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.util.ValueDescriptionUtil;
 import org.w3c.dom.NamedNodeMap;
 
-public class TRXWeatherDevice extends Device<TRXDevice> {
+public class TRXWeatherDevice extends Device<TRXWeatherDevice> {
+    @ShowField(description = R.string.temperature, showInOverview = true)
     private String temperature;
+    @ShowField(description = R.string.battery, showInOverview = true)
     private String battery;
 
     @Override

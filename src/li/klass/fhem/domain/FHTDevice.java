@@ -28,6 +28,7 @@ import li.klass.fhem.R;
 import li.klass.fhem.domain.fht.FHTDayControl;
 import li.klass.fhem.domain.fht.FHTMode;
 import li.klass.fhem.domain.genericview.DeviceChart;
+import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.DayUtil;
 import li.klass.fhem.util.ValueDescriptionUtil;
@@ -41,20 +42,23 @@ import java.util.List;
 import java.util.Map;
 
 public class FHTDevice extends Device<FHTDevice> {
+    @ShowField(description = R.string.actuator, showInOverview = true)
     private String actuator;
     private FHTMode mode;
+    @ShowField(description = R.string.desiredTemperature)
     private double desiredTemp;
+    @ShowField(description = R.string.dayTemperature)
     private double dayTemperature;
+    @ShowField(description = R.string.nightTemperature)
     private double nightTemperature;
+    @ShowField(description = R.string.windowOpenTemp)
     private double windowOpenTemp;
+    @ShowField(description = R.string.warnings)
     private String warnings;
+    @ShowField(description = R.string.temperature, showInOverview = true)
     private String temperature;
 
     private Map<Integer, FHTDayControl> dayControlMap = new HashMap<Integer, FHTDayControl>();
-
-    public static final Integer COLUMN_SPEC_TEMPERATURE = R.string.temperature;
-    public static final Integer COLUMN_SPEC_DESIRED_TEMPERATURE = R.string.desiredTemperature;
-    public static final Integer COLUMN_SPEC_ACTUATOR = R.string.actuator;
 
     public FHTDevice() {
         for (Integer dayId : DayUtil.getSortedDayStringIdList()) {
@@ -211,9 +215,9 @@ public class FHTDevice extends Device<FHTDevice> {
     @Override
     protected void fillDeviceCharts(List<DeviceChart> chartSeries) {
         addDeviceChartIfNotNull(temperature, new DeviceChart(R.string.temperatureGraph, R.string.yAxisTemperature,
-                ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:measured:0"),
-                ChartSeriesDescription.getDiscreteValuesInstance(R.string.desiredTemperature, "4:desired-temp:0:")));
+                ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:measured"),
+                ChartSeriesDescription.getDiscreteValuesInstance(R.string.desiredTemperature, "4:desired-temp")));
         addDeviceChartIfNotNull(actuator, new DeviceChart(R.string.actuatorGraph, R.string.yAxisActuator,
-                new ChartSeriesDescription(R.string.actuator, "4:actuator.*[0-9]+%:0:int")));
+                new ChartSeriesDescription(R.string.actuator, "4:actuator.*[0-9]+%")));
     }
 }

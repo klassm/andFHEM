@@ -29,161 +29,117 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.view.View;
-import android.widget.*;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
-import li.klass.fhem.adapter.devices.core.DeviceDetailAvailableAdapter;
+import li.klass.fhem.adapter.devices.generic.*;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.domain.Device;
 import li.klass.fhem.domain.FHTDevice;
 import li.klass.fhem.domain.fht.FHTMode;
 import li.klass.fhem.fragments.FHTTimetableControlListFragment;
 import li.klass.fhem.util.ValueDescriptionUtil;
 import li.klass.fhem.util.device.DeviceActionUtil;
 
-import static li.klass.fhem.domain.FHTDevice.temperatureToString;
+public class FHTAdapter extends GenericDeviceAdapter<FHTDevice> {
 
-public class FHTAdapter extends DeviceDetailAvailableAdapter<FHTDevice> {
-
-    private interface TemperatureValueSeekBarChangeListener {
-        void onSeekBarValueChanged(double newTemperature);
+    public FHTAdapter() {
+        super(FHTDevice.class);
     }
 
-    private abstract class TemperatureViewSeekBarChangeListener implements SeekBar.OnSeekBarChangeListener {
-        protected double value;
-        protected View view;
-        protected int updateTextFieldId;
-        private int tableRowUpdateTextFieldId;
+    private class FHTTemperatureChangeTableRow extends SeekBarActionRowFullWidth<FHTDevice> {
+        private final TextView updateView;
+        private double newTemperature;
+        private String intentAction;
+        private int valueStringId;
+        private Context context;
 
-        protected TemperatureViewSeekBarChangeListener(View view, int tableRowUpdateTextFieldId, int updateTextFieldId) {
-            this.view = view;
-            this.updateTextFieldId = updateTextFieldId;
-            this.tableRowUpdateTextFieldId = tableRowUpdateTextFieldId;
+        public FHTTemperatureChangeTableRow(Context context, double initialTemperature, TableRow updateTableRow,
+                                            String intentAction, int valueStringId) {
+            super((int) ((initialTemperature - 5.5) / 0.5));
+            updateView = (TextView) updateTableRow.findViewById(R.id.value);
+            this.intentAction = intentAction;
+            this.valueStringId = valueStringId;
+            this.context = context;
         }
 
         @Override
-        public void onProgressChanged(SeekBar seekBar, int progress, boolean byUser) {
-            this.value = 5.5 + (progress * 0.5);
-            setTextViewOrHideTableRow(view, tableRowUpdateTextFieldId, updateTextFieldId, temperatureToString(value));
+        public void onProgressChanged(Context context, FHTDevice device, int progress) {
+            this.newTemperature = 5.5 + (progress * 0.5);
+            updateView.setText(ValueDescriptionUtil.appendTemperature(newTemperature));
         }
+
         @Override
-        public void onStartTrackingTouch(SeekBar seekBar) {
+        public void onStopTrackingTouch(final Context seekBarContext, final FHTDevice device, int progress) {
+            String confirmationMessage = createConfirmationText(valueStringId, newTemperature);
+            DeviceActionUtil.showConfirmation(context, new Dialog.OnClickListener() {
+
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    Intent intent = new Intent(intentAction);
+                    intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
+                    intent.putExtra(BundleExtraKeys.DEVICE_TEMPERATURE, newTemperature);
+                    context.startService(intent);
+                }
+            }, confirmationMessage);
+
         }
     }
 
     @Override
-    public void fillDeviceOverviewView(View view, FHTDevice device) {
-        setTextView(view, R.id.deviceName, device.getAliasOrName());
-        setTextViewOrHideTableRow(view, R.id.tableRowTemperature, R.id.temperature, device.getTemperature());
-        setTextViewOrHideTableRow(view, R.id.tableRowActuator, R.id.actuator, device.getActuator());
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    protected void fillDeviceDetailView(final Context context, final View view, final FHTDevice device) {
-
-        setTextViewOrHideTableRow(view, R.id.tableRowTemperature, R.id.temperature, device.getTemperature());
-        setTextViewOrHideTableRow(view, R.id.tableRowActuator, R.id.actuator, device.getActuator());
-        setTextViewOrHideTableRow(view, R.id.tableRowDesiredTemperature, R.id.desiredTemperature, device.getDesiredTempDesc());
-        setTextViewOrHideTableRow(view, R.id.tableRowDayTemp, R.id.dayTemperature, device.getDayTemperatureDesc());
-        setTextViewOrHideTableRow(view, R.id.tableRowNightTemp, R.id.nightTemperature, device.getNightTemperatureDesc());
-        setTextViewOrHideTableRow(view, R.id.tableRowWindowOpenTemp, R.id.windowOpenTemp, device.getWindowOpenTempDesc());
-        setTextViewOrHideTableRow(view, R.id.tableRowWarnings, R.id.warnings, device.getWarnings());
-
-        createSeekBar(view, R.id.desiredTemperatureSeek, R.id.tableRowDesiredTemperature, R.id.desiredTemperature, device.getDesiredTemp(),
-                new TemperatureValueSeekBarChangeListener() {
-                    @Override
-                    public void onSeekBarValueChanged(double newTemperature) {
-                        String action = Actions.DEVICE_SET_DESIRED_TEMPERATURE;
-                        sendTemperatureIntent(newTemperature, action, device);
-                    }
-                });
-
-        createSeekBar(view, R.id.dayTemperatureSeek, R.id.tableRowDayTemp, R.id.dayTemperature, device.getDayTemperature(),
-                new TemperatureValueSeekBarChangeListener() {
-                    @Override
-                    public void onSeekBarValueChanged(final double newTemperature) {
-                        String confirmationMessage = createConfirmationText(R.string.dayTemperature, newTemperature);
-                        DeviceActionUtil.showConfirmation(context, new Dialog.OnClickListener() {
-
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                String action = Actions.DEVICE_SET_DAY_TEMPERATURE;
-                                sendTemperatureIntent(newTemperature, action, device);
-                            }
-                        }, confirmationMessage);
-
-                    }
-                });
-
-        createSeekBar(view, R.id.nightTemperatureSeek, R.id.tableRowNightTemp, R.id.nightTemperature, device.getNightTemperature(),
-                new TemperatureValueSeekBarChangeListener() {
-                    @Override
-                    public void onSeekBarValueChanged(final double newTemperature) {
-                        String confirmationMessage = createConfirmationText(R.string.nightTemperature, newTemperature);
-                        DeviceActionUtil.showConfirmation(context, new Dialog.OnClickListener() {
-
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                String action = Actions.DEVICE_SET_NIGHT_TEMPERATURE;
-                                sendTemperatureIntent(newTemperature, action, device);
-                            }
-                        }, confirmationMessage);
-                    }
-                });
-
-        createSeekBar(view, R.id.windowOpenTempSeek, R.id.tableRowWindowOpenTemp, R.id.windowOpenTemp, device.getWindowOpenTemp(),
-                new TemperatureValueSeekBarChangeListener() {
-                    @Override
-                    public void onSeekBarValueChanged(final double newTemperature) {
-                        String confirmationMessage = createConfirmationText(R.string.windowOpenTemp, newTemperature);
-                        DeviceActionUtil.showConfirmation(context, new Dialog.OnClickListener() {
-
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                String action = Actions.DEVICE_SET_WINDOW_OPEN_TEMPERATURE;
-                                sendTemperatureIntent(newTemperature, action, device);
-                            }
-                        }, confirmationMessage);
-                    }
-                });
-
-        Spinner modeSpinner = (Spinner) view.findViewById(R.id.mode);
-
-        ArrayAdapter adapter = new ArrayAdapter(context, R.layout.spinnercontent, FHTMode.values());
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        modeSpinner.setAdapter(adapter);
-        modeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+    protected void afterPropertiesSet() {
+        fieldNameAddedListeners.put("desiredTemp", new FieldNameAddedToDetailListener<FHTDevice>() {
             @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-                FHTMode mode = FHTMode.values()[position];
-                Intent intent = new Intent(Actions.DEVICE_SET_MODE);
-                intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
-                intent.putExtra(BundleExtraKeys.DEVICE_MODE, mode);
-                context.startService(intent);
+            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FHTDevice device, TableRow fieldTableRow) {
+                new FHTTemperatureChangeTableRow(context, device.getDesiredTemp(), fieldTableRow, Actions.DEVICE_SET_DESIRED_TEMPERATURE, R.string.desiredTemperature)
+                        .createRow(inflater, device);
             }
-
+        });
+        fieldNameAddedListeners.put("dayTemperature", new FieldNameAddedToDetailListener<FHTDevice>() {
             @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
+            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FHTDevice device, TableRow fieldTableRow) {
+                new FHTTemperatureChangeTableRow(context, device.getDayTemperature(), fieldTableRow, Actions.DEVICE_SET_DAY_TEMPERATURE, R.string.dayTemperature)
+                        .createRow(inflater, device);
+            }
+        });
+        fieldNameAddedListeners.put("nightTemperature", new FieldNameAddedToDetailListener<FHTDevice>() {
+            @Override
+            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FHTDevice device, TableRow fieldTableRow) {
+                tableLayout.addView(new FHTTemperatureChangeTableRow(context, device.getNightTemperature(), fieldTableRow, Actions.DEVICE_SET_NIGHT_TEMPERATURE, R.string.nightTemperature)
+                        .createRow(inflater, device));
+            }
+        });
+        fieldNameAddedListeners.put("windowOpenTemp", new FieldNameAddedToDetailListener<FHTDevice>() {
+            @Override
+            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FHTDevice device, TableRow fieldTableRow) {
+                tableLayout.addView(new FHTTemperatureChangeTableRow(context, device.getNightTemperature(), fieldTableRow, Actions.DEVICE_SET_WINDOW_OPEN_TEMPERATURE, R.string.windowOpenTemp)
+                        .createRow(inflater, device));
+            }
+        });
+        fieldNameAddedListeners.put("actuator", new FieldNameAddedToDetailListener<FHTDevice>() {
+            @Override
+            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FHTDevice device, TableRow fieldTableRow) {
+                FHTMode mode = device.getMode();
+                int selected = mode != null ? FHTMode.positionOf(mode) : FHTMode.positionOf(FHTMode.UNKNOWN);
+                tableLayout.addView(new SpinnerActionRow<FHTDevice>(context, R.string.mode, R.string.setMode, FHTMode.toStringList(), selected) {
+
+                    @Override
+                    public void onItemSelected(Context context, FHTDevice device, String item) {
+                        FHTMode mode = FHTMode.valueOf(item);
+                        Intent intent = new Intent(Actions.DEVICE_SET_MODE);
+                        intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
+                        intent.putExtra(BundleExtraKeys.DEVICE_MODE, mode);
+                        context.startService(intent);
+                    }
+                }.createRow(device));
             }
         });
 
-        if (device.getMode() != null) {
-            modeSpinner.setSelection(FHTMode.positionOf(device.getMode()));
-        }
-
-        fillGraphButtonAndHideIfNull(context, view, R.id.temperatureGraph, device,
-                device.getDeviceChartForButtonStringId(R.string.temperatureGraph));
-        fillGraphButtonAndHideIfNull(context, view, R.id.actuatorGraph, device,
-                device.getDeviceChartForButtonStringId(R.string.actuatorGraph));
-
-        Button timetableButton = (Button) view.findViewById(R.id.timetableButton);
-        timetableButton.setOnClickListener(new View.OnClickListener() {
+        detailActions.add(new DeviceDetailViewAction<FHTDevice>(R.string.timetable) {
             @Override
-            public void onClick(View view) {
+            public void onButtonClick(Context context, FHTDevice device) {
                 Intent intent = new Intent(Actions.SHOW_FRAGMENT);
                 intent.putExtra(BundleExtraKeys.FRAGMENT_NAME, FHTTimetableControlListFragment.class.getName());
                 intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
@@ -191,10 +147,9 @@ public class FHTAdapter extends DeviceDetailAvailableAdapter<FHTDevice> {
             }
         });
 
-        Button updateValuesButton = (Button) view.findViewById(R.id.updateValuesButton);
-        updateValuesButton.setOnClickListener(new View.OnClickListener() {
+        detailActions.add(new DeviceDetailViewAction<FHTDevice>(R.string.requestRefresh) {
             @Override
-            public void onClick(View view) {
+            public void onButtonClick(Context context, FHTDevice device) {
                 Intent intent = new Intent(Actions.DEVICE_REFRESH_VALUES);
                 intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
                 context.startService(intent);
@@ -202,41 +157,6 @@ public class FHTAdapter extends DeviceDetailAvailableAdapter<FHTDevice> {
         });
     }
 
-    private void sendTemperatureIntent(double newTemperature, String action, FHTDevice device) {
-        Context context = AndFHEMApplication.getContext();
-        Intent intent = new Intent(action);
-        intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
-        intent.putExtra(BundleExtraKeys.DEVICE_TEMPERATURE, newTemperature);
-        context.startService(intent);
-    }
-
-    @Override
-    public Class<? extends Device> getSupportedDeviceClass() {
-        return FHTDevice.class;
-    }
-
-    @Override
-    public int getOverviewLayout(FHTDevice device) {
-        return R.layout.room_detail_fht;
-    }
-
-    @Override
-    public int getDetailViewLayout() {
-        return R.layout.device_detail_fht;
-    }
-
-    private void createSeekBar(View view, int seekBarLayoutId, int tableRowUpdateTextFieldId, int updateTextFieldId,
-                               double initialTemperature, final TemperatureValueSeekBarChangeListener listener) {
-        final SeekBar desiredTempSeekBar = (SeekBar) view.findViewById(seekBarLayoutId);
-        desiredTempSeekBar.setProgress((int) ((initialTemperature - 5.5) / 0.5));
-        desiredTempSeekBar.setOnSeekBarChangeListener(new TemperatureViewSeekBarChangeListener(view, tableRowUpdateTextFieldId, updateTextFieldId) {
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                listener.onSeekBarValueChanged(value);
-            }
-        });
-    }
-    
     private String createConfirmationText(int attributeStringId, double newTemperature) {
         Context context = AndFHEMApplication.getContext();
         Resources resources = context.getResources();

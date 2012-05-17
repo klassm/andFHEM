@@ -25,7 +25,9 @@ package li.klass.fhem.domain.genericview;
 
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 
-public class DeviceChart {
+import java.io.Serializable;
+
+public class DeviceChart implements Serializable {
     public final int buttonText;
     public final int yTitleId;
     public final ChartSeriesDescription[] chartSeriesDescriptions;

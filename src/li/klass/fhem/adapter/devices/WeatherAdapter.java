@@ -28,14 +28,16 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.ListDataAdapter;
-import li.klass.fhem.adapter.devices.core.DeviceDetailAvailableAdapter;
-import li.klass.fhem.domain.Device;
+import li.klass.fhem.adapter.devices.generic.GenericDeviceAdapter;
 import li.klass.fhem.domain.WeatherDevice;
 import li.klass.fhem.util.ListViewUtil;
 
@@ -43,11 +45,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
-public class WeatherAdapter extends DeviceDetailAvailableAdapter<WeatherDevice> {
+public class WeatherAdapter extends GenericDeviceAdapter<WeatherDevice> {
+
+    public WeatherAdapter() {
+        super(WeatherDevice.class);
+    }
 
     @Override
     protected int getOverviewLayout(WeatherDevice device) {
-        return R.layout.room_detail_weather;
+        return R.layout.device_overview_weather;
     }
 
     @Override
@@ -62,26 +68,24 @@ public class WeatherAdapter extends DeviceDetailAvailableAdapter<WeatherDevice> 
     }
 
     @Override
-    public int getDetailViewLayout() {
-        return R.layout.device_detail_weather;
+    protected void fillOtherStuffLayout(Context context, LinearLayout layout, WeatherDevice device, LayoutInflater inflater) {
+        LinearLayout currentWeatherHolder = (LinearLayout) inflater.inflate(R.layout.device_detail_other_layout, null);
+        setTextView(currentWeatherHolder, R.id.caption, R.string.currentWeather);
+        RelativeLayout currentWeatherContent = createCurrentWeatherContent(device, inflater);
+        currentWeatherHolder.addView(currentWeatherContent);
+        layout.addView(currentWeatherHolder);
+
+        LinearLayout forecastHolder = (LinearLayout) inflater.inflate(R.layout.device_detail_other_layout, null);
+        setTextView(forecastHolder, R.id.caption, R.string.forecast);
+        layout.addView(forecastHolder);
+
+        ListView weatherForecastList = createWeatherForecastList(context, device);
+        forecastHolder.addView(weatherForecastList);
+        ListViewUtil.setListViewHeightBasedOnChildren(weatherForecastList);
     }
 
-    @Override
-    protected void fillDeviceDetailView(Context context, View view, WeatherDevice device) {
-        setTextView(view, R.id.deviceName, device.getAliasOrName());
-        setTextViewOrHideTableRow(view, R.id.tableRowTemperature, R.id.temperature, device.getTemperature());
-        setTextViewOrHideTableRow(view, R.id.tableRowWind, R.id.wind, device.getWind());
-        setTextViewOrHideTableRow(view, R.id.tableRowHumidity, R.id.humidity, device.getHumidity());
-        setTextViewOrHideTableRow(view, R.id.tableRowCondition, R.id.condition, device.getCondition());
-
-        setWeatherIconIn((ImageView) view.findViewById(R.id.currentWeatherImage), device.getIcon());
-
-        fillGraphButtonAndHideIfNull(context, view, R.id.temperatureGraph, device,
-                device.getDeviceChartForButtonStringId(R.string.temperatureGraph));
-        fillGraphButtonAndHideIfNull(context, view, R.id.humidityGraph, device,
-                device.getDeviceChartForButtonStringId(R.string.humidityGraph));
-
-        final ListView weatherForecastList = (ListView) view.findViewById(R.id.weatherForecast);
+    private ListView createWeatherForecastList(final Context context, final WeatherDevice device) {
+        final ListView weatherForecastList = new ListView(context);
         ListDataAdapter<WeatherDevice.WeatherDeviceForecast> forecastAdapter = new ListDataAdapter<WeatherDevice.WeatherDeviceForecast>(
                 context, R.layout.weather_forecast_item, device.getForecasts()
         ) {
@@ -114,13 +118,22 @@ public class WeatherAdapter extends DeviceDetailAvailableAdapter<WeatherDevice> 
             }
         };
         weatherForecastList.setAdapter(forecastAdapter);
-        ListViewUtil.setListViewHeightBasedOnChildren(weatherForecastList);
+        return weatherForecastList;
     }
 
-    @Override
-    public Class<? extends Device> getSupportedDeviceClass() {
-        return WeatherDevice.class;
+    private RelativeLayout createCurrentWeatherContent(WeatherDevice device, LayoutInflater inflater) {
+        RelativeLayout currentWeather = (RelativeLayout) inflater.inflate(R.layout.weather_current, null);
+
+        setTextViewOrHideTableRow(currentWeather, R.id.tableRowTemperature, R.id.temperature, device.getTemperature());
+        setTextViewOrHideTableRow(currentWeather, R.id.tableRowWind, R.id.wind, device.getWind());
+        setTextViewOrHideTableRow(currentWeather, R.id.tableRowHumidity, R.id.humidity, device.getHumidity());
+        setTextViewOrHideTableRow(currentWeather, R.id.tableRowCondition, R.id.condition, device.getCondition());
+
+        setWeatherIconIn((ImageView) currentWeather.findViewById(R.id.currentWeatherImage), device.getIcon());
+
+        return currentWeather;
     }
+
 
     private void setWeatherIconIn(final ImageView imageView, String weatherIcon) {
         final String imageURL = WeatherDevice.IMAGE_URL_PREFIX + weatherIcon;

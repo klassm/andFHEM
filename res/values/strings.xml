@@ -85,6 +85,8 @@
     <string name="weatherForecast">Weather Forecast</string>
     <string name="dimUp">Dim +</string>
     <string name="dimDown">Dim -</string>
+    <string name="actions">Actions</string>
+    <string name="actions">Model</string>
 
     <string name="switchDevice">Switch</string>
     <string name="preferences">Preferences</string>
@@ -224,5 +226,5 @@
     <string name="premium_desc">AndFHEM Premium includes the shutdown of advertisements within the app!</string>
     <string name="shop_buyPemium">Buy andFHEM Premium</string>
 
-
+    <string name="blank"></string>
 </resources>

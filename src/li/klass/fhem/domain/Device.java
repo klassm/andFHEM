@@ -105,7 +105,10 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
         }
 
         fillDeviceCharts(deviceCharts);
+        afterXMLRead();
     }
+
+    protected void afterXMLRead() {}
 
     private void parseEventMap(String content) {
         eventMap = new HashMap<String, String>();

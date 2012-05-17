@@ -25,19 +25,17 @@
 package li.klass.fhem.domain;
 
 import li.klass.fhem.R;
-import li.klass.fhem.domain.genericview.ShowInDetail;
-import li.klass.fhem.domain.genericview.ShowInOverview;
+import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.util.ValueUtil;
 import org.w3c.dom.NamedNodeMap;
 
+@SuppressWarnings("unused")
 public class OwtempDevice extends Device<OwtempDevice> {
 
-    @ShowInOverview(description = R.string.temperature)
-    @ShowInDetail(description = R.string.temperature)
+    @ShowField(description = R.string.temperature, showInOverview = true)
     private String temperature;
 
-    @ShowInOverview(description = R.string.warnings)
-    @ShowInDetail(description = R.string.warnings)
+    @ShowField(description = R.string.warnings, showInOverview = true)
     private String warnings;
 
     @Override

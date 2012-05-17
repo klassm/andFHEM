@@ -26,6 +26,7 @@ package li.klass.fhem.domain;
 
 import li.klass.fhem.R;
 import li.klass.fhem.domain.genericview.DeviceChart;
+import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ValueDescriptionUtil;
 import org.w3c.dom.NamedNodeMap;
@@ -33,12 +34,11 @@ import org.w3c.dom.NamedNodeMap;
 import java.util.List;
 
 public class CULWSDevice extends Device<CULWSDevice> {
-    
-    private String humidity;
-    private String temperature;
 
-    public static final Integer COLUMN_SPEC_TEMPERATURE = R.string.temperature;
-    public static final Integer COLUMN_SPEC_HUMIDITY = R.string.humidity;
+    @ShowField(description = R.string.humidity, showInOverview = true)
+    private String humidity;
+    @ShowField(description = R.string.temperature, showInOverview = true)
+    private String temperature;
 
     @Override
     public void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {

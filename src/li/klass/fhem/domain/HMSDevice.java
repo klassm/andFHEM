@@ -26,8 +26,7 @@ package li.klass.fhem.domain;
 
 import li.klass.fhem.R;
 import li.klass.fhem.domain.genericview.DeviceChart;
-import li.klass.fhem.domain.genericview.ShowInDetail;
-import li.klass.fhem.domain.genericview.ShowInOverview;
+import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ValueUtil;
 import org.w3c.dom.NamedNodeMap;
@@ -36,20 +35,14 @@ import java.util.List;
 
 @SuppressWarnings("unused")
 public class HMSDevice extends Device<HMSDevice> {
-    @ShowInOverview(description = R.string.temperature)
-    @ShowInDetail(description = R.string.temperature)
+    @ShowField(description = R.string.temperature, showInOverview = true)
     private String temperature;
 
-    @ShowInOverview(description = R.string.battery)
-    @ShowInDetail(description = R.string.battery)
+    @ShowField(description = R.string.battery, showInOverview = true)
     private String battery;
 
-    @ShowInOverview(description = R.string.humidity)
-    @ShowInDetail(description = R.string.humidity)
+    @ShowField(description = R.string.humidity, showInOverview = true)
     private String humidity;
-
-    public static final Integer COLUMN_SPEC_TEMPERATURE = R.string.temperature;
-    public static final Integer COLUMN_SPEC_HUMIDITY = R.string.humidity;
 
     @Override
     public void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {
@@ -60,6 +53,18 @@ public class HMSDevice extends Device<HMSDevice> {
         } else if (keyValue.equals("HUMIDITY")) {
             humidity = nodeContent;
         }
+    }
+
+    public String getTemperature() {
+        return temperature;
+    }
+
+    public String getBattery() {
+        return battery;
+    }
+
+    public String getHumidity() {
+        return humidity;
     }
 
     @Override

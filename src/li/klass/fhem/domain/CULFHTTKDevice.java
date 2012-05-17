@@ -24,14 +24,19 @@
 
 package li.klass.fhem.domain;
 
+import li.klass.fhem.R;
+import li.klass.fhem.domain.genericview.ShowField;
 import org.w3c.dom.NamedNodeMap;
 
+@SuppressWarnings("unused")
 public class CULFHTTKDevice extends Device<CULFHTTKDevice> {
-
-    private String lastStateChangeTime;
     private String lastWindowState;
     private String windowState = "???";
-    
+    @ShowField(description = R.string.state, showInOverview = true)
+    private String stateChangeText;
+    @ShowField(description = R.string.lastStateChange, showInOverview = true)
+    private String lastStateChangeTime;
+
     @Override
     public void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {
         if (keyValue.equals("WINDOW")) {
@@ -40,6 +45,15 @@ public class CULFHTTKDevice extends Device<CULFHTTKDevice> {
             lastWindowState = nodeContent;
             lastStateChangeTime = attributes.getNamedItem("measured").getNodeValue();
         }
+    }
+
+    @Override
+    protected void afterXMLRead() {
+        stateChangeText = "";
+        if (getLastWindowState() != null) {
+            stateChangeText += getLastWindowState() + " => ";
+        }
+        stateChangeText += getWindowState();
     }
 
     public String getLastStateChangeTime() {
@@ -52,5 +66,9 @@ public class CULFHTTKDevice extends Device<CULFHTTKDevice> {
 
     public String getWindowState() {
         return windowState;
+    }
+
+    public String getStateChangeText() {
+        return stateChangeText;
     }
 }

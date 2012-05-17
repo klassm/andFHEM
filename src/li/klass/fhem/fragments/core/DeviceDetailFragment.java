@@ -77,9 +77,10 @@ public class DeviceDetailFragment extends BaseFragment {
                 super.onReceiveResult(resultCode, resultData);
                 if (resultCode == ResultCodes.SUCCESS && getView() != null) {
                     Device device = (Device) resultData.getSerializable(BundleExtraKeys.DEVICE);
+                    if (device == null) return;
 
                     DeviceAdapter adapter = DeviceType.getAdapterFor(device);
-                    ScrollView scrollView = (ScrollView) getView().findViewById(R.id.deviceDetailView1);
+                    ScrollView scrollView = (ScrollView) getView().findViewById(R.id.deviceDetailView);
                     if (scrollView != null) {
                         scrollView.removeAllViews();
                         scrollView.addView(adapter.createDetailView(getActivity(), device));

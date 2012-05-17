@@ -77,4 +77,21 @@
         <TextView style="@style/deviceDetailSectionCaption"
                   android:text="@string/plots" />
     </LinearLayout>
+
+    <LinearLayout android:layout_width="fill_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_marginTop="20dp"
+                  android:orientation="vertical"
+                  android:id="@+id/actionButtons">
+
+        <TextView style="@style/deviceDetailSectionCaption"
+                  android:text="@string/actions" />
+    </LinearLayout>
+
+    <LinearLayout android:layout_width="fill_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_marginTop="20dp"
+                  android:orientation="vertical"
+                  android:id="@+id/otherStuff">
+    </LinearLayout>
 </LinearLayout>

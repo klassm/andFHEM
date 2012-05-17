@@ -24,8 +24,10 @@
 
 package li.klass.fhem.domain;
 
+import li.klass.fhem.domain.genericview.ViewSettings;
 import org.w3c.dom.NamedNodeMap;
 
+@ViewSettings(showState = true)
 public class SISPMSDevice extends Device<SISPMSDevice> {
     @Override
     public void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {
