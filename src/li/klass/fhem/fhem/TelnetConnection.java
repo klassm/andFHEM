@@ -71,8 +71,8 @@ public class TelnetConnection implements FHEMConnection {
         return request(command, "#" + columnSpec);
     }
 
-    public void executeCommand(String command) {
-        request(command, null);
+    public String executeCommand(String command) {
+        return request(command, null);
     }
 
     private String request(String command, String delimiter) {

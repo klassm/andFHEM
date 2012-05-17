@@ -55,4 +55,8 @@ public class BundleExtraKeys {
 
     public static final String TITLE = "title";
     public static final String CONTENT = "content";
+
+    public static final String COMMAND = "COMMAND";
+    public static final String COMMAND_RESULT = "COMMAND_RESULT";
+    public static final String RECENT_COMMANDS = "RECENT_COMMANDS";
 }

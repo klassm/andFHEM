@@ -87,6 +87,7 @@
     <string name="dimDown">Dim -</string>
     <string name="actions">Actions</string>
     <string name="actions">Model</string>
+    <string name="send">Send</string>
 
     <string name="switchDevice">Switch</string>
     <string name="preferences">Preferences</string>
@@ -96,6 +97,8 @@
     <string name="executing">Executing ...</string>
     <string name="help">Help</string>
     <string name="donate">Donate</string>
+    <string name="send_command">Send Command</string>
+    <string name="command_execution_result">Command Result</string>
 
     <string name="context_addtofavorites">Add to favorites</string>
     <string name="context_removefavorite">Remove favorite</string>
@@ -227,4 +230,6 @@
     <string name="shop_buyPemium">Buy andFHEM Premium</string>
 
     <string name="blank"></string>
+
+
 </resources>

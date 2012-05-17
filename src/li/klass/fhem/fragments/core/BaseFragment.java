@@ -45,6 +45,7 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        update(false);
     }
 
     @Override

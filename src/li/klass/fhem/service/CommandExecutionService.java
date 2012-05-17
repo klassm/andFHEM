@@ -50,8 +50,8 @@ public class CommandExecutionService extends AbstractService {
      * Execute a command without catching any exception or showing an update dialog. Executes synchronously.
      * @param command command to execute
      */
-    public void executeUnsafeCommand(String command) {
-        DataConnectionSwitch.INSTANCE.getCurrentProvider().executeCommand(command);
+    public String executeUnsafeCommand(String command) {
+        return DataConnectionSwitch.INSTANCE.getCurrentProvider().executeCommand(command);
     }
 
     /**
@@ -60,18 +60,19 @@ public class CommandExecutionService extends AbstractService {
      * @param command command to execute
      * 
      */
-    public void executeSafely(String command) {
+    public String executeSafely(String command) {
         Context context = AndFHEMApplication.getContext();
         context.sendBroadcast(new Intent(SHOW_EXECUTING_DIALOG));
 
         try {
-            executeUnsafeCommand(command);
+            return executeUnsafeCommand(command);
         } catch (AndFHEMException e) {
             Bundle bundle = new Bundle();
             bundle.putInt(BundleExtraKeys.TOAST_STRING_ID, e.getErrorMessageStringId());
             sendBroadcastWithAction(Actions.SHOW_TOAST, bundle);
             
             Log.e(CommandExecutionService.class.getName(), "error occurred while executing command " + command, e);
+            return "";
         } finally {
             context.sendBroadcast(new Intent(DISMISS_EXECUTING_DIALOG));
         }

@@ -86,6 +86,7 @@
     <string name="dimDown">Dim -</string>
     <string name="actions">Aktionen</string>
     <string name="model">Modell</string>
+    <string name="send">Senden</string>
 
     <string name="switchDevice">Schalte</string>
     <string name="preferences">Einstellungen</string>
@@ -95,6 +96,8 @@
     <string name="executing">Ausführend ...</string>
     <string name="help">Hilfe</string>
     <string name="donate">Spenden</string>
+    <string name="send_command">Kommando senden</string>
+    <string name="command_execution_result">Kommando Ergebnis</string>
 
     <string name="context_addtofavorites">Zu Favoriten hinzufügen</string>
     <string name="context_removefavorite">Aus Favoriten entfernen</string>

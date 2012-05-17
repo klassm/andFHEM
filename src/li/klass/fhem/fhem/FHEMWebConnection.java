@@ -91,8 +91,8 @@ public class FHEMWebConnection implements FHEMConnection {
     }
 
     @Override
-    public void executeCommand(String command) {
-        request(command);
+    public String executeCommand(String command) {
+        return request(command);
     }
 
     private String request(String command) {

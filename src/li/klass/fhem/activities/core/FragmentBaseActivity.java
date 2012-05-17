@@ -43,10 +43,7 @@ import li.klass.fhem.activities.PreferencesActivity;
 import li.klass.fhem.activities.base.Updateable;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.fragments.AllDevicesFragment;
-import li.klass.fhem.fragments.FavoritesFragment;
-import li.klass.fhem.fragments.PremiumFragment;
-import li.klass.fhem.fragments.RoomListFragment;
+import li.klass.fhem.fragments.*;
 import li.klass.fhem.fragments.core.ActionBarShowTabs;
 import li.klass.fhem.fragments.core.BaseFragment;
 import li.klass.fhem.fragments.core.TopLevelFragment;
@@ -308,6 +305,13 @@ public abstract class FragmentBaseActivity extends FragmentActivity implements A
                 Intent premiumIntent = new Intent(Actions.SHOW_FRAGMENT);
                 premiumIntent.putExtra(BundleExtraKeys.FRAGMENT_NAME, PremiumFragment.class.getName());
                 sendBroadcast(premiumIntent);
+
+                return true;
+
+            case R.id.menu_command:
+                Intent commandIntent = new Intent(Actions.SHOW_FRAGMENT);
+                commandIntent.putExtra(BundleExtraKeys.FRAGMENT_NAME, SendCommandFragment.class.getName());
+                sendBroadcast(commandIntent);
 
                 return true;
         }

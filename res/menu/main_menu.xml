@@ -37,5 +37,7 @@
           android:title="@string/help" android:icon="@android:drawable/ic_menu_help" />
     <item android:id="@+id/menu_premium" android:showAsAction="ifRoom"
           android:title="@string/premium" android:icon="@android:drawable/ic_menu_agenda" />
+    <item android:id="@+id/menu_command" android:showAsAction="ifRoom"
+          android:title="@string/send_command" android:icon="@android:drawable/ic_menu_call" />
 
 </menu>
