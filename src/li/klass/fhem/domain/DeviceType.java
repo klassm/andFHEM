@@ -36,6 +36,7 @@ public enum DeviceType {
     FHT("FHT", FHTDevice.class, new FHTAdapter()),
     HMS("HMS", HMSDevice.class),
     WOL("WOL", WOLDevice.class, new WOLAdapter()),
+    IT("IT", IntertechnoDevice.class, new IntertechnoAdapter()),
     OWTEMP("OWTEMP", OwtempDevice.class),
     CUL_FHTTK("CUL_FHTTK", CULFHTTKDevice.class),
     RFXX10REC("RFXX10REC", RFXX10RECDevice.class),

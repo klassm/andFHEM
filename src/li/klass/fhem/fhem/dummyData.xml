@@ -23,6 +23,28 @@
 </_internal_>
 </_internal__LIST>
 
+<IT_LIST>
+    <IT name="Intertechno_1" state="on" sets="off on" attrs="room comment alias
+    IODev switch_rfmode:1,0 do_not_notify:1,0 ignore:0,1 dummy:1,0
+    model:itremote,itswitch,itdimmer loglevel:0,1,2,3,4,5,6 eventMap">
+        <INT key="DEF" value="F00000000F FF F0"/>
+        <INT key="NAME" value=" Intertechno_1"/>
+        <INT key="NR" value="6"/>
+        <INT key="STATE" value="on"/>
+        <INT key="TYPE" value="IT"/>
+        <INT key="XMIT" value="f00000000f"/>
+        <INT key="XMITdimdown" value="00"/>
+        <INT key="XMITdimup" value="00"/>
+        <INT key="XMIToff" value="f0"/>
+        <INT key="XMITon" value="ff"/>
+        <INT key="IODev" value="mycul"/>
+        <ATTR key="IODev" value="mycul"/>
+        <ATTR key="model" value="itswitch"/>
+        <ATTR key="room" value="Wohnzimmer"/>
+        <STATE key="state" value="on" measured="2012-05-06 19:40:03"/>
+    </IT>
+</IT_LIST>
+
 <Weather_LIST>
 <Weather name="Augsburg" state="T: 19  H: 43  W: 11" sets="" attrs="room comment alias loglevel:0,1,2,3,4,5 event-on-update-reading event-on-change-reading fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon webCmd eventMap">
     <INT key="DEF" value="Augsburg 3000 de"/>

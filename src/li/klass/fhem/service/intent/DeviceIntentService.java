@@ -33,9 +33,9 @@ import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.domain.*;
 import li.klass.fhem.domain.fht.FHTMode;
 import li.klass.fhem.service.device.*;
-import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.service.graph.GraphEntry;
 import li.klass.fhem.service.graph.GraphService;
+import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.service.room.RoomListService;
 
 import java.util.ArrayList;
@@ -161,6 +161,9 @@ public class DeviceIntentService extends ConvenientIntentService {
             return SUCCESS;
         } else if (device instanceof HOLDevice) {
             HOLService.INSTANCE.toggleState((HOLDevice) device);
+            return SUCCESS;
+        } else if (device instanceof IntertechnoDevice) {
+            IntertechnoService.INSTANCE.toggleState((IntertechnoDevice) device);
             return SUCCESS;
         } else {
             return ERROR;
