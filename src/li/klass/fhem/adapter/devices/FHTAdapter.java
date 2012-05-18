@@ -93,15 +93,15 @@ public class FHTAdapter extends GenericDeviceAdapter<FHTDevice> {
         fieldNameAddedListeners.put("desiredTemp", new FieldNameAddedToDetailListener<FHTDevice>() {
             @Override
             public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FHTDevice device, TableRow fieldTableRow) {
-                new FHTTemperatureChangeTableRow(context, device.getDesiredTemp(), fieldTableRow, Actions.DEVICE_SET_DESIRED_TEMPERATURE, R.string.desiredTemperature)
-                        .createRow(inflater, device);
+                tableLayout.addView(new FHTTemperatureChangeTableRow(context, device.getDesiredTemp(), fieldTableRow, Actions.DEVICE_SET_DESIRED_TEMPERATURE, R.string.desiredTemperature)
+                        .createRow(inflater, device));
             }
         });
         fieldNameAddedListeners.put("dayTemperature", new FieldNameAddedToDetailListener<FHTDevice>() {
             @Override
             public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FHTDevice device, TableRow fieldTableRow) {
-                new FHTTemperatureChangeTableRow(context, device.getDayTemperature(), fieldTableRow, Actions.DEVICE_SET_DAY_TEMPERATURE, R.string.dayTemperature)
-                        .createRow(inflater, device);
+                tableLayout.addView(new FHTTemperatureChangeTableRow(context, device.getDayTemperature(), fieldTableRow, Actions.DEVICE_SET_DAY_TEMPERATURE, R.string.dayTemperature)
+                        .createRow(inflater, device));
             }
         });
         fieldNameAddedListeners.put("nightTemperature", new FieldNameAddedToDetailListener<FHTDevice>() {
