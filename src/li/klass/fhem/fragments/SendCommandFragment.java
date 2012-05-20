@@ -133,7 +133,11 @@ public class SendCommandFragment extends BaseFragment {
 
                 recentCommands = resultData.getStringArrayList(BundleExtraKeys.RECENT_COMMANDS);
                 recentCommandsAdapter.clear();
-                recentCommandsAdapter.addAll(recentCommands);
+
+                // careful: addAll method is only available since API level 11 (Android 3.0)
+                for (String recentCommand : recentCommands) {
+                    recentCommandsAdapter.add(recentCommand);
+                }
                 recentCommandsAdapter.notifyDataSetChanged();
 
                 ListViewUtil.setListViewHeightBasedOnChildren((ListView) getView().findViewById(R.id.command_history));
