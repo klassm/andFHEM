@@ -35,9 +35,10 @@
           android:title="@string/update" android:icon="@android:drawable/ic_menu_preferences" />
     <item android:id="@+id/menu_help" android:showAsAction="ifRoom"
           android:title="@string/help" android:icon="@android:drawable/ic_menu_help" />
+    <item android:id="@+id/menu_command" android:showAsAction="ifRoom"
+          android:title="@string/send_command" android:icon="@android:drawable/ic_menu_send" />
+    <item android:id="@+id/menu_conversion" android:showAsAction="ifRoom"
+          android:title="@string/conversion" android:icon="@android:drawable/ic_menu_recent_history" />
     <item android:id="@+id/menu_premium" android:showAsAction="ifRoom"
           android:title="@string/premium" android:icon="@android:drawable/ic_menu_agenda" />
-    <item android:id="@+id/menu_command" android:showAsAction="ifRoom"
-          android:title="@string/send_command" android:icon="@android:drawable/ic_menu_call" />
-
 </menu>

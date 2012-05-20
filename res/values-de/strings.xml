@@ -87,6 +87,11 @@
     <string name="actions">Aktionen</string>
     <string name="model">Modell</string>
     <string name="send">Senden</string>
+    <string name="error">Fehler!</string>
+    <string name="conversion">Konvertierung</string>
+    <string name="hex2quat">Hex -> Quat</string>
+    <string name="quat2hex">Quat -> Hex</string>
+    <string name="result">Ergebnis</string>
 
     <string name="switchDevice">Schalte</string>
     <string name="preferences">Einstellungen</string>

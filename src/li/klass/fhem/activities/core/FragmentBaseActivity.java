@@ -314,6 +314,13 @@ public abstract class FragmentBaseActivity extends FragmentActivity implements A
                 sendBroadcast(commandIntent);
 
                 return true;
+
+            case R.id.menu_conversion:
+                Intent conversion = new Intent(Actions.SHOW_FRAGMENT);
+                conversion.putExtra(BundleExtraKeys.FRAGMENT_NAME, ConversionFragment.class.getName());
+                sendBroadcast(conversion);
+
+                return true;
         }
 
         return super.onOptionsItemSelected(item);

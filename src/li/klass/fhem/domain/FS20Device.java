@@ -27,6 +27,7 @@ package li.klass.fhem.domain;
 import li.klass.fhem.R;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.domain.genericview.ViewSettings;
+import li.klass.fhem.util.NumberSystemUtil;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
@@ -156,18 +157,8 @@ public class FS20Device extends Device<FS20Device> implements Comparable<FS20Dev
     public List<String> getSetOptions() {
         return setOptions;
     }
-    
-    private String transformHexTo4System(String input) {
-        int value = Integer.decode("0x" + input);
-        StringBuilder result = new StringBuilder();
-        do {
-            value = value  / 4;
-            result.append((value % 4) + 1);
-        } while (value > 0);
 
-        while (result.length() < 4) {
-            result.insert(0, "1");
-        }
-        return result.reverse().toString();
+    private String transformHexTo4System(String input) {
+        return NumberSystemUtil.hexToQuaternary(input, 4);
     }
 }
