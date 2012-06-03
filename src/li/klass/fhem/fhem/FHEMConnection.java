@@ -24,10 +24,13 @@
 
 package li.klass.fhem.fhem;
 
+import android.graphics.Bitmap;
+
 import java.util.Date;
 
 public interface FHEMConnection {
     String xmllist();
     String fileLogData(String logName, Date fromDate, Date toDate, String columnSpec);
     String executeCommand(String command);
+    Bitmap requestBitmap(String relativePath);
 }

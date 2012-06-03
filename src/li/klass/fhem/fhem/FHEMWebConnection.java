@@ -25,6 +25,8 @@
 package li.klass.fhem.fhem;
 
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import li.klass.fhem.AndFHEMApplication;
@@ -49,6 +51,8 @@ import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
 import org.apache.http.protocol.HTTP;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.security.KeyStore;
@@ -76,7 +80,7 @@ public class FHEMWebConnection implements FHEMConnection {
 
     @Override
     public String xmllist() {
-        return request("xmllist");
+        return requestCommandResponse("xmllist");
     }
 
     @Override
@@ -87,23 +91,40 @@ public class FHEMWebConnection implements FHEMConnection {
                 .append(dateFormat.format(toDate)).append(" ")
                 .append(columnSpec).toString();
 
-        return request(command).replaceAll("#" + columnSpec, "").replaceAll("[\\r\\n]", "");
+        return requestCommandResponse(command).replaceAll("#" + columnSpec, "").replaceAll("[\\r\\n]", "");
     }
 
     @Override
     public String executeCommand(String command) {
-        return request(command);
+        return requestCommandResponse(command);
     }
 
-    private String request(String command) {
+    @Override
+    public Bitmap requestBitmap(String relativePath) {
+        InputStream response = executeRequest(relativePath);
+        return BitmapFactory.decodeStream(response);
+    }
 
+    private String requestCommandResponse(String command) {
+        String urlSuffix = "?XHR=1&cmd=" + URLEncoder.encode(command);
+        InputStream response = executeRequest(urlSuffix);
+        try {
+            String content = IOUtils.toString(response);
+            if (content.contains("<title>") || content.contains("<div id=")) {
+                throw new FHEMUpdateRequiredException();
+            }
+            return content;
+        } catch (IOException e) {
+            throw new HostConnectionException(e);
+        }
+    }
 
-        String content;
+    private InputStream executeRequest(String urlSuffix) {
         try {
             HttpGet request = new HttpGet();
-            String urlString = getURL() + "?XHR=1&cmd=" + URLEncoder.encode(command);
-            Log.i(FHEMWebConnection.class.getName(), "accessing URL " + urlString);
-            URI uri = new URI(urlString);
+            String url = getURL() + urlSuffix;
+            Log.i(FHEMWebConnection.class.getName(), "accessing URL " + url);
+            URI uri = new URI(url);
 
             client.getCredentialsProvider().setCredentials(new AuthScope(uri.getHost(), uri.getPort()),
                     new UsernamePasswordCredentials(getUsername(), getPassword()));
@@ -114,11 +135,7 @@ public class FHEMWebConnection implements FHEMConnection {
             if (response.getStatusLine().getStatusCode() == 401) {
                 throw new AuthenticationException(response.getStatusLine().toString());
             }
-            content = IOUtils.toString(response.getEntity().getContent());
-
-            if (content.contains("<title>") || content.contains("<div id=")) {
-                throw new FHEMUpdateRequiredException();
-            }
+            return response.getEntity().getContent();
         } catch (AndFHEMException e) {
             throw e;
         } catch (ConnectTimeoutException e) {
@@ -126,8 +143,6 @@ public class FHEMWebConnection implements FHEMConnection {
         } catch (Exception e) {
             throw new HostConnectionException(e);
         }
-
-        return content;
     }
 
     private String getURL() {

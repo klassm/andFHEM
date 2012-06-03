@@ -25,6 +25,7 @@
 package li.klass.fhem.fhem;
 
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import li.klass.fhem.AndFHEMApplication;
@@ -73,6 +74,12 @@ public class TelnetConnection implements FHEMConnection {
 
     public String executeCommand(String command) {
         return request(command, null);
+    }
+
+    @Override
+    public Bitmap requestBitmap(String relativePath) {
+        Log.e(TelnetConnection.class.getName(), "get image: " + relativePath);
+        return null;
     }
 
     private String request(String command, String delimiter) {

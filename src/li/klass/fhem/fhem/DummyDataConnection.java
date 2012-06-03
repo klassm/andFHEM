@@ -24,6 +24,7 @@
 
 package li.klass.fhem.fhem;
 
+import android.graphics.Bitmap;
 import android.util.Log;
 import li.klass.fhem.util.CloseableUtil;
 import org.apache.commons.io.IOUtils;
@@ -81,7 +82,13 @@ public class DummyDataConnection implements FHEMConnection {
 
     @Override
     public String executeCommand(String command) {
-        Log.e(DummyDataConnection.class.getName(), "execute command " + command);
+        Log.e(DummyDataConnection.class.getName(), "execute command: " + command);
         return "I am a dummy. Do you expect me to answer you?";
+    }
+
+    @Override
+    public Bitmap requestBitmap(String relativePath) {
+        Log.e(DummyDataConnection.class.getName(), "get image: " + relativePath);
+        return null;
     }
 }
