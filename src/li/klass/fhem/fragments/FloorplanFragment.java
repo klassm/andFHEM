@@ -85,8 +85,9 @@ public class FloorplanFragment extends BaseFragment {
         return view;
     }
 
-    private void requestFloorplanDevices() {
+    private void requestFloorplanDevices(boolean doUpdate) {
         Intent intent = new Intent(Actions.GET_ALL_ROOMS_DEVICE_LIST);
+        intent.putExtra(BundleExtraKeys.DO_REFRESH, doUpdate);
         intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
             @Override
             protected void onReceiveResult(int resultCode, Bundle resultData) {
@@ -155,7 +156,7 @@ public class FloorplanFragment extends BaseFragment {
         layout.removeAllViews();
         layout.addView(floorplanView);
 
-        requestFloorplanDevices();
+        requestFloorplanDevices(doUpdate);
     }
 
     private void setBackground() {
@@ -171,7 +172,7 @@ public class FloorplanFragment extends BaseFragment {
                 Intent intent = new Intent(Actions.DISMISS_UPDATING_DIALOG);
                 getActivity().startService(intent);
 
-                requestFloorplanDevices();
+                requestFloorplanDevices(false);
             }
         });
         getActivity().startService(intent);
