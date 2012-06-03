@@ -108,7 +108,8 @@ public class RoomDetailAdapter extends NestedListViewAdapter<DeviceType, Device<
     protected List<DeviceType> getParents() {
         List<DeviceType> parents = new ArrayList<DeviceType>();
         for (DeviceType deviceType : DeviceType.values()) {
-            if (deviceType.isDoShowInDeviceList() && getChildrenCountForParent(deviceType) > 0) {
+            if (deviceType.isDoShowInDeviceList() && getChildrenCountForParent(deviceType) > 0 &&
+                    deviceType.mayShowInCurrentConnectionType()) {
                 parents.add(deviceType);
             }
         }

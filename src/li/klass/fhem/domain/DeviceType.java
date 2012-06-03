@@ -2,13 +2,13 @@
  * AndFHEM - Open Source Android application to control a FHEM home automation
  * server.
  *
- * Copyright (c) 2011, Matthias Klass or third-party contributors as
+ * Copyright (c) 2012, Matthias Klass or third-party contributors as
  * indicated by the @author tags or express copyright attribution
  * statements applied by the authors.  All third-party contributions are
  * distributed under license by Red Hat Inc.
  *
  * This copyrighted material is made available to anyone wishing to use, modify,
- * copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+ * copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLICLICENSE, as published by the Free Software Foundation.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
@@ -19,7 +19,6 @@
  * along with this distribution; if not, write to:
  *   Free Software Foundation, Inc.
  *   51 Franklin Street, Fifth Floor
- *   Boston, MA  02110-1301  USA
  */
 
 package li.klass.fhem.domain;
@@ -29,11 +28,13 @@ import li.klass.fhem.adapter.devices.core.DeviceAdapter;
 import li.klass.fhem.adapter.devices.core.HOLDevice;
 import li.klass.fhem.adapter.devices.generic.GenericDeviceAdapter;
 import li.klass.fhem.domain.fht.FHT8VDevice;
+import li.klass.fhem.fhem.ConnectionType;
+import li.klass.fhem.util.ApplicationProperties;
 
 public enum DeviceType {
     KS300("KS300", KS300Device.class),
     WEATHER("Weather", WeatherDevice.class, new WeatherAdapter()),
-    FLOORPLAN("FLOORPLAN", FloorplanDevice.class, new FloorplanAdapter()),
+    FLOORPLAN("FLOORPLAN", FloorplanDevice.class, new FloorplanAdapter(), ConnectionType.FHEMWEB),
     FHT("FHT", FHTDevice.class, new FHTAdapter()),
     HMS("HMS", HMSDevice.class),
     WOL("WOL", WOLDevice.class, new WOLAdapter()),
@@ -64,6 +65,7 @@ public enum DeviceType {
     private Class<? extends Device> deviceClass;
     private DeviceAdapter<? extends Device<?>> adapter;
     private boolean doShowInDeviceList = true;
+    private ConnectionType showDeviceOnlyInConnection = null;
 
     <T extends Device<T>> DeviceType(String xmllistTag, Class<T> deviceClass) {
         this(xmllistTag, deviceClass, new GenericDeviceAdapter<T>(deviceClass));
@@ -82,6 +84,11 @@ public enum DeviceType {
         doShowInDeviceList = doShow;
     }
 
+    DeviceType(String xmllistTag, Class<? extends Device> deviceClass, DeviceAdapter<? extends Device<?>> adapter, ConnectionType showConnectionOnlyIn) {
+        this(xmllistTag, deviceClass, adapter);
+        showDeviceOnlyInConnection = showConnectionOnlyIn;
+    }
+
     public String getXmllistTag() {
         return xmllistTag;
     }
@@ -97,6 +104,13 @@ public enum DeviceType {
 
     public boolean isDoShowInDeviceList() {
         return doShowInDeviceList;
+    }
+
+    public boolean mayShowInCurrentConnectionType() {
+        if (showDeviceOnlyInConnection == null) return true;
+
+        ConnectionType connectionType = ApplicationProperties.INSTANCE.getConnectionType();
+        return connectionType == showDeviceOnlyInConnection;
     }
 
     public static <T extends Device> DeviceAdapter<T> getAdapterFor(T device) {
