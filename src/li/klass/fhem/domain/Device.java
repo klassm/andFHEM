@@ -24,8 +24,10 @@
 
 package li.klass.fhem.domain;
 
+import android.util.Log;
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
+import li.klass.fhem.domain.floorplan.Coordinate;
 import li.klass.fhem.domain.genericview.DeviceChart;
 import li.klass.fhem.domain.genericview.ShowInDetail;
 import li.klass.fhem.util.StringEscapeUtils;
@@ -56,6 +58,8 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
     protected String definition;
     protected Map<String, String> eventMapReverse = new HashMap<String, String>();
     protected Map<String, String> eventMap = new HashMap<String, String>();
+
+    private Map<String, Coordinate> floorPlanPositionMap = new HashMap<String, Coordinate>();
 
     protected volatile FileLogDevice fileLog;
 
@@ -92,6 +96,14 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
                 definition = nodeContent;
             } else if (keyValue.equals("EVENTMAP")) {
                 parseEventMap(nodeContent);
+            } else if (keyValue.startsWith("FP_")) {
+                String[] commaParts = nodeContent.split(",");
+                if (commaParts.length > 2) {
+                    int y = Integer.valueOf(commaParts[0]);
+                    int x = Integer.valueOf(commaParts[1]);
+                    floorPlanPositionMap.put(keyValue.substring(3), new Coordinate(x, y));
+                    Log.e(Device.class.getName(), name + " " + floorPlanPositionMap.size() + " " + keyValue.substring(3));
+                }
             }
 
             String tagName = item.getNodeName().toUpperCase();
@@ -280,5 +292,13 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
 
     public Map<String, String> getEventMap() {
         return eventMap;
+    }
+
+    public boolean isOnFloorplan(String floorplan) {
+        return floorPlanPositionMap.containsKey(floorplan.toUpperCase());
+    }
+
+    public Coordinate getCoordinateFor(String floorplan) {
+        return floorPlanPositionMap.get(floorplan.toUpperCase());
     }
 }
