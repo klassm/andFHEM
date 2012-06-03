@@ -26,6 +26,7 @@ package li.klass.fhem.service;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import li.klass.fhem.AndFHEMApplication;
@@ -61,20 +62,43 @@ public class CommandExecutionService extends AbstractService {
      * 
      */
     public String executeSafely(String command) {
-        Context context = AndFHEMApplication.getContext();
-        context.sendBroadcast(new Intent(SHOW_EXECUTING_DIALOG));
+        Context context = showExecutingDialog();
 
         try {
             return executeUnsafeCommand(command);
         } catch (AndFHEMException e) {
-            Bundle bundle = new Bundle();
-            bundle.putInt(BundleExtraKeys.TOAST_STRING_ID, e.getErrorMessageStringId());
-            sendBroadcastWithAction(Actions.SHOW_TOAST, bundle);
+            handleAndFHEMException(e);
             
             Log.e(CommandExecutionService.class.getName(), "error occurred while executing command " + command, e);
             return "";
         } finally {
             context.sendBroadcast(new Intent(DISMISS_EXECUTING_DIALOG));
         }
+    }
+
+    public Bitmap getBitmap(String relativePath) {
+        Context context = showExecutingDialog();
+
+        try {
+            return DataConnectionSwitch.INSTANCE.getCurrentProvider().requestBitmap(relativePath);
+        } catch (AndFHEMException e) {
+            handleAndFHEMException(e);
+            Log.e(CommandExecutionService.class.getName(), "error occurred while getting image " + relativePath, e);
+            return null;
+        } finally {
+            context.sendBroadcast(new Intent(DISMISS_EXECUTING_DIALOG));
+        }
+    }
+
+    private Context showExecutingDialog() {
+        Context context = AndFHEMApplication.getContext();
+        context.sendBroadcast(new Intent(SHOW_EXECUTING_DIALOG));
+        return context;
+    }
+
+    private void handleAndFHEMException(AndFHEMException e) {
+        Bundle bundle = new Bundle();
+        bundle.putInt(BundleExtraKeys.TOAST_STRING_ID, e.getErrorMessageStringId());
+        sendBroadcastWithAction(Actions.SHOW_TOAST, bundle);
     }
 }
