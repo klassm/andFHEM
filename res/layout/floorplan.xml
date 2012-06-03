@@ -24,14 +24,14 @@
   -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:id="@+id/floorplanHolder">
 
     <li.klass.fhem.widget.TouchImageView
             android:scaleType="matrix"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
             android:id="@+id/floorplan"
             android:contentDescription="@string/floorplan"/>
 </RelativeLayout>

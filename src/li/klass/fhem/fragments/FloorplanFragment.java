@@ -102,6 +102,7 @@ public class FloorplanFragment extends BaseFragment {
 
                     View view = adapter.getFloorplanView(getActivity(), device);
                     view.setVisibility(View.INVISIBLE);
+                    view.setTag(device);
                     layout.addView(view);
 
                     deviceViewMap.put(device, view);
