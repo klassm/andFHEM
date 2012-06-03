@@ -23,32 +23,18 @@
 
 package li.klass.fhem.domain;
 
-import li.klass.fhem.R;
-import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
-import li.klass.fhem.domain.genericview.FloorplanViewSettings;
-import li.klass.fhem.domain.genericview.ShowField;
-import org.w3c.dom.NamedNodeMap;
+import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 
-@SuppressWarnings("unused")
-@DetailOverviewViewSettings(showState = true)
-@FloorplanViewSettings(showState = true)
-public class IntertechnoDevice extends Device<IntertechnoDevice> {
+import java.io.Serializable;
 
-    @ShowField(description = R.string.model)
-    private String model;
+public class DeviceChart implements Serializable {
+    public final int buttonText;
+    public final int yTitleId;
+    public final ChartSeriesDescription[] chartSeriesDescriptions;
 
-    @Override
-    protected void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {
-        if (keyValue.equalsIgnoreCase("MODEL")) {
-            model = nodeContent;
-        }
-    }
-
-    public boolean isOn() {
-        return getState().equals("on");
-    }
-
-    public String getModel() {
-        return model;
+    public DeviceChart(int buttonText, int yTitleId, ChartSeriesDescription... chartSeriesDescriptions) {
+        this.buttonText = buttonText;
+        this.yTitleId = yTitleId;
+        this.chartSeriesDescriptions = chartSeriesDescriptions;
     }
 }

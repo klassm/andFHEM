@@ -23,7 +23,7 @@
 
 package li.klass.fhem.service.device;
 
-import li.klass.fhem.adapter.devices.core.HOLDevice;
+import li.klass.fhem.domain.HOLDevice;
 import li.klass.fhem.service.CommandExecutionService;
 
 public class HOLService {

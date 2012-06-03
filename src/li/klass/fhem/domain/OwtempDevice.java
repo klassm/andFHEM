@@ -25,11 +25,13 @@
 package li.klass.fhem.domain;
 
 import li.klass.fhem.R;
+import li.klass.fhem.domain.genericview.FloorplanViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.util.ValueUtil;
 import org.w3c.dom.NamedNodeMap;
 
 @SuppressWarnings("unused")
+@FloorplanViewSettings(showState = true)
 public class OwtempDevice extends Device<OwtempDevice> {
 
     @ShowField(description = R.string.temperature, showInOverview = true)

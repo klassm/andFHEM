@@ -25,7 +25,7 @@ package li.klass.fhem.adapter.devices;
 
 import android.content.Context;
 import android.content.Intent;
-import li.klass.fhem.adapter.devices.generic.GenericDeviceAdapter;
+import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.Device;
 import li.klass.fhem.domain.FloorplanDevice;

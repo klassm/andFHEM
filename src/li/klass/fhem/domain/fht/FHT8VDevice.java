@@ -25,10 +25,10 @@ package li.klass.fhem.domain.fht;
 
 import li.klass.fhem.R;
 import li.klass.fhem.domain.Device;
-import li.klass.fhem.domain.genericview.ViewSettings;
+import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
 import org.w3c.dom.NamedNodeMap;
 
-@ViewSettings(showState = true, stateStringId = R.string.actuator)
+@DetailOverviewViewSettings(showState = true, stateStringId = R.string.actuator)
 public class FHT8VDevice extends Device<FHT8VDevice> {
     @Override
     protected void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {

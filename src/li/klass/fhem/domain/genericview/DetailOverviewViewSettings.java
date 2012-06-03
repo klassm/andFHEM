@@ -23,18 +23,15 @@
 
 package li.klass.fhem.domain.genericview;
 
-import li.klass.fhem.service.graph.description.ChartSeriesDescription;
+import li.klass.fhem.R;
 
-import java.io.Serializable;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
-public class DeviceChart implements Serializable {
-    public final int buttonText;
-    public final int yTitleId;
-    public final ChartSeriesDescription[] chartSeriesDescriptions;
-
-    public DeviceChart(int buttonText, int yTitleId, ChartSeriesDescription... chartSeriesDescriptions) {
-        this.buttonText = buttonText;
-        this.yTitleId = yTitleId;
-        this.chartSeriesDescriptions = chartSeriesDescriptions;
-    }
+@Retention(RetentionPolicy.RUNTIME)
+public @interface DetailOverviewViewSettings {
+    boolean showState() default false;
+    boolean showMeasured() default false;
+    int stateStringId() default R.string.state;
+    int measuredStringId() default R.string.measured;
 }

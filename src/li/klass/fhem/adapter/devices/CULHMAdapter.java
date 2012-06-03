@@ -26,14 +26,18 @@ package li.klass.fhem.adapter.devices;
 
 import android.content.Context;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import li.klass.fhem.R;
-import li.klass.fhem.adapter.devices.generic.FieldNameAddedToDetailListener;
-import li.klass.fhem.adapter.devices.generic.GenericDeviceAdapter;
-import li.klass.fhem.adapter.devices.generic.SeekBarActionRow;
-import li.klass.fhem.adapter.devices.generic.ToggleActionRow;
+import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
+import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
+import li.klass.fhem.adapter.devices.genericui.SeekBarActionRow;
+import li.klass.fhem.adapter.devices.genericui.ToggleActionRow;
 import li.klass.fhem.domain.CULHMDevice;
+import li.klass.fhem.domain.genericview.FloorplanViewSettings;
+import li.klass.fhem.util.device.FloorplanUtil;
 
 public class CULHMAdapter extends GenericDeviceAdapter<CULHMDevice> {
 
@@ -80,5 +84,13 @@ public class CULHMAdapter extends GenericDeviceAdapter<CULHMDevice> {
                 }
             }
         });
+    }
+
+    @Override
+    protected void fillFloorplanView(final Context context, final CULHMDevice device, LinearLayout layout, FloorplanViewSettings viewSettings) {
+        if (device.getSubType() != CULHMDevice.SubType.SWITCH) super.fillFloorplanView(context, device, layout, viewSettings);
+
+        ImageView buttonView = FloorplanUtil.createSwitchStateBasedImageView(context, device);
+        layout.addView(buttonView);
     }
 }

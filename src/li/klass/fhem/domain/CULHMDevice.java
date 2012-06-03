@@ -25,14 +25,16 @@
 package li.klass.fhem.domain;
 
 import li.klass.fhem.R;
+import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
+import li.klass.fhem.domain.genericview.FloorplanViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
-import li.klass.fhem.domain.genericview.ViewSettings;
 import li.klass.fhem.util.ValueDescriptionUtil;
 import li.klass.fhem.util.ValueExtractUtil;
 import org.w3c.dom.NamedNodeMap;
 
 @SuppressWarnings("unused")
-@ViewSettings(showState = true)
+@DetailOverviewViewSettings(showState = true)
+@FloorplanViewSettings(showState = true)
 public class CULHMDevice extends Device<CULHMDevice> {
 
     public enum SubType {

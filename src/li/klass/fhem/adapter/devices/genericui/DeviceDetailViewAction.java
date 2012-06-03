@@ -21,13 +21,37 @@
  *   51 Franklin Street, Fifth Floor
  */
 
-package li.klass.fhem.adapter.devices.generic;
+package li.klass.fhem.adapter.devices.genericui;
 
 import android.content.Context;
-import android.widget.TableLayout;
-import android.widget.TableRow;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.Button;
+import li.klass.fhem.R;
 import li.klass.fhem.domain.Device;
 
-public interface FieldNameAddedToDetailListener<T extends Device> {
-    void onFieldNameAdded(Context context, TableLayout tableLayout, String field, T device, TableRow fieldTableRow);
+public abstract class DeviceDetailViewAction<T extends Device> {
+    private int buttonText;
+
+    protected DeviceDetailViewAction(int buttonText) {
+        this.buttonText = buttonText;
+    }
+
+    public Button createButton(Context context, LayoutInflater inflater, T device) {
+        Button button = (Button) inflater.inflate(R.layout.button, null).findViewById(R.id.button);
+        button.setOnClickListener(createListener(context, device));
+        button.setText(buttonText);
+
+        return button;
+    }
+
+    private Button.OnClickListener createListener(final Context context, final T device) {
+        return new Button.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onButtonClick(context, device);
+            }
+        };
+    }
+    public abstract void onButtonClick(Context context, T device);
 }

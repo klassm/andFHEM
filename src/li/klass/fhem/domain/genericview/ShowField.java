@@ -31,4 +31,5 @@ public @interface ShowField {
     int description();
     boolean showInOverview() default false;
     boolean showInDetail() default true;
+    boolean showInFloorplan() default false;
 }

@@ -25,10 +25,12 @@
 package li.klass.fhem.domain;
 
 import li.klass.fhem.R;
+import li.klass.fhem.domain.genericview.FloorplanViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import org.w3c.dom.NamedNodeMap;
 
 @SuppressWarnings("unused")
+@FloorplanViewSettings(showState = true)
 public class CULFHTTKDevice extends Device<CULFHTTKDevice> {
     private String lastWindowState;
     private String windowState = "???";

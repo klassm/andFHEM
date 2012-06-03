@@ -32,15 +32,19 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.TableLayout;
-import android.widget.TableRow;
-import android.widget.Toast;
+import android.widget.*;
 import li.klass.fhem.R;
-import li.klass.fhem.adapter.devices.generic.*;
+import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
+import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
+import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewAction;
+import li.klass.fhem.adapter.devices.genericui.SeekBarActionRow;
+import li.klass.fhem.adapter.devices.genericui.ToggleActionRow;
+import li.klass.fhem.adapter.devices.genericui.UpDownButtonRow;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.FS20Device;
+import li.klass.fhem.domain.genericview.FloorplanViewSettings;
+import li.klass.fhem.util.device.FloorplanUtil;
 
 import java.util.List;
 
@@ -170,5 +174,11 @@ public class FS20Adapter extends GenericDeviceAdapter<FS20Device> {
             }
         });
         context.startService(intent);
+    }
+
+    @Override
+    protected void fillFloorplanView(final Context context, final FS20Device device, LinearLayout layout, FloorplanViewSettings viewSettings) {
+        ImageView buttonView = FloorplanUtil.createSwitchStateBasedImageView(context, device);
+        layout.addView(buttonView);
     }
 }

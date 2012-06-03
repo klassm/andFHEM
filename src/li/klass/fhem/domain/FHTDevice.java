@@ -27,7 +27,7 @@ package li.klass.fhem.domain;
 import li.klass.fhem.R;
 import li.klass.fhem.domain.fht.FHTDayControl;
 import li.klass.fhem.domain.fht.FHTMode;
-import li.klass.fhem.domain.genericview.DeviceChart;
+import li.klass.fhem.domain.genericview.FloorplanViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.DayUtil;
@@ -41,6 +41,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@FloorplanViewSettings
 public class FHTDevice extends Device<FHTDevice> {
     @ShowField(description = R.string.actuator, showInOverview = true)
     private String actuator;
@@ -55,7 +56,7 @@ public class FHTDevice extends Device<FHTDevice> {
     private double windowOpenTemp;
     @ShowField(description = R.string.warnings)
     private String warnings;
-    @ShowField(description = R.string.temperature, showInOverview = true)
+    @ShowField(description = R.string.temperature, showInOverview = true, showInFloorplan = true)
     private String temperature;
 
     private Map<Integer, FHTDayControl> dayControlMap = new HashMap<Integer, FHTDayControl>();

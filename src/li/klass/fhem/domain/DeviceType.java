@@ -25,8 +25,7 @@ package li.klass.fhem.domain;
 
 import li.klass.fhem.adapter.devices.*;
 import li.klass.fhem.adapter.devices.core.DeviceAdapter;
-import li.klass.fhem.adapter.devices.core.HOLDevice;
-import li.klass.fhem.adapter.devices.generic.GenericDeviceAdapter;
+import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
 import li.klass.fhem.domain.fht.FHT8VDevice;
 import li.klass.fhem.fhem.ConnectionType;
 import li.klass.fhem.util.ApplicationProperties;

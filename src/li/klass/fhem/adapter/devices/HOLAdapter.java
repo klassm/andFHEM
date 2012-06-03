@@ -31,15 +31,15 @@ import android.view.View;
 import android.widget.TableLayout;
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
-import li.klass.fhem.adapter.devices.core.HOLDevice;
-import li.klass.fhem.adapter.devices.generic.FieldNameAddedToDetailListener;
-import li.klass.fhem.adapter.devices.generic.GenericDeviceAdapter;
-import li.klass.fhem.adapter.devices.generic.ToggleActionRow;
+import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
+import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
+import li.klass.fhem.adapter.devices.genericui.ToggleActionRow;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
+import li.klass.fhem.domain.HOLDevice;
 
-import static li.klass.fhem.adapter.devices.generic.ToggleActionRow.LAYOUT_DETAIL;
-import static li.klass.fhem.adapter.devices.generic.ToggleActionRow.LAYOUT_OVERVIEW;
+import static li.klass.fhem.adapter.devices.genericui.ToggleActionRow.LAYOUT_DETAIL;
+import static li.klass.fhem.adapter.devices.genericui.ToggleActionRow.LAYOUT_OVERVIEW;
 
 public class HOLAdapter extends GenericDeviceAdapter<HOLDevice> {
 

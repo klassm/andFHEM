@@ -21,7 +21,7 @@
  *   51 Franklin Street, Fifth Floor
  */
 
-package li.klass.fhem.adapter.devices.generic;
+package li.klass.fhem.adapter.devices.genericui;
 
 import android.content.Context;
 import android.content.Intent;
@@ -31,34 +31,20 @@ import android.os.ResultReceiver;
 import android.view.LayoutInflater;
 import android.widget.SeekBar;
 import android.widget.TableRow;
-import android.widget.TextView;
-import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.Device;
 
-public class SeekBarActionRow<T extends Device> {
-    private String description;
-    private int layout;
+public class SeekBarActionRowFullWidth<T extends Device> {
     private int initialProgress;
 
-    public static final int LAYOUT_DETAIL = R.layout.device_detail_seekbarrow;
-    public static final int LAYOUT_OVERVIEW = R.layout.device_overview_seekbarrow;
-
-    public SeekBarActionRow(int initialProgress, int description, int layout) {
-        this(initialProgress, AndFHEMApplication.getContext().getString(description), layout);
-    }
-
-    public SeekBarActionRow(int initialProgress, String description, int layout) {
-        this.description = description;
-        this.layout = layout;
+    public SeekBarActionRowFullWidth(int initialProgress) {
         this.initialProgress = initialProgress;
     }
 
     public TableRow createRow(LayoutInflater inflater, T device) {
-        TableRow row = (TableRow) inflater.inflate(layout, null);
-        ((TextView) row.findViewById(R.id.description)).setText(description);
+        TableRow row = (TableRow) inflater.inflate(R.layout.device_detail_seekbarrow_full_width, null);
         SeekBar seekBar = (SeekBar) row.findViewById(R.id.seekBar);
         seekBar.setOnSeekBarChangeListener(createListener(device));
         seekBar.setProgress(initialProgress);
@@ -74,6 +60,7 @@ public class SeekBarActionRow<T extends Device> {
             @Override
             public void onProgressChanged(SeekBar seekBar, final int progress, boolean fromUser) {
                 this.progress = progress;
+                SeekBarActionRowFullWidth.this.onProgressChanged(seekBar.getContext(), device, progress);
             }
 
             @Override
@@ -82,10 +69,13 @@ public class SeekBarActionRow<T extends Device> {
 
             @Override
             public void onStopTrackingTouch(final SeekBar seekBar) {
-                SeekBarActionRow.this.onStopTrackingTouch(seekBar.getContext(), device, progress);
+                SeekBarActionRowFullWidth.this.onStopTrackingTouch(seekBar.getContext(), device, progress);
             }
         };
     }
+
+    public void onProgressChanged(Context context, T device, int progress) {}
+
     public void onStopTrackingTouch(final Context context, T device, int progress) {
         Intent intent = new Intent(Actions.DEVICE_DIM);
         intent.putExtra(BundleExtraKeys.DEVICE_DIM_PROGRESS, progress);

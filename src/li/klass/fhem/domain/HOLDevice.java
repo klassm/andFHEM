@@ -21,17 +21,18 @@
  *   51 Franklin Street, Fifth Floor
  */
 
-package li.klass.fhem.domain.genericview;
+package li.klass.fhem.domain;
 
-import li.klass.fhem.R;
+import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
+import org.w3c.dom.NamedNodeMap;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
+@DetailOverviewViewSettings(showState = true)
+public class HOLDevice extends Device<HOLDevice> {
+    @Override
+    protected void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {
+    }
 
-@Retention(RetentionPolicy.RUNTIME)
-public @interface ViewSettings {
-    boolean showState() default false;
-    boolean showMeasured() default false;
-    int stateStringId() default R.string.state;
-    int measuredStringId() default R.string.measured;
+    public boolean isOn() {
+        return ! getInternalState().equals("off");
+    }
 }

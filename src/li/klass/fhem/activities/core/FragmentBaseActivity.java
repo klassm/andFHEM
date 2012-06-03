@@ -228,6 +228,7 @@ public abstract class FragmentBaseActivity extends FragmentActivity implements A
     @Override
     protected void onResume() {
         super.onResume();
+        saveInstanceStateCalled = false;
         registerReceiver(broadcastReceiver, broadcastReceiver.getIntentFilter());
     }
 

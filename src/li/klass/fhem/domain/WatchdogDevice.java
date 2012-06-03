@@ -24,10 +24,10 @@
 
 package li.klass.fhem.domain;
 
-import li.klass.fhem.domain.genericview.ViewSettings;
+import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
 import org.w3c.dom.NamedNodeMap;
 
-@ViewSettings(showMeasured = true)
+@DetailOverviewViewSettings(showMeasured = true)
 public class WatchdogDevice extends Device<WatchdogDevice> {
     @Override
     protected void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {

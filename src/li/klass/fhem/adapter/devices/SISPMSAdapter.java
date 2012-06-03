@@ -28,18 +28,22 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
-import li.klass.fhem.adapter.devices.generic.FieldNameAddedToDetailListener;
-import li.klass.fhem.adapter.devices.generic.GenericDeviceAdapter;
-import li.klass.fhem.adapter.devices.generic.ToggleActionRow;
+import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
+import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
+import li.klass.fhem.adapter.devices.genericui.ToggleActionRow;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.SISPMSDevice;
+import li.klass.fhem.domain.genericview.FloorplanViewSettings;
+import li.klass.fhem.util.device.FloorplanUtil;
 
-import static li.klass.fhem.adapter.devices.generic.ToggleActionRow.LAYOUT_DETAIL;
-import static li.klass.fhem.adapter.devices.generic.ToggleActionRow.LAYOUT_OVERVIEW;
+import static li.klass.fhem.adapter.devices.genericui.ToggleActionRow.LAYOUT_DETAIL;
+import static li.klass.fhem.adapter.devices.genericui.ToggleActionRow.LAYOUT_OVERVIEW;
 
 public class SISPMSAdapter extends GenericDeviceAdapter<SISPMSDevice> {
 
@@ -78,5 +82,11 @@ public class SISPMSAdapter extends GenericDeviceAdapter<SISPMSDevice> {
                         .createRow(tableLayout.getContext(), inflater, device));
             }
         });
+    }
+
+    @Override
+    protected void fillFloorplanView(final Context context, final SISPMSDevice device, LinearLayout layout, FloorplanViewSettings viewSettings) {
+        ImageView buttonView = FloorplanUtil.createSwitchStateBasedImageView(context, device);
+        layout.addView(buttonView);
     }
 }

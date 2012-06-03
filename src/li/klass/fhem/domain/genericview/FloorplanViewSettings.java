@@ -21,19 +21,12 @@
  *   51 Franklin Street, Fifth Floor
  */
 
-package li.klass.fhem.adapter.devices.core;
+package li.klass.fhem.domain.genericview;
 
-import li.klass.fhem.domain.Device;
-import li.klass.fhem.domain.genericview.ViewSettings;
-import org.w3c.dom.NamedNodeMap;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
-@ViewSettings(showState = true)
-public class HOLDevice extends Device<HOLDevice> {
-    @Override
-    protected void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {
-    }
-
-    public boolean isOn() {
-        return ! getInternalState().equals("off");
-    }
+@Retention(RetentionPolicy.RUNTIME)
+public @interface FloorplanViewSettings {
+    boolean showState() default false;
 }

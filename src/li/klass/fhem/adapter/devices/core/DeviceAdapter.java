@@ -36,7 +36,7 @@ import li.klass.fhem.activities.graph.ChartingActivity;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.Device;
-import li.klass.fhem.domain.genericview.DeviceChart;
+import li.klass.fhem.domain.DeviceChart;
 import li.klass.fhem.fragments.core.DeviceDetailFragment;
 
 public abstract class DeviceAdapter<D extends Device> {
@@ -110,11 +110,13 @@ public abstract class DeviceAdapter<D extends Device> {
         }
     }
 
-
     public abstract boolean supportsDetailView(Device device);
     public abstract int getDetailViewLayout();
     protected abstract View getDeviceDetailView(Context context, D device);
     protected abstract Intent onFillDeviceDetailIntent(Context context, Device device, Intent intent);
+
+    public abstract boolean supportsFloorplan(D device);
+    public abstract View getFloorplanView(Context context, D device);
 
     public abstract Class<? extends Device> getSupportedDeviceClass();
 

@@ -25,13 +25,14 @@
 package li.klass.fhem.domain;
 
 import li.klass.fhem.R;
-import li.klass.fhem.domain.genericview.DeviceChart;
+import li.klass.fhem.domain.genericview.FloorplanViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import org.w3c.dom.NamedNodeMap;
 
 import java.util.List;
 
+@FloorplanViewSettings(showState = true)
 public class CULEMDevice extends Device<CULEMDevice> {
 
     @ShowField(description = R.string.currentUsage, showInOverview = true)

@@ -25,9 +25,11 @@
 package li.klass.fhem.domain;
 
 import li.klass.fhem.R;
+import li.klass.fhem.domain.genericview.FloorplanViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import org.w3c.dom.NamedNodeMap;
 
+@FloorplanViewSettings(showState = true)
 public class LGTVDevice extends Device<LGTVDevice> {
     @ShowField(description = R.string.power, showInOverview = true)
     private String power;

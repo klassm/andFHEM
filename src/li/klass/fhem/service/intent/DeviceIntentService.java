@@ -27,7 +27,6 @@ package li.klass.fhem.service.intent;
 import android.content.Intent;
 import android.os.ResultReceiver;
 import android.util.Log;
-import li.klass.fhem.adapter.devices.core.HOLDevice;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.domain.*;

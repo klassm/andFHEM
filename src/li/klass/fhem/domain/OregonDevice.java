@@ -25,7 +25,7 @@
 package li.klass.fhem.domain;
 
 import li.klass.fhem.R;
-import li.klass.fhem.domain.genericview.DeviceChart;
+import li.klass.fhem.domain.genericview.FloorplanViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ValueDescriptionUtil;
@@ -33,6 +33,7 @@ import org.w3c.dom.NamedNodeMap;
 
 import java.util.List;
 
+@FloorplanViewSettings(showState = true)
 public class OregonDevice extends Device<OregonDevice> {
 
     @ShowField(description = R.string.humidity, showInOverview = true)

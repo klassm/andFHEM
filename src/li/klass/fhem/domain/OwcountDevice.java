@@ -27,9 +27,11 @@ package li.klass.fhem.domain;
 import android.content.res.Resources;
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
+import li.klass.fhem.domain.genericview.FloorplanViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import org.w3c.dom.NamedNodeMap;
 
+@FloorplanViewSettings(showState = true)
 public class OwcountDevice extends Device<OwcountDevice> {
 
     @ShowField(description = R.string.counterA, showInOverview = true)

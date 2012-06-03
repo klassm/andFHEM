@@ -25,8 +25,9 @@
 package li.klass.fhem.domain;
 
 import li.klass.fhem.R;
+import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
+import li.klass.fhem.domain.genericview.FloorplanViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
-import li.klass.fhem.domain.genericview.ViewSettings;
 import li.klass.fhem.util.NumberSystemUtil;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -36,7 +37,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-@ViewSettings(showState = true)
+@DetailOverviewViewSettings(showState = true)
+@FloorplanViewSettings()
 public class FS20Device extends Device<FS20Device> implements Comparable<FS20Device>, Serializable {
 
     /**

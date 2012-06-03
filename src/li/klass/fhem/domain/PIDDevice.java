@@ -24,10 +24,12 @@
 package li.klass.fhem.domain;
 
 import li.klass.fhem.R;
+import li.klass.fhem.domain.genericview.FloorplanViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.util.ValueDescriptionUtil;
 import org.w3c.dom.NamedNodeMap;
 
+@FloorplanViewSettings(showState = true)
 public class PIDDevice extends Device<PIDDevice> {
     @ShowField(description = R.string.temperature, showInOverview = true)
     private String temperature;

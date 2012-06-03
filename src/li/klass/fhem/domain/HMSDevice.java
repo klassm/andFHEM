@@ -25,7 +25,7 @@
 package li.klass.fhem.domain;
 
 import li.klass.fhem.R;
-import li.klass.fhem.domain.genericview.DeviceChart;
+import li.klass.fhem.domain.genericview.FloorplanViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ValueUtil;
@@ -34,6 +34,7 @@ import org.w3c.dom.NamedNodeMap;
 import java.util.List;
 
 @SuppressWarnings("unused")
+@FloorplanViewSettings(showState = true)
 public class HMSDevice extends Device<HMSDevice> {
     @ShowField(description = R.string.temperature, showInOverview = true)
     private String temperature;

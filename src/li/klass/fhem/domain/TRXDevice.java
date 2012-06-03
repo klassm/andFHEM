@@ -23,10 +23,12 @@
 
 package li.klass.fhem.domain;
 
-import li.klass.fhem.domain.genericview.ViewSettings;
+import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
+import li.klass.fhem.domain.genericview.FloorplanViewSettings;
 import org.w3c.dom.NamedNodeMap;
 
-@ViewSettings(showState = true)
+@DetailOverviewViewSettings(showState = true)
+@FloorplanViewSettings(showState = true)
 public class TRXDevice extends Device<TRXDevice> {
     @Override
     protected void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {

@@ -21,7 +21,7 @@
  *   51 Franklin Street, Fifth Floor
  */
 
-package li.klass.fhem.adapter.devices.generic;
+package li.klass.fhem.adapter.devices.genericui;
 
 import android.content.Context;
 import android.view.LayoutInflater;

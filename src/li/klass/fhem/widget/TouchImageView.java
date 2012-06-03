@@ -275,6 +275,14 @@ public class TouchImageView extends ImageView {
         super.onLayout(changed, left, top, right, bottom);    //To change body of overridden methods use File | Settings | File Templates.
     }
 
+    public PointF getLast() {
+        return last;
+    }
+
+    public float getSaveScale() {
+        return saveScale;
+    }
+
     public interface OnTouchImageViewChangeListener {
         void onTouchImageViewChange(float newScale, float newX, float newY);
     }

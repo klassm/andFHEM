@@ -32,12 +32,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import li.klass.fhem.R;
+import li.klass.fhem.adapter.devices.core.DeviceAdapter;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.domain.Device;
+import li.klass.fhem.domain.DeviceType;
 import li.klass.fhem.domain.RoomDeviceList;
 import li.klass.fhem.domain.floorplan.Coordinate;
 import li.klass.fhem.fragments.core.BaseFragment;
@@ -50,8 +51,10 @@ public class FloorplanFragment extends BaseFragment {
 
     private transient TouchImageView floorplanView;
     private String deviceName;
-    private transient Map<Device, TextView> deviceTextViewMap = new HashMap<Device, TextView>();
+    private transient Map<Device, View> deviceViewMap = new HashMap<Device, View>();
     public static final float DEFAULT_ITEM_ZOOM_FACTOR = 0.3f;
+
+    private int tickCounter = 0;
 
     @SuppressWarnings("unused")
     public FloorplanFragment() {
@@ -69,12 +72,12 @@ public class FloorplanFragment extends BaseFragment {
         TouchImageView.OnTouchImageViewChangeListener listener = new TouchImageView.OnTouchImageViewChangeListener() {
             @Override
             public void onTouchImageViewChange(float newScale, float newX, float newY) {
-                for (Device device : deviceTextViewMap.keySet()) {
-                    updateTextViewFor(device, newScale, newX, newY);
+                if (tickCounter++ % 2 != 0) return;
+                for (Device device : deviceViewMap.keySet()) {
+                    updateViewFor(device, newScale, newX, newY);
                 }
             }
         };
-        requestFloorplanDevices();
 
         floorplanView = (TouchImageView) view.findViewById(R.id.floorplan);
         floorplanView.setListener(listener);
@@ -92,29 +95,30 @@ public class FloorplanFragment extends BaseFragment {
 
                 RoomDeviceList deviceList = (RoomDeviceList) resultData.getSerializable(BundleExtraKeys.DEVICE_LIST);
                 for (Device device : deviceList.getAllDevices()) {
-                    if (! device.isOnFloorplan(deviceName)) {
-                        continue;
-                    }
+                    if (! device.isOnFloorplan(deviceName)) continue;
+                    DeviceAdapter<Device> adapter = DeviceType.getAdapterFor(device);
+                    if (! adapter.supportsFloorplan(device)) continue;
 
-                    TextView textView = new TextView(getActivity());
-                    textView.setMaxLines(1);
-                    textView.setText(device.getAliasOrName());
-                    textView.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                            ViewGroup.LayoutParams.WRAP_CONTENT));
+                    View view = adapter.getFloorplanView(getActivity(), device);
+                    view.setVisibility(View.INVISIBLE);
+                    layout.addView(view);
 
-                    layout.addView(textView);
-                    deviceTextViewMap.put(device, textView);
+                    deviceViewMap.put(device, view);
                 }
+                floorplanView.manualTouch();
+
+                Intent intent = new Intent(Actions.DISMISS_UPDATING_DIALOG);
+                getActivity().startService(intent);
             }
         });
         getActivity().startService(intent);
     }
 
-    private void updateTextViewFor(Device device, float newScale, float newX, float newY) {
-        if (! deviceTextViewMap.containsKey(device)) return;
+    private void updateViewFor(Device device, float newScale, float newX, float newY) {
+        if (! deviceViewMap.containsKey(device)) return;
 
-        TextView textView = deviceTextViewMap.get(device);
-        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) textView.getLayoutParams();
+        View view = deviceViewMap.get(device);
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) view.getLayoutParams();
 
         // negate the coordinate (all android coordinates are negative) and renive the image offset from the floorplan FHEM UI
         Coordinate coordinate = device.getCoordinateFor(deviceName).add(new Coordinate(-190, -15)).negate();
@@ -127,13 +131,15 @@ public class FloorplanFragment extends BaseFragment {
         int newTopMargin = (int) ((requiredY - newY) * -1);
 
         params.setMargins(newLeftMargin, newTopMargin, 0, 0);
-        textView.setScaleX(newScale * DEFAULT_ITEM_ZOOM_FACTOR);
-        textView.setScaleY(newScale * DEFAULT_ITEM_ZOOM_FACTOR);
+        view.setScaleX(newScale * DEFAULT_ITEM_ZOOM_FACTOR);
+        view.setScaleY(newScale * DEFAULT_ITEM_ZOOM_FACTOR);
 
-        textView.setPivotX(0);
-        textView.setPivotY(0);
+        view.setPivotX(0);
+        view.setPivotY(0);
 
-        textView.requestLayout();
+        view.setVisibility(View.VISIBLE);
+
+        view.requestLayout();
     }
 
     @Override
@@ -144,7 +150,12 @@ public class FloorplanFragment extends BaseFragment {
 
     @Override
     public void update(boolean doUpdate) {
-        setBackground();
+        tickCounter = 0;
+        RelativeLayout layout = (RelativeLayout) getView().findViewById(R.id.floorplanHolder);
+        layout.removeAllViews();
+        layout.addView(floorplanView);
+
+        requestFloorplanDevices();
     }
 
     private void setBackground() {
@@ -156,6 +167,11 @@ public class FloorplanFragment extends BaseFragment {
                 if (resultCode != ResultCodes.SUCCESS || ! resultData.containsKey(BundleExtraKeys.FLOORPLAN_IMAGE)) return;
 
                 floorplanView.setImageBitmap((Bitmap) resultData.getParcelable(BundleExtraKeys.FLOORPLAN_IMAGE));
+
+                Intent intent = new Intent(Actions.DISMISS_UPDATING_DIALOG);
+                getActivity().startService(intent);
+
+                requestFloorplanDevices();
             }
         });
         getActivity().startService(intent);

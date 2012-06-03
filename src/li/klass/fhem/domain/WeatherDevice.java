@@ -25,7 +25,7 @@ package li.klass.fhem.domain;
 
 import android.util.Log;
 import li.klass.fhem.R;
-import li.klass.fhem.domain.genericview.DeviceChart;
+import li.klass.fhem.domain.genericview.FloorplanViewSettings;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ValueDescriptionUtil;
 import org.w3c.dom.NamedNodeMap;
@@ -35,6 +35,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+@FloorplanViewSettings(showState = true)
 public class WeatherDevice extends Device<WeatherDevice> {
     public static class WeatherDeviceForecast implements Comparable<WeatherDeviceForecast>, Serializable {
         private static final SimpleDateFormat forecastDateFormat = new SimpleDateFormat("yyyy-MM-dd");

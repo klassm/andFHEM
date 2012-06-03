@@ -33,7 +33,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.ListDataAdapter;
-import li.klass.fhem.adapter.devices.generic.GenericDeviceAdapter;
+import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
 import li.klass.fhem.domain.WeatherDevice;
 import li.klass.fhem.util.ImageUtil;
 import li.klass.fhem.util.ListViewUtil;

@@ -25,7 +25,7 @@
 package li.klass.fhem.domain;
 
 import li.klass.fhem.R;
-import li.klass.fhem.domain.genericview.DeviceChart;
+import li.klass.fhem.domain.genericview.FloorplanViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ValueDescriptionUtil;
@@ -36,6 +36,7 @@ import java.io.Serializable;
 import java.util.List;
 
 @SuppressWarnings("unused")
+@FloorplanViewSettings(showState = true)
 public class KS300Device extends Device<KS300Device> implements Serializable {
 
     @ShowField(description = R.string.temperature, showInOverview = true)
