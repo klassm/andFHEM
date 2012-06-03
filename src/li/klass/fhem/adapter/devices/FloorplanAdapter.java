@@ -21,24 +21,25 @@
  *   51 Franklin Street, Fifth Floor
  */
 
-package li.klass.fhem.domain.floorplan;
+package li.klass.fhem.adapter.devices;
 
-import java.io.Serializable;
+import android.content.Context;
+import android.content.Intent;
+import li.klass.fhem.adapter.devices.generic.GenericDeviceAdapter;
+import li.klass.fhem.constants.BundleExtraKeys;
+import li.klass.fhem.domain.Device;
+import li.klass.fhem.domain.FloorplanDevice;
+import li.klass.fhem.fragments.FloorplanFragment;
 
-public class Coordinate implements Serializable {
-    public final int x;
-    public final int y;
-
-    public Coordinate(int x, int y) {
-        this.x = x;
-        this.y = y;
+public class FloorplanAdapter extends GenericDeviceAdapter<FloorplanDevice> {
+    public FloorplanAdapter() {
+        super(FloorplanDevice.class);
     }
 
-    public Coordinate negate() {
-        return new Coordinate(-x, -y);
-    }
-
-    public Coordinate add(Coordinate addVector) {
-        return new Coordinate(x + addVector.x, y + addVector.y);
+    @Override
+    protected Intent onFillDeviceDetailIntent(Context context, Device device, Intent intent) {
+        intent.putExtra(BundleExtraKeys.FRAGMENT_NAME, FloorplanFragment.class.getName());
+        intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
+        return intent;
     }
 }

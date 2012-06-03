@@ -41,6 +41,8 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
     private transient UIBroadcastReceiver broadcastReceiver;
     private transient View contentView;
 
+    public BaseFragment() {}
+    public BaseFragment(Bundle bundle) {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

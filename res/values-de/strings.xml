@@ -92,6 +92,7 @@
     <string name="hex2quat">Hex -> Quat</string>
     <string name="quat2hex">Quat -> Hex</string>
     <string name="result">Ergebnis</string>
+    <string name="floorplan">Floorplan</string>
 
     <string name="switchDevice">Schalte</string>
     <string name="preferences">Einstellungen</string>

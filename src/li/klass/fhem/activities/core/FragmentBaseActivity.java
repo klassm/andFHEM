@@ -92,6 +92,7 @@ public abstract class FragmentBaseActivity extends FragmentActivity implements A
             firstRun = false;
         }
     };
+    private boolean saveInstanceStateCalled = false;
 
     private class Receiver extends BroadcastReceiver {
 
@@ -152,6 +153,8 @@ public abstract class FragmentBaseActivity extends FragmentActivity implements A
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        saveInstanceStateCalled = false;
 
         autoUpdateHandler = new Handler();
         autoUpdateHandler.postDelayed(autoUpdateCallback, 0);
@@ -341,6 +344,7 @@ public abstract class FragmentBaseActivity extends FragmentActivity implements A
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
+        this.saveInstanceStateCalled = true;
         outState.putSerializable(BundleExtraKeys.CURRENT_FRAGMENT, currentFragment);
         outState.putSerializable(BundleExtraKeys.FRAGMENT_HISTORY_STACK, fragmentHistoryStack);
 
@@ -400,6 +404,7 @@ public abstract class FragmentBaseActivity extends FragmentActivity implements A
     }
 
     private void removeDialog() {
+        if (saveInstanceStateCalled) return;
         try {
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             Fragment prev = getSupportFragmentManager().findFragmentByTag("dialog");

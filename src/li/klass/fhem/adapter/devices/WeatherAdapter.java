@@ -24,10 +24,6 @@
 package li.klass.fhem.adapter.devices;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,11 +35,8 @@ import li.klass.fhem.R;
 import li.klass.fhem.adapter.ListDataAdapter;
 import li.klass.fhem.adapter.devices.generic.GenericDeviceAdapter;
 import li.klass.fhem.domain.WeatherDevice;
+import li.klass.fhem.util.ImageUtil;
 import li.klass.fhem.util.ListViewUtil;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
 
 public class WeatherAdapter extends GenericDeviceAdapter<WeatherDevice> {
 
@@ -137,22 +130,6 @@ public class WeatherAdapter extends GenericDeviceAdapter<WeatherDevice> {
 
     private void setWeatherIconIn(final ImageView imageView, String weatherIcon) {
         final String imageURL = WeatherDevice.IMAGE_URL_PREFIX + weatherIcon;
-        new AsyncTask<Void, Void, Bitmap>() {
-
-            @Override
-            protected Bitmap doInBackground(Void... voids) {
-                try {
-                    return BitmapFactory.decodeStream((InputStream) new URL(imageURL).getContent());
-                } catch (IOException e) {
-                    Log.e(WeatherAdapter.class.getName(), "could not load image from " + imageURL, e);
-                    return null;
-                }
-            }
-
-            @Override
-            protected void onPostExecute(Bitmap bitmap) {
-                imageView.setImageBitmap(bitmap);
-            }
-        }.execute(null, null);
+        ImageUtil.setExternalImageIn(imageView, imageURL);
     }
 }

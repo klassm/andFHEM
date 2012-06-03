@@ -25,38 +25,41 @@
 package li.klass.fhem.constants;
 
 public class BundleExtraKeys {
-    public static final String DO_REFRESH = "doRefresh";
-    public static final String ROOM_NAME = "roomName";
-    public static final String ROOM_LIST = "roomList";
-    public static final String DEVICE = "device";
-    public static final String DEVICE_NAME = "deviceName";
-    public static final String DEVICE_NEW_NAME = "deviceNewName";
-    public static final String DEVICE_NEW_ROOM = "deviceNewRoom";
-    public static final String DEVICE_NEW_ALIAS = "deviceNewAlias";
-    public static final String DEVICE_LIST = "deviceList";
-    public static final String RESULT_RECEIVER = "resultReceiver";
-    public static final String TOAST_STRING_ID = "toastStringID";
+    public static final String DO_REFRESH = "DOREFRESH";
+    public static final String ROOM_NAME = "ROOMNAME";
+    public static final String ROOM_LIST = "ROOMLIST";
+    public static final String DEVICE = "DEVICE";
+    public static final String DEVICE_NAME = "DEVICENAME";
+    public static final String DEVICE_NEW_NAME = "DEVICENEWNAME";
+    public static final String DEVICE_NEW_ROOM = "DEVICENEWROOM";
+    public static final String DEVICE_NEW_ALIAS = "DEVICENEWALIAS";
+    public static final String DEVICE_LIST = "DEVICELIST";
+    public static final String RESULT_RECEIVER = "RESULTRECEIVER";
+    public static final String TOAST_STRING_ID = "TOASTSTRINGID";
 
-    public static final String DEVICE_GRAPH_ENTRY_MAP = "graphEntryMap";
-    public static final String DEVICE_GRAPH_Y_TITLE = "graphYTitle";
-    public static final String DEVICE_GRAPH_SERIES_DESCRIPTIONS = "deviceGraphSeriesDescriptions";
-    public static final String START_DATE = "startDate";
-    public static final String END_DATE = "endDate";
-    public static final String DEVICE_DIM_PROGRESS = "dimProgress";
-    public static final String DEVICE_TARGET_STATE = "targetState";
-    public static final String DEVICE_TEMPERATURE = "temperature";
-    public static final String DEVICE_MODE = "deviceMode";
+    public static final String DEVICE_GRAPH_ENTRY_MAP = "GRAPHENTRYMAP";
+    public static final String DEVICE_GRAPH_Y_TITLE = "GRAPHYTITLE";
+    public static final String DEVICE_GRAPH_SERIES_DESCRIPTIONS = "DEVICEGRAPHSERIESDESCRIPTIONS";
+    public static final String START_DATE = "STARTDATE";
+    public static final String END_DATE = "ENDDATE";
+    public static final String DEVICE_DIM_PROGRESS = "DIMPROGRESS";
+    public static final String DEVICE_TARGET_STATE = "TARGETSTATE";
+    public static final String DEVICE_TEMPERATURE = "TEMPERATURE";
+    public static final String DEVICE_MODE = "DEVICEMODE";
 
-    public static final String FRAGMENT_NAME = "fragmentName";
-    public static final String FRAGMENT_HISTORY_STACK = "fragmentHistoryStack";
-    public static final String CURRENT_TAB = "currentTab";
-    public static final String CURRENT_FRAGMENT = "currentFragment";
-    public static final String FRAGMENT_ADD_TO_STACK = "fragmentAddToStack";
+    public static final String FRAGMENT_NAME = "FRAGMENTNAME";
+    public static final String FRAGMENT_HISTORY_STACK = "FRAGMENTHISTORYSTACK";
+    public static final String CURRENT_TAB = "CURRENTTAB";
+    public static final String CURRENT_FRAGMENT = "CURRENTFRAGMENT";
+    public static final String FRAGMENT_ADD_TO_STACK = "FRAGMENTADDTOSTACK";
 
-    public static final String TITLE = "title";
-    public static final String CONTENT = "content";
+    public static final String TITLE = "TITLE";
+    public static final String CONTENT = "CONTENT";
 
     public static final String COMMAND = "COMMAND";
     public static final String COMMAND_RESULT = "COMMAND_RESULT";
     public static final String RECENT_COMMANDS = "RECENT_COMMANDS";
+
+    public static final String FLOORPLAN_IMAGE_RELATIVE_PATH = "FLOORPLAN_IMAGE_RELATIVE_PATH";
+    public static final String FLOORPLAN_IMAGE = "FLOORPLAN_IMAGE";
 }

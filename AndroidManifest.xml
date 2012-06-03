@@ -120,7 +120,6 @@
         <service android:name=".service.intent.FloorplanIntentService">
             <intent-filter>
                 <action android:name="li.klass.fhem.constants.Actions.FLOORPLAN_IMAGE" />
-                <action android:name="li.klass.fhem.constants.Actions.FLOORPLAN_DEVICES" />
             </intent-filter>
         </service>
 
