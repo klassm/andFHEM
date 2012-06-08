@@ -22,7 +22,16 @@
           value="5.1 from 2011-07-08 ($Id: fhem.pl,v 1.145 2011-07-07 08:46:28 rudolfkoenig Exp $)"/>
 </_internal_>
 </_internal__LIST>
-
+<dummy_LIST>
+<dummy name="myvar" state="7" sets="*" attrs="room group comment alias eventMap loglevel:0,1,2,3,4,5,6 setList fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon webCmd">
+    <INT key="CFGFN" value=""/>
+    <INT key="NAME" value="myvar"/>
+    <INT key="NR" value="228"/>
+    <INT key="STATE" value="7"/>
+    <INT key="TYPE" value="dummy"/>
+    <STATE key="state" value="7" measured="2012-06-08 16:33:08"/>
+</dummy>
+</dummy_LIST>
 <IT_LIST>
     <IT name="Intertechno_1" state="on" sets="off on" attrs="room comment alias
     IODev switch_rfmode:1,0 do_not_notify:1,0 ignore:0,1 dummy:1,0

@@ -58,7 +58,8 @@ public enum DeviceType {
     PID("PID", PIDDevice.class),
     FHT8V("FHT8V", FHT8VDevice.class),
     TRX_WEATHER("TRX_WEATHER", TRXWeatherDevice.class),
-    TRX("TRX", TRXDevice.class);
+    TRX("TRX", TRXDevice.class),
+    DUMMY("dummy", DummyDevice.class, new DummyAdapter());
 
     private String xmllistTag;
     private Class<? extends Device> deviceClass;

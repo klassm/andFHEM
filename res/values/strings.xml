@@ -93,6 +93,7 @@
     <string name="hex2quat">Hex -> Quat</string>
     <string name="quat2hex">Quat -> Hex</string>
     <string name="result">Result</string>
+    <string name="set_value">Set value</string>
     <string name="floorplan">Floorplan</string>
     <string name="floorplan_move_confirmation">Do you really want to move %1$s to %2$s?</string>
     <string name="android_version">Android Version</string>

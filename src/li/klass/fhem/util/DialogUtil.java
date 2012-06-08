@@ -26,9 +26,14 @@ package li.klass.fhem.util;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.widget.EditText;
 import li.klass.fhem.R;
 
 public class DialogUtil {
+    public interface InputDialogListener {
+        void onClick(String text);
+    }
+
     public static void showAlertDialog(Context context, int title, String text) {
         showAlertDialog(context, context.getString(title), text);
     }
@@ -45,5 +50,25 @@ public class DialogUtil {
             }
         });
         alert.show();
+    }
+
+    public static void showInputBox(Context context, String title, String defaultText, final InputDialogListener positiveOnClickListener) {
+        final EditText input = new EditText(context);
+        input.setText(defaultText);
+        new AlertDialog.Builder(context)
+                .setTitle(title)
+                .setView(input)
+                .setPositiveButton(R.string.okButton, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        String text = input.getText().toString();
+                        positiveOnClickListener.onClick(text);
+                        dialogInterface.dismiss();
+                    }
+                })
+                .setNegativeButton(R.string.cancelButton, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                    }
+                }).show();
     }
 }

@@ -149,6 +149,9 @@ public class DeviceIntentService extends ConvenientIntentService {
         if (device instanceof FS20Device) {
             FS20Service.INSTANCE.setState((FS20Device) device, targetState);
             return STATE.SUCCESS;
+        } else if (device instanceof DummyDevice) {
+            DummyService.INSTANCE.setState((DummyDevice) device, targetState);
+            return STATE.SUCCESS;
         }
         return STATE.ERROR;
     }
