@@ -95,6 +95,8 @@
     <string name="result">Result</string>
     <string name="floorplan">Floorplan</string>
     <string name="floorplan_move_confirmation">Do you really want to move %1$s to %2$s?</string>
+    <string name="android_version">Android Version</string>
+    <string name="feature_requires_android_version">This feature requires a minimum Android version of %1$s.</string>
 
     <string name="switchDevice">Switch</string>
     <string name="preferences">Preferences</string>

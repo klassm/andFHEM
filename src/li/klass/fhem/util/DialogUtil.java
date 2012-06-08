@@ -21,33 +21,29 @@
  *   51 Franklin Street, Fifth Floor
  */
 
-package li.klass.fhem.adapter.devices;
+package li.klass.fhem.util;
 
+import android.app.AlertDialog;
 import android.content.Context;
-import android.content.Intent;
-import android.os.Build;
+import android.content.DialogInterface;
 import li.klass.fhem.R;
-import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
-import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.domain.Device;
-import li.klass.fhem.domain.FloorplanDevice;
-import li.klass.fhem.fragments.FloorplanFragment;
-import li.klass.fhem.util.DialogUtil;
 
-public class FloorplanAdapter extends GenericDeviceAdapter<FloorplanDevice> {
-    public FloorplanAdapter() {
-        super(FloorplanDevice.class);
+public class DialogUtil {
+    public static void showAlertDialog(Context context, int title, String text) {
+        showAlertDialog(context, context.getString(title), text);
     }
 
-    @Override
-    protected Intent onFillDeviceDetailIntent(Context context, Device device, Intent intent) {
-        if (Build.VERSION.SDK_INT < 11) {
-            String text = String.format(context.getString(R.string.feature_requires_android_version), 3);
-            DialogUtil.showAlertDialog(context, R.string.android_version, text);
-            return null;
-        }
-        intent.putExtra(BundleExtraKeys.FRAGMENT_NAME, FloorplanFragment.class.getName());
-        intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
-        return intent;
+    public static void showAlertDialog(Context context, String title, String text) {
+        final AlertDialog alert = new AlertDialog.Builder(context).create();
+        alert.setTitle(title);
+        alert.setCancelable(false);
+        alert.setMessage(text);
+        alert.setButton(context.getString(R.string.okButton), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                alert.dismiss();
+            }
+        });
+        alert.show();
     }
 }
