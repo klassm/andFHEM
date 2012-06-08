@@ -93,6 +93,7 @@
     <string name="quat2hex">Quat -> Hex</string>
     <string name="result">Ergebnis</string>
     <string name="floorplan">Floorplan</string>
+    <string name="floorplan_move_confirmation">Soll %1$s wirklich nach %2$s verschoben werden?</string>
 
     <string name="switchDevice">Schalte</string>
     <string name="preferences">Einstellungen</string>

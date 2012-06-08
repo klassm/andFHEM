@@ -27,6 +27,7 @@ package li.klass.fhem.domain;
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.domain.floorplan.Coordinate;
+import li.klass.fhem.domain.floorplan.FloorplanPosition;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.util.StringEscapeUtils;
 import org.w3c.dom.NamedNodeMap;
@@ -57,7 +58,7 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
     protected Map<String, String> eventMapReverse = new HashMap<String, String>();
     protected Map<String, String> eventMap = new HashMap<String, String>();
 
-    private Map<String, Coordinate> floorPlanPositionMap = new HashMap<String, Coordinate>();
+    private Map<String, FloorplanPosition> floorPlanPositionMap = new HashMap<String, FloorplanPosition>();
 
     protected volatile FileLogDevice fileLog;
 
@@ -99,7 +100,9 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
                 if (commaParts.length > 2) {
                     int y = Integer.valueOf(commaParts[0]);
                     int x = Integer.valueOf(commaParts[1]);
-                    floorPlanPositionMap.put(keyValue.substring(3), new Coordinate(x, y));
+                    int viewType = Integer.valueOf(commaParts[2]);
+
+                    floorPlanPositionMap.put(keyValue.substring(3), new FloorplanPosition(x, y, viewType));
                 }
             }
 
@@ -243,16 +246,6 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
         }
     }
 
-    @Deprecated
-    public DeviceChart getDeviceChartForButtonStringId(int stringId) {
-        for (DeviceChart deviceChart : deviceCharts) {
-            if (deviceChart.buttonText == stringId) {
-                return deviceChart;
-            }
-        }
-        return null;
-    }
-
     public String getState() {
         return state;
     }
@@ -295,11 +288,17 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
         return floorPlanPositionMap.containsKey(floorplan.toUpperCase());
     }
 
-    public Coordinate getCoordinateFor(String floorplan) {
+    public FloorplanPosition getFloorplanPositionFor(String floorplan) {
         return floorPlanPositionMap.get(floorplan.toUpperCase());
     }
 
     public void setCoordinateFor(String floorplan, Coordinate coordinate) {
-        floorPlanPositionMap.put(floorplan.toUpperCase(), coordinate);
+        String key = floorplan.toUpperCase();
+        if (! floorPlanPositionMap.containsKey(key)) return;
+
+        FloorplanPosition floorplanPosition = floorPlanPositionMap.get(key);
+        FloorplanPosition newPosition = new FloorplanPosition(coordinate.x, coordinate.y, floorplanPosition.viewType);
+
+        floorPlanPositionMap.put(key, newPosition);
     }
 }

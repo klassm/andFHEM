@@ -39,4 +39,9 @@
         <item>30 Minuten</item>
         <item>1 Stunde</item>
     </string-array>
+
+    <string-array name="floorplanDeviceDetail">
+        <item>Details</item>
+        <item>Verschieben</item>
+    </string-array>
 </resources>

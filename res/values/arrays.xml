@@ -52,11 +52,11 @@
     </string-array>
 
     <string-array name="updateRoomListTimeEntries">
-        <item>nie</item>
-        <item>1 Minute</item>
-        <item>5 Minuten</item>
-        <item>30 Minuten</item>
-        <item>1 Stunde</item>
+        <item>never</item>
+        <item>1 minute</item>
+        <item>5 minutes</item>
+        <item>30 minutes</item>
+        <item>1 hour</item>
     </string-array>
     <string-array name="updateRoomListTimeValues">
         <item>-1</item>
@@ -64,5 +64,10 @@
         <item>300000</item>
         <item>1800000</item>
         <item>3600000</item>
+    </string-array>
+
+    <string-array name="floorplanDeviceDetail">
+        <item>Details</item>
+        <item>Move</item>
     </string-array>
 </resources>

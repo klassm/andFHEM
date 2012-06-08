@@ -23,6 +23,9 @@
 
 package li.klass.fhem.fragments;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -44,6 +47,7 @@ import li.klass.fhem.domain.DeviceType;
 import li.klass.fhem.domain.RoomDeviceList;
 import li.klass.fhem.domain.floorplan.Coordinate;
 import li.klass.fhem.fragments.core.BaseFragment;
+import li.klass.fhem.util.device.DeviceActionUtil;
 import li.klass.fhem.widget.TouchImageView;
 
 import java.util.HashMap;
@@ -60,6 +64,7 @@ public class FloorplanFragment extends BaseFragment {
 
     public Coordinate currentImageViewCoordinate;
     private transient DeviceMoveTouchListener deviceMoveTouchListener = new DeviceMoveTouchListener();
+    private transient DeviceOnLongClickListener deviceOnLongClickListener = new DeviceOnLongClickListener();
 
     public static Coordinate FLOORPLAN_OFFSET = new Coordinate(190, 15);
     public static final float DEFAULT_ITEM_ZOOM_FACTOR = 0.3f;
@@ -114,7 +119,7 @@ public class FloorplanFragment extends BaseFragment {
                     View view = adapter.getFloorplanView(getActivity(), device);
                     view.setVisibility(View.INVISIBLE);
                     view.setTag(device);
-                    view.setOnTouchListener(deviceMoveTouchListener);
+                    view.setOnLongClickListener(deviceOnLongClickListener);
                     layout.addView(view);
 
                     deviceViewMap.put(device, view);
@@ -134,7 +139,7 @@ public class FloorplanFragment extends BaseFragment {
         View view = deviceViewMap.get(device);
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) view.getLayoutParams();
 
-        Coordinate deviceCoordinate = device.getCoordinateFor(floorplanName);
+        Coordinate deviceCoordinate = device.getFloorplanPositionFor(floorplanName);
         Coordinate margin = floorplanToMargin(deviceCoordinate);
 
         view.setPivotX(0);
@@ -143,7 +148,6 @@ public class FloorplanFragment extends BaseFragment {
         view.setScaleX(newScale * DEFAULT_ITEM_ZOOM_FACTOR);
         view.setScaleY(newScale * DEFAULT_ITEM_ZOOM_FACTOR);
         params.setMargins((int) margin.x, (int) margin.y, 0, 0);
-        view.setBackgroundColor(getResources().getColor(R.color.lightBlue));
 
         view.setVisibility(View.VISIBLE);
 
@@ -185,6 +189,56 @@ public class FloorplanFragment extends BaseFragment {
         getActivity().startService(intent);
     }
 
+    private Coordinate floorplanToMargin(Coordinate deviceCoordinate) {
+        return floorplanToMargin(deviceCoordinate, currentImageViewScale, currentImageViewCoordinate);
+    }
+
+    private static Coordinate floorplanToMargin(Coordinate deviceCoordinate, float currentImageViewScale, Coordinate currentImageViewCoordinate) {
+        return deviceCoordinate.subtract(FLOORPLAN_OFFSET).scale(currentImageViewScale).add(currentImageViewCoordinate);
+    }
+
+    private Coordinate marginToFloorplan(Coordinate margin) {
+        return marginToFloorplan(margin, currentImageViewScale, currentImageViewCoordinate);
+    }
+
+    private static Coordinate marginToFloorplan(Coordinate margin, float currentImageViewScale, Coordinate currentImageViewCoordinate) {
+        return margin.subtract(currentImageViewCoordinate).scale(1 / currentImageViewScale).add(FLOORPLAN_OFFSET);
+    }
+
+    private class DeviceOnLongClickListener implements View.OnLongClickListener {
+
+        @Override
+        public boolean onLongClick(final View view) {
+            Context context = getActivity();
+
+            final Device device = (Device) view.getTag();
+
+            final AlertDialog.Builder contextMenu = new AlertDialog.Builder(context);
+            contextMenu.setTitle(device.getAliasOrName());
+            contextMenu.setItems(R.array.floorplanDeviceDetail, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int position) {
+                    switch(position) {
+                        case 0:
+                            Log.e(FloorplanFragment.class.getName(), "Details");
+                            break;
+                        case 1:
+                            view.setBackgroundColor(getResources().getColor(R.color.focusedColor));
+                            view.setOnTouchListener(deviceMoveTouchListener);
+
+                            Log.e(FloorplanFragment.class.getName(), "Move " + device.getName());
+                            break;
+                        default:
+                            Log.e(FloorplanFragment.class.getName(), "unknown " + position);
+                    }
+                    dialogInterface.dismiss();
+                }
+            });
+            contextMenu.show();
+            return true;
+        }
+    }
+
     private class DeviceMoveTouchListener implements View.OnTouchListener {
         private float lastX;
         private float lastY;
@@ -212,7 +266,8 @@ public class FloorplanFragment extends BaseFragment {
                 layoutParams.setMargins(newLeftMargin, newTopMargin, 0, 0);
                 view.requestLayout();
             } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-                Intent intent = new Intent(Actions.DEVICE_FLOORPLAN_MOVE);
+
+                final Intent intent = new Intent(Actions.DEVICE_FLOORPLAN_MOVE);
                 intent.putExtra(BundleExtraKeys.FLOORPLAN_NAME, floorplanName);
                 intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
 
@@ -226,8 +281,17 @@ public class FloorplanFragment extends BaseFragment {
                         update(false);
                     }
                 });
-                getActivity().startService(intent);
 
+                String text = getActivity().getResources().getString(R.string.floorplan_move_confirmation);
+                text = String.format(text, device.getAliasOrName(), "x=" + coordinate.x + ", y=" + coordinate.y);
+                DeviceActionUtil.showConfirmation(getActivity(), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        getActivity().startService(intent);
+                    }
+                }, text);
+
+                view.setBackgroundColor(getResources().getColor(android.R.color.transparent));
                 Log.d(FloorplanFragment.class.getName(), "up " + new Coordinate(newLeftMargin, newTopMargin));
 
                 moved = false;
@@ -238,21 +302,5 @@ public class FloorplanFragment extends BaseFragment {
             moved = true;
             return true;
         }
-    }
-
-    private Coordinate floorplanToMargin(Coordinate deviceCoordinate) {
-        return floorplanToMargin(deviceCoordinate, currentImageViewScale, currentImageViewCoordinate);
-    }
-
-    private static Coordinate floorplanToMargin(Coordinate deviceCoordinate, float currentImageViewScale, Coordinate currentImageViewCoordinate) {
-        return deviceCoordinate.subtract(FLOORPLAN_OFFSET).scale(currentImageViewScale).add(currentImageViewCoordinate);
-    }
-
-    private Coordinate marginToFloorplan(Coordinate margin) {
-        return marginToFloorplan(margin, currentImageViewScale, currentImageViewCoordinate);
-    }
-
-    private static Coordinate marginToFloorplan(Coordinate margin, float currentImageViewScale, Coordinate currentImageViewCoordinate) {
-        return margin.subtract(currentImageViewCoordinate).scale(1 / currentImageViewScale).add(FLOORPLAN_OFFSET);
     }
 }

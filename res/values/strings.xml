@@ -94,6 +94,7 @@
     <string name="quat2hex">Quat -> Hex</string>
     <string name="result">Result</string>
     <string name="floorplan">Floorplan</string>
+    <string name="floorplan_move_confirmation">Do you really want to move %1$s to %2$s?</string>
 
     <string name="switchDevice">Switch</string>
     <string name="preferences">Preferences</string>

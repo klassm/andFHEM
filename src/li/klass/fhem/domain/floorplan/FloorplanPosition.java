@@ -21,31 +21,13 @@
  *   51 Franklin Street, Fifth Floor
  */
 
-package li.klass.fhem.service.device;
+package li.klass.fhem.domain.floorplan;
 
-import android.util.Log;
-import li.klass.fhem.domain.Device;
-import li.klass.fhem.domain.floorplan.Coordinate;
-import li.klass.fhem.domain.floorplan.FloorplanPosition;
-import li.klass.fhem.service.CommandExecutionService;
+public class FloorplanPosition extends Coordinate {
+    public final int viewType;
 
-public class FloorplanService {
-    public static final FloorplanService INSTANCE = new FloorplanService();
-
-    private FloorplanService() {
-    }
-
-    public void setDeviceLocation(String floorplanName, Device<?> device, Coordinate newCoordinate) {
-
-        int x = Math.round(newCoordinate.x);
-        int y = Math.round(newCoordinate.y);
-
-        FloorplanPosition oldPosition = device.getFloorplanPositionFor(floorplanName);
-
-        String command = "attr " + device.getName() + " fp_" + floorplanName + " " + y + "," + x + "," + oldPosition.viewType + ",";
-        Log.e(FloorplanService.class.getName(), command);
-        CommandExecutionService.INSTANCE.executeSafely(command);
-
-        device.setCoordinateFor(floorplanName, newCoordinate);
+    public FloorplanPosition(float x, float y, int viewType) {
+        super(x, y);
+        this.viewType = viewType;
     }
 }
