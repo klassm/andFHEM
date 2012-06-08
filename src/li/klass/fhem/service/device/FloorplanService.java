@@ -21,40 +21,28 @@
  *   51 Franklin Street, Fifth Floor
  */
 
-package li.klass.fhem.domain.floorplan;
+package li.klass.fhem.service.device;
 
-import java.io.Serializable;
+import android.util.Log;
+import li.klass.fhem.domain.Device;
+import li.klass.fhem.domain.floorplan.Coordinate;
+import li.klass.fhem.service.CommandExecutionService;
 
-public class Coordinate implements Serializable {
-    public final float x;
-    public final float y;
+public class FloorplanService {
+    public static final FloorplanService INSTANCE = new FloorplanService();
 
-    public Coordinate(float x, float y) {
-        this.x = x;
-        this.y = y;
+    private FloorplanService() {
     }
 
-    public Coordinate negate() {
-        return new Coordinate(-x, -y);
-    }
+    public void setDeviceLocation(String floorplanName, Device<?> device, Coordinate newCoordinate) {
 
-    public Coordinate scale(float factor) {
-        return new Coordinate(x * factor, y * factor);
-    }
+        int x = Math.round(newCoordinate.x);
+        int y = Math.round(newCoordinate.y);
 
-    public Coordinate add(Coordinate addVector) {
-        return new Coordinate(x + addVector.x, y + addVector.y);
-    }
+        String command = "attr " + "fp_" + device.getName() + " " + y + "," + x + ",1,";
+        Log.e(FloorplanService.class.getName(), command);
+        CommandExecutionService.INSTANCE.executeSafely(command);
 
-    public Coordinate subtract(Coordinate addVector) {
-        return this.add(addVector.negate());
-    }
-
-    @Override
-    public String toString() {
-        return "Coordinate{" +
-                "x=" + x +
-                ", y=" + y +
-                '}';
+        device.setCoordinateFor(floorplanName, newCoordinate);
     }
 }

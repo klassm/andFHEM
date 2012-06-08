@@ -28,7 +28,9 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
@@ -50,11 +52,17 @@ import java.util.Map;
 public class FloorplanFragment extends BaseFragment {
 
     private transient TouchImageView floorplanView;
-    private String deviceName;
+    private String floorplanName;
     private transient Map<Device, View> deviceViewMap = new HashMap<Device, View>();
-    public static final float DEFAULT_ITEM_ZOOM_FACTOR = 0.3f;
-
     private int tickCounter = 0;
+
+    public float currentImageViewScale;
+
+    public Coordinate currentImageViewCoordinate;
+    private transient DeviceMoveTouchListener deviceMoveTouchListener = new DeviceMoveTouchListener();
+
+    public static Coordinate FLOORPLAN_OFFSET = new Coordinate(190, 15);
+    public static final float DEFAULT_ITEM_ZOOM_FACTOR = 0.3f;
 
     @SuppressWarnings("unused")
     public FloorplanFragment() {
@@ -62,7 +70,7 @@ public class FloorplanFragment extends BaseFragment {
 
     @SuppressWarnings("unused")
     public FloorplanFragment(Bundle bundle) {
-        deviceName = bundle.getString(BundleExtraKeys.DEVICE_NAME);
+        floorplanName = bundle.getString(BundleExtraKeys.DEVICE_NAME);
     }
 
     @Override
@@ -72,9 +80,12 @@ public class FloorplanFragment extends BaseFragment {
         TouchImageView.OnTouchImageViewChangeListener listener = new TouchImageView.OnTouchImageViewChangeListener() {
             @Override
             public void onTouchImageViewChange(float newScale, float newX, float newY) {
+                currentImageViewScale = newScale * floorplanView.getBaseScale();
+                currentImageViewCoordinate = new Coordinate(newX, newY);
+
                 if (tickCounter++ % 2 != 0) return;
                 for (Device device : deviceViewMap.keySet()) {
-                    updateViewFor(device, newScale, newX, newY);
+                    updateViewFor(device, newScale);
                 }
             }
         };
@@ -96,13 +107,14 @@ public class FloorplanFragment extends BaseFragment {
 
                 RoomDeviceList deviceList = (RoomDeviceList) resultData.getSerializable(BundleExtraKeys.DEVICE_LIST);
                 for (Device device : deviceList.getAllDevices()) {
-                    if (! device.isOnFloorplan(deviceName)) continue;
+                    if (! device.isOnFloorplan(floorplanName)) continue;
                     DeviceAdapter<Device> adapter = DeviceType.getAdapterFor(device);
                     if (! adapter.supportsFloorplan(device)) continue;
 
                     View view = adapter.getFloorplanView(getActivity(), device);
                     view.setVisibility(View.INVISIBLE);
                     view.setTag(device);
+                    view.setOnTouchListener(deviceMoveTouchListener);
                     layout.addView(view);
 
                     deviceViewMap.put(device, view);
@@ -116,28 +128,22 @@ public class FloorplanFragment extends BaseFragment {
         getActivity().startService(intent);
     }
 
-    private void updateViewFor(Device device, float newScale, float newX, float newY) {
+    private void updateViewFor(Device device, float newScale) {
         if (! deviceViewMap.containsKey(device)) return;
 
         View view = deviceViewMap.get(device);
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) view.getLayoutParams();
 
-        // negate the coordinate (all android coordinates are negative) and renive the image offset from the floorplan FHEM UI
-        Coordinate coordinate = device.getCoordinateFor(deviceName).add(new Coordinate(-190, -15)).negate();
-
-        float baseScale = floorplanView.getBaseScale();
-        float requiredX = (int) (coordinate.x * baseScale * newScale);
-        float requiredY = (int) (coordinate.y * baseScale * newScale);
-
-        int newLeftMargin = (int) ((requiredX - newX) * -1);
-        int newTopMargin = (int) ((requiredY - newY) * -1);
-
-        params.setMargins(newLeftMargin, newTopMargin, 0, 0);
-        view.setScaleX(newScale * DEFAULT_ITEM_ZOOM_FACTOR);
-        view.setScaleY(newScale * DEFAULT_ITEM_ZOOM_FACTOR);
+        Coordinate deviceCoordinate = device.getCoordinateFor(floorplanName);
+        Coordinate margin = floorplanToMargin(deviceCoordinate);
 
         view.setPivotX(0);
         view.setPivotY(0);
+
+        view.setScaleX(newScale * DEFAULT_ITEM_ZOOM_FACTOR);
+        view.setScaleY(newScale * DEFAULT_ITEM_ZOOM_FACTOR);
+        params.setMargins((int) margin.x, (int) margin.y, 0, 0);
+        view.setBackgroundColor(getResources().getColor(R.color.lightBlue));
 
         view.setVisibility(View.VISIBLE);
 
@@ -162,7 +168,7 @@ public class FloorplanFragment extends BaseFragment {
 
     private void setBackground() {
         Intent intent = new Intent(Actions.FLOORPLAN_IMAGE);
-        intent.putExtra(BundleExtraKeys.FLOORPLAN_IMAGE_RELATIVE_PATH, "/fp_" + deviceName + ".png");
+        intent.putExtra(BundleExtraKeys.FLOORPLAN_IMAGE_RELATIVE_PATH, "/fp_" + floorplanName + ".png");
         intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
             @Override
             protected void onReceiveResult(int resultCode, Bundle resultData) {
@@ -177,5 +183,76 @@ public class FloorplanFragment extends BaseFragment {
             }
         });
         getActivity().startService(intent);
+    }
+
+    private class DeviceMoveTouchListener implements View.OnTouchListener {
+        private float lastX;
+        private float lastY;
+        private boolean moved = false;
+
+        @Override
+        public boolean onTouch(View view, MotionEvent motionEvent) {
+            Object tag = view.getTag();
+            if (! (tag instanceof Device)) return false;
+
+            Device<?> device = (Device<?>) tag;
+            float x = motionEvent.getRawX();
+            float y = motionEvent.getRawY();
+
+            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) view.getLayoutParams();
+            int leftMargin = layoutParams.leftMargin;
+            int topMargin = layoutParams.topMargin;
+
+            int newLeftMargin = (int) (leftMargin + (x - lastX));
+            int newTopMargin = (int) (topMargin + (y - lastY));
+
+            if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                Log.d(FloorplanFragment.class.getName(), "down " + new Coordinate(x, y));
+            } else if (motionEvent.getAction() == MotionEvent.ACTION_MOVE && moved) {
+                layoutParams.setMargins(newLeftMargin, newTopMargin, 0, 0);
+                view.requestLayout();
+            } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                Intent intent = new Intent(Actions.DEVICE_FLOORPLAN_MOVE);
+                intent.putExtra(BundleExtraKeys.FLOORPLAN_NAME, floorplanName);
+                intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
+
+                Coordinate coordinate = marginToFloorplan(new Coordinate(newLeftMargin, newTopMargin));
+                intent.putExtra(BundleExtraKeys.COORDINATE, coordinate);
+
+                intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
+                    @Override
+                    protected void onReceiveResult(int resultCode, Bundle resultData) {
+                        if (resultCode != ResultCodes.SUCCESS) return;
+                        update(false);
+                    }
+                });
+                getActivity().startService(intent);
+
+                Log.d(FloorplanFragment.class.getName(), "up " + new Coordinate(newLeftMargin, newTopMargin));
+
+                moved = false;
+            }
+            lastX = x;
+            lastY = y;
+
+            moved = true;
+            return true;
+        }
+    }
+
+    private Coordinate floorplanToMargin(Coordinate deviceCoordinate) {
+        return floorplanToMargin(deviceCoordinate, currentImageViewScale, currentImageViewCoordinate);
+    }
+
+    private static Coordinate floorplanToMargin(Coordinate deviceCoordinate, float currentImageViewScale, Coordinate currentImageViewCoordinate) {
+        return deviceCoordinate.subtract(FLOORPLAN_OFFSET).scale(currentImageViewScale).add(currentImageViewCoordinate);
+    }
+
+    private Coordinate marginToFloorplan(Coordinate margin) {
+        return marginToFloorplan(margin, currentImageViewScale, currentImageViewCoordinate);
+    }
+
+    private static Coordinate marginToFloorplan(Coordinate margin, float currentImageViewScale, Coordinate currentImageViewCoordinate) {
+        return margin.subtract(currentImageViewCoordinate).scale(1 / currentImageViewScale).add(FLOORPLAN_OFFSET);
     }
 }

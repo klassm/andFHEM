@@ -107,6 +107,7 @@
                 <action android:name="li.klass.fhem.constants.Actions.DEVICE_WAKE" />
                 <action android:name="li.klass.fhem.constants.Actions.DEVICE_REFRESH_STATE" />
                 <action android:name="li.klass.fhem.constants.Actions.DEVICE_REFRESH_VALUES" />
+                <action android:name="li.klass.fhem.constants.Actions.DEVICE_FLOORPLAN_MOVE" />
             </intent-filter>
         </service>
 

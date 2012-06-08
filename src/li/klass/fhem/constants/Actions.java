@@ -63,8 +63,10 @@ public class Actions {
     public static final String DEVICE_SET_ALIAS = prefix + "DEVICE_SET_ALIAS";
     public static final String DEVICE_WAKE = prefix + "DEVICE_WAKE";
     public static final String DEVICE_REFRESH_STATE = prefix + "DEVICE_REFRESH_STATE";
+    public static final String DEVICE_FLOORPLAN_MOVE = prefix + "DEVICE_FLOORPLAN_MOVE";
 
     public static final String FLOORPLAN_IMAGE = prefix + "FLOORPLAN_IMAGE";
+
 
     public static final String DO_UPDATE = prefix + "DO_UPDATE";
 

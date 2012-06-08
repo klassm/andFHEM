@@ -31,6 +31,7 @@ import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.domain.*;
 import li.klass.fhem.domain.fht.FHTMode;
+import li.klass.fhem.domain.floorplan.Coordinate;
 import li.klass.fhem.service.device.*;
 import li.klass.fhem.service.graph.GraphEntry;
 import li.klass.fhem.service.graph.GraphService;
@@ -104,7 +105,17 @@ public class DeviceIntentService extends ConvenientIntentService {
             WOLService.INSTANCE.wake((WOLDevice) device);
         } else if (action.equals(DEVICE_REFRESH_STATE)) {
             WOLService.INSTANCE.requestRefreshState((WOLDevice) device);
+        } else if (action.equals(DEVICE_FLOORPLAN_MOVE)) {
+            moveFloorplanDevice(intent, device);
         }
+        return SUCCESS;
+    }
+
+    private STATE moveFloorplanDevice(Intent intent, Device device) {
+        String floorplanName = intent.getStringExtra(BundleExtraKeys.FLOORPLAN_NAME);
+        Coordinate coordinate = (Coordinate) intent.getSerializableExtra(BundleExtraKeys.COORDINATE);
+
+        FloorplanService.INSTANCE.setDeviceLocation(floorplanName, device, coordinate);
         return SUCCESS;
     }
 

@@ -298,4 +298,8 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
     public Coordinate getCoordinateFor(String floorplan) {
         return floorPlanPositionMap.get(floorplan.toUpperCase());
     }
+
+    public void setCoordinateFor(String floorplan, Coordinate coordinate) {
+        floorPlanPositionMap.put(floorplan.toUpperCase(), coordinate);
+    }
 }
