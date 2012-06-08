@@ -101,6 +101,20 @@ public class FloorplanFragment extends BaseFragment {
         return view;
     }
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setBackground();
+
+        if (floorplanView == null) return;
+        floorplanView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                floorplanView.manualTouch();
+            }
+        }, 1000);
+    }
+
     private void requestFloorplanDevices(boolean doUpdate) {
         Intent intent = new Intent(Actions.GET_ALL_ROOMS_DEVICE_LIST);
         intent.putExtra(BundleExtraKeys.DO_REFRESH, doUpdate);
@@ -155,12 +169,6 @@ public class FloorplanFragment extends BaseFragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setBackground();
-    }
-
-    @Override
     public void update(boolean doUpdate) {
         tickCounter = 0;
         RelativeLayout layout = (RelativeLayout) getView().findViewById(R.id.floorplanHolder);
@@ -176,7 +184,8 @@ public class FloorplanFragment extends BaseFragment {
         intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
             @Override
             protected void onReceiveResult(int resultCode, Bundle resultData) {
-                if (resultCode != ResultCodes.SUCCESS || ! resultData.containsKey(BundleExtraKeys.FLOORPLAN_IMAGE)) return;
+                if (resultCode != ResultCodes.SUCCESS || !resultData.containsKey(BundleExtraKeys.FLOORPLAN_IMAGE))
+                    return;
 
                 floorplanView.setImageBitmap((Bitmap) resultData.getParcelable(BundleExtraKeys.FLOORPLAN_IMAGE));
 
@@ -209,7 +218,7 @@ public class FloorplanFragment extends BaseFragment {
 
         @Override
         public boolean onLongClick(final View view) {
-            Context context = getActivity();
+            final Context context = getActivity();
 
             final Device device = (Device) view.getTag();
 
@@ -220,6 +229,9 @@ public class FloorplanFragment extends BaseFragment {
                 public void onClick(DialogInterface dialogInterface, int position) {
                     switch(position) {
                         case 0:
+                            DeviceAdapter<?> adapter = DeviceType.getAdapterFor(device);
+                            adapter.gotoDetailView(context, device);
+
                             Log.e(FloorplanFragment.class.getName(), "Details");
                             break;
                         case 1:
