@@ -87,6 +87,21 @@
             <meta-data android:name="android.appwidget.provider" android:resource="@xml/andfhem_appwidget_small" />
         </receiver>
 
+        <activity android:name=".appwidget.type.big.BigWidgetSelectionActivity">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
+            </intent-filter>
+        </activity>
+
+        <receiver android:name=".appwidget.type.big.BigAppWidgetProvider" android:label="@string/widget_big">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="li.klass.fhem.constants.Actions.WIDGET_UPDATE" />
+                <action android:name="li.klass.fhem.constants.Actions.WIDGET_ALL_UPDATE" />
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider" android:resource="@xml/andfhem_appwidget_big" />
+        </receiver>
+
         <service android:name=".service.intent.RoomListIntentService">
             <intent-filter>
                 <action android:name="li.klass.fhem.constants.Actions.ALL_ROOMS_DEVICE_LIST" />
