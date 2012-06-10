@@ -131,6 +131,7 @@
     <string name="prefDataSourceCategory">Datenquelle</string>
     <string name="prefDataSource">Datenquelle</string>
     <string name="prefOtherPreferencesCategory">Andere Einstellungen</string>
+    <string name="prefWidgetCategory">Widgets</string>
     <string name="prefTelnetUrlSummary">z.B. 192.168.0.1 </string>
     <string name="prefTelnetUrl">IP</string>
     <string name="prefTelnetPortSummary">z.B. 7072</string>
@@ -143,6 +144,7 @@
     <string name="prefDefaultTimespan">Graph Zeitspanne</string>
     <string name="prefAutoUpdate">Automatischer Update</string>
     <string name="prefAutoUpdateSummary">nur wenn Applikation läuft</string>
+    <string name="prefWidgetRemoteUpdate">Remote Aktualisierung</string>
 
     <string name="notNumericError">Nicht numerisch!</string>
     <string name="updateError">Error während Update Vorgang.</string>
@@ -239,4 +241,14 @@
     <string name="premium">AndFHEM Premium</string>
     <string name="premium_desc">AndFHEM Premium beinhaltet die Abschaltung der Werbung in der Applikation!</string>
     <string name="shop_buyPemium">AndFHEM Premium kaufen</string>
+
+    <string name="widget_small">andFHEM Klein</string>
+    <string name="widget_medium">andFHEM Mittel</string>
+    <string name="widget_big">andFHEM Groß</string>
+
+    <string name="widget_type_selection">Widget Typ</string>
+    <string name="widget_devicelist_empty">Entschuldigung! Kein Widget ist für deine Geräte verfügbar!</string>
+    <string name="widget_temperature">Temperatur</string>
+    <string name="widget_toggle">Umschalter</string>
+    <string name="widget_status">Status</string>
 </resources>

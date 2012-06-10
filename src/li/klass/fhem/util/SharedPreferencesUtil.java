@@ -21,39 +21,20 @@
  *   51 Franklin Street, Fifth Floor
  */
 
-package li.klass.fhem.domain;
+package li.klass.fhem.util;
 
-import li.klass.fhem.R;
-import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
-import li.klass.fhem.domain.genericview.FloorplanViewSettings;
-import li.klass.fhem.domain.genericview.ShowField;
-import org.w3c.dom.NamedNodeMap;
+import android.content.Context;
+import android.content.SharedPreferences;
+import li.klass.fhem.AndFHEMApplication;
 
-@SuppressWarnings("unused")
-@DetailOverviewViewSettings(showState = true)
-@FloorplanViewSettings(showState = true)
-public class IntertechnoDevice extends Device<IntertechnoDevice> implements Toggleable {
-
-    @ShowField(description = R.string.model)
-    private String model;
-
-    @Override
-    protected void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {
-        if (keyValue.equalsIgnoreCase("MODEL")) {
-            model = nodeContent;
-        }
+public class SharedPreferencesUtil {
+    public static SharedPreferences.Editor getSharedPreferencesEditor(String preferencesName) {
+        SharedPreferences sharedPreferences = getSharedPreferences(preferencesName);
+        return sharedPreferences.edit();
     }
 
-    public boolean isOn() {
-        return getState().equals("on");
-    }
-
-    @Override
-    public boolean supportsToggle() {
-        return true;
-    }
-
-    public String getModel() {
-        return model;
+    public static SharedPreferences getSharedPreferences(String preferencesName) {
+        Context context = AndFHEMApplication.getContext();
+        return context.getSharedPreferences(preferencesName, Context.MODE_PRIVATE);
     }
 }

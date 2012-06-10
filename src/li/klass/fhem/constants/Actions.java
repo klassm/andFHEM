@@ -64,6 +64,7 @@ public class Actions {
     public static final String DEVICE_WAKE = prefix + "DEVICE_WAKE";
     public static final String DEVICE_REFRESH_STATE = prefix + "DEVICE_REFRESH_STATE";
     public static final String DEVICE_FLOORPLAN_MOVE = prefix + "DEVICE_FLOORPLAN_MOVE";
+    public static final String DEVICE_WIDGET_TOGGLE = prefix + "DEVICE_WIDGET_TOGGLE";
 
     public static final String FLOORPLAN_IMAGE = prefix + "FLOORPLAN_IMAGE";
 
@@ -73,4 +74,7 @@ public class Actions {
 
     public static final String EXECUTE_COMMAND = prefix + "EXECUTE_COMMAND";
     public static final String RECENT_COMMAND_LIST = prefix + "RECENT_COMMANDS_LIST";
+
+    public static final String WIDGET_UPDATE = prefix + "WIDGET_UPDATE";
+    public static final String WIDGET_ALL_UPDATE = prefix + "WIDGET_ALL_UPDATE";
 }

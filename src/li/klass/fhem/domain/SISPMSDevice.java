@@ -30,7 +30,7 @@ import org.w3c.dom.NamedNodeMap;
 
 @DetailOverviewViewSettings(showState = true)
 @FloorplanViewSettings(showState = true)
-public class SISPMSDevice extends Device<SISPMSDevice> {
+public class SISPMSDevice extends Device<SISPMSDevice> implements Toggleable {
     @Override
     public void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {
         if (nodeContent.equals("STATE")) {
@@ -40,5 +40,10 @@ public class SISPMSDevice extends Device<SISPMSDevice> {
 
     public boolean isOn() {
         return getInternalState().equalsIgnoreCase("on");
+    }
+
+    @Override
+    public boolean supportsToggle() {
+        return true;
     }
 }

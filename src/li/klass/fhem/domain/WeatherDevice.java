@@ -25,6 +25,9 @@ package li.klass.fhem.domain;
 
 import android.util.Log;
 import li.klass.fhem.R;
+import li.klass.fhem.appwidget.annotation.SupportsWidget;
+import li.klass.fhem.appwidget.annotation.WidgetTemperatureField;
+import li.klass.fhem.appwidget.view.widget.TemperatureWidgetView;
 import li.klass.fhem.domain.genericview.FloorplanViewSettings;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ValueDescriptionUtil;
@@ -36,6 +39,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 @FloorplanViewSettings(showState = true)
+@SupportsWidget(TemperatureWidgetView.class)
 public class WeatherDevice extends Device<WeatherDevice> {
     public static class WeatherDeviceForecast implements Comparable<WeatherDeviceForecast>, Serializable {
         private static final SimpleDateFormat forecastDateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -82,9 +86,6 @@ public class WeatherDevice extends Device<WeatherDevice> {
         }
     }
 
-    public static final int COLUMN_SPEC_TEMPERATURE = R.string.temperature;
-    public static final int COLUMN_SPEC_HUMIDITY = R.string.humidity;
-
     public static final String IMAGE_URL_PREFIX = "http://www.google.de";
 
     private static final SimpleDateFormat parseDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -92,6 +93,8 @@ public class WeatherDevice extends Device<WeatherDevice> {
     private String condition;
     private String humidity;
     private String icon;
+
+    @WidgetTemperatureField
     private String temperature;
     private String wind;
     private Map<String, WeatherDeviceForecast> forecastMap = new HashMap<String, WeatherDeviceForecast>();

@@ -131,6 +131,7 @@
     <string name="prefDataSourceCategory">Data Source</string>
     <string name="prefDataSource">Data Source</string>
     <string name="prefOtherPreferencesCategory">Other Preferences</string>
+    <string name="prefWidgetCategory">Widgets</string>
     <string name="prefTelnetUrlSummary">i.e. 192.168.0.1 </string>
     <string name="prefTelnetUrl">IP</string>
     <string name="prefTelnetPortSummary">i.e. 7072</string>
@@ -143,6 +144,7 @@
     <string name="prefDefaultTimespan">Graph Timespan</string>
     <string name="prefAutoUpdate">Auto Update</string>
     <string name="prefAutoUpdateSummary">only when application is running</string>
+    <string name="prefWidgetRemoteUpdate">Remote Update</string>
 
     <string name="notNumericError">Not numeric!</string>
     <string name="updateError">Error while updating.</string>
@@ -241,5 +243,14 @@
 
     <string name="blank"></string>
 
+    <string name="widget_small">andFHEM Small</string>
+    <string name="widget_medium">andFHEM Middle</string>
+    <string name="widget_big">andFHEM Big</string>
+
+    <string name="widget_type_selection">Widget Type</string>
+    <string name="widget_devicelist_empty">Sorry! No widget is available for your devices!</string>
+    <string name="widget_temperature">Temperature</string>
+    <string name="widget_toggle">Toggle</string>
+    <string name="widget_status">State</string>
 
 </resources>

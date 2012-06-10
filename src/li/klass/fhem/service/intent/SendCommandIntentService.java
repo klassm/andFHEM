@@ -45,7 +45,7 @@ public class SendCommandIntentService extends ConvenientIntentService  {
     }
 
     @Override
-    protected STATE handleIntent(Intent intent, boolean doRefresh, ResultReceiver resultReceiver) {
+    protected STATE handleIntent(Intent intent, long updatePeriod, ResultReceiver resultReceiver) {
         Log.d(SendCommandIntentService.class.getName(), intent.getAction());
         String action = intent.getAction();
 

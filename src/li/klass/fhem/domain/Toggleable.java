@@ -23,37 +23,7 @@
 
 package li.klass.fhem.domain;
 
-import li.klass.fhem.R;
-import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
-import li.klass.fhem.domain.genericview.FloorplanViewSettings;
-import li.klass.fhem.domain.genericview.ShowField;
-import org.w3c.dom.NamedNodeMap;
-
-@SuppressWarnings("unused")
-@DetailOverviewViewSettings(showState = true)
-@FloorplanViewSettings(showState = true)
-public class IntertechnoDevice extends Device<IntertechnoDevice> implements Toggleable {
-
-    @ShowField(description = R.string.model)
-    private String model;
-
-    @Override
-    protected void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {
-        if (keyValue.equalsIgnoreCase("MODEL")) {
-            model = nodeContent;
-        }
-    }
-
-    public boolean isOn() {
-        return getState().equals("on");
-    }
-
-    @Override
-    public boolean supportsToggle() {
-        return true;
-    }
-
-    public String getModel() {
-        return model;
-    }
+public interface Toggleable {
+    boolean isOn();
+    boolean supportsToggle();
 }

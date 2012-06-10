@@ -151,6 +151,11 @@ public abstract class NestedListViewAdapter<P, C> extends BaseAdapter implements
         parentChildClickObservers.remove(observer);
     }
 
+    @Override
+    public boolean isEmpty() {
+        return totalItems == 0;
+    }
+
     protected abstract C getChildForParentAndChildPosition(P parent, int childPosition);
     protected abstract int getChildrenCountForParent(P parent);
 

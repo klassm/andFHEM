@@ -60,12 +60,13 @@ public class FavoritesService {
 
     /**
      * Reads all saved favorite devices. The result will be provided to the given listener.
-     * @param refresh should the underlying {@link RoomDeviceList} be refreshed by asking FHEM for new values?
+     * @param updatePeriod -1 if the underlying list should always be updated, otherwise do update if the last update is
+     *                     longer ago than the given period
      * @return favorite {@link RoomDeviceList}
      */
-    public RoomDeviceList getFavorites(boolean refresh) {
+    public RoomDeviceList getFavorites(long updatePeriod) {
 
-        RoomDeviceList allRoomsDeviceList = RoomListService.INSTANCE.getAllRoomsDeviceList(refresh);
+        RoomDeviceList allRoomsDeviceList = RoomListService.INSTANCE.getAllRoomsDeviceList(updatePeriod);
         RoomDeviceList favoritesList = new RoomDeviceList("favorites");
         Set<String> favoriteDeviceNames = getPreferences().getAll().keySet();
         for (String favoriteDeviceName : favoriteDeviceNames) {

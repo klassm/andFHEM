@@ -21,39 +21,29 @@
  *   51 Franklin Street, Fifth Floor
  */
 
-package li.klass.fhem.domain;
+package li.klass.fhem.appwidget.adapter;
 
-import li.klass.fhem.R;
-import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
-import li.klass.fhem.domain.genericview.FloorplanViewSettings;
-import li.klass.fhem.domain.genericview.ShowField;
-import org.w3c.dom.NamedNodeMap;
+import android.content.Context;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+import li.klass.fhem.adapter.rooms.RoomDetailAdapter;
+import li.klass.fhem.domain.Device;
+import li.klass.fhem.domain.RoomDeviceList;
 
-@SuppressWarnings("unused")
-@DetailOverviewViewSettings(showState = true)
-@FloorplanViewSettings(showState = true)
-public class IntertechnoDevice extends Device<IntertechnoDevice> implements Toggleable {
+public class WidgetDeviceSelectionAdapter extends RoomDetailAdapter {
 
-    @ShowField(description = R.string.model)
-    private String model;
+    public WidgetDeviceSelectionAdapter(Context context, RoomDeviceList roomDeviceList) {
+        super(context, roomDeviceList);
 
-    @Override
-    protected void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {
-        if (keyValue.equalsIgnoreCase("MODEL")) {
-            model = nodeContent;
-        }
-    }
-
-    public boolean isOn() {
-        return getState().equals("on");
     }
 
     @Override
-    public boolean supportsToggle() {
-        return true;
-    }
+    protected View getChildView(Device<?> child, View view, ViewGroup viewGroup) {
+        view = layoutInflater.inflate(android.R.layout.simple_list_item_1, null);
+        TextView content = (TextView) view.findViewById(android.R.id.text1);
+        content.setText(child.getAliasOrName());
 
-    public String getModel() {
-        return model;
+        return view;
     }
 }

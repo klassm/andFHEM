@@ -25,6 +25,9 @@
 package li.klass.fhem.domain;
 
 import li.klass.fhem.R;
+import li.klass.fhem.appwidget.annotation.SupportsWidget;
+import li.klass.fhem.appwidget.annotation.WidgetTemperatureField;
+import li.klass.fhem.appwidget.view.widget.TemperatureWidgetView;
 import li.klass.fhem.domain.genericview.FloorplanViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
@@ -34,10 +37,12 @@ import org.w3c.dom.NamedNodeMap;
 import java.util.List;
 
 @FloorplanViewSettings(showState = true)
+@SupportsWidget(TemperatureWidgetView.class)
 public class OregonDevice extends Device<OregonDevice> {
 
     @ShowField(description = R.string.humidity, showInOverview = true)
     private String humidity;
+    @WidgetTemperatureField
     @ShowField(description = R.string.temperature, showInOverview = true)
     private String temperature;
     @ShowField(description = R.string.forecast, showInOverview = true)

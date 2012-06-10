@@ -35,6 +35,7 @@ public class RoomDeviceList implements Serializable {
     private Map<DeviceType, HashSet<Device>> deviceMap = new HashMap<DeviceType, HashSet<Device>>();
     
     public static final String ALL_DEVICES_ROOM = "ALL_DEVICES_LIST";
+    public static final String UNKNOWN_ROOM = "UNKNOWN_LIST";
 
     public RoomDeviceList(String roomName) {
         this.roomName = roomName;

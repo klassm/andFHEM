@@ -25,6 +25,9 @@
 package li.klass.fhem.domain;
 
 import li.klass.fhem.R;
+import li.klass.fhem.appwidget.annotation.SupportsWidget;
+import li.klass.fhem.appwidget.annotation.WidgetTemperatureField;
+import li.klass.fhem.appwidget.view.widget.TemperatureWidgetView;
 import li.klass.fhem.domain.fht.FHTDayControl;
 import li.klass.fhem.domain.fht.FHTMode;
 import li.klass.fhem.domain.genericview.FloorplanViewSettings;
@@ -42,6 +45,7 @@ import java.util.List;
 import java.util.Map;
 
 @FloorplanViewSettings
+@SupportsWidget(TemperatureWidgetView.class)
 public class FHTDevice extends Device<FHTDevice> {
     @ShowField(description = R.string.actuator, showInOverview = true)
     private String actuator;
@@ -57,6 +61,7 @@ public class FHTDevice extends Device<FHTDevice> {
     @ShowField(description = R.string.warnings)
     private String warnings;
     @ShowField(description = R.string.temperature, showInOverview = true, showInFloorplan = true)
+    @WidgetTemperatureField
     private String temperature;
 
     private Map<Integer, FHTDayControl> dayControlMap = new HashMap<Integer, FHTDayControl>();

@@ -21,39 +21,37 @@
  *   51 Franklin Street, Fifth Floor
  */
 
-package li.klass.fhem.domain;
+package li.klass.fhem.appwidget.view.widget;
 
+import android.content.Context;
+import android.widget.RemoteViews;
 import li.klass.fhem.R;
-import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
-import li.klass.fhem.domain.genericview.FloorplanViewSettings;
-import li.klass.fhem.domain.genericview.ShowField;
-import org.w3c.dom.NamedNodeMap;
+import li.klass.fhem.appwidget.WidgetConfiguration;
+import li.klass.fhem.domain.Device;
 
-@SuppressWarnings("unused")
-@DetailOverviewViewSettings(showState = true)
-@FloorplanViewSettings(showState = true)
-public class IntertechnoDevice extends Device<IntertechnoDevice> implements Toggleable {
-
-    @ShowField(description = R.string.model)
-    private String model;
-
+public class StatusWidgetView extends AppWidgetView {
     @Override
-    protected void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {
-        if (keyValue.equalsIgnoreCase("MODEL")) {
-            model = nodeContent;
-        }
-    }
-
-    public boolean isOn() {
-        return getState().equals("on");
+    public int getWidgetName() {
+        return R.string.widget_status;
     }
 
     @Override
-    public boolean supportsToggle() {
+    protected int getContentView() {
+        return R.layout.appwidget_state;
+    }
+
+    @Override
+    protected void fillWidgetView(Context context, RemoteViews view, Device<?> device, WidgetConfiguration widgetConfiguration) {
+        view.setTextViewText(R.id.status, device.getState());
+    }
+
+    @Override
+    public boolean supports(Device<?> device) {
         return true;
     }
 
-    public String getModel() {
-        return model;
+    @Override
+    public long updateInterval() {
+        return 3600000;
     }
 }

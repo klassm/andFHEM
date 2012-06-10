@@ -27,6 +27,7 @@ package li.klass.fhem.service.intent;
 import android.content.Intent;
 import android.os.ResultReceiver;
 import android.util.Log;
+import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.domain.*;
@@ -55,10 +56,10 @@ public class DeviceIntentService extends ConvenientIntentService {
     }
 
     @Override
-    protected STATE handleIntent(Intent intent, boolean doRefresh, ResultReceiver resultReceiver) {
+    protected STATE handleIntent(Intent intent, long updatePeriod, ResultReceiver resultReceiver) {
 
         String deviceName = intent.getStringExtra(BundleExtraKeys.DEVICE_NAME);
-        Device device = RoomListService.INSTANCE.getDeviceForName(deviceName, doRefresh);
+        Device device = RoomListService.INSTANCE.getDeviceForName(deviceName, updatePeriod);
         Log.d(DeviceIntentService.class.getName(), intent.getAction());
         String action = intent.getAction();
         if (action.equals(DEVICE_GRAPH)) {
@@ -107,6 +108,15 @@ public class DeviceIntentService extends ConvenientIntentService {
             WOLService.INSTANCE.requestRefreshState((WOLDevice) device);
         } else if (action.equals(DEVICE_FLOORPLAN_MOVE)) {
             moveFloorplanDevice(intent, device);
+        } else if (action.equals(DEVICE_WIDGET_TOGGLE)) {
+            STATE result = toggleIntent(device);
+
+            int widgetId = intent.getIntExtra(BundleExtraKeys.APP_WIDGET_ID, -1);
+            Intent widgetUpdateIntent = new Intent(Actions.WIDGET_UPDATE);
+            widgetUpdateIntent.putExtra(BundleExtraKeys.APP_WIDGET_ID, widgetId);
+            sendBroadcast(widgetUpdateIntent);
+
+            return result;
         }
         return SUCCESS;
     }

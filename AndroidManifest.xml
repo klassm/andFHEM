@@ -57,17 +57,19 @@
         <activity android:name="com.google.ads.AdActivity"
                   android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"/>
 
-        <activity android:name=".appwidget.toggle.ToggleConfigurationActivity">
+        <activity android:name=".appwidget.AppWidgetSelectionActivity">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
             </intent-filter>
         </activity>
 
-        <receiver android:name=".appwidget.toggle.ToggleProvider" android:label="@string/widgetToggle">
+        <receiver android:name=".appwidget.AndFHEMAppWidgetProvider" android:label="@string/widget_medium">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="li.klass.fhem.constants.Actions.WIDGET_UPDATE" />
+                <action android:name="li.klass.fhem.constants.Actions.WIDGET_ALL_UPDATE" />
             </intent-filter>
-            <meta-data android:name="android.appwidget.provider" android:resource="@xml/appwidgetprovider_switch" />
+            <meta-data android:name="android.appwidget.provider" android:resource="@xml/andfhem_appwidget_medium" />
         </receiver>
 
         <service android:name=".service.intent.RoomListIntentService">
@@ -108,6 +110,7 @@
                 <action android:name="li.klass.fhem.constants.Actions.DEVICE_REFRESH_STATE" />
                 <action android:name="li.klass.fhem.constants.Actions.DEVICE_REFRESH_VALUES" />
                 <action android:name="li.klass.fhem.constants.Actions.DEVICE_FLOORPLAN_MOVE" />
+                <action android:name="li.klass.fhem.constants.Actions.DEVICE_WIDGET_TOGGLE" />
             </intent-filter>
         </service>
 

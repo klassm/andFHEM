@@ -21,39 +21,20 @@
  *   51 Franklin Street, Fifth Floor
  */
 
-package li.klass.fhem.domain;
+package li.klass.fhem.appwidget;
 
-import li.klass.fhem.R;
-import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
-import li.klass.fhem.domain.genericview.FloorplanViewSettings;
-import li.klass.fhem.domain.genericview.ShowField;
-import org.w3c.dom.NamedNodeMap;
+import li.klass.fhem.appwidget.view.WidgetType;
 
-@SuppressWarnings("unused")
-@DetailOverviewViewSettings(showState = true)
-@FloorplanViewSettings(showState = true)
-public class IntertechnoDevice extends Device<IntertechnoDevice> implements Toggleable {
+import java.io.Serializable;
 
-    @ShowField(description = R.string.model)
-    private String model;
+public class WidgetConfiguration implements Serializable {
+    public final int widgetId;
+    public final String deviceName;
+    public final WidgetType widgetType;
 
-    @Override
-    protected void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {
-        if (keyValue.equalsIgnoreCase("MODEL")) {
-            model = nodeContent;
-        }
-    }
-
-    public boolean isOn() {
-        return getState().equals("on");
-    }
-
-    @Override
-    public boolean supportsToggle() {
-        return true;
-    }
-
-    public String getModel() {
-        return model;
+    public WidgetConfiguration(int widgetId, String deviceName, WidgetType widgetType) {
+        this.widgetId = widgetId;
+        this.deviceName = deviceName;
+        this.widgetType = widgetType;
     }
 }

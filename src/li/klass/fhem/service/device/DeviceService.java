@@ -32,6 +32,8 @@ import li.klass.fhem.domain.RoomDeviceList;
 import li.klass.fhem.service.CommandExecutionService;
 import li.klass.fhem.service.room.RoomListService;
 
+import static li.klass.fhem.service.room.RoomListService.NEVER_UPDATE_PERIOD;
+
 /**
  * Class accumulating all device actions like renaming, moving or deleting.
  */
@@ -58,9 +60,9 @@ public class DeviceService {
      */
     public void deleteDevice(final Device device) {
         CommandExecutionService.INSTANCE.executeSafely("delete " + device.getName());
-        RoomListService.INSTANCE.getAllRoomsDeviceList(false).removeDevice(device);
+        RoomListService.INSTANCE.getAllRoomsDeviceList(NEVER_UPDATE_PERIOD).removeDevice(device);
 
-        RoomDeviceList deviceListForRoom = RoomListService.INSTANCE.getDeviceListForRoom(device.getRoom(), false);
+        RoomDeviceList deviceListForRoom = RoomListService.INSTANCE.getDeviceListForRoom(device.getRoom(), NEVER_UPDATE_PERIOD);
         if (deviceListForRoom != null) {
             deviceListForRoom.removeDevice(device);
         }
@@ -86,7 +88,7 @@ public class DeviceService {
         String oldRoom = device.getRoom();
         device.setRoom(newRoom);
 
-        RoomDeviceList oldRoomDeviceList = RoomListService.INSTANCE.getDeviceListForRoom(oldRoom, false);
+        RoomDeviceList oldRoomDeviceList = RoomListService.INSTANCE.getDeviceListForRoom(oldRoom, NEVER_UPDATE_PERIOD);
         oldRoomDeviceList.removeDevice(device);
         if (oldRoomDeviceList.getAllDevices().size() == 0) {
             RoomListService.INSTANCE.removeDeviceListForRoom(oldRoom);
@@ -94,7 +96,7 @@ public class DeviceService {
 
         AndFHEMApplication.getContext().sendBroadcast(new Intent(Actions.DO_UPDATE));
 
-        RoomDeviceList newRoomDeviceList = RoomListService.INSTANCE.getOrCreateRoomDeviceList(newRoom, false);
+        RoomDeviceList newRoomDeviceList = RoomListService.INSTANCE.getOrCreateRoomDeviceList(newRoom, NEVER_UPDATE_PERIOD);
         newRoomDeviceList.addDevice(device);
     }
 }

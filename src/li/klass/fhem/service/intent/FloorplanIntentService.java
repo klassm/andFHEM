@@ -37,7 +37,7 @@ public class FloorplanIntentService extends ConvenientIntentService {
     }
 
     @Override
-    protected STATE handleIntent(Intent intent, boolean doRefresh, ResultReceiver resultReceiver) {
+    protected STATE handleIntent(Intent intent, long updatePeriod, ResultReceiver resultReceiver) {
         String action = intent.getAction();
 
         if (action.equals(Actions.FLOORPLAN_IMAGE)) {

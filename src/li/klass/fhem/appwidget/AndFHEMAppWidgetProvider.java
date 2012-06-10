@@ -2,13 +2,13 @@
  * AndFHEM - Open Source Android application to control a FHEM home automation
  * server.
  *
- * Copyright (c) 2011, Matthias Klass or third-party contributors as
+ * Copyright (c) 2012, Matthias Klass or third-party contributors as
  * indicated by the @author tags or express copyright attribution
  * statements applied by the authors.  All third-party contributions are
  * distributed under license by Red Hat Inc.
  *
  * This copyrighted material is made available to anyone wishing to use, modify,
- * copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+ * copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLICLICENSE, as published by the Free Software Foundation.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
@@ -19,22 +19,24 @@
  * along with this distribution; if not, write to:
  *   Free Software Foundation, Inc.
  *   51 Franklin Street, Fifth Floor
- *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.appwidget.toggle;
+package li.klass.fhem.appwidget;
 
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
+import li.klass.fhem.constants.Actions;
+import li.klass.fhem.constants.BundleExtraKeys;
 
-public class ToggleProvider extends AppWidgetProvider {
-    
+public class AndFHEMAppWidgetProvider extends AppWidgetProvider {
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         super.onUpdate(context, appWidgetManager, appWidgetIds);
         for (int appWidgetId : appWidgetIds) {
-            ToggleConfigurationActivity.updateWidget(appWidgetManager, context, appWidgetId);
+            AppWidgetDataHolder.INSTANCE.updateWidget(appWidgetManager, context, appWidgetId);
         }
     }
 
@@ -42,8 +44,23 @@ public class ToggleProvider extends AppWidgetProvider {
     public void onDeleted(Context context, int[] appWidgetIds) {
         super.onDeleted(context, appWidgetIds);
         for (int appWidgetId : appWidgetIds) {
-            ToggleConfigurationActivity.deleteWidget(context, appWidgetId);
+            AppWidgetDataHolder.INSTANCE.deleteWidget(context, appWidgetId);
         }
     }
 
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        super.onReceive(context, intent);
+        if (intent.getAction().equals(Actions.WIDGET_UPDATE)) {
+            int appWidgetId = intent.getIntExtra(BundleExtraKeys.APP_WIDGET_ID, -1);
+            Log.e(AndFHEMAppWidgetProvider.class.getName(), "update widget " + appWidgetId);
+
+            AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+            if (appWidgetId != -1) {
+                onUpdate(context, appWidgetManager, new int[] {appWidgetId});
+            }
+        } else if (intent.getAction().equals(Actions.WIDGET_ALL_UPDATE)) {
+            AppWidgetDataHolder.INSTANCE.updateAllWidgets(context);
+        }
+    }
 }

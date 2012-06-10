@@ -41,6 +41,14 @@
                 android:entryValues="@array/dataOriginValues" />
     </PreferenceCategory>
 
+    <PreferenceCategory android:title="@string/prefWidgetCategory" android:key="DATAORIGINCATEGORY">
+        <CheckBoxPreference
+                android:key="prefWidgetRemoteUpdate"
+                android:title="@string/prefWidgetRemoteUpdate"
+                android:defaultValue="true"
+                />
+    </PreferenceCategory>
+
     <PreferenceCategory android:title="@string/prefOtherPreferencesCategory">
         <CheckBoxPreference
                 android:key="prefShowHiddenDevices"

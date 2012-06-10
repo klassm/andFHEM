@@ -33,20 +33,35 @@ public class DialogUtil {
     public interface InputDialogListener {
         void onClick(String text);
     }
+    public interface AlertOnClickListener {
+        void onClick();
+    }
+
+    public static void showAlertDialog(Context context, int title, int text, final AlertOnClickListener onClickListener) {
+        String titleText = title != -1 ? context.getString(title) : null;
+        String contentText = context.getString(text);
+
+        showAlertDialog(context, titleText, contentText, onClickListener);
+    }
 
     public static void showAlertDialog(Context context, int title, String text) {
         showAlertDialog(context, context.getString(title), text);
     }
 
     public static void showAlertDialog(Context context, String title, String text) {
+        showAlertDialog(context, title, text, null);
+    }
+
+    public static void showAlertDialog(Context context, String title, String text, final AlertOnClickListener onClickListener) {
         final AlertDialog alert = new AlertDialog.Builder(context).create();
-        alert.setTitle(title);
+        if (title != null) alert.setTitle(title);
         alert.setCancelable(false);
         alert.setMessage(text);
         alert.setButton(context.getString(R.string.okButton), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 alert.dismiss();
+                if (onClickListener != null) onClickListener.onClick();
             }
         });
         alert.show();

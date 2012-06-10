@@ -25,6 +25,9 @@
 package li.klass.fhem.domain;
 
 import li.klass.fhem.R;
+import li.klass.fhem.appwidget.annotation.SupportsWidget;
+import li.klass.fhem.appwidget.annotation.WidgetTemperatureField;
+import li.klass.fhem.appwidget.view.widget.TemperatureWidgetView;
 import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
 import li.klass.fhem.domain.genericview.FloorplanViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
@@ -35,7 +38,8 @@ import org.w3c.dom.NamedNodeMap;
 @SuppressWarnings("unused")
 @DetailOverviewViewSettings(showState = true)
 @FloorplanViewSettings(showState = true)
-public class CULHMDevice extends Device<CULHMDevice> {
+@SupportsWidget(TemperatureWidgetView.class)
+public class CULHMDevice extends Device<CULHMDevice> implements Toggleable {
 
     public enum SubType {
         DIMMER, SWITCH, HEATING, SMOKE_DETECTOR, THREE_STATE
@@ -48,6 +52,7 @@ public class CULHMDevice extends Device<CULHMDevice> {
     @ShowField(description = R.string.desiredTemperature)
     private String desiredTemp;
     @ShowField(description = R.string.temperature)
+    @WidgetTemperatureField
     private String measuredTemp;
     @ShowField(description = R.string.actuator, showInOverview = true)
     private String actuator;
@@ -95,6 +100,11 @@ public class CULHMDevice extends Device<CULHMDevice> {
     public boolean isOn() {
         String internalState = getInternalState();
         return internalState.equalsIgnoreCase("on") || internalState.equalsIgnoreCase("on-for-timer");
+    }
+
+    @Override
+    public boolean supportsToggle() {
+        return subType == SubType.SWITCH;
     }
 
     public int getDimProgress() {

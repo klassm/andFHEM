@@ -232,16 +232,16 @@ public class FloorplanFragment extends BaseFragment {
                             DeviceAdapter<?> adapter = DeviceType.getAdapterFor(device);
                             adapter.gotoDetailView(context, device);
 
-                            Log.e(FloorplanFragment.class.getName(), "Details");
+                            Log.d(FloorplanFragment.class.getName(), "Details");
                             break;
                         case 1:
                             view.setBackgroundColor(getResources().getColor(R.color.focusedColor));
                             view.setOnTouchListener(deviceMoveTouchListener);
 
-                            Log.e(FloorplanFragment.class.getName(), "Move " + device.getName());
+                            Log.d(FloorplanFragment.class.getName(), "Move " + device.getName());
                             break;
                         default:
-                            Log.e(FloorplanFragment.class.getName(), "unknown " + position);
+                            Log.d(FloorplanFragment.class.getName(), "unknown " + position);
                     }
                     dialogInterface.dismiss();
                 }

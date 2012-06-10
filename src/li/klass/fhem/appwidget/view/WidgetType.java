@@ -21,39 +21,35 @@
  *   51 Franklin Street, Fifth Floor
  */
 
-package li.klass.fhem.domain;
+package li.klass.fhem.appwidget.view;
 
-import li.klass.fhem.R;
-import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
-import li.klass.fhem.domain.genericview.FloorplanViewSettings;
-import li.klass.fhem.domain.genericview.ShowField;
-import org.w3c.dom.NamedNodeMap;
+import li.klass.fhem.appwidget.view.widget.AppWidgetView;
+import li.klass.fhem.appwidget.view.widget.StatusWidgetView;
+import li.klass.fhem.appwidget.view.widget.TemperatureWidgetView;
+import li.klass.fhem.appwidget.view.widget.ToggleWidgetView;
+import li.klass.fhem.domain.Device;
 
-@SuppressWarnings("unused")
-@DetailOverviewViewSettings(showState = true)
-@FloorplanViewSettings(showState = true)
-public class IntertechnoDevice extends Device<IntertechnoDevice> implements Toggleable {
+import java.util.ArrayList;
+import java.util.List;
 
-    @ShowField(description = R.string.model)
-    private String model;
+public enum WidgetType {
+    TEMPERATURE(new TemperatureWidgetView()),
+    TOGGLE(new ToggleWidgetView()),
+    STATUS(new StatusWidgetView());
 
-    @Override
-    protected void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {
-        if (keyValue.equalsIgnoreCase("MODEL")) {
-            model = nodeContent;
+    public final AppWidgetView widgetView;
+
+    WidgetType(AppWidgetView widgetView) {
+        this.widgetView = widgetView;
+    }
+
+    public static List<WidgetType> getSupportedWidgetTypesFor(Device<?> device) {
+        List<WidgetType> widgetTypes = new ArrayList<WidgetType>();
+        for (WidgetType widgetType : WidgetType.values()) {
+            if (widgetType.widgetView.supports(device)) {
+                widgetTypes.add(widgetType);
+            }
         }
-    }
-
-    public boolean isOn() {
-        return getState().equals("on");
-    }
-
-    @Override
-    public boolean supportsToggle() {
-        return true;
-    }
-
-    public String getModel() {
-        return model;
+        return widgetTypes;
     }
 }

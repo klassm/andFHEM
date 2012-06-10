@@ -41,11 +41,11 @@ public class FavoritesIntentService extends ConvenientIntentService {
     }
 
     @Override
-    protected STATE handleIntent(Intent intent, boolean doRefresh, ResultReceiver resultReceiver) {
+    protected STATE handleIntent(Intent intent, long updatePeriod, ResultReceiver resultReceiver) {
         FavoritesService service = FavoritesService.INSTANCE;
 
         if (intent.getAction().equals(FAVORITE_ROOM_LIST)) {
-            RoomDeviceList favorites = service.getFavorites(doRefresh);
+            RoomDeviceList favorites = service.getFavorites(updatePeriod);
             sendSingleExtraResult(resultReceiver, ResultCodes.SUCCESS, BundleExtraKeys.DEVICE_LIST, favorites);
         } else if (intent.getAction().equals(FAVORITE_ADD)) {
             Device device = (Device) intent.getSerializableExtra(DEVICE);

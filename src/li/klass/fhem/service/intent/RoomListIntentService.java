@@ -44,22 +44,22 @@ public class RoomListIntentService extends ConvenientIntentService {
     }
 
     @Override
-    protected STATE handleIntent(Intent intent, boolean doRefresh, ResultReceiver resultReceiver) {
+    protected STATE handleIntent(Intent intent, long updatePeriod, ResultReceiver resultReceiver) {
 
         RoomListService roomListService = RoomListService.INSTANCE;
         if (intent.getAction().equals(GET_ALL_ROOMS_DEVICE_LIST)) {
-            RoomDeviceList allRoomsDeviceList = roomListService.getAllRoomsDeviceList(doRefresh);
+            RoomDeviceList allRoomsDeviceList = roomListService.getAllRoomsDeviceList(updatePeriod);
             sendSingleExtraResult(resultReceiver, ResultCodes.SUCCESS, DEVICE_LIST, allRoomsDeviceList);
         } else if (intent.getAction().equals(GET_ROOM_NAME_LIST)) {
-            ArrayList<String> roomNameList = roomListService.getRoomNameList(doRefresh);
+            ArrayList<String> roomNameList = roomListService.getRoomNameList(updatePeriod);
             sendSingleExtraResult(resultReceiver, ResultCodes.SUCCESS, ROOM_LIST, roomNameList);
         } else if (intent.getAction().equals(GET_ROOM_DEVICE_LIST)) {
             String roomName = intent.getStringExtra(ROOM_NAME);
-            RoomDeviceList roomDeviceList = roomListService.getDeviceListForRoom(roomName, doRefresh);
+            RoomDeviceList roomDeviceList = roomListService.getDeviceListForRoom(roomName, updatePeriod);
             sendSingleExtraResult(resultReceiver, ResultCodes.SUCCESS, DEVICE_LIST, roomDeviceList);
         } else if (intent.getAction().equals(GET_DEVICE_FOR_NAME)) {
             String deviceName = intent.getStringExtra(DEVICE_NAME);
-            Device device = roomListService.getDeviceForName(deviceName, doRefresh);
+            Device device = roomListService.getDeviceForName(deviceName, updatePeriod);
             sendSingleExtraResult(resultReceiver, ResultCodes.SUCCESS, DEVICE, device);
         }
 

@@ -49,4 +49,9 @@ public class AndFHEMApplication extends Application {
     public static Context getContext() {
         return context;
     }
+
+    public static void setContext(Context targetContext) {
+        context = targetContext;
+    }
+
 }

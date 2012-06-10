@@ -40,6 +40,9 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Map;
 
+import static li.klass.fhem.util.SharedPreferencesUtil.getSharedPreferences;
+import static li.klass.fhem.util.SharedPreferencesUtil.getSharedPreferencesEditor;
+
 public class RoomListService extends AbstractService {
     public static final RoomListService INSTANCE = new RoomListService();
 
@@ -53,26 +56,34 @@ public class RoomListService extends AbstractService {
      */
     public static final String CACHE_FILENAME = "cache.obj";
 
+    public static final String PREFERENCES_NAME = RoomListService.class.getName();
+    public static final String LAST_UPDATE_PROPERTY = "LAST_UPDATE";
+
+    public static final long NEVER_UPDATE_PERIOD = 0;
+    public static final long ALWAYS_UPDATE_PERIOD = -1;
+
     private RoomListService() {
     }
 
     /**
      * Looks for a device with a given name.
      * @param deviceName name of the device
-     * @param refresh refresh device list
+     * @param updatePeriod -1 if the underlying list should always be updated, otherwise do update if the last update is
+     *                     longer ago than the given period
      * @return found device or null
      */
-    public Device getDeviceForName(String deviceName, boolean refresh) {
-        return getAllRoomsDeviceList(refresh).getDeviceFor(deviceName);
+    public Device getDeviceForName(String deviceName, long updatePeriod) {
+        return getAllRoomsDeviceList(updatePeriod).getDeviceFor(deviceName);
     }
 
     /**
      * Retrieves a list of all room names.
-     * @param refresh should the underlying {@link RoomDeviceList} be refreshed by asking FHEM for new values?
+     * @param updatePeriod -1 if the underlying list should always be updated, otherwise do update if the last update is
+     *                     longer ago than the given period
      * @return list of all room names
      */
-    public ArrayList<String> getRoomNameList(boolean refresh) {
-        Map<String, RoomDeviceList> map = getRoomDeviceListMap(refresh);
+    public ArrayList<String> getRoomNameList(long updatePeriod) {
+        Map<String, RoomDeviceList> map = getRoomDeviceListMap(updatePeriod);
         ArrayList<String> roomNames = new ArrayList<String>(map.keySet());
         for (RoomDeviceList roomDeviceList : map.values()) {
             if (roomDeviceList.isOnlyLogDeviceRoom()) {
@@ -87,11 +98,12 @@ public class RoomListService extends AbstractService {
     /**
      * Gets or creates a new device list for a given room.
      * @param roomName room name used for searching
-     * @param refresh should the underlying {@link RoomDeviceList} be refreshed by asking FHEM for new values?
+     * @param updatePeriod -1 if the underlying list should always be updated, otherwise do update if the last update is
+     *                     longer ago than the given period
      * @return {@link RoomDeviceList} for a room
      */
-    public RoomDeviceList getOrCreateRoomDeviceList(final String roomName, boolean refresh) {
-        Map<String, RoomDeviceList> map = getRoomDeviceListMap(refresh);
+    public RoomDeviceList getOrCreateRoomDeviceList(final String roomName, long updatePeriod) {
+        Map<String, RoomDeviceList> map = getRoomDeviceListMap(updatePeriod);
         RoomDeviceList roomDeviceList = map.get(roomName);
         if (roomDeviceList == null) {
             roomDeviceList = new RoomDeviceList(roomName);
@@ -103,21 +115,30 @@ public class RoomListService extends AbstractService {
 
     /**
      * Retrieves a {@link RoomDeviceList} containing all devices, not only the devices of a specific room.
-     * @param refresh should the underlying {@link RoomDeviceList} be refreshed by asking FHEM for new values?
+     * @param updatePeriod -1 if the underlying list should always be updated, otherwise do update if the last update is
+     *                     longer ago than the given period
      * @return {@link RoomDeviceList} containing all devices
      */
-    public RoomDeviceList getAllRoomsDeviceList(boolean refresh) {
-        return getRoomDeviceListMap(refresh).get(RoomDeviceList.ALL_DEVICES_ROOM);
+    public RoomDeviceList getAllRoomsDeviceList(long updatePeriod) {
+        Map<String, RoomDeviceList> roomDeviceListMap = getRoomDeviceListMap(updatePeriod);
+        RoomDeviceList allRoomsDeviceList = new RoomDeviceList(RoomDeviceList.ALL_DEVICES_ROOM);
+        for (String room : roomDeviceListMap.keySet()) {
+            for (Device device : roomDeviceListMap.get(room).getAllDevices()) {
+                allRoomsDeviceList.addDevice(device);
+            }
+        }
+        return allRoomsDeviceList;
     }
 
     /**
      * Retrieves the {@link RoomDeviceList} for a specific room name.
      * @param roomName room name used for searching.
-     * @param refresh should the underlying {@link RoomDeviceList} be refreshed by asking FHEM for new values?
+     * @param updatePeriod -1 if the underlying list should always be updated, otherwise do update if the last update is
+     *                     longer ago than the given period
      * @return found {@link RoomDeviceList} or null
      */
-    public RoomDeviceList getDeviceListForRoom(String roomName, boolean refresh) {
-        return getRoomDeviceListMap(refresh).get(roomName);
+    public RoomDeviceList getDeviceListForRoom(String roomName, long updatePeriod) {
+        return getRoomDeviceListMap(updatePeriod).get(roomName);
     }
 
     /**
@@ -125,16 +146,19 @@ public class RoomListService extends AbstractService {
      * @param roomName room name used for searching the room
      */
     public void removeDeviceListForRoom(String roomName) {
-        getRoomDeviceListMap(false).remove(roomName);
+        getRoomDeviceListMap(NEVER_UPDATE_PERIOD).remove(roomName);
     }
 
     /**
      * Switch method deciding whether a FHEM has to be contacted, the cached list can be used or the map already has
      * been loaded to the deviceListMap attribute.
-     * @param refresh refresh should the underlying {@link RoomDeviceList} be refreshed by asking FHEM for new values?
+     * @param updatePeriod -1 if the underlying list should always be updated, otherwise do update if the last update is
+     *                     longer ago than the given period
      * @return current room device list map
      */
-    private Map<String, RoomDeviceList> getRoomDeviceListMap(boolean refresh) {
+    private Map<String, RoomDeviceList> getRoomDeviceListMap(long updatePeriod) {
+        boolean refresh = shouldUpdate(updatePeriod);
+
         if (! refresh && deviceListMap == null) {
             deviceListMap = getCachedRoomDeviceListMap();
         }
@@ -162,7 +186,9 @@ public class RoomListService extends AbstractService {
      * @return remotely loaded room device list map
      */
     private Map<String, RoomDeviceList> getRemoteRoomDeviceListMap() {
-        return DeviceListParser.INSTANCE.listDevices();
+        Map<String, RoomDeviceList> result = DeviceListParser.INSTANCE.listDevices();
+        setLastUpdateToNow();
+        return result;
     }
 
     /**
@@ -200,5 +226,21 @@ public class RoomListService extends AbstractService {
             Log.d(RoomListService.class.getName(), "error occurred while de-serializing data", e);
             return null;
         }
+    }
+
+    private long getLastUpdate() {
+        return getSharedPreferences(PREFERENCES_NAME).getLong(LAST_UPDATE_PROPERTY, 0);
+    }
+
+    private void setLastUpdateToNow() {
+        getSharedPreferencesEditor(PREFERENCES_NAME).putLong(LAST_UPDATE_PROPERTY, System.currentTimeMillis());
+    }
+
+    private boolean shouldUpdate(long updatePeriod) {
+        if (updatePeriod == ALWAYS_UPDATE_PERIOD) return true;
+        if (updatePeriod == NEVER_UPDATE_PERIOD) return false;
+
+        long lastUpdate = getLastUpdate();
+        return lastUpdate + updatePeriod > System.currentTimeMillis();
     }
 }

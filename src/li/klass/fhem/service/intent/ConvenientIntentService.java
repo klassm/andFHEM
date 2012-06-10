@@ -32,6 +32,7 @@ import android.os.ResultReceiver;
 import android.util.Log;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
+import li.klass.fhem.service.room.RoomListService;
 
 import java.io.Serializable;
 
@@ -75,9 +76,13 @@ public abstract class ConvenientIntentService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         ResultReceiver resultReceiver = intent.getParcelableExtra(RESULT_RECEIVER);
         boolean doRefresh = intent.getBooleanExtra(BundleExtraKeys.DO_REFRESH, false);
+        long updatePeriod = intent.getLongExtra(BundleExtraKeys.UPDATE_PERIOD, RoomListService.NEVER_UPDATE_PERIOD);
+        if (doRefresh) {
+            updatePeriod = RoomListService.ALWAYS_UPDATE_PERIOD;
+        }
 
         try {
-            STATE state = handleIntent(intent, doRefresh, resultReceiver);
+            STATE state = handleIntent(intent, updatePeriod, resultReceiver);
             if (state == STATE.SUCCESS) {
                 sendNoResult(resultReceiver, ResultCodes.SUCCESS);
             } else if (state == STATE.ERROR) {
@@ -89,5 +94,5 @@ public abstract class ConvenientIntentService extends IntentService {
         }
     }
     
-    protected abstract STATE handleIntent(Intent intent, boolean doRefresh, ResultReceiver resultReceiver);
+    protected abstract STATE handleIntent(Intent intent, long updatePeriod, ResultReceiver resultReceiver);
 }

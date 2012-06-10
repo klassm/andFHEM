@@ -68,6 +68,8 @@ public class DeviceListParser {
     public Map<String, RoomDeviceList> listDevices() {
 
         Map<String, RoomDeviceList> roomDeviceListMap = new HashMap<String, RoomDeviceList>();
+        RoomDeviceList allDevicesRoom = new RoomDeviceList(RoomDeviceList.ALL_DEVICES_ROOM);
+
         try {
             String xmlList = DataConnectionSwitch.INSTANCE.getCurrentProvider().xmllist();
             if (xmlList == null) {
@@ -120,10 +122,11 @@ public class DeviceListParser {
 
             DeviceType[] deviceTypes = DeviceType.values();
             for (DeviceType deviceType : deviceTypes) {
-                devicesFromDocument(deviceType.getDeviceClass(), roomDeviceListMap, document, deviceType.getXmllistTag());
+                devicesFromDocument(deviceType.getDeviceClass(), roomDeviceListMap, document, deviceType.getXmllistTag(),
+                        allDevicesRoom);
             }
 
-            addFileLogsToDevices(roomDeviceListMap);
+            addFileLogsToDevices(allDevicesRoom);
 
             return roomDeviceListMap;
         } catch (AndFHEMException e) {
@@ -146,12 +149,12 @@ public class DeviceListParser {
      * @throws Exception if something went utterly wrong
      */
     private <T extends Device> void devicesFromDocument(Class<T> deviceClass, Map<String,
-            RoomDeviceList> roomDeviceListMap, Document document, String tagName) throws Exception {
+            RoomDeviceList> roomDeviceListMap, Document document, String tagName, RoomDeviceList allDevicesRoom) throws Exception {
 
         NodeList nodes = document.getElementsByTagName(tagName);
         for (int i = 0; i < nodes.getLength(); i++) {
             Node item = nodes.item(i);
-            deviceFromNode(deviceClass, roomDeviceListMap, item);
+            deviceFromNode(deviceClass, roomDeviceListMap, item, allDevicesRoom);
         }
     }
 
@@ -164,7 +167,8 @@ public class DeviceListParser {
      * @param <T> specific device type
      * @throws Exception if something went utterly wrong
      */
-    private <T extends Device> void deviceFromNode(Class<T> deviceClass, Map<String, RoomDeviceList> roomDeviceListMap, Node node)
+    private <T extends Device> void deviceFromNode(Class<T> deviceClass, Map<String, RoomDeviceList> roomDeviceListMap,
+                                                   Node node, RoomDeviceList allDevicesRoom)
             throws Exception {
 
         T device = deviceClass.newInstance();
@@ -176,10 +180,8 @@ public class DeviceListParser {
                 RoomDeviceList roomDeviceList = getOrCreateRoomDeviceList(room, roomDeviceListMap);
                 roomDeviceList.addDevice(device);
             }
-
-            RoomDeviceList allRoomDeviceList = getOrCreateRoomDeviceList(RoomDeviceList.ALL_DEVICES_ROOM, roomDeviceListMap);
-            allRoomDeviceList.addDevice(device);
         }
+        allDevicesRoom.addDevice(device);
     }
 
     /**
@@ -201,10 +203,8 @@ public class DeviceListParser {
     /**
      * Walks through all {@link li.klass.fhem.domain.FileLogDevice}s and tries to find the matching {@link Device} it
      * is associated to.
-     * @param roomDeviceListMap map of room -> device
      */
-    private void addFileLogsToDevices(Map<String, RoomDeviceList> roomDeviceListMap) {
-        RoomDeviceList allDevicesRoom = roomDeviceListMap.get(RoomDeviceList.ALL_DEVICES_ROOM);
+    private void addFileLogsToDevices(RoomDeviceList allDevicesRoom) {
         Collection<Device> devices = allDevicesRoom.getAllDevices();
 
         Collection<FileLogDevice> fileLogDevices = allDevicesRoom.getDevicesOfType(FILE_LOG);

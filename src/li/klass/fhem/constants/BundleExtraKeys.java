@@ -26,6 +26,7 @@ package li.klass.fhem.constants;
 
 public class BundleExtraKeys {
     public static final String DO_REFRESH = "DOREFRESH";
+    public static final String UPDATE_PERIOD = "UPDATE_PERIOD";
     public static final String ROOM_NAME = "ROOMNAME";
     public static final String ROOM_LIST = "ROOMLIST";
     public static final String DEVICE = "DEVICE";
@@ -65,4 +66,6 @@ public class BundleExtraKeys {
     public static final String FLOORPLAN_NAME = "FLOORPLAN_NAME";
 
     public static final String COORDINATE = "COORDINATE";
+
+    public static final String APP_WIDGET_ID = "APP_WIDGET_ID";
 }

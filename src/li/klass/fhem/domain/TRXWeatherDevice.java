@@ -24,13 +24,18 @@
 package li.klass.fhem.domain;
 
 import li.klass.fhem.R;
+import li.klass.fhem.appwidget.annotation.SupportsWidget;
+import li.klass.fhem.appwidget.annotation.WidgetTemperatureField;
+import li.klass.fhem.appwidget.view.widget.TemperatureWidgetView;
 import li.klass.fhem.domain.genericview.FloorplanViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.util.ValueDescriptionUtil;
 import org.w3c.dom.NamedNodeMap;
 
 @FloorplanViewSettings(showState = true)
+@SupportsWidget(TemperatureWidgetView.class)
 public class TRXWeatherDevice extends Device<TRXWeatherDevice> {
+    @WidgetTemperatureField
     @ShowField(description = R.string.temperature, showInOverview = true)
     private String temperature;
     @ShowField(description = R.string.battery, showInOverview = true)

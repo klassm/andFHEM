@@ -50,6 +50,7 @@ import li.klass.fhem.fragments.core.TopLevelFragment;
 import li.klass.fhem.service.room.RoomListService;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
 import static li.klass.fhem.constants.Actions.*;
@@ -64,7 +65,10 @@ public abstract class FragmentBaseActivity extends FragmentActivity implements A
 
     private Receiver broadcastReceiver;
     private Menu optionsMenu;
-    
+
+    // an intent waiting to be processed, but received in the wrong activity state (widget problem ..)
+    private Intent waitingIntent;
+
     private static final String INTENT_IS_TOPLEVEL = "isTopLevelIntent";
 
     private Handler autoUpdateHandler;
@@ -118,13 +122,7 @@ public abstract class FragmentBaseActivity extends FragmentActivity implements A
                         String action = intent.getAction();
                         if (action.equals(Actions.SHOW_FRAGMENT)) {
                             String fragmentName = intent.getStringExtra(BundleExtraKeys.FRAGMENT_NAME);
-                            Class<?> fragmentClass = Class.forName(fragmentName);
-                            intent.putExtra(INTENT_IS_TOPLEVEL, fragmentClass.isAssignableFrom(TopLevelFragment.class));
-
-                            Constructor<?> constructor = fragmentClass.getConstructor(Bundle.class);
-                            BaseFragment fragment = (BaseFragment) constructor.newInstance(intent.getExtras());
-                            
-                            switchToFragment(fragment, intent.getBooleanExtra(BundleExtraKeys.FRAGMENT_ADD_TO_STACK, true));
+                            prepareAndCallSwitchToFragment(fragmentName, intent);
                         } else if (action.equals(Actions.DISMISS_UPDATING_DIALOG)) {
                             setShowRefreshProgressIcon(false);
                         } else if (action.equals(Actions.DO_UPDATE) && intent.getBooleanExtra(BundleExtraKeys.DO_REFRESH, false)) {
@@ -148,6 +146,17 @@ public abstract class FragmentBaseActivity extends FragmentActivity implements A
         public IntentFilter getIntentFilter() {
             return intentFilter;
         }
+    }
+
+    private void prepareAndCallSwitchToFragment(String fragmentName, Intent intent) throws ClassNotFoundException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
+        Class<?> fragmentClass = Class.forName(fragmentName);
+        boolean addToStack = intent.getBooleanExtra(BundleExtraKeys.FRAGMENT_ADD_TO_STACK, true);
+        intent.putExtra(INTENT_IS_TOPLEVEL, fragmentClass.isAssignableFrom(TopLevelFragment.class));
+
+        Constructor<?> constructor = fragmentClass.getConstructor(Bundle.class);
+        BaseFragment fragment = (BaseFragment) constructor.newInstance(intent.getExtras());
+
+        switchToFragment(fragment, addToStack);
     }
 
     @Override
@@ -196,6 +205,34 @@ public abstract class FragmentBaseActivity extends FragmentActivity implements A
             intent.putExtra(BundleExtraKeys.FRAGMENT_NAME, FavoritesFragment.class.getName());
             sendBroadcast(intent);
         }
+    }
+
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        // we're in the wrong lifecycle (activity is not yet resumed)
+        // save the intent intermediately and process it in onPostResume();
+        waitingIntent = intent;
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        // process the intent received in onNewIntent()
+        if (waitingIntent == null) {
+            return;
+        }
+        String fragmentName = waitingIntent.getStringExtra(BundleExtraKeys.FRAGMENT_NAME);
+        if (fragmentName != null) {
+            try {
+                prepareAndCallSwitchToFragment(fragmentName, waitingIntent);
+            } catch (Exception e) {
+                Log.e(FragmentBaseActivity.class.getName(), "error while creating fragment", e);
+            }
+        }
+
+        waitingIntent = null;
     }
 
     @SuppressWarnings("unchecked")
@@ -364,7 +401,7 @@ public abstract class FragmentBaseActivity extends FragmentActivity implements A
     private void switchToFragment(BaseFragment fragment, boolean putToStack) {
         removeDialog();
 
-        if (fragment == null || (currentFragment != null && currentFragment.getClass().equals(fragment.getClass()))) return;
+        if (fragment == null || (currentFragment != null && currentFragment.equals(fragment))) return;
 
         if (fragment instanceof TopLevelFragment) {
             fragmentHistoryStack.clear();
@@ -386,10 +423,14 @@ public abstract class FragmentBaseActivity extends FragmentActivity implements A
             getSupportActionBar().setNavigationMode(navigationMode);
         }
 
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(android.R.id.content, fragment)
-                .commit();
+        try {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(android.R.id.content, fragment)
+                    .commit();
+        } catch (IllegalStateException e) {
+            Log.e(FragmentBaseActivity.class.getName(), "error while switching to fragment " + fragment.getClass().getName());
+        }
     }
 
     private void showDialog(Bundle bundle) {
