@@ -23,10 +23,13 @@
   ~   51 Franklin Street, Fifth Floor
   -->
 
-<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:minWidth="144dp"
-                    android:minHeight="70dp"
-                    android:updatePeriodMillis="0"
-                    android:configure="li.klass.fhem.appwidget.type.medium.MediumWidgetSelectionActivity"
-                    android:initialLayout="@layout/appwidget_loading">
-</appwidget-provider>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <padding android:left="2dp"
+             android:top="2dp"
+             android:right="2dp"
+             android:bottom="2dp" />
+    <corners android:radius="10dp"/>
+    <gradient android:startColor="@android:color/white"
+              android:endColor="@android:color/white" />
+</shape>

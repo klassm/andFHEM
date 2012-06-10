@@ -21,35 +21,25 @@
  *   51 Franklin Street, Fifth Floor
  */
 
-package li.klass.fhem.appwidget.view;
+package li.klass.fhem.appwidget.view.widget;
 
-import li.klass.fhem.appwidget.view.widget.*;
+import android.content.Context;
+import android.widget.RemoteViews;
+import li.klass.fhem.R;
+import li.klass.fhem.appwidget.WidgetConfiguration;
 import li.klass.fhem.domain.Device;
 
-import java.util.ArrayList;
-import java.util.List;
+public class SmallToggleWidget extends ToggleWidgetView {
+    @Override
+    protected void fillWidgetView(Context context, RemoteViews view, Device<?> device, WidgetConfiguration widgetConfiguration) {
+        super.fillWidgetView(context, view, device, widgetConfiguration);
 
-public enum WidgetType {
-    TEMPERATURE(new TemperatureWidgetView(), WidgetSize.MEDIUM),
-    TOGGLE(new ToggleWidgetView(), WidgetSize.MEDIUM),
-    TOGGLE_SMALL(new SmallToggleWidget(), WidgetSize.SMALL),
-    STATUS(new StatusWidgetView(), WidgetSize.MEDIUM);
-
-    public final AppWidgetView widgetView;
-    public final WidgetSize widgetSize;
-
-    WidgetType(AppWidgetView widgetView, WidgetSize widgetSize) {
-        this.widgetView = widgetView;
-        this.widgetSize = widgetSize;
+        view.setTextViewText(R.id.toggleOff, device.getAliasOrName());
+        view.setTextViewText(R.id.toggleOn, device.getAliasOrName());
     }
 
-    public static List<WidgetType> getSupportedWidgetTypesFor(WidgetSize size, Device<?> device) {
-        List<WidgetType> widgetTypes = new ArrayList<WidgetType>();
-        for (WidgetType widgetType : WidgetType.values()) {
-            if (widgetType.widgetSize == size && widgetType.widgetView.supports(device)) {
-                widgetTypes.add(widgetType);
-            }
-        }
-        return widgetTypes;
+    @Override
+    protected int getContentView() {
+        return R.layout.appwidget_toggle_small;
     }
 }

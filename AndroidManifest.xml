@@ -57,19 +57,34 @@
         <activity android:name="com.google.ads.AdActivity"
                   android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"/>
 
-        <activity android:name=".appwidget.AppWidgetSelectionActivity">
+        <activity android:name=".appwidget.type.medium.MediumWidgetSelectionActivity">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
             </intent-filter>
         </activity>
 
-        <receiver android:name=".appwidget.AndFHEMAppWidgetProvider" android:label="@string/widget_medium">
+        <receiver android:name=".appwidget.type.medium.MediumAppWidgetProvider" android:label="@string/widget_medium">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
                 <action android:name="li.klass.fhem.constants.Actions.WIDGET_UPDATE" />
                 <action android:name="li.klass.fhem.constants.Actions.WIDGET_ALL_UPDATE" />
             </intent-filter>
             <meta-data android:name="android.appwidget.provider" android:resource="@xml/andfhem_appwidget_medium" />
+        </receiver>
+
+        <activity android:name=".appwidget.type.small.SmallWidgetSelectionActivity">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
+            </intent-filter>
+        </activity>
+
+        <receiver android:name=".appwidget.type.small.SmallAppWidgetProvider" android:label="@string/widget_small">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="li.klass.fhem.constants.Actions.WIDGET_UPDATE" />
+                <action android:name="li.klass.fhem.constants.Actions.WIDGET_ALL_UPDATE" />
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider" android:resource="@xml/andfhem_appwidget_small" />
         </receiver>
 
         <service android:name=".service.intent.RoomListIntentService">

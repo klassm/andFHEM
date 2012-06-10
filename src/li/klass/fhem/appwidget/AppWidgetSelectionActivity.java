@@ -33,6 +33,7 @@ import android.os.ResultReceiver;
 import android.view.View;
 import li.klass.fhem.R;
 import li.klass.fhem.appwidget.adapter.WidgetDeviceSelectionAdapter;
+import li.klass.fhem.appwidget.view.WidgetSize;
 import li.klass.fhem.appwidget.view.WidgetType;
 import li.klass.fhem.appwidget.view.widget.AppWidgetView;
 import li.klass.fhem.constants.Actions;
@@ -46,8 +47,13 @@ import java.util.List;
 
 import static android.appwidget.AppWidgetManager.*;
 
-public class AppWidgetSelectionActivity extends ListActivity {
+public abstract class AppWidgetSelectionActivity extends ListActivity {
     private int widgetId;
+    private WidgetSize widgetSize;
+
+    public AppWidgetSelectionActivity(WidgetSize size) {
+        this.widgetSize = size;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,14 +113,14 @@ public class AppWidgetSelectionActivity extends ListActivity {
 
     private void removeDevicesWithoutWidgets(RoomDeviceList roomDeviceList) {
         for (Device device : roomDeviceList.getAllDevices()) {
-            if (WidgetType.getSupportedWidgetTypesFor(device).size() == 0) {
+            if (WidgetType.getSupportedWidgetTypesFor(widgetSize, device).size() == 0) {
                 roomDeviceList.removeDevice(device);
             }
         }
     }
 
     private void deviceClickedInMainList(final Device<?> device) {
-        final List<WidgetType> widgetTypes = WidgetType.getSupportedWidgetTypesFor(device);
+        final List<WidgetType> widgetTypes = WidgetType.getSupportedWidgetTypesFor(widgetSize, device);
         String[] widgetNames = new String[widgetTypes.size()];
 
         for (int i = 0; i < widgetTypes.size(); i++) {

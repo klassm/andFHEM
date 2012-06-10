@@ -31,7 +31,7 @@ import android.util.Log;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 
-public class AndFHEMAppWidgetProvider extends AppWidgetProvider {
+public abstract class AndFHEMAppWidgetProvider extends AppWidgetProvider {
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         super.onUpdate(context, appWidgetManager, appWidgetIds);
