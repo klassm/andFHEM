@@ -21,37 +21,12 @@
  *   51 Franklin Street, Fifth Floor
  */
 
-package li.klass.fhem.appwidget.view.widget;
+package li.klass.fhem.appwidget.annotation;
 
-import android.content.Context;
-import android.widget.RemoteViews;
-import li.klass.fhem.R;
-import li.klass.fhem.appwidget.WidgetConfiguration;
-import li.klass.fhem.domain.Device;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
-public class StatusWidgetView extends AppWidgetView {
-    @Override
-    public int getWidgetName() {
-        return R.string.widget_status;
-    }
-
-    @Override
-    protected int getContentView() {
-        return R.layout.appwidget_state;
-    }
-
-    @Override
-    protected void fillWidgetView(Context context, RemoteViews view, Device<?> device, WidgetConfiguration widgetConfiguration) {
-        view.setTextViewText(R.id.status, device.getState());
-    }
-
-    @Override
-    public boolean supports(Device<?> device) {
-        return true;
-    }
-
-    @Override
-    public long updateInterval() {
-        return 3600000;
-    }
+@Retention(RetentionPolicy.RUNTIME)
+public @interface WidgetMediumLine3 {
+    int description() default -1;
 }

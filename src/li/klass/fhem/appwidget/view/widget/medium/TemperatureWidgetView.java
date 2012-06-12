@@ -21,27 +21,19 @@
  *   51 Franklin Street, Fifth Floor
  */
 
-package li.klass.fhem.appwidget.view.widget;
+package li.klass.fhem.appwidget.view.widget.medium;
 
-import android.app.PendingIntent;
 import android.content.Context;
-import android.content.Intent;
-import android.os.SystemClock;
-import android.view.View;
 import android.widget.RemoteViews;
 import li.klass.fhem.R;
-import li.klass.fhem.activities.MainActivity;
 import li.klass.fhem.appwidget.WidgetConfiguration;
 import li.klass.fhem.appwidget.annotation.WidgetTemperatureAdditionalField;
 import li.klass.fhem.appwidget.annotation.WidgetTemperatureField;
-import li.klass.fhem.constants.BundleExtraKeys;
+import li.klass.fhem.appwidget.view.widget.AppWidgetView;
 import li.klass.fhem.domain.Device;
-import li.klass.fhem.fragments.core.DeviceDetailFragment;
+import li.klass.fhem.util.ReflectionUtil;
 
-import java.lang.reflect.Field;
-import java.util.List;
-
-import static li.klass.fhem.util.ReflectionUtil.*;
+import static li.klass.fhem.util.ReflectionUtil.getStringForAnnotation;
 
 public class TemperatureWidgetView extends AppWidgetView {
     @Override
@@ -56,38 +48,13 @@ public class TemperatureWidgetView extends AppWidgetView {
 
     @Override
     public void fillWidgetView(Context context, RemoteViews view, Device<?> device, WidgetConfiguration widgetConfiguration) {
-        Class<? extends Device> clazz = device.getClass();
-
         String temperature = getStringForAnnotation(device, WidgetTemperatureField.class);
-        List<Field> additionalFields = getFieldsWithAnnotation(clazz, WidgetTemperatureAdditionalField.class);
-
-        switch (additionalFields.size()) {
-            case 0:
-                view.setViewVisibility(R.id.additional, View.GONE);
-                break;
-            case 1:
-                Field field = additionalFields.get(0);
-                WidgetTemperatureAdditionalField annotation = field.getAnnotation(WidgetTemperatureAdditionalField.class);
-                String text = getFieldValue(field, device);
-                if (annotation.descriptionId() != -1) text += " " + context.getString(annotation.descriptionId());
-
-                view.setTextViewText(R.id.additional, text);
-                break;
-            default:
-                throw new IllegalArgumentException("invalid input for temperature widget for class " + clazz.getName());
-        }
+        String additionalFieldValue = ReflectionUtil.getValueAndDescriptionForAnnotation(device, WidgetTemperatureAdditionalField.class);
+        setTextViewOrHide(view, R.id.additional, additionalFieldValue);
 
         view.setTextViewText(R.id.temperature, temperature);
 
-        Intent openIntent = new Intent(context, MainActivity.class);
-        openIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        openIntent.putExtra(BundleExtraKeys.FRAGMENT_NAME, DeviceDetailFragment.class.getName());
-        openIntent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
-        openIntent.putExtra("unique", "foobar://" + SystemClock.elapsedRealtime());
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, widgetConfiguration.widgetId, openIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT);
-        view.setOnClickPendingIntent(R.id.main, pendingIntent);
-
+        openDeviceDetailPageWhenClicking(R.id.main, view, device, widgetConfiguration);
     }
 
     @Override

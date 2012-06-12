@@ -27,6 +27,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 @Retention(RetentionPolicy.RUNTIME)
-public @interface WidgetTemperatureAdditionalField {
+public @interface WidgetMediumLine2 {
     int description() default -1;
 }

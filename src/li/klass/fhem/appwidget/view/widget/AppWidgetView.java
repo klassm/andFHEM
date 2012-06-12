@@ -23,12 +23,20 @@
 
 package li.klass.fhem.appwidget.view.widget;
 
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
+import android.os.SystemClock;
+import android.view.View;
 import android.widget.RemoteViews;
+import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
+import li.klass.fhem.activities.MainActivity;
 import li.klass.fhem.appwidget.WidgetConfiguration;
 import li.klass.fhem.appwidget.annotation.SupportsWidget;
+import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.Device;
+import li.klass.fhem.fragments.core.DeviceDetailFragment;
 
 public abstract class AppWidgetView {
 
@@ -52,8 +60,32 @@ public abstract class AppWidgetView {
         return views;
     }
 
+    protected void setTextViewOrHide(RemoteViews view, int viewId, String value) {
+        if (value != null) {
+            view.setTextViewText(viewId, value);
+            view.setViewVisibility(viewId, View.VISIBLE);
+        } else {
+            view.setViewVisibility(viewId, View.GONE);
+        }
+    }
+
+    protected void openDeviceDetailPageWhenClicking(int viewId, RemoteViews view, Device device, WidgetConfiguration widgetConfiguration) {
+        Context context = AndFHEMApplication.getContext();
+
+        Intent openIntent = new Intent(context, MainActivity.class);
+        openIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        openIntent.putExtra(BundleExtraKeys.FRAGMENT_NAME, DeviceDetailFragment.class.getName());
+        openIntent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
+        openIntent.putExtra("unique", "foobar://" + SystemClock.elapsedRealtime());
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, widgetConfiguration.widgetId, openIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+
+        view.setOnClickPendingIntent(viewId, pendingIntent);
+    }
+
     public long updateInterval() { return 3600000 * 24; } // once a day
     public abstract int getWidgetName();
     protected abstract int getContentView();
     protected abstract void fillWidgetView(Context context, RemoteViews view, Device<?> device, WidgetConfiguration widgetConfiguration);
+
 }

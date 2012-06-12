@@ -25,9 +25,9 @@
 package li.klass.fhem.domain;
 
 import li.klass.fhem.R;
-import li.klass.fhem.appwidget.annotation.SupportsWidget;
-import li.klass.fhem.appwidget.annotation.WidgetTemperatureField;
-import li.klass.fhem.appwidget.view.widget.TemperatureWidgetView;
+import li.klass.fhem.appwidget.annotation.*;
+import li.klass.fhem.appwidget.view.widget.medium.MediumInformationWidgetView;
+import li.klass.fhem.appwidget.view.widget.medium.TemperatureWidgetView;
 import li.klass.fhem.domain.genericview.FloorplanViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
@@ -40,17 +40,21 @@ import java.util.List;
 
 @SuppressWarnings("unused")
 @FloorplanViewSettings(showState = true)
-@SupportsWidget(TemperatureWidgetView.class)
+@SupportsWidget({TemperatureWidgetView.class, MediumInformationWidgetView.class})
 public class KS300Device extends Device<KS300Device> implements Serializable {
 
     @ShowField(description = R.string.temperature, showInOverview = true)
     @WidgetTemperatureField
+    @WidgetMediumLine1
     private String temperature;
 
     @ShowField(description = R.string.wind, showInOverview = true)
+    @WidgetMediumLine2
     private String wind;
 
     @ShowField(description = R.string.humidity, showInOverview = true)
+    @WidgetMediumLine3
+    @WidgetTemperatureAdditionalField
     private String humidity;
 
     @ShowField(description = R.string.rain, showInOverview = true)

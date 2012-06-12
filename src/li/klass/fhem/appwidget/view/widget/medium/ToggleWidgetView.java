@@ -21,7 +21,7 @@
  *   51 Franklin Street, Fifth Floor
  */
 
-package li.klass.fhem.appwidget.view.widget;
+package li.klass.fhem.appwidget.view.widget.medium;
 
 import android.app.PendingIntent;
 import android.content.Context;
@@ -30,6 +30,7 @@ import android.view.View;
 import android.widget.RemoteViews;
 import li.klass.fhem.R;
 import li.klass.fhem.appwidget.WidgetConfiguration;
+import li.klass.fhem.appwidget.view.widget.AppWidgetView;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.Device;
@@ -66,6 +67,8 @@ public class ToggleWidgetView extends AppWidgetView {
                 PendingIntent.FLAG_UPDATE_CURRENT);
         view.setOnClickPendingIntent(R.id.toggleOff, pendingIntent);
         view.setOnClickPendingIntent(R.id.toggleOn, pendingIntent);
+
+        openDeviceDetailPageWhenClicking(R.id.main, view, device, widgetConfiguration);
     }
 
     @Override

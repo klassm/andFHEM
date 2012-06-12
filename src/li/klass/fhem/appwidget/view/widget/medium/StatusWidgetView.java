@@ -21,12 +21,39 @@
  *   51 Franklin Street, Fifth Floor
  */
 
-package li.klass.fhem.appwidget.annotation;
+package li.klass.fhem.appwidget.view.widget.medium;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
+import android.content.Context;
+import android.widget.RemoteViews;
+import li.klass.fhem.R;
+import li.klass.fhem.appwidget.WidgetConfiguration;
+import li.klass.fhem.appwidget.view.widget.AppWidgetView;
+import li.klass.fhem.domain.Device;
 
-@Retention(RetentionPolicy.RUNTIME)
-public @interface WidgetTemperatureAdditionalField {
-    int description() default -1;
+public class StatusWidgetView extends AppWidgetView {
+    @Override
+    public int getWidgetName() {
+        return R.string.widget_status;
+    }
+
+    @Override
+    protected int getContentView() {
+        return R.layout.appwidget_state;
+    }
+
+    @Override
+    protected void fillWidgetView(Context context, RemoteViews view, Device<?> device, WidgetConfiguration widgetConfiguration) {
+        setTextViewOrHide(view, R.id.status, device.getState());
+        openDeviceDetailPageWhenClicking(R.id.main, view, device, widgetConfiguration);
+    }
+
+    @Override
+    public boolean supports(Device<?> device) {
+        return true;
+    }
+
+    @Override
+    public long updateInterval() {
+        return 3600000;
+    }
 }

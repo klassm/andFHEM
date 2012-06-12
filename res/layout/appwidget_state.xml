@@ -24,40 +24,17 @@
   -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="144dp"
-                android:layout_height="72dp"
-                android:layout_margin="3dp"
-                android:orientation="vertical"
-        >
+                style="@style/appwidget_medium">
 
-    <LinearLayout android:layout_height="fill_parent"
-                  android:layout_width="fill_parent"
-                  android:layout_marginLeft="10dp"
-                  android:layout_marginTop="5dp"
-                  android:background="@drawable/appwidget_background"
-                  android:gravity="center"
-                  android:orientation="vertical"
-                  android:id="@+id/main">
+    <LinearLayout style="@style/appwidget_content">
 
-        <TextView android:layout_height="wrap_content"
-                  android:layout_width="wrap_content"
-                  android:singleLine="true"
-                  android:textStyle="bold"
-                  android:id="@+id/deviceName"
-                  android:textColor="@android:color/black"
-                  android:text="deviceName"/>
+        <TextView style="@style/appwidget_caption"/>
 
-        <TextView android:layout_height="wrap_content"
-                  android:layout_width="wrap_content"
+        <TextView style="@style/appwidget_item"
                   android:textSize="16dp"
                   android:id="@+id/status"
-                  android:textColor="@android:color/black"
                   android:text="20°C, 40%, not raining"
-                  android:singleLine="false"
-                  android:gravity="center"/>
+                  android:singleLine="false"/>
     </LinearLayout>
-    <ImageView android:src="@drawable/ic_launcher"
-               android:contentDescription="@string/app_name"
-               android:layout_height="30dp"
-               android:layout_width="30dp"/>
+    <ImageView style="@style/appwidget_logo" android:contentDescription="@string/app_name"/>
 </RelativeLayout>

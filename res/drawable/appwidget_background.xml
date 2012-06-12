@@ -30,6 +30,6 @@
              android:right="2dp"
              android:bottom="2dp" />
     <corners android:radius="10dp"/>
-    <gradient android:startColor="@android:color/darker_gray"
-              android:endColor="@android:color/darker_gray" />
+    <gradient android:startColor="@color/widgetBackground"
+              android:endColor="@color/widgetBackground" />
 </shape>

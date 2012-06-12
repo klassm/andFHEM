@@ -25,9 +25,9 @@ package li.klass.fhem.domain;
 
 import android.util.Log;
 import li.klass.fhem.R;
-import li.klass.fhem.appwidget.annotation.SupportsWidget;
-import li.klass.fhem.appwidget.annotation.WidgetTemperatureField;
-import li.klass.fhem.appwidget.view.widget.TemperatureWidgetView;
+import li.klass.fhem.appwidget.annotation.*;
+import li.klass.fhem.appwidget.view.widget.medium.MediumInformationWidgetView;
+import li.klass.fhem.appwidget.view.widget.medium.TemperatureWidgetView;
 import li.klass.fhem.domain.genericview.FloorplanViewSettings;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ValueDescriptionUtil;
@@ -39,7 +39,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 @FloorplanViewSettings(showState = true)
-@SupportsWidget(TemperatureWidgetView.class)
+@SupportsWidget({TemperatureWidgetView.class, MediumInformationWidgetView.class})
 public class WeatherDevice extends Device<WeatherDevice> {
     public static class WeatherDeviceForecast implements Comparable<WeatherDeviceForecast>, Serializable {
         private static final SimpleDateFormat forecastDateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -90,11 +90,15 @@ public class WeatherDevice extends Device<WeatherDevice> {
 
     private static final SimpleDateFormat parseDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
+    @WidgetMediumLine3
     private String condition;
+    @WidgetTemperatureAdditionalField
+    @WidgetMediumLine2
     private String humidity;
     private String icon;
 
     @WidgetTemperatureField
+    @WidgetMediumLine1
     private String temperature;
     private String wind;
     private Map<String, WeatherDeviceForecast> forecastMap = new HashMap<String, WeatherDeviceForecast>();

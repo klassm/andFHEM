@@ -25,8 +25,9 @@ package li.klass.fhem.domain;
 
 import li.klass.fhem.R;
 import li.klass.fhem.appwidget.annotation.SupportsWidget;
+import li.klass.fhem.appwidget.annotation.WidgetTemperatureAdditionalField;
 import li.klass.fhem.appwidget.annotation.WidgetTemperatureField;
-import li.klass.fhem.appwidget.view.widget.TemperatureWidgetView;
+import li.klass.fhem.appwidget.view.widget.medium.TemperatureWidgetView;
 import li.klass.fhem.domain.genericview.FloorplanViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.util.ValueDescriptionUtil;
@@ -39,6 +40,7 @@ public class PIDDevice extends Device<PIDDevice> {
     @WidgetTemperatureField
     private String temperature;
     @ShowField(description = R.string.delta, showInOverview = true)
+    @WidgetTemperatureAdditionalField(description = R.string.delta)
     private String delta;
 
     @Override

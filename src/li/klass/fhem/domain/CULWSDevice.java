@@ -26,8 +26,9 @@ package li.klass.fhem.domain;
 
 import li.klass.fhem.R;
 import li.klass.fhem.appwidget.annotation.SupportsWidget;
+import li.klass.fhem.appwidget.annotation.WidgetTemperatureAdditionalField;
 import li.klass.fhem.appwidget.annotation.WidgetTemperatureField;
-import li.klass.fhem.appwidget.view.widget.TemperatureWidgetView;
+import li.klass.fhem.appwidget.view.widget.medium.TemperatureWidgetView;
 import li.klass.fhem.domain.genericview.FloorplanViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
@@ -41,6 +42,7 @@ import java.util.List;
 public class CULWSDevice extends Device<CULWSDevice> {
 
     @ShowField(description = R.string.humidity, showInOverview = true)
+    @WidgetTemperatureAdditionalField
     private String humidity;
     @ShowField(description = R.string.temperature, showInOverview = true)
     @WidgetTemperatureField

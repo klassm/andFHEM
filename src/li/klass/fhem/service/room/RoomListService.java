@@ -229,11 +229,11 @@ public class RoomListService extends AbstractService {
     }
 
     private long getLastUpdate() {
-        return getSharedPreferences(PREFERENCES_NAME).getLong(LAST_UPDATE_PROPERTY, 0);
+        return getSharedPreferences(PREFERENCES_NAME).getLong(LAST_UPDATE_PROPERTY, 0L);
     }
 
     private void setLastUpdateToNow() {
-        getSharedPreferencesEditor(PREFERENCES_NAME).putLong(LAST_UPDATE_PROPERTY, System.currentTimeMillis());
+        getSharedPreferencesEditor(PREFERENCES_NAME).putLong(LAST_UPDATE_PROPERTY, System.currentTimeMillis()).commit();
     }
 
     private boolean shouldUpdate(long updatePeriod) {
@@ -241,6 +241,6 @@ public class RoomListService extends AbstractService {
         if (updatePeriod == NEVER_UPDATE_PERIOD) return false;
 
         long lastUpdate = getLastUpdate();
-        return lastUpdate + updatePeriod > System.currentTimeMillis();
+        return lastUpdate + updatePeriod < System.currentTimeMillis();
     }
 }

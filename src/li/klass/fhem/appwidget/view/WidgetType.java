@@ -23,7 +23,12 @@
 
 package li.klass.fhem.appwidget.view;
 
-import li.klass.fhem.appwidget.view.widget.*;
+import li.klass.fhem.appwidget.view.widget.AppWidgetView;
+import li.klass.fhem.appwidget.view.widget.medium.MediumInformationWidgetView;
+import li.klass.fhem.appwidget.view.widget.medium.StatusWidgetView;
+import li.klass.fhem.appwidget.view.widget.medium.TemperatureWidgetView;
+import li.klass.fhem.appwidget.view.widget.medium.ToggleWidgetView;
+import li.klass.fhem.appwidget.view.widget.small.SmallToggleWidget;
 import li.klass.fhem.domain.Device;
 
 import java.util.ArrayList;
@@ -33,7 +38,8 @@ public enum WidgetType {
     TEMPERATURE(new TemperatureWidgetView(), WidgetSize.MEDIUM),
     TOGGLE(new ToggleWidgetView(), WidgetSize.MEDIUM),
     TOGGLE_SMALL(new SmallToggleWidget(), WidgetSize.SMALL),
-    STATUS(new StatusWidgetView(), WidgetSize.MEDIUM);
+    STATUS(new StatusWidgetView(), WidgetSize.MEDIUM),
+    INFORMATION(new MediumInformationWidgetView(), WidgetSize.MEDIUM);
 
     public final AppWidgetView widgetView;
     public final WidgetSize widgetSize;

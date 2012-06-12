@@ -21,12 +21,13 @@
  *   51 Franklin Street, Fifth Floor
  */
 
-package li.klass.fhem.appwidget.view.widget;
+package li.klass.fhem.appwidget.view.widget.small;
 
 import android.content.Context;
 import android.widget.RemoteViews;
 import li.klass.fhem.R;
 import li.klass.fhem.appwidget.WidgetConfiguration;
+import li.klass.fhem.appwidget.view.widget.medium.ToggleWidgetView;
 import li.klass.fhem.domain.Device;
 
 public class SmallToggleWidget extends ToggleWidgetView {

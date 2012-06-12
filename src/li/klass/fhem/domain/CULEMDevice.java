@@ -25,6 +25,11 @@
 package li.klass.fhem.domain;
 
 import li.klass.fhem.R;
+import li.klass.fhem.appwidget.annotation.SupportsWidget;
+import li.klass.fhem.appwidget.annotation.WidgetMediumLine1;
+import li.klass.fhem.appwidget.annotation.WidgetMediumLine2;
+import li.klass.fhem.appwidget.annotation.WidgetMediumLine3;
+import li.klass.fhem.appwidget.view.widget.medium.MediumInformationWidgetView;
 import li.klass.fhem.domain.genericview.FloorplanViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
@@ -33,13 +38,17 @@ import org.w3c.dom.NamedNodeMap;
 import java.util.List;
 
 @FloorplanViewSettings(showState = true)
+@SupportsWidget(MediumInformationWidgetView.class)
 public class CULEMDevice extends Device<CULEMDevice> {
 
     @ShowField(description = R.string.currentUsage, showInOverview = true)
+    @WidgetMediumLine1
     private String currentUsage;
     @ShowField(description = R.string.dayUsage, showInOverview = true)
+    @WidgetMediumLine2
     private String dayUsage;
     @ShowField(description = R.string.monthUsage, showInOverview = true)
+    @WidgetMediumLine3
     private String monthUsage;
     private double sumGraphDivisionFactor = 1d;
 

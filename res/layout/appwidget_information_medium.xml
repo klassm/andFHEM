@@ -24,34 +24,18 @@
   -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                style="@style/appwidget_small">
+                style="@style/appwidget_medium">
 
-    <LinearLayout android:layout_height="fill_parent"
-                  android:layout_width="fill_parent"
-                  android:layout_marginLeft="10dp"
-                  android:layout_marginTop="5dp"
-                  android:padding="5dp"
-                  android:gravity="center"
-                  android:orientation="vertical"
-                  android:id="@+id/main">
+    <LinearLayout style="@style/appwidget_content">
 
-        <TextView android:id="@+id/toggleOn"
-                  android:layout_height="fill_parent"
-                  android:layout_width="fill_parent"
-                  android:gravity="center"
-                  android:text="@string/on"
-                  android:textColor="@android:color/black"
-                  android:background="@drawable/rounded_green"
-                  android:contentDescription="@string/switchDevice"
-                />
-        <TextView android:id="@+id/toggleOff"
-                  android:layout_height="fill_parent"
-                  android:layout_width="fill_parent"
-                  android:gravity="center"
-                  android:text="@string/off"
-                  android:background="@drawable/rounded_white"
-                  android:contentDescription="@string/switchDevice"
-                />
+        <TextView style="@style/appwidget_caption"/>
+
+        <TextView style="@style/appwidget_item"
+                  android:id="@+id/line1" />
+        <TextView style="@style/appwidget_item"
+                  android:id="@+id/line2" />
+        <TextView style="@style/appwidget_item"
+                  android:id="@+id/line3" />
     </LinearLayout>
     <ImageView style="@style/appwidget_logo" android:contentDescription="@string/app_name"/>
 </RelativeLayout>

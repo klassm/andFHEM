@@ -29,6 +29,7 @@ import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
@@ -56,16 +57,32 @@ public class AppWidgetDataHolder {
     private AppWidgetDataHolder() {
     }
 
-    public void updateAllWidgets(Context context) {
-        Set<String> appWidgetIds = getSharedPreferences(preferenceName).getAll().keySet();
-        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+    public void updateAllWidgets(final Context context) {
+        new AsyncTask<String, String, String>() {
+            @Override
+            protected String doInBackground(String... voids) {
+                Set<String> appWidgetIds = getSharedPreferences(preferenceName).getAll().keySet();
+                AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
 
-        for (String appWidgetId : appWidgetIds) {
-            updateWidget(appWidgetManager, context, Integer.parseInt(appWidgetId));
-        }
+                for (String appWidgetId : appWidgetIds) {
+                    updateWidgetInCurrentThread(appWidgetManager, context, Integer.parseInt(appWidgetId));
+                }
+                return null;
+            }
+        }.doInBackground("");
     }
 
     public void updateWidget(final AppWidgetManager appWidgetManager, final Context context, final int appWidgetId) {
+        new AsyncTask<String, String, String>() {
+            @Override
+            protected String doInBackground(String... voids) {
+                updateWidgetInCurrentThread(appWidgetManager, context, Integer.parseInt(String.valueOf(appWidgetId)));
+                return null;
+            }
+        }.doInBackground("");
+    }
+
+    private void updateWidgetInCurrentThread(final AppWidgetManager appWidgetManager, final Context context, final int appWidgetId) {
         final WidgetConfiguration widgetConfiguration = getWidgetConfiguration(appWidgetId);
         if (widgetConfiguration == null) {
             Log.d(AppWidgetDataHolder.class.getName(), "cannot find widget for id " + appWidgetId);
@@ -76,6 +93,7 @@ public class AppWidgetDataHolder {
 
         boolean doRemoteWidgetUpdates = ApplicationProperties.INSTANCE.getProperty("prefWidgetRemoteUpdate", true);
         long updatePeriod = doRemoteWidgetUpdates ? widgetView.updateInterval() : RoomListService.NEVER_UPDATE_PERIOD;
+        scheduleUpdateIntent(context, widgetConfiguration, false);
 
         Intent deviceIntent = new Intent(Actions.GET_DEVICE_FOR_NAME);
         deviceIntent.putExtra(BundleExtraKeys.DEVICE_NAME, widgetConfiguration.deviceName);
@@ -117,6 +135,10 @@ public class AppWidgetDataHolder {
         edit.putString(String.valueOf(widgetConfiguration.widgetId), value);
         edit.commit();
 
+        scheduleUpdateIntent(context, widgetConfiguration, true);
+    }
+
+    private void scheduleUpdateIntent(Context context, WidgetConfiguration widgetConfiguration, boolean updateNow) {
         long updateInterval = widgetConfiguration.widgetType.widgetView.updateInterval();
         if (updateInterval > 0) {
             Intent intent = updateIntentForWidgetId(widgetConfiguration.widgetId);
@@ -125,7 +147,9 @@ public class AppWidgetDataHolder {
             PendingIntent sender = PendingIntent.getBroadcast(context, widgetConfiguration.widgetId,
                     intent, PendingIntent.FLAG_UPDATE_CURRENT);
             long now = System.currentTimeMillis();
-            alarmManager.setRepeating(AlarmManager.RTC, now, updateInterval, sender);
+            long firstRun = updateNow ? now : now + updateInterval;
+
+            alarmManager.setRepeating(AlarmManager.RTC, firstRun, updateInterval, sender);
         }
     }
 
@@ -145,5 +169,4 @@ public class AppWidgetDataHolder {
 
         return new WidgetConfiguration(Integer.valueOf(parts[0]), parts[1], WidgetType.valueOf(parts[2]));
     }
-
 }

@@ -36,4 +36,7 @@
     <color name="thumbOuterColor">#55FFE748</color>
 
     <color name="lightBlue">#B5C5FF</color>
+
+    <color name="widgetBackground">#E1E1E1</color>
+
 </resources>

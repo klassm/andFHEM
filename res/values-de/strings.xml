@@ -251,4 +251,5 @@
     <string name="widget_temperature">Temperatur</string>
     <string name="widget_toggle">Umschalter</string>
     <string name="widget_status">Status</string>
+    <string name="widget_information">Informationen</string>
 </resources>
