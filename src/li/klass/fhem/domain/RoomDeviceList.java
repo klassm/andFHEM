@@ -30,12 +30,11 @@ import java.util.*;
 public class RoomDeviceList implements Serializable {
 
     private String roomName;
-    private boolean containsOnlyLogDevices = true;
+    private boolean onlyContainsDoNotShowDevices = true;
 
     private Map<DeviceType, HashSet<Device>> deviceMap = new HashMap<DeviceType, HashSet<Device>>();
     
     public static final String ALL_DEVICES_ROOM = "ALL_DEVICES_LIST";
-    public static final String UNKNOWN_ROOM = "UNKNOWN_LIST";
 
     public RoomDeviceList(String roomName) {
         this.roomName = roomName;
@@ -43,17 +42,24 @@ public class RoomDeviceList implements Serializable {
 
     public <T extends Device> Collection<T> getDevicesOfType(DeviceType type) {
         Set<T> deviceSet = getOrCreateDeviceList(type);
-        List<T> deviceList = new ArrayList<T>(deviceSet);
+        List<T> deviceList = new ArrayList<T>();
+        for (T device : deviceSet) {
+            if (device.isSupported()) {
+                deviceList.add(device);
+            }
+        }
+
         Collections.sort(deviceList);
         return deviceList;
     }
 
     public <T extends Device> void addDevice(T device) {
         if (device == null) return;
-        getOrCreateDeviceList(DeviceType.getDeviceTypeFor(device)).add(device);
-        
-        if (! (device instanceof FileLogDevice)) {
-            containsOnlyLogDevices = false;
+        DeviceType deviceType = DeviceType.getDeviceTypeFor(device);
+        getOrCreateDeviceList(deviceType).add(device);
+
+        if (deviceType.mayShowInCurrentConnectionType()) {
+            onlyContainsDoNotShowDevices = false;
         }
     }
     
@@ -81,8 +87,8 @@ public class RoomDeviceList implements Serializable {
         return null;
     }
 
-    public boolean isOnlyLogDeviceRoom() {
-        return containsOnlyLogDevices;
+    public boolean isEmptyOrOnlyContainsDoNotShowDevices() {
+        return onlyContainsDoNotShowDevices;
     }
 
     @SuppressWarnings("unchecked")

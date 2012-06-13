@@ -86,7 +86,7 @@ public class RoomListService extends AbstractService {
         Map<String, RoomDeviceList> map = getRoomDeviceListMap(updatePeriod);
         ArrayList<String> roomNames = new ArrayList<String>(map.keySet());
         for (RoomDeviceList roomDeviceList : map.values()) {
-            if (roomDeviceList.isOnlyLogDeviceRoom()) {
+            if (roomDeviceList.isEmptyOrOnlyContainsDoNotShowDevices()) {
                 roomNames.remove(roomDeviceList.getRoomName());
             } else if (roomDeviceList.getRoomName().equals(RoomDeviceList.ALL_DEVICES_ROOM)) {
                 roomNames.remove(roomDeviceList.getRoomName());

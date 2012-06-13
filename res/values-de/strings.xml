@@ -29,7 +29,7 @@
     <string name="allRoomsTitle">Alle Räume</string>
     <string name="deviceDetailPrefix">Details für</string>
 
-    <string name="defaultRoomName">unbekannt</string>
+    <string name="unsortedRoomName">unsortiert</string>
 
     <string name="deviceName">Name</string>
     <string name="temperature">Temperatur</string>

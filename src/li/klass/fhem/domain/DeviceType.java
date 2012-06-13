@@ -48,7 +48,7 @@ public enum DeviceType {
     USBWX("USBWX", USBWXDevice.class),
     CUL_WS("CUL_WS", CULWSDevice.class),
     FS20("FS20", FS20Device.class, new FS20Adapter()),
-    FILE_LOG("FileLog", FileLogDevice.class, null, false),
+    FILE_LOG("FileLog", FileLogDevice.class, null, ConnectionType.NEVER),
     OWFS("OWFS", OWFSDevice.class),
     LGTV("LGTV", LGTVDevice.class),
     RFXCOM("RFXCOM", RFXCOMDevice.class),
@@ -64,7 +64,6 @@ public enum DeviceType {
     private String xmllistTag;
     private Class<? extends Device> deviceClass;
     private DeviceAdapter<? extends Device<?>> adapter;
-    private boolean doShowInDeviceList = true;
     private ConnectionType showDeviceOnlyInConnection = null;
 
     <T extends Device<T>> DeviceType(String xmllistTag, Class<T> deviceClass) {
@@ -75,13 +74,6 @@ public enum DeviceType {
         this.xmllistTag = xmllistTag;
         this.deviceClass = deviceClass;
         this.adapter = adapter;
-    }
-
-    DeviceType(String xmllistTag, Class<? extends Device> deviceClass, DeviceAdapter<? extends Device<?>> adapter, boolean doShow) {
-        this.xmllistTag = xmllistTag;
-        this.deviceClass = deviceClass;
-        this.adapter = adapter;
-        doShowInDeviceList = doShow;
     }
 
     DeviceType(String xmllistTag, Class<? extends Device> deviceClass, DeviceAdapter<? extends Device<?>> adapter, ConnectionType showConnectionOnlyIn) {
@@ -100,10 +92,6 @@ public enum DeviceType {
     @SuppressWarnings("unchecked")
     public <T extends Device> DeviceAdapter<T> getAdapter() {
         return (DeviceAdapter<T>) adapter;
-    }
-
-    public boolean isDoShowInDeviceList() {
-        return doShowInDeviceList;
     }
 
     public boolean mayShowInCurrentConnectionType() {

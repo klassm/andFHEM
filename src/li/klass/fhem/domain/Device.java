@@ -42,7 +42,7 @@ import java.util.Map;
 
 public abstract class Device<T extends Device> implements Serializable, Comparable<T> {
 
-    protected String room = AndFHEMApplication.getContext().getResources().getString(R.string.defaultRoomName);
+    protected String room = AndFHEMApplication.getContext().getResources().getString(R.string.unsortedRoomName);
 
     protected String name;
 

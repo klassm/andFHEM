@@ -25,5 +25,5 @@
 package li.klass.fhem.fhem;
 
 public enum ConnectionType {
-    DUMMYDATA, TELNET, FHEMWEB
+    DUMMYDATA, TELNET, NEVER, FHEMWEB
 }
