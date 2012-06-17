@@ -253,4 +253,5 @@
     <string name="widget_toggle">Toggle</string>
     <string name="widget_status">State</string>
     <string name="widget_information">Information</string>
+    <string name="widget_weather_forecast">Weather Forecast</string>
 </resources>

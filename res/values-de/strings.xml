@@ -252,4 +252,5 @@
     <string name="widget_toggle">Umschalter</string>
     <string name="widget_status">Status</string>
     <string name="widget_information">Informationen</string>
+    <string name="widget_weather_forecast">Wettervorhersage</string>
 </resources>

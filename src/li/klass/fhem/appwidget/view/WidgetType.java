@@ -24,6 +24,7 @@
 package li.klass.fhem.appwidget.view;
 
 import li.klass.fhem.appwidget.view.widget.AppWidgetView;
+import li.klass.fhem.appwidget.view.widget.big.WeatherForecastWidget;
 import li.klass.fhem.appwidget.view.widget.medium.MediumInformationWidgetView;
 import li.klass.fhem.appwidget.view.widget.medium.StatusWidgetView;
 import li.klass.fhem.appwidget.view.widget.medium.TemperatureWidgetView;
@@ -39,7 +40,8 @@ public enum WidgetType {
     TOGGLE(new ToggleWidgetView(), WidgetSize.MEDIUM),
     TOGGLE_SMALL(new SmallToggleWidget(), WidgetSize.SMALL),
     STATUS(new StatusWidgetView(), WidgetSize.MEDIUM),
-    INFORMATION(new MediumInformationWidgetView(), WidgetSize.MEDIUM);
+    INFORMATION(new MediumInformationWidgetView(), WidgetSize.MEDIUM),
+    WEATHER_FORECAST(new WeatherForecastWidget(), WidgetSize.BIG);
 
     public final AppWidgetView widgetView;
     public final WidgetSize widgetSize;
