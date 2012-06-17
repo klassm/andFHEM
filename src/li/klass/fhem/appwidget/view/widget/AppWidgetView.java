@@ -87,5 +87,4 @@ public abstract class AppWidgetView {
     public abstract int getWidgetName();
     protected abstract int getContentView();
     protected abstract void fillWidgetView(Context context, RemoteViews view, Device<?> device, WidgetConfiguration widgetConfiguration);
-
 }

@@ -54,8 +54,7 @@ public class AppWidgetDataHolder {
     private static final String preferenceName = AppWidgetDataHolder.class.getName();
     private String SAVE_SEPARATOR = "#";
 
-    private AppWidgetDataHolder() {
-    }
+    private AppWidgetDataHolder() {}
 
     public void updateAllWidgets(final Context context) {
         new AsyncTask<String, String, String>() {
@@ -123,8 +122,8 @@ public class AppWidgetDataHolder {
 
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, appWidgetId, updateIntentForWidgetId(appWidgetId), PendingIntent.FLAG_UPDATE_CURRENT);
-        alarmManager.cancel(pendingIntent);
+        PendingIntent updatePendingIntent = updatePendingIndentForWidgetId(context, appWidgetId);
+        alarmManager.cancel(updatePendingIntent);
     }
 
     public void saveWidgetConfigurationToPreferences(Context context, WidgetConfiguration widgetConfiguration) {
@@ -141,11 +140,8 @@ public class AppWidgetDataHolder {
     private void scheduleUpdateIntent(Context context, WidgetConfiguration widgetConfiguration, boolean updateNow) {
         long updateInterval = widgetConfiguration.widgetType.widgetView.updateInterval();
         if (updateInterval > 0) {
-            Intent intent = updateIntentForWidgetId(widgetConfiguration.widgetId);
-
             AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-            PendingIntent sender = PendingIntent.getBroadcast(context, widgetConfiguration.widgetId,
-                    intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            PendingIntent sender = updatePendingIndentForWidgetId(context, widgetConfiguration.widgetId);
             long now = System.currentTimeMillis();
             long firstRun = updateNow ? now : now + updateInterval;
 
@@ -153,10 +149,12 @@ public class AppWidgetDataHolder {
         }
     }
 
-    private Intent updateIntentForWidgetId(int appWidgetId) {
-        Intent intent = new Intent(Actions.WIDGET_UPDATE);
-        intent.putExtra(BundleExtraKeys.APP_WIDGET_ID, appWidgetId);
-        return intent;
+    private PendingIntent updatePendingIndentForWidgetId(Context context, int widgetId) {
+        Intent updateIntent = new Intent(Actions.WIDGET_UPDATE);
+        updateIntent.putExtra(BundleExtraKeys.APP_WIDGET_ID, widgetId);
+
+        return PendingIntent.getBroadcast(context, widgetId * (-1),
+                updateIntent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     private WidgetConfiguration getWidgetConfiguration(int widgetId) {
@@ -167,6 +165,20 @@ public class AppWidgetDataHolder {
         String[] parts = value.split(SAVE_SEPARATOR);
         if (parts.length != 3) return null;
 
-        return new WidgetConfiguration(Integer.valueOf(parts[0]), parts[1], WidgetType.valueOf(parts[2]));
+        WidgetType widgetType = getWidgetTypeFromName(parts[2]);
+        if (widgetType == null) {
+            return null;
+        }
+
+        return new WidgetConfiguration(Integer.valueOf(parts[0]), parts[1], widgetType);
+    }
+
+    private WidgetType getWidgetTypeFromName(String widgetTypeName) {
+        try {
+            return WidgetType.valueOf(widgetTypeName);
+        } catch (Exception e) {
+            Log.e(AppWidgetDataHolder.class.getName(), "cannot find widget type for name " + widgetTypeName, e);
+            return null;
+        }
     }
 }
