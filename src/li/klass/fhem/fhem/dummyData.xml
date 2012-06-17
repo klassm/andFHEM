@@ -32,6 +32,52 @@
     <STATE key="state" value="7" measured="2012-06-08 16:33:08"/>
 </dummy>
 </dummy_LIST>
+<CUL_TX_LIST>
+<CUL_TX name="CUL_TX_10" state="T: 16.5 H: 73.0" sets="" attrs="room group comment alias eventMap IODev do_not_notify:1,0 ignore:0,1 showtime:1,0 loglevel:0,1,2,3,4,5,6 icon webCmd">
+    <INT key="CODE" value="10"/>
+    <INT key="CUL_0_MSGCNT" value="4751"/>
+    <INT key="CUL_0_RAWMSG" value="tA01466566CFB"/>
+    <INT key="CUL_0_RSSI" value="-76.5"/>
+    <INT key="CUL_0_TIME" value="2012-06-13 23:02:56"/>
+    <INT key="DEF" value="10"/>
+    <INT key="LASTIODev" value="CUL_0"/>
+    <INT key="MSGCNT" value="4751"/>
+    <INT key="NAME" value="CUL_TX_10"/>
+    <INT key="NR" value="79"/>
+    <INT key="STATE" value="T: 16.5 H: 73.0"/>
+    <INT key="TYPE" value="CUL_TX"/>
+    <INT key="corr" value="0"/>
+    <INT key="lastH" value="1339621320"/>
+    <INT key="lastT" value="1339621376"/>
+    <INT key="minsecs" value="0"/>
+    <ATTR key="room" value="CUL_TX"/>
+    <STATE key="humidity" value="73.0" measured="2012-06-13 23:02:00"/>
+    <STATE key="state" value="T: 16.5 H: 73.0" measured="2012-06-13 23:02:56"/>
+    <STATE key="temperature" value="16.5" measured="2012-06-13 23:02:56"/>
+</CUL_TX>
+
+<CUL_TX name="CUL_TX_116" state="T: 22.9" sets="" attrs="room group comment alias eventMap IODev do_not_notify:1,0 ignore:0,1 showtime:1,0 loglevel:0,1,2,3,4,5,6 icon webCmd">
+    <INT key="CODE" value="116"/>
+    <INT key="CUL_0_MSGCNT" value="3277"/>
+    <INT key="CUL_0_RAWMSG" value="tA0E872972A15"/>
+    <INT key="CUL_0_RSSI" value="-63.5"/>
+    <INT key="CUL_0_TIME" value="2012-06-13 23:03:41"/>
+    <INT key="DEF" value="116"/>
+    <INT key="LASTIODev" value="CUL_0"/>
+    <INT key="MSGCNT" value="3277"/>
+    <INT key="NAME" value="CUL_TX_116"/>
+    <INT key="NR" value="73"/>
+    <INT key="STATE" value="T: 22.9"/>
+    <INT key="TYPE" value="CUL_TX"/>
+    <INT key="corr" value="0"/>
+    <INT key="lastH" value="0"/>
+    <INT key="lastT" value="1339621421"/>
+    <INT key="minsecs" value="0"/>
+    <ATTR key="room" value="CUL_TX"/>
+    <STATE key="state" value="T: 22.9" measured="2012-06-13 23:03:41"/>
+    <STATE key="temperature" value="22.9" measured="2012-06-13 23:03:41"/>
+</CUL_TX>
+</CUL_TX_LIST>
 <IT_LIST>
     <IT name="Intertechno_1" state="on" sets="off on" attrs="room comment alias
     IODev switch_rfmode:1,0 do_not_notify:1,0 ignore:0,1 dummy:1,0

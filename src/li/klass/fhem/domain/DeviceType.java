@@ -35,6 +35,7 @@ public enum DeviceType {
     WEATHER("Weather", WeatherDevice.class, new WeatherAdapter()),
     FLOORPLAN("FLOORPLAN", FloorplanDevice.class, new FloorplanAdapter(), ConnectionType.FHEMWEB),
     FHT("FHT", FHTDevice.class, new FHTAdapter()),
+    CUL_TX("CUL_TX", CULTXDevice.class),
     HMS("HMS", HMSDevice.class),
     WOL("WOL", WOLDevice.class, new WOLAdapter()),
     IT("IT", IntertechnoDevice.class, new IntertechnoAdapter()),

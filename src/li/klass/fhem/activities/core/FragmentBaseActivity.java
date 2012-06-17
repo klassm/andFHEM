@@ -401,7 +401,7 @@ public abstract class FragmentBaseActivity extends FragmentActivity implements A
     private void switchToFragment(BaseFragment fragment, boolean putToStack) {
         removeDialog();
 
-        if (fragment == null || (currentFragment != null && currentFragment.equals(fragment))) return;
+        if (fragment == null || (currentFragment != null && currentFragment.getClass().equals(fragment.getClass()))) return;
 
         if (fragment instanceof TopLevelFragment) {
             fragmentHistoryStack.clear();
