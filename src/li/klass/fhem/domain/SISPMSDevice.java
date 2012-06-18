@@ -30,9 +30,11 @@ import org.w3c.dom.NamedNodeMap;
 
 @DetailOverviewViewSettings(showState = true)
 @FloorplanViewSettings(showState = true)
-public class SISPMSDevice extends Device<SISPMSDevice> implements Toggleable {
+public class SISPMSDevice extends ToggleableDevice<SISPMSDevice> {
     @Override
     public void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {
+        super.onChildItemRead(tagName, keyValue, nodeContent, attributes);
+
         if (nodeContent.equals("STATE")) {
             this.measured = attributes.getNamedItem("measured").getNodeValue();
         }

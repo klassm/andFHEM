@@ -39,25 +39,24 @@ import li.klass.fhem.R;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.Device;
+import li.klass.fhem.domain.ToggleableDevice;
 
 import java.util.Map;
 
-public class ToggleActionRow<T extends Device> {
+public class ToggleActionRow<T extends ToggleableDevice> {
     private String description;
     private int layout;
 
     public static final int LAYOUT_DETAIL = R.layout.device_detail_togglebuttonrow;
     public static final int LAYOUT_OVERVIEW = R.layout.device_overview_togglebuttonrow;
-    private boolean checked;
 
-    public ToggleActionRow(int description, int layout, boolean checked) {
-        this(AndFHEMApplication.getContext().getString(description), layout, checked);
+    public ToggleActionRow(int description, int layout) {
+        this(AndFHEMApplication.getContext().getString(description), layout);
     }
 
-    public ToggleActionRow(String description, int layout, boolean checked) {
+    public ToggleActionRow(String description, int layout) {
         this.description = description;
         this.layout = layout;
-        this.checked = checked;
     }
 
     public TableRow createRow(Context context, LayoutInflater inflater, T device) {
@@ -65,7 +64,7 @@ public class ToggleActionRow<T extends Device> {
         ((TextView) row.findViewById(R.id.description)).setText(description);
         ToggleButton button = (ToggleButton) row.findViewById(R.id.toggleButton);
         button.setOnClickListener(createListener(context, device));
-        button.setChecked(checked);
+        button.setChecked(device.isOn());
         setToogleButtonText(device, button);
 
         return row;

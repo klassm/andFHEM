@@ -38,16 +38,15 @@ import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.domain.Device;
-import li.klass.fhem.domain.Toggleable;
+import li.klass.fhem.domain.ToggleableDevice;
 
 import java.util.Map;
 
-public class OnOffActionRow<T extends Device & Toggleable> {
+public class OnOffActionRow<T extends ToggleableDevice> {
     private String description;
     private int layout;
 
-    public static final int LAYOUT_DETAIL = R.layout.device_detail_togglebuttonrow;
+    public static final int LAYOUT_DETAIL = R.layout.device_detail_onoffbuttonrow;
     public static final int LAYOUT_OVERVIEW = R.layout.device_overview_onoffbuttonrow;
 
     public OnOffActionRow(int description, int layout) {
@@ -59,6 +58,7 @@ public class OnOffActionRow<T extends Device & Toggleable> {
         this.layout = layout;
     }
 
+    @SuppressWarnings("unchecked")
     public TableRow createRow(Context context, LayoutInflater inflater, T device) {
         Map<String, String> eventMap = device.getEventMap();
 

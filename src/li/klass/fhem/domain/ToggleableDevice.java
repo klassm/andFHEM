@@ -21,36 +21,29 @@
  *   51 Franklin Street, Fifth Floor
  */
 
-package li.klass.fhem.service.device;
+package li.klass.fhem.domain;
 
-import li.klass.fhem.domain.IntertechnoDevice;
-import li.klass.fhem.service.CommandExecutionService;
+import org.w3c.dom.NamedNodeMap;
 
-public class IntertechnoService {
-    public static final IntertechnoService INSTANCE = new IntertechnoService();
-
-    private IntertechnoService() {
-    }
+public abstract class ToggleableDevice<T extends Device> extends Device<T> {
 
     /**
-     * Sets a specific state for the device.
-     * @param device concerned device
-     * @param newState state to set
+     * Variable set by the user attribute onOffDevice in fhem.cfg. If set and the device being a toggleable device,
+     * show on / off buttons instead of toggle buttons.
      */
-    public void setState(IntertechnoDevice device, String newState) {
-        CommandExecutionService.INSTANCE.executeSafely("set " + device.getName() + " " + newState);
-        device.setState(newState);
-    }
+    private boolean onOffDevice = false;
 
-    /**
-     * Toggles the state of a device.
-     * @param device concerned device
-     */
-    public void toggleState(IntertechnoDevice device) {
-        if (device.isOn()) {
-            setState(device, "off");
-        } else {
-            setState(device, "on");
+    public abstract boolean isOn();
+    public abstract boolean supportsToggle();
+
+    @Override
+    protected void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {
+        if (keyValue.equalsIgnoreCase("ONOFFDEVICE")) {
+            this.onOffDevice = Boolean.valueOf(nodeContent);
         }
+    }
+
+    public boolean isOnOffDevice() {
+        return onOffDevice;
     }
 }

@@ -23,20 +23,20 @@
 
 package li.klass.fhem.service.device;
 
-import li.klass.fhem.domain.HOLDevice;
+import li.klass.fhem.domain.ToggleableDevice;
 import li.klass.fhem.service.CommandExecutionService;
 
-public class HOLService {
-    public static HOLService INSTANCE = new HOLService();
+public class ToggleableService {
+    public static final ToggleableService INSTANCE = new ToggleableService();
 
-    private HOLService() {
+    private ToggleableService() {
     }
 
     /**
      * Toggles the state of a HOL device.
      * @param device concerned device
      */
-    public void toggleState(HOLDevice device) {
+    public <D extends ToggleableDevice> void toggleState(D device) {
         if (device.isOn()) {
             CommandExecutionService.INSTANCE.executeSafely("set " + device.getName() + " off");
             device.setState("off");

@@ -25,7 +25,6 @@
 package li.klass.fhem.service.device;
 
 import li.klass.fhem.domain.FS20Device;
-import li.klass.fhem.service.CommandExecutionService;
 
 /**
  * Class accumulating FS20 specific operations. Changes will be executed using FHEM.
@@ -34,28 +33,6 @@ public class FS20Service {
     public static final FS20Service INSTANCE = new FS20Service();
 
     private FS20Service() {
-    }
-
-    /**
-     * Sets a specific state for the FS20 device.
-     * @param device concerned device
-     * @param newState state to set
-     */
-    public void setState(FS20Device device, String newState) {
-        CommandExecutionService.INSTANCE.executeSafely("set " + device.getName() + " " + newState);
-        device.setState(newState);
-    }
-
-    /**
-     * Toggles the state of an FS20 device.
-     * @param device concerned device
-     */
-    public void toggleState(FS20Device device) {
-        if (device.isOn()) {
-            setState(device, "off");
-        } else {
-            setState(device, "on");
-        }
     }
 
     /**
@@ -74,6 +51,6 @@ public class FS20Service {
             newState = "dim" + String.format("%02d", bestMatch) + "%";
         }
 
-        setState(device, newState);
+        GenericDeviceService.INSTANCE.setState(device, newState);
     }
 }

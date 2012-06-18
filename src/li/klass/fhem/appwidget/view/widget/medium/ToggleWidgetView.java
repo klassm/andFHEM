@@ -34,7 +34,7 @@ import li.klass.fhem.appwidget.view.widget.AppWidgetView;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.Device;
-import li.klass.fhem.domain.Toggleable;
+import li.klass.fhem.domain.ToggleableDevice;
 
 public class ToggleWidgetView extends AppWidgetView {
     @Override
@@ -49,7 +49,7 @@ public class ToggleWidgetView extends AppWidgetView {
 
     @Override
     protected void fillWidgetView(Context context, RemoteViews view, Device<?> device, WidgetConfiguration widgetConfiguration) {
-        Toggleable toggleable = (Toggleable) device;
+        ToggleableDevice toggleable = (ToggleableDevice) device;
         if (toggleable.isOn()) {
             view.setViewVisibility(R.id.toggleOff, View.GONE);
             view.setViewVisibility(R.id.toggleOn, View.VISIBLE);
@@ -73,7 +73,7 @@ public class ToggleWidgetView extends AppWidgetView {
 
     @Override
     public boolean supports(Device<?> device) {
-        return device instanceof Toggleable;
+        return device instanceof ToggleableDevice;
     }
 
     @Override

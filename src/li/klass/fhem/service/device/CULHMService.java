@@ -25,22 +25,11 @@
 package li.klass.fhem.service.device;
 
 import li.klass.fhem.domain.CULHMDevice;
-import li.klass.fhem.service.CommandExecutionService;
 
 public class CULHMService {
     public static final CULHMService INSTANCE = new CULHMService();
 
     private CULHMService() {
-    }
-
-    /**
-     * Sets a specific state for the CULHM device.
-     * @param device concerned device
-     * @param newState state to set
-     */
-    public void setState(CULHMDevice device, String newState) {
-        CommandExecutionService.INSTANCE.executeSafely("set " + device.getName() + " " + newState);
-        device.setState(newState + " %");
     }
 
     /**
@@ -52,22 +41,7 @@ public class CULHMService {
         if (device.getSubType() != CULHMDevice.SubType.DIMMER) {
             return;
         }
-        setState(device, String.valueOf(dimProgress));
+        GenericDeviceService.INSTANCE.setState(device, String.valueOf(dimProgress));
         device.setDimProgress(dimProgress);
-    }
-
-    /**
-     * Toggles the state of an CUL_HM device.
-     * @param device concerned device
-     */
-    public void toggleState(CULHMDevice device) {
-        if (device.getSubType() != CULHMDevice.SubType.SWITCH) {
-            return;
-        }
-        if (device.isOn()) {
-            setState(device, "off");
-        } else {
-            setState(device, "on");
-        }
     }
 }

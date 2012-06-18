@@ -23,15 +23,16 @@
 
 package li.klass.fhem.service.device;
 
-import li.klass.fhem.domain.DummyDevice;
+import li.klass.fhem.domain.Device;
 import li.klass.fhem.service.CommandExecutionService;
 
-public class DummyService {
-    public static final DummyService INSTANCE = new DummyService();
+public class GenericDeviceService {
+    public static final GenericDeviceService INSTANCE = new GenericDeviceService();
 
-    private DummyService() {}
+    private GenericDeviceService() {
+    }
 
-    public void setState(DummyDevice device, String targetState) {
+    public void setState(Device<?> device, String targetState) {
         CommandExecutionService.INSTANCE.executeSafely("set " + device.getName() + " " + targetState);
         device.setState(targetState);
     }

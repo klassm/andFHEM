@@ -29,20 +29,37 @@ import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
 import li.klass.fhem.adapter.devices.genericui.OnOffActionRow;
 import li.klass.fhem.adapter.devices.genericui.ToggleActionRow;
 import li.klass.fhem.domain.Device;
-import li.klass.fhem.domain.Toggleable;
+import li.klass.fhem.domain.ToggleableDevice;
 
-public abstract class ToggleableAdapter<D extends Device<D> & Toggleable> extends GenericDeviceAdapter<D> {
+public abstract class ToggleableAdapter<D extends Device<D>> extends GenericDeviceAdapter<D> {
     public ToggleableAdapter(Class<D> deviceClass) {
         super(deviceClass);
     }
 
-    protected void addOverviewSwitchActionRow(Context context, D device, TableLayout layout) {
+    protected <T extends ToggleableDevice<D>> void addOverviewSwitchActionRow(Context context, T device, TableLayout layout) {
         if (device.isOnOffDevice()) {
-            layout.addView(new OnOffActionRow<D>(device.getName(), OnOffActionRow.LAYOUT_OVERVIEW)
-                    .createRow(context, inflater, device));
+            addSwitchActionRow(context, device, layout, OnOffActionRow.LAYOUT_OVERVIEW);
         } else {
-            layout.addView(new ToggleActionRow<D>(device.getName(), ToggleActionRow.LAYOUT_OVERVIEW, device.isOn())
-                    .createRow(context, inflater, device));
+            addSwitchActionRow(context, device, layout, ToggleActionRow.LAYOUT_OVERVIEW);
+        }
+    }
+
+    protected <T extends ToggleableDevice<D>> void addDetailSwitchActionRow(Context context, T device, TableLayout layout) {
+        if (device.isOnOffDevice()) {
+            addSwitchActionRow(context, device, layout, OnOffActionRow.LAYOUT_DETAIL);
+        } else {
+            addSwitchActionRow(context, device, layout, ToggleActionRow.LAYOUT_DETAIL);
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T extends ToggleableDevice<D>> void addSwitchActionRow(Context context, T device, TableLayout layout, int rowId) {
+        if (device.isOnOffDevice()) {
+            layout.addView(new OnOffActionRow<T>(device.getName(), rowId)
+                    .createRow(context, inflater, (T) device));
+        } else {
+            layout.addView(new ToggleActionRow<T>(device.getName(), rowId)
+                    .createRow(context, inflater, (T) device));
         }
     }
 }

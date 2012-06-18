@@ -32,13 +32,15 @@ import org.w3c.dom.NamedNodeMap;
 @SuppressWarnings("unused")
 @DetailOverviewViewSettings(showState = true)
 @FloorplanViewSettings(showState = true)
-public class IntertechnoDevice extends Device<IntertechnoDevice> implements Toggleable {
+public class IntertechnoDevice extends ToggleableDevice<IntertechnoDevice> {
 
     @ShowField(description = R.string.model)
     private String model;
 
     @Override
     protected void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {
+        super.onChildItemRead(tagName, keyValue, nodeContent, attributes);
+
         if (keyValue.equalsIgnoreCase("MODEL")) {
             model = nodeContent;
         }

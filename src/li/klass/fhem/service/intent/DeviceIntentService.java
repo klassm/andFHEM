@@ -156,14 +156,9 @@ public class DeviceIntentService extends ConvenientIntentService {
      */
     private STATE setStateIntent(Intent intent, Device device) {
         String targetState = intent.getStringExtra(BundleExtraKeys.DEVICE_TARGET_STATE);
-        if (device instanceof FS20Device) {
-            FS20Service.INSTANCE.setState((FS20Device) device, targetState);
-            return STATE.SUCCESS;
-        } else if (device instanceof DummyDevice) {
-            DummyService.INSTANCE.setState((DummyDevice) device, targetState);
-            return STATE.SUCCESS;
-        }
-        return STATE.ERROR;
+        GenericDeviceService.INSTANCE.setState(device, targetState);
+
+        return STATE.SUCCESS;
     }
 
     /**
@@ -173,20 +168,8 @@ public class DeviceIntentService extends ConvenientIntentService {
      * @return success?
      */
     private STATE toggleIntent(Device device) {
-        if (device instanceof FS20Device) {
-            FS20Service.INSTANCE.toggleState((FS20Device) device);
-            return SUCCESS;
-        } else if (device instanceof SISPMSDevice) {
-            SISPMSService.INSTANCE.toggleState((SISPMSDevice) device);
-            return SUCCESS;
-        } else if (device instanceof CULHMDevice && ((CULHMDevice) device).getSubType() == CULHMDevice.SubType.SWITCH) {
-            CULHMService.INSTANCE.toggleState((CULHMDevice) device);
-            return SUCCESS;
-        } else if (device instanceof HOLDevice) {
-            HOLService.INSTANCE.toggleState((HOLDevice) device);
-            return SUCCESS;
-        } else if (device instanceof IntertechnoDevice) {
-            IntertechnoService.INSTANCE.toggleState((IntertechnoDevice) device);
+        if (device instanceof ToggleableDevice && ((ToggleableDevice) device).supportsToggle()) {
+            ToggleableService.INSTANCE.toggleState((ToggleableDevice) device);
             return SUCCESS;
         } else {
             return ERROR;

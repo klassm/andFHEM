@@ -39,7 +39,7 @@ import java.util.List;
 
 @DetailOverviewViewSettings(showState = true)
 @FloorplanViewSettings()
-public class FS20Device extends Device<FS20Device> implements Comparable<FS20Device>, Serializable, Toggleable {
+public class FS20Device extends ToggleableDevice<FS20Device> implements Comparable<FS20Device>, Serializable {
 
     /**
      * List of dim states available for FS20 devices. Careful: this list has to be ordered, to make dim up and
@@ -59,6 +59,8 @@ public class FS20Device extends Device<FS20Device> implements Comparable<FS20Dev
 
     @Override
     public void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {
+        super.onChildItemRead(tagName, keyValue, nodeContent, attributes);
+
         if (keyValue.equals("STATE") && tagName.equals("INT")) {
             setState(nodeContent);
         } else if (keyValue.equals("STATE") && tagName.equals("STATE")) {

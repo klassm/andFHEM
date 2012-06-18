@@ -65,12 +65,6 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
 
     private List<DeviceChart> deviceCharts = new ArrayList<DeviceChart>();
 
-    /**
-     * Variable set by the user attribute onOffDevice in fhem.cfg. If set and the device being a toggleable device,
-     * show on / off buttons instead of toggle buttons.
-     */
-    private boolean onOffDevice = false;
-
     public void loadXML(Node xml) {
         NodeList childNodes = xml.getChildNodes();
         for (int i = 0; i < childNodes.getLength(); i++) {
@@ -130,8 +124,6 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
 
                 floorPlanPositionMap.put(keyValue.substring(3), new FloorplanPosition(x, y, viewType));
             }
-        } else if (keyValue.equalsIgnoreCase("ONOFFDEVICE")) {
-            this.onOffDevice = Boolean.valueOf(nodeContent);
         }
 
         String tagName = item.getNodeName().toUpperCase();
@@ -318,9 +310,5 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
         FloorplanPosition newPosition = new FloorplanPosition(coordinate.x, coordinate.y, floorplanPosition.viewType);
 
         floorPlanPositionMap.put(key, newPosition);
-    }
-
-    public boolean isOnOffDevice() {
-        return onOffDevice;
     }
 }

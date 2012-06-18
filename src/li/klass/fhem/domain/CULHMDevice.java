@@ -39,7 +39,7 @@ import org.w3c.dom.NamedNodeMap;
 @DetailOverviewViewSettings(showState = true)
 @FloorplanViewSettings(showState = true)
 @SupportsWidget(TemperatureWidgetView.class)
-public class CULHMDevice extends Device<CULHMDevice> implements Toggleable {
+public class CULHMDevice extends ToggleableDevice<CULHMDevice> {
 
     public enum SubType {
         DIMMER, SWITCH, HEATING, SMOKE_DETECTOR, THREE_STATE
@@ -63,6 +63,8 @@ public class CULHMDevice extends Device<CULHMDevice> implements Toggleable {
 
     @Override
     protected void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {
+        super.onChildItemRead(tagName, keyValue, nodeContent, attributes);
+
         if (keyValue.equals("SUBTYPE")) {
             if (nodeContent.equalsIgnoreCase("DIMMER") || nodeContent.equalsIgnoreCase("BLINDACTUATOR")) {
                 subType = SubType.DIMMER;

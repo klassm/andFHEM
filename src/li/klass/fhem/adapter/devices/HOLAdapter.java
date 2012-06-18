@@ -24,8 +24,6 @@
 package li.klass.fhem.adapter.devices;
 
 import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TableLayout;
@@ -34,8 +32,6 @@ import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
 import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
 import li.klass.fhem.adapter.devices.genericui.ToggleActionRow;
-import li.klass.fhem.constants.Actions;
-import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.HOLDevice;
 
 import static li.klass.fhem.adapter.devices.genericui.ToggleActionRow.LAYOUT_DETAIL;
@@ -50,26 +46,11 @@ public class HOLAdapter extends GenericDeviceAdapter<HOLDevice> {
         inflater = (LayoutInflater) AndFHEMApplication.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
-    private class TableRow extends ToggleActionRow<HOLDevice> {
-
-        public TableRow(HOLDevice device, int layout) {
-            super(device.getAliasOrName(), layout, device.isOn());
-        }
-
-        @Override
-        public void onButtonClick(Context context, HOLDevice device) {
-            Intent intent = new Intent(Actions.DEVICE_TOGGLE_STATE);
-            intent.putExtras(new Bundle());
-            intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
-            AndFHEMApplication.getContext().startService(intent);
-        }
-    }
-
     @Override
     public void fillDeviceOverviewView(View view, final HOLDevice device) {
         TableLayout layout = (TableLayout) view.findViewById(R.id.device_overview_generic);
         layout.findViewById(R.id.deviceName).setVisibility(View.GONE);
-        layout.addView(new TableRow(device, LAYOUT_OVERVIEW).createRow(view.getContext(), inflater, device));
+        layout.addView(new ToggleActionRow<HOLDevice>(device.getAliasOrName(), LAYOUT_OVERVIEW).createRow(view.getContext(), inflater, device));
     }
 
     @Override
@@ -77,7 +58,7 @@ public class HOLAdapter extends GenericDeviceAdapter<HOLDevice> {
         fieldNameAddedListeners.put("state", new FieldNameAddedToDetailListener<HOLDevice>() {
             @Override
             public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, HOLDevice device, android.widget.TableRow fieldTableRow) {
-                tableLayout.addView(new TableRow(device, LAYOUT_DETAIL)
+                tableLayout.addView(new ToggleActionRow<HOLDevice>(device.getAliasOrName(), LAYOUT_DETAIL)
                         .createRow(tableLayout.getContext(), inflater, device));
             }
         });

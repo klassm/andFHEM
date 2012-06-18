@@ -32,14 +32,12 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
-import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
 import li.klass.fhem.adapter.devices.genericui.SeekBarActionRow;
-import li.klass.fhem.adapter.devices.genericui.ToggleActionRow;
 import li.klass.fhem.domain.CULHMDevice;
 import li.klass.fhem.domain.genericview.FloorplanViewSettings;
 import li.klass.fhem.util.device.FloorplanUtil;
 
-public class CULHMAdapter extends GenericDeviceAdapter<CULHMDevice> {
+public class CULHMAdapter extends ToggleableAdapter<CULHMDevice> {
 
     public CULHMAdapter() {
         super(CULHMDevice.class);
@@ -57,8 +55,7 @@ public class CULHMAdapter extends GenericDeviceAdapter<CULHMDevice> {
                         .createRow(inflater, device));
                 break;
             case SWITCH:
-                layout.addView(new ToggleActionRow<CULHMDevice>(device.getName(), ToggleActionRow.LAYOUT_OVERVIEW, device.isOn())
-                        .createRow(view.getContext(), inflater, device));
+                addOverviewSwitchActionRow(view.getContext(), device, layout);
                 break;
             default:
                 super.fillDeviceOverviewView(view, device);
@@ -78,8 +75,7 @@ public class CULHMAdapter extends GenericDeviceAdapter<CULHMDevice> {
                                 .createRow(inflater, device));
                         break;
                     case SWITCH:
-                        tableLayout.addView(new ToggleActionRow<CULHMDevice>(device.getName(), ToggleActionRow.LAYOUT_DETAIL, device.isOn())
-                                .createRow(tableLayout.getContext(), inflater, device));
+                        addDetailSwitchActionRow(context, device, tableLayout);
                         break;
                 }
             }
