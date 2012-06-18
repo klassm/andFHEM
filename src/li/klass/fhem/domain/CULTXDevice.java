@@ -24,15 +24,26 @@
 package li.klass.fhem.domain;
 
 import li.klass.fhem.R;
+import li.klass.fhem.appwidget.annotation.SupportsWidget;
+import li.klass.fhem.appwidget.annotation.WidgetTemperatureAdditionalField;
+import li.klass.fhem.appwidget.annotation.WidgetTemperatureField;
+import li.klass.fhem.appwidget.view.widget.medium.TemperatureWidgetView;
 import li.klass.fhem.domain.genericview.FloorplanViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
+import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ValueDescriptionUtil;
 import org.w3c.dom.NamedNodeMap;
 
+import java.util.List;
+
 @FloorplanViewSettings
+@SupportsWidget(TemperatureWidgetView.class)
 public class CULTXDevice extends Device<CULTXDevice> {
     @ShowField(description = R.string.temperature, showInDetail= true, showInOverview = true, showInFloorplan = true)
+    @WidgetTemperatureField
     private String temperature;
+
+    @WidgetTemperatureAdditionalField(description = R.string.humidity)
     @ShowField(description = R.string.humidity, showInDetail= true, showInOverview = true, showInFloorplan = true)
     private String humidity;
 
@@ -52,4 +63,13 @@ public class CULTXDevice extends Device<CULTXDevice> {
     public String getHumidity() {
         return humidity;
     }
+
+    @Override
+    protected void fillDeviceCharts(List<DeviceChart> chartSeries) {
+        addDeviceChartIfNotNull(humidity, new DeviceChart(R.string.humidityGraph, R.string.yAxisHumidity,
+                new ChartSeriesDescription(R.string.temperature, "4:humidity:0:")));
+        addDeviceChartIfNotNull(temperature, new DeviceChart(R.string.temperature, R.string.yAxisTemperature,
+                new ChartSeriesDescription(R.string.temperature, "4:temperature:0:")));
+    }
+
 }
