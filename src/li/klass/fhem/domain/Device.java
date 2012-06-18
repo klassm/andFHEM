@@ -24,6 +24,7 @@
 
 package li.klass.fhem.domain;
 
+import android.util.Log;
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.domain.floorplan.Coordinate;
@@ -64,6 +65,12 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
 
     private List<DeviceChart> deviceCharts = new ArrayList<DeviceChart>();
 
+    /**
+     * Variable set by the user attribute onOffDevice in fhem.cfg. If set and the device being a toggleable device,
+     * show on / off buttons instead of toggle buttons.
+     */
+    private boolean onOffDevice = false;
+
     public void loadXML(Node xml) {
         NodeList childNodes = xml.getChildNodes();
         for (int i = 0; i < childNodes.getLength(); i++) {
@@ -81,33 +88,12 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
                 continue;
             }
 
-            if (keyValue.equals("ROOM")) {
-                room = nodeContent;
-            } else if (keyValue.equals("NAME")) {
-                name = nodeContent;
-            } else if (state == null && keyValue.equals("STATE")) {
-                state = nodeContent;
-            } else if (keyValue.equals("ALIAS")) {
-                alias = nodeContent;
-            } else if (keyValue.equals("CUL_TIME")) {
-                measured = nodeContent;
-            } else if (keyValue.equals("DEF")) {
-                definition = nodeContent;
-            } else if (keyValue.equals("EVENTMAP")) {
-                parseEventMap(nodeContent);
-            } else if (keyValue.startsWith("FP_")) {
-                String[] commaParts = nodeContent.split(",");
-                if (commaParts.length > 2) {
-                    int y = Integer.valueOf(commaParts[0]);
-                    int x = Integer.valueOf(commaParts[1]);
-                    int viewType = Integer.valueOf(commaParts[2]);
-
-                    floorPlanPositionMap.put(keyValue.substring(3), new FloorplanPosition(x, y, viewType));
-                }
+            try {
+                parseNodeContent(item, keyValue, nodeContent);
+            } catch (Exception e) {
+                Log.e(Device.class.getName(), "an error occurred while reading attribute " + keyValue + " with value" +
+                        nodeContent, e);
             }
-
-            String tagName = item.getNodeName().toUpperCase();
-            onChildItemRead(tagName, keyValue, nodeContent, item.getAttributes());
         }
 
         NamedNodeMap attributes = xml.getAttributes();
@@ -118,6 +104,38 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
 
         fillDeviceCharts(deviceCharts);
         afterXMLRead();
+    }
+
+    private void parseNodeContent(Node item, String keyValue, String nodeContent) {
+        if (keyValue.equals("ROOM")) {
+            room = nodeContent;
+        } else if (keyValue.equals("NAME")) {
+            name = nodeContent;
+        } else if (state == null && keyValue.equals("STATE")) {
+            state = nodeContent;
+        } else if (keyValue.equals("ALIAS")) {
+            alias = nodeContent;
+        } else if (keyValue.equals("CUL_TIME")) {
+            measured = nodeContent;
+        } else if (keyValue.equals("DEF")) {
+            definition = nodeContent;
+        } else if (keyValue.equals("EVENTMAP")) {
+            parseEventMap(nodeContent);
+        } else if (keyValue.startsWith("FP_")) {
+            String[] commaParts = nodeContent.split(",");
+            if (commaParts.length > 2) {
+                int y = Integer.valueOf(commaParts[0]);
+                int x = Integer.valueOf(commaParts[1]);
+                int viewType = Integer.valueOf(commaParts[2]);
+
+                floorPlanPositionMap.put(keyValue.substring(3), new FloorplanPosition(x, y, viewType));
+            }
+        } else if (keyValue.equalsIgnoreCase("ONOFFDEVICE")) {
+            this.onOffDevice = Boolean.valueOf(nodeContent);
+        }
+
+        String tagName = item.getNodeName().toUpperCase();
+        onChildItemRead(tagName, keyValue, nodeContent, item.getAttributes());
     }
 
     protected void afterXMLRead() {}
@@ -300,5 +318,9 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
         FloorplanPosition newPosition = new FloorplanPosition(coordinate.x, coordinate.y, floorplanPosition.viewType);
 
         floorPlanPositionMap.put(key, newPosition);
+    }
+
+    public boolean isOnOffDevice() {
+        return onOffDevice;
     }
 }

@@ -25,6 +25,8 @@
   -->
 
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_activated="true"
+          android:drawable="@drawable/theme_toggle_on_normal" />
     <item android:state_checked="true" android:state_pressed="true"
           android:drawable="@drawable/theme_toggle_on_focused" />
     <item android:state_checked="true" android:state_focused="true"

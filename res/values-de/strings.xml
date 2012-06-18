@@ -227,6 +227,8 @@
     <string name="change">Ändern</string>
     <string name="on">an</string>
     <string name="off">aus</string>
+    <string name="ON">AN</string>
+    <string name="OFF">AUS</string>
     <string name="dayTemperature">Tagestemperatur</string>
     <string name="nightTemperature">Nachttemperatur</string>
     <string name="windowOpenTemp">Fenster geöffnet</string>

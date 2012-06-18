@@ -35,7 +35,6 @@ import android.view.View;
 import android.widget.*;
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
-import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
 import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewAction;
 import li.klass.fhem.adapter.devices.genericui.SeekBarActionRow;
 import li.klass.fhem.adapter.devices.genericui.ToggleActionRow;
@@ -48,7 +47,7 @@ import li.klass.fhem.util.device.FloorplanUtil;
 
 import java.util.List;
 
-public class FS20Adapter extends GenericDeviceAdapter<FS20Device> {
+public class FS20Adapter extends ToggleableAdapter<FS20Device> {
 
     public FS20Adapter() {
         super(FS20Device.class);
@@ -95,8 +94,9 @@ public class FS20Adapter extends GenericDeviceAdapter<FS20Device> {
             layout.addView(new SeekBarActionRow<FS20Device>(device.getFS20DimState(), device.getName(), SeekBarActionRow.LAYOUT_OVERVIEW)
                     .createRow(inflater, device));
         } else {
-            layout.addView(new ToggleActionRow<FS20Device>(device.getName(), ToggleActionRow.LAYOUT_OVERVIEW, device.isOn())
-                    .createRow(view.getContext(), inflater, device));
+            addOverviewSwitchActionRow(view.getContext(), device, layout);
+//            layout.addView(new ToggleActionRow<FS20Device>(device.getName(), ToggleActionRow.LAYOUT_OVERVIEW, device.isOn())
+//                    .createRow(view.getContext(), inflater, device));
         }
     }
 

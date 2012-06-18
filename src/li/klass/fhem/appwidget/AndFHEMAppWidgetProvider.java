@@ -53,7 +53,7 @@ public abstract class AndFHEMAppWidgetProvider extends AppWidgetProvider {
         super.onReceive(context, intent);
         if (intent.getAction().equals(Actions.WIDGET_UPDATE)) {
             int appWidgetId = intent.getIntExtra(BundleExtraKeys.APP_WIDGET_ID, -1);
-            Log.e(AndFHEMAppWidgetProvider.class.getName(), "update widget " + appWidgetId);
+            Log.d(AndFHEMAppWidgetProvider.class.getName(), "update widget " + appWidgetId);
 
             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
             if (appWidgetId != -1) {
