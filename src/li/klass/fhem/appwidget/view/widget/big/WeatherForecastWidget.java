@@ -52,12 +52,14 @@ public class WeatherForecastWidget extends AppWidgetView {
         for (int i = 0; i < forecasts.size() && i < 3; i++) {
             WeatherDevice.WeatherDeviceForecast forecast = forecasts.get(i);
 
-            RemoteViews forecastView = new RemoteViews(context.getPackageName(), R.layout.appwidet_weather_forecast_item);
+            final RemoteViews forecastView = new RemoteViews(context.getPackageName(), R.layout.appwidet_weather_forecast_item);
             forecastView.setTextViewText(R.id.day_description, forecast.getDayOfWeek() + ", " + forecast.getDate());
             forecastView.setTextViewText(R.id.day_condition, forecast.getCondition());
             forecastView.setTextViewText(R.id.day_temperature, forecast.getLowTemperature() + " - " + forecast.getHighTemperature());
+
             view.addView(R.id.main, forecastView);
         }
+        openDeviceDetailPageWhenClicking(R.id.main, view, device, widgetConfiguration);
     }
 
     @Override

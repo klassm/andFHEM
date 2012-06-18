@@ -34,7 +34,12 @@ import java.io.InputStream;
 import java.net.URL;
 
 public class ImageUtil {
-    public static void setExternalImageIn(final ImageView imageView, final String imageURL) {
+
+    public interface ImageLoadedListener {
+        void imageLoaded(Bitmap bitmap);
+    }
+
+    public static void loadImageFrom(final String imageURL, final ImageLoadedListener callback) {
         new AsyncTask<Void, Void, Bitmap>() {
 
             @Override
@@ -50,8 +55,17 @@ public class ImageUtil {
 
             @Override
             protected void onPostExecute(Bitmap bitmap) {
-                imageView.setImageBitmap(bitmap);
+                callback.imageLoaded(bitmap);
             }
         }.execute(null, null);
+    }
+
+    public static void setExternalImageIn(final ImageView imageView, final String imageURL) {
+        loadImageFrom(imageURL, new ImageLoadedListener() {
+            @Override
+            public void imageLoaded(Bitmap bitmap) {
+                imageView.setImageBitmap(bitmap);
+            }
+        });
     }
 }
