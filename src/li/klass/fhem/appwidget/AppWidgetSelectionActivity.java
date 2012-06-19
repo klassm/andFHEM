@@ -92,6 +92,7 @@ public abstract class AppWidgetSelectionActivity extends ListActivity {
                 adapter.addParentChildObserver(new NestedListView.NestedListViewOnClickObserver() {
                     @Override
                     public void onItemClick(View view, Object parent, Object child, int parentPosition, int childPosition) {
+                        if (childPosition == -1) return;
                         deviceClickedInMainList((Device<?>) child);
                     }
                 });
