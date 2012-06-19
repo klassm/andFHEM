@@ -56,10 +56,6 @@ import java.util.ArrayList;
 import static li.klass.fhem.constants.Actions.*;
 
 public abstract class FragmentBaseActivity extends FragmentActivity implements ActionBar.TabListener, Updateable {
-    private static final int FAVORITES_TAB = 1;
-    private static final int ROOM_LIST_TAB = 2;
-    private static final int ALL_DEVICES_TAB = 3;
-
     private BaseFragment currentFragment = null;
     private ArrayList<BaseFragment> fragmentHistoryStack = new ArrayList<BaseFragment>();
 
@@ -172,23 +168,13 @@ public abstract class FragmentBaseActivity extends FragmentActivity implements A
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
         actionBar.setDisplayShowTitleEnabled(false);
 
-        ActionBar.Tab favoritesTab = actionBar.newTab()
-                .setText(R.string.tab_favorites)
-                .setTabListener(this)
-                .setTag(FAVORITES_TAB);
-        actionBar.addTab(favoritesTab);
-
-        ActionBar.Tab roomListTab = actionBar.newTab()
-                .setText(R.string.tab_roomList)
-                .setTabListener(this)
-                .setTag(ROOM_LIST_TAB);
-        actionBar.addTab(roomListTab);
-
-        ActionBar.Tab allDevicesTab = actionBar.newTab()
-                .setText(R.string.tab_alldevices)
-                .setTabListener(this)
-                .setTag(ALL_DEVICES_TAB);
-        actionBar.addTab(allDevicesTab);
+        for (FragmentType fragmentType : FragmentType.getTopLevelFragments()) {
+            ActionBar.Tab tab = actionBar.newTab()
+                    .setText(fragmentType.getTopLevelTabName())
+                    .setTabListener(this)
+                    .setTag(fragmentType);
+            actionBar.addTab(tab);
+        }
 
         actionBar.setDisplayHomeAsUpEnabled(true);
 
@@ -281,21 +267,15 @@ public abstract class FragmentBaseActivity extends FragmentActivity implements A
 
     @Override
     public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
-        Intent intent = new Intent(Actions.SHOW_FRAGMENT);
-        switch(Integer.valueOf(tab.getTag().toString())){
-            case FAVORITES_TAB:
-                intent.putExtra(BundleExtraKeys.FRAGMENT_NAME, FavoritesFragment.class.getName());
-                break;
-            case ROOM_LIST_TAB:
-                intent.putExtra(BundleExtraKeys.FRAGMENT_NAME, RoomListFragment.class.getName());
-                break;
-            case ALL_DEVICES_TAB:
-                intent.putExtra(BundleExtraKeys.FRAGMENT_NAME, AllDevicesFragment.class.getName());
-                break;
-            default:
-                return;
+        Object tag = tab.getTag();
+        if (! (tag instanceof FragmentType)) {
+            Log.e(FragmentBaseActivity.class.getName(), "can only switch tabs including a Fragment as tag");
+            return;
         }
 
+        FragmentType fragmentTypeTag = (FragmentType) tag;
+        Intent intent = new Intent(Actions.SHOW_FRAGMENT);
+        intent.putExtra(BundleExtraKeys.FRAGMENT_NAME, fragmentTypeTag.getFragmentClass().getName());
         sendBroadcast(intent);
     }
 
@@ -431,6 +411,11 @@ public abstract class FragmentBaseActivity extends FragmentActivity implements A
         } catch (IllegalStateException e) {
             Log.e(FragmentBaseActivity.class.getName(), "error while switching to fragment " + fragment.getClass().getName(), e);
         }
+
+        // activate the correct tab
+        FragmentType fragmentType = FragmentType.getFragmentFor(currentFragment.getClass());
+        if (fragmentType.isTopLevelFragment())
+            getSupportActionBar().getTabAt(fragmentType.getTopLevelPosition()).select();
     }
 
     private void showDialog(Bundle bundle) {

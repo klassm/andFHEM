@@ -49,6 +49,7 @@ public class BundleExtraKeys {
     public static final String DEVICE_MODE = "DEVICEMODE";
 
     public static final String FRAGMENT_NAME = "FRAGMENTNAME";
+    public static final String FRAGMENT = "FRAGMENT";
     public static final String FRAGMENT_HISTORY_STACK = "FRAGMENTHISTORYSTACK";
     public static final String CURRENT_TAB = "CURRENTTAB";
     public static final String CURRENT_FRAGMENT = "CURRENTFRAGMENT";
