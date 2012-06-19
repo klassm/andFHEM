@@ -429,7 +429,7 @@ public abstract class FragmentBaseActivity extends FragmentActivity implements A
                     .replace(android.R.id.content, fragment)
                     .commit();
         } catch (IllegalStateException e) {
-            Log.e(FragmentBaseActivity.class.getName(), "error while switching to fragment " + fragment.getClass().getName());
+            Log.e(FragmentBaseActivity.class.getName(), "error while switching to fragment " + fragment.getClass().getName(), e);
         }
     }
 

@@ -80,9 +80,6 @@ public class OnOffActionRow<T extends ToggleableDevice> {
         if (device.isOn()) {
             onButton.setActivated(true);
             offButton.setActivated(false);
-        } else {
-            onButton.setActivated(false);
-            offButton.setActivated(true);
         }
 
         return row;
