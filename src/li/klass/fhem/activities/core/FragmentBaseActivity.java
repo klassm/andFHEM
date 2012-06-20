@@ -414,8 +414,11 @@ public abstract class FragmentBaseActivity extends FragmentActivity implements A
 
         // activate the correct tab
         FragmentType fragmentType = FragmentType.getFragmentFor(currentFragment.getClass());
-        if (fragmentType.isTopLevelFragment())
-            getSupportActionBar().getTabAt(fragmentType.getTopLevelPosition()).select();
+        if (fragmentType != null && fragmentType.isTopLevelFragment() && fragmentType.getTopLevelPosition() != -1) {
+            int topLevelPosition = fragmentType.getTopLevelPosition();
+            ActionBar.Tab tab = getSupportActionBar().getTabAt(topLevelPosition);
+            if (tab != null) tab.select();
+        }
     }
 
     private void showDialog(Bundle bundle) {
