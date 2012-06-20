@@ -407,7 +407,7 @@ public abstract class FragmentBaseActivity extends FragmentActivity implements A
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(android.R.id.content, fragment)
-                    .commit();
+                    .commitAllowingStateLoss();
         } catch (IllegalStateException e) {
             Log.e(FragmentBaseActivity.class.getName(), "error while switching to fragment " + fragment.getClass().getName(), e);
         }
