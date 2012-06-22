@@ -37,7 +37,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
-import org.xml.sax.SAXParseException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -72,8 +71,8 @@ public class DeviceListParser {
 
         try {
             String xmlList = DataConnectionSwitch.INSTANCE.getCurrentProvider().xmllist();
-            if (xmlList == null) {
-                Log.e(DeviceListParser.class.getName(), "xmlList is null");
+            if (xmlList == null || "".equals(xmlList)) {
+                Log.e(DeviceListParser.class.getName(), "xmlList is null or blank");
                 return roomDeviceListMap;
             }
 
@@ -113,8 +112,7 @@ public class DeviceListParser {
             // remove "" not being preceded by an =
             xmlList = xmlList.replaceAll("(?:[^=])\"\"+", "\"");
 
-
-            Log.d(DeviceListParser.class.getName(), xmlList);
+            Log.d(DeviceListParser.class.getName(), "xmllist content:\n" + xmlList);
 
             DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
@@ -131,8 +129,6 @@ public class DeviceListParser {
             return roomDeviceListMap;
         } catch (AndFHEMException e) {
             throw e;
-        } catch (SAXParseException e) {
-            throw new DeviceListParseException(e);
         } catch (Exception e) {
             Log.e(DeviceListParser.class.getName(), "error parsing device list", e);
             throw new DeviceListParseException(e);

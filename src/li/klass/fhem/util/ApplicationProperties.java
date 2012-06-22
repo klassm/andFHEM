@@ -57,7 +57,7 @@ public class ApplicationProperties {
         try {
             String connectionType = PreferenceManager.getDefaultSharedPreferences(AndFHEMApplication.getContext())
                     .getString(DataConnectionSwitch.CONNECTION_TYPE, "DUMMYDATA");
-            Log.i(ApplicationProperties.class.getName(), "returning " + connectionType + " as current connection type");
+            Log.v(ApplicationProperties.class.getName(), "returning " + connectionType + " as current connection type");
             return ConnectionType.valueOf(connectionType.toUpperCase());
         } catch (Exception e) {
             Log.e(ApplicationProperties.class.getName(), "error occurred while loading connection type", e);
