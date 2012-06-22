@@ -77,9 +77,11 @@ public class OnOffActionRow<T extends ToggleableDevice> {
             offButton.setText(eventMap.get("off"));
         }
 
+        offButton.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.theme_toggle_off_normal));
         if (device.isOn()) {
-            onButton.setActivated(true);
-            offButton.setActivated(false);
+            onButton.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.theme_toggle_on_normal));
+        } else {
+            onButton.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.theme_toggle_off_normal));
         }
 
         return row;
