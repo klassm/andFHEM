@@ -235,9 +235,9 @@ public abstract class FragmentBaseActivity extends FragmentActivity implements A
                 actionBar.setSelectedNavigationItem(savedInstanceState.getInt(BundleExtraKeys.CURRENT_TAB));
             }
 
-            Intent intent = savedInstanceState.getParcelable(BundleExtraKeys.CURRENT_FRAGMENT);
-            if (intent != null) {
-                sendBroadcast(intent);
+            BaseFragment fragment = (BaseFragment) savedInstanceState.getSerializable(BundleExtraKeys.CURRENT_FRAGMENT);
+            if (fragment != null) {
+                switchToFragment(fragment, false);
                 return true;
             } else {
                 return false;
