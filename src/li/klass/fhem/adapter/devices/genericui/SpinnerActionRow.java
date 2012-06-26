@@ -54,10 +54,11 @@ public abstract class SpinnerActionRow<T extends Device> {
         ((TextView) row.findViewById(R.id.description)).setText(description);
         final Spinner spinner = (Spinner) row.findViewById(R.id.spinner);
         spinner.setPrompt(context.getString(prompt));
-        spinner.setSelection(selectedPosition);
 
         ArrayAdapter adapter = new ArrayAdapter<String>(context, R.layout.spinnercontent, spinnerValues);
         spinner.setAdapter(adapter);
+
+        spinner.setSelection(selectedPosition);
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
