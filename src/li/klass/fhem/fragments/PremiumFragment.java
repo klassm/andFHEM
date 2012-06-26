@@ -23,19 +23,15 @@
 
 package li.klass.fhem.fragments;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
-import li.klass.fhem.billing.*;
+import li.klass.fhem.billing.BillingService;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.fragments.core.BaseFragment;
@@ -44,58 +40,7 @@ import java.util.Set;
 
 public class PremiumFragment extends BaseFragment {
 
-    private static final String BILLING_PREFERENCE = "li.klass.fhem.billing";
-    private static final String DB_INITIALIZED = "billingDbInitialised";
-
-
-    private transient BillingService billingService;
-    private transient PurchaseDatabase purchaseDatabase;
-    private transient BillingObserver billingObserver;
     private static final String TAG = PremiumFragment.class.getName();
-
-    private class BillingObserver extends PurchaseObserver {
-
-        public BillingObserver(Activity activity, Handler handler) {
-            super(activity, handler);
-        }
-
-        @Override
-        public void onBillingSupported(boolean supported) {
-            Log.i(TAG, "billing supported: " + supported);
-            if (supported) {
-                restoreDatabase();
-            } else {
-                showBillingNotSupportedToast();
-            }
-        }
-
-        @Override
-        public void onPurchaseStateChange(BillingConstants.PurchaseState purchaseState, String itemId, int quantity, long purchaseTime, String developerPayload) {
-            Log.i(TAG, "onPurchaseStateChange() itemId: " + itemId + " " + purchaseState);
-            update(false);
-        }
-
-        @Override
-        public void onRequestPurchaseResponse(BillingService.RequestPurchase request, BillingConstants.ResponseCode responseCode) {
-            Log.i(TAG, "request purchase response: " + responseCode.name());
-        }
-
-        @Override
-        public void onRestoreTransactionsResponse(BillingService.RestoreTransactions request, BillingConstants.ResponseCode responseCode) {
-            if (responseCode != BillingConstants.ResponseCode.RESULT_OK) {
-                Log.i(TAG, "RestoreTransactions error: " + responseCode);
-                return;
-            }
-            Log.i(TAG, "completed RestoreTransactions request");
-
-            SharedPreferences billingPreferences = getBillingPreferences();
-            SharedPreferences.Editor edit = billingPreferences.edit();
-            edit.putBoolean(DB_INITIALIZED, true);
-            edit.commit();
-
-            update(false);
-        }
-    }
 
     @SuppressWarnings("unused")
     public PremiumFragment(Bundle bundle) {
@@ -107,16 +52,7 @@ public class PremiumFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        billingService = new BillingService();
-        billingService.setContext(getActivity());
-        purchaseDatabase = new PurchaseDatabase(getActivity());
-        Handler handler = new Handler();
-        billingObserver = new BillingObserver(getActivity(), handler);
-
-        ResponseHandler.register(billingObserver);
-        if (!billingService.checkBillingSupported()) {
-            showBillingNotSupportedToast();
-        }
+        onResume();
     }
 
     @Override
@@ -132,7 +68,7 @@ public class PremiumFragment extends BaseFragment {
             @Override
             public void onClick(View view) {
                 Log.i(TAG, "request purchase for product " + AndFHEMApplication.PRODUCT_PREMIUM_ID);
-                billingService.requestPurchase(AndFHEMApplication.PRODUCT_PREMIUM_ID, null);
+                BillingService.INSTANCE.requestPurchase(AndFHEMApplication.PRODUCT_PREMIUM_ID, null);
             }
         });
         update(view);
@@ -150,10 +86,10 @@ public class PremiumFragment extends BaseFragment {
         view.findViewById(R.id.shop_premium_pending).setVisibility(View.GONE);
         view.findViewById(R.id.shop_premium_buy).setVisibility(View.GONE);
 
-        Set<String> ownedItems = purchaseDatabase.getOwnedItems();
+        Set<String> ownedItems = BillingService.INSTANCE.getOwnedItems();
         if (ownedItems.contains(AndFHEMApplication.PRODUCT_PREMIUM_ID)) {
             view.findViewById(R.id.shop_premium_bought).setVisibility(View.VISIBLE);
-        } else if(billingService.hasPendingRequestFor(AndFHEMApplication.PRODUCT_PREMIUM_ID)) {
+        } else if(BillingService.INSTANCE.hasPendingRequestFor(AndFHEMApplication.PRODUCT_PREMIUM_ID)) {
             view.findViewById(R.id.shop_premium_pending).setVisibility(View.VISIBLE);
         } else {
             view.findViewById(R.id.shop_premium_buy).setVisibility(View.VISIBLE);
@@ -166,33 +102,16 @@ public class PremiumFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        ResponseHandler.register(billingObserver);
+        BillingService.INSTANCE.bindActivity(getActivity());
+        if (! BillingService.INSTANCE.isBillingSupported()) {
+            showBillingNotSupportedToast();
+        }
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        ResponseHandler.unregister(billingObserver);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        purchaseDatabase.close();
-        billingService.unbind();
-    }
-
-    private void restoreDatabase() {
-        SharedPreferences preferences = getBillingPreferences();
-        boolean initialized = preferences.getBoolean(DB_INITIALIZED, false);
-        if (!initialized) {
-            billingService.restoreTransactions();
-            showToast(R.string.billing_restoringTransactions);
-        }
-    }
-
-    private SharedPreferences getBillingPreferences() {
-        return AndFHEMApplication.getContext().getSharedPreferences(BILLING_PREFERENCE, Context.MODE_PRIVATE);
+        BillingService.INSTANCE.unbindActivity(getActivity());
     }
 
     private void showBillingNotSupportedToast() {

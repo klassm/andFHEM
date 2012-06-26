@@ -21,7 +21,7 @@
  *   51 Franklin Street, Fifth Floor
  */
 
-package li.klass.fhem.billing;
+package li.klass.fhem.billing.playstore;
 
 
 import android.app.Activity;
@@ -40,30 +40,28 @@ import static li.klass.fhem.billing.BillingConstants.ResponseCode;
 /**
  * An interface for observing changes related to purchases. The main application
  * extends this class and registers an instance of that derived class with
- * {@link ResponseHandler}. The main application implements the callbacks
+ * {@link PlayStoreResponseHandler}. The main application implements the callbacks
  * {@link #onBillingSupported(boolean)} and
  * {@link #onPurchaseStateChange}. These methods
  * are used to update the UI.
  */
-public abstract class PurchaseObserver {
-    private static final String TAG = "PurchaseObserver";
-    private final Activity activity;
+public abstract class PlayStorePurchaseObserver {
+    private static final String TAG = PlayStorePurchaseObserver.class.getName();
     private final Handler handler;
     private Method startIntentSender;
     private Object[] startIntentSenderArgs = new Object[5];
     private static final Class[] START_INTENT_SENDER_SIG = new Class[] {
             IntentSender.class, Intent.class, int.class, int.class, int.class
     };
+    protected Activity activity;
 
-    public PurchaseObserver(Activity activity, Handler handler) {
-        this.activity = activity;
+    public PlayStorePurchaseObserver(Handler handler) {
         this.handler = handler;
-        initCompatibilityLayer();
     }
 
     /**
      * This is the callback that is invoked when Android Market responds to the
-     * {@link BillingService#checkBillingSupported()} request.
+     * {@link PlayStoreBillingService#checkBillingSupported()} request.
      * @param supported true if in-app billing is supported.
      */
     public abstract void onBillingSupported(boolean supported);
@@ -71,12 +69,12 @@ public abstract class PurchaseObserver {
     /**
      * This is the callback that is invoked when an item is purchased,
      * refunded, or canceled.  It is the callback invoked in response to
-     * calling {@link BillingService#requestPurchase(String, String)}.  It may also
+     * calling {@link PlayStoreBillingService#requestPurchase(String, String)}.  It may also
      * be invoked asynchronously when a purchase is made on another device
      * (if the purchase was for a Market-managed item), or if the purchase
      * was refunded, or the charge was canceled.  This handles the UI
      * update.  The database update is handled in
-     * {@link ResponseHandler#purchaseResponse}.
+     * {@link PlayStoreResponseHandler#purchaseResponse}.
      * @param purchaseState the purchase state of the item
      * @param itemId a string identifying the item (the "SKU")
      * @param quantity the current quantity of this item after the purchase
@@ -109,7 +107,7 @@ public abstract class PurchaseObserver {
      *       catalog.
      *   RESULT_ERROR is used for any other errors (such as a server error).
      */
-    public abstract void onRequestPurchaseResponse(BillingService.RequestPurchase request,
+    public abstract void onRequestPurchaseResponse(PlayStoreBillingService.RequestPurchase request,
                                                    ResponseCode responseCode);
 
     /**
@@ -117,10 +115,15 @@ public abstract class PurchaseObserver {
      * RestoreTransactions request that we made.  A response code of
      * RESULT_OK means that the request was successfully sent to the server.
      */
-    public abstract void onRestoreTransactionsResponse(BillingService.RestoreTransactions request,
+    public abstract void onRestoreTransactionsResponse(PlayStoreBillingService.RestoreTransactions request,
                                                        ResponseCode responseCode);
 
-    private void initCompatibilityLayer() {
+    public void bindActivity(Activity activity) {
+        this.activity = activity;
+        initCompatibilityLayer();
+    }
+
+    public void initCompatibilityLayer() {
         try {
             startIntentSender = activity.getClass().getMethod("startIntentSender",
                     START_INTENT_SENDER_SIG);

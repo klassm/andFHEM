@@ -21,17 +21,18 @@
  *   51 Franklin Street, Fifth Floor
  */
 
-package li.klass.fhem.billing;
+package li.klass.fhem.billing.playstore;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import li.klass.fhem.billing.BillingConstants;
 
 /**
  * This class implements the broadcast receiver for in-app billing. All asynchronous messages from
  * Android Market come to this app through this receiver. This class forwards all
- * messages to the {@link BillingService}, which can start background threads,
+ * messages to the {@link PlayStoreBillingService}, which can start background threads,
  * if necessary, to process the messages. This class runs on the UI thread and must not do any
  * network I/O, database updates, or any tasks that might take a long time to complete.
  * It also must not start a background thread because that may be killed as soon as
@@ -39,15 +40,15 @@ import android.util.Log;
  *
  * You should modify and obfuscate this code before using it.
  */
-public class BillingReceiver extends BroadcastReceiver {
+public class PlayStoreBillingReceiver extends BroadcastReceiver {
     private static final String TAG = "BillingReceiver";
 
     /**
      * This is the entry point for all asynchronous messages sent from Android Market to
      * the application. This method forwards the messages on to the
-     * {@link BillingService}, which handles the communication back to Android Market.
-     * The {@link BillingService} also reports state changes back to the application through
-     * the {@link ResponseHandler}.
+     * {@link PlayStoreBillingService}, which handles the communication back to Android Market.
+     * The {@link PlayStoreBillingService} also reports state changes back to the application through
+     * the {@link PlayStoreResponseHandler}.
      */
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -83,7 +84,7 @@ public class BillingReceiver extends BroadcastReceiver {
      */
     private void purchaseStateChanged(Context context, String signedData, String signature) {
         Intent intent = new Intent(BillingConstants.ACTION_PURCHASE_STATE_CHANGED);
-        intent.setClass(context, BillingService.class);
+        intent.setClass(context, PlayStoreBillingService.class);
         intent.putExtra(BillingConstants.INAPP_SIGNED_DATA, signedData);
         intent.putExtra(BillingConstants.INAPP_SIGNATURE, signature);
         context.startService(intent);
@@ -94,7 +95,7 @@ public class BillingReceiver extends BroadcastReceiver {
      * information is available. The request includes a nonce (random number used once) that
      * we generate and Android Market signs and sends back to us with the purchase state and
      * other transaction details. This BroadcastReceiver cannot bind to the
-     * MarketBillingService directly so it starts the {@link BillingService}, which does the
+     * MarketBillingService directly so it starts the {@link PlayStoreBillingService}, which does the
      * actual work of sending the message.
      *
      * @param context the context
@@ -102,13 +103,13 @@ public class BillingReceiver extends BroadcastReceiver {
      */
     private void notify(Context context, String notifyId) {
         Intent intent = new Intent(BillingConstants.ACTION_GET_PURCHASE_INFORMATION);
-        intent.setClass(context, BillingService.class);
+        intent.setClass(context, PlayStoreBillingService.class);
         intent.putExtra(BillingConstants.NOTIFICATION_ID, notifyId);
         context.startService(intent);
     }
 
     /**
-     * This is called when Android Market sends a server response code. The BillingService can
+     * This is called when Android Market sends a server response code. The PlayStoreBillingService can
      * then report the status of the response if desired.
      *
      * @param context the context
@@ -117,7 +118,7 @@ public class BillingReceiver extends BroadcastReceiver {
      */
     private void checkResponseCode(Context context, long requestId, int responseCodeIndex) {
         Intent intent = new Intent(BillingConstants.ACTION_RESPONSE_CODE);
-        intent.setClass(context, BillingService.class);
+        intent.setClass(context, PlayStoreBillingService.class);
         intent.putExtra(BillingConstants.INAPP_REQUEST_ID, requestId);
         intent.putExtra(BillingConstants.INAPP_RESPONSE_CODE, responseCodeIndex);
         context.startService(intent);

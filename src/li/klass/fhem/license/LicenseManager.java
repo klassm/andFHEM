@@ -29,33 +29,35 @@ import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.util.Log;
 import li.klass.fhem.AndFHEMApplication;
-import li.klass.fhem.billing.PurchaseDatabase;
+import li.klass.fhem.billing.BillingService;
 
 import javax.security.cert.X509Certificate;
 import java.util.Set;
 
 public class LicenseManager {
     public static final LicenseManager INSTANCE = new LicenseManager();
-    private PurchaseDatabase purchaseDatabase;
+    private final static boolean isPremium = false;
 
     private LicenseManager() {
-        purchaseDatabase = new PurchaseDatabase(AndFHEMApplication.getContext());
     }
-    public boolean isPro() {
-        try {
-        Context context = AndFHEMApplication.getContext();
-        PackageInfo pkgInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), PackageManager.GET_SIGNATURES);
 
-        for (Signature appSignature : pkgInfo.signatures) {
-            X509Certificate appCertificate = X509Certificate.getInstance(appSignature.toByteArray());
-            if (appCertificate.getSubjectDN().getName().contains("Android Debug")) {
-                return true;
+    public boolean isPro() {
+        if (isPremium) return true;
+
+        try {
+            Context context = AndFHEMApplication.getContext();
+            PackageInfo pkgInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), PackageManager.GET_SIGNATURES);
+
+            for (Signature appSignature : pkgInfo.signatures) {
+                X509Certificate appCertificate = X509Certificate.getInstance(appSignature.toByteArray());
+                if (appCertificate.getSubjectDN().getName().contains("Android Debug")) {
+                    return true;
+                }
             }
-        }
         } catch (Exception e) {
             Log.e(LicenseManager.class.getName(), "some exception occurred during reading of app signatures", e);
         }
-        Set<String> ownedItems = purchaseDatabase.getOwnedItems();
+        Set<String> ownedItems = BillingService.INSTANCE.getOwnedItems();
         return ownedItems.contains(AndFHEMApplication.PRODUCT_PREMIUM_ID) || ownedItems.contains(AndFHEMApplication.PRODUCT_PREMIUM_DONATOR_ID);
     }
 }

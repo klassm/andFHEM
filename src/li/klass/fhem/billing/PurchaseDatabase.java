@@ -29,6 +29,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import li.klass.fhem.AndFHEMApplication;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -43,22 +44,24 @@ import static li.klass.fhem.billing.BillingConstants.PurchaseState;
  * distribute it to others.
  */
 public class PurchaseDatabase {
+    public static final PurchaseDatabase INSTANCE = new PurchaseDatabase();
+
     private static final String TAG = "PurchaseDatabase";
+
     private static final String DATABASE_NAME = "purchase.db";
     private static final int DATABASE_VERSION = 1;
     private static final String PURCHASE_HISTORY_TABLE_NAME = "history";
     private static final String PURCHASED_ITEMS_TABLE_NAME = "purchased";
-
     // These are the column names for the purchase history table. We need a
     // column named "_id" if we want to use a CursorAdapter. The primary key is
     // the orderId so that we can be robust against getting multiple messages
     // from the server for the same purchase.
     static final String HISTORY_ORDER_ID_COL = "_id";
+
     static final String HISTORY_STATE_COL = "state";
     static final String HISTORY_PRODUCT_ID_COL = "productId";
     static final String HISTORY_PURCHASE_TIME_COL = "purchaseTime";
     static final String HISTORY_DEVELOPER_PAYLOAD_COL = "developerPayload";
-
     private static final String[] HISTORY_COLUMNS = {
             HISTORY_ORDER_ID_COL, HISTORY_PRODUCT_ID_COL, HISTORY_STATE_COL,
             HISTORY_PURCHASE_TIME_COL, HISTORY_DEVELOPER_PAYLOAD_COL
@@ -66,17 +69,18 @@ public class PurchaseDatabase {
 
     // These are the column names for the "purchased items" table.
     public static final String PURCHASED_PRODUCT_ID_COL = "_id";
-    public static final String PURCHASED_QUANTITY_COL = "quantity";
 
+    public static final String PURCHASED_QUANTITY_COL = "quantity";
     private static final String[] PURCHASED_COLUMNS = {
             PURCHASED_PRODUCT_ID_COL, PURCHASED_QUANTITY_COL
     };
 
     private SQLiteDatabase mDb;
+
     private DatabaseHelper mDatabaseHelper;
 
-    public PurchaseDatabase(Context context) {
-        mDatabaseHelper = new DatabaseHelper(context);
+    private PurchaseDatabase() {
+        mDatabaseHelper = new DatabaseHelper(AndFHEMApplication.getContext());
         mDb = mDatabaseHelper.getWritableDatabase();
     }
 

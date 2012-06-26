@@ -21,11 +21,12 @@
  *   51 Franklin Street, Fifth Floor
  */
 
-package li.klass.fhem.billing;
+package li.klass.fhem.billing.playstore;
 
 import android.text.TextUtils;
 import android.util.Log;
 import li.klass.fhem.AndFHEMApplication;
+import li.klass.fhem.billing.BillingConstants;
 import li.klass.fhem.billing.util.Base64;
 import li.klass.fhem.billing.util.Base64DecoderException;
 import org.json.JSONArray;
@@ -49,8 +50,8 @@ import static li.klass.fhem.billing.BillingConstants.PurchaseState;
  * make it harder for an attacker to replace the code with stubs that treat all
  * purchases as verified.
  */
-public class Security {
-    private static final String TAG = Security.class.getName();
+public class PlayStoreSecurity {
+    private static final String TAG = PlayStoreSecurity.class.getName();
 
     private static final String KEY_FACTORY_ALGORITHM = "RSA";
     private static final String SIGNATURE_ALGORITHM = "SHA1withRSA";
@@ -62,7 +63,7 @@ public class Security {
      * state and send a confirmation message back to Android Market. If we are
      * killed and lose this list of nonces, it is not fatal. Android Market will
      * send us a new "notify" message and we will re-generate a new nonce.
-     * This has to be "static" so that the {@link BillingReceiver} can
+     * This has to be "static" so that the {@link PlayStoreBillingReceiver} can
      * check if a nonce exists.
      */
     private static HashSet<Long> knownNonces = new HashSet<Long>();
@@ -140,8 +141,8 @@ public class Security {
              * long enough to perform the operation they need to perform.
              */
             String base64EncodedPublicKey = AndFHEMApplication.PUBLIC_KEY_ENCODED;
-            PublicKey key = Security.generatePublicKey(base64EncodedPublicKey);
-            verified = Security.verify(key, signedData, signature);
+            PublicKey key = PlayStoreSecurity.generatePublicKey(base64EncodedPublicKey);
+            verified = PlayStoreSecurity.verify(key, signedData, signature);
             if (!verified) {
                 Log.w(TAG, "signature does not match data.");
                 return null;
@@ -165,7 +166,7 @@ public class Security {
             return null;
         }
 
-        if (!Security.isNonceKnown(nonce)) {
+        if (!PlayStoreSecurity.isNonceKnown(nonce)) {
             Log.w(TAG, "Nonce not found: " + nonce);
             return null;
         }

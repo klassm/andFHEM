@@ -157,13 +157,20 @@
             </intent-filter>
         </service>
 
-        <service android:name=".billing.BillingService" />
+        <service android:name=".billing.playstore.PlayStoreBillingService" />
 
-        <receiver android:name=".billing.BillingReceiver">
+        <receiver android:name=".billing.playstore.PlayStoreBillingReceiver">
             <intent-filter>
                 <action android:name="com.android.vending.billing.IN_APP_NOTIFY" />
                 <action android:name="com.android.vending.billing.RESPONSE_CODE" />
                 <action android:name="com.android.vending.billing.PURCHASE_STATE_CHANGED" />
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name = "com.amazon.inapp.purchasing.ResponseReceiver" >
+            <intent-filter>
+                <action android:name = "com.amazon.inapp.purchasing.NOTIFY"
+                        android:permission = "com.amazon.inapp.purchasing.Permission.NOTIFY" />
             </intent-filter>
         </receiver>
     </application>
