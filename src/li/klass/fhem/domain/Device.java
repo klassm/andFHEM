@@ -27,6 +27,7 @@ package li.klass.fhem.domain;
 import android.util.Log;
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
+import li.klass.fhem.appwidget.view.widget.AppWidgetView;
 import li.klass.fhem.domain.floorplan.Coordinate;
 import li.klass.fhem.domain.floorplan.FloorplanPosition;
 import li.klass.fhem.domain.genericview.ShowField;
@@ -310,5 +311,9 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
         FloorplanPosition newPosition = new FloorplanPosition(coordinate.x, coordinate.y, floorplanPosition.viewType);
 
         floorPlanPositionMap.put(key, newPosition);
+    }
+
+    public boolean supportsWidget(Class<? extends AppWidgetView> appWidgetClass) {
+        return true;
     }
 }

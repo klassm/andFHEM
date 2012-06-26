@@ -24,8 +24,11 @@
 
 package li.klass.fhem.domain;
 
+import android.content.Context;
+import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.appwidget.annotation.*;
+import li.klass.fhem.appwidget.view.widget.AppWidgetView;
 import li.klass.fhem.appwidget.view.widget.medium.MediumInformationWidgetView;
 import li.klass.fhem.appwidget.view.widget.medium.TemperatureWidgetView;
 import li.klass.fhem.domain.genericview.FloorplanViewSettings;
@@ -45,7 +48,7 @@ public class HMSDevice extends Device<HMSDevice> {
     @WidgetMediumLine1
     private String temperature;
 
-    @ShowField(description = R.string.battery, showInOverview = true)
+    @ShowField(description = R.string.battery)
     @WidgetMediumLine3
     private String battery;
 
@@ -54,14 +57,26 @@ public class HMSDevice extends Device<HMSDevice> {
     @WidgetTemperatureAdditionalField
     private String humidity;
 
+    @ShowField(description = R.string.model)
+    private String model;
+
+    @ShowField(description = R.string.state, showInOverview = true)
+    private String switchDetect;
+
     @Override
     public void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {
-        if (keyValue.equals("TEMPERATURE")) {
+        if (keyValue.equalsIgnoreCase("TEMPERATURE")) {
             temperature = ValueUtil.formatTemperature(nodeContent);
-        } else if (keyValue.equals("BATTERY")) {
+        } else if (keyValue.equalsIgnoreCase("BATTERY")) {
             battery = nodeContent;
-        } else if (keyValue.equals("HUMIDITY")) {
+        } else if (keyValue.equalsIgnoreCase("HUMIDITY")) {
             humidity = nodeContent;
+        } else if (keyValue.equalsIgnoreCase("TYPE")) {
+            this.model = nodeContent;
+        } else if (keyValue.equalsIgnoreCase("SWITCH_DETECT")) {
+            Context context = AndFHEMApplication.getContext();
+            this.switchDetect = nodeContent.equalsIgnoreCase("ON")
+                    ? context.getString(R.string.on) : context.getString(R.string.off);
         }
     }
 
@@ -77,11 +92,24 @@ public class HMSDevice extends Device<HMSDevice> {
         return humidity;
     }
 
+    public String getModel() {
+        return model;
+    }
+
+    public String getSwitchDetect() {
+        return switchDetect;
+    }
+
     @Override
     protected void fillDeviceCharts(List<DeviceChart> chartSeries) {
         addDeviceChartIfNotNull(temperature, new DeviceChart(R.string.temperatureGraph, R.string.yAxisTemperature,
                 ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:T\\x3a:0:")));
         addDeviceChartIfNotNull(humidity, new DeviceChart(R.string.humidityGraph, R.string.yAxisHumidity,
                 new ChartSeriesDescription(R.string.temperature, "6:H\\x3a:0:")));
+    }
+
+    @Override
+    public boolean supportsWidget(Class<? extends AppWidgetView> appWidgetClass) {
+        return !(appWidgetClass.equals(TemperatureWidgetView.class) && model.equals("HMS100TFK"));
     }
 }

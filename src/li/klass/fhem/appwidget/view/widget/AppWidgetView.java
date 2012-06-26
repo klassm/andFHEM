@@ -43,11 +43,16 @@ public abstract class AppWidgetView {
     public boolean supports(Device<?> device) {
         if (! device.getClass().isAnnotationPresent(SupportsWidget.class)) return false;
 
+        if (! device.supportsWidget(this.getClass())) {
+            return false;
+        }
+
         SupportsWidget annotation = device.getClass().getAnnotation(SupportsWidget.class);
         Class<? extends AppWidgetView>[] supportedWidgetViews = annotation.value();
         for (Class<? extends AppWidgetView> supportedWidgetView : supportedWidgetViews) {
             if (supportedWidgetView.equals(this.getClass())) return true;
         }
+
         return false;
     }
 
