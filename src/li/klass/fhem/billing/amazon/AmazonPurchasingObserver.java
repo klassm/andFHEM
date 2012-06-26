@@ -23,11 +23,13 @@
 
 package li.klass.fhem.billing.amazon;
 
+import android.content.Intent;
 import android.util.Log;
 import com.amazon.inapp.purchasing.*;
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.billing.BillingConstants;
 import li.klass.fhem.billing.BillingService;
+import li.klass.fhem.constants.Actions;
 
 import java.util.Set;
 
@@ -54,6 +56,8 @@ public class AmazonPurchasingObserver extends BasePurchasingObserver {
         for (Receipt receipt : purchaseUpdatesResponse.getReceipts()) {
             processSuccessfulReceipt(receipt);
         }
+
+        doUpdate();
     }
 
     @Override
@@ -61,7 +65,8 @@ public class AmazonPurchasingObserver extends BasePurchasingObserver {
         super.onPurchaseResponse(purchaseResponse);
 
         Receipt receipt = purchaseResponse.getReceipt();
-        String sku = receipt.getSku();
+
+        String sku = receipt != null ? receipt.getSku() : "invalid";
 
         switch (purchaseResponse.getPurchaseRequestStatus()) {
             case ALREADY_ENTITLED:
@@ -81,6 +86,8 @@ public class AmazonPurchasingObserver extends BasePurchasingObserver {
 
         String requestId = purchaseResponse.getRequestId();
         AmazonBillingProvider.INSTANCE.removePurchaseRequest(requestId);
+
+        doUpdate();
     }
 
     private void processSuccessfulReceipt(Receipt receipt) {
@@ -93,5 +100,10 @@ public class AmazonPurchasingObserver extends BasePurchasingObserver {
 
         billingService.updatePurchase(sku, sku, BillingConstants.PurchaseState.PURCHASED,
                 System.currentTimeMillis(), null);
+    }
+
+    private void doUpdate() {
+        Intent intent = new Intent(Actions.DO_UPDATE);
+        AndFHEMApplication.getContext().sendBroadcast(intent);
     }
 }

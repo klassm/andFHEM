@@ -42,7 +42,6 @@ public class BillingService {
         public BillingProvider getStoreProvider() {
             return storeProvider;
         }
-
     }
 
     public static final BillingService INSTANCE = new BillingService();

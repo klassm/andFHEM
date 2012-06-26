@@ -42,7 +42,6 @@ public class DummyDataConnection implements FHEMConnection {
     
     @Override
     public String xmllist() {
-
         InputStream inputStream = null;
         try {
             inputStream = DummyDataConnection.class.getResource("dummyData.xml").openStream();

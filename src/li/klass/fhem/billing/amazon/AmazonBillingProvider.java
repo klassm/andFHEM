@@ -34,7 +34,7 @@ import java.util.Map;
 
 public class AmazonBillingProvider implements BillingProvider {
 
-    private static final String REQUEST_PREFERENCES = AmazonBillingProvider.class.getName() + "-requests";
+    private static final String REQUEST_PREFERENCES = AmazonBillingProvider.class.getName() + "-request";
 
     public static final AmazonBillingProvider INSTANCE = new AmazonBillingProvider();
 
