@@ -35,7 +35,7 @@ import static li.klass.fhem.fhem.TelnetConnection.TELNET_PORT;
 import static li.klass.fhem.fhem.TelnetConnection.TELNET_URL;
 
 public class PreferencesActivity extends PreferenceActivity {
-    
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,7 +53,7 @@ public class PreferencesActivity extends PreferenceActivity {
         });
 
     }
-    
+
     private void setDataOriginOptionsForValue(String value) {
         removeAllDateOriginOptions();
         if (value.equals("TELNET")) {
@@ -62,7 +62,7 @@ public class PreferencesActivity extends PreferenceActivity {
             addFHEMWEBPreferences();
         }
     }
-    
+
     private void removeAllDateOriginOptions() {
         removePreferenceIfNotNull(TELNET_URL);
         removePreferenceIfNotNull(TELNET_PORT);
@@ -71,7 +71,7 @@ public class PreferencesActivity extends PreferenceActivity {
         removePreferenceIfNotNull(FHEMWEB_PASSWORD);
 
     }
-    
+
     private void removePreferenceIfNotNull(String preferenceKey) {
         Preference preference = findPreference(preferenceKey);
         if (preference != null) {

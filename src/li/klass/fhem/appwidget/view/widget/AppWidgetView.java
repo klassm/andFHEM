@@ -59,7 +59,9 @@ public abstract class AppWidgetView {
     public RemoteViews createView(Context context, Device<?> device, WidgetConfiguration widgetConfiguration) {
         RemoteViews views = new RemoteViews(context.getPackageName(), getContentView());
 
-        views.setTextViewText(R.id.deviceName, device.getAliasOrName());
+        if (shouldSetDeviceName()) {
+            views.setTextViewText(R.id.deviceName, device.getAliasOrName());
+        }
         fillWidgetView(context, views, device, widgetConfiguration);
 
         return views;
@@ -86,6 +88,10 @@ public abstract class AppWidgetView {
                 PendingIntent.FLAG_UPDATE_CURRENT);
 
         view.setOnClickPendingIntent(viewId, pendingIntent);
+    }
+
+    public boolean shouldSetDeviceName() {
+        return true;
     }
 
     public long updateInterval() { return 3600000 * 24; } // once a day

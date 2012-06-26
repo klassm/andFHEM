@@ -43,4 +43,9 @@ public class SmallToggleWidget extends ToggleWidgetView {
     protected int getContentView() {
         return R.layout.appwidget_toggle_small;
     }
+
+    @Override
+    public boolean shouldSetDeviceName() {
+        return false;
+    }
 }
