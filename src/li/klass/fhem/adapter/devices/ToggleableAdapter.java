@@ -55,10 +55,10 @@ public abstract class ToggleableAdapter<D extends Device<D>> extends GenericDevi
     @SuppressWarnings("unchecked")
     private <T extends ToggleableDevice<D>> void addSwitchActionRow(Context context, T device, TableLayout layout, int rowId) {
         if (device.isOnOffDevice()) {
-            layout.addView(new OnOffActionRow<T>(device.getName(), rowId)
+            layout.addView(new OnOffActionRow<T>(device.getAliasOrName(), rowId)
                     .createRow(context, inflater, (T) device));
         } else {
-            layout.addView(new ToggleActionRow<T>(device.getName(), rowId)
+            layout.addView(new ToggleActionRow<T>(device.getAliasOrName(), rowId)
                     .createRow(context, inflater, (T) device));
         }
     }

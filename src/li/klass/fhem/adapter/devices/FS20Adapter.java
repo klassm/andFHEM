@@ -90,7 +90,7 @@ public class FS20Adapter extends ToggleableAdapter<FS20Device> {
         layout.findViewById(R.id.deviceName).setVisibility(View.GONE);
 
         if (device.isDimDevice()) {
-            layout.addView(new SeekBarActionRow<FS20Device>(device.getFS20DimState(), device.getName(), SeekBarActionRow.LAYOUT_OVERVIEW)
+            layout.addView(new SeekBarActionRow<FS20Device>(device.getFS20DimState(), device.getAliasOrName(), SeekBarActionRow.LAYOUT_OVERVIEW)
                     .createRow(inflater, device));
         } else {
             addOverviewSwitchActionRow(view.getContext(), device, layout);
