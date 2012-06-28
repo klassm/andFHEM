@@ -38,6 +38,7 @@ import li.klass.fhem.appwidget.view.WidgetType;
 import li.klass.fhem.appwidget.view.widget.AppWidgetView;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
+import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.domain.Device;
 import li.klass.fhem.domain.RoomDeviceList;
 import li.klass.fhem.util.DialogUtil;
@@ -80,6 +81,10 @@ public abstract class AppWidgetSelectionActivity extends ListActivity {
             @Override
             protected void onReceiveResult(int resultCode, Bundle resultData) {
                 super.onReceiveResult(resultCode, resultData);
+
+                if (resultCode != ResultCodes.SUCCESS || ! resultData.containsKey(BundleExtraKeys.DEVICE_LIST)) {
+                    return;
+                }
 
                 RoomDeviceList roomDeviceList = (RoomDeviceList) resultData.getSerializable(BundleExtraKeys.DEVICE_LIST);
                 removeDevicesWithoutWidgets(roomDeviceList);
