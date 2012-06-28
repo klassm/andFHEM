@@ -66,7 +66,7 @@ public class PreferencesActivity extends PreferenceActivity {
     private void removeAllDateOriginOptions() {
         removePreferenceIfNotNull(TELNET_URL);
         removePreferenceIfNotNull(TELNET_PORT);
-        removePreferenceIfNotNull(TELNET_USERNAME);
+        removePreferenceIfNotNull(TELNET_PASSWORD);
 
         removePreferenceIfNotNull(FHEMWEB_URL);
         removePreferenceIfNotNull(FHEMWEB_USERNAME);
@@ -95,8 +95,11 @@ public class PreferencesActivity extends PreferenceActivity {
         getDataOriginCategory().addPreference(portPreference);
 
         EditTextPreference passwordPreference = new EditTextPreference(this);
-        passwordPreference.setTitle(R.string.prefUsername);
-        passwordPreference.setKey(TELNET_USERNAME);
+        passwordPreference.setTitle(R.string.prefPassword);
+        passwordPreference.setSummary(R.string.optional);
+        passwordPreference.setKey(TELNET_PASSWORD);
+        passwordPreference.getEditText().setTransformationMethod(PasswordTransformationMethod.getInstance());
+
         getDataOriginCategory().addPreference(passwordPreference);
     }
 

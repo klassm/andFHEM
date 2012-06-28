@@ -71,6 +71,10 @@ public class DeviceListParser {
 
         try {
             String xmlList = DataConnectionSwitch.INSTANCE.getCurrentProvider().xmllist();
+            if (xmlList != null) {
+                xmlList = xmlList.trim();
+            }
+
             if (xmlList == null || "".equals(xmlList)) {
                 Log.e(DeviceListParser.class.getName(), "xmlList is null or blank");
                 return roomDeviceListMap;

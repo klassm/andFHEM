@@ -49,8 +49,9 @@ import java.util.Date;
 public class TelnetConnection implements FHEMConnection {
     public static final String TELNET_URL = "TELNET_URL";
     public static final String TELNET_PORT = "TELNET_PORT";
-    public static final String TELNET_USERNAME = "TELNET_USERNAME";
+    public static final String TELNET_PASSWORD = "TELNET_PASSWORD";
 
+    public static final String FHEM_PROMPT = "fhem>";
 
     private static final String DEFAULT_HOST = "";
     private static final int DEFAULT_PORT = 0;
@@ -124,7 +125,15 @@ public class TelnetConnection implements FHEMConnection {
                 ((TelnetURLConnection) urlConnection).disconnect();
             }
 
-            return buffer.toString();
+            String returnValue = buffer.toString();
+            int startPos = returnValue.indexOf(", try help");
+            if (startPos != -1) {
+                returnValue = returnValue.substring(startPos + ", try help".length());
+            }
+            if (returnValue.endsWith("Bye...")) {
+                returnValue = buffer.substring(0, buffer.length() - "Bye...".length());
+            }
+            return returnValue;
         } catch (AndFHEMException e) {
             throw e;
         } catch (ConnectTimeoutException e) {
@@ -141,26 +150,44 @@ public class TelnetConnection implements FHEMConnection {
         String password = getPassword();
         if (password == null || "".equals(password)) return true;
 
-        if (! waitForPasswordPrompt(inputStream)) {
-            return false;
-        }
-
-        printWriter.write(password + "\r\n");
+        printWriter.write(password + "\n\r");
         printWriter.flush();
-        return true;
+
+        return waitForPasswordPrompt(inputStream, printWriter);
     }
 
-    private boolean waitForPasswordPrompt(InputStream inputStream) throws Exception {
+    private boolean waitForPasswordPrompt(InputStream inputStream, PrintWriter printWriter) throws Exception {
         int ch;
         int passwordPointer = 0;
+        int fhemPromptPointer = 0;
+
+        boolean validCharacter;
         while ((ch = inputStream.read()) != -1) {
-            if (ch != PASSWORD_PROMPT.charAt(passwordPointer)) {
+            validCharacter = false;
+            if (ch == PASSWORD_PROMPT.charAt(passwordPointer)) {
+                passwordPointer ++;
+                validCharacter = true;
+            } else {
+                passwordPointer = 0;
+            }
+
+            if (passwordPointer >= PASSWORD_PROMPT.length()) {
+                return true;
+            }
+
+            if (ch == FHEM_PROMPT.charAt(fhemPromptPointer)) {
+                fhemPromptPointer++;
+                validCharacter = true;
+            } else {
+                fhemPromptPointer = 0;
+            }
+
+            if (fhemPromptPointer >= FHEM_PROMPT.length()) {
                 return false;
             }
 
-            passwordPointer ++;
-            if (passwordPointer == PASSWORD_PROMPT.length()) {
-                return true;
+            if (! validCharacter) {
+                return  false;
             }
         }
         return false;
@@ -176,7 +203,7 @@ public class TelnetConnection implements FHEMConnection {
     }
 
     private String getPassword() {
-        return getPreferenceString(TELNET_USERNAME, "");
+        return getPreferenceString(TELNET_PASSWORD, "");
     }
 
     private String getPreferenceString(String key, String defaultValue) {
