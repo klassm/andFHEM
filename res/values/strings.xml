@@ -155,6 +155,7 @@
     <string name="authenticationError">Invalid username or password.</string>
     <string name="graphLoadError">Error while loading graph data.</string>
     <string name="fhemUpdateRequiredError">Please update your FHEM server (updatefhem)</string>
+    <string name="prefUrlBeginningError">URL has to start with http!</string>
 
     <string name="okButton">OK</string>
     <string name="cancelButton">Cancel</string>

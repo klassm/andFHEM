@@ -29,6 +29,7 @@ import android.preference.*;
 import android.text.method.PasswordTransformationMethod;
 import li.klass.fhem.R;
 import li.klass.fhem.fhem.DataConnectionSwitch;
+import li.klass.fhem.util.DialogUtil;
 
 import static li.klass.fhem.fhem.FHEMWebConnection.*;
 import static li.klass.fhem.fhem.TelnetConnection.TELNET_PORT;
@@ -99,6 +100,17 @@ public class PreferencesActivity extends PreferenceActivity {
         urlPreference.setSummary(R.string.prefFHEMWEBUrlSummary);
         urlPreference.setKey(FHEMWEB_URL);
         getDataOriginCategory().addPreference(urlPreference);
+
+        urlPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object o) {
+                String newValue = (String) o;
+                if (! newValue.matches("http[s]?://.*")) {
+                    DialogUtil.showAlertDialog(preference.getContext(), R.string.error ,R.string.prefUrlBeginningError);
+                }
+                return true;
+            }
+        });
 
         EditTextPreference usernamePreference = new EditTextPreference(this);
         usernamePreference.setTitle(R.string.prefUsername);

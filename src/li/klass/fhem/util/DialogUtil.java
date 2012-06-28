@@ -44,6 +44,10 @@ public class DialogUtil {
         showAlertDialog(context, titleText, contentText, onClickListener);
     }
 
+    public static void showAlertDialog(Context context, int title, int text) {
+        showAlertDialog(context, context.getString(title), context.getString(text));
+    }
+
     public static void showAlertDialog(Context context, int title, String text) {
         showAlertDialog(context, context.getString(title), text);
     }
