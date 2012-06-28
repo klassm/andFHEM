@@ -29,6 +29,7 @@ import android.graphics.Bitmap;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import li.klass.fhem.AndFHEMApplication;
+import li.klass.fhem.exception.AndFHEMException;
 import li.klass.fhem.exception.HostConnectionException;
 import li.klass.fhem.exception.TimeoutException;
 import li.klass.fhem.util.CloseableUtil;
@@ -48,12 +49,14 @@ import java.util.Date;
 public class TelnetConnection implements FHEMConnection {
     public static final String TELNET_URL = "TELNET_URL";
     public static final String TELNET_PORT = "TELNET_PORT";
+    public static final String TELNET_USERNAME = "TELNET_USERNAME";
 
 
     private static final String DEFAULT_HOST = "";
     private static final int DEFAULT_PORT = 0;
 
     public static final TelnetConnection INSTANCE = new TelnetConnection();
+    private static final String PASSWORD_PROMPT = "Password: ";
 
     private TelnetConnection() {}
 
@@ -64,10 +67,7 @@ public class TelnetConnection implements FHEMConnection {
     @Override
     public String fileLogData(String logName, Date fromDate, Date toDate, String columnSpec) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH:mm");
-        String command = new StringBuilder().append("get ").append(logName).append(" - - ")
-                .append(dateFormat.format(fromDate)).append(" ")
-                .append(dateFormat.format(toDate)).append(" ")
-                .append(columnSpec).toString();
+        String command = "get " + logName + " - - " + dateFormat.format(fromDate) + " " + dateFormat.format(toDate) + " " + columnSpec;
 
         return request(command, "#" + columnSpec);
     }
@@ -92,7 +92,7 @@ public class TelnetConnection implements FHEMConnection {
 
         try {
             URL url = new URL("telnet", getHost(), getPort(), "", new thor.net.URLStreamHandler());
-            URLConnection urlConnection=url.openConnection();
+            URLConnection urlConnection = url.openConnection();
             urlConnection.connect();
 
             if (urlConnection instanceof TelnetURLConnection) {
@@ -103,35 +103,30 @@ public class TelnetConnection implements FHEMConnection {
 
             inputStream = urlConnection.getInputStream();
 
+
             outputStream = urlConnection.getOutputStream();
             bufferedOutputStream = new BufferedOutputStream(outputStream);
             printWriter = new PrintWriter(bufferedOutputStream);
+
+            handlePasswordVerification(inputStream, printWriter);
+
             printWriter.write(command + "\r\n");
+            printWriter.write("exit" + "\r\n");
             printWriter.flush();
 
-            String result = null;
-            int stopPointer = 0;
-            if (delimiter != null) {
-                StringBuilder buffer = new StringBuilder();
-                do {
-                    int ch = inputStream.read();
-                    buffer.append((char) ch);
-
-                    if (ch == delimiter.charAt(stopPointer)) {
-                        stopPointer ++;
-
-                    } else {
-                        stopPointer = 0;
-                    }
-                } while(stopPointer < delimiter.length());
-                result = buffer.toString();
+            int ch;
+            StringBuilder buffer = new StringBuilder();
+            while ((ch = inputStream.read()) != -1) {
+                buffer.append((char) ch);
             }
 
             if (urlConnection instanceof  TelnetURLConnection) {
                 ((TelnetURLConnection) urlConnection).disconnect();
             }
 
-            return result;
+            return buffer.toString();
+        } catch (AndFHEMException e) {
+            throw e;
         } catch (ConnectTimeoutException e) {
             throw new TimeoutException(e);
         } catch (Exception e) {
@@ -142,13 +137,50 @@ public class TelnetConnection implements FHEMConnection {
         }
     }
 
+    private boolean handlePasswordVerification(InputStream inputStream, PrintWriter printWriter) throws Exception {
+        String password = getPassword();
+        if (password == null || "".equals(password)) return true;
+
+        if (! waitForPasswordPrompt(inputStream)) {
+            return false;
+        }
+
+        printWriter.write(password + "\r\n");
+        printWriter.flush();
+        return true;
+    }
+
+    private boolean waitForPasswordPrompt(InputStream inputStream) throws Exception {
+        int ch;
+        int passwordPointer = 0;
+        while ((ch = inputStream.read()) != -1) {
+            if (ch != PASSWORD_PROMPT.charAt(passwordPointer)) {
+                return false;
+            }
+
+            passwordPointer ++;
+            if (passwordPointer == PASSWORD_PROMPT.length()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private String getHost() {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(AndFHEMApplication.getContext());
-        return sharedPreferences.getString(TELNET_URL, DEFAULT_HOST);
+        return getPreferenceString(TELNET_URL, DEFAULT_HOST);
     }
 
     private int getPort() {
+        String value = getPreferenceString(TELNET_PORT, String.valueOf(DEFAULT_PORT));
+        return Integer.valueOf(value);
+    }
+
+    private String getPassword() {
+        return getPreferenceString(TELNET_USERNAME, "");
+    }
+
+    private String getPreferenceString(String key, String defaultValue) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(AndFHEMApplication.getContext());
-        return Integer.valueOf(sharedPreferences.getString(TELNET_PORT, String.valueOf(DEFAULT_PORT)));
+        return sharedPreferences.getString(key, defaultValue);
     }
 }

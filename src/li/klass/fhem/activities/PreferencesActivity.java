@@ -32,8 +32,7 @@ import li.klass.fhem.fhem.DataConnectionSwitch;
 import li.klass.fhem.util.DialogUtil;
 
 import static li.klass.fhem.fhem.FHEMWebConnection.*;
-import static li.klass.fhem.fhem.TelnetConnection.TELNET_PORT;
-import static li.klass.fhem.fhem.TelnetConnection.TELNET_URL;
+import static li.klass.fhem.fhem.TelnetConnection.*;
 
 public class PreferencesActivity extends PreferenceActivity {
 
@@ -67,6 +66,8 @@ public class PreferencesActivity extends PreferenceActivity {
     private void removeAllDateOriginOptions() {
         removePreferenceIfNotNull(TELNET_URL);
         removePreferenceIfNotNull(TELNET_PORT);
+        removePreferenceIfNotNull(TELNET_USERNAME);
+
         removePreferenceIfNotNull(FHEMWEB_URL);
         removePreferenceIfNotNull(FHEMWEB_USERNAME);
         removePreferenceIfNotNull(FHEMWEB_PASSWORD);
@@ -92,6 +93,11 @@ public class PreferencesActivity extends PreferenceActivity {
         portPreference.setSummary(R.string.prefTelnetPortSummary);
         portPreference.setKey(TELNET_PORT);
         getDataOriginCategory().addPreference(portPreference);
+
+        EditTextPreference passwordPreference = new EditTextPreference(this);
+        passwordPreference.setTitle(R.string.prefUsername);
+        passwordPreference.setKey(TELNET_USERNAME);
+        getDataOriginCategory().addPreference(passwordPreference);
     }
 
     private void addFHEMWEBPreferences() {
