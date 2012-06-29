@@ -34,7 +34,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import li.klass.fhem.R;
-import li.klass.fhem.activities.base.Updateable;
 import li.klass.fhem.adapter.rooms.RoomListAdapter;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
@@ -47,7 +46,7 @@ import li.klass.fhem.util.advertisement.AdvertisementUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RoomListFragment extends BaseFragment implements Updateable, ActionBarShowTabs, TopLevelFragment {
+public class RoomListFragment extends BaseFragment implements ActionBarShowTabs, TopLevelFragment {
 
     private transient RoomListAdapter adapter;
 

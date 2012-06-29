@@ -30,8 +30,8 @@ import android.support.v4.app.SupportActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import li.klass.fhem.activities.base.Updateable;
 import li.klass.fhem.activities.core.FragmentBaseActivity;
+import li.klass.fhem.activities.core.Updateable;
 import li.klass.fhem.util.UIBroadcastReceiver;
 
 import java.io.Serializable;

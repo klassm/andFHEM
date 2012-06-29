@@ -40,7 +40,6 @@ import android.widget.Toast;
 import li.klass.fhem.ApplicationUrls;
 import li.klass.fhem.R;
 import li.klass.fhem.activities.PreferencesActivity;
-import li.klass.fhem.activities.base.Updateable;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.fragments.*;
@@ -107,6 +106,7 @@ public abstract class FragmentBaseActivity extends FragmentActivity implements A
             intentFilter.addAction(DISMISS_EXECUTING_DIALOG);
             intentFilter.addAction(SHOW_TOAST);
             intentFilter.addAction(DO_UPDATE);
+            intentFilter.addAction(BACK);
         }
 
         @Override
@@ -131,6 +131,8 @@ public abstract class FragmentBaseActivity extends FragmentActivity implements A
                             removeDialog();
                         } else if (action.equals(SHOW_TOAST)) {
                             Toast.makeText(FragmentBaseActivity.this, intent.getIntExtra(BundleExtraKeys.TOAST_STRING_ID, 0), Toast.LENGTH_SHORT).show();
+                        } else if (action.equals(BACK)) {
+                            onBackPressed();
                         }
                     } catch (Exception e) {
                         Log.e(FragmentBaseActivity.class.getName(), "exception occurred while receiving broadcast", e);

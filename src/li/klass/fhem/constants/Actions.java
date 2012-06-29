@@ -33,6 +33,7 @@ public class Actions {
     public static final String DISMISS_UPDATING_DIALOG = prefix + "DISMISS_UPDATING_DIALOG";
     public static final String SHOW_EXECUTING_DIALOG = prefix + "SHOW_EXECUTING_DIALOG";
     public static final String DISMISS_EXECUTING_DIALOG = prefix + "DISMISS_EXECUTING_DIALOG";
+    public static final String BACK = prefix + "BACK";
 
     public static final String SHOW_TOAST = prefix + "SHOW_TOAST";
 

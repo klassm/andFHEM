@@ -22,7 +22,7 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.activities.base;
+package li.klass.fhem.activities.core;
 
 public interface Updateable {
     void update(boolean doUpdate);

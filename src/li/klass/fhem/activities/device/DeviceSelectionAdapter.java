@@ -21,7 +21,7 @@
  *   51 Franklin Street, Fifth Floor
  */
 
-package li.klass.fhem.appwidget.adapter;
+package li.klass.fhem.activities.device;
 
 import android.content.Context;
 import android.view.View;
@@ -31,9 +31,9 @@ import li.klass.fhem.adapter.rooms.RoomDetailAdapter;
 import li.klass.fhem.domain.Device;
 import li.klass.fhem.domain.RoomDeviceList;
 
-public class WidgetDeviceSelectionAdapter extends RoomDetailAdapter {
+public class DeviceSelectionAdapter extends RoomDetailAdapter {
 
-    public WidgetDeviceSelectionAdapter(Context context, RoomDeviceList roomDeviceList) {
+    public DeviceSelectionAdapter(Context context, RoomDeviceList roomDeviceList) {
         super(context, roomDeviceList);
 
     }

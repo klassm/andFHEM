@@ -29,11 +29,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.util.Log;
-import li.klass.fhem.activities.base.Updateable;
 import li.klass.fhem.activities.core.FragmentBaseActivity;
+import li.klass.fhem.activities.core.Updateable;
 import li.klass.fhem.constants.BundleExtraKeys;
 
-import static li.klass.fhem.constants.Actions.*;
+import static li.klass.fhem.constants.Actions.DO_UPDATE;
 
 public class UIBroadcastReceiver extends BroadcastReceiver {
 

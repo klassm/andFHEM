@@ -41,7 +41,8 @@ public enum FragmentType {
     PREMIUM(PremiumFragment.class),
     ROOM_DETAIL(RoomDetailFragment.class),
     ROOM_LIST(RoomListFragment.class, R.string.tab_roomList, 1),
-    SEND_COMMAND(SendCommandFragment.class);
+    SEND_COMMAND(SendCommandFragment.class),
+    DEVICE_SELECTION(DeviceSelectionFragment.class);
 
     private Class<? extends BaseFragment> fragmentClass;
     private String topLevelTabName;

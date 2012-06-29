@@ -245,6 +245,7 @@
     <string name="shop_buyPemium">Buy andFHEM Premium</string>
 
     <string name="blank"></string>
+    <string name="deviceListEmpty">No matching devices found!</string>
 
     <string name="widget_small">andFHEM Small</string>
     <string name="widget_medium">andFHEM Middle</string>

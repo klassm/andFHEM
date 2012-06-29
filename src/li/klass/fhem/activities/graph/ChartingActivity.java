@@ -40,7 +40,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
 import li.klass.fhem.R;
-import li.klass.fhem.activities.base.Updateable;
+import li.klass.fhem.activities.core.Updateable;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.domain.Device;

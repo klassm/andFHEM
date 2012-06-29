@@ -245,6 +245,8 @@
     <string name="premium_desc">AndFHEM Premium beinhaltet die Abschaltung der Werbung in der Applikation!</string>
     <string name="shop_buyPemium">AndFHEM Premium kaufen</string>
 
+    <string name="deviceListEmpty">Keine passenden Geräte gefunden!</string>
+
     <string name="widget_small">andFHEM Klein</string>
     <string name="widget_medium">andFHEM Mittel</string>
     <string name="widget_big">andFHEM Groß</string>
