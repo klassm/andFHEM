@@ -63,8 +63,8 @@ public class BillingService {
         getCurrentProvider().unbindActivity(activity);
     }
 
-    public void updatePurchase(String orderId, String productId,
-                               BillingConstants.PurchaseState purchaseState, long purchaseTime, String developerPayload) {
+    public void markProductAsPurchases(String orderId, String productId,
+                                       BillingConstants.PurchaseState purchaseState, long purchaseTime, String developerPayload) {
         PurchaseDatabase.INSTANCE.updatePurchase(orderId, productId, purchaseState, purchaseTime, developerPayload);
     }
 

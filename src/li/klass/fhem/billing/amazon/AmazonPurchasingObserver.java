@@ -49,7 +49,7 @@ public class AmazonPurchasingObserver extends BasePurchasingObserver {
                 != PurchaseUpdatesResponse.PurchaseUpdatesRequestStatus.SUCCESSFUL) return;
 
         for (String revokedSku : purchaseUpdatesResponse.getRevokedSkus()) {
-            BillingService.INSTANCE.updatePurchase(revokedSku, revokedSku, BillingConstants.PurchaseState.REFUNDED,
+            BillingService.INSTANCE.markProductAsPurchases(revokedSku, revokedSku, BillingConstants.PurchaseState.REFUNDED,
                     System.currentTimeMillis(), null);
         }
 
@@ -71,6 +71,7 @@ public class AmazonPurchasingObserver extends BasePurchasingObserver {
         switch (purchaseResponse.getPurchaseRequestStatus()) {
             case ALREADY_ENTITLED:
                 Log.e(TAG, "already entitled for product " + sku);
+                processSuccessfulReceipt(receipt);
                 break;
             case FAILED:
                 Log.e(TAG, "purchase failed, product: " + sku);
@@ -98,7 +99,7 @@ public class AmazonPurchasingObserver extends BasePurchasingObserver {
         Set<String> ownedItems = billingService.getOwnedItems();
         if (ownedItems.contains(sku)) return;
 
-        billingService.updatePurchase(sku, sku, BillingConstants.PurchaseState.PURCHASED,
+        billingService.markProductAsPurchases(sku, sku, BillingConstants.PurchaseState.PURCHASED,
                 System.currentTimeMillis(), null);
     }
 

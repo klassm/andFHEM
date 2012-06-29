@@ -26,6 +26,7 @@ package li.klass.fhem.billing.amazon;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import com.amazon.inapp.purchasing.Offset;
 import com.amazon.inapp.purchasing.PurchasingManager;
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.billing.BillingProvider;
@@ -54,6 +55,7 @@ public class AmazonBillingProvider implements BillingProvider {
 
     @Override
     public void bindActivity(Activity activity) {
+        PurchasingManager.initiatePurchaseUpdatesRequest(Offset.BEGINNING);
     }
 
     @Override

@@ -165,6 +165,8 @@ public class PurchaseDatabase {
 
             // Update the "purchased items" table
             updatePurchasedItem(productId, quantity);
+        } catch (Exception e) {
+            Log.e(PurchaseDatabase.class.getName(), "something strange happened here while using the purchasing database!", e);
         } finally {
             cursor.close();
         }
