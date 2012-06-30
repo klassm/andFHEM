@@ -44,8 +44,8 @@ public class AtDevice extends Device<AtDevice> {
 
     public enum AtRepetition {
         ONCE, EVERY_DAY, WEEKEND, NOT_WEEKEND
-
     }
+
     public enum TimerType {
         RELATIVE, ABSOLUTE
     }
