@@ -77,15 +77,9 @@ public class PurchaseDatabase {
 
     private SQLiteDatabase mDb;
 
-    private DatabaseHelper mDatabaseHelper;
-
     private PurchaseDatabase() {
-        mDatabaseHelper = new DatabaseHelper(AndFHEMApplication.getContext());
+        DatabaseHelper mDatabaseHelper = new DatabaseHelper(AndFHEMApplication.getContext());
         mDb = mDatabaseHelper.getWritableDatabase();
-    }
-
-    public void close() {
-        mDatabaseHelper.close();
     }
 
     /**

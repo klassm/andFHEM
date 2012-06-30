@@ -135,7 +135,6 @@ public class PlayStoreResponseHandler {
                 PurchaseDatabase db = PurchaseDatabase.INSTANCE;
                 int quantity = db.updatePurchase(
                         orderId, productId, purchaseState, purchaseTime, developerPayload);
-                db.close();
 
                 // This needs to be synchronized because the UI thread can change the
                 // value of purchaseObserver.
