@@ -44,7 +44,7 @@ import java.util.Map;
 
 public abstract class Device<T extends Device> implements Serializable, Comparable<T> {
 
-    protected String room = AndFHEMApplication.getContext().getResources().getString(R.string.unsortedRoomName);
+    protected String room;
 
     protected String name;
 
@@ -98,7 +98,10 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
         }
 
         fillDeviceCharts(deviceCharts);
+
+        room = AndFHEMApplication.getContext().getResources().getString(R.string.unsortedRoomName);
         afterXMLRead();
+
     }
 
     private void parseNodeContent(Node item, String keyValue, String nodeContent) {

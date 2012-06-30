@@ -101,10 +101,14 @@ public class DeviceListParser {
             //replace values with an unset tag
             xmlList = xmlList.replaceAll("< name=[a-zA-Z\"=0-9 ]+>", "");
 
-            //xmlList = xmlList.replaceAll("<_internal__LIST>[\\s\\S]*</_internal__LIST>", "");
+            xmlList = xmlList.replaceAll("<_internal__LIST>[\\s\\S]*</_internal__LIST>", "");
             xmlList = xmlList.replaceAll("<notify_LIST[\\s\\S]*</notify_LIST>", "");
+            xmlList = xmlList.replaceAll("<weblink_LIST[\\s\\S]*</weblink_LIST>", "");
             xmlList = xmlList.replaceAll("<CUL_IR_LIST>[\\s\\S]*</CUL_IR_LIST>", "");
-            xmlList = xmlList.replaceAll("<at_LIST>[\\s\\S]*</at_LIST>", "");
+            xmlList = xmlList.replaceAll("<autocreate_LIST>[\\s\\S]*</autocreate_LIST>", "");
+
+            xmlList = xmlList.replaceAll("(fhem\\()\"([^\"]*)\"(\\))", "$1'$2'$3");
+            xmlList = xmlList.replaceAll("(<at.*?)<INT key=\"DEF\" value=\"[\\+\\*]{0,2}[0-9:]*[ ]?[\\{\"].*?/>", "$1");
 
             xmlList = xmlList.replaceAll("\"<", "\"&lt;");
             xmlList = xmlList.replaceAll(">\"", "&gt;\"");
@@ -116,7 +120,7 @@ public class DeviceListParser {
             // remove "" not being preceded by an =
             xmlList = xmlList.replaceAll("(?:[^=])\"\"+", "\"");
 
-            Log.d(DeviceListParser.class.getName(), "xmllist content:\n" + xmlList);
+            Log.e(DeviceListParser.class.getName(), "xmllist content:\n" + xmlList);
 
             DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
@@ -226,5 +230,4 @@ public class DeviceListParser {
             }
         }
     }
-
 }

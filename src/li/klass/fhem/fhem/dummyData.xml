@@ -769,6 +769,99 @@ room structexclude webCmd eventMap">
     <INT key="TYPE" value="at"/>
     <ATTR key="room" value="Timer"/>
 </at>
+<at name="a16" state="Next: 23:00:00" sets="" attrs="room group comment alias eventMap disable:0,1 skip_next:0,1 loglevel:0,1,2,3,4,5,6 alignTime fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon onOffDevice webCmd">
+    <INT key="DEF" value="*23:00:00 fhem("set lamp off") if ($we)"/>
+    <INT key="NAME" value="a16"/>
+    <INT key="NR" value="172"/>
+    <INT key="REP" value="-1"/>
+    <INT key="STATE" value="Next: 23:00:00"/>
+    <INT key="TRIGGERTIME" value="1341090000"/>
+    <INT key="TYPE" value="at"/>
+</at>
+<at name="afhem" state="Next: 17:00:00" sets=""
+    attrs="room group comment alias eventMap disable:0,1 skip_next:0,1 loglevel:0,1,2,3,4,5,6 alignTime fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon onOffDevice webCmd">
+    <INT key="DEF" value="17:00:00 set lamp on"/>
+    <INT key="NAME" value="a1"/>
+    <INT key="NR" value="175"/>
+    <INT key="STATE" value="Next: 17:00:00"/>
+    <INT key="TRIGGERTIME" value="1341068400"/>
+    <INT key="TYPE" value="at"/>
+    <INT key="VOLATILE" value="1"/>
+</at>
+
+<at name="a14" state="Next: 19:26:59" sets="" attrs="room group comment alias eventMap disable:0,1 skip_next:0,1 loglevel:0,1,2,3,4,5,6 alignTime fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon onOffDevice webCmd">
+    <INT key="CFGFN" value="./log/fhem.save"/>
+    <INT key="DEF" value="+{sunrise(+120)} set lamp on"/>
+    <INT key="NAME" value="a14"/>
+    <INT key="NR" value="174"/>
+    <INT key="NTM" value="19:26:59"/>
+    <INT key="STATE" value="Next: 19:26:59"/>
+    <INT key="TRIGGERTIME" value="1341163619.04494"/>
+    <INT key="TYPE" value="at"/>
+    <INT key="VOLATILE" value="1"/>
+</at>
+<at name="a16" state="Next: 23:00:00" sets="" attrs="room group comment alias eventMap disable:0,1 skip_next:0,1 loglevel:0,1,2,3,4,5,6 alignTime fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon onOffDevice webCmd">
+    <INT key="DEF" value="*23:00:00 fhem("set lamp off") if ($we)"/>
+    <INT key="NAME" value="a16"/>
+    <INT key="NR" value="172"/>
+    <INT key="REP" value="-1"/>
+    <INT key="STATE" value="Next: 23:00:00"/>
+    <INT key="TRIGGERTIME" value="1341090000"/>
+    <INT key="TYPE" value="at"/>
+</at>
+<at name="a2" state="Next: 17:00:00" sets="" attrs="room group comment alias eventMap disable:0,1 skip_next:0,1 loglevel:0,1,2,3,4,5,6 alignTime fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon onOffDevice webCmd">
+    <INT key="CFGFN" value="./log/fhem.save"/>
+    <INT key="DEF" value="17:00:00 { Log 1, "Teatime" }"/>
+    <INT key="NAME" value="a2"/>
+    <INT key="NR" value="175"/>
+    <INT key="STATE" value="Next: 17:00:00"/>
+    <INT key="TRIGGERTIME" value="1341068400"/>
+    <INT key="TYPE" value="at"/>
+    <INT key="VOLATILE" value="1"/>
+</at>
+<at name="a3" state="Next: 17:00:00" sets="" attrs="room group comment alias eventMap disable:0,1 skip_next:0,1 loglevel:0,1,2,3,4,5,6 alignTime fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon onOffDevice webCmd">
+    <INT key="CFGFN" value="./log/fhem.save"/>
+    <INT key="DEF" value="17:00:00 "/bin/echo "Teatime" > /dev/console""/>
+    <INT key="NAME" value="a3"/>
+    <INT key="NR" value="176"/>
+    <INT key="STATE" value="Next: 17:00:00"/>
+    <INT key="TRIGGERTIME" value="1341068400"/>
+    <INT key="TYPE" value="at"/>
+    <INT key="VOLATILE" value="1"/>
+</at>
+
+<at name="a13" state="Next: 07:00:00" sets=""
+    attrs="room group comment alias eventMap disable:0,1 skip_next:0,1 loglevel:0,1,2,3,4,5,6 alignTime fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon onOffDevice webCmd">
+    <INT key="DEF" value="*07:00 set lamp1,lamp2 on-till {sunrise(+600)}"/>
+    <INT key="NAME" value="a13"/>
+    <INT key="NR" value="199"/>
+    <INT key="REP" value="-1"/>
+    <INT key="STATE" value="Next: 07:00:00"/>
+    <INT key="TRIGGERTIME" value="1341118800"/>
+    <INT key="TYPE" value="at"/>
+</at>
+
+<at name="a4" state="Next: 17:00:00" sets=""
+    attrs="room group comment alias eventMap disable:0,1 skip_next:0,1 loglevel:0,1,2,3,4,5,6 alignTime fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon onOffDevice webCmd">
+    <INT key="DEF" value="*17:00:00 set lamp on"/>
+    <INT key="NAME" value="a4"/>
+    <INT key="NR" value="178"/>
+    <INT key="REP" value="-1"/>
+    <INT key="STATE" value="Next: 17:00:00"/>
+    <INT key="TRIGGERTIME" value="1341068400"/>
+    <INT key="TYPE" value="at"/>
+</at>
+<at name="a5" state="Next: 13:00:22" sets=""
+    attrs="room group comment alias eventMap disable:0,1 skip_next:0,1 loglevel:0,1,2,3,4,5,6 alignTime fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon onOffDevice webCmd">
+    <INT key="DEF" value="+00:00:10 set lamp on"/>
+    <INT key="NAME" value="a5"/>
+    <INT key="NR" value="181"/>
+    <INT key="NTM" value="13:00:22"/>
+    <INT key="STATE" value="Next: 13:00:22"/>
+    <INT key="TRIGGERTIME" value="1341054022.64136"/>
+    <INT key="TYPE" value="at"/>
+    <INT key="VOLATILE" value="1"/>
+</at>
 </at_LIST>
 <CUL_LIST>
 <CUL name="CUL" state="Initialized"
