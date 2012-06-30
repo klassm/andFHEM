@@ -48,8 +48,8 @@ public class AtDevice extends Device<AtDevice> {
     }
     public enum TimerType {
         RELATIVE, ABSOLUTE
-
     }
+
     private String targetDevice;
     private String targetState;
     private String targetStateAddtionalInformation;
@@ -150,7 +150,6 @@ public class AtDevice extends Device<AtDevice> {
     }
 
     public static void main(String[] args) {
-
         parse("17:00:00 set lamp on");
         parse("*23:00:00 fhem('set lamp off') if ($we)");
         parse("+*23:00:00 fhem('set lamp off-for-timer 200') if (not $we)");
