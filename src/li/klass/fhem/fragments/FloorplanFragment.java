@@ -80,6 +80,9 @@ public class FloorplanFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View superView = super.onCreateView(inflater, container, savedInstanceState);
+        if (superView != null) return superView;
+
         View view = inflater.inflate(R.layout.floorplan, null);
 
         TouchImageView.OnTouchImageViewChangeListener listener = new TouchImageView.OnTouchImageViewChangeListener() {
