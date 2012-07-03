@@ -23,6 +23,7 @@
 
 package li.klass.fhem.domain;
 
+import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
 import org.w3c.dom.NamedNodeMap;
 

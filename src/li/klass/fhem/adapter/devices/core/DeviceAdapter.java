@@ -35,8 +35,8 @@ import android.widget.TextView;
 import li.klass.fhem.activities.graph.ChartingActivity;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.domain.Device;
-import li.klass.fhem.domain.DeviceChart;
+import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.fragments.core.DeviceDetailFragment;
 
 public abstract class DeviceAdapter<D extends Device> {

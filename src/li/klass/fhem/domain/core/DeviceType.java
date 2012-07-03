@@ -21,11 +21,12 @@
  *   51 Franklin Street, Fifth Floor
  */
 
-package li.klass.fhem.domain;
+package li.klass.fhem.domain.core;
 
 import li.klass.fhem.adapter.devices.*;
 import li.klass.fhem.adapter.devices.core.DeviceAdapter;
 import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
+import li.klass.fhem.domain.*;
 import li.klass.fhem.domain.fht.FHT8VDevice;
 import li.klass.fhem.fhem.ConnectionType;
 import li.klass.fhem.util.ApplicationProperties;
@@ -60,7 +61,9 @@ public enum DeviceType {
     FHT8V("FHT8V", FHT8VDevice.class),
     TRX_WEATHER("TRX_WEATHER", TRXWeatherDevice.class),
     TRX("TRX", TRXDevice.class),
-    DUMMY("dummy", DummyDevice.class, new DummyAdapter());
+    DUMMY("dummy", DummyDevice.class, new DummyAdapter()),
+    AT("at", AtDevice.class, null, ConnectionType.NEVER)
+    ;
 
     private String xmllistTag;
     private Class<? extends Device> deviceClass;

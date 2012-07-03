@@ -30,7 +30,7 @@ import li.klass.fhem.appwidget.view.widget.medium.StatusWidgetView;
 import li.klass.fhem.appwidget.view.widget.medium.TemperatureWidgetView;
 import li.klass.fhem.appwidget.view.widget.medium.ToggleWidgetView;
 import li.klass.fhem.appwidget.view.widget.small.SmallToggleWidget;
-import li.klass.fhem.domain.Device;
+import li.klass.fhem.domain.core.Device;
 
 import java.util.ArrayList;
 import java.util.List;

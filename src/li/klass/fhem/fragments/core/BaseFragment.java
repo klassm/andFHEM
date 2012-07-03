@@ -40,6 +40,7 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
 
     private transient UIBroadcastReceiver broadcastReceiver;
     private transient View contentView;
+    protected Bundle resultData;
 
     public BaseFragment() {}
     public BaseFragment(Bundle bundle) {}
@@ -85,5 +86,9 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
         if (broadcastReceiver != null) {
             broadcastReceiver.detach();
         }
+    }
+
+    public final void onBackPressResult(Bundle resultData) {
+        this.resultData = resultData;
     }
 }

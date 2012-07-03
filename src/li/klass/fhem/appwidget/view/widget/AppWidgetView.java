@@ -35,7 +35,7 @@ import li.klass.fhem.activities.MainActivity;
 import li.klass.fhem.appwidget.WidgetConfiguration;
 import li.klass.fhem.appwidget.annotation.SupportsWidget;
 import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.domain.Device;
+import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.fragments.core.DeviceDetailFragment;
 
 public abstract class AppWidgetView {

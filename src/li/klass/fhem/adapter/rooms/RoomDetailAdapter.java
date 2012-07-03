@@ -31,9 +31,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.DeviceAdapter;
-import li.klass.fhem.domain.Device;
-import li.klass.fhem.domain.DeviceType;
 import li.klass.fhem.domain.RoomDeviceList;
+import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.DeviceType;
 import li.klass.fhem.widget.NestedListViewAdapter;
 
 import java.util.ArrayList;

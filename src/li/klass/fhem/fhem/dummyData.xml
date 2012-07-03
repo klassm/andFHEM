@@ -759,7 +759,7 @@ room structexclude webCmd eventMap">
 
 <at_LIST>
 <at name="d_FB_Temp" state="Next: 21:24:22" sets="" attrs="room comment alias disable:0,1 skip_next:0,1 loglevel:0,1,2,3,4,5,6 webCmd fm_fav fm_name fm_order fm_groups eventMap">
-    <INT key="DEF" value="+*00:10:00 "(/bin/echo -n "`date '+%Y-%m-%d_%H:%M:%S FB_Temp FHZ:measured-temp:'` ">> ./log/`date +%Y-%m`_Temp_FB.log & /usr/bin/ctlmgr_ctl r power status/act_temperature >> ./log/`date +%Y-%m`_Temp_FB.log )""/>
+    <INT key="DEF" value="+*00:10:00 &quot;(/bin/echo -n &quot;`date '+%Y-%m-%d_%H:%M:%S FB_Temp FHZ:measured-temp:'` &quot;>> ./log/`date +%Y-%m`_Temp_FB.log &amp; /usr/bin/ctlmgr_ctl r power status/act_temperature >> ./log/`date +%Y-%m`_Temp_FB.log )&quot;"/>
     <INT key="NAME" value="d_FB_Temp"/>
     <INT key="NR" value="109"/>
     <INT key="NTM" value="21:24:22"/>
@@ -770,7 +770,7 @@ room structexclude webCmd eventMap">
     <ATTR key="room" value="Timer"/>
 </at>
 <at name="a16" state="Next: 23:00:00" sets="" attrs="room group comment alias eventMap disable:0,1 skip_next:0,1 loglevel:0,1,2,3,4,5,6 alignTime fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon onOffDevice webCmd">
-    <INT key="DEF" value="*23:00:00 fhem("set lamp off") if ($we)"/>
+    <INT key="DEF" value="*23:00:00 { fhem(&quot;set lamp off&quot;) if ($we) }"/>
     <INT key="NAME" value="a16"/>
     <INT key="NR" value="172"/>
     <INT key="REP" value="-1"/>
@@ -801,7 +801,7 @@ room structexclude webCmd eventMap">
     <INT key="VOLATILE" value="1"/>
 </at>
 <at name="a16" state="Next: 23:00:00" sets="" attrs="room group comment alias eventMap disable:0,1 skip_next:0,1 loglevel:0,1,2,3,4,5,6 alignTime fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon onOffDevice webCmd">
-    <INT key="DEF" value="*23:00:00 fhem("set lamp off") if ($we)"/>
+    <INT key="DEF" value="*23:00:00 fhem(&quot;set lamp off&quot;) if ($we)"/>
     <INT key="NAME" value="a16"/>
     <INT key="NR" value="172"/>
     <INT key="REP" value="-1"/>
@@ -811,7 +811,7 @@ room structexclude webCmd eventMap">
 </at>
 <at name="a2" state="Next: 17:00:00" sets="" attrs="room group comment alias eventMap disable:0,1 skip_next:0,1 loglevel:0,1,2,3,4,5,6 alignTime fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon onOffDevice webCmd">
     <INT key="CFGFN" value="./log/fhem.save"/>
-    <INT key="DEF" value="17:00:00 { Log 1, "Teatime" }"/>
+    <INT key="DEF" value="17:00:00 { Log 1, &quot;Teatime&quot; }"/>
     <INT key="NAME" value="a2"/>
     <INT key="NR" value="175"/>
     <INT key="STATE" value="Next: 17:00:00"/>
@@ -821,7 +821,7 @@ room structexclude webCmd eventMap">
 </at>
 <at name="a3" state="Next: 17:00:00" sets="" attrs="room group comment alias eventMap disable:0,1 skip_next:0,1 loglevel:0,1,2,3,4,5,6 alignTime fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon onOffDevice webCmd">
     <INT key="CFGFN" value="./log/fhem.save"/>
-    <INT key="DEF" value="17:00:00 "/bin/echo "Teatime" > /dev/console""/>
+    <INT key="DEF" value="17:00:00 &quot;/bin/echo &quot;Teatime&quot; > /dev/console&quot;"/>
     <INT key="NAME" value="a3"/>
     <INT key="NR" value="176"/>
     <INT key="STATE" value="Next: 17:00:00"/>
@@ -843,7 +843,7 @@ room structexclude webCmd eventMap">
 
 <at name="a4" state="Next: 17:00:00" sets=""
     attrs="room group comment alias eventMap disable:0,1 skip_next:0,1 loglevel:0,1,2,3,4,5,6 alignTime fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon onOffDevice webCmd">
-    <INT key="DEF" value="*17:00:00 set lamp on"/>
+    <INT key="DEF" value="+00:01:00 { fhem(&quot;set au_brunnen on&quot;) }"/>
     <INT key="NAME" value="a4"/>
     <INT key="NR" value="178"/>
     <INT key="REP" value="-1"/>
@@ -2050,17 +2050,17 @@ room structexclude webCmd eventMap">
     <STATE key="cum_day" value="2011-12-05 00:01:01 T: 283802.8  H: 4657934  W: 390585  R: 19.4"
            measured="2011-12-05 16:29:47"/>
     <STATE key="cum_month" value="4 T: 26.7  H: 152  W: 169.6  R: 10.2" measured="2011-12-05 00:01:01"/>
-    <STATE key="humidity" value="74 (%)" measured="2011-12-05 16:29:47"/>
+    <STATE key="humidity" value="74" measured="2011-12-05 16:29:47"/>
     <STATE key="israining" value="no (yes/no)" measured="2011-12-05 16:29:47"/>
-    <STATE key="rain" value="24.5 (l/m2)" measured="2011-12-05 16:29:47"/>
+    <STATE key="rain" value="24.5" measured="2011-12-05 16:29:47"/>
     <STATE key="rain_raw" value="96 (counter)" measured="2011-12-05 16:29:47"/>
     <STATE key="rain_raw_adj" value="96" measured="2011-12-05 16:29:47"/>
-    <STATE key="temperature" value="2.0 (Celsius)" measured="2011-12-05 16:29:47"/>
+    <STATE key="temperature" value="2.0" measured="2011-12-05 16:29:47"/>
     <STATE key="tsecs" value="1323098987" measured="2011-12-05 16:29:47"/>
     <STATE key="unknown1" value="1 " measured="2011-12-05 16:29:47"/>
     <STATE key="unknown2" value="7 " measured="2011-12-05 16:29:47"/>
     <STATE key="unknown3" value="1 " measured="2011-12-05 16:29:47"/>
-    <STATE key="wind" value="2.2 (km/h)" measured="2011-12-05 16:29:47"/>
+    <STATE key="wind" value="2.2" measured="2011-12-05 16:29:47"/>
 </KS300>
 
 <KS300 name="everest" state="T: -20.0  H: 74  W: 2.2  R: 24.5  IR: no" sets=""
@@ -2080,23 +2080,23 @@ room structexclude webCmd eventMap">
     <INT key="TYPE" value="KS300"/>
     <INT key="WINDUNIT" value="1"/>
     <INT key="IODev" value="CUL"/>
-    <ATTR key="room" value="unknown"/>
-    <STATE key="avg_day" value="T: -25.8  H: 78  W: 6.6  R: 5.1" measured="2011-12-05 16:29:47"/>
-    <STATE key="avg_month" value="T: -20.7  H: 38  W: 42.4  R: 10.2" measured="2011-12-05 00:01:01"/>
+    <ATTR key="room" value="garten"/>
+    <STATE key="avg_day" value="T: 4.8  H: 78  W: 6.6  R: 5.1" measured="2011-12-05 16:29:47"/>
+    <STATE key="avg_month" value="T: 6.7  H: 38  W: 42.4  R: 10.2" measured="2011-12-05 00:01:01"/>
     <STATE key="cum_day" value="2011-12-05 00:01:01 T: 283802.8  H: 4657934  W: 390585  R: 19.4"
            measured="2011-12-05 16:29:47"/>
     <STATE key="cum_month" value="4 T: 26.7  H: 152  W: 169.6  R: 10.2" measured="2011-12-05 00:01:01"/>
-    <STATE key="humidity" value="74 (%)" measured="2011-12-05 16:29:47"/>
+    <STATE key="humidity" value="74" measured="2011-12-05 16:29:47"/>
     <STATE key="israining" value="no (yes/no)" measured="2011-12-05 16:29:47"/>
-    <STATE key="rain" value="24.5 (l/m2)" measured="2011-12-05 16:29:47"/>
+    <STATE key="rain" value="24.5" measured="2011-12-05 16:29:47"/>
     <STATE key="rain_raw" value="96 (counter)" measured="2011-12-05 16:29:47"/>
     <STATE key="rain_raw_adj" value="96" measured="2011-12-05 16:29:47"/>
-    <STATE key="temperature" value="-20.0 (Celsius)" measured="2011-12-05 16:29:47"/>
+    <STATE key="temperature" value="2.0" measured="2011-12-05 16:29:47"/>
     <STATE key="tsecs" value="1323098987" measured="2011-12-05 16:29:47"/>
     <STATE key="unknown1" value="1 " measured="2011-12-05 16:29:47"/>
     <STATE key="unknown2" value="7 " measured="2011-12-05 16:29:47"/>
     <STATE key="unknown3" value="1 " measured="2011-12-05 16:29:47"/>
-    <STATE key="wind" value="2.2 (km/h)" measured="2011-12-05 16:29:47"/>
+    <STATE key="wind" value="2.2" measured="2011-12-05 16:29:47"/>
 </KS300>
 </KS300_LIST>
 
@@ -2339,7 +2339,7 @@ room structexclude webCmd eventMap">
     <INT key="STATE" value="initial"/>
     <INT key="TYPE" value="weblink"/>
     <INT key="WLTYPE" value="fileplot"/>
-    <ATTR key="label" value=""CUL_WS_2 Min $data{min1}, Max $data{max1}, Last $data{currval1}""/>
+    <ATTR key="label" value="&quot;CUL_WS_2 Min $data{min1}, Max $data{max1}, Last $data{currval1}&quot;"/>
     <ATTR key="room" value="APlots"/>
 </weblink>
 <weblink name="weblink_KS300_2" state="initial" sets=""
@@ -2364,7 +2364,7 @@ room structexclude webCmd eventMap">
     <INT key="TYPE" value="weblink"/>
     <INT key="WLTYPE" value="iframe"/>
     <ATTR key="fp_Lindenhof" value="420,25"/>
-    <ATTR key="htmlattr" value="width="220" height="330" frameborder="0" marginheight="0" marginwidth="0""/>
+    <ATTR key="htmlattr" value="width=&quot;220&quot; height=&quot;330&quot; frameborder=&quot;0&quot; marginheight=&quot;0&quot; marginwidth=&quot;0&quot;"/>
     <ATTR key="room" value="Plots"/>
 
 </weblink>

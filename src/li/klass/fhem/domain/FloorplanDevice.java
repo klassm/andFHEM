@@ -23,6 +23,7 @@
 
 package li.klass.fhem.domain;
 
+import li.klass.fhem.domain.core.Device;
 import org.w3c.dom.NamedNodeMap;
 
 public class FloorplanDevice extends Device<FloorplanDevice> {

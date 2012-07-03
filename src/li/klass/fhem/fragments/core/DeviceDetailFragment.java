@@ -37,8 +37,8 @@ import li.klass.fhem.adapter.devices.core.DeviceAdapter;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
-import li.klass.fhem.domain.Device;
-import li.klass.fhem.domain.DeviceType;
+import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.DeviceType;
 import li.klass.fhem.util.advertisement.AdvertisementUtil;
 
 public class DeviceDetailFragment extends BaseFragment {

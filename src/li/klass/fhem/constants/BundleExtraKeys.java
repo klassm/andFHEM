@@ -72,4 +72,15 @@ public class BundleExtraKeys {
 
     public static final String DEVICE_FILTER = "DEVICE_FILTER";
     public static final String CLICKED_DEVICE = "CLICKED_DEVICE";
+
+    public static final String TIMER_NAME = "TIMER_NAME";
+    public static final String TIMER_HOUR = "HOUR";
+    public static final String TIMER_MINUTE = "MINUTE";
+    public static final String TIMER_SECOND = "SECOND";
+    public static final String TIMER_TYPE = "TIMER_TYPE";
+    public static final String TIMER_REPETITION = "TIMER_REPETITION";
+    public static final String TIMER_TARGET_DEVICE_NAME = "TIMER_TARGET_DEVICE_NAME";
+    public static final String TIMER_TARGET_STATE = "TIMER_TARGET_STATE";
+    public static final String TIMER_TARGET_STATE_APPENDIX = "TIMER_TARGET_STATE_APPENDIX";
+
 }

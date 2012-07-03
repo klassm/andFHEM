@@ -28,6 +28,8 @@ import li.klass.fhem.R;
 import li.klass.fhem.appwidget.annotation.*;
 import li.klass.fhem.appwidget.view.widget.medium.MediumInformationWidgetView;
 import li.klass.fhem.appwidget.view.widget.medium.TemperatureWidgetView;
+import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.fht.FHTDayControl;
 import li.klass.fhem.domain.fht.FHTMode;
 import li.klass.fhem.domain.genericview.FloorplanViewSettings;

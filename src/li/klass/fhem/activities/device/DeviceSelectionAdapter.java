@@ -28,8 +28,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import li.klass.fhem.adapter.rooms.RoomDetailAdapter;
-import li.klass.fhem.domain.Device;
 import li.klass.fhem.domain.RoomDeviceList;
+import li.klass.fhem.domain.core.Device;
 
 public class DeviceSelectionAdapter extends RoomDetailAdapter {
 

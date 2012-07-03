@@ -115,4 +115,10 @@ public class ListDataAdapter<T extends Comparable<T>> extends BaseAdapter {
             Collections.sort(data);
         }
     }
+
+
+    @Override
+    public boolean isEmpty() {
+        return data == null || data.size() == 0;
+    }
 }

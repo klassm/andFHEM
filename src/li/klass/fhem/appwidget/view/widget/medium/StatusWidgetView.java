@@ -28,7 +28,7 @@ import android.widget.RemoteViews;
 import li.klass.fhem.R;
 import li.klass.fhem.appwidget.WidgetConfiguration;
 import li.klass.fhem.appwidget.view.widget.AppWidgetView;
-import li.klass.fhem.domain.Device;
+import li.klass.fhem.domain.core.Device;
 
 public class StatusWidgetView extends AppWidgetView {
     @Override

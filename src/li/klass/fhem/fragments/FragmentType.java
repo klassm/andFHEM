@@ -42,7 +42,9 @@ public enum FragmentType {
     ROOM_DETAIL(RoomDetailFragment.class),
     ROOM_LIST(RoomListFragment.class, R.string.tab_roomList, 1),
     SEND_COMMAND(SendCommandFragment.class),
-    DEVICE_SELECTION(DeviceSelectionFragment.class);
+    DEVICE_SELECTION(DeviceSelectionFragment.class),
+    TIMER_OVERVIEW(TimerFragment.class),
+    TIMER_DETAIL(TimerDetailFragment.class);
 
     private Class<? extends BaseFragment> fragmentClass;
     private String topLevelTabName;

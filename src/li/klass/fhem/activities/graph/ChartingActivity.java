@@ -43,7 +43,7 @@ import li.klass.fhem.R;
 import li.klass.fhem.activities.core.Updateable;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.ResultCodes;
-import li.klass.fhem.domain.Device;
+import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.service.graph.GraphEntry;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.service.graph.description.SeriesType;

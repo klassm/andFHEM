@@ -30,7 +30,7 @@ import li.klass.fhem.appwidget.WidgetConfiguration;
 import li.klass.fhem.appwidget.annotation.WidgetTemperatureAdditionalField;
 import li.klass.fhem.appwidget.annotation.WidgetTemperatureField;
 import li.klass.fhem.appwidget.view.widget.AppWidgetView;
-import li.klass.fhem.domain.Device;
+import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.util.ReflectionUtil;
 
 import static li.klass.fhem.util.ReflectionUtil.getStringForAnnotation;

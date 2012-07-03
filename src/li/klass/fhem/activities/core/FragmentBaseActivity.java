@@ -29,6 +29,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -47,6 +48,7 @@ import li.klass.fhem.fragments.core.ActionBarShowTabs;
 import li.klass.fhem.fragments.core.BaseFragment;
 import li.klass.fhem.fragments.core.TopLevelFragment;
 import li.klass.fhem.service.room.RoomListService;
+import li.klass.fhem.util.DialogUtil;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -116,12 +118,12 @@ public abstract class FragmentBaseActivity extends FragmentActivity implements A
                 public void run() {
                     try {
                         String action = intent.getAction();
-                        if (action.equals(Actions.SHOW_FRAGMENT)) {
+                        if (Actions.SHOW_FRAGMENT.equals(action)) {
                             String fragmentName = intent.getStringExtra(BundleExtraKeys.FRAGMENT_NAME);
                             prepareAndCallSwitchToFragment(fragmentName, intent);
                         } else if (action.equals(Actions.DISMISS_UPDATING_DIALOG)) {
                             setShowRefreshProgressIcon(false);
-                        } else if (action.equals(Actions.DO_UPDATE) && intent.getBooleanExtra(BundleExtraKeys.DO_REFRESH, false)) {
+                        } else if (intent.getBooleanExtra(BundleExtraKeys.DO_REFRESH, false) && action.equals(Actions.DO_UPDATE)) {
                             setShowRefreshProgressIcon(true);
                         } else if (action.equals(SHOW_EXECUTING_DIALOG)) {
                             Bundle bundle = new Bundle();
@@ -132,7 +134,7 @@ public abstract class FragmentBaseActivity extends FragmentActivity implements A
                         } else if (action.equals(SHOW_TOAST)) {
                             Toast.makeText(FragmentBaseActivity.this, intent.getIntExtra(BundleExtraKeys.TOAST_STRING_ID, 0), Toast.LENGTH_SHORT).show();
                         } else if (action.equals(BACK)) {
-                            onBackPressed();
+                            onBackPressed(intent.getExtras());
                         }
                     } catch (Exception e) {
                         Log.e(FragmentBaseActivity.class.getName(), "exception occurred while receiving broadcast", e);
@@ -344,6 +346,19 @@ public abstract class FragmentBaseActivity extends FragmentActivity implements A
                 sendBroadcast(conversion);
 
                 return true;
+
+            case R.id.menu_timer:
+                if (Build.VERSION.SDK_INT < 11) {
+                    String text = String.format(getString(R.string.feature_requires_android_version), 3);
+                    DialogUtil.showAlertDialog(this, R.string.android_version, text);
+                    return true;
+                }
+                Intent timer = new Intent(Actions.SHOW_FRAGMENT);
+                timer.putExtra(BundleExtraKeys.FRAGMENT_NAME, TimerFragment.class.getName());
+                sendBroadcast(timer);
+
+                return true;
+
         }
 
         return super.onOptionsItemSelected(item);
@@ -351,11 +366,16 @@ public abstract class FragmentBaseActivity extends FragmentActivity implements A
 
     @Override
     public void onBackPressed() {
+        onBackPressed(null);
+    }
+
+    private void onBackPressed(Bundle data) {
         removeDialog();
         BaseFragment previousFragment = removeLastHistoryFragment(fragmentHistoryStack);
 
         if (previousFragment != null) {
             switchToFragment(previousFragment, false);
+            previousFragment.onBackPressResult(data);
         } else {
             finish();
         }

@@ -38,8 +38,8 @@ import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.domain.Device;
-import li.klass.fhem.domain.ToggleableDevice;
+import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.ToggleableDevice;
 
 import java.util.Map;
 

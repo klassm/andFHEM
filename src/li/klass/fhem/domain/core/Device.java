@@ -22,12 +22,13 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.domain;
+package li.klass.fhem.domain.core;
 
 import android.util.Log;
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.appwidget.view.widget.AppWidgetView;
+import li.klass.fhem.domain.FileLogDevice;
 import li.klass.fhem.domain.floorplan.Coordinate;
 import li.klass.fhem.domain.floorplan.FloorplanPosition;
 import li.klass.fhem.domain.genericview.ShowField;
@@ -59,14 +60,21 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
     protected String definition;
     protected Map<String, String> eventMapReverse = new HashMap<String, String>();
     protected Map<String, String> eventMap = new HashMap<String, String>();
+    private String[] availableTargetStates;
 
     private Map<String, FloorplanPosition> floorPlanPositionMap = new HashMap<String, FloorplanPosition>();
 
     protected volatile FileLogDevice fileLog;
-
     private List<DeviceChart> deviceCharts = new ArrayList<DeviceChart>();
 
     public void loadXML(Node xml) {
+
+        Node setsAttribute = xml.getAttributes().getNamedItem("sets");
+        if (setsAttribute != null) {
+            String setsText = setsAttribute.getNodeValue().replaceAll("\\*", "");
+            parseSetsAttribute(setsText);
+        }
+
         NodeList childNodes = xml.getChildNodes();
         for (int i = 0; i < childNodes.getLength(); i++) {
             Node item = childNodes.item(i);
@@ -99,9 +107,19 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
 
         fillDeviceCharts(deviceCharts);
 
-        room = AndFHEMApplication.getContext().getResources().getString(R.string.unsortedRoomName);
         afterXMLRead();
 
+    }
+
+    private void parseSetsAttribute(String setsText) {
+        setsText = setsText.trim();
+        String lowercase = setsText.toLowerCase();
+        if (lowercase.equals("") || lowercase.equals("*") || lowercase.contains("not set function")
+                || lowercase.contains("needs one parameter")) {
+            return;
+        }
+
+        this.availableTargetStates = setsText.split(" ");
     }
 
     private void parseNodeContent(Node item, String keyValue, String nodeContent) {
@@ -182,6 +200,9 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
     }
 
     public String getRoom() {
+        if (room == null) {
+            return AndFHEMApplication.getContext().getResources().getString(R.string.unsortedRoomName);
+        }
         return room;
     }
 
@@ -314,6 +335,10 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
         FloorplanPosition newPosition = new FloorplanPosition(coordinate.x, coordinate.y, floorplanPosition.viewType);
 
         floorPlanPositionMap.put(key, newPosition);
+    }
+
+    public String[] getAvailableTargetStates() {
+        return availableTargetStates;
     }
 
     public boolean supportsWidget(Class<? extends AppWidgetView> appWidgetClass) {

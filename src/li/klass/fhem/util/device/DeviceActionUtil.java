@@ -36,7 +36,7 @@ import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.domain.Device;
+import li.klass.fhem.domain.core.Device;
 
 public class DeviceActionUtil {
     private static ResultReceiver updateReceiver = new ResultReceiver(new Handler()) {

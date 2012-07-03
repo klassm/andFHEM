@@ -26,16 +26,14 @@
 
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- Selected -->
-    <item
-            android:state_focused="true"
-            android:state_selected="false"
-            android:drawable="@drawable/theme_listview_selected_bg"/>
+    <item android:state_focused="true"
+          android:state_selected="false"
+          android:drawable="@drawable/theme_listview_selected_bg"/>
 
-    <!-- Pressed -->
-    <item
-            android:state_selected="true"
-            android:state_focused="false"
-            android:drawable="@android:color/transparent" />
+    <item android:state_pressed="true"
+          android:drawable="@drawable/theme_listview_selected_bg" />
 
+    <item android:state_selected="true"
+          android:state_focused="false"
+          android:drawable="@android:color/transparent" />
 </selector>

@@ -25,12 +25,18 @@
 package li.klass.fhem.service.intent;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.ResultReceiver;
 import android.util.Log;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
-import li.klass.fhem.domain.*;
+import li.klass.fhem.domain.CULHMDevice;
+import li.klass.fhem.domain.FHTDevice;
+import li.klass.fhem.domain.FS20Device;
+import li.klass.fhem.domain.WOLDevice;
+import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.ToggleableDevice;
 import li.klass.fhem.domain.fht.FHTMode;
 import li.klass.fhem.domain.floorplan.Coordinate;
 import li.klass.fhem.service.device.*;
@@ -117,7 +123,32 @@ public class DeviceIntentService extends ConvenientIntentService {
             sendBroadcast(widgetUpdateIntent);
 
             return result;
+        } else if (action.equals(Actions.DEVICE_TIMER_MODIFY)) {
+           processTimerIntent(intent, true);
+        } else if (action.equals(Actions.DEVICE_TIMER_NEW)) {
+            processTimerIntent(intent, false);
         }
+        return SUCCESS;
+    }
+
+    private STATE processTimerIntent(Intent intent, boolean isModify) {
+        Bundle extras = intent.getExtras();
+        String targetDeviceName = extras.getString(BundleExtraKeys.TIMER_TARGET_DEVICE_NAME);
+        String targetState = extras.getString(BundleExtraKeys.TIMER_TARGET_STATE);
+        int hour = extras.getInt(BundleExtraKeys.TIMER_HOUR, 0);
+        int minute = extras.getInt(BundleExtraKeys.TIMER_MINUTE, 0);
+        int second = extras.getInt(BundleExtraKeys.TIMER_SECOND, 0);
+        String repetition = extras.getString(BundleExtraKeys.TIMER_REPETITION);
+        String type = extras.getString(BundleExtraKeys.TIMER_TYPE);
+        String stateAppendix = extras.getString(BundleExtraKeys.TIMER_TARGET_STATE_APPENDIX, null);
+        String timerName = extras.getString(BundleExtraKeys.TIMER_NAME);
+
+        if (isModify) {
+            AtService.INSTANCE.modify(timerName, hour, minute, second, repetition, type, targetDeviceName, targetState, stateAppendix);
+        } else {
+            AtService.INSTANCE.createNew(timerName, hour, minute, second, repetition, type, targetDeviceName, targetState, stateAppendix);
+        }
+
         return SUCCESS;
     }
 

@@ -24,7 +24,7 @@
 package li.klass.fhem.service.device;
 
 import android.util.Log;
-import li.klass.fhem.domain.Device;
+import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.floorplan.Coordinate;
 import li.klass.fhem.domain.floorplan.FloorplanPosition;
 import li.klass.fhem.service.CommandExecutionService;

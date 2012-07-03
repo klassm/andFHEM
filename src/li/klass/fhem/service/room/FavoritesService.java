@@ -27,8 +27,8 @@ package li.klass.fhem.service.room;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import li.klass.fhem.AndFHEMApplication;
-import li.klass.fhem.domain.Device;
 import li.klass.fhem.domain.RoomDeviceList;
+import li.klass.fhem.domain.core.Device;
 
 import java.util.Set;
 

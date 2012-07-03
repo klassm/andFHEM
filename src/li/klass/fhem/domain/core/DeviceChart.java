@@ -21,7 +21,7 @@
  *   51 Franklin Street, Fifth Floor
  */
 
-package li.klass.fhem.domain;
+package li.klass.fhem.domain.core;
 
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 

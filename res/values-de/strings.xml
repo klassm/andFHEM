@@ -97,6 +97,7 @@
     <string name="floorplan_move_confirmation">Soll %1$s wirklich nach %2$s verschoben werden?</string>
     <string name="android_version">Android Version</string>
     <string name="feature_requires_android_version">Dieses Feature benötigt mindestens Android %1$s.</string>
+    <string name="unknown">unbekannt</string>
 
     <string name="switchDevice">Schalte</string>
     <string name="preferences">Einstellungen</string>
@@ -156,6 +157,7 @@
     <string name="graphLoadError">Graph Daten konnten nicht geladen werden.</string>
     <string name="fhemUpdateRequiredError">Aktualisiere bitte deinen FHEM Server (updatefhem)</string>
     <string name="prefUrlBeginningError">URL muss mit http beginnen!</string>
+    <string name="incompleteConfigurationError">Konfiguration ist nicht vollständig!</string>
 
     <string name="okButton">OK</string>
     <string name="cancelButton">Abbrechen</string>
@@ -258,4 +260,15 @@
     <string name="widget_status">Status</string>
     <string name="widget_information">Informationen</string>
     <string name="widget_weather_forecast">Wettervorhersage</string>
+
+    <string name="timer">Zeitschaltuhr</string>
+    <string name="timer_overview">Schalte %1$s %2$s %3$s %4$s auf %5$s.</string>
+    <string name="timer_overview_every_day">an jedem Tag</string>
+    <string name="timer_overview_once">einmal</string>
+    <string name="timer_overview_weekend">am Wochenende</string>
+    <string name="timer_overview_weekday">unter der Woche</string>
+    <string name="timer_overview_at">um</string>
+    <string name="timer_overview_every">alle</string>
+    <string name="timer_overview_create_new">Neue Zeitschaltuhr erstellen</string>
+    <string name="timer_next_trigger">Nächster Schaltvorgang</string>
 </resources>

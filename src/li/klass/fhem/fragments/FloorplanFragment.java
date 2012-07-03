@@ -42,9 +42,9 @@ import li.klass.fhem.adapter.devices.core.DeviceAdapter;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
-import li.klass.fhem.domain.Device;
-import li.klass.fhem.domain.DeviceType;
 import li.klass.fhem.domain.RoomDeviceList;
+import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.DeviceType;
 import li.klass.fhem.domain.floorplan.Coordinate;
 import li.klass.fhem.fragments.core.BaseFragment;
 import li.klass.fhem.util.device.DeviceActionUtil;
@@ -141,7 +141,7 @@ public class FloorplanFragment extends BaseFragment {
                 floorplanView.manualTouch();
 
                 Intent intent = new Intent(Actions.DISMISS_UPDATING_DIALOG);
-                getActivity().startService(intent);
+                getActivity().sendBroadcast(intent);
             }
         });
         getActivity().startService(intent);

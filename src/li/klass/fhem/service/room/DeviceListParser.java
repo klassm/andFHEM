@@ -25,10 +25,10 @@
 package li.klass.fhem.service.room;
 
 import android.util.Log;
-import li.klass.fhem.domain.Device;
-import li.klass.fhem.domain.DeviceType;
 import li.klass.fhem.domain.FileLogDevice;
 import li.klass.fhem.domain.RoomDeviceList;
+import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.DeviceType;
 import li.klass.fhem.exception.AndFHEMException;
 import li.klass.fhem.exception.DeviceListParseException;
 import li.klass.fhem.exception.HostConnectionException;
@@ -45,7 +45,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import static li.klass.fhem.domain.DeviceType.FILE_LOG;
+import static li.klass.fhem.domain.core.DeviceType.FILE_LOG;
 
 /**
  * Class responsible for reading the current xml list from FHEM.
@@ -80,7 +80,7 @@ public class DeviceListParser {
                 return roomDeviceListMap;
             }
 
-            xmlList = new String(xmlList.getBytes(), "UTF8");
+//            xmlList = new String(xmlList.getBytes(), "UTF8");
 
             // if a newline happens after a set followed by an attrs, both attributes are appended together without
             // adding a whitespace
@@ -88,12 +88,6 @@ public class DeviceListParser {
 
             // replace html attribute
             xmlList = xmlList.replaceAll("<ATTR key=\"htmlattr\"[ A-Za-z0-9=\"]*/>", "");
-
-            // remove double ""
-            xmlList = xmlList.replaceAll(" +(?= )", "");
-
-            // replace double quotes if not followed by a space or slash
-            xmlList = xmlList.replaceAll("\"\"+(?![ /])", "\"");
 
             xmlList = xmlList.replaceAll("</>", "");
             xmlList = xmlList.replaceAll("< [^>]*>", "");
@@ -107,11 +101,6 @@ public class DeviceListParser {
             xmlList = xmlList.replaceAll("<CUL_IR_LIST>[\\s\\S]*</CUL_IR_LIST>", "");
             xmlList = xmlList.replaceAll("<autocreate_LIST>[\\s\\S]*</autocreate_LIST>", "");
 
-            xmlList = xmlList.replaceAll("(fhem\\()\"([^\"]*)\"(\\))", "$1'$2'$3");
-            xmlList = xmlList.replaceAll("(<at.*?)<INT key=\"DEF\" value=\"[\\+\\*]{0,2}[0-9:]*[ ]?[\\{\"].*?/>", "$1");
-
-            xmlList = xmlList.replaceAll("\"<", "\"&lt;");
-            xmlList = xmlList.replaceAll(">\"", "&gt;\"");
             xmlList = xmlList.replaceAll("_internal_", "internal");
 
             // fix for invalid umlauts
@@ -120,7 +109,7 @@ public class DeviceListParser {
             // remove "" not being preceded by an =
             xmlList = xmlList.replaceAll("(?:[^=])\"\"+", "\"");
 
-            Log.e(DeviceListParser.class.getName(), "xmllist content:\n" + xmlList);
+            Log.d(DeviceListParser.class.getName(), "xmllist content:\n" + xmlList);
 
             DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
@@ -229,5 +218,20 @@ public class DeviceListParser {
                 return;
             }
         }
+    }
+
+    public static void main(String[] args) {
+//        String text = "<at name=\"d_FB_Temp\" state=\"Next: 21:24:22\" sets=\"\" attrs=\"room comment alias disable:0,1 skip_next:0,1 loglevel:0,1,2,3,4,5,6 webCmd fm_fav fm_name fm_order fm_groups eventMap\">\n" +
+//                "    <INT key=\"DEF\" value=\"+*00:10:00 \"(/bin/echo -n \"`date '+%Y-%m-%d_%H:%M:%S FB_Temp FHZ:measured-temp:'` \">> ./log/`date +%Y-%m`_Temp_FB.log & /usr/bin/ctlmgr_ctl r power status/act_temperature >> ./log/`date +%Y-%m`_Temp_FB.log )\"\"/>\n" +
+//                "    <INT key=\"NAME\" value=\"d_FB_Temp\"/>";
+        String text = "            <INT key=\"CFGFN\" value=\"./log/fhem.save\"/>\n" +
+                "\n" +
+                "            <INT key=\"DEF\" value=\"17:00:00 '/bin/echo \" Teatime\" > /dev/console\"\"/>\n" +
+                "\n" +
+                "            <INT key=\"NAME\" value=\"a3\"/>";
+        for (int i = 0; i < 10; i++) {
+            text = text.replaceAll("(<INT.*?value=\".*?)\"(?!/>)", "$1'");
+        }
+        System.out.println(text);
     }
 }

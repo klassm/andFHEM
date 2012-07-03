@@ -36,8 +36,8 @@ import li.klass.fhem.activities.device.DeviceSelectionAdapter;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
-import li.klass.fhem.domain.Device;
 import li.klass.fhem.domain.RoomDeviceList;
+import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.fragments.core.BaseFragment;
 import li.klass.fhem.util.DialogUtil;
 import li.klass.fhem.widget.NestedListView;
@@ -48,8 +48,7 @@ public class DeviceSelectionFragment extends BaseFragment {
 
     private DeviceFilter deviceFilter;
     private ResultReceiver resultReceiver;
-    private DeviceSelectionAdapter adapter;
-
+    private transient DeviceSelectionAdapter adapter;
 
     public interface DeviceFilter extends Serializable {
         boolean isSelectable(Device<?> device);
@@ -82,11 +81,16 @@ public class DeviceSelectionFragment extends BaseFragment {
             @Override
             public void onItemClick(View view, Object parent, Object child, int parentPosition, int childPosition) {
                 if (childPosition == -1) return;
-                Bundle result = new Bundle();
-                result.putSerializable(BundleExtraKeys.CLICKED_DEVICE, (Device<?>) child);
-                resultReceiver.send(ResultCodes.SUCCESS, result);
 
-                finish();
+                if (resultReceiver != null) {
+                    Bundle result = new Bundle();
+                    result.putSerializable(BundleExtraKeys.CLICKED_DEVICE, (Device<?>) child);
+                    resultReceiver.send(ResultCodes.SUCCESS, result);
+                }
+
+                Intent intent = new Intent(Actions.BACK);
+                intent.putExtra(BundleExtraKeys.CLICKED_DEVICE, (Device<?>) child);
+                getActivity().sendBroadcast(intent);
             }
         });
         nestedListView.setAdapter(adapter);

@@ -24,6 +24,9 @@
 package li.klass.fhem.domain;
 
 import android.util.Log;
+import li.klass.fhem.AndFHEMApplication;
+import li.klass.fhem.R;
+import li.klass.fhem.domain.core.Device;
 import org.w3c.dom.NamedNodeMap;
 
 import java.text.ParseException;
@@ -32,22 +35,45 @@ import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static li.klass.fhem.util.NumberUtil.toTwoDecimalDigits;
+
 public class AtDevice extends Device<AtDevice> {
 
-    public static final Pattern FHEM_PATTERN = Pattern.compile("fhem\\('set ([\\w-]+) ([\\w-]+)(?: ([0-9:]+))?'\\)(.*)");
+    public static final Pattern FHEM_PATTERN = Pattern.compile("fhem\\(\"set ([\\w\\-,]+) ([\\w%-]+)(?: ([0-9:]+))?\"\\)(.*)");
     public static final Pattern PREFIX_PATTERN = Pattern.compile("([+*]{0,2})([0-9:]+)(.*)");
-    public static final Pattern DEFAULT_PATTERN = Pattern.compile("set ([\\w-]+) ([\\w-]+)(?: ([0-9:]+))?");
+    public static final Pattern DEFAULT_PATTERN = Pattern.compile("set ([\\w-]+) ([\\w\\-,%]+)(?: ([0-9:]+))?");
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
     private int hours;
     private int minutes;
     private int seconds;
+    private String nextTrigger;
 
     public enum AtRepetition {
-        ONCE, EVERY_DAY, WEEKEND, NOT_WEEKEND
+        ONCE(R.string.timer_overview_once), EVERY_DAY(R.string.timer_overview_every_day), WEEKEND(R.string.timer_overview_weekend), WEEKDAY(R.string.timer_overview_weekend);
+
+        private int stringId;
+
+        AtRepetition(int stringId) {
+            this.stringId = stringId;
+        }
+
+        public String getText() {
+            return AndFHEMApplication.getContext().getString(stringId);
+        }
     }
 
     public enum TimerType {
-        RELATIVE, ABSOLUTE
+        RELATIVE(R.string.timer_overview_every), ABSOLUTE(R.string.timer_overview_at);
+
+        private int stringId;
+
+        TimerType(int stringId) {
+            this.stringId = stringId;
+        }
+
+        public String getText() {
+            return AndFHEMApplication.getContext().getString(stringId);
+        }
     }
 
     private String targetDevice;
@@ -60,6 +86,8 @@ public class AtDevice extends Device<AtDevice> {
     protected void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {
         if (keyValue.equalsIgnoreCase("DEF")) {
             definition = parseDefinition(nodeContent) ? nodeContent : "";
+        } else if (keyValue.equalsIgnoreCase("STATE")) {
+            nextTrigger = nodeContent.replaceAll("Next: ", "");
         }
     }
 
@@ -80,6 +108,7 @@ public class AtDevice extends Device<AtDevice> {
     }
 
     private boolean parseDeviceSwitchContent(String rest) {
+        rest = rest.replaceAll("[{}]", "").trim();
         if (rest.startsWith("fhem")) {
             Matcher fhemMatcher = FHEM_PATTERN.matcher(rest);
 
@@ -93,7 +122,7 @@ public class AtDevice extends Device<AtDevice> {
             if (fhemRest.matches("if[ ]?\\(\\$we\\)")) {
                 repetition = AtRepetition.WEEKEND;
             } else if (fhemRest.matches("if[ ]?\\((NOT|not|!)[ ]?\\$we\\)")) {
-                repetition = AtRepetition.NOT_WEEKEND;
+                repetition = AtRepetition.WEEKDAY;
             }
         } else {
             Matcher matcher = DEFAULT_PATTERN.matcher(rest);
@@ -108,6 +137,9 @@ public class AtDevice extends Device<AtDevice> {
     }
 
     private void parseDateContent(String dateContent) {
+        if (dateContent.length() < "00:00:00".length()) {
+            dateContent += ":00";
+        }
         try {
             Date date = dateFormat.parse(dateContent);
             hours = date.getHours();
@@ -131,7 +163,7 @@ public class AtDevice extends Device<AtDevice> {
 
     @Override
     public boolean isSupported() {
-        return definition != null;
+        return definition != null && targetDevice != null;
     }
 
     @Override
@@ -149,17 +181,125 @@ public class AtDevice extends Device<AtDevice> {
                 '}';
     }
 
+    public int getHours() {
+        return hours;
+    }
+
+    public int getMinutes() {
+        return minutes;
+    }
+
+    public int getSeconds() {
+        return seconds;
+    }
+
+    public String getTargetDevice() {
+        return targetDevice;
+    }
+
+    public String getTargetState() {
+        return targetState;
+    }
+
+    public String getTargetStateAddtionalInformation() {
+        return targetStateAddtionalInformation;
+    }
+
+    public AtRepetition getRepetition() {
+        return repetition;
+    }
+
+    public TimerType getTimerType() {
+        return timerType;
+    }
+
+    public String getNextTrigger() {
+        return nextTrigger;
+    }
+
+    public void setHour(int hours) {
+        this.hours = hours;
+    }
+
+    public void setMinute(int minutes) {
+        this.minutes = minutes;
+    }
+
+    public void setSecond(int seconds) {
+        this.seconds = seconds;
+    }
+
+    public void setTargetDevice(String targetDevice) {
+        this.targetDevice = targetDevice;
+    }
+
+    public void setTargetState(String targetState) {
+        this.targetState = targetState;
+    }
+
+    public void setTargetStateAddtionalInformation(String targetStateAddtionalInformation) {
+        this.targetStateAddtionalInformation = targetStateAddtionalInformation;
+    }
+
+    public void setRepetition(AtRepetition repetition) {
+        this.repetition = repetition;
+    }
+
+    public void setTimerType(TimerType timerType) {
+        this.timerType = timerType;
+    }
+
+    public String getFormattedSwitchTime() {
+        return toTwoDecimalDigits(hours) + ":" + toTwoDecimalDigits(minutes)
+                + ":" + toTwoDecimalDigits(seconds);
+    }
+
+    public String toFHEMDefinition() {
+        String command = "";
+        if (timerType == TimerType.RELATIVE) {
+            command += "+";
+        }
+        if (repetition != AtRepetition.ONCE) {
+            command += "*";
+        }
+
+        command += getFormattedSwitchTime();
+
+        command += " { fhem(\"set " + targetDevice + " " + targetState;
+        if (targetStateAddtionalInformation != null) {
+            command += " " + targetStateAddtionalInformation;
+        }
+        command += "\") }";
+
+        if (repetition == AtRepetition.WEEKEND) {
+            command += " if($we)";
+        } else if (repetition == AtRepetition.WEEKDAY) {
+            command += " if (!$we)";
+        }
+
+        return command;
+    }
+
+
     public static void main(String[] args) {
-        parse("17:00:00 set lamp on");
-        parse("*23:00:00 fhem('set lamp off') if ($we)");
-        parse("+*23:00:00 fhem('set lamp off-for-timer 200') if (not $we)");
-        parse("*23:00:00 fhem('set lamp off-for-timer 200') if(NOT $we)");
-        parse("*23:00:00 fhem('set lamp off-for-timer 200') if (!$we)");
+//        parse("17:00:00 set lamp on");
+//        parse("*23:00:00 fhem('set lamp off') if ($we)");
+//        parse("+*23:00:00 fhem('set lamp off-for-timer 200') if (not $we)");
+//        parse("*23:00:00 fhem('set lamp off-for-timer 200') if(NOT $we)");
+//        parse("*23:00:00 fhem('set lamp off-for-timer 200') if (!$we)");
+        parse("*23:00:00 { fhem('set lamp off') if ($we) }");
     }
 
     public static void parse(String def) {
         AtDevice device = new AtDevice();
         device.parseDefinition(def);
+        System.out.println();
+        System.out.println(def);
         System.out.println(device.toString());
+        String back = device.toFHEMDefinition();
+        System.out.println(back);
+
+        device.parseDefinition(back);
+        System.out.println(device);
     }
 }

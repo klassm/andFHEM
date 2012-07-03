@@ -28,7 +28,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import li.klass.fhem.R;
-import li.klass.fhem.domain.Device;
+import li.klass.fhem.domain.core.Device;
 
 public abstract class DeviceDetailViewAction<T extends Device> {
     private int buttonText;

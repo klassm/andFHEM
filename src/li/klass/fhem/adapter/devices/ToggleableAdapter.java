@@ -28,8 +28,8 @@ import android.widget.TableLayout;
 import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
 import li.klass.fhem.adapter.devices.genericui.OnOffActionRow;
 import li.klass.fhem.adapter.devices.genericui.ToggleActionRow;
-import li.klass.fhem.domain.Device;
-import li.klass.fhem.domain.ToggleableDevice;
+import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.ToggleableDevice;
 
 public abstract class ToggleableAdapter<D extends Device<D>> extends GenericDeviceAdapter<D> {
     public ToggleableAdapter(Class<D> deviceClass) {

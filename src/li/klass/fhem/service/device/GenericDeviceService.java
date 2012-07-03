@@ -23,7 +23,7 @@
 
 package li.klass.fhem.service.device;
 
-import li.klass.fhem.domain.Device;
+import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.service.CommandExecutionService;
 
 public class GenericDeviceService {

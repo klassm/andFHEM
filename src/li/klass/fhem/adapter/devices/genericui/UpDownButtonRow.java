@@ -30,7 +30,7 @@ import android.widget.Button;
 import android.widget.TableRow;
 import android.widget.TextView;
 import li.klass.fhem.R;
-import li.klass.fhem.domain.Device;
+import li.klass.fhem.domain.core.Device;
 
 public abstract class UpDownButtonRow<T extends Device> {
     private String description;

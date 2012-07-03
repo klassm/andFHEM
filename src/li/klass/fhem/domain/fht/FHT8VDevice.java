@@ -24,7 +24,7 @@
 package li.klass.fhem.domain.fht;
 
 import li.klass.fhem.R;
-import li.klass.fhem.domain.Device;
+import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
 import org.w3c.dom.NamedNodeMap;
 

@@ -28,8 +28,8 @@ import android.widget.RemoteViews;
 import li.klass.fhem.R;
 import li.klass.fhem.appwidget.WidgetConfiguration;
 import li.klass.fhem.appwidget.view.widget.AppWidgetView;
-import li.klass.fhem.domain.Device;
 import li.klass.fhem.domain.WeatherDevice;
+import li.klass.fhem.domain.core.Device;
 
 import java.util.List;
 

@@ -31,7 +31,7 @@ import li.klass.fhem.appwidget.annotation.WidgetMediumLine1;
 import li.klass.fhem.appwidget.annotation.WidgetMediumLine2;
 import li.klass.fhem.appwidget.annotation.WidgetMediumLine3;
 import li.klass.fhem.appwidget.view.widget.AppWidgetView;
-import li.klass.fhem.domain.Device;
+import li.klass.fhem.domain.core.Device;
 
 import static li.klass.fhem.util.ReflectionUtil.getValueAndDescriptionForAnnotation;
 

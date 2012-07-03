@@ -23,7 +23,7 @@
 
 package li.klass.fhem.service.device;
 
-import li.klass.fhem.domain.ToggleableDevice;
+import li.klass.fhem.domain.core.ToggleableDevice;
 import li.klass.fhem.service.CommandExecutionService;
 
 public class ToggleableService {

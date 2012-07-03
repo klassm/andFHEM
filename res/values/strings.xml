@@ -98,6 +98,7 @@
     <string name="floorplan_move_confirmation">Do you really want to move %1$s to %2$s?</string>
     <string name="android_version">Android Version</string>
     <string name="feature_requires_android_version">This feature requires a minimum Android version of %1$s.</string>
+    <string name="unknown">unknown</string>
 
     <string name="switchDevice">Switch</string>
     <string name="preferences">Preferences</string>
@@ -156,6 +157,7 @@
     <string name="graphLoadError">Error while loading graph data.</string>
     <string name="fhemUpdateRequiredError">Please update your FHEM server (updatefhem)</string>
     <string name="prefUrlBeginningError">URL has to start with http!</string>
+    <string name="incompleteConfigurationError">Incomplete configuration!</string>
 
     <string name="okButton">OK</string>
     <string name="cancelButton">Cancel</string>
@@ -258,4 +260,21 @@
     <string name="widget_status">State</string>
     <string name="widget_information">Information</string>
     <string name="widget_weather_forecast">Weather Forecast</string>
+
+    <string name="timer">Timer</string>
+    <string name="timer_overview">Switch %1$s %2$s %3$s %4$s to %5$s.</string>
+    <string name="timer_overview_every_day">every day</string>
+    <string name="timer_overview_once">once</string>
+    <string name="timer_overview_weekend">at the weekend</string>
+    <string name="timer_overview_weekday">on a weekday</string>
+    <string name="timer_overview_at">at</string>
+    <string name="timer_overview_every">every</string>
+    <string name="timer_name">Timer name</string>
+    <string name="target_device">Switch device</string>
+    <string name="timer_repetition">Repetition</string>
+    <string name="timer_targetState">Target state</string>
+    <string name="timer_commandAppendix">State appendix</string>
+    <string name="timer_time">Switch time</string>
+    <string name="timer_overview_create_new">Create new timer</string>
+    <string name="timer_next_trigger">Next trigger</string>
 </resources>

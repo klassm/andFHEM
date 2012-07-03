@@ -29,7 +29,7 @@ import android.util.Log;
 import android.widget.Toast;
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
-import li.klass.fhem.domain.Device;
+import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.exception.HostConnectionException;
 import li.klass.fhem.fhem.DataConnectionSwitch;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;

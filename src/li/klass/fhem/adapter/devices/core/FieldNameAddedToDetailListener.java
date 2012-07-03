@@ -26,7 +26,7 @@ package li.klass.fhem.adapter.devices.core;
 import android.content.Context;
 import android.widget.TableLayout;
 import android.widget.TableRow;
-import li.klass.fhem.domain.Device;
+import li.klass.fhem.domain.core.Device;
 
 public interface FieldNameAddedToDetailListener<T extends Device> {
     void onFieldNameAdded(Context context, TableLayout tableLayout, String field, T device, TableRow fieldTableRow);

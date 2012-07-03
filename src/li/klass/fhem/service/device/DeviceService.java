@@ -27,8 +27,8 @@ package li.klass.fhem.service.device;
 import android.content.Intent;
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.constants.Actions;
-import li.klass.fhem.domain.Device;
 import li.klass.fhem.domain.RoomDeviceList;
+import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.service.CommandExecutionService;
 import li.klass.fhem.service.room.RoomListService;
 

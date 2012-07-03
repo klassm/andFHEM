@@ -29,8 +29,8 @@ import android.os.Build;
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
 import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.domain.Device;
 import li.klass.fhem.domain.FloorplanDevice;
+import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.fragments.FloorplanFragment;
 import li.klass.fhem.util.DialogUtil;
 

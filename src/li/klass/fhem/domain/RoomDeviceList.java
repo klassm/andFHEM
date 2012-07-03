@@ -24,6 +24,9 @@
 
 package li.klass.fhem.domain;
 
+import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.DeviceType;
+
 import java.io.Serializable;
 import java.util.*;
 
@@ -40,7 +43,7 @@ public class RoomDeviceList implements Serializable {
         this.roomName = roomName;
     }
 
-    public <T extends Device> Collection<T> getDevicesOfType(DeviceType type) {
+    public <T extends Device> List<T> getDevicesOfType(DeviceType type) {
         Set<T> deviceSet = getOrCreateDeviceList(type);
         List<T> deviceList = new ArrayList<T>();
         for (T device : deviceSet) {

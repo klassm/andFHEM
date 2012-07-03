@@ -57,6 +57,8 @@
         <item name="android:background">@drawable/theme_spinner_selector</item>
         <item name="android:layout_margin">3dp</item>
         <item name="android:padding">3dp</item>
+        <item name="android:minHeight">40dp</item>
+
     </style>
 
 
