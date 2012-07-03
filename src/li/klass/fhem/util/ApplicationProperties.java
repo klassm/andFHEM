@@ -32,18 +32,38 @@ import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.fhem.ConnectionType;
 import li.klass.fhem.fhem.DataConnectionSwitch;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
+
 public class ApplicationProperties {
     public static final ApplicationProperties INSTANCE = new ApplicationProperties();
 
+    private final Properties properties = new Properties();
+
     private ApplicationProperties() {
+        loadApplicationProperties();
     }
 
-    public boolean getProperty(String key, boolean defaultValue) {
+    private void loadApplicationProperties() {
+        try {
+            InputStream stream = AndFHEMApplication.class.getResource("application.properties").openStream();
+            properties.load(stream);
+        } catch (IOException e) {
+            Log.e(ApplicationProperties.class.getName(), "cannot load application.properties", e);
+        }
+    }
+
+    public String getStringApplicationProperty(String key) {
+        return properties.getProperty(key);
+    }
+
+    public boolean getBooleanSharedPreference(String key, boolean defaultValue) {
         SharedPreferences preferences = getPreferences();
         return preferences.getBoolean(key, defaultValue);
     }
     
-    public void setProperty(String key, boolean value) {
+    public void setSharedPreference(String key, boolean value) {
         SharedPreferences preferences = getPreferences();
         preferences.edit().putBoolean(key, value).commit();
     }

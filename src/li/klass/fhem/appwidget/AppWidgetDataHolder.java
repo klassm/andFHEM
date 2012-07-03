@@ -90,7 +90,7 @@ public class AppWidgetDataHolder {
         }
         final AppWidgetView widgetView = widgetConfiguration.widgetType.widgetView;
 
-        boolean doRemoteWidgetUpdates = ApplicationProperties.INSTANCE.getProperty("prefWidgetRemoteUpdate", true);
+        boolean doRemoteWidgetUpdates = ApplicationProperties.INSTANCE.getBooleanSharedPreference("prefWidgetRemoteUpdate", true);
         long updatePeriod = doRemoteWidgetUpdates ? widgetView.updateInterval() : RoomListService.NEVER_UPDATE_PERIOD;
         scheduleUpdateIntent(context, widgetConfiguration, false);
 

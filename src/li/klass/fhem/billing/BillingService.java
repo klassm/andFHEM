@@ -24,12 +24,16 @@
 package li.klass.fhem.billing;
 
 import android.app.Activity;
+import android.util.Log;
 import li.klass.fhem.billing.amazon.AmazonBillingProvider;
 import li.klass.fhem.billing.playstore.PlayStoreProvider;
+import li.klass.fhem.util.ApplicationProperties;
 
 import java.util.Set;
 
 public class BillingService {
+    public static final String BILLING_PROVIDER_PROPERTIES_KEY = "billing.provider";
+
     private enum ProviderType {
         AMAZON(AmazonBillingProvider.INSTANCE), GOOGLE(PlayStoreProvider.INSTANCE);
 
@@ -49,7 +53,7 @@ public class BillingService {
     private BillingService() {
     }
 
-    private ProviderType billingProvider = ProviderType.GOOGLE;
+    private ProviderType billingProvider;
 
     public boolean hasPendingRequestFor(String productId) {
         return getCurrentProvider().hasPendingRequestFor(productId);
@@ -81,6 +85,16 @@ public class BillingService {
     }
 
     private BillingProvider getCurrentProvider() {
+        if (billingProvider == null) {
+            try {
+                String provider = ApplicationProperties.INSTANCE.getStringApplicationProperty(BILLING_PROVIDER_PROPERTIES_KEY);
+                billingProvider = ProviderType.valueOf(provider);
+            } catch (Exception e) {
+                Log.e(BillingService.class.getName(), "cannot find billing provider property, falling back to Google");
+                billingProvider = ProviderType.GOOGLE;
+            }
+            Log.e(BillingService.class.getName(), "set " + billingProvider.name() + " as billing provider!");
+        }
         return billingProvider.getStoreProvider();
     }
 }
