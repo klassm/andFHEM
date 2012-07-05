@@ -1,109 +1,77 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
-  ~ AndFHEM - Open Source Android application to control a FHEM home automation
-  ~ server.
-  ~
-  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
-  ~ indicated by the @author tags or express copyright attribution
-  ~ statements applied by the authors.  All third-party contributions are
-  ~ distributed under license by Red Hat Inc.
-  ~
-  ~ This copyrighted material is made available to anyone wishing to use, modify,
-  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
-  ~
-  ~ This program is distributed in the hope that it will be useful,
-  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
-  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
-  ~ for more details.
-  ~
-  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
-  ~ along with this distribution; if not, write to:
-  ~   Free Software Foundation, Inc.
-  ~   51 Franklin Street, Fifth Floor
-  ~   Boston, MA  02110-1301  USA
-  -->
-
-<project name="andFHEM" default="help">
-
-    <!-- The local.properties file is created and updated by the 'android' tool.
-         It contains the path to the SDK. It should *NOT* be checked into
-         Version Control Systems. -->
-    <loadproperties srcFile="local.properties" />
-
-    <!-- The ant.properties file can be created by you. It is only edited by the
-         'android' tool to add properties to it.
-         This is the place to change some Ant specific build properties.
-         Here are some properties you may want to change/update:
-
-         source.dir
-             The name of the source directory. Default is 'src'.
-         out.dir
-             The name of the output directory. Default is 'bin'.
-
-         For other overridable properties, look at the beginning of the rules
-         files in the SDK, at tools/ant/build.xml
-
-         Properties related to the SDK location or the project target should
-         be updated using the 'android' tool with the 'update' action.
-
-         This file is an integral part of the build system for your
-         application and should be checked into Version Control Systems.
-
-         -->
-    <property file="ant.properties" />
-
-    <!-- The project.properties file is created and updated by the 'android'
-         tool, as well as ADT.
-
-         This contains project specific properties such as project target, and library
-         dependencies. Lower level build properties are stored in ant.properties
-         (or in .classpath for Eclipse projects).
-
-         This file is an integral part of the build system for your
-         application and should be checked into Version Control Systems. -->
-    <loadproperties srcFile="project.properties" />
-
-    <!-- quick check on sdk.dir -->
-    <fail
-            message="sdk.dir is missing. Make sure to generate local.properties using 'android update project'"
-            unless="sdk.dir"
-    />
-
-
-<!-- extension targets. Uncomment the ones where you want to do custom work
-     in between standard targets -->
-<!--
-    <target name="-pre-build">
+<project name="andFHEM" basedir=".">
+    <target name="cleanPlayStore">
+        <delete dir="playStore"/>
+        <delete file="bin/andFHEM-playStore-release.apk" />
+        <mkdir dir="playStore"/>
     </target>
-    <target name="-pre-compile">
+     <target name="cleanAmazon">
+        <delete dir="amazon"/>
+        <delete file="bin/andFHEM-amazon-release.apk" />
+        <mkdir dir="amazon"/>
+    </target>
+    <target name="clean" depends="cleanPlayStore,cleanAmazon">
     </target>
 
-    /* This is typically used for code obfuscation.
-       Compiled code location: ${out.classes.absolute.dir}
-       If this is not done in place, override ${out.dex.input.absolute.dir} */
-    <target name="-post-compile">
+    <target name="copyPlayStore" depends="cleanPlayStore">
+        <copy todir="playStore">
+            <fileset file="project.properties" />
+        </copy>
+        <copy todir="playStore">
+            <fileset dir="../andFHEM">
+                <exclude name=".git" />
+            </fileset>
+        </copy>
     </target>
--->
 
-    <!-- Import the actual build file.
+    <target name="copyAmazon" depends="cleanAmazon">
+        <copy todir="amazon">
+            <fileset file="project.properties" />
+        </copy>
+        <copy todir="amazon">
+            <fileset dir="../andFHEM">
+                <exclude name=".git" />
+            </fileset>
+        </copy>
+    </target>
 
-         To customize existing targets, there are two options:
-         - Customize only one target:
-             - copy/paste the target into this file, *before* the
-               <import> task.
-             - customize it to your needs.
-         - Customize the whole content of build.xml
-             - copy/paste the content of the rules files (minus the top node)
-               into this file, replacing the <import> task.
-             - customize to your needs.
+    <target name="promptPasswords">
+        <input message="Please enter the keystore password" addproperty="key.store.password"/>
+        <input message="Please enter the alias password" addproperty="key.alias.password"/>
+    </target>
 
-         ***********************
-         ****** IMPORTANT ******
-         ***********************
-         In all cases you must update the value of version-tag below to read 'custom' instead of an integer,
-         in order to avoid having your file be overridden by tools such as "android update project"
-    -->
-    <!-- version-tag: 1 -->
-    <import file="${sdk.dir}/tools/ant/build.xml" />
+    <target name="buildAPKPlayStore" depends="copyPlayStore,promptPasswords">
+         <subant inheritall="true">
+            <fileset dir="playStore" includes="build.xml" />
+            <target name="clean" />
+            <target name="release" />
+        </subant>
+    </target>
+ 
+    <target name="buildPlayStore" depends="buildAPKPlayStore">
+        <move tofile="bin/andFHEM-playStore-release.apk">
+            <fileset file="playStore/bin/andFHEM-release.apk"  />
+        </move>
+        <mkdir dir="bin"/>
+    </target>
 
+    <target name="modifyFilesAmazon" depends="copyAmazon">
+        <exec dir="." executable="./setAmazonBillingProvider.sh" />
+    </target>
+
+    <target name="buildAPKAmazon" depends="modifyFilesAmazon,promptPasswords">
+         <subant inheritall="true">
+            <fileset dir="amazon" includes="build.xml" />
+            <target name="clean" />
+            <target name="release" />
+        </subant>
+    </target>
+ 
+   <target name="buildAmazon" depends="buildAPKAmazon">
+        <move tofile="bin/andFHEM-amazon-release.apk">
+            <fileset file="amazon/bin/andFHEM-release.apk"  />
+        </move>
+        <mkdir dir="bin"/>
+   </target>
+
+    <target name="build" depends="buildAmazon,buildPlayStore" />
 </project>

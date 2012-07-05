@@ -1,0 +1,274 @@
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<resources>
+    <string name="app_name">andFHEM</string>
+
+    <string name="roomTitlePrefix">Raum</string>
+    <string name="allRoomsTitle">Alle Räume</string>
+    <string name="deviceDetailPrefix">Details für</string>
+
+    <string name="unsortedRoomName">unsortiert</string>
+
+    <string name="deviceName">Name</string>
+    <string name="temperature">Temperatur</string>
+    <string name="wind">Wind</string>
+    <string name="rain">Regen</string>
+    <string name="humidity">Luftfeuchtigkeit</string>
+    <string name="actuator">Regler</string>
+    <string name="state">Zustand</string>
+    <string name="battery">Batterie</string>
+    <string name="measured">Messzeit</string>
+    <string name="warnings">Warnungen</string>
+    <string name="time">Zeit</string>
+    <string name="avgDay">Tagesschnitt</string>
+    <string name="avgMonth">Monatsschnitt</string>
+    <string name="isRaining">Regnet es?</string>
+    <string name="desiredTemperature">Wunschtemperatur</string>
+    <string name="forecast">Vorhersage</string>
+    <string name="pressure">Luftdruck</string>
+    <string name="dewpoint">Taupunkt</string>
+    <string name="rainRate">Regenstärke</string>
+    <string name="rainTotal">Regenmenge</string>
+    <string name="windAvgSpeed">Wind Durchschnitt</string>
+    <string name="windSpeed">Windgeschwindigkeit</string>
+    <string name="windDirection">Windrichtung</string>
+    <string name="uvValue">UV Wert</string>
+    <string name="uvRisk">UV Risiko</string>
+    <string name="room">Raum</string>
+    <string name="counterA">Zähler A</string>
+    <string name="counterB">Zähler B</string>
+    <string name="present">Sendend</string>
+    <string name="currentUsage">Aktueller Verbrauch</string>
+    <string name="dayUsage">Tagesverbrauch</string>
+    <string name="monthUsage">Monatsverbrauch</string>
+    <string name="lastStateChange">Letzte Zustandsänderung</string>
+    <string name="lastState">Letzter Zustand</string>
+    <string name="power">Strom</string>
+    <string name="audio">Audio</string>
+    <string name="input">Eingang</string>
+    <string name="mode">Modus</string>
+    <string name="definition">Definition</string>
+    <string name="optional">optional</string>
+    <string name="regression">Regression</string>
+    <string name="sum">Summe</string>
+    <string name="mac">MAC Adresse</string>
+    <string name="ip">IP Adresse</string>
+    <string name="wake">Wecken</string>
+    <string name="howLong">Wie lange?</string>
+    <string name="requestRefresh">Update anfordern</string>
+    <string name="delta">Delta</string>
+    <string name="weather">Wetter</string>
+    <string name="currentWeather">Aktuelles Wetter</string>
+    <string name="weatherForecast">Wetter Vorhersage</string>
+    <string name="dimUp">Dim +</string>
+    <string name="dimDown">Dim -</string>
+    <string name="actions">Aktionen</string>
+    <string name="model">Modell</string>
+    <string name="send">Senden</string>
+    <string name="error">Fehler!</string>
+    <string name="conversion">Konvertierung</string>
+    <string name="hex2quat">Hex -> Quat</string>
+    <string name="quat2hex">Quat -> Hex</string>
+    <string name="result">Ergebnis</string>
+    <string name="set_value">Wert setzen</string>
+    <string name="floorplan">Floorplan</string>
+    <string name="floorplan_move_confirmation">Soll %1$s wirklich nach %2$s verschoben werden?</string>
+    <string name="android_version">Android Version</string>
+    <string name="feature_requires_android_version">Dieses Feature benötigt mindestens Android %1$s.</string>
+    <string name="unknown">unbekannt</string>
+
+    <string name="switchDevice">Schalte</string>
+    <string name="preferences">Einstellungen</string>
+    <string name="update">Aktualisieren</string>
+    <string name="updating">Aktualisieren ...</string>
+    <string name="loading">Laden ...</string>
+    <string name="executing">Ausführend ...</string>
+    <string name="help">Hilfe</string>
+    <string name="donate">Spenden</string>
+    <string name="send_command">Kommando senden</string>
+    <string name="command_execution_result">Kommando Ergebnis</string>
+
+    <string name="context_addtofavorites">Zu Favoriten hinzufügen</string>
+    <string name="context_removefavorite">Aus Favoriten entfernen</string>
+    <string name="context_favoriteadded">Favorit wurde hinzugefügt!</string>
+    <string name="context_favoriteremoved">Favorit wurde gelöscht!</string>
+
+    <string name="context_rename">Gerät umbenennen</string>
+    <string name="context_alias">Setze Alias</string>
+    <string name="context_delete">Gerät löschen</string>
+    <string name="context_move">Gerät verschieben</string>
+
+    <string name="areYouSure">Sind Sie sicher?</string>
+    <string name="areYouSureText">Möchten Sie wirklich %1$s auf %2$s setzen?</string>
+    <string name="setMode">Modus setzen</string>
+
+
+    <string name="tab_roomList">Räume</string>
+    <string name="tab_favorites">Favoriten</string>
+    <string name="tab_alldevices">Alle Geräte</string>
+
+    <string name="prefDataSourceCategory">Datenquelle</string>
+    <string name="prefDataSource">Datenquelle</string>
+    <string name="prefOtherPreferencesCategory">Andere Einstellungen</string>
+    <string name="prefWidgetCategory">Widgets</string>
+    <string name="prefTelnetUrlSummary">z.B. 192.168.0.1 </string>
+    <string name="prefTelnetUrl">IP</string>
+    <string name="prefTelnetPortSummary">z.B. 7072</string>
+    <string name="prefTelnetPort">Port</string>
+    <string name="prefFHEMWEBUrl">URL</string>
+    <string name="prefUsername">Benutzername</string>
+    <string name="prefPassword">Passwort</string>
+    <string name="prefFHEMWEBUrlSummary">z.B.. http://192.168.0.1:8083/fhem</string>
+    <string name="prefShowHiddenDevices">Zeige versteckte Geräte</string>
+    <string name="prefDefaultTimespan">Graph Zeitspanne</string>
+    <string name="prefAutoUpdate">Automatischer Update</string>
+    <string name="prefAutoUpdateSummary">nur wenn Applikation läuft</string>
+    <string name="prefWidgetRemoteUpdate">Remote Aktualisierung</string>
+
+    <string name="notNumericError">Nicht numerisch!</string>
+    <string name="updateError">Error während Update Vorgang.</string>
+    <string name="timeoutError">Zeitüberschreitung der Anforderung.</string>
+    <string name="executeError">Error während Kommando Ausführung.</string>
+    <string name="authenticationError">Falscher Benutzer / Passwort.</string>
+    <string name="updateErrorHostConnection">Keine Verbindung zum FHEM Server.</string>
+    <string name="updateErrorDeviceListParse">Konnte xml Geräte Liste nicht lesen.</string>
+    <string name="graphLoadError">Graph Daten konnten nicht geladen werden.</string>
+    <string name="fhemUpdateRequiredError">Aktualisiere bitte deinen FHEM Server (updatefhem)</string>
+    <string name="prefUrlBeginningError">URL muss mit http beginnen!</string>
+    <string name="incompleteConfigurationError">Konfiguration ist nicht vollständig!</string>
+
+    <string name="okButton">OK</string>
+    <string name="cancelButton">Abbrechen</string>
+    <string name="save">Speichern</string>
+    <string name="reset">Zurücksetzen</string>
+
+    <string name="welcomeMessageTitle">Erster Start</string>
+    <string name="welcomeMessage">
+        Einstellungsmenü aufrufen und FHEM Server Details eingeben.
+        \n\nUm ein Gerät zu den Favoriten hinzuzufügen, lange darauf klicken
+    </string>
+
+    <string name="temperatureGraph">Temperatur Graph</string>
+    <string name="rainGraph">Regen Graph</string>
+    <string name="humidityGraph">Luftfeuchtigkeit Graph</string>
+    <string name="windGraph">Wind Graph</string>
+    <string name="actuatorGraph">Regler Graph</string>
+    <string name="pressureGraph">Luftdruck Graph</string>
+    <string name="rainRateGraph">Regenstärke Graph</string>
+    <string name="rainTotalGraph">Regenmenge Graph</string>
+    <string name="usageGraph">Verbrauch Graph</string>
+    <string name="windSpeedGraph">Windgeschwindigkeit Graph</string>
+
+    <string name="yAxisWind">Wind (km/h)</string>
+    <string name="yAxisHumidity">Luftfeuchtigkeit (%)</string>
+    <string name="yAxisTemperature">Temperatur (°C)</string>
+    <string name="yAxisRain">Regen (l/m2)</string>
+    <string name="yAxisActuator">Regler (%)</string>
+    <string name="yAxisPressure">Luftdruck (hPa)</string>
+    <string name="yAxisRainRate">Regenstärke (mm/hr)</string>
+    <string name="yAxisRainTotal">Regenmenge (l/m2)</string>
+    <string name="yAxisWindSpeed">Windgeschwindigkeit (km/h)</string>
+    <string name="yAxisUsage">Verbrauch</string>
+
+    <string name="startDate">Start-Datum</string>
+    <string name="endDate">End-Datum</string>
+    <string name="startTime">Start-Zeit</string>
+    <string name="endTime">End-Zeit</string>
+    <string name="startDateAfterEndDateMsg">Start-Datum muss vor End-Datum sein.</string>
+    <string name="optionChangeStartEndDate">Start- /End-Datum ändern</string>
+
+    <string name="generalDetails">Allgemeine Informationen</string>
+    <string name="plots">Graphen</string>
+    <string name="switchSetOptions">Schaltoptionen</string>
+
+    <string name="deviceRenameSuccess">Gerät wurde umbenannt.</string>
+    <string name="deviceDeleteSuccess">Gerät wurde gelöscht.</string>
+    <string name="deviceMoveSuccess">Geräte wurde verschoben.</string>
+    <string name="deviceAliasSuccess">Alias wurde gesetzt.</string>
+    <string name="deviceSwitchSuccess">Gerät %1$s wurde geschaltet.</string>
+
+
+    <string name="yes">ja</string>
+    <string name="no">nein</string>
+
+    <string name="monday">Montag</string>
+    <string name="tuesday">Dienstag</string>
+    <string name="wednesday">Mittwoch</string>
+    <string name="thursday">Donnerstag</string>
+    <string name="friday">Freitag</string>
+    <string name="saturday">Samstag</string>
+    <string name="sunday">Sonntag</string>
+
+    <string name="manage">Verwaltung</string>
+    <string name="timetable">Schaltplan</string>
+    <string name="from1">(1) Von</string>
+    <string name="from2">(2) Von</string>
+    <string name="to1">(1) Bis</string>
+    <string name="to2">(2) Bis</string>
+    <string name="change">Ändern</string>
+    <string name="on">an</string>
+    <string name="off">aus</string>
+    <string name="ON">AN</string>
+    <string name="OFF">AUS</string>
+    <string name="dayTemperature">Tagestemperatur</string>
+    <string name="nightTemperature">Nachttemperatur</string>
+    <string name="windowOpenTemp">Fenster geöffnet</string>
+
+    <string name="widgetToggle">AndFHEM Toggle</string>
+    <string name="deviceNotFound">Gerät %1$s wurde nicht gefunden.</string>
+
+    <string name="billing_notSupported">Kann keine Verbindung zu Google Billing herstellen.</string>
+    <string name="billing_restoringTransactions">Stelle Transaktionen wieder her ...</string>
+    <string name="billing_state_pending">Warte auf Beendigung der aktuellen Transaktion ...</string>
+    <string name="billing_state_bought">Vielen Dank für den Kauf von andFHEM Premium!</string>
+    <string name="premium">AndFHEM Premium</string>
+    <string name="premium_desc">AndFHEM Premium beinhaltet die Abschaltung der Werbung in der Applikation!</string>
+    <string name="shop_buyPemium">AndFHEM Premium kaufen</string>
+
+    <string name="deviceListEmpty">Keine passenden Geräte gefunden!</string>
+
+    <string name="widget_small">andFHEM Klein</string>
+    <string name="widget_medium">andFHEM Mittel</string>
+    <string name="widget_big">andFHEM Groß</string>
+
+    <string name="widget_type_selection">Widget Typ</string>
+    <string name="widget_devicelist_empty">Entschuldigung! Kein Widget ist für deine Geräte verfügbar!</string>
+    <string name="widget_temperature">Temperatur</string>
+    <string name="widget_toggle">Umschalter</string>
+    <string name="widget_status">Status</string>
+    <string name="widget_information">Informationen</string>
+    <string name="widget_weather_forecast">Wettervorhersage</string>
+
+    <string name="timer">Zeitschaltuhr</string>
+    <string name="timer_overview">Schalte %1$s %2$s %3$s %4$s auf %5$s.</string>
+    <string name="timer_overview_every_day">an jedem Tag</string>
+    <string name="timer_overview_once">einmal</string>
+    <string name="timer_overview_weekend">am Wochenende</string>
+    <string name="timer_overview_weekday">unter der Woche</string>
+    <string name="timer_overview_at">um</string>
+    <string name="timer_overview_every">alle</string>
+    <string name="timer_overview_create_new">Neue Zeitschaltuhr erstellen</string>
+    <string name="timer_next_trigger">Nächster Schaltvorgang</string>
+</resources>

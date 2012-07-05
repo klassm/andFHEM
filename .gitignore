@@ -9,4 +9,8 @@ log
 *.log
 *.txt
 out/
+test/build
 local.properties
+ActionBarSherlock
+target
+.gradle

@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="li.klass.fhem"
+          android:versionCode="71"
+          android:versionName="1.7.1">
+
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="com.android.vending.BILLING" />
+
+    <supports-screens android:xlargeScreens="true"
+                      android:anyDensity="true"
+                      android:largeScreens="true"
+                      android:normalScreens="true"
+                      android:smallScreens="true" />
+
+    <application android:label="@string/app_name" android:icon="@drawable/ic_launcher" android:name="AndFHEMApplication"
+                 android:theme="@style/ApplicationTheme">
+
+        <activity android:name=".activities.MainActivity" android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".activities.PreferencesActivity" />
+
+        <activity android:name=".activities.graph.ChartingActivity"/>
+        <activity android:name=".activities.graph.ChartingDateSelectionActivity"/>
+
+        <activity android:name="com.google.ads.AdActivity"
+                  android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"/>
+
+        <activity android:name=".appwidget.type.medium.MediumWidgetSelectionActivity">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
+            </intent-filter>
+        </activity>
+
+        <receiver android:name=".appwidget.type.medium.MediumAppWidgetProvider" android:label="@string/widget_medium">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="li.klass.fhem.constants.Actions.WIDGET_UPDATE" />
+                <action android:name="li.klass.fhem.constants.Actions.WIDGET_ALL_UPDATE" />
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider" android:resource="@xml/andfhem_appwidget_medium" />
+        </receiver>
+
+        <activity android:name=".appwidget.type.small.SmallWidgetSelectionActivity">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
+            </intent-filter>
+        </activity>
+
+        <receiver android:name=".appwidget.type.small.SmallAppWidgetProvider" android:label="@string/widget_small">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="li.klass.fhem.constants.Actions.WIDGET_UPDATE" />
+                <action android:name="li.klass.fhem.constants.Actions.WIDGET_ALL_UPDATE" />
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider" android:resource="@xml/andfhem_appwidget_small" />
+        </receiver>
+
+        <activity android:name=".appwidget.type.big.BigWidgetSelectionActivity">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
+            </intent-filter>
+        </activity>
+
+        <receiver android:name=".appwidget.type.big.BigAppWidgetProvider" android:label="@string/widget_big">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="li.klass.fhem.constants.Actions.WIDGET_UPDATE" />
+                <action android:name="li.klass.fhem.constants.Actions.WIDGET_ALL_UPDATE" />
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider" android:resource="@xml/andfhem_appwidget_big" />
+        </receiver>
+
+        <service android:name=".service.intent.RoomListIntentService">
+            <intent-filter>
+                <action android:name="li.klass.fhem.constants.Actions.ALL_ROOMS_DEVICE_LIST" />
+                <action android:name="li.klass.fhem.constants.Actions.GET_ROOM_NAME_LIST" />
+                <action android:name="li.klass.fhem.constants.Actions.GET_ROOM_DEVICE_LIST" />
+                <action android:name="li.klass.fhem.constants.Actions.GET_DEVICE_FOR_NAME" />
+            </intent-filter>
+        </service>
+
+        <service android:name=".service.intent.FavoritesIntentService">
+            <intent-filter>
+                <action android:name="li.klass.fhem.constants.Actions.GET_FAVORITE_LIST" />
+                <action android:name="li.klass.fhem.constants.Actions.ADD_FAVORITE" />
+                <action android:name="li.klass.fhem.constants.Actions.REMOVE_FAVORITE" />
+            </intent-filter>
+        </service>
+
+        <service android:name=".service.intent.DeviceIntentService">
+            <intent-filter>
+                <action android:name="li.klass.fhem.constants.Actions.DEVICE_GRAPH"/>
+                <action android:name="li.klass.fhem.constants.Actions.TOGGLE_STATE" />
+                <action android:name="li.klass.fhem.constants.Actions.SET_STATE" />
+                <action android:name="li.klass.fhem.constants.Actions.DEVICE_DIM" />
+                <action android:name="li.klass.fhem.constants.Actions.DEVICE_SET_MODE" />
+                <action android:name="li.klass.fhem.constants.Actions.DEVICE_SET_DAY_TEMPERATURE" />
+                <action android:name="li.klass.fhem.constants.Actions.DEVICE_SET_NIGHT_TEMPERATURE" />
+                <action android:name="li.klass.fhem.constants.Actions.DEVICE_SET_WINDOW_OPEN_TEMPERATURE" />
+                <action android:name="li.klass.fhem.constants.Actions.DEVICE_SET_TIMETABLE" />
+                <action android:name="li.klass.fhem.constants.Actions.DEVICE_RESET_TIMETABLE" />
+                <action android:name="li.klass.fhem.constants.Actions.DEVICE_SET_DESIRED_TEMPERATURE" />
+                <action android:name="li.klass.fhem.constants.Actions.DEVICE_RENAME" />
+                <action android:name="li.klass.fhem.constants.Actions.DEVICE_DELETE" />
+                <action android:name="li.klass.fhem.constants.Actions.DEVICE_MOVE_ROOM" />
+                <action android:name="li.klass.fhem.constants.Actions.DEVICE_SET_ALIAS" />
+                <action android:name="li.klass.fhem.constants.Actions.DEVICE_WAKE" />
+                <action android:name="li.klass.fhem.constants.Actions.DEVICE_REFRESH_STATE" />
+                <action android:name="li.klass.fhem.constants.Actions.DEVICE_REFRESH_VALUES" />
+                <action android:name="li.klass.fhem.constants.Actions.DEVICE_FLOORPLAN_MOVE" />
+                <action android:name="li.klass.fhem.constants.Actions.DEVICE_WIDGET_TOGGLE" />
+                <action android:name="li.klass.fhem.constants.Actions.DEVICE_TIMER_NEW" />
+                <action android:name="li.klass.fhem.constants.Actions.DEVICE_TIMER_MODIFY" />
+            </intent-filter>
+        </service>
+
+        <service android:name=".service.intent.SendCommandIntentService">
+            <intent-filter>
+                <action android:name="li.klass.fhem.constants.Actions.EXECUTE_COMMAND" />
+                <action android:name="li.klass.fhem.constants.Actions.RECENT_COMMANDS_LIST" />
+            </intent-filter>
+        </service>
+
+        <service android:name=".service.intent.FloorplanIntentService">
+            <intent-filter>
+                <action android:name="li.klass.fhem.constants.Actions.FLOORPLAN_IMAGE" />
+            </intent-filter>
+        </service>
+
+        <service android:name=".billing.playstore.PlayStoreBillingService" />
+
+        <receiver android:name=".billing.playstore.PlayStoreBillingReceiver">
+            <intent-filter>
+                <action android:name="com.android.vending.billing.IN_APP_NOTIFY" />
+                <action android:name="com.android.vending.billing.RESPONSE_CODE" />
+                <action android:name="com.android.vending.billing.PURCHASE_STATE_CHANGED" />
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name = "com.amazon.inapp.purchasing.ResponseReceiver" >
+            <intent-filter>
+                <action android:name = "com.amazon.inapp.purchasing.NOTIFY"
+                        android:permission = "com.amazon.inapp.purchasing.Permission.NOTIFY" />
+            </intent-filter>
+        </receiver>
+    </application>
+
+    <uses-sdk android:minSdkVersion="7" android:targetSdkVersion="15"/>
+</manifest>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2012, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLICLICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  -->
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+    <LinearLayout android:layout_width="fill_parent"
+                  android:layout_height="fill_parent"
+                  android:padding="5dp"
+                  android:orientation="vertical">
+        <TextView android:layout_height="wrap_content"
+                  android:layout_width="fill_parent"
+                  android:text="@string/premium"
+                  android:id="@+id/title"
+                  android:textSize="20dp"
+                  android:textStyle="bold"/>
+        <LinearLayout android:layout_height="wrap_content"
+                      android:layout_width="fill_parent"
+                      android:id="@+id/buyPremiumLayout"
+                      android:layout_marginTop="10dp"
+                      android:gravity="center"
+                      android:orientation="vertical">
+            <Button android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/shop_buyPemium"
+                    android:id="@+id/shop_premium_buy"
+                    android:textSize="15dp"
+                    android:gravity="center"/>
+            <TextView android:id="@+id/shop_premium_pending"
+                      android:layout_marginLeft="10dp"
+                      android:layout_marginRight="10dp"
+                      android:padding="5dp"
+                      android:background="@color/lightBlue"
+                      android:layout_width="fill_parent"
+                      android:layout_height="wrap_content"
+                      android:text="@string/billing_state_pending"
+                      android:gravity="center"
+                    />
+            <TextView android:id="@+id/shop_premium_bought"
+                      android:layout_marginLeft="10dp"
+                      android:layout_marginRight="10dp"
+                      android:padding="5dp"
+                      android:background="@color/android_green"
+                      android:layout_width="fill_parent"
+                      android:layout_height="wrap_content"
+                      android:text="@string/billing_state_bought"
+                      android:gravity="center"
+                    />
+        </LinearLayout>
+        <TextView android:layout_height="wrap_content"
+                  android:layout_width="fill_parent"
+                  android:layout_marginTop="10dp"
+                  android:text="@string/premium_desc"
+                  android:id="@+id/description"/>
+    </LinearLayout>
+</ScrollView>

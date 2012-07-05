@@ -1,0 +1,89 @@
+/*
+ * AndFHEM - Open Source Android application to control a FHEM home automation
+ * server.
+ *
+ * Copyright (c) 2012, Matthias Klass or third-party contributors as
+ * indicated by the @author tags or express copyright attribution
+ * statements applied by the authors.  All third-party contributions are
+ * distributed under license by Red Hat Inc.
+ *
+ * This copyrighted material is made available to anyone wishing to use, modify,
+ * copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLICLICENSE, as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+ * for more details.
+ *
+ * You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+ * along with this distribution; if not, write to:
+ *   Free Software Foundation, Inc.
+ *   51 Franklin Street, Fifth Floor
+ */
+
+ext.targetDir = new File('target')
+ext.binDir = new File('bin')
+
+apply plugin:com.smokejumperit.gradle.ExecPlugin
+
+buildscript {
+    repositories {
+        mavenRepo urls:'http://repo.smokejumperit.com'
+    }
+    dependencies {
+        classpath 'com.smokejumperit:gradle-plugins:0.8.2'
+    }
+}
+
+task readPasswords << {
+    Console console = System.console()
+
+    console.printf("\n\n")
+    console.printf(">> Please enter the keystore password!\n")
+    project.ext.storePassword = console.readPassword()
+    console.printf("\n")
+    console.printf(">> Please enter the alias password!\n")
+    project.ext.aliasPassword = console.readPassword()
+}
+
+task clean << {
+    delete 'bin', 'target'
+}
+
+task mkdirs(dependsOn: 'clean') << {
+    targetDir.mkdir()
+    binDir.mkdir()
+}
+
+task copy(type:Copy, dependsOn: 'mkdirs') {
+    from 'app'
+    into 'target'
+}
+
+task buildGoogle << {
+    dependsOn 'readPasswords', 'copy'
+    build('GOOGLE', "google-release.apk")
+}
+
+task buildAmazon << {
+    dependsOn 'readPasswords', 'copy'
+    build('AMAZON', "amazon-release.apk")
+}
+
+task release() << {
+    dependsOn 'buildGoogle', 'buildAmazon'
+}
+
+def build(billingProvider, targetFilename) {
+    def storeProperty = "-Dkey.store.password=" + project.storePassword
+    def aliasProperty = "-Dkey.alias.password=" + project.aliasPassword
+
+    def propertiesFile = new File('target/src/li/klass/fhem/application.properties')
+    def content = propertiesFile.getText('UTF-8').replaceAll("<BILLING.PROVIDER>", billingProvider)
+    propertiesFile.write(content, 'UTF-8')
+
+    project.execIn(new File('target'), "ant", "release", storeProperty, aliasProperty)
+
+    def targetPath = "bin/" + targetFilename
+    project.execIn(new File('.'), "mv", "target/bin/andFHEM-release.apk", targetPath)
+}
