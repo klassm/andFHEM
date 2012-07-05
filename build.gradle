@@ -61,18 +61,20 @@ task copy(type:Copy, dependsOn: 'mkdirs') {
 }
 
 task buildGoogle << {
-    dependsOn 'readPasswords', 'copy'
     build('GOOGLE', "google-release.apk")
 }
+buildGoogle.dependsOn readPasswords
+buildGoogle.dependsOn copy
 
 task buildAmazon << {
-    dependsOn 'readPasswords', 'copy'
     build('AMAZON', "amazon-release.apk")
 }
+buildAmazon.dependsOn readPasswords
+buildAmazon.dependsOn copy
 
-task release() << {
-    dependsOn 'buildGoogle', 'buildAmazon'
-}
+task release() << {}
+release.dependsOn buildGoogle
+release.dependsOn buildAmazon
 
 def build(billingProvider, targetFilename) {
     def storeProperty = "-Dkey.store.password=" + project.storePassword
