@@ -25,6 +25,7 @@
 <resources>
     <style name="ApplicationActionBarTabStyle">
         <item name="android:background">@drawable/actionbar_tab_bg_land</item>
+        <item name="background">@drawable/actionbar_tab_bg_land</item>
         <item name="android:padding">10dp</item>
     </style>
 
