@@ -37,17 +37,17 @@ sourceSets.test.java.srcDirs = [
 ]
 
 test {
-  //makes the standard streams (err and out) visible at console when running tests
-  testLogging.showStandardStreams = true
+    //makes the standard streams (err and out) visible at console when running tests
+    testLogging.showStandardStreams = true
 
-  //tweaking memory settings for the forked vm that runs tests
-  jvmArgs '-Xms128m', '-Xmx512m', '-XX:MaxPermSize=128m'
+    //tweaking memory settings for the forked vm that runs tests
+    jvmArgs '-Xms128m', '-Xmx512m', '-XX:MaxPermSize=128m'
 
-  //listening to test execution events
-  beforeTest { descriptor ->
-     logger.lifecycle("Running test: " + descriptor)
-  }
-  onOutput { descriptor, event ->
-     logger.lifecycle("Test: " + descriptor + " produced standard out/err: " + event.message )
-  }
+    //listening to test execution events
+    beforeTest { descriptor ->
+        logger.lifecycle("Running test: " + descriptor)
+    }
+    onOutput { descriptor, event ->
+        logger.lifecycle("Test: " + descriptor + " produced standard out/err: " + event.message )
+    }
 }
