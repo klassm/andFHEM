@@ -89,9 +89,4 @@ public class NumberSystemUtil {
         }
         return totalDecimal;
     }
-
-    public static void main(String[] args) {
-        System.out.println(hexToQuaternary("FA91", 4));
-        System.out.println(quaternaryToHex("33222101"));
-    }
 }
