@@ -29,6 +29,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import li.klass.fhem.AndFHEMApplication;
+import li.klass.fhem.AndFHEMBase;
 import li.klass.fhem.fhem.ConnectionType;
 import li.klass.fhem.fhem.DataConnectionSwitch;
 
@@ -47,8 +48,15 @@ public class ApplicationProperties {
 
     private void loadApplicationProperties() {
         try {
-            InputStream stream = AndFHEMApplication.class.getResource("application.properties").openStream();
-            properties.load(stream);
+            InputStream stream = AndFHEMBase.class.getResource("application.properties").openStream();
+            load(stream);
+        } catch (IOException e) {
+            Log.e(ApplicationProperties.class.getName(), "cannot load application.properties", e);
+        }
+    }
+    void load(InputStream inputStream) {
+        try {
+            properties.load(inputStream);
         } catch (IOException e) {
             Log.e(ApplicationProperties.class.getName(), "cannot load application.properties", e);
         }
@@ -62,7 +70,7 @@ public class ApplicationProperties {
         SharedPreferences preferences = getPreferences();
         return preferences.getBoolean(key, defaultValue);
     }
-    
+
     public void setSharedPreference(String key, boolean value) {
         SharedPreferences preferences = getPreferences();
         preferences.edit().putBoolean(key, value).commit();
