@@ -21,6 +21,8 @@
  *   51 Franklin Street, Fifth Floor
  */
 
+apply plugin: 'java'
+
 ext.targetDir = new File('target')
 ext.binDir = new File('bin')
 
@@ -46,11 +48,11 @@ task readPasswords << {
     project.ext.aliasPassword = console.readPassword()
 }
 
-task clean << {
+task deleteBuildDirectories << {
     delete 'bin', 'target'
 }
 
-task mkdirs(dependsOn: 'clean') << {
+task mkdirs(dependsOn: 'deleteBuildDirectories') << {
     targetDir.mkdir()
     binDir.mkdir()
 }
@@ -72,9 +74,8 @@ task buildAmazon << {
 buildAmazon.dependsOn readPasswords
 buildAmazon.dependsOn copy
 
-task release() << {}
-release.dependsOn buildGoogle
-release.dependsOn buildAmazon
+
+task release(dependsOn: [buildGoogle, buildAmazon]) << {}
 
 def build(billingProvider, targetFilename) {
     def storeProperty = "-Dkey.store.password=" + project.storePassword
@@ -88,4 +89,36 @@ def build(billingProvider, targetFilename) {
 
     def targetPath = "bin/" + targetFilename
     project.execIn(new File('.'), "mv", "target/bin/andFHEM-release.apk", targetPath)
+}
+build.dependsOn(release)
+
+allprojects {
+    apply plugin: 'java'
+
+    repositories {
+        mavenCentral()
+    }
+}
+
+project(':ActionBarSherlock') {
+    configurations: {
+        test {
+            dependencies {
+                compile 'com.google.android:android:4.0.1.2'
+            }
+        }
+    }
+}
+
+project(':app') {
+    dependencies {
+        compile project(':ActionBarSherlock')
+    }
+}
+
+project(':tests') {
+    dependencies {
+        compile project(path: ':ActionBarSherlock')
+        compile project(path: ':app')
+    }
 }
