@@ -91,94 +91,9 @@ public class AtDevice extends Device<AtDevice> {
         }
     }
 
-    private boolean parseDefinition(String nodeContent) {
-        Matcher prefixMatcher = PREFIX_PATTERN.matcher(nodeContent);
-
-        if (! prefixMatcher.matches()) return false;
-
-        String prefix = prefixMatcher.group(1);
-        handlePrefix(prefix);
-
-        String dateContent = prefixMatcher.group(2);
-        parseDateContent(dateContent);
-
-        String rest = prefixMatcher.group(3).trim();
-
-        return parseDeviceSwitchContent(rest);
-    }
-
-    private boolean parseDeviceSwitchContent(String rest) {
-        rest = rest.replaceAll("[{}]", "").trim();
-        if (rest.startsWith("fhem")) {
-            Matcher fhemMatcher = FHEM_PATTERN.matcher(rest);
-
-            if (! fhemMatcher.matches()) return false;
-
-            targetDevice = fhemMatcher.group(1);
-            targetState = fhemMatcher.group(2);
-            targetStateAddtionalInformation = fhemMatcher.group(3);
-
-            String fhemRest = fhemMatcher.group(4).trim();
-            if (fhemRest.matches("if[ ]?\\(\\$we\\)")) {
-                repetition = AtRepetition.WEEKEND;
-            } else if (fhemRest.matches("if[ ]?\\((NOT|not|!)[ ]?\\$we\\)")) {
-                repetition = AtRepetition.WEEKDAY;
-            }
-        } else {
-            Matcher matcher = DEFAULT_PATTERN.matcher(rest);
-
-            if (! matcher.matches()) return false;
-
-            targetDevice = matcher.group(1);
-            targetState = matcher.group(2);
-            targetStateAddtionalInformation = matcher.group(3);
-        }
-        return true;
-    }
-
-    private void parseDateContent(String dateContent) {
-        if (dateContent.length() < "00:00:00".length()) {
-            dateContent += ":00";
-        }
-        try {
-            Date date = dateFormat.parse(dateContent);
-            hours = date.getHours();
-            minutes = date.getMinutes();
-            seconds = date.getSeconds();
-
-        } catch (ParseException e) {
-            Log.e(AtDevice.class.getName(), "cannot parse dateContent " + dateContent);
-        }
-    }
-
-    private void handlePrefix(String prefix) {
-        if (prefix.contains("+")) {
-            timerType = TimerType.RELATIVE;
-        }
-
-        if (prefix.contains("*")) {
-            repetition = AtRepetition.EVERY_DAY;
-        }
-    }
-
     @Override
     public boolean isSupported() {
         return definition != null && targetDevice != null;
-    }
-
-    @Override
-    public String toString() {
-        return "AtDevice{" +
-                "definition=" + definition +
-                ", hours=" + hours +
-                ", minutes=" + minutes +
-                ", seconds=" + seconds +
-                ", targetDevice='" + targetDevice + '\'' +
-                ", targetState='" + targetState + '\'' +
-                ", targetStateAddtionalInformation='" + targetStateAddtionalInformation + '\'' +
-                ", repetition=" + repetition +
-                ", timerType=" + timerType +
-                '}';
     }
 
     public int getHours() {
@@ -254,6 +169,76 @@ public class AtDevice extends Device<AtDevice> {
                 + ":" + toTwoDecimalDigits(seconds);
     }
 
+    private void parseDateContent(String dateContent) {
+        if (dateContent.length() < "00:00:00".length()) {
+            dateContent += ":00";
+        }
+        try {
+            Date date = dateFormat.parse(dateContent);
+            hours = date.getHours();
+            minutes = date.getMinutes();
+            seconds = date.getSeconds();
+
+        } catch (ParseException e) {
+            Log.e(AtDevice.class.getName(), "cannot parse dateContent " + dateContent);
+        }
+    }
+
+    boolean parseDefinition(String nodeContent) {
+        Matcher prefixMatcher = PREFIX_PATTERN.matcher(nodeContent);
+
+        if (! prefixMatcher.matches()) return false;
+
+        String prefix = prefixMatcher.group(1);
+        handlePrefix(prefix);
+
+        String dateContent = prefixMatcher.group(2);
+        parseDateContent(dateContent);
+
+        String rest = prefixMatcher.group(3).trim();
+
+        return parseDeviceSwitchContent(rest);
+    }
+
+    private boolean parseDeviceSwitchContent(String rest) {
+        rest = rest.replaceAll("[{}]", "").trim();
+        if (rest.startsWith("fhem")) {
+            Matcher fhemMatcher = FHEM_PATTERN.matcher(rest);
+
+            if (! fhemMatcher.matches()) return false;
+
+            targetDevice = fhemMatcher.group(1);
+            targetState = fhemMatcher.group(2);
+            targetStateAddtionalInformation = fhemMatcher.group(3);
+
+            String fhemRest = fhemMatcher.group(4).trim();
+            if (fhemRest.matches("if[ ]?\\(\\$we\\)")) {
+                repetition = AtRepetition.WEEKEND;
+            } else if (fhemRest.matches("if[ ]?\\((NOT|not|!)[ ]?\\$we\\)")) {
+                repetition = AtRepetition.WEEKDAY;
+            }
+        } else {
+            Matcher matcher = DEFAULT_PATTERN.matcher(rest);
+
+            if (! matcher.matches()) return false;
+
+            targetDevice = matcher.group(1);
+            targetState = matcher.group(2);
+            targetStateAddtionalInformation = matcher.group(3);
+        }
+        return true;
+    }
+
+    private void handlePrefix(String prefix) {
+        if (prefix.contains("+")) {
+            timerType = TimerType.RELATIVE;
+        }
+
+        if (prefix.contains("*")) {
+            repetition = AtRepetition.EVERY_DAY;
+        }
+    }
+
     public String toFHEMDefinition() {
         String command = "";
         if (timerType == TimerType.RELATIVE) {
@@ -269,37 +254,30 @@ public class AtDevice extends Device<AtDevice> {
         if (targetStateAddtionalInformation != null) {
             command += " " + targetStateAddtionalInformation;
         }
-        command += "\") }";
+        command += "\")";
 
         if (repetition == AtRepetition.WEEKEND) {
             command += " if($we)";
         } else if (repetition == AtRepetition.WEEKDAY) {
             command += " if (!$we)";
         }
+        command += " }";
 
         return command;
     }
 
-
-    public static void main(String[] args) {
-//        parse("17:00:00 set lamp on");
-//        parse("*23:00:00 fhem('set lamp off') if ($we)");
-//        parse("+*23:00:00 fhem('set lamp off-for-timer 200') if (not $we)");
-//        parse("*23:00:00 fhem('set lamp off-for-timer 200') if(NOT $we)");
-//        parse("*23:00:00 fhem('set lamp off-for-timer 200') if (!$we)");
-        parse("*23:00:00 { fhem('set lamp off') if ($we) }");
-    }
-
-    public static void parse(String def) {
-        AtDevice device = new AtDevice();
-        device.parseDefinition(def);
-        System.out.println();
-        System.out.println(def);
-        System.out.println(device.toString());
-        String back = device.toFHEMDefinition();
-        System.out.println(back);
-
-        device.parseDefinition(back);
-        System.out.println(device);
+    @Override
+    public String toString() {
+        return "AtDevice{" +
+                "definition=" + definition +
+                ", hours=" + hours +
+                ", minutes=" + minutes +
+                ", seconds=" + seconds +
+                ", targetDevice='" + targetDevice + '\'' +
+                ", targetState='" + targetState + '\'' +
+                ", targetStateAddtionalInformation='" + targetStateAddtionalInformation + '\'' +
+                ", repetition=" + repetition +
+                ", timerType=" + timerType +
+                '}';
     }
 }

@@ -25,12 +25,56 @@ package li.klass.fhem.domain;
 
 import org.junit.Test;
 
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertEquals;
 
 public class AtDeviceTest {
     @Test
-    public void test() {
-        new AtDevice();
-        assertFalse(true);
+    public void testParseDefinition() {
+        AtDevice device;
+
+        device = parse("17:00:00 set lamp on", 17, 0, 0, "lamp", "on", null,
+                AtDevice.AtRepetition.ONCE, AtDevice.TimerType.ABSOLUTE);
+        assemble(device, "17:00:00 { fhem(\"set lamp on\") }");
+
+        device = parse("*23:00:00 { fhem(\"set lamp off\") if ($we) }", 23, 0, 0, "lamp", "off", null,
+                AtDevice.AtRepetition.WEEKEND, AtDevice.TimerType.ABSOLUTE);
+        assemble(device, "*23:00:00 { fhem(\"set lamp off\") if($we) }");
+
+        device = parse("+*23:00:00 { fhem(\"set lamp off-for-timer 200\") if (not $we) }", 23, 0, 0, "lamp", "off-for-timer", "200",
+                AtDevice.AtRepetition.WEEKDAY, AtDevice.TimerType.RELATIVE);
+        assemble(device, "+*23:00:00 { fhem(\"set lamp off-for-timer 200\") if (!$we) }");
+
+        device = parse("*23:00:00 { fhem(\"set lamp off-for-timer 200\") if(NOT $we) }", 23, 0, 0, "lamp", "off-for-timer", "200",
+                AtDevice.AtRepetition.WEEKDAY, AtDevice.TimerType.ABSOLUTE);
+        assemble(device, "*23:00:00 { fhem(\"set lamp off-for-timer 200\") if (!$we) }");
+
+        device = parse("*23:00:00 { fhem(\"set lamp off-for-timer 200\") if (!$we) }", 23, 0, 0, "lamp", "off-for-timer", "200",
+                AtDevice.AtRepetition.WEEKDAY, AtDevice.TimerType.ABSOLUTE);
+        assemble(device, "*23:00:00 { fhem(\"set lamp off-for-timer 200\") if (!$we) }");
+    }
+
+    private AtDevice parse(String definition,
+                           int expectedHours, int expectedMinutes, int expectedSeconds,
+                           String expectedTargetDevice, String expectedTargetState,
+                           String expectedAdditionalInformation,
+                           AtDevice.AtRepetition expectedRepetition,
+                           AtDevice.TimerType expectedTimerType) {
+        AtDevice device = new AtDevice();
+        device.parseDefinition(definition);
+
+        assertEquals(expectedHours, device.getHours());
+        assertEquals(expectedMinutes, device.getMinutes());
+        assertEquals(expectedSeconds, device.getSeconds());
+        assertEquals(expectedTargetState, device.getTargetState());
+        assertEquals(expectedTargetDevice, device.getTargetDevice());
+        assertEquals(expectedAdditionalInformation, device.getTargetStateAddtionalInformation());
+        assertEquals(expectedRepetition, device.getRepetition());
+        assertEquals(expectedTimerType, device.getTimerType());
+
+       return device;
+    }
+    
+    private void assemble(AtDevice device, String expectedDefinition) {
+        assertEquals(expectedDefinition, device.toFHEMDefinition());
     }
 }
