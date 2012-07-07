@@ -52,7 +52,6 @@ task setUpSDK(type:Exec) {
 compileJava.dependsOn(setUpSDK)
 
 task buildDebug (dependsOn: setUpSDK) << {
-    println 'hallo'
     project.execIn(new File('app'), "ant", "debug")
 }
 test.dependsOn(buildDebug)
