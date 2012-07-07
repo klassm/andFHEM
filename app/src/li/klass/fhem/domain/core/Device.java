@@ -85,7 +85,7 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
 
             String keyValue = keyAttribute.getNodeValue().toUpperCase().trim();
             String nodeContent = item.getAttributes().getNamedItem("value").getNodeValue().trim();
-            nodeContent = StringEscapeUtils.unescapeHtml(nodeContent);
+            nodeContent = StringEscapeUtils.unescape(nodeContent);
 
             if (nodeContent == null || nodeContent.length() == 0) {
                 continue;

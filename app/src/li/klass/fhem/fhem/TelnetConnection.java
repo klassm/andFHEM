@@ -62,7 +62,7 @@ public class TelnetConnection implements FHEMConnection {
     private TelnetConnection() {}
 
     public String xmllist() {
-        return request("xmllist", "</FHZINFO>");
+        return request("xmllist");
     }
 
     @Override
@@ -70,11 +70,11 @@ public class TelnetConnection implements FHEMConnection {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH:mm");
         String command = "get " + logName + " - - " + dateFormat.format(fromDate) + " " + dateFormat.format(toDate) + " " + columnSpec;
 
-        return request(command, "#" + columnSpec);
+        return request(command);
     }
 
     public String executeCommand(String command) {
-        return request(command, null);
+        return request(command);
     }
 
     @Override
@@ -83,8 +83,8 @@ public class TelnetConnection implements FHEMConnection {
         return null;
     }
 
-    private String request(String command, String delimiter) {
-        Log.i(TelnetConnection.class.getName(), "executeTask command " + command + " with delimiter " + delimiter);
+    private String request(String command) {
+        Log.i(TelnetConnection.class.getName(), "executeTask command " + command);
 
         OutputStream outputStream = null;
         BufferedOutputStream bufferedOutputStream = null;

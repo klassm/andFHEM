@@ -61,7 +61,7 @@ public class DialogUtil {
         if (title != null) alert.setTitle(title);
         alert.setCancelable(false);
         alert.setMessage(text);
-        alert.setButton(context.getString(R.string.okButton), new DialogInterface.OnClickListener() {
+        alert.setButton(DialogInterface.BUTTON_POSITIVE, context.getString(R.string.okButton), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 alert.dismiss();

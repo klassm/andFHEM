@@ -35,7 +35,7 @@ public class ValueExtractUtil {
         return Integer.valueOf(text);
     }
 
-    private static String extractContentBeforeSpace(String text) {
+    static String extractContentBeforeSpace(String text) {
         text = text.trim();
         int spacePosition = text.indexOf(" ");
         if (spacePosition != -1) {

@@ -29,6 +29,7 @@ import android.view.Gravity;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
+import li.klass.fhem.util.NumberUtil;
 
 import static android.widget.NumberPicker.Formatter;
 
@@ -46,10 +47,7 @@ public class TimePickerWithSeconds extends LinearLayout {
     public static final Formatter TWO_DIGIT_FORMATTER = new Formatter() {
         @Override
         public String format(int i) {
-            if (i < 10) {
-                return "0" + i;
-            }
-            return "" + i;
+            return NumberUtil.toTwoDecimalDigits(i);
         }
     };
 
