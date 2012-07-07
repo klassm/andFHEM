@@ -44,7 +44,15 @@ sourceSets.main.java.srcDirs = [
         './gen',
 ]
 
-task buildDebug << {
+task setUpSDK(type:Exec) {
+    workingDir '.'
+    commandLine "../build-utils/update-android-project"
+}
+
+compileJava.dependsOn(setUpSDK)
+
+task buildDebug (dependsOn: setUpSDK) << {
+    println 'hallo'
     project.execIn(new File('app'), "ant", "debug")
 }
 test.dependsOn(buildDebug)
