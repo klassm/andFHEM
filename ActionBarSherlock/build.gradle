@@ -21,6 +21,16 @@
  *   51 Franklin Street, Fifth Floor
  */
 
+apply plugin:com.smokejumperit.gradle.ExecPlugin
+
+buildscript {
+    repositories {
+        mavenRepo urls:'http://repo.smokejumperit.com'
+    }
+    dependencies {
+        classpath 'com.smokejumperit:gradle-plugins:0.8.2'
+    }
+}
 dependencies {
     compile fileTree(dir: './libs', include: '*.jar')
     testCompile 'com.google.android:android:4.0.1.2'
@@ -30,3 +40,8 @@ sourceSets.main.java.srcDirs = [
         './src',
         './gen',
 ]
+
+task buildDebug << {
+    project.execIn(new File('ActionBarSherlock'), "ant", "debug")
+}
+test.dependsOn(buildDebug)
