@@ -14,3 +14,5 @@ local.properties
 ActionBarSherlock
 target
 .gradle
+build
+jarlist.cache
