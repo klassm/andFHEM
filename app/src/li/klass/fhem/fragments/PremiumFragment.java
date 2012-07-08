@@ -44,6 +44,7 @@ public class PremiumFragment extends BaseFragment {
 
     @SuppressWarnings("unused")
     public PremiumFragment(Bundle bundle) {
+        super(bundle);
     }
 
     @SuppressWarnings("unused")

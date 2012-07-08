@@ -26,6 +26,7 @@ package li.klass.fhem.fragments;
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.fragments.core.BaseFragment;
+import li.klass.fhem.fragments.core.DeviceDetailFragment;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,20 +34,22 @@ import java.util.Comparator;
 import java.util.List;
 
 public enum FragmentType {
-    ALL_DEVICES(AllDevicesFragment.class, R.string.tab_alldevices, 2),
+    ALL_DEVICES(AllDevicesFragment.class, R.string.tab_alldevices, 2, RoomListFragment.class),
     CONVERSION(ConversionFragment.class),
-    FAVORITES(FavoritesFragment.class, R.string.tab_favorites, 0),
+    FAVORITES(FavoritesFragment.class, R.string.tab_favorites, 0, RoomListFragment.class),
+    DEVICE_DETAIL(DeviceDetailFragment.class, RoomListFragment.class),
     FHT_TIMETABLE_CONTROL(FHTTimetableControlListFragment.class),
     FLOORPLAN(FloorplanFragment.class),
     PREMIUM(PremiumFragment.class),
-    ROOM_DETAIL(RoomDetailFragment.class),
-    ROOM_LIST(RoomListFragment.class, R.string.tab_roomList, 1),
+    ROOM_DETAIL(RoomDetailFragment.class, RoomListFragment.class),
+    ROOM_LIST(RoomListFragment.class, R.string.tab_roomList, 1, null),
     SEND_COMMAND(SendCommandFragment.class),
     DEVICE_SELECTION(DeviceSelectionFragment.class),
     TIMER_OVERVIEW(TimerFragment.class),
     TIMER_DETAIL(TimerDetailFragment.class);
 
     private Class<? extends BaseFragment> fragmentClass;
+    private Class<? extends BaseFragment> navigationFragment;
     private String topLevelTabName;
 
     private static Comparator<FragmentType> topLevelFragmentNameComparator = new Comparator<FragmentType>() {
@@ -59,17 +62,24 @@ public enum FragmentType {
     private int topLevelPosition;
 
     FragmentType(Class<? extends BaseFragment> fragmentClass) {
-        this(fragmentClass, null, -1);
+        this(fragmentClass, null, -1, null);
     }
 
-    FragmentType(Class<? extends BaseFragment> fragmentClass, int topLevelTabName, int topLevelPosition) {
-        this(fragmentClass, AndFHEMApplication.getContext().getString(topLevelTabName), topLevelPosition);
+    FragmentType(Class<? extends BaseFragment> fragmentClass, Class<? extends BaseFragment> navigationFragment) {
+        this(fragmentClass, null, -1, navigationFragment);
     }
 
-    FragmentType(Class<? extends BaseFragment> fragmentClass, String topLevelTabName, int topLevelPosition) {
+    FragmentType(Class<? extends BaseFragment> fragmentClass, int topLevelTabName, int topLevelPosition,
+                 Class<? extends BaseFragment> navigationFragment) {
+        this(fragmentClass, AndFHEMApplication.getContext().getString(topLevelTabName), topLevelPosition, navigationFragment);
+    }
+
+    FragmentType(Class<? extends BaseFragment> fragmentClass, String topLevelTabName, int topLevelPosition,
+                 Class<? extends BaseFragment> navigationFragment) {
         this.fragmentClass = fragmentClass;
         this.topLevelTabName = topLevelTabName;
         this.topLevelPosition = topLevelPosition;
+        this.navigationFragment = navigationFragment;
     }
 
     public static List<FragmentType> getTopLevelFragments() {
@@ -91,6 +101,20 @@ public enum FragmentType {
             }
         }
         return null;
+    }
+
+    @SuppressWarnings("unchecked")
+    public static FragmentType getFragmentFor(String name) {
+        try {
+            Class<? extends BaseFragment> fragmentType = (Class<? extends BaseFragment>) Class.forName(name);
+            return FragmentType.getFragmentFor(fragmentType);
+        } catch (ClassNotFoundException e) {
+            return null;
+        }
+    }
+
+    public Class<? extends BaseFragment> getNavigationFragment() {
+        return navigationFragment;
     }
 
     public Class<? extends BaseFragment> getFragmentClass() {

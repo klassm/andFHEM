@@ -38,6 +38,7 @@ public class RoomDetailFragment extends DeviceListFragment {
 
     @SuppressWarnings("unused")
     public RoomDetailFragment(Bundle bundle) {
+        super(bundle);
         this.roomName = bundle.getString(BundleExtraKeys.ROOM_NAME);
     }
 

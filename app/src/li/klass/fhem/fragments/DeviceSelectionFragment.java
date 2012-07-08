@@ -56,6 +56,8 @@ public class DeviceSelectionFragment extends BaseFragment {
 
     @SuppressWarnings("unused")
     public DeviceSelectionFragment(Bundle bundle) {
+        super(bundle);
+
         if (bundle.containsKey(BundleExtraKeys.DEVICE_FILTER)) {
             Serializable deviceFilterSerializable = bundle.getSerializable(BundleExtraKeys.DEVICE_FILTER);
             if (deviceFilterSerializable instanceof DeviceFilter) {

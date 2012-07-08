@@ -51,6 +51,12 @@ public abstract class DeviceListFragment extends BaseFragment {
 
     private transient RoomDetailAdapter adapter;
 
+    public DeviceListFragment(Bundle bundle) {
+        super(bundle);
+    }
+
+    public DeviceListFragment() {}
+
     /**
      * Attribute is set whenever a context menu concerning a device is clicked. This is the only way to actually get
      * the concerned device.

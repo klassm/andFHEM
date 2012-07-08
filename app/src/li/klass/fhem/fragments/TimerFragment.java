@@ -58,6 +58,7 @@ public class TimerFragment extends BaseFragment {
 
     @SuppressWarnings("unused")
     public TimerFragment(Bundle bundle) {
+        super(bundle);
     }
 
     @SuppressWarnings("unused")

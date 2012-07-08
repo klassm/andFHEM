@@ -47,6 +47,7 @@ public class FHTTimetableControlListFragment extends BaseFragment {
 
     @SuppressWarnings("unused")
     public FHTTimetableControlListFragment(Bundle bundle) {
+        super(bundle);
         deviceName = bundle.getString(BundleExtraKeys.DEVICE_NAME);
     }
 

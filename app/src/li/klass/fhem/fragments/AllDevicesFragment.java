@@ -33,7 +33,9 @@ import li.klass.fhem.fragments.core.TopLevelFragment;
 public class AllDevicesFragment extends DeviceListFragment implements TopLevelFragment, ActionBarShowTabs {
 
     @SuppressWarnings("unused")
-    public AllDevicesFragment(Bundle bundle) {}
+    public AllDevicesFragment(Bundle bundle) {
+        super(bundle);
+    }
 
     @SuppressWarnings("unused")
     public AllDevicesFragment() {}

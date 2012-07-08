@@ -44,7 +44,9 @@ import li.klass.fhem.fragments.core.TopLevelFragment;
 public class FavoritesFragment extends DeviceListFragment implements TopLevelFragment, ActionBarShowTabs {
 
     @SuppressWarnings("unused")
-    public FavoritesFragment(Bundle bundle) {}
+    public FavoritesFragment(Bundle bundle) {
+        super(bundle);
+    }
 
     @SuppressWarnings("unused")
     public FavoritesFragment() {}

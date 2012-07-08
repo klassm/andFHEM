@@ -75,6 +75,7 @@ public class FloorplanFragment extends BaseFragment {
 
     @SuppressWarnings("unused")
     public FloorplanFragment(Bundle bundle) {
+        super(bundle);
         floorplanName = bundle.getString(BundleExtraKeys.DEVICE_NAME);
     }
 

@@ -40,10 +40,13 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
 
     private transient UIBroadcastReceiver broadcastReceiver;
     private transient View contentView;
-    protected Bundle resultData;
+    protected transient Bundle fragmentIntentResultData;
+    protected transient Bundle creationBundle;
 
     public BaseFragment() {}
-    public BaseFragment(Bundle bundle) {}
+    public BaseFragment(Bundle bundle) {
+        this.creationBundle = bundle;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -89,6 +92,10 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
     }
 
     public final void onBackPressResult(Bundle resultData) {
-        this.resultData = resultData;
+        this.fragmentIntentResultData = resultData;
+    }
+
+    public Bundle getCreationBundle() {
+        return creationBundle;
     }
 }

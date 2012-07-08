@@ -37,6 +37,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
@@ -54,23 +55,31 @@ import li.klass.fhem.fragments.core.TopLevelFragment;
 import li.klass.fhem.service.room.RoomListService;
 import li.klass.fhem.util.DialogUtil;
 
+import java.io.Serializable;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
 import static li.klass.fhem.constants.Actions.*;
 
 public abstract class FragmentBaseActivity extends SherlockFragmentActivity implements ActionBar.TabListener, Updateable {
-    private BaseFragment currentFragment = null;
-    private ArrayList<BaseFragment> fragmentHistoryStack = new ArrayList<BaseFragment>();
+    static class FragmentHistoryStackEntry implements Serializable {
+        FragmentHistoryStackEntry(BaseFragment navigationFragment, BaseFragment contentFragment) {
+            this.navigationFragment = navigationFragment;
+            this.contentFragment = contentFragment;
+        }
+
+        private BaseFragment navigationFragment;
+        private BaseFragment contentFragment;
+    }
+
+    private FragmentHistoryStackEntry currentHistoryStackEntry = null;
+    private ArrayList<FragmentHistoryStackEntry> fragmentHistoryStack = new ArrayList<FragmentHistoryStackEntry>();
 
     private Receiver broadcastReceiver;
     private Menu optionsMenu;
 
     // an intent waiting to be processed, but received in the wrong activity state (widget problem ..)
     private Intent waitingIntent;
-
-    private static final String INTENT_IS_TOPLEVEL = "isTopLevelIntent";
 
     private Handler autoUpdateHandler;
     private final Runnable autoUpdateCallback = new Runnable() {
@@ -124,7 +133,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
                         String action = intent.getAction();
                         if (Actions.SHOW_FRAGMENT.equals(action)) {
                             String fragmentName = intent.getStringExtra(BundleExtraKeys.FRAGMENT_NAME);
-                            prepareAndCallSwitchToFragment(fragmentName, intent);
+                            switchToFragment(FragmentType.getFragmentFor(fragmentName), intent.getExtras());
                         } else if (action.equals(Actions.DISMISS_UPDATING_DIALOG)) {
                             setShowRefreshProgressIcon(false);
                         } else if (intent.getBooleanExtra(BundleExtraKeys.DO_REFRESH, false) && action.equals(Actions.DO_UPDATE)) {
@@ -152,20 +161,10 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
         }
     }
 
-    private void prepareAndCallSwitchToFragment(String fragmentName, Intent intent) throws ClassNotFoundException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
-        Class<?> fragmentClass = Class.forName(fragmentName);
-        boolean addToStack = intent.getBooleanExtra(BundleExtraKeys.FRAGMENT_ADD_TO_STACK, true);
-        intent.putExtra(INTENT_IS_TOPLEVEL, fragmentClass.isAssignableFrom(TopLevelFragment.class));
-
-        Constructor<?> constructor = fragmentClass.getConstructor(Bundle.class);
-        BaseFragment fragment = (BaseFragment) constructor.newInstance(intent.getExtras());
-
-        switchToFragment(fragment, addToStack);
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.main_view);
 
         saveInstanceStateCalled = false;
 
@@ -195,12 +194,9 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
         }
 
         if (savedInstanceState == null || ! restoreResult)  {
-            Intent intent = new Intent(Actions.SHOW_FRAGMENT);
-            intent.putExtra(BundleExtraKeys.FRAGMENT_NAME, FavoritesFragment.class.getName());
-            sendBroadcast(intent);
+            switchToFragment(FragmentType.FAVORITES, new Bundle());
         }
     }
-
 
     @Override
     protected void onNewIntent(Intent intent) {
@@ -209,6 +205,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
         // save the intent intermediately and process it in onPostResume();
         waitingIntent = intent;
     }
+
 
     @Override
     protected void onPostResume() {
@@ -220,7 +217,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
         String fragmentName = waitingIntent.getStringExtra(BundleExtraKeys.FRAGMENT_NAME);
         if (fragmentName != null) {
             try {
-                prepareAndCallSwitchToFragment(fragmentName, waitingIntent);
+                switchToFragment(FragmentType.getFragmentFor(fragmentName), waitingIntent.getExtras());
             } catch (Exception e) {
                 Log.e(FragmentBaseActivity.class.getName(), "error while creating fragment", e);
             }
@@ -232,10 +229,11 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
     @SuppressWarnings("unchecked")
     private boolean restoreSavedInstance(Bundle savedInstanceState, ActionBar actionBar) {
         try {
-            ArrayList<BaseFragment> previousFragmentStack = (ArrayList<BaseFragment>) savedInstanceState.getSerializable(BundleExtraKeys.FRAGMENT_HISTORY_STACK);
+            ArrayList<FragmentHistoryStackEntry> previousFragmentStack =
+                    (ArrayList<FragmentHistoryStackEntry>) savedInstanceState.getSerializable(BundleExtraKeys.FRAGMENT_HISTORY_STACK);
 
             if (previousFragmentStack != null) {
-                removeLastHistoryFragment(previousFragmentStack);
+                removeLastHistoryFragmentEntry();
                 fragmentHistoryStack = previousFragmentStack;
             }
 
@@ -243,9 +241,9 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
                 actionBar.setSelectedNavigationItem(savedInstanceState.getInt(BundleExtraKeys.CURRENT_TAB));
             }
 
-            BaseFragment fragment = (BaseFragment) savedInstanceState.getSerializable(BundleExtraKeys.CURRENT_FRAGMENT);
-            if (fragment != null) {
-                switchToFragment(fragment, false);
+            FragmentHistoryStackEntry historyEntry = (FragmentHistoryStackEntry) savedInstanceState.getSerializable(BundleExtraKeys.CURRENT_FRAGMENT);
+            if (historyEntry != null) {
+                switchToFragment(historyEntry, false);
                 return true;
             } else {
                 return false;
@@ -375,21 +373,20 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
 
     private void onBackPressed(Bundle data) {
         removeDialog();
-        BaseFragment previousFragment = removeLastHistoryFragment(fragmentHistoryStack);
+        FragmentHistoryStackEntry previousEntry = removeLastHistoryFragmentEntry();
 
-        if (previousFragment != null) {
-            switchToFragment(previousFragment, false);
-            previousFragment.onBackPressResult(data);
+        if (previousEntry != null) {
+            switchToFragment(previousEntry, false);
+            previousEntry.contentFragment.onBackPressResult(data);
         } else {
             finish();
         }
     }
 
-
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         this.saveInstanceStateCalled = true;
-        outState.putSerializable(BundleExtraKeys.CURRENT_FRAGMENT, currentFragment);
+        outState.putSerializable(BundleExtraKeys.CURRENT_FRAGMENT, currentHistoryStackEntry);
         outState.putSerializable(BundleExtraKeys.FRAGMENT_HISTORY_STACK, fragmentHistoryStack);
 
         if (getSupportActionBar().getSelectedTab() != null) {
@@ -399,29 +396,122 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
         super.onSaveInstanceState(outState);
     }
 
-    /**
-     * Shows the given fragment in the main content section.
-     * @param fragment fragment to show
-     * @param putToStack put the fragment to history. Usually true, except when back is pressed (history)
-     */
-    private void switchToFragment(BaseFragment fragment, boolean putToStack) {
+    private void switchToFragment(FragmentType fragmentType, Bundle data) {
+        BaseFragment contentFragment = createContentFragment(fragmentType, data);
+        if (contentFragment == null) {
+            Log.e(FragmentBaseActivity.class.getName(), "cannot switch to fragment, as createContentFragment() returned null");
+        }
+
+        FragmentHistoryStackEntry lastHistoryFragmentEntry = currentHistoryStackEntry;
+        BaseFragment navigationFragment = createNavigationFragment(contentFragment, lastHistoryFragmentEntry);
+
+        boolean addToStack = data.getBoolean(BundleExtraKeys.FRAGMENT_ADD_TO_STACK, true);
+        switchToFragment(new FragmentHistoryStackEntry(navigationFragment, contentFragment), addToStack);
+    }
+
+
+    private BaseFragment createContentFragment(FragmentType fragmentType, Bundle data) {
+        try {
+            Constructor<? extends BaseFragment> constructor = fragmentType.getFragmentClass().getConstructor(Bundle.class);
+            return (BaseFragment) constructor.newInstance(data);
+        } catch (Exception e) {
+            Log.e(FragmentBaseActivity.class.getName(), "cannot instantiate fragment", e);
+            return null;
+        }
+    }
+
+
+    private BaseFragment createNavigationFragment(BaseFragment contentFragment, FragmentHistoryStackEntry lastEntry) {
+        if (contentFragment == null) {
+            return null;
+        }
+        View navigationView = findViewById(R.id.navigation);
+        boolean isTablet = navigationView != null;
+
+        if (! isTablet) return null;
+        FragmentType currentFragmentType = FragmentType.getFragmentFor(contentFragment.getClass());
+        Class<? extends BaseFragment> navigationFragmentClass = currentFragmentType.getNavigationFragment();
+        if (navigationFragmentClass == null) {
+            return null;
+        }
+
+        Bundle bundle = new Bundle();
+        if (lastEntry != null) {
+            BaseFragment lastContent = lastEntry.contentFragment;
+            BaseFragment lastNavigation = lastEntry.navigationFragment;
+
+            if (lastContent != null) {
+                bundle.putAll(lastContent.getCreationBundle());
+            }
+            if (lastNavigation != null) {
+                bundle.putAll(lastNavigation.getCreationBundle());
+            }
+        }
+
+        navigationView.setVisibility(View.VISIBLE);
+        try {
+            Constructor<? extends BaseFragment> constructor = navigationFragmentClass.getConstructor(Bundle.class);
+            return constructor.newInstance(bundle);
+        } catch (Exception e) {
+            Log.e(FragmentBaseActivity.class.getName(), "cannot instantiate navigation fragment", e);
+            return null;
+        }
+    }
+
+    private void switchToFragment(FragmentHistoryStackEntry toSwitchToEntry, boolean putToStack) {
         removeDialog();
 
-        if (fragment == null || (currentFragment != null && currentFragment.getClass().equals(fragment.getClass()))) return;
+        if (currentHistoryStackEntry != null && currentHistoryStackEntry.contentFragment.getClass().equals(toSwitchToEntry.contentFragment.getClass()) &&
+                currentHistoryStackEntry.contentFragment.getCreationBundle().equals(toSwitchToEntry.contentFragment.getCreationBundle())) {
+            return;
+        }
 
-        if (fragment instanceof TopLevelFragment) {
+        if (toSwitchToEntry.contentFragment instanceof TopLevelFragment) {
             fragmentHistoryStack.clear();
         }
 
         if (putToStack) {
             if (fragmentHistoryStack.size() > 10) fragmentHistoryStack.remove(0);
-            fragmentHistoryStack.add(currentFragment);
+            fragmentHistoryStack.add(currentHistoryStackEntry);
         }
+        currentHistoryStackEntry = toSwitchToEntry;
 
-        currentFragment = fragment;
+        try {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.content, toSwitchToEntry.contentFragment)
+                    .commitAllowingStateLoss();
+            setNavigationFragment(toSwitchToEntry);
+            handleNavigationChanges(toSwitchToEntry);
+        } catch (IllegalStateException e) {
+            Log.e(FragmentBaseActivity.class.getName(), "error while switching to fragment " + toSwitchToEntry.contentFragment.getClass().getName(), e);
+        }
+    }
 
+    private void setNavigationFragment(FragmentHistoryStackEntry entry) {
+        View navigationView = findViewById(R.id.navigation);
+        if (navigationView == null) return;
+
+        BaseFragment navigationFragment = entry.navigationFragment;
+        if (navigationFragment == null) {
+            navigationView.setVisibility(View.GONE);
+            return;
+        }
+        navigationView.setVisibility(View.VISIBLE);
+
+        try {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.navigation, navigationFragment)
+                    .commitAllowingStateLoss();
+        } catch (Exception e) {
+            Log.e(FragmentBaseActivity.class.getName(), "cannot instantiate navigation fragment", e);
+        }
+    }
+
+    private void handleNavigationChanges(FragmentHistoryStackEntry entry) {
         int navigationMode = ActionBar.NAVIGATION_MODE_STANDARD;
-        if (fragment instanceof ActionBarShowTabs) {
+        if (entry.contentFragment instanceof ActionBarShowTabs) {
             navigationMode = ActionBar.NAVIGATION_MODE_TABS;
         }
 
@@ -429,19 +519,11 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
             getSupportActionBar().setNavigationMode(navigationMode);
         }
 
-        try {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(android.R.id.content, fragment)
-                    .commitAllowingStateLoss();
-        } catch (IllegalStateException e) {
-            Log.e(FragmentBaseActivity.class.getName(), "error while switching to fragment " + fragment.getClass().getName(), e);
-        }
+        FragmentType currentFragmentType = FragmentType.getFragmentFor(entry.contentFragment.getClass());
+        if (currentFragmentType == null) return;
 
-        // activate the correct tab
-        FragmentType fragmentType = FragmentType.getFragmentFor(currentFragment.getClass());
-        if (fragmentType != null && fragmentType.isTopLevelFragment() && fragmentType.getTopLevelPosition() != -1) {
-            int topLevelPosition = fragmentType.getTopLevelPosition();
+        if (currentFragmentType.isTopLevelFragment() && currentFragmentType.getTopLevelPosition() != -1) {
+            int topLevelPosition = currentFragmentType.getTopLevelPosition();
             ActionBar.Tab tab = getSupportActionBar().getTabAt(topLevelPosition);
             if (tab != null) tab.select();
         }
@@ -480,9 +562,15 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
         optionsMenu.findItem(R.id.menu_refresh_progress).setVisible(show);
     }
 
-    private BaseFragment removeLastHistoryFragment(ArrayList<BaseFragment> previousFragmentStack) {
-        if (! previousFragmentStack.isEmpty()) {
-            return previousFragmentStack.remove(previousFragmentStack.size() - 1);
+    private FragmentHistoryStackEntry removeLastHistoryFragmentEntry() {
+        if (! fragmentHistoryStack.isEmpty()) {
+            return fragmentHistoryStack.remove(fragmentHistoryStack.size() - 1);
+        }
+        return null;
+    }
+    private FragmentHistoryStackEntry getLastHistoryFragmentEntry() {
+        if (! fragmentHistoryStack.isEmpty()) {
+            return fragmentHistoryStack.get(fragmentHistoryStack.size() - 1);
         }
         return null;
     }

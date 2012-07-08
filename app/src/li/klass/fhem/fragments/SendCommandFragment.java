@@ -50,6 +50,7 @@ public class SendCommandFragment extends BaseFragment {
 
     @SuppressWarnings("unused")
     public SendCommandFragment(Bundle bundle) {
+        super(bundle);
     }
 
     @SuppressWarnings("unused")

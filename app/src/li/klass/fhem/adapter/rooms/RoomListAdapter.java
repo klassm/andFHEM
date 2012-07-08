@@ -36,6 +36,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RoomListAdapter extends ListDataAdapter<String> {
+    private String selectedRoom;
+
     public RoomListAdapter(Context context, int resource, List<String> data) {
         super(context, resource, data);
     }
@@ -51,12 +53,17 @@ public class RoomListAdapter extends ListDataAdapter<String> {
 
         convertView.setTag(roomName);
 
+        if (roomName.equals(selectedRoom)) {
+            convertView.setBackgroundColor(context.getResources().getColor(R.color.focusedColor));
+        }
+
         return convertView;
     }
 
-    @Override
-    public void updateData(List<String> newData) {
+    public void updateData(List<String> newData, String selectedRoom) {
         if (newData == null) return;
+
+        this.selectedRoom = selectedRoom;
 
         boolean showHiddenDevices = PreferenceManager.getDefaultSharedPreferences(context).getBoolean("prefShowHiddenDevices", false);
         if (! showHiddenDevices) {
@@ -67,6 +74,6 @@ public class RoomListAdapter extends ListDataAdapter<String> {
             }
         }
 
-        super.updateData(newData);
+        updateData(newData);
     }
 }

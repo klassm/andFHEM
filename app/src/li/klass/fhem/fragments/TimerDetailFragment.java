@@ -72,6 +72,7 @@ public class TimerDetailFragment extends BaseFragment {
 
     @SuppressWarnings("unused")
     public TimerDetailFragment(Bundle bundle) {
+        super(bundle);
         if (bundle.containsKey(BundleExtraKeys.DEVICE_NAME)) {
             timerDeviceName = bundle.getString(BundleExtraKeys.DEVICE_NAME);
             isModify = true;
@@ -339,11 +340,11 @@ public class TimerDetailFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (resultData == null || ! resultData.containsKey(BundleExtraKeys.CLICKED_DEVICE)) {
+        if (fragmentIntentResultData == null || ! fragmentIntentResultData.containsKey(BundleExtraKeys.CLICKED_DEVICE)) {
             return;
         }
 
-        Device device = (Device) resultData.getSerializable(BundleExtraKeys.CLICKED_DEVICE);
+        Device device = (Device) fragmentIntentResultData.getSerializable(BundleExtraKeys.CLICKED_DEVICE);
         updateTargetDevice(device);
         selectTargetState(null);
     }

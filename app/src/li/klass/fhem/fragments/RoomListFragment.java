@@ -49,9 +49,13 @@ import java.util.List;
 public class RoomListFragment extends BaseFragment implements ActionBarShowTabs, TopLevelFragment {
 
     private transient RoomListAdapter adapter;
+    private String selectedRoomName;
 
     @SuppressWarnings("unused")
-    public RoomListFragment(Bundle bundle) {}
+    public RoomListFragment(Bundle bundle) {
+        super(bundle);
+        this.selectedRoomName = bundle.getString(BundleExtraKeys.ROOM_NAME);
+    }
 
     @SuppressWarnings("unused")
     public RoomListFragment() {}
@@ -72,7 +76,9 @@ public class RoomListFragment extends BaseFragment implements ActionBarShowTabs,
 
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
                 String roomName = String.valueOf(view.getTag());
+                getCreationBundle().putString(BundleExtraKeys.ROOM_NAME, roomName);
 
                 Intent intent = new Intent(Actions.SHOW_FRAGMENT);
                 intent.putExtra(BundleExtraKeys.FRAGMENT_NAME, RoomDetailFragment.class.getName());
@@ -90,7 +96,7 @@ public class RoomListFragment extends BaseFragment implements ActionBarShowTabs,
     @Override
     @SuppressWarnings("unchecked")
     public void update(boolean doUpdate) {
-        adapter.updateData(new ArrayList<String>());
+        adapter.updateData(new ArrayList<String>(), selectedRoomName);
 
         Intent intent = new Intent(Actions.GET_ROOM_NAME_LIST);
         intent.putExtras(new Bundle());

@@ -41,6 +41,7 @@ public class ConversionFragment extends BaseFragment {
 
     @SuppressWarnings("unused")
     public ConversionFragment(Bundle bundle) {
+        super(bundle);
     }
 
     @SuppressWarnings("unused")
