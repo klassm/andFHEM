@@ -269,6 +269,12 @@
     <string name="timer_overview_weekday">unter der Woche</string>
     <string name="timer_overview_at">um</string>
     <string name="timer_overview_every">alle</string>
+    <string name="timer_name">Zeitschaltuhr Name</string>
+    <string name="target_device">Zielgerät</string>
+    <string name="timer_repetition">Wiederholung</string>
+    <string name="timer_targetState">Ziel-Zustand</string>
+    <string name="timer_commandAppendix">Zustand Zusatz</string>
+    <string name="timer_time">Schaltzeit</string>
     <string name="timer_overview_create_new">Neue Zeitschaltuhr erstellen</string>
     <string name="timer_next_trigger">Nächster Schaltvorgang</string>
 </resources>
