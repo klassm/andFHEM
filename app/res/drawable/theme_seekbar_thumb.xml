@@ -29,7 +29,7 @@
         android:thickness="10dp"
         android:useLevel="false">
 
-    <size android:width="22dp"
+    <size android:width="35dp"
           android:height="22dp" />
 
     <solid android:color="@color/lightGrey" />
