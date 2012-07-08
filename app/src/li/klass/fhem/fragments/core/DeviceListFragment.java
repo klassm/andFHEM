@@ -28,6 +28,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
+import android.util.Log;
 import android.view.*;
 import android.widget.AdapterView;
 import android.widget.Toast;
@@ -97,6 +98,8 @@ public abstract class DeviceListFragment extends BaseFragment {
 
     @Override
     public void update(boolean doUpdate) {
+        Log.i(DeviceListFragment.class.getName(), "request device list update (doUpdate=" + doUpdate + ")");
+
         Intent intent = new Intent(getUpdateAction());
         intent.putExtras(new Bundle());
         intent.putExtra(DO_REFRESH, doUpdate);

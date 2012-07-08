@@ -38,12 +38,28 @@ import li.klass.fhem.service.AbstractService;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static li.klass.fhem.util.SharedPreferencesUtil.getSharedPreferences;
 import static li.klass.fhem.util.SharedPreferencesUtil.getSharedPreferencesEditor;
 
 public class RoomListService extends AbstractService {
+    private class RemoteRoomDeviceListCallable implements Callable<Map<String, RoomDeviceList>> {
+
+        @Override
+        public Map<String, RoomDeviceList> call() throws Exception {
+            Map<String, RoomDeviceList> result = DeviceListParser.INSTANCE.listDevices();
+            setLastUpdateToNow();
+            return result;
+        }
+    }
+
     public static final RoomListService INSTANCE = new RoomListService();
 
     /**
@@ -61,6 +77,9 @@ public class RoomListService extends AbstractService {
 
     public static final long NEVER_UPDATE_PERIOD = 0;
     public static final long ALWAYS_UPDATE_PERIOD = -1;
+
+    private AtomicReference<Future<Map<String, RoomDeviceList>>> currentRemoteRoomDeviceListFuture = new AtomicReference<Future<Map<String, RoomDeviceList>>>();
+    private ExecutorService executorService = Executors.newFixedThreadPool(1);
 
     private RoomListService() {
     }
@@ -182,13 +201,30 @@ public class RoomListService extends AbstractService {
     }
 
     /**
-     * Loads the most current room device list map from FHEM and saves it to the cache.
+     * Loads the most current room device list map from FHEM. Only one request can be active simultaneously. This is
+     * why a callable is used. If a request is in progress, the next request just waits for the same result.
      * @return remotely loaded room device list map
      */
-    private Map<String, RoomDeviceList> getRemoteRoomDeviceListMap() {
-        Map<String, RoomDeviceList> result = DeviceListParser.INSTANCE.listDevices();
-        setLastUpdateToNow();
-        return result;
+    private synchronized Map<String, RoomDeviceList> getRemoteRoomDeviceListMap() {
+        try {
+            Map<String, RoomDeviceList> result;
+            if (currentRemoteRoomDeviceListFuture.get() != null) {
+                result = currentRemoteRoomDeviceListFuture.get().get();
+                return result;
+            } else {
+                Future<Map<String, RoomDeviceList>> future = executorService.submit(new RemoteRoomDeviceListCallable());
+                currentRemoteRoomDeviceListFuture.set(future);
+                result = future.get();
+            }
+            currentRemoteRoomDeviceListFuture.set(null);
+            return result;
+        } catch (Exception e) {
+            Log.e(RoomListService.class.getName(), "error while retrieving rooms and devices", e);
+            if (e.getCause() instanceof AndFHEMException) {
+                throw (AndFHEMException) e;
+            }
+            return new HashMap<String, RoomDeviceList>();
+        }
     }
 
     /**

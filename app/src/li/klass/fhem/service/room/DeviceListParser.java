@@ -53,6 +53,7 @@ import static li.klass.fhem.domain.core.DeviceType.FILE_LOG;
 public class DeviceListParser {
 
     public static final DeviceListParser INSTANCE = new DeviceListParser();
+    public static final String TAG = DeviceListParser.class.getSimpleName();
 
     private DeviceListParser() {}
 
@@ -76,7 +77,7 @@ public class DeviceListParser {
             }
 
             if (xmlList == null || "".equals(xmlList)) {
-                Log.e(DeviceListParser.class.getName(), "xmlList is null or blank");
+                Log.e(TAG, "xmlList is null or blank");
                 return roomDeviceListMap;
             }
 
@@ -109,7 +110,9 @@ public class DeviceListParser {
             // remove "" not being preceded by an =
             xmlList = xmlList.replaceAll("(?:[^=])\"\"+", "\"");
 
-            Log.d(DeviceListParser.class.getName(), "xmllist content:\n" + xmlList);
+            if (Log.isLoggable(TAG, Log.DEBUG)) {
+                Log.d(TAG, "xmllist content:\n" + xmlList);
+            }
 
             DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
@@ -218,20 +221,5 @@ public class DeviceListParser {
                 return;
             }
         }
-    }
-
-    public static void main(String[] args) {
-//        String text = "<at name=\"d_FB_Temp\" state=\"Next: 21:24:22\" sets=\"\" attrs=\"room comment alias disable:0,1 skip_next:0,1 loglevel:0,1,2,3,4,5,6 webCmd fm_fav fm_name fm_order fm_groups eventMap\">\n" +
-//                "    <INT key=\"DEF\" value=\"+*00:10:00 \"(/bin/echo -n \"`date '+%Y-%m-%d_%H:%M:%S FB_Temp FHZ:measured-temp:'` \">> ./log/`date +%Y-%m`_Temp_FB.log & /usr/bin/ctlmgr_ctl r power status/act_temperature >> ./log/`date +%Y-%m`_Temp_FB.log )\"\"/>\n" +
-//                "    <INT key=\"NAME\" value=\"d_FB_Temp\"/>";
-        String text = "            <INT key=\"CFGFN\" value=\"./log/fhem.save\"/>\n" +
-                "\n" +
-                "            <INT key=\"DEF\" value=\"17:00:00 '/bin/echo \" Teatime\" > /dev/console\"\"/>\n" +
-                "\n" +
-                "            <INT key=\"NAME\" value=\"a3\"/>";
-        for (int i = 0; i < 10; i++) {
-            text = text.replaceAll("(<INT.*?value=\".*?)\"(?!/>)", "$1'");
-        }
-        System.out.println(text);
     }
 }

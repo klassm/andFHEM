@@ -53,6 +53,7 @@ import org.apache.http.protocol.HTTP;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.security.KeyStore;
@@ -107,7 +108,13 @@ public class FHEMWebConnection implements FHEMConnection {
     }
 
     private String requestCommandResponse(String command) {
-        String urlSuffix = "?XHR=1&cmd=" + URLEncoder.encode(command);
+        String urlSuffix = null;
+        try {
+            urlSuffix = "?XHR=1&cmd=" + URLEncoder.encode(command, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            Log.e(TAG, "unsupported encoding", e);
+        }
+
         InputStream response = executeRequest(urlSuffix);
         try {
             String content = IOUtils.toString(response);
