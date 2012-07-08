@@ -58,6 +58,7 @@ public class TelnetConnection implements FHEMConnection {
 
     public static final TelnetConnection INSTANCE = new TelnetConnection();
     private static final String PASSWORD_PROMPT = "Password: ";
+    public static final String TAG = TelnetConnection.class.getName();
 
     private TelnetConnection() {}
 
@@ -79,7 +80,7 @@ public class TelnetConnection implements FHEMConnection {
 
     @Override
     public Bitmap requestBitmap(String relativePath) {
-        Log.e(TelnetConnection.class.getName(), "get image: " + relativePath);
+        Log.e(TAG, "get image: " + relativePath);
         return null;
     }
 
@@ -194,16 +195,22 @@ public class TelnetConnection implements FHEMConnection {
     }
 
     private String getHost() {
-        return getPreferenceString(TELNET_URL, DEFAULT_HOST);
+        String host = getPreferenceString(TELNET_URL, DEFAULT_HOST);
+        Log.d(TAG, "telnet host is '" + host + "'");
+        return host;
     }
 
     private int getPort() {
         String value = getPreferenceString(TELNET_PORT, String.valueOf(DEFAULT_PORT));
+        Log.d(TAG, "telnet port is '" + value + "'");
         return Integer.valueOf(value);
     }
 
     private String getPassword() {
-        return getPreferenceString(TELNET_PASSWORD, "");
+        String password = getPreferenceString(TELNET_PASSWORD, "");
+        String logMessage = password.equals("") ? "has password" : "has no password";
+        Log.d(TAG, "telnet connection " + logMessage + " configured");
+        return password;
     }
 
     private String getPreferenceString(String key, String defaultValue) {

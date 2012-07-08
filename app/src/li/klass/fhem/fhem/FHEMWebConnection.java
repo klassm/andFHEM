@@ -63,6 +63,7 @@ public class FHEMWebConnection implements FHEMConnection {
 
     public static final int CONNECTION_TIMEOUT = 3000;
     public static final int SOCKET_TIMEOUT = 20000;
+    public static final String TAG = FHEMWebConnection.class.getName();
     private DefaultHttpClient client;
 
     public static final String FHEMWEB_URL = "FHEMWEB_URL";
@@ -123,7 +124,7 @@ public class FHEMWebConnection implements FHEMConnection {
         try {
             HttpGet request = new HttpGet();
             String url = getURL() + urlSuffix;
-            Log.i(FHEMWebConnection.class.getName(), "accessing URL " + url);
+            Log.i(TAG, "accessing URL " + url);
             URI uri = new URI(url);
 
             client.getCredentialsProvider().setCredentials(new AuthScope(uri.getHost(), uri.getPort()),
@@ -151,17 +152,23 @@ public class FHEMWebConnection implements FHEMConnection {
         if (url.lastIndexOf("/") == url.length() - 1) {
             return url.substring(0, url.length() -1);
         }
+        Log.d(TAG, "FHEMWEB URL is '" + url + "'");
         return url;
     }
 
     private String getUsername() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(AndFHEMApplication.getContext());
-        return sharedPreferences.getString(FHEMWEB_USERNAME, "");
+        String username = sharedPreferences.getString(FHEMWEB_USERNAME, "");
+        Log.d(TAG, "FHEMWEB username  is '" + username + "'");
+        return username;
     }
 
     private String getPassword() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(AndFHEMApplication.getContext());
-        return sharedPreferences.getString(FHEMWEB_PASSWORD, "");
+        String password = sharedPreferences.getString(FHEMWEB_PASSWORD, "");
+        String logMessage = password.equals("") ? "has password" : "has no password";
+        Log.d(TAG, "FHEMWEB connection " + logMessage + " configured");
+        return password;
     }
 
     private DefaultHttpClient createNewHTTPClient() {
