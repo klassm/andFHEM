@@ -78,7 +78,7 @@ public class RoomListFragment extends BaseFragment implements ActionBarShowTabs,
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
                 String roomName = String.valueOf(view.getTag());
-                getCreationBundle().putString(BundleExtraKeys.ROOM_NAME, roomName);
+                creationAttributes.put(BundleExtraKeys.ROOM_NAME, roomName);
 
                 Intent intent = new Intent(Actions.SHOW_FRAGMENT);
                 intent.putExtra(BundleExtraKeys.FRAGMENT_NAME, RoomDetailFragment.class.getName());

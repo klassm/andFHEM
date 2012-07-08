@@ -32,20 +32,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import li.klass.fhem.activities.core.FragmentBaseActivity;
 import li.klass.fhem.activities.core.Updateable;
+import li.klass.fhem.util.BundleUtils;
 import li.klass.fhem.util.UIBroadcastReceiver;
 
 import java.io.Serializable;
+import java.util.Map;
 
 public abstract class BaseFragment extends Fragment implements Updateable, Serializable {
 
     private transient UIBroadcastReceiver broadcastReceiver;
     private transient View contentView;
     protected transient Bundle fragmentIntentResultData;
-    protected transient Bundle creationBundle;
+    protected Map<String, String> creationAttributes;
 
     public BaseFragment() {}
     public BaseFragment(Bundle bundle) {
-        this.creationBundle = bundle;
+        this.creationAttributes = BundleUtils.bundleToMap(bundle);
     }
 
     @Override
@@ -64,6 +66,7 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
         if (contentView != null) {
             contentView.clearFocus();
         }
+        update(false);
     }
 
     @Override
@@ -95,7 +98,7 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
         this.fragmentIntentResultData = resultData;
     }
 
-    public Bundle getCreationBundle() {
-        return creationBundle;
+    public Bundle getCreationAttributesAsBundle() {
+        return BundleUtils.mapToBundle(creationAttributes);
     }
 }

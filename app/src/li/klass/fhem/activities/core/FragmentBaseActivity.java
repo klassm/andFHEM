@@ -436,15 +436,17 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
         }
 
         Bundle bundle = new Bundle();
-        if (lastEntry != null) {
+        if (lastEntry != null && ! (contentFragment instanceof TopLevelFragment)) {
             BaseFragment lastContent = lastEntry.contentFragment;
             BaseFragment lastNavigation = lastEntry.navigationFragment;
 
             if (lastContent != null) {
-                bundle.putAll(lastContent.getCreationBundle());
+                Bundle creationAttributes = lastContent.getCreationAttributesAsBundle();
+                if (creationAttributes != null) bundle.putAll(creationAttributes);
             }
             if (lastNavigation != null) {
-                bundle.putAll(lastNavigation.getCreationBundle());
+                Bundle creationAttributes = lastNavigation.getCreationAttributesAsBundle();
+                if (creationAttributes != null) bundle.putAll(creationAttributes);
             }
         }
 
@@ -462,7 +464,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
         removeDialog();
 
         if (currentHistoryStackEntry != null && currentHistoryStackEntry.contentFragment.getClass().equals(toSwitchToEntry.contentFragment.getClass()) &&
-                currentHistoryStackEntry.contentFragment.getCreationBundle().equals(toSwitchToEntry.contentFragment.getCreationBundle())) {
+                currentHistoryStackEntry.contentFragment.getCreationAttributesAsBundle().equals(toSwitchToEntry.contentFragment.getCreationAttributesAsBundle())) {
             return;
         }
 
@@ -510,8 +512,9 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
     }
 
     private void handleNavigationChanges(FragmentHistoryStackEntry entry) {
+        boolean isTablet = findViewById(R.id.navigation) != null;
         int navigationMode = ActionBar.NAVIGATION_MODE_STANDARD;
-        if (entry.contentFragment instanceof ActionBarShowTabs) {
+        if ((entry.contentFragment instanceof ActionBarShowTabs) || isTablet) {
             navigationMode = ActionBar.NAVIGATION_MODE_TABS;
         }
 
