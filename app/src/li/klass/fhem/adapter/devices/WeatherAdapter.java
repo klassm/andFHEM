@@ -74,7 +74,7 @@ public class WeatherAdapter extends GenericDeviceAdapter<WeatherDevice> {
 
         ListView weatherForecastList = createWeatherForecastList(context, device);
         forecastHolder.addView(weatherForecastList);
-        ListViewUtil.setListViewHeightBasedOnChildren(weatherForecastList);
+        ListViewUtil.setHeightBasedOnChildren(weatherForecastList);
     }
 
     private ListView createWeatherForecastList(final Context context, final WeatherDevice device) {

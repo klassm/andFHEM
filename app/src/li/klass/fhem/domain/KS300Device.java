@@ -138,7 +138,7 @@ public class KS300Device extends Device<KS300Device> implements Serializable {
         addDeviceChartIfNotNull(temperature, new DeviceChart(R.string.temperatureGraph, R.string.yAxisTemperature,
                 ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:IR:")));
         addDeviceChartIfNotNull(humidity, new DeviceChart(R.string.humidityGraph, R.string.yAxisHumidity,
-                new ChartSeriesDescription(R.string.temperature, "6:IR:")));
+                new ChartSeriesDescription(R.string.humidity, "6:IR:")));
         addDeviceChartIfNotNull(wind, new DeviceChart(R.string.windGraph, R.string.yAxisWind,
                 new ChartSeriesDescription(R.string.wind, "8:IR:")));
         addDeviceChartIfNotNull(rain, new DeviceChart(R.string.rainGraph, R.string.yAxisRain,

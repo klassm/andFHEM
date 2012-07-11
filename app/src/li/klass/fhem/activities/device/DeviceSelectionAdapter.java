@@ -27,11 +27,12 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import li.klass.fhem.adapter.rooms.RoomDetailAdapter;
+import li.klass.fhem.adapter.rooms.DeviceListAdapter;
 import li.klass.fhem.domain.RoomDeviceList;
 import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.DeviceType;
 
-public class DeviceSelectionAdapter extends RoomDetailAdapter {
+public class DeviceSelectionAdapter extends DeviceListAdapter {
 
     public DeviceSelectionAdapter(Context context, RoomDeviceList roomDeviceList) {
         super(context, roomDeviceList);
@@ -39,7 +40,7 @@ public class DeviceSelectionAdapter extends RoomDetailAdapter {
     }
 
     @Override
-    protected View getChildView(Device<?> child, View view, ViewGroup viewGroup) {
+    protected View getChildView(DeviceType parent, int parentPosition, Device<?> child, View view, ViewGroup viewGroup) {
         view = layoutInflater.inflate(android.R.layout.simple_list_item_1, null);
         TextView content = (TextView) view.findViewById(android.R.id.text1);
         content.setText(child.getAliasOrName());

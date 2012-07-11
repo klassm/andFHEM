@@ -36,7 +36,7 @@ import java.util.List;
 public enum FragmentType {
     ALL_DEVICES(AllDevicesFragment.class, R.string.tab_alldevices, 2, RoomListFragment.class),
     CONVERSION(ConversionFragment.class),
-    FAVORITES(FavoritesFragment.class, R.string.tab_favorites, 0, RoomListFragment.class),
+    FAVORITES(FavoritesFragment.class, R.string.tab_favorites, 0, null),
     DEVICE_DETAIL(DeviceDetailFragment.class, RoomListFragment.class),
     FHT_TIMETABLE_CONTROL(FHTTimetableControlListFragment.class),
     FLOORPLAN(FloorplanFragment.class),

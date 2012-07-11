@@ -85,14 +85,14 @@ public class FHTTimetableControlListAdapter extends NestedListViewAdapter<Intege
     }
 
     @Override
-    protected View getChildView(final FHTDayControl child, View v, ViewGroup viewGroup) {
+    protected View getChildView(Integer parent, int parentPosition, final FHTDayControl child, View v, ViewGroup viewGroup) {
         final View view = layoutInflater.inflate(R.layout.control_fht_list_item, null);
-        
+
         setDetailTextView(view, R.id.from1, child.getFrom1Current(), child.getFrom1(), child.getFrom1Changed());
         setDetailTextView(view, R.id.from2, child.getFrom2Current(), child.getFrom2(), child.getFrom2Changed());
         setDetailTextView(view, R.id.to1, child.getTo1Current(), child.getTo1(), child.getTo1Changed());
         setDetailTextView(view, R.id.to2, child.getTo2Current(), child.getTo2(), child.getTo2Changed());
-        
+
         setChangeTimeButton(view, R.id.from1Set, child.getFrom1Current(), new OnTimeChangedListener() {
             @Override
             public void onTimeChanged(String newTime) {
@@ -132,7 +132,7 @@ public class FHTTimetableControlListAdapter extends NestedListViewAdapter<Intege
             layoutItem.setTextColor(Color.BLUE);
         }
     }
-    
+
     private void setChangeTimeButton(View view, int buttonId, final String currentTime, final OnTimeChangedListener listener) {
 
         Button to2Button = (Button) view.findViewById(buttonId);

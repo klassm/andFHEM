@@ -36,7 +36,7 @@ import java.util.*;
 
 public abstract class NestedListViewAdapter<P, C> extends BaseAdapter implements ListAdapter {
 
-    public Set<NestedListView.NestedListViewOnClickObserver> parentChildClickObservers = new HashSet<NestedListView.NestedListViewOnClickObserver>();
+    protected Set<NestedListView.NestedListViewOnClickObserver> parentChildClickObservers = new HashSet<NestedListView.NestedListViewOnClickObserver>();
 
     private Map<Integer, P> parentPositions = new HashMap<Integer, P>();
     private int totalItems = 0;
@@ -72,7 +72,7 @@ public abstract class NestedListViewAdapter<P, C> extends BaseAdapter implements
                 int relativeChildPosition = flatPosition - parentPosition - 1;
                 C child = getChildForParentAndChildPosition(parent, relativeChildPosition);
 
-                return getChildView(child, view, viewGroup);
+                return getChildView(parent, parentPosition, child, view, viewGroup);
             }
         }catch (Exception e) {
             Log.e(NestedListViewAdapter.class.getName(), "error occurred", e);
@@ -160,7 +160,7 @@ public abstract class NestedListViewAdapter<P, C> extends BaseAdapter implements
     protected abstract int getChildrenCountForParent(P parent);
 
     protected abstract View getParentView(P parent, View view, ViewGroup viewGroup);
-    protected abstract View getChildView(C child, View view, ViewGroup viewGroup);
+    protected abstract View getChildView(P parent, int parentPosition, C child, View view, ViewGroup viewGroup);
 
     protected abstract List<P> getParents();
 }

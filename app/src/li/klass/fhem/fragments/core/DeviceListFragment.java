@@ -34,7 +34,7 @@ import android.widget.AdapterView;
 import android.widget.Toast;
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.DeviceAdapter;
-import li.klass.fhem.adapter.rooms.RoomDetailAdapter;
+import li.klass.fhem.adapter.rooms.DeviceGridAdapter;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.domain.RoomDeviceList;
@@ -42,14 +42,15 @@ import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceType;
 import li.klass.fhem.util.advertisement.AdvertisementUtil;
 import li.klass.fhem.util.device.DeviceActionUtil;
-import li.klass.fhem.widget.NestedListView;
+import li.klass.fhem.widget.GridViewWithSections;
 
 import static li.klass.fhem.constants.Actions.FAVORITE_ADD;
 import static li.klass.fhem.constants.BundleExtraKeys.*;
+import static li.klass.fhem.widget.GridViewWithSections.GridViewWithSectionsOnClickObserver;
 
 public abstract class DeviceListFragment extends BaseFragment {
 
-    private transient RoomDetailAdapter adapter;
+    private transient DeviceGridAdapter adapter;
 
     public DeviceListFragment(Bundle bundle) {
         super(bundle);
@@ -78,21 +79,22 @@ public abstract class DeviceListFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.room_detail, container, false);
         AdvertisementUtil.addAd(view, getActivity());
 
-        NestedListView nestedListView = (NestedListView) view.findViewById(R.id.deviceMap1);
-        adapter = new RoomDetailAdapter(getActivity(), new RoomDeviceList(""));
+        GridViewWithSections nestedListView = (GridViewWithSections) view.findViewById(R.id.deviceMap1);
+        adapter = new DeviceGridAdapter(getActivity(), new RoomDeviceList(""));
         nestedListView.setAdapter(adapter);
 
         registerForContextMenu(nestedListView);
 
-        adapter.addParentChildObserver(new NestedListView.NestedListViewOnClickObserver() {
+        adapter.registerOnClickObserver(new GridViewWithSectionsOnClickObserver() {
             @Override
             public void onItemClick(View view, Object parent, Object child, int parentPosition, int childPosition) {
-                if (child != null) {
-                    Device<?> device = (Device<?>) child;
-                    DeviceAdapter<? extends Device<?>> adapter = DeviceType.getAdapterFor(device);
-                    if (adapter != null && adapter.supportsDetailView(device)) {
-                        adapter.gotoDetailView(getActivity(), device);
-                    }
+                if (child == null || !(child instanceof Device)) {
+                    return;
+                }
+                Device<?> device = (Device<?>) child;
+                DeviceAdapter<? extends Device<?>> adapter = DeviceType.getAdapterFor(device);
+                if (adapter != null && adapter.supportsDetailView(device)) {
+                    adapter.gotoDetailView(getActivity(), device);
                 }
             }
         });
@@ -103,6 +105,7 @@ public abstract class DeviceListFragment extends BaseFragment {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public void update(boolean doUpdate) {
         Log.i(DeviceListFragment.class.getName(), "request device list update (doUpdate=" + doUpdate + ")");
 

@@ -1,25 +1,24 @@
 /*
  * AndFHEM - Open Source Android application to control a FHEM home automation
- * server.
+ *  server.
  *
- * Copyright (c) 2011, Matthias Klass or third-party contributors as
- * indicated by the @author tags or express copyright attribution
- * statements applied by the authors.  All third-party contributions are
- * distributed under license by Red Hat Inc.
+ *  Copyright (c) 2012, Matthias Klass or third-party contributors as
+ *  indicated by the @author tags or express copyright attribution
+ *  statements applied by the authors.  All third-party contributions are
+ *  distributed under license by Red Hat Inc.
  *
- * This copyrighted material is made available to anyone wishing to use, modify,
- * copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+ *  This copyrighted material is made available to anyone wishing to use, modify,
+ *  copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLICLICENSE, as published by the Free Software Foundation.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
- * for more details.
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ *  or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+ *  for more details.
  *
- * You should have received a copy of the GNU GENERAL PUBLIC LICENSE
- * along with this distribution; if not, write to:
- *   Free Software Foundation, Inc.
- *   51 Franklin Street, Fifth Floor
- *   Boston, MA  02110-1301  USA
+ *  You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+ *  along with this distribution; if not, write to:
+ *    Free Software Foundation, Inc.
+ *    51 Franklin Street, Fifth Floor
  */
 
 package li.klass.fhem.adapter.rooms;
@@ -39,10 +38,10 @@ import li.klass.fhem.widget.NestedListViewAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RoomDetailAdapter extends NestedListViewAdapter<DeviceType, Device<?>> {
+public class DeviceListAdapter extends NestedListViewAdapter<DeviceType, Device<?>> {
     private RoomDeviceList roomDeviceList;
 
-    public RoomDetailAdapter(Context context, RoomDeviceList roomDeviceList) {
+    public DeviceListAdapter(Context context, RoomDeviceList roomDeviceList) {
         super(context);
         if (roomDeviceList != null) {
             updateData(roomDeviceList);
@@ -86,15 +85,15 @@ public class RoomDetailAdapter extends NestedListViewAdapter<DeviceType, Device<
     }
 
     @Override
-    protected View getChildView(final Device<?> child, View view, ViewGroup viewGroup) {
+    protected View getChildView(final DeviceType parent, int parentPosition, Device<?> child, View view, ViewGroup viewGroup) {
         final DeviceAdapter<? extends Device<?>> deviceAdapter =  DeviceType.getAdapterFor(child);
         if (deviceAdapter == null) {
-            Log.e(RoomDetailAdapter.class.getName(), "unsupported device type " + child);
+            Log.e(DeviceListAdapter.class.getName(), "unsupported device type " + child);
             return layoutInflater.inflate(android.R.layout.simple_list_item_1, null);
         }
 
         if (! deviceAdapter.supports(child.getClass())) {
-            Log.e(RoomDetailAdapter.class.getName(), "adapter was found for device type, but it will not support the device: " + child);
+            Log.e(DeviceListAdapter.class.getName(), "adapter was found for device type, but it will not support the device: " + child);
             throw new IllegalArgumentException("adapter was found for device type, but it will not support the device: " + child);
         }
 
