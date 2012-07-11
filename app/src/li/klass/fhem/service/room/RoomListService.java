@@ -220,8 +220,9 @@ public class RoomListService extends AbstractService {
             return result;
         } catch (Exception e) {
             Log.e(RoomListService.class.getName(), "error while retrieving rooms and devices", e);
-            if (e.getCause() instanceof AndFHEMException) {
-                throw (AndFHEMException) e;
+            Throwable cause = e.getCause();
+            if (cause instanceof AndFHEMException) {
+                throw (AndFHEMException) cause;
             }
             return new HashMap<String, RoomDeviceList>();
         }
