@@ -30,16 +30,15 @@ import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.fragments.core.DeviceListFragment;
 
+import java.util.Map;
+
 import static li.klass.fhem.constants.BundleExtraKeys.ROOM_NAME;
 
 public class RoomDetailFragment extends DeviceListFragment {
 
-    private String roomName;
-
     @SuppressWarnings("unused")
     public RoomDetailFragment(Bundle bundle) {
         super(bundle);
-        this.roomName = bundle.getString(BundleExtraKeys.ROOM_NAME);
     }
 
     @SuppressWarnings("unused")
@@ -48,11 +47,20 @@ public class RoomDetailFragment extends DeviceListFragment {
     @Override
     protected void fillIntent(Intent intent) {
         super.fillIntent(intent);
-        intent.putExtra(ROOM_NAME, roomName);
+        intent.putExtra(ROOM_NAME, creationAttributes.get(BundleExtraKeys.ROOM_NAME));
     }
 
     @Override
     protected String getUpdateAction() {
         return Actions.GET_ROOM_DEVICE_LIST;
+    }
+
+    @Override
+    protected void onContentChanged(Map<String, String> oldCreationAttributes, Map<String, String> newCreationAttributes) {
+        super.onContentChanged(oldCreationAttributes, newCreationAttributes);
+        if (oldCreationAttributes != null && ! oldCreationAttributes.get(BundleExtraKeys.ROOM_NAME)
+                .equals(newCreationAttributes.get(BundleExtraKeys.ROOM_NAME))) {
+            update(false);
+        }
     }
 }

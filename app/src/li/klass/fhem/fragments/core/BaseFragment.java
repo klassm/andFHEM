@@ -45,9 +45,12 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
     protected transient Bundle fragmentIntentResultData;
     protected Map<String, String> creationAttributes;
 
+    private transient Bundle originalCreationBundle;
+
     public BaseFragment() {}
+
     public BaseFragment(Bundle bundle) {
-        this.creationAttributes = BundleUtils.bundleToMap(bundle);
+        this.originalCreationBundle = bundle;
     }
 
     @Override
@@ -58,6 +61,14 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return contentView;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (creationAttributes == null) {
+            onContentChanged(originalCreationBundle);
+        }
     }
 
     @Override
@@ -99,5 +110,17 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
 
     public Bundle getCreationAttributesAsBundle() {
         return BundleUtils.mapToBundle(creationAttributes);
+    }
+
+    public final void onContentChanged(Bundle bundle) {
+        Map<String, String> oldAttributes = creationAttributes;
+        creationAttributes = BundleUtils.bundleToMap(bundle);
+        onContentChanged(oldAttributes, creationAttributes);
+    }
+
+    protected void onContentChanged(Map<String, String> oldCreationAttributes, Map<String, String> newCreationAttributes) {
+        if  (oldCreationAttributes == null) {
+            update(false);
+        }
     }
 }

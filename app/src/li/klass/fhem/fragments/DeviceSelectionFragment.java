@@ -97,8 +97,6 @@ public class DeviceSelectionFragment extends BaseFragment {
         });
         nestedListView.setAdapter(adapter);
 
-        update(false);
-
         return nestedListView;
     }
 

@@ -104,7 +104,6 @@ public class TimerFragment extends BaseFragment {
                 getActivity().sendBroadcast(intent);
             }
         });
-        update(false);
 
         return layout;
     }

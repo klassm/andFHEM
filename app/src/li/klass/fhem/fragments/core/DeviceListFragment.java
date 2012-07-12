@@ -99,8 +99,6 @@ public abstract class DeviceListFragment extends BaseFragment {
             }
         });
 
-        update(false);
-
         return view;
     }
 
@@ -180,6 +178,6 @@ public abstract class DeviceListFragment extends BaseFragment {
         }
         return false;
     }
-    
+
     protected abstract String getUpdateAction();
 }

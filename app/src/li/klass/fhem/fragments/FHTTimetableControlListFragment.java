@@ -101,8 +101,6 @@ public class FHTTimetableControlListFragment extends BaseFragment {
         NestedListView nestedListView = (NestedListView) view.findViewById(R.id.control_fht_list);
         nestedListView.setAdapter(adapter);
 
-        update(false);
-
         return view;
     }
 

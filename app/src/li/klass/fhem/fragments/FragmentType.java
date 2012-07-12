@@ -113,11 +113,11 @@ public enum FragmentType {
         }
     }
 
-    public Class<? extends BaseFragment> getNavigationFragment() {
+    public Class<? extends BaseFragment> getNavigationClass() {
         return navigationFragment;
     }
 
-    public Class<? extends BaseFragment> getFragmentClass() {
+    public Class<? extends BaseFragment> getContentClass() {
         return fragmentClass;
     }
 
