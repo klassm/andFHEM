@@ -74,8 +74,10 @@ public class GridViewWithSections extends GridView {
 
     @Override
     public boolean performItemClick(View view, int position, long id) {
-        int parentPosition = getGridViewWithSectionsAdapter().findOriginalParentPosition(position);
-        int childPosition = position - getGridViewWithSectionsAdapter().findParentPositionForChildPosition(position) - 1;
+        GridViewWithSectionsAdapter adapter = getGridViewWithSectionsAdapter();
+
+        int parentPosition = adapter.findOriginalParentPosition(position);
+        int childPosition = position - adapter.findParentPositionForChildPosition(position) - adapter.getNumberOfColumns();
 
         performParentChildItemClick(view, parentPosition, childPosition);
         return super.performItemClick(view, parentPosition, id);

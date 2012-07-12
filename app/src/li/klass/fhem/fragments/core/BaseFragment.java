@@ -66,7 +66,6 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
         if (contentView != null) {
             contentView.clearFocus();
         }
-        update(false);
     }
 
     @Override
