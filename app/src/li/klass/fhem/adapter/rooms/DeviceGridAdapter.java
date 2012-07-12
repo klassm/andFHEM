@@ -29,7 +29,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.DeviceAdapter;
@@ -45,6 +44,7 @@ public class DeviceGridAdapter extends GridViewWithSectionsAdapter<DeviceType, D
     private RoomDeviceList roomDeviceList;
     private static final int REQUIRED_COLUMN_WIDTH = 350;
     private int numberOfColumns;
+    private int lastParentHeight;
 
     public DeviceGridAdapter(Context context, RoomDeviceList roomDeviceList) {
         super(context);
@@ -86,7 +86,17 @@ public class DeviceGridAdapter extends GridViewWithSectionsAdapter<DeviceType, D
         } else {
             textView.setText(parent.name());
         }
-        textView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, 45));
+
+        int widthMeasureSpec = View.MeasureSpec.UNSPECIFIED;
+        int heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+        view.measure(widthMeasureSpec, heightMeasureSpec);
+
+        int measuredHeight = view.getMeasuredHeight();
+        if (lastParentHeight < measuredHeight) {
+            lastParentHeight = measuredHeight;
+        }
+        view.setLayoutParams(new AbsListView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, lastParentHeight));
+
         return view;
     }
 

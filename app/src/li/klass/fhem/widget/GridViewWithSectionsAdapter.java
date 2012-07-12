@@ -51,8 +51,6 @@ public abstract class GridViewWithSectionsAdapter<P, C> extends BaseAdapter {
         layoutInflater = LayoutInflater.from(context);
     }
 
-
-
     public void updateParentPositions() {
         parentPositions = new HashMap<Integer, P>();
 
@@ -130,7 +128,7 @@ public abstract class GridViewWithSectionsAdapter<P, C> extends BaseAdapter {
                 C child = getChildForParentAndChildPosition(parent, relativeChildPosition);
 
                 View childView = getChildView(parent, parentPosition, child, view, viewGroup);
-                updateRowHeight(getNumberOfColumns(), parentPosition, relativeChildPosition, childView);
+                updateChildrenRowHeight(getNumberOfColumns(), parentPosition, relativeChildPosition, childView);
 
                 return childView;
             }
@@ -140,7 +138,7 @@ public abstract class GridViewWithSectionsAdapter<P, C> extends BaseAdapter {
         }
     }
 
-    private void updateRowHeight(int columns, int parentIndex, int childOffset, View childView) {
+    private void updateChildrenRowHeight(int columns, int parentIndex, int childOffset, View childView) {
         int rowIndex = getRowForChildOffset(columns, childOffset);
         if (currentRowParentIndex != parentIndex || currentRowIndex != rowIndex) {
             currentRowViews.clear();
@@ -150,6 +148,7 @@ public abstract class GridViewWithSectionsAdapter<P, C> extends BaseAdapter {
         int widthMeasureSpec = View.MeasureSpec.makeMeasureSpec(500, View.MeasureSpec.EXACTLY);
         int heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
         childView.measure(widthMeasureSpec, heightMeasureSpec);
+
         int measuredHeight = childView.getMeasuredHeight();
         currentRowViews.add(childView);
         if (measuredHeight > currentRowHeight) {
