@@ -103,10 +103,24 @@ public class RoomListFragment extends BaseFragment implements ActionBarShowTabs,
 
                     String selectedRoom = creationAttributes.get(BundleExtraKeys.ROOM_NAME);
                     adapter.updateData(roomList, selectedRoom);
+                    scrollToSelectedRoom(selectedRoom, roomList);
                 }
             }
         });
         getActivity().startService(intent);
+    }
+
+    private void scrollToSelectedRoom(String selectedRoom, List<String> roomList) {
+        if (selectedRoom == null) return;
+
+        ListView roomListView = (ListView) getView().findViewById(R.id.roomList);
+        for (int i = 0; i < roomList.size(); i++) {
+             String roomName = roomList.get(i);
+            if (roomName.equals(selectedRoom)) {
+                roomListView.setSelection(i);
+                return;
+            }
+        }
     }
 
     @Override
