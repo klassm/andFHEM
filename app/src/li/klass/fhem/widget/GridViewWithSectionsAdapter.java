@@ -31,7 +31,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 public abstract class GridViewWithSectionsAdapter<P, C> extends BaseAdapter {
     protected Set<GridViewWithSections.GridViewWithSectionsOnClickObserver> clickObservers =
@@ -41,7 +40,6 @@ public abstract class GridViewWithSectionsAdapter<P, C> extends BaseAdapter {
     private int totalNumberOfItems;
     protected final Context context;
     protected final LayoutInflater layoutInflater;
-    private Map<Integer, List<View>> childViews = new ConcurrentHashMap<Integer, java.util.List<View>>();
 
     private int currentRowIndex;
     private int currentRowParentIndex;
@@ -57,7 +55,6 @@ public abstract class GridViewWithSectionsAdapter<P, C> extends BaseAdapter {
 
     public void updateParentPositions() {
         parentPositions = new HashMap<Integer, P>();
-        childViews.clear();
 
         int numberOfColumns = getNumberOfColumns();
         int currentPosition = 0;
@@ -124,9 +121,6 @@ public abstract class GridViewWithSectionsAdapter<P, C> extends BaseAdapter {
             if (parentBasePosition != -1) {
                 P parent = parentPositions.get(parentBasePosition);
                 int parentOffset = flatPosition - parentBasePosition;
-                if (parentOffset == 0) {
-                    childViews.put(parentBasePosition, new ArrayList<View>());
-                }
                 return getParentView(parent, parentOffset, view, viewGroup);
             } else {
                 int parentPosition = findParentPositionForChildPosition(flatPosition);
@@ -137,7 +131,6 @@ public abstract class GridViewWithSectionsAdapter<P, C> extends BaseAdapter {
 
                 View childView = getChildView(parent, parentPosition, child, view, viewGroup);
                 updateRowHeight(getNumberOfColumns(), parentPosition, relativeChildPosition, childView);
-                childViews.get(parentPosition).add(childView);
 
                 return childView;
             }
