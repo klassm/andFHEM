@@ -65,7 +65,7 @@ public class GridViewWithSections extends GridView {
     @Override
     public void setAdapter(ListAdapter adapter) {
         if (!(adapter instanceof GridViewWithSectionsAdapter)) {
-            throw new RuntimeException("I am expecting a NestedListViewAdapter.");
+            throw new RuntimeException("I am expecting a " + GridViewWithSectionsAdapter.class.getSimpleName());
         }
         super.setAdapter(adapter);
         setNumColumns(((GridViewWithSectionsAdapter) adapter).getNumberOfColumns());

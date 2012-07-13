@@ -137,8 +137,15 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
                     try {
                         String action = intent.getAction();
                         if (Actions.SHOW_FRAGMENT.equals(action)) {
-                            String fragmentName = intent.getStringExtra(BundleExtraKeys.FRAGMENT_NAME);
-                            switchToFragment(FragmentType.getFragmentFor(fragmentName), intent.getExtras());
+                            Bundle bundle = intent.getExtras();
+                            FragmentType fragmentType;
+                            if (bundle.containsKey(BundleExtraKeys.FRAGMENT)) {
+                                fragmentType = (FragmentType) bundle.getSerializable(BundleExtraKeys.FRAGMENT);
+                            } else {
+                                String fragmentName = bundle.getString(BundleExtraKeys.FRAGMENT_NAME);
+                                fragmentType = FragmentType.getFragmentFor(fragmentName);
+                            }
+                            switchToFragment(fragmentType, intent.getExtras());
                         } else if (action.equals(Actions.DISMISS_UPDATING_DIALOG)) {
                             setShowRefreshProgressIcon(false);
                         } else if (intent.getBooleanExtra(BundleExtraKeys.DO_REFRESH, false) && action.equals(Actions.DO_UPDATE)) {
@@ -461,6 +468,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
             Class<? extends BaseFragment> navigationClass = fragmentType.getNavigationClass();
             if (navigationClass == null) {
                 navigationView.setVisibility(View.GONE);
+                return null;
             }
             navigationView.setVisibility(View.VISIBLE);
             return createFragmentForClass(data, navigationClass);
@@ -472,17 +480,14 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
 
 
     private BaseFragment createFragmentForClass(Bundle data, Class<? extends BaseFragment> fragmentClass) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
+        if (fragmentClass == null) return null;
+
         Constructor<? extends BaseFragment> constructor = fragmentClass.getConstructor(Bundle.class);
         return (BaseFragment) constructor.newInstance(data);
     }
 
     private void switchToFragment(FragmentHistoryStackEntry toSwitchToEntry, boolean putToStack) {
         removeDialog();
-
-        if (currentHistoryStackEntry != null && currentHistoryStackEntry.contentFragment.getClass().equals(toSwitchToEntry.contentFragment.getClass()) &&
-                currentHistoryStackEntry.contentFragment.getCreationAttributesAsBundle().equals(toSwitchToEntry.contentFragment.getCreationAttributesAsBundle())) {
-            return;
-        }
 
         if (toSwitchToEntry.contentFragment instanceof TopLevelFragment) {
             fragmentHistoryStack.clear();
@@ -501,6 +506,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
                     .commitAllowingStateLoss();
             setNavigationFragment(toSwitchToEntry);
             handleNavigationChanges(toSwitchToEntry);
+
         } catch (IllegalStateException e) {
             Log.e(FragmentBaseActivity.class.getName(), "error while switching to fragment " + toSwitchToEntry.contentFragment.getClass().getName(), e);
         }

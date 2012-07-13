@@ -121,4 +121,8 @@ public class ListDataAdapter<T extends Comparable<T>> extends BaseAdapter {
     public boolean isEmpty() {
         return data == null || data.size() == 0;
     }
+
+    public List<T> getData() {
+        return Collections.unmodifiableList(data);
+    }
 }

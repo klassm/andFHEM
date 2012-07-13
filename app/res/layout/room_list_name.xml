@@ -25,14 +25,14 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="fill_parent"
+              android:layout_width="match_parent"
               android:layout_height="fill_parent"
               android:padding="10dp"
         >
 
     <TextView android:id="@+id/roomName"
               android:layout_height="fill_parent"
-              android:layout_width="fill_parent"
+              android:layout_width="match_parent"
               android:gravity="center_vertical|center_horizontal"
               android:textSize="20dp"
             />

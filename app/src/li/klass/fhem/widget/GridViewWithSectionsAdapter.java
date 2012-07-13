@@ -45,6 +45,7 @@ public abstract class GridViewWithSectionsAdapter<P, C> extends BaseAdapter {
     private int currentRowParentIndex;
     private int currentRowHeight;
     private List<View> currentRowViews = new ArrayList<View>();
+    private int numberOfColumns;
 
     public GridViewWithSectionsAdapter(Context context) {
         this.context = context;
@@ -168,6 +169,9 @@ public abstract class GridViewWithSectionsAdapter<P, C> extends BaseAdapter {
     private void setHeightForViews(int height, List<View> views) {
         for (View view : views) {
             ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
+            if (layoutParams == null) {
+                layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            }
             layoutParams.height = height;
             view.setLayoutParams(layoutParams);
         }
@@ -225,6 +229,15 @@ public abstract class GridViewWithSectionsAdapter<P, C> extends BaseAdapter {
         return Collections.unmodifiableSet(clickObservers);
     }
 
+    protected int getNumberOfColumns() {
+        if (numberOfColumns <= 0) return 1;
+        return numberOfColumns;
+    }
+
+    public void setGridViewWidth(int gridViewWidth) {
+        this.numberOfColumns = gridViewWidth / getRequiredColumnWidth();
+    }
+
     protected abstract C getChildForParentAndChildPosition(P parent, int childPosition);
     protected abstract int getChildrenCountForParent(P parent);
 
@@ -233,7 +246,7 @@ public abstract class GridViewWithSectionsAdapter<P, C> extends BaseAdapter {
 
     protected abstract List<P> getParents();
 
-    protected abstract int getNumberOfColumns();
+    protected abstract int getRequiredColumnWidth();
 
-    public abstract void setGridViewWidth(int gridViewWidth);
+
 }

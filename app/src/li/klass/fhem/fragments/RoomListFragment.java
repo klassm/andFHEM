@@ -43,6 +43,7 @@ import li.klass.fhem.fragments.core.BaseFragment;
 import li.klass.fhem.fragments.core.TopLevelFragment;
 import li.klass.fhem.util.advertisement.AdvertisementUtil;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -101,9 +102,9 @@ public class RoomListFragment extends BaseFragment implements ActionBarShowTabs,
                     super.onReceiveResult(resultCode, resultData);
                     List<String> roomList = (ArrayList<String>) resultData.getSerializable(BundleExtraKeys.ROOM_LIST);
 
-                    String selectedRoom = creationAttributes.get(BundleExtraKeys.ROOM_NAME);
+                    String selectedRoom = (String) creationAttributes.get(BundleExtraKeys.ROOM_NAME);
                     adapter.updateData(roomList, selectedRoom);
-                    scrollToSelectedRoom(selectedRoom, roomList);
+                    scrollToSelectedRoom(selectedRoom, adapter.getData());
                 }
             }
         });
@@ -115,7 +116,7 @@ public class RoomListFragment extends BaseFragment implements ActionBarShowTabs,
 
         ListView roomListView = (ListView) getView().findViewById(R.id.roomList);
         for (int i = 0; i < roomList.size(); i++) {
-             String roomName = roomList.get(i);
+            String roomName = roomList.get(i);
             if (roomName.equals(selectedRoom)) {
                 roomListView.setSelection(i);
                 return;
@@ -124,7 +125,7 @@ public class RoomListFragment extends BaseFragment implements ActionBarShowTabs,
     }
 
     @Override
-    protected void onContentChanged(Map<String, String> oldCreationAttributes, Map<String, String> newCreationAttributes) {
+    protected void onContentChanged(Map<String, Serializable> oldCreationAttributes, Map<String, Serializable> newCreationAttributes) {
         super.onContentChanged(oldCreationAttributes, newCreationAttributes);
         if (oldCreationAttributes != null && ! oldCreationAttributes.get(BundleExtraKeys.ROOM_NAME)
                 .equals(newCreationAttributes.get(BundleExtraKeys.ROOM_NAME))) {

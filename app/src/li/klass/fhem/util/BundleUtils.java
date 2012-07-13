@@ -25,12 +25,13 @@ package li.klass.fhem.util;
 
 import android.os.Bundle;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
 public class BundleUtils {
-    public static Map<String, String> bundleToMap(Bundle bundle) {
-        Map<String, String> result = new HashMap<String, String>();
+    public static Map<String, Serializable> bundleToMap(Bundle bundle) {
+        Map<String, Serializable> result = new HashMap<String, Serializable>();
         if (bundle == null) return result;
 
         for (String key : bundle.keySet()) {
@@ -39,12 +40,12 @@ public class BundleUtils {
         return result;
     }
 
-    public static Bundle mapToBundle(Map<String, String> map) {
+    public static Bundle mapToBundle(Map<String, Serializable> map) {
         Bundle result = new Bundle();
         if (map == null) return result;
 
         for (String key : map.keySet()) {
-            result.putString(key, map.get(key));
+            result.putSerializable(key, map.get(key));
         }
         return result;
     }

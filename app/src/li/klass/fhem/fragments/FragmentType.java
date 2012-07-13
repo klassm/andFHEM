@@ -27,6 +27,7 @@ import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.fragments.core.BaseFragment;
 import li.klass.fhem.fragments.core.DeviceDetailFragment;
+import li.klass.fhem.fragments.device.DeviceNameListNavigationFragment;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -37,7 +38,7 @@ public enum FragmentType {
     ALL_DEVICES(AllDevicesFragment.class, R.string.tab_alldevices, 2, RoomListFragment.class),
     CONVERSION(ConversionFragment.class),
     FAVORITES(FavoritesFragment.class, R.string.tab_favorites, 0, null),
-    DEVICE_DETAIL(DeviceDetailFragment.class, RoomListFragment.class),
+    DEVICE_DETAIL(DeviceDetailFragment.class, DeviceNameListNavigationFragment.class),
     FHT_TIMETABLE_CONTROL(FHTTimetableControlListFragment.class),
     FLOORPLAN(FloorplanFragment.class),
     PREMIUM(PremiumFragment.class),
@@ -45,6 +46,7 @@ public enum FragmentType {
     ROOM_LIST(RoomListFragment.class, R.string.tab_roomList, 1, null),
     SEND_COMMAND(SendCommandFragment.class),
     DEVICE_SELECTION(DeviceSelectionFragment.class),
+    DEVICE_NAME_LIST_NAVIGATION(DeviceNameListNavigationFragment.class),
     TIMER_OVERVIEW(TimerFragment.class),
     TIMER_DETAIL(TimerDetailFragment.class);
 

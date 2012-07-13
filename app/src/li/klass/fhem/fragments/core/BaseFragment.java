@@ -43,7 +43,7 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
     private transient UIBroadcastReceiver broadcastReceiver;
     private transient View contentView;
     protected transient Bundle fragmentIntentResultData;
-    protected Map<String, String> creationAttributes;
+    protected Map<String, Serializable> creationAttributes;
 
     private transient Bundle originalCreationBundle;
 
@@ -113,13 +113,41 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
     }
 
     public final void onContentChanged(Bundle bundle) {
-        Map<String, String> oldAttributes = creationAttributes;
+        Map<String, Serializable> oldAttributes = creationAttributes;
         creationAttributes = BundleUtils.bundleToMap(bundle);
         onContentChanged(oldAttributes, creationAttributes);
     }
 
-    protected void onContentChanged(Map<String, String> oldCreationAttributes, Map<String, String> newCreationAttributes) {
+    protected void onContentChanged(Map<String, Serializable> oldCreationAttributes, Map<String, Serializable> newCreationAttributes) {
         if  (oldCreationAttributes == null) {
+            update(false);
+        }
+    }
+
+    protected void updateIfAttributesDoNotMatch(Map<String, Serializable> oldCreationAttributes,
+                                                Map<String, Serializable> newCreationAttributes, String key) {
+        if (oldCreationAttributes == null && newCreationAttributes == null) {
+            return;
+        }
+
+        if ((oldCreationAttributes == null) || (newCreationAttributes == null)) {
+            update(false);
+            return;
+        }
+
+        Serializable oldValue = oldCreationAttributes.get(key);
+        Serializable newValue = newCreationAttributes.get(key);
+
+        if (oldValue == null && newValue == null) {
+            return;
+        }
+
+        if (oldValue == null || newValue == null) {
+            update(false);
+            return;
+        }
+
+        if (! oldValue.equals(newValue)) {
             update(false);
         }
     }

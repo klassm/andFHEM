@@ -135,15 +135,8 @@ public class DeviceGridAdapter extends GridViewWithSectionsAdapter<DeviceType, D
     }
 
     @Override
-    protected int getNumberOfColumns() {
-        if (numberOfColumns <= 0) return 1;
-
-        return numberOfColumns;
-    }
-
-    @Override
-    public void setGridViewWidth(int gridViewWidth) {
-        this.numberOfColumns = gridViewWidth / REQUIRED_COLUMN_WIDTH;
+    protected int getRequiredColumnWidth() {
+        return REQUIRED_COLUMN_WIDTH;
     }
 
     public void updateData(RoomDeviceList roomDeviceList) {
