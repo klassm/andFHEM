@@ -28,7 +28,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,7 +49,6 @@ public class DeviceDetailFragment extends BaseFragment {
     @SuppressWarnings("unused")
     public DeviceDetailFragment(Bundle bundle) {
         super(bundle);
-        Log.e(DeviceDetailFragment.class.getName(), bundle.toString());
     }
 
     @SuppressWarnings("unused")

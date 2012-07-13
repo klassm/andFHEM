@@ -43,7 +43,6 @@ import java.util.List;
 public class DeviceGridAdapter extends GridViewWithSectionsAdapter<DeviceType, Device<?>> {
     private RoomDeviceList roomDeviceList;
     private static final int REQUIRED_COLUMN_WIDTH = 350;
-    private int numberOfColumns;
     private int lastParentHeight;
 
     public DeviceGridAdapter(Context context, RoomDeviceList roomDeviceList) {
