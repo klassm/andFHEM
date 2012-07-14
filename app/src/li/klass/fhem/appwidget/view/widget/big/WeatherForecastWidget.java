@@ -24,12 +24,15 @@
 package li.klass.fhem.appwidget.view.widget.big;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.widget.RemoteViews;
 import li.klass.fhem.R;
 import li.klass.fhem.appwidget.WidgetConfiguration;
 import li.klass.fhem.appwidget.view.widget.AppWidgetView;
 import li.klass.fhem.domain.WeatherDevice;
 import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.util.ImageUtil;
 
 import java.util.List;
 
@@ -56,6 +59,9 @@ public class WeatherForecastWidget extends AppWidgetView {
             forecastView.setTextViewText(R.id.day_description, forecast.getDayOfWeek() + ", " + forecast.getDate());
             forecastView.setTextViewText(R.id.day_condition, forecast.getCondition());
             forecastView.setTextViewText(R.id.day_temperature, forecast.getLowTemperature() + " - " + forecast.getHighTemperature());
+
+            Bitmap bitmap = ImageUtil.loadBitmap(WeatherDevice.IMAGE_URL_PREFIX + forecast.getIcon() + "?time=" + System.currentTimeMillis());
+            forecastView.setImageViewBitmap(R.id.day_image, bitmap);
 
             view.addView(R.id.main, forecastView);
         }

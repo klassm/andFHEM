@@ -44,13 +44,7 @@ public class ImageUtil {
 
             @Override
             protected Bitmap doInBackground(Void... voids) {
-                try {
-                    URL url = new URL(imageURL);
-                    return BitmapFactory.decodeStream((InputStream) url.getContent());
-                } catch (IOException e) {
-                    Log.e(ImageUtil.class.getName(), "could not load image from " + imageURL, e);
-                    return null;
-                }
+                return loadBitmap(imageURL);
             }
 
             @Override
@@ -58,6 +52,16 @@ public class ImageUtil {
                 callback.imageLoaded(bitmap);
             }
         }.execute(null, null);
+    }
+
+    public static Bitmap loadBitmap(String imageURL) {
+        try {
+            URL url = new URL(imageURL);
+            return BitmapFactory.decodeStream((InputStream) url.getContent());
+        } catch (IOException e) {
+            Log.e(ImageUtil.class.getName(), "could not load image from " + imageURL, e);
+            return null;
+        }
     }
 
     public static void setExternalImageIn(final ImageView imageView, final String imageURL) {
