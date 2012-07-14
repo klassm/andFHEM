@@ -41,11 +41,12 @@ import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceStateAdditionalInformationType;
 import li.klass.fhem.domain.core.DeviceStateRequiringAdditionalInformation;
 import li.klass.fhem.fragments.core.BaseFragment;
+import li.klass.fhem.fragments.device.DeviceNameSelectionFragment;
 import li.klass.fhem.widget.TimePickerWithSecondsDialog;
 
 public class TimerDetailFragment extends BaseFragment {
 
-    private static final DeviceSelectionFragment.DeviceFilter deviceFilter = new DeviceSelectionFragment.DeviceFilter() {
+    private static final DeviceNameSelectionFragment.DeviceFilter deviceFilter = new DeviceNameSelectionFragment.DeviceFilter() {
         @Override
         public boolean isSelectable(Device<?> device) {
             return device.getAvailableTargetStates() != null &&
@@ -117,7 +118,7 @@ public class TimerDetailFragment extends BaseFragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Actions.SHOW_FRAGMENT);
-                intent.putExtra(BundleExtraKeys.FRAGMENT_NAME, DeviceSelectionFragment.class.getName());
+                intent.putExtra(BundleExtraKeys.FRAGMENT, FragmentType.DEVICE_SELECTION);
                 intent.putExtra(BundleExtraKeys.DEVICE_FILTER, deviceFilter);
                 getActivity().sendBroadcast(intent);
             }

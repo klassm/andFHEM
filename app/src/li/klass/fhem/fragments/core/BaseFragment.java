@@ -124,30 +124,25 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
         }
     }
 
-    protected void updateIfAttributesDoNotMatch(Map<String, Serializable> oldCreationAttributes,
-                                                Map<String, Serializable> newCreationAttributes, String key) {
+    protected boolean doContentChangedAttributesMatch(Map<String, Serializable> oldCreationAttributes,
+                                                      Map<String, Serializable> newCreationAttributes, String key) {
         if (oldCreationAttributes == null && newCreationAttributes == null) {
-            return;
+            return true;
         }
 
         if ((oldCreationAttributes == null) || (newCreationAttributes == null)) {
-            update(false);
-            return;
+            return false;
         }
 
         Serializable oldValue = oldCreationAttributes.get(key);
         Serializable newValue = newCreationAttributes.get(key);
 
-        if (oldValue == null && newValue == null) {
-            return;
-        }
+        return oldValue == null && newValue == null || !(oldValue == null || newValue == null) && oldValue.equals(newValue);
+    }
 
-        if (oldValue == null || newValue == null) {
-            update(false);
-            return;
-        }
-
-        if (! oldValue.equals(newValue)) {
+    protected void updateIfAttributesDoNotMatch(Map<String, Serializable> oldCreationAttributes,
+                                                Map<String, Serializable> newCreationAttributes, String key) {
+        if (doContentChangedAttributesMatch(oldCreationAttributes, newCreationAttributes, key)) {
             update(false);
         }
     }

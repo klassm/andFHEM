@@ -70,6 +70,7 @@ public class BundleExtraKeys {
 
     public static final String APP_WIDGET_ID = "APP_WIDGET_ID";
 
+    public static final String ORIGINAL_DEVICE_FILTER = "ORIGINAL_DEVICE_FILTER";
     public static final String DEVICE_FILTER = "DEVICE_FILTER";
     public static final String CLICKED_DEVICE = "CLICKED_DEVICE";
 

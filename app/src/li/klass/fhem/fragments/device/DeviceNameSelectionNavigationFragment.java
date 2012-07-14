@@ -21,32 +21,31 @@
  *    51 Franklin Street, Fifth Floor
  */
 
-package li.klass.fhem.util;
+package li.klass.fhem.fragments.device;
 
+import android.content.Intent;
 import android.os.Bundle;
+import li.klass.fhem.constants.Actions;
+import li.klass.fhem.constants.BundleExtraKeys;
+import li.klass.fhem.fragments.FragmentType;
+import li.klass.fhem.fragments.RoomListFragment;
 
-import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
-
-public class BundleUtils {
-    public static Map<String, Serializable> bundleToMap(Bundle bundle) {
-        Map<String, Serializable> result = new HashMap<String, Serializable>();
-        if (bundle == null) return result;
-
-        for (String key : bundle.keySet()) {
-            result.put(key, bundle.getSerializable(key));
-        }
-        return result;
+public class DeviceNameSelectionNavigationFragment extends RoomListFragment {
+    @SuppressWarnings("unused")
+    public DeviceNameSelectionNavigationFragment(Bundle bundle) {
+        super(bundle);
     }
 
-    public static Bundle mapToBundle(Map<String, Serializable> map) {
-        Bundle result = new Bundle();
-        if (map == null) return result;
+    @SuppressWarnings("unused")
+    public DeviceNameSelectionNavigationFragment() {
+    }
 
-        for (String key : map.keySet()) {
-            result.putSerializable(key, map.get(key));
-        }
-        return result;
+    @Override
+    public void onClick(String roomName) {
+        Intent intent = new Intent(Actions.SHOW_FRAGMENT);
+        intent.putExtra(BundleExtraKeys.FRAGMENT, FragmentType.DEVICE_SELECTION);
+        intent.putExtra(BundleExtraKeys.ROOM_NAME, roomName);
+
+        getActivity().sendBroadcast(intent);
     }
 }

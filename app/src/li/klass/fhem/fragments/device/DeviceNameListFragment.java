@@ -122,28 +122,33 @@ public abstract class DeviceNameListFragment extends BaseFragment {
     }
 
     private DeviceFilter getDeviceFilter() {
-        if (! creationAttributes.containsKey(BundleExtraKeys.DEVICE_FILTER)) {
-            return null;
-        }
         return (DeviceFilter) creationAttributes.get(BundleExtraKeys.DEVICE_FILTER);
     }
 
     @Override
     protected void onContentChanged(Map<String, Serializable> oldCreationAttributes, final Map<String, Serializable> newCreationAttributes) {
-        if (! newCreationAttributes.containsKey(BundleExtraKeys.DEVICE_FILTER) && newCreationAttributes.containsKey(BundleExtraKeys.ROOM_NAME)) {
+        if (oldCreationAttributes == null && newCreationAttributes.containsKey(BundleExtraKeys.DEVICE_FILTER)) {
+            newCreationAttributes.put(BundleExtraKeys.ORIGINAL_DEVICE_FILTER, newCreationAttributes.get(BundleExtraKeys.DEVICE_FILTER));
+        }
+
+        if (oldCreationAttributes != null && ! doContentChangedAttributesMatch(oldCreationAttributes, newCreationAttributes, BundleExtraKeys.ROOM_NAME)) {
+            final DeviceFilter oldDeviceFilter = (DeviceFilter) oldCreationAttributes.get(BundleExtraKeys.ORIGINAL_DEVICE_FILTER);
+            newCreationAttributes.put(BundleExtraKeys.ORIGINAL_DEVICE_FILTER, oldDeviceFilter);
             newCreationAttributes.put(BundleExtraKeys.DEVICE_FILTER, new DeviceFilter() {
                 @Override
                 public boolean isSelectable(Device<?> device) {
+                    if (oldDeviceFilter != null && ! oldDeviceFilter.isSelectable(device)) {
+                        return false;
+                    }
                     String roomName = (String) newCreationAttributes.get(BundleExtraKeys.ROOM_NAME);
                     return device.getRoom().equals(roomName);
                 }
             });
-        }
-
-        if (oldCreationAttributes != null && ! oldCreationAttributes.get(BundleExtraKeys.DEVICE_NAME)
-                .equals(newCreationAttributes.get(BundleExtraKeys.DEVICE_NAME))) {
             update(false);
         }
+
+        updateIfAttributesDoNotMatch(oldCreationAttributes, newCreationAttributes, BundleExtraKeys.DEVICE_NAME);
+        updateIfAttributesDoNotMatch(oldCreationAttributes, newCreationAttributes, BundleExtraKeys.ROOM_NAME);
 
         super.onContentChanged(oldCreationAttributes, newCreationAttributes);
     }

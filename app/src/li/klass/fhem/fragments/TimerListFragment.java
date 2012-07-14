@@ -46,9 +46,9 @@ import li.klass.fhem.util.device.DeviceActionUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TimerFragment extends BaseFragment {
+public class TimerListFragment extends BaseFragment {
 
-    private static final String TAG = TimerFragment.class.getName();
+    private static final String TAG = TimerListFragment.class.getName();
     private transient TimerAdapter adapter;
 
     private static final int CONTEXT_MENU_DELETE = 1;
@@ -57,12 +57,12 @@ public class TimerFragment extends BaseFragment {
     private boolean createNewDeviceCalled = false;
 
     @SuppressWarnings("unused")
-    public TimerFragment(Bundle bundle) {
+    public TimerListFragment(Bundle bundle) {
         super(bundle);
     }
 
     @SuppressWarnings("unused")
-    public TimerFragment() {}
+    public TimerListFragment() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -87,7 +87,7 @@ public class TimerFragment extends BaseFragment {
                 AtDevice device = (AtDevice) view.getTag();
 
                 Intent intent = new Intent(Actions.SHOW_FRAGMENT);
-                intent.putExtra(BundleExtraKeys.FRAGMENT_NAME, TimerDetailFragment.class.getName());
+                intent.putExtra(BundleExtraKeys.FRAGMENT, FragmentType.TIMER_DETAIL);
                 intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
                 getActivity().sendBroadcast(intent);
             }
@@ -100,7 +100,7 @@ public class TimerFragment extends BaseFragment {
                 createNewDeviceCalled = true;
 
                 Intent intent = new Intent(Actions.SHOW_FRAGMENT);
-                intent.putExtra(BundleExtraKeys.FRAGMENT_NAME, TimerDetailFragment.class.getName());
+                intent.putExtra(BundleExtraKeys.FRAGMENT, FragmentType.TIMER_DETAIL);
                 getActivity().sendBroadcast(intent);
             }
         });

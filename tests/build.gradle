@@ -23,11 +23,13 @@
 
 apply plugin: 'java'
 
-dependencies {
-    compile 'com.google.android:android:4.0.1.2'
-    compile 'junit:junit:4.10'
-}
+configurations { robo }
 
+dependencies {
+    testCompile 'com.pivotallabs:robolectric:1.1'
+    testCompile 'junit:junit:4.10'
+    testCompile 'com.google.android:android:4.0.1.2'
+}
 repositories {
     mavenCentral()
 }

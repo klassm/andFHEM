@@ -28,6 +28,8 @@ import li.klass.fhem.R;
 import li.klass.fhem.fragments.core.BaseFragment;
 import li.klass.fhem.fragments.core.DeviceDetailFragment;
 import li.klass.fhem.fragments.device.DeviceNameListNavigationFragment;
+import li.klass.fhem.fragments.device.DeviceNameSelectionFragment;
+import li.klass.fhem.fragments.device.DeviceNameSelectionNavigationFragment;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -45,9 +47,9 @@ public enum FragmentType {
     ROOM_DETAIL(RoomDetailFragment.class, RoomListFragment.class),
     ROOM_LIST(RoomListFragment.class, R.string.tab_roomList, 1, null),
     SEND_COMMAND(SendCommandFragment.class),
-    DEVICE_SELECTION(DeviceSelectionFragment.class),
+    DEVICE_SELECTION(DeviceNameSelectionFragment.class, DeviceNameSelectionNavigationFragment.class),
     DEVICE_NAME_LIST_NAVIGATION(DeviceNameListNavigationFragment.class),
-    TIMER_OVERVIEW(TimerFragment.class),
+    TIMER_OVERVIEW(TimerListFragment.class),
     TIMER_DETAIL(TimerDetailFragment.class);
 
     private Class<? extends BaseFragment> fragmentClass;

@@ -34,8 +34,11 @@ import li.klass.fhem.domain.RoomDeviceList;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceType;
 
+import static android.view.ViewGroup.LayoutParams;
+
 public class DeviceNameListAdapter extends DeviceGridAdapter {
     private String selectedDeviceName;
+    private static final int REQUIRED_COLUMN_WIDTH = 150;
 
     public DeviceNameListAdapter(Context context, RoomDeviceList roomDeviceList) {
         super(context, roomDeviceList);
@@ -43,12 +46,18 @@ public class DeviceNameListAdapter extends DeviceGridAdapter {
 
     @Override
     protected View getChildView(DeviceType parent, int parentPosition, Device<?> child, View view, ViewGroup viewGroup) {
+        if (child == null) {
+            TextView fillerView = new TextView(context);
+            fillerView.setLayoutParams(new AbsListView.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+            return fillerView;
+        }
+
         view = layoutInflater.inflate(R.layout.device_name_selection, null);
 
         TextView content = (TextView) view.findViewById(R.id.name);
         content.setText(child.getAliasOrName());
 
-        view.setLayoutParams(new AbsListView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        view.setLayoutParams(new AbsListView.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 
         if (child.getName().equals(selectedDeviceName)) {
             view.setBackgroundColor(context.getResources().getColor(R.color.focusedColor));
@@ -60,6 +69,11 @@ public class DeviceNameListAdapter extends DeviceGridAdapter {
     public void updateData(RoomDeviceList roomDeviceList, String selectedDeviceName) {
         this.selectedDeviceName = selectedDeviceName;
         super.updateData(roomDeviceList);
+    }
+
+    @Override
+    protected int getRequiredColumnWidth() {
+        return REQUIRED_COLUMN_WIDTH;
     }
 }
 

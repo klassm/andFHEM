@@ -368,7 +368,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
                     return true;
                 }
                 Intent timer = new Intent(Actions.SHOW_FRAGMENT);
-                timer.putExtra(BundleExtraKeys.FRAGMENT_NAME, TimerFragment.class.getName());
+                timer.putExtra(BundleExtraKeys.FRAGMENT_NAME, TimerListFragment.class.getName());
                 sendBroadcast(timer);
 
                 return true;
