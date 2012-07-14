@@ -51,8 +51,8 @@ public class WeatherForecastWidget extends AppWidgetView {
     protected void fillWidgetView(Context context, RemoteViews view, Device<?> device, WidgetConfiguration widgetConfiguration) {
         WeatherDevice weatherDevice = (WeatherDevice) device;
         List<WeatherDevice.WeatherDeviceForecast> forecasts = weatherDevice.getForecasts();
-
-        for (int i = 0; i < forecasts.size() && i < 3; i++) {
+        int size = forecasts.size() > 3 ? 3 : forecasts.size();
+        for (int i = size - 1; i >= 0; i--) {
             WeatherDevice.WeatherDeviceForecast forecast = forecasts.get(i);
 
             final RemoteViews forecastView = new RemoteViews(context.getPackageName(), R.layout.appwidet_weather_forecast_item);
