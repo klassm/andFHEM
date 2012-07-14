@@ -197,6 +197,10 @@ public class RoomListService extends AbstractService {
             }
         }
 
+        if (deviceListMap == null) {
+            deviceListMap = new HashMap<String, RoomDeviceList>();
+        }
+
         return deviceListMap;
     }
 

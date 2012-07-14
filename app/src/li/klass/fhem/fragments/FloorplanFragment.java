@@ -50,6 +50,7 @@ import li.klass.fhem.fragments.core.BaseFragment;
 import li.klass.fhem.util.device.DeviceActionUtil;
 import li.klass.fhem.widget.TouchImageView;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -108,7 +109,6 @@ public class FloorplanFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setBackground();
 
         if (floorplanView == null) return;
         floorplanView.postDelayed(new Runnable() {
@@ -117,6 +117,13 @@ public class FloorplanFragment extends BaseFragment {
                 floorplanView.manualTouch();
             }
         }, 1000);
+    }
+
+    @Override
+    protected void onContentChanged(Map<String, Serializable> oldCreationAttributes, Map<String, Serializable> newCreationAttributes) {
+        if (oldCreationAttributes == null) {
+            setBackground();
+        }
     }
 
     private void requestFloorplanDevices(boolean doUpdate) {
