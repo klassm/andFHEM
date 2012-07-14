@@ -39,6 +39,7 @@ import li.klass.fhem.appwidget.view.widget.AppWidgetView;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.fragments.DeviceSelectionFragment;
+import li.klass.fhem.fragments.device.DeviceNameSelectionFragment;
 
 import java.util.List;
 
@@ -70,7 +71,7 @@ public abstract class AppWidgetSelectionActivity extends FragmentActivity {
 
     private void addDeviceSelectionFragment() {
         Bundle bundle = new Bundle();
-        bundle.putSerializable(BundleExtraKeys.DEVICE_FILTER, new DeviceSelectionFragment.DeviceFilter() {
+        bundle.putSerializable(BundleExtraKeys.DEVICE_FILTER, new DeviceNameSelectionFragment.DeviceFilter() {
             @Override
             public boolean isSelectable(Device<?> device) {
                 return WidgetType.getSupportedWidgetTypesFor(widgetSize, device).size() != 0;
@@ -87,8 +88,7 @@ public abstract class AppWidgetSelectionActivity extends FragmentActivity {
             }
         });
 
-        DeviceSelectionFragment deviceSelectionFragment = new DeviceSelectionFragment(bundle);
-
+        DeviceNameSelectionFragment deviceSelectionFragment = new DeviceNameSelectionFragment(bundle);
 
         try {
             getSupportFragmentManager()
