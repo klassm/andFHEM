@@ -40,25 +40,12 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.atomic.AtomicReference;
 
 import static li.klass.fhem.util.SharedPreferencesUtil.getSharedPreferences;
 import static li.klass.fhem.util.SharedPreferencesUtil.getSharedPreferencesEditor;
 
 public class RoomListService extends AbstractService {
-    private class RemoteRoomDeviceListCallable implements Callable<Map<String, RoomDeviceList>> {
-
-        @Override
-        public Map<String, RoomDeviceList> call() throws Exception {
-            Map<String, RoomDeviceList> result = DeviceListParser.INSTANCE.listDevices();
-            setLastUpdateToNow();
-            return result;
-        }
-    }
+    public static final String TAG = RoomListService.class.getName();
 
     public static final RoomListService INSTANCE = new RoomListService();
 
@@ -77,9 +64,6 @@ public class RoomListService extends AbstractService {
 
     public static final long NEVER_UPDATE_PERIOD = 0;
     public static final long ALWAYS_UPDATE_PERIOD = -1;
-
-    private AtomicReference<Future<Map<String, RoomDeviceList>>> currentRemoteRoomDeviceListFuture = new AtomicReference<Future<Map<String, RoomDeviceList>>>();
-    private ExecutorService executorService = Executors.newFixedThreadPool(1);
 
     private RoomListService() {
     }
@@ -209,27 +193,14 @@ public class RoomListService extends AbstractService {
      * why a callable is used. If a request is in progress, the next request just waits for the same result.
      * @return remotely loaded room device list map
      */
-    private synchronized Map<String, RoomDeviceList> getRemoteRoomDeviceListMap() {
-        try {
-            Map<String, RoomDeviceList> result;
-            if (currentRemoteRoomDeviceListFuture.get() != null) {
-                result = currentRemoteRoomDeviceListFuture.get().get();
-                return result;
-            } else {
-                Future<Map<String, RoomDeviceList>> future = executorService.submit(new RemoteRoomDeviceListCallable());
-                currentRemoteRoomDeviceListFuture.set(future);
-                result = future.get();
-            }
-            currentRemoteRoomDeviceListFuture.set(null);
-            return result;
-        } catch (Exception e) {
-            Log.e(RoomListService.class.getName(), "error while retrieving rooms and devices", e);
-            Throwable cause = e.getCause();
-            if (cause instanceof AndFHEMException) {
-                throw (AndFHEMException) cause;
-            }
-            return new HashMap<String, RoomDeviceList>();
-        }
+    /**
+     * Loads the most current room device list map from FHEM and saves it to the cache.
+     * @return remotely loaded room device list map
+     */
+    private Map<String, RoomDeviceList> getRemoteRoomDeviceListMap() {
+        Map<String, RoomDeviceList> result = DeviceListParser.INSTANCE.listDevices();
+        setLastUpdateToNow();
+        return result;
     }
 
     /**
@@ -252,9 +223,8 @@ public class RoomListService extends AbstractService {
      */
     @SuppressWarnings("unchecked")
     private Map<String, RoomDeviceList> getCachedRoomDeviceListMap() {
-
         try {
-            Log.i(RoomListService.class.getName(), "loading device list from cache");
+            Log.i(RoomListService.class.getName(), "fetching device list from cache");
             long startLoad = System.currentTimeMillis();
 
             ObjectInputStream objectInputStream = new ObjectInputStream(AndFHEMApplication.getContext().openFileInput(CACHE_FILENAME));
@@ -278,10 +248,19 @@ public class RoomListService extends AbstractService {
     }
 
     private boolean shouldUpdate(long updatePeriod) {
-        if (updatePeriod == ALWAYS_UPDATE_PERIOD) return true;
-        if (updatePeriod == NEVER_UPDATE_PERIOD) return false;
+        if (updatePeriod == ALWAYS_UPDATE_PERIOD) {
+            Log.i(TAG, "recommend update, as updatePeriod is set to ALWAYS_UPDATE");
+            return true;
+        }
+        if (updatePeriod == NEVER_UPDATE_PERIOD) {
+            Log.i(TAG, "recommend no update, as updatePeriod is set to NEVER_UPDATE");
+            return false;
+        }
 
         long lastUpdate = getLastUpdate();
-        return lastUpdate + updatePeriod < System.currentTimeMillis();
+        boolean shouldUpdate = lastUpdate + updatePeriod < System.currentTimeMillis();
+        Log.i(TAG, "recommend " + (!shouldUpdate ? "no " : "") + "update (lastUpdate: " + lastUpdate +
+                ", updatePeriod: " + updatePeriod + ")");
+        return shouldUpdate;
     }
 }

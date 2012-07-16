@@ -49,6 +49,8 @@ public class WeatherForecastWidget extends AppWidgetView {
 
     @Override
     protected void fillWidgetView(Context context, RemoteViews view, Device<?> device, WidgetConfiguration widgetConfiguration) {
+        view.removeAllViews(R.id.forecasts);
+
         WeatherDevice weatherDevice = (WeatherDevice) device;
         List<WeatherDevice.WeatherDeviceForecast> forecasts = weatherDevice.getForecasts();
         int size = forecasts.size() > 3 ? 3 : forecasts.size();
@@ -63,7 +65,7 @@ public class WeatherForecastWidget extends AppWidgetView {
             Bitmap bitmap = ImageUtil.loadBitmap(WeatherDevice.IMAGE_URL_PREFIX + forecast.getIcon() + "?time=" + System.currentTimeMillis());
             forecastView.setImageViewBitmap(R.id.day_image, bitmap);
 
-            view.addView(R.id.main, forecastView);
+            view.addView(R.id.forecasts, forecastView);
         }
         openDeviceDetailPageWhenClicking(R.id.main, view, device, widgetConfiguration);
     }

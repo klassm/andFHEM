@@ -27,9 +27,12 @@
                 style="@style/appwidget_medium">
 
     <LinearLayout style="@style/appwidget_content">
-
         <TextView style="@style/appwidget_caption"/>
-
+        <LinearLayout android:layout_height="155dp"
+                      android:layout_width="wrap_content"
+                      android:orientation="vertical"
+                      android:id="@+id/forecasts" />
     </LinearLayout>
+
     <ImageView style="@style/appwidget_logo" android:contentDescription="@string/app_name"/>
 </RelativeLayout>
