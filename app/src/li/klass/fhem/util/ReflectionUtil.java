@@ -72,7 +72,8 @@ public class ReflectionUtil {
 
         String fieldValue = "";
         try {
-            fieldValue = field.get(object).toString();
+            Object value = field.get(object);
+            fieldValue = value == null ? "" : value.toString();
         } catch (IllegalAccessException e) {
             Log.e(ReflectionUtil.class.getName(), "this should never ever happen", e);
         }
