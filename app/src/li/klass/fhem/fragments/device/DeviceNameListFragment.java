@@ -109,17 +109,21 @@ public abstract class DeviceNameListFragment extends BaseFragment {
                 }
 
                 RoomDeviceList roomDeviceList = (RoomDeviceList) resultData.getSerializable(BundleExtraKeys.DEVICE_LIST);
-                filterDevices(roomDeviceList);
-
-                String selectedDevice = (String) creationAttributes.get(BundleExtraKeys.DEVICE_NAME);
-
-                Set<Device> allDevices = roomDeviceList.getAllDevices();
-                if (allDevices.size() > 0) {
-                    adapter.updateData(roomDeviceList, selectedDevice);
-                }
+                deviceListReceived(roomDeviceList);
             }
         });
         getActivity().startService(allDevicesIntent);
+    }
+
+    protected void deviceListReceived(RoomDeviceList roomDeviceList) {
+        filterDevices(roomDeviceList);
+
+        String selectedDevice = (String) creationAttributes.get(BundleExtraKeys.DEVICE_NAME);
+
+        Set<Device> allDevices = roomDeviceList.getAllDevices();
+        if (allDevices.size() > 0) {
+            adapter.updateData(roomDeviceList, selectedDevice);
+        }
     }
 
     private DeviceFilter getDeviceFilter() {
