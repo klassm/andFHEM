@@ -25,6 +25,7 @@ package li.klass.fhem.widget;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.GridView;
 import android.widget.HeaderViewListAdapter;
@@ -34,8 +35,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class GridViewWithSections extends GridView {
-    protected Set<GridViewWithSectionsOnClickObserver> clickObservers =
-            new HashSet<GridViewWithSectionsOnClickObserver>();
 
     public interface GridViewWithSectionsOnClickObserver {
         void onItemClick(View view, Object parent, Object child, int parentPosition, int childPosition);
@@ -96,14 +95,25 @@ public class GridViewWithSections extends GridView {
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        GridViewWithSectionsAdapter adapter = getGridViewWithSectionsAdapter();
-        if (adapter != null) {
-            int gridViewWidth = getMeasuredWidth();
-            adapter.setGridViewWidth(gridViewWidth);
-            setNumColumns(adapter.getNumberOfColumns());
-        }
+        updateNumberOfColumns();
 
         super.onLayout(changed, l, t, r, b);
+    }
+
+    public void updateNumberOfColumns() {
+        Log.i(GridViewWithSections.class.getName(), "update number of columns");
+        GridViewWithSectionsAdapter adapter = getGridViewWithSectionsAdapter();
+        if (adapter == null) {
+            return;
+        }
+        int horizontalSpacing = 20;
+
+        // code equivalent to the one used for auto calculating the width in Android's GridView
+        adapter.setNumberOfColumns((getMeasuredWidth() + horizontalSpacing) / (adapter.getRequiredColumnWidth() + horizontalSpacing));
+
+        setHorizontalSpacing(horizontalSpacing);
+        setNumColumns(AUTO_FIT);
+        setColumnWidth(adapter.getRequiredColumnWidth());
     }
 }
 

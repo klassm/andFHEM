@@ -54,7 +54,7 @@ public class DeviceGridAdapter extends GridViewWithSectionsAdapter<DeviceType, D
 
     @Override
     protected Device<?> getChildForParentAndChildPosition(DeviceType parent, int childPosition) {
-        if (childPosition == -1) return null;
+        if (childPosition < 0) return null;
 
         List<Device<?>> childrenForDeviceType = getChildrenForDeviceType(parent);
         if (childPosition >= childrenForDeviceType.size()) {

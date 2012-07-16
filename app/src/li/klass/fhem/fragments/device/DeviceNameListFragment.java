@@ -40,6 +40,7 @@ import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceType;
 import li.klass.fhem.fragments.core.BaseFragment;
 import li.klass.fhem.widget.GridViewWithSections;
+import li.klass.fhem.widget.GridViewWithSectionsAdapter;
 
 import java.io.Serializable;
 import java.util.Map;

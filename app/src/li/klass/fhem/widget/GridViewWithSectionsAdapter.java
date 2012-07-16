@@ -33,6 +33,9 @@ import android.widget.BaseAdapter;
 import java.util.*;
 
 public abstract class GridViewWithSectionsAdapter<P, C> extends BaseAdapter {
+
+    public static final String TAG = GridViewWithSectionsAdapter.class.getName();
+
     protected Set<GridViewWithSections.GridViewWithSectionsOnClickObserver> clickObservers =
             new HashSet<GridViewWithSections.GridViewWithSectionsOnClickObserver>();
 
@@ -45,7 +48,7 @@ public abstract class GridViewWithSectionsAdapter<P, C> extends BaseAdapter {
     private int currentRowParentIndex;
     private int currentRowHeight;
     private List<View> currentRowViews = new ArrayList<View>();
-    private int numberOfColumns;
+    private int numberOfColumns = -1;
 
     public GridViewWithSectionsAdapter(Context context) {
         this.context = context;
@@ -53,6 +56,8 @@ public abstract class GridViewWithSectionsAdapter<P, C> extends BaseAdapter {
     }
 
     public void updateParentPositions() {
+        Log.i(TAG, "updating parent positions");
+
         parentPositions = new HashMap<Integer, P>();
 
         int numberOfColumns = getNumberOfColumns();
@@ -71,10 +76,12 @@ public abstract class GridViewWithSectionsAdapter<P, C> extends BaseAdapter {
             currentPosition += numberOfColumns;
         }
         totalNumberOfItems = currentPosition;
+        Log.i(TAG, "found " + totalNumberOfItems + " items");
     }
 
     @Override
     public int getCount() {
+        Log.i(TAG, "returning totalNumberOfItems: " + totalNumberOfItems);
         return totalNumberOfItems;
     }
 
@@ -115,6 +122,7 @@ public abstract class GridViewWithSectionsAdapter<P, C> extends BaseAdapter {
 
     @Override
     public View getView(int flatPosition, View view, ViewGroup viewGroup) {
+        Log.d(TAG, "drawing flatPosition " + flatPosition + "/" + totalNumberOfItems);
         try {
             int parentBasePosition = getParentBasePosition(flatPosition);
             if (parentBasePosition != -1) {
@@ -134,7 +142,7 @@ public abstract class GridViewWithSectionsAdapter<P, C> extends BaseAdapter {
                 return childView;
             }
         } catch (Exception e) {
-            Log.e(GridViewWithSectionsAdapter.class.getName(), "error occurred", e);
+            Log.e(TAG, "error occurred", e);
             return null;
         }
     }
@@ -234,8 +242,11 @@ public abstract class GridViewWithSectionsAdapter<P, C> extends BaseAdapter {
         return numberOfColumns;
     }
 
-    public void setGridViewWidth(int gridViewWidth) {
-        this.numberOfColumns = gridViewWidth / getRequiredColumnWidth();
+    public void setNumberOfColumns(int numberOfColumns) {
+        this.numberOfColumns = numberOfColumns;
+        Log.i(TAG, "set grid view to " + numberOfColumns + " columns");
+        updateParentPositions();
+        notifyDataSetChanged();
     }
 
     protected abstract C getChildForParentAndChildPosition(P parent, int childPosition);
