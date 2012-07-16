@@ -154,10 +154,10 @@ public class TelnetConnection implements FHEMConnection {
         printWriter.write(password + "\n\r");
         printWriter.flush();
 
-        return waitForPasswordPrompt(inputStream, printWriter);
+        return waitForPasswordPrompt(inputStream);
     }
 
-    private boolean waitForPasswordPrompt(InputStream inputStream, PrintWriter printWriter) throws Exception {
+    private boolean waitForPasswordPrompt(InputStream inputStream) throws Exception {
         int ch;
         int passwordPointer = 0;
         int fhemPromptPointer = 0;
@@ -208,7 +208,7 @@ public class TelnetConnection implements FHEMConnection {
 
     private String getPassword() {
         String password = getPreferenceString(TELNET_PASSWORD, "");
-        String logMessage = password.equals("") ? "has password" : "has no password";
+        String logMessage = password.equals("") ? "has no password" : "has password";
         Log.d(TAG, "telnet connection " + logMessage + " configured");
         return password;
     }

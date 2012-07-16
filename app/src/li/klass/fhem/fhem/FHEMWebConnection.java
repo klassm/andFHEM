@@ -173,7 +173,7 @@ public class FHEMWebConnection implements FHEMConnection {
     private String getPassword() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(AndFHEMApplication.getContext());
         String password = sharedPreferences.getString(FHEMWEB_PASSWORD, "");
-        String logMessage = password.equals("") ? "has password" : "has no password";
+        String logMessage = password.equals("") ? "has no password" : "has password";
         Log.d(TAG, "FHEMWEB connection " + logMessage + " configured");
         return password;
     }
