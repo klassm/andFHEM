@@ -81,6 +81,7 @@ def build(billingProvider, targetFilename) {
     def storeProperty = "-Dkey.store.password=" + project.storePassword
     def aliasProperty = "-Dkey.alias.password=" + project.aliasPassword
 
+    project.execIn(new File('.'), "cp", "target/src/li/klass/fhem/application.properties", 'target/src/li/klass/fhem/application.properties.temp')
     def propertiesFile = new File('target/src/li/klass/fhem/application.properties')
     def content = propertiesFile.getText('UTF-8').replaceAll("<BILLING.PROVIDER>", billingProvider)
     propertiesFile.write(content, 'UTF-8')
@@ -89,6 +90,9 @@ def build(billingProvider, targetFilename) {
 
     def targetPath = "bin/" + targetFilename
     project.execIn(new File('.'), "mv", "target/bin/andFHEM-release.apk", targetPath)
+
+    // write back the old placeholder value!
+    project.execIn(new File('.'), "mv", "target/src/li/klass/fhem/application.properties.temp", 'target/src/li/klass/fhem/application.properties')
 }
 build.dependsOn(release)
 
