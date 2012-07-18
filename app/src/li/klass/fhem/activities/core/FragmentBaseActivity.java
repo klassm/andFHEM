@@ -417,7 +417,9 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
         if (requiredAction == FragmentAction.UPDATE) {
             FragmentHistoryStackEntry current = currentHistoryStackEntry;
             current.contentFragment.onContentChanged(data);
-            current.navigationFragment.onContentChanged(data);
+            if (current.navigationFragment != null) {
+                current.navigationFragment.onContentChanged(data);
+            }
 
             return;
         }

@@ -95,7 +95,9 @@ public class GridViewWithSections extends GridView {
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        updateNumberOfColumns();
+        if (changed) {
+            updateNumberOfColumns();
+        }
 
         super.onLayout(changed, l, t, r, b);
     }
