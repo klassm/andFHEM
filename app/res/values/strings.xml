@@ -100,6 +100,7 @@
     <string name="feature_requires_android_version">This feature requires a minimum Android version of %1$s.</string>
     <string name="unknown">unknown</string>
     <string name="type">Type</string>
+    <string name="about">About</string>
 
     <string name="switchDevice">Switch</string>
     <string name="preferences">Preferences</string>

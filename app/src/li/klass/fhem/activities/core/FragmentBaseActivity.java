@@ -28,6 +28,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -371,6 +372,18 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
                 timer.putExtra(BundleExtraKeys.FRAGMENT_NAME, TimerListFragment.class.getName());
                 sendBroadcast(timer);
 
+                return true;
+
+            case R.id.menu_about:
+                String version;
+                try {
+                    String pkg = getPackageName();
+                    version = getPackageManager().getPackageInfo(pkg, 0).versionName;
+                } catch (PackageManager.NameNotFoundException e) {
+                    version = "?";
+                }
+                DialogUtil.showAlertDialog(this, R.string.about, "Matthias Klass\r\nVersion: " + version +  "\r\n" +
+                        "andFHEM.klass.li\r\nandFHEM@klass.li");
                 return true;
 
         }

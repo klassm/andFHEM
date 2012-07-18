@@ -43,4 +43,6 @@
           android:title="@string/premium" android:icon="@android:drawable/ic_menu_agenda" />
     <item android:id="@+id/menu_timer" android:showAsAction="ifRoom"
           android:title="@string/timer" android:icon="@android:drawable/ic_menu_week" />
+    <item android:id="@+id/menu_about" android:showAsAction="ifRoom"
+          android:title="@string/about" android:icon="@android:drawable/ic_menu_info_details" />
 </menu>

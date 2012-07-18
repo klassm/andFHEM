@@ -99,6 +99,7 @@
     <string name="feature_requires_android_version">Dieses Feature benötigt mindestens Android %1$s.</string>
     <string name="unknown">unbekannt</string>
     <string name="type">Typ</string>
+    <string name="about">About</string>
 
     <string name="switchDevice">Schalte</string>
     <string name="preferences">Einstellungen</string>
