@@ -76,6 +76,11 @@ public class ApplicationProperties {
         return preferences.getInt(key, defaultValue);
     }
 
+    public String getStringSharedPreference(String key, String defaultValue) {
+        SharedPreferences preferences = getPreferences();
+        return preferences.getString(key, defaultValue);
+    }
+
     public void setSharedPreference(String key, boolean value) {
         SharedPreferences preferences = getPreferences();
         preferences.edit().putBoolean(key, value).commit();

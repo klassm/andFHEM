@@ -51,6 +51,36 @@
         <item>48</item>
     </string-array>
 
+    <string-array name="widgetUpdateTimeEntries">
+        <item>5 minutes</item>
+        <item>10 minutes</item>
+        <item>20 minutes</item>
+        <item>30 minutes</item>
+        <item>1 hour</item>
+        <item>2 hours</item>
+        <item>4 hours</item>
+        <item>8 hours</item>
+        <item>12 hours</item>
+        <item>24 hours</item>
+        <item>36 hours</item>
+        <item>48 hours</item>
+    </string-array>
+
+    <string-array name="widgetUpdateTimeValues">
+        <item>300</item> <!-- 5 minutes -->
+        <item>600</item> <!-- 10 minutes -->
+        <item>1200</item> <!-- 20 minutes -->
+        <item>1800</item> <!-- 30 minutes -->
+        <item>3600</item> <!-- 1 hour -->
+        <item>7200</item> <!-- 2 hours -->
+        <item>14400</item> <!-- 4 hours -->
+        <item>28800</item> <!-- 8 hours -->
+        <item>43200</item> <!-- 12 hours -->
+        <item>86400</item> <!-- 24 hours -->
+        <item>129600</item> <!-- 36 hours -->
+        <item>172800</item> <!-- 48 hours -->
+    </string-array>
+
     <string-array name="updateRoomListTimeEntries">
         <item>never</item>
         <item>1 minute</item>

@@ -75,9 +75,4 @@ public class ToggleWidgetView extends AppWidgetView {
     public boolean supports(Device<?> device) {
         return device instanceof ToggleableDevice;
     }
-
-    @Override
-    public long updateInterval() {
-        return 3600000; // every hour
-    }
 }

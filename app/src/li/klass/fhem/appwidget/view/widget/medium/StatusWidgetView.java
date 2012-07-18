@@ -51,9 +51,4 @@ public class StatusWidgetView extends AppWidgetView {
     public boolean supports(Device<?> device) {
         return true;
     }
-
-    @Override
-    public long updateInterval() {
-        return 3600000;
-    }
 }

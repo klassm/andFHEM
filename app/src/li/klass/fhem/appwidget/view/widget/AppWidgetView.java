@@ -94,7 +94,6 @@ public abstract class AppWidgetView {
         return true;
     }
 
-    public long updateInterval() { return 3600000 * 24; } // once a day
     public abstract int getWidgetName();
     protected abstract int getContentView();
     protected abstract void fillWidgetView(Context context, RemoteViews view, Device<?> device, WidgetConfiguration widgetConfiguration);

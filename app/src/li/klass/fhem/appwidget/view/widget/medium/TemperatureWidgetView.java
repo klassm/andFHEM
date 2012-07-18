@@ -56,9 +56,4 @@ public class TemperatureWidgetView extends AppWidgetView {
 
         openDeviceDetailPageWhenClicking(R.id.main, view, device, widgetConfiguration);
     }
-
-    @Override
-    public long updateInterval() {
-        return 3600000; // every hour
-    }
 }

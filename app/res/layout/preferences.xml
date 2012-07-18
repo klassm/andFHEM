@@ -47,6 +47,13 @@
                 android:title="@string/prefWidgetRemoteUpdate"
                 android:defaultValue="true"
                 />
+        <ListPreference
+                android:title="@string/prefWidgetUpdateTime"
+                android:summary="@string/prefWidgetUpdateTimeSummary"
+                android:key="WIDGET_UPDATE_INTERVAL"
+                android:defaultValue="3600"
+                android:entries="@array/widgetUpdateTimeEntries"
+                android:entryValues="@array/widgetUpdateTimeValues" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/prefOtherPreferencesCategory">

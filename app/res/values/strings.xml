@@ -150,6 +150,8 @@
     <string name="prefWidgetRemoteUpdate">Remote Update</string>
     <string name="prefDeviceColumnWidth">Device column width</string>
     <string name="prefDeviceColumnWidthSummary">Minimum width of the device columns</string>
+    <string name="prefWidgetUpdateTime">Update interval</string>
+    <string name="prefWidgetUpdateTimeSummary">default 1 times per hour</string>
 
     <string name="notNumericError">Not numeric!</string>
     <string name="updateError">Error while updating.</string>
