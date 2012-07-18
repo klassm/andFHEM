@@ -71,14 +71,18 @@ public class ApplicationProperties {
         return preferences.getBoolean(key, defaultValue);
     }
 
+    public int getIntegerSharedPreference(String key, int defaultValue) {
+        SharedPreferences preferences = getPreferences();
+        return preferences.getInt(key, defaultValue);
+    }
+
     public void setSharedPreference(String key, boolean value) {
         SharedPreferences preferences = getPreferences();
         preferences.edit().putBoolean(key, value).commit();
     }
 
     private SharedPreferences getPreferences() {
-        Context context = AndFHEMApplication.getContext();
-        return context.getSharedPreferences(AndFHEMApplication.class.getName(), Context.MODE_PRIVATE);
+        return PreferenceManager.getDefaultSharedPreferences(AndFHEMApplication.getContext());
     }
 
     public ConnectionType getConnectionType() {

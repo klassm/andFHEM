@@ -148,6 +148,8 @@
     <string name="prefAutoUpdate">Automatischer Update</string>
     <string name="prefAutoUpdateSummary">nur wenn Applikation läuft</string>
     <string name="prefWidgetRemoteUpdate">Remote Aktualisierung</string>
+    <string name="prefDeviceColumnWidth">Geräte Spaltenbreite</string>
+    <string name="prefDeviceColumnWidthSummary">Mindestbreite der Gerätespalten</string>
 
     <string name="notNumericError">Nicht numerisch!</string>
     <string name="updateError">Error während Update Vorgang.</string>

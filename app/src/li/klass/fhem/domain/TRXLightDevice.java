@@ -36,7 +36,7 @@ public class TRXLightDevice extends ToggleableDevice<TRXLightDevice> {
     protected void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {
         if (keyValue.equalsIgnoreCase("TRX_LIGHT_type")) {
             this.type = nodeContent;
-        } else if (keyValue.equalsIgnoreCase("STATE")) {
+        } else if (keyValue.equalsIgnoreCase("STATE") && attributes.getNamedItem("measured") != null) {
             measured = attributes.getNamedItem("measured").getNodeValue();
         }
     }

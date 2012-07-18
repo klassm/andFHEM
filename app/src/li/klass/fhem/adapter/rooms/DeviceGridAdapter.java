@@ -35,6 +35,7 @@ import li.klass.fhem.adapter.devices.core.DeviceAdapter;
 import li.klass.fhem.domain.RoomDeviceList;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceType;
+import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.widget.GridViewWithSectionsAdapter;
 
 import java.util.ArrayList;
@@ -42,8 +43,10 @@ import java.util.List;
 
 public class DeviceGridAdapter extends GridViewWithSectionsAdapter<DeviceType, Device<?>> {
     private RoomDeviceList roomDeviceList;
-    private static final int REQUIRED_COLUMN_WIDTH = 350;
+    private static final int DEFAULT_COLUMN_WIDTH = 350;
     private int lastParentHeight;
+
+    public static final String COLUMN_WIDTH_PREFERENCE = "DEVICE_COLUMN_WIDTH";
 
     public DeviceGridAdapter(Context context, RoomDeviceList roomDeviceList) {
         super(context);
@@ -135,7 +138,9 @@ public class DeviceGridAdapter extends GridViewWithSectionsAdapter<DeviceType, D
 
     @Override
     protected int getRequiredColumnWidth() {
-        return REQUIRED_COLUMN_WIDTH;
+        int width = ApplicationProperties.INSTANCE.getIntegerSharedPreference(COLUMN_WIDTH_PREFERENCE, DEFAULT_COLUMN_WIDTH);
+        Log.e(TAG, "column width: " + width);
+        return width;
     }
 
     public void updateData(RoomDeviceList roomDeviceList) {

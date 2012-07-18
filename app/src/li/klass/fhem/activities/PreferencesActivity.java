@@ -27,7 +27,9 @@ package li.klass.fhem.activities;
 import android.os.Bundle;
 import android.preference.*;
 import android.text.method.PasswordTransformationMethod;
+import com.hlidskialf.android.preference.SeekBarPreference;
 import li.klass.fhem.R;
+import li.klass.fhem.adapter.rooms.DeviceGridAdapter;
 import li.klass.fhem.fhem.DataConnectionSwitch;
 import li.klass.fhem.util.DialogUtil;
 
@@ -51,6 +53,9 @@ public class PreferencesActivity extends PreferenceActivity {
                 return true;
             }
         });
+
+        SeekBarPreference deviceColumnWidthPreference = (SeekBarPreference) findPreference(DeviceGridAdapter.COLUMN_WIDTH_PREFERENCE);
+        deviceColumnWidthPreference.setMin(350);
 
     }
 
