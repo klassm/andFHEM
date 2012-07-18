@@ -34,7 +34,7 @@
 
     <style name="seekBar">
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_width">wrap_content</item>
         <item name="android:paddingTop">5dp</item>
         <item name="android:paddingBottom">5dp</item>
         <item name="android:paddingLeft">10dp</item>
@@ -44,6 +44,7 @@
         <item name="android:focusable">false</item>
         <item name="android:progressDrawable">@drawable/theme_seekbar</item>
         <item name="android:thumb">@drawable/theme_seekbar_thumb_selector</item>
+        <item name="android:minWidth">90dp</item>
     </style>
 
     <style name="button" parent="android:style/Widget.Button">
@@ -79,11 +80,9 @@
     </style>
 
     <style name="deviceOverviewDescription" parent="@android:style/TextAppearance.Small">
-        <item name="android:layout_weight">1</item>
+        <item name="android:layout_weight">5</item>
         <item name="android:layout_marginLeft">10dp</item>
         <item name="android:textColor">@android:color/black</item>
-        <!--<item name="android:maxWidth">150dp</item>-->
-        <!--<item name="android:minWidth">150dp</item>-->
     </style>
 
     <style name="deviceOverviewCaption" parent="deviceOverviewDescription">
@@ -104,7 +103,7 @@
     <style name="deviceOverviewTable">
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">fill_parent</item>
-        <item name="android:stretchColumns">1</item>
+        <!--<item name="android:stretchColumns">1</item>-->
 
         <item name="android:layout_marginLeft">5dp</item>
         <item name="android:padding">2dp</item>
@@ -126,12 +125,12 @@
         <item name="android:layout_marginLeft">10dp</item>
         <item name="android:textColor">@android:color/black</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_weight">1</item>
+        <item name="android:maxWidth">120dp</item>
+
         <item name="android:gravity">center_vertical</item>
         <item name="android:textSize">15dp</item>
-
-
     </style>
 
     <style name="deviceOverviewToggleButton" parent="toggleButton">

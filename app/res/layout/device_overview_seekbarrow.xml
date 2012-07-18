@@ -25,11 +25,12 @@
 
 <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
           android:layout_width="fill_parent"
-          android:layout_height="fill_parent">
+          android:layout_height="fill_parent"
+          android:gravity="center_vertical">
     <TextView style="@style/deviceOverviewLayoutDeviceName"
               android:id="@+id/description"
               android:gravity="center_vertical"
-              android:text="text"/>
+              android:text="Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt"/>
 
     <SeekBar android:id="@+id/seekBar"
              style="@style/deviceOverviewSeekBar"/>
