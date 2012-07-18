@@ -278,4 +278,28 @@
     <string name="timer_time">Schaltzeit</string>
     <string name="timer_overview_create_new">Neue Zeitschaltuhr erstellen</string>
     <string name="timer_next_trigger">Nächster Schaltvorgang</string>
+
+    <string name="twilight_light">Helligkeit</string>
+    <string name="twilight_next_event">Nächster Event</string>
+    <string name="twilight_next_event_time">Nächster Zeitpunkt</string>
+    <string name="twilight_sunrise">Sonnenaufgang</string>
+    <string name="twilight_sunrise_astronomical">Astronomischer Sonnenaufgang</string>
+    <string name="twilight_sunrise_nautical">Nautischer Sonnenaufgang</string>
+    <string name="twilight_sunrise_civil">Ziviler Sonnenaufgang</string>
+    <string name="twilight_sunrise_indoor">Raum Sonnenaufgang</string>
+    <string name="twilight_sunrise_weather">Wetter Sonnenaufgang</string>
+    <string name="twilight_sunset">Sonnenuntergang</string>
+    <string name="twilight_sunset_astronomical">Astronomischer Sonnenuntergang</string>
+    <string name="twilight_sunset_nautical">Nautischer Sonnenuntergang</string>
+    <string name="twilight_sunset_civil">Ziviler Sonnenuntergang</string>
+    <string name="twilight_sunset_indoor">Raum Sonnenuntergang</string>
+    <string name="twilight_sunset_weather">Wetter Sonnenuntergang</string>
+    <string name="twilight_light_total_night">Nacht</string>
+    <string name="twilight_light_astronomical">Astronomische Dämmerung</string>
+    <string name="twilight_light_nautical">Nautische Dämmerung</string>
+    <string name="twilight_light_civil">Zivile Dämmerung</string>
+    <string name="twilight_light_indoor">Raum-Dämmerung</string>
+    <string name="twilight_light_weather">Wetter Dämmerung</string>
+    <string name="twilight_light_daylight">Tageslicht</string>
+
 </resources>

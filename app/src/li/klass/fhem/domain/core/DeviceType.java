@@ -63,6 +63,7 @@ public enum DeviceType {
     TRX_LIGHT("TRX_LIGHT", TRXLightDevice.class, new TRXLightAdapter()),
     TRX("TRX", TRXDevice.class),
     DUMMY("dummy", DummyDevice.class, new DummyAdapter()),
+    TWILIGHT("Twilight", TwilightDevice.class),
     AT("at", AtDevice.class, null, ConnectionType.NEVER)
     ;
 

@@ -278,4 +278,27 @@
     <string name="timer_time">Switch time</string>
     <string name="timer_overview_create_new">Create new timer</string>
     <string name="timer_next_trigger">Next trigger</string>
+
+    <string name="twilight_light">Light</string>
+    <string name="twilight_next_event">Next event</string>
+    <string name="twilight_next_event_time">Next event time</string>
+    <string name="twilight_sunrise">Sunrise</string>
+    <string name="twilight_sunrise_astronomical">Astronomical sunrise</string>
+    <string name="twilight_sunrise_nautical">Nautical sunrise</string>
+    <string name="twilight_sunrise_civil">Civil sunrise</string>
+    <string name="twilight_sunrise_indoor">Indoor sunrise</string>
+    <string name="twilight_sunrise_weather">Weather sunrise</string>
+    <string name="twilight_sunset">Sunset</string>
+    <string name="twilight_sunset_astronomical">Astronomical sunset</string>
+    <string name="twilight_sunset_nautical">Nautical sunset</string>
+    <string name="twilight_sunset_civil">Civil sunset</string>
+    <string name="twilight_sunset_indoor">Indoor sunset</string>
+    <string name="twilight_sunset_weather">Weather sunset</string>
+    <string name="twilight_light_total_night">Total night</string>
+    <string name="twilight_light_astronomical">Astronomical twilight</string>
+    <string name="twilight_light_nautical">Nautical twilight</string>
+    <string name="twilight_light_civil">Civil twilight</string>
+    <string name="twilight_light_indoor">Indoor twilight</string>
+    <string name="twilight_light_weather">Weather twilight</string>
+    <string name="twilight_light_daylight">Daylight</string>
 </resources>
