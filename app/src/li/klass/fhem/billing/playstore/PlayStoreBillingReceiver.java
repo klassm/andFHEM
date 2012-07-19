@@ -83,6 +83,7 @@ public class PlayStoreBillingReceiver extends BroadcastReceiver {
      * @param signature the signature for the signedData
      */
     private void purchaseStateChanged(Context context, String signedData, String signature) {
+        Log.i(TAG, "purchase state changed, data: " + signedData);
         Intent intent = new Intent(BillingConstants.ACTION_PURCHASE_STATE_CHANGED);
         intent.setClass(context, PlayStoreBillingService.class);
         intent.putExtra(BillingConstants.INAPP_SIGNED_DATA, signedData);

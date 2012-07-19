@@ -33,6 +33,7 @@ import java.util.Set;
 
 public class BillingService {
     public static final String BILLING_PROVIDER_PROPERTIES_KEY = "billing.provider";
+    public static final String TAG = BillingService.class.getName();
 
     private enum ProviderType {
         AMAZON(AmazonBillingProvider.INSTANCE), GOOGLE(PlayStoreProvider.INSTANCE);
@@ -67,8 +68,9 @@ public class BillingService {
         getCurrentProvider().unbindActivity(activity);
     }
 
-    public void markProductAsPurchases(String orderId, String productId,
+    public void markProductAsPurchased(String orderId, String productId,
                                        BillingConstants.PurchaseState purchaseState, long purchaseTime, String developerPayload) {
+        Log.i(TAG, "marking " + productId + " as " + purchaseState.name());
         PurchaseDatabase.INSTANCE.updatePurchase(orderId, productId, purchaseState, purchaseTime, developerPayload);
     }
 
@@ -77,7 +79,9 @@ public class BillingService {
     }
 
     public Set<String> getOwnedItems() {
-        return PurchaseDatabase.INSTANCE.getOwnedItems();
+        Set<String> ownedItems = PurchaseDatabase.INSTANCE.getOwnedItems();
+        Log.i(TAG, "owned items: " + ownedItems);
+        return ownedItems;
     }
 
     public boolean isBillingSupported() {

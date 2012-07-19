@@ -49,7 +49,7 @@ public class AmazonPurchasingObserver extends BasePurchasingObserver {
                 != PurchaseUpdatesResponse.PurchaseUpdatesRequestStatus.SUCCESSFUL) return;
 
         for (String revokedSku : purchaseUpdatesResponse.getRevokedSkus()) {
-            BillingService.INSTANCE.markProductAsPurchases(revokedSku, revokedSku, BillingConstants.PurchaseState.REFUNDED,
+            BillingService.INSTANCE.markProductAsPurchased(revokedSku, revokedSku, BillingConstants.PurchaseState.REFUNDED,
                     System.currentTimeMillis(), null);
         }
 
@@ -99,7 +99,7 @@ public class AmazonPurchasingObserver extends BasePurchasingObserver {
         Set<String> ownedItems = billingService.getOwnedItems();
         if (ownedItems.contains(sku)) return;
 
-        billingService.markProductAsPurchases(sku, sku, BillingConstants.PurchaseState.PURCHASED,
+        billingService.markProductAsPurchased(sku, sku, BillingConstants.PurchaseState.PURCHASED,
                 System.currentTimeMillis(), null);
     }
 

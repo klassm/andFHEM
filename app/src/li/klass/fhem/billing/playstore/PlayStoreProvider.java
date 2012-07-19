@@ -80,6 +80,7 @@ public class PlayStoreProvider extends PlayStorePurchaseObserver implements Bill
 
     @Override
     public void onBillingSupported(boolean supported) {
+        Log.i(TAG, "billing is " + (supported ? "" : "not ") + "supported");
         if (supported) {
             restoreDatabase();
         }
@@ -101,23 +102,21 @@ public class PlayStoreProvider extends PlayStorePurchaseObserver implements Bill
     @Override
     public void onRequestPurchaseResponse(PlayStoreBillingService.RequestPurchase request, BillingConstants.ResponseCode responseCode) {
         Log.i(TAG, "request purchase response: " + responseCode.name());
+        doUpdate();
+    }
 
+    @Override
+    public void onRestoreTransactionsResponse(PlayStoreBillingService.RestoreTransactions request, BillingConstants.ResponseCode responseCode) {
+        Log.i(TAG, "restore transactions response with result" + responseCode.name());
         if (responseCode != BillingConstants.ResponseCode.RESULT_OK) {
-            Log.i(TAG, "RestoreTransactions error: " + responseCode);
             return;
         }
-        Log.i(TAG, "completed RestoreTransactions request");
 
         SharedPreferences billingPreferences = getBillingPreferences();
         SharedPreferences.Editor edit = billingPreferences.edit();
         edit.putBoolean(DB_INITIALIZED, true);
         edit.commit();
 
-        doUpdate();
-    }
-
-    @Override
-    public void onRestoreTransactionsResponse(PlayStoreBillingService.RestoreTransactions request, BillingConstants.ResponseCode responseCode) {
         doUpdate();
     }
 
