@@ -115,7 +115,7 @@ public class PlayStoreProvider extends PlayStorePurchaseObserver implements Bill
 
     @Override
     public void onRestoreTransactionsResponse(PlayStoreBillingService.RestoreTransactions request, BillingConstants.ResponseCode responseCode) {
-        Log.i(TAG, "restore transactions response with result" + responseCode.name());
+        Log.i(TAG, "restore transactions response with result " + responseCode.name());
         if (responseCode != BillingConstants.ResponseCode.RESULT_OK) {
             return;
         }
