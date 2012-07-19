@@ -32,6 +32,7 @@ import li.klass.fhem.R;
 import li.klass.fhem.adapter.rooms.DeviceGridAdapter;
 import li.klass.fhem.fhem.DataConnectionSwitch;
 import li.klass.fhem.util.DialogUtil;
+import li.klass.fhem.util.DisplayUtil;
 
 import static li.klass.fhem.fhem.FHEMWebConnection.*;
 import static li.klass.fhem.fhem.TelnetConnection.*;
@@ -56,7 +57,7 @@ public class PreferencesActivity extends PreferenceActivity {
 
         SeekBarPreference deviceColumnWidthPreference = (SeekBarPreference) findPreference(DeviceGridAdapter.COLUMN_WIDTH_PREFERENCE);
         deviceColumnWidthPreference.setMin(350);
-
+        deviceColumnWidthPreference.setMax(DisplayUtil.getLargestDimensionInDP(this));
     }
 
     private void setDataOriginOptionsForValue(String value) {
