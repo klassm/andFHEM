@@ -34,4 +34,6 @@ public interface BillingProvider {
     boolean isBillingSupported();
 
     boolean hasPendingRequestFor(String productId);
+
+    void onActivityUpdate();
 }

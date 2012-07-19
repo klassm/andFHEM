@@ -80,6 +80,7 @@ public class PremiumFragment extends BaseFragment {
     @Override
     public void update(boolean doUpdate) {
         update(getView());
+        BillingService.INSTANCE.onActivityUpdate();
     }
 
     public void update(View view) {

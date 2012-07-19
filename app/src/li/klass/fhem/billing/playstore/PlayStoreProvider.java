@@ -33,6 +33,7 @@ import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.billing.BillingConstants;
 import li.klass.fhem.billing.BillingProvider;
+import li.klass.fhem.billing.BillingService;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 
@@ -79,6 +80,11 @@ public class PlayStoreProvider extends PlayStorePurchaseObserver implements Bill
     }
 
     @Override
+    public void onActivityUpdate() {
+        restoreDatabase();
+    }
+
+    @Override
     public void onBillingSupported(boolean supported) {
         Log.i(TAG, "billing is " + (supported ? "" : "not ") + "supported");
         if (supported) {
@@ -89,6 +95,8 @@ public class PlayStoreProvider extends PlayStorePurchaseObserver implements Bill
     @Override
     public void onPurchaseStateChange(BillingConstants.PurchaseState purchaseState, String itemId, int quantity, long purchaseTime, String developerPayload) {
         Log.i(TAG, "onPurchaseStateChange() itemId: " + itemId + " " + purchaseState);
+
+        BillingService.INSTANCE.markProductAsPurchased("O" + purchaseTime, itemId, purchaseState, purchaseTime, developerPayload);
         doUpdate();
     }
 

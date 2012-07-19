@@ -84,6 +84,10 @@ public class BillingService {
         return ownedItems;
     }
 
+    public void onActivityUpdate() {
+        getCurrentProvider().onActivityUpdate();
+    }
+
     public boolean isBillingSupported() {
         return getCurrentProvider().isBillingSupported();
     }

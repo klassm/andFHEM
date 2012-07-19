@@ -77,6 +77,10 @@ public class AmazonBillingProvider implements BillingProvider {
         return false;
     }
 
+    @Override
+    public void onActivityUpdate() {
+    }
+
     private SharedPreferences getRequestPreferences() {
         return AndFHEMApplication.getContext().getSharedPreferences(REQUEST_PREFERENCES, Context.MODE_PRIVATE);
     }
