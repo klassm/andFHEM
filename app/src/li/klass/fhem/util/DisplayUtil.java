@@ -24,9 +24,7 @@
 package li.klass.fhem.util;
 
 import android.app.Activity;
-import android.text.BoringLayout;
 import android.util.DisplayMetrics;
-import li.klass.fhem.AndFHEMApplication;
 
 public class DisplayUtil {
     /**
