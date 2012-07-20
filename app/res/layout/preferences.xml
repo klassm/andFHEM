@@ -85,7 +85,7 @@
                                                              android:title="@string/prefDeviceColumnWidth"
                                                              android:summary="@string/prefDeviceColumnWidthSummary"
                                                              android:dialogMessage=""
-                                                             android:defaultValue="0"
+                                                             android:defaultValue="5"
                                                              android:text=" dp"
                                                              android:max="1000"
                 />
