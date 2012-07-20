@@ -142,6 +142,6 @@ public class KS300Device extends Device<KS300Device> implements Serializable {
         addDeviceChartIfNotNull(wind, new DeviceChart(R.string.windGraph, R.string.yAxisWind,
                 new ChartSeriesDescription(R.string.wind, "8:IR:")));
         addDeviceChartIfNotNull(rain, new DeviceChart(R.string.rainGraph, R.string.yAxisRain,
-                new ChartSeriesDescription(R.string.rain, "10:IR:")));
+                new ChartSeriesDescription(R.string.rain, "10:IR::delta-h")));
     }
 }
