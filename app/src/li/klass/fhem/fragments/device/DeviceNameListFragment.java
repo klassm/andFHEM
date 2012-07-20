@@ -136,7 +136,8 @@ public abstract class DeviceNameListFragment extends BaseFragment {
             newCreationAttributes.put(BundleExtraKeys.ORIGINAL_DEVICE_FILTER, newCreationAttributes.get(BundleExtraKeys.DEVICE_FILTER));
         }
 
-        if (! doContentChangedAttributesMatch(oldCreationAttributes, newCreationAttributes, BundleExtraKeys.ROOM_NAME)) {
+        if (getDeviceFilter() == null ||
+                ! doContentChangedAttributesMatch(oldCreationAttributes, newCreationAttributes, BundleExtraKeys.ROOM_NAME)) {
             final DeviceFilter oldDeviceFilter = oldCreationAttributes ==  null ?
                     null : (DeviceFilter) oldCreationAttributes.get(BundleExtraKeys.ORIGINAL_DEVICE_FILTER);
 
