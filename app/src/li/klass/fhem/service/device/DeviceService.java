@@ -31,6 +31,7 @@ import li.klass.fhem.domain.RoomDeviceList;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.service.CommandExecutionService;
 import li.klass.fhem.service.room.RoomListService;
+import li.klass.fhem.util.StringUtil;
 
 import static li.klass.fhem.service.room.RoomListService.NEVER_UPDATE_PERIOD;
 
@@ -103,7 +104,11 @@ public class DeviceService {
      * @param alias new alias to set
      */
     public void setAlias(final Device device, final String alias) {
-        CommandExecutionService.INSTANCE.executeSafely("attr " + device.getName() + " alias " + alias);
+        if (StringUtil.isBlank(alias)) {
+            CommandExecutionService.INSTANCE.executeSafely("deleteattr " + device.getName() + " alias");
+        } else {
+            CommandExecutionService.INSTANCE.executeSafely("attr " + device.getName() + " alias " + alias);
+        }
         device.setAlias(alias);
     }
 

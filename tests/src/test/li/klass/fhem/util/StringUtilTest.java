@@ -26,7 +26,10 @@ package li.klass.fhem.util;
 import org.junit.Test;
 
 import static li.klass.fhem.util.StringUtil.concatenate;
+import static li.klass.fhem.util.StringUtil.isBlank;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class StringUtilTest {
 
@@ -34,5 +37,14 @@ public class StringUtilTest {
     public void testConcatenate() {
         assertEquals("a,b,c", concatenate(new String[]{"a", "b", "c"}, ","));
         assertEquals("", concatenate(new String[]{}, ","));
+    }
+
+    @Test
+    public void testIsBlank() {
+         assertTrue(isBlank(""));
+         assertTrue(isBlank(" "));
+         assertTrue(isBlank(null));
+         assertFalse(isBlank("abc"));
+
     }
 }
