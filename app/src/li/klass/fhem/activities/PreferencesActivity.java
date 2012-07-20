@@ -30,6 +30,7 @@ import android.text.method.PasswordTransformationMethod;
 import com.hlidskialf.android.preference.SeekBarPreference;
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.rooms.DeviceGridAdapter;
+import li.klass.fhem.constants.PreferenceKeys;
 import li.klass.fhem.fhem.DataConnectionSwitch;
 import li.klass.fhem.util.DialogUtil;
 import li.klass.fhem.util.DisplayUtil;
@@ -55,7 +56,7 @@ public class PreferencesActivity extends PreferenceActivity {
             }
         });
 
-        SeekBarPreference deviceColumnWidthPreference = (SeekBarPreference) findPreference(DeviceGridAdapter.COLUMN_WIDTH_PREFERENCE);
+        SeekBarPreference deviceColumnWidthPreference = (SeekBarPreference) findPreference(PreferenceKeys.DEVICE_COLUMN_WIDTH);
         deviceColumnWidthPreference.setMin(350);
         deviceColumnWidthPreference.setMax(DisplayUtil.getLargestDimensionInDP(this));
     }

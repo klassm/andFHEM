@@ -138,7 +138,7 @@ public class DeviceListParser {
     /**
      *
      * @param deviceClass class of the device to read
-     * @param roomDeviceListMap room device list map to read the device into.
+     * @param roomDeviceListMap rooms device list map to read the device into.
      * @param document xml document to read
      * @param tagName current tag name to read
      * @param <T> type of device
@@ -169,10 +169,9 @@ public class DeviceListParser {
 
         T device = deviceClass.newInstance();
         device.loadXML(node);
-        String roomConcatenated = device.getRoom();
-        String[] roomParts = roomConcatenated.split(",");
+        String[] rooms = device.getRooms();
         if (device.isSupported()) {
-            for (String room : roomParts) {
+            for (String room : rooms) {
                 RoomDeviceList roomDeviceList = getOrCreateRoomDeviceList(room, roomDeviceListMap);
                 roomDeviceList.addDevice(device);
             }

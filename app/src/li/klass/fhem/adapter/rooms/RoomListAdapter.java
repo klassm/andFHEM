@@ -31,6 +31,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.ListDataAdapter;
+import li.klass.fhem.constants.PreferenceKeys;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,7 +66,7 @@ public class RoomListAdapter extends ListDataAdapter<String> {
 
         this.selectedRoom = selectedRoom;
 
-        boolean showHiddenDevices = PreferenceManager.getDefaultSharedPreferences(context).getBoolean("prefShowHiddenDevices", false);
+        boolean showHiddenDevices = PreferenceManager.getDefaultSharedPreferences(context).getBoolean(PreferenceKeys.SHOW_HIDDEN_DEVICES, false);
         if (! showHiddenDevices) {
             for (String roomName : new ArrayList<String>(newData)) {
                 if (roomName.equalsIgnoreCase("hidden")) {

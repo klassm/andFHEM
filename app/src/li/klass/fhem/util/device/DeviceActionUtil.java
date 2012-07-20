@@ -81,7 +81,7 @@ public class DeviceActionUtil {
 
     public static void moveDevice(final  Context context,final Device device) {
         final EditText input = new EditText(context);
-        input.setText(device.getRoom());
+        input.setText(device.getRoomConcatenated());
         new AlertDialog.Builder(context)
                 .setTitle(R.string.context_move)
                 .setView(input)

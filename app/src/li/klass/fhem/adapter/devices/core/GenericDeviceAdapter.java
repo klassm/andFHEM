@@ -112,7 +112,7 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
 
         setTextViewOrHideTableRow(view, R.id.tableRowDeviceName, R.id.deviceName, device.getAliasOrName());
         setTextViewOrHideTableRow(view, R.id.tableRowDef, R.id.def, device.getDefinition());
-        setTextViewOrHideTableRow(view, R.id.tableRowRoom, R.id.room, device.getRoom());
+        setTextViewOrHideTableRow(view, R.id.tableRowRoom, R.id.rooms, device.getRoomConcatenated());
         setTextViewOrHideTableRow(view, R.id.tableRowMeasured, R.id.measured, device.getMeasured());
 
         return view;
@@ -203,7 +203,7 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
         textView.setTextSize(10);
         textView.setSingleLine(true);
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.FILL_PARENT);
+                ViewGroup.LayoutParams.MATCH_PARENT);
         textView.setLayoutParams(params);
 
         return textView;

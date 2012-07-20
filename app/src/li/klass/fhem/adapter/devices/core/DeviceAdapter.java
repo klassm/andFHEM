@@ -102,7 +102,7 @@ public abstract class DeviceAdapter<D extends Device> {
         intent.putExtras(new Bundle());
         intent.putExtra(BundleExtraKeys.FRAGMENT_NAME, DeviceDetailFragment.class.getName());
         intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
-        intent.putExtra(BundleExtraKeys.ROOM_NAME, device.getRoom());
+        intent.putExtra(BundleExtraKeys.ROOM_NAME, device.getRooms()[0]);
 
         intent = onFillDeviceDetailIntent(context, device, intent);
         if (intent != null) {

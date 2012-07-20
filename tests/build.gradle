@@ -25,11 +25,16 @@ apply plugin: 'java'
 
 configurations { robo }
 
+androidJar = new File(System.getenv('ANDROID_HOME'), '/platforms/android-14/android.jar')
+
 dependencies {
-    testCompile 'com.pivotallabs:robolectric:1.1'
+    robo 'com.pivotallabs:robolectric:1.1'
     testCompile 'junit:junit:4.10'
-    testCompile 'com.google.android:android:4.0.1.2'
+    testCompile files(androidJar)
 }
+sourceSets.test.compileClasspath = configurations.robo + sourceSets.test.compileClasspath
+sourceSets.test.runtimeClasspath = configurations.robo + sourceSets.test.runtimeClasspath
+
 repositories {
     mavenCentral()
 }

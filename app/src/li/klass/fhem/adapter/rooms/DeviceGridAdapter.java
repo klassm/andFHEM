@@ -32,6 +32,7 @@ import android.widget.AbsListView;
 import android.widget.TextView;
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.DeviceAdapter;
+import li.klass.fhem.constants.PreferenceKeys;
 import li.klass.fhem.domain.RoomDeviceList;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceType;
@@ -40,13 +41,14 @@ import li.klass.fhem.widget.GridViewWithSectionsAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class DeviceGridAdapter extends GridViewWithSectionsAdapter<DeviceType, Device<?>> {
     private RoomDeviceList roomDeviceList;
     private static final int DEFAULT_COLUMN_WIDTH = 350;
     private int lastParentHeight;
 
-    public static final String COLUMN_WIDTH_PREFERENCE = "DEVICE_COLUMN_WIDTH";
+
 
     public DeviceGridAdapter(Context context, RoomDeviceList roomDeviceList) {
         super(context);
@@ -138,13 +140,23 @@ public class DeviceGridAdapter extends GridViewWithSectionsAdapter<DeviceType, D
 
     @Override
     protected int getRequiredColumnWidth() {
-        int width = ApplicationProperties.INSTANCE.getIntegerSharedPreference(COLUMN_WIDTH_PREFERENCE, DEFAULT_COLUMN_WIDTH);
+        int width = ApplicationProperties.INSTANCE.getIntegerSharedPreference(PreferenceKeys.DEVICE_COLUMN_WIDTH, DEFAULT_COLUMN_WIDTH);
         Log.e(TAG, "column width: " + width);
         return width;
     }
 
     public void updateData(RoomDeviceList roomDeviceList) {
         if (roomDeviceList == null) return;
+
+        if (! ApplicationProperties.INSTANCE.getBooleanSharedPreference(PreferenceKeys.SHOW_HIDDEN_DEVICES, false)) {
+            Set<Device> allDevices = roomDeviceList.getAllDevices();
+            for (Device device : allDevices) {
+                if (device.isInRoom("hidden")) {
+                    roomDeviceList.removeDevice(device);
+                }
+            }
+        }
+
         this.roomDeviceList = roomDeviceList;
         super.updateData();
     }

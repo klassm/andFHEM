@@ -56,7 +56,7 @@
     <string name="windDirection">Windrichtung</string>
     <string name="uvValue">UV Wert</string>
     <string name="uvRisk">UV Risiko</string>
-    <string name="room">Raum</string>
+    <string name="rooms">Raum</string>
     <string name="counterA">Zähler A</string>
     <string name="counterB">Zähler B</string>
     <string name="present">Sendend</string>

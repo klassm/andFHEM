@@ -33,19 +33,17 @@ import li.klass.fhem.domain.floorplan.Coordinate;
 import li.klass.fhem.domain.floorplan.FloorplanPosition;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.util.StringEscapeUtils;
+import li.klass.fhem.util.StringUtil;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public abstract class Device<T extends Device> implements Serializable, Comparable<T> {
 
-    protected String room;
+    protected String[] rooms;
 
     protected String name;
 
@@ -124,7 +122,7 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
 
     private void parseNodeContent(Node item, String keyValue, String nodeContent) {
         if (keyValue.equals("ROOM")) {
-            room = nodeContent;
+            setRoomConcatenated(nodeContent);
         } else if (keyValue.equals("NAME")) {
             name = nodeContent;
         } else if (state == null && keyValue.equals("STATE")) {
@@ -199,11 +197,29 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
         return name;
     }
 
-    public String getRoom() {
-        if (room == null) {
-            return AndFHEMApplication.getContext().getResources().getString(R.string.unsortedRoomName);
+    public String[] getRooms() {
+        if (rooms == null) {
+            return new String[] {AndFHEMApplication.getContext().getResources().getString(R.string.unsortedRoomName)};
         }
-        return room;
+        return rooms;
+    }
+
+    public String getRoomConcatenated() {
+        return StringUtil.concatenate(getRooms(), ",");
+    }
+
+    /**
+     * Checks whether a device is in a given room.
+     * @param room room to check
+     * @return true if the device is in the room
+     */
+    public boolean isInRoom(String room) {
+        for (String internalRoom : getRooms()) {
+            if (internalRoom.equals(room)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void setName(String name) {
@@ -224,15 +240,6 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
     protected abstract void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes);
 
     protected void onAttributeRead(String attributeKey, String attributeValue) {
-    }
-
-    @Override
-    public String toString() {
-        return "Device{" +
-                "name='" + name + '\'' +
-                ", room_list_name='" + room + '\'' +
-                ", state='" + state + '\'' +
-                '}';
     }
 
     @Override
@@ -295,8 +302,8 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
         return eventMapReverse.get(state);
     }
 
-    public void setRoom(String room) {
-        this.room = room;
+    public void setRoomConcatenated(String roomsConcatenated) {
+        this.rooms = roomsConcatenated.split(",");
     }
 
     public void setAlias(String alias) {
@@ -343,5 +350,23 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
 
     public boolean supportsWidget(Class<? extends AppWidgetView> appWidgetClass) {
         return true;
+    }
+
+    @Override
+    public String toString() {
+        return "Device{" +
+                "rooms=" + (rooms == null ? null : Arrays.asList(rooms)) +
+                ", name='" + name + '\'' +
+                ", state='" + state + '\'' +
+                ", alias='" + alias + '\'' +
+                ", measured='" + measured + '\'' +
+                ", definition='" + definition + '\'' +
+                ", eventMapReverse=" + eventMapReverse +
+                ", eventMap=" + eventMap +
+                ", availableTargetStates=" + (availableTargetStates == null ? null : Arrays.asList(availableTargetStates)) +
+                ", floorPlanPositionMap=" + floorPlanPositionMap +
+                ", fileLog=" + fileLog +
+                ", deviceCharts=" + deviceCharts +
+                '}';
     }
 }

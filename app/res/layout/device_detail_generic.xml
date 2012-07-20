@@ -44,9 +44,9 @@
         </TableRow>
 
         <TableRow android:id="@+id/tableRowRoom">
-            <TextView android:text="@string/room"
+            <TextView android:text="@string/rooms"
                       style="@style/deviceDetailDescription" />
-            <TextView android:id="@+id/room"
+            <TextView android:id="@+id/rooms"
                       android:text="xxxxx"
                       style="@style/deviceDetailContent" />
         </TableRow>

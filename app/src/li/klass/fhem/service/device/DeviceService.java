@@ -41,7 +41,7 @@ public class DeviceService {
 
     public static final DeviceService INSTANCE = new DeviceService();
 
-    private DeviceService() {
+    DeviceService() {
     }
 
     /**
@@ -62,11 +62,40 @@ public class DeviceService {
         CommandExecutionService.INSTANCE.executeSafely("delete " + device.getName());
         RoomListService.INSTANCE.getAllRoomsDeviceList(NEVER_UPDATE_PERIOD).removeDevice(device);
 
-        RoomDeviceList deviceListForRoom = RoomListService.INSTANCE.getDeviceListForRoom(device.getRoom(), NEVER_UPDATE_PERIOD);
-        if (deviceListForRoom != null) {
-            deviceListForRoom.removeDevice(device);
+        String[] rooms = device.getRooms();
+        removeDeviceFromRooms(device, rooms);
+
+    }
+
+    /**
+     * Remove a device from all given rooms. If the device is the only device in the room, also remove the room itself.
+     * @param device device to remove
+     * @param rooms associated rooms
+     */
+    private void removeDeviceFromRooms(Device device, String[] rooms) {
+        for (String room : rooms) {
+            RoomDeviceList deviceListForRoom = RoomListService.INSTANCE.getDeviceListForRoom(room, NEVER_UPDATE_PERIOD);
+            if (deviceListForRoom != null) {
+                deviceListForRoom.removeDevice(device);
+                if (deviceListForRoom.getAllDevices().size() == 0) {
+                    RoomListService.INSTANCE.removeDeviceListForRoom(room);
+                }
+            }
         }
     }
+
+    /**
+     * Adds a device to all given rooms.
+     * @param device device to add
+     * @param rooms rooms to add the device to.
+     */
+    private void addDeviceToRooms(Device device, String[] rooms) {
+        for (String room : rooms) {
+            RoomDeviceList deviceListForRoom = RoomListService.INSTANCE.getOrCreateRoomDeviceList(room, NEVER_UPDATE_PERIOD);
+            deviceListForRoom.addDevice(device);
+        }
+    }
+
 
     /**
      * Sets an alias for a device.
@@ -81,22 +110,18 @@ public class DeviceService {
     /**
      * Moves a device.
      * @param device concerned device
-     * @param newRoom new room to move the concerned device to.
+     * @param newRoomConcatenated new room to move the concerned device to.
      */
-    public void moveDevice(final Device device, final String newRoom) {
-        CommandExecutionService.INSTANCE.executeSafely("attr " + device.getName() + " room " + newRoom);
-        String oldRoom = device.getRoom();
-        device.setRoom(newRoom);
+    public void moveDevice(final Device device, final String newRoomConcatenated) {
+        CommandExecutionService.INSTANCE.executeSafely("attr " + device.getName() + " room " + newRoomConcatenated);
+        String[] oldRooms = device.getRooms();
 
-        RoomDeviceList oldRoomDeviceList = RoomListService.INSTANCE.getDeviceListForRoom(oldRoom, NEVER_UPDATE_PERIOD);
-        oldRoomDeviceList.removeDevice(device);
-        if (oldRoomDeviceList.getAllDevices().size() == 0) {
-            RoomListService.INSTANCE.removeDeviceListForRoom(oldRoom);
-        }
+        device.setRoomConcatenated(newRoomConcatenated);
+        String[] newRooms = device.getRooms();
+
+        removeDeviceFromRooms(device, oldRooms);
+        addDeviceToRooms(device, newRooms);
 
         AndFHEMApplication.getContext().sendBroadcast(new Intent(Actions.DO_UPDATE));
-
-        RoomDeviceList newRoomDeviceList = RoomListService.INSTANCE.getOrCreateRoomDeviceList(newRoom, NEVER_UPDATE_PERIOD);
-        newRoomDeviceList.addDevice(device);
     }
 }

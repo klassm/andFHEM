@@ -136,8 +136,10 @@ public abstract class DeviceNameListFragment extends BaseFragment {
             newCreationAttributes.put(BundleExtraKeys.ORIGINAL_DEVICE_FILTER, newCreationAttributes.get(BundleExtraKeys.DEVICE_FILTER));
         }
 
-        if (oldCreationAttributes != null && ! doContentChangedAttributesMatch(oldCreationAttributes, newCreationAttributes, BundleExtraKeys.ROOM_NAME)) {
-            final DeviceFilter oldDeviceFilter = (DeviceFilter) oldCreationAttributes.get(BundleExtraKeys.ORIGINAL_DEVICE_FILTER);
+        if (! doContentChangedAttributesMatch(oldCreationAttributes, newCreationAttributes, BundleExtraKeys.ROOM_NAME)) {
+            final DeviceFilter oldDeviceFilter = oldCreationAttributes ==  null ?
+                    null : (DeviceFilter) oldCreationAttributes.get(BundleExtraKeys.ORIGINAL_DEVICE_FILTER);
+
             newCreationAttributes.put(BundleExtraKeys.ORIGINAL_DEVICE_FILTER, oldDeviceFilter);
             newCreationAttributes.put(BundleExtraKeys.DEVICE_FILTER, new DeviceFilter() {
                 @Override
@@ -146,7 +148,7 @@ public abstract class DeviceNameListFragment extends BaseFragment {
                         return false;
                     }
                     String roomName = (String) newCreationAttributes.get(BundleExtraKeys.ROOM_NAME);
-                    return device.getRoom().equals(roomName);
+                    return device.isInRoom(roomName);
                 }
             });
             update(false);
