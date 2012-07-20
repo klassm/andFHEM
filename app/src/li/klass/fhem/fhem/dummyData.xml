@@ -2667,5 +2667,16 @@ room structexclude webCmd eventMap">
     <ATTR key="room" value="Plots"/>
 
 </weblink>
+<weblink name="weblink_Temp_Feuchte1.Aussen" state="initial" sets="" attrs="room group comment alias eventMap fixedrange plotmode plotsize label title htmlattr icon structexclude webCmd">
+    <INT key="DEF" value="fileplot FileLog_Temp_Feuchte1.Aussen:temp4hum6:CURRENT"/>
+    <INT key="LINK" value="FileLog_Temp_Feuchte1.Aussen:temp4hum6:CURRENT"/>
+    <INT key="NAME" value="weblink_Temp_Feuchte1.Aussen"/>
+    <INT key="NR" value="54"/>
+    <INT key="STATE" value="initial"/>
+    <INT key="TYPE" value="weblink"/>
+    <INT key="WLTYPE" value="fileplot"/>
+    <ATTR key="label" value="&quot;Temp_Feuchte1.Aussen Min $data{min1}, Max $data{max1}, Last $data{currval1}&quot;"/>
+    <ATTR key="room" value="Plot"/>
+</weblink>
 </weblink_LIST>
         </FHZINFO>
