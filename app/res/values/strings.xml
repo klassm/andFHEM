@@ -101,6 +101,7 @@
     <string name="unknown">unknown</string>
     <string name="type">Type</string>
     <string name="about">About</string>
+    <string name="commandAccepted">Command accepted?</string>
 
     <string name="switchDevice">Switch</string>
     <string name="preferences">Preferences</string>

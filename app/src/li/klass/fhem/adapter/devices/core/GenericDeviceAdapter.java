@@ -203,7 +203,7 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
         textView.setTextSize(10);
         textView.setSingleLine(true);
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.MATCH_PARENT);
+                ViewGroup.LayoutParams.FILL_PARENT);
         textView.setLayoutParams(params);
 
         return textView;

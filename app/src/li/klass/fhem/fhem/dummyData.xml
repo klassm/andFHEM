@@ -263,6 +263,169 @@
 </PID_LIST>
 
 <CUL_HM_LIST>
+<CUL_HM name="Aussenlicht" state="off" sets="off on on-for-timer pair raw reset sign statusRequest toggle unpair" attrs="room group comment alias eventMap IODev do_not_notify:1,0 ignore:1,0 dummy:1,0 showtime:1,0 loglevel:0,1,2,3,4,5,6 hmClass:receiver,sender serialNr firmware devInfo rawToReadable unit model:ASH550,ASH550I,CMM,HM-CC-SCD,HM-CC-TC,HM-CC-VD,HM-LC-BL1-FM,HM-LC-BL1-PB-FM,HM-LC-BL1-SM,HM-LC-DDC1-PCB,HM-LC-DIM1L-CV,HM-LC-DIM1L-PL,HM-LC-DIM1T-CV,HM-LC-DIM1T-FM,HM-LC-DIM1T-PL,HM-LC-DIM2L-CV,HM-LC-DIM2L-SM,HM-LC-DIM2T-SM,HM-LC-SW1-BA-PCB,HM-LC-SW1-FM,HM-LC-SW1-PB-FM,HM-LC-SW1-PL,HM-LC-SW1-PL-OM54,HM-LC-SW1-SM,HM-LC-SW1-SM-ATMEGA168,HM-LC-SW2-DR,HM-LC-SW2-FM,HM-LC-SW2-PB-FM,HM-LC-SW2-SM,HM-LC-SW4-DR,HM-LC-SW4-PCB,HM-LC-SW4-SM,HM-LC-SW4-SM-ATMEGA168,HM-LC_Bl1PBU-FM,HM-LC_Dim1PWM-CV,HM-LC_Dim1TPBU-FM,HM-OU-CF-PL,HM-PB-2-WM,HM-PB-4-WM,HM-PB-4DIS-WM,HM-PBI-4-FM,HM-RC-12,HM-RC-12-B,HM-RC-12-SW,HM-RC-19,HM-RC-19-B,HM-RC-19-SW,HM-RC-4,HM-RC-4-B,HM-RC-KEY3,HM-RC-KEY3-B,HM-RC-P1,HM-RC-SEC3,HM-RC-SEC3-B,HM-SCI-3-FM,HM-SEC-KEY,HM-SEC-KEY-O,HM-SEC-KEY-S,HM-SEC-MDIR,HM-SEC-RHS,HM-SEC-SC,HM-SEC-SD,HM-SEC-SFA-SM,HM-SEC-TIS,HM-SEC-WDS,HM-SEC-WIN,HM-SEN-EP,HM-SEN-MDIR-SM,HM-SWI-3-FM,HM-Sec-Cen,HM-WDC7000,HM-WDC7000,HM-WDS10-TH-O,HM-WDS100-C6-O,HM-WDS20-TH-O,HM-WDS30-T-O,HM-WDS40-TH-I,HM_LC_Sw4-WM,IS-WDS-TH-OD-S-R3,KFM-Display,KFM-Sensor,KS550,S550IA,WS888 subType:AlarmControl,KFM100,THSensor,blindActuator,dimmer,keyMatic,motionDetector,pushButton,remote,sensor,smokeDetector,swi,switch,threeStateSensor,winMatic icon structexclude webCmd">
+    <INT key="CUL_MSGCNT" value="2"/>
+    <INT key="CUL_RAWMSG" value="A0D14A4101B005FF117130601000014"/>
+    <INT key="CUL_RSSI" value="-64"/>
+    <INT key="CUL_TIME" value="2012-07-19 21:43:22"/>
+    <INT key="DEF" value="1B005F"/>
+    <INT key="LASTIODev" value="CUL"/>
+    <INT key="MSGCNT" value="2"/>
+    <INT key="NAME" value="Aussenlicht"/>
+    <INT key="NR" value="68"/>
+    <INT key="STATE" value="off"/>
+    <INT key="TYPE" value="CUL_HM"/>
+    <INT key="lastMsg" value="0D14A0101B005FF1171306010000"/>
+    <INT key="IODev" value="CUL"/>
+    <ATTR key="devInfo" value="010100"/>
+    <ATTR key="firmware" value="2.1"/>
+    <ATTR key="hmClass" value="receiver"/>
+    <ATTR key="model" value="unknown"/>
+    <ATTR key="room" value="Wohnzimmer"/>
+    <ATTR key="serialNr" value="JEQ0097792"/>
+    <ATTR key="subType" value="switch"/>
+    <STATE key="CommandAccepted" value="yes" measured="2012-07-19 21:41:20"/>
+    <STATE key="deviceMsg" value="on" measured="2012-07-19 21:41:20"/>
+    <STATE key="powerOn" value="off" measured="2012-07-19 21:43:21"/>
+    <STATE key="state" value="off" measured="2012-07-19 21:43:21"/>
+</CUL_HM>
+<CUL_HM name="Garage" state="closed" sets="pair raw reset sign statusRequest unpair" attrs="room group comment alias eventMap IODev do_not_notify:1,0 ignore:1,0 dummy:1,0 showtime:1,0 loglevel:0,1,2,3,4,5,6 hmClass:receiver,sender serialNr firmware devInfo rawToReadable unit model:ASH550,ASH550I,CMM,HM-CC-SCD,HM-CC-TC,HM-CC-VD,HM-LC-BL1-FM,HM-LC-BL1-PB-FM,HM-LC-BL1-SM,HM-LC-DDC1-PCB,HM-LC-DIM1L-CV,HM-LC-DIM1L-PL,HM-LC-DIM1T-CV,HM-LC-DIM1T-FM,HM-LC-DIM1T-PL,HM-LC-DIM2L-CV,HM-LC-DIM2L-SM,HM-LC-DIM2T-SM,HM-LC-SW1-BA-PCB,HM-LC-SW1-FM,HM-LC-SW1-PB-FM,HM-LC-SW1-PL,HM-LC-SW1-PL-OM54,HM-LC-SW1-SM,HM-LC-SW1-SM-ATMEGA168,HM-LC-SW2-DR,HM-LC-SW2-FM,HM-LC-SW2-PB-FM,HM-LC-SW2-SM,HM-LC-SW4-DR,HM-LC-SW4-PCB,HM-LC-SW4-SM,HM-LC-SW4-SM-ATMEGA168,HM-LC_Bl1PBU-FM,HM-LC_Dim1PWM-CV,HM-LC_Dim1TPBU-FM,HM-OU-CF-PL,HM-PB-2-WM,HM-PB-4-WM,HM-PB-4DIS-WM,HM-PBI-4-FM,HM-RC-12,HM-RC-12-B,HM-RC-12-SW,HM-RC-19,HM-RC-19-B,HM-RC-19-SW,HM-RC-4,HM-RC-4-B,HM-RC-KEY3,HM-RC-KEY3-B,HM-RC-P1,HM-RC-SEC3,HM-RC-SEC3-B,HM-SCI-3-FM,HM-SEC-KEY,HM-SEC-KEY-O,HM-SEC-KEY-S,HM-SEC-MDIR,HM-SEC-RHS,HM-SEC-SC,HM-SEC-SD,HM-SEC-SFA-SM,HM-SEC-TIS,HM-SEC-WDS,HM-SEC-WIN,HM-SEN-EP,HM-SEN-MDIR-SM,HM-SWI-3-FM,HM-Sec-Cen,HM-WDC7000,HM-WDC7000,HM-WDS10-TH-O,HM-WDS100-C6-O,HM-WDS20-TH-O,HM-WDS30-T-O,HM-WDS40-TH-I,HM_LC_Sw4-WM,IS-WDS-TH-OD-S-R3,KFM-Display,KFM-Sensor,KS550,S550IA,WS888 subType:AlarmControl,KFM100,THSensor,blindActuator,dimmer,keyMatic,motionDetector,pushButton,remote,sensor,smokeDetector,swi,switch,threeStateSensor,winMatic icon structexclude webCmd">
+    <INT key="CUL_MSGCNT" value="11"/>
+    <INT key="CUL_RAWMSG" value="A0C0FA44119A3DDF11713010800DF"/>
+    <INT key="CUL_RSSI" value="-90.5"/>
+    <INT key="CUL_TIME" value="2012-07-19 21:42:09"/>
+    <INT key="DEF" value="19A3DD"/>
+    <INT key="LASTIODev" value="CUL"/>
+    <INT key="MSGCNT" value="11"/>
+    <INT key="NAME" value="Garage"/>
+    <INT key="NR" value="65"/>
+    <INT key="STATE" value="closed"/>
+    <INT key="TYPE" value="CUL_HM"/>
+    <INT key="lastMsg" value="0C0FA04119A3DDF11713010800"/>
+    <INT key="IODev" value="CUL"/>
+    <ATTR key="devInfo" value="810101"/>
+    <ATTR key="firmware" value="2.0"/>
+    <ATTR key="hmClass" value="sender"/>
+    <ATTR key="model" value="HM-SEC-SC"/>
+    <ATTR key="room" value="Garage"/>
+    <ATTR key="serialNr" value="JEQ0069567"/>
+    <ATTR key="subType" value="threeStateSensor"/>
+    <STATE key="CommandAccepted" value="yes" measured="2012-07-09 16:42:24"/>
+    <STATE key="alive" value="yes" measured="2012-07-09 16:42:37"/>
+    <STATE key="battery" value="ok" measured="2012-07-09 16:42:37"/>
+    <STATE key="state" value="closed" measured="2012-07-19 21:42:09"/>
+</CUL_HM>
+<CUL_HM name="Gartenlampe" state="off" sets="off on on-for-timer pair pct:slider,0,1,100 raw reset sign statusRequest toggle unpair" attrs="room group comment alias eventMap IODev do_not_notify:1,0 ignore:1,0 dummy:1,0 showtime:1,0 loglevel:0,1,2,3,4,5,6 hmClass:receiver,sender serialNr firmware devInfo rawToReadable unit model:ASH550,ASH550I,CMM,HM-CC-SCD,HM-CC-TC,HM-CC-VD,HM-LC-BL1-FM,HM-LC-BL1-PB-FM,HM-LC-BL1-SM,HM-LC-DDC1-PCB,HM-LC-DIM1L-CV,HM-LC-DIM1L-PL,HM-LC-DIM1T-CV,HM-LC-DIM1T-FM,HM-LC-DIM1T-PL,HM-LC-DIM2L-CV,HM-LC-DIM2L-SM,HM-LC-DIM2T-SM,HM-LC-SW1-BA-PCB,HM-LC-SW1-FM,HM-LC-SW1-PB-FM,HM-LC-SW1-PL,HM-LC-SW1-PL-OM54,HM-LC-SW1-SM,HM-LC-SW1-SM-ATMEGA168,HM-LC-SW2-DR,HM-LC-SW2-FM,HM-LC-SW2-PB-FM,HM-LC-SW2-SM,HM-LC-SW4-DR,HM-LC-SW4-PCB,HM-LC-SW4-SM,HM-LC-SW4-SM-ATMEGA168,HM-LC_Bl1PBU-FM,HM-LC_Dim1PWM-CV,HM-LC_Dim1TPBU-FM,HM-OU-CF-PL,HM-PB-2-WM,HM-PB-4-WM,HM-PB-4DIS-WM,HM-PBI-4-FM,HM-RC-12,HM-RC-12-B,HM-RC-12-SW,HM-RC-19,HM-RC-19-B,HM-RC-19-SW,HM-RC-4,HM-RC-4-B,HM-RC-KEY3,HM-RC-KEY3-B,HM-RC-P1,HM-RC-SEC3,HM-RC-SEC3-B,HM-SCI-3-FM,HM-SEC-KEY,HM-SEC-KEY-O,HM-SEC-KEY-S,HM-SEC-MDIR,HM-SEC-RHS,HM-SEC-SC,HM-SEC-SD,HM-SEC-SFA-SM,HM-SEC-TIS,HM-SEC-WDS,HM-SEC-WIN,HM-SEN-EP,HM-SEN-MDIR-SM,HM-SWI-3-FM,HM-Sec-Cen,HM-WDC7000,HM-WDC7000,HM-WDS10-TH-O,HM-WDS100-C6-O,HM-WDS20-TH-O,HM-WDS30-T-O,HM-WDS40-TH-I,HM_LC_Sw4-WM,IS-WDS-TH-OD-S-R3,KFM-Display,KFM-Sensor,KS550,S550IA,WS888 subType:AlarmControl,KFM100,THSensor,blindActuator,dimmer,keyMatic,motionDetector,pushButton,remote,sensor,smokeDetector,swi,switch,threeStateSensor,winMatic icon structexclude webCmd">
+    <INT key="CUL_MSGCNT" value="16"/>
+    <INT key="CUL_RAWMSG" value="A0F1DA4101878E2F11713060100008000DC"/>
+    <INT key="CUL_RSSI" value="-92"/>
+    <INT key="CUL_TIME" value="2012-07-19 21:44:22"/>
+    <INT key="DEF" value="1878E2"/>
+    <INT key="LASTIODev" value="CUL"/>
+    <INT key="MSGCNT" value="16"/>
+    <INT key="NAME" value="Gartenlampe"/>
+    <INT key="NR" value="71"/>
+    <INT key="STATE" value="off"/>
+    <INT key="TYPE" value="CUL_HM"/>
+    <INT key="lastMsg" value="0F1DA0101878E2F11713060100008000"/>
+    <INT key="IODev" value="CUL"/>
+    <ATTR key="devInfo" value="110100"/>
+    <ATTR key="firmware" value="2.1"/>
+    <ATTR key="hmClass" value="receiver"/>
+    <ATTR key="icon" value="icoHEIZUNG.png"/>
+    <ATTR key="model" value="HM-LC_Dim1TPBU-FM"/>
+    <ATTR key="room" value="Aussen"/>
+    <ATTR key="serialNr" value="IEQ0548786"/>
+    <ATTR key="subType" value="dimmer"/>
+    <STATE key="CommandAccepted" value="yes" measured="2012-07-19 21:44:14"/>
+    <STATE key="deviceMsg" value="23.5 %" measured="2012-07-19 21:44:14"/>
+    <STATE key="dim" value="down" measured="2012-07-19 21:44:14"/>
+    <STATE key="powerOn" value="off" measured="2012-07-19 21:44:18"/>
+    <STATE key="state" value="off" measured="2012-07-19 21:44:18"/>
+</CUL_HM>
+<CUL_HM name="Fernseher" state="MISSING ACK" sets="off on on-for-timer pair raw reset sign statusRequest toggle unpair" attrs="room group comment alias eventMap IODev do_not_notify:1,0 ignore:1,0 dummy:1,0 showtime:1,0 loglevel:0,1,2,3,4,5,6 hmClass:receiver,sender serialNr firmware devInfo rawToReadable unit model:ASH550,ASH550I,CMM,HM-CC-SCD,HM-CC-TC,HM-CC-VD,HM-LC-BL1-FM,HM-LC-BL1-PB-FM,HM-LC-BL1-SM,HM-LC-DDC1-PCB,HM-LC-DIM1L-CV,HM-LC-DIM1L-PL,HM-LC-DIM1T-CV,HM-LC-DIM1T-FM,HM-LC-DIM1T-PL,HM-LC-DIM2L-CV,HM-LC-DIM2L-SM,HM-LC-DIM2T-SM,HM-LC-SW1-BA-PCB,HM-LC-SW1-FM,HM-LC-SW1-PB-FM,HM-LC-SW1-PL,HM-LC-SW1-PL-OM54,HM-LC-SW1-SM,HM-LC-SW1-SM-ATMEGA168,HM-LC-SW2-DR,HM-LC-SW2-FM,HM-LC-SW2-PB-FM,HM-LC-SW2-SM,HM-LC-SW4-DR,HM-LC-SW4-PCB,HM-LC-SW4-SM,HM-LC-SW4-SM-ATMEGA168,HM-LC_Bl1PBU-FM,HM-LC_Dim1PWM-CV,HM-LC_Dim1TPBU-FM,HM-OU-CF-PL,HM-PB-2-WM,HM-PB-4-WM,HM-PB-4DIS-WM,HM-PBI-4-FM,HM-RC-12,HM-RC-12-B,HM-RC-12-SW,HM-RC-19,HM-RC-19-B,HM-RC-19-SW,HM-RC-4,HM-RC-4-B,HM-RC-KEY3,HM-RC-KEY3-B,HM-RC-P1,HM-RC-SEC3,HM-RC-SEC3-B,HM-SCI-3-FM,HM-SEC-KEY,HM-SEC-KEY-O,HM-SEC-KEY-S,HM-SEC-MDIR,HM-SEC-RHS,HM-SEC-SC,HM-SEC-SD,HM-SEC-SFA-SM,HM-SEC-TIS,HM-SEC-WDS,HM-SEC-WIN,HM-SEN-EP,HM-SEN-MDIR-SM,HM-SWI-3-FM,HM-Sec-Cen,HM-WDC7000,HM-WDC7000,HM-WDS10-TH-O,HM-WDS100-C6-O,HM-WDS20-TH-O,HM-WDS30-T-O,HM-WDS40-TH-I,HM_LC_Sw4-WM,IS-WDS-TH-OD-S-R3,KFM-Display,KFM-Sensor,KS550,S550IA,WS888 subType:AlarmControl,KFM100,THSensor,blindActuator,dimmer,keyMatic,motionDetector,pushButton,remote,sensor,smokeDetector,swi,switch,threeStateSensor,winMatic icon structexclude webCmd">
+    <INT key="DEF" value="1BC7A3"/>
+    <INT key="NAME" value="Fernseher"/>
+    <INT key="NR" value="56"/>
+    <INT key="STATE" value="MISSING ACK"/>
+    <INT key="TYPE" value="CUL_HM"/>
+    <INT key="IODev" value="CUL"/>
+    <ATTR key="devInfo" value="020200"/>
+    <ATTR key="firmware" value="1.9"/>
+    <ATTR key="hmClass" value="receiver"/>
+    <ATTR key="icon" value="icoBlitz.png"/>
+    <ATTR key="model" value="HM-LC-SW2-FM"/>
+    <ATTR key="room" value="Testraum"/>
+    <ATTR key="serialNr" value="JEQ0083259"/>
+    <ATTR key="subType" value="switch"/>
+    <STATE key="CommandAccepted" value="yes" measured="2012-06-27 17:16:53"/>
+    <STATE key="deviceMsg" value="off" measured="2012-06-27 17:16:53"/>
+    <STATE key="powerOn" value="on" measured="2012-06-27 17:10:10"/>
+    <STATE key="state" value="MISSING ACK" measured="2012-06-27 17:16:53"/>
+</CUL_HM>
+<CUL_HM name="Beamer" state="MISSING ACK" sets="off on on-for-timer pair raw reset sign statusRequest toggle unpair" attrs="room group comment alias eventMap IODev do_not_notify:1,0 ignore:1,0 dummy:1,0 showtime:1,0 loglevel:0,1,2,3,4,5,6 hmClass:receiver,sender serialNr firmware devInfo rawToReadable unit model:ASH550,ASH550I,CMM,HM-CC-SCD,HM-CC-TC,HM-CC-VD,HM-LC-BL1-FM,HM-LC-BL1-PB-FM,HM-LC-BL1-SM,HM-LC-DDC1-PCB,HM-LC-DIM1L-CV,HM-LC-DIM1L-PL,HM-LC-DIM1T-CV,HM-LC-DIM1T-FM,HM-LC-DIM1T-PL,HM-LC-DIM2L-CV,HM-LC-DIM2L-SM,HM-LC-DIM2T-SM,HM-LC-SW1-BA-PCB,HM-LC-SW1-FM,HM-LC-SW1-PB-FM,HM-LC-SW1-PL,HM-LC-SW1-PL-OM54,HM-LC-SW1-SM,HM-LC-SW1-SM-ATMEGA168,HM-LC-SW2-DR,HM-LC-SW2-FM,HM-LC-SW2-PB-FM,HM-LC-SW2-SM,HM-LC-SW4-DR,HM-LC-SW4-PCB,HM-LC-SW4-SM,HM-LC-SW4-SM-ATMEGA168,HM-LC_Bl1PBU-FM,HM-LC_Dim1PWM-CV,HM-LC_Dim1TPBU-FM,HM-OU-CF-PL,HM-PB-2-WM,HM-PB-4-WM,HM-PB-4DIS-WM,HM-PBI-4-FM,HM-RC-12,HM-RC-12-B,HM-RC-12-SW,HM-RC-19,HM-RC-19-B,HM-RC-19-SW,HM-RC-4,HM-RC-4-B,HM-RC-KEY3,HM-RC-KEY3-B,HM-RC-P1,HM-RC-SEC3,HM-RC-SEC3-B,HM-SCI-3-FM,HM-SEC-KEY,HM-SEC-KEY-O,HM-SEC-KEY-S,HM-SEC-MDIR,HM-SEC-RHS,HM-SEC-SC,HM-SEC-SD,HM-SEC-SFA-SM,HM-SEC-TIS,HM-SEC-WDS,HM-SEC-WIN,HM-SEN-EP,HM-SEN-MDIR-SM,HM-SWI-3-FM,HM-Sec-Cen,HM-WDC7000,HM-WDC7000,HM-WDS10-TH-O,HM-WDS100-C6-O,HM-WDS20-TH-O,HM-WDS30-T-O,HM-WDS40-TH-I,HM_LC_Sw4-WM,IS-WDS-TH-OD-S-R3,KFM-Display,KFM-Sensor,KS550,S550IA,WS888 subType:AlarmControl,KFM100,THSensor,blindActuator,dimmer,keyMatic,motionDetector,pushButton,remote,sensor,smokeDetector,swi,switch,threeStateSensor,winMatic icon structexclude webCmd">
+    <INT key="DEF" value="1BC7A302"/>
+    <INT key="NAME" value="Beamer"/>
+    <INT key="NR" value="59"/>
+    <INT key="STATE" value="MISSING ACK"/>
+    <INT key="TYPE" value="CUL_HM"/>
+    <INT key="IODev" value="CUL"/>
+    <ATTR key="devInfo" value="020100"/>
+    <ATTR key="firmware" value="1.9"/>
+    <ATTR key="hmClass" value="receiver"/>
+    <ATTR key="icon" value="icoBlitz.png"/>
+    <ATTR key="model" value="HM-LC-SW2-FM"/>
+    <ATTR key="room" value="Testraum"/>
+    <ATTR key="serialNr" value="JEQ0083259"/>
+    <ATTR key="subType" value="switch"/>
+    <STATE key="CommandAccepted" value="yes" measured="2012-06-27 17:16:52"/>
+    <STATE key="deviceMsg" value="off" measured="2012-06-27 17:16:52"/>
+    <STATE key="state" value="MISSING ACK" measured="2012-06-27 17:16:52"/>
+</CUL_HM>
+<CUL_HM name="Taster1" state="Btn2 offLong 5 (to broadcast)" sets="devicepair pair raw reset sign statusRequest text unpair" attrs="room group comment alias eventMap IODev do_not_notify:1,0 ignore:1,0 dummy:1,0 showtime:1,0 loglevel:0,1,2,3,4,5,6 hmClass:receiver,sender serialNr firmware devInfo rawToReadable unit model:ASH550,ASH550I,CMM,HM-CC-SCD,HM-CC-TC,HM-CC-VD,HM-LC-BL1-FM,HM-LC-BL1-PB-FM,HM-LC-BL1-SM,HM-LC-DDC1-PCB,HM-LC-DIM1L-CV,HM-LC-DIM1L-PL,HM-LC-DIM1T-CV,HM-LC-DIM1T-FM,HM-LC-DIM1T-PL,HM-LC-DIM2L-CV,HM-LC-DIM2L-SM,HM-LC-DIM2T-SM,HM-LC-SW1-BA-PCB,HM-LC-SW1-FM,HM-LC-SW1-PB-FM,HM-LC-SW1-PL,HM-LC-SW1-PL-OM54,HM-LC-SW1-SM,HM-LC-SW1-SM-ATMEGA168,HM-LC-SW2-DR,HM-LC-SW2-FM,HM-LC-SW2-PB-FM,HM-LC-SW2-SM,HM-LC-SW4-DR,HM-LC-SW4-PCB,HM-LC-SW4-SM,HM-LC-SW4-SM-ATMEGA168,HM-LC_Bl1PBU-FM,HM-LC_Dim1PWM-CV,HM-LC_Dim1TPBU-FM,HM-OU-CF-PL,HM-PB-2-WM,HM-PB-4-WM,HM-PB-4DIS-WM,HM-PBI-4-FM,HM-RC-12,HM-RC-12-B,HM-RC-12-SW,HM-RC-19,HM-RC-19-B,HM-RC-19-SW,HM-RC-4,HM-RC-4-B,HM-RC-KEY3,HM-RC-KEY3-B,HM-RC-P1,HM-RC-SEC3,HM-RC-SEC3-B,HM-SCI-3-FM,HM-SEC-KEY,HM-SEC-KEY-O,HM-SEC-KEY-S,HM-SEC-MDIR,HM-SEC-RHS,HM-SEC-SC,HM-SEC-SD,HM-SEC-SFA-SM,HM-SEC-TIS,HM-SEC-WDS,HM-SEC-WIN,HM-SEN-EP,HM-SEN-MDIR-SM,HM-SWI-3-FM,HM-Sec-Cen,HM-WDC7000,HM-WDC7000,HM-WDS10-TH-O,HM-WDS100-C6-O,HM-WDS20-TH-O,HM-WDS30-T-O,HM-WDS40-TH-I,HM_LC_Sw4-WM,IS-WDS-TH-OD-S-R3,KFM-Display,KFM-Sensor,KS550,S550IA,WS888 subType:AlarmControl,KFM100,THSensor,blindActuator,dimmer,keyMatic,motionDetector,pushButton,remote,sensor,smokeDetector,swi,switch,threeStateSensor,winMatic icon structexclude webCmd">
+    <INT key="DEF" value="1A214A"/>
+    <INT key="NAME" value="Taster1"/>
+    <INT key="NR" value="62"/>
+    <INT key="STATE" value="Btn2 offLong 5 (to broadcast)"/>
+    <INT key="TYPE" value="CUL_HM"/>
+    <INT key="IODev" value="CUL"/>
+    <ATTR key="devInfo" value="040101"/>
+    <ATTR key="firmware" value="1.3"/>
+    <ATTR key="hmClass" value="sender"/>
+    <ATTR key="model" value="HM-PBI-4-FM"/>
+    <ATTR key="room" value="CUL_HM"/>
+    <ATTR key="serialNr" value="JEQ0040379"/>
+    <ATTR key="subType" value="pushButton"/>
+    <STATE key="CommandAccepted" value="yes" measured="2012-06-26 22:20:10"/>
+    <STATE key="battery" value="ok" measured="2012-06-26 22:23:09"/>
+    <STATE key="state" value="Btn2 offLong 5 (to broadcast)" measured="2012-06-26 22:23:09"/>
+</CUL_HM>
+<CUL_HM name="Temp_Feuchte1.Aussen" state="T: 14.6 H: 67" sets="pair raw reset sign statusRequest unpair" attrs="room group comment alias eventMap IODev do_not_notify:1,0 ignore:1,0 dummy:1,0 showtime:1,0 loglevel:0,1,2,3,4,5,6 hmClass:receiver,sender serialNr firmware devInfo rawToReadable unit model:ASH550,ASH550I,CMM,HM-CC-SCD,HM-CC-TC,HM-CC-VD,HM-LC-BL1-FM,HM-LC-BL1-PB-FM,HM-LC-BL1-SM,HM-LC-DDC1-PCB,HM-LC-DIM1L-CV,HM-LC-DIM1L-PL,HM-LC-DIM1T-CV,HM-LC-DIM1T-FM,HM-LC-DIM1T-PL,HM-LC-DIM2L-CV,HM-LC-DIM2L-SM,HM-LC-DIM2T-SM,HM-LC-SW1-BA-PCB,HM-LC-SW1-FM,HM-LC-SW1-PB-FM,HM-LC-SW1-PL,HM-LC-SW1-PL-OM54,HM-LC-SW1-SM,HM-LC-SW1-SM-ATMEGA168,HM-LC-SW2-DR,HM-LC-SW2-FM,HM-LC-SW2-PB-FM,HM-LC-SW2-SM,HM-LC-SW4-DR,HM-LC-SW4-PCB,HM-LC-SW4-SM,HM-LC-SW4-SM-ATMEGA168,HM-LC_Bl1PBU-FM,HM-LC_Dim1PWM-CV,HM-LC_Dim1TPBU-FM,HM-OU-CF-PL,HM-PB-2-WM,HM-PB-4-WM,HM-PB-4DIS-WM,HM-PBI-4-FM,HM-RC-12,HM-RC-12-B,HM-RC-12-SW,HM-RC-19,HM-RC-19-B,HM-RC-19-SW,HM-RC-4,HM-RC-4-B,HM-RC-KEY3,HM-RC-KEY3-B,HM-RC-P1,HM-RC-SEC3,HM-RC-SEC3-B,HM-SCI-3-FM,HM-SEC-KEY,HM-SEC-KEY-O,HM-SEC-KEY-S,HM-SEC-MDIR,HM-SEC-RHS,HM-SEC-SC,HM-SEC-SD,HM-SEC-SFA-SM,HM-SEC-TIS,HM-SEC-WDS,HM-SEC-WIN,HM-SEN-EP,HM-SEN-MDIR-SM,HM-SWI-3-FM,HM-Sec-Cen,HM-WDC7000,HM-WDC7000,HM-WDS10-TH-O,HM-WDS100-C6-O,HM-WDS20-TH-O,HM-WDS30-T-O,HM-WDS40-TH-I,HM_LC_Sw4-WM,IS-WDS-TH-OD-S-R3,KFM-Display,KFM-Sensor,KS550,S550IA,WS888 subType:AlarmControl,KFM100,THSensor,blindActuator,dimmer,keyMatic,motionDetector,pushButton,remote,sensor,smokeDetector,swi,switch,threeStateSensor,winMatic icon structexclude webCmd">
+    <INT key="CUL_MSGCNT" value="274"/>
+    <INT key="CUL_RAWMSG" value="A0CAB86701B0A3A00000000924300"/>
+    <INT key="CUL_RSSI" value="-74"/>
+    <INT key="CUL_TIME" value="2012-07-19 22:13:03"/>
+    <INT key="DEF" value="1B0A3A"/>
+    <INT key="LASTIODev" value="CUL"/>
+    <INT key="MSGCNT" value="274"/>
+    <INT key="NAME" value="Temp_Feuchte1.Aussen"/>
+    <INT key="NR" value="52"/>
+    <INT key="STATE" value="T: 14.6 H: 67"/>
+    <INT key="TYPE" value="CUL_HM"/>
+    <INT key="lastMsg" value="0CAB86701B0A3A000000009243"/>
+    <INT key="IODev" value="CUL"/>
+    <ATTR key="devInfo" value="030100"/>
+    <ATTR key="firmware" value="1.2"/>
+    <ATTR key="hmClass" value="sender"/>
+    <ATTR key="icon" value="icoTempBaum.png"/>
+    <ATTR key="model" value="HM-WDS10-TH-O"/>
+    <ATTR key="room" value="Aussen"/>
+    <ATTR key="serialNr" value="JEQ0091208"/>
+    <ATTR key="subType" value="THSensor"/>
+    <STATE key="humidity" value="67" measured="2012-07-19 22:13:03"/>
+    <STATE key="state" value="T: 14.6 H: 67" measured="2012-07-19 22:13:03"/>
+    <STATE key="temperature" value="14.6" measured="2012-07-19 22:13:03"/>
+</CUL_HM>
 <CUL_HM name="CUL_HM_threeStateSensor_1638BB" state="open (to broadcast)" sets="pair raw reset sign statusRequest unpair " attrs="room comment alias IODev do_not_notify:1,0 ignore:0,1 showtime:1,0 loglevel:0,1,2,3,4,5,6 model subType:switch,dimmer,blindActuator,remote,sensor,swi,pushButton,threeStateSensor,motionDetector,keyMatic,winMatic,smokeDetector hmClass:receiver,sender serialNr firmware devInfo rawToReadable unit webCmd eventMap">
     <INT key="DEF" value="1638BB"/>
     <INT key="NAME" value="CUL_HM_threeStateSensor_1638BB"/>
@@ -2262,6 +2425,19 @@ room structexclude webCmd eventMap">
 </notify>
 </notify_LIST>
 <FileLog_LIST>
+<FileLog name="FileLog_Temp_Feuchte1.Aussen" state="active" sets="reopen" attrs="room group comment alias eventMap disable:0,1 logtype nrarchive archivedir archivecmd icon structexclude webCmd">
+    <INT key="DEF" value="/var/log/fhem/Temp_Feuchte1.Aussen-%Y.log Temp_Feuchte1.Aussen:T:.*"/>
+    <INT key="NAME" value="FileLog_Temp_Feuchte1.Aussen"/>
+    <INT key="NR" value="53"/>
+    <INT key="NTFY_ORDER" value="50-FileLog_Temp_Feuchte1.Aussen"/>
+    <INT key="REGEXP" value="Temp_Feuchte1.Aussen:T:.*"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="FileLog"/>
+    <INT key="currentlogfile" value="/var/log/fhem/Temp_Feuchte1.Aussen-2012.log"/>
+    <INT key="logfile" value="/var/log/fhem/Temp_Feuchte1.Aussen-%Y.log"/>
+    <ATTR key="logtype" value="temp4hum6:Temp/Hum,text"/>
+    <ATTR key="room" value="CUL_HM"/>
+</FileLog>
 <FileLog name="FileLog_CUL_WS_1" state="active" sets="reopen"
          attrs="room comment alias disable:0,1 logtype nrarchive archivedir archivecmd eventMap">
     <INT key="DEF" value="./log/CUL_WS_1-%Y.log CUL_WS_1"/>
