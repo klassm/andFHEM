@@ -136,22 +136,24 @@ public abstract class DeviceNameListFragment extends BaseFragment {
             newCreationAttributes.put(BundleExtraKeys.ORIGINAL_DEVICE_FILTER, newCreationAttributes.get(BundleExtraKeys.DEVICE_FILTER));
         }
 
-        if (getDeviceFilter() == null ||
+        if (newCreationAttributes.get(BundleExtraKeys.DEVICE_FILTER) == null ||
                 ! doContentChangedAttributesMatch(oldCreationAttributes, newCreationAttributes, BundleExtraKeys.ROOM_NAME)) {
             final DeviceFilter oldDeviceFilter = oldCreationAttributes ==  null ?
                     null : (DeviceFilter) oldCreationAttributes.get(BundleExtraKeys.ORIGINAL_DEVICE_FILTER);
 
             newCreationAttributes.put(BundleExtraKeys.ORIGINAL_DEVICE_FILTER, oldDeviceFilter);
-            newCreationAttributes.put(BundleExtraKeys.DEVICE_FILTER, new DeviceFilter() {
-                @Override
-                public boolean isSelectable(Device<?> device) {
-                    if (oldDeviceFilter != null && ! oldDeviceFilter.isSelectable(device)) {
-                        return false;
+            if (newCreationAttributes.get(BundleExtraKeys.ROOM_NAME) != null) {
+                newCreationAttributes.put(BundleExtraKeys.DEVICE_FILTER, new DeviceFilter() {
+                    @Override
+                    public boolean isSelectable(Device<?> device) {
+                        if (oldDeviceFilter != null && ! oldDeviceFilter.isSelectable(device)) {
+                            return false;
+                        }
+                        String roomName = (String) newCreationAttributes.get(BundleExtraKeys.ROOM_NAME);
+                        return device.isInRoom(roomName);
                     }
-                    String roomName = (String) newCreationAttributes.get(BundleExtraKeys.ROOM_NAME);
-                    return device.isInRoom(roomName);
-                }
-            });
+                });
+            }
             update(false);
         }
 

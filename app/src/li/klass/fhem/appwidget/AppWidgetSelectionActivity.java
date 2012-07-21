@@ -38,7 +38,6 @@ import li.klass.fhem.appwidget.view.WidgetType;
 import li.klass.fhem.appwidget.view.widget.AppWidgetView;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.core.Device;
-import li.klass.fhem.fragments.DeviceSelectionFragment;
 import li.klass.fhem.fragments.device.DeviceNameSelectionFragment;
 
 import java.util.List;
