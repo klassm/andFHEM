@@ -187,6 +187,7 @@
     <string name="rainTotalGraph">Rain Total Graph</string>
     <string name="usageGraph">Usage Graph</string>
     <string name="windSpeedGraph">Wind Speed Graph</string>
+    <string name="stateGraph">State Graph</string>
 
     <string name="yAxisWind">wind (km/h)</string>
     <string name="yAxisHumidity">humidity (%)</string>
@@ -198,6 +199,7 @@
     <string name="yAxisRainTotal">rain toal (l/m2)</string>
     <string name="yAxisWindSpeed">wind speed (km/h)</string>
     <string name="yAxisUsage">usage</string>
+    <string name="yAxisFS20State">on (1) / off (0)</string>
 
     <string name="startDate">Start Date</string>
     <string name="endDate">End Date</string>

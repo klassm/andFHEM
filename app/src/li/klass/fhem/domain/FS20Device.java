@@ -25,10 +25,12 @@
 package li.klass.fhem.domain;
 
 import li.klass.fhem.R;
+import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.ToggleableDevice;
 import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
 import li.klass.fhem.domain.genericview.FloorplanViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
+import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.NumberSystemUtil;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -166,6 +168,12 @@ public class FS20Device extends ToggleableDevice<FS20Device> implements Comparab
 
     public List<String> getSetOptions() {
         return setOptions;
+    }
+
+    @Override
+    protected void fillDeviceCharts(List<DeviceChart> chartSeries) {
+        addDeviceChartIfNotNull(getState(), new DeviceChart(R.string.stateGraph, R.string.yAxisFS20State,
+                new ChartSeriesDescription(R.string.state, "3:::$fld[2]=~/on.*/?1:0", true, false, false, 1)));
     }
 
     private String transformHexTo4System(String input) {
