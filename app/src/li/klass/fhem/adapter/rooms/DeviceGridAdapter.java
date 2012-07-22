@@ -38,8 +38,10 @@ import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceType;
 import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.widget.GridViewWithSectionsAdapter;
+import org.apache.pig.impl.util.ObjectSerializer;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -47,14 +49,26 @@ public class DeviceGridAdapter extends GridViewWithSectionsAdapter<DeviceType, D
     private RoomDeviceList roomDeviceList;
     private static final int DEFAULT_COLUMN_WIDTH = 355;
     private int lastParentHeight;
-
-
+    private List<DeviceType> parents;
 
     public DeviceGridAdapter(Context context, RoomDeviceList roomDeviceList) {
         super(context);
+        restoreParents();
         if (roomDeviceList != null) {
             updateData(roomDeviceList);
         }
+    }
+
+    private void restoreParents() {
+        String value = ApplicationProperties.INSTANCE.getStringSharedPreference(PreferenceKeys.DEVICE_TYPE_ORDER, null);
+
+        DeviceType[] parentsArray;
+        if (value == null) {
+           parentsArray = DeviceType.values();
+        } else {
+            parentsArray = (DeviceType[]) ObjectSerializer.deserialize(value);
+        }
+        this.parents = Arrays.asList(parentsArray);
     }
 
     @Override
@@ -128,14 +142,14 @@ public class DeviceGridAdapter extends GridViewWithSectionsAdapter<DeviceType, D
 
     @Override
     protected List<DeviceType> getParents() {
-        List<DeviceType> parents = new ArrayList<DeviceType>();
-        for (DeviceType deviceType : DeviceType.values()) {
+        List<DeviceType> viewableParents = new ArrayList<DeviceType>();
+        for (DeviceType deviceType : parents) {
             if (getChildrenCountForParent(deviceType) > 0 &&
                     deviceType.mayShowInCurrentConnectionType()) {
-                parents.add(deviceType);
+                viewableParents.add(deviceType);
             }
         }
-        return parents;
+        return viewableParents;
     }
 
     @Override

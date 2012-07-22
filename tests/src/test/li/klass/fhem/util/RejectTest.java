@@ -21,10 +21,22 @@
  *    51 Franklin Street, Fifth Floor
  */
 
-package li.klass.fhem.constants;
+package li.klass.fhem.util;
 
-public class PreferenceKeys {
-    public static final String SHOW_HIDDEN_DEVICES = "prefShowHiddenDevices";
-    public static final String DEVICE_COLUMN_WIDTH = "DEVICE_COLUMN_WIDTH";
-    public static final String DEVICE_TYPE_ORDER = "DEVICE_TYPE_ORDER";
+import org.junit.Test;
+
+import static org.junit.Assert.fail;
+
+public class RejectTest {
+
+    @Test
+    public void testIfNullWithNotNullValue() {
+        Reject.ifNull("some");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testIfNullWithNullValue() {
+        Reject.ifNull(null);
+        fail();
+    }
 }

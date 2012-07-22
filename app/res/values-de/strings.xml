@@ -101,6 +101,9 @@
     <string name="type">Typ</string>
     <string name="about">About</string>
     <string name="commandAccepted">Kommando akzeptiert?</string>
+    <string name="up">hoch</string>
+    <string name="down">runter</string>
+    <string name="visibility">Sichtbarkeit</string>
 
     <string name="switchDevice">Schalte</string>
     <string name="preferences">Einstellungen</string>

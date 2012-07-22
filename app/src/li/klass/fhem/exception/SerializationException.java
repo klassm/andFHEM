@@ -21,10 +21,21 @@
  *    51 Franklin Street, Fifth Floor
  */
 
-package li.klass.fhem.constants;
+package li.klass.fhem.exception;
 
-public class PreferenceKeys {
-    public static final String SHOW_HIDDEN_DEVICES = "prefShowHiddenDevices";
-    public static final String DEVICE_COLUMN_WIDTH = "DEVICE_COLUMN_WIDTH";
-    public static final String DEVICE_TYPE_ORDER = "DEVICE_TYPE_ORDER";
+public class SerializationException extends RuntimeException {
+    public SerializationException() {
+    }
+
+    public SerializationException(String detailMessage) {
+        super(detailMessage);
+    }
+
+    public SerializationException(String detailMessage, Throwable throwable) {
+        super(detailMessage, throwable);
+    }
+
+    public SerializationException(Throwable throwable) {
+        super(throwable);
+    }
 }

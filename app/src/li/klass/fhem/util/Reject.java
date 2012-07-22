@@ -21,10 +21,12 @@
  *    51 Franklin Street, Fifth Floor
  */
 
-package li.klass.fhem.constants;
+package li.klass.fhem.util;
 
-public class PreferenceKeys {
-    public static final String SHOW_HIDDEN_DEVICES = "prefShowHiddenDevices";
-    public static final String DEVICE_COLUMN_WIDTH = "DEVICE_COLUMN_WIDTH";
-    public static final String DEVICE_TYPE_ORDER = "DEVICE_TYPE_ORDER";
+public class Reject {
+    public static <T> void ifNull(T toTest) {
+        if (toTest == null) {
+            throw new IllegalArgumentException("object was null, but was expected to be not null");
+        }
+    }
 }

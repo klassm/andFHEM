@@ -102,6 +102,9 @@
     <string name="type">Type</string>
     <string name="about">About</string>
     <string name="commandAccepted">Command accepted?</string>
+    <string name="up">up</string>
+    <string name="down">down</string>
+    <string name="visibility">visibility</string>
 
     <string name="switchDevice">Switch</string>
     <string name="preferences">Preferences</string>

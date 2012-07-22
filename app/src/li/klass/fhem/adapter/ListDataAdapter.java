@@ -44,7 +44,6 @@ public class ListDataAdapter<T extends Comparable<T>> extends BaseAdapter {
     protected Context context;
     private Comparator<T> comparator = null;
 
-
     public ListDataAdapter(Context context, int resource, List<T> data) {
         this(context, resource, data, null);
     }
@@ -59,8 +58,11 @@ public class ListDataAdapter<T extends Comparable<T>> extends BaseAdapter {
     }
 
     public void updateData(List<T> newData) {
-        data.clear();
-        data.addAll(newData);
+        // do this ONLY if the references do NOT match!!
+        if (data != newData) {
+            data.clear();
+            data.addAll(newData);
+        }
         sortData();
 
         notifyDataSetChanged();
@@ -68,6 +70,7 @@ public class ListDataAdapter<T extends Comparable<T>> extends BaseAdapter {
 
     @Override
     public int getCount() {
+        if (data == null) return 0;
         return data.size();
     }
 
@@ -108,6 +111,8 @@ public class ListDataAdapter<T extends Comparable<T>> extends BaseAdapter {
     }
 
     private void sortData() {
+        if (! doSort()) return;
+
         if (data == null || data.size() == 0) return;
         if (comparator != null) {
             Collections.sort(data, comparator);
@@ -124,5 +129,9 @@ public class ListDataAdapter<T extends Comparable<T>> extends BaseAdapter {
 
     public List<T> getData() {
         return Collections.unmodifiableList(data);
+    }
+
+    protected boolean doSort() {
+        return true;
     }
 }
