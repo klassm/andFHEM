@@ -80,7 +80,7 @@ public class ArrayListUtilTest {
         moveDown(values, 3);
         assertEquals("d", values.get(3));
 
-        moveUp(values, 2);
+        moveDown(values, 2);
         assertEquals("d", values.get(2));
         assertEquals("c", values.get(3));
     }
