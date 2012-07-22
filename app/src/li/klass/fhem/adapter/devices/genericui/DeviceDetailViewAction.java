@@ -27,6 +27,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import li.klass.fhem.R;
 import li.klass.fhem.domain.core.Device;
 
@@ -37,8 +38,8 @@ public abstract class DeviceDetailViewAction<T extends Device> {
         this.buttonText = buttonText;
     }
 
-    public Button createButton(Context context, LayoutInflater inflater, T device) {
-        Button button = (Button) inflater.inflate(R.layout.button, null).findViewById(R.id.button);
+    public Button createButton(Context context, LayoutInflater inflater, T device, LinearLayout parent) {
+        Button button = (Button) inflater.inflate(R.layout.button_device_detail, parent, false);
         button.setOnClickListener(createListener(context, device));
         button.setText(buttonText);
 

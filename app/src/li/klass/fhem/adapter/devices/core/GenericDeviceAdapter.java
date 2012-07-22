@@ -144,7 +144,7 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
         }
 
         addDetailGraphButtons(context, view, device, inflater);
-        addDetailActionhButtons(context, view, device, inflater);
+        addDetailActionButtons(context, view, device, inflater);
         fillOtherStuffLayout(context, (LinearLayout) view.findViewById(R.id.otherStuff), device, inflater);
     }
 
@@ -221,19 +221,21 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
         LinearLayout graphLayout = (LinearLayout) view.findViewById(R.id.graphButtons);
         if (device.getDeviceCharts().size() == 0 || device.getFileLog() == null) {
             graphLayout.setVisibility(View.GONE);
+            return;
         }
         for (DeviceChart deviceChart : device.getDeviceCharts()) {
             addGraphButton(context, graphLayout, inflater, device, deviceChart);
         }
     }
 
-    private void addDetailActionhButtons(Context context, View view, D device, LayoutInflater inflater) {
-        LinearLayout actionLyout = (LinearLayout) view.findViewById(R.id.actionButtons);
+    private void addDetailActionButtons(Context context, View view, D device, LayoutInflater inflater) {
+        LinearLayout actionLayout = (LinearLayout) view.findViewById(R.id.actionButtons);
         if (detailActions.size() == 0) {
-            actionLyout.setVisibility(View.GONE);
+            actionLayout.setVisibility(View.GONE);
         }
         for (DeviceDetailViewAction<D> action : detailActions) {
-            actionLyout.addView(action.createButton(context, inflater, device));
+            Button button = action.createButton(context, inflater, device, actionLayout);
+            actionLayout.addView(button);
         }
     }
 
@@ -262,7 +264,7 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
 
     private void addGraphButton(final Context context, LinearLayout graphLayout, LayoutInflater inflater, final D device,
                                 final DeviceChart chart) {
-        Button button = (Button) inflater.inflate(R.layout.button, null);
+        Button button = (Button) inflater.inflate(R.layout.button_device_detail, graphLayout, false);
         fillGraphButton(context, device, chart, button);
         graphLayout.addView(button);
     }

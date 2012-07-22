@@ -76,6 +76,7 @@
 
         <TextView style="@style/deviceDetailSectionCaption"
                   android:text="@string/plots" />
+
     </LinearLayout>
 
     <LinearLayout android:layout_width="fill_parent"
