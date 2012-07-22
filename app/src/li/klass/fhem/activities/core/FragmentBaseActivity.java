@@ -193,7 +193,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
                     .setText(fragmentType.getTopLevelTabName())
                     .setTabListener(this)
                     .setTag(fragmentType);
-            actionBar.addTab(tab);
+            actionBar.addTab(tab, false);
         }
 
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -207,6 +207,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
         }
 
         if (savedInstanceState == null || ! restoreResult)  {
+            Log.e(FragmentBaseActivity.class.getName(), "create a new favorites fragment");
             switchToFragment(FragmentType.FAVORITES, new Bundle());
         }
     }
@@ -287,14 +288,16 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
     @Override
     public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
         Object tag = tab.getTag();
+        Log.d(FragmentBaseActivity.class.getName(), "selected tab with target " + tag);
+
         if (! (tag instanceof FragmentType)) {
-            Log.e(FragmentBaseActivity.class.getName(), "can only switch tabs including a Fragment as tag");
+            Log.e(FragmentBaseActivity.class.getName(), "can only switch tabs including a FragmentType as tag");
             return;
         }
 
         FragmentType fragmentTypeTag = (FragmentType) tag;
         Intent intent = new Intent(Actions.SHOW_FRAGMENT);
-        intent.putExtra(BundleExtraKeys.FRAGMENT_NAME, fragmentTypeTag.getContentClass().getName());
+        intent.putExtra(BundleExtraKeys.FRAGMENT, fragmentTypeTag);
         sendBroadcast(intent);
     }
 
@@ -401,9 +404,11 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
         FragmentHistoryStackEntry previousEntry = removeLastHistoryFragmentEntry();
 
         if (previousEntry != null) {
+            Log.d(FragmentBaseActivity.class.getName(), "back pressed, switching to previous fragment");
             switchToFragment(previousEntry, false);
             previousEntry.contentFragment.onBackPressResult(data);
         } else {
+            Log.d(FragmentBaseActivity.class.getName(), "back pressed, no more previous fragments on the stack");
             finish();
         }
     }
@@ -503,6 +508,8 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
 
     private void switchToFragment(FragmentHistoryStackEntry toSwitchToEntry, boolean putToStack) {
         removeDialog();
+
+        Log.d(FragmentBaseActivity.class.getName(), "switch to " + toSwitchToEntry.contentFragment.getClass().getName());
 
         if (toSwitchToEntry.contentFragment instanceof TopLevelFragment) {
             fragmentHistoryStack.clear();

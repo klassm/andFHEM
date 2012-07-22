@@ -122,7 +122,7 @@ public class DeviceGridAdapter extends GridViewWithSectionsAdapter<DeviceType, D
     protected View getChildView(final DeviceType parent, int parentPosition, Device<?> child, View view, ViewGroup viewGroup) {
         final DeviceAdapter<? extends Device<?>> deviceAdapter =  DeviceType.getAdapterFor(child);
         if (deviceAdapter == null) {
-            Log.e(DeviceGridAdapter.class.getName(), "unsupported device type " + child);
+            Log.d(DeviceGridAdapter.class.getName(), "unsupported device type " + child);
             View ret = layoutInflater.inflate(android.R.layout.simple_list_item_1, null);
             ret.setLayoutParams(new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             return ret;
@@ -155,7 +155,7 @@ public class DeviceGridAdapter extends GridViewWithSectionsAdapter<DeviceType, D
     @Override
     protected int getRequiredColumnWidth() {
         int width = ApplicationProperties.INSTANCE.getIntegerSharedPreference(PreferenceKeys.DEVICE_COLUMN_WIDTH, DEFAULT_COLUMN_WIDTH);
-        Log.e(TAG, "column width: " + width);
+        Log.d(TAG, "column width: " + width);
         return width;
     }
 

@@ -130,8 +130,7 @@ public class RoomListFragment extends BaseFragment implements ActionBarShowTabs,
     @Override
     protected void onContentChanged(Map<String, Serializable> oldCreationAttributes, Map<String, Serializable> newCreationAttributes) {
         super.onContentChanged(oldCreationAttributes, newCreationAttributes);
-        if (oldCreationAttributes != null && ! oldCreationAttributes.get(BundleExtraKeys.ROOM_NAME)
-                .equals(newCreationAttributes.get(BundleExtraKeys.ROOM_NAME))) {
+        if (oldCreationAttributes != null && ! doContentChangedAttributesMatch(oldCreationAttributes, newCreationAttributes, BundleExtraKeys.ROOM_NAME)) {
             update(false);
         }
     }

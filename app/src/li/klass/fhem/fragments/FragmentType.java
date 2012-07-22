@@ -73,9 +73,10 @@ public enum FragmentType {
         this(fragmentClass, null, -1, navigationFragment);
     }
 
-    FragmentType(Class<? extends BaseFragment> fragmentClass, int topLevelTabName, int topLevelPosition,
+    FragmentType(Class<? extends BaseFragment> fragmentClass, int topLevelTabStringId, int topLevelPosition,
                  Class<? extends BaseFragment> navigationFragment) {
-        this(fragmentClass, AndFHEMApplication.getContext().getString(topLevelTabName), topLevelPosition, navigationFragment);
+        this(fragmentClass, topLevelTabStringId == -1 ? null : AndFHEMApplication.getContext().getString(topLevelTabStringId),
+                topLevelPosition, navigationFragment);
     }
 
     FragmentType(Class<? extends BaseFragment> fragmentClass, String topLevelTabName, int topLevelPosition,
@@ -134,6 +135,6 @@ public enum FragmentType {
     }
 
     public boolean isTopLevelFragment() {
-        return topLevelTabName == null;
+        return topLevelTabName != null;
     }
 }
