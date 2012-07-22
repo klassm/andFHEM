@@ -93,8 +93,8 @@
                                                                    android:layout_height="wrap_content"
                                                                    android:layout_width="wrap_content"
                                                                    android:key="DEVICE_TYPE_ORDER"
-                                                                   android:title="@string/prefDeviceColumnWidth"
-                                                                   android:summary="@string/prefDeviceColumnWidthSummary" />
+                                                                   android:title="@string/prefDeviceTypeOrder"
+                                                                   android:summary="@string/prefDeviceTypeOrderSummary" />
 
 
 

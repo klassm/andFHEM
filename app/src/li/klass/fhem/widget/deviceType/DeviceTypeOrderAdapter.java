@@ -72,6 +72,8 @@ public class DeviceTypeOrderAdapter extends ListDataAdapter<DeviceTypePreference
 
         if (! item.isVisible()) {
             nameView.setPaintFlags(nameView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+        } else {
+            nameView.setPaintFlags(nameView.getPaintFlags() | Paint.FAKE_BOLD_TEXT_FLAG);
         }
         return view;
     }
