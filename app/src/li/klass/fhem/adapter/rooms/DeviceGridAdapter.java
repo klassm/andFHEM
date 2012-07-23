@@ -38,10 +38,9 @@ import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceType;
 import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.widget.GridViewWithSectionsAdapter;
-import org.apache.pig.impl.util.ObjectSerializer;
+import li.klass.fhem.widget.deviceType.DeviceTypeHolder;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -60,15 +59,8 @@ public class DeviceGridAdapter extends GridViewWithSectionsAdapter<DeviceType, D
     }
 
     private void restoreParents() {
-        String value = ApplicationProperties.INSTANCE.getStringSharedPreference(PreferenceKeys.DEVICE_TYPE_ORDER, null);
-
-        DeviceType[] parentsArray;
-        if (value == null) {
-           parentsArray = DeviceType.values();
-        } else {
-            parentsArray = (DeviceType[]) ObjectSerializer.deserialize(value);
-        }
-        this.parents = Arrays.asList(parentsArray);
+        DeviceTypeHolder deviceTypeHolder = new DeviceTypeHolder();
+        parents = deviceTypeHolder.getVisibleDeviceTypes();
     }
 
     @Override

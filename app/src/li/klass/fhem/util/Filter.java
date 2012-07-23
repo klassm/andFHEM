@@ -21,11 +21,8 @@
  *    51 Franklin Street, Fifth Floor
  */
 
-package li.klass.fhem.constants;
+package li.klass.fhem.util;
 
-public class PreferenceKeys {
-    public static final String SHOW_HIDDEN_DEVICES = "prefShowHiddenDevices";
-    public static final String DEVICE_COLUMN_WIDTH = "DEVICE_COLUMN_WIDTH";
-    public static final String DEVICE_TYPE_ORDER_VISIBLE = "DEVICE_TYPE_ORDER_VISIBLE";
-    public static final String DEVICE_TYPE_ORDER_INVISIBLE = "DEVICE_TYPE_ORDER_INVISIBLE";
+public interface Filter<T> {
+    public boolean doFilter(T object);
 }

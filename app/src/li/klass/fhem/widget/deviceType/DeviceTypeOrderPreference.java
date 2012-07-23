@@ -24,16 +24,18 @@
 package li.klass.fhem.widget.deviceType;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.preference.DialogPreference;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ListView;
 import li.klass.fhem.R;
+import li.klass.fhem.constants.PreferenceKeys;
 import li.klass.fhem.domain.core.DeviceType;
 import li.klass.fhem.util.ArrayListUtil;
+import li.klass.fhem.util.Filter;
 import org.apache.pig.impl.util.ObjectSerializer;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -41,7 +43,7 @@ import java.util.List;
 @SuppressWarnings("unused")
 public class DeviceTypeOrderPreference extends DialogPreference {
 
-    private ArrayList<DeviceTypePreferenceWrapper> deviceTypes;
+    private ArrayList<DeviceTypePreferenceWrapper> wrappedDevices = new ArrayList<DeviceTypePreferenceWrapper>();
 
     public DeviceTypeOrderPreference(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
@@ -58,25 +60,25 @@ public class DeviceTypeOrderPreference extends DialogPreference {
         // dirty hack ... this should be called by Android automatically ...
         onSetInitialValue(true, "");
 
-        final DeviceTypeOrderAdapter adapter = new DeviceTypeOrderAdapter(getContext(), R.layout.device_type_list_item, deviceTypes);
+        final DeviceTypeOrderAdapter adapter = new DeviceTypeOrderAdapter(getContext(), R.layout.device_type_list_item, wrappedDevices);
         adapter.setListener(new DeviceTypeOrderAdapter.DeviceTypeOrderActionListener() {
             @Override
             public void deviceTypeReordered(DeviceTypePreferenceWrapper wrapper, DeviceTypeOrderAdapter.DeviceTypeOrderAction action) {
-                int currentPosition = deviceTypes.indexOf(wrapper);
+                int currentPosition = wrappedDevices.indexOf(wrapper);
 
                 switch (action) {
                     case UP:
-                        ArrayListUtil.moveUp(deviceTypes, currentPosition);
+                        ArrayListUtil.moveUp(wrappedDevices, currentPosition);
                         break;
                     case DOWN:
-                        ArrayListUtil.moveDown(deviceTypes, currentPosition);
+                        ArrayListUtil.moveDown(wrappedDevices, currentPosition);
                         break;
                     case VISIBILITY_CHANGE:
-                        deviceTypes.get(currentPosition).invertVisibility();
+                        wrappedDevices.get(currentPosition).invertVisibility();
                         break;
                 }
-                callChangeListener(deviceTypes);
-                adapter.updateData(deviceTypes);
+                callChangeListener(wrappedDevices);
+                adapter.updateData(wrappedDevices);
             }
         });
         deviceTypeListView.setAdapter(adapter);
@@ -87,49 +89,80 @@ public class DeviceTypeOrderPreference extends DialogPreference {
     protected void onSetInitialValue(boolean restore, Object defaultValue) {
         super.onSetInitialValue(restore, defaultValue);
 
-        DeviceType[] elements;
-        String persistedValue = getPersistedString(null);
-        if (shouldPersist() && persistedValue != null && ! "".equals(persistedValue)) {
-            elements = (DeviceType[]) ObjectSerializer.deserialize(persistedValue);
-        } else {
-            elements = DeviceType.values();
-        }
-        deviceTypes = wrapDeviceTypes(elements);
+        DeviceTypeHolder deviceTypeHolder = new DeviceTypeHolder();
+        List<DeviceType> visibleDeviceTypes = deviceTypeHolder.getVisibleDeviceTypes();
+        List<DeviceType> invisibleDeviceTypes = deviceTypeHolder.getInvisibleDeviceTypes();
+
+        this.wrappedDevices = wrapDevices(visibleDeviceTypes, invisibleDeviceTypes);
     }
 
     @Override
     protected void onDialogClosed(boolean positiveResult) {
         if (! positiveResult) return;
+        save();
+    }
 
-        DeviceType[] toPersist = unwrapDeviceTypes(deviceTypes);
+    private List<DeviceType> parsePersistedValue(String persistedValue, DeviceType[] defaultValue) {
+        if (shouldPersist() && persistedValue != null && ! "".equals(persistedValue)) {
+            return Arrays.asList((DeviceType[]) ObjectSerializer.deserialize(persistedValue));
+        }
+        return Arrays.asList(defaultValue);
+    }
+
+    private ArrayList<DeviceTypePreferenceWrapper> wrapDevices(List<DeviceType> visibleDeviceTypes, List<DeviceType> invisibleDeviceTypes) {
+        ArrayList<DeviceTypePreferenceWrapper> returnList = new ArrayList<DeviceTypePreferenceWrapper>();
+
+        returnList.addAll(wrapList(visibleDeviceTypes, true));
+        returnList.addAll(wrapList(invisibleDeviceTypes, false));
+
+        return returnList;
+    }
+
+    private List<DeviceTypePreferenceWrapper> wrapList(List<DeviceType> toWrap, boolean isVisible) {
+        List<DeviceTypePreferenceWrapper> result = new ArrayList<DeviceTypePreferenceWrapper>();
+        for (DeviceType deviceType : toWrap) {
+            result.add(new DeviceTypePreferenceWrapper(deviceType, isVisible));
+        }
+        return result;
+    }
+
+    private void save() {
+        saveVisibleDevices();
+        saveInvisibleDevices();
+    }
+
+    private void saveVisibleDevices() {
+        ArrayList<DeviceTypePreferenceWrapper> visibleDevices = ArrayListUtil.filter(wrappedDevices, new Filter<DeviceTypePreferenceWrapper>() {
+            @Override
+            public boolean doFilter(DeviceTypePreferenceWrapper object) {
+                return object.isVisible();
+            }
+        });
+        DeviceType[] toPersist = unwrapDeviceTypes(visibleDevices);
         if (shouldPersist()) persistString(ObjectSerializer.serialize(toPersist));
+
+    }
+
+    private void saveInvisibleDevices() {
+        ArrayList<DeviceTypePreferenceWrapper> invisibleDevices = ArrayListUtil.filter(wrappedDevices, new Filter<DeviceTypePreferenceWrapper>() {
+            @Override
+            public boolean doFilter(DeviceTypePreferenceWrapper object) {
+                return ! object.isVisible();
+            }
+        });
+        DeviceType[] toPersist = unwrapDeviceTypes(invisibleDevices);
+        if (shouldPersist()) {
+            SharedPreferences.Editor editor = getSharedPreferences().edit();
+            editor.putString(PreferenceKeys.DEVICE_TYPE_ORDER_INVISIBLE, ObjectSerializer.serialize(toPersist)).commit();
+        }
     }
 
     private DeviceType[] unwrapDeviceTypes(ArrayList<DeviceTypePreferenceWrapper> toUnwrap) {
         ArrayList<DeviceType> finalList = new ArrayList<DeviceType>();
         for (DeviceTypePreferenceWrapper wrapper : toUnwrap) {
-            if (wrapper.isVisible()) {
-                finalList.add(wrapper.getDeviceType());
-            }
+            finalList.add(wrapper.getDeviceType());
         }
         return finalList.toArray(new DeviceType[finalList.size()]);
-    }
-
-    private ArrayList<DeviceTypePreferenceWrapper> wrapDeviceTypes(DeviceType[] toWrap) {
-        List<DeviceType> allDeviceTypes = new ArrayList<DeviceType>(Arrays.asList(DeviceType.values()));
-        ArrayList<DeviceTypePreferenceWrapper> returnList = new ArrayList<DeviceTypePreferenceWrapper>();
-
-        for (DeviceType deviceType : toWrap) {
-
-            allDeviceTypes.remove(deviceType);
-            returnList.add(new DeviceTypePreferenceWrapper(deviceType, true));
-        }
-
-        for (DeviceType deviceType : allDeviceTypes) {
-            returnList.add(new DeviceTypePreferenceWrapper(deviceType, false));
-        }
-
-        return returnList;
     }
 
     @Override

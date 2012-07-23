@@ -57,4 +57,17 @@ public class ArrayListUtil {
     private static <T> boolean isInRange(ArrayList<T> list, int position) {
         return !(position < 0 || position >= list.size());
     }
+
+    public static <T> ArrayList<T> filter(ArrayList<T> toFilter, Filter<T> filter) {
+        Reject.ifNull(toFilter);
+        Reject.ifNull(filter);
+
+        ArrayList<T> result = new ArrayList<T>();
+        for (T element : toFilter) {
+            if (filter.doFilter(element)) {
+                result.add(element);
+            }
+        }
+        return result;
+    }
 }

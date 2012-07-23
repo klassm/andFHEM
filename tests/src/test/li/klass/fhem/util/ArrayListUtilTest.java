@@ -84,4 +84,16 @@ public class ArrayListUtilTest {
         assertEquals("d", values.get(2));
         assertEquals("c", values.get(3));
     }
+
+    @Test
+    public void testFilter() {
+        ArrayList<String> result = ArrayListUtil.filter(values, new Filter<String>() {
+            @Override
+            public boolean doFilter(String object) {
+                return object.equals("a");
+            }
+        });
+        assertEquals(new ArrayList<String>(Arrays.asList("a")), result);
+        assertEquals(1, result.size());
+    }
 }
