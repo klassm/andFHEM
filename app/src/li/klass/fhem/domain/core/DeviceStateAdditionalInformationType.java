@@ -23,6 +23,9 @@
 
 package li.klass.fhem.domain.core;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public enum DeviceStateAdditionalInformationType {
     NUMERIC("[0-9]*", ""),
     ANY(".*", ""),
@@ -30,16 +33,17 @@ public enum DeviceStateAdditionalInformationType {
     TIME_WITH_SECOND("[0-9]{2}:[0-9]{2}:[0-9]{2}", "00:00:00"),
     TEMPERATURE("[0-9]*(.[0-9]*)?", "00.00");
 
-    private String regex;
+    private Pattern pattern;
     private String example;
 
     DeviceStateAdditionalInformationType(String regex, String example) {
-        this.regex = regex;
+        this.pattern = Pattern.compile(regex);
         this.example = example;
     }
 
-    public String getRegex() {
-        return regex;
+    public boolean matches(String value) {
+        Matcher matcher = pattern.matcher(value);
+        return matcher.matches();
     }
 
     public String getExample() {

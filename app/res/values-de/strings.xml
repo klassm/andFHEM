@@ -76,7 +76,7 @@
     <string name="mac">MAC Adresse</string>
     <string name="ip">IP Adresse</string>
     <string name="wake">Wecken</string>
-    <string name="howLong">Wie lange?</string>
+    <string name="stateAppendix">State appendix</string>
     <string name="requestRefresh">Update anfordern</string>
     <string name="delta">Delta</string>
     <string name="weather">Wetter</string>
@@ -170,6 +170,7 @@
     <string name="fhemUpdateRequiredError">Aktualisiere bitte deinen FHEM Server (updatefhem)</string>
     <string name="prefUrlBeginningError">URL muss mit http beginnen!</string>
     <string name="incompleteConfigurationError">Konfiguration ist nicht vollständig!</string>
+    <string name="invalidInput">Ungültige Eingabe!</string>
 
     <string name="okButton">OK</string>
     <string name="cancelButton">Abbrechen</string>

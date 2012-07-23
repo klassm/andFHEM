@@ -77,7 +77,7 @@
     <string name="mac">MAC address</string>
     <string name="ip">IP address</string>
     <string name="wake">Wake</string>
-    <string name="howLong">How long?</string>
+    <string name="stateAppendix">Zustand Anhang</string>
     <string name="requestRefresh">Request refresh</string>
     <string name="delta">Delta</string>
     <string name="weather">Weather</string>
@@ -171,6 +171,7 @@
     <string name="fhemUpdateRequiredError">Please update your FHEM server (updatefhem)</string>
     <string name="prefUrlBeginningError">URL has to start with http!</string>
     <string name="incompleteConfigurationError">Incomplete configuration!</string>
+    <string name="invalidInput">Invalid input!</string>
 
     <string name="okButton">OK</string>
     <string name="cancelButton">Cancel</string>

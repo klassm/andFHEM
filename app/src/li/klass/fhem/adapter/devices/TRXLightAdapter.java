@@ -34,6 +34,7 @@ import android.view.View;
 import android.widget.*;
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
+import li.klass.fhem.adapter.devices.genericui.AvailableTargetStatesSwitchActionRow;
 import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewAction;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
@@ -64,62 +65,7 @@ public class TRXLightAdapter extends ToggleableAdapter<TRXLightDevice> {
             }
         });
 
-        detailActions.add(new DeviceDetailViewAction<TRXLightDevice>(R.string.switchSetOptions) {
-            @Override
-            public void onButtonClick(final Context context, final TRXLightDevice device) {
-                showSwitchOptionsMenu(context, device);
-            }
-        });
-    }
-
-    private void showSwitchOptionsMenu(final Context context, final TRXLightDevice device) {
-        AlertDialog.Builder contextMenu = new AlertDialog.Builder(context);
-        contextMenu.setTitle(context.getResources().getString(R.string.switchDevice));
-        final String[] setOptions = device.getAvailableTargetStates();
-
-        contextMenu.setItems(setOptions, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int item) {
-                final String option = setOptions[item];
-
-                if (option.equals("off-for-timer") || option.equals("on-for-timer")) {
-                    final EditText input = new EditText(context);
-                    new AlertDialog.Builder(context)
-                            .setTitle(R.string.howLong)
-                            .setView(input)
-                            .setPositiveButton(R.string.okButton, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int whichButton) {
-                                    String time = input.getText().toString();
-                                    try {
-                                        switchDeviceState(option + " " + time, device, context);
-                                    } catch (NumberFormatException e) {
-                                        Toast.makeText(context, R.string.notNumericError, Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-                            }).setNegativeButton(R.string.cancelButton, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int whichButton) {
-                        }
-                    }).show();
-                } else {
-                    switchDeviceState(option, device, context);
-                }
-                dialog.dismiss();
-            }
-        });
-        contextMenu.show();
-    }
-
-    private void switchDeviceState(String newState, TRXLightDevice device, final Context context) {
-        Intent intent = new Intent(Actions.DEVICE_SET_STATE);
-        intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
-        intent.putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, newState);
-        intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
-            @Override
-            protected void onReceiveResult(int resultCode, Bundle resultData) {
-                super.onReceiveResult(resultCode, resultData);
-                context.sendBroadcast(new Intent(Actions.DO_UPDATE));
-            }
-        });
-        context.startService(intent);
+        detailActions.add(new AvailableTargetStatesSwitchActionRow<TRXLightDevice>());
     }
 
     @Override

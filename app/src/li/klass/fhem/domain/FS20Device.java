@@ -37,7 +37,6 @@ import org.w3c.dom.Node;
 
 import java.io.Serializable;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 @DetailOverviewViewSettings(showState = true)
@@ -54,7 +53,6 @@ public class FS20Device extends ToggleableDevice<FS20Device> implements Comparab
 
     @ShowField(description = R.string.model)
     private String model;
-    private List<String> setOptions = Collections.emptyList();
 
     public enum FS20State {
         ON, OFF
@@ -78,16 +76,6 @@ public class FS20Device extends ToggleableDevice<FS20Device> implements Comparab
             if (parts.length == 2 && parts[0].length() == 4 && parts[1].length() == 2) {
                 definition = transformHexTo4System(parts[0]) + " " + transformHexTo4System(parts[1]);
             }
-        }
-    }
-
-    @Override
-    protected void onAttributeRead(String attributeKey, String attributeValue) {
-        super.onAttributeRead(attributeKey, attributeValue);
-
-        if (attributeKey.equals("SETS")) {
-            setOptions = Arrays.asList(attributeValue.split(" "));
-            Collections.sort(setOptions);
         }
     }
 
@@ -164,10 +152,6 @@ public class FS20Device extends ToggleableDevice<FS20Device> implements Comparab
         }
 
         return 100;
-    }
-
-    public List<String> getSetOptions() {
-        return setOptions;
     }
 
     @Override
