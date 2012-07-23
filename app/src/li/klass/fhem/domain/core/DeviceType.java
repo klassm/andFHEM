@@ -100,6 +100,10 @@ public enum DeviceType {
         return (DeviceAdapter<T>) adapter;
     }
 
+    public boolean mayEverShow() {
+        return showDeviceOnlyInConnection != ConnectionType.NEVER;
+    }
+
     public boolean mayShowInCurrentConnectionType() {
         if (showDeviceOnlyInConnection == null) return true;
 

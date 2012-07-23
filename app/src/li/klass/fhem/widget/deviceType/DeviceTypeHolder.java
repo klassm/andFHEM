@@ -28,20 +28,23 @@ import li.klass.fhem.constants.PreferenceKeys;
 import li.klass.fhem.domain.core.DeviceType;
 import li.klass.fhem.exception.SerializationException;
 import li.klass.fhem.util.ApplicationProperties;
+import li.klass.fhem.util.ArrayListUtil;
+import li.klass.fhem.util.Filter;
 import org.apache.pig.impl.util.ObjectSerializer;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class DeviceTypeHolder {
 
     private volatile boolean isLoaded = false;
     private List<DeviceType> invisibleDeviceTypes;
     private List<DeviceType> visibleDeviceTypes;
+    private ArrayList<DeviceType> availableDeviceTypes;
 
     private synchronized void load() {
         if (isLoaded) return;
+
+        availableDeviceTypes = getAvailableDeviceTypes();
 
         visibleDeviceTypes = loadVisibleDeviceTypes();
         invisibleDeviceTypes = loadInvisibleDeviceTypes();
@@ -52,7 +55,7 @@ public class DeviceTypeHolder {
     public List<DeviceType> getVisibleDeviceTypes() {
         if (! isLoaded) load();
 
-        List<DeviceType> allDevices = new ArrayList<DeviceType>(Arrays.asList(DeviceType.values()));
+        List<DeviceType> allDevices = getAvailableDeviceTypes();
         allDevices.removeAll(invisibleDeviceTypes);
         allDevices.removeAll(visibleDeviceTypes);
 
@@ -60,6 +63,24 @@ public class DeviceTypeHolder {
         result.addAll(allDevices);
 
         return result;
+    }
+
+    private ArrayList<DeviceType> getAvailableDeviceTypes() {
+        Filter<DeviceType> filter = new Filter<DeviceType>() {
+            @Override
+            public boolean doFilter(DeviceType object) {
+                return object.mayEverShow();
+            }
+        };
+        ArrayList<DeviceType> filteredDeviceTypes = ArrayListUtil.filter(new ArrayList<DeviceType>(Arrays.asList(DeviceType.values())), filter);
+        Collections.sort(filteredDeviceTypes, new Comparator<DeviceType>() {
+            @Override
+            public int compare(DeviceType me, DeviceType other) {
+                return me.name().compareTo(other.name());
+            }
+        });
+
+        return filteredDeviceTypes;
     }
 
     public List<DeviceType> getInvisibleDeviceTypes() {
@@ -70,22 +91,22 @@ public class DeviceTypeHolder {
 
     private List<DeviceType> loadVisibleDeviceTypes() {
         String persistedValue = ApplicationProperties.INSTANCE.getStringSharedPreference(PreferenceKeys.DEVICE_TYPE_ORDER_VISIBLE, null);
-        return parsePersistedValue(persistedValue, DeviceType.values());
+        return parsePersistedValue(persistedValue, availableDeviceTypes);
     }
 
     private List<DeviceType> loadInvisibleDeviceTypes() {
         String persistedValue = ApplicationProperties.INSTANCE.getStringSharedPreference(PreferenceKeys.DEVICE_TYPE_ORDER_INVISIBLE, null);
-        return parsePersistedValue(persistedValue, new DeviceType[0]);
+        return parsePersistedValue(persistedValue, new ArrayList<DeviceType>());
     }
 
-    private List<DeviceType> parsePersistedValue(String persistedValue, DeviceType[] defaultValue) {
+    private List<DeviceType> parsePersistedValue(String persistedValue, ArrayList<DeviceType> defaultValue) {
         try {
-        if (persistedValue != null && ! "".equals(persistedValue)) {
-            return Arrays.asList((DeviceType[]) ObjectSerializer.deserialize(persistedValue));
-        }
+            if (persistedValue != null && ! "".equals(persistedValue)) {
+                return Arrays.asList((DeviceType[]) ObjectSerializer.deserialize(persistedValue));
+            }
         } catch (SerializationException e) {
             Log.e(DeviceTypeHolder.class.getName(), "error during deserialisation", e);
         }
-        return Arrays.asList(defaultValue);
+        return defaultValue;
     }
 }
