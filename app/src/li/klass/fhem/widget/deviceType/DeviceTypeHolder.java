@@ -23,8 +23,10 @@
 
 package li.klass.fhem.widget.deviceType;
 
+import android.util.Log;
 import li.klass.fhem.constants.PreferenceKeys;
 import li.klass.fhem.domain.core.DeviceType;
+import li.klass.fhem.exception.SerializationException;
 import li.klass.fhem.util.ApplicationProperties;
 import org.apache.pig.impl.util.ObjectSerializer;
 
@@ -77,8 +79,12 @@ public class DeviceTypeHolder {
     }
 
     private List<DeviceType> parsePersistedValue(String persistedValue, DeviceType[] defaultValue) {
+        try {
         if (persistedValue != null && ! "".equals(persistedValue)) {
             return Arrays.asList((DeviceType[]) ObjectSerializer.deserialize(persistedValue));
+        }
+        } catch (SerializationException e) {
+            Log.e(DeviceTypeHolder.class.getName(), "error during deserialisation", e);
         }
         return Arrays.asList(defaultValue);
     }
