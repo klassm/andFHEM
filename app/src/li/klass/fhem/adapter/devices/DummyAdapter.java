@@ -28,18 +28,37 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
+import android.view.View;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import li.klass.fhem.R;
+import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
 import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
 import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewAction;
+import li.klass.fhem.adapter.devices.genericui.SeekBarActionRow;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.domain.DummyDevice;
+import li.klass.fhem.domain.FS20Device;
 import li.klass.fhem.util.DialogUtil;
 
-public class DummyAdapter extends GenericDeviceAdapter<DummyDevice> {
+import java.util.List;
+
+public class DummyAdapter extends ToggleableAdapter<DummyDevice> {
     public DummyAdapter() {
         super(DummyDevice.class);
+    }
+
+    @Override
+    protected void fillDeviceOverviewView(View view, DummyDevice device) {
+        if (device.supportsToggle()) {
+            TableLayout layout = (TableLayout) view.findViewById(R.id.device_overview_generic);
+            layout.findViewById(R.id.deviceName).setVisibility(View.GONE);
+            addOverviewSwitchActionRow(view.getContext(), device, layout);
+        } else {
+            super.fillDeviceOverviewView(view, device);
+        }
     }
 
     @Override
@@ -69,5 +88,15 @@ public class DummyAdapter extends GenericDeviceAdapter<DummyDevice> {
                 });
             }
         });
+
+        fieldNameAddedListeners.put("state", new FieldNameAddedToDetailListener<DummyDevice>() {
+            @Override
+            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, DummyDevice device, TableRow fieldTableRow) {
+                if (device.supportsToggle()) {
+                    addDetailSwitchActionRow(context, device, tableLayout);
+                }
+            }
+        });
+
     }
 }

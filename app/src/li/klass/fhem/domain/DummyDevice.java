@@ -23,16 +23,28 @@
 
 package li.klass.fhem.domain;
 
-import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.ToggleableDevice;
 import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
+import li.klass.fhem.util.ArrayUtil;
 import org.w3c.dom.NamedNodeMap;
 
 @DetailOverviewViewSettings(showState = true)
-public class DummyDevice extends Device<DummyDevice> {
+public class DummyDevice extends ToggleableDevice<DummyDevice> {
+
     @Override
     protected void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {
         if (tagName.equalsIgnoreCase("STATE") && keyValue.equalsIgnoreCase("STATE")) {
             this.measured = attributes.getNamedItem("measured").getNodeValue();
         }
+    }
+
+    @Override
+    public boolean supportsToggle() {
+        return ArrayUtil.contains(getAvailableTargetStates(), "on", "off");
+    }
+
+    @Override
+    public boolean isOn() {
+        return getState().equalsIgnoreCase("on");
     }
 }
