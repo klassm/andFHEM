@@ -28,11 +28,18 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dp">
 
+    <TextView android:layout_height="40dp"
+                 android:layout_width="40dp"
+                 android:contentDescription="@string/visibility"
+                 android:background="@drawable/icmpmove"
+                 android:id="@+id/drag"/>
+
     <TextView android:layout_height="wrap_content"
               android:layout_width="wrap_content"
               android:id="@+id/name"
               android:layout_marginTop="10dp"
               android:text="@string/deviceName"
+              android:layout_toRightOf="@+id/drag"
               android:gravity="center_vertical"/>
     <ImageButton android:layout_height="40dp"
                  android:layout_width="40dp"

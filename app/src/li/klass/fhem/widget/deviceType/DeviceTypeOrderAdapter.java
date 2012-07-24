@@ -29,24 +29,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import com.ericharlow.DragNDrop.DragNDropAdapter;
 import li.klass.fhem.R;
-import li.klass.fhem.adapter.ListDataAdapter;
 import li.klass.fhem.util.Reject;
 
-import java.util.List;
+import java.util.ArrayList;
 
-public class DeviceTypeOrderAdapter extends ListDataAdapter<DeviceTypePreferenceWrapper> {
+public class DeviceTypeOrderAdapter extends DragNDropAdapter<DeviceTypePreferenceWrapper> {
+
     enum DeviceTypeOrderAction {
         UP, DOWN, VISIBILITY_CHANGE
     }
 
     interface DeviceTypeOrderActionListener {
+
         void deviceTypeReordered(DeviceTypePreferenceWrapper wrapper, DeviceTypeOrderAction action);
     }
-
     private DeviceTypeOrderActionListener listener;
 
-    public DeviceTypeOrderAdapter(Context context, int resource, List<DeviceTypePreferenceWrapper> data) {
+    public DeviceTypeOrderAdapter(Context context, int resource, ArrayList<DeviceTypePreferenceWrapper> data) {
         super(context, resource, data);
     }
 
@@ -92,4 +93,5 @@ public class DeviceTypeOrderAdapter extends ListDataAdapter<DeviceTypePreference
     protected boolean doSort() {
         return false;
     }
+
 }

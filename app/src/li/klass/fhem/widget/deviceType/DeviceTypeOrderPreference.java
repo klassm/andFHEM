@@ -27,8 +27,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.DialogPreference;
 import android.util.AttributeSet;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ListView;
+import com.ericharlow.DragNDrop.DragNDropListView;
 import li.klass.fhem.R;
 import li.klass.fhem.constants.PreferenceKeys;
 import li.klass.fhem.domain.core.DeviceType;
@@ -55,7 +56,9 @@ public class DeviceTypeOrderPreference extends DialogPreference {
 
     @Override
     protected View onCreateDialogView() {
-        final ListView deviceTypeListView = new ListView(getContext());
+        LayoutInflater inflater = LayoutInflater.from(getContext());
+        View view = inflater.inflate(R.layout.device_type_order_layout, null);
+        DragNDropListView deviceTypeListView = (DragNDropListView) view.findViewById(android.R.id.list);
 
         // dirty hack ... this should be called by Android automatically ...
         onSetInitialValue(true, "");
@@ -82,7 +85,8 @@ public class DeviceTypeOrderPreference extends DialogPreference {
             }
         });
         deviceTypeListView.setAdapter(adapter);
-        return deviceTypeListView;
+
+        return view;
     }
 
     @Override
