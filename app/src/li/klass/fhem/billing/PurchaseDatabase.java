@@ -176,6 +176,15 @@ public class PurchaseDatabase {
                 null, null, null, null);
     }
 
+    public void removeAllPurchases() {
+        Log.e(TAG, "ownedItems before database clean: " + getOwnedItems());
+
+        mDb.execSQL("DELETE FROM " + PURCHASE_HISTORY_TABLE_NAME);
+        mDb.execSQL("DELETE FROM " + PURCHASED_ITEMS_TABLE_NAME);
+
+        Log.e(TAG, "ownedItems after database clean: " + getOwnedItems());
+    }
+
     /**
      * This is a standard helper class for constructing the database.
      */

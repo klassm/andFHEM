@@ -86,6 +86,11 @@ public class ApplicationProperties {
         preferences.edit().putBoolean(key, value).commit();
     }
 
+    public void setSharedPreference(String key, String value) {
+        SharedPreferences preferences = getPreferences();
+        preferences.edit().putString(key, value).commit();
+    }
+
     private SharedPreferences getPreferences() {
         return PreferenceManager.getDefaultSharedPreferences(AndFHEMApplication.getContext());
     }

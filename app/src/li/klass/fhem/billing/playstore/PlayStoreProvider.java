@@ -38,14 +38,13 @@ import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 
 public class PlayStoreProvider extends PlayStorePurchaseObserver implements BillingProvider {
-    private PlayStoreBillingService billingService;
-    private static final String BILLING_PREFERENCE = "li.klass.fhem.billing";
-    private static final String DB_INITIALIZED = "billingDbInitialised";
-
     public static final String TAG = PlayStoreProvider.class.getName();
 
+    private PlayStoreBillingService billingService;
+    private volatile boolean isRestoreDatabaseRequestInProgress = false;
 
     public static final PlayStoreProvider INSTANCE = new PlayStoreProvider();
+
     private PlayStoreProvider() {
         super(new Handler());
     }
@@ -85,6 +84,11 @@ public class PlayStoreProvider extends PlayStorePurchaseObserver implements Bill
     }
 
     @Override
+    public void rebuildDatabaseFromRemote() {
+        restoreDatabase();
+    }
+
+    @Override
     public void onBillingSupported(boolean supported) {
         Log.i(TAG, "billing is " + (supported ? "" : "not ") + "supported");
         if (supported) {
@@ -94,7 +98,7 @@ public class PlayStoreProvider extends PlayStorePurchaseObserver implements Bill
 
     @Override
     public void onPurchaseStateChange(BillingConstants.PurchaseState purchaseState, String itemId, int quantity, long purchaseTime, String developerPayload) {
-        Log.i(TAG, "onPurchaseStateChange() itemId: " + itemId + " " + purchaseState);
+        Log.e(TAG, "onPurchaseStateChange() itemId: " + itemId + " " + purchaseState);
 
         BillingService.INSTANCE.markProductAsPurchased("O" + purchaseTime, itemId, purchaseState, purchaseTime, developerPayload);
         doUpdate();
@@ -102,9 +106,7 @@ public class PlayStoreProvider extends PlayStorePurchaseObserver implements Bill
 
     private void doUpdate() {
         Intent intent = new Intent(Actions.DO_UPDATE);
-        if (activity != null) {
-            activity.sendBroadcast(intent);
-        }
+        AndFHEMApplication.getContext().sendBroadcast(intent);
     }
 
     @Override
@@ -115,32 +117,29 @@ public class PlayStoreProvider extends PlayStorePurchaseObserver implements Bill
 
     @Override
     public void onRestoreTransactionsResponse(PlayStoreBillingService.RestoreTransactions request, BillingConstants.ResponseCode responseCode) {
-        Log.i(TAG, "restore transactions response with result " + responseCode.name());
+        Log.e(TAG, "restore transactions response with result " + responseCode.name());
+        isRestoreDatabaseRequestInProgress = false;
+
         if (responseCode != BillingConstants.ResponseCode.RESULT_OK) {
             return;
         }
 
-        SharedPreferences billingPreferences = getBillingPreferences();
-        SharedPreferences.Editor edit = billingPreferences.edit();
-        edit.putBoolean(DB_INITIALIZED, true);
-        edit.commit();
-
+        BillingService.INSTANCE.setBillingDatabaseInitialised(true);
         doUpdate();
     }
 
     private void restoreDatabase() {
-        SharedPreferences preferences = getBillingPreferences();
-        boolean initialized = preferences.getBoolean(DB_INITIALIZED, false);
-        if (!initialized) {
-            billingService.restoreTransactions();
-
-            Intent intent = new Intent(Actions.SHOW_TOAST);
-            intent.putExtra(BundleExtraKeys.TOAST_STRING_ID, R.string.billing_restoringTransactions);
-            if (activity != null) activity.sendBroadcast(intent);
+        if (BillingService.INSTANCE.isBillingDatabaseInitialised() || isRestoreDatabaseRequestInProgress) {
+            return;
         }
-    }
 
-    private SharedPreferences getBillingPreferences() {
-        return AndFHEMApplication.getContext().getSharedPreferences(BILLING_PREFERENCE, Context.MODE_PRIVATE);
+        Log.e(TAG, "execute restore database");
+
+        isRestoreDatabaseRequestInProgress = true;
+        billingService.restoreTransactions();
+
+        Intent intent = new Intent(Actions.SHOW_TOAST);
+        intent.putExtra(BundleExtraKeys.TOAST_STRING_ID, R.string.billing_restoringTransactions);
+        AndFHEMApplication.getContext().sendBroadcast(intent);
     }
 }

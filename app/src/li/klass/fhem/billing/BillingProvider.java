@@ -36,4 +36,6 @@ public interface BillingProvider {
     boolean hasPendingRequestFor(String productId);
 
     void onActivityUpdate();
+
+    void rebuildDatabaseFromRemote();
 }

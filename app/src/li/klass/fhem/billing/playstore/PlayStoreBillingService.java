@@ -568,7 +568,7 @@ public class PlayStoreBillingService extends Service implements ServiceConnectio
         try {
             unbindService(this);
         } catch (IllegalArgumentException e) {
-            Log.e(TAG, "error while unbinding the service", e);
+            Log.d(TAG, "error while unbinding the service", e);
             // This might happen if the service was disconnected
         }
     }

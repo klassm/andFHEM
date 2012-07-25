@@ -57,6 +57,8 @@ public class AmazonPurchasingObserver extends BasePurchasingObserver {
             processSuccessfulReceipt(receipt);
         }
 
+        BillingService.INSTANCE.setBillingDatabaseInitialised(true);
+
         doUpdate();
     }
 
@@ -87,6 +89,8 @@ public class AmazonPurchasingObserver extends BasePurchasingObserver {
 
         String requestId = purchaseResponse.getRequestId();
         AmazonBillingProvider.INSTANCE.removePurchaseRequest(requestId);
+
+        BillingService.INSTANCE.setBillingDatabaseInitialised(true);
 
         doUpdate();
     }

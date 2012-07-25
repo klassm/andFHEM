@@ -28,4 +28,9 @@ public class PreferenceKeys {
     public static final String DEVICE_COLUMN_WIDTH = "DEVICE_COLUMN_WIDTH";
     public static final String DEVICE_TYPE_ORDER_VISIBLE = "DEVICE_TYPE_ORDER_VISIBLE";
     public static final String DEVICE_TYPE_ORDER_INVISIBLE = "DEVICE_TYPE_ORDER_INVISIBLE";
+    public static final String APPLICATION_VERSION = "APPLICATION_VERSION";
+    public static final String BILLING_DATABASE_INITIALISED = "BILLING_DATABASE_INITIALISED";
+    public static final String UPDATE_ON_APPLICATION_START = "UPDATE_ON_APPLICATION_START";
+
+    public static final String FIX_INVALID_PURCHASES = "FIX_INVALID_PURCHASES";
 }

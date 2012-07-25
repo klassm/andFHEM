@@ -31,6 +31,7 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.os.Handler;
 import android.util.Log;
+import li.klass.fhem.util.Reject;
 
 import java.lang.reflect.Method;
 
@@ -119,6 +120,8 @@ public abstract class PlayStorePurchaseObserver {
                                                        ResponseCode responseCode);
 
     public void bindActivity(Activity activity) {
+        Reject.ifNull(activity);
+
         this.activity = activity;
         initCompatibilityLayer();
     }
@@ -135,6 +138,10 @@ public abstract class PlayStorePurchaseObserver {
     }
 
     void startBuyPageActivity(PendingIntent pendingIntent, Intent intent) {
+        if (activity == null) {
+            throw new IllegalStateException("cannot start buy page activity without having an activity attached");
+        }
+
         if (startIntentSender != null) {
             // This is on Android 2.0 and beyond.  The in-app buy page activity
             // must be on the activity stack of the application.

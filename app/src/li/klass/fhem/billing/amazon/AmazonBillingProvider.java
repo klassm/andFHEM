@@ -30,6 +30,7 @@ import com.amazon.inapp.purchasing.Offset;
 import com.amazon.inapp.purchasing.PurchasingManager;
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.billing.BillingProvider;
+import li.klass.fhem.billing.BillingService;
 
 import java.util.Map;
 
@@ -64,6 +65,7 @@ public class AmazonBillingProvider implements BillingProvider {
 
     @Override
     public boolean isBillingSupported() {
+        rebuildDatabaseFromRemote();
         return true;
     }
 
@@ -79,6 +81,14 @@ public class AmazonBillingProvider implements BillingProvider {
 
     @Override
     public void onActivityUpdate() {
+        rebuildDatabaseFromRemote();
+    }
+
+    @Override
+    public void rebuildDatabaseFromRemote() {
+        if (BillingService.INSTANCE.isBillingDatabaseInitialised()) return;
+
+        PurchasingManager.initiatePurchaseUpdatesRequest(Offset.BEGINNING);
     }
 
     private SharedPreferences getRequestPreferences() {

@@ -31,7 +31,7 @@ import android.view.View;
 import android.widget.RemoteViews;
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
-import li.klass.fhem.activities.MainActivity;
+import li.klass.fhem.activities.AndFHEMMainActivity;
 import li.klass.fhem.appwidget.WidgetConfiguration;
 import li.klass.fhem.appwidget.annotation.SupportsWidget;
 import li.klass.fhem.constants.BundleExtraKeys;
@@ -79,7 +79,7 @@ public abstract class AppWidgetView {
     protected void openDeviceDetailPageWhenClicking(int viewId, RemoteViews view, Device device, WidgetConfiguration widgetConfiguration) {
         Context context = AndFHEMApplication.getContext();
 
-        Intent openIntent = new Intent(context, MainActivity.class);
+        Intent openIntent = new Intent(context, AndFHEMMainActivity.class);
         openIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         openIntent.putExtra(BundleExtraKeys.FRAGMENT_NAME, DeviceDetailFragment.class.getName());
         openIntent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());

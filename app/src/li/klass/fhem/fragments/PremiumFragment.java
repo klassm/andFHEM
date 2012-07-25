@@ -104,16 +104,9 @@ public class PremiumFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        BillingService.INSTANCE.bindActivity(getActivity());
         if (! BillingService.INSTANCE.isBillingSupported()) {
             showBillingNotSupportedToast();
         }
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        BillingService.INSTANCE.unbindActivity(getActivity());
     }
 
     private void showBillingNotSupportedToast() {
