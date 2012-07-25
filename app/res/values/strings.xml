@@ -158,7 +158,7 @@
     <string name="prefWidgetUpdateTimeSummary">default 1 times per hour</string>
     <string name="prefDeviceTypeOrder">Device type order</string>
     <string name="prefDeviceTypeOrderSummary">Order of device types as well as hide and view</string>
-
+    <string name="prefUpdateOnApplicationStart">Refresh on application start</string>
 
     <string name="notNumericError">Not numeric!</string>
     <string name="updateError">Error while updating.</string>

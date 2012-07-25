@@ -47,13 +47,16 @@ import com.actionbarsherlock.view.MenuItem;
 import li.klass.fhem.ApplicationUrls;
 import li.klass.fhem.R;
 import li.klass.fhem.activities.PreferencesActivity;
+import li.klass.fhem.billing.BillingService;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
+import li.klass.fhem.constants.PreferenceKeys;
 import li.klass.fhem.fragments.*;
 import li.klass.fhem.fragments.core.ActionBarShowTabs;
 import li.klass.fhem.fragments.core.BaseFragment;
 import li.klass.fhem.fragments.core.TopLevelFragment;
 import li.klass.fhem.service.room.RoomListService;
+import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.DialogUtil;
 
 import java.io.Serializable;
@@ -213,6 +216,18 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
     }
 
     @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+
+        if (hasFocus && ApplicationProperties.INSTANCE.getBooleanSharedPreference(PreferenceKeys.UPDATE_ON_APPLICATION_START, false)) {
+            Log.e(FragmentBaseActivity.class.getName(), "request update due to application start preference");
+            Intent intent = new Intent(Actions.DO_UPDATE);
+            intent.putExtra(BundleExtraKeys.DO_REFRESH, true);
+            sendBroadcast(intent);
+        }
+    }
+
+    @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         // we're in the wrong lifecycle (activity is not yet resumed)
@@ -271,6 +286,9 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
     @Override
     protected void onResume() {
         super.onResume();
+
+        BillingService.INSTANCE.bindActivity(this);
+
         saveInstanceStateCalled = false;
         registerReceiver(broadcastReceiver, broadcastReceiver.getIntentFilter());
     }
@@ -278,6 +296,9 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
     @Override
     protected void onStop() {
         super.onStop();
+
+        BillingService.INSTANCE.unbindActivity(this);
+
         RoomListService.INSTANCE.storeDeviceListMap();
         unregisterReceiver(broadcastReceiver);
 

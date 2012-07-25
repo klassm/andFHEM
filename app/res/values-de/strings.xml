@@ -158,6 +158,7 @@
     <string name="prefWidgetUpdateTimeSummary">default 1x pro Stunde</string>
     <string name="prefDeviceTypeOrder">Gerätetyp Reihenfolge</string>
     <string name="prefDeviceTypeOrderSummary">Veränderung der Reihenfolge sowie Anzeige / Ausblendung von Typen</string>
+    <string name="prefUpdateOnApplicationStart">Aktualisierung beim Applikationsstart</string>
 
     <string name="notNumericError">Nicht numerisch!</string>
     <string name="updateError">Error während Update Vorgang.</string>

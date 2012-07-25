@@ -62,6 +62,11 @@
                 android:title="@string/prefShowHiddenDevices"
                 android:defaultValue="false"
                 />
+        <CheckBoxPreference
+                android:key="UPDATE_ON_APPLICATION_START"
+                android:title="@string/prefUpdateOnApplicationStart"
+                android:defaultValue="false"
+                />
         <ListPreference
                 android:title="@string/prefDefaultTimespan"
                 android:id="@+id/graphDefaultTimespanSelector"
