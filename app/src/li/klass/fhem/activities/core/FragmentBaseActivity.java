@@ -67,6 +67,8 @@ import java.util.ArrayList;
 import static li.klass.fhem.constants.Actions.*;
 
 public abstract class FragmentBaseActivity extends SherlockFragmentActivity implements ActionBar.TabListener, Updateable {
+    ;
+
     private static class FragmentHistoryStackEntry implements Serializable {
         FragmentHistoryStackEntry(BaseFragment navigationFragment, BaseFragment contentFragment) {
             this.navigationFragment = navigationFragment;
@@ -87,10 +89,18 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
     private Receiver broadcastReceiver;
     private Menu optionsMenu;
 
-    // an intent waiting to be processed, but received in the wrong activity state (widget problem ..)
+    /**
+     * an intent waiting to be processed, but received in the wrong activity state (widget problem ..)
+     **/
     private Intent waitingIntent;
 
+    /**
+     * Attribute is true if the activity has been restarted instead of being newly created
+     */
+    private boolean isActivityRestart = false;
+
     private Handler autoUpdateHandler;
+
     private final Runnable autoUpdateCallback = new Runnable() {
         boolean firstRun = true;
 
@@ -216,15 +226,25 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
     }
 
     @Override
+    protected void onRestart() {
+        super.onRestart();
+        this.isActivityRestart = true;
+        Log.e(FragmentBaseActivity.class.getName(), "onRestart");
+    }
+
+    @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
 
-        if (hasFocus && ApplicationProperties.INSTANCE.getBooleanSharedPreference(PreferenceKeys.UPDATE_ON_APPLICATION_START, false)) {
+        if (hasFocus && ! isActivityRestart && ApplicationProperties.INSTANCE.getBooleanSharedPreference(PreferenceKeys.UPDATE_ON_APPLICATION_START, false)) {
             Log.e(FragmentBaseActivity.class.getName(), "request update due to application start preference");
             Intent intent = new Intent(Actions.DO_UPDATE);
             intent.putExtra(BundleExtraKeys.DO_REFRESH, true);
             sendBroadcast(intent);
         }
+
+        // reset the attribute!
+        isActivityRestart = false;
     }
 
     @Override
@@ -354,7 +374,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
 
             case R.id.menu_settings:
                 Intent settingsIntent = new Intent(this, PreferencesActivity.class);
-                startActivity(settingsIntent);
+                startActivityForResult(settingsIntent, RESULT_OK);
 
                 return true;
 
