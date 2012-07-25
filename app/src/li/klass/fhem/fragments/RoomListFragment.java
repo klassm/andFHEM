@@ -118,6 +118,8 @@ public class RoomListFragment extends BaseFragment implements ActionBarShowTabs,
         if (selectedRoom == null) return;
 
         ListView roomListView = (ListView) getView().findViewById(R.id.roomList);
+        if (roomListView == null) return;
+
         for (int i = 0; i < roomList.size(); i++) {
             String roomName = roomList.get(i);
             if (roomName.equals(selectedRoom)) {
