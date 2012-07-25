@@ -47,16 +47,4 @@
                  android:background="@drawable/visibility"
                  android:layout_alignParentRight="true"
                  android:id="@+id/change_visibility"/>
-    <ImageButton android:layout_height="40dp"
-                 android:layout_width="40dp"
-                 android:contentDescription="@string/up"
-                 android:layout_toLeftOf="@+id/change_visibility"
-                 android:background="@drawable/button_up"
-                 android:id="@+id/move_up"/>
-    <ImageButton android:layout_height="40dp"
-                 android:layout_width="40dp"
-                 android:contentDescription="@string/down"
-                 android:background="@drawable/button_down"
-                 android:layout_toLeftOf="@+id/move_up"
-                 android:id="@+id/move_down"/>
 </RelativeLayout>

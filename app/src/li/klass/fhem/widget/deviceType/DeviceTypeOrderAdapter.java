@@ -63,12 +63,7 @@ public class DeviceTypeOrderAdapter extends DragNDropAdapter<DeviceTypePreferenc
         TextView nameView = (TextView) view.findViewById(R.id.name);
         nameView.setText(item.getDeviceType().name());
 
-        ImageButton downButton = (ImageButton) view.findViewById(R.id.move_down);
-        ImageButton upButton = (ImageButton) view.findViewById(R.id.move_up);
         ImageButton visibilityButton = (ImageButton) view.findViewById(R.id.change_visibility);
-
-        setOnClickAction(downButton, DeviceTypeOrderAction.DOWN, item);
-        setOnClickAction(upButton, DeviceTypeOrderAction.UP, item);
         setOnClickAction(visibilityButton, DeviceTypeOrderAction.VISIBILITY_CHANGE, item);
 
         if (! item.isVisible()) {

@@ -66,6 +66,7 @@ public class DragNDropAdapter<T  extends Comparable<T>> extends ListDataAdapter<
 
     @Override
     public void onStopDrag(View itemView) {
+        if (itemView == null) return;
         itemView.setBackgroundColor(context.getResources().getColor(android.R.color.transparent));
     }
 }

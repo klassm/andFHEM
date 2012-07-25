@@ -20,6 +20,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.PixelFormat;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -30,6 +31,8 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 
 public class DragNDropListView extends ListView {
+
+    private static final String TAG = DragNDropListView.class.getName();
 
     boolean mDragMode;
 
@@ -86,6 +89,12 @@ public class DragNDropListView extends ListView {
                 break;
             case MotionEvent.ACTION_MOVE:
                 drag(0,y);// replace 0 with x if desired
+                int currentPosition = pointToPosition(x, y);
+                if (currentPosition == getLastVisiblePosition()) {
+                    smoothScrollToPosition(currentPosition + 1);
+                } else if (currentPosition == getFirstVisiblePosition()) {
+                    smoothScrollToPosition(currentPosition - 1);
+                }
                 break;
             case MotionEvent.ACTION_CANCEL:
             case MotionEvent.ACTION_UP:

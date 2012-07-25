@@ -70,12 +70,6 @@ public class DeviceTypeOrderPreference extends DialogPreference {
                 int currentPosition = wrappedDevices.indexOf(wrapper);
 
                 switch (action) {
-                    case UP:
-                        ArrayListUtil.moveUp(wrappedDevices, currentPosition);
-                        break;
-                    case DOWN:
-                        ArrayListUtil.moveDown(wrappedDevices, currentPosition);
-                        break;
                     case VISIBILITY_CHANGE:
                         wrappedDevices.get(currentPosition).invertVisibility();
                         break;
