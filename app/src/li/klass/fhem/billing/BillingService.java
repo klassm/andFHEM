@@ -44,6 +44,8 @@ public class BillingService {
     private Set<BeforeProductPurchasedListener> beforeProductPurchasedListeners = new HashSet<BeforeProductPurchasedListener>();
 
     public void rebuildDatabaseFromRemote() {
+        if (!isBillingSupported()) return;
+
         Log.e(TAG, "request rebuild database from remote");
         getCurrentProvider().rebuildDatabaseFromRemote();
     }

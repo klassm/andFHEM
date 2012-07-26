@@ -24,6 +24,8 @@
 
 package li.klass.fhem.util;
 
+import java.io.UnsupportedEncodingException;
+
 public class StringEscapeUtils {
 
     public static String unescape(String content) {
@@ -34,6 +36,13 @@ public class StringEscapeUtils {
         content = content.replaceAll("#df;", "ß");
 
         content = content.replace("Ã¼", "ü");
+
+        try {
+            content = new String(content.getBytes(), "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            // this should never happen, as UTF-8 is known!
+            e.printStackTrace();
+        }
 
         return content;
     }
