@@ -110,9 +110,7 @@ public class DeviceListParser {
             // remove "" not being preceded by an =
             xmlList = xmlList.replaceAll("(?:[^=])\"\"+", "\"");
 
-            if (Log.isLoggable(TAG, Log.DEBUG)) {
-                Log.d(TAG, "xmllist content:\n" + xmlList);
-            }
+            Log.d(TAG, "xmllist content:\n" + xmlList);
 
             DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
@@ -169,6 +167,7 @@ public class DeviceListParser {
 
         T device = deviceClass.newInstance();
         device.loadXML(node);
+        Log.d(TAG, "loaded device with name " + device.getName());
         String[] rooms = device.getRooms();
         if (device.isSupported()) {
             for (String room : rooms) {

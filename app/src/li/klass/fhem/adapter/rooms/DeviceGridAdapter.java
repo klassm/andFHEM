@@ -61,6 +61,7 @@ public class DeviceGridAdapter extends GridViewWithSectionsAdapter<DeviceType, D
     private void restoreParents() {
         DeviceTypeHolder deviceTypeHolder = new DeviceTypeHolder();
         parents = deviceTypeHolder.getVisibleDeviceTypes();
+        Log.d(TAG, "set visible parents: " + parents);
     }
 
     @Override

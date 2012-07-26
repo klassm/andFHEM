@@ -56,13 +56,14 @@ public abstract class GridViewWithSectionsAdapter<P, C> extends BaseAdapter {
     }
 
     public void updateParentPositions() {
-        Log.i(TAG, "updating parent positions");
+        List<P> parents = getParents();
+        Log.i(TAG, "updating parent positions for parent count " + parents.size());
 
         parentPositions = new HashMap<Integer, P>();
 
         int numberOfColumns = getNumberOfColumns();
         int currentPosition = 0;
-        for (P parent : getParents()) {
+        for (P parent : parents) {
             parentPositions.put(currentPosition, parent);
 
             // add all the children plus an offset to complete the grid row

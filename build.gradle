@@ -30,22 +30,34 @@ apply plugin:com.smokejumperit.gradle.ExecPlugin
 
 buildscript {
     repositories {
-        mavenRepo urls:'http://repo.smokejumperit.com'
+        mavenCentral()
+        mavenRepo url:'http://repo.open.med.harvard.edu/nexus/content/groups/public'
+        mavenRepo url:'http://repo.smokejumperit.com'
     }
     dependencies {
         classpath 'com.smokejumperit:gradle-plugins:0.8.2'
+        classpath 'com.google.gdata:gdata-sites-2.0:1.40.3'
+        classpath group: 'commons-codec', name: 'commons-codec', version: '1.2'
     }
 }
 
-task readPasswords << {
+task readKeystorePassword << {
+    def read = readFromConsole("Please enter the keystore password!")
+    project.ext.storePassword = read
+}
+
+task readAliasPassword << {
+    def read = readFromConsole("Please enter the alias password!")
+    project.ext.aliasPassword = read
+}
+task readPasswords(dependsOn: [readAliasPassword, readKeystorePassword]) << {}
+
+def readFromConsole(notifyText) {
     Console console = System.console()
 
-    console.printf("\n\n")
-    console.printf(">> Please enter the keystore password!\n")
-    project.ext.storePassword = console.readPassword()
     console.printf("\n")
-    console.printf(">> Please enter the alias password!\n")
-    project.ext.aliasPassword = console.readPassword()
+    console.printf(">> " + notifyText + "\n")
+    return console.readPassword()
 }
 
 task deleteBuildDirectories << {
@@ -74,8 +86,48 @@ task buildAmazon << {
 buildAmazon.dependsOn readPasswords
 buildAmazon.dependsOn copy
 
+import com.google.gdata.client.*;
+import com.google.gdata.client.sites.*;
+import com.google.gdata.data.*;
+import com.google.gdata.data.acl.*;
+import com.google.gdata.data.media.*;
+import com.google.gdata.data.sites.*;
+import com.google.gdata.data.spreadsheet.*;
+import com.google.gdata.util.*;
+import com.google.gdata.client.sites.SitesService
+import com.google.gdata.data.Link.*
+import javax.activation.MimetypesFileTypeMap
 
-task release(dependsOn: [buildGoogle, buildAmazon]) << {}
+task uploadToGoogleSites(dependsOn: readAliasPassword) << {
+    def file = new File("bin/google-release.apk")
+    def title = "google-release.apk"
+    def description = ""
+
+    def client = new SitesService("li.klass-andFHEM-v1");
+    client.setUserCredentials("andFHEM@klass.li", '' + project.aliasPassword);
+
+    def attachment = client.getEntry(new URL("https://sites.google.com/feeds/content/site/andfhem/7112257256224480762?with-mappings=true"), FileCabinetPageEntry.class)
+    attachment.delete()
+
+    def page = client.getEntry(new URL("https://sites.google.com/feeds/content/site/andfhem/2520721202291031153?with-mappings=true"), SiteEntry.class)
+    def fileCabinet = new FileCabinetPageEntry(page)
+
+    def mediaTypes = new MimetypesFileTypeMap()
+    mediaTypes.addMimeTypes("application/vnd.android.package-archive")
+
+    def newAttachment = new AttachmentEntry();
+    newAttachment.setMediaSource(new MediaFileSource(file, mediaTypes.getContentType(file)));
+    newAttachment.setTitle(new PlainTextConstruct(title));
+    newAttachment.setSummary(new PlainTextConstruct(description));
+    newAttachment.addLink(SitesLink.Rel.PARENT, ILink.Type.ATOM, fileCabinet.getSelfLink().getHref());
+
+    client.insert(new URL("https://sites.google.com/feeds/content/site/andfhem/"), newAttachment);
+}
+
+task buildAll(dependsOn: [buildGoogle, buildAmazon]) << {}
+
+task release(dependsOn:  [buildAll, uploadToGoogleSites])
+
 
 def build(billingProvider, targetFilename) {
     def storeProperty = "-Dkey.store.password=" + project.storePassword
