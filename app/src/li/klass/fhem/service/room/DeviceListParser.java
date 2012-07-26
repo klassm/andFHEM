@@ -66,6 +66,7 @@ public class DeviceListParser {
      * @throws RuntimeException if some other exception occurred.
      */
     public Map<String, RoomDeviceList> listDevices() {
+        Log.i(TAG, "fetching devices for xmllist parsing ...");
 
         Map<String, RoomDeviceList> roomDeviceListMap = new HashMap<String, RoomDeviceList>();
         RoomDeviceList allDevicesRoom = new RoomDeviceList(RoomDeviceList.ALL_DEVICES_ROOM);
@@ -75,13 +76,12 @@ public class DeviceListParser {
             if (xmlList != null) {
                 xmlList = xmlList.trim();
             }
+            Log.d(TAG, "fetched xmllist :\n" + xmlList);
 
             if (xmlList == null || "".equals(xmlList)) {
                 Log.e(TAG, "xmlList is null or blank");
                 return roomDeviceListMap;
             }
-
-//            xmlList = new String(xmlList.getBytes(), "UTF8");
 
             // if a newline happens after a set followed by an attrs, both attributes are appended together without
             // adding a whitespace
@@ -110,8 +110,6 @@ public class DeviceListParser {
             // remove "" not being preceded by an =
             xmlList = xmlList.replaceAll("(?:[^=])\"\"+", "\"");
 
-            Log.d(TAG, "xmllist content:\n" + xmlList);
-
             DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
             Document document = docBuilder.parse(new InputSource(new StringReader(xmlList)));
@@ -123,6 +121,8 @@ public class DeviceListParser {
             }
 
             addFileLogsToDevices(allDevicesRoom);
+
+            Log.e(TAG, "loaded " + allDevicesRoom.getAllDevices().size() + " devices!");
 
             return roomDeviceListMap;
         } catch (AndFHEMException e) {

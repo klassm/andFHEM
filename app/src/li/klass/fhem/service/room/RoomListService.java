@@ -45,9 +45,9 @@ import static li.klass.fhem.util.SharedPreferencesUtil.getSharedPreferences;
 import static li.klass.fhem.util.SharedPreferencesUtil.getSharedPreferencesEditor;
 
 public class RoomListService extends AbstractService {
-    public static final String TAG = RoomListService.class.getName();
 
     public static final RoomListService INSTANCE = new RoomListService();
+    public static final String TAG = RoomListService.class.getName();
 
     /**
      * Currently loaded device list map.
@@ -59,7 +59,7 @@ public class RoomListService extends AbstractService {
      */
     public static final String CACHE_FILENAME = "cache.obj";
 
-    public static final String PREFERENCES_NAME = RoomListService.class.getName();
+    public static final String PREFERENCES_NAME = TAG;
     public static final String LAST_UPDATE_PROPERTY = "LAST_UPDATE";
 
     public static final long NEVER_UPDATE_PERIOD = 0;
@@ -175,13 +175,14 @@ public class RoomListService extends AbstractService {
                 bundle.putInt(BundleExtraKeys.TOAST_STRING_ID, e.getErrorMessageStringId());
                 sendBroadcastWithAction(Actions.SHOW_TOAST, bundle);
 
-                Log.e(RoomListService.class.getName(), "error occurred", e);
+                Log.e(TAG, "error occurred", e);
             } finally {
                 sendBroadcastWithAction(Actions.DISMISS_UPDATING_DIALOG, null);
             }
         }
 
         if (deviceListMap == null) {
+            Log.e(TAG, "deviceListMap is still null, returning an empty hashMap");
             deviceListMap = new HashMap<String, RoomDeviceList>();
         }
 
@@ -198,6 +199,7 @@ public class RoomListService extends AbstractService {
      * @return remotely loaded room device list map
      */
     private Map<String, RoomDeviceList> getRemoteRoomDeviceListMap() {
+        Log.i(TAG, "fetching device list from remote");
         Map<String, RoomDeviceList> result = DeviceListParser.INSTANCE.listDevices();
         setLastUpdateToNow();
         return result;
@@ -207,13 +209,13 @@ public class RoomListService extends AbstractService {
      * Stores the currently loaded room device list map to the cache file.
      */
     public void storeDeviceListMap() {
-        Log.i(RoomListService.class.getName(), "storing device list to cache");
+        Log.i(TAG, "storing device list to cache");
         Context context = AndFHEMApplication.getContext();
         try {
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(context.openFileOutput(CACHE_FILENAME, Context.MODE_PRIVATE));
             objectOutputStream.writeObject(deviceListMap);
         } catch (Exception e) {
-            Log.e(RoomListService.class.getName(), "error occurred while serializing data", e);
+            Log.e(TAG, "error occurred while serializing data", e);
         }
     }
 
@@ -224,17 +226,17 @@ public class RoomListService extends AbstractService {
     @SuppressWarnings("unchecked")
     private Map<String, RoomDeviceList> getCachedRoomDeviceListMap() {
         try {
-            Log.i(RoomListService.class.getName(), "fetching device list from cache");
+            Log.i(TAG, "fetching device list from cache");
             long startLoad = System.currentTimeMillis();
 
             ObjectInputStream objectInputStream = new ObjectInputStream(AndFHEMApplication.getContext().openFileInput(CACHE_FILENAME));
             Map<String, RoomDeviceList> roomDeviceListMap = (Map<String, RoomDeviceList>) objectInputStream.readObject();
-            Log.i(RoomListService.class.getName(), "loading device list from cache completed after "
+            Log.i(TAG, "loading device list from cache completed after "
                     + ( System.currentTimeMillis() - startLoad) + "ms");
 
             return roomDeviceListMap;
         } catch (Exception e) {
-            Log.d(RoomListService.class.getName(), "error occurred while de-serializing data", e);
+            Log.d(TAG, "error occurred while de-serializing data", e);
             return null;
         }
     }

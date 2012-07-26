@@ -275,6 +275,19 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
         waitingIntent = null;
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        this.saveInstanceStateCalled = true;
+        outState.putSerializable(BundleExtraKeys.CURRENT_FRAGMENT, currentHistoryStackEntry);
+        outState.putSerializable(BundleExtraKeys.FRAGMENT_HISTORY_STACK, fragmentHistoryStack);
+
+        if (getSupportActionBar().getSelectedTab() != null) {
+            outState.putInt(BundleExtraKeys.CURRENT_TAB, getSupportActionBar().getSelectedTab().getPosition());
+        }
+
+        super.onSaveInstanceState(outState);
+    }
+
     @SuppressWarnings("unchecked")
     private boolean restoreSavedInstance(Bundle savedInstanceState, ActionBar actionBar) {
         try {
@@ -282,17 +295,12 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
                     (ArrayList<FragmentHistoryStackEntry>) savedInstanceState.getSerializable(BundleExtraKeys.FRAGMENT_HISTORY_STACK);
 
             if (previousFragmentStack != null) {
-                removeLastHistoryFragmentEntry();
                 fragmentHistoryStack = previousFragmentStack;
             }
 
-            if (savedInstanceState.containsKey(BundleExtraKeys.CURRENT_TAB)) {
-                actionBar.setSelectedNavigationItem(savedInstanceState.getInt(BundleExtraKeys.CURRENT_TAB));
-            }
-
-            FragmentHistoryStackEntry historyEntry = (FragmentHistoryStackEntry) savedInstanceState.getSerializable(BundleExtraKeys.CURRENT_FRAGMENT);
-            if (historyEntry != null) {
-                switchToFragment(historyEntry, false);
+            FragmentHistoryStackEntry currentEntry = (FragmentHistoryStackEntry) savedInstanceState.getSerializable(BundleExtraKeys.CURRENT_FRAGMENT);
+            if (currentEntry != null) {
+                switchToFragment(currentEntry, false);
                 return true;
             } else {
                 return false;
@@ -452,19 +460,6 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
             Log.d(FragmentBaseActivity.class.getName(), "back pressed, no more previous fragments on the stack");
             finish();
         }
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        this.saveInstanceStateCalled = true;
-        outState.putSerializable(BundleExtraKeys.CURRENT_FRAGMENT, currentHistoryStackEntry);
-        outState.putSerializable(BundleExtraKeys.FRAGMENT_HISTORY_STACK, fragmentHistoryStack);
-
-        if (getSupportActionBar().getSelectedTab() != null) {
-            outState.putInt(BundleExtraKeys.CURRENT_TAB, getSupportActionBar().getSelectedTab().getPosition());
-        }
-
-        super.onSaveInstanceState(outState);
     }
 
     private void switchToFragment(FragmentType fragmentType, Bundle data) {

@@ -134,6 +134,7 @@ public class TelnetConnection implements FHEMConnection {
             if (returnValue.endsWith("Bye...")) {
                 returnValue = buffer.substring(0, buffer.length() - "Bye...".length());
             }
+            Log.d(TAG, "result is :: " + returnValue);
             return returnValue;
         } catch (AndFHEMException e) {
             throw e;
