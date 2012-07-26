@@ -93,6 +93,7 @@
     <string name="quat2hex">Quat -> Hex</string>
     <string name="result">Ergebnis</string>
     <string name="set_value">Wert setzen</string>
+    <string name="set">Ändern</string>
     <string name="floorplan">Floorplan</string>
     <string name="floorplan_move_confirmation">Soll %1$s wirklich nach %2$s verschoben werden?</string>
     <string name="android_version">Android Version</string>
@@ -159,6 +160,7 @@
     <string name="prefDeviceTypeOrder">Gerätetyp Reihenfolge</string>
     <string name="prefDeviceTypeOrderSummary">Veränderung der Reihenfolge sowie Anzeige / Ausblendung von Typen</string>
     <string name="prefUpdateOnApplicationStart">Aktualisierung beim Applikationsstart</string>
+    <string name="prefShowFHTSetValueButtons">Zeige "Ändern" Knöpfe für FHT Geräte</string>
 
     <string name="notNumericError">Nicht numerisch!</string>
     <string name="updateError">Error während Update Vorgang.</string>

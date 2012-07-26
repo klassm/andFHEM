@@ -37,15 +37,18 @@ import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
 import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
 import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewAction;
-import li.klass.fhem.adapter.devices.genericui.SeekBarActionRowFullWidth;
+import li.klass.fhem.adapter.devices.genericui.SeekBarActionRowFullWidthAndButton;
 import li.klass.fhem.adapter.devices.genericui.SpinnerActionRow;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.FHTDevice;
 import li.klass.fhem.domain.fht.FHTMode;
 import li.klass.fhem.fragments.FHTTimetableControlListFragment;
+import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.ValueDescriptionUtil;
 import li.klass.fhem.util.device.DeviceActionUtil;
+
+import static li.klass.fhem.constants.PreferenceKeys.FHT_SHOW_SET_VALUE_BUTTONS;
 
 public class FHTAdapter extends GenericDeviceAdapter<FHTDevice> {
 
@@ -53,7 +56,7 @@ public class FHTAdapter extends GenericDeviceAdapter<FHTDevice> {
         super(FHTDevice.class);
     }
 
-    private class FHTTemperatureChangeTableRow extends SeekBarActionRowFullWidth<FHTDevice> {
+    private class FHTTemperatureChangeTableRow extends SeekBarActionRowFullWidthAndButton<FHTDevice> {
         private final TextView updateView;
         private double newTemperature;
         private String intentAction;
@@ -62,7 +65,7 @@ public class FHTAdapter extends GenericDeviceAdapter<FHTDevice> {
 
         public FHTTemperatureChangeTableRow(Context context, double initialTemperature, TableRow updateTableRow,
                                             String intentAction, int valueStringId) {
-            super((int) ((initialTemperature - 5.5) / 0.5));
+            super(context, (int) ((initialTemperature - 5.5) / 0.5));
             updateView = (TextView) updateTableRow.findViewById(R.id.value);
             this.intentAction = intentAction;
             this.valueStringId = valueStringId;
@@ -82,13 +85,28 @@ public class FHTAdapter extends GenericDeviceAdapter<FHTDevice> {
 
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
-                    Intent intent = new Intent(intentAction);
-                    intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
-                    intent.putExtra(BundleExtraKeys.DEVICE_TEMPERATURE, newTemperature);
-                    context.startService(intent);
+                    setValue(device, newTemperature);
                 }
             }, confirmationMessage);
+        }
 
+        @Override
+        public void onButtonSetValue(FHTDevice device, int value) {
+            setValue(device, value);
+        }
+
+        private void setValue(FHTDevice device, double newValue) {
+            Intent intent = new Intent(intentAction);
+            intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
+            intent.putExtra(BundleExtraKeys.DEVICE_TEMPERATURE, newValue);
+            context.startService(intent);
+
+            updateView.setText(ValueDescriptionUtil.appendTemperature(newValue));
+        }
+
+        @Override
+        protected boolean showButton() {
+            return ApplicationProperties.INSTANCE.getBooleanSharedPreference(FHT_SHOW_SET_VALUE_BUTTONS, false);
         }
     }
 

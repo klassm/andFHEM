@@ -67,6 +67,11 @@
                 android:title="@string/prefUpdateOnApplicationStart"
                 android:defaultValue="false"
                 />
+        <CheckBoxPreference
+                android:key="FHT_SHOW_SET_VALUE_BUTTONS"
+                android:title="@string/prefShowFHTSetValueButtons"
+                android:defaultValue="false"
+                />
         <ListPreference
                 android:title="@string/prefDefaultTimespan"
                 android:id="@+id/graphDefaultTimespanSelector"

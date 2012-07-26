@@ -38,13 +38,19 @@ import li.klass.fhem.domain.core.Device;
 
 public class SeekBarActionRowFullWidth<T extends Device> {
     private int initialProgress;
+    private int layoutId;
 
-    public SeekBarActionRowFullWidth(int initialProgress) {
+    public SeekBarActionRowFullWidth(int initialProgress, boolean showButton) {
+        this(initialProgress, R.layout.device_detail_seekbarrow_full_width);
+    }
+
+    public SeekBarActionRowFullWidth(int initialProgress, int layoutId) {
         this.initialProgress = initialProgress;
+        this.layoutId = layoutId;
     }
 
     public TableRow createRow(LayoutInflater inflater, T device) {
-        TableRow row = (TableRow) inflater.inflate(R.layout.device_detail_seekbarrow_full_width, null);
+        TableRow row = (TableRow) inflater.inflate(layoutId, null);
         SeekBar seekBar = (SeekBar) row.findViewById(R.id.seekBar);
         seekBar.setOnSeekBarChangeListener(createListener(device));
         seekBar.setProgress(initialProgress);
