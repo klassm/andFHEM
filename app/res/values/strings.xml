@@ -106,6 +106,8 @@
     <string name="up">up</string>
     <string name="down">down</string>
     <string name="visibility">visibility</string>
+    <string name="rawValue">Raw value</string>
+    <string name="content">Content</string>
 
     <string name="switchDevice">Switch</string>
     <string name="preferences">Preferences</string>
@@ -197,6 +199,7 @@
     <string name="usageGraph">Usage Graph</string>
     <string name="windSpeedGraph">Wind Speed Graph</string>
     <string name="stateGraph">State Graph</string>
+    <string name="contentGraph">Content Graph</string>
 
     <string name="yAxisWind">wind (km/h)</string>
     <string name="yAxisHumidity">humidity (%)</string>
@@ -209,6 +212,7 @@
     <string name="yAxisWindSpeed">wind speed (km/h)</string>
     <string name="yAxisUsage">usage</string>
     <string name="yAxisFS20State">on (1) / off (0)</string>
+    <string name="yAxisLitreContent">Content (l)</string>
 
     <string name="startDate">Start Date</string>
     <string name="endDate">End Date</string>

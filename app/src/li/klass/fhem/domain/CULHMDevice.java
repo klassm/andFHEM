@@ -46,11 +46,14 @@ import java.util.List;
 @FloorplanViewSettings(showState = true)
 @SupportsWidget(TemperatureWidgetView.class)
 public class CULHMDevice extends ToggleableDevice<CULHMDevice> {
+
     public enum SubType {
-        DIMMER, SWITCH, HEATING, SMOKE_DETECTOR, THREE_STATE, TEMPERATURE_HUMIDITY
+        DIMMER, SWITCH, HEATING, SMOKE_DETECTOR, THREE_STATE, TEMPERATURE_HUMIDITY, KFM100
     }
+
     private SubType subType = null;
     private int dimProgress = -1;
+
     @ShowField(description = R.string.measured)
     private String measured;
 
@@ -67,6 +70,12 @@ public class CULHMDevice extends ToggleableDevice<CULHMDevice> {
     private String subTypeRaw;
     @ShowField(description = R.string.commandAccepted)
     private String commandAccepted;
+    @ShowField(description = R.string.rawValue, showInOverview = true)
+    private String rawValue;
+    @ShowField(description = R.string.content, showInOverview = true)
+    private String content;
+    @ShowField(description = R.string.conversion)
+    private String rawToReadable;
 
     @Override
     protected void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {
@@ -83,6 +92,8 @@ public class CULHMDevice extends ToggleableDevice<CULHMDevice> {
                 subType = SubType.THREE_STATE;
             } else if (nodeContent.equalsIgnoreCase("THSensor")) {
                 subType = SubType.TEMPERATURE_HUMIDITY;
+            } else if (nodeContent.equalsIgnoreCase("KFM100")) {
+                subType = SubType.KFM100;
             }
             subTypeRaw = nodeContent;
         } else if (keyValue.equals("STATE")) {
@@ -102,6 +113,12 @@ public class CULHMDevice extends ToggleableDevice<CULHMDevice> {
             humidity = ValueDescriptionUtil.appendPercent(nodeContent);
         } else if (keyValue.equalsIgnoreCase("COMMANDACCEPTED")) {
             this.commandAccepted = nodeContent;
+        } else if (keyValue.equalsIgnoreCase("CONTENT")) {
+            this.content = nodeContent;
+        } else if (keyValue.equalsIgnoreCase("RAWVALUE")) {
+            this.rawValue = nodeContent;
+        } else if (keyValue.equalsIgnoreCase("rawToReadable")) {
+            this.rawToReadable = nodeContent;
         }
     }
 
@@ -163,13 +180,36 @@ public class CULHMDevice extends ToggleableDevice<CULHMDevice> {
         return commandAccepted;
     }
 
+    public String getRawValue() {
+        return rawValue;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public String getRawToReadable() {
+        return rawToReadable;
+    }
+
     @Override
     protected void fillDeviceCharts(List<DeviceChart> chartSeries) {
-        if (subType == SubType.TEMPERATURE_HUMIDITY) {
-            addDeviceChartIfNotNull(measuredTemp, new DeviceChart(R.string.temperatureGraph, R.string.yAxisTemperature,
-                    ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:")));
-            addDeviceChartIfNotNull(humidity, new DeviceChart(R.string.humidityGraph, R.string.yAxisHumidity,
-                    new ChartSeriesDescription(R.string.humidity, "6:")));
+        switch (subType) {
+            case TEMPERATURE_HUMIDITY:
+
+                addDeviceChartIfNotNull(measuredTemp, new DeviceChart(R.string.temperatureGraph, R.string.yAxisTemperature,
+                        ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:")));
+                addDeviceChartIfNotNull(humidity, new DeviceChart(R.string.humidityGraph, R.string.yAxisHumidity,
+                        new ChartSeriesDescription(R.string.humidity, "6:")));
+
+                break;
+
+            case KFM100:
+                addDeviceChartIfNotNull(getState(), new DeviceChart(R.string.contentGraph, R.string.yAxisLitreContent,
+                        ChartSeriesDescription.getRegressionValuesInstance(R.string.content, "4:content:0:"),
+                        new ChartSeriesDescription(R.string.rawValue, "4:rawValue:0:")));
+
+                break;
         }
     }
 
