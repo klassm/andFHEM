@@ -32,10 +32,12 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
+import li.klass.fhem.adapter.devices.genericui.CustomViewTableRow;
 import li.klass.fhem.adapter.devices.genericui.SeekBarActionRow;
 import li.klass.fhem.domain.CULHMDevice;
 import li.klass.fhem.domain.genericview.FloorplanViewSettings;
 import li.klass.fhem.util.device.FloorplanUtil;
+import li.klass.fhem.widget.LitreContentView;
 
 public class CULHMAdapter extends ToggleableAdapter<CULHMDevice> {
 
@@ -68,7 +70,7 @@ public class CULHMAdapter extends ToggleableAdapter<CULHMDevice> {
     protected void afterPropertiesSet() {
         fieldNameAddedListeners.put("state", new FieldNameAddedToDetailListener<CULHMDevice>() {
             @Override
-            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, CULHMDevice device, TableRow fieldTableRow) {
+            public void onFieldNameAdded(final Context context, TableLayout tableLayout, String field, final CULHMDevice device, TableRow fieldTableRow) {
                 switch (device.getSubType()) {
                     case DIMMER:
                         tableLayout.addView(new SeekBarActionRow<CULHMDevice>(device.getDimProgress(), R.string.blank, SeekBarActionRow.LAYOUT_DETAIL)
@@ -76,6 +78,15 @@ public class CULHMAdapter extends ToggleableAdapter<CULHMDevice> {
                         break;
                     case SWITCH:
                         addDetailSwitchActionRow(context, device, tableLayout);
+                        break;
+
+                    case KFM100:
+                        tableLayout.addView(new CustomViewTableRow() {
+                            @Override
+                            public View getContentView() {
+                                return new LitreContentView(context, device.getFillStatePercentage());
+                            }
+                        }.createRow(inflater));
                         break;
                 }
             }
