@@ -468,7 +468,7 @@
     <ATTR key="hmClass" value="sender"/>
     <ATTR key="model" value="HM-SEC-SC"/>
     <ATTR key="room" value="Keller"/>
-    <ATTR key="serialNr" value="IEQxxxxxxx""/>
+    <ATTR key="serialNr" value="IEQxxxxxxx"/>
     <ATTR key="subType" value="threeStateSensor"/>
     <STATE key="alive" value="yes" measured="2012-01-22 17:16:21"/>
     <STATE key="cover" value="closed" measured="2012-01-22 17:16:21"/>

@@ -77,6 +77,8 @@ public class CULHMDevice extends ToggleableDevice<CULHMDevice> {
     @ShowField(description = R.string.conversion)
     private String rawToReadable;
 
+    private int sequence;
+
     @Override
     protected void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {
         super.onChildItemRead(tagName, keyValue, nodeContent, attributes);
@@ -117,8 +119,10 @@ public class CULHMDevice extends ToggleableDevice<CULHMDevice> {
             this.content = nodeContent;
         } else if (keyValue.equalsIgnoreCase("RAWVALUE")) {
             this.rawValue = nodeContent;
-        } else if (keyValue.equalsIgnoreCase("rawToReadable")) {
+        } else if (keyValue.equalsIgnoreCase("RAWTOREADABLE")) {
             this.rawToReadable = nodeContent;
+        } else if (keyValue.equalsIgnoreCase("SEQUENCE")) {
+            this.sequence = Integer.parseInt(nodeContent);
         }
     }
 
@@ -192,8 +196,19 @@ public class CULHMDevice extends ToggleableDevice<CULHMDevice> {
         return rawToReadable;
     }
 
+    public int getSequence() {
+        return sequence;
+    }
+
+    public float getFillStatePercentage() {
+        if (subType != SubType.KFM100) throw new UnsupportedOperationException();
+        return sequence / 7;
+    }
+
     @Override
     protected void fillDeviceCharts(List<DeviceChart> chartSeries) {
+        if (subType == null) return;
+
         switch (subType) {
             case TEMPERATURE_HUMIDITY:
 
