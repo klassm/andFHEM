@@ -40,4 +40,8 @@ public class ValueDescriptionUtil {
     public static String appendLm2(Object text) {
         return text + " (l/m2)";
     }
+
+    public static String appendL(Object text) {
+        return text + " (l)";
+    }
 }

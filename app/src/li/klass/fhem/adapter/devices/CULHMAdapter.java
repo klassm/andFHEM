@@ -84,7 +84,7 @@ public class CULHMAdapter extends ToggleableAdapter<CULHMDevice> {
                         tableLayout.addView(new CustomViewTableRow() {
                             @Override
                             public View getContentView() {
-                                return new LitreContentView(context, device.getFillStatePercentage());
+                                return new LitreContentView(context, device.getFillContentPercentageRaw());
                             }
                         }.createRow(inflater));
                         break;

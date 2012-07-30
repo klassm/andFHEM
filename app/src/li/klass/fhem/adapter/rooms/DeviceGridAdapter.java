@@ -137,8 +137,11 @@ public class DeviceGridAdapter extends GridViewWithSectionsAdapter<DeviceType, D
     protected List<DeviceType> getParents() {
         List<DeviceType> viewableParents = new ArrayList<DeviceType>();
         for (DeviceType deviceType : parents) {
-            if (getChildrenCountForParent(deviceType) > 0 &&
-                    deviceType.mayShowInCurrentConnectionType()) {
+            if (! deviceType.mayShowInCurrentConnectionType()) {
+                Log.i(TAG, "deviceType " + deviceType + " may not show in current connection, filtered!");
+            } else if (getChildrenCountForParent(deviceType) <= 0) {
+                Log.i(TAG, "deviceType " + deviceType + " has no children, filtered!");
+            } else {
                 viewableParents.add(deviceType);
             }
         }

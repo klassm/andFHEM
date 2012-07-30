@@ -108,6 +108,8 @@
     <string name="visibility">visibility</string>
     <string name="rawValue">Raw value</string>
     <string name="content">Content</string>
+    <string name="fillPercentage">Fill percentage</string>
+    <string name="maximumContent">Maximum content</string>
 
     <string name="switchDevice">Switch</string>
     <string name="preferences">Preferences</string>

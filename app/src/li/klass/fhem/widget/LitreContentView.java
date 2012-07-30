@@ -42,7 +42,7 @@ public class LitreContentView extends View {
     public static final int HEIGHT = 150;
 
     public static final int BORDER_WIDTH = 3;
-    private float fillPercentage;
+    private double fillPercentage;
 
     static {
         WHITE_PAINT.setColor(Color.WHITE);
@@ -56,7 +56,7 @@ public class LitreContentView extends View {
         BORDER_PAINT.setStrokeWidth(BORDER_WIDTH);
     }
 
-    public LitreContentView(Context context, float fillPercentage) {
+    public LitreContentView(Context context, double fillPercentage) {
         super(context);
         this.fillPercentage = fillPercentage;
         init();
@@ -113,7 +113,7 @@ public class LitreContentView extends View {
 
         canvas.save();
 
-        float contentHeight = 2 * innerCircleRadius * fillPercentage;
+        float contentHeight = (float) (2 * innerCircleRadius * fillPercentage);
         canvas.clipRect(xStart, innerCircleYCenter + innerCircleRadius - contentHeight, innerCircleXCenter + innerCircleRadius, HEIGHT, Region.Op.REPLACE);
 
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);

@@ -70,7 +70,7 @@ public enum DeviceType {
     private String xmllistTag;
     private Class<? extends Device> deviceClass;
     private DeviceAdapter<? extends Device<?>> adapter;
-    private ConnectionType showDeviceOnlyInConnection = null;
+    private ConnectionType showDeviceTypeOnlyInConnection = null;
 
     <T extends Device<T>> DeviceType(String xmllistTag, Class<T> deviceClass) {
         this(xmllistTag, deviceClass, new GenericDeviceAdapter<T>(deviceClass));
@@ -82,9 +82,9 @@ public enum DeviceType {
         this.adapter = adapter;
     }
 
-    DeviceType(String xmllistTag, Class<? extends Device> deviceClass, DeviceAdapter<? extends Device<?>> adapter, ConnectionType showConnectionOnlyIn) {
+    DeviceType(String xmllistTag, Class<? extends Device> deviceClass, DeviceAdapter<? extends Device<?>> adapter, ConnectionType showDeviceTypeOnlyIn) {
         this(xmllistTag, deviceClass, adapter);
-        showDeviceOnlyInConnection = showConnectionOnlyIn;
+        showDeviceTypeOnlyInConnection = showDeviceTypeOnlyIn;
     }
 
     public String getXmllistTag() {
@@ -101,14 +101,14 @@ public enum DeviceType {
     }
 
     public boolean mayEverShow() {
-        return showDeviceOnlyInConnection != ConnectionType.NEVER;
+        return showDeviceTypeOnlyInConnection != ConnectionType.NEVER;
     }
 
     public boolean mayShowInCurrentConnectionType() {
-        if (showDeviceOnlyInConnection == null) return true;
+        if (showDeviceTypeOnlyInConnection == null) return true;
 
         ConnectionType connectionType = ApplicationProperties.INSTANCE.getConnectionType();
-        return connectionType == showDeviceOnlyInConnection;
+        return connectionType == showDeviceTypeOnlyInConnection;
     }
 
     public static <T extends Device> DeviceAdapter<T> getAdapterFor(T device) {

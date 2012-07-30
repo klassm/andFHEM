@@ -90,6 +90,7 @@ public class RoomListService extends AbstractService {
         ArrayList<String> roomNames = new ArrayList<String>(map.keySet());
         for (RoomDeviceList roomDeviceList : map.values()) {
             if (roomDeviceList.isEmptyOrOnlyContainsDoNotShowDevices()) {
+                Log.i(TAG, "removing " + roomDeviceList.getRoomName() + ", as it only contains do not show devices!");
                 roomNames.remove(roomDeviceList.getRoomName());
             } else if (roomDeviceList.getRoomName().equals(RoomDeviceList.ALL_DEVICES_ROOM)) {
                 roomNames.remove(roomDeviceList.getRoomName());
@@ -175,7 +176,7 @@ public class RoomListService extends AbstractService {
                 bundle.putInt(BundleExtraKeys.TOAST_STRING_ID, e.getErrorMessageStringId());
                 sendBroadcastWithAction(Actions.SHOW_TOAST, bundle);
 
-                Log.e(TAG, "error occurred", e);
+                Log.e(TAG, "error occurred while fetching the remove device list", e);
             } finally {
                 sendBroadcastWithAction(Actions.DISMISS_UPDATING_DIALOG, null);
             }

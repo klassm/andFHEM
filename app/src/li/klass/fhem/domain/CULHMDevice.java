@@ -56,7 +56,6 @@ public class CULHMDevice extends ToggleableDevice<CULHMDevice> {
 
     @ShowField(description = R.string.measured)
     private String measured;
-
     @ShowField(description = R.string.desiredTemperature)
     private String desiredTemp;
     @ShowField(description = R.string.temperature, showInOverview = true)
@@ -70,14 +69,16 @@ public class CULHMDevice extends ToggleableDevice<CULHMDevice> {
     private String subTypeRaw;
     @ShowField(description = R.string.commandAccepted)
     private String commandAccepted;
-    @ShowField(description = R.string.rawValue, showInOverview = true)
+    @ShowField(description = R.string.rawValue)
     private String rawValue;
-    @ShowField(description = R.string.content, showInOverview = true)
-    private String content;
+    private double fillContentLitresRaw;
+    @ShowField(description = R.string.maximumContent)
+    private int fillContentLitresMaximum;
+    private double fillContentPercentageRaw;
+    @ShowField(description = R.string.fillPercentage, showInOverview = true, showInDetail = false)
+    private String fillContentPercentage;
     @ShowField(description = R.string.conversion)
     private String rawToReadable;
-
-    private int sequence;
 
     @Override
     protected void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {
@@ -116,13 +117,33 @@ public class CULHMDevice extends ToggleableDevice<CULHMDevice> {
         } else if (keyValue.equalsIgnoreCase("COMMANDACCEPTED")) {
             this.commandAccepted = nodeContent;
         } else if (keyValue.equalsIgnoreCase("CONTENT")) {
-            this.content = nodeContent;
+            fillContentLitresRaw = ValueExtractUtil.extractLeadingDouble(nodeContent.replace("l", ""));
+            String fillContentLitres = ValueDescriptionUtil.appendL(fillContentLitresRaw);
+            setState(fillContentLitres);
         } else if (keyValue.equalsIgnoreCase("RAWVALUE")) {
             this.rawValue = nodeContent;
         } else if (keyValue.equalsIgnoreCase("RAWTOREADABLE")) {
             this.rawToReadable = nodeContent;
-        } else if (keyValue.equalsIgnoreCase("SEQUENCE")) {
-            this.sequence = Integer.parseInt(nodeContent);
+
+            int lastSpace = nodeContent.lastIndexOf(" ");
+            String lastDefinition = lastSpace == -1 ? nodeContent : nodeContent.substring(lastSpace + 1);
+            String[] parts = lastDefinition.split(":");
+            if (parts.length != 2) return;
+
+            int rawValue = Integer.parseInt(parts[0]);
+            int realValue = Integer.parseInt(parts[1]);
+
+            fillContentLitresMaximum = realValue / rawValue * 255;
+        }
+    }
+
+    @Override
+    protected void afterXMLRead() {
+        super.afterXMLRead();
+
+        if (subType == SubType.KFM100) {
+            fillContentPercentageRaw = fillContentLitresRaw / fillContentLitresMaximum;
+            fillContentPercentage = ValueDescriptionUtil.appendPercent((int) (fillContentPercentageRaw * 100));
         }
     }
 
@@ -188,21 +209,24 @@ public class CULHMDevice extends ToggleableDevice<CULHMDevice> {
         return rawValue;
     }
 
-    public String getContent() {
-        return content;
-    }
-
     public String getRawToReadable() {
         return rawToReadable;
     }
 
-    public int getSequence() {
-        return sequence;
+    public double getFillContentPercentageRaw() {
+        return fillContentPercentageRaw;
     }
 
-    public float getFillStatePercentage() {
-        if (subType != SubType.KFM100) throw new UnsupportedOperationException();
-        return sequence / 7;
+    public double getFillContentLitresRaw() {
+        return fillContentLitresRaw;
+    }
+
+    public int getFillContentLitresMaximum() {
+        return fillContentLitresMaximum;
+    }
+
+    public String getFillContentPercentage() {
+        return fillContentPercentage;
     }
 
     @Override
@@ -227,6 +251,8 @@ public class CULHMDevice extends ToggleableDevice<CULHMDevice> {
                 break;
         }
     }
+
+
 
     @Override
     public boolean supportsWidget(Class<? extends AppWidgetView> appWidgetClass) {
