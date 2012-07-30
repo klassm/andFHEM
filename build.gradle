@@ -96,24 +96,41 @@ import com.google.gdata.data.spreadsheet.*;
 import com.google.gdata.util.*;
 import com.google.gdata.client.sites.SitesService
 import com.google.gdata.data.Link.*
+
 import javax.activation.MimetypesFileTypeMap
 
 task uploadToGoogleSites(dependsOn: readAliasPassword) << {
-    def file = new File("bin/google-release.apk")
+    def attachmentContentFeedUrl = "https://sites.google.com/feeds/content/site/andfhem/"
+
+    def service = new SitesService("li.klass-andFHEM-v1");
+    service.setUserCredentials("andFHEM@klass.li", '' + project.aliasPassword);
+
+
+    def contentFeed = service.getFeed(new URL(attachmentContentFeedUrl), ContentFeed.class)
+
+    def entries = contentFeed.getEntries()
+    for (e in entries) {
+        def href = e.getRevisionLink().getHref()
+        def id = href.substring(href.lastIndexOf("/") + 1)
+
+        def fileTitle = e.getTitle().getText()
+        if (fileTitle.equals("google-release.apk")) {
+            updateGoogleSitesAPK(service, id)
+        }
+    }
+}
+
+def updateGoogleSitesAPK(service, id) {
     def title = "google-release.apk"
     def description = ""
 
-    def client = new SitesService("li.klass-andFHEM-v1");
-    client.setUserCredentials("andFHEM@klass.li", '' + project.aliasPassword);
-
-    def attachment = client.getEntry(new URL("https://sites.google.com/feeds/content/site/andfhem/7112257256224480762?with-mappings=true"), FileCabinetPageEntry.class)
-    attachment.delete()
-
-    def page = client.getEntry(new URL("https://sites.google.com/feeds/content/site/andfhem/2520721202291031153?with-mappings=true"), SiteEntry.class)
-    def fileCabinet = new FileCabinetPageEntry(page)
-
     def mediaTypes = new MimetypesFileTypeMap()
     mediaTypes.addMimeTypes("application/vnd.android.package-archive")
+
+    def file = new File("bin/google-release.apk")
+
+    def attachment = service.getEntry(new URL("https://sites.google.com/feeds/content/site/andfhem/" + id + "?with-mappings=true"), FileCabinetPageEntry.class)
+    attachment.delete();
 
     def newAttachment = new AttachmentEntry();
     newAttachment.setMediaSource(new MediaFileSource(file, mediaTypes.getContentType(file)));
@@ -121,7 +138,7 @@ task uploadToGoogleSites(dependsOn: readAliasPassword) << {
     newAttachment.setSummary(new PlainTextConstruct(description));
     newAttachment.addLink(SitesLink.Rel.PARENT, ILink.Type.ATOM, fileCabinet.getSelfLink().getHref());
 
-    client.insert(new URL("https://sites.google.com/feeds/content/site/andfhem/"), newAttachment);
+    service.insert(new URL("https://sites.google.com/feeds/content/site/andfhem/"), newAttachment);
 }
 
 task buildAll(dependsOn: [buildGoogle, buildAmazon]) << {}
