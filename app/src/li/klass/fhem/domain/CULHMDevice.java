@@ -275,4 +275,12 @@ public class CULHMDevice extends ToggleableDevice<CULHMDevice> {
 
         return super.supportsWidget(appWidgetClass);
     }
+
+    @Override
+    public int compareTo(CULHMDevice other) {
+        int result = subType.compareTo(other.getSubType());
+        if (result != 0) return result;
+
+        return name.compareTo(other.getName());
+    }
 }
