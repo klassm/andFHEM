@@ -27,12 +27,8 @@ package li.klass.fhem.domain;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
 import li.klass.fhem.domain.genericview.FloorplanViewSettings;
-import org.w3c.dom.NamedNodeMap;
 
 @DetailOverviewViewSettings(showState = true)
 @FloorplanViewSettings(showState = true)
 public class RFXCOMDevice extends Device<RFXCOMDevice> {
-    @Override
-    protected void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {
-    }
 }

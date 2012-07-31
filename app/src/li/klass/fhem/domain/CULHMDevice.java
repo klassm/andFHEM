@@ -37,7 +37,6 @@ import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ValueDescriptionUtil;
 import li.klass.fhem.util.ValueExtractUtil;
-import org.w3c.dom.NamedNodeMap;
 
 import java.util.List;
 
@@ -80,65 +79,78 @@ public class CULHMDevice extends ToggleableDevice<CULHMDevice> {
     @ShowField(description = R.string.conversion)
     private String rawToReadable;
 
-    @Override
-    protected void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {
-        super.onChildItemRead(tagName, keyValue, nodeContent, attributes);
+    public void readRAWTOREADABLE(String value) {
+        this.rawToReadable = value;
 
-        if (keyValue.equals("SUBTYPE")) {
-            if (nodeContent.equalsIgnoreCase("DIMMER") || nodeContent.equalsIgnoreCase("BLINDACTUATOR")) {
-                subType = SubType.DIMMER;
-            } else if (nodeContent.equalsIgnoreCase("SWITCH")) {
-                subType = SubType.SWITCH;
-            } else if (nodeContent.equalsIgnoreCase("SMOKEDETECTOR")) {
-                subType = SubType.SMOKE_DETECTOR;
-            } else if (nodeContent.equalsIgnoreCase("THREESTATESENSOR")) {
-                subType = SubType.THREE_STATE;
-            } else if (nodeContent.equalsIgnoreCase("THSensor")) {
-                subType = SubType.TEMPERATURE_HUMIDITY;
-            } else if (nodeContent.equalsIgnoreCase("KFM100")) {
-                subType = SubType.KFM100;
-            }
-            subTypeRaw = nodeContent;
-        } else if (keyValue.equals("STATE")) {
-            if (nodeContent.endsWith("%")) {
-                dimProgress = ValueExtractUtil.extractLeadingInt(nodeContent);
-            }
-        } else if (keyValue.equals("DESIRED-TEMP")) {
-            desiredTemp = ValueDescriptionUtil.appendTemperature(nodeContent);
-        } else if (keyValue.equals("MEASURED-TEMP") || keyValue.equals("TEMPERATURE")) {
-            measuredTemp = ValueDescriptionUtil.appendTemperature(nodeContent);
-        } else if (keyValue.equals("ACTUATOR")) {
-            subType = SubType.HEATING;
-            actuator = nodeContent;
-        } else if (keyValue.equals("CUL_TIME")) {
-            measured = nodeContent;
-        } else if (keyValue.equals("HUMIDITY")) {
-            humidity = ValueDescriptionUtil.appendPercent(nodeContent);
-        } else if (keyValue.equalsIgnoreCase("COMMANDACCEPTED")) {
-            this.commandAccepted = nodeContent;
-        } else if (keyValue.equalsIgnoreCase("CONTENT")) {
-            fillContentLitresRaw = ValueExtractUtil.extractLeadingDouble(nodeContent.replace("l", ""));
-            String fillContentLitres = ValueDescriptionUtil.appendL(fillContentLitresRaw);
-            setState(fillContentLitres);
-        } else if (keyValue.equalsIgnoreCase("RAWVALUE")) {
-            this.rawValue = nodeContent;
-        } else if (keyValue.equalsIgnoreCase("RAWTOREADABLE")) {
-            this.rawToReadable = nodeContent;
+        int lastSpace = value.lastIndexOf(" ");
+        String lastDefinition = lastSpace == -1 ? value : value.substring(lastSpace + 1);
+        String[] parts = lastDefinition.split(":");
+        if (parts.length != 2) return;
 
-            int lastSpace = nodeContent.lastIndexOf(" ");
-            String lastDefinition = lastSpace == -1 ? nodeContent : nodeContent.substring(lastSpace + 1);
-            String[] parts = lastDefinition.split(":");
-            if (parts.length != 2) return;
+        int rawValue = Integer.parseInt(parts[0]);
+        int realValue = Integer.parseInt(parts[1]);
 
-            int rawValue = Integer.parseInt(parts[0]);
-            int realValue = Integer.parseInt(parts[1]);
+        fillContentLitresMaximum = realValue / rawValue * 255;
+    }
 
-            fillContentLitresMaximum = realValue / rawValue * 255;
-        }
+    public void readRAWVALUE(String value) {
+        this.rawValue = value;
+    }
+
+    public void readCONTENT(String value) {
+        fillContentLitresRaw = ValueExtractUtil.extractLeadingDouble(value.replace("l", ""));
+        String fillContentLitres = ValueDescriptionUtil.appendL(fillContentLitresRaw);
+        setState(fillContentLitres);
+    }
+
+    public void readCOMMANDACCEPTED(String value) {
+        this.commandAccepted = value;
+    }
+
+    public void readHumidity(String value) {
+        humidity = ValueDescriptionUtil.appendPercent(value);
+    }
+
+    public void readACTUATOR(String value) {
+        subType = SubType.HEATING;
+        actuator = value;
     }
 
     @Override
-    protected void afterXMLRead() {
+    public void readSTATE(String value) {
+        super.readSTATE(value);
+        if (value.endsWith("%")) {
+            dimProgress = ValueExtractUtil.extractLeadingInt(value);
+        }
+    }
+
+    public void readMEASURED_TEMP(String value) {
+        measuredTemp = ValueDescriptionUtil.appendTemperature(value);
+    }
+
+    public void readDESIRED_TEMP(String value) {
+        desiredTemp = ValueDescriptionUtil.appendTemperature(value);
+    }
+
+    public void readSUBTYPE(String value) {
+        if (value.equalsIgnoreCase("DIMMER") || value.equalsIgnoreCase("BLINDACTUATOR")) {
+            subType = SubType.DIMMER;
+        } else if (value.equalsIgnoreCase("SWITCH")) {
+            subType = SubType.SWITCH;
+        } else if (value.equalsIgnoreCase("SMOKEDETECTOR")) {
+            subType = SubType.SMOKE_DETECTOR;
+        } else if (value.equalsIgnoreCase("THREESTATESENSOR")) {
+            subType = SubType.THREE_STATE;
+        } else if (value.equalsIgnoreCase("THSensor")) {
+            subType = SubType.TEMPERATURE_HUMIDITY;
+        } else if (value.equalsIgnoreCase("KFM100")) {
+            subType = SubType.KFM100;
+        }
+        subTypeRaw = value; 
+    }
+
+    @Override
+    public void afterXMLRead() {
         super.afterXMLRead();
 
         if (subType == SubType.KFM100) {

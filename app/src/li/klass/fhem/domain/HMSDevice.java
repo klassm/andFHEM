@@ -37,7 +37,6 @@ import li.klass.fhem.domain.genericview.FloorplanViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ValueUtil;
-import org.w3c.dom.NamedNodeMap;
 
 import java.util.List;
 
@@ -65,21 +64,26 @@ public class HMSDevice extends Device<HMSDevice> {
     @ShowField(description = R.string.state, showInOverview = true)
     private String switchDetect;
 
-    @Override
-    public void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {
-        if (keyValue.equalsIgnoreCase("TEMPERATURE")) {
-            temperature = ValueUtil.formatTemperature(nodeContent);
-        } else if (keyValue.equalsIgnoreCase("BATTERY")) {
-            battery = nodeContent;
-        } else if (keyValue.equalsIgnoreCase("HUMIDITY")) {
-            humidity = nodeContent;
-        } else if (keyValue.equalsIgnoreCase("TYPE")) {
-            this.model = nodeContent;
-        } else if (keyValue.equalsIgnoreCase("SWITCH_DETECT")) {
-            Context context = AndFHEMApplication.getContext();
-            this.switchDetect = nodeContent.equalsIgnoreCase("ON")
-                    ? context.getString(R.string.on) : context.getString(R.string.off);
-        }
+    public void readTEMPERATURE(String value) {
+        temperature = ValueUtil.formatTemperature(value);
+    }
+
+    public void readBATTERY(String value) {
+        this.battery = value;
+    }
+
+    public void readHUMIDITY(String value) {
+        this.humidity = value;
+    }
+
+    public void readTYPE(String value) {
+        this.model = value;
+    }
+
+    public void readSWITCH_DETECT(String value) {
+        Context context = AndFHEMApplication.getContext();
+        this.switchDetect = value.equalsIgnoreCase("ON")
+                ? context.getString(R.string.on) : context.getString(R.string.off);
     }
 
     public String getTemperature() {

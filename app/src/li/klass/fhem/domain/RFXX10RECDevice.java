@@ -41,14 +41,13 @@ public class RFXX10RECDevice extends Device<RFXX10RECDevice> {
     @ShowField(description = R.string.lastState, showInOverview = true)
     private String lastState;
 
-    @Override
-    protected void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {
-        if (keyValue.equals("TIME")) {
-            measured = nodeContent;
-        } else if (keyValue.equals("STATECHANGE")) {
-            lastStateChangeTime = attributes.getNamedItem("measured").getNodeValue();
-            lastState = nodeContent;
-        }
+    public void readTIME(String value)  {
+        measured = value;
+    }
+
+    public void readSTATECHANGE(String value, NamedNodeMap attributes)  {
+        lastStateChangeTime = attributes.getNamedItem("measured").getNodeValue();
+        lastState = value;
     }
 
     public String getLastStateChangedTime() {

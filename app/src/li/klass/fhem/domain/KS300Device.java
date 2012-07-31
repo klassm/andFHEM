@@ -33,9 +33,6 @@ import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.genericview.FloorplanViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
-import li.klass.fhem.util.ValueDescriptionUtil;
-import li.klass.fhem.util.ValueUtil;
-import org.w3c.dom.NamedNodeMap;
 
 import java.io.Serializable;
 import java.util.List;
@@ -76,6 +73,35 @@ public class KS300Device extends Device<KS300Device> implements Serializable {
         return getName().compareTo(ks300Device.getName());
     }
 
+
+    public void readTEMPERATURE(String value) {
+        this.temperature = value;
+    }
+
+    public void readWIND(String value) {
+        this.wind = value;
+    }
+
+    public void readHUMIDITY(String value) {
+        this.humidity = value;
+    }
+
+    public void readRAIN(String value) {
+        this.rain = value;
+    }
+
+    public void readAVG_DAY(String value) {
+        this.averageDay = value;
+    }
+
+    public void readAVG_MONTH(String value) {
+        this.averageMonth = value;
+    }
+
+    public void readISRAINING(String value) {
+        this.isRaining = value;
+    }
+
     public String getTemperature() {
         return temperature;
     }
@@ -102,25 +128,6 @@ public class KS300Device extends Device<KS300Device> implements Serializable {
 
     public String getRaining() {
         return isRaining;
-    }
-
-    @Override
-    public void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {
-        if (keyValue.equals("TEMPERATURE")) {
-            this.temperature = ValueUtil.formatTemperature(nodeContent);
-        } else if (keyValue.equals("WIND")) {
-            this.wind = ValueDescriptionUtil.appendKmH(nodeContent);
-        } else if (keyValue.equals("HUMIDITY")) {
-            this.humidity = ValueDescriptionUtil.appendPercent(nodeContent);
-        } else if (keyValue.equals("RAIN")) {
-            this.rain = ValueDescriptionUtil.appendLm2(nodeContent);
-        } else if (keyValue.equals("AVG_DAY")) {
-            this.averageDay = nodeContent;
-        } else if (keyValue.equals("AVG_MONTH")) {
-            this.averageMonth = nodeContent;
-        } else if (keyValue.equals("ISRAINING")) {
-            this.isRaining = nodeContent;
-        }
     }
 
     @Override

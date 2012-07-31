@@ -79,39 +79,53 @@ public class FHTDevice extends Device<FHTDevice> {
     }
 
     @Override
-    public void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap nodeAttributes) {
-        if (keyValue.startsWith("ACTUATOR") && ! nodeContent.equalsIgnoreCase("pair")) {
-            actuator = nodeContent;
-        } else if (keyValue.equalsIgnoreCase("MEASURED-TEMP")) {
-            temperature = ValueUtil.formatTemperature(nodeContent);
-        } else if (keyValue.equals("DESIRED-TEMP")) {
-            if (nodeContent.equalsIgnoreCase("off")) nodeContent = "5.5";
-            if (nodeContent.equalsIgnoreCase("on")) nodeContent = "30.5";
-
-            desiredTemp = ValueExtractUtil.extractLeadingDouble(nodeContent);
-        } else if (keyValue.equals("WARNINGS")) {
-            warnings = nodeContent;
-        } else if (keyValue.equals("MODE")) {
-            try {
-                this.mode = FHTMode.valueOf(nodeContent.toUpperCase());
-            } catch (IllegalArgumentException e) {
-                this.mode = FHTMode.UNKNOWN;
-            }
-        } else if (keyValue.equals("DAY-TEMP")) {
-            dayTemperature = ValueExtractUtil.extractLeadingDouble(nodeContent);
-        } else if (keyValue.equals("NIGHT-TEMP")) {
-            nightTemperature = ValueExtractUtil.extractLeadingDouble(nodeContent);
-        } else if (keyValue.equals("WINDOWOPEN-TEMP")) {
-            windowOpenTemp = ValueExtractUtil.extractLeadingDouble(nodeContent);
-        }else if (keyValue.endsWith("FROM1") || keyValue.endsWith("FROM2") || keyValue.endsWith("TO1") || keyValue.endsWith("TO2")) {
+    public void onChildItemRead(String tagName, String keyValue, String value, NamedNodeMap nodeAttributes) {
+        if (keyValue.startsWith("ACTUATOR") && ! value.equalsIgnoreCase("pair")) {
+            actuator = value;
+        } else if (keyValue.endsWith("FROM1") || keyValue.endsWith("FROM2") || keyValue.endsWith("TO1") || keyValue.endsWith("TO2")) {
             String shortName = keyValue.substring(0, 3);
             FHTDayControl dayControl = dayControlMap.get(DayUtil.getDayStringIdForShortName(shortName));
 
-            if (keyValue.endsWith("FROM1")) dayControl.setFrom1(nodeContent);
-            if (keyValue.endsWith("FROM2")) dayControl.setFrom2(nodeContent);
-            if (keyValue.endsWith("TO1")) dayControl.setTo1(nodeContent);
-            if (keyValue.endsWith("TO2")) dayControl.setTo2(nodeContent);
+            if (keyValue.endsWith("FROM1")) dayControl.setFrom1(value);
+            if (keyValue.endsWith("FROM2")) dayControl.setFrom2(value);
+            if (keyValue.endsWith("TO1")) dayControl.setTo1(value);
+            if (keyValue.endsWith("TO2")) dayControl.setTo2(value);
         }
+    }
+
+    public void readMEASURED_TEMP(String value) {
+        temperature = ValueUtil.formatTemperature(value);
+    }
+
+    public void readWARNINGS(String value) {
+        warnings = value;
+    }
+
+    public void readMODE(String value) {
+        try {
+            this.mode = FHTMode.valueOf(value.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            this.mode = FHTMode.UNKNOWN;
+        }
+    }
+
+    public void readDESIRED_TEMP(String value) {
+        if (value.equalsIgnoreCase("off")) value = "5.5";
+        if (value.equalsIgnoreCase("on")) value = "30.5";
+
+        desiredTemp = ValueExtractUtil.extractLeadingDouble(value);
+    }
+
+    public void readDAY_TEMP(String value) {
+        dayTemperature = ValueExtractUtil.extractLeadingDouble(value);
+    }
+
+    public void readNIGHT_TEMP(String value) {
+        nightTemperature = ValueExtractUtil.extractLeadingDouble(value);
+    }
+
+    public void readWINDOW_OPEN_TEMP(String value) {
+        windowOpenTemp = ValueExtractUtil.extractLeadingDouble(value);
     }
 
     public String getActuator() {

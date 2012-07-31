@@ -44,6 +44,6 @@ public class StringEscapeUtils {
             e.printStackTrace();
         }
 
-        return content;
+        return content.trim();
     }
 }

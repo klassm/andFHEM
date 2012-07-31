@@ -30,11 +30,9 @@ import org.w3c.dom.NamedNodeMap;
 
 @DetailOverviewViewSettings(showMeasured = true)
 public class WatchdogDevice extends Device<WatchdogDevice> {
-    @Override
-    protected void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {
-        if (keyValue.equalsIgnoreCase("Triggered")) {
-            measured = attributes.getNamedItem("measured").getNodeValue();
-        }
+
+    public void readTRIGGERED(String value, NamedNodeMap attributes) {
+        this.measured = attributes.getNamedItem("measured").getNodeValue();
     }
 
     @Override

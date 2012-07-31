@@ -46,14 +46,13 @@ public class OwtempDevice extends Device<OwtempDevice> {
     @ShowField(description = R.string.warnings, showInOverview = true)
     private String warnings;
 
-    @Override
-    public void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {
-        if (keyValue.equals("TEMPERATURE")) {
-            this.temperature = ValueUtil.formatTemperature(nodeContent);
-        } else if (keyValue.equals("WARNINGS")) {
-            this.warnings = nodeContent;
-            measured = attributes.getNamedItem("measured").getNodeValue();
-        }
+    public void readTEMPERATURE(String value)  {
+        this.temperature = ValueUtil.formatTemperature(value);
+    }
+
+    public void readWARNINGS(String value, NamedNodeMap attributes)  {
+        this.warnings = value;
+        measured = attributes.getNamedItem("measured").getNodeValue();
     }
 
     public String getTemperature() {

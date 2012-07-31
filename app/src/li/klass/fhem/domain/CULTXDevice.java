@@ -34,7 +34,6 @@ import li.klass.fhem.domain.genericview.FloorplanViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ValueDescriptionUtil;
-import org.w3c.dom.NamedNodeMap;
 
 import java.util.List;
 
@@ -49,13 +48,12 @@ public class CULTXDevice extends Device<CULTXDevice> {
     @ShowField(description = R.string.humidity, showInDetail= true, showInOverview = true, showInFloorplan = true)
     private String humidity;
 
-    @Override
-    protected void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {
-        if (keyValue.equalsIgnoreCase("TEMPERATURE")) {
-            this.temperature = ValueDescriptionUtil.appendTemperature(nodeContent);
-        } else if (keyValue.equalsIgnoreCase("HUMIDITY")) {
-            this.humidity = ValueDescriptionUtil.appendPercent(nodeContent);
-        }
+    public void readTEMPERATURE(String value) {
+        this.temperature = ValueDescriptionUtil.appendTemperature(value);
+    }
+
+    public void readHUMIDITY(String value) {
+        this.humidity = ValueDescriptionUtil.appendPercent(value);
     }
 
     public String getTemperature() {

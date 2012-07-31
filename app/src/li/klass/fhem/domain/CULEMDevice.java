@@ -35,7 +35,7 @@ import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.genericview.FloorplanViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
-import org.w3c.dom.NamedNodeMap;
+import li.klass.fhem.util.ValueDescriptionUtil;
 
 import java.util.List;
 
@@ -54,20 +54,23 @@ public class CULEMDevice extends Device<CULEMDevice> {
     private String monthUsage;
     private double sumGraphDivisionFactor = 1d;
 
-    @Override
-    protected void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {
-        if (keyValue.equals("CURRENT")) {
-            currentUsage = nodeContent + " (kwh)";
-        } else if (keyValue.equals("CUM_DAY")) {
-            dayUsage = extractCumUsage(nodeContent, "CUM_DAY") + " (kwh)";
-        } else if (keyValue.equals("CUM_MONTH")) {
-            monthUsage = extractCumUsage(nodeContent, "CUM_MONTH") + " (kwh)";
-        } else if (keyValue.equals("SUM_GRAPH_DIVISION_FACTOR")) {
-            sumGraphDivisionFactor = Double.valueOf(nodeContent);
-        }
+    public void readCURRENT(String value) {
+        currentUsage = ValueDescriptionUtil.appendKwh(value);
     }
 
-    public String getCurrentUsage() {
+    public void readCUM_DAY(String value) {
+        dayUsage = ValueDescriptionUtil.appendKwh(extractCumUsage(value, "CUM_DAY"));
+    }
+
+    public void readCUM_MONTH(String value) {
+        monthUsage = ValueDescriptionUtil.appendKwh(extractCumUsage(value, "CUM_MONTH"));
+    }
+
+    public void readSUM_GRAPH_DIVISION_FACTOR(String value) {
+        sumGraphDivisionFactor = Double.valueOf(value);
+    }
+
+    public String readCurrentUsage() {
         return currentUsage;
     }
 

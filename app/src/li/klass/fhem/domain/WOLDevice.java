@@ -50,18 +50,19 @@ public class WOLDevice extends Device<WOLDevice> {
     @ShowField(description = R.string.mac)
     private String mac;
 
-    @Override
-    protected void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {
-        if (keyValue.equals("ISRUNNING")) {
-            Context context = AndFHEMApplication.getContext();
-            int isRunningId = Boolean.valueOf(nodeContent) ? R.string.on : R.string.off;
-            isRunning = context.getString(isRunningId);
-            measured = attributes.getNamedItem("measured").getNodeValue();
-        } else if (keyValue.equals("IP")) {
-            ip = nodeContent;
-        } else if (keyValue.equals("MAC")) {
-            mac = nodeContent.toUpperCase();
-        }
+    public void readISRUNNING(String value, NamedNodeMap attributes)  {
+        Context context = AndFHEMApplication.getContext();
+        int isRunningId = Boolean.valueOf(value) ? R.string.on : R.string.off;
+        isRunning = context.getString(isRunningId);
+        measured = attributes.getNamedItem("measured").getNodeValue();
+    }
+
+    public void readIP(String value)  {
+        ip = value;
+    }
+
+    public void readMAC(String value)  {
+        mac = value.toUpperCase();
     }
 
     public String isRunning() {

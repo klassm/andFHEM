@@ -94,33 +94,47 @@ public class WeatherDevice extends Device<WeatherDevice> {
 
     @WidgetMediumLine3
     private String condition;
+
     @WidgetTemperatureAdditionalField
     @WidgetMediumLine2
     private String humidity;
+
     private String icon;
 
     @WidgetTemperatureField
     @WidgetMediumLine1
     private String temperature;
+
     private String wind;
+
     private Map<String, WeatherDeviceForecast> forecastMap = new HashMap<String, WeatherDeviceForecast>();
 
     @Override
-    protected void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {
-        if (keyValue.equalsIgnoreCase("CONDITION")) {
-            this.condition = nodeContent;
-            this.measured = attributes.getNamedItem("measured").getTextContent();
-        } else if (keyValue.equalsIgnoreCase("HUMIDITY")) {
-            this.humidity = ValueDescriptionUtil.appendPercent(nodeContent);
-        } else if (keyValue.equalsIgnoreCase("ICON")) {
-            this.icon = nodeContent;
-        } else if (keyValue.equalsIgnoreCase("TEMP_C")) {
-            this.temperature = ValueDescriptionUtil.appendTemperature(nodeContent);
-        } else if (keyValue.equalsIgnoreCase("WIND_CONDITION")) {
-            this.wind = nodeContent.replaceAll("Wind: ", "").trim();
-        } else if (keyValue.startsWith("FC")) {
-            parseForecast(keyValue, nodeContent);
+    protected void onChildItemRead(String tagName, String keyValue, String value, NamedNodeMap attributes) {
+        if (keyValue.startsWith("FC")) {
+            parseForecast(keyValue, value);
         }
+    }
+
+    public void readCONDITION(String value, NamedNodeMap attributes)  {
+        this.condition = value;
+        this.measured = attributes.getNamedItem("measured").getTextContent();
+    }
+
+    public void readHUMIDITY(String value)  {
+        this.humidity = ValueDescriptionUtil.appendPercent(value);
+    }
+
+    public void readICON(String value)  {
+        this.icon = value;
+    }
+
+    public void readTEMP_C(String value)  {
+        this.temperature = ValueDescriptionUtil.appendTemperature(value);
+    }
+
+    public void readWIND_CONDITION(String value)  {
+        this.wind = value.replaceAll("Wind: ", "").trim();
     }
 
     private void parseForecast(String keyValue, String nodeContent) {

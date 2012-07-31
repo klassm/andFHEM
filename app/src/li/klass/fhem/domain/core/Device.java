@@ -24,7 +24,6 @@
 
 package li.klass.fhem.domain.core;
 
-import android.util.Log;
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.appwidget.view.widget.AppWidgetView;
@@ -32,11 +31,9 @@ import li.klass.fhem.domain.FileLogDevice;
 import li.klass.fhem.domain.floorplan.Coordinate;
 import li.klass.fhem.domain.floorplan.FloorplanPosition;
 import li.klass.fhem.domain.genericview.ShowField;
-import li.klass.fhem.util.StringEscapeUtils;
 import li.klass.fhem.util.StringUtil;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 import java.io.Serializable;
 import java.util.*;
@@ -65,51 +62,10 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
     protected volatile FileLogDevice fileLog;
     private List<DeviceChart> deviceCharts = new ArrayList<DeviceChart>();
 
-    public void loadXML(Node xml) {
 
-        Node setsAttribute = xml.getAttributes().getNamedItem("sets");
-        if (setsAttribute != null) {
-            String setsText = setsAttribute.getNodeValue().replaceAll("\\*", "");
-            parseSetsAttribute(setsText);
-        }
+    public void readSETS(String value) {
+        String setsText = value.replaceAll("\\*", "");
 
-        NodeList childNodes = xml.getChildNodes();
-        for (int i = 0; i < childNodes.getLength(); i++) {
-            Node item = childNodes.item(i);
-            if (item == null || item.getAttributes() == null) continue;
-
-            Node keyAttribute = item.getAttributes().getNamedItem("key");
-            if (keyAttribute == null) continue;
-
-            String keyValue = keyAttribute.getNodeValue().toUpperCase().trim();
-            String nodeContent = item.getAttributes().getNamedItem("value").getNodeValue().trim();
-            nodeContent = StringEscapeUtils.unescape(nodeContent);
-
-            if (nodeContent == null || nodeContent.length() == 0) {
-                continue;
-            }
-
-            try {
-                parseNodeContent(item, keyValue, nodeContent);
-            } catch (Exception e) {
-                Log.e(Device.class.getName(), "an error occurred while reading attribute " + keyValue + " with value" +
-                        nodeContent, e);
-            }
-        }
-
-        NamedNodeMap attributes = xml.getAttributes();
-        for (int i = 0; i < attributes.getLength(); i++) {
-            Node attributeNode = attributes.item(i);
-            onAttributeRead(attributeNode.getNodeName().toUpperCase(), attributeNode.getNodeValue());
-        }
-
-        fillDeviceCharts(deviceCharts);
-
-        afterXMLRead();
-
-    }
-
-    private void parseSetsAttribute(String setsText) {
         setsText = setsText.trim();
         String lowercase = setsText.toLowerCase();
         if (lowercase.equals("") || lowercase.equals("*") || lowercase.contains("not set function")
@@ -120,37 +76,46 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
         this.availableTargetStates = setsText.split(" ");
     }
 
-    private void parseNodeContent(Node item, String keyValue, String nodeContent) {
-        if (keyValue.equals("ROOM")) {
-            setRoomConcatenated(nodeContent);
-        } else if (keyValue.equals("NAME")) {
-            name = nodeContent;
-        } else if (state == null && keyValue.equals("STATE")) {
-            state = nodeContent;
-        } else if (keyValue.equals("ALIAS")) {
-            alias = nodeContent;
-        } else if (keyValue.equals("CUL_TIME")) {
-            measured = nodeContent;
-        } else if (keyValue.equals("DEF")) {
-            definition = nodeContent;
-        } else if (keyValue.equals("EVENTMAP")) {
-            parseEventMap(nodeContent);
-        } else if (keyValue.startsWith("FP_")) {
-            String[] commaParts = nodeContent.split(",");
+    public void readROOM(String value) {
+        setRoomConcatenated(value);
+    }
+
+    public void readNAME(String value) {
+        name = value;
+    }
+
+    public void readSTATE(String value) {
+        state = value;
+    }
+
+    public void readCUL_TIME(String value) {
+        this.measured = value;
+    }
+
+    public void readDEF(String value) {
+        this.definition = value;
+    }
+
+    public void readEVENTMAP(String value) {
+        parseEventMap(value);
+    }
+
+    public void parseNodeContent(Node item, String key, String value) {
+        if (key.startsWith("FP_")) {
+            String[] commaParts = value.split(",");
             if (commaParts.length > 2) {
                 int y = Integer.valueOf(commaParts[0]);
                 int x = Integer.valueOf(commaParts[1]);
                 int viewType = Integer.valueOf(commaParts[2]);
 
-                floorPlanPositionMap.put(keyValue.substring(3), new FloorplanPosition(x, y, viewType));
+                floorPlanPositionMap.put(key.substring(3), new FloorplanPosition(x, y, viewType));
             }
         }
-
-        String tagName = item.getNodeName().toUpperCase();
-        onChildItemRead(tagName, keyValue, nodeContent, item.getAttributes());
     }
 
-    protected void afterXMLRead() {}
+    public void afterXMLRead() {
+        fillDeviceCharts(deviceCharts);
+    }
 
     private void parseEventMap(String content) {
         eventMap = new HashMap<String, String>();
@@ -237,10 +202,7 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
      * @param nodeContent value of the tag
      * @param attributes additional tag attributes
      */
-    protected abstract void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes);
-
-    protected void onAttributeRead(String attributeKey, String attributeValue) {
-    }
+    protected void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {};
 
     @Override
     public boolean equals(Object o) {

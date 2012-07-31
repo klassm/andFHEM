@@ -35,7 +35,6 @@ import li.klass.fhem.domain.genericview.FloorplanViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ValueDescriptionUtil;
-import org.w3c.dom.NamedNodeMap;
 
 import java.util.List;
 
@@ -51,18 +50,21 @@ public class USBWXDevice extends Device<USBWXDevice> {
     private String temperature;
     @ShowField(description = R.string.dewpoint, showInOverview = true)
     private String dewpoint;
-    
-    @Override
-    protected void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {
-        if (keyValue.equals("TEMPERATURE")) {
-            this.temperature = ValueDescriptionUtil.appendTemperature(nodeContent);
-        } else if (keyValue.equals("HUMIDITY")) {
-            this.humidity = ValueDescriptionUtil.appendPercent(nodeContent);
-        } else if (keyValue.equals("DEWPOINT")) {
-            this.dewpoint = ValueDescriptionUtil.appendTemperature(nodeContent);
-        } else if (keyValue.equals("TIME")) {
-            measured = nodeContent;
-        }
+
+    public void readTEMPERATURE(String value)  {
+        this.temperature = ValueDescriptionUtil.appendTemperature(value);
+    }
+
+    public void readHUMIDITY(String value)  {
+        this.humidity = ValueDescriptionUtil.appendPercent(value);
+    }
+
+    public void readDEWPOINT(String value)  {
+        this.dewpoint = ValueDescriptionUtil.appendTemperature(value);
+    }
+
+    public void readTIME(String value)  {
+        measured = value;
     }
 
     public String getHumidity() {

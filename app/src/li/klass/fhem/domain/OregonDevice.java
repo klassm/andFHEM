@@ -71,103 +71,157 @@ public class OregonDevice extends Device<OregonDevice> {
     private String uvRisk;
 
     @Override
-    protected void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {
+    protected void onChildItemRead(String tagName, String keyValue, String value, NamedNodeMap attributes) {
         if (keyValue.equals("TEMPERATURE")) {
-            this.temperature = ValueDescriptionUtil.appendTemperature(nodeContent);
+            this.temperature = ValueDescriptionUtil.appendTemperature(value);
         } else if (keyValue.equals("HUMIDITY")) {
-            this.humidity = ValueDescriptionUtil.appendPercent(nodeContent);
+            this.humidity = ValueDescriptionUtil.appendPercent(value);
         } else if (keyValue.equals("FORECAST")) {
-            this.forecast = nodeContent;
+            this.forecast = value;
         } else if (keyValue.equals("DEWPOINT")) {
-            this.dewpoint = nodeContent + " (Celsius)";
+            this.dewpoint = value + " (Celsius)";
         } else if (keyValue.equals("PRESSURE")) {
-            this.pressure = nodeContent + " (hPa)";
+            this.pressure = value + " (hPa)";
         } else if (keyValue.equals("BATTERY")) {
-            this.battery = nodeContent + " (%)";
+            this.battery = value + " (%)";
         } else if (keyValue.equals("RAIN_RATE")) {
-            this.rainRate = nodeContent + " (mm/hr)";
+            this.rainRate = value + " (mm/hr)";
         } else if (keyValue.equals("RAIN_TOTAL")) {
-            this.rainTotal = nodeContent + " (l/m2)";
+            this.rainTotal = value + " (l/m2)";
         } else if (keyValue.equals("WIND_AVSPEED")) {
-            this.windAvgSpeed = nodeContent + " (km/h)";
+            this.windAvgSpeed = value + " (km/h)";
         } else if (keyValue.equals("WIND_DIR")) {
-            this.windDirection = nodeContent;
+            this.windDirection = value;
         } else if (keyValue.equals("WIND_SPEED")) {
-            this.windSpeed = nodeContent + " (km/h)";
+            this.windSpeed = value + " (km/h)";
         } else if (keyValue.equals("UV_VAL")) {
-            this.uvValue = nodeContent;
+            this.uvValue = value;
         } else if (keyValue.equals("UV_RISK")) {
-            this.uvRisk = nodeContent;
+            this.uvRisk = value;
         } else if (keyValue.equals("TIME")) {
-            this.measured = nodeContent;
+            this.measured = value;
         }
     }
 
-    public String getHumidity() {
+    public void readTEMPERATURE(String value) {
+        this.temperature = value;
+    }
+
+    public void readHUMIDITY(String value) {
+        this.humidity = ValueDescriptionUtil.appendPercent(value);
+    }
+
+    public void readFORECAST(String value) {
+        this.forecast = value;
+    }
+
+    public void readDEWPOINT(String value) {
+        this.dewpoint = ValueDescriptionUtil.appendTemperature(value);
+    }
+    public void readPRESSURE(String value) {
+        this.pressure = ValueDescriptionUtil.append(value, "hPa");
+    }
+    public void readBATTERY(String value) {
+        this.battery = ValueDescriptionUtil.appendPercent(value);
+    }
+
+    public void readRAIN_RATE(String value) {
+        this.rainRate = ValueDescriptionUtil.append(value, "mm/hr");
+    }
+
+    public void readRAIN_TOTAL(String value) {
+        this.rainTotal = ValueDescriptionUtil.append(value, "l/m2");
+    }
+
+    public void readWIND_AVSPEED(String value) {
+        this.windAvgSpeed = ValueDescriptionUtil.appendKmH(value);
+    }
+
+    public void readWIND_DIR(String value) {
+        this.windDirection = value;
+    }
+
+    public void readWIND_SPEED(String value) {
+        this.windSpeed = ValueDescriptionUtil.appendKmH(value);
+    }
+
+    public void readUV_VAL(String value) {
+        this.uvValue = value;
+    }
+
+    public void readUV_RISK(String value) {
+        this.uvRisk = value;
+    }
+
+    public void readTIME(String value) {
+        this.measured = value;
+    }
+
+    public String getHumidity(){
         return humidity;
     }
 
-    public String getTemperature() {
+    public String getTemperature(){
         return temperature;
     }
 
-    public String getForecast() {
+    public String getForecast(){
         return forecast;
     }
 
-    public String getDewpoint() {
+    public String getDewpoint(){
         return dewpoint;
     }
 
-    public String getPressure() {
+    public String getPressure(){
         return pressure;
     }
 
-    public String getBattery() {
+    public String getBattery(){
         return battery;
     }
 
-    public String getRainRate() {
+    public String getRainRate(){
         return rainRate;
     }
 
-    public String getRainTotal() {
+    public String getRainTotal(){
         return rainTotal;
     }
 
-    public String getWindAvgSpeed() {
+    public String getWindAvgSpeed(){
         return windAvgSpeed;
     }
 
-    public String getWindDirection() {
+    public String getWindDirection(){
         return windDirection;
     }
 
-    public String getWindSpeed() {
+    public String getWindSpeed(){
         return windSpeed;
     }
 
-    public String getUvValue() {
+    public String getUvValue(){
         return uvValue;
     }
 
-    public String getUvRisk() {
+    public String getUvRisk(){
         return uvRisk;
     }
 
     @Override
-    protected void fillDeviceCharts(List<DeviceChart> chartSeries) {
-        addDeviceChartIfNotNull(temperature, new DeviceChart(R.string.temperatureGraph, R.string.yAxisTemperature,
-                ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:temperature:0:")));
-        addDeviceChartIfNotNull(humidity, new DeviceChart(R.string.humidityGraph, R.string.yAxisHumidity,
-                new ChartSeriesDescription(R.string.temperature, "4:humidity:0:")));
-        addDeviceChartIfNotNull(pressure, new DeviceChart(R.string.pressureGraph, R.string.yAxisPressure,
-                new ChartSeriesDescription(R.string.pressure, "4:pressure:0:")));
-        addDeviceChartIfNotNull(rainRate, new DeviceChart(R.string.rainRate, R.string.yAxisRainRate,
-                new ChartSeriesDescription(R.string.rainRate, "4:rain_rate:0:")));
-        addDeviceChartIfNotNull(rainTotal, new DeviceChart(R.string.rainTotal, R.string.yAxisRainTotal,
-                new ChartSeriesDescription(R.string.rainRate, "4:rain_total:0:")));
-        addDeviceChartIfNotNull(windSpeed, new DeviceChart(R.string.windSpeed, R.string.yAxisWindSpeed,
-                new ChartSeriesDescription(R.string.rainRate, "4:wind_speed:0:")));
+    protected void fillDeviceCharts(List<DeviceChart>chartSeries){
+        addDeviceChartIfNotNull(temperature,new DeviceChart(R.string.temperatureGraph,R.string.yAxisTemperature,
+                ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature,"4:temperature:0:")));
+        addDeviceChartIfNotNull(humidity,new DeviceChart(R.string.humidityGraph,R.string.yAxisHumidity,
+                new ChartSeriesDescription(R.string.temperature,"4:humidity:0:")));
+        addDeviceChartIfNotNull(pressure,new DeviceChart(R.string.pressureGraph,R.string.yAxisPressure,
+                new ChartSeriesDescription(R.string.pressure,"4:pressure:0:")));
+        addDeviceChartIfNotNull(rainRate,new DeviceChart(R.string.rainRate,R.string.yAxisRainRate,
+                new ChartSeriesDescription(R.string.rainRate,"4:rain_rate:0:")));
+        addDeviceChartIfNotNull(rainTotal,new DeviceChart(R.string.rainTotal,R.string.yAxisRainTotal,
+                new ChartSeriesDescription(R.string.rainRate,"4:rain_total:0:")));
+        addDeviceChartIfNotNull(windSpeed,new DeviceChart(R.string.windSpeed,R.string.yAxisWindSpeed,
+                new ChartSeriesDescription(R.string.rainRate,"4:wind_speed:0:")));
     }
 }

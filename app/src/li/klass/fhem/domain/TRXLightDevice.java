@@ -29,15 +29,17 @@ import li.klass.fhem.domain.genericview.ShowField;
 import org.w3c.dom.NamedNodeMap;
 
 public class TRXLightDevice extends ToggleableDevice<TRXLightDevice> {
+
     @ShowField(description = R.string.type)
     private String type;
 
-    @Override
-    protected void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {
-        if (keyValue.equalsIgnoreCase("TRX_LIGHT_type")) {
-            this.type = nodeContent;
-        } else if (keyValue.equalsIgnoreCase("STATE") && attributes.getNamedItem("measured") != null) {
-            measured = attributes.getNamedItem("measured").getNodeValue();
+    public void setTRX_LIGHT_TYPE(String value) {
+        this.type = value;
+    }
+
+    public void readSTATE(String tagName, NamedNodeMap attributes, String value) {
+        if (tagName.equals("STATE")) {
+            this.measured = attributes.getNamedItem("measured").getNodeValue();
         }
     }
 

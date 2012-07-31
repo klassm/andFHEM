@@ -40,18 +40,17 @@ public class CULFHTTKDevice extends Device<CULFHTTKDevice> {
     @ShowField(description = R.string.lastStateChange, showInOverview = true)
     private String lastStateChangeTime;
 
-    @Override
-    public void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {
-        if (keyValue.equals("WINDOW")) {
-            windowState = nodeContent;
-        } else if (keyValue.equals("PREVIOUS")) {
-            lastWindowState = nodeContent;
-            lastStateChangeTime = attributes.getNamedItem("measured").getNodeValue();
-        }
+    public void readWINDOW(String value) {
+        windowState = value;
+    }
+
+    public void readPREVIOUS(String value, NamedNodeMap attributes) {
+        lastWindowState = value;
+        lastStateChangeTime = attributes.getNamedItem("measured").getNodeValue();
     }
 
     @Override
-    protected void afterXMLRead() {
+    public void afterXMLRead() {
         stateChangeText = "";
         if (getLastWindowState() != null) {
             stateChangeText += getLastWindowState() + " => ";

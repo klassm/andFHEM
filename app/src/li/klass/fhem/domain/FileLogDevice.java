@@ -25,17 +25,13 @@
 package li.klass.fhem.domain;
 
 import li.klass.fhem.domain.core.Device;
-import org.w3c.dom.NamedNodeMap;
 
 public class FileLogDevice extends Device<FileLogDevice> {
 
     private String concerningDeviceName;
 
-    @Override
-    public void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {
-        if (keyValue.equals("REGEXP")) {
-            this.concerningDeviceName = extractConcerningDeviceNameFromDefinition(nodeContent);
-        }
+    public void readREGEXP(String value) {
+        this.concerningDeviceName = extractConcerningDeviceNameFromDefinition(value);
     }
 
     private String extractConcerningDeviceNameFromDefinition(String definition) {

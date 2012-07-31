@@ -25,14 +25,9 @@ package li.klass.fhem.domain;
 
 import li.klass.fhem.domain.core.ToggleableDevice;
 import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
-import org.w3c.dom.NamedNodeMap;
 
 @DetailOverviewViewSettings(showState = true)
 public class HOLDevice extends ToggleableDevice<HOLDevice> {
-    @Override
-    protected void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {
-        super.onChildItemRead(tagName, keyValue, nodeContent, attributes);
-    }
 
     public boolean isOn() {
         return ! getInternalState().equals("off");

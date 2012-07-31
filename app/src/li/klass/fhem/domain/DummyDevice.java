@@ -31,11 +31,8 @@ import org.w3c.dom.NamedNodeMap;
 @DetailOverviewViewSettings(showState = true)
 public class DummyDevice extends ToggleableDevice<DummyDevice> {
 
-    @Override
-    protected void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {
-        if (tagName.equalsIgnoreCase("STATE") && keyValue.equalsIgnoreCase("STATE")) {
-            this.measured = attributes.getNamedItem("measured").getNodeValue();
-        }
+    public void readSTATE(String tagName, String value, NamedNodeMap attributes) {
+        this.measured = attributes.getNamedItem("measured").getNodeValue();
     }
 
     @Override

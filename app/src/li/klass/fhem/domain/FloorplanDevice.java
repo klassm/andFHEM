@@ -24,10 +24,6 @@
 package li.klass.fhem.domain;
 
 import li.klass.fhem.domain.core.Device;
-import org.w3c.dom.NamedNodeMap;
 
 public class FloorplanDevice extends Device<FloorplanDevice> {
-    @Override
-    protected void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {
-    }
 }

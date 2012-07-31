@@ -27,7 +27,6 @@ import android.util.Log;
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.domain.core.Device;
-import org.w3c.dom.NamedNodeMap;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -38,15 +37,6 @@ import java.util.regex.Pattern;
 import static li.klass.fhem.util.NumberUtil.toTwoDecimalDigits;
 
 public class AtDevice extends Device<AtDevice> {
-
-    public static final Pattern FHEM_PATTERN = Pattern.compile("fhem\\(\"set ([\\w\\-,]+) ([\\w%-]+)(?: ([0-9:]+))?\"\\)(.*)");
-    public static final Pattern PREFIX_PATTERN = Pattern.compile("([+*]{0,2})([0-9:]+)(.*)");
-    public static final Pattern DEFAULT_PATTERN = Pattern.compile("set ([\\w-]+) ([\\w\\-,%]+)(?: ([0-9:]+))?");
-    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-    private int hours;
-    private int minutes;
-    private int seconds;
-    private String nextTrigger;
 
     public enum AtRepetition {
         ONCE(R.string.timer_overview_once), EVERY_DAY(R.string.timer_overview_every_day), WEEKEND(R.string.timer_overview_weekend), WEEKDAY(R.string.timer_overview_weekend);
@@ -76,6 +66,16 @@ public class AtDevice extends Device<AtDevice> {
         }
     }
 
+    public static final Pattern FHEM_PATTERN = Pattern.compile("fhem\\(\"set ([\\w\\-,]+) ([\\w%-]+)(?: ([0-9:]+))?\"\\)(.*)");
+    public static final Pattern PREFIX_PATTERN = Pattern.compile("([+*]{0,2})([0-9:]+)(.*)");
+    public static final Pattern DEFAULT_PATTERN = Pattern.compile("set ([\\w-]+) ([\\w\\-,%]+)(?: ([0-9:]+))?");
+    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+
+    private int hours;
+    private int minutes;
+    private int seconds;
+    private String nextTrigger;
+
     private String targetDevice;
     private String targetState;
     private String targetStateAddtionalInformation;
@@ -83,12 +83,15 @@ public class AtDevice extends Device<AtDevice> {
     private TimerType timerType = TimerType.ABSOLUTE;
 
     @Override
-    protected void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {
-        if (keyValue.equalsIgnoreCase("DEF")) {
-            definition = parseDefinition(nodeContent) ? nodeContent : "";
-        } else if (keyValue.equalsIgnoreCase("STATE")) {
-            nextTrigger = nodeContent.replaceAll("Next: ", "");
-        }
+    public void readDEF(String value) {
+        super.readDEF(value);
+        definition = parseDefinition(value) ? value : "";
+    }
+
+    @Override
+    public void readSTATE(String value) {
+        super.readSTATE(value);
+        nextTrigger = value.replaceAll("Next: ", "");
     }
 
     @Override

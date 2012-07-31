@@ -35,7 +35,6 @@ import li.klass.fhem.appwidget.view.widget.medium.MediumInformationWidgetView;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.genericview.FloorplanViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
-import org.w3c.dom.NamedNodeMap;
 
 @FloorplanViewSettings(showState = true)
 @SupportsWidget(MediumInformationWidgetView.class)
@@ -55,23 +54,29 @@ public class OwcountDevice extends Device<OwcountDevice> {
     @WidgetMediumLine3(description = R.string.warnings)
     private String warnings;
 
-    
-    @Override
-    protected void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {
-        if (keyValue.equals("COUNTERS.A")) {
-            this.counterA = Float.valueOf(nodeContent);
-        } else if (keyValue.equals("COUNTERS.B")) {
-            this.counterB = Float.valueOf(nodeContent);
-        } else if (keyValue.equals("CORR1")) {
-            this.correlationA = Float.valueOf(nodeContent);
-        } else if (keyValue.equals("CORR2")) {
-            this.correlationB = Float.valueOf(nodeContent);
-        } else if (keyValue.equals("PRESENT")) {
-            Resources resources = AndFHEMApplication.getContext().getResources();
-            this.present = nodeContent.equals("1") ? resources.getString(R.string.yes) : resources.getString(R.string.no);
-        } else if (keyValue.equals("WARNINGS")) {
-            this.warnings = nodeContent;
-        }
+    public void readCOUNTERS_A(String value)  {
+        this.counterA = Float.valueOf(value);
+    }
+
+    public void readCOUNTERS_B(String value)  {
+        this.counterB = Float.valueOf(value);
+    }
+
+    public void readCORR1(String value)  {
+        this.correlationA = Float.valueOf(value);
+    }
+
+    public void readCORR2(String value)  {
+        this.correlationB = Float.valueOf(value);
+    }
+
+    public void readPRESENT(String value)  {
+        Resources resources = AndFHEMApplication.getContext().getResources();
+        this.present = value.equals("1") ? resources.getString(R.string.yes) : resources.getString(R.string.no);
+    }
+
+    public void readWARNINGS(String value)  {
+        this.warnings = value;
     }
 
     public float getCounterA() {

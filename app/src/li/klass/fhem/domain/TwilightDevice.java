@@ -27,7 +27,6 @@ import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.genericview.ShowField;
-import org.w3c.dom.NamedNodeMap;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -41,27 +40,37 @@ public class TwilightDevice extends Device<TwilightDevice> {
 
     @ShowField(description = R.string.twilight_sunrise)
     private String sunrise;
+
     @ShowField(description = R.string.twilight_sunrise_astronomical)
     private String sunriseAstronomical;
+
     @ShowField(description = R.string.twilight_sunrise_civil)
     private String sunriseCivil;
+
     @ShowField(description = R.string.twilight_sunrise_indoor)
     private String sunriseIndoor;
+
     @ShowField(description = R.string.twilight_sunrise_nautical)
     private String sunriseNautical;
+
     @ShowField(description = R.string.twilight_sunrise_weather)
     private String sunriseWeather;
 
     @ShowField(description = R.string.twilight_sunset)
     private String sunset;
+
     @ShowField(description = R.string.twilight_sunset_astronomical)
     private String sunsetAstronomical;
+
     @ShowField(description = R.string.twilight_sunset_civil)
     private String sunsetCivil;
+
     @ShowField(description = R.string.twilight_sunset_indoor)
     private String sunsetIndoor;
+
     @ShowField(description = R.string.twilight_sunset_nautical)
     private String sunsetNautical;
+
     @ShowField(description = R.string.twilight_sunset_weather)
     private String sunsetWeather;
 
@@ -79,40 +88,65 @@ public class TwilightDevice extends Device<TwilightDevice> {
         lightStringIdMap.put(6, R.string.twilight_light_daylight);
     }
 
-    @Override
-    protected void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {
-        if (keyValue.equalsIgnoreCase("NEXTEVENT")) {
-            nextEvent = nodeContent;
-        } else if (keyValue.equalsIgnoreCase("NEXTEVENTTIME")) {
-            nextEventTime = nodeContent;
-        } else if (keyValue.equalsIgnoreCase("LIGHT")) {
-            Integer value = Integer.parseInt(nodeContent);
-            light = AndFHEMApplication.getContext().getString(lightStringIdMap.get(value));
-        } else if (keyValue.equalsIgnoreCase("SR")) {
-            sunrise = nodeContent;
-        } else if (keyValue.equalsIgnoreCase("SR_ASTRO")) {
-            sunriseAstronomical = nodeContent;
-        } else if (keyValue.equalsIgnoreCase("SR_CIVIL")) {
-            sunriseCivil = nodeContent;
-        } else if (keyValue.equalsIgnoreCase("SR_INDOOR")) {
-            sunriseIndoor = nodeContent;
-        } else if (keyValue.equalsIgnoreCase("SR_NAUTICAL")) {
-            sunriseNautical = nodeContent;
-        } else if (keyValue.equalsIgnoreCase("SR_WEATHER")) {
-            sunriseWeather = nodeContent;
-        } else if (keyValue.equalsIgnoreCase("SS")) {
-            sunset = nodeContent;
-        } else if (keyValue.equalsIgnoreCase("SS_ASTRO")) {
-            sunsetAstronomical = nodeContent;
-        } else if (keyValue.equalsIgnoreCase("SS_CIVIL")) {
-            sunsetCivil = nodeContent;
-        } else if (keyValue.equalsIgnoreCase("SS_INDOOR")) {
-            sunsetIndoor = nodeContent;
-        } else if (keyValue.equalsIgnoreCase("SS_NAUTICAL")) {
-            sunsetNautical = nodeContent;
-        } else if (keyValue.equalsIgnoreCase("SS_WEATHER")) {
-            sunsetWeather = nodeContent;
-        }
+    public void readNEXTEVENT(String value)  {
+        nextEvent = value;
+    }
+
+    public void readNEXTEVENTTIME(String value)  {
+        nextEventTime = value;
+    }
+
+    public void readLIGHT(String value)  {
+        Integer light = Integer.parseInt(value);
+        this.light = AndFHEMApplication.getContext().getString(lightStringIdMap.get(light));
+    }
+
+    public void readSR(String value)  {
+        sunrise = value;
+    }
+
+    public void readSR_ASTRO(String value)  {
+        sunriseAstronomical = value;
+    }
+
+    public void readSR_CIVIL(String value)  {
+        sunriseCivil = value;
+    }
+
+    public void readSR_INDOOR(String value)  {
+        sunriseIndoor = value;
+    }
+
+    public void readSR_NAUTICAL(String value)  {
+        sunriseNautical = value;
+    }
+
+    public void readSR_WEATHER(String value)  {
+        sunriseWeather = value;
+    }
+
+    public void readSS(String value)  {
+        sunset = value;
+    }
+
+    public void readSS_ASTRO(String value)  {
+        sunsetAstronomical = value;
+    }
+
+    public void readSS_CIVIL(String value)  {
+        sunsetCivil = value;
+    }
+
+    public void readSS_INDOOR(String value)  {
+        sunsetIndoor = value;
+    }
+
+    public void readSS_NAUTICAL(String value)  {
+        sunsetNautical = value;
+    }
+
+    public void readSS_WEATHER(String value)  {
+        sunsetWeather = value;
     }
 
     public String getNextEvent() {

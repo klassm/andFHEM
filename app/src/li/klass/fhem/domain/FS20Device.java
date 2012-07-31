@@ -33,7 +33,6 @@ import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.NumberSystemUtil;
 import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
 
 import java.io.Serializable;
 import java.util.Arrays;
@@ -47,7 +46,7 @@ public class FS20Device extends ToggleableDevice<FS20Device> implements Comparab
      * List of dim states available for FS20 devices. Careful: this list has to be ordered, to make dim up and
      * down work!
      */
-    private List<Integer> dimStates = Arrays.asList(0, 6, 12, 18, 25, 31, 37, 43, 50, 56, 62, 68, 75, 81, 87, 93, 100);
+    private static final List<Integer> dimStates = Arrays.asList(0, 6, 12, 18, 25, 31, 37, 43, 50, 56, 62, 68, 75, 81, 87, 93, 100);
     private static final List<String> dimModels = Arrays.asList("FS20DI", "FS20DI10", "FS20DU");
     private static final List<String> offStates = Arrays.asList("off", "off-for-timer", "reset", "timer");
 
@@ -58,24 +57,23 @@ public class FS20Device extends ToggleableDevice<FS20Device> implements Comparab
         ON, OFF
     }
 
-    @Override
-    public void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {
-        super.onChildItemRead(tagName, keyValue, nodeContent, attributes);
+    public void readSTATE(String tagName, String value, NamedNodeMap attributes) {
+        if (tagName.equals("INT")) {
+            setState(value);
+        }
+    }
 
-        if (keyValue.equals("STATE") && tagName.equals("INT")) {
-            setState(nodeContent);
-        } else if (keyValue.equals("STATE") && tagName.equals("STATE")) {
-            Node measured = attributes.getNamedItem("measured");
-            if (measured != null) {
-                this.measured = measured.getNodeValue();
-            }
-        } else if (keyValue.equalsIgnoreCase("MODEL")) {
-            this.model = nodeContent.toUpperCase();
-        } else if (keyValue.equals("DEF")) {
-            String[] parts = nodeContent.split(" ");
-            if (parts.length == 2 && parts[0].length() == 4 && parts[1].length() == 2) {
-                definition = transformHexTo4System(parts[0]) + " " + transformHexTo4System(parts[1]);
-            }
+    public void readMODEL(String value) {
+        this.model = value.toUpperCase();
+    }
+
+    @Override
+    public void readDEF(String value) {
+        super.readDEF(value);
+
+        String[] parts = value.split(" ");
+        if (parts.length == 2 && parts[0].length() == 4 && parts[1].length() == 2) {
+            definition = transformHexTo4System(parts[0]) + " " + transformHexTo4System(parts[1]);
         }
     }
 

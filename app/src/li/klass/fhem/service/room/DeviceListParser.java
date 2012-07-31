@@ -33,7 +33,9 @@ import li.klass.fhem.exception.AndFHEMException;
 import li.klass.fhem.exception.DeviceListParseException;
 import li.klass.fhem.exception.HostConnectionException;
 import li.klass.fhem.fhem.DataConnectionSwitch;
+import li.klass.fhem.util.StringEscapeUtils;
 import org.w3c.dom.Document;
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
@@ -41,11 +43,11 @@ import org.xml.sax.InputSource;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.StringReader;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.lang.reflect.Method;
+import java.util.*;
 
 import static li.klass.fhem.domain.core.DeviceType.FILE_LOG;
+
 
 /**
  * Class responsible for reading the current xml list from FHEM.
@@ -54,6 +56,8 @@ public class DeviceListParser {
 
     public static final DeviceListParser INSTANCE = new DeviceListParser();
     public static final String TAG = DeviceListParser.class.getSimpleName();
+
+    private Map<Class<Device>, Map<String, Set<Method>>> deviceClassCache;
 
     private DeviceListParser() {}
 
@@ -165,9 +169,9 @@ public class DeviceListParser {
                                                    Node node, RoomDeviceList allDevicesRoom)
             throws Exception {
 
-        T device = deviceClass.newInstance();
-        device.loadXML(node);
+        T device = createAndFillDevice(deviceClass, node);
         Log.d(TAG, "loaded device with name " + device.getName());
+
         String[] rooms = device.getRooms();
         if (device.isSupported()) {
             for (String room : rooms) {
@@ -219,5 +223,123 @@ public class DeviceListParser {
                 return;
             }
         }
+    }
+
+    private <T extends Device> T createAndFillDevice(Class<T> deviceClass, Node node) throws Exception {
+        T device = deviceClass.newInstance();
+        Map<String, Set<Method>> cache = getDeviceClassCacheEntriesFor(deviceClass);
+
+        NamedNodeMap attributes = node.getAttributes();
+        for (int i = 0; i < attributes.getLength(); i++) {
+            Node item = attributes.item(i);
+            String name = item.getNodeName().toUpperCase().replaceAll("[-.]", "_");
+            String value = StringEscapeUtils.unescape(item.getNodeValue());
+
+            invokeDeviceAttributeMethod(cache, device, name, value);
+        }
+
+        NodeList childNodes = node.getChildNodes();
+        for (int i = 0; i < childNodes.getLength(); i++) {
+            Node item = childNodes.item(i);
+            if (item == null || item.getAttributes() == null) continue;
+
+            Node keyAttribute = item.getAttributes().getNamedItem("key");
+            if (keyAttribute == null) continue;
+
+            String keyValue = keyAttribute.getNodeValue().toUpperCase().trim().replaceAll("[-.]", "_");
+            String nodeContent = StringEscapeUtils.unescape(item.getAttributes().getNamedItem("value").getNodeValue());
+
+            if (nodeContent == null || nodeContent.length() == 0) {
+                continue;
+            }
+
+            invokeDeviceAttributeMethod(cache, device, keyValue, nodeContent, item.getAttributes(), item.getNodeName());
+            device.parseNodeContent(item, keyValue, nodeContent);
+        }
+
+
+        device.afterXMLRead();
+
+        return device;
+    }
+
+    private <T extends Device> void invokeDeviceAttributeMethod(Map<String, Set<Method>> cache, T device, String key,
+                                                                   String value) throws Exception {
+        invokeDeviceAttributeMethod(cache, device, key, value, null);
+    }
+
+    private <T extends Device> void invokeDeviceAttributeMethod(Map<String, Set<Method>> cache, T device, String key,
+                                                                   String value, NamedNodeMap attributes) throws Exception {
+        invokeDeviceAttributeMethod(cache, device, key, value, attributes, "");
+    }
+
+    private <T extends Device> void invokeDeviceAttributeMethod(Map<String, Set<Method>> cache, T device, String key,
+                                                                   String value, NamedNodeMap attributes, String tagName) throws Exception {
+
+        if (! cache.containsKey(key)) return;
+
+        Set<Method> availableMethods = cache.get(key);
+        for (Method availableMethod : availableMethods) {
+            Class<?>[] parameterTypes = availableMethod.getParameterTypes();
+
+            if (parameterTypes.length == 1 && parameterTypes[0].equals(String.class)) {
+                availableMethod.invoke(device, value);
+            }
+
+            if (attributes != null && parameterTypes.length == 2 && parameterTypes[0].equals(String.class) &&
+                    parameterTypes[1].equals(NamedNodeMap.class)) {
+                availableMethod.invoke(device, value, attributes);
+            }
+
+            if (tagName != null && attributes != null && parameterTypes.length == 3 &&
+                    parameterTypes[0].equals(String.class) && parameterTypes[1].equals(NamedNodeMap.class) &&
+                    parameterTypes[2].equals(String.class)) {
+                availableMethod.invoke(device, tagName, attributes, value);
+            }
+        }
+    }
+
+
+    @SuppressWarnings("unchecked")
+    private <T extends Device> Map<String, Set<Method>> getDeviceClassCacheEntriesFor(Class<T> deviceClass) {
+        Map<Class<Device>, Map<String, Set<Method>>> cache = getDeviceClassCache();
+//        if (! cache.containsKey(deviceClass)) {
+            cache.put((Class<Device>) deviceClass, initDeviceClassCacheEntries(deviceClass));
+//        }
+
+        return cache.get(deviceClass);
+    }
+
+    /**
+     * Loads an initial map of method names (that are parsed to attribute names) incl. the methods polymorphic
+     * method parameters.
+     *
+     * @param deviceClass class of the device
+     * @return map of device methods
+     */
+    private <T extends Device>  Map<String, Set<Method>> initDeviceClassCacheEntries(Class<T> deviceClass) {
+        Map<String, Set<Method>> cache = new HashMap<String, Set<Method>>();
+        Method[] methods = deviceClass.getMethods();
+        for (Method method : methods) {
+            String methodName = method.getName();
+            if (! methodName.startsWith("read")) continue;
+
+            String attributeName = methodName.substring("read".length());
+            if (! cache.containsKey(attributeName)) {
+                cache.put(attributeName, new HashSet<Method>());
+            }
+            cache.get(attributeName).add(method);
+            method.setAccessible(true);
+        }
+
+        return cache;
+    }
+
+    private Map<Class<Device>, Map<String, Set<Method>>> getDeviceClassCache() {
+        if (deviceClassCache == null) {
+            deviceClassCache = new HashMap<Class<Device>, Map<String, Set<Method>>>();
+        }
+
+        return deviceClassCache;
     }
 }

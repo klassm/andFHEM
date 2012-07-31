@@ -50,6 +50,18 @@ public class LGTVDevice extends Device<LGTVDevice> {
         }
     }
 
+    public void readPOWER(String value) {
+        this.power = value;
+    }
+
+    public void readAUDIO(String value) {
+        this.audio = value;
+    }
+
+    public void readINPUT(String value) {
+        this.input = value;
+    }
+
     public String getPower() {
         return power;
     }
