@@ -28,6 +28,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import li.klass.fhem.AndFHEMApplication;
+import li.klass.fhem.R;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.RoomDeviceList;
@@ -172,12 +173,15 @@ public class RoomListService extends AbstractService {
             try {
                 deviceListMap = getRemoteRoomDeviceListMap();
             } catch (AndFHEMException e) {
-                Bundle bundle = new Bundle();
-                bundle.putInt(BundleExtraKeys.TOAST_STRING_ID, e.getErrorMessageStringId());
-                sendBroadcastWithAction(Actions.SHOW_TOAST, bundle);
+                int errorStringId = e.getErrorMessageStringId();
+                sendErrorMessage(errorStringId);
 
-                Log.e(TAG, "error occurred while fetching the remove device list", e);
-            } finally {
+                Log.e(TAG, "error occurred while fetching the remote device list", e);
+            } catch (Exception e) {
+                sendErrorMessage(R.string.updateError);
+                Log.e(TAG, "unknown exception occurred while fetching the remote device list", e);
+            }
+            finally {
                 sendBroadcastWithAction(Actions.DISMISS_UPDATING_DIALOG, null);
             }
         }
@@ -188,6 +192,12 @@ public class RoomListService extends AbstractService {
         }
 
         return deviceListMap;
+    }
+
+    private void sendErrorMessage(int errorStringId) {
+        Bundle bundle = new Bundle();
+        bundle.putInt(BundleExtraKeys.TOAST_STRING_ID, errorStringId);
+        sendBroadcastWithAction(Actions.SHOW_TOAST, bundle);
     }
 
     /**

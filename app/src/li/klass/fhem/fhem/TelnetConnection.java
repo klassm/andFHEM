@@ -85,7 +85,7 @@ public class TelnetConnection implements FHEMConnection {
     }
 
     private String request(String command) {
-        Log.i(TelnetConnection.class.getName(), "executeTask command " + command);
+        Log.i(TAG, "executeTask command " + command);
 
         OutputStream outputStream = null;
         BufferedOutputStream bufferedOutputStream = null;
@@ -139,9 +139,10 @@ public class TelnetConnection implements FHEMConnection {
         } catch (AndFHEMException e) {
             throw e;
         } catch (ConnectTimeoutException e) {
+            Log.e(TAG, "timeout", e);
             throw new TimeoutException(e);
         } catch (Exception e) {
-            Log.e(TelnetConnection.class.getName(), "error occurred", e);
+            Log.e(TAG, "error occurred", e);
             throw new HostConnectionException(e);
         } finally {
             CloseableUtil.close(printWriter, bufferedOutputStream, outputStream, inputStream);

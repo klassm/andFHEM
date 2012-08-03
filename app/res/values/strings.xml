@@ -86,7 +86,7 @@
     <string name="dimUp">Dim +</string>
     <string name="dimDown">Dim -</string>
     <string name="actions">Actions</string>
-    <string name="actions">Model</string>
+    <string name="model">Model</string>
     <string name="send">Send</string>
     <string name="error">Error!</string>
     <string name="conversion">Conversion</string>

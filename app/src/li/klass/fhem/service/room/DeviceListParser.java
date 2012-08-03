@@ -105,6 +105,7 @@ public class DeviceListParser {
             xmlList = xmlList.replaceAll("<weblink_LIST[\\s\\S]*</weblink_LIST>", "");
             xmlList = xmlList.replaceAll("<CUL_IR_LIST>[\\s\\S]*</CUL_IR_LIST>", "");
             xmlList = xmlList.replaceAll("<autocreate_LIST>[\\s\\S]*</autocreate_LIST>", "");
+            xmlList = xmlList.replaceAll("<Global_LIST[\\s\\S]*</Global_LIST>", "");
 
             xmlList = xmlList.replaceAll("_internal_", "internal");
 
