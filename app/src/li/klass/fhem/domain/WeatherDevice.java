@@ -143,13 +143,14 @@ public class WeatherDevice extends Device<WeatherDevice> {
             String name = keyValue.substring(underscorePosition + 1);
 
             String prefix = keyValue.substring(2, underscorePosition);
+            if ("1".equals(prefix)) return;
 
             if (! forecastMap.containsKey(prefix)) {
                 Calendar forecastDate = Calendar.getInstance();
 
                 Date measuredDate = parseDateFormat.parse(measured);
                 forecastDate.setTime(measuredDate);
-                forecastDate.add(Calendar.DAY_OF_YEAR, Integer.valueOf(prefix));
+                forecastDate.add(Calendar.DAY_OF_YEAR, Integer.valueOf(prefix) - 1);
                 String forecastTimeString = WeatherDeviceForecast.forecastDateFormat.format(forecastDate.getTime());
 
                 forecastMap.put(prefix, new WeatherDeviceForecast(forecastTimeString));
