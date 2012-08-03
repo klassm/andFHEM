@@ -28,7 +28,6 @@ import li.klass.fhem.R;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.genericview.FloorplanViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
-import org.w3c.dom.NamedNodeMap;
 
 @FloorplanViewSettings(showState = true)
 public class LGTVDevice extends Device<LGTVDevice> {
@@ -38,17 +37,6 @@ public class LGTVDevice extends Device<LGTVDevice> {
     private String audio;
     @ShowField(description = R.string.input, showInOverview = true)
     private String input;
-
-    @Override
-    protected void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {
-        if (keyValue.equals("POWER")) {
-            this.power = nodeContent;
-        } else if (keyValue.equals("AUDIO")) {
-            this.audio = nodeContent;
-        } else if (keyValue.equals("INPUT")) {
-            this.input = nodeContent;
-        }
-    }
 
     public void readPOWER(String value) {
         this.power = value;

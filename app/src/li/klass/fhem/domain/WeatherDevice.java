@@ -110,9 +110,9 @@ public class WeatherDevice extends Device<WeatherDevice> {
     private Map<String, WeatherDeviceForecast> forecastMap = new HashMap<String, WeatherDeviceForecast>();
 
     @Override
-    protected void onChildItemRead(String tagName, String keyValue, String value, NamedNodeMap attributes) {
-        if (keyValue.startsWith("FC")) {
-            parseForecast(keyValue, value);
+    public void onChildItemRead(String tagName, String key, String value, NamedNodeMap attributes) {
+        if (key.startsWith("FC")) {
+            parseForecast(key, value);
         }
     }
 

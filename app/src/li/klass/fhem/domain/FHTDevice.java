@@ -79,17 +79,17 @@ public class FHTDevice extends Device<FHTDevice> {
     }
 
     @Override
-    public void onChildItemRead(String tagName, String keyValue, String value, NamedNodeMap nodeAttributes) {
-        if (keyValue.startsWith("ACTUATOR") && ! value.equalsIgnoreCase("pair")) {
+    public void onChildItemRead(String tagName, String key, String value, NamedNodeMap nodeAttributes) {
+        if (key.startsWith("ACTUATOR") && ! value.equalsIgnoreCase("pair")) {
             actuator = value;
-        } else if (keyValue.endsWith("FROM1") || keyValue.endsWith("FROM2") || keyValue.endsWith("TO1") || keyValue.endsWith("TO2")) {
-            String shortName = keyValue.substring(0, 3);
+        } else if (key.endsWith("FROM1") || key.endsWith("FROM2") || key.endsWith("TO1") || key.endsWith("TO2")) {
+            String shortName = key.substring(0, 3);
             FHTDayControl dayControl = dayControlMap.get(DayUtil.getDayStringIdForShortName(shortName));
 
-            if (keyValue.endsWith("FROM1")) dayControl.setFrom1(value);
-            if (keyValue.endsWith("FROM2")) dayControl.setFrom2(value);
-            if (keyValue.endsWith("TO1")) dayControl.setTo1(value);
-            if (keyValue.endsWith("TO2")) dayControl.setTo2(value);
+            if (key.endsWith("FROM1")) dayControl.setFrom1(value);
+            if (key.endsWith("FROM2")) dayControl.setFrom2(value);
+            if (key.endsWith("TO1")) dayControl.setTo1(value);
+            if (key.endsWith("TO2")) dayControl.setTo2(value);
         }
     }
 

@@ -23,8 +23,6 @@
 
 package li.klass.fhem.domain.core;
 
-import org.w3c.dom.NamedNodeMap;
-
 public abstract class ToggleableDevice<T extends Device> extends Device<T> {
 
     /**
@@ -36,11 +34,8 @@ public abstract class ToggleableDevice<T extends Device> extends Device<T> {
     public abstract boolean isOn();
     public abstract boolean supportsToggle();
 
-    @Override
-    protected void onChildItemRead(String tagName, String keyValue, String nodeContent, NamedNodeMap attributes) {
-        if (keyValue.equalsIgnoreCase("ONOFFDEVICE")) {
-            this.onOffDevice = Boolean.valueOf(nodeContent);
-        }
+    public void readONOFFDEVICE(String value) {
+        this.onOffDevice = Boolean.valueOf(value);
     }
 
     public boolean isOnOffDevice() {

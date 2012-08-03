@@ -55,7 +55,7 @@ import static li.klass.fhem.domain.core.DeviceType.FILE_LOG;
 public class DeviceListParser {
 
     public static final DeviceListParser INSTANCE = new DeviceListParser();
-    public static final String TAG = DeviceListParser.class.getSimpleName();
+    public static final String TAG = DeviceListParser.class.getName();
 
     private Map<Class<Device>, Map<String, Set<Method>>> deviceClassCache;
 
@@ -276,6 +276,7 @@ public class DeviceListParser {
     private <T extends Device> void invokeDeviceAttributeMethod(Map<String, Set<Method>> cache, T device, String key,
                                                                    String value, NamedNodeMap attributes, String tagName) throws Exception {
 
+        device.onChildItemRead(tagName, key, value, attributes);
         if (! cache.containsKey(key)) return;
 
         Set<Method> availableMethods = cache.get(key);

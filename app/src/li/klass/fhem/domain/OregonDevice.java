@@ -34,7 +34,6 @@ import li.klass.fhem.domain.genericview.FloorplanViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ValueDescriptionUtil;
-import org.w3c.dom.NamedNodeMap;
 
 import java.util.List;
 
@@ -69,39 +68,6 @@ public class OregonDevice extends Device<OregonDevice> {
     private String uvValue;
     @ShowField(description = R.string.uvRisk, showInOverview = true)
     private String uvRisk;
-
-    @Override
-    protected void onChildItemRead(String tagName, String keyValue, String value, NamedNodeMap attributes) {
-        if (keyValue.equals("TEMPERATURE")) {
-            this.temperature = ValueDescriptionUtil.appendTemperature(value);
-        } else if (keyValue.equals("HUMIDITY")) {
-            this.humidity = ValueDescriptionUtil.appendPercent(value);
-        } else if (keyValue.equals("FORECAST")) {
-            this.forecast = value;
-        } else if (keyValue.equals("DEWPOINT")) {
-            this.dewpoint = value + " (Celsius)";
-        } else if (keyValue.equals("PRESSURE")) {
-            this.pressure = value + " (hPa)";
-        } else if (keyValue.equals("BATTERY")) {
-            this.battery = value + " (%)";
-        } else if (keyValue.equals("RAIN_RATE")) {
-            this.rainRate = value + " (mm/hr)";
-        } else if (keyValue.equals("RAIN_TOTAL")) {
-            this.rainTotal = value + " (l/m2)";
-        } else if (keyValue.equals("WIND_AVSPEED")) {
-            this.windAvgSpeed = value + " (km/h)";
-        } else if (keyValue.equals("WIND_DIR")) {
-            this.windDirection = value;
-        } else if (keyValue.equals("WIND_SPEED")) {
-            this.windSpeed = value + " (km/h)";
-        } else if (keyValue.equals("UV_VAL")) {
-            this.uvValue = value;
-        } else if (keyValue.equals("UV_RISK")) {
-            this.uvRisk = value;
-        } else if (keyValue.equals("TIME")) {
-            this.measured = value;
-        }
-    }
 
     public void readTEMPERATURE(String value) {
         this.temperature = value;
