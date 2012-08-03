@@ -39,7 +39,8 @@ import static li.klass.fhem.util.NumberUtil.toTwoDecimalDigits;
 public class AtDevice extends Device<AtDevice> {
 
     public enum AtRepetition {
-        ONCE(R.string.timer_overview_once), EVERY_DAY(R.string.timer_overview_every_day), WEEKEND(R.string.timer_overview_weekend), WEEKDAY(R.string.timer_overview_weekend);
+        ONCE(R.string.timer_overview_once), EVERY_DAY(R.string.timer_overview_every_day),
+        WEEKEND(R.string.timer_overview_weekend), WEEKDAY(R.string.timer_overview_weekday);
 
         private int stringId;
 
