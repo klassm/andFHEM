@@ -33,6 +33,7 @@ import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.genericview.FloorplanViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
+import li.klass.fhem.util.ValueDescriptionUtil;
 
 import java.io.Serializable;
 import java.util.List;
@@ -75,19 +76,19 @@ public class KS300Device extends Device<KS300Device> implements Serializable {
 
 
     public void readTEMPERATURE(String value) {
-        this.temperature = value;
+        this.temperature = ValueDescriptionUtil.appendTemperature(value);
     }
 
     public void readWIND(String value) {
-        this.wind = value;
+        this.wind = ValueDescriptionUtil.appendKmH(value);
     }
 
     public void readHUMIDITY(String value) {
-        this.humidity = value;
+        this.humidity = ValueDescriptionUtil.appendPercent(value);
     }
 
     public void readRAIN(String value) {
-        this.rain = value;
+        this.rain = ValueDescriptionUtil.appendLm2(value);
     }
 
     public void readAVG_DAY(String value) {
