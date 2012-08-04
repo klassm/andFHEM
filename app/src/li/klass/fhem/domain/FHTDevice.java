@@ -48,6 +48,7 @@ import java.util.Map;
 
 @FloorplanViewSettings
 @SupportsWidget({TemperatureWidgetView.class, MediumInformationWidgetView.class})
+@SuppressWarnings("unused")
 public class FHTDevice extends Device<FHTDevice> {
     @ShowField(description = R.string.actuator, showInOverview = true)
     @WidgetTemperatureAdditionalField(description = R.string.actuator)
@@ -80,7 +81,7 @@ public class FHTDevice extends Device<FHTDevice> {
 
     @Override
     public void onChildItemRead(String tagName, String key, String value, NamedNodeMap nodeAttributes) {
-        if (key.startsWith("ACTUATOR") && ! value.equalsIgnoreCase("pair")) {
+        if (key.startsWith("ACTUATOR") && ! value.equalsIgnoreCase("pair") && ! value.toLowerCase().contains("offset")) {
             actuator = value;
         } else if (key.endsWith("FROM1") || key.endsWith("FROM2") || key.endsWith("TO1") || key.endsWith("TO2")) {
             String shortName = key.substring(0, 3);
