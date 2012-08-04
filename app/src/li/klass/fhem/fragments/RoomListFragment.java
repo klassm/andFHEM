@@ -117,7 +117,10 @@ public class RoomListFragment extends BaseFragment implements ActionBarShowTabs,
     private void scrollToSelectedRoom(String selectedRoom, List<String> roomList) {
         if (selectedRoom == null) return;
 
-        ListView roomListView = (ListView) getView().findViewById(R.id.roomList);
+        View view = getView();
+        if (view == null) return;
+
+        ListView roomListView = (ListView) view.findViewById(R.id.roomList);
         if (roomListView == null) return;
 
         for (int i = 0; i < roomList.size(); i++) {
