@@ -385,6 +385,7 @@ public class TimerDetailFragment extends BaseFragment {
 
     private void setValuesForCurrentTimerDevice() {
         final View view = getView();
+        if (view == null) return;
 
         TextView timerName = (TextView) view.findViewById(R.id.timerName);
         timerName.setText(timerDevice.getAliasOrName());
