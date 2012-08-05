@@ -119,6 +119,8 @@ public class FHEMWebConnection implements FHEMConnection {
         try {
             String content = IOUtils.toString(response);
             if (content.contains("<title>") || content.contains("<div id=")) {
+                Log.e(TAG, "FHEM update required");
+                Log.e(TAG, "found content: " + content);
                 throw new FHEMUpdateRequiredException();
             }
             return content;
@@ -140,7 +142,11 @@ public class FHEMWebConnection implements FHEMConnection {
             request.setURI(uri);
 
             HttpResponse response = client.execute(request);
-            if (response.getStatusLine().getStatusCode() == 401) {
+            int statusCode = response.getStatusLine().getStatusCode();
+            Log.d(TAG, "response status code is " + statusCode);
+
+            if (statusCode == 401) {
+                Log.d(TAG, "cannot authenticate (401 access denied)");
                 throw new AuthenticationException(response.getStatusLine().toString());
             }
             return response.getEntity().getContent();

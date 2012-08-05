@@ -38,6 +38,7 @@ import org.w3c.dom.Node;
 import java.io.Serializable;
 import java.util.*;
 
+@SuppressWarnings("unused")
 public abstract class Device<T extends Device> implements Serializable, Comparable<T> {
 
     protected String[] rooms;
@@ -89,15 +90,19 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
     }
 
     public void readCUL_TIME(String value) {
-        this.measured = value;
+        measured = value;
     }
 
     public void readDEF(String value) {
-        this.definition = value;
+        definition = value;
     }
 
     public void readEVENTMAP(String value) {
         parseEventMap(value);
+    }
+
+    public void readALIAS(String value) {
+        alias = value;
     }
 
     public void parseNodeContent(Node item, String key, String value) {
