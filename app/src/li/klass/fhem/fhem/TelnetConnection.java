@@ -41,6 +41,7 @@ import java.io.BufferedOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.text.SimpleDateFormat;
@@ -139,6 +140,9 @@ public class TelnetConnection implements FHEMConnection {
         } catch (AndFHEMException e) {
             throw e;
         } catch (ConnectTimeoutException e) {
+            Log.e(TAG, "timeout", e);
+            throw new TimeoutException(e);
+        } catch (SocketTimeoutException e) {
             Log.e(TAG, "timeout", e);
             throw new TimeoutException(e);
         } catch (Exception e) {
