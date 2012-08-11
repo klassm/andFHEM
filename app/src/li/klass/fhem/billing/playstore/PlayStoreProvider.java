@@ -24,9 +24,7 @@
 package li.klass.fhem.billing.playstore;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Handler;
 import android.util.Log;
 import li.klass.fhem.AndFHEMApplication;
@@ -70,8 +68,7 @@ public class PlayStoreProvider extends PlayStorePurchaseObserver implements Bill
 
     @Override
     public boolean isBillingSupported() {
-        if (billingService == null) return false;
-        return billingService.checkBillingSupported();
+        return billingService != null && billingService.checkBillingSupported();
     }
 
     @Override
