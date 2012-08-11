@@ -339,6 +339,8 @@ public class PlayStoreBillingService extends Service implements ServiceConnectio
      */
     public void handleCommand(Intent intent, int startId) {
         try {
+            if (intent == null) return;
+
             String action = intent.getAction();
             if (DEBUG) {
                 Log.i(TAG, "handleCommand() action: " + action);

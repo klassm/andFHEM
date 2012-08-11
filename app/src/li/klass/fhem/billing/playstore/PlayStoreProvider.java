@@ -70,6 +70,7 @@ public class PlayStoreProvider extends PlayStorePurchaseObserver implements Bill
 
     @Override
     public boolean isBillingSupported() {
+        if (billingService == null) return false;
         return billingService.checkBillingSupported();
     }
 
