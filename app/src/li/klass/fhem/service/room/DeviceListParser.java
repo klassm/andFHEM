@@ -33,7 +33,7 @@ import li.klass.fhem.exception.AndFHEMException;
 import li.klass.fhem.exception.DeviceListParseException;
 import li.klass.fhem.exception.HostConnectionException;
 import li.klass.fhem.fhem.DataConnectionSwitch;
-import li.klass.fhem.util.StringEscapeUtils;
+import li.klass.fhem.util.StringEscapeUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -72,9 +72,6 @@ public class DeviceListParser {
     public Map<String, RoomDeviceList> listDevices() {
         Log.i(TAG, "fetching devices for xmllist parsing ...");
 
-        Map<String, RoomDeviceList> roomDeviceListMap = new HashMap<String, RoomDeviceList>();
-        RoomDeviceList allDevicesRoom = new RoomDeviceList(RoomDeviceList.ALL_DEVICES_ROOM);
-
         try {
             String xmlList = DataConnectionSwitch.INSTANCE.getCurrentProvider().xmllist();
             if (xmlList != null) {
@@ -82,60 +79,67 @@ public class DeviceListParser {
             }
             Log.d(TAG, "fetched xmllist :\n" + xmlList);
 
-            if (xmlList == null || "".equals(xmlList)) {
-                Log.e(TAG, "xmlList is null or blank");
-                return roomDeviceListMap;
-            }
-
-            // if a newline happens after a set followed by an attrs, both attributes are appended together without
-            // adding a whitespace
-            xmlList = xmlList.replaceAll("=\"\"attrs", "=\"\" attrs");
-
-            // replace html attribute
-            xmlList = xmlList.replaceAll("<ATTR key=\"htmlattr\"[ A-Za-z0-9=\"]*/>", "");
-
-            xmlList = xmlList.replaceAll("</>", "");
-            xmlList = xmlList.replaceAll("< [^>]*>", "");
-
-            //replace values with an unset tag
-            xmlList = xmlList.replaceAll("< name=[a-zA-Z\"=0-9 ]+>", "");
-
-            xmlList = xmlList.replaceAll("<_internal__LIST>[\\s\\S]*</_internal__LIST>", "");
-            xmlList = xmlList.replaceAll("<notify_LIST[\\s\\S]*</notify_LIST>", "");
-            xmlList = xmlList.replaceAll("<weblink_LIST[\\s\\S]*</weblink_LIST>", "");
-            xmlList = xmlList.replaceAll("<CUL_IR_LIST>[\\s\\S]*</CUL_IR_LIST>", "");
-            xmlList = xmlList.replaceAll("<autocreate_LIST>[\\s\\S]*</autocreate_LIST>", "");
-            xmlList = xmlList.replaceAll("<Global_LIST[\\s\\S]*</Global_LIST>", "");
-
-            xmlList = xmlList.replaceAll("_internal_", "internal");
-
-            // fix for invalid umlauts
-            xmlList = xmlList.replaceAll("&#[\\s\\S]*;", "");
-
-            // remove "" not being preceded by an =
-            xmlList = xmlList.replaceAll("(?:[^=])\"\"+", "\"");
-
-            DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
-            Document document = docBuilder.parse(new InputSource(new StringReader(xmlList)));
-
-            DeviceType[] deviceTypes = DeviceType.values();
-            for (DeviceType deviceType : deviceTypes) {
-                devicesFromDocument(deviceType.getDeviceClass(), roomDeviceListMap, document, deviceType.getXmllistTag(),
-                        allDevicesRoom);
-            }
-
-            addFileLogsToDevices(allDevicesRoom);
-
-            Log.e(TAG, "loaded " + allDevicesRoom.getAllDevices().size() + " devices!");
-
-            return roomDeviceListMap;
+            return parseXMLList(xmlList);
         } catch (AndFHEMException e) {
             throw e;
         } catch (Exception e) {
             Log.e(DeviceListParser.class.getName(), "error parsing device list", e);
             throw new DeviceListParseException(e);
         }
+    }
+
+    Map<String, RoomDeviceList> parseXMLList(String xmlList) throws Exception {
+        Map<String, RoomDeviceList> roomDeviceListMap = new HashMap<String, RoomDeviceList>();
+        RoomDeviceList allDevicesRoom = new RoomDeviceList(RoomDeviceList.ALL_DEVICES_ROOM);
+
+        if (xmlList == null || "".equals(xmlList)) {
+            Log.e(TAG, "xmlList is null or blank");
+            return roomDeviceListMap;
+        }
+
+        // if a newline happens after a set followed by an attrs, both attributes are appended together without
+        // adding a whitespace
+        xmlList = xmlList.replaceAll("=\"\"attrs", "=\"\" attrs");
+
+        // replace html attribute
+        xmlList = xmlList.replaceAll("<ATTR key=\"htmlattr\"[ A-Za-z0-9=\"]*/>", "");
+
+        xmlList = xmlList.replaceAll("</>", "");
+        xmlList = xmlList.replaceAll("< [^>]*>", "");
+
+        //replace values with an unset tag
+        xmlList = xmlList.replaceAll("< name=[a-zA-Z\"=0-9 ]+>", "");
+
+        xmlList = xmlList.replaceAll("<_internal__LIST>[\\s\\S]*</_internal__LIST>", "");
+        xmlList = xmlList.replaceAll("<notify_LIST[\\s\\S]*</notify_LIST>", "");
+        xmlList = xmlList.replaceAll("<weblink_LIST[\\s\\S]*</weblink_LIST>", "");
+        xmlList = xmlList.replaceAll("<CUL_IR_LIST>[\\s\\S]*</CUL_IR_LIST>", "");
+        xmlList = xmlList.replaceAll("<autocreate_LIST>[\\s\\S]*</autocreate_LIST>", "");
+        xmlList = xmlList.replaceAll("<Global_LIST[\\s\\S]*</Global_LIST>", "");
+
+        xmlList = xmlList.replaceAll("_internal_", "internal");
+
+        // fix for invalid umlauts
+        xmlList = xmlList.replaceAll("&#[\\s\\S]*;", "");
+
+        // remove "" not being preceded by an =
+        xmlList = xmlList.replaceAll("(?:[^=])\"\"+", "\"");
+
+        DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
+        Document document = docBuilder.parse(new InputSource(new StringReader(xmlList)));
+
+        DeviceType[] deviceTypes = DeviceType.values();
+        for (DeviceType deviceType : deviceTypes) {
+            devicesFromDocument(deviceType.getDeviceClass(), roomDeviceListMap, document, deviceType.getXmllistTag(),
+                    allDevicesRoom);
+        }
+
+        addFileLogsToDevices(allDevicesRoom);
+
+        Log.e(TAG, "loaded " + allDevicesRoom.getAllDevices().size() + " devices!");
+
+        return roomDeviceListMap;
     }
 
     /**
@@ -234,7 +238,7 @@ public class DeviceListParser {
         for (int i = 0; i < attributes.getLength(); i++) {
             Node item = attributes.item(i);
             String name = item.getNodeName().toUpperCase().replaceAll("[-.]", "_");
-            String value = StringEscapeUtils.unescape(item.getNodeValue());
+            String value = StringEscapeUtil.unescape(item.getNodeValue());
 
             invokeDeviceAttributeMethod(cache, device, name, value);
         }
@@ -248,7 +252,7 @@ public class DeviceListParser {
             if (keyAttribute == null) continue;
 
             String keyValue = keyAttribute.getNodeValue().toUpperCase().trim().replaceAll("[-.]", "_");
-            String nodeContent = StringEscapeUtils.unescape(item.getAttributes().getNamedItem("value").getNodeValue());
+            String nodeContent = StringEscapeUtil.unescape(item.getAttributes().getNamedItem("value").getNodeValue());
 
             if (nodeContent == null || nodeContent.length() == 0) {
                 continue;

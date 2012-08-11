@@ -29,7 +29,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class BundleUtils {
+public class BundleUtil {
     public static Map<String, Serializable> bundleToMap(Bundle bundle) {
         Map<String, Serializable> result = new HashMap<String, Serializable>();
         if (bundle == null) return result;

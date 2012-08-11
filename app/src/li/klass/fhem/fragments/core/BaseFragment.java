@@ -32,7 +32,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import li.klass.fhem.activities.core.FragmentBaseActivity;
 import li.klass.fhem.activities.core.Updateable;
-import li.klass.fhem.util.BundleUtils;
+import li.klass.fhem.util.BundleUtil;
 import li.klass.fhem.util.UIBroadcastReceiver;
 
 import java.io.Serializable;
@@ -109,12 +109,12 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
     }
 
     public Bundle getCreationAttributesAsBundle() {
-        return BundleUtils.mapToBundle(creationAttributes);
+        return BundleUtil.mapToBundle(creationAttributes);
     }
 
     public final void onContentChanged(Bundle bundle) {
         Map<String, Serializable> oldAttributes = creationAttributes;
-        creationAttributes = BundleUtils.bundleToMap(bundle);
+        creationAttributes = BundleUtil.bundleToMap(bundle);
         onContentChanged(oldAttributes, creationAttributes);
     }
 

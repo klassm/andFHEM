@@ -31,6 +31,7 @@ import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -44,10 +45,11 @@ public class DummyDataConnection implements FHEMConnection {
     public String xmllist() {
         InputStream inputStream = null;
         try {
-            inputStream = DummyDataConnection.class.getResource("dummyData.xml").openStream();
+            inputStream = DummyDataConnection.class.getResourceAsStream("dummyData.xml");
+
             String content = IOUtils.toString(inputStream);
-            content = content.replaceAll("\n", "");
             content = content.replaceAll("  ", "");
+
             return content;
         } catch (IOException e) {
             Log.e(DummyDataConnection.class.getName(), "cannot read file", e);

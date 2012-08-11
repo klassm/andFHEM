@@ -26,12 +26,11 @@ apply plugin: 'java'
 configurations { robo }
 
 dependencies {
-    robo 'com.pivotallabs:robolectric:1.1'
-    robo 'com.google.android:android:4.0.1.2'
+    testCompile 'com.pivotallabs:robolectric:1.1'
+//    testCompile 'com.google.android:android:4.0.1.2'
     testCompile 'junit:junit:4.10'
+    testCompile project(path: ':app')
 }
-sourceSets.test.compileClasspath = configurations.robo + sourceSets.test.compileClasspath
-sourceSets.test.runtimeClasspath = configurations.robo + sourceSets.test.runtimeClasspath
 
 repositories {
     mavenCentral()
@@ -44,6 +43,7 @@ sourceSets {
         }
     }
 }
+
 test {
     //makes the standard streams (err and out) visible at console when running tests
     testLogging.showStandardStreams = true

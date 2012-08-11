@@ -26,7 +26,7 @@ package li.klass.fhem.util;
 
 import java.io.UnsupportedEncodingException;
 
-public class StringEscapeUtils {
+public class StringEscapeUtil {
 
     public static String unescape(String content) {
 

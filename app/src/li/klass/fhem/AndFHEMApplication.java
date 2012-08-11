@@ -44,6 +44,10 @@ public class AndFHEMApplication extends Application {
     private boolean isUpdate = false;
     private String currentApplicationVersion;
 
+    public static void setContext(Context newContext) {
+        context = newContext;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();

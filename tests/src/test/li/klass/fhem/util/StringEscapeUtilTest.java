@@ -27,9 +27,9 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class StringEscapeUtilsTest {
+public class StringEscapeUtilTest {
     @Test
     public void testUnescape() {
-        assertEquals("Vereinzelt stürmiscüh", StringEscapeUtils.unescape("Vereinzelt stÃ¼rmiscÃ¼h"));
+        assertEquals("Vereinzelt stürmiscüh", StringEscapeUtil.unescape("Vereinzelt stÃ¼rmiscÃ¼h"));
     }
 }

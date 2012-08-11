@@ -43,6 +43,10 @@ sourceSets {
         java {
             srcDirs = [ 'src', 'gen' ]
         }
+        resources {
+            // fix to get xml resources within the src dir to be found within gradle
+            srcDirs = [ 'src' ]
+        }
     }
 }
 
