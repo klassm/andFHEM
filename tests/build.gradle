@@ -37,10 +37,13 @@ repositories {
     mavenCentral()
 }
 
-sourceSets.test.java.srcDirs = [
-        'src/test'
-]
-
+sourceSets {
+    test {
+        java {
+            srcDirs = [ 'src/test' ]
+        }
+    }
+}
 test {
     //makes the standard streams (err and out) visible at console when running tests
     testLogging.showStandardStreams = true

@@ -36,10 +36,13 @@ dependencies {
     testCompile 'com.google.android:android:4.0.1.2'
 }
 
-sourceSets.main.java.srcDirs = [
-        './src',
-        './gen',
-]
+sourceSets {
+    main {
+        java {
+            srcDirs = [ 'src', 'gen' ]
+        }
+    }
+}
 
 task setUpSDK(type:Exec) {
     workingDir '.'

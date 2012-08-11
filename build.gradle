@@ -22,11 +22,13 @@
  */
 
 apply plugin: 'java'
+apply plugin: com.smokejumperit.gradle.ExecPlugin
+apply plugin: 'idea'
 
-ext.targetDir = new File('target')
-ext.binDir = new File('bin')
-
-apply plugin:com.smokejumperit.gradle.ExecPlugin
+ext {
+    targetDir = new File('target')
+    binDir = new File('bin')
+}
 
 buildscript {
     repositories {
@@ -38,6 +40,39 @@ buildscript {
         classpath 'com.smokejumperit:gradle-plugins:0.8.2'
         classpath 'com.google.gdata:gdata-sites-2.0:1.40.3'
         classpath group: 'commons-codec', name: 'commons-codec', version: '1.2'
+    }
+}
+
+
+allprojects {
+    apply plugin: 'java'
+    apply plugin: 'idea'
+
+    repositories {
+        mavenCentral()
+    }
+}
+
+project(':ActionBarSherlock') {
+    configurations: {
+        test {
+            dependencies {
+                compile 'com.google.android:android:4.0.1.2'
+            }
+        }
+    }
+}
+
+project(':app') {
+    dependencies {
+        compile project(':ActionBarSherlock')
+    }
+}
+
+project(':tests') {
+    dependencies {
+        compile project(path: ':ActionBarSherlock')
+        compile project(path: ':app')
     }
 }
 
@@ -58,6 +93,10 @@ def readFromConsole(notifyText) {
     console.printf("\n")
     console.printf(">> " + notifyText + "\n")
     return console.readPassword()
+}
+
+task uploadToGoogleSites(dependsOn: readAliasPassword) << {
+    uploadApkToGoogleSites();
 }
 
 task deleteBuildDirectories << {
@@ -86,6 +125,35 @@ task buildAmazon << {
 buildAmazon.dependsOn readPasswords
 buildAmazon.dependsOn copy
 
+
+task buildAll(dependsOn: [buildGoogle, buildAmazon]) << {}
+
+task release(dependsOn:  [buildAll, uploadToGoogleSites])
+
+
+def build(billingProvider, targetFilename) {
+    def storeProperty = "-Dkey.store.password=" + project.storePassword
+    def aliasProperty = "-Dkey.alias.password=" + project.aliasPassword
+
+    project.execIn(new File('.'), "cp", "target/src/li/klass/fhem/application.properties", 'target/src/li/klass/fhem/application.properties.temp')
+    def propertiesFile = new File('target/src/li/klass/fhem/application.properties')
+    def content = propertiesFile.getText('UTF-8').replaceAll("<BILLING.PROVIDER>", billingProvider)
+    propertiesFile.write(content, 'UTF-8')
+
+    project.execIn(new File('target'), "ant", "release", storeProperty, aliasProperty)
+
+    def targetPath = "bin/" + targetFilename
+    project.execIn(new File('.'), "mv", "target/bin/andFHEM-release.apk", targetPath)
+
+    // write back the old placeholder value!
+    project.execIn(new File('.'), "mv", "target/src/li/klass/fhem/application.properties.temp", 'target/src/li/klass/fhem/application.properties')
+}
+build.dependsOn(release)
+
+/*************************************
+ * GOOGLE SITES
+ ************************************/
+
 import com.google.gdata.client.*;
 import com.google.gdata.client.sites.*;
 import com.google.gdata.data.*;
@@ -99,7 +167,7 @@ import com.google.gdata.data.Link.*
 
 import javax.activation.MimetypesFileTypeMap
 
-task uploadToGoogleSites(dependsOn: readAliasPassword) << {
+def uploadApkToGoogleSites() {
     def attachmentContentFeedUrl = "https://sites.google.com/feeds/content/site/andfhem/"
 
     def service = new SitesService("li.klass-andFHEM-v1");
@@ -141,57 +209,12 @@ def updateGoogleSitesAPK(service, id) {
     service.insert(new URL("https://sites.google.com/feeds/content/site/andfhem/"), newAttachment);
 }
 
-task buildAll(dependsOn: [buildGoogle, buildAmazon]) << {}
+/*************************************
+ * IDEA
+ ************************************/
 
-task release(dependsOn:  [buildAll, uploadToGoogleSites])
-
-
-def build(billingProvider, targetFilename) {
-    def storeProperty = "-Dkey.store.password=" + project.storePassword
-    def aliasProperty = "-Dkey.alias.password=" + project.aliasPassword
-
-    project.execIn(new File('.'), "cp", "target/src/li/klass/fhem/application.properties", 'target/src/li/klass/fhem/application.properties.temp')
-    def propertiesFile = new File('target/src/li/klass/fhem/application.properties')
-    def content = propertiesFile.getText('UTF-8').replaceAll("<BILLING.PROVIDER>", billingProvider)
-    propertiesFile.write(content, 'UTF-8')
-
-    project.execIn(new File('target'), "ant", "release", storeProperty, aliasProperty)
-
-    def targetPath = "bin/" + targetFilename
-    project.execIn(new File('.'), "mv", "target/bin/andFHEM-release.apk", targetPath)
-
-    // write back the old placeholder value!
-    project.execIn(new File('.'), "mv", "target/src/li/klass/fhem/application.properties.temp", 'target/src/li/klass/fhem/application.properties')
-}
-build.dependsOn(release)
-
-allprojects {
-    apply plugin: 'java'
-
-    repositories {
-        mavenCentral()
-    }
-}
-
-project(':ActionBarSherlock') {
-    configurations: {
-        test {
-            dependencies {
-                compile 'com.google.android:android:4.0.1.2'
-            }
-        }
-    }
-}
-
-project(':app') {
-    dependencies {
-        compile project(':ActionBarSherlock')
-    }
-}
-
-project(':tests') {
-    dependencies {
-        compile project(path: ':ActionBarSherlock')
-        compile project(path: ':app')
+idea.project.ipr {
+    withXml { provider ->
+        provider.node.component.find { it.@name == 'VcsDirectoryMappings' }.mapping.@vcs = 'Git'
     }
 }

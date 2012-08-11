@@ -5,6 +5,9 @@ gen/*
 log
 .idea
 *.iml
+*.ipr
+*.iws
+*.swp
 *.class
 *.log
 *.txt

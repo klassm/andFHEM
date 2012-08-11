@@ -268,8 +268,6 @@ public class CULHMDevice extends ToggleableDevice<CULHMDevice> {
         }
     }
 
-
-
     @Override
     public boolean supportsWidget(Class<? extends AppWidgetView> appWidgetClass) {
         if (appWidgetClass.equals(TemperatureWidgetView.class) &&
