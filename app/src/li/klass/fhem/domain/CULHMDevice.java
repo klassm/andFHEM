@@ -72,7 +72,7 @@ public class CULHMDevice extends ToggleableDevice<CULHMDevice> {
     private String rawValue;
     private double fillContentLitresRaw;
     @ShowField(description = R.string.maximumContent)
-    private int fillContentLitresMaximum;
+    private Integer fillContentLitresMaximum;
     private double fillContentPercentageRaw;
     @ShowField(description = R.string.fillPercentage, showInOverview = true, showInDetail = false)
     private String fillContentPercentage;
@@ -124,6 +124,10 @@ public class CULHMDevice extends ToggleableDevice<CULHMDevice> {
         }
     }
 
+    public void readTEMPERATURE(String value) {
+        this.measuredTemp = ValueDescriptionUtil.appendTemperature(value);
+    }
+
     public void readMEASURED_TEMP(String value) {
         measuredTemp = ValueDescriptionUtil.appendTemperature(value);
     }
@@ -146,7 +150,7 @@ public class CULHMDevice extends ToggleableDevice<CULHMDevice> {
         } else if (value.equalsIgnoreCase("KFM100")) {
             subType = SubType.KFM100;
         }
-        subTypeRaw = value; 
+        subTypeRaw = value;
     }
 
     @Override
@@ -154,7 +158,7 @@ public class CULHMDevice extends ToggleableDevice<CULHMDevice> {
         super.afterXMLRead();
 
         if (subType == SubType.KFM100) {
-            fillContentPercentageRaw = fillContentLitresRaw / fillContentLitresMaximum;
+            fillContentPercentageRaw = fillContentLitresRaw == 0 ? 0 : fillContentLitresRaw / fillContentLitresMaximum;
             fillContentPercentage = ValueDescriptionUtil.appendPercent((int) (fillContentPercentageRaw * 100));
         }
     }
