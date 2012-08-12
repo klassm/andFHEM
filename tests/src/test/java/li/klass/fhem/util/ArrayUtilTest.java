@@ -22,28 +22,22 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.domain;
+package li.klass.fhem.util;
 
-import li.klass.fhem.domain.core.ToggleableDevice;
-import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
-import li.klass.fhem.util.ArrayUtil;
-import org.w3c.dom.NamedNodeMap;
+import org.junit.Test;
 
-@DetailOverviewViewSettings(showState = true)
-@SuppressWarnings("unused")
-public class DummyDevice extends ToggleableDevice<DummyDevice> {
+import static li.klass.fhem.util.ArrayUtil.contains;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
-    public void readSTATE(String tagName, String value, NamedNodeMap attributes) {
-        this.measured = attributes.getNamedItem("measured").getNodeValue();
-    }
+public class ArrayUtilTest {
+    @Test
+    public void testContains() {
+        String[] values = new String[]{"a", "b", "c", "d"};
 
-    @Override
-    public boolean supportsToggle() {
-        return ArrayUtil.contains(getAvailableTargetStates(), "on", "off");
-    }
-
-    @Override
-    public boolean isOn() {
-        return getState().equalsIgnoreCase("on");
+        assertTrue(contains(values, "a"));
+        assertTrue(contains(values, "a", "b"));
+        assertFalse(contains(values, "e"));
+        assertFalse(contains(null, "e"));
     }
 }

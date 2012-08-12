@@ -22,28 +22,34 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.domain;
+package li.klass.fhem.domain.culhm;
 
-import li.klass.fhem.domain.core.ToggleableDevice;
-import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
-import li.klass.fhem.util.ArrayUtil;
-import org.w3c.dom.NamedNodeMap;
+import li.klass.fhem.domain.CULHMDevice;
+import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+import org.hamcrest.core.IsNull;
+import org.junit.Test;
 
-@DetailOverviewViewSettings(showState = true)
-@SuppressWarnings("unused")
-public class DummyDevice extends ToggleableDevice<DummyDevice> {
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
 
-    public void readSTATE(String tagName, String value, NamedNodeMap attributes) {
-        this.measured = attributes.getNamedItem("measured").getNodeValue();
+public class SmokeDetectorTest extends DeviceXMLParsingBase {
+    @Test
+    public void testForCorrectlySetAttributes() {
+        CULHMDevice device = getDefaultDevice();
+
+        assertThat(device.getName(), is(DEFAULT_TEST_DEVICE_NAME));
+        assertThat(device.getRoomConcatenated(), is(DEFAULT_TEST_ROOM_NAME));
+
+        assertThat(device.getState(), is("NACK"));
+        assertThat(device.getSubType(), is(CULHMDevice.SubType.SMOKE_DETECTOR));
+
+
+        assertThat(device.getFileLog(), is(IsNull.nullValue()));
+        assertThat(device.getDeviceCharts().size(), is(0));
     }
 
     @Override
-    public boolean supportsToggle() {
-        return ArrayUtil.contains(getAvailableTargetStates(), "on", "off");
-    }
-
-    @Override
-    public boolean isOn() {
-        return getState().equalsIgnoreCase("on");
+    protected String getFileName() {
+        return "smokedetector.xml";
     }
 }

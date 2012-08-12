@@ -8,7 +8,7 @@
  * distributed under license by Red Hat Inc.
  *
  * This copyrighted material is made available to anyone wishing to use, modify,
- * copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLICLICENSE, as published by the Free Software Foundation.
+ * copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
@@ -29,6 +29,7 @@ import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
 import org.w3c.dom.NamedNodeMap;
 
 @DetailOverviewViewSettings(showMeasured = true)
+@SuppressWarnings("unused")
 public class WatchdogDevice extends Device<WatchdogDevice> {
 
     public void readTRIGGERED(String value, NamedNodeMap attributes) {

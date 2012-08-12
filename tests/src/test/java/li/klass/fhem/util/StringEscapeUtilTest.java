@@ -22,28 +22,15 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.domain;
+package li.klass.fhem.util;
 
-import li.klass.fhem.domain.core.ToggleableDevice;
-import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
-import li.klass.fhem.util.ArrayUtil;
-import org.w3c.dom.NamedNodeMap;
+import org.junit.Test;
 
-@DetailOverviewViewSettings(showState = true)
-@SuppressWarnings("unused")
-public class DummyDevice extends ToggleableDevice<DummyDevice> {
+import static org.junit.Assert.assertEquals;
 
-    public void readSTATE(String tagName, String value, NamedNodeMap attributes) {
-        this.measured = attributes.getNamedItem("measured").getNodeValue();
-    }
-
-    @Override
-    public boolean supportsToggle() {
-        return ArrayUtil.contains(getAvailableTargetStates(), "on", "off");
-    }
-
-    @Override
-    public boolean isOn() {
-        return getState().equalsIgnoreCase("on");
+public class StringEscapeUtilTest {
+    @Test
+    public void testUnescape() {
+        assertEquals("Vereinzelt stürmiscüh", StringEscapeUtil.unescape("Vereinzelt stÃ¼rmiscÃ¼h"));
     }
 }

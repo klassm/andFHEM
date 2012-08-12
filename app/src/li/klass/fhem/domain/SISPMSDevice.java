@@ -31,12 +31,11 @@ import org.w3c.dom.NamedNodeMap;
 
 @DetailOverviewViewSettings(showState = true)
 @FloorplanViewSettings(showState = true)
+@SuppressWarnings("unused")
 public class SISPMSDevice extends ToggleableDevice<SISPMSDevice> {
 
-    public void readSTATE(String tagName, NamedNodeMap attributes, String value) {
-        if (tagName.equals("STATE")) {
-            this.measured = attributes.getNamedItem("measured").getNodeValue();
-        }
+    public void readSTATE(NamedNodeMap attributes) {
+        this.measured = attributes.getNamedItem("measured").getNodeValue();
     }
 
     public boolean isOn() {

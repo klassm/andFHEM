@@ -22,28 +22,25 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.domain;
+package li.klass.fhem.infra;
 
-import li.klass.fhem.domain.core.ToggleableDevice;
-import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
-import li.klass.fhem.util.ArrayUtil;
-import org.w3c.dom.NamedNodeMap;
+import com.xtremelabs.robolectric.RobolectricConfig;
+import com.xtremelabs.robolectric.RobolectricTestRunner;
+import li.klass.fhem.AndFHEMApplication;
+import li.klass.fhem.activities.AndFHEMMainActivity;
+import org.junit.runners.model.InitializationError;
 
-@DetailOverviewViewSettings(showState = true)
-@SuppressWarnings("unused")
-public class DummyDevice extends ToggleableDevice<DummyDevice> {
+import java.io.File;
+import java.lang.reflect.Method;
 
-    public void readSTATE(String tagName, String value, NamedNodeMap attributes) {
-        this.measured = attributes.getNamedItem("measured").getNodeValue();
+public class AndFHEMRobolectricTestRunner extends RobolectricTestRunner {
+    public AndFHEMRobolectricTestRunner(Class<?> testClass) throws InitializationError {
+        super(testClass, new RobolectricConfig(new File(ProjectMetaDataProvider.getProjectRoot() + "/app")));
     }
 
     @Override
-    public boolean supportsToggle() {
-        return ArrayUtil.contains(getAvailableTargetStates(), "on", "off");
-    }
-
-    @Override
-    public boolean isOn() {
-        return getState().equalsIgnoreCase("on");
+    public void beforeTest(Method method) {
+        AndFHEMApplication.setContext(new AndFHEMMainActivity());
+        super.beforeTest(method);
     }
 }

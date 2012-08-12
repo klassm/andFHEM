@@ -2,13 +2,13 @@
  * AndFHEM - Open Source Android application to control a FHEM home automation
  * server.
  *
- * Copyright (c) 2012, Matthias Klass or third-party contributors as
+ * Copyright (c) 2011, Matthias Klass or third-party contributors as
  * indicated by the @author tags or express copyright attribution
  * statements applied by the authors.  All third-party contributions are
  * distributed under license by Red Hat Inc.
  *
  * This copyrighted material is made available to anyone wishing to use, modify,
- * copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLICLICENSE, as published by the Free Software Foundation.
+ * copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
@@ -19,6 +19,7 @@
  * along with this distribution; if not, write to:
  *   Free Software Foundation, Inc.
  *   51 Franklin Street, Fifth Floor
+ *   Boston, MA  02110-1301  USA
  */
 
 package li.klass.fhem.fragments;
@@ -137,9 +138,9 @@ public class FloorplanFragment extends BaseFragment {
 
                 RoomDeviceList deviceList = (RoomDeviceList) resultData.getSerializable(BundleExtraKeys.DEVICE_LIST);
                 for (Device device : deviceList.getAllDevices()) {
-                    if (! device.isOnFloorplan(floorplanName)) continue;
+                    if (!device.isOnFloorplan(floorplanName)) continue;
                     DeviceAdapter<Device> adapter = DeviceType.getAdapterFor(device);
-                    if (! adapter.supportsFloorplan(device)) continue;
+                    if (!adapter.supportsFloorplan(device)) continue;
 
                     View view = adapter.getFloorplanView(getActivity(), device);
                     view.setVisibility(View.INVISIBLE);
@@ -159,7 +160,7 @@ public class FloorplanFragment extends BaseFragment {
     }
 
     private void updateViewFor(Device device, float newScale) {
-        if (! deviceViewMap.containsKey(device)) return;
+        if (!deviceViewMap.containsKey(device)) return;
 
         View view = deviceViewMap.get(device);
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) view.getLayoutParams();
@@ -191,7 +192,7 @@ public class FloorplanFragment extends BaseFragment {
 
     private void setBackground() {
         Intent intent = new Intent(Actions.FLOORPLAN_IMAGE);
-        intent.putExtra(BundleExtraKeys.FLOORPLAN_IMAGE_RELATIVE_PATH, "/fp_" + floorplanName + ".png");
+        intent.putExtra(BundleExtraKeys.FLOORPLAN_IMAGE_RELATIVE_PATH, "/icons/fp_" + floorplanName + ".png");
         intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
             @Override
             protected void onReceiveResult(int resultCode, Bundle resultData) {
@@ -238,7 +239,7 @@ public class FloorplanFragment extends BaseFragment {
             contextMenu.setItems(R.array.floorplanDeviceDetail, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int position) {
-                    switch(position) {
+                    switch (position) {
                         case 0:
                             DeviceAdapter<?> adapter = DeviceType.getAdapterFor(device);
                             adapter.gotoDetailView(context, device);
@@ -270,7 +271,7 @@ public class FloorplanFragment extends BaseFragment {
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
             Object tag = view.getTag();
-            if (! (tag instanceof Device)) return false;
+            if (!(tag instanceof Device)) return false;
 
             Device<?> device = (Device<?>) tag;
             float x = motionEvent.getRawX();

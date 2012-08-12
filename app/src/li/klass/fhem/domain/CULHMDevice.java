@@ -78,6 +78,8 @@ public class CULHMDevice extends ToggleableDevice<CULHMDevice> {
     private String fillContentPercentage;
     @ShowField(description = R.string.conversion)
     private String rawToReadable;
+    @ShowField(description = R.string.battery)
+    private String battery;
 
     public void readRAWTOREADABLE(String value) {
         this.rawToReadable = value;
@@ -107,7 +109,7 @@ public class CULHMDevice extends ToggleableDevice<CULHMDevice> {
         this.commandAccepted = value;
     }
 
-    public void readHumidity(String value) {
+    public void readHUMIDITY(String value) {
         humidity = ValueDescriptionUtil.appendPercent(value);
     }
 
@@ -116,9 +118,7 @@ public class CULHMDevice extends ToggleableDevice<CULHMDevice> {
         actuator = value;
     }
 
-    @Override
     public void readSTATE(String value) {
-        super.readSTATE(value);
         if (value.endsWith("%")) {
             dimProgress = ValueExtractUtil.extractLeadingInt(value);
         }
@@ -134,6 +134,10 @@ public class CULHMDevice extends ToggleableDevice<CULHMDevice> {
 
     public void readDESIRED_TEMP(String value) {
         desiredTemp = ValueDescriptionUtil.appendTemperature(value);
+    }
+
+    public void readBATTERY(String value) {
+        battery = value;
     }
 
     public void readSUBTYPE(String value) {
@@ -170,7 +174,8 @@ public class CULHMDevice extends ToggleableDevice<CULHMDevice> {
 
     public boolean isOn() {
         String internalState = getInternalState();
-        return internalState.equalsIgnoreCase("on") || internalState.equalsIgnoreCase("on-for-timer");
+        return internalState.equalsIgnoreCase("on") || internalState.equalsIgnoreCase("on-for-timer") ||
+                (subType == SubType.DIMMER && getDimProgress() > 0);
     }
 
     @Override
@@ -180,7 +185,7 @@ public class CULHMDevice extends ToggleableDevice<CULHMDevice> {
 
     public int getDimProgress() {
         if (dimProgress == -1) {
-            return isOn() ? 100 : 0;
+            return getInternalState().equals("on") ? 100 : 0;
         }
         return dimProgress;
     }
@@ -245,6 +250,11 @@ public class CULHMDevice extends ToggleableDevice<CULHMDevice> {
         return fillContentPercentage;
     }
 
+    public String getBattery() {
+        return battery;
+    }
+
+
     @Override
     protected void fillDeviceCharts(List<DeviceChart> chartSeries) {
         if (subType == null) return;
@@ -271,7 +281,7 @@ public class CULHMDevice extends ToggleableDevice<CULHMDevice> {
     @Override
     public boolean supportsWidget(Class<? extends AppWidgetView> appWidgetClass) {
         if (appWidgetClass.equals(TemperatureWidgetView.class) &&
-                ! (subType == SubType.TEMPERATURE_HUMIDITY || subType == SubType.HEATING)) {
+                !(subType == SubType.TEMPERATURE_HUMIDITY || subType == SubType.HEATING)) {
             return false;
         }
 

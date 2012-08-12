@@ -22,28 +22,30 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.domain;
+package li.klass.fhem.util;
 
-import li.klass.fhem.domain.core.ToggleableDevice;
-import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
-import li.klass.fhem.util.ArrayUtil;
-import org.w3c.dom.NamedNodeMap;
+import org.junit.Test;
 
-@DetailOverviewViewSettings(showState = true)
-@SuppressWarnings("unused")
-public class DummyDevice extends ToggleableDevice<DummyDevice> {
+import static junit.framework.Assert.assertEquals;
+import static li.klass.fhem.util.ValueExtractUtil.*;
 
-    public void readSTATE(String tagName, String value, NamedNodeMap attributes) {
-        this.measured = attributes.getNamedItem("measured").getNodeValue();
+public class ValueExtractUtilTest {
+
+    @Test
+    public void testExtractContentBeforeSpace() {
+        assertEquals("abc", extractContentBeforeSpace("abc def"));
+        assertEquals("abc", extractContentBeforeSpace("abc def ds"));
     }
 
-    @Override
-    public boolean supportsToggle() {
-        return ArrayUtil.contains(getAvailableTargetStates(), "on", "off");
+    @Test
+    public void testExtractLeadingInt() {
+        assertEquals(1, extractLeadingInt("1 abc"));
+        assertEquals(1, extractLeadingInt("1 23"));
     }
 
-    @Override
-    public boolean isOn() {
-        return getState().equalsIgnoreCase("on");
+    @Test
+    public void testExtractLeadingDouble() {
+        assertEquals(1d, extractLeadingDouble("1.0 abc"));
+        assertEquals(2.5, extractLeadingDouble("2.5 23"));
     }
 }

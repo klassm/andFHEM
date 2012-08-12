@@ -59,15 +59,17 @@ public class DeviceListParser {
 
     private Map<Class<Device>, Map<String, Set<Method>>> deviceClassCache;
 
-    private DeviceListParser() {}
+    private DeviceListParser() {
+    }
 
     /**
      * Reads the current device list, validates it by applying some regular expression replaces and extracts
      * {@link RoomDeviceList} objects.
+     *
      * @return Map of room names to their included devices.
-     * @throws HostConnectionException if the current FHEM server cannot be contacted
+     * @throws HostConnectionException  if the current FHEM server cannot be contacted
      * @throws DeviceListParseException if the read xml content cannot be parsed
-     * @throws RuntimeException if some other exception occurred.
+     * @throws RuntimeException         if some other exception occurred.
      */
     public Map<String, RoomDeviceList> listDevices() {
         Log.i(TAG, "fetching devices for xmllist parsing ...");
@@ -88,7 +90,7 @@ public class DeviceListParser {
         }
     }
 
-    Map<String, RoomDeviceList> parseXMLList(String xmlList) throws Exception {
+    public Map<String, RoomDeviceList> parseXMLList(String xmlList) throws Exception {
         Map<String, RoomDeviceList> roomDeviceListMap = new HashMap<String, RoomDeviceList>();
         RoomDeviceList allDevicesRoom = new RoomDeviceList(RoomDeviceList.ALL_DEVICES_ROOM);
 
@@ -143,12 +145,11 @@ public class DeviceListParser {
     }
 
     /**
-     *
-     * @param deviceClass class of the device to read
+     * @param deviceClass       class of the device to read
      * @param roomDeviceListMap rooms device list map to read the device into.
-     * @param document xml document to read
-     * @param tagName current tag name to read
-     * @param <T> type of device
+     * @param document          xml document to read
+     * @param tagName           current tag name to read
+     * @param <T>               type of device
      * @throws Exception if something went utterly wrong
      */
     private <T extends Device> void devicesFromDocument(Class<T> deviceClass, Map<String,
@@ -164,10 +165,11 @@ public class DeviceListParser {
     /**
      * Instantiates a new device from the given device class. The current {@link Node} to read will be provided to
      * the device, so that it can extract any values.
-     * @param deviceClass class to instantiate
+     *
+     * @param deviceClass       class to instantiate
      * @param roomDeviceListMap map used for saving the device
-     * @param node current xml node
-     * @param <T> specific device type
+     * @param node              current xml node
+     * @param <T>               specific device type
      * @throws Exception if something went utterly wrong
      */
     private <T extends Device> void deviceFromNode(Class<T> deviceClass, Map<String, RoomDeviceList> roomDeviceListMap,
@@ -190,7 +192,8 @@ public class DeviceListParser {
     /**
      * Returns the {@link RoomDeviceList} if it is already included within the room-device list map. Otherwise,
      * the appropriate list will be created, put into the map and returned.
-     * @param roomName room name to look for
+     *
+     * @param roomName          room name to look for
      * @param roomDeviceListMap current map including room names and associated device lists.
      * @return matching {@link RoomDeviceList}
      */
@@ -218,8 +221,9 @@ public class DeviceListParser {
 
     /**
      * Walks through all devices and tries to find the matching {@link Device} for one given {@link FileLogDevice}.
+     *
      * @param fileLogDevice {@link FileLogDevice}, of which the matching {@link Device} is searched
-     * @param devices devices to walk through.
+     * @param devices       devices to walk through.
      */
     private void addFileLogToDevices(FileLogDevice fileLogDevice, Collection<Device> devices) {
         for (Device device : devices) {
@@ -240,7 +244,7 @@ public class DeviceListParser {
             String name = item.getNodeName().toUpperCase().replaceAll("[-.]", "_");
             String value = StringEscapeUtil.unescape(item.getNodeValue());
 
-            invokeDeviceAttributeMethod(cache, device, name, value);
+            device.onAttributeRead(name, value);
         }
 
         NodeList childNodes = node.getChildNodes();
@@ -259,7 +263,6 @@ public class DeviceListParser {
             }
 
             invokeDeviceAttributeMethod(cache, device, keyValue, nodeContent, item.getAttributes(), item.getNodeName());
-            device.parseNodeContent(item, keyValue, nodeContent);
         }
 
 
@@ -269,20 +272,10 @@ public class DeviceListParser {
     }
 
     private <T extends Device> void invokeDeviceAttributeMethod(Map<String, Set<Method>> cache, T device, String key,
-                                                                   String value) throws Exception {
-        invokeDeviceAttributeMethod(cache, device, key, value, null);
-    }
-
-    private <T extends Device> void invokeDeviceAttributeMethod(Map<String, Set<Method>> cache, T device, String key,
-                                                                   String value, NamedNodeMap attributes) throws Exception {
-        invokeDeviceAttributeMethod(cache, device, key, value, attributes, "");
-    }
-
-    private <T extends Device> void invokeDeviceAttributeMethod(Map<String, Set<Method>> cache, T device, String key,
-                                                                   String value, NamedNodeMap attributes, String tagName) throws Exception {
+                                                                String value, NamedNodeMap attributes, String tagName) throws Exception {
 
         device.onChildItemRead(tagName, key, value, attributes);
-        if (! cache.containsKey(key)) return;
+        if (!cache.containsKey(key)) return;
 
         Set<Method> availableMethods = cache.get(key);
         for (Method availableMethod : availableMethods) {
@@ -309,9 +302,9 @@ public class DeviceListParser {
     @SuppressWarnings("unchecked")
     private <T extends Device> Map<String, Set<Method>> getDeviceClassCacheEntriesFor(Class<T> deviceClass) {
         Map<Class<Device>, Map<String, Set<Method>>> cache = getDeviceClassCache();
-//        if (! cache.containsKey(deviceClass)) {
+        if (!cache.containsKey(deviceClass)) {
             cache.put((Class<Device>) deviceClass, initDeviceClassCacheEntries(deviceClass));
-//        }
+        }
 
         return cache.get(deviceClass);
     }
@@ -323,15 +316,15 @@ public class DeviceListParser {
      * @param deviceClass class of the device
      * @return map of device methods
      */
-    private <T extends Device>  Map<String, Set<Method>> initDeviceClassCacheEntries(Class<T> deviceClass) {
+    private <T extends Device> Map<String, Set<Method>> initDeviceClassCacheEntries(Class<T> deviceClass) {
         Map<String, Set<Method>> cache = new HashMap<String, Set<Method>>();
         Method[] methods = deviceClass.getMethods();
         for (Method method : methods) {
             String methodName = method.getName();
-            if (! methodName.startsWith("read")) continue;
+            if (!methodName.startsWith("read")) continue;
 
             String attributeName = methodName.substring("read".length());
-            if (! cache.containsKey(attributeName)) {
+            if (!cache.containsKey(attributeName)) {
                 cache.put(attributeName, new HashSet<Method>());
             }
             cache.get(attributeName).add(method);

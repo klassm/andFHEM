@@ -32,7 +32,6 @@ import li.klass.fhem.domain.genericview.FloorplanViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.NumberSystemUtil;
-import org.w3c.dom.NamedNodeMap;
 
 import java.io.Serializable;
 import java.util.Arrays;
@@ -40,6 +39,7 @@ import java.util.List;
 
 @DetailOverviewViewSettings(showState = true)
 @FloorplanViewSettings()
+@SuppressWarnings("unused")
 public class FS20Device extends ToggleableDevice<FS20Device> implements Comparable<FS20Device>, Serializable {
 
     /**
@@ -55,12 +55,6 @@ public class FS20Device extends ToggleableDevice<FS20Device> implements Comparab
 
     public enum FS20State {
         ON, OFF
-    }
-
-    public void readSTATE(String tagName, String value, NamedNodeMap attributes) {
-        if (tagName.equals("INT")) {
-            setState(value);
-        }
     }
 
     public void readMODEL(String value) {
@@ -89,7 +83,7 @@ public class FS20Device extends ToggleableDevice<FS20Device> implements Comparab
     public boolean isDimDevice() {
         return dimModels.contains(model);
     }
-    
+
     public int getBestDimMatchFor(int dimProgress) {
         int bestMatch = -1;
         int smallestDiff = 100;
@@ -97,7 +91,7 @@ public class FS20Device extends ToggleableDevice<FS20Device> implements Comparab
             int diff = dimProgress - dimState;
             if (diff < 0) diff *= -1;
 
-            if (bestMatch == -1 || diff < smallestDiff ) {
+            if (bestMatch == -1 || diff < smallestDiff) {
                 bestMatch = dimState;
                 smallestDiff = diff;
             }
@@ -124,7 +118,7 @@ public class FS20Device extends ToggleableDevice<FS20Device> implements Comparab
     }
 
     private int getDimProgressInIndexDirection(int indexDirection) {
-        if (! isDimDevice()) return -1;
+        if (!isDimDevice()) return -1;
 
         int dimState = getFS20DimState();
 
@@ -141,9 +135,9 @@ public class FS20Device extends ToggleableDevice<FS20Device> implements Comparab
         if (getFs20State() == FS20State.OFF) {
             return 0;
         }
-        
+
         String internalState = getInternalState();
-        
+
         if (internalState.startsWith("dim") && internalState.endsWith("%")) {
             String dimProgress = internalState.substring("dim".length(), internalState.length() - 1);
             return Integer.valueOf(dimProgress);

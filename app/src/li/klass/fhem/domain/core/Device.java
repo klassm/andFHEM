@@ -33,7 +33,6 @@ import li.klass.fhem.domain.floorplan.FloorplanPosition;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.util.StringUtil;
 import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
 
 import java.io.Serializable;
 import java.util.*;
@@ -64,19 +63,6 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
     private List<DeviceChart> deviceCharts = new ArrayList<DeviceChart>();
 
 
-    public void readSETS(String value) {
-        String setsText = value.replaceAll("\\*", "");
-
-        setsText = setsText.trim();
-        String lowercase = setsText.toLowerCase();
-        if (lowercase.equals("") || lowercase.equals("*") || lowercase.contains("not set function")
-                || lowercase.contains("needs one parameter")) {
-            return;
-        }
-
-        this.availableTargetStates = setsText.split(" ");
-    }
-
     public void readROOM(String value) {
         setRoomConcatenated(value);
     }
@@ -85,8 +71,10 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
         name = value;
     }
 
-    public void readSTATE(String value) {
-        state = value;
+    public void readSTATE(String tagName, NamedNodeMap attributes, String value) {
+        if (tagName.equals("INT")) {
+            state = value;
+        }
     }
 
     public void readCUL_TIME(String value) {
@@ -103,19 +91,6 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
 
     public void readALIAS(String value) {
         alias = value;
-    }
-
-    public void parseNodeContent(Node item, String key, String value) {
-        if (key.startsWith("FP_")) {
-            String[] commaParts = value.split(",");
-            if (commaParts.length > 2) {
-                int y = Integer.valueOf(commaParts[0]);
-                int x = Integer.valueOf(commaParts[1]);
-                int viewType = Integer.valueOf(commaParts[2]);
-
-                floorPlanPositionMap.put(key.substring(3), new FloorplanPosition(x, y, viewType));
-            }
-        }
     }
 
     public void afterXMLRead() {
@@ -169,7 +144,7 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
 
     public String[] getRooms() {
         if (rooms == null) {
-            return new String[] {AndFHEMApplication.getContext().getResources().getString(R.string.unsortedRoomName)};
+            return new String[]{AndFHEMApplication.getContext().getResources().getString(R.string.unsortedRoomName)};
         }
         return rooms;
     }
@@ -180,6 +155,7 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
 
     /**
      * Checks whether a device is in a given room.
+     *
      * @param room room to check
      * @return true if the device is in the room
      */
@@ -202,12 +178,41 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
 
     /**
      * Called for each device node in the <i>xmllist</i>.
-     * @param tagName contains the current tag name (i.e. STATE, ATTR or INT)
-     * @param key name of the key (i.e. ROOM)
-     * @param value value of the tag
+     *
+     * @param tagName    contains the current tag name (i.e. STATE, ATTR or INT)
+     * @param key        name of the key (i.e. ROOM)
+     * @param value      value of the tag
      * @param attributes additional tag attributes
      */
-    public void onChildItemRead(String tagName, String key, String value, NamedNodeMap attributes) {}
+    public void onChildItemRead(String tagName, String key, String value, NamedNodeMap attributes) {
+        if (!key.startsWith("FP_")) {
+            return;
+        }
+        String[] commaParts = value.split(",");
+        if (commaParts.length <= 2) {
+            return;
+        }
+        int y = Integer.valueOf(commaParts[0]);
+        int x = Integer.valueOf(commaParts[1]);
+        int viewType = Integer.valueOf(commaParts[2]);
+
+        floorPlanPositionMap.put(key.substring(3), new FloorplanPosition(x, y, viewType));
+    }
+
+    public void onAttributeRead(String attributeName, String attributeValue) {
+        if (attributeName.equals("sets")) {
+            String setsText = attributeValue.replaceAll("\\*", "");
+
+            setsText = setsText.trim();
+            String lowercase = setsText.toLowerCase();
+            if (lowercase.equals("") || lowercase.equals("*") || lowercase.contains("not set function")
+                    || lowercase.contains("needs one parameter")) {
+                return;
+            }
+
+            this.availableTargetStates = setsText.split(" ");
+        }
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -244,6 +249,7 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
 
     /**
      * Override me if you want to provide charts for a device
+     *
      * @param chartSeries fill me with chart descriptions
      */
     protected void fillDeviceCharts(List<DeviceChart> chartSeries) {
@@ -265,7 +271,7 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
 
     public String getInternalState() {
         String state = getState();
-        if (eventMapReverse == null || ! eventMapReverse.containsKey(state)) return state;
+        if (eventMapReverse == null || !eventMapReverse.containsKey(state)) return state;
         return eventMapReverse.get(state);
     }
 
@@ -303,7 +309,7 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
 
     public void setCoordinateFor(String floorplan, Coordinate coordinate) {
         String key = floorplan.toUpperCase();
-        if (! floorPlanPositionMap.containsKey(key)) return;
+        if (!floorPlanPositionMap.containsKey(key)) return;
 
         FloorplanPosition floorplanPosition = floorPlanPositionMap.get(key);
         FloorplanPosition newPosition = new FloorplanPosition(coordinate.x, coordinate.y, floorplanPosition.viewType);

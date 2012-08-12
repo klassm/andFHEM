@@ -22,28 +22,17 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.domain;
+package li.klass.fhem.infra;
 
-import li.klass.fhem.domain.core.ToggleableDevice;
-import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
-import li.klass.fhem.util.ArrayUtil;
-import org.w3c.dom.NamedNodeMap;
+import java.io.File;
 
-@DetailOverviewViewSettings(showState = true)
-@SuppressWarnings("unused")
-public class DummyDevice extends ToggleableDevice<DummyDevice> {
-
-    public void readSTATE(String tagName, String value, NamedNodeMap attributes) {
-        this.measured = attributes.getNamedItem("measured").getNodeValue();
-    }
-
-    @Override
-    public boolean supportsToggle() {
-        return ArrayUtil.contains(getAvailableTargetStates(), "on", "off");
-    }
-
-    @Override
-    public boolean isOn() {
-        return getState().equalsIgnoreCase("on");
+public class ProjectMetaDataProvider {
+    public static String getProjectRoot() {
+        String userDirectory = System.getProperty("user.dir");
+        File userDirectorySrc = new File(userDirectory + File.separator + "src");
+        if (userDirectorySrc.exists()) {
+            return userDirectory + "/..";
+        }
+        return userDirectory;
     }
 }

@@ -22,28 +22,34 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.domain;
+package li.klass.fhem.util;
 
-import li.klass.fhem.domain.core.ToggleableDevice;
-import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
-import li.klass.fhem.util.ArrayUtil;
-import org.w3c.dom.NamedNodeMap;
+import org.junit.Test;
 
-@DetailOverviewViewSettings(showState = true)
-@SuppressWarnings("unused")
-public class DummyDevice extends ToggleableDevice<DummyDevice> {
+import static li.klass.fhem.util.NumberSystemUtil.hexToQuaternary;
+import static li.klass.fhem.util.NumberSystemUtil.quaternaryToHex;
+import static org.junit.Assert.assertEquals;
 
-    public void readSTATE(String tagName, String value, NamedNodeMap attributes) {
-        this.measured = attributes.getNamedItem("measured").getNodeValue();
+public class NumberSystemUtilTest {
+
+    @Test
+    public void testHexToQuaternary() {
+        assertEquals("33222101", hexToQuaternary("FA91", 4));
+        assertEquals("0033222101", hexToQuaternary("FA91", 10));
     }
 
-    @Override
-    public boolean supportsToggle() {
-        return ArrayUtil.contains(getAvailableTargetStates(), "on", "off");
+    @Test(expected = IllegalArgumentException.class)
+    public void testIllegalHexToQuaternary() {
+        hexToQuaternary("XY1982", 4);
     }
 
-    @Override
-    public boolean isOn() {
-        return getState().equalsIgnoreCase("on");
+    @Test
+    public void testQuaternaryToHex() {
+        assertEquals("FA91", quaternaryToHex("33222101"));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testIllegalQuaternaryToHex() {
+        quaternaryToHex("3352229101");
     }
 }

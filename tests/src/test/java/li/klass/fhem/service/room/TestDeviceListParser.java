@@ -22,28 +22,29 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.domain;
+package li.klass.fhem.service.room;
 
-import li.klass.fhem.domain.core.ToggleableDevice;
-import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
-import li.klass.fhem.util.ArrayUtil;
-import org.w3c.dom.NamedNodeMap;
+import li.klass.fhem.domain.RoomDeviceList;
+import li.klass.fhem.fhem.DummyDataConnection;
+import li.klass.fhem.infra.AndFHEMRobolectricTestRunner;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
-@DetailOverviewViewSettings(showState = true)
-@SuppressWarnings("unused")
-public class DummyDevice extends ToggleableDevice<DummyDevice> {
+import java.util.Map;
 
-    public void readSTATE(String tagName, String value, NamedNodeMap attributes) {
-        this.measured = attributes.getNamedItem("measured").getNodeValue();
-    }
+import static org.junit.Assert.assertNotNull;
 
-    @Override
-    public boolean supportsToggle() {
-        return ArrayUtil.contains(getAvailableTargetStates(), "on", "off");
-    }
+@RunWith(AndFHEMRobolectricTestRunner.class)
+public class TestDeviceListParser {
 
-    @Override
-    public boolean isOn() {
-        return getState().equalsIgnoreCase("on");
+    @Test
+    public void testParseDummyData() throws Exception {
+        String xmlList = DummyDataConnection.INSTANCE.xmllist();
+        assertNotNull(xmlList);
+
+        DeviceListParser deviceListParser = DeviceListParser.INSTANCE;
+        Map<String, RoomDeviceList> result = deviceListParser.parseXMLList(xmlList);
+
+        assertNotNull(result);
     }
 }
