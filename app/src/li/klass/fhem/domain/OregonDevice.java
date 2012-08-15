@@ -39,6 +39,7 @@ import java.util.List;
 
 @FloorplanViewSettings(showState = true)
 @SupportsWidget(TemperatureWidgetView.class)
+@SuppressWarnings("unused")
 public class OregonDevice extends Device<OregonDevice> {
 
     @ShowField(description = R.string.humidity, showInOverview = true)
@@ -70,7 +71,7 @@ public class OregonDevice extends Device<OregonDevice> {
     private String uvRisk;
 
     public void readTEMPERATURE(String value) {
-        this.temperature = value;
+        this.temperature = ValueDescriptionUtil.appendTemperature(value);
     }
 
     public void readHUMIDITY(String value) {
@@ -84,15 +85,17 @@ public class OregonDevice extends Device<OregonDevice> {
     public void readDEWPOINT(String value) {
         this.dewpoint = ValueDescriptionUtil.appendTemperature(value);
     }
+
     public void readPRESSURE(String value) {
         this.pressure = ValueDescriptionUtil.append(value, "hPa");
     }
+
     public void readBATTERY(String value) {
         this.battery = ValueDescriptionUtil.appendPercent(value);
     }
 
     public void readRAIN_RATE(String value) {
-        this.rainRate = ValueDescriptionUtil.append(value, "mm/hr");
+        this.rainRate = ValueDescriptionUtil.append(value, "mm/h");
     }
 
     public void readRAIN_TOTAL(String value) {
@@ -123,71 +126,71 @@ public class OregonDevice extends Device<OregonDevice> {
         this.measured = value;
     }
 
-    public String getHumidity(){
+    public String getHumidity() {
         return humidity;
     }
 
-    public String getTemperature(){
+    public String getTemperature() {
         return temperature;
     }
 
-    public String getForecast(){
+    public String getForecast() {
         return forecast;
     }
 
-    public String getDewpoint(){
+    public String getDewpoint() {
         return dewpoint;
     }
 
-    public String getPressure(){
+    public String getPressure() {
         return pressure;
     }
 
-    public String getBattery(){
+    public String getBattery() {
         return battery;
     }
 
-    public String getRainRate(){
+    public String getRainRate() {
         return rainRate;
     }
 
-    public String getRainTotal(){
+    public String getRainTotal() {
         return rainTotal;
     }
 
-    public String getWindAvgSpeed(){
+    public String getWindAvgSpeed() {
         return windAvgSpeed;
     }
 
-    public String getWindDirection(){
+    public String getWindDirection() {
         return windDirection;
     }
 
-    public String getWindSpeed(){
+    public String getWindSpeed() {
         return windSpeed;
     }
 
-    public String getUvValue(){
+    public String getUvValue() {
         return uvValue;
     }
 
-    public String getUvRisk(){
+    public String getUvRisk() {
         return uvRisk;
     }
 
     @Override
-    protected void fillDeviceCharts(List<DeviceChart>chartSeries){
-        addDeviceChartIfNotNull(temperature,new DeviceChart(R.string.temperatureGraph,R.string.yAxisTemperature,
-                ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature,"4:temperature:0:")));
-        addDeviceChartIfNotNull(humidity,new DeviceChart(R.string.humidityGraph,R.string.yAxisHumidity,
-                new ChartSeriesDescription(R.string.temperature,"4:humidity:0:")));
-        addDeviceChartIfNotNull(pressure,new DeviceChart(R.string.pressureGraph,R.string.yAxisPressure,
-                new ChartSeriesDescription(R.string.pressure,"4:pressure:0:")));
-        addDeviceChartIfNotNull(rainRate,new DeviceChart(R.string.rainRate,R.string.yAxisRainRate,
-                new ChartSeriesDescription(R.string.rainRate,"4:rain_rate:0:")));
-        addDeviceChartIfNotNull(rainTotal,new DeviceChart(R.string.rainTotal,R.string.yAxisRainTotal,
-                new ChartSeriesDescription(R.string.rainRate,"4:rain_total:0:")));
-        addDeviceChartIfNotNull(windSpeed,new DeviceChart(R.string.windSpeed,R.string.yAxisWindSpeed,
-                new ChartSeriesDescription(R.string.rainRate,"4:wind_speed:0:")));
+    protected void fillDeviceCharts(List<DeviceChart> chartSeries) {
+        addDeviceChartIfNotNull(temperature, new DeviceChart(R.string.temperatureGraph, R.string.yAxisTemperature,
+                ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:temperature:0:")));
+        addDeviceChartIfNotNull(humidity, new DeviceChart(R.string.humidityGraph, R.string.yAxisHumidity,
+                new ChartSeriesDescription(R.string.temperature, "4:humidity:0:")));
+        addDeviceChartIfNotNull(pressure, new DeviceChart(R.string.pressureGraph, R.string.yAxisPressure,
+                new ChartSeriesDescription(R.string.pressure, "4:pressure:0:")));
+        addDeviceChartIfNotNull(rainRate, new DeviceChart(R.string.rainRate, R.string.yAxisRainRate,
+                new ChartSeriesDescription(R.string.rainRate, "4:rain_rate:0:")));
+        addDeviceChartIfNotNull(rainTotal, new DeviceChart(R.string.rainTotal, R.string.yAxisRainTotal,
+                new ChartSeriesDescription(R.string.rainRate, "4:rain_total:0:")));
+        addDeviceChartIfNotNull(windSpeed, new DeviceChart(R.string.windSpeed, R.string.yAxisWindSpeed,
+                new ChartSeriesDescription(R.string.rainRate, "4:wind_speed:0:")));
     }
 }

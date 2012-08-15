@@ -2,13 +2,13 @@
  * AndFHEM - Open Source Android application to control a FHEM home automation
  * server.
  *
- * Copyright (c) 2012, Matthias Klass or third-party contributors as
+ * Copyright (c) 2011, Matthias Klass or third-party contributors as
  * indicated by the @author tags or express copyright attribution
  * statements applied by the authors.  All third-party contributions are
  * distributed under license by Red Hat Inc.
  *
  * This copyrighted material is made available to anyone wishing to use, modify,
- * copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLICLICENSE, as published by the Free Software Foundation.
+ * copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
@@ -19,6 +19,7 @@
  * along with this distribution; if not, write to:
  *   Free Software Foundation, Inc.
  *   51 Franklin Street, Fifth Floor
+ *   Boston, MA  02110-1301  USA
  */
 
 package li.klass.fhem.domain;
@@ -42,6 +43,7 @@ import java.util.*;
 
 @FloorplanViewSettings(showState = true)
 @SupportsWidget({TemperatureWidgetView.class, MediumInformationWidgetView.class})
+@SuppressWarnings("unused")
 public class WeatherDevice extends Device<WeatherDevice> {
     public static class WeatherDeviceForecast implements Comparable<WeatherDeviceForecast>, Serializable {
         private static final SimpleDateFormat forecastDateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -107,7 +109,7 @@ public class WeatherDevice extends Device<WeatherDevice> {
 
     private String wind;
 
-    private Map<String, WeatherDeviceForecast> forecastMap = new HashMap<String, WeatherDeviceForecast>();
+    private Map<Integer, WeatherDeviceForecast> forecastMap = new HashMap<Integer, WeatherDeviceForecast>();
 
     @Override
     public void onChildItemRead(String tagName, String key, String value, NamedNodeMap attributes) {
@@ -116,24 +118,24 @@ public class WeatherDevice extends Device<WeatherDevice> {
         }
     }
 
-    public void readCONDITION(String value, NamedNodeMap attributes)  {
+    public void readCONDITION(String value, NamedNodeMap attributes) {
         this.condition = value;
         this.measured = attributes.getNamedItem("measured").getTextContent();
     }
 
-    public void readHUMIDITY(String value)  {
+    public void readHUMIDITY(String value) {
         this.humidity = ValueDescriptionUtil.appendPercent(value);
     }
 
-    public void readICON(String value)  {
+    public void readICON(String value) {
         this.icon = value;
     }
 
-    public void readTEMP_C(String value)  {
+    public void readTEMP_C(String value) {
         this.temperature = ValueDescriptionUtil.appendTemperature(value);
     }
 
-    public void readWIND_CONDITION(String value)  {
+    public void readWIND_CONDITION(String value) {
         this.wind = value.replaceAll("Wind: ", "").trim();
     }
 
@@ -142,15 +144,15 @@ public class WeatherDevice extends Device<WeatherDevice> {
             int underscorePosition = keyValue.indexOf("_");
             String name = keyValue.substring(underscorePosition + 1);
 
-            String prefix = keyValue.substring(2, underscorePosition);
-            if ("1".equals(prefix)) return;
+            int prefix = Integer.valueOf(keyValue.substring(2, underscorePosition));
+            if (((Integer) 1).equals(prefix)) return;
 
-            if (! forecastMap.containsKey(prefix)) {
+            if (!forecastMap.containsKey(prefix)) {
                 Calendar forecastDate = Calendar.getInstance();
 
                 Date measuredDate = parseDateFormat.parse(measured);
                 forecastDate.setTime(measuredDate);
-                forecastDate.add(Calendar.DAY_OF_YEAR, Integer.valueOf(prefix) - 1);
+                forecastDate.add(Calendar.DAY_OF_YEAR, prefix - 1);
                 String forecastTimeString = WeatherDeviceForecast.forecastDateFormat.format(forecastDate.getTime());
 
                 forecastMap.put(prefix, new WeatherDeviceForecast(forecastTimeString));
@@ -195,8 +197,14 @@ public class WeatherDevice extends Device<WeatherDevice> {
     }
 
     public List<WeatherDeviceForecast> getForecasts() {
-        Collection<WeatherDeviceForecast> values = forecastMap.values();
-        return new ArrayList<WeatherDeviceForecast>(values);
+        TreeSet<Integer> keys = new TreeSet<Integer>();
+        keys.addAll(forecastMap.keySet());
+
+        ArrayList<WeatherDeviceForecast> result = new ArrayList<WeatherDeviceForecast>();
+        for (Integer key : keys) {
+            result.add(forecastMap.get(key));
+        }
+        return result;
     }
 
     @Override

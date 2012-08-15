@@ -24,11 +24,15 @@
 
 package li.klass.fhem.domain;
 
+import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 import org.junit.Test;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNull.nullValue;
 import static org.junit.Assert.assertEquals;
 
-public class AtDeviceTest {
+public class AtDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testParseDefinition() {
         AtDevice device;
@@ -77,5 +81,32 @@ public class AtDeviceTest {
 
     private void assemble(AtDevice device, String expectedDefinition) {
         assertEquals(expectedDefinition, device.toFHEMDefinition());
+    }
+
+    @Test
+    public void testForCorrectlySetAttributes() {
+        AtDevice device = getDefaultDevice();
+
+        assertThat(device.getName(), is(DEFAULT_TEST_DEVICE_NAME));
+        assertThat(device.getRoomConcatenated(), is(DEFAULT_TEST_ROOM_NAME));
+
+        assertThat(device.getTimerType(), is(AtDevice.TimerType.ABSOLUTE));
+        assertThat(device.getFormattedSwitchTime(), is("23:00:00"));
+        assertThat(device.getHours(), is(23));
+        assertThat(device.getMinutes(), is(0));
+        assertThat(device.getSeconds(), is(0));
+        assertThat(device.getNextTrigger(), is("23:00:00"));
+        assertThat(device.getRepetition(), is(AtDevice.AtRepetition.WEEKEND));
+        assertThat(device.getTargetDevice(), is("lamp"));
+        assertThat(device.getTargetState(), is("off"));
+        assertThat(device.getTargetStateAddtionalInformation(), is(nullValue()));
+
+        assertThat(device.getFileLog(), is(nullValue()));
+        assertThat(device.getDeviceCharts().size(), is(0));
+    }
+
+    @Override
+    protected String getFileName() {
+        return "at.xml";
     }
 }

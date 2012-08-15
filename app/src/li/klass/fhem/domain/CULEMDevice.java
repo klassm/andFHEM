@@ -41,6 +41,7 @@ import java.util.List;
 
 @FloorplanViewSettings(showState = true)
 @SupportsWidget(MediumInformationWidgetView.class)
+@SuppressWarnings("unused")
 public class CULEMDevice extends Device<CULEMDevice> {
 
     @ShowField(description = R.string.currentUsage, showInOverview = true)
@@ -84,6 +85,10 @@ public class CULEMDevice extends Device<CULEMDevice> {
 
     public double getSumGraphDivisionFactor() {
         return sumGraphDivisionFactor;
+    }
+
+    public String getCurrentUsage() {
+        return currentUsage;
     }
 
     private String extractCumUsage(String cumString, String cumToken) {

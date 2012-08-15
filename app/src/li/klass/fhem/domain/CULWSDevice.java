@@ -40,6 +40,7 @@ import java.util.List;
 
 @FloorplanViewSettings(showState = true)
 @SupportsWidget(TemperatureWidgetView.class)
+@SuppressWarnings("unused")
 public class CULWSDevice extends Device<CULWSDevice> {
 
     @ShowField(description = R.string.humidity, showInOverview = true)

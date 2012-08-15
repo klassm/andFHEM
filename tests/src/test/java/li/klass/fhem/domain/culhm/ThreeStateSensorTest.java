@@ -29,9 +29,9 @@ import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 import org.hamcrest.core.Is;
 import org.junit.Test;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.assertThat;
 
 public class ThreeStateSensorTest extends DeviceXMLParsingBase {
 

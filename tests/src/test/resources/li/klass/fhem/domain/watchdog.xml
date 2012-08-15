@@ -1,0 +1,45 @@
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<FHZINFO>
+    <watchdog_LIST>
+        <watchdog name="device" state="defined" sets=""
+                  attrs="room comment alias disable:0,1 regexp1WontReactivate:0,1 webCmd eventMap">
+            <INT key="CMD"
+                 value="{ fhem &quot;set gang_licht on&quot;; fhem &quot;setstate bad_fenster_open defined&quot; }"/>
+            <INT key="DEF"
+                 value="bad_fenster:Window.*(Open) 00:00:01 bad_fenster:Window.*(Closed) { fhem &quot;set gang_licht on&quot;; fhem &quot;setstate bad_fenster_open defined&quot; }"/>
+            <INT key="NAME" value="device"/>
+            <INT key="NR" value="6"/>
+            <INT key="NTFY_ORDER" value="50-bad_fenster_open"/>
+            <INT key="RE1" value="bad_fenster:Window.*(Open)"/>
+            <INT key="RE2" value="bad_fenster:Window.*(Closed)"/>
+            <INT key="STATE" value="defined"/>
+            <INT key="TO" value="1"/>
+            <INT key="TYPE" value="watchdog"/>
+            <STATE key="Triggered" value="triggered" measured="2012-02-02 10:00:10"/>
+            <STATE key="room" value="room"/>
+        </watchdog>
+    </watchdog_LIST>
+</FHZINFO>

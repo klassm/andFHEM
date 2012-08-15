@@ -1,3 +1,27 @@
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
 <FHZINFO>
     < name="FHZ1" state="" sets="" attrs="room comment DarkPeriod">
 </>
@@ -23,7 +47,8 @@
 </_internal_>
 </_internal__LIST>
 <dummy_LIST>
-<dummy name="myvar" state="7" sets="*" attrs="room group comment alias eventMap loglevel:0,1,2,3,4,5,6 setList fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon webCmd">
+<dummy name="myvar" state="7" sets="*"
+       attrs="room group comment alias eventMap loglevel:0,1,2,3,4,5,6 setList fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon webCmd">
     <INT key="CFGFN" value=""/>
     <INT key="NAME" value="myvar"/>
     <INT key="NR" value="228"/>
@@ -33,7 +58,8 @@
 </dummy>
 </dummy_LIST>
 <CUL_TX_LIST>
-<CUL_TX name="CUL_TX_10" state="T: 16.5 H: 73.0" sets="" attrs="room group comment alias eventMap IODev do_not_notify:1,0 ignore:0,1 showtime:1,0 loglevel:0,1,2,3,4,5,6 icon webCmd">
+<CUL_TX name="CUL_TX_10" state="T: 16.5 H: 73.0" sets=""
+        attrs="room group comment alias eventMap IODev do_not_notify:1,0 ignore:0,1 showtime:1,0 loglevel:0,1,2,3,4,5,6 icon webCmd">
     <INT key="CODE" value="10"/>
     <INT key="CUL_0_MSGCNT" value="4751"/>
     <INT key="CUL_0_RAWMSG" value="tA01466566CFB"/>
@@ -56,7 +82,8 @@
     <STATE key="temperature" value="16.5" measured="2012-06-13 23:02:56"/>
 </CUL_TX>
 
-<CUL_TX name="CUL_TX_116" state="T: 22.9" sets="" attrs="room group comment alias eventMap IODev do_not_notify:1,0 ignore:0,1 showtime:1,0 loglevel:0,1,2,3,4,5,6 icon webCmd">
+<CUL_TX name="CUL_TX_116" state="T: 22.9" sets=""
+        attrs="room group comment alias eventMap IODev do_not_notify:1,0 ignore:0,1 showtime:1,0 loglevel:0,1,2,3,4,5,6 icon webCmd">
     <INT key="CODE" value="116"/>
     <INT key="CUL_0_MSGCNT" value="3277"/>
     <INT key="CUL_0_RAWMSG" value="tA0E872972A15"/>
@@ -79,29 +106,30 @@
 </CUL_TX>
 </CUL_TX_LIST>
 <IT_LIST>
-    <IT name="Intertechno_1" state="on" sets="off on" attrs="room comment alias
+<IT name="Intertechno_1" state="on" sets="off on" attrs="room comment alias
     IODev switch_rfmode:1,0 do_not_notify:1,0 ignore:0,1 dummy:1,0
     model:itremote,itswitch,itdimmer loglevel:0,1,2,3,4,5,6 eventMap">
-        <INT key="DEF" value="F00000000F FF F0"/>
-        <INT key="NAME" value=" Intertechno_1"/>
-        <INT key="NR" value="6"/>
-        <INT key="STATE" value="on"/>
-        <INT key="TYPE" value="IT"/>
-        <INT key="XMIT" value="f00000000f"/>
-        <INT key="XMITdimdown" value="00"/>
-        <INT key="XMITdimup" value="00"/>
-        <INT key="XMIToff" value="f0"/>
-        <INT key="XMITon" value="ff"/>
-        <INT key="IODev" value="mycul"/>
-        <ATTR key="IODev" value="mycul"/>
-        <ATTR key="model" value="itswitch"/>
-        <ATTR key="room" value="Wohnzimmer"/>
-        <STATE key="state" value="on" measured="2012-05-06 19:40:03"/>
-    </IT>
+    <INT key="DEF" value="F00000000F FF F0"/>
+    <INT key="NAME" value=" Intertechno_1"/>
+    <INT key="NR" value="6"/>
+    <INT key="STATE" value="on"/>
+    <INT key="TYPE" value="IT"/>
+    <INT key="XMIT" value="f00000000f"/>
+    <INT key="XMITdimdown" value="00"/>
+    <INT key="XMITdimup" value="00"/>
+    <INT key="XMIToff" value="f0"/>
+    <INT key="XMITon" value="ff"/>
+    <INT key="IODev" value="mycul"/>
+    <ATTR key="IODev" value="mycul"/>
+    <ATTR key="model" value="itswitch"/>
+    <ATTR key="room" value="Wohnzimmer"/>
+    <STATE key="state" value="on" measured="2012-05-06 19:40:03"/>
+</IT>
 </IT_LIST>
 
 <Weather_LIST>
-<Weather name="Augsburg" state="T: 19  H: 43  W: 11" sets="" attrs="room comment alias loglevel:0,1,2,3,4,5 event-on-update-reading event-on-change-reading fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon webCmd eventMap">
+<Weather name="Augsburg" state="T: 19  H: 43  W: 11" sets=""
+         attrs="room comment alias loglevel:0,1,2,3,4,5 event-on-update-reading event-on-change-reading fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon webCmd eventMap">
     <INT key="DEF" value="Augsburg 3000 de"/>
     <INT key="INTERVAL" value="3000"/>
     <INT key="LANG" value="de"/>
@@ -147,7 +175,8 @@
     <STATE key="wind" value="11" measured="2012-05-01 14:56:22"/>
     <STATE key="wind_condition" value="Wind: NW mit 11 km/h" measured="2012-05-01 14:56:22"/>
 </Weather>
-<Weather name="SomePlace" state="T: 19  H: 43  W: 11" sets="" attrs="room comment alias loglevel:0,1,2,3,4,5 event-on-update-reading event-on-change-reading fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon webCmd eventMap">
+<Weather name="SomePlace" state="T: 19  H: 43  W: 11" sets=""
+         attrs="room comment alias loglevel:0,1,2,3,4,5 event-on-update-reading event-on-change-reading fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon webCmd eventMap">
     <INT key="DEF" value="Augsburg 3000 de"/>
     <INT key="INTERVAL" value="3000"/>
     <INT key="LANG" value="de"/>
@@ -195,9 +224,11 @@
 </Weather>
 </Weather_LIST>
 <watchdog_LIST>
-<watchdog name="bad_fenster_open" state="defined" sets="" attrs="room comment alias disable:0,1 regexp1WontReactivate:0,1 webCmd eventMap">
+<watchdog name="bad_fenster_open" state="defined" sets=""
+          attrs="room comment alias disable:0,1 regexp1WontReactivate:0,1 webCmd eventMap">
     <INT key="CMD" value="{ fhem &quot;set gang_licht on&quot;; fhem &quot;setstate bad_fenster_open defined&quot; }"/>
-    <INT key="DEF" value="bad_fenster:Window.*(Open) 00:00:01 bad_fenster:Window.*(Closed) { fhem &quot;set gang_licht on&quot;; fhem &quot;setstate bad_fenster_open defined&quot; }"/>
+    <INT key="DEF"
+         value="bad_fenster:Window.*(Open) 00:00:01 bad_fenster:Window.*(Closed) { fhem &quot;set gang_licht on&quot;; fhem &quot;setstate bad_fenster_open defined&quot; }"/>
     <INT key="NAME" value="bad_fenster_open"/>
     <INT key="NR" value="6"/>
     <INT key="NTFY_ORDER" value="50-bad_fenster_open"/>
@@ -208,9 +239,12 @@
     <INT key="TYPE" value="watchdog"/>
     <STATE key="Triggered" value="triggered" measured="2012-02-02 10:00:10"/>
 </watchdog>
-<watchdog name="badunten_fenster_open" state="defined" sets="" attrs="room comment alias disable:0,1 regexp1WontReactivate:0,1 webCmd eventMap">
-    <INT key="CMD" value="{ fhem &quot;set gang_vitrine on&quot;; fhem &quot;setstate badunten_fenster_open defined&quot; }"/>
-    <INT key="DEF" value="badunten_fenster:Window.*(Open) 00:05 badunten_fenster:Window.*(Closed) { fhem &quot;set gang_vitrine on&quot;; fhem &quot;setstate badunten_fenster_open defined&quot; }"/>
+<watchdog name="badunten_fenster_open" state="defined" sets=""
+          attrs="room comment alias disable:0,1 regexp1WontReactivate:0,1 webCmd eventMap">
+    <INT key="CMD"
+         value="{ fhem &quot;set gang_vitrine on&quot;; fhem &quot;setstate badunten_fenster_open defined&quot; }"/>
+    <INT key="DEF"
+         value="badunten_fenster:Window.*(Open) 00:05 badunten_fenster:Window.*(Closed) { fhem &quot;set gang_vitrine on&quot;; fhem &quot;setstate badunten_fenster_open defined&quot; }"/>
     <INT key="NAME" value="badunten_fenster_open"/>
     <INT key="NR" value="8"/>
     <INT key="NTFY_ORDER" value="50-badunten_fenster_open"/>
@@ -223,7 +257,8 @@
 </watchdog_LIST>
 
 <FHT8V_LIST>
-<FHT8V name="SchlafzimmerTemp" state="0 %" sets="valve pair" attrs="room comment alias IODev dummy:1,0 ignore:1,0 loglevel:0,1,2,3,4,5,6 armed fm_fav fm_groups fm_name fm_order icon triggered webCmd eventMap">
+<FHT8V name="SchlafzimmerTemp" state="0 %" sets="valve pair"
+       attrs="room comment alias IODev dummy:1,0 ignore:1,0 loglevel:0,1,2,3,4,5,6 armed fm_fav fm_groups fm_name fm_order icon triggered webCmd eventMap">
     <INT key="DEF" value="4931"/>
     <INT key="NAME" value="SchlafzimmerTemp"/>
     <INT key="NR" value="7"/>
@@ -237,7 +272,8 @@
 </FHT8V_LIST>
 
 <PID_LIST>
-<PID name="SchlafzimmerTemp2" state="16.8 (delta -0.800000000000001)" sets="factors desired" attrs="room comment alias disable:0,1 loglevel:0,1,2,3,4,5,6 armed fm_fav fm_groups fm_name fm_order icon triggered webCmd eventMap">
+<PID name="SchlafzimmerTemp2" state="16.8 (delta -0.800000000000001)" sets="factors desired"
+     attrs="room comment alias disable:0,1 loglevel:0,1,2,3,4,5,6 armed fm_fav fm_groups fm_name fm_order icon triggered webCmd eventMap">
     <INT key="DEF" value="tempslaap:temperature:([\d\.]*) thermostaat_slaap"/>
     <INT key="NAME" value="SchlafzimmerTemp2"/>
     <INT key="NR" value="91"/>
@@ -263,7 +299,8 @@
 </PID_LIST>
 
 <CUL_HM_LIST>
-<CUL_HM name="CUL_HM_KFM100_122334" state="171.3  l" sets="pair raw reset sign statusRequest unpair" attrs="room group comment alias eventMap IODev do_not_notify:1,0 ignore:1,0 dummy:1,0 showtime:1,0 loglevel:0,1,2,3,4,5,6 hmClass:receiver,sender serialNr firmware devInfo rawToReadable unit model:ASH550,ASH550I,CMM,HM-CC-SCD,HM-CC-TC,HM-CC-VD,HM-LC-BL1-FM,HM-LC-BL1-PB-FM,HM-LC-BL1-SM,HM-LC-DDC1-PCB,HM-LC-DIM1L-CV,HM-LC-DIM1L-PL,HM-LC-DIM1T-CV,HM-LC-DIM1T-FM,HM-LC-DIM1T-PL,HM-LC-DIM2L-CV,HM-LC-DIM2L-SM,HM-LC-DIM2T-SM,HM-LC-SW1-BA-PCB,HM-LC-SW1-FM,HM-LC-SW1-PB-FM,HM-LC-SW1-PL,HM-LC-SW1-PL-OM54,HM-LC-SW1-SM,HM-LC-SW1-SM-ATMEGA168,HM-LC-SW2-DR,HM-LC-SW2-FM,HM-LC-SW2-PB-FM,HM-LC-SW2-SM,HM-LC-SW4-DR,HM-LC-SW4-PCB,HM-LC-SW4-SM,HM-LC-SW4-SM-ATMEGA168,HM-LC_Bl1PBU-FM,HM-LC_Dim1PWM-CV,HM-LC_Dim1TPBU-FM,HM-OU-CF-PL,HM-PB-2-WM,HM-PB-4-WM,HM-PB-4DIS-WM,HM-PBI-4-FM,HM-RC-12,HM-RC-12-B,HM-RC-12-SW,HM-RC-19,HM-RC-19-B,HM-RC-19-SW,HM-RC-4,HM-RC-4-B,HM-RC-KEY3,HM-RC-KEY3-B,HM-RC-P1,HM-RC-SEC3,HM-RC-SEC3-B,HM-SCI-3-FM,HM-SEC-KEY,HM-SEC-KEY-O,HM-SEC-KEY-S,HM-SEC-MDIR,HM-SEC-RHS,HM-SEC-SC,HM-SEC-SD,HM-SEC-SFA-SM,HM-SEC-TIS,HM-SEC-WDS,HM-SEC-WIN,HM-SEN-EP,HM-SEN-MDIR-SM,HM-SWI-3-FM,HM-Sec-Cen,HM-WDC7000,HM-WDC7000,HM-WDS10-TH-O,HM-WDS100-C6-O,HM-WDS20-TH-O,HM-WDS30-T-O,HM-WDS40-TH-I,HM_LC_Sw4-WM,IS-WDS-TH-OD-S-R3,KFM-Display,KFM-Sensor,KS550,S550IA,WS888 subType:AlarmControl,KFM100,THSensor,blindActuator,dimmer,keyMatic,motionDetector,pushButton,remote,sensor,smokeDetector,swi,switch,threeStateSensor,winMatic icon webCmd">
+<CUL_HM name="CUL_HM_KFM100_122334" state="171.3  l" sets="pair raw reset sign statusRequest unpair"
+        attrs="room group comment alias eventMap IODev do_not_notify:1,0 ignore:1,0 dummy:1,0 showtime:1,0 loglevel:0,1,2,3,4,5,6 hmClass:receiver,sender serialNr firmware devInfo rawToReadable unit model:ASH550,ASH550I,CMM,HM-CC-SCD,HM-CC-TC,HM-CC-VD,HM-LC-BL1-FM,HM-LC-BL1-PB-FM,HM-LC-BL1-SM,HM-LC-DDC1-PCB,HM-LC-DIM1L-CV,HM-LC-DIM1L-PL,HM-LC-DIM1T-CV,HM-LC-DIM1T-FM,HM-LC-DIM1T-PL,HM-LC-DIM2L-CV,HM-LC-DIM2L-SM,HM-LC-DIM2T-SM,HM-LC-SW1-BA-PCB,HM-LC-SW1-FM,HM-LC-SW1-PB-FM,HM-LC-SW1-PL,HM-LC-SW1-PL-OM54,HM-LC-SW1-SM,HM-LC-SW1-SM-ATMEGA168,HM-LC-SW2-DR,HM-LC-SW2-FM,HM-LC-SW2-PB-FM,HM-LC-SW2-SM,HM-LC-SW4-DR,HM-LC-SW4-PCB,HM-LC-SW4-SM,HM-LC-SW4-SM-ATMEGA168,HM-LC_Bl1PBU-FM,HM-LC_Dim1PWM-CV,HM-LC_Dim1TPBU-FM,HM-OU-CF-PL,HM-PB-2-WM,HM-PB-4-WM,HM-PB-4DIS-WM,HM-PBI-4-FM,HM-RC-12,HM-RC-12-B,HM-RC-12-SW,HM-RC-19,HM-RC-19-B,HM-RC-19-SW,HM-RC-4,HM-RC-4-B,HM-RC-KEY3,HM-RC-KEY3-B,HM-RC-P1,HM-RC-SEC3,HM-RC-SEC3-B,HM-SCI-3-FM,HM-SEC-KEY,HM-SEC-KEY-O,HM-SEC-KEY-S,HM-SEC-MDIR,HM-SEC-RHS,HM-SEC-SC,HM-SEC-SD,HM-SEC-SFA-SM,HM-SEC-TIS,HM-SEC-WDS,HM-SEC-WIN,HM-SEN-EP,HM-SEN-MDIR-SM,HM-SWI-3-FM,HM-Sec-Cen,HM-WDC7000,HM-WDC7000,HM-WDS10-TH-O,HM-WDS100-C6-O,HM-WDS20-TH-O,HM-WDS30-T-O,HM-WDS40-TH-I,HM_LC_Sw4-WM,IS-WDS-TH-OD-S-R3,KFM-Display,KFM-Sensor,KS550,S550IA,WS888 subType:AlarmControl,KFM100,THSensor,blindActuator,dimmer,keyMatic,motionDetector,pushButton,remote,sensor,smokeDetector,swi,switch,threeStateSensor,winMatic icon webCmd">
     <INT key="CUL_MSGCNT" value="146"/>
     <INT key="CUL_RAWMSG" value="A108DA05312233411591901470200B06C4552"/>
     <INT key="CUL_RSSI" value="-33"/>
@@ -293,7 +330,8 @@
     <STATE key="state" value="171.3  l" measured="2012-07-26 21:55:57"/>
     <STATE key="unknownMsg" value="(A453) 01490200308245" measured="2012-07-24 18:36:56"/>
 </CUL_HM>
-<CUL_HM name="Aussenlicht" state="off" sets="off on on-for-timer pair raw reset sign statusRequest toggle unpair" attrs="room group comment alias eventMap IODev do_not_notify:1,0 ignore:1,0 dummy:1,0 showtime:1,0 loglevel:0,1,2,3,4,5,6 hmClass:receiver,sender serialNr firmware devInfo rawToReadable unit model:ASH550,ASH550I,CMM,HM-CC-SCD,HM-CC-TC,HM-CC-VD,HM-LC-BL1-FM,HM-LC-BL1-PB-FM,HM-LC-BL1-SM,HM-LC-DDC1-PCB,HM-LC-DIM1L-CV,HM-LC-DIM1L-PL,HM-LC-DIM1T-CV,HM-LC-DIM1T-FM,HM-LC-DIM1T-PL,HM-LC-DIM2L-CV,HM-LC-DIM2L-SM,HM-LC-DIM2T-SM,HM-LC-SW1-BA-PCB,HM-LC-SW1-FM,HM-LC-SW1-PB-FM,HM-LC-SW1-PL,HM-LC-SW1-PL-OM54,HM-LC-SW1-SM,HM-LC-SW1-SM-ATMEGA168,HM-LC-SW2-DR,HM-LC-SW2-FM,HM-LC-SW2-PB-FM,HM-LC-SW2-SM,HM-LC-SW4-DR,HM-LC-SW4-PCB,HM-LC-SW4-SM,HM-LC-SW4-SM-ATMEGA168,HM-LC_Bl1PBU-FM,HM-LC_Dim1PWM-CV,HM-LC_Dim1TPBU-FM,HM-OU-CF-PL,HM-PB-2-WM,HM-PB-4-WM,HM-PB-4DIS-WM,HM-PBI-4-FM,HM-RC-12,HM-RC-12-B,HM-RC-12-SW,HM-RC-19,HM-RC-19-B,HM-RC-19-SW,HM-RC-4,HM-RC-4-B,HM-RC-KEY3,HM-RC-KEY3-B,HM-RC-P1,HM-RC-SEC3,HM-RC-SEC3-B,HM-SCI-3-FM,HM-SEC-KEY,HM-SEC-KEY-O,HM-SEC-KEY-S,HM-SEC-MDIR,HM-SEC-RHS,HM-SEC-SC,HM-SEC-SD,HM-SEC-SFA-SM,HM-SEC-TIS,HM-SEC-WDS,HM-SEC-WIN,HM-SEN-EP,HM-SEN-MDIR-SM,HM-SWI-3-FM,HM-Sec-Cen,HM-WDC7000,HM-WDC7000,HM-WDS10-TH-O,HM-WDS100-C6-O,HM-WDS20-TH-O,HM-WDS30-T-O,HM-WDS40-TH-I,HM_LC_Sw4-WM,IS-WDS-TH-OD-S-R3,KFM-Display,KFM-Sensor,KS550,S550IA,WS888 subType:AlarmControl,KFM100,THSensor,blindActuator,dimmer,keyMatic,motionDetector,pushButton,remote,sensor,smokeDetector,swi,switch,threeStateSensor,winMatic icon structexclude webCmd">
+<CUL_HM name="Aussenlicht" state="off" sets="off on on-for-timer pair raw reset sign statusRequest toggle unpair"
+        attrs="room group comment alias eventMap IODev do_not_notify:1,0 ignore:1,0 dummy:1,0 showtime:1,0 loglevel:0,1,2,3,4,5,6 hmClass:receiver,sender serialNr firmware devInfo rawToReadable unit model:ASH550,ASH550I,CMM,HM-CC-SCD,HM-CC-TC,HM-CC-VD,HM-LC-BL1-FM,HM-LC-BL1-PB-FM,HM-LC-BL1-SM,HM-LC-DDC1-PCB,HM-LC-DIM1L-CV,HM-LC-DIM1L-PL,HM-LC-DIM1T-CV,HM-LC-DIM1T-FM,HM-LC-DIM1T-PL,HM-LC-DIM2L-CV,HM-LC-DIM2L-SM,HM-LC-DIM2T-SM,HM-LC-SW1-BA-PCB,HM-LC-SW1-FM,HM-LC-SW1-PB-FM,HM-LC-SW1-PL,HM-LC-SW1-PL-OM54,HM-LC-SW1-SM,HM-LC-SW1-SM-ATMEGA168,HM-LC-SW2-DR,HM-LC-SW2-FM,HM-LC-SW2-PB-FM,HM-LC-SW2-SM,HM-LC-SW4-DR,HM-LC-SW4-PCB,HM-LC-SW4-SM,HM-LC-SW4-SM-ATMEGA168,HM-LC_Bl1PBU-FM,HM-LC_Dim1PWM-CV,HM-LC_Dim1TPBU-FM,HM-OU-CF-PL,HM-PB-2-WM,HM-PB-4-WM,HM-PB-4DIS-WM,HM-PBI-4-FM,HM-RC-12,HM-RC-12-B,HM-RC-12-SW,HM-RC-19,HM-RC-19-B,HM-RC-19-SW,HM-RC-4,HM-RC-4-B,HM-RC-KEY3,HM-RC-KEY3-B,HM-RC-P1,HM-RC-SEC3,HM-RC-SEC3-B,HM-SCI-3-FM,HM-SEC-KEY,HM-SEC-KEY-O,HM-SEC-KEY-S,HM-SEC-MDIR,HM-SEC-RHS,HM-SEC-SC,HM-SEC-SD,HM-SEC-SFA-SM,HM-SEC-TIS,HM-SEC-WDS,HM-SEC-WIN,HM-SEN-EP,HM-SEN-MDIR-SM,HM-SWI-3-FM,HM-Sec-Cen,HM-WDC7000,HM-WDC7000,HM-WDS10-TH-O,HM-WDS100-C6-O,HM-WDS20-TH-O,HM-WDS30-T-O,HM-WDS40-TH-I,HM_LC_Sw4-WM,IS-WDS-TH-OD-S-R3,KFM-Display,KFM-Sensor,KS550,S550IA,WS888 subType:AlarmControl,KFM100,THSensor,blindActuator,dimmer,keyMatic,motionDetector,pushButton,remote,sensor,smokeDetector,swi,switch,threeStateSensor,winMatic icon structexclude webCmd">
     <INT key="CUL_MSGCNT" value="2"/>
     <INT key="CUL_RAWMSG" value="A0D14A4101B005FF117130601000014"/>
     <INT key="CUL_RSSI" value="-64"/>
@@ -319,7 +357,8 @@
     <STATE key="powerOn" value="off" measured="2012-07-19 21:43:21"/>
     <STATE key="state" value="off" measured="2012-07-19 21:43:21"/>
 </CUL_HM>
-<CUL_HM name="Garage" state="closed" sets="pair raw reset sign statusRequest unpair" attrs="room group comment alias eventMap IODev do_not_notify:1,0 ignore:1,0 dummy:1,0 showtime:1,0 loglevel:0,1,2,3,4,5,6 hmClass:receiver,sender serialNr firmware devInfo rawToReadable unit model:ASH550,ASH550I,CMM,HM-CC-SCD,HM-CC-TC,HM-CC-VD,HM-LC-BL1-FM,HM-LC-BL1-PB-FM,HM-LC-BL1-SM,HM-LC-DDC1-PCB,HM-LC-DIM1L-CV,HM-LC-DIM1L-PL,HM-LC-DIM1T-CV,HM-LC-DIM1T-FM,HM-LC-DIM1T-PL,HM-LC-DIM2L-CV,HM-LC-DIM2L-SM,HM-LC-DIM2T-SM,HM-LC-SW1-BA-PCB,HM-LC-SW1-FM,HM-LC-SW1-PB-FM,HM-LC-SW1-PL,HM-LC-SW1-PL-OM54,HM-LC-SW1-SM,HM-LC-SW1-SM-ATMEGA168,HM-LC-SW2-DR,HM-LC-SW2-FM,HM-LC-SW2-PB-FM,HM-LC-SW2-SM,HM-LC-SW4-DR,HM-LC-SW4-PCB,HM-LC-SW4-SM,HM-LC-SW4-SM-ATMEGA168,HM-LC_Bl1PBU-FM,HM-LC_Dim1PWM-CV,HM-LC_Dim1TPBU-FM,HM-OU-CF-PL,HM-PB-2-WM,HM-PB-4-WM,HM-PB-4DIS-WM,HM-PBI-4-FM,HM-RC-12,HM-RC-12-B,HM-RC-12-SW,HM-RC-19,HM-RC-19-B,HM-RC-19-SW,HM-RC-4,HM-RC-4-B,HM-RC-KEY3,HM-RC-KEY3-B,HM-RC-P1,HM-RC-SEC3,HM-RC-SEC3-B,HM-SCI-3-FM,HM-SEC-KEY,HM-SEC-KEY-O,HM-SEC-KEY-S,HM-SEC-MDIR,HM-SEC-RHS,HM-SEC-SC,HM-SEC-SD,HM-SEC-SFA-SM,HM-SEC-TIS,HM-SEC-WDS,HM-SEC-WIN,HM-SEN-EP,HM-SEN-MDIR-SM,HM-SWI-3-FM,HM-Sec-Cen,HM-WDC7000,HM-WDC7000,HM-WDS10-TH-O,HM-WDS100-C6-O,HM-WDS20-TH-O,HM-WDS30-T-O,HM-WDS40-TH-I,HM_LC_Sw4-WM,IS-WDS-TH-OD-S-R3,KFM-Display,KFM-Sensor,KS550,S550IA,WS888 subType:AlarmControl,KFM100,THSensor,blindActuator,dimmer,keyMatic,motionDetector,pushButton,remote,sensor,smokeDetector,swi,switch,threeStateSensor,winMatic icon structexclude webCmd">
+<CUL_HM name="Garage" state="closed" sets="pair raw reset sign statusRequest unpair"
+        attrs="room group comment alias eventMap IODev do_not_notify:1,0 ignore:1,0 dummy:1,0 showtime:1,0 loglevel:0,1,2,3,4,5,6 hmClass:receiver,sender serialNr firmware devInfo rawToReadable unit model:ASH550,ASH550I,CMM,HM-CC-SCD,HM-CC-TC,HM-CC-VD,HM-LC-BL1-FM,HM-LC-BL1-PB-FM,HM-LC-BL1-SM,HM-LC-DDC1-PCB,HM-LC-DIM1L-CV,HM-LC-DIM1L-PL,HM-LC-DIM1T-CV,HM-LC-DIM1T-FM,HM-LC-DIM1T-PL,HM-LC-DIM2L-CV,HM-LC-DIM2L-SM,HM-LC-DIM2T-SM,HM-LC-SW1-BA-PCB,HM-LC-SW1-FM,HM-LC-SW1-PB-FM,HM-LC-SW1-PL,HM-LC-SW1-PL-OM54,HM-LC-SW1-SM,HM-LC-SW1-SM-ATMEGA168,HM-LC-SW2-DR,HM-LC-SW2-FM,HM-LC-SW2-PB-FM,HM-LC-SW2-SM,HM-LC-SW4-DR,HM-LC-SW4-PCB,HM-LC-SW4-SM,HM-LC-SW4-SM-ATMEGA168,HM-LC_Bl1PBU-FM,HM-LC_Dim1PWM-CV,HM-LC_Dim1TPBU-FM,HM-OU-CF-PL,HM-PB-2-WM,HM-PB-4-WM,HM-PB-4DIS-WM,HM-PBI-4-FM,HM-RC-12,HM-RC-12-B,HM-RC-12-SW,HM-RC-19,HM-RC-19-B,HM-RC-19-SW,HM-RC-4,HM-RC-4-B,HM-RC-KEY3,HM-RC-KEY3-B,HM-RC-P1,HM-RC-SEC3,HM-RC-SEC3-B,HM-SCI-3-FM,HM-SEC-KEY,HM-SEC-KEY-O,HM-SEC-KEY-S,HM-SEC-MDIR,HM-SEC-RHS,HM-SEC-SC,HM-SEC-SD,HM-SEC-SFA-SM,HM-SEC-TIS,HM-SEC-WDS,HM-SEC-WIN,HM-SEN-EP,HM-SEN-MDIR-SM,HM-SWI-3-FM,HM-Sec-Cen,HM-WDC7000,HM-WDC7000,HM-WDS10-TH-O,HM-WDS100-C6-O,HM-WDS20-TH-O,HM-WDS30-T-O,HM-WDS40-TH-I,HM_LC_Sw4-WM,IS-WDS-TH-OD-S-R3,KFM-Display,KFM-Sensor,KS550,S550IA,WS888 subType:AlarmControl,KFM100,THSensor,blindActuator,dimmer,keyMatic,motionDetector,pushButton,remote,sensor,smokeDetector,swi,switch,threeStateSensor,winMatic icon structexclude webCmd">
     <INT key="CUL_MSGCNT" value="11"/>
     <INT key="CUL_RAWMSG" value="A0C0FA44119A3DDF11713010800DF"/>
     <INT key="CUL_RSSI" value="-90.5"/>
@@ -345,7 +384,9 @@
     <STATE key="battery" value="ok" measured="2012-07-09 16:42:37"/>
     <STATE key="state" value="closed" measured="2012-07-19 21:42:09"/>
 </CUL_HM>
-<CUL_HM name="Gartenlampe" state="off" sets="off on on-for-timer pair pct:slider,0,1,100 raw reset sign statusRequest toggle unpair" attrs="room group comment alias eventMap IODev do_not_notify:1,0 ignore:1,0 dummy:1,0 showtime:1,0 loglevel:0,1,2,3,4,5,6 hmClass:receiver,sender serialNr firmware devInfo rawToReadable unit model:ASH550,ASH550I,CMM,HM-CC-SCD,HM-CC-TC,HM-CC-VD,HM-LC-BL1-FM,HM-LC-BL1-PB-FM,HM-LC-BL1-SM,HM-LC-DDC1-PCB,HM-LC-DIM1L-CV,HM-LC-DIM1L-PL,HM-LC-DIM1T-CV,HM-LC-DIM1T-FM,HM-LC-DIM1T-PL,HM-LC-DIM2L-CV,HM-LC-DIM2L-SM,HM-LC-DIM2T-SM,HM-LC-SW1-BA-PCB,HM-LC-SW1-FM,HM-LC-SW1-PB-FM,HM-LC-SW1-PL,HM-LC-SW1-PL-OM54,HM-LC-SW1-SM,HM-LC-SW1-SM-ATMEGA168,HM-LC-SW2-DR,HM-LC-SW2-FM,HM-LC-SW2-PB-FM,HM-LC-SW2-SM,HM-LC-SW4-DR,HM-LC-SW4-PCB,HM-LC-SW4-SM,HM-LC-SW4-SM-ATMEGA168,HM-LC_Bl1PBU-FM,HM-LC_Dim1PWM-CV,HM-LC_Dim1TPBU-FM,HM-OU-CF-PL,HM-PB-2-WM,HM-PB-4-WM,HM-PB-4DIS-WM,HM-PBI-4-FM,HM-RC-12,HM-RC-12-B,HM-RC-12-SW,HM-RC-19,HM-RC-19-B,HM-RC-19-SW,HM-RC-4,HM-RC-4-B,HM-RC-KEY3,HM-RC-KEY3-B,HM-RC-P1,HM-RC-SEC3,HM-RC-SEC3-B,HM-SCI-3-FM,HM-SEC-KEY,HM-SEC-KEY-O,HM-SEC-KEY-S,HM-SEC-MDIR,HM-SEC-RHS,HM-SEC-SC,HM-SEC-SD,HM-SEC-SFA-SM,HM-SEC-TIS,HM-SEC-WDS,HM-SEC-WIN,HM-SEN-EP,HM-SEN-MDIR-SM,HM-SWI-3-FM,HM-Sec-Cen,HM-WDC7000,HM-WDC7000,HM-WDS10-TH-O,HM-WDS100-C6-O,HM-WDS20-TH-O,HM-WDS30-T-O,HM-WDS40-TH-I,HM_LC_Sw4-WM,IS-WDS-TH-OD-S-R3,KFM-Display,KFM-Sensor,KS550,S550IA,WS888 subType:AlarmControl,KFM100,THSensor,blindActuator,dimmer,keyMatic,motionDetector,pushButton,remote,sensor,smokeDetector,swi,switch,threeStateSensor,winMatic icon structexclude webCmd">
+<CUL_HM name="Gartenlampe" state="off"
+        sets="off on on-for-timer pair pct:slider,0,1,100 raw reset sign statusRequest toggle unpair"
+        attrs="room group comment alias eventMap IODev do_not_notify:1,0 ignore:1,0 dummy:1,0 showtime:1,0 loglevel:0,1,2,3,4,5,6 hmClass:receiver,sender serialNr firmware devInfo rawToReadable unit model:ASH550,ASH550I,CMM,HM-CC-SCD,HM-CC-TC,HM-CC-VD,HM-LC-BL1-FM,HM-LC-BL1-PB-FM,HM-LC-BL1-SM,HM-LC-DDC1-PCB,HM-LC-DIM1L-CV,HM-LC-DIM1L-PL,HM-LC-DIM1T-CV,HM-LC-DIM1T-FM,HM-LC-DIM1T-PL,HM-LC-DIM2L-CV,HM-LC-DIM2L-SM,HM-LC-DIM2T-SM,HM-LC-SW1-BA-PCB,HM-LC-SW1-FM,HM-LC-SW1-PB-FM,HM-LC-SW1-PL,HM-LC-SW1-PL-OM54,HM-LC-SW1-SM,HM-LC-SW1-SM-ATMEGA168,HM-LC-SW2-DR,HM-LC-SW2-FM,HM-LC-SW2-PB-FM,HM-LC-SW2-SM,HM-LC-SW4-DR,HM-LC-SW4-PCB,HM-LC-SW4-SM,HM-LC-SW4-SM-ATMEGA168,HM-LC_Bl1PBU-FM,HM-LC_Dim1PWM-CV,HM-LC_Dim1TPBU-FM,HM-OU-CF-PL,HM-PB-2-WM,HM-PB-4-WM,HM-PB-4DIS-WM,HM-PBI-4-FM,HM-RC-12,HM-RC-12-B,HM-RC-12-SW,HM-RC-19,HM-RC-19-B,HM-RC-19-SW,HM-RC-4,HM-RC-4-B,HM-RC-KEY3,HM-RC-KEY3-B,HM-RC-P1,HM-RC-SEC3,HM-RC-SEC3-B,HM-SCI-3-FM,HM-SEC-KEY,HM-SEC-KEY-O,HM-SEC-KEY-S,HM-SEC-MDIR,HM-SEC-RHS,HM-SEC-SC,HM-SEC-SD,HM-SEC-SFA-SM,HM-SEC-TIS,HM-SEC-WDS,HM-SEC-WIN,HM-SEN-EP,HM-SEN-MDIR-SM,HM-SWI-3-FM,HM-Sec-Cen,HM-WDC7000,HM-WDC7000,HM-WDS10-TH-O,HM-WDS100-C6-O,HM-WDS20-TH-O,HM-WDS30-T-O,HM-WDS40-TH-I,HM_LC_Sw4-WM,IS-WDS-TH-OD-S-R3,KFM-Display,KFM-Sensor,KS550,S550IA,WS888 subType:AlarmControl,KFM100,THSensor,blindActuator,dimmer,keyMatic,motionDetector,pushButton,remote,sensor,smokeDetector,swi,switch,threeStateSensor,winMatic icon structexclude webCmd">
     <INT key="CUL_MSGCNT" value="16"/>
     <INT key="CUL_RAWMSG" value="A0F1DA4101878E2F11713060100008000DC"/>
     <INT key="CUL_RSSI" value="-92"/>
@@ -373,7 +414,8 @@
     <STATE key="powerOn" value="off" measured="2012-07-19 21:44:18"/>
     <STATE key="state" value="off" measured="2012-07-19 21:44:18"/>
 </CUL_HM>
-<CUL_HM name="Fernseher" state="MISSING ACK" sets="off on on-for-timer pair raw reset sign statusRequest toggle unpair" attrs="room group comment alias eventMap IODev do_not_notify:1,0 ignore:1,0 dummy:1,0 showtime:1,0 loglevel:0,1,2,3,4,5,6 hmClass:receiver,sender serialNr firmware devInfo rawToReadable unit model:ASH550,ASH550I,CMM,HM-CC-SCD,HM-CC-TC,HM-CC-VD,HM-LC-BL1-FM,HM-LC-BL1-PB-FM,HM-LC-BL1-SM,HM-LC-DDC1-PCB,HM-LC-DIM1L-CV,HM-LC-DIM1L-PL,HM-LC-DIM1T-CV,HM-LC-DIM1T-FM,HM-LC-DIM1T-PL,HM-LC-DIM2L-CV,HM-LC-DIM2L-SM,HM-LC-DIM2T-SM,HM-LC-SW1-BA-PCB,HM-LC-SW1-FM,HM-LC-SW1-PB-FM,HM-LC-SW1-PL,HM-LC-SW1-PL-OM54,HM-LC-SW1-SM,HM-LC-SW1-SM-ATMEGA168,HM-LC-SW2-DR,HM-LC-SW2-FM,HM-LC-SW2-PB-FM,HM-LC-SW2-SM,HM-LC-SW4-DR,HM-LC-SW4-PCB,HM-LC-SW4-SM,HM-LC-SW4-SM-ATMEGA168,HM-LC_Bl1PBU-FM,HM-LC_Dim1PWM-CV,HM-LC_Dim1TPBU-FM,HM-OU-CF-PL,HM-PB-2-WM,HM-PB-4-WM,HM-PB-4DIS-WM,HM-PBI-4-FM,HM-RC-12,HM-RC-12-B,HM-RC-12-SW,HM-RC-19,HM-RC-19-B,HM-RC-19-SW,HM-RC-4,HM-RC-4-B,HM-RC-KEY3,HM-RC-KEY3-B,HM-RC-P1,HM-RC-SEC3,HM-RC-SEC3-B,HM-SCI-3-FM,HM-SEC-KEY,HM-SEC-KEY-O,HM-SEC-KEY-S,HM-SEC-MDIR,HM-SEC-RHS,HM-SEC-SC,HM-SEC-SD,HM-SEC-SFA-SM,HM-SEC-TIS,HM-SEC-WDS,HM-SEC-WIN,HM-SEN-EP,HM-SEN-MDIR-SM,HM-SWI-3-FM,HM-Sec-Cen,HM-WDC7000,HM-WDC7000,HM-WDS10-TH-O,HM-WDS100-C6-O,HM-WDS20-TH-O,HM-WDS30-T-O,HM-WDS40-TH-I,HM_LC_Sw4-WM,IS-WDS-TH-OD-S-R3,KFM-Display,KFM-Sensor,KS550,S550IA,WS888 subType:AlarmControl,KFM100,THSensor,blindActuator,dimmer,keyMatic,motionDetector,pushButton,remote,sensor,smokeDetector,swi,switch,threeStateSensor,winMatic icon structexclude webCmd">
+<CUL_HM name="Fernseher" state="MISSING ACK" sets="off on on-for-timer pair raw reset sign statusRequest toggle unpair"
+        attrs="room group comment alias eventMap IODev do_not_notify:1,0 ignore:1,0 dummy:1,0 showtime:1,0 loglevel:0,1,2,3,4,5,6 hmClass:receiver,sender serialNr firmware devInfo rawToReadable unit model:ASH550,ASH550I,CMM,HM-CC-SCD,HM-CC-TC,HM-CC-VD,HM-LC-BL1-FM,HM-LC-BL1-PB-FM,HM-LC-BL1-SM,HM-LC-DDC1-PCB,HM-LC-DIM1L-CV,HM-LC-DIM1L-PL,HM-LC-DIM1T-CV,HM-LC-DIM1T-FM,HM-LC-DIM1T-PL,HM-LC-DIM2L-CV,HM-LC-DIM2L-SM,HM-LC-DIM2T-SM,HM-LC-SW1-BA-PCB,HM-LC-SW1-FM,HM-LC-SW1-PB-FM,HM-LC-SW1-PL,HM-LC-SW1-PL-OM54,HM-LC-SW1-SM,HM-LC-SW1-SM-ATMEGA168,HM-LC-SW2-DR,HM-LC-SW2-FM,HM-LC-SW2-PB-FM,HM-LC-SW2-SM,HM-LC-SW4-DR,HM-LC-SW4-PCB,HM-LC-SW4-SM,HM-LC-SW4-SM-ATMEGA168,HM-LC_Bl1PBU-FM,HM-LC_Dim1PWM-CV,HM-LC_Dim1TPBU-FM,HM-OU-CF-PL,HM-PB-2-WM,HM-PB-4-WM,HM-PB-4DIS-WM,HM-PBI-4-FM,HM-RC-12,HM-RC-12-B,HM-RC-12-SW,HM-RC-19,HM-RC-19-B,HM-RC-19-SW,HM-RC-4,HM-RC-4-B,HM-RC-KEY3,HM-RC-KEY3-B,HM-RC-P1,HM-RC-SEC3,HM-RC-SEC3-B,HM-SCI-3-FM,HM-SEC-KEY,HM-SEC-KEY-O,HM-SEC-KEY-S,HM-SEC-MDIR,HM-SEC-RHS,HM-SEC-SC,HM-SEC-SD,HM-SEC-SFA-SM,HM-SEC-TIS,HM-SEC-WDS,HM-SEC-WIN,HM-SEN-EP,HM-SEN-MDIR-SM,HM-SWI-3-FM,HM-Sec-Cen,HM-WDC7000,HM-WDC7000,HM-WDS10-TH-O,HM-WDS100-C6-O,HM-WDS20-TH-O,HM-WDS30-T-O,HM-WDS40-TH-I,HM_LC_Sw4-WM,IS-WDS-TH-OD-S-R3,KFM-Display,KFM-Sensor,KS550,S550IA,WS888 subType:AlarmControl,KFM100,THSensor,blindActuator,dimmer,keyMatic,motionDetector,pushButton,remote,sensor,smokeDetector,swi,switch,threeStateSensor,winMatic icon structexclude webCmd">
     <INT key="DEF" value="1BC7A3"/>
     <INT key="NAME" value="Fernseher"/>
     <INT key="NR" value="56"/>
@@ -393,7 +435,8 @@
     <STATE key="powerOn" value="on" measured="2012-06-27 17:10:10"/>
     <STATE key="state" value="MISSING ACK" measured="2012-06-27 17:16:53"/>
 </CUL_HM>
-<CUL_HM name="Beamer" state="MISSING ACK" sets="off on on-for-timer pair raw reset sign statusRequest toggle unpair" attrs="room group comment alias eventMap IODev do_not_notify:1,0 ignore:1,0 dummy:1,0 showtime:1,0 loglevel:0,1,2,3,4,5,6 hmClass:receiver,sender serialNr firmware devInfo rawToReadable unit model:ASH550,ASH550I,CMM,HM-CC-SCD,HM-CC-TC,HM-CC-VD,HM-LC-BL1-FM,HM-LC-BL1-PB-FM,HM-LC-BL1-SM,HM-LC-DDC1-PCB,HM-LC-DIM1L-CV,HM-LC-DIM1L-PL,HM-LC-DIM1T-CV,HM-LC-DIM1T-FM,HM-LC-DIM1T-PL,HM-LC-DIM2L-CV,HM-LC-DIM2L-SM,HM-LC-DIM2T-SM,HM-LC-SW1-BA-PCB,HM-LC-SW1-FM,HM-LC-SW1-PB-FM,HM-LC-SW1-PL,HM-LC-SW1-PL-OM54,HM-LC-SW1-SM,HM-LC-SW1-SM-ATMEGA168,HM-LC-SW2-DR,HM-LC-SW2-FM,HM-LC-SW2-PB-FM,HM-LC-SW2-SM,HM-LC-SW4-DR,HM-LC-SW4-PCB,HM-LC-SW4-SM,HM-LC-SW4-SM-ATMEGA168,HM-LC_Bl1PBU-FM,HM-LC_Dim1PWM-CV,HM-LC_Dim1TPBU-FM,HM-OU-CF-PL,HM-PB-2-WM,HM-PB-4-WM,HM-PB-4DIS-WM,HM-PBI-4-FM,HM-RC-12,HM-RC-12-B,HM-RC-12-SW,HM-RC-19,HM-RC-19-B,HM-RC-19-SW,HM-RC-4,HM-RC-4-B,HM-RC-KEY3,HM-RC-KEY3-B,HM-RC-P1,HM-RC-SEC3,HM-RC-SEC3-B,HM-SCI-3-FM,HM-SEC-KEY,HM-SEC-KEY-O,HM-SEC-KEY-S,HM-SEC-MDIR,HM-SEC-RHS,HM-SEC-SC,HM-SEC-SD,HM-SEC-SFA-SM,HM-SEC-TIS,HM-SEC-WDS,HM-SEC-WIN,HM-SEN-EP,HM-SEN-MDIR-SM,HM-SWI-3-FM,HM-Sec-Cen,HM-WDC7000,HM-WDC7000,HM-WDS10-TH-O,HM-WDS100-C6-O,HM-WDS20-TH-O,HM-WDS30-T-O,HM-WDS40-TH-I,HM_LC_Sw4-WM,IS-WDS-TH-OD-S-R3,KFM-Display,KFM-Sensor,KS550,S550IA,WS888 subType:AlarmControl,KFM100,THSensor,blindActuator,dimmer,keyMatic,motionDetector,pushButton,remote,sensor,smokeDetector,swi,switch,threeStateSensor,winMatic icon structexclude webCmd">
+<CUL_HM name="Beamer" state="MISSING ACK" sets="off on on-for-timer pair raw reset sign statusRequest toggle unpair"
+        attrs="room group comment alias eventMap IODev do_not_notify:1,0 ignore:1,0 dummy:1,0 showtime:1,0 loglevel:0,1,2,3,4,5,6 hmClass:receiver,sender serialNr firmware devInfo rawToReadable unit model:ASH550,ASH550I,CMM,HM-CC-SCD,HM-CC-TC,HM-CC-VD,HM-LC-BL1-FM,HM-LC-BL1-PB-FM,HM-LC-BL1-SM,HM-LC-DDC1-PCB,HM-LC-DIM1L-CV,HM-LC-DIM1L-PL,HM-LC-DIM1T-CV,HM-LC-DIM1T-FM,HM-LC-DIM1T-PL,HM-LC-DIM2L-CV,HM-LC-DIM2L-SM,HM-LC-DIM2T-SM,HM-LC-SW1-BA-PCB,HM-LC-SW1-FM,HM-LC-SW1-PB-FM,HM-LC-SW1-PL,HM-LC-SW1-PL-OM54,HM-LC-SW1-SM,HM-LC-SW1-SM-ATMEGA168,HM-LC-SW2-DR,HM-LC-SW2-FM,HM-LC-SW2-PB-FM,HM-LC-SW2-SM,HM-LC-SW4-DR,HM-LC-SW4-PCB,HM-LC-SW4-SM,HM-LC-SW4-SM-ATMEGA168,HM-LC_Bl1PBU-FM,HM-LC_Dim1PWM-CV,HM-LC_Dim1TPBU-FM,HM-OU-CF-PL,HM-PB-2-WM,HM-PB-4-WM,HM-PB-4DIS-WM,HM-PBI-4-FM,HM-RC-12,HM-RC-12-B,HM-RC-12-SW,HM-RC-19,HM-RC-19-B,HM-RC-19-SW,HM-RC-4,HM-RC-4-B,HM-RC-KEY3,HM-RC-KEY3-B,HM-RC-P1,HM-RC-SEC3,HM-RC-SEC3-B,HM-SCI-3-FM,HM-SEC-KEY,HM-SEC-KEY-O,HM-SEC-KEY-S,HM-SEC-MDIR,HM-SEC-RHS,HM-SEC-SC,HM-SEC-SD,HM-SEC-SFA-SM,HM-SEC-TIS,HM-SEC-WDS,HM-SEC-WIN,HM-SEN-EP,HM-SEN-MDIR-SM,HM-SWI-3-FM,HM-Sec-Cen,HM-WDC7000,HM-WDC7000,HM-WDS10-TH-O,HM-WDS100-C6-O,HM-WDS20-TH-O,HM-WDS30-T-O,HM-WDS40-TH-I,HM_LC_Sw4-WM,IS-WDS-TH-OD-S-R3,KFM-Display,KFM-Sensor,KS550,S550IA,WS888 subType:AlarmControl,KFM100,THSensor,blindActuator,dimmer,keyMatic,motionDetector,pushButton,remote,sensor,smokeDetector,swi,switch,threeStateSensor,winMatic icon structexclude webCmd">
     <INT key="DEF" value="1BC7A302"/>
     <INT key="NAME" value="Beamer"/>
     <INT key="NR" value="59"/>
@@ -412,7 +455,9 @@
     <STATE key="deviceMsg" value="off" measured="2012-06-27 17:16:52"/>
     <STATE key="state" value="MISSING ACK" measured="2012-06-27 17:16:52"/>
 </CUL_HM>
-<CUL_HM name="Taster1" state="Btn2 offLong 5 (to broadcast)" sets="devicepair pair raw reset sign statusRequest text unpair" attrs="room group comment alias eventMap IODev do_not_notify:1,0 ignore:1,0 dummy:1,0 showtime:1,0 loglevel:0,1,2,3,4,5,6 hmClass:receiver,sender serialNr firmware devInfo rawToReadable unit model:ASH550,ASH550I,CMM,HM-CC-SCD,HM-CC-TC,HM-CC-VD,HM-LC-BL1-FM,HM-LC-BL1-PB-FM,HM-LC-BL1-SM,HM-LC-DDC1-PCB,HM-LC-DIM1L-CV,HM-LC-DIM1L-PL,HM-LC-DIM1T-CV,HM-LC-DIM1T-FM,HM-LC-DIM1T-PL,HM-LC-DIM2L-CV,HM-LC-DIM2L-SM,HM-LC-DIM2T-SM,HM-LC-SW1-BA-PCB,HM-LC-SW1-FM,HM-LC-SW1-PB-FM,HM-LC-SW1-PL,HM-LC-SW1-PL-OM54,HM-LC-SW1-SM,HM-LC-SW1-SM-ATMEGA168,HM-LC-SW2-DR,HM-LC-SW2-FM,HM-LC-SW2-PB-FM,HM-LC-SW2-SM,HM-LC-SW4-DR,HM-LC-SW4-PCB,HM-LC-SW4-SM,HM-LC-SW4-SM-ATMEGA168,HM-LC_Bl1PBU-FM,HM-LC_Dim1PWM-CV,HM-LC_Dim1TPBU-FM,HM-OU-CF-PL,HM-PB-2-WM,HM-PB-4-WM,HM-PB-4DIS-WM,HM-PBI-4-FM,HM-RC-12,HM-RC-12-B,HM-RC-12-SW,HM-RC-19,HM-RC-19-B,HM-RC-19-SW,HM-RC-4,HM-RC-4-B,HM-RC-KEY3,HM-RC-KEY3-B,HM-RC-P1,HM-RC-SEC3,HM-RC-SEC3-B,HM-SCI-3-FM,HM-SEC-KEY,HM-SEC-KEY-O,HM-SEC-KEY-S,HM-SEC-MDIR,HM-SEC-RHS,HM-SEC-SC,HM-SEC-SD,HM-SEC-SFA-SM,HM-SEC-TIS,HM-SEC-WDS,HM-SEC-WIN,HM-SEN-EP,HM-SEN-MDIR-SM,HM-SWI-3-FM,HM-Sec-Cen,HM-WDC7000,HM-WDC7000,HM-WDS10-TH-O,HM-WDS100-C6-O,HM-WDS20-TH-O,HM-WDS30-T-O,HM-WDS40-TH-I,HM_LC_Sw4-WM,IS-WDS-TH-OD-S-R3,KFM-Display,KFM-Sensor,KS550,S550IA,WS888 subType:AlarmControl,KFM100,THSensor,blindActuator,dimmer,keyMatic,motionDetector,pushButton,remote,sensor,smokeDetector,swi,switch,threeStateSensor,winMatic icon structexclude webCmd">
+<CUL_HM name="Taster1" state="Btn2 offLong 5 (to broadcast)"
+        sets="devicepair pair raw reset sign statusRequest text unpair"
+        attrs="room group comment alias eventMap IODev do_not_notify:1,0 ignore:1,0 dummy:1,0 showtime:1,0 loglevel:0,1,2,3,4,5,6 hmClass:receiver,sender serialNr firmware devInfo rawToReadable unit model:ASH550,ASH550I,CMM,HM-CC-SCD,HM-CC-TC,HM-CC-VD,HM-LC-BL1-FM,HM-LC-BL1-PB-FM,HM-LC-BL1-SM,HM-LC-DDC1-PCB,HM-LC-DIM1L-CV,HM-LC-DIM1L-PL,HM-LC-DIM1T-CV,HM-LC-DIM1T-FM,HM-LC-DIM1T-PL,HM-LC-DIM2L-CV,HM-LC-DIM2L-SM,HM-LC-DIM2T-SM,HM-LC-SW1-BA-PCB,HM-LC-SW1-FM,HM-LC-SW1-PB-FM,HM-LC-SW1-PL,HM-LC-SW1-PL-OM54,HM-LC-SW1-SM,HM-LC-SW1-SM-ATMEGA168,HM-LC-SW2-DR,HM-LC-SW2-FM,HM-LC-SW2-PB-FM,HM-LC-SW2-SM,HM-LC-SW4-DR,HM-LC-SW4-PCB,HM-LC-SW4-SM,HM-LC-SW4-SM-ATMEGA168,HM-LC_Bl1PBU-FM,HM-LC_Dim1PWM-CV,HM-LC_Dim1TPBU-FM,HM-OU-CF-PL,HM-PB-2-WM,HM-PB-4-WM,HM-PB-4DIS-WM,HM-PBI-4-FM,HM-RC-12,HM-RC-12-B,HM-RC-12-SW,HM-RC-19,HM-RC-19-B,HM-RC-19-SW,HM-RC-4,HM-RC-4-B,HM-RC-KEY3,HM-RC-KEY3-B,HM-RC-P1,HM-RC-SEC3,HM-RC-SEC3-B,HM-SCI-3-FM,HM-SEC-KEY,HM-SEC-KEY-O,HM-SEC-KEY-S,HM-SEC-MDIR,HM-SEC-RHS,HM-SEC-SC,HM-SEC-SD,HM-SEC-SFA-SM,HM-SEC-TIS,HM-SEC-WDS,HM-SEC-WIN,HM-SEN-EP,HM-SEN-MDIR-SM,HM-SWI-3-FM,HM-Sec-Cen,HM-WDC7000,HM-WDC7000,HM-WDS10-TH-O,HM-WDS100-C6-O,HM-WDS20-TH-O,HM-WDS30-T-O,HM-WDS40-TH-I,HM_LC_Sw4-WM,IS-WDS-TH-OD-S-R3,KFM-Display,KFM-Sensor,KS550,S550IA,WS888 subType:AlarmControl,KFM100,THSensor,blindActuator,dimmer,keyMatic,motionDetector,pushButton,remote,sensor,smokeDetector,swi,switch,threeStateSensor,winMatic icon structexclude webCmd">
     <INT key="DEF" value="1A214A"/>
     <INT key="NAME" value="Taster1"/>
     <INT key="NR" value="62"/>
@@ -430,7 +475,8 @@
     <STATE key="battery" value="ok" measured="2012-06-26 22:23:09"/>
     <STATE key="state" value="Btn2 offLong 5 (to broadcast)" measured="2012-06-26 22:23:09"/>
 </CUL_HM>
-<CUL_HM name="Temp_Feuchte1.Aussen" state="T: 14.6 H: 67" sets="pair raw reset sign statusRequest unpair" attrs="room group comment alias eventMap IODev do_not_notify:1,0 ignore:1,0 dummy:1,0 showtime:1,0 loglevel:0,1,2,3,4,5,6 hmClass:receiver,sender serialNr firmware devInfo rawToReadable unit model:ASH550,ASH550I,CMM,HM-CC-SCD,HM-CC-TC,HM-CC-VD,HM-LC-BL1-FM,HM-LC-BL1-PB-FM,HM-LC-BL1-SM,HM-LC-DDC1-PCB,HM-LC-DIM1L-CV,HM-LC-DIM1L-PL,HM-LC-DIM1T-CV,HM-LC-DIM1T-FM,HM-LC-DIM1T-PL,HM-LC-DIM2L-CV,HM-LC-DIM2L-SM,HM-LC-DIM2T-SM,HM-LC-SW1-BA-PCB,HM-LC-SW1-FM,HM-LC-SW1-PB-FM,HM-LC-SW1-PL,HM-LC-SW1-PL-OM54,HM-LC-SW1-SM,HM-LC-SW1-SM-ATMEGA168,HM-LC-SW2-DR,HM-LC-SW2-FM,HM-LC-SW2-PB-FM,HM-LC-SW2-SM,HM-LC-SW4-DR,HM-LC-SW4-PCB,HM-LC-SW4-SM,HM-LC-SW4-SM-ATMEGA168,HM-LC_Bl1PBU-FM,HM-LC_Dim1PWM-CV,HM-LC_Dim1TPBU-FM,HM-OU-CF-PL,HM-PB-2-WM,HM-PB-4-WM,HM-PB-4DIS-WM,HM-PBI-4-FM,HM-RC-12,HM-RC-12-B,HM-RC-12-SW,HM-RC-19,HM-RC-19-B,HM-RC-19-SW,HM-RC-4,HM-RC-4-B,HM-RC-KEY3,HM-RC-KEY3-B,HM-RC-P1,HM-RC-SEC3,HM-RC-SEC3-B,HM-SCI-3-FM,HM-SEC-KEY,HM-SEC-KEY-O,HM-SEC-KEY-S,HM-SEC-MDIR,HM-SEC-RHS,HM-SEC-SC,HM-SEC-SD,HM-SEC-SFA-SM,HM-SEC-TIS,HM-SEC-WDS,HM-SEC-WIN,HM-SEN-EP,HM-SEN-MDIR-SM,HM-SWI-3-FM,HM-Sec-Cen,HM-WDC7000,HM-WDC7000,HM-WDS10-TH-O,HM-WDS100-C6-O,HM-WDS20-TH-O,HM-WDS30-T-O,HM-WDS40-TH-I,HM_LC_Sw4-WM,IS-WDS-TH-OD-S-R3,KFM-Display,KFM-Sensor,KS550,S550IA,WS888 subType:AlarmControl,KFM100,THSensor,blindActuator,dimmer,keyMatic,motionDetector,pushButton,remote,sensor,smokeDetector,swi,switch,threeStateSensor,winMatic icon structexclude webCmd">
+<CUL_HM name="Temp_Feuchte1.Aussen" state="T: 14.6 H: 67" sets="pair raw reset sign statusRequest unpair"
+        attrs="room group comment alias eventMap IODev do_not_notify:1,0 ignore:1,0 dummy:1,0 showtime:1,0 loglevel:0,1,2,3,4,5,6 hmClass:receiver,sender serialNr firmware devInfo rawToReadable unit model:ASH550,ASH550I,CMM,HM-CC-SCD,HM-CC-TC,HM-CC-VD,HM-LC-BL1-FM,HM-LC-BL1-PB-FM,HM-LC-BL1-SM,HM-LC-DDC1-PCB,HM-LC-DIM1L-CV,HM-LC-DIM1L-PL,HM-LC-DIM1T-CV,HM-LC-DIM1T-FM,HM-LC-DIM1T-PL,HM-LC-DIM2L-CV,HM-LC-DIM2L-SM,HM-LC-DIM2T-SM,HM-LC-SW1-BA-PCB,HM-LC-SW1-FM,HM-LC-SW1-PB-FM,HM-LC-SW1-PL,HM-LC-SW1-PL-OM54,HM-LC-SW1-SM,HM-LC-SW1-SM-ATMEGA168,HM-LC-SW2-DR,HM-LC-SW2-FM,HM-LC-SW2-PB-FM,HM-LC-SW2-SM,HM-LC-SW4-DR,HM-LC-SW4-PCB,HM-LC-SW4-SM,HM-LC-SW4-SM-ATMEGA168,HM-LC_Bl1PBU-FM,HM-LC_Dim1PWM-CV,HM-LC_Dim1TPBU-FM,HM-OU-CF-PL,HM-PB-2-WM,HM-PB-4-WM,HM-PB-4DIS-WM,HM-PBI-4-FM,HM-RC-12,HM-RC-12-B,HM-RC-12-SW,HM-RC-19,HM-RC-19-B,HM-RC-19-SW,HM-RC-4,HM-RC-4-B,HM-RC-KEY3,HM-RC-KEY3-B,HM-RC-P1,HM-RC-SEC3,HM-RC-SEC3-B,HM-SCI-3-FM,HM-SEC-KEY,HM-SEC-KEY-O,HM-SEC-KEY-S,HM-SEC-MDIR,HM-SEC-RHS,HM-SEC-SC,HM-SEC-SD,HM-SEC-SFA-SM,HM-SEC-TIS,HM-SEC-WDS,HM-SEC-WIN,HM-SEN-EP,HM-SEN-MDIR-SM,HM-SWI-3-FM,HM-Sec-Cen,HM-WDC7000,HM-WDC7000,HM-WDS10-TH-O,HM-WDS100-C6-O,HM-WDS20-TH-O,HM-WDS30-T-O,HM-WDS40-TH-I,HM_LC_Sw4-WM,IS-WDS-TH-OD-S-R3,KFM-Display,KFM-Sensor,KS550,S550IA,WS888 subType:AlarmControl,KFM100,THSensor,blindActuator,dimmer,keyMatic,motionDetector,pushButton,remote,sensor,smokeDetector,swi,switch,threeStateSensor,winMatic icon structexclude webCmd">
     <INT key="CUL_MSGCNT" value="274"/>
     <INT key="CUL_RAWMSG" value="A0CAB86701B0A3A00000000924300"/>
     <INT key="CUL_RSSI" value="-74"/>
@@ -456,7 +502,9 @@
     <STATE key="state" value="T: 14.6 H: 67" measured="2012-07-19 22:13:03"/>
     <STATE key="temperature" value="14.6" measured="2012-07-19 22:13:03"/>
 </CUL_HM>
-<CUL_HM name="CUL_HM_threeStateSensor_1638BB" state="open (to broadcast)" sets="pair raw reset sign statusRequest unpair " attrs="room comment alias IODev do_not_notify:1,0 ignore:0,1 showtime:1,0 loglevel:0,1,2,3,4,5,6 model subType:switch,dimmer,blindActuator,remote,sensor,swi,pushButton,threeStateSensor,motionDetector,keyMatic,winMatic,smokeDetector hmClass:receiver,sender serialNr firmware devInfo rawToReadable unit webCmd eventMap">
+<CUL_HM name="CUL_HM_threeStateSensor_1638BB" state="open (to broadcast)"
+        sets="pair raw reset sign statusRequest unpair "
+        attrs="room comment alias IODev do_not_notify:1,0 ignore:0,1 showtime:1,0 loglevel:0,1,2,3,4,5,6 model subType:switch,dimmer,blindActuator,remote,sensor,swi,pushButton,threeStateSensor,motionDetector,keyMatic,winMatic,smokeDetector hmClass:receiver,sender serialNr firmware devInfo rawToReadable unit webCmd eventMap">
     <INT key="DEF" value="1638BB"/>
     <INT key="NAME" value="CUL_HM_threeStateSensor_1638BB"/>
     <INT key="NR" value="44"/>
@@ -658,7 +706,9 @@ room structexclude webCmd eventMap">
     <STATE key="state" value="off" measured="2012-01-08 23:00:00"/>
 </CUL_HM>
 
-<CUL_HM name="CUL_HM_HM_CC_TC_172A5A" state="T: 16.7 H: 65" sets="pair raw reset sign statusRequest unpair  day-temp desired-temp night-temp party-temp tempListFri tempListMon tempListSat tempListSun tempListThu tempListTue tempListWed" attrs="room comment alias IODev do_not_notify:1,0 ignore:0,1 showtime:1,0 loglevel:0,1,2,3,4,5,6 model subType:switch,dimmer,blindActuator,remote,sensor,swi,pushButton,threeStateSensor,motionDetector,keyMatic,winMatic,smokeDetector hmClass:receiver,sender serialNr firmware devInfo rawToReadable unit webCmd eventMap">
+<CUL_HM name="CUL_HM_HM_CC_TC_172A5A" state="T: 16.7 H: 65"
+        sets="pair raw reset sign statusRequest unpair  day-temp desired-temp night-temp party-temp tempListFri tempListMon tempListSat tempListSun tempListThu tempListTue tempListWed"
+        attrs="room comment alias IODev do_not_notify:1,0 ignore:0,1 showtime:1,0 loglevel:0,1,2,3,4,5,6 model subType:switch,dimmer,blindActuator,remote,sensor,swi,pushButton,threeStateSensor,motionDetector,keyMatic,winMatic,smokeDetector hmClass:receiver,sender serialNr firmware devInfo rawToReadable unit webCmd eventMap">
     <INT key="CUL_MSGCNT" value="6938"/>
     <INT key="CUL_RAWMSG" value="A0B63A258172A5A179BFC00DC01"/>
     <INT key="CUL_RSSI" value="-73.5"/>
@@ -686,7 +736,9 @@ room structexclude webCmd eventMap">
     <STATE key="state" value="T: 16.7 H: 65" measured="2012-01-09 12:26:46"/>
     <STATE key="temperature" value="16.7" measured="2012-01-09 12:26:46"/>
 </CUL_HM>
-<CUL_HM name="CUL_HM_HM_CC_TC_172AA1" state="T: 17.7 H: 61" sets="pair raw reset sign statusRequest unpair  day-temp desired-temp night-temp party-temp tempListFri tempListMon tempListSat tempListSun tempListThu tempListTue tempListWed" attrs="room comment alias IODev do_not_notify:1,0 ignore:0,1 showtime:1,0 loglevel:0,1,2,3,4,5,6 model subType:switch,dimmer,blindActuator,remote,sensor,swi,pushButton,threeStateSensor,motionDetector,keyMatic,winMatic,smokeDetector hmClass:receiver,sender serialNr firmware devInfo rawToReadable unit webCmd eventMap">
+<CUL_HM name="CUL_HM_HM_CC_TC_172AA1" state="T: 17.7 H: 61"
+        sets="pair raw reset sign statusRequest unpair  day-temp desired-temp night-temp party-temp tempListFri tempListMon tempListSat tempListSun tempListThu tempListTue tempListWed"
+        attrs="room comment alias IODev do_not_notify:1,0 ignore:0,1 showtime:1,0 loglevel:0,1,2,3,4,5,6 model subType:switch,dimmer,blindActuator,remote,sensor,swi,pushButton,threeStateSensor,motionDetector,keyMatic,winMatic,smokeDetector hmClass:receiver,sender serialNr firmware devInfo rawToReadable unit webCmd eventMap">
     <INT key="CUL_MSGCNT" value="6699"/>
     <INT key="CUL_RAWMSG" value="A0B3BA258172AA11728040007F2"/>
     <INT key="CUL_RSSI" value="-81"/>
@@ -717,46 +769,30 @@ room structexclude webCmd eventMap">
 </CUL_HM_LIST>
 
 <CUL_FHTTK_LIST>
-<CUL_FHTTK name="CUL_FHTTK_9dbf85" state="Open" sets="" attrs="room comment IODev do_not_notify:1,0 ignore:0,1 showtime:0,1 model:FHT80TF loglevel:0,1,2,3,4,5,6 DarkPeriod">
-    <INT key="CUL_MSGCNT" value="3734"/>
-    <INT key="CUL_RAWMSG" value="T124AB202DE"/>
-    <INT key="CUL_RSSI" value="-91"/>
-    <INT key="CUL_TIME" value="2011-12-16 14:53:05"/>
+<CUL_FHTTK name="bad_fenster" state="Open" sets=""
+           attrs="room group comment alias eventMap IODev do_not_notify:1,0 ignore:0,1 showtime:0,1 model:FHT80TF loglevel:0,1,2,3,4,5,6 fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon onOffDevice webCmd">
+    <INT key="CODE" value="230fd0"/>
+    <INT key="CUL_MSGCNT" value="1009"/>
+    <INT key="CUL_RAWMSG" value="T230FD001FC"/>
+    <INT key="CUL_RSSI" value="-76"/>
+    <INT key="CUL_TIME" value="2012-08-15 11:59:13"/>
+    <INT key="DEF" value="230fd0"/>
     <INT key="LASTIODev" value="CUL"/>
-    <INT key="MSGCNT" value="3734"/>
-    <INT key="NAME" value="CUL_FHTTK_9dbf85"/>
-    <INT key="NR" value="132"/>
-    <INT key="OPEN" value=""/>
-    <INT key="PREVSTATE" value="Closed"/>
-    <INT key="PREVTIMESTAMP" value="1324043333"/>
+    <INT key="MSGCNT" value="1009"/>
+    <INT key="NAME" value="bad_fenster"/>
+    <INT key="NR" value="148"/>
+    <INT key="OPEN" value="1"/>
+    <INT key="PREVSTATE" value="Open"/>
+    <INT key="PREVTIMESTAMP" value="1345024497"/>
     <INT key="STATE" value="Open"/>
     <INT key="TYPE" value="CUL_FHTTK"/>
     <INT key="IODev" value="CUL"/>
-    <ATTR key="room" value="büro"/>
-    <STATE key="Battery" value="ok" measured="2011-12-16 14:53:05"/>
-    <STATE key="Reliability" value="ok" measured="2011-12-16 14:53:05"/>
-    <STATE key="Window" value="Closed" measured="2011-12-16 14:53:05"/>
-</CUL_FHTTK>
-
-<CUL_FHTTK name="CUL_FHTTK_9dbf86" state="Closed" sets="" attrs="room comment IODev do_not_notify:1,0 ignore:0,1 showtime:0,1 model:FHT80TF loglevel:0,1,2,3,4,5,6 DarkPeriod">
-    <INT key="CUL_MSGCNT" value="3734"/>
-    <INT key="CUL_RAWMSG" value="T124AB202DE"/>
-    <INT key="CUL_RSSI" value="-91"/>
-    <INT key="CUL_TIME" value="2011-12-16 14:53:05"/>
-    <INT key="LASTIODev" value="CUL"/>
-    <INT key="MSGCNT" value="3734"/>
-    <INT key="NAME" value="CUL_FHTTK_9dbf86"/>
-    <INT key="NR" value="132"/>
-    <INT key="OPEN" value=""/>
-    <INT key="PREVSTATE" value="Open"/>
-    <INT key="PREVTIMESTAMP" value="1324043333"/>
-    <INT key="STATE" value="Closed"/>
-    <INT key="TYPE" value="CUL_FHTTK"/>
-    <INT key="IODev" value="CUL"/>
-    <ATTR key="room" value="kueche,wohnzimmer"/>
-    <STATE key="Battery" value="ok" measured="2011-12-16 14:53:05"/>
-    <STATE key="Reliability" value="ok" measured="2011-12-16 14:53:05"/>
-    <STATE key="Window" value="Closed" measured="2011-12-16 14:53:05"/>
+    <ATTR key="fp_obergeschoss" value="50,680,1,"/>
+    <ATTR key="room" value="bad"/>
+    <STATE key="Battery" value="ok" measured="2012-08-15 11:59:13"/>
+    <STATE key="Previous" value="Closed" measured="2012-08-14 23:05:51"/>
+    <STATE key="Reliability" value="ok" measured="2012-08-15 11:59:13"/>
+    <STATE key="Window" value="Open" measured="2012-08-15 11:59:13"/>
 </CUL_FHTTK>
 </CUL_FHTTK_LIST>
 <WOL_LIST>
@@ -777,7 +813,8 @@ room structexclude webCmd eventMap">
 
 
 <CUL_EM_LIST>
-<CUL_EM name="CUL_EM_5" state="CNT: 62 CUM: 1254.521  5MIN: 0.000  TOP: 0.000" sets="" attrs="room comment alias IODev do_not_notify:0,1 showtime:0,1 model:EMEM,EMWZ,EMGZ loglevel ignore:0,1 eventMap">
+<CUL_EM name="CUL_EM_5" state="CNT: 62 CUM: 1254.521  5MIN: 0.000  TOP: 0.000" sets=""
+        attrs="room comment alias IODev do_not_notify:0,1 showtime:0,1 model:EMEM,EMWZ,EMGZ loglevel ignore:0,1 eventMap">
     <INT key="BasicFeePerMonth" value="0"/>
     <INT key="CODE" value="5"/>
     <INT key="CUL_MSGCNT" value="3111"/>
@@ -809,7 +846,8 @@ room structexclude webCmd eventMap">
     <STATE key="tsecs" value="1325191576" measured="2011-12-29 21:46:16"/>
 </CUL_EM>
 
-<CUL_EM name="CUL_EM_6" state="CNT: 62 CUM: 1254.521  5MIN: 0.000  TOP: 0.000" sets="" attrs="room comment alias IODev do_not_notify:0,1 showtime:0,1 model:EMEM,EMWZ,EMGZ loglevel ignore:0,1 eventMap">
+<CUL_EM name="CUL_EM_6" state="CNT: 62 CUM: 1254.521  5MIN: 0.000  TOP: 0.000" sets=""
+        attrs="room comment alias IODev do_not_notify:0,1 showtime:0,1 model:EMEM,EMWZ,EMGZ loglevel ignore:0,1 eventMap">
     <INT key="BasicFeePerMonth" value="0"/>
     <INT key="CODE" value="5"/>
     <INT key="CUL_MSGCNT" value="3111"/>
@@ -842,7 +880,8 @@ room structexclude webCmd eventMap">
     <STATE key="tsecs" value="1325191576" measured="2011-12-29 21:46:16"/>
 </CUL_EM>
 
-<CUL_EM name="CUL_EM_7" state="CNT: 62 CUM: 1254.521  5MIN: 0.000  TOP: 0.000" sets="" attrs="room comment alias IODev do_not_notify:0,1 showtime:0,1 model:EMEM,EMWZ,EMGZ loglevel ignore:0,1 eventMap">
+<CUL_EM name="CUL_EM_7" state="CNT: 62 CUM: 1254.521  5MIN: 0.000  TOP: 0.000" sets=""
+        attrs="room comment alias IODev do_not_notify:0,1 showtime:0,1 model:EMEM,EMWZ,EMGZ loglevel ignore:0,1 eventMap">
     <INT key="BasicFeePerMonth" value="0"/>
     <INT key="CODE" value="5"/>
     <INT key="CUL_MSGCNT" value="3111"/>
@@ -877,7 +916,8 @@ room structexclude webCmd eventMap">
 </CUL_EM_LIST>
 
 <OWFS_LIST>
-<OWFS name="DS9490R" state="Initialized" sets="" attrs="room comment alias IODev do_not_notify:1,0 dummy:1,0 temp-scale:C,F,K,R showtime:1,0 loglevel:0,1,2,3,4,5,6 eventMap">
+<OWFS name="DS9490R" state="Initialized" sets=""
+      attrs="room comment alias IODev do_not_notify:1,0 dummy:1,0 temp-scale:C,F,K,R showtime:1,0 loglevel:0,1,2,3,4,5,6 eventMap">
     <INT key="DEF" value="192.168.169.195:4301 DS1420"/>
     <INT key="DeviceName" value="192.168.169.195:4301"/>
     <INT key="NAME" value="DS9490R"/>
@@ -889,7 +929,8 @@ room structexclude webCmd eventMap">
 </OWFS_LIST>
 
 <OWCOUNT_LIST>
-<OWCOUNT name="COUNTER" state="C1: 131134.5  C2: 7884  P: 1  " sets="set needs one parameter" attrs="room comment alias IODev do_not_notify:0,1 showtime:0,1 model:DS18S20 loglevel:0,1,2,3,4,5 eventMap">
+<OWCOUNT name="COUNTER" state="C1: 131134.5  C2: 7884  P: 1  " sets="set needs one parameter"
+         attrs="room comment alias IODev do_not_notify:0,1 showtime:0,1 model:DS18S20 loglevel:0,1,2,3,4,5 eventMap">
     <INT key="ALARM" value="0"/>
     <INT key="DEF" value="A9EB09000000 0.1 0.1"/>
     <INT key="INTERVAL" value="300"/>
@@ -913,7 +954,8 @@ room structexclude webCmd eventMap">
 </OWCOUNT>
 </OWCOUNT_LIST>
 <RFXCOM_LIST>
-<RFXCOM name="RFXCOM" state="Initialized" sets="RFXCOM =&gt; No Set function (?) implemented" attrs="room comment alias do_not_notify:1,0 do_not_init:1:0 loglevel:0,1,2,3,4,5,6 eventMap">
+<RFXCOM name="RFXCOM" state="Initialized" sets="RFXCOM =&gt; No Set function (?) implemented"
+        attrs="room comment alias do_not_notify:1,0 do_not_init:1:0 loglevel:0,1,2,3,4,5,6 eventMap">
     <INT key="DEF" value="/dev/rfxcom"/>
     <INT key="DeviceName" value="/dev/rfxcom"/>
     <INT key="FD" value="7"/>
@@ -931,7 +973,8 @@ room structexclude webCmd eventMap">
 </RFXCOM_LIST>
 
 <OREGON_LIST>
-<OREGON name="oregon1" state="T: 15.9  H: 46" sets="" attrs="room comment alias IODev do_not_notify:1,0 loglevel:0,1,2,3,4,5,6 eventMap">
+<OREGON name="oregon1" state="T: 15.9  H: 46" sets=""
+        attrs="room comment alias IODev do_not_notify:1,0 loglevel:0,1,2,3,4,5,6 eventMap">
     <INT key="CODE" value="BTHR918_6f"/>
     <INT key="DEF" value="BTHR918_6f"/>
     <INT key="NAME" value="oregon1"/>
@@ -949,7 +992,8 @@ room structexclude webCmd eventMap">
     <STATE key="pressure" value="1000" measured="2011-12-29 21:49:47"/>
     <STATE key="temperature" value="15.9" measured="2011-12-29 21:49:47"/>
 </OREGON>
-<OREGON name="oregon2" state="T: 6.4  H: 78" sets="" attrs="room comment alias IODev do_not_notify:1,0 loglevel:0,1,2,3,4,5,6 eventMap">
+<OREGON name="oregon2" state="T: 6.4  H: 78" sets=""
+        attrs="room comment alias IODev do_not_notify:1,0 loglevel:0,1,2,3,4,5,6 eventMap">
     <INT key="CODE" value="WTGR800_T_4c"/>
     <INT key="DEF" value="WTGR800_T_4c"/>
     <INT key="NAME" value="oregon2"/>
@@ -965,7 +1009,8 @@ room structexclude webCmd eventMap">
     <STATE key="humidity" value="78" measured="2011-12-29 21:50:06"/>
     <STATE key="temperature" value="6.4" measured="2011-12-29 21:50:06"/>
 </OREGON>
-<OREGON name="PCR800_5d" state="RR: 0 TR: 976.2998" sets="" attrs="room comment alias IODev do_not_notify:1,0 loglevel:0,1,2,3,4,5,6 eventMap">
+<OREGON name="PCR800_5d" state="RR: 0 TR: 976.2998" sets=""
+        attrs="room comment alias IODev do_not_notify:1,0 loglevel:0,1,2,3,4,5,6 eventMap">
     <INT key="CODE" value="PCR800_5d"/>
     <INT key="DEF" value="PCR800_5d"/>
     <INT key="NAME" value="PCR800_5d"/>
@@ -979,7 +1024,8 @@ room structexclude webCmd eventMap">
     <STATE key="rain_rate" value="0" measured="2011-12-29 21:49:36"/>
     <STATE key="rain_total" value="976.2998" measured="2011-12-29 21:49:36"/>
 </OREGON>
-<OREGON name="WGR918_83" state="W: 0 WA: 0 WD: 245  WDN: SW" sets="" attrs="room comment alias IODev do_not_notify:1,0 loglevel:0,1,2,3,4,5,6 eventMap">
+<OREGON name="WGR918_83" state="W: 0 WA: 0 WD: 245  WDN: SW" sets=""
+        attrs="room comment alias IODev do_not_notify:1,0 loglevel:0,1,2,3,4,5,6 eventMap">
     <INT key="CODE" value="WGR918_83"/>
     <INT key="DEF" value="WGR918_83"/>
     <INT key="NAME" value="WGR918_83"/>
@@ -997,8 +1043,10 @@ room structexclude webCmd eventMap">
 </OREGON_LIST>
 
 <at_LIST>
-<at name="d_FB_Temp" state="Next: 21:24:22" sets="" attrs="room comment alias disable:0,1 skip_next:0,1 loglevel:0,1,2,3,4,5,6 webCmd fm_fav fm_name fm_order fm_groups eventMap">
-    <INT key="DEF" value="+*00:10:00 &quot;(/bin/echo -n &quot;`date '+%Y-%m-%d_%H:%M:%S FB_Temp FHZ:measured-temp:'` &quot;>> ./log/`date +%Y-%m`_Temp_FB.log &amp; /usr/bin/ctlmgr_ctl r power status/act_temperature >> ./log/`date +%Y-%m`_Temp_FB.log )&quot;"/>
+<at name="d_FB_Temp" state="Next: 21:24:22" sets=""
+    attrs="room comment alias disable:0,1 skip_next:0,1 loglevel:0,1,2,3,4,5,6 webCmd fm_fav fm_name fm_order fm_groups eventMap">
+    <INT key="DEF"
+         value="+*00:10:00 &quot;(/bin/echo -n &quot;`date '+%Y-%m-%d_%H:%M:%S FB_Temp FHZ:measured-temp:'` &quot;>> ./log/`date +%Y-%m`_Temp_FB.log &amp; /usr/bin/ctlmgr_ctl r power status/act_temperature >> ./log/`date +%Y-%m`_Temp_FB.log )&quot;"/>
     <INT key="NAME" value="d_FB_Temp"/>
     <INT key="NR" value="109"/>
     <INT key="NTM" value="21:24:22"/>
@@ -1008,7 +1056,8 @@ room structexclude webCmd eventMap">
     <INT key="TYPE" value="at"/>
     <ATTR key="room" value="Timer"/>
 </at>
-<at name="a16" state="Next: 23:00:00" sets="" attrs="room group comment alias eventMap disable:0,1 skip_next:0,1 loglevel:0,1,2,3,4,5,6 alignTime fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon onOffDevice webCmd">
+<at name="a16" state="Next: 23:00:00" sets=""
+    attrs="room group comment alias eventMap disable:0,1 skip_next:0,1 loglevel:0,1,2,3,4,5,6 alignTime fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon onOffDevice webCmd">
     <INT key="DEF" value="*23:00:00 { fhem(&quot;set lamp off&quot;) if ($we) }"/>
     <INT key="NAME" value="a16"/>
     <INT key="NR" value="172"/>
@@ -1028,7 +1077,8 @@ room structexclude webCmd eventMap">
     <INT key="VOLATILE" value="1"/>
 </at>
 
-<at name="a14" state="Next: 19:26:59" sets="" attrs="room group comment alias eventMap disable:0,1 skip_next:0,1 loglevel:0,1,2,3,4,5,6 alignTime fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon onOffDevice webCmd">
+<at name="a14" state="Next: 19:26:59" sets=""
+    attrs="room group comment alias eventMap disable:0,1 skip_next:0,1 loglevel:0,1,2,3,4,5,6 alignTime fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon onOffDevice webCmd">
     <INT key="CFGFN" value="./log/fhem.save"/>
     <INT key="DEF" value="+{sunrise(+120)} set lamp on"/>
     <INT key="NAME" value="a14"/>
@@ -1039,7 +1089,8 @@ room structexclude webCmd eventMap">
     <INT key="TYPE" value="at"/>
     <INT key="VOLATILE" value="1"/>
 </at>
-<at name="a16" state="Next: 23:00:00" sets="" attrs="room group comment alias eventMap disable:0,1 skip_next:0,1 loglevel:0,1,2,3,4,5,6 alignTime fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon onOffDevice webCmd">
+<at name="a16" state="Next: 23:00:00" sets=""
+    attrs="room group comment alias eventMap disable:0,1 skip_next:0,1 loglevel:0,1,2,3,4,5,6 alignTime fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon onOffDevice webCmd">
     <INT key="DEF" value="*23:00:00 fhem(&quot;set lamp off&quot;) if ($we)"/>
     <INT key="NAME" value="a16"/>
     <INT key="NR" value="172"/>
@@ -1048,7 +1099,8 @@ room structexclude webCmd eventMap">
     <INT key="TRIGGERTIME" value="1341090000"/>
     <INT key="TYPE" value="at"/>
 </at>
-<at name="a2" state="Next: 17:00:00" sets="" attrs="room group comment alias eventMap disable:0,1 skip_next:0,1 loglevel:0,1,2,3,4,5,6 alignTime fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon onOffDevice webCmd">
+<at name="a2" state="Next: 17:00:00" sets=""
+    attrs="room group comment alias eventMap disable:0,1 skip_next:0,1 loglevel:0,1,2,3,4,5,6 alignTime fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon onOffDevice webCmd">
     <INT key="CFGFN" value="./log/fhem.save"/>
     <INT key="DEF" value="17:00:00 { Log 1, &quot;Teatime&quot; }"/>
     <INT key="NAME" value="a2"/>
@@ -1058,7 +1110,8 @@ room structexclude webCmd eventMap">
     <INT key="TYPE" value="at"/>
     <INT key="VOLATILE" value="1"/>
 </at>
-<at name="a3" state="Next: 17:00:00" sets="" attrs="room group comment alias eventMap disable:0,1 skip_next:0,1 loglevel:0,1,2,3,4,5,6 alignTime fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon onOffDevice webCmd">
+<at name="a3" state="Next: 17:00:00" sets=""
+    attrs="room group comment alias eventMap disable:0,1 skip_next:0,1 loglevel:0,1,2,3,4,5,6 alignTime fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon onOffDevice webCmd">
     <INT key="CFGFN" value="./log/fhem.save"/>
     <INT key="DEF" value="17:00:00 &quot;/bin/echo &quot;Teatime&quot; > /dev/console&quot;"/>
     <INT key="NAME" value="a3"/>
@@ -1162,7 +1215,8 @@ room structexclude webCmd eventMap">
 </FHEMWEB_LIST>
 
 <RFXX10REC_LIST>
-<RFXX10REC name="RFXX10REC_0bbd" state="Open" sets="" attrs="room comment alias IODev do_not_notify:1,0 loglevel:0,1,2,3,4,5,6 eventMap">
+<RFXX10REC name="RFXX10REC_0bbd" state="Open" sets=""
+           attrs="room comment alias IODev do_not_notify:1,0 loglevel:0,1,2,3,4,5,6 eventMap">
     <INT key="DEF" value="ds10a 0bbd Window"/>
     <INT key="NAME" value="RFXX10REC_0bbd"/>
     <INT key="NR" value="213"/>
@@ -1179,7 +1233,8 @@ room structexclude webCmd eventMap">
     <STATE key="delay" value="min" measured="2011-12-29 21:25:42"/>
     <STATE key="statechange" value="Open" measured="2011-09-25 22:12:11"/>
 </RFXX10REC>
-<RFXX10REC name="RFXX10REC_17a1" state="Open" sets="" attrs="room comment alias IODev do_not_notify:1,0 loglevel:0,1,2,3,4,5,6 eventMap">
+<RFXX10REC name="RFXX10REC_17a1" state="Open" sets=""
+           attrs="room comment alias IODev do_not_notify:1,0 loglevel:0,1,2,3,4,5,6 eventMap">
     <INT key="DEF" value="ds10a 17a1 Window"/>
     <INT key="NAME" value="RFXX10REC_17a1"/>
     <INT key="NR" value="209"/>
@@ -1199,9 +1254,9 @@ room structexclude webCmd eventMap">
 </RFXX10REC_LIST>
 
 
-
 <ECMD_LIST>
-<ECMD name="EMCD1" state="Initialized" sets="Usage: set AVRNETIO classdef &lt;classname&gt; &lt;filename&gt; " attrs="room comment alias classdefs loglevel:0,1,2,3,4,5 eventMap">
+<ECMD name="EMCD1" state="Initialized" sets="Usage: set AVRNETIO classdef &lt;classname&gt; &lt;filename&gt; "
+      attrs="room comment alias classdefs loglevel:0,1,2,3,4,5 eventMap">
     <INT key="DEF" value="telnet 192.168.169.181:2701"/>
     <INT key="DeviceName" value="192.168.169.181:2701"/>
     <INT key="FD" value="9"/>
@@ -1218,7 +1273,8 @@ room structexclude webCmd eventMap">
 </ECMD_LIST>
 <ECMDDevice_LIST>
 
-<ECMDDevice name="EMCD2" state="pinstate: on" sets="Wasser error: unknown command ?" attrs="room comment alias loglevel 0,1,2,3,4,5 eventMap">
+<ECMDDevice name="EMCD2" state="pinstate: on" sets="Wasser error: unknown command ?"
+            attrs="room comment alias loglevel 0,1,2,3,4,5 eventMap">
     <INT key="DEF" value="WATER 2"/>
     <INT key="NAME" value="EMCD2"/>
     <INT key="NR" value="8"/>
@@ -1229,7 +1285,8 @@ room structexclude webCmd eventMap">
     <STATE key="resetstate" value="off" measured="2011-12-02 08:16:03"/>
     <STATE key="setstate" value="on" measured="2011-11-21 20:33:45"/>
 </ECMDDevice>
-<ECMDDevice name="WasserLED" state="pinstate: on" sets="WasserLED error: unknown command ?" attrs="room comment alias loglevel 0,1,2,3,4,5 eventMap">
+<ECMDDevice name="WasserLED" state="pinstate: on" sets="WasserLED error: unknown command ?"
+            attrs="room comment alias loglevel 0,1,2,3,4,5 eventMap">
     <INT key="DEF" value="WATER 1"/>
     <INT key="NAME" value="WasserLED"/>
     <INT key="NR" value="7"/>
@@ -1243,7 +1300,8 @@ room structexclude webCmd eventMap">
 
 
 <USBWX_LIST>
-<USBWX name="USBWX_1" state="T: 18.2  H: 60  " sets="USBWX_1 =&gt; No Set function (?) implemented" attrs="room comment alias loglevel:0,1,2,3,4,5,6 eventMap">
+<USBWX name="USBWX_1" state="T: 18.2  H: 60  " sets="USBWX_1 =&gt; No Set function (?) implemented"
+       attrs="room comment alias loglevel:0,1,2,3,4,5,6 eventMap">
     <INT key="CODE" value="1"/>
     <INT key="DEF" value="1 0 0"/>
     <INT key="NAME" value="USBWX_1"/>
@@ -1264,7 +1322,9 @@ room structexclude webCmd eventMap">
 </USBWX_LIST>
 
 <FS20_LIST>
-<FS20 name="FS20_897a14" state="on" sets="dim06% dim100% dim12% dim18% dim25% dim31% dim37% dim43% dim50% dim56% dim62% dim68% dim75% dim81% dim87% dim93% dimdown dimup dimupdown off off-for-timer on on-100-for-timer-prev on-for-timer on-old-for-timer on-old-for-timer-prev on-till ramp-off-time ramp-on-time reset sendstate timer toggle" attrs="room comment alias IODev follow-on-for-timer:1,0 do_not_notify:1,0 ignore:0,1 dummy:1,0 showtime:1,0 model;fs20hgs,fs20hgs,fs20pira,fs20piri,fs20s20,fs20s8,fs20s4,fs20s4a,fs20s4m,fs20s4u,fs20s4ub,fs20sd,fs20sn,fs20sr,fs20ss,fs20str,fs20tfk,fs20tfk,fs20tk,fs20uts,fs20ze,fs20as1,fs20as4,fs20di,fs20du,fs20ls,fs20ms2,fs20rst,fs20sa,fs20sig,fs20st,fs20sv,fs20usr loglevel:0,1,2,3,4,5,6 webCmd eventMap">
+<FS20 name="FS20_897a14" state="on"
+      sets="dim06% dim100% dim12% dim18% dim25% dim31% dim37% dim43% dim50% dim56% dim62% dim68% dim75% dim81% dim87% dim93% dimdown dimup dimupdown off off-for-timer on on-100-for-timer-prev on-for-timer on-old-for-timer on-old-for-timer-prev on-till ramp-off-time ramp-on-time reset sendstate timer toggle"
+      attrs="room comment alias IODev follow-on-for-timer:1,0 do_not_notify:1,0 ignore:0,1 dummy:1,0 showtime:1,0 model;fs20hgs,fs20hgs,fs20pira,fs20piri,fs20s20,fs20s8,fs20s4,fs20s4a,fs20s4m,fs20s4u,fs20s4ub,fs20sd,fs20sn,fs20sr,fs20ss,fs20str,fs20tfk,fs20tfk,fs20tk,fs20uts,fs20ze,fs20as1,fs20as4,fs20di,fs20du,fs20ls,fs20ms2,fs20rst,fs20sa,fs20sig,fs20st,fs20sv,fs20usr loglevel:0,1,2,3,4,5,6 webCmd eventMap">
     <INT key="BTN" value="14"/>
     <INT key="DEF" value="897a 14"/>
     <INT key="NAME" value="FS20_897a14"/>
@@ -1979,7 +2039,8 @@ room structexclude webCmd eventMap">
 </FS20>
 </FS20_LIST>
 <dummy_LIST>
-<dummy name="FB_Temp_Sensor" state="???" sets="*" attrs="room group comment alias eventMap loglevel:0,1,2,3,4,5,6 setList fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon onOffDevice webCmd">
+<dummy name="FB_Temp_Sensor" state="???" sets="*"
+       attrs="room group comment alias eventMap loglevel:0,1,2,3,4,5,6 setList fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon onOffDevice webCmd">
     <INT key="NAME" value="FB_Temp_Sensor"/>
     <INT key="NR" value="195"/>
     <INT key="STATE" value="???"/>
@@ -1987,7 +2048,8 @@ room structexclude webCmd eventMap">
     <ATTR key="comment" value="FritzBox Device Sensor"/>
     <ATTR key="room" value="hidden"/>
 </dummy>
-<dummy name="someDummy" state="on" sets="on off" attrs="room group comment alias eventMap loglevel:0,1,2,3,4,5,6 setList fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon onOffDevice webCmd">
+<dummy name="someDummy" state="on" sets="on off"
+       attrs="room group comment alias eventMap loglevel:0,1,2,3,4,5,6 setList fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon onOffDevice webCmd">
     <INT key="NAME" value="someDummy"/>
     <INT key="NR" value="21"/>
     <INT key="STATE" value="on"/>
@@ -1995,7 +2057,8 @@ room structexclude webCmd eventMap">
     <ATTR key="setList" value="on off"/>
     <STATE key="state" value="on" measured="2012-07-23 11:06:31"/>
 </dummy>
-<dummy name="someDummy2" state="??" sets="" attrs="room group comment alias eventMap loglevel:0,1,2,3,4,5,6 setList fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon onOffDevice webCmd">
+<dummy name="someDummy2" state="??" sets=""
+       attrs="room group comment alias eventMap loglevel:0,1,2,3,4,5,6 setList fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon onOffDevice webCmd">
     <INT key="NAME" value="someDummy2"/>
     <INT key="NR" value="21"/>
     <INT key="STATE" value="on"/>
@@ -2107,8 +2170,9 @@ room structexclude webCmd eventMap">
 </FHT>
 
 
-
-<FHT name="FHT_195c" state="measured-temp: 28.1 (Celsius)" sets="actuator actuator1 actuator2 actuator3 actuator4 actuator5 actuator6 actuator7 actuator8 day day-temp desired-temp fri-from1 fri-from2 fri-to1 fri-to2 holiday1 holiday2 hour lowtemp-offset manu-temp minute mode mon-from1 mon-from2 mon-to1 mon-to2 month night-temp report1 report2 sat-from1 sat-from2 sat-to1 sat-to2 sun-from1 sun-from2 sun-to1 sun-to2 thu-from1 thu-from2 thu-to1 thu-to2 tue-from1 tue-from2 tue-to1 tue-to2 wed-from1 wed-from2 wed-to1 wed-to2 windowopen-temp year" attrs="room comment IODev do_not_notify:0,1 model;fht80b dummy:0,1 showtime:0,1 loglevel:0,1,2,3,4,5,6 retrycount minfhtbuffer lazy tmpcorr ignore:0,1 DarkPeriod">
+<FHT name="FHT_195c" state="measured-temp: 28.1 (Celsius)"
+     sets="actuator actuator1 actuator2 actuator3 actuator4 actuator5 actuator6 actuator7 actuator8 day day-temp desired-temp fri-from1 fri-from2 fri-to1 fri-to2 holiday1 holiday2 hour lowtemp-offset manu-temp minute mode mon-from1 mon-from2 mon-to1 mon-to2 month night-temp report1 report2 sat-from1 sat-from2 sat-to1 sat-to2 sun-from1 sun-from2 sun-to1 sun-to2 thu-from1 thu-from2 thu-to1 thu-to2 tue-from1 tue-from2 tue-to1 tue-to2 wed-from1 wed-from2 wed-to1 wed-to2 windowopen-temp year"
+     attrs="room comment IODev do_not_notify:0,1 model;fht80b dummy:0,1 showtime:0,1 loglevel:0,1,2,3,4,5,6 retrycount minfhtbuffer lazy tmpcorr ignore:0,1 DarkPeriod">
     <INT key="NAME" value="FHT_195c"/>
     <INT key="NR" value="19"/>
     <INT key="STATE" value="measured-temp: 28.1 (Celsius)"/>
@@ -2127,7 +2191,8 @@ room structexclude webCmd eventMap">
 </FHT_LIST>
 
 <HMS_LIST>
-<HMS name="Pool" state="T: 12.6  Bat: ok" sets="" attrs="room comment alias IODev do_not_notify:0,1 showtime:0,1 model;hms100-t,hms100-tf,hms100-wd,hms100-mg,hms100-tfk,rm100-2,hms100-co,hms100-fit loglevel:0,1,2,3,4,5,6 ignore:0,1 1 advent bundle structexclude">
+<HMS name="Pool" state="T: 12.6  Bat: ok" sets=""
+     attrs="room comment alias IODev do_not_notify:0,1 showtime:0,1 model;hms100-t,hms100-tf,hms100-wd,hms100-mg,hms100-tfk,rm100-2,hms100-co,hms100-fit loglevel:0,1,2,3,4,5,6 ignore:0,1 1 advent bundle structexclude">
     <INT key="CODE" value="1362"/>
     <INT key="CUL_MSGCNT" value="1133"/>
     <INT key="CUL_RAWMSG" value="H136201870000DA"/>
@@ -2151,7 +2216,8 @@ room structexclude webCmd eventMap">
     <STATE key="type" value="HMS100T" measured="2010-04-05 14:06:52"/>
 </HMS>
 
-<HMS name="HMS" state="T: 22.2  H: 40  Bat: ok" sets="" attrs="room comment IODev do_not_notify:0,1 showtime:0,1 model;hms100-t,hms100-tf,hms100-wd,hms100-mg,hms100-tfk,rm100-2,hms100-co,hms100-fit loglevel:0,1,2,3,4,5,6 ignore:0,1 DarkPeriod">
+<HMS name="HMS" state="T: 22.2  H: 40  Bat: ok" sets=""
+     attrs="room comment IODev do_not_notify:0,1 showtime:0,1 model;hms100-t,hms100-tf,hms100-wd,hms100-mg,hms100-tfk,rm100-2,hms100-co,hms100-fit loglevel:0,1,2,3,4,5,6 ignore:0,1 DarkPeriod">
     <INT key="NAME" value="HMS"/>
     <INT key="NR" value="49"/>
     <INT key="STATE" value="T: 22.2  H: 40  Bat: ok"/>
@@ -2164,7 +2230,8 @@ room structexclude webCmd eventMap">
     <STATE key="temperature" value="22.2 (Celsius)" measured="2010-04-05 18:52:31"/>
     <STATE key="type" value="HMS100TF" measured="2010-04-05 18:52:31"/>
 </HMS>
-<HMS name="Badezimmer_Fenster" state="Switch Detect: on" sets="" attrs="room group comment alias eventMap IODev do_not_notify:0,1 showtime:0,1 model:hms100-t,hms100-tf,hms100-wd,hms100-mg,hms100-tfk,rm100-2,hms100-co,hms100-fit loglevel:0,1,2,3,4,5,6 ignore:0,1">
+<HMS name="Badezimmer_Fenster" state="Switch Detect: on" sets=""
+     attrs="room group comment alias eventMap IODev do_not_notify:0,1 showtime:0,1 model:hms100-t,hms100-tf,hms100-wd,hms100-mg,hms100-tfk,rm100-2,hms100-co,hms100-fit loglevel:0,1,2,3,4,5,6 ignore:0,1">
     <INT key="CODE" value="5bc6"/>
     <INT key="DEF" value="5bc6"/>
     <INT key="FHZ1_MSGCNT" value="40"/>
@@ -2185,7 +2252,8 @@ room structexclude webCmd eventMap">
 </HMS>
 </HMS_LIST>
 <TRX_LIST>
-<TRX name="RFXTRXUSB" state="opened" sets="RFXTRXUSB => No Set function (?) implemented" attrs="room comment alias do_not_notify:1,0 dummy:1,0 do_not_init:1:0 addvaltrigger:1:0 longids loglevel:0,1,2,3,4,5,6 icon webCmd eventMap">
+<TRX name="RFXTRXUSB" state="opened" sets="RFXTRXUSB => No Set function (?) implemented"
+     attrs="room comment alias do_not_notify:1,0 dummy:1,0 do_not_init:1:0 addvaltrigger:1:0 longids loglevel:0,1,2,3,4,5,6 icon webCmd eventMap">
     <INT key="DEF" value="COM3@38400 noinit"/>
     <INT key="DeviceName" value="COM3@38400"/>
     <INT key="NAME" value="RFXTRXUSB"/>
@@ -2202,7 +2270,8 @@ room structexclude webCmd eventMap">
 </TRX>
 </TRX_LIST>
 <TRX_LIGHT_LIST>
-<TRX_LIGHT name="KlikAanKlikUit_C1" state="off" sets="  all_off all_on chime off on" attrs="room group comment alias eventMap IODev do_not_notify:1,0 loglevel:0,1,2,3,4,5,6 icon webCmd">
+<TRX_LIGHT name="KlikAanKlikUit_C1" state="off" sets="  all_off all_on chime off on"
+           attrs="room group comment alias eventMap IODev do_not_notify:1,0 loglevel:0,1,2,3,4,5,6 icon webCmd">
     <INT key="DEF" value="ARC C1 light"/>
     <INT key="NAME" value="KlikAanKlikUit_C1"/>
     <INT key="NR" value="38"/>
@@ -2216,7 +2285,8 @@ room structexclude webCmd eventMap">
     <STATE key="light" value="off" measured="2012-07-15 20:22:58"/>
     <STATE key="state" value="off" measured="2012-07-16 09:42:28"/>
 </TRX_LIGHT>
-<TRX_LIGHT name="KlikAanKlikUit_C2" state="on" sets="  all_off all_on chime off on" attrs="room group comment alias eventMap IODev do_not_notify:1,0 loglevel:0,1,2,3,4,5,6 icon webCmd">
+<TRX_LIGHT name="KlikAanKlikUit_C2" state="on" sets="  all_off all_on chime off on"
+           attrs="room group comment alias eventMap IODev do_not_notify:1,0 loglevel:0,1,2,3,4,5,6 icon webCmd">
     <INT key="DEF" value="ARC C2 light"/>
     <INT key="NAME" value="KlikAanKlikUit_C2"/>
     <INT key="NR" value="41"/>
@@ -2231,7 +2301,8 @@ room structexclude webCmd eventMap">
     <STATE key="light" value="on" measured="2012-07-17 20:10:46"/>
     <STATE key="state" value="on" measured="2012-07-16 23:12:23"/>
 </TRX_LIGHT>
-<TRX_LIGHT name="KlikAanKlikUit_C3" state="off" sets="  all_off all_on chime off on" attrs="room group comment alias eventMap IODev do_not_notify:1,0 loglevel:0,1,2,3,4,5,6 icon webCmd">
+<TRX_LIGHT name="KlikAanKlikUit_C3" state="off" sets="  all_off all_on chime off on"
+           attrs="room group comment alias eventMap IODev do_not_notify:1,0 loglevel:0,1,2,3,4,5,6 icon webCmd">
     <INT key="DEF" value="ARC C3 light"/>
     <INT key="NAME" value="KlikAanKlikUit_C3"/>
     <INT key="NR" value="44"/>
@@ -2247,7 +2318,8 @@ room structexclude webCmd eventMap">
 </TRX_LIGHT>
 </TRX_LIGHT_LIST>
 <TRX_WEATHER_LIST>
-<TRX_WEATHER name="TX3_T_05" state="T: 21.1 BAT: ok" sets="" attrs="room comment alias IODev do_not_notify:1,0 loglevel:0,1,2,3,4,5,6 icon webCmd eventMap">
+<TRX_WEATHER name="TX3_T_05" state="T: 21.1 BAT: ok" sets=""
+             attrs="room comment alias IODev do_not_notify:1,0 loglevel:0,1,2,3,4,5,6 icon webCmd eventMap">
     <INT key="CODE" value="TX3_T_05"/>
     <INT key="DEF" value="TX3_T_05"/>
     <INT key="NAME" value="TX3_T_05"/>
@@ -2261,7 +2333,8 @@ room structexclude webCmd eventMap">
     <STATE key="battery" value="ok" measured="2012-04-10 16:29:33"/>
     <STATE key="temperature" value="21.1" measured="2012-04-10 16:29:33"/>
 </TRX_WEATHER>
-<TRX_WEATHER name="TX3_T_2f" state="T: 6 BAT: ok" sets="" attrs="room comment alias IODev do_not_notify:1,0 loglevel:0,1,2,3,4,5,6 icon webCmd eventMap">
+<TRX_WEATHER name="TX3_T_2f" state="T: 6 BAT: ok" sets=""
+             attrs="room comment alias IODev do_not_notify:1,0 loglevel:0,1,2,3,4,5,6 icon webCmd eventMap">
     <INT key="CODE" value="TX3_T_2f"/>
     <INT key="DEF" value="TX3_T_2f"/>
     <INT key="NAME" value="TX3_T_2f"/>
@@ -2277,7 +2350,8 @@ room structexclude webCmd eventMap">
 </TRX_WEATHER>
 </TRX_WEATHER_LIST>
 <OWTEMP_LIST>
-<OWTEMP name="Hz.Ruecklauf" state="T: 24.1250  L: 15  H: 35  P: 1  A: 0  W: none" sets="set needs one parameter" attrs="room comment alias IODev do_not_notify:0,1 showtime:0,1 model:DS18S20 loglevel:0,1,2,3,4,5 1 advent bundle structexclude">
+<OWTEMP name="Hz.Ruecklauf" state="T: 24.1250  L: 15  H: 35  P: 1  A: 0  W: none" sets="set needs one parameter"
+        attrs="room comment alias IODev do_not_notify:0,1 showtime:0,1 model:DS18S20 loglevel:0,1,2,3,4,5 1 advent bundle structexclude">
     <INT key="ALARM" value="0"/>
     <INT key="DEF" value="E09538020000 300 300"/>
     <INT key="INTERVAL" value="300"/>
@@ -2303,7 +2377,8 @@ room structexclude webCmd eventMap">
 </OWTEMP_LIST>
 
 <SIS_PMS_LIST>
-<SIS_PMS name="HLQ_rechts" state="off" sets="off on on-till off-till toggle" attrs="room comment IODev model:sis_pms,fs20st loglevel:0,1,2,3,4,5,6">
+<SIS_PMS name="HLQ_rechts" state="off" sets="off on on-till off-till toggle"
+         attrs="room comment IODev model:sis_pms,fs20st loglevel:0,1,2,3,4,5,6">
     <INT key="DEF" value="01:0b:52:00:94 3"/>
     <INT key="LASTIODev" value="Wohnz_PMS"/>
     <INT key="MSGCNT" value="17570"/>
@@ -2323,7 +2398,8 @@ room structexclude webCmd eventMap">
 </SIS_PMS_LIST>
 
 <LGTV_LIST>
-<LGTV name="47LG7000" state="off" sets="power input audio" attrs="room comment dummy:1,0 model:LGTV loglevel:0,1,2,3,4,5 TIMER:30">
+<LGTV name="47LG7000" state="off" sets="power input audio"
+      attrs="room comment dummy:1,0 model:LGTV loglevel:0,1,2,3,4,5 TIMER:30">
     <INT key="NAME" value="47LG7000"/>
     <INT key="NR" value="4"/>
     <INT key="STATE" value="off"/>
@@ -2410,7 +2486,8 @@ room structexclude webCmd eventMap">
 </KS300>
 </KS300_LIST>
 <Twilight_LIST>
-<Twilight name="twilight" state="6" sets="" attrs="room group comment alias eventMap loglevel:0,1,2,3,4,5 event-on-update-reading event-on-change-reading fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon onOffDevice webCmd">
+<Twilight name="twilight" state="6" sets=""
+          attrs="room group comment alias eventMap loglevel:0,1,2,3,4,5 event-on-update-reading event-on-change-reading fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon onOffDevice webCmd">
     <INT key="CONDITION" value="-1"/>
     <INT key="DEF" value="48.371667 10.898333"/>
     <INT key="INDOOR_HORIZON" value="4"/>
@@ -2443,7 +2520,8 @@ room structexclude webCmd eventMap">
 </Twilight_LIST>
 
 <CUL_WS_LIST>
-<CUL_WS name="CUL_WS" state="T: 13.6  H: 45.8" sets="" attrs="room comment alias IODev do_not_notify:0,1 showtime:0,1 model:S300TH,KS300 loglevel ignore:0,1 month day hz_month hz_day eventMap">
+<CUL_WS name="CUL_WS" state="T: 13.6  H: 45.8" sets=""
+        attrs="room comment alias IODev do_not_notify:0,1 showtime:0,1 model:S300TH,KS300 loglevel ignore:0,1 month day hz_month hz_day eventMap">
     <INT key="CODE" value="4"/>
     <INT key="CUL_MSGCNT" value="1876"/>
     <INT key="CUL_RAWMSG" value="K31368145E0"/>
@@ -2481,7 +2559,8 @@ room structexclude webCmd eventMap">
 </notify>
 </notify_LIST>
 <FileLog_LIST>
-<FileLog name="FileLog_CUL_HM_KFM100_122334" state="active" sets="reopen" attrs="room group comment alias eventMap disable:0,1 logtype nrarchive archivedir archivecmd icon webCmd">
+<FileLog name="FileLog_CUL_HM_KFM100_122334" state="active" sets="reopen"
+         attrs="room group comment alias eventMap disable:0,1 logtype nrarchive archivedir archivecmd icon webCmd">
     <INT key="DEF" value="/var/InternerSpeicher/fhem/log/CUL_HM_KFM100_122334-%Y.log CUL_HM_KFM100_122334"/>
     <INT key="NAME" value="FileLog_CUL_HM_KFM100_122334"/>
     <INT key="NR" value="91"/>
@@ -2494,7 +2573,8 @@ room structexclude webCmd eventMap">
     <ATTR key="logtype" value="text,vol5"/>
     <ATTR key="room" value="CUL_HM"/>
 </FileLog>
-<FileLog name="FileLog_Temp_Feuchte1.Aussen" state="active" sets="reopen" attrs="room group comment alias eventMap disable:0,1 logtype nrarchive archivedir archivecmd icon structexclude webCmd">
+<FileLog name="FileLog_Temp_Feuchte1.Aussen" state="active" sets="reopen"
+         attrs="room group comment alias eventMap disable:0,1 logtype nrarchive archivedir archivecmd icon structexclude webCmd">
     <INT key="DEF" value="/var/log/fhem/Temp_Feuchte1.Aussen-%Y.log Temp_Feuchte1.Aussen:T:.*"/>
     <INT key="NAME" value="FileLog_Temp_Feuchte1.Aussen"/>
     <INT key="NR" value="53"/>
@@ -2571,7 +2651,8 @@ room structexclude webCmd eventMap">
     <INT key="logfile" value="./log/fhem-%Y-%m.log"/>
 </FileLog>
 
-<FileLog name="FileLog_wetterstation" state="active" sets="reopen" attrs="room comment alias disable:0,1 logtype nrarchive archivedir archivecmd eventMap">
+<FileLog name="FileLog_wetterstation" state="active" sets="reopen"
+         attrs="room comment alias disable:0,1 logtype nrarchive archivedir archivecmd eventMap">
     <INT key="DEF" value="./log/wetterstation-%Y.log wetterstation:T:.*"/>
     <INT key="NAME" value="FileLog_wetterstation"/>
     <INT key="NR" value="49"/>
@@ -2584,7 +2665,8 @@ room structexclude webCmd eventMap">
     <ATTR key="room" value="unknown"/>
 </FileLog>
 
-<FileLog name="FileLog_CUL_EM_5" state="active" sets="reopen" attrs="room comment alias disable:0,1 logtype nrarchive archivedir archivecmd eventMap">
+<FileLog name="FileLog_CUL_EM_5" state="active" sets="reopen"
+         attrs="room comment alias disable:0,1 logtype nrarchive archivedir archivecmd eventMap">
     <INT key="DEF" value="./log/wetterstation-%Y.log wetterstation:T:.*"/>
     <INT key="NAME" value="FileLog_CUL_EM_5"/>
     <INT key="NR" value="49"/>
@@ -2596,7 +2678,8 @@ room structexclude webCmd eventMap">
     <ATTR key="logtype" value="CUL_EM_5:Temp/Rain,wetterstation:Wind/Hum,text"/>
     <ATTR key="room" value="unknown"/>
 </FileLog>
-<FileLog name="FileLog_CUL_EM_6" state="active" sets="reopen" attrs="room comment alias disable:0,1 logtype nrarchive archivedir archivecmd eventMap">
+<FileLog name="FileLog_CUL_EM_6" state="active" sets="reopen"
+         attrs="room comment alias disable:0,1 logtype nrarchive archivedir archivecmd eventMap">
     <INT key="DEF" value="./log/wetterstation-%Y.log wetterstation:T:.*"/>
     <INT key="NAME" value="FileLog_CUL_EM_6"/>
     <INT key="NR" value="49"/>
@@ -2609,7 +2692,8 @@ room structexclude webCmd eventMap">
     <ATTR key="room" value="unknown"/>
 </FileLog>
 
-<FileLog name="FileLog_CUL_EM_7" state="active" sets="reopen" attrs="room comment alias disable:0,1 logtype nrarchive archivedir archivecmd eventMap">
+<FileLog name="FileLog_CUL_EM_7" state="active" sets="reopen"
+         attrs="room comment alias disable:0,1 logtype nrarchive archivedir archivecmd eventMap">
     <INT key="DEF" value="./log/wetterstation-%Y.log wetterstation:T:.*"/>
     <INT key="NAME" value="FileLog_CUL_EM_7"/>
     <INT key="NR" value="49"/>
@@ -2622,7 +2706,8 @@ room structexclude webCmd eventMap">
     <ATTR key="room" value="unknown"/>
 </FileLog>
 
-<FileLog name="FileLog_oregon1" state="active" sets="reopen" attrs="room comment alias disable:0,1 logtype nrarchive archivedir archivecmd eventMap">
+<FileLog name="FileLog_oregon1" state="active" sets="reopen"
+         attrs="room comment alias disable:0,1 logtype nrarchive archivedir archivecmd eventMap">
     <INT key="DEF" value="./log/wetterstation-%Y.log wetterstation:T:.*"/>
     <INT key="NAME" value="FileLog_oregon1"/>
     <INT key="NR" value="49"/>
@@ -2634,6 +2719,21 @@ room structexclude webCmd eventMap">
     <ATTR key="logtype" value="wetterstation:Temp/Rain,wetterstation:Wind/Hum,text"/>
     <ATTR key="room" value="unknown"/>
 </FileLog>
+
+<FileLog name="FileLog_CUL_TX_116" state="active" sets="reopen"
+         attrs="room comment alias disable:0,1 logtype nrarchive archivedir archivecmd eventMap">
+    <INT key="DEF" value="./log/CUL_TX_116-%Y.log CUL_TX_116:T:.*"/>
+    <INT key="NAME" value="FileLog_CUL_TX_116"/>
+    <INT key="NR" value="49"/>
+    <INT key="REGEXP" value="CUL_TX_116:T:.*"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="FileLog"/>
+    <INT key="currentlogfile" value="./log/CUL_TX_116-2011.log"/>
+    <INT key="logfile" value="./log/CUL_TX_116-%Y.log"/>
+    <ATTR key="logtype" value="CUL_TX_116:Temp/Rain,wetterstation:Wind/Hum,text"/>
+    <ATTR key="room" value="unknown"/>
+</FileLog>
+
 </FileLog_LIST>
 <autocreate_LIST>
 <autocreate name="autocreate" state="active" sets=""
@@ -2699,7 +2799,8 @@ room structexclude webCmd eventMap">
     <ATTR key="label" value="&quot;KS300 Min $data{min1}, Max $data{max1}, Last $data{currval1}&quot;"/>
     <ATTR key="room" value="Plots"/>
 </weblink>
-<weblink name="weblink_CUL_WS_2" state="initial" sets="" attrs="room comment alias fixedrange plotmode plotsize label title htmlattr webCmd fm_fav fm_name fm_order fm_groups eventMap">
+<weblink name="weblink_CUL_WS_2" state="initial" sets=""
+         attrs="room comment alias fixedrange plotmode plotsize label title htmlattr webCmd fm_fav fm_name fm_order fm_groups eventMap">
     <INT key="DEF" value="fileplot FileLog_CUL_WS_2:temp4hum6:CURRENT"/>
     <INT key="LINK" value="FileLog_CUL_WS2:temp4hum6:CURRENT"/>
     <INT key="NAME" value="weblink_CUL_WS_2"/>
@@ -2720,10 +2821,12 @@ room structexclude webCmd eventMap">
     <INT key="TYPE" value="weblink"/>
     <INT key="WLTYPE" value="fileplot"/>
     <ATTR key="label" value="&quot;KS300 Min $data{min1}, Max $data{max1}, Last $data{currval1}&quot;"/>
-    <ATTR key="label" value="Gasverbrauch Summe $data{sum1} m³, Min $data{min1}, Max $data{max1}, Last $data{currval1} m³"/>
+    <ATTR key="label"
+          value="Gasverbrauch Summe $data{sum1} m³, Min $data{min1}, Max $data{max1}, Last $data{currval1} m³"/>
     <ATTR key="room" value="Plots"/>
 </weblink>
-<weblink name="Wetter" state="initial" sets="" attrs="room group comment alias eventMap fixedrange plotmode plotsize label title htmlattr Geschoss Haus fp_Lindenhof icon structexclude webCmd">
+<weblink name="Wetter" state="initial" sets=""
+         attrs="room group comment alias eventMap fixedrange plotmode plotsize label title htmlattr Geschoss Haus fp_Lindenhof icon structexclude webCmd">
     <INT key="DEF" value="iframe http://www.wetteronline.de/cgi-bin/hpweather?PLZ=15749"/>
     <INT key="LINK" value="http://www.wetteronline.de/cgi-bin/hpweather?PLZ=15749"/>
     <INT key="NAME" value="Wetter"/>
@@ -2732,11 +2835,13 @@ room structexclude webCmd eventMap">
     <INT key="TYPE" value="weblink"/>
     <INT key="WLTYPE" value="iframe"/>
     <ATTR key="fp_Lindenhof" value="420,25"/>
-    <ATTR key="htmlattr" value="width=&quot;220&quot; height=&quot;330&quot; frameborder=&quot;0&quot; marginheight=&quot;0&quot; marginwidth=&quot;0&quot;"/>
+    <ATTR key="htmlattr"
+          value="width=&quot;220&quot; height=&quot;330&quot; frameborder=&quot;0&quot; marginheight=&quot;0&quot; marginwidth=&quot;0&quot;"/>
     <ATTR key="room" value="Plots"/>
 
 </weblink>
-<weblink name="weblink_Temp_Feuchte1.Aussen" state="initial" sets="" attrs="room group comment alias eventMap fixedrange plotmode plotsize label title htmlattr icon structexclude webCmd">
+<weblink name="weblink_Temp_Feuchte1.Aussen" state="initial" sets=""
+         attrs="room group comment alias eventMap fixedrange plotmode plotsize label title htmlattr icon structexclude webCmd">
     <INT key="DEF" value="fileplot FileLog_Temp_Feuchte1.Aussen:temp4hum6:CURRENT"/>
     <INT key="LINK" value="FileLog_Temp_Feuchte1.Aussen:temp4hum6:CURRENT"/>
     <INT key="NAME" value="weblink_Temp_Feuchte1.Aussen"/>

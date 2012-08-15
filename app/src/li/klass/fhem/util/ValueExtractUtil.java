@@ -26,17 +26,18 @@ package li.klass.fhem.util;
 
 public class ValueExtractUtil {
     public static double extractLeadingDouble(String text) {
-        text = extractContentBeforeSpace(text);
+        text = extractLeadingNumericText(text);
         return Double.valueOf(text);
     }
 
     public static int extractLeadingInt(String text) {
-        text = extractContentBeforeSpace(text);
+        text = extractLeadingNumericText(text);
         return Integer.valueOf(text);
     }
 
-    static String extractContentBeforeSpace(String text) {
+    static String extractLeadingNumericText(String text) {
         text = text.trim();
+        text = text.replaceAll("[a-zA-Z%°]*", "");
         int spacePosition = text.indexOf(" ");
         if (spacePosition != -1) {
             text = text.substring(0, spacePosition);

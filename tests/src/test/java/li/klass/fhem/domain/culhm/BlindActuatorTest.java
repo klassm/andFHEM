@@ -28,9 +28,9 @@ import li.klass.fhem.domain.CULHMDevice;
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 import org.junit.Test;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.assertThat;
 
 public class BlindActuatorTest extends DeviceXMLParsingBase {
     @Test

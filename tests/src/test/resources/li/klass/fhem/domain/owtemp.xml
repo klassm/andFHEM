@@ -1,0 +1,52 @@
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<FHZINFO>
+    <OWTEMP_LIST>
+        <OWTEMP name="device" state="T: 24.1250  L: 15  H: 35  P: 1  A: 0  W: none" sets="set needs one parameter"
+                attrs="room comment alias IODev do_not_notify:0,1 showtime:0,1 model:DS18S20 loglevel:0,1,2,3,4,5 1 advent bundle structexclude">
+            <INT key="ALARM" value="0"/>
+            <INT key="DEF" value="E09538020000 300 300"/>
+            <INT key="INTERVAL" value="300"/>
+            <INT key="INTV_ALARM" value="300"/>
+            <INT key="INTV_CHECK" value="300"/>
+            <INT key="NAME" value="device"/>
+            <INT key="NR" value="29"/>
+            <INT key="OW_FAMILY" value="28"/>
+            <INT key="OW_ID" value="E09538020000"/>
+            <INT key="OW_PATH" value="28.E09538020000"/>
+            <INT key="OW_SCALE" value="Celsius"/>
+            <INT key="PRESENT" value="1"/>
+            <INT key="STATE" value="T: 24.1250  L: 15  H: 35  P: 1  A: 0  W: none"/>
+            <INT key="TYPE" value="OWTEMP"/>
+            <INT key="IODev" value="DS9490R"/>
+            <ATTR key="room" value="room"/>
+            <STATE key="present" value="1" measured="2010-04-05 14:06:49"/>
+            <STATE key="temperature" value="24.1250 (Celsius)" measured="2010-04-05 14:06:49"/>
+            <STATE key="temphigh" value="35" measured="2010-04-05 14:06:49"/>
+            <STATE key="templow" value="15" measured="2010-04-05 14:06:49"/>
+            <STATE key="warnings" value="none" measured="2010-04-05 14:06:49"/>
+        </OWTEMP>
+    </OWTEMP_LIST>
+</FHZINFO>

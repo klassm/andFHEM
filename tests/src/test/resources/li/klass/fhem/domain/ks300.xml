@@ -1,0 +1,79 @@
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<FHZINFO>
+    <KS300_LIST>
+        <KS300 name="device" state="T: 2.0  H: 74  W: 2.2  R: 24.5  IR: no" sets=""
+               attrs="room comment alias IODev do_not_notify:0,1 showtime:0,1 model:ks300 loglevel:0,1 rainadjustment:0,1 ignore:0,1 eventMap">
+            <INT key="CODE" value="1234"/>
+            <INT key="CUL_MSGCNT" value="7010"/>
+            <INT key="CUL_RAWMSG" value="K1720402702601010"/>
+            <INT key="CUL_RSSI" value="-66"/>
+            <INT key="CUL_TIME" value="2011-12-05 16:29:47"/>
+            <INT key="DEF" value="1234"/>
+            <INT key="LASTIODev" value="CUL"/>
+            <INT key="MSGCNT" value="7010"/>
+            <INT key="NAME" value="device"/>
+            <INT key="NR" value="50"/>
+            <INT key="RAINUNIT" value="255"/>
+            <INT key="STATE" value="T: 2.0  H: 74  W: 2.2  R: 24.5  IR: no"/>
+            <INT key="TYPE" value="KS300"/>
+            <INT key="WINDUNIT" value="1"/>
+            <INT key="IODev" value="CUL"/>
+            <ATTR key="room" value="room"/>
+            <STATE key="avg_day" value="T: 4.8  H: 78  W: 6.6  R: 5.1" measured="2011-12-05 16:29:47"/>
+            <STATE key="avg_month" value="T: 6.7  H: 38  W: 42.4  R: 10.2" measured="2011-12-05 00:01:01"/>
+            <STATE key="cum_day" value="2011-12-05 00:01:01 T: 283802.8  H: 4657934  W: 390585  R: 19.4"
+                   measured="2011-12-05 16:29:47"/>
+            <STATE key="cum_month" value="4 T: 26.7  H: 152  W: 169.6  R: 10.2" measured="2011-12-05 00:01:01"/>
+            <STATE key="humidity" value="74" measured="2011-12-05 16:29:47"/>
+            <STATE key="israining" value="no (yes/no)" measured="2011-12-05 16:29:47"/>
+            <STATE key="rain" value="24.5" measured="2011-12-05 16:29:47"/>
+            <STATE key="rain_raw" value="96 (counter)" measured="2011-12-05 16:29:47"/>
+            <STATE key="rain_raw_adj" value="96" measured="2011-12-05 16:29:47"/>
+            <STATE key="temperature" value="2.0" measured="2011-12-05 16:29:47"/>
+            <STATE key="tsecs" value="1323098987" measured="2011-12-05 16:29:47"/>
+            <STATE key="unknown1" value="1 " measured="2011-12-05 16:29:47"/>
+            <STATE key="unknown2" value="7 " measured="2011-12-05 16:29:47"/>
+            <STATE key="unknown3" value="1 " measured="2011-12-05 16:29:47"/>
+            <STATE key="wind" value="2.2" measured="2011-12-05 16:29:47"/>
+        </KS300>
+    </KS300_LIST>
+
+    <FileLog_LIST>
+        <FileLog name="FileLog_device" state="active" sets="reopen"
+                 attrs="room comment alias disable:0,1 logtype nrarchive archivedir archivecmd eventMap">
+            <INT key="DEF" value="./log/device-%Y.log device:T:.*"/>
+            <INT key="NAME" value="FileLog_device"/>
+            <INT key="NR" value="49"/>
+            <INT key="REGEXP" value="device:T:.*"/>
+            <INT key="STATE" value="active"/>
+            <INT key="TYPE" value="FileLog"/>
+            <INT key="currentlogfile" value="./log/device-2011.log"/>
+            <INT key="logfile" value="./log/device-%Y.log"/>
+            <ATTR key="logtype" value="device:Temp/Rain,device:Wind/Hum,text"/>
+            <ATTR key="room" value="unknown"/>
+        </FileLog>
+    </FileLog_LIST>
+</FHZINFO>

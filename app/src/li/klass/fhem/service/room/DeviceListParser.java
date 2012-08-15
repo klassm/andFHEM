@@ -138,10 +138,17 @@ public class DeviceListParser {
         }
 
         addFileLogsToDevices(allDevicesRoom);
+        callAfterXmlRead(allDevicesRoom);
 
         Log.e(TAG, "loaded " + allDevicesRoom.getAllDevices().size() + " devices!");
 
         return roomDeviceListMap;
+    }
+
+    private void callAfterXmlRead(RoomDeviceList allDevicesRoom) {
+        for (Device device : allDevicesRoom.getAllDevices()) {
+            device.afterXMLRead();
+        }
     }
 
     /**
@@ -264,9 +271,6 @@ public class DeviceListParser {
 
             invokeDeviceAttributeMethod(cache, device, keyValue, nodeContent, item.getAttributes(), item.getNodeName());
         }
-
-
-        device.afterXMLRead();
 
         return device;
     }

@@ -35,7 +35,7 @@ public class TRXLightDevice extends ToggleableDevice<TRXLightDevice> {
     @ShowField(description = R.string.type)
     private String type;
 
-    public void setTRX_LIGHT_TYPE(String value) {
+    public void readTRX_LIGHT_TYPE(String value) {
         this.type = value;
     }
 

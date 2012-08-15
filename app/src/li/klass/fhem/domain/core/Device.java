@@ -94,7 +94,9 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
     }
 
     public void afterXMLRead() {
-        fillDeviceCharts(deviceCharts);
+        if (fileLog != null) {
+            fillDeviceCharts(deviceCharts);
+        }
     }
 
     private void parseEventMap(String content) {
@@ -200,12 +202,12 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
     }
 
     public void onAttributeRead(String attributeName, String attributeValue) {
-        if (attributeName.equals("sets")) {
+        if (attributeName.equals("SETS")) {
             String setsText = attributeValue.replaceAll("\\*", "");
 
             setsText = setsText.trim();
             String lowercase = setsText.toLowerCase();
-            if (lowercase.equals("") || lowercase.equals("*") || lowercase.contains("not set function")
+            if (lowercase.equals("") || lowercase.equals("*") || lowercase.contains("no set function")
                     || lowercase.contains("needs one parameter")) {
                 return;
             }

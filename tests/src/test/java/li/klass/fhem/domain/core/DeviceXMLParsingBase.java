@@ -51,7 +51,6 @@ public abstract class DeviceXMLParsingBase {
             inputStream = getClass().getResourceAsStream(getFileName());
 
             String content = IOUtils.toString(inputStream);
-            content = content.replaceAll("  ", "");
 
             roomDeviceListMap = DeviceListParser.INSTANCE.parseXMLList(content);
         } finally {
@@ -60,7 +59,11 @@ public abstract class DeviceXMLParsingBase {
     }
 
     protected <T extends Device<T>> T getDefaultDevice() {
-        return roomDeviceListMap.get(DEFAULT_TEST_ROOM_NAME).getDeviceFor(DEFAULT_TEST_DEVICE_NAME);
+        return getDeviceFor(DEFAULT_TEST_DEVICE_NAME);
+    }
+
+    protected <T extends Device<T>> T getDeviceFor(String deviceName) {
+        return roomDeviceListMap.get(DEFAULT_TEST_ROOM_NAME).getDeviceFor(deviceName);
     }
 
     protected abstract String getFileName();

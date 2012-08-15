@@ -32,9 +32,10 @@ import static li.klass.fhem.util.ValueExtractUtil.*;
 public class ValueExtractUtilTest {
 
     @Test
-    public void testExtractContentBeforeSpace() {
-        assertEquals("abc", extractContentBeforeSpace("abc def"));
-        assertEquals("abc", extractContentBeforeSpace("abc def ds"));
+    public void testExtractLeadingNumericText() {
+        assertEquals("", extractLeadingNumericText("abc def"));
+        assertEquals("5", extractLeadingNumericText("5 abc def ds"));
+        assertEquals("5.0", extractLeadingNumericText("5.0 abc def ds"));
     }
 
     @Test

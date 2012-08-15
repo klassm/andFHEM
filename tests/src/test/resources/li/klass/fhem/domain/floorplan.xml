@@ -1,0 +1,54 @@
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<FHZINFO>
+    <FLOORPLAN_LIST>
+        <FLOORPLAN name="device" state="dach" sets=""
+                   attrs="room group comment alias eventMap loglevel:0,1,2,3,4,5,6 refresh fp_arrange:1,detail,WEB,0 commandfield:1,0 fp_default:1,0 fp_stylesheetPrefix fp_noMenu:1,0 fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon onOffDevice webCmd">
+            <INT key="NAME" value="device"/>
+            <INT key="NR" value="48"/>
+            <INT key="STATE" value="dach"/>
+            <INT key="TYPE" value="FLOORPLAN"/>
+            <ATTR key="fp_arrange" value="1"/>
+            <ATTR key="room" value="room"/>
+        </FLOORPLAN>
+    </FLOORPLAN_LIST>
+    <FS20_LIST>
+        <FS20 name="device1" state="off"
+              sets="dim06% dim100% dim12% dim18% dim25% dim31% dim37% dim43% dim50% dim56% dim62% dim68% dim75% dim81% dim87% dim93% dimdown dimup dimupdown off off-for-timer on on-100-for-timer-prev on-for-timer on-old-for-timer on-old-for-timer-prev on-till ramp-off-time ramp-on-time reset sendstate timer toggle dim:slider,0,6.25,100"
+              attrs="room group comment alias eventMap IODev follow-on-for-timer:1,0 follow-on-timer do_not_notify:1,0 ignore:1,0 dummy:1,0 showtime:1,0 loglevel:0,1,2,3,4,5,6 model:dummyDimmer,dummySender,dummySimple,fs20as1,fs20as4,fs20bf,fs20bs,fs20di,fs20di10,fs20du,fs20fms,fs20hgs,fs20irl,fs20kse,fs20ls,fs20ms2,fs20pira,fs20piri,fs20piru,fs20rgbsa,fs20rst,fs20rsu,fs20s16,fs20s20,fs20s4,fs20s4a,fs20s4m,fs20s4u,fs20s4ub,fs20s8,fs20s8m,fs20sa,fs20sd,fs20sig,fs20sm4,fs20sm8,fs20sn,fs20sr,fs20ss,fs20st,fs20st2,fs20str,fs20su,fs20sv,fs20tc1,fs20tc6,fs20tfk,fs20tk,fs20ue1,fs20usr,fs20uts,fs20ws1,fs20ze fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon onOffDevice webCmd">
+            <INT key="BTN" value="41"/>
+            <INT key="DEF" value="11111111 2112 gm 4444 lm 2144"/>
+            <INT key="NAME" value="device1"/>
+            <INT key="NR" value="54"/>
+            <INT key="STATE" value="off"/>
+            <INT key="TYPE" value="FS20"/>
+            <INT key="XMIT" value="c848"/>
+            <INT key="IODev" value="CUL"/>
+            <ATTR key="fp_dach" value="550,270,1,"/>
+            <ATTR key="room" value="room"/>
+            <STATE key="state" value="off" measured="2012-08-11 16:45:20"/>
+        </FS20>
+    </FS20_LIST>
+</FHZINFO>

@@ -70,6 +70,8 @@ public class FHTDevice extends Device<FHTDevice> {
     @WidgetTemperatureField
     @WidgetMediumLine1
     private String temperature;
+    @ShowField(description = R.string.battery)
+    private String battery;
 
     private Map<Integer, FHTDayControl> dayControlMap = new HashMap<Integer, FHTDayControl>();
 
@@ -81,8 +83,9 @@ public class FHTDevice extends Device<FHTDevice> {
 
     @Override
     public void onChildItemRead(String tagName, String key, String value, NamedNodeMap nodeAttributes) {
-        if (key.startsWith("ACTUATOR") && ! value.equalsIgnoreCase("pair") && ! value.toLowerCase().contains("offset")) {
-            actuator = value;
+        if (key.startsWith("ACTUATOR") && !value.equalsIgnoreCase("pair") && !value.toLowerCase().contains("offset")) {
+            double percentage = ValueExtractUtil.extractLeadingDouble(value);
+            actuator = ValueDescriptionUtil.appendPercent(percentage);
         } else if (key.endsWith("FROM1") || key.endsWith("FROM2") || key.endsWith("TO1") || key.endsWith("TO2")) {
             String shortName = key.substring(0, 3);
             FHTDayControl dayControl = dayControlMap.get(DayUtil.getDayStringIdForShortName(shortName));
@@ -94,7 +97,11 @@ public class FHTDevice extends Device<FHTDevice> {
         }
     }
 
-    public void readMEASURED_TEMP(String value) {
+    public void readBATTERY(String value) {
+        battery = value;
+    }
+
+    public void readTEMPERATURE(String value) {
         temperature = ValueUtil.formatTemperature(value);
     }
 
@@ -125,7 +132,7 @@ public class FHTDevice extends Device<FHTDevice> {
         nightTemperature = ValueExtractUtil.extractLeadingDouble(value);
     }
 
-    public void readWINDOW_OPEN_TEMP(String value) {
+    public void readWINDOWOPEN_TEMP(String value) {
         windowOpenTemp = ValueExtractUtil.extractLeadingDouble(value);
     }
 
@@ -202,6 +209,10 @@ public class FHTDevice extends Device<FHTDevice> {
 
     public void setMode(FHTMode mode) {
         this.mode = mode;
+    }
+
+    public String getBattery() {
+        return battery;
     }
 
     public Map<Integer, FHTDayControl> getDayControlMap() {
