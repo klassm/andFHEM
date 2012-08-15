@@ -83,7 +83,7 @@ public class FHTDevice extends Device<FHTDevice> {
 
     @Override
     public void onChildItemRead(String tagName, String key, String value, NamedNodeMap nodeAttributes) {
-        if (key.startsWith("ACTUATOR") && !value.equalsIgnoreCase("pair") && !value.toLowerCase().contains("offset")) {
+        if (key.startsWith("ACTUATOR") && value != null && value.matches("[0-9]*[%]?")) {
             double percentage = ValueExtractUtil.extractLeadingDouble(value);
             actuator = ValueDescriptionUtil.appendPercent(percentage);
         } else if (key.endsWith("FROM1") || key.endsWith("FROM2") || key.endsWith("TO1") || key.endsWith("TO2")) {
