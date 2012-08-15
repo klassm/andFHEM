@@ -26,6 +26,7 @@ package li.klass.fhem.domain;
 
 import li.klass.fhem.domain.core.ToggleableDevice;
 import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
+import li.klass.fhem.util.ArrayUtil;
 import org.w3c.dom.NamedNodeMap;
 
 @DetailOverviewViewSettings(showState = true)
@@ -38,7 +39,7 @@ public class DummyDevice extends ToggleableDevice<DummyDevice> {
 
     @Override
     public boolean supportsToggle() {
-        return isOnOffDevice();
+        return ArrayUtil.contains(getAvailableTargetStates(), "on", "off");
     }
 
     @Override

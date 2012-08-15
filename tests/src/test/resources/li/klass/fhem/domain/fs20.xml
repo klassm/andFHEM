@@ -52,6 +52,7 @@
             <INT key="IODev" value="CUL"/>
             <ATTR key="room" value="room"/>
             <ATTR key="alias" value="myAlias"/>
+            <ATTR key="onoffdevice" value="true"/>
             <ATTR key="eventMap" value="on:open off:closed"/>
         </FS20>
     </FS20_LIST>

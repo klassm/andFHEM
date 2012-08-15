@@ -24,8 +24,7 @@
 
 package li.klass.fhem.domain.core;
 
-import li.klass.fhem.util.ArrayUtil;
-
+@SuppressWarnings("unused")
 public abstract class ToggleableDevice<T extends Device> extends Device<T> {
 
     /**
@@ -38,12 +37,8 @@ public abstract class ToggleableDevice<T extends Device> extends Device<T> {
 
     public abstract boolean supportsToggle();
 
-    @Override
-    public void afterXMLRead() {
-        super.afterXMLRead();
-
-        String[] availableTargetStates = getAvailableTargetStates();
-        onOffDevice = ArrayUtil.contains(availableTargetStates, "on", "off");
+    public void readONOFFDEVICE(String value) {
+        this.onOffDevice = value.equals("true");
     }
 
     public boolean isOnOffDevice() {
