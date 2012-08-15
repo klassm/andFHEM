@@ -2,13 +2,13 @@
  * AndFHEM - Open Source Android application to control a FHEM home automation
  * server.
  *
- * Copyright (c) 2012, Matthias Klass or third-party contributors as
+ * Copyright (c) 2011, Matthias Klass or third-party contributors as
  * indicated by the @author tags or express copyright attribution
  * statements applied by the authors.  All third-party contributions are
  * distributed under license by Red Hat Inc.
  *
  * This copyrighted material is made available to anyone wishing to use, modify,
- * copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLICLICENSE, as published by the Free Software Foundation.
+ * copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
@@ -19,6 +19,7 @@
  * along with this distribution; if not, write to:
  *   Free Software Foundation, Inc.
  *   51 Franklin Street, Fifth Floor
+ *   Boston, MA  02110-1301  USA
  */
 
 apply plugin: 'java'
@@ -33,8 +34,8 @@ ext {
 buildscript {
     repositories {
         mavenCentral()
-        mavenRepo url:'http://repo.open.med.harvard.edu/nexus/content/groups/public'
-        mavenRepo url:'http://repo.smokejumperit.com'
+        mavenRepo url: 'http://repo.open.med.harvard.edu/nexus/content/groups/public'
+        mavenRepo url: 'http://repo.smokejumperit.com'
     }
     dependencies {
         classpath 'com.smokejumperit:gradle-plugins:0.8.2'
@@ -43,14 +44,16 @@ buildscript {
     }
 }
 
-
 allprojects {
-    apply plugin: 'java'
     apply plugin: 'idea'
 
     repositories {
         mavenCentral()
     }
+}
+
+subprojects {
+    apply plugin: 'java'
 }
 
 project(':ActionBarSherlock') {
@@ -108,7 +111,7 @@ task mkdirs(dependsOn: 'deleteBuildDirectories') << {
     binDir.mkdir()
 }
 
-task copy(type:Copy, dependsOn: 'mkdirs') {
+task copy(type: Copy, dependsOn: 'mkdirs') {
     from 'app'
     into 'target'
 }
@@ -128,7 +131,7 @@ buildAmazon.dependsOn copy
 
 task buildAll(dependsOn: [buildGoogle, buildAmazon]) << {}
 
-task release(dependsOn:  [buildAll, uploadToGoogleSites])
+task release(dependsOn: [buildAll, uploadToGoogleSites])
 
 
 def build(billingProvider, targetFilename) {
@@ -148,11 +151,12 @@ def build(billingProvider, targetFilename) {
     // write back the old placeholder value!
     project.execIn(new File('.'), "mv", "target/src/li/klass/fhem/application.properties.temp", 'target/src/li/klass/fhem/application.properties')
 }
+
 build.dependsOn(release)
 
 /*************************************
  * GOOGLE SITES
- ************************************/
+ *********************************** */
 
 import com.google.gdata.client.*;
 import com.google.gdata.client.sites.*;
@@ -177,18 +181,27 @@ def uploadApkToGoogleSites() {
     def contentFeed = service.getFeed(new URL(attachmentContentFeedUrl), ContentFeed.class)
 
     def entries = contentFeed.getEntries()
+
     for (e in entries) {
         def href = e.getRevisionLink().getHref()
         def id = href.substring(href.lastIndexOf("/") + 1)
 
         def fileTitle = e.getTitle().getText()
         if (fileTitle.equals("google-release.apk")) {
+            deleteGoogleSitesAttachment(service, id)
             updateGoogleSitesAPK(service, id)
         }
     }
+
+    updateGoogleSitesAPK(service)
 }
 
-def updateGoogleSitesAPK(service, id) {
+def deleteGoogleSitesAttachment(service, id) {
+    def attachment = service.getEntry(new URL("https://sites.google.com/feeds/content/site/andfhem/" + id + "?with-mappings=true"), FileCabinetPageEntry.class)
+    attachment.delete();
+}
+
+def updateGoogleSitesAPK(service) {
     def title = "google-release.apk"
     def description = ""
 
@@ -197,21 +210,17 @@ def updateGoogleSitesAPK(service, id) {
 
     def file = new File("bin/google-release.apk")
 
-    def attachment = service.getEntry(new URL("https://sites.google.com/feeds/content/site/andfhem/" + id + "?with-mappings=true"), FileCabinetPageEntry.class)
-    attachment.delete();
-
     def newAttachment = new AttachmentEntry();
     newAttachment.setMediaSource(new MediaFileSource(file, mediaTypes.getContentType(file)));
     newAttachment.setTitle(new PlainTextConstruct(title));
     newAttachment.setSummary(new PlainTextConstruct(description));
-    newAttachment.addLink(SitesLink.Rel.PARENT, ILink.Type.ATOM, fileCabinet.getSelfLink().getHref());
 
     service.insert(new URL("https://sites.google.com/feeds/content/site/andfhem/"), newAttachment);
 }
 
 /*************************************
  * IDEA
- ************************************/
+ *********************************** */
 
 idea.project.ipr {
     withXml { provider ->
