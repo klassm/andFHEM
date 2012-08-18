@@ -45,7 +45,7 @@ public class KFM100Test extends DeviceXMLParsingBase {
         assertThat(device.supportsDim(), is(false));
 
         assertThat(device.getRawValue(), is("20"));
-        assertThat(device.getFillContentLitresMaximum(), is(4080));
+        assertThat(device.getFillContentLitresMaximum(), is(4198));
         assertThat(device.getFillContentPercentage(), is("4 (%)"));
         assertThat(device.getFillContentPercentageRaw(), is(closeTo(0.04, 0.01)));
         assertThat(device.getFillContentLitresRaw(), is(closeTo(171.3, 0.01)));
