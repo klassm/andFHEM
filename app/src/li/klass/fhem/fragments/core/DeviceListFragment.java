@@ -1,20 +1,20 @@
 /*
  * AndFHEM - Open Source Android application to control a FHEM home automation
  * server.
- *  
+ *
  * Copyright (c) 2011, Matthias Klass or third-party contributors as
  * indicated by the @author tags or express copyright attribution
  * statements applied by the authors.  All third-party contributions are
  * distributed under license by Red Hat Inc.
  *
  * This copyrighted material is made available to anyone wishing to use, modify,
- * copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLICLICENSE, as published by the Free Software Foundation.
- *  
+ * copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
  * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
  * for more details.
- *  
+ *
  * You should have received a copy of the GNU GENERAL PUBLIC LICENSE
  * along with this distribution; if not, write to:
  *   Free Software Foundation, Inc.
@@ -37,9 +37,9 @@ import li.klass.fhem.adapter.devices.core.DeviceAdapter;
 import li.klass.fhem.adapter.rooms.DeviceGridAdapter;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
-import li.klass.fhem.domain.RoomDeviceList;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceType;
+import li.klass.fhem.domain.core.RoomDeviceList;
 import li.klass.fhem.util.advertisement.AdvertisementUtil;
 import li.klass.fhem.util.device.DeviceActionUtil;
 import li.klass.fhem.widget.GridViewWithSections;
@@ -56,7 +56,8 @@ public abstract class DeviceListFragment extends BaseFragment {
         super(bundle);
     }
 
-    public DeviceListFragment() {}
+    public DeviceListFragment() {
+    }
 
     /**
      * Attribute is set whenever a context menu concerning a device is clicked. This is the only way to actually get
@@ -125,7 +126,8 @@ public abstract class DeviceListFragment extends BaseFragment {
         getActivity().startService(intent);
     }
 
-    protected void fillIntent(Intent intent) {}
+    protected void fillIntent(Intent intent) {
+    }
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View view, ContextMenu.ContextMenuInfo menuInfo) {
@@ -150,7 +152,7 @@ public abstract class DeviceListFragment extends BaseFragment {
     public boolean onContextItemSelected(MenuItem item) {
         super.onContextItemSelected(item);
 
-        switch(item.getItemId()) {
+        switch (item.getItemId()) {
             case CONTEXT_MENU_FAVORITES_ADD:
                 Intent favoriteAddIntent = new Intent(FAVORITE_ADD);
                 favoriteAddIntent.putExtra(BundleExtraKeys.DEVICE, contextMenuClickedDevice);

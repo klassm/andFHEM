@@ -27,8 +27,8 @@ package li.klass.fhem.service.intent;
 import android.content.Intent;
 import android.os.ResultReceiver;
 import li.klass.fhem.constants.ResultCodes;
-import li.klass.fhem.domain.RoomDeviceList;
 import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.RoomDeviceList;
 import li.klass.fhem.service.room.RoomListService;
 
 import java.util.ArrayList;

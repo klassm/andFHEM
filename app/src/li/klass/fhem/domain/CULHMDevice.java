@@ -30,11 +30,12 @@ import li.klass.fhem.appwidget.annotation.WidgetTemperatureField;
 import li.klass.fhem.appwidget.view.widget.AppWidgetView;
 import li.klass.fhem.appwidget.view.widget.medium.TemperatureWidgetView;
 import li.klass.fhem.domain.core.DeviceChart;
-import li.klass.fhem.domain.core.ToggleableDevice;
+import li.klass.fhem.domain.core.DimmableContinuousStatesDevice;
 import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
 import li.klass.fhem.domain.genericview.FloorplanViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
+import li.klass.fhem.util.NumberUtil;
 import li.klass.fhem.util.ValueDescriptionUtil;
 import li.klass.fhem.util.ValueExtractUtil;
 
@@ -44,14 +45,13 @@ import java.util.List;
 @DetailOverviewViewSettings(showState = true)
 @FloorplanViewSettings(showState = true)
 @SupportsWidget(TemperatureWidgetView.class)
-public class CULHMDevice extends ToggleableDevice<CULHMDevice> {
+public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice> {
 
     public enum SubType {
         DIMMER, SWITCH, HEATING, SMOKE_DETECTOR, THREE_STATE, TEMPERATURE_HUMIDITY, KFM100
     }
 
     private SubType subType = null;
-    private int dimProgress = -1;
 
     @ShowField(description = R.string.measured)
     private String measured;
@@ -118,12 +118,6 @@ public class CULHMDevice extends ToggleableDevice<CULHMDevice> {
         actuator = value;
     }
 
-    public void readSTATE(String value) {
-        if (value.endsWith("%")) {
-            dimProgress = ValueExtractUtil.extractLeadingInt(value);
-        }
-    }
-
     public void readTEMPERATURE(String value) {
         this.measuredTemp = ValueDescriptionUtil.appendTemperature(value);
     }
@@ -175,7 +169,7 @@ public class CULHMDevice extends ToggleableDevice<CULHMDevice> {
     public boolean isOn() {
         String internalState = getInternalState();
         return internalState.equalsIgnoreCase("on") || internalState.equalsIgnoreCase("on-for-timer") ||
-                (subType == SubType.DIMMER && getDimProgress() > 0);
+                (subType == SubType.DIMMER && getDimPosition() > 0);
     }
 
     @Override
@@ -183,15 +177,34 @@ public class CULHMDevice extends ToggleableDevice<CULHMDevice> {
         return subType == SubType.SWITCH;
     }
 
-    public int getDimProgress() {
-        if (dimProgress == -1) {
-            return getInternalState().equals("on") ? 100 : 0;
-        }
-        return dimProgress;
+    @Override
+    public int getDimUpperBound() {
+        return 100;
     }
 
-    public void setDimProgress(int dimProgress) {
-        this.dimProgress = dimProgress;
+    @Override
+    public boolean supportsDim() {
+        return subType == SubType.DIMMER;
+    }
+
+    @Override
+    public int getDimPosition() {
+        if (subType != SubType.DIMMER) return 0;
+        return super.getDimPosition();
+    }
+
+    @Override
+    public int getPositionForDimState(String dimState) {
+        dimState = dimState.replaceAll("[ ]?%", "");
+        return super.getPositionForDimState(dimState);
+    }
+
+    @Override
+    public String formatStateTextToSet(String stateToSet) {
+        if (getSubType() == SubType.DIMMER && NumberUtil.isNumeric(stateToSet)) {
+            return stateToSet + " %";
+        }
+        return super.formatStateTextToSet(stateToSet);
     }
 
     public String getMeasured() {

@@ -22,26 +22,42 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.service.device;
+package li.klass.fhem.domain.core;
 
-import li.klass.fhem.domain.CULHMDevice;
-
-public class CULHMService {
-    public static final CULHMService INSTANCE = new CULHMService();
-
-    private CULHMService() {
+public abstract class DimmableDevice<D extends Device<D>> extends ToggleableDevice<D> {
+    public final int getDimLowerBound() {
+        return 0;
     }
 
-    /**
-     * Dims an CUL_HM device.
-     * @param device concerned device
-     * @param dimProgress dim state to set (0-100)
-     */
-    public void dim(CULHMDevice device, int dimProgress) {
-        if (device.getSubType() != CULHMDevice.SubType.DIMMER) {
-            return;
+    public int getDimPosition() {
+        int position = getPositionForDimState(getState());
+        if (position == -1) {
+            return 0;
         }
-        GenericDeviceService.INSTANCE.setState(device, String.valueOf(dimProgress));
-        device.setDimProgress(dimProgress);
+        return position;
     }
+
+    public int getDimUpPosition() {
+        int currentPosition = getDimPosition();
+        if (currentPosition + 1 > getDimUpperBound()) {
+            return getDimUpperBound();
+        }
+        return currentPosition + 1;
+    }
+
+    public int getDimDownPosition() {
+        int currentPosition = getDimPosition();
+        if (currentPosition - 1 < getDimLowerBound()) {
+            return getDimLowerBound();
+        }
+        return currentPosition - 1;
+    }
+
+    public abstract int getDimUpperBound();
+
+    public abstract String getDimStateForPosition(int position);
+
+    public abstract int getPositionForDimState(String dimState);
+
+    public abstract boolean supportsDim();
 }

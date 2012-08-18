@@ -27,8 +27,8 @@ package li.klass.fhem.service.device;
 import android.content.Intent;
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.constants.Actions;
-import li.klass.fhem.domain.RoomDeviceList;
 import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.RoomDeviceList;
 import li.klass.fhem.service.CommandExecutionService;
 import li.klass.fhem.service.room.RoomListService;
 import li.klass.fhem.util.StringUtil;
@@ -47,7 +47,8 @@ public class DeviceService {
 
     /**
      * Rename a device.
-     * @param device concerned device
+     *
+     * @param device  concerned device
      * @param newName new device name
      */
     public void renameDevice(final Device device, final String newName) {
@@ -57,6 +58,7 @@ public class DeviceService {
 
     /**
      * Deletes a device.
+     *
      * @param device concerned device
      */
     public void deleteDevice(final Device device) {
@@ -70,8 +72,9 @@ public class DeviceService {
 
     /**
      * Remove a device from all given rooms. If the device is the only device in the room, also remove the room itself.
+     *
      * @param device device to remove
-     * @param rooms associated rooms
+     * @param rooms  associated rooms
      */
     private void removeDeviceFromRooms(Device device, String[] rooms) {
         for (String room : rooms) {
@@ -87,8 +90,9 @@ public class DeviceService {
 
     /**
      * Adds a device to all given rooms.
+     *
      * @param device device to add
-     * @param rooms rooms to add the device to.
+     * @param rooms  rooms to add the device to.
      */
     private void addDeviceToRooms(Device device, String[] rooms) {
         for (String room : rooms) {
@@ -100,8 +104,9 @@ public class DeviceService {
 
     /**
      * Sets an alias for a device.
+     *
      * @param device concerned device
-     * @param alias new alias to set
+     * @param alias  new alias to set
      */
     public void setAlias(final Device device, final String alias) {
         if (StringUtil.isBlank(alias)) {
@@ -114,7 +119,8 @@ public class DeviceService {
 
     /**
      * Moves a device.
-     * @param device concerned device
+     *
+     * @param device              concerned device
      * @param newRoomConcatenated new room to move the concerned device to.
      */
     public void moveDevice(final Device device, final String newRoomConcatenated) {

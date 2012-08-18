@@ -42,6 +42,7 @@ public class KFM100Test extends DeviceXMLParsingBase {
 
         assertThat(device.getState(), is("171.3 (l)"));
         assertThat(device.getSubType(), is(CULHMDevice.SubType.KFM100));
+        assertThat(device.supportsDim(), is(false));
 
         assertThat(device.getRawValue(), is("20"));
         assertThat(device.getFillContentLitresMaximum(), is(4080));

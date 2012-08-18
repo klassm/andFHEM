@@ -2,13 +2,13 @@
  * AndFHEM - Open Source Android application to control a FHEM home automation
  * server.
  *
- * Copyright (c) 2012, Matthias Klass or third-party contributors as
+ * Copyright (c) 2011, Matthias Klass or third-party contributors as
  * indicated by the @author tags or express copyright attribution
  * statements applied by the authors.  All third-party contributions are
  * distributed under license by Red Hat Inc.
  *
  * This copyrighted material is made available to anyone wishing to use, modify,
- * copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLICLICENSE, as published by the Free Software Foundation.
+ * copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
@@ -19,6 +19,7 @@
  * along with this distribution; if not, write to:
  *   Free Software Foundation, Inc.
  *   51 Franklin Street, Fifth Floor
+ *   Boston, MA  02110-1301  USA
  */
 
 package li.klass.fhem.adapter.devices.genericui;
@@ -36,40 +37,42 @@ import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.DimmableDevice;
 
-public class SeekBarActionRow<T extends Device> {
+public class DimActionRow<D extends DimmableDevice<D>> {
     private String description;
     private int layout;
-    private int initialProgress;
 
     public static final int LAYOUT_DETAIL = R.layout.device_detail_seekbarrow;
     public static final int LAYOUT_OVERVIEW = R.layout.device_overview_seekbarrow;
+    private D device;
 
-    public SeekBarActionRow(int initialProgress, int description, int layout) {
-        this(initialProgress, AndFHEMApplication.getContext().getString(description), layout);
+    public DimActionRow(D device, int description, int layout) {
+        this(device, AndFHEMApplication.getContext().getString(description), layout);
     }
 
-    public SeekBarActionRow(int initialProgress, String description, int layout) {
+    public DimActionRow(D device, String description, int layout) {
         this.description = description;
         this.layout = layout;
-        this.initialProgress = initialProgress;
+        this.device = device;
     }
 
-    public TableRow createRow(LayoutInflater inflater, T device) {
+    public TableRow createRow(LayoutInflater inflater, D device) {
         TableRow row = (TableRow) inflater.inflate(layout, null);
         ((TextView) row.findViewById(R.id.description)).setText(description);
+
         SeekBar seekBar = (SeekBar) row.findViewById(R.id.seekBar);
         seekBar.setOnSeekBarChangeListener(createListener(device));
-        seekBar.setProgress(initialProgress);
+        seekBar.setProgress(device.getDimPosition());
+        seekBar.setMax(device.getDimUpperBound());
 
         return row;
     }
 
-    private SeekBar.OnSeekBarChangeListener createListener(final T device) {
+    private SeekBar.OnSeekBarChangeListener createListener(final D device) {
         return new SeekBar.OnSeekBarChangeListener() {
 
-            public int progress = initialProgress;
+            public int progress = device.getDimPosition();
 
             @Override
             public void onProgressChanged(SeekBar seekBar, final int progress, boolean fromUser) {
@@ -82,11 +85,12 @@ public class SeekBarActionRow<T extends Device> {
 
             @Override
             public void onStopTrackingTouch(final SeekBar seekBar) {
-                SeekBarActionRow.this.onStopTrackingTouch(seekBar.getContext(), device, progress);
+                DimActionRow.this.onStopTrackingTouch(seekBar.getContext(), device, progress);
             }
         };
     }
-    public void onStopTrackingTouch(final Context context, T device, int progress) {
+
+    public void onStopTrackingTouch(final Context context, D device, int progress) {
         Intent intent = new Intent(Actions.DEVICE_DIM);
         intent.putExtra(BundleExtraKeys.DEVICE_DIM_PROGRESS, progress);
         intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());

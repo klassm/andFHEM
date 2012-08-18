@@ -112,35 +112,35 @@ public class FHTAdapter extends GenericDeviceAdapter<FHTDevice> {
 
     @Override
     protected void afterPropertiesSet() {
-        fieldNameAddedListeners.put("desiredTemp", new FieldNameAddedToDetailListener<FHTDevice>() {
+        registerFieldListener("desiredTemp", new FieldNameAddedToDetailListener<FHTDevice>() {
             @Override
             public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FHTDevice device, TableRow fieldTableRow) {
                 tableLayout.addView(new FHTTemperatureChangeTableRow(context, device.getDesiredTemp(), fieldTableRow, Actions.DEVICE_SET_DESIRED_TEMPERATURE, R.string.desiredTemperature)
                         .createRow(inflater, device));
             }
         });
-        fieldNameAddedListeners.put("dayTemperature", new FieldNameAddedToDetailListener<FHTDevice>() {
+        registerFieldListener("dayTemperature", new FieldNameAddedToDetailListener<FHTDevice>() {
             @Override
             public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FHTDevice device, TableRow fieldTableRow) {
                 tableLayout.addView(new FHTTemperatureChangeTableRow(context, device.getDayTemperature(), fieldTableRow, Actions.DEVICE_SET_DAY_TEMPERATURE, R.string.dayTemperature)
                         .createRow(inflater, device));
             }
         });
-        fieldNameAddedListeners.put("nightTemperature", new FieldNameAddedToDetailListener<FHTDevice>() {
+        registerFieldListener("nightTemperature", new FieldNameAddedToDetailListener<FHTDevice>() {
             @Override
             public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FHTDevice device, TableRow fieldTableRow) {
                 tableLayout.addView(new FHTTemperatureChangeTableRow(context, device.getNightTemperature(), fieldTableRow, Actions.DEVICE_SET_NIGHT_TEMPERATURE, R.string.nightTemperature)
                         .createRow(inflater, device));
             }
         });
-        fieldNameAddedListeners.put("windowOpenTemp", new FieldNameAddedToDetailListener<FHTDevice>() {
+        registerFieldListener("windowOpenTemp", new FieldNameAddedToDetailListener<FHTDevice>() {
             @Override
             public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FHTDevice device, TableRow fieldTableRow) {
                 tableLayout.addView(new FHTTemperatureChangeTableRow(context, device.getNightTemperature(), fieldTableRow, Actions.DEVICE_SET_WINDOW_OPEN_TEMPERATURE, R.string.windowOpenTemp)
                         .createRow(inflater, device));
             }
         });
-        fieldNameAddedListeners.put("actuator", new FieldNameAddedToDetailListener<FHTDevice>() {
+        registerFieldListener("actuator", new FieldNameAddedToDetailListener<FHTDevice>() {
             @Override
             public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FHTDevice device, TableRow fieldTableRow) {
                 FHTMode mode = device.getMode();

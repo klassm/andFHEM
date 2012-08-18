@@ -22,10 +22,7 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.domain;
-
-import li.klass.fhem.domain.core.Device;
-import li.klass.fhem.domain.core.DeviceType;
+package li.klass.fhem.domain.core;
 
 import java.io.Serializable;
 import java.util.*;
@@ -36,7 +33,7 @@ public class RoomDeviceList implements Serializable {
     private boolean onlyContainsDoNotShowDevices = true;
 
     private Map<DeviceType, HashSet<Device>> deviceMap = new HashMap<DeviceType, HashSet<Device>>();
-    
+
     public static final String ALL_DEVICES_ROOM = "ALL_DEVICES_LIST";
 
     public RoomDeviceList(String roomName) {
@@ -65,11 +62,11 @@ public class RoomDeviceList implements Serializable {
             onlyContainsDoNotShowDevices = false;
         }
     }
-    
+
     public <T extends Device> void removeDevice(T device) {
         deviceMap.get(DeviceType.getDeviceTypeFor(device)).remove(device);
     }
-    
+
     public Set<Device> getAllDevices() {
         Set<Device> devices = new HashSet<Device>();
         Collection<HashSet<Device>> devicesCollection = deviceMap.values();
@@ -96,7 +93,7 @@ public class RoomDeviceList implements Serializable {
 
     @SuppressWarnings("unchecked")
     private <T extends Device> Set<T> getOrCreateDeviceList(DeviceType deviceType) {
-        if (! deviceMap.containsKey(deviceType)) {
+        if (!deviceMap.containsKey(deviceType)) {
             deviceMap.put(deviceType, new HashSet<Device>());
         }
         return (Set<T>) deviceMap.get(deviceType);

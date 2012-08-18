@@ -76,6 +76,23 @@ public class FS20DeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getDeviceCharts().size(), is(1));
     }
 
+    @Test
+    public void testDim() {
+        FS20Device device = new FS20Device();
+        device.setState("dim12%");
+
+        assertThat(device.getDimPosition(), is(2));
+
+        assertThat(device.getDimDownPosition(), is(FS20Device.dimStates.indexOf("dim6%")));
+        assertThat(device.getDimUpPosition(), is(FS20Device.dimStates.indexOf("dim18%")));
+
+        device.setState("on");
+        assertThat(device.getDimUpPosition(), is(FS20Device.dimStates.indexOf("on")));
+
+        device.setState("off");
+        assertThat(device.getDimDownPosition(), is(FS20Device.dimStates.indexOf("off")));
+    }
+
     @Override
     protected String getFileName() {
         return "fs20.xml";

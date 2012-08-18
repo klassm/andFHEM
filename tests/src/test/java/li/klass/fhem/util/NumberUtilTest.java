@@ -26,7 +26,10 @@ package li.klass.fhem.util;
 
 import org.junit.Test;
 
+import static li.klass.fhem.util.NumberUtil.isNumeric;
 import static li.klass.fhem.util.NumberUtil.toTwoDecimalDigits;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
 
 
@@ -37,5 +40,10 @@ public class NumberUtilTest {
         assertEquals("01", toTwoDecimalDigits(1));
         assertEquals("10", toTwoDecimalDigits(10));
         assertEquals("100", toTwoDecimalDigits(100));
+    }
+
+    public void testIsNumeric() {
+        assertThat(isNumeric("123"), is(true));
+        assertThat(isNumeric("123a"), is(false));
     }
 }

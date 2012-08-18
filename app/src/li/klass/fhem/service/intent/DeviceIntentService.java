@@ -31,11 +31,10 @@ import android.util.Log;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
-import li.klass.fhem.domain.CULHMDevice;
 import li.klass.fhem.domain.FHTDevice;
-import li.klass.fhem.domain.FS20Device;
 import li.klass.fhem.domain.WOLDevice;
 import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.DimmableDevice;
 import li.klass.fhem.domain.core.ToggleableDevice;
 import li.klass.fhem.domain.fht.FHTMode;
 import li.klass.fhem.domain.floorplan.Coordinate;
@@ -124,7 +123,7 @@ public class DeviceIntentService extends ConvenientIntentService {
 
             return result;
         } else if (action.equals(Actions.DEVICE_TIMER_MODIFY)) {
-           processTimerIntent(intent, true);
+            processTimerIntent(intent, true);
         } else if (action.equals(Actions.DEVICE_TIMER_NEW)) {
             processTimerIntent(intent, false);
         }
@@ -169,11 +168,9 @@ public class DeviceIntentService extends ConvenientIntentService {
      */
     private STATE dimIntent(Intent intent, Device device) {
         int dimProgress = intent.getIntExtra(BundleExtraKeys.DEVICE_DIM_PROGRESS, -1);
-        if (device instanceof FS20Device) {
-            FS20Service.INSTANCE.dim((FS20Device) device, dimProgress);
+        if (device instanceof DimmableDevice) {
+            DimmableDeviceService.INSTANCE.dim((DimmableDevice) device, dimProgress);
             return STATE.SUCCESS;
-        } else if (device instanceof CULHMDevice && ((CULHMDevice) device).getSubType() == CULHMDevice.SubType.DIMMER) {
-            CULHMService.INSTANCE.dim((CULHMDevice) device, dimProgress);
         }
         return STATE.ERROR;
     }
@@ -209,8 +206,9 @@ public class DeviceIntentService extends ConvenientIntentService {
 
     /**
      * Find out graph data for a given device and notify the result receiver with the read graph data
-     * @param intent received intent
-     * @param device device to read the graph data
+     *
+     * @param intent         received intent
+     * @param device         device to read the graph data
      * @param resultReceiver receiver to notify on result
      * @return success?
      */

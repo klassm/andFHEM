@@ -42,9 +42,10 @@ public class BlindActuatorTest extends DeviceXMLParsingBase {
 
         assertThat(device.getState(), is("75 %"));
         assertThat(device.getSubType(), is(CULHMDevice.SubType.DIMMER));
+        assertThat(device.supportsDim(), is(true));
 
         assertThat(device.isOn(), is(true));
-        assertThat(device.getDimProgress(), is(75));
+        assertThat(device.getDimPosition(), is(75));
 
         assertThat(device.getFileLog(), is(nullValue()));
         assertThat(device.getDeviceCharts().size(), is(0));

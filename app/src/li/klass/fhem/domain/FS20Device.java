@@ -26,7 +26,7 @@ package li.klass.fhem.domain;
 
 import li.klass.fhem.R;
 import li.klass.fhem.domain.core.DeviceChart;
-import li.klass.fhem.domain.core.ToggleableDevice;
+import li.klass.fhem.domain.core.DimmableDiscreteStatesDevice;
 import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
 import li.klass.fhem.domain.genericview.FloorplanViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
@@ -40,18 +40,21 @@ import java.util.List;
 @DetailOverviewViewSettings(showState = true)
 @FloorplanViewSettings()
 @SuppressWarnings("unused")
-public class FS20Device extends ToggleableDevice<FS20Device> implements Comparable<FS20Device>, Serializable {
+public class FS20Device extends DimmableDiscreteStatesDevice<FS20Device> implements Comparable<FS20Device>, Serializable {
 
     /**
      * List of dim states available for FS20 devices. Careful: this list has to be ordered, to make dim up and
      * down work!
      */
-    private static final List<Integer> dimStates = Arrays.asList(0, 6, 12, 18, 25, 31, 37, 43, 50, 56, 62, 68, 75, 81, 87, 93, 100);
-    private static final List<String> dimModels = Arrays.asList("FS20DI", "FS20DI10", "FS20DU");
-    private static final List<String> offStates = Arrays.asList("off", "off-for-timer", "reset", "timer");
+    public static final List<String> dimStates =
+            Arrays.asList("off", "dim6%", "dim12%", "dim18%", "dim25%", "dim31%", "dim37%", "dim43%", "dim50%", "dim56%",
+                    "dim62%", "dim68%", "dim75%", "dim81%", "dim87%", "dim93%", "on");
+    public static final List<String> dimModels = Arrays.asList("FS20DI", "FS20DI10", "FS20DU");
+    public static final List<String> offStates = Arrays.asList("off", "off-for-timer", "reset", "timer");
 
     @ShowField(description = R.string.model)
     private String model;
+
 
     public enum FS20State {
         ON, OFF
@@ -80,24 +83,14 @@ public class FS20Device extends ToggleableDevice<FS20Device> implements Comparab
         return true;
     }
 
-    public boolean isDimDevice() {
+    @Override
+    public boolean supportsDim() {
         return dimModels.contains(model);
     }
 
-    public int getBestDimMatchFor(int dimProgress) {
-        int bestMatch = -1;
-        int smallestDiff = 100;
-        for (Integer dimState : dimStates) {
-            int diff = dimProgress - dimState;
-            if (diff < 0) diff *= -1;
-
-            if (bestMatch == -1 || diff < smallestDiff) {
-                bestMatch = dimState;
-                smallestDiff = diff;
-            }
-        }
-
-        return bestMatch;
+    @Override
+    public List<String> getDimStates() {
+        return dimStates;
     }
 
     public FS20State getFs20State() {
@@ -107,43 +100,6 @@ public class FS20Device extends ToggleableDevice<FS20Device> implements Comparab
             }
         }
         return FS20State.ON;
-    }
-
-    public int getDimUpProgress() {
-        return getDimProgressInIndexDirection(1);
-    }
-
-    public int getDimDownProgress() {
-        return getDimProgressInIndexDirection(-1);
-    }
-
-    private int getDimProgressInIndexDirection(int indexDirection) {
-        if (!isDimDevice()) return -1;
-
-        int dimState = getFS20DimState();
-
-        int currentIndex = dimStates.indexOf(dimState);
-        int newIndex = currentIndex + indexDirection;
-
-        if (newIndex >= 0 && dimStates.size() > newIndex) {
-            return dimStates.get(newIndex);
-        }
-        return dimState;
-    }
-
-    public int getFS20DimState() {
-        if (getFs20State() == FS20State.OFF) {
-            return 0;
-        }
-
-        String internalState = getInternalState();
-
-        if (internalState.startsWith("dim") && internalState.endsWith("%")) {
-            String dimProgress = internalState.substring("dim".length(), internalState.length() - 1);
-            return Integer.valueOf(dimProgress);
-        }
-
-        return 100;
     }
 
     @Override

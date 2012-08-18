@@ -2,13 +2,13 @@
  * AndFHEM - Open Source Android application to control a FHEM home automation
  * server.
  *
- * Copyright (c) 2012, Matthias Klass or third-party contributors as
+ * Copyright (c) 2011, Matthias Klass or third-party contributors as
  * indicated by the @author tags or express copyright attribution
  * statements applied by the authors.  All third-party contributions are
  * distributed under license by Red Hat Inc.
  *
  * This copyrighted material is made available to anyone wishing to use, modify,
- * copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLICLICENSE, as published by the Free Software Foundation.
+ * copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
@@ -19,6 +19,7 @@
  * along with this distribution; if not, write to:
  *   Free Software Foundation, Inc.
  *   51 Franklin Street, Fifth Floor
+ *   Boston, MA  02110-1301  USA
  */
 
 package li.klass.fhem.adapter.devices.core;
@@ -41,17 +42,14 @@ import li.klass.fhem.domain.genericview.FloorplanViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> {
     private static final String TAG = GenericDeviceAdapter.class.getName();
 
     private Class<D> deviceClass;
     protected List<DeviceDetailViewAction<D>> detailActions = new ArrayList<DeviceDetailViewAction<D>>();
-    protected Map<String, FieldNameAddedToDetailListener<D>> fieldNameAddedListeners = new HashMap<String, FieldNameAddedToDetailListener<D>>();
+    private Map<String, Set<FieldNameAddedToDetailListener<D>>> fieldNameAddedListeners = new HashMap<String, Set<FieldNameAddedToDetailListener<D>>>();
     protected final LayoutInflater inflater;
 
     public GenericDeviceAdapter(Class<D> deviceClass) {
@@ -60,7 +58,8 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
         afterPropertiesSet();
     }
 
-    protected void afterPropertiesSet() {}
+    protected void afterPropertiesSet() {
+    }
 
     @Override
     protected int getOverviewLayout(D device) {
@@ -160,7 +159,7 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
 
     @Override
     public View getFloorplanView(Context context, D device) {
-        if (! supportsFloorplan(device)) return null;
+        if (!supportsFloorplan(device)) return null;
 
         LinearLayout layout = new LinearLayout(context);
         layout.setOrientation(LinearLayout.VERTICAL);
@@ -179,7 +178,7 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
         return layout;
     }
 
-    protected  void fillFloorplanView(Context context, D device, LinearLayout layout, FloorplanViewSettings viewSettings) {
+    protected void fillFloorplanView(Context context, D device, LinearLayout layout, FloorplanViewSettings viewSettings) {
         if (viewSettings.showState()) {
             layout.addView(createFloorplanTextView(context, device.getState()));
         }
@@ -209,11 +208,27 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
         return textView;
     }
 
-    protected void fillOtherStuffLayout(Context context, LinearLayout layout, D device, LayoutInflater inflater) {}
+    protected void fillOtherStuffLayout(Context context, LinearLayout layout, D device, LayoutInflater inflater) {
+    }
+
+    protected void registerFieldListener(String fieldName, FieldNameAddedToDetailListener<D> listener) {
+        if (!fieldNameAddedListeners.containsKey(fieldName)) {
+            fieldNameAddedListeners.put(fieldName, new HashSet<FieldNameAddedToDetailListener<D>>());
+        }
+
+        fieldNameAddedListeners.get(fieldName).add(listener);
+    }
 
     private void notifyFieldListeners(Context context, D device, TableLayout layout, String fieldName, TableRow fieldTableRow) {
-        if (fieldNameAddedListeners.containsKey(fieldName)) {
-            fieldNameAddedListeners.get(fieldName).onFieldNameAdded(context, layout, fieldName, device, fieldTableRow);
+        if (!fieldNameAddedListeners.containsKey(fieldName)) {
+            return;
+        }
+
+        Set<FieldNameAddedToDetailListener<D>> listeners = fieldNameAddedListeners.get(fieldName);
+        for (FieldNameAddedToDetailListener<D> listener : listeners) {
+            if (listener.supportsDevice(device)) {
+                listener.onFieldNameAdded(context, layout, fieldName, device, fieldTableRow);
+            }
         }
     }
 

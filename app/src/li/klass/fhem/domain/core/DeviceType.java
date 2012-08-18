@@ -2,13 +2,13 @@
  * AndFHEM - Open Source Android application to control a FHEM home automation
  * server.
  *
- * Copyright (c) 2012, Matthias Klass or third-party contributors as
+ * Copyright (c) 2011, Matthias Klass or third-party contributors as
  * indicated by the @author tags or express copyright attribution
  * statements applied by the authors.  All third-party contributions are
  * distributed under license by Red Hat Inc.
  *
  * This copyrighted material is made available to anyone wishing to use, modify,
- * copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLICLICENSE, as published by the Free Software Foundation.
+ * copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
@@ -19,13 +19,19 @@
  * along with this distribution; if not, write to:
  *   Free Software Foundation, Inc.
  *   51 Franklin Street, Fifth Floor
+ *   Boston, MA  02110-1301  USA
  */
 
 package li.klass.fhem.domain.core;
 
-import li.klass.fhem.adapter.devices.*;
+import li.klass.fhem.adapter.devices.FHTAdapter;
+import li.klass.fhem.adapter.devices.FloorplanAdapter;
+import li.klass.fhem.adapter.devices.WOLAdapter;
+import li.klass.fhem.adapter.devices.WeatherAdapter;
 import li.klass.fhem.adapter.devices.core.DeviceAdapter;
 import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
+import li.klass.fhem.adapter.devices.core.GenericDeviceDimmableAdapter;
+import li.klass.fhem.adapter.devices.core.ToggleableAdapter;
 import li.klass.fhem.domain.*;
 import li.klass.fhem.domain.fht.FHT8VDevice;
 import li.klass.fhem.fhem.ConnectionType;
@@ -39,33 +45,32 @@ public enum DeviceType {
     CUL_TX("CUL_TX", CULTXDevice.class),
     HMS("HMS", HMSDevice.class),
     WOL("WOL", WOLDevice.class, new WOLAdapter()),
-    IT("IT", IntertechnoDevice.class, new IntertechnoAdapter()),
+    IT("IT", IntertechnoDevice.class, new ToggleableAdapter<IntertechnoDevice>(IntertechnoDevice.class)),
     OWTEMP("OWTEMP", OwtempDevice.class),
     CUL_FHTTK("CUL_FHTTK", CULFHTTKDevice.class),
     RFXX10REC("RFXX10REC", RFXX10RECDevice.class),
     OREGON("OREGON", OregonDevice.class),
     CUL_EM("CUL_EM", CULEMDevice.class),
     OWCOUNT("OWCOUNT", OwcountDevice.class),
-    SIS_PMS("SIS_PMS", SISPMSDevice.class, new SISPMSAdapter()),
+    SIS_PMS("SIS_PMS", SISPMSDevice.class, new ToggleableAdapter<SISPMSDevice>(SISPMSDevice.class)),
     USBWX("USBWX", USBWXDevice.class),
     CUL_WS("CUL_WS", CULWSDevice.class),
-    FS20("FS20", FS20Device.class, new FS20Adapter()),
+    FS20("FS20", FS20Device.class, new GenericDeviceDimmableAdapter<FS20Device>(FS20Device.class)),
     FILE_LOG("FileLog", FileLogDevice.class, null, ConnectionType.NEVER),
     OWFS("OWFS", OWFSDevice.class),
     LGTV("LGTV", LGTVDevice.class),
     RFXCOM("RFXCOM", RFXCOMDevice.class),
-    CUL_HM("CUL_HM", CULHMDevice.class, new CULHMAdapter()),
+    CUL_HM("CUL_HM", CULHMDevice.class, new GenericDeviceDimmableAdapter<CULHMDevice>(CULHMDevice.class)),
     WATCHDOG("watchdog", WatchdogDevice.class),
-    HOLIDAY("HOL", HOLDevice.class, new HOLAdapter()),
+    HOLIDAY("HOL", HOLDevice.class, new ToggleableAdapter<HOLDevice>(HOLDevice.class)),
     PID("PID", PIDDevice.class),
     FHT8V("FHT8V", FHT8VDevice.class),
     TRX_WEATHER("TRX_WEATHER", TRXWeatherDevice.class),
-    TRX_LIGHT("TRX_LIGHT", TRXLightDevice.class, new TRXLightAdapter()),
+    TRX_LIGHT("TRX_LIGHT", TRXLightDevice.class, new GenericDeviceDimmableAdapter<TRXLightDevice>(TRXLightDevice.class)),
     TRX("TRX", TRXDevice.class),
-    DUMMY("dummy", DummyDevice.class, new DummyAdapter()),
+    DUMMY("dummy", DummyDevice.class, new ToggleableAdapter<DummyDevice>(DummyDevice.class)),
     TWILIGHT("Twilight", TwilightDevice.class),
-    AT("at", AtDevice.class, null, ConnectionType.NEVER)
-    ;
+    AT("at", AtDevice.class, null, ConnectionType.NEVER);
 
     private String xmllistTag;
     private Class<? extends Device> deviceClass;

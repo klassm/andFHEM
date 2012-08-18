@@ -25,12 +25,26 @@
 package li.klass.fhem.domain;
 
 import li.klass.fhem.R;
-import li.klass.fhem.domain.core.ToggleableDevice;
+import li.klass.fhem.domain.core.DimmableDiscreteStatesDevice;
+import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
+import li.klass.fhem.util.ArrayUtil;
 import org.w3c.dom.NamedNodeMap;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @SuppressWarnings("unused")
-public class TRXLightDevice extends ToggleableDevice<TRXLightDevice> {
+@DetailOverviewViewSettings(showState = true)
+public class TRXLightDevice extends DimmableDiscreteStatesDevice<TRXLightDevice> {
+
+    private static final ArrayList<String> dimLevels = new ArrayList<String>();
+
+    static {
+        for (int i = 0; i <= 15; i++) {
+            dimLevels.add("level " + i);
+        }
+    }
 
     @ShowField(description = R.string.type)
     private String type;
@@ -50,7 +64,7 @@ public class TRXLightDevice extends ToggleableDevice<TRXLightDevice> {
 
     @Override
     public boolean isOn() {
-        return getState().equalsIgnoreCase("on");
+        return !getInternalState().equalsIgnoreCase("off");
     }
 
     @Override
@@ -61,5 +75,15 @@ public class TRXLightDevice extends ToggleableDevice<TRXLightDevice> {
     @SuppressWarnings("unused")
     public String getType() {
         return type;
+    }
+
+    @Override
+    public boolean supportsDim() {
+        return ArrayUtil.contains(getAvailableTargetStates(), "all_level");
+    }
+
+    @Override
+    public List<String> getDimStates() {
+        return dimLevels;
     }
 }

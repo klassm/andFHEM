@@ -24,32 +24,26 @@
 
 package li.klass.fhem.service.device;
 
-import li.klass.fhem.domain.FS20Device;
+import li.klass.fhem.domain.core.DimmableDevice;
 
 /**
- * Class accumulating FS20 specific operations. Changes will be executed using FHEM.
+ * Class accumulating dimmable device specific operations. Changes will be executed using FHEM.
  */
-public class FS20Service {
-    public static final FS20Service INSTANCE = new FS20Service();
+public class DimmableDeviceService {
+    public static final DimmableDeviceService INSTANCE = new DimmableDeviceService();
 
-    private FS20Service() {
+    private DimmableDeviceService() {
     }
 
     /**
-     * Dims an FS20 device.
-     * @param device concerned device
+     * Dims a device.
+     *
+     * @param device      concerned device
      * @param dimProgress dim state to set. The progress will be matched against the available FS20 dim options.
      */
-    public void dim(FS20Device device, int dimProgress) {
-        if (! device.isDimDevice()) return;
-        int bestMatch = device.getBestDimMatchFor(dimProgress);
-
-        String newState;
-        if (bestMatch == 0)
-            newState = "off";
-        else {
-            newState = "dim" + String.format("%02d", bestMatch) + "%";
-        }
+    public void dim(DimmableDevice device, int dimProgress) {
+        if (!device.supportsDim()) return;
+        String newState = device.getDimStateForPosition(dimProgress);
 
         GenericDeviceService.INSTANCE.setState(device, newState);
     }

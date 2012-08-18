@@ -22,17 +22,24 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.util;
+package li.klass.fhem.domain.core;
 
-public class NumberUtil {
-    public static String toTwoDecimalDigits(int value) {
-        if (value <= 9) {
-            return "0" + value;
-        }
-        return "" + value;
+import li.klass.fhem.util.NumberUtil;
+
+public abstract class DimmableContinuousStatesDevice<D extends Device<D>> extends DimmableDevice<D> {
+    @Override
+    public String getDimStateForPosition(int position) {
+        if (position == getDimUpperBound()) return "on";
+        if (position == getDimLowerBound()) return "off";
+        return position + "";
     }
 
-    public static boolean isNumeric(String text) {
-        return text.matches("[0-9]*");
+    @Override
+    public int getPositionForDimState(String dimState) {
+        if (dimState.equals("on")) return getDimUpperBound();
+        if (dimState.equals("off")) return getDimLowerBound();
+        if (!NumberUtil.isNumeric(dimState)) return 0;
+
+        return Integer.valueOf(dimState);
     }
 }

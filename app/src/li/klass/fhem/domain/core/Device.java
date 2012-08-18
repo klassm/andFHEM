@@ -327,6 +327,10 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
         return true;
     }
 
+    public String formatStateTextToSet(String stateToSet) {
+        return stateToSet;
+    }
+
     @Override
     public String toString() {
         return "Device{" +

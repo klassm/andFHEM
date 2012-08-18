@@ -24,7 +24,7 @@
 
 package li.klass.fhem.service.room;
 
-import li.klass.fhem.domain.RoomDeviceList;
+import li.klass.fhem.domain.core.RoomDeviceList;
 import li.klass.fhem.fhem.DummyDataConnection;
 import li.klass.fhem.infra.AndFHEMRobolectricTestRunner;
 import org.junit.Test;

@@ -33,9 +33,9 @@ import android.widget.TextView;
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.DeviceAdapter;
 import li.klass.fhem.constants.PreferenceKeys;
-import li.klass.fhem.domain.RoomDeviceList;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceType;
+import li.klass.fhem.domain.core.RoomDeviceList;
 import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.widget.GridViewWithSectionsAdapter;
 import li.klass.fhem.widget.deviceType.DeviceTypeHolder;
@@ -113,7 +113,7 @@ public class DeviceGridAdapter extends GridViewWithSectionsAdapter<DeviceType, D
 
     @Override
     protected View getChildView(final DeviceType parent, int parentPosition, Device<?> child, View view, ViewGroup viewGroup) {
-        final DeviceAdapter<? extends Device<?>> deviceAdapter =  DeviceType.getAdapterFor(child);
+        final DeviceAdapter<? extends Device<?>> deviceAdapter = DeviceType.getAdapterFor(child);
         if (deviceAdapter == null) {
             Log.d(DeviceGridAdapter.class.getName(), "unsupported device type " + child);
             View ret = layoutInflater.inflate(android.R.layout.simple_list_item_1, null);
@@ -121,7 +121,7 @@ public class DeviceGridAdapter extends GridViewWithSectionsAdapter<DeviceType, D
             return ret;
         }
 
-        if (! deviceAdapter.supports(child.getClass())) {
+        if (!deviceAdapter.supports(child.getClass())) {
             Log.e(DeviceGridAdapter.class.getName(), "adapter was found for device type, but it will not support the device: " + child);
             throw new IllegalArgumentException("adapter was found for device type, but it will not support the device: " + child);
         }
@@ -137,7 +137,7 @@ public class DeviceGridAdapter extends GridViewWithSectionsAdapter<DeviceType, D
     protected List<DeviceType> getParents() {
         List<DeviceType> viewableParents = new ArrayList<DeviceType>();
         for (DeviceType deviceType : parents) {
-            if (! deviceType.mayShowInCurrentConnectionType()) {
+            if (!deviceType.mayShowInCurrentConnectionType()) {
                 Log.i(TAG, "deviceType " + deviceType + " may not show in current connection, filtered!");
             } else if (getChildrenCountForParent(deviceType) <= 0) {
                 Log.i(TAG, "deviceType " + deviceType + " has no children, filtered!");
@@ -158,7 +158,7 @@ public class DeviceGridAdapter extends GridViewWithSectionsAdapter<DeviceType, D
     public void updateData(RoomDeviceList roomDeviceList) {
         if (roomDeviceList == null) return;
 
-        if (! ApplicationProperties.INSTANCE.getBooleanSharedPreference(PreferenceKeys.SHOW_HIDDEN_DEVICES, false)) {
+        if (!ApplicationProperties.INSTANCE.getBooleanSharedPreference(PreferenceKeys.SHOW_HIDDEN_DEVICES, false)) {
             Set<Device> allDevices = roomDeviceList.getAllDevices();
             for (Device device : allDevices) {
                 if (device.isInRoom("hidden")) {

@@ -44,6 +44,7 @@ public class ThreeStateSensorTest extends DeviceXMLParsingBase {
 
         assertThat(device.getState(), is("closed"));
         assertThat(device.getSubType(), is(CULHMDevice.SubType.THREE_STATE));
+        assertThat(device.supportsDim(), is(false));
         assertThat(device.getBattery(), is("ok"));
 
         assertThat(device.getFileLog(), is(nullValue()));

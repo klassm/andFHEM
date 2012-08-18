@@ -42,6 +42,7 @@ public class SwitchTest extends DeviceXMLParsingBase {
 
         assertThat(device.getState(), is("off"));
         assertThat(device.getSubType(), is(CULHMDevice.SubType.SWITCH));
+        assertThat(device.supportsDim(), is(false));
 
         assertThat(device.getFileLog(), is(nullValue()));
         assertThat(device.getDeviceCharts().size(), is(0));

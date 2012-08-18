@@ -44,10 +44,26 @@ public class DimmerTest extends DeviceXMLParsingBase {
         assertThat(device.getSubType(), is(CULHMDevice.SubType.DIMMER));
 
         assertThat(device.isOn(), is(false));
-        assertThat(device.getDimProgress(), is(0));
+        assertThat(device.getDimPosition(), is(0));
+        assertThat(device.supportsDim(), is(true));
 
         assertThat(device.getFileLog(), is(nullValue()));
         assertThat(device.getDeviceCharts().size(), is(0));
+    }
+
+    @Test
+    public void testDim() {
+        CULHMDevice device = getDefaultDevice();
+        device.setState("5 %");
+
+        assertThat(device.getDimPosition(), is(5));
+        assertThat(device.getDimDownPosition(), is(4));
+        assertThat(device.getDimUpPosition(), is(6));
+
+        device.setState("on");
+        assertThat(device.getDimPosition(), is(100));
+        device.setState("off");
+        assertThat(device.getDimPosition(), is(0));
     }
 
     @Override

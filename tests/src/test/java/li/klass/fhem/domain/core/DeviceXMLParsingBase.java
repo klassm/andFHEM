@@ -24,7 +24,6 @@
 
 package li.klass.fhem.domain.core;
 
-import li.klass.fhem.domain.RoomDeviceList;
 import li.klass.fhem.infra.AndFHEMRobolectricTestRunner;
 import li.klass.fhem.service.room.DeviceListParser;
 import li.klass.fhem.util.CloseableUtil;

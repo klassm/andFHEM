@@ -27,8 +27,8 @@ package li.klass.fhem.service.room;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import li.klass.fhem.AndFHEMApplication;
-import li.klass.fhem.domain.RoomDeviceList;
 import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.RoomDeviceList;
 
 import java.util.Set;
 
@@ -42,6 +42,7 @@ public class FavoritesService {
 
     /**
      * Adds a new favorite device.
+     *
      * @param device device to add.
      */
     public void addFavorite(Device device) {
@@ -51,6 +52,7 @@ public class FavoritesService {
 
     /**
      * Removes a favorite.
+     *
      * @param device favorite to remove.
      */
     public void removeFavorite(Device device) {
@@ -60,6 +62,7 @@ public class FavoritesService {
 
     /**
      * Reads all saved favorite devices. The result will be provided to the given listener.
+     *
      * @param updatePeriod -1 if the underlying list should always be updated, otherwise do update if the last update is
      *                     longer ago than the given period
      * @return favorite {@link RoomDeviceList}

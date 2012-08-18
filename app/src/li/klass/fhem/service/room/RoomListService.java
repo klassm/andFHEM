@@ -31,8 +31,8 @@ import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.domain.RoomDeviceList;
 import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.RoomDeviceList;
 import li.klass.fhem.exception.AndFHEMException;
 import li.klass.fhem.service.AbstractService;
 
@@ -53,7 +53,7 @@ public class RoomListService extends AbstractService {
     /**
      * Currently loaded device list map.
      */
-    private volatile Map<String,RoomDeviceList> deviceListMap;
+    private volatile Map<String, RoomDeviceList> deviceListMap;
 
     /**
      * file name of the current cache object.
@@ -71,7 +71,8 @@ public class RoomListService extends AbstractService {
 
     /**
      * Looks for a device with a given name.
-     * @param deviceName name of the device
+     *
+     * @param deviceName   name of the device
      * @param updatePeriod -1 if the underlying list should always be updated, otherwise do update if the last update is
      *                     longer ago than the given period
      * @return found device or null
@@ -82,6 +83,7 @@ public class RoomListService extends AbstractService {
 
     /**
      * Retrieves a list of all room names.
+     *
      * @param updatePeriod -1 if the underlying list should always be updated, otherwise do update if the last update is
      *                     longer ago than the given period
      * @return list of all room names
@@ -102,7 +104,8 @@ public class RoomListService extends AbstractService {
 
     /**
      * Gets or creates a new device list for a given room.
-     * @param roomName room name used for searching
+     *
+     * @param roomName     room name used for searching
      * @param updatePeriod -1 if the underlying list should always be updated, otherwise do update if the last update is
      *                     longer ago than the given period
      * @return {@link RoomDeviceList} for a room
@@ -120,6 +123,7 @@ public class RoomListService extends AbstractService {
 
     /**
      * Retrieves a {@link RoomDeviceList} containing all devices, not only the devices of a specific room.
+     *
      * @param updatePeriod -1 if the underlying list should always be updated, otherwise do update if the last update is
      *                     longer ago than the given period
      * @return {@link RoomDeviceList} containing all devices
@@ -137,7 +141,8 @@ public class RoomListService extends AbstractService {
 
     /**
      * Retrieves the {@link RoomDeviceList} for a specific room name.
-     * @param roomName room name used for searching.
+     *
+     * @param roomName     room name used for searching.
      * @param updatePeriod -1 if the underlying list should always be updated, otherwise do update if the last update is
      *                     longer ago than the given period
      * @return found {@link RoomDeviceList} or null
@@ -148,6 +153,7 @@ public class RoomListService extends AbstractService {
 
     /**
      * Removes the {@link RoomDeviceList} being associated to the given room name.
+     *
      * @param roomName room name used for searching the room
      */
     public void removeDeviceListForRoom(String roomName) {
@@ -157,6 +163,7 @@ public class RoomListService extends AbstractService {
     /**
      * Switch method deciding whether a FHEM has to be contacted, the cached list can be used or the map already has
      * been loaded to the deviceListMap attribute.
+     *
      * @param updatePeriod -1 if the underlying list should always be updated, otherwise do update if the last update is
      *                     longer ago than the given period
      * @return current room device list map
@@ -164,7 +171,7 @@ public class RoomListService extends AbstractService {
     private Map<String, RoomDeviceList> getRoomDeviceListMap(long updatePeriod) {
         boolean refresh = shouldUpdate(updatePeriod);
 
-        if (! refresh && deviceListMap == null) {
+        if (!refresh && deviceListMap == null) {
             deviceListMap = getCachedRoomDeviceListMap();
         }
 
@@ -180,8 +187,7 @@ public class RoomListService extends AbstractService {
             } catch (Exception e) {
                 sendErrorMessage(R.string.updateError);
                 Log.e(TAG, "unknown exception occurred while fetching the remote device list", e);
-            }
-            finally {
+            } finally {
                 sendBroadcastWithAction(Actions.DISMISS_UPDATING_DIALOG, null);
             }
         }
@@ -207,6 +213,7 @@ public class RoomListService extends AbstractService {
      */
     /**
      * Loads the most current room device list map from FHEM and saves it to the cache.
+     *
      * @return remotely loaded room device list map
      */
     private Map<String, RoomDeviceList> getRemoteRoomDeviceListMap() {
@@ -232,6 +239,7 @@ public class RoomListService extends AbstractService {
 
     /**
      * Loads the currently cached room device list map data from the file storage.
+     *
      * @return cached room device list map
      */
     @SuppressWarnings("unchecked")
@@ -243,7 +251,7 @@ public class RoomListService extends AbstractService {
             ObjectInputStream objectInputStream = new ObjectInputStream(AndFHEMApplication.getContext().openFileInput(CACHE_FILENAME));
             Map<String, RoomDeviceList> roomDeviceListMap = (Map<String, RoomDeviceList>) objectInputStream.readObject();
             Log.i(TAG, "loading device list from cache completed after "
-                    + ( System.currentTimeMillis() - startLoad) + "ms");
+                    + (System.currentTimeMillis() - startLoad) + "ms");
 
             return roomDeviceListMap;
         } catch (Exception e) {

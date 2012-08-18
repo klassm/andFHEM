@@ -22,7 +22,7 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.adapter.devices;
+package li.klass.fhem.adapter.devices.core;
 
 import android.content.Context;
 import android.content.Intent;
@@ -30,44 +30,41 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import li.klass.fhem.R;
-import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
 import li.klass.fhem.adapter.devices.genericui.AvailableTargetStatesSwitchActionRow;
-import li.klass.fhem.adapter.devices.genericui.SeekBarActionRow;
+import li.klass.fhem.adapter.devices.genericui.DimActionRow;
 import li.klass.fhem.adapter.devices.genericui.UpDownButtonRow;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.domain.FS20Device;
-import li.klass.fhem.domain.genericview.FloorplanViewSettings;
-import li.klass.fhem.util.device.FloorplanUtil;
+import li.klass.fhem.domain.core.DimmableDevice;
 
-public class FS20Adapter extends ToggleableAdapter<FS20Device> {
+import static li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener.NotificationDeviceType.DIMMER;
 
-    public FS20Adapter() {
-        super(FS20Device.class);
+public class GenericDeviceDimmableAdapter<D extends DimmableDevice<D>> extends ToggleableAdapter<D> {
+
+    public GenericDeviceDimmableAdapter(Class<D> deviceClass) {
+        super(deviceClass);
     }
 
-    private class FS20DimUpDownRow extends UpDownButtonRow<FS20Device> {
+    private class DimUpDownRow extends UpDownButtonRow<D> {
 
-        public FS20DimUpDownRow() {
+        public DimUpDownRow() {
             super("");
         }
 
         @Override
-        public void onUpButtonClick(Context context, FS20Device device) {
-            sendTargetDimState(context, device, device.getDimUpProgress());
+        public void onUpButtonClick(Context context, D device) {
+            sendTargetDimState(context, device, device.getDimUpPosition());
         }
 
         @Override
-        public void onDownButtonClick(Context context, FS20Device device) {
-            sendTargetDimState(context, device, device.getDimDownProgress());
+        public void onDownButtonClick(Context context, D device) {
+            sendTargetDimState(context, device, device.getDimDownPosition());
         }
 
-        private void sendTargetDimState(final Context context, FS20Device device, int target) {
+        private void sendTargetDimState(final Context context, D device, int target) {
 
             Intent intent = new Intent(Actions.DEVICE_DIM);
             intent.putExtra(BundleExtraKeys.DEVICE_DIM_PROGRESS, target);
@@ -84,40 +81,37 @@ public class FS20Adapter extends ToggleableAdapter<FS20Device> {
     }
 
     @Override
-    public void fillDeviceOverviewView(View view, final FS20Device device) {
+    public void fillDeviceOverviewView(View view, final D device) {
+        if (!device.supportsDim()) {
+            super.fillDeviceOverviewView(view, device);
+            return;
+        }
+
         TableLayout layout = (TableLayout) view.findViewById(R.id.device_overview_generic);
         layout.findViewById(R.id.deviceName).setVisibility(View.GONE);
 
-        if (device.isDimDevice()) {
-            layout.addView(new SeekBarActionRow<FS20Device>(device.getFS20DimState(), device.getAliasOrName(), SeekBarActionRow.LAYOUT_OVERVIEW)
-                    .createRow(inflater, device));
-        } else {
-            addOverviewSwitchActionRow(view.getContext(), device, layout);
-        }
+        layout.addView(new DimActionRow<D>(device, device.getAliasOrName(), DimActionRow.LAYOUT_OVERVIEW)
+                .createRow(inflater, device));
     }
 
     @Override
     protected void afterPropertiesSet() {
-        fieldNameAddedListeners.put("state", new FieldNameAddedToDetailListener<FS20Device>() {
+        super.afterPropertiesSet();
+
+        registerFieldListener("state", new FieldNameAddedToDetailListener<D>(DIMMER) {
             @Override
-            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FS20Device device, TableRow fieldTableRow) {
-                if (device.isDimDevice()) {
-                    tableLayout.addView(new SeekBarActionRow<FS20Device>(device.getFS20DimState(), R.string.blank, SeekBarActionRow.LAYOUT_DETAIL)
-                            .createRow(inflater, device));
-                    tableLayout.addView(new FS20DimUpDownRow()
-                            .createRow(context, inflater, device));
-                } else {
-                    addDetailSwitchActionRow(context, device, tableLayout);
+            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, D device, TableRow fieldTableRow) {
+                if (!device.supportsDim()) {
+                    return;
                 }
+
+                tableLayout.addView(new DimActionRow<D>(device, R.string.blank, DimActionRow.LAYOUT_DETAIL)
+                        .createRow(inflater, device));
+                tableLayout.addView(new DimUpDownRow()
+                        .createRow(context, inflater, device));
             }
         });
 
-        detailActions.add(new AvailableTargetStatesSwitchActionRow<FS20Device>());
-    }
-
-    @Override
-    protected void fillFloorplanView(final Context context, final FS20Device device, LinearLayout layout, FloorplanViewSettings viewSettings) {
-        ImageView buttonView = FloorplanUtil.createSwitchStateBasedImageView(context, device);
-        layout.addView(buttonView);
+        detailActions.add(new AvailableTargetStatesSwitchActionRow<D>());
     }
 }

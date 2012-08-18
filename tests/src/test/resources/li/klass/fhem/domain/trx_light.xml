@@ -55,5 +55,21 @@
             <STATE key="light" value="on" measured="2012-07-17 20:10:46"/>
             <STATE key="state" value="on" measured="2012-07-16 23:12:23"/>
         </TRX_LIGHT>
+        <TRX_LIGHT name="device2" state="level 15" sets="all_level all_off all_on level:slider,0,1,15 off on"
+                   attrs="room group comment alias eventMap IODev ignore:1,0 do_not_notify:1,0 loglevel:0,1,2,3,4,5,6 icon webCmd">
+            <INT key="DEF" value="AC 010A0B0C01 light"/>
+            <INT key="NAME" value="device2"/>
+            <INT key="NR" value="90"/>
+            <INT key="STATE" value="level 15"/>
+            <INT key="TRX_LIGHT_deviceid" value="010A0B0C01"/>
+            <INT key="TRX_LIGHT_devicelog" value="light"/>
+            <INT key="TRX_LIGHT_type" value="AC"/>
+            <INT key="TYPE" value="TRX_LIGHT"/>
+            <INT key="IODev" value="TRX_0"/>
+            <ATTR key="room" value="room"/>
+            <ATTR key="webCmd" value="level:on:off"/>
+            <STATE key="state" value="level 15" measured="2012-08-15 17:59:21"/>
+        </TRX_LIGHT>
+
     </TRX_LIGHT_LIST>
 </FHZINFO>

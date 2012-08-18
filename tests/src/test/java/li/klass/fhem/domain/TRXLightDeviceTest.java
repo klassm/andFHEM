@@ -49,8 +49,18 @@ public class TRXLightDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getFileLog(), is(nullValue()));
         assertThat(device.getDeviceCharts().size(), is(0));
 
+        assertThat(device.supportsToggle(), is(true));
+        assertThat(device.supportsDim(), is(false));
+
         TRXLightDevice device1 = getDeviceFor("device1");
         assertThat(device1.isOn(), is(true));
+        assertThat(device.supportsDim(), is(false));
+
+        TRXLightDevice device2 = getDeviceFor("device2");
+        assertThat(device2.getState(), is("level 15"));
+        assertThat(device2.isOn(), is(true));
+        assertThat(device2.supportsDim(), is(true));
+        assertThat(device2.getDimPosition(), is(15));
     }
 
     @Override

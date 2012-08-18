@@ -1,24 +1,25 @@
 /*
  * AndFHEM - Open Source Android application to control a FHEM home automation
- *  server.
+ * server.
  *
- *  Copyright (c) 2012, Matthias Klass or third-party contributors as
- *  indicated by the @author tags or express copyright attribution
- *  statements applied by the authors.  All third-party contributions are
- *  distributed under license by Red Hat Inc.
+ * Copyright (c) 2011, Matthias Klass or third-party contributors as
+ * indicated by the @author tags or express copyright attribution
+ * statements applied by the authors.  All third-party contributions are
+ * distributed under license by Red Hat Inc.
  *
- *  This copyrighted material is made available to anyone wishing to use, modify,
- *  copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLICLICENSE, as published by the Free Software Foundation.
+ * This copyrighted material is made available to anyone wishing to use, modify,
+ * copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
  *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- *  or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
- *  for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+ * for more details.
  *
- *  You should have received a copy of the GNU GENERAL PUBLIC LICENSE
- *  along with this distribution; if not, write to:
- *    Free Software Foundation, Inc.
- *    51 Franklin Street, Fifth Floor
+ * You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+ * along with this distribution; if not, write to:
+ *   Free Software Foundation, Inc.
+ *   51 Franklin Street, Fifth Floor
+ *   Boston, MA  02110-1301  USA
  */
 
 package li.klass.fhem.fragments.device;
@@ -35,12 +36,11 @@ import li.klass.fhem.activities.device.DeviceNameListAdapter;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
-import li.klass.fhem.domain.RoomDeviceList;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceType;
+import li.klass.fhem.domain.core.RoomDeviceList;
 import li.klass.fhem.fragments.core.BaseFragment;
 import li.klass.fhem.widget.GridViewWithSections;
-import li.klass.fhem.widget.GridViewWithSectionsAdapter;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -59,7 +59,8 @@ public abstract class DeviceNameListFragment extends BaseFragment {
     }
 
     @SuppressWarnings("unused")
-    public DeviceNameListFragment() {}
+    public DeviceNameListFragment() {
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -88,7 +89,7 @@ public abstract class DeviceNameListFragment extends BaseFragment {
         if (deviceFilter == null) return;
 
         for (Device<?> device : roomDeviceList.getAllDevices()) {
-            if (! deviceFilter.isSelectable(device)) {
+            if (!deviceFilter.isSelectable(device)) {
                 roomDeviceList.removeDevice(device);
             }
         }
@@ -137,8 +138,8 @@ public abstract class DeviceNameListFragment extends BaseFragment {
         }
 
         if (newCreationAttributes.get(BundleExtraKeys.DEVICE_FILTER) == null ||
-                ! doContentChangedAttributesMatch(oldCreationAttributes, newCreationAttributes, BundleExtraKeys.ROOM_NAME)) {
-            final DeviceFilter oldDeviceFilter = oldCreationAttributes ==  null ?
+                !doContentChangedAttributesMatch(oldCreationAttributes, newCreationAttributes, BundleExtraKeys.ROOM_NAME)) {
+            final DeviceFilter oldDeviceFilter = oldCreationAttributes == null ?
                     null : (DeviceFilter) oldCreationAttributes.get(BundleExtraKeys.ORIGINAL_DEVICE_FILTER);
 
             newCreationAttributes.put(BundleExtraKeys.ORIGINAL_DEVICE_FILTER, oldDeviceFilter);
@@ -146,7 +147,7 @@ public abstract class DeviceNameListFragment extends BaseFragment {
                 newCreationAttributes.put(BundleExtraKeys.DEVICE_FILTER, new DeviceFilter() {
                     @Override
                     public boolean isSelectable(Device<?> device) {
-                        if (oldDeviceFilter != null && ! oldDeviceFilter.isSelectable(device)) {
+                        if (oldDeviceFilter != null && !oldDeviceFilter.isSelectable(device)) {
                             return false;
                         }
                         String roomName = (String) newCreationAttributes.get(BundleExtraKeys.ROOM_NAME);
