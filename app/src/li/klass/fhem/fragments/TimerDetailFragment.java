@@ -2,13 +2,13 @@
  * AndFHEM - Open Source Android application to control a FHEM home automation
  * server.
  *
- * Copyright (c) 2012, Matthias Klass or third-party contributors as
+ * Copyright (c) 2011, Matthias Klass or third-party contributors as
  * indicated by the @author tags or express copyright attribution
  * statements applied by the authors.  All third-party contributions are
  * distributed under license by Red Hat Inc.
  *
  * This copyrighted material is made available to anyone wishing to use, modify,
- * copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLICLICENSE, as published by the Free Software Foundation.
+ * copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
@@ -19,6 +19,7 @@
  * along with this distribution; if not, write to:
  *   Free Software Foundation, Inc.
  *   51 Franklin Street, Fifth Floor
+ *   Boston, MA  02110-1301  USA
  */
 
 package li.klass.fhem.fragments;
@@ -81,12 +82,13 @@ public class TimerDetailFragment extends BaseFragment {
     }
 
     @SuppressWarnings("unused")
-    public TimerDetailFragment() {}
+    public TimerDetailFragment() {
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
-        if (view != null)  {
+        if (view != null) {
             return view;
         }
 
@@ -284,7 +286,7 @@ public class TimerDetailFragment extends BaseFragment {
         intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
             @Override
             protected void onReceiveResult(int resultCode, Bundle resultData) {
-                if (resultCode != ResultCodes.SUCCESS || ! resultData.containsKey(BundleExtraKeys.DEVICE)) {
+                if (resultCode != ResultCodes.SUCCESS || !resultData.containsKey(BundleExtraKeys.DEVICE)) {
                     return;
                 }
 
@@ -333,6 +335,9 @@ public class TimerDetailFragment extends BaseFragment {
     private void setNewTargetStatesInSpinner() {
         String[] availableTargetStates = selectedTargetDevice.getAvailableTargetStates();
         targetStateAdapter.clear();
+
+        if (availableTargetStates.length == 0) return;
+
         for (String availableTargetState : availableTargetStates) {
             targetStateAdapter.add(availableTargetState);
         }
@@ -341,7 +346,7 @@ public class TimerDetailFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (fragmentIntentResultData == null || ! fragmentIntentResultData.containsKey(BundleExtraKeys.CLICKED_DEVICE)) {
+        if (fragmentIntentResultData == null || !fragmentIntentResultData.containsKey(BundleExtraKeys.CLICKED_DEVICE)) {
             return;
         }
 
@@ -352,7 +357,7 @@ public class TimerDetailFragment extends BaseFragment {
 
     @Override
     public void update(boolean doUpdate) {
-        if (! isModify){
+        if (!isModify) {
             Log.e(TAG, "I can only update if a device is being modified!");
             return;
         }
@@ -363,11 +368,11 @@ public class TimerDetailFragment extends BaseFragment {
 
             @Override
             protected void onReceiveResult(int resultCode, Bundle resultData) {
-                if (resultCode != ResultCodes.SUCCESS || ! resultData.containsKey(BundleExtraKeys.DEVICE)) {
+                if (resultCode != ResultCodes.SUCCESS || !resultData.containsKey(BundleExtraKeys.DEVICE)) {
                     return;
                 }
                 Device device = (Device) resultData.getSerializable(BundleExtraKeys.DEVICE);
-                if (! (device instanceof AtDevice)) {
+                if (!(device instanceof AtDevice)) {
                     Log.e(TAG, "expected an AtDevice, but got " + device);
                     return;
                 }
