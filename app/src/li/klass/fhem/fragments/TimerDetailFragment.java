@@ -336,7 +336,7 @@ public class TimerDetailFragment extends BaseFragment {
         String[] availableTargetStates = selectedTargetDevice.getAvailableTargetStates();
         targetStateAdapter.clear();
 
-        if (availableTargetStates.length == 0) return;
+        if (availableTargetStates == null || availableTargetStates.length == 0) return;
 
         for (String availableTargetState : availableTargetStates) {
             targetStateAdapter.add(availableTargetState);
