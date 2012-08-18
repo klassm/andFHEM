@@ -90,9 +90,8 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice> {
         if (parts.length != 2) return;
 
         int rawValue = Integer.parseInt(parts[0]);
-        int realValue = Integer.parseInt(parts[1]);
 
-        fillContentLitresMaximum = realValue / rawValue * 255;
+        fillContentLitresMaximum = Integer.parseInt(parts[1]);
     }
 
     public void readRAWVALUE(String value) {

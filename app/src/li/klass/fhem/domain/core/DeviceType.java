@@ -24,10 +24,7 @@
 
 package li.klass.fhem.domain.core;
 
-import li.klass.fhem.adapter.devices.FHTAdapter;
-import li.klass.fhem.adapter.devices.FloorplanAdapter;
-import li.klass.fhem.adapter.devices.WOLAdapter;
-import li.klass.fhem.adapter.devices.WeatherAdapter;
+import li.klass.fhem.adapter.devices.*;
 import li.klass.fhem.adapter.devices.core.DeviceAdapter;
 import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
 import li.klass.fhem.adapter.devices.core.GenericDeviceDimmableAdapter;
@@ -60,7 +57,7 @@ public enum DeviceType {
     OWFS("OWFS", OWFSDevice.class),
     LGTV("LGTV", LGTVDevice.class),
     RFXCOM("RFXCOM", RFXCOMDevice.class),
-    CUL_HM("CUL_HM", CULHMDevice.class, new GenericDeviceDimmableAdapter<CULHMDevice>(CULHMDevice.class)),
+    CUL_HM("CUL_HM", CULHMDevice.class, new CULHMAdapter()),
     WATCHDOG("watchdog", WatchdogDevice.class),
     HOLIDAY("HOL", HOLDevice.class, new ToggleableAdapter<HOLDevice>(HOLDevice.class)),
     PID("PID", PIDDevice.class),
