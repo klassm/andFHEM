@@ -43,7 +43,7 @@ public class TRXLightDevice extends DimmableDiscreteStatesDevice<TRXLightDevice>
     static {
         dimLevels.add("off");
         for (int i = 1; i <= 14; i++) {
-            dimLevels.add("on level=" + i);
+            dimLevels.add("level " + i);
         }
         dimLevels.add("on");
     }
@@ -61,10 +61,6 @@ public class TRXLightDevice extends DimmableDiscreteStatesDevice<TRXLightDevice>
         if (value.equals("level 0")) value = "off";
         if (value.equals("level 15")) value = "on";
 
-        if (value.startsWith("level")) {
-            value = "on " + value.replaceAll(" ", "=");
-        }
-
         super.readSTATE(tagName, attributes, value);
 
         if (tagName.equals("STATE")) {
@@ -75,6 +71,14 @@ public class TRXLightDevice extends DimmableDiscreteStatesDevice<TRXLightDevice>
     @Override
     public boolean isOn() {
         return !getInternalState().equalsIgnoreCase("off");
+    }
+
+    @Override
+    public String formatTargetState(String targetState) {
+        if (targetState.startsWith("level") && !isOn()) {
+            return "on " + targetState.replaceAll(" ", ":");
+        }
+        return super.formatTargetState(targetState);
     }
 
     @Override
@@ -95,5 +99,14 @@ public class TRXLightDevice extends DimmableDiscreteStatesDevice<TRXLightDevice>
     @Override
     public List<String> getDimStates() {
         return dimLevels;
+    }
+
+    @Override
+    public void setState(String state) {
+        if (state.startsWith("on level")) {
+            setState(state.substring("on ".length()).replace(":", " "));
+            return;
+        }
+        super.setState(state);
     }
 }

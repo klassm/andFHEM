@@ -34,6 +34,8 @@ public class GenericDeviceService {
     }
 
     public void setState(Device<?> device, String targetState) {
+        targetState = device.formatTargetState(targetState);
+
         CommandExecutionService.INSTANCE.executeSafely("set " + device.getName() + " " + targetState);
         device.setState(device.formatStateTextToSet(targetState));
     }
