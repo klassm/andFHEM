@@ -43,7 +43,7 @@ public class TRXLightDevice extends DimmableDiscreteStatesDevice<TRXLightDevice>
     static {
         dimLevels.add("off");
         for (int i = 1; i <= 14; i++) {
-            dimLevels.add("level=" + i);
+            dimLevels.add("on level=" + i);
         }
         dimLevels.add("on");
     }
@@ -57,12 +57,13 @@ public class TRXLightDevice extends DimmableDiscreteStatesDevice<TRXLightDevice>
 
     @Override
     public void readSTATE(String tagName, NamedNodeMap attributes, String value) {
-        if (value.startsWith("level")) {
-            value = value.replaceAll(" ", "=");
-        }
 
-        if (value.equals("level=0")) value = "off";
-        if (value.equals("level=15")) value = "on";
+        if (value.equals("level 0")) value = "off";
+        if (value.equals("level 15")) value = "on";
+
+        if (value.startsWith("level")) {
+            value = "on " + value.replaceAll(" ", "=");
+        }
 
         super.readSTATE(tagName, attributes, value);
 
