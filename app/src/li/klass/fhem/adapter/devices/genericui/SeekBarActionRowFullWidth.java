@@ -46,8 +46,8 @@ public abstract class SeekBarActionRowFullWidth<T extends Device> {
         TableRow row = (TableRow) inflater.inflate(layoutId, null);
         SeekBar seekBar = (SeekBar) row.findViewById(R.id.seekBar);
         seekBar.setOnSeekBarChangeListener(createListener(device));
-        seekBar.setProgress(initialProgress);
         seekBar.setMax(maximumProgress);
+        seekBar.setProgress(initialProgress);
 
         return row;
     }
