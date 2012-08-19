@@ -33,11 +33,15 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="com.android.vending.BILLING"/>
 
+    <uses-feature android:name="android.hardware.touchscreen"/>
+
     <supports-screens android:xlargeScreens="true"
                       android:anyDensity="true"
                       android:largeScreens="true"
                       android:normalScreens="true"
                       android:smallScreens="true"/>
+
+    <uses-sdk android:minSdkVersion="7"/>
 
     <application android:label="@string/app_name" android:icon="@drawable/ic_launcher" android:name="AndFHEMApplication"
                  android:theme="@style/ApplicationTheme">
@@ -176,6 +180,4 @@
             </intent-filter>
         </receiver>
     </application>
-
-    <uses-sdk android:minSdkVersion="7"/>
 </manifest>

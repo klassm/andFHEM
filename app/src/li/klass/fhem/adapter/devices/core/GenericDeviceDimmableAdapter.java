@@ -90,7 +90,7 @@ public class GenericDeviceDimmableAdapter<D extends DimmableDevice<D>> extends T
         TableLayout layout = (TableLayout) view.findViewById(R.id.device_overview_generic);
         layout.findViewById(R.id.deviceName).setVisibility(View.GONE);
 
-        layout.addView(new DimActionRow<D>(device, device.getAliasOrName(), DimActionRow.LAYOUT_OVERVIEW)
+        layout.addView(new DimActionRow<D>(device.getAliasOrName(), DimActionRow.LAYOUT_OVERVIEW)
                 .createRow(inflater, device));
     }
 
@@ -105,7 +105,7 @@ public class GenericDeviceDimmableAdapter<D extends DimmableDevice<D>> extends T
                     return;
                 }
 
-                tableLayout.addView(new DimActionRow<D>(device, R.string.blank, DimActionRow.LAYOUT_DETAIL)
+                tableLayout.addView(new DimActionRow<D>(R.string.blank, DimActionRow.LAYOUT_DETAIL)
                         .createRow(inflater, device));
                 tableLayout.addView(new DimUpDownRow()
                         .createRow(context, inflater, device));

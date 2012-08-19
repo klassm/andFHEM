@@ -45,16 +45,14 @@ public class DimActionRow<D extends DimmableDevice<D>> {
 
     public static final int LAYOUT_DETAIL = R.layout.device_detail_seekbarrow;
     public static final int LAYOUT_OVERVIEW = R.layout.device_overview_seekbarrow;
-    private D device;
 
-    public DimActionRow(D device, int description, int layout) {
-        this(device, AndFHEMApplication.getContext().getString(description), layout);
+    public DimActionRow(int description, int layout) {
+        this(AndFHEMApplication.getContext().getString(description), layout);
     }
 
-    public DimActionRow(D device, String description, int layout) {
+    public DimActionRow(String description, int layout) {
         this.description = description;
         this.layout = layout;
-        this.device = device;
     }
 
     public TableRow createRow(LayoutInflater inflater, D device) {
@@ -63,8 +61,8 @@ public class DimActionRow<D extends DimmableDevice<D>> {
 
         SeekBar seekBar = (SeekBar) row.findViewById(R.id.seekBar);
         seekBar.setOnSeekBarChangeListener(createListener(device));
-        seekBar.setProgress(device.getDimPosition());
         seekBar.setMax(device.getDimUpperBound());
+        seekBar.setProgress(device.getDimPosition());
 
         return row;
     }
