@@ -42,6 +42,7 @@ public class CULHMAdapter extends GenericDeviceDimmableAdapter<CULHMDevice> {
 
     @Override
     protected void afterPropertiesSet() {
+        super.afterPropertiesSet();
         registerFieldListener("state", new FieldNameAddedToDetailListener<CULHMDevice>() {
             @Override
             public void onFieldNameAdded(final Context context, TableLayout tableLayout, String field, final CULHMDevice device, TableRow fieldTableRow) {

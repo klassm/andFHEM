@@ -25,19 +25,13 @@
 package li.klass.fhem.adapter.devices.genericui;
 
 import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.ResultReceiver;
 import android.view.LayoutInflater;
 import android.widget.SeekBar;
 import android.widget.TableRow;
 import li.klass.fhem.R;
-import li.klass.fhem.constants.Actions;
-import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.core.Device;
 
-public class SeekBarActionRowFullWidth<T extends Device> {
+public abstract class SeekBarActionRowFullWidth<T extends Device> {
     private int initialProgress;
     private int layoutId;
     private int maximumProgress;
@@ -83,21 +77,5 @@ public class SeekBarActionRowFullWidth<T extends Device> {
     public void onProgressChanged(Context context, T device, int progress) {
     }
 
-    public void onStopTrackingTouch(final Context context, T device, int progress) {
-        Intent intent = new Intent(Actions.DEVICE_DIM);
-        intent.putExtra(BundleExtraKeys.DEVICE_DIM_PROGRESS, progress);
-        intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
-        intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
-            @Override
-            protected void onReceiveResult(int resultCode, Bundle resultData) {
-                context.sendBroadcast(new Intent(Actions.DO_UPDATE));
-            }
-        });
-
-        context.startService(intent);
-    }
-
-    public int getInitialProgress() {
-        return initialProgress;
-    }
+    public abstract void onStopTrackingTouch(final Context context, T device, int progress);
 }

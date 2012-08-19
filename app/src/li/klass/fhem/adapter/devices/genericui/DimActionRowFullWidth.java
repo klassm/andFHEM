@@ -29,57 +29,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
-import android.view.LayoutInflater;
-import android.widget.SeekBar;
-import android.widget.TableRow;
-import android.widget.TextView;
-import li.klass.fhem.R;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.core.DimmableDevice;
 
-public class DimActionRow<D extends DimmableDevice<D>> {
-    private String description;
-    private int layout;
+public class DimActionRowFullWidth<D extends DimmableDevice<D>> extends SeekBarActionRowFullWidth<D> {
 
-    public static final int LAYOUT_OVERVIEW = R.layout.device_overview_seekbarrow;
-
-    public DimActionRow(String description, int layout) {
-        this.description = description;
-        this.layout = layout;
-    }
-
-    public TableRow createRow(LayoutInflater inflater, D device) {
-        TableRow row = (TableRow) inflater.inflate(layout, null);
-        ((TextView) row.findViewById(R.id.description)).setText(description);
-
-        SeekBar seekBar = (SeekBar) row.findViewById(R.id.seekBar);
-        seekBar.setOnSeekBarChangeListener(createListener(device));
-        seekBar.setMax(device.getDimUpperBound());
-        seekBar.setProgress(device.getDimPosition());
-
-        return row;
-    }
-
-    private SeekBar.OnSeekBarChangeListener createListener(final D device) {
-        return new SeekBar.OnSeekBarChangeListener() {
-
-            public int progress = device.getDimPosition();
-
-            @Override
-            public void onProgressChanged(SeekBar seekBar, final int progress, boolean fromUser) {
-                this.progress = progress;
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-            }
-
-            @Override
-            public void onStopTrackingTouch(final SeekBar seekBar) {
-                DimActionRow.this.onStopTrackingTouch(seekBar.getContext(), device, progress);
-            }
-        };
+    public DimActionRowFullWidth(int initialProgress, int maximumProgress, int layoutId) {
+        super(initialProgress, maximumProgress, layoutId);
     }
 
     public void onStopTrackingTouch(final Context context, D device, int progress) {

@@ -35,6 +35,7 @@ import android.widget.TableRow;
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.genericui.AvailableTargetStatesSwitchActionRow;
 import li.klass.fhem.adapter.devices.genericui.DimActionRow;
+import li.klass.fhem.adapter.devices.genericui.DimActionRowFullWidth;
 import li.klass.fhem.adapter.devices.genericui.UpDownButtonRow;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
@@ -105,7 +106,7 @@ public class GenericDeviceDimmableAdapter<D extends DimmableDevice<D>> extends T
                     return;
                 }
 
-                tableLayout.addView(new DimActionRow<D>(R.string.blank, DimActionRow.LAYOUT_DETAIL)
+                tableLayout.addView(new DimActionRowFullWidth<D>(device.getDimPosition(), device.getDimUpperBound(), R.layout.device_detail_seekbarrow_full_width)
                         .createRow(inflater, device));
                 tableLayout.addView(new DimUpDownRow()
                         .createRow(context, inflater, device));
