@@ -41,9 +41,11 @@ public class TRXLightDevice extends DimmableDiscreteStatesDevice<TRXLightDevice>
     private static final ArrayList<String> dimLevels = new ArrayList<String>();
 
     static {
-        for (int i = 0; i <= 15; i++) {
+        dimLevels.add("off");
+        for (int i = 1; i <= 14; i++) {
             dimLevels.add("level " + i);
         }
+        dimLevels.add("on");
     }
 
     @ShowField(description = R.string.type)
@@ -55,6 +57,9 @@ public class TRXLightDevice extends DimmableDiscreteStatesDevice<TRXLightDevice>
 
     @Override
     public void readSTATE(String tagName, NamedNodeMap attributes, String value) {
+        if (value.equals("level 0")) value = "off";
+        if (value.equals("level 15")) value = "on";
+
         super.readSTATE(tagName, attributes, value);
 
         if (tagName.equals("STATE")) {
