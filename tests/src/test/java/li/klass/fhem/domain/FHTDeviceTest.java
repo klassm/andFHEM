@@ -104,6 +104,20 @@ public class FHTDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getDeviceCharts().size(), is(2));
     }
 
+    @Test
+    public void testDimProgressToTemperature() {
+        assertThat(FHTDevice.dimProgressToTemperature(50), is(FHTDevice.MAXIMUM_TEMPERATURE));
+        assertThat(FHTDevice.dimProgressToTemperature(20), is(15.5));
+        assertThat(FHTDevice.dimProgressToTemperature(10), is(10.5));
+    }
+
+    @Test
+    public void testTemperatureToDimProgress() {
+        assertThat(FHTDevice.temperatureToDimProgress(FHTDevice.MAXIMUM_TEMPERATURE), is(50));
+        assertThat(FHTDevice.temperatureToDimProgress(15.5), is(20));
+        assertThat(FHTDevice.temperatureToDimProgress(10.5), is(10));
+    }
+
     @Override
     protected String getFileName() {
         return "fht.xml";

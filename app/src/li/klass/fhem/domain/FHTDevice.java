@@ -50,6 +50,8 @@ import java.util.Map;
 @SupportsWidget({TemperatureWidgetView.class, MediumInformationWidgetView.class})
 @SuppressWarnings("unused")
 public class FHTDevice extends Device<FHTDevice> {
+    public static double MAXIMUM_TEMPERATURE = 30.5;
+
     @ShowField(description = R.string.actuator, showInOverview = true)
     @WidgetTemperatureAdditionalField(description = R.string.actuator)
     @WidgetMediumLine3(description = R.string.actuator)
@@ -248,6 +250,14 @@ public class FHTDevice extends Device<FHTDevice> {
         for (FHTDayControl fhtDayControl : dayControlMap.values()) {
             fhtDayControl.setChangedAsCurrent();
         }
+    }
+
+    public static int temperatureToDimProgress(double temperature) {
+        return (int) ((temperature - 5.5) / 0.5);
+    }
+
+    public static double dimProgressToTemperature(double progress) {
+        return 5.5 + (progress * 0.5);
     }
 
     @Override

@@ -24,18 +24,16 @@
 
 package li.klass.fhem.domain.core;
 
-import li.klass.fhem.infra.AndFHEMRobolectricTestRunner;
+import li.klass.fhem.infra.basetest.RobolectricBaseTestCase;
 import li.klass.fhem.service.room.DeviceListParser;
 import li.klass.fhem.util.CloseableUtil;
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
-import org.junit.runner.RunWith;
 
 import java.io.InputStream;
 import java.util.Map;
 
-@RunWith(AndFHEMRobolectricTestRunner.class)
-public abstract class DeviceXMLParsingBase {
+public abstract class DeviceXMLParsingBase extends RobolectricBaseTestCase {
 
     public static final String DEFAULT_TEST_ROOM_NAME = "room";
     public static final String DEFAULT_TEST_DEVICE_NAME = "device";

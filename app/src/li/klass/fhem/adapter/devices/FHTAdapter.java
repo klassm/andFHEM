@@ -49,6 +49,7 @@ import li.klass.fhem.util.ValueDescriptionUtil;
 import li.klass.fhem.util.device.DeviceActionUtil;
 
 import static li.klass.fhem.constants.PreferenceKeys.FHT_SHOW_SET_VALUE_BUTTONS;
+import static li.klass.fhem.domain.FHTDevice.*;
 
 public class FHTAdapter extends GenericDeviceAdapter<FHTDevice> {
 
@@ -56,7 +57,7 @@ public class FHTAdapter extends GenericDeviceAdapter<FHTDevice> {
         super(FHTDevice.class);
     }
 
-    private class FHTTemperatureChangeTableRow extends SeekBarActionRowFullWidthAndButton<FHTDevice> {
+    class FHTTemperatureChangeTableRow extends SeekBarActionRowFullWidthAndButton<FHTDevice> {
         private final TextView updateView;
         private double newTemperature;
         private String intentAction;
@@ -65,7 +66,7 @@ public class FHTAdapter extends GenericDeviceAdapter<FHTDevice> {
 
         public FHTTemperatureChangeTableRow(Context context, double initialTemperature, TableRow updateTableRow,
                                             String intentAction, int valueStringId) {
-            super(context, (int) ((initialTemperature - 5.5) / 0.5));
+            super(context, temperatureToDimProgress(initialTemperature), temperatureToDimProgress(MAXIMUM_TEMPERATURE));
             updateView = (TextView) updateTableRow.findViewById(R.id.value);
             this.intentAction = intentAction;
             this.valueStringId = valueStringId;
@@ -74,7 +75,7 @@ public class FHTAdapter extends GenericDeviceAdapter<FHTDevice> {
 
         @Override
         public void onProgressChanged(Context context, FHTDevice device, int progress) {
-            this.newTemperature = 5.5 + (progress * 0.5);
+            this.newTemperature = dimProgressToTemperature(progress);
             updateView.setText(ValueDescriptionUtil.appendTemperature(newTemperature));
         }
 
@@ -107,6 +108,14 @@ public class FHTAdapter extends GenericDeviceAdapter<FHTDevice> {
         @Override
         protected boolean showButton() {
             return ApplicationProperties.INSTANCE.getBooleanSharedPreference(FHT_SHOW_SET_VALUE_BUTTONS, false);
+        }
+
+        int temperatureToProgress(double temperature) {
+            return (int) ((temperature - 5.5) / 0.5);
+        }
+
+        double progressToTemperature(double progress) {
+            return 5.5 + (progress * 0.5);
         }
     }
 
