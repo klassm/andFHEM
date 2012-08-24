@@ -43,6 +43,7 @@
             <ATTR key="mode" value="auto"/>
             <ATTR key="retrycount" value="3"/>
             <ATTR key="room" value="room"/>
+            <STATE key="3at-from1" value="06:00" measured="2012-05-02 17:31:41"/>
             <STATE key="sun-from1" value="10:00" measured="2011-12-24 13:21:17"/>
             <STATE key="sun-from2" value="13:00" measured="2011-12-24 13:21:18"/>
             <STATE key="sun-to1" value="17:00" measured="2011-12-24 13:21:18"/>

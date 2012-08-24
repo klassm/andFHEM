@@ -24,6 +24,7 @@
 
 package li.klass.fhem.domain;
 
+import android.util.Log;
 import li.klass.fhem.R;
 import li.klass.fhem.appwidget.annotation.*;
 import li.klass.fhem.appwidget.view.widget.medium.MediumInformationWidgetView;
@@ -90,7 +91,9 @@ public class FHTDevice extends Device<FHTDevice> {
             actuator = ValueDescriptionUtil.appendPercent(percentage);
         } else if (key.endsWith("FROM1") || key.endsWith("FROM2") || key.endsWith("TO1") || key.endsWith("TO2")) {
             String shortName = key.substring(0, 3);
+            Log.e(FHTDevice.class.getName(), "parse " + shortName);
             FHTDayControl dayControl = dayControlMap.get(DayUtil.getDayStringIdForShortName(shortName));
+            if (dayControl == null) return;
 
             if (key.endsWith("FROM1")) dayControl.setFrom1(value);
             if (key.endsWith("FROM2")) dayControl.setFrom2(value);
