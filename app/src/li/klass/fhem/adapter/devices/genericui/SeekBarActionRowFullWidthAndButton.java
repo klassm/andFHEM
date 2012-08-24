@@ -24,6 +24,8 @@
 
 package li.klass.fhem.adapter.devices.genericui;
 
+import static li.klass.fhem.util.NumberUtil.isNumeric;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,7 +33,6 @@ import android.widget.Button;
 import android.widget.TableRow;
 import li.klass.fhem.R;
 import li.klass.fhem.domain.core.Device;
-import li.klass.fhem.domain.core.DeviceStateAdditionalInformationType;
 import li.klass.fhem.util.DialogUtil;
 
 public abstract class SeekBarActionRowFullWidthAndButton<T extends Device<T>> extends SeekBarActionRowFullWidth<T> {
@@ -54,10 +55,10 @@ public abstract class SeekBarActionRowFullWidthAndButton<T extends Device<T>> ex
 
                 String title = context.getString(R.string.set_value);
 
-                DialogUtil.showInputBox(context, title, "", new DialogUtil.InputDialogListener() {
+                DialogUtil.showInputBox(context, title, "0", new DialogUtil.InputDialogListener() {
                     @Override
                     public void onClick(String text) {
-                        if (DeviceStateAdditionalInformationType.NUMERIC.matches(text)) {
+                        if (isNumeric(text)) {
                             onButtonSetValue(device, Integer.parseInt(text));
                         } else {
                             DialogUtil.showAlertDialog(context, R.string.error, R.string.invalidInput);

@@ -42,8 +42,10 @@ public class NumberUtilTest {
         assertEquals("100", toTwoDecimalDigits(100));
     }
 
+    @Test
     public void testIsNumeric() {
         assertThat(isNumeric("123"), is(true));
         assertThat(isNumeric("123a"), is(false));
+        assertThat(isNumeric(""), is(false));
     }
 }
