@@ -107,7 +107,7 @@
     <string name="visibility">Sichtbarkeit</string>
     <string name="rawValue">Rohwert</string>
     <string name="content">Inhalt</string>
-    <string name="fillPercentage">Füllung (%)</string>
+    <string name="fillPercentage">Füllung</string>
     <string name="maximumContent">Maximal Volumen</string>
 
     <string name="switchDevice">Schalte</string>

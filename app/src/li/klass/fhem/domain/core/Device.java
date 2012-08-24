@@ -24,6 +24,13 @@
 
 package li.klass.fhem.domain.core;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.appwidget.view.widget.AppWidgetView;
@@ -33,9 +40,6 @@ import li.klass.fhem.domain.floorplan.FloorplanPosition;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.util.StringUtil;
 import org.w3c.dom.NamedNodeMap;
-
-import java.io.Serializable;
-import java.util.*;
 
 @SuppressWarnings("unused")
 public abstract class Device<T extends Device> implements Serializable, Comparable<T> {
@@ -75,10 +79,6 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
         if (tagName.equals("INT")) {
             state = value;
         }
-    }
-
-    public void readCUL_TIME(String value) {
-        measured = value;
     }
 
     public void readDEF(String value) {
@@ -187,18 +187,19 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
      * @param attributes additional tag attributes
      */
     public void onChildItemRead(String tagName, String key, String value, NamedNodeMap attributes) {
-        if (!key.startsWith("FP_")) {
-            return;
-        }
-        String[] commaParts = value.split(",");
-        if (commaParts.length <= 2) {
-            return;
-        }
-        int y = Integer.valueOf(commaParts[0]);
-        int x = Integer.valueOf(commaParts[1]);
-        int viewType = Integer.valueOf(commaParts[2]);
+        if (key.startsWith("FP_")) {
+            String[] commaParts = value.split(",");
+            if (commaParts.length <= 2) {
+                return;
+            }
+            int y = Integer.valueOf(commaParts[0]);
+            int x = Integer.valueOf(commaParts[1]);
+            int viewType = Integer.valueOf(commaParts[2]);
 
-        floorPlanPositionMap.put(key.substring(3), new FloorplanPosition(x, y, viewType));
+            floorPlanPositionMap.put(key.substring(3), new FloorplanPosition(x, y, viewType));
+        } else if (key.endsWith("_TIME")) {
+            measured = value;
+        }
     }
 
     public void onAttributeRead(String attributeName, String attributeValue) {

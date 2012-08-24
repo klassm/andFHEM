@@ -24,6 +24,10 @@
 
 package li.klass.fhem.domain;
 
+import java.io.Serializable;
+import java.util.Arrays;
+import java.util.List;
+
 import li.klass.fhem.R;
 import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.DimmableDiscreteStatesDevice;
@@ -32,10 +36,7 @@ import li.klass.fhem.domain.genericview.FloorplanViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.NumberSystemUtil;
-
-import java.io.Serializable;
-import java.util.Arrays;
-import java.util.List;
+import org.w3c.dom.NamedNodeMap;
 
 @DetailOverviewViewSettings(showState = true)
 @FloorplanViewSettings()
@@ -71,6 +72,14 @@ public class FS20Device extends DimmableDiscreteStatesDevice<FS20Device> impleme
         String[] parts = value.split(" ");
         if (parts.length == 2 && parts[0].length() == 4 && parts[1].length() == 2) {
             definition = transformHexTo4System(parts[0]) + " " + transformHexTo4System(parts[1]);
+        }
+    }
+
+    @Override
+    public void readSTATE(String tagName, NamedNodeMap attributes, String value) {
+        super.readSTATE(tagName, attributes, value);
+        if (tagName.equals("STATE")) {
+            measured = attributes.getNamedItem("measured").getNodeValue();
         }
     }
 

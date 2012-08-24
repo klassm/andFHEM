@@ -24,13 +24,26 @@
 
 package li.klass.fhem.fhem;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.net.URLEncoder;
+import java.security.KeyStore;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import li.klass.fhem.AndFHEMApplication;
-import li.klass.fhem.exception.*;
+import li.klass.fhem.exception.AndFHEMException;
+import li.klass.fhem.exception.AuthenticationException;
+import li.klass.fhem.exception.FHEMStrangeContentException;
+import li.klass.fhem.exception.HostConnectionException;
+import li.klass.fhem.exception.TimeoutException;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
@@ -50,15 +63,6 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
 import org.apache.http.protocol.HTTP;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.URI;
-import java.net.URLEncoder;
-import java.security.KeyStore;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class FHEMWebConnection implements FHEMConnection {
 
@@ -118,9 +122,8 @@ public class FHEMWebConnection implements FHEMConnection {
         InputStream response = executeRequest(urlSuffix);
         try {
             String content = IOUtils.toString(response);
-            if ("".equals(content) || content.contains("<title>") || content.contains("<div id=")) {
-                Log.e(TAG, "FHEM update required");
-                Log.e(TAG, "found content: " + content);
+            if (content.contains("<title>") || content.contains("<div id=")) {
+                Log.e(TAG, "found strange content: " + content);
                 throw new FHEMStrangeContentException();
             }
             return content;

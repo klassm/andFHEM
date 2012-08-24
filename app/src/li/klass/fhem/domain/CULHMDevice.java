@@ -24,6 +24,8 @@
 
 package li.klass.fhem.domain;
 
+import java.util.List;
+
 import li.klass.fhem.R;
 import li.klass.fhem.appwidget.annotation.SupportsWidget;
 import li.klass.fhem.appwidget.annotation.WidgetTemperatureField;
@@ -39,8 +41,6 @@ import li.klass.fhem.util.NumberUtil;
 import li.klass.fhem.util.ValueDescriptionUtil;
 import li.klass.fhem.util.ValueExtractUtil;
 
-import java.util.List;
-
 @SuppressWarnings("unused")
 @DetailOverviewViewSettings(showState = true)
 @FloorplanViewSettings(showState = true)
@@ -53,8 +53,6 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice> {
 
     private SubType subType = null;
 
-    @ShowField(description = R.string.measured)
-    private String measured;
     @ShowField(description = R.string.desiredTemperature)
     private String desiredTemp;
     @ShowField(description = R.string.temperature, showInOverview = true)
