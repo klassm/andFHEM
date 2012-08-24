@@ -25,9 +25,9 @@ package li.klass.fhem.exception;
 
 import li.klass.fhem.R;
 
-public class FHEMUpdateRequiredException extends AndFHEMException {
+public class FHEMStrangeContentException extends AndFHEMException {
     @Override
     public int getErrorMessageStringId() {
-        return R.string.fhemUpdateRequiredError;
+        return R.string.strangeContentError;
     }
 }

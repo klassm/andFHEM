@@ -118,10 +118,10 @@ public class FHEMWebConnection implements FHEMConnection {
         InputStream response = executeRequest(urlSuffix);
         try {
             String content = IOUtils.toString(response);
-            if (content.contains("<title>") || content.contains("<div id=")) {
+            if ("".equals(content) || content.contains("<title>") || content.contains("<div id=")) {
                 Log.e(TAG, "FHEM update required");
                 Log.e(TAG, "found content: " + content);
-                throw new FHEMUpdateRequiredException();
+                throw new FHEMStrangeContentException();
             }
             return content;
         } catch (IOException e) {

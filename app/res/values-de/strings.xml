@@ -174,7 +174,7 @@
     <string name="updateErrorHostConnection">Keine Verbindung zum FHEM Server.</string>
     <string name="updateErrorDeviceListParse">Konnte xml Geräte Liste nicht lesen.</string>
     <string name="graphLoadError">Graph Daten konnten nicht geladen werden.</string>
-    <string name="fhemUpdateRequiredError">Aktualisiere bitte deinen FHEM Server (updatefhem)</string>
+    <string name="strangeContentError">Seltsamer Inhalt wurde von FHEM geladen. Ist die URL wirklich richtig?</string>
     <string name="prefUrlBeginningError">URL muss mit http beginnen!</string>
     <string name="incompleteConfigurationError">Konfiguration ist nicht vollständig!</string>
     <string name="invalidInput">Ungültige Eingabe!</string>

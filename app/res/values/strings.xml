@@ -174,7 +174,7 @@
     <string name="updateErrorDeviceListParse">Could not parse xml device list.</string>
     <string name="authenticationError">Invalid username or password.</string>
     <string name="graphLoadError">Error while loading graph data.</string>
-    <string name="fhemUpdateRequiredError">Please update your FHEM server (updatefhem)</string>
+    <string name="strangeContentError">FHEM returned some strange content. Are you sure the URL is valid?</string>
     <string name="prefUrlBeginningError">URL has to start with http!</string>
     <string name="incompleteConfigurationError">Incomplete configuration!</string>
     <string name="invalidInput">Invalid input!</string>
