@@ -41,6 +41,7 @@ import java.util.Set;
 public class PremiumFragment extends BaseFragment {
 
     private static final String TAG = PremiumFragment.class.getName();
+    private boolean billingSupported;
 
     @SuppressWarnings("unused")
     public PremiumFragment(Bundle bundle) {
@@ -53,12 +54,16 @@ public class PremiumFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        onResume();
+
+        billingSupported = BillingService.INSTANCE.isBillingSupported();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
+        View superView = super.onCreateView(inflater, container, savedInstanceState);
+        if (! billingSupported) {
+            return superView;
+        }
 
         View view = inflater.inflate(R.layout.shop_premium, null);
         view.findViewById(R.id.shop_premium_bought).setVisibility(View.GONE);
@@ -72,6 +77,7 @@ public class PremiumFragment extends BaseFragment {
                 BillingService.INSTANCE.requestPurchase(AndFHEMApplication.PRODUCT_PREMIUM_ID, null);
             }
         });
+
         update(view);
 
         return view;
@@ -79,6 +85,8 @@ public class PremiumFragment extends BaseFragment {
 
     @Override
     public void update(boolean doUpdate) {
+        if (! billingSupported) return;
+
         update(getView());
         BillingService.INSTANCE.onActivityUpdate();
     }
@@ -117,5 +125,7 @@ public class PremiumFragment extends BaseFragment {
         Intent intent = new Intent(Actions.SHOW_TOAST);
         intent.putExtra(BundleExtraKeys.TOAST_STRING_ID, toastString);
         getActivity().sendBroadcast(intent);
+
+        getActivity().sendBroadcast(new Intent(Actions.BACK));
     }
 }

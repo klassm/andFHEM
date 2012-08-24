@@ -28,6 +28,7 @@ import android.util.Log;
 import li.klass.fhem.billing.amazon.AmazonBillingProvider;
 import li.klass.fhem.billing.playstore.PlayStoreProvider;
 import li.klass.fhem.constants.PreferenceKeys;
+import li.klass.fhem.license.LicenseManager;
 import li.klass.fhem.util.ApplicationProperties;
 
 import java.util.HashSet;
@@ -43,13 +44,6 @@ public class BillingService {
 
     private Set<BeforeProductPurchasedListener> beforeProductPurchasedListeners = new HashSet<BeforeProductPurchasedListener>();
 
-    public void rebuildDatabaseFromRemote() {
-        if (!isBillingSupported()) return;
-
-        Log.e(TAG, "request rebuild database from remote");
-        getCurrentProvider().rebuildDatabaseFromRemote();
-    }
-
     private enum ProviderType {
         AMAZON(AmazonBillingProvider.INSTANCE), GOOGLE(PlayStoreProvider.INSTANCE);
 
@@ -62,14 +56,21 @@ public class BillingService {
         public BillingProvider getStoreProvider() {
             return storeProvider;
         }
-    }
 
+    }
     public static final BillingService INSTANCE = new BillingService();
 
     private BillingService() {
     }
 
     private ProviderType billingProvider;
+
+    public void rebuildDatabaseFromRemote() {
+        if (!isBillingSupported()) return;
+
+        Log.e(TAG, "request rebuild database from remote");
+        getCurrentProvider().rebuildDatabaseFromRemote();
+    }
 
     public boolean hasPendingRequestFor(String productId) {
         return getCurrentProvider().hasPendingRequestFor(productId);
@@ -105,7 +106,7 @@ public class BillingService {
     }
 
     public boolean isBillingSupported() {
-        return getCurrentProvider().isBillingSupported();
+        return ! LicenseManager.INSTANCE.isDebug() && getCurrentProvider().isBillingSupported();
     }
 
     public boolean isBillingDatabaseInitialised() {
@@ -147,5 +148,4 @@ public class BillingService {
         }
         return billingProvider.getStoreProvider();
     }
-
 }

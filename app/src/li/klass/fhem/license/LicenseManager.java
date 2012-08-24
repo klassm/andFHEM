@@ -43,7 +43,13 @@ public class LicenseManager {
 
     public boolean isPro() {
         if (isPremium) return true;
+        if (isDebug()) return true;
 
+        Set<String> ownedItems = BillingService.INSTANCE.getOwnedItems();
+        return ownedItems.contains(AndFHEMApplication.PRODUCT_PREMIUM_ID) || ownedItems.contains(AndFHEMApplication.PRODUCT_PREMIUM_DONATOR_ID);
+    }
+
+    public boolean isDebug() {
         try {
             Context context = AndFHEMApplication.getContext();
             PackageInfo pkgInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), PackageManager.GET_SIGNATURES);
@@ -57,7 +63,6 @@ public class LicenseManager {
         } catch (Exception e) {
             Log.e(LicenseManager.class.getName(), "some exception occurred during reading of app signatures", e);
         }
-        Set<String> ownedItems = BillingService.INSTANCE.getOwnedItems();
-        return ownedItems.contains(AndFHEMApplication.PRODUCT_PREMIUM_ID) || ownedItems.contains(AndFHEMApplication.PRODUCT_PREMIUM_DONATOR_ID);
+        return false;
     }
 }

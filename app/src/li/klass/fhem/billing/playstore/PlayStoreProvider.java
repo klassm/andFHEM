@@ -49,6 +49,7 @@ public class PlayStoreProvider extends PlayStorePurchaseObserver implements Bill
 
     @Override
     public void requestPurchase(String productId, String payload) {
+        if (billingService == null) return;
         billingService.requestPurchase(productId, payload);
     }
 
@@ -73,7 +74,7 @@ public class PlayStoreProvider extends PlayStorePurchaseObserver implements Bill
 
     @Override
     public boolean hasPendingRequestFor(String productId) {
-        return billingService.hasPendingRequestFor(productId);
+        return billingService != null && billingService.hasPendingRequestFor(productId);
     }
 
     @Override
@@ -127,7 +128,8 @@ public class PlayStoreProvider extends PlayStorePurchaseObserver implements Bill
     }
 
     private void restoreDatabase() {
-        if (BillingService.INSTANCE.isBillingDatabaseInitialised() || isRestoreDatabaseRequestInProgress) {
+        if (billingService == null || BillingService.INSTANCE.isBillingDatabaseInitialised()
+                || isRestoreDatabaseRequestInProgress) {
             return;
         }
 
