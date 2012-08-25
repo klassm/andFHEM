@@ -26,7 +26,6 @@
 
 apply plugin: 'java'
 apply plugin: com.smokejumperit.gradle.ExecPlugin
-apply plugin: 'idea'
 
 ext {
     targetDir = new File('target')
@@ -56,29 +55,6 @@ allprojects {
 
 subprojects {
     apply plugin: 'java'
-}
-
-project(':ActionBarSherlock') {
-    configurations: {
-        test {
-            dependencies {
-                compile 'com.google.android:android:4.0.1.2'
-            }
-        }
-    }
-}
-
-project(':app') {
-    dependencies {
-        compile project(':ActionBarSherlock')
-    }
-}
-
-project(':tests') {
-    dependencies {
-        compile project(path: ':ActionBarSherlock')
-        compile project(path: ':app')
-    }
 }
 
 task readKeystorePassword << {

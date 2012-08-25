@@ -22,6 +22,8 @@
  *   Boston, MA  02110-1301  USA
  */
 
+
+
 apply plugin: com.smokejumperit.gradle.ExecPlugin
 
 buildscript {
@@ -32,6 +34,15 @@ buildscript {
         classpath 'com.smokejumperit:gradle-plugins:0.8.2'
     }
 }
+
+configurations: {
+    test {
+        dependencies {
+            compile 'com.google.android:android:4.0.1.2'
+        }
+    }
+}
+
 dependencies {
     compile fileTree(dir: './libs', include: '*.jar')
 }
