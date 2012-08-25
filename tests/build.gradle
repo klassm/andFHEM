@@ -24,11 +24,7 @@
 
 
 
-
-
 apply plugin: 'java'
-
-configurations { robo }
 
 dependencies {
     testCompile 'com.pivotallabs:robolectric:1.1'
