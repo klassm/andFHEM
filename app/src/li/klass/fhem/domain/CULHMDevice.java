@@ -24,8 +24,6 @@
 
 package li.klass.fhem.domain;
 
-import java.util.List;
-
 import li.klass.fhem.R;
 import li.klass.fhem.appwidget.annotation.SupportsWidget;
 import li.klass.fhem.appwidget.annotation.WidgetTemperatureField;
@@ -40,6 +38,8 @@ import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.NumberUtil;
 import li.klass.fhem.util.ValueDescriptionUtil;
 import li.klass.fhem.util.ValueExtractUtil;
+
+import java.util.List;
 
 @SuppressWarnings("unused")
 @DetailOverviewViewSettings(showState = true)
@@ -153,6 +153,10 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice> {
         super.afterXMLRead();
 
         if (subType == SubType.KFM100) {
+            if (fillContentLitresRaw > fillContentLitresMaximum) {
+                fillContentLitresRaw = fillContentLitresMaximum;
+            }
+
             fillContentPercentageRaw = fillContentLitresRaw == 0 ? 0 : fillContentLitresRaw / fillContentLitresMaximum;
             fillContentPercentage = ValueDescriptionUtil.appendPercent((int) (fillContentPercentageRaw * 100));
         }
