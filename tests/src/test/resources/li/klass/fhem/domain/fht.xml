@@ -79,7 +79,7 @@
             <STATE key="desired-temp" value="6.5" measured="2012-08-14 23:08:35"/>
             <STATE key="night-temp" value="6.5" measured="2012-08-08 22:04:40"/>
             <STATE key="windowopen-temp" value="6.5" measured="2012-08-08 22:04:40"/>
-            <STATE key="temperature" value="23.1" measured="2012-08-15 12:00:00"/>
+            <STATE key="measured-temp" value="23.1" measured="2012-08-15 12:00:00"/>
 
             <STATE key="actuator" value="0%" measured="2011-12-05 16:33:11"/>
         </FHT>
