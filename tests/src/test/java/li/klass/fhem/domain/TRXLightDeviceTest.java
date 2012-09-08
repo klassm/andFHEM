@@ -74,7 +74,7 @@ public class TRXLightDeviceTest extends DeviceXMLParsingBase {
         TRXLightDevice device3 = getDeviceFor("device3");
 
         device3.setState("off");
-        assertThat(device3.formatTargetState("level 13"), is("on level=13"));
+        assertThat(device3.formatTargetState("level 13"), is("level 13"));
         assertThat(device3.formatTargetState("on"), is("on"));
         assertThat(device3.formatTargetState("off"), is("off"));
 
@@ -85,9 +85,6 @@ public class TRXLightDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testSetState() {
         TRXLightDevice device3 = getDeviceFor("device3");
-
-        device3.setState("on level=5");
-        assertThat(device3.getState(), is("level 5"));
 
         device3.setState("level 5");
         assertThat(device3.getState(), is("level 5"));

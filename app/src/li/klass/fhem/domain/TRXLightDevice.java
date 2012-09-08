@@ -73,14 +73,6 @@ public class TRXLightDevice extends DimmableDiscreteStatesDevice<TRXLightDevice>
     }
 
     @Override
-    public String formatTargetState(String targetState) {
-        if (targetState.startsWith("level") && !isOn()) {
-            return "on " + targetState.replaceAll(" ", "=");
-        }
-        return super.formatTargetState(targetState);
-    }
-
-    @Override
     public boolean supportsToggle() {
         return true;
     }
@@ -106,14 +98,5 @@ public class TRXLightDevice extends DimmableDiscreteStatesDevice<TRXLightDevice>
             dimState = "level 15";
         }
         return super.getPositionForDimState(dimState);
-    }
-
-    @Override
-    public void setState(String state) {
-        if (state.startsWith("on level")) {
-            setState(state.substring("on ".length()).replace("=", " "));
-            return;
-        }
-        super.setState(state);
     }
 }
