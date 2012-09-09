@@ -8,7 +8,7 @@
  * distributed under license by Red Hat Inc.
  *
  * This copyrighted material is made available to anyone wishing to use, modify,
- * copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLICLICENSE, as published by the Free Software Foundation.
+ * copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
@@ -28,9 +28,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.PackageManager;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -43,21 +40,17 @@ import android.widget.Toast;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
-import li.klass.fhem.ApplicationUrls;
 import li.klass.fhem.R;
-import li.klass.fhem.activities.PreferencesActivity;
 import li.klass.fhem.billing.BillingService;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.PreferenceKeys;
-import li.klass.fhem.fragments.*;
+import li.klass.fhem.fragments.FragmentType;
 import li.klass.fhem.fragments.core.ActionBarShowTabs;
 import li.klass.fhem.fragments.core.BaseFragment;
 import li.klass.fhem.fragments.core.TopLevelFragment;
 import li.klass.fhem.service.room.RoomListService;
 import li.klass.fhem.util.ApplicationProperties;
-import li.klass.fhem.util.DialogUtil;
 
 import java.io.Serializable;
 import java.lang.reflect.Constructor;
@@ -67,8 +60,6 @@ import java.util.ArrayList;
 import static li.klass.fhem.constants.Actions.*;
 
 public abstract class FragmentBaseActivity extends SherlockFragmentActivity implements ActionBar.TabListener, Updateable {
-    ;
-
     private static class FragmentHistoryStackEntry implements Serializable {
         FragmentHistoryStackEntry(BaseFragment navigationFragment, BaseFragment contentFragment) {
             this.navigationFragment = navigationFragment;
@@ -91,13 +82,13 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
 
     /**
      * an intent waiting to be processed, but received in the wrong activity state (widget problem ..)
-     **/
+     */
     private Intent waitingIntent;
 
     /**
      * Attribute is true if the activity has been restarted instead of being newly created
      */
-    private boolean isActivityRestart = false;
+    private boolean isActivityStart = true;
 
     private Handler autoUpdateHandler;
 
@@ -219,7 +210,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
             restoreResult = restoreSavedInstance(savedInstanceState, actionBar);
         }
 
-        if (savedInstanceState == null || ! restoreResult)  {
+        if (savedInstanceState == null || !restoreResult) {
             Log.e(FragmentBaseActivity.class.getName(), "create a new favorites fragment");
             switchToFragment(FragmentType.FAVORITES, new Bundle());
         }
@@ -228,7 +219,6 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
     @Override
     protected void onRestart() {
         super.onRestart();
-        this.isActivityRestart = true;
         Log.e(FragmentBaseActivity.class.getName(), "onRestart");
     }
 
@@ -236,7 +226,10 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
 
-        if (hasFocus && ! isActivityRestart && ApplicationProperties.INSTANCE.getBooleanSharedPreference(PreferenceKeys.UPDATE_ON_APPLICATION_START, false)) {
+        boolean updateOnApplicationStart = ApplicationProperties.INSTANCE
+                .getBooleanSharedPreference(PreferenceKeys.UPDATE_ON_APPLICATION_START, false);
+
+        if (hasFocus && isActivityStart && updateOnApplicationStart) {
             Log.e(FragmentBaseActivity.class.getName(), "request update due to application start preference");
             Intent intent = new Intent(Actions.DO_UPDATE);
             intent.putExtra(BundleExtraKeys.DO_REFRESH, true);
@@ -244,7 +237,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
         }
 
         // reset the attribute!
-        isActivityRestart = false;
+        isActivityStart = false;
     }
 
     @Override
@@ -305,7 +298,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
             } else {
                 return false;
             }
-        } catch(Exception e) {
+        } catch (Exception e) {
             Log.i(FragmentBaseActivity.class.getName(), "error occurred while restoring instance", e);
             return false;
         }
@@ -339,7 +332,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
         Object tag = tab.getTag();
         Log.d(FragmentBaseActivity.class.getName(), "selected tab with target " + tag);
 
-        if (! (tag instanceof FragmentType)) {
+        if (!(tag instanceof FragmentType)) {
             Log.e(FragmentBaseActivity.class.getName(), "can only switch tabs including a FragmentType as tag");
             return;
         }
@@ -364,83 +357,6 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
         getSupportMenuInflater().inflate(R.menu.main_menu, menu);
         this.optionsMenu = menu;
         return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                onBackPressed();
-                break;
-
-            case R.id.menu_refresh:
-                Intent refreshIntent = new Intent(Actions.DO_UPDATE);
-                refreshIntent.putExtra(BundleExtraKeys.DO_REFRESH, true);
-                sendBroadcast(refreshIntent);
-
-                return true;
-
-            case R.id.menu_settings:
-                Intent settingsIntent = new Intent(this, PreferencesActivity.class);
-                startActivityForResult(settingsIntent, RESULT_OK);
-
-                return true;
-
-            case R.id.menu_help:
-                Uri helpUri = Uri.parse(ApplicationUrls.HELP_PAGE);
-                Intent helpIntent = new Intent(Intent.ACTION_VIEW, helpUri);
-                startActivity(helpIntent);
-
-                return true;
-
-            case R.id.menu_premium:
-                Intent premiumIntent = new Intent(Actions.SHOW_FRAGMENT);
-                premiumIntent.putExtra(BundleExtraKeys.FRAGMENT_NAME, PremiumFragment.class.getName());
-                sendBroadcast(premiumIntent);
-
-                return true;
-
-            case R.id.menu_command:
-                Intent commandIntent = new Intent(Actions.SHOW_FRAGMENT);
-                commandIntent.putExtra(BundleExtraKeys.FRAGMENT_NAME, SendCommandFragment.class.getName());
-                sendBroadcast(commandIntent);
-
-                return true;
-
-            case R.id.menu_conversion:
-                Intent conversion = new Intent(Actions.SHOW_FRAGMENT);
-                conversion.putExtra(BundleExtraKeys.FRAGMENT_NAME, ConversionFragment.class.getName());
-                sendBroadcast(conversion);
-
-                return true;
-
-            case R.id.menu_timer:
-                if (Build.VERSION.SDK_INT < 11) {
-                    String text = String.format(getString(R.string.feature_requires_android_version), 3);
-                    DialogUtil.showAlertDialog(this, R.string.android_version, text);
-                    return true;
-                }
-                Intent timer = new Intent(Actions.SHOW_FRAGMENT);
-                timer.putExtra(BundleExtraKeys.FRAGMENT_NAME, TimerListFragment.class.getName());
-                sendBroadcast(timer);
-
-                return true;
-
-            case R.id.menu_about:
-                String version;
-                try {
-                    String pkg = getPackageName();
-                    version = getPackageManager().getPackageInfo(pkg, 0).versionName;
-                } catch (PackageManager.NameNotFoundException e) {
-                    version = "?";
-                }
-                DialogUtil.showAlertDialog(this, R.string.about, "Matthias Klass\r\nVersion: " + version +  "\r\n" +
-                        "andFHEM.klass.li\r\nandFHEM@klass.li");
-                return true;
-
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -492,7 +408,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
 
     private FragmentAction findOutRequiredFragmentAction(FragmentType fragmentType, Bundle data) {
         FragmentHistoryStackEntry current = currentHistoryStackEntry;
-        if (current == null || ! current.contentFragment.getClass().equals(fragmentType.getContentClass())) {
+        if (current == null || !current.contentFragment.getClass().equals(fragmentType.getContentClass())) {
             return FragmentAction.CREATE_NEW;
         }
         if (current.contentFragment.getCreationAttributesAsBundle().equals(data)) {
@@ -516,7 +432,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
         View navigationView = findViewById(R.id.navigation);
         boolean isTablet = navigationView != null;
 
-        if (! isTablet) {
+        if (!isTablet) {
             return null;
         }
 
@@ -539,7 +455,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
         if (fragmentClass == null) return null;
 
         Constructor<? extends BaseFragment> constructor = fragmentClass.getConstructor(Bundle.class);
-        return (BaseFragment) constructor.newInstance(data);
+        return constructor.newInstance(data);
     }
 
     private void switchToFragment(FragmentHistoryStackEntry toSwitchToEntry, boolean putToStack) {
@@ -641,12 +557,12 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
 
     private void setShowRefreshProgressIcon(boolean show) {
         if (optionsMenu == null) return;
-        optionsMenu.findItem(R.id.menu_refresh).setVisible(! show);
+        optionsMenu.findItem(R.id.menu_refresh).setVisible(!show);
         optionsMenu.findItem(R.id.menu_refresh_progress).setVisible(show);
     }
 
     private FragmentHistoryStackEntry removeLastHistoryFragmentEntry() {
-        if (! fragmentHistoryStack.isEmpty()) {
+        if (!fragmentHistoryStack.isEmpty()) {
             return fragmentHistoryStack.remove(fragmentHistoryStack.size() - 1);
         }
         return null;
