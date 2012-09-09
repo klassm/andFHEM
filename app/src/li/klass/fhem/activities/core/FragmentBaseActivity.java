@@ -466,14 +466,15 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
 
         Log.d(FragmentBaseActivity.class.getName(), "switch to " + toSwitchToEntry.contentFragment.getClass().getName());
 
-        if (toSwitchToEntry.contentFragment instanceof TopLevelFragment) {
-            fragmentHistoryStack.clear();
-        }
-
         if (putToStack) {
             if (fragmentHistoryStack.size() > 10) fragmentHistoryStack.remove(0);
             fragmentHistoryStack.add(currentHistoryStackEntry);
         }
+
+        if (toSwitchToEntry.contentFragment instanceof TopLevelFragment) {
+            fragmentHistoryStack.clear();
+        }
+
         currentHistoryStackEntry = toSwitchToEntry;
 
         try {
