@@ -31,16 +31,16 @@ import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class DummyDataConnection implements FHEMConnection {
     public static final DummyDataConnection INSTANCE = new DummyDataConnection();
+    public static final String TAG = DummyDataConnection.class.getName();
 
     private DummyDataConnection() {
     }
-    
+
     @Override
     public String xmllist() {
         InputStream inputStream = null;
@@ -83,6 +83,11 @@ public class DummyDataConnection implements FHEMConnection {
 
     @Override
     public String executeCommand(String command) {
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            Log.d(TAG, "ignored", e);
+        }
         Log.e(DummyDataConnection.class.getName(), "execute command: " + command);
         return "I am a dummy. Do you expect me to answer you?";
     }
