@@ -60,6 +60,9 @@ import java.util.ArrayList;
 import static li.klass.fhem.constants.Actions.*;
 
 public abstract class FragmentBaseActivity extends SherlockFragmentActivity implements ActionBar.TabListener, Updateable {
+
+    ApplicationProperties applicationProperties = ApplicationProperties.INSTANCE;
+
     private static class FragmentHistoryStackEntry implements Serializable {
         FragmentHistoryStackEntry(BaseFragment navigationFragment, BaseFragment contentFragment) {
             this.navigationFragment = navigationFragment;
@@ -88,7 +91,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
     /**
      * Attribute is true if the activity has been restarted instead of being newly created
      */
-    private boolean isActivityStart = true;
+    boolean isActivityStart = true;
 
     private Handler autoUpdateHandler;
 
@@ -226,7 +229,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
 
-        boolean updateOnApplicationStart = ApplicationProperties.INSTANCE
+        boolean updateOnApplicationStart = applicationProperties
                 .getBooleanSharedPreference(PreferenceKeys.UPDATE_ON_APPLICATION_START, false);
 
         if (hasFocus && isActivityStart && updateOnApplicationStart) {
