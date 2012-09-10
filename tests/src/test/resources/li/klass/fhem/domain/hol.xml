@@ -24,14 +24,18 @@
 
 <FHZINFO>
     <HOL_LIST>
-        <HOL name="device" state="off" sets="on off"
-             attrs="room group comment alias eventMap fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon onOffDevice webCmd">
+        <HOL name="device" state="off" sets="on off" attrs="room group comment alias eventMap fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon onOffDevice webCmd">
             <INT key="NAME" value="device"/>
-            <INT key="NR" value="184"/>
+            <INT key="NR" value="189"/>
             <INT key="STATE" value="off"/>
             <INT key="TYPE" value="HOL"/>
+            <INT key="currentSwitchDevice" value="mat_halogen"/>
+            <INT key="currentSwitchTime" value="600"/>
+            <INT key="lastTrigger" value="2012-09-09 20:05:17"/>
+            <INT key="nextTrigger" value="2012-09-09 20:15:22"/>
             <ATTR key="room" value="room"/>
         </HOL>
+
         <HOL name="device1" state="on" sets="on off"
              attrs="room group comment alias eventMap fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon onOffDevice webCmd">
             <INT key="NAME" value="device1"/>

@@ -43,6 +43,11 @@ public class HOLDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.isOn(), is(false));
         assertThat(device.getState(), is("off"));
 
+        assertThat(device.getCurrentSwitchDevice(), is("mat_halogen"));
+        assertThat(device.getCurrentSwitchTime(), is("600 (s)"));
+        assertThat(device.getLastTrigger(), is("2012-09-09 20:05:17"));
+        assertThat(device.getNextTrigger(), is("2012-09-09 20:15:22"));
+
         assertThat(device.getAvailableTargetStates(), is(notNullValue()));
 
         assertThat(device.getFileLog(), is(nullValue()));

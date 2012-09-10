@@ -46,6 +46,19 @@
           value="5.1 from 2011-07-08 ($Id: fhem.pl,v 1.145 2011-07-07 08:46:28 rudolfkoenig Exp $)"/>
 </_internal_>
 </_internal__LIST>
+<HOL_LIST>
+<HOL name="holiday" state="off" sets="on off" attrs="room group comment alias eventMap fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon onOffDevice webCmd">
+    <INT key="NAME" value="holiday"/>
+    <INT key="NR" value="189"/>
+    <INT key="STATE" value="off"/>
+    <INT key="TYPE" value="HOL"/>
+    <INT key="currentSwitchDevice" value="mat_halogen"/>
+    <INT key="currentSwitchTime" value="600"/>
+    <INT key="lastTrigger" value="2012-09-09 20:05:17"/>
+    <INT key="nextTrigger" value="2012-09-09 20:15:22"/>
+    <ATTR key="room" value="haus"/>
+</HOL>
+</HOL_LIST>
 <dummy_LIST>
 <dummy name="myvar" state="7" sets="*"
        attrs="room group comment alias eventMap loglevel:0,1,2,3,4,5,6 setList fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon webCmd">

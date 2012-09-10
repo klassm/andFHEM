@@ -23,11 +23,59 @@
 
 package li.klass.fhem.domain;
 
+import li.klass.fhem.R;
 import li.klass.fhem.domain.core.ToggleableDevice;
 import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
+import li.klass.fhem.domain.genericview.ShowField;
+import li.klass.fhem.util.ValueDescriptionUtil;
 
 @DetailOverviewViewSettings(showState = true)
+@SuppressWarnings("unused")
 public class HOLDevice extends ToggleableDevice<HOLDevice> {
+
+    @ShowField(description = R.string.currentSwitchDevice)
+    private String currentSwitchDevice;
+
+    @ShowField(description = R.string.currentSwitchTime)
+    private String currentSwitchTime;
+
+    @ShowField(description = R.string.lastSwitchTime)
+    private String lastTrigger;
+
+    @ShowField(description = R.string.nextSwitchTime)
+    private String nextTrigger;
+
+    public void readCURRENTSWITCHDEVICE(String currentSwitchDevice) {
+        this.currentSwitchDevice = currentSwitchDevice;
+    }
+
+    public void readCURRENTSWITCHTIME(String currentSwitchTime) {
+        this.currentSwitchTime = ValueDescriptionUtil.append(currentSwitchTime, "s");
+    }
+
+    public void readLASTTRIGGER(String lastTrigger) {
+        this.lastTrigger = lastTrigger;
+    }
+
+    public void readNEXTTRIGGER(String nextTrigger) {
+        this.nextTrigger = nextTrigger;
+    }
+
+    public String getCurrentSwitchDevice() {
+        return currentSwitchDevice;
+    }
+
+    public String getCurrentSwitchTime() {
+        return currentSwitchTime;
+    }
+
+    public String getLastTrigger() {
+        return lastTrigger;
+    }
+
+    public String getNextTrigger() {
+        return nextTrigger;
+    }
 
     public boolean isOn() {
         return ! getInternalState().equals("off");

@@ -110,6 +110,10 @@
     <string name="content">Content</string>
     <string name="fillPercentage">Fill percentage</string>
     <string name="maximumContent">Maximum content</string>
+    <string name="currentSwitchTime">Current Switch Time</string>
+    <string name="currentSwitchDevice">Current Device</string>
+    <string name="lastSwitchTime">Last Trigger</string>
+    <string name="nextSwitchTime">Next Trigger</string>
 
     <string name="switchDevice">Switch</string>
     <string name="preferences">Preferences</string>
