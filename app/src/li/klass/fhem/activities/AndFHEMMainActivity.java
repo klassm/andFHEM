@@ -53,7 +53,6 @@ public class AndFHEMMainActivity extends FragmentBaseActivity {
         UpdateHandler.INSTANCE.onUpdate();
     }
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {

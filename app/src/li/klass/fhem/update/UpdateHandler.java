@@ -24,11 +24,7 @@
 
 package li.klass.fhem.update;
 
-import android.util.Log;
 import li.klass.fhem.AndFHEMApplication;
-import li.klass.fhem.billing.BillingService;
-import li.klass.fhem.constants.PreferenceKeys;
-import li.klass.fhem.util.ApplicationProperties;
 
 public class UpdateHandler {
     public static final UpdateHandler INSTANCE = new UpdateHandler();
@@ -41,28 +37,5 @@ public class UpdateHandler {
     public void onUpdate() {
         AndFHEMApplication application = AndFHEMApplication.INSTANCE;
         if (!application.isUpdate()) return;
-
-        fixInvalidPurchases();
     }
-
-    private void fixInvalidPurchases() {
-        if (!ApplicationProperties.INSTANCE.getBooleanSharedPreference(PreferenceKeys.FIX_INVALID_PURCHASES, false)) {
-
-            Log.e(TAG, "execute fix invalid purchases");
-
-            BillingService.INSTANCE.registerBeforeProductPurchasedListener(new BillingService.BeforeProductPurchasedListener() {
-                @Override
-                public void productPurchased(String orderId, String productId) {
-                    BillingService.INSTANCE.clearDatabase();
-                    BillingService.INSTANCE.removeBeforeProductPurchasedListener(this);
-                    ApplicationProperties.INSTANCE.setSharedPreference(PreferenceKeys.FIX_INVALID_PURCHASES, true);
-
-                    Log.e(TAG, "fix invalid purchases fix executed!");
-                }
-            });
-            ApplicationProperties.INSTANCE.setSharedPreference(PreferenceKeys.BILLING_DATABASE_INITIALISED, false);
-            BillingService.INSTANCE.rebuildDatabaseFromRemote();
-        }
-    }
-
 }
