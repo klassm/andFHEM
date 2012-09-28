@@ -25,10 +25,13 @@
 package li.klass.fhem.service.graph;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
+import li.klass.fhem.constants.Actions;
+import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.exception.HostConnectionException;
 import li.klass.fhem.fhem.DataConnectionSwitch;
@@ -61,8 +64,6 @@ public class GraphService {
     public HashMap<ChartSeriesDescription, List<GraphEntry>> getGraphData(Device device, ArrayList<ChartSeriesDescription> seriesDescriptions,
                                                            final Calendar startDate, final Calendar endDate) {
 
-        Context context = AndFHEMApplication.getContext();
-
         if (device.getFileLog() == null) return null;
 
         HashMap<ChartSeriesDescription, List<GraphEntry>> data = new HashMap<ChartSeriesDescription, List<GraphEntry>>();
@@ -77,7 +78,9 @@ public class GraphService {
                 data.put(seriesDescription, valueEntries);
             }
         } catch (HostConnectionException e) {
-            Toast.makeText(context, R.string.updateErrorHostConnection, Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(Actions.SHOW_TOAST);
+            intent.putExtra(BundleExtraKeys.TOAST_STRING_ID, R.string.updateErrorHostConnection);
+            AndFHEMApplication.getContext().sendBroadcast(intent);
         }
 
         return data;

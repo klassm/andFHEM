@@ -58,7 +58,7 @@ public class ImageUtil {
         try {
             URL url = new URL(imageURL);
             return BitmapFactory.decodeStream((InputStream) url.getContent());
-        } catch (IOException e) {
+        } catch (Exception e) {
             Log.e(ImageUtil.class.getName(), "could not load image from " + imageURL, e);
             return null;
         }
