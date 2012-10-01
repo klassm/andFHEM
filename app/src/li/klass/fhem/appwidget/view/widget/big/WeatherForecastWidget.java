@@ -62,8 +62,9 @@ public class WeatherForecastWidget extends AppWidgetView {
             forecastView.setTextViewText(R.id.day_condition, forecast.getCondition());
             forecastView.setTextViewText(R.id.day_temperature, forecast.getLowTemperature() + " - " + forecast.getHighTemperature());
 
-            Bitmap bitmap = ImageUtil.loadBitmap(WeatherDevice.IMAGE_URL_PREFIX + forecast.getIcon() + "?time=" + System.currentTimeMillis());
-            forecastView.setImageViewBitmap(R.id.day_image, bitmap);
+//            TODO fixme whenever weather icons are available
+//            Bitmap bitmap = ImageUtil.loadBitmap(WeatherDevice.IMAGE_URL_PREFIX + forecast.getIcon() + "?time=" + System.currentTimeMillis());
+//            forecastView.setImageViewBitmap(R.id.day_image, bitmap);
 
             view.addView(R.id.forecasts, forecastView);
         }

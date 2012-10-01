@@ -129,7 +129,8 @@ public class WeatherAdapter extends GenericDeviceAdapter<WeatherDevice> {
 
 
     private void setWeatherIconIn(final ImageView imageView, String weatherIcon) {
-        final String imageURL = WeatherDevice.IMAGE_URL_PREFIX + weatherIcon;
-        ImageUtil.setExternalImageIn(imageView, imageURL);
+//        TODO fixme whenever weather icons are available
+//        final String imageURL = WeatherDevice.IMAGE_URL_PREFIX + weatherIcon;
+//        ImageUtil.setExternalImageIn(imageView, imageURL);
     }
 }
