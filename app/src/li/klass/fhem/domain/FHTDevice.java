@@ -267,6 +267,6 @@ public class FHTDevice extends Device<FHTDevice> {
                 ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:measured"),
                 ChartSeriesDescription.getDiscreteValuesInstance(R.string.desiredTemperature, "4:desired-temp")));
         addDeviceChartIfNotNull(actuator, new DeviceChart(R.string.actuatorGraph, R.string.yAxisActuator,
-                new ChartSeriesDescription(R.string.actuator, "4:actuator.*[0-9]+%")));
+                new ChartSeriesDescription(R.string.actuator, "4:actuator.*[0-9]+%:0:int")));
     }
 }
