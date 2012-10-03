@@ -45,6 +45,12 @@ public class TRXWeatherDevice extends Device<TRXWeatherDevice> {
     @ShowField(description = R.string.battery, showInOverview = true)
     private String battery;
 
+    @ShowField(description = R.string.humidity, showInOverview = true)
+    private String humidity;
+
+    @ShowField(description = R.string.dewpoint, showInOverview = false)
+    private String dewpoint;
+
     public void readTEMPERATURE(String value) {
         this.temperature = ValueDescriptionUtil.appendTemperature(value);
     }
@@ -53,11 +59,27 @@ public class TRXWeatherDevice extends Device<TRXWeatherDevice> {
         this.battery = value;
     }
 
+    public void readHUMIDITY(String value) {
+        this.humidity = ValueDescriptionUtil.appendPercent(value);
+    }
+
+    public void readDEWPOINT(String value) {
+        this.dewpoint = ValueDescriptionUtil.appendTemperature(value);
+    }
+
     public String getTemperature() {
         return temperature;
     }
 
     public String getBattery() {
         return battery;
+    }
+
+    public String getHumidity() {
+        return humidity;
+    }
+
+    public String getDewpoint() {
+        return dewpoint;
     }
 }

@@ -24,6 +24,7 @@
 
 package li.klass.fhem.domain;
 
+import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 import org.junit.Test;
 
@@ -47,6 +48,14 @@ public class TRXWeatherDeviceTest extends DeviceXMLParsingBase {
 
         assertThat(device.getFileLog(), is(nullValue()));
         assertThat(device.getDeviceCharts().size(), is(0));
+    }
+
+    @Test
+    public void testForCorrectlySetAttributesInHumidityDevice() {
+        TRXWeatherDevice device = getDeviceFor("device1");
+
+        assertThat(device.getHumidity(), is("59 (%)"));
+        assertThat(device.getDewpoint(), is("11.1 (°C)"));
     }
 
     @Override

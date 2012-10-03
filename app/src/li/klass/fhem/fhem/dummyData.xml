@@ -2363,6 +2363,43 @@ room structexclude webCmd eventMap">
     <STATE key="battery" value="ok" measured="2012-04-10 16:29:33"/>
     <STATE key="temperature" value="21.1" measured="2012-04-10 16:29:33"/>
 </TRX_WEATHER>
+<TRX_WEATHER name="TX3_T_06" state="T: 19.3 H: 59 D: 11.1 BAT: ok" sets="" attrs="room group comment alias eventMap IODev ignore:1,0 do_not_notify:1,0 loglevel:0,1,2,3,4,5,6 fp_0_Keller fp_1_Erdgeschoss fp_2_Obergeschoss icon webCmd">
+    <INT key="CFGFN" value="./FHEM/0_Proberaum.cfg"/>
+    <INT key="CODE" value="TFATS34C_5d_14"/>
+    <INT key="DEF" value="TFATS34C_5d_14"/>
+    <INT key="NAME" value="TX3_T_06"/>
+    <INT key="NR" value="32"/>
+    <INT key="STATE" value="T: 19.3 H: 59 D: 11.1 BAT: ok"/>
+    <INT key="TIME" value="2012-10-02 11:36:13"/>
+    <INT key="TYPE" value="TRX_WEATHER"/>
+    <INT key="IODev" value="RFXTRXUSB"/>
+    <ATTR key="alias" value="PR_TemperaturAktuell"/>
+    <ATTR key="fp_0_Keller" value="620,610,4,Proberaum"/>
+    <ATTR key="group" value="PR_Temperaturen"/>
+    <ATTR key="icon" value="icoTemp"/>
+    <ATTR key="room" value="room"/>
+    <STATE key="battery" value="ok" measured="2012-10-02 11:36:13"/>
+    <STATE key="dewpoint" value="11.1" measured="2012-10-02 11:36:13"/>
+    <STATE key="fan" value="off" measured="2012-10-01 11:09:13"/>
+    <STATE key="humidity" value="59" measured="2012-10-02 11:36:13"/>
+    <STATE key="humidity_avg_day" value="59.0" measured="2012-10-02 11:36:13"/>
+    <STATE key="humidity_avg_month" value="58.4" measured="2012-10-02 11:36:13"/>
+    <STATE key="humidity_cum_day" value="2464607" measured="2012-10-02 11:36:13"/>
+    <STATE key="humidity_cum_month" value="12523624" measured="2012-10-02 11:36:13"/>
+    <STATE key="humidity_max_day" value="59.0" measured="2012-10-02 09:27:13"/>
+    <STATE key="humidity_max_month" value="59.0" measured="2012-10-01 17:21:13"/>
+    <STATE key="humidity_min_day" value="59.0" measured="2012-10-02 09:27:13"/>
+    <STATE key="humidity_min_month" value="58.0" measured="2012-10-01 09:30:14"/>
+    <STATE key="temperature" value="19.3" measured="2012-10-02 11:36:13"/>
+    <STATE key="temperature_avg_day" value="19.3" measured="2012-10-02 11:36:13"/>
+    <STATE key="temperature_avg_month" value="18.9" measured="2012-10-02 11:36:13"/>
+    <STATE key="temperature_cum_day" value="806101.9" measured="2012-10-02 11:36:13"/>
+    <STATE key="temperature_cum_month" value="4054990.5" measured="2012-10-02 11:36:13"/>
+    <STATE key="temperature_max_day" value="19.3" measured="2012-10-02 09:27:13"/>
+    <STATE key="temperature_max_month" value="19.3" measured="2012-10-02 09:27:13"/>
+    <STATE key="temperature_min_day" value="19.2" measured="2012-10-02 09:51:58"/>
+    <STATE key="temperature_min_month" value="18.6" measured="2012-10-01 09:32:29"/>
+</TRX_WEATHER>
 <TRX_WEATHER name="TX3_T_2f" state="T: 6 BAT: ok" sets=""
              attrs="room comment alias IODev do_not_notify:1,0 loglevel:0,1,2,3,4,5,6 icon webCmd eventMap">
     <INT key="CODE" value="TX3_T_2f"/>
