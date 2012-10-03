@@ -78,4 +78,20 @@
             <STATE key="temperature_min_month" value="18.6" measured="2012-10-01 09:32:29"/>
         </TRX_WEATHER>
     </TRX_WEATHER_LIST>
+
+    <FileLog_LIST>
+        <FileLog name="FileLog_device1" state="active" sets="reopen"
+                 attrs="room comment alias disable:0,1 logtype nrarchive archivedir archivecmd eventMap">
+            <INT key="DEF" value="./log/device-%Y.log device1:T:.*"/>
+            <INT key="NAME" value="FileLog_device1"/>
+            <INT key="NR" value="49"/>
+            <INT key="REGEXP" value="device1:T:.*"/>
+            <INT key="STATE" value="active"/>
+            <INT key="TYPE" value="FileLog"/>
+            <INT key="currentlogfile" value="./log/device1-2011.log"/>
+            <INT key="logfile" value="./log/device1-%Y.log"/>
+            <ATTR key="logtype" value="device:Temp/Rain,device:Wind/Hum,text"/>
+            <ATTR key="room" value="unknown"/>
+        </FileLog>
+    </FileLog_LIST>
 </FHZINFO>

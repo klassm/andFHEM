@@ -29,6 +29,7 @@ import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 import org.junit.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.Is.is;
 
@@ -56,6 +57,9 @@ public class TRXWeatherDeviceTest extends DeviceXMLParsingBase {
 
         assertThat(device.getHumidity(), is("59 (%)"));
         assertThat(device.getDewpoint(), is("11.1 (°C)"));
+
+        assertThat(device.getFileLog(), is(notNullValue()));
+        assertThat(device.getDeviceCharts().size(), is(3));
     }
 
     @Override

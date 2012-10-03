@@ -2801,6 +2801,20 @@ room structexclude webCmd eventMap">
     <ATTR key="room" value="unknown"/>
 </FileLog>
 
+<FileLog name="FileLog_TX3_T_06" state="active" sets="reopen"
+         attrs="room comment alias disable:0,1 logtype nrarchive archivedir archivecmd eventMap">
+    <INT key="DEF" value="./log/TX3_T_06-%Y.log CUL_TX_116:T:.*"/>
+    <INT key="NAME" value="FileLog_TX3_T_06"/>
+    <INT key="NR" value="49"/>
+    <INT key="REGEXP" value="TX3_T_06:T:.*"/>
+    <INT key="STATE" value="active"/>
+    <INT key="TYPE" value="FileLog"/>
+    <INT key="currentlogfile" value="./log/TX3_T_06-2011.log"/>
+    <INT key="logfile" value="./log/TX3_T_06-%Y.log"/>
+    <ATTR key="logtype" value="TX3_T_06:Temp/Rain,wetterstation:Wind/Hum,text"/>
+    <ATTR key="room" value="unknown"/>
+</FileLog>
+
 </FileLog_LIST>
 <autocreate_LIST>
 <autocreate name="autocreate" state="active" sets=""

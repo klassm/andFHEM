@@ -206,6 +206,7 @@
     <string name="windSpeedGraph">Windgeschwindigkeit Graph</string>
     <string name="stateGraph">Zustand-Graph</string>
     <string name="contentGraph">Inhalt Graph</string>
+    <string name="dewpointGraph">Taupunkt Graph</string>
 
     <string name="yAxisWind">Wind (km/h)</string>
     <string name="yAxisHumidity">Luftfeuchtigkeit (%)</string>
