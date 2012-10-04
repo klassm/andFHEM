@@ -113,6 +113,7 @@
     <string name="currentSwitchDevice">Aktuelles Gerät</string>
     <string name="lastSwitchTime">Letzter Schaltvorgang</string>
     <string name="nextSwitchTime">Nächster Schaltvorgang</string>
+    <string name="windchill">Windkälte</string>
 
     <string name="switchDevice">Schalte</string>
     <string name="preferences">Einstellungen</string>

@@ -24,7 +24,6 @@
 
 package li.klass.fhem.domain;
 
-import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 import org.junit.Test;
 
@@ -59,7 +58,22 @@ public class TRXWeatherDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getDewpoint(), is("11.1 (°C)"));
 
         assertThat(device.getFileLog(), is(notNullValue()));
-        assertThat(device.getDeviceCharts().size(), is(3));
+        assertThat(device.getDeviceCharts().size(), is(2));
+    }
+
+    @Test
+    public void testRainAttributes() {
+        TRXWeatherDevice device = getDeviceFor("rain");
+        assertThat(device.getRain(), is("343 (l/m2)"));
+    }
+
+    @Test
+    public void testWindAttributes() {
+        TRXWeatherDevice device = getDeviceFor("wind");
+        assertThat(device.getWindAverageSpeed(), is("3 (km/h)"));
+        assertThat(device.getWindDirection(), is("180 S"));
+        assertThat(device.getWindSpeed(), is("0 (km/h)"));
+        assertThat(device.getWindchill(), is("10.4 (°C)"));
     }
 
     @Override

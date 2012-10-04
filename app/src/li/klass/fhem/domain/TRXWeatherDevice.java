@@ -55,6 +55,22 @@ public class TRXWeatherDevice extends Device<TRXWeatherDevice> {
     @ShowField(description = R.string.dewpoint, showInOverview = false)
     private String dewpoint;
 
+    @ShowField(description = R.string.rain, showInOverview = false)
+    private String rain;
+
+    @ShowField(description = R.string.windSpeed, showInOverview = true)
+    private String windSpeed;
+
+    @ShowField(description = R.string.windDirection, showInOverview = true)
+    private String windDirection;
+
+    @ShowField(description = R.string.windAvgSpeed, showInOverview = false)
+    private String windAverageSpeed;
+
+    @ShowField(description = R.string.windchill, showInOverview = false)
+    private String windchill;
+
+
     public void readTEMPERATURE(String value) {
         this.temperature = ValueDescriptionUtil.appendTemperature(value);
     }
@@ -69,6 +85,26 @@ public class TRXWeatherDevice extends Device<TRXWeatherDevice> {
 
     public void readDEWPOINT(String value) {
         this.dewpoint = ValueDescriptionUtil.appendTemperature(value);
+    }
+
+    public void readRAIN_TOTAL(String value) {
+        this.rain = ValueDescriptionUtil.appendLm2(value);
+    }
+
+    public void readWIND_SPEED(String value) {
+        this.windSpeed = ValueDescriptionUtil.appendKmH(value);
+    }
+
+    public void readWIND_DIR(String value) {
+        this.windDirection = value;
+    }
+
+    public void readWIND_AVSPEED(String value) {
+        this.windAverageSpeed = ValueDescriptionUtil.appendKmH(value);
+    }
+
+    public void readWINDCHILL(String value) {
+        this.windchill = ValueDescriptionUtil.appendTemperature(value);
     }
 
     public String getTemperature() {
@@ -87,13 +123,32 @@ public class TRXWeatherDevice extends Device<TRXWeatherDevice> {
         return dewpoint;
     }
 
+    public String getRain() {
+        return rain;
+    }
+
+    public String getWindSpeed() {
+        return windSpeed;
+    }
+
+    public String getWindDirection() {
+        return windDirection;
+    }
+
+    public String getWindAverageSpeed() {
+        return windAverageSpeed;
+    }
+
+    public String getWindchill() {
+        return windchill;
+    }
+
     @Override
     protected void fillDeviceCharts(List<DeviceChart> chartSeries) {
         addDeviceChartIfNotNull(temperature, new DeviceChart(R.string.temperatureGraph, R.string.yAxisTemperature,
-                ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:temperature:")));
+                ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:temperature:"),
+                new ChartSeriesDescription(R.string.dewpoint, "4:dewpoint:0:")));
         addDeviceChartIfNotNull(humidity, new DeviceChart(R.string.humidityGraph, R.string.yAxisHumidity,
-                new ChartSeriesDescription(R.string.temperature, "4:humidity:0:")));
-        addDeviceChartIfNotNull(humidity, new DeviceChart(R.string.dewpointGraph, R.string.yAxisTemperature,
-                new ChartSeriesDescription(R.string.temperature, "4:dewpoint:0:")));
+                new ChartSeriesDescription(R.string.humidity, "4:humidity:0:")));
     }
 }

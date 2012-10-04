@@ -114,6 +114,7 @@
     <string name="currentSwitchDevice">Current Device</string>
     <string name="lastSwitchTime">Last Trigger</string>
     <string name="nextSwitchTime">Next Trigger</string>
+    <string name="windchill">Windchill</string>
 
     <string name="switchDevice">Switch</string>
     <string name="preferences">Preferences</string>
