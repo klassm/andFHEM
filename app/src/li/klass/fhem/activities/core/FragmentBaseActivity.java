@@ -210,7 +210,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
 
         boolean restoreResult = false;
         if (savedInstanceState != null) {
-            restoreResult = restoreSavedInstance(savedInstanceState, actionBar);
+            restoreResult = restoreSavedInstance(savedInstanceState);
         }
 
         if (savedInstanceState == null || !restoreResult) {
@@ -232,10 +232,10 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
         boolean updateOnApplicationStart = applicationProperties
                 .getBooleanSharedPreference(PreferenceKeys.UPDATE_ON_APPLICATION_START, false);
 
-        if (hasFocus && isActivityStart && updateOnApplicationStart) {
-            Log.e(FragmentBaseActivity.class.getName(), "request update due to application start preference");
+        if (hasFocus && isActivityStart) {
+            Log.e(FragmentBaseActivity.class.getName(), "request update on application start preference");
             Intent intent = new Intent(Actions.DO_UPDATE);
-            intent.putExtra(BundleExtraKeys.DO_REFRESH, true);
+            intent.putExtra(BundleExtraKeys.DO_REFRESH, updateOnApplicationStart);
             sendBroadcast(intent);
         }
 
@@ -285,7 +285,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
     }
 
     @SuppressWarnings("unchecked")
-    private boolean restoreSavedInstance(Bundle savedInstanceState, ActionBar actionBar) {
+    private boolean restoreSavedInstance(Bundle savedInstanceState) {
         try {
             ArrayList<FragmentHistoryStackEntry> previousFragmentStack =
                     (ArrayList<FragmentHistoryStackEntry>) savedInstanceState.getSerializable(BundleExtraKeys.FRAGMENT_HISTORY_STACK);

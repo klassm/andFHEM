@@ -298,6 +298,15 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
         return true;
     }
 
+    public String getEventMapStateForCurrentState() {
+        String currentState = getState();
+        if (eventMap.containsKey(currentState)) {
+            return eventMap.get(currentState);
+        }
+
+        return currentState;
+    }
+
     public Map<String, String> getEventMap() {
         return eventMap;
     }
