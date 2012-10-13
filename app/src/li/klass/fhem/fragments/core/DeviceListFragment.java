@@ -36,16 +36,19 @@ import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.DeviceAdapter;
 import li.klass.fhem.adapter.rooms.DeviceGridAdapter;
 import li.klass.fhem.constants.BundleExtraKeys;
+import li.klass.fhem.constants.PreferenceKeys;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceType;
 import li.klass.fhem.domain.core.RoomDeviceList;
+import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.advertisement.AdvertisementUtil;
 import li.klass.fhem.util.device.DeviceActionUtil;
 import li.klass.fhem.widget.GridViewWithSections;
 
 import static li.klass.fhem.constants.Actions.FAVORITE_ADD;
 import static li.klass.fhem.constants.BundleExtraKeys.*;
+import static li.klass.fhem.constants.PreferenceKeys.*;
 import static li.klass.fhem.widget.GridViewWithSections.GridViewWithSectionsOnClickObserver;
 
 public abstract class DeviceListFragment extends BaseFragment {
@@ -81,6 +84,10 @@ public abstract class DeviceListFragment extends BaseFragment {
         AdvertisementUtil.addAd(view, getActivity());
 
         GridViewWithSections nestedListView = (GridViewWithSections) view.findViewById(R.id.deviceMap1);
+
+        int rightPadding = ApplicationProperties.INSTANCE.getIntegerSharedPreference(DEVICE_LIST_RIGHT_PADDING, 0);
+        nestedListView.setPadding(nestedListView.getPaddingLeft(), nestedListView.getPaddingTop(), rightPadding, nestedListView.getPaddingBottom());
+
         adapter = new DeviceGridAdapter(getActivity(), new RoomDeviceList(""));
         nestedListView.setAdapter(adapter);
 

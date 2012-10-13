@@ -99,6 +99,17 @@
                                                              android:text=" dp"
                                                              android:max="1000"
                 />
+        <com.hlidskialf.android.preference.SeekBarPreference xmlns:android="http://schemas.android.com/apk/res/android"
+                                                             android:layout_height="wrap_content"
+                                                             android:layout_width="wrap_content"
+                                                             android:key="DEVICE_LIST_PADDING_RIGHT"
+                                                             android:title="@string/prefDeviceListPaddingRight"
+                                                             android:summary="@string/prefDeviceListPaddingRightSummary"
+                                                             android:dialogMessage=""
+                                                             android:defaultValue="0"
+                                                             android:text=" dp"
+                                                             android:max="1000"
+                />
         <li.klass.fhem.widget.deviceType.DeviceTypeOrderPreference xmlns:android="http://schemas.android.com/apk/res/android"
                                                                    android:layout_height="wrap_content"
                                                                    android:layout_width="wrap_content"

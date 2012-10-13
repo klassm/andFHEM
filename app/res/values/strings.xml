@@ -164,6 +164,8 @@
     <string name="prefWidgetRemoteUpdate">Remote Update</string>
     <string name="prefDeviceColumnWidth">Device column width</string>
     <string name="prefDeviceColumnWidthSummary">Minimum width of the device columns</string>
+    <string name="prefDeviceListPaddingRight">Device list padding</string>
+    <string name="prefDeviceListPaddingRightSummary">Right-padding</string>
     <string name="prefWidgetUpdateTime">Update interval</string>
     <string name="prefWidgetUpdateTimeSummary">default 1 times per hour</string>
     <string name="prefDeviceTypeOrder">Device type order</string>

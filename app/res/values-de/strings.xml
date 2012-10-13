@@ -164,6 +164,8 @@
     <string name="prefWidgetRemoteUpdate">Remote Aktualisierung</string>
     <string name="prefDeviceColumnWidth">Geräte Spaltenbreite</string>
     <string name="prefDeviceColumnWidthSummary">Mindestbreite der Gerätespalten</string>
+    <string name="prefDeviceListPaddingRight">Geräteliste Abstand rechts</string>
+    <string name="prefDeviceListPaddingRightSummary">Abstand, der rechts einzuhalten ist</string>
     <string name="prefWidgetUpdateTime">Aktualisierungsintervall</string>
     <string name="prefWidgetUpdateTimeSummary">default 1x pro Stunde</string>
     <string name="prefDeviceTypeOrder">Gerätetyp Reihenfolge</string>
