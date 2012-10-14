@@ -115,6 +115,7 @@
     <string name="lastSwitchTime">Last Trigger</string>
     <string name="nextSwitchTime">Next Trigger</string>
     <string name="windchill">Windchill</string>
+    <string name="deleteConfirmation">Are you sure you want to delete the device from FHEM?</string>
 
     <string name="switchDevice">Switch</string>
     <string name="preferences">Preferences</string>

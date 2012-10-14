@@ -76,7 +76,7 @@ public class DeviceActionUtil {
                 intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, updateReceiver);
                 context.startService(intent);
             }
-        });
+        }, context.getString(R.string.deleteConfirmation));
     }
 
     public static void moveDevice(final  Context context,final Device device) {
