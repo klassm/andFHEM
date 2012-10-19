@@ -31,8 +31,7 @@ import li.klass.fhem.domain.fht.FHTMode;
 import org.junit.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.closeTo;
-import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.*;
 import static org.hamcrest.core.Is.is;
 
 public class FHTDeviceTest extends DeviceXMLParsingBase {
@@ -102,6 +101,12 @@ public class FHTDeviceTest extends DeviceXMLParsingBase {
 
         assertThat(device.getFileLog(), is(notNullValue()));
         assertThat(device.getDeviceCharts().size(), is(2));
+
+        assertThat(device.getAvailableTargetStates(), hasItemInArray("day-temp"));
+        assertThat(device.getAvailableTargetStates(), hasItemInArray("desired-temp"));
+        assertThat(device.getAvailableTargetStates(), hasItemInArray("manu-temp"));
+        assertThat(device.getAvailableTargetStates(), hasItemInArray("night-temp"));
+        assertThat(device.getAvailableTargetStates(), hasItemInArray("windowopen-temp"));
     }
 
     @Test

@@ -213,7 +213,14 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
                 return;
             }
 
-            this.availableTargetStates = setsText.split(" ");
+            String[] targetStates = setsText.split(" ");
+            for (int i = 0; i < targetStates.length; i++) {
+                String targetState = targetStates[i];
+                if (targetState.contains(":")) {
+                    targetStates[i] = targetState.substring(0, targetState.indexOf(":"));
+                }
+            }
+            this.availableTargetStates = targetStates;
         }
     }
 
