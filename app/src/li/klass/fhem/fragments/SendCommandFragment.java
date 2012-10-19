@@ -132,6 +132,9 @@ public class SendCommandFragment extends BaseFragment {
                     return;
                 }
 
+                View view = getView();
+                if (view == null) return;
+
                 recentCommands = resultData.getStringArrayList(BundleExtraKeys.RECENT_COMMANDS);
                 recentCommandsAdapter.clear();
 
@@ -141,7 +144,7 @@ public class SendCommandFragment extends BaseFragment {
                 }
                 recentCommandsAdapter.notifyDataSetChanged();
 
-                ListViewUtil.setHeightBasedOnChildren((ListView) getView().findViewById(R.id.command_history));
+                ListViewUtil.setHeightBasedOnChildren((ListView) view.findViewById(R.id.command_history));
 
                 getActivity().sendBroadcast(new Intent(Actions.DISMISS_UPDATING_DIALOG));
             }
