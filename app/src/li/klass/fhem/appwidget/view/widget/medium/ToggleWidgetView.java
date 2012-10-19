@@ -53,11 +53,11 @@ public class ToggleWidgetView extends AppWidgetView {
         if (toggleable.isOn()) {
             view.setViewVisibility(R.id.toggleOff, View.GONE);
             view.setViewVisibility(R.id.toggleOn, View.VISIBLE);
-            view.setTextViewText(R.id.toggleOn, device.getEventMapStateForCurrentState());
+            view.setTextViewText(R.id.toggleOn, device.getEventMap().get("on"));
         } else {
             view.setViewVisibility(R.id.toggleOff, View.VISIBLE);
             view.setViewVisibility(R.id.toggleOn, View.GONE);
-            view.setTextViewText(R.id.toggleOff, device.getEventMapStateForCurrentState());
+            view.setTextViewText(R.id.toggleOff, device.getEventMap().get("off"));
         }
 
         Intent intent = new Intent(Actions.DEVICE_WIDGET_TOGGLE);

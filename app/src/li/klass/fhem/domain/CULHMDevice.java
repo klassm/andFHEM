@@ -175,7 +175,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice> {
 
     @Override
     public boolean supportsToggle() {
-        return subType == SubType.SWITCH;
+        return subType == SubType.SWITCH || subType == SubType.DIMMER;
     }
 
     @Override
