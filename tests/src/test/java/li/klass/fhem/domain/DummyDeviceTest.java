@@ -41,7 +41,7 @@ public class DummyDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getRoomConcatenated(), is(DEFAULT_TEST_ROOM_NAME));
 
         assertThat(device.getState(), is("on"));
-        assertThat(device.isOnOffDevice(), is(false));
+        assertThat(device.isSpecialButtonDevice(), is(false));
         assertThat(device.supportsToggle(), is(true));
         assertThat(device.isOn(), is(true));
 
@@ -60,7 +60,7 @@ public class DummyDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getRoomConcatenated(), is(DEFAULT_TEST_ROOM_NAME));
 
         assertThat(device.getState(), is("??"));
-        assertThat(device.isOnOffDevice(), is(false));
+        assertThat(device.isSpecialButtonDevice(), is(false));
         assertThat(device.supportsToggle(), is(false));
 
         assertThat(device.getFileLog(), is(nullValue()));

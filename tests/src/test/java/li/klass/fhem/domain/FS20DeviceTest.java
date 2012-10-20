@@ -25,6 +25,7 @@
 package li.klass.fhem.domain;
 
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+import li.klass.fhem.domain.core.ToggleableDevice;
 import org.junit.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -42,7 +43,7 @@ public class FS20DeviceTest extends DeviceXMLParsingBase {
 
         assertThat(device.getState(), is("on"));
         assertThat(device.isOn(), is(true));
-        assertThat(device.isOnOffDevice(), is(false));
+        assertThat(device.isSpecialButtonDevice(), is(false));
 
         assertThat(device.getEventMap().get("off-for-timer 12"), is("Ab80"));
         assertThat(device.getEventMap().get("off"), is("Ab"));
@@ -68,7 +69,8 @@ public class FS20DeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getEventMap().get("on"), is("open"));
 
         assertThat(device.getAlias(), is("myAlias"));
-        assertThat(device.isOnOffDevice(), is(true));
+        assertThat(device.isSpecialButtonDevice(), is(true));
+        assertThat(device.getHookType(), is(ToggleableDevice.HookType.ON_OFF_DEVICE));
 
         assertThat(device.getAvailableTargetStates(), is(notNullValue()));
 
