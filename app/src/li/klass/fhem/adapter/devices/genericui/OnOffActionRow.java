@@ -49,10 +49,6 @@ public class OnOffActionRow<T extends ToggleableDevice> {
     public static final int LAYOUT_DETAIL = R.layout.device_detail_onoffbuttonrow;
     public static final int LAYOUT_OVERVIEW = R.layout.device_overview_onoffbuttonrow;
 
-    public OnOffActionRow(int description, int layout) {
-        this(AndFHEMApplication.getContext().getString(description), layout);
-    }
-
     public OnOffActionRow(String description, int layout) {
         this.description = description;
         this.layout = layout;
@@ -82,6 +78,15 @@ public class OnOffActionRow<T extends ToggleableDevice> {
             onButton.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.theme_toggle_on_normal));
         } else {
             onButton.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.theme_toggle_off_normal));
+        }
+
+        switch(device.getHookType()) {
+            case ON_DEVICE:
+                offButton.setVisibility(View.GONE);
+                break;
+            case OFF_DEVICE:
+                onButton.setVisibility(View.GONE);
+                break;
         }
 
         return row;

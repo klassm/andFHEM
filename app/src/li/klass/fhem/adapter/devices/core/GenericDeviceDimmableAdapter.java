@@ -83,7 +83,7 @@ public class GenericDeviceDimmableAdapter<D extends DimmableDevice<D>> extends T
 
     @Override
     public void fillDeviceOverviewView(View view, final D device) {
-        if (!device.supportsDim() || device.isOnOffDevice()) {
+        if (!device.supportsDim() || device.isSpecialButtonDevice()) {
             super.fillDeviceOverviewView(view, device);
             return;
         }

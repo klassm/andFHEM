@@ -27,21 +27,33 @@ package li.klass.fhem.domain.core;
 @SuppressWarnings("unused")
 public abstract class ToggleableDevice<T extends Device> extends Device<T> {
 
-    /**
-     * Variable set by the user attribute onOffDevice in fhem.cfg. If set and the device being a toggleable device,
-     * show on / off buttons instead of toggle buttons.
-     */
-    private boolean onOffDevice = false;
+    public enum HookType {
+        NORMAL, ON_OFF_DEVICE, ON_DEVICE, OFF_DEVICE
+    }
+
+    private HookType hookType = HookType.NORMAL;
 
     public abstract boolean isOn();
 
     public abstract boolean supportsToggle();
 
     public void readONOFFDEVICE(String value) {
-        this.onOffDevice = value.equals("true");
+        if (value.equalsIgnoreCase("true")) hookType = HookType.ON_OFF_DEVICE;
     }
 
-    public boolean isOnOffDevice() {
-        return onOffDevice;
+    public void readONDEVICE(String value) {
+        if (value.equalsIgnoreCase("true")) hookType = HookType.ON_DEVICE;
+    }
+
+    public void readOFFDEVICE(String value) {
+        if (value.equalsIgnoreCase("true")) hookType = HookType.OFF_DEVICE;
+    }
+
+    public HookType getHookType() {
+        return hookType;
+    }
+
+    public boolean isSpecialButtonDevice() {
+        return hookType != HookType.NORMAL;
     }
 }
