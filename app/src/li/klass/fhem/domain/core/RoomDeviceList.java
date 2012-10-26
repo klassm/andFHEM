@@ -65,6 +65,9 @@ public class RoomDeviceList implements Serializable {
 
     public <T extends Device> void removeDevice(T device) {
         deviceMap.get(DeviceType.getDeviceTypeFor(device)).remove(device);
+        if (deviceMap.size() == 0) {
+            onlyContainsDoNotShowDevices = true;
+        }
     }
 
     public Set<Device> getAllDevices() {

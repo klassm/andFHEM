@@ -55,12 +55,12 @@ public class DeviceNameSelectionFragment extends DeviceNameListFragment {
 
         if (resultReceiver != null) {
             Bundle result = new Bundle();
-            result.putSerializable(BundleExtraKeys.CLICKED_DEVICE, (Device<?>) child);
+            result.putSerializable(BundleExtraKeys.CLICKED_DEVICE, child);
             resultReceiver.send(ResultCodes.SUCCESS, result);
         }
 
         Intent intent = new Intent(Actions.BACK);
-        intent.putExtra(BundleExtraKeys.CLICKED_DEVICE, (Device<?>) child);
+        intent.putExtra(BundleExtraKeys.CLICKED_DEVICE, child);
         getActivity().sendBroadcast(intent);
     }
 
