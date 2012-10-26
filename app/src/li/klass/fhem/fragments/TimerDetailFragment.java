@@ -243,6 +243,9 @@ public class TimerDetailFragment extends BaseFragment {
             return;
         }
 
+        CheckBox timerIsActiveCheckbox = (CheckBox) getView().findViewById(R.id.isActive);
+        boolean isActive = timerIsActiveCheckbox.isChecked();
+
         Bundle bundle = new Bundle();
         bundle.putString(BundleExtraKeys.TIMER_TARGET_DEVICE_NAME, selectedTargetDevice.getName());
         bundle.putString(BundleExtraKeys.TIMER_TARGET_STATE, selectedTargetState);
@@ -251,6 +254,7 @@ public class TimerDetailFragment extends BaseFragment {
         bundle.putInt(BundleExtraKeys.TIMER_SECOND, second);
         bundle.putString(BundleExtraKeys.TIMER_REPETITION, repetition.name());
         bundle.putString(BundleExtraKeys.TIMER_TYPE, type.name());
+        bundle.putBoolean(BundleExtraKeys.TIMER_IS_ACTIVE, isActive);
 
         if (requiresStateAppendix) {
             EditText targetStateAppendixView = (EditText) getView().findViewById(R.id.stateAppendix);
@@ -415,6 +419,9 @@ public class TimerDetailFragment extends BaseFragment {
         selectTargetDeviceInSpinner(timerDevice.getTargetDevice(), timerDevice.getTargetState());
         selectTargetState(timerDevice.getTargetState());
         setTargetStateAppendix(timerDevice.getTargetStateAddtionalInformation());
+
+        CheckBox isActiveCheckbox = (CheckBox) view.findViewById(R.id.isActive);
+        isActiveCheckbox.setChecked(timerDevice.isActive());
 
         hour = timerDevice.getHours();
         minute = timerDevice.getMinutes();

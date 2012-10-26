@@ -37,10 +37,10 @@ public class AtService {
     private AtService() {}
 
     public void createNew(String timerName, int hour, int minute, int second, String repetition, String type,
-                          String targetDeviceName, String targetState, String targetStateAppendix) {
+                          String targetDeviceName, String targetState, String targetStateAppendix, boolean isActive) {
         AtDevice device = new AtDevice();
 
-        setValues(hour, minute, second, repetition, type, targetDeviceName, targetState, targetStateAppendix, device);
+        setValues(hour, minute, second, repetition, type, targetDeviceName, targetState, targetStateAppendix, device, isActive);
 
         String definition = device.toFHEMDefinition();
         String command = "define " + timerName + " at " + definition;
@@ -52,16 +52,16 @@ public class AtService {
     }
 
     public void modify(String timerName, int hour, int minute, int second, String repetition, String type,
-                       String targetDeviceName, String targetState, String targetStateAppendix) {
+                       String targetDeviceName, String targetState, String targetStateAppendix, boolean isActive) {
         AtDevice device = (AtDevice) RoomListService.INSTANCE.getDeviceForName(timerName, RoomListService.NEVER_UPDATE_PERIOD);
 
-        setValues(hour, minute, second, repetition, type, targetDeviceName, targetState, targetStateAppendix, device);
+        setValues(hour, minute, second, repetition, type, targetDeviceName, targetState, targetStateAppendix, device, isActive);
         String definition = device.toFHEMDefinition();
         String command = "modify " + timerName + " " + definition;
         CommandExecutionService.INSTANCE.executeSafely(command);
     }
 
-    private void setValues(int hour, int minute, int second, String repetition, String type, String targetDeviceName, String targetState, String targetStateAppendix, AtDevice device) {
+    private void setValues(int hour, int minute, int second, String repetition, String type, String targetDeviceName, String targetState, String targetStateAppendix, AtDevice device, boolean isActive) {
         device.setHour(hour);
         device.setMinute(minute);
         device.setSecond(second);
@@ -70,5 +70,6 @@ public class AtService {
         device.setTargetDevice(targetDeviceName);
         device.setTargetState(targetState);
         device.setTargetStateAddtionalInformation(targetStateAppendix);
+        device.setActive(isActive);
     }
 }

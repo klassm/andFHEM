@@ -141,11 +141,12 @@ public class DeviceIntentService extends ConvenientIntentService {
         String type = extras.getString(BundleExtraKeys.TIMER_TYPE);
         String stateAppendix = extras.getString(BundleExtraKeys.TIMER_TARGET_STATE_APPENDIX, null);
         String timerName = extras.getString(BundleExtraKeys.TIMER_NAME);
+        boolean isActive = extras.getBoolean(BundleExtraKeys.TIMER_IS_ACTIVE);
 
         if (isModify) {
-            AtService.INSTANCE.modify(timerName, hour, minute, second, repetition, type, targetDeviceName, targetState, stateAppendix);
+            AtService.INSTANCE.modify(timerName, hour, minute, second, repetition, type, targetDeviceName, targetState, stateAppendix, isActive);
         } else {
-            AtService.INSTANCE.createNew(timerName, hour, minute, second, repetition, type, targetDeviceName, targetState, stateAppendix);
+            AtService.INSTANCE.createNew(timerName, hour, minute, second, repetition, type, targetDeviceName, targetState, stateAppendix, isActive);
         }
 
         return SUCCESS;

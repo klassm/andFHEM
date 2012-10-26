@@ -28,6 +28,7 @@ import android.util.Log;
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.util.StringUtil;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -78,6 +79,8 @@ public class AtDevice extends Device<AtDevice> {
     private int minutes;
     private int seconds;
     private String nextTrigger;
+
+    private boolean isActive = true;
 
     private String targetDevice;
     private String targetState;
@@ -173,6 +176,14 @@ public class AtDevice extends Device<AtDevice> {
                 + ":" + toTwoDecimalDigits(seconds);
     }
 
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
+    }
+
     private void parseDateContent(String dateContent) {
         if (dateContent.length() < "00:00:00".length()) {
             dateContent += ":00";
@@ -215,11 +226,18 @@ public class AtDevice extends Device<AtDevice> {
             targetState = fhemMatcher.group(2);
             targetStateAddtionalInformation = fhemMatcher.group(3);
 
-            String fhemRest = fhemMatcher.group(4).trim();
-            if (fhemRest.matches("if[ ]?\\(\\$we\\)")) {
-                repetition = AtRepetition.WEEKEND;
-            } else if (fhemRest.matches("if[ ]?\\((NOT|not|!)[ ]?\\$we\\)")) {
-                repetition = AtRepetition.WEEKDAY;
+            String fhemRest = fhemMatcher.group(4).trim().toLowerCase();
+            Pattern ifPattern = Pattern.compile("if[ ]?\\(([^\\)]+)\\)");
+            Matcher ifMatcher = ifPattern.matcher(fhemRest);
+
+            if (ifMatcher.find()) {
+                String ifContent = ifMatcher.group(1);
+                String[] parts = ifContent.split("&&");
+
+                for (String part : parts) {
+                    part = part.trim();
+                    handleIfPart(part);
+                }
             }
         } else {
             Matcher matcher = DEFAULT_PATTERN.matcher(rest);
@@ -231,6 +249,16 @@ public class AtDevice extends Device<AtDevice> {
             targetStateAddtionalInformation = matcher.group(3);
         }
         return true;
+    }
+
+    private void handleIfPart(String part) {
+        if (part.equals("$we")) {
+            repetition = AtRepetition.WEEKEND;
+        } else if (part.matches("(NOT|not|!)[ ]?\\$we")) {
+            repetition = AtRepetition.WEEKDAY;
+        } else if (part.equals("0")) {
+            isActive = false;
+        }
     }
 
     private void handlePrefix(String prefix) {
@@ -260,14 +288,33 @@ public class AtDevice extends Device<AtDevice> {
         }
         command += "\")";
 
-        if (repetition == AtRepetition.WEEKEND) {
-            command += " if($we)";
-        } else if (repetition == AtRepetition.WEEKDAY) {
-            command += " if (!$we)";
+        if (repetition != null || !isActive) {
+            String ifContent = "";
+            if (repetition == AtRepetition.WEEKEND) {
+                ifContent = addToIf(ifContent, "$we");
+            } else if (repetition == AtRepetition.WEEKDAY) {
+                ifContent = addToIf(ifContent, "!$we");
+            }
+
+            if (!isActive) {
+                ifContent = addToIf(ifContent, "0");
+            }
+
+            if (! StringUtil.isBlank(ifContent)) {
+                command += " if (" + ifContent + ")";
+            }
         }
+
         command += " }";
 
         return command;
+    }
+
+    private String addToIf(String ifContent, String newPart) {
+        if (StringUtil.isBlank(ifContent)) {
+            return newPart;
+        }
+        return ifContent + " && " + newPart;
     }
 
     @Override

@@ -35,9 +35,9 @@ import li.klass.fhem.domain.AtDevice;
 
 import java.util.List;
 
-public class TimerAdapter extends ListDataAdapter<AtDevice> {
+public class TimerListAdapter extends ListDataAdapter<AtDevice> {
 
-    public TimerAdapter(Context context, int resource, List<AtDevice> data) {
+    public TimerListAdapter(Context context, int resource, List<AtDevice> data) {
         super(context, resource, data);
     }
 
@@ -47,8 +47,12 @@ public class TimerAdapter extends ListDataAdapter<AtDevice> {
 
         LinearLayout layout = (LinearLayout) inflater.inflate(resource, null);
 
-        TextView timerName = (TextView) layout.findViewById(R.id.timerName);
-        timerName.setText(device.getAliasOrName());
+        TextView timerNameView = (TextView) layout.findViewById(R.id.timerName);
+        String timerName = device.getAliasOrName();
+        if (! device.isActive()) {
+            timerName += " (" + context.getString(R.string.deactivated) + ")";
+        }
+        timerNameView.setText(timerName);
 
         String formatString = AndFHEMApplication.getContext().getString(R.string.timer_overview);
         String repetition = device.getRepetition().getText();
@@ -58,7 +62,7 @@ public class TimerAdapter extends ListDataAdapter<AtDevice> {
         String targetState = device.getTargetState();
 
         if (device.getTargetStateAddtionalInformation() != null)  {
-           targetState += " " + device.getTargetStateAddtionalInformation();
+            targetState += " " + device.getTargetStateAddtionalInformation();
         }
 
         String content = String.format(formatString, repetition, interval, date, targetDevice, targetState);
@@ -67,6 +71,10 @@ public class TimerAdapter extends ListDataAdapter<AtDevice> {
 
         TextView timerNextTrigger = (TextView) layout.findViewById(R.id.timerNextTrigger);
         timerNextTrigger.setText(context.getString(R.string.timer_next_trigger) + ": " + device.getNextTrigger());
+
+        int color = device.isActive() ? R.color.activeGreen : android.R.color.white;
+        int colorResource = context.getResources().getColor(color);
+        layout.findViewById(R.id.item).setBackgroundColor(colorResource);
 
         layout.setTag(device);
 

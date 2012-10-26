@@ -83,5 +83,6 @@ public class BundleExtraKeys {
     public static final String TIMER_TARGET_DEVICE_NAME = "TIMER_TARGET_DEVICE_NAME";
     public static final String TIMER_TARGET_STATE = "TIMER_TARGET_STATE";
     public static final String TIMER_TARGET_STATE_APPENDIX = "TIMER_TARGET_STATE_APPENDIX";
+    public static final String TIMER_IS_ACTIVE = "TIMER_IS_ACTIVE";
 
 }

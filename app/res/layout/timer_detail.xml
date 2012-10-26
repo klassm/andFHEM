@@ -67,6 +67,12 @@
                           android:id="@+id/timerName"
                           android:text="timerName"/>
             </TableRow>
+            <TableRow android:gravity="center_vertical">
+                <TextView style="@style/deviceOverviewDescription"
+                          android:text="@string/isActive" />
+                <CheckBox android:layout_gravity="right"
+                        android:id="@+id/isActive"/>
+            </TableRow>
 
             <TableRow android:gravity="top">
                 <TextView style="@style/deviceOverviewDescription"

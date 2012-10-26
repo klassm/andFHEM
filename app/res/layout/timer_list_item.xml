@@ -29,7 +29,8 @@
               android:orientation="vertical"
               android:paddingTop="3dp"
               android:paddingBottom="3dp"
-              android:focusable="false">
+              android:focusable="false"
+              android:id="@+id/item">
     <TextView style="@style/deviceOverviewCaption"
               android:text="timerName"
               android:id="@+id/timerName"

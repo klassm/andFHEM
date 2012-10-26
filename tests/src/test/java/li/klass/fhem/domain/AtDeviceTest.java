@@ -38,24 +38,40 @@ public class AtDeviceTest extends DeviceXMLParsingBase {
         AtDevice device;
 
         device = parse("17:00:00 set lamp on", 17, 0, 0, "lamp", "on", null,
-                AtDevice.AtRepetition.ONCE, AtDevice.TimerType.ABSOLUTE);
+                AtDevice.AtRepetition.ONCE, AtDevice.TimerType.ABSOLUTE, true);
         assemble(device, "17:00:00 { fhem(\"set lamp on\") }");
 
         device = parse("*23:00:00 { fhem(\"set lamp off\") if ($we) }", 23, 0, 0, "lamp", "off", null,
-                AtDevice.AtRepetition.WEEKEND, AtDevice.TimerType.ABSOLUTE);
-        assemble(device, "*23:00:00 { fhem(\"set lamp off\") if($we) }");
+                AtDevice.AtRepetition.WEEKEND, AtDevice.TimerType.ABSOLUTE, true);
+        assemble(device, "*23:00:00 { fhem(\"set lamp off\") if ($we) }");
 
         device = parse("+*23:00:00 { fhem(\"set lamp off-for-timer 200\") if (not $we) }", 23, 0, 0, "lamp", "off-for-timer", "200",
-                AtDevice.AtRepetition.WEEKDAY, AtDevice.TimerType.RELATIVE);
+                AtDevice.AtRepetition.WEEKDAY, AtDevice.TimerType.RELATIVE, true);
         assemble(device, "+*23:00:00 { fhem(\"set lamp off-for-timer 200\") if (!$we) }");
 
-        device = parse("*23:00:00 { fhem(\"set lamp off-for-timer 200\") if(NOT $we) }", 23, 0, 0, "lamp", "off-for-timer", "200",
-                AtDevice.AtRepetition.WEEKDAY, AtDevice.TimerType.ABSOLUTE);
+        device = parse("*23:00:00 { fhem(\"set lamp off-for-timer 200\") if (NOT $we) }", 23, 0, 0, "lamp", "off-for-timer", "200",
+                AtDevice.AtRepetition.WEEKDAY, AtDevice.TimerType.ABSOLUTE, true);
         assemble(device, "*23:00:00 { fhem(\"set lamp off-for-timer 200\") if (!$we) }");
 
         device = parse("*23:00:00 { fhem(\"set lamp off-for-timer 200\") if (!$we) }", 23, 0, 0, "lamp", "off-for-timer", "200",
-                AtDevice.AtRepetition.WEEKDAY, AtDevice.TimerType.ABSOLUTE);
+                AtDevice.AtRepetition.WEEKDAY, AtDevice.TimerType.ABSOLUTE, true);
         assemble(device, "*23:00:00 { fhem(\"set lamp off-for-timer 200\") if (!$we) }");
+
+        device = parse("*23:00:00 { fhem(\"set lamp off-for-timer 200\") if (0 && !$we) }", 23, 0, 0, "lamp", "off-for-timer", "200",
+                AtDevice.AtRepetition.WEEKDAY, AtDevice.TimerType.ABSOLUTE, false);
+        assemble(device, "*23:00:00 { fhem(\"set lamp off-for-timer 200\") if (!$we && 0) }");
+
+        device = parse("*23:00:00 { fhem(\"set lamp off-for-timer 200\") if (!$we && 0) }", 23, 0, 0, "lamp", "off-for-timer", "200",
+                AtDevice.AtRepetition.WEEKDAY, AtDevice.TimerType.ABSOLUTE, false);
+        assemble(device, "*23:00:00 { fhem(\"set lamp off-for-timer 200\") if (!$we && 0) }");
+
+        device = parse("*23:00:00 { fhem(\"set lamp off-for-timer 200\") if (!$we && 1) }", 23, 0, 0, "lamp", "off-for-timer", "200",
+                AtDevice.AtRepetition.WEEKDAY, AtDevice.TimerType.ABSOLUTE, true);
+        assemble(device, "*23:00:00 { fhem(\"set lamp off-for-timer 200\") if (!$we) }");
+
+        device = parse("*23:00:00 { fhem(\"set lamp off-for-timer 200\") if (!$we && 0) }", 23, 0, 0, "lamp", "off-for-timer", "200",
+                AtDevice.AtRepetition.WEEKDAY, AtDevice.TimerType.ABSOLUTE, false);
+        assemble(device, "*23:00:00 { fhem(\"set lamp off-for-timer 200\") if (!$we && 0) }");
     }
 
     private AtDevice parse(String definition,
@@ -63,7 +79,7 @@ public class AtDeviceTest extends DeviceXMLParsingBase {
                            String expectedTargetDevice, String expectedTargetState,
                            String expectedAdditionalInformation,
                            AtDevice.AtRepetition expectedRepetition,
-                           AtDevice.TimerType expectedTimerType) {
+                           AtDevice.TimerType expectedTimerType, boolean isActive) {
         AtDevice device = new AtDevice();
         device.parseDefinition(definition);
 
@@ -75,6 +91,7 @@ public class AtDeviceTest extends DeviceXMLParsingBase {
         assertEquals(expectedAdditionalInformation, device.getTargetStateAddtionalInformation());
         assertEquals(expectedRepetition, device.getRepetition());
         assertEquals(expectedTimerType, device.getTimerType());
+        assertEquals(isActive, device.isActive());
 
         return device;
     }

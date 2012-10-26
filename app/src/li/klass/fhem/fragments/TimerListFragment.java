@@ -34,7 +34,7 @@ import android.view.*;
 import android.widget.*;
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
-import li.klass.fhem.adapter.timer.TimerAdapter;
+import li.klass.fhem.adapter.timer.TimerListAdapter;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
@@ -50,7 +50,7 @@ import java.util.List;
 public class TimerListFragment extends BaseFragment {
 
     private static final String TAG = TimerListFragment.class.getName();
-    private transient TimerAdapter adapter;
+    private transient TimerListAdapter listAdapter;
 
     private static final int CONTEXT_MENU_DELETE = 1;
     private AtDevice contextMenuClickedDevice;
@@ -74,14 +74,14 @@ public class TimerListFragment extends BaseFragment {
         }
         Context context = getActivity();
 
-        adapter = new TimerAdapter(context, R.layout.timer_list_item, new ArrayList<AtDevice>());
+        listAdapter = new TimerListAdapter(context, R.layout.timer_list_item, new ArrayList<AtDevice>());
 
         LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.timer_overview, null);
         TextView emptyView = (TextView) layout.findViewById(android.R.id.empty);
         ListView listView = (ListView) layout.findViewById(R.id.list);
 
         listView.setEmptyView(emptyView);
-        listView.setAdapter(adapter);
+        listView.setAdapter(listAdapter);
         registerForContextMenu(listView);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -126,7 +126,7 @@ public class TimerListFragment extends BaseFragment {
                 for (AtDevice atDevice : new ArrayList<AtDevice>(devices)) {
                     if (!atDevice.isSupported()) devices.remove(atDevice);
                 }
-                adapter.updateData(devices);
+                listAdapter.updateData(devices);
 
                 Intent intent = new Intent(Actions.DISMISS_UPDATING_DIALOG);
                 AndFHEMApplication.getContext().sendBroadcast(intent);
