@@ -43,9 +43,9 @@ import li.klass.fhem.domain.core.DimmableDevice;
 
 import static li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener.NotificationDeviceType.DIMMER;
 
-public class GenericDeviceDimmableAdapter<D extends DimmableDevice<D>> extends ToggleableAdapter<D> {
+public class DimmableAdapter<D extends DimmableDevice<D>> extends ToggleableAdapter<D> {
 
-    public GenericDeviceDimmableAdapter(Class<D> deviceClass) {
+    public DimmableAdapter(Class<D> deviceClass) {
         super(deviceClass);
     }
 

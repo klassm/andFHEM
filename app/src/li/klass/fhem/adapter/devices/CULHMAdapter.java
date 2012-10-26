@@ -28,13 +28,13 @@ import android.content.Context;
 import android.view.View;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+import li.klass.fhem.adapter.devices.core.DimmableAdapter;
 import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
-import li.klass.fhem.adapter.devices.core.GenericDeviceDimmableAdapter;
 import li.klass.fhem.adapter.devices.genericui.CustomViewTableRow;
 import li.klass.fhem.domain.CULHMDevice;
 import li.klass.fhem.widget.LitreContentView;
 
-public class CULHMAdapter extends GenericDeviceDimmableAdapter<CULHMDevice> {
+public class CULHMAdapter extends DimmableAdapter<CULHMDevice> {
 
     public CULHMAdapter() {
         super(CULHMDevice.class);

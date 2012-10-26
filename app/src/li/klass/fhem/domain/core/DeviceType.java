@@ -26,8 +26,8 @@ package li.klass.fhem.domain.core;
 
 import li.klass.fhem.adapter.devices.*;
 import li.klass.fhem.adapter.devices.core.DeviceAdapter;
+import li.klass.fhem.adapter.devices.core.DimmableAdapter;
 import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
-import li.klass.fhem.adapter.devices.core.GenericDeviceDimmableAdapter;
 import li.klass.fhem.adapter.devices.core.ToggleableAdapter;
 import li.klass.fhem.domain.*;
 import li.klass.fhem.domain.fht.FHT8VDevice;
@@ -52,7 +52,7 @@ public enum DeviceType {
     SIS_PMS("SIS_PMS", SISPMSDevice.class, new ToggleableAdapter<SISPMSDevice>(SISPMSDevice.class)),
     USBWX("USBWX", USBWXDevice.class),
     CUL_WS("CUL_WS", CULWSDevice.class),
-    FS20("FS20", FS20Device.class, new GenericDeviceDimmableAdapter<FS20Device>(FS20Device.class)),
+    FS20("FS20", FS20Device.class, new DimmableAdapter<FS20Device>(FS20Device.class)),
     FILE_LOG("FileLog", FileLogDevice.class, null, ConnectionType.NEVER),
     OWFS("OWFS", OWFSDevice.class),
     LGTV("LGTV", LGTVDevice.class),
@@ -63,7 +63,7 @@ public enum DeviceType {
     PID("PID", PIDDevice.class),
     FHT8V("FHT8V", FHT8VDevice.class),
     TRX_WEATHER("TRX_WEATHER", TRXWeatherDevice.class),
-    TRX_LIGHT("TRX_LIGHT", TRXLightDevice.class, new GenericDeviceDimmableAdapter<TRXLightDevice>(TRXLightDevice.class)),
+    TRX_LIGHT("TRX_LIGHT", TRXLightDevice.class, new DimmableAdapter<TRXLightDevice>(TRXLightDevice.class)),
     TRX("TRX", TRXDevice.class),
     DUMMY("dummy", DummyDevice.class, new ToggleableAdapter<DummyDevice>(DummyDevice.class)),
     TWILIGHT("Twilight", TwilightDevice.class),

@@ -28,7 +28,7 @@ package li.klass.fhem.domain.core;
 public abstract class ToggleableDevice<T extends Device> extends Device<T> {
 
     public enum HookType {
-        NORMAL, ON_OFF_DEVICE, ON_DEVICE, OFF_DEVICE
+        NORMAL, ON_OFF_DEVICE, ON_DEVICE, OFF_DEVICE, TOGGLE_DEVICE
     }
 
     private HookType hookType = HookType.NORMAL;
@@ -47,6 +47,10 @@ public abstract class ToggleableDevice<T extends Device> extends Device<T> {
 
     public void readOFFDEVICE(String value) {
         if (value.equalsIgnoreCase("true")) hookType = HookType.OFF_DEVICE;
+    }
+
+    public void readTOGGLEDEVICE(String value) {
+        if (value.equalsIgnoreCase("true")) hookType = HookType.TOGGLE_DEVICE;
     }
 
     public HookType getHookType() {
