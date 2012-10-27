@@ -65,8 +65,9 @@ public class FS20DeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getState(), is("off"));
         assertThat(device.isOn(), is(false));
 
-        assertThat(device.getEventMap().get("off"), is("closed"));
-        assertThat(device.getEventMap().get("on"), is("open"));
+        assertThat(device.getEventMapStateFor("off"), is("closed"));
+        assertThat(device.getEventMapStateFor("on"), is("open"));
+        assertThat(device.getEventMapStateFor("dummy"), is("dummy"));
 
         assertThat(device.getAlias(), is("myAlias"));
         assertThat(device.isSpecialButtonDevice(), is(true));
