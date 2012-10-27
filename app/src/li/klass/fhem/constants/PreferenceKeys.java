@@ -31,6 +31,6 @@ public class PreferenceKeys {
     public static final String APPLICATION_VERSION = "APPLICATION_VERSION";
     public static final String BILLING_DATABASE_INITIALISED = "BILLING_DATABASE_INITIALISED";
     public static final String UPDATE_ON_APPLICATION_START = "UPDATE_ON_APPLICATION_START";
-    public static final String FHT_SHOW_SET_VALUE_BUTTONS = "FHT_SHOW_SET_VALUE_BUTTONS";
+    public static final String SHOW_SET_VALUE_BUTTONS = "SHOW_SET_VALUE_BUTTONS";
     public static final String DEVICE_LIST_RIGHT_PADDING = "DEVICE_LIST_PADDING_RIGHT";
 }

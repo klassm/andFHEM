@@ -33,6 +33,7 @@ import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.genericview.FloorplanViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.util.ValueDescriptionUtil;
+import li.klass.fhem.util.ValueExtractUtil;
 
 @FloorplanViewSettings(showState = true)
 @SupportsWidget(TemperatureWidgetView.class)
@@ -43,9 +44,15 @@ public class PIDDevice extends Device<PIDDevice> {
     @WidgetTemperatureField
     private String temperature;
 
+    @ShowField(description = R.string.desiredTemperature)
+    private double desiredTemperature;
+
     @ShowField(description = R.string.delta, showInOverview = true)
     @WidgetTemperatureAdditionalField(description = R.string.delta)
     private String delta;
+
+    public static final double MINIMUM_TEMPERATURE = 0;
+    public static final double MAXIMUM_TEMPERATURE = 40;
 
     public void readSTATE(String value) {
         String content = value.replaceAll("[\\(\\)]", "").replaceAll("  ", "");
@@ -55,8 +62,20 @@ public class PIDDevice extends Device<PIDDevice> {
         delta = parts[2];
     }
 
+    public void readDESIRED(String value) {
+        desiredTemperature = ValueExtractUtil.extractLeadingDouble(value);
+    }
+
     public String getTemperature() {
         return temperature;
+    }
+
+    public void setDesiredTemperature(double desiredTemperature) {
+        this.desiredTemperature = desiredTemperature;
+    }
+
+    public double getDesiredTemperature() {
+        return desiredTemperature;
     }
 
     public String getDelta() {

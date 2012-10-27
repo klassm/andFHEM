@@ -174,7 +174,7 @@
     <string name="prefDeviceTypeOrder">Device type order</string>
     <string name="prefDeviceTypeOrderSummary">Order of device types as well as hide and view</string>
     <string name="prefUpdateOnApplicationStart">Refresh on application start</string>
-    <string name="prefShowFHTSetValueButtons">Show FHT set value buttons</string>
+    <string name="prefShowSetValueButtons">Show set value buttons for temperature changes</string>
 
     <string name="notNumericError">Not numeric!</string>
     <string name="updateError">Error while updating.</string>

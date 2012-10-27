@@ -22,36 +22,26 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.domain;
+package li.klass.fhem.adapter.devices.genericui;
 
-import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 import org.junit.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
 import static org.hamcrest.core.Is.is;
 
-public class PIDDeviceTest extends DeviceXMLParsingBase {
+public class TemperatureChangeTableRowTest {
     @Test
-    public void testForCorrectlySetAttributes() {
-        PIDDevice device = getDefaultDevice();
-
-        assertThat(device.getName(), is(DEFAULT_TEST_DEVICE_NAME));
-        assertThat(device.getRoomConcatenated(), is(DEFAULT_TEST_ROOM_NAME));
-
-        assertThat(device.getTemperature(), is("16.8 (°C)"));
-        assertThat(device.getDelta(), is("-0.800000000000001"));
-        assertThat(device.getState(), is("16.8 (delta -0.800000000000001)"));
-        assertThat(device.getDesiredTemperature(), is(closeTo(16, 0.001)));
-
-        assertThat(device.getAvailableTargetStates(), is(notNullValue()));
-
-        assertThat(device.getFileLog(), is(nullValue()));
-        assertThat(device.getDeviceCharts().size(), is(0));
+    public void testDimProgressToTemperature() {
+        assertThat(TemperatureChangeTableRow.dimProgressToTemperature(50, 5.5), is(30.5));
+        assertThat(TemperatureChangeTableRow.dimProgressToTemperature(20, 5.5), is(15.5));
+        assertThat(TemperatureChangeTableRow.dimProgressToTemperature(10, 5.5), is(10.5));
     }
 
-    @Override
-    protected String getFileName() {
-        return "pid.xml";
+    @Test
+    public void testTemperatureToDimProgress() {
+        assertThat(TemperatureChangeTableRow.temperatureToDimProgress(30.5, 5.5), is(50));
+        assertThat(TemperatureChangeTableRow.temperatureToDimProgress(15.5, 5.5), is(20));
+        assertThat(TemperatureChangeTableRow.temperatureToDimProgress(10.5, 5.5), is(10));
     }
+
 }

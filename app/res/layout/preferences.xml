@@ -68,8 +68,8 @@
                 android:defaultValue="false"
                 />
         <CheckBoxPreference
-                android:key="FHT_SHOW_SET_VALUE_BUTTONS"
-                android:title="@string/prefShowFHTSetValueButtons"
+                android:key="SHOW_SET_VALUE_BUTTONS"
+                android:title="@string/prefShowSetValueButtons"
                 android:defaultValue="false"
                 />
         <ListPreference

@@ -60,7 +60,7 @@ public enum DeviceType {
     CUL_HM("CUL_HM", CULHMDevice.class, new CULHMAdapter()),
     WATCHDOG("watchdog", WatchdogDevice.class),
     HOLIDAY("HOL", HOLDevice.class, new ToggleableAdapter<HOLDevice>(HOLDevice.class)),
-    PID("PID", PIDDevice.class),
+    PID("PID", PIDDevice.class, new PidAdapter(PIDDevice.class)),
     FHT8V("FHT8V", FHT8VDevice.class),
     TRX_WEATHER("TRX_WEATHER", TRXWeatherDevice.class),
     TRX_LIGHT("TRX_LIGHT", TRXLightDevice.class, new DimmableAdapter<TRXLightDevice>(TRXLightDevice.class)),

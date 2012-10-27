@@ -32,6 +32,7 @@ import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.domain.FHTDevice;
+import li.klass.fhem.domain.PIDDevice;
 import li.klass.fhem.domain.WOLDevice;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DimmableDevice;
@@ -91,7 +92,11 @@ public class DeviceIntentService extends ConvenientIntentService {
             FHTService.INSTANCE.setWindowOpenTemp((FHTDevice) device, temperature);
         } else if (action.equals(DEVICE_SET_DESIRED_TEMPERATURE)) {
             double temperature = intent.getDoubleExtra(BundleExtraKeys.DEVICE_TEMPERATURE, -1);
-            FHTService.INSTANCE.setDesiredTemperature((FHTDevice) device, temperature);
+            if (device instanceof FHTDevice) {
+                FHTService.INSTANCE.setDesiredTemperature((FHTDevice) device, temperature);
+            } else if (device instanceof PIDDevice) {
+               PIDService.INSTANCE.setDesiredTemperature((PIDDevice) device, temperature);
+            }
         } else if (action.equals(DEVICE_RESET_TIMETABLE)) {
             FHTService.INSTANCE.resetTimetable((FHTDevice) device);
         } else if (action.equals(DEVICE_REFRESH_VALUES)) {

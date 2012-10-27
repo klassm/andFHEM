@@ -174,7 +174,7 @@
     <string name="prefDeviceTypeOrder">Gerätetyp Reihenfolge</string>
     <string name="prefDeviceTypeOrderSummary">Veränderung der Reihenfolge sowie Anzeige / Ausblendung von Typen</string>
     <string name="prefUpdateOnApplicationStart">Aktualisierung beim Applikationsstart</string>
-    <string name="prefShowFHTSetValueButtons">Zeige "Ändern" Knöpfe für FHT Geräte</string>
+    <string name="prefShowSetValueButtons">Zeige "Ändern" Knöpfe für Temperaturänderungen</string>
 
     <string name="notNumericError">Nicht numerisch!</string>
     <string name="updateError">Error während Update Vorgang.</string>

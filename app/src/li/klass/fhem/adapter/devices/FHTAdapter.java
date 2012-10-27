@@ -24,32 +24,24 @@
 
 package li.klass.fhem.adapter.devices;
 
-import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.widget.TableLayout;
 import android.widget.TableRow;
-import android.widget.TextView;
-import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
 import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
 import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewAction;
-import li.klass.fhem.adapter.devices.genericui.SeekBarActionRowFullWidthAndButton;
 import li.klass.fhem.adapter.devices.genericui.SpinnerActionRow;
+import li.klass.fhem.adapter.devices.genericui.TemperatureChangeTableRow;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.FHTDevice;
 import li.klass.fhem.domain.fht.FHTMode;
 import li.klass.fhem.fragments.FHTTimetableControlListFragment;
-import li.klass.fhem.util.ApplicationProperties;
-import li.klass.fhem.util.ValueDescriptionUtil;
-import li.klass.fhem.util.device.DeviceActionUtil;
 
-import static li.klass.fhem.constants.PreferenceKeys.FHT_SHOW_SET_VALUE_BUTTONS;
-import static li.klass.fhem.domain.FHTDevice.*;
+import static li.klass.fhem.domain.FHTDevice.MAXIMUM_TEMPERATURE;
+import static li.klass.fhem.domain.FHTDevice.MINIMUM_TEMPERATURE;
 
 public class FHTAdapter extends GenericDeviceAdapter<FHTDevice> {
 
@@ -57,95 +49,37 @@ public class FHTAdapter extends GenericDeviceAdapter<FHTDevice> {
         super(FHTDevice.class);
     }
 
-    class FHTTemperatureChangeTableRow extends SeekBarActionRowFullWidthAndButton<FHTDevice> {
-        private final TextView updateView;
-        private double newTemperature;
-        private String intentAction;
-        private int valueStringId;
-        private Context context;
-
-        public FHTTemperatureChangeTableRow(Context context, double initialTemperature, TableRow updateTableRow,
-                                            String intentAction, int valueStringId) {
-            super(context, temperatureToDimProgress(initialTemperature), temperatureToDimProgress(MAXIMUM_TEMPERATURE));
-            updateView = (TextView) updateTableRow.findViewById(R.id.value);
-            this.intentAction = intentAction;
-            this.valueStringId = valueStringId;
-            this.context = context;
-        }
-
-        @Override
-        public void onProgressChanged(Context context, FHTDevice device, int progress) {
-            this.newTemperature = dimProgressToTemperature(progress);
-            updateView.setText(ValueDescriptionUtil.appendTemperature(newTemperature));
-        }
-
-        @Override
-        public void onStopTrackingTouch(final Context seekBarContext, final FHTDevice device, int progress) {
-            String confirmationMessage = createConfirmationText(valueStringId, newTemperature);
-            DeviceActionUtil.showConfirmation(context, new Dialog.OnClickListener() {
-
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    setValue(device, newTemperature);
-                }
-            }, confirmationMessage);
-        }
-
-        @Override
-        public void onButtonSetValue(FHTDevice device, int value) {
-            setValue(device, value);
-        }
-
-        private void setValue(FHTDevice device, double newValue) {
-            Intent intent = new Intent(intentAction);
-            intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
-            intent.putExtra(BundleExtraKeys.DEVICE_TEMPERATURE, newValue);
-            context.startService(intent);
-
-            updateView.setText(ValueDescriptionUtil.appendTemperature(newValue));
-        }
-
-        @Override
-        protected boolean showButton() {
-            return ApplicationProperties.INSTANCE.getBooleanSharedPreference(FHT_SHOW_SET_VALUE_BUTTONS, false);
-        }
-
-        int temperatureToProgress(double temperature) {
-            return (int) ((temperature - 5.5) / 0.5);
-        }
-
-        double progressToTemperature(double progress) {
-            return 5.5 + (progress * 0.5);
-        }
-    }
-
     @Override
     protected void afterPropertiesSet() {
         registerFieldListener("desiredTemp", new FieldNameAddedToDetailListener<FHTDevice>() {
             @Override
             public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FHTDevice device, TableRow fieldTableRow) {
-                tableLayout.addView(new FHTTemperatureChangeTableRow(context, device.getDesiredTemp(), fieldTableRow, Actions.DEVICE_SET_DESIRED_TEMPERATURE, R.string.desiredTemperature)
+                tableLayout.addView(new TemperatureChangeTableRow<FHTDevice>(context, device.getDesiredTemp(), fieldTableRow,
+                        Actions.DEVICE_SET_DESIRED_TEMPERATURE, R.string.desiredTemperature, MINIMUM_TEMPERATURE, MAXIMUM_TEMPERATURE)
                         .createRow(inflater, device));
             }
         });
         registerFieldListener("dayTemperature", new FieldNameAddedToDetailListener<FHTDevice>() {
             @Override
             public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FHTDevice device, TableRow fieldTableRow) {
-                tableLayout.addView(new FHTTemperatureChangeTableRow(context, device.getDayTemperature(), fieldTableRow, Actions.DEVICE_SET_DAY_TEMPERATURE, R.string.dayTemperature)
+                tableLayout.addView(new TemperatureChangeTableRow<FHTDevice>(context, device.getDayTemperature(), fieldTableRow,
+                        Actions.DEVICE_SET_DAY_TEMPERATURE, R.string.dayTemperature, MINIMUM_TEMPERATURE, MAXIMUM_TEMPERATURE)
                         .createRow(inflater, device));
             }
         });
         registerFieldListener("nightTemperature", new FieldNameAddedToDetailListener<FHTDevice>() {
             @Override
             public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FHTDevice device, TableRow fieldTableRow) {
-                tableLayout.addView(new FHTTemperatureChangeTableRow(context, device.getNightTemperature(), fieldTableRow, Actions.DEVICE_SET_NIGHT_TEMPERATURE, R.string.nightTemperature)
+                tableLayout.addView(new TemperatureChangeTableRow<FHTDevice>(context, device.getNightTemperature(), fieldTableRow,
+                        Actions.DEVICE_SET_NIGHT_TEMPERATURE, R.string.nightTemperature, MINIMUM_TEMPERATURE, MAXIMUM_TEMPERATURE)
                         .createRow(inflater, device));
             }
         });
         registerFieldListener("windowOpenTemp", new FieldNameAddedToDetailListener<FHTDevice>() {
             @Override
             public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FHTDevice device, TableRow fieldTableRow) {
-                tableLayout.addView(new FHTTemperatureChangeTableRow(context, device.getNightTemperature(), fieldTableRow, Actions.DEVICE_SET_WINDOW_OPEN_TEMPERATURE, R.string.windowOpenTemp)
+                tableLayout.addView(new TemperatureChangeTableRow<FHTDevice>(context, device.getNightTemperature(), fieldTableRow,
+                        Actions.DEVICE_SET_WINDOW_OPEN_TEMPERATURE, R.string.windowOpenTemp, MINIMUM_TEMPERATURE, MAXIMUM_TEMPERATURE)
                         .createRow(inflater, device));
             }
         });
@@ -188,14 +122,4 @@ public class FHTAdapter extends GenericDeviceAdapter<FHTDevice> {
         });
     }
 
-    private String createConfirmationText(int attributeStringId, double newTemperature) {
-        Context context = AndFHEMApplication.getContext();
-        Resources resources = context.getResources();
-
-        String attributeText = resources.getString(attributeStringId);
-        String temperatureText = ValueDescriptionUtil.appendTemperature(newTemperature);
-
-        String text = resources.getString(R.string.areYouSureText);
-        return String.format(text, attributeText, temperatureText);
-    }
 }
