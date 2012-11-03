@@ -86,6 +86,8 @@ public class FHTDevice extends Device<FHTDevice> {
 
     @Override
     public void onChildItemRead(String tagName, String key, String value, NamedNodeMap nodeAttributes) {
+        super.onChildItemRead(tagName, key, value, nodeAttributes);
+
         if (key.startsWith("ACTUATOR") && value != null && value.matches("[0-9]*[%]?")) {
             double percentage = ValueExtractUtil.extractLeadingDouble(value);
             actuator = ValueDescriptionUtil.appendPercent(percentage);
