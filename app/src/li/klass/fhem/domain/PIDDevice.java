@@ -58,6 +58,10 @@ public class PIDDevice extends Device<PIDDevice> {
         String content = value.replaceAll("[\\(\\)]", "").replaceAll("  ", "");
         String[] parts = content.split(" ");
 
+        if (parts.length == 1) {
+            return;
+        }
+
         temperature = ValueDescriptionUtil.appendTemperature(parts[0]);
         delta = parts[2];
     }
