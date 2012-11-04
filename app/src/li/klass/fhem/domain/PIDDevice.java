@@ -40,15 +40,15 @@ import li.klass.fhem.util.ValueExtractUtil;
 @SuppressWarnings("unused")
 public class PIDDevice extends Device<PIDDevice> {
 
-    @ShowField(description = R.string.temperature, showInOverview = true)
+    @ShowField(description = "R.string.temperature", showInOverview = true)
     @WidgetTemperatureField
     private String temperature;
 
-    @ShowField(description = R.string.desiredTemperature)
+    @ShowField(description = "R.string.desiredTemperature")
     private double desiredTemperature;
 
-    @ShowField(description = R.string.delta, showInOverview = true)
-    @WidgetTemperatureAdditionalField(description = R.string.delta)
+    @ShowField(description = "R.string.delta", showInOverview = true)
+    @WidgetTemperatureAdditionalField(description = "R.string.delta")
     private String delta;
 
     public static final double MINIMUM_TEMPERATURE = 0;

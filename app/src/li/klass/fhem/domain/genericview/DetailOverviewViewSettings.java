@@ -32,6 +32,6 @@ import java.lang.annotation.RetentionPolicy;
 public @interface DetailOverviewViewSettings {
     boolean showState() default false;
     boolean showMeasured() default false;
-    int stateStringId() default R.string.state;
-    int measuredStringId() default R.string.measured;
+    String stateStringId() default "R.string.state";
+    String measuredStringId() default "R.string.measured";
 }

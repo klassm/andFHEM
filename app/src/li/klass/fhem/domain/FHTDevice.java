@@ -53,27 +53,27 @@ public class FHTDevice extends Device<FHTDevice> {
     public static double MAXIMUM_TEMPERATURE = 30.5;
     public static double MINIMUM_TEMPERATURE = 5.5;
 
-    @ShowField(description = R.string.actuator, showInOverview = true)
-    @WidgetTemperatureAdditionalField(description = R.string.actuator)
-    @WidgetMediumLine3(description = R.string.actuator)
+    @ShowField(description = "R.string.actuator", showInOverview = true)
+    @WidgetTemperatureAdditionalField(description = "R.string.actuator")
+    @WidgetMediumLine3(description = "R.string.actuator")
     private String actuator;
     private FHTMode mode;
-    @ShowField(description = R.string.desiredTemperature)
-    @WidgetMediumLine2(description = R.string.desiredTemperature)
+    @ShowField(description = "R.string.desiredTemperature")
+    @WidgetMediumLine2(description = "R.string.desiredTemperature")
     private double desiredTemp;
-    @ShowField(description = R.string.dayTemperature)
+    @ShowField(description = "R.string.dayTemperature")
     private double dayTemperature;
-    @ShowField(description = R.string.nightTemperature)
+    @ShowField(description = "R.string.nightTemperature")
     private double nightTemperature;
-    @ShowField(description = R.string.windowOpenTemp)
+    @ShowField(description = "R.string.windowOpenTemp")
     private double windowOpenTemp;
-    @ShowField(description = R.string.warnings)
+    @ShowField(description = "R.string.warnings")
     private String warnings;
-    @ShowField(description = R.string.temperature, showInOverview = true, showInFloorplan = true)
+    @ShowField(description = "R.string.temperature", showInOverview = true, showInFloorplan = true)
     @WidgetTemperatureField
     @WidgetMediumLine1
     private String temperature;
-    @ShowField(description = R.string.battery)
+    @ShowField(description = "R.string.battery")
     private String battery;
 
     private Map<Integer, FHTDayControl> dayControlMap = new HashMap<Integer, FHTDayControl>();

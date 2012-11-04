@@ -33,16 +33,16 @@ import li.klass.fhem.util.ValueDescriptionUtil;
 @SuppressWarnings("unused")
 public class HOLDevice extends ToggleableDevice<HOLDevice> {
 
-    @ShowField(description = R.string.currentSwitchDevice)
+    @ShowField(description = "R.string.currentSwitchDevice")
     private String currentSwitchDevice;
 
-    @ShowField(description = R.string.currentSwitchTime)
+    @ShowField(description = "R.string.currentSwitchTime")
     private String currentSwitchTime;
 
-    @ShowField(description = R.string.lastSwitchTime)
+    @ShowField(description = "R.string.lastSwitchTime")
     private String lastTrigger;
 
-    @ShowField(description = R.string.nextSwitchTime)
+    @ShowField(description = "R.string.nextSwitchTime")
     private String nextTrigger;
 
     public void readCURRENTSWITCHDEVICE(String currentSwitchDevice) {

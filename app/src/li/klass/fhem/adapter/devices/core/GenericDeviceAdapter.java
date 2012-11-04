@@ -75,10 +75,12 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
             if (device.getClass().isAnnotationPresent(DetailOverviewViewSettings.class)) {
                 DetailOverviewViewSettings annotation = device.getClass().getAnnotation(DetailOverviewViewSettings.class);
                 if (annotation.showState()) {
-                    createTableRow(inflater, layout, R.layout.device_overview_generic_table_row, device.getState(), annotation.stateStringId());
+                	String[] split = annotation.stateStringId().split("\\.");
+                    createTableRow(inflater, layout, R.layout.device_overview_generic_table_row, device.getState(), view.getResources().getIdentifier(split[2], split[1], "li.klass.fhem"));
                 }
                 if (annotation.showMeasured()) {
-                    createTableRow(inflater, layout, R.layout.device_overview_generic_table_row, device.getMeasured(), annotation.measuredStringId());
+                	String[] split = annotation.measuredStringId().split("\\.");
+                    createTableRow(inflater, layout, R.layout.device_overview_generic_table_row, device.getMeasured(), view.getResources().getIdentifier(split[2], split[1], "li.klass.fhem"));
                 }
             }
             Field[] declaredFields = device.getClass().getDeclaredFields();
@@ -256,7 +258,8 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
 
     private TableRow createTableRow(D device, LayoutInflater inflater, TableLayout layout, Field declaredField, int resource) throws IllegalAccessException {
         Object value = declaredField.get(device);
-        int description = declaredField.getAnnotation(ShowField.class).description();
+    	String[] split = declaredField.getAnnotation(ShowField.class).description().split("\\.");
+        int description = layout.getResources().getIdentifier(split[2], split[1], "li.klass.fhem");
 
         return createTableRow(inflater, layout, resource, value, description);
     }

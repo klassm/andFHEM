@@ -31,11 +31,11 @@ import li.klass.fhem.domain.genericview.ShowField;
 
 @FloorplanViewSettings(showState = true)
 public class LGTVDevice extends Device<LGTVDevice> {
-    @ShowField(description = R.string.power, showInOverview = true)
+    @ShowField(description = "R.string.power", showInOverview = true)
     private String power;
-    @ShowField(description = R.string.audio, showInOverview = true)
+    @ShowField(description = "R.string.audio", showInOverview = true)
     private String audio;
-    @ShowField(description = R.string.input, showInOverview = true)
+    @ShowField(description = "R.string.input", showInOverview = true)
     private String input;
 
     public void readPOWER(String value) {

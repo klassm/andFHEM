@@ -48,10 +48,10 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
 
     protected String alias;
 
-    @ShowField(description = R.string.measured)
+    @ShowField(description = "R.string.measured")
     protected String measured;
 
-    @ShowField(description = R.string.definition)
+    @ShowField(description = "R.string.definition")
     protected String definition;
     protected Map<String, String> eventMapReverse = new HashMap<String, String>();
     protected Map<String, String> eventMap = new HashMap<String, String>();
