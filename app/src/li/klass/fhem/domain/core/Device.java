@@ -272,7 +272,11 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
     }
 
     public void setState(String state) {
-        this.state = state;
+        if (eventMap.containsKey(state)) {
+            this.state = eventMap.get(state);
+        } else {
+            this.state = state;
+        }
     }
 
     public String getInternalState() {

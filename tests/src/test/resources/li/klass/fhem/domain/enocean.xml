@@ -1,0 +1,62 @@
+<EnOcean_LIST>
+    <EnOcean name="device" state="on" sets="BI:off B0:on A0 AI B0 BI C0 CI D0 DI released" attrs="room group comment alias eventMap IODev do_not_notify:1,0 ignore:0,1 dummy:0,1 showtime:1,0 loglevel:0,1,2,3,4,5,6 model:other,MD15-FtL-HE,SR04,SR04P,SR04PT,SR04PST,SR04PMS,FAH60,FAH63,FIH63,FABH63,FBH63,FIBH63,PM101,FTF55,FSB61,FSM61 subType:dimmCtrl,sensor,FAH,FTF,contact,FBH,MD15,switch,windowHandle,SR04,dimmer actualTemp fp_Erdgeschoss icon webCmd">
+        <INT key="DEF" value="FFB2D381"/>
+        <INT key="NAME" value="device"/>
+        <INT key="NR" value="70"/>
+        <INT key="STATE" value="on"/>
+        <INT key="TYPE" value="EnOcean"/>
+        <INT key="IODev" value="TCM310"/>
+        <ATTR key="eventMap" value="BI:off B0:on"/>
+        <ATTR key="loglevel" value="2"/>
+        <ATTR key="room" value="room"/>
+        <ATTR key="subType" value="switch"/>
+        <STATE key="state" value="on" measured="2012-11-05 19:26:10"/>
+    </EnOcean>
+    <EnOcean name="device1" state="153" sets="A0 AI B0 BI C0 CI D0 DI released" attrs="room group comment alias eventMap IODev do_not_notify:1,0 ignore:0,1 dummy:0,1 showtime:1,0 loglevel:0,1,2,3,4,5,6 model:other,MD15-FtL-HE,SR04,SR04P,SR04PT,SR04PST,SR04PMS,FAH60,FAH63,FIH63,FABH63,FBH63,FIBH63,PM101,FTF55,FSB61,FSM61 subType:dimmCtrl,sensor,FAH,FTF,contact,FBH,MD15,switch,windowHandle,SR04,dimmer actualTemp fp_Erdgeschoss icon webCmd">
+        <INT key="CFGFN" value=""/>
+        <INT key="DEF" value="0103915C"/>
+        <INT key="LASTIODev" value="TCM310"/>
+        <INT key="MSGCNT" value="10"/>
+        <INT key="NAME" value="device1"/>
+        <INT key="NR" value="81"/>
+        <INT key="STATE" value="153"/>
+        <INT key="TCM310_DestinationID" value="FFFFFFFF"/>
+        <INT key="TCM310_MSGCNT" value="10"/>
+        <INT key="TCM310_RSSI" value="92"/>
+        <INT key="TCM310_SecurityLevel" value="0"/>
+        <INT key="TCM310_SubTelNum" value="1"/>
+        <INT key="TCM310_TIME" value="2012-11-04 23:55:11"/>
+        <INT key="TYPE" value="EnOcean"/>
+        <INT key="IODev" value="TCM310"/>
+        <ATTR key="room" value="room"/>
+        <ATTR key="subType" value="sensor"/>
+        <STATE key="D0" value="1" measured="2012-11-04 23:55:11"/>
+        <STATE key="D1" value="1" measured="2012-11-04 23:55:11"/>
+        <STATE key="D2" value="1" measured="2012-11-04 23:55:11"/>
+        <STATE key="D3" value="1" measured="2012-11-04 23:55:11"/>
+        <STATE key="sensor1" value="153" measured="2012-11-04 23:55:11"/>
+        <STATE key="sensor2" value="0" measured="2012-11-04 23:55:11"/>
+        <STATE key="sensor3" value="0" measured="2012-11-04 23:55:11"/>
+        <STATE key="state" value="153" measured="2012-11-04 23:55:11"/>
+    </EnOcean>
+    <EnOcean name="device2" state="on" sets="BI:off B0:on A0 AI B0 BI C0 CI D0 DI released" attrs="room group comment alias eventMap IODev do_not_notify:1,0 ignore:0,1 dummy:0,1 showtime:1,0 loglevel:0,1,2,3,4,5,6 model:other,MD15-FtL-HE,SR04,SR04P,SR04PT,SR04PST,SR04PMS,FAH60,FAH63,FIH63,FABH63,FBH63,FIBH63,PM101,FTF55,FSB61,FSM61 subType:dimmCtrl,sensor,FAH,FTF,contact,FBH,MD15,switch,windowHandle,SR04,dimmer actualTemp fp_Erdgeschoss icon webCmd">
+        <INT key="DEF" value="01039779"/>
+        <INT key="LASTIODev" value="TCM310"/>
+        <INT key="MSGCNT" value="230"/>
+        <INT key="NAME" value="device2"/>
+        <INT key="NR" value="75"/>
+        <INT key="STATE" value="on"/>
+        <INT key="TCM310_DestinationID" value="FFFFFFFF"/>
+        <INT key="TCM310_MSGCNT" value="230"/>
+        <INT key="TCM310_RSSI" value="80"/>
+        <INT key="TCM310_SecurityLevel" value="0"/>
+        <INT key="TCM310_SubTelNum" value="1"/>
+        <INT key="TCM310_TIME" value="2012-11-05 19:41:52"/>
+        <INT key="TYPE" value="EnOcean"/>
+        <INT key="IODev" value="TCM310"/>
+        <ATTR key="eventMap" value="BI:off B0:on"/>
+        <ATTR key="room" value="room"/>
+        <ATTR key="subType" value="switch"/>
+        <STATE key="state" value="on" measured="2012-11-05 19:41:52"/>
+    </EnOcean>
+</EnOcean_LIST>

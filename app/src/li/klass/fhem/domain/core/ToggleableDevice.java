@@ -60,4 +60,12 @@ public abstract class ToggleableDevice<T extends Device> extends Device<T> {
     public boolean isSpecialButtonDevice() {
         return hookType != HookType.NORMAL;
     }
+
+    public String getOffStateName() {
+        return "off";
+    }
+
+    public String getOnStateName() {
+        return "on";
+    }
 }

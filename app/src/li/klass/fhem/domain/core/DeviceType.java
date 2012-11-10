@@ -67,7 +67,8 @@ public enum DeviceType {
     TRX("TRX", TRXDevice.class),
     DUMMY("dummy", DummyDevice.class, new ToggleableAdapter<DummyDevice>(DummyDevice.class)),
     TWILIGHT("Twilight", TwilightDevice.class),
-    AT("at", AtDevice.class, null, ConnectionType.NEVER);
+    AT("at", AtDevice.class, null, ConnectionType.NEVER),
+    EN_OCEAN("EnOcean", EnOceanDevice.class, new ToggleableAdapter<EnOceanDevice>(EnOceanDevice.class));
 
     private String xmllistTag;
     private Class<? extends Device> deviceClass;
