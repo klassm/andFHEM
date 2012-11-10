@@ -178,6 +178,7 @@ public class RoomListService extends AbstractService {
         if (refresh || deviceListMap == null) {
             sendBroadcastWithAction(Actions.SHOW_UPDATING_DIALOG, null);
             try {
+                sendBroadcastWithAction(Actions.DEVICE_LIST_REMOTE_NOTIFY, null);
                 deviceListMap = getRemoteRoomDeviceListMap();
             } catch (AndFHEMException e) {
                 int errorStringId = e.getErrorMessageStringId();

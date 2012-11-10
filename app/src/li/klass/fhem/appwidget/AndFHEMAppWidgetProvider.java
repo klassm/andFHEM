@@ -59,7 +59,7 @@ public abstract class AndFHEMAppWidgetProvider extends AppWidgetProvider {
             if (appWidgetId != -1) {
                 onUpdate(context, appWidgetManager, new int[] {appWidgetId});
             }
-        } else if (intent.getAction().equals(Actions.WIDGET_ALL_UPDATE)) {
+        } else if (intent.getAction().equals(Actions.DEVICE_LIST_REMOTE_NOTIFY)) {
             AppWidgetDataHolder.INSTANCE.updateAllWidgets(context);
         }
     }

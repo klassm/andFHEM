@@ -58,6 +58,7 @@ public class AppWidgetDataHolder {
     private AppWidgetDataHolder() {}
 
     public void updateAllWidgets(final Context context) {
+        Log.e(AndFHEMAppWidgetProvider.class.getName(), "update all widgets!");
         new AsyncTask<String, String, String>() {
             @Override
             protected String doInBackground(String... voids) {
