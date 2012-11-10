@@ -70,7 +70,7 @@ public class AtDevice extends Device<AtDevice> {
         }
     }
 
-    public static final Pattern FHEM_PATTERN = Pattern.compile("fhem\\(\"set ([\\w\\-,]+) ([\\w%-]+)(?: ([0-9:]+))?\"\\)(.*)");
+    public static final Pattern FHEM_PATTERN = Pattern.compile("fhem\\(\"set ([\\w\\-,]+) ([\\w%-]+)(?: ([0-9.:]+))?\"\\)(.*)");
     public static final Pattern PREFIX_PATTERN = Pattern.compile("([+*]{0,2})([0-9:]+)(.*)");
     public static final Pattern DEFAULT_PATTERN = Pattern.compile("set ([\\w-]+) ([\\w\\-,%]+)(?: ([0-9:]+))?");
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");

@@ -27,6 +27,9 @@ package li.klass.fhem.domain;
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 import org.junit.Test;
 
+import static li.klass.fhem.domain.AtDevice.AtRepetition.*;
+import static li.klass.fhem.domain.AtDevice.TimerType.ABSOLUTE;
+import static li.klass.fhem.domain.AtDevice.TimerType.RELATIVE;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNull.nullValue;
@@ -38,40 +41,44 @@ public class AtDeviceTest extends DeviceXMLParsingBase {
         AtDevice device;
 
         device = parse("17:00:00 set lamp on", 17, 0, 0, "lamp", "on", null,
-                AtDevice.AtRepetition.ONCE, AtDevice.TimerType.ABSOLUTE, true);
+                ONCE, ABSOLUTE, true);
         assemble(device, "17:00:00 { fhem(\"set lamp on\") }");
 
         device = parse("*23:00:00 { fhem(\"set lamp off\") if ($we) }", 23, 0, 0, "lamp", "off", null,
-                AtDevice.AtRepetition.WEEKEND, AtDevice.TimerType.ABSOLUTE, true);
+                WEEKEND, ABSOLUTE, true);
         assemble(device, "*23:00:00 { fhem(\"set lamp off\") if ($we) }");
 
         device = parse("+*23:00:00 { fhem(\"set lamp off-for-timer 200\") if (not $we) }", 23, 0, 0, "lamp", "off-for-timer", "200",
-                AtDevice.AtRepetition.WEEKDAY, AtDevice.TimerType.RELATIVE, true);
+                WEEKDAY, RELATIVE, true);
         assemble(device, "+*23:00:00 { fhem(\"set lamp off-for-timer 200\") if (!$we) }");
 
         device = parse("*23:00:00 { fhem(\"set lamp off-for-timer 200\") if (NOT $we) }", 23, 0, 0, "lamp", "off-for-timer", "200",
-                AtDevice.AtRepetition.WEEKDAY, AtDevice.TimerType.ABSOLUTE, true);
+                WEEKDAY, ABSOLUTE, true);
         assemble(device, "*23:00:00 { fhem(\"set lamp off-for-timer 200\") if (!$we) }");
 
         device = parse("*23:00:00 { fhem(\"set lamp off-for-timer 200\") if (!$we) }", 23, 0, 0, "lamp", "off-for-timer", "200",
-                AtDevice.AtRepetition.WEEKDAY, AtDevice.TimerType.ABSOLUTE, true);
+                WEEKDAY, ABSOLUTE, true);
         assemble(device, "*23:00:00 { fhem(\"set lamp off-for-timer 200\") if (!$we) }");
 
         device = parse("*23:00:00 { fhem(\"set lamp off-for-timer 200\") if (0 && !$we) }", 23, 0, 0, "lamp", "off-for-timer", "200",
-                AtDevice.AtRepetition.WEEKDAY, AtDevice.TimerType.ABSOLUTE, false);
+                WEEKDAY, ABSOLUTE, false);
         assemble(device, "*23:00:00 { fhem(\"set lamp off-for-timer 200\") if (!$we && 0) }");
 
         device = parse("*23:00:00 { fhem(\"set lamp off-for-timer 200\") if (!$we && 0) }", 23, 0, 0, "lamp", "off-for-timer", "200",
-                AtDevice.AtRepetition.WEEKDAY, AtDevice.TimerType.ABSOLUTE, false);
+                WEEKDAY, ABSOLUTE, false);
         assemble(device, "*23:00:00 { fhem(\"set lamp off-for-timer 200\") if (!$we && 0) }");
 
         device = parse("*23:00:00 { fhem(\"set lamp off-for-timer 200\") if (!$we && 1) }", 23, 0, 0, "lamp", "off-for-timer", "200",
-                AtDevice.AtRepetition.WEEKDAY, AtDevice.TimerType.ABSOLUTE, true);
+                WEEKDAY, ABSOLUTE, true);
         assemble(device, "*23:00:00 { fhem(\"set lamp off-for-timer 200\") if (!$we) }");
 
         device = parse("*23:00:00 { fhem(\"set lamp off-for-timer 200\") if (!$we && 0) }", 23, 0, 0, "lamp", "off-for-timer", "200",
-                AtDevice.AtRepetition.WEEKDAY, AtDevice.TimerType.ABSOLUTE, false);
+                WEEKDAY, ABSOLUTE, false);
         assemble(device, "*23:00:00 { fhem(\"set lamp off-for-timer 200\") if (!$we && 0) }");
+
+        device = parse("*07:15:00 { fhem(\"set Badezimmer desired-temp 00.00\") if (!$we && 0) }", 7, 15, 0, "Badezimmer",
+                "desired-temp", "00.00", WEEKDAY, ABSOLUTE, false);
+        assemble(device, "*07:15:00 { fhem(\"set Badezimmer desired-temp 00.00\") if (!$we && 0) }");
     }
 
     private AtDevice parse(String definition,
@@ -107,13 +114,13 @@ public class AtDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getName(), is(DEFAULT_TEST_DEVICE_NAME));
         assertThat(device.getRoomConcatenated(), is(DEFAULT_TEST_ROOM_NAME));
 
-        assertThat(device.getTimerType(), is(AtDevice.TimerType.ABSOLUTE));
+        assertThat(device.getTimerType(), is(ABSOLUTE));
         assertThat(device.getFormattedSwitchTime(), is("23:00:00"));
         assertThat(device.getHours(), is(23));
         assertThat(device.getMinutes(), is(0));
         assertThat(device.getSeconds(), is(0));
         assertThat(device.getNextTrigger(), is("23:00:00"));
-        assertThat(device.getRepetition(), is(AtDevice.AtRepetition.WEEKEND));
+        assertThat(device.getRepetition(), is(WEEKEND));
         assertThat(device.getTargetDevice(), is("lamp"));
         assertThat(device.getTargetState(), is("off"));
         assertThat(device.getTargetStateAddtionalInformation(), is(nullValue()));
