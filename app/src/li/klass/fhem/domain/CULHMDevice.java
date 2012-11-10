@@ -48,7 +48,7 @@ import java.util.List;
 public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice> {
 
     public enum SubType {
-        DIMMER, SWITCH, HEATING, SMOKE_DETECTOR, THREE_STATE, TEMPERATURE_HUMIDITY, KFM100
+        DIMMER, SWITCH, HEATING, SMOKE_DETECTOR, THREE_STATE, TEMPERATURE_HUMIDITY, THERMOSTAT, KFM100
     }
 
     private SubType subType = null;
@@ -145,6 +145,9 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice> {
         } else if (value.equalsIgnoreCase("KFM100")) {
             subType = SubType.KFM100;
         }
+//        else if (value.equalsIgnoreCase("THERMOSTAT")) {
+//            subType = SubType.THERMOSTAT;
+//        }
         subTypeRaw = value;
     }
 
