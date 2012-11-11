@@ -43,10 +43,10 @@ import java.util.List;
 @SuppressWarnings("unused")
 public class CULWSDevice extends Device<CULWSDevice> {
 
-    @ShowField(description = R.string.humidity, showInOverview = true)
+    @ShowField(description = "R.string.humidity", showInOverview = true)
     @WidgetTemperatureAdditionalField
     private String humidity;
-    @ShowField(description = R.string.temperature, showInOverview = true)
+    @ShowField(description = "R.string.temperature", showInOverview = true)
     @WidgetTemperatureField
     private String temperature;
 

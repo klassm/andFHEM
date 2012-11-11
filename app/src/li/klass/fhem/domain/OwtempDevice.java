@@ -39,11 +39,11 @@ import org.w3c.dom.NamedNodeMap;
 @SupportsWidget(TemperatureWidgetView.class)
 public class OwtempDevice extends Device<OwtempDevice> {
 
-    @ShowField(description = R.string.temperature, showInOverview = true)
+    @ShowField(description = "R.string.temperature", showInOverview = true)
     @WidgetTemperatureField
     private String temperature;
 
-    @ShowField(description = R.string.warnings, showInOverview = true)
+    @ShowField(description = "R.string.warnings", showInOverview = true)
     private String warnings;
 
     public void readTEMPERATURE(String value)  {

@@ -53,30 +53,30 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice> {
 
     private SubType subType = null;
 
-    @ShowField(description = R.string.desiredTemperature)
+    @ShowField(description = "R.string.desiredTemperature")
     private String desiredTemp;
-    @ShowField(description = R.string.temperature, showInOverview = true)
+    @ShowField(description = "R.string.temperature", showInOverview = true)
     @WidgetTemperatureField
     private String measuredTemp;
-    @ShowField(description = R.string.actuator, showInOverview = true)
+    @ShowField(description = "R.string.actuator", showInOverview = true)
     private String actuator;
-    @ShowField(description = R.string.humidity, showInOverview = true)
+    @ShowField(description = "R.string.humidity", showInOverview = true)
     private String humidity;
-    @ShowField(description = R.string.model)
+    @ShowField(description = "R.string.model")
     private String subTypeRaw;
-    @ShowField(description = R.string.commandAccepted)
+    @ShowField(description = "R.string.commandAccepted")
     private String commandAccepted;
-    @ShowField(description = R.string.rawValue)
+    @ShowField(description = "R.string.rawValue")
     private String rawValue;
     private double fillContentLitresRaw;
-    @ShowField(description = R.string.maximumContent)
+    @ShowField(description = "R.string.maximumContent")
     private Integer fillContentLitresMaximum;
     private double fillContentPercentageRaw;
-    @ShowField(description = R.string.fillPercentage, showInOverview = true, showInDetail = false)
+    @ShowField(description = "R.string.fillPercentage", showInOverview = true, showInDetail = false)
     private String fillContentPercentage;
-    @ShowField(description = R.string.conversion)
+    @ShowField(description = "R.string.conversion")
     private String rawToReadable;
-    @ShowField(description = R.string.battery)
+    @ShowField(description = "R.string.battery")
     private String battery;
 
     public void readRAWTOREADABLE(String value) {

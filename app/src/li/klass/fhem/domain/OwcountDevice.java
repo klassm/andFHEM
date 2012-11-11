@@ -40,18 +40,18 @@ import li.klass.fhem.domain.genericview.ShowField;
 @SupportsWidget(MediumInformationWidgetView.class)
 public class OwcountDevice extends Device<OwcountDevice> {
 
-    @ShowField(description = R.string.counterA, showInOverview = true)
-    @WidgetMediumLine1(description = R.string.counterA)
+    @ShowField(description = "R.string.counterA", showInOverview = true)
+    @WidgetMediumLine1(description = "R.string.counterA")
     private float counterA;
-    @ShowField(description = R.string.counterB, showInOverview = true)
-    @WidgetMediumLine2(description = R.string.counterB)
+    @ShowField(description = "R.string.counterB", showInOverview = true)
+    @WidgetMediumLine2(description = "R.string.counterB")
     private float counterB;
     private float correlationA;
     private float correlationB;
-    @ShowField(description = R.string.present, showInOverview = true)
+    @ShowField(description = "R.string.present", showInOverview = true)
     private String present;
-    @ShowField(description = R.string.warnings)
-    @WidgetMediumLine3(description = R.string.warnings)
+    @ShowField(description = "R.string.warnings")
+    @WidgetMediumLine3(description = "R.string.warnings")
     private String warnings;
 
     public void readCOUNTERS_A(String value)  {

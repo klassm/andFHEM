@@ -35,10 +35,10 @@ import org.w3c.dom.NamedNodeMap;
 @FloorplanViewSettings(showState = true)
 @SuppressWarnings("unused")
 public class RFXX10RECDevice extends Device<RFXX10RECDevice> {
-    @ShowField(description = R.string.lastStateChange, showInOverview = true)
+    @ShowField(description = "R.string.lastStateChange", showInOverview = true)
     private String lastStateChangeTime;
 
-    @ShowField(description = R.string.lastState, showInOverview = true)
+    @ShowField(description = "R.string.lastState", showInOverview = true)
     private String lastState;
 
     public void readTIME(String value)  {

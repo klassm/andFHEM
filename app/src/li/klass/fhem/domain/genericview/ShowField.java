@@ -28,7 +28,7 @@ import java.lang.annotation.RetentionPolicy;
 
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ShowField {
-    int description();
+    String description();
     boolean showInOverview() default false;
     boolean showInDetail() default true;
     boolean showInFloorplan() default false;

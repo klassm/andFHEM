@@ -53,7 +53,7 @@ public class FS20Device extends DimmableDiscreteStatesDevice<FS20Device> impleme
     public static final List<String> dimModels = Arrays.asList("FS20DI", "FS20DI10", "FS20DU");
     public static final List<String> offStates = Arrays.asList("off", "off-for-timer", "reset", "timer");
 
-    @ShowField(description = R.string.model)
+    @ShowField(description = "R.string.model")
     private String model;
 
 

@@ -42,32 +42,32 @@ import java.util.List;
 @SuppressWarnings("unused")
 public class OregonDevice extends Device<OregonDevice> {
 
-    @ShowField(description = R.string.humidity, showInOverview = true)
+    @ShowField(description = "R.string.humidity", showInOverview = true)
     private String humidity;
     @WidgetTemperatureField
-    @ShowField(description = R.string.temperature, showInOverview = true)
+    @ShowField(description = "R.string.temperature", showInOverview = true)
     private String temperature;
-    @ShowField(description = R.string.forecast, showInOverview = true)
+    @ShowField(description = "R.string.forecast", showInOverview = true)
     private String forecast;
-    @ShowField(description = R.string.dewpoint)
+    @ShowField(description = "R.string.dewpoint")
     private String dewpoint;
-    @ShowField(description = R.string.pressure)
+    @ShowField(description = "R.string.pressure")
     private String pressure;
-    @ShowField(description = R.string.battery)
+    @ShowField(description = "R.string.battery")
     private String battery;
-    @ShowField(description = R.string.rainRate, showInOverview = true)
+    @ShowField(description = "R.string.rainRate", showInOverview = true)
     private String rainRate;
-    @ShowField(description = R.string.rainTotal, showInOverview = true)
+    @ShowField(description = "R.string.rainTotal", showInOverview = true)
     private String rainTotal;
-    @ShowField(description = R.string.windAvgSpeed, showInOverview = true)
+    @ShowField(description = "R.string.windAvgSpeed", showInOverview = true)
     private String windAvgSpeed;
-    @ShowField(description = R.string.windDirection, showInOverview = true)
+    @ShowField(description = "R.string.windDirection", showInOverview = true)
     private String windDirection;
-    @ShowField(description = R.string.windSpeed, showInOverview = true)
+    @ShowField(description = "R.string.windSpeed", showInOverview = true)
     private String windSpeed;
-    @ShowField(description = R.string.uvValue, showInOverview = true)
+    @ShowField(description = "R.string.uvValue", showInOverview = true)
     private String uvValue;
-    @ShowField(description = R.string.uvRisk, showInOverview = true)
+    @ShowField(description = "R.string.uvRisk", showInOverview = true)
     private String uvRisk;
 
     public void readTEMPERATURE(String value) {

@@ -34,48 +34,48 @@ import java.util.Map;
 
 @SuppressWarnings("unused")
 public class TwilightDevice extends Device<TwilightDevice> {
-    @ShowField(description = R.string.twilight_next_event, showInOverview = true, showInFloorplan = true)
+    @ShowField(description = "R.string.twilight_next_event", showInOverview = true, showInFloorplan = true)
     private String nextEvent;
-    @ShowField(description = R.string.twilight_next_event_time, showInOverview = true, showInFloorplan = true)
+    @ShowField(description = "R.string.twilight_next_event_time", showInOverview = true, showInFloorplan = true)
     private String nextEventTime;
 
-    @ShowField(description = R.string.twilight_sunrise)
+    @ShowField(description = "R.string.twilight_sunrise")
     private String sunrise;
 
-    @ShowField(description = R.string.twilight_sunrise_astronomical)
+    @ShowField(description = "R.string.twilight_sunrise_astronomical")
     private String sunriseAstronomical;
 
-    @ShowField(description = R.string.twilight_sunrise_civil)
+    @ShowField(description = "R.string.twilight_sunrise_civil")
     private String sunriseCivil;
 
-    @ShowField(description = R.string.twilight_sunrise_indoor)
+    @ShowField(description = "R.string.twilight_sunrise_indoor")
     private String sunriseIndoor;
 
-    @ShowField(description = R.string.twilight_sunrise_nautical)
+    @ShowField(description = "R.string.twilight_sunrise_nautical")
     private String sunriseNautical;
 
-    @ShowField(description = R.string.twilight_sunrise_weather)
+    @ShowField(description = "R.string.twilight_sunrise_weather")
     private String sunriseWeather;
 
-    @ShowField(description = R.string.twilight_sunset)
+    @ShowField(description = "R.string.twilight_sunset")
     private String sunset;
 
-    @ShowField(description = R.string.twilight_sunset_astronomical)
+    @ShowField(description = "R.string.twilight_sunset_astronomical")
     private String sunsetAstronomical;
 
-    @ShowField(description = R.string.twilight_sunset_civil)
+    @ShowField(description = "R.string.twilight_sunset_civil")
     private String sunsetCivil;
 
-    @ShowField(description = R.string.twilight_sunset_indoor)
+    @ShowField(description = "R.string.twilight_sunset_indoor")
     private String sunsetIndoor;
 
-    @ShowField(description = R.string.twilight_sunset_nautical)
+    @ShowField(description = "R.string.twilight_sunset_nautical")
     private String sunsetNautical;
 
-    @ShowField(description = R.string.twilight_sunset_weather)
+    @ShowField(description = "R.string.twilight_sunset_weather")
     private String sunsetWeather;
 
-    @ShowField(description = R.string.twilight_light)
+    @ShowField(description = "R.string.twilight_light")
     private String light;
 
     private static Map<Integer, Integer> lightStringIdMap = new HashMap<Integer, Integer>();

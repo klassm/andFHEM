@@ -47,7 +47,7 @@ public class TRXLightDevice extends DimmableDiscreteStatesDevice<TRXLightDevice>
         }
     }
 
-    @ShowField(description = R.string.type)
+    @ShowField(description = "R.string.type")
     private String type;
 
     public void readTRX_LIGHT_TYPE(String value) {

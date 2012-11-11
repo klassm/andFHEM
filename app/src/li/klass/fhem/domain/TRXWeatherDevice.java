@@ -43,31 +43,31 @@ import java.util.List;
 public class TRXWeatherDevice extends Device<TRXWeatherDevice> {
 
     @WidgetTemperatureField
-    @ShowField(description = R.string.temperature, showInOverview = true)
+    @ShowField(description = "R.string.temperature", showInOverview = true)
     private String temperature;
 
-    @ShowField(description = R.string.battery, showInOverview = true)
+    @ShowField(description = "R.string.battery", showInOverview = true)
     private String battery;
 
-    @ShowField(description = R.string.humidity, showInOverview = true)
+    @ShowField(description = "R.string.humidity", showInOverview = true)
     private String humidity;
 
-    @ShowField(description = R.string.dewpoint, showInOverview = false)
+    @ShowField(description = "R.string.dewpoint", showInOverview = false)
     private String dewpoint;
 
-    @ShowField(description = R.string.rain, showInOverview = false)
+    @ShowField(description = "R.string.rain", showInOverview = false)
     private String rain;
 
-    @ShowField(description = R.string.windSpeed, showInOverview = true)
+    @ShowField(description = "R.string.windSpeed", showInOverview = true)
     private String windSpeed;
 
-    @ShowField(description = R.string.windDirection, showInOverview = true)
+    @ShowField(description = "R.string.windDirection", showInOverview = true)
     private String windDirection;
 
-    @ShowField(description = R.string.windAvgSpeed, showInOverview = false)
+    @ShowField(description = "R.string.windAvgSpeed", showInOverview = false)
     private String windAverageSpeed;
 
-    @ShowField(description = R.string.windchill, showInOverview = false)
+    @ShowField(description = "R.string.windchill", showInOverview = false)
     private String windchill;
 
 

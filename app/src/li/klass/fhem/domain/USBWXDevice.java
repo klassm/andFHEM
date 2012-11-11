@@ -42,13 +42,13 @@ import java.util.List;
 @SupportsWidget(TemperatureWidgetView.class)
 public class USBWXDevice extends Device<USBWXDevice> {
 
-    @ShowField(description = R.string.humidity, showInOverview = true)
+    @ShowField(description = "R.string.humidity", showInOverview = true)
     @WidgetTemperatureAdditionalField
     private String humidity;
-    @ShowField(description = R.string.temperature, showInOverview = true)
+    @ShowField(description = "R.string.temperature", showInOverview = true)
     @WidgetTemperatureField
     private String temperature;
-    @ShowField(description = R.string.dewpoint, showInOverview = true)
+    @ShowField(description = "R.string.dewpoint", showInOverview = true)
     private String dewpoint;
 
     public void readTEMPERATURE(String value)  {

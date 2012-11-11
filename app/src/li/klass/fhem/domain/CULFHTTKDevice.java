@@ -35,9 +35,9 @@ import org.w3c.dom.NamedNodeMap;
 public class CULFHTTKDevice extends Device<CULFHTTKDevice> {
     private String lastWindowState;
     private String windowState = "???";
-    @ShowField(description = R.string.state, showInOverview = true)
+    @ShowField(description = "R.string.state", showInOverview = true)
     private String stateChangeText;
-    @ShowField(description = R.string.lastStateChange, showInOverview = true)
+    @ShowField(description = "R.string.lastStateChange", showInOverview = true)
     private String lastStateChangeTime;
 
     public void readWINDOW(String value) {

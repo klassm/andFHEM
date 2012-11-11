@@ -44,24 +44,24 @@ import java.util.List;
 @FloorplanViewSettings(showState = true)
 @SupportsWidget({TemperatureWidgetView.class, MediumInformationWidgetView.class})
 public class HMSDevice extends Device<HMSDevice> {
-    @ShowField(description = R.string.temperature, showInOverview = true)
+    @ShowField(description = "R.string.temperature", showInOverview = true)
     @WidgetTemperatureField
     @WidgetMediumLine1
     private String temperature;
 
-    @ShowField(description = R.string.battery)
+    @ShowField(description = "R.string.battery")
     @WidgetMediumLine3
     private String battery;
 
-    @ShowField(description = R.string.humidity, showInOverview = true)
+    @ShowField(description = "R.string.humidity", showInOverview = true)
     @WidgetMediumLine2
     @WidgetTemperatureAdditionalField
     private String humidity;
 
-    @ShowField(description = R.string.model)
+    @ShowField(description = "R.string.model")
     private String model;
 
-    @ShowField(description = R.string.state, showInOverview = true)
+    @ShowField(description = "R.string.state", showInOverview = true)
     private String switchDetect;
 
     public void readTEMPERATURE(String value) {

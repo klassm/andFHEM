@@ -42,12 +42,12 @@ import java.util.List;
 @SupportsWidget(TemperatureWidgetView.class)
 @SuppressWarnings("unused")
 public class CULTXDevice extends Device<CULTXDevice> {
-    @ShowField(description = R.string.temperature, showInDetail = true, showInOverview = true, showInFloorplan = true)
+    @ShowField(description = "R.string.temperature", showInDetail = true, showInOverview = true, showInFloorplan = true)
     @WidgetTemperatureField
     private String temperature;
 
-    @WidgetTemperatureAdditionalField(description = R.string.humidity)
-    @ShowField(description = R.string.humidity, showInDetail = true, showInOverview = true, showInFloorplan = true)
+    @WidgetTemperatureAdditionalField(description = "R.string.humidity")
+    @ShowField(description = "R.string.humidity", showInDetail = true, showInOverview = true, showInFloorplan = true)
     private String humidity;
 
     public void readTEMPERATURE(String value) {

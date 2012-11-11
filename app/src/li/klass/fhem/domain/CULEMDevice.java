@@ -44,13 +44,13 @@ import java.util.List;
 @SuppressWarnings("unused")
 public class CULEMDevice extends Device<CULEMDevice> {
 
-    @ShowField(description = R.string.currentUsage, showInOverview = true)
+    @ShowField(description = "R.string.currentUsage", showInOverview = true)
     @WidgetMediumLine1
     private String currentUsage;
-    @ShowField(description = R.string.dayUsage, showInOverview = true)
+    @ShowField(description = "R.string.dayUsage", showInOverview = true)
     @WidgetMediumLine2
     private String dayUsage;
-    @ShowField(description = R.string.monthUsage, showInOverview = true)
+    @ShowField(description = "R.string.monthUsage", showInOverview = true)
     @WidgetMediumLine3
     private String monthUsage;
     private double sumGraphDivisionFactor = 1d;

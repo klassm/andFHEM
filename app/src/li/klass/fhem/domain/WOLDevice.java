@@ -41,13 +41,13 @@ import org.w3c.dom.NamedNodeMap;
 @SupportsWidget(MediumInformationWidgetView.class)
 public class WOLDevice extends Device<WOLDevice> {
 
-    @ShowField(description = R.string.state, showInOverview = true)
+    @ShowField(description = "R.string.state", showInOverview = true)
     @WidgetMediumLine1
     private String isRunning;
-    @ShowField(description = R.string.ip)
+    @ShowField(description = "R.string.ip")
     @WidgetMediumLine2
     private String ip;
-    @ShowField(description = R.string.mac)
+    @ShowField(description = "R.string.mac")
     private String mac;
 
     public void readISRUNNING(String value, NamedNodeMap attributes)  {
