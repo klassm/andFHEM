@@ -24,7 +24,10 @@
 
 package li.klass.fhem.domain;
 
+import java.util.List;
+
 import li.klass.fhem.R;
+import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.appwidget.annotation.SupportsWidget;
 import li.klass.fhem.appwidget.annotation.WidgetTemperatureField;
 import li.klass.fhem.appwidget.view.widget.medium.TemperatureWidgetView;
@@ -35,39 +38,37 @@ import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ValueDescriptionUtil;
 
-import java.util.List;
-
 @FloorplanViewSettings(showState = true)
 @SupportsWidget(TemperatureWidgetView.class)
 @SuppressWarnings("unused")
 public class OregonDevice extends Device<OregonDevice> {
 
-    @ShowField(description = R.string.humidity, showInOverview = true)
+    @ShowField(description = ResourceIdMapper.humidity, showInOverview = true)
     private String humidity;
     @WidgetTemperatureField
-    @ShowField(description = R.string.temperature, showInOverview = true)
+    @ShowField(description = ResourceIdMapper.temperature, showInOverview = true)
     private String temperature;
-    @ShowField(description = R.string.forecast, showInOverview = true)
+    @ShowField(description = ResourceIdMapper.forecast, showInOverview = true)
     private String forecast;
-    @ShowField(description = R.string.dewpoint)
+    @ShowField(description = ResourceIdMapper.dewpoint)
     private String dewpoint;
-    @ShowField(description = R.string.pressure)
+    @ShowField(description = ResourceIdMapper.pressure)
     private String pressure;
-    @ShowField(description = R.string.battery)
+    @ShowField(description = ResourceIdMapper.battery)
     private String battery;
-    @ShowField(description = R.string.rainRate, showInOverview = true)
+    @ShowField(description = ResourceIdMapper.rainRate, showInOverview = true)
     private String rainRate;
-    @ShowField(description = R.string.rainTotal, showInOverview = true)
+    @ShowField(description = ResourceIdMapper.rainTotal, showInOverview = true)
     private String rainTotal;
-    @ShowField(description = R.string.windAvgSpeed, showInOverview = true)
+    @ShowField(description = ResourceIdMapper.windAvgSpeed, showInOverview = true)
     private String windAvgSpeed;
-    @ShowField(description = R.string.windDirection, showInOverview = true)
+    @ShowField(description = ResourceIdMapper.windDirection, showInOverview = true)
     private String windDirection;
-    @ShowField(description = R.string.windSpeed, showInOverview = true)
+    @ShowField(description = ResourceIdMapper.windSpeed, showInOverview = true)
     private String windSpeed;
-    @ShowField(description = R.string.uvValue, showInOverview = true)
+    @ShowField(description = ResourceIdMapper.uvValue, showInOverview = true)
     private String uvValue;
-    @ShowField(description = R.string.uvRisk, showInOverview = true)
+    @ShowField(description = ResourceIdMapper.uvRisk, showInOverview = true)
     private String uvRisk;
 
     public void readTEMPERATURE(String value) {

@@ -23,15 +23,15 @@
 
 package li.klass.fhem.domain.genericview;
 
-import li.klass.fhem.R;
-
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
+import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
+
 @Retention(RetentionPolicy.RUNTIME)
 public @interface DetailOverviewViewSettings {
-    boolean showState() default false;
-    boolean showMeasured() default false;
-    int stateStringId() default R.string.state;
-    int measuredStringId() default R.string.measured;
+	boolean showState() default false;
+	boolean showMeasured() default false;
+	ResourceIdMapper stateStringId() default ResourceIdMapper.state;
+	ResourceIdMapper measuredStringId() default ResourceIdMapper.measured;
 }

@@ -24,7 +24,10 @@
 
 package li.klass.fhem.domain;
 
+import java.util.List;
+
 import li.klass.fhem.R;
+import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.appwidget.annotation.SupportsWidget;
 import li.klass.fhem.appwidget.annotation.WidgetTemperatureField;
 import li.klass.fhem.appwidget.view.widget.AppWidgetView;
@@ -39,8 +42,6 @@ import li.klass.fhem.util.NumberUtil;
 import li.klass.fhem.util.ValueDescriptionUtil;
 import li.klass.fhem.util.ValueExtractUtil;
 
-import java.util.List;
-
 @SuppressWarnings("unused")
 @DetailOverviewViewSettings(showState = true)
 @FloorplanViewSettings(showState = true)
@@ -53,30 +54,30 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice> {
 
     private SubType subType = null;
 
-    @ShowField(description = R.string.desiredTemperature)
+    @ShowField(description = ResourceIdMapper.desiredTemperature)
     private String desiredTemp;
-    @ShowField(description = R.string.temperature, showInOverview = true)
+    @ShowField(description = ResourceIdMapper.temperature, showInOverview = true)
     @WidgetTemperatureField
     private String measuredTemp;
-    @ShowField(description = R.string.actuator, showInOverview = true)
+    @ShowField(description = ResourceIdMapper.actuator, showInOverview = true)
     private String actuator;
-    @ShowField(description = R.string.humidity, showInOverview = true)
+    @ShowField(description = ResourceIdMapper.humidity, showInOverview = true)
     private String humidity;
-    @ShowField(description = R.string.model)
+    @ShowField(description = ResourceIdMapper.model)
     private String subTypeRaw;
-    @ShowField(description = R.string.commandAccepted)
+    @ShowField(description = ResourceIdMapper.commandAccepted)
     private String commandAccepted;
-    @ShowField(description = R.string.rawValue)
+    @ShowField(description = ResourceIdMapper.rawValue)
     private String rawValue;
     private double fillContentLitresRaw;
-    @ShowField(description = R.string.maximumContent)
+    @ShowField(description = ResourceIdMapper.maximumContent)
     private Integer fillContentLitresMaximum;
     private double fillContentPercentageRaw;
-    @ShowField(description = R.string.fillPercentage, showInOverview = true, showInDetail = false)
+    @ShowField(description = ResourceIdMapper.fillPercentage, showInOverview = true, showInDetail = false)
     private String fillContentPercentage;
-    @ShowField(description = R.string.conversion)
+    @ShowField(description = ResourceIdMapper.conversion)
     private String rawToReadable;
-    @ShowField(description = R.string.battery)
+    @ShowField(description = ResourceIdMapper.battery)
     private String battery;
 
     public void readRAWTOREADABLE(String value) {

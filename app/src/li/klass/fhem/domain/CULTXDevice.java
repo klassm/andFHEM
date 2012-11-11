@@ -24,7 +24,10 @@
 
 package li.klass.fhem.domain;
 
+import java.util.List;
+
 import li.klass.fhem.R;
+import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.appwidget.annotation.SupportsWidget;
 import li.klass.fhem.appwidget.annotation.WidgetTemperatureAdditionalField;
 import li.klass.fhem.appwidget.annotation.WidgetTemperatureField;
@@ -36,18 +39,16 @@ import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ValueDescriptionUtil;
 
-import java.util.List;
-
 @FloorplanViewSettings
 @SupportsWidget(TemperatureWidgetView.class)
 @SuppressWarnings("unused")
 public class CULTXDevice extends Device<CULTXDevice> {
-    @ShowField(description = R.string.temperature, showInDetail = true, showInOverview = true, showInFloorplan = true)
+    @ShowField(description = ResourceIdMapper.temperature, showInDetail = true, showInOverview = true, showInFloorplan = true)
     @WidgetTemperatureField
     private String temperature;
 
-    @WidgetTemperatureAdditionalField(description = R.string.humidity)
-    @ShowField(description = R.string.humidity, showInDetail = true, showInOverview = true, showInFloorplan = true)
+    @WidgetTemperatureAdditionalField(description = ResourceIdMapper.humidity)
+    @ShowField(description = ResourceIdMapper.humidity, showInDetail = true, showInOverview = true, showInFloorplan = true)
     private String humidity;
 
     public void readTEMPERATURE(String value) {

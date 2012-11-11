@@ -24,9 +24,9 @@
 
 package li.klass.fhem.domain;
 
-import android.content.res.Resources;
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
+import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.appwidget.annotation.SupportsWidget;
 import li.klass.fhem.appwidget.annotation.WidgetMediumLine1;
 import li.klass.fhem.appwidget.annotation.WidgetMediumLine2;
@@ -35,23 +35,24 @@ import li.klass.fhem.appwidget.view.widget.medium.MediumInformationWidgetView;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.genericview.FloorplanViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
+import android.content.res.Resources;
 
 @FloorplanViewSettings(showState = true)
 @SupportsWidget(MediumInformationWidgetView.class)
 public class OwcountDevice extends Device<OwcountDevice> {
 
-    @ShowField(description = R.string.counterA, showInOverview = true)
-    @WidgetMediumLine1(description = R.string.counterA)
+    @ShowField(description = ResourceIdMapper.counterA, showInOverview = true)
+    @WidgetMediumLine1(description = ResourceIdMapper.counterA)
     private float counterA;
-    @ShowField(description = R.string.counterB, showInOverview = true)
-    @WidgetMediumLine2(description = R.string.counterB)
+    @ShowField(description = ResourceIdMapper.counterB, showInOverview = true)
+    @WidgetMediumLine2(description = ResourceIdMapper.counterB)
     private float counterB;
     private float correlationA;
     private float correlationB;
-    @ShowField(description = R.string.present, showInOverview = true)
+    @ShowField(description = ResourceIdMapper.present, showInOverview = true)
     private String present;
-    @ShowField(description = R.string.warnings)
-    @WidgetMediumLine3(description = R.string.warnings)
+    @ShowField(description = ResourceIdMapper.warnings)
+    @WidgetMediumLine3(description = ResourceIdMapper.warnings)
     private String warnings;
 
     public void readCOUNTERS_A(String value)  {

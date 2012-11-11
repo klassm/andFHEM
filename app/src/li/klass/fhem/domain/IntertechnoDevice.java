@@ -23,7 +23,7 @@
 
 package li.klass.fhem.domain;
 
-import li.klass.fhem.R;
+import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.domain.core.ToggleableDevice;
 import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
 import li.klass.fhem.domain.genericview.FloorplanViewSettings;
@@ -34,7 +34,7 @@ import li.klass.fhem.domain.genericview.ShowField;
 @FloorplanViewSettings(showState = true)
 public class IntertechnoDevice extends ToggleableDevice<IntertechnoDevice> {
 
-    @ShowField(description = R.string.model)
+    @ShowField(description = ResourceIdMapper.model)
     private String model;
 
     public void readMODEL(String value) {

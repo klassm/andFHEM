@@ -24,10 +24,17 @@
 
 package li.klass.fhem.domain;
 
-import android.content.Context;
+import java.util.List;
+
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
-import li.klass.fhem.appwidget.annotation.*;
+import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
+import li.klass.fhem.appwidget.annotation.SupportsWidget;
+import li.klass.fhem.appwidget.annotation.WidgetMediumLine1;
+import li.klass.fhem.appwidget.annotation.WidgetMediumLine2;
+import li.klass.fhem.appwidget.annotation.WidgetMediumLine3;
+import li.klass.fhem.appwidget.annotation.WidgetTemperatureAdditionalField;
+import li.klass.fhem.appwidget.annotation.WidgetTemperatureField;
 import li.klass.fhem.appwidget.view.widget.AppWidgetView;
 import li.klass.fhem.appwidget.view.widget.medium.MediumInformationWidgetView;
 import li.klass.fhem.appwidget.view.widget.medium.TemperatureWidgetView;
@@ -37,31 +44,30 @@ import li.klass.fhem.domain.genericview.FloorplanViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ValueUtil;
-
-import java.util.List;
+import android.content.Context;
 
 @SuppressWarnings("unused")
 @FloorplanViewSettings(showState = true)
 @SupportsWidget({TemperatureWidgetView.class, MediumInformationWidgetView.class})
 public class HMSDevice extends Device<HMSDevice> {
-    @ShowField(description = R.string.temperature, showInOverview = true)
+    @ShowField(description = ResourceIdMapper.temperature, showInOverview = true)
     @WidgetTemperatureField
     @WidgetMediumLine1
     private String temperature;
 
-    @ShowField(description = R.string.battery)
+    @ShowField(description = ResourceIdMapper.battery)
     @WidgetMediumLine3
     private String battery;
 
-    @ShowField(description = R.string.humidity, showInOverview = true)
+    @ShowField(description = ResourceIdMapper.humidity, showInOverview = true)
     @WidgetMediumLine2
     @WidgetTemperatureAdditionalField
     private String humidity;
 
-    @ShowField(description = R.string.model)
+    @ShowField(description = ResourceIdMapper.model)
     private String model;
 
-    @ShowField(description = R.string.state, showInOverview = true)
+    @ShowField(description = ResourceIdMapper.state, showInOverview = true)
     private String switchDetect;
 
     public void readTEMPERATURE(String value) {
