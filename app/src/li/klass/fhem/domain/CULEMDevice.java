@@ -24,7 +24,10 @@
 
 package li.klass.fhem.domain;
 
+import java.util.List;
+
 import li.klass.fhem.R;
+import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.appwidget.annotation.SupportsWidget;
 import li.klass.fhem.appwidget.annotation.WidgetMediumLine1;
 import li.klass.fhem.appwidget.annotation.WidgetMediumLine2;
@@ -37,20 +40,18 @@ import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ValueDescriptionUtil;
 
-import java.util.List;
-
 @FloorplanViewSettings(showState = true)
 @SupportsWidget(MediumInformationWidgetView.class)
 @SuppressWarnings("unused")
 public class CULEMDevice extends Device<CULEMDevice> {
 
-    @ShowField(description = R.string.currentUsage, showInOverview = true)
+    @ShowField(description = ResourceIdMapper.currentUsage, showInOverview = true)
     @WidgetMediumLine1
     private String currentUsage;
-    @ShowField(description = R.string.dayUsage, showInOverview = true)
+    @ShowField(description = ResourceIdMapper.dayUsage, showInOverview = true)
     @WidgetMediumLine2
     private String dayUsage;
-    @ShowField(description = R.string.monthUsage, showInOverview = true)
+    @ShowField(description = ResourceIdMapper.monthUsage, showInOverview = true)
     @WidgetMediumLine3
     private String monthUsage;
     private double sumGraphDivisionFactor = 1d;

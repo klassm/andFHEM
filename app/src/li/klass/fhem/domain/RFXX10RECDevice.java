@@ -24,21 +24,22 @@
 
 package li.klass.fhem.domain;
 
-import li.klass.fhem.R;
+import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
 import li.klass.fhem.domain.genericview.FloorplanViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
+
 import org.w3c.dom.NamedNodeMap;
 
 @DetailOverviewViewSettings(showState = true)
 @FloorplanViewSettings(showState = true)
 @SuppressWarnings("unused")
 public class RFXX10RECDevice extends Device<RFXX10RECDevice> {
-    @ShowField(description = R.string.lastStateChange, showInOverview = true)
+    @ShowField(description = ResourceIdMapper.lastStateChange, showInOverview = true)
     private String lastStateChangeTime;
 
-    @ShowField(description = R.string.lastState, showInOverview = true)
+    @ShowField(description = ResourceIdMapper.lastState, showInOverview = true)
     private String lastState;
 
     public void readTIME(String value)  {

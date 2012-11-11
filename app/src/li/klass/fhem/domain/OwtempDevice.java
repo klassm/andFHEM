@@ -24,7 +24,7 @@
 
 package li.klass.fhem.domain;
 
-import li.klass.fhem.R;
+import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.appwidget.annotation.SupportsWidget;
 import li.klass.fhem.appwidget.annotation.WidgetTemperatureField;
 import li.klass.fhem.appwidget.view.widget.medium.TemperatureWidgetView;
@@ -32,6 +32,7 @@ import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.genericview.FloorplanViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.util.ValueUtil;
+
 import org.w3c.dom.NamedNodeMap;
 
 @SuppressWarnings("unused")
@@ -39,11 +40,11 @@ import org.w3c.dom.NamedNodeMap;
 @SupportsWidget(TemperatureWidgetView.class)
 public class OwtempDevice extends Device<OwtempDevice> {
 
-    @ShowField(description = R.string.temperature, showInOverview = true)
+    @ShowField(description = ResourceIdMapper.temperature, showInOverview = true)
     @WidgetTemperatureField
     private String temperature;
 
-    @ShowField(description = R.string.warnings, showInOverview = true)
+    @ShowField(description = ResourceIdMapper.warnings, showInOverview = true)
     private String warnings;
 
     public void readTEMPERATURE(String value)  {

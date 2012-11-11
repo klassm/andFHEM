@@ -28,5 +28,5 @@ import java.lang.annotation.RetentionPolicy;
 
 @Retention(RetentionPolicy.RUNTIME)
 public @interface WidgetTemperatureAdditionalField {
-    int description() default -1;
+	ResourceIdMapper description() default ResourceIdMapper.none;
 }

@@ -43,30 +43,30 @@ import java.util.List;
 @SupportsWidget({TemperatureWidgetView.class, MediumInformationWidgetView.class})
 public class KS300Device extends Device<KS300Device> implements Serializable {
 
-    @ShowField(description = R.string.temperature, showInOverview = true)
+    @ShowField(description = ResourceIdMapper.temperature, showInOverview = true)
     @WidgetTemperatureField
     @WidgetMediumLine1
     private String temperature;
 
-    @ShowField(description = R.string.wind, showInOverview = true)
+    @ShowField(description = ResourceIdMapper.wind, showInOverview = true)
     @WidgetMediumLine2
     private String wind;
 
-    @ShowField(description = R.string.humidity, showInOverview = true)
+    @ShowField(description = ResourceIdMapper.humidity, showInOverview = true)
     @WidgetMediumLine3
     @WidgetTemperatureAdditionalField
     private String humidity;
 
-    @ShowField(description = R.string.rain, showInOverview = true)
+    @ShowField(description = ResourceIdMapper.rain, showInOverview = true)
     private String rain;
 
-    @ShowField(description = R.string.avgDay)
+    @ShowField(description = ResourceIdMapper.avgDay)
     private String averageDay;
 
-    @ShowField(description = R.string.avgMonth)
+    @ShowField(description = ResourceIdMapper.avgMonth)
     private String averageMonth;
 
-    @ShowField(description = R.string.isRaining)
+    @ShowField(description = ResourceIdMapper.isRaining)
     private String isRaining;
 
     @Override
