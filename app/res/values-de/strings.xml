@@ -94,7 +94,7 @@
     <string name="result">Ergebnis</string>
     <string name="set_value">Wert setzen</string>
     <string name="set">Ändern</string>
-    <string name="floorplan">Floorplan</string>
+    <string name="floorplan">Grundriss</string>
     <string name="floorplan_move_confirmation">Soll %1$s wirklich nach %2$s verschoben werden?</string>
     <string name="android_version">Android Version</string>
     <string name="feature_requires_android_version">Dieses Feature benötigt mindestens Android %1$s.</string>
