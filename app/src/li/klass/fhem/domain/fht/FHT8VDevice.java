@@ -23,10 +23,10 @@
 
 package li.klass.fhem.domain.fht;
 
-import li.klass.fhem.R;
+import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
 
-@DetailOverviewViewSettings(showState = true, stateStringId = R.string.actuator)
+@DetailOverviewViewSettings(showState = true, stateStringId = ResourceIdMapper.actuator)
 public class FHT8VDevice extends Device<FHT8VDevice> {
 }

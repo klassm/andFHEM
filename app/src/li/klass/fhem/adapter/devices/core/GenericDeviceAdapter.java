@@ -75,10 +75,10 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
             if (device.getClass().isAnnotationPresent(DetailOverviewViewSettings.class)) {
                 DetailOverviewViewSettings annotation = device.getClass().getAnnotation(DetailOverviewViewSettings.class);
                 if (annotation.showState()) {
-                    createTableRow(inflater, layout, R.layout.device_overview_generic_table_row, device.getState(), annotation.stateStringId());
+                    createTableRow(inflater, layout, R.layout.device_overview_generic_table_row, device.getState(), annotation.stateStringId().getId());
                 }
                 if (annotation.showMeasured()) {
-                    createTableRow(inflater, layout, R.layout.device_overview_generic_table_row, device.getMeasured(), annotation.measuredStringId());
+                    createTableRow(inflater, layout, R.layout.device_overview_generic_table_row, device.getMeasured(), annotation.measuredStringId().getId());
                 }
             }
             Field[] declaredFields = device.getClass().getDeclaredFields();
@@ -256,7 +256,7 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
 
     private TableRow createTableRow(D device, LayoutInflater inflater, TableLayout layout, Field declaredField, int resource) throws IllegalAccessException {
         Object value = declaredField.get(device);
-        int description = declaredField.getAnnotation(ShowField.class).description();
+        int description = declaredField.getAnnotation(ShowField.class).description().getId();
 
         return createTableRow(inflater, layout, resource, value, description);
     }

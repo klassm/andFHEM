@@ -23,7 +23,7 @@
 
 package li.klass.fhem.domain;
 
-import li.klass.fhem.R;
+import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.domain.core.ToggleableDevice;
 import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
@@ -33,16 +33,16 @@ import li.klass.fhem.util.ValueDescriptionUtil;
 @SuppressWarnings("unused")
 public class HOLDevice extends ToggleableDevice<HOLDevice> {
 
-    @ShowField(description = R.string.currentSwitchDevice)
+    @ShowField(description = ResourceIdMapper.currentSwitchDevice)
     private String currentSwitchDevice;
 
-    @ShowField(description = R.string.currentSwitchTime)
+    @ShowField(description = ResourceIdMapper.currentSwitchTime)
     private String currentSwitchTime;
 
-    @ShowField(description = R.string.lastSwitchTime)
+    @ShowField(description = ResourceIdMapper.lastSwitchTime)
     private String lastTrigger;
 
-    @ShowField(description = R.string.nextSwitchTime)
+    @ShowField(description = ResourceIdMapper.nextSwitchTime)
     private String nextTrigger;
 
     public void readCURRENTSWITCHDEVICE(String currentSwitchDevice) {

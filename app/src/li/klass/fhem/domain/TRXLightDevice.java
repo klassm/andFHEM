@@ -24,15 +24,16 @@
 
 package li.klass.fhem.domain;
 
-import li.klass.fhem.R;
+import java.util.ArrayList;
+import java.util.List;
+
+import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.domain.core.DimmableDiscreteStatesDevice;
 import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.util.ArrayUtil;
-import org.w3c.dom.NamedNodeMap;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.w3c.dom.NamedNodeMap;
 
 @SuppressWarnings("unused")
 @DetailOverviewViewSettings(showState = true)
@@ -47,7 +48,7 @@ public class TRXLightDevice extends DimmableDiscreteStatesDevice<TRXLightDevice>
         }
     }
 
-    @ShowField(description = R.string.type)
+    @ShowField(description = ResourceIdMapper.type)
     private String type;
 
     public void readTRX_LIGHT_TYPE(String value) {

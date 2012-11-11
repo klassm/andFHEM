@@ -24,7 +24,10 @@
 
 package li.klass.fhem.domain;
 
+import java.util.List;
+
 import li.klass.fhem.R;
+import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.appwidget.annotation.SupportsWidget;
 import li.klass.fhem.appwidget.annotation.WidgetTemperatureAdditionalField;
 import li.klass.fhem.appwidget.annotation.WidgetTemperatureField;
@@ -36,17 +39,15 @@ import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ValueDescriptionUtil;
 
-import java.util.List;
-
 @FloorplanViewSettings(showState = true)
 @SupportsWidget(TemperatureWidgetView.class)
 @SuppressWarnings("unused")
 public class CULWSDevice extends Device<CULWSDevice> {
 
-    @ShowField(description = R.string.humidity, showInOverview = true)
+    @ShowField(description = ResourceIdMapper.humidity, showInOverview = true)
     @WidgetTemperatureAdditionalField
     private String humidity;
-    @ShowField(description = R.string.temperature, showInOverview = true)
+    @ShowField(description = ResourceIdMapper.temperature, showInOverview = true)
     @WidgetTemperatureField
     private String temperature;
 

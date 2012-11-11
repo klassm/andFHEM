@@ -24,10 +24,11 @@
 
 package li.klass.fhem.domain;
 
-import li.klass.fhem.R;
+import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.genericview.FloorplanViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
+
 import org.w3c.dom.NamedNodeMap;
 
 @SuppressWarnings("unused")
@@ -35,9 +36,9 @@ import org.w3c.dom.NamedNodeMap;
 public class CULFHTTKDevice extends Device<CULFHTTKDevice> {
     private String lastWindowState;
     private String windowState = "???";
-    @ShowField(description = R.string.state, showInOverview = true)
+    @ShowField(description = ResourceIdMapper.state, showInOverview = true)
     private String stateChangeText;
-    @ShowField(description = R.string.lastStateChange, showInOverview = true)
+    @ShowField(description = ResourceIdMapper.lastStateChange, showInOverview = true)
     private String lastStateChangeTime;
 
     public void readWINDOW(String value) {

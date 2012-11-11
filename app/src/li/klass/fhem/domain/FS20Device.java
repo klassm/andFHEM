@@ -29,6 +29,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import li.klass.fhem.R;
+import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.DimmableDiscreteStatesDevice;
 import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
@@ -36,6 +37,7 @@ import li.klass.fhem.domain.genericview.FloorplanViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.NumberSystemUtil;
+
 import org.w3c.dom.NamedNodeMap;
 
 @DetailOverviewViewSettings(showState = true)
@@ -53,7 +55,7 @@ public class FS20Device extends DimmableDiscreteStatesDevice<FS20Device> impleme
     public static final List<String> dimModels = Arrays.asList("FS20DI", "FS20DI10", "FS20DU");
     public static final List<String> offStates = Arrays.asList("off", "off-for-timer", "reset", "timer");
 
-    @ShowField(description = R.string.model)
+    @ShowField(description = ResourceIdMapper.model)
     private String model;
 
 

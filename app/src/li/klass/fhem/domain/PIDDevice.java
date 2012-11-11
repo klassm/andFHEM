@@ -24,7 +24,7 @@
 
 package li.klass.fhem.domain;
 
-import li.klass.fhem.R;
+import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.appwidget.annotation.SupportsWidget;
 import li.klass.fhem.appwidget.annotation.WidgetTemperatureAdditionalField;
 import li.klass.fhem.appwidget.annotation.WidgetTemperatureField;
@@ -40,15 +40,15 @@ import li.klass.fhem.util.ValueExtractUtil;
 @SuppressWarnings("unused")
 public class PIDDevice extends Device<PIDDevice> {
 
-    @ShowField(description = R.string.temperature, showInOverview = true)
+    @ShowField(description = ResourceIdMapper.temperature, showInOverview = true)
     @WidgetTemperatureField
     private String temperature;
 
-    @ShowField(description = R.string.desiredTemperature)
+    @ShowField(description = ResourceIdMapper.desiredTemperature)
     private double desiredTemperature;
 
-    @ShowField(description = R.string.delta, showInOverview = true)
-    @WidgetTemperatureAdditionalField(description = R.string.delta)
+    @ShowField(description = ResourceIdMapper.delta, showInOverview = true)
+    @WidgetTemperatureAdditionalField(description = ResourceIdMapper.delta)
     private String delta;
 
     public static final double MINIMUM_TEMPERATURE = 0;
