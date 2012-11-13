@@ -32,11 +32,14 @@ import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 
 public abstract class AndFHEMAppWidgetProvider extends AppWidgetProvider {
+
+    public static final String TAG = AndFHEMAppWidgetProvider.class.getName();
+
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         super.onUpdate(context, appWidgetManager, appWidgetIds);
         for (int appWidgetId : appWidgetIds) {
-            AppWidgetDataHolder.INSTANCE.updateWidget(appWidgetManager, context, appWidgetId);
+            AppWidgetDataHolder.INSTANCE.updateWidget(appWidgetManager, context, appWidgetId, true);
         }
     }
 
@@ -53,14 +56,15 @@ public abstract class AndFHEMAppWidgetProvider extends AppWidgetProvider {
         super.onReceive(context, intent);
         if (intent.getAction().equals(Actions.WIDGET_UPDATE)) {
             int appWidgetId = intent.getIntExtra(BundleExtraKeys.APP_WIDGET_ID, -1);
-            Log.d(AndFHEMAppWidgetProvider.class.getName(), "update widget " + appWidgetId);
+            Log.d(TAG, "update widget " + appWidgetId);
 
             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
             if (appWidgetId != -1) {
                 onUpdate(context, appWidgetManager, new int[] {appWidgetId});
             }
         } else if (intent.getAction().equals(Actions.DEVICE_LIST_REMOTE_NOTIFY)) {
-            AppWidgetDataHolder.INSTANCE.updateAllWidgets(context);
+            Log.i(TAG, "updating all widgets (received DEVICE_LIST_REMOTE_NOTIFY");
+            AppWidgetDataHolder.INSTANCE.updateAllWidgets(context, false);
         }
     }
 }

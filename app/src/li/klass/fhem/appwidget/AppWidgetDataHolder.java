@@ -23,6 +23,9 @@
 
 package li.klass.fhem.appwidget;
 
+import static li.klass.fhem.util.SharedPreferencesUtil.getSharedPreferences;
+import static li.klass.fhem.util.SharedPreferencesUtil.getSharedPreferencesEditor;
+
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -35,6 +38,7 @@ import android.os.Handler;
 import android.os.ResultReceiver;
 import android.util.Log;
 import android.widget.RemoteViews;
+import java.util.Set;
 import li.klass.fhem.appwidget.view.WidgetType;
 import li.klass.fhem.appwidget.view.widget.AppWidgetView;
 import li.klass.fhem.constants.Actions;
@@ -44,11 +48,6 @@ import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.service.room.RoomListService;
 import li.klass.fhem.util.ApplicationProperties;
 
-import java.util.Set;
-
-import static li.klass.fhem.util.SharedPreferencesUtil.getSharedPreferences;
-import static li.klass.fhem.util.SharedPreferencesUtil.getSharedPreferencesEditor;
-
 public class AppWidgetDataHolder {
     public static final AppWidgetDataHolder INSTANCE = new AppWidgetDataHolder();
     private static final String preferenceName = AppWidgetDataHolder.class.getName();
@@ -57,7 +56,7 @@ public class AppWidgetDataHolder {
 
     private AppWidgetDataHolder() {}
 
-    public void updateAllWidgets(final Context context) {
+    public void updateAllWidgets(final Context context, final boolean allowRemoteUpdate) {
         Log.e(AndFHEMAppWidgetProvider.class.getName(), "update all widgets!");
         new AsyncTask<String, String, String>() {
             @Override
@@ -66,24 +65,26 @@ public class AppWidgetDataHolder {
                 AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
 
                 for (String appWidgetId : appWidgetIds) {
-                    updateWidgetInCurrentThread(appWidgetManager, context, Integer.parseInt(appWidgetId));
+                    updateWidgetInCurrentThread(appWidgetManager, context, Integer.parseInt(appWidgetId), allowRemoteUpdate);
                 }
                 return null;
             }
         }.doInBackground("");
     }
 
-    public void updateWidget(final AppWidgetManager appWidgetManager, final Context context, final int appWidgetId) {
+    public void updateWidget(final AppWidgetManager appWidgetManager, final Context context, final int appWidgetId,
+                             final boolean allowRemoteUpdate) {
         new AsyncTask<String, String, String>() {
             @Override
             protected String doInBackground(String... voids) {
-                updateWidgetInCurrentThread(appWidgetManager, context, Integer.parseInt(String.valueOf(appWidgetId)));
+                updateWidgetInCurrentThread(appWidgetManager, context, Integer.parseInt(String.valueOf(appWidgetId)), allowRemoteUpdate);
                 return null;
             }
         }.doInBackground("");
     }
 
-    private void updateWidgetInCurrentThread(final AppWidgetManager appWidgetManager, final Context context, final int appWidgetId) {
+    private void updateWidgetInCurrentThread(final AppWidgetManager appWidgetManager, final Context context,
+                                             final int appWidgetId, final boolean allowRemoteUpdate) {
         final WidgetConfiguration widgetConfiguration = getWidgetConfiguration(appWidgetId);
         if (widgetConfiguration == null) {
             Log.d(AppWidgetDataHolder.class.getName(), "cannot find widget for id " + appWidgetId);
@@ -95,7 +96,7 @@ public class AppWidgetDataHolder {
         boolean doRemoteWidgetUpdates = ApplicationProperties.INSTANCE.getBooleanSharedPreference("prefWidgetRemoteUpdate", true);
         int widgetUpdateInterval = getWidgetUpdateInterval();
 
-        long updatePeriod = doRemoteWidgetUpdates ? widgetUpdateInterval : RoomListService.NEVER_UPDATE_PERIOD;
+        long updatePeriod = doRemoteWidgetUpdates && allowRemoteUpdate ? widgetUpdateInterval : RoomListService.NEVER_UPDATE_PERIOD;
         scheduleUpdateIntent(context, widgetConfiguration, false, widgetUpdateInterval);
 
         Intent deviceIntent = new Intent(Actions.GET_DEVICE_FOR_NAME);
