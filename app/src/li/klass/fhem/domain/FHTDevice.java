@@ -24,19 +24,8 @@
 
 package li.klass.fhem.domain;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import li.klass.fhem.R;
-import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
-import li.klass.fhem.appwidget.annotation.SupportsWidget;
-import li.klass.fhem.appwidget.annotation.WidgetMediumLine1;
-import li.klass.fhem.appwidget.annotation.WidgetMediumLine2;
-import li.klass.fhem.appwidget.annotation.WidgetMediumLine3;
-import li.klass.fhem.appwidget.annotation.WidgetTemperatureAdditionalField;
-import li.klass.fhem.appwidget.annotation.WidgetTemperatureField;
+import li.klass.fhem.appwidget.annotation.*;
 import li.klass.fhem.appwidget.view.widget.medium.MediumInformationWidgetView;
 import li.klass.fhem.appwidget.view.widget.medium.TemperatureWidgetView;
 import li.klass.fhem.domain.core.Device;
@@ -50,8 +39,12 @@ import li.klass.fhem.util.DayUtil;
 import li.klass.fhem.util.ValueDescriptionUtil;
 import li.klass.fhem.util.ValueExtractUtil;
 import li.klass.fhem.util.ValueUtil;
-
 import org.w3c.dom.NamedNodeMap;
+
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @FloorplanViewSettings
 @SupportsWidget({TemperatureWidgetView.class, MediumInformationWidgetView.class})
@@ -67,13 +60,13 @@ public class FHTDevice extends Device<FHTDevice> {
     private FHTMode mode;
     @ShowField(description = ResourceIdMapper.desiredTemperature)
     @WidgetMediumLine2(description = ResourceIdMapper.desiredTemperature)
-    private double desiredTemp;
+    private double desiredTemp = MINIMUM_TEMPERATURE;
     @ShowField(description = ResourceIdMapper.dayTemperature)
-    private double dayTemperature;
+    private double dayTemperature = MINIMUM_TEMPERATURE;
     @ShowField(description = ResourceIdMapper.nightTemperature)
-    private double nightTemperature;
+    private double nightTemperature = MINIMUM_TEMPERATURE;
     @ShowField(description = ResourceIdMapper.windowOpenTemp)
-    private double windowOpenTemp;
+    private double windowOpenTemp = MINIMUM_TEMPERATURE;
     @ShowField(description = ResourceIdMapper.warnings)
     private String warnings;
     @ShowField(description = ResourceIdMapper.temperature, showInOverview = true, showInFloorplan = true)
