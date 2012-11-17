@@ -35,17 +35,25 @@ import static org.hamcrest.Matchers.notNullValue;
 public class ThermostatTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
-//        CULHMDevice device = getDefaultDevice();
-//
-//        assertThat(device.getName(), is(DEFAULT_TEST_DEVICE_NAME));
-//        assertThat(device.getRoomConcatenated(), is(DEFAULT_TEST_ROOM_NAME));
-//
-//        assertThat(device.getState(), is("12%"));
-//        assertThat(device.getSubType(), is(CULHMDevice.SubType.DIMMER));
+        CULHMDevice device = getDefaultDevice();
 
+        assertThat(device.getName(), is(DEFAULT_TEST_DEVICE_NAME));
+        assertThat(device.getRoomConcatenated(), is(DEFAULT_TEST_ROOM_NAME));
+
+        assertThat(device.getState(), is("12%"));
+        assertThat(device.getSubType(), is(CULHMDevice.SubType.THERMOSTAT));
+
+        assertThat(device.isSupported(), is(true));
 
         CULHMDevice device1 = getDeviceFor("device1");
         assertThat(device1, is(notNullValue()));
+        assertThat(device1.isSupported(), is(true));
+        assertThat(device.getSubType(), is(CULHMDevice.SubType.THERMOSTAT));
+
+        CULHMDevice device2 = getDeviceFor("device2");
+        assertThat(device2, is(notNullValue()));
+        assertThat(device2.isSupported(), is(true));
+        assertThat(device2.getSubType(), is(CULHMDevice.SubType.THERMOSTAT));
     }
 
     @Override

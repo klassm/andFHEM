@@ -24,8 +24,6 @@
 
 package li.klass.fhem.domain;
 
-import java.util.List;
-
 import li.klass.fhem.R;
 import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.appwidget.annotation.SupportsWidget;
@@ -41,6 +39,8 @@ import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.NumberUtil;
 import li.klass.fhem.util.ValueDescriptionUtil;
 import li.klass.fhem.util.ValueExtractUtil;
+
+import java.util.List;
 
 @SuppressWarnings("unused")
 @DetailOverviewViewSettings(showState = true)
@@ -145,10 +145,9 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice> {
             subType = SubType.TEMPERATURE_HUMIDITY;
         } else if (value.equalsIgnoreCase("KFM100")) {
             subType = SubType.KFM100;
+        } else if (value.equalsIgnoreCase("THERMOSTAT")) {
+            subType = SubType.THERMOSTAT;
         }
-//        else if (value.equalsIgnoreCase("THERMOSTAT")) {
-//            subType = SubType.THERMOSTAT;
-//        }
         subTypeRaw = value;
     }
 
