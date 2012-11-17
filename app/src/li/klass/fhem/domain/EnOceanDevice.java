@@ -79,7 +79,11 @@ public class EnOceanDevice extends ToggleableDevice<EnOceanDevice> {
 
     @Override
     public int compareTo(EnOceanDevice other) {
-        int result = subType.compareTo(other.getSubType());
+        int result = 0;
+        if (subType != null) {
+            result = subType.compareTo(other.getSubType());
+        }
+
         if (result != 0) return result;
 
         return name.compareTo(other.getName());
