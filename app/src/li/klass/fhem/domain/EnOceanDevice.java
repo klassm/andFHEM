@@ -51,6 +51,7 @@ public class EnOceanDevice extends ToggleableDevice<EnOceanDevice> {
             subType = SubType.SENSOR;
         } else {
             Log.e(TAG, "unknown subtype " + value);
+            subType = null;
         }
     }
 
