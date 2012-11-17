@@ -42,7 +42,7 @@ public class FS20DeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getRoomConcatenated(), is(DEFAULT_TEST_ROOM_NAME));
 
         assertThat(device.getState(), is("on"));
-        assertThat(device.isOn(), is(true));
+        assertThat(device.isOnByState(), is(true));
         assertThat(device.isSpecialButtonDevice(), is(false));
 
         assertThat(device.getEventMap().get("off-for-timer 12"), is("Ab80"));
@@ -63,7 +63,7 @@ public class FS20DeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getRoomConcatenated(), is(DEFAULT_TEST_ROOM_NAME));
 
         assertThat(device.getState(), is("off"));
-        assertThat(device.isOn(), is(false));
+        assertThat(device.isOnByState(), is(false));
 
         assertThat(device.getEventMapStateFor("off"), is("closed"));
         assertThat(device.getEventMapStateFor("on"), is("open"));
@@ -71,12 +71,20 @@ public class FS20DeviceTest extends DeviceXMLParsingBase {
 
         assertThat(device.getAlias(), is("myAlias"));
         assertThat(device.isSpecialButtonDevice(), is(true));
-        assertThat(device.getHookType(), is(ToggleableDevice.HookType.ON_OFF_DEVICE));
+        assertThat(device.getButtonHookType(), is(ToggleableDevice.ButtonHookType.ON_OFF_DEVICE));
 
         assertThat(device.getAvailableTargetStates(), is(notNullValue()));
 
         assertThat(device.getFileLog(), is(notNullValue()));
         assertThat(device.getDeviceCharts().size(), is(1));
+    }
+
+    @Test
+    public void testForCorrectlySetAttributesInThirdDevice() {
+        FS20Device device = getDeviceFor("device2");
+
+        assertThat(device.isOnRespectingInvertHook(), is(true));
+        assertThat(device.isOnByState(), is(false));
     }
 
     @Test

@@ -50,7 +50,7 @@ public class ToggleWidgetView extends AppWidgetView {
     @Override
     protected void fillWidgetView(Context context, RemoteViews view, Device<?> device, WidgetConfiguration widgetConfiguration) {
         ToggleableDevice toggleable = (ToggleableDevice) device;
-        if (toggleable.isOn()) {
+        if (toggleable.isOnRespectingInvertHook()) {
             view.setViewVisibility(R.id.toggleOff, View.GONE);
             view.setViewVisibility(R.id.toggleOn, View.VISIBLE);
             view.setTextViewText(R.id.toggleOn, device.getEventMapStateFor("on"));

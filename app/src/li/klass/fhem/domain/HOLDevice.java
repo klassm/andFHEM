@@ -77,7 +77,7 @@ public class HOLDevice extends ToggleableDevice<HOLDevice> {
         return nextTrigger;
     }
 
-    public boolean isOn() {
+    public boolean isOnByState() {
         return ! getInternalState().equals("off");
     }
 

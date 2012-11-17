@@ -43,7 +43,7 @@ public class DimmerTest extends DeviceXMLParsingBase {
         assertThat(device.getState(), is("off"));
         assertThat(device.getSubType(), is(CULHMDevice.SubType.DIMMER));
 
-        assertThat(device.isOn(), is(false));
+        assertThat(device.isOnByState(), is(false));
         assertThat(device.getDimPosition(), is(0));
         assertThat(device.supportsDim(), is(true));
 

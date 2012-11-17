@@ -24,41 +24,65 @@
 
 package li.klass.fhem.domain.core;
 
+import static li.klass.fhem.domain.core.ToggleableDevice.ButtonHookType.*;
+
 @SuppressWarnings("unused")
 public abstract class ToggleableDevice<T extends Device> extends Device<T> {
 
-    public enum HookType {
+    private boolean doInvertOnState = false;
+
+    public enum ButtonHookType {
         NORMAL, ON_OFF_DEVICE, ON_DEVICE, OFF_DEVICE, TOGGLE_DEVICE
     }
 
-    private HookType hookType = HookType.NORMAL;
+    private ButtonHookType buttonHookType = NORMAL;
 
-    public abstract boolean isOn();
+    public abstract boolean isOnByState();
+
+    public boolean isOnRespectingInvertHook() {
+        boolean isOn = isOnByState();
+        if (doInvertOnState) isOn = ! isOn;
+
+        return isOn;
+    }
 
     public abstract boolean supportsToggle();
 
     public void readONOFFDEVICE(String value) {
-        if (value.equalsIgnoreCase("true")) hookType = HookType.ON_OFF_DEVICE;
+        ButtonHookType target = ON_OFF_DEVICE;
+        readButtonHookType(value, target);
     }
 
     public void readONDEVICE(String value) {
-        if (value.equalsIgnoreCase("true")) hookType = HookType.ON_DEVICE;
+        readButtonHookType(value, ON_DEVICE);
     }
 
     public void readOFFDEVICE(String value) {
-        if (value.equalsIgnoreCase("true")) hookType = HookType.OFF_DEVICE;
+        readButtonHookType(value, OFF_DEVICE);
     }
 
     public void readTOGGLEDEVICE(String value) {
-        if (value.equalsIgnoreCase("true")) hookType = HookType.TOGGLE_DEVICE;
+        readButtonHookType(value, TOGGLE_DEVICE);
     }
 
-    public HookType getHookType() {
-        return hookType;
+    private void readButtonHookType(String value, ButtonHookType target) {
+        if (value.equalsIgnoreCase("true")) {
+            buttonHookType = target;
+        }
+    }
+
+    public void readINVERTSTATE(String value) {
+       if (value.equalsIgnoreCase("true")) {
+           doInvertOnState = true;
+       }
+    }
+
+    public ButtonHookType getButtonHookType() {
+        return buttonHookType;
     }
 
     public boolean isSpecialButtonDevice() {
-        return hookType != HookType.NORMAL;
+        return buttonHookType != NORMAL;
     }
 
     public String getOffStateName() {

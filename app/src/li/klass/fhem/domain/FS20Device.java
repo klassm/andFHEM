@@ -24,10 +24,6 @@
 
 package li.klass.fhem.domain;
 
-import java.io.Serializable;
-import java.util.Arrays;
-import java.util.List;
-
 import li.klass.fhem.R;
 import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.domain.core.DeviceChart;
@@ -37,8 +33,11 @@ import li.klass.fhem.domain.genericview.FloorplanViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.NumberSystemUtil;
-
 import org.w3c.dom.NamedNodeMap;
+
+import java.io.Serializable;
+import java.util.Arrays;
+import java.util.List;
 
 @DetailOverviewViewSettings(showState = true)
 @FloorplanViewSettings()
@@ -85,7 +84,7 @@ public class FS20Device extends DimmableDiscreteStatesDevice<FS20Device> impleme
         }
     }
 
-    public boolean isOn() {
+    public boolean isOnByState() {
         return getFs20State() == FS20State.ON;
     }
 

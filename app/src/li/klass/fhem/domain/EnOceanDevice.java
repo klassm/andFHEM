@@ -56,8 +56,8 @@ public class EnOceanDevice extends ToggleableDevice<EnOceanDevice> {
     }
 
     @Override
-    public boolean isOn() {
-        return getInternalState().equalsIgnoreCase("B0");
+    public boolean isOnByState() {
+        return getInternalState().equalsIgnoreCase(getOnStateName());
     }
 
     @Override

@@ -37,7 +37,7 @@ import li.klass.fhem.domain.genericview.FloorplanViewSettings;
 import li.klass.fhem.util.device.FloorplanUtil;
 
 import static li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener.NotificationDeviceType.TOGGLEABLE_AND_NOT_DIMMABLE;
-import static li.klass.fhem.domain.core.ToggleableDevice.HookType.TOGGLE_DEVICE;
+import static li.klass.fhem.domain.core.ToggleableDevice.ButtonHookType.TOGGLE_DEVICE;
 
 public class ToggleableAdapter<D extends ToggleableDevice<D>> extends GenericDeviceAdapter<D> {
     public ToggleableAdapter(Class<D> deviceClass) {
@@ -71,7 +71,7 @@ public class ToggleableAdapter<D extends ToggleableDevice<D>> extends GenericDev
     }
 
     protected <T extends ToggleableDevice<D>> void addOverviewSwitchActionRow(Context context, T device, TableLayout layout) {
-        if (device.isSpecialButtonDevice() && device.getHookType() != TOGGLE_DEVICE) {
+        if (device.isSpecialButtonDevice() && device.getButtonHookType() != TOGGLE_DEVICE) {
             addSwitchActionRow(context, device, layout, OnOffActionRow.LAYOUT_OVERVIEW);
         } else {
             addSwitchActionRow(context, device, layout, ToggleActionRow.LAYOUT_OVERVIEW);
@@ -79,7 +79,7 @@ public class ToggleableAdapter<D extends ToggleableDevice<D>> extends GenericDev
     }
 
     protected <T extends ToggleableDevice<D>> void addDetailSwitchActionRow(Context context, T device, TableLayout layout) {
-        if (device.isSpecialButtonDevice() && device.getHookType() != TOGGLE_DEVICE) {
+        if (device.isSpecialButtonDevice() && device.getButtonHookType() != TOGGLE_DEVICE) {
             addSwitchActionRow(context, device, layout, OnOffActionRow.LAYOUT_DETAIL);
         } else {
             addSwitchActionRow(context, device, layout, ToggleActionRow.LAYOUT_DETAIL);
@@ -88,7 +88,7 @@ public class ToggleableAdapter<D extends ToggleableDevice<D>> extends GenericDev
 
     @SuppressWarnings("unchecked")
     private <T extends ToggleableDevice<D>> void addSwitchActionRow(Context context, T device, TableLayout layout, int rowId) {
-        if (device.isSpecialButtonDevice() && device.getHookType() != TOGGLE_DEVICE) {
+        if (device.isSpecialButtonDevice() && device.getButtonHookType() != TOGGLE_DEVICE) {
             layout.addView(new OnOffActionRow<T>(device.getAliasOrName(), rowId)
                     .createRow(context, inflater, device));
         } else {

@@ -38,7 +38,7 @@ public class SISPMSDevice extends ToggleableDevice<SISPMSDevice> {
         this.measured = attributes.getNamedItem("measured").getNodeValue();
     }
 
-    public boolean isOn() {
+    public boolean isOnByState() {
         return getInternalState().equalsIgnoreCase("on");
     }
 

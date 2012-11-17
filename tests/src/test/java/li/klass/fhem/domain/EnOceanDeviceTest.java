@@ -37,7 +37,7 @@ public class EnOceanDeviceTest extends DeviceXMLParsingBase {
         EnOceanDevice device = getDefaultDevice();
         assertThat(device.getSubType(), is(EnOceanDevice.SubType.SWITCH));
         assertThat(device.getState(), is("on"));
-        assertThat(device.isOn(), is(true));
+        assertThat(device.isOnByState(), is(true));
         assertThat(device.getEventMapStateFor("BI"), is("off"));
         assertThat(device.getEventMapStateFor("B0"), is("on"));
 

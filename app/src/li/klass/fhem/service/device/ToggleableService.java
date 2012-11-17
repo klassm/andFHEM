@@ -37,7 +37,7 @@ public class ToggleableService {
      * @param device concerned device
      */
     public <D extends ToggleableDevice> void toggleState(D device) {
-        if (device.isOn()) {
+        if (device.isOnByState()) {
             CommandExecutionService.INSTANCE.executeSafely("set " + device.getName() + " " + device.getOffStateName());
             device.setState(device.getOffStateName());
         } else {
