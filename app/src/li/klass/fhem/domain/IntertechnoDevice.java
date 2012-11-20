@@ -41,7 +41,7 @@ public class IntertechnoDevice extends ToggleableDevice<IntertechnoDevice> {
         this.model = value;
     }
 
-    public boolean isOn() {
+    public boolean isOnByState() {
         return getState().equals("on");
     }
 

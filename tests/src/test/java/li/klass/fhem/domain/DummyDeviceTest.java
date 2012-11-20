@@ -43,7 +43,7 @@ public class DummyDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getState(), is("on"));
         assertThat(device.isSpecialButtonDevice(), is(false));
         assertThat(device.supportsToggle(), is(true));
-        assertThat(device.isOn(), is(true));
+        assertThat(device.isOnByState(), is(true));
 
         assertThat(device.getAvailableTargetStates(), hasItemInArray("on"));
         assertThat(device.getAvailableTargetStates(), hasItemInArray("off"));

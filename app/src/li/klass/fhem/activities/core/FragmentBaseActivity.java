@@ -183,7 +183,11 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        try {
+            super.onCreate(savedInstanceState);
+        } catch (Exception e) {
+            Log.e(FragmentBaseActivity.class.getName(), "error while creating activity", e);
+        }
         setContentView(R.layout.main_view);
 
         saveInstanceStateCalled = false;

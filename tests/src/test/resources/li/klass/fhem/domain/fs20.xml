@@ -55,6 +55,21 @@
             <ATTR key="onoffdevice" value="true"/>
             <ATTR key="eventMap" value="on:open off:closed"/>
         </FS20>
+
+        <FS20 name="device2" state="off" sets="dim06% dim100% dim12% dim18% dim25% dim31% dim37% dim43% dim50% dim56% dim62% dim68% dim75% dim81% dim87% dim93% dimdown dimup dimupdown off off-for-timer on on-100-for-timer-prev on-for-timer on-old-for-timer on-old-for-timer-prev on-till ramp-off-time ramp-on-time reset sendstate timer toggle dim:slider,0,6.25,100" attrs="room group comment alias eventMap IODev follow-on-for-timer:1,0 follow-on-timer do_not_notify:1,0 ignore:1,0 dummy:1,0 showtime:1,0 loglevel:0,1,2,3,4,5,6 model:dummyDimmer,dummySender,dummySimple,fs20as1,fs20as4,fs20bf,fs20bs,fs20di,fs20di10,fs20du,fs20fms,fs20hgs,fs20irl,fs20kse,fs20ls,fs20ms2,fs20pira,fs20piri,fs20piru,fs20rgbsa,fs20rst,fs20rsu,fs20s16,fs20s20,fs20s4,fs20s4a,fs20s4m,fs20s4u,fs20s4ub,fs20s8,fs20s8m,fs20sa,fs20sd,fs20sig,fs20sm4,fs20sm8,fs20sn,fs20sr,fs20ss,fs20st,fs20st2,fs20str,fs20su,fs20sv,fs20tc1,fs20tc6,fs20tfk,fs20tk,fs20ue1,fs20usr,fs20uts,fs20ws1,fs20ze fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon offDevice onDevice onOffDevice toggleDevice webCmd invertState">
+            <INT key="BTN" value="5a"/>
+            <INT key="DEF" value="12345678 2233 gm 4444 lm 2244"/>
+            <INT key="NAME" value="device2"/>
+            <INT key="NR" value="70"/>
+            <INT key="STATE" value="off"/>
+            <INT key="TYPE" value="FS20"/>
+            <INT key="XMIT" value="0000"/>
+            <INT key="IODev" value="CUL"/>
+            <ATTR key="fp_obergeschoss" value="600,400,1,"/>
+            <ATTR key="invertState" value="true"/>
+            <ATTR key="room" value="room"/>
+            <STATE key="state" value="off" measured="2012-11-17 18:04:20"/>
+        </FS20>
     </FS20_LIST>
 
     <FileLog_LIST>

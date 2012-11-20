@@ -46,6 +46,31 @@
           value="5.1 from 2011-07-08 ($Id: fhem.pl,v 1.145 2011-07-07 08:46:28 rudolfkoenig Exp $)"/>
 </_internal_>
 </_internal__LIST>
+<OWTHERM_LIST>
+<OWTHERM name="OWX_28_970D56040000" state="13.62 &amp;deg;C" sets="interval tempHigh tempLow" attrs="room group comment alias eventMap IODev do_not_notify:0,1 showtime:0,1 loglevel:0,1,2,3,4,5 event:on-update,on-change stateAL stateAH tempOffset tempUnit:C,Celsius,F,Fahrenheit,K,Kelvin tempLow tempHigh icon webCmd">
+    <INT key="ALARM" value="0"/>
+    <INT key="DEF" value="DS18B20 970D56040000"/>
+    <INT key="INTERVAL" value="300"/>
+    <INT key="NAME" value="OWX_28_970D56040000"/>
+    <INT key="NR" value="31"/>
+    <INT key="OW_FAMILY" value="28"/>
+    <INT key="OW_ID" value="970D56040000"/>
+    <INT key="PRESENT" value="1"/>
+    <INT key="ROM_ID" value="28.970D56040000.89"/>
+    <INT key="STATE" value="13.62 &amp;deg;C"/>
+    <INT key="TYPE" value="OWTHERM"/>
+    <INT key="IODev" value="OWio2"/>
+    <ATTR key="IODev" value="OWio2"/>
+    <ATTR key="alias" value="Oelkeller"/>
+    <ATTR key="room" value="OWX"/>
+    <ATTR key="stateAH" value="&lt;span style=&quot;color:red&quot;&gt;&amp;"/>
+    <ATTR key="stateAL" value="&lt;span style=&quot;color:red&quot;&gt;&amp;"/>
+    <STATE key="tempHigh" value="100" measured="2012-11-17 20:36:33"/>
+    <STATE key="tempLow" value="0" measured="2012-11-17 20:36:33"/>
+    <STATE key="temperature" value="13.625" measured="2012-11-17 20:36:33"/>
+</OWTHERM>
+</OWTHERM_LIST>
+
 <EnOcean_LIST>
 <EnOcean name="enoceanSwitch1" state="on" sets="BI:off B0:on A0 AI B0 BI C0 CI D0 DI released" attrs="room group comment alias eventMap IODev do_not_notify:1,0 ignore:0,1 dummy:0,1 showtime:1,0 loglevel:0,1,2,3,4,5,6 model:other,MD15-FtL-HE,SR04,SR04P,SR04PT,SR04PST,SR04PMS,FAH60,FAH63,FIH63,FABH63,FBH63,FIBH63,PM101,FTF55,FSB61,FSM61 subType:dimmCtrl,sensor,FAH,FTF,contact,FBH,MD15,switch,windowHandle,SR04,dimmer actualTemp fp_Erdgeschoss icon webCmd">
     <INT key="DEF" value="FFB2D381"/>

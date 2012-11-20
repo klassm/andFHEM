@@ -37,7 +37,7 @@ public class EnOceanDeviceTest extends DeviceXMLParsingBase {
         EnOceanDevice device = getDefaultDevice();
         assertThat(device.getSubType(), is(EnOceanDevice.SubType.SWITCH));
         assertThat(device.getState(), is("on"));
-        assertThat(device.isOn(), is(true));
+        assertThat(device.isOnByState(), is(true));
         assertThat(device.getEventMapStateFor("BI"), is("off"));
         assertThat(device.getEventMapStateFor("B0"), is("on"));
 
@@ -48,6 +48,9 @@ public class EnOceanDeviceTest extends DeviceXMLParsingBase {
         assertThat(device1.getSubType(), is(EnOceanDevice.SubType.SENSOR));
         assertThat(device1.getState(), is("153"));
         assertThat(device1.getMeasured(), is("2012-11-04 23:55:11"));
+
+        device.readSUBTYPE("");
+        assertThat(device.compareTo(device1), is(-1));
     }
 
     @Override

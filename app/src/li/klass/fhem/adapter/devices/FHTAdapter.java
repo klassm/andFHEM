@@ -78,7 +78,7 @@ public class FHTAdapter extends GenericDeviceAdapter<FHTDevice> {
         registerFieldListener("windowOpenTemp", new FieldNameAddedToDetailListener<FHTDevice>() {
             @Override
             public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FHTDevice device, TableRow fieldTableRow) {
-                tableLayout.addView(new TemperatureChangeTableRow<FHTDevice>(context, device.getNightTemperature(), fieldTableRow,
+                tableLayout.addView(new TemperatureChangeTableRow<FHTDevice>(context, device.getWindowOpenTemp(), fieldTableRow,
                         Actions.DEVICE_SET_WINDOW_OPEN_TEMPERATURE, R.string.windowOpenTemp, MINIMUM_TEMPERATURE, MAXIMUM_TEMPERATURE)
                         .createRow(inflater, device));
             }

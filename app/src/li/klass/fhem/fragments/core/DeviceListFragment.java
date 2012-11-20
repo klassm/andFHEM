@@ -24,6 +24,11 @@
 
 package li.klass.fhem.fragments.core;
 
+import static li.klass.fhem.constants.Actions.FAVORITE_ADD;
+import static li.klass.fhem.constants.BundleExtraKeys.*;
+import static li.klass.fhem.constants.PreferenceKeys.DEVICE_LIST_RIGHT_PADDING;
+import static li.klass.fhem.widget.GridViewWithSections.GridViewWithSectionsOnClickObserver;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -36,7 +41,6 @@ import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.DeviceAdapter;
 import li.klass.fhem.adapter.rooms.DeviceGridAdapter;
 import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.constants.PreferenceKeys;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceType;
@@ -45,11 +49,6 @@ import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.advertisement.AdvertisementUtil;
 import li.klass.fhem.util.device.DeviceActionUtil;
 import li.klass.fhem.widget.GridViewWithSections;
-
-import static li.klass.fhem.constants.Actions.FAVORITE_ADD;
-import static li.klass.fhem.constants.BundleExtraKeys.*;
-import static li.klass.fhem.constants.PreferenceKeys.*;
-import static li.klass.fhem.widget.GridViewWithSections.GridViewWithSectionsOnClickObserver;
 
 public abstract class DeviceListFragment extends BaseFragment {
 
@@ -113,6 +112,7 @@ public abstract class DeviceListFragment extends BaseFragment {
     @Override
     @SuppressWarnings("unchecked")
     public void update(boolean doUpdate) {
+
         Log.i(DeviceListFragment.class.getName(), "request device list update (doUpdate=" + doUpdate + ")");
 
         Intent intent = new Intent(getUpdateAction());

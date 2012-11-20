@@ -73,13 +73,13 @@ public class OnOffActionRow<T extends ToggleableDevice> {
         }
 
         offButton.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.theme_toggle_off_normal));
-        if (device.isOn()) {
+        if (device.isOnRespectingInvertHook()) {
             onButton.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.theme_toggle_on_normal));
         } else {
             onButton.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.theme_toggle_off_normal));
         }
 
-        switch(device.getHookType()) {
+        switch(device.getButtonHookType()) {
             case ON_DEVICE:
                 offButton.setVisibility(View.GONE);
                 break;

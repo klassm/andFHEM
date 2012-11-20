@@ -24,9 +24,17 @@
 
 package li.klass.fhem.service.room;
 
+import static li.klass.fhem.util.SharedPreferencesUtil.getSharedPreferences;
+import static li.klass.fhem.util.SharedPreferencesUtil.getSharedPreferencesEditor;
+
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.constants.Actions;
@@ -35,15 +43,6 @@ import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.RoomDeviceList;
 import li.klass.fhem.exception.AndFHEMException;
 import li.klass.fhem.service.AbstractService;
-
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
-import static li.klass.fhem.util.SharedPreferencesUtil.getSharedPreferences;
-import static li.klass.fhem.util.SharedPreferencesUtil.getSharedPreferencesEditor;
 
 public class RoomListService extends AbstractService {
 
@@ -168,7 +167,7 @@ public class RoomListService extends AbstractService {
      *                     longer ago than the given period
      * @return current room device list map
      */
-    private Map<String, RoomDeviceList> getRoomDeviceListMap(long updatePeriod) {
+    private synchronized Map<String, RoomDeviceList> getRoomDeviceListMap(long updatePeriod) {
         boolean refresh = shouldUpdate(updatePeriod);
 
         if (!refresh && deviceListMap == null) {
@@ -178,7 +177,6 @@ public class RoomListService extends AbstractService {
         if (refresh || deviceListMap == null) {
             sendBroadcastWithAction(Actions.SHOW_UPDATING_DIALOG, null);
             try {
-                sendBroadcastWithAction(Actions.DEVICE_LIST_REMOTE_NOTIFY, null);
                 deviceListMap = getRemoteRoomDeviceListMap();
             } catch (AndFHEMException e) {
                 int errorStringId = e.getErrorMessageStringId();
@@ -190,6 +188,7 @@ public class RoomListService extends AbstractService {
                 Log.e(TAG, "unknown exception occurred while fetching the remote device list", e);
             } finally {
                 sendBroadcastWithAction(Actions.DISMISS_UPDATING_DIALOG, null);
+                sendBroadcastWithAction(Actions.DEVICE_LIST_REMOTE_NOTIFY, null);
             }
         }
 

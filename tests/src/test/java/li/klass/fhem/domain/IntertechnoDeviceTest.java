@@ -40,7 +40,7 @@ public class IntertechnoDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getName(), is(DEFAULT_TEST_DEVICE_NAME));
         assertThat(device.getRoomConcatenated(), is(DEFAULT_TEST_ROOM_NAME));
 
-        assertThat(device.isOn(), is(true));
+        assertThat(device.isOnByState(), is(true));
         assertThat(device.getState(), is("on"));
         assertThat(device.getModel(), is("itswitch"));
 

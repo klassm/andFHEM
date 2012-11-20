@@ -40,7 +40,7 @@ public class TRXLightDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getName(), is(DEFAULT_TEST_DEVICE_NAME));
         assertThat(device.getRoomConcatenated(), is(DEFAULT_TEST_ROOM_NAME));
 
-        assertThat(device.isOn(), is(false));
+        assertThat(device.isOnByState(), is(false));
         assertThat(device.getState(), is("off"));
         assertThat(device.getType(), is("ARC"));
 
@@ -53,18 +53,18 @@ public class TRXLightDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.supportsDim(), is(false));
 
         TRXLightDevice device1 = getDeviceFor("device1");
-        assertThat(device1.isOn(), is(true));
+        assertThat(device1.isOnByState(), is(true));
         assertThat(device.supportsDim(), is(false));
 
         TRXLightDevice device2 = getDeviceFor("device2");
         assertThat(device2.getState(), is("level 15"));
-        assertThat(device2.isOn(), is(true));
+        assertThat(device2.isOnByState(), is(true));
         assertThat(device2.supportsDim(), is(true));
         assertThat(device2.getDimPosition(), is(16));
 
         TRXLightDevice device3 = getDeviceFor("device3");
         assertThat(device3.getState(), is("level 12"));
-        assertThat(device3.isOn(), is(true));
+        assertThat(device3.isOnByState(), is(true));
         assertThat(device3.supportsDim(), is(true));
         assertThat(device3.getDimPosition(), is(13));
     }

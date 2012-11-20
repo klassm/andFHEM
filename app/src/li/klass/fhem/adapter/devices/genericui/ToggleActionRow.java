@@ -65,7 +65,7 @@ public class ToggleActionRow<T extends ToggleableDevice> {
         ToggleButton button = (ToggleButton) row.findViewById(R.id.toggleButton);
         button.setOnClickListener(createListener(context, device));
         setToogleButtonText(device, button);
-        button.setChecked(device.isOn());
+        button.setChecked(device.isOnRespectingInvertHook());
 
         return row;
     }
