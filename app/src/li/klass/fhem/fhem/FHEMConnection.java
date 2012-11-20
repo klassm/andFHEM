@@ -33,4 +33,6 @@ public interface FHEMConnection {
     String fileLogData(String logName, Date fromDate, Date toDate, String columnSpec);
     String executeCommand(String command);
     Bitmap requestBitmap(String relativePath);
+    void startEventReceiver();
+    void stopEventReceiver();
 }

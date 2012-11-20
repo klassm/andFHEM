@@ -24,6 +24,8 @@
 
 package li.klass.fhem.fhem;
 
+import static li.klass.fhem.constants.BundleExtraKeys.DO_REFRESH;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
@@ -33,9 +35,11 @@ import java.security.KeyStore;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import li.klass.fhem.AndFHEMApplication;
@@ -44,6 +48,8 @@ import li.klass.fhem.exception.AuthenticationException;
 import li.klass.fhem.exception.FHEMStrangeContentException;
 import li.klass.fhem.exception.HostConnectionException;
 import li.klass.fhem.exception.TimeoutException;
+import li.klass.fhem.service.room.DeviceListParser;
+
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
@@ -68,8 +74,10 @@ public class FHEMWebConnection implements FHEMConnection {
 
     public static final int CONNECTION_TIMEOUT = 3000;
     public static final int SOCKET_TIMEOUT = 20000;
+    public static final int SOCKET_TIMEOUT_EVENT_RECEIVER = 20000;
     public static final String TAG = FHEMWebConnection.class.getName();
     private DefaultHttpClient client;
+    private EventReceiver eventReceiver;
 
     public static final String FHEMWEB_URL = "FHEMWEB_URL";
     public static final String FHEMWEB_USERNAME = "FHEMWEB_USERNAME";
@@ -81,7 +89,7 @@ public class FHEMWebConnection implements FHEMConnection {
         HttpParams httpParams = new BasicHttpParams();
         HttpConnectionParams.setConnectionTimeout(httpParams, 3000);
         HttpConnectionParams.setSoTimeout(httpParams, 20000);
-        client = createNewHTTPClient();
+        client = createNewHTTPClient(CONNECTION_TIMEOUT, SOCKET_TIMEOUT);
     }
 
     @Override
@@ -107,7 +115,7 @@ public class FHEMWebConnection implements FHEMConnection {
 
     @Override
     public Bitmap requestBitmap(String relativePath) {
-        InputStream response = executeRequest(relativePath);
+        InputStream response = executeRequest(relativePath, client);
         return BitmapFactory.decodeStream(response);
     }
 
@@ -119,7 +127,7 @@ public class FHEMWebConnection implements FHEMConnection {
             Log.e(TAG, "unsupported encoding", e);
         }
 
-        InputStream response = executeRequest(urlSuffix);
+        InputStream response = executeRequest(urlSuffix, client);
         try {
             String content = IOUtils.toString(response);
             if (content.contains("<title>") || content.contains("<div id=")) {
@@ -132,7 +140,7 @@ public class FHEMWebConnection implements FHEMConnection {
         }
     }
 
-    private InputStream executeRequest(String urlSuffix) {
+    private InputStream executeRequest(String urlSuffix, DefaultHttpClient client) {
         try {
             HttpGet request = new HttpGet();
             String url = getURL() + urlSuffix;
@@ -187,7 +195,8 @@ public class FHEMWebConnection implements FHEMConnection {
         return password;
     }
 
-    private DefaultHttpClient createNewHTTPClient() {
+    private DefaultHttpClient createNewHTTPClient(int connectionTimeout,
+			int socketTimeout) {
         try {
             KeyStore trustStore = KeyStore.getInstance(KeyStore.getDefaultType());
             trustStore.load(null, null);
@@ -198,8 +207,8 @@ public class FHEMWebConnection implements FHEMConnection {
             HttpParams params = new BasicHttpParams();
             HttpProtocolParams.setVersion(params, HttpVersion.HTTP_1_1);
             HttpProtocolParams.setContentCharset(params, HTTP.UTF_8);
-            HttpConnectionParams.setConnectionTimeout(params, CONNECTION_TIMEOUT);
-            HttpConnectionParams.setSoTimeout(params, SOCKET_TIMEOUT);
+            HttpConnectionParams.setConnectionTimeout(params, connectionTimeout);
+            HttpConnectionParams.setSoTimeout(params, socketTimeout);
 
             SchemeRegistry registry = new SchemeRegistry();
             registry.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
@@ -212,4 +221,66 @@ public class FHEMWebConnection implements FHEMConnection {
             return new DefaultHttpClient();
         }
     }
+
+	@Override
+	public void startEventReceiver() {
+		if (eventReceiver == null || eventReceiver.isCancelled()) {
+			eventReceiver = new EventReceiver();
+			eventReceiver.execute();
+		}
+	}
+
+	@Override
+	public void stopEventReceiver() {
+		eventReceiver.cancel(false);
+	}
+
+	private class EventReceiver extends AsyncTask<Void, Void, Void> {
+		private DefaultHttpClient eventClient = createNewHTTPClient(
+				CONNECTION_TIMEOUT, SOCKET_TIMEOUT_EVENT_RECEIVER);
+		private long startTime;
+
+		@Override
+		protected Void doInBackground(Void... params) {
+			Log.i(TAG, "event receiver started");
+			while (!isCancelled()) {
+				startTime = System.currentTimeMillis();
+				InputStream response = executeRequest("?XHR=1&inform=console",
+						eventClient);
+				try {
+					String[] contentLines = IOUtils.toString(response).split(
+							"<br>");
+
+					if (contentLines.length > 0) {
+						for (String line : contentLines) {
+							try {
+								DeviceListParser.INSTANCE.parseEvent(line
+										.trim());
+							} catch (Exception e) {
+								Log.e(TAG, "event parse error", e);
+							}
+						}
+
+						Intent refreshIntent = new Intent(
+								li.klass.fhem.constants.Actions.DO_UPDATE);
+						refreshIntent.putExtra(DO_REFRESH, false);
+						AndFHEMApplication.getContext().sendBroadcast(
+								refreshIntent);
+					}
+				} catch (IOException e) {
+					// check if connection timed out or something bad happened
+					if (System.currentTimeMillis() - startTime < SOCKET_TIMEOUT_EVENT_RECEIVER) {
+						throw new HostConnectionException();
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+
+			}
+
+			Log.i(TAG, "event receiver stopped");
+
+			return null;
+		}
+	}
 }

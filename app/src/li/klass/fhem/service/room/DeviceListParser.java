@@ -345,4 +345,41 @@ public class DeviceListParser {
 
         return deviceClassCache;
     }
+
+	public void parseEvent(String event) throws Exception {
+		String[] split = event.split(" ", 5);
+		if (split.length == 5) {
+			String devName = split[3];
+			String measured = split[0] + " " + split[1];
+			String value = split[4];
+			String state;
+
+			Device dev = RoomListService.INSTANCE.getDeviceForName(devName,
+					RoomListService.NEVER_UPDATE_PERIOD);
+			if (dev != null) {
+				Map<String, Set<Method>> cache = getDeviceClassCacheEntriesFor(dev
+						.getClass());
+
+				if (value.indexOf(":") == -1) {
+					state = "STATE";
+				} else {
+					String[] stateTest = value.split(":", 2);
+					stateTest[0] = stateTest[0].replaceAll("[-.]", "_").toUpperCase();
+					if (cache.containsKey(stateTest[0])) {
+						state = stateTest[0];
+						value = stateTest[1].trim();
+					} else {
+						state = "STATE";
+					}
+				}
+
+				Log.d(TAG, "new state for " + dev.getName() + " " + state
+						+ ": " + value);
+
+				invokeDeviceAttributeMethod(cache, dev, state, value, null,
+						"STATE");
+			}
+		}
+	}
+
 }
