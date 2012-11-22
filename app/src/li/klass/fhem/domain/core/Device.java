@@ -83,10 +83,6 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
         }
     }
 
-    public void readSTATE(String value) {
-    	state = value;
-    }
-
     public void readDEF(String value) {
         definition = value;
     }
