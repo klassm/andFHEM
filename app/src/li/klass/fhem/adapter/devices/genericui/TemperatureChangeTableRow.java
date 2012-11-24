@@ -35,11 +35,8 @@ import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.core.Device;
-import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.ValueDescriptionUtil;
 import li.klass.fhem.util.device.DeviceActionUtil;
-
-import static li.klass.fhem.constants.PreferenceKeys.SHOW_SET_VALUE_BUTTONS;
 
 public class TemperatureChangeTableRow<D extends Device<D>> extends SeekBarActionRowFullWidthAndButton<D> {
     private final TextView updateView;
@@ -48,6 +45,13 @@ public class TemperatureChangeTableRow<D extends Device<D>> extends SeekBarActio
     private int valueStringId;
     private Context context;
     private double minTemperature;
+    private boolean sendIntents = true;
+
+    public TemperatureChangeTableRow(Context context, double initialTemperature, TableRow updateTableRow,
+                                     double minTemperature, double maxTemperature) {
+        this(context, initialTemperature, updateTableRow, null, -1, minTemperature, maxTemperature);
+        sendIntents = false;
+    }
 
     public TemperatureChangeTableRow(Context context, double initialTemperature, TableRow updateTableRow,
                                      String intentAction, int valueStringId, double minTemperature, double maxTemperature) {
@@ -69,6 +73,8 @@ public class TemperatureChangeTableRow<D extends Device<D>> extends SeekBarActio
 
     @Override
     public void onStopTrackingTouch(final Context seekBarContext, final D device, int progress) {
+        if (! sendIntents) return;
+
         String confirmationMessage = createConfirmationText(valueStringId, newTemperature);
         DeviceActionUtil.showConfirmation(context, new Dialog.OnClickListener() {
 
@@ -93,12 +99,6 @@ public class TemperatureChangeTableRow<D extends Device<D>> extends SeekBarActio
         updateView.setText(ValueDescriptionUtil.appendTemperature(newValue));
     }
 
-    @Override
-    protected boolean showButton() {
-        return ApplicationProperties.INSTANCE.getBooleanSharedPreference(SHOW_SET_VALUE_BUTTONS, false);
-    }
-
-
     private String createConfirmationText(int attributeStringId, double newTemperature) {
         Context context = AndFHEMApplication.getContext();
         Resources resources = context.getResources();
@@ -110,6 +110,9 @@ public class TemperatureChangeTableRow<D extends Device<D>> extends SeekBarActio
         return String.format(text, attributeText, temperatureText);
     }
 
+    public double getTemperature() {
+        return newTemperature;
+    }
 
     public static int temperatureToDimProgress(double temperature, double minTemperature) {
         return (int) ((temperature - minTemperature) / 0.5);

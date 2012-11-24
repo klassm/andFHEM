@@ -36,8 +36,11 @@ public abstract class SpinnerActionRow<T extends Device> {
     private int description;
     private int prompt;
     private List<String> spinnerValues;
-    private final int selectedPosition;
+    private int selectedPosition;
     private Context context;
+    private TableRow rowView;
+
+    private boolean ignoreItemSelection = false;
 
     public SpinnerActionRow(Context context, int description, int prompt, List<String> spinnerValues, int selectedPosition) {
         this.description = description;
@@ -48,22 +51,26 @@ public abstract class SpinnerActionRow<T extends Device> {
     }
 
     public TableRow createRow(final T device) {
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        TableRow row = (TableRow) inflater.inflate(R.layout.device_detail_spinnerrow, null);
+        ignoreItemSelection = true;
 
-        ((TextView) row.findViewById(R.id.description)).setText(description);
-        final Spinner spinner = (Spinner) row.findViewById(R.id.spinner);
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        rowView = (TableRow) inflater.inflate(R.layout.device_detail_spinnerrow, null);
+
+        ((TextView) rowView.findViewById(R.id.description)).setText(description);
+        final Spinner spinner = (Spinner) rowView.findViewById(R.id.spinner);
         spinner.setPrompt(context.getString(prompt));
 
         ArrayAdapter adapter = new ArrayAdapter<String>(context, R.layout.spinnercontent, spinnerValues);
         spinner.setAdapter(adapter);
 
         spinner.setSelection(selectedPosition);
-
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+                if (ignoreItemSelection || selectedPosition == position) return;
+                selectedPosition = position;
+
                 SpinnerActionRow.this.onItemSelected(context, device, spinnerValues.get(position));
             }
 
@@ -71,7 +78,15 @@ public abstract class SpinnerActionRow<T extends Device> {
             public void onNothingSelected(AdapterView<?> adapterView) {
             }
         });
-        return row;
+
+        ignoreItemSelection = false;
+
+        return rowView;
+    }
+
+    public void revertSelection() {
+        Spinner spinner = (Spinner) rowView.findViewById(R.id.spinner);
+        spinner.setSelection(selectedPosition);
     }
 
     public abstract void onItemSelected(final Context context, T device, String item);

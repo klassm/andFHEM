@@ -62,13 +62,21 @@ public class FHTService {
      * the already set one.
      * @param device concerned device
      * @param mode new mode to set.
+     * @param desiredTemperature temperature to set (only holiday and holiday_short
+     * @param holiday1 holiday attribute one (only holiday and holiday_short
+     * @param holiday2 holiday attribute two (only holiday and holiday_short
      */
-    public void setMode(FHTDevice device, FHTMode mode) {
+    public void setMode(FHTDevice device, FHTMode mode, double desiredTemperature, int holiday1, int holiday2) {
         if (mode != FHTMode.UNKNOWN && device.getMode() != mode) {
             Log.e(FHTService.class.getName(), "changing mode for device " + device.getName() +
                     " from " + device.getMode() + " to " + mode);
 
             String command = "set " + device.getName() + " mode " + mode.name().toLowerCase();
+
+            if (mode == FHTMode.HOLIDAY || mode == FHTMode.HOLIDAY_SHORT) {
+                command += " holiday1 " + holiday1 + " holiday2 " + holiday2 + " desired-temp " + desiredTemperature;
+            }
+
             CommandExecutionService.INSTANCE.executeSafely(command);
             device.setMode(mode);
         }

@@ -117,6 +117,8 @@
     <string name="deleteConfirmation">Möchten Sie das Gerät wirklich aus FHEM löschen?</string>
     <string name="isActive">Aktiv?</string>
     <string name="deactivated">deaktiviert</string>
+    <string name="endDate">End-Datum</string>
+    <string name="durationMinutes">Dauer (Minuten)</string>
 
     <string name="switchDevice">Schalte</string>
     <string name="preferences">Einstellungen</string>

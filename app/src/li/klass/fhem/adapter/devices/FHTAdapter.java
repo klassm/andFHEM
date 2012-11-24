@@ -24,14 +24,20 @@
 
 package li.klass.fhem.adapter.devices;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.view.LayoutInflater;
+import android.widget.DatePicker;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+import android.widget.TextView;
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
 import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
 import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewAction;
+import li.klass.fhem.adapter.devices.genericui.SeekBarActionRowFullWidthAndButton;
 import li.klass.fhem.adapter.devices.genericui.SpinnerActionRow;
 import li.klass.fhem.adapter.devices.genericui.TemperatureChangeTableRow;
 import li.klass.fhem.constants.Actions;
@@ -39,6 +45,10 @@ import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.FHTDevice;
 import li.klass.fhem.domain.fht.FHTMode;
 import li.klass.fhem.fragments.FHTTimetableControlListFragment;
+import li.klass.fhem.util.DatePickerUtil;
+import li.klass.fhem.util.DialogUtil;
+
+import java.util.Calendar;
 
 import static li.klass.fhem.domain.FHTDevice.MAXIMUM_TEMPERATURE;
 import static li.klass.fhem.domain.FHTDevice.MINIMUM_TEMPERATURE;
@@ -93,10 +103,7 @@ public class FHTAdapter extends GenericDeviceAdapter<FHTDevice> {
                     @Override
                     public void onItemSelected(Context context, FHTDevice device, String item) {
                         FHTMode mode = FHTMode.valueOf(item);
-                        Intent intent = new Intent(Actions.DEVICE_SET_MODE);
-                        intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
-                        intent.putExtra(BundleExtraKeys.DEVICE_MODE, mode);
-                        context.startService(intent);
+                        setMode(context, device, mode, this);
                     }
                 }.createRow(device));
             }
@@ -120,6 +127,164 @@ public class FHTAdapter extends GenericDeviceAdapter<FHTDevice> {
                 context.startService(intent);
             }
         });
+    }
+
+    private void setMode(final Context context, FHTDevice device, FHTMode mode, final SpinnerActionRow<FHTDevice> spinnerActionRow) {
+        final Intent intent = new Intent(Actions.DEVICE_SET_MODE);
+        intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
+        intent.putExtra(BundleExtraKeys.DEVICE_MODE, mode);
+
+        LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        switch (mode) {
+            case HOLIDAY:
+
+                handleHolidayMode(context, device, spinnerActionRow, intent, inflater);
+
+                break;
+
+            case HOLIDAY_SHORT:
+
+                handleHolidayShortMode(context, device, spinnerActionRow, intent, inflater);
+
+                break;
+            default:
+                context.startService(intent);
+        }
+    }
+
+    private void handleHolidayShortMode(final Context context, FHTDevice device, final SpinnerActionRow<FHTDevice> spinnerActionRow, final Intent intent, LayoutInflater inflater) {
+        final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
+
+        TableLayout contentView = (TableLayout) inflater.inflate(R.layout.fht_holiday_short_dialog, null);
+        dialogBuilder.setView(contentView);
+
+        TableRow temperatureUpdateRow = (TableRow) contentView.findViewById(R.id.updateTemperatureRow);
+        TableRow durationUpdateRow = (TableRow) contentView.findViewById(R.id.updateDurationRow);
+
+        final PartyModeTimeSelectionTableRow durationRow = new PartyModeTimeSelectionTableRow(context, durationUpdateRow);
+        contentView.addView(durationRow.createRow(inflater, device), 1);
+
+        final TemperatureChangeTableRow<FHTDevice> temperatureChangeTableRow =
+                new TemperatureChangeTableRow<FHTDevice>(context, FHTDevice.MINIMUM_TEMPERATURE, temperatureUpdateRow,
+                        FHTDevice.MINIMUM_TEMPERATURE, FHTDevice.MAXIMUM_TEMPERATURE);
+        contentView.addView(temperatureChangeTableRow.createRow(inflater, device));
+
+
+        dialogBuilder.setNegativeButton(R.string.cancelButton, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                spinnerActionRow.revertSelection();
+                dialogInterface.dismiss();
+            }
+        });
+
+        dialogBuilder.setPositiveButton(R.string.okButton, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int item) {
+                intent.putExtra(BundleExtraKeys.DEVICE_TEMPERATURE, temperatureChangeTableRow.getTemperature());
+                intent.putExtra(BundleExtraKeys.DEVICE_HOLIDAY1, durationRow.getTargetDayOfMonth());
+                intent.putExtra(BundleExtraKeys.DEVICE_HOLIDAY2, durationRow.getPartyModeTimeSpanInMinutes());
+
+                context.startService(intent);
+
+                dialogInterface.dismiss();
+            }
+        });
+        dialogBuilder.show();
+    }
+
+    private void handleHolidayMode(final Context context, FHTDevice device, final SpinnerActionRow<FHTDevice> spinnerActionRow, final Intent intent, LayoutInflater inflater) {
+        final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
+
+        TableLayout contentView = (TableLayout) inflater.inflate(R.layout.fht_holiday_dialog, null);
+
+        final DatePicker datePicker = (DatePicker) contentView.findViewById(R.id.datePicker);
+        DatePickerUtil.hideYearField(datePicker);
+
+        TableRow temperatureUpdateRow = (TableRow) contentView.findViewById(R.id.updateRow);
+
+        final TemperatureChangeTableRow<FHTDevice> temperatureChangeTableRow =
+                new TemperatureChangeTableRow<FHTDevice>(context, FHTDevice.MINIMUM_TEMPERATURE, temperatureUpdateRow,
+                FHTDevice.MINIMUM_TEMPERATURE, FHTDevice.MAXIMUM_TEMPERATURE);
+        contentView.addView(temperatureChangeTableRow.createRow(inflater, device));
+
+        dialogBuilder.setView(contentView);
+
+        dialogBuilder.setNegativeButton(R.string.cancelButton, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                spinnerActionRow.revertSelection();
+                dialogInterface.dismiss();
+            }
+        });
+
+        dialogBuilder.setPositiveButton(R.string.okButton, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int item) {
+                intent.putExtra(BundleExtraKeys.DEVICE_TEMPERATURE, temperatureChangeTableRow.getTemperature());
+                intent.putExtra(BundleExtraKeys.DEVICE_HOLIDAY1, datePicker.getDayOfMonth());
+                intent.putExtra(BundleExtraKeys.DEVICE_HOLIDAY2, datePicker.getMonth() + 1);
+
+                context.startService(intent);
+
+                dialogInterface.dismiss();
+            }
+        });
+
+        dialogBuilder.show();
+    }
+
+    private class PartyModeTimeSelectionTableRow extends SeekBarActionRowFullWidthAndButton<FHTDevice> {
+        private int currentValue = 0;
+        private final TextView updateView;
+
+        public PartyModeTimeSelectionTableRow(Context context, TableRow updateTableRow) {
+            super(context, 0, 144);
+            updateView = (TextView) updateTableRow.findViewById(R.id.value);
+        }
+
+        @Override
+        public void onButtonSetValue(FHTDevice device, int value) {
+            if (value > 1440) {
+                DialogUtil.showAlertDialog(context, -1, R.string.invalidInput);
+                return;
+            }
+            setValue(value / 10);
+        }
+
+        @Override
+        public void onProgressChanged(Context context, FHTDevice device, int progress) {
+            super.onProgressChanged(context, device, progress);
+            setValue(progress);
+        }
+
+        private void setValue(int progress) {
+            currentValue = progress;
+            updateView.setText("" + currentValue * 10);
+        }
+
+        @Override
+        public void onStopTrackingTouch(Context context, FHTDevice device, int progress) {
+        }
+
+        public int getPartyModeTimeSpanInMinutes() {
+            return currentValue * 10;
+        }
+
+        public int getTargetDayOfMonth() {
+            Calendar calendar = Calendar.getInstance();
+            calendar.add(Calendar.MINUTE, getPartyModeTimeSpanInMinutes());
+
+            return calendar.get(Calendar.DAY_OF_MONTH);
+        }
+
+        @Override
+        protected boolean showButton() {
+            return false;
+        }
+
+
     }
 
 }

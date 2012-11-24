@@ -84,7 +84,11 @@ public class DeviceIntentService extends ConvenientIntentService {
             FHTService.INSTANCE.setNightTemperature((FHTDevice) device, nightTemperature);
         } else if (action.equals(DEVICE_SET_MODE)) {
             FHTMode mode = (FHTMode) intent.getSerializableExtra(BundleExtraKeys.DEVICE_MODE);
-            FHTService.INSTANCE.setMode((FHTDevice) device, mode);
+            double desiredTemperature = intent.getDoubleExtra(BundleExtraKeys.DEVICE_TEMPERATURE, FHTDevice.MINIMUM_TEMPERATURE);
+            int holiday1 = intent.getIntExtra(BundleExtraKeys.DEVICE_HOLIDAY1, -1);
+            int holiday2 = intent.getIntExtra(BundleExtraKeys.DEVICE_HOLIDAY2, -1);
+
+            FHTService.INSTANCE.setMode((FHTDevice) device, mode, desiredTemperature, holiday1, holiday2);
         } else if (action.equals(DEVICE_SET_TIMETABLE)) {
             FHTService.INSTANCE.setTimetableFor((FHTDevice) device);
         } else if (action.equals(DEVICE_SET_WINDOW_OPEN_TEMPERATURE)) {

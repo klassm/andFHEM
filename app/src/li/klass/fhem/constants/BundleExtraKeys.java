@@ -47,6 +47,8 @@ public class BundleExtraKeys {
     public static final String DEVICE_TARGET_STATE = "TARGETSTATE";
     public static final String DEVICE_TEMPERATURE = "TEMPERATURE";
     public static final String DEVICE_MODE = "DEVICEMODE";
+    public static final String DEVICE_HOLIDAY1 = "HOLIDAY1";
+    public static final String DEVICE_HOLIDAY2 = "HOLIDAY2";
 
     public static final String FRAGMENT_NAME = "FRAGMENTNAME";
     public static final String FRAGMENT = "FRAGMENT";

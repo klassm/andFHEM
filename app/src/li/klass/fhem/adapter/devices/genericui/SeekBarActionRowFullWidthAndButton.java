@@ -24,8 +24,6 @@
 
 package li.klass.fhem.adapter.devices.genericui;
 
-import static li.klass.fhem.util.NumberUtil.isNumeric;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,11 +31,15 @@ import android.widget.Button;
 import android.widget.TableRow;
 import li.klass.fhem.R;
 import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.DialogUtil;
+
+import static li.klass.fhem.constants.PreferenceKeys.SHOW_SET_VALUE_BUTTONS;
+import static li.klass.fhem.util.NumberUtil.isNumeric;
 
 public abstract class SeekBarActionRowFullWidthAndButton<T extends Device<T>> extends SeekBarActionRowFullWidth<T> {
 
-    private Context context;
+    protected Context context;
 
     public SeekBarActionRowFullWidthAndButton(Context context, int initialProgress, int maximumProgress) {
         super(initialProgress, maximumProgress, R.layout.device_detail_seekbarrow_with_button);
@@ -77,6 +79,6 @@ public abstract class SeekBarActionRowFullWidthAndButton<T extends Device<T>> ex
     public abstract void onButtonSetValue(T device, int value);
 
     protected boolean showButton() {
-        return true;
+        return ApplicationProperties.INSTANCE.getBooleanSharedPreference(SHOW_SET_VALUE_BUTTONS, false);
     }
 }
