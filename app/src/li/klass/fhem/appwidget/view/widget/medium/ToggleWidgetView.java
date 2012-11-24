@@ -50,7 +50,35 @@ public class ToggleWidgetView extends AppWidgetView {
     @Override
     protected void fillWidgetView(Context context, RemoteViews view, Device<?> device, WidgetConfiguration widgetConfiguration) {
         ToggleableDevice toggleable = (ToggleableDevice) device;
-        if (toggleable.isOnRespectingInvertHook()) {
+
+        boolean isOn = toggleable.isOnRespectingInvertHook();
+
+        Intent actionIntent;
+
+        if (!toggleable.isSpecialButtonDevice()) {
+            actionIntent = new Intent(Actions.DEVICE_WIDGET_TOGGLE);
+            actionIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            actionIntent.putExtra(BundleExtraKeys.APP_WIDGET_ID, widgetConfiguration.widgetId);
+            actionIntent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
+
+        } else {
+            actionIntent = new Intent(Actions.DEVICE_SET_STATE);
+            actionIntent.putExtra(BundleExtraKeys.DEVICE_NAME, toggleable.getName());
+
+            ToggleableDevice.ButtonHookType buttonHookType = toggleable.getButtonHookType();
+            switch(buttonHookType) {
+                case ON_DEVICE:
+                    isOn = true;
+                    actionIntent.putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, toggleable.getOnStateName());
+                    break;
+                case OFF_DEVICE:
+                    isOn = false;
+                    actionIntent.putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, toggleable.getOffStateName());
+                    break;
+            }
+        }
+
+        if (isOn) {
             view.setViewVisibility(R.id.toggleOff, View.GONE);
             view.setViewVisibility(R.id.toggleOn, View.VISIBLE);
             view.setTextViewText(R.id.toggleOn, device.getEventMapStateFor("on"));
@@ -60,12 +88,9 @@ public class ToggleWidgetView extends AppWidgetView {
             view.setTextViewText(R.id.toggleOff, device.getEventMapStateFor("off"));
         }
 
-        Intent intent = new Intent(Actions.DEVICE_WIDGET_TOGGLE);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.putExtra(BundleExtraKeys.APP_WIDGET_ID, widgetConfiguration.widgetId);
-        intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
 
-        PendingIntent pendingIntent = PendingIntent.getService(context, widgetConfiguration.widgetId, intent,
+
+        PendingIntent pendingIntent = PendingIntent.getService(context, widgetConfiguration.widgetId, actionIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
         view.setOnClickPendingIntent(R.id.toggleOff, pendingIntent);
         view.setOnClickPendingIntent(R.id.toggleOn, pendingIntent);
