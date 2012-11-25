@@ -37,6 +37,7 @@ public abstract class SpinnerActionRow<T extends Device> {
     private int prompt;
     private List<String> spinnerValues;
     private int selectedPosition;
+    private int temporarySelectedPosition;
     private Context context;
     private TableRow rowView;
 
@@ -69,7 +70,7 @@ public abstract class SpinnerActionRow<T extends Device> {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
                 if (ignoreItemSelection || selectedPosition == position) return;
-                selectedPosition = position;
+                temporarySelectedPosition = position;
 
                 SpinnerActionRow.this.onItemSelected(context, device, spinnerValues.get(position));
             }
@@ -87,6 +88,10 @@ public abstract class SpinnerActionRow<T extends Device> {
     public void revertSelection() {
         Spinner spinner = (Spinner) rowView.findViewById(R.id.spinner);
         spinner.setSelection(selectedPosition);
+    }
+
+    public void commitSelection() {
+        selectedPosition = temporarySelectedPosition;
     }
 
     public abstract void onItemSelected(final Context context, T device, String item);

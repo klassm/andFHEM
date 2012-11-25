@@ -188,6 +188,7 @@ public class FHTAdapter extends GenericDeviceAdapter<FHTDevice> {
 
                 context.startService(intent);
 
+                spinnerActionRow.commitSelection();
                 dialogInterface.dismiss();
             }
         });
@@ -228,6 +229,7 @@ public class FHTAdapter extends GenericDeviceAdapter<FHTDevice> {
 
                 context.startService(intent);
 
+                spinnerActionRow.commitSelection();
                 dialogInterface.dismiss();
             }
         });
