@@ -24,7 +24,19 @@
 
 package li.klass.fhem.service.room;
 
-import android.util.Log;
+import static li.klass.fhem.domain.core.DeviceType.FILE_LOG;
+
+import java.io.StringReader;
+import java.lang.reflect.Method;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
 import li.klass.fhem.domain.FileLogDevice;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceType;
@@ -34,19 +46,14 @@ import li.klass.fhem.exception.DeviceListParseException;
 import li.klass.fhem.exception.HostConnectionException;
 import li.klass.fhem.fhem.DataConnectionSwitch;
 import li.klass.fhem.util.StringEscapeUtil;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import java.io.StringReader;
-import java.lang.reflect.Method;
-import java.util.*;
-
-import static li.klass.fhem.domain.core.DeviceType.FILE_LOG;
+import android.util.Log;
 
 
 /**
@@ -345,4 +352,45 @@ public class DeviceListParser {
 
         return deviceClassCache;
     }
+
+	public void parseEvent(String event) throws Exception {
+		String[] split = event.split(" ", 5);
+		if (split.length == 5) {
+			String devName = split[3];
+			String measured = split[0] + " " + split[1];
+			String value = split[4];
+			String state;
+
+			Device dev = RoomListService.INSTANCE.getDeviceForName(devName,
+					RoomListService.NEVER_UPDATE_PERIOD);
+			if (dev != null) {
+				Map<String, Set<Method>> cache = getDeviceClassCacheEntriesFor(dev
+						.getClass());
+
+				if (value.indexOf(":") == -1) {
+					state = "STATE";
+				} else {
+					String[] stateTest = value.split(":", 2);
+					stateTest[0] = stateTest[0].replaceAll("[-.]", "_").toUpperCase();
+					if (cache.containsKey(stateTest[0])) {
+						state = stateTest[0];
+						value = stateTest[1].trim();
+					} else {
+						state = "STATE";
+					}
+				}
+
+				Log.d(TAG, "new state for " + dev.getName() + " " + state
+						+ ": " + value);
+				
+				DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
+		        DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
+		        Document doc = docBuilder.newDocument();
+		        
+				invokeDeviceAttributeMethod(cache, dev, state, value, doc.getAttributes(),
+						"STATE");
+			}
+		}
+	}
+
 }

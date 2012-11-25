@@ -28,8 +28,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
-import li.klass.fhem.activities.core.FragmentBaseActivity;
 import li.klass.fhem.activities.core.Updateable;
 import li.klass.fhem.constants.BundleExtraKeys;
 
@@ -38,10 +38,10 @@ import static li.klass.fhem.constants.Actions.DO_UPDATE;
 public class UIBroadcastReceiver extends BroadcastReceiver {
 
     private final IntentFilter intentFilter;
-    private FragmentBaseActivity activity;
+    private FragmentActivity activity;
     private Updateable updateable;
 
-    public UIBroadcastReceiver(FragmentBaseActivity activity, Updateable updateable) {
+    public UIBroadcastReceiver(FragmentActivity activity, Updateable updateable) {
         this.activity = activity;
         this.updateable = updateable;
 
