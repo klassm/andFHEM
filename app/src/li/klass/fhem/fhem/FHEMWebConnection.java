@@ -24,17 +24,6 @@
 
 package li.klass.fhem.fhem;
 
-import static li.klass.fhem.constants.BundleExtraKeys.DO_REFRESH;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.URI;
-import java.net.URLEncoder;
-import java.security.KeyStore;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -43,13 +32,9 @@ import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import li.klass.fhem.AndFHEMApplication;
-import li.klass.fhem.exception.AndFHEMException;
-import li.klass.fhem.exception.AuthenticationException;
-import li.klass.fhem.exception.FHEMStrangeContentException;
-import li.klass.fhem.exception.HostConnectionException;
-import li.klass.fhem.exception.TimeoutException;
+import li.klass.fhem.constants.Actions;
+import li.klass.fhem.exception.*;
 import li.klass.fhem.service.room.DeviceListParser;
-
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
@@ -69,6 +54,17 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
 import org.apache.http.protocol.HTTP;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.net.URLEncoder;
+import java.security.KeyStore;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import static li.klass.fhem.constants.BundleExtraKeys.DO_REFRESH;
 
 public class FHEMWebConnection implements FHEMConnection {
 
@@ -196,7 +192,7 @@ public class FHEMWebConnection implements FHEMConnection {
     }
 
     private DefaultHttpClient createNewHTTPClient(int connectionTimeout,
-			int socketTimeout) {
+                                                  int socketTimeout) {
         try {
             KeyStore trustStore = KeyStore.getInstance(KeyStore.getDefaultType());
             trustStore.load(null, null);
@@ -222,65 +218,63 @@ public class FHEMWebConnection implements FHEMConnection {
         }
     }
 
-	@Override
-	public void startEventReceiver() {
-		if (eventReceiver == null || eventReceiver.isCancelled()) {
-			eventReceiver = new EventReceiver();
-			eventReceiver.execute();
-		}
-	}
+    @Override
+    public void startEventReceiver() {
+        if (eventReceiver == null || eventReceiver.isCancelled()) {
+            eventReceiver = new EventReceiver();
+            eventReceiver.execute();
+        }
+    }
 
-	@Override
-	public void stopEventReceiver() {
-		eventReceiver.cancel(false);
-	}
+    @Override
+    public void stopEventReceiver() {
+        eventReceiver.cancel(false);
+    }
 
-	private class EventReceiver extends AsyncTask<Void, Void, Void> {
-		private DefaultHttpClient eventClient = createNewHTTPClient(
-				CONNECTION_TIMEOUT, SOCKET_TIMEOUT_EVENT_RECEIVER);
-		private long startTime;
+    private class EventReceiver extends AsyncTask<Void, Void, Void> {
+        private DefaultHttpClient eventClient = createNewHTTPClient(
+                CONNECTION_TIMEOUT, SOCKET_TIMEOUT_EVENT_RECEIVER);
+        private long startTime;
 
-		@Override
-		protected Void doInBackground(Void... params) {
-			Log.i(TAG, "event receiver started");
-			while (!isCancelled()) {
-				startTime = System.currentTimeMillis();
-				InputStream response = executeRequest("?XHR=1&inform=console",
-						eventClient);
-				try {
-					String[] contentLines = IOUtils.toString(response).split(
-							"<br>");
+        @Override
+        protected Void doInBackground(Void... params) {
+            Log.i(TAG, "event receiver started");
 
-					if (contentLines.length > 0) {
-						for (String line : contentLines) {
-							try {
-								DeviceListParser.INSTANCE.parseEvent(line
-										.trim());
-							} catch (Exception e) {
-								Log.e(TAG, "event parse error", e);
-							}
-						}
+            while (! isCancelled()) {
+                startTime = System.currentTimeMillis();
+                InputStream response = executeRequest("?XHR=1&inform=console", eventClient);
 
-						Intent refreshIntent = new Intent(
-								li.klass.fhem.constants.Actions.DO_UPDATE);
-						refreshIntent.putExtra(DO_REFRESH, false);
-						AndFHEMApplication.getContext().sendBroadcast(
-								refreshIntent);
-					}
-				} catch (IOException e) {
-					// check if connection timed out or something bad happened
-					if (System.currentTimeMillis() - startTime < SOCKET_TIMEOUT_EVENT_RECEIVER) {
-						throw new HostConnectionException();
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+                try {
+                    String[] contentLines = IOUtils.toString(response).split(
+                            "<br>");
 
-			}
+                    if (contentLines.length > 0) {
+                        for (String line : contentLines) {
+                            try {
+                                DeviceListParser.INSTANCE.parseEvent(line.trim());
+                            } catch (Exception e) {
+                                Log.e(TAG, "event parse error", e);
+                            }
+                        }
 
-			Log.i(TAG, "event receiver stopped");
+                        Intent refreshIntent = new Intent(Actions.DO_UPDATE);
+                        refreshIntent.putExtra(DO_REFRESH, false);
+                        AndFHEMApplication.getContext().sendBroadcast(refreshIntent);
+                    }
+                } catch (IOException e) {
+                    // check if connection timed out or something bad happened
+                    if (System.currentTimeMillis() - startTime < SOCKET_TIMEOUT_EVENT_RECEIVER) {
+                        throw new HostConnectionException();
+                    }
+                } catch (Exception e) {
+                    Log.e(TAG, "error while receiving events...", e);
+                }
 
-			return null;
-		}
-	}
+            }
+
+            Log.i(TAG, "event receiver stopped");
+
+            return null;
+        }
+    }
 }

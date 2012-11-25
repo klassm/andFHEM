@@ -24,17 +24,9 @@
 
 package li.klass.fhem.service.room;
 
-import static li.klass.fhem.util.SharedPreferencesUtil.getSharedPreferences;
-import static li.klass.fhem.util.SharedPreferencesUtil.getSharedPreferencesEditor;
-
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.constants.Actions;
@@ -43,6 +35,15 @@ import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.RoomDeviceList;
 import li.klass.fhem.exception.AndFHEMException;
 import li.klass.fhem.service.AbstractService;
+
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import static li.klass.fhem.util.SharedPreferencesUtil.getSharedPreferences;
+import static li.klass.fhem.util.SharedPreferencesUtil.getSharedPreferencesEditor;
 
 public class RoomListService extends AbstractService {
 
@@ -76,7 +77,7 @@ public class RoomListService extends AbstractService {
      *                     longer ago than the given period
      * @return found device or null
      */
-    public Device getDeviceForName(String deviceName, long updatePeriod) {
+    public synchronized Device getDeviceForName(String deviceName, long updatePeriod) {
         return getAllRoomsDeviceList(updatePeriod).getDeviceFor(deviceName);
     }
 
@@ -87,7 +88,7 @@ public class RoomListService extends AbstractService {
      *                     longer ago than the given period
      * @return list of all room names
      */
-    public ArrayList<String> getRoomNameList(long updatePeriod) {
+    public synchronized ArrayList<String> getRoomNameList(long updatePeriod) {
         Map<String, RoomDeviceList> map = getRoomDeviceListMap(updatePeriod);
         ArrayList<String> roomNames = new ArrayList<String>(map.keySet());
         for (RoomDeviceList roomDeviceList : map.values()) {
@@ -109,7 +110,7 @@ public class RoomListService extends AbstractService {
      *                     longer ago than the given period
      * @return {@link RoomDeviceList} for a room
      */
-    public RoomDeviceList getOrCreateRoomDeviceList(final String roomName, long updatePeriod) {
+    public synchronized RoomDeviceList getOrCreateRoomDeviceList(final String roomName, long updatePeriod) {
         Map<String, RoomDeviceList> map = getRoomDeviceListMap(updatePeriod);
         RoomDeviceList roomDeviceList = map.get(roomName);
         if (roomDeviceList == null) {
@@ -127,7 +128,7 @@ public class RoomListService extends AbstractService {
      *                     longer ago than the given period
      * @return {@link RoomDeviceList} containing all devices
      */
-    public RoomDeviceList getAllRoomsDeviceList(long updatePeriod) {
+    public synchronized RoomDeviceList getAllRoomsDeviceList(long updatePeriod) {
         Map<String, RoomDeviceList> roomDeviceListMap = getRoomDeviceListMap(updatePeriod);
         RoomDeviceList allRoomsDeviceList = new RoomDeviceList(RoomDeviceList.ALL_DEVICES_ROOM);
         for (String room : roomDeviceListMap.keySet()) {
@@ -146,7 +147,7 @@ public class RoomListService extends AbstractService {
      *                     longer ago than the given period
      * @return found {@link RoomDeviceList} or null
      */
-    public RoomDeviceList getDeviceListForRoom(String roomName, long updatePeriod) {
+    public synchronized RoomDeviceList getDeviceListForRoom(String roomName, long updatePeriod) {
         return getRoomDeviceListMap(updatePeriod).get(roomName);
     }
 
@@ -155,7 +156,7 @@ public class RoomListService extends AbstractService {
      *
      * @param roomName room name used for searching the room
      */
-    public void removeDeviceListForRoom(String roomName) {
+    public synchronized void removeDeviceListForRoom(String roomName) {
         getRoomDeviceListMap(NEVER_UPDATE_PERIOD).remove(roomName);
     }
 

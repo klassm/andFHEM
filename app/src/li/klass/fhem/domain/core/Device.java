@@ -24,13 +24,6 @@
 
 package li.klass.fhem.domain.core;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
@@ -40,8 +33,10 @@ import li.klass.fhem.domain.floorplan.Coordinate;
 import li.klass.fhem.domain.floorplan.FloorplanPosition;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.util.StringUtil;
-
 import org.w3c.dom.NamedNodeMap;
+
+import java.io.Serializable;
+import java.util.*;
 
 @SuppressWarnings("unused")
 public abstract class Device<T extends Device> implements Serializable, Comparable<T> {
@@ -93,6 +88,10 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
 
     public void readALIAS(String value) {
         alias = value;
+    }
+
+    public void readMEASURED(String value) {
+        measured = value;
     }
 
     public void afterXMLRead() {
