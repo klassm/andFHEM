@@ -43,16 +43,34 @@ public class AtDevice extends Device<AtDevice> {
 
     public enum AtRepetition {
         ONCE(R.string.timer_overview_once), EVERY_DAY(R.string.timer_overview_every_day),
-        WEEKEND(R.string.timer_overview_weekend), WEEKDAY(R.string.timer_overview_weekday);
+        WEEKEND(R.string.timer_overview_weekend), WEEKDAY(R.string.timer_overview_weekday),
+        MONDAY(R.string.monday, 1), TUESDAY(R.string.tuesday, 2), WEDNESDAY(R.string.wednesday, 3),
+        THURSDAY(R.string.thursday, 4), FRIDAY(R.string.friday, 5), SATURDAY(R.string.saturday, 6), SUNDAY(R.string.sunday, 0);
 
         private int stringId;
+        private int weekdayOrdinate;
 
         AtRepetition(int stringId) {
             this.stringId = stringId;
+            this.weekdayOrdinate = -1;
+        }
+
+        AtRepetition(int stringId, int weekdayOrdinate) {
+            this.stringId = stringId;
+            this.weekdayOrdinate = weekdayOrdinate;
         }
 
         public String getText() {
             return AndFHEMApplication.getContext().getString(stringId);
+        }
+
+        public static AtRepetition getRepetitionForWeekdayOrdinate(int ordinate) {
+            for (AtRepetition atRepetition : values()) {
+                if (atRepetition.weekdayOrdinate == ordinate) {
+                    return atRepetition;
+                }
+            }
+            return null;
         }
     }
 
@@ -258,6 +276,9 @@ public class AtDevice extends Device<AtDevice> {
             repetition = AtRepetition.WEEKDAY;
         } else if (part.equals("0")) {
             isActive = false;
+        } else if (part.matches("\\$wday[ ]?=[ ]?[0-6]")) {
+            int weekdayOrdinate = Integer.parseInt(part.substring(part.length() - 1));
+            repetition = AtRepetition.getRepetitionForWeekdayOrdinate(weekdayOrdinate);
         }
     }
 
@@ -294,6 +315,8 @@ public class AtDevice extends Device<AtDevice> {
                 ifContent = addToIf(ifContent, "$we");
             } else if (repetition == AtRepetition.WEEKDAY) {
                 ifContent = addToIf(ifContent, "!$we");
+            } else if (repetition != null && repetition.weekdayOrdinate != -1) {
+                ifContent = addToIf(ifContent, "$wday = " + repetition.weekdayOrdinate);
             }
 
             if (!isActive) {
