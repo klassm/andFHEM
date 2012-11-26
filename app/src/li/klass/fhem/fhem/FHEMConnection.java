@@ -29,6 +29,7 @@ import android.graphics.Bitmap;
 import java.util.Date;
 
 public interface FHEMConnection {
+	static final int RESTART_EVENT_RECEIVER_DELAY = 1000;
     String xmllist();
     String fileLogData(String logName, Date fromDate, Date toDate, String columnSpec);
     String executeCommand(String command);

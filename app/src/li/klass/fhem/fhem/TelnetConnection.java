@@ -24,322 +24,383 @@
 
 package li.klass.fhem.fhem;
 
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.os.AsyncTask;
-import android.os.Handler;
-import android.preference.PreferenceManager;
-import android.util.Log;
-import li.klass.fhem.AndFHEMApplication;
-import li.klass.fhem.constants.Actions;
-import li.klass.fhem.exception.AndFHEMException;
-import li.klass.fhem.exception.HostConnectionException;
-import li.klass.fhem.exception.TimeoutException;
-import li.klass.fhem.service.room.DeviceListParser;
-import li.klass.fhem.util.CloseableUtil;
-import org.apache.http.conn.ConnectTimeoutException;
-import thor.net.DefaultTelnetTerminalHandler;
-import thor.net.TelnetURLConnection;
-import thor.net.URLStreamHandler;
+import static li.klass.fhem.constants.BundleExtraKeys.DO_REFRESH;
 
-import java.io.*;
+import java.io.BufferedOutputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static li.klass.fhem.constants.BundleExtraKeys.DO_REFRESH;
+import li.klass.fhem.AndFHEMApplication;
+import li.klass.fhem.exception.AndFHEMException;
+import li.klass.fhem.exception.HostConnectionException;
+import li.klass.fhem.exception.TimeoutException;
+import li.klass.fhem.service.room.DeviceListParser;
+import li.klass.fhem.util.CloseableUtil;
+
+import org.apache.http.conn.ConnectTimeoutException;
+
+import thor.net.DefaultTelnetTerminalHandler;
+import thor.net.TelnetURLConnection;
+import thor.net.URLStreamHandler;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Looper;
+import android.preference.PreferenceManager;
+import android.util.Log;
 
 public class TelnetConnection implements FHEMConnection {
-    public static final String TELNET_URL = "TELNET_URL";
-    public static final String TELNET_PORT = "TELNET_PORT";
-    public static final String TELNET_PASSWORD = "TELNET_PASSWORD";
+	public static final String TELNET_URL = "TELNET_URL";
+	public static final String TELNET_PORT = "TELNET_PORT";
+	public static final String TELNET_PASSWORD = "TELNET_PASSWORD";
 
-    public static final String FHEM_PROMPT = "fhem>";
+	public static final String FHEM_PROMPT = "fhem>";
 
-    private static final String DEFAULT_HOST = "";
-    private static final int DEFAULT_PORT = 0;
+	private static final String DEFAULT_HOST = "";
+	private static final int DEFAULT_PORT = 0;
 
-    public static final TelnetConnection INSTANCE = new TelnetConnection();
-    private static final String PASSWORD_PROMPT = "Password: ";
-    public static final String TAG = TelnetConnection.class.getName();
+	public static final TelnetConnection INSTANCE = new TelnetConnection();
+	private static final String PASSWORD_PROMPT = "Password: ";
+	public static final String TAG = TelnetConnection.class.getName();
 
-    private EventReceiver eventReceiver;
-    private static final int UPDATE_INTENT_WAITTIME = 75;
+	private EventReceiver eventReceiver;
+	// create new Handler on main Thread! The thread creating this object may
+	// die before we use the handler, which ends in a post message call on a
+	// dead thread. Don't do heavy operations on this handler, cause they will
+	// be executed on the UI thread!!!
+	private final Handler handler = new Handler(Looper.getMainLooper());
+	private int currentRestartDelay = RESTART_EVENT_RECEIVER_DELAY;
+	private Runnable startEventReceiverRunnable = new Runnable() {
 
-    private TelnetConnection() {}
+		@Override
+		public void run() {
+			eventReceiver = new EventReceiver();
+			eventReceiver.execute();
+		}
+	};
+	private static final int UPDATE_INTENT_WAITTIME = 75;
 
-    public String xmllist() {
-        return request("xmllist");
-    }
+	private TelnetConnection() {
+	}
 
-    @Override
-    public String fileLogData(String logName, Date fromDate, Date toDate, String columnSpec) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH:mm");
-        String command = "get " + logName + " - - " + dateFormat.format(fromDate) + " " + dateFormat.format(toDate) + " " + columnSpec;
+	public String xmllist() {
+		return request("xmllist");
+	}
 
-        return request(command);
-    }
+	@Override
+	public String fileLogData(String logName, Date fromDate, Date toDate,
+			String columnSpec) {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH:mm");
+		String command = "get " + logName + " - - "
+				+ dateFormat.format(fromDate) + " " + dateFormat.format(toDate)
+				+ " " + columnSpec;
 
-    public String executeCommand(String command) {
-        return request(command);
-    }
+		return request(command);
+	}
 
-    @Override
-    public Bitmap requestBitmap(String relativePath) {
-        Log.e(TAG, "get image: " + relativePath);
-        return null;
-    }
+	public String executeCommand(String command) {
+		return request(command);
+	}
 
-    private String request(String command) {
-        Log.i(TAG, "executeTask command " + command);
+	@Override
+	public Bitmap requestBitmap(String relativePath) {
+		Log.e(TAG, "get image: " + relativePath);
+		return null;
+	}
 
-        OutputStream outputStream = null;
-        BufferedOutputStream bufferedOutputStream = null;
-        PrintWriter printWriter = null;
-        InputStream inputStream = null;
+	private String request(String command) {
+		Log.i(TAG, "executeTask command " + command);
 
-        try {
-            URL url = new URL("telnet", getHost(), getPort(), "", new thor.net.URLStreamHandler());
-            URLConnection urlConnection = url.openConnection();
-            urlConnection.connect();
+		OutputStream outputStream = null;
+		BufferedOutputStream bufferedOutputStream = null;
+		PrintWriter printWriter = null;
+		InputStream inputStream = null;
 
-            if (urlConnection instanceof TelnetURLConnection) {
-                ((TelnetURLConnection)urlConnection).
-                        setTelnetTerminalHandler(new DefaultTelnetTerminalHandler());
-            }
-            urlConnection.setConnectTimeout(4000);
+		try {
+			URL url = new URL("telnet", getHost(), getPort(), "",
+					new thor.net.URLStreamHandler());
+			URLConnection urlConnection = url.openConnection();
+			urlConnection.connect();
 
-            inputStream = urlConnection.getInputStream();
+			if (urlConnection instanceof TelnetURLConnection) {
+				((TelnetURLConnection) urlConnection)
+						.setTelnetTerminalHandler(new DefaultTelnetTerminalHandler());
+			}
+			urlConnection.setConnectTimeout(4000);
 
+			inputStream = urlConnection.getInputStream();
 
-            outputStream = urlConnection.getOutputStream();
-            bufferedOutputStream = new BufferedOutputStream(outputStream);
-            printWriter = new PrintWriter(bufferedOutputStream);
+			outputStream = urlConnection.getOutputStream();
+			bufferedOutputStream = new BufferedOutputStream(outputStream);
+			printWriter = new PrintWriter(bufferedOutputStream);
 
-            handlePasswordVerification(inputStream, printWriter);
+			handlePasswordVerification(inputStream, printWriter);
 
-            printWriter.write(command + "\r\n");
-            printWriter.write("exit" + "\r\n");
-            printWriter.flush();
+			printWriter.write(command + "\r\n");
+			printWriter.write("exit" + "\r\n");
+			printWriter.flush();
 
-            int ch;
-            StringBuilder buffer = new StringBuilder();
-            while ((ch = inputStream.read()) != -1) {
-                buffer.append((char) ch);
-            }
+			int ch;
+			StringBuilder buffer = new StringBuilder();
+			while ((ch = inputStream.read()) != -1) {
+				buffer.append((char) ch);
+			}
 
-            if (urlConnection instanceof  TelnetURLConnection) {
-                ((TelnetURLConnection) urlConnection).disconnect();
-            }
+			if (urlConnection instanceof TelnetURLConnection) {
+				((TelnetURLConnection) urlConnection).disconnect();
+			}
 
-            String returnValue = buffer.toString();
-            int startPos = returnValue.indexOf(", try help");
-            if (startPos != -1) {
-                returnValue = returnValue.substring(startPos + ", try help".length());
-            }
-            if (returnValue.endsWith("Bye...")) {
-                returnValue = buffer.substring(0, buffer.length() - "Bye...".length());
-            }
-            Log.d(TAG, "result is :: " + returnValue);
-            return returnValue;
-        } catch (AndFHEMException e) {
-            throw e;
-        } catch (ConnectTimeoutException e) {
-            Log.e(TAG, "timeout", e);
-            throw new TimeoutException(e);
-        } catch (SocketTimeoutException e) {
-            Log.e(TAG, "timeout", e);
-            throw new TimeoutException(e);
-        } catch (Exception e) {
-            Log.e(TAG, "error occurred", e);
-            throw new HostConnectionException(e);
-        } finally {
-            CloseableUtil.close(printWriter, bufferedOutputStream, outputStream, inputStream);
-        }
-    }
+			String returnValue = buffer.toString();
+			int startPos = returnValue.indexOf(", try help");
+			if (startPos != -1) {
+				returnValue = returnValue.substring(startPos
+						+ ", try help".length());
+			}
+			if (returnValue.endsWith("Bye...")) {
+				returnValue = buffer.substring(0,
+						buffer.length() - "Bye...".length());
+			}
+			Log.d(TAG, "result is :: " + returnValue);
+			return returnValue;
+		} catch (AndFHEMException e) {
+			throw e;
+		} catch (ConnectTimeoutException e) {
+			Log.e(TAG, "timeout", e);
+			throw new TimeoutException(e);
+		} catch (SocketTimeoutException e) {
+			Log.e(TAG, "timeout", e);
+			throw new TimeoutException(e);
+		} catch (Exception e) {
+			Log.e(TAG, "error occurred", e);
+			throw new HostConnectionException(e);
+		} finally {
+			CloseableUtil.close(printWriter, bufferedOutputStream,
+					outputStream, inputStream);
+		}
+	}
 
-    private boolean handlePasswordVerification(InputStream inputStream, PrintWriter printWriter) throws Exception {
-        String password = getPassword();
-        if (password == null || "".equals(password)) return true;
+	private boolean handlePasswordVerification(InputStream inputStream,
+			PrintWriter printWriter) throws Exception {
+		String password = getPassword();
+		if (password == null || "".equals(password))
+			return true;
 
-        printWriter.write(password + "\n\r");
-        printWriter.flush();
+		printWriter.write(password + "\n\r");
+		printWriter.flush();
 
-        return waitForPasswordPrompt(inputStream);
-    }
+		return waitForPasswordPrompt(inputStream);
+	}
 
-    private boolean waitForPasswordPrompt(InputStream inputStream) throws Exception {
-        int ch;
-        int passwordPointer = 0;
-        int fhemPromptPointer = 0;
+	private boolean waitForPasswordPrompt(InputStream inputStream)
+			throws Exception {
+		int ch;
+		int passwordPointer = 0;
+		int fhemPromptPointer = 0;
 
-        boolean validCharacter;
-        while ((ch = inputStream.read()) != -1) {
-            validCharacter = false;
-            if (ch == PASSWORD_PROMPT.charAt(passwordPointer)) {
-                passwordPointer ++;
-                validCharacter = true;
-            } else {
-                passwordPointer = 0;
-            }
+		boolean validCharacter;
+		while ((ch = inputStream.read()) != -1) {
+			validCharacter = false;
+			if (ch == PASSWORD_PROMPT.charAt(passwordPointer)) {
+				passwordPointer++;
+				validCharacter = true;
+			} else {
+				passwordPointer = 0;
+			}
 
-            if (passwordPointer >= PASSWORD_PROMPT.length()) {
-                return true;
-            }
+			if (passwordPointer >= PASSWORD_PROMPT.length()) {
+				return true;
+			}
 
-            if (ch == FHEM_PROMPT.charAt(fhemPromptPointer)) {
-                fhemPromptPointer++;
-                validCharacter = true;
-            } else {
-                fhemPromptPointer = 0;
-            }
+			if (ch == FHEM_PROMPT.charAt(fhemPromptPointer)) {
+				fhemPromptPointer++;
+				validCharacter = true;
+			} else {
+				fhemPromptPointer = 0;
+			}
 
-            if (fhemPromptPointer >= FHEM_PROMPT.length()) {
-                return false;
-            }
+			if (fhemPromptPointer >= FHEM_PROMPT.length()) {
+				return false;
+			}
 
-            if (! validCharacter) {
-                return  false;
-            }
-        }
-        return false;
-    }
+			if (!validCharacter) {
+				return false;
+			}
+		}
+		return false;
+	}
 
-    private String getHost() {
-        String host = getPreferenceString(TELNET_URL, DEFAULT_HOST);
-        Log.d(TAG, "telnet host is '" + host + "'");
-        return host;
-    }
+	private String getHost() {
+		String host = getPreferenceString(TELNET_URL, DEFAULT_HOST);
+		Log.d(TAG, "telnet host is '" + host + "'");
+		return host;
+	}
 
-    private int getPort() {
-        String value = getPreferenceString(TELNET_PORT, String.valueOf(DEFAULT_PORT));
-        Log.d(TAG, "telnet port is '" + value + "'");
-        return Integer.valueOf(value);
-    }
+	private int getPort() {
+		String value = getPreferenceString(TELNET_PORT,
+				String.valueOf(DEFAULT_PORT));
+		Log.d(TAG, "telnet port is '" + value + "'");
+		return Integer.valueOf(value);
+	}
 
-    private String getPassword() {
-        String password = getPreferenceString(TELNET_PASSWORD, "");
-        String logMessage = password.equals("") ? "has no password" : "has password";
-        Log.d(TAG, "telnet connection " + logMessage + " configured");
-        return password;
-    }
+	private String getPassword() {
+		String password = getPreferenceString(TELNET_PASSWORD, "");
+		String logMessage = password.equals("") ? "has no password"
+				: "has password";
+		Log.d(TAG, "telnet connection " + logMessage + " configured");
+		return password;
+	}
 
-    private String getPreferenceString(String key, String defaultValue) {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(AndFHEMApplication.getContext());
-        return sharedPreferences.getString(key, defaultValue);
-    }
+	private String getPreferenceString(String key, String defaultValue) {
+		SharedPreferences sharedPreferences = PreferenceManager
+				.getDefaultSharedPreferences(AndFHEMApplication.getContext());
+		return sharedPreferences.getString(key, defaultValue);
+	}
 
-    @Override
-    public void startEventReceiver() {
-        if (eventReceiver == null || eventReceiver.isCancelled()) {
-            eventReceiver = new EventReceiver();
-            eventReceiver.execute();
-        }
-    }
+	@Override
+	public void startEventReceiver() {
+		if (eventReceiver == null || eventReceiver.isCancelled()) {
+			startNewEventReceiver(0);
+		}
+	}
 
-    @Override
-    public void stopEventReceiver() {
-        eventReceiver.cancel(false);
-    }
+	private void startNewEventReceiver(int delay) {
+		handler.postDelayed(startEventReceiverRunnable, delay);
+	}
 
-    private class EventReceiver extends AsyncTask<Void, Void, Void> {
+	@Override
+	public void stopEventReceiver() {
+		handler.removeCallbacks(startEventReceiverRunnable);
+		if (eventReceiver != null && !eventReceiver.isCancelled()) {
+			eventReceiver.cancel(false);
+		}
+	}
 
-        private StringBuilder buffer = new StringBuilder();
-        private Handler handler = new Handler();
-        private Runnable updateIntentSender = new Runnable() {
-            @Override
-            public void run() {
-                Intent refreshIntent = new Intent(Actions.DO_UPDATE);
-                refreshIntent.putExtra(DO_REFRESH, false);
-                AndFHEMApplication.getContext().sendBroadcast(refreshIntent);
+	private class EventReceiver extends AsyncTask<Void, Void, Void> {
 
-                Log.d(TAG, "event received. Update intent started.");
-            }
-        };
+		private StringBuilder buffer = new StringBuilder();
+		private Handler intentHandler = new Handler();
+		private Runnable updateIntentSender = new Runnable() {
+			@Override
+			public void run() {
+				Intent refreshIntent = new Intent(
+						li.klass.fhem.constants.Actions.DO_UPDATE);
+				refreshIntent.putExtra(DO_REFRESH, false);
+				AndFHEMApplication.getContext().sendBroadcast(refreshIntent);
 
-        @Override
-        protected Void doInBackground(Void... params) {
-            Log.i(TAG, "event receiver started");
+				Log.d(TAG, "event received. Update intent started.");
+			}
+		};
 
-            OutputStream outputStream = null;
-            BufferedOutputStream bufferedOutputStream = null;
-            PrintWriter printWriter = null;
-            InputStream inputStream = null;
-            InputStreamReader inputStreamReader = null;
+		@Override
+		protected Void doInBackground(Void... params) {
+			Log.i(TAG, "event receiver started");
 
-            try {
-                URL url = new URL("telnet", getHost(), getPort(), "", new URLStreamHandler());
-                URLConnection urlConnection = url.openConnection();
-                urlConnection.connect();
+			OutputStream outputStream = null;
+			BufferedOutputStream bufferedOutputStream = null;
+			PrintWriter printWriter = null;
+			InputStream inputStream = null;
+			InputStreamReader inreader = null;
 
-                if (! (urlConnection instanceof  TelnetURLConnection)) {
-                    Log.e(TAG, "expected a " + TelnetURLConnection.class.getSimpleName() + ", " +
-                            "but got a " + urlConnection.getClass().getSimpleName());
-                    return null;
-                }
+			try {
+				URL url = new URL("telnet", getHost(), getPort(), "",
+						new URLStreamHandler());
+				URLConnection urlConnection = url.openConnection();
+				urlConnection.connect();
 
-                TelnetURLConnection telnetURLConnection = (TelnetURLConnection) urlConnection;
+				if (!(urlConnection instanceof TelnetURLConnection)) {
+					Log.e(TAG,
+							"expected a "
+									+ TelnetURLConnection.class.getSimpleName()
+									+ ", " + "but got a "
+									+ urlConnection.getClass().getSimpleName());
+					cancel(false);
+					return null;
+				}
 
-                telnetURLConnection.setTelnetTerminalHandler(new DefaultTelnetTerminalHandler() {
-                    @Override
-                    public void LineFeed() {
-                        handler.removeCallbacks(updateIntentSender);
+				TelnetURLConnection telnetURLConnection = (TelnetURLConnection) urlConnection;
 
-                        String line = buffer.toString();
-                        buffer = new StringBuilder();
-                        try {
-                            DeviceListParser.INSTANCE.parseEvent(line.trim());
-                        } catch (Exception e) {
-                            Log.e(TAG, "event parse error", e);
-                        }
+				telnetURLConnection
+						.setTelnetTerminalHandler(new DefaultTelnetTerminalHandler() {
+							@Override
+							public void LineFeed() {
+								intentHandler
+										.removeCallbacks(updateIntentSender);
 
-                        handler.postDelayed(updateIntentSender, UPDATE_INTENT_WAITTIME);
-                    }
-                });
+								String line = buffer.toString();
+								buffer = new StringBuilder();
+								try {
+									DeviceListParser.INSTANCE.parseEvent(line
+											.trim());
+								} catch (Exception e) {
+									Log.e(TAG, "event parse error. Event: "
+											+ line, e);
+								}
 
-                urlConnection.setConnectTimeout(0);
+								intentHandler.postDelayed(updateIntentSender,
+										UPDATE_INTENT_WAITTIME);
+							}
+						});
+				telnetURLConnection.setConnectTimeout(0);
 
-                inputStream = urlConnection.getInputStream();
+				inputStream = telnetURLConnection.getInputStream();
 
-                outputStream = urlConnection.getOutputStream();
-                bufferedOutputStream = new BufferedOutputStream(outputStream);
-                printWriter = new PrintWriter(bufferedOutputStream);
+				outputStream = telnetURLConnection.getOutputStream();
+				bufferedOutputStream = new BufferedOutputStream(outputStream);
+				printWriter = new PrintWriter(bufferedOutputStream);
 
-                handlePasswordVerification(inputStream, printWriter);
+				handlePasswordVerification(inputStream, printWriter);
 
-                printWriter.write("inform timer\r\n");
-                printWriter.flush();
+				printWriter.write("inform timer\r\n");
+				printWriter.flush();
 
-                int ch;
-                while ((ch = inputStream.read()) != -1) {
-                    buffer.append((char) ch);
-                }
+				// reset current restart delay after a successful
+				// connection
+				currentRestartDelay = RESTART_EVENT_RECEIVER_DELAY;
 
-                if (urlConnection instanceof TelnetURLConnection) {
-                    telnetURLConnection.disconnect();
-                }
-            } catch (AndFHEMException e) {
-                throw e;
-            } catch (ConnectTimeoutException e) {
-                Log.e(TAG, "timeout", e);
-                throw new TimeoutException(e);
-            } catch (SocketTimeoutException e) {
-                Log.e(TAG, "timeout", e);
-                throw new TimeoutException(e);
-            } catch (Exception e) {
-                Log.e(TAG, "error occurred", e);
-                throw new HostConnectionException(e);
-            } finally {
-                CloseableUtil.close(printWriter, bufferedOutputStream,
-                        outputStream, inputStream, inputStreamReader);
-            }
+				int ch;
+				while ((ch = inputStream.read()) != -1 && !isCancelled()) {
+					buffer.append((char) ch);
+				}
 
-            Log.i(TAG, "event receiver stopped");
+				if (urlConnection instanceof TelnetURLConnection) {
+					telnetURLConnection.disconnect();
+				}
+			} catch (ConnectTimeoutException e) {
+				Log.e(TAG, "timeout", e);
+			} catch (SocketTimeoutException e) {
+				Log.e(TAG, "timeout", e);
+			} catch (Exception e) {
+				Log.e(TAG, "error occurred", e);
+			} finally {
+				CloseableUtil.close(printWriter, bufferedOutputStream,
+						outputStream, inputStream, inreader);
 
-            return null;
-        }
-    }
+				if (!isCancelled()) {
+					// bad things happened, restart event receiver
+
+					// increase delay to not drain too much battery power
+					// increase up to 32 times the amount of
+					// RESTART_EVENT_RECEIVER_DELAY
+					if (currentRestartDelay / RESTART_EVENT_RECEIVER_DELAY < 32) {
+						currentRestartDelay *= 2;
+					}
+					startNewEventReceiver(currentRestartDelay);
+					cancel(false);
+				}
+			}
+
+			Log.i(TAG, "event receiver stopped");
+
+			return null;
+		}
+	}
 }
