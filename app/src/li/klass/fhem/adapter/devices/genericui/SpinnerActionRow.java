@@ -69,7 +69,10 @@ public abstract class SpinnerActionRow<T extends Device> {
 
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-                if (ignoreItemSelection || selectedPosition == position) return;
+                if (ignoreItemSelection || selectedPosition == position) {
+                    revertSelection();
+                    return;
+                }
                 temporarySelectedPosition = position;
 
                 SpinnerActionRow.this.onItemSelected(context, device, spinnerValues.get(position));

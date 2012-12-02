@@ -30,15 +30,23 @@
              android:stretchColumns="1"
              android:padding="10dp">
 
-    <TableRow android:id="@+id/updateDurationRow">
-        <TextView android:text="@string/durationMinutes"
-                  style="@style/deviceDetailDescription"
-                  android:textStyle="bold"
-                  android:layout_column="0"/>
-        <TextView android:id="@+id/value"
-                  style="@style/deviceDetailContent"
-                  android:layout_column="1"
-                  android:text="___" />
+    <TableRow android:id="@+id/targetTime">
+        <TextView android:text="@string/endTime"
+        style="@style/deviceDetailDescription"
+        android:textStyle="bold"
+        android:layout_column="0"/>
+
+        <TextView android:id="@+id/endTimeValue"
+        style="@style/deviceDetailContent"
+        android:layout_column="1"
+        android:text="" />
+    </TableRow>
+
+    <TableRow>
+        <TimePicker android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_span="2"
+                    android:id="@+id/timePicker"/>
     </TableRow>
 
     <TableRow android:id="@+id/updateTemperatureRow">
