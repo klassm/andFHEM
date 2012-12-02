@@ -36,6 +36,8 @@ import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.ToggleableDevice;
 
+import static li.klass.fhem.domain.core.ToggleableDevice.ButtonHookType.ON_OFF_DEVICE;
+
 public class ToggleWidgetView extends AppWidgetView {
     @Override
     public int getWidgetName() {
@@ -55,7 +57,7 @@ public class ToggleWidgetView extends AppWidgetView {
 
         Intent actionIntent;
 
-        if (!toggleable.isSpecialButtonDevice()) {
+        if (! toggleable.isSpecialButtonDevice() && toggleable.getButtonHookType() != ON_OFF_DEVICE) {
             actionIntent = new Intent(Actions.DEVICE_WIDGET_TOGGLE);
             actionIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             actionIntent.putExtra(BundleExtraKeys.APP_WIDGET_ID, widgetConfiguration.widgetId);
@@ -81,14 +83,12 @@ public class ToggleWidgetView extends AppWidgetView {
         if (isOn) {
             view.setViewVisibility(R.id.toggleOff, View.GONE);
             view.setViewVisibility(R.id.toggleOn, View.VISIBLE);
-            view.setTextViewText(R.id.toggleOn, device.getEventMapStateFor("on"));
+            view.setTextViewText(R.id.toggleOn, device.getEventMapStateFor(toggleable.getOnStateName()));
         } else {
             view.setViewVisibility(R.id.toggleOff, View.VISIBLE);
             view.setViewVisibility(R.id.toggleOn, View.GONE);
-            view.setTextViewText(R.id.toggleOff, device.getEventMapStateFor("off"));
+            view.setTextViewText(R.id.toggleOff, device.getEventMapStateFor(toggleable.getOffStateName()));
         }
-
-
 
         PendingIntent pendingIntent = PendingIntent.getService(context, widgetConfiguration.widgetId, actionIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
