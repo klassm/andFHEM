@@ -177,6 +177,8 @@
     <string name="prefDeviceTypeOrderSummary">Order of device types as well as hide and view</string>
     <string name="prefUpdateOnApplicationStart">Refresh on application start</string>
     <string name="prefShowSetValueButtons">Show set value buttons for temperature changes</string>
+    <string name="prefUseEventReceiver">Event Receiver</string>
+    <string name="prefUseEventReceiverAlert">The Event Receiver is connected all the time to FHEM. This costs loads of battery!</string>
 
     <string name="notNumericError">Not numeric!</string>
     <string name="updateError">Error while updating.</string>

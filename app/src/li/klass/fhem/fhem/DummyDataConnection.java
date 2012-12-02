@@ -88,21 +88,23 @@ public class DummyDataConnection implements FHEMConnection {
         } catch (InterruptedException e) {
             Log.d(TAG, "ignored", e);
         }
-        Log.e(DummyDataConnection.class.getName(), "execute command: " + command);
+        Log.e(TAG, "execute command: " + command);
         return "I am a dummy. Do you expect me to answer you?";
     }
 
     @Override
     public Bitmap requestBitmap(String relativePath) {
-        Log.e(DummyDataConnection.class.getName(), "get image: " + relativePath);
+        Log.e(TAG, "get image: " + relativePath);
         return null;
     }
 
     @Override
     public void startEventReceiver() {
+        Log.e(TAG, "start event receiver");
     }
 
     @Override
     public void stopEventReceiver() {
+        Log.e(TAG, "stop event receiver");
     }
 }

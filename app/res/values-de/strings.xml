@@ -177,6 +177,8 @@
     <string name="prefDeviceTypeOrderSummary">Veränderung der Reihenfolge sowie Anzeige / Ausblendung von Typen</string>
     <string name="prefUpdateOnApplicationStart">Aktualisierung beim Applikationsstart</string>
     <string name="prefShowSetValueButtons">Zeige "Ändern" Knöpfe für Temperaturänderungen</string>
+    <string name="prefUseEventReceiver">Event Receiver</string>
+    <string name="prefUseEventReceiverAlert">Der Event Receiver ist ständig mit FHEM verbunden und ruft Updates ab. Dies kostet entsprechend viel Batterie!</string>
 
     <string name="notNumericError">Nicht numerisch!</string>
     <string name="updateError">Error während Update Vorgang.</string>

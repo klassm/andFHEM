@@ -68,6 +68,11 @@
                 android:defaultValue="false"
                 />
         <CheckBoxPreference
+                android:key="EVENT_RECEIVER"
+                android:title="@string/prefUseEventReceiver"
+                android:defaultValue="false"
+                />
+        <CheckBoxPreference
                 android:key="SHOW_SET_VALUE_BUTTONS"
                 android:title="@string/prefShowSetValueButtons"
                 android:defaultValue="false"

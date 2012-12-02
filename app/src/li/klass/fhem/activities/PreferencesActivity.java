@@ -29,12 +29,13 @@ import android.preference.*;
 import android.text.method.PasswordTransformationMethod;
 import com.hlidskialf.android.preference.SeekBarPreference;
 import li.klass.fhem.R;
-import li.klass.fhem.adapter.rooms.DeviceGridAdapter;
-import li.klass.fhem.constants.PreferenceKeys;
 import li.klass.fhem.fhem.DataConnectionSwitch;
+import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.DialogUtil;
 import li.klass.fhem.util.DisplayUtil;
 
+import static li.klass.fhem.constants.PreferenceKeys.DEVICE_COLUMN_WIDTH;
+import static li.klass.fhem.constants.PreferenceKeys.USE_EVENT_RECEIVER;
 import static li.klass.fhem.fhem.FHEMWebConnection.*;
 import static li.klass.fhem.fhem.TelnetConnection.*;
 
@@ -51,14 +52,40 @@ public class PreferencesActivity extends PreferenceActivity {
         dataOriginPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object o) {
+                DataConnectionSwitch.INSTANCE.getCurrentProvider().stopEventReceiver();
+                ApplicationProperties.INSTANCE.setBooleanSharedPreference(USE_EVENT_RECEIVER, false);
                 setDataOriginOptionsForValue((String) o);
                 return true;
             }
         });
 
-        SeekBarPreference deviceColumnWidthPreference = (SeekBarPreference) findPreference(PreferenceKeys.DEVICE_COLUMN_WIDTH);
+        SeekBarPreference deviceColumnWidthPreference = (SeekBarPreference) findPreference(DEVICE_COLUMN_WIDTH);
         deviceColumnWidthPreference.setMin(350);
         deviceColumnWidthPreference.setMax(DisplayUtil.getLargestDimensionInDP(this));
+
+        final CheckBoxPreference eventReceiverPreference = (CheckBoxPreference) findPreference(USE_EVENT_RECEIVER);
+        eventReceiverPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object o) {
+                boolean value = Boolean.valueOf(o.toString());
+                if (! value) {
+                    DataConnectionSwitch.INSTANCE.getCurrentProvider().stopEventReceiver();
+                    return true;
+                } else {
+                    DialogUtil.showConfirmBox(PreferencesActivity.this, R.string.areYouSure, R.string.prefUseEventReceiverAlert,
+                            new DialogUtil.AlertOnClickListener() {
+                                @Override
+                                public void onClick() {
+                                    ApplicationProperties.INSTANCE.setBooleanSharedPreference(USE_EVENT_RECEIVER, true);
+                                    DataConnectionSwitch.INSTANCE.getCurrentProvider().startEventReceiver();
+                                    eventReceiverPreference.setChecked(true);
+                                }
+                            });
+
+                }
+                return false;
+            }
+        });
     }
 
     private void setDataOriginOptionsForValue(String value) {

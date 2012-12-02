@@ -24,7 +24,6 @@
 
 package li.klass.fhem.util;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -69,6 +68,11 @@ public class ApplicationProperties {
     public boolean getBooleanSharedPreference(String key, boolean defaultValue) {
         SharedPreferences preferences = getPreferences();
         return preferences.getBoolean(key, defaultValue);
+    }
+
+    public void setBooleanSharedPreference(String key, boolean value) {
+        SharedPreferences preferences = getPreferences();
+        preferences.edit().putBoolean(key, value).commit();
     }
 
     public int getIntegerSharedPreference(String key, int defaultValue) {

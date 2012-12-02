@@ -26,7 +26,9 @@ package li.klass.fhem.util;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import li.klass.fhem.R;
 
 public class DialogUtil {
@@ -74,14 +76,34 @@ public class DialogUtil {
     public static void showInputBox(Context context, String title, String defaultText, final InputDialogListener positiveOnClickListener) {
         final EditText input = new EditText(context);
         input.setText(defaultText);
+
+        showConfirmBox(context, title, input, new AlertOnClickListener() {
+            @Override
+            public void onClick() {
+                String text = input.getText().toString();
+                positiveOnClickListener.onClick(text);
+            }
+        });
+    }
+
+    public static void showConfirmBox(Context context, int title, int text, AlertOnClickListener positiveOnClickListener) {
+        String titleContent = context.getString(title);
+
+        TextView view = new TextView(context);
+        view.setPadding(5, 5, 5, 5);
+        view.setText(text);
+
+        showConfirmBox(context, titleContent, view, positiveOnClickListener);
+    }
+
+    private static void showConfirmBox(Context context, String title, View view, final AlertOnClickListener positiveOnClickListener) {
         new AlertDialog.Builder(context)
                 .setTitle(title)
-                .setView(input)
+                .setView(view)
                 .setPositiveButton(R.string.okButton, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        String text = input.getText().toString();
-                        positiveOnClickListener.onClick(text);
+                        positiveOnClickListener.onClick();
                         dialogInterface.dismiss();
                     }
                 })
