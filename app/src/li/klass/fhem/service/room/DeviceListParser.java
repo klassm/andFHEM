@@ -35,6 +35,7 @@ import li.klass.fhem.exception.HostConnectionException;
 import li.klass.fhem.fhem.DataConnectionSwitch;
 import li.klass.fhem.util.StringEscapeUtil;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -280,11 +281,9 @@ public class DeviceListParser {
 
         device.onChildItemRead(tagName, key, value, attributes);
         if (!cache.containsKey(key)) return;
-
         Set<Method> availableMethods = cache.get(key);
         for (Method availableMethod : availableMethods) {
             Class<?>[] parameterTypes = availableMethod.getParameterTypes();
-
             if (parameterTypes.length == 1 && parameterTypes[0].equals(String.class)) {
                 availableMethod.invoke(device, value);
             }
@@ -378,8 +377,9 @@ public class DeviceListParser {
                 DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
                 DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
                 Document doc = docBuilder.newDocument();
+                Element e = doc.createElement("anything");
 
-                invokeDeviceAttributeMethod(cache, device, state, value, doc.getAttributes(), "STATE");
+                invokeDeviceAttributeMethod(cache, device, state, value, e.getAttributes(), "INT");
                 device.readMEASURED(measured);
             }
         }
