@@ -35,8 +35,7 @@ import li.klass.fhem.billing.BillingService;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.fragments.core.BaseFragment;
-
-import java.util.Set;
+import li.klass.fhem.license.LicenseManager;
 
 public class PremiumFragment extends BaseFragment {
 
@@ -96,8 +95,7 @@ public class PremiumFragment extends BaseFragment {
         view.findViewById(R.id.shop_premium_pending).setVisibility(View.GONE);
         view.findViewById(R.id.shop_premium_buy).setVisibility(View.GONE);
 
-        Set<String> ownedItems = BillingService.INSTANCE.getOwnedItems();
-        if (ownedItems.contains(AndFHEMApplication.PRODUCT_PREMIUM_ID)) {
+        if (LicenseManager.INSTANCE.isPro()) {
             view.findViewById(R.id.shop_premium_bought).setVisibility(View.VISIBLE);
         } else if(BillingService.INSTANCE.hasPendingRequestFor(AndFHEMApplication.PRODUCT_PREMIUM_ID)) {
             view.findViewById(R.id.shop_premium_pending).setVisibility(View.VISIBLE);
