@@ -65,7 +65,7 @@ public enum DeviceType {
     TRX_WEATHER("TRX_WEATHER", TRXWeatherDevice.class),
     TRX_LIGHT("TRX_LIGHT", TRXLightDevice.class, new DimmableAdapter<TRXLightDevice>(TRXLightDevice.class)),
     TRX("TRX", TRXDevice.class),
-    DUMMY("dummy", DummyDevice.class, new ToggleableAdapter<DummyDevice>(DummyDevice.class)),
+    DUMMY("dummy", DummyDevice.class, new DummyAdapter(DummyDevice.class)),
     TWILIGHT("Twilight", TwilightDevice.class),
     AT("at", AtDevice.class, null, ConnectionType.NEVER),
     EN_OCEAN("EnOcean", EnOceanDevice.class, new ToggleableAdapter<EnOceanDevice>(EnOceanDevice.class)),

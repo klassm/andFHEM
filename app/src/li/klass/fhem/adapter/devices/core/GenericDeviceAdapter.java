@@ -245,13 +245,26 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
 
     private void addDetailActionButtons(Context context, View view, D device, LayoutInflater inflater) {
         LinearLayout actionLayout = (LinearLayout) view.findViewById(R.id.actionButtons);
-        if (detailActions.size() == 0) {
+        if (! hasDetailActions(device)) {
             actionLayout.setVisibility(View.GONE);
         }
         for (DeviceDetailViewAction<D> action : detailActions) {
+            if (! action.isVisible(device)) continue;
+
             Button button = action.createButton(context, inflater, device, actionLayout);
             actionLayout.addView(button);
         }
+    }
+
+    private boolean hasDetailActions(D device) {
+        if (detailActions.size() == 0) return false;
+
+        for (DeviceDetailViewAction<D> detailAction : detailActions) {
+            if (detailAction.isVisible(device)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private TableRow createTableRow(D device, LayoutInflater inflater, TableLayout layout, Field declaredField, int resource) throws IllegalAccessException {

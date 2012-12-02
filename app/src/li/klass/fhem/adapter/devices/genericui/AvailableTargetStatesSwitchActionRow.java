@@ -110,4 +110,10 @@ public class AvailableTargetStatesSwitchActionRow<D extends Device<D>> extends D
         });
         context.startService(intent);
     }
+
+    @Override
+    public boolean isVisible(D device) {
+        String[] availableTargetStates = device.getAvailableTargetStates();
+        return availableTargetStates != null && availableTargetStates.length > 0;
+    }
 }

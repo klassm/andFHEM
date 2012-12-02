@@ -31,14 +31,14 @@ import android.widget.LinearLayout;
 import li.klass.fhem.R;
 import li.klass.fhem.domain.core.Device;
 
-public abstract class DeviceDetailViewAction<T extends Device> {
+public abstract class DeviceDetailViewAction<D extends Device> {
     private int buttonText;
 
     protected DeviceDetailViewAction(int buttonText) {
         this.buttonText = buttonText;
     }
 
-    public Button createButton(Context context, LayoutInflater inflater, T device, LinearLayout parent) {
+    public Button createButton(Context context, LayoutInflater inflater, D device, LinearLayout parent) {
         Button button = (Button) inflater.inflate(R.layout.button_device_detail, parent, false);
         button.setOnClickListener(createListener(context, device));
         button.setText(buttonText);
@@ -46,7 +46,7 @@ public abstract class DeviceDetailViewAction<T extends Device> {
         return button;
     }
 
-    private Button.OnClickListener createListener(final Context context, final T device) {
+    private Button.OnClickListener createListener(final Context context, final D device) {
         return new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -54,5 +54,10 @@ public abstract class DeviceDetailViewAction<T extends Device> {
             }
         };
     }
-    public abstract void onButtonClick(Context context, T device);
+
+    public boolean isVisible(D device) {
+        return true;
+    }
+
+    public abstract void onButtonClick(Context context, D device);
 }
