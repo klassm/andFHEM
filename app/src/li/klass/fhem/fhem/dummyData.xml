@@ -46,6 +46,327 @@
           value="5.1 from 2011-07-08 ($Id: fhem.pl,v 1.145 2011-07-07 08:46:28 rudolfkoenig Exp $)"/>
 </_internal_>
 </_internal__LIST>
+<MAX_LIST>
+<MAX name="Fensterkontakt_Bad" state="closed" sets="groupid removeDevice" attrs="room group comment alias eventMap IODev do_not_notify:1,0 ignore:0,1 dummy:0,1 showtime:1,0 loglevel:0,1,2,3,4,5,6 event-on-update-reading event-on-change-reading devStateIcon fp_Grundriss icon webCmd">
+    <INT key="DEF" value="ShutterContact 0257d4"/>
+    <INT key="LASTIODev" value="ml"/>
+    <INT key="MSGCNT" value="32"/>
+    <INT key="NAME" value="Fensterkontakt_Bad"/>
+    <INT key="NR" value="89"/>
+    <INT key="STATE" value="closed"/>
+    <INT key="TYPE" value="MAX"/>
+    <INT key="addr" value="0257d4"/>
+    <INT key="groupid" value="1"/>
+    <INT key="ml_MSGCNT" value="32"/>
+    <INT key="ml_RAWMSG" value="L:CwRaqQkSGAAiAAAABgXElwkSEAYCSxkJEhAGAle+CRIQCwEu0wkSGAAiAMMACwRa3AMSGAAoAN4ABgJLHAkSEAYCV20JEhAGAlfUCRIQCwRawQkSGUQhAAAACwRZKgkSGAAiALwA"/>
+    <INT key="ml_TIME" value="2012-11-30 15:20:26"/>
+    <INT key="rferror" value="0"/>
+    <INT key="serial" value="JEQ0161008"/>
+    <INT key="type" value="ShutterContact"/>
+    <INT key="IODev" value="ml"/>
+    <ATTR key="room" value="Bad"/>
+    <STATE key="battery" value="ok" measured="2012-11-30 15:20:26"/>
+    <STATE key="onoff" value="0" measured="2012-11-30 15:20:26"/>
+</MAX>
+<MAX name="Fensterkontakt_Kinderzimmer" state="closed" sets="groupid removeDevice" attrs="room group comment alias eventMap IODev do_not_notify:1,0 ignore:0,1 dummy:0,1 showtime:1,0 loglevel:0,1,2,3,4,5,6 event-on-update-reading event-on-change-reading devStateIcon fp_Grundriss icon webCmd">
+    <INT key="DEF" value="ShutterContact 024b1c"/>
+    <INT key="LASTIODev" value="ml"/>
+    <INT key="MSGCNT" value="32"/>
+    <INT key="NAME" value="Fensterkontakt_Kinderzimmer"/>
+    <INT key="NR" value="59"/>
+    <INT key="STATE" value="closed"/>
+    <INT key="TYPE" value="MAX"/>
+    <INT key="addr" value="024b1c"/>
+    <INT key="groupid" value="4"/>
+    <INT key="ml_MSGCNT" value="32"/>
+    <INT key="ml_RAWMSG" value="L:CwRaqQkSGAAiAAAABgXElwkSEAYCSxkJEhAGAle+CRIQCwEu0wkSGAAiAMMACwRa3AMSGAAoAN4ABgJLHAkSEAYCV20JEhAGAlfUCRIQCwRawQkSGUQhAAAACwRZKgkSGAAiALwA"/>
+    <INT key="ml_TIME" value="2012-11-30 15:20:26"/>
+    <INT key="rferror" value="0"/>
+    <INT key="serial" value="JEQ0157746"/>
+    <INT key="type" value="ShutterContact"/>
+    <INT key="IODev" value="ml"/>
+    <ATTR key="room" value="Kinderzimmer"/>
+    <STATE key="battery" value="ok" measured="2012-11-30 15:20:26"/>
+    <STATE key="onoff" value="0" measured="2012-11-30 15:20:26"/>
+</MAX>
+<MAX name="Fensterkontakt_Kueche" state="closed" sets="groupid removeDevice" attrs="room group comment alias eventMap IODev do_not_notify:1,0 ignore:0,1 dummy:0,1 showtime:1,0 loglevel:0,1,2,3,4,5,6 event-on-update-reading event-on-change-reading devStateIcon fp_Grundriss icon webCmd">
+    <INT key="DEF" value="ShutterContact 024b19"/>
+    <INT key="LASTIODev" value="ml"/>
+    <INT key="MSGCNT" value="32"/>
+    <INT key="NAME" value="Fensterkontakt_Kueche"/>
+    <INT key="NR" value="69"/>
+    <INT key="STATE" value="closed"/>
+    <INT key="TYPE" value="MAX"/>
+    <INT key="addr" value="024b19"/>
+    <INT key="groupid" value="5"/>
+    <INT key="ml_MSGCNT" value="32"/>
+    <INT key="ml_RAWMSG" value="L:CwRaqQkSGAAiAAAABgXElwkSEAYCSxkJEhAGAle+CRIQCwEu0wkSGAAiAMMACwRa3AMSGAAoAN4ABgJLHAkSEAYCV20JEhAGAlfUCRIQCwRawQkSGUQhAAAACwRZKgkSGAAiALwA"/>
+    <INT key="ml_TIME" value="2012-11-30 15:20:26"/>
+    <INT key="rferror" value="0"/>
+    <INT key="serial" value="JEQ0157749"/>
+    <INT key="type" value="ShutterContact"/>
+    <INT key="IODev" value="ml"/>
+    <ATTR key="room" value="Kueche"/>
+    <STATE key="battery" value="ok" measured="2012-11-30 15:20:26"/>
+    <STATE key="onoff" value="0" measured="2012-11-30 15:20:26"/>
+</MAX>
+<MAX name="Fensterkontakt_Schlafzimmer" state="closed" sets="groupid removeDevice" attrs="room group comment alias eventMap IODev do_not_notify:1,0 ignore:0,1 dummy:0,1 showtime:1,0 loglevel:0,1,2,3,4,5,6 event-on-update-reading event-on-change-reading devStateIcon fp_Grundriss icon webCmd">
+    <INT key="DEF" value="ShutterContact 0257be"/>
+    <INT key="LASTIODev" value="ml"/>
+    <INT key="MSGCNT" value="32"/>
+    <INT key="NAME" value="Fensterkontakt_Schlafzimmer"/>
+    <INT key="NR" value="77"/>
+    <INT key="STATE" value="closed"/>
+    <INT key="TYPE" value="MAX"/>
+    <INT key="addr" value="0257be"/>
+    <INT key="groupid" value="3"/>
+    <INT key="ml_MSGCNT" value="32"/>
+    <INT key="ml_RAWMSG" value="L:CwRaqQkSGAAiAAAABgXElwkSEAYCSxkJEhAGAle+CRIQCwEu0wkSGAAiAMMACwRa3AMSGAAoAN4ABgJLHAkSEAYCV20JEhAGAlfUCRIQCwRawQkSGUQhAAAACwRZKgkSGAAiALwA"/>
+    <INT key="ml_TIME" value="2012-11-30 15:20:26"/>
+    <INT key="rferror" value="0"/>
+    <INT key="serial" value="JEQ0160986"/>
+    <INT key="type" value="ShutterContact"/>
+    <INT key="IODev" value="ml"/>
+    <ATTR key="room" value="Schlafzimmer"/>
+    <STATE key="battery" value="ok" measured="2012-11-30 15:20:26"/>
+    <STATE key="onoff" value="0" measured="2012-11-30 15:20:26"/>
+</MAX>
+<MAX name="Fensterkontakt_Wohnzimmer" state="closed" sets="groupid removeDevice" attrs="room group comment alias eventMap IODev do_not_notify:1,0 ignore:0,1 dummy:0,1 showtime:1,0 loglevel:0,1,2,3,4,5,6 event-on-update-reading event-on-change-reading devStateIcon fp_Grundriss icon webCmd">
+    <INT key="DEF" value="ShutterContact 02576d"/>
+    <INT key="LASTIODev" value="ml"/>
+    <INT key="MSGCNT" value="32"/>
+    <INT key="NAME" value="Fensterkontakt_Wohnzimmer"/>
+    <INT key="NR" value="48"/>
+    <INT key="STATE" value="closed"/>
+    <INT key="TYPE" value="MAX"/>
+    <INT key="addr" value="02576d"/>
+    <INT key="groupid" value="2"/>
+    <INT key="ml_MSGCNT" value="32"/>
+    <INT key="ml_RAWMSG" value="L:CwRaqQkSGAAiAAAABgXElwkSEAYCSxkJEhAGAle+CRIQCwEu0wkSGAAiAMMACwRa3AMSGAAoAN4ABgJLHAkSEAYCV20JEhAGAlfUCRIQCwRawQkSGUQhAAAACwRZKgkSGAAiALwA"/>
+    <INT key="ml_TIME" value="2012-11-30 15:20:26"/>
+    <INT key="rferror" value="0"/>
+    <INT key="serial" value="JEQ0160905"/>
+    <INT key="type" value="ShutterContact"/>
+    <INT key="IODev" value="ml"/>
+    <ATTR key="room" value="Wohnzimmer"/>
+    <STATE key="battery" value="ok" measured="2012-11-30 15:20:26"/>
+    <STATE key="onoff" value="0" measured="2012-11-30 15:20:26"/>
+</MAX>
+<MAX name="MAX_03b5f5" state="connected" sets="groupid removeDevice" attrs="room group comment alias eventMap IODev do_not_notify:1,0 ignore:0,1 dummy:0,1 showtime:1,0 loglevel:0,1,2,3,4,5,6 event-on-update-reading event-on-change-reading devStateIcon fp_Grundriss icon webCmd">
+    <INT key="DEF" value="Cube 03b5f5"/>
+    <INT key="LASTIODev" value="ml"/>
+    <INT key="MSGCNT" value="5"/>
+    <INT key="NAME" value="MAX_03b5f5"/>
+    <INT key="NR" value="33"/>
+    <INT key="STATE" value="connected"/>
+    <INT key="TYPE" value="MAX"/>
+    <INT key="addr" value="03b5f5"/>
+    <INT key="clocknotset" value=""/>
+    <INT key="groupid" value="17"/>
+    <INT key="ml_MSGCNT" value="5"/>
+    <INT key="ml_RAWMSG" value="C:03b5f5,7QO19QARAf9KRVEwMTMxODk4AQsABEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAsABEAAAAAAAAAAQQAAAAAAAAAAAAAAAAAAAAAAAAAAAGh0dHA6Ly93d3cubWF4LXBvcnRhbC5lbHYuZGU6ODAvY3ViZQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAENFVAAACgADAAAOEENFU1QAAwAAAAAcIA=="/>
+    <INT key="ml_TIME" value="2012-11-30 13:04:25"/>
+    <INT key="serial" value="JEQ0131898"/>
+    <INT key="type" value="Cube"/>
+    <INT key="IODev" value="ml"/>
+    <ATTR key="room" value="Schlafzimmer"/>
+    <STATE key="connection" value="1" measured="2012-11-30 13:04:25"/>
+</MAX>
+<MAX name="MAX_05c497" state="waiting for data" sets="groupid removeDevice" attrs="room group comment alias eventMap IODev do_not_notify:1,0 ignore:0,1 dummy:0,1 showtime:1,0 loglevel:0,1,2,3,4,5,6 event-on-update-reading event-on-change-reading devStateIcon fp_Grundriss icon webCmd">
+    <INT key="DEF" value="PushButton 05c497"/>
+    <INT key="LASTIODev" value="ml"/>
+    <INT key="MSGCNT" value="3"/>
+    <INT key="NAME" value="MAX_05c497"/>
+    <INT key="NR" value="39"/>
+    <INT key="STATE" value="waiting for data"/>
+    <INT key="TYPE" value="MAX"/>
+    <INT key="addr" value="05c497"/>
+    <INT key="groupid" value="0"/>
+    <INT key="ml_MSGCNT" value="3"/>
+    <INT key="ml_RAWMSG" value="C:05c497,EQXElwUAEg9KRVEwMzg0MTA4"/>
+    <INT key="ml_TIME" value="2012-11-30 13:04:25"/>
+    <INT key="serial" value="JEQ0384108"/>
+    <INT key="type" value="PushButton"/>
+    <INT key="IODev" value="ml"/>
+    <ATTR key="room" value="MAX"/>
+</MAX>
+<MAX name="Thermostat_Bad" state="17.0 °C" sets="desiredTemperature:eco,boost,comfort,4.5,5.0,5.5,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,10.0,10.5,11.0,11.5,12.0,12.5,13.0,13.5,14.0,14.5,15.0,15.5,16.0,16.5,17.0,17.5,18.0,18.5,19.0,19.5,20.0,20.5,21.0,21.5,22.0,22.5,23.0,23.5,24.0,24.5,25.0,25.5,26.0,26.5,27.0,27.5,28.0,28.5,29.0,29.5,30.0,30.5 ecoTemperature:4.5,5.0,5.5,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,10.0,10.5,11.0,11.5,12.0,12.5,13.0,13.5,14.0,14.5,15.0,15.5,16.0,16.5,17.0,17.5,18.0,18.5,19.0,19.5,20.0,20.5,21.0,21.5,22.0,22.5,23.0,23.5,24.0,24.5,25.0,25.5,26.0,26.5,27.0,27.5,28.0,28.5,29.0,29.5,30.0,30.5 comfortTemperature:4.5,5.0,5.5,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,10.0,10.5,11.0,11.5,12.0,12.5,13.0,13.5,14.0,14.5,15.0,15.5,16.0,16.5,17.0,17.5,18.0,18.5,19.0,19.5,20.0,20.5,21.0,21.5,22.0,22.5,23.0,23.5,24.0,24.5,25.0,25.5,26.0,26.5,27.0,27.5,28.0,28.5,29.0,29.5,30.0,30.5 temperatureOffset:-3.5,-3.0,-2.5,-2.0,-1.5,-1.0,-0.5,0.0,0.5,1.0,1.5,2.0,2.5,3.0,3.5 maximumTemperature:4.5,5.0,5.5,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,10.0,10.5,11.0,11.5,12.0,12.5,13.0,13.5,14.0,14.5,15.0,15.5,16.0,16.5,17.0,17.5,18.0,18.5,19.0,19.5,20.0,20.5,21.0,21.5,22.0,22.5,23.0,23.5,24.0,24.5,25.0,25.5,26.0,26.5,27.0,27.5,28.0,28.5,29.0,29.5,30.0,30.5 minimumTemperature:4.5,5.0,5.5,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,10.0,10.5,11.0,11.5,12.0,12.5,13.0,13.5,14.0,14.5,15.0,15.5,16.0,16.5,17.0,17.5,18.0,18.5,19.0,19.5,20.0,20.5,21.0,21.5,22.0,22.5,23.0,23.5,24.0,24.5,25.0,25.5,26.0,26.5,27.0,27.5,28.0,28.5,29.0,29.5,30.0,30.5 windowOpenTemperature:4.5,5.0,5.5,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,10.0,10.5,11.0,11.5,12.0,12.5,13.0,13.5,14.0,14.5,15.0,15.5,16.0,16.5,17.0,17.5,18.0,18.5,19.0,19.5,20.0,20.5,21.0,21.5,22.0,22.5,23.0,23.5,24.0,24.5,25.0,25.5,26.0,26.5,27.0,27.5,28.0,28.5,29.0,29.5,30.0,30.5 windowOpenDuration groupid removeDevice" attrs="room group comment alias eventMap IODev do_not_notify:1,0 ignore:0,1 dummy:0,1 showtime:1,0 loglevel:0,1,2,3,4,5,6 event-on-update-reading event-on-change-reading devStateIcon fp_Grundriss icon webCmd">
+    <INT key="DEF" value="HeatingThermostat 012ed3"/>
+    <INT key="LASTIODev" value="ml"/>
+    <INT key="MSGCNT" value="33"/>
+    <INT key="NAME" value="Thermostat_Bad"/>
+    <INT key="NR" value="92"/>
+    <INT key="STATE" value="17.0 °C"/>
+    <INT key="TYPE" value="MAX"/>
+    <INT key="addr" value="012ed3"/>
+    <INT key="boostDuration" value="5"/>
+    <INT key="boostValveposition" value="80"/>
+    <INT key="comfortTemperature" value="19"/>
+    <INT key="dstsetting" value="1"/>
+    <INT key="ecoTemperature" value="16.5"/>
+    <INT key="groupid" value="1"/>
+    <INT key="maximumTemperature" value="30.5"/>
+    <INT key="minimumTemperature" value="4.5"/>
+    <INT key="ml_MSGCNT" value="33"/>
+    <INT key="ml_RAWMSG" value="L:CwRaqQkSGAAiAAAABgXElwkSEAYCSxkJEhAGAle+CRIQCwEu0wkSGAAiAMMACwRa3AMSGAAoAN4ABgJLHAkSEAYCV20JEhAGAlfUCRIQCwRawQkSGUQhAAAACwRZKgkSGAAiALwA"/>
+    <INT key="ml_TIME" value="2012-11-30 15:20:26"/>
+    <INT key="mode" value="0"/>
+    <INT key="rferror" value="0"/>
+    <INT key="serial" value="JEQ0329148"/>
+    <INT key="temperatureOffset" value="1.5"/>
+    <INT key="type" value="HeatingThermostat"/>
+    <INT key="windowOpenDuration" value="15"/>
+    <INT key="windowOpenTemperature" value="12"/>
+    <INT key="IODev" value="ml"/>
+    <ATTR key="fp_Grundriss" value="50,100,5,"/>
+    <ATTR key="room" value="Bad"/>
+    <ATTR key="webCmd" value="desiredTemperature"/>
+    <STATE key="battery" value="ok" measured="2012-11-30 15:20:26"/>
+    <STATE key="desiredTemperature" value="17.0" measured="2012-11-30 15:20:26"/>
+    <STATE key="temperature" value="21" measured="2012-11-30 15:20:26"/>
+    <STATE key="valveposition" value="0" measured="2012-11-30 15:20:26"/>
+</MAX>
+<MAX name="Thermostat_Kinderzimmer" state="20.0 °C" sets="desiredTemperature:eco,boost,comfort,4.5,5.0,5.5,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,10.0,10.5,11.0,11.5,12.0,12.5,13.0,13.5,14.0,14.5,15.0,15.5,16.0,16.5,17.0,17.5,18.0,18.5,19.0,19.5,20.0,20.5,21.0,21.5,22.0,22.5,23.0,23.5,24.0,24.5,25.0,25.5,26.0,26.5,27.0,27.5,28.0,28.5,29.0,29.5,30.0,30.5 ecoTemperature:4.5,5.0,5.5,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,10.0,10.5,11.0,11.5,12.0,12.5,13.0,13.5,14.0,14.5,15.0,15.5,16.0,16.5,17.0,17.5,18.0,18.5,19.0,19.5,20.0,20.5,21.0,21.5,22.0,22.5,23.0,23.5,24.0,24.5,25.0,25.5,26.0,26.5,27.0,27.5,28.0,28.5,29.0,29.5,30.0,30.5 comfortTemperature:4.5,5.0,5.5,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,10.0,10.5,11.0,11.5,12.0,12.5,13.0,13.5,14.0,14.5,15.0,15.5,16.0,16.5,17.0,17.5,18.0,18.5,19.0,19.5,20.0,20.5,21.0,21.5,22.0,22.5,23.0,23.5,24.0,24.5,25.0,25.5,26.0,26.5,27.0,27.5,28.0,28.5,29.0,29.5,30.0,30.5 temperatureOffset:-3.5,-3.0,-2.5,-2.0,-1.5,-1.0,-0.5,0.0,0.5,1.0,1.5,2.0,2.5,3.0,3.5 maximumTemperature:4.5,5.0,5.5,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,10.0,10.5,11.0,11.5,12.0,12.5,13.0,13.5,14.0,14.5,15.0,15.5,16.0,16.5,17.0,17.5,18.0,18.5,19.0,19.5,20.0,20.5,21.0,21.5,22.0,22.5,23.0,23.5,24.0,24.5,25.0,25.5,26.0,26.5,27.0,27.5,28.0,28.5,29.0,29.5,30.0,30.5 minimumTemperature:4.5,5.0,5.5,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,10.0,10.5,11.0,11.5,12.0,12.5,13.0,13.5,14.0,14.5,15.0,15.5,16.0,16.5,17.0,17.5,18.0,18.5,19.0,19.5,20.0,20.5,21.0,21.5,22.0,22.5,23.0,23.5,24.0,24.5,25.0,25.5,26.0,26.5,27.0,27.5,28.0,28.5,29.0,29.5,30.0,30.5 windowOpenTemperature:4.5,5.0,5.5,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,10.0,10.5,11.0,11.5,12.0,12.5,13.0,13.5,14.0,14.5,15.0,15.5,16.0,16.5,17.0,17.5,18.0,18.5,19.0,19.5,20.0,20.5,21.0,21.5,22.0,22.5,23.0,23.5,24.0,24.5,25.0,25.5,26.0,26.5,27.0,27.5,28.0,28.5,29.0,29.5,30.0,30.5 windowOpenDuration groupid removeDevice" attrs="room group comment alias eventMap IODev do_not_notify:1,0 ignore:0,1 dummy:0,1 showtime:1,0 loglevel:0,1,2,3,4,5,6 event-on-update-reading event-on-change-reading devStateIcon fp_Grundriss icon webCmd">
+    <INT key="DEF" value="HeatingThermostat 045adc"/>
+    <INT key="LASTIODev" value="ml"/>
+    <INT key="MSGCNT" value="33"/>
+    <INT key="NAME" value="Thermostat_Kinderzimmer"/>
+    <INT key="NR" value="61"/>
+    <INT key="STATE" value="20.0 °C"/>
+    <INT key="TYPE" value="MAX"/>
+    <INT key="addr" value="045adc"/>
+    <INT key="boostDuration" value="5"/>
+    <INT key="boostValveposition" value="80"/>
+    <INT key="comfortTemperature" value="19"/>
+    <INT key="dstsetting" value="1"/>
+    <INT key="ecoTemperature" value="16.5"/>
+    <INT key="groupid" value="4"/>
+    <INT key="maximumTemperature" value="30.5"/>
+    <INT key="minimumTemperature" value="4.5"/>
+    <INT key="ml_MSGCNT" value="33"/>
+    <INT key="ml_RAWMSG" value="L:CwRaqQkSGAAiAAAABgXElwkSEAYCSxkJEhAGAle+CRIQCwEu0wkSGAAiAMMACwRa3AMSGAAoAN4ABgJLHAkSEAYCV20JEhAGAlfUCRIQCwRawQkSGUQhAAAACwRZKgkSGAAiALwA"/>
+    <INT key="ml_TIME" value="2012-11-30 15:20:26"/>
+    <INT key="mode" value="0"/>
+    <INT key="rferror" value="0"/>
+    <INT key="serial" value="JEQ0326780"/>
+    <INT key="temperatureOffset" value="1.5"/>
+    <INT key="type" value="HeatingThermostat"/>
+    <INT key="windowOpenDuration" value="15"/>
+    <INT key="windowOpenTemperature" value="12"/>
+    <INT key="IODev" value="ml"/>
+    <ATTR key="room" value="Kinderzimmer"/>
+    <ATTR key="webCmd" value="desiredTemperature"/>
+    <STATE key="battery" value="ok" measured="2012-11-30 15:20:26"/>
+    <STATE key="desiredTemperature" value="20.0" measured="2012-11-30 15:20:26"/>
+    <STATE key="temperature" value="23.7" measured="2012-11-30 15:20:26"/>
+    <STATE key="valveposition" value="0" measured="2012-11-30 15:20:26"/>
+</MAX>
+<MAX name="Thermostat_Kueche" state="17.0 °C" sets="desiredTemperature:eco,boost,comfort,4.5,5.0,5.5,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,10.0,10.5,11.0,11.5,12.0,12.5,13.0,13.5,14.0,14.5,15.0,15.5,16.0,16.5,17.0,17.5,18.0,18.5,19.0,19.5,20.0,20.5,21.0,21.5,22.0,22.5,23.0,23.5,24.0,24.5,25.0,25.5,26.0,26.5,27.0,27.5,28.0,28.5,29.0,29.5,30.0,30.5 ecoTemperature:4.5,5.0,5.5,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,10.0,10.5,11.0,11.5,12.0,12.5,13.0,13.5,14.0,14.5,15.0,15.5,16.0,16.5,17.0,17.5,18.0,18.5,19.0,19.5,20.0,20.5,21.0,21.5,22.0,22.5,23.0,23.5,24.0,24.5,25.0,25.5,26.0,26.5,27.0,27.5,28.0,28.5,29.0,29.5,30.0,30.5 comfortTemperature:4.5,5.0,5.5,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,10.0,10.5,11.0,11.5,12.0,12.5,13.0,13.5,14.0,14.5,15.0,15.5,16.0,16.5,17.0,17.5,18.0,18.5,19.0,19.5,20.0,20.5,21.0,21.5,22.0,22.5,23.0,23.5,24.0,24.5,25.0,25.5,26.0,26.5,27.0,27.5,28.0,28.5,29.0,29.5,30.0,30.5 temperatureOffset:-3.5,-3.0,-2.5,-2.0,-1.5,-1.0,-0.5,0.0,0.5,1.0,1.5,2.0,2.5,3.0,3.5 maximumTemperature:4.5,5.0,5.5,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,10.0,10.5,11.0,11.5,12.0,12.5,13.0,13.5,14.0,14.5,15.0,15.5,16.0,16.5,17.0,17.5,18.0,18.5,19.0,19.5,20.0,20.5,21.0,21.5,22.0,22.5,23.0,23.5,24.0,24.5,25.0,25.5,26.0,26.5,27.0,27.5,28.0,28.5,29.0,29.5,30.0,30.5 minimumTemperature:4.5,5.0,5.5,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,10.0,10.5,11.0,11.5,12.0,12.5,13.0,13.5,14.0,14.5,15.0,15.5,16.0,16.5,17.0,17.5,18.0,18.5,19.0,19.5,20.0,20.5,21.0,21.5,22.0,22.5,23.0,23.5,24.0,24.5,25.0,25.5,26.0,26.5,27.0,27.5,28.0,28.5,29.0,29.5,30.0,30.5 windowOpenTemperature:4.5,5.0,5.5,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,10.0,10.5,11.0,11.5,12.0,12.5,13.0,13.5,14.0,14.5,15.0,15.5,16.0,16.5,17.0,17.5,18.0,18.5,19.0,19.5,20.0,20.5,21.0,21.5,22.0,22.5,23.0,23.5,24.0,24.5,25.0,25.5,26.0,26.5,27.0,27.5,28.0,28.5,29.0,29.5,30.0,30.5 windowOpenDuration groupid removeDevice" attrs="room group comment alias eventMap IODev do_not_notify:1,0 ignore:0,1 dummy:0,1 showtime:1,0 loglevel:0,1,2,3,4,5,6 event-on-update-reading event-on-change-reading devStateIcon fp_Grundriss icon webCmd">
+    <INT key="DEF" value="HeatingThermostat 045aa9"/>
+    <INT key="LASTIODev" value="ml"/>
+    <INT key="MSGCNT" value="33"/>
+    <INT key="NAME" value="Thermostat_Kueche"/>
+    <INT key="NR" value="70"/>
+    <INT key="STATE" value="17.0 °C"/>
+    <INT key="TYPE" value="MAX"/>
+    <INT key="addr" value="045aa9"/>
+    <INT key="boostDuration" value="5"/>
+    <INT key="boostValveposition" value="80"/>
+    <INT key="comfortTemperature" value="19"/>
+    <INT key="dstsetting" value="1"/>
+    <INT key="ecoTemperature" value="16.5"/>
+    <INT key="groupid" value="5"/>
+    <INT key="maximumTemperature" value="30.5"/>
+    <INT key="minimumTemperature" value="4.5"/>
+    <INT key="ml_MSGCNT" value="33"/>
+    <INT key="ml_RAWMSG" value="L:CwRaqQkSGAAiAAAABgXElwkSEAYCSxkJEhAGAle+CRIQCwEu0wkSGAAiAMMACwRa3AMSGAAoAN4ABgJLHAkSEAYCV20JEhAGAlfUCRIQCwRawQkSGUQhAAAACwRZKgkSGAAiALwA"/>
+    <INT key="ml_TIME" value="2012-11-30 15:20:26"/>
+    <INT key="mode" value="0"/>
+    <INT key="rferror" value="0"/>
+    <INT key="serial" value="JEQ0326832"/>
+    <INT key="temperatureOffset" value="1.5"/>
+    <INT key="type" value="HeatingThermostat"/>
+    <INT key="windowOpenDuration" value="15"/>
+    <INT key="windowOpenTemperature" value="12"/>
+    <INT key="IODev" value="ml"/>
+    <ATTR key="room" value="Kueche"/>
+    <ATTR key="webCmd" value="desiredTemperature"/>
+    <STATE key="battery" value="ok" measured="2012-11-30 15:20:26"/>
+    <STATE key="desiredTemperature" value="17.0" measured="2012-11-30 15:20:26"/>
+    <STATE key="temperature" value="19.9" measured="2012-11-30 15:12:56"/>
+    <STATE key="valveposition" value="0" measured="2012-11-30 15:20:26"/>
+</MAX>
+<MAX name="Thermostat_Schlafzimmer" state="17.0 °C" sets="desiredTemperature:eco,boost,comfort,4.5,5.0,5.5,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,10.0,10.5,11.0,11.5,12.0,12.5,13.0,13.5,14.0,14.5,15.0,15.5,16.0,16.5,17.0,17.5,18.0,18.5,19.0,19.5,20.0,20.5,21.0,21.5,22.0,22.5,23.0,23.5,24.0,24.5,25.0,25.5,26.0,26.5,27.0,27.5,28.0,28.5,29.0,29.5,30.0,30.5 ecoTemperature:4.5,5.0,5.5,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,10.0,10.5,11.0,11.5,12.0,12.5,13.0,13.5,14.0,14.5,15.0,15.5,16.0,16.5,17.0,17.5,18.0,18.5,19.0,19.5,20.0,20.5,21.0,21.5,22.0,22.5,23.0,23.5,24.0,24.5,25.0,25.5,26.0,26.5,27.0,27.5,28.0,28.5,29.0,29.5,30.0,30.5 comfortTemperature:4.5,5.0,5.5,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,10.0,10.5,11.0,11.5,12.0,12.5,13.0,13.5,14.0,14.5,15.0,15.5,16.0,16.5,17.0,17.5,18.0,18.5,19.0,19.5,20.0,20.5,21.0,21.5,22.0,22.5,23.0,23.5,24.0,24.5,25.0,25.5,26.0,26.5,27.0,27.5,28.0,28.5,29.0,29.5,30.0,30.5 temperatureOffset:-3.5,-3.0,-2.5,-2.0,-1.5,-1.0,-0.5,0.0,0.5,1.0,1.5,2.0,2.5,3.0,3.5 maximumTemperature:4.5,5.0,5.5,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,10.0,10.5,11.0,11.5,12.0,12.5,13.0,13.5,14.0,14.5,15.0,15.5,16.0,16.5,17.0,17.5,18.0,18.5,19.0,19.5,20.0,20.5,21.0,21.5,22.0,22.5,23.0,23.5,24.0,24.5,25.0,25.5,26.0,26.5,27.0,27.5,28.0,28.5,29.0,29.5,30.0,30.5 minimumTemperature:4.5,5.0,5.5,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,10.0,10.5,11.0,11.5,12.0,12.5,13.0,13.5,14.0,14.5,15.0,15.5,16.0,16.5,17.0,17.5,18.0,18.5,19.0,19.5,20.0,20.5,21.0,21.5,22.0,22.5,23.0,23.5,24.0,24.5,25.0,25.5,26.0,26.5,27.0,27.5,28.0,28.5,29.0,29.5,30.0,30.5 windowOpenTemperature:4.5,5.0,5.5,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,10.0,10.5,11.0,11.5,12.0,12.5,13.0,13.5,14.0,14.5,15.0,15.5,16.0,16.5,17.0,17.5,18.0,18.5,19.0,19.5,20.0,20.5,21.0,21.5,22.0,22.5,23.0,23.5,24.0,24.5,25.0,25.5,26.0,26.5,27.0,27.5,28.0,28.5,29.0,29.5,30.0,30.5 windowOpenDuration groupid removeDevice" attrs="room group comment alias eventMap IODev do_not_notify:1,0 ignore:0,1 dummy:0,1 showtime:1,0 loglevel:0,1,2,3,4,5,6 event-on-update-reading event-on-change-reading devStateIcon fp_Grundriss icon webCmd">
+    <INT key="DEF" value="HeatingThermostat 04592a"/>
+    <INT key="LASTIODev" value="ml"/>
+    <INT key="MSGCNT" value="33"/>
+    <INT key="NAME" value="Thermostat_Schlafzimmer"/>
+    <INT key="NR" value="80"/>
+    <INT key="STATE" value="17.0 °C"/>
+    <INT key="TYPE" value="MAX"/>
+    <INT key="addr" value="04592a"/>
+    <INT key="boostDuration" value="5"/>
+    <INT key="boostValveposition" value="80"/>
+    <INT key="comfortTemperature" value="19"/>
+    <INT key="dstsetting" value="1"/>
+    <INT key="ecoTemperature" value="16.5"/>
+    <INT key="groupid" value="3"/>
+    <INT key="maximumTemperature" value="30.5"/>
+    <INT key="minimumTemperature" value="4.5"/>
+    <INT key="ml_MSGCNT" value="33"/>
+    <INT key="ml_RAWMSG" value="L:CwRaqQkSGAAiAAAABgXElwkSEAYCSxkJEhAGAle+CRIQCwEu0wkSGAAiAMMACwRa3AMSGAAoAN4ABgJLHAkSEAYCV20JEhAGAlfUCRIQCwRawQkSGUQhAAAACwRZKgkSGAAiALwA"/>
+    <INT key="ml_TIME" value="2012-11-30 15:20:26"/>
+    <INT key="mode" value="0"/>
+    <INT key="rferror" value="0"/>
+    <INT key="serial" value="JEQ0327214"/>
+    <INT key="temperatureOffset" value="1.5"/>
+    <INT key="type" value="HeatingThermostat"/>
+    <INT key="windowOpenDuration" value="15"/>
+    <INT key="windowOpenTemperature" value="12"/>
+    <INT key="IODev" value="ml"/>
+    <ATTR key="room" value="Schlafzimmer"/>
+    <ATTR key="webCmd" value="desiredTemperature"/>
+    <STATE key="battery" value="ok" measured="2012-11-30 15:20:26"/>
+    <STATE key="desiredTemperature" value="17.0" measured="2012-11-30 15:20:26"/>
+    <STATE key="temperature" value="20.3" measured="2012-11-30 15:20:26"/>
+    <STATE key="valveposition" value="0" measured="2012-11-30 15:20:26"/>
+</MAX>
+<MAX name="Thermostat_Wohnzimmer" state="16.5 °C" sets="desiredTemperature:eco,boost,comfort,4.5,5.0,5.5,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,10.0,10.5,11.0,11.5,12.0,12.5,13.0,13.5,14.0,14.5,15.0,15.5,16.0,16.5,17.0,17.5,18.0,18.5,19.0,19.5,20.0,20.5,21.0,21.5,22.0,22.5,23.0,23.5,24.0,24.5,25.0,25.5,26.0,26.5,27.0,27.5,28.0,28.5,29.0,29.5,30.0,30.5 ecoTemperature:4.5,5.0,5.5,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,10.0,10.5,11.0,11.5,12.0,12.5,13.0,13.5,14.0,14.5,15.0,15.5,16.0,16.5,17.0,17.5,18.0,18.5,19.0,19.5,20.0,20.5,21.0,21.5,22.0,22.5,23.0,23.5,24.0,24.5,25.0,25.5,26.0,26.5,27.0,27.5,28.0,28.5,29.0,29.5,30.0,30.5 comfortTemperature:4.5,5.0,5.5,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,10.0,10.5,11.0,11.5,12.0,12.5,13.0,13.5,14.0,14.5,15.0,15.5,16.0,16.5,17.0,17.5,18.0,18.5,19.0,19.5,20.0,20.5,21.0,21.5,22.0,22.5,23.0,23.5,24.0,24.5,25.0,25.5,26.0,26.5,27.0,27.5,28.0,28.5,29.0,29.5,30.0,30.5 temperatureOffset:-3.5,-3.0,-2.5,-2.0,-1.5,-1.0,-0.5,0.0,0.5,1.0,1.5,2.0,2.5,3.0,3.5 maximumTemperature:4.5,5.0,5.5,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,10.0,10.5,11.0,11.5,12.0,12.5,13.0,13.5,14.0,14.5,15.0,15.5,16.0,16.5,17.0,17.5,18.0,18.5,19.0,19.5,20.0,20.5,21.0,21.5,22.0,22.5,23.0,23.5,24.0,24.5,25.0,25.5,26.0,26.5,27.0,27.5,28.0,28.5,29.0,29.5,30.0,30.5 minimumTemperature:4.5,5.0,5.5,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,10.0,10.5,11.0,11.5,12.0,12.5,13.0,13.5,14.0,14.5,15.0,15.5,16.0,16.5,17.0,17.5,18.0,18.5,19.0,19.5,20.0,20.5,21.0,21.5,22.0,22.5,23.0,23.5,24.0,24.5,25.0,25.5,26.0,26.5,27.0,27.5,28.0,28.5,29.0,29.5,30.0,30.5 windowOpenTemperature:4.5,5.0,5.5,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,10.0,10.5,11.0,11.5,12.0,12.5,13.0,13.5,14.0,14.5,15.0,15.5,16.0,16.5,17.0,17.5,18.0,18.5,19.0,19.5,20.0,20.5,21.0,21.5,22.0,22.5,23.0,23.5,24.0,24.5,25.0,25.5,26.0,26.5,27.0,27.5,28.0,28.5,29.0,29.5,30.0,30.5 windowOpenDuration groupid removeDevice" attrs="room group comment alias eventMap IODev do_not_notify:1,0 ignore:0,1 dummy:0,1 showtime:1,0 loglevel:0,1,2,3,4,5,6 event-on-update-reading event-on-change-reading devStateIcon fp_Grundriss icon webCmd">
+    <INT key="DEF" value="HeatingThermostat 045ac1"/>
+    <INT key="LASTIODev" value="ml"/>
+    <INT key="MSGCNT" value="33"/>
+    <INT key="NAME" value="Thermostat_Wohnzimmer"/>
+    <INT key="NR" value="49"/>
+    <INT key="STATE" value="16.5 °C"/>
+    <INT key="TYPE" value="MAX"/>
+    <INT key="addr" value="045ac1"/>
+    <INT key="boostDuration" value="5"/>
+    <INT key="boostValveposition" value="80"/>
+    <INT key="comfortTemperature" value="19"/>
+    <INT key="dstsetting" value="1"/>
+    <INT key="ecoTemperature" value="16.5"/>
+    <INT key="groupid" value="2"/>
+    <INT key="maximumTemperature" value="30.5"/>
+    <INT key="minimumTemperature" value="4.5"/>
+    <INT key="ml_MSGCNT" value="33"/>
+    <INT key="ml_RAWMSG" value="L:CwRaqQkSGAAiAAAABgXElwkSEAYCSxkJEhAGAle+CRIQCwEu0wkSGAAiAMMACwRa3AMSGAAoAN4ABgJLHAkSEAYCV20JEhAGAlfUCRIQCwRawQkSGUQhAAAACwRZKgkSGAAiALwA"/>
+    <INT key="ml_TIME" value="2012-11-30 15:20:26"/>
+    <INT key="mode" value="1"/>
+    <INT key="rferror" value="0"/>
+    <INT key="serial" value="JEQ0326807"/>
+    <INT key="temperatureOffset" value="1.5"/>
+    <INT key="type" value="HeatingThermostat"/>
+    <INT key="windowOpenDuration" value="15"/>
+    <INT key="windowOpenTemperature" value="12"/>
+    <INT key="IODev" value="ml"/>
+    <ATTR key="room" value="Wohnzimmer"/>
+    <ATTR key="webCmd" value="desiredTemperature"/>
+    <STATE key="battery" value="ok" measured="2012-11-30 15:20:26"/>
+    <STATE key="desiredTemperature" value="16.5" measured="2012-11-30 15:20:26"/>
+    <STATE key="temperature" value="20.5" measured="2012-11-30 15:20:16"/>
+    <STATE key="valveposition" value="68" measured="2012-11-30 15:20:26"/>
+</MAX>
+</MAX_LIST>
 <OWTHERM_LIST>
 <OWTHERM name="OWX_28_970D56040000" state="13.62 &amp;deg;C" sets="interval tempHigh tempLow" attrs="room group comment alias eventMap IODev do_not_notify:0,1 showtime:0,1 loglevel:0,1,2,3,4,5 event:on-update,on-change stateAL stateAH tempOffset tempUnit:C,Celsius,F,Fahrenheit,K,Kelvin tempLow tempHigh icon webCmd">
     <INT key="ALARM" value="0"/>
