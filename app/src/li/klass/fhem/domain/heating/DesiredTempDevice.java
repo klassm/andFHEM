@@ -26,7 +26,7 @@ package li.klass.fhem.domain.heating;
 
 public interface DesiredTempDevice {
     void setDesiredTemp(double desiredTemp);
-    Double getDesiredTemp();
+    double getDesiredTemp();
     String getDesiredTempDesc();
     String getDesiredTempCommandFieldName();
     String getName();

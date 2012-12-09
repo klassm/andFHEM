@@ -262,7 +262,7 @@ public class MaxDevice extends ToggleableDevice<MaxDevice> implements DesiredTem
     }
 
     @Override
-    public Double getDesiredTemp() {
+    public double getDesiredTemp() {
         return desiredTemp;
     }
 

@@ -173,7 +173,7 @@ public class FHTDevice extends Device<FHTDevice> implements DesiredTempDevice,
         return "desired-temp";
     }
 
-    public Double getDesiredTemp() {
+    public double getDesiredTemp() {
         return desiredTemp;
     }
 

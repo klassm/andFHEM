@@ -79,7 +79,7 @@ public class PIDDevice extends Device<PIDDevice> implements DesiredTempDevice {
         this.desiredTemperature = desiredTemperature;
     }
 
-    public Double getDesiredTemp() {
+    public double getDesiredTemp() {
         return desiredTemperature;
     }
 

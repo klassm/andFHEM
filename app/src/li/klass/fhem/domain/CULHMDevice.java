@@ -236,7 +236,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice> imp
         this.desiredTemp = desiredTemp;
     }
 
-    public Double getDesiredTemp() {
+    public double getDesiredTemp() {
         return desiredTemp;
     }
 
