@@ -242,7 +242,7 @@ public class FHTAdapter extends GenericDeviceAdapter<FHTDevice> {
     }
 
     public static int caclulateHolidayShortHoliday1ValueFrom(int hour, int minute) {
-        return hour * 6 + minute / 6;
+        return hour * 6 + minute / 10;
     }
 
     public static boolean holidayShortIsTomorrow(TimePicker timePicker) {

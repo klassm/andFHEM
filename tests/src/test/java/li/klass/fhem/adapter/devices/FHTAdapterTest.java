@@ -39,6 +39,7 @@ public class FHTAdapterTest extends RobolectricBaseTestCase {
         verifyTimePickerHoliday1Time(24, 0, 144);
         verifyTimePickerHoliday1Time(23, 0, 138);
         verifyTimePickerHoliday1Time(12, 10, 73);
+        verifyTimePickerHoliday1Time(21, 40, 130);
     }
 
     @Test
