@@ -26,6 +26,8 @@ package li.klass.fhem.domain;
 
 import li.klass.fhem.R;
 import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
+import li.klass.fhem.appwidget.annotation.SupportsWidget;
+import li.klass.fhem.appwidget.annotation.WidgetTemperatureField;
 import li.klass.fhem.appwidget.view.widget.AppWidgetView;
 import li.klass.fhem.appwidget.view.widget.medium.TemperatureWidgetView;
 import li.klass.fhem.appwidget.view.widget.medium.ToggleWidgetView;
@@ -46,6 +48,7 @@ import static li.klass.fhem.util.ValueDescriptionUtil.desiredTemperatureToString
 @SuppressWarnings("unused")
 @FloorplanViewSettings(showState = true)
 @DetailOverviewViewSettings(showState = true)
+@SupportsWidget(TemperatureWidgetView.class)
 public class MaxDevice extends ToggleableDevice<MaxDevice> implements DesiredTempDevice, HeatingModeDevice<MaxDevice.HeatingMode>,
         WindowOpenTempDevice, EcoTempDevice, ComfortTempDevice {
 
@@ -78,6 +81,7 @@ public class MaxDevice extends ToggleableDevice<MaxDevice> implements DesiredTem
     private String desiredTempDesc;
 
     @ShowField(description = ResourceIdMapper.temperature, showInOverview = true)
+    @WidgetTemperatureField
     private String temperature;
 
     @ShowField(description = ResourceIdMapper.actuator)
@@ -240,7 +244,7 @@ public class MaxDevice extends ToggleableDevice<MaxDevice> implements DesiredTem
 
     @Override
     public boolean supportsWidget(Class<? extends AppWidgetView> appWidgetClass) {
-        if (appWidgetClass.equals(TemperatureWidgetView.class) && subType == SubType.TEMPERATURE) {
+        if (appWidgetClass.isAssignableFrom(TemperatureWidgetView.class) && subType == SubType.TEMPERATURE) {
             return true;
         } else if (appWidgetClass.isAssignableFrom(ToggleWidgetView.class) && subType == SubType.SWITCH) {
             return true;
@@ -252,7 +256,6 @@ public class MaxDevice extends ToggleableDevice<MaxDevice> implements DesiredTem
     public boolean isSupported() {
         return subType != null;
     }
-
 
     @Override
     public void setDesiredTemp(double desiredTemp) {
