@@ -119,9 +119,8 @@ public class MaxDevice extends ToggleableDevice<MaxDevice> implements DesiredTem
     }
 
     public void readDESIREDTEMPERATURE(String value) {
-        String modeValue = value.toUpperCase();
         for (HeatingMode heatingMode : HeatingMode.values()) {
-            if (modeValue.equalsIgnoreCase(value)) {
+            if (value.equalsIgnoreCase(heatingMode.name())) {
                 this.heatingMode = heatingMode;
                 return;
             }
@@ -265,6 +264,7 @@ public class MaxDevice extends ToggleableDevice<MaxDevice> implements DesiredTem
 
     @Override
     public String getDesiredTempDesc() {
+        if (desiredTemp == null) return null;
         return desiredTemperatureToString(desiredTemp, MINIMUM_TEMPERATURE, MAXIMUM_TEMPERATURE);
     }
 

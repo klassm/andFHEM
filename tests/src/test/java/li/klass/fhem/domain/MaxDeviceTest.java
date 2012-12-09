@@ -67,9 +67,9 @@ public class MaxDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getActuator(), is("0 (%)"));
         assertThat(device.getDesiredTempDesc(), is("17.0 (°C)"));
         assertThat(device.getTemperature(), is("21 (°C)"));
-        assertThat(device.getWindowOpenTempDesc(), is("12 (°C)"));
+        assertThat(device.getWindowOpenTempDesc(), is("12.0 (°C)"));
         assertThat(device.getEcoTempDesc(), is("16.5 (°C)"));
-        assertThat(device.getComfortTempDesc(), is("19 (°C)"));
+        assertThat(device.getComfortTempDesc(), is("19.0 (°C)"));
     }
 
     @Override
