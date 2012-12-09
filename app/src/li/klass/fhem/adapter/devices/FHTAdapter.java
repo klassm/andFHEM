@@ -43,11 +43,13 @@ import li.klass.fhem.domain.fht.FHTMode;
 import li.klass.fhem.fragments.FHTTimetableControlListFragment;
 import li.klass.fhem.util.DateFormatUtil;
 import li.klass.fhem.util.DatePickerUtil;
+import li.klass.fhem.util.EnumUtils;
 
 import java.util.Calendar;
 
 import static li.klass.fhem.domain.FHTDevice.MAXIMUM_TEMPERATURE;
 import static li.klass.fhem.domain.FHTDevice.MINIMUM_TEMPERATURE;
+import static li.klass.fhem.util.EnumUtils.toStringList;
 
 public class FHTAdapter extends GenericDeviceAdapter<FHTDevice> {
 
@@ -93,8 +95,10 @@ public class FHTAdapter extends GenericDeviceAdapter<FHTDevice> {
             @Override
             public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FHTDevice device, TableRow fieldTableRow) {
                 FHTMode mode = device.getMode();
-                int selected = mode != null ? FHTMode.positionOf(mode) : FHTMode.positionOf(FHTMode.UNKNOWN);
-                tableLayout.addView(new SpinnerActionRow<FHTDevice>(context, R.string.mode, R.string.setMode, FHTMode.toStringList(), selected) {
+                mode = mode == null ? FHTMode.UNKNOWN : mode;
+
+                int selected = EnumUtils.positionOf(FHTMode.values(), mode);
+                tableLayout.addView(new SpinnerActionRow<FHTDevice>(context, R.string.mode, R.string.setMode, toStringList(FHTMode.values()), selected) {
 
                     @Override
                     public void onItemSelected(Context context, FHTDevice device, String item) {
@@ -303,75 +307,4 @@ public class FHTAdapter extends GenericDeviceAdapter<FHTDevice> {
 
         dialogBuilder.show();
     }
-
-//    private class PartyModeTimeSelectionTableRow extends SeekBarActionRowFullWidthAndButton<FHTDevice> {
-//        private int currentValue = 0;
-//        private final TextView updateView;
-//
-//        public PartyModeTimeSelectionTableRow(Context context, TableRow updateTableRow) {
-//            super(context, 0, 144);
-//            updateView = (TextView) updateTableRow.findViewById(R.id.value);
-//        }
-//
-//        @Override
-//        public void onButtonSetValue(FHTDevice device, int value) {
-//            if (value > 144) {
-//                DialogUtil.showAlertDialog(context, -1, R.string.invalidInput);
-//                return;
-//            }
-//            setValue(value);
-//        }
-//
-//        @Override
-//        public void onProgressChanged(Context context, FHTDevice device, int progress) {
-//            super.onProgressChanged(context, device, progress);
-//            setValue(progress);
-//        }
-//
-//        private void setValue(int progress) {
-//            currentValue = progress;
-//
-//            Calendar calendar = Calendar.getInstance();
-//
-//            int currentMinutes = calendar.get(Calendar.MINUTE);
-//            currentMinutes = (currentMinutes / 10) * 10;
-//            calendar.set(Calendar.MINUTE, currentMinutes);
-//
-//            calendar.add(Calendar.MINUTE, progress * 10);
-//
-//            String hour = NumberUtil.toTwoDecimalDigits(calendar.get(Calendar.HOUR_OF_DAY));
-//            String minute = NumberUtil.toTwoDecimalDigits(calendar.get(Calendar.MINUTE));
-//            String text = hour + ":" + minute;
-//
-//            updateView.setText(text);
-//        }
-//
-//        @Override
-//        public void onStopTrackingTouch(Context context, FHTDevice device, int progress) {
-//        }
-//
-//        public int getPartyModeTimeForNow() {
-//            Calendar calendar = Calendar.getInstance();
-//            int hour = calendar.get(Calendar.HOUR_OF_DAY);
-//            int minutes = calendar.get(Calendar.MINUTE);
-//
-//            int diffToNextTenMinutes = (minutes / 10) * 10;
-//        }
-//
-//        public int getPartyModeTimeSpanInMinutes() {
-//            return currentValue * 10;
-//        }
-//
-//        public int getTargetDayOfMonth() {
-//            Calendar calendar = Calendar.getInstance();
-//            calendar.add(Calendar.MINUTE, getPartyModeTimeSpanInMinutes());
-//
-//            return calendar.get(Calendar.DAY_OF_MONTH);
-//        }
-//
-//        @Override
-//        protected boolean showButton() {
-//            return false;
-//        }
-//    }
 }

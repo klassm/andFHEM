@@ -50,6 +50,28 @@ public abstract class ConvenientIntentService extends IntentService {
         SUCCESS, ERROR, DONE
     }
 
+    @Override
+    protected void onHandleIntent(Intent intent) {
+        ResultReceiver resultReceiver = intent.getParcelableExtra(RESULT_RECEIVER);
+        boolean doRefresh = intent.getBooleanExtra(BundleExtraKeys.DO_REFRESH, false);
+        long updatePeriod = intent.getLongExtra(BundleExtraKeys.UPDATE_PERIOD, RoomListService.NEVER_UPDATE_PERIOD);
+        if (doRefresh) {
+            updatePeriod = RoomListService.ALWAYS_UPDATE_PERIOD;
+        }
+
+        try {
+            STATE state = handleIntent(intent, updatePeriod, resultReceiver);
+            if (state == STATE.SUCCESS) {
+                sendNoResult(resultReceiver, ResultCodes.SUCCESS);
+            } else if (state == STATE.ERROR) {
+                sendNoResult(resultReceiver, ResultCodes.ERROR);
+            }
+        } catch (Exception e) {
+            Log.e(ConvenientIntentService.class.getName(), "An error occurred while processing an intent", e);
+            sendNoResult(resultReceiver, ResultCodes.ERROR);
+        }
+    }
+
     protected void sendNoResult(ResultReceiver receiver, int resultCode) {
         if (receiver != null) {
             receiver.send(resultCode, null);
@@ -72,27 +94,5 @@ public abstract class ConvenientIntentService extends IntentService {
         }
     }
 
-    @Override
-    protected void onHandleIntent(Intent intent) {
-        ResultReceiver resultReceiver = intent.getParcelableExtra(RESULT_RECEIVER);
-        boolean doRefresh = intent.getBooleanExtra(BundleExtraKeys.DO_REFRESH, false);
-        long updatePeriod = intent.getLongExtra(BundleExtraKeys.UPDATE_PERIOD, RoomListService.NEVER_UPDATE_PERIOD);
-        if (doRefresh) {
-            updatePeriod = RoomListService.ALWAYS_UPDATE_PERIOD;
-        }
-
-        try {
-            STATE state = handleIntent(intent, updatePeriod, resultReceiver);
-            if (state == STATE.SUCCESS) {
-                sendNoResult(resultReceiver, ResultCodes.SUCCESS);
-            } else if (state == STATE.ERROR) {
-                sendNoResult(resultReceiver, ResultCodes.ERROR);
-            }
-        } catch (Exception e) {
-            Log.e(ConvenientIntentService.class.getName(), "An error occurred while processing an intent", e);
-            sendNoResult(resultReceiver, ResultCodes.ERROR);
-        }
-    }
-    
     protected abstract STATE handleIntent(Intent intent, long updatePeriod, ResultReceiver resultReceiver);
 }

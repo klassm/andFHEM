@@ -23,6 +23,8 @@ public enum ResourceIdMapper {
     dayTemperature(R.string.dayTemperature),
     nightTemperature(R.string.nightTemperature),
     windowOpenTemp(R.string.windowOpenTemp),
+    ecoTemp(R.string.ecoTemperature),
+    comfortTemp(R.string.comfortTemperature),
     warnings(R.string.warnings),
     wind(R.string.wind),
     rain(R.string.rain),

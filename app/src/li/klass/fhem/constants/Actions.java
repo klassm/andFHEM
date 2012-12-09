@@ -54,6 +54,8 @@ public class Actions {
     public static final String DEVICE_SET_DAY_TEMPERATURE = prefix + "DEVICE_SET_DAY_TEMPERATURE";
     public static final String DEVICE_SET_NIGHT_TEMPERATURE = prefix + "DEVICE_SET_NIGHT_TEMPERATURE";
     public static final String DEVICE_SET_WINDOW_OPEN_TEMPERATURE = prefix + "DEVICE_SET_WINDOW_OPEN_TEMPERATURE";
+    public static final String DEVICE_SET_COMFORT_TEMPERATURE = prefix + "DEVICE_SET_COMFORT_TEMPERATURE";
+    public static final String DEVICE_SET_ECO_TEMPERATURE = prefix + "DEVICE_SET_ECO_TEMPERATURE";
     public static final String DEVICE_SET_TIMETABLE = prefix + "DEVICE_SET_TIMETABLE";
     public static final String DEVICE_RESET_TIMETABLE = prefix + "DEVICE_RESET_TIMETABLE";
     public static final String DEVICE_SET_DESIRED_TEMPERATURE = prefix + "DEVICE_SET_DESIRED_TEMPERATURE";

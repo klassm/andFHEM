@@ -94,10 +94,14 @@ public class TemperatureChangeTableRow<D extends Device<D>> extends SeekBarActio
         Intent intent = new Intent(intentAction);
         intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
         intent.putExtra(BundleExtraKeys.DEVICE_TEMPERATURE, newValue);
+        onIntentCreation(intent);
+
         context.startService(intent);
 
         updateView.setText(ValueDescriptionUtil.appendTemperature(newValue));
     }
+
+    protected void onIntentCreation(Intent intent) {}
 
     private String createConfirmationText(int attributeStringId, double newTemperature) {
         Context context = AndFHEMApplication.getContext();

@@ -32,6 +32,7 @@ import li.klass.fhem.appwidget.view.widget.medium.TemperatureWidgetView;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.genericview.FloorplanViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
+import li.klass.fhem.domain.heating.DesiredTempDevice;
 import li.klass.fhem.util.ValueDescriptionUtil;
 import li.klass.fhem.util.ValueExtractUtil;
 
@@ -78,7 +79,7 @@ public class PIDDevice extends Device<PIDDevice> implements DesiredTempDevice {
         this.desiredTemperature = desiredTemperature;
     }
 
-    public double getDesiredTemp() {
+    public Double getDesiredTemp() {
         return desiredTemperature;
     }
 

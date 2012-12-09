@@ -22,10 +22,12 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.domain.fht;
+package li.klass.fhem.domain.heating;
 
-import java.io.Serializable;
-
-public enum FHTMode implements Serializable {
-    UNKNOWN, AUTO, MANUAL, HOLIDAY, HOLIDAY_SHORT;
+public interface WindowOpenTempDevice {
+    void setWindowOpenTemp(double windowOpenTemp);
+    Double getWindowOpenTemp();
+    String getWindowOpenTempDesc();
+    String getWindowOpenTempCommandFieldName();
+    String getName();
 }

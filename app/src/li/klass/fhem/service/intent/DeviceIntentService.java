@@ -31,7 +31,6 @@ import android.util.Log;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
-import li.klass.fhem.domain.DesiredTempDevice;
 import li.klass.fhem.domain.FHTDevice;
 import li.klass.fhem.domain.WOLDevice;
 import li.klass.fhem.domain.core.Device;
@@ -39,6 +38,7 @@ import li.klass.fhem.domain.core.DimmableDevice;
 import li.klass.fhem.domain.core.ToggleableDevice;
 import li.klass.fhem.domain.fht.FHTMode;
 import li.klass.fhem.domain.floorplan.Coordinate;
+import li.klass.fhem.domain.heating.*;
 import li.klass.fhem.service.device.*;
 import li.klass.fhem.service.graph.GraphEntry;
 import li.klass.fhem.service.graph.GraphService;
@@ -68,6 +68,7 @@ public class DeviceIntentService extends ConvenientIntentService {
         Device device = RoomListService.INSTANCE.getDeviceForName(deviceName, updatePeriod);
         Log.d(DeviceIntentService.class.getName(), intent.getAction());
         String action = intent.getAction();
+
         if (action.equals(DEVICE_GRAPH)) {
             return graphIntent(intent, device, resultReceiver);
         } else if (action.equals(DEVICE_TOGGLE_STATE)) {
@@ -83,21 +84,41 @@ public class DeviceIntentService extends ConvenientIntentService {
             double nightTemperature = intent.getDoubleExtra(BundleExtraKeys.DEVICE_TEMPERATURE, -1);
             FHTService.INSTANCE.setNightTemperature((FHTDevice) device, nightTemperature);
         } else if (action.equals(DEVICE_SET_MODE)) {
-            FHTMode mode = (FHTMode) intent.getSerializableExtra(BundleExtraKeys.DEVICE_MODE);
-            double desiredTemperature = intent.getDoubleExtra(BundleExtraKeys.DEVICE_TEMPERATURE, FHTDevice.MINIMUM_TEMPERATURE);
-            int holiday1 = intent.getIntExtra(BundleExtraKeys.DEVICE_HOLIDAY1, -1);
-            int holiday2 = intent.getIntExtra(BundleExtraKeys.DEVICE_HOLIDAY2, -1);
+            if (device instanceof FHTDevice) {
+                FHTMode mode = (FHTMode) intent.getSerializableExtra(BundleExtraKeys.DEVICE_MODE);
+                double desiredTemperature = intent.getDoubleExtra(BundleExtraKeys.DEVICE_TEMPERATURE, FHTDevice.MINIMUM_TEMPERATURE);
+                int holiday1 = intent.getIntExtra(BundleExtraKeys.DEVICE_HOLIDAY1, -1);
+                int holiday2 = intent.getIntExtra(BundleExtraKeys.DEVICE_HOLIDAY2, -1);
 
-            FHTService.INSTANCE.setMode((FHTDevice) device, mode, desiredTemperature, holiday1, holiday2);
+                FHTService.INSTANCE.setMode((FHTDevice) device, mode, desiredTemperature, holiday1, holiday2);
+            } else if (device instanceof HeatingModeDevice) {
+                Enum mode = (Enum) intent.getSerializableExtra(BundleExtraKeys.DEVICE_MODE);
+                HeatingModeDevice heatingModeDevice = (HeatingModeDevice) device;
+
+                HeatingService.INSTANCE.setMode(heatingModeDevice, mode);
+            }
+
         } else if (action.equals(DEVICE_SET_TIMETABLE)) {
             FHTService.INSTANCE.setTimetableFor((FHTDevice) device);
         } else if (action.equals(DEVICE_SET_WINDOW_OPEN_TEMPERATURE)) {
+            if ( ! (device instanceof WindowOpenTempDevice )) return SUCCESS;
+
             double temperature = intent.getDoubleExtra(BundleExtraKeys.DEVICE_TEMPERATURE, -1);
-            FHTService.INSTANCE.setWindowOpenTemp((FHTDevice) device, temperature);
+            HeatingService.INSTANCE.setWindowOpenTemp((WindowOpenTempDevice) device, temperature);
         } else if (action.equals(DEVICE_SET_DESIRED_TEMPERATURE)) {
             double temperature = intent.getDoubleExtra(BundleExtraKeys.DEVICE_TEMPERATURE, -1);
             if (device instanceof DesiredTempDevice) {
-                DesiredTempService.INSTANCE.setDesiredTemperature((DesiredTempDevice) device, temperature);
+                HeatingService.INSTANCE.setDesiredTemperature((DesiredTempDevice) device, temperature);
+            }
+        } else if (action.equals(DEVICE_SET_COMFORT_TEMPERATURE)) {
+            double temperature = intent.getDoubleExtra(BundleExtraKeys.DEVICE_TEMPERATURE, -1);
+            if (device instanceof DesiredTempDevice) {
+                HeatingService.INSTANCE.setComfortTemperature((ComfortTempDevice) device, temperature);
+            }
+        } else if (action.equals(DEVICE_SET_ECO_TEMPERATURE)) {
+            double temperature = intent.getDoubleExtra(BundleExtraKeys.DEVICE_TEMPERATURE, -1);
+            if (device instanceof DesiredTempDevice) {
+                HeatingService.INSTANCE.setEcoTemperature((EcoTempDevice) device, temperature);
             }
         } else if (action.equals(DEVICE_RESET_TIMETABLE)) {
             FHTService.INSTANCE.resetTimetable((FHTDevice) device);

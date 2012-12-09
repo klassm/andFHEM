@@ -41,7 +41,7 @@ public enum DeviceType {
     FHT("FHT", FHTDevice.class, new FHTAdapter()),
     CUL_TX("CUL_TX", CULTXDevice.class),
     HMS("HMS", HMSDevice.class),
-    MAX("MAX", MaxDevice.class),
+    MAX("MAX", MaxDevice.class, new MaxAdapter()),
     WOL("WOL", WOLDevice.class, new WOLAdapter()),
     IT("IT", IntertechnoDevice.class, new ToggleableAdapter<IntertechnoDevice>(IntertechnoDevice.class)),
     OWTEMP("OWTEMP", OwtempDevice.class),

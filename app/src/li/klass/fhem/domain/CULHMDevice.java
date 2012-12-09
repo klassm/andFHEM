@@ -35,6 +35,7 @@ import li.klass.fhem.domain.core.DimmableContinuousStatesDevice;
 import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
 import li.klass.fhem.domain.genericview.FloorplanViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
+import li.klass.fhem.domain.heating.DesiredTempDevice;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.NumberUtil;
 import li.klass.fhem.util.ValueDescriptionUtil;
@@ -235,7 +236,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice> imp
         this.desiredTemp = desiredTemp;
     }
 
-    public double getDesiredTemp() {
+    public Double getDesiredTemp() {
         return desiredTemp;
     }
 

@@ -22,12 +22,12 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.domain;
+package li.klass.fhem.domain.heating;
 
-public interface DesiredTempDevice {
-    void setDesiredTemp(double desiredTemp);
-    double getDesiredTemp();
-    String getDesiredTempDesc();
-    String getDesiredTempCommandFieldName();
+public interface HeatingModeDevice <MODE extends Enum<MODE>> {
+    void setHeatingMode(MODE mode);
+    MODE getHeatingMode();
+    MODE[] getIgnoredHeatingModes();
+    String getHeatingModeCommandField();
     String getName();
 }

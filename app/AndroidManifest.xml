@@ -134,6 +134,8 @@
                 <action android:name="li.klass.fhem.constants.Actions.DEVICE_SET_DAY_TEMPERATURE"/>
                 <action android:name="li.klass.fhem.constants.Actions.DEVICE_SET_NIGHT_TEMPERATURE"/>
                 <action android:name="li.klass.fhem.constants.Actions.DEVICE_SET_WINDOW_OPEN_TEMPERATURE"/>
+                <action android:name="li.klass.fhem.constants.Actions.DEVICE_SET_ECO_TEMPERATURE"/>
+                <action android:name="li.klass.fhem.constants.Actions.DEVICE_SET_COMFORT_TEMPERATURE"/>
                 <action android:name="li.klass.fhem.constants.Actions.DEVICE_SET_TIMETABLE"/>
                 <action android:name="li.klass.fhem.constants.Actions.DEVICE_RESET_TIMETABLE"/>
                 <action android:name="li.klass.fhem.constants.Actions.DEVICE_SET_DESIRED_TEMPERATURE"/>

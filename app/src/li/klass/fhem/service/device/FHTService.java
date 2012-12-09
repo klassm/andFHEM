@@ -44,20 +44,6 @@ public class FHTService {
     }
 
     /**
-     * Sets the desired temperature. The action will only be executed if the new desired temperature is different to
-     * the already set one.
-     * @param device concerned device
-     * @param desiredTemperatureToSet new desired temperature value
-     */
-    public void setDesiredTemperature(FHTDevice device, double desiredTemperatureToSet) {
-        String command = "set " + device.getName() + " desired-temp " + desiredTemperatureToSet;
-        if (desiredTemperatureToSet != device.getDesiredTemp()) {
-            CommandExecutionService.INSTANCE.executeSafely(command);
-            device.setDesiredTemp(desiredTemperatureToSet);
-        }
-    }
-
-    /**
      * Sets the mode attribute of a given FHT device. The action will only be executed if the new mode is different to
      * the already set one.
      * @param device concerned device
@@ -107,20 +93,6 @@ public class FHTService {
             String command = "set " + device.getName() + " night-temp " + nightTemperature;
             CommandExecutionService.INSTANCE.executeSafely(command);
             device.setNightTemperature(nightTemperature);
-        }
-    }
-
-    /**
-     * Sets the window open temperature. The action will only be executed if the new window open temperature is
-     * different to the already set one.
-     * @param device concerned device
-     * @param windowOpenTemp new window open temperature to set
-     */
-    public void setWindowOpenTemp(FHTDevice device, double windowOpenTemp) {
-        if (device.getWindowOpenTemp() != windowOpenTemp) {
-            String command = "set " + device.getName() + " windowopen-temp " + windowOpenTemp;
-            CommandExecutionService.INSTANCE.executeSafely(command);
-            device.setWindowOpenTemp(windowOpenTemp);
         }
     }
 

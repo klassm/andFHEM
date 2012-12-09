@@ -34,6 +34,8 @@ import li.klass.fhem.domain.fht.FHTDayControl;
 import li.klass.fhem.domain.fht.FHTMode;
 import li.klass.fhem.domain.genericview.FloorplanViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
+import li.klass.fhem.domain.heating.DesiredTempDevice;
+import li.klass.fhem.domain.heating.WindowOpenTempDevice;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.DayUtil;
 import li.klass.fhem.util.ValueDescriptionUtil;
@@ -49,7 +51,8 @@ import java.util.Map;
 @FloorplanViewSettings
 @SupportsWidget({TemperatureWidgetView.class, MediumInformationWidgetView.class})
 @SuppressWarnings("unused")
-public class FHTDevice extends Device<FHTDevice> implements DesiredTempDevice {
+public class FHTDevice extends Device<FHTDevice> implements DesiredTempDevice,
+        WindowOpenTempDevice {
     public static double MAXIMUM_TEMPERATURE = 30.5;
     public static double MINIMUM_TEMPERATURE = 5.5;
 
@@ -170,7 +173,7 @@ public class FHTDevice extends Device<FHTDevice> implements DesiredTempDevice {
         return "desired-temp";
     }
 
-    public double getDesiredTemp() {
+    public Double getDesiredTemp() {
         return desiredTemp;
     }
 
@@ -202,7 +205,12 @@ public class FHTDevice extends Device<FHTDevice> implements DesiredTempDevice {
         return ValueDescriptionUtil.desiredTemperatureToString(windowOpenTemp, MINIMUM_TEMPERATURE, MAXIMUM_TEMPERATURE);
     }
 
-    public double getWindowOpenTemp() {
+    @Override
+    public String getWindowOpenTempCommandFieldName() {
+        return "windowopen-temp";
+    }
+
+    public Double getWindowOpenTemp() {
         return windowOpenTemp;
     }
 

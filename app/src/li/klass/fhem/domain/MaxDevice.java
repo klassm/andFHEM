@@ -34,15 +34,31 @@ import li.klass.fhem.domain.core.ToggleableDevice;
 import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
 import li.klass.fhem.domain.genericview.FloorplanViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
+import li.klass.fhem.domain.heating.*;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ValueDescriptionUtil;
+import li.klass.fhem.util.ValueExtractUtil;
 
 import java.util.List;
+
+import static li.klass.fhem.util.ValueDescriptionUtil.desiredTemperatureToString;
 
 @SuppressWarnings("unused")
 @FloorplanViewSettings(showState = true)
 @DetailOverviewViewSettings(showState = true)
-public class MaxDevice extends ToggleableDevice<MaxDevice> {
+public class MaxDevice extends ToggleableDevice<MaxDevice> implements DesiredTempDevice, HeatingModeDevice<MaxDevice.HeatingMode>,
+        WindowOpenTempDevice, EcoTempDevice, ComfortTempDevice {
+
+    public enum HeatingMode {
+        ECO, COMFORT, BOOST, AUTO, MANUAL
+    }
+
+    public enum SubType {
+        CUBE, SWITCH, WINDOW, TEMPERATURE
+    }
+
+    public static double MAXIMUM_TEMPERATURE = 30.5;
+    public static double MINIMUM_TEMPERATURE = 4.5;
 
     private SubType subType;
 
@@ -53,10 +69,10 @@ public class MaxDevice extends ToggleableDevice<MaxDevice> {
     private String battery;
 
     @ShowField(description = ResourceIdMapper.windowOpenTemp)
-    private String windowOpenTemperature;
+    private double windowOpenTemp;
 
     @ShowField(description = ResourceIdMapper.desiredTemperature, showInOverview = true)
-    private String desiredTemperature;
+    private Double desiredTemp = null;
 
     @ShowField(description = ResourceIdMapper.temperature, showInOverview = true)
     private String temperature;
@@ -64,10 +80,13 @@ public class MaxDevice extends ToggleableDevice<MaxDevice> {
     @ShowField(description = ResourceIdMapper.actuator)
     private String actuator;
 
+    @ShowField(description = ResourceIdMapper.ecoTemp)
+    private double ecoTemp;
 
-    public enum SubType {
-        CUBE, SWITCH, WINDOW, TEMPERATURE
-    }
+    @ShowField(description = ResourceIdMapper.comfortTemp)
+    private double comfortTemp;
+
+    private HeatingMode heatingMode;
 
     public void readTYPE(String value) {
         if (value.equalsIgnoreCase("ShutterContact")) {
@@ -88,11 +107,27 @@ public class MaxDevice extends ToggleableDevice<MaxDevice> {
     }
 
     public void readWINDOWOPENTEMPERATURE(String value) {
-        this.windowOpenTemperature = ValueDescriptionUtil.appendTemperature(value);
+        this.windowOpenTemp = ValueExtractUtil.extractLeadingDouble(value);
+    }
+
+    public void readECOTEMPERATURE(String value) {
+        this.ecoTemp = ValueExtractUtil.extractLeadingDouble(value);
+    }
+
+    public void readCOMFORTTEMPERATURE(String value) {
+        comfortTemp = ValueExtractUtil.extractLeadingDouble(value);
     }
 
     public void readDESIREDTEMPERATURE(String value) {
-        this.desiredTemperature = ValueDescriptionUtil.appendTemperature(value);
+        String modeValue = value.toUpperCase();
+        for (HeatingMode heatingMode : HeatingMode.values()) {
+            if (modeValue.equalsIgnoreCase(value)) {
+                this.heatingMode = heatingMode;
+                return;
+            }
+        }
+
+        setDesiredTemp(ValueExtractUtil.extractLeadingDouble(value));
     }
 
     public void readTEMPERATURE(String value) {
@@ -120,12 +155,63 @@ public class MaxDevice extends ToggleableDevice<MaxDevice> {
         return battery;
     }
 
-    public String getWindowOpenTemperature() {
-        return windowOpenTemperature;
+    @Override
+    public void setWindowOpenTemp(double windowOpenTemp) {
+        this.windowOpenTemp = windowOpenTemp;
     }
 
-    public String getDesiredTemperature() {
-        return desiredTemperature;
+    public Double getWindowOpenTemp() {
+        return windowOpenTemp;
+    }
+
+    @Override
+    public String getWindowOpenTempDesc() {
+        return ValueDescriptionUtil.appendTemperature(windowOpenTemp);
+    }
+
+    @Override
+    public String getWindowOpenTempCommandFieldName() {
+        return "windowOpenTemperature";
+    }
+
+    @Override
+    public void setEcoTemp(double ecoTemp) {
+        this.ecoTemp = ecoTemp;
+    }
+
+    @Override
+    public Double getEcoTemp() {
+        return ecoTemp;
+    }
+
+    @Override
+    public String getEcoTempDesc() {
+        return ValueDescriptionUtil.appendTemperature(ecoTemp);
+    }
+
+    @Override
+    public String getEcoTempCommandFieldName() {
+        return "ecoTemperature";
+    }
+
+    @Override
+    public void setComfortTemp(double comfortTemp) {
+        this.comfortTemp = comfortTemp;
+    }
+
+    @Override
+    public Double getComfortTemp() {
+        return comfortTemp;
+    }
+
+    @Override
+    public String getComfortTempDesc() {
+        return ValueDescriptionUtil.appendTemperature(comfortTemp);
+    }
+
+    @Override
+    public String getComfortTempCommandFieldName() {
+        return "comfortTemperature";
     }
 
     public String getTemperature() {
@@ -164,4 +250,49 @@ public class MaxDevice extends ToggleableDevice<MaxDevice> {
     public boolean isSupported() {
         return subType != null;
     }
+
+
+    @Override
+    public void setDesiredTemp(double desiredTemp) {
+        this.desiredTemp = desiredTemp;
+        heatingMode = HeatingMode.MANUAL;
+    }
+
+    @Override
+    public Double getDesiredTemp() {
+        return desiredTemp;
+    }
+
+    @Override
+    public String getDesiredTempDesc() {
+        return desiredTemperatureToString(desiredTemp, MINIMUM_TEMPERATURE, MAXIMUM_TEMPERATURE);
+    }
+
+    @Override
+    public void setHeatingMode(HeatingMode heatingMode) {
+        this.heatingMode = heatingMode;
+        this.desiredTemp = MINIMUM_TEMPERATURE;
+    }
+
+    public HeatingMode getHeatingMode() {
+        return heatingMode;
+    }
+
+    @Override
+    public HeatingMode[] getIgnoredHeatingModes() {
+        return new HeatingMode[] { HeatingMode.MANUAL };
+    }
+
+    @Override
+    public String getHeatingModeCommandField() {
+        return "desired-temp";
+    }
+
+    @Override
+    public String getDesiredTempCommandFieldName() {
+        return "desired-temp";
+    }
+
+
+
 }

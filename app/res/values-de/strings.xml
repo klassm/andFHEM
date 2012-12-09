@@ -46,6 +46,8 @@
     <string name="avgMonth">Monatsschnitt</string>
     <string name="isRaining">Regnet es?</string>
     <string name="desiredTemperature">Wunschtemperatur</string>
+    <string name="comfortTemperature">Komfort-Temperatur</string>
+    <string name="ecoTemperature">Öko-Temperatur</string>
     <string name="forecast">Vorhersage</string>
     <string name="pressure">Luftdruck</string>
     <string name="dewpoint">Taupunkt</string>

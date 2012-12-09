@@ -22,31 +22,27 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.service.device;
+package li.klass.fhem.util;
 
-import li.klass.fhem.domain.DesiredTempDevice;
-import li.klass.fhem.service.CommandExecutionService;
+import java.util.ArrayList;
+import java.util.List;
 
-public class DesiredTempService {
-
-    public static final DesiredTempService INSTANCE = new DesiredTempService();
-
-    private static final String DESIRED_TEMP_COMMAND = "set %s %s %s";
-
-    private DesiredTempService() {
+public class EnumUtils {
+    public static <T extends Enum<T>> List<String> toStringList(T[] values) {
+        List<String> result = new ArrayList<String>();
+        for (T value : values) {
+            result.add(value.name());
+        }
+        return result;
     }
 
-    /**
-     * Sets the desired temperature. The action will only be executed if the new desired temperature is different to
-     * the already set one.
-     * @param device concerned device
-     * @param desiredTemperatureToSet new desired temperature value
-     */
-    public void setDesiredTemperature(DesiredTempDevice device, double desiredTemperatureToSet) {
-        String command = String.format(DESIRED_TEMP_COMMAND, device.getName(), device.getDesiredTempCommandFieldName(), desiredTemperatureToSet);
-        if (desiredTemperatureToSet != device.getDesiredTemp()) {
-            CommandExecutionService.INSTANCE.executeSafely(command);
-            device.setDesiredTemp(desiredTemperatureToSet);
+    public static <T extends Enum<T>> int positionOf(T[] values, T mode) {
+        for (int i = 0; i < values.length; i++) {
+            T value = values[i];
+            if (value == mode) {
+                return i;
+            }
         }
+        return -1;
     }
 }
