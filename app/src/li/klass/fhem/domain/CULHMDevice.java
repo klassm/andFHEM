@@ -292,6 +292,17 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice> {
                         new ChartSeriesDescription(R.string.rawValue, "4:rawValue:0:")));
 
                 break;
+
+            case THERMOSTAT:
+
+                addDeviceChartIfNotNull(measuredTemp, new DeviceChart(R.string.temperatureGraph, R.string.yAxisTemperature,
+                        ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:measured-temp")));
+                addDeviceChartIfNotNull(humidity, new DeviceChart(R.string.humidityGraph, R.string.yAxisHumidity,
+                        new ChartSeriesDescription(R.string.humidity, "4:humidity")));
+                addDeviceChartIfNotNull(actuator, new DeviceChart(R.string.actuatorGraph, R.string.yAxisActuator,
+                        new ChartSeriesDescription(R.string.humidity, "4:actuator")));
+
+                break;
         }
     }
 
