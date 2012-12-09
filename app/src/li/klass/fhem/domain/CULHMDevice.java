@@ -58,7 +58,6 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice> imp
     public static double MAXIMUM_TEMPERATURE = 30.5;
     public static double MINIMUM_TEMPERATURE = 5.5;
 
-    @ShowField(description = ResourceIdMapper.desiredTemperature)
     private double desiredTemp;
     @ShowField(description = ResourceIdMapper.temperature, showInOverview = true)
     @WidgetTemperatureField
@@ -206,6 +205,9 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice> imp
 
     @Override
     public int getPositionForDimState(String dimState) {
+        if (eventMapReverse.containsKey(dimState)) {
+            dimState = eventMapReverse.get(dimState);
+        }
         dimState = dimState.replaceAll("[ ]?%", "");
         return super.getPositionForDimState(dimState);
     }
@@ -222,6 +224,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice> imp
         return measured;
     }
 
+    @ShowField(description = ResourceIdMapper.desiredTemperature)
     public String getDesiredTempDesc() {
         return ValueDescriptionUtil.desiredTemperatureToString(desiredTemp, MINIMUM_TEMPERATURE, MAXIMUM_TEMPERATURE);
     }

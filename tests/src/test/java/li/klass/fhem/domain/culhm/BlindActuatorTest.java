@@ -51,6 +51,13 @@ public class BlindActuatorTest extends DeviceXMLParsingBase {
         assertThat(device.getDeviceCharts().size(), is(0));
     }
 
+    @Test
+    public void testEventMap() {
+        CULHMDevice device = getDeviceFor("device1");
+        device.setState("on");
+        assertThat(device.getDimPosition(), is(device.getDimUpperBound()));
+    }
+
     @Override
     protected String getFileName() {
         return "blindActuator.xml";

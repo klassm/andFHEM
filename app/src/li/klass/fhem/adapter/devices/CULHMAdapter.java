@@ -68,6 +68,8 @@ public class CULHMAdapter extends DimmableAdapter<CULHMDevice> {
         registerFieldListener("desiredTemp", new FieldNameAddedToDetailListener<CULHMDevice>() {
             @Override
             public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, CULHMDevice device, TableRow fieldTableRow) {
+                if (device.getSubType() != CULHMDevice.SubType.THERMOSTAT) return;
+
                 tableLayout.addView(new TemperatureChangeTableRow<CULHMDevice>(context, device.getDesiredTemp(), fieldTableRow,
                         Actions.DEVICE_SET_DESIRED_TEMPERATURE, R.string.desiredTemperature, MINIMUM_TEMPERATURE, MAXIMUM_TEMPERATURE)
                         .createRow(inflater, device));
