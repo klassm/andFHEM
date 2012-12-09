@@ -71,8 +71,11 @@ public class MaxDevice extends ToggleableDevice<MaxDevice> implements DesiredTem
     @ShowField(description = ResourceIdMapper.windowOpenTemp)
     private double windowOpenTemp;
 
+
+    private double desiredTemp;
+
     @ShowField(description = ResourceIdMapper.desiredTemperature, showInOverview = true)
-    private Double desiredTemp = null;
+    private String desiredTempDesc;
 
     @ShowField(description = ResourceIdMapper.temperature, showInOverview = true)
     private String temperature;
@@ -254,7 +257,8 @@ public class MaxDevice extends ToggleableDevice<MaxDevice> implements DesiredTem
     @Override
     public void setDesiredTemp(double desiredTemp) {
         this.desiredTemp = desiredTemp;
-        heatingMode = HeatingMode.MANUAL;
+        this.desiredTempDesc = desiredTemperatureToString(desiredTemp, MINIMUM_TEMPERATURE, MAXIMUM_TEMPERATURE);
+        this.heatingMode = HeatingMode.MANUAL;
     }
 
     @Override
@@ -264,8 +268,7 @@ public class MaxDevice extends ToggleableDevice<MaxDevice> implements DesiredTem
 
     @Override
     public String getDesiredTempDesc() {
-        if (desiredTemp == null) return null;
-        return desiredTemperatureToString(desiredTemp, MINIMUM_TEMPERATURE, MAXIMUM_TEMPERATURE);
+        return desiredTempDesc;
     }
 
     @Override

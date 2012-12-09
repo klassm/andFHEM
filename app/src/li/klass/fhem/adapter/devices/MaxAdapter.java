@@ -54,7 +54,7 @@ public class MaxAdapter extends GenericDeviceAdapter<MaxDevice> {
 
     @Override
     protected void afterPropertiesSet() {
-        registerFieldListener("desiredTemp", new FieldNameAddedToDetailListener<MaxDevice>() {
+        registerFieldListener("state", new FieldNameAddedToDetailListener<MaxDevice>() {
             @Override
             public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, MaxDevice device, TableRow fieldTableRow) {
                 if (device.getSubType() != MaxDevice.SubType.TEMPERATURE) return;
@@ -79,7 +79,7 @@ public class MaxAdapter extends GenericDeviceAdapter<MaxDevice> {
             }
         });
 
-        registerFieldListener("desiredTemp", new FieldNameAddedToDetailListener<MaxDevice>() {
+        registerFieldListener("desiredTempDesc", new FieldNameAddedToDetailListener<MaxDevice>() {
             @Override
             public void onFieldNameAdded(final Context context, TableLayout tableLayout, String field, MaxDevice device, TableRow fieldTableRow) {
                 if (device.getSubType() != MaxDevice.SubType.TEMPERATURE) return;
