@@ -26,6 +26,7 @@ package li.klass.fhem.domain;
 
 import li.klass.fhem.domain.core.Device;
 
+@SuppressWarnings("unused")
 public class FileLogDevice extends Device<FileLogDevice> {
 
     private String concerningDeviceName;
@@ -34,10 +35,10 @@ public class FileLogDevice extends Device<FileLogDevice> {
         this.concerningDeviceName = extractConcerningDeviceNameFromDefinition(value);
     }
 
-    private String extractConcerningDeviceNameFromDefinition(String definition) {
+    static String extractConcerningDeviceNameFromDefinition(String definition) {
         int firstColonPosition = definition.indexOf(":");
         if (firstColonPosition != -1) {
-            return definition.substring(0, firstColonPosition);
+            return definition.substring(0, firstColonPosition).replaceAll("\\(", "");
         }
 
         return definition;

@@ -27,6 +27,7 @@ package li.klass.fhem.domain;
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 import org.junit.Test;
 
+import static li.klass.fhem.domain.FileLogDevice.extractConcerningDeviceNameFromDefinition;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
@@ -47,6 +48,12 @@ public class FileLogDeviceTest extends DeviceXMLParsingBase {
 
         assertThat(device.getFileLog(), is(nullValue()));
         assertThat(device.getDeviceCharts().size(), is(0));
+    }
+
+    @Test
+    public void testExtractConcerningDeviceNameFromDefinition() {
+        assertThat(extractConcerningDeviceNameFromDefinition("(Thermostat_Bad:.*(temperature|battery|desiredTemperature|valveposition)):|(Temp_Sensor_Schlafzimmer:.*temperature).*"), is("Thermostat_Bad"));
+        assertThat(extractConcerningDeviceNameFromDefinition("CUL_TX_116:T:.*"), is("CUL_TX_116"));
     }
 
     @Override
