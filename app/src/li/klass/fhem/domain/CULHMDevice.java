@@ -46,7 +46,7 @@ import java.util.List;
 @DetailOverviewViewSettings(showState = true)
 @FloorplanViewSettings(showState = true)
 @SupportsWidget(TemperatureWidgetView.class)
-public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice> {
+public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice> implements DesiredTempDevice {
 
     public enum SubType {
         DIMMER, SWITCH, HEATING, SMOKE_DETECTOR, THREE_STATE, TEMPERATURE_HUMIDITY, THERMOSTAT, KFM100
@@ -54,8 +54,11 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice> {
 
     private SubType subType = null;
 
+    public static double MAXIMUM_TEMPERATURE = 30.5;
+    public static double MINIMUM_TEMPERATURE = 5.5;
+
     @ShowField(description = ResourceIdMapper.desiredTemperature)
-    private String desiredTemp;
+    private double desiredTemp;
     @ShowField(description = ResourceIdMapper.temperature, showInOverview = true)
     @WidgetTemperatureField
     private String measuredTemp;
@@ -125,7 +128,10 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice> {
     }
 
     public void readDESIRED_TEMP(String value) {
-        desiredTemp = ValueDescriptionUtil.appendTemperature(value);
+        if (value.equalsIgnoreCase("off")) value = "5.5";
+        if (value.equalsIgnoreCase("on")) value = "30.5";
+
+        desiredTemp = ValueExtractUtil.extractLeadingDouble(value);
     }
 
     public void readBATTERY(String value) {
@@ -215,7 +221,21 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice> {
         return measured;
     }
 
-    public String getDesiredTemp() {
+    public String getDesiredTempDesc() {
+        return ValueDescriptionUtil.desiredTemperatureToString(desiredTemp, MINIMUM_TEMPERATURE, MAXIMUM_TEMPERATURE);
+    }
+
+    @Override
+    public String getDesiredTempCommandFieldName() {
+        return "desired-temp";
+    }
+
+    @Override
+    public void setDesiredTemp(double desiredTemp) {
+        this.desiredTemp = desiredTemp;
+    }
+
+    public double getDesiredTemp() {
         return desiredTemp;
     }
 

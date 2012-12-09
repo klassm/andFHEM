@@ -38,7 +38,7 @@ import li.klass.fhem.util.ValueExtractUtil;
 @FloorplanViewSettings(showState = true)
 @SupportsWidget(TemperatureWidgetView.class)
 @SuppressWarnings("unused")
-public class PIDDevice extends Device<PIDDevice> {
+public class PIDDevice extends Device<PIDDevice> implements DesiredTempDevice {
 
     @ShowField(description = ResourceIdMapper.temperature, showInOverview = true)
     @WidgetTemperatureField
@@ -74,12 +74,22 @@ public class PIDDevice extends Device<PIDDevice> {
         return temperature;
     }
 
-    public void setDesiredTemperature(double desiredTemperature) {
+    public void setDesiredTemp(double desiredTemperature) {
         this.desiredTemperature = desiredTemperature;
     }
 
-    public double getDesiredTemperature() {
+    public double getDesiredTemp() {
         return desiredTemperature;
+    }
+
+    @Override
+    public String getDesiredTempDesc() {
+        return ValueDescriptionUtil.desiredTemperatureToString(desiredTemperature, MINIMUM_TEMPERATURE, MAXIMUM_TEMPERATURE);
+    }
+
+    @Override
+    public String getDesiredTempCommandFieldName() {
+        return "desired";
     }
 
     public String getDelta() {

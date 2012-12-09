@@ -49,7 +49,7 @@ import java.util.Map;
 @FloorplanViewSettings
 @SupportsWidget({TemperatureWidgetView.class, MediumInformationWidgetView.class})
 @SuppressWarnings("unused")
-public class FHTDevice extends Device<FHTDevice> {
+public class FHTDevice extends Device<FHTDevice> implements DesiredTempDevice {
     public static double MAXIMUM_TEMPERATURE = 30.5;
     public static double MINIMUM_TEMPERATURE = 5.5;
 
@@ -162,7 +162,12 @@ public class FHTDevice extends Device<FHTDevice> {
     }
 
     public String getDesiredTempDesc() {
-        return temperatureToString(desiredTemp);
+        return ValueDescriptionUtil.desiredTemperatureToString(desiredTemp, MINIMUM_TEMPERATURE, MAXIMUM_TEMPERATURE);
+    }
+
+    @Override
+    public String getDesiredTempCommandFieldName() {
+        return "desired-temp";
     }
 
     public double getDesiredTemp() {
@@ -170,7 +175,7 @@ public class FHTDevice extends Device<FHTDevice> {
     }
 
     public String getDayTemperatureDesc() {
-        return temperatureToString(dayTemperature);
+        return ValueDescriptionUtil.desiredTemperatureToString(dayTemperature, MINIMUM_TEMPERATURE, MAXIMUM_TEMPERATURE);
     }
 
     public double getDayTemperature() {
@@ -182,7 +187,7 @@ public class FHTDevice extends Device<FHTDevice> {
     }
 
     public String getNightTemperatureDesc() {
-        return temperatureToString(nightTemperature);
+        return ValueDescriptionUtil.desiredTemperatureToString(nightTemperature, MINIMUM_TEMPERATURE, MAXIMUM_TEMPERATURE);
     }
 
     public double getNightTemperature() {
@@ -194,7 +199,7 @@ public class FHTDevice extends Device<FHTDevice> {
     }
 
     public String getWindowOpenTempDesc() {
-        return temperatureToString(windowOpenTemp);
+        return ValueDescriptionUtil.desiredTemperatureToString(windowOpenTemp, MINIMUM_TEMPERATURE, MAXIMUM_TEMPERATURE);
     }
 
     public double getWindowOpenTemp() {
@@ -223,16 +228,6 @@ public class FHTDevice extends Device<FHTDevice> {
 
     public Map<Integer, FHTDayControl> getDayControlMap() {
         return Collections.unmodifiableMap(dayControlMap);
-    }
-
-    public static String temperatureToString(double temperature) {
-        if (temperature == 5.5) {
-            return "off";
-        } else if (temperature == 30.5) {
-            return "on";
-        } else {
-            return ValueDescriptionUtil.appendTemperature(temperature);
-        }
     }
 
     public boolean hasChangedDayControlMapValues() {

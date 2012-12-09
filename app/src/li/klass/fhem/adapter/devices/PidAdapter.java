@@ -47,7 +47,7 @@ public class PidAdapter extends GenericDeviceAdapter<PIDDevice> {
         registerFieldListener("desiredTemperature", new FieldNameAddedToDetailListener<PIDDevice>() {
             @Override
             public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, PIDDevice device, TableRow fieldTableRow) {
-                tableLayout.addView(new TemperatureChangeTableRow<PIDDevice>(context, device.getDesiredTemperature(), fieldTableRow,
+                tableLayout.addView(new TemperatureChangeTableRow<PIDDevice>(context, device.getDesiredTemp(), fieldTableRow,
                         Actions.DEVICE_SET_DESIRED_TEMPERATURE, R.string.desiredTemperature, MINIMUM_TEMPERATURE, MAXIMUM_TEMPERATURE)
                         .createRow(inflater, device));
             }

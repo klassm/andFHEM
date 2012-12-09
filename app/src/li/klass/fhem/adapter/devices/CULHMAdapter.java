@@ -28,11 +28,17 @@ import android.content.Context;
 import android.view.View;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.DimmableAdapter;
 import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
 import li.klass.fhem.adapter.devices.genericui.CustomViewTableRow;
+import li.klass.fhem.adapter.devices.genericui.TemperatureChangeTableRow;
+import li.klass.fhem.constants.Actions;
 import li.klass.fhem.domain.CULHMDevice;
 import li.klass.fhem.widget.LitreContentView;
+
+import static li.klass.fhem.domain.CULHMDevice.MAXIMUM_TEMPERATURE;
+import static li.klass.fhem.domain.CULHMDevice.MINIMUM_TEMPERATURE;
 
 public class CULHMAdapter extends DimmableAdapter<CULHMDevice> {
 
@@ -56,6 +62,15 @@ public class CULHMAdapter extends DimmableAdapter<CULHMDevice> {
                         }.createRow(inflater));
                         break;
                 }
+            }
+        });
+
+        registerFieldListener("desiredTemp", new FieldNameAddedToDetailListener<CULHMDevice>() {
+            @Override
+            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, CULHMDevice device, TableRow fieldTableRow) {
+                tableLayout.addView(new TemperatureChangeTableRow<CULHMDevice>(context, device.getDesiredTemp(), fieldTableRow,
+                        Actions.DEVICE_SET_DESIRED_TEMPERATURE, R.string.desiredTemperature, MINIMUM_TEMPERATURE, MAXIMUM_TEMPERATURE)
+                        .createRow(inflater, device));
             }
         });
     }

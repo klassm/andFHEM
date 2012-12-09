@@ -42,7 +42,7 @@ public class PIDDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getTemperature(), is("16.8 (°C)"));
         assertThat(device.getDelta(), is("-0.800000000000001"));
         assertThat(device.getState(), is("16.8 (delta -0.800000000000001)"));
-        assertThat(device.getDesiredTemperature(), is(closeTo(16, 0.001)));
+        assertThat(device.getDesiredTemp(), is(closeTo(16, 0.001)));
 
         assertThat(device.getAvailableTargetStates(), is(notNullValue()));
 

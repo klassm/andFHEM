@@ -22,44 +22,31 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.util;
+package li.klass.fhem.service.device;
 
-public class ValueDescriptionUtil {
-    public static String appendTemperature(Object text) {
-        return append(text, "°C");
+import li.klass.fhem.domain.DesiredTempDevice;
+import li.klass.fhem.service.CommandExecutionService;
+
+public class DesiredTempService {
+
+    public static final DesiredTempService INSTANCE = new DesiredTempService();
+
+    private static final String DESIRED_TEMP_COMMAND = "set %s %s %s";
+
+    private DesiredTempService() {
     }
 
-    public static String appendPercent(Object text) {
-        return append(text, "%");
-    }
-
-    public static String appendKmH(Object text) {
-        return append(text, "km/h");
-    }
-
-    public static String appendLm2(Object text) {
-        return append(text, "l/m2");
-    }
-
-    public static String appendL(Object text) {
-        return append(text, "l");
-    }
-
-    public static String appendKwh(Object text) {
-        return append(text, "kwh");
-    }
-
-    public static String append(Object text, String appendix) {
-        return text + " (" + appendix + ")";
-    }
-
-    public static String desiredTemperatureToString(double temperature, double minTemp, double maxTemp) {
-        if (temperature == minTemp) {
-            return "off";
-        } else if (temperature == maxTemp) {
-            return "on";
-        } else {
-            return ValueDescriptionUtil.appendTemperature(temperature);
+    /**
+     * Sets the desired temperature. The action will only be executed if the new desired temperature is different to
+     * the already set one.
+     * @param device concerned device
+     * @param desiredTemperatureToSet new desired temperature value
+     */
+    public void setDesiredTemperature(DesiredTempDevice device, double desiredTemperatureToSet) {
+        String command = String.format(DESIRED_TEMP_COMMAND, device.getName(), device.getDesiredTempCommandFieldName(), desiredTemperatureToSet);
+        if (desiredTemperatureToSet != device.getDesiredTemp()) {
+            CommandExecutionService.INSTANCE.executeSafely(command);
+            device.setDesiredTemp(desiredTemperatureToSet);
         }
     }
 }
