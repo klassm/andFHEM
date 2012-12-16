@@ -47,6 +47,7 @@ public class FHTAdapterTest extends RobolectricBaseTestCase {
          assertThat(FHTAdapter.holidayShortIsTomorrow(12, 12, 11, 10), is(true));
          assertThat(FHTAdapter.holidayShortIsTomorrow(12, 10, 12, 10), is(false));
          assertThat(FHTAdapter.holidayShortIsTomorrow(11, 10, 12, 10), is(false));
+         assertThat(FHTAdapter.holidayShortIsTomorrow(9, 0, 9, 50), is(false));
     }
 
     private void verifyTimePickerHoliday1Time(int currentHour, int currentMinute, int expextedHoliday1Value) {

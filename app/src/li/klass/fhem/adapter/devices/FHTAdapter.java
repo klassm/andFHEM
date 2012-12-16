@@ -260,7 +260,7 @@ public class FHTAdapter extends GenericDeviceAdapter<FHTDevice> {
         if (selectedHour < currentHour) {
             return true;
         } else if (selectedHour == currentHour) {
-            return currentMinutes < selectedMinutes;
+            return currentMinutes > selectedMinutes;
         }
 
         return false;
