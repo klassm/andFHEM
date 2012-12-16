@@ -54,7 +54,7 @@
         <INT key="TCM310_TIME" value="2012-11-05 19:41:52"/>
         <INT key="TYPE" value="EnOcean"/>
         <INT key="IODev" value="TCM310"/>
-        <ATTR key="eventMap" value="BI:off B0:on"/>
+        <ATTR key="eventMap" value="released:off B0:on"/>
         <ATTR key="room" value="room"/>
         <ATTR key="subType" value="switch"/>
         <STATE key="state" value="on" measured="2012-11-05 19:41:52"/>

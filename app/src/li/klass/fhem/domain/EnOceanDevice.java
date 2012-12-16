@@ -81,7 +81,7 @@ public class EnOceanDevice extends ToggleableDevice<EnOceanDevice> {
     @Override
     public int compareTo(EnOceanDevice other) {
         int result = 0;
-        if (subType != null) {
+        if (subType != null && other.getSubType() != null) {
             result = subType.compareTo(other.getSubType());
         }
 
@@ -92,11 +92,17 @@ public class EnOceanDevice extends ToggleableDevice<EnOceanDevice> {
 
     @Override
     public String getOffStateName() {
+        if (eventMapReverse.containsKey("off")) {
+            return eventMapReverse.get("off");
+        }
         return "BI";
     }
 
     @Override
     public String getOnStateName() {
+        if (eventMapReverse.containsKey("on")) {
+            return eventMapReverse.get("on");
+        }
         return "B0";
     }
 }
