@@ -167,7 +167,7 @@ public class DeviceIntentService extends ConvenientIntentService {
         int second = extras.getInt(BundleExtraKeys.TIMER_SECOND, 0);
         String repetition = extras.getString(BundleExtraKeys.TIMER_REPETITION);
         String type = extras.getString(BundleExtraKeys.TIMER_TYPE);
-        String stateAppendix = extras.getString(BundleExtraKeys.TIMER_TARGET_STATE_APPENDIX, null);
+        String stateAppendix = extras.getString(BundleExtraKeys.TIMER_TARGET_STATE_APPENDIX);
         String timerName = extras.getString(BundleExtraKeys.TIMER_NAME);
         boolean isActive = extras.getBoolean(BundleExtraKeys.TIMER_IS_ACTIVE);
 
