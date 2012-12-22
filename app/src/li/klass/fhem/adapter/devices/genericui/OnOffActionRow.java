@@ -61,15 +61,17 @@ public class OnOffActionRow<T extends ToggleableDevice> {
         ((TextView) row.findViewById(R.id.description)).setText(description);
 
         Button onButton = (Button) row.findViewById(R.id.onButton);
-        onButton.setOnClickListener(createListener(context, device, "on"));
-        if (eventMap.containsKey("on")) {
-            onButton.setText(eventMap.get("on"));
+        String onStateName = device.getOnStateName();
+        onButton.setOnClickListener(createListener(context, device, onStateName));
+        if (eventMap.containsKey(onStateName)) {
+            onButton.setText(eventMap.get(onStateName));
         }
 
         Button offButton = (Button) row.findViewById(R.id.offButton);
-        offButton.setOnClickListener(createListener(context, device, "off"));
-        if (eventMap.containsKey("off")) {
-            offButton.setText(eventMap.get("off"));
+        String offStateName = device.getOffStateName();
+        offButton.setOnClickListener(createListener(context, device, offStateName));
+        if (eventMap.containsKey(offStateName)) {
+            offButton.setText(eventMap.get(offStateName));
         }
 
         offButton.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.theme_toggle_off_normal));

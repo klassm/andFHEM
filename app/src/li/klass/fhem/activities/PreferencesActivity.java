@@ -24,9 +24,15 @@
 
 package li.klass.fhem.activities;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.preference.*;
 import android.text.method.PasswordTransformationMethod;
+import android.view.View;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import com.hlidskialf.android.preference.SeekBarPreference;
 import li.klass.fhem.R;
 import li.klass.fhem.fhem.DataConnectionSwitch;
@@ -128,7 +134,7 @@ public class PreferencesActivity extends PreferenceActivity {
         portPreference.setKey(TELNET_PORT);
         getDataOriginCategory().addPreference(portPreference);
 
-        EditTextPreference passwordPreference = new EditTextPreference(this);
+        EditPasswordPreference passwordPreference = new EditPasswordPreference(this);
         passwordPreference.setTitle(R.string.prefPassword);
         passwordPreference.setSummary(R.string.optional);
         passwordPreference.setKey(TELNET_PASSWORD);
@@ -161,15 +167,53 @@ public class PreferencesActivity extends PreferenceActivity {
         usernamePreference.setSummary(R.string.optional);
         getDataOriginCategory().addPreference(usernamePreference);
 
-        EditTextPreference passwordPreference = new EditTextPreference(this);
+        EditPasswordPreference passwordPreference = new EditPasswordPreference(this);
         passwordPreference.setTitle(R.string.prefPassword);
         passwordPreference.setKey(FHEMWEB_PASSWORD);
         passwordPreference.setSummary(R.string.optional);
-        passwordPreference.getEditText().setTransformationMethod(PasswordTransformationMethod.getInstance());
         getDataOriginCategory().addPreference(passwordPreference);
     }
 
     private PreferenceCategory getDataOriginCategory() {
         return (PreferenceCategory) findPreference("DATAORIGINCATEGORY");
+    }
+
+    private class EditPasswordPreference extends EditTextPreference {
+
+        public EditPasswordPreference(Context context) {
+            super(context);
+        }
+
+        @Override
+        protected View onCreateDialogView() {
+            ScrollView view = (ScrollView) super.onCreateDialogView();
+            LinearLayout layout = (LinearLayout) view.getChildAt(0);
+
+            CheckBox checkBox = new CheckBox(PreferencesActivity.this);
+            checkBox.setText(getString(R.string.showPassword));
+            checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                    if (checked) {
+                        showPassword();
+                    } else {
+                        hidePassword();
+                    }
+                }
+            });
+            layout.addView(checkBox);
+
+            hidePassword();
+
+            return view;
+        }
+
+        private void showPassword() {
+            getEditText().setTransformationMethod(null);
+        }
+
+        private void hidePassword() {
+            getEditText().setTransformationMethod(PasswordTransformationMethod.getInstance());
+        }
     }
 }

@@ -122,6 +122,7 @@
     <string name="deactivated">deactivated</string>
     <string name="endDate">End Date</string>
     <string name="endTime">End Time</string>
+    <string name="showPassword">Show password</string>
 
     <string name="switchDevice">Switch</string>
     <string name="preferences">Preferences</string>
