@@ -24,6 +24,8 @@
 
 package li.klass.fhem.activities.core;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -62,6 +64,7 @@ import static li.klass.fhem.constants.Actions.*;
 public abstract class FragmentBaseActivity extends SherlockFragmentActivity implements ActionBar.TabListener, Updateable {
 
     ApplicationProperties applicationProperties = ApplicationProperties.INSTANCE;
+    private ProgressDialog progressDialog;
 
     private static class FragmentHistoryStackEntry implements Serializable {
         FragmentHistoryStackEntry(BaseFragment navigationFragment, BaseFragment contentFragment) {
@@ -537,29 +540,24 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
     }
 
     private void showDialog(Bundle bundle) {
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        Fragment prev = getSupportFragmentManager().findFragmentByTag("dialog");
-        if (prev != null) {
-            fragmentTransaction.remove(prev);
-        }
-        fragmentTransaction.addToBackStack(null);
+        String message = getString(bundle.getInt(BundleExtraKeys.CONTENT));
 
-        DialogFragment newFragment = new ProgressFragment(bundle);
-        newFragment.show(fragmentTransaction, "dialog");
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage(message);
+
+        if (bundle.containsKey(BundleExtraKeys.TITLE)) {
+            progressDialog.setTitle(bundle.getInt(BundleExtraKeys.TITLE));
+        }
+        progressDialog.setCancelable(true);
+
+        progressDialog.show();
     }
 
     private void removeDialog() {
         if (saveInstanceStateCalled) return;
-        try {
-            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            Fragment prev = getSupportFragmentManager().findFragmentByTag("dialog");
-            if (prev != null) {
-                fragmentTransaction.remove(prev);
-            }
-            fragmentTransaction.addToBackStack(null);
-            fragmentTransaction.commit();
-        } catch (Exception e) {
-            Log.e(FragmentBaseActivity.class.getName(), "error while removing dialog", e);
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+            progressDialog = null;
         }
     }
 
