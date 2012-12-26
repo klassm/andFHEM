@@ -3375,4 +3375,16 @@ room structexclude webCmd eventMap">
     <ATTR key="room" value="Plot"/>
 </weblink>
 </weblink_LIST>
+<EIB_LIST>
+<EIB name="vse_klet" state="on" sets="off on on-for-timer on-till value" attrs="room group comment alias eventMap IODev do_not_notify:1,0 ignore:0,1 dummy:1,0 showtime:1,0 model:EIB loglevel:0,1,2,3,4,5,6">
+    <INT key="DEF" value="0/0/200"/>
+    <INT key="GROUP" value="00c8"/>
+    <INT key="NAME" value="vse_klet"/>
+    <INT key="NR" value="44"/>
+    <INT key="STATE" value="on"/>
+    <INT key="TYPE" value="EIB"/>
+    <INT key="IODev" value="tul1"/>
+    <ATTR key="room" value="rolete"/>
+</EIB>
+</EIB_LIST>
         </FHZINFO>
