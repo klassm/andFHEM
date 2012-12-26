@@ -49,8 +49,16 @@ import java.util.Set;
 public abstract class DeviceNameListFragment extends BaseFragment {
     private transient DeviceNameListAdapter adapter;
 
+    private int columnWidth = Integer.MAX_VALUE;
+
     public interface DeviceFilter extends Serializable {
         boolean isSelectable(Device<?> device);
+    }
+
+    @SuppressWarnings("unused")
+    public DeviceNameListFragment(Bundle bundle, int columnWidth) {
+        super(bundle);
+        this.columnWidth = columnWidth;
     }
 
     @SuppressWarnings("unused")
@@ -70,7 +78,7 @@ public abstract class DeviceNameListFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.device_name_list, null);
         GridViewWithSections deviceList = (GridViewWithSections) view.findViewById(R.id.deviceMap1);
 
-        adapter = new DeviceNameListAdapter(inflater.getContext(), new RoomDeviceList(""), Integer.MAX_VALUE);
+        adapter = new DeviceNameListAdapter(inflater.getContext(), new RoomDeviceList(""), columnWidth);
         adapter.registerOnClickObserver(new GridViewWithSections.GridViewWithSectionsOnClickObserver() {
             @Override
             public void onItemClick(View view, Object parent, Object child, int parentPosition, int childPosition) {

@@ -33,6 +33,7 @@ import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import li.klass.fhem.R;
 import li.klass.fhem.activities.core.FragmentBaseActivity;
+import li.klass.fhem.activities.device.DeviceNameListAdapter;
 import li.klass.fhem.appwidget.view.WidgetSize;
 import li.klass.fhem.appwidget.view.WidgetType;
 import li.klass.fhem.appwidget.view.widget.AppWidgetView;
@@ -87,7 +88,7 @@ public abstract class AppWidgetSelectionActivity extends FragmentActivity {
             }
         });
 
-        DeviceNameSelectionFragment deviceSelectionFragment = new DeviceNameSelectionFragment(bundle);
+        DeviceNameSelectionFragment deviceSelectionFragment = new DeviceNameSelectionFragment(bundle, DeviceNameListAdapter.DEFAULT_REQUIRED_COLUMN_WIDTH);
 
         try {
             getSupportFragmentManager()

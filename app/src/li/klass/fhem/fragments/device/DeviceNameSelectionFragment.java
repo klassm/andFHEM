@@ -46,6 +46,12 @@ public class DeviceNameSelectionFragment extends DeviceNameListFragment {
     }
 
     @SuppressWarnings("unused")
+    public DeviceNameSelectionFragment(Bundle bundle, int columnWidth) {
+        super(bundle, columnWidth);
+        resultReceiver = (ResultReceiver) bundle.getParcelable(BundleExtraKeys.RESULT_RECEIVER);
+    }
+
+    @SuppressWarnings("unused")
     public DeviceNameSelectionFragment() {
     }
 
