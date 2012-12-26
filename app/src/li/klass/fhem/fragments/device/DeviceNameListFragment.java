@@ -70,7 +70,7 @@ public abstract class DeviceNameListFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.device_name_list, null);
         GridViewWithSections deviceList = (GridViewWithSections) view.findViewById(R.id.deviceMap1);
 
-        adapter = new DeviceNameListAdapter(inflater.getContext(), new RoomDeviceList(""));
+        adapter = new DeviceNameListAdapter(inflater.getContext(), new RoomDeviceList(""), Integer.MAX_VALUE);
         adapter.registerOnClickObserver(new GridViewWithSections.GridViewWithSectionsOnClickObserver() {
             @Override
             public void onItemClick(View view, Object parent, Object child, int parentPosition, int childPosition) {

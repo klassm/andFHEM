@@ -39,10 +39,13 @@ import static android.view.ViewGroup.LayoutParams;
 
 public class DeviceNameListAdapter extends DeviceGridAdapter {
     private String selectedDeviceName;
-    private static final int REQUIRED_COLUMN_WIDTH = 150;
+    private static final int DEFAULT_REQUIRED_COLUMN_WIDTH = 150;
 
-    public DeviceNameListAdapter(Context context, RoomDeviceList roomDeviceList) {
+    private int requiredColumnWidth = DEFAULT_REQUIRED_COLUMN_WIDTH;
+
+    public DeviceNameListAdapter(Context context, RoomDeviceList roomDeviceList, int requiredColumnWidth) {
         super(context, roomDeviceList);
+        this.requiredColumnWidth = requiredColumnWidth;
     }
 
     @Override
@@ -74,7 +77,7 @@ public class DeviceNameListAdapter extends DeviceGridAdapter {
 
     @Override
     protected int getRequiredColumnWidth() {
-        return REQUIRED_COLUMN_WIDTH;
+        return requiredColumnWidth;
     }
 }
 
