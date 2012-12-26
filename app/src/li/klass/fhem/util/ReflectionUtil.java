@@ -36,6 +36,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ReflectionUtil {
+    public static final String TAG = ReflectionUtil.class.getName();
+
     public static List<Field> getFieldsWithAnnotation(Class<?> clazz, Class<? extends Annotation> annotation) {
         List<Field> result = new ArrayList<Field>();
         for (Field field : clazz.getDeclaredFields()) {
@@ -53,7 +55,7 @@ public class ReflectionUtil {
             throw new IllegalArgumentException("expected exactly one occurence for annotation " + annotation.getName() +
                     " in object " + object.toString() + ", but found " + fields.size());
         }
-        return getFieldValue(fields.get(0), object);
+        return getFieldValueAsString(object, fields.get(0));
     }
 
     public static <T extends Annotation> String getValueAndDescriptionForAnnotation(Object object, Class<T> annotationCls) {
@@ -92,12 +94,32 @@ public class ReflectionUtil {
         return fieldValue;
     }
 
-    public static String getFieldValue(Field field, Object object) {
+
+
+    public static Object getFieldValue(Object object, Field field) {
         try {
-            return String.valueOf(field.get(object));
+            field.setAccessible(true);
+            return field.get(object);
         } catch (IllegalAccessException e) {
-            throw new IllegalArgumentException(e);
+            Log.e(TAG, "cannot read field " + field.getName(), e);
+            return null;
         }
+    }
+
+    public static Object getMethodReturnValue(Object object, Method method) {
+        try {
+            method.setAccessible(true);
+            return method.invoke(object);
+        } catch (Exception e) {
+            Log.e(TAG, "exception while invoking " + method.getName(), e);
+            return null;
+        }
+    }
+
+
+    public static String getFieldValueAsString(Object object, Field field) {
+        Object value = getFieldValue(object, field);
+        return String.valueOf(value);
     }
 
     public static void main(String[] args) {

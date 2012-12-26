@@ -226,6 +226,8 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice> imp
 
     @ShowField(description = ResourceIdMapper.desiredTemperature)
     public String getDesiredTempDesc() {
+        if (! (subType == SubType.THERMOSTAT)) return null;
+
         return ValueDescriptionUtil.desiredTemperatureToString(desiredTemp, MINIMUM_TEMPERATURE, MAXIMUM_TEMPERATURE);
     }
 

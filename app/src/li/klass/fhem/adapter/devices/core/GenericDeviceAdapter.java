@@ -40,9 +40,9 @@ import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
 import li.klass.fhem.domain.genericview.FloorplanViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
+import li.klass.fhem.util.ReflectionUtil;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
 
@@ -133,6 +133,7 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
                     notifyFieldListeners(context, device, layout, "state", row);
                 }
             }
+
             Field[] declaredFields = device.getClass().getDeclaredFields();
             for (Field declaredField : declaredFields) {
                 declaredField.setAccessible(true);
@@ -145,7 +146,8 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
             for (Method method : device.getClass().getDeclaredMethods()) {
                 method.setAccessible(true);
                 if (method.isAnnotationPresent(ShowField.class) && method.getAnnotation(ShowField.class).showInDetail()) {
-                    createTableRow(device, inflater, layout, method, R.layout.device_overview_generic_table_row);
+                    TableRow row = createTableRow(device, inflater, layout, method, R.layout.device_detail_generic_table_row);
+                    notifyFieldListeners(context, device, layout, method.getName(), row);
                 }
             }
         } catch (Exception e) {
@@ -278,21 +280,21 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
     }
 
     private TableRow createTableRow(D device, LayoutInflater inflater, TableLayout layout, Field declaredField, int resource) throws IllegalAccessException {
-        Object value = declaredField.get(device);
-        int description = declaredField.getAnnotation(ShowField.class).description().getId();
+        Object value = ReflectionUtil.getFieldValue(device, declaredField);
+        ShowField showFieldAnnotation = declaredField.getAnnotation(ShowField.class);
 
-        return createTableRow(inflater, layout, resource, value, description);
+        return createTableRow(inflater, layout, resource, value, showFieldAnnotation);
     }
 
     private TableRow createTableRow(D device, LayoutInflater inflater, TableLayout layout, Method method, int resource) throws IllegalAccessException {
-        Object value = null;
-        try {
-            value = method.invoke(device);
-        } catch (InvocationTargetException e) {
-            Log.e(TAG, "exception while invoking " + method.getName(), e);
-        }
-        int description = method.getAnnotation(ShowField.class).description().getId();
+        Object value = ReflectionUtil.getMethodReturnValue(device, method);
+        ShowField showFieldAnnotation = method.getAnnotation(ShowField.class);
 
+        return createTableRow(inflater, layout, resource, value, showFieldAnnotation);
+    }
+
+    private TableRow createTableRow(LayoutInflater inflater, TableLayout layout, int resource, Object value, ShowField showFieldAnnotation) {
+        int description = showFieldAnnotation.description().getId();
         return createTableRow(inflater, layout, resource, value, description);
     }
 
