@@ -122,6 +122,8 @@ public class FloorplanFragment extends BaseFragment {
 
     @Override
     protected void onContentChanged(Map<String, Serializable> oldCreationAttributes, Map<String, Serializable> newCreationAttributes) {
+        super.onContentChanged(oldCreationAttributes, newCreationAttributes);
+
         if (oldCreationAttributes == null) {
             setBackground();
         }
@@ -183,6 +185,8 @@ public class FloorplanFragment extends BaseFragment {
     @Override
     public void update(boolean doUpdate) {
         tickCounter = 0;
+
+        setBackground();
         RelativeLayout layout = (RelativeLayout) getView().findViewById(R.id.floorplanHolder);
         layout.removeAllViews();
         layout.addView(floorplanView);
@@ -327,4 +331,6 @@ public class FloorplanFragment extends BaseFragment {
             return true;
         }
     }
+
+
 }
