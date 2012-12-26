@@ -35,7 +35,7 @@
     <item android:right="10dp" android:left="10dp" android:top="30dp" android:bottom="3dp">
         <shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="line">
             <corners android:radius="3dp" />
-            <stroke android:width="5dp" android:color="@color/android_green" />
+            <stroke android:width="5dp" android:color="@color/offRed" />
         </shape>
     </item>
 </layer-list>

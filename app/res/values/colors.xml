@@ -40,5 +40,6 @@
     <color name="widgetBackground">#E1E1E1</color>
 
     <color name="activeGreen">#E0FFD4</color>
+    <color name="offRed">#44FF0000</color>
 
 </resources>

@@ -74,11 +74,13 @@ public class OnOffActionRow<T extends ToggleableDevice> {
             offButton.setText(eventMap.get(offStateName));
         }
 
-        offButton.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.theme_toggle_off_normal));
+
         if (device.isOnRespectingInvertHook()) {
             onButton.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.theme_toggle_on_normal));
+            offButton.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.theme_toggle_default_normal));
         } else {
-            onButton.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.theme_toggle_off_normal));
+            onButton.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.theme_toggle_default_normal));
+            offButton.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.theme_toggle_off_normal));
         }
 
         switch(device.getButtonHookType()) {
