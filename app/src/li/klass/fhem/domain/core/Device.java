@@ -206,23 +206,36 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
     public void onAttributeRead(String attributeName, String attributeValue) {
         if (attributeName.equals("SETS")) {
             String setsText = attributeValue.replaceAll("\\*", "");
+            if (StringUtil.isBlank(setsText)) return;
 
-            setsText = setsText.trim();
-            String lowercase = setsText.toLowerCase();
-            if (lowercase.equals("") || lowercase.equals("*") || lowercase.contains("no set function")
-                    || lowercase.contains("needs one parameter")) {
-                return;
-            }
+            parseAvailableTargetStates(setsText);
+        }
+    }
 
-            String[] targetStates = setsText.split(" ");
+    private void parseAvailableTargetStates(String setsText) {
+        setsText = setsText.trim().toLowerCase();
+        String lowercase = setsText.toLowerCase();
+
+        if (lowercase.equals("") || lowercase.equals("*") || lowercase.contains("no set function")
+                || lowercase.contains("needs one parameter")) {
+            return;
+        }
+
+        String[] targetStates;
+        if (setsText.startsWith("state:")) {
+            setsText = setsText.substring("state:".length());
+
+            targetStates = setsText.split(",");
+        } else {
+            targetStates = setsText.split(" ");
             for (int i = 0; i < targetStates.length; i++) {
                 String targetState = targetStates[i];
                 if (targetState.contains(":")) {
                     targetStates[i] = targetState.substring(0, targetState.indexOf(":"));
                 }
             }
-            this.availableTargetStates = targetStates;
         }
+        this.availableTargetStates = targetStates;
     }
 
     @Override

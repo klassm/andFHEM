@@ -28,8 +28,7 @@ import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 import org.junit.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.hasItemInArray;
-import static org.hamcrest.Matchers.nullValue;
+import static org.hamcrest.Matchers.*;
 import static org.hamcrest.core.Is.is;
 
 public class DummyDeviceTest extends DeviceXMLParsingBase {
@@ -65,6 +64,14 @@ public class DummyDeviceTest extends DeviceXMLParsingBase {
 
         assertThat(device.getFileLog(), is(nullValue()));
         assertThat(device.getDeviceCharts().size(), is(0));
+    }
+
+    @Test
+    public void testDeviceWithSetList() {
+        DummyDevice device = getDeviceFor("deviceWithSetlist");
+
+        assertThat(device.getAvailableTargetStates(), is(arrayContaining("17", "18", "19", "20", "21", "21.5", "22")));
+        assertThat(device.getAvailableTargetStates().length, is(7));
     }
 
     @Override

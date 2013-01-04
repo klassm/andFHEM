@@ -477,6 +477,18 @@
     <INT key="TYPE" value="dummy"/>
     <STATE key="state" value="7" measured="2012-06-08 16:33:08"/>
 </dummy>
+<dummy name="HZ_2" state="20" sets="state:17,18,19,20,21,21.5,22" attrs="room group comment alias eventMap loglevel:0,1,2,3,4,5,6 setList devStateIcon fp_5WG fp_5WG.image fp_image icon room_map structexclude webCmd">
+    <INT key="CFGFN" value="heiz.cfg"/>
+    <INT key="NAME" value="HZ_2"/>
+    <INT key="NR" value="141"/>
+    <INT key="STATE" value="20"/>
+    <INT key="TYPE" value="dummy"/>
+    <ATTR key="fp_5WG" value="100,1030,5,."/>
+    <ATTR key="room" value="Heizungen"/>
+    <ATTR key="setList" value="state:17,18,19,20,21,21.5,22"/>
+    <ATTR key="webCmd" value="state"/>
+    <STATE key="state" value="20" measured="2013-01-01 20:47:03"/>
+</dummy>
 </dummy_LIST>
 <CUL_TX_LIST>
 <CUL_TX name="CUL_TX_10" state="T: 16.5 H: 73.0" sets=""
