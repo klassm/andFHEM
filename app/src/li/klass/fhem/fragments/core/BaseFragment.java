@@ -47,7 +47,8 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
 
     private transient Bundle originalCreationBundle;
 
-    public BaseFragment() {}
+    public BaseFragment() {
+    }
 
     public BaseFragment(Bundle bundle) {
         this.originalCreationBundle = bundle;
@@ -112,16 +113,19 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
         return BundleUtil.mapToBundle(creationAttributes);
     }
 
-    public final void onContentChanged(Bundle bundle) {
+    public final boolean onContentChanged(Bundle bundle) {
         Map<String, Serializable> oldAttributes = creationAttributes;
-        creationAttributes = BundleUtil.bundleToMap(bundle);
-        onContentChanged(oldAttributes, creationAttributes);
+        Map<String, Serializable> newCreationAttributes = BundleUtil.bundleToMap(bundle);
+        return onContentChanged(oldAttributes, newCreationAttributes);
     }
 
-    protected void onContentChanged(Map<String, Serializable> oldCreationAttributes, Map<String, Serializable> newCreationAttributes) {
-        if  (oldCreationAttributes == null) {
+    protected boolean onContentChanged(Map<String, Serializable> oldCreationAttributes, Map<String, Serializable> newCreationAttributes) {
+        creationAttributes = newCreationAttributes;
+        if (oldCreationAttributes == null) {
             update(false);
+            return true;
         }
+        return false;
     }
 
     protected boolean doContentChangedAttributesMatch(Map<String, Serializable> oldCreationAttributes,
@@ -151,10 +155,12 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
         return false;
     }
 
-    protected void updateIfAttributesDoNotMatch(Map<String, Serializable> oldCreationAttributes,
-                                                Map<String, Serializable> newCreationAttributes, String key) {
-        if (! doContentChangedAttributesMatch(oldCreationAttributes, newCreationAttributes, key)) {
+    protected boolean updateIfAttributesDoNotMatch(Map<String, Serializable> oldCreationAttributes,
+                                                   Map<String, Serializable> newCreationAttributes, String key) {
+        if (!doContentChangedAttributesMatch(oldCreationAttributes, newCreationAttributes, key)) {
             update(false);
+            return true;
         }
+        return false;
     }
 }

@@ -52,7 +52,8 @@ public class DeviceDetailFragment extends BaseFragment {
     }
 
     @SuppressWarnings("unused")
-    public DeviceDetailFragment() {}
+    public DeviceDetailFragment() {
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -92,8 +93,9 @@ public class DeviceDetailFragment extends BaseFragment {
     }
 
     @Override
-    protected void onContentChanged(Map<String, Serializable> oldCreationAttributes, Map<String, Serializable> newCreationAttributes) {
-        super.onContentChanged(oldCreationAttributes, newCreationAttributes);
-        updateIfAttributesDoNotMatch(oldCreationAttributes, newCreationAttributes, BundleExtraKeys.DEVICE_NAME);
+    protected boolean onContentChanged(Map<String, Serializable> oldCreationAttributes, Map<String, Serializable> newCreationAttributes) {
+        if (super.onContentChanged(oldCreationAttributes, newCreationAttributes)) return true;
+
+        return updateIfAttributesDoNotMatch(oldCreationAttributes, newCreationAttributes, BundleExtraKeys.DEVICE_NAME);
     }
 }

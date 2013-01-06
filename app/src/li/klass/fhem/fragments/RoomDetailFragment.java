@@ -43,7 +43,8 @@ public class RoomDetailFragment extends DeviceListFragment {
     }
 
     @SuppressWarnings("unused")
-    public RoomDetailFragment() {}
+    public RoomDetailFragment() {
+    }
 
     @Override
     protected void fillIntent(Intent intent) {
@@ -57,11 +58,15 @@ public class RoomDetailFragment extends DeviceListFragment {
     }
 
     @Override
-    protected void onContentChanged(Map<String, Serializable> oldCreationAttributes, Map<String, Serializable> newCreationAttributes) {
-        super.onContentChanged(oldCreationAttributes, newCreationAttributes);
-        if (oldCreationAttributes != null && ! oldCreationAttributes.get(BundleExtraKeys.ROOM_NAME)
+    protected boolean onContentChanged(Map<String, Serializable> oldCreationAttributes, Map<String, Serializable> newCreationAttributes) {
+        if (super.onContentChanged(oldCreationAttributes, newCreationAttributes)) return true;
+
+        if (oldCreationAttributes != null && !oldCreationAttributes.get(BundleExtraKeys.ROOM_NAME)
                 .equals(newCreationAttributes.get(BundleExtraKeys.ROOM_NAME))) {
             update(false);
+            return true;
         }
+
+        return false;
     }
 }

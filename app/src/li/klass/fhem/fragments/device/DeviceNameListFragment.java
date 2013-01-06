@@ -140,7 +140,7 @@ public abstract class DeviceNameListFragment extends BaseFragment {
     }
 
     @Override
-    protected void onContentChanged(Map<String, Serializable> oldCreationAttributes, final Map<String, Serializable> newCreationAttributes) {
+    protected boolean onContentChanged(Map<String, Serializable> oldCreationAttributes, final Map<String, Serializable> newCreationAttributes) {
         if (oldCreationAttributes == null && newCreationAttributes.containsKey(BundleExtraKeys.DEVICE_FILTER)) {
             newCreationAttributes.put(BundleExtraKeys.ORIGINAL_DEVICE_FILTER, newCreationAttributes.get(BundleExtraKeys.DEVICE_FILTER));
         }
@@ -169,6 +169,6 @@ public abstract class DeviceNameListFragment extends BaseFragment {
         updateIfAttributesDoNotMatch(oldCreationAttributes, newCreationAttributes, BundleExtraKeys.DEVICE_NAME);
         updateIfAttributesDoNotMatch(oldCreationAttributes, newCreationAttributes, BundleExtraKeys.ROOM_NAME);
 
-        super.onContentChanged(oldCreationAttributes, newCreationAttributes);
+        return super.onContentChanged(oldCreationAttributes, newCreationAttributes);
     }
 }

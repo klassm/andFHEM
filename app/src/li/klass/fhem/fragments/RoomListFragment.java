@@ -58,7 +58,8 @@ public class RoomListFragment extends BaseFragment implements ActionBarShowTabs,
     }
 
     @SuppressWarnings("unused")
-    public RoomListFragment() {}
+    public RoomListFragment() {
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -133,10 +134,14 @@ public class RoomListFragment extends BaseFragment implements ActionBarShowTabs,
     }
 
     @Override
-    protected void onContentChanged(Map<String, Serializable> oldCreationAttributes, Map<String, Serializable> newCreationAttributes) {
-        super.onContentChanged(oldCreationAttributes, newCreationAttributes);
-        if (oldCreationAttributes != null && ! doContentChangedAttributesMatch(oldCreationAttributes, newCreationAttributes, BundleExtraKeys.ROOM_NAME)) {
+    protected boolean onContentChanged(Map<String, Serializable> oldCreationAttributes, Map<String, Serializable> newCreationAttributes) {
+        if (super.onContentChanged(oldCreationAttributes, newCreationAttributes)) return true;
+
+        if (oldCreationAttributes != null && !doContentChangedAttributesMatch(oldCreationAttributes, newCreationAttributes, BundleExtraKeys.ROOM_NAME)) {
             update(false);
+            return true;
         }
+
+        return false;
     }
 }

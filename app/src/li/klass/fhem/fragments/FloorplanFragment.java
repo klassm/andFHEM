@@ -121,12 +121,13 @@ public class FloorplanFragment extends BaseFragment {
     }
 
     @Override
-    protected void onContentChanged(Map<String, Serializable> oldCreationAttributes, Map<String, Serializable> newCreationAttributes) {
+    protected boolean onContentChanged(Map<String, Serializable> oldCreationAttributes, Map<String, Serializable> newCreationAttributes) {
         super.onContentChanged(oldCreationAttributes, newCreationAttributes);
 
         if (oldCreationAttributes == null) {
             setBackground();
         }
+        return true;
     }
 
     private void requestFloorplanDevices(boolean doUpdate) {
