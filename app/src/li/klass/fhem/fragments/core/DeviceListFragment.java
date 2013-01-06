@@ -24,11 +24,6 @@
 
 package li.klass.fhem.fragments.core;
 
-import static li.klass.fhem.constants.Actions.FAVORITE_ADD;
-import static li.klass.fhem.constants.BundleExtraKeys.*;
-import static li.klass.fhem.constants.PreferenceKeys.DEVICE_LIST_RIGHT_PADDING;
-import static li.klass.fhem.widget.GridViewWithSections.GridViewWithSectionsOnClickObserver;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -45,10 +40,17 @@ import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceType;
 import li.klass.fhem.domain.core.RoomDeviceList;
+import li.klass.fhem.fhem.DataConnectionSwitch;
+import li.klass.fhem.fhem.DummyDataConnection;
 import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.advertisement.AdvertisementUtil;
 import li.klass.fhem.util.device.DeviceActionUtil;
 import li.klass.fhem.widget.GridViewWithSections;
+
+import static li.klass.fhem.constants.Actions.FAVORITE_ADD;
+import static li.klass.fhem.constants.BundleExtraKeys.*;
+import static li.klass.fhem.constants.PreferenceKeys.DEVICE_LIST_RIGHT_PADDING;
+import static li.klass.fhem.widget.GridViewWithSections.GridViewWithSectionsOnClickObserver;
 
 public abstract class DeviceListFragment extends BaseFragment {
 
@@ -79,7 +81,9 @@ public abstract class DeviceListFragment extends BaseFragment {
         View superView = super.onCreateView(inflater, container, savedInstanceState);
         if (superView != null) return superView;
 
+
         View view = inflater.inflate(R.layout.room_detail, container, false);
+
         AdvertisementUtil.addAd(view, getActivity());
 
         GridViewWithSections nestedListView = (GridViewWithSections) view.findViewById(R.id.deviceMap1);
@@ -112,6 +116,20 @@ public abstract class DeviceListFragment extends BaseFragment {
     @Override
     @SuppressWarnings("unchecked")
     public void update(boolean doUpdate) {
+
+        View view = getView();
+        if (view != null) {
+            View dummyConnectionNotification = view.findViewById(R.id.dummyConnectionNotification);
+            if (!DataConnectionSwitch.INSTANCE.getCurrentProvider().getClass().isAssignableFrom(DummyDataConnection.class)) {
+                dummyConnectionNotification.setVisibility(View.GONE);
+            } else {
+                dummyConnectionNotification.setVisibility(View.VISIBLE);
+            }
+
+            if (doUpdate) {
+                view.invalidate();
+            }
+        }
 
         Log.i(DeviceListFragment.class.getName(), "request device list update (doUpdate=" + doUpdate + ")");
 

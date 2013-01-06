@@ -24,7 +24,7 @@
   -->
 
 <resources>
-	<color name="android_green">#FFA4C639</color>
+    <color name="android_green">#FFA4C639</color>
     <color name="navigationBarBackground">#FFE1F3E3</color>
     <color name="tabPressGrey">#FFD9D9D9</color>
     <color name="tabBackgroundGrey">#FFF6F6F6</color>
@@ -41,5 +41,6 @@
 
     <color name="activeGreen">#E0FFD4</color>
     <color name="offRed">#44FF0000</color>
+    <color name="red">#FF0000</color>
 
 </resources>

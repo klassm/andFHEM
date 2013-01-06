@@ -25,23 +25,34 @@
   -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="fill_parent"
-              android:layout_height="fill_parent">
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+
+    <TextView android:id="@+id/dummyConnectionNotification"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:padding="5dp"
+              android:layout_margin="0dp"
+              android:textAlignment="center"
+              android:text="@string/dummyConnectionNotification"
+              android:gravity="center"
+              android:textStyle="bold"
+              android:textColor="@color/red"/>
 
     <li.klass.fhem.widget.GridViewWithSections
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:id="@+id/deviceMap1"
-                android:dividerHeight="0dp"
-                android:divider="@drawable/empty"
-                android:fastScrollEnabled="true"
-                android:listSelector="@drawable/theme_listview_item"
-                android:layout_alignParentTop="true"
-                android:layout_above="@+id/adContainer"
-                />
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/deviceMap1"
+            android:dividerHeight="0dp"
+            android:divider="@drawable/empty"
+            android:fastScrollEnabled="true"
+            android:listSelector="@drawable/theme_listview_item"
+            android:layout_below="@id/dummyConnectionNotification"
+            android:layout_above="@+id/adContainer"
+            />
 
     <LinearLayout android:layout_width="fill_parent"
                   android:layout_height="wrap_content"
                   android:id="@+id/adContainer"
-                  android:layout_alignParentBottom="true" />
+                  android:layout_alignParentBottom="true"/>
 </RelativeLayout>

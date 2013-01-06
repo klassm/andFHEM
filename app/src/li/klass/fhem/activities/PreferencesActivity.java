@@ -25,9 +25,12 @@
 package li.klass.fhem.activities;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.*;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -35,6 +38,7 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import com.hlidskialf.android.preference.SeekBarPreference;
 import li.klass.fhem.R;
+import li.klass.fhem.constants.Actions;
 import li.klass.fhem.fhem.DataConnectionSwitch;
 import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.DialogUtil;
@@ -45,11 +49,18 @@ import static li.klass.fhem.constants.PreferenceKeys.USE_EVENT_RECEIVER;
 import static li.klass.fhem.fhem.FHEMWebConnection.*;
 import static li.klass.fhem.fhem.TelnetConnection.*;
 
-public class PreferencesActivity extends PreferenceActivity {
+public class PreferencesActivity extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
+
+    private boolean preferencesChanged;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        preferencesChanged = false;
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        preferences.registerOnSharedPreferenceChangeListener(this);
 
         addPreferencesFromResource(R.layout.preferences);
 
@@ -74,7 +85,7 @@ public class PreferencesActivity extends PreferenceActivity {
             @Override
             public boolean onPreferenceChange(Preference preference, Object o) {
                 boolean value = Boolean.valueOf(o.toString());
-                if (! value) {
+                if (!value) {
                     DataConnectionSwitch.INSTANCE.getCurrentProvider().stopEventReceiver();
                     return true;
                 } else {
@@ -154,8 +165,8 @@ public class PreferencesActivity extends PreferenceActivity {
             @Override
             public boolean onPreferenceChange(Preference preference, Object o) {
                 String newValue = (String) o;
-                if (! newValue.matches("http[s]?://.*")) {
-                    DialogUtil.showAlertDialog(preference.getContext(), R.string.error ,R.string.prefUrlBeginningError);
+                if (!newValue.matches("http[s]?://.*")) {
+                    DialogUtil.showAlertDialog(preference.getContext(), R.string.error, R.string.prefUrlBeginningError);
                 }
                 return true;
             }
@@ -176,6 +187,27 @@ public class PreferencesActivity extends PreferenceActivity {
 
     private PreferenceCategory getDataOriginCategory() {
         return (PreferenceCategory) findPreference("DATAORIGINCATEGORY");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();    //To change body of overridden methods use File | Settings | File Templates.
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        PreferenceManager.getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener(this);
+
+        if (preferencesChanged) {
+            sendBroadcast(new Intent(Actions.DO_UPDATE));
+        }
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
+        preferencesChanged = true;
+        Log.e(PreferenceActivity.class.getName(), "hallowelt");
     }
 
     private class EditPasswordPreference extends EditTextPreference {

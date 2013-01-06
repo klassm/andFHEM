@@ -24,17 +24,11 @@
 
 package li.klass.fhem.activities.core;
 
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
+import android.content.*;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.View;
@@ -65,6 +59,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
 
     ApplicationProperties applicationProperties = ApplicationProperties.INSTANCE;
     private ProgressDialog progressDialog;
+    private FragmentBaseActivity.PreferencesChangedListener preferencesChangedListener;
 
     private static class FragmentHistoryStackEntry implements Serializable {
         FragmentHistoryStackEntry(BaseFragment navigationFragment, BaseFragment contentFragment) {
@@ -181,6 +176,14 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
 
         public IntentFilter getIntentFilter() {
             return intentFilter;
+        }
+    }
+
+    private class PreferencesChangedListener implements SharedPreferences.OnSharedPreferenceChangeListener {
+
+        @Override
+        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
+            System.out.println("hallo");
         }
     }
 

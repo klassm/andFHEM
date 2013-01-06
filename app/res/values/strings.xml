@@ -157,7 +157,7 @@
     <string name="prefDataSource">Data Source</string>
     <string name="prefOtherPreferencesCategory">Other Preferences</string>
     <string name="prefWidgetCategory">Widgets</string>
-    <string name="prefTelnetUrlSummary">i.e. 192.168.0.1 </string>
+    <string name="prefTelnetUrlSummary">i.e. 192.168.0.1</string>
     <string name="prefTelnetUrl">IP</string>
     <string name="prefTelnetPortSummary">i.e. 7072</string>
     <string name="prefTelnetPort">Port</string>
@@ -181,7 +181,9 @@
     <string name="prefUpdateOnApplicationStart">Refresh on application start</string>
     <string name="prefShowSetValueButtons">Show set value buttons for temperature changes</string>
     <string name="prefUseEventReceiver">Event Receiver</string>
-    <string name="prefUseEventReceiverAlert">The Event Receiver is connected all the time to FHEM. This costs loads of battery!</string>
+    <string name="prefUseEventReceiverAlert">The Event Receiver is connected all the time to FHEM. This costs loads of
+        battery!
+    </string>
 
     <string name="notNumericError">Not numeric!</string>
     <string name="updateError">Error while updating.</string>
@@ -342,4 +344,6 @@
     <string name="twilight_light_indoor">Indoor twilight</string>
     <string name="twilight_light_weather">Weather twilight</string>
     <string name="twilight_light_daylight">Daylight</string>
+
+    <string name="dummyConnectionNotification">Currently only dummy devices are shown!</string>
 </resources>
