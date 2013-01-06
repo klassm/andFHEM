@@ -52,7 +52,7 @@ public class ThermostatTest extends DeviceXMLParsingBase {
         CULHMDevice device2 = getDeviceFor("device2");
         assertThat(device2, is(notNullValue()));
         assertThat(device2.isSupported(), is(true));
-        assertThat(device2.getSubType(), is(CULHMDevice.SubType.THERMOSTAT));
+        assertThat(device2.getSubType(), is(CULHMDevice.SubType.HEATING));
         assertThat(device2.getDesiredTemp(), is(closeTo(16, 0.01)));
         assertThat(device2.getDesiredTempDesc(), is("16.0 (°C)"));
     }
