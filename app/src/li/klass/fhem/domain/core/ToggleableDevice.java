@@ -41,6 +41,8 @@ public abstract class ToggleableDevice<T extends Device> extends Device<T> {
 
     public boolean isOnByState() {
         String internalState = getInternalState();
+        if (internalState == null) return false;
+
         return internalState.equalsIgnoreCase(getOnStateName())
                 || internalState.equalsIgnoreCase(eventMap.get(getOnStateName()));
 

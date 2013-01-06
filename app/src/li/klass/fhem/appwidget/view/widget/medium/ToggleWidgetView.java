@@ -57,7 +57,7 @@ public class ToggleWidgetView extends AppWidgetView {
 
         Intent actionIntent;
 
-        if (! toggleable.isSpecialButtonDevice() && toggleable.getButtonHookType() != ON_OFF_DEVICE) {
+        if (!toggleable.isSpecialButtonDevice() || toggleable.getButtonHookType() == ON_OFF_DEVICE) {
             actionIntent = new Intent(Actions.DEVICE_WIDGET_TOGGLE);
             actionIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             actionIntent.putExtra(BundleExtraKeys.APP_WIDGET_ID, widgetConfiguration.widgetId);
@@ -68,7 +68,7 @@ public class ToggleWidgetView extends AppWidgetView {
             actionIntent.putExtra(BundleExtraKeys.DEVICE_NAME, toggleable.getName());
 
             ToggleableDevice.ButtonHookType buttonHookType = toggleable.getButtonHookType();
-            switch(buttonHookType) {
+            switch (buttonHookType) {
                 case ON_DEVICE:
                     isOn = true;
                     actionIntent.putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, toggleable.getOnStateName());
