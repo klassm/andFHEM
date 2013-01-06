@@ -33,7 +33,6 @@
               android:layout_height="wrap_content"
               android:padding="5dp"
               android:layout_margin="0dp"
-              android:textAlignment="center"
               android:text="@string/dummyConnectionNotification"
               android:gravity="center"
               android:textStyle="bold"
