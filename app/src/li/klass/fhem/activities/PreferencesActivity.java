@@ -29,6 +29,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.*;
+import android.text.InputType;
 import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.CheckBox;
@@ -158,6 +159,7 @@ public class PreferencesActivity extends PreferenceActivity implements SharedPre
         urlPreference.setTitle(R.string.prefFHEMWEBUrl);
         urlPreference.setSummary(R.string.prefFHEMWEBUrlSummary);
         urlPreference.setKey(FHEMWEB_URL);
+        urlPreference.getEditText().setInputType(InputType.TYPE_TEXT_VARIATION_URI);
         getDataOriginCategory().addPreference(urlPreference);
 
         urlPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
