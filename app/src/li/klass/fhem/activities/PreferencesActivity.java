@@ -30,7 +30,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.*;
 import android.text.method.PasswordTransformationMethod;
-import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -190,11 +189,6 @@ public class PreferencesActivity extends PreferenceActivity implements SharedPre
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();    //To change body of overridden methods use File | Settings | File Templates.
-    }
-
-    @Override
     protected void onStop() {
         super.onStop();
         PreferenceManager.getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener(this);
@@ -207,7 +201,6 @@ public class PreferencesActivity extends PreferenceActivity implements SharedPre
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
         preferencesChanged = true;
-        Log.e(PreferenceActivity.class.getName(), "hallowelt");
     }
 
     private class EditPasswordPreference extends EditTextPreference {
