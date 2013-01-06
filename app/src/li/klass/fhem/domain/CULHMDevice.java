@@ -180,6 +180,8 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice> imp
     }
 
     public boolean isOnByState() {
+        if (super.isOnByState()) return true;
+
         String internalState = getInternalState();
         return internalState.equalsIgnoreCase("on") || internalState.equalsIgnoreCase("on-for-timer") ||
                 (subType == SubType.DIMMER && getDimPosition() > 0);

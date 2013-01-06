@@ -85,7 +85,15 @@ public class FS20Device extends DimmableDiscreteStatesDevice<FS20Device> impleme
     }
 
     public boolean isOnByState() {
-        return getFs20State() == FS20State.ON;
+        if (super.isOnByState()) return true;
+
+        for (String offState : offStates) {
+            if (getInternalState().equals(offState) || getInternalState().equals(eventMap.get(offState))) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     @Override
@@ -101,15 +109,6 @@ public class FS20Device extends DimmableDiscreteStatesDevice<FS20Device> impleme
     @Override
     public List<String> getDimStates() {
         return dimStates;
-    }
-
-    public FS20State getFs20State() {
-        for (String offState : offStates) {
-            if (getInternalState().equals(offState) || getInternalState().equals(eventMap.get(offState))) {
-                return FS20State.OFF;
-            }
-        }
-        return FS20State.ON;
     }
 
     @Override

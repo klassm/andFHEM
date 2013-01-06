@@ -78,7 +78,9 @@ public class HOLDevice extends ToggleableDevice<HOLDevice> {
     }
 
     public boolean isOnByState() {
-        return ! getInternalState().equals("off");
+        if (super.isOnByState()) return true;
+
+        return !getInternalState().equals("off");
     }
 
     @Override

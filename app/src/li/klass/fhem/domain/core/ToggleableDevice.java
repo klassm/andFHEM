@@ -30,6 +30,8 @@ import static li.klass.fhem.domain.core.ToggleableDevice.ButtonHookType.*;
 public abstract class ToggleableDevice<T extends Device> extends Device<T> {
 
     private boolean doInvertOnState = false;
+    private String onStateName = "on";
+    private String offStateName = "off";
 
     public enum ButtonHookType {
         NORMAL, ON_OFF_DEVICE, ON_DEVICE, OFF_DEVICE, TOGGLE_DEVICE
@@ -37,11 +39,16 @@ public abstract class ToggleableDevice<T extends Device> extends Device<T> {
 
     private ButtonHookType buttonHookType = NORMAL;
 
-    public abstract boolean isOnByState();
+    public boolean isOnByState() {
+        String internalState = getInternalState();
+        return internalState.equalsIgnoreCase(getOnStateName())
+                || internalState.equalsIgnoreCase(eventMap.get(getOnStateName()));
+
+    }
 
     public boolean isOnRespectingInvertHook() {
         boolean isOn = isOnByState();
-        if (doInvertOnState) isOn = ! isOn;
+        if (doInvertOnState) isOn = !isOn;
 
         return isOn;
     }
@@ -65,6 +72,14 @@ public abstract class ToggleableDevice<T extends Device> extends Device<T> {
         readButtonHookType(value, TOGGLE_DEVICE);
     }
 
+    public void readONSTATENAME(String value) {
+        onStateName = value;
+    }
+
+    public void readOFFSTATENAME(String value) {
+        offStateName = value;
+    }
+
     private void readButtonHookType(String value, ButtonHookType target) {
         if (value.equalsIgnoreCase("true")) {
             buttonHookType = target;
@@ -72,9 +87,9 @@ public abstract class ToggleableDevice<T extends Device> extends Device<T> {
     }
 
     public void readINVERTSTATE(String value) {
-       if (value.equalsIgnoreCase("true")) {
-           doInvertOnState = true;
-       }
+        if (value.equalsIgnoreCase("true")) {
+            doInvertOnState = true;
+        }
     }
 
     public ButtonHookType getButtonHookType() {
@@ -86,10 +101,10 @@ public abstract class ToggleableDevice<T extends Device> extends Device<T> {
     }
 
     public String getOffStateName() {
-        return "off";
+        return offStateName;
     }
 
     public String getOnStateName() {
-        return "on";
+        return onStateName;
     }
 }

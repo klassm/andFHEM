@@ -44,6 +44,8 @@ public class DummyDevice extends ToggleableDevice<DummyDevice> {
 
     @Override
     public boolean isOnByState() {
+        if (super.isOnByState()) return true;
+
         return getState().equalsIgnoreCase("on");
     }
 }

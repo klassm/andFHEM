@@ -39,6 +39,8 @@ public class SISPMSDevice extends ToggleableDevice<SISPMSDevice> {
     }
 
     public boolean isOnByState() {
+        if (super.isOnByState()) return true;
+
         return getInternalState().equalsIgnoreCase("on");
     }
 

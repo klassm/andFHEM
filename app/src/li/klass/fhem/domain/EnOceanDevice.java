@@ -56,11 +56,6 @@ public class EnOceanDevice extends ToggleableDevice<EnOceanDevice> {
     }
 
     @Override
-    public boolean isOnByState() {
-        return getInternalState().equalsIgnoreCase(getOnStateName());
-    }
-
-    @Override
     public boolean supportsToggle() {
         return subType == SubType.SWITCH;
     }

@@ -144,11 +144,6 @@ public class MaxDevice extends ToggleableDevice<MaxDevice> implements DesiredTem
         this.actuator = ValueDescriptionUtil.appendPercent(value);
     }
 
-    @Override
-    public boolean isOnByState() {
-        return getInternalState().equalsIgnoreCase(getOnStateName());
-    }
-
     public SubType getSubType() {
         return subType;
     }
@@ -286,7 +281,7 @@ public class MaxDevice extends ToggleableDevice<MaxDevice> implements DesiredTem
 
     @Override
     public HeatingMode[] getIgnoredHeatingModes() {
-        return new HeatingMode[] { HeatingMode.MANUAL };
+        return new HeatingMode[]{HeatingMode.MANUAL};
     }
 
     @Override
@@ -298,7 +293,6 @@ public class MaxDevice extends ToggleableDevice<MaxDevice> implements DesiredTem
     public String getDesiredTempCommandFieldName() {
         return "desired-temp";
     }
-
 
 
 }

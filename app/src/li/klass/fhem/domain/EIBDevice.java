@@ -9,6 +9,8 @@ import li.klass.fhem.domain.genericview.FloorplanViewSettings;
 public class EIBDevice extends ToggleableDevice<EIBDevice> {
     @Override
     public boolean isOnByState() {
+        if (super.isOnByState()) return true;
+
         String internalState = getInternalState();
         return internalState.equalsIgnoreCase("on") || internalState.equalsIgnoreCase("on-for-timer") ||
                 internalState.equalsIgnoreCase("on-till");
