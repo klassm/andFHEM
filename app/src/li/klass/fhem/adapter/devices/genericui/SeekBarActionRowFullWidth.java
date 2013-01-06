@@ -32,7 +32,7 @@ import li.klass.fhem.R;
 import li.klass.fhem.domain.core.Device;
 
 public abstract class SeekBarActionRowFullWidth<T extends Device> {
-    private int initialProgress;
+    protected int initialProgress;
     private int layoutId;
     private int maximumProgress;
 

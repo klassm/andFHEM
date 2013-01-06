@@ -73,7 +73,8 @@ public class TemperatureChangeTableRow<D extends Device<D>> extends SeekBarActio
 
     @Override
     public void onStopTrackingTouch(final Context seekBarContext, final D device, int progress) {
-        if (! sendIntents) return;
+        if (!sendIntents) return;
+        if (progress == initialProgress) return;
 
         String confirmationMessage = createConfirmationText(valueStringId, newTemperature);
         DeviceActionUtil.showConfirmation(context, new Dialog.OnClickListener() {
@@ -101,7 +102,8 @@ public class TemperatureChangeTableRow<D extends Device<D>> extends SeekBarActio
         updateView.setText(ValueDescriptionUtil.appendTemperature(newValue));
     }
 
-    protected void onIntentCreation(Intent intent) {}
+    protected void onIntentCreation(Intent intent) {
+    }
 
     private String createConfirmationText(int attributeStringId, double newTemperature) {
         Context context = AndFHEMApplication.getContext();

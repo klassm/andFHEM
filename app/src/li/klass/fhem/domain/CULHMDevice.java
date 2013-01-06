@@ -43,6 +43,9 @@ import li.klass.fhem.util.ValueExtractUtil;
 
 import java.util.List;
 
+import static li.klass.fhem.domain.CULHMDevice.SubType.HEATING;
+import static li.klass.fhem.domain.CULHMDevice.SubType.THERMOSTAT;
+
 @SuppressWarnings("unused")
 @DetailOverviewViewSettings(showState = true)
 @FloorplanViewSettings(showState = true)
@@ -58,7 +61,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice> imp
     public static double MAXIMUM_TEMPERATURE = 30.5;
     public static double MINIMUM_TEMPERATURE = 5.5;
 
-    private double desiredTemp;
+    private double desiredTemp = MINIMUM_TEMPERATURE;
     @ShowField(description = ResourceIdMapper.temperature, showInOverview = true)
     @WidgetTemperatureField
     private String measuredTemp;
@@ -115,7 +118,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice> imp
     }
 
     public void readACTUATOR(String value) {
-        subType = SubType.HEATING;
+        subType = HEATING;
         actuator = value;
     }
 
@@ -152,7 +155,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice> imp
         } else if (value.equalsIgnoreCase("KFM100")) {
             subType = SubType.KFM100;
         } else if (value.equalsIgnoreCase("THERMOSTAT")) {
-            subType = SubType.THERMOSTAT;
+            subType = THERMOSTAT;
         }
         subTypeRaw = value;
     }
@@ -226,7 +229,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice> imp
 
     @ShowField(description = ResourceIdMapper.desiredTemperature)
     public String getDesiredTempDesc() {
-        if (! (subType == SubType.THERMOSTAT)) return null;
+        if (subType != HEATING) return null;
 
         return ValueDescriptionUtil.desiredTemperatureToString(desiredTemp, MINIMUM_TEMPERATURE, MAXIMUM_TEMPERATURE);
     }
@@ -335,7 +338,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice> imp
     @Override
     public boolean supportsWidget(Class<? extends AppWidgetView> appWidgetClass) {
         if (appWidgetClass.equals(TemperatureWidgetView.class) &&
-                !(subType == SubType.TEMPERATURE_HUMIDITY || subType == SubType.HEATING)) {
+                !(subType == SubType.TEMPERATURE_HUMIDITY || subType == HEATING)) {
             return false;
         }
 

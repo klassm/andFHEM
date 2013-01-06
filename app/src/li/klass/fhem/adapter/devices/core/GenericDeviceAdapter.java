@@ -46,6 +46,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.*;
 
+import static li.klass.fhem.util.ReflectionUtil.methodNameToFieldName;
+
 public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> {
     private static final String TAG = GenericDeviceAdapter.class.getName();
 
@@ -147,7 +149,9 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
                 method.setAccessible(true);
                 if (method.isAnnotationPresent(ShowField.class) && method.getAnnotation(ShowField.class).showInDetail()) {
                     TableRow row = createTableRow(device, inflater, layout, method, R.layout.device_detail_generic_table_row);
-                    notifyFieldListeners(context, device, layout, method.getName(), row);
+
+                    String methodName = methodNameToFieldName(method);
+                    notifyFieldListeners(context, device, layout, methodName, row);
                 }
             }
         } catch (Exception e) {
@@ -257,11 +261,11 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
 
     private void addDetailActionButtons(Context context, View view, D device, LayoutInflater inflater) {
         LinearLayout actionLayout = (LinearLayout) view.findViewById(R.id.actionButtons);
-        if (! hasDetailActions(device)) {
+        if (!hasDetailActions(device)) {
             actionLayout.setVisibility(View.GONE);
         }
         for (DeviceDetailViewAction<D> action : detailActions) {
-            if (! action.isVisible(device)) continue;
+            if (!action.isVisible(device)) continue;
 
             Button button = action.createButton(context, inflater, device, actionLayout);
             actionLayout.addView(button);

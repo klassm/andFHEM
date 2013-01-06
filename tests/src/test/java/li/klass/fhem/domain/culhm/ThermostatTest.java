@@ -29,8 +29,7 @@ import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 import org.junit.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.*;
 
 public class ThermostatTest extends DeviceXMLParsingBase {
     @Test
@@ -54,6 +53,8 @@ public class ThermostatTest extends DeviceXMLParsingBase {
         assertThat(device2, is(notNullValue()));
         assertThat(device2.isSupported(), is(true));
         assertThat(device2.getSubType(), is(CULHMDevice.SubType.THERMOSTAT));
+        assertThat(device2.getDesiredTemp(), is(closeTo(16, 0.01)));
+        assertThat(device2.getDesiredTempDesc(), is("16.0 (°C)"));
     }
 
     @Override

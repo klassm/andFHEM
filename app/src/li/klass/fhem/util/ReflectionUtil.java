@@ -95,7 +95,6 @@ public class ReflectionUtil {
     }
 
 
-
     public static Object getFieldValue(Object object, Field field) {
         try {
             field.setAccessible(true);
@@ -124,5 +123,23 @@ public class ReflectionUtil {
 
     public static void main(String[] args) {
         System.out.println(getFieldsWithAnnotation(FHTDevice.class, WidgetTemperatureField.class));
+    }
+
+    public static String methodNameToFieldName(Method method) {
+        Reject.ifNull(method);
+
+        String methodName = method.getName();
+        return methodNameToFieldName(methodName);
+    }
+
+    public static String methodNameToFieldName(String methodName) {
+        if (methodName.startsWith("get")) {
+            methodName = methodName.substring("get".length());
+        }
+        char firstChar = methodName.charAt(0);
+        if (firstChar >= 'A' && firstChar <= 'Z') {
+            methodName = ((char) (firstChar - 'A' + 'a')) + methodName.substring(1);
+        }
+        return methodName;
     }
 }
