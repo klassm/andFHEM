@@ -90,7 +90,7 @@ public class WeatherDevice extends Device<WeatherDevice> {
         }
     }
 
-    public static final String IMAGE_URL_PREFIX = "http://www.google.de";
+    public static final String IMAGE_URL_PREFIX = "http://andfhem.klass.li/";
 
     private static final SimpleDateFormat parseDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 

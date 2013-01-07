@@ -25,7 +25,6 @@ package li.klass.fhem.appwidget.view.widget.big;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.widget.RemoteViews;
 import li.klass.fhem.R;
 import li.klass.fhem.appwidget.WidgetConfiguration;
@@ -49,25 +48,17 @@ public class WeatherForecastWidget extends AppWidgetView {
 
     @Override
     protected void fillWidgetView(Context context, RemoteViews view, Device<?> device, WidgetConfiguration widgetConfiguration) {
-        view.removeAllViews(R.id.forecasts);
-
         WeatherDevice weatherDevice = (WeatherDevice) device;
         List<WeatherDevice.WeatherDeviceForecast> forecasts = weatherDevice.getForecasts();
-        int size = forecasts.size() > 3 ? 3 : forecasts.size();
-        for (int i = size - 1; i >= 0; i--) {
-            WeatherDevice.WeatherDeviceForecast forecast = forecasts.get(i);
+        WeatherDevice.WeatherDeviceForecast forecast = forecasts.get(0);
 
-            final RemoteViews forecastView = new RemoteViews(context.getPackageName(), R.layout.appwidet_weather_forecast_item);
-            forecastView.setTextViewText(R.id.day_description, forecast.getDayOfWeek() + ", " + forecast.getDate());
-            forecastView.setTextViewText(R.id.day_condition, forecast.getCondition());
-            forecastView.setTextViewText(R.id.day_temperature, forecast.getLowTemperature() + " - " + forecast.getHighTemperature());
+        view.setTextViewText(R.id.day_description, forecast.getDayOfWeek() + ", " + forecast.getDate());
+        view.setTextViewText(R.id.day_condition, forecast.getCondition());
+        view.setTextViewText(R.id.day_temperature, forecast.getLowTemperature() + " - " + forecast.getHighTemperature());
 
-//            TODO fixme whenever weather icons are available
-//            Bitmap bitmap = ImageUtil.loadBitmap(WeatherDevice.IMAGE_URL_PREFIX + forecast.getIcon() + "?time=" + System.currentTimeMillis());
-//            forecastView.setImageViewBitmap(R.id.day_image, bitmap);
+        Bitmap bitmap = ImageUtil.loadBitmap(WeatherDevice.IMAGE_URL_PREFIX + forecast.getIcon() + ".png?time=" + System.currentTimeMillis());
+        view.setImageViewBitmap(R.id.day_image, bitmap);
 
-            view.addView(R.id.forecasts, forecastView);
-        }
         openDeviceDetailPageWhenClicking(R.id.main, view, device, widgetConfiguration);
     }
 

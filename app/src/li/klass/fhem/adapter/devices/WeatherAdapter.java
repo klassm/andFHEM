@@ -91,7 +91,7 @@ public class WeatherAdapter extends GenericDeviceAdapter<WeatherDevice> {
                 setTextViewOrHideTableRow(view, R.id.tableRowDate, R.id.date, date);
 
                 String temperature = item.getLowTemperature() + " - " + item.getHighTemperature();
-                setTextViewOrHideTableRow(view, R.id.tableRowTemperature, R.id.temperature,temperature);
+                setTextViewOrHideTableRow(view, R.id.tableRowTemperature, R.id.temperature, temperature);
 
                 setTextViewOrHideTableRow(view, R.id.tableRowCondition, R.id.condition, item.getCondition());
 
@@ -129,8 +129,7 @@ public class WeatherAdapter extends GenericDeviceAdapter<WeatherDevice> {
 
 
     private void setWeatherIconIn(final ImageView imageView, String weatherIcon) {
-//        TODO fixme whenever weather icons are available
-//        final String imageURL = WeatherDevice.IMAGE_URL_PREFIX + weatherIcon;
-//        ImageUtil.setExternalImageIn(imageView, imageURL);
+        final String imageURL = WeatherDevice.IMAGE_URL_PREFIX + weatherIcon + ".png";
+        ImageUtil.setExternalImageIn(imageView, imageURL);
     }
 }

@@ -41,7 +41,7 @@ public enum WidgetType {
     TOGGLE_SMALL(new SmallToggleWidget(), WidgetSize.SMALL),
     STATUS(new StatusWidgetView(), WidgetSize.MEDIUM),
     INFORMATION(new MediumInformationWidgetView(), WidgetSize.MEDIUM),
-    WEATHER_FORECAST(new WeatherForecastWidget(), WidgetSize.BIG);
+    WEATHER_FORECAST(new WeatherForecastWidget(), WidgetSize.MEDIUM);
 
     public final AppWidgetView widgetView;
     public final WidgetSize widgetSize;
