@@ -86,7 +86,7 @@ public class WeatherDevice extends Device<WeatherDevice> {
         }
 
         public String getIcon() {
-            return icon;
+            return parseIcon(icon);
         }
     }
 
@@ -185,7 +185,7 @@ public class WeatherDevice extends Device<WeatherDevice> {
     }
 
     public String getIcon() {
-        return icon;
+        return parseIcon(icon);
     }
 
     public String getTemperature() {
@@ -213,5 +213,17 @@ public class WeatherDevice extends Device<WeatherDevice> {
                 ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:temp_c:")));
         addDeviceChartIfNotNull(humidity, new DeviceChart(R.string.humidityGraph, R.string.yAxisHumidity,
                 new ChartSeriesDescription(R.string.temperature, "4:humidity:0:")));
+    }
+
+    public static String parseIcon(String icon) {
+        if (icon == null) return null;
+        if (!icon.endsWith(".png")) {
+            icon = icon.substring(0, icon.lastIndexOf(".")) + ".png";
+        }
+
+        if (!icon.contains("/")) return icon;
+
+        int lastSlashIndex = icon.lastIndexOf("/");
+        return icon.substring(lastSlashIndex + 1);
     }
 }

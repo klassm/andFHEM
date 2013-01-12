@@ -42,7 +42,7 @@ public class WeatherDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getName(), is(DEFAULT_TEST_DEVICE_NAME));
         assertThat(device.getRoomConcatenated(), is(DEFAULT_TEST_ROOM_NAME));
 
-        assertThat(device.getIcon(), is("/ig/images/weather/cloudy.gif"));
+        assertThat(device.getIcon(), is("cloudy.png"));
         assertThat(device.getCondition(), is("Bewölkt"));
         assertThat(device.getHumidity(), is("43 (%)"));
         assertThat(device.getTemperature(), is("19 (°C)"));
@@ -53,7 +53,7 @@ public class WeatherDeviceTest extends DeviceXMLParsingBase {
         assertThat(forecasts.size(), is(3));
 
         WeatherDevice.WeatherDeviceForecast firstForecast = forecasts.get(0);
-        assertThat(firstForecast.getIcon(), is("/ig/images/weather/chance_of_rain.gif"));
+        assertThat(firstForecast.getIcon(), is("chance_of_rain.png"));
         assertThat(firstForecast.getDayOfWeek(), is("Mi."));
         assertThat(firstForecast.getCondition(), is("Vereinzelt Regen"));
         assertThat(firstForecast.getDate(), is("2012-05-02"));
@@ -61,7 +61,7 @@ public class WeatherDeviceTest extends DeviceXMLParsingBase {
         assertThat(firstForecast.getLowTemperature(), is("9 (°C)"));
 
         WeatherDevice.WeatherDeviceForecast secondForecast = forecasts.get(1);
-        assertThat(secondForecast.getIcon(), is("/ig/images/weather/mostly_sunny.gif"));
+        assertThat(secondForecast.getIcon(), is("mostly_sunny.png"));
         assertThat(secondForecast.getDayOfWeek(), is("Do."));
         assertThat(secondForecast.getCondition(), is("Meist sonnig"));
         assertThat(secondForecast.getDate(), is("2012-05-03"));
@@ -69,7 +69,7 @@ public class WeatherDeviceTest extends DeviceXMLParsingBase {
         assertThat(secondForecast.getLowTemperature(), is("8 (°C)"));
 
         WeatherDevice.WeatherDeviceForecast thirdForecast = forecasts.get(2);
-        assertThat(thirdForecast.getIcon(), is("/ig/images/weather/sunny.gif"));
+        assertThat(thirdForecast.getIcon(), is("sunny.png"));
         assertThat(thirdForecast.getDayOfWeek(), is("Fr."));
         assertThat(thirdForecast.getCondition(), is("Klar"));
         assertThat(thirdForecast.getDate(), is("2012-05-04"));
@@ -80,6 +80,8 @@ public class WeatherDeviceTest extends DeviceXMLParsingBase {
 
         assertThat(device.getFileLog(), is(notNullValue()));
         assertThat(device.getDeviceCharts().size(), is(2));
+
+        device.readICON("");
     }
 
     @Override

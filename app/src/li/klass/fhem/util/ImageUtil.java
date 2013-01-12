@@ -29,11 +29,12 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.ImageView;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
 public class ImageUtil {
+
+    private static long lastFail = 0;
 
     public interface ImageLoadedListener {
         void imageLoaded(Bitmap bitmap);
@@ -55,11 +56,16 @@ public class ImageUtil {
     }
 
     public static Bitmap loadBitmap(String imageURL) {
+        if (lastFail - System.currentTimeMillis() < 60 * 10) {
+            return null;
+        }
+
         try {
             URL url = new URL(imageURL);
             return BitmapFactory.decodeStream((InputStream) url.getContent());
         } catch (Exception e) {
             Log.e(ImageUtil.class.getName(), "could not load image from " + imageURL, e);
+            lastFail = System.currentTimeMillis();
             return null;
         }
     }
