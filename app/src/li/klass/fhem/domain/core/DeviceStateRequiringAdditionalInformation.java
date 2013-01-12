@@ -27,6 +27,7 @@ package li.klass.fhem.domain.core;
 import static li.klass.fhem.domain.core.DeviceStateAdditionalInformationType.*;
 
 public enum DeviceStateRequiringAdditionalInformation {
+    PCT("pct", NUMERIC),
     VALVE("valve", NUMERIC),
     FACTORS("factors", ANY),
     DESIRED("desired", NUMERIC),

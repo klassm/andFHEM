@@ -213,7 +213,7 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
     }
 
     private void parseAvailableTargetStates(String setsText) {
-        setsText = setsText.trim().toLowerCase();
+        setsText = setsText.trim();
         String lowercase = setsText.toLowerCase();
 
         if (lowercase.equals("") || lowercase.equals("*") || lowercase.contains("no set function")
