@@ -207,7 +207,7 @@ public class DeviceListParser {
      * Returns the {@link RoomDeviceList} if it is already included within the room-device list map. Otherwise,
      * the appropriate list will be created, put into the map and returned.
      *
-     * @param roomName          room name to look for
+     * @param roomName          room name
      * @param roomDeviceListMap current map including room names and associated device lists.
      * @return matching {@link RoomDeviceList}
      */
