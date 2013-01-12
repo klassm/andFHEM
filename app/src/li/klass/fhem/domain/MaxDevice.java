@@ -102,7 +102,7 @@ public class MaxDevice extends ToggleableDevice<MaxDevice> implements DesiredTem
             subType = SubType.CUBE;
         } else if (value.equalsIgnoreCase("PushButton")) {
             subType = SubType.SWITCH;
-        } else if (value.equalsIgnoreCase("HeatingThermostat")) {
+        } else if (value.equalsIgnoreCase("HeatingThermostat") || value.equalsIgnoreCase("WallMountedThermostat")) {
             subType = SubType.TEMPERATURE;
         }
 
