@@ -34,11 +34,7 @@ import li.klass.fhem.exception.DeviceListParseException;
 import li.klass.fhem.exception.HostConnectionException;
 import li.klass.fhem.fhem.DataConnectionSwitch;
 import li.klass.fhem.util.StringEscapeUtil;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import org.w3c.dom.*;
 import org.xml.sax.InputSource;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -139,17 +135,29 @@ public class DeviceListParser {
         }
 
         addFileLogsToDevices(allDevicesRoom);
-        callAfterXmlRead(allDevicesRoom);
+        performAfterReadOperations(allDevicesRoom, roomDeviceListMap);
 
         Log.e(TAG, "loaded " + allDevicesRoom.getAllDevices().size() + " devices!");
 
         return roomDeviceListMap;
     }
 
-    private void callAfterXmlRead(RoomDeviceList allDevicesRoom) {
+    private void performAfterReadOperations(RoomDeviceList allDevicesRoom, Map<String, RoomDeviceList> roomDeviceListMap) {
         for (Device device : allDevicesRoom.getAllDevices()) {
             device.afterXMLRead();
+            removeIfUnsupported(device, allDevicesRoom, roomDeviceListMap);
         }
+    }
+
+    private void removeIfUnsupported(Device device, RoomDeviceList allDevicesRoom, Map<String, RoomDeviceList> roomDeviceListMap) {
+        if (device.isSupported()) return;
+
+        for (String room : device.getRooms()) {
+            RoomDeviceList roomDeviceList = roomDeviceListMap.get(room);
+            roomDeviceList.removeDevice(device);
+        }
+
+        allDevicesRoom.removeDevice(device);
     }
 
     /**
@@ -184,15 +192,13 @@ public class DeviceListParser {
                                                    Node node, RoomDeviceList allDevicesRoom)
             throws Exception {
 
-        T device = createAndFillDevice(deviceClass, node);
+        T device = createAndFillDevice(deviceClass, node, allDevicesRoom);
         Log.d(TAG, "loaded device with name " + device.getName());
 
         String[] rooms = device.getRooms();
-        if (device.isSupported()) {
-            for (String room : rooms) {
-                RoomDeviceList roomDeviceList = getOrCreateRoomDeviceList(room, roomDeviceListMap);
-                roomDeviceList.addDevice(device);
-            }
+        for (String room : rooms) {
+            RoomDeviceList roomDeviceList = getOrCreateRoomDeviceList(room, roomDeviceListMap);
+            roomDeviceList.addDevice(device);
         }
         allDevicesRoom.addDevice(device);
     }
@@ -242,7 +248,7 @@ public class DeviceListParser {
         }
     }
 
-    private <T extends Device> T createAndFillDevice(Class<T> deviceClass, Node node) throws Exception {
+    private <T extends Device> T createAndFillDevice(Class<T> deviceClass, Node node, RoomDeviceList allDevicesRoom) throws Exception {
         T device = deviceClass.newInstance();
         Map<String, Set<Method>> cache = getDeviceClassCacheEntriesFor(deviceClass);
 
@@ -268,6 +274,10 @@ public class DeviceListParser {
 
             if (nodeContent == null || nodeContent.length() == 0) {
                 continue;
+            }
+
+            if (keyValue.equalsIgnoreCase("device")) {
+                device.setAssociatedDeviceCallback(new AssociatedDeviceCallback(nodeContent, allDevicesRoom));
             }
 
             invokeDeviceAttributeMethod(cache, device, keyValue, nodeContent, item.getAttributes(), item.getNodeName());
@@ -358,7 +368,7 @@ public class DeviceListParser {
             if (device != null) {
                 Map<String, Set<Method>> cache = getDeviceClassCacheEntriesFor(device.getClass());
 
-                if (! value.contains(":")) {
+                if (!value.contains(":")) {
                     state = "STATE";
                 } else {
                     String[] stateTest = value.split(":", 2);

@@ -32,6 +32,7 @@ import li.klass.fhem.domain.FileLogDevice;
 import li.klass.fhem.domain.floorplan.Coordinate;
 import li.klass.fhem.domain.floorplan.FloorplanPosition;
 import li.klass.fhem.domain.genericview.ShowField;
+import li.klass.fhem.service.room.AssociatedDeviceCallback;
 import li.klass.fhem.util.StringUtil;
 import org.w3c.dom.NamedNodeMap;
 
@@ -62,6 +63,7 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
 
     protected volatile FileLogDevice fileLog;
     private List<DeviceChart> deviceCharts = new ArrayList<DeviceChart>();
+    private AssociatedDeviceCallback associatedDeviceCallback;
 
 
     public void readROOM(String value) {
@@ -389,5 +391,13 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
                 ", fileLog=" + fileLog +
                 ", deviceCharts=" + deviceCharts +
                 '}';
+    }
+
+    public void setAssociatedDeviceCallback(AssociatedDeviceCallback associatedDeviceCallback) {
+        this.associatedDeviceCallback = associatedDeviceCallback;
+    }
+
+    public AssociatedDeviceCallback getAssociatedDeviceCallback() {
+        return associatedDeviceCallback;
     }
 }

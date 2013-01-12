@@ -164,6 +164,13 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice> imp
     public void afterXMLRead() {
         super.afterXMLRead();
 
+        if (getAssociatedDeviceCallback() != null) {
+            CULHMDevice device = getAssociatedDeviceCallback().getAssociatedDevice();
+            if (device != null) {
+                subType = device.getSubType();
+            }
+        }
+
         if (subType == SubType.KFM100) {
             if (fillContentLitresRaw > fillContentLitresMaximum) {
                 fillContentLitresRaw = fillContentLitresMaximum;
