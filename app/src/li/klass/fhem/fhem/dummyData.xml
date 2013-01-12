@@ -46,6 +46,60 @@
           value="5.1 from 2011-07-08 ($Id: fhem.pl,v 1.145 2011-07-07 08:46:28 rudolfkoenig Exp $)"/>
 </_internal_>
 </_internal__LIST>
+<structure_LIST>
+<structure name="AllFHT8V" state="undefined" sets="state:17,18,19,20,21,21.5,22"
+           attrs="room group comment alias eventMap clientstate_priority clientstate_behavior:relative,absolute loglevel:0,5 devStateIcon fp_5WG fp_5WG.image fp_image icon room_map structexclude webCmd">
+    <INT key="ATTR" value="room"/>
+    <INT key="CFGFN" value="structure.cfg"/>
+    <INT key="DEF" value="room HZ_2 HZ_3 HZ_5 HZ_6"/>
+    <INT key="NAME" value="AllFHT8V"/>
+    <INT key="NR" value="171"/>
+    <INT key="NTFY_ORDER" value="50-AllFHT8V"/>
+    <INT key="STATE" value="undefined"/>
+    <INT key="TYPE" value="structure"/>
+    <ATTR key="room" value="Heizungen"/>
+    <STATE key="state" value="undefined" measured="2013-01-06 10:27:32"/>
+</structure>
+<structure name="WBalkon" state="on" sets="off on"
+           attrs="room group comment alias eventMap clientstate_priority clientstate_behavior:relative,absolute loglevel:0,5 devStateIcon fp_5WG fp_5WG.image fp_image icon room_map structexclude webCmd">
+    <INT key="ATTR" value="room"/>
+    <INT key="CFGFN" value="structure.cfg"/>
+    <INT key="DEF" value="room FunkAu1 FunkAu2"/>
+    <INT key="NAME" value="WBalkon"/>
+    <INT key="NR" value="168"/>
+    <INT key="NTFY_ORDER" value="50-WBalkon"/>
+    <INT key="STATE" value="on"/>
+    <INT key="TYPE" value="structure"/>
+    <ATTR key="room" value="WLicht"/>
+    <STATE key="state" value="on" measured="2013-01-06 17:00:00"/>
+</structure>
+<structure name="WDeko" state="undefined" sets="off on"
+           attrs="room group comment alias eventMap clientstate_priority clientstate_behavior:relative,absolute loglevel:0,5 devStateIcon fp_5WG fp_5WG.image fp_image icon room_map structexclude webCmd">
+    <INT key="ATTR" value="room"/>
+    <INT key="CFGFN" value="structure.cfg"/>
+    <INT key="DEF" value="room FunkDo3 FunkDo5"/>
+    <INT key="NAME" value="WDeko"/>
+    <INT key="NR" value="169"/>
+    <INT key="NTFY_ORDER" value="50-WDeko"/>
+    <INT key="STATE" value="undefined"/>
+    <INT key="TYPE" value="structure"/>
+    <ATTR key="room" value="WLicht"/>
+    <STATE key="state" value="undefined" measured="2013-01-06 10:28:10"/>
+</structure>
+<structure name="WLicht" state="on" sets="off on"
+           attrs="room group comment alias eventMap clientstate_priority clientstate_behavior:relative,absolute loglevel:0,5 devStateIcon fp_5WG fp_5WG.image fp_image icon room_map structexclude webCmd">
+    <INT key="ATTR" value="room"/>
+    <INT key="CFGFN" value="structure.cfg"/>
+    <INT key="DEF" value="room FunkDo1 FunkDo2 FunkDo4 FunkDo6 FunkDo7 FunkDo8"/>
+    <INT key="NAME" value="WLicht"/>
+    <INT key="NR" value="170"/>
+    <INT key="NTFY_ORDER" value="50-WLicht"/>
+    <INT key="STATE" value="on"/>
+    <INT key="TYPE" value="structure"/>
+    <ATTR key="room" value="WLicht"/>
+    <STATE key="state" value="on" measured="2013-01-06 16:00:02"/>
+</structure>
+</structure_LIST>
 <MAX_LIST>
 <MAX name="Fensterkontakt_Bad" state="closed" sets="groupid removeDevice"
      attrs="room group comment alias eventMap IODev do_not_notify:1,0 ignore:0,1 dummy:0,1 showtime:1,0 loglevel:0,1,2,3,4,5,6 event-on-update-reading event-on-change-reading devStateIcon fp_Grundriss icon webCmd">

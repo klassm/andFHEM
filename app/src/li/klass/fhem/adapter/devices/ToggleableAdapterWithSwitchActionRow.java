@@ -26,10 +26,10 @@ package li.klass.fhem.adapter.devices;
 
 import li.klass.fhem.adapter.devices.core.ToggleableAdapter;
 import li.klass.fhem.adapter.devices.genericui.AvailableTargetStatesSwitchActionRow;
-import li.klass.fhem.domain.DummyDevice;
+import li.klass.fhem.domain.core.ToggleableDevice;
 
-public class DummyAdapter extends ToggleableAdapter<DummyDevice> {
-    public DummyAdapter(Class<DummyDevice> deviceClass) {
+public class ToggleableAdapterWithSwitchActionRow<D extends ToggleableDevice<D>> extends ToggleableAdapter<D> {
+    public ToggleableAdapterWithSwitchActionRow(Class<D> deviceClass) {
         super(deviceClass);
     }
 
@@ -37,6 +37,6 @@ public class DummyAdapter extends ToggleableAdapter<DummyDevice> {
     protected void afterPropertiesSet() {
         super.afterPropertiesSet();
 
-        detailActions.add(new AvailableTargetStatesSwitchActionRow<DummyDevice>());
+        detailActions.add(new AvailableTargetStatesSwitchActionRow<D>());
     }
 }
