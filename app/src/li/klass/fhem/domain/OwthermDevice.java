@@ -33,8 +33,6 @@ import li.klass.fhem.appwidget.view.widget.medium.TemperatureWidgetView;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.genericview.FloorplanViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
-import li.klass.fhem.util.ValueDescriptionUtil;
-import li.klass.fhem.util.ValueExtractUtil;
 import li.klass.fhem.util.ValueUtil;
 
 @SuppressWarnings("unused")
@@ -53,7 +51,7 @@ public class OwthermDevice extends Device<OwthermDevice> {
         present = AndFHEMApplication.getContext().getString(stringId);
     }
 
-    public void readTEMPERATURE(String value)  {
+    public void readTEMPERATURE(String value) {
         this.temperature = ValueUtil.formatTemperature(value);
     }
 
@@ -70,9 +68,8 @@ public class OwthermDevice extends Device<OwthermDevice> {
         super.afterXMLRead();
 
         String state = getInternalState();
-        if (state.contains("deg;C")) {
-            double temperature = ValueExtractUtil.extractLeadingDouble(state);
-            setState(ValueDescriptionUtil.appendTemperature(temperature));
+        if (state.contains("temperature")) {
+            setState(temperature);
         }
     }
 }

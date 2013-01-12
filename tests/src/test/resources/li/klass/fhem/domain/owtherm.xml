@@ -24,7 +24,8 @@
 
 <FHZINFO>
     <OWTHERM_LIST>
-        <OWTHERM name="device" state="13.62 &amp;deg;C" sets="interval tempHigh tempLow" attrs="room group comment alias eventMap IODev do_not_notify:0,1 showtime:0,1 loglevel:0,1,2,3,4,5 event:on-update,on-change stateAL stateAH tempOffset tempUnit:C,Celsius,F,Fahrenheit,K,Kelvin tempLow tempHigh icon webCmd">
+        <OWTHERM name="device" state="13.62 &amp;deg;C" sets="interval tempHigh tempLow"
+                 attrs="room group comment alias eventMap IODev do_not_notify:0,1 showtime:0,1 loglevel:0,1,2,3,4,5 event:on-update,on-change stateAL stateAH tempOffset tempUnit:C,Celsius,F,Fahrenheit,K,Kelvin tempLow tempHigh icon webCmd">
             <INT key="ALARM" value="0"/>
             <INT key="DEF" value="DS18B20 970D56040000"/>
             <INT key="INTERVAL" value="300"/>
@@ -34,7 +35,7 @@
             <INT key="OW_ID" value="970D56040000"/>
             <INT key="PRESENT" value="1"/>
             <INT key="ROM_ID" value="28.970D56040000.89"/>
-            <INT key="STATE" value="13.62 &amp;deg;C"/>
+            <INT key="STATE" value="temperature: 13.62 &amp;deg;C"/>
             <INT key="TYPE" value="OWTHERM"/>
             <INT key="IODev" value="OWio2"/>
             <ATTR key="IODev" value="OWio2"/>

@@ -171,7 +171,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice> imp
             }
         }
 
-        if (subType == SubType.KFM100) {
+        if (subType == SubType.KFM100 && fillContentLitresMaximum != null) {
             if (fillContentLitresRaw > fillContentLitresMaximum) {
                 fillContentLitresRaw = fillContentLitresMaximum;
             }
