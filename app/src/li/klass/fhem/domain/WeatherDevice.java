@@ -217,7 +217,7 @@ public class WeatherDevice extends Device<WeatherDevice> {
 
     public static String parseIcon(String icon) {
         if (icon == null) return null;
-        if (!icon.endsWith(".png")) {
+        if (!icon.endsWith(".png") && icon.lastIndexOf(".") != -1) {
             icon = icon.substring(0, icon.lastIndexOf(".")) + ".png";
         }
 
