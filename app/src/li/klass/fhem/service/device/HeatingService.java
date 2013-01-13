@@ -42,7 +42,8 @@ public class HeatingService {
     /**
      * Sets the desired temperature. The action will only be executed if the new desired temperature is different to
      * the already set one.
-     * @param device concerned device
+     *
+     * @param device                  concerned device
      * @param desiredTemperatureToSet new desired temperature value
      */
     public void setDesiredTemperature(DesiredTempDevice device, double desiredTemperatureToSet) {
@@ -56,8 +57,9 @@ public class HeatingService {
     /**
      * Sets the mode attribute of a given HeatingModeDevice device. The action will only be executed if the new mode is different to
      * the already set one.
+     *
      * @param device concerned device
-     * @param mode new mode to set.
+     * @param mode   new mode to set.
      */
     @SuppressWarnings("unchecked")
     public <MODE extends Enum<MODE>, D extends HeatingModeDevice<MODE>> void setMode(D device, MODE mode) {
@@ -75,7 +77,7 @@ public class HeatingService {
         Log.e(TAG, "changing mode for device " + device.getName() +
                 " from " + device.getHeatingMode() + " to " + mode);
 
-        String command = String.format(device.getName(), device.getHeatingModeCommandField(), mode.name().toLowerCase());
+        String command = String.format(SET_COMMAND, device.getName(), device.getHeatingModeCommandField(), mode.name().toLowerCase());
         CommandExecutionService.INSTANCE.executeSafely(command);
         device.setHeatingMode(mode);
     }
@@ -84,7 +86,8 @@ public class HeatingService {
     /**
      * Sets the window open temperature. The action will only be executed if the new window open temperature is
      * different to the already set one.
-     * @param device concerned device
+     *
+     * @param device         concerned device
      * @param windowOpenTemp new window open temperature to set
      */
     public void setWindowOpenTemp(WindowOpenTempDevice device, double windowOpenTemp) {

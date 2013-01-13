@@ -45,10 +45,12 @@ public class CommandExecutionService extends AbstractService {
 
     public static final CommandExecutionService INSTANCE = new CommandExecutionService();
 
-    private CommandExecutionService() {}
+    private CommandExecutionService() {
+    }
 
     /**
      * Execute a command without catching any exception or showing an update dialog. Executes synchronously.
+     *
      * @param command command to execute
      */
     public String executeUnsafeCommand(String command) {
@@ -58,17 +60,18 @@ public class CommandExecutionService extends AbstractService {
     /**
      * Executes a command safely by catching exceptions. Shows an update dialog during execution. Shows an update
      * dialog.
+     *
      * @param command command to execute
-     * 
      */
     public String executeSafely(String command) {
+        command = command.replaceAll("  ", " ");
         Context context = showExecutingDialog();
 
         try {
             return executeUnsafeCommand(command);
         } catch (AndFHEMException e) {
             handleAndFHEMException(e);
-            
+
             Log.e(CommandExecutionService.class.getName(), "error occurred while executing command " + command, e);
             return "";
         } finally {
