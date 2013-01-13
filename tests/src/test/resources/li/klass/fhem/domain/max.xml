@@ -1,6 +1,7 @@
 <FHZINFO>
     <MAX_LIST>
-        <MAX name="device" state="closed" sets="groupid removeDevice" attrs="room group comment alias eventMap IODev do_not_notify:1,0 ignore:0,1 dummy:0,1 showtime:1,0 loglevel:0,1,2,3,4,5,6 event-on-update-reading event-on-change-reading devStateIcon fp_Grundriss icon webCmd">
+        <MAX name="device" state="closed" sets="groupid removeDevice"
+             attrs="room group comment alias eventMap IODev do_not_notify:1,0 ignore:0,1 dummy:0,1 showtime:1,0 loglevel:0,1,2,3,4,5,6 event-on-update-reading event-on-change-reading devStateIcon fp_Grundriss icon webCmd">
             <INT key="DEF" value="ShutterContact 0257d4"/>
             <INT key="LASTIODev" value="ml"/>
             <INT key="MSGCNT" value="32"/>
@@ -11,7 +12,8 @@
             <INT key="addr" value="0257d4"/>
             <INT key="groupid" value="1"/>
             <INT key="ml_MSGCNT" value="32"/>
-            <INT key="ml_RAWMSG" value="L:CwRaqQkSGAAiAAAABgXElwkSEAYCSxkJEhAGAle+CRIQCwEu0wkSGAAiAMMACwRa3AMSGAAoAN4ABgJLHAkSEAYCV20JEhAGAlfUCRIQCwRawQkSGUQhAAAACwRZKgkSGAAiALwA"/>
+            <INT key="ml_RAWMSG"
+                 value="L:CwRaqQkSGAAiAAAABgXElwkSEAYCSxkJEhAGAle+CRIQCwEu0wkSGAAiAMMACwRa3AMSGAAoAN4ABgJLHAkSEAYCV20JEhAGAlfUCRIQCwRawQkSGUQhAAAACwRZKgkSGAAiALwA"/>
             <INT key="ml_TIME" value="2012-11-30 15:20:26"/>
             <INT key="rferror" value="0"/>
             <INT key="serial" value="JEQ0161008"/>
@@ -22,7 +24,8 @@
             <STATE key="onoff" value="0" measured="2012-11-30 15:20:26"/>
         </MAX>
 
-        <MAX name="device1" state="connected" sets="groupid removeDevice" attrs="room group comment alias eventMap IODev do_not_notify:1,0 ignore:0,1 dummy:0,1 showtime:1,0 loglevel:0,1,2,3,4,5,6 event-on-update-reading event-on-change-reading devStateIcon fp_Grundriss icon webCmd">
+        <MAX name="device1" state="connected" sets="groupid removeDevice"
+             attrs="room group comment alias eventMap IODev do_not_notify:1,0 ignore:0,1 dummy:0,1 showtime:1,0 loglevel:0,1,2,3,4,5,6 event-on-update-reading event-on-change-reading devStateIcon fp_Grundriss icon webCmd">
             <INT key="DEF" value="Cube 03b5f5"/>
             <INT key="LASTIODev" value="ml"/>
             <INT key="MSGCNT" value="5"/>
@@ -34,7 +37,8 @@
             <INT key="clocknotset" value=""/>
             <INT key="groupid" value="17"/>
             <INT key="ml_MSGCNT" value="5"/>
-            <INT key="ml_RAWMSG" value="C:03b5f5,7QO19QARAf9KRVEwMTMxODk4AQsABEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAsABEAAAAAAAAAAQQAAAAAAAAAAAAAAAAAAAAAAAAAAAGh0dHA6Ly93d3cubWF4LXBvcnRhbC5lbHYuZGU6ODAvY3ViZQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAENFVAAACgADAAAOEENFU1QAAwAAAAAcIA=="/>
+            <INT key="ml_RAWMSG"
+                 value="C:03b5f5,7QO19QARAf9KRVEwMTMxODk4AQsABEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAsABEAAAAAAAAAAQQAAAAAAAAAAAAAAAAAAAAAAAAAAAGh0dHA6Ly93d3cubWF4LXBvcnRhbC5lbHYuZGU6ODAvY3ViZQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAENFVAAACgADAAAOEENFU1QAAwAAAAAcIA=="/>
             <INT key="ml_TIME" value="2012-11-30 13:04:25"/>
             <INT key="serial" value="JEQ0131898"/>
             <INT key="type" value="Cube"/>
@@ -42,7 +46,8 @@
             <ATTR key="room" value="room"/>
             <STATE key="connection" value="1" measured="2012-11-30 13:04:25"/>
         </MAX>
-        <MAX name="device2" state="waiting for data" sets="groupid removeDevice" attrs="room group comment alias eventMap IODev do_not_notify:1,0 ignore:0,1 dummy:0,1 showtime:1,0 loglevel:0,1,2,3,4,5,6 event-on-update-reading event-on-change-reading devStateIcon fp_Grundriss icon webCmd">
+        <MAX name="device2" state="waiting for data" sets="groupid removeDevice"
+             attrs="room group comment alias eventMap IODev do_not_notify:1,0 ignore:0,1 dummy:0,1 showtime:1,0 loglevel:0,1,2,3,4,5,6 event-on-update-reading event-on-change-reading devStateIcon fp_Grundriss icon webCmd">
             <INT key="DEF" value="PushButton 05c497"/>
             <INT key="LASTIODev" value="ml"/>
             <INT key="MSGCNT" value="3"/>
@@ -60,7 +65,9 @@
             <INT key="IODev" value="ml"/>
             <ATTR key="room" value="room"/>
         </MAX>
-        <MAX name="device3" state="17.0 °C" sets="desiredTemperature:eco,boost,comfort,4.5,5.0,5.5,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,10.0,10.5,11.0,11.5,12.0,12.5,13.0,13.5,14.0,14.5,15.0,15.5,16.0,16.5,17.0,17.5,18.0,18.5,19.0,19.5,20.0,20.5,21.0,21.5,22.0,22.5,23.0,23.5,24.0,24.5,25.0,25.5,26.0,26.5,27.0,27.5,28.0,28.5,29.0,29.5,30.0,30.5 ecoTemperature:4.5,5.0,5.5,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,10.0,10.5,11.0,11.5,12.0,12.5,13.0,13.5,14.0,14.5,15.0,15.5,16.0,16.5,17.0,17.5,18.0,18.5,19.0,19.5,20.0,20.5,21.0,21.5,22.0,22.5,23.0,23.5,24.0,24.5,25.0,25.5,26.0,26.5,27.0,27.5,28.0,28.5,29.0,29.5,30.0,30.5 comfortTemperature:4.5,5.0,5.5,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,10.0,10.5,11.0,11.5,12.0,12.5,13.0,13.5,14.0,14.5,15.0,15.5,16.0,16.5,17.0,17.5,18.0,18.5,19.0,19.5,20.0,20.5,21.0,21.5,22.0,22.5,23.0,23.5,24.0,24.5,25.0,25.5,26.0,26.5,27.0,27.5,28.0,28.5,29.0,29.5,30.0,30.5 temperatureOffset:-3.5,-3.0,-2.5,-2.0,-1.5,-1.0,-0.5,0.0,0.5,1.0,1.5,2.0,2.5,3.0,3.5 maximumTemperature:4.5,5.0,5.5,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,10.0,10.5,11.0,11.5,12.0,12.5,13.0,13.5,14.0,14.5,15.0,15.5,16.0,16.5,17.0,17.5,18.0,18.5,19.0,19.5,20.0,20.5,21.0,21.5,22.0,22.5,23.0,23.5,24.0,24.5,25.0,25.5,26.0,26.5,27.0,27.5,28.0,28.5,29.0,29.5,30.0,30.5 minimumTemperature:4.5,5.0,5.5,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,10.0,10.5,11.0,11.5,12.0,12.5,13.0,13.5,14.0,14.5,15.0,15.5,16.0,16.5,17.0,17.5,18.0,18.5,19.0,19.5,20.0,20.5,21.0,21.5,22.0,22.5,23.0,23.5,24.0,24.5,25.0,25.5,26.0,26.5,27.0,27.5,28.0,28.5,29.0,29.5,30.0,30.5 windowOpenTemperature:4.5,5.0,5.5,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,10.0,10.5,11.0,11.5,12.0,12.5,13.0,13.5,14.0,14.5,15.0,15.5,16.0,16.5,17.0,17.5,18.0,18.5,19.0,19.5,20.0,20.5,21.0,21.5,22.0,22.5,23.0,23.5,24.0,24.5,25.0,25.5,26.0,26.5,27.0,27.5,28.0,28.5,29.0,29.5,30.0,30.5 windowOpenDuration groupid removeDevice" attrs="room group comment alias eventMap IODev do_not_notify:1,0 ignore:0,1 dummy:0,1 showtime:1,0 loglevel:0,1,2,3,4,5,6 event-on-update-reading event-on-change-reading devStateIcon fp_Grundriss icon webCmd">
+        <MAX name="device3" state="17.0 °C"
+             sets="desiredTemperature:eco,boost,comfort,4.5,5.0,5.5,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,10.0,10.5,11.0,11.5,12.0,12.5,13.0,13.5,14.0,14.5,15.0,15.5,16.0,16.5,17.0,17.5,18.0,18.5,19.0,19.5,20.0,20.5,21.0,21.5,22.0,22.5,23.0,23.5,24.0,24.5,25.0,25.5,26.0,26.5,27.0,27.5,28.0,28.5,29.0,29.5,30.0,30.5 ecoTemperature:4.5,5.0,5.5,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,10.0,10.5,11.0,11.5,12.0,12.5,13.0,13.5,14.0,14.5,15.0,15.5,16.0,16.5,17.0,17.5,18.0,18.5,19.0,19.5,20.0,20.5,21.0,21.5,22.0,22.5,23.0,23.5,24.0,24.5,25.0,25.5,26.0,26.5,27.0,27.5,28.0,28.5,29.0,29.5,30.0,30.5 comfortTemperature:4.5,5.0,5.5,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,10.0,10.5,11.0,11.5,12.0,12.5,13.0,13.5,14.0,14.5,15.0,15.5,16.0,16.5,17.0,17.5,18.0,18.5,19.0,19.5,20.0,20.5,21.0,21.5,22.0,22.5,23.0,23.5,24.0,24.5,25.0,25.5,26.0,26.5,27.0,27.5,28.0,28.5,29.0,29.5,30.0,30.5 temperatureOffset:-3.5,-3.0,-2.5,-2.0,-1.5,-1.0,-0.5,0.0,0.5,1.0,1.5,2.0,2.5,3.0,3.5 maximumTemperature:4.5,5.0,5.5,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,10.0,10.5,11.0,11.5,12.0,12.5,13.0,13.5,14.0,14.5,15.0,15.5,16.0,16.5,17.0,17.5,18.0,18.5,19.0,19.5,20.0,20.5,21.0,21.5,22.0,22.5,23.0,23.5,24.0,24.5,25.0,25.5,26.0,26.5,27.0,27.5,28.0,28.5,29.0,29.5,30.0,30.5 minimumTemperature:4.5,5.0,5.5,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,10.0,10.5,11.0,11.5,12.0,12.5,13.0,13.5,14.0,14.5,15.0,15.5,16.0,16.5,17.0,17.5,18.0,18.5,19.0,19.5,20.0,20.5,21.0,21.5,22.0,22.5,23.0,23.5,24.0,24.5,25.0,25.5,26.0,26.5,27.0,27.5,28.0,28.5,29.0,29.5,30.0,30.5 windowOpenTemperature:4.5,5.0,5.5,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,10.0,10.5,11.0,11.5,12.0,12.5,13.0,13.5,14.0,14.5,15.0,15.5,16.0,16.5,17.0,17.5,18.0,18.5,19.0,19.5,20.0,20.5,21.0,21.5,22.0,22.5,23.0,23.5,24.0,24.5,25.0,25.5,26.0,26.5,27.0,27.5,28.0,28.5,29.0,29.5,30.0,30.5 windowOpenDuration groupid removeDevice"
+             attrs="room group comment alias eventMap IODev do_not_notify:1,0 ignore:0,1 dummy:0,1 showtime:1,0 loglevel:0,1,2,3,4,5,6 event-on-update-reading event-on-change-reading devStateIcon fp_Grundriss icon webCmd">
             <INT key="DEF" value="HeatingThermostat 012ed3"/>
             <INT key="LASTIODev" value="ml"/>
             <INT key="MSGCNT" value="33"/>
@@ -78,7 +85,8 @@
             <INT key="maximumTemperature" value="30.5"/>
             <INT key="minimumTemperature" value="4.5"/>
             <INT key="ml_MSGCNT" value="33"/>
-            <INT key="ml_RAWMSG" value="L:CwRaqQkSGAAiAAAABgXElwkSEAYCSxkJEhAGAle+CRIQCwEu0wkSGAAiAMMACwRa3AMSGAAoAN4ABgJLHAkSEAYCV20JEhAGAlfUCRIQCwRawQkSGUQhAAAACwRZKgkSGAAiALwA"/>
+            <INT key="ml_RAWMSG"
+                 value="L:CwRaqQkSGAAiAAAABgXElwkSEAYCSxkJEhAGAle+CRIQCwEu0wkSGAAiAMMACwRa3AMSGAAoAN4ABgJLHAkSEAYCV20JEhAGAlfUCRIQCwRawQkSGUQhAAAACwRZKgkSGAAiALwA"/>
             <INT key="ml_TIME" value="2012-11-30 15:20:26"/>
             <INT key="mode" value="0"/>
             <INT key="rferror" value="0"/>
@@ -95,6 +103,67 @@
             <STATE key="desiredTemperature" value="17.0" measured="2012-11-30 15:20:26"/>
             <STATE key="temperature" value="21" measured="2012-11-30 15:20:26"/>
             <STATE key="valveposition" value="0" measured="2012-11-30 15:20:26"/>
+        </MAX>
+
+        <MAX name="journalDevice" state="22.0 °C"
+             sets="wakeUp factoryReset groupid associate:MAX_TH_SZ,MAX_TH_WZ_GROSS,MAX_TH_JAN,MAX_TH_NIKLAS,MAX_TH_WZ_KLEIN displayActualTemperature:0,1 desiredTemperature:eco,comfort,boost,auto,4.5,5.0,5.5,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,10.0,10.5,11.0,11.5,12.0,12.5,13.0,13.5,14.0,14.5,15.0,15.5,16.0,16.5,17.0,17.5,18.0,18.5,19.0,19.5,20.0,20.5,21.0,21.5,22.0,22.5,23.0,23.5,24.0,24.5,25.0,25.5,26.0,26.5,27.0,27.5,28.0,28.5,29.0,29.5,30.0,30.5 ecoTemperature:4.5,5.0,5.5,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,10.0,10.5,11.0,11.5,12.0,12.5,13.0,13.5,14.0,14.5,15.0,15.5,16.0,16.5,17.0,17.5,18.0,18.5,19.0,19.5,20.0,20.5,21.0,21.5,22.0,22.5,23.0,23.5,24.0,24.5,25.0,25.5,26.0,26.5,27.0,27.5,28.0,28.5,29.0,29.5,30.0,30.5 comfortTemperature:4.5,5.0,5.5,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,10.0,10.5,11.0,11.5,12.0,12.5,13.0,13.5,14.0,14.5,15.0,15.5,16.0,16.5,17.0,17.5,18.0,18.5,19.0,19.5,20.0,20.5,21.0,21.5,22.0,22.5,23.0,23.5,24.0,24.5,25.0,25.5,26.0,26.5,27.0,27.5,28.0,28.5,29.0,29.5,30.0,30.5 maximumTemperature:4.5,5.0,5.5,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,10.0,10.5,11.0,11.5,12.0,12.5,13.0,13.5,14.0,14.5,15.0,15.5,16.0,16.5,17.0,17.5,18.0,18.5,19.0,19.5,20.0,20.5,21.0,21.5,22.0,22.5,23.0,23.5,24.0,24.5,25.0,25.5,26.0,26.5,27.0,27.5,28.0,28.5,29.0,29.5,30.0,30.5"
+             attrs="room group comment alias eventMap IODev do_not_notify:1,0 ignore:0,1 dummy:0,1 showtime:1,0 loglevel:0,1,2,3,4,5,6 event-on-change-reading:0,1 event-on-update-reading:0,1 stateFormat devStateIcon icon webCmd">
+            <INT key="CFGFN" value="/fhem-5.3/CFG/maxinterface.cfg"/>
+            <INT key="DEF" value="WallMountedThermostat 057fa4"/>
+            <INT key="LASTIODev" value="MAX_LAN"/>
+            <INT key="MAX_LAN_MSGCNT" value="254"/>
+            <INT key="MAX_LAN_RAWMSG"
+                 value="L:BgXlywkSEAsEydsJEhgSLAAAAAYF5c8JEhAGBeXtMRIQBgXno1QSEAsExge8EhgRKgDtAAYF556oEhALBMX7vBIYGiwA9QALBMYWqBIYACcAAAALBBrkqBIYECwAAAAMBX+kqBIYBCwA6QDk"/>
+            <INT key="MAX_LAN_TIME" value="2013-01-12 15:27:55"/>
+            <INT key="MSGCNT" value="254"/>
+            <INT key="NAME" value="journalDevice"/>
+            <INT key="NR" value="43"/>
+            <INT key="STATE" value="22.0 °C"/>
+            <INT key="TYPE" value="MAX"/>
+            <INT key="addr" value="057fa4"/>
+            <INT key="backend" value="MAX_LAN"/>
+            <INT key="groupid" value="1"/>
+            <INT key="rferror" value="0"/>
+            <INT key="serial" value="JEQ0501671"/>
+            <INT key="type" value="WallMountedThermostat"/>
+            <INT key="IODev" value="MAX_LAN"/>
+            <ATTR key="alias" value="Wandthermostat Wohnzimmer"/>
+            <ATTR key="event-on-change-reading" value=".*"/>
+            <ATTR key="event-on-update-reading" value=".*"/>
+            <ATTR key="icon" value="icoHeizungReg"/>
+            <ATTR key="room" value="99 MAX,01 Wohnzimmer,00 Heizkoerper,00 Info"/>
+            <ATTR key="webCmd" value="desiredTemperature"/>
+            <STATE key="battery" value="ok" measured="2013-01-12 15:27:55"/>
+            <STATE key="comfortTemperature" value="21" measured="2013-01-12 14:24:35"/>
+            <STATE key="desiredTemperature" value="22.0" measured="2013-01-12 15:27:55"/>
+            <STATE key="displayActualTemperature" value="1" measured="2013-01-12 15:27:55"/>
+            <STATE key="ecoTemperature" value="16.5" measured="2013-01-12 14:24:35"/>
+            <STATE key="maximumTemperature" value="30" measured="2013-01-12 14:24:35"/>
+            <STATE key="minimumTemperature" value="4.5" measured="2013-01-12 14:24:35"/>
+            <STATE key="state" value="22.0 °C" measured="2013-01-12 15:27:55"/>
+            <STATE key="temperature" value="22.8" measured="2013-01-12 15:27:55"/>
+            <STATE key="valveposition" value="4" measured="2013-01-12 15:27:55"/>
+            <STATE key="weekprofile-0-Sat-temp" value="15  /  22  /  15" measured="2013-01-12 14:24:35"/>
+            <STATE key="weekprofile-0-Sat-time" value="00:00-07:00  /  07:00-23:00  /  23:00-00:00"
+                   measured="2013-01-12 14:24:35"/>
+            <STATE key="weekprofile-1-Sun-temp" value="15  /  22  /  15" measured="2013-01-12 14:24:35"/>
+            <STATE key="weekprofile-1-Sun-time" value="00:00-08:00  /  08:00-23:00  /  23:00-00:00"
+                   measured="2013-01-12 14:24:35"/>
+            <STATE key="weekprofile-2-Mon-temp" value="15  /  22  /  15" measured="2013-01-12 14:24:35"/>
+            <STATE key="weekprofile-2-Mon-time" value="00:00-06:00  /  06:00-23:00  /  23:00-00:00"
+                   measured="2013-01-12 14:24:35"/>
+            <STATE key="weekprofile-3-Tue-temp" value="15  /  22  /  15" measured="2013-01-12 14:24:35"/>
+            <STATE key="weekprofile-3-Tue-time" value="00:00-06:00  /  06:00-23:00  /  23:00-00:00"
+                   measured="2013-01-12 14:24:35"/>
+            <STATE key="weekprofile-4-Wed-temp" value="15  /  22  /  15" measured="2013-01-12 14:24:35"/>
+            <STATE key="weekprofile-4-Wed-time" value="00:00-06:00  /  06:00-23:00  /  23:00-00:00"
+                   measured="2013-01-12 14:24:35"/>
+            <STATE key="weekprofile-5-Thu-temp" value="15  /  22  /  15" measured="2013-01-12 14:24:35"/>
+            <STATE key="weekprofile-5-Thu-time" value="00:00-06:00  /  06:00-23:00  /  23:00-00:00"
+                   measured="2013-01-12 14:24:35"/>
+            <STATE key="weekprofile-6-Fri-temp" value="15  /  22  /  15" measured="2013-01-12 14:24:35"/>
+            <STATE key="weekprofile-6-Fri-time" value="00:00-06:00  /  06:00-23:00  /  23:00-00:00"
+                   measured="2013-01-12 14:24:35"/>
         </MAX>
     </MAX_LIST>
 </FHZINFO>

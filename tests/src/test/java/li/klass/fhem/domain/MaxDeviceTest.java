@@ -72,6 +72,12 @@ public class MaxDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getComfortTempDesc(), is("19.0 (°C)"));
     }
 
+    public void testJournalDevice() {
+        MaxDevice device = getDeviceFor("journalDevice");
+
+        assertThat(device.getMeasured(), is("2013-01-12 15:27:55"));
+    }
+
     @Override
     protected String getFileName() {
         return "max.xml";
