@@ -49,7 +49,8 @@
             <ATTR key="subType" value="THSensor"/>
             <STATE key="humidity" value="67" measured="2012-07-19 22:13:03"/>
             <STATE key="state" value="T: 14.6 H: 67" measured="2012-07-19 22:13:03"/>
-            <STATE key="temperature" value="14.6" measured="2012-07-19 22:13:03"/>
+            <!-- was originally temperature. Supposed to be measured-temp by now ... -->
+            <STATE key="measured-temp" value="14.6" measured="2012-07-19 22:13:03"/>
         </CUL_HM>
     </CUL_HM_LIST>
     <FileLog_LIST>

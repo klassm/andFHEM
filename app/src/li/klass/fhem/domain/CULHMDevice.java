@@ -122,10 +122,6 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice> imp
         actuator = value;
     }
 
-    public void readTEMPERATURE(String value) {
-        this.measuredTemp = ValueDescriptionUtil.appendTemperature(value);
-    }
-
     public void readMEASURED_TEMP(String value) {
         measuredTemp = ValueDescriptionUtil.appendTemperature(value);
     }
