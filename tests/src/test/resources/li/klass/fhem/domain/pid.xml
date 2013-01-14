@@ -47,9 +47,11 @@
             <STATE key="delta" value="-0.800000000000001" measured="2012-03-20 20:39:02"/>
             <STATE key="desired" value="16" measured="2012-03-20 18:00:00"/>
             <STATE key="integrator" value="0" measured="2012-03-20 20:39:02"/>
+            <STATE key="state" value="desired 21.5" measured="2013-01-14 08:02:39"/>
         </PID>
 
-        <PID name="device1" state="initialized" sets="factors desired" attrs="room group comment alias eventMap disable:0,1 loglevel:0,1,2,3,4,5,6 icon webCmd">
+        <PID name="device1" state="initialized" sets="factors desired"
+             attrs="room group comment alias eventMap disable:0,1 loglevel:0,1,2,3,4,5,6 icon webCmd">
             <INT key="DEF" value="FHT_462b:measured-temp:([\d\.]*)  8vBed"/>
             <INT key="NAME" value="device1"/>
             <INT key="NR" value="39"/>

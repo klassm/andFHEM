@@ -163,7 +163,11 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
                         } else if (action.equals(DISMISS_EXECUTING_DIALOG)) {
                             removeDialog();
                         } else if (action.equals(SHOW_TOAST)) {
-                            Toast.makeText(FragmentBaseActivity.this, intent.getIntExtra(BundleExtraKeys.TOAST_STRING_ID, 0), Toast.LENGTH_SHORT).show();
+                            String content = intent.getStringExtra(BundleExtraKeys.CONTENT);
+                            if (content == null) {
+                                content = getString(intent.getIntExtra(BundleExtraKeys.TOAST_STRING_ID, 0));
+                            }
+                            Toast.makeText(FragmentBaseActivity.this, content, Toast.LENGTH_SHORT).show();
                         } else if (action.equals(BACK)) {
                             onBackPressed(intent.getExtras());
                         }

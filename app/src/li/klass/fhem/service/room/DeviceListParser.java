@@ -24,7 +24,13 @@
 
 package li.klass.fhem.service.room;
 
+import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
+import li.klass.fhem.AndFHEMApplication;
+import li.klass.fhem.R;
+import li.klass.fhem.constants.Actions;
+import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.FileLogDevice;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceType;
@@ -34,6 +40,7 @@ import li.klass.fhem.exception.DeviceListParseException;
 import li.klass.fhem.exception.HostConnectionException;
 import li.klass.fhem.fhem.DataConnectionSwitch;
 import li.klass.fhem.util.StringEscapeUtil;
+import li.klass.fhem.util.StringUtil;
 import org.w3c.dom.*;
 import org.xml.sax.InputSource;
 
@@ -129,9 +136,26 @@ public class DeviceListParser {
         Document document = docBuilder.parse(new InputSource(new StringReader(xmlList)));
 
         DeviceType[] deviceTypes = DeviceType.values();
+        int errorCount = 0;
+        ArrayList<String> errorDeviceTypes = new ArrayList<String>();
         for (DeviceType deviceType : deviceTypes) {
-            devicesFromDocument(deviceType.getDeviceClass(), roomDeviceListMap, document, deviceType.getXmllistTag(),
+            int localErrorCount = devicesFromDocument(deviceType.getDeviceClass(), roomDeviceListMap, document, deviceType.getXmllistTag(),
                     allDevicesRoom);
+            if (localErrorCount > 0) {
+                errorDeviceTypes.add(deviceType.name());
+                errorCount += localErrorCount;
+            }
+        }
+
+        if (errorCount > 0) {
+            Context context = AndFHEMApplication.getContext();
+            String errorMessage = context.getString(R.string.errorDeviceListLoad);
+            String deviceTypesError = StringUtil.concatenate(errorDeviceTypes.toArray(new String[errorDeviceTypes.size()]), ",");
+            errorMessage = String.format(errorMessage, "" + errorCount, deviceTypesError);
+
+            Intent intent = new Intent(Actions.SHOW_TOAST);
+            intent.putExtra(BundleExtraKeys.CONTENT, errorMessage);
+            context.sendBroadcast(intent);
         }
 
         addFileLogsToDevices(allDevicesRoom);
@@ -166,16 +190,23 @@ public class DeviceListParser {
      * @param document          xml document to read
      * @param tagName           current tag name to read
      * @param <T>               type of device
-     * @throws Exception if something went utterly wrong
+     * @return error count while parsing the device list
      */
-    private <T extends Device> void devicesFromDocument(Class<T> deviceClass, Map<String,
-            RoomDeviceList> roomDeviceListMap, Document document, String tagName, RoomDeviceList allDevicesRoom) throws Exception {
+    private <T extends Device> int devicesFromDocument(Class<T> deviceClass, Map<String,
+            RoomDeviceList> roomDeviceListMap, Document document, String tagName, RoomDeviceList allDevicesRoom) {
+
+        int errorCount = 0;
 
         NodeList nodes = document.getElementsByTagName(tagName);
         for (int i = 0; i < nodes.getLength(); i++) {
             Node item = nodes.item(i);
-            deviceFromNode(deviceClass, roomDeviceListMap, item, allDevicesRoom);
+
+            if (!deviceFromNode(deviceClass, roomDeviceListMap, item, allDevicesRoom)) {
+                errorCount++;
+            }
         }
+
+        return errorCount;
     }
 
     /**
@@ -186,21 +217,26 @@ public class DeviceListParser {
      * @param roomDeviceListMap map used for saving the device
      * @param node              current xml node
      * @param <T>               specific device type
-     * @throws Exception if something went utterly wrong
+     * @return true if everything went well
      */
-    private <T extends Device> void deviceFromNode(Class<T> deviceClass, Map<String, RoomDeviceList> roomDeviceListMap,
-                                                   Node node, RoomDeviceList allDevicesRoom)
-            throws Exception {
+    private <T extends Device> boolean deviceFromNode(Class<T> deviceClass, Map<String, RoomDeviceList> roomDeviceListMap,
+                                                      Node node, RoomDeviceList allDevicesRoom) {
+        try {
+            T device = createAndFillDevice(deviceClass, node, allDevicesRoom);
+            Log.d(TAG, "loaded device with name " + device.getName());
 
-        T device = createAndFillDevice(deviceClass, node, allDevicesRoom);
-        Log.d(TAG, "loaded device with name " + device.getName());
+            String[] rooms = device.getRooms();
+            for (String room : rooms) {
+                RoomDeviceList roomDeviceList = getOrCreateRoomDeviceList(room, roomDeviceListMap);
+                roomDeviceList.addDevice(device);
+            }
+            allDevicesRoom.addDevice(device);
 
-        String[] rooms = device.getRooms();
-        for (String room : rooms) {
-            RoomDeviceList roomDeviceList = getOrCreateRoomDeviceList(room, roomDeviceListMap);
-            roomDeviceList.addDevice(device);
+            return true;
+        } catch (Exception e) {
+            Log.e(TAG, "error parsing device", e);
+            return false;
         }
-        allDevicesRoom.addDevice(device);
     }
 
     /**

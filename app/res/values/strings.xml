@@ -91,6 +91,7 @@
     <string name="model">Model</string>
     <string name="send">Send</string>
     <string name="error">Error!</string>
+    <string name="errorDeviceListLoad">Could not load %1$s device(s) (types: %2$s)!</string>
     <string name="conversion">Conversion</string>
     <string name="hex2quat">Hex -> Quat</string>
     <string name="quat2hex">Quat -> Hex</string>

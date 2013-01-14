@@ -56,15 +56,15 @@ public class PIDDevice extends Device<PIDDevice> implements DesiredTempDevice {
     public static final double MAXIMUM_TEMPERATURE = 40;
 
     public void readSTATE(String value) {
-        String content = value.replaceAll("[\\(\\)]", "").replaceAll("  ", "");
-        String[] parts = content.split(" ");
-
-        if (parts.length == 1) {
-            return;
+        String content = value.trim();
+        int firstBlank = content.indexOf(" ");
+        if (firstBlank != -1 && !content.startsWith("desired")) {
+            temperature = ValueDescriptionUtil.appendTemperature(content.substring(0, firstBlank));
         }
+    }
 
-        temperature = ValueDescriptionUtil.appendTemperature(parts[0]);
-        delta = parts[2];
+    public void readDELTA(String value) {
+        delta = value;
     }
 
     public void readDESIRED(String value) {
