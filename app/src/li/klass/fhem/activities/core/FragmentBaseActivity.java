@@ -25,7 +25,10 @@
 package li.klass.fhem.activities.core;
 
 import android.app.ProgressDialog;
-import android.content.*;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -57,9 +60,10 @@ import static li.klass.fhem.constants.Actions.*;
 
 public abstract class FragmentBaseActivity extends SherlockFragmentActivity implements ActionBar.TabListener, Updateable {
 
-    ApplicationProperties applicationProperties = ApplicationProperties.INSTANCE;
+    public static final String TAG = FragmentBaseActivity.class.getName();
+
+    private ApplicationProperties applicationProperties = ApplicationProperties.INSTANCE;
     private ProgressDialog progressDialog;
-    private FragmentBaseActivity.PreferencesChangedListener preferencesChangedListener;
 
     private static class FragmentHistoryStackEntry implements Serializable {
         FragmentHistoryStackEntry(BaseFragment navigationFragment, BaseFragment contentFragment) {
@@ -106,7 +110,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
                 updateIntent.putExtra(BundleExtraKeys.DO_REFRESH, true);
                 sendBroadcast(updateIntent);
 
-                Log.d(FragmentBaseActivity.class.getName(), "update");
+                Log.d(TAG, "update");
             }
 
             if (millis == -1) {
@@ -172,7 +176,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
                             onBackPressed(intent.getExtras());
                         }
                     } catch (Exception e) {
-                        Log.e(FragmentBaseActivity.class.getName(), "exception occurred while receiving broadcast", e);
+                        Log.e(TAG, "exception occurred while receiving broadcast", e);
                     }
                 }
             });
@@ -183,21 +187,18 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
         }
     }
 
-    private class PreferencesChangedListener implements SharedPreferences.OnSharedPreferenceChangeListener {
-
-        @Override
-        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
-            System.out.println("hallo");
-        }
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         try {
             super.onCreate(savedInstanceState);
         } catch (Exception e) {
-            Log.e(FragmentBaseActivity.class.getName(), "error while creating activity", e);
+            Log.e(TAG, "error while creating activity", e);
         }
+
+        if (getIntent() != null) {
+            waitingIntent = getIntent();
+        }
+
         setContentView(R.layout.main_view);
 
         saveInstanceStateCalled = false;
@@ -227,8 +228,8 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
             restoreResult = restoreSavedInstance(savedInstanceState);
         }
 
-        if (savedInstanceState == null || !restoreResult) {
-            Log.e(FragmentBaseActivity.class.getName(), "create a new favorites fragment");
+        if (!getIntent().hasExtra(BundleExtraKeys.FRAGMENT_NAME) && (savedInstanceState == null || !restoreResult)) {
+            Log.i(TAG, "create a new favorites fragment");
             switchToFragment(FragmentType.FAVORITES, new Bundle());
         }
     }
@@ -236,7 +237,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
     @Override
     protected void onRestart() {
         super.onRestart();
-        Log.e(FragmentBaseActivity.class.getName(), "onRestart");
+        Log.i(TAG, "onRestart");
     }
 
     @Override
@@ -247,7 +248,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
                 .getBooleanSharedPreference(PreferenceKeys.UPDATE_ON_APPLICATION_START, false);
 
         if (hasFocus && isActivityStart) {
-            Log.e(FragmentBaseActivity.class.getName(), "request update on application start preference");
+            Log.i(TAG, "request update on application start preference");
             Intent intent = new Intent(Actions.DO_UPDATE);
             intent.putExtra(BundleExtraKeys.DO_REFRESH, updateOnApplicationStart);
             sendBroadcast(intent);
@@ -269,16 +270,19 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
     @Override
     protected void onPostResume() {
         super.onPostResume();
+        Log.d(TAG, "onPostResume()");
+
         // process the intent received in onNewIntent()
-        if (waitingIntent == null) {
+        if (waitingIntent == null || !waitingIntent.hasExtra(BundleExtraKeys.FRAGMENT_NAME)) {
             return;
         }
         String fragmentName = waitingIntent.getStringExtra(BundleExtraKeys.FRAGMENT_NAME);
+        Log.i(TAG, "switching to fragment " + fragmentName);
         if (fragmentName != null) {
             try {
                 switchToFragment(FragmentType.getFragmentFor(fragmentName), waitingIntent.getExtras());
             } catch (Exception e) {
-                Log.e(FragmentBaseActivity.class.getName(), "error while creating fragment", e);
+                Log.e(TAG, "error while creating fragment", e);
             }
         }
 
@@ -316,7 +320,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
                 return false;
             }
         } catch (Exception e) {
-            Log.i(FragmentBaseActivity.class.getName(), "error occurred while restoring instance", e);
+            Log.i(TAG, "error occurred while restoring instance", e);
             return false;
         }
     }
@@ -347,10 +351,10 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
     @Override
     public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
         Object tag = tab.getTag();
-        Log.d(FragmentBaseActivity.class.getName(), "selected tab with target " + tag);
+        Log.d(TAG, "selected tab with target " + tag);
 
         if (!(tag instanceof FragmentType)) {
-            Log.e(FragmentBaseActivity.class.getName(), "can only switch tabs including a FragmentType as tag");
+            Log.e(TAG, "can only switch tabs including a FragmentType as tag");
             return;
         }
 
@@ -386,16 +390,18 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
         FragmentHistoryStackEntry previousEntry = removeLastHistoryFragmentEntry();
 
         if (previousEntry != null) {
-            Log.d(FragmentBaseActivity.class.getName(), "back pressed, switching to previous fragment");
+            Log.d(TAG, "back pressed, switching to previous fragment");
             switchToFragment(previousEntry, false);
             previousEntry.contentFragment.onBackPressResult(data);
         } else {
-            Log.d(FragmentBaseActivity.class.getName(), "back pressed, no more previous fragments on the stack");
+            Log.d(TAG, "back pressed, no more previous fragments on the stack");
             finish();
         }
     }
 
     private void switchToFragment(FragmentType fragmentType, Bundle data) {
+        Log.e(TAG, "switch to fragment " + fragmentType.name());
+
         FragmentAction requiredAction = findOutRequiredFragmentAction(fragmentType, data);
         if (requiredAction == FragmentAction.NOTHING) {
             return;
@@ -413,7 +419,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
 
         BaseFragment contentFragment = createContentFragment(fragmentType, data);
         if (contentFragment == null) {
-            Log.e(FragmentBaseActivity.class.getName(), "cannot switch to fragment, as createContentFragment() returned null");
+            Log.e(TAG, "cannot switch to fragment, as createContentFragment() returned null");
             return;
         }
 
@@ -440,7 +446,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
             Class<? extends BaseFragment> fragmentClass = fragmentType.getContentClass();
             return createFragmentForClass(data, fragmentClass);
         } catch (Exception e) {
-            Log.e(FragmentBaseActivity.class.getName(), "cannot instantiate fragment", e);
+            Log.e(TAG, "cannot instantiate fragment", e);
             return null;
         }
     }
@@ -462,7 +468,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
             navigationView.setVisibility(View.VISIBLE);
             return createFragmentForClass(data, navigationClass);
         } catch (Exception e) {
-            Log.e(FragmentBaseActivity.class.getName(), "cannot instantiate fragment", e);
+            Log.e(TAG, "cannot instantiate fragment", e);
             return null;
         }
     }
@@ -478,7 +484,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
     private void switchToFragment(FragmentHistoryStackEntry toSwitchToEntry, boolean putToStack) {
         removeDialog();
 
-        Log.d(FragmentBaseActivity.class.getName(), "switch to " + toSwitchToEntry.contentFragment.getClass().getName());
+        Log.d(TAG, "switch to " + toSwitchToEntry.contentFragment.getClass().getName());
 
         if (putToStack) {
             if (fragmentHistoryStack.size() > 10) fragmentHistoryStack.remove(0);
@@ -500,7 +506,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
             handleNavigationChanges(toSwitchToEntry);
 
         } catch (IllegalStateException e) {
-            Log.e(FragmentBaseActivity.class.getName(), "error while switching to fragment " + toSwitchToEntry.contentFragment.getClass().getName(), e);
+            Log.e(TAG, "error while switching to fragment " + toSwitchToEntry.contentFragment.getClass().getName(), e);
         }
     }
 
@@ -521,7 +527,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
                     .replace(R.id.navigation, navigationFragment)
                     .commitAllowingStateLoss();
         } catch (Exception e) {
-            Log.e(FragmentBaseActivity.class.getName(), "cannot instantiate navigation fragment", e);
+            Log.e(TAG, "cannot instantiate navigation fragment", e);
         }
     }
 
