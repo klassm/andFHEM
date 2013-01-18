@@ -48,6 +48,12 @@ public class SwitchTest extends DeviceXMLParsingBase {
         assertThat(device.getDeviceCharts().size(), is(0));
     }
 
+    @Test
+    public void testRelaxedEventMap() {
+        CULHMDevice relaxedEventMapDevice = getDeviceFor("device_relaxedEventMap");
+        assertThat(relaxedEventMapDevice.getEventMapStateFor("off"), is("off"));
+    }
+
     @Override
     protected String getFileName() {
         return "switch.xml";
