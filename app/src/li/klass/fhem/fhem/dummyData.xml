@@ -57,7 +57,7 @@
     <INT key="NTFY_ORDER" value="50-AllFHT8V"/>
     <INT key="STATE" value="undefined"/>
     <INT key="TYPE" value="structure"/>
-    <ATTR key="room" value="Heizungen"/>
+    <ATTR key="room" value="heizungen"/>
     <STATE key="state" value="undefined" measured="2013-01-06 10:27:32"/>
 </structure>
 <structure name="WBalkon" state="on" sets="off on"
@@ -70,7 +70,7 @@
     <INT key="NTFY_ORDER" value="50-WBalkon"/>
     <INT key="STATE" value="on"/>
     <INT key="TYPE" value="structure"/>
-    <ATTR key="room" value="WLicht"/>
+    <ATTR key="room" value="balkon"/>
     <STATE key="state" value="on" measured="2013-01-06 17:00:00"/>
 </structure>
 <structure name="WDeko" state="undefined" sets="off on"
@@ -83,7 +83,7 @@
     <INT key="NTFY_ORDER" value="50-WDeko"/>
     <INT key="STATE" value="undefined"/>
     <INT key="TYPE" value="structure"/>
-    <ATTR key="room" value="WLicht"/>
+    <ATTR key="room" value="wohnzimmer"/>
     <STATE key="state" value="undefined" measured="2013-01-06 10:28:10"/>
 </structure>
 <structure name="WLicht" state="on" sets="off on"
@@ -96,7 +96,7 @@
     <INT key="NTFY_ORDER" value="50-WLicht"/>
     <INT key="STATE" value="on"/>
     <INT key="TYPE" value="structure"/>
-    <ATTR key="room" value="WLicht"/>
+    <ATTR key="room" value="wohnzimmer"/>
     <STATE key="state" value="on" measured="2013-01-06 16:00:02"/>
 </structure>
 </structure_LIST>
@@ -127,7 +127,7 @@
     <ATTR key="event-on-change-reading" value=".*"/>
     <ATTR key="event-on-update-reading" value=".*"/>
     <ATTR key="icon" value="icoHeizungReg"/>
-    <ATTR key="room" value="Wohnzimmer"/>
+    <ATTR key="room" value="wohnzimmer"/>
     <ATTR key="webCmd" value="desiredTemperature"/>
     <STATE key="battery" value="ok" measured="2013-01-12 15:27:55"/>
     <STATE key="comfortTemperature" value="21" measured="2013-01-12 14:24:35"/>
@@ -180,7 +180,7 @@
     <INT key="serial" value="JEQ0161008"/>
     <INT key="type" value="ShutterContact"/>
     <INT key="IODev" value="ml"/>
-    <ATTR key="room" value="Bad"/>
+    <ATTR key="room" value="bad"/>
     <STATE key="battery" value="ok" measured="2012-11-30 15:20:26"/>
     <STATE key="onoff" value="0" measured="2012-11-30 15:20:26"/>
 </MAX>
@@ -203,7 +203,7 @@
     <INT key="serial" value="JEQ0157746"/>
     <INT key="type" value="ShutterContact"/>
     <INT key="IODev" value="ml"/>
-    <ATTR key="room" value="Kinderzimmer"/>
+    <ATTR key="room" value="kinderzimmer"/>
     <STATE key="battery" value="ok" measured="2012-11-30 15:20:26"/>
     <STATE key="onoff" value="0" measured="2012-11-30 15:20:26"/>
 </MAX>
@@ -226,7 +226,7 @@
     <INT key="serial" value="JEQ0157749"/>
     <INT key="type" value="ShutterContact"/>
     <INT key="IODev" value="ml"/>
-    <ATTR key="room" value="Kueche"/>
+    <ATTR key="room" value="kueche"/>
     <STATE key="battery" value="ok" measured="2012-11-30 15:20:26"/>
     <STATE key="onoff" value="0" measured="2012-11-30 15:20:26"/>
 </MAX>
@@ -249,7 +249,7 @@
     <INT key="serial" value="JEQ0160986"/>
     <INT key="type" value="ShutterContact"/>
     <INT key="IODev" value="ml"/>
-    <ATTR key="room" value="Schlafzimmer"/>
+    <ATTR key="room" value="schlafzimmer"/>
     <STATE key="battery" value="ok" measured="2012-11-30 15:20:26"/>
     <STATE key="onoff" value="0" measured="2012-11-30 15:20:26"/>
 </MAX>
@@ -272,7 +272,7 @@
     <INT key="serial" value="JEQ0160905"/>
     <INT key="type" value="ShutterContact"/>
     <INT key="IODev" value="ml"/>
-    <ATTR key="room" value="Wohnzimmer"/>
+    <ATTR key="room" value="wohnzimmer"/>
     <STATE key="battery" value="ok" measured="2012-11-30 15:20:26"/>
     <STATE key="onoff" value="0" measured="2012-11-30 15:20:26"/>
 </MAX>
@@ -295,7 +295,7 @@
     <INT key="serial" value="JEQ0131898"/>
     <INT key="type" value="Cube"/>
     <INT key="IODev" value="ml"/>
-    <ATTR key="room" value="Schlafzimmer"/>
+    <ATTR key="room" value="schlafzimmer"/>
     <STATE key="connection" value="1" measured="2012-11-30 13:04:25"/>
 </MAX>
 <MAX name="MAX_05c497" state="waiting for data" sets="groupid removeDevice"
@@ -315,7 +315,7 @@
     <INT key="serial" value="JEQ0384108"/>
     <INT key="type" value="PushButton"/>
     <INT key="IODev" value="ml"/>
-    <ATTR key="room" value="MAX"/>
+    <ATTR key="room" value="wohnzimmer"/>
 </MAX>
 <MAX name="Thermostat_Bad" state="17.0 °C"
      sets="desiredTemperature:eco,boost,comfort,4.5,5.0,5.5,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,10.0,10.5,11.0,11.5,12.0,12.5,13.0,13.5,14.0,14.5,15.0,15.5,16.0,16.5,17.0,17.5,18.0,18.5,19.0,19.5,20.0,20.5,21.0,21.5,22.0,22.5,23.0,23.5,24.0,24.5,25.0,25.5,26.0,26.5,27.0,27.5,28.0,28.5,29.0,29.5,30.0,30.5 ecoTemperature:4.5,5.0,5.5,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,10.0,10.5,11.0,11.5,12.0,12.5,13.0,13.5,14.0,14.5,15.0,15.5,16.0,16.5,17.0,17.5,18.0,18.5,19.0,19.5,20.0,20.5,21.0,21.5,22.0,22.5,23.0,23.5,24.0,24.5,25.0,25.5,26.0,26.5,27.0,27.5,28.0,28.5,29.0,29.5,30.0,30.5 comfortTemperature:4.5,5.0,5.5,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,10.0,10.5,11.0,11.5,12.0,12.5,13.0,13.5,14.0,14.5,15.0,15.5,16.0,16.5,17.0,17.5,18.0,18.5,19.0,19.5,20.0,20.5,21.0,21.5,22.0,22.5,23.0,23.5,24.0,24.5,25.0,25.5,26.0,26.5,27.0,27.5,28.0,28.5,29.0,29.5,30.0,30.5 temperatureOffset:-3.5,-3.0,-2.5,-2.0,-1.5,-1.0,-0.5,0.0,0.5,1.0,1.5,2.0,2.5,3.0,3.5 maximumTemperature:4.5,5.0,5.5,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,10.0,10.5,11.0,11.5,12.0,12.5,13.0,13.5,14.0,14.5,15.0,15.5,16.0,16.5,17.0,17.5,18.0,18.5,19.0,19.5,20.0,20.5,21.0,21.5,22.0,22.5,23.0,23.5,24.0,24.5,25.0,25.5,26.0,26.5,27.0,27.5,28.0,28.5,29.0,29.5,30.0,30.5 minimumTemperature:4.5,5.0,5.5,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,10.0,10.5,11.0,11.5,12.0,12.5,13.0,13.5,14.0,14.5,15.0,15.5,16.0,16.5,17.0,17.5,18.0,18.5,19.0,19.5,20.0,20.5,21.0,21.5,22.0,22.5,23.0,23.5,24.0,24.5,25.0,25.5,26.0,26.5,27.0,27.5,28.0,28.5,29.0,29.5,30.0,30.5 windowOpenTemperature:4.5,5.0,5.5,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,10.0,10.5,11.0,11.5,12.0,12.5,13.0,13.5,14.0,14.5,15.0,15.5,16.0,16.5,17.0,17.5,18.0,18.5,19.0,19.5,20.0,20.5,21.0,21.5,22.0,22.5,23.0,23.5,24.0,24.5,25.0,25.5,26.0,26.5,27.0,27.5,28.0,28.5,29.0,29.5,30.0,30.5 windowOpenDuration groupid removeDevice"
@@ -349,7 +349,7 @@
     <INT key="windowOpenTemperature" value="12"/>
     <INT key="IODev" value="ml"/>
     <ATTR key="fp_Grundriss" value="50,100,5,"/>
-    <ATTR key="room" value="Bad"/>
+    <ATTR key="room" value="bad"/>
     <ATTR key="webCmd" value="desiredTemperature"/>
     <STATE key="battery" value="ok" measured="2012-11-30 15:20:26"/>
     <STATE key="desiredTemperature" value="17.0" measured="2012-11-30 15:20:26"/>
@@ -387,7 +387,7 @@
     <INT key="windowOpenDuration" value="15"/>
     <INT key="windowOpenTemperature" value="12"/>
     <INT key="IODev" value="ml"/>
-    <ATTR key="room" value="Kinderzimmer"/>
+    <ATTR key="room" value="kinderzimmer"/>
     <ATTR key="webCmd" value="desiredTemperature"/>
     <STATE key="battery" value="ok" measured="2012-11-30 15:20:26"/>
     <STATE key="desiredTemperature" value="20.0" measured="2012-11-30 15:20:26"/>
@@ -425,7 +425,7 @@
     <INT key="windowOpenDuration" value="15"/>
     <INT key="windowOpenTemperature" value="12"/>
     <INT key="IODev" value="ml"/>
-    <ATTR key="room" value="Kueche"/>
+    <ATTR key="room" value="kueche"/>
     <ATTR key="webCmd" value="desiredTemperature"/>
     <STATE key="battery" value="ok" measured="2012-11-30 15:20:26"/>
     <STATE key="desiredTemperature" value="17.0" measured="2012-11-30 15:20:26"/>
@@ -463,7 +463,7 @@
     <INT key="windowOpenDuration" value="15"/>
     <INT key="windowOpenTemperature" value="12"/>
     <INT key="IODev" value="ml"/>
-    <ATTR key="room" value="Schlafzimmer"/>
+    <ATTR key="room" value="schlafzimmer"/>
     <ATTR key="webCmd" value="desiredTemperature"/>
     <STATE key="battery" value="ok" measured="2012-11-30 15:20:26"/>
     <STATE key="desiredTemperature" value="17.0" measured="2012-11-30 15:20:26"/>
@@ -501,7 +501,7 @@
     <INT key="windowOpenDuration" value="15"/>
     <INT key="windowOpenTemperature" value="12"/>
     <INT key="IODev" value="ml"/>
-    <ATTR key="room" value="Wohnzimmer"/>
+    <ATTR key="room" value="wohnzimmer"/>
     <ATTR key="webCmd" value="desiredTemperature"/>
     <STATE key="battery" value="ok" measured="2012-11-30 15:20:26"/>
     <STATE key="desiredTemperature" value="16.5" measured="2012-11-30 15:20:26"/>
@@ -526,7 +526,7 @@
     <INT key="IODev" value="OWio2"/>
     <ATTR key="IODev" value="OWio2"/>
     <ATTR key="alias" value="Oelkeller"/>
-    <ATTR key="room" value="OWX"/>
+    <ATTR key="room" value="keller"/>
     <ATTR key="stateAH" value="&lt;span style=&quot;color:red&quot;&gt;&amp;"/>
     <ATTR key="stateAL" value="&lt;span style=&quot;color:red&quot;&gt;&amp;"/>
     <STATE key="tempHigh" value="100" measured="2012-11-17 20:36:33"/>
@@ -546,7 +546,7 @@
     <INT key="IODev" value="TCM310"/>
     <ATTR key="eventMap" value="BI:off B0:on"/>
     <ATTR key="loglevel" value="2"/>
-    <ATTR key="room" value="room"/>
+    <ATTR key="room" value="garten"/>
     <ATTR key="subType" value="switch"/>
     <STATE key="state" value="on" measured="2012-11-05 19:26:10"/>
 </EnOcean>
@@ -567,7 +567,7 @@
     <INT key="TCM310_TIME" value="2012-11-04 23:55:11"/>
     <INT key="TYPE" value="EnOcean"/>
     <INT key="IODev" value="TCM310"/>
-    <ATTR key="room" value="room"/>
+    <ATTR key="room" value="garten"/>
     <ATTR key="subType" value="sensor"/>
     <STATE key="D0" value="1" measured="2012-11-04 23:55:11"/>
     <STATE key="D1" value="1" measured="2012-11-04 23:55:11"/>
@@ -595,7 +595,7 @@
     <INT key="TYPE" value="EnOcean"/>
     <INT key="IODev" value="TCM310"/>
     <ATTR key="eventMap" value="BI:off B0:on"/>
-    <ATTR key="room" value="room"/>
+    <ATTR key="room" value="garten"/>
     <ATTR key="subType" value="switch"/>
     <STATE key="state" value="on" measured="2012-11-05 19:41:52"/>
 </EnOcean>
@@ -632,7 +632,7 @@
     <INT key="STATE" value="20"/>
     <INT key="TYPE" value="dummy"/>
     <ATTR key="fp_5WG" value="100,1030,5,."/>
-    <ATTR key="room" value="Heizungen"/>
+    <ATTR key="room" value="heizungen"/>
     <ATTR key="setList" value="state:17,18,19,20,21,21.5,22"/>
     <ATTR key="webCmd" value="state"/>
     <STATE key="state" value="20" measured="2013-01-01 20:47:03"/>
@@ -657,7 +657,7 @@
     <INT key="lastH" value="1339621320"/>
     <INT key="lastT" value="1339621376"/>
     <INT key="minsecs" value="0"/>
-    <ATTR key="room" value="CUL_TX"/>
+    <ATTR key="room" value="garten"/>
     <STATE key="humidity" value="73.0" measured="2012-06-13 23:02:00"/>
     <STATE key="state" value="T: 16.5 H: 73.0" measured="2012-06-13 23:02:56"/>
     <STATE key="temperature" value="16.5" measured="2012-06-13 23:02:56"/>
@@ -681,7 +681,7 @@
     <INT key="lastH" value="0"/>
     <INT key="lastT" value="1339621421"/>
     <INT key="minsecs" value="0"/>
-    <ATTR key="room" value="CUL_TX"/>
+    <ATTR key="room" value="garten"/>
     <STATE key="state" value="T: 22.9" measured="2012-06-13 23:03:41"/>
     <STATE key="temperature" value="22.9" measured="2012-06-13 23:03:41"/>
 </CUL_TX>
@@ -703,7 +703,7 @@
     <INT key="IODev" value="mycul"/>
     <ATTR key="IODev" value="mycul"/>
     <ATTR key="model" value="itswitch"/>
-    <ATTR key="room" value="Wohnzimmer"/>
+    <ATTR key="room" value="wohnzimmer"/>
     <STATE key="state" value="on" measured="2012-05-06 19:40:03"/>
 </IT>
 </IT_LIST>
@@ -719,7 +719,7 @@
     <INT key="NR" value="20"/>
     <INT key="STATE" value="T: 19  H: 43  W: 11"/>
     <INT key="TYPE" value="Weather"/>
-    <ATTR key="room" value="wetter"/>
+    <ATTR key="room" value="haus"/>
     <STATE key="city" value="Augsburg, Bavaria" measured="2012-05-01 14:56:22"/>
     <STATE key="condition" value="Bewölkt" measured="2012-05-01 14:56:22"/>
     <STATE key="current_date_time" value="1970-01-01 00:00:00 +0000" measured="2012-05-01 14:56:22"/>
@@ -766,7 +766,7 @@
     <INT key="NR" value="20"/>
     <INT key="STATE" value="T: 19  H: 43  W: 11"/>
     <INT key="TYPE" value="Weather"/>
-    <ATTR key="room" value="wetter"/>
+    <ATTR key="room" value="haus"/>
     <STATE key="city" value="Augsburg, Bavaria" measured="2012-05-01 14:56:22"/>
     <STATE key="condition" value="Bewölkt" measured="2012-05-01 14:56:22"/>
     <STATE key="current_date_time" value="1970-01-01 00:00:00 +0000" measured="2012-05-01 14:56:22"/>
@@ -848,7 +848,7 @@
     <INT key="addr" value="4931"/>
     <INT key="idx" value="03"/>
     <INT key="IODev" value="CUL"/>
-    <ATTR key="room" value="Schlafzimmer"/>
+    <ATTR key="room" value="schlafzimmer"/>
 </FHT8V>
 </FHT8V_LIST>
 
@@ -905,7 +905,7 @@
     <ATTR key="protLastRcv" value="2012-10-18 12:54:59"/>
     <ATTR key="protSndCnt" value="7"/>
     <ATTR key="protSndLast" value="2012-10-18 12:54:35"/>
-    <ATTR key="room" value="CUL_HM"/>
+    <ATTR key="room" value="wohnzimmer"/>
     <ATTR key="serialNr" value="JEQ0037515"/>
     <ATTR key="subType" value="blindActuator"/>
     <ATTR key="webCmd" value="Rollo_Zu:Rollo_Auf:Rollo_Halb"/>
@@ -936,7 +936,7 @@
     <ATTR key="hmClass" value="sender"/>
     <ATTR key="model" value="KFM-Sensor"/>
     <ATTR key="rawToReadable" value="10:0 255:4198"/>
-    <ATTR key="room" value="CUL_HM"/>
+    <ATTR key="room" value="garten"/>
     <ATTR key="serialNr" value="GAA0130268"/>
     <ATTR key="subType" value="KFM100"/>
     <ATTR key="unit" value="l"/>
@@ -965,7 +965,7 @@
     <ATTR key="firmware" value="2.1"/>
     <ATTR key="hmClass" value="receiver"/>
     <ATTR key="model" value="unknown"/>
-    <ATTR key="room" value="Wohnzimmer"/>
+    <ATTR key="room" value="garten"/>
     <ATTR key="serialNr" value="JEQ0097792"/>
     <ATTR key="subType" value="switch"/>
     <STATE key="CommandAccepted" value="yes" measured="2012-07-19 21:41:20"/>
@@ -992,7 +992,7 @@
     <ATTR key="firmware" value="2.0"/>
     <ATTR key="hmClass" value="sender"/>
     <ATTR key="model" value="HM-SEC-SC"/>
-    <ATTR key="room" value="Garage"/>
+    <ATTR key="room" value="garten"/>
     <ATTR key="serialNr" value="JEQ0069567"/>
     <ATTR key="subType" value="threeStateSensor"/>
     <STATE key="CommandAccepted" value="yes" measured="2012-07-09 16:42:24"/>
@@ -1021,7 +1021,7 @@
     <ATTR key="hmClass" value="receiver"/>
     <ATTR key="icon" value="icoHEIZUNG.png"/>
     <ATTR key="model" value="HM-LC_Dim1TPBU-FM"/>
-    <ATTR key="room" value="Aussen"/>
+    <ATTR key="room" value="garten"/>
     <ATTR key="serialNr" value="IEQ0548786"/>
     <ATTR key="subType" value="dimmer"/>
     <STATE key="CommandAccepted" value="yes" measured="2012-07-19 21:44:14"/>
@@ -1043,7 +1043,7 @@
     <ATTR key="hmClass" value="receiver"/>
     <ATTR key="icon" value="icoBlitz.png"/>
     <ATTR key="model" value="HM-LC-SW2-FM"/>
-    <ATTR key="room" value="Testraum"/>
+    <ATTR key="room" value="wohnzimmer"/>
     <ATTR key="serialNr" value="JEQ0083259"/>
     <ATTR key="subType" value="switch"/>
     <STATE key="CommandAccepted" value="yes" measured="2012-06-27 17:16:53"/>
@@ -1064,7 +1064,7 @@
     <ATTR key="hmClass" value="receiver"/>
     <ATTR key="icon" value="icoBlitz.png"/>
     <ATTR key="model" value="HM-LC-SW2-FM"/>
-    <ATTR key="room" value="Testraum"/>
+    <ATTR key="room" value="wohnzimmer"/>
     <ATTR key="serialNr" value="JEQ0083259"/>
     <ATTR key="subType" value="switch"/>
     <STATE key="CommandAccepted" value="yes" measured="2012-06-27 17:16:52"/>
@@ -1084,7 +1084,7 @@
     <ATTR key="firmware" value="1.3"/>
     <ATTR key="hmClass" value="sender"/>
     <ATTR key="model" value="HM-PBI-4-FM"/>
-    <ATTR key="room" value="CUL_HM"/>
+    <ATTR key="room" value="wohnzimmer"/>
     <ATTR key="serialNr" value="JEQ0040379"/>
     <ATTR key="subType" value="pushButton"/>
     <STATE key="CommandAccepted" value="yes" measured="2012-06-26 22:20:10"/>
@@ -1111,7 +1111,7 @@
     <ATTR key="hmClass" value="sender"/>
     <ATTR key="icon" value="icoTempBaum.png"/>
     <ATTR key="model" value="HM-WDS10-TH-O"/>
-    <ATTR key="room" value="Aussen"/>
+    <ATTR key="room" value="garten"/>
     <ATTR key="serialNr" value="JEQ0091208"/>
     <ATTR key="subType" value="THSensor"/>
     <STATE key="humidity" value="67" measured="2012-07-19 22:13:03"/>
@@ -1131,7 +1131,7 @@
     <ATTR key="firmware" value="2.0"/>
     <ATTR key="hmClass" value="sender"/>
     <ATTR key="model" value="HM-SEC-SC"/>
-    <ATTR key="room" value="Keller"/>
+    <ATTR key="room" value="keller"/>
     <ATTR key="serialNr" value="IEQxxxxxxx"/>
     <ATTR key="subType" value="threeStateSensor"/>
     <STATE key="alive" value="yes" measured="2012-01-22 17:16:21"/>
@@ -1278,7 +1278,7 @@ room structexclude webCmd eventMap">
     <ATTR key="firmware" value="1.5"/>
     <ATTR key="hmClass" value="receiver"/>
     <ATTR key="model" value="HM-LC-BL1-FM"/>
-    <ATTR key="room" value="Bügelzimmer"/>
+    <ATTR key="room" value="bügelzimmer"/>
     <ATTR key="serialNr" value="IEQ0497298"/>
     <ATTR key="subType" value="blindActuator"/>
     <STATE key="CommandAccepted" value="yes" measured="2012-01-09
@@ -1312,7 +1312,7 @@ room structexclude webCmd eventMap">
     <ATTR key="firmware" value="1.9"/>
     <ATTR key="hmClass" value="receiver"/>
     <ATTR key="model" value="HM-LC-SW1-PL"/>
-    <ATTR key="room" value="hausgang"/>
+    <ATTR key="room" value="gang"/>
     <ATTR key="serialNr" value="IEQ0378008"/>
     <ATTR key="subType" value="switch"/>
     <STATE key="CommandAccepted" value="yes" measured="2012-01-08
@@ -1447,7 +1447,7 @@ room structexclude webCmd eventMap">
     <INT key="corr1" value="0.01"/>
     <INT key="corr2" value="0.001"/>
     <INT key="IODev" value="CUL"/>
-    <ATTR key="room" value="unknown"/>
+    <ATTR key="room" value="garten"/>
     <STATE key="RAW" value="CNT: 62 CUM: 9337  5MIN: 0  TOP: 0" measured="2011-12-29 21:46:16"/>
     <STATE key="basis" value="1245184" measured="2011-12-28 11:31:19"/>
     <STATE key="cum_day" value="CUM_DAY: 9.490 CUM: 1254.521 COST: 0.00" measured="2011-12-29 00:01:18"/>
@@ -1480,7 +1480,7 @@ room structexclude webCmd eventMap">
     <INT key="corr1" value="0.01"/>
     <INT key="corr2" value="0.001"/>
     <INT key="IODev" value="CUL"/>
-    <ATTR key="room" value="unknown"/>
+    <ATTR key="room" value="garten"/>
     <ATTR key="SUM_GRAPH_DIVISION_FACTOR" value="2"/>
     <STATE key="RAW" value="CNT: 62 CUM: 9337  5MIN: 0  TOP: 0" measured="2011-12-29 21:46:16"/>
     <STATE key="basis" value="1245184" measured="2011-12-28 11:31:19"/>
@@ -1514,7 +1514,7 @@ room structexclude webCmd eventMap">
     <INT key="corr1" value="0.01"/>
     <INT key="corr2" value="0.001"/>
     <INT key="IODev" value="CUL"/>
-    <ATTR key="room" value="unknown"/>
+    <ATTR key="room" value="garten"/>
     <ATTR key="SUM_GRAPH_DIVISION_FACTOR" value="3"/>
     <STATE key="RAW" value="CNT: 62 CUM: 9337  5MIN: 0  TOP: 0" measured="2011-12-29 21:46:16"/>
     <STATE key="basis" value="1245184" measured="2011-12-28 11:31:19"/>
@@ -1670,7 +1670,7 @@ room structexclude webCmd eventMap">
     <INT key="STATE" value="Next: 21:24:22"/>
     <INT key="TRIGGERTIME" value="1325967862.60752"/>
     <INT key="TYPE" value="at"/>
-    <ATTR key="room" value="Timer"/>
+    <ATTR key="room" value="buero"/>
 </at>
 <at name="a16" state="Next: 23:00:00" sets=""
     attrs="room group comment alias eventMap disable:0,1 skip_next:0,1 loglevel:0,1,2,3,4,5,6 alignTime fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon onOffDevice webCmd">
@@ -1843,7 +1843,7 @@ room structexclude webCmd eventMap">
     <INT key="TIME" value="2011-12-29 21:25:42"/>
     <INT key="TYPE" value="RFXX10REC"/>
     <INT key="IODev" value="RFXCOM"/>
-    <ATTR key="room" value="matthias"/>
+    <ATTR key="room" value="wohnzimmer"/>
     <STATE key="Window" value="Open" measured="2011-12-29 21:25:42"/>
     <STATE key="battery" value="ok" measured="2011-12-29 21:25:42"/>
     <STATE key="delay" value="min" measured="2011-12-29 21:25:42"/>
@@ -1861,7 +1861,7 @@ room structexclude webCmd eventMap">
     <INT key="TIME" value="2011-12-29 21:38:30"/>
     <INT key="TYPE" value="RFXX10REC"/>
     <INT key="IODev" value="RFXCOM"/>
-    <ATTR key="room" value="christian"/>
+    <ATTR key="room" value="wohnzimmer"/>
     <STATE key="Window" value="Open" measured="2011-12-29 21:38:30"/>
     <STATE key="battery" value="ok" measured="2011-12-29 21:38:30"/>
     <STATE key="delay" value="max" measured="2011-12-29 21:38:30"/>
@@ -1949,7 +1949,7 @@ room structexclude webCmd eventMap">
     <INT key="TYPE" value="FS20"/>
     <INT key="XMIT" value="897a"/>
     <INT key="IODev" value="CUL"/>
-    <ATTR key="room" value="unknown"/>
+    <ATTR key="room" value="keller"/>
     <STATE key="state" value="on" measured="2012-01-23 17:45:56"/>
     <ATTR key="eventMap" value="/off-for-timer 12:Ab80/off:Ab/on:Auf/"/>
 </FS20>
@@ -2155,7 +2155,7 @@ room structexclude webCmd eventMap">
     <INT key="TYPE" value="FS20"/>
     <INT key="XMIT" value="c848"/>
     <INT key="IODev" value="CUL"/>
-    <ATTR key="room" value="christian"/>
+    <ATTR key="room" value="wohnzimmer"/>
     <STATE key="state" value="toggle" measured="2011-12-01 22:00:12"/>
 </FS20>
 <FS20 name="chr_h2_dimmer" state="on"
@@ -2176,7 +2176,7 @@ room structexclude webCmd eventMap">
     <INT key="TYPE" value="FS20"/>
     <INT key="XMIT" value="c848"/>
     <INT key="IODev" value="CUL"/>
-    <ATTR key="room" value="christian"/>
+    <ATTR key="room" value="wohnzimmer"/>
     <STATE key="state" value="toggle" measured="2011-12-01 22:00:16"/>
 </FS20>
 <FS20 name="chr_h3_dimmer" state="on"
@@ -2197,7 +2197,7 @@ room structexclude webCmd eventMap">
     <INT key="TYPE" value="FS20"/>
     <INT key="XMIT" value="c848"/>
     <INT key="IODev" value="CUL"/>
-    <ATTR key="room" value="christian"/>
+    <ATTR key="room" value="wohnzimmer"/>
     <STATE key="state" value="toggle" measured="2011-12-01 22:01:58"/>
 </FS20>
 <FS20 name="chr_lichtventilator" state="on"
@@ -2217,7 +2217,7 @@ room structexclude webCmd eventMap">
     <INT key="TYPE" value="FS20"/>
     <INT key="XMIT" value="c848"/>
     <INT key="IODev" value="CUL"/>
-    <ATTR key="room" value="christian"/>
+    <ATTR key="room" value="keller"/>
     <STATE key="state" value="toggle" measured="2011-12-02 17:26:54"/>
 </FS20>
 <FS20 name="chr_ventilator" state="on"
@@ -2237,7 +2237,7 @@ room structexclude webCmd eventMap">
     <INT key="TYPE" value="FS20"/>
     <INT key="XMIT" value="c848"/>
     <INT key="IODev" value="CUL"/>
-    <ATTR key="room" value="christian"/>
+    <ATTR key="room" value="dach"/>
     <STATE key="state" value="toggle" measured="2011-11-30 16:54:03"/>
 </FS20>
 <FS20 name="chr_z_obenlinks" state="on"
@@ -2257,7 +2257,7 @@ room structexclude webCmd eventMap">
     <INT key="TYPE" value="FS20"/>
     <INT key="XMIT" value="c848"/>
     <INT key="IODev" value="CUL"/>
-    <ATTR key="room" value="christian"/>
+    <ATTR key="room" value="dach"/>
     <STATE key="state" value="toggle" measured="2011-11-30 16:54:05"/>
 </FS20>
 <FS20 name="chr_z_obenrechts" state="on"
@@ -2277,7 +2277,7 @@ room structexclude webCmd eventMap">
     <INT key="TYPE" value="FS20"/>
     <INT key="XMIT" value="c848"/>
     <INT key="IODev" value="CUL"/>
-    <ATTR key="room" value="christian"/>
+    <ATTR key="room" value="buegelzimmer"/>
     <STATE key="state" value="toggle" measured="2011-11-30 16:54:07"/>
 </FS20>
 <FS20 name="cp_heizung_mama" state="???"
@@ -2291,7 +2291,7 @@ room structexclude webCmd eventMap">
     <INT key="TYPE" value="FS20"/>
     <INT key="XMIT" value="c848"/>
     <INT key="IODev" value="CUL"/>
-    <ATTR key="room" value="carport"/>
+    <ATTR key="room" value="garten"/>
 </FS20>
 <FS20 name="cp_heizung_matthias" state="???"
       sets="dim06% dim100% dim12% dim18% dim25% dim31% dim37% dim43% dim50% dim56% dim62% dim68% dim75% dim81% dim87% dim93% dimdown dimup dimupdown off off-for-timer on on-100-for-timer-prev on-for-timer on-old-for-timer on-old-for-timer-prev on-till ramp-off-time ramp-on-time reset sendstate timer toggle"
@@ -2304,7 +2304,7 @@ room structexclude webCmd eventMap">
     <INT key="TYPE" value="FS20"/>
     <INT key="XMIT" value="c848"/>
     <INT key="IODev" value="CUL"/>
-    <ATTR key="room" value="carport"/>
+    <ATTR key="room" value="garten"/>
 </FS20>
 <FS20 name="gang_licht" state="off"
       sets="dim06% dim100% dim12% dim18% dim25% dim31% dim37% dim43% dim50% dim56% dim62% dim68% dim75% dim81% dim87% dim93% dimdown dimup dimupdown off off-for-timer on on-100-for-timer-prev on-for-timer on-old-for-timer on-old-for-timer-prev on-till ramp-off-time ramp-on-time reset sendstate timer toggle"
@@ -2323,7 +2323,7 @@ room structexclude webCmd eventMap">
     <INT key="TYPE" value="FS20"/>
     <INT key="XMIT" value="0000"/>
     <INT key="IODev" value="CUL"/>
-    <ATTR key="room" value="hausgang"/>
+    <ATTR key="room" value="gang"/>
     <STATE key="state" value="off" measured="2011-12-02 23:50:21"/>
 </FS20>
 <FS20 name="gang_vitrine" state="dimdown"
@@ -2343,7 +2343,7 @@ room structexclude webCmd eventMap">
     <INT key="TYPE" value="FS20"/>
     <INT key="XMIT" value="0000"/>
     <INT key="IODev" value="CUL"/>
-    <ATTR key="room" value="hausgang"/>
+    <ATTR key="room" value="gang"/>
     <STATE key="state" value="dimdown" measured="2011-11-25 16:17:30"/>
 </FS20>
 <FS20 name="mat_computer" state="on"
@@ -2357,7 +2357,7 @@ room structexclude webCmd eventMap">
     <INT key="TYPE" value="FS20"/>
     <INT key="XMIT" value="0000"/>
     <INT key="IODev" value="CUL"/>
-    <ATTR key="room" value="matthias"/>
+    <ATTR key="room" value="buero"/>
     <STATE key="state" value="on" measured="2011-11-21 18:29:26"/>
 </FS20>
 <FS20 name="mat_dachfensterled" state="off"
@@ -2396,7 +2396,7 @@ room structexclude webCmd eventMap">
     <INT key="TYPE" value="FS20"/>
     <INT key="XMIT" value="0000"/>
     <INT key="IODev" value="CUL"/>
-    <ATTR key="room" value="matthias"/>
+    <ATTR key="room" value="buero"/>
     <STATE key="state" value="on" measured="2011-12-05 16:31:35"/>
 </FS20>
 <FS20 name="mat_licht" state="on"
@@ -2416,7 +2416,7 @@ room structexclude webCmd eventMap">
     <INT key="TYPE" value="FS20"/>
     <INT key="XMIT" value="0000"/>
     <INT key="IODev" value="CUL"/>
-    <ATTR key="room" value="matthias"/>
+    <ATTR key="room" value="buero"/>
     <STATE key="state" value="toggle" measured="2011-12-01 21:58:40"/>
 </FS20>
 <FS20 name="mat_ventilator" state="on"
@@ -2436,7 +2436,7 @@ room structexclude webCmd eventMap">
     <INT key="TYPE" value="FS20"/>
     <INT key="XMIT" value="0000"/>
     <INT key="IODev" value="CUL"/>
-    <ATTR key="room" value="matthias"/>
+    <ATTR key="room" value="buero"/>
     <STATE key="state" value="toggle" measured="2011-11-27 21:19:46"/>
 </FS20>
 <FS20 name="sz_licht" state="dimupdown"
@@ -2702,7 +2702,7 @@ room structexclude webCmd eventMap">
     <INT key="IODev" value="CUL"/>
     <ATTR key="mode" value="auto"/>
     <ATTR key="retrycount" value="3"/>
-    <ATTR key="room" value="unknown"/>
+    <ATTR key="room" value="bad"/>
     <STATE key="sun-from1" value="10:00" measured="2011-12-24 13:21:17"/>
     <STATE key="sun-from2" value="24:00" measured="2011-12-24 13:21:18"/>
     <STATE key="sun-to1" value="17:00" measured="2011-12-24 13:21:18"/>
@@ -2752,7 +2752,7 @@ room structexclude webCmd eventMap">
     <INT key="TYPE" value="FHT"/>
     <INT key="IODev" value="CUL"/>
     <ATTR key="retrycount" value="3"/>
-    <ATTR key="room" value="unknown"/>
+    <ATTR key="room" value="wohnzimmer"/>
     <STATE key="sun-from1" value="07:40" measured="2011-12-24 13:21:17"/>
     <STATE key="sun-from2" value="24:00" measured="2011-12-24 13:21:18"/>
     <STATE key="sun-to1" value="23:00" measured="2011-12-24 13:21:18"/>
@@ -2795,7 +2795,7 @@ room structexclude webCmd eventMap">
     <INT key="TYPE" value="FHT"/>
     <INT key="IODev" value="CUL"/>
     <ATTR key="retrycount" value="3"/>
-    <ATTR key="room" value="unknown"/>
+    <ATTR key="room" value="buero"/>
     <STATE key="actuator" value="lime-protection" measured="2011-04-27 03:07:33"/>
     <STATE key="desired-temp" value="12.0" measured="2010-08-08 06:02:18"/>
     <STATE key="measured-high" value="1" measured="2010-08-08 15:23:21"/>
@@ -2840,7 +2840,7 @@ room structexclude webCmd eventMap">
     <INT key="TYPE" value="HMS"/>
     <INT key="IODev" value="CUL"/>
     <ATTR key="model" value="hms100-tf"/>
-    <ATTR key="room" value="unknown"/>
+    <ATTR key="room" value="garten"/>
     <STATE key="battery" value="ok" measured="2010-04-05 18:52:31"/>
     <STATE key="humidity" value="40 (%)" measured="2010-04-05 18:52:31"/>
     <STATE key="temperature" value="22.2 (Celsius)" measured="2010-04-05 18:52:31"/>
@@ -2861,7 +2861,7 @@ room structexclude webCmd eventMap">
     <INT key="TYPE" value="HMS"/>
     <INT key="IODev" value="FHZ1"/>
     <ATTR key="model" value="hms100-tfk"/>
-    <ATTR key="room" value="Badezimmer"/>
+    <ATTR key="room" value="bad"/>
     <STATE key="battery" value="ok" measured="2012-06-26 15:36:39"/>
     <STATE key="switch_detect" value="on" measured="2012-06-26 15:36:39"/>
     <STATE key="type" value="HMS100TFK" measured="2012-06-26 15:36:39"/>
@@ -2882,7 +2882,7 @@ room structexclude webCmd eventMap">
     <INT key="TYPE" value="TRX"/>
     <ATTR key="do_not_init" value="1"/>
     <ATTR key="longids" value="TX3_T"/>
-    <ATTR key="room" value="Wohnzimmer"/>
+    <ATTR key="room" value="wohnzimmer"/>
 </TRX>
 </TRX_LIST>
 <TRX_LIGHT_LIST>
@@ -2897,7 +2897,7 @@ room structexclude webCmd eventMap">
     <INT key="TRX_LIGHT_type" value="ARC"/>
     <INT key="TYPE" value="TRX_LIGHT"/>
     <INT key="IODev" value="TRX_0"/>
-    <ATTR key="room" value="TRX_LIGHT"/>
+    <ATTR key="room" value="keller"/>
     <STATE key="light" value="off" measured="2012-07-15 20:22:58"/>
     <STATE key="state" value="off" measured="2012-07-16 09:42:28"/>
 </TRX_LIGHT>
@@ -2913,7 +2913,7 @@ room structexclude webCmd eventMap">
     <INT key="TRX_LIGHT_type" value="AC"/>
     <INT key="TYPE" value="TRX_LIGHT"/>
     <INT key="IODev" value="TRX_0"/>
-    <ATTR key="room" value="KaKu"/>
+    <ATTR key="room" value="keller"/>
     <ATTR key="webCmd" value="level:on:off"/>
     <STATE key="state" value="level 15" measured="2012-08-15 17:59:21"/>
 </TRX_LIGHT>
@@ -2930,7 +2930,7 @@ room structexclude webCmd eventMap">
     <INT key="TRX_LIGHT_type" value="ARC"/>
     <INT key="TYPE" value="TRX_LIGHT"/>
     <INT key="IODev" value="TRX_0"/>
-    <ATTR key="room" value="TRX_LIGHT"/>
+    <ATTR key="room" value="keller"/>
     <STATE key="light" value="on" measured="2012-07-17 20:10:46"/>
     <STATE key="state" value="on" measured="2012-07-16 23:12:23"/>
 </TRX_LIGHT>
@@ -2945,7 +2945,7 @@ room structexclude webCmd eventMap">
     <INT key="TRX_LIGHT_type" value="ARC"/>
     <INT key="TYPE" value="TRX_LIGHT"/>
     <INT key="IODev" value="TRX_0"/>
-    <ATTR key="room" value="TRX_LIGHT"/>
+    <ATTR key="room" value="keller"/>
     <STATE key="light" value="off" measured="2012-07-16 18:17:41"/>
     <STATE key="state" value="off" measured="2012-07-16 12:20:12"/>
 </TRX_LIGHT>
@@ -2962,7 +2962,7 @@ room structexclude webCmd eventMap">
     <INT key="TYPE" value="TRX_WEATHER"/>
     <INT key="IODev" value="RFXTRXUSB"/>
     <ATTR key="alias" value="Außentemperatur"/>
-    <ATTR key="room" value="Balkon"/>
+    <ATTR key="room" value="balkon"/>
     <STATE key="battery" value="ok" measured="2012-04-10 16:29:33"/>
     <STATE key="temperature" value="21.1" measured="2012-04-10 16:29:33"/>
 </TRX_WEATHER>
@@ -2981,7 +2981,7 @@ room structexclude webCmd eventMap">
     <ATTR key="fp_0_Keller" value="620,610,4,Proberaum"/>
     <ATTR key="group" value="PR_Temperaturen"/>
     <ATTR key="icon" value="icoTemp"/>
-    <ATTR key="room" value="room"/>
+    <ATTR key="room" value="keller"/>
     <STATE key="battery" value="ok" measured="2012-10-02 11:36:13"/>
     <STATE key="dewpoint" value="11.1" measured="2012-10-02 11:36:13"/>
     <STATE key="fan" value="off" measured="2012-10-01 11:09:13"/>
@@ -3015,7 +3015,7 @@ room structexclude webCmd eventMap">
     <INT key="TYPE" value="TRX_WEATHER"/>
     <INT key="IODev" value="RFXTRXUSB"/>
     <ATTR key="alias" value="Innentemperatur"/>
-    <ATTR key="room" value="Küche"/>
+    <ATTR key="room" value="kueche"/>
     <STATE key="battery" value="ok" measured="2012-04-10 16:29:48"/>
     <STATE key="temperature" value="6" measured="2012-04-10 16:29:48"/>
 </TRX_WEATHER>
@@ -3242,7 +3242,7 @@ room structexclude webCmd eventMap">
     <INT key="currentlogfile" value="/var/InternerSpeicher/fhem/log/CUL_HM_KFM100_122334-2012.log"/>
     <INT key="logfile" value="/var/InternerSpeicher/fhem/log/CUL_HM_KFM100_122334-%Y.log"/>
     <ATTR key="logtype" value="text,vol5"/>
-    <ATTR key="room" value="CUL_HM"/>
+    <ATTR key="room" value="garten"/>
 </FileLog>
 <FileLog name="FileLog_Temp_Feuchte1.Aussen" state="active" sets="reopen"
          attrs="room group comment alias eventMap disable:0,1 logtype nrarchive archivedir archivecmd icon structexclude webCmd">
@@ -3548,7 +3548,7 @@ room structexclude webCmd eventMap">
     <INT key="STATE" value="on"/>
     <INT key="TYPE" value="EIB"/>
     <INT key="IODev" value="tul1"/>
-    <ATTR key="room" value="rolete"/>
+    <ATTR key="room" value="garten"/>
 </EIB>
 </EIB_LIST>
         </FHZINFO>
