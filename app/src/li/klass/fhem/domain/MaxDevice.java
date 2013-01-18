@@ -24,6 +24,7 @@
 
 package li.klass.fhem.domain;
 
+import android.util.Log;
 import li.klass.fhem.R;
 import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.appwidget.annotation.SupportsWidget;
@@ -144,6 +145,14 @@ public class MaxDevice extends ToggleableDevice<MaxDevice> implements DesiredTem
         this.actuator = ValueDescriptionUtil.appendPercent(value);
     }
 
+    public void readMODE(String value) {
+        try {
+            heatingMode = HeatingMode.valueOf(value.toUpperCase());
+        } catch (Exception e) {
+            Log.e(MaxDevice.class.getName(), "cannot set heating mode from value " + value, e);
+        }
+    }
+
     public SubType getSubType() {
         return subType;
     }
@@ -256,7 +265,6 @@ public class MaxDevice extends ToggleableDevice<MaxDevice> implements DesiredTem
     public void setDesiredTemp(double desiredTemp) {
         this.desiredTemp = desiredTemp;
         this.desiredTempDesc = desiredTemperatureToString(desiredTemp, MINIMUM_TEMPERATURE, MAXIMUM_TEMPERATURE);
-        this.heatingMode = HeatingMode.MANUAL;
     }
 
     @Override
@@ -293,6 +301,4 @@ public class MaxDevice extends ToggleableDevice<MaxDevice> implements DesiredTem
     public String getDesiredTempCommandFieldName() {
         return "desired-temp";
     }
-
-
 }

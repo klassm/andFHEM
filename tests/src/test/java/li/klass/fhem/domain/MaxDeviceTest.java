@@ -27,10 +27,25 @@ package li.klass.fhem.domain;
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 import org.junit.Test;
 
+import static li.klass.fhem.domain.MaxDevice.HeatingMode.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
 public class MaxDeviceTest extends DeviceXMLParsingBase {
+
+    @Test
+    public void testHeatingMode() {
+        MaxDevice maxDevice = new MaxDevice();
+
+        maxDevice.readMODE("auto");
+        assertThat(maxDevice.getHeatingMode(), is(AUTO));
+
+        maxDevice.readMODE("boost");
+        assertThat(maxDevice.getHeatingMode(), is(BOOST));
+
+        maxDevice.readMODE("manual");
+        assertThat(maxDevice.getHeatingMode(), is(MANUAL));
+    }
 
     @Test
     public void testShutterContactDevice() {
@@ -70,6 +85,8 @@ public class MaxDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getWindowOpenTempDesc(), is("12.0 (°C)"));
         assertThat(device.getEcoTempDesc(), is("16.5 (°C)"));
         assertThat(device.getComfortTempDesc(), is("19.0 (°C)"));
+
+        assertThat(device.getHeatingMode(), is(BOOST));
     }
 
     public void testJournalDevice() {

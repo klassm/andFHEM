@@ -340,7 +340,7 @@
     <INT key="ml_RAWMSG"
          value="L:CwRaqQkSGAAiAAAABgXElwkSEAYCSxkJEhAGAle+CRIQCwEu0wkSGAAiAMMACwRa3AMSGAAoAN4ABgJLHAkSEAYCV20JEhAGAlfUCRIQCwRawQkSGUQhAAAACwRZKgkSGAAiALwA"/>
     <INT key="ml_TIME" value="2012-11-30 15:20:26"/>
-    <INT key="mode" value="0"/>
+    <INT key="mode" value="manual"/>
     <INT key="rferror" value="0"/>
     <INT key="serial" value="JEQ0329148"/>
     <INT key="temperatureOffset" value="1.5"/>
@@ -379,7 +379,7 @@
     <INT key="ml_RAWMSG"
          value="L:CwRaqQkSGAAiAAAABgXElwkSEAYCSxkJEhAGAle+CRIQCwEu0wkSGAAiAMMACwRa3AMSGAAoAN4ABgJLHAkSEAYCV20JEhAGAlfUCRIQCwRawQkSGUQhAAAACwRZKgkSGAAiALwA"/>
     <INT key="ml_TIME" value="2012-11-30 15:20:26"/>
-    <INT key="mode" value="0"/>
+    <INT key="mode" value="boost"/>
     <INT key="rferror" value="0"/>
     <INT key="serial" value="JEQ0326780"/>
     <INT key="temperatureOffset" value="1.5"/>
@@ -417,7 +417,7 @@
     <INT key="ml_RAWMSG"
          value="L:CwRaqQkSGAAiAAAABgXElwkSEAYCSxkJEhAGAle+CRIQCwEu0wkSGAAiAMMACwRa3AMSGAAoAN4ABgJLHAkSEAYCV20JEhAGAlfUCRIQCwRawQkSGUQhAAAACwRZKgkSGAAiALwA"/>
     <INT key="ml_TIME" value="2012-11-30 15:20:26"/>
-    <INT key="mode" value="0"/>
+    <INT key="mode" value="auto"/>
     <INT key="rferror" value="0"/>
     <INT key="serial" value="JEQ0326832"/>
     <INT key="temperatureOffset" value="1.5"/>
@@ -455,7 +455,7 @@
     <INT key="ml_RAWMSG"
          value="L:CwRaqQkSGAAiAAAABgXElwkSEAYCSxkJEhAGAle+CRIQCwEu0wkSGAAiAMMACwRa3AMSGAAoAN4ABgJLHAkSEAYCV20JEhAGAlfUCRIQCwRawQkSGUQhAAAACwRZKgkSGAAiALwA"/>
     <INT key="ml_TIME" value="2012-11-30 15:20:26"/>
-    <INT key="mode" value="0"/>
+    <INT key="mode" value="auto"/>
     <INT key="rferror" value="0"/>
     <INT key="serial" value="JEQ0327214"/>
     <INT key="temperatureOffset" value="1.5"/>
@@ -493,7 +493,7 @@
     <INT key="ml_RAWMSG"
          value="L:CwRaqQkSGAAiAAAABgXElwkSEAYCSxkJEhAGAle+CRIQCwEu0wkSGAAiAMMACwRa3AMSGAAoAN4ABgJLHAkSEAYCV20JEhAGAlfUCRIQCwRawQkSGUQhAAAACwRZKgkSGAAiALwA"/>
     <INT key="ml_TIME" value="2012-11-30 15:20:26"/>
-    <INT key="mode" value="1"/>
+    <INT key="mode" value="boost"/>
     <INT key="rferror" value="0"/>
     <INT key="serial" value="JEQ0326807"/>
     <INT key="temperatureOffset" value="1.5"/>
