@@ -62,7 +62,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
 
     public static final String TAG = FragmentBaseActivity.class.getName();
 
-    private ApplicationProperties applicationProperties = ApplicationProperties.INSTANCE;
+    ApplicationProperties applicationProperties = ApplicationProperties.INSTANCE;
     private ProgressDialog progressDialog;
 
     private static class FragmentHistoryStackEntry implements Serializable {
