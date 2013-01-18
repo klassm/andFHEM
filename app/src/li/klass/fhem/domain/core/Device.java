@@ -204,7 +204,7 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
             int viewType = Integer.valueOf(commaParts[2]);
 
             floorPlanPositionMap.put(key.substring(3), new FloorplanPosition(x, y, viewType));
-        } else if (key.endsWith("_TIME") && !key.startsWith("week")) {
+        } else if (key.endsWith("_TIME") && !key.startsWith("WEEK")) {
             measured = value;
         }
     }

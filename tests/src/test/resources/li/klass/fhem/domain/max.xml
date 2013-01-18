@@ -131,7 +131,7 @@
             <ATTR key="event-on-change-reading" value=".*"/>
             <ATTR key="event-on-update-reading" value=".*"/>
             <ATTR key="icon" value="icoHeizungReg"/>
-            <ATTR key="room" value="99 MAX,01 Wohnzimmer,00 Heizkoerper,00 Info"/>
+            <ATTR key="room" value="room"/>
             <ATTR key="webCmd" value="desiredTemperature"/>
             <STATE key="battery" value="ok" measured="2013-01-12 15:27:55"/>
             <STATE key="comfortTemperature" value="21" measured="2013-01-12 14:24:35"/>
