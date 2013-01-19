@@ -126,6 +126,10 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice> imp
         measuredTemp = ValueDescriptionUtil.appendTemperature(value);
     }
 
+    public void readTEMPERATURE(String value) {
+        measuredTemp = ValueDescriptionUtil.appendTemperature(value);
+    }
+
     public void readDESIRED_TEMP(String value) {
         if (value.equalsIgnoreCase("off")) value = "5.5";
         if (value.equalsIgnoreCase("on")) value = "30.5";
