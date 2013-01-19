@@ -709,99 +709,50 @@
 </IT_LIST>
 
 <Weather_LIST>
-<Weather name="Augsburg" state="T: 19  H: 43  W: 11" sets=""
-         attrs="room comment alias loglevel:0,1,2,3,4,5 event-on-update-reading event-on-change-reading fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon webCmd eventMap">
-    <INT key="DEF" value="Augsburg 3000 de"/>
-    <INT key="INTERVAL" value="3000"/>
-    <INT key="LANG" value="de"/>
-    <INT key="LOCATION" value="Augsburg"/>
+<Weather name="Augsburg" state="T: -4  H: 85  W: 14" sets="update"
+         attrs="room group comment alias eventMap loglevel:0,1,2,3,4,5 localicons event-on-change-reading:0,1 event-on-update-reading:0,1 stateFormat alias_map devStateIcon fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon invertState measured-temp offDevice onDevice onOffDevice structexclude toggleDevice webCmd">
+    <INT key="DEF" value="12837117"/>
+    <INT key="INTERVAL" value="3600"/>
+    <INT key="LANG" value="en"/>
+    <INT key="LOCATION" value="12837117"/>
     <INT key="NAME" value="Augsburg"/>
-    <INT key="NR" value="20"/>
-    <INT key="STATE" value="T: 19  H: 43  W: 11"/>
+    <INT key="NR" value="220"/>
+    <INT key="STATE" value="T: -4  H: 85  W: 14"/>
     <INT key="TYPE" value="Weather"/>
-    <ATTR key="room" value="haus"/>
-    <STATE key="city" value="Augsburg, Bavaria" measured="2012-05-01 14:56:22"/>
-    <STATE key="condition" value="Bewölkt" measured="2012-05-01 14:56:22"/>
-    <STATE key="current_date_time" value="1970-01-01 00:00:00 +0000" measured="2012-05-01 14:56:22"/>
-    <STATE key="fc1_condition" value="Klar" measured="2012-05-01 14:56:22"/>
-    <STATE key="fc1_day_of_week" value="Di." measured="2012-05-01 14:56:22"/>
-    <STATE key="fc1_high_c" value="22" measured="2012-05-01 14:56:22"/>
-    <STATE key="fc1_icon" value="/ig/images/weather/sunny.gif" measured="2012-05-01 14:56:22"/>
-    <STATE key="fc1_low_c" value="13" measured="2012-05-01 14:56:22"/>
-    <STATE key="fc2_condition" value="Vereinzelt Regen" measured="2012-05-01 14:56:22"/>
-    <STATE key="fc2_day_of_week" value="Mi." measured="2012-05-01 14:56:22"/>
-    <STATE key="fc2_high_c" value="20" measured="2012-05-01 14:56:22"/>
-    <STATE key="fc2_icon" value="/ig/images/weather/chance_of_rain.gif" measured="2012-05-01 14:56:22"/>
-    <STATE key="fc2_low_c" value="9" measured="2012-05-01 14:56:22"/>
-    <STATE key="fc3_condition" value="Meist sonnig" measured="2012-05-01 14:56:22"/>
-    <STATE key="fc3_day_of_week" value="Do." measured="2012-05-01 14:56:22"/>
-    <STATE key="fc3_high_c" value="19" measured="2012-05-01 14:56:22"/>
-    <STATE key="fc3_icon" value="/ig/images/weather/mostly_sunny.gif" measured="2012-05-01 14:56:22"/>
-    <STATE key="fc3_low_c" value="8" measured="2012-05-01 14:56:22"/>
-    <STATE key="fc4_condition" value="Klar" measured="2012-05-01 14:56:22"/>
-    <STATE key="fc4_day_of_week" value="Fr." measured="2012-05-01 14:56:22"/>
-    <STATE key="fc4_high_c" value="19" measured="2012-05-01 14:56:22"/>
-    <STATE key="fc4_icon" value="/ig/images/weather/sunny.gif" measured="2012-05-01 14:56:22"/>
-    <STATE key="fc4_low_c" value="10" measured="2012-05-01 14:56:22"/>
-    <STATE key="forecast_date" value="2012-05-01" measured="2012-05-01 14:56:22"/>
-    <STATE key="humidity" value="43" measured="2012-05-01 14:56:22"/>
-    <STATE key="icon" value="/ig/images/weather/cloudy.gif" measured="2012-05-01 14:56:22"/>
-    <STATE key="latitude_e6" value="" measured="2012-05-01 14:56:22"/>
-    <STATE key="longitude_e6" value="" measured="2012-05-01 14:56:22"/>
-    <STATE key="postal_code" value="Augsburg" measured="2012-05-01 14:56:22"/>
-    <STATE key="temp_c" value="19" measured="2012-05-01 14:56:22"/>
-    <STATE key="temp_f" value="67" measured="2012-05-01 14:56:22"/>
-    <STATE key="temperature" value="19" measured="2012-05-01 14:56:22"/>
-    <STATE key="unit_system" value="SI" measured="2012-05-01 14:56:22"/>
-    <STATE key="wind" value="11" measured="2012-05-01 14:56:22"/>
-    <STATE key="wind_condition" value="Wind: NW mit 11 km/h" measured="2012-05-01 14:56:22"/>
-</Weather>
-<Weather name="SomePlace" state="T: 19  H: 43  W: 11" sets=""
-         attrs="room comment alias loglevel:0,1,2,3,4,5 event-on-update-reading event-on-change-reading fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon webCmd eventMap">
-    <INT key="DEF" value="Augsburg 3000 de"/>
-    <INT key="INTERVAL" value="3000"/>
-    <INT key="LANG" value="de"/>
-    <INT key="LOCATION" value="Augsburg"/>
-    <INT key="NAME" value="SomePlace"/>
-    <INT key="NR" value="20"/>
-    <INT key="STATE" value="T: 19  H: 43  W: 11"/>
-    <INT key="TYPE" value="Weather"/>
-    <ATTR key="room" value="haus"/>
-    <STATE key="city" value="Augsburg, Bavaria" measured="2012-05-01 14:56:22"/>
-    <STATE key="condition" value="Bewölkt" measured="2012-05-01 14:56:22"/>
-    <STATE key="current_date_time" value="1970-01-01 00:00:00 +0000" measured="2012-05-01 14:56:22"/>
-    <STATE key="fc1_condition" value="Klar" measured="2012-05-01 14:56:22"/>
-    <STATE key="fc1_day_of_week" value="Di." measured="2012-05-01 14:56:22"/>
-    <STATE key="fc1_high_c" value="22" measured="2012-05-01 14:56:22"/>
-    <STATE key="fc1_icon" value="/ig/images/weather/sunny.gif" measured="2012-05-01 14:56:22"/>
-    <STATE key="fc1_low_c" value="13" measured="2012-05-01 14:56:22"/>
-    <STATE key="fc2_condition" value="Vereinzelt Regen" measured="2012-05-01 14:56:22"/>
-    <STATE key="fc2_day_of_week" value="Mi." measured="2012-05-01 14:56:22"/>
-    <STATE key="fc2_high_c" value="20" measured="2012-05-01 14:56:22"/>
-    <STATE key="fc2_icon" value="/ig/images/weather/chance_of_rain.gif" measured="2012-05-01 14:56:22"/>
-    <STATE key="fc2_low_c" value="9" measured="2012-05-01 14:56:22"/>
-    <STATE key="fc3_condition" value="Meist sonnig" measured="2012-05-01 14:56:22"/>
-    <STATE key="fc3_day_of_week" value="Do." measured="2012-05-01 14:56:22"/>
-    <STATE key="fc3_high_c" value="19" measured="2012-05-01 14:56:22"/>
-    <STATE key="fc3_icon" value="/ig/images/weather/mostly_sunny.gif" measured="2012-05-01 14:56:22"/>
-    <STATE key="fc3_low_c" value="8" measured="2012-05-01 14:56:22"/>
-    <STATE key="fc4_condition" value="Klar" measured="2012-05-01 14:56:22"/>
-    <STATE key="fc4_day_of_week" value="Fr." measured="2012-05-01 14:56:22"/>
-    <STATE key="fc4_high_c" value="19" measured="2012-05-01 14:56:22"/>
-    <STATE key="fc4_icon" value="/ig/images/weather/sunny.gif" measured="2012-05-01 14:56:22"/>
-    <STATE key="fc4_low_c" value="10" measured="2012-05-01 14:56:22"/>
-    <STATE key="forecast_date" value="2012-05-01" measured="2012-05-01 14:56:22"/>
-    <STATE key="humidity" value="43" measured="2012-05-01 14:56:22"/>
-    <STATE key="icon" value="/ig/images/weather/cloudy.gif" measured="2012-05-01 14:56:22"/>
-    <STATE key="latitude_e6" value="" measured="2012-05-01 14:56:22"/>
-    <STATE key="longitude_e6" value="" measured="2012-05-01 14:56:22"/>
-    <STATE key="postal_code" value="Augsburg" measured="2012-05-01 14:56:22"/>
-    <STATE key="temp_c" value="19" measured="2012-05-01 14:56:22"/>
-    <STATE key="temp_f" value="67" measured="2012-05-01 14:56:22"/>
-    <STATE key="temperature" value="19" measured="2012-05-01 14:56:22"/>
-    <STATE key="unit_system" value="SI" measured="2012-05-01 14:56:22"/>
-    <STATE key="wind" value="11" measured="2012-05-01 14:56:22"/>
-    <STATE key="wind_condition" value="Wind: NW mit 11 km/h" measured="2012-05-01 14:56:22"/>
+    <INT key="UNITS" value="c"/>
+    <ATTR key="room" value="garten"/>
+    <STATE key="city" value="Augsburg, Germany" measured="2013-01-19 16:39:36"/>
+    <STATE key="code" value="14" measured="2013-01-19 16:39:36"/>
+    <STATE key="condition" value="light snow showers" measured="2013-01-19 16:39:36"/>
+    <STATE key="current_date_time" value="19 Jan 2013 2:58 pm CET" measured="2013-01-19 16:39:36"/>
+    <STATE key="day_of_week" value="Sat" measured="2013-01-19 16:39:36"/>
+    <STATE key="fc1_code" value="46" measured="2013-01-19 16:39:36"/>
+    <STATE key="fc1_condition" value="snow showers" measured="2013-01-19 16:39:36"/>
+    <STATE key="fc1_day_of_week" value="Sat" measured="2013-01-19 16:39:36"/>
+    <STATE key="fc1_high_c" value="-4" measured="2013-01-19 16:39:36"/>
+    <STATE key="fc1_icon" value="chance_of_snow" measured="2013-01-19 16:39:36"/>
+    <STATE key="fc1_low_c" value="-7" measured="2013-01-19 16:39:36"/>
+    <STATE key="fc2_code" value="28" measured="2013-01-19 16:39:36"/>
+    <STATE key="fc2_condition" value="mostly cloudy" measured="2013-01-19 16:39:36"/>
+    <STATE key="fc2_day_of_week" value="Sun" measured="2013-01-19 16:39:36"/>
+    <STATE key="fc2_high_c" value="-2" measured="2013-01-19 16:39:36"/>
+    <STATE key="fc2_icon" value="mostlycloudy" measured="2013-01-19 16:39:36"/>
+    <STATE key="fc2_low_c" value="-4" measured="2013-01-19 16:39:36"/>
+    <STATE key="humidity" value="85" measured="2013-01-19 16:39:36"/>
+    <STATE key="icon" value="chance_of_snow" measured="2013-01-19 16:39:36"/>
+    <STATE key="pressure" value="998" measured="2013-01-19 16:39:36"/>
+    <STATE key="pressure_trend" value="2" measured="2013-01-19 16:39:36"/>
+    <STATE key="pressure_trend_sym" value="-" measured="2013-01-19 16:39:36"/>
+    <STATE key="pressure_trend_txt" value="falling" measured="2013-01-19 16:39:36"/>
+    <STATE key="temp_c" value="-4" measured="2013-01-19 16:39:36"/>
+    <STATE key="temp_f" value="25" measured="2013-01-19 16:39:36"/>
+    <STATE key="temperature" value="-4" measured="2013-01-19 16:39:36"/>
+    <STATE key="visibility" value="7" measured="2013-01-19 16:39:36"/>
+    <STATE key="wind" value="14" measured="2013-01-19 16:39:36"/>
+    <STATE key="wind_chill" value="-9" measured="2013-01-19 16:39:36"/>
+    <STATE key="wind_condition" value="Wind: ESE 14 km/h" measured="2013-01-19 16:39:36"/>
+    <STATE key="wind_direction" value="110" measured="2013-01-19 16:39:36"/>
+    <STATE key="wind_speed" value="14" measured="2013-01-19 16:39:36"/>
 </Weather>
 </Weather_LIST>
 <watchdog_LIST>
