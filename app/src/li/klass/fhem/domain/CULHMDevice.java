@@ -43,8 +43,7 @@ import li.klass.fhem.util.ValueExtractUtil;
 
 import java.util.List;
 
-import static li.klass.fhem.domain.CULHMDevice.SubType.HEATING;
-import static li.klass.fhem.domain.CULHMDevice.SubType.THERMOSTAT;
+import static li.klass.fhem.domain.CULHMDevice.SubType.*;
 
 @SuppressWarnings("unused")
 @DetailOverviewViewSettings(showState = true)
@@ -53,7 +52,7 @@ import static li.klass.fhem.domain.CULHMDevice.SubType.THERMOSTAT;
 public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice> implements DesiredTempDevice {
 
     public enum SubType {
-        DIMMER, SWITCH, HEATING, SMOKE_DETECTOR, THREE_STATE, TEMPERATURE_HUMIDITY, THERMOSTAT, KFM100
+        DIMMER, SWITCH, HEATING, SMOKE_DETECTOR, THREE_STATE, TEMPERATURE_HUMIDITY, THERMOSTAT, KFM100, MOTION
     }
 
     private SubType subType = null;
@@ -85,6 +84,10 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice> imp
     private String rawToReadable;
     @ShowField(description = ResourceIdMapper.battery)
     private String battery;
+    @ShowField(description = ResourceIdMapper.brightness)
+    private String brightness;
+    @ShowField(description = ResourceIdMapper.motion)
+    private String motion;
 
     public void readRAWTOREADABLE(String value) {
         this.rawToReadable = value;
@@ -141,6 +144,14 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice> imp
         battery = value;
     }
 
+    public void readBRIGHTNESS(String value) {
+        brightness = value;
+    }
+
+    public void readMOTION(String value) {
+        motion = value;
+    }
+
     public void readSUBTYPE(String value) {
         if (value.equalsIgnoreCase("DIMMER") || value.equalsIgnoreCase("BLINDACTUATOR")) {
             subType = SubType.DIMMER;
@@ -156,6 +167,8 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice> imp
             subType = SubType.KFM100;
         } else if (value.equalsIgnoreCase("THERMOSTAT")) {
             subType = THERMOSTAT;
+        } else if (value.equalsIgnoreCase("MOTIONDETECTOR")) {
+            subType = MOTION;
         }
         subTypeRaw = value;
     }
@@ -309,6 +322,13 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice> imp
         return battery;
     }
 
+    public String getBrightness() {
+        return brightness;
+    }
+
+    public String getMotion() {
+        return motion;
+    }
 
     @Override
     protected void fillDeviceCharts(List<DeviceChart> chartSeries) {

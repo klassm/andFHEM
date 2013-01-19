@@ -37,7 +37,7 @@ public enum ResourceIdMapper {
     forecast(R.string.forecast),
     dewpoint(R.string.dewpoint),
     pressure(R.string.pressure),
-    rainRate( R.string.rainRate),
+    rainRate(R.string.rainRate),
     rainTotal(R.string.rainTotal),
     windAvgSpeed(R.string.windAvgSpeed),
     windDirection(R.string.windDirection),
@@ -73,6 +73,8 @@ public enum ResourceIdMapper {
     ip(R.string.ip),
     mac(R.string.mac),
     definition(R.string.definition),
+    brightness(R.string.brightness),
+    motion(R.string.motion),
     none(-1);
 
     private int id;

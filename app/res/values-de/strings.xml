@@ -123,6 +123,8 @@
     <string name="endDate">End-Datum</string>
     <string name="endTime">End-Zeit</string>
     <string name="showPassword">Passwort anzeigen</string>
+    <string name="brightness">Helligkeit</string>
+    <string name="motion">Bewegung</string>
 
     <string name="switchDevice">Schalte</string>
     <string name="preferences">Einstellungen</string>
