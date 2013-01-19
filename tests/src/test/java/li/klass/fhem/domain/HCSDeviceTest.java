@@ -50,9 +50,9 @@ public class HCSDeviceTest extends DeviceXMLParsingBase {
 
         assertThat(device.getMode(), is("valve"));
 
-        assertThat(device.getNumberOfDemandDevices(), is("3"));
-        assertThat(device.getNumberOfExcludedDevices(), is("3"));
-        assertThat(device.getNumberOfIdleDevices(), is("3"));
+        assertThat(device.getNumberOfDemandDevices(), is(3));
+        assertThat(device.getNumberOfExcludedDevices(), is(3));
+        assertThat(device.getNumberOfIdleDevices(), is(3));
 
         assertThat(device.getFileLog(), is(nullValue()));
         assertThat(device.getDeviceCharts().size(), is(0));
