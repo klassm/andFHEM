@@ -126,6 +126,15 @@
     <string name="showPassword">Show password</string>
     <string name="brightness">Brightness</string>
     <string name="motion">Motion</string>
+    <string name="thermostatThresholdOn">Thermostat On-Threshold</string>
+    <string name="thermostatThresholdOff">Thermostat Off-Threshold</string>
+    <string name="valveThresholdOff">Valve Off-Threshold</string>
+    <string name="valveThresholdOn">Valve On-Threshold</string>
+    <string name="ecoThresholdOn">Eco Off-Threshold</string>
+    <string name="ecoThresholdOff">Eco On-Threshold</string>
+    <string name="excludedDevices">Excluded devices</string>
+    <string name="idleDevices">Idle devices</string>
+    <string name="demandDevices">Demand devices</string>
 
     <string name="switchDevice">Switch</string>
     <string name="preferences">Preferences</string>

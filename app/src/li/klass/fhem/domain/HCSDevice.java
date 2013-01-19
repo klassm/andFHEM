@@ -1,0 +1,140 @@
+/*
+ * AndFHEM - Open Source Android application to control a FHEM home automation
+ * server.
+ *
+ * Copyright (c) 2011, Matthias Klass or third-party contributors as
+ * indicated by the @author tags or express copyright attribution
+ * statements applied by the authors.  All third-party contributions are
+ * distributed under license by Red Hat Inc.
+ *
+ * This copyrighted material is made available to anyone wishing to use, modify,
+ * copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+ * for more details.
+ *
+ * You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+ * along with this distribution; if not, write to:
+ *   Free Software Foundation, Inc.
+ *   51 Franklin Street, Fifth Floor
+ *   Boston, MA  02110-1301  USA
+ */
+
+package li.klass.fhem.domain;
+
+import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
+import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
+import li.klass.fhem.domain.genericview.ShowField;
+import li.klass.fhem.util.ValueDescriptionUtil;
+import org.w3c.dom.NamedNodeMap;
+
+@DetailOverviewViewSettings(showState = true)
+@SuppressWarnings("unused")
+public class HCSDevice extends Device<HCSDevice> {
+
+    @ShowField(description = ResourceIdMapper.ecoThresholdOn)
+    private String thermostatThresholdOn;
+    @ShowField(description = ResourceIdMapper.thermostatThresholdOff)
+    private String thermostatThresholdOff;
+    @ShowField(description = ResourceIdMapper.valveThresholdOff)
+    private String valveThresholdOff;
+    @ShowField(description = ResourceIdMapper.valveThresholdOn)
+    private String valveThresholdOn;
+    @ShowField(description = ResourceIdMapper.ecoThresholdOff)
+    private String ecoTemperatureOff;
+    @ShowField(description = ResourceIdMapper.ecoThresholdOn)
+    private String ecoTemperatureOn;
+    @ShowField(description = ResourceIdMapper.mode)
+    private String mode;
+    @ShowField(description = ResourceIdMapper.idleDevices)
+    private int numberOfIdleDevices;
+    @ShowField(description = ResourceIdMapper.excludedDevices)
+    private int numberOfExcludedDevices;
+    @ShowField(description = ResourceIdMapper.demandDevices)
+    private int numberOfDemandDevices;
+
+
+    public void readTHERMOSTATTHRESHOLDOFF(String value) {
+        thermostatThresholdOff = ValueDescriptionUtil.appendTemperature(value);
+    }
+
+    public void readTHERMOSTATTHRESHOLDON(String value) {
+        thermostatThresholdOn = ValueDescriptionUtil.appendTemperature(value);
+    }
+
+    public void readVALVETHRESHOLDOFF(String value) {
+        valveThresholdOff = ValueDescriptionUtil.appendTemperature(value);
+    }
+
+    public void readVALVETHRESHOLDON(String value) {
+        valveThresholdOn = ValueDescriptionUtil.appendTemperature(value);
+    }
+
+    public void readECOTEMPERATUREOFF(String value) {
+        ecoTemperatureOff = ValueDescriptionUtil.appendTemperature(value);
+    }
+
+    public void readECOTEMPERATUREON(String value) {
+        ecoTemperatureOn = ValueDescriptionUtil.appendTemperature(value);
+    }
+
+    public void readMODE(String value) {
+        mode = value;
+    }
+
+    @Override
+    public void onChildItemRead(String tagName, String key, String value, NamedNodeMap attributes) {
+        super.onChildItemRead(tagName, key, value, attributes);
+
+        if (value.equalsIgnoreCase("DEMAND")) {
+            numberOfDemandDevices++;
+        } else if (value.equalsIgnoreCase("IDLE")) {
+            numberOfIdleDevices++;
+        } else if (value.equalsIgnoreCase("EXCLUDED")) {
+            numberOfExcludedDevices++;
+        }
+    }
+
+    public String getThermostatThresholdOn() {
+        return thermostatThresholdOn;
+    }
+
+    public String getThermostatThresholdOff() {
+        return thermostatThresholdOff;
+    }
+
+    public String getValveThresholdOff() {
+        return valveThresholdOff;
+    }
+
+    public String getValveThresholdOn() {
+        return valveThresholdOn;
+    }
+
+    public String getEcoTemperatureOff() {
+        return ecoTemperatureOff;
+    }
+
+    public String getEcoTemperatureOn() {
+        return ecoTemperatureOn;
+    }
+
+    public String getMode() {
+        return mode;
+    }
+
+    public int getNumberOfIdleDevices() {
+        return numberOfIdleDevices;
+    }
+
+    public int getNumberOfExcludedDevices() {
+        return numberOfExcludedDevices;
+    }
+
+    public int getNumberOfDemandDevices() {
+        return numberOfDemandDevices;
+    }
+}

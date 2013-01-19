@@ -125,6 +125,15 @@
     <string name="showPassword">Passwort anzeigen</string>
     <string name="brightness">Helligkeit</string>
     <string name="motion">Bewegung</string>
+    <string name="thermostatThresholdOn">Thermostat On-Schwelle</string>
+    <string name="thermostatThresholdOff">Thermostat Off-Schwelle</string>
+    <string name="valveThresholdOff">Ventil Off-Schwelle</string>
+    <string name="valveThresholdOn">Ventil On-Schwelle</string>
+    <string name="ecoThresholdOn">Öko Off-Schwelle</string>
+    <string name="ecoThresholdOff">Öko On-Schwelle</string>
+    <string name="excludedDevices">Ausgenommene-Geräte</string>
+    <string name="idleDevices">Leerlauf-Geräte</string>
+    <string name="demandDevices">Abruf-Geräte</string>
 
     <string name="switchDevice">Schalte</string>
     <string name="preferences">Einstellungen</string>

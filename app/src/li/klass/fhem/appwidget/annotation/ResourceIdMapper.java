@@ -75,6 +75,17 @@ public enum ResourceIdMapper {
     definition(R.string.definition),
     brightness(R.string.brightness),
     motion(R.string.motion),
+    mode(R.string.mode),
+    thermostatThresholdOn(R.string.thermostatThresholdOn),
+    thermostatThresholdOff(R.string.thermostatThresholdOff),
+    valveThresholdOff(R.string.valveThresholdOff),
+    valveThresholdOn(R.string.valveThresholdOn),
+    ecoThresholdOn(R.string.ecoThresholdOn),
+    ecoThresholdOff(R.string.ecoThresholdOff),
+    excludedDevices(R.string.excludedDevices),
+    idleDevices(R.string.idleDevices),
+    demandDevices(R.string.demandDevices),
+
     none(-1);
 
     private int id;
