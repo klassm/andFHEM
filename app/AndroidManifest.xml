@@ -107,7 +107,7 @@
             <meta-data android:name="android.appwidget.provider" android:resource="@xml/andfhem_appwidget_big"/>
         </receiver>
 
-        <service android:name=".service.intent.RoomListIntentService">
+        <service android:name=".service.intent.RoomListIntentService" android:exported="false">
             <intent-filter>
                 <action android:name="li.klass.fhem.constants.Actions.ALL_ROOMS_DEVICE_LIST"/>
                 <action android:name="li.klass.fhem.constants.Actions.GET_ROOM_NAME_LIST"/>
@@ -116,7 +116,7 @@
             </intent-filter>
         </service>
 
-        <service android:name=".service.intent.FavoritesIntentService">
+        <service android:name=".service.intent.FavoritesIntentService" android:exported="false">
             <intent-filter>
                 <action android:name="li.klass.fhem.constants.Actions.GET_FAVORITE_LIST"/>
                 <action android:name="li.klass.fhem.constants.Actions.ADD_FAVORITE"/>
@@ -124,7 +124,7 @@
             </intent-filter>
         </service>
 
-        <service android:name=".service.intent.DeviceIntentService">
+        <service android:name=".service.intent.DeviceIntentService" android:exported="false">
             <intent-filter>
                 <action android:name="li.klass.fhem.constants.Actions.DEVICE_GRAPH"/>
                 <action android:name="li.klass.fhem.constants.Actions.TOGGLE_STATE"/>
@@ -153,14 +153,14 @@
             </intent-filter>
         </service>
 
-        <service android:name=".service.intent.SendCommandIntentService">
+        <service android:name=".service.intent.SendCommandIntentService" android:exported="true">
             <intent-filter>
                 <action android:name="li.klass.fhem.constants.Actions.EXECUTE_COMMAND"/>
                 <action android:name="li.klass.fhem.constants.Actions.RECENT_COMMANDS_LIST"/>
             </intent-filter>
         </service>
 
-        <service android:name=".service.intent.FloorplanIntentService">
+        <service android:name=".service.intent.FloorplanIntentService" android:exported="false">
             <intent-filter>
                 <action android:name="li.klass.fhem.constants.Actions.FLOORPLAN_IMAGE"/>
             </intent-filter>
