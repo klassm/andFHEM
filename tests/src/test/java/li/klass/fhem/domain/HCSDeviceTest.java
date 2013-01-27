@@ -41,16 +41,16 @@ public class HCSDeviceTest extends DeviceXMLParsingBase {
 
         assertThat(device.getState(), is("demand"));
 
-        assertThat(device.getEcoTemperatureOff(), is("23 (°C)"));
-        assertThat(device.getEcoTemperatureOn(), is("12 (°C)"));
-        assertThat(device.getThermostatThresholdOff(), is("0.5 (°C)"));
-        assertThat(device.getThermostatThresholdOn(), is("0.5 (°C)"));
-        assertThat(device.getValveThresholdOff(), is("25 (°C)"));
-        assertThat(device.getValveThresholdOn(), is("30 (°C)"));
+        assertThat(device.getEcoTemperatureOff(), is("23 (%)"));
+        assertThat(device.getEcoTemperatureOn(), is("12 (%)"));
+        assertThat(device.getThermostatThresholdOff(), is("0.5 (%)"));
+        assertThat(device.getThermostatThresholdOn(), is("0.5 (%)"));
+        assertThat(device.getValveThresholdOff(), is("25 (%)"));
+        assertThat(device.getValveThresholdOn(), is("30 (%)"));
 
         assertThat(device.getMode(), is("valve"));
 
-        assertThat(device.getNumberOfDemandDevices(), is(3));
+        assertThat(device.getNumberOfDemandDevices(), is(1));
         assertThat(device.getNumberOfExcludedDevices(), is(3));
         assertThat(device.getNumberOfIdleDevices(), is(3));
 

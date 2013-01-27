@@ -58,27 +58,27 @@ public class HCSDevice extends Device<HCSDevice> {
 
 
     public void readTHERMOSTATTHRESHOLDOFF(String value) {
-        thermostatThresholdOff = ValueDescriptionUtil.appendTemperature(value);
+        thermostatThresholdOff = ValueDescriptionUtil.appendPercent(value);
     }
 
     public void readTHERMOSTATTHRESHOLDON(String value) {
-        thermostatThresholdOn = ValueDescriptionUtil.appendTemperature(value);
+        thermostatThresholdOn = ValueDescriptionUtil.appendPercent(value);
     }
 
     public void readVALVETHRESHOLDOFF(String value) {
-        valveThresholdOff = ValueDescriptionUtil.appendTemperature(value);
+        valveThresholdOff = ValueDescriptionUtil.appendPercent(value);
     }
 
     public void readVALVETHRESHOLDON(String value) {
-        valveThresholdOn = ValueDescriptionUtil.appendTemperature(value);
+        valveThresholdOn = ValueDescriptionUtil.appendPercent(value);
     }
 
     public void readECOTEMPERATUREOFF(String value) {
-        ecoTemperatureOff = ValueDescriptionUtil.appendTemperature(value);
+        ecoTemperatureOff = ValueDescriptionUtil.appendPercent(value);
     }
 
     public void readECOTEMPERATUREON(String value) {
-        ecoTemperatureOn = ValueDescriptionUtil.appendTemperature(value);
+        ecoTemperatureOn = ValueDescriptionUtil.appendPercent(value);
     }
 
     public void readMODE(String value) {
@@ -88,6 +88,10 @@ public class HCSDevice extends Device<HCSDevice> {
     @Override
     public void onChildItemRead(String tagName, String key, String value, NamedNodeMap attributes) {
         super.onChildItemRead(tagName, key, value, attributes);
+
+        if (!tagName.equalsIgnoreCase("STATE") || key.equalsIgnoreCase("STATE")) {
+            return;
+        }
 
         if (value.equalsIgnoreCase("DEMAND")) {
             numberOfDemandDevices++;
