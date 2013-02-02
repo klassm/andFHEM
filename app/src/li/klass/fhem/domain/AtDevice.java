@@ -276,7 +276,7 @@ public class AtDevice extends Device<AtDevice> {
             repetition = AtRepetition.WEEKDAY;
         } else if (part.equals("0")) {
             isActive = false;
-        } else if (part.matches("\\$wday[ ]?=[ ]?[0-6]")) {
+        } else if (part.matches("\\$wday[ ]?==[ ]?[0-6]")) {
             int weekdayOrdinate = Integer.parseInt(part.substring(part.length() - 1));
             repetition = AtRepetition.getRepetitionForWeekdayOrdinate(weekdayOrdinate);
         }
@@ -316,14 +316,14 @@ public class AtDevice extends Device<AtDevice> {
             } else if (repetition == AtRepetition.WEEKDAY) {
                 ifContent = addToIf(ifContent, "!$we");
             } else if (repetition != null && repetition.weekdayOrdinate != -1) {
-                ifContent = addToIf(ifContent, "$wday = " + repetition.weekdayOrdinate);
+                ifContent = addToIf(ifContent, "$wday == " + repetition.weekdayOrdinate);
             }
 
             if (!isActive) {
                 ifContent = addToIf(ifContent, "0");
             }
 
-            if (! StringUtil.isBlank(ifContent)) {
+            if (!StringUtil.isBlank(ifContent)) {
                 command += " if (" + ifContent + ")";
             }
         }

@@ -80,13 +80,13 @@ public class AtDeviceTest extends DeviceXMLParsingBase {
                 "desired-temp", "00.00", WEEKDAY, ABSOLUTE, false);
         assemble(device, "*07:15:00 { fhem(\"set Badezimmer desired-temp 00.00\") if (!$we && 0) }");
 
-        device = parse("*07:15:00 { fhem(\"set Badezimmer desired-temp 00.00\") if ($wday = 5) }", 7, 15, 0, "Badezimmer",
+        device = parse("*07:15:00 { fhem(\"set Badezimmer desired-temp 00.00\") if ($wday == 5) }", 7, 15, 0, "Badezimmer",
                 "desired-temp", "00.00", FRIDAY, ABSOLUTE, true);
-        assemble(device, "*07:15:00 { fhem(\"set Badezimmer desired-temp 00.00\") if ($wday = 5) }");
+        assemble(device, "*07:15:00 { fhem(\"set Badezimmer desired-temp 00.00\") if ($wday == 5) }");
 
-        device = parse("*07:15:00 { fhem(\"set Badezimmer desired-temp 00.00\") if ($wday = 5 && 0) }", 7, 15, 0, "Badezimmer",
+        device = parse("*07:15:00 { fhem(\"set Badezimmer desired-temp 00.00\") if ($wday == 5 && 0) }", 7, 15, 0, "Badezimmer",
                 "desired-temp", "00.00", FRIDAY, ABSOLUTE, false);
-        assemble(device, "*07:15:00 { fhem(\"set Badezimmer desired-temp 00.00\") if ($wday = 5 && 0) }");
+        assemble(device, "*07:15:00 { fhem(\"set Badezimmer desired-temp 00.00\") if ($wday == 5 && 0) }");
     }
 
     private AtDevice parse(String definition,
