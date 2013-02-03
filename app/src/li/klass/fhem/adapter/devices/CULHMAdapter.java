@@ -32,6 +32,7 @@ import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.DimmableAdapter;
 import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
 import li.klass.fhem.adapter.devices.genericui.CustomViewTableRow;
+import li.klass.fhem.adapter.devices.genericui.HeatingModeListener;
 import li.klass.fhem.adapter.devices.genericui.TemperatureChangeTableRow;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.domain.CULHMDevice;
@@ -63,6 +64,13 @@ public class CULHMAdapter extends DimmableAdapter<CULHMDevice> {
                         }.createRow(inflater));
                         break;
                 }
+            }
+        });
+
+        registerFieldListener("state", new HeatingModeListener<CULHMDevice, CULHMDevice.HeatingMode>() {
+            @Override
+            protected boolean doAddField(CULHMDevice device) {
+                return device.getHeatingMode() != null;
             }
         });
 

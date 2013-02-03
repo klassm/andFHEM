@@ -24,6 +24,7 @@
 
 package li.klass.fhem.domain;
 
+import android.util.Log;
 import li.klass.fhem.R;
 import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.appwidget.annotation.SupportsWidget;
@@ -36,6 +37,7 @@ import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
 import li.klass.fhem.domain.genericview.FloorplanViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.domain.heating.DesiredTempDevice;
+import li.klass.fhem.domain.heating.HeatingModeDevice;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.NumberUtil;
 import li.klass.fhem.util.ValueDescriptionUtil;
@@ -49,10 +51,16 @@ import static li.klass.fhem.domain.CULHMDevice.SubType.*;
 @DetailOverviewViewSettings(showState = true)
 @FloorplanViewSettings(showState = true)
 @SupportsWidget(TemperatureWidgetView.class)
-public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice> implements DesiredTempDevice {
+public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice> implements DesiredTempDevice, HeatingModeDevice<CULHMDevice.HeatingMode> {
+
+    private HeatingMode heatingMode;
 
     public enum SubType {
         DIMMER, SWITCH, HEATING, SMOKE_DETECTOR, THREE_STATE, TEMPERATURE_HUMIDITY, THERMOSTAT, KFM100, MOTION
+    }
+
+    public enum HeatingMode {
+        MANUAL, AUTO, CENTRAL
     }
 
     private SubType subType = null;
@@ -171,6 +179,14 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice> imp
             subType = MOTION;
         }
         subTypeRaw = value;
+    }
+
+    public void readCONTROLMODE(String value) {
+        try {
+            heatingMode = HeatingMode.valueOf(value.toUpperCase());
+        } catch (Exception e) {
+            Log.e(CULHMDevice.class.getName(), "cannot set heating mode from value " + value, e);
+        }
     }
 
     @Override
@@ -328,6 +344,31 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice> imp
 
     public String getMotion() {
         return motion;
+    }
+
+    @Override
+    public void setHeatingMode(HeatingMode heatingMode) {
+        this.heatingMode = heatingMode;
+    }
+
+    @Override
+    public HeatingMode getHeatingMode() {
+        return heatingMode;
+    }
+
+    @Override
+    public HeatingMode[] getIgnoredHeatingModes() {
+        return new HeatingMode[0];
+    }
+
+    @Override
+    public HeatingMode[] getHeatingModes() {
+        return HeatingMode.values();
+    }
+
+    @Override
+    public String getHeatingModeCommandField() {
+        return "controlMode";
     }
 
     @Override

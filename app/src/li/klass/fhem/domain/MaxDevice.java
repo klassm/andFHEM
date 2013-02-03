@@ -293,6 +293,11 @@ public class MaxDevice extends ToggleableDevice<MaxDevice> implements DesiredTem
     }
 
     @Override
+    public HeatingMode[] getHeatingModes() {
+        return HeatingMode.values();
+    }
+
+    @Override
     public String getHeatingModeCommandField() {
         return "desiredTemperature";
     }

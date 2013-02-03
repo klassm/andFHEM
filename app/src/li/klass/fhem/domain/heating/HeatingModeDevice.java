@@ -24,10 +24,16 @@
 
 package li.klass.fhem.domain.heating;
 
-public interface HeatingModeDevice <MODE extends Enum<MODE>> {
+public interface HeatingModeDevice<MODE extends Enum<MODE>> {
     void setHeatingMode(MODE mode);
+
     MODE getHeatingMode();
+
     MODE[] getIgnoredHeatingModes();
+
+    MODE[] getHeatingModes();
+
     String getHeatingModeCommandField();
+
     String getName();
 }

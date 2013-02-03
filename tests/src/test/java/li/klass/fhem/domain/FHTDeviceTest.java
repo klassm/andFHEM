@@ -50,7 +50,7 @@ public class FHTDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getWindowOpenTemp(), is(closeTo(6.5, 0.01)));
         assertThat(device.getWindowOpenTempDesc(), is("6.5 (°C)"));
         assertThat(device.getTemperature(), is("23.1 (°C)"));
-        assertThat(device.getMode(), is(FHTMode.AUTO));
+        assertThat(device.getHeatingMode(), is(FHTMode.AUTO));
         assertThat(device.getWarnings(), is("Window open"));
         assertThat(device.getBattery(), is("ok"));
         assertThat(device.getState(), is("???"));

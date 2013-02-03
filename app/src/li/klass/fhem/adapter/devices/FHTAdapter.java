@@ -91,11 +91,11 @@ public class FHTAdapter extends GenericDeviceAdapter<FHTDevice> {
                         .createRow(inflater, device));
             }
         });
+
         registerFieldListener("actuator", new FieldNameAddedToDetailListener<FHTDevice>() {
             @Override
             public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FHTDevice device, TableRow fieldTableRow) {
-                FHTMode mode = device.getMode();
-                mode = mode == null ? FHTMode.UNKNOWN : mode;
+                FHTMode mode = device.getHeatingMode();
 
                 int selected = EnumUtils.positionOf(FHTMode.values(), mode);
                 tableLayout.addView(new SpinnerActionRow<FHTDevice>(context, R.string.mode, R.string.setMode, toStringList(FHTMode.values()), selected) {
@@ -134,7 +134,7 @@ public class FHTAdapter extends GenericDeviceAdapter<FHTDevice> {
         intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
         intent.putExtra(BundleExtraKeys.DEVICE_MODE, mode);
 
-        LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         switch (mode) {
             case HOLIDAY:
@@ -174,6 +174,7 @@ public class FHTAdapter extends GenericDeviceAdapter<FHTDevice> {
         timePicker.setIs24HourView(true);
         timePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
             private int lastMinute = 0;
+
             @Override
             public void onTimeChanged(TimePicker timePicker, int hourOfDay, int minute) {
                 Calendar calendar = Calendar.getInstance();
@@ -278,7 +279,7 @@ public class FHTAdapter extends GenericDeviceAdapter<FHTDevice> {
 
         final TemperatureChangeTableRow<FHTDevice> temperatureChangeTableRow =
                 new TemperatureChangeTableRow<FHTDevice>(context, FHTDevice.MINIMUM_TEMPERATURE, temperatureUpdateRow,
-                FHTDevice.MINIMUM_TEMPERATURE, FHTDevice.MAXIMUM_TEMPERATURE);
+                        FHTDevice.MINIMUM_TEMPERATURE, FHTDevice.MAXIMUM_TEMPERATURE);
         contentView.addView(temperatureChangeTableRow.createRow(inflater, device));
 
         dialogBuilder.setView(contentView);

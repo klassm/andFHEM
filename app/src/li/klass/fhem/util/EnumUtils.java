@@ -45,4 +45,14 @@ public class EnumUtils {
         }
         return -1;
     }
+
+    public static <T extends Enum<T>> T valueOf(T[] values, String toSearch) {
+        for (T value : values) {
+            if (toSearch.equalsIgnoreCase(value.name())) {
+                return value;
+            }
+        }
+
+        return null;
+    }
 }

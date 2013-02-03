@@ -35,6 +35,7 @@ import li.klass.fhem.domain.fht.FHTMode;
 import li.klass.fhem.domain.genericview.FloorplanViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.domain.heating.DesiredTempDevice;
+import li.klass.fhem.domain.heating.HeatingModeDevice;
 import li.klass.fhem.domain.heating.WindowOpenTempDevice;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.DayUtil;
@@ -52,7 +53,7 @@ import java.util.Map;
 @SupportsWidget({TemperatureWidgetView.class, MediumInformationWidgetView.class})
 @SuppressWarnings("unused")
 public class FHTDevice extends Device<FHTDevice> implements DesiredTempDevice,
-        WindowOpenTempDevice {
+        WindowOpenTempDevice, HeatingModeDevice<FHTMode> {
     public static double MAXIMUM_TEMPERATURE = 30.5;
     public static double MINIMUM_TEMPERATURE = 5.5;
 
@@ -60,7 +61,7 @@ public class FHTDevice extends Device<FHTDevice> implements DesiredTempDevice,
     @WidgetTemperatureAdditionalField(description = ResourceIdMapper.actuator)
     @WidgetMediumLine3(description = ResourceIdMapper.actuator)
     private String actuator;
-    private FHTMode mode;
+    private FHTMode heatingMode;
     @ShowField(description = ResourceIdMapper.desiredTemperature)
     @WidgetMediumLine2(description = ResourceIdMapper.desiredTemperature)
     private double desiredTemp = MINIMUM_TEMPERATURE;
@@ -120,9 +121,9 @@ public class FHTDevice extends Device<FHTDevice> implements DesiredTempDevice,
 
     public void readMODE(String value) {
         try {
-            this.mode = FHTMode.valueOf(value.toUpperCase());
+            this.heatingMode = FHTMode.valueOf(value.toUpperCase());
         } catch (IllegalArgumentException e) {
-            this.mode = FHTMode.UNKNOWN;
+            this.heatingMode = FHTMode.UNKNOWN;
         }
     }
 
@@ -222,12 +223,28 @@ public class FHTDevice extends Device<FHTDevice> implements DesiredTempDevice,
         return warnings;
     }
 
-    public FHTMode getMode() {
-        return mode;
+    public FHTMode getHeatingMode() {
+        if (heatingMode == null) return FHTMode.UNKNOWN;
+        return heatingMode;
     }
 
-    public void setMode(FHTMode mode) {
-        this.mode = mode;
+    @Override
+    public FHTMode[] getIgnoredHeatingModes() {
+        return new FHTMode[0];
+    }
+
+    @Override
+    public FHTMode[] getHeatingModes() {
+        return FHTMode.values();
+    }
+
+    @Override
+    public String getHeatingModeCommandField() {
+        return "mode";
+    }
+
+    public void setHeatingMode(FHTMode heatingMode) {
+        this.heatingMode = heatingMode;
     }
 
     public String getBattery() {

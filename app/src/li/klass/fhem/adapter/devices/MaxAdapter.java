@@ -35,17 +35,15 @@ import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
 import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
-import li.klass.fhem.adapter.devices.genericui.SpinnerActionRow;
+import li.klass.fhem.adapter.devices.genericui.HeatingModeListener;
 import li.klass.fhem.adapter.devices.genericui.TemperatureChangeTableRow;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.MaxDevice;
-import li.klass.fhem.util.EnumUtils;
 
 import static li.klass.fhem.domain.FHTDevice.MAXIMUM_TEMPERATURE;
 import static li.klass.fhem.domain.FHTDevice.MINIMUM_TEMPERATURE;
 import static li.klass.fhem.domain.MaxDevice.HeatingMode;
-import static li.klass.fhem.util.EnumUtils.toStringList;
 
 public class MaxAdapter extends GenericDeviceAdapter<MaxDevice> {
     public MaxAdapter() {
@@ -54,28 +52,10 @@ public class MaxAdapter extends GenericDeviceAdapter<MaxDevice> {
 
     @Override
     protected void afterPropertiesSet() {
-        registerFieldListener("state", new FieldNameAddedToDetailListener<MaxDevice>() {
+        registerFieldListener("state", new HeatingModeListener<MaxDevice, HeatingMode>() {
             @Override
-            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, MaxDevice device, TableRow fieldTableRow) {
-                if (device.getSubType() != MaxDevice.SubType.TEMPERATURE) return;
-
-                HeatingMode mode = device.getHeatingMode();
-                int selected = EnumUtils.positionOf(HeatingMode.values(), mode);
-
-                tableLayout.addView(new SpinnerActionRow<MaxDevice>(context, R.string.mode, R.string.setMode, toStringList(HeatingMode.values()), selected) {
-
-                    @Override
-                    public void onItemSelected(final Context context, MaxDevice device, String item) {
-                        HeatingMode mode = HeatingMode.valueOf(item);
-
-                        final Intent intent = new Intent(Actions.DEVICE_SET_MODE);
-                        intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
-                        intent.putExtra(BundleExtraKeys.DEVICE_MODE, mode);
-                        putUpdateIntent(intent);
-
-                        context.startService(intent);
-                    }
-                }.createRow(device));
+            protected boolean doAddField(MaxDevice device) {
+                return device.getSubType() == MaxDevice.SubType.TEMPERATURE;
             }
         });
 
