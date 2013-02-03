@@ -58,11 +58,11 @@ public class HCSDevice extends Device<HCSDevice> {
 
 
     public void readTHERMOSTATTHRESHOLDOFF(String value) {
-        thermostatThresholdOff = ValueDescriptionUtil.appendPercent(value);
+        thermostatThresholdOff = ValueDescriptionUtil.appendTemperature(value);
     }
 
     public void readTHERMOSTATTHRESHOLDON(String value) {
-        thermostatThresholdOn = ValueDescriptionUtil.appendPercent(value);
+        thermostatThresholdOn = ValueDescriptionUtil.appendTemperature(value);
     }
 
     public void readVALVETHRESHOLDOFF(String value) {
@@ -74,11 +74,11 @@ public class HCSDevice extends Device<HCSDevice> {
     }
 
     public void readECOTEMPERATUREOFF(String value) {
-        ecoTemperatureOff = ValueDescriptionUtil.appendPercent(value);
+        ecoTemperatureOff = ValueDescriptionUtil.appendTemperature(value);
     }
 
     public void readECOTEMPERATUREON(String value) {
-        ecoTemperatureOn = ValueDescriptionUtil.appendPercent(value);
+        ecoTemperatureOn = ValueDescriptionUtil.appendTemperature(value);
     }
 
     public void readMODE(String value) {
