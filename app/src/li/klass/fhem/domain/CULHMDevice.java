@@ -249,7 +249,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice> imp
         return measured;
     }
 
-    @ShowField(description = ResourceIdMapper.desiredTemperature)
+    @ShowField(description = ResourceIdMapper.desiredTemperature, showInOverview = true)
     public String getDesiredTempDesc() {
         if (subType != HEATING) return null;
 
