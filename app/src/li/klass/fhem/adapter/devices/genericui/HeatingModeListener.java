@@ -56,6 +56,12 @@ public class HeatingModeListener<D extends Device<D> & HeatingModeDevice<M>, M e
             @Override
             public void onItemSelected(final Context context, D device, String item) {
                 M mode = EnumUtils.valueOf(device.getHeatingModes(), item);
+
+                if (mode == getUnknownMode() || mode == null) {
+                    revertSelection();
+                    return;
+                }
+
                 changeMode(mode, device, context);
             }
         }.createRow(device));
@@ -77,6 +83,10 @@ public class HeatingModeListener<D extends Device<D> & HeatingModeDevice<M>, M e
         putUpdateIntent(intent);
 
         context.startService(intent);
+    }
+
+    protected M getUnknownMode() {
+        return null;
     }
 
     protected boolean doAddField(D device) {

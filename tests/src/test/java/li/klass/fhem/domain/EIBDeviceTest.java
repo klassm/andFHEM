@@ -25,7 +25,6 @@
 package li.klass.fhem.domain;
 
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
-import li.klass.fhem.domain.core.ToggleableDevice;
 import org.junit.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -49,6 +48,25 @@ public class EIBDeviceTest extends DeviceXMLParsingBase {
 
         assertThat(device.getFileLog(), is(nullValue()));
         assertThat(device.getDeviceCharts().size(), is(0));
+
+        assertThat(device.supportsToggle(), is(true));
+    }
+
+    @Test
+    public void testNonSwitchDeviceTypes() {
+        assertDeviceState("speedsensor", "1.7 (m/s)");
+        assertDeviceState("tempsensor", "0.9 (°C)");
+        assertDeviceState("lightsensor", "1158.4 (lux)");
+        assertDeviceState("brightness", "13338.0 (lux)");
+
+        // missing data??
+//        assertDeviceState("rainsensor", "0.9 (°C)");
+    }
+
+    private void assertDeviceState(String deviceName, String expectedState) {
+        EIBDevice device = getDeviceFor(deviceName);
+        assertThat(device.getState(), is(expectedState));
+        assertThat(device.supportsToggle(), is(false));
     }
 
     @Override

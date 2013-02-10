@@ -70,7 +70,12 @@ public class CULHMAdapter extends DimmableAdapter<CULHMDevice> {
         registerFieldListener("state", new HeatingModeListener<CULHMDevice, CULHMDevice.HeatingMode>() {
             @Override
             protected boolean doAddField(CULHMDevice device) {
-                return device.getHeatingMode() != null;
+                return device.getSubType() == HEATING;
+            }
+
+            @Override
+            protected CULHMDevice.HeatingMode getUnknownMode() {
+                return CULHMDevice.HeatingMode.UNKNOWN;
             }
         });
 

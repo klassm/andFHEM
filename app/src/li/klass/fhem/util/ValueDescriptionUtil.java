@@ -25,28 +25,38 @@
 package li.klass.fhem.util;
 
 public class ValueDescriptionUtil {
+
+    public static final String C = "°C";
+    public static final String PERCENT = "%";
+    public static final String KM_H = "km/h";
+    public static final String M_S = "m/s";
+    public static final String L_M2 = "l/m2";
+    public static final String L = "l";
+    public static final String KWH = "kwh";
+    public static final String LUX = "lux";
+
     public static String appendTemperature(Object text) {
-        return append(text, "°C");
+        return append(text, C);
     }
 
     public static String appendPercent(Object text) {
-        return append(text, "%");
+        return append(text, PERCENT);
     }
 
     public static String appendKmH(Object text) {
-        return append(text, "km/h");
+        return append(text, KM_H);
     }
 
     public static String appendLm2(Object text) {
-        return append(text, "l/m2");
+        return append(text, L_M2);
     }
 
     public static String appendL(Object text) {
-        return append(text, "l");
+        return append(text, L);
     }
 
     public static String appendKwh(Object text) {
-        return append(text, "kwh");
+        return append(text, KWH);
     }
 
     public static String append(Object text, String appendix) {

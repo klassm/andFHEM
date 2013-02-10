@@ -53,14 +53,14 @@ import static li.klass.fhem.domain.CULHMDevice.SubType.*;
 @SupportsWidget(TemperatureWidgetView.class)
 public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice> implements DesiredTempDevice, HeatingModeDevice<CULHMDevice.HeatingMode> {
 
-    private HeatingMode heatingMode;
+    private HeatingMode heatingMode = HeatingMode.UNKNOWN;
 
     public enum SubType {
         DIMMER, SWITCH, HEATING, SMOKE_DETECTOR, THREE_STATE, TEMPERATURE_HUMIDITY, THERMOSTAT, KFM100, MOTION
     }
 
     public enum HeatingMode {
-        MANUAL, AUTO, CENTRAL
+        MANUAL, AUTO, CENTRAL, UNKNOWN
     }
 
     private SubType subType = null;
