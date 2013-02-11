@@ -56,7 +56,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice> imp
     private HeatingMode heatingMode = HeatingMode.UNKNOWN;
 
     public enum SubType {
-        DIMMER, SWITCH, HEATING, SMOKE_DETECTOR, THREE_STATE, TEMPERATURE_HUMIDITY, THERMOSTAT, KFM100, MOTION
+        DIMMER, SWITCH, HEATING, SMOKE_DETECTOR, THREE_STATE, TEMPERATURE_HUMIDITY, THERMOSTAT, KFM100, MOTION, KEYMATIC
     }
 
     public enum HeatingMode {
@@ -177,6 +177,8 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice> imp
             subType = THERMOSTAT;
         } else if (value.equalsIgnoreCase("MOTIONDETECTOR")) {
             subType = MOTION;
+        } else if (value.equalsIgnoreCase("KEYMATIC")) {
+            subType = KEYMATIC;
         }
         subTypeRaw = value;
     }
