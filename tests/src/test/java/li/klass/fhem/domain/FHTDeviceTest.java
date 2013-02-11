@@ -54,6 +54,8 @@ public class FHTDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getWarnings(), is("Window open"));
         assertThat(device.getBattery(), is("ok"));
         assertThat(device.getState(), is("???"));
+        assertThat(device.getDesiredTemp(), is(closeTo(6.5, 0.01)));
+        assertThat(device.getDesiredTempDesc(), is("6.5 (°C)"));
 
         FHTDayControl monday = device.getDayControlMap().get(R.string.monday);
         assertThat(monday.getFrom1(), is("10:00"));

@@ -134,6 +134,7 @@
     <string name="excludedDevices">Ausgenommene-Geräte</string>
     <string name="idleDevices">Leerlauf-Geräte</string>
     <string name="demandDevices">Abruf-Geräte</string>
+    <string name="target">Ziel</string>
 
     <string name="switchDevice">Schalte</string>
     <string name="preferences">Einstellungen</string>
@@ -318,6 +319,7 @@
     <string name="widget_status">Status</string>
     <string name="widget_information">Informationen</string>
     <string name="widget_weather_forecast">Wettervorhersage</string>
+    <string name="widget_heating">Heizung</string>
 
     <string name="timer">Zeitschaltuhr</string>
     <string name="timer_overview">Schalte %1$s %2$s %3$s %4$s auf %5$s.</string>

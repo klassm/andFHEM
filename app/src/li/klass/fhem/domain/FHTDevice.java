@@ -36,6 +36,7 @@ import li.klass.fhem.domain.genericview.FloorplanViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.domain.heating.DesiredTempDevice;
 import li.klass.fhem.domain.heating.HeatingModeDevice;
+import li.klass.fhem.domain.heating.TemperatureDevice;
 import li.klass.fhem.domain.heating.WindowOpenTempDevice;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.DayUtil;
@@ -53,7 +54,7 @@ import java.util.Map;
 @SupportsWidget({TemperatureWidgetView.class, MediumInformationWidgetView.class})
 @SuppressWarnings("unused")
 public class FHTDevice extends Device<FHTDevice> implements DesiredTempDevice,
-        WindowOpenTempDevice, HeatingModeDevice<FHTMode> {
+        WindowOpenTempDevice, HeatingModeDevice<FHTMode>, TemperatureDevice {
     public static double MAXIMUM_TEMPERATURE = 30.5;
     public static double MINIMUM_TEMPERATURE = 5.5;
 
