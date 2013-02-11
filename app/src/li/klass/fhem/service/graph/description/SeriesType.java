@@ -24,5 +24,5 @@
 package li.klass.fhem.service.graph.description;
 
 public enum SeriesType {
-    DISCRETE, REGRESSION, SUM
+    DISCRETE, REGRESSION, SUM, DEFAULT
 }

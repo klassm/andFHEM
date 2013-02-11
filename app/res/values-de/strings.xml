@@ -222,6 +222,8 @@
     </string>
 
     <string name="temperatureGraph">Temperatur Graph</string>
+    <string name="temperatureHumidityGraph">Temperatur &amp; Luftfeuchtigkeit Graph</string>
+    <string name="temperatureActuatorGraph">Temperatur &amp; Regler Graph</string>
     <string name="rainGraph">Regen Graph</string>
     <string name="humidityGraph">Luftfeuchtigkeit Graph</string>
     <string name="windGraph">Wind Graph</string>

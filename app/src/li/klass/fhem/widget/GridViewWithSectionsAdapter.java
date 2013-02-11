@@ -57,7 +57,7 @@ public abstract class GridViewWithSectionsAdapter<P, C> extends BaseAdapter {
 
     public void updateParentPositions() {
         List<P> parents = getParents();
-        Log.i(TAG, "updating parent positions for parent count " + parents.size());
+        Log.d(TAG, "updating parent positions for parent count " + parents.size());
 
         parentPositions = new HashMap<Integer, P>();
 
@@ -77,12 +77,12 @@ public abstract class GridViewWithSectionsAdapter<P, C> extends BaseAdapter {
             currentPosition += numberOfColumns;
         }
         totalNumberOfItems = currentPosition;
-        Log.i(TAG, "found " + totalNumberOfItems + " items");
+        Log.d(TAG, "found " + totalNumberOfItems + " items");
     }
 
     @Override
     public int getCount() {
-        Log.i(TAG, "returning totalNumberOfItems: " + totalNumberOfItems);
+        Log.d(TAG, "returning totalNumberOfItems: " + totalNumberOfItems);
         return totalNumberOfItems;
     }
 
@@ -245,15 +245,17 @@ public abstract class GridViewWithSectionsAdapter<P, C> extends BaseAdapter {
 
     public void setNumberOfColumns(int numberOfColumns) {
         this.numberOfColumns = numberOfColumns;
-        Log.i(TAG, "set grid view to " + numberOfColumns + " columns");
+        Log.d(TAG, "set grid view to " + numberOfColumns + " columns");
         updateParentPositions();
         notifyDataSetChanged();
     }
 
     protected abstract C getChildForParentAndChildPosition(P parent, int childPosition);
+
     protected abstract int getChildrenCountForParent(P parent);
 
     protected abstract View getParentView(P parent, int parentOffset, View view, ViewGroup viewGroup);
+
     protected abstract View getChildView(P parent, int parentPosition, C child, View view, ViewGroup viewGroup);
 
     protected abstract List<P> getParents();

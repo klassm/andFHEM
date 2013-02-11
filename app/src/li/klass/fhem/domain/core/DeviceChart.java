@@ -29,12 +29,10 @@ import java.io.Serializable;
 
 public class DeviceChart implements Serializable {
     public final int buttonText;
-    public final int yTitleId;
     public final ChartSeriesDescription[] chartSeriesDescriptions;
 
-    public DeviceChart(int buttonText, int yTitleId, ChartSeriesDescription... chartSeriesDescriptions) {
+    public DeviceChart(int buttonText, ChartSeriesDescription... chartSeriesDescriptions) {
         this.buttonText = buttonText;
-        this.yTitleId = yTitleId;
         this.chartSeriesDescriptions = chartSeriesDescriptions;
     }
 }

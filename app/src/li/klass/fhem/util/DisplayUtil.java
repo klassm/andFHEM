@@ -24,7 +24,10 @@
 package li.klass.fhem.util;
 
 import android.app.Activity;
+import android.content.res.Resources;
 import android.util.DisplayMetrics;
+import android.util.TypedValue;
+import li.klass.fhem.AndFHEMApplication;
 
 public class DisplayUtil {
     /**
@@ -39,10 +42,19 @@ public class DisplayUtil {
         return (int) (largerDimension * metrics.density);
     }
 
+    public static int getWidthInDP(Activity activity) {
+        return getDisplayMetrics(activity).widthPixels;
+    }
+
     private static DisplayMetrics getDisplayMetrics(Activity activity) {
         DisplayMetrics metrics = new DisplayMetrics();
         activity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
 
         return metrics;
+    }
+
+    public static float dpToPx(int dp) {
+        Resources resources = AndFHEMApplication.getContext().getResources();
+        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, resources.getDisplayMetrics());
     }
 }

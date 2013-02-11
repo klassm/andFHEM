@@ -70,9 +70,9 @@ public class CULWSDevice extends Device<CULWSDevice> {
 
     @Override
     protected void fillDeviceCharts(List<DeviceChart> chartSeries) {
-        addDeviceChartIfNotNull(temperature, new DeviceChart(R.string.temperatureGraph, R.string.yAxisTemperature,
-                ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:temperature:0:")));
-        addDeviceChartIfNotNull(humidity, new DeviceChart(R.string.humidityGraph, R.string.yAxisHumidity,
-                new ChartSeriesDescription(R.string.humidity, "4:humidity:0")));
+        addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureGraph,
+                ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:temperature:0:", R.string.yAxisTemperature)), temperature);
+        addDeviceChartIfNotNull(new DeviceChart(R.string.humidityGraph,
+                new ChartSeriesDescription(R.string.humidity, "4:humidity:0", R.string.yAxisHumidity)), humidity);
     }
 }

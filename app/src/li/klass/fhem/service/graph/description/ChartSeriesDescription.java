@@ -38,17 +38,18 @@ public class ChartSeriesDescription implements Parcelable, Serializable {
     private boolean showRegression = false;
     private boolean showSum = false;
     private double sumDivisionFactor;
+    private final int yAxisName;
 
-    public static ChartSeriesDescription getDiscreteValuesInstance(int columnName, String columnSpecification) {
-        return new ChartSeriesDescription(columnName, columnSpecification, true, false, false, 0);
+    public static ChartSeriesDescription getDiscreteValuesInstance(int columnName, String columnSpecification, int yAxisName) {
+        return new ChartSeriesDescription(columnName, columnSpecification, true, false, false, 0, yAxisName);
     }
 
-    public static ChartSeriesDescription getRegressionValuesInstance(int columnName, String columnSpecification) {
-        return new ChartSeriesDescription(columnName, columnSpecification, false, true, false, 0);
+    public static ChartSeriesDescription getRegressionValuesInstance(int columnName, String columnSpecification, int yAxisName) {
+        return new ChartSeriesDescription(columnName, columnSpecification, false, true, false, 0, yAxisName);
     }
 
-    public static ChartSeriesDescription getSumInstance(int columnName, String columnSpecification, double divisionFactor) {
-        return new ChartSeriesDescription(columnName, columnSpecification, false, false, true, divisionFactor);
+    public static ChartSeriesDescription getSumInstance(int columnName, String columnSpecification, double divisionFactor, int yAxisName) {
+        return new ChartSeriesDescription(columnName, columnSpecification, false, false, true, divisionFactor, yAxisName);
     }
 
     public static final Creator<ChartSeriesDescription> CREATOR = new Creator<ChartSeriesDescription>() {
@@ -65,17 +66,18 @@ public class ChartSeriesDescription implements Parcelable, Serializable {
         }
     };
 
-    public ChartSeriesDescription(int columnName, String columnSpecification, boolean showDiscreteValues, boolean showRegression, boolean showSum, double sumDivisionFactor) {
+    public ChartSeriesDescription(int columnName, String columnSpecification, boolean showDiscreteValues, boolean showRegression, boolean showSum, double sumDivisionFactor, int yAxisName) {
         this.columnName = columnName;
         this.columnSpecification = columnSpecification;
         this.showDiscreteValues = showDiscreteValues;
         this.showRegression = showRegression;
         this.showSum = showSum;
         this.sumDivisionFactor = sumDivisionFactor;
+        this.yAxisName = yAxisName;
     }
 
-    public ChartSeriesDescription(int columnName, String columnSpecification) {
-        this(columnName, columnSpecification, false, false, false, 0);
+    public ChartSeriesDescription(int columnName, String columnSpecification, int yAxisName) {
+        this(columnName, columnSpecification, false, false, false, 0, yAxisName);
     }
 
     private ChartSeriesDescription(Bundle bundle) {
@@ -85,6 +87,7 @@ public class ChartSeriesDescription implements Parcelable, Serializable {
         this.showRegression = bundle.getBoolean("SHOW_REGRESSION");
         this.showSum = bundle.getBoolean("SHOW_SUM");
         this.sumDivisionFactor = bundle.getDouble("SUM_DIVISION_FACTOR");
+        this.yAxisName = bundle.getInt("Y_AXIS_NAME");
     }
 
     public int getColumnName() {
@@ -122,6 +125,10 @@ public class ChartSeriesDescription implements Parcelable, Serializable {
 
     }
 
+    public int getYAxisResource() {
+        return yAxisName;
+    }
+
     @Override
     public int hashCode() {
         return columnName;
@@ -141,6 +148,7 @@ public class ChartSeriesDescription implements Parcelable, Serializable {
         bundle.putBoolean("SHOW_SUM", showSum);
         bundle.putBoolean("SHOW_REGRESSION", showRegression);
         bundle.putDouble("SUM_DIVISION_FACTOR", sumDivisionFactor);
+        bundle.putInt("Y_AXIS_NAME", yAxisName);
         parcel.writeBundle(bundle);
     }
 

@@ -222,6 +222,8 @@
     </string>
 
     <string name="temperatureGraph">Temperature Graph</string>
+    <string name="temperatureHumidityGraph">Temperature &amp; Humidity Graph</string>
+    <string name="temperatureActuatorGraph">Temperature &amp; Actuator Graph</string>
     <string name="rainGraph">Rain Graph</string>
     <string name="humidityGraph">Humidity Graph</string>
     <string name="windGraph">Wind Graph</string>
@@ -236,6 +238,7 @@
     <string name="dewpointGraph">Dewpoint Graph</string>
 
     <string name="yAxisWind">wind (km/h)</string>
+    <string name="yAxisHumidity">humidity (%)</string>
     <string name="yAxisHumidity">humidity (%)</string>
     <string name="yAxisTemperature">temperature (°C)</string>
     <string name="yAxisRain">rain (l/m2)</string>

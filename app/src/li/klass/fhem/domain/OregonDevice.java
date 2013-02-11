@@ -24,8 +24,6 @@
 
 package li.klass.fhem.domain;
 
-import java.util.List;
-
 import li.klass.fhem.R;
 import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.appwidget.annotation.SupportsWidget;
@@ -37,6 +35,8 @@ import li.klass.fhem.domain.genericview.FloorplanViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ValueDescriptionUtil;
+
+import java.util.List;
 
 @FloorplanViewSettings(showState = true)
 @SupportsWidget(TemperatureWidgetView.class)
@@ -181,17 +181,17 @@ public class OregonDevice extends Device<OregonDevice> {
 
     @Override
     protected void fillDeviceCharts(List<DeviceChart> chartSeries) {
-        addDeviceChartIfNotNull(temperature, new DeviceChart(R.string.temperatureGraph, R.string.yAxisTemperature,
-                ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:temperature:0:")));
-        addDeviceChartIfNotNull(humidity, new DeviceChart(R.string.humidityGraph, R.string.yAxisHumidity,
-                new ChartSeriesDescription(R.string.temperature, "4:humidity:0:")));
-        addDeviceChartIfNotNull(pressure, new DeviceChart(R.string.pressureGraph, R.string.yAxisPressure,
-                new ChartSeriesDescription(R.string.pressure, "4:pressure:0:")));
-        addDeviceChartIfNotNull(rainRate, new DeviceChart(R.string.rainRate, R.string.yAxisRainRate,
-                new ChartSeriesDescription(R.string.rainRate, "4:rain_rate:0:")));
-        addDeviceChartIfNotNull(rainTotal, new DeviceChart(R.string.rainTotal, R.string.yAxisRainTotal,
-                new ChartSeriesDescription(R.string.rainRate, "4:rain_total:0:")));
-        addDeviceChartIfNotNull(windSpeed, new DeviceChart(R.string.windSpeed, R.string.yAxisWindSpeed,
-                new ChartSeriesDescription(R.string.rainRate, "4:wind_speed:0:")));
+        addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureGraph,
+                ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:temperature:0:", R.string.yAxisTemperature)), temperature);
+        addDeviceChartIfNotNull(new DeviceChart(R.string.humidityGraph,
+                new ChartSeriesDescription(R.string.temperature, "4:humidity:0:", R.string.yAxisHumidity)), humidity);
+        addDeviceChartIfNotNull(new DeviceChart(R.string.pressureGraph,
+                new ChartSeriesDescription(R.string.pressure, "4:pressure:0:", R.string.yAxisPressure)), pressure);
+        addDeviceChartIfNotNull(new DeviceChart(R.string.rainRate,
+                new ChartSeriesDescription(R.string.rainRate, "4:rain_rate:0:", R.string.yAxisRainRate)), rainRate);
+        addDeviceChartIfNotNull(new DeviceChart(R.string.rainTotal,
+                new ChartSeriesDescription(R.string.rainRate, "4:rain_total:0:", R.string.yAxisRainTotal)), rainTotal);
+        addDeviceChartIfNotNull(new DeviceChart(R.string.windSpeed,
+                new ChartSeriesDescription(R.string.rainRate, "4:wind_speed:0:", R.string.yAxisWindSpeed)), windSpeed);
     }
 }

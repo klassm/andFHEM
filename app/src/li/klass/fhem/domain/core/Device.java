@@ -285,10 +285,11 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
     protected void fillDeviceCharts(List<DeviceChart> chartSeries) {
     }
 
-    protected void addDeviceChartIfNotNull(Object notNull, DeviceChart holder) {
-        if (notNull != null) {
-            deviceCharts.add(holder);
+    protected void addDeviceChartIfNotNull(DeviceChart holder, Object... notNull) {
+        for (Object o : notNull) {
+            if (o == null) return;
         }
+        deviceCharts.add(holder);
     }
 
     public String getState() {

@@ -24,8 +24,6 @@
 
 package li.klass.fhem.domain;
 
-import java.util.List;
-
 import li.klass.fhem.R;
 import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.appwidget.annotation.SupportsWidget;
@@ -39,8 +37,11 @@ import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ValueDescriptionUtil;
 
+import java.util.List;
+
 @FloorplanViewSettings(showState = true)
 @SupportsWidget(TemperatureWidgetView.class)
+@SuppressWarnings("unused")
 public class USBWXDevice extends Device<USBWXDevice> {
 
     @ShowField(description = ResourceIdMapper.humidity, showInOverview = true)
@@ -52,19 +53,19 @@ public class USBWXDevice extends Device<USBWXDevice> {
     @ShowField(description = ResourceIdMapper.dewpoint, showInOverview = true)
     private String dewpoint;
 
-    public void readTEMPERATURE(String value)  {
+    public void readTEMPERATURE(String value) {
         this.temperature = ValueDescriptionUtil.appendTemperature(value);
     }
 
-    public void readHUMIDITY(String value)  {
+    public void readHUMIDITY(String value) {
         this.humidity = ValueDescriptionUtil.appendPercent(value);
     }
 
-    public void readDEWPOINT(String value)  {
+    public void readDEWPOINT(String value) {
         this.dewpoint = ValueDescriptionUtil.appendTemperature(value);
     }
 
-    public void readTIME(String value)  {
+    public void readTIME(String value) {
         measured = value;
     }
 
@@ -82,9 +83,9 @@ public class USBWXDevice extends Device<USBWXDevice> {
 
     @Override
     protected void fillDeviceCharts(List<DeviceChart> chartSeries) {
-        addDeviceChartIfNotNull(temperature, new DeviceChart(R.string.temperatureGraph, R.string.yAxisTemperature,
-                ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:temperature:0:")));
-        addDeviceChartIfNotNull(humidity, new DeviceChart(R.string.humidityGraph, R.string.yAxisHumidity,
-                new ChartSeriesDescription(R.string.temperature, "4:humidity:0:")));
+        addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureGraph,
+                ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:temperature:0:", R.string.yAxisTemperature)), temperature);
+        addDeviceChartIfNotNull(new DeviceChart(R.string.humidityGraph,
+                new ChartSeriesDescription(R.string.temperature, "4:humidity:0:", R.string.yAxisHumidity)), humidity);
     }
 }

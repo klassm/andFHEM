@@ -24,8 +24,6 @@
 
 package li.klass.fhem.domain;
 
-import java.util.List;
-
 import li.klass.fhem.R;
 import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.appwidget.annotation.SupportsWidget;
@@ -37,6 +35,8 @@ import li.klass.fhem.domain.genericview.FloorplanViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ValueDescriptionUtil;
+
+import java.util.List;
 
 @FloorplanViewSettings(showState = true)
 @SupportsWidget(TemperatureWidgetView.class)
@@ -146,10 +146,10 @@ public class TRXWeatherDevice extends Device<TRXWeatherDevice> {
 
     @Override
     protected void fillDeviceCharts(List<DeviceChart> chartSeries) {
-        addDeviceChartIfNotNull(temperature, new DeviceChart(R.string.temperatureGraph, R.string.yAxisTemperature,
-                ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:temperature:"),
-                new ChartSeriesDescription(R.string.dewpoint, "4:dewpoint:0:")));
-        addDeviceChartIfNotNull(humidity, new DeviceChart(R.string.humidityGraph, R.string.yAxisHumidity,
-                new ChartSeriesDescription(R.string.humidity, "4:humidity:0:")));
+        addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureGraph,
+                ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:temperature:", R.string.yAxisTemperature),
+                new ChartSeriesDescription(R.string.dewpoint, "4:dewpoint:0:", R.string.yAxisTemperature)), temperature);
+        addDeviceChartIfNotNull(new DeviceChart(R.string.humidityGraph,
+                new ChartSeriesDescription(R.string.humidity, "4:humidity:0:", R.string.yAxisHumidity)), humidity);
     }
 }

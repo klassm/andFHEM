@@ -24,17 +24,10 @@
 
 package li.klass.fhem.domain;
 
-import java.util.List;
-
+import android.content.Context;
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
-import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
-import li.klass.fhem.appwidget.annotation.SupportsWidget;
-import li.klass.fhem.appwidget.annotation.WidgetMediumLine1;
-import li.klass.fhem.appwidget.annotation.WidgetMediumLine2;
-import li.klass.fhem.appwidget.annotation.WidgetMediumLine3;
-import li.klass.fhem.appwidget.annotation.WidgetTemperatureAdditionalField;
-import li.klass.fhem.appwidget.annotation.WidgetTemperatureField;
+import li.klass.fhem.appwidget.annotation.*;
 import li.klass.fhem.appwidget.view.widget.AppWidgetView;
 import li.klass.fhem.appwidget.view.widget.medium.MediumInformationWidgetView;
 import li.klass.fhem.appwidget.view.widget.medium.TemperatureWidgetView;
@@ -44,7 +37,8 @@ import li.klass.fhem.domain.genericview.FloorplanViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ValueUtil;
-import android.content.Context;
+
+import java.util.List;
 
 @SuppressWarnings("unused")
 @FloorplanViewSettings(showState = true)
@@ -114,10 +108,10 @@ public class HMSDevice extends Device<HMSDevice> {
 
     @Override
     protected void fillDeviceCharts(List<DeviceChart> chartSeries) {
-        addDeviceChartIfNotNull(temperature, new DeviceChart(R.string.temperatureGraph, R.string.yAxisTemperature,
-                ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:T\\x3a:0:")));
-        addDeviceChartIfNotNull(humidity, new DeviceChart(R.string.humidityGraph, R.string.yAxisHumidity,
-                new ChartSeriesDescription(R.string.temperature, "6:H\\x3a:0:")));
+        addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureGraph,
+                ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:T\\x3a:0:", R.string.yAxisTemperature)), temperature);
+        addDeviceChartIfNotNull(new DeviceChart(R.string.humidityGraph,
+                new ChartSeriesDescription(R.string.temperature, "6:H\\x3a:0:", R.string.yAxisHumidity)), humidity);
     }
 
     @Override

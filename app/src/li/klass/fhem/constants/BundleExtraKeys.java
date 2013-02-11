@@ -39,7 +39,6 @@ public class BundleExtraKeys {
     public static final String TOAST_STRING_ID = "TOASTSTRINGID";
 
     public static final String DEVICE_GRAPH_ENTRY_MAP = "GRAPHENTRYMAP";
-    public static final String DEVICE_GRAPH_Y_TITLE = "GRAPHYTITLE";
     public static final String DEVICE_GRAPH_SERIES_DESCRIPTIONS = "DEVICEGRAPHSERIESDESCRIPTIONS";
     public static final String START_DATE = "STARTDATE";
     public static final String END_DATE = "ENDDATE";

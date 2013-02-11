@@ -43,6 +43,7 @@ public abstract class DeviceAdapter<D extends Device> {
 
     /**
      * Indicates whether the current adapter supports the given device class.
+     *
      * @param deviceClass class to check
      * @return true if device class is supported
      */
@@ -53,8 +54,9 @@ public abstract class DeviceAdapter<D extends Device> {
     /**
      * Creates an overview view for the given device. The device has to match the adapter device type, otherwise
      * a cast exception occurs.
+     *
      * @param layoutInflater layoutInflater to create the view
-     * @param rawDevice device used for filling the view
+     * @param rawDevice      device used for filling the view
      * @return overview view
      */
     @SuppressWarnings("unchecked")
@@ -67,6 +69,7 @@ public abstract class DeviceAdapter<D extends Device> {
 
     /**
      * Gets the overview layout id for the given device.
+     *
      * @param device device
      * @return layout id
      */
@@ -74,15 +77,17 @@ public abstract class DeviceAdapter<D extends Device> {
 
     /**
      * Fills a given device view.
-     * @param view view to fill
+     *
+     * @param view   view to fill
      * @param device content provider
      */
     protected abstract void fillDeviceOverviewView(View view, D device);
 
     /**
      * Creates a filled detail view for a given device.
+     *
      * @param context context used for inflating the layout.
-     * @param device device used for filling.
+     * @param device  device used for filling.
      * @return filled view.
      */
     @SuppressWarnings("unchecked")
@@ -94,7 +99,7 @@ public abstract class DeviceAdapter<D extends Device> {
     }
 
     public void gotoDetailView(Context context, Device device) {
-        if (! supportsDetailView(device)) {
+        if (!supportsDetailView(device)) {
             return;
         }
 
@@ -111,11 +116,15 @@ public abstract class DeviceAdapter<D extends Device> {
     }
 
     public abstract boolean supportsDetailView(Device device);
+
     public abstract int getDetailViewLayout();
+
     protected abstract View getDeviceDetailView(Context context, D device);
+
     protected abstract Intent onFillDeviceDetailIntent(Context context, Device device, Intent intent);
 
     public abstract boolean supportsFloorplan(D device);
+
     public abstract View getFloorplanView(Context context, D device);
 
     public abstract Class<? extends Device> getSupportedDeviceClass();
@@ -156,8 +165,7 @@ public abstract class DeviceAdapter<D extends Device> {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String yTitle = context.getResources().getString(deviceChart.yTitleId);
-                ChartingActivity.showChart(context, device, yTitle, deviceChart.chartSeriesDescriptions);
+                ChartingActivity.showChart(context, device, deviceChart.chartSeriesDescriptions);
             }
         });
     }

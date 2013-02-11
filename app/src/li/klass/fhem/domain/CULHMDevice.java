@@ -378,36 +378,34 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice> imp
         switch (subType) {
             case TEMPERATURE_HUMIDITY:
 
-                addDeviceChartIfNotNull(measuredTemp, new DeviceChart(R.string.temperatureGraph, R.string.yAxisTemperature,
-                        ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:")));
-                addDeviceChartIfNotNull(humidity, new DeviceChart(R.string.humidityGraph, R.string.yAxisHumidity,
-                        new ChartSeriesDescription(R.string.humidity, "6:")));
+                addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureHumidityGraph,
+                        ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:", R.string.yAxisTemperature),
+                        new ChartSeriesDescription(R.string.humidity, "6:", R.string.yAxisHumidity)), humidity, measuredTemp);
 
                 break;
 
             case KFM100:
-                addDeviceChartIfNotNull(getState(), new DeviceChart(R.string.contentGraph, R.string.yAxisLitreContent,
-                        ChartSeriesDescription.getRegressionValuesInstance(R.string.content, "4:content:0:"),
-                        new ChartSeriesDescription(R.string.rawValue, "4:rawValue:0:")));
+                addDeviceChartIfNotNull(new DeviceChart(R.string.contentGraph,
+                        ChartSeriesDescription.getRegressionValuesInstance(R.string.content, "4:content:0:", R.string.yAxisLitreContent),
+                        new ChartSeriesDescription(R.string.rawValue, "4:rawValue:0:", R.string.yAxisLitreContent)), getState());
 
                 break;
 
             case THERMOSTAT:
 
-                addDeviceChartIfNotNull(measuredTemp, new DeviceChart(R.string.temperatureGraph, R.string.yAxisTemperature,
-                        ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:measured-temp:0")));
+                addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureGraph,
+                        ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:measured-temp:0", R.string.yAxisTemperature)), measuredTemp);
 
                 break;
 
             case HEATING:
+                addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureHumidityGraph,
+                        ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:", R.string.yAxisTemperature),
+                        new ChartSeriesDescription(R.string.humidity, "6:", R.string.yAxisHumidity)), humidity, measuredTemp);
 
-
-                addDeviceChartIfNotNull(measuredTemp, new DeviceChart(R.string.temperatureGraph, R.string.yAxisTemperature,
-                        ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:measured-temp:0")));
-                addDeviceChartIfNotNull(humidity, new DeviceChart(R.string.humidityGraph, R.string.yAxisHumidity,
-                        new ChartSeriesDescription(R.string.humidity, "6:humidity:0")));
-                addDeviceChartIfNotNull(actuator, new DeviceChart(R.string.actuatorGraph, R.string.yAxisActuator,
-                        new ChartSeriesDescription(R.string.humidity, "4:actuator")));
+                addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureActuatorGraph,
+                        ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:measured-temp:0", R.string.yAxisTemperature),
+                        new ChartSeriesDescription(R.string.actuator, "4:actuator", R.string.yAxisActuator)), measuredTemp, actuator);
 
                 break;
 

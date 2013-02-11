@@ -209,10 +209,9 @@ public class WeatherDevice extends Device<WeatherDevice> {
 
     @Override
     protected void fillDeviceCharts(List<DeviceChart> chartSeries) {
-        addDeviceChartIfNotNull(temperature, new DeviceChart(R.string.temperatureGraph, R.string.yAxisTemperature,
-                ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:temp_c:")));
-        addDeviceChartIfNotNull(humidity, new DeviceChart(R.string.humidityGraph, R.string.yAxisHumidity,
-                new ChartSeriesDescription(R.string.temperature, "4:humidity:0:")));
+        addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureHumidityGraph,
+                ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:temp_c:", R.string.yAxisTemperature),
+                new ChartSeriesDescription(R.string.humidity, "4:humidity:0:", R.string.yAxisHumidity)), temperature, humidity);
     }
 
     public static String parseIcon(String icon) {

@@ -24,8 +24,6 @@
 
 package li.klass.fhem.domain;
 
-import java.util.List;
-
 import li.klass.fhem.R;
 import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.appwidget.annotation.SupportsWidget;
@@ -38,6 +36,8 @@ import li.klass.fhem.domain.genericview.FloorplanViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ValueDescriptionUtil;
+
+import java.util.List;
 
 @FloorplanViewSettings
 @SupportsWidget(TemperatureWidgetView.class)
@@ -69,10 +69,9 @@ public class CULTXDevice extends Device<CULTXDevice> {
 
     @Override
     protected void fillDeviceCharts(List<DeviceChart> chartSeries) {
-        addDeviceChartIfNotNull(humidity, new DeviceChart(R.string.humidityGraph, R.string.yAxisHumidity,
-                new ChartSeriesDescription(R.string.temperature, "4:humidity:0:")));
-        addDeviceChartIfNotNull(temperature, new DeviceChart(R.string.temperature, R.string.yAxisTemperature,
-                new ChartSeriesDescription(R.string.temperature, "4:temperature:0:")));
+        addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureHumidityGraph,
+                new ChartSeriesDescription(R.string.temperature, "4:humidity:0:", R.string.yAxisHumidity),
+                new ChartSeriesDescription(R.string.temperature, "4:temperature:0:", R.string.yAxisTemperature)), humidity, temperature);
     }
 
 }

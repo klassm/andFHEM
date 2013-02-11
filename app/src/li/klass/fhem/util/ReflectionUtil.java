@@ -115,7 +115,6 @@ public class ReflectionUtil {
         }
     }
 
-
     public static String getFieldValueAsString(Object object, Field field) {
         Object value = getFieldValue(object, field);
         return String.valueOf(value);
@@ -141,5 +140,19 @@ public class ReflectionUtil {
             methodName = ((char) (firstChar - 'A' + 'a')) + methodName.substring(1);
         }
         return methodName;
+    }
+
+    public static Field findField(Class<?> clazz, String fieldName) {
+        try {
+            Field field = clazz.getDeclaredField(fieldName);
+            field.setAccessible(true);
+
+            return field;
+        } catch (NoSuchFieldException e) {
+            if (clazz.getSuperclass() != null) {
+                return findField(clazz.getSuperclass(), fieldName);
+            }
+        }
+        return null;
     }
 }
