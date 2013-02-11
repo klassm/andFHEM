@@ -49,7 +49,7 @@ public class THSensorTest extends DeviceXMLParsingBase {
         assertThat(device.getHumidity(), is("67 (%)"));
 
         assertThat(device.getFileLog(), Matchers.is(notNullValue()));
-        assertThat(device.getDeviceCharts().size(), is(2));
+        assertThat(device.getDeviceCharts().size(), is(1));
     }
 
     @Override

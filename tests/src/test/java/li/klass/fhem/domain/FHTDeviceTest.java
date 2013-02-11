@@ -100,7 +100,7 @@ public class FHTDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getAvailableTargetStates(), is(notNullValue()));
 
         assertThat(device.getFileLog(), is(notNullValue()));
-        assertThat(device.getDeviceCharts().size(), is(2));
+        assertThat(device.getDeviceCharts().size(), is(1));
 
         assertThat(device.getAvailableTargetStates(), hasItemInArray("day-temp"));
         assertThat(device.getAvailableTargetStates(), hasItemInArray("desired-temp"));

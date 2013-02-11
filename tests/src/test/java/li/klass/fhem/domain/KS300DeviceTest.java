@@ -52,7 +52,7 @@ public class KS300DeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getAvailableTargetStates(), is(nullValue()));
 
         assertThat(device.getFileLog(), is(notNullValue()));
-        assertThat(device.getDeviceCharts().size(), is(4));
+        assertThat(device.getDeviceCharts().size(), is(3));
     }
 
     @Override
