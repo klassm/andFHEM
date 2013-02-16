@@ -408,8 +408,6 @@ public class ChartingActivity extends Activity implements Updateable {
 
             resultList.add(new SeriesContainer(scaleNumber, timeSeries, SeriesType.DEFAULT));
             dataSet.addSeries(timeSeries);
-
-//            dataSet.addSeries(timeSeries);
         }
 
         // render regression and sum series
