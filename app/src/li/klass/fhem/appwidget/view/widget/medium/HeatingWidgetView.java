@@ -65,6 +65,8 @@ public class HeatingWidgetView extends AppWidgetView {
         } else {
             view.setViewVisibility(R.id.additional, View.GONE);
         }
+
+        openDeviceDetailPageWhenClicking(R.id.main, view, device, widgetConfiguration);
     }
 
     @Override
