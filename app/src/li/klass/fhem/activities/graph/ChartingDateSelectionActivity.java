@@ -39,7 +39,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-public class ChartingDateSelectionActivity extends Activity{
+public class ChartingDateSelectionActivity extends Activity {
 
     private Calendar startDate = Calendar.getInstance();
     private Calendar endDate = Calendar.getInstance();

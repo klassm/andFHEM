@@ -363,4 +363,13 @@
     <string name="twilight_light_daylight">Daylight</string>
 
     <string name="dummyConnectionNotification">Currently only dummy devices are shown!</string>
+
+    <string name="localeSendCommandPlugin">AndFHEM Command</string>
+    <string name="localeSendCommandPluginInfoText">Please enter a FHEM command that will be sent upon executing the
+        action! (z.B. "set device off")
+    </string>
+    <string name="localeDeviceState">AndFHEM Device State</string>
+    <string name="localeDeviceStateInfo">Please select a device and enter a target status, upon which the event will be
+        regarded as successful! (i.e. "off")
+    </string>
 </resources>

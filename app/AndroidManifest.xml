@@ -182,5 +182,37 @@
                         android:permission="com.amazon.inapp.purchasing.Permission.NOTIFY"/>
             </intent-filter>
         </receiver>
+
+        <activity android:name=".activities.base.DeviceNameSelectionActivity"/>
+
+        <activity
+                android:name=".activities.locale.LocaleEditConditionActivity"
+                android:label="@string/localeDeviceState"
+                android:icon="@drawable/ic_launcher" android:exported="true">
+            <intent-filter>
+                <action android:name="com.twofortyfouram.locale.intent.action.EDIT_CONDITION"/>
+            </intent-filter>
+        </activity>
+
+        <activity
+                android:name=".activities.locale.LocaleSettingActivity"
+                android:label="@string/localeSendCommandPlugin"
+                android:icon="@drawable/ic_launcher" android:exported="true">
+            <intent-filter>
+                <action android:name="com.twofortyfouram.locale.intent.action.EDIT_SETTING"/>
+            </intent-filter>
+        </activity>
+
+        <receiver android:name=".activities.locale.LocaleConditionQueryReceiver" android:exported="true">
+            <intent-filter>
+                <action android:name="com.twofortyfouram.locale.intent.action.QUERY_CONDITION"/>
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name=".activities.locale.LocaleActionReceiver" android:exported="true">
+            <intent-filter>
+                <action android:name="com.twofortyfouram.locale.intent.action.FIRE_SETTING"/>
+            </intent-filter>
+        </receiver>
     </application>
 </manifest>

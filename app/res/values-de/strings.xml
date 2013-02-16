@@ -363,4 +363,14 @@
 
     <string name="dummyConnectionNotification">Momentan werden nur Dummy Geräte angezeigt!</string>
 
+    <string name="localeSendCommandPlugin">AndFHEM Kommando</string>
+    <string name="localeSendCommandPluginInfoText">Bitte ein FHEM Kommando eingeben, das ausgeführt werden soll (z.B.
+        "set device off")
+    </string>
+    <string name="localeDeviceState">AndFHEM Gerätestatus</string>
+    <string name="localeDeviceStateInfo">Bitte ein Gerät auswählen und einen Zielstatus eingeben, bei dem das Ereignis
+        als erfolgreich angesehen wird. (z.B. "off")
+    </string>
+
+
 </resources>
