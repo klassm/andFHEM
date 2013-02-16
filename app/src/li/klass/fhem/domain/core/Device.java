@@ -63,7 +63,7 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
 
     protected volatile FileLogDevice fileLog;
     private List<DeviceChart> deviceCharts = new ArrayList<DeviceChart>();
-    private AssociatedDeviceCallback associatedDeviceCallback;
+    private transient AssociatedDeviceCallback associatedDeviceCallback;
 
 
     public void readROOM(String value) {
