@@ -135,6 +135,9 @@
     <string name="idleDevices">Leerlauf-Geräte</string>
     <string name="demandDevices">Abruf-Geräte</string>
     <string name="target">Ziel</string>
+    <string name="noGraphEntries">Keine Graph-Einträge gefunden, die entsprechend zum ausgewählten Zeitraum passen!
+        Stehen im FileLog Daten?
+    </string>
 
     <string name="switchDevice">Schalte</string>
     <string name="preferences">Einstellungen</string>

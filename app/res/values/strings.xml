@@ -136,6 +136,9 @@
     <string name="idleDevices">Idle devices</string>
     <string name="demandDevices">Demand devices</string>
     <string name="target">Target</string>
+    <string name="noGraphEntries">No graph entries found that match the selected time range. Does your FileLog contain
+        any matching entries?
+    </string>
 
     <string name="switchDevice">Switch</string>
     <string name="preferences">Preferences</string>

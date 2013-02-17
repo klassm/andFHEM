@@ -264,6 +264,16 @@ public class ChartingActivity extends Activity implements Updateable {
     @SuppressWarnings("unchecked")
     private void createChart(Device device, Map<ChartSeriesDescription, List<GraphEntry>> graphData) {
 
+        for (ChartSeriesDescription chartSeriesDescription : new HashSet<ChartSeriesDescription>(graphData.keySet())) {
+            if (graphData.get(chartSeriesDescription).size() < 2) {
+                graphData.remove(chartSeriesDescription);
+            }
+        }
+
+        if (graphData.size() == 0) {
+            setContentView(R.layout.no_graph_entries);
+            return;
+        }
 
         Map<ScaleMappingKey, List<ChartSeriesDescription>> scaleMapping = createScaleMapping(graphData);
 
