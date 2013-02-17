@@ -23,9 +23,6 @@
 
 package li.klass.fhem.appwidget;
 
-import static li.klass.fhem.util.SharedPreferencesUtil.getSharedPreferences;
-import static li.klass.fhem.util.SharedPreferencesUtil.getSharedPreferencesEditor;
-
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -38,7 +35,6 @@ import android.os.Handler;
 import android.os.ResultReceiver;
 import android.util.Log;
 import android.widget.RemoteViews;
-import java.util.Set;
 import li.klass.fhem.appwidget.view.WidgetType;
 import li.klass.fhem.appwidget.view.widget.AppWidgetView;
 import li.klass.fhem.constants.Actions;
@@ -48,13 +44,20 @@ import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.service.room.RoomListService;
 import li.klass.fhem.util.ApplicationProperties;
 
+import java.util.Set;
+
+import static li.klass.fhem.util.SharedPreferencesUtil.getSharedPreferences;
+import static li.klass.fhem.util.SharedPreferencesUtil.getSharedPreferencesEditor;
+
 public class AppWidgetDataHolder {
     public static final AppWidgetDataHolder INSTANCE = new AppWidgetDataHolder();
     private static final String preferenceName = AppWidgetDataHolder.class.getName();
     public static final String WIDGET_UPDATE_INTERVAL_PREFERENCES_KEY = "WIDGET_UPDATE_INTERVAL";
+    public static final String TAG = AppWidgetDataHolder.class.getName();
     private String SAVE_SEPARATOR = "#";
 
-    private AppWidgetDataHolder() {}
+    private AppWidgetDataHolder() {
+    }
 
     public void updateAllWidgets(final Context context, final boolean allowRemoteUpdate) {
         Log.e(AndFHEMAppWidgetProvider.class.getName(), "update all widgets!");
@@ -108,13 +111,17 @@ public class AppWidgetDataHolder {
                 if (resultCode == ResultCodes.SUCCESS) {
                     Device device = (Device) resultData.get(BundleExtraKeys.DEVICE);
                     if (device == null) {
-                        Log.d(AppWidgetDataHolder.class.getName(), "cannot find device " + widgetConfiguration.deviceName);
+                        Log.d(TAG, "cannot find device " + widgetConfiguration.deviceName);
                         return;
                     }
 
                     RemoteViews content = widgetView.createView(context, device, widgetConfiguration);
 
-                    appWidgetManager.updateAppWidget(appWidgetId, content);
+                    try {
+                        appWidgetManager.updateAppWidget(appWidgetId, content);
+                    } catch (Exception e) {
+                        Log.e(TAG, "something strange happened during appwidget update", e);
+                    }
                 }
             }
         });
