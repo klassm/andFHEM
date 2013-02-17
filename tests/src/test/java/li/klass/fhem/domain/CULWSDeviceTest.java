@@ -47,7 +47,7 @@ public class CULWSDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getAvailableTargetStates(), is(nullValue()));
 
         assertThat(device.getFileLog(), is(notNullValue()));
-        assertThat(device.getDeviceCharts().size(), is(2));
+        assertThat(device.getDeviceCharts().size(), is(1));
     }
 
     @Override
