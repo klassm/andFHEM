@@ -41,11 +41,13 @@ import li.klass.fhem.domain.heating.HeatingModeDevice;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.NumberUtil;
 import li.klass.fhem.util.ValueDescriptionUtil;
-import li.klass.fhem.util.ValueExtractUtil;
 
 import java.util.List;
 
 import static li.klass.fhem.domain.CULHMDevice.SubType.*;
+import static li.klass.fhem.util.ValueDescriptionUtil.appendPercent;
+import static li.klass.fhem.util.ValueExtractUtil.extractLeadingDouble;
+import static li.klass.fhem.util.ValueExtractUtil.extractLeadingInt;
 
 @SuppressWarnings("unused")
 @DetailOverviewViewSettings(showState = true)
@@ -115,7 +117,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice> imp
     }
 
     public void readCONTENT(String value) {
-        fillContentLitresRaw = ValueExtractUtil.extractLeadingDouble(value.replace("l", ""));
+        fillContentLitresRaw = extractLeadingDouble(value.replace("l", ""));
         String fillContentLitres = ValueDescriptionUtil.appendL(fillContentLitresRaw);
         setState(fillContentLitres);
     }
@@ -125,11 +127,14 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice> imp
     }
 
     public void readHUMIDITY(String value) {
-        humidity = ValueDescriptionUtil.appendPercent(value);
+        humidity = appendPercent(value);
     }
 
     public void readACTUATOR(String value) {
         subType = HEATING;
+        if (value != null && value.endsWith("%")) {
+            value = appendPercent(extractLeadingInt(value));
+        }
         actuator = value;
     }
 
@@ -145,7 +150,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice> imp
         if (value.equalsIgnoreCase("off")) value = "5.5";
         if (value.equalsIgnoreCase("on")) value = "30.5";
 
-        desiredTemp = ValueExtractUtil.extractLeadingDouble(value);
+        desiredTemp = extractLeadingDouble(value);
     }
 
     public void readBATTERY(String value) {
@@ -208,7 +213,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice> imp
             }
 
             fillContentPercentageRaw = fillContentLitresRaw == 0 ? 0 : fillContentLitresRaw / fillContentLitresMaximum;
-            fillContentPercentage = ValueDescriptionUtil.appendPercent((int) (fillContentPercentageRaw * 100));
+            fillContentPercentage = appendPercent((int) (fillContentPercentageRaw * 100));
         }
     }
 

@@ -93,6 +93,13 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
                 }
             }
 
+            for (Method method : device.getClass().getDeclaredMethods()) {
+                method.setAccessible(true);
+                if (method.isAnnotationPresent(ShowField.class) && method.getAnnotation(ShowField.class).showInOverview()) {
+                    createTableRow(device, inflater, layout, method, R.layout.device_overview_generic_table_row);
+                }
+            }
+
         } catch (Exception e) {
             Log.e(TAG, "exception occurred while setting device overview values", e);
         }
