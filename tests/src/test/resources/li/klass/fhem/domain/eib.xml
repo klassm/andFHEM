@@ -121,5 +121,29 @@
             <ATTR key="model" value="brightness"/>
             <ATTR key="room" value="room"/>
         </EIB>
+
+        <EIB name="time" state="13:34:00 " sets="off on on-for-timer on-till value"
+             attrs="room group comment alias eventMap userReadings IODev do_not_notify:1,0 ignore:0,1 dummy:1,0 showtime:1,0 loglevel:0,1,2,3,4,5,6 model:voltage-mV,pressuresensor,date,percent,power,powerdensity,percent255,current-mA2,dpt5,dpt12,dpt11,timeperiod-min,brightness,dpt10,speedsensor,dpt9,speedsensor-km/h,time,tempsensor,rainsensor,dpt5.003,lightsensor,time1sensor,dpt14,time2sensor,timeperiod-ms,dpt5.004,angle,dpt7,current-mA,humiditysensor,airqualitysensor,timeperiod-h,length-mm building building_map devStateIcon fp_Erdgeschoss icon structexclude webCmd">
+            <INT key="DEF" value="0001"/>
+            <INT key="GROUP" value="0001"/>
+            <INT key="LASTGROUP" value="0001"/>
+            <INT key="LASTIODev" value="tul"/>
+            <INT key="MSGCNT" value="275"/>
+            <INT key="NAME" value="time"/>
+            <INT key="NR" value="35"/>
+            <INT key="RAWSTATE" value="2d2200"/>
+            <INT key="STATE" value="13:34:00 "/>
+            <INT key="TYPE" value="EIB"/>
+            <INT key="tul_MSGCNT" value="275"/>
+            <INT key="tul_RAWMSG" value="B1102w00012d2200"/>
+            <INT key="tul_TIME" value="2013-02-18 13:34:09"/>
+            <INT key="IODev" value="tul"/>
+            <ATTR key="alias" value="EIB-Time"/>
+            <ATTR key="fp_Erdgeschoss" value="98,263,1,"/>
+            <ATTR key="icon" value="icoUhr"/>
+            <ATTR key="model" value="time"/>
+            <ATTR key="room" value="room"/>
+            <STATE key="state" value="13:34:00 " measured="2013-02-18 13:34:09"/>
+        </EIB>
     </EIB_LIST>
 </FHZINFO>

@@ -58,6 +58,7 @@ public class EIBDeviceTest extends DeviceXMLParsingBase {
         assertDeviceState("tempsensor", "0.9 (°C)");
         assertDeviceState("lightsensor", "1158.4 (lux)");
         assertDeviceState("brightness", "13338.0 (lux)");
+        assertDeviceState("time", "13:34:00");
 
         // missing data??
 //        assertDeviceState("rainsensor", "0.9 (°C)");

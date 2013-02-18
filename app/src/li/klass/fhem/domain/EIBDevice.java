@@ -48,6 +48,7 @@ public class EIBDevice extends ToggleableDevice<EIBDevice> {
 
     @Override
     public boolean supportsToggle() {
+        if (model != null && model.equalsIgnoreCase("time")) return false;
         return ArrayUtil.contains(getAvailableTargetStates(), "on", "off");
     }
 }
