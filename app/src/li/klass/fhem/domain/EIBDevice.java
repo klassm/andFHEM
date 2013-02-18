@@ -31,7 +31,7 @@ public class EIBDevice extends ToggleableDevice<EIBDevice> {
     public void afterXMLRead() {
         super.afterXMLRead();
 
-        if (model == null || getInternalState().equalsIgnoreCase("???")) return;
+        if (model == null || model.equals("time") || getInternalState().equalsIgnoreCase("???")) return;
 
         double value = ValueExtractUtil.extractLeadingDouble(getInternalState());
         String description = "";
