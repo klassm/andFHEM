@@ -386,8 +386,8 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice> imp
             case TEMPERATURE_HUMIDITY:
 
                 addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureHumidityGraph,
-                        ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:", R.string.yAxisTemperature),
-                        new ChartSeriesDescription(R.string.humidity, "6:", R.string.yAxisHumidity)), humidity, measuredTemp);
+                        ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:measured-temp:0", R.string.yAxisTemperature),
+                        new ChartSeriesDescription(R.string.humidity, "4:humidity:0", R.string.yAxisHumidity)), humidity, measuredTemp);
 
                 break;
 
