@@ -51,6 +51,8 @@ public class LocaleConditionQueryReceiver extends BroadcastReceiver {
             finishConditionIntent(RESULT_CONDITION_UNKNOWN);
         } else if (device.getInternalState().equalsIgnoreCase(targetState)) {
             finishConditionIntent(RESULT_CONDITION_SATISFIED);
+        } else if (device.getInternalState().matches(targetState)) {
+            finishConditionIntent(RESULT_CONDITION_SATISFIED);
         } else {
             finishConditionIntent(RESULT_CONDITION_UNSATISFIED);
         }
