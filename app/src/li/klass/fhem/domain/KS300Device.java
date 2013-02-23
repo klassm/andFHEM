@@ -144,11 +144,11 @@ public class KS300Device extends Device<KS300Device> implements Serializable {
     @Override
     protected void fillDeviceCharts(List<DeviceChart> chartSeries) {
         addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureHumidityGraph,
-                ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:IR:", R.string.yAxisTemperature),
-                new ChartSeriesDescription(R.string.humidity, "6:IR:", R.string.yAxisHumidity)), temperature, humidity);
+                ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4::", R.string.yAxisTemperature),
+                new ChartSeriesDescription(R.string.humidity, "6::", R.string.yAxisHumidity)), temperature, humidity);
         addDeviceChartIfNotNull(new DeviceChart(R.string.windGraph,
-                new ChartSeriesDescription(R.string.wind, "8:IR:", R.string.yAxisWind)), wind);
+                new ChartSeriesDescription(R.string.wind, "8::", R.string.yAxisWind)), wind);
         addDeviceChartIfNotNull(new DeviceChart(R.string.rainGraph,
-                new ChartSeriesDescription(R.string.rain, "10:IR::delta-h", R.string.yAxisRain)), rain);
+                new ChartSeriesDescription(R.string.rain, "10::", R.string.yAxisRain)), rain);
     }
 }

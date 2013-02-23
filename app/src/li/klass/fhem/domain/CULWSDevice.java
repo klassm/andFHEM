@@ -72,11 +72,11 @@ public class CULWSDevice extends Device<CULWSDevice> {
     protected void fillDeviceCharts(List<DeviceChart> chartSeries) {
         if (humidity != null) {
             addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureHumidityGraph,
-                    ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:temperature:0:", R.string.yAxisTemperature),
-                    new ChartSeriesDescription(R.string.humidity, "4:humidity:0", R.string.yAxisHumidity)), temperature, humidity);
+                    ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:T:0:", R.string.yAxisTemperature),
+                    new ChartSeriesDescription(R.string.humidity, "6:H:0", R.string.yAxisHumidity)), temperature, humidity);
         } else {
             addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureGraph,
-                    ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:temperature:0:", R.string.yAxisTemperature)), temperature);
+                    ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:T:0:", R.string.yAxisTemperature)), temperature);
         }
     }
 }
