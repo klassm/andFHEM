@@ -42,7 +42,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class BaseWeekProfileAdapter<H extends BaseHeatingInterval>
-        extends NestedListViewAdapter<DayProfile<H, ?>, H> {
+        extends NestedListViewAdapter<DayProfile<H, ?, ?>, H> {
 
     protected WeekProfile<H, ?, ? extends Device> weekProfile;
 
@@ -57,19 +57,19 @@ public abstract class BaseWeekProfileAdapter<H extends BaseHeatingInterval>
     }
 
     @Override
-    protected int getChildrenCountForParent(DayProfile<H, ?> parent) {
+    protected int getChildrenCountForParent(DayProfile<H, ?, ?> parent) {
         return parent.getNumberOfHeatingIntervals() + getNumberOfAdditionalChildrenForParent();
     }
 
     protected abstract int getNumberOfAdditionalChildrenForParent();
 
     @Override
-    protected H getChildForParentAndChildPosition(DayProfile<H, ?> parent, int childPosition) {
+    protected H getChildForParentAndChildPosition(DayProfile<H, ?, ?> parent, int childPosition) {
         return parent.getHeatingIntervalAt(childPosition);
     }
 
     @Override
-    protected View getParentView(DayProfile<H, ?> parent, View view, ViewGroup viewGroup) {
+    protected View getParentView(DayProfile<H, ?, ?> parent, View view, ViewGroup viewGroup) {
         view = layoutInflater.inflate(R.layout.weekprofile_parent, null);
 
         TextView parentTextView = (TextView) view.findViewById(R.id.parent);
@@ -79,13 +79,13 @@ public abstract class BaseWeekProfileAdapter<H extends BaseHeatingInterval>
     }
 
     @Override
-    protected List<DayProfile<H, ?>> getParents() {
-        List<DayProfile<H, ?>> parents = new ArrayList<DayProfile<H, ?>>();
+    protected List<DayProfile<H, ?, ?>> getParents() {
+        List<DayProfile<H, ?, ?>> parents = new ArrayList<DayProfile<H, ?, ?>>();
         if (weekProfile == null) return parents;
 
-        List<? extends DayProfile<H, ? extends HeatingConfiguration>> sortedDayProfiles = weekProfile.getSortedDayProfiles();
+        List<? extends DayProfile> sortedDayProfiles = weekProfile.getSortedDayProfiles();
 
-        for (DayProfile<H, ? extends HeatingConfiguration> sortedDayProfile : sortedDayProfiles) {
+        for (DayProfile<H, ?, ? extends HeatingConfiguration> sortedDayProfile : sortedDayProfiles) {
             parents.add(sortedDayProfile);
         }
         return parents;

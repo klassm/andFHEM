@@ -58,7 +58,7 @@ public class IntervalWeekProfileAdapter
     }
 
     @Override
-    protected View getChildView(final DayProfile<FilledTemperatureInterval, ?> parent, int parentPosition,
+    protected View getChildView(final DayProfile<FilledTemperatureInterval, ?, ?> parent, int parentPosition,
                                 final FilledTemperatureInterval child, View v, ViewGroup viewGroup, final int relativeChildPosition) {
 
         if (child == null) {
@@ -105,7 +105,7 @@ public class IntervalWeekProfileAdapter
         return view;
     }
 
-    private View addView(final DayProfile<FilledTemperatureInterval, ?> parent) {
+    private View addView(final DayProfile<FilledTemperatureInterval, ?, ?> parent) {
         View view = layoutInflater.inflate(R.layout.weekprofile_interval_add, null);
 
         final FilledTemperatureInterval interval = new FilledTemperatureInterval();

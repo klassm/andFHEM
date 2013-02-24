@@ -54,7 +54,7 @@ public class FromToWeekProfileAdapter
     }
 
     @Override
-    protected View getChildView(DayProfile<FromToHeatingInterval, ?> parent, int parentPosition, final FromToHeatingInterval child, View v, ViewGroup viewGroup, int relativeChildPosition) {
+    protected View getChildView(DayProfile<FromToHeatingInterval, ?, ?> parent, int parentPosition, final FromToHeatingInterval child, View v, ViewGroup viewGroup, int relativeChildPosition) {
         final View view = layoutInflater.inflate(R.layout.weekprofile_from_to_item, null);
 
         setDetailTextView(view, R.id.from, child.getChangedFromTime(), child.getFromTime(), false);

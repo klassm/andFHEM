@@ -42,7 +42,7 @@ public class WeekProfile<H extends BaseHeatingInterval, C extends HeatingConfigu
         implements Serializable {
 
     private final C configuration;
-    private Map<Day, DayProfile<H, C>> dayProfiles = new HashMap<Day, DayProfile<H, C>>();
+    private Map<Day, DayProfile<H, D, C>> dayProfiles = new HashMap<Day, DayProfile<H, D, C>>();
 
     public WeekProfile(C configuration) {
         for (Day day : Day.values()) {
@@ -52,10 +52,10 @@ public class WeekProfile<H extends BaseHeatingInterval, C extends HeatingConfigu
         this.configuration = configuration;
     }
 
-    public List<DayProfile<H, C>> getChangedDayProfiles() {
-        List<DayProfile<H, C>> changedDayProfiles = new ArrayList<DayProfile<H, C>>();
+    public List<DayProfile<H, D, C>> getChangedDayProfiles() {
+        List<DayProfile<H, D, C>> changedDayProfiles = new ArrayList<DayProfile<H, D, C>>();
 
-        for (DayProfile<H, C> dayProfile : dayProfiles.values()) {
+        for (DayProfile<H, D, C> dayProfile : dayProfiles.values()) {
             if (dayProfile.isModified()) {
                 changedDayProfiles.add(dayProfile);
             }
@@ -64,8 +64,8 @@ public class WeekProfile<H extends BaseHeatingInterval, C extends HeatingConfigu
         return changedDayProfiles;
     }
 
-    public List<DayProfile<H, C>> getSortedDayProfiles() {
-        List<DayProfile<H, C>> result = new ArrayList<DayProfile<H, C>>();
+    public List<DayProfile<H, D, C>> getSortedDayProfiles() {
+        List<DayProfile<H, D, C>> result = new ArrayList<DayProfile<H, D, C>>();
 
         for (Day day : Day.values()) {
             result.add(dayProfiles.get(day));
@@ -74,7 +74,7 @@ public class WeekProfile<H extends BaseHeatingInterval, C extends HeatingConfigu
         return result;
     }
 
-    public DayProfile<H, C> getDayProfileFor(Day day) {
+    public DayProfile<H, D, C> getDayProfileFor(Day day) {
         return dayProfiles.get(day);
     }
 
@@ -87,13 +87,13 @@ public class WeekProfile<H extends BaseHeatingInterval, C extends HeatingConfigu
     }
 
     public void acceptChanges() {
-        for (DayProfile<H, C> dayProfile : dayProfiles.values()) {
+        for (DayProfile<H, D, C> dayProfile : dayProfiles.values()) {
             dayProfile.acceptChanges();
         }
     }
 
     public void reset() {
-        for (DayProfile<H, C> dayProfile : dayProfiles.values()) {
+        for (DayProfile<H, D, C> dayProfile : dayProfiles.values()) {
             dayProfile.reset();
         }
     }

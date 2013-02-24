@@ -77,7 +77,7 @@ public class CULHMConfigurationTest {
     }
 
     private FilledTemperatureInterval getHeatingIntervalAt(DayUtil.Day saturday, int position) {
-        DayProfile<FilledTemperatureInterval, CULHMConfiguration> dayProfile = weekProfile.getDayProfileFor(saturday);
+        DayProfile<FilledTemperatureInterval, CULHMDevice, CULHMConfiguration> dayProfile = weekProfile.getDayProfileFor(saturday);
         Reject.ifNull(dayProfile);
 
         FilledTemperatureInterval interval = dayProfile.getHeatingIntervalAt(position);

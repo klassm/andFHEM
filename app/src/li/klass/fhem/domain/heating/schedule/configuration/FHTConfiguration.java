@@ -53,7 +53,7 @@ public class FHTConfiguration extends HeatingConfiguration<FromToHeatingInterval
 
         if (day == null) return;
 
-        DayProfile<FromToHeatingInterval, FHTConfiguration> dayProfile = weekProfile.getDayProfileFor(day);
+        DayProfile<FromToHeatingInterval, FHTDevice, FHTConfiguration> dayProfile = weekProfile.getDayProfileFor(day);
         Reject.ifNull(dayProfile);
 
         int intervalId = (key.charAt(key.length() - 1) - '0') - 1;
@@ -68,17 +68,17 @@ public class FHTConfiguration extends HeatingConfiguration<FromToHeatingInterval
 
     public List<String> generateScheduleCommands(FHTDevice device,
                                                  WeekProfile<FromToHeatingInterval, FHTConfiguration, FHTDevice> weekProfile) {
-        List<DayProfile<FromToHeatingInterval, FHTConfiguration>> changedDayProfiles = weekProfile.getChangedDayProfiles();
+        List<DayProfile<FromToHeatingInterval, FHTDevice, FHTConfiguration>> changedDayProfiles = weekProfile.getChangedDayProfiles();
         if (changedDayProfiles.size() == 0) return Collections.emptyList();
 
         List<String> commandParts = generateCommandParts(changedDayProfiles);
         return generateCommands(device, commandParts);
     }
 
-    protected List<String> generateCommandParts(List<DayProfile<FromToHeatingInterval, FHTConfiguration>> changedDayProfiles) {
+    protected List<String> generateCommandParts(List<DayProfile<FromToHeatingInterval, FHTDevice, FHTConfiguration>> changedDayProfiles) {
         List<String> commandParts = new ArrayList<String>();
 
-        for (DayProfile<FromToHeatingInterval, FHTConfiguration> dayProfile : changedDayProfiles) {
+        for (DayProfile<FromToHeatingInterval, FHTDevice, FHTConfiguration> dayProfile : changedDayProfiles) {
             DayUtil.Day day = dayProfile.getDay();
             String shortDayName = DayUtil.getShortNameFor(day);
 
@@ -129,8 +129,8 @@ public class FHTConfiguration extends HeatingConfiguration<FromToHeatingInterval
     }
 
     @Override
-    public DayProfile<FromToHeatingInterval, FHTConfiguration> createDayProfileFor(DayUtil.Day day, FHTConfiguration configuration) {
-        return new DayProfile<FromToHeatingInterval, FHTConfiguration>(day, configuration);
+    public DayProfile<FromToHeatingInterval, FHTDevice, FHTConfiguration> createDayProfileFor(DayUtil.Day day, FHTConfiguration configuration) {
+        return new DayProfile<FromToHeatingInterval, FHTDevice, FHTConfiguration>(day, configuration);
     }
 
     @Override

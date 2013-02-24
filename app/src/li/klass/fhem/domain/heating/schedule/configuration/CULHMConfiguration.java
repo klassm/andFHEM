@@ -72,21 +72,21 @@ public class CULHMConfiguration extends HeatingConfiguration<FilledTemperatureIn
     }
 
     @Override
-    public DayProfile<FilledTemperatureInterval, CULHMConfiguration> createDayProfileFor(DayUtil.Day day, CULHMConfiguration configuration) {
-        return new DayProfile<FilledTemperatureInterval, CULHMConfiguration>(day, configuration);
+    public DayProfile<FilledTemperatureInterval, CULHMDevice, CULHMConfiguration> createDayProfileFor(DayUtil.Day day, CULHMConfiguration configuration) {
+        return new DayProfile<FilledTemperatureInterval, CULHMDevice, CULHMConfiguration>(day, configuration);
     }
 
     @Override
     public List<String> generateScheduleCommands(CULHMDevice device, WeekProfile<FilledTemperatureInterval, CULHMConfiguration, CULHMDevice> weekProfile) {
         List<String> result = new ArrayList<String>();
-        for (DayProfile<FilledTemperatureInterval, CULHMConfiguration> dayProfile : weekProfile.getChangedDayProfiles()) {
+        for (DayProfile<FilledTemperatureInterval, CULHMDevice, CULHMConfiguration> dayProfile : weekProfile.getChangedDayProfiles()) {
             result.add(generateCommandFor(device, dayProfile));
         }
 
         return result;
     }
 
-    public String generateCommandFor(CULHMDevice device, DayProfile<FilledTemperatureInterval, CULHMConfiguration> dayProfile) {
+    public String generateCommandFor(CULHMDevice device, DayProfile<FilledTemperatureInterval, CULHMDevice, CULHMConfiguration> dayProfile) {
         StringBuilder command = new StringBuilder();
 
         List<FilledTemperatureInterval> heatingIntervals = new ArrayList<FilledTemperatureInterval>(dayProfile.getHeatingIntervals());

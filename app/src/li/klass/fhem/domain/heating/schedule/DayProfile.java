@@ -35,7 +35,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-public class DayProfile<H extends BaseHeatingInterval, C extends HeatingConfiguration<H, ? extends Device<?>, C>> implements Serializable {
+public class DayProfile<H extends BaseHeatingInterval, D extends Device<D>, C extends HeatingConfiguration<H, D, C>> implements Serializable {
     private DayUtil.Day day;
     private List<H> heatingIntervals = new ArrayList<H>();
     private List<H> deletedIntervals = new ArrayList<H>();

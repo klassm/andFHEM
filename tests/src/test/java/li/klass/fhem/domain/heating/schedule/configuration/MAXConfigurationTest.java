@@ -92,7 +92,7 @@ public class MAXConfigurationTest {
     }
 
     private FilledTemperatureInterval getHeatingIntervalAt(DayUtil.Day saturday, int position) {
-        DayProfile<FilledTemperatureInterval, MAXConfiguration> dayProfile = weekProfile.getDayProfileFor(saturday);
+        DayProfile<FilledTemperatureInterval, MaxDevice, MAXConfiguration> dayProfile = weekProfile.getDayProfileFor(saturday);
         Reject.ifNull(dayProfile);
 
         FilledTemperatureInterval interval = dayProfile.getHeatingIntervalAt(position);

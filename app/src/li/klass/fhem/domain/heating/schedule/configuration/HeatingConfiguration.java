@@ -67,7 +67,7 @@ public abstract class HeatingConfiguration<H extends BaseHeatingInterval, D exte
 
     public abstract H createHeatingInterval();
 
-    public abstract DayProfile<H, C> createDayProfileFor(Day day, C configuration);
+    public abstract DayProfile<H, D, C> createDayProfileFor(Day day, C configuration);
 
     public abstract List<String> generateScheduleCommands(D device, WeekProfile<H, C, D> weekProfile);
 

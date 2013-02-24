@@ -98,23 +98,23 @@ public class MAXConfiguration extends HeatingConfiguration<FilledTemperatureInte
     }
 
     @Override
-    public DayProfile<FilledTemperatureInterval, MAXConfiguration> createDayProfileFor(DayUtil.Day day, MAXConfiguration configuration) {
-        return new DayProfile<FilledTemperatureInterval, MAXConfiguration>(day, configuration);
+    public DayProfile<FilledTemperatureInterval, MaxDevice, MAXConfiguration> createDayProfileFor(DayUtil.Day day, MAXConfiguration configuration) {
+        return new DayProfile<FilledTemperatureInterval, MaxDevice, MAXConfiguration>(day, configuration);
     }
 
     @Override
     public List<String> generateScheduleCommands(MaxDevice device, WeekProfile<FilledTemperatureInterval, MAXConfiguration, MaxDevice> weekProfile) {
         List<String> result = new ArrayList<String>();
 
-        List<? extends DayProfile<FilledTemperatureInterval, MAXConfiguration>> changedDayProfiles = weekProfile.getChangedDayProfiles();
-        for (DayProfile<FilledTemperatureInterval, MAXConfiguration> dayProfile : changedDayProfiles) {
+        List<? extends DayProfile<FilledTemperatureInterval, MaxDevice, MAXConfiguration>> changedDayProfiles = weekProfile.getChangedDayProfiles();
+        for (DayProfile<FilledTemperatureInterval, MaxDevice, MAXConfiguration> dayProfile : changedDayProfiles) {
             result.add(generateCommandFor(device, dayProfile));
         }
 
         return result;
     }
 
-    protected <D extends DayProfile<FilledTemperatureInterval, MAXConfiguration>>
+    protected <D extends DayProfile<FilledTemperatureInterval, MaxDevice, MAXConfiguration>>
     String generateCommandFor(MaxDevice device, D dayProfile) {
         StringBuilder builder = new StringBuilder();
 
