@@ -26,13 +26,8 @@ package li.klass.fhem.service.device;
 
 import android.util.Log;
 import li.klass.fhem.domain.FHTDevice;
-import li.klass.fhem.domain.fht.FHTDayControl;
 import li.klass.fhem.domain.fht.FHTMode;
 import li.klass.fhem.service.CommandExecutionService;
-import li.klass.fhem.util.DayUtil;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Class accumulating operations for FHT devices.
@@ -97,81 +92,6 @@ public class FHTService {
             CommandExecutionService.INSTANCE.executeSafely(command);
             device.setNightTemperature(nightTemperature);
         }
-    }
-
-    /**
-     * Sets a new timetable for a given device. The action will only be executed if the new timetable is
-     * different to the already set one.
-     *
-     * @param device concerned device
-     */
-    public void setTimetableFor(FHTDevice device) {
-        if (!device.hasChangedDayControlMapValues()) {
-            return;
-        }
-
-        List<String> changeParts = new ArrayList<String>();
-        for (FHTDayControl fhtDayControl : device.getDayControlMap().values()) {
-            String shortDayName = DayUtil.getShortNameForStringId(fhtDayControl.getDayId());
-
-            if (!fhtDayControl.getFrom1().equals(fhtDayControl.getFrom1Changed())) {
-                changeParts.add(shortDayName + "-from1 " + fhtDayControl.getFrom1Changed());
-            }
-            if (!fhtDayControl.getFrom2().equals(fhtDayControl.getFrom2Changed())) {
-                changeParts.add(shortDayName + "-from2 " + fhtDayControl.getFrom2Changed());
-            }
-            if (!fhtDayControl.getTo1().equals(fhtDayControl.getTo1Changed())) {
-                changeParts.add(shortDayName + "-to1 " + fhtDayControl.getTo1Changed());
-            }
-            if (!fhtDayControl.getTo2().equals(fhtDayControl.getTo2Changed())) {
-                changeParts.add(shortDayName + "-to2 " + fhtDayControl.getTo2Changed());
-            }
-        }
-
-        for (String command : generateTimetableCommands(device, changeParts)) {
-            CommandExecutionService.INSTANCE.executeSafely(command);
-        }
-        device.setChangedDayControlMapValuesAsCurrent();
-    }
-
-    /**
-     * Generates the actual timetable commands from some given command parts. A FHT command may contain up to 8 command
-     * parts. As FHT command evaluation is lazy, this should be used excessively.
-     *
-     * @param device       concerned device
-     * @param commandParts some parts of the future commands. A part is like "mon-from1 08:00".
-     * @return list of FHT commands like "set device_name mon-from1 08:00 mon-from2 17:00"
-     */
-    public List<String> generateTimetableCommands(FHTDevice device, List<String> commandParts) {
-        List<String> commands = new ArrayList<String>();
-        StringBuilder currentCommand = new StringBuilder();
-        int currentCommandSize = 0;
-
-        for (String commandPart : commandParts) {
-            if (currentCommandSize >= 8) {
-                commands.add("set " + device.getName() + " " + currentCommand.toString().trim());
-                currentCommand = new StringBuilder();
-                currentCommandSize = 0;
-            }
-            currentCommand.append(commandPart).append(" ");
-
-            currentCommandSize++;
-        }
-
-        if (currentCommand.length() > 0) {
-            commands.add("set " + device.getName() + " " + currentCommand.toString().trim());
-        }
-
-        return commands;
-    }
-
-    /**
-     * Reset the changed timetable values to defaults
-     *
-     * @param device device to change
-     */
-    public void resetTimetable(FHTDevice device) {
-        device.resetDayControlMapValues();
     }
 
     public void refreshValues(FHTDevice device) {

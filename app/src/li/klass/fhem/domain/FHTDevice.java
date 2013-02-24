@@ -30,7 +30,6 @@ import li.klass.fhem.appwidget.view.widget.medium.MediumInformationWidgetView;
 import li.klass.fhem.appwidget.view.widget.medium.TemperatureWidgetView;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceChart;
-import li.klass.fhem.domain.fht.FHTDayControl;
 import li.klass.fhem.domain.fht.FHTMode;
 import li.klass.fhem.domain.genericview.FloorplanViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
@@ -42,16 +41,12 @@ import li.klass.fhem.domain.heating.schedule.WeekProfile;
 import li.klass.fhem.domain.heating.schedule.configuration.FHTConfiguration;
 import li.klass.fhem.domain.heating.schedule.interval.FromToHeatingInterval;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
-import li.klass.fhem.util.DayUtil;
 import li.klass.fhem.util.ValueDescriptionUtil;
 import li.klass.fhem.util.ValueExtractUtil;
 import li.klass.fhem.util.ValueUtil;
 import org.w3c.dom.NamedNodeMap;
 
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @FloorplanViewSettings
 @SupportsWidget({TemperatureWidgetView.class, MediumInformationWidgetView.class})
@@ -87,14 +82,6 @@ public class FHTDevice extends Device<FHTDevice> implements DesiredTempDevice,
     private static final FHTConfiguration heatingConfiguration = new FHTConfiguration();
     private WeekProfile<FromToHeatingInterval, FHTConfiguration, FHTDevice> weekProfile = new WeekProfile<FromToHeatingInterval, FHTConfiguration, FHTDevice>(heatingConfiguration);
 
-    private Map<Integer, FHTDayControl> dayControlMap = new HashMap<Integer, FHTDayControl>();
-
-    public FHTDevice() {
-        for (Integer dayId : DayUtil.getSortedDayStringIdList()) {
-            dayControlMap.put(dayId, new FHTDayControl(dayId));
-        }
-    }
-
     @Override
     public void onChildItemRead(String tagName, String key, String value, NamedNodeMap nodeAttributes) {
         super.onChildItemRead(tagName, key, value, nodeAttributes);
@@ -103,15 +90,6 @@ public class FHTDevice extends Device<FHTDevice> implements DesiredTempDevice,
         if (key.startsWith("ACTUATOR") && value != null && value.matches("[0-9]*[%]?")) {
             double percentage = ValueExtractUtil.extractLeadingDouble(value);
             actuator = ValueDescriptionUtil.appendPercent(percentage);
-        } else if (key.endsWith("FROM1") || key.endsWith("FROM2") || key.endsWith("TO1") || key.endsWith("TO2")) {
-            String shortName = key.substring(0, 3);
-            FHTDayControl dayControl = dayControlMap.get(DayUtil.getDayForShortName(shortName));
-            if (dayControl == null) return;
-
-            if (key.endsWith("FROM1")) dayControl.setFrom1(value);
-            if (key.endsWith("FROM2")) dayControl.setFrom2(value);
-            if (key.endsWith("TO1")) dayControl.setTo1(value);
-            if (key.endsWith("TO2")) dayControl.setTo2(value);
         }
     }
 
@@ -262,31 +240,6 @@ public class FHTDevice extends Device<FHTDevice> implements DesiredTempDevice,
 
     public String getBattery() {
         return battery;
-    }
-
-    public Map<Integer, FHTDayControl> getDayControlMap() {
-        return Collections.unmodifiableMap(dayControlMap);
-    }
-
-    public boolean hasChangedDayControlMapValues() {
-        for (FHTDayControl fhtDayControl : dayControlMap.values()) {
-            if (fhtDayControl.hasChangedValues()) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public void resetDayControlMapValues() {
-        for (FHTDayControl fhtDayControl : dayControlMap.values()) {
-            fhtDayControl.reset();
-        }
-    }
-
-    public void setChangedDayControlMapValuesAsCurrent() {
-        for (FHTDayControl fhtDayControl : dayControlMap.values()) {
-            fhtDayControl.setChangedAsCurrent();
-        }
     }
 
     @Override

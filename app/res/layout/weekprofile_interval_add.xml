@@ -31,7 +31,8 @@
     <Button android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:text="@string/newInterval"
-            android:layout_gravity="center_horizontal"
+            android:layout_gravity="left"
+            android:paddingLeft="10dp"
             android:id="@+id/addInterval"
             style="@style/button"/>
 
