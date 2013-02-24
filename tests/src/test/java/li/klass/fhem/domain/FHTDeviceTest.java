@@ -24,9 +24,7 @@
 
 package li.klass.fhem.domain;
 
-import li.klass.fhem.R;
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
-import li.klass.fhem.domain.fht.FHTDayControl;
 import li.klass.fhem.domain.fht.FHTMode;
 import org.junit.Test;
 
@@ -56,48 +54,6 @@ public class FHTDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getState(), is("???"));
         assertThat(device.getDesiredTemp(), is(closeTo(6.5, 0.01)));
         assertThat(device.getDesiredTempDesc(), is("6.5 (°C)"));
-
-        FHTDayControl monday = device.getDayControlMap().get(R.string.monday);
-        assertThat(monday.getFrom1(), is("10:00"));
-        assertThat(monday.getFrom2(), is("24:00"));
-        assertThat(monday.getTo1(), is("17:00"));
-        assertThat(monday.getTo2(), is("09:00"));
-
-        FHTDayControl tuesday = device.getDayControlMap().get(R.string.tuesday);
-        assertThat(tuesday.getFrom1(), is("10:00"));
-        assertThat(tuesday.getFrom2(), is("24:00"));
-        assertThat(tuesday.getTo1(), is("17:00"));
-        assertThat(tuesday.getTo2(), is("24:00"));
-
-        FHTDayControl wednesday = device.getDayControlMap().get(R.string.wednesday);
-        assertThat(wednesday.getFrom1(), is("10:00"));
-        assertThat(wednesday.getFrom2(), is("24:00"));
-        assertThat(wednesday.getTo1(), is("17:00"));
-        assertThat(wednesday.getTo2(), is("24:00"));
-
-        FHTDayControl thursday = device.getDayControlMap().get(R.string.thursday);
-        assertThat(thursday.getFrom1(), is("10:00"));
-        assertThat(thursday.getFrom2(), is("24:00"));
-        assertThat(thursday.getTo1(), is("17:00"));
-        assertThat(thursday.getTo2(), is("24:00"));
-
-        FHTDayControl friday = device.getDayControlMap().get(R.string.friday);
-        assertThat(friday.getFrom1(), is("10:00"));
-        assertThat(friday.getFrom2(), is("24:00"));
-        assertThat(friday.getTo1(), is("17:30"));
-        assertThat(friday.getTo2(), is("24:00"));
-
-        FHTDayControl saturday = device.getDayControlMap().get(R.string.saturday);
-        assertThat(saturday.getFrom1(), is("09:00"));
-        assertThat(saturday.getFrom2(), is("24:00"));
-        assertThat(saturday.getTo1(), is("17:00"));
-        assertThat(saturday.getTo2(), is("24:00"));
-
-        FHTDayControl sunday = device.getDayControlMap().get(R.string.sunday);
-        assertThat(sunday.getFrom1(), is("10:00"));
-        assertThat(sunday.getFrom2(), is("13:00"));
-        assertThat(sunday.getTo1(), is("17:00"));
-        assertThat(sunday.getTo2(), is("24:00"));
 
         assertThat(device.getAvailableTargetStates(), is(notNullValue()));
 
