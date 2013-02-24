@@ -24,20 +24,24 @@
 package li.klass.fhem.util.advertisement;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
-import com.google.ads.AdRequest;
-import com.google.ads.AdSize;
-import com.google.ads.AdView;
+import com.google.ads.*;
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
+import li.klass.fhem.constants.Actions;
+import li.klass.fhem.constants.BundleExtraKeys;
+import li.klass.fhem.fragments.FragmentType;
 import li.klass.fhem.license.LicenseManager;
 
 public class AdvertisementUtil {
+    private static long lastError = System.currentTimeMillis();
 
-    public static void addAd(View view, Activity activity) {
-        LinearLayout adContainer = (LinearLayout) view.findViewById(R.id.adContainer);
+    public static void addAd(View view, final Activity activity) {
+        final LinearLayout adContainer = (LinearLayout) view.findViewById(R.id.adContainer);
         if (adContainer == null) return;
 
         if (LicenseManager.INSTANCE.isPro() ||
@@ -47,8 +51,52 @@ public class AdvertisementUtil {
         }
         adContainer.setVisibility(View.VISIBLE);
 
+        if (System.currentTimeMillis() - lastError < 1000 * 60 * 10) {
+            addErrorView(activity, adContainer);
+            return;
+        }
+
         AdView adView = new AdView(activity, AdSize.BANNER, AndFHEMApplication.AD_UNIT_ID);
+
+        adView.setAdListener(new AdListener() {
+            @Override
+            public void onReceiveAd(Ad ad) {
+                adContainer.removeAllViews();
+                addErrorView(activity, adContainer);
+                lastError = System.currentTimeMillis();
+            }
+
+            @Override
+            public void onFailedToReceiveAd(Ad ad, AdRequest.ErrorCode errorCode) {
+
+            }
+
+            @Override
+            public void onPresentScreen(Ad ad) {
+            }
+
+            @Override
+            public void onDismissScreen(Ad ad) {
+            }
+
+            @Override
+            public void onLeaveApplication(Ad ad) {
+            }
+        });
         adView.loadAd(new AdRequest());
         adContainer.addView(adView);
+    }
+
+    private static void addErrorView(final Activity activity, LinearLayout container) {
+        ImageView selfAd = (ImageView) activity.getLayoutInflater().inflate(R.layout.selfadd, null);
+        selfAd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Actions.SHOW_FRAGMENT);
+                intent.putExtra(BundleExtraKeys.FRAGMENT, FragmentType.PREMIUM);
+                activity.sendBroadcast(intent);
+            }
+        });
+        container.addView(selfAd);
     }
 }
