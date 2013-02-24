@@ -26,7 +26,7 @@ package li.klass.fhem.constants;
 
 public class Actions {
     private static final String prefix = Actions.class.getName() + ".";
-    
+
     public static final String SHOW_FRAGMENT = prefix + "SHOW_FRAGMENT";
 
     public static final String SHOW_UPDATING_DIALOG = prefix + "SHOW_UPDATING_DIALOG";
@@ -56,8 +56,8 @@ public class Actions {
     public static final String DEVICE_SET_WINDOW_OPEN_TEMPERATURE = prefix + "DEVICE_SET_WINDOW_OPEN_TEMPERATURE";
     public static final String DEVICE_SET_COMFORT_TEMPERATURE = prefix + "DEVICE_SET_COMFORT_TEMPERATURE";
     public static final String DEVICE_SET_ECO_TEMPERATURE = prefix + "DEVICE_SET_ECO_TEMPERATURE";
-    public static final String DEVICE_SET_TIMETABLE = prefix + "DEVICE_SET_TIMETABLE";
-    public static final String DEVICE_RESET_TIMETABLE = prefix + "DEVICE_RESET_TIMETABLE";
+    public static final String DEVICE_SET_WEEK_PROFILE = prefix + "DEVICE_SET_WEEK_PROFILE";
+    public static final String DEVICE_RESET_WEEK_PROFILE = prefix + "DEVICE_RESET_WEEK_PROFILE";
     public static final String DEVICE_SET_DESIRED_TEMPERATURE = prefix + "DEVICE_SET_DESIRED_TEMPERATURE";
     public static final String DEVICE_REFRESH_VALUES = prefix + "DEVICE_REFRESH_VALUES";
     public static final String DEVICE_RENAME = prefix + "DEVICE_RENAME";

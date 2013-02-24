@@ -30,6 +30,8 @@ import li.klass.fhem.fragments.core.DeviceDetailFragment;
 import li.klass.fhem.fragments.device.DeviceNameListNavigationFragment;
 import li.klass.fhem.fragments.device.DeviceNameSelectionFragment;
 import li.klass.fhem.fragments.device.DeviceNameSelectionNavigationFragment;
+import li.klass.fhem.fragments.weekprofile.FromToWeekProfileFragment;
+import li.klass.fhem.fragments.weekprofile.IntervalWeekProfileFragment;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -42,6 +44,8 @@ public enum FragmentType {
     FAVORITES(FavoritesFragment.class, R.string.tab_favorites, 0, null),
     DEVICE_DETAIL(DeviceDetailFragment.class, DeviceNameListNavigationFragment.class),
     FHT_TIMETABLE_CONTROL(FHTTimetableControlListFragment.class),
+    FROM_TO_WEEK_PROFILE(FromToWeekProfileFragment.class),
+    INTERVAL_WEEK_PROFILE(IntervalWeekProfileFragment.class),
     FLOORPLAN(FloorplanFragment.class),
     PREMIUM(PremiumFragment.class),
     ROOM_DETAIL(RoomDetailFragment.class, RoomListFragment.class),

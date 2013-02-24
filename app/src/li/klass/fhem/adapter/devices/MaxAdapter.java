@@ -35,11 +35,13 @@ import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
 import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
+import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewAction;
 import li.klass.fhem.adapter.devices.genericui.HeatingModeListener;
 import li.klass.fhem.adapter.devices.genericui.TemperatureChangeTableRow;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.MaxDevice;
+import li.klass.fhem.fragments.FragmentType;
 
 import static li.klass.fhem.domain.FHTDevice.MAXIMUM_TEMPERATURE;
 import static li.klass.fhem.domain.FHTDevice.MINIMUM_TEMPERATURE;
@@ -100,6 +102,21 @@ public class MaxAdapter extends GenericDeviceAdapter<MaxDevice> {
                 tableLayout.addView(new TemperatureChangeTableRow<MaxDevice>(context, device.getComfortTemp(), fieldTableRow,
                         Actions.DEVICE_SET_COMFORT_TEMPERATURE, R.string.comfortTemperature, MINIMUM_TEMPERATURE, MAXIMUM_TEMPERATURE)
                         .createRow(inflater, device));
+            }
+        });
+
+        detailActions.add(new DeviceDetailViewAction<MaxDevice>(R.string.timetable) {
+            @Override
+            public void onButtonClick(Context context, MaxDevice device) {
+                Intent intent = new Intent(Actions.SHOW_FRAGMENT);
+                intent.putExtra(BundleExtraKeys.FRAGMENT, FragmentType.INTERVAL_WEEK_PROFILE);
+                intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
+                context.sendBroadcast(intent);
+            }
+
+            @Override
+            public boolean isVisible(MaxDevice device) {
+                return device.getSubType() == MaxDevice.SubType.TEMPERATURE;
             }
         });
     }

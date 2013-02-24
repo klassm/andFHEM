@@ -38,9 +38,13 @@ import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
 import li.klass.fhem.domain.genericview.FloorplanViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.domain.heating.*;
+import li.klass.fhem.domain.heating.schedule.WeekProfile;
+import li.klass.fhem.domain.heating.schedule.configuration.MAXConfiguration;
+import li.klass.fhem.domain.heating.schedule.interval.FilledTemperatureInterval;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ValueDescriptionUtil;
 import li.klass.fhem.util.ValueExtractUtil;
+import org.w3c.dom.NamedNodeMap;
 
 import java.util.List;
 
@@ -50,7 +54,8 @@ import static li.klass.fhem.util.ValueDescriptionUtil.desiredTemperatureToString
 @FloorplanViewSettings(showState = true)
 @DetailOverviewViewSettings(showState = true)
 @SupportsWidget(TemperatureWidgetView.class)
-public class MaxDevice extends ToggleableDevice<MaxDevice> implements DesiredTempDevice, HeatingModeDevice<MaxDevice.HeatingMode>,
+public class MaxDevice extends ToggleableDevice<MaxDevice> implements DesiredTempDevice,
+        HeatingDevice<MaxDevice.HeatingMode, MAXConfiguration, FilledTemperatureInterval, MaxDevice>,
         WindowOpenTempDevice, EcoTempDevice, ComfortTempDevice {
 
     public enum HeatingMode {
@@ -63,6 +68,10 @@ public class MaxDevice extends ToggleableDevice<MaxDevice> implements DesiredTem
 
     public static double MAXIMUM_TEMPERATURE = 30.5;
     public static double MINIMUM_TEMPERATURE = 4.5;
+
+    public static final MAXConfiguration heatingConfiguration = new MAXConfiguration();
+
+    private WeekProfile<FilledTemperatureInterval, MAXConfiguration, MaxDevice> weekProfile = new WeekProfile<FilledTemperatureInterval, MAXConfiguration, MaxDevice>(heatingConfiguration);
 
     private SubType subType;
 
@@ -95,6 +104,12 @@ public class MaxDevice extends ToggleableDevice<MaxDevice> implements DesiredTem
     private double comfortTemp;
 
     private HeatingMode heatingMode;
+
+    @Override
+    public void onChildItemRead(String tagName, String key, String value, NamedNodeMap attributes) {
+        super.onChildItemRead(tagName, key, value, attributes);
+        weekProfile.readNode(key, value);
+    }
 
     public void readTYPE(String value) {
         if (value.equalsIgnoreCase("ShutterContact")) {
@@ -305,6 +320,11 @@ public class MaxDevice extends ToggleableDevice<MaxDevice> implements DesiredTem
     @Override
     public String getHeatingModeCommandField() {
         return "desiredTemperature";
+    }
+
+    @Override
+    public WeekProfile<FilledTemperatureInterval, MAXConfiguration, MaxDevice> getWeekProfile() {
+        return weekProfile;
     }
 
     @Override

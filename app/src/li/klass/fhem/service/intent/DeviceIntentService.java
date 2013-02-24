@@ -91,17 +91,19 @@ public class DeviceIntentService extends ConvenientIntentService {
                 int holiday2 = intent.getIntExtra(BundleExtraKeys.DEVICE_HOLIDAY2, -1);
 
                 FHTService.INSTANCE.setMode((FHTDevice) device, mode, desiredTemperature, holiday1, holiday2);
-            } else if (device instanceof HeatingModeDevice) {
+            } else if (device instanceof HeatingDevice) {
                 Enum mode = (Enum) intent.getSerializableExtra(BundleExtraKeys.DEVICE_MODE);
-                HeatingModeDevice heatingModeDevice = (HeatingModeDevice) device;
+                HeatingDevice heatingDevice = (HeatingDevice) device;
 
-                HeatingService.INSTANCE.setMode(heatingModeDevice, mode);
+                HeatingService.INSTANCE.setMode(heatingDevice, mode);
             }
 
-        } else if (action.equals(DEVICE_SET_TIMETABLE)) {
-            FHTService.INSTANCE.setTimetableFor((FHTDevice) device);
+        } else if (action.equals(DEVICE_SET_WEEK_PROFILE)) {
+            if (!(device instanceof HeatingDevice)) return ERROR;
+            HeatingService.INSTANCE.setWeekProfileFor((HeatingDevice) device);
+
         } else if (action.equals(DEVICE_SET_WINDOW_OPEN_TEMPERATURE)) {
-            if ( ! (device instanceof WindowOpenTempDevice )) return SUCCESS;
+            if (!(device instanceof WindowOpenTempDevice)) return SUCCESS;
 
             double temperature = intent.getDoubleExtra(BundleExtraKeys.DEVICE_TEMPERATURE, -1);
             HeatingService.INSTANCE.setWindowOpenTemp((WindowOpenTempDevice) device, temperature);
@@ -120,8 +122,9 @@ public class DeviceIntentService extends ConvenientIntentService {
             if (device instanceof DesiredTempDevice) {
                 HeatingService.INSTANCE.setEcoTemperature((EcoTempDevice) device, temperature);
             }
-        } else if (action.equals(DEVICE_RESET_TIMETABLE)) {
-            FHTService.INSTANCE.resetTimetable((FHTDevice) device);
+        } else if (action.equals(DEVICE_RESET_WEEK_PROFILE)) {
+            if (!(device instanceof HeatingDevice)) return ERROR;
+            HeatingService.INSTANCE.resetWeekProfile((HeatingDevice) device);
         } else if (action.equals(DEVICE_REFRESH_VALUES)) {
             FHTService.INSTANCE.refreshValues((FHTDevice) device);
         } else if (action.equals(DEVICE_RENAME)) {

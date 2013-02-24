@@ -43,11 +43,21 @@ public abstract class SeekBarActionRowFullWidth<T extends Device> {
     }
 
     public TableRow createRow(LayoutInflater inflater, T device) {
+        return createRow(inflater, device, 1);
+    }
+
+    public TableRow createRow(LayoutInflater inflater, T device, int layoutSpan) {
         TableRow row = (TableRow) inflater.inflate(layoutId, null);
         SeekBar seekBar = (SeekBar) row.findViewById(R.id.seekBar);
         seekBar.setOnSeekBarChangeListener(createListener(device));
         seekBar.setMax(maximumProgress);
         seekBar.setProgress(initialProgress);
+
+        if (layoutSpan != 1) {
+            TableRow.LayoutParams layoutParams = (TableRow.LayoutParams) seekBar.getLayoutParams();
+            layoutParams.span = layoutSpan;
+            seekBar.setLayoutParams(layoutParams);
+        }
 
         return row;
     }

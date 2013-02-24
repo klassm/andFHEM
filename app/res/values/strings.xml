@@ -139,6 +139,9 @@
     <string name="noGraphEntries">No graph entries found that match the selected time range. Does your FileLog contain
         any matching entries?
     </string>
+    <string name="delete">Delete</string>
+    <string name="deleteConfirmIntervalText">Do you really want to delete the interval?</string>
+    <string name="newInterval">New interval</string>
 
     <string name="switchDevice">Switch</string>
     <string name="preferences">Preferences</string>
@@ -340,6 +343,7 @@
     <string name="timer_commandAppendix">State appendix</string>
     <string name="timer_time">Switch time</string>
     <string name="timer_overview_create_new">Create new timer</string>
+    <string name="timer_overview_create_new">Create new timer</string>
     <string name="timer_next_trigger">Next trigger</string>
 
     <string name="twilight_light">Light</string>
@@ -375,4 +379,5 @@
     <string name="localeDeviceStateInfo">Please select a device and enter a target status, upon which the event will be
         regarded as successful! (i.e. "off")
     </string>
+
 </resources>

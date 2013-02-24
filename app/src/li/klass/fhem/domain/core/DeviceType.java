@@ -30,7 +30,6 @@ import li.klass.fhem.adapter.devices.core.DimmableAdapter;
 import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
 import li.klass.fhem.adapter.devices.core.ToggleableAdapter;
 import li.klass.fhem.domain.*;
-import li.klass.fhem.domain.fht.FHT8VDevice;
 import li.klass.fhem.fhem.ConnectionType;
 import li.klass.fhem.util.ApplicationProperties;
 

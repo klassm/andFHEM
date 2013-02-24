@@ -25,9 +25,13 @@
 package li.klass.fhem.service.device;
 
 import android.util.Log;
+import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.heating.*;
+import li.klass.fhem.domain.heating.schedule.WeekProfile;
 import li.klass.fhem.service.CommandExecutionService;
 import li.klass.fhem.util.ArrayUtil;
+
+import java.util.List;
 
 public class HeatingService {
 
@@ -55,14 +59,14 @@ public class HeatingService {
     }
 
     /**
-     * Sets the mode attribute of a given HeatingModeDevice device. The action will only be executed if the new mode is different to
+     * Sets the mode attribute of a given HeatingDevice device. The action will only be executed if the new mode is different to
      * the already set one.
      *
      * @param device concerned device
      * @param mode   new mode to set.
      */
     @SuppressWarnings("unchecked")
-    public <MODE extends Enum<MODE>, D extends HeatingModeDevice<MODE>> void setMode(D device, MODE mode) {
+    public <MODE extends Enum<MODE>, D extends HeatingDevice<MODE, ?, ?, ?>> void setMode(D device, MODE mode) {
         if (mode == device.getHeatingMode()) {
             Log.e(TAG, "won't change heating mode, as it is already set!");
             return;
@@ -121,5 +125,21 @@ public class HeatingService {
         String command = String.format(SET_COMMAND, device.getName(), device.getEcoTempCommandFieldName(), temperature);
         CommandExecutionService.INSTANCE.executeSafely(command);
         device.setEcoTemp(temperature);
+    }
+
+    @SuppressWarnings("unchecked")
+    public void setWeekProfileFor(HeatingDevice device) {
+        WeekProfile weekProfile = device.getWeekProfile();
+        List<String> commands = weekProfile.getSubmitCommands((Device) device);
+
+        for (String command : commands) {
+            CommandExecutionService.INSTANCE.executeSafely(command);
+        }
+
+        weekProfile.acceptChanges();
+    }
+
+    public void resetWeekProfile(HeatingDevice device) {
+        device.getWeekProfile().reset();
     }
 }

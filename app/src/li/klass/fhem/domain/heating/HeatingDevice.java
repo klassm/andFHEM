@@ -22,30 +22,25 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.activities.device;
+package li.klass.fhem.domain.heating;
 
-import android.content.Context;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
-import li.klass.fhem.adapter.rooms.DeviceListAdapter;
 import li.klass.fhem.domain.core.Device;
-import li.klass.fhem.domain.core.DeviceType;
-import li.klass.fhem.domain.core.RoomDeviceList;
+import li.klass.fhem.domain.heating.schedule.WeekProfile;
+import li.klass.fhem.domain.heating.schedule.configuration.HeatingConfiguration;
+import li.klass.fhem.domain.heating.schedule.interval.BaseHeatingInterval;
 
-public class DeviceSelectionAdapter extends DeviceListAdapter {
+public interface HeatingDevice<MODE extends Enum<MODE>, C extends HeatingConfiguration<H, D, C>, H extends BaseHeatingInterval, D extends Device<D>> {
+    void setHeatingMode(MODE mode);
 
-    public DeviceSelectionAdapter(Context context, RoomDeviceList roomDeviceList) {
-        super(context, roomDeviceList);
+    MODE getHeatingMode();
 
-    }
+    MODE[] getIgnoredHeatingModes();
 
-    @Override
-    protected View getChildView(DeviceType parent, int parentPosition, Device<?> child, View view, ViewGroup viewGroup, int relativeChildPosition) {
-        view = layoutInflater.inflate(android.R.layout.simple_list_item_1, null);
-        TextView content = (TextView) view.findViewById(android.R.id.text1);
-        content.setText(child.getAliasOrName());
+    MODE[] getHeatingModes();
 
-        return view;
-    }
+    String getHeatingModeCommandField();
+
+    String getName();
+
+    WeekProfile<H, C, D> getWeekProfile();
 }

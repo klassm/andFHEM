@@ -22,7 +22,7 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.fragments;
+package li.klass.fhem.fragments.weekprofile;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -33,26 +33,28 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import li.klass.fhem.R;
-import li.klass.fhem.adapter.fhtControl.FHTTimetableControlListAdapter;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
-import li.klass.fhem.domain.FHTDevice;
+import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.heating.HeatingDevice;
+import li.klass.fhem.domain.heating.schedule.WeekProfile;
+import li.klass.fhem.domain.heating.schedule.interval.BaseHeatingInterval;
 import li.klass.fhem.fragments.core.BaseFragment;
 import li.klass.fhem.widget.NestedListView;
+import li.klass.fhem.widget.NestedListViewAdapter;
 
-public class FHTTimetableControlListFragment extends BaseFragment {
+public abstract class BaseWeekProfileFragment<H extends BaseHeatingInterval> extends BaseFragment {
     private String deviceName;
-    private transient volatile FHTTimetableControlListAdapter adapter;
 
     @SuppressWarnings("unused")
-    public FHTTimetableControlListFragment(Bundle bundle) {
+    public BaseWeekProfileFragment(Bundle bundle) {
         super(bundle);
         deviceName = bundle.getString(BundleExtraKeys.DEVICE_NAME);
     }
 
     @SuppressWarnings("unused")
-    public FHTTimetableControlListFragment() {
+    public BaseWeekProfileFragment() {
     }
 
     @Override
@@ -60,9 +62,9 @@ public class FHTTimetableControlListFragment extends BaseFragment {
         View superView = super.onCreateView(inflater, container, savedInstanceState);
         if (superView != null) return superView;
 
-        adapter = new FHTTimetableControlListAdapter(getActivity());
+        beforeCreateView();
 
-        View view = inflater.inflate(R.layout.control_fht_list, container, false);
+        View view = inflater.inflate(R.layout.weekprofile, container, false);
 
         Button saveButton = (Button) view.findViewById(R.id.save);
         saveButton.setOnClickListener(new View.OnClickListener() {
@@ -99,16 +101,14 @@ public class FHTTimetableControlListFragment extends BaseFragment {
             }
         });
 
-        NestedListView nestedListView = (NestedListView) view.findViewById(R.id.control_fht_list);
-        nestedListView.setAdapter(adapter);
+        NestedListView nestedListView = (NestedListView) view.findViewById(R.id.weekprofile);
+        nestedListView.setAdapter(getAdapter());
 
         return view;
     }
 
     @Override
     public void update(boolean doUpdate) {
-
-        if (adapter == null) return;
 
         Intent intent = new Intent(Actions.GET_DEVICE_FOR_NAME);
         intent.putExtras(new Bundle());
@@ -120,14 +120,21 @@ public class FHTTimetableControlListFragment extends BaseFragment {
                 super.onReceiveResult(resultCode, resultData);
 
                 if (resultCode == ResultCodes.SUCCESS && getView() != null) {
-                    FHTDevice fhtDevice = (FHTDevice) resultData.getSerializable(BundleExtraKeys.DEVICE);
+                    Device device = (Device) resultData.getSerializable(BundleExtraKeys.DEVICE);
+                    if (device == null || !(device instanceof HeatingDevice)) {
+                        return;
+                    }
+
+                    @SuppressWarnings("unchecked")
+                    HeatingDevice<?, ?, H, ? extends Device> heatingDevice = (HeatingDevice) device;
+
                     View holder = getView().findViewById(R.id.changeValueButtonHolder);
+                    if (holder == null) return;
 
-                    if (holder == null || fhtDevice == null) return;
+                    WeekProfile<H, ?, ? extends Device> weekProfile = heatingDevice.getWeekProfile();
+                    updateAdapterWith(weekProfile);
 
-                    adapter.updateData(fhtDevice.getDayControlMap());
-
-                    if (fhtDevice.hasChangedDayControlMapValues()) {
+                    if (weekProfile.getChangedDayProfiles().size() > 0) {
                         holder.setVisibility(View.VISIBLE);
                     } else {
                         holder.setVisibility(View.GONE);
@@ -136,5 +143,12 @@ public class FHTTimetableControlListFragment extends BaseFragment {
             }
         });
         getActivity().startService(intent);
+    }
+
+    protected abstract void updateAdapterWith(WeekProfile<H, ?, ? extends Device> weekProfile);
+
+    protected abstract NestedListViewAdapter getAdapter();
+
+    protected void beforeCreateView() {
     }
 }

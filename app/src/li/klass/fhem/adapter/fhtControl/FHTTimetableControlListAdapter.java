@@ -49,7 +49,7 @@ public class FHTTimetableControlListAdapter extends NestedListViewAdapter<Intege
     private interface OnTimeChangedListener {
         void onTimeChanged(String newTime);
     }
-    
+
     private Map<Integer, FHTDayControl> controlMap = new HashMap<Integer, FHTDayControl>();
     private Resources resources;
     private Context context;
@@ -85,7 +85,7 @@ public class FHTTimetableControlListAdapter extends NestedListViewAdapter<Intege
     }
 
     @Override
-    protected View getChildView(Integer parent, int parentPosition, final FHTDayControl child, View v, ViewGroup viewGroup) {
+    protected View getChildView(Integer parent, int parentPosition, final FHTDayControl child, View v, ViewGroup viewGroup, int relativeChildPosition) {
         final View view = layoutInflater.inflate(R.layout.control_fht_list_item, null);
 
         setDetailTextView(view, R.id.from1, child.getFrom1Current(), child.getFrom1(), child.getFrom1Changed());
@@ -128,7 +128,7 @@ public class FHTTimetableControlListAdapter extends NestedListViewAdapter<Intege
         TextView layoutItem = (TextView) view.findViewById(layoutItemId);
         layoutItem.setText(FHTDayControl.formatTime(currentText));
 
-        if (! originalText.equals(changedText)) {
+        if (!originalText.equals(changedText)) {
             layoutItem.setTextColor(Color.BLUE);
         }
     }

@@ -22,30 +22,29 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.activities.device;
+package li.klass.fhem.domain.heating.schedule;
 
-import android.content.Context;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
-import li.klass.fhem.adapter.rooms.DeviceListAdapter;
-import li.klass.fhem.domain.core.Device;
-import li.klass.fhem.domain.core.DeviceType;
-import li.klass.fhem.domain.core.RoomDeviceList;
+import li.klass.fhem.domain.heating.schedule.configuration.FHTConfiguration;
+import li.klass.fhem.domain.heating.schedule.interval.FromToHeatingInterval;
+import li.klass.fhem.util.DayUtil;
+import org.junit.Test;
 
-public class DeviceSelectionAdapter extends DeviceListAdapter {
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
 
-    public DeviceSelectionAdapter(Context context, RoomDeviceList roomDeviceList) {
-        super(context, roomDeviceList);
+public class DayProfileTest {
 
-    }
+    @Test
+    public void testIsModified() {
+        DayProfile<FromToHeatingInterval, FHTConfiguration> dayProfile = new DayProfile<FromToHeatingInterval, FHTConfiguration>(DayUtil.Day.MONDAY, new FHTConfiguration());
 
-    @Override
-    protected View getChildView(DeviceType parent, int parentPosition, Device<?> child, View view, ViewGroup viewGroup, int relativeChildPosition) {
-        view = layoutInflater.inflate(android.R.layout.simple_list_item_1, null);
-        TextView content = (TextView) view.findViewById(android.R.id.text1);
-        content.setText(child.getAliasOrName());
+        dayProfile.getHeatingIntervalAt(0).setFromTime("03:04");
+        dayProfile.getHeatingIntervalAt(0).setToTime("05:23");
 
-        return view;
+        assertThat(dayProfile.isModified(), is(false));
+
+        dayProfile.getHeatingIntervalAt(0).setChangedFromTime("06:32");
+
+        assertThat(dayProfile.isModified(), is(true));
     }
 }

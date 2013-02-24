@@ -35,9 +35,12 @@ import li.klass.fhem.domain.fht.FHTMode;
 import li.klass.fhem.domain.genericview.FloorplanViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.domain.heating.DesiredTempDevice;
-import li.klass.fhem.domain.heating.HeatingModeDevice;
+import li.klass.fhem.domain.heating.HeatingDevice;
 import li.klass.fhem.domain.heating.TemperatureDevice;
 import li.klass.fhem.domain.heating.WindowOpenTempDevice;
+import li.klass.fhem.domain.heating.schedule.WeekProfile;
+import li.klass.fhem.domain.heating.schedule.configuration.FHTConfiguration;
+import li.klass.fhem.domain.heating.schedule.interval.FromToHeatingInterval;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.DayUtil;
 import li.klass.fhem.util.ValueDescriptionUtil;
@@ -54,7 +57,7 @@ import java.util.Map;
 @SupportsWidget({TemperatureWidgetView.class, MediumInformationWidgetView.class})
 @SuppressWarnings("unused")
 public class FHTDevice extends Device<FHTDevice> implements DesiredTempDevice,
-        WindowOpenTempDevice, HeatingModeDevice<FHTMode>, TemperatureDevice {
+        WindowOpenTempDevice, HeatingDevice<FHTMode, FHTConfiguration, FromToHeatingInterval, FHTDevice>, TemperatureDevice {
     public static double MAXIMUM_TEMPERATURE = 30.5;
     public static double MINIMUM_TEMPERATURE = 5.5;
 
@@ -81,6 +84,9 @@ public class FHTDevice extends Device<FHTDevice> implements DesiredTempDevice,
     @ShowField(description = ResourceIdMapper.battery)
     private String battery;
 
+    private static final FHTConfiguration heatingConfiguration = new FHTConfiguration();
+    private WeekProfile<FromToHeatingInterval, FHTConfiguration, FHTDevice> weekProfile = new WeekProfile<FromToHeatingInterval, FHTConfiguration, FHTDevice>(heatingConfiguration);
+
     private Map<Integer, FHTDayControl> dayControlMap = new HashMap<Integer, FHTDayControl>();
 
     public FHTDevice() {
@@ -92,13 +98,14 @@ public class FHTDevice extends Device<FHTDevice> implements DesiredTempDevice,
     @Override
     public void onChildItemRead(String tagName, String key, String value, NamedNodeMap nodeAttributes) {
         super.onChildItemRead(tagName, key, value, nodeAttributes);
+        weekProfile.readNode(key, value);
 
         if (key.startsWith("ACTUATOR") && value != null && value.matches("[0-9]*[%]?")) {
             double percentage = ValueExtractUtil.extractLeadingDouble(value);
             actuator = ValueDescriptionUtil.appendPercent(percentage);
         } else if (key.endsWith("FROM1") || key.endsWith("FROM2") || key.endsWith("TO1") || key.endsWith("TO2")) {
             String shortName = key.substring(0, 3);
-            FHTDayControl dayControl = dayControlMap.get(DayUtil.getDayStringIdForShortName(shortName));
+            FHTDayControl dayControl = dayControlMap.get(DayUtil.getDayForShortName(shortName));
             if (dayControl == null) return;
 
             if (key.endsWith("FROM1")) dayControl.setFrom1(value);
@@ -242,6 +249,11 @@ public class FHTDevice extends Device<FHTDevice> implements DesiredTempDevice,
     @Override
     public String getHeatingModeCommandField() {
         return "mode";
+    }
+
+    @Override
+    public WeekProfile<FromToHeatingInterval, FHTConfiguration, FHTDevice> getWeekProfile() {
+        return weekProfile;
     }
 
     public void setHeatingMode(FHTMode heatingMode) {

@@ -22,30 +22,29 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.activities.device;
+package li.klass.fhem.domain.heating.schedule.interval;
 
-import android.content.Context;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
-import li.klass.fhem.adapter.rooms.DeviceListAdapter;
-import li.klass.fhem.domain.core.Device;
-import li.klass.fhem.domain.core.DeviceType;
-import li.klass.fhem.domain.core.RoomDeviceList;
+import java.io.Serializable;
 
-public class DeviceSelectionAdapter extends DeviceListAdapter {
+public abstract class BaseHeatingInterval implements Serializable, Comparable<BaseHeatingInterval> {
 
-    public DeviceSelectionAdapter(Context context, RoomDeviceList roomDeviceList) {
-        super(context, roomDeviceList);
+    private boolean isNew = false;
 
+    public boolean isModified() {
+        return isNew;
     }
 
-    @Override
-    protected View getChildView(DeviceType parent, int parentPosition, Device<?> child, View view, ViewGroup viewGroup, int relativeChildPosition) {
-        view = layoutInflater.inflate(android.R.layout.simple_list_item_1, null);
-        TextView content = (TextView) view.findViewById(android.R.id.text1);
-        content.setText(child.getAliasOrName());
-
-        return view;
+    public void acceptChanges() {
+        isNew = false;
     }
+
+    public boolean isNew() {
+        return isNew;
+    }
+
+    public void setNew(boolean aNew) {
+        isNew = aNew;
+    }
+
+    public abstract void reset();
 }

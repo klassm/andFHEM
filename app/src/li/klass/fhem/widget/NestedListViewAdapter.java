@@ -72,9 +72,9 @@ public abstract class NestedListViewAdapter<P, C> extends BaseAdapter implements
                 int relativeChildPosition = flatPosition - parentPosition - 1;
                 C child = getChildForParentAndChildPosition(parent, relativeChildPosition);
 
-                return getChildView(parent, parentPosition, child, view, viewGroup);
+                return getChildView(parent, parentPosition, child, view, viewGroup, relativeChildPosition);
             }
-        }catch (Exception e) {
+        } catch (Exception e) {
             Log.e(NestedListViewAdapter.class.getName(), "error occurred", e);
             return null;
         }
@@ -157,10 +157,12 @@ public abstract class NestedListViewAdapter<P, C> extends BaseAdapter implements
     }
 
     protected abstract C getChildForParentAndChildPosition(P parent, int childPosition);
+
     protected abstract int getChildrenCountForParent(P parent);
 
     protected abstract View getParentView(P parent, View view, ViewGroup viewGroup);
-    protected abstract View getChildView(P parent, int parentPosition, C child, View view, ViewGroup viewGroup);
+
+    protected abstract View getChildView(P parent, int parentPosition, C child, View view, ViewGroup viewGroup, int relativeChildPosition);
 
     protected abstract List<P> getParents();
 }

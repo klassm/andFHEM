@@ -22,18 +22,35 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.domain.heating;
+package li.klass.fhem.fragments.weekprofile;
 
-public interface HeatingModeDevice<MODE extends Enum<MODE>> {
-    void setHeatingMode(MODE mode);
+import android.os.Bundle;
+import li.klass.fhem.adapter.weekprofile.IntervalWeekProfileAdapter;
+import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.heating.schedule.WeekProfile;
+import li.klass.fhem.domain.heating.schedule.interval.FilledTemperatureInterval;
+import li.klass.fhem.widget.NestedListViewAdapter;
 
-    MODE getHeatingMode();
+public class IntervalWeekProfileFragment extends BaseWeekProfileFragment<FilledTemperatureInterval> {
 
-    MODE[] getIgnoredHeatingModes();
+    private IntervalWeekProfileAdapter adapter;
 
-    MODE[] getHeatingModes();
+    public IntervalWeekProfileFragment(Bundle bundle) {
+        super(bundle);
+    }
 
-    String getHeatingModeCommandField();
+    @Override
+    protected void updateAdapterWith(WeekProfile<FilledTemperatureInterval, ?, ? extends Device> weekProfile) {
+        adapter.updateData(weekProfile);
+    }
 
-    String getName();
+    @Override
+    protected void beforeCreateView() {
+        adapter = new IntervalWeekProfileAdapter(getActivity());
+    }
+
+    @Override
+    protected NestedListViewAdapter getAdapter() {
+        return adapter;
+    }
 }

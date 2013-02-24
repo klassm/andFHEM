@@ -37,10 +37,14 @@ import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
 import li.klass.fhem.domain.genericview.FloorplanViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.domain.heating.DesiredTempDevice;
-import li.klass.fhem.domain.heating.HeatingModeDevice;
+import li.klass.fhem.domain.heating.HeatingDevice;
+import li.klass.fhem.domain.heating.schedule.WeekProfile;
+import li.klass.fhem.domain.heating.schedule.configuration.CULHMConfiguration;
+import li.klass.fhem.domain.heating.schedule.interval.FilledTemperatureInterval;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.NumberUtil;
 import li.klass.fhem.util.ValueDescriptionUtil;
+import org.w3c.dom.NamedNodeMap;
 
 import java.util.List;
 
@@ -53,7 +57,8 @@ import static li.klass.fhem.util.ValueExtractUtil.extractLeadingInt;
 @DetailOverviewViewSettings(showState = true)
 @FloorplanViewSettings(showState = true)
 @SupportsWidget(TemperatureWidgetView.class)
-public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice> implements DesiredTempDevice, HeatingModeDevice<CULHMDevice.HeatingMode> {
+public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
+        implements DesiredTempDevice, HeatingDevice<CULHMDevice.HeatingMode, CULHMConfiguration, FilledTemperatureInterval, CULHMDevice> {
 
     private HeatingMode heatingMode = HeatingMode.UNKNOWN;
 
@@ -69,6 +74,9 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice> imp
 
     public static double MAXIMUM_TEMPERATURE = 30.5;
     public static double MINIMUM_TEMPERATURE = 5.5;
+
+    private static final CULHMConfiguration heatingConfiguration = new CULHMConfiguration();
+    private WeekProfile<FilledTemperatureInterval, CULHMConfiguration, CULHMDevice> weekProfile = new WeekProfile<FilledTemperatureInterval, CULHMConfiguration, CULHMDevice>(heatingConfiguration);
 
     private double desiredTemp = MINIMUM_TEMPERATURE;
     @ShowField(description = ResourceIdMapper.temperature, showInOverview = true)
@@ -98,6 +106,12 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice> imp
     private String brightness;
     @ShowField(description = ResourceIdMapper.motion)
     private String motion;
+
+    @Override
+    public void onChildItemRead(String tagName, String key, String value, NamedNodeMap attributes) {
+        super.onChildItemRead(tagName, key, value, attributes);
+        weekProfile.readNode(key, value);
+    }
 
     public void readRAWTOREADABLE(String value) {
         this.rawToReadable = value;
@@ -376,6 +390,11 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice> imp
     @Override
     public String getHeatingModeCommandField() {
         return "controlMode";
+    }
+
+    @Override
+    public WeekProfile<FilledTemperatureInterval, CULHMConfiguration, CULHMDevice> getWeekProfile() {
+        return weekProfile;
     }
 
     @Override

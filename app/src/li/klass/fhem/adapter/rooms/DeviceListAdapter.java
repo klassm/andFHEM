@@ -86,7 +86,7 @@ public class DeviceListAdapter extends NestedListViewAdapter<DeviceType, Device<
     }
 
     @Override
-    protected View getChildView(final DeviceType parent, int parentPosition, Device<?> child, View view, ViewGroup viewGroup) {
+    protected View getChildView(final DeviceType parent, int parentPosition, Device<?> child, View view, ViewGroup viewGroup, int relativeChildPosition) {
         final DeviceAdapter<? extends Device<?>> deviceAdapter = DeviceType.getAdapterFor(child);
         if (deviceAdapter == null) {
             Log.e(DeviceListAdapter.class.getName(), "unsupported device type " + child);

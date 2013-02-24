@@ -149,7 +149,7 @@ public class FHTService {
 
         for (String commandPart : commandParts) {
             if (currentCommandSize >= 8) {
-                commands.add("set " + device.getName() + " " + currentCommand.toString());
+                commands.add("set " + device.getName() + " " + currentCommand.toString().trim());
                 currentCommand = new StringBuilder();
                 currentCommandSize = 0;
             }
@@ -159,7 +159,7 @@ public class FHTService {
         }
 
         if (currentCommand.length() > 0) {
-            commands.add("set " + device.getName() + " " + currentCommand.toString());
+            commands.add("set " + device.getName() + " " + currentCommand.toString().trim());
         }
 
         return commands;

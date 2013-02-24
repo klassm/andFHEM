@@ -25,11 +25,16 @@
 package li.klass.fhem.domain;
 
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+import li.klass.fhem.domain.heating.schedule.DayProfile;
+import li.klass.fhem.domain.heating.schedule.WeekProfile;
+import li.klass.fhem.domain.heating.schedule.configuration.MAXConfiguration;
+import li.klass.fhem.domain.heating.schedule.interval.FilledTemperatureInterval;
+import li.klass.fhem.util.DayUtil;
 import org.junit.Test;
 
 import static li.klass.fhem.domain.MaxDevice.HeatingMode.*;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.*;
 
 public class MaxDeviceTest extends DeviceXMLParsingBase {
 
@@ -89,10 +94,19 @@ public class MaxDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getHeatingMode(), is(BOOST));
     }
 
+    @Test
     public void testJournalDevice() {
         MaxDevice device = getDeviceFor("journalDevice");
 
         assertThat(device.getMeasured(), is("2013-01-12 15:27:55"));
+
+        WeekProfile<FilledTemperatureInterval, MAXConfiguration, MaxDevice> weekProfile = device.getWeekProfile();
+        assertThat(weekProfile, is(notNullValue()));
+
+        DayProfile<FilledTemperatureInterval, MAXConfiguration> tuesday = weekProfile.getDayProfileFor(DayUtil.Day.TUESDAY);
+        assertThat(tuesday.getHeatingIntervals().size(), is(3));
+        assertThat(tuesday.getHeatingIntervalAt(0).getSwitchTime(), is("00:00"));
+        assertThat(tuesday.getHeatingIntervalAt(0).getTemperature(), is(closeTo(15, 0.1)));
     }
 
     @Override

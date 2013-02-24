@@ -21,7 +21,7 @@
  *   51 Franklin Street, Fifth Floor
  */
 
-package li.klass.fhem.domain.fht;
+package li.klass.fhem.domain;
 
 import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.domain.core.Device;

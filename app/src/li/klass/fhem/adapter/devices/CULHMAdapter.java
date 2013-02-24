@@ -25,6 +25,7 @@
 package li.klass.fhem.adapter.devices;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.View;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -32,10 +33,13 @@ import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.DimmableAdapter;
 import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
 import li.klass.fhem.adapter.devices.genericui.CustomViewTableRow;
+import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewAction;
 import li.klass.fhem.adapter.devices.genericui.HeatingModeListener;
 import li.klass.fhem.adapter.devices.genericui.TemperatureChangeTableRow;
 import li.klass.fhem.constants.Actions;
+import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.CULHMDevice;
+import li.klass.fhem.fragments.FragmentType;
 import li.klass.fhem.widget.LitreContentView;
 
 import static li.klass.fhem.domain.CULHMDevice.MAXIMUM_TEMPERATURE;
@@ -87,6 +91,21 @@ public class CULHMAdapter extends DimmableAdapter<CULHMDevice> {
                 tableLayout.addView(new TemperatureChangeTableRow<CULHMDevice>(context, device.getDesiredTemp(), fieldTableRow,
                         Actions.DEVICE_SET_DESIRED_TEMPERATURE, R.string.desiredTemperature, MINIMUM_TEMPERATURE, MAXIMUM_TEMPERATURE)
                         .createRow(inflater, device));
+            }
+        });
+
+        detailActions.add(new DeviceDetailViewAction<CULHMDevice>(R.string.timetable) {
+            @Override
+            public void onButtonClick(Context context, CULHMDevice device) {
+                Intent intent = new Intent(Actions.SHOW_FRAGMENT);
+                intent.putExtra(BundleExtraKeys.FRAGMENT, FragmentType.INTERVAL_WEEK_PROFILE);
+                intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
+                context.sendBroadcast(intent);
+            }
+
+            @Override
+            public boolean isVisible(CULHMDevice device) {
+                return device.getSubType() == HEATING;
             }
         });
     }

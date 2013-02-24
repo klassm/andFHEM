@@ -35,6 +35,7 @@ public class DialogUtil {
     public interface InputDialogListener {
         void onClick(String text);
     }
+
     public interface AlertOnClickListener {
         void onClick();
     }
@@ -71,6 +72,23 @@ public class DialogUtil {
             }
         });
         alert.show();
+    }
+
+    public static void showContentDialog(Context context, String title, View content, final AlertOnClickListener onClickListener) {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        if (title != null) builder.setTitle(title);
+        builder.setCancelable(true);
+        builder.setView(content);
+
+        final AlertDialog alertDialog = builder.create();
+        alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, context.getString(R.string.okButton), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                alertDialog.dismiss();
+                if (onClickListener != null) onClickListener.onClick();
+            }
+        });
+        alertDialog.show();
     }
 
     public static void showInputBox(Context context, String title, String defaultText, final InputDialogListener positiveOnClickListener) {

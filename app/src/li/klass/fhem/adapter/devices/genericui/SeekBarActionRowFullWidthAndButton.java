@@ -28,6 +28,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TableLayout;
 import android.widget.TableRow;
 import li.klass.fhem.R;
 import li.klass.fhem.domain.core.Device;
@@ -47,9 +48,29 @@ public abstract class SeekBarActionRowFullWidthAndButton<T extends Device<T>> ex
     }
 
     @Override
+    public TableRow createRow(LayoutInflater inflater, T device, int layoutSpan) {
+        TableRow row = super.createRow(inflater, device, 1);
+        applySetButtonIfRequired(device, row);
+
+        TableLayout layout = (TableLayout) row.findViewById(R.id.seekBarLayout);
+        if (layoutSpan != 1) {
+            TableRow.LayoutParams layoutParams = (TableRow.LayoutParams) layout.getLayoutParams();
+            layoutParams.span = layoutSpan;
+            layout.setLayoutParams(layoutParams);
+        }
+
+        return row;
+    }
+
+    @Override
     public TableRow createRow(final LayoutInflater inflater, final T device) {
         TableRow row = super.createRow(inflater, device);
+        applySetButtonIfRequired(device, row);
 
+        return row;
+    }
+
+    private void applySetButtonIfRequired(final T device, TableRow row) {
         Button button = (Button) row.findViewById(R.id.button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,8 +93,6 @@ public abstract class SeekBarActionRowFullWidthAndButton<T extends Device<T>> ex
         if (!showButton()) {
             button.setVisibility(View.GONE);
         }
-
-        return row;
     }
 
     public abstract void onButtonSetValue(T device, int value);
