@@ -51,8 +51,8 @@ public class MAXConfigurationTest {
     @Test
     public void testDayRead() {
         configuration.readNode(weekProfile, "WEEKPROFILE-0-SAT-TIME", "00:00-07:00  /  07:00-23:00  /  23:00-00:00");
-        configuration.readNode(weekProfile, "WEEKPROFILE-0-SAT-TEMP", "15  /  22  /  15.5");
-        configuration.readNode(weekProfile, "WEEKPROFILE-6-FRI-TEMP", "15  /  22  /  15");
+        configuration.readNode(weekProfile, "WEEKPROFILE-0-SAT-TEMP", "15 °C  /  22 °C /  15.5 °C");
+        configuration.readNode(weekProfile, "WEEKPROFILE-6-FRI-TEMP", "15 °C  /  22 °C /  15 °C");
         configuration.readNode(weekProfile, "WEEKPROFILE-6-FRI-TIME", "00:00-06:00  /  06:00-23:00  /  23:00-00:00");
 
         assertThat(getHeatingIntervalAt(DayUtil.Day.SATURDAY, 0).getSwitchTime(), is("00:00"));
@@ -75,8 +75,8 @@ public class MAXConfigurationTest {
     @Test
     public void testGenerateCommand() {
         configuration.readNode(weekProfile, "WEEKPROFILE-0-SAT-TIME", "00:00-07:00  /  07:00-23:00  /  23:00-00:00");
-        configuration.readNode(weekProfile, "WEEKPROFILE-0-SAT-TEMP", "15  /  22  /  15");
-        configuration.readNode(weekProfile, "WEEKPROFILE-6-FRI-TEMP", "15  /  22  /  15");
+        configuration.readNode(weekProfile, "WEEKPROFILE-0-SAT-TEMP", "15 °C  /  22 °C  /  15 °C");
+        configuration.readNode(weekProfile, "WEEKPROFILE-6-FRI-TEMP", "15 °C /  22 °C /  15 °C");
         configuration.readNode(weekProfile, "WEEKPROFILE-6-FRI-TIME", "00:00-06:00  /  06:00-23:00  /  23:00-00:00");
 
         MaxDevice device = new MaxDevice();
