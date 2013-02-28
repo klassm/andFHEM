@@ -46,6 +46,7 @@ public class MAXConfiguration extends HeatingConfiguration<FilledTemperatureInte
     public void readNode(WeekProfile<FilledTemperatureInterval, MAXConfiguration, MaxDevice> weekProfile, String key, String value) {
         if (!key.startsWith("WEEKPROFILE") || (!key.endsWith("TEMP") && !key.endsWith("TIME"))) return;
         key = key.replaceAll("-", "_");
+        value = value.replaceAll("°C", "");
 
         int lastDash = key.lastIndexOf("_");
         int dayDash = key.indexOf("_", "WEEKPROFILE_".length());

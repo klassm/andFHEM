@@ -98,15 +98,15 @@ public class MaxDeviceTest extends DeviceXMLParsingBase {
     public void testJournalDevice() {
         MaxDevice device = getDeviceFor("journalDevice");
 
-        assertThat(device.getMeasured(), is("2013-01-12 15:27:55"));
+        assertThat(device.getMeasured(), is("2013-02-27 22:00:03"));
 
         WeekProfile<FilledTemperatureInterval, MAXConfiguration, MaxDevice> weekProfile = device.getWeekProfile();
         assertThat(weekProfile, is(notNullValue()));
 
         DayProfile<FilledTemperatureInterval, MaxDevice, MAXConfiguration> tuesday = weekProfile.getDayProfileFor(DayUtil.Day.TUESDAY);
-        assertThat(tuesday.getHeatingIntervals().size(), is(3));
+        assertThat(tuesday.getHeatingIntervals().size(), is(6));
         assertThat(tuesday.getHeatingIntervalAt(0).getSwitchTime(), is("00:00"));
-        assertThat(tuesday.getHeatingIntervalAt(0).getTemperature(), is(closeTo(15, 0.1)));
+        assertThat(tuesday.getHeatingIntervalAt(0).getTemperature(), is(closeTo(17, 0.1)));
     }
 
     @Override
