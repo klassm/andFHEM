@@ -72,7 +72,8 @@ public enum DeviceType {
     EN_OCEAN("EnOcean", EnOceanDevice.class, new ToggleableAdapter<EnOceanDevice>(EnOceanDevice.class)),
     EIB("EIB", EIBDevice.class, new ToggleableAdapterWithSwitchActionRow<EIBDevice>(EIBDevice.class)),
     HCS("HCS", HCSDevice.class, new SwitchActionRowAdapter<HCSDevice>(HCSDevice.class)),
-    OWTHERM("OWTHERM", OwthermDevice.class);
+    OWTHERM("OWTHERM", OwthermDevice.class),
+    OWDEVICE("OWDevice", OwDevice.class, new ToggleableAdapterWithSwitchActionRow<OwDevice>(OwDevice.class));
 
     private String xmllistTag;
     private Class<? extends Device> deviceClass;

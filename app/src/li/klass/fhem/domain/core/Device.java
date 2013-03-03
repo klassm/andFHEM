@@ -135,7 +135,7 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
         }
     }
 
-    private void putEventToEventMap(String key, String value) {
+    protected void putEventToEventMap(String key, String value) {
         eventMap.put(key, value);
         eventMapReverse.put(value, key);
     }

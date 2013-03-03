@@ -305,7 +305,7 @@ public class DeviceListParser {
             Node keyAttribute = item.getAttributes().getNamedItem("key");
             if (keyAttribute == null) continue;
 
-            String keyValue = keyAttribute.getNodeValue().toUpperCase().trim().replaceAll("[-.]", "_");
+            String keyValue = keyAttribute.getNodeValue().toUpperCase().trim().replaceAll("[-\\.]", "_");
             String nodeContent = StringEscapeUtil.unescape(item.getAttributes().getNamedItem("value").getNodeValue());
 
             if (nodeContent == null || nodeContent.length() == 0) {
