@@ -43,6 +43,7 @@ public class WOLDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getMac(), is("72:75:AD:4A:17:43"));
         assertThat(device.isRunning(), is("off"));
         assertThat(device.getState(), is("on"));
+        assertThat(device.getShutdownCommand(), is("sh /some/crazy/command.sh"));
 
         assertThat(device.getAvailableTargetStates(), is(nullValue()));
 

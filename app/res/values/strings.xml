@@ -79,6 +79,7 @@
     <string name="mac">MAC address</string>
     <string name="ip">IP address</string>
     <string name="wake">Wake</string>
+    <string name="shutdown">Shutdown</string>
     <string name="stateAppendix">Zustand Anhang</string>
     <string name="requestRefresh">Request refresh</string>
     <string name="delta">Delta</string>

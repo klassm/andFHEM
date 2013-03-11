@@ -43,9 +43,25 @@ public class WOLAdapter extends GenericDeviceAdapter<WOLDevice> {
         detailActions.add(new DeviceDetailViewAction<WOLDevice>(R.string.wake) {
             @Override
             public void onButtonClick(Context context, WOLDevice device) {
-                Intent intent = new Intent(Actions.DEVICE_WAKE);
+                Intent intent = new Intent(Actions.DEVICE_SET_STATE);
+                intent.putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, "on");
                 intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
                 context.startService(intent);
+            }
+        });
+
+        detailActions.add(new DeviceDetailViewAction<WOLDevice>(R.string.shutdown) {
+            @Override
+            public void onButtonClick(Context context, WOLDevice device) {
+                Intent intent = new Intent(Actions.DEVICE_SET_STATE);
+                intent.putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, "off");
+                intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
+                context.startService(intent);
+            }
+
+            @Override
+            public boolean isVisible(WOLDevice device) {
+                return device.getShutdownCommand() != null;
             }
         });
         detailActions.add(new DeviceDetailViewAction<WOLDevice>(R.string.requestRefresh) {

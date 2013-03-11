@@ -24,6 +24,7 @@
 
 package li.klass.fhem.domain;
 
+import android.content.Context;
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
@@ -34,10 +35,7 @@ import li.klass.fhem.appwidget.view.widget.medium.MediumInformationWidgetView;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.genericview.FloorplanViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
-
 import org.w3c.dom.NamedNodeMap;
-
-import android.content.Context;
 
 @SuppressWarnings("unused")
 @FloorplanViewSettings(showState = true)
@@ -53,18 +51,24 @@ public class WOLDevice extends Device<WOLDevice> {
     @ShowField(description = ResourceIdMapper.mac)
     private String mac;
 
-    public void readISRUNNING(String value, NamedNodeMap attributes)  {
+    private String shutdownCommand;
+
+    public void readISRUNNING(String value, NamedNodeMap attributes) {
         Context context = AndFHEMApplication.getContext();
         int isRunningId = Boolean.valueOf(value) ? R.string.on : R.string.off;
         isRunning = context.getString(isRunningId);
         measured = attributes.getNamedItem("measured").getNodeValue();
     }
 
-    public void readIP(String value)  {
+    public void readSHUTDOWNCMD(String value) {
+        this.shutdownCommand = value;
+    }
+
+    public void readIP(String value) {
         ip = value;
     }
 
-    public void readMAC(String value)  {
+    public void readMAC(String value) {
         mac = value.toUpperCase();
     }
 
@@ -78,5 +82,9 @@ public class WOLDevice extends Device<WOLDevice> {
 
     public String getMac() {
         return mac;
+    }
+
+    public String getShutdownCommand() {
+        return shutdownCommand;
     }
 }

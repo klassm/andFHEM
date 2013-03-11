@@ -36,6 +36,7 @@
             <ATTR key="room" value="room"/>
             <STATE key="isRunning" value="false" measured="2012-01-21 16:30:55"/>
             <STATE key="state" value="off" measured="2012-01-21 16:30:55"/>
+            <ATTR key="shutdownCmd" value="sh /some/crazy/command.sh"/>
         </WOL>
     </WOL_LIST>
 </FHZINFO>
