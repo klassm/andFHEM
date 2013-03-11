@@ -130,6 +130,7 @@ public class DeviceListParser {
 
         // remove "" not being preceded by an =
         xmlList = xmlList.replaceAll("(?:[^=])\"\"+", "\"");
+        xmlList = xmlList.replaceAll("\\\\B0", "°");
 
         DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();

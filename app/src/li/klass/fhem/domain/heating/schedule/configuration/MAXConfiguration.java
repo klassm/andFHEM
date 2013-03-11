@@ -46,7 +46,9 @@ public class MAXConfiguration extends HeatingConfiguration<FilledTemperatureInte
     public void readNode(WeekProfile<FilledTemperatureInterval, MAXConfiguration, MaxDevice> weekProfile, String key, String value) {
         if (!key.startsWith("WEEKPROFILE") || (!key.endsWith("TEMP") && !key.endsWith("TIME"))) return;
         key = key.replaceAll("-", "_");
-        value = value.replaceAll("°C", "");
+
+        // B0 is a pretty strange fix. Sometimes it seems to be places instead of a degree (°) sign
+        value = value.replaceAll("[^0-9. -:/]", "").replaceAll("  ", " ");
 
         int lastDash = key.lastIndexOf("_");
         int dayDash = key.indexOf("_", "WEEKPROFILE_".length());

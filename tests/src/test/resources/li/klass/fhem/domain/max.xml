@@ -195,5 +195,87 @@ n comfortTemperature:off,5.0,5.5,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,10.0,10.5,11.0,
             <STATE key="windowOpenTemperature" value="8.0" measured="2013-02-02 21:19:29"/>
         </MAX>
 
+        <MAX name="HT_Bad" state="17.0 \B0C"
+             sets="wakeUp factoryReset groupid associate:HT_Kueche,HT_Wohnzimmer,HT_Schlafzimmer,fakeWallThermostat,fakeShutterContact deassociate:HT_Kueche,HT_Wohnzimmer,HT_Schlafzimmer,fakeWallThermostat,fakeShutterContact desiredTemperature:eco,comfort,boost,auto,off,5.0,5.5,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,10.0,10.5,11.0,11.5,12.0,12.5,13.0,13.5,14.0,14.5,15.0,15.5,16.0,16.5,17.0,17.5,18.0,18.5,19.0,19.5,20.0,20.5,21.0,21.5,22.0,22.5,23.0,23.5,24.0,24.5,25.0,25.5,26.0,26.5,27.0,27.5,28.0,28.5,29.0,29.5,30.0,on ecoTemperature:off,5.0,5.5,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,10.0,10.5,11.0,11.5,12.0,12.5,13.0,13.5,14.0,14.5,15.0,15.5,16.0,16.5,17.0,17.5,18.0,18.5,19.0,19.5,20.0,20.5,21.0,21.5,22.0,22.5,23.0,23.5,24.0,24.5,25.0,25.5,26.0,26.5,27.0,27.5,28.0,28.5,29.0,29.5,30.0,on comfortTemperature:off,5.0,5.5,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,10.0,10.5,11.0,11.5,12.0,12.5,13.0,13.5,14.0,14.5,15.0,15.5,16.0,16.5,17.0,17.5,18.0,18.5,19.0,19.5,20.0,20.5,21.0,21.5,22.0,22.5,23.0,23.5,24.0,24.5,25.0,25.5,26.0,26.5,27.0,27.5,28.0,28.5,29.0,29.5,30.0,on measurementOffset:-3.5,-3.0,-2.5,-2.0,-1.5,-1.0,-0.5,0.0,0.5,1.0,1.5,2.0,2.5,3.0,3.5 maximumTemperature:off,5.0,5.5,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,10.0,10.5,11.0,11.5,12.0,12.5,13.0,13.5,14.0,14.5,15.0,15.5,16.0,16.5,17.0,17.5,18.0,18.5,19.0,19.5,20.0,20.5,21.0,21.5,22.0,22.5,23.0,23.5,24.0,24.5,25.0,25.5,26.0,26.5,27.0,27.5,28.0,28.5,29.0,29.5,30.0,on minimumTemperature:off,5.0,5.5,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,10.0,10.5,11.0,11.5,12.0,12.5,13.0,13.5,14.0,14.5,15.0,15.5,16.0,16.5,17.0,17.5,18.0,18.5,19.0,19.5,20.0,20.5,21.0,21.5,22.0,22.5,23.0,23.5,24.0,24.5,25.0,25.5,26.0,26.5,27.0,27.5,28.0,28.5,29.0,29.5,30.0,on windowOpenTemperature:off,5.0,5.5,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,10.0,10.5,11.0,11.5,12.0,12.5,13.0,13.5,14.0,14.5,15.0,15.5,16.0,16.5,17.0,17.5,18.0,18.5,19.0,19.5,20.0,20.5,21.0,21.5,22.0,22.5,23.0,23.5,24.0,24.5,25.0,25.5,26.0,26.5,27.0,27.5,28.0,28.5,29.0,29.5,30.0,on windowOpenDuration boostDuration:30,20,5,15,0,60,10,25 boostValveposition decalcification maxValveSetting valveOffset"
+             attrs="room group comment alias eventMap userReadings IODev do_not_notify:1,0 ignore:0,1 dummy:0,1 showtime:1,0 loglevel:0,1,2,3,4,5,6 event-on-change-reading event-on-update-reading event-min-interval stateFormat devStateIcon icon webCmd">
+            <INT key="CULMAX0_MSGCNT" value="1"/>
+            <INT key="CULMAX0_RAWMSG" value="Z0F00046001778B000000001856220093"/>
+            <INT key="CULMAX0_TIME" value="2013-03-10 14:16:20"/>
+            <INT key="DEF" value="HeatingThermostat 01778b"/>
+            <INT key="LASTInputDev" value="CULMAX0"/>
+            <INT key="MSGCNT" value="1"/>
+            <INT key="NAME" value="HT_Bad"/>
+            <INT key="NR" value="70"/>
+            <INT key="STATE" value="17.0 \B0C"/>
+            <INT key="TYPE" value="MAX"/>
+            <INT key="addr" value="01778b"/>
+            <INT key="dstsetting" value="1"/>
+            <INT key="mode" value="0"/>
+            <INT key="rferror" value="0"/>
+            <INT key="type" value="HeatingThermostat"/>
+            <INT key="IODev" value="CULMAX0"/>
+            <ATTR key="icon" value="icoHEIZUNG"/>
+            <ATTR key="room" value="@119-Bad"/>
+            <STATE key="TimeInformationHour" value="4" measured="2013-02-17 20:15:45"/>
+            <STATE key="battery" value="ok" measured="2013-03-10 14:16:20"/>
+            <STATE key="boostDuration" value="15" measured="2013-01-13 13:52:35"/>
+            <STATE key="boostValveposition" value="0" measured="2013-01-13 23:01:52"/>
+            <STATE key="comfortTemperature" value="21.0" measured="2013-01-13 23:02:53"/>
+            <STATE key="decalcification" value="Mon 05:00" measured="2013-02-17 20:18:58"/>
+            <STATE key="desiredTemperature" value="17.0" measured="2013-03-10 14:16:20"/>
+            <STATE key="ecoTemperature" value="17.0" measured="2013-01-13 23:02:42"/>
+            <STATE key="maxValveSetting" value="100" measured="2013-01-13 01:48:41"/>
+            <STATE key="maximumTemperature" value="30.5" measured="2013-01-14 19:58:10"/>
+            <STATE key="measurementOffset" value="0.0" measured="2013-01-13 23:03:40"/>
+            <STATE key="minimumTemperature" value="4.5" measured="2013-01-14 19:58:10"/>
+            <STATE key="mode" value="auto" measured="2013-03-10 14:16:20"/>
+            <STATE key="msgcnt" value="145" measured="2013-01-13 23:01:15"/>
+            <STATE key="state" value="17.0 \B0C" measured="2013-03-10 14:16:20"/>
+            <STATE key="temperature" value="14.7" measured="2013-03-10 14:16:20"/>
+            <STATE key="valveOffset" value="0" measured="2013-01-13 01:48:41"/>
+            <STATE key="valveposition" value="86" measured="2013-03-10 14:16:20"/>
+            <STATE key="weekprofile-0-Sat-temp"
+                   value="20.0 \B0C  /  18.0 \B0C  /  22.0 \B0C  /  18.0 \B0C  /  20.0 \B0C"
+                   measured="2013-03-04 10:08:15"/>
+            <STATE key="weekprofile-0-Sat-time"
+                   value="00:00-02:00  /  02:00-10:00  /  10:00-12:00  /  12:00-23:00  /  23:00-00:00"
+                   measured="2013-03-04 10:08:15"/>
+            <STATE key="weekprofile-1-Sun-temp"
+                   value="20.0 \B0C  /  18.0 \B0C  /  22.0 \B0C  /  18.0 \B0C  /  20.0 \B0C  /  18.0 \B0C"
+                   measured="2013-03-04 10:08:15"/>
+            <STATE key="weekprofile-1-Sun-time"
+                   value="00:00-02:00  /  02:00-10:00  /  10:00-12:00  /  12:00-22:00  /  22:00-23:45  /  23:45-00:00"
+                   measured="2013-03-04 10:08:15"/>
+            <STATE key="weekprofile-2-Mon-temp"
+                   value="18.0 \B0C  /  22.0 \B0C  /  18.0 \B0C  /  20.0 \B0C  /  18.0 \B0C"
+                   measured="2013-03-04 10:08:15"/>
+            <STATE key="weekprofile-2-Mon-time"
+                   value="00:00-05:15  /  05:15-06:35  /  06:35-22:00  /  22:00-23:45  /  23:45-00:00"
+                   measured="2013-03-04 10:08:15"/>
+            <STATE key="weekprofile-3-Tue-temp"
+                   value="18.0 \B0C  /  22.0 \B0C  /  18.0 \B0C  /  20.0 \B0C  /  18.0 \B0C"
+                   measured="2013-03-04 10:08:15"/>
+            <STATE key="weekprofile-3-Tue-time"
+                   value="00:00-05:15  /  05:15-06:35  /  06:35-22:00  /  22:00-23:45  /  23:45-00:00"
+                   measured="2013-03-04 10:08:15"/>
+            <STATE key="weekprofile-4-Wed-temp"
+                   value="18.0 \B0C  /  22.0 \B0C  /  18.0 \B0C  /  20.0 \B0C  /  18.0 \B0C"
+                   measured="2013-03-04 10:08:15"/>
+            <STATE key="weekprofile-4-Wed-time"
+                   value="00:00-05:15  /  05:15-06:35  /  06:35-22:00  /  22:00-23:45  /  23:45-00:00"
+                   measured="2013-03-04 10:08:15"/>
+            <STATE key="weekprofile-5-Thu-temp"
+                   value="18.0 \B0C  /  22.0 \B0C  /  18.0 \B0C  /  20.0 \B0C  /  18.0 \B0C"
+                   measured="2013-03-04 10:08:15"/>
+            <STATE key="weekprofile-5-Thu-time"
+                   value="00:00-05:15  /  05:15-06:35  /  06:35-22:00  /  22:00-23:45  /  23:45-00:00"
+                   measured="2013-03-04 10:08:15"/>
+            <STATE key="weekprofile-6-Fri-temp" value="18.0 \B0C  /  22.0 \B0C  /  18.0 \B0C  /  20.0 \B0C"
+                   measured="2013-03-04 10:08:15"/>
+            <STATE key="weekprofile-6-Fri-time" value="00:00-05:15  /  05:15-06:35  /  06:35-22:00  /  22:00-00:00"
+                   measured="2013-03-04 10:08:15"/>
+            <STATE key="windowOpenDuration" value="25" measured="2013-01-13 23:03:20"/>
+            <STATE key="windowOpenTemperature" value="5.0" measured="2013-01-13 23:03:30"/>
+        </MAX>
     </MAX_LIST>
 </FHZINFO>
