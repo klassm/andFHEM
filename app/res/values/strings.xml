@@ -109,6 +109,7 @@
     <string name="commandAccepted">Command accepted?</string>
     <string name="up">up</string>
     <string name="down">down</string>
+    <string name="stop">stop</string>
     <string name="visibility">visibility</string>
     <string name="rawValue">Raw value</string>
     <string name="content">Content</string>

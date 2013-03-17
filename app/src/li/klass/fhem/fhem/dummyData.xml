@@ -534,6 +534,40 @@
     <STATE key="temperature" value="13.625" measured="2012-11-17 20:36:33"/>
 </OWTHERM>
 </OWTHERM_LIST>
+<UNIRoll_LIST>
+<UNIRoll name="KU1_Rollo" state="Auf" sets="Auf Stopp Zu down stop up"
+         attrs="room group comment alias eventMap userReadings IODev do_not_notify:1,0 ignore:1,0 showtime:1,0 loglevel:0,1,2,3,4,5,6 model:R_23700,dummySimple devStateIcon icon webCmd">
+    <INT key="BTN" value="6"/>
+    <INT key="DEF" value="xxxx 6"/>
+    <INT key="NAME" value="KU1_Rollo"/>
+    <INT key="NR" value="207"/>
+    <INT key="STATE" value="Auf"/>
+    <INT key="TYPE" value="UNIRoll"/>
+    <INT key="XMIT" value="xxxx"/>
+    <INT key="IODev" value="CUL868"/>
+    <ATTR key="IODev" value="CUL868"/>
+    <ATTR key="eventMap" value="up:Auf stop:Stopp down:Zu"/>
+    <ATTR key="room" value="dach"/>
+    <ATTR key="webCmd" value="Auf:Stopp:Zu"/>
+    <STATE key="state" value="up" measured="2013-03-16 06:01:00"/>
+</UNIRoll>
+<UNIRoll name="WZ1_Rollo" state="Auf" sets="Auf Stopp Zu down stop up"
+         attrs="room group comment alias eventMap userReadings IODev do_not_notify:1,0 ignore:1,0 showtime:1,0 loglevel:0,1,2,3,4,5,6 model:R_23700,dummySimple devStateIcon icon webCmd">
+    <INT key="BTN" value="7"/>
+    <INT key="DEF" value="xxxx 7"/>
+    <INT key="NAME" value="WZ1_Rollo"/>
+    <INT key="NR" value="203"/>
+    <INT key="STATE" value="Auf"/>
+    <INT key="TYPE" value="UNIRoll"/>
+    <INT key="XMIT" value="xxxx"/>
+    <INT key="IODev" value="CUL868"/>
+    <ATTR key="IODev" value="CUL868"/>
+    <ATTR key="eventMap" value="up:Auf stop:Stopp down:Zu"/>
+    <ATTR key="room" value="dach"/>
+    <ATTR key="webCmd" value="Auf:Stopp:Zu"/>
+    <STATE key="state" value="up" measured="2013-03-16 06:00:00"/>
+</UNIRoll>
+</UNIRoll_LIST>
 
 <EnOcean_LIST>
 <EnOcean name="enoceanSwitch1" state="on" sets="BI:off B0:on A0 AI B0 BI C0 CI D0 DI released"

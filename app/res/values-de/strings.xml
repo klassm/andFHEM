@@ -108,6 +108,7 @@
     <string name="commandAccepted">Kommando akzeptiert?</string>
     <string name="up">hoch</string>
     <string name="down">runter</string>
+    <string name="stop">stop</string>
     <string name="visibility">Sichtbarkeit</string>
     <string name="rawValue">Rohwert</string>
     <string name="content">Inhalt</string>

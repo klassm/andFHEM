@@ -73,7 +73,8 @@ public enum DeviceType {
     EIB("EIB", EIBDevice.class, new ToggleableAdapterWithSwitchActionRow<EIBDevice>(EIBDevice.class)),
     HCS("HCS", HCSDevice.class, new SwitchActionRowAdapter<HCSDevice>(HCSDevice.class)),
     OWTHERM("OWTHERM", OwthermDevice.class),
-    OWDEVICE("OWDevice", OwDevice.class, new ToggleableAdapterWithSwitchActionRow<OwDevice>(OwDevice.class));
+    OWDEVICE("OWDevice", OwDevice.class, new ToggleableAdapterWithSwitchActionRow<OwDevice>(OwDevice.class)),
+    UNIROLL("UNIRoll", UniRollDevice.class, new UniRollAdapter());
 
     private String xmllistTag;
     private Class<? extends Device> deviceClass;
