@@ -38,15 +38,11 @@ import li.klass.fhem.exception.HostConnectionException;
 import li.klass.fhem.exception.TimeoutException;
 import li.klass.fhem.service.room.DeviceListParser;
 import li.klass.fhem.util.CloseableUtil;
-import org.apache.http.conn.ConnectTimeoutException;
-import thor.net.DefaultTelnetTerminalHandler;
-import thor.net.TelnetURLConnection;
-import thor.net.URLStreamHandler;
+import org.apache.commons.net.telnet.TelnetClient;
+import org.apache.commons.net.telnet.TelnetInputListener;
 
 import java.io.*;
 import java.net.SocketTimeoutException;
-import java.net.URL;
-import java.net.URLConnection;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -115,26 +111,20 @@ public class TelnetConnection implements FHEMConnection {
     private String request(String command) {
         Log.i(TAG, "executeTask command " + command);
 
+        TelnetClient telnetClient = new TelnetClient();
+        telnetClient.setConnectTimeout(4000);
+
         OutputStream outputStream = null;
         BufferedOutputStream bufferedOutputStream = null;
         PrintWriter printWriter = null;
         InputStream inputStream = null;
 
         try {
-            URL url = new URL("telnet", getHost(), getPort(), "",
-                    new thor.net.URLStreamHandler());
-            URLConnection urlConnection = url.openConnection();
-            urlConnection.connect();
+            telnetClient.connect(getHost(), getPort());
 
-            if (urlConnection instanceof TelnetURLConnection) {
-                ((TelnetURLConnection) urlConnection)
-                        .setTelnetTerminalHandler(new DefaultTelnetTerminalHandler());
-            }
-            urlConnection.setConnectTimeout(4000);
+            outputStream = telnetClient.getOutputStream();
+            inputStream = telnetClient.getInputStream();
 
-            inputStream = urlConnection.getInputStream();
-
-            outputStream = urlConnection.getOutputStream();
             bufferedOutputStream = new BufferedOutputStream(outputStream);
             printWriter = new PrintWriter(bufferedOutputStream);
 
@@ -150,9 +140,7 @@ public class TelnetConnection implements FHEMConnection {
                 buffer.append((char) ch);
             }
 
-            if (urlConnection instanceof TelnetURLConnection) {
-                ((TelnetURLConnection) urlConnection).disconnect();
-            }
+            telnetClient.disconnect();
 
             String returnValue = buffer.toString();
             int startPos = returnValue.indexOf(", try help");
@@ -160,17 +148,11 @@ public class TelnetConnection implements FHEMConnection {
                 returnValue = returnValue.substring(startPos
                         + ", try help".length());
             }
-            if (returnValue.endsWith("Bye...")) {
-                returnValue = buffer.substring(0,
-                        buffer.length() - "Bye...".length());
-            }
+            returnValue = returnValue.replaceAll("Bye...", "");
             Log.d(TAG, "result is :: " + returnValue);
             return returnValue;
         } catch (AndFHEMException e) {
             throw e;
-        } catch (ConnectTimeoutException e) {
-            Log.e(TAG, "timeout", e);
-            throw new TimeoutException(e);
         } catch (SocketTimeoutException e) {
             Log.e(TAG, "timeout", e);
             throw new TimeoutException(e);
@@ -306,49 +288,34 @@ public class TelnetConnection implements FHEMConnection {
             InputStreamReader inreader = null;
 
             try {
-                URL url = new URL("telnet", getHost(), getPort(), "",
-                        new URLStreamHandler());
-                URLConnection urlConnection = url.openConnection();
-                urlConnection.connect();
+                TelnetClient telnetClient = new TelnetClient();
+                telnetClient.setConnectTimeout(0);
+                telnetClient.connect(getHost(), getPort());
 
-                if (!(urlConnection instanceof TelnetURLConnection)) {
-                    Log.e(TAG,
-                            "expected a "
-                                    + TelnetURLConnection.class.getSimpleName()
-                                    + ", " + "but got a "
-                                    + urlConnection.getClass().getSimpleName());
-                    cancel(false);
-                    return null;
-                }
+                telnetClient.registerInputListener(new TelnetInputListener() {
+                    @Override
+                    public void telnetInputAvailable() {
+                        intentHandler
+                                .removeCallbacks(updateIntentSender);
 
-                TelnetURLConnection telnetURLConnection = (TelnetURLConnection) urlConnection;
+                        String line = buffer.toString();
+                        buffer = new StringBuilder();
+                        try {
+                            DeviceListParser.INSTANCE.parseEvent(line
+                                    .trim());
+                        } catch (Exception e) {
+                            Log.e(TAG, "event parse error. Event: "
+                                    + line, e);
+                        }
 
-                telnetURLConnection
-                        .setTelnetTerminalHandler(new DefaultTelnetTerminalHandler() {
-                            @Override
-                            public void LineFeed() {
-                                intentHandler
-                                        .removeCallbacks(updateIntentSender);
+                        intentHandler.postDelayed(updateIntentSender,
+                                UPDATE_INTENT_WAITTIME);
+                    }
+                });
 
-                                String line = buffer.toString();
-                                buffer = new StringBuilder();
-                                try {
-                                    DeviceListParser.INSTANCE.parseEvent(line
-                                            .trim());
-                                } catch (Exception e) {
-                                    Log.e(TAG, "event parse error. Event: "
-                                            + line, e);
-                                }
 
-                                intentHandler.postDelayed(updateIntentSender,
-                                        UPDATE_INTENT_WAITTIME);
-                            }
-                        });
-                telnetURLConnection.setConnectTimeout(0);
-
-                inputStream = telnetURLConnection.getInputStream();
-
-                outputStream = telnetURLConnection.getOutputStream();
+                inputStream = telnetClient.getInputStream();
+                outputStream = telnetClient.getOutputStream();
                 bufferedOutputStream = new BufferedOutputStream(outputStream);
                 printWriter = new PrintWriter(bufferedOutputStream);
 
@@ -366,11 +333,7 @@ public class TelnetConnection implements FHEMConnection {
                     buffer.append((char) ch);
                 }
 
-                if (urlConnection instanceof TelnetURLConnection) {
-                    telnetURLConnection.disconnect();
-                }
-            } catch (ConnectTimeoutException e) {
-                Log.e(TAG, "timeout", e);
+                telnetClient.disconnect();
             } catch (SocketTimeoutException e) {
                 Log.e(TAG, "timeout", e);
             } catch (Exception e) {

@@ -62,8 +62,9 @@ public class PlayStoreBillingService extends Service implements ServiceConnectio
 
         /**
          * Run the request, starting the connection if necessary.
+         *
          * @return true if the request was executed or queued; false if there
-         * was an error starting the connection
+         *         was an error starting the connection
          */
         public boolean runRequest() {
             if (runIfConnected()) {
@@ -80,8 +81,9 @@ public class PlayStoreBillingService extends Service implements ServiceConnectio
 
         /**
          * Try running the request directly if the service is already connected.
+         *
          * @return true if the request ran successfully; false if the service
-         * is not connected or there was an error when trying to use it
+         *         is not connected or there was an error when trying to use it
          */
         public boolean runIfConnected() {
             Log.d(TAG, getClass().getSimpleName());
@@ -104,6 +106,7 @@ public class PlayStoreBillingService extends Service implements ServiceConnectio
          * Called when a remote exception occurs while trying to execute the
          * {@link #run()} method.  The derived class can override this to
          * execute exception-handling code.
+         *
          * @param e the exception
          */
         protected void onRemoteException(RemoteException e) {
@@ -113,6 +116,7 @@ public class PlayStoreBillingService extends Service implements ServiceConnectio
 
         /**
          * The derived class must implement this method.
+         *
          * @throws RemoteException
          */
         abstract protected long run() throws RemoteException;
@@ -120,6 +124,7 @@ public class PlayStoreBillingService extends Service implements ServiceConnectio
         /**
          * This is called when Android Market sends a response code for this
          * request.
+         *
          * @param responseCode the response code
          */
         protected void responseCodeReceived(ResponseCode responseCode) {
@@ -334,7 +339,8 @@ public class PlayStoreBillingService extends Service implements ServiceConnectio
     /**
      * The {@link PlayStoreBillingReceiver} sends messages to this service using intents.
      * Each intent has an action and some extra arguments specific to that action.
-     * @param intent the intent containing one of the supported actions
+     *
+     * @param intent  the intent containing one of the supported actions
      * @param startId an identifier for the invocation instance of this service
      */
     public void handleCommand(Intent intent, int startId) {
@@ -350,7 +356,7 @@ public class PlayStoreBillingService extends Service implements ServiceConnectio
                 confirmNotifications(startId, notifyIds);
             } else if (ACTION_GET_PURCHASE_INFORMATION.equals(action)) {
                 String notifyId = intent.getStringExtra(NOTIFICATION_ID);
-                getPurchaseInformation(startId, new String[] { notifyId });
+                getPurchaseInformation(startId, new String[]{notifyId});
             } else if (ACTION_PURCHASE_STATE_CHANGED.equals(action)) {
                 String signedData = intent.getStringExtra(INAPP_SIGNED_DATA);
                 String signature = intent.getStringExtra(INAPP_SIGNATURE);
@@ -370,6 +376,7 @@ public class PlayStoreBillingService extends Service implements ServiceConnectio
     /**
      * Binds to the MarketBillingService and returns true if the bind
      * succeeded.
+     *
      * @return true if the bind succeeded; false otherwise
      */
     private boolean bindToMarketBillingService() {
@@ -395,6 +402,7 @@ public class PlayStoreBillingService extends Service implements ServiceConnectio
 
     /**
      * Checks if in-app billing is supported.
+     *
      * @return true if supported; false otherwise
      */
     public boolean checkBillingSupported() {
@@ -406,9 +414,10 @@ public class PlayStoreBillingService extends Service implements ServiceConnectio
      * the purchase succeeds (or is canceled) the {@link PlayStoreBillingReceiver}
      * receives an intent with the action {@link li.klass.fhem.billing.BillingConstants#ACTION_NOTIFY}.
      * Returns false if there was an error trying to connect to Android Market.
-     * @param productId an identifier for the item being offered for purchase
+     *
+     * @param productId        an identifier for the item being offered for purchase
      * @param developerPayload a payload that is associated with a given
-     * purchase, if null, no payload is sent
+     *                         purchase, if null, no payload is sent
      * @return false if there was an error connecting to Android Market
      */
     public boolean requestPurchase(String productId, String developerPayload) {
@@ -419,6 +428,7 @@ public class PlayStoreBillingService extends Service implements ServiceConnectio
      * Requests transaction information for all managed items. Call this only when the
      * application is first installed or after a database wipe. Do NOT call this
      * every time the application starts up.
+     *
      * @return false if there was an error connecting to Android Market
      */
     public boolean restoreTransactions() {
@@ -431,9 +441,10 @@ public class PlayStoreBillingService extends Service implements ServiceConnectio
      * identifiers back to the MarketBillingService, which ACKs them to the
      * server. Returns false if there was an error trying to connect to the
      * MarketBillingService.
-     * @param startId an identifier for the invocation instance of this service
+     *
+     * @param startId   an identifier for the invocation instance of this service
      * @param notifyIds a list of opaque identifiers associated with purchase
-     * state changes.
+     *                  state changes.
      * @return false if there was an error connecting to Market
      */
     private boolean confirmNotifications(int startId, String[] notifyIds) {
@@ -448,9 +459,9 @@ public class PlayStoreBillingService extends Service implements ServiceConnectio
      * in an intent with the action {@link li.klass.fhem.billing.BillingConstants#ACTION_PURCHASE_STATE_CHANGED}.
      * Returns false if there was an error trying to connect to the MarketBillingService.
      *
-     * @param startId an identifier for the invocation instance of this service
+     * @param startId   an identifier for the invocation instance of this service
      * @param notifyIds a list of opaque identifiers associated with purchase
-     * state changes
+     *                  state changes
      * @return false if there was an error connecting to Android Market
      */
     private boolean getPurchaseInformation(int startId, String[] notifyIds) {
@@ -461,9 +472,10 @@ public class PlayStoreBillingService extends Service implements ServiceConnectio
      * Verifies that the data was signed with the given signature, and calls
      * {@link PlayStoreResponseHandler#purchaseResponse}
      * for each verified purchase.
-     * @param startId an identifier for the invocation instance of this service
+     *
+     * @param startId    an identifier for the invocation instance of this service
      * @param signedData the signed JSON string (signed, not encrypted)
-     * @param signature the signature for the data, signed with the private key
+     * @param signature  the signature for the data, signed with the private key
      */
     private void purchaseStateChanged(int startId, String signedData, String signature) {
         ArrayList<PlayStoreSecurity.VerifiedPurchase> purchases;
@@ -494,10 +506,11 @@ public class PlayStoreBillingService extends Service implements ServiceConnectio
      * for any purchase state changes.  All purchase state changes are received
      * in the {@link PlayStoreBillingReceiver} and passed to this service, where they are
      * handled in {@link #purchaseStateChanged(int, String, String)}.
-     * @param requestId a number that identifies a request, assigned at the
-     * time the request was made to Android Market
+     *
+     * @param requestId    a number that identifies a request, assigned at the
+     *                     time the request was made to Android Market
      * @param responseCode a response code from Android Market to indicate the state
-     * of the request
+     *                     of the request
      */
     private void checkResponseCode(long requestId, ResponseCode responseCode) {
         BillingRequest request = sentRequests.get(requestId);
@@ -568,7 +581,11 @@ public class PlayStoreBillingService extends Service implements ServiceConnectio
 
     public void unbind() {
         try {
-            unbindService(this);
+            boolean isBound = getApplicationContext().bindService(new Intent(getApplicationContext(), PlayStoreBillingService.class), this, Context.BIND_AUTO_CREATE);
+
+            if (isBound) {
+                unbindService(this);
+            }
         } catch (IllegalArgumentException e) {
             Log.d(TAG, "error while unbinding the service", e);
             // This might happen if the service was disconnected
