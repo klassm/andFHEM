@@ -36,7 +36,6 @@ buildscript {
 dependencies {
     compile project(':ActionBarSherlock')
     compile fileTree(dir: './libs', include: '*.jar')
-    compile 'commons-net:commons-net:3.2'
 }
 
 sourceSets {
