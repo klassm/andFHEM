@@ -74,7 +74,8 @@ public enum DeviceType {
     HCS("HCS", HCSDevice.class, new SwitchActionRowAdapter<HCSDevice>(HCSDevice.class)),
     OWTHERM("OWTHERM", OwthermDevice.class),
     OWDEVICE("OWDevice", OwDevice.class, new ToggleableAdapterWithSwitchActionRow<OwDevice>(OwDevice.class)),
-    UNIROLL("UNIRoll", UniRollDevice.class, new UniRollAdapter());
+    UNIROLL("UNIRoll", UniRollDevice.class, new UniRollAdapter()),
+    TRXSecurity("TRX_SECURITY", TRXSecurityDevice.class);
 
     private String xmllistTag;
     private Class<? extends Device> deviceClass;
