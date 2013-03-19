@@ -145,9 +145,12 @@ public class TelnetConnection implements FHEMConnection {
             String returnValue = buffer.toString();
             int startPos = returnValue.indexOf(", try help");
             if (startPos != -1) {
-                returnValue = returnValue.substring(startPos
-                        + ", try help".length());
+                returnValue = returnValue.substring(startPos + ", try help".length());
             }
+
+            startPos = returnValue.indexOf("<");
+            returnValue = returnValue.substring(startPos);
+
             returnValue = returnValue.replaceAll("Bye...", "");
             Log.d(TAG, "result is :: " + returnValue);
             return returnValue;
