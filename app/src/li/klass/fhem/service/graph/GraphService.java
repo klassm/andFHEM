@@ -24,10 +24,8 @@
 
 package li.klass.fhem.service.graph;
 
-import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
-import android.widget.Toast;
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.constants.Actions;
@@ -40,11 +38,10 @@ import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class GraphService {
     public static final GraphService INSTANCE = new GraphService();
+    public static final SimpleDateFormat GRAPH_ENTRY_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
 
     private GraphService() {
     }
@@ -53,16 +50,15 @@ public class GraphService {
      * Retrieves {@link GraphEntry} objects from FHEM. When the entries are available, the given listener object will
      * be notified.
      *
-     *
-     * @param device concerned device
+     * @param device             concerned device
      * @param seriesDescriptions series descriptions each representing one series in the resulting chart
-     * @param startDate read FileLog entries from the given date
-     * @param endDate read FileLog entries up to the given date
+     * @param startDate          read FileLog entries from the given date
+     * @param endDate            read FileLog entries up to the given date
      * @return read graph data or null (if the device does not have a FileLog device)
      */
     @SuppressWarnings("unchecked")
     public HashMap<ChartSeriesDescription, List<GraphEntry>> getGraphData(Device device, ArrayList<ChartSeriesDescription> seriesDescriptions,
-                                                           final Calendar startDate, final Calendar endDate) {
+                                                                          final Calendar startDate, final Calendar endDate) {
 
         if (device.getFileLog() == null) return null;
 
@@ -91,9 +87,9 @@ public class GraphService {
      * {@link GraphEntry} objects and be returned.
      *
      * @param fileLogName name of the fileLog. This usually equals to "FileLog_${deviceName}".
-     * @param columnSpec column specification to read.
-     * @param startDate read FileLog entries from the given date
-     * @param endDate read FileLog entries up to the given date
+     * @param columnSpec  column specification to read.
+     * @param startDate   read FileLog entries from the given date
+     * @param endDate     read FileLog entries up to the given date
      * @return read fileLog entries converted to {@link GraphEntry} objects.
      */
     private List<GraphEntry> getCurrentGraphEntriesFor(String fileLogName, String columnSpec,
@@ -108,27 +104,28 @@ public class GraphService {
      * Looks for any {@link GraphEntry} objects within the returned String. Unfortunately, FHEM does not return any
      * line delimiters, to that a pretty complicated regular expression has to be applied.
      *
-     *
      * @param content content to parse
      * @return found {@link GraphEntry} objects.
      */
-    private List<GraphEntry> findGraphEntries(String content) {
-        content += "0000"; //dummy for easy regexp matching
-
-        Pattern pattern = Pattern.compile("([\\d]{4}-[\\d]{2}-[\\d]{2}_[\\d]{2}:[\\d]{2}:[\\d]{2}) ([-]?[\\d\\.]+(?=[\\d]{4}))");
-        Matcher matcher = pattern.matcher(content);
+    List<GraphEntry> findGraphEntries(String content) {
+        content = content.replaceAll("\r", "");
 
         List<GraphEntry> result = new ArrayList<GraphEntry>();
-        SimpleDateFormat providedDateFormat = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
 
-        while(matcher.find()) {
-            String entryTime = matcher.group(1);
-            float entryValue = Float.valueOf(matcher.group(2));
+        String[] entries = content.split("\n");
+        for (String entry : entries) {
+
+            String[] parts = entry.split(" ");
+            if (parts.length != 2) continue;
+
+            String entryTime = parts[0];
+            String entryValue = parts[1];
 
             try {
-                Date entryDate = providedDateFormat.parse(entryTime);
-                result.add(new GraphEntry(entryDate, entryValue));
-                
+                Date entryDate = GRAPH_ENTRY_DATE_FORMAT.parse(entryTime);
+                float entryFloatValue = Float.valueOf(entryValue);
+
+                result.add(new GraphEntry(entryDate, entryFloatValue));
             } catch (ParseException e) {
                 Log.e(GraphService.class.getName(), "cannot parse date " + entryTime, e);
             } catch (NumberFormatException e) {
