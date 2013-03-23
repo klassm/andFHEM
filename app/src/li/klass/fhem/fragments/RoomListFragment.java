@@ -38,7 +38,6 @@ import li.klass.fhem.adapter.rooms.RoomListAdapter;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
-import li.klass.fhem.fragments.core.ActionBarShowTabs;
 import li.klass.fhem.fragments.core.BaseFragment;
 import li.klass.fhem.fragments.core.TopLevelFragment;
 import li.klass.fhem.util.advertisement.AdvertisementUtil;
@@ -48,7 +47,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class RoomListFragment extends BaseFragment implements ActionBarShowTabs, TopLevelFragment {
+public class RoomListFragment extends BaseFragment implements TopLevelFragment {
 
     private transient RoomListAdapter adapter;
 

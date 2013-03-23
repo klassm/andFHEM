@@ -55,11 +55,6 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return contentView;
     }

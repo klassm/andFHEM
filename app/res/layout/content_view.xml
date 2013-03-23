@@ -23,23 +23,8 @@
   ~    51 Franklin Street, Fifth Floor
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="horizontal">
-
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                 android:layout_width="fill_parent"
-                 android:layout_height="match_parent"
-                 android:paddingLeft="30dp"
-                 android:id="@+id/mainContent">
-    </FrameLayout>
-    <!--<ViewPager xmlns:android="http://schemas.android.com/apk/res/android"-->
-    <!--android:layout_width="fill_parent"-->
-    <!--android:layout_height="match_parent"-->
-    <!--android:id="@+id/content"-->
-    <!--android:paddingLeft="30dp">-->
-    <!--</ViewPager>-->
-    <TextView android:id="@+id/tabletIndicator" android:visibility="gone"
-              android:layout_height="wrap_content" android:layout_width="wrap_content"/>
-</LinearLayout>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:id="@+id/content">
+</FrameLayout>

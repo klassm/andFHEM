@@ -50,7 +50,7 @@ public enum FragmentType {
     ROOM_DETAIL(RoomDetailFragment.class, RoomListFragment.class),
     ROOM_LIST(RoomListFragment.class, R.string.tab_roomList, 1, null),
     SEND_COMMAND(SendCommandFragment.class),
-    DEVICE_SELECTION(DeviceNameSelectionFragment.class, DeviceNameSelectionNavigationFragment.class),
+    DEVICE_SELECTION(DeviceNameSelectionFragment.class, DeviceNameSelectionNavigationFragment.class, true),
     DEVICE_NAME_LIST_NAVIGATION(DeviceNameListNavigationFragment.class),
     TIMER_OVERVIEW(TimerListFragment.class),
     TIMER_DETAIL(TimerDetailFragment.class);
@@ -58,6 +58,7 @@ public enum FragmentType {
     private Class<? extends BaseFragment> fragmentClass;
     private Class<? extends BaseFragment> navigationFragment;
     private String topLevelTabName;
+    private boolean showTabs;
 
     private static Comparator<FragmentType> topLevelFragmentNameComparator = new Comparator<FragmentType>() {
         @Override
@@ -72,14 +73,14 @@ public enum FragmentType {
         this(fragmentClass, null, -1, null);
     }
 
-    FragmentType(Class<? extends BaseFragment> fragmentClass, Class<? extends BaseFragment> navigationFragment) {
-        this(fragmentClass, null, -1, navigationFragment);
+    FragmentType(Class<? extends BaseFragment> fragmentClass, Class<? extends BaseFragment> navigationClass) {
+        this(fragmentClass, null, -1, navigationClass);
     }
 
     FragmentType(Class<? extends BaseFragment> fragmentClass, int topLevelTabStringId, int topLevelPosition,
-                 Class<? extends BaseFragment> navigationFragment) {
+                 Class<? extends BaseFragment> navigationClass) {
         this(fragmentClass, topLevelTabStringId == -1 ? null : AndFHEMApplication.getContext().getString(topLevelTabStringId),
-                topLevelPosition, navigationFragment);
+                topLevelPosition, navigationClass);
     }
 
     FragmentType(Class<? extends BaseFragment> fragmentClass, String topLevelTabName, int topLevelPosition,
@@ -88,6 +89,11 @@ public enum FragmentType {
         this.topLevelTabName = topLevelTabName;
         this.topLevelPosition = topLevelPosition;
         this.navigationFragment = navigationFragment;
+    }
+
+    FragmentType(Class<? extends BaseFragment> fragmentClass, Class<? extends BaseFragment> navigationClass, boolean showTabs) {
+        this(fragmentClass, navigationClass);
+        this.showTabs = true;
     }
 
     public static List<FragmentType> getTopLevelFragments() {
@@ -139,5 +145,9 @@ public enum FragmentType {
 
     public boolean isTopLevelFragment() {
         return topLevelTabName != null;
+    }
+
+    public boolean isShowTabs() {
+        return isTopLevelFragment() || showTabs;
     }
 }

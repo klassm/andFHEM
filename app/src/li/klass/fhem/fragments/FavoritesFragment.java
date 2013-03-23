@@ -37,11 +37,10 @@ import li.klass.fhem.R;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.core.Device;
-import li.klass.fhem.fragments.core.ActionBarShowTabs;
 import li.klass.fhem.fragments.core.DeviceListFragment;
 import li.klass.fhem.fragments.core.TopLevelFragment;
 
-public class FavoritesFragment extends DeviceListFragment implements TopLevelFragment, ActionBarShowTabs {
+public class FavoritesFragment extends DeviceListFragment implements TopLevelFragment {
 
     @SuppressWarnings("unused")
     public FavoritesFragment(Bundle bundle) {
@@ -49,7 +48,8 @@ public class FavoritesFragment extends DeviceListFragment implements TopLevelFra
     }
 
     @SuppressWarnings("unused")
-    public FavoritesFragment() {}
+    public FavoritesFragment() {
+    }
 
     @Override
     protected String getUpdateAction() {
@@ -72,7 +72,7 @@ public class FavoritesFragment extends DeviceListFragment implements TopLevelFra
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        if (! super.onContextItemSelected(item)) {
+        if (!super.onContextItemSelected(item)) {
             switch (item.getItemId()) {
                 case CONTEXT_MENU_FAVORITES_DELETE:
                     Intent favoriteRemoveIntent = new Intent(Actions.FAVORITE_REMOVE);
