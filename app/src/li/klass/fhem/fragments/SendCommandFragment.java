@@ -54,7 +54,8 @@ public class SendCommandFragment extends BaseFragment {
     }
 
     @SuppressWarnings("unused")
-    public SendCommandFragment() {}
+    public SendCommandFragment() {
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -106,6 +107,7 @@ public class SendCommandFragment extends BaseFragment {
                         return;
                     }
 
+                    if (result.replaceAll("[\\r\\n]", "").isEmpty()) return;
                     new AlertDialog.Builder(getActivity())
                             .setTitle(R.string.command_execution_result)
                             .setMessage(result)
