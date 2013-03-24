@@ -44,7 +44,6 @@ public class ContentHolderFragment extends Fragment implements Serializable {
     private transient Bundle data = null;
     private BaseFragment navigationFragment;
     private BaseFragment contentFragment;
-
     private transient View contentView;
 
     public ContentHolderFragment(FragmentType fragmentType, Bundle data) {
@@ -60,22 +59,22 @@ public class ContentHolderFragment extends Fragment implements Serializable {
     }
 
     @Override
-    public void onPause() {
-        this.contentView = getView();
-        super.onPause();
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
         fillView();
     }
 
+    @Override
+    public void onPause() {
+        this.contentView = getView();
+        super.onPause();
+    }
+
     public void fillView() {
-        if (contentFragment == null) {
-            contentFragment = createContentFragment();
-            navigationFragment = createNavigationFragment();
-        }
+//        if (contentFragment == null) {
+        contentFragment = createContentFragment();
+        navigationFragment = createNavigationFragment();
+//        }
 
         try {
             setContentFragment(contentFragment);
@@ -156,7 +155,7 @@ public class ContentHolderFragment extends Fragment implements Serializable {
         return constructor.newInstance(data);
     }
 
-    public void onContentChanged(Bundle newData) {
+    public void onHolderContentChanged(Bundle newData) {
         data = newData;
 
         if (contentFragment != null) contentFragment.onContentChanged(newData);
