@@ -32,6 +32,7 @@ import li.klass.fhem.domain.FileLogDevice;
 import li.klass.fhem.domain.floorplan.Coordinate;
 import li.klass.fhem.domain.floorplan.FloorplanPosition;
 import li.klass.fhem.domain.genericview.ShowField;
+import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.service.room.AssociatedDeviceCallback;
 import li.klass.fhem.util.StringUtil;
 import org.w3c.dom.NamedNodeMap;
@@ -283,6 +284,13 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
      * @param chartSeries fill me with chart descriptions
      */
     protected void fillDeviceCharts(List<DeviceChart> chartSeries) {
+        if (fileLog == null) return;
+
+        for (FileLogDevice.CustomGraph customGraph : fileLog.getCustomGraphs()) {
+            addDeviceChartIfNotNull(new DeviceChart(customGraph.description, new ChartSeriesDescription(
+                    customGraph.description, customGraph.columnSpecification, customGraph.yAxisName
+            )));
+        }
     }
 
     protected void addDeviceChartIfNotNull(DeviceChart holder, Object... notNull) {

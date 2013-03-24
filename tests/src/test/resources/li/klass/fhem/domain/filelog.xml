@@ -35,6 +35,8 @@
             <INT key="TYPE" value="FileLog"/>
             <INT key="currentlogfile" value="/var/InternerSpeicher/fhem/log/CUL_HM_KFM100_122334-2012.log"/>
             <INT key="logfile" value="/var/InternerSpeicher/fhem/log/CUL_HM_KFM100_122334-%Y.log"/>
+            <ATTR key="custom_graph" value="4:#axis1#someValue"/>
+            <ATTR key="custom_graph1" value="46:#axis#someValue with space"/>
             <ATTR key="logtype" value="text,vol5"/>
             <ATTR key="room" value="room"/>
         </FileLog>

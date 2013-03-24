@@ -226,6 +226,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
     protected void onRestart() {
         super.onRestart();
         Log.i(TAG, "onRestart");
+        sendBroadcast(new Intent(Actions.BACK));
     }
 
     @Override
@@ -259,7 +260,6 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
     protected void onPostResume() {
         super.onPostResume();
         Log.d(TAG, "onPostResume()");
-
         // process the intent received in onNewIntent()
         if (waitingIntent == null || !waitingIntent.hasExtra(BundleExtraKeys.FRAGMENT_NAME)) {
             return;
@@ -275,6 +275,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
         }
 
         waitingIntent = null;
+
     }
 
     @Override
@@ -402,7 +403,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
         }
 
         if (requiredAction == FragmentAction.UPDATE) {
-            currentHistoryStackEntry.onContentChanged(data);
+            currentHistoryStackEntry.onHolderContentChanged(data);
 
             return;
         }

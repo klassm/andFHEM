@@ -27,18 +27,19 @@ package li.klass.fhem.service.graph.description;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
+import li.klass.fhem.AndFHEMApplication;
 
 import java.io.Serializable;
 
 public class ChartSeriesDescription implements Parcelable, Serializable {
 
-    private int columnName;
+    private String columnName;
     private String columnSpecification;
-    private boolean showDiscreteValues;
+    private boolean showDiscreteValues = false;
     private boolean showRegression = false;
     private boolean showSum = false;
-    private double sumDivisionFactor;
-    private final int yAxisName;
+    private double sumDivisionFactor = 0;
+    private final String yAxisName;
 
     public static ChartSeriesDescription getDiscreteValuesInstance(int columnName, String columnSpecification, int yAxisName) {
         return new ChartSeriesDescription(columnName, columnSpecification, true, false, false, 0, yAxisName);
@@ -50,6 +51,22 @@ public class ChartSeriesDescription implements Parcelable, Serializable {
 
     public static ChartSeriesDescription getSumInstance(int columnName, String columnSpecification, double divisionFactor, int yAxisName) {
         return new ChartSeriesDescription(columnName, columnSpecification, false, false, true, divisionFactor, yAxisName);
+    }
+
+    public ChartSeriesDescription(String columnName, String columnSpecification, String yAxisName) {
+        this.columnName = columnName;
+        this.columnSpecification = columnSpecification;
+        this.yAxisName = yAxisName;
+    }
+
+    public ChartSeriesDescription(int columnName, String columnSpecification, boolean showDiscreteValues, boolean showRegression, boolean showSum, double sumDivisionFactor, int yAxisName) {
+        this.columnName = AndFHEMApplication.getContext().getString(columnName);
+        this.columnSpecification = columnSpecification;
+        this.showDiscreteValues = showDiscreteValues;
+        this.showRegression = showRegression;
+        this.showSum = showSum;
+        this.sumDivisionFactor = sumDivisionFactor;
+        this.yAxisName = AndFHEMApplication.getContext().getString(yAxisName);
     }
 
     public static final Creator<ChartSeriesDescription> CREATOR = new Creator<ChartSeriesDescription>() {
@@ -66,31 +83,21 @@ public class ChartSeriesDescription implements Parcelable, Serializable {
         }
     };
 
-    public ChartSeriesDescription(int columnName, String columnSpecification, boolean showDiscreteValues, boolean showRegression, boolean showSum, double sumDivisionFactor, int yAxisName) {
-        this.columnName = columnName;
-        this.columnSpecification = columnSpecification;
-        this.showDiscreteValues = showDiscreteValues;
-        this.showRegression = showRegression;
-        this.showSum = showSum;
-        this.sumDivisionFactor = sumDivisionFactor;
-        this.yAxisName = yAxisName;
-    }
-
     public ChartSeriesDescription(int columnName, String columnSpecification, int yAxisName) {
         this(columnName, columnSpecification, false, false, false, 0, yAxisName);
     }
 
     private ChartSeriesDescription(Bundle bundle) {
-        this.columnName = bundle.getInt("COLUMN_NAME");
+        this.columnName = bundle.getString("COLUMN_NAME");
         this.columnSpecification = bundle.getString("COLUMN_SPEC");
         this.showDiscreteValues = bundle.getBoolean("SHOW_DISCRETE_VALUES");
         this.showRegression = bundle.getBoolean("SHOW_REGRESSION");
         this.showSum = bundle.getBoolean("SHOW_SUM");
         this.sumDivisionFactor = bundle.getDouble("SUM_DIVISION_FACTOR");
-        this.yAxisName = bundle.getInt("Y_AXIS_NAME");
+        this.yAxisName = bundle.getString("Y_AXIS_NAME");
     }
 
-    public int getColumnName() {
+    public String getColumnName() {
         return columnName;
     }
 
@@ -121,17 +128,12 @@ public class ChartSeriesDescription implements Parcelable, Serializable {
 
         ChartSeriesDescription that = (ChartSeriesDescription) o;
 
-        return columnName == that.columnName;
+        return columnName.equals(that.columnName);
 
     }
 
-    public int getYAxisResource() {
+    public String getYAxisName() {
         return yAxisName;
-    }
-
-    @Override
-    public int hashCode() {
-        return columnName;
     }
 
     @Override
@@ -142,13 +144,13 @@ public class ChartSeriesDescription implements Parcelable, Serializable {
     @Override
     public void writeToParcel(Parcel parcel, int flags) {
         Bundle bundle = new Bundle();
-        bundle.putInt("COLUMN_NAME", columnName);
+        bundle.putString("COLUMN_NAME", columnName);
         bundle.putString("COLUMN_SPEC", columnSpecification);
         bundle.putBoolean("SHOW_DISCRETE_VALUES", showDiscreteValues);
         bundle.putBoolean("SHOW_SUM", showSum);
         bundle.putBoolean("SHOW_REGRESSION", showRegression);
         bundle.putDouble("SUM_DIVISION_FACTOR", sumDivisionFactor);
-        bundle.putInt("Y_AXIS_NAME", yAxisName);
+        bundle.putString("Y_AXIS_NAME", yAxisName);
         parcel.writeBundle(bundle);
     }
 

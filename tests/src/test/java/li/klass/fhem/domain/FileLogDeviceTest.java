@@ -29,8 +29,7 @@ import org.junit.Test;
 
 import static li.klass.fhem.domain.FileLogDevice.extractConcerningDeviceNameFromDefinition;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.hamcrest.Matchers.nullValue;
+import static org.hamcrest.Matchers.*;
 import static org.hamcrest.core.Is.is;
 
 public class FileLogDeviceTest extends DeviceXMLParsingBase {
@@ -48,6 +47,10 @@ public class FileLogDeviceTest extends DeviceXMLParsingBase {
 
         assertThat(device.getFileLog(), is(nullValue()));
         assertThat(device.getDeviceCharts().size(), is(0));
+
+        assertThat(device.getCustomGraphs().size(), is(2));
+        assertThat(device.getCustomGraphs(), hasItem(new FileLogDevice.CustomGraph("4:", "someValue", "axis1")));
+        assertThat(device.getCustomGraphs(), hasItem(new FileLogDevice.CustomGraph("46:", "someValue with space", "axis")));
     }
 
     @Test

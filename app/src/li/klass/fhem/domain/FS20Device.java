@@ -116,6 +116,8 @@ public class FS20Device extends DimmableDiscreteStatesDevice<FS20Device> impleme
 
     @Override
     protected void fillDeviceCharts(List<DeviceChart> chartSeries) {
+        super.fillDeviceCharts(chartSeries);
+
         addDeviceChartIfNotNull(new DeviceChart(R.string.stateGraph,
                 new ChartSeriesDescription(R.string.state, "3:::$fld[2]=~/on.*/?1:0", true, false, false, 1, R.string.yAxisFS20State)), getState());
     }

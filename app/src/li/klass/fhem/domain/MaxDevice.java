@@ -260,6 +260,8 @@ public class MaxDevice extends ToggleableDevice<MaxDevice> implements DesiredTem
 
     @Override
     protected void fillDeviceCharts(List<DeviceChart> chartSeries) {
+        super.fillDeviceCharts(chartSeries);
+
         if (actuator != null) {
             addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureActuatorGraph,
                     ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:temperature", R.string.yAxisTemperature),

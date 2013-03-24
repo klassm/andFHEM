@@ -181,6 +181,8 @@ public class OregonDevice extends Device<OregonDevice> {
 
     @Override
     protected void fillDeviceCharts(List<DeviceChart> chartSeries) {
+        super.fillDeviceCharts(chartSeries);
+
         addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureGraph,
                 ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:temperature:0:", R.string.yAxisTemperature)), temperature);
         addDeviceChartIfNotNull(new DeviceChart(R.string.humidityGraph,

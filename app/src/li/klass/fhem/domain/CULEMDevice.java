@@ -95,6 +95,8 @@ public class CULEMDevice extends Device<CULEMDevice> {
 
     @Override
     protected void fillDeviceCharts(List<DeviceChart> chartSeries) {
+        super.fillDeviceCharts(chartSeries);
+
         addDeviceChartIfNotNull(new DeviceChart(R.string.usageGraph,
                 ChartSeriesDescription.getSumInstance(R.string.currentUsage, "8::0:", getSumGraphDivisionFactor(), R.string.yAxisUsage)), currentUsage);
     }

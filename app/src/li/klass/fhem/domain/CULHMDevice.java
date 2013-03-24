@@ -401,6 +401,8 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
 
     @Override
     protected void fillDeviceCharts(List<DeviceChart> chartSeries) {
+        super.fillDeviceCharts(chartSeries);
+
         if (subType == null) return;
 
         switch (subType) {

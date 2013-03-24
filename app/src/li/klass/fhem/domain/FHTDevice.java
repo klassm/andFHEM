@@ -250,6 +250,8 @@ public class FHTDevice extends Device<FHTDevice> implements DesiredTempDevice,
 
     @Override
     protected void fillDeviceCharts(List<DeviceChart> chartSeries) {
+        super.fillDeviceCharts(chartSeries);
+
         addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureActuatorGraph,
                 ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:measured", R.string.yAxisTemperature),
                 ChartSeriesDescription.getDiscreteValuesInstance(R.string.desiredTemperature, "4:desired-temp", R.string.yAxisTemperature),

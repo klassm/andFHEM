@@ -146,6 +146,8 @@ public class TRXWeatherDevice extends Device<TRXWeatherDevice> {
 
     @Override
     protected void fillDeviceCharts(List<DeviceChart> chartSeries) {
+        super.fillDeviceCharts(chartSeries);
+
         addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureGraph,
                 ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:temperature:", R.string.yAxisTemperature),
                 new ChartSeriesDescription(R.string.dewpoint, "4:dewpoint:0:", R.string.yAxisTemperature)), temperature);

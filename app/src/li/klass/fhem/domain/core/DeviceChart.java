@@ -23,15 +23,21 @@
 
 package li.klass.fhem.domain.core;
 
+import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 
 import java.io.Serializable;
 
 public class DeviceChart implements Serializable {
-    public final int buttonText;
+    public final String buttonText;
     public final ChartSeriesDescription[] chartSeriesDescriptions;
 
-    public DeviceChart(int buttonText, ChartSeriesDescription... chartSeriesDescriptions) {
+    public DeviceChart(int buttonTextId, ChartSeriesDescription... chartSeriesDescriptions) {
+        this.buttonText = AndFHEMApplication.getContext().getString(buttonTextId);
+        this.chartSeriesDescriptions = chartSeriesDescriptions;
+    }
+
+    public DeviceChart(String buttonText, ChartSeriesDescription... chartSeriesDescriptions) {
         this.buttonText = buttonText;
         this.chartSeriesDescriptions = chartSeriesDescriptions;
     }

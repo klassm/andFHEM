@@ -64,20 +64,20 @@ public class DummyDataConnection implements FHEMConnection {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String today = simpleDateFormat.format(new Date());
 
-        return today + "_00:16:48 4.2" +
-                today + "_01:19:21 5.2" +
-                today + "_02:21:53 5.2" +
-                today + "_03:24:26 6.2" +
-                today + "_04:26:58 7.3" +
-                today + "_05:32:03 8.2" +
-                today + "_06:37:08 9.3" +
-                today + "_07:39:41 8.3" +
-                today + "_08:42:13 6.3" +
-                today + "_09:44:46 5.3" +
-                today + "_10:49:51 4.3" +
-                today + "_11:52:23 3.3" +
-                today + "_12:54:56 2.3" +
-                today + "_13:57:28 1.3" +
+        return today + "_00:16:48 4.2\r\n" +
+                today + "_01:19:21 5.2\r\n" +
+                today + "_02:21:53 5.2\r\n" +
+                today + "_03:24:26 6.2\r\n" +
+                today + "_04:26:58 7.3\r\n" +
+                today + "_05:32:03 8.2\r\n" +
+                today + "_06:37:08 9.3\r\n" +
+                today + "_07:39:41 8.3\r\n" +
+                today + "_08:42:13 6.3\r\n" +
+                today + "_09:44:46 5.3\r\n" +
+                today + "_10:49:51 4.3\r\n" +
+                today + "_11:52:23 3.3\r\n" +
+                today + "_12:54:56 2.3\r\n" +
+                today + "_13:57:28 1.3\r\n" +
                 "#" + columnSpec;
     }
 

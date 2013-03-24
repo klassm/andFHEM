@@ -72,11 +72,11 @@ public class ChartingActivity extends Activity implements Updateable {
 
     private class ScaleMappingKey {
         private int scaleNumber;
-        private int yAxisResourceId;
+        private String yAxisName;
 
-        private ScaleMappingKey(int scaleNumber, int yAxisResourceId) {
+        private ScaleMappingKey(int scaleNumber, String yAxisName) {
             this.scaleNumber = scaleNumber;
-            this.yAxisResourceId = yAxisResourceId;
+            this.yAxisName = yAxisName;
         }
 
         @Override
@@ -87,7 +87,7 @@ public class ChartingActivity extends Activity implements Updateable {
             ScaleMappingKey that = (ScaleMappingKey) o;
 
             if (scaleNumber != that.scaleNumber) return false;
-            if (yAxisResourceId != that.yAxisResourceId) return false;
+            if (!yAxisName.equals(that.yAxisName)) return false;
 
             return true;
         }
@@ -95,7 +95,7 @@ public class ChartingActivity extends Activity implements Updateable {
         @Override
         public int hashCode() {
             int result = scaleNumber;
-            result = 31 * result + yAxisResourceId;
+            result = 31 * result + (yAxisName != null ? yAxisName.hashCode() : 0);
             return result;
         }
     }
@@ -386,7 +386,7 @@ public class ChartingActivity extends Activity implements Updateable {
 
         // add values as data series, find out max and min values
         for (ChartSeriesDescription chartSeriesDescription : chartSeriesDescriptions) {
-            String dataSetName = getResources().getString(chartSeriesDescription.getColumnName());
+            String dataSetName = chartSeriesDescription.getColumnName();
             List<GraphEntry> data = graphData.get(chartSeriesDescription);
 
             TimeSeries timeSeries = new CustomTimeSeries(dataSetName, scaleNumber);
@@ -422,7 +422,7 @@ public class ChartingActivity extends Activity implements Updateable {
 
         // render regression and sum series
         for (ChartSeriesDescription seriesDescription : chartSeriesDescriptions) {
-            String dataSetName = getResources().getString(seriesDescription.getColumnName());
+            String dataSetName = seriesDescription.getColumnName();
             List<GraphEntry> data = graphData.get(seriesDescription);
 
             if (seriesDescription.isShowRegression()) {
@@ -450,7 +450,7 @@ public class ChartingActivity extends Activity implements Updateable {
         for (ScaleMappingKey scaleMappingKey : scaleMapping.keySet()) {
             int scaleNumber = scaleMappingKey.scaleNumber;
 
-            String title = getString(scaleMappingKey.yAxisResourceId);
+            String title = scaleMappingKey.yAxisName;
             renderer.setYTitle(title, scaleNumber);
 
             if (scaleNumber == 0) {
@@ -471,11 +471,11 @@ public class ChartingActivity extends Activity implements Updateable {
         Map<ScaleMappingKey, List<ChartSeriesDescription>> mapping = new HashMap<ScaleMappingKey, List<ChartSeriesDescription>>();
 
         for (ChartSeriesDescription chartSeriesDescription : graphData.keySet()) {
-            List<ChartSeriesDescription> scaleMappingList = getScaleMappingListFor(chartSeriesDescription.getYAxisResource(), mapping);
+            List<ChartSeriesDescription> scaleMappingList = getScaleMappingListFor(chartSeriesDescription.getYAxisName(), mapping);
             if (scaleMappingList != null) {
                 scaleMappingList.add(chartSeriesDescription);
             } else {
-                ScaleMappingKey key = new ScaleMappingKey(mapping.size(), chartSeriesDescription.getYAxisResource());
+                ScaleMappingKey key = new ScaleMappingKey(mapping.size(), chartSeriesDescription.getYAxisName());
                 List<ChartSeriesDescription> keyList = new ArrayList<ChartSeriesDescription>();
                 keyList.add(chartSeriesDescription);
 
@@ -491,9 +491,9 @@ public class ChartingActivity extends Activity implements Updateable {
     }
 
 
-    private List<ChartSeriesDescription> getScaleMappingListFor(int yAxisResourceId, Map<ScaleMappingKey, List<ChartSeriesDescription>> mapping) {
+    private List<ChartSeriesDescription> getScaleMappingListFor(String yAxisResource, Map<ScaleMappingKey, List<ChartSeriesDescription>> mapping) {
         for (ScaleMappingKey scaleMappingKey : mapping.keySet()) {
-            if (scaleMappingKey.yAxisResourceId == yAxisResourceId) {
+            if (scaleMappingKey.yAxisName.equals(yAxisResource)) {
                 return mapping.get(scaleMappingKey);
             }
         }

@@ -118,8 +118,7 @@ public class FHEMWebConnection implements FHEMConnection {
                 .append(" ").append(dateFormat.format(toDate)).append(" ")
                 .append(columnSpec).toString();
 
-        return requestCommandResponse(command).replaceAll("#" + columnSpec, "")
-                .replaceAll("[\\r\\n]", "");
+        return requestCommandResponse(command).replaceAll("#" + columnSpec, "");
     }
 
     @Override

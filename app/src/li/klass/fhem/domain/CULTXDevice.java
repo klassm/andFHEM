@@ -69,6 +69,8 @@ public class CULTXDevice extends Device<CULTXDevice> {
 
     @Override
     protected void fillDeviceCharts(List<DeviceChart> chartSeries) {
+        super.fillDeviceCharts(chartSeries);
+
         addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureHumidityGraph,
                 new ChartSeriesDescription(R.string.temperature, "4:humidity:0:", R.string.yAxisHumidity),
                 new ChartSeriesDescription(R.string.temperature, "4:temperature:0:", R.string.yAxisTemperature)), humidity, temperature);

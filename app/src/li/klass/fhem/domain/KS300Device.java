@@ -143,6 +143,8 @@ public class KS300Device extends Device<KS300Device> implements Serializable {
 
     @Override
     protected void fillDeviceCharts(List<DeviceChart> chartSeries) {
+        super.fillDeviceCharts(chartSeries);
+
         addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureHumidityGraph,
                 ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4::", R.string.yAxisTemperature),
                 new ChartSeriesDescription(R.string.humidity, "6::", R.string.yAxisHumidity)), temperature, humidity);
