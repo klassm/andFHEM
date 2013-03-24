@@ -214,6 +214,8 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
     public void afterXMLRead() {
         super.afterXMLRead();
 
+        weekProfile.afterXMLRead();
+
         if (getAssociatedDeviceCallback() != null) {
             CULHMDevice device = getAssociatedDeviceCallback().getAssociatedDevice();
             if (device != null) {

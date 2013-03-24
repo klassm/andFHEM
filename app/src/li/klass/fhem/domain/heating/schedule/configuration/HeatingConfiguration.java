@@ -74,4 +74,7 @@ public abstract class HeatingConfiguration<H extends BaseHeatingInterval, D exte
     public String getOffTime() {
         return null;
     }
+
+    public void afterXMLRead(WeekProfile<H, C, D> weekProfile) {
+    }
 }

@@ -111,6 +111,12 @@ public class MaxDevice extends ToggleableDevice<MaxDevice> implements DesiredTem
         weekProfile.readNode(key, value);
     }
 
+    @Override
+    public void afterXMLRead() {
+        super.afterXMLRead();
+        weekProfile.afterXMLRead();
+    }
+
     public void readTYPE(String value) {
         if (value.equalsIgnoreCase("ShutterContact")) {
             subType = SubType.WINDOW;

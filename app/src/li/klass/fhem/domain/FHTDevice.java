@@ -93,6 +93,12 @@ public class FHTDevice extends Device<FHTDevice> implements DesiredTempDevice,
         }
     }
 
+    @Override
+    public void afterXMLRead() {
+        super.afterXMLRead();
+        weekProfile.afterXMLRead();
+    }
+
     public void readBATTERY(String value) {
         battery = value;
     }

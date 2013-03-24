@@ -112,4 +112,8 @@ public class WeekProfile<H extends BaseHeatingInterval, C extends HeatingConfigu
             return time;
         }
     }
+
+    public void afterXMLRead() {
+        configuration.afterXMLRead(this);
+    }
 }

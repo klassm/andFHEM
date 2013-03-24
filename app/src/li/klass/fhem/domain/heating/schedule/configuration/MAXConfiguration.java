@@ -119,6 +119,8 @@ public class MAXConfiguration extends HeatingConfiguration<FilledTemperatureInte
 
     protected <D extends DayProfile<FilledTemperatureInterval, MaxDevice, MAXConfiguration>>
     String generateCommandFor(MaxDevice device, D dayProfile) {
+        addMidnightIntervalIfNotAvailable(dayProfile);
+
         StringBuilder builder = new StringBuilder();
 
         List<FilledTemperatureInterval> heatingIntervals = new ArrayList<FilledTemperatureInterval>(dayProfile.getHeatingIntervals());
@@ -141,5 +143,24 @@ public class MAXConfiguration extends HeatingConfiguration<FilledTemperatureInte
         shortName = ((char) (firstChar - 'a' + 'A')) + shortName.substring(1);
 
         return "set " + device.getName() + " weekProfile " + shortName + " " + builder.toString();
+    }
+
+    private <D extends DayProfile<FilledTemperatureInterval, MaxDevice, MAXConfiguration>> void addMidnightIntervalIfNotAvailable(D profile) {
+        boolean foundMidnightInterval = false;
+        for (FilledTemperatureInterval interval : profile.getHeatingIntervals()) {
+            if (interval.getChangedSwitchTime().equals("00:00")) {
+                foundMidnightInterval = true;
+                break;
+            }
+        }
+
+        if (!foundMidnightInterval) {
+            FilledTemperatureInterval interval = new FilledTemperatureInterval();
+            interval.setChangedSwitchTime("00:00");
+            interval.setChangedTemperature(5.5);
+            interval.setTimeFixed(true);
+
+            profile.addHeatingInterval(interval);
+        }
     }
 }
