@@ -68,7 +68,7 @@ public class FileLogDevice extends Device<FileLogDevice> {
     }
 
     private String concerningDeviceName;
-    private List<CustomGraph> customGraphs = new ArrayList<>();
+    private List<CustomGraph> customGraphs = new ArrayList<CustomGraph>();
 
     public void readREGEXP(String value) {
         this.concerningDeviceName = extractConcerningDeviceNameFromDefinition(value);
@@ -93,7 +93,7 @@ public class FileLogDevice extends Device<FileLogDevice> {
         String yAxisDescription = parts[1];
         String description = parts[2];
 
-        if (customGraphs == null) customGraphs = new ArrayList<>();
+        if (customGraphs == null) customGraphs = new ArrayList<CustomGraph>();
         customGraphs.add(new CustomGraph(pattern, description, yAxisDescription));
     }
 
