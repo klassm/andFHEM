@@ -31,7 +31,6 @@
     <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
                  android:layout_width="fill_parent"
                  android:layout_height="match_parent"
-                 android:paddingLeft="30dp"
                  android:id="@+id/mainContent">
     </FrameLayout>
     <!--<ViewPager xmlns:android="http://schemas.android.com/apk/res/android"-->

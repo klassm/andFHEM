@@ -32,6 +32,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.widget.Toast;
@@ -48,8 +49,6 @@ import li.klass.fhem.fragments.FragmentType;
 import li.klass.fhem.service.room.RoomListService;
 import li.klass.fhem.util.ApplicationProperties;
 
-import java.util.ArrayList;
-
 import static li.klass.fhem.constants.Actions.*;
 
 public abstract class FragmentBaseActivity extends SherlockFragmentActivity implements ActionBar.TabListener, Updateable {
@@ -59,16 +58,10 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
     ApplicationProperties applicationProperties = ApplicationProperties.INSTANCE;
     private ProgressDialog progressDialog;
     private boolean backPressed;
-
-    private enum FragmentAction {
-        CREATE_NEW, UPDATE, NOTHING
-    }
-
-    private ContentHolderFragment currentHistoryStackEntry = null;
-    private ArrayList<ContentHolderFragment> fragmentHistoryStack = new ArrayList<ContentHolderFragment>();
-
     private Receiver broadcastReceiver;
     private Menu optionsMenu;
+
+    private TopLevelFragment topLevelFragment;
 
     /**
      * an intent waiting to be processed, but received in the wrong activity state (widget problem ..)
@@ -106,6 +99,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
             firstRun = false;
         }
     };
+
     private boolean saveInstanceStateCalled = false;
 
     private class Receiver extends BroadcastReceiver {
@@ -189,6 +183,9 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
             AndFHEMApplication.INSTANCE.setIsTablet(true);
         }
 
+        topLevelFragment = new TopLevelFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.mainContent, topLevelFragment).commit();
+
         saveInstanceStateCalled = false;
 
         autoUpdateHandler = new Handler();
@@ -211,14 +208,8 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
         broadcastReceiver = new Receiver();
         registerReceiver(broadcastReceiver, broadcastReceiver.getIntentFilter());
 
-        boolean restoreResult = false;
-        if (savedInstanceState != null) {
-            restoreResult = restoreSavedInstance(savedInstanceState);
-        }
-
-        if (!getIntent().hasExtra(BundleExtraKeys.FRAGMENT_NAME) && (savedInstanceState == null || !restoreResult)) {
-            Log.i(TAG, "create a new favorites fragment");
-            switchToFragment(FragmentType.FAVORITES, new Bundle());
+        if (topLevelFragment.getCurrentContent() == null) {
+            switchToFragment(FragmentType.FAVORITES, null);
         }
     }
 
@@ -279,42 +270,6 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        this.saveInstanceStateCalled = true;
-        outState.putSerializable(BundleExtraKeys.CURRENT_FRAGMENT, currentHistoryStackEntry);
-        outState.putSerializable(BundleExtraKeys.FRAGMENT_HISTORY_STACK, fragmentHistoryStack);
-
-        if (getSupportActionBar().getSelectedTab() != null) {
-            outState.putInt(BundleExtraKeys.CURRENT_TAB, getSupportActionBar().getSelectedTab().getPosition());
-        }
-
-        super.onSaveInstanceState(outState);
-    }
-
-    @SuppressWarnings("unchecked")
-    private boolean restoreSavedInstance(Bundle savedInstanceState) {
-        try {
-            ArrayList<ContentHolderFragment> previousFragmentStack =
-                    (ArrayList<ContentHolderFragment>) savedInstanceState.getSerializable(BundleExtraKeys.FRAGMENT_HISTORY_STACK);
-
-            if (previousFragmentStack != null) {
-                fragmentHistoryStack = previousFragmentStack;
-            }
-
-            ContentHolderFragment currentEntry = (ContentHolderFragment) savedInstanceState.getSerializable(BundleExtraKeys.CURRENT_FRAGMENT);
-            if (currentEntry != null) {
-                switchToFragment(currentEntry, false);
-                return true;
-            } else {
-                return false;
-            }
-        } catch (Exception e) {
-            Log.i(TAG, "error occurred while restoring instance", e);
-            return false;
-        }
-    }
-
-    @Override
     protected void onResume() {
         super.onResume();
 
@@ -339,7 +294,11 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
 
     @Override
     public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
-        if (backPressed) return;
+        if (backPressed) {
+            backPressed = false;
+            return;
+        }
+        getSupportFragmentManager().popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
 
         Object tag = tab.getTag();
         Log.d(TAG, "selected tab with target " + tag);
@@ -350,7 +309,6 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
         }
 
         FragmentType fragmentTypeTag = (FragmentType) tag;
-        if (fragmentTypeTag == currentHistoryStackEntry.getFragmentType()) return;
 
         Intent intent = new Intent(Actions.SHOW_FRAGMENT);
         intent.putExtra(BundleExtraKeys.FRAGMENT, fragmentTypeTag);
@@ -375,101 +333,39 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
 
     @Override
     public void onBackPressed() {
+        backPressed = true;
         onBackPressed(null);
     }
 
     private void onBackPressed(Bundle data) {
-        backPressed = true;
-
-        removeDialog();
-        ContentHolderFragment previousEntry = removeLastHistoryFragmentEntry();
-
-        if (previousEntry != null) {
-            Log.d(TAG, "back pressed, switching to previous fragment");
-            switchToFragment(previousEntry, false);
-            previousEntry.onBackPressResult(data);
+        boolean result = topLevelFragment.back(data);
+        if (result) {
+            FragmentType fragmentType = topLevelFragment.getCurrentContent().getFragmentType();
+            handleNavigationChanges(fragmentType);
         } else {
-            Log.d(TAG, "back pressed, no more previous fragments on the stack");
             finish();
         }
     }
 
     private void switchToFragment(FragmentType fragmentType, Bundle data) {
-        Log.e(TAG, "switch to fragment " + fragmentType.name());
+        Log.i(TAG, "switch to fragment " + fragmentType.name());
 
-        FragmentAction requiredAction = findOutRequiredFragmentAction(fragmentType, data);
-        if (requiredAction == FragmentAction.NOTHING) {
-            return;
-        }
+        topLevelFragment.switchTo(fragmentType, data);
+        handleNavigationChanges(fragmentType);
 
-        if (requiredAction == FragmentAction.UPDATE) {
-            currentHistoryStackEntry.onHolderContentChanged(data);
-
-            return;
-        }
-
-        ContentHolderFragment contentFragment = new ContentHolderFragment(fragmentType, data);
-
-        boolean addToStack = data.getBoolean(BundleExtraKeys.FRAGMENT_ADD_TO_STACK, true);
-        switchToFragment(contentFragment, addToStack);
-    }
-
-    private FragmentAction findOutRequiredFragmentAction(FragmentType fragmentType, Bundle data) {
-        if (currentHistoryStackEntry == null || fragmentType != currentHistoryStackEntry.getFragmentType()) {
-            return FragmentAction.CREATE_NEW;
-        }
-        if (currentHistoryStackEntry.getCreationAttributesAsBundle().equals(data)) {
-            return FragmentAction.NOTHING;
-        }
-        return FragmentAction.UPDATE;
-    }
-
-    private void switchToFragment(ContentHolderFragment toSwitchToEntry, boolean putToStack) {
         removeDialog();
-
-        Log.d(TAG, "switch to " + toSwitchToEntry.getFragmentType().name());
-
-        if (putToStack) {
-            if (fragmentHistoryStack.size() > 10) fragmentHistoryStack.remove(0);
-            fragmentHistoryStack.add(currentHistoryStackEntry);
-        }
-
-        if (toSwitchToEntry.getFragmentType().isTopLevelFragment()) {
-            fragmentHistoryStack.clear();
-        }
-
-        currentHistoryStackEntry = toSwitchToEntry;
-
-        try {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.mainContent, toSwitchToEntry)
-                    .commitAllowingStateLoss();
-            handleNavigationChanges(toSwitchToEntry);
-
-        } catch (IllegalStateException e) {
-            Log.e(TAG, "error while switching to fragment " + toSwitchToEntry.getFragmentType().name(), e);
-        }
-
-        backPressed = false;
     }
 
-    private void handleNavigationChanges(ContentHolderFragment entry) {
+
+    private void handleNavigationChanges(FragmentType fragmentType) {
         int navigationMode = ActionBar.NAVIGATION_MODE_STANDARD;
         boolean isTablet = findViewById(R.id.tabletIndicator) != null;
-        if ((entry.getFragmentType().isShowTabs()) || isTablet) {
+        if ((fragmentType.isShowTabs()) || isTablet) {
             navigationMode = ActionBar.NAVIGATION_MODE_TABS;
         }
 
         if (getSupportActionBar().getNavigationMode() != navigationMode) {
             getSupportActionBar().setNavigationMode(navigationMode);
-        }
-
-        FragmentType currentFragmentType = entry.getFragmentType();
-        if (currentFragmentType.isTopLevelFragment() && currentFragmentType.getTopLevelPosition() != -1) {
-            int topLevelPosition = currentFragmentType.getTopLevelPosition();
-            ActionBar.Tab tab = getSupportActionBar().getTabAt(topLevelPosition);
-            if (tab != null) tab.select();
         }
     }
 
@@ -499,12 +395,5 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
         if (optionsMenu == null) return;
         optionsMenu.findItem(R.id.menu_refresh).setVisible(!show);
         optionsMenu.findItem(R.id.menu_refresh_progress).setVisible(show);
-    }
-
-    private ContentHolderFragment removeLastHistoryFragmentEntry() {
-        if (!fragmentHistoryStack.isEmpty()) {
-            return fragmentHistoryStack.remove(fragmentHistoryStack.size() - 1);
-        }
-        return null;
     }
 }

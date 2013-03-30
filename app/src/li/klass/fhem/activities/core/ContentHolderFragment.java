@@ -39,12 +39,14 @@ import java.lang.reflect.Constructor;
 
 public class ContentHolderFragment extends Fragment implements Serializable {
 
-    private final FragmentType fragmentType;
     private static final String TAG = ContentHolderFragment.class.getName();
+    private FragmentType fragmentType;
     private transient Bundle data = null;
     private BaseFragment navigationFragment;
     private BaseFragment contentFragment;
-    private transient View contentView;
+
+    public ContentHolderFragment() {
+    }
 
     public ContentHolderFragment(FragmentType fragmentType, Bundle data) {
         this.fragmentType = fragmentType;
@@ -53,28 +55,25 @@ public class ContentHolderFragment extends Fragment implements Serializable {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        if (contentView != null) return contentView;
-
         return inflater.inflate(R.layout.content_view, null);
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         fillView();
     }
 
     @Override
     public void onPause() {
-        this.contentView = getView();
         super.onPause();
     }
 
     public void fillView() {
-//        if (contentFragment == null) {
-        contentFragment = createContentFragment();
-        navigationFragment = createNavigationFragment();
-//        }
+        if (contentFragment == null) {
+            contentFragment = createContentFragment();
+            navigationFragment = createNavigationFragment();
+        }
 
         try {
             setContentFragment(contentFragment);
