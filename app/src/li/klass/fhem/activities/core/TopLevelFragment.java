@@ -26,28 +26,65 @@ package li.klass.fhem.activities.core;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import li.klass.fhem.R;
 import li.klass.fhem.fragments.FragmentType;
+import li.klass.fhem.util.ViewUtil;
 
 import java.io.Serializable;
 
 public class TopLevelFragment extends Fragment implements Serializable {
 
+    private transient FragmentType initialFragmentType;
+    private int topLevelId;
+
+    public TopLevelFragment() {
+    }
+
+    public TopLevelFragment(FragmentType initialFragmentType) {
+        this.initialFragmentType = initialFragmentType;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.top_level_view, null);
+        View view = inflater.inflate(R.layout.top_level_view, null);
+        View topLevelContent = view.findViewById(R.id.topLevelContent);
+
+        topLevelId = ViewUtil.getPseudoUniqueId(view, container);
+        topLevelContent.setId(topLevelId);
+
+        return view;
+    }
+
+    public void switchToInitialFragment() {
+        int entryCount = getFragmentManager().getBackStackEntryCount();
+        for (int i = 0; i < entryCount; i++) {
+            getFragmentManager().popBackStack();
+        }
+
+        switchTo(initialFragmentType, null);
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        switchTo(initialFragmentType, null);
     }
 
     public void switchTo(FragmentType fragmentType, Bundle data) {
 
         ContentHolderFragment content = new ContentHolderFragment(fragmentType, data);
 
-        getFragmentManager()
+        FragmentManager fragmentManager = getFragmentManager();
+        if (fragmentManager == null) return;
+
+        fragmentManager
                 .beginTransaction()
-                .replace(R.id.topLevelContent, content)
+                .replace(topLevelId, content)
                 .addToBackStack(null)
                 .commitAllowingStateLoss();
     }
@@ -64,6 +101,7 @@ public class TopLevelFragment extends Fragment implements Serializable {
     }
 
     public ContentHolderFragment getCurrentContent() {
-        return (ContentHolderFragment) getFragmentManager().findFragmentById(R.id.topLevelContent);
+        if (getFragmentManager() == null) return null;
+        return (ContentHolderFragment) getFragmentManager().findFragmentById(topLevelId);
     }
 }

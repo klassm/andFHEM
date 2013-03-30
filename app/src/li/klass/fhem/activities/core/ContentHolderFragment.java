@@ -33,6 +33,7 @@ import android.view.ViewGroup;
 import li.klass.fhem.R;
 import li.klass.fhem.fragments.FragmentType;
 import li.klass.fhem.fragments.core.BaseFragment;
+import li.klass.fhem.util.ViewUtil;
 
 import java.io.Serializable;
 import java.lang.reflect.Constructor;
@@ -44,6 +45,10 @@ public class ContentHolderFragment extends Fragment implements Serializable {
     private transient Bundle data = null;
     private BaseFragment navigationFragment;
     private BaseFragment contentFragment;
+    private int contentId = -1;
+    private int navigationId = -1;
+
+    private transient View contentView;
 
     public ContentHolderFragment() {
     }
@@ -55,17 +60,34 @@ public class ContentHolderFragment extends Fragment implements Serializable {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.content_view, null);
+        super.onCreateView(inflater, container, savedInstanceState);
+        if (contentView != null) return contentView;
+
+        View view = inflater.inflate(R.layout.content_view, null);
+
+        View navigationView = view.findViewById(R.id.navigation);
+        View contentView = view.findViewById(R.id.content);
+
+        if (contentId == -1)
+            contentId = ViewUtil.getPseudoUniqueId(view, container);
+        contentView.setId(contentId);
+
+        if (navigationId == -1)
+            navigationId = ViewUtil.getPseudoUniqueId(view, container);
+        navigationView.setId(navigationId);
+
+        return view;
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        fillView();
+        if (contentView == null) fillView();
     }
 
     @Override
     public void onPause() {
+        contentView = getView();
         super.onPause();
     }
 
@@ -87,7 +109,7 @@ public class ContentHolderFragment extends Fragment implements Serializable {
     private void setContentFragment(BaseFragment contentFragment) {
         getFragmentManager()
                 .beginTransaction()
-                .replace(R.id.content, contentFragment)
+                .replace(contentId, contentFragment)
                 .commitAllowingStateLoss();
     }
 
@@ -97,7 +119,7 @@ public class ContentHolderFragment extends Fragment implements Serializable {
             View view = getView();
             if (view == null) return;
 
-            View navigationView = view.findViewById(R.id.navigation);
+            View navigationView = view.findViewById(navigationId);
             if (navigationView == null) return;
 
             if (navigationFragment == null) {
@@ -109,7 +131,7 @@ public class ContentHolderFragment extends Fragment implements Serializable {
 
             getFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.navigation, navigationFragment)
+                    .replace(navigationId, navigationFragment)
                     .commitAllowingStateLoss();
         } catch (Exception e) {
             Log.e(TAG, "cannot instantiate navigation fragment", e);
@@ -118,7 +140,7 @@ public class ContentHolderFragment extends Fragment implements Serializable {
 
 
     private BaseFragment createNavigationFragment() {
-        View navigationView = getView().findViewById(R.id.navigation);
+        View navigationView = getView().findViewById(navigationId);
         if (navigationView == null) {
             return null;
         }

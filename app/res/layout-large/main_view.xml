@@ -28,17 +28,10 @@
               android:layout_height="match_parent"
               android:orientation="horizontal">
 
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                 android:layout_width="fill_parent"
-                 android:layout_height="match_parent"
-                 android:id="@+id/mainContent">
-    </FrameLayout>
-    <!--<ViewPager xmlns:android="http://schemas.android.com/apk/res/android"-->
-    <!--android:layout_width="fill_parent"-->
-    <!--android:layout_height="match_parent"-->
-    <!--android:id="@+id/content"-->
-    <!--android:paddingLeft="30dp">-->
-    <!--</ViewPager>-->
+    <android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
+                                       android:layout_width="fill_parent"
+                                       android:layout_height="match_parent"
+                                       android:id="@+id/mainContent"/>
     <TextView android:id="@+id/tabletIndicator" android:visibility="gone"
               android:layout_height="wrap_content" android:layout_width="wrap_content"/>
 </LinearLayout>

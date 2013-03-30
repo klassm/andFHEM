@@ -32,8 +32,8 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.widget.Toast;
 import com.actionbarsherlock.app.ActionBar;
@@ -57,11 +57,11 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
 
     ApplicationProperties applicationProperties = ApplicationProperties.INSTANCE;
     private ProgressDialog progressDialog;
-    private boolean backPressed;
+    private boolean ignoreTabSelection;
     private Receiver broadcastReceiver;
     private Menu optionsMenu;
 
-    private TopLevelFragment topLevelFragment;
+//    private TopLevelFragment topLevelFragment;
 
     /**
      * an intent waiting to be processed, but received in the wrong activity state (widget problem ..)
@@ -101,6 +101,8 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
     };
 
     private boolean saveInstanceStateCalled = false;
+    private ViewPager viewPager;
+    private TabsAdapter viewPagerAdapter;
 
     private class Receiver extends BroadcastReceiver {
 
@@ -183,9 +185,6 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
             AndFHEMApplication.INSTANCE.setIsTablet(true);
         }
 
-        topLevelFragment = new TopLevelFragment();
-        getSupportFragmentManager().beginTransaction().replace(R.id.mainContent, topLevelFragment).commit();
-
         saveInstanceStateCalled = false;
 
         autoUpdateHandler = new Handler();
@@ -208,9 +207,22 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
         broadcastReceiver = new Receiver();
         registerReceiver(broadcastReceiver, broadcastReceiver.getIntentFilter());
 
-        if (topLevelFragment.getCurrentContent() == null) {
-            switchToFragment(FragmentType.FAVORITES, null);
-        }
+        viewPager = (ViewPager) findViewById(R.id.mainContent);
+        viewPagerAdapter = new TabsAdapter(getSupportFragmentManager(), new TabsAdapter.PageChangeListener() {
+            @Override
+            public void onPageChanged(int newPage) {
+                ignoreTabSelection = true;
+                getCurrentTopLevelFragment().switchToInitialFragment();
+                getSupportActionBar().setSelectedNavigationItem(newPage);
+            }
+        });
+        viewPager.setAdapter(viewPagerAdapter);
+        viewPager.setOnPageChangeListener(viewPagerAdapter);
+
+        viewPager.setCurrentItem(0);
+
+        ignoreTabSelection = true;
+        getSupportActionBar().setSelectedNavigationItem(0);
     }
 
     @Override
@@ -294,25 +306,28 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
 
     @Override
     public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
-        if (backPressed) {
-            backPressed = false;
-            return;
-        }
-        getSupportFragmentManager().popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-
-        Object tag = tab.getTag();
-        Log.d(TAG, "selected tab with target " + tag);
-
-        if (!(tag instanceof FragmentType)) {
-            Log.e(TAG, "can only switch tabs including a FragmentType as tag");
+        if (ignoreTabSelection) {
+            ignoreTabSelection = false;
             return;
         }
 
-        FragmentType fragmentTypeTag = (FragmentType) tag;
-
-        Intent intent = new Intent(Actions.SHOW_FRAGMENT);
-        intent.putExtra(BundleExtraKeys.FRAGMENT, fragmentTypeTag);
-        sendBroadcast(intent);
+        ignoreTabSelection = true;
+        viewPager.setCurrentItem(tab.getPosition());
+//
+//        if (tab.getPosition() != viewPager.getCurrentItem()) {
+//            viewPager.setCurrentItem(tab.getPosition());
+//        }
+//
+//        FragmentType currentFragmentType = null;
+//        if (getCurrentTopLevelFragment().getCurrentContent() != null) {
+//            currentFragmentType = getCurrentTopLevelFragment().getCurrentContent().getFragmentType();
+//        }
+//
+//        FragmentType tabFragmentType = (FragmentType) tab.getTag();
+//        if (tabFragmentType != currentFragmentType) {
+//            FragmentType fragmentType = (FragmentType) tab.getTag();
+//            switchToFragment(fragmentType, null);
+//        }
     }
 
     @Override
@@ -333,14 +348,15 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
 
     @Override
     public void onBackPressed() {
-        backPressed = true;
+        ignoreTabSelection = true;
         onBackPressed(null);
     }
 
     private void onBackPressed(Bundle data) {
-        boolean result = topLevelFragment.back(data);
+        TopLevelFragment currentTopLevelFragment = getCurrentTopLevelFragment();
+        boolean result = currentTopLevelFragment.back(data);
         if (result) {
-            FragmentType fragmentType = topLevelFragment.getCurrentContent().getFragmentType();
+            FragmentType fragmentType = currentTopLevelFragment.getCurrentContent().getFragmentType();
             handleNavigationChanges(fragmentType);
         } else {
             finish();
@@ -350,7 +366,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
     private void switchToFragment(FragmentType fragmentType, Bundle data) {
         Log.i(TAG, "switch to fragment " + fragmentType.name());
 
-        topLevelFragment.switchTo(fragmentType, data);
+        getCurrentTopLevelFragment().switchTo(fragmentType, data);
         handleNavigationChanges(fragmentType);
 
         removeDialog();
@@ -395,5 +411,10 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
         if (optionsMenu == null) return;
         optionsMenu.findItem(R.id.menu_refresh).setVisible(!show);
         optionsMenu.findItem(R.id.menu_refresh_progress).setVisible(show);
+    }
+
+    protected TopLevelFragment getCurrentTopLevelFragment() {
+        int currentItem = viewPager.getCurrentItem();
+        return viewPagerAdapter.getTopLevelFragmentAt(currentItem);
     }
 }

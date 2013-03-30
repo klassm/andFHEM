@@ -39,16 +39,16 @@ import java.util.Comparator;
 import java.util.List;
 
 public enum FragmentType {
+    FAVORITES(FavoritesFragment.class, R.string.tab_favorites, 0, null),
+    ROOM_LIST(RoomListFragment.class, R.string.tab_roomList, 1, null),
     ALL_DEVICES(AllDevicesFragment.class, R.string.tab_alldevices, 2, RoomListFragment.class),
     CONVERSION(ConversionFragment.class),
-    FAVORITES(FavoritesFragment.class, R.string.tab_favorites, 0, null),
     DEVICE_DETAIL(DeviceDetailFragment.class, DeviceNameListNavigationFragment.class),
     FROM_TO_WEEK_PROFILE(FromToWeekProfileFragment.class),
     INTERVAL_WEEK_PROFILE(IntervalWeekProfileFragment.class),
     FLOORPLAN(FloorplanFragment.class),
     PREMIUM(PremiumFragment.class),
     ROOM_DETAIL(RoomDetailFragment.class, RoomListFragment.class),
-    ROOM_LIST(RoomListFragment.class, R.string.tab_roomList, 1, null),
     SEND_COMMAND(SendCommandFragment.class),
     DEVICE_SELECTION(DeviceNameSelectionFragment.class, DeviceNameSelectionNavigationFragment.class, true),
     DEVICE_NAME_LIST_NAVIGATION(DeviceNameListNavigationFragment.class),
