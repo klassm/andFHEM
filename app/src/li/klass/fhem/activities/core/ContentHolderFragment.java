@@ -74,7 +74,8 @@ public class ContentHolderFragment extends Fragment implements Serializable {
 
         if (navigationId == -1)
             navigationId = ViewUtil.getPseudoUniqueId(view, container);
-        navigationView.setId(navigationId);
+        if (navigationView != null)
+            navigationView.setId(navigationId);
 
         return view;
     }

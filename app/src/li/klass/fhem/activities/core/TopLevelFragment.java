@@ -104,4 +104,8 @@ public class TopLevelFragment extends Fragment implements Serializable {
         if (getFragmentManager() == null) return null;
         return (ContentHolderFragment) getFragmentManager().findFragmentById(topLevelId);
     }
+
+    public FragmentType getInitialFragmentType() {
+        return initialFragmentType;
+    }
 }

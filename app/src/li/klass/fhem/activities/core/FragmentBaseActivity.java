@@ -213,6 +213,10 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
             public void onPageChanged(int newPage) {
                 ignoreTabSelection = true;
                 getCurrentTopLevelFragment().switchToInitialFragment();
+
+                handleNavigationChanges(getCurrentTopLevelFragment().getInitialFragmentType());
+
+                ignoreTabSelection = true;
                 getSupportActionBar().setSelectedNavigationItem(newPage);
             }
         });
@@ -417,4 +421,6 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
         int currentItem = viewPager.getCurrentItem();
         return viewPagerAdapter.getTopLevelFragmentAt(currentItem);
     }
+
+
 }
