@@ -41,6 +41,7 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static li.klass.fhem.util.SharedPreferencesUtil.getSharedPreferences;
 import static li.klass.fhem.util.SharedPreferencesUtil.getSharedPreferencesEditor;
@@ -66,6 +67,8 @@ public class RoomListService extends AbstractService {
     public static final long NEVER_UPDATE_PERIOD = 0;
     public static final long ALWAYS_UPDATE_PERIOD = -1;
 
+    private final AtomicBoolean currentlyUpdating = new AtomicBoolean(false);
+
     private RoomListService() {
     }
 
@@ -77,7 +80,7 @@ public class RoomListService extends AbstractService {
      *                     longer ago than the given period
      * @return found device or null
      */
-    public synchronized Device getDeviceForName(String deviceName, long updatePeriod) {
+    public Device getDeviceForName(String deviceName, long updatePeriod) {
         return getAllRoomsDeviceList(updatePeriod).getDeviceFor(deviceName);
     }
 
@@ -88,7 +91,7 @@ public class RoomListService extends AbstractService {
      *                     longer ago than the given period
      * @return list of all room names
      */
-    public synchronized ArrayList<String> getRoomNameList(long updatePeriod) {
+    public ArrayList<String> getRoomNameList(long updatePeriod) {
         Map<String, RoomDeviceList> map = getRoomDeviceListMap(updatePeriod);
         ArrayList<String> roomNames = new ArrayList<String>(map.keySet());
         for (RoomDeviceList roomDeviceList : map.values()) {
@@ -128,7 +131,7 @@ public class RoomListService extends AbstractService {
      *                     longer ago than the given period
      * @return {@link RoomDeviceList} containing all devices
      */
-    public synchronized RoomDeviceList getAllRoomsDeviceList(long updatePeriod) {
+    public RoomDeviceList getAllRoomsDeviceList(long updatePeriod) {
         Map<String, RoomDeviceList> roomDeviceListMap = getRoomDeviceListMap(updatePeriod);
         RoomDeviceList allRoomsDeviceList = new RoomDeviceList(RoomDeviceList.ALL_DEVICES_ROOM);
         for (String room : roomDeviceListMap.keySet()) {
@@ -147,7 +150,7 @@ public class RoomListService extends AbstractService {
      *                     longer ago than the given period
      * @return found {@link RoomDeviceList} or null
      */
-    public synchronized RoomDeviceList getDeviceListForRoom(String roomName, long updatePeriod) {
+    public RoomDeviceList getDeviceListForRoom(String roomName, long updatePeriod) {
         return getRoomDeviceListMap(updatePeriod).get(roomName);
     }
 
@@ -168,7 +171,7 @@ public class RoomListService extends AbstractService {
      *                     longer ago than the given period
      * @return current room device list map
      */
-    private synchronized Map<String, RoomDeviceList> getRoomDeviceListMap(long updatePeriod) {
+    private Map<String, RoomDeviceList> getRoomDeviceListMap(long updatePeriod) {
         boolean refresh = shouldUpdate(updatePeriod);
 
         if (!refresh && deviceListMap == null) {
@@ -176,9 +179,21 @@ public class RoomListService extends AbstractService {
         }
 
         if (refresh || deviceListMap == null) {
-            sendBroadcastWithAction(Actions.SHOW_UPDATING_DIALOG, null);
+
             try {
-                deviceListMap = getRemoteRoomDeviceListMap();
+                if (currentlyUpdating.compareAndSet(false, true)) {
+                    sendBroadcastWithAction(Actions.SHOW_UPDATING_DIALOG, null);
+                    try {
+                        deviceListMap = getRemoteRoomDeviceListMap();
+                    } finally {
+                        currentlyUpdating.set(false);
+                        sendBroadcastWithAction(Actions.DISMISS_UPDATING_DIALOG, null);
+                        sendBroadcastWithAction(Actions.DEVICE_LIST_REMOTE_NOTIFY, null);
+                    }
+                } else {
+                    Log.i(TAG, "should update, but update is currently in progress. Returning cached roomDeviceList");
+                    return deviceListMap;
+                }
             } catch (AndFHEMException e) {
                 int errorStringId = e.getErrorMessageStringId();
                 sendErrorMessage(errorStringId);
@@ -187,9 +202,6 @@ public class RoomListService extends AbstractService {
             } catch (Exception e) {
                 sendErrorMessage(R.string.updateError);
                 Log.e(TAG, "unknown exception occurred while fetching the remote device list", e);
-            } finally {
-                sendBroadcastWithAction(Actions.DISMISS_UPDATING_DIALOG, null);
-                sendBroadcastWithAction(Actions.DEVICE_LIST_REMOTE_NOTIFY, null);
             }
         }
 
@@ -217,7 +229,7 @@ public class RoomListService extends AbstractService {
      *
      * @return remotely loaded room device list map
      */
-    private Map<String, RoomDeviceList> getRemoteRoomDeviceListMap() {
+    private synchronized Map<String, RoomDeviceList> getRemoteRoomDeviceListMap() {
         Log.i(TAG, "fetching device list from remote");
         Map<String, RoomDeviceList> result = DeviceListParser.INSTANCE.listDevices();
         setLastUpdateToNow();
@@ -227,7 +239,7 @@ public class RoomListService extends AbstractService {
     /**
      * Stores the currently loaded room device list map to the cache file.
      */
-    public void storeDeviceListMap() {
+    public synchronized void storeDeviceListMap() {
         Log.i(TAG, "storing device list to cache");
         Context context = AndFHEMApplication.getContext();
         try {

@@ -60,7 +60,7 @@ public class AppWidgetDataHolder {
     }
 
     public void updateAllWidgets(final Context context, final boolean allowRemoteUpdate) {
-        Log.e(AndFHEMAppWidgetProvider.class.getName(), "update all widgets!");
+        Log.d(AppWidgetDataHolder.class.getName(), "update all widgets!");
         new AsyncTask<String, String, String>() {
             @Override
             protected String doInBackground(String... voids) {

@@ -35,6 +35,8 @@ import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.service.room.RoomListService;
 
 import java.io.Serializable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import static li.klass.fhem.constants.BundleExtraKeys.RESULT_RECEIVER;
 
@@ -42,8 +44,16 @@ import static li.klass.fhem.constants.BundleExtraKeys.RESULT_RECEIVER;
  * Abstract class extending {@link IntentService} to provide some more convenience methods.
  */
 public abstract class ConvenientIntentService extends IntentService {
+    private ExecutorService executorService = null;
+
     public ConvenientIntentService(String name) {
+        this(name, 1);
+    }
+
+    public ConvenientIntentService(String name, int numberOfThreads) {
         super(name);
+
+        if (numberOfThreads > 1) executorService = Executors.newFixedThreadPool(numberOfThreads);
     }
 
     protected enum STATE {
@@ -51,7 +61,20 @@ public abstract class ConvenientIntentService extends IntentService {
     }
 
     @Override
-    protected void onHandleIntent(Intent intent) {
+    protected void onHandleIntent(final Intent intent) {
+        if (executorService != null) {
+            executorService.submit(new Runnable() {
+                @Override
+                public void run() {
+                    handleTaskInternal(intent);
+                }
+            });
+        } else {
+            handleTaskInternal(intent);
+        }
+    }
+
+    private void handleTaskInternal(Intent intent) {
         ResultReceiver resultReceiver = intent.getParcelableExtra(RESULT_RECEIVER);
         boolean doRefresh = intent.getBooleanExtra(BundleExtraKeys.DO_REFRESH, false);
         long updatePeriod = intent.getLongExtra(BundleExtraKeys.UPDATE_PERIOD, RoomListService.NEVER_UPDATE_PERIOD);

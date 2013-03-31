@@ -39,13 +39,11 @@ import static li.klass.fhem.constants.BundleExtraKeys.*;
 public class RoomListIntentService extends ConvenientIntentService {
 
     public RoomListIntentService() {
-        super(RoomListIntentService.class.getName());
-
+        super(RoomListIntentService.class.getName(), 2);
     }
 
     @Override
     protected STATE handleIntent(Intent intent, long updatePeriod, ResultReceiver resultReceiver) {
-
         RoomListService roomListService = RoomListService.INSTANCE;
         if (intent.getAction().equals(GET_ALL_ROOMS_DEVICE_LIST)) {
             RoomDeviceList allRoomsDeviceList = roomListService.getAllRoomsDeviceList(updatePeriod);

@@ -76,7 +76,7 @@ public class FavoritesFragment extends DeviceListFragment implements TopLevelFra
             switch (item.getItemId()) {
                 case CONTEXT_MENU_FAVORITES_DELETE:
                     Intent favoriteRemoveIntent = new Intent(Actions.FAVORITE_REMOVE);
-                    favoriteRemoveIntent.putExtra(BundleExtraKeys.DEVICE, contextMenuClickedDevice);
+                    favoriteRemoveIntent.putExtra(BundleExtraKeys.DEVICE, contextMenuClickedDevice.get());
                     favoriteRemoveIntent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
                         @Override
                         protected void onReceiveResult(int resultCode, Bundle resultData) {

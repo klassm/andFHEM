@@ -47,6 +47,8 @@ import li.klass.fhem.util.advertisement.AdvertisementUtil;
 import li.klass.fhem.util.device.DeviceActionUtil;
 import li.klass.fhem.widget.GridViewWithSections;
 
+import java.util.concurrent.atomic.AtomicReference;
+
 import static li.klass.fhem.constants.Actions.FAVORITE_ADD;
 import static li.klass.fhem.constants.BundleExtraKeys.*;
 import static li.klass.fhem.constants.PreferenceKeys.DEVICE_LIST_RIGHT_PADDING;
@@ -67,7 +69,8 @@ public abstract class DeviceListFragment extends BaseFragment {
      * Attribute is set whenever a context menu concerning a device is clicked. This is the only way to actually get
      * the concerned device.
      */
-    protected Device contextMenuClickedDevice;
+    protected static AtomicReference<Device> contextMenuClickedDevice = new AtomicReference<Device>();
+    protected static AtomicReference<DeviceListFragment> currentClickFragment = new AtomicReference<DeviceListFragment>();
 
     public static final int CONTEXT_MENU_FAVORITES_ADD = 1;
     public static final int CONTEXT_MENU_FAVORITES_DELETE = 2;
@@ -163,7 +166,8 @@ public abstract class DeviceListFragment extends BaseFragment {
 
         if (tag == null) return;
         if (tag instanceof Device) {
-            contextMenuClickedDevice = (Device) tag;
+            contextMenuClickedDevice.set((Device) tag);
+            currentClickFragment.set(this);
 
             menu.add(0, CONTEXT_MENU_FAVORITES_ADD, 0, R.string.context_addtofavorites);
             menu.add(0, CONTEXT_MENU_RENAME, 0, R.string.context_rename);
@@ -177,10 +181,12 @@ public abstract class DeviceListFragment extends BaseFragment {
     public boolean onContextItemSelected(MenuItem item) {
         super.onContextItemSelected(item);
 
+        if (this != currentClickFragment.get()) return false;
+
         switch (item.getItemId()) {
             case CONTEXT_MENU_FAVORITES_ADD:
                 Intent favoriteAddIntent = new Intent(FAVORITE_ADD);
-                favoriteAddIntent.putExtra(BundleExtraKeys.DEVICE, contextMenuClickedDevice);
+                favoriteAddIntent.putExtra(BundleExtraKeys.DEVICE, contextMenuClickedDevice.get());
                 favoriteAddIntent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
                     @Override
                     protected void onReceiveResult(int resultCode, Bundle resultData) {
@@ -191,16 +197,16 @@ public abstract class DeviceListFragment extends BaseFragment {
 
                 return true;
             case CONTEXT_MENU_RENAME:
-                DeviceActionUtil.renameDevice(getActivity(), contextMenuClickedDevice);
+                DeviceActionUtil.renameDevice(getActivity(), contextMenuClickedDevice.get());
                 return true;
             case CONTEXT_MENU_DELETE:
-                DeviceActionUtil.deleteDevice(getActivity(), contextMenuClickedDevice);
+                DeviceActionUtil.deleteDevice(getActivity(), contextMenuClickedDevice.get());
                 return true;
             case CONTEXT_MENU_MOVE:
-                DeviceActionUtil.moveDevice(getActivity(), contextMenuClickedDevice);
+                DeviceActionUtil.moveDevice(getActivity(), contextMenuClickedDevice.get());
                 return true;
             case CONTEXT_MENU_ALIAS:
-                DeviceActionUtil.setAlias(getActivity(), contextMenuClickedDevice);
+                DeviceActionUtil.setAlias(getActivity(), contextMenuClickedDevice.get());
                 return true;
         }
         return false;
