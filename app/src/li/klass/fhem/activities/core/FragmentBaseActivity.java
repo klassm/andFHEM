@@ -118,6 +118,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
             intentFilter.addAction(SHOW_TOAST);
             intentFilter.addAction(DO_UPDATE);
             intentFilter.addAction(BACK);
+            intentFilter.addAction(RELOAD);
         }
 
         @Override
@@ -155,6 +156,9 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
                             Toast.makeText(FragmentBaseActivity.this, content, Toast.LENGTH_SHORT).show();
                         } else if (action.equals(BACK)) {
                             onBackPressed(intent.getExtras());
+                        } else if (action.equals(RELOAD)) {
+                            finish();
+                            startActivity(new Intent(FragmentBaseActivity.this, FragmentBaseActivity.this.getClass()));
                         }
                     } catch (Exception e) {
                         Log.e(TAG, "exception occurred while receiving broadcast", e);
@@ -312,6 +316,11 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
     public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
         if (ignoreTabSelection) {
             ignoreTabSelection = false;
+            return;
+        }
+
+        if (viewPager == null || tab == null) {
+            sendBroadcast(new Intent(Actions.RELOAD));
             return;
         }
 

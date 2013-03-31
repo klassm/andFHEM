@@ -84,4 +84,6 @@ public class Actions {
 
     public static final String WIDGET_UPDATE = prefix + "WIDGET_UPDATE";
     public static final String DEVICE_LIST_REMOTE_NOTIFY = prefix + "DEVICE_LIST_REMOTE_NOTIFY";
+
+    public static final String RELOAD = prefix + "RELOAD";
 }

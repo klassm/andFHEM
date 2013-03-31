@@ -24,13 +24,16 @@
 
 package li.klass.fhem.activities.core;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
+import li.klass.fhem.constants.Actions;
 import li.klass.fhem.fragments.FragmentType;
 import li.klass.fhem.util.ViewUtil;
 
@@ -60,6 +63,10 @@ public class TopLevelFragment extends Fragment implements Serializable {
     }
 
     public void switchToInitialFragment() {
+        if (getFragmentManager() == null) {
+            AndFHEMApplication.getContext().sendBroadcast(new Intent(Actions.RELOAD));
+            return;
+        }
         int entryCount = getFragmentManager().getBackStackEntryCount();
         for (int i = 0; i < entryCount; i++) {
             getFragmentManager().popBackStack();

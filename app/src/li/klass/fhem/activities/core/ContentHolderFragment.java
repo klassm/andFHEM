@@ -24,6 +24,7 @@
 
 package li.klass.fhem.activities.core;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -31,6 +32,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import li.klass.fhem.R;
+import li.klass.fhem.constants.Actions;
 import li.klass.fhem.fragments.FragmentType;
 import li.klass.fhem.fragments.core.BaseFragment;
 import li.klass.fhem.util.ViewUtil;
@@ -108,10 +110,15 @@ public class ContentHolderFragment extends Fragment implements Serializable {
     }
 
     private void setContentFragment(BaseFragment contentFragment) {
-        getFragmentManager()
-                .beginTransaction()
-                .replace(contentId, contentFragment)
-                .commitAllowingStateLoss();
+        try {
+            getFragmentManager()
+                    .beginTransaction()
+                    .replace(contentId, contentFragment)
+                    .commitAllowingStateLoss();
+        } catch (Exception e) {
+            Log.d(TAG, "probably savedInstance restore just failed, ignore", e);
+            getActivity().sendBroadcast(new Intent(Actions.RELOAD));
+        }
     }
 
 
@@ -161,6 +168,10 @@ public class ContentHolderFragment extends Fragment implements Serializable {
     }
 
     private BaseFragment createContentFragment() {
+        if (fragmentType == null) {
+            getActivity().sendBroadcast(new Intent(Actions.RELOAD));
+            return null;
+        }
         try {
             Class<? extends BaseFragment> fragmentClass = fragmentType.getContentClass();
             return createFragmentForClass(data, fragmentClass);
