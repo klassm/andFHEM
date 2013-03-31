@@ -23,15 +23,20 @@
 
 package li.klass.fhem.domain.genericview;
 
+import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
+
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
-
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ShowField {
-	ResourceIdMapper description();
+    ResourceIdMapper description();
+
     boolean showInOverview() default false;
+
     boolean showInDetail() default true;
+
     boolean showInFloorplan() default false;
+
+    String showAfter() default "";
 }

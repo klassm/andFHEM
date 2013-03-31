@@ -84,12 +84,6 @@ public class MaxDevice extends ToggleableDevice<MaxDevice> implements DesiredTem
     @ShowField(description = ResourceIdMapper.windowOpenTemp)
     private double windowOpenTemp;
 
-
-    private double desiredTemp;
-
-    @ShowField(description = ResourceIdMapper.desiredTemperature, showInOverview = true)
-    private String desiredTempDesc;
-
     @ShowField(description = ResourceIdMapper.temperature, showInOverview = true)
     @WidgetTemperatureField
     private String temperature;
@@ -102,6 +96,13 @@ public class MaxDevice extends ToggleableDevice<MaxDevice> implements DesiredTem
 
     @ShowField(description = ResourceIdMapper.comfortTemp)
     private double comfortTemp;
+
+
+    private double desiredTemp;
+
+    @ShowField(description = ResourceIdMapper.desiredTemperature, showInOverview = true, showAfter = "temperature")
+    private String desiredTempDesc;
+
 
     private HeatingMode heatingMode;
 

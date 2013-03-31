@@ -143,7 +143,9 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
                 }
             }
 
-            Field[] declaredFields = device.getClass().getDeclaredFields();
+            List<Field> declaredFields = Arrays.asList(device.getClass().getDeclaredFields());
+            Collections.sort(declaredFields, new FieldNameComparator());
+
             for (Field declaredField : declaredFields) {
                 declaredField.setAccessible(true);
                 if (declaredField.isAnnotationPresent(ShowField.class) && declaredField.getAnnotation(ShowField.class).showInDetail()) {
