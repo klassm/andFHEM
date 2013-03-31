@@ -46,6 +46,24 @@
           value="5.1 from 2011-07-08 ($Id: fhem.pl,v 1.145 2011-07-07 08:46:28 rudolfkoenig Exp $)"/>
 </_internal_>
 </_internal__LIST>
+<PRESENCE_LIST>
+<PRESENCE name="presence" state="present" sets="statusRequest "
+          attrs="room group comment alias eventMap userReadings do_not_notify:0,1 disable:0,1 loglevel:1,2,3,4,5 event-on-change-reading event-on-update-reading stateFormat devStateIcon icon invertState onOffDevice toggleDevice webCmd">
+    <INT key="ADDRESS" value="HTC-Harry"/>
+    <INT key="CHANGED" value=""/>
+    <INT key="DEF" value="fritzbox HTC-Harry 120"/>
+    <INT key="MODE" value="fritzbox"/>
+    <INT key="NAME" value="presence"/>
+    <INT key="NR" value="184"/>
+    <INT key="STATE" value="present"/>
+    <INT key="TIMEOUT" value="120"/>
+    <INT key="TYPE" value="PRESENCE"/>
+    <ATTR key="event-on-change-reading" value="state"/>
+    <ATTR key="icon" value="icoHouse.png"/>
+    <ATTR key="room" value="wohnzimmer"/>
+    <STATE key="state" value="present" measured="2013-03-31 14:23:10"/>
+</PRESENCE>
+</PRESENCE_LIST>
 <structure_LIST>
 <structure name="AllFHT8V" state="undefined" sets="state:17,18,19,20,21,21.5,22"
            attrs="room group comment alias eventMap clientstate_priority clientstate_behavior:relative,absolute loglevel:0,5 devStateIcon fp_5WG fp_5WG.image fp_image icon room_map structexclude webCmd">
