@@ -144,6 +144,9 @@
     <string name="delete">Delete</string>
     <string name="deleteConfirmIntervalText">Do you really want to delete the interval?</string>
     <string name="newInterval">New interval</string>
+    <string name="price">Price</string>
+    <string name="energy">Energy</string>
+    <string name="cumulativeKwH">Cumulative</string>
 
     <string name="switchDevice">Switch</string>
     <string name="preferences">Preferences</string>
@@ -245,6 +248,7 @@
     <string name="stateGraph">State Graph</string>
     <string name="contentGraph">Content Graph</string>
     <string name="dewpointGraph">Dewpoint Graph</string>
+    <string name="powerGraph">Power Graph</string>
 
     <string name="yAxisWind">wind (km/h)</string>
     <string name="yAxisHumidity">humidity (%)</string>

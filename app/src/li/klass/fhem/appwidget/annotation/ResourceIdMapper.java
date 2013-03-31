@@ -85,6 +85,9 @@ public enum ResourceIdMapper {
     excludedDevices(R.string.excludedDevices),
     idleDevices(R.string.idleDevices),
     demandDevices(R.string.demandDevices),
+    price(R.string.price),
+    energy(R.string.energy),
+    cumulativeKwh(R.string.cumulativeKwH),
 
     none(-1);
 
