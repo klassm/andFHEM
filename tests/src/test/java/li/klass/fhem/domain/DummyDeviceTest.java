@@ -74,6 +74,13 @@ public class DummyDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getAvailableTargetStates().length, is(7));
     }
 
+    @Test
+    public void testDeviceWithTimer() {
+        DummyDevice device = getDeviceFor("timerDevice");
+
+        assertThat(device.isTimerDevice(), is(true));
+    }
+
     @Override
     protected String getFileName() {
         return "dummy.xml";

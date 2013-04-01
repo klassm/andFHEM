@@ -43,20 +43,29 @@
             <INT key="room" value="room"/>
             <STATE key="state" value="??" measured="2012-07-23 11:06:31"/>
         </dummy>
-    </dummy_LIST>
-    <dummy name="deviceWithSetlist" state="20" sets="state:17,18,19,20,21,21.5,22" attrs="room group comment alias eventMap loglevel:0,1,2,3,4,5,6 setList devStateIcon fp_5WG fp_5WG.image fp_image icon room_map structexclude webCmd">
-        <INT key="CFGFN" value="heiz.cfg"/>
-        <INT key="NAME" value="deviceWithSetlist"/>
-        <INT key="NR" value="141"/>
-        <INT key="STATE" value="20"/>
-        <INT key="TYPE" value="dummy"/>
-        <ATTR key="fp_5WG" value="100,1030,5,."/>
-        <ATTR key="room" value="room"/>
-        <ATTR key="setList" value="state:17,18,19,20,21,21.5,22"/>
-        <ATTR key="webCmd" value="state"/>
-        <STATE key="state" value="20" measured="2013-01-01 20:47:03"/>
-    </dummy>
+        <dummy name="deviceWithSetlist" state="20" sets="state:17,18,19,20,21,21.5,22"
+               attrs="room group comment alias eventMap loglevel:0,1,2,3,4,5,6 setList devStateIcon fp_5WG fp_5WG.image fp_image icon room_map structexclude webCmd">
+            <INT key="CFGFN" value="heiz.cfg"/>
+            <INT key="NAME" value="deviceWithSetlist"/>
+            <INT key="NR" value="141"/>
+            <INT key="STATE" value="20"/>
+            <INT key="TYPE" value="dummy"/>
+            <ATTR key="fp_5WG" value="100,1030,5,."/>
+            <ATTR key="room" value="room"/>
+            <ATTR key="setList" value="state:17,18,19,20,21,21.5,22"/>
+            <ATTR key="webCmd" value="state"/>
+            <STATE key="state" value="20" measured="2013-01-01 20:47:03"/>
+        </dummy>
+        <dummy name="timerDevice" state="???" sets="state:time"
+               attrs="room group comment alias eventMap userReadings loglevel:0,1,2,3,4,5,6 setList event-on-change-reading event-on-update-reading event-min-interval stateFormat alias_map custom_graph devStateIcon fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon invertState measured-temp offDevice onDevice onOffDevice sortby structexclude toggleDevice webCmd">
+            <INT key="CFGFN" value=""/>
+            <INT key="NAME" value="timerDevice"/>
+            <INT key="NR" value="290"/>
+            <INT key="STATE" value="???"/>
+            <INT key="TYPE" value="dummy"/>
+            <ATTR key="room" value="room"/>
+            <ATTR key="setList" value="state:time"/>
+        </dummy>
 
-    <FileLog_LIST>
-    </FileLog_LIST>
+    </dummy_LIST>
 </FHZINFO>

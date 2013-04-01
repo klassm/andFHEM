@@ -33,6 +33,8 @@ import org.w3c.dom.NamedNodeMap;
 @SuppressWarnings("unused")
 public class DummyDevice extends ToggleableDevice<DummyDevice> {
 
+    private boolean timerDevice = false;
+
     public void readSTATE(String tagName, String value, NamedNodeMap attributes) {
         this.measured = attributes.getNamedItem("measured").getNodeValue();
     }
@@ -45,5 +47,18 @@ public class DummyDevice extends ToggleableDevice<DummyDevice> {
     @Override
     public boolean isOnByState() {
         return super.isOnByState() || getState().equalsIgnoreCase("on");
+    }
+
+    @Override
+    public void afterXMLRead() {
+        super.afterXMLRead();
+
+        if (ArrayUtil.contains(getAvailableTargetStates(), "time")) {
+            timerDevice = true;
+        }
+    }
+
+    public boolean isTimerDevice() {
+        return timerDevice;
     }
 }
