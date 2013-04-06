@@ -102,14 +102,14 @@
             <meta-data android:name="android.appwidget.provider" android:resource="@xml/andfhem_appwidget_medium"/>
         </receiver>
 
-        <receiver android:name=".appwidget.type.big.BigAppWidgetProvider" android:label="@string/widget_big">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
-                <action android:name="li.klass.fhem.constants.Actions.WIDGET_UPDATE"/>
-                <action android:name="li.klass.fhem.constants.Actions.DEVICE_LIST_REMOTE_NOTIFY"/>
-            </intent-filter>
-            <meta-data android:name="android.appwidget.provider" android:resource="@xml/andfhem_appwidget_big"/>
-        </receiver>
+        <!--<receiver android:name=".appwidget.type.big.BigAppWidgetProvider" android:label="@string/widget_big">-->
+        <!--<intent-filter>-->
+        <!--<action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>-->
+        <!--<action android:name="li.klass.fhem.constants.Actions.WIDGET_UPDATE"/>-->
+        <!--<action android:name="li.klass.fhem.constants.Actions.DEVICE_LIST_REMOTE_NOTIFY"/>-->
+        <!--</intent-filter>-->
+        <!--<meta-data android:name="android.appwidget.provider" android:resource="@xml/andfhem_appwidget_big"/>-->
+        <!--</receiver>-->
 
         <service android:name=".service.intent.RoomListIntentService" android:exported="false">
             <intent-filter>
