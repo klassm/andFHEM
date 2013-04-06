@@ -56,7 +56,7 @@ public class ImageUtil {
     }
 
     public static Bitmap loadBitmap(String imageURL) {
-        if (lastFail - System.currentTimeMillis() < 60 * 10) {
+        if (System.currentTimeMillis() - lastFail < 60 * 10) {
             return null;
         }
 

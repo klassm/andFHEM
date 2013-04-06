@@ -61,7 +61,7 @@ public class WeatherAdapter extends GenericDeviceAdapter<WeatherDevice> {
     }
 
     @Override
-    protected void fillOtherStuffLayout(Context context, LinearLayout layout, WeatherDevice device, LayoutInflater inflater) {
+    protected void fillOtherStuffDetailLayout(Context context, LinearLayout layout, WeatherDevice device, LayoutInflater inflater) {
         LinearLayout currentWeatherHolder = (LinearLayout) inflater.inflate(R.layout.device_detail_other_layout, null);
         setTextView(currentWeatherHolder, R.id.caption, R.string.currentWeather);
         RelativeLayout currentWeatherContent = createCurrentWeatherContent(device, inflater);

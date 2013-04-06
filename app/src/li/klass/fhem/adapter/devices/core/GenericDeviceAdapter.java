@@ -169,7 +169,7 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
 
         addDetailGraphButtons(context, view, device, inflater);
         addDetailActionButtons(context, view, device, inflater);
-        fillOtherStuffLayout(context, (LinearLayout) view.findViewById(R.id.otherStuff), device, inflater);
+        fillOtherStuffDetailLayout(context, (LinearLayout) view.findViewById(R.id.otherStuff), device, inflater);
     }
 
     @Override
@@ -233,7 +233,7 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
         return textView;
     }
 
-    protected void fillOtherStuffLayout(Context context, LinearLayout layout, D device, LayoutInflater inflater) {
+    protected void fillOtherStuffDetailLayout(Context context, LinearLayout layout, D device, LayoutInflater inflater) {
     }
 
     protected void registerFieldListener(String fieldName, FieldNameAddedToDetailListener<D> listener) {
