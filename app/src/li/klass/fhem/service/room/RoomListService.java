@@ -41,7 +41,10 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.ReentrantLock;
 
 import static li.klass.fhem.util.SharedPreferencesUtil.getSharedPreferences;
 import static li.klass.fhem.util.SharedPreferencesUtil.getSharedPreferencesEditor;
@@ -66,6 +69,8 @@ public class RoomListService extends AbstractService {
 
     public static final long NEVER_UPDATE_PERIOD = 0;
     public static final long ALWAYS_UPDATE_PERIOD = -1;
+
+    private final ReentrantLock reentrantLock = new ReentrantLock();
 
     private final AtomicBoolean currentlyUpdating = new AtomicBoolean(false);
 
@@ -93,6 +98,8 @@ public class RoomListService extends AbstractService {
      */
     public ArrayList<String> getRoomNameList(long updatePeriod) {
         Map<String, RoomDeviceList> map = getRoomDeviceListMap(updatePeriod);
+        if (map == null) return new ArrayList<String>();
+
         ArrayList<String> roomNames = new ArrayList<String>(map.keySet());
         for (RoomDeviceList roomDeviceList : map.values()) {
             if (roomDeviceList.isEmptyOrOnlyContainsDoNotShowDevices()) {
@@ -182,6 +189,8 @@ public class RoomListService extends AbstractService {
 
             try {
                 if (currentlyUpdating.compareAndSet(false, true)) {
+                    reentrantLock.lock();
+
                     sendBroadcastWithAction(Actions.SHOW_UPDATING_DIALOG, null);
                     try {
                         deviceListMap = getRemoteRoomDeviceListMap();
@@ -189,8 +198,17 @@ public class RoomListService extends AbstractService {
                         currentlyUpdating.set(false);
                         sendBroadcastWithAction(Actions.DISMISS_UPDATING_DIALOG, null);
                         sendBroadcastWithAction(Actions.DEVICE_LIST_REMOTE_NOTIFY, null);
+
+                        reentrantLock.unlock();
                     }
                 } else {
+                    while (currentlyUpdating.get() && deviceListMap == null) {
+                        try {
+                            Log.i(TAG, "Update in progress, still got null device list, waiting ...");
+                            Thread.sleep(1000);
+                        } catch (Exception ignored) {
+                        }
+                    }
                     Log.i(TAG, "should update, but update is currently in progress. Returning cached roomDeviceList");
                     return deviceListMap;
                 }

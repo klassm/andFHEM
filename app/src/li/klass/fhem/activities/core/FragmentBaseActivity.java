@@ -270,23 +270,19 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
     @Override
     protected void onPostResume() {
         super.onPostResume();
-        Log.d(TAG, "onPostResume()");
+        Log.e(TAG, "onPostResume()");
         // process the intent received in onNewIntent()
         if (waitingIntent == null || !waitingIntent.hasExtra(BundleExtraKeys.FRAGMENT_NAME)) {
             return;
         }
         String fragmentName = waitingIntent.getStringExtra(BundleExtraKeys.FRAGMENT_NAME);
-        Log.i(TAG, "switching to fragment " + fragmentName);
-        if (fragmentName != null) {
-            try {
-                switchToFragment(FragmentType.getFragmentFor(fragmentName), waitingIntent.getExtras());
-            } catch (Exception e) {
-                Log.e(TAG, "error while creating fragment", e);
-            }
-        }
+
+        Intent intent = new Intent(Actions.SHOW_FRAGMENT);
+        intent.putExtras(waitingIntent.getExtras());
+        intent.putExtra(BundleExtraKeys.FRAGMENT, FragmentType.getFragmentFor(fragmentName));
+        sendBroadcast(intent);
 
         waitingIntent = null;
-
     }
 
     @Override
