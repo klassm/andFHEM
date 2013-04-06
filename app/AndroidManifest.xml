@@ -218,5 +218,18 @@
                 <action android:name="com.twofortyfouram.locale.intent.action.FIRE_SETTING"/>
             </intent-filter>
         </receiver>
+
+        <activity
+                android:name=".activities.FHEMUrlActivity"
+                android:label="@string/app_name"
+                android:theme="@android:style/Theme.NoDisplay">
+            <intent-filter>
+
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="fhem"/>
+            </intent-filter>
+        </activity>
     </application>
 </manifest>
