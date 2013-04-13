@@ -69,17 +69,18 @@ public class DeviceActionUtil {
     }
 
     public static void deleteDevice(final Context context, final Device device) {
+        final String deviceName = device.getName();
         showConfirmation(context, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 Intent intent = new Intent(Actions.DEVICE_DELETE);
-                intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
+                intent.putExtra(BundleExtraKeys.DEVICE_NAME, deviceName);
                 intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, updateReceiver);
                 context.startService(intent);
             }
         }, context.getString(R.string.deleteConfirmation));
     }
 
-    public static void moveDevice(final  Context context,final Device device) {
+    public static void moveDevice(final Context context, final Device device) {
         final EditText input = new EditText(context);
         input.setText(device.getRoomConcatenated());
         new AlertDialog.Builder(context)

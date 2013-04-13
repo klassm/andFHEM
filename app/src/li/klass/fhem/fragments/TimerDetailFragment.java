@@ -206,8 +206,11 @@ public class TimerDetailFragment extends BaseFragment {
                 }
 
                 String newTargetState = selectedTargetDevice.getAvailableTargetStates()[i];
-                selectTargetState(newTargetState);
-                setTargetStateAppendix(null);
+
+                if (selectedTargetState == null || !selectedTargetState.equals(newTargetState)) {
+                    selectTargetState(newTargetState);
+                    setTargetStateAppendix(null);
+                }
             }
 
             @Override
@@ -418,6 +421,7 @@ public class TimerDetailFragment extends BaseFragment {
 
         selectTargetDeviceInSpinner(timerDevice.getTargetDevice(), timerDevice.getTargetState());
         selectTargetState(timerDevice.getTargetState());
+        selectedTargetState = timerDevice.getTargetState();
         setTargetStateAppendix(timerDevice.getTargetStateAddtionalInformation());
 
         CheckBox isActiveCheckbox = (CheckBox) view.findViewById(R.id.isActive);
@@ -468,5 +472,16 @@ public class TimerDetailFragment extends BaseFragment {
             targetDeviceRow.setVisibility(View.VISIBLE);
             return true;
         }
+    }
+
+    @Override
+    public void onBackPressResult(Bundle resultData) {
+        super.onBackPressResult(resultData);
+
+        if (resultData == null || !resultData.containsKey(BundleExtraKeys.CLICKED_DEVICE)) {
+            return;
+        }
+        Device device = (Device) resultData.get(BundleExtraKeys.CLICKED_DEVICE);
+        updateTargetDevice(device);
     }
 }

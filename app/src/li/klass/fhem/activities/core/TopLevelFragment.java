@@ -97,7 +97,15 @@ public class TopLevelFragment extends Fragment implements Serializable {
     }
 
     public boolean back(Bundle data) {
-        getFragmentManager().popBackStackImmediate();
+
+        // pop fragments as long as the current content's fragment type is the same as the next content fragment type
+        // this is necessary to handle device name selection (with tablet room selection) in timer fragment!
+        FragmentType currentFragmentType = getCurrentContent().getFragmentType();
+        while (getFragmentManager().popBackStackImmediate()) {
+            if (getCurrentContent().getFragmentType() != currentFragmentType) {
+                break;
+            }
+        }
 
         ContentHolderFragment contentFragment = getCurrentContent();
         if (contentFragment != null) {
