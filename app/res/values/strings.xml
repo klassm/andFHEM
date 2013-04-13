@@ -265,6 +265,7 @@
     <string name="yAxisUsage">usage</string>
     <string name="yAxisFS20State">on (1) / off (0)</string>
     <string name="yAxisLitreContent">Content (l)</string>
+    <string name="yAxisEnergy">Energy (W)</string>
 
     <string name="startDate">Start Date</string>
     <string name="endDate">End Date</string>

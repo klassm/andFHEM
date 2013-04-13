@@ -24,16 +24,21 @@
 
 package li.klass.fhem.domain;
 
+import li.klass.fhem.R;
 import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
+import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ValueDescriptionUtil;
 import li.klass.fhem.util.ValueExtractUtil;
 
+import java.util.List;
+
 @SuppressWarnings("unused")
 @DetailOverviewViewSettings(showState = true, showMeasured = true)
-public class FBDectDevice extends Device {
+public class FBDectDevice extends Device<FBDectDevice> {
     @ShowField(description = ResourceIdMapper.energy)
     private String energy;
 
@@ -81,5 +86,14 @@ public class FBDectDevice extends Device {
 
     public String getCurrent() {
         return current;
+    }
+
+    @Override
+    protected void fillDeviceCharts(List<DeviceChart> chartSeries) {
+        super.fillDeviceCharts(chartSeries);
+
+        addDeviceChartIfNotNull(new DeviceChart(R.string.powerGraph,
+                new ChartSeriesDescription(R.string.power, "4:power", R.string.yAxisEnergy)),
+                energy);
     }
 }

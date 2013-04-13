@@ -262,6 +262,7 @@
     <string name="yAxisUsage">Verbrauch</string>
     <string name="yAxisFS20State">an (1) / aus(0)</string>
     <string name="yAxisLitreContent">Inhalt (l)</string>
+    <string name="yAxisEnergy">Energie (W)</string>
 
     <string name="startDate">Start-Datum</string>
     <string name="endDate">End-Datum</string>
