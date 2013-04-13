@@ -24,48 +24,47 @@
 
 package li.klass.fhem.domain;
 
-import li.klass.fhem.R;
 import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.domain.core.Device;
-import li.klass.fhem.domain.core.DeviceChart;
+import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
-import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ValueDescriptionUtil;
-
-import java.util.List;
+import li.klass.fhem.util.ValueExtractUtil;
 
 @SuppressWarnings("unused")
-public class EMWZDevice extends Device<EMWZDevice> {
-    @ShowField(description = ResourceIdMapper.cumulativeKwh, showInOverview = true)
-    private String cumulativeKwh;
-
+@DetailOverviewViewSettings(showState = true, showMeasured = true)
+public class FBDectDevice extends Device {
     @ShowField(description = ResourceIdMapper.energy)
     private String energy;
 
     @ShowField(description = ResourceIdMapper.power)
     private String power;
 
-    @ShowField(description = ResourceIdMapper.price)
-    private String price;
+    @ShowField(description = ResourceIdMapper.voltage)
+    private String voltage;
 
-    public void readCUM_KWH(String value) {
-        cumulativeKwh = ValueDescriptionUtil.append(value, "kWh");
-    }
+    @ShowField(description = ResourceIdMapper.cumulativeKwh)
+    private String current;
+
 
     public void readENERGY(String value) {
-        this.energy = ValueDescriptionUtil.append(value, "Wh");
+        int numValue = ValueExtractUtil.extractLeadingInt(value);
+        this.energy = ValueDescriptionUtil.append(numValue, "Wh");
     }
 
     public void readPOWER(String value) {
-        this.power = ValueDescriptionUtil.append(value, "W");
+        double numValue = ValueExtractUtil.extractLeadingDouble(value);
+        this.power = ValueDescriptionUtil.append(numValue, "W");
     }
 
-    public void readPRICE_CF(String value) {
-        this.price = ValueDescriptionUtil.append(value, "EUR/W");
+    public void readVOLTAGE(String value) {
+        double numValue = ValueExtractUtil.extractLeadingDouble(value);
+        this.voltage = ValueDescriptionUtil.append(numValue, "V");
     }
 
-    public String getCumulativeKwh() {
-        return cumulativeKwh;
+    public void readCURRENT(String value) {
+        double numValue = ValueExtractUtil.extractLeadingDouble(value);
+        this.current = ValueDescriptionUtil.append(numValue, "A");
     }
 
     public String getEnergy() {
@@ -76,15 +75,11 @@ public class EMWZDevice extends Device<EMWZDevice> {
         return power;
     }
 
-    public String getPrice() {
-        return price;
+    public String getVoltage() {
+        return voltage;
     }
 
-    @Override
-    protected void fillDeviceCharts(List<DeviceChart> chartSeries) {
-        super.fillDeviceCharts(chartSeries);
-
-        addDeviceChartIfNotNull(new DeviceChart(R.string.powerGraph,
-                ChartSeriesDescription.getRegressionValuesInstance(R.string.power, "4:", R.string.power)));
+    public String getCurrent() {
+        return current;
     }
 }

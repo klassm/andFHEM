@@ -1,0 +1,53 @@
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<FHZINFO>
+    <FBDECT_LIST>
+        <FBDECT name="device" state="off" sets="off on blink on-for-timer on-till off-for-timer intervals off-till"
+                attrs="room group comment alias eventMap userReadings IODev do_not_notify:1,0 ignore:1,0 dummy:1,0 showtime:1,0 loglevel:0,1,2,3,4,5,6 event-on-change-reading event-on-update-reading event-min-interval stateFormat model:&quot;AVM,&quot;AVM,200&quot;,546E&quot;,FRITZ!Dect,FRITZ!Dect,Powerline devStateIcon icon sortby webCmd">
+            <INT key="DEF" value="16 switch"/>
+            <INT key="LASTInputDev" value="fbaha"/>
+            <INT key="MSGCNT" value="6"/>
+            <INT key="NAME" value="device"/>
+            <INT key="NR" value="91"/>
+            <INT key="STATE" value="off"/>
+            <INT key="TYPE" value="FBDECT"/>
+            <INT key="fbaha_MSGCNT" value="6"/>
+            <INT key="fbaha_RAWMSG"
+                 value="040300e000000002001002000000000900000280465249545a214445435420323030202331000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100000000000480000000f00040000000000000000001200040000000000000000001300040000000376cd000000140004000000000000000000150004000000003618000000160004000000000000"/>
+            <INT key="fbaha_TIME" value="2013-04-07 20:55:29"/>
+            <INT key="id" value="16"/>
+            <INT key="props" value="switch"/>
+            <INT key="IODev" value="fbaha"/>
+            <ATTR key="event-min-interval" value="power:120"/>
+            <ATTR key="loglevel" value="5"/>
+            <ATTR key="room" value="room"/>
+            <STATE key="current" value="0.1039 A" measured="2013-04-07 18:20:51"/>
+            <STATE key="energy" value="13837 Wh" measured="2013-04-07 18:18:51"/>
+            <STATE key="power" value="13.08 W" measured="2013-04-07 18:20:51"/>
+            <STATE key="state" value="off" measured="2013-04-07 20:55:29"/>
+            <STATE key="voltage" value="230.014 V" measured="2013-04-07 18:20:51"/>
+        </FBDECT>
+    </FBDECT_LIST>
+</FHZINFO>

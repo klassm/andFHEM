@@ -147,6 +147,8 @@
     <string name="price">Price</string>
     <string name="energy">Energy</string>
     <string name="cumulativeKwH">Cumulative</string>
+    <string name="voltage">Voltage</string>
+    <string name="current">Current</string>
 
     <string name="switchDevice">Switch</string>
     <string name="preferences">Preferences</string>

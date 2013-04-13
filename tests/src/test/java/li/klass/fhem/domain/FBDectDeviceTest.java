@@ -30,21 +30,22 @@ import org.junit.Test;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
-public class EMWZDeviceTest extends DeviceXMLParsingBase {
+public class FBDectDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void testForCorrectlySetAttributes() {
-        EMWZDevice device = getDefaultDevice();
+        FBDectDevice device = getDefaultDevice();
 
-        assertThat(device.getCumulativeKwh(), is("0.120 (kWh)"));
-        assertThat(device.getPower(), is("0.480 (W)"));
-        assertThat(device.getPrice(), is("0.250 (EUR/W)"));
-        assertThat(device.getEnergy(), is("0.040 (Wh)"));
-
+        assertThat(device.getName(), is("device"));
+        assertThat(device.getCurrent(), is("0.1039 (A)"));
+        assertThat(device.getEnergy(), is("13837 (Wh)"));
+        assertThat(device.getPower(), is("13.08 (W)"));
+        assertThat(device.getVoltage(), is("230.014 (V)"));
+        assertThat(device.getMeasured(), is("2013-04-07 20:55:29"));
     }
 
     @Override
     protected String getFileName() {
-        return "emzw.xml";
+        return "fbdect.xml";
     }
 }

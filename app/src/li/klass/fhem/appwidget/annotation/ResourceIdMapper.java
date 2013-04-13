@@ -88,6 +88,8 @@ public enum ResourceIdMapper {
     price(R.string.price),
     energy(R.string.energy),
     cumulativeKwh(R.string.cumulativeKwH),
+    voltage(R.string.voltage),
+    current(R.string.current),
 
     none(-1);
 
