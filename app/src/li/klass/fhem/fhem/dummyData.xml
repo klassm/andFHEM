@@ -46,6 +46,33 @@
           value="5.1 from 2011-07-08 ($Id: fhem.pl,v 1.145 2011-07-07 08:46:28 rudolfkoenig Exp $)"/>
 </_internal_>
 </_internal__LIST>
+<FBDECT_LIST>
+<FBDECT name="FB_dect1" state="off" sets="off on blink on-for-timer on-till off-for-timer intervals off-till"
+        attrs="room group comment alias eventMap userReadings IODev do_not_notify:1,0 ignore:1,0 dummy:1,0 showtime:1,0 loglevel:0,1,2,3,4,5,6 event-on-change-reading event-on-update-reading event-min-interval stateFormat model:&quot;AVM,&quot;AVM,200&quot;,546E&quot;,FRITZ!Dect,FRITZ!Dect,Powerline devStateIcon icon sortby webCmd">
+    <INT key="DEF" value="16 switch"/>
+    <INT key="LASTInputDev" value="fbaha"/>
+    <INT key="MSGCNT" value="6"/>
+    <INT key="NAME" value="FB_dect1"/>
+    <INT key="NR" value="91"/>
+    <INT key="STATE" value="off"/>
+    <INT key="TYPE" value="FBDECT"/>
+    <INT key="fbaha_MSGCNT" value="6"/>
+    <INT key="fbaha_RAWMSG"
+         value="040300e000000002001002000000000900000280465249545a214445435420323030202331000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100000000000480000000f00040000000000000000001200040000000000000000001300040000000376cd000000140004000000000000000000150004000000003618000000160004000000000000"/>
+    <INT key="fbaha_TIME" value="2013-04-07 20:55:29"/>
+    <INT key="id" value="16"/>
+    <INT key="props" value="switch"/>
+    <INT key="IODev" value="fbaha"/>
+    <ATTR key="event-min-interval" value="power:120"/>
+    <ATTR key="loglevel" value="5"/>
+    <ATTR key="room" value="arbeitszimmer"/>
+    <STATE key="current" value="0.1039 A" measured="2013-04-07 18:20:51"/>
+    <STATE key="energy" value="13837 Wh" measured="2013-04-07 18:18:51"/>
+    <STATE key="power" value="13.08 W" measured="2013-04-07 18:20:51"/>
+    <STATE key="state" value="off" measured="2013-04-07 20:55:29"/>
+    <STATE key="voltage" value="230.014 V" measured="2013-04-07 18:20:51"/>
+</FBDECT>
+</FBDECT_LIST>
 <PRESENCE_LIST>
 <PRESENCE name="presence" state="present" sets="statusRequest "
           attrs="room group comment alias eventMap userReadings do_not_notify:0,1 disable:0,1 loglevel:1,2,3,4,5 event-on-change-reading event-on-update-reading stateFormat devStateIcon icon invertState onOffDevice toggleDevice webCmd">
