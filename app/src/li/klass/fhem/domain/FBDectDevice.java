@@ -37,7 +37,7 @@ public class FBDectDevice extends Device {
     @ShowField(description = ResourceIdMapper.energy)
     private String energy;
 
-    @ShowField(description = ResourceIdMapper.power)
+    @ShowField(description = ResourceIdMapper.power, showInOverview = true)
     private String power;
 
     @ShowField(description = ResourceIdMapper.voltage)
