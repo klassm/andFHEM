@@ -102,6 +102,7 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
 
     public void onBackPressResult(Bundle resultData) {
         this.fragmentIntentResultData = resultData;
+        update(false);
     }
 
     public Bundle getCreationAttributesAsBundle() {
