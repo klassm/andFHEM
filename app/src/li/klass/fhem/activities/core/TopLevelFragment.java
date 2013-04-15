@@ -102,7 +102,7 @@ public class TopLevelFragment extends Fragment implements Serializable {
         // this is necessary to handle device name selection (with tablet room selection) in timer fragment!
         FragmentType currentFragmentType = getCurrentContent().getFragmentType();
         while (getFragmentManager().popBackStackImmediate()) {
-            if (getCurrentContent().getFragmentType() != currentFragmentType) {
+            if (getCurrentContent() == null || getCurrentContent().getFragmentType() != currentFragmentType) {
                 break;
             }
         }

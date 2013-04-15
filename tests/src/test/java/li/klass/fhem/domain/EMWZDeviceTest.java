@@ -45,6 +45,6 @@ public class EMWZDeviceTest extends DeviceXMLParsingBase {
 
     @Override
     protected String getFileName() {
-        return "emzw.xml";
+        return "emwz.xml";
     }
 }
