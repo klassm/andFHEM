@@ -263,7 +263,10 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
         super.onNewIntent(intent);
         // we're in the wrong lifecycle (activity is not yet resumed)
         // save the intent intermediately and process it in onPostResume();
-        waitingIntent = intent;
+        if (intent != null) {
+            waitingIntent = intent;
+            Log.e(TAG, "waiting intent: " + intent);
+        }
     }
 
 
@@ -275,12 +278,27 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
         if (waitingIntent == null || !waitingIntent.hasExtra(BundleExtraKeys.FRAGMENT_NAME)) {
             return;
         }
-        String fragmentName = waitingIntent.getStringExtra(BundleExtraKeys.FRAGMENT_NAME);
 
-        Intent intent = new Intent(Actions.SHOW_FRAGMENT);
-        intent.putExtras(waitingIntent.getExtras());
-        intent.putExtra(BundleExtraKeys.FRAGMENT, FragmentType.getFragmentFor(fragmentName));
-        sendBroadcast(intent);
+        final String fragmentName = waitingIntent.getStringExtra(BundleExtraKeys.FRAGMENT_NAME);
+        Log.e(TAG, "resume waiting intent " + fragmentName);
+
+        int delay = 0;
+        if (isActivityStart) {
+            delay = 1000;
+        }
+
+        final Bundle extras = waitingIntent.getExtras();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Intent intent = new Intent(Actions.SHOW_FRAGMENT);
+
+                intent.putExtras(extras);
+                intent.putExtra(BundleExtraKeys.FRAGMENT, FragmentType.getFragmentFor(fragmentName));
+                sendBroadcast(intent);
+            }
+        }, delay);
+
 
         waitingIntent = null;
     }
