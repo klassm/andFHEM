@@ -28,6 +28,7 @@ import li.klass.fhem.R;
 import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceChart;
+import li.klass.fhem.domain.core.ToggleableDevice;
 import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
@@ -38,7 +39,7 @@ import java.util.List;
 
 @SuppressWarnings("unused")
 @DetailOverviewViewSettings(showState = true, showMeasured = true)
-public class FBDectDevice extends Device<FBDectDevice> {
+public class FBDectDevice extends ToggleableDevice<FBDectDevice> {
     @ShowField(description = ResourceIdMapper.energy)
     private String energy;
 
@@ -95,5 +96,10 @@ public class FBDectDevice extends Device<FBDectDevice> {
         addDeviceChartIfNotNull(new DeviceChart(R.string.powerGraph,
                 new ChartSeriesDescription(R.string.power, "4:power", R.string.yAxisEnergy)),
                 energy);
+    }
+
+    @Override
+    public boolean supportsToggle() {
+        return true;
     }
 }
