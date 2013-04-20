@@ -154,6 +154,7 @@
                 <action android:name="li.klass.fhem.constants.Actions.DEVICE_WIDGET_TOGGLE"/>
                 <action android:name="li.klass.fhem.constants.Actions.DEVICE_TIMER_NEW"/>
                 <action android:name="li.klass.fhem.constants.Actions.DEVICE_TIMER_MODIFY"/>
+                <action android:name="li.klass.fhem.constants.Actions.DEVICE_SET_SUB_STATE"/>
             </intent-filter>
         </service>
 

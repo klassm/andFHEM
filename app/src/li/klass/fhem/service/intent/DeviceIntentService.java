@@ -51,7 +51,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import static li.klass.fhem.constants.Actions.*;
-import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_GRAPH_ENTRY_MAP;
+import static li.klass.fhem.constants.BundleExtraKeys.*;
 import static li.klass.fhem.service.intent.ConvenientIntentService.STATE.ERROR;
 import static li.klass.fhem.service.intent.ConvenientIntentService.STATE.SUCCESS;
 
@@ -147,9 +147,9 @@ public class DeviceIntentService extends ConvenientIntentService {
         } else if (action.equals(DEVICE_WIDGET_TOGGLE)) {
             STATE result = toggleIntent(device);
 
-            int widgetId = intent.getIntExtra(BundleExtraKeys.APP_WIDGET_ID, -1);
-            Intent widgetUpdateIntent = new Intent(Actions.WIDGET_UPDATE);
-            widgetUpdateIntent.putExtra(BundleExtraKeys.APP_WIDGET_ID, widgetId);
+            int widgetId = intent.getIntExtra(APP_WIDGET_ID, -1);
+            Intent widgetUpdateIntent = new Intent(WIDGET_UPDATE);
+            widgetUpdateIntent.putExtra(APP_WIDGET_ID, widgetId);
             sendBroadcast(widgetUpdateIntent);
 
             return result;
@@ -157,6 +157,11 @@ public class DeviceIntentService extends ConvenientIntentService {
             processTimerIntent(intent, true);
         } else if (action.equals(Actions.DEVICE_TIMER_NEW)) {
             processTimerIntent(intent, false);
+        } else if (action.equals(DEVICE_SET_SUB_STATE)) {
+            String name = intent.getStringExtra(STATE_NAME);
+            String value = intent.getStringExtra(STATE_VALUE);
+
+            GenericDeviceService.INSTANCE.setSubState(device, name, value);
         }
         return SUCCESS;
     }

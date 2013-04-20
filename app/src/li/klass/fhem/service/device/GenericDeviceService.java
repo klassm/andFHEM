@@ -24,8 +24,11 @@
 
 package li.klass.fhem.service.device;
 
+import android.util.Log;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.service.CommandExecutionService;
+
+import java.lang.reflect.Method;
 
 public class GenericDeviceService {
     public static final GenericDeviceService INSTANCE = new GenericDeviceService();
@@ -38,5 +41,19 @@ public class GenericDeviceService {
 
         CommandExecutionService.INSTANCE.executeSafely("set " + device.getName() + " " + targetState);
         device.setState(device.formatStateTextToSet(targetState));
+    }
+
+    public void setSubState(Device<?> device, String subStateName, String value) {
+        CommandExecutionService.INSTANCE.executeSafely("set " + device.getName() + " " + subStateName + " " + value);
+
+        String methodName = "read" + subStateName.toUpperCase();
+        try {
+            Method method = device.getClass().getMethod(methodName, String.class);
+            method.invoke(device, value);
+        } catch (NoSuchMethodException e) {
+            Log.e(GenericDeviceService.class.getName(), "could not find " + methodName + " for device " + device.getClass().getSimpleName(), e);
+        } catch (Exception e) {
+            Log.e(GenericDeviceService.class.getName(), "error during invoke of " + methodName + " for device " + device.getClass().getSimpleName(), e);
+        }
     }
 }

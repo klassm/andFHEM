@@ -26,6 +26,9 @@ package li.klass.fhem.adapter.devices.core;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.ResultReceiver;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -35,6 +38,9 @@ import android.widget.*;
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewAction;
+import li.klass.fhem.constants.Actions;
+import li.klass.fhem.constants.BundleExtraKeys;
+import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
@@ -337,5 +343,17 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
     @Override
     public Class<? extends Device> getSupportedDeviceClass() {
         return deviceClass;
+    }
+
+    protected void putUpdateExtra(Intent intent) {
+        intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
+            @Override
+            protected void onReceiveResult(int resultCode, Bundle resultData) {
+                if (resultCode == ResultCodes.SUCCESS) {
+                    Intent updateIntent = new Intent(Actions.DO_UPDATE);
+                    AndFHEMApplication.getContext().sendBroadcast(updateIntent);
+                }
+            }
+        });
     }
 }
