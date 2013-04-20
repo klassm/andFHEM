@@ -27,6 +27,7 @@ package li.klass.fhem;
 import android.app.Application;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.util.Log;
 import li.klass.fhem.util.ApplicationProperties;
 
@@ -98,5 +99,9 @@ public class AndFHEMApplication extends Application {
 
     public boolean isTablet() {
         return isTablet;
+    }
+
+    public static int getAndroidSDKLevel() {
+        return Build.VERSION.SDK_INT;
     }
 }

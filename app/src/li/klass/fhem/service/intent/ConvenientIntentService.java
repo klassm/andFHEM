@@ -30,6 +30,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.os.ResultReceiver;
 import android.util.Log;
+import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.service.room.RoomListService;
@@ -53,7 +54,9 @@ public abstract class ConvenientIntentService extends IntentService {
     public ConvenientIntentService(String name, int numberOfThreads) {
         super(name);
 
-        if (numberOfThreads > 1) executorService = Executors.newFixedThreadPool(numberOfThreads);
+        if (numberOfThreads > 1 && AndFHEMApplication.getAndroidSDKLevel() >= 13) {
+            executorService = Executors.newFixedThreadPool(numberOfThreads);
+        }
     }
 
     protected enum STATE {
