@@ -1645,7 +1645,29 @@ room structexclude webCmd eventMap">
     <STATE key="state" value="off" measured="2012-01-21 16:30:55"/>
 </WOL>
 </WOL_LIST>
-
+<EMWZ_LIST>
+<EMWZ name="Heizung Zähler" state="0.48 kW" sets="price alarm rperkw"
+      attrs="room comment alias IODev dummy:1,0 model;EM1000WZ loglevel:0,1,2,3,4,5,6 icon webCmd eventMap">
+    <INT key="DEF" value="1"/>
+    <INT key="DEVNR" value="1"/>
+    <INT key="NAME" value="heating_meter"/>
+    <INT key="NR" value="23"/>
+    <INT key="STATE" value="0.48 kW"/>
+    <INT key="TYPE" value="EMWZ"/>
+    <INT key="IODev" value="EM1010PC"/>
+    <ATTR key="model" value="EM1000WZ"/>
+    <ATTR key="room" value="dach"/>
+    <STATE key="5min_pulses" value="3" measured="2013-03-23 21:49:51"/>
+    <STATE key="RperKW_EC" value="75" measured="2013-03-23 21:49:51"/>
+    <STATE key="alarm_PA" value="4000 Watt" measured="2013-03-23 21:49:51"/>
+    <STATE key="cum_kWh" value="0.120" measured="2013-03-23 21:49:51"/>
+    <STATE key="energy" value="0.040" measured="2013-03-23 21:49:51"/>
+    <STATE key="power" value="0.480" measured="2013-03-23 21:49:51"/>
+    <STATE key="price_CF" value="0.250" measured="2013-03-23 21:49:51"/>
+    <STATE key="summary" value="Pulses: 3 Energy: 0.040 Power: 0.480 Cum: 0.120"
+           measured="2013-03-23 21:49:51"/>
+</EMWZ>
+</EMWZ_LIST>
 
 <CUL_EM_LIST>
 <CUL_EM name="CUL_EM_5" state="CNT: 62 CUM: 1254.521  5MIN: 0.000  TOP: 0.000" sets=""
