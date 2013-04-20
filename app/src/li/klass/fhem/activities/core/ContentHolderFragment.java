@@ -116,8 +116,8 @@ public class ContentHolderFragment extends Fragment implements Serializable {
                     .replace(contentId, contentFragment)
                     .commitAllowingStateLoss();
         } catch (Exception e) {
-            Log.d(TAG, "probably savedInstance restore just failed, ignore", e);
-            getActivity().sendBroadcast(new Intent(Actions.RELOAD));
+            Log.e(TAG, "probably savedInstance restore just failed, ignore", e);
+//            getActivity().sendBroadcast(new Intent(Actions.RELOAD));
         }
     }
 

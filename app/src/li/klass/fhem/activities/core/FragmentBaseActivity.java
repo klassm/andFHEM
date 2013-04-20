@@ -157,8 +157,8 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
                         } else if (action.equals(BACK)) {
                             onBackPressed(intent.getExtras());
                         } else if (action.equals(RELOAD)) {
-                            finish();
-                            startActivity(new Intent(FragmentBaseActivity.this, FragmentBaseActivity.this.getClass()));
+//                            finish();
+//                            startActivity(new Intent(FragmentBaseActivity.this, FragmentBaseActivity.this.getClass()));
                         }
                     } catch (Exception e) {
                         Log.e(TAG, "exception occurred while receiving broadcast", e);
@@ -322,21 +322,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
 
         ignoreTabSelection = true;
         viewPager.setCurrentItem(tab.getPosition());
-//
-//        if (tab.getPosition() != viewPager.getCurrentItem()) {
-//            viewPager.setCurrentItem(tab.getPosition());
-//        }
-//
-//        FragmentType currentFragmentType = null;
-//        if (getCurrentTopLevelFragment().getCurrentContent() != null) {
-//            currentFragmentType = getCurrentTopLevelFragment().getCurrentContent().getFragmentType();
-//        }
-//
-//        FragmentType tabFragmentType = (FragmentType) tab.getTag();
-//        if (tabFragmentType != currentFragmentType) {
-//            FragmentType fragmentType = (FragmentType) tab.getTag();
-//            switchToFragment(fragmentType, null);
-//        }
+        ignoreTabSelection = false;
     }
 
     @Override
@@ -345,7 +331,11 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
 
     @Override
     public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
-        onTabSelected(tab, ft);
+        if (ignoreTabSelection) return;
+
+        ignoreTabSelection = true;
+        getCurrentTopLevelFragment().switchToInitialFragment();
+        ignoreTabSelection = false;
     }
 
     @Override
