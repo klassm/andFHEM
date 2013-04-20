@@ -36,7 +36,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class FHTConfiguration extends HeatingConfiguration<FromToHeatingInterval, FHTDevice, FHTConfiguration> {
-    public static final String OFF_TIME = "24:00";
+    public static final String OFF_TIME = "00:00";
 
     public FHTConfiguration() {
         super(OFF_TIME, 2, NumberOfIntervalsType.FIXED);
@@ -58,6 +58,10 @@ public class FHTConfiguration extends HeatingConfiguration<FromToHeatingInterval
 
         int intervalId = (key.charAt(key.length() - 1) - '0') - 1;
         FromToHeatingInterval interval = dayProfile.getHeatingIntervalAt(intervalId);
+
+        if (value.equals("24:00")) {
+            value = "00:00";
+        }
 
         if (key.contains("FROM")) {
             interval.setFromTime(value);
