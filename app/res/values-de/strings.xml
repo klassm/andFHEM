@@ -374,6 +374,17 @@
     <string name="twilight_light_weather">Wetter Dämmerung</string>
     <string name="twilight_light_daylight">Tageslicht</string>
 
+    <string name="musicMute">Stumm</string>
+    <string name="musicRepeat">Wiederholung</string>
+    <string name="musicShuffle">Mischen</string>
+    <string name="musicVolume">Lautstärke</string>
+    <string name="musicAlbum">Album</string>
+    <string name="musicSender">Sender</string>
+    <string name="musicTitle">Titel</string>
+    <string name="musicDuration">Dauer</string>
+    <string name="musicTrackNumber">Titel-Nummer</string>
+    <string name="musicInfo">Info</string>
+
     <string name="dummyConnectionNotification">Momentan werden nur Dummy Geräte angezeigt!</string>
 
     <string name="localeSendCommandPlugin">AndFHEM Kommando</string>

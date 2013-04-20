@@ -378,6 +378,17 @@
     <string name="twilight_light_weather">Weather twilight</string>
     <string name="twilight_light_daylight">Daylight</string>
 
+    <string name="musicMute">Mute</string>
+    <string name="musicRepeat">Repeat</string>
+    <string name="musicShuffle">Shuffle</string>
+    <string name="musicVolume">Volume</string>
+    <string name="musicAlbum">Album</string>
+    <string name="musicSender">Sender</string>
+    <string name="musicTitle">Title</string>
+    <string name="musicDuration">Duration</string>
+    <string name="musicTrackNumber">Track number</string>
+    <string name="musicInfo">Info</string>
+
     <string name="dummyConnectionNotification">Currently only dummy devices are shown!</string>
 
     <string name="localeSendCommandPlugin">AndFHEM Command</string>

@@ -90,6 +90,16 @@ public enum ResourceIdMapper {
     cumulativeKwh(R.string.cumulativeKwH),
     voltage(R.string.voltage),
     current(R.string.current),
+    musicMute(R.string.musicMute),
+    musicRepeat(R.string.musicRepeat),
+    musicShuffle(R.string.musicShuffle),
+    musicVolume(R.string.musicVolume),
+    musicAlbum(R.string.musicAlbum),
+    musicSender(R.string.musicSender),
+    musicTitle(R.string.musicTitle),
+    musicDuration(R.string.musicDuration),
+    musicTrackNumber(R.string.musicTrackNumber),
+    musicInfo(R.string.musicInfo),
 
     none(-1);
 

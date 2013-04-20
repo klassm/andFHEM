@@ -78,7 +78,8 @@ public enum DeviceType {
     TRXSecurity("TRX_SECURITY", TRXSecurityDevice.class, new SwitchActionRowAdapter<TRXSecurityDevice>(TRXSecurityDevice.class)),
     PRESENCE("PRESENCE", PresenceDevice.class),
     EMWZ("EMWZ", EMWZDevice.class),
-    FBDect("FBDECT", FBDectDevice.class, new ToggleableAdapterWithSwitchActionRow<FBDectDevice>(FBDectDevice.class));
+    FBDect("FBDECT", FBDectDevice.class, new ToggleableAdapterWithSwitchActionRow<FBDectDevice>(FBDectDevice.class)),
+    SONOS_PLAYER("SONOSPLAYER", SonosPlayerDevice.class);
 
     private String xmllistTag;
     private Class<? extends Device> deviceClass;
