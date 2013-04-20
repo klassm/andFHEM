@@ -55,7 +55,7 @@ public class FHTConfigurationTest {
         configuration.readNode(weekProfile, "MON-TO1", "09:30");
         configuration.readNode(weekProfile, "MON-TO2", "11:56");
 
-        assertThat(weekProfile.getDayProfileFor(DayUtil.Day.MONDAY).getHeatingIntervalAt(0).getFromTime(), is("24:00"));
+        assertThat(weekProfile.getDayProfileFor(DayUtil.Day.MONDAY).getHeatingIntervalAt(0).getFromTime(), is("00:00"));
         assertThat(weekProfile.getDayProfileFor(DayUtil.Day.MONDAY).getHeatingIntervalAt(1).getFromTime(), is("08:25"));
         assertThat(weekProfile.getDayProfileFor(DayUtil.Day.MONDAY).getHeatingIntervalAt(0).getToTime(), is("09:30"));
         assertThat(weekProfile.getDayProfileFor(DayUtil.Day.MONDAY).getHeatingIntervalAt(1).getToTime(), is("11:56"));
