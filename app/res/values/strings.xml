@@ -336,6 +336,7 @@
     <string name="widget_information">Information</string>
     <string name="widget_weather_forecast">Weather Forecast</string>
     <string name="widget_heating">Heating</string>
+    <string name="widget_dim">Dim</string>
 
     <string name="timer">Timer</string>
     <string name="timer_overview">Switch %1$s %2$s %3$s %4$s to %5$s.</string>

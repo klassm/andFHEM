@@ -39,7 +39,8 @@ public enum WidgetType {
     STATUS(new StatusWidgetView(), WidgetSize.MEDIUM),
     INFORMATION(new MediumInformationWidgetView(), WidgetSize.MEDIUM),
     HEATING(new HeatingWidgetView(), WidgetSize.MEDIUM),
-    WEATHER_FORECAST(new WeatherForecastWidget(), WidgetSize.MEDIUM);
+    WEATHER_FORECAST(new WeatherForecastWidget(), WidgetSize.MEDIUM),
+    DIM(new DimWidgetView(), WidgetSize.MEDIUM);
 
     public final AppWidgetView widgetView;
     public final WidgetSize widgetSize;

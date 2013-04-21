@@ -53,6 +53,16 @@ public abstract class DimmableDevice<D extends Device<D>> extends ToggleableDevi
         return currentPosition - 1;
     }
 
+    @Override
+    public String formatTargetState(String targetState) {
+        if (targetState.equals("dimup")) {
+            return getDimStateForPosition(getDimUpPosition());
+        } else if (targetState.equals("dimdown")) {
+            return getDimStateForPosition(getDimDownPosition());
+        }
+        return super.formatTargetState(targetState);
+    }
+
     public abstract int getDimUpperBound();
 
     public abstract String getDimStateForPosition(int position);
