@@ -33,6 +33,7 @@ import li.klass.fhem.domain.genericview.FloorplanViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ValueDescriptionUtil;
+import li.klass.fhem.util.ValueExtractUtil;
 
 import java.util.List;
 
@@ -52,6 +53,9 @@ public class CULEMDevice extends Device<CULEMDevice> {
     private String monthUsage;
     private double sumGraphDivisionFactor = 1d;
 
+    @ShowField(description = ResourceIdMapper.cumulativeKwh, showInOverview = true)
+    private String cumulativeKwh;
+
     public void readCURRENT(String value) {
         currentUsage = ValueDescriptionUtil.appendKwh(value);
     }
@@ -66,6 +70,11 @@ public class CULEMDevice extends Device<CULEMDevice> {
 
     public void readSUM_GRAPH_DIVISION_FACTOR(String value) {
         sumGraphDivisionFactor = Double.valueOf(value);
+    }
+
+    public void readTOTAL(String value) {
+        double val = ValueExtractUtil.extractLeadingDouble(value);
+        cumulativeKwh = ValueDescriptionUtil.appendKwh("" + (((int) (val * 100)) / 100d));
     }
 
     public String readCurrentUsage() {
@@ -86,6 +95,10 @@ public class CULEMDevice extends Device<CULEMDevice> {
 
     public String getCurrentUsage() {
         return currentUsage;
+    }
+
+    public String getCumulativeKwh() {
+        return cumulativeKwh;
     }
 
     private String extractCumUsage(String cumString, String cumToken) {

@@ -25,6 +25,7 @@
 package li.klass.fhem.domain;
 
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+import org.hamcrest.Matchers;
 import org.junit.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -44,6 +45,7 @@ public class CULEMDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getSumGraphDivisionFactor(), is(closeTo(2, 0.01)));
         assertThat(device.getCurrentUsage(), is("0 (kwh)"));
         assertThat(device.getState(), is("CNT: 62 CUM: 1254.521  5MIN: 0.000  TOP: 0.000"));
+        assertThat(device.getCumulativeKwh(), is("1254.52 (kwh)"));
 
 
         assertThat(device.getAvailableTargetStates(), is(nullValue()));
