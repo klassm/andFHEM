@@ -28,13 +28,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.*;
 import android.widget.AdapterView;
 import android.widget.Toast;
+import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.DeviceAdapter;
 import li.klass.fhem.adapter.rooms.DeviceGridAdapter;
+import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.domain.core.Device;
@@ -151,7 +154,12 @@ public abstract class DeviceListFragment extends BaseFragment {
         });
         fillIntent(intent);
 
-        getActivity().startService(intent);
+        FragmentActivity activity = getActivity();
+        if (activity == null) {
+            AndFHEMApplication.getContext().sendBroadcast(new Intent(Actions.RELOAD));
+        } else {
+            activity.startService(intent);
+        }
     }
 
     protected void fillIntent(Intent intent) {

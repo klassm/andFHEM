@@ -61,8 +61,6 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
     private Receiver broadcastReceiver;
     private Menu optionsMenu;
 
-//    private TopLevelFragment topLevelFragment;
-
     /**
      * an intent waiting to be processed, but received in the wrong activity state (widget problem ..)
      */
@@ -157,6 +155,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
                         } else if (action.equals(BACK)) {
                             onBackPressed(intent.getExtras());
                         } else if (action.equals(RELOAD)) {
+                            onRestoreInstanceState(null);
 //                            finish();
 //                            startActivity(new Intent(FragmentBaseActivity.this, FragmentBaseActivity.this.getClass()));
                         }
@@ -170,6 +169,14 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
         public IntentFilter getIntentFilter() {
             return intentFilter;
         }
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+            super.onRestoreInstanceState(savedInstanceState);
+        }
+        getWindow().getDecorView().findViewById(android.R.id.content).invalidate();
     }
 
     @Override
