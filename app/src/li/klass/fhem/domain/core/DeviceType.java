@@ -79,7 +79,8 @@ public enum DeviceType {
     PRESENCE("PRESENCE", PresenceDevice.class),
     EMWZ("EMWZ", EMWZDevice.class),
     FBDect("FBDECT", FBDectDevice.class, new ToggleableAdapterWithSwitchActionRow<FBDectDevice>(FBDectDevice.class)),
-    SONOS_PLAYER("SONOSPLAYER", SonosPlayerDevice.class, new SonosPlayerAdapter());
+    SONOS_PLAYER("SONOSPLAYER", SonosPlayerDevice.class, new SonosPlayerAdapter()),
+    SONOS("SONOS", SonosDevice.class);
 
     private String xmllistTag;
     private Class<? extends Device> deviceClass;

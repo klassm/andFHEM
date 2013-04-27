@@ -28,7 +28,7 @@ import android.content.Context;
 import android.content.Intent;
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
-import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewAction;
+import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewButtonAction;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.UniRollDevice;
@@ -40,7 +40,7 @@ public class UniRollAdapter extends GenericDeviceAdapter<UniRollDevice> {
 
     @Override
     protected void afterPropertiesSet() {
-        detailActions.add(new DeviceDetailViewAction<UniRollDevice>(R.string.up) {
+        detailActions.add(new DeviceDetailViewButtonAction<UniRollDevice>(R.string.up) {
             @Override
             public void onButtonClick(Context context, UniRollDevice device) {
                 Intent intent = new Intent(Actions.DEVICE_SET_STATE);
@@ -50,7 +50,7 @@ public class UniRollAdapter extends GenericDeviceAdapter<UniRollDevice> {
             }
         });
 
-        detailActions.add(new DeviceDetailViewAction<UniRollDevice>(R.string.stop) {
+        detailActions.add(new DeviceDetailViewButtonAction<UniRollDevice>(R.string.stop) {
             @Override
             public void onButtonClick(Context context, UniRollDevice device) {
                 Intent intent = new Intent(Actions.DEVICE_SET_STATE);
@@ -60,7 +60,7 @@ public class UniRollAdapter extends GenericDeviceAdapter<UniRollDevice> {
             }
         });
 
-        detailActions.add(new DeviceDetailViewAction<UniRollDevice>(R.string.down) {
+        detailActions.add(new DeviceDetailViewButtonAction<UniRollDevice>(R.string.down) {
             @Override
             public void onButtonClick(Context context, UniRollDevice device) {
                 Intent intent = new Intent(Actions.DEVICE_SET_STATE);

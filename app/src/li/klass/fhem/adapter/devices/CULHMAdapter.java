@@ -33,7 +33,7 @@ import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.DimmableAdapter;
 import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
 import li.klass.fhem.adapter.devices.genericui.CustomViewTableRow;
-import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewAction;
+import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewButtonAction;
 import li.klass.fhem.adapter.devices.genericui.HeatingModeListener;
 import li.klass.fhem.adapter.devices.genericui.TemperatureChangeTableRow;
 import li.klass.fhem.constants.Actions;
@@ -94,7 +94,7 @@ public class CULHMAdapter extends DimmableAdapter<CULHMDevice> {
             }
         });
 
-        detailActions.add(new DeviceDetailViewAction<CULHMDevice>(R.string.timetable) {
+        detailActions.add(new DeviceDetailViewButtonAction<CULHMDevice>(R.string.timetable) {
             @Override
             public void onButtonClick(Context context, CULHMDevice device) {
                 Intent intent = new Intent(Actions.SHOW_FRAGMENT);

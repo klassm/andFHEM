@@ -28,7 +28,7 @@ import android.content.Context;
 import android.content.Intent;
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
-import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewAction;
+import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewButtonAction;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.WOLDevice;
@@ -40,7 +40,7 @@ public class WOLAdapter extends GenericDeviceAdapter<WOLDevice> {
 
     @Override
     protected void afterPropertiesSet() {
-        detailActions.add(new DeviceDetailViewAction<WOLDevice>(R.string.wake) {
+        detailActions.add(new DeviceDetailViewButtonAction<WOLDevice>(R.string.wake) {
             @Override
             public void onButtonClick(Context context, WOLDevice device) {
                 Intent intent = new Intent(Actions.DEVICE_SET_STATE);
@@ -50,7 +50,7 @@ public class WOLAdapter extends GenericDeviceAdapter<WOLDevice> {
             }
         });
 
-        detailActions.add(new DeviceDetailViewAction<WOLDevice>(R.string.shutdown) {
+        detailActions.add(new DeviceDetailViewButtonAction<WOLDevice>(R.string.shutdown) {
             @Override
             public void onButtonClick(Context context, WOLDevice device) {
                 Intent intent = new Intent(Actions.DEVICE_SET_STATE);
@@ -64,7 +64,7 @@ public class WOLAdapter extends GenericDeviceAdapter<WOLDevice> {
                 return device.getShutdownCommand() != null;
             }
         });
-        detailActions.add(new DeviceDetailViewAction<WOLDevice>(R.string.requestRefresh) {
+        detailActions.add(new DeviceDetailViewButtonAction<WOLDevice>(R.string.requestRefresh) {
             @Override
             public void onButtonClick(Context context, WOLDevice device) {
                 Intent intent = new Intent(Actions.DEVICE_REFRESH_STATE);

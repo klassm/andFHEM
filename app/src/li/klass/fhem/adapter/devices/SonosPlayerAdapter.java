@@ -26,10 +26,17 @@ package li.klass.fhem.adapter.devices;
 
 import android.content.Context;
 import android.content.Intent;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
 import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
+import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewAction;
+import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewButtonAction;
 import li.klass.fhem.adapter.devices.genericui.SeekBarActionRowFullWidthAndButton;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
@@ -65,5 +72,40 @@ public class SonosPlayerAdapter extends GenericDeviceAdapter<SonosPlayerDevice> 
                 }.createRow(inflater, device));
             }
         });
+
+        detailActions.add(new DeviceDetailViewAction<SonosPlayerDevice>() {
+            @Override
+            public View createView(Context context, LayoutInflater inflater, SonosPlayerDevice device, LinearLayout parent) {
+                View view = inflater.inflate(R.layout.sonos_player_action, null);
+
+                fillImageButtonWithAction(context, view, device, R.id.rewind, "Previous");
+                fillImageButtonWithAction(context, view, device, R.id.pause, "Pause");
+                fillImageButtonWithAction(context, view, device, R.id.stop, "Stop");
+                fillImageButtonWithAction(context, view, device, R.id.play, "Play");
+                fillImageButtonWithAction(context, view, device, R.id.forward, "Next");
+
+                return view;
+            }
+        });
+    }
+
+    private void fillImageButtonWithAction(final Context context, View view, final SonosPlayerDevice device,
+                                           int id, final String action) {
+        ImageButton button = (ImageButton) view.findViewById(id);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendAction(context, device, action);
+            }
+        });
+    }
+
+    private void sendAction(Context context, SonosPlayerDevice device, String action) {
+        Intent intent = new Intent(Actions.DEVICE_SET_STATE);
+        intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
+        intent.putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, action);
+        putUpdateExtra(intent);
+
+        context.startService(intent);
     }
 }

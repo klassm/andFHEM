@@ -33,7 +33,7 @@ import android.widget.*;
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
 import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
-import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewAction;
+import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewButtonAction;
 import li.klass.fhem.adapter.devices.genericui.SpinnerActionRow;
 import li.klass.fhem.adapter.devices.genericui.TemperatureChangeTableRow;
 import li.klass.fhem.constants.Actions;
@@ -109,7 +109,7 @@ public class FHTAdapter extends GenericDeviceAdapter<FHTDevice> {
             }
         });
 
-        detailActions.add(new DeviceDetailViewAction<FHTDevice>(R.string.timetable) {
+        detailActions.add(new DeviceDetailViewButtonAction<FHTDevice>(R.string.timetable) {
             @Override
             public void onButtonClick(Context context, FHTDevice device) {
                 Intent intent = new Intent(Actions.SHOW_FRAGMENT);
@@ -119,7 +119,7 @@ public class FHTAdapter extends GenericDeviceAdapter<FHTDevice> {
             }
         });
 
-        detailActions.add(new DeviceDetailViewAction<FHTDevice>(R.string.requestRefresh) {
+        detailActions.add(new DeviceDetailViewButtonAction<FHTDevice>(R.string.requestRefresh) {
             @Override
             public void onButtonClick(Context context, FHTDevice device) {
                 Intent intent = new Intent(Actions.DEVICE_REFRESH_VALUES);

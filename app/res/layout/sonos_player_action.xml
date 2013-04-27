@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center">
+
+    <ImageButton
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:id="@+id/rewind"
+            android:background="@drawable/player_rew"
+            android:layout_marginTop="30dp"/>
+
+    <LinearLayout android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_toRightOf="@+id/rewind"
+                  android:orientation="vertical"
+                  android:id="@+id/mid">
+        <LinearLayout android:layout_width="wrap_content"
+                      android:layout_height="wrap_content">
+
+            <ImageButton
+                    android:layout_width="60dp"
+                    android:layout_height="fill_parent"
+                    android:id="@+id/pause"
+                    android:background="@drawable/player_pause"
+                    android:layout_alignLeft="@+id/imageButton"/>
+
+            <ImageButton
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:id="@+id/play"
+                    android:background="@drawable/player_play" android:layout_gravity="center"/>
+
+        </LinearLayout>
+        <ImageButton
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:id="@+id/stop"
+                android:background="@drawable/player_stop"
+                android:layout_gravity="center"
+                android:layout_below="@+id/stop"/>
+    </LinearLayout>
+
+    <ImageButton
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="30dp"
+            android:id="@+id/forward"
+            android:background="@drawable/player_fwd"
+            android:layout_gravity="center"
+            android:layout_toRightOf="@+id/mid"/>
+</RelativeLayout>

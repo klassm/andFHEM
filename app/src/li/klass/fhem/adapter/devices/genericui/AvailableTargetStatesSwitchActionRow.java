@@ -39,7 +39,7 @@ import li.klass.fhem.domain.core.DeviceStateAdditionalInformationType;
 import li.klass.fhem.domain.core.DeviceStateRequiringAdditionalInformation;
 import li.klass.fhem.util.DialogUtil;
 
-public class AvailableTargetStatesSwitchActionRow<D extends Device<D>> extends DeviceDetailViewAction<D> {
+public class AvailableTargetStatesSwitchActionRow<D extends Device<D>> extends DeviceDetailViewButtonAction<D> {
     public AvailableTargetStatesSwitchActionRow() {
         super(R.string.switchSetOptions);
     }
@@ -87,8 +87,8 @@ public class AvailableTargetStatesSwitchActionRow<D extends Device<D>> extends D
     private void handleAdditionalInformationValue(String value, DeviceStateRequiringAdditionalInformation specialDeviceState,
                                                   String option, D device, Context context) {
 
-        for (DeviceStateAdditionalInformationType type :specialDeviceState.getAdditionalInformationTypes()) {
-            if (! type.matches(value)) {
+        for (DeviceStateAdditionalInformationType type : specialDeviceState.getAdditionalInformationTypes()) {
+            if (!type.matches(value)) {
                 DialogUtil.showAlertDialog(context, R.string.error, R.string.invalidInput);
                 return;
             }

@@ -282,8 +282,8 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
         for (DeviceDetailViewAction<D> action : detailActions) {
             if (!action.isVisible(device)) continue;
 
-            Button button = action.createButton(context, inflater, device, actionLayout);
-            actionLayout.addView(button);
+            View actionView = action.createView(context, inflater, device, actionLayout);
+            actionLayout.addView(actionView);
         }
     }
 

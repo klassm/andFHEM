@@ -35,7 +35,7 @@ import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
 import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
-import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewAction;
+import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewButtonAction;
 import li.klass.fhem.adapter.devices.genericui.HeatingModeListener;
 import li.klass.fhem.adapter.devices.genericui.TemperatureChangeTableRow;
 import li.klass.fhem.constants.Actions;
@@ -105,7 +105,7 @@ public class MaxAdapter extends GenericDeviceAdapter<MaxDevice> {
             }
         });
 
-        detailActions.add(new DeviceDetailViewAction<MaxDevice>(R.string.timetable) {
+        detailActions.add(new DeviceDetailViewButtonAction<MaxDevice>(R.string.timetable) {
             @Override
             public void onButtonClick(Context context, MaxDevice device) {
                 Intent intent = new Intent(Actions.SHOW_FRAGMENT);
