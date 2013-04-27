@@ -55,64 +55,63 @@ public class AndFHEMMainActivity extends FragmentBaseActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-    	int id = item.getItemId();
+        int id = item.getItemId();
         if (id == android.R.id.home) {
-			onBackPressed();
-		} else if (id == R.id.menu_refresh) {
-			Intent refreshIntent = new Intent(Actions.DO_UPDATE);
-			refreshIntent.putExtra(DO_REFRESH, true);
-			sendBroadcast(refreshIntent);
-			return true;
-		} else if (id == R.id.menu_settings) {
-			Intent settingsIntent = new Intent(this, PreferencesActivity.class);
-			startActivityForResult(settingsIntent, RESULT_OK);
-			return true;
-		} else if (id == R.id.menu_help) {
-			Uri helpUri = Uri.parse(ApplicationUrls.HELP_PAGE);
-			Intent helpIntent = new Intent(Intent.ACTION_VIEW, helpUri);
-			startActivity(helpIntent);
-			return true;
-		} else if (id == R.id.menu_premium) {
-			Intent premiumIntent = new Intent(Actions.SHOW_FRAGMENT);
-			premiumIntent.putExtra(BundleExtraKeys.FRAGMENT_NAME, PremiumFragment.class.getName());
-			sendBroadcast(premiumIntent);
-			return true;
-		} else if (id == R.id.menu_command) {
-			Intent commandIntent = new Intent(Actions.SHOW_FRAGMENT);
-			commandIntent.putExtra(BundleExtraKeys.FRAGMENT_NAME, SendCommandFragment.class.getName());
-			sendBroadcast(commandIntent);
-			return true;
-		} else if (id == R.id.menu_conversion) {
-			Intent conversion = new Intent(Actions.SHOW_FRAGMENT);
-			conversion.putExtra(BundleExtraKeys.FRAGMENT_NAME, ConversionFragment.class.getName());
-			sendBroadcast(conversion);
-			return true;
-		} else if (id == R.id.menu_timer) {
-			if (Build.VERSION.SDK_INT < 11) {
-			    String text = String.format(getString(R.string.feature_requires_android_version), 3);
-			    DialogUtil.showAlertDialog(this, R.string.android_version, text);
-			    return true;
-			}
-			Intent timer = new Intent(Actions.SHOW_FRAGMENT);
-			timer.putExtra(BundleExtraKeys.FRAGMENT_NAME, TimerListFragment.class.getName());
-			sendBroadcast(timer);
-			return true;
-		} else if (id == R.id.menu_about) {
-			String version;
-			try {
-			    String pkg = getPackageName();
-			    version = getPackageManager().getPackageInfo(pkg, 0).versionName;
-			} catch (PackageManager.NameNotFoundException e) {
-			    version = "?";
-			}
-			DialogUtil.showAlertDialog(this, R.string.about, "Matthias Klass\r\nVersion: " + version + "\r\n" +
-			        "andFHEM.klass.li\r\nandFHEM@klass.li");
-			return true;
-		}
+            onBackPressed();
+        } else if (id == R.id.menu_refresh) {
+            Intent refreshIntent = new Intent(Actions.DO_UPDATE);
+            refreshIntent.putExtra(DO_REFRESH, true);
+            sendBroadcast(refreshIntent);
+            return true;
+        } else if (id == R.id.menu_settings) {
+            Intent settingsIntent = new Intent(this, PreferencesActivity.class);
+            startActivityForResult(settingsIntent, RESULT_OK);
+            return true;
+        } else if (id == R.id.menu_help) {
+            Uri helpUri = Uri.parse(ApplicationUrls.HELP_PAGE);
+            Intent helpIntent = new Intent(Intent.ACTION_VIEW, helpUri);
+            startActivity(helpIntent);
+            return true;
+        } else if (id == R.id.menu_premium) {
+            Intent premiumIntent = new Intent(Actions.SHOW_FRAGMENT);
+            premiumIntent.putExtra(BundleExtraKeys.FRAGMENT_NAME, PremiumFragment.class.getName());
+            sendBroadcast(premiumIntent);
+            return true;
+        } else if (id == R.id.menu_command) {
+            Intent commandIntent = new Intent(Actions.SHOW_FRAGMENT);
+            commandIntent.putExtra(BundleExtraKeys.FRAGMENT_NAME, SendCommandFragment.class.getName());
+            sendBroadcast(commandIntent);
+            return true;
+        } else if (id == R.id.menu_conversion) {
+            Intent conversion = new Intent(Actions.SHOW_FRAGMENT);
+            conversion.putExtra(BundleExtraKeys.FRAGMENT_NAME, ConversionFragment.class.getName());
+            sendBroadcast(conversion);
+            return true;
+        } else if (id == R.id.menu_timer) {
+            if (Build.VERSION.SDK_INT < 11) {
+                String text = String.format(getString(R.string.feature_requires_android_version), 3);
+                DialogUtil.showAlertDialog(this, R.string.android_version, text);
+                return true;
+            }
+            Intent timer = new Intent(Actions.SHOW_FRAGMENT);
+            timer.putExtra(BundleExtraKeys.FRAGMENT_NAME, TimerListFragment.class.getName());
+            sendBroadcast(timer);
+            return true;
+        } else if (id == R.id.menu_about) {
+            String version;
+            try {
+                String pkg = getPackageName();
+                version = getPackageManager().getPackageInfo(pkg, 0).versionName;
+            } catch (PackageManager.NameNotFoundException e) {
+                version = "?";
+            }
+            DialogUtil.showAlertDialog(this, R.string.about, "Matthias Klass\r\nVersion: " + version + "\r\n" +
+                    "andFHEM.klass.li\r\nandFHEM@klass.li");
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }
-
 
     @Override
     public void update(boolean doUpdate) {

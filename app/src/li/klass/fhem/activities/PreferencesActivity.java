@@ -39,6 +39,8 @@ import android.widget.ScrollView;
 import com.hlidskialf.android.preference.SeekBarPreference;
 import li.klass.fhem.R;
 import li.klass.fhem.constants.Actions;
+import li.klass.fhem.constants.BundleExtraKeys;
+import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.fhem.DataConnectionSwitch;
 import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.DialogUtil;
@@ -72,6 +74,7 @@ public class PreferencesActivity extends PreferenceActivity implements SharedPre
                 DataConnectionSwitch.INSTANCE.getCurrentProvider().stopEventReceiver();
                 ApplicationProperties.INSTANCE.setBooleanSharedPreference(USE_EVENT_RECEIVER, false);
                 setDataOriginOptionsForValue((String) o);
+
                 return true;
             }
         });
@@ -241,6 +244,16 @@ public class PreferencesActivity extends PreferenceActivity implements SharedPre
 
         private void hidePassword() {
             getEditText().setTransformationMethod(PasswordTransformationMethod.getInstance());
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if (preferencesChanged) {
+            Intent intent = new Intent(Actions.GET_ALL_ROOMS_DEVICE_LIST);
+            intent.putExtra(BundleExtraKeys.DO_REFRESH, true);
+            startService(intent);
         }
     }
 }
