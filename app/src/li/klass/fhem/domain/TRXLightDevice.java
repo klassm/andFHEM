@@ -27,6 +27,7 @@ package li.klass.fhem.domain;
 import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.domain.core.DimmableDiscreteStatesDevice;
 import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
+import li.klass.fhem.domain.genericview.FloorplanViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.util.ArrayUtil;
 import org.w3c.dom.NamedNodeMap;
@@ -36,6 +37,7 @@ import java.util.List;
 
 @SuppressWarnings("unused")
 @DetailOverviewViewSettings(showState = true)
+@FloorplanViewSettings
 public class TRXLightDevice extends DimmableDiscreteStatesDevice<TRXLightDevice> {
 
     private static final ArrayList<String> dimLevels = new ArrayList<String>();
