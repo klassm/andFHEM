@@ -175,8 +175,11 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         if (savedInstanceState != null) {
             super.onRestoreInstanceState(savedInstanceState);
+            setContentView(R.layout.main_view);
         }
-        getWindow().getDecorView().findViewById(android.R.id.content).invalidate();
+        finish();
+        startActivity(getIntent());
+//        getWindow().getDecorView().findViewById(android.R.id.content).invalidate();
     }
 
     @Override
