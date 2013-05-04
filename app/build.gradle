@@ -29,7 +29,7 @@ buildscript {
         mavenRepo urls: 'http://repo.smokejumperit.com'
     }
     dependencies {
-        classpath 'com.smokejumperit:gradle-plugins:4.1.1.4'
+        classpath 'com.smokejumperit:gradle-plugins:0.8.2'
     }
 }
 
