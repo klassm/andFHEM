@@ -145,6 +145,43 @@
     <STATE key="state" value="on" measured="2013-01-06 16:00:02"/>
 </structure>
 </structure_LIST>
+<GenShellSwitch_LIST>
+<GenShellSwitch name="Flur_Obergeschoss" state="an/aus" sets="an/aus on off toggle on-for-timer"
+                attrs="room group comment alias eventMap userReadings loglevel:0,1,2,3,4,5,6 event-on-change-reading event-on-update-reading event-min-interval stateFormat devStateIcon icon sortby webCmd">
+    <INT key="Command" value="/home/pi/rcswitch-pi/send k 1 1 "/>
+    <INT key="DEF" value="/home/pi/rcswitch-pi/send k 1 1 1 1"/>
+    <INT key="NAME" value="Flur_Obergeschoss"/>
+    <INT key="NR" value="35"/>
+    <INT key="OffValue" value="1"/>
+    <INT key="OnValue" value="1"/>
+    <INT key="STATE" value="an/aus"/>
+    <INT key="TYPE" value="GenShellSwitch"/>
+    <ATTR key="devStateIcon" value=".*:toggle"/>
+    <ATTR key="eventMap" value="on:an/aus"/>
+    <ATTR key="group" value="Licht"/>
+    <ATTR key="icon" value="icoLichtHaus"/>
+    <ATTR key="room" value="gang"/>
+    <ATTR key="webCmd" value="an/aus"/>
+    <STATE key="state" value="on" measured="2013-04-28 14:43:52"/>
+</GenShellSwitch>
+<GenShellSwitch name="Gartenfluter" state="aus" sets="an aus on off toggle on-for-timer"
+                attrs="room group comment alias eventMap userReadings loglevel:0,1,2,3,4,5,6 event-on-change-reading event-on-update-reading event-min-interval stateFormat devStateIcon icon sortby webCmd">
+    <INT key="Command" value="/home/pi/rcswitch-pi/send o 4 1 "/>
+    <INT key="DEF" value="/home/pi/rcswitch-pi/send o 4 1 1 0"/>
+    <INT key="NAME" value="Gartenfluter"/>
+    <INT key="NR" value="38"/>
+    <INT key="OffValue" value="0"/>
+    <INT key="OnValue" value="1"/>
+    <INT key="STATE" value="aus"/>
+    <INT key="TYPE" value="GenShellSwitch"/>
+    <ATTR key="eventMap" value="on:an off:aus"/>
+    <ATTR key="group" value="Licht"/>
+    <ATTR key="icon" value="icoLichtBaum"/>
+    <ATTR key="room" value="garten"/>
+    <ATTR key="webCmd" value="an:aus"/>
+    <STATE key="state" value="off" measured="2013-04-28 22:35:22"/>
+</GenShellSwitch>
+</GenShellSwitch_LIST>
 <MAX_LIST>
 <MAX name="MAX_TH_WAND" state="22.0 °C"
      sets="wakeUp factoryReset groupid associate:MAX_TH_SZ,MAX_TH_WZ_GROSS,MAX_TH_JAN,MAX_TH_NIKLAS,MAX_TH_WZ_KLEIN displayActualTemperature:0,1 desiredTemperature:eco,comfort,boost,auto,4.5,5.0,5.5,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,10.0,10.5,11.0,11.5,12.0,12.5,13.0,13.5,14.0,14.5,15.0,15.5,16.0,16.5,17.0,17.5,18.0,18.5,19.0,19.5,20.0,20.5,21.0,21.5,22.0,22.5,23.0,23.5,24.0,24.5,25.0,25.5,26.0,26.5,27.0,27.5,28.0,28.5,29.0,29.5,30.0,30.5 ecoTemperature:4.5,5.0,5.5,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,10.0,10.5,11.0,11.5,12.0,12.5,13.0,13.5,14.0,14.5,15.0,15.5,16.0,16.5,17.0,17.5,18.0,18.5,19.0,19.5,20.0,20.5,21.0,21.5,22.0,22.5,23.0,23.5,24.0,24.5,25.0,25.5,26.0,26.5,27.0,27.5,28.0,28.5,29.0,29.5,30.0,30.5 comfortTemperature:4.5,5.0,5.5,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,10.0,10.5,11.0,11.5,12.0,12.5,13.0,13.5,14.0,14.5,15.0,15.5,16.0,16.5,17.0,17.5,18.0,18.5,19.0,19.5,20.0,20.5,21.0,21.5,22.0,22.5,23.0,23.5,24.0,24.5,25.0,25.5,26.0,26.5,27.0,27.5,28.0,28.5,29.0,29.5,30.0,30.5 maximumTemperature:4.5,5.0,5.5,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,10.0,10.5,11.0,11.5,12.0,12.5,13.0,13.5,14.0,14.5,15.0,15.5,16.0,16.5,17.0,17.5,18.0,18.5,19.0,19.5,20.0,20.5,21.0,21.5,22.0,22.5,23.0,23.5,24.0,24.5,25.0,25.5,26.0,26.5,27.0,27.5,28.0,28.5,29.0,29.5,30.0,30.5"

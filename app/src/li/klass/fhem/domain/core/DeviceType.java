@@ -80,7 +80,8 @@ public enum DeviceType {
     EMWZ("EMWZ", EMWZDevice.class),
     FBDect("FBDECT", FBDectDevice.class, new ToggleableAdapterWithSwitchActionRow<FBDectDevice>(FBDectDevice.class)),
     SONOS_PLAYER("SONOSPLAYER", SonosPlayerDevice.class, new SonosPlayerAdapter()),
-    SONOS("SONOS", SonosDevice.class);
+    SONOS("SONOS", SonosDevice.class),
+    GENSHELLSWITCH("GenShellSwitch", GenShellSwitchDevice.class, new ToggleableAdapterWithSwitchActionRow<GenShellSwitchDevice>(GenShellSwitchDevice.class));
 
     private String xmllistTag;
     private Class<? extends Device> deviceClass;

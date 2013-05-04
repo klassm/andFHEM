@@ -22,26 +22,27 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.infra;
+package li.klass.fhem.domain;
 
-import android.app.Activity;
-import com.xtremelabs.robolectric.RobolectricConfig;
-import com.xtremelabs.robolectric.RobolectricTestRunner;
-import li.klass.fhem.AndFHEMApplication;
-import li.klass.fhem.activities.AndFHEMMainActivity;
-import org.junit.runners.model.InitializationError;
+import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+import org.junit.Test;
 
-import java.io.File;
-import java.lang.reflect.Method;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 
-public class AndFHEMRobolectricTestRunner extends RobolectricTestRunner {
-    public AndFHEMRobolectricTestRunner(Class<?> testClass) throws InitializationError {
-        super(testClass, new RobolectricConfig(new File(ProjectMetaDataProvider.getProjectRoot() + "/app")));
+public class GenShellSwitchDeviceTest extends DeviceXMLParsingBase {
+
+    @Test
+    public void testForCorrectlySetAttributes() {
+        GenShellSwitchDevice device1 = getDeviceFor("device1");
+        assertThat(device1.isOnByState(), is(true));
+
+        GenShellSwitchDevice device2 = getDeviceFor("device2");
+        assertThat(device2.isOnByState(), is(false));
     }
 
     @Override
-    public void beforeTest(Method method) {
-        AndFHEMApplication.setContext(new Activity());
-        super.beforeTest(method);
+    protected String getFileName() {
+        return "genshellswitch.xml";
     }
 }

@@ -22,26 +22,13 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.infra;
+package li.klass.fhem.domain;
 
-import android.app.Activity;
-import com.xtremelabs.robolectric.RobolectricConfig;
-import com.xtremelabs.robolectric.RobolectricTestRunner;
-import li.klass.fhem.AndFHEMApplication;
-import li.klass.fhem.activities.AndFHEMMainActivity;
-import org.junit.runners.model.InitializationError;
+import li.klass.fhem.domain.core.ToggleableDevice;
 
-import java.io.File;
-import java.lang.reflect.Method;
-
-public class AndFHEMRobolectricTestRunner extends RobolectricTestRunner {
-    public AndFHEMRobolectricTestRunner(Class<?> testClass) throws InitializationError {
-        super(testClass, new RobolectricConfig(new File(ProjectMetaDataProvider.getProjectRoot() + "/app")));
-    }
-
+public class GenShellSwitchDevice extends ToggleableDevice<GenShellSwitchDevice> {
     @Override
-    public void beforeTest(Method method) {
-        AndFHEMApplication.setContext(new Activity());
-        super.beforeTest(method);
+    public boolean supportsToggle() {
+        return true;
     }
 }
