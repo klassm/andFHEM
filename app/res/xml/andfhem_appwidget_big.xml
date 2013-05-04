@@ -28,5 +28,6 @@
                     android:minHeight="142dp"
                     android:updatePeriodMillis="86400"
                     android:configure="li.klass.fhem.appwidget.type.big.BigWidgetSelectionActivity"
-                    android:initialLayout="@layout/appwidget_loading">
+                    android:initialLayout="@layout/appwidget_loading"
+                    android:widgetCategory="keyguard|home_screen">
 </appwidget-provider>
