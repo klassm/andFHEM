@@ -6,12 +6,12 @@ import java.util.Set;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.SpinnerAdapter;
 
 import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
 
 public class ActionBarWrapper extends ActionBar implements android.app.ActionBar.OnNavigationListener, android.app.ActionBar.OnMenuVisibilityListener {
     private final Activity mActivity;
@@ -26,6 +26,10 @@ public class ActionBarWrapper extends ActionBar implements android.app.ActionBar
         mActionBar = activity.getActionBar();
         if (mActionBar != null) {
             mActionBar.addOnMenuVisibilityListener(this);
+
+            // Fixes issue #746
+            int displayOptions = mActionBar.getDisplayOptions();
+            mActionBar.setHomeButtonEnabled((displayOptions & DISPLAY_HOME_AS_UP) != 0);
         }
     }
 
@@ -132,11 +136,19 @@ public class ActionBarWrapper extends ActionBar implements android.app.ActionBar
     @Override
     public void setDisplayOptions(int options) {
         mActionBar.setDisplayOptions(options);
+
+        // Fixes issue #746
+        mActionBar.setHomeButtonEnabled((options & DISPLAY_HOME_AS_UP) != 0);
     }
 
     @Override
     public void setDisplayOptions(int options, int mask) {
         mActionBar.setDisplayOptions(options, mask);
+
+        // Fixes issue #746
+        if ((mask & DISPLAY_HOME_AS_UP) != 0) {
+            mActionBar.setHomeButtonEnabled((options & DISPLAY_HOME_AS_UP) != 0);
+        }
     }
 
     @Override
@@ -319,8 +331,8 @@ public class ActionBarWrapper extends ActionBar implements android.app.ActionBar
         public void onTabReselected(android.app.ActionBar.Tab tab, android.app.FragmentTransaction ft) {
             if (mListener != null) {
                 FragmentTransaction trans = null;
-                if (mActivity instanceof SherlockFragmentActivity) {
-                    trans = ((SherlockFragmentActivity)mActivity).getSupportFragmentManager().beginTransaction()
+                if (mActivity instanceof FragmentActivity) {
+                    trans = ((FragmentActivity) mActivity).getSupportFragmentManager().beginTransaction()
                             .disallowAddToBackStack();
                 }
 
@@ -336,8 +348,8 @@ public class ActionBarWrapper extends ActionBar implements android.app.ActionBar
         public void onTabSelected(android.app.ActionBar.Tab tab, android.app.FragmentTransaction ft) {
             if (mListener != null) {
 
-                if (mFragmentTransaction == null && mActivity instanceof SherlockFragmentActivity) {
-                    mFragmentTransaction = ((SherlockFragmentActivity)mActivity).getSupportFragmentManager().beginTransaction()
+                if (mFragmentTransaction == null && mActivity instanceof FragmentActivity) {
+                    mFragmentTransaction = ((FragmentActivity) mActivity).getSupportFragmentManager().beginTransaction()
                             .disallowAddToBackStack();
                 }
 
@@ -356,8 +368,8 @@ public class ActionBarWrapper extends ActionBar implements android.app.ActionBar
         public void onTabUnselected(android.app.ActionBar.Tab tab, android.app.FragmentTransaction ft) {
             if (mListener != null) {
                 FragmentTransaction trans = null;
-                if (mActivity instanceof SherlockFragmentActivity) {
-                    trans = ((SherlockFragmentActivity)mActivity).getSupportFragmentManager().beginTransaction()
+                if (mActivity instanceof FragmentActivity) {
+                    trans = ((FragmentActivity) mActivity).getSupportFragmentManager().beginTransaction()
                             .disallowAddToBackStack();
                     mFragmentTransaction = trans;
                 }
@@ -374,27 +386,27 @@ public class ActionBarWrapper extends ActionBar implements android.app.ActionBar
 
     @Override
     public void addTab(Tab tab) {
-        mActionBar.addTab(((TabWrapper)tab).mNativeTab);
+        mActionBar.addTab(((TabWrapper) tab).mNativeTab);
     }
 
     @Override
     public void addTab(Tab tab, boolean setSelected) {
-        mActionBar.addTab(((TabWrapper)tab).mNativeTab, setSelected);
+        mActionBar.addTab(((TabWrapper) tab).mNativeTab, setSelected);
     }
 
     @Override
     public void addTab(Tab tab, int position) {
-        mActionBar.addTab(((TabWrapper)tab).mNativeTab, position);
+        mActionBar.addTab(((TabWrapper) tab).mNativeTab, position);
     }
 
     @Override
     public void addTab(Tab tab, int position, boolean setSelected) {
-        mActionBar.addTab(((TabWrapper)tab).mNativeTab, position, setSelected);
+        mActionBar.addTab(((TabWrapper) tab).mNativeTab, position, setSelected);
     }
 
     @Override
     public void removeTab(Tab tab) {
-        mActionBar.removeTab(((TabWrapper)tab).mNativeTab);
+        mActionBar.removeTab(((TabWrapper) tab).mNativeTab);
     }
 
     @Override
@@ -409,19 +421,19 @@ public class ActionBarWrapper extends ActionBar implements android.app.ActionBar
 
     @Override
     public void selectTab(Tab tab) {
-        mActionBar.selectTab(((TabWrapper)tab).mNativeTab);
+        mActionBar.selectTab(((TabWrapper) tab).mNativeTab);
     }
 
     @Override
     public Tab getSelectedTab() {
         android.app.ActionBar.Tab selected = mActionBar.getSelectedTab();
-        return (selected != null) ? (Tab)selected.getTag() : null;
+        return (selected != null) ? (Tab) selected.getTag() : null;
     }
 
     @Override
     public Tab getTabAt(int index) {
         android.app.ActionBar.Tab selected = mActionBar.getTabAt(index);
-        return (selected != null) ? (Tab)selected.getTag() : null;
+        return (selected != null) ? (Tab) selected.getTag() : null;
     }
 
     @Override

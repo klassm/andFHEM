@@ -128,6 +128,7 @@ class ActivityChooserView extends ViewGroup implements ActivityChooserModelClien
             super.onChanged();
             mAdapter.notifyDataSetChanged();
         }
+
         @Override
         public void onInvalidated() {
             super.onInvalidated();
@@ -196,7 +197,7 @@ class ActivityChooserView extends ViewGroup implements ActivityChooserModelClien
      * Create a new instance.
      *
      * @param context The application environment.
-     * @param attrs A collection of attributes.
+     * @param attrs   A collection of attributes.
      */
     public ActivityChooserView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
@@ -205,8 +206,8 @@ class ActivityChooserView extends ViewGroup implements ActivityChooserModelClien
     /**
      * Create a new instance.
      *
-     * @param context The application environment.
-     * @param attrs A collection of attributes.
+     * @param context  The application environment.
+     * @param attrs    A collection of attributes.
      * @param defStyle The default style to apply to this view.
      */
     public ActivityChooserView(Context context, AttributeSet attrs, int defStyle) {
@@ -241,7 +242,7 @@ class ActivityChooserView extends ViewGroup implements ActivityChooserModelClien
         mExpandActivityOverflowButton = (FrameLayout) findViewById(R.id.abs__expand_activities_button);
         mExpandActivityOverflowButton.setOnClickListener(mCallbacks);
         mExpandActivityOverflowButtonImage =
-            (ImageView) mExpandActivityOverflowButton.findViewById(R.id.abs__image);
+                (ImageView) mExpandActivityOverflowButton.findViewById(R.id.abs__image);
         mExpandActivityOverflowButtonImage.setImageDrawable(expandActivityOverflowButtonDrawable);
 
         mAdapter = new ActivityChooserViewAdapter();
@@ -255,7 +256,7 @@ class ActivityChooserView extends ViewGroup implements ActivityChooserModelClien
 
         Resources resources = context.getResources();
         mListPopupMaxWidth = Math.max(resources.getDisplayMetrics().widthPixels / 2,
-              resources.getDimensionPixelSize(R.dimen.abs__config_prefDialogWidth));
+                resources.getDimensionPixelSize(R.dimen.abs__config_prefDialogWidth));
     }
 
     /**
@@ -272,7 +273,7 @@ class ActivityChooserView extends ViewGroup implements ActivityChooserModelClien
     /**
      * Sets the background for the button that expands the activity
      * overflow list.
-     *
+     * <p/>
      * <strong>Note:</strong> Clients would like to set this drawable
      * as a clue about the action the chosen activity will perform. For
      * example, if a share activity is to be chosen the drawable should
@@ -287,7 +288,7 @@ class ActivityChooserView extends ViewGroup implements ActivityChooserModelClien
     /**
      * Sets the content description for the button that expands the activity
      * overflow list.
-     *
+     * <p/>
      * description as a clue about the action performed by the button.
      * For example, if a share activity is to be chosen the content
      * description should be something like "Share with".
@@ -301,6 +302,7 @@ class ActivityChooserView extends ViewGroup implements ActivityChooserModelClien
 
     /**
      * Set the provider hosting this view, if applicable.
+     *
      * @hide Internal use only
      */
     public void setProvider(ActionProvider provider) {
@@ -334,7 +336,7 @@ class ActivityChooserView extends ViewGroup implements ActivityChooserModelClien
         getViewTreeObserver().addOnGlobalLayoutListener(mOnGlobalLayoutListener);
 
         final boolean defaultActivityButtonShown =
-            mDefaultActivityButton.getVisibility() == VISIBLE;
+                mDefaultActivityButton.getVisibility() == VISIBLE;
 
         final int activityCount = mAdapter.getActivityCount();
         final int maxActivityCountOffset = defaultActivityButtonShown ? 1 : 0;
@@ -395,7 +397,11 @@ class ActivityChooserView extends ViewGroup implements ActivityChooserModelClien
         super.onAttachedToWindow();
         ActivityChooserModel dataModel = mAdapter.getDataModel();
         if (dataModel != null) {
-            dataModel.registerObserver(mModelDataSetOberver);
+            try {
+                dataModel.registerObserver(mModelDataSetOberver);
+            } catch (IllegalStateException e) {
+                // Related to #557.
+            }
         }
         mIsAttachedToWindow = true;
     }
@@ -405,7 +411,11 @@ class ActivityChooserView extends ViewGroup implements ActivityChooserModelClien
         super.onDetachedFromWindow();
         ActivityChooserModel dataModel = mAdapter.getDataModel();
         if (dataModel != null) {
-            dataModel.unregisterObserver(mModelDataSetOberver);
+            try {
+                dataModel.unregisterObserver(mModelDataSetOberver);
+            } catch (IllegalStateException e) {
+                //Oh, well... fixes issue #557
+            }
         }
         ViewTreeObserver viewTreeObserver = getViewTreeObserver();
         if (viewTreeObserver.isAlive()) {
@@ -518,6 +528,9 @@ class ActivityChooserView extends ViewGroup implements ActivityChooserModelClien
                         mDefaultActionButtonContentDescription, label);
                 mDefaultActivityButton.setContentDescription(contentDescription);
             }
+
+            // Work-around for #415.
+            mAdapter.setShowDefaultActivity(false, false);
         } else {
             mDefaultActivityButton.setVisibility(View.GONE);
         }
@@ -526,6 +539,7 @@ class ActivityChooserView extends ViewGroup implements ActivityChooserModelClien
             mActivityChooserContent.setBackgroundDrawable(mActivityChooserContentBackground);
         } else {
             mActivityChooserContent.setBackgroundDrawable(null);
+            mActivityChooserContent.setPadding(0, 0, 0, 0);
         }
     }
 
@@ -542,7 +556,8 @@ class ActivityChooserView extends ViewGroup implements ActivityChooserModelClien
             switch (itemViewType) {
                 case ActivityChooserViewAdapter.ITEM_VIEW_TYPE_FOOTER: {
                     showPopupUnchecked(ActivityChooserViewAdapter.MAX_ACTIVITY_COUNT_UNLIMITED);
-                } break;
+                }
+                break;
                 case ActivityChooserViewAdapter.ITEM_VIEW_TYPE_ACTIVITY: {
                     dismissPopup();
                     if (mIsSelectingDefaultActivity) {
@@ -559,7 +574,8 @@ class ActivityChooserView extends ViewGroup implements ActivityChooserModelClien
                             mContext.startActivity(launchIntent);
                         }
                     }
-                } break;
+                }
+                break;
                 default:
                     throw new IllegalArgumentException();
             }
@@ -639,7 +655,8 @@ class ActivityChooserView extends ViewGroup implements ActivityChooserModelClien
 
         private int mMaxActivityCount = MAX_ACTIVITY_COUNT_DEFAULT;
 
-        private boolean mShowDefaultActivity;
+        // Work-around for #415.
+        private boolean mShowDefaultActivity = true;
 
         private boolean mHighlightDefaultActivity;
 
@@ -648,11 +665,19 @@ class ActivityChooserView extends ViewGroup implements ActivityChooserModelClien
         public void setDataModel(ActivityChooserModel dataModel) {
             ActivityChooserModel oldDataModel = mAdapter.getDataModel();
             if (oldDataModel != null && isShown()) {
-                oldDataModel.unregisterObserver(mModelDataSetOberver);
+                try {
+                    oldDataModel.unregisterObserver(mModelDataSetOberver);
+                } catch (IllegalStateException e) {
+                    //Oh, well... fixes issue #557
+                }
             }
             mDataModel = dataModel;
             if (dataModel != null && isShown()) {
-                dataModel.registerObserver(mModelDataSetOberver);
+                try {
+                    dataModel.registerObserver(mModelDataSetOberver);
+                } catch (IllegalStateException e) {
+                    // Related to #557.
+                }
             }
             notifyDataSetChanged();
         }
@@ -802,7 +827,7 @@ class ActivityChooserView extends ViewGroup implements ActivityChooserModelClien
         }
 
         public void setShowDefaultActivity(boolean showDefaultActivity,
-                boolean highlightDefaultActivity) {
+                                           boolean highlightDefaultActivity) {
             if (mShowDefaultActivity != showDefaultActivity
                     || mHighlightDefaultActivity != highlightDefaultActivity) {
                 mShowDefaultActivity = showDefaultActivity;

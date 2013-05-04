@@ -16,16 +16,14 @@
 
 package com.actionbarsherlock.internal.widget;
 
-import org.xmlpull.v1.XmlPullParser;
+import com.actionbarsherlock.internal.ResourcesCompat;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
-import android.content.res.AssetManager;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
-import android.content.res.XmlResourceParser;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Parcel;
@@ -49,7 +47,6 @@ import android.widget.TextView;
 import com.actionbarsherlock.R;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.ActionBar.OnNavigationListener;
-import com.actionbarsherlock.internal.ActionBarSherlockCompat;
 import com.actionbarsherlock.internal.view.menu.ActionMenuItem;
 import com.actionbarsherlock.internal.view.menu.ActionMenuPresenter;
 import com.actionbarsherlock.internal.view.menu.ActionMenuView;
@@ -70,7 +67,6 @@ import static com.actionbarsherlock.internal.ResourcesCompat.getResources_getBoo
  */
 public class ActionBarView extends AbsActionBarView {
     private static final String TAG = "ActionBarView";
-    private static final boolean DEBUG = false;
 
     /**
      * Display options applied by default
@@ -82,10 +78,10 @@ public class ActionBarView extends AbsActionBarView {
      */
     private static final int DISPLAY_RELAYOUT_MASK =
             ActionBar.DISPLAY_SHOW_HOME |
-            ActionBar.DISPLAY_USE_LOGO |
-            ActionBar.DISPLAY_HOME_AS_UP |
-            ActionBar.DISPLAY_SHOW_CUSTOM |
-            ActionBar.DISPLAY_SHOW_TITLE;
+                    ActionBar.DISPLAY_USE_LOGO |
+                    ActionBar.DISPLAY_HOME_AS_UP |
+                    ActionBar.DISPLAY_SHOW_CUSTOM |
+                    ActionBar.DISPLAY_SHOW_TITLE;
 
     private static final int DEFAULT_CUSTOM_GRAVITY = Gravity.LEFT | Gravity.CENTER_VERTICAL;
 
@@ -142,15 +138,16 @@ public class ActionBarView extends AbsActionBarView {
     @SuppressWarnings("rawtypes")
     private final IcsAdapterView.OnItemSelectedListener mNavItemSelectedListener =
             new IcsAdapterView.OnItemSelectedListener() {
-        public void onItemSelected(IcsAdapterView parent, View view, int position, long id) {
-            if (mCallback != null) {
-                mCallback.onNavigationItemSelected(position, id);
-            }
-        }
-        public void onNothingSelected(IcsAdapterView parent) {
-            // Do nothing
-        }
-    };
+                public void onItemSelected(IcsAdapterView parent, View view, int position, long id) {
+                    if (mCallback != null) {
+                        mCallback.onNavigationItemSelected(position, id);
+                    }
+                }
+
+                public void onNothingSelected(IcsAdapterView parent) {
+                    // Do nothing
+                }
+            };
 
     private final OnClickListener mExpandedActionViewUpListener = new OnClickListener() {
         @Override
@@ -190,7 +187,7 @@ public class ActionBarView extends AbsActionBarView {
                 if (context instanceof Activity) {
                     //Even though native methods existed in API 9 and 10 they don't work
                     //so just parse the manifest to look for the logo pre-Honeycomb
-                    final int resId = loadLogoFromManifest((Activity) context);
+                    final int resId = ResourcesCompat.loadLogoFromManifest((Activity) context);
                     if (resId != 0) {
                         mLogo = context.getResources().getDrawable(resId);
                     }
@@ -265,85 +262,6 @@ public class ActionBarView extends AbsActionBarView {
         mHomeLayout.setFocusable(true);
     }
 
-    /**
-     * Attempt to programmatically load the logo from the manifest file of an
-     * activity by using an XML pull parser. This should allow us to read the
-     * logo attribute regardless of the platform it is being run on.
-     *
-     * @param activity Activity instance.
-     * @return Logo resource ID.
-     */
-    private static int loadLogoFromManifest(Activity activity) {
-        int logo = 0;
-        try {
-            final String thisPackage = activity.getClass().getName();
-            if (DEBUG) Log.i(TAG, "Parsing AndroidManifest.xml for " + thisPackage);
-
-            final String packageName = activity.getApplicationInfo().packageName;
-            final AssetManager am = activity.createPackageContext(packageName, 0).getAssets();
-            final XmlResourceParser xml = am.openXmlResourceParser("AndroidManifest.xml");
-
-            int eventType = xml.getEventType();
-            while (eventType != XmlPullParser.END_DOCUMENT) {
-                if (eventType == XmlPullParser.START_TAG) {
-                    String name = xml.getName();
-
-                    if ("application".equals(name)) {
-                        //Check if the <application> has the attribute
-                        if (DEBUG) Log.d(TAG, "Got <application>");
-
-                        for (int i = xml.getAttributeCount() - 1; i >= 0; i--) {
-                            if (DEBUG) Log.d(TAG, xml.getAttributeName(i) + ": " + xml.getAttributeValue(i));
-
-                            if ("logo".equals(xml.getAttributeName(i))) {
-                                logo = xml.getAttributeResourceValue(i, 0);
-                                break; //out of for loop
-                            }
-                        }
-                    } else if ("activity".equals(name)) {
-                        //Check if the <activity> is us and has the attribute
-                        if (DEBUG) Log.d(TAG, "Got <activity>");
-                        Integer activityLogo = null;
-                        String activityPackage = null;
-                        boolean isOurActivity = false;
-
-                        for (int i = xml.getAttributeCount() - 1; i >= 0; i--) {
-                            if (DEBUG) Log.d(TAG, xml.getAttributeName(i) + ": " + xml.getAttributeValue(i));
-
-                            //We need both uiOptions and name attributes
-                            String attrName = xml.getAttributeName(i);
-                            if ("logo".equals(attrName)) {
-                                activityLogo = xml.getAttributeResourceValue(i, 0);
-                            } else if ("name".equals(attrName)) {
-                                activityPackage = ActionBarSherlockCompat.cleanActivityName(packageName, xml.getAttributeValue(i));
-                                if (!thisPackage.equals(activityPackage)) {
-                                    break; //on to the next
-                                }
-                                isOurActivity = true;
-                            }
-
-                            //Make sure we have both attributes before processing
-                            if ((activityLogo != null) && (activityPackage != null)) {
-                                //Our activity, logo specified, override with our value
-                                logo = activityLogo.intValue();
-                            }
-                        }
-                        if (isOurActivity) {
-                            //If we matched our activity but it had no logo don't
-                            //do any more processing of the manifest
-                            break;
-                        }
-                    }
-                }
-                eventType = xml.nextToken();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        if (DEBUG) Log.i(TAG, "Returning " + Integer.toHexString(logo));
-        return logo;
-    }
-
     /*
      * Must be public so we can dispatch pre-2.2 via ActionBarImpl.
      */
@@ -374,6 +292,7 @@ public class ActionBarView extends AbsActionBarView {
 
     /**
      * Set the window callback used to invoke menu items; used for dispatching home button presses.
+     *
      * @param cb Window callback to dispatch to
      */
     public void setWindowCallback(Window.Callback cb) {
@@ -487,7 +406,7 @@ public class ActionBarView extends AbsActionBarView {
         if (!mSplitActionBar) {
             mActionMenuPresenter.setExpandedActionViewsExclusive(
                     getResources_getBoolean(getContext(),
-                    R.bool.abs__action_bar_expanded_action_views_exclusive));
+                            R.bool.abs__action_bar_expanded_action_views_exclusive));
             configPresenters(builder);
             menuView = (ActionMenuView) mActionMenuPresenter.getMenuView(this);
             final ViewGroup oldParent = (ViewGroup) menuView.getParent();
@@ -563,8 +482,8 @@ public class ActionBarView extends AbsActionBarView {
 
     /**
      * Set the action bar title. This will always replace or override window titles.
-     * @param title Title to set
      *
+     * @param title Title to set
      * @see #setWindowTitle(CharSequence)
      */
     public void setTitle(CharSequence title) {
@@ -574,8 +493,8 @@ public class ActionBarView extends AbsActionBarView {
 
     /**
      * Set the window title. A window title will always be replaced or overridden by a user title.
-     * @param title Title to set
      *
+     * @param title Title to set
      * @see #setTitle(CharSequence)
      */
     public void setWindowTitle(CharSequence title) {
@@ -723,40 +642,40 @@ public class ActionBarView extends AbsActionBarView {
         final int oldMode = mNavigationMode;
         if (mode != oldMode) {
             switch (oldMode) {
-            case ActionBar.NAVIGATION_MODE_LIST:
-                if (mListNavLayout != null) {
-                    removeView(mListNavLayout);
-                }
-                break;
-            case ActionBar.NAVIGATION_MODE_TABS:
-                if (mTabScrollView != null && mIncludeTabs) {
-                    removeView(mTabScrollView);
-                }
+                case ActionBar.NAVIGATION_MODE_LIST:
+                    if (mListNavLayout != null) {
+                        removeView(mListNavLayout);
+                    }
+                    break;
+                case ActionBar.NAVIGATION_MODE_TABS:
+                    if (mTabScrollView != null && mIncludeTabs) {
+                        removeView(mTabScrollView);
+                    }
             }
 
             switch (mode) {
-            case ActionBar.NAVIGATION_MODE_LIST:
-                if (mSpinner == null) {
-                    mSpinner = new IcsSpinner(mContext, null,
-                            R.attr.actionDropDownStyle);
-                    mListNavLayout = (IcsLinearLayout) LayoutInflater.from(mContext)
-                            .inflate(R.layout.abs__action_bar_tab_bar_view, null);
-                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                            LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
-                    params.gravity = Gravity.CENTER;
-                    mListNavLayout.addView(mSpinner, params);
-                }
-                if (mSpinner.getAdapter() != mSpinnerAdapter) {
-                    mSpinner.setAdapter(mSpinnerAdapter);
-                }
-                mSpinner.setOnItemSelectedListener(mNavItemSelectedListener);
-                addView(mListNavLayout);
-                break;
-            case ActionBar.NAVIGATION_MODE_TABS:
-                if (mTabScrollView != null && mIncludeTabs) {
-                    addView(mTabScrollView);
-                }
-                break;
+                case ActionBar.NAVIGATION_MODE_LIST:
+                    if (mSpinner == null) {
+                        mSpinner = new IcsSpinner(mContext, null,
+                                R.attr.actionDropDownStyle);
+                        mListNavLayout = (IcsLinearLayout) LayoutInflater.from(mContext)
+                                .inflate(R.layout.abs__action_bar_tab_bar_view, null);
+                        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                                LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
+                        params.gravity = Gravity.CENTER;
+                        mListNavLayout.addView(mSpinner, params);
+                    }
+                    if (mSpinner.getAdapter() != mSpinnerAdapter) {
+                        mSpinner.setAdapter(mSpinnerAdapter);
+                    }
+                    mSpinner.setOnItemSelectedListener(mNavItemSelectedListener);
+                    addView(mListNavLayout);
+                    break;
+                case ActionBar.NAVIGATION_MODE_TABS:
+                    if (mTabScrollView != null && mIncludeTabs) {
+                        addView(mTabScrollView);
+                    }
+                    break;
             }
             mNavigationMode = mode;
             requestLayout();
@@ -1020,7 +939,7 @@ public class ActionBarView extends AbsActionBarView {
                     MeasureSpec.EXACTLY : MeasureSpec.AT_MOST;
             int customNavWidth = Math.max(0,
                     (lp.width >= 0 ? Math.min(lp.width, availableWidth) : availableWidth)
-                    - horizontalMargin);
+                            - horizontalMargin);
             final int hgrav = (ablp != null ? ablp.gravity : DEFAULT_CUSTOM_GRAVITY) &
                     Gravity.HORIZONTAL_GRAVITY_MASK;
 
@@ -1275,14 +1194,14 @@ public class ActionBarView extends AbsActionBarView {
 
         public static final Parcelable.Creator<SavedState> CREATOR =
                 new Parcelable.Creator<SavedState>() {
-            public SavedState createFromParcel(Parcel in) {
-                return new SavedState(in);
-            }
+                    public SavedState createFromParcel(Parcel in) {
+                        return new SavedState(in);
+                    }
 
-            public SavedState[] newArray(int size) {
-                return new SavedState[size];
-            }
-        };
+                    public SavedState[] newArray(int size) {
+                        return new SavedState[size];
+                    }
+                };
     }
 
     public static class HomeView extends FrameLayout {

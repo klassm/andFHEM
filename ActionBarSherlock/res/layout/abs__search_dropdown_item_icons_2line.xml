@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:paddingLeft="@dimen/abs__dropdownitem_text_padding_left"
+                android:paddingRight="4dip"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/searchResultListItemHeight">
+
+    <!-- Icons come first in the layout, since their placement doesn't depend on
+         the placement of the text views. -->
+    <ImageView android:id="@android:id/icon1"
+               android:layout_width="@dimen/abs__dropdownitem_icon_width"
+               android:layout_height="48dip"
+               android:scaleType="centerInside"
+               android:layout_alignParentLeft="true"
+               android:layout_alignParentTop="true"
+               android:layout_alignParentBottom="true"
+               android:visibility="invisible"/>
+
+    <ImageView android:id="@+id/edit_query"
+               android:layout_width="48dip"
+               android:layout_height="48dip"
+               android:scaleType="centerInside"
+               android:layout_alignParentRight="true"
+               android:layout_alignParentTop="true"
+               android:layout_alignParentBottom="true"
+               android:src="?attr/searchViewEditQuery"
+               android:background="?attr/searchViewEditQueryBackground"
+               android:visibility="gone"/>
+
+    <ImageView android:id="@android:id/icon2"
+               android:layout_width="48dip"
+               android:layout_height="48dip"
+               android:scaleType="centerInside"
+               android:layout_alignWithParentIfMissing="true"
+               android:layout_toLeftOf="@id/edit_query"
+               android:layout_alignParentTop="true"
+               android:layout_alignParentBottom="true"
+               android:visibility="gone"/>
+
+
+    <!-- The subtitle comes before the title, since the height of the title depends on whether the
+         subtitle is visible or gone. -->
+    <TextView android:id="@android:id/text2"
+              style="?android:attr/dropDownItemStyle"
+              android:textAppearance="?attr/textAppearanceSearchResultSubtitle"
+              android:singleLine="true"
+              android:layout_width="match_parent"
+              android:layout_height="29dip"
+              android:paddingBottom="4dip"
+              android:gravity="top"
+              android:layout_toRightOf="@android:id/icon1"
+              android:layout_toLeftOf="@android:id/icon2"
+              android:layout_alignWithParentIfMissing="true"
+              android:layout_alignParentBottom="true"
+              android:visibility="gone"/>
+
+    <!-- The title is placed above the subtitle, if there is one. If there is no
+         subtitle, it fills the parent. -->
+    <TextView android:id="@android:id/text1"
+              style="?android:attr/dropDownItemStyle"
+              android:textAppearance="?attr/textAppearanceSearchResultTitle"
+              android:singleLine="true"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_centerVertical="true"
+              android:layout_toRightOf="@android:id/icon1"
+              android:layout_toLeftOf="@android:id/icon2"
+              android:layout_above="@android:id/text2"/>
+
+</RelativeLayout>

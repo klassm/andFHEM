@@ -42,10 +42,12 @@ public abstract class SherlockListActivity extends ListActivity implements OnCre
     }
 
     @Override
-    public void onActionModeStarted(ActionMode mode) {}
+    public void onActionModeStarted(ActionMode mode) {
+    }
 
     @Override
-    public void onActionModeFinished(ActionMode mode) {}
+    public void onActionModeFinished(ActionMode mode) {
+    }
 
 
     ///////////////////////////////////////////////////////////////////////////
@@ -116,6 +118,17 @@ public abstract class SherlockListActivity extends ListActivity implements OnCre
         return super.dispatchKeyEvent(event);
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        getSherlock().dispatchSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        getSherlock().dispatchRestoreInstanceState(savedInstanceState);
+    }
 
     ///////////////////////////////////////////////////////////////////////////
     // Native menu handling
@@ -229,7 +242,13 @@ public abstract class SherlockListActivity extends ListActivity implements OnCre
     }
 
     public void requestWindowFeature(long featureId) {
-        getSherlock().requestFeature((int)featureId);
+        getSherlock().requestFeature((int) featureId);
+    }
+
+    @Override
+    public View findViewById(int id) {
+        getSherlock().ensureActionBar();
+        return super.findViewById(id);
     }
 
 

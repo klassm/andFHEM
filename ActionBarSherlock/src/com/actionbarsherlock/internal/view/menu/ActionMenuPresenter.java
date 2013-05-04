@@ -17,13 +17,14 @@
 package com.actionbarsherlock.internal.view.menu;
 
 import static com.actionbarsherlock.internal.ResourcesCompat.getResources_getInteger;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
+
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.content.res.TypedArray;
 import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -119,14 +120,6 @@ public class ActionMenuPresenter extends BaseMenuPresenter
     }
 
     public static boolean reserveOverflow(Context context) {
-        //Check for theme-forced overflow action item
-        TypedArray a = context.getTheme().obtainStyledAttributes(R.styleable.SherlockTheme);
-        boolean result = a.getBoolean(R.styleable.SherlockTheme_absForceOverflow, false);
-        a.recycle();
-        if (result) {
-            return true;
-        }
-
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
             return (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB);
         } else {
@@ -301,6 +294,7 @@ public class ActionMenuPresenter extends BaseMenuPresenter
 
     /**
      * Display the overflow menu if one is present.
+     *
      * @return true if the overflow menu was shown, false otherwise.
      */
     public boolean showOverflowMenu() {
@@ -342,6 +336,7 @@ public class ActionMenuPresenter extends BaseMenuPresenter
 
     /**
      * Dismiss all popup menus - overflow and submenus.
+     *
      * @return true if popups were dismissed, false otherwise. (This can be because none were open.)
      */
     public boolean dismissPopupMenus() {
@@ -621,6 +616,8 @@ public class ActionMenuPresenter extends BaseMenuPresenter
             for (View_OnAttachStateChangeListener listener : mListeners) {
                 listener.onViewDetachedFromWindow(this);
             }
+
+            if (mOverflowPopup != null) mOverflowPopup.dismiss();
         }
 
         @Override
@@ -636,7 +633,7 @@ public class ActionMenuPresenter extends BaseMenuPresenter
 
     private class OverflowPopup extends MenuPopupHelper {
         public OverflowPopup(Context context, MenuBuilder menu, View anchorView,
-                boolean overflowOnly) {
+                             boolean overflowOnly) {
             super(context, menu, anchorView, overflowOnly);
             setCallback(mPopupPresenterCallback);
         }

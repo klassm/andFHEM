@@ -9,16 +9,8 @@ import com.actionbarsherlock.internal.nineoldandroids.view.animation.AnimatorPro
 public class NineFrameLayout extends FrameLayout {
     private final AnimatorProxy mProxy;
 
-    public NineFrameLayout(Context context) {
-        super(context);
-        mProxy = AnimatorProxy.NEEDS_PROXY ? AnimatorProxy.wrap(this) : null;
-    }
     public NineFrameLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
-        mProxy = AnimatorProxy.NEEDS_PROXY ? AnimatorProxy.wrap(this) : null;
-    }
-    public NineFrameLayout(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
         mProxy = AnimatorProxy.NEEDS_PROXY ? AnimatorProxy.wrap(this) : null;
     }
 
@@ -41,6 +33,7 @@ public class NineFrameLayout extends FrameLayout {
             return super.getAlpha();
         }
     }
+
     public void setAlpha(float alpha) {
         if (AnimatorProxy.NEEDS_PROXY) {
             mProxy.setAlpha(alpha);
@@ -48,6 +41,7 @@ public class NineFrameLayout extends FrameLayout {
             super.setAlpha(alpha);
         }
     }
+
     public float getTranslationY() {
         if (AnimatorProxy.NEEDS_PROXY) {
             return mProxy.getTranslationY();
@@ -55,6 +49,7 @@ public class NineFrameLayout extends FrameLayout {
             return super.getTranslationY();
         }
     }
+
     public void setTranslationY(float translationY) {
         if (AnimatorProxy.NEEDS_PROXY) {
             mProxy.setTranslationY(translationY);

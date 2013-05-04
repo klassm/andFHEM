@@ -1,13 +1,22 @@
 package com.actionbarsherlock.internal;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.res.AssetManager;
+import android.content.res.XmlResourceParser;
 import android.os.Build;
 import android.util.DisplayMetrics;
+import android.util.Log;
+import com.actionbarsherlock.BuildConfig;
 import com.actionbarsherlock.R;
+import org.xmlpull.v1.XmlPullParser;
 
 public final class ResourcesCompat {
+    private static final String TAG = "ResourcesCompat";
+
     //No instances
-    private ResourcesCompat() {}
+    private ResourcesCompat() {
+    }
 
 
     /**
@@ -16,10 +25,10 @@ public final class ResourcesCompat {
      * qualifiers on pre-3.2.
      *
      * @param context Context to load booleans from on 3.2+ and to fetch the
-     * display metrics.
-     * @param id Id of boolean to load.
+     *                display metrics.
+     * @param id      Id of boolean to load.
      * @return Associated boolean value as reflected by the current display
-     * metrics.
+     *         metrics.
      */
     public static boolean getResources_getBoolean(Context context, int id) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
@@ -64,10 +73,10 @@ public final class ResourcesCompat {
      * can use to simulate filtering based on width qualifiers on pre-3.2.
      *
      * @param context Context to load integers from on 3.2+ and to fetch the
-     * display metrics.
-     * @param id Id of integer to load.
+     *                display metrics.
+     * @param id      Id of integer to load.
      * @return Associated integer value as reflected by the current display
-     * metrics.
+     *         metrics.
      */
     public static int getResources_getInteger(Context context, int id) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
@@ -91,5 +100,86 @@ public final class ResourcesCompat {
         }
 
         throw new IllegalArgumentException("Unknown integer resource ID " + id);
+    }
+
+    /**
+     * Attempt to programmatically load the logo from the manifest file of an
+     * activity by using an XML pull parser. This should allow us to read the
+     * logo attribute regardless of the platform it is being run on.
+     *
+     * @param activity Activity instance.
+     * @return Logo resource ID.
+     */
+    public static int loadLogoFromManifest(Activity activity) {
+        int logo = 0;
+        try {
+            final String thisPackage = activity.getClass().getName();
+            if (BuildConfig.DEBUG) Log.i(TAG, "Parsing AndroidManifest.xml for " + thisPackage);
+
+            final String packageName = activity.getApplicationInfo().packageName;
+            final AssetManager am = activity.createPackageContext(packageName, 0).getAssets();
+            final XmlResourceParser xml = am.openXmlResourceParser("AndroidManifest.xml");
+
+            int eventType = xml.getEventType();
+            while (eventType != XmlPullParser.END_DOCUMENT) {
+                if (eventType == XmlPullParser.START_TAG) {
+                    String name = xml.getName();
+
+                    if ("application".equals(name)) {
+                        //Check if the <application> has the attribute
+                        if (BuildConfig.DEBUG) Log.d(TAG, "Got <application>");
+
+                        for (int i = xml.getAttributeCount() - 1; i >= 0; i--) {
+                            if (BuildConfig.DEBUG)
+                                Log.d(TAG, xml.getAttributeName(i) + ": " + xml.getAttributeValue(i));
+
+                            if ("logo".equals(xml.getAttributeName(i))) {
+                                logo = xml.getAttributeResourceValue(i, 0);
+                                break; //out of for loop
+                            }
+                        }
+                    } else if ("activity".equals(name)) {
+                        //Check if the <activity> is us and has the attribute
+                        if (BuildConfig.DEBUG) Log.d(TAG, "Got <activity>");
+                        Integer activityLogo = null;
+                        String activityPackage = null;
+                        boolean isOurActivity = false;
+
+                        for (int i = xml.getAttributeCount() - 1; i >= 0; i--) {
+                            if (BuildConfig.DEBUG)
+                                Log.d(TAG, xml.getAttributeName(i) + ": " + xml.getAttributeValue(i));
+
+                            //We need both uiOptions and name attributes
+                            String attrName = xml.getAttributeName(i);
+                            if ("logo".equals(attrName)) {
+                                activityLogo = xml.getAttributeResourceValue(i, 0);
+                            } else if ("name".equals(attrName)) {
+                                activityPackage = ActionBarSherlockCompat.cleanActivityName(packageName, xml.getAttributeValue(i));
+                                if (!thisPackage.equals(activityPackage)) {
+                                    break; //on to the next
+                                }
+                                isOurActivity = true;
+                            }
+
+                            //Make sure we have both attributes before processing
+                            if ((activityLogo != null) && (activityPackage != null)) {
+                                //Our activity, logo specified, override with our value
+                                logo = activityLogo.intValue();
+                            }
+                        }
+                        if (isOurActivity) {
+                            //If we matched our activity but it had no logo don't
+                            //do any more processing of the manifest
+                            break;
+                        }
+                    }
+                }
+                eventType = xml.nextToken();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (BuildConfig.DEBUG) Log.i(TAG, "Returning " + Integer.toHexString(logo));
+        return logo;
     }
 }

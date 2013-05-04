@@ -31,10 +31,10 @@ import java.util.HashMap;
 /**
  * This class provides a simple timing engine for running animations
  * which calculate animated values and set them on target objects.
- *
+ * <p/>
  * <p>There is a single timing pulse that all animations use. It runs in a
  * custom handler to ensure that property changes happen on the UI thread.</p>
- *
+ * <p/>
  * <p>By default, ValueAnimator uses non-linear time interpolation, via the
  * {@link AccelerateDecelerateInterpolator} class, which accelerates into and decelerates
  * out of an animation. This behavior can be changed by calling
@@ -63,9 +63,9 @@ public class ValueAnimator extends Animator {
      * Values used with internal variable mPlayingState to indicate the current state of an
      * animation.
      */
-    static final int STOPPED    = 0; // Not yet playing
-    static final int RUNNING    = 1; // Playing normally
-    static final int SEEKED     = 2; // Seeked to some time value
+    static final int STOPPED = 0; // Not yet playing
+    static final int RUNNING = 1; // Playing normally
+    static final int SEEKED = 2; // Seeked to some time value
 
     /**
      * Internal variables
@@ -142,7 +142,7 @@ public class ValueAnimator extends Animator {
             };
 
     // The time interpolator to be used if none is set on the animation
-    private static final /*Time*/Interpolator sDefaultInterpolator =
+    private static final /*Time*/ Interpolator sDefaultInterpolator =
             new AccelerateDecelerateInterpolator();
 
     // type evaluators for the primitive types handled by this implementation
@@ -238,7 +238,7 @@ public class ValueAnimator extends Animator {
      * through this interpolator to calculate the interpolated fraction, which is then used to
      * calculate the animated values.
      */
-    private /*Time*/Interpolator mInterpolator = sDefaultInterpolator;
+    private /*Time*/ Interpolator mInterpolator = sDefaultInterpolator;
 
     /**
      * The set of listeners to be sent events through the life of an animation.
@@ -323,7 +323,7 @@ public class ValueAnimator extends Animator {
      * specified in the PropertyValuesHolder objects.
      *
      * @param values A set of PropertyValuesHolder objects whose values will be animated
-     * between over time.
+     *               between over time.
      * @return A ValueAnimator object that is set up to animate between the given values.
      */
     public static ValueAnimator ofPropertyValuesHolder(PropertyValuesHolder... values) {
@@ -331,6 +331,7 @@ public class ValueAnimator extends Animator {
         anim.setValues(values);
         return anim;
     }
+
     /**
      * Constructs and returns a ValueAnimator that animates between Object values. A single
      * value implies that that value is the one being animated to. However, this is not typically
@@ -338,15 +339,15 @@ public class ValueAnimator extends Animator {
      * starting value for the animation (unlike ObjectAnimator, which can derive that value
      * from the target object and property being animated). Therefore, there should typically
      * be two or more values.
-     *
+     * <p/>
      * <p>Since ValueAnimator does not know how to animate between arbitrary Objects, this
      * factory method also takes a TypeEvaluator object that the ValueAnimator will use
      * to perform that interpolation.
      *
      * @param evaluator A TypeEvaluator that will be called on each animation frame to
-     * provide the ncessry interpolation between the Object values to derive the animated
-     * value.
-     * @param values A set of values that the animation will animate between over time.
+     *                  provide the ncessry interpolation between the Object values to derive the animated
+     *                  value.
+     * @param values    A set of values that the animation will animate between over time.
      * @return A ValueAnimator object that is set up to animate between the given values.
      */
     public static ValueAnimator ofObject(TypeEvaluator evaluator, Object... values) {
@@ -363,7 +364,7 @@ public class ValueAnimator extends Animator {
      * starting value for the animation (unlike ObjectAnimator, which can derive that value
      * from the target object and property being animated). Therefore, there should typically
      * be two or more values.
-     *
+     * <p/>
      * <p>If there are already multiple sets of values defined for this ValueAnimator via more
      * than one PropertyValuesHolder object, this method will set the values for the first
      * of those objects.</p>
@@ -391,7 +392,7 @@ public class ValueAnimator extends Animator {
      * starting value for the animation (unlike ObjectAnimator, which can derive that value
      * from the target object and property being animated). Therefore, there should typically
      * be two or more values.
-     *
+     * <p/>
      * <p>If there are already multiple sets of values defined for this ValueAnimator via more
      * than one PropertyValuesHolder object, this method will set the values for the first
      * of those objects.</p>
@@ -419,11 +420,11 @@ public class ValueAnimator extends Animator {
      * starting value for the animation (unlike ObjectAnimator, which can derive that value
      * from the target object and property being animated). Therefore, there should typically
      * be two or more values.
-     *
+     * <p/>
      * <p>If there are already multiple sets of values defined for this ValueAnimator via more
      * than one PropertyValuesHolder object, this method will set the values for the first
      * of those objects.</p>
-     *
+     * <p/>
      * <p>There should be a TypeEvaluator set on the ValueAnimator that knows how to interpolate
      * between these value objects. ValueAnimator only knows how to interpolate between the
      * primitive types specified in the other setValues() methods.</p>
@@ -436,7 +437,7 @@ public class ValueAnimator extends Animator {
         }
         if (mValues == null || mValues.length == 0) {
             setValues(new PropertyValuesHolder[]{PropertyValuesHolder.ofObject("",
-                    (TypeEvaluator)null, values)});
+                    (TypeEvaluator) null, values)});
         } else {
             PropertyValuesHolder valuesHolder = mValues[0];
             valuesHolder.setObjectValues(values);
@@ -471,7 +472,7 @@ public class ValueAnimator extends Animator {
      * of value objects instead.
      *
      * @return PropertyValuesHolder[] An array of PropertyValuesHolder objects which hold the
-     * values, per property, that define the animation.
+     *         values, per property, that define the animation.
      */
     public PropertyValuesHolder[] getValues() {
         return mValues;
@@ -483,9 +484,9 @@ public class ValueAnimator extends Animator {
      * function is called after that delay ends.
      * It takes care of the final initialization steps for the
      * animation.
-     *
-     *  <p>Overrides of this method should call the superclass method to ensure
-     *  that internal mechanisms for the animation are set up correctly.</p>
+     * <p/>
+     * <p>Overrides of this method should call the superclass method to ensure
+     * that internal mechanisms for the animation are set up correctly.</p>
      */
     void initAnimation() {
         if (!mInitialized) {
@@ -502,10 +503,10 @@ public class ValueAnimator extends Animator {
      * Sets the length of the animation. The default duration is 300 milliseconds.
      *
      * @param duration The length of the animation, in milliseconds. This value cannot
-     * be negative.
+     *                 be negative.
      * @return ValueAnimator The object called with setDuration(). This return
-     * value makes it easier to compose statements together that construct and then set the
-     * duration, as in <code>ValueAnimator.ofInt(0, 10).setDuration(500).start()</code>.
+     *         value makes it easier to compose statements together that construct and then set the
+     *         duration, as in <code>ValueAnimator.ofInt(0, 10).setDuration(500).start()</code>.
      */
     public ValueAnimator setDuration(long duration) {
         if (duration < 0) {
@@ -566,7 +567,6 @@ public class ValueAnimator extends Animator {
      * values will happen on the UI thread and that all animations will share
      * the same times for calculating their values, which makes synchronizing
      * animations possible.
-     *
      */
     private static class AnimationHandler extends Handler {
         /**
@@ -582,6 +582,7 @@ public class ValueAnimator extends Animator {
          * active animations to process.
          */
         @Override
+        @SuppressWarnings("fallthrough")
         public void handleMessage(Message msg) {
             boolean callAgain = true;
             ArrayList<ValueAnimator> animations = sAnimations.get();
@@ -676,7 +677,7 @@ public class ValueAnimator extends Animator {
                     // after the frameDelay
                     if (callAgain && (!animations.isEmpty() || !delayedAnims.isEmpty())) {
                         sendEmptyMessageDelayed(ANIMATION_FRAME, Math.max(0, sFrameDelay -
-                            (AnimationUtils.currentAnimationTimeMillis() - currentTime)));
+                                (AnimationUtils.currentAnimationTimeMillis() - currentTime)));
                     }
                     break;
             }
@@ -696,7 +697,7 @@ public class ValueAnimator extends Animator {
     /**
      * The amount of time, in milliseconds, to delay starting the animation after
      * {@link #start()} is called.
-
+     *
      * @param startDelay The amount of the delay, in milliseconds
      */
     public void setStartDelay(long startDelay) {
@@ -737,9 +738,9 @@ public class ValueAnimator extends Animator {
      * is called during each animation frame, immediately after the value is calculated.
      *
      * @return animatedValue The value most recently calculated by this <code>ValueAnimator</code> for
-     * the single property being animated. If there are several properties being animated
-     * (specified by several PropertyValuesHolder objects in the constructor), this function
-     * returns the animated value for the first of those objects.
+     *         the single property being animated. If there are several properties being animated
+     *         (specified by several PropertyValuesHolder objects in the constructor), this function
+     *         returns the animated value for the first of those objects.
      */
     public Object getAnimatedValue() {
         if (mValues != null && mValues.length > 0) {
@@ -757,7 +758,7 @@ public class ValueAnimator extends Animator {
      * is called during each animation frame, immediately after the value is calculated.
      *
      * @return animatedValue The value most recently calculated for the named property
-     * by this <code>ValueAnimator</code>.
+     *         by this <code>ValueAnimator</code>.
      */
     public Object getAnimatedValue(String propertyName) {
         PropertyValuesHolder valuesHolder = mValuesMap.get(propertyName);
@@ -780,6 +781,7 @@ public class ValueAnimator extends Animator {
     public void setRepeatCount(int value) {
         mRepeatCount = value;
     }
+
     /**
      * Defines how many times the animation should repeat. The default value
      * is 0.
@@ -839,7 +841,7 @@ public class ValueAnimator extends Animator {
      * Removes a listener from the set listening to frame updates for this animation.
      *
      * @param listener the listener to be removed from the current set of update listeners
-     * for this animation.
+     *                 for this animation.
      */
     public void removeUpdateListener(AnimatorUpdateListener listener) {
         if (mUpdateListeners == null) {
@@ -859,7 +861,7 @@ public class ValueAnimator extends Animator {
      * {@link android.view.animation.AccelerateDecelerateInterpolator}
      *
      * @param value the interpolator to be used by this animation. A value of <code>null</code>
-     * will result in linear interpolation.
+     *              will result in linear interpolation.
      */
     @Override
     public void setInterpolator(/*Time*/Interpolator value) {
@@ -887,7 +889,7 @@ public class ValueAnimator extends Animator {
      * necessary with int values that represent colors), a custom evaluator needs to be assigned.
      * For example, when running an animation on color values, the {@link ArgbEvaluator}
      * should be used to get correct RGB color interpolation.
-     *
+     * <p/>
      * <p>If this ValueAnimator has only one set of values being animated between, this evaluator
      * will be used for that set. If there are several sets of values being animated, which is
      * the case if PropertyValuesHOlder objects were set on the ValueAnimator, then the evaluator
@@ -905,7 +907,7 @@ public class ValueAnimator extends Animator {
      * Start the animation playing. This version of start() takes a boolean flag that indicates
      * whether the animation should play in reverse. The flag is usually false, but may be set
      * to true if called from the reverse() method.
-     *
+     * <p/>
      * <p>The animation started by calling this method will be run on the thread that called
      * this method. This thread should have a Looper on it (a runtime exception will be thrown if
      * this is not the case). Also, if the animation will animate
@@ -1064,9 +1066,9 @@ public class ValueAnimator extends Animator {
      * should be woken up and put on the active animations queue.
      *
      * @param currentTime The current animation time, used to calculate whether the animation
-     * has exceeded its <code>startDelay</code> and should be started.
+     *                    has exceeded its <code>startDelay</code> and should be started.
      * @return True if the animation's <code>startDelay</code> has been exceeded and the animation
-     * should be added to the set of active animations.
+     *         should be added to the set of active animations.
      */
     private boolean delayedAnimationFrame(long currentTime) {
         if (!mStartedDelay) {
@@ -1095,7 +1097,7 @@ public class ValueAnimator extends Animator {
      *
      * @param currentTime The current time, as tracked by the static timing handler
      * @return true if the animation's duration, including any repetitions due to
-     * <code>repeatCount</code> has been exceeded and the animation should be ended.
+     *         <code>repeatCount</code> has been exceeded and the animation should be ended.
      */
     boolean animationFrame(long currentTime) {
         boolean done = false;
@@ -1111,34 +1113,34 @@ public class ValueAnimator extends Animator {
             }
         }
         switch (mPlayingState) {
-        case RUNNING:
-        case SEEKED:
-            float fraction = mDuration > 0 ? (float)(currentTime - mStartTime) / mDuration : 1f;
-            if (fraction >= 1f) {
-                if (mCurrentIteration < mRepeatCount || mRepeatCount == INFINITE) {
-                    // Time to repeat
-                    if (mListeners != null) {
-                        int numListeners = mListeners.size();
-                        for (int i = 0; i < numListeners; ++i) {
-                            mListeners.get(i).onAnimationRepeat(this);
+            case RUNNING:
+            case SEEKED:
+                float fraction = mDuration > 0 ? (float) (currentTime - mStartTime) / mDuration : 1f;
+                if (fraction >= 1f) {
+                    if (mCurrentIteration < mRepeatCount || mRepeatCount == INFINITE) {
+                        // Time to repeat
+                        if (mListeners != null) {
+                            int numListeners = mListeners.size();
+                            for (int i = 0; i < numListeners; ++i) {
+                                mListeners.get(i).onAnimationRepeat(this);
+                            }
                         }
+                        if (mRepeatMode == REVERSE) {
+                            mPlayingBackwards = mPlayingBackwards ? false : true;
+                        }
+                        mCurrentIteration += (int) fraction;
+                        fraction = fraction % 1f;
+                        mStartTime += mDuration;
+                    } else {
+                        done = true;
+                        fraction = Math.min(fraction, 1.0f);
                     }
-                    if (mRepeatMode == REVERSE) {
-                        mPlayingBackwards = mPlayingBackwards ? false : true;
-                    }
-                    mCurrentIteration += (int)fraction;
-                    fraction = fraction % 1f;
-                    mStartTime += mDuration;
-                } else {
-                    done = true;
-                    fraction = Math.min(fraction, 1.0f);
                 }
-            }
-            if (mPlayingBackwards) {
-                fraction = 1f - fraction;
-            }
-            animateValue(fraction);
-            break;
+                if (mPlayingBackwards) {
+                    fraction = 1f - fraction;
+                }
+                animateValue(fraction);
+                break;
         }
 
         return done;
@@ -1160,7 +1162,7 @@ public class ValueAnimator extends Animator {
      * and then into an animated value (from the evaluator. The function is called mostly during
      * animation updates, but it is also called when the <code>end()</code>
      * function is called, to set the final value on the property.
-     *
+     * <p/>
      * <p>Overrides of this method must call the superclass to perform the calculation
      * of the animated value.</p>
      *
@@ -1230,7 +1232,7 @@ public class ValueAnimator extends Animator {
 
     /**
      * Return the number of animations currently running.
-     *
+     * <p/>
      * Used by StrictMode internally to annotate violations.  Only
      * called on the main thread.
      *

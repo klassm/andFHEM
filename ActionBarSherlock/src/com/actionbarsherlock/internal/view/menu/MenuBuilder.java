@@ -31,6 +31,7 @@ import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.SparseArray;
@@ -56,13 +57,13 @@ public class MenuBuilder implements Menu {
     private static final String ACTION_VIEW_STATES_KEY = "android:menu:actionviewstates";
     private static final String EXPANDED_ACTION_VIEW_ID = "android:menu:expandedactionview";
 
-    private static final int[]  sCategoryToOrder = new int[] {
-        1, /* No category */
-        4, /* CONTAINER */
-        5, /* SYSTEM */
-        3, /* SECONDARY */
-        2, /* ALTERNATIVE */
-        0, /* SELECTED_ALTERNATIVE */
+    private static final int[] sCategoryToOrder = new int[]{
+            1, /* No category */
+            4, /* CONTAINER */
+            5, /* SYSTEM */
+            3, /* SECONDARY */
+            2, /* ALTERNATIVE */
+            0, /* SELECTED_ALTERNATIVE */
     };
 
     private final Context mContext;
@@ -86,11 +87,15 @@ public class MenuBuilder implements Menu {
      */
     private Callback mCallback;
 
-    /** Contains all of the items for this menu */
+    /**
+     * Contains all of the items for this menu
+     */
     private ArrayList<MenuItemImpl> mItems;
 
-    /** Contains only the items that are currently visible.  This will be created/refreshed from
-     * {@link #getVisibleItems()} */
+    /**
+     * Contains only the items that are currently visible.  This will be created/refreshed from
+     * {@link #getVisibleItems()}
+     */
     private ArrayList<MenuItemImpl> mVisibleItems;
     /**
      * Whether or not the items (or any one item's shown state) has changed since it was last
@@ -125,11 +130,17 @@ public class MenuBuilder implements Menu {
      */
     private ContextMenuInfo mCurrentMenuInfo;
 
-    /** Header title for menu types that have a header (context and submenus) */
+    /**
+     * Header title for menu types that have a header (context and submenus)
+     */
     CharSequence mHeaderTitle;
-    /** Header icon for menu types that have a header and support icons (context) */
+    /**
+     * Header icon for menu types that have a header and support icons (context)
+     */
     Drawable mHeaderIcon;
-    /** Header custom view for menu types that have a header and support custom views (context) */
+    /**
+     * Header custom view for menu types that have a header and support custom views (context)
+     */
     View mHeaderView;
 
     /**
@@ -165,6 +176,7 @@ public class MenuBuilder implements Menu {
     public interface Callback {
         /**
          * Called when a menu item is selected.
+         *
          * @param menu The menu that is the parent of the item
          * @param item The menu item that is selected
          * @return whether the menu item selection was handled
@@ -353,6 +365,11 @@ public class MenuBuilder implements Menu {
         SparseArray<Parcelable> viewStates = states.getSparseParcelableArray(
                 getActionViewStatesKey());
 
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB && viewStates == null) {
+            //Fixes Issue #652 with sdk <= 2.3.6
+            return;
+        }
+
         final int itemCount = size();
         for (int i = 0; i < itemCount; i++) {
             final MenuItem item = getItem(i);
@@ -440,7 +457,7 @@ public class MenuBuilder implements Menu {
     }
 
     public int addIntentOptions(int group, int id, int categoryOrder, ComponentName caller,
-            Intent[] specifics, Intent intent, int flags, MenuItem[] outSpecificItems) {
+                                Intent[] specifics, Intent intent, int flags, MenuItem[] outSpecificItems) {
         PackageManager pm = mContext.getPackageManager();
         final List<ResolveInfo> lri =
                 pm.queryIntentActivityOptions(caller, specifics, intent, 0);
@@ -450,10 +467,10 @@ public class MenuBuilder implements Menu {
             removeGroup(group);
         }
 
-        for (int i=0; i<N; i++) {
+        for (int i = 0; i < N; i++) {
             final ResolveInfo ri = lri.get(i);
             Intent rintent = new Intent(
-                ri.specificIndex < 0 ? intent : specifics[ri.specificIndex]);
+                    ri.specificIndex < 0 ? intent : specifics[ri.specificIndex]);
             rintent.setComponent(new ComponentName(
                     ri.activityInfo.applicationInfo.packageName,
                     ri.activityInfo.name));
@@ -492,11 +509,11 @@ public class MenuBuilder implements Menu {
      * Remove the item at the given index and optionally forces menu views to
      * update.
      *
-     * @param index The index of the item to be removed. If this index is
-     *            invalid an exception is thrown.
+     * @param index                     The index of the item to be removed. If this index is
+     *                                  invalid an exception is thrown.
      * @param updateChildrenOnMenuViews Whether to force update on menu views.
-     *            Please make sure you eventually call this after your batch of
-     *            removals.
+     *                                  Please make sure you eventually call this after your batch of
+     *                                  removals.
      */
     private void removeItemAtInt(int index, boolean updateChildrenOnMenuViews) {
         if ((index < 0) || (index >= mItems.size())) return;
@@ -654,7 +671,9 @@ public class MenuBuilder implements Menu {
         return mItems.size();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public MenuItem getItem(int index) {
         return mItems.get(index);
     }
@@ -675,8 +694,8 @@ public class MenuBuilder implements Menu {
      * categories, and combine it with the lower bits.
      *
      * @param categoryOrder The category order for a particular item (if it has
-     *            not been or/add with a category, the default category is
-     *            assumed).
+     *                      not been or/add with a category, the default category is
+     *                      assumed).
      * @return An ordering integer that can be used to order this item across
      *         all the items (even from other categories).
      */
@@ -702,8 +721,8 @@ public class MenuBuilder implements Menu {
      * key input will never make shortcuts visible even if this method is passed 'true'.
      *
      * @param shortcutsVisible Whether shortcuts should be visible (if true and a
-     *            menu item does not have a shortcut defined, that item will
-     *            still NOT show a shortcut)
+     *                         menu item does not have a shortcut defined, that item will
+     *                         still NOT show a shortcut)
      */
     public void setShortcutsVisible(boolean shortcutsVisible) {
         if (mShortcutsVisible == shortcutsVisible) return;
@@ -716,7 +735,7 @@ public class MenuBuilder implements Menu {
         mShortcutsVisible = shortcutsVisible
                 && mResources.getConfiguration().keyboard != Configuration.KEYBOARD_NOKEYS
                 && mResources.getBoolean(
-                        R.bool.abs__config_showMenuShortcutsWhenKeyboardPresent);
+                R.bool.abs__config_showMenuShortcutsWhenKeyboardPresent);
     }
 
     /**
@@ -797,16 +816,16 @@ public class MenuBuilder implements Menu {
         for (int i = 0; i < N; i++) {
             MenuItemImpl item = mItems.get(i);
             if (item.hasSubMenu()) {
-                ((MenuBuilder)item.getSubMenu()).findItemsWithShortcutForKey(items, keyCode, event);
+                ((MenuBuilder) item.getSubMenu()).findItemsWithShortcutForKey(items, keyCode, event);
             }
             final char shortcutChar = qwerty ? item.getAlphabeticShortcut() : item.getNumericShortcut();
             if (((metaState & (KeyEvent.META_SHIFT_ON | KeyEvent.META_SYM_ON)) == 0) &&
-                  (shortcutChar != 0) &&
-                  (shortcutChar == possibleChars.meta[0]
-                      || shortcutChar == possibleChars.meta[2]
-                      || (qwerty && shortcutChar == '\b' &&
-                          keyCode == KeyEvent.KEYCODE_DEL)) &&
-                  item.isEnabled()) {
+                    (shortcutChar != 0) &&
+                    (shortcutChar == possibleChars.meta[0]
+                            || shortcutChar == possibleChars.meta[2]
+                            || (qwerty && shortcutChar == '\b' &&
+                            keyCode == KeyEvent.KEYCODE_DEL)) &&
+                    item.isEnabled()) {
                 items.add(item);
             }
         }
@@ -854,9 +873,9 @@ public class MenuBuilder implements Menu {
                     item.getNumericShortcut();
             if ((shortcutChar == possibleChars.meta[0] &&
                     (metaState & KeyEvent.META_ALT_ON) == 0)
-                || (shortcutChar == possibleChars.meta[2] &&
+                    || (shortcutChar == possibleChars.meta[2] &&
                     (metaState & KeyEvent.META_ALT_ON) != 0)
-                || (qwerty && shortcutChar == '\b' &&
+                    || (qwerty && shortcutChar == '\b' &&
                     keyCode == KeyEvent.KEYCODE_DEL)) {
                 return item;
             }
@@ -904,10 +923,10 @@ public class MenuBuilder implements Menu {
      * Closes the visible menu.
      *
      * @param allMenusAreClosing Whether the menus are completely closing (true),
-     *            or whether there is another menu coming in this menu's place
-     *            (false). For example, if the menu is closing because a
-     *            sub menu is about to be shown, <var>allMenusAreClosing</var>
-     *            is false.
+     *                           or whether there is another menu coming in this menu's place
+     *                           (false). For example, if the menu is closing because a
+     *                           sub menu is about to be shown, <var>allMenusAreClosing</var>
+     *                           is false.
      */
     final void close(boolean allMenusAreClosing) {
         if (mIsClosing) return;
@@ -924,7 +943,9 @@ public class MenuBuilder implements Menu {
         mIsClosing = false;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public void close() {
         close(true);
     }
@@ -972,6 +993,7 @@ public class MenuBuilder implements Menu {
 
     /**
      * Called by {@link MenuItemImpl} when its visible flag is changed.
+     *
      * @param item The item that has gone through a visibility change.
      */
     void onItemVisibleChanged(MenuItemImpl item) {
@@ -982,6 +1004,7 @@ public class MenuBuilder implements Menu {
 
     /**
      * Called by {@link MenuItemImpl} when its action request status is changed.
+     *
      * @param item The item that has gone through a change in action request status.
      */
     void onItemActionRequestChanged(MenuItemImpl item) {
@@ -1013,7 +1036,7 @@ public class MenuBuilder implements Menu {
      * This method determines which menu items get to be 'action items' that will appear
      * in an action bar and which items should be 'overflow items' in a secondary menu.
      * The rules are as follows:
-     *
+     * <p/>
      * <p>Items are considered for inclusion in the order specified within the menu.
      * There is a limit of mMaxActionItems as a total count, optionally including the overflow
      * menu button itself. This is a soft limit; if an item shares a group ID with an item
@@ -1022,13 +1045,13 @@ public class MenuBuilder implements Menu {
      * limit the conceptual complexity of the items presented within an action bar. Only a few
      * unrelated concepts should be presented to the user in this space, and groups are treated
      * as a single concept.
-     *
+     * <p/>
      * <p>There is also a hard limit of consumed measurable space: mActionWidthLimit. This
      * limit may be broken by a single item that exceeds the remaining space, but no further
      * items may be added. If an item that is part of a group cannot fit within the remaining
      * measured width, the entire group will be demoted to overflow. This is done to ensure room
      * for navigation and other affordances in the action bar as well as reduce general UI clutter.
-     *
+     * <p/>
      * <p>The space freed by demoting a full group cannot be consumed by future menu items.
      * Once items begin to overflow, all future items become overflow items as well. This is
      * to avoid inadvertent reordering that may break the app's intended design.
@@ -1091,7 +1114,7 @@ public class MenuBuilder implements Menu {
     }
 
     private void setHeaderInternal(final int titleRes, final CharSequence title, final int iconRes,
-            final Drawable icon, final View view) {
+                                   final Drawable icon, final View view) {
         final Resources r = getResources();
 
         if (view != null) {
@@ -1195,6 +1218,7 @@ public class MenuBuilder implements Menu {
 
     /**
      * Gets the root menu (if this is a submenu, find its root menu).
+     *
      * @return The root menu.
      */
     public MenuBuilder getRootMenu() {
@@ -1287,7 +1311,7 @@ public class MenuBuilder implements Menu {
                 android.view.SubMenu nativeSub = menu.addSubMenu(nonActionItem.getGroupId(), nonActionItem.getItemId(),
                         nonActionItem.getOrder(), nonActionItem.getTitle());
 
-                SubMenuBuilder subMenu = (SubMenuBuilder)nonActionItem.getSubMenu();
+                SubMenuBuilder subMenu = (SubMenuBuilder) nonActionItem.getSubMenu();
                 for (MenuItemImpl subItem : subMenu.getVisibleItems()) {
                     android.view.MenuItem nativeSubItem = nativeSub.add(subItem.getGroupId(), subItem.getItemId(),
                             subItem.getOrder(), subItem.getTitle());

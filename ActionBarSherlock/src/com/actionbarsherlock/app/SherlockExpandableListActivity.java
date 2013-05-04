@@ -42,10 +42,12 @@ public abstract class SherlockExpandableListActivity extends ExpandableListActiv
     }
 
     @Override
-    public void onActionModeStarted(ActionMode mode) {}
+    public void onActionModeStarted(ActionMode mode) {
+    }
 
     @Override
-    public void onActionModeFinished(ActionMode mode) {}
+    public void onActionModeFinished(ActionMode mode) {
+    }
 
 
     ///////////////////////////////////////////////////////////////////////////
@@ -229,7 +231,13 @@ public abstract class SherlockExpandableListActivity extends ExpandableListActiv
     }
 
     public void requestWindowFeature(long featureId) {
-        getSherlock().requestFeature((int)featureId);
+        getSherlock().requestFeature((int) featureId);
+    }
+
+    @Override
+    public View findViewById(int id) {
+        getSherlock().ensureActionBar();
+        return super.findViewById(id);
     }
 
 

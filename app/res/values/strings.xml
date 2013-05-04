@@ -123,8 +123,6 @@
     <string name="deleteConfirmation">Are you sure you want to delete the device from FHEM?</string>
     <string name="isActive">Active?</string>
     <string name="deactivated">deactivated</string>
-    <string name="endDate">End Date</string>
-    <string name="endTime">End Time</string>
     <string name="showPassword">Show password</string>
     <string name="brightness">Brightness</string>
     <string name="motion">Motion</string>
@@ -254,7 +252,6 @@
 
     <string name="yAxisWind">wind (km/h)</string>
     <string name="yAxisHumidity">humidity (%)</string>
-    <string name="yAxisHumidity">humidity (%)</string>
     <string name="yAxisTemperature">temperature (°C)</string>
     <string name="yAxisRain">rain (l/m2)</string>
     <string name="yAxisActuator">actuator (%)</string>
@@ -352,7 +349,6 @@
     <string name="timer_targetState">Target state</string>
     <string name="timer_commandAppendix">State appendix</string>
     <string name="timer_time">Switch time</string>
-    <string name="timer_overview_create_new">Create new timer</string>
     <string name="timer_overview_create_new">Create new timer</string>
     <string name="timer_next_trigger">Next trigger</string>
 
