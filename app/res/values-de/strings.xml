@@ -145,7 +145,7 @@
     <string name="newInterval">Neues Intervall</string>
     <string name="price">Preis</string>
     <string name="energy">Energie</string>
-    <string name="cumulativeKwH">Kumuliert</string>
+    <string name="cumulativeKwH">Gesamtzählerstand</string>
 
     <string name="switchDevice">Schalte</string>
     <string name="preferences">Einstellungen</string>
