@@ -46,6 +46,7 @@ import static li.klass.fhem.constants.BundleExtraKeys.RESULT_RECEIVER;
  */
 public abstract class ConvenientIntentService extends IntentService {
     private ExecutorService executorService = null;
+    private static boolean outOfMemoryOccurred = false;
 
     public ConvenientIntentService(String name) {
         this(name, 1);
@@ -54,7 +55,7 @@ public abstract class ConvenientIntentService extends IntentService {
     public ConvenientIntentService(String name, int numberOfThreads) {
         super(name);
 
-        if (numberOfThreads > 1 && AndFHEMApplication.getAndroidSDKLevel() >= 13) {
+        if (numberOfThreads > 1 && AndFHEMApplication.getAndroidSDKLevel() >= 13 && !outOfMemoryOccurred) {
             executorService = Executors.newFixedThreadPool(numberOfThreads);
         }
     }
@@ -65,15 +66,22 @@ public abstract class ConvenientIntentService extends IntentService {
 
     @Override
     protected void onHandleIntent(final Intent intent) {
-        if (executorService != null) {
-            executorService.submit(new Runnable() {
-                @Override
-                public void run() {
-                    handleTaskInternal(intent);
-                }
-            });
-        } else {
-            handleTaskInternal(intent);
+        try {
+            if (executorService != null && !outOfMemoryOccurred) {
+                executorService.submit(new Runnable() {
+                    @Override
+                    public void run() {
+                        handleTaskInternal(intent);
+                    }
+                });
+            } else {
+                handleTaskInternal(intent);
+            }
+        } catch (OutOfMemoryError e) {
+            Log.e(ConvenientIntentService.class.getSimpleName(), "out of memory occurred", e);
+            outOfMemoryOccurred = true;
+            executorService = null;
+            onHandleIntent(intent);
         }
     }
 
