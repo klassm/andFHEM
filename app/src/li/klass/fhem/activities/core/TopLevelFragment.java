@@ -51,6 +51,8 @@ public class TopLevelFragment extends Fragment implements Serializable {
 
     public static final String INITIAL_FRAGMENT_TYPE_KEY = "initialFragmentType";
     public static final String LAST_SWITCH_TO_BUNDLE_KEY = "lastBundle";
+    public static final String NAVIGATION_TAG = "NAVIGATION";
+    public static final String CONTENT_TAG = "CONTENT";
     private transient FragmentType initialFragmentType;
     private int topLevelId;
     private BroadcastReceiver broadcastReceiver;
@@ -91,11 +93,6 @@ public class TopLevelFragment extends Fragment implements Serializable {
         View view = inflater.inflate(R.layout.content_view, null);
         View navigationView = view.findViewById(R.id.navigation);
         View contentView = view.findViewById(R.id.content);
-
-//        View topLevelContent = view.findViewById(R.id.topLevelContent);
-//
-//        topLevelId = ViewUtil.getPseudoUniqueId(view, container);
-//        topLevelContent.setId(topLevelId);
 
         contentId = ViewUtil.getPseudoUniqueId(view, container);
         contentView.setId(contentId);
@@ -157,51 +154,50 @@ public class TopLevelFragment extends Fragment implements Serializable {
         BaseFragment navigationFragment = createNavigationFragment(fragmentType, data);
 
         setContent(navigationFragment, contentFragment);
-//        ContentHolderFragment content = new ContentHolderFragment(fragmentType, data);
-//
-//        FragmentManager fragmentManager = getFragmentManager();
-//        if (fragmentManager == null) return;
-//
-//        fragmentManager
-//                .beginTransaction()
-//                .replace(topLevelId, content)
-//                .addToBackStack(null)
-//                .commitAllowingStateLoss();
     }
 
     public boolean back(Bundle data) {
-
-        // pop fragments as long as the current content's fragment type is the same as the next content fragment type
-        // this is necessary to handle device name selection (with tablet room selection) in timer fragment!
-//        ContentHolderFragment currentContent = getCurrentContent();
-//        if (currentContent != null) {
-//            FragmentType currentFragmentType = currentContent.getFragmentType();
-//            while (getFragmentManager().popBackStackImmediate()) {
-//                if (getCurrentContent() == null || getCurrentContent().getFragmentType() != currentFragmentType) {
-//                    break;
-//                }
-//            }
-//        }
-//
-//        ContentHolderFragment contentFragment = getCurrentContent();
-//        if (contentFragment != null) {
-//            contentFragment.onBackPressResult(data);
-//            return true;
-//        }
-
 
         if (getFragmentManager().getBackStackEntryCount() == 0) {
             getActivity().finish();
             return false;
         } else {
-            getFragmentManager().popBackStackImmediate();
-            getFragmentManager().popBackStackImmediate();
+            String currentName = getLastTransactionName();
+            boolean found = false;
+            while (getFragmentManager().getBackStackEntryCount() != 0) {
+                String lastTransactionName = getLastTransactionName();
+                int backStackEntryCount = getFragmentManager().getBackStackEntryCount();
+                Log.e(TAG, backStackEntryCount + "");
 
-            BaseFragment navigationFragment = (BaseFragment) getFragmentManager().findFragmentById(R.id.navigation);
+                if (!currentName.equals(lastTransactionName)) {
+                    found = true;
+                    break;
+                }
+                getFragmentManager().popBackStackImmediate();
+            }
+
+            BaseFragment contentFragment = (BaseFragment) getFragmentManager().findFragmentByTag(CONTENT_TAG);
+            if (!found) {
+                getActivity().finish();
+                return true;
+            }
+
+            BaseFragment navigationFragment = (BaseFragment) getFragmentManager().findFragmentByTag(NAVIGATION_TAG);
             updateNavigationVisibility(navigationFragment);
+            if (navigationFragment != null) {
+                navigationFragment.onBackPressResult(data);
+            }
+
+            if (contentFragment != null) {
+                contentFragment.onBackPressResult(data);
+            }
 
             return true;
         }
+    }
+
+    private String getLastTransactionName() {
+        return getFragmentManager().getBackStackEntryAt(getFragmentManager().getBackStackEntryCount() - 1).getName();
     }
 
     @Override
@@ -280,20 +276,18 @@ public class TopLevelFragment extends Fragment implements Serializable {
 
         FragmentTransaction transaction = getFragmentManager()
                 .beginTransaction()
-                .addToBackStack(null);
+                .addToBackStack(contentFragment.getClass().getName());
 
         if (hasNavigation) {
             transaction
-                    .replace(navigationId, navigationFragment)
-                    .replace(contentId, contentFragment);
+                    .replace(navigationId, navigationFragment, NAVIGATION_TAG)
+                    .replace(contentId, contentFragment, CONTENT_TAG);
         } else {
             transaction
                     .replace(contentId, contentFragment);
         }
 
         transaction.commit();
-
-
     }
 
     private boolean updateNavigationVisibility(BaseFragment navigationFragment) {
