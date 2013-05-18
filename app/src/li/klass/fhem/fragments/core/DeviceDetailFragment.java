@@ -71,7 +71,7 @@ public class DeviceDetailFragment extends BaseFragment {
         Intent intent = new Intent(Actions.GET_DEVICE_FOR_NAME);
         intent.putExtras(new Bundle());
         intent.putExtra(BundleExtraKeys.DO_REFRESH, doUpdate);
-        intent.putExtra(BundleExtraKeys.DEVICE_NAME, creationAttributes.get(BundleExtraKeys.DEVICE_NAME));
+        intent.putExtra(BundleExtraKeys.DEVICE_NAME, creationBundle.getString(BundleExtraKeys.DEVICE_NAME));
         intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
             @Override
             protected void onReceiveResult(int resultCode, Bundle resultData) {
@@ -90,12 +90,5 @@ public class DeviceDetailFragment extends BaseFragment {
             }
         });
         getActivity().startService(intent);
-    }
-
-    @Override
-    protected boolean onContentChanged(Map<String, Serializable> oldCreationAttributes, Map<String, Serializable> newCreationAttributes) {
-        if (super.onContentChanged(oldCreationAttributes, newCreationAttributes)) return true;
-
-        return updateIfAttributesDoNotMatch(oldCreationAttributes, newCreationAttributes, BundleExtraKeys.DEVICE_NAME);
     }
 }

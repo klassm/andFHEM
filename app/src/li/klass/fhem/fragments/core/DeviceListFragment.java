@@ -59,13 +59,11 @@ import static li.klass.fhem.widget.GridViewWithSections.GridViewWithSectionsOnCl
 
 public abstract class DeviceListFragment extends BaseFragment {
 
-    private transient DeviceGridAdapter adapter;
+    public DeviceListFragment() {
+    }
 
     public DeviceListFragment(Bundle bundle) {
         super(bundle);
-    }
-
-    public DeviceListFragment() {
     }
 
     /**
@@ -97,7 +95,7 @@ public abstract class DeviceListFragment extends BaseFragment {
         int rightPadding = ApplicationProperties.INSTANCE.getIntegerSharedPreference(DEVICE_LIST_RIGHT_PADDING, 0);
         nestedListView.setPadding(nestedListView.getPaddingLeft(), nestedListView.getPaddingTop(), rightPadding, nestedListView.getPaddingBottom());
 
-        adapter = new DeviceGridAdapter(getActivity(), new RoomDeviceList(""));
+        DeviceGridAdapter adapter = new DeviceGridAdapter(getActivity(), new RoomDeviceList(""));
         nestedListView.setAdapter(adapter);
 
         registerForContextMenu(nestedListView);
@@ -124,17 +122,17 @@ public abstract class DeviceListFragment extends BaseFragment {
     public void update(boolean doUpdate) {
 
         View view = getView();
-        if (view != null) {
-            View dummyConnectionNotification = view.findViewById(R.id.dummyConnectionNotification);
-            if (!DataConnectionSwitch.INSTANCE.getCurrentProvider().getClass().isAssignableFrom(DummyDataConnection.class)) {
-                dummyConnectionNotification.setVisibility(View.GONE);
-            } else {
-                dummyConnectionNotification.setVisibility(View.VISIBLE);
-            }
+        if (view == null) return;
 
-            if (doUpdate) {
-                view.invalidate();
-            }
+        View dummyConnectionNotification = view.findViewById(R.id.dummyConnectionNotification);
+        if (!DataConnectionSwitch.INSTANCE.getCurrentProvider().getClass().isAssignableFrom(DummyDataConnection.class)) {
+            dummyConnectionNotification.setVisibility(View.GONE);
+        } else {
+            dummyConnectionNotification.setVisibility(View.VISIBLE);
+        }
+
+        if (doUpdate) {
+            view.invalidate();
         }
 
         Log.i(DeviceListFragment.class.getName(), "request device list update (doUpdate=" + doUpdate + ")");
@@ -146,9 +144,11 @@ public abstract class DeviceListFragment extends BaseFragment {
             @Override
             protected void onReceiveResult(int resultCode, Bundle resultData) {
                 super.onReceiveResult(resultCode, resultData);
-                if (resultCode == ResultCodes.SUCCESS) {
+                if (getView() == null) return;
+
+                if (resultCode == ResultCodes.SUCCESS && resultData.containsKey(DEVICE_LIST)) {
                     RoomDeviceList deviceList = (RoomDeviceList) resultData.getSerializable(DEVICE_LIST);
-                    adapter.updateData(deviceList);
+                    getAdapter().updateData(deviceList);
                 }
             }
         });
@@ -218,6 +218,11 @@ public abstract class DeviceListFragment extends BaseFragment {
                 return true;
         }
         return false;
+    }
+
+    protected DeviceGridAdapter getAdapter() {
+        GridViewWithSections listView = (GridViewWithSections) getView().findViewById(R.id.deviceMap1);
+        return (DeviceGridAdapter) listView.getAdapter();
     }
 
     protected abstract String getUpdateAction();

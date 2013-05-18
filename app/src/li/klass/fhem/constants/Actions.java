@@ -88,4 +88,7 @@ public class Actions {
     public static final String DEVICE_LIST_REMOTE_NOTIFY = prefix + "DEVICE_LIST_REMOTE_NOTIFY";
 
     public static final String RELOAD = prefix + "RELOAD";
+
+    public static final String SWITCH_TO_INITIAL_FRAGMENT = prefix + "SWITCH_TO_INITAL_FRAGMENT";
+    public static final String TOP_LEVEL_BACK = prefix + "TOP_LEVEL_BACK";
 }

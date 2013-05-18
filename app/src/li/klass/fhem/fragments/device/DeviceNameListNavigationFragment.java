@@ -52,7 +52,7 @@ public class DeviceNameListNavigationFragment extends DeviceNameListFragment {
         Intent intent = new Intent(Actions.SHOW_FRAGMENT);
         intent.putExtra(BundleExtraKeys.FRAGMENT, FragmentType.DEVICE_DETAIL);
         intent.putExtra(BundleExtraKeys.DEVICE_NAME, child.getName());
-        intent.putExtra(BundleExtraKeys.ROOM_NAME, creationAttributes.get(BundleExtraKeys.ROOM_NAME));
+        intent.putExtra(BundleExtraKeys.ROOM_NAME, creationBundle.getString(BundleExtraKeys.ROOM_NAME));
 
         getActivity().sendBroadcast(intent);
     }

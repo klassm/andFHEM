@@ -127,7 +127,7 @@ public abstract class DeviceNameListFragment extends BaseFragment {
     protected void deviceListReceived(RoomDeviceList roomDeviceList) {
         filterDevices(roomDeviceList);
 
-        String selectedDevice = (String) creationAttributes.get(BundleExtraKeys.DEVICE_NAME);
+        String selectedDevice = creationBundle.getString(BundleExtraKeys.DEVICE_NAME);
 
         Set<Device> allDevices = roomDeviceList.getAllDevices();
         if (allDevices.size() > 0) {
@@ -136,39 +136,6 @@ public abstract class DeviceNameListFragment extends BaseFragment {
     }
 
     private DeviceFilter getDeviceFilter() {
-        return (DeviceFilter) creationAttributes.get(BundleExtraKeys.DEVICE_FILTER);
-    }
-
-    @Override
-    protected boolean onContentChanged(Map<String, Serializable> oldCreationAttributes, final Map<String, Serializable> newCreationAttributes) {
-        if (oldCreationAttributes == null && newCreationAttributes.containsKey(BundleExtraKeys.DEVICE_FILTER)) {
-            newCreationAttributes.put(BundleExtraKeys.ORIGINAL_DEVICE_FILTER, newCreationAttributes.get(BundleExtraKeys.DEVICE_FILTER));
-        }
-
-        if (newCreationAttributes.get(BundleExtraKeys.DEVICE_FILTER) == null ||
-                !doContentChangedAttributesMatch(oldCreationAttributes, newCreationAttributes, BundleExtraKeys.ROOM_NAME)) {
-            final DeviceFilter oldDeviceFilter = oldCreationAttributes == null ?
-                    null : (DeviceFilter) oldCreationAttributes.get(BundleExtraKeys.ORIGINAL_DEVICE_FILTER);
-
-            newCreationAttributes.put(BundleExtraKeys.ORIGINAL_DEVICE_FILTER, oldDeviceFilter);
-            if (newCreationAttributes.get(BundleExtraKeys.ROOM_NAME) != null) {
-                newCreationAttributes.put(BundleExtraKeys.DEVICE_FILTER, new DeviceFilter() {
-                    @Override
-                    public boolean isSelectable(Device<?> device) {
-                        if (oldDeviceFilter != null && !oldDeviceFilter.isSelectable(device)) {
-                            return false;
-                        }
-                        String roomName = (String) newCreationAttributes.get(BundleExtraKeys.ROOM_NAME);
-                        return device.isInRoom(roomName);
-                    }
-                });
-            }
-            update(false);
-        }
-
-        updateIfAttributesDoNotMatch(oldCreationAttributes, newCreationAttributes, BundleExtraKeys.DEVICE_NAME);
-        updateIfAttributesDoNotMatch(oldCreationAttributes, newCreationAttributes, BundleExtraKeys.ROOM_NAME);
-
-        return super.onContentChanged(oldCreationAttributes, newCreationAttributes);
+        return (DeviceFilter) creationBundle.getSerializable(BundleExtraKeys.DEVICE_FILTER);
     }
 }

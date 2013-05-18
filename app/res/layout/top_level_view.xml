@@ -29,10 +29,10 @@
               android:layout_height="match_parent"
               android:orientation="horizontal">
 
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                 android:layout_width="match_parent"
-                 android:layout_height="match_parent"
-                 android:id="@+id/topLevelContent">
-    </FrameLayout>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:id="@+id/topLevelContent">
+    </LinearLayout>
 
 </LinearLayout>

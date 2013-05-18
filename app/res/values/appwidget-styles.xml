@@ -25,12 +25,12 @@
     <style name="appwidget">
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">fill_parent</item>
-        <item name="android:layout_margin">6dp</item>
+        <item name="android:layout_margin">0dp</item>
     </style>
 
-    <style name="appwidget_small" parent="appwidget" />
-    <style name="appwidget_medium" parent="appwidget" />
-    <style name="appwidget_big" parent="appwidget" />
+    <style name="appwidget_small" parent="appwidget"/>
+    <style name="appwidget_medium" parent="appwidget"/>
+    <style name="appwidget_big" parent="appwidget"/>
 
     <style name="appwidget_content">
         <item name="android:layout_width">fill_parent</item>

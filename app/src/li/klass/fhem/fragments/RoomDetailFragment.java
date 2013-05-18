@@ -49,24 +49,11 @@ public class RoomDetailFragment extends DeviceListFragment {
     @Override
     protected void fillIntent(Intent intent) {
         super.fillIntent(intent);
-        intent.putExtra(ROOM_NAME, creationAttributes.get(BundleExtraKeys.ROOM_NAME));
+        intent.putExtra(ROOM_NAME, creationBundle.getString(BundleExtraKeys.ROOM_NAME));
     }
 
     @Override
     protected String getUpdateAction() {
         return Actions.GET_ROOM_DEVICE_LIST;
-    }
-
-    @Override
-    protected boolean onContentChanged(Map<String, Serializable> oldCreationAttributes, Map<String, Serializable> newCreationAttributes) {
-        if (super.onContentChanged(oldCreationAttributes, newCreationAttributes)) return true;
-
-        if (oldCreationAttributes != null && !oldCreationAttributes.get(BundleExtraKeys.ROOM_NAME)
-                .equals(newCreationAttributes.get(BundleExtraKeys.ROOM_NAME))) {
-            update(false);
-            return true;
-        }
-
-        return false;
     }
 }

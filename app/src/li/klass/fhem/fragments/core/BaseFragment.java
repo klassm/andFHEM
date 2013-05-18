@@ -32,7 +32,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import li.klass.fhem.activities.core.FragmentBaseActivity;
 import li.klass.fhem.activities.core.Updateable;
-import li.klass.fhem.util.BundleUtil;
 import li.klass.fhem.util.UIBroadcastReceiver;
 
 import java.io.Serializable;
@@ -40,31 +39,47 @@ import java.util.Map;
 
 public abstract class BaseFragment extends Fragment implements Updateable, Serializable {
 
+    public static final String CREATION_BUNDLE_KEY = "creationBundle";
     private transient UIBroadcastReceiver broadcastReceiver;
     private transient View contentView;
     protected transient Bundle fragmentIntentResultData;
-    protected Map<String, Serializable> creationAttributes;
 
-    private transient Bundle originalCreationBundle;
+    protected transient Bundle creationBundle;
 
     public BaseFragment() {
     }
 
     public BaseFragment(Bundle bundle) {
-        this.originalCreationBundle = bundle;
+        this.creationBundle = bundle;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putBundle("creationBundle", creationBundle);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (savedInstanceState != null && savedInstanceState.containsKey(CREATION_BUNDLE_KEY)) {
+            creationBundle = savedInstanceState.getBundle("creationBundle");
+        }
+
+        if (creationBundle == null) {
+            creationBundle = new Bundle();
+        }
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        update(false);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return contentView;
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        if (creationAttributes == null) {
-            onContentChanged(originalCreationBundle);
-        }
     }
 
     @Override
@@ -103,60 +118,5 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
     public void onBackPressResult(Bundle resultData) {
         this.fragmentIntentResultData = resultData;
         update(false);
-    }
-
-    public Bundle getCreationAttributesAsBundle() {
-        return BundleUtil.mapToBundle(creationAttributes);
-    }
-
-    public final boolean onContentChanged(Bundle bundle) {
-        Map<String, Serializable> oldAttributes = creationAttributes;
-        Map<String, Serializable> newCreationAttributes = BundleUtil.bundleToMap(bundle);
-        return onContentChanged(oldAttributes, newCreationAttributes);
-    }
-
-    protected boolean onContentChanged(Map<String, Serializable> oldCreationAttributes, Map<String, Serializable> newCreationAttributes) {
-        creationAttributes = newCreationAttributes;
-        if (oldCreationAttributes == null) {
-            update(false);
-            return true;
-        }
-        return false;
-    }
-
-    protected boolean doContentChangedAttributesMatch(Map<String, Serializable> oldCreationAttributes,
-                                                      Map<String, Serializable> newCreationAttributes, String key) {
-        if (oldCreationAttributes == null && newCreationAttributes == null) {
-            return true;
-        }
-
-        if ((oldCreationAttributes == null) || (newCreationAttributes == null)) {
-            return false;
-        }
-
-        Serializable oldValue = oldCreationAttributes.get(key);
-        Serializable newValue = newCreationAttributes.get(key);
-
-        if (oldValue == null && newValue == null) {
-            return true;
-        }
-
-        if (oldValue == null || newValue == null) {
-            return false;
-        }
-
-        if (oldValue.equals(newValue)) {
-            return true;
-        }
-        return false;
-    }
-
-    protected boolean updateIfAttributesDoNotMatch(Map<String, Serializable> oldCreationAttributes,
-                                                   Map<String, Serializable> newCreationAttributes, String key) {
-        if (!doContentChangedAttributesMatch(oldCreationAttributes, newCreationAttributes, key)) {
-            update(false);
-            return true;
-        }
-        return false;
     }
 }

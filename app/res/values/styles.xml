@@ -232,6 +232,7 @@
     <!-- the theme applied to the application or activity -->
     <style name="ApplicationTheme" parent="@style/Theme.Sherlock.Light">
         <item name="android:actionBarTabStyle">@style/ApplicationActionBarTabStyle</item>
+        <item name="android:actionBarTabBarStyle">@style/ApplicationActionBarTabBarStyle</item>
         <item name="actionBarTabStyle">@style/ApplicationActionBarTabStyle</item>
         <item name="android:actionBarStyle">@style/ApplicationActionBarStyle</item>
         <item name="actionBarStyle">@style/ApplicationActionBarStyle</item>
@@ -242,13 +243,17 @@
 
     <style name="ApplicationActionBarStyle" parent="@style/Widget.Sherlock.Light.ActionBar">
         <item name="android:background">@drawable/actionbar_background</item>
-        <item name="background">@drawable/actionbar_background</item>
     </style>
 
     <style name="ApplicationActionBarTabStyle">
         <item name="android:gravity">center_horizontal</item>
+        <item name="android:layout_width">match_parent</item>
+
         <item name="android:background">@drawable/actionbar_tab_bg</item>
-        <item name="background">@drawable/actionbar_tab_bg</item>
+    </style>
+
+    <style name="ApplicationActionBarTabBarStyle">
+        <item name="android:background">@drawable/actionbar_tab_unselected</item>
     </style>
 
 </resources>

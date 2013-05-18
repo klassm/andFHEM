@@ -24,42 +24,105 @@
 
 package li.klass.fhem.activities.core;
 
+import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.constants.Actions;
+import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.fragments.FragmentType;
+import li.klass.fhem.fragments.core.BaseFragment;
 import li.klass.fhem.util.ViewUtil;
 
 import java.io.Serializable;
+import java.lang.reflect.Constructor;
 
 public class TopLevelFragment extends Fragment implements Serializable {
 
+    public static final String INITIAL_FRAGMENT_TYPE_KEY = "initialFragmentType";
+    public static final String LAST_SWITCH_TO_BUNDLE_KEY = "lastBundle";
     private transient FragmentType initialFragmentType;
     private int topLevelId;
+    private BroadcastReceiver broadcastReceiver;
+    public static final IntentFilter FILTER = new IntentFilter();
+
+    static {
+        FILTER.addAction(Actions.SWITCH_TO_INITIAL_FRAGMENT);
+        FILTER.addAction(Actions.SHOW_FRAGMENT);
+        FILTER.addAction(Actions.TOP_LEVEL_BACK);
+    }
+
+    private Bundle lastSwitchToBundle;
+    private int contentId;
+    private int navigationId;
+
+    private static final String TAG = TopLevelFragment.class.getName();
 
     public TopLevelFragment() {
+        setRetainInstance(true);
     }
 
     public TopLevelFragment(FragmentType initialFragmentType) {
+        this();
         this.initialFragmentType = initialFragmentType;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.top_level_view, null);
-        View topLevelContent = view.findViewById(R.id.topLevelContent);
+        if (savedInstanceState != null) {
+            if (savedInstanceState.containsKey(INITIAL_FRAGMENT_TYPE_KEY)) {
+                initialFragmentType = FragmentType.valueOf(savedInstanceState.getString(INITIAL_FRAGMENT_TYPE_KEY));
+            }
 
-        topLevelId = ViewUtil.getPseudoUniqueId(view, container);
-        topLevelContent.setId(topLevelId);
+            if (savedInstanceState.containsKey(LAST_SWITCH_TO_BUNDLE_KEY)) {
+                lastSwitchToBundle = savedInstanceState.getBundle(LAST_SWITCH_TO_BUNDLE_KEY);
+            }
+        }
+        View view = inflater.inflate(R.layout.content_view, null);
+        View navigationView = view.findViewById(R.id.navigation);
+        View contentView = view.findViewById(R.id.content);
+
+//        View topLevelContent = view.findViewById(R.id.topLevelContent);
+//
+//        topLevelId = ViewUtil.getPseudoUniqueId(view, container);
+//        topLevelContent.setId(topLevelId);
+
+        contentId = ViewUtil.getPseudoUniqueId(view, container);
+        contentView.setId(contentId);
+
+        navigationId = ViewUtil.getPseudoUniqueId(view, container);
+        if (navigationView != null)
+            navigationView.setId(navigationId);
 
         return view;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putString(INITIAL_FRAGMENT_TYPE_KEY, initialFragmentType.name());
+        outState.putBundle(LAST_SWITCH_TO_BUNDLE_KEY, lastSwitchToBundle);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        if (lastSwitchToBundle != null) {
+            switchTo(lastSwitchToBundle);
+        } else {
+            switchTo(initialFragmentType, null);
+        }
     }
 
     public void switchToInitialFragment() {
@@ -75,55 +138,203 @@ public class TopLevelFragment extends Fragment implements Serializable {
         switchTo(initialFragmentType, null);
     }
 
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    private void switchTo(Bundle bundle) {
+        FragmentType fragmentType;
+        if (bundle.containsKey(BundleExtraKeys.FRAGMENT)) {
+            fragmentType = (FragmentType) bundle.getSerializable(BundleExtraKeys.FRAGMENT);
+        } else {
+            String fragmentName = bundle.getString(BundleExtraKeys.FRAGMENT_NAME);
+            fragmentType = FragmentType.getFragmentFor(fragmentName);
+        }
 
-        switchTo(initialFragmentType, null);
+        lastSwitchToBundle = bundle;
+        switchTo(fragmentType, bundle);
     }
 
     public void switchTo(FragmentType fragmentType, Bundle data) {
 
-        ContentHolderFragment content = new ContentHolderFragment(fragmentType, data);
+        BaseFragment contentFragment = createContentFragment(fragmentType, data);
+        BaseFragment navigationFragment = createNavigationFragment(fragmentType, data);
 
-        FragmentManager fragmentManager = getFragmentManager();
-        if (fragmentManager == null) return;
-
-        fragmentManager
-                .beginTransaction()
-                .replace(topLevelId, content)
-                .addToBackStack(null)
-                .commitAllowingStateLoss();
+        setContent(navigationFragment, contentFragment);
+//        ContentHolderFragment content = new ContentHolderFragment(fragmentType, data);
+//
+//        FragmentManager fragmentManager = getFragmentManager();
+//        if (fragmentManager == null) return;
+//
+//        fragmentManager
+//                .beginTransaction()
+//                .replace(topLevelId, content)
+//                .addToBackStack(null)
+//                .commitAllowingStateLoss();
     }
 
     public boolean back(Bundle data) {
 
         // pop fragments as long as the current content's fragment type is the same as the next content fragment type
         // this is necessary to handle device name selection (with tablet room selection) in timer fragment!
-        ContentHolderFragment currentContent = getCurrentContent();
-        if (currentContent != null) {
-            FragmentType currentFragmentType = currentContent.getFragmentType();
-            while (getFragmentManager().popBackStackImmediate()) {
-                if (getCurrentContent() == null || getCurrentContent().getFragmentType() != currentFragmentType) {
-                    break;
-                }
-            }
-        }
+//        ContentHolderFragment currentContent = getCurrentContent();
+//        if (currentContent != null) {
+//            FragmentType currentFragmentType = currentContent.getFragmentType();
+//            while (getFragmentManager().popBackStackImmediate()) {
+//                if (getCurrentContent() == null || getCurrentContent().getFragmentType() != currentFragmentType) {
+//                    break;
+//                }
+//            }
+//        }
+//
+//        ContentHolderFragment contentFragment = getCurrentContent();
+//        if (contentFragment != null) {
+//            contentFragment.onBackPressResult(data);
+//            return true;
+//        }
 
-        ContentHolderFragment contentFragment = getCurrentContent();
-        if (contentFragment != null) {
-            contentFragment.onBackPressResult(data);
+
+        if (getFragmentManager().getBackStackEntryCount() == 0) {
+            getActivity().finish();
+            return false;
+        } else {
+            getFragmentManager().popBackStackImmediate();
+            getFragmentManager().popBackStackImmediate();
+
+            BaseFragment navigationFragment = (BaseFragment) getFragmentManager().findFragmentById(R.id.navigation);
+            updateNavigationVisibility(navigationFragment);
+
             return true;
         }
-        return false;
     }
 
-    public ContentHolderFragment getCurrentContent() {
-        if (getFragmentManager() == null) return null;
-        return (ContentHolderFragment) getFragmentManager().findFragmentById(topLevelId);
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 
-    public FragmentType getInitialFragmentType() {
-        return initialFragmentType;
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        if (broadcastReceiver == null) {
+            broadcastReceiver = new BroadcastReceiver() {
+
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    if (!isVisible()) return;
+
+                    String action = intent.getAction();
+                    if (action.equals(Actions.SWITCH_TO_INITIAL_FRAGMENT)) {
+                        String fragmentName = intent.getStringExtra(BundleExtraKeys.FRAGMENT);
+                        FragmentType fragment = FragmentType.valueOf(fragmentName);
+
+                        if (fragment == initialFragmentType) {
+                            switchToInitialFragment();
+                        }
+                    } else if (action.equals(Actions.SHOW_FRAGMENT)) {
+                        if (!isVisible()) return;
+
+                        Bundle bundle = intent.getExtras();
+                        switchTo(bundle);
+
+
+                    } else if (action.equals(Actions.TOP_LEVEL_BACK)) {
+                        if (!isVisible()) return;
+
+                        String fragmentName = intent.getStringExtra(BundleExtraKeys.FRAGMENT);
+                        FragmentType fragment = FragmentType.valueOf(fragmentName);
+
+                        if (fragment == initialFragmentType) {
+                            back(intent.getExtras());
+                        }
+                    }
+                }
+            };
+
+        }
+
+        getActivity().registerReceiver(broadcastReceiver, FILTER);
+    }
+
+
+    private BaseFragment createNavigationFragment(FragmentType fragmentType, Bundle data) {
+        View navigationView = getView().findViewById(navigationId);
+        if (navigationView == null) {
+            return null;
+        }
+
+        try {
+            Class<? extends BaseFragment> navigationClass = fragmentType.getNavigationClass();
+            if (navigationClass == null) {
+                navigationView.setVisibility(View.GONE);
+                return null;
+            }
+            navigationView.setVisibility(View.VISIBLE);
+            return createFragmentForClass(data, navigationClass);
+        } catch (Exception e) {
+            Log.e(TAG, "cannot instantiate fragment", e);
+            return null;
+        }
+    }
+
+
+    private void setContent(BaseFragment navigationFragment, BaseFragment contentFragment) {
+        boolean hasNavigation = updateNavigationVisibility(navigationFragment);
+
+        FragmentTransaction transaction = getFragmentManager()
+                .beginTransaction()
+                .addToBackStack(null);
+
+        if (hasNavigation) {
+            transaction
+                    .replace(navigationId, navigationFragment)
+                    .replace(contentId, contentFragment);
+        } else {
+            transaction
+                    .replace(contentId, contentFragment);
+        }
+
+        transaction.commit();
+
+
+    }
+
+    private boolean updateNavigationVisibility(BaseFragment navigationFragment) {
+        View view = getView();
+        boolean hasNavigation = false;
+        View navigationView = view.findViewById(navigationId);
+        if (navigationView != null) {
+            if (navigationFragment == null) {
+                navigationView.setVisibility(View.GONE);
+            } else {
+                navigationView.setVisibility(View.VISIBLE);
+                hasNavigation = true;
+            }
+        }
+        return hasNavigation;
+    }
+
+    private BaseFragment createContentFragment(FragmentType fragmentType, Bundle data) {
+        if (fragmentType == null) {
+            getActivity().sendBroadcast(new Intent(Actions.RELOAD));
+            return null;
+        }
+        try {
+            Class<? extends BaseFragment> fragmentClass = fragmentType.getContentClass();
+            return createFragmentForClass(data, fragmentClass);
+        } catch (Exception e) {
+            Log.e(TAG, "cannot instantiate fragment", e);
+            return null;
+        }
+    }
+
+    private BaseFragment createFragmentForClass(Bundle data, Class<? extends BaseFragment> fragmentClass) throws Exception {
+        if (fragmentClass == null) return null;
+
+        Constructor<? extends BaseFragment> constructor = fragmentClass.getConstructor(Bundle.class);
+        return constructor.newInstance(data);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        getActivity().unregisterReceiver(broadcastReceiver);
     }
 }

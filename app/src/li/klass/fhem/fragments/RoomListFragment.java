@@ -49,8 +49,6 @@ import java.util.Map;
 
 public class RoomListFragment extends BaseFragment implements TopLevelFragment {
 
-    private transient RoomListAdapter adapter;
-
     @SuppressWarnings("unused")
     public RoomListFragment(Bundle bundle) {
         super(bundle);
@@ -65,7 +63,7 @@ public class RoomListFragment extends BaseFragment implements TopLevelFragment {
         View superView = super.onCreateView(inflater, container, savedInstanceState);
         if (superView != null) return superView;
 
-        adapter = new RoomListAdapter(getActivity(), R.layout.room_list_name, new ArrayList<String>());
+        RoomListAdapter adapter = new RoomListAdapter(getActivity(), R.layout.room_list_name, new ArrayList<String>());
         View layout = inflater.inflate(R.layout.room_list, container, false);
         AdvertisementUtil.addAd(layout, getActivity());
 
@@ -95,19 +93,23 @@ public class RoomListFragment extends BaseFragment implements TopLevelFragment {
     @Override
     @SuppressWarnings("unchecked")
     public void update(boolean doUpdate) {
+        if (getView() == null) return;
+
         Intent intent = new Intent(Actions.GET_ROOM_NAME_LIST);
         intent.putExtras(new Bundle());
         intent.putExtra(BundleExtraKeys.DO_REFRESH, doUpdate);
         intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
             @Override
             protected void onReceiveResult(int resultCode, Bundle resultData) {
+                if (getView() == null) return;
+
                 if (resultCode == ResultCodes.SUCCESS) {
                     super.onReceiveResult(resultCode, resultData);
                     List<String> roomList = (ArrayList<String>) resultData.getSerializable(BundleExtraKeys.ROOM_LIST);
 
-                    String selectedRoom = (String) creationAttributes.get(BundleExtraKeys.ROOM_NAME);
-                    adapter.updateData(roomList, selectedRoom);
-                    scrollToSelectedRoom(selectedRoom, adapter.getData());
+                    String selectedRoom = creationBundle.getString(BundleExtraKeys.ROOM_NAME);
+                    getAdapter().updateData(roomList, selectedRoom);
+                    scrollToSelectedRoom(selectedRoom, getAdapter().getData());
                 }
             }
         });
@@ -132,15 +134,8 @@ public class RoomListFragment extends BaseFragment implements TopLevelFragment {
         }
     }
 
-    @Override
-    protected boolean onContentChanged(Map<String, Serializable> oldCreationAttributes, Map<String, Serializable> newCreationAttributes) {
-        if (super.onContentChanged(oldCreationAttributes, newCreationAttributes)) return true;
-
-        if (oldCreationAttributes != null && !doContentChangedAttributesMatch(oldCreationAttributes, newCreationAttributes, BundleExtraKeys.ROOM_NAME)) {
-            update(false);
-            return true;
-        }
-
-        return false;
+    private RoomListAdapter getAdapter() {
+        ListView listView = (ListView) getView().findViewById(R.id.roomList);
+        return (RoomListAdapter) listView.getAdapter();
     }
 }

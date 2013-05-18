@@ -120,16 +120,6 @@ public class FloorplanFragment extends BaseFragment {
         }, 1000);
     }
 
-    @Override
-    protected boolean onContentChanged(Map<String, Serializable> oldCreationAttributes, Map<String, Serializable> newCreationAttributes) {
-        super.onContentChanged(oldCreationAttributes, newCreationAttributes);
-
-        if (oldCreationAttributes == null) {
-            setBackground();
-        }
-        return true;
-    }
-
     private void requestFloorplanDevices(boolean doUpdate) {
         Intent intent = new Intent(Actions.GET_ALL_ROOMS_DEVICE_LIST);
         intent.putExtra(BundleExtraKeys.DO_REFRESH, doUpdate);

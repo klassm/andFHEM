@@ -101,6 +101,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
     private boolean saveInstanceStateCalled = false;
     private ViewPager viewPager;
     private TabsAdapter viewPagerAdapter;
+    private boolean restoring = false;
 
     private class Receiver extends BroadcastReceiver {
 
@@ -155,9 +156,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
                         } else if (action.equals(BACK)) {
                             onBackPressed(intent.getExtras());
                         } else if (action.equals(RELOAD)) {
-                            onRestoreInstanceState(null);
-//                            finish();
-//                            startActivity(new Intent(FragmentBaseActivity.this, FragmentBaseActivity.this.getClass()));
+//                            onRestoreInstanceState(null);
                         }
                     } catch (Exception e) {
                         Log.e(TAG, "exception occurred while receiving broadcast", e);
@@ -173,13 +172,18 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        restoring = true;
         if (savedInstanceState != null) {
-            super.onRestoreInstanceState(savedInstanceState);
-            setContentView(R.layout.main_view);
+            viewPager.setCurrentItem(savedInstanceState.getInt("currentTab"));
         }
-        finish();
-        startActivity(getIntent());
-//        getWindow().getDecorView().findViewById(android.R.id.content).invalidate();
+        handleCurrentFragmentNavigationChanges();
+        restoring = false;
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putInt("currentTab", viewPager.getCurrentItem());
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -226,12 +230,19 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
             @Override
             public void onPageChanged(int newPage) {
                 ignoreTabSelection = true;
-                getCurrentTopLevelFragment().switchToInitialFragment();
 
-                handleNavigationChanges(getCurrentTopLevelFragment().getInitialFragmentType());
+                handleNavigationChanges(viewPagerAdapter.getFragmentTypeAt(viewPager.getCurrentItem()));
 
                 ignoreTabSelection = true;
                 getSupportActionBar().setSelectedNavigationItem(newPage);
+                ignoreTabSelection = false;
+
+                // if restore is in progress, we do not need to switch to the initial page.
+                // the top level fragment will restore the currently set fragment
+                // especially valid for screen rotation!
+                if (!restoring) {
+                    switchToInitialFragmentOnPage(newPage);
+                }
             }
         });
         viewPager.setAdapter(viewPagerAdapter);
@@ -241,6 +252,12 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
 
         ignoreTabSelection = true;
         getSupportActionBar().setSelectedNavigationItem(0);
+    }
+
+    private void switchToInitialFragmentOnPage(int newPage) {
+        Intent intent = new Intent(Actions.SWITCH_TO_INITIAL_FRAGMENT);
+        intent.putExtra(BundleExtraKeys.FRAGMENT, FragmentType.getTopLevelFragments().get(newPage).name());
+        sendBroadcast(intent);
     }
 
     @Override
@@ -278,7 +295,6 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
             Log.e(TAG, "waiting intent: " + intent);
         }
     }
-
 
     @Override
     protected void onPostResume() {
@@ -361,9 +377,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
     public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
         if (ignoreTabSelection) return;
 
-        ignoreTabSelection = true;
-        getCurrentTopLevelFragment().switchToInitialFragment();
-        ignoreTabSelection = false;
+        switchToInitialFragmentOnPage(viewPager.getCurrentItem());
     }
 
     @Override
@@ -375,25 +389,31 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
 
     @Override
     public void onBackPressed() {
-        ignoreTabSelection = true;
         onBackPressed(null);
     }
 
     private void onBackPressed(Bundle data) {
-        TopLevelFragment currentTopLevelFragment = getCurrentTopLevelFragment();
-        boolean result = currentTopLevelFragment.back(data);
-        if (result) {
-            FragmentType fragmentType = currentTopLevelFragment.getCurrentContent().getFragmentType();
-            handleNavigationChanges(fragmentType);
-        } else {
-            finish();
+        Intent intent = new Intent(Actions.TOP_LEVEL_BACK);
+        if (data != null) {
+            intent.putExtras(data);
         }
+        FragmentType fragmentType = FragmentType.getTopLevelFragments().get(viewPager.getCurrentItem());
+        intent.putExtra(BundleExtraKeys.FRAGMENT, fragmentType.name());
+        sendBroadcast(intent);
+
+        handleCurrentFragmentNavigationChanges();
+    }
+
+    private void handleCurrentFragmentNavigationChanges() {
+        FragmentType fragmentType = FragmentType.getTopLevelFragments().get(viewPager.getCurrentItem());
+        ignoreTabSelection = true;
+        handleNavigationChanges(fragmentType);
+        ignoreTabSelection = false;
     }
 
     private void switchToFragment(FragmentType fragmentType, Bundle data) {
         Log.i(TAG, "switch to fragment " + fragmentType.name());
 
-        getCurrentTopLevelFragment().switchTo(fragmentType, data);
         handleNavigationChanges(fragmentType);
 
         removeDialog();
@@ -439,11 +459,5 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
         optionsMenu.findItem(R.id.menu_refresh).setVisible(!show);
         optionsMenu.findItem(R.id.menu_refresh_progress).setVisible(show);
     }
-
-    protected TopLevelFragment getCurrentTopLevelFragment() {
-        int currentItem = viewPager.getCurrentItem();
-        return viewPagerAdapter.getTopLevelFragmentAt(currentItem);
-    }
-
 
 }

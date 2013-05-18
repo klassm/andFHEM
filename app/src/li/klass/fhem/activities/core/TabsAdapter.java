@@ -36,6 +36,7 @@ import java.util.List;
 
 public class TabsAdapter extends FragmentPagerAdapter implements ViewPager.OnPageChangeListener {
 
+    public static final List<FragmentType> TOP_LEVEL_FRAGMENTS = FragmentType.getTopLevelFragments();
     private final PageChangeListener pageChangedListener;
 
     public interface PageChangeListener {
@@ -55,7 +56,7 @@ public class TabsAdapter extends FragmentPagerAdapter implements ViewPager.OnPag
 
     @Override
     public Fragment getItem(int i) {
-        return topLevelFragments.get(i);
+        return new TopLevelFragment(TOP_LEVEL_FRAGMENTS.get(i));
     }
 
     @Override
@@ -77,7 +78,7 @@ public class TabsAdapter extends FragmentPagerAdapter implements ViewPager.OnPag
     public void onPageScrollStateChanged(int i) {
     }
 
-    public TopLevelFragment getTopLevelFragmentAt(int i) {
-        return topLevelFragments.get(i);
+    public FragmentType getFragmentTypeAt(int i) {
+        return TOP_LEVEL_FRAGMENTS.get(i);
     }
 }
