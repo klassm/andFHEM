@@ -25,7 +25,7 @@
     <style name="appwidget">
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">fill_parent</item>
-        <item name="android:layout_margin">0dp</item>
+        <item name="android:layout_margin">5dp</item>
     </style>
 
     <style name="appwidget_small" parent="appwidget"/>
