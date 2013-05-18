@@ -31,11 +31,11 @@
         <TextView style="@style/appwidget_caption"/>
 
         <TextView style="@style/appwidget_item"
-                  android:textSize="23dp"
+                  android:textSize="17dp"
                   android:id="@+id/temperature"
                   android:textColor="@android:color/black"
-                  android:text="20°C" />
-        <TextView style="@style/appwidget_item"
+                  android:text="20°C"/>
+        <TextView style="@style/appwidget_subcaption"
                   android:id="@+id/additional"
                   android:text="50% humidity"/>
     </LinearLayout>

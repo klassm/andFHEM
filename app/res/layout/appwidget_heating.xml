@@ -32,7 +32,7 @@
         <TextView style="@style/appwidget_caption"/>
 
         <TextView style="@style/appwidget_item"
-                  android:textSize="23dp"
+                  android:textSize="20dp"
                   android:id="@+id/temperature"
                   android:textColor="@android:color/black"
                   android:text="20°C"/>
@@ -44,7 +44,7 @@
                        android:layout_width="20dp"
                        android:layout_marginRight="10dp"
                        android:src="@drawable/window_open"/>
-            <TextView style="@style/appwidget_item"
+            <TextView style="@style/appwidget_subcaption"
                       android:id="@+id/additional"
                       android:layout_gravity="center"
                       android:text="50% humidity"

@@ -31,7 +31,7 @@
         <TextView style="@style/appwidget_caption"/>
 
         <TextView style="@style/appwidget_item"
-                  android:textSize="16dp"
+                  android:textSize="10dp"
                   android:id="@+id/status"
                   android:text="20°C, 40%, not raining"
                   android:singleLine="false"/>

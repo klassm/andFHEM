@@ -25,7 +25,7 @@
     <style name="appwidget">
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">fill_parent</item>
-        <item name="android:layout_margin">5dp</item>
+        <item name="android:layout_margin">0dp</item>
     </style>
 
     <style name="appwidget_small" parent="appwidget"/>
@@ -59,6 +59,10 @@
         <item name="android:id">@+id/deviceName</item>
         <item name="android:textColor">@android:color/black</item>
         <item name="android:text">deviceName</item>
+    </style>
+
+    <style name="appwidget_subcaption" parent="appwidget_item">
+        <item name="android:textSize">12dp</item>
     </style>
 
     <style name="appwidget_logo">
