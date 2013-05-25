@@ -25,6 +25,7 @@
 package li.klass.fhem.domain;
 
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+import org.hamcrest.Matchers;
 import org.junit.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -53,12 +54,23 @@ public class EIBDeviceTest extends DeviceXMLParsingBase {
     }
 
     @Test
+    public void testTimeDevice() {
+        EIBDevice timeDevice = getDeviceFor("time");
+        EIBDevice dpt10Device = getDeviceFor("dpt10");
+
+        assertThat(timeDevice.getModel(), is("time"));
+        assertThat(dpt10Device.getModel(), is("time"));
+
+    }
+
+    @Test
     public void testNonSwitchDeviceTypes() {
         assertDeviceState("speedsensor", "1.7 (m/s)");
         assertDeviceState("tempsensor", "0.9 (°C)");
         assertDeviceState("lightsensor", "1158.4 (lux)");
         assertDeviceState("brightness", "13338.0 (lux)");
         assertDeviceState("time", "13:34:00");
+        assertDeviceState("dpt10", "18:44:33");
 
         // missing data??
 //        assertDeviceState("rainsensor", "0.9 (°C)");

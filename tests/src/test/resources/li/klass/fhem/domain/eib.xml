@@ -145,5 +145,20 @@
             <ATTR key="room" value="room"/>
             <STATE key="state" value="13:34:00 " measured="2013-02-18 13:34:09"/>
         </EIB>
+
+        <EIB name="dpt10" state="18:44:33" sets="now off on on-for-timer on-till raw value"
+             attrs="room group comment alias eventMap userReadings IODev do_not_notify:1,0 ignore:0,1 dummy:1,0 showtime:1,0 loglevel:0,1,2,3,4,5,6 model:voltage-mV,pressuresensor,date,percent,power,powerdensity,percent255,current-mA2,dpt5,dpt12,dpt11,timeperiod-min,brightness,dpt10,speedsensor,dpt9,speedsensor-km/h,time,tempsensor,rainsensor,dpt5.003,lightsensor,time1sensor,dpt14,time2sensor,timeperiod-ms,dpt5.004,angle,dpt7,current-mA,humiditysensor,airqualitysensor,timeperiod-h,length-mm devStateIcon fp_Oben fp_Unten icon sortby webCmd">
+            <INT key="DEF" value="0700"/>
+            <INT key="GROUP" value="0700"/>
+            <INT key="NAME" value="dpt10"/>
+            <INT key="NR" value="73"/>
+            <INT key="STATE" value="18:44:33"/>
+            <INT key="TYPE" value="EIB"/>
+            <INT key="IODev" value="EIB"/>
+            <ATTR key="eventMap" value="/value now:now/"/>
+            <ATTR key="model" value="dpt10"/>
+            <ATTR key="room" value="room"/>
+            <ATTR key="webCmd" value="now"/>
+        </EIB>
     </EIB_LIST>
 </FHZINFO>

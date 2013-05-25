@@ -24,6 +24,7 @@ public class EIBDevice extends ToggleableDevice<EIBDevice> {
     }
 
     public void readMODEL(String value) {
+        if (value.equals("dpt10")) value = "time";
         model = value;
     }
 
@@ -44,6 +45,10 @@ public class EIBDevice extends ToggleableDevice<EIBDevice> {
         }
 
         setState(ValueDescriptionUtil.append(value, description));
+    }
+
+    public String getModel() {
+        return model;
     }
 
     @Override
