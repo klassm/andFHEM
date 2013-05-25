@@ -24,8 +24,8 @@
   -->
 
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:minWidth="144dp"
-                    android:minHeight="70dp"
+                    android:minWidth="110dp"
+                    android:minHeight="40dp"
                     android:updatePeriodMillis="86400"
                     android:configure="li.klass.fhem.appwidget.type.medium.MediumWidgetSelectionActivity"
                     android:initialLayout="@layout/appwidget_loading"
