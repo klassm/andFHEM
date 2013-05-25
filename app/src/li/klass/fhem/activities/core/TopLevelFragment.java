@@ -106,8 +106,12 @@ public class TopLevelFragment extends Fragment implements Serializable {
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        if (initialFragmentType != null) outState.putString(INITIAL_FRAGMENT_TYPE_KEY, initialFragmentType.name());
-        outState.putBundle(LAST_SWITCH_TO_BUNDLE_KEY, lastSwitchToBundle);
+        if (outState != null) {
+            if (initialFragmentType != null) {
+                outState.putString(INITIAL_FRAGMENT_TYPE_KEY, initialFragmentType.name());
+            }
+            outState.putBundle(LAST_SWITCH_TO_BUNDLE_KEY, lastSwitchToBundle);
+        }
         super.onSaveInstanceState(outState);
     }
 
