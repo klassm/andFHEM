@@ -31,8 +31,8 @@ public class ValueExtractUtil {
     }
 
     public static int extractLeadingInt(String text) {
-        text = extractLeadingNumericText(text);
-        return Integer.valueOf(text);
+        double value = extractLeadingDouble(text);
+        return (int) value;
     }
 
     static String extractLeadingNumericText(String text) {

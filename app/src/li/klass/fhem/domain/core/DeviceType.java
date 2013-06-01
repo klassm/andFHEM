@@ -70,7 +70,7 @@ public enum DeviceType {
     TWILIGHT("Twilight", TwilightDevice.class),
     AT("at", AtDevice.class, null, ConnectionType.NEVER),
     EN_OCEAN("EnOcean", EnOceanDevice.class, new ToggleableAdapter<EnOceanDevice>(EnOceanDevice.class)),
-    EIB("EIB", EIBDevice.class, new ToggleableAdapterWithSwitchActionRow<EIBDevice>(EIBDevice.class)),
+    EIB("EIB", EIBDevice.class, new DimmableAdapter<EIBDevice>(EIBDevice.class)),
     HCS("HCS", HCSDevice.class, new SwitchActionRowAdapter<HCSDevice>(HCSDevice.class)),
     OWTHERM("OWTHERM", OwthermDevice.class),
     OWDEVICE("OWDevice", OwDevice.class, new ToggleableAdapterWithSwitchActionRow<OwDevice>(OwDevice.class)),

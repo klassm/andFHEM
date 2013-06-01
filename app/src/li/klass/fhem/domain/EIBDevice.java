@@ -1,16 +1,22 @@
 package li.klass.fhem.domain;
 
+import li.klass.fhem.R;
+import li.klass.fhem.domain.core.DeviceChart;
+import li.klass.fhem.domain.core.DimmableDevice;
 import li.klass.fhem.domain.core.ToggleableDevice;
 import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
 import li.klass.fhem.domain.genericview.FloorplanViewSettings;
+import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ArrayUtil;
 import li.klass.fhem.util.ValueDescriptionUtil;
 import li.klass.fhem.util.ValueExtractUtil;
 
+import java.util.List;
+
 @DetailOverviewViewSettings(showState = true)
 @FloorplanViewSettings
 @SuppressWarnings("unused")
-public class EIBDevice extends ToggleableDevice<EIBDevice> {
+public class EIBDevice extends DimmableDevice<EIBDevice> {
 
     private String model;
 
@@ -42,6 +48,8 @@ public class EIBDevice extends ToggleableDevice<EIBDevice> {
             description = ValueDescriptionUtil.C;
         } else if (model.equalsIgnoreCase("brightness") || model.equalsIgnoreCase("lightsensor")) {
             description = ValueDescriptionUtil.LUX;
+        } else if (model.equals("percent")) {
+            description = ValueDescriptionUtil.PERCENT;
         }
 
         setState(ValueDescriptionUtil.append(value, description));
@@ -55,5 +63,46 @@ public class EIBDevice extends ToggleableDevice<EIBDevice> {
     public boolean supportsToggle() {
         if (model != null && model.equalsIgnoreCase("time")) return false;
         return ArrayUtil.contains(getAvailableTargetStates(), "on", "off");
+    }
+
+    @Override
+    public int getDimUpperBound() {
+        return 100;
+    }
+
+    @Override
+    public String getDimStateForPosition(int position) {
+        return position + "";
+    }
+
+    @Override
+    public int getPositionForDimState(String dimState) {
+        return ValueExtractUtil.extractLeadingInt(dimState);
+    }
+
+    @Override
+    public boolean supportsDim() {
+        return model != null && model.equals("percent");
+    }
+
+    @Override
+    public String formatStateTextToSet(String stateToSet) {
+        if (model != null && model.equals("percent")) {
+            return ValueDescriptionUtil.appendPercent(stateToSet);
+        }
+        return super.formatStateTextToSet(stateToSet);
+    }
+
+    @Override
+    protected void fillDeviceCharts(List<DeviceChart> chartSeries) {
+        super.fillDeviceCharts(chartSeries);
+
+        if (model.equals("tempsensor")) {
+            addDeviceChartIfNotNull(
+                    new DeviceChart(R.string.temperatureGraph,
+                            ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "3:", R.string.yAxisTemperature)
+                    ), getInternalState()
+            );
+        }
     }
 }

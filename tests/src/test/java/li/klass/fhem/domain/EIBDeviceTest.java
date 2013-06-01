@@ -60,7 +60,15 @@ public class EIBDeviceTest extends DeviceXMLParsingBase {
 
         assertThat(timeDevice.getModel(), is("time"));
         assertThat(dpt10Device.getModel(), is("time"));
+    }
 
+    @Test
+    public void testDimmerDevice() {
+        EIBDevice device = getDeviceFor("dimmer");
+
+        assertThat(device.supportsDim(), is(true));
+        assertThat(device.getDimPosition(), is(20));
+        assertThat(device.getState(), is("20 (%)"));
     }
 
     @Test

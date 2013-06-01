@@ -160,5 +160,30 @@
             <ATTR key="room" value="room"/>
             <ATTR key="webCmd" value="now"/>
         </EIB>
+
+        <EIB name="dimmer" state="20 %" sets="off on on-for-timer on-till raw value:slider,0,1,100"
+             attrs="room group comment alias eventMap userReadings IODev do_not_notify:1,0 ignore:0,1 dummy:1,0 showtime:1,0 loglevel:0,1,2,3,4,5,6 model:voltage-mV,pressuresensor,date,percent,power,powerdensity,percent255,current-mA2,dpt5,dpt12,dpt11,timeperiod-min,brightness,dpt10,speedsensor,dpt9,speedsensor-km/h,time,tempsensor,rainsensor,dpt5.003,lightsensor,time1sensor,dpt14,time2sensor,timeperiod-ms,dpt5.004,angle,dpt7,current-mA,humiditysensor,airqualitysensor,timeperiod-h,length-mm devStateIcon fp_Oben fp_Unten icon sortby webCmd custom_graph">
+            <INT key="DEF" value="1008 1713"/>
+            <INT key="EIB_MSGCNT" value="1"/>
+            <INT key="EIB_RAWMSG" value="B1007w171300"/>
+            <INT key="EIB_TIME" value="2013-05-25 23:30:42"/>
+            <INT key="GROUP" value="1008"/>
+            <INT key="LASTGROUP" value="1713"/>
+            <INT key="LASTInputDev" value="EIB"/>
+            <INT key="MSGCNT" value="1"/>
+            <INT key="NAME" value="dimmer"/>
+            <INT key="NR" value="285"/>
+            <INT key="NTFY_TRIGGERTIME" value="2013-05-25 23:30:42"/>
+            <INT key="RAWSTATE" value="off"/>
+            <INT key="STATE" value="20 %"/>
+            <INT key="TYPE" value="EIB"/>
+            <INT key="IODev" value="EIB"/>
+            <ATTR key="alias" value="WZ Licht Indirekt Dim"/>
+            <ATTR key="model" value="percent"/>
+            <ATTR key="room" value="room"/>
+            <ATTR key="webCmd" value="value"/>
+            <STATE key="state" value="20 %" measured="2013-05-25 23:30:42"/>
+        </EIB>
+
     </EIB_LIST>
 </FHZINFO>

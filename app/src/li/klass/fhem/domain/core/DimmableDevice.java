@@ -65,6 +65,12 @@ public abstract class DimmableDevice<D extends Device<D>> extends ToggleableDevi
 
     public abstract int getDimUpperBound();
 
+    /**
+     * Get the dim state for a given position. This is sent to FHEM within the set command!
+     *
+     * @param position position to look for
+     * @return state for the given position.
+     */
     public abstract String getDimStateForPosition(int position);
 
     public abstract int getPositionForDimState(String dimState);
