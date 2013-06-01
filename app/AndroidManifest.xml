@@ -59,7 +59,7 @@
 
         <activity android:name=".activities.PreferencesActivity"/>
 
-        <activity android:name=".activities.graph.ChartingActivity"/>
+        <activity android:name=".activities.graph.ChartingActivity" android:theme="@style/Theme.Sherlock"/>
         <activity android:name=".activities.graph.ChartingDateSelectionActivity"/>
 
         <activity android:name="com.google.ads.AdActivity"

@@ -26,17 +26,18 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="fill_parent"
-              android:layout_height="fill_parent">
+              android:layout_height="fill_parent"
+              android:padding="10dp">
 
     <TableLayout android:layout_height="wrap_content"
                  android:layout_width="fill_parent"
                  android:layout_marginTop="10dp">
         <TableRow>
             <TextView android:text="@string/startDate"
-                      style="@style/deviceDetailDescription" />
+                      style="@style/deviceDetailDescription"/>
             <TextView android:id="@+id/startDate"
                       android:text="01.01.2012"
-                      style="@style/deviceDetailContent" />
+                      style="@style/deviceDetailContent"/>
             <Button android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     android:id="@+id/startDateSet"
@@ -46,10 +47,10 @@
 
         <TableRow>
             <TextView android:text="@string/startTime"
-                      style="@style/deviceDetailDescription" />
+                      style="@style/deviceDetailDescription"/>
             <TextView android:id="@+id/startTime"
                       android:text="11:11"
-                      style="@style/deviceDetailContent" />
+                      style="@style/deviceDetailContent"/>
             <Button android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     android:id="@+id/startTimeSet"
@@ -59,10 +60,10 @@
 
         <TableRow>
             <TextView android:text="@string/endDate"
-                      style="@style/deviceDetailDescription" />
+                      style="@style/deviceDetailDescription"/>
             <TextView android:id="@+id/endDate"
                       android:text="02.01.2012"
-                      style="@style/deviceDetailContent" />
+                      style="@style/deviceDetailContent"/>
             <Button android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     android:id="@+id/endDateSet"
@@ -72,10 +73,10 @@
 
         <TableRow>
             <TextView android:text="@string/endTime"
-                      style="@style/deviceDetailDescription" />
+                      style="@style/deviceDetailDescription"/>
             <TextView android:id="@+id/endTime"
                       android:text="22:22"
-                      style="@style/deviceDetailContent" />
+                      style="@style/deviceDetailContent"/>
             <Button android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     android:id="@+id/endTimeSet"

@@ -24,7 +24,6 @@
 
 package li.klass.fhem.activities.graph;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -36,9 +35,11 @@ import android.os.Handler;
 import android.os.ResultReceiver;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.Window;
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 import li.klass.fhem.R;
 import li.klass.fhem.activities.core.Updateable;
 import li.klass.fhem.constants.Actions;
@@ -66,7 +67,7 @@ import static li.klass.fhem.util.DisplayUtil.dpToPx;
 /**
  * Shows a chart.
  */
-public class ChartingActivity extends Activity implements Updateable {
+public class ChartingActivity extends SherlockActivity implements Updateable {
 
     public static final int[] AVAILABLE_COLORS = new int[]{Color.RED, Color.GREEN, Color.BLUE, Color.CYAN, Color.GRAY};
 
@@ -112,9 +113,7 @@ public class ChartingActivity extends Activity implements Updateable {
         }
     }
 
-    private static final int OPTION_CHANGE_DATA = 1;
     public static final int REQUEST_TIME_CHANGE = 1;
-
     public static final int DIALOG_EXECUTING = 2;
 
     private String deviceName;
@@ -144,32 +143,28 @@ public class ChartingActivity extends Activity implements Updateable {
 
         seriesDescriptions = extras.getParcelableArrayList(DEVICE_GRAPH_SERIES_DESCRIPTIONS);
 
+
+        getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         String title = extras.getString(ChartFactory.TITLE);
-        if (title == null) {
-            requestWindowFeature(Window.FEATURE_NO_TITLE);
-        } else if (title.length() > 0) {
-            setTitle(title);
+        if (title != null) {
+            getSupportActionBar().setTitle(title);
         }
 
         update(false);
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-
-        menu.add(0, OPTION_CHANGE_DATA, 0, R.string.optionChangeStartEndDate);
-
-        return true;
+    public boolean onCreatePanelMenu(int featureId, Menu menu) {
+        getSupportMenuInflater().inflate(R.menu.graph_menu, menu);
+        return super.onCreatePanelMenu(featureId, menu);
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        super.onOptionsItemSelected(item);
-
         int itemId = item.getItemId();
         switch (itemId) {
-            case OPTION_CHANGE_DATA:
+            case R.id.menu_changeStartEndDate:
                 Intent intent = new Intent(this, ChartingDateSelectionActivity.class);
                 intent.putExtras(new Bundle());
                 intent.putExtra(DEVICE_NAME, deviceName);
@@ -179,7 +174,7 @@ public class ChartingActivity extends Activity implements Updateable {
                 return true;
         }
 
-        return false;
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -354,12 +349,13 @@ public class ChartingActivity extends Activity implements Updateable {
                     dateFormat.format(startDate.getTime()) + " - " + dateFormat.format(endDate.getTime());
             renderer.setMargins(new int[]{(int) dpToPx(30), (int) dpToPx(18), (int) dpToPx(20), (int) dpToPx(18)});
         }
-        setChartSettings(renderer, title, xTitle, yMin - yOffset, yMax + yOffset,
+        setChartSettings(renderer, "", xTitle, yMin - yOffset, yMax + yOffset,
                 Color.LTGRAY, Color.LTGRAY);
+        getSupportActionBar().setTitle(title);
 
 
         renderer.setAxisTitleTextSize(dpToPx(14));
-        renderer.setChartTitleTextSize(dpToPx(18));
+        renderer.setChartTitleTextSize(0);
         renderer.setLabelsTextSize(dpToPx(10));
         renderer.setLegendTextSize(dpToPx(14));
 
