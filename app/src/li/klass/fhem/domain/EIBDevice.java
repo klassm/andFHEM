@@ -50,6 +50,8 @@ public class EIBDevice extends DimmableDevice<EIBDevice> {
             description = ValueDescriptionUtil.LUX;
         } else if (model.equals("percent")) {
             description = ValueDescriptionUtil.PERCENT;
+            setState(ValueDescriptionUtil.append(ValueExtractUtil.extractLeadingInt(getInternalState()), description));
+            return;
         }
 
         setState(ValueDescriptionUtil.append(value, description));
