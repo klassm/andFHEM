@@ -160,7 +160,7 @@ public class TopLevelFragment extends Fragment implements Serializable {
         setContent(navigationFragment, contentFragment);
     }
 
-    public boolean back(Bundle data) {
+    public boolean back() {
 
         if (getFragmentManager().getBackStackEntryCount() == 0) {
             getActivity().finish();
@@ -170,8 +170,6 @@ public class TopLevelFragment extends Fragment implements Serializable {
             boolean found = false;
             while (getFragmentManager().getBackStackEntryCount() != 0) {
                 String lastTransactionName = getLastTransactionName();
-                int backStackEntryCount = getFragmentManager().getBackStackEntryCount();
-                Log.e(TAG, backStackEntryCount + "");
 
                 if (!currentName.equals(lastTransactionName)) {
                     found = true;
@@ -180,7 +178,6 @@ public class TopLevelFragment extends Fragment implements Serializable {
                 getFragmentManager().popBackStackImmediate();
             }
 
-            BaseFragment contentFragment = (BaseFragment) getFragmentManager().findFragmentByTag(CONTENT_TAG);
             if (!found) {
                 getActivity().finish();
                 return true;
@@ -188,13 +185,6 @@ public class TopLevelFragment extends Fragment implements Serializable {
 
             BaseFragment navigationFragment = (BaseFragment) getFragmentManager().findFragmentByTag(NAVIGATION_TAG);
             updateNavigationVisibility(navigationFragment);
-            if (navigationFragment != null) {
-                navigationFragment.onBackPressResult(data);
-            }
-
-            if (contentFragment != null) {
-                contentFragment.onBackPressResult(data);
-            }
 
             return true;
         }
@@ -242,7 +232,7 @@ public class TopLevelFragment extends Fragment implements Serializable {
                         FragmentType fragment = FragmentType.valueOf(fragmentName);
 
                         if (fragment == initialFragmentType) {
-                            back(intent.getExtras());
+                            back();
                         }
                     }
                 }

@@ -50,7 +50,7 @@ import java.util.List;
 public class TimerListFragment extends BaseFragment {
 
     private static final String TAG = TimerListFragment.class.getName();
-    private transient TimerListAdapter listAdapter;
+//    private transient TimerListAdapter listAdapter;
 
     private static final int CONTEXT_MENU_DELETE = 1;
     private AtDevice contextMenuClickedDevice;
@@ -74,7 +74,7 @@ public class TimerListFragment extends BaseFragment {
         }
         Context context = getActivity();
 
-        listAdapter = new TimerListAdapter(context, R.layout.timer_list_item, new ArrayList<AtDevice>());
+        TimerListAdapter listAdapter = new TimerListAdapter(context, R.layout.timer_list_item, new ArrayList<AtDevice>());
 
         LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.timer_overview, null);
         TextView emptyView = (TextView) layout.findViewById(android.R.id.empty);
@@ -126,7 +126,7 @@ public class TimerListFragment extends BaseFragment {
                 for (AtDevice atDevice : new ArrayList<AtDevice>(devices)) {
                     if (!atDevice.isSupported()) devices.remove(atDevice);
                 }
-                listAdapter.updateData(devices);
+                getAdapter().updateData(devices);
 
                 Intent intent = new Intent(Actions.DISMISS_UPDATING_DIALOG);
                 AndFHEMApplication.getContext().sendBroadcast(intent);
@@ -169,6 +169,11 @@ public class TimerListFragment extends BaseFragment {
         }
 
         return super.onContextItemSelected(item);
+    }
 
+    private TimerListAdapter getAdapter() {
+        if (getView() == null) return null;
+        ListView listView = (ListView) getView().findViewById(R.id.list);
+        return (TimerListAdapter) listView.getAdapter();
     }
 }

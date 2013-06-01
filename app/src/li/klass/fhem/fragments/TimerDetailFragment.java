@@ -28,6 +28,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -125,6 +126,18 @@ public class TimerDetailFragment extends BaseFragment {
                 getActivity().sendBroadcast(intent);
             }
         });
+    }
+
+
+    @Override
+    public void onBackPressResult(Bundle resultData) {
+        super.onBackPressResult(resultData);
+
+        if (resultData == null || !resultData.containsKey(BundleExtraKeys.CLICKED_DEVICE)) {
+            return;
+        }
+        Device device = (Device) resultData.get(BundleExtraKeys.CLICKED_DEVICE);
+        updateTargetDevice(device);
     }
 
     private void createSendAndResetButtons(View view) {
@@ -389,7 +402,9 @@ public class TimerDetailFragment extends BaseFragment {
                 setValuesForCurrentTimerDevice();
 
                 Intent intent = new Intent(Actions.DISMISS_UPDATING_DIALOG);
-                getActivity().sendBroadcast(intent);
+
+                FragmentActivity activity = getActivity();
+                if (activity != null) activity.sendBroadcast(intent);
             }
         });
         getActivity().startService(intent);
@@ -472,16 +487,5 @@ public class TimerDetailFragment extends BaseFragment {
             targetDeviceRow.setVisibility(View.VISIBLE);
             return true;
         }
-    }
-
-    @Override
-    public void onBackPressResult(Bundle resultData) {
-        super.onBackPressResult(resultData);
-
-        if (resultData == null || !resultData.containsKey(BundleExtraKeys.CLICKED_DEVICE)) {
-            return;
-        }
-        Device device = (Device) resultData.get(BundleExtraKeys.CLICKED_DEVICE);
-        updateTargetDevice(device);
     }
 }
