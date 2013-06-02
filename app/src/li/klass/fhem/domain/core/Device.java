@@ -355,6 +355,7 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
     }
 
     public boolean isOnFloorplan(String floorplan) {
+        if (floorPlanPositionMap == null || floorplan == null) return false;
         return floorPlanPositionMap.containsKey(floorplan.toUpperCase());
     }
 
