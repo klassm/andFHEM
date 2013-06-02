@@ -358,7 +358,7 @@ public class ChartingActivity extends SherlockActivity implements Updateable {
             renderer.setMargins(new int[]{(int) dpToPx(30), (int) dpToPx(18), (int) dpToPx(20), (int) dpToPx(18)});
         }
         setChartSettings(renderer, "", xTitle, yMin - yOffset, yMax + yOffset,
-                Color.LTGRAY, Color.LTGRAY);
+                Color.WHITE, Color.WHITE);
         getSupportActionBar().setTitle(title);
 
 
@@ -469,7 +469,7 @@ public class ChartingActivity extends SherlockActivity implements Updateable {
                 renderer.setYLabelsAlign(Paint.Align.RIGHT, 1);
             }
 
-            renderer.setYLabelsColor(scaleNumber, getResources().getColor(android.R.color.black));
+            renderer.setYLabelsColor(scaleNumber, getResources().getColor(android.R.color.white));
         }
 
 
