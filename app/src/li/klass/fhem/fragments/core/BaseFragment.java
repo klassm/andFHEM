@@ -46,6 +46,8 @@ import static li.klass.fhem.constants.Actions.DO_UPDATE;
 import static li.klass.fhem.constants.Actions.TOP_LEVEL_BACK;
 
 public abstract class BaseFragment extends Fragment implements Updateable, Serializable {
+
+
     public class UIBroadcastReceiver extends BroadcastReceiver {
 
         private final IntentFilter intentFilter;
@@ -75,7 +77,11 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
                             boolean doUpdate = intent.getBooleanExtra(BundleExtraKeys.DO_REFRESH, false);
                             updateable.update(doUpdate);
                         } else if (action.equals(TOP_LEVEL_BACK)) {
-                            onBackPressResult(intent.getExtras());
+                            if (!isVisible()) return;
+                            if (!backPressCalled) {
+                                backPressCalled = true;
+                                onBackPressResult(intent.getExtras());
+                            }
                         }
                     } catch (Exception e) {
                         Log.e(UIBroadcastReceiver.class.getName(), "error occurred", e);
@@ -100,7 +106,8 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
     public static final String CREATION_BUNDLE_KEY = "creationBundle";
     private transient UIBroadcastReceiver broadcastReceiver;
     private transient View contentView;
-    protected transient Bundle fragmentIntentResultData;
+    private boolean backPressCalled = false;
+//    protected transient Bundle fragmentIntentResultData;
 
     protected transient Bundle creationBundle;
 
@@ -146,6 +153,7 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
         if (contentView != null) {
             contentView.clearFocus();
         }
+        backPressCalled = false;
     }
 
     @Override
@@ -174,7 +182,7 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
     }
 
     public void onBackPressResult(Bundle resultData) {
-        this.fragmentIntentResultData = resultData;
+//        this.fragmentIntentResultData = resultData;
         update(false);
     }
 }

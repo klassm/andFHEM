@@ -115,6 +115,11 @@ public class TimerDetailFragment extends BaseFragment {
         return view;
     }
 
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);    //To change body of overridden methods use File | Settings | File Templates.
+    }
+
     private void createSelectDeviceButton(View view) {
         Button selectDeviceButton = (Button) view.findViewById(R.id.targetDeviceSet);
         selectDeviceButton.setOnClickListener(new View.OnClickListener() {
@@ -131,13 +136,13 @@ public class TimerDetailFragment extends BaseFragment {
 
     @Override
     public void onBackPressResult(Bundle resultData) {
-        super.onBackPressResult(resultData);
-
         if (resultData == null || !resultData.containsKey(BundleExtraKeys.CLICKED_DEVICE)) {
             return;
         }
         Device device = (Device) resultData.get(BundleExtraKeys.CLICKED_DEVICE);
         updateTargetDevice(device);
+
+        super.onBackPressResult(resultData);
     }
 
     private void createSendAndResetButtons(View view) {
@@ -363,17 +368,17 @@ public class TimerDetailFragment extends BaseFragment {
         }
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (fragmentIntentResultData == null || !fragmentIntentResultData.containsKey(BundleExtraKeys.CLICKED_DEVICE)) {
-            return;
-        }
-
-        Device device = (Device) fragmentIntentResultData.getSerializable(BundleExtraKeys.CLICKED_DEVICE);
-        updateTargetDevice(device);
-        selectTargetState(null);
-    }
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        if (fragmentIntentResultData == null || !fragmentIntentResultData.containsKey(BundleExtraKeys.CLICKED_DEVICE)) {
+//            return;
+//        }
+//
+//        Device device = (Device) fragmentIntentResultData.getSerializable(BundleExtraKeys.CLICKED_DEVICE);
+//        updateTargetDevice(device);
+//        selectTargetState(null);
+//    }
 
     @Override
     public void update(boolean doUpdate) {
