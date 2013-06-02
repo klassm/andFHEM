@@ -69,9 +69,9 @@ import static li.klass.fhem.util.DisplayUtil.dpToPx;
  */
 public class ChartingActivity extends SherlockActivity implements Updateable {
 
-    public static final int[] AVAILABLE_COLORS = new int[]{Color.RED, Color.GREEN, Color.BLUE, Color.CYAN, Color.GRAY};
+    public static final int[] AVAILABLE_COLORS = new int[]{Color.RED, Color.GREEN, Color.YELLOW, Color.CYAN, Color.GRAY, Color.WHITE};
 
-    private class ScaleMappingKey {
+    private class ScaleMappingKey implements Comparable<ScaleMappingKey> {
         private int scaleNumber;
         private String yAxisName;
 
@@ -98,6 +98,11 @@ public class ChartingActivity extends SherlockActivity implements Updateable {
             int result = scaleNumber;
             result = 31 * result + (yAxisName != null ? yAxisName.hashCode() : 0);
             return result;
+        }
+
+        @Override
+        public int compareTo(ScaleMappingKey scaleMappingKey) {
+            return yAxisName.compareTo(scaleMappingKey.yAxisName);
         }
     }
 
@@ -276,7 +281,10 @@ public class ChartingActivity extends SherlockActivity implements Updateable {
 
         List<SeriesContainer> seriesList = new ArrayList<SeriesContainer>();
 
-        for (ScaleMappingKey scaleMappingKey : scaleMapping.keySet()) {
+        List<ScaleMappingKey> scaleMappingKeys = new ArrayList<ScaleMappingKey>(scaleMapping.keySet());
+        Collections.sort(scaleMappingKeys);
+
+        for (ScaleMappingKey scaleMappingKey : scaleMappingKeys) {
             List<SeriesContainer> series = createChart(dataSet, scaleMappingKey.scaleNumber, scaleMapping.get(scaleMappingKey), graphData);
             seriesList.addAll(series);
         }
@@ -373,6 +381,10 @@ public class ChartingActivity extends SherlockActivity implements Updateable {
         Collections.sort(chartSeriesDescriptions, new Comparator<ChartSeriesDescription>() {
             @Override
             public int compare(ChartSeriesDescription seriesDescription, ChartSeriesDescription otherSeriesDescription) {
+                String myName = seriesDescription.getColumnName();
+                String otherName = otherSeriesDescription.getColumnName();
+
+                if (!myName.equals(otherName)) return myName.compareTo(otherName);
                 return ((Boolean) seriesDescription.isShowDiscreteValues()).compareTo(otherSeriesDescription.isShowDiscreteValues());
             }
         });
