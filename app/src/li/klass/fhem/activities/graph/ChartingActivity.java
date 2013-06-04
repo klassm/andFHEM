@@ -35,7 +35,6 @@ import android.os.Handler;
 import android.os.ResultReceiver;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.view.Window;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
@@ -54,7 +53,6 @@ import org.achartengine.GraphicalView;
 import org.achartengine.chart.PointStyle;
 import org.achartengine.model.TimeSeries;
 import org.achartengine.model.XYMultipleSeriesDataset;
-import org.achartengine.model.XYSeries;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import org.achartengine.renderer.XYSeriesRenderer;
 
@@ -70,12 +68,18 @@ import static li.klass.fhem.util.DisplayUtil.dpToPx;
 public class ChartingActivity extends SherlockActivity implements Updateable {
 
     public static final int[] AVAILABLE_COLORS = new int[]{Color.RED, Color.GREEN, Color.YELLOW, Color.CYAN, Color.GRAY, Color.WHITE};
+    public static final Comparator<ChartSeriesDescription> Y_AXIS_NAME_COMPARATOR = new Comparator<ChartSeriesDescription>() {
+        @Override
+        public int compare(ChartSeriesDescription chartSeriesDescription, ChartSeriesDescription chartSeriesDescription2) {
+            return -1 * chartSeriesDescription.getYAxisName().compareTo(chartSeriesDescription2.getYAxisName());
+        }
+    };
 
-    private class ScaleMappingKey implements Comparable<ScaleMappingKey> {
+    private class AxisMappingKey implements Comparable<AxisMappingKey> {
         private int scaleNumber;
         private String yAxisName;
 
-        private ScaleMappingKey(int scaleNumber, String yAxisName) {
+        private AxisMappingKey(int scaleNumber, String yAxisName) {
             this.scaleNumber = scaleNumber;
             this.yAxisName = yAxisName;
         }
@@ -85,7 +89,7 @@ public class ChartingActivity extends SherlockActivity implements Updateable {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
 
-            ScaleMappingKey that = (ScaleMappingKey) o;
+            AxisMappingKey that = (AxisMappingKey) o;
 
             if (scaleNumber != that.scaleNumber) return false;
             if (!yAxisName.equals(that.yAxisName)) return false;
@@ -101,8 +105,8 @@ public class ChartingActivity extends SherlockActivity implements Updateable {
         }
 
         @Override
-        public int compareTo(ScaleMappingKey scaleMappingKey) {
-            return yAxisName.compareTo(scaleMappingKey.yAxisName);
+        public int compareTo(AxisMappingKey axisMappingKey) {
+            return yAxisName.compareTo(axisMappingKey.yAxisName);
         }
     }
 
@@ -263,87 +267,14 @@ public class ChartingActivity extends SherlockActivity implements Updateable {
      */
     @SuppressWarnings("unchecked")
     private void createChart(Device device, Map<ChartSeriesDescription, List<GraphEntry>> graphData) {
-
-        for (ChartSeriesDescription chartSeriesDescription : new HashSet<ChartSeriesDescription>(graphData.keySet())) {
-            if (graphData.get(chartSeriesDescription).size() < 2) {
-                graphData.remove(chartSeriesDescription);
-            }
-        }
-
         if (graphData.size() == 0) {
             setContentView(R.layout.no_graph_entries);
             return;
         }
 
-        Map<ScaleMappingKey, List<ChartSeriesDescription>> scaleMapping = createScaleMapping(graphData);
-
-        XYMultipleSeriesDataset dataSet = new XYMultipleSeriesDataset();
-
-        List<SeriesContainer> seriesList = new ArrayList<SeriesContainer>();
-
-        List<ScaleMappingKey> scaleMappingKeys = new ArrayList<ScaleMappingKey>(scaleMapping.keySet());
-        Collections.sort(scaleMappingKeys);
-
-        for (ScaleMappingKey scaleMappingKey : scaleMappingKeys) {
-            List<SeriesContainer> series = createChart(dataSet, scaleMappingKey.scaleNumber, scaleMapping.get(scaleMappingKey), graphData);
-            seriesList.addAll(series);
-        }
-
-
-        double yMin = 1000;
-        double yMax = -1000;
-
-        double xMin = System.currentTimeMillis();
-        double xMax = 0;
-
-
-        for (SeriesContainer seriesContainer : seriesList) {
-            XYSeries series = seriesContainer.timeSeries;
-            double seriesYMax = series.getMaxY();
-
-            if (seriesYMax > yMax) yMax = seriesYMax;
-
-            double seriesYMin = series.getMinY();
-            if (seriesYMin < yMin) yMin = seriesYMin;
-
-            if (series.getMinX() < xMin) xMin = series.getMinX();
-            if (series.getMaxX() > xMax) xMax = series.getMaxX();
-        }
-
-        double yMaxAbsolute = absolute(yMax);
-        double yOffset = yMaxAbsolute * 0.1;
-
-
-        XYMultipleSeriesRenderer renderer = buildRenderer(scaleMapping.size(), seriesList.size(), PointStyle.CIRCLE);
-
-        for (int i = 0; i < renderer.getSeriesRendererCount(); i++) {
-            XYSeriesRenderer seriesRenderer = (XYSeriesRenderer) renderer.getSeriesRendererAt(i);
-
-            seriesRenderer.setFillPoints(false);
-            seriesRenderer.setColor(AVAILABLE_COLORS[i]);
-            seriesRenderer.setPointStyle(PointStyle.POINT);
-
-            SeriesContainer seriesContainer = seriesList.get(i);
-            switch (seriesContainer.seriesType) {
-                case REGRESSION:
-                    seriesRenderer.setLineWidth(1);
-                    break;
-                case SUM:
-                    seriesRenderer.setFillBelowLine(true);
-                    break;
-                default:
-                    seriesRenderer.setLineWidth(2);
-            }
-        }
-
-        String xTitle = getResources().getString(R.string.time);
-
-        renderer.setShowGrid(true);
-        renderer.setXLabelsAlign(Paint.Align.CENTER);
-
-        renderer.setPanLimits(new double[]{xMin, xMax, yMin, yMax});
-        renderer.setZoomLimits(new double[]{xMin, xMax, yMin, yMax});
-        renderer.setZoomButtonsVisible(false);
+        List<YAxis> yAxisList = handleChartData(graphData);
+        XYMultipleSeriesRenderer renderer = buildAndFillRenderer(yAxisList);
+        XYMultipleSeriesDataset dataSet = createChartDataSet(yAxisList);
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -357,24 +288,184 @@ public class ChartingActivity extends SherlockActivity implements Updateable {
                     dateFormat.format(startDate.getTime()) + " - " + dateFormat.format(endDate.getTime());
             renderer.setMargins(new int[]{(int) dpToPx(30), (int) dpToPx(18), (int) dpToPx(20), (int) dpToPx(18)});
         }
-        setChartSettings(renderer, "", xTitle, yMin - yOffset, yMax + yOffset,
-                Color.WHITE, Color.WHITE);
         getSupportActionBar().setTitle(title);
 
+        GraphicalView timeChartView = ChartFactory.getTimeChartView(this, dataSet, renderer, "MM-dd HH:mm");
 
+        setContentView(timeChartView);
+    }
+
+    private XYMultipleSeriesDataset createChartDataSet(List<YAxis> yAxisList) {
+        XYMultipleSeriesDataset dataSet = new XYMultipleSeriesDataset();
+
+        for (int yAxisIndex = 0; yAxisIndex < yAxisList.size(); yAxisIndex++) {
+            YAxis yAxis = yAxisList.get(yAxisIndex);
+
+            for (ViewableChartSeries seriesContainer : yAxis) {
+                CustomTimeSeries timeSeries = new CustomTimeSeries(seriesContainer.getName(), yAxisIndex);
+                for (GraphEntry graphEntry : seriesContainer.getData()) {
+                    timeSeries.add(graphEntry.getDate(), graphEntry.getValue());
+                }
+                dataSet.addSeries(timeSeries);
+            }
+
+        }
+        return dataSet;
+    }
+
+    private XYMultipleSeriesRenderer buildAndFillRenderer(List<YAxis> yAxisList) {
+        XYMultipleSeriesRenderer renderer = new XYMultipleSeriesRenderer(yAxisList.size());
+        setRendererDefaults(renderer);
+
+        Date minDate = null;
+        Date maxDate = null;
+        double minY = Double.MAX_VALUE;
+        double maxY = Double.MIN_VALUE;
+
+        int i = 0;
+        for (int axisNumber = 0; axisNumber < yAxisList.size(); axisNumber++) {
+            YAxis yAxis = yAxisList.get(axisNumber);
+
+            if (minDate == null || yAxis.getMinimumX().before(minDate)) {
+                minDate = yAxis.getMinimumX();
+            }
+
+            if (maxDate == null || yAxis.getMaximumX().after(maxDate)) {
+                maxDate = yAxis.getMaximumX();
+            }
+
+            if (yAxis.getMinimumY() < minY) {
+                minY = yAxis.getMinimumY();
+            }
+
+            if (yAxis.getMaximumY() > maxY) {
+                maxY = yAxis.getMaximumY();
+            }
+
+            renderer.setYAxisMax(yAxis.getMaximumY(), axisNumber);
+            renderer.setYAxisMin(yAxis.getMinimumY(), axisNumber);
+            setYAxisDescription(renderer, axisNumber, yAxis);
+
+            for (ViewableChartSeries chartSeries : yAxis) {
+                XYSeriesRenderer seriesRenderer = new XYSeriesRenderer();
+                seriesRenderer.setPointStyle(PointStyle.CIRCLE);
+                renderer.addSeriesRenderer(seriesRenderer);
+
+                seriesRenderer.setFillPoints(false);
+                int color = AVAILABLE_COLORS[i];
+                seriesRenderer.setColor(color);
+                seriesRenderer.setPointStyle(PointStyle.POINT);
+
+                switch (chartSeries.getChartType()) {
+                    case REGRESSION:
+                        seriesRenderer.setLineWidth(1);
+                        break;
+                    case SUM:
+                        XYSeriesRenderer.FillOutsideLine fillOutsideLine = new XYSeriesRenderer.FillOutsideLine(XYSeriesRenderer.FillOutsideLine.Type.BELOW);
+                        fillOutsideLine.setColor(color);
+                        seriesRenderer.addFillOutsideLine(fillOutsideLine);
+                        break;
+                    default:
+                        seriesRenderer.setLineWidth(2);
+                }
+
+                i++;
+            }
+        }
+
+        if (minDate == null || maxDate == null) {
+            throw new IllegalArgumentException();
+        }
+
+        renderer.setPanLimits(new double[]{minDate.getTime(), maxDate.getTime(), minY, maxY});
+        renderer.setZoomLimits(new double[]{minDate.getTime(), maxDate.getTime(), minY, maxY});
+
+        return renderer;
+    }
+
+    private void setRendererDefaults(XYMultipleSeriesRenderer renderer) {
+        renderer.setAxisTitleTextSize(16);
+        renderer.setChartTitleTextSize(20);
+        renderer.setLabelsTextSize(15);
+        renderer.setLegendTextSize(15);
+        renderer.setPointSize(5f);
+        renderer.setMargins(new int[]{20, 30, 15, 20});
+        renderer.setShowGrid(true);
+        renderer.setXLabelsAlign(Paint.Align.CENTER);
+        renderer.setZoomButtonsVisible(true);
+        renderer.setXTitle(getResources().getString(R.string.time));
+        renderer.setChartTitle("");
+        renderer.setAxesColor(Color.WHITE);
+        renderer.setLabelsColor(Color.WHITE);
         renderer.setAxisTitleTextSize(dpToPx(14));
         renderer.setChartTitleTextSize(0);
         renderer.setLabelsTextSize(dpToPx(10));
         renderer.setLegendTextSize(dpToPx(14));
-
-
-        setYAxisTitles(scaleMapping, renderer);
-
-        GraphicalView timeChartView = ChartFactory.getTimeChartView(this, dataSet, renderer, "MM-dd HH:mm");
-        setContentView(timeChartView);
     }
 
-    private List<SeriesContainer> createChart(XYMultipleSeriesDataset dataSet, int scaleNumber, List<ChartSeriesDescription> chartSeriesDescriptions, Map<ChartSeriesDescription, List<GraphEntry>> graphData) {
+    private void setYAxisDescription(XYMultipleSeriesRenderer renderer, int axisNumber, YAxis yAxis) {
+        String title = yAxis.getName();
+        renderer.setYTitle(title, axisNumber);
+
+        if (axisNumber == 0) {
+            renderer.setYAxisAlign(Paint.Align.LEFT, 0);
+            renderer.setYLabelsAlign(Paint.Align.LEFT, 0);
+        } else {
+            renderer.setYAxisAlign(Paint.Align.RIGHT, 1);
+            renderer.setYLabelsAlign(Paint.Align.RIGHT, 1);
+        }
+
+        renderer.setYLabelsColor(axisNumber, getResources().getColor(android.R.color.white));
+    }
+
+
+    private List<YAxis> handleChartData(Map<ChartSeriesDescription, List<GraphEntry>> data) {
+        removeChartSeriesWithTooFewEntries(data);
+        return mapToYAxis(data);
+    }
+
+    private void removeChartSeriesWithTooFewEntries(Map<ChartSeriesDescription, List<GraphEntry>> data) {
+        for (ChartSeriesDescription chartSeriesDescription : new HashSet<ChartSeriesDescription>(data.keySet())) {
+            if (data.get(chartSeriesDescription).size() < 2) {
+                data.remove(chartSeriesDescription);
+            }
+        }
+    }
+
+    private List<YAxis> mapToYAxis(Map<ChartSeriesDescription, List<GraphEntry>> data) {
+        Map<String, YAxis> yAxisMap = new HashMap<String, YAxis>();
+
+        for (ChartSeriesDescription chartSeriesDescription : data.keySet()) {
+            String yAxisName = chartSeriesDescription.getYAxisName();
+            if (!yAxisMap.containsKey(yAxisName)) {
+                yAxisMap.put(yAxisName, new YAxis(yAxisName));
+            }
+
+            yAxisMap.get(yAxisName).addChart(chartSeriesDescription, data.get(chartSeriesDescription));
+        }
+
+        ArrayList<YAxis> yAxisList = new ArrayList<YAxis>(yAxisMap.values());
+        Collections.sort(yAxisList);
+
+        for (YAxis yAxis : yAxisList) {
+            yAxis.afterSeriesSet();
+        }
+
+        return yAxisList;
+    }
+
+    private int calculateTotalNumberOfSeries(List<YAxis> yAxisList) {
+        int total = 0;
+        for (YAxis yAxis : yAxisList) {
+            total += yAxis.getTotalNumberOfSeries();
+        }
+
+        return total;
+    }
+
+    private List<SeriesContainer> createChart(XYMultipleSeriesDataset dataSet, int axisNumber,
+                                              List<ChartSeriesDescription> chartSeriesDescriptions,
+                                              Map<ChartSeriesDescription, List<GraphEntry>> graphData) {
 
         List<SeriesContainer> resultList = new ArrayList<SeriesContainer>();
 
@@ -397,7 +488,7 @@ public class ChartingActivity extends SherlockActivity implements Updateable {
             String dataSetName = chartSeriesDescription.getColumnName();
             List<GraphEntry> data = graphData.get(chartSeriesDescription);
 
-            TimeSeries timeSeries = new CustomTimeSeries(dataSetName, scaleNumber);
+            TimeSeries timeSeries = new CustomTimeSeries(dataSetName, axisNumber);
             float previousValue = -1;
 
             for (GraphEntry entry : data) {
@@ -424,7 +515,7 @@ public class ChartingActivity extends SherlockActivity implements Updateable {
                 previousValue = value;
             }
 
-            resultList.add(new SeriesContainer(scaleNumber, timeSeries, SeriesType.DEFAULT));
+            resultList.add(new SeriesContainer(axisNumber, timeSeries, SeriesType.DEFAULT));
             dataSet.addSeries(timeSeries);
         }
 
@@ -434,18 +525,18 @@ public class ChartingActivity extends SherlockActivity implements Updateable {
             List<GraphEntry> data = graphData.get(seriesDescription);
 
             if (seriesDescription.isShowRegression()) {
-                TimeSeries regressionSeries = new CustomTimeSeries(getResources().getString(R.string.regression) + " " + dataSetName, scaleNumber);
+                TimeSeries regressionSeries = new CustomTimeSeries(getResources().getString(R.string.regression) + " " + dataSetName, axisNumber);
                 createRegressionForSeries(regressionSeries, data);
 
-                resultList.add(new SeriesContainer(scaleNumber, regressionSeries, SeriesType.REGRESSION));
+                resultList.add(new SeriesContainer(axisNumber, regressionSeries, SeriesType.REGRESSION));
                 dataSet.addSeries(regressionSeries);
             }
 
             if (seriesDescription.isShowSum()) {
-                TimeSeries sumSeries = new CustomTimeSeries(getResources().getString(R.string.sum) + " " + dataSetName, scaleNumber);
+                TimeSeries sumSeries = new CustomTimeSeries(getResources().getString(R.string.sum) + " " + dataSetName, axisNumber);
                 createSumForSeries(sumSeries, data, xMin, xMax, seriesDescription.getSumDivisionFactor());
 
-                resultList.add(new SeriesContainer(scaleNumber, sumSeries, SeriesType.SUM));
+                resultList.add(new SeriesContainer(axisNumber, sumSeries, SeriesType.SUM));
                 dataSet.addSeries(sumSeries);
             }
 
@@ -454,11 +545,11 @@ public class ChartingActivity extends SherlockActivity implements Updateable {
         return resultList;
     }
 
-    private void setYAxisTitles(Map<ScaleMappingKey, List<ChartSeriesDescription>> scaleMapping, XYMultipleSeriesRenderer renderer) {
-        for (ScaleMappingKey scaleMappingKey : scaleMapping.keySet()) {
-            int scaleNumber = scaleMappingKey.scaleNumber;
+    private void setYAxisTitles(Map<AxisMappingKey, List<ChartSeriesDescription>> scaleMapping, XYMultipleSeriesRenderer renderer) {
+        for (AxisMappingKey axisMappingKey : scaleMapping.keySet()) {
+            int scaleNumber = axisMappingKey.scaleNumber;
 
-            String title = scaleMappingKey.yAxisName;
+            String title = axisMappingKey.yAxisName;
             renderer.setYTitle(title, scaleNumber);
 
             if (scaleNumber == 0) {
@@ -475,15 +566,18 @@ public class ChartingActivity extends SherlockActivity implements Updateable {
 
     }
 
-    private Map<ScaleMappingKey, List<ChartSeriesDescription>> createScaleMapping(Map<ChartSeriesDescription, List<GraphEntry>> graphData) {
-        Map<ScaleMappingKey, List<ChartSeriesDescription>> mapping = new HashMap<ScaleMappingKey, List<ChartSeriesDescription>>();
+    private Map<AxisMappingKey, List<ChartSeriesDescription>> createAxisMapping(Map<ChartSeriesDescription, List<GraphEntry>> graphData) {
+        Map<AxisMappingKey, List<ChartSeriesDescription>> mapping = new HashMap<AxisMappingKey, List<ChartSeriesDescription>>();
 
-        for (ChartSeriesDescription chartSeriesDescription : graphData.keySet()) {
+        List<ChartSeriesDescription> keys = new ArrayList<ChartSeriesDescription>(graphData.keySet());
+        Collections.sort(keys, Y_AXIS_NAME_COMPARATOR);
+
+        for (ChartSeriesDescription chartSeriesDescription : keys) {
             List<ChartSeriesDescription> scaleMappingList = getScaleMappingListFor(chartSeriesDescription.getYAxisName(), mapping);
             if (scaleMappingList != null) {
                 scaleMappingList.add(chartSeriesDescription);
             } else {
-                ScaleMappingKey key = new ScaleMappingKey(mapping.size(), chartSeriesDescription.getYAxisName());
+                AxisMappingKey key = new AxisMappingKey(mapping.size(), chartSeriesDescription.getYAxisName());
                 List<ChartSeriesDescription> keyList = new ArrayList<ChartSeriesDescription>();
                 keyList.add(chartSeriesDescription);
 
@@ -499,10 +593,10 @@ public class ChartingActivity extends SherlockActivity implements Updateable {
     }
 
 
-    private List<ChartSeriesDescription> getScaleMappingListFor(String yAxisResource, Map<ScaleMappingKey, List<ChartSeriesDescription>> mapping) {
-        for (ScaleMappingKey scaleMappingKey : mapping.keySet()) {
-            if (scaleMappingKey.yAxisName.equals(yAxisResource)) {
-                return mapping.get(scaleMappingKey);
+    private List<ChartSeriesDescription> getScaleMappingListFor(String yAxisResource, Map<AxisMappingKey, List<ChartSeriesDescription>> mapping) {
+        for (AxisMappingKey axisMappingKey : mapping.keySet()) {
+            if (axisMappingKey.yAxisName.equals(yAxisResource)) {
+                return mapping.get(axisMappingKey);
             }
         }
         return null;
@@ -553,37 +647,6 @@ public class ChartingActivity extends SherlockActivity implements Updateable {
         }
     }
 
-
-    private XYMultipleSeriesRenderer buildRenderer(int scaleNumber, int numberOfSeries, PointStyle pointStyle) {
-        XYMultipleSeriesRenderer renderer = new XYMultipleSeriesRenderer(scaleNumber);
-        setRenderer(renderer, numberOfSeries, pointStyle);
-        return renderer;
-    }
-
-    private void setRenderer(XYMultipleSeriesRenderer renderer, int numberOfSeries, PointStyle pointStyle) {
-        renderer.setAxisTitleTextSize(16);
-        renderer.setChartTitleTextSize(20);
-        renderer.setLabelsTextSize(15);
-        renderer.setLegendTextSize(15);
-        renderer.setPointSize(5f);
-        renderer.setMargins(new int[]{20, 30, 15, 20});
-        for (int i = 0; i < numberOfSeries; i++) {
-            XYSeriesRenderer r = new XYSeriesRenderer();
-            r.setPointStyle(pointStyle);
-            renderer.addSeriesRenderer(r);
-        }
-    }
-
-    private void setChartSettings(XYMultipleSeriesRenderer renderer, String title, String xTitle,
-                                  double yMin, double yMax, int axesColor,
-                                  int labelsColor) {
-        renderer.setChartTitle(title);
-        renderer.setXTitle(xTitle);
-        renderer.setYAxisMin(yMin);
-        renderer.setYAxisMax(yMax);
-        renderer.setAxesColor(axesColor);
-        renderer.setLabelsColor(labelsColor);
-    }
 
     @Override
     protected Dialog onCreateDialog(int id) {
