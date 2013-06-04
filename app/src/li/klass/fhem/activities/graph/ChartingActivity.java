@@ -78,11 +78,24 @@ public class ChartingActivity extends SherlockActivity implements Updateable {
     public static final int REQUEST_TIME_CHANGE = 1;
     public static final int DIALOG_EXECUTING = 2;
 
+    /**
+     * Current device graphs are shown for.
+     */
     private String deviceName;
 
+    /**
+     * {@link ChartSeriesDescription}s to be shown within the current graph.
+     */
     private ArrayList<ChartSeriesDescription> seriesDescriptions = new ArrayList<ChartSeriesDescription>();
 
+    /**
+     * Start date for the current graph.
+     */
     private Calendar startDate = Calendar.getInstance();
+
+    /**
+     * End date for the current graph
+     */
     private Calendar endDate = Calendar.getInstance();
 
     @Override
@@ -248,6 +261,13 @@ public class ChartingActivity extends SherlockActivity implements Updateable {
         setContentView(timeChartView);
     }
 
+    /**
+     * Create the actual data set for the graph. This means mapping the domain model, especially the amount of
+     * contained {@link YAxis} and its {@link ChartData} to the internal {@link CustomTimeSeries}.
+     *
+     * @param yAxisList list of {@link YAxis} to be mapped on the current data set
+     * @return data set in AChartEngine's format
+     */
     private XYMultipleSeriesDataset createChartDataSet(List<YAxis> yAxisList) {
         XYMultipleSeriesDataset dataSet = new XYMultipleSeriesDataset();
 
@@ -266,6 +286,16 @@ public class ChartingActivity extends SherlockActivity implements Updateable {
         return dataSet;
     }
 
+    /**
+     * Builds the {@link XYMultipleSeriesRenderer}. This one is responsible for rendering all the afterwards given graph data
+     * to a charting pane. What we do here is set all the required options on the main renderer as well as on all the
+     * sub renderers responsible for rendering each chart.
+     * This also includes setting the min / max value for zooming and panning and the different graph style for
+     * regression and sum charts.
+     *
+     * @param yAxisList list of {@link YAxis} to render
+     * @return renderer
+     */
     private XYMultipleSeriesRenderer buildAndFillRenderer(List<YAxis> yAxisList) {
         XYMultipleSeriesRenderer renderer = new XYMultipleSeriesRenderer(yAxisList.size());
         setRendererDefaults(renderer);
@@ -336,6 +366,11 @@ public class ChartingActivity extends SherlockActivity implements Updateable {
         return renderer;
     }
 
+    /**
+     * Sets the renderer defaults. Nothing special here.
+     *
+     * @param renderer renderer
+     */
     private void setRendererDefaults(XYMultipleSeriesRenderer renderer) {
         renderer.setAxisTitleTextSize(16);
         renderer.setChartTitleTextSize(20);
@@ -356,6 +391,14 @@ public class ChartingActivity extends SherlockActivity implements Updateable {
         renderer.setLegendTextSize(dpToPx(14));
     }
 
+    /**
+     * Set the {@link YAxis} description. This includes the axis description style (color, position) as well as the title
+     * itself.
+     *
+     * @param renderer   Renderer to set the values on.
+     * @param axisNumber axis number.
+     * @param yAxis      Axis to set
+     */
     private void setYAxisDescription(XYMultipleSeriesRenderer renderer, int axisNumber, YAxis yAxis) {
         String title = yAxis.getName();
         renderer.setYTitle(title, axisNumber);
@@ -371,12 +414,23 @@ public class ChartingActivity extends SherlockActivity implements Updateable {
         renderer.setYLabelsColor(axisNumber, getResources().getColor(android.R.color.white));
     }
 
-
+    /**
+     * Method mapping all given {@link ChartSeriesDescription}s to a common domain model (from {@link YAxis} outgoing).
+     * In addition, chart entries with less than a specified number of entries are removed.
+     *
+     * @param data loaded data for each {@link ChartSeriesDescription}
+     * @return list of {@link YAxis} (internal domain model representation)
+     */
     private List<YAxis> handleChartData(Map<ChartSeriesDescription, List<GraphEntry>> data) {
         removeChartSeriesWithTooFewEntries(data);
         return mapToYAxis(data);
     }
 
+    /**
+     * Remove all graph series with less than 2 entries.
+     *
+     * @param data data to work on (which is also modified here)
+     */
     private void removeChartSeriesWithTooFewEntries(Map<ChartSeriesDescription, List<GraphEntry>> data) {
         for (ChartSeriesDescription chartSeriesDescription : new HashSet<ChartSeriesDescription>(data.keySet())) {
             if (data.get(chartSeriesDescription).size() < 2) {
@@ -385,6 +439,12 @@ public class ChartingActivity extends SherlockActivity implements Updateable {
         }
     }
 
+    /**
+     * Maps the amount of chart description to the internal domain model
+     *
+     * @param data amount of data
+     * @return internal representation
+     */
     private List<YAxis> mapToYAxis(Map<ChartSeriesDescription, List<GraphEntry>> data) {
         Map<String, YAxis> yAxisMap = new HashMap<String, YAxis>();
 
@@ -425,7 +485,7 @@ public class ChartingActivity extends SherlockActivity implements Updateable {
     }
 
     /**
-     * Goes to the charting activity.
+     * Jumps to the charting activity.
      *
      * @param context            calling intent
      * @param device             concerned device

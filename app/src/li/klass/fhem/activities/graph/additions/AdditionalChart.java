@@ -8,6 +8,9 @@ import li.klass.fhem.service.graph.GraphEntry;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class representing any additional charts for a given {@link ChartData}. This can concern regression or sum charts.
+ */
 public abstract class AdditionalChart {
     protected final ChartData originData;
     protected List<GraphEntry> data = new ArrayList<GraphEntry>();
