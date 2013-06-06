@@ -208,7 +208,8 @@ public class TopLevelFragment extends Fragment implements Serializable {
 
                 @Override
                 public void onReceive(Context context, Intent intent) {
-                    if (!isVisible()) return;
+                    if (!isVisible() || !isAdded() || isRemoving() || isDetached()
+                            || isHidden()) return;
 
                     String action = intent.getAction();
                     if (action.equals(Actions.SWITCH_TO_INITIAL_FRAGMENT)) {
@@ -219,15 +220,11 @@ public class TopLevelFragment extends Fragment implements Serializable {
                             switchToInitialFragment();
                         }
                     } else if (action.equals(Actions.SHOW_FRAGMENT)) {
-                        if (!isVisible()) return;
-
                         Bundle bundle = intent.getExtras();
                         switchTo(bundle);
 
 
                     } else if (action.equals(Actions.TOP_LEVEL_BACK)) {
-                        if (!isVisible()) return;
-
                         String fragmentName = intent.getStringExtra(BundleExtraKeys.FRAGMENT);
                         FragmentType fragment = FragmentType.valueOf(fragmentName);
 
