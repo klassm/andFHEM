@@ -233,12 +233,13 @@ public class ChartingActivity extends SherlockActivity implements Updateable {
      */
     @SuppressWarnings("unchecked")
     private void createChart(Device device, Map<ChartSeriesDescription, List<GraphEntry>> graphData) {
+
+        List<YAxis> yAxisList = handleChartData(graphData);
         if (graphData.size() == 0) {
             setContentView(R.layout.no_graph_entries);
             return;
         }
 
-        List<YAxis> yAxisList = handleChartData(graphData);
         XYMultipleSeriesRenderer renderer = buildAndFillRenderer(yAxisList);
         XYMultipleSeriesDataset dataSet = createChartDataSet(yAxisList);
 

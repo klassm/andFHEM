@@ -417,7 +417,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
             case KFM100:
                 addDeviceChartIfNotNull(new DeviceChart(R.string.contentGraph,
                         ChartSeriesDescription.getRegressionValuesInstance(R.string.content, "4:content:0:", R.string.yAxisLitreContent),
-                        new ChartSeriesDescription(R.string.rawValue, "4:rawValue:0:", R.string.yAxisLitreContent)), getState());
+                        new ChartSeriesDescription(R.string.rawValue, "4:rawValue:0:", R.string.yAxisRaw)), getState());
 
                 break;
 

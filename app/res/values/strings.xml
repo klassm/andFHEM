@@ -261,8 +261,9 @@
     <string name="yAxisWindSpeed">wind speed (km/h)</string>
     <string name="yAxisUsage">usage</string>
     <string name="yAxisFS20State">on (1) / off (0)</string>
-    <string name="yAxisLitreContent">Content (l)</string>
-    <string name="yAxisEnergy">Energy (W)</string>
+    <string name="yAxisLitreContent">content (l)</string>
+    <string name="yAxisEnergy">energy (W)</string>
+    <string name="yAxisRaw">raw value</string>
 
     <string name="startDate">Start Date</string>
     <string name="endDate">End Date</string>
