@@ -86,12 +86,13 @@ public class PurchaseDatabase {
      * Inserts a purchased product into the database. There may be multiple
      * rows in the table for the same product if it was purchased multiple times
      * or if it was refunded.
-     * @param orderId the order ID (matches the value in the product list)
-     * @param productId the product ID (sku)
-     * @param state the state of the purchase
-     * @param purchaseTime the purchase time (in milliseconds since the epoch)
+     *
+     * @param orderId          the order ID (matches the value in the product list)
+     * @param productId        the product ID (sku)
+     * @param state            the state of the purchase
+     * @param purchaseTime     the purchase time (in milliseconds since the epoch)
      * @param developerPayload the developer provided "payload" associated with
-     *     the order.
+     *                         the order.
      */
     private void insertOrder(String orderId, String productId, PurchaseState state,
                              long purchaseTime, String developerPayload) {
@@ -107,13 +108,14 @@ public class PurchaseDatabase {
     /**
      * Updates the quantity of the given product to the given value. If the
      * given value is zero, then the product is removed from the table.
+     *
      * @param productId the product to update
-     * @param quantity the number of times the product has been purchased
+     * @param quantity  the number of times the product has been purchased
      */
     private void updatePurchasedItem(String productId, int quantity) {
         if (quantity == 0) {
             mDb.delete(PURCHASED_ITEMS_TABLE_NAME, PURCHASED_PRODUCT_ID_COL + "=?",
-                    new String[] { productId });
+                    new String[]{productId});
             return;
         }
         ContentValues values = new ContentValues();
@@ -125,20 +127,21 @@ public class PurchaseDatabase {
     /**
      * Adds the given purchase information to the database and returns the total
      * number of times that the given product has been purchased.
-     * @param orderId a string identifying the order
-     * @param productId the product ID (sku)
-     * @param purchaseState the purchase state of the product
-     * @param purchaseTime the time the product was purchased, in milliseconds
-     * since the epoch (Jan 1, 1970)
+     *
+     * @param orderId          a string identifying the order
+     * @param productId        the product ID (sku)
+     * @param purchaseState    the purchase state of the product
+     * @param purchaseTime     the time the product was purchased, in milliseconds
+     *                         since the epoch (Jan 1, 1970)
      * @param developerPayload the developer provided "payload" associated with
-     *     the order
+     *                         the order
      * @return the number of times the given product has been purchased.
      */
     public synchronized int updatePurchase(String orderId, String productId,
                                            PurchaseState purchaseState, long purchaseTime, String developerPayload) {
         insertOrder(orderId, productId, purchaseState, purchaseTime, developerPayload);
         Cursor cursor = mDb.query(PURCHASE_HISTORY_TABLE_NAME, HISTORY_COLUMNS,
-                HISTORY_PRODUCT_ID_COL + "=?", new String[] { productId }, null, null, null, null);
+                HISTORY_PRODUCT_ID_COL + "=?", new String[]{productId}, null, null, null, null);
         if (cursor == null) {
             return 0;
         }
@@ -227,11 +230,13 @@ public class PurchaseDatabase {
 
     public Set<String> getOwnedItems() {
         Set<String> ownedItems = new HashSet<String>();
-        Cursor cursor = queryAllPurchasedItems();
-        if (cursor == null) {
-            return ownedItems;
-        }
+        Cursor cursor = null;
         try {
+            cursor = queryAllPurchasedItems();
+            if (cursor == null) {
+                return ownedItems;
+            }
+
             int productIdCol = cursor.getColumnIndexOrThrow(PurchaseDatabase.PURCHASED_PRODUCT_ID_COL);
             int quantityCol = cursor.getColumnIndexOrThrow(PurchaseDatabase.PURCHASED_QUANTITY_COL);
             while (cursor.moveToNext()) {
@@ -242,7 +247,7 @@ public class PurchaseDatabase {
                 }
             }
         } finally {
-            cursor.close();
+            if (cursor != null) cursor.close();
         }
         return ownedItems;
     }
