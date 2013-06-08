@@ -47,7 +47,7 @@ public class HUEDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getSaturationDesc(), is("144"));
 
         assertThat(device.getHue(), is(14922));
-        assertThat(device.getSaturationDesc(), is("14922"));
+        assertThat(device.getHueDesc(), is("14922"));
     }
 
     @Override

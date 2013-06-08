@@ -37,7 +37,7 @@
                 <INT key="STATE" value="off"/>
                 <INT key="TYPE" value="HUEDevice"/>
                 <INT key="modelid" value="LCT001"/>
-                <INT key="name" value="Extended color light 1"/>
+                <INT key="name" value="device"/>
                 <INT key="swversion" value="65003148"/>
                 <INT key="type" value="Extended color light"/>
                 <INT key="IODev" value="Hue"/>
