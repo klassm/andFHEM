@@ -46,6 +46,37 @@
           value="5.1 from 2011-07-08 ($Id: fhem.pl,v 1.145 2011-07-07 08:46:28 rudolfkoenig Exp $)"/>
 </_internal_>
 </_internal__LIST>
+<YAMAHA_AVR_LIST>
+<YAMAHA_AVR name="RXV671Zone2" state="off"
+            sets="on off volume:slider,-80,1,16 input:audio1,audio2,av5,av6,bluetooth,netradio,napster,pc,phono,tuner,uaw,usb,v-aux,ipod,ipod_usb mute:on,off remoteControl:setup,up,down,left,right,return,option,display,enter scene: statusRequest"
+            attrs="room group comment alias eventMap userReadings do_not_notify:0,1 loglevel:0,1,2,3,4,5 volume-smooth-change:0,1 volume-smooth-time:0,1,2,3,4,5 volume-smooth-steps:1,2,3,4,5,6,7,8,9,10 event-on-change-reading event-on-update-reading event-min-interval stateFormat CUL_HM_switch_19BBEE_Sw_01 CUL_HM_switch_19BBEE_Sw_01_map RXV671 RXV671Zone2 RXV671Zone2_map RXV671_map a a_map alleGeraete alleGeraete_map alleGeräte alleGeräte_map devStateIcon fp_Groundfloor icon room_map webCmd">
+    <INT key=".updateTime" value="1370445636.21906"/>
+    <INT key=".updateTimestamp" value="2013-06-05 17:20:36"/>
+    <INT key="ACTIVE_ZONE" value="zone2"/>
+    <INT key="CHANGED" value=""/>
+    <INT key="DEF" value="192.168.1.32 zone2"/>
+    <INT key="FIRMWARE" value="1.39/2.01"/>
+    <INT key="MODEL" value="RX-V671"/>
+    <INT key="NAME" value="RXV671Zone2"/>
+    <INT key="NR" value="64"/>
+    <INT key="NTFY_TRIGGERTIME" value="2013-06-05 17:20:09"/>
+    <INT key="STATE" value="off"/>
+    <INT key="SYSTEM_ID" value="044A2F03"/>
+    <INT key="TYPE" value="YAMAHA_AVR"/>
+    <INT key="ZONES_AVAILABLE" value="mainzone,zone2"/>
+    <ATTR key="alleGeraete" value="alleGeraete"/>
+    <ATTR key="alleGeräte" value="alleGeraete"/>
+    <ATTR key="fp_Groundfloor" value="490,487"/>
+    <ATTR key="room" value="Devices"/>
+    <ATTR key="volume-smooth-change" value="1"/>
+    <STATE key="input" value="netradio" measured="2013-06-05 17:20:09"/>
+    <STATE key="input_name" value="NET RADIO" measured="2013-06-05 17:20:09"/>
+    <STATE key="mute" value="off" measured="2013-06-05 17:20:09"/>
+    <STATE key="output" value="variable" measured="2013-06-05 17:20:09"/>
+    <STATE key="power" value="standby" measured="2013-06-05 17:20:09"/>
+    <STATE key="volume_level" value="-53" measured="2013-06-05 17:20:09"/>
+</YAMAHA_AVR>
+</YAMAHA_AVR_LIST>
 <HUEDevice_LIST>
 <HUEDevice name="HUEDevice1" state="off"
            sets="off on toggle statusRequest pct:slider,0,1,100 bri:slider,0,1,254 rgb:colorpicker,RGB color:slider,2000,1,6500 ct:slider,154,1,500 hue:slider,0,1,65535 sat:slider,0,1,254 xy effect:none,colorloop blink on-for-timer on-till off-for-timer intervals off-till"

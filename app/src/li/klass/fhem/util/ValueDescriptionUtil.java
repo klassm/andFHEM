@@ -24,6 +24,9 @@
 
 package li.klass.fhem.util;
 
+import li.klass.fhem.AndFHEMApplication;
+import li.klass.fhem.R;
+
 public class ValueDescriptionUtil {
 
     public static final String C = "°C";
@@ -71,5 +74,10 @@ public class ValueDescriptionUtil {
         } else {
             return ValueDescriptionUtil.appendTemperature(temperature);
         }
+    }
+
+    public static String trueFalseToYesNo(boolean value) {
+        int resourceId = value ? R.string.yes : R.string.no;
+        return AndFHEMApplication.getContext().getString(resourceId);
     }
 }

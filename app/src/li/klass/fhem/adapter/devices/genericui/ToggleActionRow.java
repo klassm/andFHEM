@@ -63,18 +63,22 @@ public class ToggleActionRow<T extends ToggleableDevice> {
         TableRow row = (TableRow) inflater.inflate(layout, null);
         ((TextView) row.findViewById(R.id.description)).setText(description);
         ToggleButton button = (ToggleButton) row.findViewById(R.id.toggleButton);
-        button.setOnClickListener(createListener(context, device));
+        button.setOnClickListener(createListener(context, device, button));
         setToogleButtonText(device, button);
-        button.setChecked(device.isOnRespectingInvertHook());
+        button.setChecked(isOn(device));
 
         return row;
     }
 
-    private ToggleButton.OnClickListener createListener(final Context context, final T device) {
+    public boolean isOn(T device) {
+        return device.isOnRespectingInvertHook();
+    }
+
+    private ToggleButton.OnClickListener createListener(final Context context, final T device, final ToggleButton button) {
         return new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onButtonClick(context, device);
+                onButtonClick(context, device, button.isChecked());
             }
         };
     }
@@ -93,7 +97,7 @@ public class ToggleActionRow<T extends ToggleableDevice> {
         }
     }
 
-    public void onButtonClick(final Context context, T device) {
+    public void onButtonClick(final Context context, T device, boolean isChecked) {
         Intent intent = new Intent(Actions.DEVICE_TOGGLE_STATE);
         intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
         intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {

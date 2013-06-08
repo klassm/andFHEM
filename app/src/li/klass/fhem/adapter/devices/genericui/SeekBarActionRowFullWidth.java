@@ -42,7 +42,7 @@ public abstract class SeekBarActionRowFullWidth<T extends Device> {
     }
 
     public SeekBarActionRowFullWidth(int initialProgress, int minimumProgress, int maximumProgress, int layoutId) {
-        this.initialProgress = initialProgress;
+        this.initialProgress = initialProgress - minimumProgress;
         this.maximumProgress = maximumProgress;
         this.minimumProgress = minimumProgress;
         this.layoutId = layoutId;

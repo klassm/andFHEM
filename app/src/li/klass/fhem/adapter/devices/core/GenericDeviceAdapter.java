@@ -59,7 +59,7 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
 
     private Class<D> deviceClass;
     protected List<DeviceDetailViewAction<D>> detailActions = new ArrayList<DeviceDetailViewAction<D>>();
-    private Map<String, Set<FieldNameAddedToDetailListener<D>>> fieldNameAddedListeners = new HashMap<String, Set<FieldNameAddedToDetailListener<D>>>();
+    private Map<String, List<FieldNameAddedToDetailListener<D>>> fieldNameAddedListeners = new HashMap<String, List<FieldNameAddedToDetailListener<D>>>();
     protected final LayoutInflater inflater;
 
     public GenericDeviceAdapter(Class<D> deviceClass) {
@@ -244,7 +244,7 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
 
     protected void registerFieldListener(String fieldName, FieldNameAddedToDetailListener<D> listener) {
         if (!fieldNameAddedListeners.containsKey(fieldName)) {
-            fieldNameAddedListeners.put(fieldName, new HashSet<FieldNameAddedToDetailListener<D>>());
+            fieldNameAddedListeners.put(fieldName, new ArrayList<FieldNameAddedToDetailListener<D>>());
         }
 
         fieldNameAddedListeners.get(fieldName).add(listener);
@@ -255,7 +255,7 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
             return;
         }
 
-        Set<FieldNameAddedToDetailListener<D>> listeners = fieldNameAddedListeners.get(fieldName);
+        List<FieldNameAddedToDetailListener<D>> listeners = fieldNameAddedListeners.get(fieldName);
         for (FieldNameAddedToDetailListener<D> listener : listeners) {
             if (listener.supportsDevice(device)) {
                 listener.onFieldNameAdded(context, layout, fieldName, device, fieldTableRow);

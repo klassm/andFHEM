@@ -22,30 +22,31 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.util;
+package li.klass.fhem.domain;
 
-public class ValueExtractUtil {
-    public static double extractLeadingDouble(String text) {
-        text = extractLeadingNumericText(text);
-        return Double.valueOf(text);
+import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+import org.junit.Test;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.nullValue;
+import static org.hamcrest.core.Is.is;
+
+public class YamahaAVRDeviceTest extends DeviceXMLParsingBase {
+    @Test
+    public void testForCorrectlySetAttributes() {
+        YamahaAVRDevice device = getDefaultDevice();
+
+        assertThat(device.isMuted(), is(true));
+        assertThat(device.isOnByState(), is(false));
+        assertThat(device.getInput(), is("netradio"));
+        assertThat(device.getSelectedInputPosition(), is(5));
+        assertThat(device.getVolume(), is(-53));
+        assertThat(device.getState(), is("off"));
     }
 
-    public static int extractLeadingInt(String text) {
-        double value = extractLeadingDouble(text);
-        return (int) value;
-    }
-
-    static String extractLeadingNumericText(String text) {
-        text = text.trim();
-        text = text.replaceAll("[a-zA-Z%°]*", "");
-        int spacePosition = text.indexOf(" ");
-        if (spacePosition != -1) {
-            text = text.substring(0, spacePosition);
-        }
-        return text;
-    }
-
-    public static boolean onOffToTrueFalse(String value) {
-        return value.equalsIgnoreCase("on");
+    @Override
+    protected String getFileName() {
+        return "yamaha_avr.xml";
     }
 }
