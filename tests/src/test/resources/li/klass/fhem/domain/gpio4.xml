@@ -1,0 +1,71 @@
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<FHZINFO>
+    <GPIO4_LIST>
+        <GPIO4 name="temp" state="22.937 °C (Mittelwert: 22.7 °C)" sets=""
+               attrs="room group comment alias eventMap userReadings tempOffset pollingInterval model loglevel:0,1,2,3,4,5,6 event-on-change-reading event-on-update-reading event-min-interval stateFormat devStateIcon icon sortby webCmd">
+            <INT key="DEF" value="10-000802299fdc"/>
+            <INT key="NAME" value="temp"/>
+            <INT key="NR" value="56"/>
+            <INT key="NTFY_TRIGGERTIME" value="2013-06-05 13:19:36"/>
+            <INT key="STATE" value="22.937 °C (Mittelwert: 22.7 °C)"/>
+            <INT key="TYPE" value="GPIO4"/>
+            <ATTR key="alias" value="WZ_Temp"/>
+            <ATTR key="group" value="Temperatur"/>
+            <ATTR key="icon" value="icoTemp"/>
+            <ATTR key="model" value="DS1820"/>
+            <ATTR key="room" value="room"/>
+            <ATTR key="stateFormat" value="temperature °C (Mittelwert: T_avg_day °C)"/>
+            <STATE key="T_avg_day" value="22.7" measured="2013-06-05 13:19:36"/>
+            <STATE key="T_avg_month" value="23.3" measured="2013-06-05 13:19:36"/>
+            <STATE key="T_cum_day" value="1090862.58" measured="2013-06-05 13:19:36"/>
+            <STATE key="T_cum_month" value="11160913.4479999" measured="2013-06-05 13:19:36"/>
+            <STATE key="T_max_day" value="23.6" measured="2013-06-05 01:24:08"/>
+            <STATE key="T_max_month" value="24.1" measured="2013-06-04 21:56:48"/>
+            <STATE key="T_min_day" value="20.6" measured="2013-06-05 07:59:46"/>
+            <STATE key="T_min_month" value="20.6" measured="2013-06-05 07:59:46"/>
+            <STATE key="failures" value="0" measured="2013-06-05 11:24:56"/>
+            <STATE key="state" value="T: 22.937" measured="2013-06-05 13:19:36"/>
+            <STATE key="temperature" value="22.937" measured="2013-06-05 13:19:36"/>
+            <STATE key="temperature_avg_day" value="23.3" measured="2013-06-04 16:50:49"/>
+            <STATE key="temperature_avg_month" value="23.3" measured="2013-06-04 16:50:49"/>
+            <STATE key="temperature_cum_day" value="1413849.486" measured="2013-06-04 16:50:49"/>
+            <STATE key="temperature_cum_month" value="9470476.686" measured="2013-06-04 16:50:49"/>
+            <STATE key="temperature_max_day" value="23.4" measured="2013-06-04 16:50:49"/>
+            <STATE key="temperature_max_month" value="23.4" measured="2013-06-04 16:50:49"/>
+            <STATE key="temperature_min_day" value="23.2" measured="2013-06-04 16:48:48"/>
+            <STATE key="temperature_min_month" value="23.2" measured="2013-06-04 16:48:48"/>
+        </GPIO4>
+        <GPIO4 name="RPi" state="Initialized" sets=""
+               attrs="room group comment alias eventMap userReadings tempOffset pollingInterval model loglevel:0,1,2,3,4,5,6 event-on-change-reading event-on-update-reading event-min-interval stateFormat devStateIcon icon sortby webCmd">
+            <INT key="DEF" value="BUSMASTER"/>
+            <ATTR key="room" value="room"/>
+            <INT key="NAME" value="RPi"/>
+            <INT key="NR" value="53"/>
+            <INT key="STATE" value="Initialized"/>
+            <INT key="TYPE" value="GPIO4"/>
+        </GPIO4>
+    </GPIO4_LIST>
+</FHZINFO>

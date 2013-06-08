@@ -81,6 +81,7 @@ public enum DeviceType {
     FBDect("FBDECT", FBDectDevice.class, new ToggleableAdapterWithSwitchActionRow<FBDectDevice>(FBDectDevice.class)),
     SONOS_PLAYER("SONOSPLAYER", SonosPlayerDevice.class, new SonosPlayerAdapter()),
     SONOS("SONOS", SonosDevice.class),
+    GPIO4("GPIO4", GPIO4Device.class),
     GENSHELLSWITCH("GenShellSwitch", GenShellSwitchDevice.class, new ToggleableAdapterWithSwitchActionRow<GenShellSwitchDevice>(GenShellSwitchDevice.class));
 
     private String xmllistTag;
