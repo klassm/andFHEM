@@ -84,6 +84,7 @@ public enum DeviceType {
     GPIO4("GPIO4", GPIO4Device.class),
     FRMOUT("FRM_OUT", FRMOutDevice.class, new ToggleableAdapterWithSwitchActionRow<FRMOutDevice>(FRMOutDevice.class)),
     ESA2000("ESA2000", ESA2000Device.class),
+    HUE("HUEDevice", HUEDevice.class, new HueDeviceAdapter()),
     GENSHELLSWITCH("GenShellSwitch", GenShellSwitchDevice.class, new ToggleableAdapterWithSwitchActionRow<GenShellSwitchDevice>(GenShellSwitchDevice.class));
 
     private String xmllistTag;

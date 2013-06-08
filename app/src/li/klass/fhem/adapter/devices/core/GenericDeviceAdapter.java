@@ -345,7 +345,7 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
         return deviceClass;
     }
 
-    protected void putUpdateExtra(Intent intent) {
+    public static void putUpdateExtra(Intent intent) {
         intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
             @Override
             protected void onReceiveResult(int resultCode, Bundle resultData) {

@@ -145,6 +145,8 @@
     <string name="price">Preis</string>
     <string name="energy">Energie</string>
     <string name="cumulativeKwH">Gesamtzählerstand</string>
+    <string name="saturation">Sättigung</string>
+    <string name="hue">Farbton</string>
 
     <string name="switchDevice">Schalte</string>
     <string name="preferences">Einstellungen</string>

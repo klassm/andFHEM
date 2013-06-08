@@ -30,7 +30,7 @@ public abstract class DimmableDevice<D extends Device<D>> extends ToggleableDevi
     }
 
     public int getDimPosition() {
-        int position = getPositionForDimState(getState());
+        int position = getPositionForDimState(getDimStateFieldValue());
         if (position == -1) {
             return 0;
         }
@@ -51,6 +51,10 @@ public abstract class DimmableDevice<D extends Device<D>> extends ToggleableDevi
             return getDimLowerBound();
         }
         return currentPosition - 1;
+    }
+
+    public String getDimStateFieldValue() {
+        return getState();
     }
 
     @Override

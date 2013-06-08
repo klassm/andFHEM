@@ -101,6 +101,8 @@ public enum ResourceIdMapper {
     musicDuration(R.string.musicDuration),
     musicTrackNumber(R.string.musicTrackNumber),
     musicInfo(R.string.musicInfo),
+    saturation(R.string.saturation),
+    hue(R.string.hue),
 
     none(-1);
 

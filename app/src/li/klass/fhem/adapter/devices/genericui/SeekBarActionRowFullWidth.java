@@ -35,10 +35,16 @@ public abstract class SeekBarActionRowFullWidth<T extends Device> {
     protected int initialProgress;
     private int layoutId;
     private int maximumProgress;
+    private int minimumProgress;
 
     public SeekBarActionRowFullWidth(int initialProgress, int maximumProgress, int layoutId) {
+        this(initialProgress, 0, maximumProgress, layoutId);
+    }
+
+    public SeekBarActionRowFullWidth(int initialProgress, int minimumProgress, int maximumProgress, int layoutId) {
         this.initialProgress = initialProgress;
         this.maximumProgress = maximumProgress;
+        this.minimumProgress = minimumProgress;
         this.layoutId = layoutId;
     }
 
@@ -50,7 +56,7 @@ public abstract class SeekBarActionRowFullWidth<T extends Device> {
         TableRow row = (TableRow) inflater.inflate(layoutId, null);
         SeekBar seekBar = (SeekBar) row.findViewById(R.id.seekBar);
         seekBar.setOnSeekBarChangeListener(createListener(device));
-        seekBar.setMax(maximumProgress);
+        seekBar.setMax(maximumProgress - minimumProgress);
         seekBar.setProgress(initialProgress);
 
         if (layoutSpan != 1) {
@@ -69,7 +75,7 @@ public abstract class SeekBarActionRowFullWidth<T extends Device> {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, final int progress, boolean fromUser) {
-                this.progress = progress;
+                this.progress = progress + minimumProgress;
                 SeekBarActionRowFullWidth.this.onProgressChanged(seekBar.getContext(), device, progress);
             }
 
