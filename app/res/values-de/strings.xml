@@ -65,6 +65,7 @@
     <string name="currentUsage">Aktueller Verbrauch</string>
     <string name="dayUsage">Tagesverbrauch</string>
     <string name="monthUsage">Monatsverbrauch</string>
+    <string name="yearUsage">Jahresverbrauch</string>
     <string name="lastStateChange">Letzte Zustandsänderung</string>
     <string name="lastState">Letzter Zustand</string>
     <string name="power">Strom</string>

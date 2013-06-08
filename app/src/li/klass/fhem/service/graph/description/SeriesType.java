@@ -9,6 +9,7 @@ public enum SeriesType {
     DESIRED_TEMPERATURE(Color.YELLOW, R.string.yAxisTemperature),
     HUMIDITY(Color.GREEN, R.string.yAxisHumidity),
     USAGE(Color.RED, R.string.yAxisUsage),
+    CUMULATIVE_USAGE(Color.GREEN, R.string.yAxisUsage),
     ACTUATOR(Color.YELLOW, R.string.yAxisActuator),
     LITRE_CONTENT(Color.RED, R.string.yAxisLitreContent),
     RAW(Color.GREEN, R.string.yAxisRaw),

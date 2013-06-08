@@ -66,6 +66,7 @@
     <string name="currentUsage">Current Usage</string>
     <string name="dayUsage">Day Usage</string>
     <string name="monthUsage">Month Usage</string>
+    <string name="yearUsage">Year Usage</string>
     <string name="lastStateChange">Last State Change</string>
     <string name="lastState">Last State</string>
     <string name="power">Power</string>

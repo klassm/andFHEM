@@ -6,6 +6,7 @@ public enum ResourceIdMapper {
     currentUsage(R.string.currentUsage),
     dayUsage(R.string.dayUsage),
     monthUsage(R.string.monthUsage),
+    yearUsage(R.string.yearUsage),
     state(R.string.state),
     lastStateChange(R.string.lastStateChange),
     measured(R.string.measured),

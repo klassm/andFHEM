@@ -1,0 +1,82 @@
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<FHZINFO>
+    <ESA2000_LIST>
+        <ESA2000 name="device"
+                 state="CNT: 426.16 kWh    -    CUR: 81 W    -    Day: 1.04 (4.79) kWh    -    Month: 5.83 (13.85) kWh   -    T: 591 s"
+                 sets=""
+                 attrs="room group comment alias eventMap userReadings IODev do_not_notify:0,1 showtime:0,1 loglevel:0,1,2,3,4,5,6 ignore:0,1 model:esa2000-led,esa2000-wz,esa2000-s0,esa1000wz-ir,esa1000wz-s0,esa1000wz-led,esa1000gas base_1 base_2 event-on-change-reading event-on-update-reading event-min-interval stateFormat devStateIcon icon sortby webCmd">
+            <INT key="COC_MSGCNT" value="1"/>
+            <INT key="COC_RAWMSG" value="S3B431D011E00007CDA00000000000008F3"/>
+            <INT key="COC_RSSI" value="-80.5"/>
+            <INT key="COC_TIME" value="2013-06-02 15:44:46"/>
+            <INT key="CODE" value="431d"/>
+            <INT key="DEF" value="431d"/>
+            <INT key="LASTInputDev" value="COC"/>
+            <INT key="MSGCNT" value="1"/>
+            <INT key="NAME" value="device"/>
+            <INT key="NR" value="64"/>
+            <INT key="NTFY_TRIGGERTIME" value="2013-06-02 15:44:46"/>
+            <INT key="STATE"
+                 value="CNT: 426.16 kWh    -    CUR: 81 W    -    Day: 1.04 (4.79) kWh    -    Month: 5.83 (13.85) kWh   -    T: 591 s"/>
+            <INT key="TYPE" value="ESA2000"/>
+            <INT key="IODev" value="COC"/>
+            <ATTR key="event-on-update-reading" value="state,actual_ticks,diff_ticks,actual,raw_total,.*_last"/>
+            <ATTR key="model" value="esa2000-led"/>
+            <ATTR key="room" value="room"/>
+            <STATE key="actual" value="0.0812182741116751" measured="2013-06-02 15:44:46"/>
+            <STATE key="actual_ticks" value="0" measured="2013-06-02 15:44:46"/>
+            <STATE key="day" value="1.04" measured="2013-06-02 15:44:46"/>
+            <STATE key="day_hr" value="2.61333333333333" measured="2013-05-31 19:59:07"/>
+            <STATE key="day_last" value="4.78666666666665" measured="2013-06-02 00:02:25"/>
+            <STATE key="day_lr" value="1.04" measured="2013-06-02 15:44:46"/>
+            <STATE key="diff" value="0.0000" measured="2013-06-02 15:44:46"/>
+            <STATE key="diff_sec" value="591" measured="2013-06-02 15:44:46"/>
+            <STATE key="diff_ticks" value="1" measured="2013-06-02 15:44:46"/>
+            <STATE key="hour" value="0.0533333333333333" measured="2013-06-02 15:44:46"/>
+            <STATE key="hour_last" value="0.04" measured="2013-06-02 15:32:39"/>
+            <STATE key="last_sec" value="1370180686" measured="2013-06-02 15:44:46"/>
+            <STATE key="max" value="2.66666666666667" measured="2013-05-28 14:25:33"/>
+            <STATE key="month" value="5.82666666666665" measured="2013-06-02 15:44:46"/>
+            <STATE key="month" value="5.82666666666665" measured="2013-06-02 15:44:46"/>
+            <STATE key="month_hr" value="10.7333333333334" measured="2013-05-31 19:59:07"/>
+            <STATE key="month_last" value="13.8533333333334" measured="2013-06-01 00:06:55"/>
+            <STATE key="month_lr" value="5.82666666666665" measured="2013-06-02 15:44:46"/>
+            <STATE key="rate" value="LR" measured="2013-06-02 15:44:46"/>
+            <STATE key="raw" value="CNT: 59- CUM: 31962 CUR: 0  TICKS: 75 LR" measured="2013-06-02 15:44:46"/>
+            <STATE key="raw_total" value="426.16" measured="2013-06-02 15:44:46"/>
+            <STATE key="repeat" value="-" measured="2013-06-02 15:44:46"/>
+            <STATE key="sequence" value="59" measured="2013-06-02 15:44:46"/>
+            <STATE key="state" value="CNT: 59- CUM: 19.680 CUR: 0.081 TICKS: 75 LR" measured="2013-06-02 15:44:46"/>
+            <STATE key="ticks" value="75" measured="2013-06-02 15:44:46"/>
+            <STATE key="total" value="19.6799999999997" measured="2013-06-02 15:44:46"/>
+            <STATE key="total_ticks" value="31962" measured="2013-06-02 15:44:46"/>
+            <STATE key="type" value="ESAx000WZ" measured="2013-06-02 15:44:46"/>
+            <STATE key="year" value="19.6799999999997" measured="2013-06-02 15:44:46"/>
+            <STATE key="year_hr" value="10.7333333333334" measured="2013-05-31 19:59:07"/>
+            <STATE key="year_lr" value="8.94666666666664" measured="2013-06-02 15:44:46"/>
+        </ESA2000>
+    </ESA2000_LIST>
+</FHZINFO>
