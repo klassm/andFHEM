@@ -4044,6 +4044,25 @@ room structexclude webCmd eventMap">
     <ATTR key="room" value="Plot"/>
 </weblink>
 </weblink_LIST>
+<FRM_IN_LIST>
+<FRM_IN name="Alarm_Status" state="off" sets="alarm"
+        attrs="room group comment alias eventMap userReadings IODev count-mode count-threshold loglevel:0,1,2,3,4,5 event-on-change-reading event-on-update-reading event-min-interval stateFormat devStateIcon icon sortby webCmd">
+    <INT key="DEF" value="13"/>
+    <INT key="NAME" value="Alarm_Status"/>
+    <INT key="NR" value="407"/>
+    <INT key="NTFY_TRIGGERTIME" value="2013-06-08 08:30:47"/>
+    <INT key="PIN" value="13"/>
+    <INT key="STATE" value="off"/>
+    <INT key="TYPE" value="FRM_IN"/>
+    <INT key="IODev" value="FIRMATA"/>
+    <ATTR key="room" value="Keller"/>
+    <ATTR key="stateFormat" value="reading"/>
+    <STATE key="alarm" value="on" measured="2013-06-08 05:01:35"/>
+    <STATE key="count" value="0" measured="2013-06-08 05:01:35"/>
+    <STATE key="reading" value="off" measured="2013-06-08 08:30:47"/>
+    <STATE key="state" value="Initialized" measured="2013-06-07 06:58:06"/>
+</FRM_IN>
+</FRM_IN_LIST>
 <EIB_LIST>
 <EIB name="vse_klet" state="on" sets="off on on-for-timer on-till value"
      attrs="room group comment alias eventMap IODev do_not_notify:1,0 ignore:0,1 dummy:1,0 showtime:1,0 model:EIB loglevel:0,1,2,3,4,5,6">

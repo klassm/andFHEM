@@ -103,6 +103,7 @@ public enum ResourceIdMapper {
     musicInfo(R.string.musicInfo),
     saturation(R.string.saturation),
     hue(R.string.hue),
+    alarm(R.string.alarm),
 
     none(-1);
 

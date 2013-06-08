@@ -147,6 +147,7 @@
     <string name="cumulativeKwH">Gesamtzählerstand</string>
     <string name="saturation">Sättigung</string>
     <string name="hue">Farbton</string>
+    <string name="alarm">Alarm</string>
 
     <string name="switchDevice">Schalte</string>
     <string name="preferences">Einstellungen</string>

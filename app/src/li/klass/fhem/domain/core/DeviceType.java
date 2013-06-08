@@ -86,6 +86,7 @@ public enum DeviceType {
     ESA2000("ESA2000", ESA2000Device.class),
     HUE("HUEDevice", HUEDevice.class, new HueDeviceAdapter()),
     YAMAHA_AVR("YAMAHA_AVR", YamahaAVRDevice.class, new YamahaAVRAdapter()),
+    FRMIN("FRM_IN", FRMInDevice.class),
     GENSHELLSWITCH("GenShellSwitch", GenShellSwitchDevice.class, new ToggleableAdapterWithSwitchActionRow<GenShellSwitchDevice>(GenShellSwitchDevice.class));
 
     private String xmllistTag;
