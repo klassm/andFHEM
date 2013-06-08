@@ -268,12 +268,12 @@ public class MaxDevice extends ToggleableDevice<MaxDevice> implements DesiredTem
 
         if (actuator != null) {
             addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureActuatorGraph,
-                    ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:temperature", R.string.yAxisTemperature, TEMPERATURE),
-                    ChartSeriesDescription.getDiscreteValuesInstance(R.string.desiredTemperature, "4:desiredTemperature", R.string.yAxisTemperature, null),
-                    new ChartSeriesDescription(R.string.actuator, "4:valveposition", R.string.yAxisActuator, null)), temperature, actuator);
+                    ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:temperature", TEMPERATURE),
+                    ChartSeriesDescription.getDiscreteValuesInstance(R.string.desiredTemperature, "4:desiredTemperature", null),
+                    new ChartSeriesDescription(R.string.actuator, "4:valveposition", null)), temperature, actuator);
         } else {
             addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureGraph,
-                    ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:temperature", R.string.yAxisTemperature, TEMPERATURE)),
+                    ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:temperature", TEMPERATURE)),
                     temperature);
         }
     }

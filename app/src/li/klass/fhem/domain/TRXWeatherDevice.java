@@ -153,9 +153,9 @@ public class TRXWeatherDevice extends Device<TRXWeatherDevice> {
         super.fillDeviceCharts(chartSeries);
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureGraph,
-                ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:temperature:", R.string.yAxisTemperature, TEMPERATURE),
-                new ChartSeriesDescription(R.string.dewpoint, "4:dewpoint:0:", R.string.yAxisTemperature, DEWPOINT)), temperature);
+                ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:temperature:", TEMPERATURE),
+                new ChartSeriesDescription(R.string.dewpoint, "4:dewpoint:0:", DEWPOINT)), temperature);
         addDeviceChartIfNotNull(new DeviceChart(R.string.humidityGraph,
-                new ChartSeriesDescription(R.string.humidity, "4:humidity:0:", R.string.yAxisHumidity, HUMIDITY)), humidity);
+                new ChartSeriesDescription(R.string.humidity, "4:humidity:0:", HUMIDITY)), humidity);
     }
 }

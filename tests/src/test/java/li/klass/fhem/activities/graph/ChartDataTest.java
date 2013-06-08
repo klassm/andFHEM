@@ -3,7 +3,6 @@ package li.klass.fhem.activities.graph;
 import li.klass.fhem.infra.basetest.RobolectricBaseTestCase;
 import li.klass.fhem.service.graph.GraphEntry;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
-import li.klass.fhem.service.graph.description.SeriesType;
 import org.junit.Test;
 
 import java.util.*;
@@ -20,19 +19,19 @@ public class ChartDataTest extends RobolectricBaseTestCase {
 
     @Test
     public void testNumberOfContainedSeries() {
-        ChartData data = new ChartData(ChartSeriesDescription.getRegressionValuesInstance(1, "abc", 0, TEMPERATURE), dummyData);
+        ChartData data = new ChartData(ChartSeriesDescription.getRegressionValuesInstance(1, "abc", TEMPERATURE), dummyData);
         assertThat(data.getNumberOfContainedSeries(), is(2));
 
-        data = new ChartData(ChartSeriesDescription.getSumInstance(1, "abc", 1, 0, TEMPERATURE), dummyData);
+        data = new ChartData(ChartSeriesDescription.getSumInstance(1, "abc", 1, TEMPERATURE), dummyData);
         assertThat(data.getNumberOfContainedSeries(), is(2));
 
-        data = new ChartData(new ChartSeriesDescription(1, "abc", 0, TEMPERATURE), dummyData);
+        data = new ChartData(new ChartSeriesDescription(1, "abc", TEMPERATURE), dummyData);
         assertThat(data.getNumberOfContainedSeries(), is(1));
     }
 
     @Test
     public void testIterator() {
-        ChartData data = new ChartData(ChartSeriesDescription.getRegressionValuesInstance(1, "abc", 0, TEMPERATURE), dummyData);
+        ChartData data = new ChartData(ChartSeriesDescription.getRegressionValuesInstance(1, "abc", TEMPERATURE), dummyData);
 
         Iterator<ViewableChartSeries> iterator = data.iterator();
         assertThat(iterator.hasNext(), is(true));

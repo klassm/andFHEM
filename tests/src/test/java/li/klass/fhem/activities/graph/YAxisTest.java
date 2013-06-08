@@ -25,8 +25,8 @@ public class YAxisTest extends RobolectricBaseTestCase {
     @Before
     public void before() {
         yAxis = new YAxis("someName");
-        yAxis.addChart(ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "abc", 0, SeriesType.TEMPERATURE), dummyData);
-        yAxis.addChart(ChartSeriesDescription.getSumInstance(R.string.humidity, "abc1", 1, 0, SeriesType.HUMIDITY), dummyData);
+        yAxis.addChart(ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "abc", SeriesType.TEMPERATURE), dummyData);
+        yAxis.addChart(ChartSeriesDescription.getSumInstance(R.string.humidity, "abc1", 1, SeriesType.HUMIDITY), dummyData);
     }
 
     @Test

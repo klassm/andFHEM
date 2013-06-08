@@ -103,7 +103,7 @@ public class EIBDevice extends DimmableDevice<EIBDevice> {
         if (model != null && model.equals("tempsensor")) {
             addDeviceChartIfNotNull(
                     new DeviceChart(R.string.temperatureGraph,
-                            ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "3:", R.string.yAxisTemperature, TEMPERATURE)
+                            ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "3:", TEMPERATURE)
                     ), getInternalState()
             );
         }

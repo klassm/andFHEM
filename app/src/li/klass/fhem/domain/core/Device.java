@@ -288,7 +288,7 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
 
         for (FileLogDevice.CustomGraph customGraph : fileLog.getCustomGraphs()) {
             addDeviceChartIfNotNull(new DeviceChart(customGraph.description, new ChartSeriesDescription(
-                    customGraph.description, customGraph.columnSpecification, customGraph.yAxisName
+                    customGraph.description, customGraph.columnSpecification
             )));
         }
     }

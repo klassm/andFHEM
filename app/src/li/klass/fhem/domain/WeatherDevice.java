@@ -215,8 +215,8 @@ public class WeatherDevice extends Device<WeatherDevice> {
         super.fillDeviceCharts(chartSeries);
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureHumidityGraph,
-                ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:temperature:", R.string.yAxisTemperature, TEMPERATURE),
-                new ChartSeriesDescription(R.string.humidity, "4:humidity:0:", R.string.yAxisHumidity, HUMIDITY)), temperature, humidity);
+                ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:temperature:", TEMPERATURE),
+                new ChartSeriesDescription(R.string.humidity, "4:humidity:0:", HUMIDITY)), temperature, humidity);
     }
 
     public static String parseIcon(String icon) {

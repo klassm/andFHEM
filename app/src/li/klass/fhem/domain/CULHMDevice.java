@@ -410,12 +410,12 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
             case TEMPERATURE_HUMIDITY:
 
                 addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureHumidityGraph,
-                        ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:", R.string.yAxisTemperature, TEMPERATURE),
-                        new ChartSeriesDescription(R.string.humidity, "6:", R.string.yAxisHumidity, HUMIDITY)), humidity, measuredTemp);
+                        ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:", TEMPERATURE),
+                        new ChartSeriesDescription(R.string.humidity, "6:", HUMIDITY)), humidity, measuredTemp);
 
                 if (humidity == null) {
                     addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureGraph,
-                            ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:", R.string.yAxisTemperature, TEMPERATURE)),
+                            ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:", TEMPERATURE)),
                             measuredTemp);
                 }
 
@@ -423,26 +423,26 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
 
             case KFM100:
                 addDeviceChartIfNotNull(new DeviceChart(R.string.contentGraph,
-                        ChartSeriesDescription.getRegressionValuesInstance(R.string.content, "4:content:0:", R.string.yAxisLitreContent, LITRE_CONTENT),
-                        new ChartSeriesDescription(R.string.rawValue, "4:rawValue:0:", R.string.yAxisRaw, RAW)), getState());
+                        ChartSeriesDescription.getRegressionValuesInstance(R.string.content, "4:content:0:", LITRE_CONTENT),
+                        new ChartSeriesDescription(R.string.rawValue, "4:rawValue:0:", RAW)), getState());
 
                 break;
 
             case THERMOSTAT:
 
                 addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureGraph,
-                        ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:measured-temp:0", R.string.yAxisTemperature, TEMPERATURE)), measuredTemp);
+                        ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:measured-temp:0", TEMPERATURE)), measuredTemp);
 
                 break;
 
             case HEATING:
                 addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureHumidityGraph,
-                        ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:", R.string.yAxisTemperature, TEMPERATURE),
-                        new ChartSeriesDescription(R.string.humidity, "6:", R.string.yAxisHumidity, HUMIDITY)), humidity, measuredTemp);
+                        ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:", TEMPERATURE),
+                        new ChartSeriesDescription(R.string.humidity, "6:", HUMIDITY)), humidity, measuredTemp);
 
                 addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureActuatorGraph,
-                        ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:measured-temp:0", R.string.yAxisTemperature, TEMPERATURE),
-                        new ChartSeriesDescription(R.string.actuator, "4:actuator", R.string.yAxisActuator, ACTUATOR)), measuredTemp, actuator);
+                        ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:measured-temp:0", TEMPERATURE),
+                        new ChartSeriesDescription(R.string.actuator, "4:actuator", ACTUATOR)), measuredTemp, actuator);
 
                 break;
 

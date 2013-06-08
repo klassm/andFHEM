@@ -114,9 +114,9 @@ public class HMSDevice extends Device<HMSDevice> {
         super.fillDeviceCharts(chartSeries);
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureGraph,
-                ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:T\\x3a:0:", R.string.yAxisTemperature, SeriesType.TEMPERATURE)), temperature);
+                ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:T\\x3a:0:", SeriesType.TEMPERATURE)), temperature);
         addDeviceChartIfNotNull(new DeviceChart(R.string.humidityGraph,
-                new ChartSeriesDescription(R.string.temperature, "6:H\\x3a:0:", R.string.yAxisHumidity, HUMIDITY)), humidity);
+                new ChartSeriesDescription(R.string.temperature, "6:H\\x3a:0:", HUMIDITY)), humidity);
     }
 
     @Override

@@ -89,8 +89,8 @@ public class USBWXDevice extends Device<USBWXDevice> {
         super.fillDeviceCharts(chartSeries);
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureGraph,
-                ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:temperature:0:", R.string.yAxisTemperature, TEMPERATURE)), temperature);
+                ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:temperature:0:", TEMPERATURE)), temperature);
         addDeviceChartIfNotNull(new DeviceChart(R.string.humidityGraph,
-                new ChartSeriesDescription(R.string.temperature, "4:humidity:0:", R.string.yAxisHumidity, HUMIDITY)), humidity);
+                new ChartSeriesDescription(R.string.temperature, "4:humidity:0:", HUMIDITY)), humidity);
     }
 }

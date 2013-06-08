@@ -26,13 +26,11 @@ package li.klass.fhem.domain;
 
 import li.klass.fhem.R;
 import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
-import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.ToggleableDevice;
 import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
-import li.klass.fhem.service.graph.description.SeriesType;
 import li.klass.fhem.util.ValueDescriptionUtil;
 import li.klass.fhem.util.ValueExtractUtil;
 
@@ -97,7 +95,7 @@ public class FBDectDevice extends ToggleableDevice<FBDectDevice> {
         super.fillDeviceCharts(chartSeries);
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.powerGraph,
-                new ChartSeriesDescription(R.string.power, "4:power", R.string.yAxisEnergy, POWER)),
+                new ChartSeriesDescription(R.string.power, "4:power", POWER)),
                 energy);
     }
 
