@@ -24,6 +24,34 @@
 
 <FHZINFO>
     <GPIO4_LIST>
+        <!--
+        Plot data, 08.06.2013
+        2013-06-04_21:18:15 GPIO4_DS1820_000516468fcd T: 23.562
+        2013-06-04_21:18:15 GPIO4_DS1820_000516468fcd temperature: 23.562
+        2013-06-04_21:19:15 GPIO4_DS1820_000516468fcd T: 23.437
+        2013-06-04_21:19:15 GPIO4_DS1820_000516468fcd temperature: 23.437
+        2013-06-04_21:20:16 GPIO4_DS1820_000516468fcd T: 23.5
+        2013-06-04_21:20:16 GPIO4_DS1820_000516468fcd temperature: 23.5
+        2013-06-04_21:21:17 GPIO4_DS1820_000516468fcd T: 23.375
+        2013-06-04_21:21:17 GPIO4_DS1820_000516468fcd temperature: 23.375
+        2013-06-04_21:22:18 GPIO4_DS1820_000516468fcd T: 23.5
+        2013-06-04_21:22:18 GPIO4_DS1820_000516468fcd temperature: 23.5
+        2013-06-04_21:23:19 GPIO4_DS1820_000516468fcd failures: 1
+        2013-06-04_21:24:20 GPIO4_DS1820_000516468fcd T: 23.375
+        2013-06-04_21:24:20 GPIO4_DS1820_000516468fcd temperature: 23.375
+        2013-06-04_21:25:20 GPIO4_DS1820_000516468fcd T: 23.5
+        2013-06-04_21:25:20 GPIO4_DS1820_000516468fcd temperature: 23.5
+        2013-06-04_21:26:21 GPIO4_DS1820_000516468fcd T: 23.437
+        2013-06-04_21:26:21 GPIO4_DS1820_000516468fcd temperature: 23.437
+        2013-06-04_21:27:22 GPIO4_DS1820_000516468fcd T: 23.437
+        2013-06-04_21:27:22 GPIO4_DS1820_000516468fcd temperature: 23.437
+        2013-06-04_21:28:23 GPIO4_DS1820_000516468fcd T: 23.437
+        2013-06-04_21:28:23 GPIO4_DS1820_000516468fcd temperature: 23.437
+        2013-06-04_21:29:24 GPIO4_DS1820_000516468fcd T: 23.375
+        2013-06-04_21:29:24 GPIO4_DS1820_000516468fcd temperature: 23.375
+        2013-06-04_21:30:25 GPIO4_DS1820_000516468fcd T: 23.437
+        2013-06-04_21:30:25 GPIO4_DS1820_000516468fcd temperature: 23.437
+        -->
         <GPIO4 name="temp" state="22.937 °C (Mittelwert: 22.7 °C)" sets=""
                attrs="room group comment alias eventMap userReadings tempOffset pollingInterval model loglevel:0,1,2,3,4,5,6 event-on-change-reading event-on-update-reading event-min-interval stateFormat devStateIcon icon sortby webCmd">
             <INT key="DEF" value="10-000802299fdc"/>
