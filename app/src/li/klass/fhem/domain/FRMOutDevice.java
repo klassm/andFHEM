@@ -25,7 +25,9 @@
 package li.klass.fhem.domain;
 
 import li.klass.fhem.domain.core.ToggleableDevice;
+import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
 
+@DetailOverviewViewSettings(showState = true, showMeasured = true)
 public class FRMOutDevice extends ToggleableDevice<FRMOutDevice> {
     @Override
     public boolean supportsToggle() {
