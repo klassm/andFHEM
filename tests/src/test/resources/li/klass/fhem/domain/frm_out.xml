@@ -1,0 +1,66 @@
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<FHZINFO>
+    <FRM_OUT_LIST>
+        <FRM_OUT name="device" state="on"
+                 sets="Wechseln on off blink on-for-timer on-till off-for-timer intervals off-till"
+                 attrs="room group comment alias eventMap userReadings restoreOnReconnect:on,off restoreOnStartup:on,off IODev loglevel:0,1,2,3,4,5 event-on-change-reading event-on-update-reading event-min-interval stateFormat devStateIcon icon sortby webCmd">
+            <INT key="DEF" value="18"/>
+            <INT key="NAME" value="device"/>
+            <INT key="NR" value="500"/>
+            <INT key="NTFY_TRIGGERTIME" value="2013-06-08 01:49:42"/>
+            <INT key="PIN" value="18"/>
+            <INT key="STATE" value="on"/>
+            <INT key="TYPE" value="FRM_OUT"/>
+            <INT key="IODev" value="FIRMATA"/>
+            <ATTR key="devStateIcon" value="off:on-for-timer on:off"/>
+            <ATTR key="eventMap" value="/off-for-timer 0.5:Wechseln"/>
+            <ATTR key="room" value="room"/>
+            <ATTR key="stateFormat" value="value"/>
+            <ATTR key="webCmd" value="Wechseln"/>
+            <STATE key="state" value="Initialized" measured="2013-06-07 06:58:06"/>
+            <STATE key="value" value="on" measured="2013-06-08 01:49:42"/>
+        </FRM_OUT>
+        <FRM_OUT name="EGGartenfensterHoch" state="on"
+                 sets="Hoch on off blink on-for-timer on-till off-for-timer intervals off-till"
+                 attrs="room group comment alias eventMap userReadings restoreOnReconnect:on,off restoreOnStartup:on,off IODev loglevel:0,1,2,3,4,5 event-on-change-reading event-on-update-reading event-min-interval stateFormat devStateIcon icon sortby webCmd">
+            <INT key="DEF" value="33"/>
+            <INT key="NAME" value="EGGartenfensterHoch"/>
+            <INT key="NR" value="467"/>
+            <INT key="NTFY_TRIGGERTIME" value="2013-06-08 06:45:32"/>
+            <INT key="PIN" value="33"/>
+            <INT key="STATE" value="on"/>
+            <INT key="TYPE" value="FRM_OUT"/>
+            <INT key="IODev" value="FIRMATA"/>
+            <ATTR key="devStateIcon" value="off:on-for-timer on:off"/>
+            <ATTR key="eventMap" value="/off-for-timer 25:Hoch"/>
+            <ATTR key="room" value="Rollladen"/>
+            <ATTR key="stateFormat" value="value"/>
+            <ATTR key="webCmd" value="Hoch"/>
+            <STATE key="state" value="Initialized" measured="2013-06-07 06:58:06"/>
+            <STATE key="value" value="on" measured="2013-06-08 06:45:32"/>
+        </FRM_OUT>
+    </FRM_OUT_LIST>
+</FHZINFO>
