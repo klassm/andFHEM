@@ -75,11 +75,12 @@ public class EIBDevice extends DimmableDevice<EIBDevice> {
 
     @Override
     public String getDimStateForPosition(int position) {
-        return position + "";
+        return "value " + position + "";
     }
 
     @Override
     public int getPositionForDimState(String dimState) {
+        dimState = dimState.replace("value", "").trim();
         return ValueExtractUtil.extractLeadingInt(dimState);
     }
 
@@ -90,6 +91,10 @@ public class EIBDevice extends DimmableDevice<EIBDevice> {
 
     @Override
     public String formatStateTextToSet(String stateToSet) {
+        if (stateToSet.startsWith("value")) {
+            stateToSet = stateToSet.replace("value", "").trim();
+        }
+
         if (model != null && model.equals("percent")) {
             return ValueDescriptionUtil.appendPercent(stateToSet);
         }

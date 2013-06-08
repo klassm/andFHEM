@@ -4097,7 +4097,7 @@ room structexclude webCmd eventMap">
     <INT key="IODev" value="EIB"/>
     <ATTR key="alias" value="WZ Licht Indirekt Dim"/>
     <ATTR key="model" value="percent"/>
-    <ATTR key="room" value="Wohnzimmer"/>
+    <ATTR key="room" value="wohnzimmer"/>
     <ATTR key="webCmd" value="value"/>
     <STATE key="state" value="0 %" measured="2013-05-25 23:30:42"/>
 </EIB>
