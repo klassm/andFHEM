@@ -345,7 +345,7 @@ public class ChartingActivity extends SherlockActivity implements Updateable {
                         seriesRenderer.setLineWidth(1);
                         break;
                     case SUM:
-                        XYSeriesRenderer.FillOutsideLine fillOutsideLine = new XYSeriesRenderer.FillOutsideLine(XYSeriesRenderer.FillOutsideLine.Type.BELOW);
+                        XYSeriesRenderer.FillOutsideLine fillOutsideLine = new XYSeriesRenderer.FillOutsideLine(XYSeriesRenderer.FillOutsideLine.Type.BOUNDS_ALL);
                         fillOutsideLine.setColor(color);
                         seriesRenderer.addFillOutsideLine(fillOutsideLine);
                         break;

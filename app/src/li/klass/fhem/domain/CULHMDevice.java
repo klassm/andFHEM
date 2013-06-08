@@ -412,6 +412,12 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
                         ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:", R.string.yAxisTemperature),
                         new ChartSeriesDescription(R.string.humidity, "6:", R.string.yAxisHumidity)), humidity, measuredTemp);
 
+                if (humidity == null) {
+                    addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureGraph,
+                            ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:", R.string.yAxisTemperature)),
+                            measuredTemp);
+                }
+
                 break;
 
             case KFM100:
