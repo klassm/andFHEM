@@ -32,10 +32,13 @@ import li.klass.fhem.domain.core.ToggleableDevice;
 import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
+import li.klass.fhem.service.graph.description.SeriesType;
 import li.klass.fhem.util.ValueDescriptionUtil;
 import li.klass.fhem.util.ValueExtractUtil;
 
 import java.util.List;
+
+import static li.klass.fhem.service.graph.description.SeriesType.POWER;
 
 @SuppressWarnings("unused")
 @DetailOverviewViewSettings(showState = true, showMeasured = true)
@@ -94,7 +97,7 @@ public class FBDectDevice extends ToggleableDevice<FBDectDevice> {
         super.fillDeviceCharts(chartSeries);
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.powerGraph,
-                new ChartSeriesDescription(R.string.power, "4:power", R.string.yAxisEnergy)),
+                new ChartSeriesDescription(R.string.power, "4:power", R.string.yAxisEnergy, POWER)),
                 energy);
     }
 

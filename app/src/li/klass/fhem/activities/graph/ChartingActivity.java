@@ -51,8 +51,8 @@ import li.klass.fhem.util.DisplayUtil;
 import org.achartengine.ChartFactory;
 import org.achartengine.GraphicalView;
 import org.achartengine.chart.PointStyle;
-import org.achartengine.model.TimeSeries;
 import org.achartengine.model.XYMultipleSeriesDataset;
+import org.achartengine.renderer.BasicStroke;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import org.achartengine.renderer.XYSeriesRenderer;
 
@@ -67,13 +67,7 @@ import static li.klass.fhem.util.DisplayUtil.dpToPx;
  */
 public class ChartingActivity extends SherlockActivity implements Updateable {
 
-    public static final int[] AVAILABLE_COLORS = new int[]{Color.RED, Color.GREEN, Color.YELLOW, Color.CYAN, Color.GRAY, Color.WHITE};
-    public static final Comparator<ChartSeriesDescription> Y_AXIS_NAME_COMPARATOR = new Comparator<ChartSeriesDescription>() {
-        @Override
-        public int compare(ChartSeriesDescription chartSeriesDescription, ChartSeriesDescription chartSeriesDescription2) {
-            return -1 * chartSeriesDescription.getYAxisName().compareTo(chartSeriesDescription2.getYAxisName());
-        }
-    };
+    public static final List<Integer> AVAILABLE_COLORS = Arrays.asList(Color.YELLOW, Color.CYAN, Color.GRAY, Color.WHITE);
 
     public static final int REQUEST_TIME_CHANGE = 1;
     public static final int DIALOG_EXECUTING = 2;
@@ -306,6 +300,8 @@ public class ChartingActivity extends SherlockActivity implements Updateable {
         double minY = Double.MAX_VALUE;
         double maxY = Double.MIN_VALUE;
 
+        List<Integer> availableColors = new ArrayList<Integer>(AVAILABLE_COLORS);
+
         int i = 0;
         for (int axisNumber = 0; axisNumber < yAxisList.size(); axisNumber++) {
             YAxis yAxis = yAxisList.get(axisNumber);
@@ -332,22 +328,24 @@ public class ChartingActivity extends SherlockActivity implements Updateable {
 
             for (ViewableChartSeries chartSeries : yAxis) {
                 XYSeriesRenderer seriesRenderer = new XYSeriesRenderer();
-                seriesRenderer.setPointStyle(PointStyle.CIRCLE);
-                renderer.addSeriesRenderer(seriesRenderer);
 
                 seriesRenderer.setFillPoints(false);
-                int color = AVAILABLE_COLORS[i];
+                int color = getColorFor(chartSeries, availableColors);
                 seriesRenderer.setColor(color);
                 seriesRenderer.setPointStyle(PointStyle.POINT);
+
+                renderer.addSeriesRenderer(seriesRenderer);
 
                 switch (chartSeries.getChartType()) {
                     case REGRESSION:
                         seriesRenderer.setLineWidth(1);
+                        seriesRenderer.setShowLegendItem(false);
+                        seriesRenderer.setStroke(BasicStroke.DOTTED);
                         break;
                     case SUM:
-                        XYSeriesRenderer.FillOutsideLine fillOutsideLine = new XYSeriesRenderer.FillOutsideLine(XYSeriesRenderer.FillOutsideLine.Type.BOUNDS_ALL);
-                        fillOutsideLine.setColor(color);
-                        seriesRenderer.addFillOutsideLine(fillOutsideLine);
+                        seriesRenderer.setLineWidth(1);
+                        seriesRenderer.setShowLegendItem(false);
+                        seriesRenderer.setStroke(BasicStroke.DOTTED);
                         break;
                     default:
                         seriesRenderer.setLineWidth(2);
@@ -365,6 +363,18 @@ public class ChartingActivity extends SherlockActivity implements Updateable {
         renderer.setZoomLimits(new double[]{minDate.getTime(), maxDate.getTime(), minY, maxY});
 
         return renderer;
+    }
+
+    private int getColorFor(ViewableChartSeries viewableChartSeries, List<Integer> availableColors) {
+        SeriesType seriesType = viewableChartSeries.getSeriesType();
+        if (seriesType != null) {
+            return seriesType.getColor();
+        }
+
+        Integer color = availableColors.get(0);
+        availableColors.remove(0);
+
+        return color;
     }
 
     /**
@@ -450,7 +460,7 @@ public class ChartingActivity extends SherlockActivity implements Updateable {
         Map<String, YAxis> yAxisMap = new HashMap<String, YAxis>();
 
         for (ChartSeriesDescription chartSeriesDescription : data.keySet()) {
-            String yAxisName = chartSeriesDescription.getYAxisName();
+            String yAxisName = chartSeriesDescription.getSeriesType().getYAxisName();
             if (!yAxisMap.containsKey(yAxisName)) {
                 yAxisMap.put(yAxisName, new YAxis(yAxisName));
             }

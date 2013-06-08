@@ -39,6 +39,9 @@ import li.klass.fhem.util.ValueDescriptionUtil;
 
 import java.util.List;
 
+import static li.klass.fhem.service.graph.description.SeriesType.HUMIDITY;
+import static li.klass.fhem.service.graph.description.SeriesType.TEMPERATURE;
+
 @FloorplanViewSettings(showState = true)
 @SupportsWidget(TemperatureWidgetView.class)
 @SuppressWarnings("unused")
@@ -86,8 +89,8 @@ public class USBWXDevice extends Device<USBWXDevice> {
         super.fillDeviceCharts(chartSeries);
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureGraph,
-                ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:temperature:0:", R.string.yAxisTemperature)), temperature);
+                ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:temperature:0:", R.string.yAxisTemperature, TEMPERATURE)), temperature);
         addDeviceChartIfNotNull(new DeviceChart(R.string.humidityGraph,
-                new ChartSeriesDescription(R.string.temperature, "4:humidity:0:", R.string.yAxisHumidity)), humidity);
+                new ChartSeriesDescription(R.string.temperature, "4:humidity:0:", R.string.yAxisHumidity, HUMIDITY)), humidity);
     }
 }

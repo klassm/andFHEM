@@ -48,6 +48,10 @@ import org.w3c.dom.NamedNodeMap;
 
 import java.util.List;
 
+import static li.klass.fhem.service.graph.description.SeriesType.ACTUATOR;
+import static li.klass.fhem.service.graph.description.SeriesType.DESIRED_TEMPERATURE;
+import static li.klass.fhem.service.graph.description.SeriesType.TEMPERATURE;
+
 @FloorplanViewSettings
 @SupportsWidget({TemperatureWidgetView.class, MediumInformationWidgetView.class})
 @SuppressWarnings("unused")
@@ -253,8 +257,8 @@ public class FHTDevice extends Device<FHTDevice> implements DesiredTempDevice,
         super.fillDeviceCharts(chartSeries);
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureActuatorGraph,
-                ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:measured", R.string.yAxisTemperature),
-                ChartSeriesDescription.getDiscreteValuesInstance(R.string.desiredTemperature, "4:desired-temp", R.string.yAxisTemperature),
-                new ChartSeriesDescription(R.string.actuator, "4:actuator.*[0-9]+%:0:int", R.string.yAxisActuator)), temperature, actuator);
+                ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:measured", R.string.yAxisTemperature, TEMPERATURE),
+                ChartSeriesDescription.getDiscreteValuesInstance(R.string.desiredTemperature, "4:desired-temp", R.string.yAxisTemperature, DESIRED_TEMPERATURE),
+                new ChartSeriesDescription(R.string.actuator, "4:actuator.*[0-9]+%:0:int", R.string.yAxisActuator, ACTUATOR)), temperature, actuator);
     }
 }

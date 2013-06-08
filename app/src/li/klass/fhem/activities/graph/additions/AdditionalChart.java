@@ -33,5 +33,9 @@ public abstract class AdditionalChart {
 
     protected abstract void calculateData();
 
+    public ChartData getOriginData() {
+        return originData;
+    }
+
     public abstract ViewableChartSeries.ChartType getChartType();
 }

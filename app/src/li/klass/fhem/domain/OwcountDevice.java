@@ -39,6 +39,7 @@ import android.content.res.Resources;
 
 @FloorplanViewSettings(showState = true)
 @SupportsWidget(MediumInformationWidgetView.class)
+@SuppressWarnings("unused")
 public class OwcountDevice extends Device<OwcountDevice> {
 
     @ShowField(description = ResourceIdMapper.counterA, showInOverview = true)
@@ -55,28 +56,28 @@ public class OwcountDevice extends Device<OwcountDevice> {
     @WidgetMediumLine3(description = ResourceIdMapper.warnings)
     private String warnings;
 
-    public void readCOUNTERS_A(String value)  {
+    public void readCOUNTERS_A(String value) {
         this.counterA = Float.valueOf(value);
     }
 
-    public void readCOUNTERS_B(String value)  {
+    public void readCOUNTERS_B(String value) {
         this.counterB = Float.valueOf(value);
     }
 
-    public void readCORR1(String value)  {
+    public void readCORR1(String value) {
         this.correlationA = Float.valueOf(value);
     }
 
-    public void readCORR2(String value)  {
+    public void readCORR2(String value) {
         this.correlationB = Float.valueOf(value);
     }
 
-    public void readPRESENT(String value)  {
+    public void readPRESENT(String value) {
         Resources resources = AndFHEMApplication.getContext().getResources();
         this.present = value.equals("1") ? resources.getString(R.string.yes) : resources.getString(R.string.no);
     }
 
-    public void readWARNINGS(String value)  {
+    public void readWARNINGS(String value) {
         this.warnings = value;
     }
 

@@ -38,6 +38,10 @@ import li.klass.fhem.util.ValueDescriptionUtil;
 
 import java.util.List;
 
+import static li.klass.fhem.service.graph.description.SeriesType.DEWPOINT;
+import static li.klass.fhem.service.graph.description.SeriesType.HUMIDITY;
+import static li.klass.fhem.service.graph.description.SeriesType.TEMPERATURE;
+
 @FloorplanViewSettings(showState = true)
 @SupportsWidget(TemperatureWidgetView.class)
 @SuppressWarnings("unused")
@@ -149,9 +153,9 @@ public class TRXWeatherDevice extends Device<TRXWeatherDevice> {
         super.fillDeviceCharts(chartSeries);
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureGraph,
-                ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:temperature:", R.string.yAxisTemperature),
-                new ChartSeriesDescription(R.string.dewpoint, "4:dewpoint:0:", R.string.yAxisTemperature)), temperature);
+                ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:temperature:", R.string.yAxisTemperature, TEMPERATURE),
+                new ChartSeriesDescription(R.string.dewpoint, "4:dewpoint:0:", R.string.yAxisTemperature, DEWPOINT)), temperature);
         addDeviceChartIfNotNull(new DeviceChart(R.string.humidityGraph,
-                new ChartSeriesDescription(R.string.humidity, "4:humidity:0:", R.string.yAxisHumidity)), humidity);
+                new ChartSeriesDescription(R.string.humidity, "4:humidity:0:", R.string.yAxisHumidity, HUMIDITY)), humidity);
     }
 }

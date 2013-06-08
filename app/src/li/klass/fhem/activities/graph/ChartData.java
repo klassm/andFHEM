@@ -5,6 +5,7 @@ import li.klass.fhem.activities.graph.additions.RegressionAdditionalChart;
 import li.klass.fhem.activities.graph.additions.SumAdditionalChart;
 import li.klass.fhem.service.graph.GraphEntry;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
+import li.klass.fhem.service.graph.description.SeriesType;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -122,10 +123,12 @@ public class ChartData implements Comparable<ChartData>, Iterable<ViewableChartS
             public ViewableChartSeries next() {
                 ViewableChartSeries result;
                 if (current == 0) {
-                    result = new ViewableChartSeries(seriesDescription.getColumnName(), graphData, ViewableChartSeries.ChartType.NORMAL);
+                    result = new ViewableChartSeries(seriesDescription.getColumnName(), graphData, ViewableChartSeries.ChartType.NORMAL, seriesDescription.getSeriesType());
                 } else {
                     AdditionalChart chart = additionalCharts.get(current - 1);
-                    result = new ViewableChartSeries(chart.getName(), chart.getData(), chart.getChartType());
+
+                    SeriesType seriesType = chart.getOriginData().getSeriesDescription().getSeriesType();
+                    result = new ViewableChartSeries(chart.getName(), chart.getData(), chart.getChartType(), seriesType);
                 }
 
                 current++;

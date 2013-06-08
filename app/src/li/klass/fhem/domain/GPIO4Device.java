@@ -6,9 +6,12 @@ import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
+import li.klass.fhem.service.graph.description.SeriesType;
 import li.klass.fhem.util.ValueDescriptionUtil;
 
 import java.util.List;
+
+import static li.klass.fhem.service.graph.description.SeriesType.TEMPERATURE;
 
 @SuppressWarnings("unused")
 public class GPIO4Device extends Device<GPIO4Device> {
@@ -42,7 +45,7 @@ public class GPIO4Device extends Device<GPIO4Device> {
 
         if (subType == SubType.TEMPERATURE) {
             addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureGraph,
-                    ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:T", R.string.yAxisTemperature)), temperature);
+                    ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:T", R.string.yAxisTemperature, TEMPERATURE)), temperature);
         }
     }
 

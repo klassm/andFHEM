@@ -38,6 +38,8 @@ import li.klass.fhem.util.ValueDescriptionUtil;
 
 import java.util.List;
 
+import static li.klass.fhem.service.graph.description.SeriesType.*;
+
 @FloorplanViewSettings(showState = true)
 @SupportsWidget(TemperatureWidgetView.class)
 @SuppressWarnings("unused")
@@ -184,16 +186,16 @@ public class OregonDevice extends Device<OregonDevice> {
         super.fillDeviceCharts(chartSeries);
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureGraph,
-                ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:temperature:0:", R.string.yAxisTemperature)), temperature);
+                ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:temperature:0:", R.string.yAxisTemperature, TEMPERATURE)), temperature);
         addDeviceChartIfNotNull(new DeviceChart(R.string.humidityGraph,
-                new ChartSeriesDescription(R.string.temperature, "4:humidity:0:", R.string.yAxisHumidity)), humidity);
+                new ChartSeriesDescription(R.string.temperature, "4:humidity:0:", R.string.yAxisHumidity, HUMIDITY)), humidity);
         addDeviceChartIfNotNull(new DeviceChart(R.string.pressureGraph,
-                new ChartSeriesDescription(R.string.pressure, "4:pressure:0:", R.string.yAxisPressure)), pressure);
+                new ChartSeriesDescription(R.string.pressure, "4:pressure:0:", R.string.yAxisPressure, PRESSURE)), pressure);
         addDeviceChartIfNotNull(new DeviceChart(R.string.rainRate,
-                new ChartSeriesDescription(R.string.rainRate, "4:rain_rate:0:", R.string.yAxisRainRate)), rainRate);
+                new ChartSeriesDescription(R.string.rainRate, "4:rain_rate:0:", R.string.yAxisRainRate, RAIN_RATE)), rainRate);
         addDeviceChartIfNotNull(new DeviceChart(R.string.rainTotal,
-                new ChartSeriesDescription(R.string.rainRate, "4:rain_total:0:", R.string.yAxisRainTotal)), rainTotal);
+                new ChartSeriesDescription(R.string.rainRate, "4:rain_total:0:", R.string.yAxisRainTotal, RAIN_TOTAL)), rainTotal);
         addDeviceChartIfNotNull(new DeviceChart(R.string.windSpeed,
-                new ChartSeriesDescription(R.string.rainRate, "4:wind_speed:0:", R.string.yAxisWindSpeed)), windSpeed);
+                new ChartSeriesDescription(R.string.rainRate, "4:wind_speed:0:", R.string.yAxisWindSpeed, WIND)), windSpeed);
     }
 }

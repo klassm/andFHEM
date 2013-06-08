@@ -30,9 +30,12 @@ import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
+import li.klass.fhem.service.graph.description.SeriesType;
 import li.klass.fhem.util.ValueDescriptionUtil;
 
 import java.util.List;
+
+import static li.klass.fhem.service.graph.description.SeriesType.POWER;
 
 @SuppressWarnings("unused")
 public class EMWZDevice extends Device<EMWZDevice> {
@@ -85,6 +88,6 @@ public class EMWZDevice extends Device<EMWZDevice> {
         super.fillDeviceCharts(chartSeries);
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.powerGraph,
-                ChartSeriesDescription.getRegressionValuesInstance(R.string.power, "4:", R.string.power)));
+                ChartSeriesDescription.getRegressionValuesInstance(R.string.power, "4:", R.string.yAxisEnergy, POWER)));
     }
 }

@@ -258,7 +258,7 @@
     <string name="yAxisRainTotal">Regenmenge (l/m2)</string>
     <string name="yAxisWindSpeed">Windgeschwindigkeit (km/h)</string>
     <string name="yAxisUsage">Verbrauch</string>
-    <string name="yAxisFS20State">an (1) / aus(0)</string>
+    <string name="yAxisToggleState">an (1) / aus(0)</string>
     <string name="yAxisLitreContent">Inhalt (l)</string>
     <string name="yAxisEnergy">Energie (W)</string>
     <string name="yAxisRaw">Roh-Wert</string>

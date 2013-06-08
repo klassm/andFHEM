@@ -38,6 +38,8 @@ import li.klass.fhem.util.ValueDescriptionUtil;
 import java.io.Serializable;
 import java.util.List;
 
+import static li.klass.fhem.service.graph.description.SeriesType.*;
+
 @SuppressWarnings("unused")
 @FloorplanViewSettings(showState = true)
 @SupportsWidget({TemperatureWidgetView.class, MediumInformationWidgetView.class})
@@ -146,11 +148,11 @@ public class KS300Device extends Device<KS300Device> implements Serializable {
         super.fillDeviceCharts(chartSeries);
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureHumidityGraph,
-                ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4::", R.string.yAxisTemperature),
-                new ChartSeriesDescription(R.string.humidity, "6::", R.string.yAxisHumidity)), temperature, humidity);
+                ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4::", R.string.yAxisTemperature, TEMPERATURE),
+                new ChartSeriesDescription(R.string.humidity, "6::", R.string.yAxisHumidity, HUMIDITY)), temperature, humidity);
         addDeviceChartIfNotNull(new DeviceChart(R.string.windGraph,
-                new ChartSeriesDescription(R.string.wind, "8::", R.string.yAxisWind)), wind);
+                new ChartSeriesDescription(R.string.wind, "8::", R.string.yAxisWind, WIND)), wind);
         addDeviceChartIfNotNull(new DeviceChart(R.string.rainGraph,
-                new ChartSeriesDescription(R.string.rain, "10::", R.string.yAxisRain)), rain);
+                new ChartSeriesDescription(R.string.rain, "10::", R.string.yAxisRain, RAIN)), rain);
     }
 }

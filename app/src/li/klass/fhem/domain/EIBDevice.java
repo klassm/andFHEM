@@ -3,7 +3,6 @@ package li.klass.fhem.domain;
 import li.klass.fhem.R;
 import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.DimmableDevice;
-import li.klass.fhem.domain.core.ToggleableDevice;
 import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
 import li.klass.fhem.domain.genericview.FloorplanViewSettings;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
@@ -12,6 +11,8 @@ import li.klass.fhem.util.ValueDescriptionUtil;
 import li.klass.fhem.util.ValueExtractUtil;
 
 import java.util.List;
+
+import static li.klass.fhem.service.graph.description.SeriesType.TEMPERATURE;
 
 @DetailOverviewViewSettings(showState = true)
 @FloorplanViewSettings
@@ -102,7 +103,7 @@ public class EIBDevice extends DimmableDevice<EIBDevice> {
         if (model != null && model.equals("tempsensor")) {
             addDeviceChartIfNotNull(
                     new DeviceChart(R.string.temperatureGraph,
-                            ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "3:", R.string.yAxisTemperature)
+                            ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "3:", R.string.yAxisTemperature, TEMPERATURE)
                     ), getInternalState()
             );
         }

@@ -4,6 +4,7 @@ import li.klass.fhem.R;
 import li.klass.fhem.infra.basetest.RobolectricBaseTestCase;
 import li.klass.fhem.service.graph.GraphEntry;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
+import li.klass.fhem.service.graph.description.SeriesType;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -24,8 +25,8 @@ public class YAxisTest extends RobolectricBaseTestCase {
     @Before
     public void before() {
         yAxis = new YAxis("someName");
-        yAxis.addChart(ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "abc", 0), dummyData);
-        yAxis.addChart(ChartSeriesDescription.getSumInstance(R.string.humidity, "abc1", 1, 0), dummyData);
+        yAxis.addChart(ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "abc", 0, SeriesType.TEMPERATURE), dummyData);
+        yAxis.addChart(ChartSeriesDescription.getSumInstance(R.string.humidity, "abc1", 1, 0, SeriesType.HUMIDITY), dummyData);
     }
 
     @Test

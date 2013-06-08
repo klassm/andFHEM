@@ -36,9 +36,12 @@ import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.genericview.FloorplanViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
+import li.klass.fhem.service.graph.description.SeriesType;
 import li.klass.fhem.util.ValueUtil;
 
 import java.util.List;
+
+import static li.klass.fhem.service.graph.description.SeriesType.HUMIDITY;
 
 @SuppressWarnings("unused")
 @FloorplanViewSettings(showState = true)
@@ -111,9 +114,9 @@ public class HMSDevice extends Device<HMSDevice> {
         super.fillDeviceCharts(chartSeries);
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureGraph,
-                ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:T\\x3a:0:", R.string.yAxisTemperature)), temperature);
+                ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:T\\x3a:0:", R.string.yAxisTemperature, SeriesType.TEMPERATURE)), temperature);
         addDeviceChartIfNotNull(new DeviceChart(R.string.humidityGraph,
-                new ChartSeriesDescription(R.string.temperature, "6:H\\x3a:0:", R.string.yAxisHumidity)), humidity);
+                new ChartSeriesDescription(R.string.temperature, "6:H\\x3a:0:", R.string.yAxisHumidity, HUMIDITY)), humidity);
     }
 
     @Override

@@ -39,6 +39,9 @@ import li.klass.fhem.util.ValueDescriptionUtil;
 
 import java.util.List;
 
+import static li.klass.fhem.service.graph.description.SeriesType.HUMIDITY;
+import static li.klass.fhem.service.graph.description.SeriesType.TEMPERATURE;
+
 @FloorplanViewSettings
 @SupportsWidget(TemperatureWidgetView.class)
 @SuppressWarnings("unused")
@@ -72,8 +75,8 @@ public class CULTXDevice extends Device<CULTXDevice> {
         super.fillDeviceCharts(chartSeries);
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureHumidityGraph,
-                new ChartSeriesDescription(R.string.humidity, "4:humidity:0:", R.string.yAxisHumidity),
-                new ChartSeriesDescription(R.string.temperature, "4:temperature:0:", R.string.yAxisTemperature)), humidity, temperature);
+                new ChartSeriesDescription(R.string.humidity, "4:humidity:0:", R.string.yAxisHumidity, HUMIDITY),
+                new ChartSeriesDescription(R.string.temperature, "4:temperature:0:", R.string.yAxisTemperature, TEMPERATURE)), humidity, temperature);
     }
 
 }

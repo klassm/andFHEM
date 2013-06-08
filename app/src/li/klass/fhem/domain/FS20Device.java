@@ -39,6 +39,8 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
+import static li.klass.fhem.service.graph.description.SeriesType.TOGGLE_STATE;
+
 @DetailOverviewViewSettings(showState = true)
 @FloorplanViewSettings()
 @SuppressWarnings("unused")
@@ -119,7 +121,7 @@ public class FS20Device extends DimmableDiscreteStatesDevice<FS20Device> impleme
         super.fillDeviceCharts(chartSeries);
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.stateGraph,
-                new ChartSeriesDescription(R.string.state, "3:::$fld[2]=~/on.*/?1:0", true, false, false, 1, R.string.yAxisFS20State)), getState());
+                new ChartSeriesDescription(R.string.state, "3:::$fld[2]=~/on.*/?1:0", true, false, false, 1, R.string.yAxisToggleState, TOGGLE_STATE)), getState());
     }
 
     private String transformHexTo4System(String input) {

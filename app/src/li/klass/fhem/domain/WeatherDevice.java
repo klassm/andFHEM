@@ -41,6 +41,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import static li.klass.fhem.service.graph.description.SeriesType.HUMIDITY;
+import static li.klass.fhem.service.graph.description.SeriesType.TEMPERATURE;
+
 @FloorplanViewSettings(showState = true)
 @SupportsWidget({TemperatureWidgetView.class, MediumInformationWidgetView.class})
 @SuppressWarnings("unused")
@@ -212,8 +215,8 @@ public class WeatherDevice extends Device<WeatherDevice> {
         super.fillDeviceCharts(chartSeries);
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureHumidityGraph,
-                ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:temperature:", R.string.yAxisTemperature),
-                new ChartSeriesDescription(R.string.humidity, "4:humidity:0:", R.string.yAxisHumidity)), temperature, humidity);
+                ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:temperature:", R.string.yAxisTemperature, TEMPERATURE),
+                new ChartSeriesDescription(R.string.humidity, "4:humidity:0:", R.string.yAxisHumidity, HUMIDITY)), temperature, humidity);
     }
 
     public static String parseIcon(String icon) {
