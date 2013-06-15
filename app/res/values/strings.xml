@@ -65,6 +65,7 @@
     <string name="present">Present</string>
     <string name="currentUsage">Current Usage</string>
     <string name="dayUsage">Day Usage</string>
+    <string name="dayLastUsage">Last day Usage</string>
     <string name="monthUsage">Month Usage</string>
     <string name="yearUsage">Year Usage</string>
     <string name="lastStateChange">Last State Change</string>
@@ -264,7 +265,8 @@
     <string name="yAxisRainRate">rain rate (mm/hr)</string>
     <string name="yAxisRainTotal">rain toal (l/m2)</string>
     <string name="yAxisWindSpeed">wind speed (km/h)</string>
-    <string name="yAxisUsage">usage</string>
+    <string name="yAxisCurrentUsage">current usage (W)</string>
+    <string name="yAxisCumulativeUsage">cumulative usage (kWh)</string>
     <string name="yAxisToggleState">on (1) / off (0)</string>
     <string name="yAxisLitreContent">content (l)</string>
     <string name="yAxisEnergy">energy (W)</string>

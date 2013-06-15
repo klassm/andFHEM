@@ -5,6 +5,7 @@ import li.klass.fhem.R;
 public enum ResourceIdMapper {
     currentUsage(R.string.currentUsage),
     dayUsage(R.string.dayUsage),
+    dayLastUsage(R.string.dayLastUsage),
     monthUsage(R.string.monthUsage),
     yearUsage(R.string.yearUsage),
     state(R.string.state),

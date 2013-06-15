@@ -36,7 +36,7 @@ import li.klass.fhem.util.ValueExtractUtil;
 import java.util.List;
 
 import static li.klass.fhem.service.graph.description.SeriesType.CUMULATIVE_USAGE;
-import static li.klass.fhem.service.graph.description.SeriesType.USAGE;
+import static li.klass.fhem.service.graph.description.SeriesType.CURRENT_USAGE;
 
 @SuppressWarnings("unused")
 public class ESA2000Device extends Device<ESA2000Device> {
@@ -48,6 +48,8 @@ public class ESA2000Device extends Device<ESA2000Device> {
     private String month;
     @ShowField(description = ResourceIdMapper.yearUsage, showInOverview = true)
     private String year;
+    @ShowField(description = ResourceIdMapper.dayLastUsage, showInOverview = false)
+    private String dayLast;
 
     public void readACTUAL(String value) {
         double actual = ValueExtractUtil.extractLeadingDouble(value) * 1000;
@@ -64,6 +66,10 @@ public class ESA2000Device extends Device<ESA2000Device> {
 
     public void readDAY(String value) {
         day = tokWHDesc(value);
+    }
+
+    public void readDAY_LAST(String value) {
+        dayLast = tokWHDesc(value);
     }
 
     private String tokWHDesc(String value) {
@@ -89,12 +95,16 @@ public class ESA2000Device extends Device<ESA2000Device> {
         return year;
     }
 
+    public String getDayLast() {
+        return dayLast;
+    }
+
     @Override
     protected void fillDeviceCharts(List<DeviceChart> chartSeries) {
         super.fillDeviceCharts(chartSeries);
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.usageGraph,
-                ChartSeriesDescription.getDiscreteValuesInstance(R.string.currentUsage, "8:CUR\\x3a\\s[0-9]::", USAGE),
+                ChartSeriesDescription.getDiscreteValuesInstance(R.string.currentUsage, "8:CUR\\x3a\\s[0-9]::", CURRENT_USAGE),
                 ChartSeriesDescription.getDiscreteValuesInstance(R.string.cumulativeKwH, "4:hour_last\\x3a\\s[0-9]:0:", CUMULATIVE_USAGE)), current);
     }
 }

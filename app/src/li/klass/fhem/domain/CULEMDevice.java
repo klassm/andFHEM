@@ -37,7 +37,7 @@ import li.klass.fhem.util.ValueExtractUtil;
 
 import java.util.List;
 
-import static li.klass.fhem.service.graph.description.SeriesType.USAGE;
+import static li.klass.fhem.service.graph.description.SeriesType.CURRENT_USAGE;
 
 @FloorplanViewSettings(showState = true)
 @SupportsWidget(MediumInformationWidgetView.class)
@@ -113,6 +113,6 @@ public class CULEMDevice extends Device<CULEMDevice> {
         super.fillDeviceCharts(chartSeries);
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.usageGraph,
-                ChartSeriesDescription.getSumInstance(R.string.currentUsage, "8::0:", getSumGraphDivisionFactor(), USAGE)), currentUsage);
+                ChartSeriesDescription.getSumInstance(R.string.currentUsage, "8::0:", getSumGraphDivisionFactor(), CURRENT_USAGE)), currentUsage);
     }
 }
