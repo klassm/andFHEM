@@ -59,6 +59,9 @@ public class HUEDevice extends DimmableDevice<HUEDevice> {
 
     @Override
     public void setState(String state) {
+        if (state.equals("off")) level = 0;
+        if (state.equals("on")) level = getDimUpperBound();
+
         if (state.startsWith("pct")) {
             level = getPositionForDimState(state);
             super.setState(ValueDescriptionUtil.appendPercent(level));
@@ -80,6 +83,9 @@ public class HUEDevice extends DimmableDevice<HUEDevice> {
     @Override
     public int getPositionForDimState(String dimState) {
         String value = dimState.replace("pct ", "").trim();
+        if (value.equals("on")) return getDimUpperBound();
+        if (value.equals("off")) return 0;
+
         return ValueExtractUtil.extractLeadingInt(value);
     }
 

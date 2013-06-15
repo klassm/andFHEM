@@ -48,6 +48,8 @@ public class HUEDeviceTest extends DeviceXMLParsingBase {
 
         assertThat(device.getHue(), is(14922));
         assertThat(device.getHueDesc(), is("14922"));
+
+        assertThat(device.getPositionForDimState("off"), is(0));
     }
 
     @Override

@@ -90,7 +90,6 @@
     <INT key="STATE" value="off"/>
     <INT key="TYPE" value="HUEDevice"/>
     <INT key="modelid" value="LLC001"/>
-    <INT key="name" value="Color light 1"/>
     <INT key="swversion" value="2.0.0.5206"/>
     <INT key="type" value="Color light"/>
     <INT key="IODev" value="Hue"/>
