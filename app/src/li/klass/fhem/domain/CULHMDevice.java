@@ -437,8 +437,8 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
 
             case HEATING:
                 addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureHumidityGraph,
-                        ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:", TEMPERATURE),
-                        new ChartSeriesDescription(R.string.humidity, "6:", HUMIDITY)), humidity, measuredTemp);
+                        ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:T\\x3a:0:", TEMPERATURE),
+                        new ChartSeriesDescription(R.string.humidity, "6:H\\x3a:0:", HUMIDITY)), humidity, measuredTemp);
 
                 addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureActuatorGraph,
                         ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:measured-temp:0", TEMPERATURE),
