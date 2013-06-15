@@ -202,7 +202,8 @@
     <string name="prefDeviceColumnWidthSummary">Minimum width of the device columns</string>
     <string name="prefDeviceListPaddingRight">Device list padding</string>
     <string name="prefDeviceListPaddingRightSummary">Right-padding</string>
-    <string name="prefWidgetUpdateTime">Update interval</string>
+    <string name="prefWidgetUpdateTimeWLAN">WLAN update interval</string>
+    <string name="prefWidgetUpdateTimeMobile">Mobile update interval</string>
     <string name="prefWidgetUpdateTimeSummary">default 1 times per hour</string>
     <string name="prefDeviceTypeOrder">Device type order</string>
     <string name="prefDeviceTypeOrderSummary">Order of device types as well as hide and view</string>

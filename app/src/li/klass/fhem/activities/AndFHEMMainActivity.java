@@ -28,6 +28,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import com.actionbarsherlock.view.MenuItem;
 import li.klass.fhem.ApplicationUrls;
 import li.klass.fhem.R;
@@ -48,9 +49,9 @@ public class AndFHEMMainActivity extends FragmentBaseActivity {
     public static final String TAG = AndFHEMMainActivity.class.getName();
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        UpdateHandler.INSTANCE.onUpdate();
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        UpdateHandler.INSTANCE.onUpdate(this);
     }
 
     @Override

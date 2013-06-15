@@ -38,7 +38,7 @@
                 android:key="CONNECTION_TYPE"
                 android:defaultValue=""
                 android:entries="@array/dataOriginEntries"
-                android:entryValues="@array/dataOriginValues" />
+                android:entryValues="@array/dataOriginValues"/>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/prefWidgetCategory" android:key="DATAORIGINCATEGORY">
@@ -48,12 +48,19 @@
                 android:defaultValue="true"
                 />
         <ListPreference
-                android:title="@string/prefWidgetUpdateTime"
+                android:title="@string/prefWidgetUpdateTimeWLAN"
                 android:summary="@string/prefWidgetUpdateTimeSummary"
-                android:key="WIDGET_UPDATE_INTERVAL"
+                android:key="WIDGET_UPDATE_INTERVAL_WLAN"
                 android:defaultValue="3600"
                 android:entries="@array/widgetUpdateTimeEntries"
-                android:entryValues="@array/widgetUpdateTimeValues" />
+                android:entryValues="@array/widgetUpdateTimeValues"/>
+        <ListPreference
+                android:title="@string/prefWidgetUpdateTimeMobile"
+                android:summary="@string/prefWidgetUpdateTimeSummary"
+                android:key="WIDGET_UPDATE_INTERVAL_MOBILE"
+                android:defaultValue="3600"
+                android:entries="@array/widgetUpdateTimeEntries"
+                android:entryValues="@array/widgetUpdateTimeValues"/>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/prefOtherPreferencesCategory">
@@ -84,7 +91,7 @@
                 android:key="GRAPH_DEFAULT_TIMESPAN"
                 android:defaultValue="24"
                 android:entries="@array/graphDefaultTimespanEntries"
-                android:entryValues="@array/graphDefaultTimespanValues" />
+                android:entryValues="@array/graphDefaultTimespanValues"/>
         <ListPreference
                 android:title="@string/prefAutoUpdate"
                 android:summary="@string/prefAutoUpdateSummary"
@@ -92,7 +99,7 @@
                 android:key="AUTO_UPDATE_TIME"
                 android:defaultValue="-1"
                 android:entries="@array/updateRoomListTimeEntries"
-                android:entryValues="@array/updateRoomListTimeValues" />
+                android:entryValues="@array/updateRoomListTimeValues"/>
         <com.hlidskialf.android.preference.SeekBarPreference xmlns:android="http://schemas.android.com/apk/res/android"
                                                              android:layout_height="wrap_content"
                                                              android:layout_width="wrap_content"
@@ -115,14 +122,13 @@
                                                              android:text=" dp"
                                                              android:max="1000"
                 />
-        <li.klass.fhem.widget.deviceType.DeviceTypeOrderPreference xmlns:android="http://schemas.android.com/apk/res/android"
-                                                                   android:layout_height="wrap_content"
-                                                                   android:layout_width="wrap_content"
-                                                                   android:key="DEVICE_TYPE_ORDER_VISIBLE"
-                                                                   android:title="@string/prefDeviceTypeOrder"
-                                                                   android:summary="@string/prefDeviceTypeOrderSummary" />
-
-
+        <li.klass.fhem.widget.deviceType.DeviceTypeOrderPreference
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:key="DEVICE_TYPE_ORDER_VISIBLE"
+                android:title="@string/prefDeviceTypeOrder"
+                android:summary="@string/prefDeviceTypeOrderSummary"/>
 
 
     </PreferenceCategory>

@@ -82,7 +82,7 @@ public abstract class AppWidgetSelectionActivity extends DeviceNameSelectionActi
             @Override
             public void onClick(DialogInterface dialogInterface, int position) {
                 WidgetType type = widgetTypes.get(position);
-                WidgetConfiguration configuration = new WidgetConfiguration(widgetId, device.getName(), type);
+                WidgetConfiguration configuration = new WidgetConfiguration(widgetId, device.getName(), type, 0);
                 AppWidgetDataHolder.INSTANCE.saveWidgetConfigurationToPreferences(AppWidgetSelectionActivity.this, configuration);
 
                 dialogInterface.dismiss();

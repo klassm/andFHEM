@@ -60,11 +60,16 @@ public abstract class AndFHEMAppWidgetProvider extends AppWidgetProvider {
 
             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
             if (appWidgetId != -1) {
-                onUpdate(context, appWidgetManager, new int[] {appWidgetId});
+                onUpdate(context, appWidgetManager, new int[]{appWidgetId});
             }
         } else if (intent.getAction().equals(Actions.DEVICE_LIST_REMOTE_NOTIFY)) {
             Log.i(TAG, "updating all widgets (received DEVICE_LIST_REMOTE_NOTIFY");
             AppWidgetDataHolder.INSTANCE.updateAllWidgets(context, false);
+        } else if (intent.getAction().equals(Actions.REQUEST_WIDGET_UPDATE)) {
+            int appWidgetId = intent.getIntExtra(BundleExtraKeys.APP_WIDGET_ID, -1);
+            if (appWidgetId != -1) {
+                AppWidgetDataHolder.INSTANCE.requestWidgetUpdate(context, appWidgetId);
+            }
         }
     }
 }

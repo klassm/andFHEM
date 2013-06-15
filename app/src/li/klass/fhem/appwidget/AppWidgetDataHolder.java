@@ -43,6 +43,7 @@ import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.service.room.RoomListService;
 import li.klass.fhem.util.ApplicationProperties;
+import li.klass.fhem.util.NetworkState;
 
 import java.util.Set;
 
@@ -52,8 +53,10 @@ import static li.klass.fhem.util.SharedPreferencesUtil.getSharedPreferencesEdito
 public class AppWidgetDataHolder {
     public static final AppWidgetDataHolder INSTANCE = new AppWidgetDataHolder();
     private static final String preferenceName = AppWidgetDataHolder.class.getName();
-    public static final String WIDGET_UPDATE_INTERVAL_PREFERENCES_KEY = "WIDGET_UPDATE_INTERVAL";
+    public static final String WIDGET_UPDATE_INTERVAL_PREFERENCES_KEY_WLAN = "WIDGET_UPDATE_INTERVAL_WLAN";
+    public static final String WIDGET_UPDATE_INTERVAL_PREFERENCES_KEY_MOBILE = "WIDGET_UPDATE_INTERVAL_MOBILE";
     public static final String TAG = AppWidgetDataHolder.class.getName();
+    public static final int INTERNAL_WIDGET_UPDATE_INTERVAL = 300;
     private String SAVE_SEPARATOR = "#";
 
     private AppWidgetDataHolder() {
@@ -97,7 +100,7 @@ public class AppWidgetDataHolder {
         final AppWidgetView widgetView = widgetConfiguration.widgetType.widgetView;
 
         boolean doRemoteWidgetUpdates = ApplicationProperties.INSTANCE.getBooleanSharedPreference("prefWidgetRemoteUpdate", true);
-        int widgetUpdateInterval = getWidgetUpdateInterval();
+        int widgetUpdateInterval = getConnectionDependentUpdateInterval(context);
 
         long updatePeriod = doRemoteWidgetUpdates && allowRemoteUpdate ? widgetUpdateInterval : RoomListService.NEVER_UPDATE_PERIOD;
         scheduleUpdateIntent(context, widgetConfiguration, false, widgetUpdateInterval);
@@ -119,6 +122,7 @@ public class AppWidgetDataHolder {
 
                     try {
                         appWidgetManager.updateAppWidget(appWidgetId, content);
+                        saveWidgetConfigurationToPreferences(context, widgetConfiguration.updatedWithCurrentUpdateTime());
                     } catch (Exception e) {
                         Log.e(TAG, "something strange happened during appwidget update", e);
                     }
@@ -142,12 +146,12 @@ public class AppWidgetDataHolder {
         SharedPreferences.Editor edit = getSharedPreferencesEditor(preferenceName);
         String value = widgetConfiguration.widgetId + SAVE_SEPARATOR
                 + widgetConfiguration.deviceName + SAVE_SEPARATOR
-                + widgetConfiguration.widgetType.name();
+                + widgetConfiguration.widgetType.name() + SAVE_SEPARATOR
+                + widgetConfiguration.lastWidgetUpdate;
         edit.putString(String.valueOf(widgetConfiguration.widgetId), value);
         edit.commit();
 
-        int widgetUpdateInterval = getWidgetUpdateInterval();
-        scheduleUpdateIntent(context, widgetConfiguration, true, widgetUpdateInterval);
+        scheduleUpdateIntent(context, widgetConfiguration, true, INTERNAL_WIDGET_UPDATE_INTERVAL);
     }
 
     private void scheduleUpdateIntent(Context context, WidgetConfiguration widgetConfiguration, boolean updateNow, int widgetUpdateInterval) {
@@ -162,11 +166,31 @@ public class AppWidgetDataHolder {
     }
 
     private PendingIntent updatePendingIndentForWidgetId(Context context, int widgetId) {
-        Intent updateIntent = new Intent(Actions.WIDGET_UPDATE);
+        Intent updateIntent = new Intent(Actions.REQUEST_WIDGET_UPDATE);
         updateIntent.putExtra(BundleExtraKeys.APP_WIDGET_ID, widgetId);
 
         return PendingIntent.getBroadcast(context, widgetId * (-1),
                 updateIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+    }
+
+    public void requestWidgetUpdate(Context context, int appWidgetId) {
+        WidgetConfiguration widgetConfiguration = getWidgetConfiguration(appWidgetId);
+
+        long updateTimeDiff = System.currentTimeMillis() - widgetConfiguration.lastWidgetUpdate;
+        long updateInterval = getConnectionDependentUpdateInterval(context);
+        if (updateTimeDiff > updateInterval) {
+            Intent updateIntent = new Intent(Actions.WIDGET_UPDATE);
+            updateIntent.putExtra(BundleExtraKeys.APP_WIDGET_ID, appWidgetId);
+            context.sendBroadcast(updateIntent);
+        }
+    }
+
+    private int getConnectionDependentUpdateInterval(Context context) {
+        if (!NetworkState.isConnected(context)) return Integer.MAX_VALUE;
+        if (NetworkState.isConnectedMobile(context)) {
+            return getWidgetUpdateIntervalFor(WIDGET_UPDATE_INTERVAL_PREFERENCES_KEY_MOBILE);
+        }
+        return getWidgetUpdateIntervalFor(WIDGET_UPDATE_INTERVAL_PREFERENCES_KEY_WLAN);
     }
 
     private WidgetConfiguration getWidgetConfiguration(int widgetId) {
@@ -175,14 +199,19 @@ public class AppWidgetDataHolder {
         if (value == null) return null;
 
         String[] parts = value.split(SAVE_SEPARATOR);
-        if (parts.length != 3) return null;
+        if (parts.length < 3) return null;
 
         WidgetType widgetType = getWidgetTypeFromName(parts[2]);
         if (widgetType == null) {
             return null;
         }
 
-        return new WidgetConfiguration(Integer.valueOf(parts[0]), parts[1], widgetType);
+        long lastUpdate = 0;
+        if (parts.length == 4) {
+            lastUpdate = Long.parseLong(parts[3]);
+        }
+
+        return new WidgetConfiguration(Integer.valueOf(parts[0]), parts[1], widgetType, lastUpdate);
     }
 
     private WidgetType getWidgetTypeFromName(String widgetTypeName) {
@@ -194,8 +223,8 @@ public class AppWidgetDataHolder {
         }
     }
 
-    private int getWidgetUpdateInterval() {
-        String value = ApplicationProperties.INSTANCE.getStringSharedPreference(WIDGET_UPDATE_INTERVAL_PREFERENCES_KEY, "3600");
+    private int getWidgetUpdateIntervalFor(String key) {
+        String value = ApplicationProperties.INSTANCE.getStringSharedPreference(key, "0");
         int intValue = Integer.parseInt(value);
         return intValue * 1000;
     }

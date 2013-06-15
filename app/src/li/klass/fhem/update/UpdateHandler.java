@@ -24,7 +24,11 @@
 
 package li.klass.fhem.update;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import li.klass.fhem.AndFHEMApplication;
+import li.klass.fhem.appwidget.AppWidgetDataHolder;
+import li.klass.fhem.util.ApplicationProperties;
 
 public class UpdateHandler {
     public static final UpdateHandler INSTANCE = new UpdateHandler();
@@ -34,8 +38,16 @@ public class UpdateHandler {
 
     private static final String TAG = UpdateHandler.class.getName();
 
-    public void onUpdate() {
+    public void onUpdate(Context context) {
         AndFHEMApplication application = AndFHEMApplication.INSTANCE;
         if (!application.isUpdate()) return;
+
+        ApplicationProperties applicationProperties = ApplicationProperties.INSTANCE;
+        String value = applicationProperties.getStringSharedPreference("WIDGET_UPDATE_INTERVAL", null);
+        if (value != null) {
+            applicationProperties.setSharedPreference(AppWidgetDataHolder.WIDGET_UPDATE_INTERVAL_PREFERENCES_KEY_MOBILE, value);
+            applicationProperties.setSharedPreference(AppWidgetDataHolder.WIDGET_UPDATE_INTERVAL_PREFERENCES_KEY_WLAN, value);
+            applicationProperties.deleteSharedPreference("WIDGET_UPDATE_INTERVAL");
+        }
     }
 }

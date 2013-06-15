@@ -53,6 +53,7 @@ public class ApplicationProperties {
             Log.e(ApplicationProperties.class.getName(), "cannot load application.properties", e);
         }
     }
+
     void load(InputStream inputStream) {
         try {
             properties.load(inputStream);
@@ -93,6 +94,11 @@ public class ApplicationProperties {
     public void setSharedPreference(String key, String value) {
         SharedPreferences preferences = getPreferences();
         preferences.edit().putString(key, value).commit();
+    }
+
+    public void deleteSharedPreference(String key) {
+        SharedPreferences preferences = getPreferences();
+        preferences.edit().remove(key);
     }
 
     private SharedPreferences getPreferences() {
