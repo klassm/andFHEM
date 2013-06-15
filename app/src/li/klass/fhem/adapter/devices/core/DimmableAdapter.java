@@ -106,7 +106,7 @@ public class DimmableAdapter<D extends DimmableDevice<D>> extends ToggleableAdap
                     return;
                 }
 
-                tableLayout.addView(new DimActionRowFullWidth<D>(device.getDimPosition(), device.getDimUpperBound(), R.layout.device_detail_seekbarrow_full_width)
+                tableLayout.addView(new DimActionRowFullWidth<D>(device, R.layout.device_detail_seekbarrow_full_width)
                         .createRow(inflater, device));
                 tableLayout.addView(new DimUpDownRow()
                         .createRow(context, inflater, device));

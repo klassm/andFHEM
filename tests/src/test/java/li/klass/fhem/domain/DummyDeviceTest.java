@@ -49,6 +49,7 @@ public class DummyDeviceTest extends DeviceXMLParsingBase {
 
         assertThat(device.getFileLog(), is(nullValue()));
         assertThat(device.getDeviceCharts().size(), is(0));
+        assertThat(device.supportsDim(), is(false));
     }
 
     @Test
@@ -64,6 +65,7 @@ public class DummyDeviceTest extends DeviceXMLParsingBase {
 
         assertThat(device.getFileLog(), is(nullValue()));
         assertThat(device.getDeviceCharts().size(), is(0));
+        assertThat(device.supportsDim(), is(false));
     }
 
     @Test
@@ -72,6 +74,7 @@ public class DummyDeviceTest extends DeviceXMLParsingBase {
 
         assertThat(device.getAvailableTargetStates(), is(arrayContaining("17", "18", "19", "20", "21", "21.5", "22")));
         assertThat(device.getAvailableTargetStates().length, is(7));
+        assertThat(device.supportsDim(), is(false));
     }
 
     @Test
@@ -79,6 +82,17 @@ public class DummyDeviceTest extends DeviceXMLParsingBase {
         DummyDevice device = getDeviceFor("timerDevice");
 
         assertThat(device.isTimerDevice(), is(true));
+        assertThat(device.supportsDim(), is(false));
+    }
+
+    @Test
+    public void testSliderDevice() {
+        DummyDevice device = getDeviceFor("sliderDevice");
+        assertThat(device.supportsDim(), is(true));
+
+        assertThat(device.getDimUpperBound(), is(50));
+        assertThat(device.getDimLowerBound(), is(10));
+        assertThat(device.getDimStep(), is(2));
     }
 
     @Override

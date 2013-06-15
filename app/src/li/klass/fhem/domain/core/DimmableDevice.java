@@ -25,10 +25,6 @@
 package li.klass.fhem.domain.core;
 
 public abstract class DimmableDevice<D extends Device<D>> extends ToggleableDevice<D> {
-    public final int getDimLowerBound() {
-        return 0;
-    }
-
     public int getDimPosition() {
         int position = getPositionForDimState(getDimStateFieldValue());
         if (position == -1) {
@@ -67,7 +63,15 @@ public abstract class DimmableDevice<D extends Device<D>> extends ToggleableDevi
         return super.formatTargetState(targetState);
     }
 
+    public int getDimLowerBound() {
+        return 0;
+    }
+
     public abstract int getDimUpperBound();
+
+    public int getDimStep() {
+        return 1;
+    }
 
     /**
      * Get the dim state for a given position. This is sent to FHEM within the set command!

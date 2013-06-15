@@ -66,6 +66,17 @@
             <ATTR key="room" value="room"/>
             <ATTR key="setList" value="state:time"/>
         </dummy>
+        <dummy name="sliderDevice" state="???" sets="state:slider,10,2,50"
+               attrs="room group comment alias eventMap userReadings loglevel:0,1,2,3,4,5,6 setList event-on-change-reading event-on-update-reading event-min-interval stateFormat alias_map custom_graph devStateIcon fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon invertState measured-temp offDevice onDevice onOffDevice sortby structexclude toggleDevice webCmd">
+            <INT key="CFGFN" value=""/>
+            <INT key="NAME" value="sliderDevice"/>
+            <INT key="NR" value="336"/>
+            <INT key="STATE" value="???"/>
+            <INT key="room" value="room"/>
+            <INT key="TYPE" value="dummy"/>
+            <ATTR key="setList" value="state:slider,0,1,10"/>
+        </dummy>
+
 
     </dummy_LIST>
 </FHZINFO>

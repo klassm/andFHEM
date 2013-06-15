@@ -30,7 +30,9 @@ import android.content.Intent;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TimePicker;
+import li.klass.fhem.adapter.devices.core.DimmableAdapter;
 import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
+import li.klass.fhem.adapter.devices.genericui.AvailableTargetStatesSwitchActionRow;
 import li.klass.fhem.adapter.devices.genericui.ButtonActionRow;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
@@ -39,7 +41,7 @@ import li.klass.fhem.util.StringUtil;
 
 import java.util.Calendar;
 
-public class DummyAdapter extends ToggleableAdapterWithSwitchActionRow<DummyDevice> {
+public class DummyAdapter extends DimmableAdapter<DummyDevice> {
     public DummyAdapter() {
         super(DummyDevice.class);
     }
@@ -47,6 +49,8 @@ public class DummyAdapter extends ToggleableAdapterWithSwitchActionRow<DummyDevi
     @Override
     protected void afterPropertiesSet() {
         super.afterPropertiesSet();
+        detailActions.add(new AvailableTargetStatesSwitchActionRow<DummyDevice>());
+
         registerFieldListener("state", new FieldNameAddedToDetailListener<DummyDevice>() {
             @Override
             public void onFieldNameAdded(final Context context, TableLayout tableLayout, String field, final DummyDevice device, TableRow fieldTableRow) {

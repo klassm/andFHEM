@@ -35,8 +35,11 @@ import li.klass.fhem.domain.core.DimmableDevice;
 
 public class DimActionRowFullWidth<D extends DimmableDevice<D>> extends SeekBarActionRowFullWidth<D> {
 
-    public DimActionRowFullWidth(int initialProgress, int maximumProgress, int layoutId) {
-        super(initialProgress, maximumProgress, layoutId);
+    public DimActionRowFullWidth(D device, int layoutId) {
+        super(
+                toDimProgress(device.getDimPosition(), device.getDimLowerBound(), device.getDimStep()),
+                toDimProgress(device.getDimUpperBound(), device.getDimLowerBound(), device.getDimStep()),
+                layoutId);
     }
 
     public void onStopTrackingTouch(final Context context, D device, int progress) {
@@ -51,5 +54,13 @@ public class DimActionRowFullWidth<D extends DimmableDevice<D>> extends SeekBarA
         });
 
         context.startService(intent);
+    }
+
+    static int toDimProgress(int progress, int lowerBound, int step) {
+        return (progress - lowerBound) / step;
+    }
+
+    static int dimProgressToDimState(int progress, int lowerBound, int step) {
+        return progress * step + lowerBound;
     }
 }
