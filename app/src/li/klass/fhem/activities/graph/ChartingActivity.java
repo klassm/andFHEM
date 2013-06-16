@@ -460,6 +460,9 @@ public class ChartingActivity extends SherlockActivity implements Updateable {
         Map<String, YAxis> yAxisMap = new HashMap<String, YAxis>();
 
         for (ChartSeriesDescription chartSeriesDescription : data.keySet()) {
+            if (chartSeriesDescription.getSeriesType() == null) {
+                throw new IllegalArgumentException("no series type: " + chartSeriesDescription.getColumnName() + " ; device " + deviceName + "");
+            }
             String yAxisName = chartSeriesDescription.getSeriesType().getYAxisName();
             if (!yAxisMap.containsKey(yAxisName)) {
                 yAxisMap.put(yAxisName, new YAxis(yAxisName));

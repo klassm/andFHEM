@@ -48,6 +48,8 @@ import org.w3c.dom.NamedNodeMap;
 
 import java.util.List;
 
+import static li.klass.fhem.service.graph.description.SeriesType.ACTUATOR;
+import static li.klass.fhem.service.graph.description.SeriesType.DESIRED_TEMPERATURE;
 import static li.klass.fhem.service.graph.description.SeriesType.TEMPERATURE;
 import static li.klass.fhem.util.ValueDescriptionUtil.desiredTemperatureToString;
 
@@ -269,8 +271,8 @@ public class MaxDevice extends ToggleableDevice<MaxDevice> implements DesiredTem
         if (actuator != null) {
             addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureActuatorGraph,
                     ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:temperature", TEMPERATURE),
-                    ChartSeriesDescription.getDiscreteValuesInstance(R.string.desiredTemperature, "4:desiredTemperature", null),
-                    new ChartSeriesDescription(R.string.actuator, "4:valveposition", null)), temperature, actuator);
+                    ChartSeriesDescription.getDiscreteValuesInstance(R.string.desiredTemperature, "4:desiredTemperature", DESIRED_TEMPERATURE),
+                    new ChartSeriesDescription(R.string.actuator, "4:valveposition", ACTUATOR)), temperature, actuator);
         } else {
             addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureGraph,
                     ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:temperature", TEMPERATURE)),
