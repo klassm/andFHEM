@@ -32,6 +32,8 @@ import li.klass.fhem.activities.base.DeviceNameSelectionActivity;
 import li.klass.fhem.appwidget.view.WidgetSize;
 import li.klass.fhem.appwidget.view.WidgetType;
 import li.klass.fhem.appwidget.view.widget.AppWidgetView;
+import li.klass.fhem.constants.Actions;
+import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.core.Device;
 
 import java.util.List;
@@ -82,8 +84,12 @@ public abstract class AppWidgetSelectionActivity extends DeviceNameSelectionActi
             @Override
             public void onClick(DialogInterface dialogInterface, int position) {
                 WidgetType type = widgetTypes.get(position);
-                WidgetConfiguration configuration = new WidgetConfiguration(widgetId, device.getName(), type, 0);
-                AppWidgetDataHolder.INSTANCE.saveWidgetConfigurationToPreferences(AppWidgetSelectionActivity.this, configuration);
+                WidgetConfiguration configuration = new WidgetConfiguration(widgetId, device.getName(), type);
+                AppWidgetDataHolder.INSTANCE.saveWidgetConfigurationToPreferences(configuration);
+
+                Intent intent = new Intent(Actions.WIDGET_UPDATE);
+                intent.putExtra(BundleExtraKeys.APP_WIDGET_ID, widgetId);
+                sendBroadcast(intent);
 
                 dialogInterface.dismiss();
 

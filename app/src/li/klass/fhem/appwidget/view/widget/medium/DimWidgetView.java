@@ -87,7 +87,7 @@ public class DimWidgetView extends AppWidgetView {
 
     @Override
     public boolean supports(Device<?> device) {
-        return device instanceof DimmableDevice;
+        return (device instanceof DimmableDevice) && ((DimmableDevice) device).supportsDim();
     }
 
     private Intent sendTargetDimState(DimmableDevice device, String targetState, ResultReceiver resultReceiver) {

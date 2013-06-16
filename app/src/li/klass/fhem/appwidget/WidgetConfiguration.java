@@ -31,16 +31,10 @@ public class WidgetConfiguration implements Serializable {
     public final int widgetId;
     public final String deviceName;
     public final WidgetType widgetType;
-    public final long lastWidgetUpdate;
 
-    public WidgetConfiguration(int widgetId, String deviceName, WidgetType widgetType, long lastWidgetUpdate) {
+    public WidgetConfiguration(int widgetId, String deviceName, WidgetType widgetType) {
         this.widgetId = widgetId;
         this.deviceName = deviceName;
         this.widgetType = widgetType;
-        this.lastWidgetUpdate = lastWidgetUpdate;
-    }
-
-    public WidgetConfiguration updatedWithCurrentUpdateTime() {
-        return new WidgetConfiguration(widgetId, deviceName, widgetType, System.currentTimeMillis());
     }
 }

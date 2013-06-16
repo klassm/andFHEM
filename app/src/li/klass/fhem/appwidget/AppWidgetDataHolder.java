@@ -26,6 +26,7 @@ package li.klass.fhem.appwidget;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
+import android.appwidget.AppWidgetProviderInfo;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -91,18 +92,22 @@ public class AppWidgetDataHolder {
     private void updateWidgetInCurrentThread(final AppWidgetManager appWidgetManager, final Context context,
                                              final int appWidgetId, final boolean allowRemoteUpdate) {
         final WidgetConfiguration widgetConfiguration = getWidgetConfiguration(appWidgetId);
-        if (widgetConfiguration == null) {
+        AppWidgetProviderInfo widgetInfo = appWidgetManager.getAppWidgetInfo(appWidgetId);
+        if (widgetInfo == null) {
             Log.d(AppWidgetDataHolder.class.getName(), "cannot find widget for id " + appWidgetId);
             deleteWidget(context, appWidgetId);
             return;
         }
+        if (widgetConfiguration == null) return;
+
+        long updateInterval = getConnectionDependentUpdateInterval(context);
+
         final AppWidgetView widgetView = widgetConfiguration.widgetType.widgetView;
 
         boolean doRemoteWidgetUpdates = ApplicationProperties.INSTANCE.getBooleanSharedPreference("prefWidgetRemoteUpdate", true);
-        long widgetUpdateInterval = getConnectionDependentUpdateInterval(context);
 
-        long updatePeriod = doRemoteWidgetUpdates && allowRemoteUpdate ? widgetUpdateInterval : RoomListService.NEVER_UPDATE_PERIOD;
-        scheduleUpdateIntent(context, widgetConfiguration, false, widgetUpdateInterval);
+        long updatePeriod = doRemoteWidgetUpdates && allowRemoteUpdate ? updateInterval : RoomListService.NEVER_UPDATE_PERIOD;
+        scheduleUpdateIntent(context, widgetConfiguration, false, updateInterval);
 
         Intent deviceIntent = new Intent(Actions.GET_DEVICE_FOR_NAME);
         deviceIntent.putExtra(BundleExtraKeys.DEVICE_NAME, widgetConfiguration.deviceName);
@@ -121,7 +126,7 @@ public class AppWidgetDataHolder {
 
                     try {
                         appWidgetManager.updateAppWidget(appWidgetId, content);
-                        saveWidgetConfigurationToPreferences(context, widgetConfiguration.updatedWithCurrentUpdateTime());
+//                        saveWidgetConfigurationToPreferences(context, widgetConfiguration.updatedWithCurrentUpdateTime());
                     } catch (Exception e) {
                         Log.e(TAG, "something strange happened during appwidget update", e);
                     }
@@ -137,30 +142,32 @@ public class AppWidgetDataHolder {
 
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
+        cancelUpdating(context, appWidgetId, alarmManager);
+    }
+
+    private void cancelUpdating(Context context, int appWidgetId, AlarmManager alarmManager) {
         PendingIntent updatePendingIntent = updatePendingIndentForWidgetId(context, appWidgetId);
         alarmManager.cancel(updatePendingIntent);
     }
 
-    public void saveWidgetConfigurationToPreferences(Context context, WidgetConfiguration widgetConfiguration) {
+    public void saveWidgetConfigurationToPreferences(WidgetConfiguration widgetConfiguration) {
         SharedPreferences.Editor edit = getSharedPreferencesEditor(preferenceName);
         String value = widgetConfiguration.widgetId + SAVE_SEPARATOR
                 + widgetConfiguration.deviceName + SAVE_SEPARATOR
-                + widgetConfiguration.widgetType.name() + SAVE_SEPARATOR
-                + widgetConfiguration.lastWidgetUpdate;
+                + widgetConfiguration.widgetType.name();
         edit.putString(String.valueOf(widgetConfiguration.widgetId), value);
         edit.commit();
-
-        scheduleUpdateIntent(context, widgetConfiguration, true, getConnectionDependentUpdateInterval(context));
     }
 
     private void scheduleUpdateIntent(Context context, WidgetConfiguration widgetConfiguration, boolean updateNow, long widgetUpdateInterval) {
         if (widgetUpdateInterval > 0) {
             AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-            PendingIntent sender = updatePendingIndentForWidgetId(context, widgetConfiguration.widgetId);
+            PendingIntent pendingIntent = updatePendingIndentForWidgetId(context, widgetConfiguration.widgetId);
             long now = System.currentTimeMillis();
             long firstRun = updateNow ? now : now + widgetUpdateInterval;
 
-            alarmManager.setRepeating(AlarmManager.RTC, firstRun, widgetUpdateInterval, sender);
+            cancelUpdating(context, widgetConfiguration.widgetId, alarmManager);
+            alarmManager.setRepeating(AlarmManager.RTC, firstRun, widgetUpdateInterval, pendingIntent);
         }
     }
 
@@ -193,12 +200,7 @@ public class AppWidgetDataHolder {
             return null;
         }
 
-        long lastUpdate = 0;
-        if (parts.length == 4) {
-            lastUpdate = Long.parseLong(parts[3]);
-        }
-
-        return new WidgetConfiguration(Integer.valueOf(parts[0]), parts[1], widgetType, lastUpdate);
+        return new WidgetConfiguration(Integer.valueOf(parts[0]), parts[1], widgetType);
     }
 
     private WidgetType getWidgetTypeFromName(String widgetTypeName) {
@@ -211,7 +213,7 @@ public class AppWidgetDataHolder {
     }
 
     private int getWidgetUpdateIntervalFor(String key) {
-        String value = ApplicationProperties.INSTANCE.getStringSharedPreference(key, "0");
+        String value = ApplicationProperties.INSTANCE.getStringSharedPreference(key, "3600");
         int intValue = Integer.parseInt(value);
         return intValue * 1000;
     }

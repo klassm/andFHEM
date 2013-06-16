@@ -100,6 +100,6 @@ public class ToggleWidgetView extends AppWidgetView {
 
     @Override
     public boolean supports(Device<?> device) {
-        return device instanceof ToggleableDevice;
+        return (device instanceof ToggleableDevice) && ((ToggleableDevice) device).supportsToggle();
     }
 }
