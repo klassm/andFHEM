@@ -49,7 +49,6 @@ public class DummyAdapter extends DimmableAdapter<DummyDevice> {
     @Override
     protected void afterPropertiesSet() {
         super.afterPropertiesSet();
-        detailActions.add(new AvailableTargetStatesSwitchActionRow<DummyDevice>());
 
         registerFieldListener("state", new FieldNameAddedToDetailListener<DummyDevice>() {
             @Override

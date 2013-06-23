@@ -54,6 +54,8 @@ public class ChartData implements Comparable<ChartData>, Iterable<ViewableChartS
             newData.add(new GraphEntry(new Date(date.getTime() - 1), previousValue));
             newData.add(new GraphEntry(date, value));
             newData.add(new GraphEntry(new Date(date.getTime() + 1), value));
+
+            previousValue = value;
         }
 
         return newData;
@@ -141,5 +143,15 @@ public class ChartData implements Comparable<ChartData>, Iterable<ViewableChartS
                 throw new UnsupportedOperationException("removing is not supported");
             }
         };
+    }
+
+    public void handleMinMax(Date minimumX, Date maximumX, double minimumY, double maximumY) {
+        if (seriesDescription.isShowDiscreteValues()) {
+            GraphEntry first = graphData.get(0);
+            GraphEntry last = graphData.get(graphData.size() - 1);
+
+            graphData.add(0, new GraphEntry(minimumX, first.getValue()));
+            graphData.add(new GraphEntry(maximumX, last.getValue()));
+        }
     }
 }

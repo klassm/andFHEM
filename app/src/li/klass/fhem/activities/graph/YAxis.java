@@ -56,6 +56,10 @@ public class YAxis implements Comparable<YAxis>, Iterable<ViewableChartSeries> {
 
     public void afterSeriesSet() {
         Collections.sort(charts);
+
+        for (ChartData chart : charts) {
+            chart.handleMinMax(minimumX, maximumX, minimumY, maximumY);
+        }
     }
 
     public int getTotalNumberOfSeries() {

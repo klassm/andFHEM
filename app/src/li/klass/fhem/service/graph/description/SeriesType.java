@@ -10,7 +10,7 @@ public enum SeriesType {
     HUMIDITY(Color.GREEN, R.string.yAxisHumidity),
     CURRENT_USAGE(Color.RED, R.string.yAxisCurrentUsage),
     CUMULATIVE_USAGE(Color.GREEN, R.string.yAxisCumulativeUsage),
-    ACTUATOR(Color.YELLOW, R.string.yAxisActuator),
+    ACTUATOR(Color.BLUE, R.string.yAxisActuator),
     LITRE_CONTENT(Color.RED, R.string.yAxisLitreContent),
     RAW(Color.GREEN, R.string.yAxisRaw),
     TOGGLE_STATE(Color.RED, R.string.yAxisToggleState),
