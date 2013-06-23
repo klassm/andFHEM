@@ -48,6 +48,7 @@ public class CULHMConfiguration extends HeatingConfiguration<FilledTemperatureIn
 
         String shortName = key.substring("TEMPLIST".length());
         DayUtil.Day day = DayUtil.getDayForShortName(shortName);
+        if (day == null) return;
 
         String[] parts = value.split(" ");
         for (int i = 0; i < parts.length; i++) {
