@@ -125,6 +125,7 @@ public abstract class DeviceNameListFragment extends BaseFragment {
     }
 
     protected void deviceListReceived(RoomDeviceList roomDeviceList) {
+        if (adapter == null || getView() == null) return;
         filterDevices(roomDeviceList);
 
         String selectedDevice = creationBundle.getString(BundleExtraKeys.DEVICE_NAME);

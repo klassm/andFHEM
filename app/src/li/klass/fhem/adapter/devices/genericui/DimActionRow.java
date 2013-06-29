@@ -78,6 +78,7 @@ public class DimActionRow<D extends DimmableDevice<D>> {
             @Override
             public void onProgressChanged(SeekBar seekBar, final int progress, boolean fromUser) {
                 this.progress = progress;
+
                 if (updateView != null) {
                     updateView.setText(device.getDimStateForPosition(progress));
                 }
