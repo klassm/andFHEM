@@ -29,6 +29,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
+import android.widget.TableRow;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.core.DimmableDevice;
@@ -36,10 +37,15 @@ import li.klass.fhem.domain.core.DimmableDevice;
 public class DimActionRowFullWidth<D extends DimmableDevice<D>> extends SeekBarActionRowFullWidth<D> {
 
     public DimActionRowFullWidth(D device, int layoutId) {
+        this(device, layoutId, null);
+    }
+
+    public DimActionRowFullWidth(D device, int layoutId, TableRow updateRow) {
         super(
                 toDimProgress(device.getDimPosition(), device.getDimLowerBound(), device.getDimStep()),
+                0,
                 toDimProgress(device.getDimUpperBound(), device.getDimLowerBound(), device.getDimStep()),
-                layoutId);
+                layoutId, updateRow);
     }
 
     public void onStopTrackingTouch(final Context context, D device, int progress) {
@@ -62,5 +68,11 @@ public class DimActionRowFullWidth<D extends DimmableDevice<D>> extends SeekBarA
 
     static int dimProgressToDimState(int progress, int lowerBound, int step) {
         return progress * step + lowerBound;
+    }
+
+    @Override
+    public String toUpdateText(D device, int progress) {
+        int dimProgress = toDimProgress(progress, device.getDimLowerBound(), device.getDimStep());
+        return device.getDimStateForPosition(dimProgress);
     }
 }

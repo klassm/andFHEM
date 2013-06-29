@@ -39,14 +39,23 @@ import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.core.DimmableDevice;
 
 public class DimActionRow<D extends DimmableDevice<D>> {
+    private TextView updateView;
     private String description;
     private int layout;
 
     public static final int LAYOUT_OVERVIEW = R.layout.device_overview_seekbarrow;
 
     public DimActionRow(String description, int layout) {
+        this(description, layout, null);
+    }
+
+    public DimActionRow(String description, int layout, TableRow updateRow) {
         this.description = description;
         this.layout = layout;
+
+        if (updateRow != null) {
+            updateView = (TextView) updateRow.findViewById(R.id.value);
+        }
     }
 
     public TableRow createRow(LayoutInflater inflater, D device) {
@@ -69,6 +78,9 @@ public class DimActionRow<D extends DimmableDevice<D>> {
             @Override
             public void onProgressChanged(SeekBar seekBar, final int progress, boolean fromUser) {
                 this.progress = progress;
+                if (updateView != null) {
+                    updateView.setText(device.getDimStateForPosition(progress));
+                }
             }
 
             @Override

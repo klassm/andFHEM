@@ -48,7 +48,7 @@ public abstract class SeekBarActionRowFullWidthAndButton<T extends Device<T>> ex
     }
 
     public SeekBarActionRowFullWidthAndButton(Context context, int initialProgress, int minimumProgress, int maximumProgress) {
-        super(initialProgress, minimumProgress, maximumProgress, R.layout.device_detail_seekbarrow_with_button);
+        super(initialProgress, minimumProgress, maximumProgress, R.layout.device_detail_seekbarrow_with_button, null);
         this.context = context;
     }
 

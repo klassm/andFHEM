@@ -28,6 +28,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.widget.SeekBar;
 import android.widget.TableRow;
+import android.widget.TextView;
 import li.klass.fhem.R;
 import li.klass.fhem.domain.core.Device;
 
@@ -36,16 +37,22 @@ public abstract class SeekBarActionRowFullWidth<T extends Device> {
     private int layoutId;
     private int maximumProgress;
     private int minimumProgress;
+    private TextView updateView;
 
     public SeekBarActionRowFullWidth(int initialProgress, int maximumProgress, int layoutId) {
-        this(initialProgress, 0, maximumProgress, layoutId);
+        this(initialProgress, 0, maximumProgress, layoutId, null);
     }
 
-    public SeekBarActionRowFullWidth(int initialProgress, int minimumProgress, int maximumProgress, int layoutId) {
+    public SeekBarActionRowFullWidth(int initialProgress, int minimumProgress, int maximumProgress, int layoutId,
+                                     TableRow updateRow) {
         this.initialProgress = initialProgress - minimumProgress;
         this.maximumProgress = maximumProgress;
         this.minimumProgress = minimumProgress;
         this.layoutId = layoutId;
+
+        if (updateRow != null) {
+            updateView = (TextView) updateRow.findViewById(R.id.value);
+        }
     }
 
     public TableRow createRow(LayoutInflater inflater, T device) {
@@ -77,6 +84,9 @@ public abstract class SeekBarActionRowFullWidth<T extends Device> {
             public void onProgressChanged(SeekBar seekBar, final int progress, boolean fromUser) {
                 this.progress = progress + minimumProgress;
                 SeekBarActionRowFullWidth.this.onProgressChanged(seekBar.getContext(), device, progress);
+                if (updateView != null) {
+                    updateView.setText(toUpdateText(device, progress));
+                }
             }
 
             @Override
@@ -91,6 +101,10 @@ public abstract class SeekBarActionRowFullWidth<T extends Device> {
     }
 
     public void onProgressChanged(Context context, T device, int progress) {
+    }
+
+    public String toUpdateText(T device, int progress) {
+        return progress + "";
     }
 
     public abstract void onStopTrackingTouch(final Context context, T device, int progress);
