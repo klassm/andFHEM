@@ -23,10 +23,27 @@
 
 package li.klass.fhem.domain;
 
+import li.klass.fhem.R;
 import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
+import li.klass.fhem.service.graph.description.ChartSeriesDescription;
+
+import java.util.List;
+
+import static li.klass.fhem.service.graph.description.SeriesType.ACTUATOR;
+import static li.klass.fhem.service.graph.description.SeriesType.DESIRED_TEMPERATURE;
+import static li.klass.fhem.service.graph.description.SeriesType.TEMPERATURE;
 
 @DetailOverviewViewSettings(showState = true, stateStringId = ResourceIdMapper.actuator)
 public class FHT8VDevice extends Device<FHT8VDevice> {
+
+    @Override
+    protected void fillDeviceCharts(List<DeviceChart> chartSeries) {
+        super.fillDeviceCharts(chartSeries);
+
+        addDeviceChartIfNotNull(new DeviceChart(R.string.actuatorGraph,
+                ChartSeriesDescription.getDiscreteValuesInstance(R.string.actuator, "4:actuator.*[0-9]+%:0:int", ACTUATOR)));
+    }
 }
