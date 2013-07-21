@@ -66,7 +66,7 @@ public class GCMIntentService extends GCMBaseIntentService {
             changeMap.put(parts[0].trim().toUpperCase(), parts[1].trim());
         }
 
-        generateNotification(this, deviceName + " : " + Arrays.toString(changes));
+//        generateNotification(this, deviceName + " : " + Arrays.toString(changes));
 
         Intent parseIntent = new Intent(Actions.UPDATE_DEVICE_WITH_UPDATE_MAP);
         parseIntent.putExtra(BundleExtraKeys.DEVICE_NAME, deviceName);
