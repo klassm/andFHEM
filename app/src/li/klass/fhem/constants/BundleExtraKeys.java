@@ -89,4 +89,6 @@ public class BundleExtraKeys {
     public static final String STATE_NAME = "STATE_NAME";
     public static final String STATE_VALUE = "STATE_VALUE";
 
+    public static final String UPDATE_MAP = "UPDATE_MAP";
+    public static final String GCM_REGISTRATION_ID = "GCM_REGISTRATION_ID";
 }

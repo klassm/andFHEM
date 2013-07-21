@@ -22,20 +22,27 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.fhem;
+package li.klass.fhem.domain;
 
-import android.graphics.Bitmap;
+import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+import org.junit.Test;
 
-import java.util.Date;
+import static org.hamcrest.Matchers.hasItemInArray;
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
 
-public interface FHEMConnection {
-    static final int RESTART_EVENT_RECEIVER_DELAY = 1000;
+public class GCMSendDeviceTest extends DeviceXMLParsingBase {
 
-    String xmllist();
+    @Test
+    public void testAttributesProperlySet() {
+        GCMSendDevice device = getDeviceFor("gcm");
+        assertThat(device.getApiKey(), is("AIzaSyCs7OxUcPp5"));
+        assertThat(device.getRegIds(), hasItemInArray("APA91bHTAy8Xp4uE4FyCJuMnAn"));
+        assertThat(device.getRegIds(), hasItemInArray("BAPA91bHTGy8Xp5uE4FyCJuMnAn"));
+    }
 
-    String fileLogData(String logName, Date fromDate, Date toDate, String columnSpec);
-
-    String executeCommand(String command);
-
-    Bitmap requestBitmap(String relativePath);
+    @Override
+    protected String getFileName() {
+        return "gcmsend.xml";
+    }
 }

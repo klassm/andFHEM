@@ -41,6 +41,7 @@ public class Actions {
     public static final String GET_ROOM_DEVICE_LIST = prefix + "GET_ROOM_DEVICE_LIST";
     public static final String GET_ROOM_NAME_LIST = prefix + "GET_ROOM_NAME_LIST";
     public static final String GET_DEVICE_FOR_NAME = prefix + "GET_DEVICE_FOR_NAME";
+    public static final String UPDATE_DEVICE_WITH_UPDATE_MAP = prefix + "UPDATE_DEVICE_WITH_UPDATE_MAP";
 
     public static final String FAVORITE_ROOM_LIST = prefix + "GET_FAVORITE_LIST";
     public static final String FAVORITE_ADD = prefix + "ADD_FAVORITE";
@@ -92,4 +93,8 @@ public class Actions {
 
     public static final String SWITCH_TO_INITIAL_FRAGMENT = prefix + "SWITCH_TO_INITAL_FRAGMENT";
     public static final String TOP_LEVEL_BACK = prefix + "TOP_LEVEL_BACK";
+
+    public static final String GCM_REGISTERED = prefix + "GCM_REGISTERED";
+    public static final String GCM_REMOVE_ID = prefix + "GCM_REMOVE_ID";
+    public static final String GCM_ADD_SELF = prefix + "GCM_ADD_SELF";
 }

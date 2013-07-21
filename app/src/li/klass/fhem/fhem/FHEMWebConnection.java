@@ -72,24 +72,8 @@ public class FHEMWebConnection implements FHEMConnection {
 
     public static final int CONNECTION_TIMEOUT = 3000;
     public static final int SOCKET_TIMEOUT = 20000;
-    public static final int SOCKET_TIMEOUT_EVENT_RECEIVER = 20000;
     public static final String TAG = FHEMWebConnection.class.getName();
     private DefaultHttpClient client;
-    private EventReceiver eventReceiver;
-    // create new Handler on main Thread! The thread creating this object
-    // may die before we use the handler, which ends in a post message call on a
-    // dead thread. Don't do heavy operations on this handler, cause they will
-    // be executed on the UI thread!!!
-    private final Handler handler = new Handler(Looper.getMainLooper());
-    private int currentRestartDelay = RESTART_EVENT_RECEIVER_DELAY;
-    private Runnable startEventReceiverRunnable = new Runnable() {
-
-        @Override
-        public void run() {
-            eventReceiver = new EventReceiver();
-            eventReceiver.execute();
-        }
-    };
 
     public static final String FHEMWEB_URL = "FHEMWEB_URL";
     public static final String FHEMWEB_USERNAME = "FHEMWEB_USERNAME";
@@ -244,92 +228,6 @@ public class FHEMWebConnection implements FHEMConnection {
             return new DefaultHttpClient(ccm, params);
         } catch (Exception e) {
             return new DefaultHttpClient();
-        }
-    }
-
-    @Override
-    public void startEventReceiver() {
-        if (eventReceiver == null || eventReceiver.isCancelled()) {
-            startNewEventReceiver(0);
-        }
-    }
-
-    private void startNewEventReceiver(int delay) {
-        handler.postDelayed(startEventReceiverRunnable, delay);
-    }
-
-    @Override
-    public void stopEventReceiver() {
-        handler.removeCallbacks(startEventReceiverRunnable);
-        if (eventReceiver != null && !eventReceiver.isCancelled()) {
-            eventReceiver.cancel(false);
-        }
-    }
-
-    private class EventReceiver extends AsyncTask<Void, Void, Void> {
-        private DefaultHttpClient eventClient = createNewHTTPClient(
-                CONNECTION_TIMEOUT, SOCKET_TIMEOUT_EVENT_RECEIVER);
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            Log.i(TAG, "event receiver started");
-            while (!isCancelled()) {
-
-                try {
-                    InputStream response = executeRequest(
-                            "?XHR=1&inform=console", eventClient);
-
-                    // reset current restart delay after a successful
-                    // connection
-                    currentRestartDelay = RESTART_EVENT_RECEIVER_DELAY;
-
-                    try {
-                        String[] contentLines = IOUtils.toString(response)
-                                .split("<br>");
-
-                        if (contentLines.length > 0) {
-                            for (String line : contentLines) {
-                                try {
-                                    DeviceListParser.INSTANCE.parseEvent(line
-                                            .trim());
-                                } catch (Exception e) {
-                                    Log.e(TAG, "event parse error. Event: "
-                                            + line, e);
-                                }
-                            }
-
-                            Intent refreshIntent = new Intent(
-                                    li.klass.fhem.constants.Actions.DO_UPDATE);
-                            refreshIntent.putExtra(DO_REFRESH, false);
-                            AndFHEMApplication.getContext().sendBroadcast(
-                                    refreshIntent);
-                        }
-                    } catch (SocketTimeoutException e) {
-                        // do nothing, SOCKET_TIMEOUT_EVENT_RECEIVER is over
-                        // this is used to check isCancelled-Method periodically
-                    } catch (IOException e) {
-                        Log.e(TAG,
-                                "IO error while reading event input stream.", e);
-                    }
-                } catch (Exception e) {
-                    // bad things happened, restart event receiver
-                    Log.e(TAG, "http connection closed unexpectedly", e);
-
-                    // increase delay to not drain too much battery power
-                    // increase up to 32 times the amount of
-                    // RESTART_EVENT_RECEIVER_DELAY
-                    if (currentRestartDelay / RESTART_EVENT_RECEIVER_DELAY < 32) {
-                        currentRestartDelay *= 2;
-                    }
-
-                    startNewEventReceiver(currentRestartDelay);
-                    cancel(false);
-                }
-            }
-
-            Log.i(TAG, "event receiver stopped");
-
-            return null;
         }
     }
 }

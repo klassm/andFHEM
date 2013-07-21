@@ -87,7 +87,8 @@ public enum DeviceType {
     HUE("HUEDevice", HUEDevice.class, new HueDeviceAdapter()),
     YAMAHA_AVR("YAMAHA_AVR", YamahaAVRDevice.class, new YamahaAVRAdapter()),
     FRMIN("FRM_IN", FRMInDevice.class),
-    GENSHELLSWITCH("GenShellSwitch", GenShellSwitchDevice.class, new ToggleableAdapterWithSwitchActionRow<GenShellSwitchDevice>(GenShellSwitchDevice.class));
+    GENSHELLSWITCH("GenShellSwitch", GenShellSwitchDevice.class, new ToggleableAdapterWithSwitchActionRow<GenShellSwitchDevice>(GenShellSwitchDevice.class)),
+    GCM_SEND("gcmsend", GCMSendDevice.class, new GCMSendDeviceAdapter()),;
 
     private String xmllistTag;
     private Class<? extends Device> deviceClass;

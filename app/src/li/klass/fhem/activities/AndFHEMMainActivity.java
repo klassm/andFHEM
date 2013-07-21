@@ -30,18 +30,24 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import com.actionbarsherlock.view.MenuItem;
+import com.google.android.gcm.GCMRegistrar;
 import li.klass.fhem.ApplicationUrls;
 import li.klass.fhem.R;
 import li.klass.fhem.activities.core.FragmentBaseActivity;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
+import li.klass.fhem.constants.PreferenceKeys;
 import li.klass.fhem.fragments.ConversionFragment;
 import li.klass.fhem.fragments.PremiumFragment;
 import li.klass.fhem.fragments.SendCommandFragment;
 import li.klass.fhem.fragments.TimerListFragment;
+import li.klass.fhem.GCMIntentService;
 import li.klass.fhem.update.UpdateHandler;
+import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.DialogUtil;
+import li.klass.fhem.util.StringUtil;
 
+import static li.klass.fhem.GCMIntentService.registerWithGCM;
 import static li.klass.fhem.constants.BundleExtraKeys.DO_REFRESH;
 
 public class AndFHEMMainActivity extends FragmentBaseActivity {
@@ -52,6 +58,8 @@ public class AndFHEMMainActivity extends FragmentBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         UpdateHandler.INSTANCE.onUpdate(this);
+
+        registerWithGCM(this);
     }
 
     @Override

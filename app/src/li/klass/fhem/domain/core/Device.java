@@ -34,6 +34,7 @@ import li.klass.fhem.domain.floorplan.FloorplanPosition;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.service.room.AssociatedDeviceCallback;
+import li.klass.fhem.util.DateFormatUtil;
 import li.klass.fhem.util.StringUtil;
 import org.w3c.dom.NamedNodeMap;
 
@@ -79,6 +80,11 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
         if (tagName.equals("INT")) {
             state = value;
         }
+    }
+
+    public void gcmState(String value) {
+        state = value;
+        measured = DateFormatUtil.toReadable(new Date());
     }
 
     public void readDEF(String value) {
@@ -284,6 +290,7 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
      * @param chartSeries fill me with chart descriptions
      */
     protected void fillDeviceCharts(List<DeviceChart> chartSeries) {
+        deviceCharts.clear();
         if (fileLog == null) return;
 
         for (FileLogDevice.CustomGraph customGraph : fileLog.getCustomGraphs()) {

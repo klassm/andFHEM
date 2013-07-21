@@ -33,6 +33,18 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="com.android.vending.BILLING"/>
 
+    <!--GCM-->
+
+    <permission
+            android:name="li.klass.fhem.permission.C2D_MESSAGE"
+            android:protectionLevel="signature"/>
+
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE"/>
+    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="li.klass.fhem.permission.C2D_MESSAGE"/>
+
+
     <uses-feature android:name="android.hardware.touchscreen"/>
 
     <supports-screens android:xlargeScreens="true"
@@ -117,6 +129,7 @@
                 <action android:name="li.klass.fhem.constants.Actions.GET_ROOM_NAME_LIST"/>
                 <action android:name="li.klass.fhem.constants.Actions.GET_ROOM_DEVICE_LIST"/>
                 <action android:name="li.klass.fhem.constants.Actions.GET_DEVICE_FOR_NAME"/>
+                <action android:name="li.klass.fhem.constants.Actions.UPDATE_DEVICE_WITH_UPDATE_MAP"/>
             </intent-filter>
         </service>
 
@@ -155,6 +168,8 @@
                 <action android:name="li.klass.fhem.constants.Actions.DEVICE_TIMER_NEW"/>
                 <action android:name="li.klass.fhem.constants.Actions.DEVICE_TIMER_MODIFY"/>
                 <action android:name="li.klass.fhem.constants.Actions.DEVICE_SET_SUB_STATE"/>
+                <action android:name="li.klass.fhem.constants.Actions.GCM_REMOVE_ID"/>
+                <action android:name="li.klass.fhem.constants.Actions.GCM_ADD_SELF"/>
             </intent-filter>
         </service>
 
@@ -219,6 +234,17 @@
                 <action android:name="com.twofortyfouram.locale.intent.action.FIRE_SETTING"/>
             </intent-filter>
         </receiver>
+
+        <receiver
+                android:name="com.google.android.gcm.GCMBroadcastReceiver"
+                android:permission="com.google.android.c2dm.permission.SEND">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION"/>
+                <category android:name="li.klass.fhem"/>
+            </intent-filter>
+        </receiver>
+        <service android:name=".GCMIntentService"/>
 
         <activity
                 android:name=".activities.FHEMUrlActivity"

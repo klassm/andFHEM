@@ -74,10 +74,11 @@
                 android:title="@string/prefUpdateOnApplicationStart"
                 android:defaultValue="false"
                 />
-        <CheckBoxPreference
-                android:key="EVENT_RECEIVER"
-                android:title="@string/prefUseEventReceiver"
-                android:defaultValue="false"
+        <EditTextPreference
+                android:key="GCM_PROJECT_ID"
+                android:title="@string/prefGCMProjectId"
+                android:inputType="number"
+                android:defaultValue=""
                 />
         <CheckBoxPreference
                 android:key="SHOW_SET_VALUE_BUTTONS"

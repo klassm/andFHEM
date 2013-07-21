@@ -105,6 +105,7 @@ public enum ResourceIdMapper {
     saturation(R.string.saturation),
     hue(R.string.hue),
     alarm(R.string.alarm),
+    apiKey(R.string.apiKey),
 
     none(-1);
 

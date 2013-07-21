@@ -32,6 +32,7 @@ import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.domain.FHTDevice;
+import li.klass.fhem.domain.GCMSendDevice;
 import li.klass.fhem.domain.WOLDevice;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DimmableDevice;
@@ -162,6 +163,11 @@ public class DeviceIntentService extends ConvenientIntentService {
             String value = intent.getStringExtra(STATE_VALUE);
 
             GenericDeviceService.INSTANCE.setSubState(device, name, value);
+        } else if (action.equals(Actions.GCM_ADD_SELF)) {
+            GCMSendDeviceService.INSTANCE.addSelf((GCMSendDevice) device);
+        } else if (action.equals(Actions.GCM_REMOVE_ID)) {
+            String registrationId = intent.getStringExtra(BundleExtraKeys.GCM_REGISTRATION_ID);
+            GCMSendDeviceService.INSTANCE.removeRegistrationId((GCMSendDevice) device, registrationId);
         }
         return SUCCESS;
     }

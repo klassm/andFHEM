@@ -77,6 +77,14 @@ public class RoomListService extends AbstractService {
     private RoomListService() {
     }
 
+    public void parseReceivedDeviceStateMap(String deviceName, Map<String, String> updateMap) {
+        Device device = getDeviceForName(deviceName, NEVER_UPDATE_PERIOD);
+        if (device == null) return;
+
+        DeviceListParser.INSTANCE.fillDeviceWith(device, updateMap);
+        Log.i(TAG, "updated " + device.getName() + " with " + updateMap.size() + " new values!");
+    }
+
     /**
      * Looks for a device with a given name.
      *

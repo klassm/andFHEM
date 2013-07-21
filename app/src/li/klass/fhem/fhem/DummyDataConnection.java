@@ -97,14 +97,4 @@ public class DummyDataConnection implements FHEMConnection {
         Log.e(TAG, "get image: " + relativePath);
         return null;
     }
-
-    @Override
-    public void startEventReceiver() {
-        Log.e(TAG, "start event receiver");
-    }
-
-    @Override
-    public void stopEventReceiver() {
-        Log.e(TAG, "stop event receiver");
-    }
 }

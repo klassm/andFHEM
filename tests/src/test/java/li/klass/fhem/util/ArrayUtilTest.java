@@ -27,7 +27,9 @@ package li.klass.fhem.util;
 import org.junit.Test;
 
 import static li.klass.fhem.util.ArrayUtil.contains;
+import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 public class ArrayUtilTest {
@@ -39,5 +41,26 @@ public class ArrayUtilTest {
         assertTrue(contains(values, "a", "b"));
         assertFalse(contains(values, "e"));
         assertFalse(contains(null, "e"));
+    }
+
+    @Test
+    public void testJoin() {
+        String[] values = new String[]{"a", "b", "c", "d"};
+        assertThat(ArrayUtil.join(values, "|"), is("a|b|c|d"));
+    }
+
+    @Test
+    public void addToArray() {
+        String[] values = new String[]{"a"};
+        assertThat(ArrayUtil.addToArray(values, "b"), is(new String[]{"a", "b"}));
+    }
+
+    @Test
+    public void removeFromArray() {
+        String[] values = new String[]{"a", "b"};
+        assertThat(ArrayUtil.removeFromArray(values, "b"), is(new String[]{"a"}));
+
+        String[] values1 = new String[]{"b", "b"};
+        assertThat(ArrayUtil.removeFromArray(values1, "b"), is(new String[]{}));
     }
 }

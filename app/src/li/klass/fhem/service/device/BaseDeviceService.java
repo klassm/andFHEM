@@ -22,20 +22,18 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.fhem;
+package li.klass.fhem.service.device;
 
-import android.graphics.Bitmap;
+import android.content.Intent;
+import li.klass.fhem.AndFHEMApplication;
+import li.klass.fhem.R;
+import li.klass.fhem.constants.Actions;
+import li.klass.fhem.constants.BundleExtraKeys;
 
-import java.util.Date;
-
-public interface FHEMConnection {
-    static final int RESTART_EVENT_RECEIVER_DELAY = 1000;
-
-    String xmllist();
-
-    String fileLogData(String logName, Date fromDate, Date toDate, String columnSpec);
-
-    String executeCommand(String command);
-
-    Bitmap requestBitmap(String relativePath);
+public class BaseDeviceService {
+    protected void showToast(int stringId) {
+        Intent intent = new Intent(Actions.SHOW_TOAST);
+        intent.putExtra(BundleExtraKeys.TOAST_STRING_ID, R.string.gcmAlreadyRegistered);
+        AndFHEMApplication.getContext().sendBroadcast(intent);
+    }
 }

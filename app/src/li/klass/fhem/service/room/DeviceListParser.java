@@ -47,6 +47,7 @@ import org.xml.sax.InputSource;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.StringReader;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
 
@@ -430,6 +431,42 @@ public class DeviceListParser {
                 invokeDeviceAttributeMethod(cache, device, state, value, e.getAttributes(), "INT");
                 device.readMEASURED(measured);
             }
+        }
+    }
+
+    public void fillDeviceWith(Device device, Map<String, String> updates) {
+        Class<? extends Device> deviceClass = device.getClass();
+
+        fillDeviceWith(device, updates, deviceClass);
+    }
+
+    private void fillDeviceWith(Device device, Map<String, String> updates, Class<?> deviceClass) {
+        Method[] methods = deviceClass.getDeclaredMethods();
+        boolean changed = false;
+
+        for (Method method : methods) {
+            if (method.getParameterTypes().length != 1) continue;
+
+            String name = method.getName();
+            if (!name.startsWith("read") && !name.startsWith("gcm")) continue;
+
+            name = name.replaceAll("read", "").replaceAll("gcm", "").toUpperCase();
+            if (updates.containsKey(name)) {
+                try {
+                    Log.i(TAG, "invoke " + method.getName());
+                    method.setAccessible(true);
+                    method.invoke(device, updates.get(name));
+                    changed = true;
+                } catch (Exception e) {
+                    Log.e(TAG, "cannot invoke " + method.getName() + " for argument " + updates.get(name));
+                }
+            }
+        }
+
+        if (changed) {
+            device.afterXMLRead();
+        } else if (deviceClass.getSuperclass() != null) {
+            fillDeviceWith(device, updates, deviceClass.getSuperclass());
         }
     }
 

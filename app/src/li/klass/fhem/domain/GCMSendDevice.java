@@ -22,20 +22,33 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.fhem;
+package li.klass.fhem.domain;
 
-import android.graphics.Bitmap;
+import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
+import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
+import li.klass.fhem.domain.genericview.ShowField;
 
-import java.util.Date;
+@DetailOverviewViewSettings(showState = true)
+public class GCMSendDevice extends Device<GCMSendDevice> {
 
-public interface FHEMConnection {
-    static final int RESTART_EVENT_RECEIVER_DELAY = 1000;
+    @ShowField(description = ResourceIdMapper.apiKey)
+    private String apiKey;
+    private String[] regIds;
 
-    String xmllist();
+    public void readAPIKEY(String value) {
+        apiKey = value;
+    }
 
-    String fileLogData(String logName, Date fromDate, Date toDate, String columnSpec);
+    public void readREGIDS(String value) {
+        regIds = value.split("\\|");
+    }
 
-    String executeCommand(String command);
+    public String[] getRegIds() {
+        return regIds;
+    }
 
-    Bitmap requestBitmap(String relativePath);
+    public String getApiKey() {
+        return apiKey;
+    }
 }

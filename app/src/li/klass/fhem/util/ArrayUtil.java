@@ -42,4 +42,39 @@ public class ArrayUtil {
         }
         return false;
     }
+
+    public static String join(String[] array, String delimiter) {
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < array.length; i++) {
+            if (i != 0) builder.append(delimiter);
+            builder.append(array[i]);
+        }
+
+        return builder.toString();
+    }
+
+    public static String[] addToArray(String[] array, String newElement) {
+        String[] newArray = new String[array.length + 1];
+
+        System.arraycopy(array, 0, newArray, 0, array.length);
+        newArray[array.length] = newElement;
+
+        return newArray;
+    }
+
+    public static String[] removeFromArray(String[] array, String toRemove) {
+        int counter = 0;
+
+        String[] newArray = new String[array.length];
+        for (String element : array) {
+            if (!element.equals(toRemove)) {
+                newArray[counter++] = element;
+            }
+        }
+
+        String[] ret = new String[counter];
+        System.arraycopy(newArray, 0, ret, 0, ret.length);
+
+        return ret;
+    }
 }
