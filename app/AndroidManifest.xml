@@ -180,6 +180,15 @@
             </intent-filter>
         </service>
 
+        <service android:name=".service.intent.NotificationIntentService" android:exported="false">
+            <intent-filter>
+                <action android:name="li.klass.fhem.constants.Actions.DEVICE_RENAME"/>
+                <action android:name="li.klass.fhem.constants.Actions.NOTIFICATION_SET_FOR_DEVICE"/>
+                <action android:name="li.klass.fhem.constants.Actions.NOTIFICATION_GET_FOR_DEVICE"/>
+                <action android:name="li.klass.fhem.constants.Actions.NOTIFICATION_TRIGGER"/>
+            </intent-filter>
+        </service>
+
         <service android:name=".service.intent.FloorplanIntentService" android:exported="false">
             <intent-filter>
                 <action android:name="li.klass.fhem.constants.Actions.FLOORPLAN_IMAGE"/>

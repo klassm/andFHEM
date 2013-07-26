@@ -156,6 +156,9 @@
     <string name="gcmAlreadyRegistered">Device is already registered!</string>
     <string name="gcmRegistrationNotActive">Cannot register. GCM not active!</string>
     <string name="gcmRegisterThis">Register this device</string>
+    <string name="notificationAllUpdates">All updates</string>
+    <string name="notificationStateUpdates">Only state updates</string>
+    <string name="notificationNoUpdates">None</string>
 
     <string name="switchDevice">Switch</string>
     <string name="preferences">Preferences</string>
@@ -177,6 +180,7 @@
     <string name="context_alias">Set alias</string>
     <string name="context_delete">Delete device</string>
     <string name="context_move">Move device</string>
+    <string name="context_notification">Notifications</string>
 
     <string name="areYouSure">Are you sure?</string>
     <string name="areYouSureText">Are you sure you want to set %1$s to %2$s?</string>

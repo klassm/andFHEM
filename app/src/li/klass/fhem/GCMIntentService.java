@@ -66,8 +66,6 @@ public class GCMIntentService extends GCMBaseIntentService {
             changeMap.put(parts[0].trim().toUpperCase(), parts[1].trim());
         }
 
-//        generateNotification(this, deviceName + " : " + Arrays.toString(changes));
-
         Intent parseIntent = new Intent(Actions.UPDATE_DEVICE_WITH_UPDATE_MAP);
         parseIntent.putExtra(BundleExtraKeys.DEVICE_NAME, deviceName);
         parseIntent.putExtra(BundleExtraKeys.UPDATE_MAP, (Serializable) changeMap);
@@ -77,9 +75,6 @@ public class GCMIntentService extends GCMBaseIntentService {
     @Override
     protected void onDeletedMessages(Context context, int total) {
         Log.i(TAG, "Received deleted messages notification");
-        String message = "deleted " + total;
-
-        generateNotification(context, message);
     }
 
     @Override
@@ -92,27 +87,6 @@ public class GCMIntentService extends GCMBaseIntentService {
         // log message
         Log.i(TAG, "Received recoverable error: " + errorId);
         return super.onRecoverableError(context, errorId);
-    }
-
-    /**
-     * Issues a notification to inform the user that server has sent a message.
-     */
-    private static void generateNotification(Context context, String message) {
-        int icon = R.drawable.ic_launcher;
-        long when = System.currentTimeMillis();
-        NotificationManager notificationManager = (NotificationManager)
-                context.getSystemService(Context.NOTIFICATION_SERVICE);
-        Notification notification = new Notification(icon, message, when);
-        String title = context.getString(R.string.app_name);
-        Intent notificationIntent = new Intent(context, AndFHEMMainActivity.class);
-        // set intent so it does not start a new activity
-        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-                Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        PendingIntent intent =
-                PendingIntent.getActivity(context, 0, notificationIntent, 0);
-        notification.setLatestEventInfo(context, title, message, intent);
-        notification.flags |= Notification.FLAG_AUTO_CANCEL;
-        notificationManager.notify(0, notification);
     }
 
     public static void registerWithGCM(Context context) {

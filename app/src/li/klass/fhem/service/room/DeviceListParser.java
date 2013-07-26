@@ -29,12 +29,15 @@ import android.content.Intent;
 import android.util.Log;
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
+import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.FileLogDevice;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceType;
 import li.klass.fhem.domain.core.RoomDeviceList;
+import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
+import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.exception.AndFHEMException;
 import li.klass.fhem.exception.DeviceListParseException;
 import li.klass.fhem.exception.HostConnectionException;
@@ -456,6 +459,7 @@ public class DeviceListParser {
                     Log.i(TAG, "invoke " + method.getName());
                     method.setAccessible(true);
                     method.invoke(device, updates.get(name));
+
                     changed = true;
                 } catch (Exception e) {
                     Log.e(TAG, "cannot invoke " + method.getName() + " for argument " + updates.get(name));

@@ -34,7 +34,7 @@ import li.klass.fhem.service.CommandExecutionService;
 
 import java.util.ArrayList;
 
-public class SendCommandIntentService extends ConvenientIntentService  {
+public class SendCommandIntentService extends ConvenientIntentService {
     private static final String PREFERENCES_NAME = "SendCommandStorage";
     private static final String CURRENT_STORAGE_POINTER_NAME = "currentPointer";
     private static final String STORAGE_PREFIX = "RECENT_COMMAND_";
@@ -51,7 +51,7 @@ public class SendCommandIntentService extends ConvenientIntentService  {
 
         if (action.equals(Actions.EXECUTE_COMMAND)) {
             executeCommand(intent, resultReceiver);
-        } else if (action.equals(Actions.RECENT_COMMAND_LIST))  {
+        } else if (action.equals(Actions.RECENT_COMMAND_LIST)) {
             sendSingleExtraResult(resultReceiver, ResultCodes.SUCCESS, BundleExtraKeys.RECENT_COMMANDS, getRecentCommands());
         }
 

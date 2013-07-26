@@ -28,7 +28,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.*;
 import android.widget.AdapterView;
@@ -49,6 +51,7 @@ import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.advertisement.AdvertisementUtil;
 import li.klass.fhem.util.device.DeviceActionUtil;
 import li.klass.fhem.widget.GridViewWithSections;
+import li.klass.fhem.widget.notification.NotificationSettingView;
 
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -79,6 +82,7 @@ public abstract class DeviceListFragment extends BaseFragment {
     public static final int CONTEXT_MENU_DELETE = 4;
     public static final int CONTEXT_MENU_MOVE = 5;
     public static final int CONTEXT_MENU_ALIAS = 6;
+    public static final int CONTEXT_MENU_NOTIFICATION = 7;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -182,6 +186,7 @@ public abstract class DeviceListFragment extends BaseFragment {
             menu.add(0, CONTEXT_MENU_DELETE, 0, R.string.context_delete);
             menu.add(0, CONTEXT_MENU_MOVE, 0, R.string.context_move);
             menu.add(0, CONTEXT_MENU_ALIAS, 0, R.string.context_alias);
+            menu.add(0, CONTEXT_MENU_NOTIFICATION, 0, R.string.context_notification);
         }
     }
 
@@ -216,8 +221,15 @@ public abstract class DeviceListFragment extends BaseFragment {
             case CONTEXT_MENU_ALIAS:
                 DeviceActionUtil.setAlias(getActivity(), contextMenuClickedDevice.get());
                 return true;
+            case CONTEXT_MENU_NOTIFICATION:
+                handleNotifications(contextMenuClickedDevice.get().getName());
+                return true;
         }
         return false;
+    }
+
+    private void handleNotifications(String deviceName) {
+        new NotificationSettingView(getActivity(), deviceName).show();
     }
 
     protected DeviceGridAdapter getAdapter() {

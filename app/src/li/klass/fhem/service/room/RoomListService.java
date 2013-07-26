@@ -25,6 +25,7 @@
 package li.klass.fhem.service.room;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import li.klass.fhem.AndFHEMApplication;
@@ -38,6 +39,7 @@ import li.klass.fhem.service.AbstractService;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -82,7 +84,14 @@ public class RoomListService extends AbstractService {
         if (device == null) return;
 
         DeviceListParser.INSTANCE.fillDeviceWith(device, updateMap);
+
         Log.i(TAG, "updated " + device.getName() + " with " + updateMap.size() + " new values!");
+
+        Intent intent = new Intent(Actions.NOTIFICATION_TRIGGER);
+        intent.putExtra(BundleExtraKeys.DEVICE_NAME, deviceName);
+        intent.putExtra(BundleExtraKeys.DEVICE, device);
+        intent.putExtra(BundleExtraKeys.UPDATE_MAP, (Serializable) updateMap);
+        AndFHEMApplication.getContext().startService(intent);
     }
 
     /**

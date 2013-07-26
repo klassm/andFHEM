@@ -97,4 +97,8 @@ public class Actions {
     public static final String GCM_REGISTERED = prefix + "GCM_REGISTERED";
     public static final String GCM_REMOVE_ID = prefix + "GCM_REMOVE_ID";
     public static final String GCM_ADD_SELF = prefix + "GCM_ADD_SELF";
+
+    public static final String NOTIFICATION_SET_FOR_DEVICE = prefix + "NOTIFICATION_SET_FOR_DEVICE";
+    public static final String NOTIFICATION_GET_FOR_DEVICE = prefix + "NOTIFICATION_GET_FOR_DEVICE";
+    public static final String NOTIFICATION_TRIGGER = prefix + "NOTIFICATION_TRIGGER";
 }
