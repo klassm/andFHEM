@@ -53,6 +53,8 @@ public class ArrayUtilTest {
     public void addToArray() {
         String[] values = new String[]{"a"};
         assertThat(ArrayUtil.addToArray(values, "b"), is(new String[]{"a", "b"}));
+
+        assertThat(ArrayUtil.addToArray(null, "a"), is(new String[]{"a"}));
     }
 
     @Test

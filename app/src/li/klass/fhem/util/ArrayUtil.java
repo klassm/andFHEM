@@ -54,10 +54,15 @@ public class ArrayUtil {
     }
 
     public static String[] addToArray(String[] array, String newElement) {
-        String[] newArray = new String[array.length + 1];
+        int length = array == null ? 1 : array.length + 1;
+        String[] newArray = new String[length];
 
-        System.arraycopy(array, 0, newArray, 0, array.length);
-        newArray[array.length] = newElement;
+        if (array != null) {
+            System.arraycopy(array, 0, newArray, 0, array.length);
+            newArray[array.length] = newElement;
+        } else {
+            newArray[0] = newElement;
+        }
 
         return newArray;
     }
