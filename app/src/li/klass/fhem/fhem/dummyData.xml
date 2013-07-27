@@ -4300,4 +4300,24 @@ room structexclude webCmd eventMap">
     <ATTR key="room" value="heizungen"/>
 </OWDevice>
 </OWDevice_LIST>
+<ZWave_LIST>
+<ZWave name="ZWave_SWITCH_MULTILEVEL_2" state="off"
+       sets="dim:slider,0,1,100 off on reportOff reportOn blink on-for-timer on-till off-for-timer intervals off-till"
+       attrs="room group comment alias eventMap userReadings IODev do_not_notify:1,0 ignore:1,0 dummy:1,0 showtime:1,0 classes loglevel:0,1,2,3,4,5,6 event-on-change-reading event-on-update-reading event-min-interval stateFormat model:Everspring_AN1582,Everspring_AN1583 devStateIcon devStateStyle icon room_map sortby structexclude webCmd">
+    <INT key="DEF" value="00d8c4d3 2"/>
+    <INT key="NAME" value="ZWave_SWITCH_MULTILEVEL_2"/>
+    <INT key="NR" value="31"/>
+    <INT key="NTFY_TRIGGERTIME" value="2013-07-05 23:29:17"/>
+    <INT key="STATE" value="off"/>
+    <INT key="TYPE" value="ZWave"/>
+    <INT key="homeId" value="00d8c4d3"/>
+    <INT key="id" value="02"/>
+    <INT key="IODev" value="ZWDongle_0"/>
+    <ATTR key="alias" value="Stehlampe"/>
+    <ATTR key="classes" value="MANUFACTURER_SPECIFIC VERSION HAIL INDICATOR PROTECTION SWITCH_ALL SWITCH_MULTILEVEL"/>
+    <ATTR key="model" value="Everspring_AN1582"/>
+    <ATTR key="room" value="Bedroom"/>
+    <STATE key="state" value="off" measured="2013-07-05 23:29:17"/>
+</ZWave>
+</ZWave_LIST>
         </FHZINFO>

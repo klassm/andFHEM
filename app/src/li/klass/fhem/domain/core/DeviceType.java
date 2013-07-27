@@ -88,7 +88,8 @@ public enum DeviceType {
     YAMAHA_AVR("YAMAHA_AVR", YamahaAVRDevice.class, new YamahaAVRAdapter()),
     FRMIN("FRM_IN", FRMInDevice.class),
     GENSHELLSWITCH("GenShellSwitch", GenShellSwitchDevice.class, new ToggleableAdapterWithSwitchActionRow<GenShellSwitchDevice>(GenShellSwitchDevice.class)),
-    GCM_SEND("gcmsend", GCMSendDevice.class, new GCMSendDeviceAdapter()),;
+    GCM_SEND("gcmsend", GCMSendDevice.class, new GCMSendDeviceAdapter()),
+    ZWAVE("ZWave", ZWaveDevice.class, new DimmableAdapter<ZWaveDevice>(ZWaveDevice.class)),;
 
     private String xmllistTag;
     private Class<? extends Device> deviceClass;
