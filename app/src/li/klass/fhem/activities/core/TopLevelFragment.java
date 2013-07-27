@@ -30,6 +30,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
@@ -54,9 +55,10 @@ public class TopLevelFragment extends Fragment implements Serializable {
     public static final String NAVIGATION_TAG = "NAVIGATION";
     public static final String CONTENT_TAG = "CONTENT";
     private transient FragmentType initialFragmentType;
-    private int topLevelId;
     private BroadcastReceiver broadcastReceiver;
     public static final IntentFilter FILTER = new IntentFilter();
+
+    private static FragmentType currentTopLevelFragmentType = null;
 
     static {
         FILTER.addAction(Actions.SWITCH_TO_INITIAL_FRAGMENT);
@@ -210,20 +212,27 @@ public class TopLevelFragment extends Fragment implements Serializable {
                 public void onReceive(Context context, Intent intent) {
                     if (!isVisible() || !isAdded() || isRemoving() || isDetached()
                             || isHidden()) return;
+                    if (getView().findViewById(contentId) == null) return;
 
                     String action = intent.getAction();
                     if (action.equals(Actions.SWITCH_TO_INITIAL_FRAGMENT)) {
+
                         String fragmentName = intent.getStringExtra(BundleExtraKeys.FRAGMENT);
                         FragmentType fragment = FragmentType.valueOf(fragmentName);
 
                         if (fragment == initialFragmentType) {
                             switchToInitialFragment();
+                            currentTopLevelFragmentType = initialFragmentType;
                         }
-                    } else if (action.equals(Actions.SHOW_FRAGMENT)) {
+                    }
+
+                    if (currentTopLevelFragmentType != null && currentTopLevelFragmentType != initialFragmentType) {
+                        return;
+
+                    }
+                    if (action.equals(Actions.SHOW_FRAGMENT)) {
                         Bundle bundle = intent.getExtras();
                         switchTo(bundle);
-
-
                     } else if (action.equals(Actions.TOP_LEVEL_BACK)) {
                         String fragmentName = intent.getStringExtra(BundleExtraKeys.FRAGMENT);
                         FragmentType fragment = FragmentType.valueOf(fragmentName);
@@ -232,6 +241,7 @@ public class TopLevelFragment extends Fragment implements Serializable {
                             back();
                         }
                     }
+                    currentTopLevelFragmentType = initialFragmentType;
                 }
             };
 
