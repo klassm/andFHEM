@@ -214,6 +214,7 @@
     <string name="prefUpdateOnApplicationStart">Aktualisierung beim Applikationsstart</string>
     <string name="prefShowSetValueButtons">Zeige "Ändern" Knöpfe für Temperaturänderungen</string>
     <string name="prefGCMProjectId">GCM Project ID</string>
+    <string name="prefGcmWidgetUpdate">Widget-Aktualisierung bei GCM-Nachricht</string>
 
     <string name="notNumericError">Nicht numerisch!</string>
     <string name="updateError">Error während Update Vorgang.</string>

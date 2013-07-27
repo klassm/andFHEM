@@ -27,12 +27,13 @@ package li.klass.fhem.service.device;
 import li.klass.fhem.R;
 import li.klass.fhem.constants.PreferenceKeys;
 import li.klass.fhem.domain.GCMSendDevice;
+import li.klass.fhem.service.AbstractService;
 import li.klass.fhem.service.CommandExecutionService;
 import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.ArrayUtil;
 import li.klass.fhem.util.StringUtil;
 
-public class GCMSendDeviceService extends BaseDeviceService {
+public class GCMSendDeviceService extends AbstractService {
     public static final GCMSendDeviceService INSTANCE = new GCMSendDeviceService();
 
     private static final String ATTR_REG_IDS_COMMAND = "attr %s regIds %s";

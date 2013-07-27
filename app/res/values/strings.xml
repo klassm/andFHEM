@@ -219,6 +219,7 @@
     <string name="prefUpdateOnApplicationStart">Refresh on application start</string>
     <string name="prefShowSetValueButtons">Show set value buttons for temperature changes</string>
     <string name="prefGCMProjectId">GCM Project ID</string>
+    <string name="prefGcmWidgetUpdate">Update widget upon GCM notification</string>
 
     <string name="notNumericError">Not numeric!</string>
     <string name="updateError">Error while updating.</string>

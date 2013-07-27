@@ -32,10 +32,12 @@ import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
+import li.klass.fhem.constants.PreferenceKeys;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.RoomDeviceList;
 import li.klass.fhem.exception.AndFHEMException;
 import li.klass.fhem.service.AbstractService;
+import li.klass.fhem.util.ApplicationProperties;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -92,6 +94,11 @@ public class RoomListService extends AbstractService {
         intent.putExtra(BundleExtraKeys.DEVICE, device);
         intent.putExtra(BundleExtraKeys.UPDATE_MAP, (Serializable) updateMap);
         AndFHEMApplication.getContext().startService(intent);
+
+        boolean updateWidgets = ApplicationProperties.INSTANCE.getBooleanSharedPreference(PreferenceKeys.GCM_WIDGET_UPDATE, false);
+        if (updateWidgets) {
+            sendBroadcastWithAction(Actions.DEVICE_LIST_REMOTE_NOTIFY);
+        }
     }
 
     /**

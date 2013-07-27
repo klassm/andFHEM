@@ -35,4 +35,5 @@ public class PreferenceKeys {
     public static final String DEVICE_LIST_RIGHT_PADDING = "DEVICE_LIST_PADDING_RIGHT";
     public static final String GCM_REGISTRATION_ID = "GCM_REGISTRATION_ID";
     public static final String GCM_PROJECT_ID = "GCM_PROJECT_ID";
+    public static final String GCM_WIDGET_UPDATE = "GCM_WIDGET_UPDATE";
 }

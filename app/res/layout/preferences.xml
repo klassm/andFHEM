@@ -81,6 +81,11 @@
                 android:defaultValue=""
                 />
         <CheckBoxPreference
+                android:key="GCM_WIDGET_UPDATE"
+                android:title="@string/prefGcmWidgetUpdate"
+                android:defaultValue="false"
+                />
+        <CheckBoxPreference
                 android:key="SHOW_SET_VALUE_BUTTONS"
                 android:title="@string/prefShowSetValueButtons"
                 android:defaultValue="false"
