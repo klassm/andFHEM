@@ -441,10 +441,12 @@ public class DeviceListParser {
         Class<? extends Device> deviceClass = device.getClass();
 
         fillDeviceWith(device, updates, deviceClass);
+        device.afterXMLRead();
     }
 
-    private void fillDeviceWith(Device device, Map<String, String> updates, Class<?> deviceClass) {
+    private boolean fillDeviceWith(Device device, Map<String, String> updates, Class<?> deviceClass) {
         Method[] methods = deviceClass.getDeclaredMethods();
+
         boolean changed = false;
 
         for (Method method : methods) {
@@ -467,10 +469,11 @@ public class DeviceListParser {
             }
         }
 
-        if (changed) {
-            device.afterXMLRead();
-        } else if (deviceClass.getSuperclass() != null) {
-            fillDeviceWith(device, updates, deviceClass.getSuperclass());
+
+        if (deviceClass.getSuperclass() != null) {
+            return changed | fillDeviceWith(device, updates, deviceClass.getSuperclass());
+        } else {
+            return changed;
         }
     }
 
