@@ -24,6 +24,7 @@
 
 package li.klass.fhem.service.device;
 
+import android.content.Context;
 import android.content.Intent;
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
@@ -33,7 +34,11 @@ import li.klass.fhem.constants.BundleExtraKeys;
 public class BaseDeviceService {
     protected void showToast(int stringId) {
         Intent intent = new Intent(Actions.SHOW_TOAST);
-        intent.putExtra(BundleExtraKeys.TOAST_STRING_ID, R.string.gcmAlreadyRegistered);
-        AndFHEMApplication.getContext().sendBroadcast(intent);
+        intent.putExtra(BundleExtraKeys.TOAST_STRING_ID, stringId);
+        getContext().sendBroadcast(intent);
+    }
+
+    protected Context getContext() {
+        return AndFHEMApplication.getContext();
     }
 }

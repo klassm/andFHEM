@@ -95,6 +95,7 @@ public class GCMIntentService extends GCMBaseIntentService {
     }
 
     public static void registerWithGCM(Context context, String projectId) {
+        ApplicationProperties.INSTANCE.setSharedPreference(PreferenceKeys.GCM_REGISTRATION_ID, null);
         GCMRegistrar.unregister(context);
         registerWithGCMInternal(context, projectId);
     }

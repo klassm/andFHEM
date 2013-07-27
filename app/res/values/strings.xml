@@ -154,7 +154,7 @@
     <string name="alarm">Alarm</string>
     <string name="apiKey">API Key</string>
     <string name="gcmAlreadyRegistered">Device is already registered!</string>
-    <string name="gcmRegistrationNotActive">Cannot register. GCM not active!</string>
+    <string name="gcmRegistrationNotActive">GCM not active! Is the project id valid?</string>
     <string name="gcmRegisterThis">Register this device</string>
     <string name="notificationAllUpdates">All updates</string>
     <string name="notificationStateUpdates">Only state updates</string>
