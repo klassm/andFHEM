@@ -78,7 +78,7 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
 
     public void readSTATE(String tagName, NamedNodeMap attributes, String value) {
         if (tagName.equals("INT")) {
-            state = value;
+            state = formatTargetState(value);
         }
     }
 

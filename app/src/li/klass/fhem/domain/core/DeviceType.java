@@ -89,7 +89,8 @@ public enum DeviceType {
     FRMIN("FRM_IN", FRMInDevice.class),
     GENSHELLSWITCH("GenShellSwitch", GenShellSwitchDevice.class, new ToggleableAdapterWithSwitchActionRow<GenShellSwitchDevice>(GenShellSwitchDevice.class)),
     GCM_SEND("gcmsend", GCMSendDevice.class, new GCMSendDeviceAdapter()),
-    ZWAVE("ZWave", ZWaveDevice.class, new DimmableAdapter<ZWaveDevice>(ZWaveDevice.class)),;
+    ZWAVE("ZWave", ZWaveDevice.class, new DimmableAdapter<ZWaveDevice>(ZWaveDevice.class)),
+    SWAP("SWAP", SWAPDevice.class),;
 
     private String xmllistTag;
     private Class<? extends Device> deviceClass;

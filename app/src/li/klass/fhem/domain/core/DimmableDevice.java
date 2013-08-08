@@ -56,14 +56,6 @@ public abstract class DimmableDevice<D extends Device<D>> extends ToggleableDevi
     }
 
     @Override
-    public void readSTATE(String tagName, NamedNodeMap attributes, String value) {
-        if (tagName.equals("INT")) {
-            value = formatStateTextToSet(value);
-        }
-        super.readSTATE(tagName, attributes, value);
-    }
-
-    @Override
     public String formatTargetState(String targetState) {
         if (targetState.equals("dimup")) {
             return getDimStateForPosition(getDimUpPosition());
