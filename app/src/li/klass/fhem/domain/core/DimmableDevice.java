@@ -24,9 +24,11 @@
 
 package li.klass.fhem.domain.core;
 
+import org.w3c.dom.NamedNodeMap;
+
 public abstract class DimmableDevice<D extends Device<D>> extends ToggleableDevice<D> {
     public int getDimPosition() {
-        int position = getPositionForDimState(getDimStateFieldValue());
+        int position = getPositionForDimStateInternal(getDimStateFieldValue());
         if (position == -1) {
             return 0;
         }
@@ -54,6 +56,14 @@ public abstract class DimmableDevice<D extends Device<D>> extends ToggleableDevi
     }
 
     @Override
+    public void readSTATE(String tagName, NamedNodeMap attributes, String value) {
+        if (tagName.equals("INT")) {
+            value = formatStateTextToSet(value);
+        }
+        super.readSTATE(tagName, attributes, value);
+    }
+
+    @Override
     public String formatTargetState(String targetState) {
         if (targetState.equals("dimup")) {
             return getDimStateForPosition(getDimUpPosition());
@@ -61,6 +71,18 @@ public abstract class DimmableDevice<D extends Device<D>> extends ToggleableDevi
             return getDimStateForPosition(getDimDownPosition());
         }
         return super.formatTargetState(targetState);
+    }
+
+    @Override
+    public String formatStateTextToSet(String stateToSet) {
+        int position = getPositionForDimStateInternal(stateToSet);
+        if (position == getDimUpperBound()) {
+            return "on";
+        }
+        if (position == getDimLowerBound()) {
+            return "off";
+        }
+        return super.formatStateTextToSet(stateToSet);
     }
 
     public int getDimLowerBound() {
@@ -71,6 +93,13 @@ public abstract class DimmableDevice<D extends Device<D>> extends ToggleableDevi
 
     public int getDimStep() {
         return 1;
+    }
+
+    public int getPositionForDimStateInternal(String dimState) {
+        if (dimState.equals("on")) return getDimUpperBound();
+        if (dimState.equals("off")) return getDimLowerBound();
+
+        return getPositionForDimState(dimState);
     }
 
     /**
