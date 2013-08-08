@@ -142,11 +142,9 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
                         } else if (intent.getBooleanExtra(BundleExtraKeys.DO_REFRESH, false) && action.equals(Actions.DO_UPDATE)) {
                             setShowRefreshProgressIcon(true);
                         } else if (action.equals(SHOW_EXECUTING_DIALOG)) {
-                            Bundle bundle = new Bundle();
-                            bundle.putInt(BundleExtraKeys.CONTENT, R.string.executing);
-                            showDialog(bundle);
+                            setShowRefreshProgressIcon(true);
                         } else if (action.equals(DISMISS_EXECUTING_DIALOG)) {
-                            removeDialog();
+                            setShowRefreshProgressIcon(false);
                         } else if (action.equals(SHOW_TOAST)) {
                             String content = intent.getStringExtra(BundleExtraKeys.CONTENT);
                             if (content == null) {
