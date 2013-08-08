@@ -88,6 +88,7 @@ public abstract class DimmableDevice<D extends Device<D>> extends ToggleableDevi
     }
 
     public int getPositionForDimStateInternal(String dimState) {
+        if (dimState == null) return -1;
         if (dimState.equals("on")) return getDimUpperBound();
         if (dimState.equals("off")) return getDimLowerBound();
 
