@@ -98,7 +98,7 @@ public class FS20DeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getDimUpPosition(), is(FS20Device.dimStates.indexOf("dim18%")));
 
         device.setState("on");
-        assertThat(device.getDimUpPosition(), is(FS20Device.dimStates.indexOf("on")));
+        assertThat(device.getDimUpPosition(), is(FS20Device.dimStates.indexOf("dim100%")));
 
         device.setState("off");
         assertThat(device.getDimDownPosition(), is(FS20Device.dimStates.indexOf("off")));
