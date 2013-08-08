@@ -25,10 +25,12 @@ package li.klass.fhem.fragments.device;
 
 import android.content.Intent;
 import android.os.Bundle;
+import li.klass.fhem.activities.device.DeviceNameListAdapter;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceType;
+import li.klass.fhem.domain.core.RoomDeviceList;
 import li.klass.fhem.fragments.FragmentType;
 
 /**
@@ -36,9 +38,14 @@ import li.klass.fhem.fragments.FragmentType;
  */
 public class DeviceNameListNavigationFragment extends DeviceNameListFragment {
 
+    private String selectedDeviceName;
+
     @SuppressWarnings("unused")
     public DeviceNameListNavigationFragment(Bundle bundle) {
         super(bundle);
+        if (bundle.containsKey(BundleExtraKeys.DEVICE_NAME)) {
+            selectedDeviceName = bundle.getString(BundleExtraKeys.DEVICE_NAME);
+        }
     }
 
     @SuppressWarnings("unused")

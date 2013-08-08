@@ -75,6 +75,13 @@ public class DeviceNameListAdapter extends DeviceGridAdapter {
         super.updateData(roomDeviceList);
     }
 
+    public int getSelectedDevicePosition() {
+        Device device = roomDeviceList.getDeviceFor(selectedDeviceName);
+        DeviceType deviceType = DeviceType.getDeviceTypeFor(device);
+
+        return getFlatPositionForParentAndChild(deviceType, device);
+    }
+
     @Override
     protected int getRequiredColumnWidth() {
         return requiredColumnWidth;

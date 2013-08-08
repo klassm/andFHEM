@@ -45,7 +45,7 @@ import java.util.List;
 import java.util.Set;
 
 public class DeviceGridAdapter extends GridViewWithSectionsAdapter<DeviceType, Device<?>> {
-    private RoomDeviceList roomDeviceList;
+    protected RoomDeviceList roomDeviceList;
     private static final int DEFAULT_COLUMN_WIDTH = 355;
     private int lastParentHeight;
     private List<DeviceType> parents;

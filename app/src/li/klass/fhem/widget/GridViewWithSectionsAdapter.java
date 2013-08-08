@@ -29,6 +29,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import li.klass.fhem.domain.core.Device;
 
 import java.util.*;
 
@@ -250,6 +251,29 @@ public abstract class GridViewWithSectionsAdapter<P, C> extends BaseAdapter {
         notifyDataSetChanged();
     }
 
+    protected int getFlatPositionForParentAndChild(P parent, C child) {
+        int parentPosition = getParentPositionFor(parent);
+        if (parentPosition == -1) return -1;
+
+        int count = getChildrenCountForParent(parent);
+        for (int i = 0; i < count; i++) {
+            C aChild = getChildForParentAndChildPosition(parent, i);
+            if (aChild.equals(child)) {
+                return parentPosition + i;
+            }
+        }
+        return -1;
+    }
+
+    protected int getParentPositionFor(P parent) {
+        for (Integer position : parentPositions.keySet()) {
+            if (parentPositions.get(position).equals(parent)) {
+                return position;
+            }
+        }
+        return -1;
+    }
+
     protected abstract C getChildForParentAndChildPosition(P parent, int childPosition);
 
     protected abstract int getChildrenCountForParent(P parent);
@@ -261,6 +285,4 @@ public abstract class GridViewWithSectionsAdapter<P, C> extends BaseAdapter {
     protected abstract List<P> getParents();
 
     protected abstract int getRequiredColumnWidth();
-
-
 }

@@ -47,7 +47,6 @@ import java.util.Map;
 import java.util.Set;
 
 public abstract class DeviceNameListFragment extends BaseFragment {
-    private transient DeviceNameListAdapter adapter;
 
     private int columnWidth = Integer.MAX_VALUE;
 
@@ -78,7 +77,7 @@ public abstract class DeviceNameListFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.device_name_list, null);
         GridViewWithSections deviceList = (GridViewWithSections) view.findViewById(R.id.deviceMap1);
 
-        adapter = new DeviceNameListAdapter(inflater.getContext(), new RoomDeviceList(""), columnWidth);
+        DeviceNameListAdapter adapter = new DeviceNameListAdapter(inflater.getContext(), new RoomDeviceList(""), columnWidth);
         adapter.registerOnClickObserver(new GridViewWithSections.GridViewWithSectionsOnClickObserver() {
             @Override
             public void onItemClick(View view, Object parent, Object child, int parentPosition, int childPosition) {
@@ -125,6 +124,7 @@ public abstract class DeviceNameListFragment extends BaseFragment {
     }
 
     protected void deviceListReceived(RoomDeviceList roomDeviceList) {
+        DeviceNameListAdapter adapter = getAdapter();
         if (adapter == null || getView() == null) return;
         filterDevices(roomDeviceList);
 
@@ -133,10 +133,27 @@ public abstract class DeviceNameListFragment extends BaseFragment {
         Set<Device> allDevices = roomDeviceList.getAllDevices();
         if (allDevices.size() > 0) {
             adapter.updateData(roomDeviceList, selectedDevice);
+
+            int selectedDevicePosition = adapter.getSelectedDevicePosition();
+            getGridView().setSelection(selectedDevicePosition);
         }
     }
 
     private DeviceFilter getDeviceFilter() {
         return (DeviceFilter) creationBundle.getSerializable(BundleExtraKeys.DEVICE_FILTER);
+    }
+
+    protected DeviceNameListAdapter getAdapter() {
+        GridViewWithSections gridViewWithSections = getGridView();
+        if (gridViewWithSections == null) return null;
+
+        return (DeviceNameListAdapter) gridViewWithSections.getGridViewWithSectionsAdapter();
+    }
+
+    protected GridViewWithSections getGridView() {
+        View view = getView();
+        if (view == null) return null;
+
+        return (GridViewWithSections) view.findViewById(R.id.deviceMap1);
     }
 }
