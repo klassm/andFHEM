@@ -153,6 +153,9 @@
     <string name="gcmAlreadyRegistered">Gerät ist bereits registriert!</string>
     <string name="gcmRegistrationNotActive">GCM ist nicht aktiv!</string>
     <string name="gcmRegisterThis">Registriere dieses Gerät</string>
+    <string name="notificationAllUpdates">Alle Aktualisierungen</string>
+    <string name="notificationStateUpdates">Nur Status-Updates</string>
+    <string name="notificationNoUpdates">Keine Benachrichtigungen</string>
 
     <string name="switchDevice">Schalte</string>
     <string name="preferences">Einstellungen</string>
