@@ -109,6 +109,10 @@ public class NotificationIntentService extends ConvenientIntentService {
 
     private void deviceNotification(String deviceName, Map<String, String> updateMap, Device<?> device) {
         int value = getPreferences().getInt(deviceName, 0);
+        if (device.triggerStateNotificationOnAttributeChange()) {
+            updateMap.clear();
+            updateMap.put("STATE", "updateMe");
+        }
 
         if (isValueAllUpdates(value)) {
             generateNotification(device, updateMap);
@@ -144,9 +148,14 @@ public class NotificationIntentService extends ConvenientIntentService {
                 PendingIntent.FLAG_UPDATE_CURRENT);
 
         String text = "";
-        for (Map.Entry<String, String> entry : notificationMap.entrySet()) {
-            if (!text.equals("")) text += ", ";
-            text += entry.getKey() + " : " + entry.getValue();
+        String stateKey = getString(R.string.state);
+        if (notificationMap.size() == 1 && notificationMap.containsKey(stateKey)) {
+            text = notificationMap.get(stateKey);
+        } else {
+            for (Map.Entry<String, String> entry : notificationMap.entrySet()) {
+                if (!text.equals("")) text += ", ";
+                text += entry.getKey() + " : " + entry.getValue();
+            }
         }
 
         Notification notification = new NotificationCompat.Builder(this)

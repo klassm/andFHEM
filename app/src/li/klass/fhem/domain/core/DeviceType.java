@@ -90,7 +90,8 @@ public enum DeviceType {
     GENSHELLSWITCH("GenShellSwitch", GenShellSwitchDevice.class, new ToggleableAdapterWithSwitchActionRow<GenShellSwitchDevice>(GenShellSwitchDevice.class)),
     GCM_SEND("gcmsend", GCMSendDevice.class, new GCMSendDeviceAdapter()),
     ZWAVE("ZWave", ZWaveDevice.class, new DimmableAdapter<ZWaveDevice>(ZWaveDevice.class)),
-    SWAP("SWAP", SWAPDevice.class),;
+    SWAP("SWAP", SWAPDevice.class),
+    FB_CALLMONITOR("FB_CALLMONITOR", FBCallmonitorDevice.class);
 
     private String xmllistTag;
     private Class<? extends Device> deviceClass;

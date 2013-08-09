@@ -106,6 +106,12 @@ public enum ResourceIdMapper {
     hue(R.string.hue),
     alarm(R.string.alarm),
     apiKey(R.string.apiKey),
+    callMonExternalNumber(R.string.callMonExternalNumber),
+    callMonInternalNumber(R.string.callMonInternalNumber),
+    callMonExternalName(R.string.callMonExternalName),
+    callMonDuration(R.string.callMonDuration),
+    callMonEvent(R.string.callMonEvent),
+    callMonMissed(R.string.callMonMissed),
 
     none(-1);
 

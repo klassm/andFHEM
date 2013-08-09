@@ -159,6 +159,17 @@
     <string name="notificationAllUpdates">All updates</string>
     <string name="notificationStateUpdates">Only state updates</string>
     <string name="notificationNoUpdates">None</string>
+    <string name="callMonExternalName">Caller</string>
+    <string name="callMonExternalNumber">Number external</string>
+    <string name="callMonInternalNumber">Number internal</string>
+    <string name="callMonDuration">Duration</string>
+    <string name="callMonEvent">Event</string>
+    <string name="callMonMissed">Missed?</string>
+    <string name="callMonEventRing">Ringing</string>
+    <string name="callMonEventCall">Calling</string>
+    <string name="callMonEventConnect">Connected</string>
+    <string name="callMonEventDisconnect">Disconnect</string>
+    <string name="callMonEventMissed">Missed</string>
 
     <string name="switchDevice">Switch</string>
     <string name="preferences">Preferences</string>

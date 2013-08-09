@@ -156,6 +156,18 @@
     <string name="notificationAllUpdates">Alle Aktualisierungen</string>
     <string name="notificationStateUpdates">Nur Status-Updates</string>
     <string name="notificationNoUpdates">Keine Benachrichtigungen</string>
+    <string name="callMonExternalName">Anrufer</string>
+    <string name="callMonExternalNumber">Nummer extern</string>
+    <string name="callMonInternalNumber">Nummer intern</string>
+    <string name="callMonDuration">Dauer</string>
+    <string name="callMonEvent">Ereignis</string>
+    <string name="callMonMissed">Verpasst?</string>
+    <string name="callMonEventRing">Klingelnd</string>
+    <string name="callMonEventCall">Wählend</string>
+    <string name="callMonEventConnect">Verbunden</string>
+    <string name="callMonEventDisconnect">Aufgelegt</string>
+    <string name="callMonEventMissed">Verpasst</string>
+
 
     <string name="switchDevice">Schalte</string>
     <string name="preferences">Einstellungen</string>

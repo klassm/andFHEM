@@ -421,4 +421,13 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
     public AssociatedDeviceCallback getAssociatedDeviceCallback() {
         return associatedDeviceCallback;
     }
+
+    /**
+     * Trigger a state notification if a device attribute has changed via GCM
+     *
+     * @return true or false
+     */
+    public boolean triggerStateNotificationOnAttributeChange() {
+        return false;
+    }
 }
