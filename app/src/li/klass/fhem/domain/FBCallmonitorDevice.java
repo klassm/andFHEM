@@ -107,11 +107,6 @@ public class FBCallmonitorDevice extends Device<FBCallmonitorDevice> {
         super.afterXMLRead();
         Context context = AndFHEMApplication.getContext();
 
-        int stringId = R.string.no;
-        if (missedCallNumber != null && missedCallNumber.equals(externalNumber)) {
-            stringId = R.string.yes;
-        }
-
         int eventStringId;
 
         if (eventInternal == Event.DISCONNECT && missedCallNumber != null && missedCallNumber.equals(externalNumber)) {
@@ -121,7 +116,12 @@ public class FBCallmonitorDevice extends Device<FBCallmonitorDevice> {
         String eventString = context.getString(eventInternal.stringId);
         event = eventString;
 
-        setState(externalNumber + " (" + eventString + ")");
+        String description = externalNumber;
+        if (externalName != null && !externalName.equalsIgnoreCase("unknown") && !externalName.equalsIgnoreCase("timeout")) {
+            description = externalName;
+        }
+
+        setState(description + " (" + eventString + ")");
     }
 
     public String getExternalName() {
