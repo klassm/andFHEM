@@ -32,7 +32,6 @@ import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.util.ValueDescriptionUtil;
-import li.klass.fhem.util.ValueExtractUtil;
 import org.w3c.dom.NamedNodeMap;
 
 @DetailOverviewViewSettings(showState = false, showMeasured = true)
@@ -64,8 +63,6 @@ public class FBCallmonitorDevice extends Device<FBCallmonitorDevice> {
     private String event;
     @ShowField(description = ResourceIdMapper.callMonDuration, showInOverview = true)
     private String callDuration;
-    @ShowField(description = ResourceIdMapper.callMonMissed, showInOverview = true)
-    private String missed;
 
     private Event eventInternal;
 
@@ -98,7 +95,6 @@ public class FBCallmonitorDevice extends Device<FBCallmonitorDevice> {
     }
 
     public void readEVENT(String value) {
-        event = value;
         eventInternal = Event.valueOf(value.toUpperCase());
     }
 
@@ -115,14 +111,17 @@ public class FBCallmonitorDevice extends Device<FBCallmonitorDevice> {
         if (missedCallNumber != null && missedCallNumber.equals(externalNumber)) {
             stringId = R.string.yes;
         }
-        missed = context.getString(stringId);
 
         int eventStringId;
 
         if (eventInternal == Event.DISCONNECT && missedCallNumber != null && missedCallNumber.equals(externalNumber)) {
             eventInternal = Event.MISSED;
         }
-        setState(externalNumber + " (" + context.getString(eventInternal.stringId) + ")");
+
+        String eventString = context.getString(eventInternal.stringId);
+        event = eventString;
+
+        setState(externalNumber + " (" + eventString + ")");
     }
 
     public String getExternalName() {
@@ -147,10 +146,6 @@ public class FBCallmonitorDevice extends Device<FBCallmonitorDevice> {
 
     public String getCallDuration() {
         return callDuration;
-    }
-
-    public String getMissed() {
-        return missed;
     }
 
     @Override

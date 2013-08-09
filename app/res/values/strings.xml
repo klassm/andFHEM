@@ -164,7 +164,6 @@
     <string name="callMonInternalNumber">Number internal</string>
     <string name="callMonDuration">Duration</string>
     <string name="callMonEvent">Event</string>
-    <string name="callMonMissed">Missed?</string>
     <string name="callMonEventRing">Ringing</string>
     <string name="callMonEventCall">Calling</string>
     <string name="callMonEventConnect">Connected</string>

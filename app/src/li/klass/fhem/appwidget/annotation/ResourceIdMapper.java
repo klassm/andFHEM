@@ -111,7 +111,6 @@ public enum ResourceIdMapper {
     callMonExternalName(R.string.callMonExternalName),
     callMonDuration(R.string.callMonDuration),
     callMonEvent(R.string.callMonEvent),
-    callMonMissed(R.string.callMonMissed),
 
     none(-1);
 
