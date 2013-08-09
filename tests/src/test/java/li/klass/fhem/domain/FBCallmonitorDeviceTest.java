@@ -28,8 +28,6 @@ import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 import org.junit.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.Is.is;
 
 public class FBCallmonitorDeviceTest extends DeviceXMLParsingBase {
@@ -41,7 +39,7 @@ public class FBCallmonitorDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getRoomConcatenated(), is(DEFAULT_TEST_ROOM_NAME));
 
         assertThat(device.getCallDuration(), is("20 (s)"));
-        assertThat(device.getEvent(), is("disconnect"));
+        assertThat(device.getEvent(), is("Disconnect"));
         assertThat(device.getExternalName(), is("unknown"));
         assertThat(device.getExternalNumber(), is("026094339657"));
         assertThat(device.getInternalNumber(), is("4382910"));
