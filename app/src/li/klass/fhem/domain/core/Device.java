@@ -45,6 +45,7 @@ import java.util.*;
 public abstract class Device<T extends Device> implements Serializable, Comparable<T> {
 
     protected String[] rooms;
+    protected String[] webCmd;
 
     protected String name;
 
@@ -80,6 +81,10 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
         if (tagName.equals("INT")) {
             state = formatTargetState(value);
         }
+    }
+
+    public void readWEBCMD(String value) {
+        webCmd = value.split(":");
     }
 
     public void gcmState(String value) {
@@ -389,6 +394,9 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
     }
 
     public String formatTargetState(String targetState) {
+        if (eventMapReverse.containsKey(targetState)) {
+            return eventMapReverse.get(targetState);
+        }
         return targetState;
     }
 
@@ -429,5 +437,9 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
      */
     public boolean triggerStateNotificationOnAttributeChange() {
         return false;
+    }
+
+    public String[] getWebCmd() {
+        return webCmd;
     }
 }

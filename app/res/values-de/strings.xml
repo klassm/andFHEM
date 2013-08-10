@@ -166,6 +166,7 @@
     <string name="callMonEventConnect">Verbunden</string>
     <string name="callMonEventDisconnect">Aufgelegt</string>
     <string name="callMonEventMissed">Verpasst</string>
+    <string name="webcmd">WebCmds</string>
 
 
     <string name="switchDevice">Schalte</string>

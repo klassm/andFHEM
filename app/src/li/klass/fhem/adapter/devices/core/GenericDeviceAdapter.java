@@ -46,6 +46,7 @@ import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
 import li.klass.fhem.domain.genericview.FloorplanViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
+import li.klass.fhem.util.ArrayUtil;
 import li.klass.fhem.util.ReflectionUtil;
 
 import java.lang.reflect.Field;
@@ -147,6 +148,11 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
                     TableRow row = createTableRow(inflater, layout, R.layout.device_detail_generic_table_row, device.getState(), R.string.state);
                     notifyFieldListeners(context, device, layout, "state", row);
                 }
+            }
+
+            TableRow webCmdTableRow = createWebCmdTableRow(inflater, layout, device);
+            if (webCmdTableRow != null) {
+                notifyFieldListeners(context, device, layout, "webcmd", webCmdTableRow);
             }
 
             List<Field> declaredFields = Arrays.asList(device.getClass().getDeclaredFields());
@@ -315,6 +321,39 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
     private TableRow createTableRow(LayoutInflater inflater, TableLayout layout, int resource, Object value, ShowField showFieldAnnotation) {
         int description = showFieldAnnotation.description().getId();
         return createTableRow(inflater, layout, resource, value, description);
+    }
+
+    private TableRow createWebCmdTableRow(LayoutInflater inflater, TableLayout layout, final Device device) {
+        if (ArrayUtil.isEmpty(device.getWebCmd())) return null;
+        final Context context = inflater.getContext();
+
+        TableRow tableRow = (TableRow) inflater.inflate(R.layout.device_detail_webcmd, null);
+        LinearLayout holder = (LinearLayout) tableRow.findViewById(R.id.webcmdHolder);
+
+        for (final String cmd : device.getWebCmd()) {
+            ToggleButton button = (ToggleButton) inflater.inflate(R.layout.device_detail_togglebutton, null);
+            button.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.theme_toggle_default_normal));
+
+            button.setText(cmd);
+            button.setTextOn(cmd);
+            button.setTextOff(cmd);
+
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(Actions.DEVICE_SET_STATE);
+                    intent.putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, cmd);
+                    intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
+                    context.startService(intent);
+                }
+            });
+            holder.addView(button);
+        }
+
+        layout.addView(tableRow);
+
+
+        return tableRow;
     }
 
     private TableRow createTableRow(LayoutInflater inflater, TableLayout layout, int resource, Object value, int description) {

@@ -169,6 +169,7 @@
     <string name="callMonEventConnect">Connected</string>
     <string name="callMonEventDisconnect">Disconnect</string>
     <string name="callMonEventMissed">Missed</string>
+    <string name="webcmd">WebCmds</string>
 
     <string name="switchDevice">Switch</string>
     <string name="preferences">Preferences</string>

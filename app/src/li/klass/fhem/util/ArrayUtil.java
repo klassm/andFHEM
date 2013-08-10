@@ -28,6 +28,10 @@ import java.util.Arrays;
 import java.util.List;
 
 public class ArrayUtil {
+    public static <T> boolean isEmpty(T[] array) {
+        return array == null || array.length == 0;
+    }
+
     public static <T> boolean contains(T[] array, T... toLookFor) {
         if (array == null) return false;
 
