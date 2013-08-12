@@ -86,7 +86,7 @@ public class FileLogDevice extends Device<FileLogDevice> {
     }
 
     void parseCustomGraphAttribute(String value) {
-        String[] parts = value.split("#");
+        String[] parts = value.split("[#@]");
         if (parts.length != 3) return;
 
         String pattern = parts[0];

@@ -40,6 +40,7 @@ public class ChartSeriesDescription implements Parcelable, Serializable {
     private boolean showSum = false;
     private double sumDivisionFactor = 0;
     private SeriesType seriesType;
+    private String fallBackYAxisName;
 
 
     public static ChartSeriesDescription getDiscreteValuesInstance(int columnName, String columnSpecification, SeriesType seriesType) {
@@ -59,6 +60,12 @@ public class ChartSeriesDescription implements Parcelable, Serializable {
     public ChartSeriesDescription(String columnName, String columnSpecification) {
         this.columnName = columnName;
         this.columnSpecification = columnSpecification;
+    }
+
+    public ChartSeriesDescription(String columnName, String columnSpecification, String fallBackYAxisName) {
+        this.columnName = columnName;
+        this.columnSpecification = columnSpecification;
+        this.fallBackYAxisName = fallBackYAxisName;
     }
 
     public ChartSeriesDescription(int columnName, String columnSpecification, boolean showDiscreteValues,
@@ -99,6 +106,7 @@ public class ChartSeriesDescription implements Parcelable, Serializable {
         this.showRegression = bundle.getBoolean("SHOW_REGRESSION");
         this.showSum = bundle.getBoolean("SHOW_SUM");
         this.sumDivisionFactor = bundle.getDouble("SUM_DIVISION_FACTOR");
+        this.fallBackYAxisName = bundle.getString("FALLBACK_Y_AXIS_NAME");
 
         String chart_type = bundle.getString("CHART_TYPE");
         if (chart_type != null) {
@@ -150,11 +158,16 @@ public class ChartSeriesDescription implements Parcelable, Serializable {
         return 0;
     }
 
+    public String getFallBackYAxisName() {
+        return fallBackYAxisName;
+    }
+
     @Override
     public void writeToParcel(Parcel parcel, int flags) {
         Bundle bundle = new Bundle();
         bundle.putString("COLUMN_NAME", columnName);
         bundle.putString("COLUMN_SPEC", columnSpecification);
+        bundle.putString("FALLBACK_Y_AXIS_NAME", fallBackYAxisName);
         bundle.putBoolean("SHOW_DISCRETE_VALUES", showDiscreteValues);
         bundle.putBoolean("SHOW_SUM", showSum);
         bundle.putBoolean("SHOW_REGRESSION", showRegression);
