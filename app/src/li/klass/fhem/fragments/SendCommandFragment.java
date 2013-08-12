@@ -24,6 +24,7 @@
 package li.klass.fhem.fragments;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -95,6 +96,7 @@ public class SendCommandFragment extends BaseFragment {
     }
 
     private void sendCommandIntent(String command) {
+        final Context context = getActivity();
         Intent intent = new Intent(Actions.EXECUTE_COMMAND);
         intent.putExtra(BundleExtraKeys.COMMAND, command);
         intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
@@ -108,7 +110,7 @@ public class SendCommandFragment extends BaseFragment {
                     }
 
                     if (result.replaceAll("[\\r\\n]", "").isEmpty()) return;
-                    new AlertDialog.Builder(getActivity())
+                    new AlertDialog.Builder(context)
                             .setTitle(R.string.command_execution_result)
                             .setMessage(result)
                             .setPositiveButton(R.string.okButton, new DialogInterface.OnClickListener() {
