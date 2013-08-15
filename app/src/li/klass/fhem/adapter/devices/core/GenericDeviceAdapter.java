@@ -35,6 +35,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
+import com.ensequence.socialmediatestharness.ui.FlowLayout;
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewAction;
@@ -328,7 +329,7 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
         final Context context = inflater.getContext();
 
         TableRow tableRow = (TableRow) inflater.inflate(R.layout.device_detail_webcmd, null);
-        LinearLayout holder = (LinearLayout) tableRow.findViewById(R.id.webcmdHolder);
+        FlowLayout holder = (FlowLayout) tableRow.findViewById(R.id.webcmdHolder);
 
         for (final String cmd : device.getWebCmd()) {
             ToggleButton button = (ToggleButton) inflater.inflate(R.layout.device_detail_togglebutton, null);

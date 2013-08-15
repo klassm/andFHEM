@@ -44,8 +44,8 @@
                android:thickness="10dp"
                android:useLevel="false">
 
-            <size android:width="30dp"
-                  android:height="30dp"/>
+            <size android:width="28dp"
+                  android:height="28dp"/>
 
             <solid android:color="@color/thumbOuterColor"/>
         </shape>

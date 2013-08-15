@@ -24,14 +24,17 @@
   -->
 
 <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="fill_parent"
-              android:layout_height="fill_parent">
+          android:layout_width="fill_parent"
+          android:layout_height="fill_parent">
     <TextView style="@style/deviceDetailDescription"
               android:id="@+id/description"
+              android:layout_weight="20"
               android:text="text"/>
-
-    <ToggleButton android:id="@+id/toggleButton"
-                  style="@style/deviceDetailContentToggle"
-                  android:background="@drawable/theme_toggle_button"
-            />
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_weight="0" android:gravity="right">
+        <ToggleButton android:id="@+id/toggleButton"
+                      style="@style/toggleButton"
+                      android:background="@drawable/theme_toggle_button"
+                />
+    </LinearLayout>
 </TableRow>

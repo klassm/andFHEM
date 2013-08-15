@@ -3102,6 +3102,7 @@ room structexclude webCmd eventMap">
     <INT key="XMIT" value="0000"/>
     <INT key="IODev" value="CUL"/>
     <ATTR key="room" value="wintergarten"/>
+    <ATTR key="webcmd" value="dim06%:dim18%:dim25%"/>
     <STATE key="state" value="off" measured="2011-12-01 20:55:12"/>
 </FS20>
 <FS20 name="wz_brunnen" state="off"

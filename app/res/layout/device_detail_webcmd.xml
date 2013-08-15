@@ -6,8 +6,10 @@
           android:id="@+id/tableRowDeviceName">
     <TextView android:text="@string/webcmd"
               style="@style/deviceDetailDescription"/>
-    <LinearLayout android:id="@+id/webcmdHolder"
-                  android:layout_height="wrap_content"
-                  android:layout_width="wrap_content"
-                  style="@style/deviceDetailContent"/>
+    <com.ensequence.socialmediatestharness.ui.FlowLayout android:id="@+id/webcmdHolder"
+                                                         style="@style/deviceDetailContent"
+                                                         android:layout_gravity="right"
+                                                         android:gravity="right"
+                                                         android:paddingRight="0dp"
+            />
 </TableRow>
