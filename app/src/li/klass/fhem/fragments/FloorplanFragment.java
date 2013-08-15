@@ -51,7 +51,6 @@ import li.klass.fhem.fragments.core.BaseFragment;
 import li.klass.fhem.util.device.DeviceActionUtil;
 import li.klass.fhem.widget.TouchImageView;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -186,6 +185,8 @@ public class FloorplanFragment extends BaseFragment {
     }
 
     private void setBackground() {
+        final Context context = getActivity();
+
         Intent intent = new Intent(Actions.FLOORPLAN_IMAGE);
         intent.putExtra(BundleExtraKeys.FLOORPLAN_IMAGE_RELATIVE_PATH, "/icons/fp_" + floorplanName + ".png");
         intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
@@ -197,7 +198,7 @@ public class FloorplanFragment extends BaseFragment {
                 floorplanView.setImageBitmap((Bitmap) resultData.getParcelable(BundleExtraKeys.FLOORPLAN_IMAGE));
 
                 Intent intent = new Intent(Actions.DISMISS_UPDATING_DIALOG);
-                getActivity().startService(intent);
+                context.startService(intent);
 
                 requestFloorplanDevices(false);
             }
