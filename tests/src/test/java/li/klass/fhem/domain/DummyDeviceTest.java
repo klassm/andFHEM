@@ -95,6 +95,29 @@ public class DummyDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getDimStep(), is(2));
     }
 
+    @Test
+    public void testEventMapDevice() {
+        DummyDevice device = getDeviceFor("eventMapDevice");
+
+        String[] eventMapStates = device.getAvailableTargetStatesEventMapTexts();
+        assertThat(eventMapStates, is(notNullValue()));
+
+        String[] targetStates = device.getAvailableTargetStates();
+        assertThat(targetStates, is(notNullValue()));
+
+        assertThat(targetStates.length, is(eventMapStates.length));
+
+        assertThat(targetStates, hasItemInArray("oben"));
+        assertThat(targetStates, hasItemInArray("unten"));
+        assertThat(targetStates, hasItemInArray("65"));
+        assertThat(targetStates, hasItemInArray("40"));
+
+        assertThat(eventMapStates, hasItemInArray("Oben"));
+        assertThat(eventMapStates, hasItemInArray("Unten"));
+        assertThat(eventMapStates, hasItemInArray("Halbschatten"));
+        assertThat(eventMapStates, hasItemInArray("Vollschatten"));
+    }
+
     @Override
     protected String getFileName() {
         return "dummy.xml";

@@ -389,6 +389,22 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
         return availableTargetStates;
     }
 
+    /**
+     * Generate an array of available target states, but respect any set event maps.
+     *
+     * @return array of available target states
+     */
+    public String[] getAvailableTargetStatesEventMapTexts() {
+        String[] ret = Arrays.copyOf(availableTargetStates, availableTargetStates.length);
+        for (int i = 0; i < ret.length; i++) {
+            String state = ret[i];
+            if (eventMapReverse.containsKey(state)) {
+                ret[i] = eventMapReverse.get(state);
+            }
+        }
+        return ret;
+    }
+
     public boolean supportsWidget(Class<? extends AppWidgetView> appWidgetClass) {
         return true;
     }

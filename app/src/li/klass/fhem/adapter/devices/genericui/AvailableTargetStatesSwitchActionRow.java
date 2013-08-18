@@ -53,8 +53,9 @@ public class AvailableTargetStatesSwitchActionRow<D extends Device<D>> extends D
         AlertDialog.Builder contextMenu = new AlertDialog.Builder(context);
         contextMenu.setTitle(context.getResources().getString(R.string.switchDevice));
         final String[] setOptions = device.getAvailableTargetStates();
+        final String[] eventMapOptions = device.getAvailableTargetStatesEventMapTexts();
 
-        contextMenu.setItems(setOptions, new DialogInterface.OnClickListener() {
+        contextMenu.setItems(eventMapOptions, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
                 final String option = setOptions[item];
 

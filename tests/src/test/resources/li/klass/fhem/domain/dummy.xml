@@ -76,7 +76,19 @@
             <INT key="TYPE" value="dummy"/>
             <ATTR key="setList" value="state:slider,0,1,10"/>
         </dummy>
-
+        <dummy_LIST>
+            <dummy name="eventMapDevice" state="???" sets="oben unten 65 40  "
+                   attrs="room group comment alias eventMap userReadings loglevel:0,1,2,3,4,5,6 setList event-on-change-reading event-on-update-reading event-min-interval stateFormat alias_map custom_graph devStateIcon fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon invertState measured-temp offDevice onDevice onOffDevice sortby structexclude toggleDevice webCmd">
+                <INT key="CFGFN" value=""/>
+                <INT key="NAME" value="eventMapDevice"/>
+                <INT key="NR" value="450"/>
+                <INT key="STATE" value="???"/>
+                <INT key="TYPE" value="dummy"/>
+                <ATTR key="eventMap" value="Oben:oben Unten:unten Halbschatten:65 Vollschatten:40"/>
+                <ATTR key="room" value="room"/>
+                <ATTR key="webCmd" value="Oben:Unten:Halbschatten:Vollschatten"/>
+            </dummy>
+        </dummy_LIST>
 
     </dummy_LIST>
 </FHZINFO>
