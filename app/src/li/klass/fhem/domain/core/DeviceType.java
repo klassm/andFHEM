@@ -91,7 +91,8 @@ public enum DeviceType {
     GCM_SEND("gcmsend", GCMSendDevice.class, new GCMSendDeviceAdapter()),
     ZWAVE("ZWave", ZWaveDevice.class, new DimmableAdapter<ZWaveDevice>(ZWaveDevice.class)),
     SWAP("SWAP", SWAPDevice.class),
-    FB_CALLMONITOR("FB_CALLMONITOR", FBCallmonitorDevice.class);
+    FB_CALLMONITOR("FB_CALLMONITOR", FBCallmonitorDevice.class),
+    FS20_ZDR("fs20_zdr", FS20ZDRDevice.class, new FS20ZDRDeviceAdapter()),;
 
     private String xmllistTag;
     private Class<? extends Device> deviceClass;

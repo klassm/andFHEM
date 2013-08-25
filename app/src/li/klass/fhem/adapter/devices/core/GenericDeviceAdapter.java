@@ -396,4 +396,13 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
             }
         });
     }
+
+    protected void sendStateAction(Context context, D device, String action) {
+        Intent intent = new Intent(Actions.DEVICE_SET_STATE);
+        intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
+        intent.putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, action);
+        putUpdateExtra(intent);
+
+        context.startService(intent);
+    }
 }

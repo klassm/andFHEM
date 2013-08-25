@@ -36,7 +36,6 @@ import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
 import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
 import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewAction;
-import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewButtonAction;
 import li.klass.fhem.adapter.devices.genericui.SeekBarActionRowFullWidthAndButton;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
@@ -95,17 +94,8 @@ public class SonosPlayerAdapter extends GenericDeviceAdapter<SonosPlayerDevice> 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendAction(context, device, action);
+                sendStateAction(context, device, action);
             }
         });
-    }
-
-    private void sendAction(Context context, SonosPlayerDevice device, String action) {
-        Intent intent = new Intent(Actions.DEVICE_SET_STATE);
-        intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
-        intent.putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, action);
-        putUpdateExtra(intent);
-
-        context.startService(intent);
     }
 }
