@@ -30,7 +30,8 @@
               android:id="@+id/description"
               android:text="text"/>
     <LinearLayout android:layout_height="wrap_content"
-                  android:layout_width="wrap_content">
+                  android:layout_width="wrap_content"
+                  android:gravity="right">
         <Button android:id="@+id/onButton"
                 style="@style/deviceOverviewToggleButton"
                 android:text="@string/ON"/>
