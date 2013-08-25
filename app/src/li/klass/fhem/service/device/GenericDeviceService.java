@@ -40,7 +40,10 @@ public class GenericDeviceService {
         targetState = device.formatTargetState(targetState);
 
         CommandExecutionService.INSTANCE.executeSafely("set " + device.getName() + " " + targetState);
-        device.setState(device.formatStateTextToSet(targetState));
+
+        if (device.shouldUpdateStateOnDevice(targetState)) {
+            device.setState(device.formatStateTextToSet(targetState));
+        }
     }
 
     public void setSubState(Device<?> device, String subStateName, String value) {

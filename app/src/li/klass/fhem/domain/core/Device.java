@@ -420,6 +420,16 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
         return stateToSet;
     }
 
+    /**
+     * Indicates whether the internal device state should be updated with the value given in state to set
+     *
+     * @param stateToSet state to set
+     * @return true to update the internal state, else false
+     */
+    public boolean shouldUpdateStateOnDevice(String stateToSet) {
+        return true;
+    }
+
     @Override
     public String toString() {
         return "Device{" +

@@ -41,4 +41,9 @@ public class FS20ZDRDevice extends ToggleableDevice<FS20ZDRDevice> {
             measured = attributes.getNamedItem("measured").getNodeValue();
         }
     }
+
+    @Override
+    public boolean shouldUpdateStateOnDevice(String stateToSet) {
+        return (stateToSet.equalsIgnoreCase("on") || stateToSet.equalsIgnoreCase("off"));
+    }
 }
