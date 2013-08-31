@@ -42,7 +42,8 @@ import static li.klass.fhem.constants.BundleExtraKeys.*;
 public class RoomListIntentService extends ConvenientIntentService {
 
     public RoomListIntentService() {
-        super(RoomListIntentService.class.getName(), 2);
+        super(RoomListIntentService.class.getName());
+//        super(RoomListIntentService.class.getName(), 2);
     }
 
     @Override

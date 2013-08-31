@@ -26,6 +26,7 @@ package li.klass.fhem.service.room;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import li.klass.fhem.AndFHEMApplication;
@@ -45,9 +46,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
 import static li.klass.fhem.util.SharedPreferencesUtil.getSharedPreferences;
@@ -215,16 +214,24 @@ public class RoomListService extends AbstractService {
                 if (currentlyUpdating.compareAndSet(false, true)) {
                     reentrantLock.lock();
 
-                    sendBroadcastWithAction(Actions.SHOW_UPDATING_DIALOG, null);
-                    try {
-                        deviceListMap = getRemoteRoomDeviceListMap();
-                    } finally {
-                        currentlyUpdating.set(false);
-                        sendBroadcastWithAction(Actions.DISMISS_UPDATING_DIALOG, null);
-                        sendBroadcastWithAction(Actions.DEVICE_LIST_REMOTE_NOTIFY, null);
+                    new AsyncTask<Void, Void, Void>() {
 
-                        reentrantLock.unlock();
-                    }
+                        @Override
+                        protected Void doInBackground(Void... voids) {
+                            sendBroadcastWithAction(Actions.SHOW_UPDATING_DIALOG, null);
+                            try {
+                                deviceListMap = getRemoteRoomDeviceListMap();
+                            } finally {
+                                currentlyUpdating.set(false);
+                                sendBroadcastWithAction(Actions.DISMISS_UPDATING_DIALOG, null);
+                                sendBroadcastWithAction(Actions.DEVICE_LIST_REMOTE_NOTIFY, null);
+
+                                reentrantLock.unlock();
+                            }
+                            return null;
+                        }
+                    }.doInBackground();
+
                 } else {
                     while (currentlyUpdating.get() && deviceListMap == null) {
                         try {

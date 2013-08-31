@@ -42,8 +42,7 @@ import li.klass.fhem.constants.BundleExtraKeys;
 
 import java.io.Serializable;
 
-import static li.klass.fhem.constants.Actions.DO_UPDATE;
-import static li.klass.fhem.constants.Actions.TOP_LEVEL_BACK;
+import static li.klass.fhem.constants.Actions.*;
 
 public abstract class BaseFragment extends Fragment implements Updateable, Serializable {
 
@@ -61,6 +60,7 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
             intentFilter = new IntentFilter();
             intentFilter.addAction(DO_UPDATE);
             intentFilter.addAction(TOP_LEVEL_BACK);
+            intentFilter.addAction(DEVICE_LIST_REMOTE_NOTIFY);
         }
 
         @Override
@@ -82,6 +82,8 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
                                 backPressCalled = true;
                                 onBackPressResult(intent.getExtras());
                             }
+                        } else if (action.equals(DEVICE_LIST_REMOTE_NOTIFY)) {
+                            update(false);
                         }
                     } catch (Exception e) {
                         Log.e(UIBroadcastReceiver.class.getName(), "error occurred", e);
@@ -107,7 +109,6 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
     private transient UIBroadcastReceiver broadcastReceiver;
     private transient View contentView;
     private boolean backPressCalled = false;
-//    protected transient Bundle fragmentIntentResultData;
 
     protected transient Bundle creationBundle;
 
@@ -182,7 +183,6 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
     }
 
     public void onBackPressResult(Bundle resultData) {
-//        this.fragmentIntentResultData = resultData;
         update(false);
     }
 }

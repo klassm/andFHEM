@@ -30,14 +30,12 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.os.ResultReceiver;
 import android.util.Log;
-import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.service.room.RoomListService;
 
 import java.io.Serializable;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import static li.klass.fhem.constants.BundleExtraKeys.RESULT_RECEIVER;
 
@@ -49,15 +47,7 @@ public abstract class ConvenientIntentService extends IntentService {
     private static boolean outOfMemoryOccurred = false;
 
     public ConvenientIntentService(String name) {
-        this(name, 1);
-    }
-
-    public ConvenientIntentService(String name, int numberOfThreads) {
         super(name);
-
-        if (numberOfThreads > 1 && AndFHEMApplication.getAndroidSDKLevel() >= 13 && !outOfMemoryOccurred) {
-            executorService = Executors.newFixedThreadPool(numberOfThreads);
-        }
     }
 
     protected enum STATE {
