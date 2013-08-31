@@ -24,18 +24,14 @@
 
 package li.klass.fhem.fhem;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
-import android.os.Handler;
-import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.exception.*;
-import li.klass.fhem.service.room.DeviceListParser;
+import li.klass.fhem.util.StringUtil;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
@@ -56,17 +52,12 @@ import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
 import org.apache.http.protocol.HTTP;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.SocketTimeoutException;
+import java.io.*;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.security.KeyStore;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import static li.klass.fhem.constants.BundleExtraKeys.DO_REFRESH;
 
 public class FHEMWebConnection implements FHEMConnection {
 
@@ -78,6 +69,8 @@ public class FHEMWebConnection implements FHEMConnection {
     public static final String FHEMWEB_URL = "FHEMWEB_URL";
     public static final String FHEMWEB_USERNAME = "FHEMWEB_USERNAME";
     public static final String FHEMWEB_PASSWORD = "FHEMWEB_PASSWORD";
+    public static final String FHEMWEB_CLIENT_CERT_PATH = "FHEMWEB_CLIENT_CERT_PATH";
+    public static final String FHEMWEB_CLIENT_CERT_PASSWORD = "FHEMWEB_CLIENT_CERT_PASSWORD";
 
     public static final FHEMWebConnection INSTANCE = new FHEMWebConnection();
 
@@ -200,12 +193,41 @@ public class FHEMWebConnection implements FHEMConnection {
         return password;
     }
 
+    private String getClientCertPassword() {
+        SharedPreferences sharedPreferences = PreferenceManager
+                .getDefaultSharedPreferences(AndFHEMApplication.getContext());
+        String password = sharedPreferences.getString(FHEMWEB_CLIENT_CERT_PASSWORD, "");
+        String logMessage = password.equals("") ? "has no client cert password"
+                : "has client cert password";
+        Log.d(TAG, "FHEMWEB connection " + logMessage + " configured");
+        return password;
+    }
+
+    private String getClientCertPath() {
+        SharedPreferences sharedPreferences = PreferenceManager
+                .getDefaultSharedPreferences(AndFHEMApplication.getContext());
+        String path = sharedPreferences.getString(FHEMWEB_CLIENT_CERT_PATH, "");
+        String logMessage = path.equals("") ? "has no client cert path"
+                : "has client cert path";
+        Log.d(TAG, "FHEMWEB connection " + logMessage + " configured");
+        return path;
+    }
+
     private DefaultHttpClient createNewHTTPClient(int connectionTimeout,
                                                   int socketTimeout) {
+        String clientSideCertPath = getClientCertPath();
+        String clientSideCertPass = getClientCertPassword();
+
         try {
-            KeyStore trustStore = KeyStore.getInstance(KeyStore
-                    .getDefaultType());
+            KeyStore trustStore = KeyStore.getInstance(KeyStore.getDefaultType());
             trustStore.load(null, null);
+
+            File clientSideCertPathFile = new File(clientSideCertPath);
+            if (!StringUtil.isBlank(clientSideCertPath) && clientSideCertPathFile.exists()) {
+                InputStream keyInput = new FileInputStream(clientSideCertPath);
+                trustStore.load(keyInput, clientSideCertPass.toCharArray());
+                keyInput.close();
+            }
 
             SSLSocketFactory sf = new CustomSSLSocketFactory(trustStore);
             sf.setHostnameVerifier(SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
@@ -213,17 +235,14 @@ public class FHEMWebConnection implements FHEMConnection {
             HttpParams params = new BasicHttpParams();
             HttpProtocolParams.setVersion(params, HttpVersion.HTTP_1_1);
             HttpProtocolParams.setContentCharset(params, HTTP.UTF_8);
-            HttpConnectionParams
-                    .setConnectionTimeout(params, connectionTimeout);
+            HttpConnectionParams.setConnectionTimeout(params, connectionTimeout);
             HttpConnectionParams.setSoTimeout(params, socketTimeout);
 
             SchemeRegistry registry = new SchemeRegistry();
-            registry.register(new Scheme("http", PlainSocketFactory
-                    .getSocketFactory(), 80));
+            registry.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
             registry.register(new Scheme("https", sf, 443));
 
-            ClientConnectionManager ccm = new ThreadSafeClientConnManager(
-                    params, registry);
+            ClientConnectionManager ccm = new ThreadSafeClientConnManager(params, registry);
 
             return new DefaultHttpClient(ccm, params);
         } catch (Exception e) {

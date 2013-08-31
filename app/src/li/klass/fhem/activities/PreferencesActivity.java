@@ -106,6 +106,8 @@ public class PreferencesActivity extends PreferenceActivity implements SharedPre
         removePreferenceIfNotNull(FHEMWEB_URL);
         removePreferenceIfNotNull(FHEMWEB_USERNAME);
         removePreferenceIfNotNull(FHEMWEB_PASSWORD);
+        removePreferenceIfNotNull(FHEMWEB_CLIENT_CERT_PASSWORD);
+        removePreferenceIfNotNull(FHEMWEB_CLIENT_CERT_PATH);
 
     }
 
@@ -168,6 +170,18 @@ public class PreferencesActivity extends PreferenceActivity implements SharedPre
         passwordPreference.setKey(FHEMWEB_PASSWORD);
         passwordPreference.setSummary(R.string.optional);
         getDataOriginCategory().addPreference(passwordPreference);
+
+        EditTextPreference clientCertPath = new EditTextPreference(this);
+        clientCertPath.setTitle(R.string.prefFHEMWEBClientCertPath);
+        clientCertPath.setKey(FHEMWEB_CLIENT_CERT_PATH);
+        clientCertPath.setSummary(R.string.prefFHEMWEBClientCertPathSummary);
+        getDataOriginCategory().addPreference(clientCertPath);
+
+        EditPasswordPreference clientCertPassword = new EditPasswordPreference(this);
+        clientCertPassword.setTitle(R.string.prefFHEMWEBClientCertPassword);
+        clientCertPassword.setKey(FHEMWEB_CLIENT_CERT_PASSWORD);
+        clientCertPassword.setSummary(R.string.prefFHEMWEBClientCertPasswordSummary);
+        getDataOriginCategory().addPreference(clientCertPassword);
     }
 
     private PreferenceCategory getDataOriginCategory() {

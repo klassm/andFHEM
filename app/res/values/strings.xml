@@ -211,6 +211,10 @@
     <string name="prefTelnetPort">Port</string>
     <string name="prefFHEMWEBUrl">URL</string>
     <string name="prefFHEMWEBUrlSummary">i.e. http://192.168.0.1:8083/fhem</string>
+    <string name="prefFHEMWEBClientCertPassword">Password client certificate</string>
+    <string name="prefFHEMWEBClientCertPasswordSummary">Password for client certificate</string>
+    <string name="prefFHEMWEBClientCertPathSummary">Absolute path to client certificate</string>
+    <string name="prefFHEMWEBClientCertPath">Path client certificate</string>
     <string name="prefUsername">Username</string>
     <string name="prefPassword">Password</string>
     <string name="prefShowHiddenDevices">Show hidden devices</string>
