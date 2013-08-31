@@ -32,6 +32,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -125,16 +126,20 @@ public class FloorplanFragment extends BaseFragment {
         intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
             @Override
             protected void onReceiveResult(int resultCode, Bundle resultData) {
-                if (getView() == null) return;
+                FragmentActivity activity = getActivity();
+
+                if (getView() == null || activity == null) return;
+
                 RelativeLayout layout = (RelativeLayout) getView().findViewById(R.id.floorplanHolder);
 
                 RoomDeviceList deviceList = (RoomDeviceList) resultData.getSerializable(BundleExtraKeys.DEVICE_LIST);
+
                 for (Device device : deviceList.getAllDevices()) {
                     if (!device.isOnFloorplan(floorplanName)) continue;
                     DeviceAdapter<Device> adapter = DeviceType.getAdapterFor(device);
                     if (!adapter.supportsFloorplan(device)) continue;
 
-                    View view = adapter.getFloorplanView(getActivity(), device);
+                    View view = adapter.getFloorplanView(activity, device);
                     view.setVisibility(View.INVISIBLE);
                     view.setTag(device);
                     view.setOnLongClickListener(deviceOnLongClickListener);
@@ -145,10 +150,13 @@ public class FloorplanFragment extends BaseFragment {
                 floorplanView.manualTouch();
 
                 Intent intent = new Intent(Actions.DISMISS_UPDATING_DIALOG);
-                getActivity().sendBroadcast(intent);
+                activity.sendBroadcast(intent);
             }
         });
-        getActivity().startService(intent);
+        FragmentActivity activity = getActivity();
+        if (activity == null) return;
+
+        activity.startService(intent);
     }
 
     private void updateViewFor(Device device, float newScale) {

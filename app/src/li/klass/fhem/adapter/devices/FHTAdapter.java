@@ -195,6 +195,8 @@ public class FHTAdapter extends GenericDeviceAdapter<FHTDevice> {
                 } else {
                     newMinute = minute + (10 - rest);
                 }
+                if (newMinute < 0 || newMinute >= 60) newMinute = 0;
+
                 lastMinute = newMinute;
                 timePicker.setCurrentMinute(newMinute);
             }
