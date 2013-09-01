@@ -209,10 +209,7 @@
     <string name="prefTelnetPortSummary">z.B. 7072</string>
     <string name="prefTelnetPort">Port</string>
     <string name="prefFHEMWEBUrl">URL</string>
-    <string name="prefFHEMWEBClientCertPassword">Passwort Client Zertifikat</string>
-    <string name="prefFHEMWEBClientCertPasswordSummary">Passwort für Client Zertifikat</string>
-    <string name="prefFHEMWEBClientCertPathSummary">Absoluter Pfad zu Client Zertifikat</string>
-    <string name="prefFHEMWEBClientCertPath">Pfad Client Zertifikat</string>
+    <string name="prefFHEMWEBClientCert">Client Zertifikat</string>
     <string name="prefUsername">Benutzername</string>
     <string name="prefPassword">Passwort</string>
     <string name="prefFHEMWEBUrlSummary">z.B.. http://192.168.0.1:8083/fhem</string>

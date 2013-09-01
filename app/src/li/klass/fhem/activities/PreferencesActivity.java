@@ -29,6 +29,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.*;
+import android.security.KeyChain;
+import android.security.KeyChainAliasCallback;
 import android.text.InputType;
 import android.text.method.PasswordTransformationMethod;
 import android.view.View;
@@ -42,6 +44,7 @@ import li.klass.fhem.R;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.fhem.DataConnectionSwitch;
+import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.DialogUtil;
 import li.klass.fhem.util.DisplayUtil;
 
@@ -171,17 +174,28 @@ public class PreferencesActivity extends PreferenceActivity implements SharedPre
         passwordPreference.setSummary(R.string.optional);
         getDataOriginCategory().addPreference(passwordPreference);
 
-        EditTextPreference clientCertPath = new EditTextPreference(this);
-        clientCertPath.setTitle(R.string.prefFHEMWEBClientCertPath);
-        clientCertPath.setKey(FHEMWEB_CLIENT_CERT_PATH);
-        clientCertPath.setSummary(R.string.prefFHEMWEBClientCertPathSummary);
-        getDataOriginCategory().addPreference(clientCertPath);
+        Preference clientCertButton = new Preference(this);
+        clientCertButton.setTitle(R.string.prefFHEMWEBClientCert);
+        clientCertButton.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                KeyChain.choosePrivateKeyAlias(PreferencesActivity.this,
+                        new KeyChainAliasCallback() {
 
-        EditPasswordPreference clientCertPassword = new EditPasswordPreference(this);
-        clientCertPassword.setTitle(R.string.prefFHEMWEBClientCertPassword);
-        clientCertPassword.setKey(FHEMWEB_CLIENT_CERT_PASSWORD);
-        clientCertPassword.setSummary(R.string.prefFHEMWEBClientCertPasswordSummary);
-        getDataOriginCategory().addPreference(clientCertPassword);
+                            public void alias(String alias) {
+                                ApplicationProperties.INSTANCE.setSharedPreference(FHEMWEB_CLIENT_CERT_ALIAS, alias);
+                            }
+                        },
+                        new String[]{"RSA", "DSA"},     // List of acceptable key types. null for any
+                        null,                           // issuer, null for any
+                        null,                           // host name of server requesting the cert, null if unavailable
+                        443,                            // port of server requesting the cert, -1 if unavailable
+                        null);
+
+                return true;
+            }
+        });
+        getDataOriginCategory().addPreference(clientCertButton);
     }
 
     private PreferenceCategory getDataOriginCategory() {

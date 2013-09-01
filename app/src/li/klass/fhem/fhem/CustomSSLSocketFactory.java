@@ -39,7 +39,7 @@ import java.security.cert.X509Certificate;
 /**
  * Custom implementation for SSL.
  * See
- *      http://stackoverflow.com/questions/2642777/trusting-all-certificates-using-httpclient-over-https
+ * http://stackoverflow.com/questions/2642777/trusting-all-certificates-using-httpclient-over-https
  * for details
  */
 public class CustomSSLSocketFactory extends SSLSocketFactory {
@@ -47,6 +47,7 @@ public class CustomSSLSocketFactory extends SSLSocketFactory {
 
     public CustomSSLSocketFactory(KeyStore truststore) throws NoSuchAlgorithmException, KeyManagementException, KeyStoreException, UnrecoverableKeyException {
         super(truststore);
+
 
         TrustManager tm = new X509TrustManager() {
             public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {

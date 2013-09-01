@@ -24,13 +24,17 @@
 
 package li.klass.fhem.fhem;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.preference.PreferenceManager;
+import android.security.KeyChain;
 import android.util.Log;
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.exception.*;
+import li.klass.fhem.fhem.clientCert.KeyChainKeystore;
+import li.klass.fhem.fhem.clientCert.KeyChainProxy;
 import li.klass.fhem.util.StringUtil;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
@@ -52,10 +56,14 @@ import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
 import org.apache.http.protocol.HTTP;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.security.KeyStore;
+import java.security.PrivateKey;
+import java.security.cert.X509Certificate;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -65,21 +73,16 @@ public class FHEMWebConnection implements FHEMConnection {
     public static final int SOCKET_TIMEOUT = 20000;
     public static final String TAG = FHEMWebConnection.class.getName();
     private DefaultHttpClient client;
+    private String savedClientCertAlias;
 
     public static final String FHEMWEB_URL = "FHEMWEB_URL";
     public static final String FHEMWEB_USERNAME = "FHEMWEB_USERNAME";
     public static final String FHEMWEB_PASSWORD = "FHEMWEB_PASSWORD";
     public static final String FHEMWEB_CLIENT_CERT_PATH = "FHEMWEB_CLIENT_CERT_PATH";
     public static final String FHEMWEB_CLIENT_CERT_PASSWORD = "FHEMWEB_CLIENT_CERT_PASSWORD";
+    public static final String FHEMWEB_CLIENT_CERT_ALIAS = "FHEMWEB_CLIENT_CERT_ALIAS";
 
     public static final FHEMWebConnection INSTANCE = new FHEMWebConnection();
-
-    private FHEMWebConnection() {
-        HttpParams httpParams = new BasicHttpParams();
-        HttpConnectionParams.setConnectionTimeout(httpParams, 3000);
-        HttpConnectionParams.setSoTimeout(httpParams, 20000);
-        client = createNewHTTPClient(CONNECTION_TIMEOUT, SOCKET_TIMEOUT);
-    }
 
     @Override
     public String xmllist() {
@@ -132,9 +135,13 @@ public class FHEMWebConnection implements FHEMConnection {
 
     private InputStream executeRequest(String urlSuffix,
                                        DefaultHttpClient client) {
+        if (client == null || !savedClientCertAlias.equals(getClientCertAlias())) {
+            client = createNewHTTPClient(CONNECTION_TIMEOUT, SOCKET_TIMEOUT);
+        }
         try {
             HttpGet request = new HttpGet();
             String url = getURL() + urlSuffix;
+
             Log.i(TAG, "accessing URL " + url);
             URI uri = new URI(url);
 
@@ -193,40 +200,33 @@ public class FHEMWebConnection implements FHEMConnection {
         return password;
     }
 
-    private String getClientCertPassword() {
+    private String getClientCertAlias() {
         SharedPreferences sharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(AndFHEMApplication.getContext());
-        String password = sharedPreferences.getString(FHEMWEB_CLIENT_CERT_PASSWORD, "");
-        String logMessage = password.equals("") ? "has no client cert password"
-                : "has client cert password";
+        String password = sharedPreferences.getString(FHEMWEB_CLIENT_CERT_ALIAS, "");
+        String logMessage = password.equals("") ? "has no client cert alias"
+                : "has client cert alias";
         Log.d(TAG, "FHEMWEB connection " + logMessage + " configured");
         return password;
     }
 
-    private String getClientCertPath() {
-        SharedPreferences sharedPreferences = PreferenceManager
-                .getDefaultSharedPreferences(AndFHEMApplication.getContext());
-        String path = sharedPreferences.getString(FHEMWEB_CLIENT_CERT_PATH, "");
-        String logMessage = path.equals("") ? "has no client cert path"
-                : "has client cert path";
-        Log.d(TAG, "FHEMWEB connection " + logMessage + " configured");
-        return path;
-    }
-
     private DefaultHttpClient createNewHTTPClient(int connectionTimeout,
                                                   int socketTimeout) {
-        String clientSideCertPath = getClientCertPath();
-        String clientSideCertPass = getClientCertPassword();
+        Context context = AndFHEMApplication.getContext();
+        String clientSideCertAlias = getClientCertAlias();
+        savedClientCertAlias = clientSideCertAlias;
 
         try {
-            KeyStore trustStore = KeyStore.getInstance(KeyStore.getDefaultType());
-            trustStore.load(null, null);
+            KeyStore trustStore;
+            if (!StringUtil.isBlank(clientSideCertAlias)) {
+                X509Certificate[] certificateChain = KeyChain.getCertificateChain(context, clientSideCertAlias);
+                PrivateKey privateKey = KeyChain.getPrivateKey(context, clientSideCertAlias);
 
-            File clientSideCertPathFile = new File(clientSideCertPath);
-            if (!StringUtil.isBlank(clientSideCertPath) && clientSideCertPathFile.exists()) {
-                InputStream keyInput = new FileInputStream(clientSideCertPath);
-                trustStore.load(keyInput, clientSideCertPass.toCharArray());
-                keyInput.close();
+                KeyChainProxy keyChainProxy = new KeyChainProxy(clientSideCertAlias, privateKey, certificateChain);
+                trustStore = new KeyChainKeystore(keyChainProxy, null, "BKS");
+            } else {
+                trustStore = KeyStore.getInstance(KeyStore.getDefaultType());
+                trustStore.load(null, null);
             }
 
             SSLSocketFactory sf = new CustomSSLSocketFactory(trustStore);
