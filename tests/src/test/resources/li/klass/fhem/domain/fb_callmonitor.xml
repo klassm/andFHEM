@@ -47,5 +47,20 @@
             <STATE key="missed_call" value="4294829932" measured="2013-08-08 16:36:31"/>
             <STATE key="room" value="room"/>
         </FB_CALLMONITOR>
+
+        <!-- a device without an associated call event (resulted in xmllist error, issue #483) -->
+        <FB_CALLMONITOR name="device1" state="opened" sets=""
+                        attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings do_not_notify:0,1 unique-call-ids:0,1 local-area-code remove-leading-zero:0,1 reverse-search-cache-file reverse-search:all,internal,klicktel.de,dasoertliche.de,search.ch,dasschnelle.at,none reverse-search-cache:0,1 reverse-search-phonebook-file event-on-change-reading event-on-update-reading event-min-interval stateFormat devStateIcon devStateStyle icon room_map sortby structexclude webCmd">
+            <INT key="DEF" value="192.168.168.11:1012"/>
+            <INT key="DeviceName" value="device1"/>
+            <INT key="FD" value="23"/>
+            <INT key="NAME" value="MyCallMonitor"/>
+            <INT key="NR" value="138"/>
+            <INT key="PARTIAL" value=""/>
+            <INT key="STATE" value="opened"/>
+            <INT key="TYPE" value="FB_CALLMONITOR"/>
+            <STATE key="room" value="room"/>
+            <ATTR key="event-on-change-reading" value="event"/>
+        </FB_CALLMONITOR>
     </FB_CALLMONITOR_LIST>
 </FHZINFO>

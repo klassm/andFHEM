@@ -108,6 +108,9 @@ public class FBCallmonitorDevice extends Device<FBCallmonitorDevice> {
         Context context = AndFHEMApplication.getContext();
 
         int eventStringId;
+        if (eventInternal == null) {
+            return;
+        }
 
         if (eventInternal == Event.DISCONNECT && missedCallNumber != null && missedCallNumber.equals(externalNumber)) {
             eventInternal = Event.MISSED;
