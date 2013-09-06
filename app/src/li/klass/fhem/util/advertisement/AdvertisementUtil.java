@@ -26,6 +26,7 @@ package li.klass.fhem.util.advertisement;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -38,7 +39,7 @@ import li.klass.fhem.fragments.FragmentType;
 import li.klass.fhem.license.LicenseManager;
 
 public class AdvertisementUtil {
-    private static long lastError = System.currentTimeMillis();
+    private static long lastError = 0;
 
     public static void addAd(View view, final Activity activity) {
         final LinearLayout adContainer = (LinearLayout) view.findViewById(R.id.adContainer);
@@ -61,14 +62,13 @@ public class AdvertisementUtil {
         adView.setAdListener(new AdListener() {
             @Override
             public void onReceiveAd(Ad ad) {
-                adContainer.removeAllViews();
-                addErrorView(activity, adContainer);
-                lastError = System.currentTimeMillis();
             }
 
             @Override
             public void onFailedToReceiveAd(Ad ad, AdRequest.ErrorCode errorCode) {
-
+                adContainer.removeAllViews();
+                addErrorView(activity, adContainer);
+                lastError = System.currentTimeMillis();
             }
 
             @Override
