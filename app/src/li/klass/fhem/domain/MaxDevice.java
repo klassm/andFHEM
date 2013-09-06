@@ -161,7 +161,8 @@ public class MaxDevice extends ToggleableDevice<MaxDevice> implements DesiredTem
             }
         }
 
-        setDesiredTemp(ValueExtractUtil.extractLeadingDouble(value));
+        double temperature = parseTemperature(value);
+        setDesiredTemp(temperature);
     }
 
     public void readTEMPERATURE(String value) {
@@ -178,6 +179,15 @@ public class MaxDevice extends ToggleableDevice<MaxDevice> implements DesiredTem
         } catch (Exception e) {
             Log.e(MaxDevice.class.getName(), "cannot set heating mode from value " + value, e);
         }
+    }
+
+    private double parseTemperature(String temperature) {
+        if (temperature.equalsIgnoreCase("on")) {
+            return MAXIMUM_TEMPERATURE;
+        } else if (temperature.equals("off")) {
+            return MINIMUM_TEMPERATURE;
+        }
+        return ValueExtractUtil.extractLeadingDouble(temperature);
     }
 
     public SubType getSubType() {

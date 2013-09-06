@@ -581,7 +581,8 @@ public class PlayStoreBillingService extends Service implements ServiceConnectio
 
     public void unbind() {
         try {
-            boolean isBound = getApplicationContext().bindService(new Intent(getApplicationContext(), PlayStoreBillingService.class), this, Context.BIND_AUTO_CREATE);
+            boolean isBound = getApplicationContext().bindService(new Intent(getApplicationContext(),
+                    PlayStoreBillingService.class), this, Context.BIND_AUTO_CREATE);
 
             if (isBound) {
                 unbindService(this);

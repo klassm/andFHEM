@@ -100,7 +100,7 @@
             <ATTR key="room" value="room"/>
             <ATTR key="webCmd" value="desiredTemperature"/>
             <STATE key="battery" value="ok" measured="2012-11-30 15:20:26"/>
-            <STATE key="desiredTemperature" value="17.0" measured="2012-11-30 15:20:26"/>
+            <STATE key="desiredTemperature" value="on" measured="2012-11-30 15:20:26"/>
             <STATE key="temperature" value="21" measured="2012-11-30 15:20:26"/>
             <STATE key="valveposition" value="0" measured="2012-11-30 15:20:26"/>
         </MAX>

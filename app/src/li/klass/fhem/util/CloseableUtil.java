@@ -30,6 +30,8 @@ import java.io.Closeable;
 
 public class CloseableUtil {
     public static void close(Closeable... closeables) {
+        if (closeables == null) return;
+
         for (Closeable closeable : closeables) {
             if (closeable != null) {
                 try {
