@@ -256,10 +256,17 @@ public class FHTDevice extends Device<FHTDevice> implements DesiredTempDevice,
     protected void fillDeviceCharts(List<DeviceChart> chartSeries) {
         super.fillDeviceCharts(chartSeries);
 
-        addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureActuatorGraph,
-                ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:measured", TEMPERATURE),
-                ChartSeriesDescription.getDiscreteValuesInstance(R.string.desiredTemperature, "4:desired-temp", DESIRED_TEMPERATURE),
-                ChartSeriesDescription.getDiscreteValuesInstance(R.string.actuator, "4:actuator.*[0-9]+%:0:int", ACTUATOR)),
-                temperature, actuator);
+        if (temperature != null && actuator != null) {
+            addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureActuatorGraph,
+                    ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:measured", TEMPERATURE),
+                    ChartSeriesDescription.getDiscreteValuesInstance(R.string.desiredTemperature, "4:desired-temp", DESIRED_TEMPERATURE),
+                    ChartSeriesDescription.getDiscreteValuesInstance(R.string.actuator, "4:actuator.*[0-9]+%:0:int", ACTUATOR)),
+                    temperature, actuator);
+        } else if (temperature == null && actuator != null) {
+            addDeviceChartIfNotNull(new DeviceChart(R.string.actuatorGraph,
+                    ChartSeriesDescription.getDiscreteValuesInstance(R.string.desiredTemperature, "4:desired-temp", DESIRED_TEMPERATURE),
+                    ChartSeriesDescription.getDiscreteValuesInstance(R.string.actuator, "4:actuator.*[0-9]+%:0:int", ACTUATOR)),
+                    actuator);
+        }
     }
 }
