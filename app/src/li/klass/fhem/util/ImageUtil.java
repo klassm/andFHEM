@@ -26,6 +26,7 @@ package li.klass.fhem.util;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.util.Log;
 import android.widget.ImageView;
 
@@ -41,6 +42,7 @@ public class ImageUtil {
     }
 
     public static void loadImageFrom(final String imageURL, final ImageLoadedListener callback) {
+        final Handler handler = new Handler();
         new AsyncTask<Void, Void, Bitmap>() {
 
             @Override
@@ -49,8 +51,17 @@ public class ImageUtil {
             }
 
             @Override
-            protected void onPostExecute(Bitmap bitmap) {
-                callback.imageLoaded(bitmap);
+            protected void onPostExecute(final Bitmap bitmap) {
+                // onPostExecute is run from within the UI thread, but Android allows to run multiple UI threads.
+                // We cannot be sure which one is chosen, so we enforce the right UI thread by using an explicit
+                // handler.
+                // see http://stackoverflow.com/questions/10426120/android-got-calledfromwrongthreadexception-in-onpostexecute-how-could-it-be
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        callback.imageLoaded(bitmap);
+                    }
+                });
             }
         }.execute(null, null);
     }
