@@ -24,6 +24,8 @@
 
 package li.klass.fhem.fhem.clientCert;
 
+import android.util.Log;
+
 import java.security.KeyStore;
 import java.security.KeyStoreSpi;
 import java.security.Provider;
@@ -38,7 +40,7 @@ public class KeyChainKeystore extends KeyStore {
         try {
             load(null, null);
         } catch (Exception e) {
-            // ignore - our spi doesn't do anything
+            Log.e(KeyChainKeystore.class.getName(), "error while loading", e);
         }
     }
 }
