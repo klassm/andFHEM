@@ -86,4 +86,18 @@ public class ArrayUtil {
 
         return ret;
     }
+
+    /**
+     * Copy an array. Note that we cannot use {@link Arrays#copyOf}, as this is not supported in all Android versions.
+     *
+     * @param toCopy array to copy
+     * @return copy
+     */
+    public static String[] copyOf(String[] toCopy) {
+        String[] copy = new String[toCopy.length];
+        for (int i = 0; i < toCopy.length; i++) {
+            copy[i] = toCopy[i];
+        }
+        return copy;
+    }
 }

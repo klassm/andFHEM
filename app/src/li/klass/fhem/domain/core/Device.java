@@ -34,6 +34,7 @@ import li.klass.fhem.domain.floorplan.FloorplanPosition;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.service.room.AssociatedDeviceCallback;
+import li.klass.fhem.util.ArrayUtil;
 import li.klass.fhem.util.DateFormatUtil;
 import li.klass.fhem.util.StringUtil;
 import org.w3c.dom.NamedNodeMap;
@@ -395,7 +396,7 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
      * @return array of available target states
      */
     public String[] getAvailableTargetStatesEventMapTexts() {
-        String[] ret = Arrays.copyOf(availableTargetStates, availableTargetStates.length);
+        String[] ret = ArrayUtil.copyOf(availableTargetStates);
         for (int i = 0; i < ret.length; i++) {
             String state = ret[i];
             if (eventMapReverse.containsKey(state)) {

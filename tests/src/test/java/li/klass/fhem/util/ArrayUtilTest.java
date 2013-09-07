@@ -65,4 +65,12 @@ public class ArrayUtilTest {
         String[] values1 = new String[]{"b", "b"};
         assertThat(ArrayUtil.removeFromArray(values1, "b"), is(new String[]{}));
     }
+
+    @Test
+    public void testCopyArray() {
+        String[] values = new String[]{"a", "b", "c", "d"};
+        String[] copy = ArrayUtil.copyOf(values);
+        assertThat(values, is(copy));
+        assertFalse(values == copy);
+    }
 }
