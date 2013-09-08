@@ -23,6 +23,10 @@
 
 package li.klass.fhem.appwidget.view;
 
+import android.content.Context;
+import li.klass.fhem.appwidget.AppWidgetSelectionActivity;
+import li.klass.fhem.appwidget.WidgetConfiguration;
+import li.klass.fhem.appwidget.WidgetConfigurationCreatedCallback;
 import li.klass.fhem.appwidget.view.widget.AppWidgetView;
 import li.klass.fhem.appwidget.view.widget.big.WeatherForecastWidget;
 import li.klass.fhem.appwidget.view.widget.medium.*;
@@ -40,7 +44,8 @@ public enum WidgetType {
     INFORMATION(new MediumInformationWidgetView(), WidgetSize.MEDIUM),
     HEATING(new HeatingWidgetView(), WidgetSize.MEDIUM),
     WEATHER_FORECAST(new WeatherForecastWidget(), WidgetSize.MEDIUM),
-    DIM(new DimWidgetView(), WidgetSize.MEDIUM);
+    DIM(new DimWidgetView(), WidgetSize.MEDIUM),
+    TARGET_STATE(new TargetStateWidgetView(), WidgetSize.MEDIUM);
 
     public final AppWidgetView widgetView;
     public final WidgetSize widgetSize;
@@ -58,5 +63,10 @@ public enum WidgetType {
             }
         }
         return widgetTypes;
+    }
+
+    public void createWidgetConfiguration(Context context, int appWidgetId, Device device,
+                                          WidgetConfigurationCreatedCallback callback) {
+        widgetView.createWidgetConfiguration(context, this, appWidgetId, device, callback);
     }
 }

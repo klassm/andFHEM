@@ -152,9 +152,7 @@ public class AppWidgetDataHolder {
 
     public void saveWidgetConfigurationToPreferences(WidgetConfiguration widgetConfiguration) {
         SharedPreferences.Editor edit = getSharedPreferencesEditor(preferenceName);
-        String value = widgetConfiguration.widgetId + SAVE_SEPARATOR
-                + widgetConfiguration.deviceName + SAVE_SEPARATOR
-                + widgetConfiguration.widgetType.name();
+        String value = widgetConfiguration.toSaveString();
         edit.putString(String.valueOf(widgetConfiguration.widgetId), value);
         edit.commit();
     }
@@ -192,24 +190,7 @@ public class AppWidgetDataHolder {
         String value = sharedPreferences.getString(String.valueOf(widgetId), null);
         if (value == null) return null;
 
-        String[] parts = value.split(SAVE_SEPARATOR);
-        if (parts.length < 3) return null;
-
-        WidgetType widgetType = getWidgetTypeFromName(parts[2]);
-        if (widgetType == null) {
-            return null;
-        }
-
-        return new WidgetConfiguration(Integer.valueOf(parts[0]), parts[1], widgetType);
-    }
-
-    private WidgetType getWidgetTypeFromName(String widgetTypeName) {
-        try {
-            return WidgetType.valueOf(widgetTypeName);
-        } catch (Exception e) {
-            Log.e(AppWidgetDataHolder.class.getName(), "cannot find widget type for name " + widgetTypeName, e);
-            return null;
-        }
+        return WidgetConfiguration.fromSaveString(value);
     }
 
     private int getWidgetUpdateIntervalFor(String key) {

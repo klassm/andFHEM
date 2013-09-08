@@ -32,8 +32,11 @@ import android.widget.RemoteViews;
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.activities.AndFHEMMainActivity;
+import li.klass.fhem.appwidget.AppWidgetSelectionActivity;
 import li.klass.fhem.appwidget.WidgetConfiguration;
+import li.klass.fhem.appwidget.WidgetConfigurationCreatedCallback;
 import li.klass.fhem.appwidget.annotation.SupportsWidget;
+import li.klass.fhem.appwidget.view.WidgetType;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.fragments.core.DeviceDetailFragment;
@@ -41,9 +44,9 @@ import li.klass.fhem.fragments.core.DeviceDetailFragment;
 public abstract class AppWidgetView {
 
     public boolean supports(Device<?> device) {
-        if (! device.getClass().isAnnotationPresent(SupportsWidget.class)) return false;
+        if (!device.getClass().isAnnotationPresent(SupportsWidget.class)) return false;
 
-        if (! device.supportsWidget(this.getClass())) {
+        if (!device.supportsWidget(this.getClass())) {
             return false;
         }
 
@@ -94,7 +97,17 @@ public abstract class AppWidgetView {
         return true;
     }
 
+    public void createWidgetConfiguration(Context context, WidgetType widgetType, int appWidgetId,
+                                          Device device,
+                                          WidgetConfigurationCreatedCallback callback) {
+        callback.widgetConfigurationCreated(new WidgetConfiguration(appWidgetId, device.getName(), widgetType));
+    }
+
     public abstract int getWidgetName();
+
     protected abstract int getContentView();
-    protected abstract void fillWidgetView(Context context, RemoteViews view, Device<?> device, WidgetConfiguration widgetConfiguration);
+
+    protected abstract void fillWidgetView(Context context, RemoteViews view, Device<?> device,
+                                           WidgetConfiguration widgetConfiguration);
+
 }

@@ -41,6 +41,8 @@ import java.util.List;
 import static android.appwidget.AppWidgetManager.*;
 
 public abstract class AppWidgetSelectionActivity extends DeviceNameSelectionActivity {
+
+
     private int widgetId;
     private WidgetSize widgetSize;
 
@@ -83,20 +85,26 @@ public abstract class AppWidgetSelectionActivity extends DeviceNameSelectionActi
         contextMenu.setItems(widgetNames, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int position) {
-                WidgetType type = widgetTypes.get(position);
-                WidgetConfiguration configuration = new WidgetConfiguration(widgetId, device.getName(), type);
-                AppWidgetDataHolder.INSTANCE.saveWidgetConfigurationToPreferences(configuration);
-
-                Intent intent = new Intent(Actions.WIDGET_UPDATE);
-                intent.putExtra(BundleExtraKeys.APP_WIDGET_ID, widgetId);
-                sendBroadcast(intent);
-
                 dialogInterface.dismiss();
 
-                Intent resultIntent = new Intent();
-                resultIntent.putExtra(EXTRA_APPWIDGET_ID, widgetId);
-                setResult(RESULT_OK, resultIntent);
-                finish();
+                WidgetType type = widgetTypes.get(position);
+                type.createWidgetConfiguration
+                        (AppWidgetSelectionActivity.this, widgetId, device, new WidgetConfigurationCreatedCallback() {
+                            @Override
+                            public void widgetConfigurationCreated(WidgetConfiguration widgetConfiguration) {
+
+                                AppWidgetDataHolder.INSTANCE.saveWidgetConfigurationToPreferences(widgetConfiguration);
+
+                                Intent intent = new Intent(Actions.WIDGET_UPDATE);
+                                intent.putExtra(BundleExtraKeys.APP_WIDGET_ID, widgetId);
+                                sendBroadcast(intent);
+
+                                Intent resultIntent = new Intent();
+                                resultIntent.putExtra(EXTRA_APPWIDGET_ID, widgetId);
+                                setResult(RESULT_OK, resultIntent);
+                                finish();
+                            }
+                        });
             }
         });
         contextMenu.show();
