@@ -44,6 +44,7 @@ import li.klass.fhem.R;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.fhem.DataConnectionSwitch;
+import li.klass.fhem.license.LicenseManager;
 import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.DialogUtil;
 import li.klass.fhem.util.DisplayUtil;
@@ -174,28 +175,30 @@ public class PreferencesActivity extends PreferenceActivity implements SharedPre
         passwordPreference.setSummary(R.string.optional);
         getDataOriginCategory().addPreference(passwordPreference);
 
-        Preference clientCertButton = new Preference(this);
-        clientCertButton.setTitle(R.string.prefFHEMWEBClientCert);
-        clientCertButton.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                KeyChain.choosePrivateKeyAlias(PreferencesActivity.this,
-                        new KeyChainAliasCallback() {
+        if (LicenseManager.INSTANCE.isDebug()) {
+            Preference clientCertButton = new Preference(this);
+            clientCertButton.setTitle(R.string.prefFHEMWEBClientCert);
+            clientCertButton.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    KeyChain.choosePrivateKeyAlias(PreferencesActivity.this,
+                            new KeyChainAliasCallback() {
 
-                            public void alias(String alias) {
-                                ApplicationProperties.INSTANCE.setSharedPreference(FHEMWEB_CLIENT_CERT_ALIAS, alias);
-                            }
-                        },
-                        new String[]{"RSA", "DSA"},     // List of acceptable key types. null for any
-                        null,                           // issuer, null for any
-                        null,                           // host name of server requesting the cert, null if unavailable
-                        443,                            // port of server requesting the cert, -1 if unavailable
-                        null);
+                                public void alias(String alias) {
+                                    ApplicationProperties.INSTANCE.setSharedPreference(FHEMWEB_CLIENT_CERT_ALIAS, alias);
+                                }
+                            },
+                            new String[]{"RSA", "DSA"},     // List of acceptable key types. null for any
+                            null,                           // issuer, null for any
+                            null,                           // host name of server requesting the cert, null if unavailable
+                            443,                            // port of server requesting the cert, -1 if unavailable
+                            null);
 
-                return true;
-            }
-        });
-        getDataOriginCategory().addPreference(clientCertButton);
+                    return true;
+                }
+            });
+            getDataOriginCategory().addPreference(clientCertButton);
+        }
     }
 
     private PreferenceCategory getDataOriginCategory() {
