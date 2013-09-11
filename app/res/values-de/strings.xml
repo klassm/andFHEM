@@ -167,6 +167,10 @@
     <string name="callMonEventDisconnect">Aufgelegt</string>
     <string name="callMonEventMissed">Verpasst</string>
     <string name="webcmd">WebCmds</string>
+    <string name="temperatureMinimum">Min-Temperatur</string>
+    <string name="temperatureMaximum">Max-Temperatur</string>
+    <string name="sunrise">Sonnenaufgang</string>
+    <string name="sunset">Sonnenuntergang</string>
 
 
     <string name="switchDevice">Schalte</string>
