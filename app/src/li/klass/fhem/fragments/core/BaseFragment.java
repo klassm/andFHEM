@@ -151,27 +151,23 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
     @Override
     public void onResume() {
         super.onResume();
+        if (broadcastReceiver == null) {
+            broadcastReceiver = new UIBroadcastReceiver(getActivity(), this);
+        }
+        broadcastReceiver.attach();
+
         if (contentView != null) {
             contentView.clearFocus();
         }
         backPressCalled = false;
+
     }
 
     @Override
     public void onPause() {
         contentView = getView();
+        broadcastReceiver.detach();
         super.onPause();
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-
-        if (activity instanceof FragmentBaseActivity) {
-            FragmentBaseActivity baseActivity = (FragmentBaseActivity) activity;
-            broadcastReceiver = new UIBroadcastReceiver(baseActivity, this);
-            broadcastReceiver.attach();
-        }
     }
 
     @Override
@@ -179,6 +175,7 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
         super.onDetach();
         if (broadcastReceiver != null) {
             broadcastReceiver.detach();
+            broadcastReceiver = null;
         }
     }
 

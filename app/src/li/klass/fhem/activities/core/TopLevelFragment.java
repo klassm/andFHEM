@@ -133,12 +133,16 @@ public class TopLevelFragment extends Fragment implements Serializable {
             AndFHEMApplication.getContext().sendBroadcast(new Intent(Actions.RELOAD));
             return;
         }
+        clearBackStack();
+
+        switchTo(initialFragmentType, null);
+    }
+
+    private void clearBackStack() {
         int entryCount = getFragmentManager().getBackStackEntryCount();
         for (int i = 0; i < entryCount; i++) {
             getFragmentManager().popBackStack();
         }
-
-        switchTo(initialFragmentType, null);
     }
 
     private void switchTo(Bundle bundle) {
@@ -155,6 +159,9 @@ public class TopLevelFragment extends Fragment implements Serializable {
     }
 
     public void switchTo(FragmentType fragmentType, Bundle data) {
+        if (fragmentType.isTopLevelFragment()) {
+            clearBackStack();
+        }
 
         BaseFragment contentFragment = createContentFragment(fragmentType, data);
         BaseFragment navigationFragment = createNavigationFragment(fragmentType, data);
@@ -163,12 +170,12 @@ public class TopLevelFragment extends Fragment implements Serializable {
     }
 
     public boolean back() {
-
-        if (getFragmentManager().getBackStackEntryCount() == 0) {
+        String currentName = getLastTransactionName();
+        boolean topLevelFragment = FragmentType.getFragmentFor(currentName).isTopLevelFragment();
+        if (getFragmentManager().getBackStackEntryCount() == 0 || topLevelFragment) {
             getActivity().finish();
             return false;
         } else {
-            String currentName = getLastTransactionName();
             boolean found = false;
             while (getFragmentManager().getBackStackEntryCount() != 0) {
                 String lastTransactionName = getLastTransactionName();
