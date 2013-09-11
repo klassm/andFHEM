@@ -110,6 +110,15 @@ public class MaxDeviceTest extends DeviceXMLParsingBase {
         assertThat(tuesday.getHeatingIntervalAt(0).getTemperature(), is(closeTo(17, 0.1)));
     }
 
+    @Test
+    public void testOnOffTemperatureDevice() {
+        MaxDevice device = getDeviceFor("on_off");
+
+        assertThat(device.getDesiredTemp(), is(closeTo(30.5, 0.01)));
+        assertThat(device.getWindowOpenTemp(), is(closeTo(4.5, 0.01)));
+        assertThat(device.getEcoTemp(), is(closeTo(30.5, 0.01)));
+    }
+
     @Override
     protected String getFileName() {
         return "max.xml";

@@ -277,5 +277,88 @@ n comfortTemperature:off,5.0,5.5,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,10.0,10.5,11.0,
             <STATE key="windowOpenDuration" value="25" measured="2013-01-13 23:03:20"/>
             <STATE key="windowOpenTemperature" value="5.0" measured="2013-01-13 23:03:30"/>
         </MAX>
+
+        <MAX name="on_off" state="16.5 °C"
+             sets="wakeUp factoryReset groupid associate:Fenster_ArbZi,HzgTh_Kueche,Fenster_WoZi,Fenster_SchZi,HzgTh_ArbZi,Fenster_KiZi,Fenster_Kueche,HzgTh_SchZi,HzgTh_KiZi deassociate:Fenster_ArbZi,HzgTh_Kueche,Fenster_WoZi,Fenster_SchZi,HzgTh_ArbZi,Fenster_KiZi,Fenster_Kueche,HzgTh_SchZi,HzgTh_KiZi desiredTemperature:eco,comfort,boost,auto,off,5.0,5.5,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,10.0,10.5,11.0,11.5,12.0,12.5,13.0,13.5,14.0,14.5,15.0,15.5,16.0,16.5,17.0,17.5,18.0,18.5,19.0,19.5,20.0,20.5,21.0,21.5,22.0,22.5,23.0,23.5,24.0,24.5,25.0,25.5,26.0,26.5,27.0,27.5,28.0,28.5,29.0,29.5,30.0,on ecoTemperature:off,5.0,5.5,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,10.0,10.5,11.0,11.5,12.0,12.5,13.0,13.5,14.0,14.5,15.0,15.5,16.0,16.5,17.0,17.5,18.0,18.5,19.0,19.5,20.0,20.5,21.0,21.5,22.0,22.5,23.0,23.5,24.0,24.5,25.0,25.5,26.0,26.5,27.0,27.5,28.0,28.5,29.0,29.5,30.0,on comfortTemperature:off,5.0,5.5,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,10.0,10.5,11.0,11.5,12.0,12.5,13.0,13.5,14.0,14.5,15.0,15.5,16.0,16.5,17.0,17.5,18.0,18.5,19.0,19.5,20.0,20.5,21.0,21.5,22.0,22.5,23.0,23.5,24.0,24.5,25.0,25.5,26.0,26.5,27.0,27.5,28.0,28.5,29.0,29.5,30.0,on measurementOffset:-3.5,-3.0,-2.5,-2.0,-1.5,-1.0,-0.5,0.0,0.5,1.0,1.5,2.0,2.5,3.0,3.5 maximumTemperature:off,5.0,5.5,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,10.0,10.5,11.0,11.5,12.0,12.5,13.0,13.5,14.0,14.5,15.0,15.5,16.0,16.5,17.0,17.5,18.0,18.5,19.0,19.5,20.0,20.5,21.0,21.5,22.0,22.5,23.0,23.5,24.0,24.5,25.0,25.5,26.0,26.5,27.0,27.5,28.0,28.5,29.0,29.5,30.0,on minimumTemperature:off,5.0,5.5,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,10.0,10.5,11.0,11.5,12.0,12.5,13.0,13.5,14.0,14.5,15.0,15.5,16.0,16.5,17.0,17.5,18.0,18.5,19.0,19.5,20.0,20.5,21.0,21.5,22.0,22.5,23.0,23.5,24.0,24.5,25.0,25.5,26.0,26.5,27.0,27.5,28.0,28.5,29.0,29.5,30.0,on windowOpenTemperature:off,5.0,5.5,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,10.0,10.5,11.0,11.5,12.0,12.5,13.0,13.5,14.0,14.5,15.0,15.5,16.0,16.5,17.0,17.5,18.0,18.5,19.0,19.5,20.0,20.5,21.0,21.5,22.0,22.5,23.0,23.5,24.0,24.5,25.0,25.5,26.0,26.5,27.0,27.5,28.0,28.5,29.0,29.5,30.0,on windowOpenDuration boostDuration:30,20,5,15,0,60,10,25 boostValveposition decalcification maxValveSetting valveOffset"
+             attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev do_not_notify:1,0 ignore:0,1 dummy:0,1 showtime:1,0 loglevel:0,1,2,3,4,5,6 keepAuto:0,1 scanTemp:0,1 event-on-change-reading event-on-update-reading event-min-interval stateFormat devStateIcon devStateStyle fm_fav fm_groups fm_name fm_order fp_Wohnung_1OG icon sortby structexclude\\\ webCmd">
+            <INT key="DEF" value="HeatingThermostat 008ded"/>
+            <INT key="LASTInputDev" value="ml"/>
+            <INT key="MSGCNT" value="86"/>
+            <INT key="NAME" value="on_off"/>
+            <INT key="NR" value="176"/>
+            <INT key="STATE" value="16.5 °C"/>
+            <INT key="TYPE" value="MAX"/>
+            <INT key="addr" value="008ded"/>
+            <INT key="backend" value="ml"/>
+            <INT key="dstsetting" value="1"/>
+            <INT key="groupid" value="4"/>
+            <INT key="ml_MSGCNT" value="86"/>
+            <INT key="ml_RAWMSG"
+                 value="L:CwChogkSGAAgAAAACwCN7QkSGAAhAMEACwA0OQkSGQAJAAAACwNOSQkSGQAJAAAABgBsZgkSEgYAHtgJEhAGAEpFCQAABgAf3gkSEAsBEdwJEhgAIAAAAAYAL4cJEhIGAB5iCRIQ"/>
+            <INT key="ml_TIME" value="2013-09-11 15:47:06"/>
+            <INT key="mode" value="0"/>
+            <INT key="rferror" value="0"/>
+            <INT key="serial" value="IEQ0197020"/>
+            <INT key="type" value="HeatingThermostat"/>
+            <INT key="IODev" value="ml"/>
+            <ATTR key="alias" value="HzgTh_WoZi"/>
+            <ATTR key="fp_Wohnung_1OG" value="528,298,6,temperature"/>
+            <ATTR key="icon" value="icoTempHeizung"/>
+            <ATTR key="room" value="room"/>
+            <STATE key="battery" value="ok" measured="2013-09-11 15:47:06"/>
+            <STATE key="boostDuration" value="5" measured="2013-09-11 14:22:37"/>
+            <STATE key="boostValveposition" value="80" measured="2013-09-11 14:22:37"/>
+            <STATE key="comfortTemperature" value="22.0" measured="2013-09-11 14:22:37"/>
+            <STATE key="decalcification" value="Sat 12:00" measured="2013-09-11 14:22:37"/>
+            <STATE key="desiredTemperature" value="on" measured="2013-09-11 15:47:06"/>
+            <STATE key="ecoTemperature" value="on" measured="2013-09-11 14:22:37"/>
+            <STATE key="groupid" value="0" measured="2013-06-02 19:25:13"/>
+            <STATE key="maxValveSetting" value="100" measured="2013-09-11 14:22:37"/>
+            <STATE key="maximumTemperature" value="on" measured="2013-09-11 14:22:37"/>
+            <STATE key="measurementOffset" value="0.0" measured="2013-09-11 14:22:37"/>
+            <STATE key="minimumTemperature" value="off" measured="2013-09-11 14:22:37"/>
+            <STATE key="mode" value="auto" measured="2013-09-11 15:47:06"/>
+            <STATE key="state" value="16.5 °C" measured="2013-09-11 15:47:06"/>
+            <STATE key="temperature" value="19.3" measured="2013-09-11 15:47:06"/>
+            <STATE key="valveOffset" value="0" measured="2013-09-11 14:22:37"/>
+            <STATE key="valveposition" value="0" measured="2013-09-11 15:47:06"/>
+            <STATE key="weekprofile-0-Sat-temp" value="16.0 °C  /  17.5 °C  /  20.0 °C  /  17.5 °C  /  16.0 °C"
+                   measured="2013-09-11 14:22:37"/>
+            <STATE key="weekprofile-0-Sat-time"
+                   value="00:00-17:05  /  17:05-19:05  /  19:05-20:10  /  20:10-22:30  /  22:30-00:00"
+                   measured="2013-09-11 14:22:37"/>
+            <STATE key="weekprofile-1-Sun-temp" value="16.0 °C  /  17.5 °C  /  20.0 °C  /  17.5 °C  /  16.0 °C"
+                   measured="2013-09-11 14:22:37"/>
+            <STATE key="weekprofile-1-Sun-time"
+                   value="00:00-17:05  /  17:05-19:05  /  19:05-20:10  /  20:10-22:30  /  22:30-00:00"
+                   measured="2013-09-11 14:22:37"/>
+            <STATE key="weekprofile-2-Mon-temp" value="16.0 °C  /  17.5 °C  /  20.0 °C  /  17.5 °C  /  16.0 °C"
+                   measured="2013-09-11 14:22:37"/>
+            <STATE key="weekprofile-2-Mon-time"
+                   value="00:00-17:05  /  17:05-19:05  /  19:05-20:10  /  20:10-22:30  /  22:30-00:00"
+                   measured="2013-09-11 14:22:37"/>
+            <STATE key="weekprofile-3-Tue-temp" value="16.0 °C  /  17.5 °C  /  20.0 °C  /  17.5 °C  /  16.0 °C"
+                   measured="2013-09-11 14:22:37"/>
+            <STATE key="weekprofile-3-Tue-time"
+                   value="00:00-17:05  /  17:05-19:05  /  19:05-20:10  /  20:10-22:30  /  22:30-00:00"
+                   measured="2013-09-11 14:22:37"/>
+            <STATE key="weekprofile-4-Wed-temp" value="16.0 °C  /  17.5 °C  /  20.0 °C  /  17.5 °C  /  16.0 °C"
+                   measured="2013-09-11 14:22:37"/>
+            <STATE key="weekprofile-4-Wed-time"
+                   value="00:00-17:05  /  17:05-19:05  /  19:05-20:10  /  20:10-22:30  /  22:30-00:00"
+                   measured="2013-09-11 14:22:37"/>
+            <STATE key="weekprofile-5-Thu-temp" value="16.0 °C  /  17.5 °C  /  20.0 °C  /  17.5 °C  /  16.0 °C"
+                   measured="2013-09-11 14:22:37"/>
+            <STATE key="weekprofile-5-Thu-time"
+                   value="00:00-17:05  /  17:05-19:05  /  19:05-20:10  /  20:10-22:30  /  22:30-00:00"
+                   measured="2013-09-11 14:22:37"/>
+            <STATE key="weekprofile-6-Fri-temp" value="16.0 °C  /  17.5 °C  /  20.0 °C  /  17.5 °C  /  16.0 °C"
+                   measured="2013-09-11 14:22:37"/>
+            <STATE key="weekprofile-6-Fri-time"
+                   value="00:00-17:05  /  17:05-19:05  /  19:05-20:10  /  20:10-22:30  /  22:30-00:00"
+                   measured="2013-09-11 14:22:37"/>
+            <STATE key="windowOpenDuration" value="15" measured="2013-09-11 14:22:37"/>
+            <STATE key="windowOpenTemperature" value="off" measured="2013-09-11 14:22:37"/>
+        </MAX>
     </MAX_LIST>
 </FHZINFO>

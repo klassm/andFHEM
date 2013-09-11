@@ -142,15 +142,15 @@ public class MaxDevice extends ToggleableDevice<MaxDevice> implements DesiredTem
     }
 
     public void readWINDOWOPENTEMPERATURE(String value) {
-        this.windowOpenTemp = ValueExtractUtil.extractLeadingDouble(value);
+        this.windowOpenTemp = parseTemperature(value);
     }
 
     public void readECOTEMPERATURE(String value) {
-        this.ecoTemp = ValueExtractUtil.extractLeadingDouble(value);
+        this.ecoTemp = parseTemperature(value);
     }
 
     public void readCOMFORTTEMPERATURE(String value) {
-        comfortTemp = ValueExtractUtil.extractLeadingDouble(value);
+        comfortTemp = parseTemperature(value);
     }
 
     public void readDESIREDTEMPERATURE(String value) {
