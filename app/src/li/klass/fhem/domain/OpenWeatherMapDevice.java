@@ -31,35 +31,35 @@ public class OpenWeatherMapDevice extends Device<OpenWeatherMapDevice> {
     @ShowField(description = ResourceIdMapper.sunset)
     private String sunset;
 
-    public void readG_TEMPERATURE(String value) {
+    public void readC_TEMPERATURE(String value) {
         temperature = ValueDescriptionUtil.appendTemperature(value);
     }
 
-    public void readG_HUMIDITY(String value) {
+    public void readC_HUMIDITY(String value) {
         humidity = ValueDescriptionUtil.appendPercent(value);
     }
 
-    public void readG_WINDDIR(String value) {
+    public void readC_WINDDIR(String value) {
         windDirection = ValueDescriptionUtil.append(value, "°");
     }
 
-    public void readG_WINDSPEED(String value) {
+    public void readC_WINDSPEED(String value) {
         windSpeed = ValueDescriptionUtil.appendKmH(value);
     }
 
-    public void readG_TEMPMAX(String value) {
+    public void readC_TEMPMAX(String value) {
         temperatureMaximum = ValueDescriptionUtil.appendTemperature(value);
     }
 
-    public void readG_TEMPMIN(String value) {
+    public void readC_TEMPMIN(String value) {
         temperatureMinimum = ValueDescriptionUtil.appendTemperature(value);
     }
 
-    public void readG_SUNRISE(String value) {
+    public void readC_SUNRISE(String value) {
         sunrise = value.replace("T", " ");
     }
 
-    public void readG_SUNSET(String value) {
+    public void readC_SUNSET(String value) {
         sunset = value.replace("T", " ");
     }
 
