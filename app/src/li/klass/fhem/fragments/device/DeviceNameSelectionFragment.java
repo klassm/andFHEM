@@ -74,12 +74,17 @@ public class DeviceNameSelectionFragment extends DeviceNameListFragment {
     protected void deviceListReceived(RoomDeviceList roomDeviceList) {
         super.deviceListReceived(roomDeviceList);
         if (roomDeviceList.isEmptyOrOnlyContainsDoNotShowDevices()) {
-            DialogUtil.showAlertDialog(getActivity(), R.string.error, R.string.widget_devicelist_empty, new DialogUtil.AlertOnClickListener() {
-                @Override
-                public void onClick() {
-                    getActivity().finish();
-                }
-            });
+            onNoDevicesAvailable();
         }
+    }
+
+    protected void onNoDevicesAvailable() {
+        DialogUtil.showAlertDialog(getActivity(), R.string.error, R.string.devicelist_empty, new DialogUtil.AlertOnClickListener() {
+            @Override
+            public void onClick() {
+                Intent intent = new Intent(Actions.BACK);
+                getActivity().sendBroadcast(intent);
+            }
+        });
     }
 }

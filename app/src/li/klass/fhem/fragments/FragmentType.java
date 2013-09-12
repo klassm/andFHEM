@@ -50,7 +50,7 @@ public enum FragmentType {
     PREMIUM(PremiumFragment.class),
     ROOM_DETAIL(RoomDetailFragment.class, RoomListFragment.class),
     SEND_COMMAND(SendCommandFragment.class),
-    DEVICE_SELECTION(DeviceNameSelectionFragment.class, DeviceNameSelectionNavigationFragment.class, true),
+    DEVICE_SELECTION(DeviceNameSelectionFragment.class, DeviceNameSelectionNavigationFragment.class, false),
     DEVICE_NAME_LIST_NAVIGATION(DeviceNameListNavigationFragment.class),
     TIMER_OVERVIEW(TimerListFragment.class),
     TIMER_DETAIL(TimerDetailFragment.class);

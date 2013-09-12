@@ -30,11 +30,14 @@ import android.os.Handler;
 import android.os.ResultReceiver;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import li.klass.fhem.R;
 import li.klass.fhem.activities.core.FragmentBaseActivity;
 import li.klass.fhem.activities.device.DeviceNameListAdapter;
+import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.fragments.device.DeviceNameSelectionFragment;
+import li.klass.fhem.util.DialogUtil;
 
 public class DeviceNameSelectionActivity extends FragmentActivity {
 
@@ -63,7 +66,18 @@ public class DeviceNameSelectionActivity extends FragmentActivity {
             }
         });
 
-        DeviceNameSelectionFragment deviceSelectionFragment = new DeviceNameSelectionFragment(bundle, DeviceNameListAdapter.DEFAULT_REQUIRED_COLUMN_WIDTH);
+        DeviceNameSelectionFragment deviceSelectionFragment = new DeviceNameSelectionFragment(bundle,
+                DeviceNameListAdapter.DEFAULT_REQUIRED_COLUMN_WIDTH) {
+            @Override
+            protected void onNoDevicesAvailable() {
+                DialogUtil.showAlertDialog(getActivity(), R.string.error, R.string.devicelist_empty, new DialogUtil.AlertOnClickListener() {
+                    @Override
+                    public void onClick() {
+                        getActivity().finish();
+                    }
+                });
+            }
+        };
 
         try {
             getSupportFragmentManager()
@@ -71,7 +85,8 @@ public class DeviceNameSelectionActivity extends FragmentActivity {
                     .replace(android.R.id.content, deviceSelectionFragment)
                     .commitAllowingStateLoss();
         } catch (IllegalStateException e) {
-            Log.e(FragmentBaseActivity.class.getName(), "error while switching to fragment " + deviceSelectionFragment.getClass().getName(), e);
+            Log.e(FragmentBaseActivity.class.getName(), "error while switching to fragment " +
+                    deviceSelectionFragment.getClass().getName(), e);
         }
     }
 

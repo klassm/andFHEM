@@ -171,6 +171,7 @@
     <string name="temperatureMaximum">Max-Temperatur</string>
     <string name="sunrise">Sonnenaufgang</string>
     <string name="sunset">Sonnenuntergang</string>
+    <string name="devicelist_empty">Entschuldigung! Keine Geräte verfügbar!</string>
 
 
     <string name="switchDevice">Schalte</string>
@@ -355,7 +356,6 @@
     <string name="widget_big">andFHEM Groß</string>
 
     <string name="widget_type_selection">Widget Typ</string>
-    <string name="widget_devicelist_empty">Entschuldigung! Kein Widget ist für deine Geräte verfügbar!</string>
     <string name="widget_temperature">Temperatur</string>
     <string name="widget_toggle">Umschalter</string>
     <string name="widget_status">Status</string>
