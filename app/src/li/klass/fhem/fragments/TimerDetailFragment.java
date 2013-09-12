@@ -27,6 +27,7 @@ package li.klass.fhem.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.os.ResultReceiver;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -44,7 +45,10 @@ import li.klass.fhem.domain.core.DeviceStateAdditionalInformationType;
 import li.klass.fhem.domain.core.DeviceStateRequiringAdditionalInformation;
 import li.klass.fhem.fragments.core.BaseFragment;
 import li.klass.fhem.fragments.device.DeviceNameSelectionFragment;
+import li.klass.fhem.util.FhemResultReceiver;
 import li.klass.fhem.widget.TimePickerWithSecondsDialog;
+
+import static li.klass.fhem.constants.BundleExtraKeys.CLICKED_DEVICE;
 
 public class TimerDetailFragment extends BaseFragment {
 
@@ -115,11 +119,6 @@ public class TimerDetailFragment extends BaseFragment {
         return view;
     }
 
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);    //To change body of overridden methods use File | Settings | File Templates.
-    }
-
     private void createSelectDeviceButton(View view) {
         Button selectDeviceButton = (Button) view.findViewById(R.id.targetDeviceSet);
         selectDeviceButton.setOnClickListener(new View.OnClickListener() {
@@ -128,21 +127,17 @@ public class TimerDetailFragment extends BaseFragment {
                 Intent intent = new Intent(Actions.SHOW_FRAGMENT);
                 intent.putExtra(BundleExtraKeys.FRAGMENT, FragmentType.DEVICE_SELECTION);
                 intent.putExtra(BundleExtraKeys.DEVICE_FILTER, deviceFilter);
+                intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new FhemResultReceiver() {
+                    @Override
+                    protected void onReceiveResult(int resultCode, Bundle resultData) {
+                        if (!resultData.containsKey(CLICKED_DEVICE)) return;
+
+                        selectedTargetDevice = (Device) resultData.get(CLICKED_DEVICE);
+                    }
+                });
                 getActivity().sendBroadcast(intent);
             }
         });
-    }
-
-
-    @Override
-    public void onBackPressResult(Bundle resultData) {
-        if (resultData == null || !resultData.containsKey(BundleExtraKeys.CLICKED_DEVICE)) {
-            return;
-        }
-        Device device = (Device) resultData.get(BundleExtraKeys.CLICKED_DEVICE);
-        updateTargetDevice(device);
-
-        super.onBackPressResult(resultData);
     }
 
     private void createSendAndResetButtons(View view) {
@@ -305,6 +300,12 @@ public class TimerDetailFragment extends BaseFragment {
         getActivity().startService(intent);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateTargetDevice(selectedTargetDevice);
+    }
+
     private void selectTargetDeviceInSpinner(String targetDeviceName, final String targetState) {
         Intent intent = new Intent(Actions.GET_DEVICE_FOR_NAME);
         intent.putExtra(BundleExtraKeys.DEVICE_NAME, targetDeviceName);
@@ -367,18 +368,6 @@ public class TimerDetailFragment extends BaseFragment {
             targetStateAdapter.add(availableTargetState);
         }
     }
-
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//        if (fragmentIntentResultData == null || !fragmentIntentResultData.containsKey(BundleExtraKeys.CLICKED_DEVICE)) {
-//            return;
-//        }
-//
-//        Device device = (Device) fragmentIntentResultData.getSerializable(BundleExtraKeys.CLICKED_DEVICE);
-//        updateTargetDevice(device);
-//        selectTargetState(null);
-//    }
 
     @Override
     public void update(boolean doUpdate) {
