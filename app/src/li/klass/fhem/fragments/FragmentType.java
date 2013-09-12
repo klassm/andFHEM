@@ -93,7 +93,7 @@ public enum FragmentType {
 
     FragmentType(Class<? extends BaseFragment> fragmentClass, Class<? extends BaseFragment> navigationClass, boolean showTabs) {
         this(fragmentClass, navigationClass);
-        this.showTabs = true;
+        this.showTabs = showTabs;
     }
 
     public static List<FragmentType> getTopLevelFragments() {

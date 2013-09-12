@@ -126,7 +126,11 @@ public class TimerListFragment extends BaseFragment {
                 for (AtDevice atDevice : new ArrayList<AtDevice>(devices)) {
                     if (!atDevice.isSupported()) devices.remove(atDevice);
                 }
-                getAdapter().updateData(devices);
+
+                TimerListAdapter adapter = getAdapter();
+                if (adapter == null) return;
+
+                adapter.updateData(devices);
 
                 Intent intent = new Intent(Actions.DISMISS_UPDATING_DIALOG);
                 AndFHEMApplication.getContext().sendBroadcast(intent);
