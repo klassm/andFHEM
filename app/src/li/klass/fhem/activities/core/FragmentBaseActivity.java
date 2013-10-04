@@ -191,6 +191,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
         } catch (Exception e) {
             Log.e(TAG, "error while creating activity", e);
         }
+        isActivityStart = true;
 
         if (getIntent() != null) {
             waitingIntent = getIntent();
