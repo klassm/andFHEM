@@ -45,7 +45,7 @@ public class DummyDataConnection implements FHEMConnection {
     public String xmllist() {
         InputStream inputStream = null;
         try {
-            inputStream = DummyDataConnection.class.getResourceAsStream("test.xml");
+            inputStream = DummyDataConnection.class.getResourceAsStream("dummyData.xml");
 
             String content = IOUtils.toString(inputStream);
             content = content.replaceAll("  ", "");
