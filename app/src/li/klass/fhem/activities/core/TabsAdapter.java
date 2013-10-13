@@ -43,15 +43,9 @@ public class TabsAdapter extends FragmentPagerAdapter implements ViewPager.OnPag
         void onPageChanged(int newPage);
     }
 
-    private List<TopLevelFragment> topLevelFragments = new ArrayList<TopLevelFragment>();
-
     public TabsAdapter(FragmentManager fm, PageChangeListener pageChangeListener) {
         super(fm);
         this.pageChangedListener = pageChangeListener;
-
-        topLevelFragments.add(new TopLevelFragment(FragmentType.FAVORITES));
-        topLevelFragments.add(new TopLevelFragment(FragmentType.ROOM_LIST));
-        topLevelFragments.add(new TopLevelFragment(FragmentType.ALL_DEVICES));
     }
 
     @Override

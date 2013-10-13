@@ -235,8 +235,8 @@ public class TopLevelFragment extends Fragment implements Serializable {
 
                     if (currentTopLevelFragmentType != null && currentTopLevelFragmentType != initialFragmentType) {
                         return;
-
                     }
+
                     if (action.equals(Actions.SHOW_FRAGMENT)) {
                         Bundle bundle = intent.getExtras();
                         switchTo(bundle);

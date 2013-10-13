@@ -140,7 +140,6 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        update(false);
     }
 
     @Override
@@ -161,12 +160,12 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
         }
         backPressCalled = false;
 
+        update(false);
     }
 
     @Override
     public void onPause() {
         contentView = getView();
-        broadcastReceiver.detach();
         super.onPause();
     }
 
