@@ -31,7 +31,6 @@ import li.klass.fhem.appwidget.annotation.SupportsWidget;
 import li.klass.fhem.appwidget.annotation.WidgetTemperatureField;
 import li.klass.fhem.appwidget.view.widget.AppWidgetView;
 import li.klass.fhem.appwidget.view.widget.medium.TemperatureWidgetView;
-import li.klass.fhem.appwidget.view.widget.medium.ToggleWidgetView;
 import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.DimmableContinuousStatesDevice;
 import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
@@ -45,6 +44,7 @@ import li.klass.fhem.domain.heating.schedule.interval.FilledTemperatureInterval;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.NumberUtil;
 import li.klass.fhem.util.ValueDescriptionUtil;
+import li.klass.fhem.util.ValueExtractUtil;
 import org.w3c.dom.NamedNodeMap;
 
 import java.util.List;
@@ -63,9 +63,10 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
         implements DesiredTempDevice, HeatingDevice<CULHMDevice.HeatingMode, CULHMConfiguration, FilledTemperatureInterval, CULHMDevice> {
 
     private HeatingMode heatingMode = HeatingMode.UNKNOWN;
+    private String model;
 
     public enum SubType {
-        DIMMER, SWITCH, HEATING, SMOKE_DETECTOR, THREE_STATE, TEMPERATURE_HUMIDITY, THERMOSTAT, KFM100, MOTION, KEYMATIC
+        DIMMER, SWITCH, HEATING, SMOKE_DETECTOR, THREE_STATE, TEMPERATURE_HUMIDITY, THERMOSTAT, FILL_STATE, MOTION, KEYMATIC
     }
 
     public enum HeatingMode {
@@ -181,6 +182,10 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
         motion = value;
     }
 
+    public void readMODEL(String value) {
+        model = value;
+    }
+
     public void readSUBTYPE(String value) {
         if (value.equalsIgnoreCase("DIMMER") || value.equalsIgnoreCase("BLINDACTUATOR")) {
             subType = SubType.DIMMER;
@@ -193,7 +198,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
         } else if (value.equalsIgnoreCase("THSensor")) {
             subType = SubType.TEMPERATURE_HUMIDITY;
         } else if (value.equalsIgnoreCase("KFM100")) {
-            subType = SubType.KFM100;
+            subType = SubType.FILL_STATE;
         } else if (value.equalsIgnoreCase("THERMOSTAT")) {
             subType = THERMOSTAT;
         } else if (value.equalsIgnoreCase("MOTIONDETECTOR")) {
@@ -225,13 +230,23 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
             }
         }
 
-        if (subType == SubType.KFM100 && fillContentLitresMaximum != null) {
+        if (subType == SubType.FILL_STATE && fillContentLitresMaximum != null) {
             if (fillContentLitresRaw > fillContentLitresMaximum) {
                 fillContentLitresRaw = fillContentLitresMaximum;
             }
 
             fillContentPercentageRaw = fillContentLitresRaw == 0 ? 0 : fillContentLitresRaw / fillContentLitresMaximum;
             fillContentPercentage = appendPercent((int) (fillContentPercentageRaw * 100));
+        }
+
+        if (model != null && model.equalsIgnoreCase("HM-Sen-Wa-Od")) {
+            subType = FILL_STATE;
+
+
+            fillContentPercentageRaw = ValueExtractUtil.extractLeadingDouble(getInternalState()) / 100d;
+            fillContentPercentage = ValueDescriptionUtil.appendPercent((int) (fillContentPercentageRaw * 100));
+
+            setState(fillContentPercentage);
         }
     }
 
@@ -422,7 +437,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
 
                 break;
 
-            case KFM100:
+            case FILL_STATE:
                 addDeviceChartIfNotNull(new DeviceChart(R.string.contentGraph,
                         ChartSeriesDescription.getRegressionValuesInstance(R.string.content, "4:content:0:", LITRE_CONTENT),
                         new ChartSeriesDescription(R.string.rawValue, "4:rawValue:0:", RAW)), getState());

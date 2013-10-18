@@ -41,7 +41,8 @@ public class GPIO4DeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getState(), is("22.937 °C (Mittelwert: 22.7 °C)"));
 
         // this is not supported and, thus, removed
-        assertThat(getDeviceFor("RPi"), is(nullValue()));
+        GPIO4Device rPi = getDeviceFor("RPi");
+        assertThat(rPi, is(nullValue()));
     }
 
     @Override

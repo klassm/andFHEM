@@ -59,7 +59,7 @@ public class CULHMAdapter extends DimmableAdapter<CULHMDevice> {
             @Override
             public void onFieldNameAdded(final Context context, TableLayout tableLayout, String field, final CULHMDevice device, TableRow fieldTableRow) {
                 switch (device.getSubType()) {
-                    case KFM100:
+                    case FILL_STATE:
                         tableLayout.addView(new CustomViewTableRow() {
                             @Override
                             public View getContentView() {

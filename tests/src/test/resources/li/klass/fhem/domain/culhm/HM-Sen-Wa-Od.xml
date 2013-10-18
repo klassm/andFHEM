@@ -1,0 +1,70 @@
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<FHZINFO>
+    <CUL_HM_LIST>
+        <CUL_HM name="device" state="108%"
+                sets="clear getConfig getRegRaw getSerial pair peerBulk raw regBulk regSet reset sign statusRequest unpair"
+                attrs="room group comment alias eventMap userReadings IODev do_not_notify:1,0 ignore:1,0 dummy:1,0 showtime:1,0 loglevel:0,1,2,3,4,5,6 serialNr firmware rawToReadable unit peerIDs repPeers actCycle actStatus autoReadReg:1_restart,0_off,2_pon-restart,3_onChange expert:0_off,1_on,2_full hmClass:obsolete devInfo:obsolete .stc .devInfo event-on-change-reading event-on-update-reading event-min-interval stateFormat model:ASH550,ASH550I,CMM,DORMA_BRC-H,DORMA_RC-H,DORMA_atent,HM-CC-SCD,HM-CC-TC,HM-CC-VD,HM-Dis-TD-T,HM-LC-BL1-FM,HM-LC-BL1-PB-FM,HM-LC-BL1-SM,HM-LC-Bl1PBU-FM,HM-LC-DDC1-PCB,HM-LC-DIM1L-CV,HM-LC-DIM1L-PL,HM-LC-DIM1T-CV,HM-LC-DIM1T-FM,HM-LC-DIM1T-PL,HM-LC-DIM2L-CV,HM-LC-DIM2L-SM,HM-LC-DIM2T-SM,HM-LC-Dim1L-CV,HM-LC-Dim1L-Pl,HM-LC-Dim1L-Pl-2,HM-LC-Dim1PWM-CV,HM-LC-Dim1T-CV,HM-LC-Dim1T-FM,HM-LC-Dim1T-Pl,HM-LC-Dim1T-Pl-2,HM-LC-Dim1TPBU-FM,HM-LC-Dim2L-SM,HM-LC-Dim2T-SM,HM-LC-SW1-BA-PCB,HM-LC-SW1-FM,HM-LC-SW1-PB-FM,HM-LC-SW1-PL,HM-LC-SW1-PL-OM54,HM-LC-SW1-PL2,HM-LC-SW1-SM,HM-LC-SW1-SM-ATMEGA168,HM-LC-SW2-DR,HM-LC-SW2-FM,HM-LC-SW2-PB-FM,HM-LC-SW2-SM,HM-LC-SW4-DR,HM-LC-SW4-PCB,HM-LC-SW4-SM,HM-LC-SW4-SM-ATMEGA168,HM-LC-SW4-WM,HM-LC-Sw1PBU-FM,HM-OU-CF-PL,HM-OU-CFM-PL,HM-OU-LED16,HM-PB-2-WM,HM-PB-2-WM55,HM-PB-4-WM,HM-PB-4DIS-WM,HM-PBI-4-FM,HM-RC-12,HM-RC-12-B,HM-RC-12-SW,HM-RC-19,HM-RC-19-B,HM-RC-19-SW,HM-RC-4,HM-RC-4-B,HM-RC-KEY3,HM-RC-KEY3-B,HM-RC-P1,HM-RC-SEC3,HM-RC-SEC3-B,HM-SCI-3-FM,HM-SEC-KEY,HM-SEC-KEY-O,HM-SEC-KEY-S,HM-SEC-MDIR,HM-SEC-RHS,HM-SEC-SC,HM-SEC-SD,HM-SEC-SFA-SM,HM-SEC-TIS,HM-SEC-WDS,HM-SEC-WIN,HM-SEN-EP,HM-SEN-MDIR-SM,HM-SWI-3-FM,HM-Sec-Cen,HM-Sen-MDIR-O,HM-Sen-RD-O,HM-Sen-Wa-Od,HM-Sys-sRP-Pl,HM-WDC7000,HM-WDC7000,HM-WDS10-TH-O,HM-WDS100-C6-O,HM-WDS20-TH-O,HM-WDS30-T-O,HM-WDS40-TH-I,IS-WDS-TH-OD-S-R3,KFM-Display,KFM-Sensor,KS550,ROTO_ZEL-STG-RM-DWT-10,ROTO_ZEL-STG-RM-FDK,ROTO_ZEL-STG-RM-FEP-230V,ROTO_ZEL-STG-RM-FSA,ROTO_ZEL-STG-RM-FST-UP4,ROTO_ZEL-STG-RM-FWT,ROTO_ZEL-STG-RM-FZS,ROTO_ZEL-STG-RM-FZS-2,ROTO_ZEL-STG-RM-HS-4,ROTO_ZEL-STG-RM-WT-2,Roto_ZEL-STG-RM-FFK,Roto_ZEL-STG-RM-FSS-UP3,S550IA,Schueco_263-130,Schueco_263-131,Schueco_263-132,Schueco_263-133,Schueco_263-134,Schueco_263-135,Schueco_263-144,Schueco_263-145,Schueco_263-146,Schueco_263-147,Schueco_263-155,Schueco_263-157,Schueco_263-158,Schueco_263-160,Schueco_263-162,WS888 subType:AlarmControl,KFM100,THSensor,blindActuator,dimmer,keyMatic,motionDetector,outputUnit,pushButton,remote,repeater,sensor,smokeDetector,swi,switch,thermostat,threeStateSensor,winMatic devStateIcon icon sortby webCmd">
+            <INT key="CUL_0_MSGCNT" value="37"/>
+            <INT key="CUL_0_RAWMSG" value="A0D14A610226423F1103406016C00D0"/>
+            <INT key="CUL_0_RSSI" value="-98"/>
+            <INT key="CUL_0_TIME" value="2013-10-17 22:07:04"/>
+            <INT key="DEF" value="226423"/>
+            <INT key="EVENTS" value="17"/>
+            <INT key="LASTInputDev" value="CUL_0"/>
+            <INT key="MSGCNT" value="37"/>
+            <INT key="NAME" value="device"/>
+            <INT key="NR" value="51"/>
+            <INT key="STATE" value="108%"/>
+            <INT key="TRIGGERTIME" value="2013-10-17 22:06:48"/>
+            <INT key="TYPE" value="CUL_HM"/>
+            <INT key="lastMsg" value="No:14 - t:10 s:226423 d:F11034 06016C00"/>
+            <INT key="protCmdPend" value="6 CMDs_pending"/>
+            <INT key="protLastRcv" value="2013-10-17 22:07:04"/>
+            <INT key="protState" value="CMDs_pending"/>
+            <INT key="rssi_at_CUL_0" value="avg:-93.39 min:-99.5 max:-82 lst:-98 cnt:37 "/>
+            <INT key="IODev" value="CUL_0"/>
+            <ATTR key="actCycle" value="028:00"/>
+            <ATTR key="actStatus" value="alive"/>
+            <ATTR key="expert" value="2_full"/>
+            <ATTR key="firmware" value="1.2"/>
+            <ATTR key="model" value="HM-Sen-Wa-Od"/>
+            <ATTR key="peerIDs" value=""/>
+            <ATTR key="room" value="room"/>
+            <ATTR key="serialNr" value="KEQ0365416"/>
+            <ATTR key="subType" value="sensor"/>
+            <STATE key="Activity:" value="alive" measured="2013-10-17 16:50:31"/>
+            <STATE key="CommandAccepted" value="yes" measured="2013-10-17 16:08:51"/>
+            <STATE key="R-intKeyVisib" value="set_invisib" measured="2013-10-17 16:08:51"/>
+            <STATE key="R-pairCentral" value="set_0xF11034" measured="2013-10-17 15:24:41"/>
+            <STATE key="battery" value="ok" measured="2013-10-17 22:06:48"/>
+            <STATE key="state" value="108%" measured="2013-10-17 22:06:48"/>
+        </CUL_HM>
+
+
+    </CUL_HM_LIST>
+</FHZINFO>
+
+
