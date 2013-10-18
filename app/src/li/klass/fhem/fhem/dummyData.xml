@@ -1729,6 +1729,12 @@ webCmd eventMap">
     <STATE key="humidity" value="49" measured="2012-01-17 17:19:34"/>
     <STATE key="measured-temp" value="19.8" measured="2012-01-17
 17:19:34"/>
+    <STATE key="tempListSat" value="08:00 16.0 19:30 20.5 24:00 16.0" measured="2012-11-11 21:32:06"/>
+    <STATE key="tempListSun" value="08:00 16.0 19:30 20.5 24:00 16.0" measured="2012-11-11 21:32:06"/>
+    <STATE key="tempListThu" value="06:30 16.0 08:00 20.5 13:30 16.0 19:30 20.5 24:00 16.0"
+           measured="2012-11-11 21:32:06"/>
+    <STATE key="tempListTue" value="06:30 16.0 19:30 20.5 24:00 16.0" measured="2012-11-11 21:32:06"/>
+    <STATE key="tempListWed" value="06:30 16.0 19:30 20.5 24:00 16.0" measured="2012-11-11 21:32:06"/>
     <STATE key="state" value="T: 19.8 H: 49" measured="2012-01-17
 17:19:34"/>
     <STATE key="temperature" value="19.8" measured="2012-01-17
