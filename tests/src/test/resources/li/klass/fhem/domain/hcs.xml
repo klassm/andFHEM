@@ -74,6 +74,8 @@ webCmd">
                    measured="2013-01-14 23:21:52"/>
             <STATE key="FHT_Wohnzimmer" value="demand"
                    measured="2013-01-14 23:21:52"/>
+            <STATE key="FHT_Wohnzimmer1" value="demand"
+                   measured="2013-01-14 23:21:52"/>
             <STATE key="device" value="Heizung_Sperre"
                    measured="2013-01-14 22:03:38"/>
             <STATE key="devicestate" value="on"

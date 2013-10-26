@@ -55,6 +55,8 @@ public class HCSDevice extends Device<HCSDevice> {
     private int numberOfExcludedDevices;
     @ShowField(description = ResourceIdMapper.demandDevices)
     private int numberOfDemandDevices;
+    @ShowField(description = ResourceIdMapper.blank, showAfter = "numberOfDemandDevices")
+    private String commaSeparatedDemandDevices;
 
 
     public void readTHERMOSTATTHRESHOLDOFF(String value) {
@@ -95,10 +97,19 @@ public class HCSDevice extends Device<HCSDevice> {
 
         if (value.equalsIgnoreCase("DEMAND")) {
             numberOfDemandDevices++;
+            addToDemandDevicesCommaSeparatedList(key);
         } else if (value.equalsIgnoreCase("IDLE")) {
             numberOfIdleDevices++;
         } else if (value.equalsIgnoreCase("EXCLUDED")) {
             numberOfExcludedDevices++;
+        }
+    }
+
+    private void addToDemandDevicesCommaSeparatedList(String key) {
+        if (commaSeparatedDemandDevices == null) {
+            commaSeparatedDemandDevices = key;
+        } else {
+            commaSeparatedDemandDevices += ", " + key;
         }
     }
 
@@ -140,5 +151,9 @@ public class HCSDevice extends Device<HCSDevice> {
 
     public int getNumberOfDemandDevices() {
         return numberOfDemandDevices;
+    }
+
+    public String getCommaSeparatedDemandDevices() {
+        return commaSeparatedDemandDevices;
     }
 }

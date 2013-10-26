@@ -28,8 +28,8 @@ import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 import org.junit.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
-import static org.hamcrest.core.Is.is;
 
 public class HCSDeviceTest extends DeviceXMLParsingBase {
     @Test
@@ -50,9 +50,11 @@ public class HCSDeviceTest extends DeviceXMLParsingBase {
 
         assertThat(device.getMode(), is("valve"));
 
-        assertThat(device.getNumberOfDemandDevices(), is(1));
+        assertThat(device.getNumberOfDemandDevices(), is(2));
         assertThat(device.getNumberOfExcludedDevices(), is(3));
         assertThat(device.getNumberOfIdleDevices(), is(3));
+
+        assertThat(device.getCommaSeparatedDemandDevices(), is("FHT_WOHNZIMMER, FHT_WOHNZIMMER1"));
 
         assertThat(device.getFileLog(), is(nullValue()));
         assertThat(device.getDeviceCharts().size(), is(0));
