@@ -93,7 +93,8 @@ public enum DeviceType {
     SWAP("SWAP", SWAPDevice.class),
     FB_CALLMONITOR("FB_CALLMONITOR", FBCallmonitorDevice.class),
     FS20_ZDR("fs20_zdr", FS20ZDRDevice.class, new FS20ZDRDeviceAdapter()),
-    OPENWEATHERMAP("openweathermap", OpenWeatherMapDevice.class);
+    OPENWEATHERMAP("openweathermap", OpenWeatherMapDevice.class),
+    PCA301("PCA301", PCA301Device.class),;
 
     private String xmllistTag;
     private Class<? extends Device> deviceClass;

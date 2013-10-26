@@ -115,8 +115,10 @@ public enum ResourceIdMapper {
     callMonExternalName(R.string.callMonExternalName),
     callMonDuration(R.string.callMonDuration),
     callMonEvent(R.string.callMonEvent),
-    blank(R.string.blank),
+    energyPower(R.string.energy_power),
+    energyConsumption(R.string.energy_consumption),
 
+    blank(R.string.blank),
     none(-1);
 
     private int id;

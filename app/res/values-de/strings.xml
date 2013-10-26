@@ -172,6 +172,8 @@
     <string name="sunrise">Sonnenaufgang</string>
     <string name="sunset">Sonnenuntergang</string>
     <string name="devicelist_empty">Entschuldigung! Keine Geräte verfügbar!</string>
+    <string name="energy_power">Leistung</string>
+    <string name="energy_consumption">Verbrauch</string>
 
 
     <string name="switchDevice">Schalte</string>

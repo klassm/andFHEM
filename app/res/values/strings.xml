@@ -175,6 +175,8 @@
     <string name="sunrise">Sunrise</string>
     <string name="sunset">Sunset</string>
     <string name="devicelist_empty">Sorry! No devices found!</string>
+    <string name="energy_power">Power</string>
+    <string name="energy_consumption">Consumption</string>
 
     <string name="switchDevice">Switch</string>
     <string name="preferences">Preferences</string>
