@@ -30,18 +30,57 @@ import li.klass.fhem.util.StringUtil;
 import java.lang.reflect.Field;
 import java.util.Comparator;
 
+/**
+ * Comparator enforcing a total ordering on all fields to be compared.
+ * Essentially, the field names are compared. However, whenever a {@link ShowField} annotation is found, we
+ * look for a {@link li.klass.fhem.domain.genericview.ShowField#showAfter()} value. This value means, that a given
+ * field has to be shown after another field within the list.
+ * <p/>
+ * When finding a such field, we assume the field name of the show-after field to be the value of the showAfter annotation
+ * value. The only exception for this algorithm is whenever the second field name equals the value of the showAfter
+ * annotation value.
+ * <p/>
+ * We need to assume the field name to be the showAfter value to get a consistent behaviour for the comparator,
+ * as the showAfter field's name does not necessarily have the same behaviour as the showAfter field.
+ */
 public class FieldNameComparator implements Comparator<Field> {
+    public static final FieldNameComparator COMPARATOR = new FieldNameComparator();
+
+    private FieldNameComparator() {
+    }
+
     @Override
     public int compare(Field lhs, Field rhs) {
-        ShowField annotation = rhs.getAnnotation(ShowField.class);
+        ShowField rhsAnnotation = rhs.getAnnotation(ShowField.class);
+        ShowField lhsAnnotation = lhs.getAnnotation(ShowField.class);
 
-        if (annotation == null) return 0;
-        if (StringUtil.isBlank(annotation.showAfter())) return 0;
+        String rhsName = rhs.getName();
+        String lhsName = lhs.getName();
 
-        if (lhs.getName().equals(annotation.showAfter())) {
+        if (lhsAnnotation != null && !StringUtil.isBlank(lhsAnnotation.showAfter())) {
+            lhsName = lhsAnnotation.showAfter();
+        }
+
+        if (rhsAnnotation != null && !StringUtil.isBlank(rhsAnnotation.showAfter())) {
+            rhsName = rhsAnnotation.showAfter();
+        }
+
+
+        if (fieldMatchesShowAfter(rhsAnnotation, lhs)) {
             return -1;
-        } else {
+        }
+
+        if (fieldMatchesShowAfter(lhsAnnotation, rhs)) {
             return 1;
         }
+
+        return lhsName.compareTo(rhsName);
+    }
+
+    public boolean fieldMatchesShowAfter(ShowField annotation, Field field) {
+        if (annotation == null) return false;
+        if (StringUtil.isBlank(annotation.showAfter())) return false;
+
+        return field.getName().equalsIgnoreCase(annotation.showAfter());
     }
 }

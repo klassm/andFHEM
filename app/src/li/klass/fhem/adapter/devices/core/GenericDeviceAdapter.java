@@ -157,7 +157,7 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
             }
 
             List<Field> declaredFields = Arrays.asList(device.getClass().getDeclaredFields());
-            Collections.sort(declaredFields, new FieldNameComparator());
+            Collections.sort(declaredFields, FieldNameComparator.COMPARATOR);
 
             for (Field declaredField : declaredFields) {
                 declaredField.setAccessible(true);
