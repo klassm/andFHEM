@@ -27,11 +27,11 @@ public class FieldNameComparatorTest {
         assertThat(comparator.compare(afterField, orderField), is(1));
         assertThat(comparator.compare(orderField, afterField), is(-1));
 
-        assertThat(comparator.compare(afterField, otherField), is(0));
-        assertThat(comparator.compare(otherField, afterField), is(0));
+        assertThat(comparator.compare(afterField, otherField), is(-1));
+        assertThat(comparator.compare(otherField, afterField), is(1));
 
-        assertThat(comparator.compare(orderField, otherField), is(0));
-        assertThat(comparator.compare(otherField, orderField), is(0));
+        assertThat(comparator.compare(orderField, otherField), is(-1));
+        assertThat(comparator.compare(otherField, orderField), is(1));
     }
 
     @Test
@@ -42,9 +42,6 @@ public class FieldNameComparatorTest {
         List<Field> fields = Arrays.asList(hcsDeviceClass.getDeclaredFields());
 
         Collections.sort(fields, comparator);
-        for (Field field : fields) {
-            System.out.println(field.getName());
-        }
 
         int numberOfDemandDevicesIndex = -1;
         for (int i = 0; i < fields.size(); i++) {

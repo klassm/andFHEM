@@ -74,7 +74,7 @@ public class FieldNameComparator implements Comparator<Field> {
             return 1;
         }
 
-        return lhsName.compareTo(rhsName);
+        return (int) Math.signum(lhsName.compareTo(rhsName));
     }
 
     public boolean fieldMatchesShowAfter(ShowField annotation, Field field) {
