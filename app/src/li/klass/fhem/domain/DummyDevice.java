@@ -48,7 +48,8 @@ public class DummyDevice extends DimmableDevice<DummyDevice> {
 
     @Override
     public boolean supportsToggle() {
-        return ArrayUtil.contains(getAvailableTargetStates(), "on", "off");
+        return ArrayUtil.contains(getAvailableTargetStates(), "on", "off") ||
+                ArrayUtil.contains(getWebCmd(), "on", "off");
     }
 
     @Override
