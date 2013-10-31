@@ -24,18 +24,8 @@
   ~   Boston, MA  02110-1301  USA
   -->
 
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- This is the main color -->
-
-    <!-- This is the line -->
-    <item>
-        <shape>
-            <solid android:color="#ffa4c639" />
-        </shape>
-    </item>
-    <item android:bottom="6dp">
-        <shape>
-            <solid android:color="@color/tabBackgroundGrey" />
-        </shape>
-    </item>
-</layer-list>
+<selector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:exitFadeDuration="@android:integer/config_mediumAnimTime" >
+    <item android:state_pressed="true" android:drawable="@drawable/actionbar_item_bg_selected" />
+    <item android:drawable="@android:color/transparent" />
+</selector>

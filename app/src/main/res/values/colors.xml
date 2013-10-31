@@ -43,4 +43,6 @@
     <color name="offRed">#44FF0000</color>
     <color name="red">#FF0000</color>
 
+    <color name="holoDark">#242424</color>
+
 </resources>

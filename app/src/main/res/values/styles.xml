@@ -229,21 +229,55 @@
 
     <!-- the theme applied to the application or activity -->
     <style name="ApplicationTheme" parent="@style/Theme.Sherlock.Light.DarkActionBar">
+        <item name="actionBarTabBarStyle">@style/ApplicationActionBarTabBarStyle</item>
+        <item name="android:actionBarTabBarStyle">@style/ApplicationActionBarTabBarStyle</item>
+
+        <item name="actionBarTabStyle">@style/ApplicationActionBarTabStyle</item>
+        <item name="android:actionBarTabStyle">@style/ApplicationActionBarTabStyle</item>
+
+        <item name="android:actionBarItemBackground">@drawable/actionbar_item_bg_selectable</item>
+        <item name="actionBarItemBackground">@drawable/actionbar_item_bg_selectable</item>
+
+        <item name="android:dropDownListViewStyle">@style/ApplicationDropDownListViewStyle</item>
+        <item name="dropDownListViewStyle">@style/ApplicationDropDownListViewStyle</item>
+
+        <item name="android:actionDropDownStyle">@style/ApplicationActionDropDownStyle</item>
+        <item name="actionDropDownStyle">@style/ApplicationActionDropDownStyle</item>
+
+        <item name="android:popupMenuStyle">@style/ApplicationPopupMenu</item>
+        <item name="popupMenuStyle">@style/ApplicationPopupMenu</item>
+
+        <item name="android:actionBarWidgetTheme">@style/ApplicationActionBarWidgetTheme</item>
+        <item name="actionBarWidgetTheme">@style/ApplicationActionBarWidgetTheme</item>
     </style>
 
-    <style name="ApplicationActionBarStyle" parent="@style/Theme.Sherlock.Light.DarkActionBar">
-        <item name="android:background">@drawable/actionbar_background</item>
+    <style name="ApplicationActionBarTabBarStyle" parent="Widget.Sherlock.ActionBar.Solid">
+        <item name="android:background">@color/holoDark</item>
+
     </style>
 
-    <style name="ApplicationActionBarTabStyle">
-        <item name="android:gravity">center_horizontal</item>
-        <item name="android:layout_width">match_parent</item>
-
+    <style name="ApplicationActionBarTabStyle" parent="Widget.Sherlock.ActionBar.TabView">
         <item name="android:background">@drawable/actionbar_tab_bg</item>
+        <item name="background">@drawable/actionbar_tab_bg</item>
     </style>
 
-    <style name="ApplicationActionBarTabBarStyle">
-        <item name="android:background">@drawable/actionbar_tab_unselected</item>
+    <style name="ApplicationDropDownItem" parent="Widget.Sherlock.DropDownItem.Spinner">
+    </style>
+
+    <style name="ApplicationActionDropDownStyle" parent="Widget.Sherlock.Spinner.DropDown.ActionBar">
+        <item name="android:dropDownSelector">@drawable/actionbar_item_bg_selectable</item>
+    </style>
+
+    <style name="ApplicationDropDownListViewStyle" parent="Widget.Sherlock.ListView.DropDown">
+        <item name="android:listSelector">@drawable/actionbar_item_bg_selectable</item>
+    </style>
+
+    <style name="ApplicationPopupMenu" parent="Widget.Sherlock.ListPopupWindow">
+    </style>
+
+    <style name="ApplicationActionBarWidgetTheme" parent="@style/Theme.Sherlock">
+        <item name="android:popupMenuStyle">@style/ApplicationPopupMenu</item>
+        <item name="android:dropDownListViewStyle">@style/ApplicationDropDownListViewStyle</item>
     </style>
 
 </resources>

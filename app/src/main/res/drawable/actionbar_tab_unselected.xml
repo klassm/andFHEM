@@ -25,17 +25,14 @@
   -->
 
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- This is the main color -->
-
-    <!-- This is the line -->
     <item>
         <shape>
             <solid android:color="@color/android_green" />
         </shape>
     </item>
-    <item android:bottom="2dp">
+    <item android:bottom="3dp">
         <shape>
-            <solid android:color="@color/tabBackgroundGrey" />
+            <solid android:color="@color/holoDark" />
         </shape>
     </item>
 </layer-list>
