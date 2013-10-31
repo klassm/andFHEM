@@ -118,7 +118,7 @@ public class PlayStoreSecurity {
      * @param signature the signature for the data, signed with the private key
      */
     public static ArrayList<VerifiedPurchase> verifyPurchase(String signedData, String signature) {
-        if (signedData == null) {
+        if (signedData == null || signedData.length() == 0) {
             Log.e(TAG, "data is null");
             return null;
         }
