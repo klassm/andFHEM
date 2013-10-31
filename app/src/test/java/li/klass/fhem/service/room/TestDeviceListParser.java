@@ -22,17 +22,30 @@
  *   Boston, MA  02110-1301  USA
  */
 
-buildscript {
-    repositories {
-        mavenCentral()
-        maven {
-            url 'https://raw.github.com/eburtsev/gdata-maven/master'
-        }
-    }
+package li.klass.fhem.service.room;
 
-    dependencies {
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
-//        classpath 'commons-codec:commons-codec:1.2'
+import java.util.Map;
+
+import li.klass.fhem.domain.core.RoomDeviceList;
+import li.klass.fhem.fhem.DummyDataConnection;
+import li.klass.fhem.infra.AndFHEMRobolectricTestRunner;
+
+import static org.junit.Assert.assertNotNull;
+
+@RunWith(AndFHEMRobolectricTestRunner.class)
+public class TestDeviceListParser {
+
+    @Test
+    public void testParseDummyData() throws Exception {
+        String xmlList = DummyDataConnection.INSTANCE.xmllist();
+        assertNotNull(xmlList);
+
+        DeviceListParser deviceListParser = DeviceListParser.INSTANCE;
+        Map<String, RoomDeviceList> result = deviceListParser.parseXMLList(xmlList);
+
+        assertNotNull(result);
     }
 }
-

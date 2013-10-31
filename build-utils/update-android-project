@@ -1,3 +1,0 @@
-#!/bin/bash
-echo `pwd`
-$ANDROID_HOME/tools/android update project --path . --target android-17

@@ -22,17 +22,7 @@
  *   Boston, MA  02110-1301  USA
  */
 
-buildscript {
-    repositories {
-        mavenCentral()
-        maven {
-            url 'https://raw.github.com/eburtsev/gdata-maven/master'
-        }
-    }
+package li.klass.fhem.testsuite.category;
 
-    dependencies {
-
-//        classpath 'commons-codec:commons-codec:1.2'
-    }
+public interface DeviceTestBase {
 }
-

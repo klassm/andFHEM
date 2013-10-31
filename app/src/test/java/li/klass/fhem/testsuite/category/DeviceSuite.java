@@ -22,17 +22,12 @@
  *   Boston, MA  02110-1301  USA
  */
 
-buildscript {
-    repositories {
-        mavenCentral()
-        maven {
-            url 'https://raw.github.com/eburtsev/gdata-maven/master'
-        }
-    }
+package li.klass.fhem.testsuite.category;
 
-    dependencies {
+import org.junit.experimental.categories.Categories;
+import org.junit.runner.RunWith;
 
-//        classpath 'commons-codec:commons-codec:1.2'
-    }
+@RunWith(CategorySuite.class)
+@Categories.IncludeCategory(DeviceTestBase.class)
+public class DeviceSuite {
 }
-

@@ -22,42 +22,202 @@
  *   Boston, MA  02110-1301  USA
  */
 
-apply plugin: com.smokejumperit.gradle.ExecPlugin
-
 buildscript {
     repositories {
-        mavenRepo urls: 'http://repo.smokejumperit.com'
+        mavenCentral()
+        maven {
+            url 'https://oss.sonatype.org/content/repositories/snapshots/'
+        }
+        maven {
+            url 'https://raw.github.com/eburtsev/gdata-maven/master'
+        }
     }
+
     dependencies {
-        classpath 'com.smokejumperit:gradle-plugins:0.8.2'
+        classpath 'com.android.tools.build:gradle:0.6.3'
+        classpath fileTree(dir: './build-libs', include: '*.jar')
+
+        // google sites dependencies ...
+        classpath 'com.google.gdata.gdata-java-client:gdata-sites-2.0:1.47.1'
+        classpath 'javax.mail:mail:1.4.7'
+        classpath 'com.google.oauth-client:google-oauth-client:1.17.0-rc'
+
+        // currently not working, as we need some modifications to work with src/main/resources
+        // within tests. This is why the dependency was replaced by a manually assembled
+        // jar file. The respective code can be found in
+        // https://github.com/klassm/gradle-android-test-plugin
+        //
+        // classpath 'com.squareup.gradle:gradle-android-test-plugin:0.9.1-SNAPSHOT'
+    }
+}
+
+apply plugin: 'android'
+apply plugin: 'android-test'
+
+repositories {
+    mavenCentral()
+    maven {
+        url 'https://oss.sonatype.org/content/repositories/snapshots/'
     }
 }
 
 dependencies {
-    compile project(':ActionBarSherlock')
     compile fileTree(dir: './libs', include: '*.jar')
+    compile 'com.actionbarsherlock:actionbarsherlock:4.4.0@aar'
+    compile 'com.android.support:support-v4:13.0.+'
+
+    testCompile 'org.hamcrest:hamcrest-all:1.3'
+    testCompile 'junit:junit:4.10'
+    testCompile 'org.robolectric:robolectric:2.1.+'
+    testCompile 'com.squareup:fest-android:1.0.+'
+
+    instrumentTestCompile 'org.hamcrest:hamcrest-all:1.3'
+    instrumentTestCompile 'junit:junit:4.10'
+    instrumentTestCompile 'org.robolectric:robolectric:2.1.+'
+    instrumentTestCompile 'com.squareup:fest-android:1.0.+'
 }
 
-sourceSets {
-    main {
-        java {
-            srcDirs = ['src', 'gen']
+android {
+    compileSdkVersion 17
+    buildToolsVersion "17.0.0"
+
+    defaultConfig {
+        minSdkVersion 7
+        targetSdkVersion 17
+    }
+
+    signingConfigs {
+        release {
+            storeFile file("release.keystore")
+            keyAlias "android"
+            storePassword ""
+            keyPassword ""
         }
-        resources {
-            // fix to get xml resources within the src dir to be found within gradle
-            srcDirs = ['src']
+    }
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+        }
+    }
+
+    sourceSets {
+        test {
+            java.srcDir file('src/test/java')
+            resources.srcDir file('src/test/resources')
+        }
+        instrumentTest {
+            java.srcDir file('src/test/java')
+            resources.srcDir file('src/test/resources')
+        }
+        main {
+            aidl.srcDirs = ['src/main/java']
         }
     }
 }
 
-task setUpSDK(type: Exec) {
-    workingDir '.'
-    commandLine "../build-utils/update-android-project"
+task readSigningPasswordsFromConsole(
+        dependsOn: ['readSigningStorePasswordFromConsole', 'readSigningKeyAliasPasswordFromConsole'])
+
+task readSigningStorePasswordFromConsole << {
+    def console = System.console()
+    def storePassword = new String(console.readPassword('\n\nEnter store password: \n> '))
+    android.signingConfigs.release.storePassword = storePassword
 }
 
-compileJava.dependsOn(setUpSDK)
-
-task buildDebug(dependsOn: setUpSDK) << {
-    project.execIn(new File('app'), "ant", "debug")
+task readSigningKeyAliasPasswordFromConsole << {
+    def console = System.console()
+    def aliasPassword = new String(console.readPassword('\nEnter alias / google sites password: \n>'))
+    android.signingConfigs.release.keyPassword = aliasPassword
 }
-test.dependsOn(buildDebug)
+
+tasks.whenTaskAdded { task ->
+    if (task.name == 'packageRelease') {
+        task.dependsOn readSigningPasswordsFromConsole
+    }
+}
+
+task artifacts {
+    group = "Help"
+    description = "Displays the artifacts associated with each configuration of " + project
+    doFirst {
+        println "  Project:" + project.name
+        project.configurations.each { conf ->
+            println "    Configuration: ${conf.name}"
+            conf.allDependencies.each { dep ->
+                println "      ${dep.group}:${dep.name}:${dep.version}"
+            }
+        }
+    }
+}
+
+//task release(dependsOn: ['assembleRelease', 'uploadToGoogleSites']) << {
+//
+//}
+
+/*************************************
+ * GOOGLE SITES
+ *********************************** */
+
+task uploadToGoogleSites(dependsOn: 'readSigningKeyAliasPasswordFromConsole') << {
+    uploadApkToGoogleSites();
+}
+
+import com.google.gdata.client.*;
+import com.google.gdata.client.sites.*;
+import com.google.gdata.data.*;
+import com.google.gdata.data.acl.*;
+import com.google.gdata.data.media.*;
+import com.google.gdata.data.sites.*;
+import com.google.gdata.data.spreadsheet.*;
+import com.google.gdata.util.*;
+import com.google.gdata.client.sites.SitesService
+import com.google.gdata.data.Link.*
+
+import javax.activation.MimetypesFileTypeMap
+
+def uploadApkToGoogleSites() {
+    def attachmentContentFeedUrl = "https://sites.google.com/feeds/content/site/andfhem/"
+
+    def service = new SitesService("li.klass-andFHEM-v1");
+    service.setUserCredentials("andFHEM@klass.li", '' + android.signingConfigs.release.keyPassword);
+
+
+    def contentFeed = service.getFeed(new URL(attachmentContentFeedUrl), ContentFeed.class)
+
+    def entries = contentFeed.getEntries()
+
+    for (e in entries) {
+        def href = e.getRevisionLink().getHref()
+        def id = href.substring(href.lastIndexOf("/") + 1)
+
+        def fileTitle = e.getTitle().getText()
+        if (fileTitle.equals("google-release.apk")) {
+            deleteGoogleSitesAttachment(service, id)
+        }
+    }
+
+    updateGoogleSitesAPK(service)
+}
+
+def deleteGoogleSitesAttachment(service, id) {
+    def attachment = service.getEntry(new URL("https://sites.google.com/feeds/content/site/andfhem/" + id + "?with-mappings=true"), FileCabinetPageEntry.class)
+    attachment.delete();
+}
+
+def updateGoogleSitesAPK(service) {
+    def title = "google-release.apk"
+    def description = ""
+
+    def mediaTypes = new MimetypesFileTypeMap()
+    mediaTypes.addMimeTypes("application/vnd.android.package-archive")
+
+    def file = new File("app/build/apk/app-release.apk")
+
+    def newAttachment = new AttachmentEntry();
+    newAttachment.setMediaSource(new MediaFileSource(file, mediaTypes.getContentType(file)));
+    newAttachment.setTitle(new PlainTextConstruct(title));
+    newAttachment.setSummary(new PlainTextConstruct(description));
+
+    service.insert(new URL("https://sites.google.com/feeds/content/site/andfhem/"), newAttachment);
+}

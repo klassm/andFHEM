@@ -22,17 +22,12 @@
  *   Boston, MA  02110-1301  USA
  */
 
-buildscript {
-    repositories {
-        mavenCentral()
-        maven {
-            url 'https://raw.github.com/eburtsev/gdata-maven/master'
-        }
-    }
+package li.klass.fhem.infra.basetest;
 
-    dependencies {
+import org.junit.runner.RunWith;
 
-//        classpath 'commons-codec:commons-codec:1.2'
-    }
+import li.klass.fhem.infra.AndFHEMRobolectricTestRunner;
+
+@RunWith(AndFHEMRobolectricTestRunner.class)
+public abstract class RobolectricBaseTestCase {
 }
-

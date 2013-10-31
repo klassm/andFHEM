@@ -22,17 +22,34 @@
  *   Boston, MA  02110-1301  USA
  */
 
-buildscript {
-    repositories {
-        mavenCentral()
-        maven {
-            url 'https://raw.github.com/eburtsev/gdata-maven/master'
-        }
+package li.klass.fhem.util;
+
+import org.junit.Test;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.number.IsCloseTo.closeTo;
+import static org.junit.Assert.assertEquals;
+import static li.klass.fhem.util.ValueExtractUtil.*;
+
+public class ValueExtractUtilTest {
+
+    @Test
+    public void testExtractLeadingNumericText() {
+        assertEquals("", extractLeadingNumericText("abc def"));
+        assertEquals("5", extractLeadingNumericText("5 abc def ds"));
+        assertEquals("5.0", extractLeadingNumericText("5.0 abc def ds"));
     }
 
-    dependencies {
+    @Test
+    public void testExtractLeadingInt() {
+        assertEquals(1, extractLeadingInt("1 abc"));
+        assertEquals(1, extractLeadingInt("1 23"));
+    }
 
-//        classpath 'commons-codec:commons-codec:1.2'
+    @Test
+    public void testExtractLeadingDouble() {
+        assertThat(extractLeadingDouble("1.0 abc"), is(closeTo(1.0, 0.001)));
+        assertThat(extractLeadingDouble("2.5 23"), is(closeTo(2.5, 0.001)));
     }
 }
-
