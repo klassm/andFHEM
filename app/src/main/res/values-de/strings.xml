@@ -94,7 +94,6 @@
     <string name="send">Senden</string>
     <string name="error">Fehler!</string>
     <string name="errorDeviceListLoad">Konnte %1$s Gerät(e) nicht laden (Typen: %2$s)!</string>
-    <string name="conversion">Konvertierung</string>
     <string name="hex2quat">Hex -> Quat</string>
     <string name="quat2hex">Quat -> Hex</string>
     <string name="result">Ergebnis</string>
@@ -184,7 +183,6 @@
     <string name="executing">Ausführend ...</string>
     <string name="help">Hilfe</string>
     <string name="donate">Spenden</string>
-    <string name="send_command">Kommando senden</string>
     <string name="command_execution_result">Kommando Ergebnis</string>
 
     <string name="context_addtofavorites">Zu Favoriten hinzufügen</string>
@@ -202,10 +200,12 @@
     <string name="areYouSureText">Möchten Sie wirklich %1$s auf %2$s setzen?</string>
     <string name="setMode">Modus setzen</string>
 
-
-    <string name="tab_roomList">Räume</string>
-    <string name="tab_favorites">Favoriten</string>
-    <string name="tab_alldevices">Alle Geräte</string>
+    <string name="roomList">Räume</string>
+    <string name="favorites">Favoriten</string>
+    <string name="alldevices">Alle Geräte</string>
+    <string name="conversion">Konvertierung</string>
+    <string name="timer">Zeitschaltuhr</string>
+    <string name="send_command">Kommando senden</string>
 
     <string name="prefDataSourceCategory">Datenquelle</string>
     <string name="prefDataSource">Datenquelle</string>
@@ -367,7 +367,6 @@
     <string name="widget_dim">Dim</string>
     <string name="widget_targetstate">Zielzustand</string>
 
-    <string name="timer">Zeitschaltuhr</string>
     <string name="timer_overview">Schalte %1$s %2$s %3$s %4$s auf %5$s.</string>
     <string name="timer_overview_every_day">an jedem Tag</string>
     <string name="timer_overview_once">einmal</string>
@@ -429,4 +428,6 @@
         als erfolgreich angesehen wird. (z.B. "off")
     </string>
 
+    <string name="drawerOpen">Drawer öffnen</string>
+    <string name="drawerClose">Drawer schließen</string>
 </resources>

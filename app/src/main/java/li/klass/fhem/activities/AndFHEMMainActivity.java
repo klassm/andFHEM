@@ -27,25 +27,18 @@ package li.klass.fhem.activities;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
+
 import com.actionbarsherlock.view.MenuItem;
-import com.google.android.gcm.GCMRegistrar;
+
 import li.klass.fhem.ApplicationUrls;
 import li.klass.fhem.R;
 import li.klass.fhem.activities.core.FragmentBaseActivity;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.constants.PreferenceKeys;
-import li.klass.fhem.fragments.ConversionFragment;
 import li.klass.fhem.fragments.PremiumFragment;
-import li.klass.fhem.fragments.SendCommandFragment;
-import li.klass.fhem.fragments.TimerListFragment;
-import li.klass.fhem.GCMIntentService;
 import li.klass.fhem.update.UpdateHandler;
-import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.DialogUtil;
-import li.klass.fhem.util.StringUtil;
 
 import static li.klass.fhem.GCMIntentService.registerWithGCM;
 import static li.klass.fhem.constants.BundleExtraKeys.DO_REFRESH;
@@ -65,9 +58,7 @@ public class AndFHEMMainActivity extends FragmentBaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == android.R.id.home) {
-            onBackPressed();
-        } else if (id == R.id.menu_refresh) {
+        if (id == R.id.menu_refresh) {
             Intent refreshIntent = new Intent(Actions.DO_UPDATE);
             refreshIntent.putExtra(DO_REFRESH, true);
             sendBroadcast(refreshIntent);
@@ -85,26 +76,6 @@ public class AndFHEMMainActivity extends FragmentBaseActivity {
             Intent premiumIntent = new Intent(Actions.SHOW_FRAGMENT);
             premiumIntent.putExtra(BundleExtraKeys.FRAGMENT_NAME, PremiumFragment.class.getName());
             sendBroadcast(premiumIntent);
-            return true;
-        } else if (id == R.id.menu_command) {
-            Intent commandIntent = new Intent(Actions.SHOW_FRAGMENT);
-            commandIntent.putExtra(BundleExtraKeys.FRAGMENT_NAME, SendCommandFragment.class.getName());
-            sendBroadcast(commandIntent);
-            return true;
-        } else if (id == R.id.menu_conversion) {
-            Intent conversion = new Intent(Actions.SHOW_FRAGMENT);
-            conversion.putExtra(BundleExtraKeys.FRAGMENT_NAME, ConversionFragment.class.getName());
-            sendBroadcast(conversion);
-            return true;
-        } else if (id == R.id.menu_timer) {
-            if (Build.VERSION.SDK_INT < 11) {
-                String text = String.format(getString(R.string.feature_requires_android_version), 3);
-                DialogUtil.showAlertDialog(this, R.string.android_version, text);
-                return true;
-            }
-            Intent timer = new Intent(Actions.SHOW_FRAGMENT);
-            timer.putExtra(BundleExtraKeys.FRAGMENT_NAME, TimerListFragment.class.getName());
-            sendBroadcast(timer);
             return true;
         } else if (id == R.id.menu_about) {
             String version;

@@ -37,16 +37,18 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import java.io.Serializable;
+import java.lang.reflect.Constructor;
+
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.fragments.FragmentType;
 import li.klass.fhem.fragments.core.BaseFragment;
+import li.klass.fhem.util.Reject;
 import li.klass.fhem.util.ViewUtil;
-
-import java.io.Serializable;
-import java.lang.reflect.Constructor;
 
 public class TopLevelFragment extends Fragment implements Serializable {
 
@@ -55,6 +57,7 @@ public class TopLevelFragment extends Fragment implements Serializable {
     public static final String NAVIGATION_TAG = "NAVIGATION";
     public static final String CONTENT_TAG = "CONTENT";
     private transient FragmentType initialFragmentType;
+
     private BroadcastReceiver broadcastReceiver;
     public static final IntentFilter FILTER = new IntentFilter();
 
@@ -93,6 +96,8 @@ public class TopLevelFragment extends Fragment implements Serializable {
             }
         }
         View view = inflater.inflate(R.layout.content_view, null);
+        Reject.ifNull(view);
+
         View navigationView = view.findViewById(R.id.navigation);
         View contentView = view.findViewById(R.id.content);
 
@@ -222,15 +227,20 @@ public class TopLevelFragment extends Fragment implements Serializable {
                     if (getView().findViewById(contentId) == null) return;
 
                     String action = intent.getAction();
+                    if (action == null) {
+                        return;
+                    }
+
                     if (action.equals(Actions.SWITCH_TO_INITIAL_FRAGMENT)) {
 
                         String fragmentName = intent.getStringExtra(BundleExtraKeys.FRAGMENT);
                         FragmentType fragment = FragmentType.valueOf(fragmentName);
 
-                        if (fragment == initialFragmentType) {
-                            switchToInitialFragment();
-                            currentTopLevelFragmentType = initialFragmentType;
+                        if (fragment != initialFragmentType) {
+                            return;
                         }
+                        switchToInitialFragment();
+                        currentTopLevelFragmentType = initialFragmentType;
                     }
 
                     if (currentTopLevelFragmentType != null && currentTopLevelFragmentType != initialFragmentType) {

@@ -24,21 +24,33 @@
 
 package li.klass.fhem.activities.core;
 
-import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.ViewPager;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.RepairedDrawerLayout;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
 import android.widget.Toast;
+
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
+
+import java.lang.reflect.Constructor;
+
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.billing.BillingService;
@@ -46,18 +58,25 @@ import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.PreferenceKeys;
 import li.klass.fhem.fragments.FragmentType;
+import li.klass.fhem.fragments.core.BaseFragment;
 import li.klass.fhem.service.room.RoomListService;
 import li.klass.fhem.util.ApplicationProperties;
+import li.klass.fhem.util.DialogUtil;
 
-import static li.klass.fhem.constants.Actions.*;
+import static li.klass.fhem.constants.Actions.BACK;
+import static li.klass.fhem.constants.Actions.DISMISS_EXECUTING_DIALOG;
+import static li.klass.fhem.constants.Actions.DO_UPDATE;
+import static li.klass.fhem.constants.Actions.RELOAD;
+import static li.klass.fhem.constants.Actions.SHOW_EXECUTING_DIALOG;
+import static li.klass.fhem.constants.Actions.SHOW_TOAST;
 
-public abstract class FragmentBaseActivity extends SherlockFragmentActivity implements ActionBar.TabListener, Updateable {
+public abstract class FragmentBaseActivity extends SherlockFragmentActivity implements Updateable { //}, ActionBar.TabListener {
 
     public static final String TAG = FragmentBaseActivity.class.getName();
+    public static final String NAVIGATION_TAG = "NAVIGATION_TAG";
+    public static final String CONTENT_TAG = "CONTENT_TAG";
 
     ApplicationProperties applicationProperties = ApplicationProperties.INSTANCE;
-    private ProgressDialog progressDialog;
-    private boolean ignoreTabSelection;
     private Receiver broadcastReceiver;
     private Menu optionsMenu;
 
@@ -98,10 +117,12 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
         }
     };
 
-    private boolean saveInstanceStateCalled = false;
-    private ViewPager viewPager;
-    private TabsAdapter viewPagerAdapter;
-    private boolean restoring = false;
+    private RepairedDrawerLayout mDrawerLayout;
+    private ListView mDrawerList;
+    private ActionBarDrawerToggle mDrawerToggle;
+
+    protected FragmentBaseActivity() {
+    }
 
     private class Receiver extends BroadcastReceiver {
 
@@ -127,8 +148,11 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
                 public void run() {
                     try {
                         String action = intent.getAction();
+                        if (action == null) return;
+
                         if (Actions.SHOW_FRAGMENT.equals(action)) {
                             Bundle bundle = intent.getExtras();
+                            if (bundle == null) throw new IllegalArgumentException("need a content fragment");
                             FragmentType fragmentType;
                             if (bundle.containsKey(BundleExtraKeys.FRAGMENT)) {
                                 fragmentType = (FragmentType) bundle.getSerializable(BundleExtraKeys.FRAGMENT);
@@ -152,9 +176,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
                             }
                             Toast.makeText(FragmentBaseActivity.this, content, Toast.LENGTH_SHORT).show();
                         } else if (action.equals(BACK)) {
-                            onBackPressed(intent.getExtras());
-                        } else if (action.equals(RELOAD)) {
-//                            onRestoreInstanceState(null);
+                            onBackPressed();
                         }
                     } catch (Exception e) {
                         Log.e(TAG, "exception occurred while receiving broadcast", e);
@@ -166,22 +188,6 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
         public IntentFilter getIntentFilter() {
             return intentFilter;
         }
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        restoring = true;
-        if (savedInstanceState != null) {
-            viewPager.setCurrentItem(savedInstanceState.getInt("currentTab"));
-        }
-        handleCurrentFragmentNavigationChanges();
-        restoring = false;
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        outState.putInt("currentTab", viewPager.getCurrentItem());
-        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -202,61 +208,88 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
             AndFHEMApplication.INSTANCE.setIsTablet(true);
         }
 
-        saveInstanceStateCalled = false;
-
         autoUpdateHandler = new Handler();
         autoUpdateHandler.postDelayed(autoUpdateCallback, 0);
 
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-        actionBar.setDisplayShowTitleEnabled(false);
-
-        for (FragmentType fragmentType : FragmentType.getTopLevelFragments()) {
-            ActionBar.Tab tab = actionBar.newTab()
-                    .setText(fragmentType.getTopLevelTabName())
-                    .setTabListener(this)
-                    .setTag(fragmentType);
-            actionBar.addTab(tab, false);
-        }
+        actionBar.setDisplayShowTitleEnabled(true);
 
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         broadcastReceiver = new Receiver();
         registerReceiver(broadcastReceiver, broadcastReceiver.getIntentFilter());
 
-        viewPager = (ViewPager) findViewById(R.id.mainContent);
-        viewPagerAdapter = new TabsAdapter(getSupportFragmentManager(), new TabsAdapter.PageChangeListener() {
-            @Override
-            public void onPageChanged(int newPage) {
-                ignoreTabSelection = true;
+        initDrawerLayout();
 
-                handleNavigationChanges(viewPagerAdapter.getFragmentTypeAt(viewPager.getCurrentItem()));
-
-                ignoreTabSelection = true;
-                getSupportActionBar().setSelectedNavigationItem(newPage);
-                ignoreTabSelection = false;
-
-                // if restore is in progress, we do not need to switch to the initial page.
-                // the top level fragment will restore the currently set fragment
-                // especially valid for screen rotation!
-                if (!restoring) {
-                    switchToInitialFragmentOnPage(newPage);
-                }
-            }
-        });
-        viewPager.setAdapter(viewPagerAdapter);
-        viewPager.setOnPageChangeListener(viewPagerAdapter);
-
-        viewPager.setCurrentItem(0);
-
-        ignoreTabSelection = true;
-        getSupportActionBar().setSelectedNavigationItem(0);
+        if (savedInstanceState == null) {
+            switchToFragment(FragmentType.ALL_DEVICES, new Bundle());
+        }
     }
 
-    private void switchToInitialFragmentOnPage(int newPage) {
-        Intent intent = new Intent(Actions.SWITCH_TO_INITIAL_FRAGMENT);
-        intent.putExtra(BundleExtraKeys.FRAGMENT, FragmentType.getTopLevelFragments().get(newPage).name());
-        sendBroadcast(intent);
+
+
+    private void initDrawerLayout() {
+        mDrawerLayout = (RepairedDrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
+        mDrawerList = (ListView) findViewById(R.id.left_drawer);
+
+        mDrawerList.setAdapter(new NavigationDrawerAdapter(this));
+        mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                FragmentType fragmentType = (FragmentType) view.getTag();
+
+                if (fragmentType == FragmentType.TIMER_OVERVIEW && Build.VERSION.SDK_INT < 11) {
+                    String text = String.format(getString(R.string.feature_requires_android_version), 3);
+                    DialogUtil.showAlertDialog(FragmentBaseActivity.this, R.string.android_version, text);
+                    return;
+                }
+
+                switchToFragment(fragmentType, new Bundle());
+                mDrawerLayout.closeDrawers();
+            }
+        });
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.drawable.ic_drawer,
+                R.string.drawerOpen, R.string.drawerClose) {
+            public void onDrawerClosed(View view) {
+                getSupportActionBar().setTitle(R.string.app_name);
+                supportInvalidateOptionsMenu();
+            }
+
+            public void onDrawerOpened(View drawerView) {
+                getSupportActionBar().setTitle(R.string.app_name);
+                supportInvalidateOptionsMenu();
+            }
+        };
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            if (mDrawerLayout.isDrawerOpen(mDrawerList)) {
+                mDrawerLayout.closeDrawer(mDrawerList);
+            } else {
+                mDrawerLayout.openDrawer(mDrawerList);
+            }
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        mDrawerToggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
     @Override
@@ -318,7 +351,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
             public void run() {
                 Intent intent = new Intent(Actions.SHOW_FRAGMENT);
 
-                intent.putExtras(extras);
+                if (extras != null) intent.putExtras(extras);
                 intent.putExtra(BundleExtraKeys.FRAGMENT, FragmentType.getFragmentFor(fragmentName));
                 sendBroadcast(intent);
             }
@@ -334,7 +367,6 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
 
         BillingService.INSTANCE.bindActivity(this);
 
-        saveInstanceStateCalled = false;
         registerReceiver(broadcastReceiver, broadcastReceiver.getIntentFilter());
     }
 
@@ -352,34 +384,6 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
     }
 
     @Override
-    public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
-        if (ignoreTabSelection) {
-            ignoreTabSelection = false;
-            return;
-        }
-
-        if (viewPager == null || tab == null) {
-            sendBroadcast(new Intent(Actions.RELOAD));
-            return;
-        }
-
-        ignoreTabSelection = true;
-        viewPager.setCurrentItem(tab.getPosition());
-        ignoreTabSelection = false;
-    }
-
-    @Override
-    public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
-    }
-
-    @Override
-    public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
-        if (ignoreTabSelection) return;
-
-        switchToInitialFragmentOnPage(viewPager.getCurrentItem());
-    }
-
-    @Override
     public boolean onCreatePanelMenu(int featureId, com.actionbarsherlock.view.Menu menu) {
         getSupportMenuInflater().inflate(R.menu.main_menu, menu);
         this.optionsMenu = menu;
@@ -388,68 +392,137 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
 
     @Override
     public void onBackPressed() {
-        onBackPressed(null);
-    }
+        // We pop fragments as long as:
+        // - there are more fragments within the back stack
+        // - the popped fragment type is not equals to the current fragment type
 
-    private void onBackPressed(Bundle data) {
-        Intent intent = new Intent(Actions.TOP_LEVEL_BACK);
-        if (data != null) {
-            intent.putExtras(data);
+        BaseFragment contentFragment = getContentFragment();
+        FragmentType contentFragmentType = FragmentType.getFragmentFor(contentFragment.getClass());
+        while (true) {
+            if (! getSupportFragmentManager().popBackStackImmediate()) {
+                finish();
+                return;
+            }
+
+            BaseFragment current = getContentFragment();
+            if (current == null) {
+                finish();
+                return;
+            }
+
+            FragmentType currentFragmentType = FragmentType.getFragmentFor(current.getClass());
+            if (currentFragmentType != contentFragmentType) {
+                break;
+            }
         }
-        FragmentType fragmentType = FragmentType.getTopLevelFragments().get(viewPager.getCurrentItem());
-        intent.putExtra(BundleExtraKeys.FRAGMENT, fragmentType.name());
-        sendBroadcast(intent);
 
-        handleCurrentFragmentNavigationChanges();
+        BaseFragment navigationFragment = (BaseFragment) getSupportFragmentManager()
+                .findFragmentByTag(NAVIGATION_TAG);
+        updateNavigationVisibility(navigationFragment);
     }
 
-    private void handleCurrentFragmentNavigationChanges() {
-        FragmentType fragmentType = FragmentType.getTopLevelFragments().get(viewPager.getCurrentItem());
-        ignoreTabSelection = true;
-        handleNavigationChanges(fragmentType);
-        ignoreTabSelection = false;
+    private BaseFragment getContentFragment() {
+        return (BaseFragment) getSupportFragmentManager().findFragmentByTag(CONTENT_TAG);
     }
+
 
     private void switchToFragment(FragmentType fragmentType, Bundle data) {
-        Log.i(TAG, "switch to fragment " + fragmentType.name());
+        Log.i(TAG, "switch to " + fragmentType.name() + " with " + data.toString());
+        if (fragmentType.isTopLevelFragment()) {
+            clearBackStack();
+        }
 
-        handleNavigationChanges(fragmentType);
+        BaseFragment contentFragment = createContentFragment(fragmentType, data);
+        BaseFragment navigationFragment = createNavigationFragment(fragmentType, data);
 
-        removeDialog();
+        setContent(navigationFragment, contentFragment);
+    }
+
+    private BaseFragment createContentFragment(FragmentType fragmentType, Bundle data) {
+        if (fragmentType == null) {
+            sendBroadcast(new Intent(Actions.RELOAD));
+            return null;
+        }
+        try {
+            Class<? extends BaseFragment> fragmentClass = fragmentType.getContentClass();
+            return createFragmentForClass(data, fragmentClass);
+        } catch (Exception e) {
+            Log.e(TAG, "cannot instantiate fragment", e);
+            return null;
+        }
     }
 
 
-    private void handleNavigationChanges(FragmentType fragmentType) {
-        int navigationMode = ActionBar.NAVIGATION_MODE_STANDARD;
-        boolean isTablet = findViewById(R.id.tabletIndicator) != null;
-        if ((fragmentType.isShowTabs()) || isTablet) {
-            navigationMode = ActionBar.NAVIGATION_MODE_TABS;
+    private BaseFragment createNavigationFragment(FragmentType fragmentType, Bundle data) {
+        View navigationView = findViewById(R.id.navigation);
+        if (navigationView == null) {
+            return null;
         }
 
-        if (getSupportActionBar().getNavigationMode() != navigationMode) {
-            getSupportActionBar().setNavigationMode(navigationMode);
+        try {
+            Class<? extends BaseFragment> navigationClass = fragmentType.getNavigationClass();
+            if (navigationClass == null) {
+                navigationView.setVisibility(View.GONE);
+                return null;
+            }
+            navigationView.setVisibility(View.VISIBLE);
+            return createFragmentForClass(data, navigationClass);
+        } catch (Exception e) {
+            Log.e(TAG, "cannot instantiate fragment", e);
+            return null;
         }
     }
 
-    private void showDialog(Bundle bundle) {
-        String message = getString(bundle.getInt(BundleExtraKeys.CONTENT));
+    private void setContent(BaseFragment navigationFragment, BaseFragment contentFragment) {
+        boolean hasNavigation = updateNavigationVisibility(navigationFragment);
 
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage(message);
-
-        if (bundle.containsKey(BundleExtraKeys.TITLE)) {
-            progressDialog.setTitle(bundle.getInt(BundleExtraKeys.TITLE));
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        if (fragmentManager == null) {
+            Log.e(TAG, "fragment manager is null in #setContent");
+            return;
         }
-        progressDialog.setCancelable(true);
 
-        progressDialog.show();
+        FragmentTransaction transaction = fragmentManager
+                .beginTransaction()
+                .addToBackStack(contentFragment.getClass().getName())
+                .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right,
+                        android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+        if (hasNavigation) {
+            transaction
+                    .replace(R.id.navigation, navigationFragment, NAVIGATION_TAG);
+        }
+        transaction
+                .replace(R.id.content, contentFragment, CONTENT_TAG);
+
+        transaction.commit();
     }
 
-    private void removeDialog() {
-        if (saveInstanceStateCalled) return;
-        if (progressDialog != null && progressDialog.isShowing()) {
-            progressDialog.dismiss();
-            progressDialog = null;
+    private boolean updateNavigationVisibility(BaseFragment navigationFragment) {
+        boolean hasNavigation = false;
+        View navigationView = findViewById(R.id.navigation);
+        if (navigationView != null) {
+            if (navigationFragment == null) {
+                navigationView.setVisibility(View.GONE);
+            } else {
+                navigationView.setVisibility(View.VISIBLE);
+                hasNavigation = true;
+            }
+        }
+        return hasNavigation;
+    }
+
+
+    private BaseFragment createFragmentForClass(Bundle data, Class<? extends BaseFragment> fragmentClass) throws Exception {
+        if (fragmentClass == null) return null;
+
+        Constructor<? extends BaseFragment> constructor = fragmentClass.getConstructor(Bundle.class);
+        return constructor.newInstance(data);
+    }
+
+    private void clearBackStack() {
+        int entryCount = getSupportFragmentManager().getBackStackEntryCount();
+        for (int i = 0; i < entryCount; i++) {
+            getSupportFragmentManager().popBackStack();
         }
     }
 

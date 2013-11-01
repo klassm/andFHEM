@@ -2,13 +2,13 @@
  * AndFHEM - Open Source Android application to control a FHEM home automation
  * server.
  *
- * Copyright (c) 2012, Matthias Klass or third-party contributors as
+ * Copyright (c) 2011, Matthias Klass or third-party contributors as
  * indicated by the @author tags or express copyright attribution
  * statements applied by the authors.  All third-party contributions are
  * distributed under license by Red Hat Inc.
  *
  * This copyrighted material is made available to anyone wishing to use, modify,
- * copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLICLICENSE, as published by the Free Software Foundation.
+ * copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
@@ -19,11 +19,11 @@
  * along with this distribution; if not, write to:
  *   Free Software Foundation, Inc.
  *   51 Franklin Street, Fifth Floor
+ *   Boston, MA  02110-1301  USA
  */
 
 package li.klass.fhem.fragments;
 
-import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.fragments.core.BaseFragment;
 import li.klass.fhem.fragments.core.DeviceDetailFragment;
@@ -33,79 +33,40 @@ import li.klass.fhem.fragments.device.DeviceNameSelectionNavigationFragment;
 import li.klass.fhem.fragments.weekprofile.FromToWeekProfileFragment;
 import li.klass.fhem.fragments.weekprofile.IntervalWeekProfileFragment;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
 public enum FragmentType {
-    FAVORITES(FavoritesFragment.class, R.string.tab_favorites, 0, null),
-    ROOM_LIST(RoomListFragment.class, R.string.tab_roomList, 1, null),
-    ALL_DEVICES(AllDevicesFragment.class, R.string.tab_alldevices, 2, RoomListFragment.class),
-    CONVERSION(ConversionFragment.class),
+    FAVORITES(FavoritesFragment.class, R.string.favorites, null),
+    ROOM_LIST(RoomListFragment.class, R.string.roomList, null),
+    ALL_DEVICES(AllDevicesFragment.class, R.string.alldevices, RoomListFragment.class),
+    CONVERSION(ConversionFragment.class, R.string.conversion, null),
     DEVICE_DETAIL(DeviceDetailFragment.class, DeviceNameListNavigationFragment.class),
     FROM_TO_WEEK_PROFILE(FromToWeekProfileFragment.class),
     INTERVAL_WEEK_PROFILE(IntervalWeekProfileFragment.class),
     FLOORPLAN(FloorplanFragment.class),
     PREMIUM(PremiumFragment.class),
     ROOM_DETAIL(RoomDetailFragment.class, RoomListFragment.class),
-    SEND_COMMAND(SendCommandFragment.class),
-    DEVICE_SELECTION(DeviceNameSelectionFragment.class, DeviceNameSelectionNavigationFragment.class, false),
+    SEND_COMMAND(SendCommandFragment.class, R.string.send_command, null),
+    DEVICE_SELECTION(DeviceNameSelectionFragment.class, DeviceNameSelectionNavigationFragment.class),
     DEVICE_NAME_LIST_NAVIGATION(DeviceNameListNavigationFragment.class),
-    TIMER_OVERVIEW(TimerListFragment.class),
+    TIMER_OVERVIEW(TimerListFragment.class, R.string.timer, null),
     TIMER_DETAIL(TimerDetailFragment.class);
 
     private Class<? extends BaseFragment> fragmentClass;
     private Class<? extends BaseFragment> navigationFragment;
-    private String topLevelTabName;
-    private boolean showTabs;
-
-    private static Comparator<FragmentType> topLevelFragmentNameComparator = new Comparator<FragmentType>() {
-        @Override
-        public int compare(FragmentType me, FragmentType other) {
-            if (me.topLevelTabName == null) return -1;
-            return ((Integer) me.topLevelPosition).compareTo(other.topLevelPosition);
-        }
-    };
-    private int topLevelPosition;
+    private int fragmentTitle;
 
     FragmentType(Class<? extends BaseFragment> fragmentClass) {
-        this(fragmentClass, null, -1, null);
+        this(fragmentClass, -1, null);
     }
 
     FragmentType(Class<? extends BaseFragment> fragmentClass, Class<? extends BaseFragment> navigationClass) {
-        this(fragmentClass, null, -1, navigationClass);
+        this(fragmentClass, -1, navigationClass);
     }
 
-    FragmentType(Class<? extends BaseFragment> fragmentClass, int topLevelTabStringId, int topLevelPosition,
-                 Class<? extends BaseFragment> navigationClass) {
-        this(fragmentClass, topLevelTabStringId == -1 ? null : AndFHEMApplication.getContext().getString(topLevelTabStringId),
-                topLevelPosition, navigationClass);
-    }
-
-    FragmentType(Class<? extends BaseFragment> fragmentClass, String topLevelTabName, int topLevelPosition,
+    FragmentType(Class<? extends BaseFragment> fragmentClass, int fragmentTitle,
                  Class<? extends BaseFragment> navigationFragment) {
         this.fragmentClass = fragmentClass;
-        this.topLevelTabName = topLevelTabName;
-        this.topLevelPosition = topLevelPosition;
+        this.fragmentTitle = fragmentTitle;
         this.navigationFragment = navigationFragment;
-    }
-
-    FragmentType(Class<? extends BaseFragment> fragmentClass, Class<? extends BaseFragment> navigationClass, boolean showTabs) {
-        this(fragmentClass, navigationClass);
-        this.showTabs = showTabs;
-    }
-
-    public static List<FragmentType> getTopLevelFragments() {
-        List<FragmentType> topLevelFragmentTypes = new ArrayList<FragmentType>();
-        for (FragmentType fragmentType : FragmentType.values()) {
-            if (fragmentType.topLevelTabName != null) {
-                topLevelFragmentTypes.add(fragmentType);
-            }
-        }
-        Collections.sort(topLevelFragmentTypes, topLevelFragmentNameComparator);
-
-        return topLevelFragmentTypes;
     }
 
     public static FragmentType getFragmentFor(Class<? extends BaseFragment> clazz) {
@@ -135,19 +96,11 @@ public enum FragmentType {
         return fragmentClass;
     }
 
-    public String getTopLevelTabName() {
-        return topLevelTabName;
-    }
-
-    public int getTopLevelPosition() {
-        return topLevelPosition;
-    }
-
     public boolean isTopLevelFragment() {
-        return topLevelTabName != null;
+        return fragmentTitle != -1;
     }
 
-    public boolean isShowTabs() {
-        return isTopLevelFragment() || showTabs;
+    public int getFragmentTitle() {
+        return fragmentTitle;
     }
 }

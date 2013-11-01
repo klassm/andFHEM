@@ -51,12 +51,7 @@ public class BundleExtraKeys {
 
     public static final String FRAGMENT_NAME = "FRAGMENTNAME";
     public static final String FRAGMENT = "FRAGMENT";
-    public static final String FRAGMENT_HISTORY_STACK = "FRAGMENTHISTORYSTACK";
-    public static final String CURRENT_TAB = "CURRENTTAB";
-    public static final String CURRENT_FRAGMENT = "CURRENTFRAGMENT";
-    public static final String FRAGMENT_ADD_TO_STACK = "FRAGMENTADDTOSTACK";
 
-    public static final String TITLE = "TITLE";
     public static final String CONTENT = "CONTENT";
 
     public static final String COMMAND = "COMMAND";
@@ -71,7 +66,6 @@ public class BundleExtraKeys {
 
     public static final String APP_WIDGET_ID = "APP_WIDGET_ID";
 
-    public static final String ORIGINAL_DEVICE_FILTER = "ORIGINAL_DEVICE_FILTER";
     public static final String DEVICE_FILTER = "DEVICE_FILTER";
     public static final String CLICKED_DEVICE = "CLICKED_DEVICE";
 
@@ -93,4 +87,5 @@ public class BundleExtraKeys {
     public static final String GCM_REGISTRATION_ID = "GCM_REGISTRATION_ID";
 
     public static final String NOTIFICATION_UPDATES = "NOTIFICATION_UPDATES";
+
 }

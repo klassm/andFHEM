@@ -95,7 +95,6 @@
     <string name="send">Send</string>
     <string name="error">Error!</string>
     <string name="errorDeviceListLoad">Could not load %1$s device(s) (types: %2$s)!</string>
-    <string name="conversion">Conversion</string>
     <string name="hex2quat">Hex -> Quat</string>
     <string name="quat2hex">Quat -> Hex</string>
     <string name="result">Result</string>
@@ -186,7 +185,6 @@
     <string name="executing">Executing ...</string>
     <string name="help">Help</string>
     <string name="donate">Donate</string>
-    <string name="send_command">Send Command</string>
     <string name="command_execution_result">Command Result</string>
 
     <string name="context_addtofavorites">Add to favorites</string>
@@ -204,9 +202,12 @@
     <string name="areYouSureText">Are you sure you want to set %1$s to %2$s?</string>
     <string name="setMode">Set Mode</string>
 
-    <string name="tab_roomList">Rooms</string>
-    <string name="tab_favorites">Favorites</string>
-    <string name="tab_alldevices">All Devices</string>
+    <string name="roomList">Rooms</string>
+    <string name="favorites">Favorites</string>
+    <string name="alldevices">All Devices</string>
+    <string name="conversion">Conversion</string>
+    <string name="timer">Timer</string>
+    <string name="send_command">Send Command</string>
 
     <string name="prefDataSourceCategory">Data Source</string>
     <string name="prefDataSource">Data Source</string>
@@ -368,7 +369,6 @@
     <string name="widget_dim">Dim</string>
     <string name="widget_targetstate">Target State</string>
 
-    <string name="timer">Timer</string>
     <string name="timer_overview">Switch %1$s %2$s %3$s %4$s to %5$s.</string>
     <string name="timer_overview_every_day">every day</string>
     <string name="timer_overview_once">once</string>
@@ -429,5 +429,8 @@
     <string name="localeDeviceStateInfo">Please select a device and enter a target status, upon which the event will be
         regarded as successful! (i.e. "off")
     </string>
+
+    <string name="drawerOpen">Open drawer</string>
+    <string name="drawerClose">Close drawer</string>
 
 </resources>

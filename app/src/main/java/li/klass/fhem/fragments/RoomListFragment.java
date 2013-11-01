@@ -8,7 +8,7 @@
  * distributed under license by Red Hat Inc.
  *
  * This copyrighted material is made available to anyone wishing to use, modify,
- * copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLICLICENSE, as published by the Free Software Foundation.
+ * copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
@@ -33,6 +33,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.rooms.RoomListAdapter;
 import li.klass.fhem.constants.Actions;
@@ -40,12 +44,8 @@ import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.fragments.core.BaseFragment;
 import li.klass.fhem.fragments.core.TopLevelFragment;
+import li.klass.fhem.util.Reject;
 import li.klass.fhem.util.advertisement.AdvertisementUtil;
-
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 public class RoomListFragment extends BaseFragment implements TopLevelFragment {
 
@@ -68,6 +68,7 @@ public class RoomListFragment extends BaseFragment implements TopLevelFragment {
         AdvertisementUtil.addAd(layout, getActivity());
 
         ListView roomList = (ListView) layout.findViewById(R.id.roomList);
+        Reject.ifNull(roomList);
         roomList.setAdapter(adapter);
 
         roomList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
