@@ -1,20 +1,20 @@
 /*
  * AndFHEM - Open Source Android application to control a FHEM home automation
  * server.
- *  
+ *
  * Copyright (c) 2011, Matthias Klass or third-party contributors as
  * indicated by the @author tags or express copyright attribution
  * statements applied by the authors.  All third-party contributions are
  * distributed under license by Red Hat Inc.
  *
  * This copyrighted material is made available to anyone wishing to use, modify,
- * copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLICLICENSE, as published by the Free Software Foundation.
- *  
+ * copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
  * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
  * for more details.
- *  
+ *
  * You should have received a copy of the GNU GENERAL PUBLIC LICENSE
  * along with this distribution; if not, write to:
  *   Free Software Foundation, Inc.
@@ -29,16 +29,20 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
 import android.view.ContextMenu;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
+
 import li.klass.fhem.R;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.fragments.core.DeviceListFragment;
 import li.klass.fhem.fragments.core.TopLevelFragment;
+import li.klass.fhem.util.Reject;
 
 public class FavoritesFragment extends DeviceListFragment implements TopLevelFragment {
 
@@ -89,5 +93,12 @@ public class FavoritesFragment extends DeviceListFragment implements TopLevelFra
             }
         }
         return false;
+    }
+
+    @Override
+    protected void fillEmptyView(LinearLayout view) {
+        LayoutInflater inflater = LayoutInflater.from(getActivity());
+        Reject.ifNull(inflater);
+        view.addView(inflater.inflate(R.layout.favorites_empty_view, null));
     }
 }

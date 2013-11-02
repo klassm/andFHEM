@@ -32,6 +32,7 @@ import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.ResultReceiver;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentManager;
@@ -57,6 +58,7 @@ import li.klass.fhem.billing.BillingService;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.PreferenceKeys;
+import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.fragments.FragmentType;
 import li.klass.fhem.fragments.core.BaseFragment;
 import li.klass.fhem.service.room.RoomListService;
@@ -69,6 +71,7 @@ import static li.klass.fhem.constants.Actions.DO_UPDATE;
 import static li.klass.fhem.constants.Actions.RELOAD;
 import static li.klass.fhem.constants.Actions.SHOW_EXECUTING_DIALOG;
 import static li.klass.fhem.constants.Actions.SHOW_TOAST;
+import static li.klass.fhem.constants.BundleExtraKeys.HAS_FAVORITES;
 
 public abstract class FragmentBaseActivity extends SherlockFragmentActivity implements Updateable { //}, ActionBar.TabListener {
 
@@ -222,10 +225,29 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
         initDrawerLayout();
 
         if (savedInstanceState == null) {
-            switchToFragment(FragmentType.ALL_DEVICES, new Bundle());
+            Intent intent = new Intent(Actions.FAVORITES_PRESENT);
+            intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
+                @Override
+                protected void onReceiveResult(int resultCode, Bundle resultData) {
+                    super.onReceiveResult(resultCode, resultData);
+
+                    handleHasFavoritesResponse(resultCode, resultData);
+                }
+            });
+            startService(intent);
         }
     }
 
+    private void handleHasFavoritesResponse(int resultCode, Bundle resultData) {
+        if (resultCode == ResultCodes.SUCCESS && resultData.containsKey(HAS_FAVORITES)) {
+            boolean hasFavorites = resultData.getBoolean(HAS_FAVORITES, false);
+            if (hasFavorites) {
+                switchToFragment(FragmentType.FAVORITES, null);
+                return;
+            }
+        }
+        switchToFragment(FragmentType.ALL_DEVICES, null);
+    }
 
 
     private void initDrawerLayout() {
@@ -290,6 +312,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         mDrawerToggle.onConfigurationChanged(newConfig);
+        updateNavigationVisibility();
     }
 
     @Override
@@ -416,17 +439,16 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
             }
         }
 
-        BaseFragment navigationFragment = (BaseFragment) getSupportFragmentManager()
-                .findFragmentByTag(NAVIGATION_TAG);
-        updateNavigationVisibility(navigationFragment);
+        updateNavigationVisibility();
     }
 
     private BaseFragment getContentFragment() {
         return (BaseFragment) getSupportFragmentManager().findFragmentByTag(CONTENT_TAG);
     }
 
-
     private void switchToFragment(FragmentType fragmentType, Bundle data) {
+        if (data == null) data = new Bundle();
+
         Log.i(TAG, "switch to " + fragmentType.name() + " with " + data.toString());
         if (fragmentType.isTopLevelFragment()) {
             clearBackStack();
@@ -437,6 +459,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
 
         setContent(navigationFragment, contentFragment);
     }
+
 
     private BaseFragment createContentFragment(FragmentType fragmentType, Bundle data) {
         if (fragmentType == null) {
@@ -451,7 +474,6 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
             return null;
         }
     }
-
 
     private BaseFragment createNavigationFragment(FragmentType fragmentType, Bundle data) {
         View navigationView = findViewById(R.id.navigation);
@@ -472,6 +494,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
             return null;
         }
     }
+
 
     private void setContent(BaseFragment navigationFragment, BaseFragment contentFragment) {
         boolean hasNavigation = updateNavigationVisibility(navigationFragment);
@@ -495,6 +518,12 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
                 .replace(R.id.content, contentFragment, CONTENT_TAG);
 
         transaction.commit();
+    }
+
+    private void updateNavigationVisibility() {
+        BaseFragment navigationFragment = (BaseFragment) getSupportFragmentManager()
+                .findFragmentByTag(NAVIGATION_TAG);
+        updateNavigationVisibility(navigationFragment);
     }
 
     private boolean updateNavigationVisibility(BaseFragment navigationFragment) {

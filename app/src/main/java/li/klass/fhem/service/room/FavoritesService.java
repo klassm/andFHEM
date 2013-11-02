@@ -26,11 +26,12 @@ package li.klass.fhem.service.room;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
+
+import java.util.Set;
+
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.RoomDeviceList;
-
-import java.util.Set;
 
 public class FavoritesService {
     public static final FavoritesService INSTANCE = new FavoritesService();
@@ -80,6 +81,10 @@ public class FavoritesService {
         }
 
         return favoritesList;
+    }
+
+    public boolean hasFavorites() {
+        return getPreferences().getAll().size() > 0;
     }
 
     /**

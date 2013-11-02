@@ -62,7 +62,7 @@
                   android:label="@string/app_name"
                   android:alwaysRetainTaskState="true"
                   android:launchMode="singleTask"
-                  android:configChanges="orientation">
+                  android:configChanges="orientation|keyboardHidden|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
@@ -138,6 +138,7 @@
                 <action android:name="li.klass.fhem.constants.Actions.GET_FAVORITE_LIST"/>
                 <action android:name="li.klass.fhem.constants.Actions.ADD_FAVORITE"/>
                 <action android:name="li.klass.fhem.constants.Actions.REMOVE_FAVORITE"/>
+                <action android:name="li.klass.fhem.constants.Actions.FAVORITES_PRESENT"/>
             </intent-filter>
         </service>
 

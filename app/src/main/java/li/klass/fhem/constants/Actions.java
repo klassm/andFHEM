@@ -46,6 +46,7 @@ public class Actions {
     public static final String FAVORITE_ROOM_LIST = prefix + "GET_FAVORITE_LIST";
     public static final String FAVORITE_ADD = prefix + "ADD_FAVORITE";
     public static final String FAVORITE_REMOVE = prefix + "REMOVE_FAVORITE";
+    public static final String FAVORITES_PRESENT = prefix + "FAVORITES_PRESENT";
 
     public static final String DEVICE_GRAPH = prefix + "DEVICE_GRAPH";
     public static final String DEVICE_TOGGLE_STATE = prefix + "TOGGLE_STATE";

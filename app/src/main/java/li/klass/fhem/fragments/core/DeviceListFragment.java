@@ -28,13 +28,19 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
-import android.view.*;
+import android.view.ContextMenu;
+import android.view.LayoutInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
+
+import java.util.concurrent.atomic.AtomicReference;
+
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.DeviceAdapter;
@@ -53,10 +59,10 @@ import li.klass.fhem.util.device.DeviceActionUtil;
 import li.klass.fhem.widget.GridViewWithSections;
 import li.klass.fhem.widget.notification.NotificationSettingView;
 
-import java.util.concurrent.atomic.AtomicReference;
-
 import static li.klass.fhem.constants.Actions.FAVORITE_ADD;
-import static li.klass.fhem.constants.BundleExtraKeys.*;
+import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_LIST;
+import static li.klass.fhem.constants.BundleExtraKeys.DO_REFRESH;
+import static li.klass.fhem.constants.BundleExtraKeys.RESULT_RECEIVER;
 import static li.klass.fhem.constants.PreferenceKeys.DEVICE_LIST_RIGHT_PADDING;
 import static li.klass.fhem.widget.GridViewWithSections.GridViewWithSectionsOnClickObserver;
 
@@ -95,6 +101,9 @@ public abstract class DeviceListFragment extends BaseFragment {
         AdvertisementUtil.addAd(view, getActivity());
 
         GridViewWithSections nestedListView = (GridViewWithSections) view.findViewById(R.id.deviceMap1);
+        LinearLayout emptyView = (LinearLayout) getEmptyView(view);
+        fillEmptyView(emptyView);
+        nestedListView.setEmptyView(emptyView);
 
         int rightPadding = ApplicationProperties.INSTANCE.getIntegerSharedPreference(DEVICE_LIST_RIGHT_PADDING, 0);
         nestedListView.setPadding(nestedListView.getPaddingLeft(), nestedListView.getPaddingTop(), rightPadding, nestedListView.getPaddingBottom());
@@ -120,6 +129,12 @@ public abstract class DeviceListFragment extends BaseFragment {
 
         return view;
     }
+
+    private View getEmptyView(View view) {
+        return view.findViewById(android.R.id.empty);
+    }
+
+    protected void fillEmptyView(LinearLayout view) {}
 
     @Override
     @SuppressWarnings("unchecked")
