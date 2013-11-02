@@ -103,7 +103,6 @@ public abstract class DeviceListFragment extends BaseFragment {
         GridViewWithSections nestedListView = (GridViewWithSections) view.findViewById(R.id.deviceMap1);
         LinearLayout emptyView = (LinearLayout) getEmptyView(view);
         fillEmptyView(emptyView);
-        nestedListView.setEmptyView(emptyView);
 
         int rightPadding = ApplicationProperties.INSTANCE.getIntegerSharedPreference(DEVICE_LIST_RIGHT_PADDING, 0);
         nestedListView.setPadding(nestedListView.getPaddingLeft(), nestedListView.getPaddingTop(), rightPadding, nestedListView.getPaddingBottom());
@@ -131,7 +130,15 @@ public abstract class DeviceListFragment extends BaseFragment {
     }
 
     private View getEmptyView(View view) {
-        return view.findViewById(android.R.id.empty);
+        return view.findViewById(R.id.emptyView);
+    }
+
+    protected void hideEmptyView() {
+        getEmptyView(getView()).setVisibility(View.GONE);
+    }
+
+    protected void showEmptyView() {
+        getEmptyView(getView()).setVisibility(View.VISIBLE);
     }
 
     protected void fillEmptyView(LinearLayout view) {}
@@ -168,6 +175,12 @@ public abstract class DeviceListFragment extends BaseFragment {
                 if (resultCode == ResultCodes.SUCCESS && resultData.containsKey(DEVICE_LIST)) {
                     RoomDeviceList deviceList = (RoomDeviceList) resultData.getSerializable(DEVICE_LIST);
                     getAdapter().updateData(deviceList);
+
+                    if (deviceList != null && deviceList.isEmptyOrOnlyContainsDoNotShowDevices()) {
+                        showEmptyView();
+                    } else {
+                        hideEmptyView();
+                    }
                 }
             }
         });

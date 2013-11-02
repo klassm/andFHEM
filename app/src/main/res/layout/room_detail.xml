@@ -39,7 +39,7 @@
         android:visibility="gone"
         android:textColor="@color/red"/>
 
-    <LinearLayout android:id="@android:id/empty"
+    <LinearLayout android:id="@+id/emptyView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
