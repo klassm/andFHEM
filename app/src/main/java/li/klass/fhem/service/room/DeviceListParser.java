@@ -27,32 +27,39 @@ package li.klass.fhem.service.room;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
+
+import java.io.StringReader;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
-import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.FileLogDevice;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceType;
 import li.klass.fhem.domain.core.RoomDeviceList;
-import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
-import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.exception.AndFHEMException;
 import li.klass.fhem.exception.DeviceListParseException;
 import li.klass.fhem.exception.HostConnectionException;
 import li.klass.fhem.fhem.DataConnectionSwitch;
 import li.klass.fhem.util.StringEscapeUtil;
 import li.klass.fhem.util.StringUtil;
-import org.w3c.dom.*;
-import org.xml.sax.InputSource;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import java.io.StringReader;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.*;
 
 import static li.klass.fhem.domain.core.DeviceType.FILE_LOG;
 
@@ -153,6 +160,9 @@ public class DeviceListParser {
             }
         }
 
+        addFileLogsToDevices(allDevicesRoom);
+        performAfterReadOperations(allDevicesRoom, roomDeviceListMap);
+
         if (errorCount > 0) {
             Context context = AndFHEMApplication.getContext();
             String errorMessage = context.getString(R.string.errorDeviceListLoad);
@@ -163,9 +173,6 @@ public class DeviceListParser {
             intent.putExtra(BundleExtraKeys.CONTENT, errorMessage);
             context.sendBroadcast(intent);
         }
-
-        addFileLogsToDevices(allDevicesRoom);
-        performAfterReadOperations(allDevicesRoom, roomDeviceListMap);
 
         Log.e(TAG, "loaded " + allDevicesRoom.getAllDevices().size() + " devices!");
 
@@ -395,46 +402,6 @@ public class DeviceListParser {
         }
 
         return deviceClassCache;
-    }
-
-    public void parseEvent(String event) throws Exception {
-        String[] split = event.split(" ", 5);
-        if (split.length == 5) {
-            String devName = split[3];
-            String measured = split[0] + " " + split[1];
-            String value = split[4];
-            String state;
-
-            Device device = RoomListService.INSTANCE.getDeviceForName(devName,
-                    RoomListService.NEVER_UPDATE_PERIOD);
-            if (device != null) {
-                Map<String, Set<Method>> cache = getDeviceClassCacheEntriesFor(device.getClass());
-
-                if (!value.contains(":")) {
-                    state = "STATE";
-                } else {
-                    String[] stateTest = value.split(":", 2);
-                    stateTest[0] = stateTest[0].replaceAll("[-.]", "_").toUpperCase();
-                    if (cache.containsKey(stateTest[0])) {
-                        state = stateTest[0];
-                        value = stateTest[1].trim();
-                    } else {
-                        state = "STATE";
-                    }
-                }
-
-                Log.d(TAG, "new state for " + device.getName() + " " + state
-                        + ": " + value);
-
-                DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
-                DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
-                Document doc = docBuilder.newDocument();
-                Element e = doc.createElement("anything");
-
-                invokeDeviceAttributeMethod(cache, device, state, value, e.getAttributes(), "INT");
-                device.readMEASURED(measured);
-            }
-        }
     }
 
     public void fillDeviceWith(Device device, Map<String, String> updates) {
