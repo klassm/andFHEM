@@ -73,7 +73,7 @@ import static li.klass.fhem.constants.Actions.SHOW_EXECUTING_DIALOG;
 import static li.klass.fhem.constants.Actions.SHOW_TOAST;
 import static li.klass.fhem.constants.BundleExtraKeys.HAS_FAVORITES;
 
-public abstract class FragmentBaseActivity extends SherlockFragmentActivity implements Updateable { //}, ActionBar.TabListener {
+public abstract class FragmentBaseActivity extends SherlockFragmentActivity implements Updateable {
 
     public static final String TAG = FragmentBaseActivity.class.getName();
     public static final String NAVIGATION_TAG = "NAVIGATION_TAG";
