@@ -185,5 +185,26 @@
             <STATE key="state" value="20 %" measured="2013-05-25 23:30:42"/>
         </EIB>
 
+        <EIB name="date" state="13.10.2013 " sets="off on on-for-timer on-till raw value" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev do_not_notify:1,0 ignore:0,1 dummy:1,0 showtime:1,0 loglevel:0,1,2,3,4,5,6 model:voltage-mV,pressuresensor,date,percent,power,powerdensity,percent255,current-mA2,dpt5,dpt12,dpt11,timeperiod-min,brightness,dpt10,speedsensor,dpt9,speedsensor-km/h,time,tempsensor,rainsensor,dpt5.003,lightsensor,time1sensor,dpt14,time2sensor,timeperiod-ms,dpt5.004,angle,dpt7,current-mA,humiditysensor,airqualitysensor,timeperiod-h,length-mm devStateIcon devStateStyle fp_Speicher icon sortby webCmd">
+            <INT key="DEF" value="3100"/>
+            <INT key="GROUP" value="3100"/>
+            <INT key="KNX_MSGCNT" value="7"/>
+            <INT key="KNX_RAWMSG" value="B1113w31000d0a0d"/>
+            <INT key="KNX_TIME" value="2013-10-13 00:00:00"/>
+            <INT key="LASTGROUP" value="3100"/>
+            <INT key="LASTInputDev" value="KNX"/>
+            <INT key="MSGCNT" value="7"/>
+            <INT key="NAME" value="date"/>
+            <INT key="NR" value="160"/>
+            <INT key="RAWSTATE" value="0d0a0d"/>
+            <INT key="STATE" value="13.10.2013 "/>
+            <INT key="TYPE" value="EIB"/>
+            <INT key="IODev" value="KNX"/>
+            <ATTR key="alias" value="Datum"/>
+            <ATTR key="model" value="date"/>
+            <ATTR key="room" value="room"/>
+            <STATE key="state" value="13.10.2013 " measured="2013-10-13 00:00:00"/>
+        </EIB>
+
     </EIB_LIST>
 </FHZINFO>
