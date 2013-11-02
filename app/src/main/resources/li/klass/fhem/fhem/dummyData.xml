@@ -1,26 +1,26 @@
 <!--
-~ AndFHEM - Open Source Android application to control a FHEM home automation
-~ server.
-~
-~ Copyright (c) 2011, Matthias Klass or third-party contributors as
-~ indicated by the @author tags or express copyright attribution
-~ statements applied by the authors.  All third-party contributions are
-~ distributed under license by Red Hat Inc.
-~
-~ This copyrighted material is made available to anyone wishing to use, modify,
-~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
-~
-~ This program is distributed in the hope that it will be useful,
-~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
-~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
-~ for more details.
-~
-~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
-~ along with this distribution; if not, write to:
-~   Free Software Foundation, Inc.
-~   51 Franklin Street, Fifth Floor
-~   Boston, MA  02110-1301  USA
--->
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
 
 <FHZINFO>
     < name="FHZ1" state="" sets="" attrs="room comment DarkPeriod">
@@ -845,6 +845,41 @@
 </UNIRoll_LIST>
 
 <EnOcean_LIST>
+<EnOcean name="Licht_AZ" state="67" sets="dim0% dim100% dim:slider,0,1,100 B0 BI teach" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev do_not_notify:1,0 ignore:0,1 dummy:0,1 showtime:1,0 actualTemp angleMax:slider,-180,20,180 angleMin:slider,-180,20,180 angleTime:0,1,2,3,4,5,6 comMode:biDir,uniDir destinationID devChannel dimValueOn gwCmd:blindCmd,controlVar,dimming,fanStage,setpointBasic,setpointShift,switching humidityRefDev manufID:001,002,003,004,005,006,007,008,009,00A,00B,00C,00D,00E,00F,010,011,012,013,014,015,016,017,018,019,01A,01B,01C,7FF model:other,FAE14,FHK14,FSB14,FSB61,FSB70,FSM12,FSM61,FT55,FTS12 rampTime repeatingAllowed:yes,no scaleDecimals:0,1,2,3,4,5,6,7,8,9 scaleMax scaleMin securityLevel:unencrypted sensorMode:switch,pushbutton shutTime shutTimeCloses subDef subDef0 subDefI subType:COSensor.01,FRW,MD15,PM101,autoMeterReading.00,autoMeterReading.01,autoMeterReading.02,autoMeterReading.03,contact,digitalInput.01,digitalInput.02,environmentApp,gateway,keycard,lightCtrlState.01,lightCtrlState.02,lightSensor.01,lightSensor.02,lightSensor.03,lightTempOccupSensor.01,lightTempOccupSensor.02,lightTempOccupSensor.03,manufProfile,multiFuncSensor,occupSensor.01,occupSensor.02,occupSensor.03,particlesSensor.01,radonSensor.01,raw,roomSensorControl.01,roomSensorControl.02,roomSensorControl.05,roomSensorControl.18,roomSensorControl.19,roomSensorControl.1A,roomSensorControl.1B,roomSensorControl.1C,roomSensorControl.1D,roomSensorControl.1F,sensor,shutterCtrlState.01,switch,tempCtrlState.01,tempHumiCO2Sensor.01,tempHumiSensor.02,tempSensor.01,tempSensor.02,tempSensor.03,tempSensor.04,tempSensor.05,tempSensor.06,tempSensor.07,tempSensor.08,tempSensor.09,tempSensor.0A,tempSensor.0B,tempSensor.10,tempSensor.11,tempSensor.12,tempSensor.13,tempSensor.14,tempSensor.15,temp Sensor.16,tempSensor.17,tempSensor.18,tempSensor.19,tempSensor.1A,tempSensor.1B,tempSensor.20,tempSensor.30,vocSensor.01,windowHandle subTypeSet:COSensor.01,FRW,MD15,PM101,autoMeterReading.00,autoMeterReading.01,autoMeterReading.02,autoMeterReading.03,contact,digitalInput.01,digitalInput.02,environmentApp,gateway,keycard,lightCtrlState.01,lightCtrlState.02,lightSensor.01,lightSensor.02,lightSensor.03,lightTempOccupSensor.01,lightTempOccupSensor.02,lightTempOccupSensor.03,manufProfile,multiFuncSensor,occupSensor.01,occupSensor.02,occupSensor.03,particlesSensor.01,radonSensor.01,raw,roomSensorControl.01,roomSensorControl.02,roomSensorControl.05,roomSensorControl.18,roomSensorControl.19,roomSensorControl.1A,roomSensorControl.1B,roomSensorControl.1C,roomSensorControl.1D,roomSensorControl.1F,sensor,shutterCtrlState.01,switch,tempCtrlState.01,tempHumiCO2Sensor.01,tempHumiSensor.02,tempSensor.01,tempSensor.02,tempSensor.03,tempSensor.04,tempSensor.05,tempSensor.06,tempSensor.07,tempSensor.08,tempSensor.09,tempSensor.0A,tempSensor.0B,tempSensor.10,tempSensor.11,tempSensor.12,tempSensor.13,tempSensor.14,tempSensor.15,t empSensor.16,tempSensor.17,tempSensor.18,tempSensor.19,tempSensor.1A,tempSensor.1B,tempSensor.20,tempSensor.30,vocSensor.01,windowHandle switchMode:switch,pushbutton switchType:direction,universal,central temperatureRefDev event-on-change-reading event-on-update-reading event-min-interval stateFormat devStateIcon devStateStyle fp_Franzel_EG icon room_map sortby structexclude webCmd">
+    <INT key="DEF" value="FFAABCDE"/>
+    <INT key="LASTInputDev" value="RpiTCM"/>
+    <INT key="MSGCNT" value="7"/>
+    <INT key="NAME" value="Licht_AZ"/>
+    <INT key="NR" value="78"/>
+    <INT key="RpiTCM_DestinationID" value="FFFFFFFF"/>
+    <INT key="RpiTCM_MSGCNT" value="7"/>
+    <INT key="RpiTCM_PacketType" value="1"/>
+    <INT key="RpiTCM_RSSI" value="-71"/>
+    <INT key="RpiTCM_SecurityLevel" value="0"/>
+    <INT key="RpiTCM_SubTelNum" value="1"/>
+    <INT key="RpiTCM_TIME" value="2013-11-01 19:15:36"/>
+    <INT key="STATE" value="67"/>
+    <INT key="TYPE" value="EnOcean"/>
+    <INT key="IODev" value="RpiTCM"/>
+    <ATTR key="devStateIcon" value="0.*:FS20.off 18.*:dim18% 2\d.*:dim25% 3\d.*:dim31% 4\d.*:dim43% 5\d.*:dim50% 6\d.*:dim62% 7\d.*:dim75% 8\d.*:dim87% 9\d.*:dim93% 1\d.*:dim100%"/>
+    <ATTR key="eventMap" value="off:dim0% on:dim100%"/>
+    <ATTR key="fp_Franzel_EG" value="175,390,5,"/>
+    <ATTR key="gwCmd" value="dimming"/>
+    <ATTR key="icon" value="light_ceiling_light"/>
+    <ATTR key="manufID" value="00D"/>
+    <ATTR key="model" value="FUD14"/>
+    <ATTR key="room" value="arbeitszimmer"/>
+    <ATTR key="stateFormat" value="dimValue"/>
+    <ATTR key="subDef" value="FFF081BB"/>
+    <ATTR key="subType" value="gateway"/>
+    <ATTR key="webCmd" value="dim"/>
+    <STATE key="block" value="unlock" measured="2013-11-01 19:15:34"/>
+    <STATE key="dimValue" value="67" measured="2013-11-01 19:15:36"/>
+    <STATE key="dimValueLast" value="67" measured="2013-11-01 19:15:36"/>
+    <STATE key="dimValueStored" value="67" measured="2013-11-01 19:15:34"/>
+    <STATE key="rampTime" value="0" measured="2013-11-01 19:15:36"/>
+    <STATE key="state" value="on" measured="2013-11-01 19:15:36"/>
+</EnOcean>
 <EnOcean name="enoceanSwitch1" state="on" sets="BI:off B0:on A0 AI B0 BI C0 CI D0 DI released"
          attrs="room group comment alias eventMap IODev do_not_notify:1,0 ignore:0,1 dummy:0,1 showtime:1,0 loglevel:0,1,2,3,4,5,6 model:other,MD15-FtL-HE,SR04,SR04P,SR04PT,SR04PST,SR04PMS,FAH60,FAH63,FIH63,FABH63,FBH63,FIBH63,PM101,FTF55,FSB61,FSM61 subType:dimmCtrl,sensor,FAH,FTF,contact,FBH,MD15,switch,windowHandle,SR04,dimmer actualTemp fp_Erdgeschoss icon webCmd">
     <INT key="DEF" value="FFB2D381"/>

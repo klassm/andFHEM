@@ -25,22 +25,25 @@
 package li.klass.fhem.domain;
 
 import android.util.Log;
+
 import li.klass.fhem.appwidget.view.widget.AppWidgetView;
 import li.klass.fhem.appwidget.view.widget.medium.ToggleWidgetView;
-import li.klass.fhem.domain.core.ToggleableDevice;
+import li.klass.fhem.domain.core.DimmableDevice;
 import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
 import li.klass.fhem.domain.genericview.FloorplanViewSettings;
+import li.klass.fhem.util.ValueExtractUtil;
 
 @SuppressWarnings("unused")
 @DetailOverviewViewSettings(showState = true)
 @FloorplanViewSettings(showState = true)
-public class EnOceanDevice extends ToggleableDevice<EnOceanDevice> {
+public class EnOceanDevice extends DimmableDevice<EnOceanDevice> {
 
     public enum SubType {
-        SWITCH, SENSOR
+        SWITCH, SENSOR, DIMMER
     }
 
     private SubType subType;
+    private String gwCmd;
 
     private static final String TAG = EnOceanDevice.class.getName();
 
@@ -49,15 +52,53 @@ public class EnOceanDevice extends ToggleableDevice<EnOceanDevice> {
             subType = SubType.SWITCH;
         } else if (value.equalsIgnoreCase("sensor")) {
             subType = SubType.SENSOR;
+        } else if (value.equalsIgnoreCase("gateway")) {
+            // handled in #afterXMLRead
         } else {
             Log.e(TAG, "unknown subtype " + value);
             subType = null;
         }
     }
 
+    public void readGWCMD(String value) {
+        this.gwCmd = value;
+    }
+
+    @Override
+    public void afterXMLRead() {
+        super.afterXMLRead();
+
+        if (gwCmd != null && gwCmd.equalsIgnoreCase("DIMMING")) {
+            subType = SubType.DIMMER;
+        }
+    }
+
     @Override
     public boolean supportsToggle() {
         return subType == SubType.SWITCH;
+    }
+
+    @Override
+    public int getDimUpperBound() {
+        return 100;
+    }
+
+    @Override
+    public String getDimStateForPosition(int position) {
+        if (position == getDimUpperBound()) return "on";
+        if (position == getDimLowerBound()) return "off";
+        return "dim" + position + "%";
+    }
+
+    @Override
+    public int getPositionForDimState(String dimState) {
+        dimState = dimState.replaceAll("dim", "").replaceAll("%", "");
+        return ValueExtractUtil.extractLeadingInt(dimState);
+    }
+
+    @Override
+    public boolean supportsDim() {
+        return subType == SubType.DIMMER;
     }
 
     public SubType getSubType() {
