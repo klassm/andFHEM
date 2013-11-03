@@ -24,10 +24,11 @@
 
 package li.klass.fhem.domain;
 
-import li.klass.fhem.domain.core.DeviceXMLParsingBase;
-import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 
+import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -43,6 +44,15 @@ public class GPIO4DeviceTest extends DeviceXMLParsingBase {
         // this is not supported and, thus, removed
         GPIO4Device rPi = getDeviceFor("RPi");
         assertThat(rPi, is(nullValue()));
+    }
+
+    @Test
+    public void testDS18B20Device() {
+        GPIO4Device device = getDeviceFor("DS18B20");
+        assertThat(device, is(notNullValue()));
+
+        assertThat(device.isSupported(), is(true));
+        assertThat(device.getTemperature(), is("20.437 (°C)"));
     }
 
     @Override

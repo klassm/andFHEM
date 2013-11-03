@@ -123,6 +123,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
     private RepairedDrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
+    private boolean saveInstanceStateCalled;
 
     protected FragmentBaseActivity() {
     }
@@ -200,6 +201,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
         } catch (Exception e) {
             Log.e(TAG, "error while creating activity", e);
         }
+        saveInstanceStateCalled = false;
         isActivityStart = true;
 
         if (getIntent() != null) {
@@ -249,6 +251,11 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
         switchToFragment(FragmentType.ALL_DEVICES, null);
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        saveInstanceStateCalled = true;
+        super.onSaveInstanceState(outState);
+    }
 
     private void initDrawerLayout() {
         mDrawerLayout = (RepairedDrawerLayout) findViewById(R.id.drawer_layout);
@@ -388,6 +395,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
     protected void onResume() {
         super.onResume();
 
+        saveInstanceStateCalled = false;
         BillingService.INSTANCE.bindActivity(this);
 
         registerReceiver(broadcastReceiver, broadcastReceiver.getIntentFilter());
@@ -497,6 +505,8 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
 
 
     private void setContent(BaseFragment navigationFragment, BaseFragment contentFragment) {
+        if (saveInstanceStateCalled) return;
+
         boolean hasNavigation = hasNavigation(navigationFragment, contentFragment);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -528,7 +538,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
 
     private BaseFragment getNavigationFragment() {
         return (BaseFragment) getSupportFragmentManager()
-                    .findFragmentByTag(NAVIGATION_TAG);
+                .findFragmentByTag(NAVIGATION_TAG);
     }
 
     private boolean updateNavigationVisibility() {

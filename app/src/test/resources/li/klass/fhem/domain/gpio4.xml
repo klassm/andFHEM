@@ -86,6 +86,7 @@
             <STATE key="temperature_min_day" value="23.2" measured="2013-06-04 16:48:48"/>
             <STATE key="temperature_min_month" value="23.2" measured="2013-06-04 16:48:48"/>
         </GPIO4>
+
         <GPIO4 name="RPi" state="Initialized" sets=""
                attrs="room group comment alias eventMap userReadings tempOffset pollingInterval model loglevel:0,1,2,3,4,5,6 event-on-change-reading event-on-update-reading event-min-interval stateFormat devStateIcon icon sortby webCmd">
             <INT key="DEF" value="BUSMASTER"/>
@@ -94,6 +95,20 @@
             <INT key="NR" value="53"/>
             <INT key="STATE" value="Initialized"/>
             <INT key="TYPE" value="GPIO4"/>
+        </GPIO4>
+
+        <GPIO4 name="DS18B20" state="T: 20.437" sets="" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings tempOffset pollingInterval model loglevel:0,1,2,3,4,5,6 event-on-change-reading event-on-update-reading event-min-interval stateFormat custom_graph devStateIcon devStateStyle icon sortby webCmd">
+            <INT key="DEF" value="28-0000050b3960"/>
+            <INT key="NAME" value="DS18B20"/>
+            <INT key="NR" value="35"/>
+            <INT key="NTFY_ORDER" value="50-GPIO4_DS18B20_0000050b3960"/>
+            <INT key="STATE" value="T: 20.437"/>
+            <INT key="TYPE" value="GPIO4"/>
+            <ATTR key="model" value="DS18B20"/>
+            <ATTR key="room" value="room"/>
+            <STATE key="failures" value="7" measured="2013-11-01 06:47:06"/>
+            <STATE key="state" value="T: 20.437" measured="2013-11-01 06:46:05"/>
+            <STATE key="temperature" value="20.437" measured="2013-11-01 06:46:05"/>
         </GPIO4>
     </GPIO4_LIST>
 </FHZINFO>
