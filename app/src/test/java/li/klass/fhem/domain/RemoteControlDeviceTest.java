@@ -55,7 +55,7 @@ public class RemoteControlDeviceTest extends DeviceXMLParsingBase {
         assertThat(row0.get(0).icon, is("POWEROFF"));
         assertThat(row0.get(1).command, is("TV"));
         assertThat(row0.get(2).command, is("HDMI"));
-        assertThat(row0.get(2).getIconPath(), is("icons/remotecontrol/black_btn_HDMI.png"));
+        assertThat(row0.get(2).getIconPath(), is("/icons/remotecontrol/black_btn_HDMI.png"));
 
         List<RemoteControlDevice.Entry> row1 = rows.get(1);
         assertThat(row1.size(), is(3));
