@@ -2,13 +2,13 @@
  * AndFHEM - Open Source Android application to control a FHEM home automation
  * server.
  *
- * Copyright (c) 2012, Matthias Klass or third-party contributors as
+ * Copyright (c) 2011, Matthias Klass or third-party contributors as
  * indicated by the @author tags or express copyright attribution
  * statements applied by the authors.  All third-party contributions are
  * distributed under license by Red Hat Inc.
  *
  * This copyrighted material is made available to anyone wishing to use, modify,
- * copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLICLICENSE, as published by the Free Software Foundation.
+ * copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
@@ -19,6 +19,7 @@
  * along with this distribution; if not, write to:
  *   Free Software Foundation, Inc.
  *   51 Franklin Street, Fifth Floor
+ *   Boston, MA  02110-1301  USA
  */
 
 package li.klass.fhem.util;
@@ -32,6 +33,8 @@ import android.widget.ImageView;
 
 import java.io.InputStream;
 import java.net.URL;
+
+import li.klass.fhem.service.CommandExecutionService;
 
 public class ImageUtil {
 
@@ -88,5 +91,34 @@ public class ImageUtil {
                 imageView.setImageBitmap(bitmap);
             }
         });
+    }
+
+    public static void loadImageFromFHEMAndSetIn(final ImageView imageView, final String relativeImageUrl,
+                                                 final int scaleHeight, final int scaleWidth) {
+        final Handler handler = new Handler();
+
+        new AsyncTask<Void, Void, Bitmap>() {
+
+            @Override
+            protected Bitmap doInBackground(Void... voids) {
+                Bitmap bitmap = CommandExecutionService.INSTANCE.getBitmap(relativeImageUrl);
+                return resizeBitmap(bitmap, scaleHeight, scaleWidth);
+            }
+
+            @Override
+            protected void onPostExecute(final Bitmap bitmap) {
+                super.onPostExecute(bitmap);
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        imageView.setImageBitmap(bitmap);
+                    }
+                });
+            }
+        }.execute(null, null);
+    }
+
+    public static Bitmap resizeBitmap(Bitmap bitmap, int newHeight, int newWidth) {
+        return Bitmap.createScaledBitmap(bitmap, newWidth, newHeight, false);
     }
 }

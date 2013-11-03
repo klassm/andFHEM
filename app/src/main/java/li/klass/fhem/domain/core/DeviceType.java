@@ -33,6 +33,7 @@ import li.klass.fhem.adapter.devices.GCMSendDeviceAdapter;
 import li.klass.fhem.adapter.devices.HueDeviceAdapter;
 import li.klass.fhem.adapter.devices.MaxAdapter;
 import li.klass.fhem.adapter.devices.PidAdapter;
+import li.klass.fhem.adapter.devices.RemoteControlAdapter;
 import li.klass.fhem.adapter.devices.SonosPlayerAdapter;
 import li.klass.fhem.adapter.devices.SwitchActionRowAdapter;
 import li.klass.fhem.adapter.devices.ToggleableAdapterWithSwitchActionRow;
@@ -88,6 +89,7 @@ import li.klass.fhem.domain.PIDDevice;
 import li.klass.fhem.domain.PresenceDevice;
 import li.klass.fhem.domain.RFXCOMDevice;
 import li.klass.fhem.domain.RFXX10RECDevice;
+import li.klass.fhem.domain.RemoteControlDevice;
 import li.klass.fhem.domain.SISPMSDevice;
 import li.klass.fhem.domain.SWAPDevice;
 import li.klass.fhem.domain.SonosDevice;
@@ -169,7 +171,9 @@ public enum DeviceType {
     FB_CALLMONITOR("FB_CALLMONITOR", FBCallmonitorDevice.class),
     FS20_ZDR("fs20_zdr", FS20ZDRDevice.class, new FS20ZDRDeviceAdapter()),
     OPENWEATHERMAP("openweathermap", OpenWeatherMapDevice.class),
-    PCA301("PCA301", PCA301Device.class),;
+    PCA301("PCA301", PCA301Device.class),
+    REMOTECONTROL("remotecontrol", RemoteControlDevice.class, new RemoteControlAdapter(), ConnectionType.FHEMWEB)
+    ;
 
     private String xmllistTag;
     private Class<? extends Device> deviceClass;

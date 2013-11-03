@@ -59,8 +59,8 @@ public class BundleExtraKeys {
     public static final String COMMAND_RESULT = "COMMAND_RESULT";
     public static final String RECENT_COMMANDS = "RECENT_COMMANDS";
 
-    public static final String FLOORPLAN_IMAGE_RELATIVE_PATH = "FLOORPLAN_IMAGE_RELATIVE_PATH";
-    public static final String FLOORPLAN_IMAGE = "FLOORPLAN_IMAGE";
+    public static final String IMAGE_RELATIVE_PATH = "IMAGE_RELATIVE_PATH";
+    public static final String IMAGE = "LOAD_IMAGE";
     public static final String FLOORPLAN_NAME = "FLOORPLAN_NAME";
 
     public static final String COORDINATE = "COORDINATE";

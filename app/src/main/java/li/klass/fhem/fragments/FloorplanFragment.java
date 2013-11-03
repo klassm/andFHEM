@@ -39,6 +39,10 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.DeviceAdapter;
 import li.klass.fhem.constants.Actions;
@@ -51,9 +55,6 @@ import li.klass.fhem.domain.floorplan.Coordinate;
 import li.klass.fhem.fragments.core.BaseFragment;
 import li.klass.fhem.util.device.DeviceActionUtil;
 import li.klass.fhem.widget.TouchImageView;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class FloorplanFragment extends BaseFragment {
 
@@ -195,15 +196,15 @@ public class FloorplanFragment extends BaseFragment {
     private void setBackground() {
         final Context context = getActivity();
 
-        Intent intent = new Intent(Actions.FLOORPLAN_IMAGE);
-        intent.putExtra(BundleExtraKeys.FLOORPLAN_IMAGE_RELATIVE_PATH, "/icons/fp_" + floorplanName + ".png");
+        Intent intent = new Intent(Actions.LOAD_IMAGE);
+        intent.putExtra(BundleExtraKeys.IMAGE_RELATIVE_PATH, "/icons/fp_" + floorplanName + ".png");
         intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
             @Override
             protected void onReceiveResult(int resultCode, Bundle resultData) {
-                if (resultCode != ResultCodes.SUCCESS || !resultData.containsKey(BundleExtraKeys.FLOORPLAN_IMAGE))
+                if (resultCode != ResultCodes.SUCCESS || !resultData.containsKey(BundleExtraKeys.IMAGE))
                     return;
 
-                floorplanView.setImageBitmap((Bitmap) resultData.getParcelable(BundleExtraKeys.FLOORPLAN_IMAGE));
+                floorplanView.setImageBitmap((Bitmap) resultData.getParcelable(BundleExtraKeys.IMAGE));
 
                 Intent intent = new Intent(Actions.DISMISS_UPDATING_DIALOG);
                 context.startService(intent);

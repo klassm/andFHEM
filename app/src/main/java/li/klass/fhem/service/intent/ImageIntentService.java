@@ -2,13 +2,13 @@
  * AndFHEM - Open Source Android application to control a FHEM home automation
  * server.
  *
- * Copyright (c) 2012, Matthias Klass or third-party contributors as
+ * Copyright (c) 2011, Matthias Klass or third-party contributors as
  * indicated by the @author tags or express copyright attribution
  * statements applied by the authors.  All third-party contributions are
  * distributed under license by Red Hat Inc.
  *
  * This copyrighted material is made available to anyone wishing to use, modify,
- * copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLICLICENSE, as published by the Free Software Foundation.
+ * copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
@@ -19,6 +19,7 @@
  * along with this distribution; if not, write to:
  *   Free Software Foundation, Inc.
  *   51 Franklin Street, Fifth Floor
+ *   Boston, MA  02110-1301  USA
  */
 
 package li.klass.fhem.service.intent;
@@ -26,27 +27,28 @@ package li.klass.fhem.service.intent;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.ResultReceiver;
+
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.service.CommandExecutionService;
 
-public class FloorplanIntentService extends ConvenientIntentService {
-    public FloorplanIntentService() {
-        super(FloorplanIntentService.class.getName());
+public class ImageIntentService extends ConvenientIntentService {
+    public ImageIntentService() {
+        super(ImageIntentService.class.getName());
     }
 
     @Override
     protected STATE handleIntent(Intent intent, long updatePeriod, ResultReceiver resultReceiver) {
         String action = intent.getAction();
 
-        if (action.equals(Actions.FLOORPLAN_IMAGE)) {
-            String relativePath = intent.getStringExtra(BundleExtraKeys.FLOORPLAN_IMAGE_RELATIVE_PATH);
+        if (action.equals(Actions.LOAD_IMAGE)) {
+            String relativePath = intent.getStringExtra(BundleExtraKeys.IMAGE_RELATIVE_PATH);
             Bitmap bitmap = CommandExecutionService.INSTANCE.getBitmap(relativePath);
             if (bitmap == null) {
                 return STATE.ERROR;
             }
-            sendSingleExtraResult(resultReceiver, ResultCodes.SUCCESS, BundleExtraKeys.FLOORPLAN_IMAGE, bitmap);
+            sendSingleExtraResult(resultReceiver, ResultCodes.SUCCESS, BundleExtraKeys.IMAGE, bitmap);
         }
         return STATE.ERROR;
     }

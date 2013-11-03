@@ -77,7 +77,7 @@ public class Actions {
     public static final String DEVICE_SET_SUB_STATE = prefix + "DEVICE_SET_SUB_STATE";
 
 
-    public static final String FLOORPLAN_IMAGE = prefix + "FLOORPLAN_IMAGE";
+    public static final String LOAD_IMAGE = prefix + "LOAD_IMAGE";
 
 
     public static final String DO_UPDATE = prefix + "DO_UPDATE";

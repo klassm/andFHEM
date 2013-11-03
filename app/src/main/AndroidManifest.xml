@@ -195,9 +195,9 @@
             </intent-filter>
         </service>
 
-        <service android:name=".service.intent.FloorplanIntentService" android:exported="false">
+        <service android:name=".service.intent.ImageIntentService" android:exported="false">
             <intent-filter>
-                <action android:name="li.klass.fhem.constants.Actions.FLOORPLAN_IMAGE"/>
+                <action android:name="li.klass.fhem.constants.Actions.LOAD_IMAGE"/>
             </intent-filter>
         </service>
 

@@ -1,0 +1,108 @@
+/*
+ * AndFHEM - Open Source Android application to control a FHEM home automation
+ * server.
+ *
+ * Copyright (c) 2011, Matthias Klass or third-party contributors as
+ * indicated by the @author tags or express copyright attribution
+ * statements applied by the authors.  All third-party contributions are
+ * distributed under license by Red Hat Inc.
+ *
+ * This copyrighted material is made available to anyone wishing to use, modify,
+ * copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+ * for more details.
+ *
+ * You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+ * along with this distribution; if not, write to:
+ *   Free Software Foundation, Inc.
+ *   51 Franklin Street, Fifth Floor
+ *   Boston, MA  02110-1301  USA
+ */
+
+package li.klass.fhem.domain;
+
+import org.w3c.dom.NamedNodeMap;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import li.klass.fhem.domain.core.Device;
+
+public class RemoteControlDevice extends Device<RemoteControlDevice> {
+    public class Entry implements Serializable {
+        public final String command;
+        public final String icon;
+
+        public Entry(String command, String icon) {
+            this.command = command;
+            this.icon = icon;
+        }
+
+        public Entry(String icon) {
+            this(icon, icon);
+        }
+
+        public String getIconPath() {
+            return "/" + iconPath + "/" + iconPrefix + icon + ".png";
+        }
+    }
+
+    private String iconPath;
+    private String iconPrefix;
+
+    private List<List<Entry>> rows = new ArrayList<List<Entry>>();
+
+    public void readRC_ICONPATH(String value) {
+        iconPath = value;
+    }
+
+    public void readRC_ICONPREFIX(String value) {
+        iconPrefix = value;
+    }
+
+    @Override
+    public void onChildItemRead(String tagName, String key, String value, NamedNodeMap attributes) {
+        super.onChildItemRead(tagName, key, value, attributes);
+
+        if (! key.startsWith("ROW")) {
+            return;
+        }
+
+        int rowNr = Integer.valueOf(key.replace("ROW", ""));
+        if (rows.size() != rowNr) {
+            String errorString = String.format("invalid row! (expected size: %d, was: %d)",
+            rowNr - 1, rows.size());
+            throw new IllegalArgumentException(errorString);
+        }
+
+        List<Entry> row = new ArrayList<Entry>();
+        String[] rowEntries = value.split(",");
+        for (String rowEntry : rowEntries) {
+            String[] parts = rowEntry.split(":");
+            if (parts.length == 1) {
+                row.add(new Entry(parts[0]));
+            } else {
+                row.add(new Entry(parts[0], parts[1]));
+            }
+        }
+
+        rows.add(row);
+    }
+
+    public String getIconPath() {
+        return iconPath;
+    }
+
+    public String getIconPrefix() {
+        return iconPrefix;
+    }
+
+    public List<List<Entry>> getRows() {
+        return Collections.unmodifiableList(rows);
+    }
+}
