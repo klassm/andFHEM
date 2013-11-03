@@ -497,7 +497,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
 
 
     private void setContent(BaseFragment navigationFragment, BaseFragment contentFragment) {
-        boolean hasNavigation = updateNavigationVisibility(navigationFragment);
+        boolean hasNavigation = hasNavigation(navigationFragment, contentFragment);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         if (fragmentManager == null) {
@@ -511,30 +511,49 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
                 .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right,
                         android.R.anim.slide_in_left, android.R.anim.slide_out_right);
         if (hasNavigation) {
-            transaction
-                    .replace(R.id.navigation, navigationFragment, NAVIGATION_TAG);
+            transaction.replace(R.id.navigation, navigationFragment, NAVIGATION_TAG);
+        } else {
+            BaseFragment oldNavigationFragment = getNavigationFragment();
+            if (oldNavigationFragment != null) {
+                transaction.remove(oldNavigationFragment);
+            }
         }
-        transaction
-                .replace(R.id.content, contentFragment, CONTENT_TAG);
+        transaction.replace(R.id.content, contentFragment, CONTENT_TAG);
 
         transaction.commit();
+        fragmentManager.executePendingTransactions();
+
+        updateNavigationVisibility(navigationFragment, contentFragment);
     }
 
-    private void updateNavigationVisibility() {
-        BaseFragment navigationFragment = (BaseFragment) getSupportFragmentManager()
-                .findFragmentByTag(NAVIGATION_TAG);
-        updateNavigationVisibility(navigationFragment);
+    private BaseFragment getNavigationFragment() {
+        return (BaseFragment) getSupportFragmentManager()
+                    .findFragmentByTag(NAVIGATION_TAG);
     }
 
-    private boolean updateNavigationVisibility(BaseFragment navigationFragment) {
-        boolean hasNavigation = false;
+    private boolean updateNavigationVisibility() {
+        BaseFragment navigationFragment = getNavigationFragment();
+        BaseFragment contentFragment = getContentFragment();
+
+        return updateNavigationVisibility(navigationFragment , contentFragment);
+    }
+
+    private boolean hasNavigation(BaseFragment navigationFragment, BaseFragment contentFragment) {
+        FragmentType fragmentType = FragmentType.getFragmentFor(contentFragment.getClass());
+        View navigationView = findViewById(R.id.navigation);
+        return navigationView != null && !(navigationFragment == null || fragmentType.getNavigationClass() == null);
+    }
+
+    private boolean updateNavigationVisibility(BaseFragment navigationFragment, BaseFragment contentFragment) {
+        FragmentType fragmentType = FragmentType.getFragmentFor(contentFragment.getClass());
+
+        boolean hasNavigation = hasNavigation(navigationFragment, contentFragment);
         View navigationView = findViewById(R.id.navigation);
         if (navigationView != null) {
-            if (navigationFragment == null) {
+            if (navigationFragment == null || fragmentType.getNavigationClass() == null) {
                 navigationView.setVisibility(View.GONE);
             } else {
                 navigationView.setVisibility(View.VISIBLE);
-                hasNavigation = true;
             }
         }
         return hasNavigation;
