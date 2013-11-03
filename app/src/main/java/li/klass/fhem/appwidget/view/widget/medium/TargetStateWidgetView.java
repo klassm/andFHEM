@@ -30,15 +30,20 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.widget.RemoteViews;
+
 import li.klass.fhem.R;
 import li.klass.fhem.appwidget.WidgetConfiguration;
 import li.klass.fhem.appwidget.WidgetConfigurationCreatedCallback;
 import li.klass.fhem.appwidget.view.WidgetType;
 import li.klass.fhem.appwidget.view.widget.AppWidgetView;
+import li.klass.fhem.appwidget.view.widget.activity.TargetStateAdditionalInformationActivity;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.util.ArrayUtil;
+
+import static android.app.PendingIntent.FLAG_UPDATE_CURRENT;
+import static li.klass.fhem.domain.core.DeviceStateRequiringAdditionalInformation.requiresAdditionalInformation;
 
 public class TargetStateWidgetView extends AppWidgetView {
     @Override
@@ -58,12 +63,24 @@ public class TargetStateWidgetView extends AppWidgetView {
 
         view.setTextViewText(R.id.button, state);
 
-        Intent actionIntent = new Intent(Actions.DEVICE_SET_STATE);
-        actionIntent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
-        actionIntent.putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, payload);
+        PendingIntent pendingIntent;
+        if (requiresAdditionalInformation(state)) {
+            Intent actionIntent = new Intent(context, TargetStateAdditionalInformationActivity.class);
+            actionIntent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
+            actionIntent.putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, payload);
+            actionIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-        PendingIntent pendingIntent = PendingIntent.getService(context, widgetConfiguration.widgetId, actionIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT);
+            pendingIntent = PendingIntent.getActivity(context, widgetConfiguration.widgetId,
+                    actionIntent, FLAG_UPDATE_CURRENT);
+        } else {
+            Intent actionIntent = new Intent(Actions.DEVICE_SET_STATE);
+            actionIntent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
+            actionIntent.putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, payload);
+
+            pendingIntent = PendingIntent.getService(context, widgetConfiguration.widgetId, actionIntent,
+                    FLAG_UPDATE_CURRENT);
+        }
+
         view.setOnClickPendingIntent(R.id.button, pendingIntent);
 
         openDeviceDetailPageWhenClicking(R.id.main, view, device, widgetConfiguration);

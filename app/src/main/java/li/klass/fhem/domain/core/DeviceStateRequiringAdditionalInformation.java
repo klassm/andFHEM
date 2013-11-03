@@ -2,13 +2,13 @@
  * AndFHEM - Open Source Android application to control a FHEM home automation
  * server.
  *
- * Copyright (c) 2012, Matthias Klass or third-party contributors as
+ * Copyright (c) 2011, Matthias Klass or third-party contributors as
  * indicated by the @author tags or express copyright attribution
  * statements applied by the authors.  All third-party contributions are
  * distributed under license by Red Hat Inc.
  *
  * This copyrighted material is made available to anyone wishing to use, modify,
- * copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLICLICENSE, as published by the Free Software Foundation.
+ * copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
@@ -19,12 +19,18 @@
  * along with this distribution; if not, write to:
  *   Free Software Foundation, Inc.
  *   51 Franklin Street, Fifth Floor
+ *   Boston, MA  02110-1301  USA
  */
 
 package li.klass.fhem.domain.core;
 
 
-import static li.klass.fhem.domain.core.DeviceStateAdditionalInformationType.*;
+import static li.klass.fhem.domain.core.DeviceStateAdditionalInformationType.ANY;
+import static li.klass.fhem.domain.core.DeviceStateAdditionalInformationType.DEC_QUARTER;
+import static li.klass.fhem.domain.core.DeviceStateAdditionalInformationType.NUMERIC;
+import static li.klass.fhem.domain.core.DeviceStateAdditionalInformationType.TEMPERATURE;
+import static li.klass.fhem.domain.core.DeviceStateAdditionalInformationType.TIME;
+import static li.klass.fhem.domain.core.DeviceStateAdditionalInformationType.TIME_WITH_SECOND;
 
 public enum DeviceStateRequiringAdditionalInformation {
     PCT("pct", NUMERIC),
@@ -108,6 +114,10 @@ public enum DeviceStateRequiringAdditionalInformation {
 
     public DeviceStateAdditionalInformationType[] getAdditionalInformationTypes() {
         return additionalInformationTypes;
+    }
+
+    public static boolean requiresAdditionalInformation(String state) {
+        return deviceStateForFHEM(state) != null;
     }
 }
 

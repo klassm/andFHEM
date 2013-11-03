@@ -95,6 +95,11 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".appwidget.view.widget.activity.TargetStateAdditionalInformationActivity"
+            android:noHistory="true"
+            android:launchMode="singleInstance"
+            android:theme="@style/Theme.Dialog.Light" />
 
         <receiver android:name=".appwidget.type.small.SmallAppWidgetProvider" android:label="@string/widget_small">
             <intent-filter>

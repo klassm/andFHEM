@@ -408,7 +408,12 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
         BillingService.INSTANCE.unbindActivity(this);
 
         RoomListService.INSTANCE.storeDeviceListMap();
-        unregisterReceiver(broadcastReceiver);
+
+        try {
+            unregisterReceiver(broadcastReceiver);
+        } catch (IllegalArgumentException e) {
+            Log.i(TAG, "receiver was not registered, ignore ...");
+        }
 
         autoUpdateHandler.removeCallbacks(autoUpdateCallback);
         setShowRefreshProgressIcon(false);
@@ -537,7 +542,9 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
     }
 
     private BaseFragment getNavigationFragment() {
-        return (BaseFragment) getSupportFragmentManager()
+        FragmentManager supportFragmentManager = getSupportFragmentManager();
+        if (supportFragmentManager == null) return null;
+        return (BaseFragment) supportFragmentManager
                 .findFragmentByTag(NAVIGATION_TAG);
     }
 
