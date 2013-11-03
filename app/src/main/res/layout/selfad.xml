@@ -27,6 +27,6 @@
 <ImageView xmlns:android="http://schemas.android.com/apk/res/android"
            android:orientation="vertical"
            android:layout_width="match_parent"
-           android:background="@drawable/selfadd"
+           android:background="@drawable/selfad"
            android:contentDescription="@string/app_name"
            android:layout_height="50dp"/>
