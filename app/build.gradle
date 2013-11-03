@@ -22,6 +22,8 @@
  *   Boston, MA  02110-1301  USA
  */
 
+
+
 buildscript {
     repositories {
         mavenCentral()
@@ -153,9 +155,8 @@ task artifacts {
     }
 }
 
-//task release(dependsOn: ['assembleRelease', 'uploadToGoogleSites']) << {
-//
-//}
+task release(dependsOn: ['assembleRelease', 'uploadToGoogleSites']) << {
+}
 
 /*************************************
  * GOOGLE SITES
