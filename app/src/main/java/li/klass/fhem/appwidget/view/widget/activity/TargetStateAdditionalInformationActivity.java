@@ -82,7 +82,6 @@ public class TargetStateAdditionalInformationActivity extends Activity {
             }
         });
 
-
         Button cancelButton = (Button) findViewById(R.id.cancelButton);
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,8 +89,6 @@ public class TargetStateAdditionalInformationActivity extends Activity {
                 finish();
             }
         });
-
-
     }
 
     private boolean handleAdditionalInformationValue(String additionalInformation,
