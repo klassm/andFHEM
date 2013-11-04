@@ -31,9 +31,7 @@ import android.graphics.BitmapFactory;
 import android.preference.PreferenceManager;
 import android.security.KeyChain;
 import android.util.Log;
-import li.klass.fhem.AndFHEMApplication;
-import li.klass.fhem.exception.*;
-import li.klass.fhem.util.StringUtil;
+
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
@@ -46,7 +44,6 @@ import org.apache.http.conn.scheme.PlainSocketFactory;
 import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.scheme.SchemeRegistry;
 import org.apache.http.conn.ssl.SSLSocketFactory;
-import org.apache.http.conn.ssl.StrictHostnameVerifier;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
 import org.apache.http.params.BasicHttpParams;
@@ -55,10 +52,6 @@ import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
 import org.apache.http.protocol.HTTP;
 
-import javax.net.ssl.KeyManager;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManagerFactory;
-import javax.net.ssl.X509ExtendedKeyManager;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
@@ -71,6 +64,19 @@ import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import javax.net.ssl.KeyManager;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManagerFactory;
+import javax.net.ssl.X509ExtendedKeyManager;
+
+import li.klass.fhem.AndFHEMApplication;
+import li.klass.fhem.exception.AndFHEMException;
+import li.klass.fhem.exception.AuthenticationException;
+import li.klass.fhem.exception.FHEMStrangeContentException;
+import li.klass.fhem.exception.HostConnectionException;
+import li.klass.fhem.exception.TimeoutException;
+import li.klass.fhem.util.StringUtil;
 
 public class FHEMWebConnection implements FHEMConnection {
 
@@ -176,7 +182,7 @@ public class FHEMWebConnection implements FHEMConnection {
         }
     }
 
-    private String getURL() {
+    public static String getURL() {
         SharedPreferences sharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(AndFHEMApplication.getContext());
         String url = sharedPreferences.getString(FHEMWEB_URL, null);
@@ -187,7 +193,7 @@ public class FHEMWebConnection implements FHEMConnection {
         return url;
     }
 
-    private String getUsername() {
+    public static String getUsername() {
         SharedPreferences sharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(AndFHEMApplication.getContext());
         String username = sharedPreferences.getString(FHEMWEB_USERNAME, "");
@@ -195,7 +201,7 @@ public class FHEMWebConnection implements FHEMConnection {
         return username;
     }
 
-    private String getPassword() {
+    public static String getPassword() {
         SharedPreferences sharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(AndFHEMApplication.getContext());
         String password = sharedPreferences.getString(FHEMWEB_PASSWORD, "");
@@ -205,7 +211,7 @@ public class FHEMWebConnection implements FHEMConnection {
         return password;
     }
 
-    private String getClientCertAlias() {
+    public static String getClientCertAlias() {
         SharedPreferences sharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(AndFHEMApplication.getContext());
         String password = sharedPreferences.getString(FHEMWEB_CLIENT_CERT_ALIAS, "");

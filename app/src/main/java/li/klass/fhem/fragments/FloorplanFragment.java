@@ -24,53 +24,33 @@
 
 package li.klass.fhem.fragments;
 
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
+import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
+import android.net.http.SslError;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.ResultReceiver;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
+import android.webkit.HttpAuthHandler;
+import android.webkit.SslErrorHandler;
+import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import li.klass.fhem.R;
-import li.klass.fhem.adapter.devices.core.DeviceAdapter;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.constants.ResultCodes;
-import li.klass.fhem.domain.core.Device;
-import li.klass.fhem.domain.core.DeviceType;
-import li.klass.fhem.domain.core.RoomDeviceList;
-import li.klass.fhem.domain.floorplan.Coordinate;
+import li.klass.fhem.fhem.FHEMWebConnection;
 import li.klass.fhem.fragments.core.BaseFragment;
-import li.klass.fhem.util.device.DeviceActionUtil;
-import li.klass.fhem.widget.TouchImageView;
 
 public class FloorplanFragment extends BaseFragment {
 
-    private transient TouchImageView floorplanView;
-    private String floorplanName;
-    private transient Map<Device, View> deviceViewMap = new HashMap<Device, View>();
-    private int tickCounter = 0;
-
-    public float currentImageViewScale;
-
-    public Coordinate currentImageViewCoordinate;
-    private transient DeviceMoveTouchListener deviceMoveTouchListener = new DeviceMoveTouchListener();
-    private transient DeviceOnLongClickListener deviceOnLongClickListener = new DeviceOnLongClickListener();
-
-    public static Coordinate FLOORPLAN_OFFSET = new Coordinate(190, 15);
-    public static final float DEFAULT_ITEM_ZOOM_FACTOR = 0.3f;
+    private String deviceName;
 
     @SuppressWarnings("unused")
     public FloorplanFragment() {
@@ -79,259 +59,147 @@ public class FloorplanFragment extends BaseFragment {
     @SuppressWarnings("unused")
     public FloorplanFragment(Bundle bundle) {
         super(bundle);
-        floorplanName = bundle.getString(BundleExtraKeys.DEVICE_NAME);
+
+        deviceName = bundle.getString(BundleExtraKeys.DEVICE_NAME);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View superView = super.onCreateView(inflater, container, savedInstanceState);
-        if (superView != null) return superView;
+        View view = super.onCreateView(inflater, container, savedInstanceState);
+        if (view != null) return view;
 
-        View view = inflater.inflate(R.layout.floorplan, null);
+        view = inflater.inflate(R.layout.floorplan_webview, null);
+        assert view != null;
 
-        TouchImageView.OnTouchImageViewChangeListener listener = new TouchImageView.OnTouchImageViewChangeListener() {
+        WebView webView = (WebView) view.findViewById(R.id.webView);
+
+
+        WebSettings settings = webView.getSettings();
+        settings.setUseWideViewPort(true);
+        settings.setLoadWithOverviewMode(true);
+        settings.setJavaScriptEnabled(true);
+        settings.setBuiltInZoomControls(true);
+
+        final ProgressDialog progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage(getResources().getString(R.string.loading));
+
+        webView.setWebChromeClient(new WebChromeClient() {
             @Override
-            public void onTouchImageViewChange(float newScale, float newX, float newY) {
-                currentImageViewScale = newScale * floorplanView.getBaseScale();
-                currentImageViewCoordinate = new Coordinate(newX, newY);
-
-                if (tickCounter++ % 2 != 0) return;
-                for (Device device : deviceViewMap.keySet()) {
-                    updateViewFor(device, newScale);
+            public void onProgressChanged(WebView view, int newProgress) {
+                super.onProgressChanged(view, newProgress);
+                if (newProgress < 100) {
+                    progressDialog.setProgress(newProgress);
+                    progressDialog.show();
+                } else {
+                    progressDialog.hide();
                 }
             }
-        };
+        });
 
-        floorplanView = (TouchImageView) view.findViewById(R.id.floorplan);
-        floorplanView.setListener(listener);
+        webView.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+                handler.proceed();
+            }
+
+            @Override
+            public void onReceivedHttpAuthRequest(WebView view, HttpAuthHandler handler, String host, String realm) {
+                String url = FHEMWebConnection.getURL();
+                try {
+                    String fhemHost = new URL(url).getHost();
+                    String username = FHEMWebConnection.getUsername();
+                    String password = FHEMWebConnection.getPassword();
+
+                    if (host.startsWith(fhemHost)) {
+                        handler.proceed(username, password);
+                    } else {
+                        handler.cancel();
+
+                        Intent intent = new Intent(Actions.SHOW_TOAST);
+                        intent.putExtra(BundleExtraKeys.TOAST_STRING_ID, R.string.authenticationError);
+                        getActivity().sendBroadcast(intent);
+                    }
+
+                } catch (MalformedURLException e) {
+                    Intent intent = new Intent(Actions.SHOW_TOAST);
+                    intent.putExtra(BundleExtraKeys.TOAST_STRING_ID, R.string.updateErrorHostConnection);
+                    getActivity().sendBroadcast(intent);
+                    Log.e(FloorplanFragment.class.getName(), "malformed URL: " + url, e);
+
+                    handler.cancel();
+                }
+            }
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+
+                if (url.contains("&XHR=1")) {
+                    view.loadUrl(getLoadUrl());
+                    return;
+                }
+
+                String script = "javascript:" +
+
+                        // hide floorplan navigation elements
+                        "document.getElementById(\"floorplans\").style.display=\"none\";" +
+                        "document.getElementById(\"fpmenu\").style.display=\"none\";" +
+                        "document.getElementById(\"logo\").style.display=\"none\";" +
+
+                        // shift the background image to left, compute the left offset
+                        "var backImg = document.getElementById(\"backimg\"); " +
+                        "var backImgOffset = window.getComputedStyle(backImg, null).getPropertyValue(\"left\").replace(\"px\", \"\");" +
+                        "document.getElementById(\"backimg\").style.left=\"0\";" +
+
+                        // move each child element to left by using the computed background image offset
+                        "var elements = document.getElementById(\"floorplan\").getElementsByTagName(\"div\"); " +
+                        "for (var i = 0; i < elements.length; i++) { " +
+                        "var left = elements[i].style.left.replace(\"px\", \"\"); " +
+                        "elements[i].style.left = (left - backImgOffset) + \"px\" " +
+                        "};" +
+
+                        // override the implemented FW_cmd function to allow page
+                        // reloading when the XMLHttpRequest is finished
+                        "function FW_cmd(arg) { " +
+                        "var req = new XMLHttpRequest(); " +
+                        "req.onreadystatechange=function() { " +
+                        "if (req.readyState == 4 && req.status == 200) {" +
+                        "window.location.reload();" +
+                        "}" +
+                        "};" +
+                        "req.open(\"GET\", arg, true); " +
+                        "req.send(null);}";
+                view.loadUrl(script);
+            }
+        });
 
         return view;
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        if (floorplanView == null) return;
-        floorplanView.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                floorplanView.manualTouch();
-            }
-        }, 1000);
-    }
-
-    private void requestFloorplanDevices(boolean doUpdate) {
-        Intent intent = new Intent(Actions.GET_ALL_ROOMS_DEVICE_LIST);
-        intent.putExtra(BundleExtraKeys.DO_REFRESH, doUpdate);
-        intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
-            @Override
-            protected void onReceiveResult(int resultCode, Bundle resultData) {
-                FragmentActivity activity = getActivity();
-
-                if (getView() == null || activity == null) return;
-
-                RelativeLayout layout = (RelativeLayout) getView().findViewById(R.id.floorplanHolder);
-
-                RoomDeviceList deviceList = (RoomDeviceList) resultData.getSerializable(BundleExtraKeys.DEVICE_LIST);
-
-                for (Device device : deviceList.getAllDevices()) {
-                    if (!device.isOnFloorplan(floorplanName)) continue;
-                    DeviceAdapter<Device> adapter = DeviceType.getAdapterFor(device);
-                    if (!adapter.supportsFloorplan(device)) continue;
-
-                    View view = adapter.getFloorplanView(activity, device);
-                    view.setVisibility(View.INVISIBLE);
-                    view.setTag(device);
-                    view.setOnLongClickListener(deviceOnLongClickListener);
-                    layout.addView(view);
-
-                    deviceViewMap.put(device, view);
-                }
-                floorplanView.manualTouch();
-
-                Intent intent = new Intent(Actions.DISMISS_UPDATING_DIALOG);
-                activity.sendBroadcast(intent);
-            }
-        });
-        FragmentActivity activity = getActivity();
-        if (activity == null) return;
-
-        activity.startService(intent);
-    }
-
-    private void updateViewFor(Device device, float newScale) {
-        if (!deviceViewMap.containsKey(device)) return;
-
-        View view = deviceViewMap.get(device);
-        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) view.getLayoutParams();
-
-        Coordinate deviceCoordinate = device.getFloorplanPositionFor(floorplanName);
-        Coordinate margin = floorplanToMargin(deviceCoordinate);
-
-        view.setPivotX(0);
-        view.setPivotY(0);
-
-        view.setScaleX(newScale * DEFAULT_ITEM_ZOOM_FACTOR);
-        view.setScaleY(newScale * DEFAULT_ITEM_ZOOM_FACTOR);
-        params.setMargins((int) margin.x, (int) margin.y, 0, 0);
-
-        view.setVisibility(View.VISIBLE);
-
-        view.requestLayout();
-    }
-
-    @Override
     public void update(boolean doUpdate) {
-        tickCounter = 0;
+        WebView webView = (WebView) getView().findViewById(R.id.webView);
 
-        setBackground();
-        RelativeLayout layout = (RelativeLayout) getView().findViewById(R.id.floorplanHolder);
-        layout.removeAllViews();
-        layout.addView(floorplanView);
+        String url = FHEMWebConnection.getURL();
+        try {
+            String host = new URL(url).getHost();
+            String username = FHEMWebConnection.getUsername();
+            String password = FHEMWebConnection.getPassword();
 
-        requestFloorplanDevices(doUpdate);
-    }
+            webView.setHttpAuthUsernamePassword(host, "", username, password);
 
-    private void setBackground() {
-        final Context context = getActivity();
-
-        Intent intent = new Intent(Actions.LOAD_IMAGE);
-        intent.putExtra(BundleExtraKeys.IMAGE_RELATIVE_PATH, "/icons/fp_" + floorplanName + ".png");
-        intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
-            @Override
-            protected void onReceiveResult(int resultCode, Bundle resultData) {
-                if (resultCode != ResultCodes.SUCCESS || !resultData.containsKey(BundleExtraKeys.IMAGE))
-                    return;
-
-                floorplanView.setImageBitmap((Bitmap) resultData.getParcelable(BundleExtraKeys.IMAGE));
-
-                Intent intent = new Intent(Actions.DISMISS_UPDATING_DIALOG);
-                context.startService(intent);
-
-                requestFloorplanDevices(false);
-            }
-        });
-        getActivity().startService(intent);
-    }
-
-    private Coordinate floorplanToMargin(Coordinate deviceCoordinate) {
-        return floorplanToMargin(deviceCoordinate, currentImageViewScale, currentImageViewCoordinate);
-    }
-
-    private static Coordinate floorplanToMargin(Coordinate deviceCoordinate, float currentImageViewScale, Coordinate currentImageViewCoordinate) {
-        return deviceCoordinate.subtract(FLOORPLAN_OFFSET).scale(currentImageViewScale).add(currentImageViewCoordinate);
-    }
-
-    private Coordinate marginToFloorplan(Coordinate margin) {
-        return marginToFloorplan(margin, currentImageViewScale, currentImageViewCoordinate);
-    }
-
-    private static Coordinate marginToFloorplan(Coordinate margin, float currentImageViewScale, Coordinate currentImageViewCoordinate) {
-        return margin.subtract(currentImageViewCoordinate).scale(1 / currentImageViewScale).add(FLOORPLAN_OFFSET);
-    }
-
-    private class DeviceOnLongClickListener implements View.OnLongClickListener {
-
-        @Override
-        public boolean onLongClick(final View view) {
-            final Context context = getActivity();
-
-            final Device device = (Device) view.getTag();
-
-            final AlertDialog.Builder contextMenu = new AlertDialog.Builder(context);
-            contextMenu.setTitle(device.getAliasOrName());
-            contextMenu.setItems(R.array.floorplanDeviceDetail, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int position) {
-                    switch (position) {
-                        case 0:
-                            DeviceAdapter<?> adapter = DeviceType.getAdapterFor(device);
-                            adapter.gotoDetailView(context, device);
-
-                            Log.d(FloorplanFragment.class.getName(), "Details");
-                            break;
-                        case 1:
-                            view.setBackgroundColor(getResources().getColor(R.color.focusedColor));
-                            view.setOnTouchListener(deviceMoveTouchListener);
-
-                            Log.d(FloorplanFragment.class.getName(), "Move " + device.getName());
-                            break;
-                        default:
-                            Log.d(FloorplanFragment.class.getName(), "unknown " + position);
-                    }
-                    dialogInterface.dismiss();
-                }
-            });
-            contextMenu.show();
-            return true;
+            webView.loadUrl(getLoadUrl());
+//            webView.loadUrl("http://www.google.de");
+        } catch (MalformedURLException e) {
+            Intent intent = new Intent(Actions.SHOW_TOAST);
+            intent.putExtra(BundleExtraKeys.TOAST_STRING_ID, R.string.updateErrorHostConnection);
+            getActivity().sendBroadcast(intent);
+            Log.e(FloorplanFragment.class.getName(), "malformed URL: " + url, e);
         }
     }
 
-    private class DeviceMoveTouchListener implements View.OnTouchListener {
-        private float lastX;
-        private float lastY;
-        private boolean moved = false;
-
-        @Override
-        public boolean onTouch(View view, MotionEvent motionEvent) {
-            Object tag = view.getTag();
-            if (!(tag instanceof Device)) return false;
-
-            Device<?> device = (Device<?>) tag;
-            float x = motionEvent.getRawX();
-            float y = motionEvent.getRawY();
-
-            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) view.getLayoutParams();
-            int leftMargin = layoutParams.leftMargin;
-            int topMargin = layoutParams.topMargin;
-
-            int newLeftMargin = (int) (leftMargin + (x - lastX));
-            int newTopMargin = (int) (topMargin + (y - lastY));
-
-            if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-                Log.d(FloorplanFragment.class.getName(), "down " + new Coordinate(x, y));
-            } else if (motionEvent.getAction() == MotionEvent.ACTION_MOVE && moved) {
-                layoutParams.setMargins(newLeftMargin, newTopMargin, 0, 0);
-                view.requestLayout();
-            } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-
-                final Intent intent = new Intent(Actions.DEVICE_FLOORPLAN_MOVE);
-                intent.putExtra(BundleExtraKeys.FLOORPLAN_NAME, floorplanName);
-                intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
-
-                Coordinate coordinate = marginToFloorplan(new Coordinate(newLeftMargin, newTopMargin));
-                intent.putExtra(BundleExtraKeys.COORDINATE, coordinate);
-
-                intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
-                    @Override
-                    protected void onReceiveResult(int resultCode, Bundle resultData) {
-                        if (resultCode != ResultCodes.SUCCESS) return;
-                        update(false);
-                    }
-                });
-
-                String text = getActivity().getResources().getString(R.string.floorplan_move_confirmation);
-                text = String.format(text, device.getAliasOrName(), "x=" + coordinate.x + ", y=" + coordinate.y);
-                DeviceActionUtil.showConfirmation(getActivity(), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        getActivity().startService(intent);
-                    }
-                }, text);
-
-                view.setBackgroundColor(getResources().getColor(android.R.color.transparent));
-                Log.d(FloorplanFragment.class.getName(), "up " + new Coordinate(newLeftMargin, newTopMargin));
-
-                moved = false;
-            }
-            lastX = x;
-            lastY = y;
-
-            moved = true;
-            return true;
-        }
+    private String getLoadUrl() {
+        String url = FHEMWebConnection.getURL();
+        return url + "/floorplan/" + deviceName;
     }
-
-
 }
