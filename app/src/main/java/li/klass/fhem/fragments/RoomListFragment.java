@@ -32,7 +32,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,6 +69,7 @@ public class RoomListFragment extends BaseFragment implements TopLevelFragment {
         View layout = inflater.inflate(R.layout.room_list, container, false);
         AdvertisementUtil.addAd(layout, getActivity());
 
+        assert layout != null;
         ListView roomList = (ListView) layout.findViewById(R.id.roomList);
         Reject.ifNull(roomList);
         roomList.setAdapter(adapter);
@@ -96,6 +99,9 @@ public class RoomListFragment extends BaseFragment implements TopLevelFragment {
     public void update(boolean doUpdate) {
         if (getView() == null) return;
 
+        hideEmptyView();
+        showUpdatingBar();
+
         Intent intent = new Intent(Actions.GET_ROOM_NAME_LIST);
         intent.putExtras(new Bundle());
         intent.putExtra(BundleExtraKeys.DO_REFRESH, doUpdate);
@@ -104,13 +110,20 @@ public class RoomListFragment extends BaseFragment implements TopLevelFragment {
             protected void onReceiveResult(int resultCode, Bundle resultData) {
                 if (getView() == null) return;
 
+                hideUpdatingBar();
+
                 if (resultCode == ResultCodes.SUCCESS) {
                     super.onReceiveResult(resultCode, resultData);
                     List<String> roomList = (ArrayList<String>) resultData.getSerializable(BundleExtraKeys.ROOM_LIST);
 
-                    String selectedRoom = creationBundle.getString(BundleExtraKeys.ROOM_NAME);
-                    getAdapter().updateData(roomList, selectedRoom);
-                    scrollToSelectedRoom(selectedRoom, getAdapter().getData());
+                    assert roomList != null;
+                    if (roomList.size() == 0) {
+                        showEmptyView();
+                    } else {
+                        String selectedRoom = creationBundle.getString(BundleExtraKeys.ROOM_NAME);
+                        getAdapter().updateData(roomList, selectedRoom);
+                        scrollToSelectedRoom(selectedRoom, getAdapter().getData());
+                    }
                 }
             }
         });
@@ -138,5 +151,15 @@ public class RoomListFragment extends BaseFragment implements TopLevelFragment {
     private RoomListAdapter getAdapter() {
         ListView listView = (ListView) getView().findViewById(R.id.roomList);
         return (RoomListAdapter) listView.getAdapter();
+    }
+
+    @Override
+    protected void fillEmptyView(LinearLayout view) {
+        View emptyView = LayoutInflater.from(getActivity()).inflate(R.layout.empty_view, null);
+        assert emptyView != null;
+        TextView emptyText = (TextView) emptyView.findViewById(R.id.emptyText);
+        emptyText.setText(R.string.noRooms);
+
+        view.addView(emptyView);
     }
 }

@@ -501,7 +501,9 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
                 return null;
             }
             navigationView.setVisibility(View.VISIBLE);
-            return createFragmentForClass(data, navigationClass);
+            BaseFragment fragment = createFragmentForClass(data, navigationClass);
+            fragment.setNavigation(true);
+            return fragment;
         } catch (Exception e) {
             Log.e(TAG, "cannot instantiate fragment", e);
             return null;

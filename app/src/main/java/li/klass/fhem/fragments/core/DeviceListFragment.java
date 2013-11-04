@@ -37,6 +37,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.concurrent.atomic.AtomicReference;
@@ -100,12 +101,19 @@ public abstract class DeviceListFragment extends BaseFragment {
 
         AdvertisementUtil.addAd(view, getActivity());
 
+        assert view != null;
+
         GridViewWithSections nestedListView = (GridViewWithSections) view.findViewById(R.id.deviceMap1);
+        assert nestedListView != null;
+
         LinearLayout emptyView = (LinearLayout) getEmptyView(view);
         fillEmptyView(emptyView);
 
-        int rightPadding = ApplicationProperties.INSTANCE.getIntegerSharedPreference(DEVICE_LIST_RIGHT_PADDING, 0);
-        nestedListView.setPadding(nestedListView.getPaddingLeft(), nestedListView.getPaddingTop(), rightPadding, nestedListView.getPaddingBottom());
+        if (! isNavigation()) {
+            int rightPadding = ApplicationProperties.INSTANCE.getIntegerSharedPreference(DEVICE_LIST_RIGHT_PADDING, 0);
+            nestedListView.setPadding(nestedListView.getPaddingLeft(), nestedListView.getPaddingTop(),
+                    rightPadding, nestedListView.getPaddingBottom());
+        }
 
         DeviceGridAdapter adapter = new DeviceGridAdapter(getActivity(), new RoomDeviceList(""));
         nestedListView.setAdapter(adapter);
@@ -129,26 +137,14 @@ public abstract class DeviceListFragment extends BaseFragment {
         return view;
     }
 
-    private View getEmptyView(View view) {
-        return view.findViewById(R.id.emptyView);
-    }
-
-    protected void hideEmptyView() {
-        getEmptyView(getView()).setVisibility(View.GONE);
-    }
-
-    protected void showEmptyView() {
-        getEmptyView(getView()).setVisibility(View.VISIBLE);
-    }
-
-    protected void fillEmptyView(LinearLayout view) {}
-
     @Override
     @SuppressWarnings("unchecked")
     public void update(boolean doUpdate) {
 
         View view = getView();
         if (view == null) return;
+
+        showUpdatingBar();
 
         View dummyConnectionNotification = view.findViewById(R.id.dummyConnectionNotification);
         if (!DataConnectionSwitch.INSTANCE.getCurrentProvider().getClass().isAssignableFrom(DummyDataConnection.class)) {
@@ -173,6 +169,8 @@ public abstract class DeviceListFragment extends BaseFragment {
                 if (getView() == null) return;
 
                 if (resultCode == ResultCodes.SUCCESS && resultData.containsKey(DEVICE_LIST)) {
+                    hideUpdatingBar();
+
                     RoomDeviceList deviceList = (RoomDeviceList) resultData.getSerializable(DEVICE_LIST);
                     getAdapter().updateData(deviceList);
 
@@ -263,6 +261,16 @@ public abstract class DeviceListFragment extends BaseFragment {
     protected DeviceGridAdapter getAdapter() {
         GridViewWithSections listView = (GridViewWithSections) getView().findViewById(R.id.deviceMap1);
         return (DeviceGridAdapter) listView.getAdapter();
+    }
+
+    @Override
+    protected void fillEmptyView(LinearLayout view) {
+        View emptyView = LayoutInflater.from(getActivity()).inflate(R.layout.empty_view, null);
+        assert emptyView != null;
+        TextView emptyText = (TextView) emptyView.findViewById(R.id.emptyText);
+        emptyText.setText(R.string.noDevices);
+
+        view.addView(emptyView);
     }
 
     protected abstract String getUpdateAction();

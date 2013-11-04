@@ -88,5 +88,4 @@ public class BundleExtraKeys {
     public static final String GCM_REGISTRATION_ID = "GCM_REGISTRATION_ID";
 
     public static final String NOTIFICATION_UPDATES = "NOTIFICATION_UPDATES";
-
 }

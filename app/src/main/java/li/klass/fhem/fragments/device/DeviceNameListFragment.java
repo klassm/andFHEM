@@ -31,6 +31,10 @@ import android.os.ResultReceiver;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import java.io.Serializable;
+import java.util.Set;
+
 import li.klass.fhem.R;
 import li.klass.fhem.activities.device.DeviceNameListAdapter;
 import li.klass.fhem.constants.Actions;
@@ -41,10 +45,6 @@ import li.klass.fhem.domain.core.DeviceType;
 import li.klass.fhem.domain.core.RoomDeviceList;
 import li.klass.fhem.fragments.core.BaseFragment;
 import li.klass.fhem.widget.GridViewWithSections;
-
-import java.io.Serializable;
-import java.util.Map;
-import java.util.Set;
 
 public abstract class DeviceNameListFragment extends BaseFragment {
 
@@ -75,9 +75,11 @@ public abstract class DeviceNameListFragment extends BaseFragment {
         if (superView != null) return superView;
 
         View view = inflater.inflate(R.layout.device_name_list, null);
+        assert view != null;
         GridViewWithSections deviceList = (GridViewWithSections) view.findViewById(R.id.deviceMap1);
 
-        DeviceNameListAdapter adapter = new DeviceNameListAdapter(inflater.getContext(), new RoomDeviceList(""), columnWidth);
+        DeviceNameListAdapter adapter = new DeviceNameListAdapter(inflater.getContext(),
+                new RoomDeviceList(""), columnWidth);
         adapter.registerOnClickObserver(new GridViewWithSections.GridViewWithSectionsOnClickObserver() {
             @Override
             public void onItemClick(View view, Object parent, Object child, int parentPosition, int childPosition) {

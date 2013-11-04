@@ -35,9 +35,18 @@
         android:layout_margin="0dp"
         android:text="@string/dummyConnectionNotification"
         android:gravity="center"
+        android:background="@color/red"
         android:textStyle="bold"
         android:visibility="gone"
-        android:textColor="@color/red"/>
+        android:textColor="@color/whitegrey"/>
+
+    <ProgressBar
+        android:id="@+id/updateProgress"
+        android:visibility="gone"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true" />
 
     <LinearLayout android:id="@+id/emptyView"
         android:layout_width="match_parent"

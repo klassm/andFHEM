@@ -8,7 +8,7 @@
  * distributed under license by Red Hat Inc.
  *
  * This copyrighted material is made available to anyone wishing to use, modify,
- * copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLICLICENSE, as published by the Free Software Foundation.
+ * copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
@@ -24,7 +24,6 @@
 
 package li.klass.fhem.fragments.core;
 
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -36,16 +35,21 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import li.klass.fhem.activities.core.FragmentBaseActivity;
-import li.klass.fhem.activities.core.Updateable;
-import li.klass.fhem.constants.BundleExtraKeys;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 
 import java.io.Serializable;
 
-import static li.klass.fhem.constants.Actions.*;
+import li.klass.fhem.R;
+import li.klass.fhem.activities.core.Updateable;
+import li.klass.fhem.constants.BundleExtraKeys;
+
+import static li.klass.fhem.constants.Actions.DEVICE_LIST_REMOTE_NOTIFY;
+import static li.klass.fhem.constants.Actions.DO_UPDATE;
+import static li.klass.fhem.constants.Actions.TOP_LEVEL_BACK;
 
 public abstract class BaseFragment extends Fragment implements Updateable, Serializable {
-
+    private boolean isNavigation = false;
 
     public class UIBroadcastReceiver extends BroadcastReceiver {
 
@@ -72,6 +76,8 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
 
                     Log.d(UIBroadcastReceiver.class.getName(), "received action " + action);
 
+                    if (action == null) return;
+
                     try {
                         if (action.equals(DO_UPDATE)) {
                             boolean doUpdate = intent.getBooleanExtra(BundleExtraKeys.DO_REFRESH, false);
@@ -80,7 +86,7 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
                             if (!isVisible()) return;
                             if (!backPressCalled) {
                                 backPressCalled = true;
-                                onBackPressResult(intent.getExtras());
+                                onBackPressResult();
                             }
                         } else if (action.equals(DEVICE_LIST_REMOTE_NOTIFY)) {
                             update(false);
@@ -178,7 +184,43 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
         }
     }
 
-    public void onBackPressResult(Bundle resultData) {
+    public void onBackPressResult() {
         update(false);
     }
+
+    public boolean isNavigation() {
+        return isNavigation;
+    }
+
+    public void setNavigation(boolean isNavigation) {
+        this.isNavigation = isNavigation;
+    }
+
+
+    protected View getEmptyView(View view) {
+        return view.findViewById(R.id.emptyView);
+    }
+
+    protected ProgressBar getUpdatingBar(View view) {
+        return (ProgressBar) view.findViewById(R.id.updateProgress);
+    }
+
+    protected void hideEmptyView() {
+        getEmptyView(getView()).setVisibility(View.GONE);
+    }
+
+    protected void showEmptyView() {
+        getEmptyView(getView()).setVisibility(View.VISIBLE);
+    }
+
+    protected void hideUpdatingBar() {
+        getUpdatingBar(getView()).setVisibility(View.GONE);
+    }
+
+    protected void showUpdatingBar() {
+        getUpdatingBar(getView()).setVisibility(View.VISIBLE);
+    }
+
+    protected void fillEmptyView(LinearLayout view) {}
+
 }
