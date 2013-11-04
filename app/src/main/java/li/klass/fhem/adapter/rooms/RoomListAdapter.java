@@ -29,12 +29,13 @@ import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import li.klass.fhem.R;
-import li.klass.fhem.adapter.ListDataAdapter;
-import li.klass.fhem.constants.PreferenceKeys;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import li.klass.fhem.R;
+import li.klass.fhem.adapter.ListDataAdapter;
+import li.klass.fhem.constants.PreferenceKeys;
 
 public class RoomListAdapter extends ListDataAdapter<String> {
     private String selectedRoom;
@@ -55,7 +56,7 @@ public class RoomListAdapter extends ListDataAdapter<String> {
         convertView.setTag(roomName);
 
         if (roomName.equals(selectedRoom)) {
-            convertView.setBackgroundColor(context.getResources().getColor(R.color.focusedColor));
+            convertView.setBackgroundColor(context.getResources().getColor(R.color.android_green));
         }
 
         return convertView;

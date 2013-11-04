@@ -29,6 +29,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.TextView;
+
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.rooms.DeviceGridAdapter;
 import li.klass.fhem.domain.core.Device;
@@ -64,7 +65,7 @@ public class DeviceNameListAdapter extends DeviceGridAdapter {
         view.setLayoutParams(new AbsListView.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 
         if (child.getName().equals(selectedDeviceName)) {
-            view.setBackgroundColor(context.getResources().getColor(R.color.focusedColor));
+            view.setBackgroundColor(context.getResources().getColor(R.color.android_green));
         }
 
         return view;
