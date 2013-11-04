@@ -24,6 +24,8 @@
 
 
 
+
+
 buildscript {
     repositories {
         mavenCentral()
@@ -224,6 +226,10 @@ def updateGoogleSitesAPK(service) {
 
     service.insert(new URL("https://sites.google.com/feeds/content/site/andfhem/"), newAttachment);
 }
+
+/*************************************
+ * Javadoc
+ *********************************** */
 
 android.applicationVariants.all { variant ->
     def name = variant.name
