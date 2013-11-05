@@ -86,8 +86,8 @@ public class Actions {
     public static final String EXECUTE_COMMAND = prefix + "EXECUTE_COMMAND";
     public static final String RECENT_COMMAND_LIST = prefix + "RECENT_COMMANDS_LIST";
 
-    //    public static final String REQUEST_WIDGET_UPDATE = prefix + "REQUEST_WIDGET_UPDATE";
     public static final String WIDGET_UPDATE = prefix + "WIDGET_UPDATE";
+    public static final String REDRAW_WIDGET = prefix + "REDRAW_WIDGET";
     public static final String DEVICE_LIST_REMOTE_NOTIFY = prefix + "DEVICE_LIST_REMOTE_NOTIFY";
 
     public static final String RELOAD = prefix + "RELOAD";

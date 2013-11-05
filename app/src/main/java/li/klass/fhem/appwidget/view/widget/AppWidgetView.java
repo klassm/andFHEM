@@ -26,13 +26,14 @@ package li.klass.fhem.appwidget.view.widget;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.SystemClock;
 import android.view.View;
 import android.widget.RemoteViews;
+
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.activities.AndFHEMMainActivity;
-import li.klass.fhem.appwidget.AppWidgetSelectionActivity;
 import li.klass.fhem.appwidget.WidgetConfiguration;
 import li.klass.fhem.appwidget.WidgetConfigurationCreatedCallback;
 import li.klass.fhem.appwidget.annotation.SupportsWidget;
@@ -40,6 +41,7 @@ import li.klass.fhem.appwidget.view.WidgetType;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.fragments.core.DeviceDetailFragment;
+import li.klass.fhem.util.ImageUtil;
 
 public abstract class AppWidgetView {
 
@@ -101,6 +103,15 @@ public abstract class AppWidgetView {
                                           Device device,
                                           WidgetConfigurationCreatedCallback callback) {
         callback.widgetConfigurationCreated(new WidgetConfiguration(appWidgetId, device.getName(), widgetType));
+    }
+
+    protected void loadImageAndSetIn(RemoteViews view, int imageId, String url,
+                                     boolean preventCache) {
+        if (preventCache) {
+            url += "?time=" + System.currentTimeMillis();
+        }
+        Bitmap bitmap = ImageUtil.loadBitmap(url);
+        view.setImageViewBitmap(imageId, bitmap);
     }
 
     public abstract int getWidgetName();

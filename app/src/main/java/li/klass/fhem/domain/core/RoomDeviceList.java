@@ -25,7 +25,14 @@
 package li.klass.fhem.domain.core;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class RoomDeviceList implements Serializable {
 
@@ -65,9 +72,13 @@ public class RoomDeviceList implements Serializable {
 
     public <T extends Device> void removeDevice(T device) {
         deviceMap.get(DeviceType.getDeviceTypeFor(device)).remove(device);
-        if (deviceMap.size() == 0) {
-            onlyContainsDoNotShowDevices = true;
+
+        for (DeviceType deviceType : deviceMap.keySet()) {
+            if (! deviceType.mayShowInCurrentConnectionType()) continue;
+            if (deviceMap.get(deviceType).size() > 0) return;
         }
+
+        onlyContainsDoNotShowDevices = true;
     }
 
     public Set<Device> getAllDevices() {

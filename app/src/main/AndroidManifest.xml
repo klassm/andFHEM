@@ -24,9 +24,9 @@
   -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="li.klass.fhem"
-          android:versionCode="256"
-          android:versionName="2.5.6">
+    package="li.klass.fhem"
+    android:versionCode="256"
+    android:versionName="2.5.6">
 
 
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -36,8 +36,8 @@
     <!--GCM-->
 
     <permission
-            android:name="li.klass.fhem.permission.C2D_MESSAGE"
-            android:protectionLevel="signature"/>
+        android:name="li.klass.fhem.permission.C2D_MESSAGE"
+        android:protectionLevel="signature"/>
 
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE"/>
     <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
@@ -48,21 +48,21 @@
     <uses-feature android:name="android.hardware.touchscreen"/>
 
     <supports-screens android:xlargeScreens="true"
-                      android:anyDensity="true"
-                      android:largeScreens="true"
-                      android:normalScreens="true"
-                      android:smallScreens="true"/>
+        android:anyDensity="true"
+        android:largeScreens="true"
+        android:normalScreens="true"
+        android:smallScreens="true"/>
 
     <uses-sdk android:minSdkVersion="7" android:targetSdkVersion="17"/>
 
     <application android:label="@string/app_name" android:icon="@drawable/ic_launcher" android:name="AndFHEMApplication"
-                 android:theme="@style/ApplicationTheme">
+        android:theme="@style/ApplicationTheme">
 
         <activity android:name=".activities.AndFHEMMainActivity"
-                  android:label="@string/app_name"
-                  android:alwaysRetainTaskState="true"
-                  android:launchMode="singleTask"
-                  android:configChanges="orientation|keyboardHidden|screenSize">
+            android:label="@string/app_name"
+            android:alwaysRetainTaskState="true"
+            android:launchMode="singleTask"
+            android:configChanges="orientation|keyboardHidden|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
@@ -75,7 +75,7 @@
         <activity android:name=".activities.graph.ChartingDateSelectionActivity"/>
 
         <activity android:name="com.google.ads.AdActivity"
-                  android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"/>
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"/>
 
         <activity android:name=".appwidget.type.small.SmallWidgetSelectionActivity">
             <intent-filter>
@@ -119,14 +119,20 @@
             <meta-data android:name="android.appwidget.provider" android:resource="@xml/andfhem_appwidget_medium"/>
         </receiver>
 
-        <!--<receiver android:name=".appwidget.type.big.BigAppWidgetProvider" android:label="@string/widget_big">-->
-        <!--<intent-filter>-->
-        <!--<action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>-->
-        <!--<action android:name="li.klass.fhem.constants.Actions.WIDGET_UPDATE"/>-->
-        <!--<action android:name="li.klass.fhem.constants.Actions.DEVICE_LIST_REMOTE_NOTIFY"/>-->
-        <!--</intent-filter>-->
-        <!--<meta-data android:name="android.appwidget.provider" android:resource="@xml/andfhem_appwidget_big"/>-->
-        <!--</receiver>-->
+        <receiver android:name=".appwidget.type.big.BigAppWidgetProvider" android:label="@string/widget_big">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+                <action android:name="li.klass.fhem.constants.Actions.WIDGET_UPDATE"/>
+                <action android:name="li.klass.fhem.constants.Actions.DEVICE_LIST_REMOTE_NOTIFY"/>
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider" android:resource="@xml/andfhem_appwidget_big"/>
+        </receiver>
+
+        <service android:name=".appwidget.service.AppWidgetUpdateService" android:exported="false">
+            <intent-filter>
+                <action android:name="li.klass.fhem.constants.Actions.REDRAW_WIDGET"/>
+            </intent-filter>
+        </service>
 
         <service android:name=".service.intent.RoomListIntentService" android:exported="false">
             <intent-filter>
@@ -214,18 +220,18 @@
         <activity android:name=".activities.base.DeviceNameSelectionActivity"/>
 
         <activity
-                android:name=".activities.locale.LocaleEditConditionActivity"
-                android:label="@string/localeDeviceState"
-                android:icon="@drawable/ic_launcher" android:exported="true">
+            android:name=".activities.locale.LocaleEditConditionActivity"
+            android:label="@string/localeDeviceState"
+            android:icon="@drawable/ic_launcher" android:exported="true">
             <intent-filter>
                 <action android:name="com.twofortyfouram.locale.intent.action.EDIT_CONDITION"/>
             </intent-filter>
         </activity>
 
         <activity
-                android:name=".activities.locale.LocaleSettingActivity"
-                android:label="@string/localeSendCommandPlugin"
-                android:icon="@drawable/ic_launcher" android:exported="true">
+            android:name=".activities.locale.LocaleSettingActivity"
+            android:label="@string/localeSendCommandPlugin"
+            android:icon="@drawable/ic_launcher" android:exported="true">
             <intent-filter>
                 <action android:name="com.twofortyfouram.locale.intent.action.EDIT_SETTING"/>
             </intent-filter>
@@ -244,8 +250,8 @@
         </receiver>
 
         <receiver
-                android:name="com.google.android.gcm.GCMBroadcastReceiver"
-                android:permission="com.google.android.c2dm.permission.SEND">
+            android:name="com.google.android.gcm.GCMBroadcastReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
                 <action android:name="com.google.android.c2dm.intent.REGISTRATION"/>
@@ -255,9 +261,9 @@
         <service android:name=".GCMIntentService"/>
 
         <activity
-                android:name=".activities.FHEMUrlActivity"
-                android:label="@string/app_name"
-                android:theme="@android:style/Theme.NoDisplay">
+            android:name=".activities.FHEMUrlActivity"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.NoDisplay">
             <intent-filter>
 
                 <action android:name="android.intent.action.VIEW"/>

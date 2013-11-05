@@ -21,21 +21,20 @@
  *   51 Franklin Street, Fifth Floor
  */
 
-package li.klass.fhem.appwidget.view.widget.big;
+package li.klass.fhem.appwidget.view.widget.medium;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.widget.RemoteViews;
+
+import java.util.List;
+
 import li.klass.fhem.R;
 import li.klass.fhem.appwidget.WidgetConfiguration;
 import li.klass.fhem.appwidget.view.widget.AppWidgetView;
 import li.klass.fhem.domain.WeatherDevice;
 import li.klass.fhem.domain.core.Device;
-import li.klass.fhem.util.ImageUtil;
 
-import java.util.List;
-
-public class WeatherForecastWidget extends AppWidgetView {
+public class MediumWeatherForecastWidget extends AppWidgetView {
     @Override
     public int getWidgetName() {
         return R.string.widget_weather_forecast;
@@ -56,8 +55,8 @@ public class WeatherForecastWidget extends AppWidgetView {
         view.setTextViewText(R.id.day_condition, forecast.getCondition());
         view.setTextViewText(R.id.day_temperature, forecast.getLowTemperature() + " - " + forecast.getHighTemperature());
 
-        Bitmap bitmap = ImageUtil.loadBitmap(WeatherDevice.IMAGE_URL_PREFIX + forecast.getIcon() + ".png?time=" + System.currentTimeMillis());
-        view.setImageViewBitmap(R.id.day_image, bitmap);
+        String url = WeatherDevice.IMAGE_URL_PREFIX + forecast.getIcon() + ".png";
+        loadImageAndSetIn(view, R.id.day_image, url, false);
 
         openDeviceDetailPageWhenClicking(R.id.main, view, device, widgetConfiguration);
     }

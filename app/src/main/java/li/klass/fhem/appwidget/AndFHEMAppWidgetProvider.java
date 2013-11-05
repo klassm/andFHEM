@@ -25,10 +25,10 @@ package li.klass.fhem.appwidget;
 
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
-import android.appwidget.AppWidgetProviderInfo;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 
@@ -40,7 +40,7 @@ public abstract class AndFHEMAppWidgetProvider extends AppWidgetProvider {
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         super.onUpdate(context, appWidgetManager, appWidgetIds);
         for (int appWidgetId : appWidgetIds) {
-            AppWidgetDataHolder.INSTANCE.updateWidget(appWidgetManager, context, appWidgetId, true);
+            AppWidgetDataHolder.INSTANCE.updateWidget(context, appWidgetId, true);
         }
     }
 

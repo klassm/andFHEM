@@ -30,23 +30,18 @@ import android.appwidget.AppWidgetProviderInfo;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.ResultReceiver;
 import android.util.Log;
 import android.widget.RemoteViews;
-import li.klass.fhem.appwidget.view.WidgetType;
+
+import java.util.Set;
+
 import li.klass.fhem.appwidget.view.widget.AppWidgetView;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.service.room.RoomListService;
 import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.NetworkState;
-
-import java.util.Set;
 
 import static li.klass.fhem.util.SharedPreferencesUtil.getSharedPreferences;
 import static li.klass.fhem.util.SharedPreferencesUtil.getSharedPreferencesEditor;
@@ -63,33 +58,21 @@ public class AppWidgetDataHolder {
     }
 
     public void updateAllWidgets(final Context context, final boolean allowRemoteUpdate) {
-        Log.d(AppWidgetDataHolder.class.getName(), "update all widgets!");
-        new AsyncTask<String, String, String>() {
-            @Override
-            protected String doInBackground(String... voids) {
-                Set<String> appWidgetIds = getSharedPreferences(preferenceName).getAll().keySet();
-                AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-
-                for (String appWidgetId : appWidgetIds) {
-                    updateWidgetInCurrentThread(appWidgetManager, context, Integer.parseInt(appWidgetId), allowRemoteUpdate);
-                }
-                return null;
-            }
-        }.doInBackground("");
+        Set<String> appWidgetIds = getSharedPreferences(preferenceName).getAll().keySet();
+        for (String appWidgetId : appWidgetIds) {
+            updateWidget( context, Integer.parseInt(appWidgetId), allowRemoteUpdate);
+        }
     }
 
-    public void updateWidget(final AppWidgetManager appWidgetManager, final Context context, final int appWidgetId,
+    public void updateWidget(final Context context, final int appWidgetId,
                              final boolean allowRemoteUpdate) {
-        new AsyncTask<String, String, String>() {
-            @Override
-            protected String doInBackground(String... voids) {
-                updateWidgetInCurrentThread(appWidgetManager, context, Integer.parseInt(String.valueOf(appWidgetId)), allowRemoteUpdate);
-                return null;
-            }
-        }.doInBackground("");
+        Intent intent = new Intent(Actions.REDRAW_WIDGET);
+        intent.putExtra(BundleExtraKeys.APP_WIDGET_ID, appWidgetId);
+        intent.putExtra(BundleExtraKeys.ALLOW_REMOTE_UPDATES, allowRemoteUpdate);
+        context.startService(intent);
     }
 
-    private void updateWidgetInCurrentThread(final AppWidgetManager appWidgetManager, final Context context,
+    public void updateWidgetInCurrentThread(final AppWidgetManager appWidgetManager, final Context context,
                                              final int appWidgetId, final boolean allowRemoteUpdate) {
         final WidgetConfiguration widgetConfiguration = getWidgetConfiguration(appWidgetId);
         AppWidgetProviderInfo widgetInfo = appWidgetManager.getAppWidgetInfo(appWidgetId);
@@ -109,14 +92,15 @@ public class AppWidgetDataHolder {
         long updatePeriod = doRemoteWidgetUpdates && allowRemoteUpdate ? updateInterval : RoomListService.NEVER_UPDATE_PERIOD;
         scheduleUpdateIntent(context, widgetConfiguration, false, updateInterval);
 
-        Intent deviceIntent = new Intent(Actions.GET_DEVICE_FOR_NAME);
-        deviceIntent.putExtra(BundleExtraKeys.DEVICE_NAME, widgetConfiguration.deviceName);
-        deviceIntent.putExtra(BundleExtraKeys.UPDATE_PERIOD, updatePeriod);
-        deviceIntent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
-            @Override
-            protected void onReceiveResult(int resultCode, Bundle resultData) {
-                if (resultCode == ResultCodes.SUCCESS) {
-                    Device device = (Device) resultData.get(BundleExtraKeys.DEVICE);
+        Device device = RoomListService.INSTANCE.getDeviceForName(widgetConfiguration.deviceName, updatePeriod);
+//        Intent deviceIntent = new Intent(Actions.GET_DEVICE_FOR_NAME);
+//        deviceIntent.putExtra(BundleExtraKeys.DEVICE_NAME, widgetConfiguration.deviceName);
+//        deviceIntent.putExtra(BundleExtraKeys.UPDATE_PERIOD, updatePeriod);
+//        deviceIntent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
+//            @Override
+//            protected void onReceiveResult(int resultCode, Bundle resultData) {
+//                if (resultCode == ResultCodes.SUCCESS) {
+//                    Device device = (Device) resultData.get(BundleExtraKeys.DEVICE);
                     if (device == null) {
                         Log.d(TAG, "cannot find device " + widgetConfiguration.deviceName);
                         return;
@@ -130,10 +114,10 @@ public class AppWidgetDataHolder {
                     } catch (Exception e) {
                         Log.e(TAG, "something strange happened during appwidget update", e);
                     }
-                }
-            }
-        });
-        context.startService(deviceIntent);
+//                }
+//            }
+//        });
+//        context.startService(deviceIntent);
     }
 
     public void deleteWidget(Context context, int appWidgetId) {
