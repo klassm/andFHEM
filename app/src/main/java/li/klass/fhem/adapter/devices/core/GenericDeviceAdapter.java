@@ -34,8 +34,24 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
+import android.widget.ToggleButton;
+
 import com.ensequence.socialmediatestharness.ui.FlowLayout;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewAction;
@@ -49,10 +65,6 @@ import li.klass.fhem.domain.genericview.FloorplanViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.util.ArrayUtil;
 import li.klass.fhem.util.ReflectionUtil;
-
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.util.*;
 
 import static li.klass.fhem.util.ReflectionUtil.methodNameToFieldName;
 
@@ -157,7 +169,7 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
             }
 
             List<Field> declaredFields = Arrays.asList(device.getClass().getDeclaredFields());
-            Collections.sort(declaredFields, FieldNameComparator.COMPARATOR);
+            DeviceFields.sort(declaredFields);
 
             for (Field declaredField : declaredFields) {
                 declaredField.setAccessible(true);
