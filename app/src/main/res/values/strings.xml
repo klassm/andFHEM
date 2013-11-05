@@ -177,6 +177,8 @@
     <string name="energy_power">Power</string>
     <string name="energy_consumption">Consumption</string>
     <string name="additional_information">Additional information</string>
+    <string name="channel">Channel</string>
+    <string name="currentTitle">Current title</string>
 
     <string name="switchDevice">Switch</string>
     <string name="preferences">Preferences</string>

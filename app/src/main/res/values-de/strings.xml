@@ -174,7 +174,8 @@
     <string name="energy_power">Leistung</string>
     <string name="energy_consumption">Verbrauch</string>
     <string name="additional_information">Zusatzinformationen</string>
-
+    <string name="channel">Sender</string>
+    <string name="currentTitle">Aktueller Titel</string>
 
     <string name="switchDevice">Schalte</string>
     <string name="preferences">Einstellungen</string>

@@ -47,6 +47,8 @@
             <ATTR key="row11" value="TOOLS,UP,INFO"/>
             <ATTR key="row12" value="LEFT,ENTER,RIGHT"/>
             <ATTR key="row13" value="RETURN,DOWN,EXIT"/>
+            <STATE key="channel" value="kabel eins" measured="2013-10-27 20:23:10"/>
+            <STATE key="currentTitle" value="Cold Case - Kein Opfer ist je vergessen" measured="2013-10-28 11:57:02"/>
             <STATE key="state" value="channelDown" measured="2013-10-28 12:25:07"/>
         </remotecontrol>
     </remotecontrol_LIST>

@@ -26,13 +26,15 @@ package li.klass.fhem.fhem;
 
 import android.graphics.Bitmap;
 import android.util.Log;
-import li.klass.fhem.util.CloseableUtil;
+
 import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import li.klass.fhem.util.CloseableUtil;
 
 public class DummyDataConnection implements FHEMConnection {
     public static final DummyDataConnection INSTANCE = new DummyDataConnection();

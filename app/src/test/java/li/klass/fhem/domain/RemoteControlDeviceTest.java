@@ -46,6 +46,9 @@ public class RemoteControlDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getIconPath(), is("icons/remotecontrol"));
         assertThat(device.getIconPrefix(), is("black_btn_"));
 
+        assertThat(device.getChannel(), is("kabel eins"));
+        assertThat(device.getCurrentTitle(), is("Cold Case - Kein Opfer ist je vergessen"));
+
         List<List<RemoteControlDevice.Entry>> rows = device.getRows();
         assertThat(rows.size(), is(14));
 

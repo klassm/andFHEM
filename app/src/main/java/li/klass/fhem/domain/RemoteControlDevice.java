@@ -31,7 +31,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.genericview.ShowField;
 
 public class RemoteControlDevice extends Device<RemoteControlDevice> {
     public class Entry implements Serializable {
@@ -55,6 +57,12 @@ public class RemoteControlDevice extends Device<RemoteControlDevice> {
     private String iconPath;
     private String iconPrefix;
 
+    @ShowField(description = ResourceIdMapper.channel, showInOverview = true)
+    private String channel;
+    @ShowField(description = ResourceIdMapper.currentTitle, showInOverview = true,
+            showAfter = "channel")
+    private String currentTitle;
+
     private List<List<Entry>> rows = new ArrayList<List<Entry>>();
 
     public void readRC_ICONPATH(String value) {
@@ -63,6 +71,14 @@ public class RemoteControlDevice extends Device<RemoteControlDevice> {
 
     public void readRC_ICONPREFIX(String value) {
         iconPrefix = value;
+    }
+
+    public void readCHANNEL(String value) {
+        this.channel = value;
+    }
+
+    public void readCURRENTTITLE(String value) {
+        this.currentTitle = value;
     }
 
     @Override
@@ -76,7 +92,7 @@ public class RemoteControlDevice extends Device<RemoteControlDevice> {
         int rowNr = Integer.valueOf(key.replace("ROW", ""));
         if (rows.size() != rowNr) {
             String errorString = String.format("invalid row! (expected size: %d, was: %d)",
-            rowNr - 1, rows.size());
+                    rowNr - 1, rows.size());
             throw new IllegalArgumentException(errorString);
         }
 
@@ -100,6 +116,14 @@ public class RemoteControlDevice extends Device<RemoteControlDevice> {
 
     public String getIconPrefix() {
         return iconPrefix;
+    }
+
+    public String getChannel() {
+        return channel;
+    }
+
+    public String getCurrentTitle() {
+        return currentTitle;
     }
 
     public List<List<Entry>> getRows() {
