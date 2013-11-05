@@ -592,5 +592,4 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
         optionsMenu.findItem(R.id.menu_refresh).setVisible(!show);
         optionsMenu.findItem(R.id.menu_refresh_progress).setVisible(show);
     }
-
 }

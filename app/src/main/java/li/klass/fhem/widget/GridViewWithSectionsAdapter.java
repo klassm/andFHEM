@@ -24,14 +24,20 @@
 package li.klass.fhem.widget;
 
 import android.content.Context;
+import android.database.DataSetObserver;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import li.klass.fhem.domain.core.Device;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public abstract class GridViewWithSectionsAdapter<P, C> extends BaseAdapter {
 
@@ -272,6 +278,15 @@ public abstract class GridViewWithSectionsAdapter<P, C> extends BaseAdapter {
             }
         }
         return -1;
+    }
+
+    @Override
+    public void unregisterDataSetObserver(DataSetObserver observer) {
+        // Workaround for a silly bug in Android 4
+        // see http://code.google.com/p/android/issues/detail?id=22946 for details
+        if (observer != null) {
+            super.unregisterDataSetObserver(observer);
+        }
     }
 
     protected abstract C getChildForParentAndChildPosition(P parent, int childPosition);

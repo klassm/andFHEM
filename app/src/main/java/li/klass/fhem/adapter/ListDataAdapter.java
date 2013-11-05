@@ -25,6 +25,7 @@
 package li.klass.fhem.adapter;
 
 import android.content.Context;
+import android.database.DataSetObserver;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -133,5 +134,14 @@ public class ListDataAdapter<T extends Comparable<T>> extends BaseAdapter {
 
     protected boolean doSort() {
         return true;
+    }
+
+    @Override
+    public void unregisterDataSetObserver(DataSetObserver observer) {
+        // Workaround for a silly bug in Android 4
+        // see http://code.google.com/p/android/issues/detail?id=22946 for details
+        if (observer != null) {
+            super.unregisterDataSetObserver(observer);
+        }
     }
 }

@@ -25,6 +25,7 @@
 package li.klass.fhem.activities.core;
 
 import android.content.Context;
+import android.database.DataSetObserver;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -103,5 +104,14 @@ public class NavigationDrawerAdapter extends BaseAdapter {
         view.setTag(item.fragmentType);
 
         return view;
+    }
+
+    @Override
+    public void unregisterDataSetObserver(DataSetObserver observer) {
+        // Workaround for a silly bug in Android 4
+        // see http://code.google.com/p/android/issues/detail?id=22946 for details
+        if (observer != null) {
+            super.unregisterDataSetObserver(observer);
+        }
     }
 }

@@ -25,6 +25,7 @@
 package li.klass.fhem.widget;
 
 import android.content.Context;
+import android.database.DataSetObserver;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,7 +33,11 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ListAdapter;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public abstract class NestedListViewAdapter<P, C> extends BaseAdapter implements ListAdapter {
 
@@ -154,6 +159,15 @@ public abstract class NestedListViewAdapter<P, C> extends BaseAdapter implements
     @Override
     public boolean isEmpty() {
         return totalItems == 0;
+    }
+
+    @Override
+    public void unregisterDataSetObserver(DataSetObserver observer) {
+        // Workaround for a silly bug in Android 4
+        // see http://code.google.com/p/android/issues/detail?id=22946 for details
+        if (observer != null) {
+            super.unregisterDataSetObserver(observer);
+        }
     }
 
     protected abstract C getChildForParentAndChildPosition(P parent, int childPosition);
