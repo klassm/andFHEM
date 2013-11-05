@@ -24,6 +24,8 @@
 
 package li.klass.fhem.domain;
 
+import java.util.List;
+
 import li.klass.fhem.R;
 import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.appwidget.annotation.SupportsWidget;
@@ -31,16 +33,17 @@ import li.klass.fhem.appwidget.annotation.WidgetTemperatureField;
 import li.klass.fhem.appwidget.view.widget.medium.TemperatureWidgetView;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceChart;
-import li.klass.fhem.domain.genericview.FloorplanViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ValueDescriptionUtil;
 
-import java.util.List;
+import static li.klass.fhem.service.graph.description.SeriesType.HUMIDITY;
+import static li.klass.fhem.service.graph.description.SeriesType.PRESSURE;
+import static li.klass.fhem.service.graph.description.SeriesType.RAIN_RATE;
+import static li.klass.fhem.service.graph.description.SeriesType.RAIN_TOTAL;
+import static li.klass.fhem.service.graph.description.SeriesType.TEMPERATURE;
+import static li.klass.fhem.service.graph.description.SeriesType.WIND;
 
-import static li.klass.fhem.service.graph.description.SeriesType.*;
-
-@FloorplanViewSettings(showState = true)
 @SupportsWidget(TemperatureWidgetView.class)
 @SuppressWarnings("unused")
 public class OregonDevice extends Device<OregonDevice> {

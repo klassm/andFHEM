@@ -32,6 +32,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TableRow;
 import android.widget.TextView;
+
 import li.klass.fhem.activities.graph.ChartingActivity;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
@@ -122,10 +123,6 @@ public abstract class DeviceAdapter<D extends Device> {
     protected abstract View getDeviceDetailView(Context context, D device);
 
     protected abstract Intent onFillDeviceDetailIntent(Context context, Device device, Intent intent);
-
-    public abstract boolean supportsFloorplan(D device);
-
-    public abstract View getFloorplanView(Context context, D device);
 
     public abstract Class<? extends Device> getSupportedDeviceClass();
 

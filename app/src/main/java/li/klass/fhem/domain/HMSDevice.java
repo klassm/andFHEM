@@ -25,26 +25,31 @@
 package li.klass.fhem.domain;
 
 import android.content.Context;
+
+import java.util.List;
+
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
-import li.klass.fhem.appwidget.annotation.*;
+import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
+import li.klass.fhem.appwidget.annotation.SupportsWidget;
+import li.klass.fhem.appwidget.annotation.WidgetMediumLine1;
+import li.klass.fhem.appwidget.annotation.WidgetMediumLine2;
+import li.klass.fhem.appwidget.annotation.WidgetMediumLine3;
+import li.klass.fhem.appwidget.annotation.WidgetTemperatureAdditionalField;
+import li.klass.fhem.appwidget.annotation.WidgetTemperatureField;
 import li.klass.fhem.appwidget.view.widget.AppWidgetView;
 import li.klass.fhem.appwidget.view.widget.medium.MediumInformationWidgetView;
 import li.klass.fhem.appwidget.view.widget.medium.TemperatureWidgetView;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceChart;
-import li.klass.fhem.domain.genericview.FloorplanViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.service.graph.description.SeriesType;
 import li.klass.fhem.util.ValueUtil;
 
-import java.util.List;
-
 import static li.klass.fhem.service.graph.description.SeriesType.HUMIDITY;
 
 @SuppressWarnings("unused")
-@FloorplanViewSettings(showState = true)
 @SupportsWidget({TemperatureWidgetView.class, MediumInformationWidgetView.class})
 public class HMSDevice extends Device<HMSDevice> {
     @ShowField(description = ResourceIdMapper.temperature, showInOverview = true)

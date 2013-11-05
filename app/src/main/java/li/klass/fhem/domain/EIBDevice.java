@@ -30,7 +30,6 @@ import li.klass.fhem.R;
 import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.DimmableDevice;
 import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
-import li.klass.fhem.domain.genericview.FloorplanViewSettings;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ArrayUtil;
 import li.klass.fhem.util.ValueDescriptionUtil;
@@ -39,7 +38,6 @@ import li.klass.fhem.util.ValueExtractUtil;
 import static li.klass.fhem.service.graph.description.SeriesType.TEMPERATURE;
 
 @DetailOverviewViewSettings(showState = true)
-@FloorplanViewSettings
 @SuppressWarnings("unused")
 public class EIBDevice extends DimmableDevice<EIBDevice> {
 

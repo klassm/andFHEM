@@ -26,10 +26,8 @@ package li.klass.fhem.domain;
 
 import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.domain.core.Device;
-import li.klass.fhem.domain.genericview.FloorplanViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 
-@FloorplanViewSettings(showState = true)
 public class LGTVDevice extends Device<LGTVDevice> {
     @ShowField(description = ResourceIdMapper.power, showInOverview = true)
     private String power;

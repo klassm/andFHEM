@@ -25,6 +25,11 @@
 package li.klass.fhem.domain;
 
 import android.util.Log;
+
+import org.w3c.dom.NamedNodeMap;
+
+import java.util.List;
+
 import li.klass.fhem.R;
 import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.appwidget.annotation.SupportsWidget;
@@ -35,18 +40,18 @@ import li.klass.fhem.appwidget.view.widget.medium.ToggleWidgetView;
 import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.ToggleableDevice;
 import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
-import li.klass.fhem.domain.genericview.FloorplanViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
-import li.klass.fhem.domain.heating.*;
+import li.klass.fhem.domain.heating.ComfortTempDevice;
+import li.klass.fhem.domain.heating.DesiredTempDevice;
+import li.klass.fhem.domain.heating.EcoTempDevice;
+import li.klass.fhem.domain.heating.HeatingDevice;
+import li.klass.fhem.domain.heating.WindowOpenTempDevice;
 import li.klass.fhem.domain.heating.schedule.WeekProfile;
 import li.klass.fhem.domain.heating.schedule.configuration.MAXConfiguration;
 import li.klass.fhem.domain.heating.schedule.interval.FilledTemperatureInterval;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ValueDescriptionUtil;
 import li.klass.fhem.util.ValueExtractUtil;
-import org.w3c.dom.NamedNodeMap;
-
-import java.util.List;
 
 import static li.klass.fhem.service.graph.description.SeriesType.ACTUATOR;
 import static li.klass.fhem.service.graph.description.SeriesType.DESIRED_TEMPERATURE;
@@ -54,7 +59,6 @@ import static li.klass.fhem.service.graph.description.SeriesType.TEMPERATURE;
 import static li.klass.fhem.util.ValueDescriptionUtil.desiredTemperatureToString;
 
 @SuppressWarnings("unused")
-@FloorplanViewSettings(showState = true)
 @DetailOverviewViewSettings(showState = true)
 @SupportsWidget(TemperatureWidgetView.class)
 public class MaxDevice extends ToggleableDevice<MaxDevice> implements DesiredTempDevice,

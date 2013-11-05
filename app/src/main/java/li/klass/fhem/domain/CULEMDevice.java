@@ -24,22 +24,24 @@
 
 package li.klass.fhem.domain;
 
+import java.util.List;
+
 import li.klass.fhem.R;
-import li.klass.fhem.appwidget.annotation.*;
+import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
+import li.klass.fhem.appwidget.annotation.SupportsWidget;
+import li.klass.fhem.appwidget.annotation.WidgetMediumLine1;
+import li.klass.fhem.appwidget.annotation.WidgetMediumLine2;
+import li.klass.fhem.appwidget.annotation.WidgetMediumLine3;
 import li.klass.fhem.appwidget.view.widget.medium.MediumInformationWidgetView;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceChart;
-import li.klass.fhem.domain.genericview.FloorplanViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ValueDescriptionUtil;
 import li.klass.fhem.util.ValueExtractUtil;
 
-import java.util.List;
-
 import static li.klass.fhem.service.graph.description.SeriesType.CURRENT_USAGE;
 
-@FloorplanViewSettings(showState = true)
 @SupportsWidget(MediumInformationWidgetView.class)
 @SuppressWarnings("unused")
 public class CULEMDevice extends Device<CULEMDevice> {

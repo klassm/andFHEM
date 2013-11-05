@@ -24,25 +24,24 @@
 
 package li.klass.fhem.domain;
 
-import li.klass.fhem.R;
-import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
-import li.klass.fhem.domain.core.DeviceChart;
-import li.klass.fhem.domain.core.DimmableDiscreteStatesDevice;
-import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
-import li.klass.fhem.domain.genericview.FloorplanViewSettings;
-import li.klass.fhem.domain.genericview.ShowField;
-import li.klass.fhem.service.graph.description.ChartSeriesDescription;
-import li.klass.fhem.util.NumberSystemUtil;
 import org.w3c.dom.NamedNodeMap;
 
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
+import li.klass.fhem.R;
+import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
+import li.klass.fhem.domain.core.DeviceChart;
+import li.klass.fhem.domain.core.DimmableDiscreteStatesDevice;
+import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
+import li.klass.fhem.domain.genericview.ShowField;
+import li.klass.fhem.service.graph.description.ChartSeriesDescription;
+import li.klass.fhem.util.NumberSystemUtil;
+
 import static li.klass.fhem.service.graph.description.SeriesType.TOGGLE_STATE;
 
 @DetailOverviewViewSettings(showState = true)
-@FloorplanViewSettings()
 @SuppressWarnings("unused")
 public class FS20Device extends DimmableDiscreteStatesDevice<FS20Device> implements Comparable<FS20Device>, Serializable {
 

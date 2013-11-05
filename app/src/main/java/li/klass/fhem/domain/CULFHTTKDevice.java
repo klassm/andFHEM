@@ -24,15 +24,13 @@
 
 package li.klass.fhem.domain;
 
-import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
-import li.klass.fhem.domain.core.Device;
-import li.klass.fhem.domain.genericview.FloorplanViewSettings;
-import li.klass.fhem.domain.genericview.ShowField;
-
 import org.w3c.dom.NamedNodeMap;
 
+import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
+import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.genericview.ShowField;
+
 @SuppressWarnings("unused")
-@FloorplanViewSettings(showState = true)
 public class CULFHTTKDevice extends Device<CULFHTTKDevice> {
     private String lastWindowState;
     private String windowState = "???";

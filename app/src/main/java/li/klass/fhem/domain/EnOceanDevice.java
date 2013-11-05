@@ -30,12 +30,10 @@ import li.klass.fhem.appwidget.view.widget.AppWidgetView;
 import li.klass.fhem.appwidget.view.widget.medium.ToggleWidgetView;
 import li.klass.fhem.domain.core.DimmableDevice;
 import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
-import li.klass.fhem.domain.genericview.FloorplanViewSettings;
 import li.klass.fhem.util.ValueExtractUtil;
 
 @SuppressWarnings("unused")
 @DetailOverviewViewSettings(showState = true)
-@FloorplanViewSettings(showState = true)
 public class EnOceanDevice extends DimmableDevice<EnOceanDevice> {
 
     public enum SubType {

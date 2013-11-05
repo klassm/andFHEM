@@ -41,7 +41,6 @@ import li.klass.fhem.appwidget.view.widget.medium.TemperatureWidgetView;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.fht.FHTMode;
-import li.klass.fhem.domain.genericview.FloorplanViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.domain.heating.DesiredTempDevice;
 import li.klass.fhem.domain.heating.HeatingDevice;
@@ -59,7 +58,6 @@ import static li.klass.fhem.service.graph.description.SeriesType.ACTUATOR;
 import static li.klass.fhem.service.graph.description.SeriesType.DESIRED_TEMPERATURE;
 import static li.klass.fhem.service.graph.description.SeriesType.TEMPERATURE;
 
-@FloorplanViewSettings
 @SupportsWidget({TemperatureWidgetView.class, MediumInformationWidgetView.class})
 @SuppressWarnings("unused")
 public class FHTDevice extends Device<FHTDevice> implements DesiredTempDevice,

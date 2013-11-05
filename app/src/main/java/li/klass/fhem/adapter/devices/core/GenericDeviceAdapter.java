@@ -30,7 +30,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -198,32 +197,6 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
     @Override
     protected Intent onFillDeviceDetailIntent(Context context, Device device, Intent intent) {
         return intent;
-    }
-
-    @Override
-    public boolean supportsFloorplan(D device) {
-        return deviceClass.isAnnotationPresent(FloorplanViewSettings.class);
-    }
-
-    @Override
-    public View getFloorplanView(Context context, D device) {
-        if (!supportsFloorplan(device)) return null;
-
-        LinearLayout layout = new LinearLayout(context);
-        layout.setOrientation(LinearLayout.VERTICAL);
-        layout.setGravity(Gravity.CENTER_HORIZONTAL);
-        layout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-
-        TextView deviceName = new TextView(context);
-        deviceName.setText(device.getAliasOrName() + "  ");
-        deviceName.setMaxLines(1);
-        deviceName.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT));
-        layout.addView(deviceName);
-
-        fillFloorplanView(context, device, layout, deviceClass.getAnnotation(FloorplanViewSettings.class));
-
-        return layout;
     }
 
     protected void fillFloorplanView(Context context, D device, LinearLayout layout, FloorplanViewSettings viewSettings) {
