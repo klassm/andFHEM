@@ -40,9 +40,6 @@ import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.ToggleButton;
-
-import com.ensequence.socialmediatestharness.ui.FlowLayout;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -55,6 +52,7 @@ import java.util.Map;
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewAction;
+import li.klass.fhem.adapter.devices.genericui.WebCmdActionRow;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
@@ -336,35 +334,14 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
         return createTableRow(inflater, layout, resource, value, description);
     }
 
-    private TableRow createWebCmdTableRow(LayoutInflater inflater, TableLayout layout, final Device device) {
+    private TableRow createWebCmdTableRow(LayoutInflater inflater, TableLayout layout, final D device) {
         if (ArrayUtil.isEmpty(device.getWebCmd())) return null;
         final Context context = inflater.getContext();
 
-        TableRow tableRow = (TableRow) inflater.inflate(R.layout.device_detail_webcmd, null);
-        FlowLayout holder = (FlowLayout) tableRow.findViewById(R.id.webcmdHolder);
-
-        for (final String cmd : device.getWebCmd()) {
-            ToggleButton button = (ToggleButton) inflater.inflate(R.layout.device_detail_togglebutton, null);
-            button.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.theme_toggle_default_normal));
-
-            button.setText(cmd);
-            button.setTextOn(cmd);
-            button.setTextOff(cmd);
-
-            button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(Actions.DEVICE_SET_STATE);
-                    intent.putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, cmd);
-                    intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
-                    context.startService(intent);
-                }
-            });
-            holder.addView(button);
-        }
+        TableRow tableRow = new WebCmdActionRow<D>(WebCmdActionRow.LAYOUT_DETAIL)
+                .createRow(context, inflater, device);
 
         layout.addView(tableRow);
-
 
         return tableRow;
     }

@@ -29,15 +29,18 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
+
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.genericui.OnOffActionRow;
 import li.klass.fhem.adapter.devices.genericui.ToggleActionRow;
+import li.klass.fhem.adapter.devices.genericui.WebCmdActionRow;
 import li.klass.fhem.domain.core.ToggleableDevice;
 import li.klass.fhem.domain.genericview.FloorplanViewSettings;
 import li.klass.fhem.util.device.FloorplanUtil;
 
 import static li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener.NotificationDeviceType.TOGGLEABLE_AND_NOT_DIMMABLE;
 import static li.klass.fhem.domain.core.ToggleableDevice.ButtonHookType.TOGGLE_DEVICE;
+import static li.klass.fhem.domain.core.ToggleableDevice.ButtonHookType.WEBCMD_DEVICE;
 
 public class ToggleableAdapter<D extends ToggleableDevice<D>> extends GenericDeviceAdapter<D> {
     public ToggleableAdapter(Class<D> deviceClass) {
@@ -70,29 +73,43 @@ public class ToggleableAdapter<D extends ToggleableDevice<D>> extends GenericDev
         });
     }
 
-    protected <T extends ToggleableDevice<D>> void addOverviewSwitchActionRow(Context context, T device, TableLayout layout) {
-        if (device.isSpecialButtonDevice() && device.getButtonHookType() != TOGGLE_DEVICE) {
-            addSwitchActionRow(context, device, layout, OnOffActionRow.LAYOUT_OVERVIEW);
+    protected <T extends ToggleableDevice<T>> void addOverviewSwitchActionRow(Context context, T device, TableLayout layout) {
+        ToggleableDevice.ButtonHookType buttonHookType = device.getButtonHookType();
+        if (device.isSpecialButtonDevice() && buttonHookType != TOGGLE_DEVICE) {
+            if (buttonHookType == WEBCMD_DEVICE) {
+                addWebCmdOverviewActionRow(context, device, layout);
+            } else {
+                addSwitchActionRow(context, device, layout, OnOffActionRow.LAYOUT_OVERVIEW);
+            }
         } else {
             addSwitchActionRow(context, device, layout, ToggleActionRow.LAYOUT_OVERVIEW);
         }
     }
 
-    protected <T extends ToggleableDevice<D>> void addDetailSwitchActionRow(Context context, T device, TableLayout layout) {
-        if (device.isSpecialButtonDevice() && device.getButtonHookType() != TOGGLE_DEVICE) {
+    protected <T extends ToggleableDevice<T>> void addDetailSwitchActionRow(Context context, T device, TableLayout layout) {
+        ToggleableDevice.ButtonHookType buttonHookType = device.getButtonHookType();
+        if (device.isSpecialButtonDevice() && buttonHookType != TOGGLE_DEVICE) {
             addSwitchActionRow(context, device, layout, OnOffActionRow.LAYOUT_DETAIL);
         } else {
             addSwitchActionRow(context, device, layout, ToggleActionRow.LAYOUT_DETAIL);
         }
     }
 
+    private <T extends ToggleableDevice<T>> void addWebCmdOverviewActionRow(Context context, T device,
+                                                                            TableLayout tableLayout) {
+        tableLayout.addView(new WebCmdActionRow<T>(device.getName(), WebCmdActionRow.LAYOUT_OVERVIEW)
+                .createRow(context, inflater, device));
+    }
+
     @SuppressWarnings("unchecked")
-    private <T extends ToggleableDevice<D>> void addSwitchActionRow(Context context, T device, TableLayout layout, int rowId) {
-        if (device.isSpecialButtonDevice() && device.getButtonHookType() != TOGGLE_DEVICE) {
-            layout.addView(new OnOffActionRow<T>(device.getAliasOrName(), rowId)
+    private <T extends ToggleableDevice<T>> void addSwitchActionRow(Context context, T device,
+                                                                    TableLayout tableLayout, int layoutId) {
+        ToggleableDevice.ButtonHookType buttonHookType = device.getButtonHookType();
+        if (device.isSpecialButtonDevice() && buttonHookType != TOGGLE_DEVICE) {
+            tableLayout.addView(new OnOffActionRow<T>(device.getAliasOrName(), layoutId)
                     .createRow(context, inflater, device));
         } else {
-            layout.addView(new ToggleActionRow<T>(device.getAliasOrName(), rowId)
+            tableLayout.addView(new ToggleActionRow<T>(device.getAliasOrName(), layoutId)
                     .createRow(context, inflater, device));
         }
     }

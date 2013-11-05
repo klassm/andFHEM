@@ -24,7 +24,12 @@
 
 package li.klass.fhem.domain.core;
 
-import static li.klass.fhem.domain.core.ToggleableDevice.ButtonHookType.*;
+import static li.klass.fhem.domain.core.ToggleableDevice.ButtonHookType.NORMAL;
+import static li.klass.fhem.domain.core.ToggleableDevice.ButtonHookType.OFF_DEVICE;
+import static li.klass.fhem.domain.core.ToggleableDevice.ButtonHookType.ON_DEVICE;
+import static li.klass.fhem.domain.core.ToggleableDevice.ButtonHookType.ON_OFF_DEVICE;
+import static li.klass.fhem.domain.core.ToggleableDevice.ButtonHookType.TOGGLE_DEVICE;
+import static li.klass.fhem.domain.core.ToggleableDevice.ButtonHookType.WEBCMD_DEVICE;
 
 @SuppressWarnings("unused")
 public abstract class ToggleableDevice<T extends Device> extends Device<T> {
@@ -34,7 +39,7 @@ public abstract class ToggleableDevice<T extends Device> extends Device<T> {
     private String offStateName = "off";
 
     public enum ButtonHookType {
-        NORMAL, ON_OFF_DEVICE, ON_DEVICE, OFF_DEVICE, TOGGLE_DEVICE
+        NORMAL, ON_OFF_DEVICE, ON_DEVICE, OFF_DEVICE, TOGGLE_DEVICE, WEBCMD_DEVICE
     }
 
     private ButtonHookType buttonHookType = NORMAL;
@@ -72,6 +77,10 @@ public abstract class ToggleableDevice<T extends Device> extends Device<T> {
 
     public void readTOGGLEDEVICE(String value) {
         readButtonHookType(value, TOGGLE_DEVICE);
+    }
+
+    public void readWEBCMDDEVICE(String value) {
+        readButtonHookType(value, WEBCMD_DEVICE);
     }
 
     public void readONSTATENAME(String value) {
