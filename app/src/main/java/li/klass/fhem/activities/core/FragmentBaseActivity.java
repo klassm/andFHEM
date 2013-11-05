@@ -529,16 +529,10 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
                         android.R.anim.slide_in_left, android.R.anim.slide_out_right);
         if (hasNavigation) {
             transaction.replace(R.id.navigation, navigationFragment, NAVIGATION_TAG);
-        } else {
-            BaseFragment oldNavigationFragment = getNavigationFragment();
-            if (oldNavigationFragment != null) {
-                transaction.remove(oldNavigationFragment);
-            }
         }
         transaction.replace(R.id.content, contentFragment, CONTENT_TAG);
 
         transaction.commit();
-        fragmentManager.executePendingTransactions();
 
         updateNavigationVisibility(navigationFragment, contentFragment);
     }
