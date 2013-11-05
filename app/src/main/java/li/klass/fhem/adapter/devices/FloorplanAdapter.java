@@ -26,15 +26,12 @@ package li.klass.fhem.adapter.devices;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 
-import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.FloorplanDevice;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.fragments.FragmentType;
-import li.klass.fhem.util.DialogUtil;
 
 public class FloorplanAdapter extends GenericDeviceAdapter<FloorplanDevice> {
     public FloorplanAdapter() {
@@ -43,11 +40,6 @@ public class FloorplanAdapter extends GenericDeviceAdapter<FloorplanDevice> {
 
     @Override
     protected Intent onFillDeviceDetailIntent(Context context, Device device, Intent intent) {
-        if (Build.VERSION.SDK_INT < 11) {
-            String text = String.format(context.getString(R.string.feature_requires_android_version), 3);
-            DialogUtil.showAlertDialog(context, R.string.android_version, text);
-            return null;
-        }
         intent.putExtra(BundleExtraKeys.FRAGMENT, FragmentType.FLOORPLAN);
         intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
         return intent;

@@ -142,30 +142,39 @@ public class FloorplanFragment extends BaseFragment {
                 String script = "javascript:" +
 
                         // hide floorplan navigation elements
-                        "document.getElementById(\"floorplans\").style.display=\"none\";" +
-                        "document.getElementById(\"fpmenu\").style.display=\"none\";" +
-                        "document.getElementById(\"logo\").style.display=\"none\";" +
+                        "var floorplans = document.getElementById(\"floorplans\");" +
+                        "if (!! floorplans) floorplans.style.display=\"none\";" +
+
+                        "var fpmenu = document.getElementById(\"fpmenu\");" +
+                        "if (!! fpmenu) fpmenu.style.display=\"none\";" +
+
+                        "var logo = document.getElementById(\"logo\");" +
+                        "if (!! logo) logo.style.display=\"none\";" +
 
                         // shift the background image to left, compute the left offset
                         "var backImg = document.getElementById(\"backimg\"); " +
-                        "var backImgOffset = window.getComputedStyle(backImg, null).getPropertyValue(\"left\").replace(\"px\", \"\");" +
-                        "document.getElementById(\"backimg\").style.left=\"0\";" +
+                        "if (!! backImg) {" +
+                        "  var backImgOffset = window.getComputedStyle(backImg, null).getPropertyValue(\"left\").replace(\"px\", \"\");" +
+                        "  document.getElementById(\"backimg\").style.left=\"0\";" +
+                        "}" +
 
                         // move each child element to left by using the computed background image offset
                         "var elements = document.getElementById(\"floorplan\").getElementsByTagName(\"div\"); " +
-                        "for (var i = 0; i < elements.length; i++) { " +
-                        "var left = elements[i].style.left.replace(\"px\", \"\"); " +
-                        "elements[i].style.left = (left - backImgOffset) + \"px\" " +
+                        "if (!! elements) {" +
+                        "  for (var i = 0; i < elements.length; i++) { " +
+                        "    var left = elements[i].style.left.replace(\"px\", \"\"); " +
+                        "    elements[i].style.left = (left - backImgOffset) + \"px\" " +
+                        "  }" +
                         "};" +
 
                         // override the implemented FW_cmd function to allow page
                         // reloading when the XMLHttpRequest is finished
                         "function FW_cmd(arg) { " +
-                        "var req = new XMLHttpRequest(); " +
-                        "req.onreadystatechange=function() { " +
-                        "if (req.readyState == 4 && req.status == 200) {" +
-                        "window.location.reload();" +
-                        "}" +
+                        "  var req = new XMLHttpRequest(); " +
+                        "  req.onreadystatechange=function() { " +
+                        "  if (req.readyState == 4 && req.status == 200) {" +
+                        "    window.location.reload();" +
+                        "  }" +
                         "};" +
                         "req.open(\"GET\", arg, true); " +
                         "req.send(null);}";
