@@ -85,9 +85,7 @@ public class EnOceanDevice extends DimmableDevice<EnOceanDevice> {
 
     @Override
     public String getDimStateForPosition(int position) {
-        if (position == getDimUpperBound()) return "on";
-        if (position == getDimLowerBound()) return "off";
-        return "dim" + position + "%";
+        return "dim " + position;
     }
 
     @Override
