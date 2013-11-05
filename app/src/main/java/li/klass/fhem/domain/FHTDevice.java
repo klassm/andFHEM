@@ -24,8 +24,18 @@
 
 package li.klass.fhem.domain;
 
+import org.w3c.dom.NamedNodeMap;
+
+import java.util.List;
+
 import li.klass.fhem.R;
-import li.klass.fhem.appwidget.annotation.*;
+import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
+import li.klass.fhem.appwidget.annotation.SupportsWidget;
+import li.klass.fhem.appwidget.annotation.WidgetMediumLine1;
+import li.klass.fhem.appwidget.annotation.WidgetMediumLine2;
+import li.klass.fhem.appwidget.annotation.WidgetMediumLine3;
+import li.klass.fhem.appwidget.annotation.WidgetTemperatureAdditionalField;
+import li.klass.fhem.appwidget.annotation.WidgetTemperatureField;
 import li.klass.fhem.appwidget.view.widget.medium.MediumInformationWidgetView;
 import li.klass.fhem.appwidget.view.widget.medium.TemperatureWidgetView;
 import li.klass.fhem.domain.core.Device;
@@ -44,9 +54,6 @@ import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ValueDescriptionUtil;
 import li.klass.fhem.util.ValueExtractUtil;
 import li.klass.fhem.util.ValueUtil;
-import org.w3c.dom.NamedNodeMap;
-
-import java.util.List;
 
 import static li.klass.fhem.service.graph.description.SeriesType.ACTUATOR;
 import static li.klass.fhem.service.graph.description.SeriesType.DESIRED_TEMPERATURE;
@@ -64,22 +71,30 @@ public class FHTDevice extends Device<FHTDevice> implements DesiredTempDevice,
     @WidgetTemperatureAdditionalField(description = ResourceIdMapper.actuator)
     @WidgetMediumLine3(description = ResourceIdMapper.actuator)
     private String actuator;
+
     private FHTMode heatingMode;
-    @ShowField(description = ResourceIdMapper.desiredTemperature)
+
+    @ShowField(description = ResourceIdMapper.desiredTemperature, showAfter = "temperature")
     @WidgetMediumLine2(description = ResourceIdMapper.desiredTemperature)
     private double desiredTemp = MINIMUM_TEMPERATURE;
-    @ShowField(description = ResourceIdMapper.dayTemperature)
+
+    @ShowField(description = ResourceIdMapper.dayTemperature, showAfter = "desiredTemp")
     private double dayTemperature = MINIMUM_TEMPERATURE;
-    @ShowField(description = ResourceIdMapper.nightTemperature)
+
+    @ShowField(description = ResourceIdMapper.nightTemperature, showAfter = "dayTemperature")
     private double nightTemperature = MINIMUM_TEMPERATURE;
-    @ShowField(description = ResourceIdMapper.windowOpenTemp)
+
+    @ShowField(description = ResourceIdMapper.windowOpenTemp, showAfter = "nightTemperature")
     private double windowOpenTemp = MINIMUM_TEMPERATURE;
+
     @ShowField(description = ResourceIdMapper.warnings)
     private String warnings;
+
     @ShowField(description = ResourceIdMapper.temperature, showInOverview = true, showInFloorplan = true)
     @WidgetTemperatureField
     @WidgetMediumLine1
     private String temperature;
+
     @ShowField(description = ResourceIdMapper.battery)
     private String battery;
 
