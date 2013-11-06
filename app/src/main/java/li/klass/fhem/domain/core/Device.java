@@ -37,7 +37,7 @@ import java.util.Map;
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
-import li.klass.fhem.appwidget.view.widget.AppWidgetView;
+import li.klass.fhem.appwidget.view.widget.base.AppWidgetView;
 import li.klass.fhem.domain.FileLogDevice;
 import li.klass.fhem.domain.floorplan.Coordinate;
 import li.klass.fhem.domain.floorplan.FloorplanPosition;

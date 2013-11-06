@@ -23,10 +23,10 @@
 
 package li.klass.fhem.appwidget.annotation;
 
-import li.klass.fhem.appwidget.view.widget.AppWidgetView;
-
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+
+import li.klass.fhem.appwidget.view.widget.base.AppWidgetView;
 
 @Retention(RetentionPolicy.RUNTIME)
 public @interface SupportsWidget {

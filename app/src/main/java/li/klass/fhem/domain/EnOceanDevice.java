@@ -26,7 +26,7 @@ package li.klass.fhem.domain;
 
 import android.util.Log;
 
-import li.klass.fhem.appwidget.view.widget.AppWidgetView;
+import li.klass.fhem.appwidget.view.widget.base.AppWidgetView;
 import li.klass.fhem.appwidget.view.widget.medium.ToggleWidgetView;
 import li.klass.fhem.domain.core.DimmableDevice;
 import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;

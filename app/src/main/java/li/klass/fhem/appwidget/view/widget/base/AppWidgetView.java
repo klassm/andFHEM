@@ -21,7 +21,7 @@
  *   51 Franklin Street, Fifth Floor
  */
 
-package li.klass.fhem.appwidget.view.widget;
+package li.klass.fhem.appwidget.view.widget.base;
 
 import android.app.PendingIntent;
 import android.content.Context;
@@ -82,17 +82,30 @@ public abstract class AppWidgetView {
     }
 
     protected void openDeviceDetailPageWhenClicking(int viewId, RemoteViews view, Device device, WidgetConfiguration widgetConfiguration) {
+        openDeviceDetailPageWhenClicking(viewId, view, device, widgetConfiguration.widgetId);
+    }
+
+    protected void openDeviceDetailPageWhenClicking(int viewId, RemoteViews view, Device device, int widgetId) {
+        PendingIntent pendingIntent = createOpenDeviceDetailPagePendingIntent(device, widgetId);
+
+        view.setOnClickPendingIntent(viewId, pendingIntent);
+    }
+
+    protected PendingIntent createOpenDeviceDetailPagePendingIntent(Device device, int widgetId) {
         Context context = AndFHEMApplication.getContext();
 
+        Intent openIntent = createOpenDeviceDetailPageIntent(device, context);
+        return PendingIntent.getActivity(context, widgetId, openIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+    }
+
+    protected Intent createOpenDeviceDetailPageIntent(Device device, Context context) {
         Intent openIntent = new Intent(context, AndFHEMMainActivity.class);
         openIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         openIntent.putExtra(BundleExtraKeys.FRAGMENT_NAME, DeviceDetailFragment.class.getName());
         openIntent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
         openIntent.putExtra("unique", "foobar://" + SystemClock.elapsedRealtime());
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, widgetConfiguration.widgetId, openIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT);
-
-        view.setOnClickPendingIntent(viewId, pendingIntent);
+        return openIntent;
     }
 
     public boolean shouldSetDeviceName() {

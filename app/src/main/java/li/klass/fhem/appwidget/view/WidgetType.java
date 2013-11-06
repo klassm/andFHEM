@@ -29,7 +29,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import li.klass.fhem.appwidget.WidgetConfigurationCreatedCallback;
-import li.klass.fhem.appwidget.view.widget.AppWidgetView;
+import li.klass.fhem.appwidget.view.widget.base.AppWidgetView;
+import li.klass.fhem.appwidget.view.widget.big.BigWeatherForecastWidget;
 import li.klass.fhem.appwidget.view.widget.medium.DimWidgetView;
 import li.klass.fhem.appwidget.view.widget.medium.HeatingWidgetView;
 import li.klass.fhem.appwidget.view.widget.medium.MediumInformationWidgetView;
@@ -49,7 +50,7 @@ public enum WidgetType {
     INFORMATION(new MediumInformationWidgetView(), WidgetSize.MEDIUM),
     HEATING(new HeatingWidgetView(), WidgetSize.MEDIUM),
     WEATHER_FORECAST(new MediumWeatherForecastWidget(), WidgetSize.MEDIUM),
-//    WEATHER_FORECAST_BIG(new MediumWeatherForecastWidget(), WidgetSize.BIG),
+    WEATHER_FORECAST_BIG(new BigWeatherForecastWidget(), WidgetSize.BIG),
     DIM(new DimWidgetView(), WidgetSize.MEDIUM),
     TARGET_STATE(new TargetStateWidgetView(), WidgetSize.MEDIUM);
 

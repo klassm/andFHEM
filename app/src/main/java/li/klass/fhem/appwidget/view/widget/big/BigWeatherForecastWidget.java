@@ -24,20 +24,25 @@
 
 package li.klass.fhem.appwidget.view.widget.big;
 
+import android.annotation.TargetApi;
+import android.app.PendingIntent;
+import android.appwidget.AppWidgetManager;
 import android.content.Context;
-import android.graphics.Bitmap;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
 import android.widget.RemoteViews;
 
-import java.util.List;
-
+import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.appwidget.WidgetConfiguration;
-import li.klass.fhem.appwidget.view.widget.AppWidgetView;
+import li.klass.fhem.appwidget.service.AppWidgetListViewUpdateRemoteViewsService;
+import li.klass.fhem.appwidget.view.widget.base.ListAppWidgetView;
+import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.WeatherDevice;
 import li.klass.fhem.domain.core.Device;
-import li.klass.fhem.util.ImageUtil;
 
-public class BigWeatherForecastWidget extends AppWidgetView {
+public class BigWeatherForecastWidget extends ListAppWidgetView {
     @Override
     public int getWidgetName() {
         return R.string.widget_weather_forecast;
@@ -45,27 +50,59 @@ public class BigWeatherForecastWidget extends AppWidgetView {
 
     @Override
     protected int getContentView() {
-        return R.layout.appwidget_weather;
+        return R.layout.appwidget_forecast_big;
+    }
+
+    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+    @Override
+    protected void fillWidgetView(Context context, RemoteViews view, Device<?> device,
+                                  WidgetConfiguration widgetConfiguration) {
+
+        Intent listIntent = new Intent(context, AppWidgetListViewUpdateRemoteViewsService.class);
+        listIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetConfiguration.widgetId);
+        listIntent.putExtra(BundleExtraKeys.APP_WIDGET_ID, widgetConfiguration.widgetId);
+        listIntent.putExtra(BundleExtraKeys.APP_WIDGET_TYPE_NAME, widgetConfiguration.widgetType.name());
+        listIntent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
+        listIntent.setData(Uri.parse(listIntent.toUri(Intent.URI_INTENT_SCHEME)));
+
+        view.setRemoteAdapter(R.id.forecastList, listIntent);
+
+        PendingIntent pendingIntent = createOpenDeviceDetailPagePendingIntent(device, widgetConfiguration.widgetId);
+        view.setOnClickPendingIntent(R.id.main, pendingIntent);
+        view.setPendingIntentTemplate(R.id.forecastList, pendingIntent);
     }
 
     @Override
-    protected void fillWidgetView(Context context, RemoteViews view, Device<?> device, WidgetConfiguration widgetConfiguration) {
+    public boolean supports(Device<?> device) {
+        if (AndFHEMApplication.getAndroidSDKLevel() < Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            return false;
+        }
+        return device instanceof WeatherDevice;
+    }
+
+    @Override
+    protected int getListItemCount(Device<?> device) {
         WeatherDevice weatherDevice = (WeatherDevice) device;
-        List<WeatherDevice.WeatherDeviceForecast> forecasts = weatherDevice.getForecasts();
-        WeatherDevice.WeatherDeviceForecast forecast = forecasts.get(0);
+        return weatherDevice.getForecasts().size();
+    }
+
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    @Override
+    protected RemoteViews getRemoteViewAt(Context context, Device<?> device, int position, int widgetId) {
+        WeatherDevice weatherDevice = (WeatherDevice) device;
+
+        RemoteViews view = new RemoteViews(context.getPackageName(),
+                R.layout.appwidget_forecast_big_item);
+
+        WeatherDevice.WeatherDeviceForecast forecast = weatherDevice.getForecasts().get(position);
 
         view.setTextViewText(R.id.day_description, forecast.getDayOfWeek() + ", " + forecast.getDate());
         view.setTextViewText(R.id.day_condition, forecast.getCondition());
         view.setTextViewText(R.id.day_temperature, forecast.getLowTemperature() + " - " + forecast.getHighTemperature());
 
-        Bitmap bitmap = ImageUtil.loadBitmap(WeatherDevice.IMAGE_URL_PREFIX + forecast.getIcon() + ".png?time=" + System.currentTimeMillis());
-        view.setImageViewBitmap(R.id.day_image, bitmap);
+        loadImageAndSetIn(view, R.id.day_image, forecast.getUrl(), false);
 
-        openDeviceDetailPageWhenClicking(R.id.main, view, device, widgetConfiguration);
-    }
-
-    @Override
-    public boolean supports(Device<?> device) {
-        return device instanceof WeatherDevice;
+        view.setOnClickFillInIntent(R.id.forecastItem, new Intent());
+        return view;
     }
 }

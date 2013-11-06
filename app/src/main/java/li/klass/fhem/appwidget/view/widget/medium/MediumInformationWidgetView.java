@@ -25,12 +25,13 @@ package li.klass.fhem.appwidget.view.widget.medium;
 
 import android.content.Context;
 import android.widget.RemoteViews;
+
 import li.klass.fhem.R;
 import li.klass.fhem.appwidget.WidgetConfiguration;
 import li.klass.fhem.appwidget.annotation.WidgetMediumLine1;
 import li.klass.fhem.appwidget.annotation.WidgetMediumLine2;
 import li.klass.fhem.appwidget.annotation.WidgetMediumLine3;
-import li.klass.fhem.appwidget.view.widget.AppWidgetView;
+import li.klass.fhem.appwidget.view.widget.base.AppWidgetView;
 import li.klass.fhem.domain.core.Device;
 
 import static li.klass.fhem.util.ReflectionUtil.getValueAndDescriptionForAnnotation;

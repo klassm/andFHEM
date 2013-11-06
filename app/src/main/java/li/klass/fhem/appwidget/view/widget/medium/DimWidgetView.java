@@ -25,16 +25,16 @@
 package li.klass.fhem.appwidget.view.widget.medium;
 
 import android.app.PendingIntent;
-import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
 import android.widget.RemoteViews;
+
 import li.klass.fhem.R;
 import li.klass.fhem.appwidget.WidgetConfiguration;
-import li.klass.fhem.appwidget.view.widget.AppWidgetView;
+import li.klass.fhem.appwidget.view.widget.base.AppWidgetView;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;

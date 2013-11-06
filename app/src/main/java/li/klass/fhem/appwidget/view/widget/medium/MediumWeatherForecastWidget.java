@@ -30,7 +30,7 @@ import java.util.List;
 
 import li.klass.fhem.R;
 import li.klass.fhem.appwidget.WidgetConfiguration;
-import li.klass.fhem.appwidget.view.widget.AppWidgetView;
+import li.klass.fhem.appwidget.view.widget.base.AppWidgetView;
 import li.klass.fhem.domain.WeatherDevice;
 import li.klass.fhem.domain.core.Device;
 
@@ -55,8 +55,7 @@ public class MediumWeatherForecastWidget extends AppWidgetView {
         view.setTextViewText(R.id.day_condition, forecast.getCondition());
         view.setTextViewText(R.id.day_temperature, forecast.getLowTemperature() + " - " + forecast.getHighTemperature());
 
-        String url = WeatherDevice.IMAGE_URL_PREFIX + forecast.getIcon() + ".png";
-        loadImageAndSetIn(view, R.id.day_image, url, false);
+        loadImageAndSetIn(view, R.id.day_image, forecast.getUrl(), false);
 
         openDeviceDetailPageWhenClicking(R.id.main, view, device, widgetConfiguration);
     }

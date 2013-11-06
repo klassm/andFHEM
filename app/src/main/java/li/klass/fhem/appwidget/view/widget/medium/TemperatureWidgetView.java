@@ -25,11 +25,12 @@ package li.klass.fhem.appwidget.view.widget.medium;
 
 import android.content.Context;
 import android.widget.RemoteViews;
+
 import li.klass.fhem.R;
 import li.klass.fhem.appwidget.WidgetConfiguration;
 import li.klass.fhem.appwidget.annotation.WidgetTemperatureAdditionalField;
 import li.klass.fhem.appwidget.annotation.WidgetTemperatureField;
-import li.klass.fhem.appwidget.view.widget.AppWidgetView;
+import li.klass.fhem.appwidget.view.widget.base.AppWidgetView;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.util.ReflectionUtil;
 

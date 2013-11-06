@@ -134,6 +134,10 @@
             </intent-filter>
         </service>
 
+        <service
+            android:name=".appwidget.service.AppWidgetListViewUpdateRemoteViewsService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
+
         <service android:name=".service.intent.RoomListIntentService" android:exported="false">
             <intent-filter>
                 <action android:name="li.klass.fhem.constants.Actions.ALL_ROOMS_DEVICE_LIST"/>

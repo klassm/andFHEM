@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <!--
   ~ AndFHEM - Open Source Android application to control a FHEM home automation
   ~ server.
@@ -23,33 +24,35 @@
   ~   Boston, MA  02110-1301  USA
   -->
 
-<resources>
-    <color name="android_green">#FFA4C639</color>
-    <color name="navigationBarBackground">#FFE1F3E3</color>
-    <color name="tabPressGrey">#FFD9D9D9</color>
-    <color name="tabBackgroundGrey">#FFF6F6F6</color>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/appwidget_big"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <color name="lightGrey">#FFF6F6F6</color>
-    <color name="darkGrey">#FFD9D9D9</color>
+    <TextView
+        style="@style/appwidget_big_caption"
+        android:id="@+id/deviceName"
+        android:textSize="15sp"
+        android:padding="5dp" />
 
-    <color name="focusedColor">#FFFFE748</color>
-    <color name="thumbOuterColor">#55FFE748</color>
+    <TextView
+        android:layout_height="3dp"
+        android:layout_width="match_parent"
+        style="@style/appwidget_big_caption_content_separator"
+        android:background="@drawable/appwidget_big_caption_content_separator"/>
 
-    <color name="lightBlue">#B5C5FF</color>
+    <LinearLayout
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        style="@style/appwidget_big_content">
 
-    <color name="andFHEMDarkGreen">#079400</color>
-    <color name="widgetNewBackground">#F0079400</color>
-    <color name="widgetNewCaptionBackground">#BB242424</color>
-    <color name="widgetNewContentBackground">#BBFFFFFF</color>
+        <ListView
+            android:listSelector="@drawable/actionbar_item_bg_selectable"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:id="@+id/forecastList"/>
 
-    <color name="widgetBackground">#AAE1E1E1</color>
-
-    <color name="activeGreen">#E0FFD4</color>
-    <color name="offRed">#44FF0000</color>
-    <color name="red">#FF0000</color>
-
-    <color name="holoDark">#242424</color>
-
-    <color name="black">#FF000000</color>
-    <color name="whitegrey">#FFF2F2F2</color>
-</resources>
+    </LinearLayout>
+</LinearLayout>

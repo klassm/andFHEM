@@ -27,18 +27,21 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+
+import java.util.List;
+
 import li.klass.fhem.R;
 import li.klass.fhem.activities.base.DeviceNameSelectionActivity;
 import li.klass.fhem.appwidget.view.WidgetSize;
 import li.klass.fhem.appwidget.view.WidgetType;
-import li.klass.fhem.appwidget.view.widget.AppWidgetView;
+import li.klass.fhem.appwidget.view.widget.base.AppWidgetView;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.core.Device;
 
-import java.util.List;
-
-import static android.appwidget.AppWidgetManager.*;
+import static android.appwidget.AppWidgetManager.ACTION_APPWIDGET_CONFIGURE;
+import static android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_ID;
+import static android.appwidget.AppWidgetManager.INVALID_APPWIDGET_ID;
 
 public abstract class AppWidgetSelectionActivity extends DeviceNameSelectionActivity {
 

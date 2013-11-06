@@ -102,6 +102,10 @@ public class WeatherDevice extends Device<WeatherDevice> {
         public String getIcon() {
             return parseIcon(icon);
         }
+
+        public String getUrl() {
+            return WeatherDevice.IMAGE_URL_PREFIX + getIcon() + ".png";
+        }
     }
 
     public static final String IMAGE_URL_PREFIX = "http://andfhem.klass.li/";

@@ -34,7 +34,7 @@ import li.klass.fhem.R;
 import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.appwidget.annotation.SupportsWidget;
 import li.klass.fhem.appwidget.annotation.WidgetTemperatureField;
-import li.klass.fhem.appwidget.view.widget.AppWidgetView;
+import li.klass.fhem.appwidget.view.widget.base.AppWidgetView;
 import li.klass.fhem.appwidget.view.widget.medium.TemperatureWidgetView;
 import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.DimmableContinuousStatesDevice;
