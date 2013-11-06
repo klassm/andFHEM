@@ -225,6 +225,10 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
         }
     }
 
+    public void readMODE(String value) {
+        readCONTROLMODE(value);
+    }
+
     @Override
     public void afterXMLRead() {
         super.afterXMLRead();
