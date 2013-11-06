@@ -143,4 +143,10 @@ public class HUEDevice extends DimmableDevice<HUEDevice> {
     public String getDimStateFieldValue() {
         return level + "";
     }
+
+    @Override
+    public boolean acceptXmlKey(String key) {
+        if ("name".equals(key)) return false;
+        return super.acceptXmlKey(key);
+    }
 }

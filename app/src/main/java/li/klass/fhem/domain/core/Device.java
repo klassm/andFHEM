@@ -24,6 +24,16 @@
 
 package li.klass.fhem.domain.core;
 
+import org.w3c.dom.NamedNodeMap;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
@@ -37,10 +47,6 @@ import li.klass.fhem.service.room.AssociatedDeviceCallback;
 import li.klass.fhem.util.ArrayUtil;
 import li.klass.fhem.util.DateFormatUtil;
 import li.klass.fhem.util.StringUtil;
-import org.w3c.dom.NamedNodeMap;
-
-import java.io.Serializable;
-import java.util.*;
 
 @SuppressWarnings("unused")
 public abstract class Device<T extends Device> implements Serializable, Comparable<T> {
@@ -468,5 +474,16 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
 
     public String[] getWebCmd() {
         return webCmd;
+    }
+
+    /**
+     * Hook called for each xml attribute of a device. If false is returned, the attribute is ignored.
+     * Note that the given key is provided in the form it is present within the xmllist. Thus,
+     * it is not, as provided within #onChildItemRead, uppercase.
+     * @param key node key
+     * @return true if the attribute is accepted, else false
+     */
+    public boolean acceptXmlKey(String key) {
+        return true;
     }
 }

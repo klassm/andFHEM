@@ -318,7 +318,12 @@ public class DeviceListParser {
             Node keyAttribute = item.getAttributes().getNamedItem("key");
             if (keyAttribute == null) continue;
 
-            String keyValue = keyAttribute.getNodeValue().toUpperCase().trim().replaceAll("[-\\.]", "_");
+            String originalKey = keyAttribute.getNodeValue().trim().replaceAll("[-\\.]", "_");
+            if (! device.acceptXmlKey(originalKey)) {
+                continue;
+            }
+
+            String keyValue = originalKey.toUpperCase();
             String nodeContent = StringEscapeUtil.unescape(item.getAttributes().getNamedItem("value").getNodeValue());
 
             if (nodeContent == null || nodeContent.length() == 0) {

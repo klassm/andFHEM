@@ -24,8 +24,6 @@
 
 package li.klass.fhem.domain.core;
 
-import org.w3c.dom.NamedNodeMap;
-
 public abstract class DimmableDevice<D extends Device<D>> extends ToggleableDevice<D> {
     public int getDimPosition() {
         int position = getPositionForDimStateInternal(getDimStateFieldValue());

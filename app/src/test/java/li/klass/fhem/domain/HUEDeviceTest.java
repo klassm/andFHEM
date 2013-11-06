@@ -24,12 +24,11 @@
 
 package li.klass.fhem.domain;
 
-import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 import org.junit.Test;
 
+import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.Is.is;
 
 public class HUEDeviceTest extends DeviceXMLParsingBase {
@@ -39,6 +38,7 @@ public class HUEDeviceTest extends DeviceXMLParsingBase {
 
         assertThat(device.getName(), is(DEFAULT_TEST_DEVICE_NAME));
         assertThat(device.getRoomConcatenated(), is(DEFAULT_TEST_ROOM_NAME));
+        assertThat(device.getAlias(), is("Extended color light 1"));
 
         assertThat(device.getBrightness(), is(254));
         assertThat(device.getBrightnessDesc(), is("254"));
