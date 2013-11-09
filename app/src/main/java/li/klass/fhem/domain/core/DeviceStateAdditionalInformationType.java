@@ -23,7 +23,6 @@
 
 package li.klass.fhem.domain.core;
 
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public enum DeviceStateAdditionalInformationType {
@@ -34,17 +33,18 @@ public enum DeviceStateAdditionalInformationType {
     TIME_WITH_SECOND("[0-9]{2}:[0-9]{2}:[0-9]{2}", "00:00:00"),
     TEMPERATURE("[0-9]*(\\.[0-9]*)?", "00.00");
 
-    private Pattern pattern;
+    private final String regex;
+    private final Pattern pattern;
     private String example;
 
     DeviceStateAdditionalInformationType(String regex, String example) {
         this.pattern = Pattern.compile(regex);
+        this.regex = regex;
         this.example = example;
     }
 
     public boolean matches(String value) {
-        Matcher matcher = pattern.matcher(value);
-        return matcher.matches();
+        return pattern.matcher(value).matches();
     }
 
     public String getExample() {

@@ -119,5 +119,17 @@ public enum DeviceStateRequiringAdditionalInformation {
     public static boolean requiresAdditionalInformation(String state) {
         return deviceStateForFHEM(state) != null;
     }
+
+    public static boolean isValidAdditionalInformationValue(String value,
+                                                      DeviceStateRequiringAdditionalInformation specialDeviceState) {
+
+        for (DeviceStateAdditionalInformationType type : specialDeviceState.getAdditionalInformationTypes()) {
+            if (type.matches(value)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
 

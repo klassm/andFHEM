@@ -36,12 +36,11 @@ import android.widget.TextView;
 import li.klass.fhem.R;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.domain.core.DeviceStateAdditionalInformationType;
 import li.klass.fhem.domain.core.DeviceStateRequiringAdditionalInformation;
 import li.klass.fhem.util.DialogUtil;
-import li.klass.fhem.util.StringUtil;
 
 import static li.klass.fhem.domain.core.DeviceStateRequiringAdditionalInformation.deviceStateForFHEM;
+import static li.klass.fhem.domain.core.DeviceStateRequiringAdditionalInformation.isValidAdditionalInformationValue;
 
 public class TargetStateAdditionalInformationActivity extends Activity {
     @Override
@@ -95,15 +94,13 @@ public class TargetStateAdditionalInformationActivity extends Activity {
                                                   DeviceStateRequiringAdditionalInformation specialDeviceState,
                                                   String state, String deviceName) {
 
-        for (DeviceStateAdditionalInformationType type : specialDeviceState.getAdditionalInformationTypes()) {
-            if (StringUtil.isBlank(additionalInformation) || !type.matches(additionalInformation)) {
-                DialogUtil.showAlertDialog(this, R.string.error, R.string.invalidInput);
-                return false;
-            }
+        if (isValidAdditionalInformationValue(additionalInformation, specialDeviceState)) {
+            switchDeviceState(state + " " + additionalInformation, deviceName);
+            return true;
+        } else {
+            DialogUtil.showAlertDialog(this, R.string.error, R.string.invalidInput);
+            return false;
         }
-
-        switchDeviceState(state + " " + additionalInformation, deviceName);
-        return true;
     }
 
     private void switchDeviceState(String newState, String deviceName) {

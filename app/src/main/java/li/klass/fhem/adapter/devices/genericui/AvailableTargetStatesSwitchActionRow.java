@@ -31,13 +31,15 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
 import android.widget.EditText;
+
 import li.klass.fhem.R;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.core.Device;
-import li.klass.fhem.domain.core.DeviceStateAdditionalInformationType;
 import li.klass.fhem.domain.core.DeviceStateRequiringAdditionalInformation;
 import li.klass.fhem.util.DialogUtil;
+
+import static li.klass.fhem.domain.core.DeviceStateRequiringAdditionalInformation.isValidAdditionalInformationValue;
 
 public class AvailableTargetStatesSwitchActionRow<D extends Device<D>> extends DeviceDetailViewButtonAction<D> {
     public AvailableTargetStatesSwitchActionRow() {
@@ -88,14 +90,11 @@ public class AvailableTargetStatesSwitchActionRow<D extends Device<D>> extends D
     private void handleAdditionalInformationValue(String value, DeviceStateRequiringAdditionalInformation specialDeviceState,
                                                   String option, D device, Context context) {
 
-        for (DeviceStateAdditionalInformationType type : specialDeviceState.getAdditionalInformationTypes()) {
-            if (!type.matches(value)) {
-                DialogUtil.showAlertDialog(context, R.string.error, R.string.invalidInput);
-                return;
-            }
+        if (isValidAdditionalInformationValue(value, specialDeviceState)) {
+            switchDeviceState(option + " " + value, device, context);
+        } else {
+            DialogUtil.showAlertDialog(context, R.string.error, R.string.invalidInput);
         }
-
-        switchDeviceState(option + " " + value, device, context);
     }
 
     private void switchDeviceState(String newState, D device, final Context context) {
