@@ -30,6 +30,7 @@ import li.klass.fhem.R;
 import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceChart;
+import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ValueDescriptionUtil;
@@ -75,5 +76,10 @@ public class GPIO4Device extends Device<GPIO4Device> {
     @Override
     public boolean isSupported() {
         return subType != null;
+    }
+
+    @Override
+    public DeviceFunctionality getDeviceFunctionality() {
+        return DeviceFunctionality.TEMPERATURE;
     }
 }

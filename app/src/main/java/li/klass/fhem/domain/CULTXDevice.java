@@ -34,6 +34,7 @@ import li.klass.fhem.appwidget.annotation.WidgetTemperatureField;
 import li.klass.fhem.appwidget.view.widget.medium.TemperatureWidgetView;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceChart;
+import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ValueDescriptionUtil;
@@ -75,6 +76,11 @@ public class CULTXDevice extends Device<CULTXDevice> {
         addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureHumidityGraph,
                 new ChartSeriesDescription(R.string.humidity, "4:humidity:0:", HUMIDITY),
                 new ChartSeriesDescription(R.string.temperature, "4:temperature:0:", TEMPERATURE)), humidity, temperature);
+    }
+
+    @Override
+    public DeviceFunctionality getDeviceFunctionality() {
+        return DeviceFunctionality.TEMPERATURE;
     }
 
 }

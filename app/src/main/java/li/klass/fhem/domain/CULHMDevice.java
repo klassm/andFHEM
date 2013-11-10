@@ -37,6 +37,7 @@ import li.klass.fhem.appwidget.annotation.WidgetTemperatureField;
 import li.klass.fhem.appwidget.view.widget.base.AppWidgetView;
 import li.klass.fhem.appwidget.view.widget.medium.TemperatureWidgetView;
 import li.klass.fhem.domain.core.DeviceChart;
+import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.DimmableContinuousStatesDevice;
 import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
@@ -74,7 +75,22 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
     private String model;
 
     public enum SubType {
-        DIMMER, SWITCH, HEATING, SMOKE_DETECTOR, THREE_STATE, TEMPERATURE_HUMIDITY, THERMOSTAT, FILL_STATE, MOTION, KEYMATIC
+        DIMMER(DeviceFunctionality.DIMMER),
+        SWITCH(DeviceFunctionality.SWITCH),
+        HEATING(DeviceFunctionality.HEATING),
+        SMOKE_DETECTOR(DeviceFunctionality.SMOKE_DETECTOR),
+        THREE_STATE(DeviceFunctionality.WINDOW),
+        TEMPERATURE_HUMIDITY(DeviceFunctionality.TEMPERATURE),
+        THERMOSTAT(DeviceFunctionality.HEATING),
+        FILL_STATE(DeviceFunctionality.FILL_STATE),
+        MOTION(DeviceFunctionality.MOTION_DETECTOR),
+        KEYMATIC(DeviceFunctionality.KEY);
+
+        private final DeviceFunctionality functionality;
+
+        SubType(DeviceFunctionality functionality) {
+            this.functionality = functionality;
+        }
     }
 
     public enum HeatingMode {
@@ -313,6 +329,14 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
         return super.formatStateTextToSet(stateToSet);
     }
 
+    @Override
+    public DeviceFunctionality getDeviceFunctionality() {
+        if (subType != null) {
+            return subType.functionality;
+        }
+        return DeviceFunctionality.UNKNOWN;
+    }
+
     public String getMeasured() {
         return measured;
     }
@@ -485,13 +509,5 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
         }
 
         return super.supportsWidget(appWidgetClass);
-    }
-
-    @Override
-    public int compareTo(CULHMDevice other) {
-        int result = subType.compareTo(other.getSubType());
-        if (result != 0) return result;
-
-        return name.compareTo(other.getName());
     }
 }

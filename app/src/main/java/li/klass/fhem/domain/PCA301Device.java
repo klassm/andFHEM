@@ -1,6 +1,7 @@
 package li.klass.fhem.domain;
 
 import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
+import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.ToggleableDevice;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.util.ValueDescriptionUtil;
@@ -31,5 +32,10 @@ public class PCA301Device extends ToggleableDevice<PCA301Device> {
 
     public String getPower() {
         return power;
+    }
+
+    @Override
+    public DeviceFunctionality getDeviceFunctionality() {
+        return DeviceFunctionality.USAGE;
     }
 }

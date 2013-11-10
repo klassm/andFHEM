@@ -30,6 +30,7 @@ import li.klass.fhem.appwidget.annotation.WidgetTemperatureAdditionalField;
 import li.klass.fhem.appwidget.annotation.WidgetTemperatureField;
 import li.klass.fhem.appwidget.view.widget.medium.TemperatureWidgetView;
 import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.domain.heating.DesiredTempDevice;
 import li.klass.fhem.util.ValueDescriptionUtil;
@@ -93,5 +94,10 @@ public class PIDDevice extends Device<PIDDevice> implements DesiredTempDevice {
 
     public String getDelta() {
         return delta;
+    }
+
+    @Override
+    public DeviceFunctionality getDeviceFunctionality() {
+        return DeviceFunctionality.HEATING;
     }
 }

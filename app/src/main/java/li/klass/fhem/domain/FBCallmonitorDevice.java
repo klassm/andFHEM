@@ -25,14 +25,17 @@
 package li.klass.fhem.domain;
 
 import android.content.Context;
+
+import org.w3c.dom.NamedNodeMap;
+
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.util.ValueDescriptionUtil;
-import org.w3c.dom.NamedNodeMap;
 
 @DetailOverviewViewSettings(showState = false, showMeasured = true)
 @SuppressWarnings("unused")
@@ -154,5 +157,10 @@ public class FBCallmonitorDevice extends Device<FBCallmonitorDevice> {
     @Override
     public boolean triggerStateNotificationOnAttributeChange() {
         return true;
+    }
+
+    @Override
+    public DeviceFunctionality getDeviceFunctionality() {
+        return DeviceFunctionality.CALL_MONITOR;
     }
 }

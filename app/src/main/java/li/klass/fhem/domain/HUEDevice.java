@@ -1,6 +1,7 @@
 package li.klass.fhem.domain;
 
 import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
+import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.DimmableDevice;
 import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
@@ -148,5 +149,10 @@ public class HUEDevice extends DimmableDevice<HUEDevice> {
     public boolean acceptXmlKey(String key) {
         if ("name".equals(key)) return false;
         return super.acceptXmlKey(key);
+    }
+
+    @Override
+    public DeviceFunctionality getDeviceFunctionality() {
+        return DeviceFunctionality.functionalityForDimmable(this);
     }
 }

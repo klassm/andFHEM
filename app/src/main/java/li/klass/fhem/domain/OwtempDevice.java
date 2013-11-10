@@ -31,6 +31,7 @@ import li.klass.fhem.appwidget.annotation.SupportsWidget;
 import li.klass.fhem.appwidget.annotation.WidgetTemperatureField;
 import li.klass.fhem.appwidget.view.widget.medium.TemperatureWidgetView;
 import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.util.ValueUtil;
 
@@ -60,5 +61,10 @@ public class OwtempDevice extends Device<OwtempDevice> {
 
     public String getWarnings() {
         return warnings;
+    }
+
+    @Override
+    public DeviceFunctionality getDeviceFunctionality() {
+        return DeviceFunctionality.TEMPERATURE;
     }
 }

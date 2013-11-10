@@ -38,6 +38,7 @@ import li.klass.fhem.appwidget.view.widget.base.AppWidgetView;
 import li.klass.fhem.appwidget.view.widget.medium.TemperatureWidgetView;
 import li.klass.fhem.appwidget.view.widget.medium.ToggleWidgetView;
 import li.klass.fhem.domain.core.DeviceChart;
+import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.ToggleableDevice;
 import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
@@ -302,6 +303,11 @@ public class MaxDevice extends ToggleableDevice<MaxDevice> implements DesiredTem
             return true;
         }
         return super.supportsWidget(appWidgetClass);
+    }
+
+    @Override
+    public DeviceFunctionality getDeviceFunctionality() {
+        return DeviceFunctionality.HEATING;
     }
 
     @Override

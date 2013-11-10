@@ -28,6 +28,7 @@ import android.util.Log;
 
 import li.klass.fhem.appwidget.view.widget.base.AppWidgetView;
 import li.klass.fhem.appwidget.view.widget.medium.ToggleWidgetView;
+import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.DimmableDevice;
 import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
 import li.klass.fhem.util.ValueExtractUtil;
@@ -111,15 +112,8 @@ public class EnOceanDevice extends DimmableDevice<EnOceanDevice> {
     }
 
     @Override
-    public int compareTo(EnOceanDevice other) {
-        int result = 0;
-        if (subType != null && other.getSubType() != null) {
-            result = subType.compareTo(other.getSubType());
-        }
-
-        if (result != 0) return result;
-
-        return name.compareTo(other.getName());
+    public DeviceFunctionality getDeviceFunctionality() {
+        return DeviceFunctionality.functionalityForDimmable(this);
     }
 
     @Override

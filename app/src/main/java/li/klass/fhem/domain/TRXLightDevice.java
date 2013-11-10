@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
+import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.DimmableDiscreteStatesDevice;
 import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
@@ -62,6 +63,11 @@ public class TRXLightDevice extends DimmableDiscreteStatesDevice<TRXLightDevice>
         if (tagName.equals("STATE")) {
             this.measured = attributes.getNamedItem("measured").getNodeValue();
         }
+    }
+
+    @Override
+    public DeviceFunctionality getDeviceFunctionality() {
+        return DeviceFunctionality.functionalityForDimmable(this);
     }
 
     @Override

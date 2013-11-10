@@ -24,12 +24,14 @@
 
 package li.klass.fhem.domain;
 
+import org.w3c.dom.NamedNodeMap;
+
 import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.util.ValueDescriptionUtil;
-import org.w3c.dom.NamedNodeMap;
 
 @DetailOverviewViewSettings(showState = true)
 @SuppressWarnings("unused")
@@ -103,6 +105,11 @@ public class HCSDevice extends Device<HCSDevice> {
         } else if (value.equalsIgnoreCase("EXCLUDED")) {
             numberOfExcludedDevices++;
         }
+    }
+
+    @Override
+    public DeviceFunctionality getDeviceFunctionality() {
+        return DeviceFunctionality.HEATING;
     }
 
     private void addToDemandDevicesCommaSeparatedList(String key) {

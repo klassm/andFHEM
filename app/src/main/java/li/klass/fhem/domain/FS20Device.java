@@ -33,6 +33,7 @@ import java.util.List;
 import li.klass.fhem.R;
 import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.domain.core.DeviceChart;
+import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.DimmableDiscreteStatesDevice;
 import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
@@ -121,6 +122,11 @@ public class FS20Device extends DimmableDiscreteStatesDevice<FS20Device> impleme
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.stateGraph,
                 new ChartSeriesDescription(R.string.state, "3:::$fld[2]=~/on.*/?1:0", true, false, false, 1, TOGGLE_STATE)), getState());
+    }
+
+    @Override
+    public DeviceFunctionality getDeviceFunctionality() {
+        return DeviceFunctionality.functionalityForDimmable(this);
     }
 
     private String transformHexTo4System(String input) {

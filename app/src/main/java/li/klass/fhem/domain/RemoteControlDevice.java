@@ -33,6 +33,7 @@ import java.util.List;
 
 import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.genericview.ShowField;
 
 public class RemoteControlDevice extends Device<RemoteControlDevice> {
@@ -108,6 +109,11 @@ public class RemoteControlDevice extends Device<RemoteControlDevice> {
         }
 
         rows.add(row);
+    }
+
+    @Override
+    public DeviceFunctionality getDeviceFunctionality() {
+        return DeviceFunctionality.REMOTE_CONTROL;
     }
 
     public String getIconPath() {

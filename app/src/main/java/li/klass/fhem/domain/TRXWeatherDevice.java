@@ -33,6 +33,7 @@ import li.klass.fhem.appwidget.annotation.WidgetTemperatureField;
 import li.klass.fhem.appwidget.view.widget.medium.TemperatureWidgetView;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceChart;
+import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ValueDescriptionUtil;
@@ -155,5 +156,10 @@ public class TRXWeatherDevice extends Device<TRXWeatherDevice> {
                 new ChartSeriesDescription(R.string.dewpoint, "4:dewpoint:0:", DEWPOINT)), temperature);
         addDeviceChartIfNotNull(new DeviceChart(R.string.humidityGraph,
                 new ChartSeriesDescription(R.string.humidity, "4:humidity:0:", HUMIDITY)), humidity);
+    }
+
+    @Override
+    public DeviceFunctionality getDeviceFunctionality() {
+        return DeviceFunctionality.WEATHER;
     }
 }

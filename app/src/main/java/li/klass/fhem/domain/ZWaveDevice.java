@@ -24,6 +24,7 @@
 
 package li.klass.fhem.domain;
 
+import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.DimmableContinuousStatesDevice;
 
 public class ZWaveDevice extends DimmableContinuousStatesDevice<ZWaveDevice> {
@@ -40,5 +41,10 @@ public class ZWaveDevice extends DimmableContinuousStatesDevice<ZWaveDevice> {
     @Override
     public boolean supportsToggle() {
         return true;
+    }
+
+    @Override
+    public DeviceFunctionality getDeviceFunctionality() {
+        return DeviceFunctionality.functionalityForDimmable(this);
     }
 }

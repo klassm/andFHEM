@@ -28,6 +28,7 @@ import java.util.List;
 
 import li.klass.fhem.R;
 import li.klass.fhem.domain.core.DeviceChart;
+import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.DimmableDevice;
 import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
@@ -135,5 +136,10 @@ public class EIBDevice extends DimmableDevice<EIBDevice> {
                     ), getInternalState()
             );
         }
+    }
+
+    @Override
+    public DeviceFunctionality getDeviceFunctionality() {
+        return DeviceFunctionality.functionalityForDimmable(this);
     }
 }

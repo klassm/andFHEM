@@ -29,17 +29,19 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import li.klass.fhem.R;
-import li.klass.fhem.adapter.devices.core.DeviceAdapter;
-import li.klass.fhem.domain.core.Device;
-import li.klass.fhem.domain.core.DeviceType;
-import li.klass.fhem.domain.core.RoomDeviceList;
-import li.klass.fhem.widget.NestedListViewAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class DeviceListAdapter extends NestedListViewAdapter<DeviceType, Device<?>> {
+import li.klass.fhem.R;
+import li.klass.fhem.adapter.devices.core.DeviceAdapter;
+import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.DeviceFunctionality;
+import li.klass.fhem.domain.core.DeviceType;
+import li.klass.fhem.domain.core.RoomDeviceList;
+import li.klass.fhem.widget.NestedListViewAdapter;
+
+public class DeviceListAdapter extends NestedListViewAdapter<DeviceFunctionality, Device<?>> {
     private RoomDeviceList roomDeviceList;
 
     public DeviceListAdapter(Context context, RoomDeviceList roomDeviceList) {
@@ -50,10 +52,10 @@ public class DeviceListAdapter extends NestedListViewAdapter<DeviceType, Device<
     }
 
     @Override
-    protected Device getChildForParentAndChildPosition(DeviceType parent, int childPosition) {
+    protected Device getChildForParentAndChildPosition(DeviceFunctionality parent, int childPosition) {
         if (childPosition == -1) return null;
 
-        List<Device> childrenForDeviceType = getChildrenForDeviceType(parent);
+        List<Device> childrenForDeviceType = getChildrenForDeviceFunctionality(parent);
         if (childPosition >= childrenForDeviceType.size()) {
             return null;
         } else {
@@ -62,18 +64,18 @@ public class DeviceListAdapter extends NestedListViewAdapter<DeviceType, Device<
     }
 
     @Override
-    protected int getChildrenCountForParent(DeviceType parent) {
-        return getChildrenForDeviceType(parent).size();
+    protected int getChildrenCountForParent(DeviceFunctionality parent) {
+        return getChildrenForDeviceFunctionality(parent).size();
     }
 
-    private List<Device> getChildrenForDeviceType(DeviceType deviceType) {
+    private List<Device> getChildrenForDeviceFunctionality(DeviceFunctionality deviceFunctionality) {
         if (roomDeviceList == null) return new ArrayList<Device>();
 
-        return new ArrayList<Device>(roomDeviceList.getDevicesOfType(deviceType));
+        return new ArrayList<Device>(roomDeviceList.getDevicesOfFunctionality(deviceFunctionality));
     }
 
     @Override
-    protected View getParentView(DeviceType parent, View view, ViewGroup viewGroup) {
+    protected View getParentView(DeviceFunctionality parent, View view, ViewGroup viewGroup) {
         view = layoutInflater.inflate(R.layout.room_detail_parent, null);
 
         ParentViewHolder viewHolder = new ParentViewHolder();
@@ -86,7 +88,8 @@ public class DeviceListAdapter extends NestedListViewAdapter<DeviceType, Device<
     }
 
     @Override
-    protected View getChildView(final DeviceType parent, int parentPosition, Device<?> child, View view, ViewGroup viewGroup, int relativeChildPosition) {
+    protected View getChildView(final DeviceFunctionality parent, int parentPosition, Device<?> child,
+                                View view, ViewGroup viewGroup, int relativeChildPosition) {
         final DeviceAdapter<? extends Device<?>> deviceAdapter = DeviceType.getAdapterFor(child);
         if (deviceAdapter == null) {
             Log.e(DeviceListAdapter.class.getName(), "unsupported device type " + child);
@@ -105,12 +108,12 @@ public class DeviceListAdapter extends NestedListViewAdapter<DeviceType, Device<
     }
 
     @Override
-    protected List<DeviceType> getParents() {
-        List<DeviceType> parents = new ArrayList<DeviceType>();
-        for (DeviceType deviceType : DeviceType.values()) {
-            if (getChildrenCountForParent(deviceType) > 0 &&
-                    deviceType.mayShowInCurrentConnectionType()) {
-                parents.add(deviceType);
+    protected List<DeviceFunctionality> getParents() {
+        List<DeviceFunctionality> parents = new ArrayList<DeviceFunctionality>();
+        for (DeviceFunctionality deviceFunctionality : DeviceFunctionality.values()) {
+            if (getChildrenCountForParent(deviceFunctionality) > 0) {// &&
+//                    deviceFunctionality.mayShowInCurrentConnectionType()) {
+                parents.add(deviceFunctionality);
             }
         }
         return parents;

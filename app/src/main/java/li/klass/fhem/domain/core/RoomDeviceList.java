@@ -39,7 +39,7 @@ public class RoomDeviceList implements Serializable {
     private String roomName;
     private boolean onlyContainsDoNotShowDevices = true;
 
-    private Map<DeviceType, HashSet<Device>> deviceMap = new HashMap<DeviceType, HashSet<Device>>();
+    private Map<DeviceFunctionality, HashSet<Device>> deviceMap = new HashMap<DeviceFunctionality, HashSet<Device>>();
 
     public static final String ALL_DEVICES_ROOM = "ALL_DEVICES_LIST";
 
@@ -47,12 +47,30 @@ public class RoomDeviceList implements Serializable {
         this.roomName = roomName;
     }
 
-    public <T extends Device> List<T> getDevicesOfType(DeviceType type) {
-        Set<T> deviceSet = getOrCreateDeviceList(type);
+    public <T extends Device> List<T> getDevicesOfFunctionality(DeviceFunctionality functionality) {
+        Set<T> deviceSet = getOrCreateDeviceList(functionality);
         List<T> deviceList = new ArrayList<T>();
         for (T device : deviceSet) {
-            if (device.isSupported()) {
+            DeviceType deviceType = DeviceType.getDeviceTypeFor(device);
+            if (device.isSupported() && deviceType.mayShowInCurrentConnectionType()) {
                 deviceList.add(device);
+            }
+        }
+
+        Collections.sort(deviceList);
+        return deviceList;
+    }
+
+    public <T extends Device> List<T> getDevicesOfType(DeviceType deviceType) {
+        Set<Device> allDevices = getAllDevices();
+        List<T> deviceList = new ArrayList<T>();
+        for (Device device : allDevices) {
+            if (DeviceType.getDeviceTypeFor(device) != deviceType) {
+                continue;
+            }
+
+            if (device.isSupported()) {
+                deviceList.add((T) device);
             }
         }
 
@@ -62,20 +80,28 @@ public class RoomDeviceList implements Serializable {
 
     public <T extends Device> void addDevice(T device) {
         if (device == null) return;
-        DeviceType deviceType = DeviceType.getDeviceTypeFor(device);
-        getOrCreateDeviceList(deviceType).add(device);
 
+        DeviceType deviceType = DeviceType.getDeviceTypeFor(device);
         if (deviceType.mayShowInCurrentConnectionType()) {
             onlyContainsDoNotShowDevices = false;
         }
+
+        DeviceFunctionality functionality = device.getDeviceFunctionality();
+        getOrCreateDeviceList(functionality).add(device);
+
     }
 
     public <T extends Device> void removeDevice(T device) {
-        deviceMap.get(DeviceType.getDeviceTypeFor(device)).remove(device);
+        HashSet<Device> functionalitySet = deviceMap.get(device.getDeviceFunctionality());
+        functionalitySet.remove(device);
 
-        for (DeviceType deviceType : deviceMap.keySet()) {
-            if (! deviceType.mayShowInCurrentConnectionType()) continue;
-            if (deviceMap.get(deviceType).size() > 0) return;
+        for (Map.Entry<DeviceFunctionality, HashSet<Device>> functionalityEntry : deviceMap.entrySet()) {
+            for (Device deviceItem : functionalityEntry.getValue()) {
+                if (DeviceType.getDeviceTypeFor(deviceItem).mayShowInCurrentConnectionType()) {
+                    onlyContainsDoNotShowDevices = false;
+                    return;
+                }
+            }
         }
 
         onlyContainsDoNotShowDevices = true;
@@ -106,11 +132,11 @@ public class RoomDeviceList implements Serializable {
     }
 
     @SuppressWarnings("unchecked")
-    private <T extends Device> Set<T> getOrCreateDeviceList(DeviceType deviceType) {
-        if (!deviceMap.containsKey(deviceType)) {
-            deviceMap.put(deviceType, new HashSet<Device>());
+    private <T extends Device> Set<T> getOrCreateDeviceList(DeviceFunctionality functionality) {
+        if (!deviceMap.containsKey(functionality)) {
+            deviceMap.put(functionality, new HashSet<Device>());
         }
-        return (Set<T>) deviceMap.get(deviceType);
+        return (Set<T>) deviceMap.get(functionality);
     }
 
     public String getRoomName() {

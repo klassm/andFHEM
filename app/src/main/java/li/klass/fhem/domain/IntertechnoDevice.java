@@ -24,6 +24,7 @@
 package li.klass.fhem.domain;
 
 import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
+import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.ToggleableDevice;
 import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
@@ -52,5 +53,10 @@ public class IntertechnoDevice extends ToggleableDevice<IntertechnoDevice> {
 
     public String getModel() {
         return model;
+    }
+
+    @Override
+    public DeviceFunctionality getDeviceFunctionality() {
+        return DeviceFunctionality.SWITCH;
     }
 }

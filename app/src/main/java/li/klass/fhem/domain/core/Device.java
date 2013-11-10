@@ -280,8 +280,8 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
     }
 
     @Override
-    public int compareTo(T t) {
-        return getName().compareTo(t.getName());
+    public final int compareTo(T t) {
+        return getAliasOrName().compareTo(t.getAliasOrName());
     }
 
     public FileLogDevice getFileLog() {
@@ -486,4 +486,10 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
     public boolean acceptXmlKey(String key) {
         return true;
     }
+
+    /**
+     * Functionality of the device.
+     * @return NEVER null!
+     */
+    public abstract DeviceFunctionality getDeviceFunctionality();
 }

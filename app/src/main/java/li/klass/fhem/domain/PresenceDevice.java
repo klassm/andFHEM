@@ -24,11 +24,13 @@
 
 package li.klass.fhem.domain;
 
+import org.w3c.dom.NamedNodeMap;
+
 import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
-import org.w3c.dom.NamedNodeMap;
 
 @DetailOverviewViewSettings(showState = true, showMeasured = true)
 @SuppressWarnings("unused")
@@ -42,6 +44,11 @@ public class PresenceDevice extends Device<PresenceDevice> {
             measured = attributes.getNamedItem("measured").getNodeValue();
         }
         super.onChildItemRead(tagName, key, value, attributes);
+    }
+
+    @Override
+    public DeviceFunctionality getDeviceFunctionality() {
+        return DeviceFunctionality.NETWORK;
     }
 
     public void readMODE(String value) {

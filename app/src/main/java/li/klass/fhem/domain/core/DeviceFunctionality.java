@@ -22,21 +22,37 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.domain;
+package li.klass.fhem.domain.core;
 
-import li.klass.fhem.domain.core.DeviceFunctionality;
-import li.klass.fhem.domain.core.ToggleableDevice;
-import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
+public enum DeviceFunctionality {
+    SWITCH,
+    DIMMER,
+    WEATHER,
+    HEATING,
+    TEMPERATURE,
+    NETWORK,
+    USAGE,
+    WINDOW,
+    SMOKE_DETECTOR,
+    FILL_STATE,
+    MOTION_DETECTOR,
+    KEY,
+    DUMMY,
+    CALL_MONITOR,
+    FHEM,
+    LOG,
+    FLOORPLAN,
+    REMOTE_CONTROL,
 
-@DetailOverviewViewSettings(showState = true, showMeasured = true)
-public class FRMOutDevice extends ToggleableDevice<FRMOutDevice> {
-    @Override
-    public boolean supportsToggle() {
-        return true;
-    }
+    UNKNOWN;
 
-    @Override
-    public DeviceFunctionality getDeviceFunctionality() {
-        return DeviceFunctionality.SWITCH;
+    public static DeviceFunctionality functionalityForDimmable(DimmableDevice device) {
+        if (device.supportsDim()) {
+            return DeviceFunctionality.DIMMER;
+        }
+        if (device.supportsToggle()) {
+            return DeviceFunctionality.SWITCH;
+        }
+        return DeviceFunctionality.DUMMY;
     }
 }

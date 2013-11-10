@@ -24,6 +24,7 @@
 package li.klass.fhem.domain;
 
 import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
+import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.ToggleableDevice;
 import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
@@ -86,5 +87,10 @@ public class HOLDevice extends ToggleableDevice<HOLDevice> {
     @Override
     public boolean supportsToggle() {
         return true;
+    }
+
+    @Override
+    public DeviceFunctionality getDeviceFunctionality() {
+        return DeviceFunctionality.FHEM;
     }
 }

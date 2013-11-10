@@ -39,6 +39,7 @@ import li.klass.fhem.appwidget.view.widget.medium.MediumInformationWidgetView;
 import li.klass.fhem.appwidget.view.widget.medium.TemperatureWidgetView;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceChart;
+import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ValueDescriptionUtil;
@@ -77,12 +78,6 @@ public class KS300Device extends Device<KS300Device> implements Serializable {
 
     @ShowField(description = ResourceIdMapper.isRaining)
     private String isRaining;
-
-    @Override
-    public int compareTo(KS300Device ks300Device) {
-        return getName().compareTo(ks300Device.getName());
-    }
-
 
     public void readTEMPERATURE(String value) {
         this.temperature = ValueDescriptionUtil.appendTemperature(value);
@@ -148,6 +143,11 @@ public class KS300Device extends Device<KS300Device> implements Serializable {
                 ", humidity='" + humidity + '\'' +
                 ", rain='" + rain + '\'' +
                 "} " + super.toString();
+    }
+
+    @Override
+    public DeviceFunctionality getDeviceFunctionality() {
+        return DeviceFunctionality.WEATHER;
     }
 
     @Override

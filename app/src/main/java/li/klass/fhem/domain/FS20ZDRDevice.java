@@ -24,9 +24,11 @@
 
 package li.klass.fhem.domain;
 
+import org.w3c.dom.NamedNodeMap;
+
+import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.ToggleableDevice;
 import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
-import org.w3c.dom.NamedNodeMap;
 
 @DetailOverviewViewSettings(showState = true, showMeasured = true)
 public class FS20ZDRDevice extends ToggleableDevice<FS20ZDRDevice> {
@@ -45,5 +47,10 @@ public class FS20ZDRDevice extends ToggleableDevice<FS20ZDRDevice> {
     @Override
     public boolean shouldUpdateStateOnDevice(String stateToSet) {
         return (stateToSet.equalsIgnoreCase("on") || stateToSet.equalsIgnoreCase("off"));
+    }
+
+    @Override
+    public DeviceFunctionality getDeviceFunctionality() {
+        return DeviceFunctionality.SWITCH;
     }
 }

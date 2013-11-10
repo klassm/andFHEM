@@ -25,16 +25,18 @@
 package li.klass.fhem.domain;
 
 import android.util.Log;
-import li.klass.fhem.AndFHEMApplication;
-import li.klass.fhem.R;
-import li.klass.fhem.domain.core.Device;
-import li.klass.fhem.util.StringUtil;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import li.klass.fhem.AndFHEMApplication;
+import li.klass.fhem.R;
+import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.DeviceFunctionality;
+import li.klass.fhem.util.StringUtil;
 
 import static li.klass.fhem.util.NumberUtil.toTwoDecimalDigits;
 
@@ -353,5 +355,10 @@ public class AtDevice extends Device<AtDevice> {
                 ", repetition=" + repetition +
                 ", timerType=" + timerType +
                 '}';
+    }
+
+    @Override
+    public DeviceFunctionality getDeviceFunctionality() {
+        return DeviceFunctionality.FHEM;
     }
 }

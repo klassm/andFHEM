@@ -33,6 +33,7 @@ import li.klass.fhem.appwidget.annotation.WidgetTemperatureField;
 import li.klass.fhem.appwidget.view.widget.medium.TemperatureWidgetView;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceChart;
+import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ValueDescriptionUtil;
@@ -200,5 +201,10 @@ public class OregonDevice extends Device<OregonDevice> {
                 new ChartSeriesDescription(R.string.rainRate, "4:rain_total:0:", RAIN_TOTAL)), rainTotal);
         addDeviceChartIfNotNull(new DeviceChart(R.string.windSpeed,
                 new ChartSeriesDescription(R.string.rainRate, "4:wind_speed:0:", WIND)), windSpeed);
+    }
+
+    @Override
+    public DeviceFunctionality getDeviceFunctionality() {
+        return DeviceFunctionality.WEATHER;
     }
 }

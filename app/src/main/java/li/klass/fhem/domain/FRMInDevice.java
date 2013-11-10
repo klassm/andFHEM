@@ -26,6 +26,7 @@ package li.klass.fhem.domain;
 
 import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 
@@ -41,5 +42,10 @@ public class FRMInDevice extends Device<FRMInDevice> {
 
     public String getAlarm() {
         return alarm;
+    }
+
+    @Override
+    public DeviceFunctionality getDeviceFunctionality() {
+        return DeviceFunctionality.SMOKE_DETECTOR;
     }
 }

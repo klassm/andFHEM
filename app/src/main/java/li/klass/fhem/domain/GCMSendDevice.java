@@ -26,6 +26,7 @@ package li.klass.fhem.domain;
 
 import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 
@@ -50,5 +51,10 @@ public class GCMSendDevice extends Device<GCMSendDevice> {
 
     public String getApiKey() {
         return apiKey;
+    }
+
+    @Override
+    public DeviceFunctionality getDeviceFunctionality() {
+        return DeviceFunctionality.FHEM;
     }
 }

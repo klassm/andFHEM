@@ -24,11 +24,17 @@
 
 package li.klass.fhem.domain;
 
+import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.ToggleableDevice;
 
 public class GenShellSwitchDevice extends ToggleableDevice<GenShellSwitchDevice> {
     @Override
     public boolean supportsToggle() {
         return true;
+    }
+
+    @Override
+    public DeviceFunctionality getDeviceFunctionality() {
+        return DeviceFunctionality.SWITCH;
     }
 }

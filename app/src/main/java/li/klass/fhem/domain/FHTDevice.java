@@ -40,6 +40,7 @@ import li.klass.fhem.appwidget.view.widget.medium.MediumInformationWidgetView;
 import li.klass.fhem.appwidget.view.widget.medium.TemperatureWidgetView;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceChart;
+import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.fht.FHTMode;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.domain.heating.DesiredTempDevice;
@@ -164,6 +165,11 @@ public class FHTDevice extends Device<FHTDevice> implements DesiredTempDevice,
         return "FHTDevice{" +
                 "actuator='" + actuator + '\'' +
                 "} " + super.toString();
+    }
+
+    @Override
+    public DeviceFunctionality getDeviceFunctionality() {
+        return DeviceFunctionality.HEATING;
     }
 
     public String getTemperature() {

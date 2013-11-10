@@ -26,6 +26,7 @@ package li.klass.fhem.domain;
 
 import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.genericview.ShowField;
 
 public class LGTVDevice extends Device<LGTVDevice> {
@@ -58,5 +59,10 @@ public class LGTVDevice extends Device<LGTVDevice> {
 
     public String getInput() {
         return input;
+    }
+
+    @Override
+    public DeviceFunctionality getDeviceFunctionality() {
+        return DeviceFunctionality.REMOTE_CONTROL;
     }
 }

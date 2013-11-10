@@ -35,6 +35,7 @@ import li.klass.fhem.appwidget.annotation.WidgetMediumLine2;
 import li.klass.fhem.appwidget.annotation.WidgetMediumLine3;
 import li.klass.fhem.appwidget.view.widget.medium.MediumInformationWidgetView;
 import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.genericview.ShowField;
 
 @SupportsWidget(MediumInformationWidgetView.class)
@@ -102,5 +103,10 @@ public class OwcountDevice extends Device<OwcountDevice> {
 
     public String getWarnings() {
         return warnings;
+    }
+
+    @Override
+    public DeviceFunctionality getDeviceFunctionality() {
+        return DeviceFunctionality.USAGE;
     }
 }

@@ -59,7 +59,7 @@
         </CUL_EM>
     </CUL_EM_LIST>
 
-    <!-- this is not a real log file, but just a dummy to test whether graphs are shown! -->
+    <!-- this is not a real log file, but just a dummy to testFunctionalityIsSetOnAllDevices whether graphs are shown! -->
     <FileLog_LIST>
         <FileLog name="FileLog_device" state="active" sets="reopen"
                  attrs="room comment alias disable:0,1 logtype nrarchive archivedir archivecmd eventMap">

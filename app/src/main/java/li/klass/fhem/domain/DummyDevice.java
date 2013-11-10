@@ -25,13 +25,15 @@
 package li.klass.fhem.domain;
 
 import android.util.Log;
-import li.klass.fhem.domain.core.DimmableDevice;
-import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
-import li.klass.fhem.util.ArrayUtil;
-import li.klass.fhem.util.ValueExtractUtil;
+
 import org.w3c.dom.NamedNodeMap;
 
 import java.util.Arrays;
+
+import li.klass.fhem.domain.core.DeviceFunctionality;
+import li.klass.fhem.domain.core.DimmableDevice;
+import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
+import li.klass.fhem.util.ArrayUtil;
 
 @DetailOverviewViewSettings(showState = true)
 @SuppressWarnings("unused")
@@ -81,6 +83,11 @@ public class DummyDevice extends DimmableDevice<DummyDevice> {
                 Log.e(DummyDevice.class.getName(), "cannot parse slider in " + Arrays.asList(availableTargetStates), e);
             }
         }
+    }
+
+    @Override
+    public DeviceFunctionality getDeviceFunctionality() {
+        return DeviceFunctionality.functionalityForDimmable(this);
     }
 
     public boolean isTimerDevice() {

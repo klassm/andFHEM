@@ -36,6 +36,7 @@ import li.klass.fhem.appwidget.annotation.WidgetMediumLine1;
 import li.klass.fhem.appwidget.annotation.WidgetMediumLine2;
 import li.klass.fhem.appwidget.view.widget.medium.MediumInformationWidgetView;
 import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.genericview.ShowField;
 
 @SuppressWarnings("unused")
@@ -86,5 +87,10 @@ public class WOLDevice extends Device<WOLDevice> {
 
     public String getShutdownCommand() {
         return shutdownCommand;
+    }
+
+    @Override
+    public DeviceFunctionality getDeviceFunctionality() {
+        return DeviceFunctionality.NETWORK;
     }
 }

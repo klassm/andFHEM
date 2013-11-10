@@ -35,6 +35,7 @@ import li.klass.fhem.appwidget.annotation.WidgetMediumLine3;
 import li.klass.fhem.appwidget.view.widget.medium.MediumInformationWidgetView;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceChart;
+import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ValueDescriptionUtil;
@@ -116,5 +117,10 @@ public class CULEMDevice extends Device<CULEMDevice> {
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.usageGraph,
                 ChartSeriesDescription.getSumInstance(R.string.currentUsage, "8::0:", getSumGraphDivisionFactor(), CURRENT_USAGE)), currentUsage);
+    }
+
+    @Override
+    public DeviceFunctionality getDeviceFunctionality() {
+        return DeviceFunctionality.USAGE;
     }
 }

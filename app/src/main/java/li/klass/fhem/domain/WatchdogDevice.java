@@ -24,9 +24,11 @@
 
 package li.klass.fhem.domain;
 
-import li.klass.fhem.domain.core.Device;
-import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
 import org.w3c.dom.NamedNodeMap;
+
+import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.DeviceFunctionality;
+import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
 
 @DetailOverviewViewSettings(showMeasured = true)
 @SuppressWarnings("unused")
@@ -39,5 +41,10 @@ public class WatchdogDevice extends Device<WatchdogDevice> {
     @Override
     public boolean isSupported() {
         return measured != null;
+    }
+
+    @Override
+    public DeviceFunctionality getDeviceFunctionality() {
+        return DeviceFunctionality.FHEM;
     }
 }

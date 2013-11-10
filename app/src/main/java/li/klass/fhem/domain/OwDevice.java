@@ -25,6 +25,7 @@
 package li.klass.fhem.domain;
 
 import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
+import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.ToggleableDevice;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.util.ValueDescriptionUtil;
@@ -34,7 +35,14 @@ import li.klass.fhem.util.ValueExtractUtil;
 public class OwDevice extends ToggleableDevice<OwDevice> {
 
     enum SubType {
-        TEMPERATURE, SWITCH, RELAIS
+        TEMPERATURE(DeviceFunctionality.TEMPERATURE),
+        SWITCH(DeviceFunctionality.SWITCH),
+        RELAIS(DeviceFunctionality.UNKNOWN);
+        private final DeviceFunctionality functionality;
+
+        SubType(DeviceFunctionality functionality) {
+            this.functionality = functionality;
+        }
     }
 
     private SubType subType = null;
@@ -84,6 +92,11 @@ public class OwDevice extends ToggleableDevice<OwDevice> {
     @Override
     public boolean isSupported() {
         return subType != null;
+    }
+
+    @Override
+    public DeviceFunctionality getDeviceFunctionality() {
+        return subType.functionality;
     }
 
     @Override

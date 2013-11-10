@@ -234,8 +234,8 @@
     <string name="prefWidgetUpdateTimeWLAN">WLAN update interval</string>
     <string name="prefWidgetUpdateTimeMobile">Mobile update interval</string>
     <string name="prefWidgetUpdateTimeSummary">default 1x pro Stunde</string>
-    <string name="prefDeviceTypeOrder">Gerätetyp Reihenfolge</string>
-    <string name="prefDeviceTypeOrderSummary">Veränderung der Reihenfolge sowie Anzeige / Ausblendung von Typen</string>
+    <string name="prefDeviceFunctionalityOrder">Gerätefunktion Reihenfolge</string>
+    <string name="prefDeviceFunctionalityOrderSummary">Veränderung der Reihenfolge sowie Anzeige / Ausblendung von Gerätefunktionen</string>
     <string name="prefUpdateOnApplicationStart">Aktualisierung beim Applikationsstart</string>
     <string name="prefShowSetValueButtons">Zeige "Ändern" Knöpfe für Temperaturänderungen</string>
     <string name="prefGCMProjectId">GCM Project ID</string>

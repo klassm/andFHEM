@@ -26,6 +26,7 @@ package li.klass.fhem.domain;
 
 import org.w3c.dom.NamedNodeMap;
 
+import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.ToggleableDevice;
 import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
 
@@ -46,5 +47,10 @@ public class SISPMSDevice extends ToggleableDevice<SISPMSDevice> {
     @Override
     public boolean supportsToggle() {
         return true;
+    }
+
+    @Override
+    public DeviceFunctionality getDeviceFunctionality() {
+        return DeviceFunctionality.SWITCH;
     }
 }

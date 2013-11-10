@@ -42,6 +42,7 @@ import li.klass.fhem.appwidget.view.widget.medium.MediumInformationWidgetView;
 import li.klass.fhem.appwidget.view.widget.medium.TemperatureWidgetView;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceChart;
+import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.service.graph.description.SeriesType;
@@ -127,5 +128,10 @@ public class HMSDevice extends Device<HMSDevice> {
     @Override
     public boolean supportsWidget(Class<? extends AppWidgetView> appWidgetClass) {
         return !(appWidgetClass.equals(TemperatureWidgetView.class) && model.equals("HMS100TFK"));
+    }
+
+    @Override
+    public DeviceFunctionality getDeviceFunctionality() {
+        return DeviceFunctionality.TEMPERATURE;
     }
 }

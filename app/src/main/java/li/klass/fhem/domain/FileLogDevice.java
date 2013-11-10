@@ -24,12 +24,14 @@
 
 package li.klass.fhem.domain;
 
-import li.klass.fhem.domain.core.Device;
 import org.w3c.dom.NamedNodeMap;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
+import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.DeviceFunctionality;
 
 @SuppressWarnings("unused")
 public class FileLogDevice extends Device<FileLogDevice> {
@@ -79,6 +81,11 @@ public class FileLogDevice extends Device<FileLogDevice> {
         if (key.startsWith("CUSTOM_GRAPH")) {
             parseCustomGraphAttribute(value);
         }
+    }
+
+    @Override
+    public DeviceFunctionality getDeviceFunctionality() {
+        return DeviceFunctionality.LOG;
     }
 
     public List<CustomGraph> getCustomGraphs() {

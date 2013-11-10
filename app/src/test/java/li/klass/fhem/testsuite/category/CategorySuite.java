@@ -167,7 +167,7 @@ public class CategorySuite extends Suite {
     protected static String toClassName(File file, String basePath) {
         String filePath = file.getAbsolutePath();
         filePath = filePath.substring(basePath.length());
-        filePath = filePath.replace("/src/test/java/", "");
+        filePath = filePath.replace("/src/testFunctionalityIsSetOnAllDevices/java/", "");
         filePath = filePath.replace(".java", "");
         filePath = filePath.replaceAll("/", ".");
 

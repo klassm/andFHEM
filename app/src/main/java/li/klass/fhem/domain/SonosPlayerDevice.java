@@ -25,10 +25,12 @@
 package li.klass.fhem.domain;
 
 import android.content.Context;
+
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.genericview.ShowField;
 
 @SuppressWarnings("unused")
@@ -170,5 +172,10 @@ public class SonosPlayerDevice extends Device<SonosPlayerDevice> {
         } else {
             return context.getString(R.string.yes);
         }
+    }
+
+    @Override
+    public DeviceFunctionality getDeviceFunctionality() {
+        return DeviceFunctionality.REMOTE_CONTROL;
     }
 }

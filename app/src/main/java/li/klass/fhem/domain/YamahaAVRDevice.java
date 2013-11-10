@@ -24,14 +24,15 @@
 
 package li.klass.fhem.domain;
 
+import java.util.Arrays;
+import java.util.List;
+
 import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
+import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.ToggleableDevice;
 import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.util.ValueExtractUtil;
-
-import java.util.Arrays;
-import java.util.List;
 
 @SuppressWarnings("unused")
 @DetailOverviewViewSettings(showState = true, showMeasured = true)
@@ -85,5 +86,10 @@ public class YamahaAVRDevice extends ToggleableDevice<YamahaAVRDevice> {
 
     public int getSelectedInputPosition() {
         return AVAILABLE_INPUTS.indexOf(input);
+    }
+
+    @Override
+    public DeviceFunctionality getDeviceFunctionality() {
+        return DeviceFunctionality.REMOTE_CONTROL;
     }
 }

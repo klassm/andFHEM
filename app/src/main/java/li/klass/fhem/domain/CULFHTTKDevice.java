@@ -28,6 +28,7 @@ import org.w3c.dom.NamedNodeMap;
 
 import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.genericview.ShowField;
 
 @SuppressWarnings("unused")
@@ -55,6 +56,11 @@ public class CULFHTTKDevice extends Device<CULFHTTKDevice> {
             stateChangeText += getLastWindowState() + " => ";
         }
         stateChangeText += getWindowState();
+    }
+
+    @Override
+    public DeviceFunctionality getDeviceFunctionality() {
+        return DeviceFunctionality.WINDOW;
     }
 
     public String getLastStateChangeTime() {

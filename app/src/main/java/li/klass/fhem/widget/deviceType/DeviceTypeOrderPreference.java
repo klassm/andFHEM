@@ -29,17 +29,20 @@ import android.preference.DialogPreference;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+
 import com.ericharlow.DragNDrop.DragNDropListView;
-import li.klass.fhem.R;
-import li.klass.fhem.constants.PreferenceKeys;
-import li.klass.fhem.domain.core.DeviceType;
-import li.klass.fhem.util.ArrayListUtil;
-import li.klass.fhem.util.Filter;
+
 import org.apache.pig.impl.util.ObjectSerializer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import li.klass.fhem.R;
+import li.klass.fhem.constants.PreferenceKeys;
+import li.klass.fhem.domain.core.DeviceType;
+import li.klass.fhem.util.ArrayListUtil;
+import li.klass.fhem.util.Filter;
 
 @SuppressWarnings("unused")
 public class DeviceTypeOrderPreference extends DialogPreference {
@@ -107,7 +110,8 @@ public class DeviceTypeOrderPreference extends DialogPreference {
         return Arrays.asList(defaultValue);
     }
 
-    private ArrayList<DeviceTypePreferenceWrapper> wrapDevices(List<DeviceType> visibleDeviceTypes, List<DeviceType> invisibleDeviceTypes) {
+    private ArrayList<DeviceTypePreferenceWrapper> wrapDevices(List<DeviceType> visibleDeviceTypes,
+                                                               List<DeviceType> invisibleDeviceTypes) {
         ArrayList<DeviceTypePreferenceWrapper> returnList = new ArrayList<DeviceTypePreferenceWrapper>();
 
         returnList.addAll(wrapList(visibleDeviceTypes, true));
