@@ -78,6 +78,7 @@ public class DeviceNameListAdapter extends DeviceGridAdapter {
 
     public int getSelectedDevicePosition() {
         Device device = roomDeviceList.getDeviceFor(selectedDeviceName);
+        if (device == null) return 0;
 
         return getFlatPositionForParentAndChild(device.getDeviceFunctionality(), device);
     }

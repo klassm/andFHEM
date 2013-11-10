@@ -25,12 +25,11 @@ package li.klass.fhem.fragments.device;
 
 import android.content.Intent;
 import android.os.Bundle;
-import li.klass.fhem.activities.device.DeviceNameListAdapter;
+
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.core.Device;
-import li.klass.fhem.domain.core.DeviceType;
-import li.klass.fhem.domain.core.RoomDeviceList;
+import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.fragments.FragmentType;
 
 /**
@@ -53,7 +52,7 @@ public class DeviceNameListNavigationFragment extends DeviceNameListFragment {
     }
 
     @Override
-    protected void onDeviceNameClick(DeviceType parent, Device<?> child) {
+    protected void onDeviceNameClick(DeviceFunctionality parent, Device<?> child) {
         if (child == null) return;
 
         Intent intent = new Intent(Actions.SHOW_FRAGMENT);
