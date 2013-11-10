@@ -45,9 +45,9 @@ public class DeviceFunctionalityOrderAdapter extends DragNDropAdapter<DeviceFunc
     }
 
     interface OrderActionListener {
-
         void deviceTypeReordered(DeviceFunctionalityPreferenceWrapper wrapper, OrderAction action);
     }
+
     private OrderActionListener listener;
 
     public DeviceFunctionalityOrderAdapter(Context context, int resource,
@@ -66,7 +66,7 @@ public class DeviceFunctionalityOrderAdapter extends DragNDropAdapter<DeviceFunc
         View view = inflater.inflate(resource, null);
         assert view != null;
         TextView nameView = (TextView) view.findViewById(R.id.name);
-        nameView.setText(item.getDeviceFunctionality().name());
+        nameView.setText(item.getDeviceFunctionality().getCaptionText(context));
 
         ImageButton visibilityButton = (ImageButton) view.findViewById(R.id.change_visibility);
         setOnClickAction(visibilityButton, OrderAction.VISIBILITY_CHANGE, item);

@@ -101,7 +101,7 @@ public class DeviceGridAdapter extends GridViewWithSectionsAdapter<DeviceFunctio
         if (parentOffset != 0) {
             textView.setText("");
         } else {
-            textView.setText(parent.name());
+            textView.setText(parent.getCaptionText(context));
         }
 
         int widthMeasureSpec = View.MeasureSpec.UNSPECIFIED;

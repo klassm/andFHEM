@@ -438,4 +438,24 @@
     <string name="noFavoritesMessage">Um einen Favoriten zu erstellen klicken Sie bitte in der Geräteliste lange auf ein Gerät. Wählen Sie anschließend "Zu Favoriten hinzufügen".</string>
     <string name="noRooms">Keine Räume gefunden!</string>
     <string name="noDevices">Keine Geräte gefunden!</string>
+
+    <string name="functionalityDimmer">Dimmen</string>
+    <string name="functionalitySwitch">Schalten</string>
+    <string name="functionalityWeather">Wetter</string>
+    <string name="functionalityHeating">Heizung</string>
+    <string name="functionalityTemperature">Temperatur</string>
+    <string name="functionalityNetwork">Netzwerk</string>
+    <string name="functionalityUsage">Vebrauch</string>
+    <string name="functionalityWindow">Tür &amp; Fenster</string>
+    <string name="functionalitySmokeDetector">Rauchmelder</string>
+    <string name="functionalityFillState">Füllstand</string>
+    <string name="functionalityMotionDetector">Bewegungsmelder</string>
+    <string name="functionalityKey">Schlüssel</string>
+    <string name="functionalityDummy">Dummy</string>
+    <string name="functionalityCallMonitor">Anrufmonitor</string>
+    <string name="functionalityFHEM">FHEM</string>
+    <string name="functionalityLog">Log</string>
+    <string name="functionalityFloorplan">Grundriss</string>
+    <string name="functionalityRemoteControl">Fernbedienung</string>
+    <string name="functionalityUnknown">Unbekannt</string>
 </resources>

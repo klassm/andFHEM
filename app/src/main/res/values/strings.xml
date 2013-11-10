@@ -438,7 +438,28 @@
     <string name="drawerClose">Close drawer</string>
 
     <string name="noFavoritesCaption">No favorite devices found!</string>
-    <string name="noFavoritesMessage">To create a favorite device, long click the view within the list. Choose "Add to favorites within the popup window.</string>
+    <string name="noFavoritesMessage">To create a favorite device, long click the view within the list. Choose \"Add to favorites\" within the popup window.</string>
     <string name="noRooms">No rooms found!</string>
     <string name="noDevices">No devices found!</string>
+
+    <string name="functionalityDimmer">Dim</string>
+    <string name="functionalitySwitch">Switch</string>
+    <string name="functionalityWeather">Weather</string>
+    <string name="functionalityHeating">Heating</string>
+    <string name="functionalityTemperature">Temperature</string>
+    <string name="functionalityNetwork">Network</string>
+    <string name="functionalityUsage">Usage</string>
+    <string name="functionalityWindow">Door &amp; Window</string>
+    <string name="functionalitySmokeDetector">Smoke Detector</string>
+    <string name="functionalityFillState">Fill State</string>
+    <string name="functionalityMotionDetector">Motion Detector</string>
+    <string name="functionalityKey">Key</string>
+    <string name="functionalityDummy">Dummy</string>
+    <string name="functionalityCallMonitor">Call Monitor</string>
+    <string name="functionalityFHEM">FHEM</string>
+    <string name="functionalityLog">Log</string>
+    <string name="functionalityFloorplan">Floorplan</string>
+    <string name="functionalityRemoteControl">Remote Control</string>
+    <string name="functionalityUnknown">Unknown</string>
+
 </resources>

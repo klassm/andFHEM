@@ -24,6 +24,7 @@
 
 package li.klass.fhem.widget.deviceFunctionality;
 
+import android.content.Context;
 import android.util.Log;
 
 import org.apache.pig.impl.util.ObjectSerializer;
@@ -34,6 +35,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.exception.SerializationException;
 import li.klass.fhem.util.ApplicationProperties;
@@ -75,12 +77,14 @@ public class DeviceFunctionalityHolder {
     }
 
     private ArrayList<DeviceFunctionality> getAvailable() {
+        final Context context = AndFHEMApplication.getContext();
+
         ArrayList<DeviceFunctionality> functionalityList = new ArrayList<DeviceFunctionality>(
                 Arrays.asList(DeviceFunctionality.values()));
         Collections.sort(functionalityList, new Comparator<DeviceFunctionality>() {
             @Override
             public int compare(DeviceFunctionality me, DeviceFunctionality other) {
-                return me.name().compareTo(other.name());
+                return me.getCaptionText(context).compareTo(other.getCaptionText(context));
             }
         });
 
