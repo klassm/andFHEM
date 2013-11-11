@@ -1,79 +1,85 @@
-<!DOCTYPE html>
-<html>
+---
+layout: default
+title: Home
+group: "navigation"
+weight: 1
+---
 
-  <head>
-    <meta charset='utf-8' />
-    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
-    <meta name="description" content="Andfhem : Manage your FHEM home automation server via Android." />
+<div id="home">
+  <h1>andFHEM</h1>
 
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+  <p>AndFHEM is an Android frontend to control devices using a <a href="http://fhem.de/">FHEM</a> home automation server.</p>
+  <p>The application can be found within the <a href="https://play.google.com/store/apps/details?id=li.klass.fhem">Google PlayStore</a>.</p>
+  
+  <h2>Main Features</h2>
+  
+  <ul>
+    <li>Cache FHEM data on your device. No need to load all the data on every request.</li>
+    <li>Manage your devices in rooms. Create favorites to get a status summary.</li>
+    <li>Control and switch your devices, incl. heating, dimming, ...</li>
+    <li>View your FileLog data in zoomable plots.</li>
+    <li>View and switch directly from your home screen.</li>
+    <li>Create timers without having to write Perl code within the FHEM config.</li>
+    <li>Switch devices based on <a href="https://play.google.com/store/apps/details?id=net.dinglisch.android.taskerm">Tasker</a> / <a href="https://play.google.com/store/apps/details?id=com.twofortyfouram.locale">Locale</a> and/or <a href="https://play.google.com/store/apps/details?id=com.kebab.Llama">Llama</a> events. This is especially useful for location aware switching.</li>
+    <li>Receive push notifications using Google Cloud Messaging (GCM).</a>
+  </ul>
+  
+  <h2>Contact</h2>
+  
+  <p>You have found a bug or a problem and cannot solve it using the <a href="/faq.html">FAQ</a> pages? Got an idea for a new cool feature? Missing a device type? Write a mail to <a href="andFHEM@klass.li">andFHEM@klass.li</a> (German or English).</p>
 
-    <title>Andfhem</title>
-  </head>
+  <p>Join me on Google+ for the latest information about andFHEM!</p>
+  
+  <!-- Place this tag where you want the widget to render. -->
+  <div class="g-page" data-href="//plus.google.com/112111802493777776424" data-theme="dark" data-layout="landscape" data-rel="publisher"></div>
 
-  <body>
-
-    <!-- HEADER -->
-    <div id="header_wrap" class="outer">
-        <header class="inner">
-          <a id="forkme_banner" href="https://github.com/klassm/andFHEM">View on GitHub</a>
-
-          <h1 id="project_title">Andfhem</h1>
-          <h2 id="project_tagline">Manage your FHEM home automation server via Android.</h2>
-
-            <section id="downloads">
-              <a class="zip_download_link" href="https://github.com/klassm/andFHEM/zipball/master">Download this project as a .zip file</a>
-              <a class="tar_download_link" href="https://github.com/klassm/andFHEM/tarball/master">Download this project as a tar.gz file</a>
-            </section>
-        </header>
-    </div>
-
-    <!-- MAIN CONTENT -->
-    <div id="main_content_wrap" class="outer">
-      <section id="main_content" class="inner">
-        <h3>
-<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>Welcome to GitHub Pages.</h3>
-
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
-
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
-</code></pre>
-
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
-
-<h3>
-<a name="designer-templates" class="anchor" href="#designer-templates"><span class="octicon octicon-link"></span></a>Designer Templates</h3>
-
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
-
-<h3>
-<a name="rather-drive-stick" class="anchor" href="#rather-drive-stick"><span class="octicon octicon-link"></span></a>Rather Drive Stick?</h3>
-
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
-
-<h3>
-<a name="authors-and-contributors" class="anchor" href="#authors-and-contributors"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>
-
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
-
-<h3>
-<a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Support or Contact</h3>
-
-<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
-      </section>
-    </div>
-
-    <!-- FOOTER  -->
-    <div id="footer_wrap" class="outer">
-      <footer class="inner">
-        <p class="copyright">Andfhem maintained by <a href="https://github.com/klassm">klassm</a></p>
-        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
-      </footer>
-    </div>
-
+  <!-- Place this tag after the last widget tag. -->
+  <script type="text/javascript">
+    (function() {
+      var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+      po.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+    })();
+  </script>
+  
+  <h2>Screenshots</h2>
+  
+  <table id="screenshots">
+    <tr>
+      <td class="image">
+        <a href="/images/screenshots/deviceList.png"><img src="/images/screenshots/deviceList.png"></a>
+      </td>
+      <td>
+        <b>Device List</b><br /> The attributes shown here are preconfigured.
+      </td>
+    </tr>
+     
+    <tr>
+      <td>
+        <a href="/images/screenshots/deviceDetail.png"><img src="/images/screenshots/deviceDetail.png"></a>
+      </td>
+      <td>
+        <b>Detailed Information</b><br />View detailed information concerning each device.
+      </td>
+    </tr>
+   
+    <tr>
+      <td>
+        <a href="/images/screenshots/graph.png"><img src="/images/screenshots/graph.png"></a>
+      </td>
+      <td>
+        <b>Graph view</b><br />Graphs are generated from FHEM log data. The view can be zoomed. The time range can be individually selected.
+      </td>
+    </tr>
     
-
-  </body>
-</html>
+    <tr>
+      <td>
+        <a href="/images/screenshots/navbar.png"><img src="/images/screenshots/navbar.png"></a>
+      </td>
+      <td>
+        <b>Modern UI</b><br />Use a modern navigation bar to switch through various views, including rooms, favorites, .... Tablet devices profit from sensible navigation bars within each view.
+      </td>
+    </tr>
+  </table>
+  
+</div>
