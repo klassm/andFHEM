@@ -1,0 +1,146 @@
+---
+layout: default
+title: FAQ
+group: "navigation"
+weight: 4
+---
+
+<div id="faq">
+  <h1>FAQ</h1>
+  
+  <a name="overview"></a>
+  <ul>
+    <li><a href="#connectionPreferences">Only dummy data is displayed. How can I switch to real data?</a></li>
+    <li><a href="#favorites">How can favorites be created?</a></li>
+    <li><a href="#fs20dim">Where are my FS20 dim controls?</a></li>
+    <li><a href="#dummytoggle">Can I get a toggle button for my dummy devices?</a></li>
+    <li><a href="#xmllisterror">The application tells me that it cannot read my xmllist (or only some devices).</a></li>
+    <li><a href="#connection_error">The connection cannot be established. What is this about?</a></li>
+    <li><a href="#fht_delay">My FHT device does not react. What can I do?</a></li>
+    <li><a href="#https">How can I enable HTTPS?</a></li>
+    <li><a href="#cul_em_sum_division_factor">My CUL_EM sum graph uses the wrong division factor. What can I do?</a></li>
+    <li><a href="#unsupported_device">My device is not supported. Can it be added to andFHEM?</a></li>
+    <li><a href="#application_crash_no_devices">After an application crash, no devices are shown!</a></li>
+    <li><a href="#unexpected_behaviour">Help, the App shows unexpected behavior.</a></li>
+  </ul>
+  
+  
+  <h3><a name="connectionPreferences"></a>Only dummy data is displayed. How can I switch to real data? (<a href="#overview">Overview</a>)</h3>
+  <p>By default, andFHEM uses only dummy data. That way every user has something to look at when starting up the app the first time. To change this, go to the preferences (the wrench icon). Click on connection type and select the type you want to use. Enter, if necessary, your username, password, url and/or IP address and go back to the main application.</p>
+  <a href="/images/faq/data_source.png" target="_blank"><img src="/images/faq/data_source.png"/></a>
+  
+  
+  
+  <h3><a name="favorites"></a>How can favorites be created? (<a href="#overview">Overview</a>)</h3>
+  
+  <p>Long press on a device within the room view. Select "Add to Favorites" within the context menu. To remove a favorite, repeat the same procedure within the favorite devices view.</p>
+  
+  <a href="/images/faq/favorites_add_hint.png" target="_blank"><img src="/images/faq/favorites_add_hint.png"/></a>
+  
+  
+  <h3><a name="fs20dim"></a>Where are my FS20 dim controls? (<a href="#overview">Overview</a>)</h3>
+  
+  <p>To get andFHEM to recognize a FS20 device as dim device, the model attribute has to be set within the fhem configuration. Valid types for dim devices are FS20DI, FS20DI10 and FS20DU.
+As an example, this might look like:
+    <div class="code">attr devName model fs20di</div></p>
+   
+   
+  <h3><a name="dummytoggle"></a>Can I get a toggle button for my dummy devices? (<a href="#overview">Overview</a>)</h3> 
+  
+  <p>Yes. Add "on" and "off" to your set list:
+  <div class="code">attr deviceName setList on off</div></p>
+  
+
+  <h3><a name="xmllisterror"></a>The application tells me that it cannot read my xmllist (or only some devices). (<a href="#overview">Overview</a>)</h3>
+  
+  <p>AndFHEM has to use some way to extract device data from FHEM. The interface, which is used, is called <span class="code">xmllist</span>. All the device data is converted to xml and written out into some document. When reading this document errors may happen. This is exactly what this error is about.</p>
+  
+  <p>There are two flavors of this error. Either some device types or even only devices cannot be read. AndFHEM will tell you this after finishing updating the data. If you encounter this error, send a bug report to <a href="mailto:andfhem@klass.li">andfhem@klass.li</a> containing the xmllist of your device. You can create a xmllist by typing <span class="code">xmllist</span> as command into FHEMWEB or your telnet command line instance. For getting the list of only one device, just append the device name.</p>
+  
+  <p>If the application tells you that it cannot read the complete xmllist, please send the complete (anonymized) xmllist output to <a href="mailto:andfhem@klass.li">andfhem@klass.li</a>. The application tries to make some of the information included within the xmllist more readable, which is where some errors may happen.</p>
+  
+
+  <h3><a name="connection_error"></a>The connection cannot be established. What is this about? (<a href="#overview">Overview</a>)</h3>
+  
+  <p>First of all, make sure that your device can connect to FHEM. When using the telnet connection,  install <a href="https://market.android.com/details?id=org.connectbot">ConnectBot</a> on your device. Start the application, insert telnet as connection type, insert your port and hostname and try to connect. If a connection can be established, contact me. When using FHEMWEB, try to connect to the FHEM instance using your browser on your phone or tablet.</p>
+  
+  <p>Here are some possible causes if the connection is not working (as verified above):
+  
+    <ul>
+      <li>Check your network connection. Can you connect to the Internet? Can you connect to your local router?</li>
+      <li>The telnet port within the FHEM configuration has to be defined as global to allow other devices than the running machine to connect to FHEM. The attribute should look like the following: <div class="code">attr global port 7072 global</div></ul></p>
+
+  <p>If the connection from your phone/tablet to your FHEM server is working (as verified above) and you still cannot connect via andFHEM, make sure that all of your entered connection information within the app is correct. If still, no connection can be established, contact me.</p>
+
+
+  <h3><a name="fht_delay"></a>My FHT device does not react. What can I do? (<a href="#overview">Overview</a>)</h3>
+
+  <p>FHT devices are pretty lazy, as the FHEM documentation <a href="http://fhem.de/commandref.html#FHT">tells</a>. Consequently, it takes some time until the device actually sets the new desired temperature. If you still have the feeling that nothing happens, connect to FHEM via telnet and type inform on. Afterwards change the desired temperature within andFHEM. By now, telnet should now show up a new entry telling that the desired-temp value has been changed.
+
+
+  <h3><a name="https"></a>How can I enable HTTPS? (<a href="#overview">Overview</a>)</h3>
+  
+  <p>Add an additional line to your FHEM configuration file (fhem.cfg):
+    <div class="code">attr fhemweb HTTPS</div>
+    However, this does not yet work on Fritz!Boxes, as the available Perl implementation does not provide the <span class="code">IO::Socket:SSL</span> module.
+
+  <p>You can install the module manually by downloading it from the <a href="http://search.cpan.org/~sullr/IO-Socket-SSL-1.957/lib/IO/Socket/SSL.pm">CPAN site</a> and uncompressing it to <span class="code">fhem/lib/perl5/site_perl/5.12.2/</span></p>
+
+  
+  
+  <h3><a name="cul_em_sum_division_factor"></a>My CUL_EM sum graph uses the wrong division factor. What can I do? (<a href="#overview">Overview</a>)</h3>
+
+  <p>From version 1.4.9 on you can add a SUM_GRAPH_DIVISION_FACTOR attribute to your CUL_EM device in your fhem.cfg. The value has to be numeric.
+
+    <div class="code">attr myDevice SUM_GRAPH_DIVISION_FACTOR 5</div>
+
+  AndFHEM will read the value and divide all values by <span class="code">($endDateHours - $startDateHours) * $myDivisionFactor</span>.<br/>
+
+  For this to work you need to declare <span class="code">SUM_GRAPH_DIVISION_FACTOR</span> as user attribute. You can achieve this by adding a 
+
+  <div class="code">attr global userattr SUM_GRAPH_DIVISION_FACTOR</div>
+
+  Multiple userattr values can be separated by space, e.g.
+
+  <div class="code">attr global userattr SUM_GRAPH_DIVISION_FACTOR webcmd</div>
+  
+  
+  <h3><a name="unsupported_device"></a>My device is not supported. Can it be added to andFHEM?</h3>
+  
+  <p>The answer is yes. However, this will take some time - and effort from your side. To get the device type added, there I need some information. Open an issue on the Github page or write a mail containing the following information:
+    <ul>
+      <li>Excerpt of your xmllist command <br /> (connect via telnet and enter 'xmllist'
+OR connect to your FHEMWEB instance and enter 'xmllist')</li>
+      <li>Which attributes should be viewed on the overview page? (not more than 4)</li>
+      <li>Which attributes should be viewed on the detail page?</li>
+      <li>Are there any plots? If yes, attach an excerpt of your local FileLog file for an example device.</li>
+    </ul>
+  </p>
+  
+  
+  
+  <h3><a name="application_crash_no_devices"></a>After an application crash, no devices are shown! (<a href="#overview">Overview</a>)</h3>
+  
+  <p>First of all, make sure you have reported the error! This is the only way for me to resolve the problem (and for you to make sure that someone cares about the problem). To resolve the behaviour, either ...
+    <ul>
+      <li>... restart your phone (this is daunting) _or_
+      <li>... go to the application properties (System preferences -> Apps -> andFHEM) and stop the the application.</li>
+    </ul>
+  </p>
+  
+  
+  
+  <h3><a name="unexpected_behaviour"></a>Help, the App shows unexpected behavior. (<a href="#overview">Overview</a>)</h3>
+  
+  <p>You have found a new bug. Now please help me to resolve it! If the application exits, Android asks you whether you want to notify the developer. Please, always click <b>yes</b>. This helps me resolving the issue without you having to run all through your log file to find out the appropriate error message.
+If the application does not exit and there is still some unexpected behavior, write a mail to <a href="mailto:andfhem@klass.li">andfhem@klass.li</a>.</p>
+
+  <p>The mail should cover the following topics:
+    <ul>
+      <li>Description what happened.</li>
+      <li>(optional) excerpt of your system log in relations to <span class="code">li.klass.fhem</span> </li>
+      <li>(optional) your anonymized xmllist.</li>
+    </ul>
+  </p>
+    
+</div>
