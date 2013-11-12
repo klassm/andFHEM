@@ -1,0 +1,88 @@
+---
+layout: default
+title: Hooks
+group: "navigation"
+weight: 4
+---
+
+<div id="home">
+  <h1>Hooks</h1>
+  
+  <p>Hooks to change andFHEM behaviour from within the <i>fhem.cfg</i> file.</p>
+  <p>Each user attribute has to be added separately to the allowed user attributes in FHEM (i.e. <span class="code">attr global userattr onOffDevice</span>)</p>
+
+  <table>
+    <thead>
+      <tr style="font-weight:bold">
+        <th>Name</th>
+        <th>User Attribute</th>
+        <th>Example</th>
+        <th>Minimum Version</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><b>OnOffButtons</b><br>Display on / off buttons instead of toggle buttons</td>
+        <td><span class="code">onOffDevice</span><br>the value has to be boolean (<span class="code">true</span> or <span class="code">false</span>)</td>
+        <td><span class="code">attr mat_halogen onOffDevice true<br>attr mat_halogen onOffDevice false</span></td>
+        <td>1.7.0</td>
+      </tr>
+      
+      <tr>
+        <td><b>OnButton</b><br>Display only an on button</td><td><span class="code">onDevice</span><br>the value has to be boolean (<span class="code">true</span> or <span class="code">false</span>)</td>
+        <td><span class="code">attr mat_halogen onDevice true</span><br></td>
+        <td>1.9.4</td>
+      </tr>
+      
+      <tr>
+        <td><b>OffButton</b><br>Display only an off button</td>
+        <td><span class="code">offDevice</span><br>the value has to be boolean (<span class="code">true</span> or <span class="code">false</span>)</td>
+        <td><span class="code">attr mat_halogen offDevice true</span></td>
+        <td>1.9.4</td>
+      </tr>
+      
+      <tr>
+        <td><b>WebCmd</b><br>Display all webcmd buttons within the device overview list.</td>
+        <td><span class="code">webcmdDevice</span><br>the value has to be boolean (<span class="code">true</span> or <span class="code">false</span>)</td>
+        <td><span class="code">attr mat_halogen webcmdDevice true</span></td>
+        <td>2.5.7</td>
+      </tr>
+      
+      <tr>
+        <td><b>ToggleButton</b><br>Display a toggle button&nbsp;</td>
+        <td><span class="code">toggleDevice</span><br>the value has to be boolean (<span class="code">true</span> or <span class="code">false</span>)</td>
+        <td><span class="code">attr mat_halogen toggleDevice true</span></td>
+        <td>1.9.5</td>
+      </tr>
+      
+      <tr>
+        <td><b>InvertState</b><br>Display a toggle button</td>
+        <td><span class="code">invertState</span><br>the value has to be boolean (<span class="code">true</span> or <span class="code">false</span>)</td>
+        <td><span class="code">attr mat_halogen invertState true</span></td>
+        <td>1.9.9</td>
+      </tr>
+      
+      <tr>
+        <td><b>OnStateName</b><br>Field to regard as "on". This is also used for reading the eventMap state name</td>
+        <td><span class="code">OnStateName</span><br>the state name to regard as on</td>
+        <td><span class="code">attr mat_halogen onStateName toggle</span></td>
+        <td>2.0.5</td>
+      </tr>
+      
+      <tr>
+        <td><b>OffStateName</b><br>Field to regard as "on". This is also used for reading the eventMap state name</td>
+        <td><span class="code">OffStateName</span><br>the state name to regard as off</td>
+        <td><span class="code">attr mat_halogen onStateName toggle</span></td>
+        <td>2.0.5</td>
+      </tr>
+      
+      <tr>
+        <td><b>CustomGraph</b><br>Add a custom graph to a FileLog in andFHEM. You will be required to provide a regexp, a y-axis-name and a name for the graph.</td>
+        <td><span class="code">custom_graph</span><br>A custom graph. You can specify any number of custom graphs by adding text after the user attribute. For example, you can use <span class="code">custom_graph1, custom_graph123</span> as user attributes.<br></td>
+        <td><span class="code">attr FileLog_mat_heizung custom_graph 4:measured@axis@someText</span><br># and @ (&gt;= 2.4.8) can be used as delimiters.</span></td>
+        <td>&nbsp;2.2.3</td>
+      </tr>
+    </tbody>
+  </table>
+  
+</div>
