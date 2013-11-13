@@ -24,31 +24,12 @@
 
 package li.klass.fhem.util;
 
-public class ValueExtractUtil {
-    public static double extractLeadingDouble(String text) {
-        text = extractLeadingNumericText(text);
-        if (StringUtil.isBlank(text)) return 0;
-        return Double.valueOf(text);
-    }
-
-    public static int extractLeadingInt(String text) {
-        double value = extractLeadingDouble(text);
-        return (int) value;
-    }
-
-    static String extractLeadingNumericText(String text) {
-        if (StringUtil.isBlank(text)) return "";
-
-        text = text.trim();
-        text = text.replaceAll("[a-zA-Z%°]*", "");
-        int spacePosition = text.indexOf(" ");
-        if (spacePosition != -1) {
-            text = text.substring(0, spacePosition);
+public class Equals {
+    public static boolean ignoreCaseEither(String value, String... possibilities) {
+        if (value == null || possibilities == null) return false;
+        for (String possibility : possibilities) {
+            if (possibility.equalsIgnoreCase(value)) return true;
         }
-        return text;
-    }
-
-    public static boolean onOffToTrueFalse(String value) {
-        return value.equalsIgnoreCase("on");
+        return false;
     }
 }

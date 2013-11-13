@@ -32,6 +32,7 @@ import android.os.ResultReceiver;
 import android.view.View;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.genericui.AvailableTargetStatesSwitchActionRow;
 import li.klass.fhem.adapter.devices.genericui.DimActionRow;
@@ -102,14 +103,15 @@ public class DimmableAdapter<D extends DimmableDevice<D>> extends ToggleableAdap
         registerFieldListener("state", new FieldNameAddedToDetailListener<D>(DIMMER) {
             @Override
             public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, D device, TableRow fieldTableRow) {
-                if (!device.supportsDim()) {
-                    return;
-                }
-
                 tableLayout.addView(new DimActionRowFullWidth<D>(device, R.layout.device_detail_seekbarrow_full_width, fieldTableRow)
                         .createRow(inflater, device));
                 tableLayout.addView(new DimUpDownRow()
                         .createRow(context, inflater, device));
+            }
+
+            @Override
+            public boolean supportsDevice(D device) {
+                return device.supportsDim();
             }
         });
 

@@ -26,6 +26,7 @@ package li.klass.fhem.domain.core;
 
 import li.klass.fhem.adapter.devices.CULHMAdapter;
 import li.klass.fhem.adapter.devices.DummyAdapter;
+import li.klass.fhem.adapter.devices.EnOceanAdapter;
 import li.klass.fhem.adapter.devices.FHTAdapter;
 import li.klass.fhem.adapter.devices.FS20ZDRDeviceAdapter;
 import li.klass.fhem.adapter.devices.FloorplanAdapter;
@@ -146,7 +147,7 @@ public enum DeviceType {
     STRUCTURE("structure", StructureDevice.class, new ToggleableAdapterWithSwitchActionRow<StructureDevice>(StructureDevice.class)),
     TWILIGHT("Twilight", TwilightDevice.class),
     AT("at", AtDevice.class, null, ConnectionType.NEVER),
-    EN_OCEAN("EnOcean", EnOceanDevice.class, new DimmableAdapter<EnOceanDevice>(EnOceanDevice.class)),
+    EN_OCEAN("EnOcean", EnOceanDevice.class, new EnOceanAdapter()),
     EIB("EIB", EIBDevice.class, new DimmableAdapter<EIBDevice>(EIBDevice.class)),
     HCS("HCS", HCSDevice.class, new SwitchActionRowAdapter<HCSDevice>(HCSDevice.class)),
     OWTHERM("OWTHERM", OwthermDevice.class),

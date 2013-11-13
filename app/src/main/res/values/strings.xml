@@ -179,6 +179,7 @@
     <string name="additional_information">Additional information</string>
     <string name="channel">Channel</string>
     <string name="currentTitle">Current title</string>
+    <string name="shutterPosition">Shutter position</string>
 
     <string name="switchDevice">Switch</string>
     <string name="preferences">Preferences</string>

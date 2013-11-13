@@ -24,31 +24,19 @@
 
 package li.klass.fhem.util;
 
-public class ValueExtractUtil {
-    public static double extractLeadingDouble(String text) {
-        text = extractLeadingNumericText(text);
-        if (StringUtil.isBlank(text)) return 0;
-        return Double.valueOf(text);
-    }
+import org.junit.Test;
 
-    public static int extractLeadingInt(String text) {
-        double value = extractLeadingDouble(text);
-        return (int) value;
-    }
+import static li.klass.fhem.util.Equals.ignoreCaseEither;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 
-    static String extractLeadingNumericText(String text) {
-        if (StringUtil.isBlank(text)) return "";
-
-        text = text.trim();
-        text = text.replaceAll("[a-zA-Z%°]*", "");
-        int spacePosition = text.indexOf(" ");
-        if (spacePosition != -1) {
-            text = text.substring(0, spacePosition);
-        }
-        return text;
-    }
-
-    public static boolean onOffToTrueFalse(String value) {
-        return value.equalsIgnoreCase("on");
+public class EqualsTest {
+    @Test
+    public void testIgnoreCaseEither() throws Exception {
+        assertThat(ignoreCaseEither(null, (String[]) null), is(false));
+        assertThat(ignoreCaseEither(null, "abc"), is(false));
+        assertThat(ignoreCaseEither("abc", "abc", "def"), is(true));
+        assertThat(ignoreCaseEither("abc", "def", "abc"), is(true));
+        assertThat(ignoreCaseEither("abc", "def", "ghi"), is(false));
     }
 }

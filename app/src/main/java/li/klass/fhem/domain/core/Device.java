@@ -417,7 +417,7 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
     }
 
     public String formatTargetState(String targetState) {
-        if (eventMapReverse.containsKey(targetState)) {
+        if (eventMapReverse != null && eventMapReverse.containsKey(targetState)) {
             return eventMapReverse.get(targetState);
         }
         return targetState;

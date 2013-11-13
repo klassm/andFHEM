@@ -26,19 +26,31 @@ package li.klass.fhem.domain;
 
 import android.util.Log;
 
+import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.appwidget.view.widget.base.AppWidgetView;
 import li.klass.fhem.appwidget.view.widget.medium.ToggleWidgetView;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.DimmableDevice;
 import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
+import li.klass.fhem.domain.genericview.ShowField;
+import li.klass.fhem.util.ValueDescriptionUtil;
 import li.klass.fhem.util.ValueExtractUtil;
+
+import static li.klass.fhem.util.Equals.ignoreCaseEither;
 
 @SuppressWarnings("unused")
 @DetailOverviewViewSettings(showState = true)
 public class EnOceanDevice extends DimmableDevice<EnOceanDevice> {
 
+    private String model;
+    private String manufacturerId;
+    private int shutterPosition;
+
+    @ShowField(showAfter = "state", description = ResourceIdMapper.shutterPosition)
+    private String shutterPositionText;
+
     public enum SubType {
-        SWITCH, SENSOR, DIMMER
+        SWITCH, SENSOR, DIMMER, SHUTTER
     }
 
     private SubType subType;
@@ -59,22 +71,44 @@ public class EnOceanDevice extends DimmableDevice<EnOceanDevice> {
         }
     }
 
+    public void readMODEL(String value) {
+        this.model = value;
+    }
+
+    public void readMANUFID(String value) {
+        this.manufacturerId = value;
+    }
+
     public void readGWCMD(String value) {
         this.gwCmd = value;
+    }
+
+    public void readPOSITION(String value) {
+        shutterPosition = ValueExtractUtil.extractLeadingInt(value);
+        shutterPositionText = ValueDescriptionUtil.appendPercent(value);
     }
 
     @Override
     public void afterXMLRead() {
         super.afterXMLRead();
 
-        if (gwCmd != null && gwCmd.equalsIgnoreCase("DIMMING")) {
-            subType = SubType.DIMMER;
+        if (gwCmd != null) {
+            if (gwCmd.equalsIgnoreCase("DIMMING")) {
+                subType = SubType.DIMMER;
+            } else if (gwCmd.equalsIgnoreCase("SWITCHING")) {
+                subType = SubType.SWITCH;
+            }
+        }
+
+        if ("00D".equalsIgnoreCase(manufacturerId) && ignoreCaseEither(model, "FSB14", "FSB61", "FSB70")) {
+            subType = SubType.SHUTTER;
+            readONOFFDEVICE("true");
         }
     }
 
     @Override
     public boolean supportsToggle() {
-        return subType == SubType.SWITCH;
+        return subType == SubType.SWITCH || subType == SubType.SHUTTER;
     }
 
     @Override
@@ -113,11 +147,14 @@ public class EnOceanDevice extends DimmableDevice<EnOceanDevice> {
 
     @Override
     public DeviceFunctionality getDeviceFunctionality() {
+        if (subType == SubType.SHUTTER) return DeviceFunctionality.WINDOW;
         return DeviceFunctionality.functionalityForDimmable(this);
     }
 
     @Override
     public String getOffStateName() {
+        if (subType == SubType.SHUTTER) return "closes";
+
         if (eventMapReverse.containsKey("off")) {
             return eventMapReverse.get("off");
         }
@@ -126,9 +163,32 @@ public class EnOceanDevice extends DimmableDevice<EnOceanDevice> {
 
     @Override
     public String getOnStateName() {
+        if (subType == SubType.SHUTTER) return "opens";
+
         if (eventMapReverse.containsKey("on")) {
             return eventMapReverse.get("on");
         }
         return "B0";
+    }
+
+    public String getShutterPositionText() {
+        return shutterPositionText;
+    }
+
+    public void setShutterPosition(int shutterPosition) {
+        this.shutterPosition = shutterPosition;
+        this.shutterPositionText = ValueDescriptionUtil.appendPercent(shutterPosition);
+    }
+
+    public String getModel() {
+        return model;
+    }
+
+    public String getManufacturerId() {
+        return manufacturerId;
+    }
+
+    public int getShutterPosition() {
+        return shutterPosition;
     }
 }

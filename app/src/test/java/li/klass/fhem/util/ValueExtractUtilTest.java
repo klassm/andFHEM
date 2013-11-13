@@ -26,19 +26,22 @@ package li.klass.fhem.util;
 
 import org.junit.Test;
 
+import static li.klass.fhem.util.ValueExtractUtil.extractLeadingDouble;
+import static li.klass.fhem.util.ValueExtractUtil.extractLeadingInt;
+import static li.klass.fhem.util.ValueExtractUtil.extractLeadingNumericText;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.number.IsCloseTo.closeTo;
 import static org.junit.Assert.assertEquals;
-import static li.klass.fhem.util.ValueExtractUtil.*;
 
 public class ValueExtractUtilTest {
 
     @Test
     public void testExtractLeadingNumericText() {
-        assertEquals("", extractLeadingNumericText("abc def"));
-        assertEquals("5", extractLeadingNumericText("5 abc def ds"));
-        assertEquals("5.0", extractLeadingNumericText("5.0 abc def ds"));
+        assertThat(extractLeadingNumericText("abc def"), is(""));
+        assertThat(extractLeadingNumericText("5 abc def ds"), is("5"));
+        assertThat(extractLeadingNumericText("5.0 abc def ds"), is("5.0"));
+        assertThat(extractLeadingNumericText("abc"), is("0"));
     }
 
     @Test

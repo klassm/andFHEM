@@ -24,32 +24,32 @@
 
 package li.klass.fhem.adapter.devices.genericui;
 
-import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.ResultReceiver;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.*;
+import android.widget.Button;
+import android.widget.TableRow;
+import android.widget.TextView;
+
+import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
-import li.klass.fhem.constants.Actions;
-import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.domain.core.ToggleableDevice;
 
-import java.util.Map;
-
-public abstract class ButtonActionRow<T extends ToggleableDevice> {
+public abstract class ButtonActionRow {
     private final String description;
 
     public static final int LAYOUT_DETAIL = R.layout.device_detail_buttonrow;
+    private String buttonText;
 
-    public ButtonActionRow() {
-        this("");
+    public ButtonActionRow(int buttonText) {
+        this("", AndFHEMApplication.getContext().getString(buttonText));
     }
 
-    public ButtonActionRow(String description) {
+    public ButtonActionRow(String buttonText) {
+        this("", buttonText);
+    }
+
+    public ButtonActionRow(String description, String buttonText) {
         this.description = description;
+        this.buttonText = buttonText;
     }
 
     @SuppressWarnings("unchecked")
@@ -58,6 +58,7 @@ public abstract class ButtonActionRow<T extends ToggleableDevice> {
         ((TextView) row.findViewById(R.id.description)).setText(description);
 
         Button button = (Button) row.findViewById(R.id.button);
+        button.setText(buttonText);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

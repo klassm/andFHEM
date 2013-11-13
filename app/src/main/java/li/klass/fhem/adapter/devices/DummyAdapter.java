@@ -30,16 +30,16 @@ import android.content.Intent;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TimePicker;
+
+import java.util.Calendar;
+
+import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.DimmableAdapter;
 import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
-import li.klass.fhem.adapter.devices.genericui.AvailableTargetStatesSwitchActionRow;
 import li.klass.fhem.adapter.devices.genericui.ButtonActionRow;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.DummyDevice;
-import li.klass.fhem.util.StringUtil;
-
-import java.util.Calendar;
 
 public class DummyAdapter extends DimmableAdapter<DummyDevice> {
     public DummyAdapter() {
@@ -52,8 +52,10 @@ public class DummyAdapter extends DimmableAdapter<DummyDevice> {
 
         registerFieldListener("state", new FieldNameAddedToDetailListener<DummyDevice>() {
             @Override
-            public void onFieldNameAdded(final Context context, TableLayout tableLayout, String field, final DummyDevice device, TableRow fieldTableRow) {
-                tableLayout.addView(new ButtonActionRow<DummyDevice>() {
+            public void onFieldNameAdded(final Context context, TableLayout tableLayout,
+                                         String field, final DummyDevice device,
+                                         TableRow fieldTableRow) {
+                tableLayout.addView(new ButtonActionRow(R.string.set) {
 
                     @Override
                     protected void onButtonClick() {

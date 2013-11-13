@@ -176,6 +176,7 @@
     <string name="additional_information">Zusatzinformationen</string>
     <string name="channel">Sender</string>
     <string name="currentTitle">Aktueller Titel</string>
+    <string name="shutterPosition">Rolladen-Position</string>
 
     <string name="switchDevice">Schalte</string>
     <string name="preferences">Einstellungen</string>

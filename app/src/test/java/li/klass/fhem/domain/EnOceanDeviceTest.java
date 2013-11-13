@@ -24,9 +24,12 @@
 
 package li.klass.fhem.domain;
 
-import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 import org.junit.Test;
 
+import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+
+import static li.klass.fhem.domain.core.DeviceFunctionality.SWITCH;
+import static li.klass.fhem.domain.core.DeviceFunctionality.WINDOW;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
@@ -57,6 +60,25 @@ public class EnOceanDeviceTest extends DeviceXMLParsingBase {
 
         device.readSUBTYPE("");
         assertThat(device.compareTo(device1), is(-1));
+    }
+
+    @Test
+    public void testGatewaySwitchDevice() {
+        EnOceanDevice device = getDeviceFor("device3");
+        assertThat(device.getSubType(), is(EnOceanDevice.SubType.SWITCH));
+        assertThat(device.getDeviceFunctionality(), is(SWITCH));
+    }
+
+    @Test
+    public void testShutterDevice() {
+        EnOceanDevice device = getDeviceFor("shutter");
+
+        assertThat(device.getDeviceFunctionality(), is(WINDOW));
+        assertThat(device.getSubType(), is(EnOceanDevice.SubType.SHUTTER));
+
+        assertThat(device.getShutterPosition(), is(100));
+        assertThat(device.getModel(), is("FSB14"));
+        assertThat(device.getManufacturerId(), is("00D"));
     }
 
     @Override

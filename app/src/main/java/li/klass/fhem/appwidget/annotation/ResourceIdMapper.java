@@ -143,6 +143,7 @@ public enum ResourceIdMapper {
     energyConsumption(R.string.energy_consumption),
     channel(R.string.channel),
     currentTitle(R.string.currentTitle),
+    shutterPosition(R.string.shutterPosition),
 
     blank(R.string.blank),
     none(-1);
