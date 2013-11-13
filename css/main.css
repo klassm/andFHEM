@@ -183,7 +183,7 @@ a:hover {
   color: #000;
 }
 
-#body ul {
+#body ul,ol {
   margin-left: 20px; 
   margin-top: 5px;
   margin-bottom: 5px; 
