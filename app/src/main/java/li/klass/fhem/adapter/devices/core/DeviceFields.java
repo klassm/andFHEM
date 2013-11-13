@@ -25,6 +25,8 @@
 package li.klass.fhem.adapter.devices.core;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -55,6 +57,22 @@ import li.klass.fhem.util.StringUtil;
  * sort the fields.</p>
  */
 public class DeviceFields {
+    public static List<Field> sortedFieldsOf(Class<?> clazz) {
+        ArrayList<Field> fields = new ArrayList<Field>();
+        generateRecursiveFieldList(fields, clazz);
+
+        sort(fields);
+
+        return fields;
+    }
+
+    private static void generateRecursiveFieldList(List<Field> fields, Class<?> clazz) {
+        if (clazz.getSuperclass() == null) return;
+
+        fields.addAll(Arrays.asList(clazz.getDeclaredFields()));
+        generateRecursiveFieldList(fields, clazz.getSuperclass());
+    }
+
     public static void sort(List<Field> fields) {
         Map<String, String> fieldNameMapping = new HashMap<String, String>();
         for (Field field : fields) {
