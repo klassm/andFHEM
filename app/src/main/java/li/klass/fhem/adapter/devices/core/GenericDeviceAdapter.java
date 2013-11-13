@@ -43,6 +43,7 @@ import android.widget.TextView;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -164,7 +165,8 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
                 notifyFieldListeners(context, device, layout, "webcmd", webCmdTableRow);
             }
 
-            List<Field> declaredFields = DeviceFields.sortedFieldsOf(device.getClass());
+            List<Field> declaredFields = Arrays.asList(device.getClass().getDeclaredFields());
+            DeviceFields.sort(declaredFields);
 
             for (Field declaredField : declaredFields) {
                 declaredField.setAccessible(true);
