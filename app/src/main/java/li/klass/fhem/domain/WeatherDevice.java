@@ -109,7 +109,7 @@ public class WeatherDevice extends Device<WeatherDevice> {
         }
     }
 
-    public static final String IMAGE_URL_PREFIX = "http://andfhem.klass.li/";
+    public static final String IMAGE_URL_PREFIX = "http://andfhem.klass.li/images/weatherIcons/";
 
     private static final SimpleDateFormat parseDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
@@ -133,13 +133,13 @@ public class WeatherDevice extends Device<WeatherDevice> {
     @Override
     public void onChildItemRead(String tagName, String key, String value, NamedNodeMap attributes) {
         if (key.startsWith("FC")) {
-            parseForecast(key, value);
+            parseForecast(key, value, attributes.getNamedItem("measured").getNodeValue());
         }
     }
 
     public void readCONDITION(String value, NamedNodeMap attributes) {
         this.condition = value;
-        this.measured = attributes.getNamedItem("measured").getTextContent();
+        this.measured = attributes.getNamedItem("measured").getNodeValue();
     }
 
     public void readHUMIDITY(String value) {
@@ -158,7 +158,7 @@ public class WeatherDevice extends Device<WeatherDevice> {
         this.wind = value.replaceAll("Wind: ", "").trim();
     }
 
-    private void parseForecast(String keyValue, String nodeContent) {
+    private void parseForecast(String keyValue, String nodeContent, String measured) {
         try {
             int underscorePosition = keyValue.indexOf("_");
             String name = keyValue.substring(underscorePosition + 1);
