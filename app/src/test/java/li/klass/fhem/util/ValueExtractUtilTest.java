@@ -41,7 +41,7 @@ public class ValueExtractUtilTest {
         assertThat(extractLeadingNumericText("abc def"), is(""));
         assertThat(extractLeadingNumericText("5 abc def ds"), is("5"));
         assertThat(extractLeadingNumericText("5.0 abc def ds"), is("5.0"));
-        assertThat(extractLeadingNumericText("abc"), is("0"));
+        assertThat(extractLeadingNumericText("abc"), is(""));
     }
 
     @Test
