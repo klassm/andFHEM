@@ -141,8 +141,7 @@ a:hover {
   overflow: hidden;
   left: 0;
   height: 0;
-  width: 65%;
-  max-width: 300px;
+  width: 230px;
   opacity: 0.9;
   transition: height 1s;
   -webkit-transition: height 1s; 

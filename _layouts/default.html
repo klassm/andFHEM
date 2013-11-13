@@ -16,35 +16,7 @@
         
         <script src="js/jquery-1.10.2.min.js"></script>
         <script src="js/toc.js"></script>
-
-        <script>
-          function hideNavbar() {
-            if (isClickLinkTarget(event.target)) return;
-            
-            var navbar = document.getElementById("navbar");
-            var height = navbar.style.height;
-            if (height != "0px") {
-              navbar.style.height = "0px";
-            }
-          }
-          function toggleNavbarVisibility() {
-            var navbar = document.getElementById("navbar");
-            var height = navbar.style.height;
-            var targetHeight;
-            if (height != "0px" && !! height) {
-              targetHeight = "0px";
-            } else {
-              targetHeight = "100%";
-            }
-            navbar.style.height = targetHeight;
-          }
-          function isClickLinkTarget(target) {
-            if (! target) return false;
-            if (target.nodeName == "A") return true;
-            return isClickLinkTarget(target.parentElement);
-          }
-        </script>
-
+        <script src="js/layout.js"></script>
     </head>
     <body onclick="hideNavbar()">
         <div class="site">
