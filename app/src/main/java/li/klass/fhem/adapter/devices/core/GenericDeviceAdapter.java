@@ -32,13 +32,10 @@ import android.os.ResultReceiver;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
-import android.widget.TextView;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -58,7 +55,6 @@ import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
-import li.klass.fhem.domain.genericview.FloorplanViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.util.ArrayUtil;
 import li.klass.fhem.util.ReflectionUtil;
@@ -197,36 +193,6 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
     @Override
     protected Intent onFillDeviceDetailIntent(Context context, Device device, Intent intent) {
         return intent;
-    }
-
-    protected void fillFloorplanView(Context context, D device, LinearLayout layout, FloorplanViewSettings viewSettings) {
-        if (viewSettings.showState()) {
-            layout.addView(createFloorplanTextView(context, device.getState()));
-        }
-
-        Field[] declaredFields = device.getClass().getDeclaredFields();
-        for (Field declaredField : declaredFields) {
-            declaredField.setAccessible(true);
-            if (declaredField.isAnnotationPresent(ShowField.class) && declaredField.getAnnotation(ShowField.class).showInFloorplan()) {
-                try {
-                    layout.addView(createFloorplanTextView(context, declaredField.get(device).toString()));
-                } catch (IllegalAccessException e) {
-                    Log.e(GenericDeviceAdapter.class.getName(), "exception while reading floorplan value", e);
-                }
-            }
-        }
-    }
-
-    private TextView createFloorplanTextView(Context context, String text) {
-        TextView textView = new TextView(context);
-        textView.setText(text + "   ");
-        textView.setTextSize(10);
-        textView.setSingleLine(true);
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.MATCH_PARENT);
-        textView.setLayoutParams(params);
-
-        return textView;
     }
 
     protected void fillOtherStuffDetailLayout(Context context, LinearLayout layout, D device, LayoutInflater inflater) {

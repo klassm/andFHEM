@@ -45,12 +45,12 @@ import static li.klass.fhem.service.graph.description.SeriesType.TEMPERATURE;
 @SupportsWidget(TemperatureWidgetView.class)
 @SuppressWarnings("unused")
 public class CULTXDevice extends Device<CULTXDevice> {
-    @ShowField(description = ResourceIdMapper.temperature, showInDetail = true, showInOverview = true, showInFloorplan = true)
+    @ShowField(description = ResourceIdMapper.temperature, showInDetail = true, showInOverview = true)
     @WidgetTemperatureField
     private String temperature;
 
     @WidgetTemperatureAdditionalField(description = ResourceIdMapper.humidity)
-    @ShowField(description = ResourceIdMapper.humidity, showInDetail = true, showInOverview = true, showInFloorplan = true)
+    @ShowField(description = ResourceIdMapper.humidity, showInDetail = true, showInOverview = true)
     private String humidity;
 
     public void readTEMPERATURE(String value) {

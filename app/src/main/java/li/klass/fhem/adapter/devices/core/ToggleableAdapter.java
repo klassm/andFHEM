@@ -26,8 +26,6 @@ package li.klass.fhem.adapter.devices.core;
 
 import android.content.Context;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TableLayout;
 
 import li.klass.fhem.R;
@@ -35,8 +33,6 @@ import li.klass.fhem.adapter.devices.genericui.OnOffActionRow;
 import li.klass.fhem.adapter.devices.genericui.ToggleActionRow;
 import li.klass.fhem.adapter.devices.genericui.WebCmdActionRow;
 import li.klass.fhem.domain.core.ToggleableDevice;
-import li.klass.fhem.domain.genericview.FloorplanViewSettings;
-import li.klass.fhem.util.device.FloorplanUtil;
 
 import static li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener.NotificationDeviceType.TOGGLEABLE_AND_NOT_DIMMABLE;
 import static li.klass.fhem.domain.core.ToggleableDevice.ButtonHookType.TOGGLE_DEVICE;
@@ -112,11 +108,5 @@ public class ToggleableAdapter<D extends ToggleableDevice<D>> extends GenericDev
             tableLayout.addView(new ToggleActionRow<T>(device.getAliasOrName(), layoutId)
                     .createRow(context, inflater, device));
         }
-    }
-
-    @Override
-    protected void fillFloorplanView(final Context context, final D device, LinearLayout layout, FloorplanViewSettings viewSettings) {
-        ImageView buttonView = FloorplanUtil.createSwitchStateBasedImageView(context, device);
-        layout.addView(buttonView);
     }
 }

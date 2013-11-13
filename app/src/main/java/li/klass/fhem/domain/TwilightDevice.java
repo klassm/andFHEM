@@ -36,9 +36,9 @@ import li.klass.fhem.domain.genericview.ShowField;
 
 @SuppressWarnings("unused")
 public class TwilightDevice extends Device<TwilightDevice> {
-    @ShowField(description = ResourceIdMapper.twilight_next_event, showInOverview = true, showInFloorplan = true)
+    @ShowField(description = ResourceIdMapper.twilight_next_event, showInOverview = true)
     private String nextEvent;
-    @ShowField(description = ResourceIdMapper.twilight_next_event_time, showInOverview = true, showInFloorplan = true)
+    @ShowField(description = ResourceIdMapper.twilight_next_event_time, showInOverview = true)
     private String nextEventTime;
 
     @ShowField(description = ResourceIdMapper.twilight_sunrise)

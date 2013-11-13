@@ -89,7 +89,7 @@ public class FHTDevice extends Device<FHTDevice> implements DesiredTempDevice,
     @ShowField(description = ResourceIdMapper.warnings)
     private String warnings;
 
-    @ShowField(description = ResourceIdMapper.temperature, showInOverview = true, showInFloorplan = true)
+    @ShowField(description = ResourceIdMapper.temperature, showInOverview = true)
     @WidgetTemperatureField
     @WidgetMediumLine1
     private String temperature;
