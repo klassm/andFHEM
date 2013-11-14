@@ -433,6 +433,10 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
         // - the popped fragment type is not equals to the current fragment type
 
         BaseFragment contentFragment = getContentFragment();
+        if (contentFragment == null) {
+            finish();
+            return;
+        }
         FragmentType contentFragmentType = FragmentType.getFragmentFor(contentFragment.getClass());
         while (true) {
             if (! getSupportFragmentManager().popBackStackImmediate()) {
