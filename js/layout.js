@@ -40,7 +40,7 @@ $(document).ready(function() {
       var height = $(window).height();
       
       var navbar = $("#navbar");
-      var content = $("#content");
+      var content = $("#body");
       
       isNavbarPermanent = (width > height && width > 800);
       
