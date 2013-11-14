@@ -22,29 +22,38 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.domain;
+package li.klass.fhem.adapter.devices.core.showFieldAnnotation;
 
-import org.w3c.dom.NamedNodeMap;
+import java.lang.reflect.Field;
 
-import li.klass.fhem.domain.core.Device;
-import li.klass.fhem.domain.core.DeviceFunctionality;
-import li.klass.fhem.domain.genericview.OverviewViewSettings;
+import li.klass.fhem.domain.genericview.ShowField;
 
-@OverviewViewSettings(showMeasured = true)
-@SuppressWarnings("unused")
-public class WatchdogDevice extends Device<WatchdogDevice> {
+public class AnnotatedDeviceClassField extends AnnotatedDeviceClassItem {
+    public final Field field;
 
-    public void readTRIGGERED(String value, NamedNodeMap attributes) {
-        this.measured = attributes.getNamedItem("measured").getNodeValue();
+    public AnnotatedDeviceClassField(Field field) {
+        this.field = field;
+        field.setAccessible(true);
     }
 
     @Override
-    public boolean isSupported() {
-        return measured != null;
+    public String getName() {
+        return field.getName();
     }
 
     @Override
-    public DeviceFunctionality getDeviceFunctionality() {
-        return DeviceFunctionality.FHEM;
+    public String getValueFor(Object object) {
+        try {
+            return (String) field.get(object);
+        } catch (IllegalAccessException e) {
+            // this may never happen as we set the field as being accessible!
+            throw new IllegalStateException(e);
+        }
+    }
+
+    @Override
+    public ShowField getShowFieldAnnotation() {
+        if (! field.isAnnotationPresent(ShowField.class)) return null;
+        return field.getAnnotation(ShowField.class);
     }
 }

@@ -37,16 +37,14 @@ import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
+import li.klass.fhem.adapter.devices.core.showFieldAnnotation.AnnotatedDeviceClassItem;
 import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewAction;
 import li.klass.fhem.adapter.devices.genericui.WebCmdActionRow;
 import li.klass.fhem.constants.Actions;
@@ -54,12 +52,9 @@ import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceChart;
-import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
-import li.klass.fhem.domain.genericview.ShowField;
+import li.klass.fhem.domain.genericview.DetailViewSettings;
+import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.util.ArrayUtil;
-import li.klass.fhem.util.ReflectionUtil;
-
-import static li.klass.fhem.util.ReflectionUtil.methodNameToFieldName;
 
 public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> {
     private static final String TAG = GenericDeviceAdapter.class.getName();
@@ -89,8 +84,8 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
         setTextView(view, R.id.deviceName, device.getAliasOrName());
 
         try {
-            if (device.getClass().isAnnotationPresent(DetailOverviewViewSettings.class)) {
-                DetailOverviewViewSettings annotation = device.getClass().getAnnotation(DetailOverviewViewSettings.class);
+            if (device.getClass().isAnnotationPresent(OverviewViewSettings.class)) {
+                OverviewViewSettings annotation = device.getClass().getAnnotation(OverviewViewSettings.class);
                 if (annotation.showState()) {
                     createTableRow(inflater, layout, R.layout.device_overview_generic_table_row, device.getState(), annotation.stateStringId().getId());
                 }
@@ -98,21 +93,25 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
                     createTableRow(inflater, layout, R.layout.device_overview_generic_table_row, device.getMeasured(), annotation.measuredStringId().getId());
                 }
             }
-            Field[] declaredFields = device.getClass().getDeclaredFields();
-            for (Field declaredField : declaredFields) {
-                declaredField.setAccessible(true);
-                if (declaredField.isAnnotationPresent(ShowField.class) && declaredField.getAnnotation(ShowField.class).showInOverview()) {
-                    createTableRow(device, inflater, layout, declaredField, R.layout.device_overview_generic_table_row);
+
+            OverviewViewSettings annotation = device.getClass().getAnnotation(OverviewViewSettings.class);
+            List<AnnotatedDeviceClassItem> items = DeviceFields.getSortedAnnotatedClassItems(device.getClass());
+
+            for (AnnotatedDeviceClassItem item : items) {
+                String name = item.getName();
+                if (annotation != null) {
+                    if (name.equalsIgnoreCase("state") && ! annotation.showState()) {
+                        continue;
+                    }
+
+                    if (name.equalsIgnoreCase("measured") && ! annotation.showMeasured()) {
+                        continue;
+                    }
+                }
+                if (item.isShowInOverview()) {
+                    createTableRow(device, inflater, layout, item, R.layout.device_overview_generic_table_row);
                 }
             }
-
-            for (Method method : device.getClass().getDeclaredMethods()) {
-                method.setAccessible(true);
-                if (method.isAnnotationPresent(ShowField.class) && method.getAnnotation(ShowField.class).showInOverview()) {
-                    createTableRow(device, inflater, layout, method, R.layout.device_overview_generic_table_row);
-                }
-            }
-
         } catch (Exception e) {
             Log.e(TAG, "exception occurred while setting device overview values", e);
         }
@@ -134,11 +133,6 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
         View view = layoutInflater.inflate(getDetailViewLayout(), null);
         fillDeviceDetailView(context, view, device);
 
-        setTextViewOrHideTableRow(view, R.id.tableRowDeviceName, R.id.deviceName, device.getAliasOrName());
-        setTextViewOrHideTableRow(view, R.id.tableRowDef, R.id.def, device.getDefinition());
-        setTextViewOrHideTableRow(view, R.id.tableRowRoom, R.id.rooms, device.getRoomConcatenated());
-        setTextViewOrHideTableRow(view, R.id.tableRowMeasured, R.id.measured, device.getMeasured());
-
         return view;
     }
 
@@ -149,36 +143,30 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
         setTextView(view, R.id.deviceName, device.getAliasOrName());
 
         try {
-            if (device.getClass().isAnnotationPresent(DetailOverviewViewSettings.class)) {
-                if (device.getClass().getAnnotation(DetailOverviewViewSettings.class).showState()) {
-                    TableRow row = createTableRow(inflater, layout, R.layout.device_detail_generic_table_row, device.getState(), R.string.state);
-                    notifyFieldListeners(context, device, layout, "state", row);
-                }
-            }
-
-            TableRow webCmdTableRow = createWebCmdTableRow(inflater, layout, device);
+            TableRow webCmdTableRow = createWebCmdTableRowIfRequired(inflater, layout, device);
             if (webCmdTableRow != null) {
                 notifyFieldListeners(context, device, layout, "webcmd", webCmdTableRow);
             }
 
-            List<Field> declaredFields = Arrays.asList(device.getClass().getDeclaredFields());
-            DeviceFields.sort(declaredFields);
+            DetailViewSettings annotation = device.getClass().getAnnotation(DetailViewSettings.class);
+            List<AnnotatedDeviceClassItem> items = DeviceFields.getSortedAnnotatedClassItems(device.getClass());
 
-            for (Field declaredField : declaredFields) {
-                declaredField.setAccessible(true);
-                if (declaredField.isAnnotationPresent(ShowField.class) && declaredField.getAnnotation(ShowField.class).showInDetail()) {
-                    TableRow row = createTableRow(device, inflater, layout, declaredField, R.layout.device_detail_generic_table_row);
-                    notifyFieldListeners(context, device, layout, declaredField.getName(), row);
+            for (AnnotatedDeviceClassItem item : items) {
+                String name = item.getName();
+
+                if (annotation != null) {
+                    if (name.equalsIgnoreCase("state") && ! annotation.showState()) {
+                        continue;
+                    }
+
+                    if (name.equalsIgnoreCase("measured") && ! annotation.showMeasured()) {
+                        continue;
+                    }
                 }
-            }
 
-            for (Method method : device.getClass().getDeclaredMethods()) {
-                method.setAccessible(true);
-                if (method.isAnnotationPresent(ShowField.class) && method.getAnnotation(ShowField.class).showInDetail()) {
-                    TableRow row = createTableRow(device, inflater, layout, method, R.layout.device_detail_generic_table_row);
-
-                    String methodName = methodNameToFieldName(method);
-                    notifyFieldListeners(context, device, layout, methodName, row);
+                if (item.isShowInDetail()) {
+                    TableRow row = createTableRow(device, inflater, layout, item, R.layout.device_detail_generic_table_row);
+                    notifyFieldListeners(context, device, layout, name, row);
                 }
             }
         } catch (Exception e) {
@@ -254,26 +242,15 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
         return false;
     }
 
-    private TableRow createTableRow(D device, LayoutInflater inflater, TableLayout layout, Field declaredField, int resource) throws IllegalAccessException {
-        Object value = ReflectionUtil.getFieldValue(device, declaredField);
-        ShowField showFieldAnnotation = declaredField.getAnnotation(ShowField.class);
-
-        return createTableRow(inflater, layout, resource, value, showFieldAnnotation);
-    }
-
-    private TableRow createTableRow(D device, LayoutInflater inflater, TableLayout layout, Method method, int resource) throws IllegalAccessException {
-        Object value = ReflectionUtil.getMethodReturnValue(device, method);
-        ShowField showFieldAnnotation = method.getAnnotation(ShowField.class);
-
-        return createTableRow(inflater, layout, resource, value, showFieldAnnotation);
-    }
-
-    private TableRow createTableRow(LayoutInflater inflater, TableLayout layout, int resource, Object value, ShowField showFieldAnnotation) {
-        int description = showFieldAnnotation.description().getId();
+    private TableRow createTableRow(D device, LayoutInflater inflater, TableLayout layout,
+                                    AnnotatedDeviceClassItem item, int resource) {
+        String value = item.getValueFor(device);
+        int description = item.getDescriptionStringId();
         return createTableRow(inflater, layout, resource, value, description);
     }
 
-    private TableRow createWebCmdTableRow(LayoutInflater inflater, TableLayout layout, final D device) {
+    private TableRow createWebCmdTableRowIfRequired(LayoutInflater inflater, TableLayout layout,
+                                                    final D device) {
         if (ArrayUtil.isEmpty(device.getWebCmd())) return null;
         final Context context = inflater.getContext();
 
@@ -285,7 +262,8 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
         return tableRow;
     }
 
-    private TableRow createTableRow(LayoutInflater inflater, TableLayout layout, int resource, Object value, int description) {
+    private TableRow createTableRow(LayoutInflater inflater, TableLayout layout, int resource,
+                                    Object value, int description) {
         TableRow tableRow = (TableRow) inflater.inflate(resource, null);
         fillTableRow(description, value, tableRow);
         layout.addView(tableRow);
@@ -301,8 +279,8 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
         }
     }
 
-    private void addGraphButton(final Context context, LinearLayout graphLayout, LayoutInflater inflater, final D device,
-                                final DeviceChart chart) {
+    private void addGraphButton(final Context context, LinearLayout graphLayout,
+                                LayoutInflater inflater, final D device, final DeviceChart chart) {
         Button button = (Button) inflater.inflate(R.layout.button_device_detail, graphLayout, false);
         fillGraphButton(context, device, chart, button);
         graphLayout.addView(button);

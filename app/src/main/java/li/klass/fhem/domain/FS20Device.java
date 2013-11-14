@@ -35,14 +35,14 @@ import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.DimmableDiscreteStatesDevice;
-import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
+import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.NumberSystemUtil;
 
 import static li.klass.fhem.service.graph.description.SeriesType.TOGGLE_STATE;
 
-@DetailOverviewViewSettings(showState = true)
+@OverviewViewSettings(showState = true)
 @SuppressWarnings("unused")
 public class FS20Device extends DimmableDiscreteStatesDevice<FS20Device> implements Comparable<FS20Device>, Serializable {
 

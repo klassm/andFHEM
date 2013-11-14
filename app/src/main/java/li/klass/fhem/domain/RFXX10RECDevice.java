@@ -29,10 +29,10 @@ import org.w3c.dom.NamedNodeMap;
 import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceFunctionality;
-import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
+import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 
-@DetailOverviewViewSettings(showState = true)
+@OverviewViewSettings(showState = true)
 @SuppressWarnings("unused")
 public class RFXX10RECDevice extends Device<RFXX10RECDevice> {
     @ShowField(description = ResourceIdMapper.lastStateChange, showInOverview = true)

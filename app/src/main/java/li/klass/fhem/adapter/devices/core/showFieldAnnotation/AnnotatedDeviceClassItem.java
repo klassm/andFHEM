@@ -22,29 +22,35 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.domain;
+package li.klass.fhem.adapter.devices.core.showFieldAnnotation;
 
-import org.w3c.dom.NamedNodeMap;
+import li.klass.fhem.domain.genericview.ShowField;
+import li.klass.fhem.util.StringUtil;
 
-import li.klass.fhem.domain.core.Device;
-import li.klass.fhem.domain.core.DeviceFunctionality;
-import li.klass.fhem.domain.genericview.OverviewViewSettings;
+public abstract class AnnotatedDeviceClassItem {
+    public abstract String getName();
+    public abstract String getValueFor(Object object);
+    public abstract ShowField getShowFieldAnnotation();
 
-@OverviewViewSettings(showMeasured = true)
-@SuppressWarnings("unused")
-public class WatchdogDevice extends Device<WatchdogDevice> {
+    public String getShowAfterValue() {
+        ShowField annotation = getShowFieldAnnotation();
+        if (annotation == null) return null;
 
-    public void readTRIGGERED(String value, NamedNodeMap attributes) {
-        this.measured = attributes.getNamedItem("measured").getNodeValue();
+        String showAfter = annotation.showAfter();
+        if (StringUtil.isBlank(showAfter)) return null;
+
+        return showAfter;
     }
 
-    @Override
-    public boolean isSupported() {
-        return measured != null;
+    public boolean isShowInDetail() {
+        return getShowFieldAnnotation().showInDetail();
     }
 
-    @Override
-    public DeviceFunctionality getDeviceFunctionality() {
-        return DeviceFunctionality.FHEM;
+    public boolean isShowInOverview() {
+        return getShowFieldAnnotation().showInOverview();
+    }
+
+    public int getDescriptionStringId() {
+        return getShowFieldAnnotation().description().getId();
     }
 }

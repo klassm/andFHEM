@@ -32,10 +32,10 @@ import java.util.Arrays;
 
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.DimmableDevice;
-import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
+import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.util.ArrayUtil;
 
-@DetailOverviewViewSettings(showState = true)
+@OverviewViewSettings(showState = true)
 @SuppressWarnings("unused")
 public class DummyDevice extends DimmableDevice<DummyDevice> {
 

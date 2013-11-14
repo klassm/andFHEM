@@ -25,14 +25,18 @@
 package li.klass.fhem.adapter.devices.core;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import li.klass.fhem.adapter.devices.core.showFieldAnnotation.AnnotatedDeviceClassField;
+import li.klass.fhem.adapter.devices.core.showFieldAnnotation.AnnotatedDeviceClassItem;
+import li.klass.fhem.adapter.devices.core.showFieldAnnotation.AnnotatedDeviceClassMethod;
 import li.klass.fhem.domain.genericview.ShowField;
-import li.klass.fhem.util.StringUtil;
 
 /**
  * <p>DeviceField ordering is somewhat special, as we do not only need to sort by name
@@ -55,21 +59,93 @@ import li.klass.fhem.util.StringUtil;
  * sort the fields.</p>
  */
 public class DeviceFields {
-    public static void sort(List<Field> fields) {
-        Map<String, String> fieldNameMapping = new HashMap<String, String>();
-        for (Field field : fields) {
-            ShowField annotation = field.getAnnotation(ShowField.class);
+    /**
+     * Generates a list of fields and methods annotated by the
+     * {@link li.klass.fhem.domain.genericview.ShowField} annotation. All entries are encapsulated
+     * by instances of {@link li.klass.fhem.adapter.devices.core.showFieldAnnotation.AnnotatedDeviceClassItem}.
+     *
+     * The sorting depends on the value of the {@link li.klass.fhem.domain.genericview.ShowField#showAfter()}
+     * method and the field / method name.
+     *
+     * @param clazz class to handle.
+     * @return sorted list of annotated fields and methods.
+     */
+    public static List<AnnotatedDeviceClassItem> getSortedAnnotatedClassItems(Class<?> clazz) {
+        List<AnnotatedDeviceClassItem> items = generateAnnotatedClassItemsList(clazz);
+        sort(items);
 
-            if (annotation != null && !StringUtil.isBlank(annotation.showAfter())) {
-                fieldNameMapping.put(field.getName().toLowerCase(),
-                        annotation.showAfter().toLowerCase());
+        return items;
+    }
+
+    /**
+     * Generates a list of annotated methods and fields of a given clazz. We only consider
+     * fields and methods annotated by the {@link li.klass.fhem.domain.genericview.ShowField}
+     * annotation. Superclasses are also considered.
+     *
+     * @param clazz class to handle.
+     * @return list of annotated fields and methods.
+     */
+    private static List<AnnotatedDeviceClassItem> generateAnnotatedClassItemsList(Class<?> clazz) {
+        ArrayList<AnnotatedDeviceClassItem> items = new ArrayList<AnnotatedDeviceClassItem>();
+        handleClassForAnnotatedClassItems(clazz, items);
+
+        return items;
+    }
+
+    /**
+     * Recursively considers a class and its superclasses. Fields and methods annotated
+     * by {@link li.klass.fhem.domain.genericview.ShowField} are wrapped and put into the items
+     * list.
+     *
+     * @param clazz class to handle.
+     * @param items list of annotated items.
+     */
+    private static void handleClassForAnnotatedClassItems(Class<?> clazz,
+                                                          List<AnnotatedDeviceClassItem> items) {
+        if (clazz == null) return;
+
+        for (Field field : clazz.getDeclaredFields()) {
+            if (field.isAnnotationPresent(ShowField.class)) {
+                items.add(new AnnotatedDeviceClassField(field));
+            }
+        }
+
+        for (Method method : clazz.getDeclaredMethods()) {
+            if (method.isAnnotationPresent(ShowField.class)) {
+                items.add(new AnnotatedDeviceClassMethod(method));
+            }
+        }
+
+        handleClassForAnnotatedClassItems(clazz.getSuperclass(), items);
+    }
+
+    /**
+     * Sorts an amount of given annotated items by comparing the showAfter-method value of
+     * the {@link li.klass.fhem.domain.genericview.ShowField} annotation and by considering
+     * the field / method name.
+     *
+     * @param items items to sort
+     */
+    public static void sort(List<AnnotatedDeviceClassItem> items) {
+        Map<String, String> fieldNameMapping = new HashMap<String, String>();
+        for (AnnotatedDeviceClassItem item : items) {
+            String showAfterValue = item.getShowAfterValue();
+            if (showAfterValue != null) {
+                String lowerCaseName = item.getName().toLowerCase();
+                if (ShowField.FIRST.equals(showAfterValue)) {
+                    // make sure we are the first one!
+                    fieldNameMapping.put(lowerCaseName, "___" + lowerCaseName);
+                } else {
+                    fieldNameMapping.put(lowerCaseName,
+                            showAfterValue.toLowerCase());
+                }
             }
         }
 
         final Map<String, String> fieldNameMappingRecursive = handleRecursiveMappings(fieldNameMapping);
-        Collections.sort(fields, new Comparator<Field>() {
+        Collections.sort(items, new Comparator<AnnotatedDeviceClassItem>() {
             @Override
-            public int compare(Field lhs, Field rhs) {
+            public int compare(AnnotatedDeviceClassItem lhs, AnnotatedDeviceClassItem rhs) {
                 String lhsName = lhs.getName().toLowerCase();
                 String rhsName = rhs.getName().toLowerCase();
 
@@ -84,6 +160,16 @@ public class DeviceFields {
         });
     }
 
+    /**
+     * Generates a map of showAfter mappings. We also consider mappings pointing to other mappings
+     * and so on. To represent the level, we add an underscore as suffix for each level to each
+     * mapping value.
+     *
+     * Careful: We do not consider round-trip mappings! This will result in an infinite loop!
+     *
+     * @param fieldNameMapping mapping map.
+     * @return new mapping map considering recursive mappings.
+     */
     private static Map<String, String> handleRecursiveMappings(Map<String, String> fieldNameMapping) {
         Map<String, String> newMapping = new HashMap<String, String>();
         for (String key : fieldNameMapping.keySet()) {

@@ -26,11 +26,11 @@ package li.klass.fhem.domain;
 import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.ToggleableDevice;
-import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
+import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 
 @SuppressWarnings("unused")
-@DetailOverviewViewSettings(showState = true)
+@OverviewViewSettings(showState = true)
 public class IntertechnoDevice extends ToggleableDevice<IntertechnoDevice> {
 
     @ShowField(description = ResourceIdMapper.model)

@@ -28,9 +28,9 @@ import org.w3c.dom.NamedNodeMap;
 
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.ToggleableDevice;
-import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
+import li.klass.fhem.domain.genericview.OverviewViewSettings;
 
-@DetailOverviewViewSettings(showState = true, showMeasured = true)
+@OverviewViewSettings(showState = true, showMeasured = true)
 public class FS20ZDRDevice extends ToggleableDevice<FS20ZDRDevice> {
     @Override
     public boolean supportsToggle() {

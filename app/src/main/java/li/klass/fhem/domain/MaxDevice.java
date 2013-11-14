@@ -40,7 +40,7 @@ import li.klass.fhem.appwidget.view.widget.medium.ToggleWidgetView;
 import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.ToggleableDevice;
-import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
+import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.domain.heating.ComfortTempDevice;
 import li.klass.fhem.domain.heating.DesiredTempDevice;
@@ -60,7 +60,7 @@ import static li.klass.fhem.service.graph.description.SeriesType.TEMPERATURE;
 import static li.klass.fhem.util.ValueDescriptionUtil.desiredTemperatureToString;
 
 @SuppressWarnings("unused")
-@DetailOverviewViewSettings(showState = true)
+@OverviewViewSettings(showState = true)
 @SupportsWidget(TemperatureWidgetView.class)
 public class MaxDevice extends ToggleableDevice<MaxDevice> implements DesiredTempDevice,
         HeatingDevice<MaxDevice.HeatingMode, MAXConfiguration, FilledTemperatureInterval, MaxDevice>,

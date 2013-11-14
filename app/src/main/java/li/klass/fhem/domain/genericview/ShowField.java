@@ -30,6 +30,8 @@ import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ShowField {
+    public static final String FIRST = "__first__";
+
     ResourceIdMapper description();
 
     boolean showInOverview() default false;

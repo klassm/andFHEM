@@ -56,15 +56,17 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
 
     protected String name;
 
+    @ShowField(description = ResourceIdMapper.state, showAfter = "measured")
     private String state;
 
     protected String alias;
 
-    @ShowField(description = ResourceIdMapper.measured)
+    @ShowField(description = ResourceIdMapper.measured, showAfter = "definition")
     protected String measured;
 
-    @ShowField(description = ResourceIdMapper.definition)
+    @ShowField(description = ResourceIdMapper.definition, showAfter = "roomConcatenated")
     protected String definition;
+
     protected Map<String, String> eventMapReverse = new HashMap<String, String>();
     protected Map<String, String> eventMap = new HashMap<String, String>();
     private String[] availableTargetStates;
@@ -159,6 +161,7 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
         eventMapReverse.put(value, key);
     }
 
+    @ShowField(description = ResourceIdMapper.deviceName, showAfter = ShowField.FIRST)
     public String getAliasOrName() {
         if (alias != null && alias.length() != 0) {
             return alias;
@@ -177,6 +180,7 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
         return rooms;
     }
 
+    @ShowField(description = ResourceIdMapper.room, showAfter = "aliasOrName")
     public String getRoomConcatenated() {
         return StringUtil.concatenate(getRooms(), ",");
     }

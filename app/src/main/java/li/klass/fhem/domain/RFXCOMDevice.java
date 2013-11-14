@@ -26,9 +26,9 @@ package li.klass.fhem.domain;
 
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceFunctionality;
-import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
+import li.klass.fhem.domain.genericview.OverviewViewSettings;
 
-@DetailOverviewViewSettings(showState = true)
+@OverviewViewSettings(showState = true)
 public class RFXCOMDevice extends Device<RFXCOMDevice> {
     @Override
     public DeviceFunctionality getDeviceFunctionality() {

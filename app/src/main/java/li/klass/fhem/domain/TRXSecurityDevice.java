@@ -26,9 +26,9 @@ package li.klass.fhem.domain;
 
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceFunctionality;
-import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
+import li.klass.fhem.domain.genericview.OverviewViewSettings;
 
-@DetailOverviewViewSettings(showState = true, showMeasured = true)
+@OverviewViewSettings(showState = true, showMeasured = true)
 public class TRXSecurityDevice extends Device<TRXSecurityDevice> {
     @Override
     public DeviceFunctionality getDeviceFunctionality() {

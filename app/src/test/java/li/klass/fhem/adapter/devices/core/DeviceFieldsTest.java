@@ -26,13 +26,13 @@ package li.klass.fhem.adapter.devices.core;
 
 import org.junit.Test;
 
-import java.lang.reflect.Field;
-import java.util.Arrays;
 import java.util.List;
 
+import li.klass.fhem.adapter.devices.core.showFieldAnnotation.AnnotatedDeviceClassItem;
 import li.klass.fhem.domain.FHTDevice;
 import li.klass.fhem.domain.HCSDevice;
 
+import static li.klass.fhem.adapter.devices.core.DeviceFields.getSortedAnnotatedClassItems;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.lessThan;
@@ -43,15 +43,11 @@ public class DeviceFieldsTest {
 
     @Test
     public void testHCSOrder() {
-        Class<HCSDevice> hcsDeviceClass = HCSDevice.class;
-
-        List<Field> fields = Arrays.asList(hcsDeviceClass.getDeclaredFields());
-
-        DeviceFields.sort(fields);
+        List<AnnotatedDeviceClassItem> items = getSortedAnnotatedClassItems(HCSDevice.class);
 
         int numberOfDemandDevicesIndex = -1;
-        for (int i = 0; i < fields.size(); i++) {
-            if (fields.get(i).getName().equalsIgnoreCase("numberOfDemandDevices")) {
+        for (int i = 0; i < items.size(); i++) {
+            if (items.get(i).getName().equalsIgnoreCase("numberOfDemandDevices")) {
                 numberOfDemandDevicesIndex = i;
                 break;
             }
@@ -61,16 +57,12 @@ public class DeviceFieldsTest {
             fail("cannot find demandDevices attribute index.");
         }
 
-        assertThat(fields.get(numberOfDemandDevicesIndex + 1).getName(), is("commaSeparatedDemandDevices"));
+        assertThat(items.get(numberOfDemandDevicesIndex + 1).getName(), is("commaSeparatedDemandDevices"));
     }
 
     @Test
     public void testFHTOrder() {
-        Class<FHTDevice> deviceClass = FHTDevice.class;
-
-        List<Field> fields = Arrays.asList(deviceClass.getDeclaredFields());
-
-        DeviceFields.sort(fields);
+        List<AnnotatedDeviceClassItem> items = getSortedAnnotatedClassItems(FHTDevice.class);
 
         int temperatureIndex = -1;
         int desiredTempIndex = -1;
@@ -78,19 +70,19 @@ public class DeviceFieldsTest {
         int dayTempIndex = -1;
         int nightTempIndex = -1;
 
-        for (int i = 0; i < fields.size(); i++) {
-            Field field = fields.get(i);
+        for (int i = 0; i < items.size(); i++) {
+            AnnotatedDeviceClassItem item = items.get(i);
 
-            String fieldName = field.getName();
-            if (fieldName.equalsIgnoreCase("temperature")) {
+            String name = item.getName();
+            if (name.equalsIgnoreCase("temperature")) {
                 temperatureIndex = i;
-            } else if (fieldName.equalsIgnoreCase("desiredTemp")) {
+            } else if (name.equalsIgnoreCase("desiredTemp")) {
                 desiredTempIndex = i;
-            } else if (fieldName.equalsIgnoreCase("dayTemperature")) {
+            } else if (name.equalsIgnoreCase("dayTemperature")) {
                 dayTempIndex = i;
-            } else if (fieldName.equalsIgnoreCase("nightTemperature")) {
+            } else if (name.equalsIgnoreCase("nightTemperature")) {
                 nightTempIndex = i;
-            } else if (fieldName.equalsIgnoreCase("windowOpenTemp")) {
+            } else if (name.equalsIgnoreCase("windowOpenTemp")) {
                 windowOpenTempIndex = i;
             }
         }

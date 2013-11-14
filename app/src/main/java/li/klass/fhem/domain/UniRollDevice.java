@@ -26,9 +26,9 @@ package li.klass.fhem.domain;
 
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceFunctionality;
-import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
+import li.klass.fhem.domain.genericview.OverviewViewSettings;
 
-@DetailOverviewViewSettings(showMeasured = true, showState = true)
+@OverviewViewSettings(showMeasured = true, showState = true)
 public class UniRollDevice extends Device<UniRollDevice> {
     @Override
     public DeviceFunctionality getDeviceFunctionality() {

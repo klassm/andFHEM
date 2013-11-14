@@ -31,7 +31,7 @@ import li.klass.fhem.appwidget.view.widget.base.AppWidgetView;
 import li.klass.fhem.appwidget.view.widget.medium.ToggleWidgetView;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.DimmableDevice;
-import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
+import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.util.ValueDescriptionUtil;
 import li.klass.fhem.util.ValueExtractUtil;
@@ -39,7 +39,7 @@ import li.klass.fhem.util.ValueExtractUtil;
 import static li.klass.fhem.util.Equals.ignoreCaseEither;
 
 @SuppressWarnings("unused")
-@DetailOverviewViewSettings(showState = true)
+@OverviewViewSettings(showState = true)
 public class EnOceanDevice extends DimmableDevice<EnOceanDevice> {
 
     private String model;

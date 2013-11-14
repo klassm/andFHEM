@@ -22,29 +22,18 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.domain;
+package li.klass.fhem.adapter.devices.core.showFieldAnnotation;
 
-import org.w3c.dom.NamedNodeMap;
+import org.junit.Test;
 
-import li.klass.fhem.domain.core.Device;
-import li.klass.fhem.domain.core.DeviceFunctionality;
-import li.klass.fhem.domain.genericview.OverviewViewSettings;
+import static li.klass.fhem.adapter.devices.core.showFieldAnnotation.AnnotatedDeviceClassMethod.getterNameToName;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 
-@OverviewViewSettings(showMeasured = true)
-@SuppressWarnings("unused")
-public class WatchdogDevice extends Device<WatchdogDevice> {
-
-    public void readTRIGGERED(String value, NamedNodeMap attributes) {
-        this.measured = attributes.getNamedItem("measured").getNodeValue();
-    }
-
-    @Override
-    public boolean isSupported() {
-        return measured != null;
-    }
-
-    @Override
-    public DeviceFunctionality getDeviceFunctionality() {
-        return DeviceFunctionality.FHEM;
+public class AnnotatedDeviceClassMethodTest {
+    @Test
+    public void testGetterNameToName() throws Exception {
+        assertThat(getterNameToName("getName"), is("name"));
+        assertThat(getterNameToName("hello"), is("hello"));
     }
 }

@@ -29,7 +29,7 @@ import java.lang.annotation.RetentionPolicy;
 import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 
 @Retention(RetentionPolicy.RUNTIME)
-public @interface DetailOverviewViewSettings {
+public @interface OverviewViewSettings {
 	boolean showState() default false;
 	boolean showMeasured() default false;
 	ResourceIdMapper stateStringId() default ResourceIdMapper.state;

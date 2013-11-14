@@ -3,13 +3,13 @@ package li.klass.fhem.domain;
 import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.DimmableDevice;
-import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
+import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.util.ValueDescriptionUtil;
 import li.klass.fhem.util.ValueExtractUtil;
 
 @SuppressWarnings("unused")
-@DetailOverviewViewSettings(showState = true)
+@OverviewViewSettings(showState = true)
 public class HUEDevice extends DimmableDevice<HUEDevice> {
 
     public enum SubType {

@@ -30,12 +30,12 @@ import java.util.List;
 import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.ToggleableDevice;
-import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
+import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.util.ValueExtractUtil;
 
 @SuppressWarnings("unused")
-@DetailOverviewViewSettings(showState = true, showMeasured = true)
+@OverviewViewSettings(showState = true, showMeasured = true)
 public class YamahaAVRDevice extends ToggleableDevice<YamahaAVRDevice> {
 
     private int volume;

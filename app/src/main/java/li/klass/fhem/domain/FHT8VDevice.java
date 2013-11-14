@@ -30,12 +30,12 @@ import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.DeviceFunctionality;
-import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
+import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 
 import static li.klass.fhem.service.graph.description.SeriesType.ACTUATOR;
 
-@DetailOverviewViewSettings(showState = true, stateStringId = ResourceIdMapper.actuator)
+@OverviewViewSettings(showState = true, stateStringId = ResourceIdMapper.actuator)
 public class FHT8VDevice extends Device<FHT8VDevice> {
 
     @Override

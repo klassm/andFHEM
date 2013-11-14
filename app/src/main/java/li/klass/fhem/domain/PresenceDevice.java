@@ -29,10 +29,10 @@ import org.w3c.dom.NamedNodeMap;
 import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceFunctionality;
-import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
+import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 
-@DetailOverviewViewSettings(showState = true, showMeasured = true)
+@OverviewViewSettings(showState = true, showMeasured = true)
 @SuppressWarnings("unused")
 public class PresenceDevice extends Device<PresenceDevice> {
     @ShowField(description = ResourceIdMapper.mode)

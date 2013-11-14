@@ -39,7 +39,7 @@ import li.klass.fhem.appwidget.view.widget.medium.TemperatureWidgetView;
 import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.DimmableContinuousStatesDevice;
-import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
+import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.domain.heating.DesiredTempDevice;
 import li.klass.fhem.domain.heating.HeatingDevice;
@@ -66,7 +66,7 @@ import static li.klass.fhem.util.ValueExtractUtil.extractLeadingDouble;
 import static li.klass.fhem.util.ValueExtractUtil.extractLeadingInt;
 
 @SuppressWarnings("unused")
-@DetailOverviewViewSettings(showState = true)
+@OverviewViewSettings(showState = true)
 @SupportsWidget(TemperatureWidgetView.class)
 public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
         implements DesiredTempDevice, HeatingDevice<CULHMDevice.HeatingMode, CULHMConfiguration, FilledTemperatureInterval, CULHMDevice> {

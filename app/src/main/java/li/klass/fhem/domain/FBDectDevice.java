@@ -31,7 +31,7 @@ import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.ToggleableDevice;
-import li.klass.fhem.domain.genericview.DetailOverviewViewSettings;
+import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ValueDescriptionUtil;
@@ -40,7 +40,7 @@ import li.klass.fhem.util.ValueExtractUtil;
 import static li.klass.fhem.service.graph.description.SeriesType.POWER;
 
 @SuppressWarnings("unused")
-@DetailOverviewViewSettings(showState = true, showMeasured = true)
+@OverviewViewSettings(showState = true, showMeasured = true)
 public class FBDectDevice extends ToggleableDevice<FBDectDevice> {
     @ShowField(description = ResourceIdMapper.energy)
     private String energy;

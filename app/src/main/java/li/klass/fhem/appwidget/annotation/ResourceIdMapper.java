@@ -144,6 +144,8 @@ public enum ResourceIdMapper {
     channel(R.string.channel),
     currentTitle(R.string.currentTitle),
     shutterPosition(R.string.shutterPosition),
+    room(R.string.rooms),
+    deviceName(R.string.deviceName),
 
     blank(R.string.blank),
     none(-1);

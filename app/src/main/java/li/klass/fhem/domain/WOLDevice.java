@@ -37,10 +37,12 @@ import li.klass.fhem.appwidget.annotation.WidgetMediumLine2;
 import li.klass.fhem.appwidget.view.widget.medium.MediumInformationWidgetView;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceFunctionality;
+import li.klass.fhem.domain.genericview.DetailViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 
 @SuppressWarnings("unused")
 @SupportsWidget(MediumInformationWidgetView.class)
+@DetailViewSettings(showState = false)
 public class WOLDevice extends Device<WOLDevice> {
 
     @ShowField(description = ResourceIdMapper.state, showInOverview = true)
