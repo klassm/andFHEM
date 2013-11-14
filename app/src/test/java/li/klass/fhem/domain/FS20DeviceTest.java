@@ -24,9 +24,10 @@
 
 package li.klass.fhem.domain;
 
+import org.junit.Test;
+
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 import li.klass.fhem.domain.core.ToggleableDevice;
-import org.junit.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.notNullValue;
@@ -77,6 +78,8 @@ public class FS20DeviceTest extends DeviceXMLParsingBase {
 
         assertThat(device.getFileLog(), is(notNullValue()));
         assertThat(device.getDeviceCharts().size(), is(1));
+
+        assertThat(device.getWidgetName(), is("myAlias"));
     }
 
     @Test
@@ -85,6 +88,7 @@ public class FS20DeviceTest extends DeviceXMLParsingBase {
 
         assertThat(device.isOnRespectingInvertHook(), is(true));
         assertThat(device.isOnByState(), is(false));
+        assertThat(device.getWidgetName(), is("widget_name"));
     }
 
     @Test

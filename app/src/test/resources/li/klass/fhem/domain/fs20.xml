@@ -68,6 +68,7 @@
             <ATTR key="fp_obergeschoss" value="600,400,1,"/>
             <ATTR key="invertState" value="true"/>
             <ATTR key="room" value="room"/>
+            <ATTR key="widget_name" value="widget_name" />
             <STATE key="state" value="off" measured="2012-11-17 18:04:20"/>
         </FS20>
     </FS20_LIST>

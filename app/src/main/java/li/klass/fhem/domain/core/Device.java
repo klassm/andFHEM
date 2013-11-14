@@ -76,6 +76,7 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
     protected volatile FileLogDevice fileLog;
     private List<DeviceChart> deviceCharts = new ArrayList<DeviceChart>();
     private transient AssociatedDeviceCallback associatedDeviceCallback;
+    private String widgetName;
 
 
     public void readROOM(String value) {
@@ -84,6 +85,10 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
 
     public void readNAME(String value) {
         name = value;
+    }
+
+    public void readWIDGET_NAME(String value) {
+        this.widgetName = value;
     }
 
     public void readSTATE(String tagName, NamedNodeMap attributes, String value) {
@@ -418,6 +423,11 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
 
     public boolean supportsWidget(Class<? extends AppWidgetView> appWidgetClass) {
         return true;
+    }
+
+    public String getWidgetName() {
+        if (widgetName == null) return getAliasOrName();
+        return widgetName;
     }
 
     public String formatTargetState(String targetState) {

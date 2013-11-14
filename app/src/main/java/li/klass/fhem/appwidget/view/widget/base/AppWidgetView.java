@@ -65,7 +65,7 @@ public abstract class AppWidgetView {
         RemoteViews views = new RemoteViews(context.getPackageName(), getContentView());
 
         if (shouldSetDeviceName()) {
-            views.setTextViewText(R.id.deviceName, device.getAliasOrName());
+            views.setTextViewText(R.id.deviceName, device.getWidgetName());
         }
         fillWidgetView(context, views, device, widgetConfiguration);
 

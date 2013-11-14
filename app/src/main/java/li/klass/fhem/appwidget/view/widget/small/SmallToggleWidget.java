@@ -25,6 +25,7 @@ package li.klass.fhem.appwidget.view.widget.small;
 
 import android.content.Context;
 import android.widget.RemoteViews;
+
 import li.klass.fhem.R;
 import li.klass.fhem.appwidget.WidgetConfiguration;
 import li.klass.fhem.appwidget.view.widget.medium.ToggleWidgetView;
@@ -35,8 +36,8 @@ public class SmallToggleWidget extends ToggleWidgetView {
     protected void fillWidgetView(Context context, RemoteViews view, Device<?> device, WidgetConfiguration widgetConfiguration) {
         super.fillWidgetView(context, view, device, widgetConfiguration);
 
-        view.setTextViewText(R.id.toggleOff, device.getAliasOrName());
-        view.setTextViewText(R.id.toggleOn, device.getAliasOrName());
+        view.setTextViewText(R.id.toggleOff, device.getWidgetName());
+        view.setTextViewText(R.id.toggleOn, device.getWidgetName());
     }
 
     @Override

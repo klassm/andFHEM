@@ -24,8 +24,9 @@
 
 package li.klass.fhem.domain;
 
-import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 import org.junit.Test;
+
+import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.notNullValue;
@@ -39,6 +40,7 @@ public class KS300DeviceTest extends DeviceXMLParsingBase {
 
         assertThat(device.getName(), is(DEFAULT_TEST_DEVICE_NAME));
         assertThat(device.getRoomConcatenated(), is(DEFAULT_TEST_ROOM_NAME));
+        assertThat(device.getWidgetName(), is(DEFAULT_TEST_DEVICE_NAME));
 
         assertThat(device.getAverageDay(), is("T: 4.8  H: 78  W: 6.6  R: 5.1"));
         assertThat(device.getAverageMonth(), is("T: 6.7  H: 38  W: 42.4  R: 10.2"));
