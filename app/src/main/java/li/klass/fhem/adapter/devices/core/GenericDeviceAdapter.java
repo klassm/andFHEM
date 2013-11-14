@@ -64,6 +64,13 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
     private Map<String, List<FieldNameAddedToDetailListener<D>>> fieldNameAddedListeners = new HashMap<String, List<FieldNameAddedToDetailListener<D>>>();
     protected final LayoutInflater inflater;
 
+    /**
+     * Field to cache our sorted and annotated class members. This is especially useful as
+     * recreating this list on each view creation is really really expensive (involves reflection,
+     * list sorting, object creation, ...)
+     */
+    private transient List<AnnotatedDeviceClassItem> sortedAnnotatedClassItems;
+
     public GenericDeviceAdapter(Class<D> deviceClass) {
         this.deviceClass = deviceClass;
         inflater = (LayoutInflater) AndFHEMApplication.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -84,18 +91,8 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
         setTextView(view, R.id.deviceName, device.getAliasOrName());
 
         try {
-            if (device.getClass().isAnnotationPresent(OverviewViewSettings.class)) {
-                OverviewViewSettings annotation = device.getClass().getAnnotation(OverviewViewSettings.class);
-                if (annotation.showState()) {
-                    createTableRow(inflater, layout, R.layout.device_overview_generic_table_row, device.getState(), annotation.stateStringId().getId());
-                }
-                if (annotation.showMeasured()) {
-                    createTableRow(inflater, layout, R.layout.device_overview_generic_table_row, device.getMeasured(), annotation.measuredStringId().getId());
-                }
-            }
-
             OverviewViewSettings annotation = device.getClass().getAnnotation(OverviewViewSettings.class);
-            List<AnnotatedDeviceClassItem> items = DeviceFields.getSortedAnnotatedClassItems(device.getClass());
+            List<AnnotatedDeviceClassItem> items = getSortedAnnotatedClassItems(device);
 
             for (AnnotatedDeviceClassItem item : items) {
                 String name = item.getName();
@@ -115,6 +112,13 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
         } catch (Exception e) {
             Log.e(TAG, "exception occurred while setting device overview values", e);
         }
+    }
+
+    private List<AnnotatedDeviceClassItem> getSortedAnnotatedClassItems(D device) {
+        if (sortedAnnotatedClassItems == null) {
+            sortedAnnotatedClassItems = DeviceFields.getSortedAnnotatedClassItems(device.getClass());
+        }
+        return sortedAnnotatedClassItems;
     }
 
     @Override
@@ -149,7 +153,7 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
             }
 
             DetailViewSettings annotation = device.getClass().getAnnotation(DetailViewSettings.class);
-            List<AnnotatedDeviceClassItem> items = DeviceFields.getSortedAnnotatedClassItems(device.getClass());
+            List<AnnotatedDeviceClassItem> items = getSortedAnnotatedClassItems(device);
 
             for (AnnotatedDeviceClassItem item : items) {
                 String name = item.getName();
