@@ -51,7 +51,7 @@ import static li.klass.fhem.constants.PreferenceKeys.SHOW_HIDDEN_DEVICES;
 public class DeviceGridAdapter extends GridViewWithSectionsAdapter<DeviceFunctionality, Device<?>> {
     public static final String TAG = DeviceGridAdapter.class.getName();
     protected RoomDeviceList roomDeviceList;
-    private static final int DEFAULT_COLUMN_WIDTH = 355;
+    public static final int DEFAULT_COLUMN_WIDTH = 355;
     private int lastParentHeight;
     private List<DeviceFunctionality> parents;
 

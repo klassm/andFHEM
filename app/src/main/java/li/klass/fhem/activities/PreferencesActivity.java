@@ -48,6 +48,7 @@ import com.hlidskialf.android.preference.SeekBarPreference;
 
 import li.klass.fhem.GCMIntentService;
 import li.klass.fhem.R;
+import li.klass.fhem.adapter.rooms.DeviceGridAdapter;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.fhem.DataConnectionSwitch;
@@ -95,6 +96,7 @@ public class PreferencesActivity extends PreferenceActivity implements SharedPre
 
         SeekBarPreference deviceColumnWidthPreference = (SeekBarPreference) findPreference(DEVICE_COLUMN_WIDTH);
         deviceColumnWidthPreference.setMin(200);
+        deviceColumnWidthPreference.setDefaultValue(DeviceGridAdapter.DEFAULT_COLUMN_WIDTH);
         deviceColumnWidthPreference.setMax(DisplayUtil.getLargestDimensionInDP(this));
 
         findPreference("GCM_PROJECT_ID").setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
