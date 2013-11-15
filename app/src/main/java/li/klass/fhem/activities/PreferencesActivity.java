@@ -28,7 +28,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.*;
+import android.preference.EditTextPreference;
+import android.preference.ListPreference;
+import android.preference.Preference;
+import android.preference.PreferenceActivity;
+import android.preference.PreferenceCategory;
+import android.preference.PreferenceManager;
 import android.security.KeyChain;
 import android.security.KeyChainAliasCallback;
 import android.text.InputType;
@@ -38,7 +43,9 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
+
 import com.hlidskialf.android.preference.SeekBarPreference;
+
 import li.klass.fhem.GCMIntentService;
 import li.klass.fhem.R;
 import li.klass.fhem.constants.Actions;
@@ -50,8 +57,15 @@ import li.klass.fhem.util.DialogUtil;
 import li.klass.fhem.util.DisplayUtil;
 
 import static li.klass.fhem.constants.PreferenceKeys.DEVICE_COLUMN_WIDTH;
-import static li.klass.fhem.fhem.FHEMWebConnection.*;
-import static li.klass.fhem.fhem.TelnetConnection.*;
+import static li.klass.fhem.fhem.FHEMWebConnection.FHEMWEB_CLIENT_CERT_ALIAS;
+import static li.klass.fhem.fhem.FHEMWebConnection.FHEMWEB_CLIENT_CERT_PASSWORD;
+import static li.klass.fhem.fhem.FHEMWebConnection.FHEMWEB_CLIENT_CERT_PATH;
+import static li.klass.fhem.fhem.FHEMWebConnection.FHEMWEB_PASSWORD;
+import static li.klass.fhem.fhem.FHEMWebConnection.FHEMWEB_URL;
+import static li.klass.fhem.fhem.FHEMWebConnection.FHEMWEB_USERNAME;
+import static li.klass.fhem.fhem.TelnetConnection.TELNET_PASSWORD;
+import static li.klass.fhem.fhem.TelnetConnection.TELNET_PORT;
+import static li.klass.fhem.fhem.TelnetConnection.TELNET_URL;
 
 public class PreferencesActivity extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -80,7 +94,7 @@ public class PreferencesActivity extends PreferenceActivity implements SharedPre
         });
 
         SeekBarPreference deviceColumnWidthPreference = (SeekBarPreference) findPreference(DEVICE_COLUMN_WIDTH);
-        deviceColumnWidthPreference.setMin(350);
+        deviceColumnWidthPreference.setMin(200);
         deviceColumnWidthPreference.setMax(DisplayUtil.getLargestDimensionInDP(this));
 
         findPreference("GCM_PROJECT_ID").setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
