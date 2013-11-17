@@ -230,19 +230,8 @@
     <string name="timer">Timer</string>
     <string name="send_command">Send Command</string>
 
-    <string name="prefDataSourceCategory">Data Source</string>
-    <string name="prefDataSource">Data Source</string>
     <string name="prefOtherPreferencesCategory">Other Preferences</string>
     <string name="prefWidgetCategory">Widgets</string>
-    <string name="prefTelnetUrlSummary">i.e. 192.168.0.1</string>
-    <string name="prefTelnetUrl">IP</string>
-    <string name="prefTelnetPortSummary">i.e. 7072</string>
-    <string name="prefTelnetPort">Port</string>
-    <string name="prefFHEMWEBUrl">URL</string>
-    <string name="prefFHEMWEBUrlSummary">i.e. http://192.168.0.1:8083/fhem</string>
-    <string name="prefFHEMWEBClientCert">Client Certificate</string>
-    <string name="prefUsername">Username</string>
-    <string name="prefPassword">Password</string>
     <string name="prefShowHiddenDevices">Show hidden devices</string>
     <string name="prefDefaultTimespan">Graph Timespan</string>
     <string name="prefAutoUpdate">Auto Update</string>
@@ -373,6 +362,7 @@
     <string name="premium">AndFHEM Premium</string>
     <string name="premium_desc">AndFHEM Premium includes the shutdown of advertisements within the app!</string>
     <string name="shop_buyPemium">Buy andFHEM Premium</string>
+    <string name="premium_multipleConnections">AndFHEM Premium is required to use more than one connection.</string>
 
     <string name="blank"></string>
     <string name="deviceListEmpty">No matching devices found!</string>

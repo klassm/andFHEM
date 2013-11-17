@@ -29,19 +29,7 @@
         android:layout_height="fill_parent"
         android:layout_width="fill_parent">
 
-    <PreferenceCategory android:title="@string/prefDataSourceCategory" android:key="DATAORIGINCATEGORY">
-
-        <ListPreference
-                android:title="@string/prefDataSource"
-                android:id="@+id/dataOriginSelector"
-                android:summary=""
-                android:key="CONNECTION_TYPE"
-                android:defaultValue=""
-                android:entries="@array/dataOriginEntries"
-                android:entryValues="@array/dataOriginValues"/>
-    </PreferenceCategory>
-
-    <PreferenceCategory android:title="@string/prefWidgetCategory" android:key="DATAORIGINCATEGORY">
+    <PreferenceCategory android:title="@string/prefWidgetCategory">
         <CheckBoxPreference
                 android:key="prefWidgetRemoteUpdate"
                 android:title="@string/prefWidgetRemoteUpdate"

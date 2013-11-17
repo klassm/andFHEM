@@ -29,9 +29,12 @@ import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.util.Log;
 
+import java.util.Set;
+
 import javax.security.cert.X509Certificate;
 
 import li.klass.fhem.AndFHEMApplication;
+import li.klass.fhem.billing.BillingService;
 
 public class LicenseManager {
     public static final LicenseManager INSTANCE = new LicenseManager();
@@ -41,13 +44,11 @@ public class LicenseManager {
     }
 
     public boolean isPro() {
-        return false;
+        if (isPremium) return true;
+        if (isDebug()) return true;
 
-//        if (isPremium) return true;
-//        if (isDebug()) return true;
-//
-//        Set<String> ownedItems = BillingService.INSTANCE.getOwnedItems();
-//        return ownedItems.contains(AndFHEMApplication.PRODUCT_PREMIUM_ID) || ownedItems.contains(AndFHEMApplication.PRODUCT_PREMIUM_DONATOR_ID);
+        Set<String> ownedItems = BillingService.INSTANCE.getOwnedItems();
+        return ownedItems.contains(AndFHEMApplication.PRODUCT_PREMIUM_ID) || ownedItems.contains(AndFHEMApplication.PRODUCT_PREMIUM_DONATOR_ID);
     }
 
     public boolean isDebug() {
@@ -62,7 +63,7 @@ public class LicenseManager {
                 }
             }
         } catch (Exception e) {
-            Log.e(LicenseManager.class.getName(), "some exception occurred during reading of app signatures", e);
+            Log.e(LicenseManager.class.getName(), "some exception occurred while reading app signatures", e);
         }
         return false;
     }

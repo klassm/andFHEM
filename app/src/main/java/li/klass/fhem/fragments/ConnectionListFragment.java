@@ -42,6 +42,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.ConnectionListAdapter;
 import li.klass.fhem.constants.Actions;
@@ -106,6 +107,16 @@ public class ConnectionListFragment extends BaseFragment implements TopLevelFrag
         createButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                int size = getAdapter().getData().size();
+                if (size >= AndFHEMApplication.PREMIUM_ALLOWED_FREE_CONNECTIONS) {
+                    Intent intent = new Intent(Actions.SHOW_ALERT);
+                    intent.putExtra(BundleExtraKeys.ALERT_CONTENT_ID, R.string.premium_multipleConnections);
+                    intent.putExtra(BundleExtraKeys.ALERT_TITLE_ID, R.string.premium);
+                    AndFHEMApplication.getContext().sendBroadcast(intent);
+
+                    return;
+                }
+
                 Intent intent = new Intent(Actions.SHOW_FRAGMENT);
                 intent.putExtra(BundleExtraKeys.FRAGMENT, FragmentType.CONNECTION_DETAIL);
 

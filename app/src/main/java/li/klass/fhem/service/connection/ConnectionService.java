@@ -37,8 +37,10 @@ import java.util.UUID;
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.fhem.connection.FHEMServerSpec;
 import li.klass.fhem.fhem.connection.ServerType;
+import li.klass.fhem.license.LicenseManager;
 import li.klass.fhem.util.ApplicationProperties;
 
+import static li.klass.fhem.AndFHEMApplication.PREMIUM_ALLOWED_FREE_CONNECTIONS;
 import static li.klass.fhem.constants.PreferenceKeys.SELECTED_CONNECTION;
 
 public class ConnectionService {
@@ -61,6 +63,10 @@ public class ConnectionService {
     public boolean create(String name, ServerType serverType, String username, String password,
                           String ip, int port, String url) {
         if (exists(name)) return false;
+
+        if (! LicenseManager.INSTANCE.isPro() && getCountWithoutDummy() >= PREMIUM_ALLOWED_FREE_CONNECTIONS) {
+            return false;
+        }
 
         FHEMServerSpec server = new FHEMServerSpec(newUniqueId());
 
@@ -109,6 +115,12 @@ public class ConnectionService {
         return true;
     }
 
+    private int getCountWithoutDummy() {
+        Map<String, ?> all = getPreferences().getAll();
+        if (all == null) return 0;
+        return all.size();
+    }
+
     public ArrayList<FHEMServerSpec> listAll() {
         ArrayList<FHEMServerSpec> servers = new ArrayList<FHEMServerSpec>();
 
@@ -150,6 +162,13 @@ public class ConnectionService {
 
     private boolean exists(String id) {
         return DUMMY_DATA_ID.equals(id) || getPreferences().contains(id);
+    }
+
+    public boolean nameExists(String name) {
+        for (FHEMServerSpec serverSpec : listAll()) {
+            if (serverSpec.getName().equalsIgnoreCase(name)) return true;
+        }
+        return false;
     }
 
     private FHEMServerSpec getForId(String id) {

@@ -24,25 +24,12 @@
 
 package li.klass.fhem.activities;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.EditTextPreference;
-import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
-import android.preference.PreferenceCategory;
 import android.preference.PreferenceManager;
-import android.security.KeyChain;
-import android.security.KeyChainAliasCallback;
-import android.text.InputType;
-import android.text.method.PasswordTransformationMethod;
-import android.view.View;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.LinearLayout;
-import android.widget.ScrollView;
 
 import com.hlidskialf.android.preference.SeekBarPreference;
 
@@ -51,24 +38,12 @@ import li.klass.fhem.R;
 import li.klass.fhem.adapter.rooms.DeviceGridAdapter;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.fhem.DataConnectionSwitch;
-import li.klass.fhem.license.LicenseManager;
-import li.klass.fhem.util.ApplicationProperties;
-import li.klass.fhem.util.DialogUtil;
 import li.klass.fhem.util.DisplayUtil;
 
 import static li.klass.fhem.constants.PreferenceKeys.DEVICE_COLUMN_WIDTH;
-import static li.klass.fhem.fhem.FHEMWEBConnection.FHEMWEB_CLIENT_CERT_ALIAS;
-import static li.klass.fhem.fhem.FHEMWEBConnection.FHEMWEB_CLIENT_CERT_PASSWORD;
-import static li.klass.fhem.fhem.FHEMWEBConnection.FHEMWEB_CLIENT_CERT_PATH;
-import static li.klass.fhem.fhem.FHEMWEBConnection.FHEMWEB_PASSWORD;
-import static li.klass.fhem.fhem.FHEMWEBConnection.FHEMWEB_URL;
-import static li.klass.fhem.fhem.FHEMWEBConnection.FHEMWEB_USERNAME;
-import static li.klass.fhem.fhem.TelnetConnection.TELNET_PASSWORD;
-import static li.klass.fhem.fhem.TelnetConnection.TELNET_PORT;
-import static li.klass.fhem.fhem.TelnetConnection.TELNET_URL;
 
-public class PreferencesActivity extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
+public class PreferencesActivity extends PreferenceActivity
+        implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     private boolean preferencesChanged;
 
@@ -82,17 +57,6 @@ public class PreferencesActivity extends PreferenceActivity implements SharedPre
         preferences.registerOnSharedPreferenceChangeListener(this);
 
         addPreferencesFromResource(R.layout.preferences);
-
-        ListPreference dataOriginPreference = (ListPreference) findPreference(DataConnectionSwitch.CONNECTION_TYPE);
-        setDataOriginOptionsForValue(dataOriginPreference.getValue());
-        dataOriginPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object o) {
-                setDataOriginOptionsForValue((String) o);
-
-                return true;
-            }
-        });
 
         SeekBarPreference deviceColumnWidthPreference = (SeekBarPreference) findPreference(DEVICE_COLUMN_WIDTH);
         deviceColumnWidthPreference.setMin(200);
@@ -109,118 +73,6 @@ public class PreferencesActivity extends PreferenceActivity implements SharedPre
         });
     }
 
-    private void setDataOriginOptionsForValue(String value) {
-        removeAllDateOriginOptions();
-        if (value.equals("TELNET")) {
-            addTelnetPreferences();
-        } else if (value.equals("FHEMWEB")) {
-            addFHEMWEBPreferences();
-        }
-    }
-
-    private void removeAllDateOriginOptions() {
-        removePreferenceIfNotNull(TELNET_URL);
-        removePreferenceIfNotNull(TELNET_PORT);
-        removePreferenceIfNotNull(TELNET_PASSWORD);
-
-        removePreferenceIfNotNull(FHEMWEB_URL);
-        removePreferenceIfNotNull(FHEMWEB_USERNAME);
-        removePreferenceIfNotNull(FHEMWEB_PASSWORD);
-        removePreferenceIfNotNull(FHEMWEB_CLIENT_CERT_PASSWORD);
-        removePreferenceIfNotNull(FHEMWEB_CLIENT_CERT_PATH);
-
-    }
-
-    private void removePreferenceIfNotNull(String preferenceKey) {
-        Preference preference = findPreference(preferenceKey);
-        if (preference != null) {
-            getDataOriginCategory().removePreference(preference);
-        }
-    }
-
-    private void addTelnetPreferences() {
-        EditTextPreference urlPreference = new EditTextPreference(this);
-        urlPreference.setTitle(R.string.prefTelnetUrl);
-        urlPreference.setSummary(R.string.prefTelnetUrlSummary);
-        urlPreference.setKey(TELNET_URL);
-        getDataOriginCategory().addPreference(urlPreference);
-
-        EditTextPreference portPreference = new EditTextPreference(this);
-        portPreference.setTitle(R.string.prefTelnetPort);
-        portPreference.setSummary(R.string.prefTelnetPortSummary);
-        portPreference.setKey(TELNET_PORT);
-        getDataOriginCategory().addPreference(portPreference);
-
-        EditPasswordPreference passwordPreference = new EditPasswordPreference(this);
-        passwordPreference.setTitle(R.string.prefPassword);
-        passwordPreference.setSummary(R.string.optional);
-        passwordPreference.setKey(TELNET_PASSWORD);
-        passwordPreference.getEditText().setTransformationMethod(PasswordTransformationMethod.getInstance());
-
-        getDataOriginCategory().addPreference(passwordPreference);
-    }
-
-    private void addFHEMWEBPreferences() {
-        EditTextPreference urlPreference = new EditTextPreference(this);
-        urlPreference.setTitle(R.string.prefFHEMWEBUrl);
-        urlPreference.setSummary(R.string.prefFHEMWEBUrlSummary);
-        urlPreference.setKey(FHEMWEB_URL);
-        urlPreference.getEditText().setInputType(InputType.TYPE_TEXT_VARIATION_URI);
-        getDataOriginCategory().addPreference(urlPreference);
-
-        urlPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object o) {
-                String newValue = (String) o;
-                if (!newValue.matches("http[s]?://.*")) {
-                    DialogUtil.showAlertDialog(preference.getContext(), R.string.error, R.string.prefUrlBeginningError);
-                }
-                return true;
-            }
-        });
-
-        EditTextPreference usernamePreference = new EditTextPreference(this);
-        usernamePreference.setTitle(R.string.prefUsername);
-        usernamePreference.setKey(FHEMWEB_USERNAME);
-        usernamePreference.setSummary(R.string.optional);
-        getDataOriginCategory().addPreference(usernamePreference);
-
-        EditPasswordPreference passwordPreference = new EditPasswordPreference(this);
-        passwordPreference.setTitle(R.string.prefPassword);
-        passwordPreference.setKey(FHEMWEB_PASSWORD);
-        passwordPreference.setSummary(R.string.optional);
-        getDataOriginCategory().addPreference(passwordPreference);
-
-        if (LicenseManager.INSTANCE.isDebug()) {
-            Preference clientCertButton = new Preference(this);
-            clientCertButton.setTitle(R.string.prefFHEMWEBClientCert);
-            clientCertButton.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                @Override
-                public boolean onPreferenceClick(Preference preference) {
-                    KeyChain.choosePrivateKeyAlias(PreferencesActivity.this,
-                            new KeyChainAliasCallback() {
-
-                                public void alias(String alias) {
-                                    ApplicationProperties.INSTANCE.setSharedPreference(FHEMWEB_CLIENT_CERT_ALIAS, alias);
-                                }
-                            },
-                            new String[]{"RSA", "DSA"},     // List of acceptable key types. null for any
-                            null,                           // issuer, null for any
-                            null,                           // host name of server requesting the cert, null if unavailable
-                            443,                            // port of server requesting the cert, -1 if unavailable
-                            null);
-
-                    return true;
-                }
-            });
-            getDataOriginCategory().addPreference(clientCertButton);
-        }
-    }
-
-    private PreferenceCategory getDataOriginCategory() {
-        return (PreferenceCategory) findPreference("DATAORIGINCATEGORY");
-    }
-
     @Override
     protected void onStop() {
         super.onStop();
@@ -234,45 +86,6 @@ public class PreferencesActivity extends PreferenceActivity implements SharedPre
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
         preferencesChanged = true;
-    }
-
-    private class EditPasswordPreference extends EditTextPreference {
-
-        public EditPasswordPreference(Context context) {
-            super(context);
-        }
-
-        @Override
-        protected View onCreateDialogView() {
-            ScrollView view = (ScrollView) super.onCreateDialogView();
-            LinearLayout layout = (LinearLayout) view.getChildAt(0);
-
-            CheckBox checkBox = new CheckBox(PreferencesActivity.this);
-            checkBox.setText(getString(R.string.showPassword));
-            checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
-                    if (checked) {
-                        showPassword();
-                    } else {
-                        hidePassword();
-                    }
-                }
-            });
-            layout.addView(checkBox);
-
-            hidePassword();
-
-            return view;
-        }
-
-        private void showPassword() {
-            getEditText().setTransformationMethod(null);
-        }
-
-        private void hidePassword() {
-            getEditText().setTransformationMethod(PasswordTransformationMethod.getInstance());
-        }
     }
 
     @Override

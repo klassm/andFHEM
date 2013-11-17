@@ -146,13 +146,6 @@ public abstract class DeviceListFragment extends BaseFragment {
 
         showUpdatingBar();
 
-        View dummyConnectionNotification = view.findViewById(R.id.dummyConnectionNotification);
-        if (!DataConnectionSwitch.INSTANCE.getCurrentProvider().getClass().isAssignableFrom(DummyDataConnection.class)) {
-            dummyConnectionNotification.setVisibility(View.GONE);
-        } else {
-            dummyConnectionNotification.setVisibility(View.VISIBLE);
-        }
-
         if (doUpdate) {
             view.invalidate();
         }
@@ -166,7 +159,8 @@ public abstract class DeviceListFragment extends BaseFragment {
             @Override
             protected void onReceiveResult(int resultCode, Bundle resultData) {
                 super.onReceiveResult(resultCode, resultData);
-                if (getView() == null) return;
+                View view = getView();
+                if (view == null) return;
 
                 if (resultCode == ResultCodes.SUCCESS && resultData.containsKey(DEVICE_LIST)) {
                     hideUpdatingBar();
@@ -179,6 +173,13 @@ public abstract class DeviceListFragment extends BaseFragment {
                     } else {
                         hideEmptyView();
                     }
+                }
+
+                View dummyConnectionNotification = view.findViewById(R.id.dummyConnectionNotification);
+                if (!DataConnectionSwitch.INSTANCE.getCurrentProvider().getClass().isAssignableFrom(DummyDataConnection.class)) {
+                    dummyConnectionNotification.setVisibility(View.GONE);
+                } else {
+                    dummyConnectionNotification.setVisibility(View.VISIBLE);
                 }
             }
         });

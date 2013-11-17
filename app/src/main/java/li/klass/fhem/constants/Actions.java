@@ -36,6 +36,7 @@ public class Actions {
     public static final String BACK = prefix + "BACK";
 
     public static final String SHOW_TOAST = prefix + "SHOW_TOAST";
+    public static final String SHOW_ALERT = prefix + "SHOW_ALERT";
 
     public static final String GET_ALL_ROOMS_DEVICE_LIST = prefix + "ALL_ROOMS_DEVICE_LIST";
     public static final String GET_ROOM_DEVICE_LIST = prefix + "GET_ROOM_DEVICE_LIST";

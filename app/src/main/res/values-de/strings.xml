@@ -227,19 +227,8 @@
     <string name="timer">Zeitschaltuhr</string>
     <string name="send_command">Kommando senden</string>
 
-    <string name="prefDataSourceCategory">Datenquelle</string>
-    <string name="prefDataSource">Datenquelle</string>
     <string name="prefOtherPreferencesCategory">Andere Einstellungen</string>
     <string name="prefWidgetCategory">Widgets</string>
-    <string name="prefTelnetUrlSummary">z.B. 192.168.0.1</string>
-    <string name="prefTelnetUrl">IP</string>
-    <string name="prefTelnetPortSummary">z.B. 7072</string>
-    <string name="prefTelnetPort">Port</string>
-    <string name="prefFHEMWEBUrl">URL</string>
-    <string name="prefFHEMWEBClientCert">Client Zertifikat</string>
-    <string name="prefUsername">Benutzername</string>
-    <string name="prefPassword">Passwort</string>
-    <string name="prefFHEMWEBUrlSummary">z.B.. http://192.168.0.1:8083/fhem</string>
     <string name="prefShowHiddenDevices">Zeige versteckte Geräte</string>
     <string name="prefDefaultTimespan">Graph Zeitspanne</string>
     <string name="prefAutoUpdate">Automatischer Update</string>
@@ -371,6 +360,7 @@
     <string name="premium">AndFHEM Premium</string>
     <string name="premium_desc">AndFHEM Premium beinhaltet die Abschaltung der Werbung in der Applikation!</string>
     <string name="shop_buyPemium">AndFHEM Premium kaufen</string>
+    <string name="premium_multipleConnections">Für mehr als eine Verbindung wird AndFHEM Premium benötigt.</string>
 
     <string name="deviceListEmpty">Keine passenden Geräte gefunden!</string>
 

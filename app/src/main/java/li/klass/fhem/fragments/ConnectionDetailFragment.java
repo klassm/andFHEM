@@ -246,8 +246,8 @@ public class ConnectionDetailFragment extends BaseFragment {
         View view = getView();
         if (view == null) return;
 
-        setTextViewContent(detailView, R.id.url, connection.getIp());
-        setTextViewContent(detailView, R.id.username, connection.getPort() + "");
+        setTextViewContent(detailView, R.id.url, connection.getUrl());
+        setTextViewContent(detailView, R.id.username, connection.getUsername() + "");
         setTextViewContent(detailView, R.id.password, connection.getPassword());
     }
 

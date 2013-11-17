@@ -108,7 +108,7 @@ public class ApplicationProperties {
 
     public void deleteSharedPreference(String key) {
         SharedPreferences preferences = getPreferences();
-        preferences.edit().remove(key);
+        preferences.edit().remove(key).commit();
     }
 
     private SharedPreferences getPreferences() {

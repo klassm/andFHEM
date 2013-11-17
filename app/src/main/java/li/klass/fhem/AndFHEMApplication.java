@@ -29,6 +29,7 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.util.Log;
+
 import li.klass.fhem.util.ApplicationProperties;
 
 import static li.klass.fhem.constants.PreferenceKeys.APPLICATION_VERSION;
@@ -41,6 +42,8 @@ public class AndFHEMApplication extends Application {
     public static final String PUBLIC_KEY_ENCODED = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA1umqueNUDXDqFzXEsRi/kvum6VcI8qiF0OWE7ME6Lm3mHsYHH4W/XIpLWXyh/7FeVpGl36c1UJfBhWCjjLi3d0qechVr/+0RJmXX+r5QZYzE6ZR9jr1g+BUCZj8bB2h+kGL6068pWJJMgzP0mvUBwCxHJioSpdIaBUK4FFyJDz/Nuu8PnThxLJsYEzB6ppyZ8gWYYyeSwg1oNdqcTafLPsh4rAyLJAMOBa9m8cQ7dyEqFXrrM+shYB1JDOJICM6fBNEUDh6kY12QEvh5m6vrAiB7q2eO11rCjZQqSzUEg2Qnd8PFR27ZBQ7CF9mF8VTL71bFOCoM6l/6rIe83SfKWQIDAQAB";
     public static final String PRODUCT_PREMIUM_ID = "li.klass.fhem.premium";
     public static final String PRODUCT_PREMIUM_DONATOR_ID = "li.klass.fhem.premiumdonator";
+
+    public static final int PREMIUM_ALLOWED_FREE_CONNECTIONS = 1;
 
     private boolean isUpdate = false;
     private String currentApplicationVersion;
@@ -86,7 +89,7 @@ public class AndFHEMApplication extends Application {
     }
 
     public boolean isUpdate() {
-        return isUpdate;
+        return true;
     }
 
     public String getCurrentApplicationVersion() {

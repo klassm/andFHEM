@@ -24,12 +24,8 @@
 
 package li.klass.fhem.fhem;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.preference.PreferenceManager;
-import android.security.KeyChain;
 import android.util.Log;
 
 import org.apache.commons.io.IOUtils;
@@ -55,28 +51,17 @@ import org.apache.http.protocol.HTTP;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
-import java.net.Socket;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.security.KeyStore;
-import java.security.Principal;
-import java.security.PrivateKey;
-import java.security.cert.X509Certificate;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import javax.net.ssl.KeyManager;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManagerFactory;
-import javax.net.ssl.X509ExtendedKeyManager;
-
-import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.exception.AndFHEMException;
 import li.klass.fhem.exception.AuthenticationException;
 import li.klass.fhem.exception.FHEMStrangeContentException;
 import li.klass.fhem.exception.HostConnectionException;
 import li.klass.fhem.exception.TimeoutException;
-import li.klass.fhem.util.StringUtil;
 
 public class FHEMWEBConnection extends FHEMConnection {
 
@@ -84,14 +69,10 @@ public class FHEMWEBConnection extends FHEMConnection {
     public static final int SOCKET_TIMEOUT = 20000;
     public static final String TAG = FHEMWEBConnection.class.getName();
     private DefaultHttpClient client;
-    private String savedClientCertAlias;
 
     public static final String FHEMWEB_URL = "FHEMWEB_URL";
     public static final String FHEMWEB_USERNAME = "FHEMWEB_USERNAME";
     public static final String FHEMWEB_PASSWORD = "FHEMWEB_PASSWORD";
-    public static final String FHEMWEB_CLIENT_CERT_PATH = "FHEMWEB_CLIENT_CERT_PATH";
-    public static final String FHEMWEB_CLIENT_CERT_PASSWORD = "FHEMWEB_CLIENT_CERT_PASSWORD";
-    public static final String FHEMWEB_CLIENT_CERT_ALIAS = "FHEMWEB_CLIENT_CERT_ALIAS";
 
     public static final FHEMWEBConnection INSTANCE = new FHEMWEBConnection();
 
@@ -146,7 +127,7 @@ public class FHEMWEBConnection extends FHEMConnection {
 
     private InputStream executeRequest(String urlSuffix,
                                        DefaultHttpClient client) {
-        if (client == null || !savedClientCertAlias.equals(getClientCertAlias())) {
+        if (client == null) {
             client = createNewHTTPClient(CONNECTION_TIMEOUT, SOCKET_TIMEOUT);
         }
         try {
@@ -186,81 +167,18 @@ public class FHEMWEBConnection extends FHEMConnection {
         return serverSpec.getPassword();
     }
 
-    public static String getClientCertAlias() {
-        SharedPreferences sharedPreferences = PreferenceManager
-                .getDefaultSharedPreferences(AndFHEMApplication.getContext());
-        String password = sharedPreferences.getString(FHEMWEB_CLIENT_CERT_ALIAS, "");
-        String logMessage = password.equals("") ? "has no client cert alias"
-                : "has client cert alias";
-        Log.d(TAG, "FHEMWEB connection " + logMessage + " configured");
-        return password;
-    }
-
     private DefaultHttpClient createNewHTTPClient(int connectionTimeout,
                                                   int socketTimeout) {
-        Context context = AndFHEMApplication.getContext();
-        final String clientSideCertAlias = getClientCertAlias();
-        savedClientCertAlias = clientSideCertAlias;
-
         try {
             KeyStore trustStore;
             SSLSocketFactory socketFactory;
-            if (!StringUtil.isBlank(clientSideCertAlias)) {
-                final X509Certificate[] certificateChain = KeyChain.getCertificateChain(context, clientSideCertAlias);
-                final PrivateKey privateKey = KeyChain.getPrivateKey(context, clientSideCertAlias);
 
-                SSLContext ctx = SSLContext.getInstance("SSL");
-
-                TrustManagerFactory tmf = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
-
-                X509ExtendedKeyManager keyManager = new X509ExtendedKeyManager() {
-
-                    @Override
-                    public String chooseClientAlias(String[] strings, Principal[] principals, Socket socket) {
-                        return clientSideCertAlias;
-                    }
-
-                    @Override
-                    public String chooseServerAlias(String s, Principal[] principals, Socket socket) {
-                        return clientSideCertAlias;
-                    }
-
-                    @Override
-                    public X509Certificate[] getCertificateChain(String s) {
-                        return certificateChain;
-                    }
-
-                    @Override
-                    public String[] getClientAliases(String s, Principal[] principals) {
-                        return new String[]{clientSideCertAlias};
-                    }
-
-                    @Override
-                    public String[] getServerAliases(String s, Principal[] principals) {
-                        return new String[]{clientSideCertAlias};
-                    }
-
-                    @Override
-                    public PrivateKey getPrivateKey(String s) {
-                        return privateKey;
-                    }
-                };
-                ctx.init(new KeyManager[]{keyManager}, tmf.getTrustManagers(), null);
-                SSLContext.setDefault(ctx);
-
-                KeyStore keyStore = KeyStore.getInstance("AndroidCAStore");
-                socketFactory = new SSLSocketFactory(keyStore);
-                socketFactory.setHostnameVerifier(SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
-
-            } else {
-                trustStore = KeyStore.getInstance(KeyStore.getDefaultType());
-                trustStore.load(null, null);
+            trustStore = KeyStore.getInstance(KeyStore.getDefaultType());
+            trustStore.load(null, null);
 
 
-                socketFactory = new CustomSSLSocketFactory(trustStore);
-                socketFactory.setHostnameVerifier(SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
-
-            }
+            socketFactory = new CustomSSLSocketFactory(trustStore);
+            socketFactory.setHostnameVerifier(SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
 
 
             HttpParams params = new BasicHttpParams();

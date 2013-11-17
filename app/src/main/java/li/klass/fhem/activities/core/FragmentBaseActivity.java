@@ -70,6 +70,7 @@ import static li.klass.fhem.constants.Actions.CONNECTIONS_CHANGED;
 import static li.klass.fhem.constants.Actions.DISMISS_EXECUTING_DIALOG;
 import static li.klass.fhem.constants.Actions.DO_UPDATE;
 import static li.klass.fhem.constants.Actions.RELOAD;
+import static li.klass.fhem.constants.Actions.SHOW_ALERT;
 import static li.klass.fhem.constants.Actions.SHOW_EXECUTING_DIALOG;
 import static li.klass.fhem.constants.Actions.SHOW_TOAST;
 import static li.klass.fhem.constants.BundleExtraKeys.HAS_FAVORITES;
@@ -142,6 +143,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
             intentFilter.addAction(SHOW_EXECUTING_DIALOG);
             intentFilter.addAction(DISMISS_EXECUTING_DIALOG);
             intentFilter.addAction(SHOW_TOAST);
+            intentFilter.addAction(SHOW_ALERT);
             intentFilter.addAction(DO_UPDATE);
             intentFilter.addAction(BACK);
             intentFilter.addAction(RELOAD);
@@ -182,6 +184,10 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
                                 content = getString(intent.getIntExtra(BundleExtraKeys.TOAST_STRING_ID, 0));
                             }
                             Toast.makeText(FragmentBaseActivity.this, content, Toast.LENGTH_SHORT).show();
+                        } else if (action.equals(SHOW_ALERT)) {
+                            DialogUtil.showAlertDialog(FragmentBaseActivity.this,
+                                    intent.getIntExtra(BundleExtraKeys.ALERT_TITLE_ID, R.string.blank),
+                                    intent.getIntExtra(BundleExtraKeys.ALERT_CONTENT_ID, R.string.blank));
                         } else if (action.equals(BACK)) {
                             onBackPressed();
                         } else if (CONNECTIONS_CHANGED.equals(action)) {

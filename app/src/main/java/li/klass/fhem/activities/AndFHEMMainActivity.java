@@ -50,7 +50,7 @@ public class AndFHEMMainActivity extends FragmentBaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        UpdateHandler.INSTANCE.onUpdate(this);
+        UpdateHandler.INSTANCE.onApplicationUpdate();
 
         registerWithGCM(this);
     }
