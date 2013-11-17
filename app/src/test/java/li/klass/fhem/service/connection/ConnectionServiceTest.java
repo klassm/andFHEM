@@ -37,7 +37,7 @@ import static org.hamcrest.core.IsNot.not;
 public class ConnectionServiceTest {
     @Test
     public void testFHEMServerSpecSerializeDeserialize() {
-        FHEMServerSpec serverSpec = new FHEMServerSpec();
+        FHEMServerSpec serverSpec = new FHEMServerSpec("test");
         serverSpec.setUrl("http://test.com");
         serverSpec.setUsername("hallowelt");
         serverSpec.setPassword("myPassword");
