@@ -52,6 +52,7 @@ import li.klass.fhem.fhem.connection.FHEMServerSpec;
 import li.klass.fhem.fhem.connection.ServerType;
 import li.klass.fhem.fragments.core.BaseFragment;
 import li.klass.fhem.fragments.core.TopLevelFragment;
+import li.klass.fhem.license.LicenseManager;
 import li.klass.fhem.util.Reject;
 import li.klass.fhem.util.advertisement.AdvertisementUtil;
 
@@ -108,7 +109,7 @@ public class ConnectionListFragment extends BaseFragment implements TopLevelFrag
             @Override
             public void onClick(View view) {
                 int size = getAdapter().getData().size();
-                if (size >= AndFHEMApplication.PREMIUM_ALLOWED_FREE_CONNECTIONS) {
+                if (! LicenseManager.INSTANCE.isPro() && size >= AndFHEMApplication.PREMIUM_ALLOWED_FREE_CONNECTIONS) {
                     Intent intent = new Intent(Actions.SHOW_ALERT);
                     intent.putExtra(BundleExtraKeys.ALERT_CONTENT_ID, R.string.premium_multipleConnections);
                     intent.putExtra(BundleExtraKeys.ALERT_TITLE_ID, R.string.premium);
