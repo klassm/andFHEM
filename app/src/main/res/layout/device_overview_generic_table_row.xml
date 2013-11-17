@@ -24,11 +24,12 @@
   -->
 
 <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
-          android:id="@+id/tableRow"
-          android:layout_height="wrap_content"
-          android:layout_width="fill_parent">
+    android:id="@+id/tableRow"
+    android:layout_height="wrap_content"
+    android:layout_width="fill_parent"
+    android:paddingLeft="10dp">
     <TextView android:id="@+id/description"
-              style="@style/deviceOverviewDescription"/>
+        style="@style/deviceOverviewDescription"/>
     <TextView android:id="@+id/value"
-              style="@style/deviceOverviewContent"/>
+        style="@style/deviceOverviewContent"/>
 </TableRow>

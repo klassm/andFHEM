@@ -28,6 +28,6 @@
              android:id="@+id/device_overview_generic">
     <TableRow>
         <TextView android:id="@+id/deviceName"
-                  style="@style/deviceOverviewCaption"/>
+                  style="@style/deviceOverviewLayoutDeviceName"/>
     </TableRow>
 </TableLayout>
