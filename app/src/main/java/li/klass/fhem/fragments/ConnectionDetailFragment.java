@@ -98,7 +98,7 @@ public class ConnectionDetailFragment extends BaseFragment {
         final List<ServerType> connectionTypes = getServerTypes();
 
         ArrayAdapter<ServerType> adapter = new ArrayAdapter<ServerType>(getActivity(),
-                android.R.layout.simple_spinner_item, connectionTypes);
+                android.R.layout.simple_spinner_dropdown_item, connectionTypes);
         connectionTypeSpinner.setAdapter(adapter);
 
         connectionTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
