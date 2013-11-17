@@ -29,14 +29,14 @@ import org.w3c.dom.NamedNodeMap;
 import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceFunctionality;
+import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 
 @SuppressWarnings("unused")
+@OverviewViewSettings(showState = true)
 public class CULFHTTKDevice extends Device<CULFHTTKDevice> {
     private String lastWindowState;
     private String windowState = "???";
-    @ShowField(description = ResourceIdMapper.state, showInOverview = true)
-    private String stateChangeText;
     @ShowField(description = ResourceIdMapper.lastStateChange, showInOverview = true)
     private String lastStateChangeTime;
 
@@ -51,11 +51,12 @@ public class CULFHTTKDevice extends Device<CULFHTTKDevice> {
 
     @Override
     public void afterXMLRead() {
-        stateChangeText = "";
+        String stateChangeText = "";
         if (getLastWindowState() != null) {
             stateChangeText += getLastWindowState() + " => ";
         }
         stateChangeText += getWindowState();
+        setState(stateChangeText);
     }
 
     @Override
@@ -73,9 +74,5 @@ public class CULFHTTKDevice extends Device<CULFHTTKDevice> {
 
     public String getWindowState() {
         return windowState;
-    }
-
-    public String getStateChangeText() {
-        return stateChangeText;
     }
 }

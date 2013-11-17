@@ -96,16 +96,19 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
 
             for (AnnotatedDeviceClassItem item : items) {
                 String name = item.getName();
+                boolean alwaysShow = false;
                 if (annotation != null) {
-                    if (name.equalsIgnoreCase("state") && ! annotation.showState()) {
-                        continue;
+                    if (name.equalsIgnoreCase("state")) {
+                        if (! annotation.showState()) continue;
+                        alwaysShow = true;
                     }
 
-                    if (name.equalsIgnoreCase("measured") && ! annotation.showMeasured()) {
-                        continue;
+                    if (name.equalsIgnoreCase("measured")) {
+                        if (! annotation.showMeasured()) continue;
+                        alwaysShow = true;
                     }
                 }
-                if (item.isShowInOverview()) {
+                if (alwaysShow || item.isShowInOverview()) {
                     createTableRow(device, inflater, layout, item, R.layout.device_overview_generic_table_row);
                 }
             }

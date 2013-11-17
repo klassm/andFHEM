@@ -24,8 +24,9 @@
 
 package li.klass.fhem.domain;
 
-import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 import org.junit.Test;
+
+import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.nullValue;
@@ -40,10 +41,9 @@ public class CULFHTTKDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getRoomConcatenated(), is(DEFAULT_TEST_ROOM_NAME));
 
         assertThat(device.getLastStateChangeTime(), is("2012-08-14 23:05:51"));
-        assertThat(device.getState(), is("Open"));
         assertThat(device.getLastWindowState(), is("Closed"));
         assertThat(device.getWindowState(), is("Open"));
-        assertThat(device.getStateChangeText(), is("Closed => Open"));
+        assertThat(device.getState(), is("Closed => Open"));
 
         assertThat(device.getAvailableTargetStates(), is(nullValue()));
 
