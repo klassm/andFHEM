@@ -48,7 +48,10 @@ public enum FragmentType {
     DEVICE_SELECTION(DeviceNameSelectionFragment.class, DeviceNameSelectionNavigationFragment.class),
     DEVICE_NAME_LIST_NAVIGATION(DeviceNameListNavigationFragment.class),
     TIMER_OVERVIEW(TimerListFragment.class, R.string.timer, null),
-    TIMER_DETAIL(TimerDetailFragment.class);
+    TIMER_DETAIL(TimerDetailFragment.class),
+    CONNECTION_LIST(ConnectionListFragment.class),
+    CONNECTION_DETAIL(ConnectionDetailFragment.class, ConnectionListFragment.class)
+    ;
 
     private Class<? extends BaseFragment> fragmentClass;
     private Class<? extends BaseFragment> navigationFragment;

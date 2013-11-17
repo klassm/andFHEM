@@ -66,6 +66,7 @@ import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.DialogUtil;
 
 import static li.klass.fhem.constants.Actions.BACK;
+import static li.klass.fhem.constants.Actions.CONNECTIONS_CHANGED;
 import static li.klass.fhem.constants.Actions.DISMISS_EXECUTING_DIALOG;
 import static li.klass.fhem.constants.Actions.DO_UPDATE;
 import static li.klass.fhem.constants.Actions.RELOAD;
@@ -124,6 +125,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
     private boolean saveInstanceStateCalled;
+    private AvailableConnectionDataAdapter availableConnectionDataAdapter;
 
     protected FragmentBaseActivity() {
     }
@@ -143,6 +145,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
             intentFilter.addAction(DO_UPDATE);
             intentFilter.addAction(BACK);
             intentFilter.addAction(RELOAD);
+            intentFilter.addAction(CONNECTIONS_CHANGED);
         }
 
         @Override
@@ -181,6 +184,10 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
                             Toast.makeText(FragmentBaseActivity.this, content, Toast.LENGTH_SHORT).show();
                         } else if (action.equals(BACK)) {
                             onBackPressed();
+                        } else if (CONNECTIONS_CHANGED.equals(action)) {
+                            if (availableConnectionDataAdapter != null) {
+                                availableConnectionDataAdapter.doLoad();
+                            }
                         }
                     } catch (Exception e) {
                         Log.e(TAG, "exception occurred while receiving broadcast", e);
@@ -217,7 +224,9 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
         autoUpdateHandler.postDelayed(autoUpdateCallback, 0);
 
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayShowTitleEnabled(true);
+        actionBar.setDisplayShowTitleEnabled(false);
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+        handleConnectionSpinner(actionBar);
 
         actionBar.setDisplayHomeAsUpEnabled(true);
 
@@ -238,6 +247,12 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
             });
             startService(intent);
         }
+    }
+
+    private void handleConnectionSpinner(ActionBar actionBar) {
+        availableConnectionDataAdapter = new AvailableConnectionDataAdapter(this, actionBar);
+        actionBar.setListNavigationCallbacks(availableConnectionDataAdapter, availableConnectionDataAdapter);
+        availableConnectionDataAdapter.doLoad();
     }
 
     private void handleHasFavoritesResponse(int resultCode, Bundle resultData) {

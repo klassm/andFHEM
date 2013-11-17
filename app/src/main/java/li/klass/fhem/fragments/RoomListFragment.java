@@ -70,6 +70,10 @@ public class RoomListFragment extends BaseFragment implements TopLevelFragment {
         AdvertisementUtil.addAd(layout, getActivity());
 
         assert layout != null;
+        
+        LinearLayout emptyView = (LinearLayout) getEmptyView(layout);
+        fillEmptyView(emptyView);
+
         ListView roomList = (ListView) layout.findViewById(R.id.roomList);
         Reject.ifNull(roomList);
         roomList.setAdapter(adapter);

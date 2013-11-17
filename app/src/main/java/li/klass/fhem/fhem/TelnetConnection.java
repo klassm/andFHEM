@@ -24,39 +24,30 @@
 
 package li.klass.fhem.fhem;
 
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.os.AsyncTask;
-import android.os.Handler;
-import android.os.Looper;
-import android.preference.PreferenceManager;
 import android.util.Log;
-import li.klass.fhem.AndFHEMApplication;
-import li.klass.fhem.exception.AndFHEMException;
-import li.klass.fhem.exception.HostConnectionException;
-import li.klass.fhem.exception.TimeoutException;
-import li.klass.fhem.service.room.DeviceListParser;
-import li.klass.fhem.util.CloseableUtil;
-import org.apache.commons.net.telnet.TelnetClient;
-import org.apache.commons.net.telnet.TelnetInputListener;
 
-import java.io.*;
+import org.apache.commons.net.telnet.TelnetClient;
+
+import java.io.BufferedOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.net.SocketTimeoutException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static li.klass.fhem.constants.BundleExtraKeys.DO_REFRESH;
+import li.klass.fhem.exception.AndFHEMException;
+import li.klass.fhem.exception.HostConnectionException;
+import li.klass.fhem.exception.TimeoutException;
+import li.klass.fhem.util.CloseableUtil;
 
-public class TelnetConnection implements FHEMConnection {
+public class TelnetConnection extends FHEMConnection {
     public static final String TELNET_URL = "TELNET_URL";
     public static final String TELNET_PORT = "TELNET_PORT";
     public static final String TELNET_PASSWORD = "TELNET_PASSWORD";
 
     public static final String FHEM_PROMPT = "fhem>";
-
-    private static final String DEFAULT_HOST = "";
-    private static final int DEFAULT_PORT = 0;
 
     public static final TelnetConnection INSTANCE = new TelnetConnection();
     private static final String PASSWORD_PROMPT = "Password: ";
@@ -102,7 +93,7 @@ public class TelnetConnection implements FHEMConnection {
         InputStream inputStream = null;
 
         try {
-            telnetClient.connect(getHost(), getPort());
+            telnetClient.connect(serverSpec.getIp(), serverSpec.getPort());
 
             outputStream = telnetClient.getOutputStream();
             inputStream = telnetClient.getInputStream();
@@ -202,30 +193,7 @@ public class TelnetConnection implements FHEMConnection {
         return false;
     }
 
-    private String getHost() {
-        String host = getPreferenceString(TELNET_URL, DEFAULT_HOST);
-        Log.d(TAG, "telnet host is '" + host + "'");
-        return host;
-    }
-
-    private int getPort() {
-        String value = getPreferenceString(TELNET_PORT,
-                String.valueOf(DEFAULT_PORT));
-        Log.d(TAG, "telnet port is '" + value + "'");
-        return Integer.valueOf(value);
-    }
-
     private String getPassword() {
-        String password = getPreferenceString(TELNET_PASSWORD, "");
-        String logMessage = password.equals("") ? "has no password"
-                : "has password";
-        Log.d(TAG, "telnet connection " + logMessage + " configured");
-        return password;
-    }
-
-    private String getPreferenceString(String key, String defaultValue) {
-        SharedPreferences sharedPreferences = PreferenceManager
-                .getDefaultSharedPreferences(AndFHEMApplication.getContext());
-        return sharedPreferences.getString(key, defaultValue);
+        return serverSpec.getPassword();
     }
 }

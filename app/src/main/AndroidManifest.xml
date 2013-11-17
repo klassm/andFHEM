@@ -134,6 +134,18 @@
             </intent-filter>
         </service>
 
+        <service android:name=".service.intent.ConnectionsIntentService" android:exported="false">
+            <intent-filter>
+                <action android:name="li.klass.fhem.constants.Actions.CONNECTIONS_LIST"/>
+                <action android:name="li.klass.fhem.constants.Actions.CONNECTION_GET"/>
+                <action android:name="li.klass.fhem.constants.Actions.CONNECTION_UPDATE"/>
+                <action android:name="li.klass.fhem.constants.Actions.CONNECTION_CREATE"/>
+                <action android:name="li.klass.fhem.constants.Actions.CONNECTION_DELETE"/>
+                <action android:name="li.klass.fhem.constants.Actions.CONNECTION_SET_SELECTED"/>
+                <action android:name="li.klass.fhem.constants.Actions.CONNECTION_GET_SELECTED"/>
+            </intent-filter>
+        </service>
+
         <service
             android:name=".appwidget.service.AppWidgetListViewUpdateRemoteViewsService"
             android:permission="android.permission.BIND_REMOTEVIEWS" />

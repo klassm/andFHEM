@@ -25,7 +25,7 @@
 package li.klass.fhem.adapter.rooms;
 
 import android.content.Context;
-import android.preference.PreferenceManager;
+import android.content.SharedPreferences;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -35,7 +35,9 @@ import java.util.List;
 
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.ListDataAdapter;
-import li.klass.fhem.constants.PreferenceKeys;
+
+import static android.preference.PreferenceManager.getDefaultSharedPreferences;
+import static li.klass.fhem.constants.PreferenceKeys.SHOW_HIDDEN_DEVICES;
 
 public class RoomListAdapter extends ListDataAdapter<String> {
     private String selectedRoom;
@@ -49,6 +51,7 @@ public class RoomListAdapter extends ListDataAdapter<String> {
         String roomName = (String) getItem(position);
 
         convertView = inflater.inflate(resource, null);
+        assert convertView != null;
 
         TextView roomNameTextView = (TextView) convertView.findViewById(R.id.roomName);
         roomNameTextView.setText(roomName);
@@ -67,7 +70,8 @@ public class RoomListAdapter extends ListDataAdapter<String> {
 
         this.selectedRoom = selectedRoom;
 
-        boolean showHiddenDevices = PreferenceManager.getDefaultSharedPreferences(context).getBoolean(PreferenceKeys.SHOW_HIDDEN_DEVICES, false);
+        SharedPreferences preferences = getDefaultSharedPreferences(context);
+        boolean showHiddenDevices = preferences.getBoolean(SHOW_HIDDEN_DEVICES, false);
         if (! showHiddenDevices) {
             for (String roomName : new ArrayList<String>(newData)) {
                 if (roomName.equalsIgnoreCase("hidden")) {

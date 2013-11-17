@@ -28,14 +28,20 @@ import android.graphics.Bitmap;
 
 import java.util.Date;
 
-public interface FHEMConnection {
-    static final int RESTART_EVENT_RECEIVER_DELAY = 1000;
+import li.klass.fhem.fhem.connection.FHEMServerSpec;
 
-    String xmllist();
+public abstract class FHEMConnection {
+    protected FHEMServerSpec serverSpec;
 
-    String fileLogData(String logName, Date fromDate, Date toDate, String columnSpec);
+    public abstract String xmllist();
 
-    String executeCommand(String command);
+    public abstract String fileLogData(String logName, Date fromDate, Date toDate, String columnSpec);
 
-    Bitmap requestBitmap(String relativePath);
+    public abstract String executeCommand(String command);
+
+    public abstract Bitmap requestBitmap(String relativePath);
+
+    public void setServer(FHEMServerSpec serverSpec) {
+        this.serverSpec = serverSpec;
+    }
 }

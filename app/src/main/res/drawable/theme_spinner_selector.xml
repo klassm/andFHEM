@@ -32,5 +32,4 @@
     <item android:state_selected="true"
           android:state_window_focused="true" android:drawable="@drawable/theme_spinner_active"/>
     <item android:drawable="@drawable/theme_spinner" />
-
 </selector>

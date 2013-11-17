@@ -58,12 +58,12 @@ import li.klass.fhem.util.DialogUtil;
 import li.klass.fhem.util.DisplayUtil;
 
 import static li.klass.fhem.constants.PreferenceKeys.DEVICE_COLUMN_WIDTH;
-import static li.klass.fhem.fhem.FHEMWebConnection.FHEMWEB_CLIENT_CERT_ALIAS;
-import static li.klass.fhem.fhem.FHEMWebConnection.FHEMWEB_CLIENT_CERT_PASSWORD;
-import static li.klass.fhem.fhem.FHEMWebConnection.FHEMWEB_CLIENT_CERT_PATH;
-import static li.klass.fhem.fhem.FHEMWebConnection.FHEMWEB_PASSWORD;
-import static li.klass.fhem.fhem.FHEMWebConnection.FHEMWEB_URL;
-import static li.klass.fhem.fhem.FHEMWebConnection.FHEMWEB_USERNAME;
+import static li.klass.fhem.fhem.FHEMWEBConnection.FHEMWEB_CLIENT_CERT_ALIAS;
+import static li.klass.fhem.fhem.FHEMWEBConnection.FHEMWEB_CLIENT_CERT_PASSWORD;
+import static li.klass.fhem.fhem.FHEMWEBConnection.FHEMWEB_CLIENT_CERT_PATH;
+import static li.klass.fhem.fhem.FHEMWEBConnection.FHEMWEB_PASSWORD;
+import static li.klass.fhem.fhem.FHEMWEBConnection.FHEMWEB_URL;
+import static li.klass.fhem.fhem.FHEMWEBConnection.FHEMWEB_USERNAME;
 import static li.klass.fhem.fhem.TelnetConnection.TELNET_PASSWORD;
 import static li.klass.fhem.fhem.TelnetConnection.TELNET_PORT;
 import static li.klass.fhem.fhem.TelnetConnection.TELNET_URL;

@@ -178,6 +178,23 @@
     <string name="currentTitle">Aktueller Titel</string>
     <string name="shutterPosition">Rolladen-Position</string>
 
+    <string name="connectionManage">Verwalten</string>
+    <string name="connectionCreate">Neue Verbindung erstellen</string>
+    <string name="connectionName">Name</string>
+    <string name="connectionType">Typ</string>
+    <string name="connectionUsername">Benutzername</string>
+    <string name="connectionUsernameDesc">(optional)</string>
+    <string name="connectionPassword">Passwort</string>
+    <string name="connectionPasswordDesc">(optional)</string>
+    <string name="connectionShowPassword">Passwort anzeigen</string>
+    <string name="connectionURL">URL</string>
+    <string name="connectionURLDesc">z.B. http://192.168.0.1:8083/fhem</string>
+    <string name="connectionIP">IP</string>
+    <string name="connectionIPDesc">z.B. 192.168.0.1</string>
+    <string name="connectionPort">Port</string>
+    <string name="connectionPortDesc">z.B. 7072</string>
+    <string name="connectionEmptyError">Feld \"%s\" darf nicht leer sein!</string>
+
     <string name="switchDevice">Schalte</string>
     <string name="preferences">Einstellungen</string>
     <string name="update">Aktualisieren</string>
@@ -193,10 +210,10 @@
     <string name="context_favoriteadded">Favorit wurde hinzugefügt!</string>
     <string name="context_favoriteremoved">Favorit wurde gelöscht!</string>
 
-    <string name="context_rename">Gerät umbenennen</string>
+    <string name="context_rename">Umbenennen</string>
     <string name="context_alias">Setze Alias</string>
-    <string name="context_delete">Gerät löschen</string>
-    <string name="context_move">Gerät verschieben</string>
+    <string name="context_delete">Löschen</string>
+    <string name="context_move">Verschieben</string>
     <string name="context_notification">Benachrichtigungen</string>
 
     <string name="areYouSure">Sind Sie sicher?</string>
@@ -438,6 +455,7 @@
     <string name="noFavoritesCaption">Keine Favoriten gefunden!</string>
     <string name="noFavoritesMessage">Um einen Favoriten zu erstellen klicken Sie bitte in der Geräteliste lange auf ein Gerät. Wählen Sie anschließend "Zu Favoriten hinzufügen".</string>
     <string name="noRooms">Keine Räume gefunden!</string>
+    <string name="noConnections">Keine Verbindungen gefunden!</string>
     <string name="noDevices">Keine Geräte gefunden!</string>
 
     <string name="functionalityDimmer">Dimmen</string>

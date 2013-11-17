@@ -108,13 +108,14 @@ import li.klass.fhem.domain.WatchdogDevice;
 import li.klass.fhem.domain.WeatherDevice;
 import li.klass.fhem.domain.YamahaAVRDevice;
 import li.klass.fhem.domain.ZWaveDevice;
-import li.klass.fhem.fhem.ConnectionType;
-import li.klass.fhem.util.ApplicationProperties;
+import li.klass.fhem.fhem.connection.ServerType;
+import li.klass.fhem.service.connection.ConnectionService;
 
 public enum DeviceType {
+
     KS300("KS300", KS300Device.class),
     WEATHER("Weather", WeatherDevice.class, new WeatherAdapter()),
-    FLOORPLAN("FLOORPLAN", FloorplanDevice.class, new FloorplanAdapter(), ConnectionType.FHEMWEB),
+    FLOORPLAN("FLOORPLAN", FloorplanDevice.class, new FloorplanAdapter(), DeviceVisibility.FHEMWEB_ONLY),
     FHT("FHT", FHTDevice.class, new FHTAdapter()),
     CUL_TX("CUL_TX", CULTXDevice.class),
     HMS("HMS", HMSDevice.class),
@@ -131,7 +132,7 @@ public enum DeviceType {
     USBWX("USBWX", USBWXDevice.class),
     CUL_WS("CUL_WS", CULWSDevice.class),
     FS20("FS20", FS20Device.class, new DimmableAdapter<FS20Device>(FS20Device.class)),
-    FILE_LOG("FileLog", FileLogDevice.class, null, ConnectionType.NEVER),
+    FILE_LOG("FileLog", FileLogDevice.class, null, DeviceVisibility.NEVER),
     OWFS("OWFS", OWFSDevice.class),
     LGTV("LGTV", LGTVDevice.class),
     RFXCOM("RFXCOM", RFXCOMDevice.class),
@@ -146,7 +147,7 @@ public enum DeviceType {
     DUMMY("dummy", DummyDevice.class, new DummyAdapter()),
     STRUCTURE("structure", StructureDevice.class, new ToggleableAdapterWithSwitchActionRow<StructureDevice>(StructureDevice.class)),
     TWILIGHT("Twilight", TwilightDevice.class),
-    AT("at", AtDevice.class, null, ConnectionType.NEVER),
+    AT("at", AtDevice.class, null, DeviceVisibility.NEVER),
     EN_OCEAN("EnOcean", EnOceanDevice.class, new EnOceanAdapter()),
     EIB("EIB", EIBDevice.class, new DimmableAdapter<EIBDevice>(EIBDevice.class)),
     HCS("HCS", HCSDevice.class, new SwitchActionRowAdapter<HCSDevice>(HCSDevice.class)),
@@ -173,13 +174,13 @@ public enum DeviceType {
     FS20_ZDR("fs20_zdr", FS20ZDRDevice.class, new FS20ZDRDeviceAdapter()),
     OPENWEATHERMAP("openweathermap", OpenWeatherMapDevice.class),
     PCA301("PCA301", PCA301Device.class),
-    REMOTECONTROL("remotecontrol", RemoteControlDevice.class, new RemoteControlAdapter(), ConnectionType.FHEMWEB)
+    REMOTECONTROL("remotecontrol", RemoteControlDevice.class, new RemoteControlAdapter(), DeviceVisibility.FHEMWEB_ONLY)
     ;
 
     private String xmllistTag;
     private Class<? extends Device> deviceClass;
     private DeviceAdapter<? extends Device<?>> adapter;
-    private ConnectionType showDeviceTypeOnlyInConnection = null;
+    private DeviceVisibility visibility = null;
 
     <T extends Device<T>> DeviceType(String xmllistTag, Class<T> deviceClass) {
         this(xmllistTag, deviceClass, new GenericDeviceAdapter<T>(deviceClass));
@@ -191,9 +192,9 @@ public enum DeviceType {
         this.adapter = adapter;
     }
 
-    DeviceType(String xmllistTag, Class<? extends Device> deviceClass, DeviceAdapter<? extends Device<?>> adapter, ConnectionType showDeviceTypeOnlyIn) {
+    DeviceType(String xmllistTag, Class<? extends Device> deviceClass, DeviceAdapter<? extends Device<?>> adapter, DeviceVisibility visibility) {
         this(xmllistTag, deviceClass, adapter);
-        showDeviceTypeOnlyInConnection = showDeviceTypeOnlyIn;
+        this.visibility = visibility;
     }
 
     public String getXmllistTag() {
@@ -209,15 +210,15 @@ public enum DeviceType {
         return (DeviceAdapter<T>) adapter;
     }
 
-    public boolean mayEverShow() {
-        return showDeviceTypeOnlyInConnection != ConnectionType.NEVER;
-    }
-
     public boolean mayShowInCurrentConnectionType() {
-        if (showDeviceTypeOnlyInConnection == null) return true;
+        if (visibility == null) return true;
 
-        ConnectionType connectionType = ApplicationProperties.INSTANCE.getConnectionType();
-        return connectionType == showDeviceTypeOnlyInConnection;
+        ServerType serverType = ConnectionService.INSTANCE.getCurrentServer().getServerType();
+        if (visibility == null) return true;
+        if (visibility == DeviceVisibility.NEVER) return false;
+
+        ServerType showOnlyIn = visibility.getShowOnlyIn();
+        return showOnlyIn == null || serverType == showOnlyIn;
     }
 
     public static <T extends Device> DeviceAdapter<T> getAdapterFor(T device) {

@@ -28,11 +28,10 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.util.Log;
-import li.klass.fhem.AndFHEMApplication;
-import li.klass.fhem.billing.BillingService;
 
 import javax.security.cert.X509Certificate;
-import java.util.Set;
+
+import li.klass.fhem.AndFHEMApplication;
 
 public class LicenseManager {
     public static final LicenseManager INSTANCE = new LicenseManager();
@@ -42,11 +41,13 @@ public class LicenseManager {
     }
 
     public boolean isPro() {
-        if (isPremium) return true;
-        if (isDebug()) return true;
+        return false;
 
-        Set<String> ownedItems = BillingService.INSTANCE.getOwnedItems();
-        return ownedItems.contains(AndFHEMApplication.PRODUCT_PREMIUM_ID) || ownedItems.contains(AndFHEMApplication.PRODUCT_PREMIUM_DONATOR_ID);
+//        if (isPremium) return true;
+//        if (isDebug()) return true;
+//
+//        Set<String> ownedItems = BillingService.INSTANCE.getOwnedItems();
+//        return ownedItems.contains(AndFHEMApplication.PRODUCT_PREMIUM_ID) || ownedItems.contains(AndFHEMApplication.PRODUCT_PREMIUM_DONATOR_ID);
     }
 
     public boolean isDebug() {

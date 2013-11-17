@@ -27,15 +27,14 @@ package li.klass.fhem.util;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import li.klass.fhem.AndFHEMApplication;
-import li.klass.fhem.AndFHEMBase;
-import li.klass.fhem.fhem.ConnectionType;
-import li.klass.fhem.fhem.DataConnectionSwitch;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Properties;
+
+import li.klass.fhem.AndFHEMApplication;
+import li.klass.fhem.AndFHEMBase;
 
 public class ApplicationProperties {
     public static final ApplicationProperties INSTANCE = new ApplicationProperties();
@@ -114,18 +113,5 @@ public class ApplicationProperties {
 
     private SharedPreferences getPreferences() {
         return PreferenceManager.getDefaultSharedPreferences(AndFHEMApplication.getContext());
-    }
-
-    public ConnectionType getConnectionType() {
-        try {
-            String connectionType = PreferenceManager.getDefaultSharedPreferences(AndFHEMApplication.getContext())
-                    .getString(DataConnectionSwitch.CONNECTION_TYPE, "DUMMYDATA");
-            if (connectionType.equals("")) connectionType = "DUMMYDATA";
-            Log.v(TAG, "returning " + connectionType + " as current connection type");
-            return ConnectionType.valueOf(connectionType.toUpperCase());
-        } catch (Exception e) {
-            Log.e(TAG, "error occurred while loading connection type", e);
-            return ConnectionType.DUMMYDATA;
-        }
     }
 }

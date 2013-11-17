@@ -78,11 +78,11 @@ import li.klass.fhem.exception.HostConnectionException;
 import li.klass.fhem.exception.TimeoutException;
 import li.klass.fhem.util.StringUtil;
 
-public class FHEMWebConnection implements FHEMConnection {
+public class FHEMWEBConnection extends FHEMConnection {
 
     public static final int CONNECTION_TIMEOUT = 3000;
     public static final int SOCKET_TIMEOUT = 20000;
-    public static final String TAG = FHEMWebConnection.class.getName();
+    public static final String TAG = FHEMWEBConnection.class.getName();
     private DefaultHttpClient client;
     private String savedClientCertAlias;
 
@@ -93,7 +93,7 @@ public class FHEMWebConnection implements FHEMConnection {
     public static final String FHEMWEB_CLIENT_CERT_PASSWORD = "FHEMWEB_CLIENT_CERT_PASSWORD";
     public static final String FHEMWEB_CLIENT_CERT_ALIAS = "FHEMWEB_CLIENT_CERT_ALIAS";
 
-    public static final FHEMWebConnection INSTANCE = new FHEMWebConnection();
+    public static final FHEMWEBConnection INSTANCE = new FHEMWEBConnection();
 
     @Override
     public String xmllist() {
@@ -151,14 +151,14 @@ public class FHEMWebConnection implements FHEMConnection {
         }
         try {
             HttpGet request = new HttpGet();
-            String url = getURL() + urlSuffix;
+            String url = serverSpec.getUrl() + urlSuffix;
 
             Log.i(TAG, "accessing URL " + url);
             URI uri = new URI(url);
 
             client.getCredentialsProvider().setCredentials(
                     new AuthScope(uri.getHost(), uri.getPort()),
-                    new UsernamePasswordCredentials(getUsername(),
+                    new UsernamePasswordCredentials(serverSpec.getUsername(),
                             getPassword()));
 
             request.setURI(uri);
@@ -182,33 +182,8 @@ public class FHEMWebConnection implements FHEMConnection {
         }
     }
 
-    public static String getURL() {
-        SharedPreferences sharedPreferences = PreferenceManager
-                .getDefaultSharedPreferences(AndFHEMApplication.getContext());
-        String url = sharedPreferences.getString(FHEMWEB_URL, null);
-        if (url.lastIndexOf("/") == url.length() - 1) {
-            return url.substring(0, url.length() - 1);
-        }
-        Log.d(TAG, "FHEMWEB URL is '" + url + "'");
-        return url;
-    }
-
-    public static String getUsername() {
-        SharedPreferences sharedPreferences = PreferenceManager
-                .getDefaultSharedPreferences(AndFHEMApplication.getContext());
-        String username = sharedPreferences.getString(FHEMWEB_USERNAME, "");
-        Log.d(TAG, "FHEMWEB username  is '" + username + "'");
-        return username;
-    }
-
-    public static String getPassword() {
-        SharedPreferences sharedPreferences = PreferenceManager
-                .getDefaultSharedPreferences(AndFHEMApplication.getContext());
-        String password = sharedPreferences.getString(FHEMWEB_PASSWORD, "");
-        String logMessage = password.equals("") ? "has no password"
-                : "has password";
-        Log.d(TAG, "FHEMWEB connection " + logMessage + " configured");
-        return password;
+    public String getPassword() {
+        return serverSpec.getPassword();
     }
 
     public static String getClientCertAlias() {

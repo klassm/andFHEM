@@ -30,12 +30,13 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.os.ResultReceiver;
 import android.util.Log;
-import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.constants.ResultCodes;
-import li.klass.fhem.service.room.RoomListService;
 
 import java.io.Serializable;
 import java.util.concurrent.ExecutorService;
+
+import li.klass.fhem.constants.BundleExtraKeys;
+import li.klass.fhem.constants.ResultCodes;
+import li.klass.fhem.service.room.RoomListService;
 
 import static li.klass.fhem.constants.BundleExtraKeys.RESULT_RECEIVER;
 
@@ -106,6 +107,12 @@ public abstract class ConvenientIntentService extends IntentService {
         if (receiver != null) {
             Bundle bundle = new Bundle();
             bundle.putSerializable(bundleExtrasKey, value);
+            receiver.send(resultCode, bundle);
+        }
+    }
+
+    protected void sendResult(ResultReceiver receiver, int resultCode, Bundle bundle) {
+        if (receiver != null) {
             receiver.send(resultCode, bundle);
         }
     }

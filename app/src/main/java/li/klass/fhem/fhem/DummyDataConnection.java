@@ -36,7 +36,7 @@ import java.util.Date;
 
 import li.klass.fhem.util.CloseableUtil;
 
-public class DummyDataConnection implements FHEMConnection {
+public class DummyDataConnection extends FHEMConnection {
     public static final DummyDataConnection INSTANCE = new DummyDataConnection();
     public static final String TAG = DummyDataConnection.class.getName();
 

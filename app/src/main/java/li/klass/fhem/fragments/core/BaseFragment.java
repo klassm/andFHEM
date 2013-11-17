@@ -42,6 +42,7 @@ import java.io.Serializable;
 
 import li.klass.fhem.R;
 import li.klass.fhem.activities.core.Updateable;
+import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 
 import static li.klass.fhem.constants.Actions.DEVICE_LIST_REMOTE_NOTIFY;
@@ -214,7 +215,16 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
     }
 
     protected void hideUpdatingBar() {
-        getUpdatingBar(getView()).setVisibility(View.GONE);
+        View view = getView();
+        if (view == null) return;
+
+        ProgressBar updatingBar = getUpdatingBar(view);
+        if (updatingBar == null) return;
+
+        updatingBar.setVisibility(View.GONE);
+
+        Intent intent = new Intent(Actions.DISMISS_UPDATING_DIALOG);
+        getActivity().sendBroadcast(intent);
     }
 
     protected void showUpdatingBar() {

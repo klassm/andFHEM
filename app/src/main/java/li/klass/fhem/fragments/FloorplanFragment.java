@@ -45,8 +45,9 @@ import java.net.URL;
 import li.klass.fhem.R;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.fhem.FHEMWebConnection;
+import li.klass.fhem.fhem.connection.FHEMServerSpec;
 import li.klass.fhem.fragments.core.BaseFragment;
+import li.klass.fhem.service.connection.ConnectionService;
 
 public class FloorplanFragment extends BaseFragment {
 
@@ -104,11 +105,12 @@ public class FloorplanFragment extends BaseFragment {
 
             @Override
             public void onReceivedHttpAuthRequest(WebView view, HttpAuthHandler handler, String host, String realm) {
-                String url = FHEMWebConnection.getURL();
+                FHEMServerSpec currentServer = ConnectionService.INSTANCE.getCurrentServer();
+                String url = currentServer.getUrl();
                 try {
                     String fhemHost = new URL(url).getHost();
-                    String username = FHEMWebConnection.getUsername();
-                    String password = FHEMWebConnection.getPassword();
+                    String username = currentServer.getUsername();
+                    String password = currentServer.getPassword();
 
                     if (host.startsWith(fhemHost)) {
                         handler.proceed(username, password);
@@ -189,16 +191,16 @@ public class FloorplanFragment extends BaseFragment {
     public void update(boolean doUpdate) {
         WebView webView = (WebView) getView().findViewById(R.id.webView);
 
-        String url = FHEMWebConnection.getURL();
+        FHEMServerSpec currentServer = ConnectionService.INSTANCE.getCurrentServer();
+        String url = currentServer.getUrl();
         try {
-            String host = new URL(url).getHost();
-            String username = FHEMWebConnection.getUsername();
-            String password = FHEMWebConnection.getPassword();
+            String host = new URL(currentServer.getUrl()).getHost();
+            String username = currentServer.getUsername();
+            String password = currentServer.getPassword();
 
             webView.setHttpAuthUsernamePassword(host, "", username, password);
 
             webView.loadUrl(getLoadUrl());
-//            webView.loadUrl("http://www.google.de");
         } catch (MalformedURLException e) {
             Intent intent = new Intent(Actions.SHOW_TOAST);
             intent.putExtra(BundleExtraKeys.TOAST_STRING_ID, R.string.updateErrorHostConnection);
@@ -208,7 +210,7 @@ public class FloorplanFragment extends BaseFragment {
     }
 
     private String getLoadUrl() {
-        String url = FHEMWebConnection.getURL();
+        String url = ConnectionService.INSTANCE.getCurrentServer().getUrl();
         return url + "/floorplan/" + deviceName;
     }
 }

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="45"
+   height="65"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.4 r9939"
+   sodipodi:docname="spinner_focused.svg"
+   inkscape:export-filename="/home/klassm/IdeaProjects/andFHEM/images/ui/spinner_focused_dark.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
+  <defs
+     id="defs4">
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect3826"
+       is_visible="true" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="11.2"
+     inkscape:cx="-31.248843"
+     inkscape:cy="36.047719"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="true"
+     inkscape:window-width="1920"
+     inkscape:window-height="1056"
+     inkscape:window-x="0"
+     inkscape:window-y="24"
+     inkscape:window-maximized="1">
+    <inkscape:grid
+       type="xygrid"
+       id="grid2985"
+       empspacing="5"
+       visible="true"
+       enabled="true"
+       snapvisiblegridlinesonly="true" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Ebene 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-987.3622)">
+    <rect
+       style="opacity:0.90000000000000002;fill:#079400;fill-opacity:1;stroke:none;stroke-width:1.01159607999999990;stroke-linejoin:round;stroke-opacity:0.43137255000000002"
+       id="rect5673"
+       width="40.988403"
+       height="61.416977"
+       x="2.0057981"
+       y="988.93945" />
+    <path
+       style="fill:#cecece;fill-opacity:1;stroke:none"
+       d="m 23,1042.3622 17,0 0,-18 -18,18 1,0"
+       id="path3824"
+       inkscape:path-effect="#path-effect3826"
+       inkscape:original-d="m 23,1042.3622 17,0 0,-18 -18,18 z"
+       inkscape:connector-curvature="0" />
+    <rect
+       style="fill:#cecece;fill-opacity:1;stroke:none"
+       id="rect2985"
+       width="18.008928"
+       height="1"
+       x="4.9786992"
+       y="1041.3622" />
+  </g>
+</svg>

@@ -22,8 +22,25 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.fhem;
+package li.klass.fhem.domain.core;
 
-public enum ConnectionType {
-    DUMMYDATA, TELNET, NEVER, FHEMWEB
+
+import li.klass.fhem.fhem.connection.ServerType;
+
+public enum DeviceVisibility {
+    FHEMWEB_ONLY(ServerType.FHEMWEB),
+    NEVER;
+    private final ServerType showOnlyIn;
+
+    DeviceVisibility() {
+        this(null);
+    }
+
+    DeviceVisibility(ServerType showOnlyIn) {
+        this.showOnlyIn = showOnlyIn;
+    }
+
+    public ServerType getShowOnlyIn() {
+        return showOnlyIn;
+    }
 }
