@@ -8,23 +8,47 @@ weight: 2
 <div id="installation">
   <h1>Installation</h1>
 
-
-
-
-  <p>When starting andFHEM the first time some dummy data is used for previewing what the application looks like and what devices are supported. To use your own FHEM server, touch your context menu button and click on Preferences. </p>
   
   <div class="toc"></div>
+
+  <h2 id="configuring_connections">Configuring Connections</h2>
+  (<a class="back-to-top">up</a>)
+
+  <p>When starting andFHEM the first time some dummy data is used for previewing what the application looks like and what devices are supported. To use your own FHEM server click on the selector in the action bar. This selector always contains the name of the connection that is currently used for pulling data from a FHEM server.</p>
   
-  <h2 id="dummyDataPreferenceScreen">Dummy Data Preference Screen</h2>
+  <a href="images/installation/connectionType.png"><img src="images/installation/connectionType.png" /></a>
+    
+  <p>After clicking the selector a submenu opens. This submenu contains all configured connections. When clicking a connection name, the current connection used for pulling information from FHEM changes to that new one. When selecting the bottom item, which is called "Manage" or "Verwalten", you are directed to a view where you can manage your connections.</p>
+  
+  <a href="images/installation/connectionList.png"><img src="images/installation/connectionList.png" /></a>
+
+  <p>All the configured connections are listed here. When clicking such a connection, you can edit all configured connection items like URL, username or password. When clicking "Create a new connection" or "Neue Verbindung erstellen", you can create a new one.</p>
+  
+  <p>Changing a configuration or adding a new one always looks the same, except that you cannot change the connection type when editing a connection.</p>
+  
+  <table >
+    <tr>
+      <td style="vertical-align: top"><a href="images/installation/fhemweb.png"><img src="images/installation/fhemweb.png" /></a></td>
+      <td style="vertical-align: top"><a href="images/installation/telnet.png"><img src="images/installation/telnet.png" /></a></td>
+    </tr>
+  </table>
+  
+  <p>Enter your credentials and click "Save" or "Speichern". When leaving the configuration view with the back key and reentering the collection list selector, you can select your newly created connection.</p>
+  
+  <h2 id="fhemweb">FHEMWEB</h2>
   (<a class="back-to-top">up</a>)
   
-  <p>You can now see a preference screen. It includes the options for the dummy data connection - so basically none. Still, you can click on Data Source to select another type of source to load the FHEM data from. Clicking on the button brings up a popup screen like the following:</p>
-  
-  <a href="images/installation/datasource-selector.png"><img src="images/installation/datasource-selector.png" /></a>
+  <p>FHEM supports some web interfaces delivered together with the server itself. One of these web interfaces is FHEMWEB, which is configured by adding a line like <span class="code">define fhemweb FHEMWEB 8083 global</span> to your <i>fhem.cfg</i>. Before any data within andFHEM, make sure that you can access the web interface in a browser, either on your smartphone or on another computer. You should see a web page like the following:</p>
+    
+    <img src="images/installation/fhemweb_view.png" />
+    
+    <p>The same address you just entered is expected by andFHEM in the URL field within the FHEMWEB preferences. Trailing slashes do not matter. The username and password fields can be filled optionally. They are required if you want to authenticate yourself using basic authentication. If you do not know what this means, stop reading here and leave the fields empty. </p>
 
+    <p>If you want to use the authentication feature you have to make sure that your fhem.cfg contains a line like <span class="code">attr fhemweb basicAuth aj38219cnake</span>. For information how to create the string after basicAuth, continue reading here. Now just enter your username and password in andFHEM.</p>
+    
   <h2 id="telnet">Telnet</h2>
   (<a class="back-to-top">up</a>)
-  
+
   <p>FHEM supports a very basic command line interface to query the current state of devices. Before selecting this option, make sure that you can access the interface from another computer in your local network.</p>
 
   <p>When using Windows, download Putty and start the program. Select telnet as connection option, enter the address of your FHEM server and add the specified port in your FHEM configuration. The port defaults to 7072. When clicking hitting the button to open the connection, a black window opens up. Hit two times enter to see the FHEM prompt showing up. If this works, andFHEM is also able to connect to FHEM.</p>
@@ -32,25 +56,6 @@ weight: 2
   <p>If not, make sure that your fhem.cfg contains a line such as the following: attr global port 7072 global. 7072 is the port used for opening up the command line interface. Global specifies that computers can connect to the server without connecting from the computer running the FHEM server.</p>
 
   <p>When the above connection is successful you can enter the configuration data in andFHEM in the appropriate fields. The IP field should contain something like 192.168.0.1. It is the address of the computer running the FHEM server. Port is the above mentioned FHEM command line interface port, such as 7072.</p>
-
-  <p>Afterwards click back and refresh the loaded data. You should now see your own devices!</p>
-
-  <a href="images/installation/telnet.png"><img src="images/installation/telnet.png" /></a>
-  
-  <h2 id="fhemweb">FHEMWEB</h2>
-  (<a class="back-to-top">up</a>)
-  
-  <p>FHEM supports some web interfaces delivered together with the server itself. One of these web interfaces is FHEMWEB, which is configured by adding a line like <span class="code">define fhemweb FHEMWEB 8083 global</span> to your <i>fhem.cfg</i>. Before any data within andFHEM, make sure that you can access the web interface in a browser, either on your smartphone or on another computer. You should see a web page like the following:</p>
-  
-  <img src="images/installation/fhemweb_view.png" />
-  
-  <p>The same address you just entered is expected by andFHEM in the URL field within the FHEMWEB preferences. Trailing slashes do not matter. The username and password fields can be filled optionally. They are required if you want to authenticate yourself using basic authentication. If you do not know what this means, stop reading here and leave the fields empty. </p>
-
-  <p>If you want to use the authentication feature you have to make sure that your fhem.cfg contains a line like <span class="code">attr fhemweb basicAuth aj38219cnake</span>. For information how to create the string after basicAuth, continue reading here. Now just enter your username and password in andFHEM.</p>
-
-  <p>Finally, touch your back button and refresh the loaded data. You should now see your own devices!</p>
-  
-  <a href="images/installation/fhemweb.png"><img src="images/installation/fhemweb.png" /></a>
   
   <h2 id="gcm">Google Cloud Messaging</h2>
   (<a class="back-to-top">up</a>)
@@ -71,10 +76,20 @@ weight: 2
       
       <li>Create a Google GCM Account.
         <ul>
-          <li>Go to <a href="https://code.google.com/apis/console/">https://code.google.com/apis/console/</a> and create a new API project.</li>
-          <li>Enable "Google Cloud Messaging for Android" under "Services"</li>
-          <li>Under "API Access" hit "Create new browser key", the generated API key is required for configuring GCM afterwards
-            <a href="images/installation/google_console.png"><img src="images/installation/google_console.png" /></a>
+          <li>Go to <a href="https://code.google.com/apis/console/">https://code.google.com/apis/console/</a> and create a new API project. <br />
+          <a href="images/installation/gcm/01_create.png"><img src="images/installation/gcm/01_create.png" /></a>
+          </li>
+          <li>Enter your newly created project and enable "Google Cloud Messaging for Android" under "APIs & auth" > "Api" <br/>
+          <a href="images/installation/gcm/02_api_enable.png"><img src="images/installation/gcm/02_api_enable.png" /></a>
+          </li>
+          <li>Jump to the submenu "Registered Apps" and click "Register App".<br />
+            <a href="images/installation/gcm/03_register_app.png"><img src="images/installation/gcm/03_register_app.png" /></a>
+          </li>
+          <li>A new window opens to enter some information. Enter some name (doesn't matter which one) and select "Web Application" as platform. Continue with "Register".<br/>
+          <a href="images/installation/gcm/04_register_detail.png"><img src="images/installation/gcm/04_register_detail.png" /></a>
+          </li>
+          <li>We are directed to a new page containing the API-key we wanted to obtain: <br/>
+            <a href="images/installation/gcm/05_browser_key.png"><img src="images/installation/gcm/05_browser_key.png" /></a>
           </li>
           <li>We have to configure the plug-in to talk to GCM. This is why we have to issue an FHEM command: <br/>
             <span class="code">attr &lt;gcm_device_name&gt; apiKey &lt;apiKey&gt;</span><br />
@@ -84,15 +99,14 @@ weight: 2
             Link andFHEM
             <ul>
               <li>Enter the andFHEM settings and enter the GCM project number (from the Google console page in section "Overview") within the field "GCM Project Id".</li>
-              <li>Refresh your xmllist and look for your GCMSend device you just created. Open the detail page and click the button to register your device. Internally, andFHEM will add your device as regIds attribute of your gcm device.</li>
+              <li>Refresh your xmllist and look for your GCMSend device you just created. Open the detail page and click the button to register your device. Internally, andFHEM will add your device as regIds attribute of your gcm device. <br />
+                <a href="images/installation/gcm/gcm_app.png"><img src="images/installation/gcm/gcm_app.png" /></a>
+                </li>
             </ul>
           </li>
         </ul>
       </li>
     </ul>
-    
-    <a href="images/installation/gcm.png"><img src="images/installation/gcm.png" /></a>
-  
   </p>
 
 </div>
