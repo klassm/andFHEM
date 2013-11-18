@@ -29,6 +29,7 @@ import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
 import org.apache.http.auth.AuthScope;
@@ -56,6 +57,7 @@ import java.net.URLEncoder;
 import java.security.KeyStore;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.zip.GZIPInputStream;
 
 import li.klass.fhem.exception.AndFHEMException;
 import li.klass.fhem.exception.AuthenticationException;
@@ -132,6 +134,8 @@ public class FHEMWEBConnection extends FHEMConnection {
         }
         try {
             HttpGet request = new HttpGet();
+            request.addHeader("Accept-Encoding", "gzip");
+
             String url = serverSpec.getUrl() + urlSuffix;
 
             Log.i(TAG, "accessing URL " + url);
@@ -153,7 +157,13 @@ public class FHEMWEBConnection extends FHEMConnection {
                 throw new AuthenticationException(response.getStatusLine()
                         .toString());
             }
-            return response.getEntity().getContent();
+
+            InputStream contentStream = response.getEntity().getContent();
+            Header contentEncoding = response.getFirstHeader("Content-Encoding");
+            if (contentEncoding != null && contentEncoding.getValue().equalsIgnoreCase("gzip")) {
+                return new GZIPInputStream(contentStream);
+            }
+            return contentStream;
         } catch (AndFHEMException e) {
             throw e;
         } catch (ConnectTimeoutException e) {
