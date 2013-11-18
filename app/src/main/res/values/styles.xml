@@ -256,7 +256,8 @@
         <item name="android:actionBarWidgetTheme">@style/ApplicationActionBarWidgetTheme</item>
         <item name="actionBarWidgetTheme">@style/ApplicationActionBarWidgetTheme</item>
 
-        <item name="android:spinnerStyle">@style/ApplicationActionDropDownStyle</item>
+
+        <item name="android:spinnerStyle">@style/spinner</item>
     </style>
 
     <style name="ApplicationActionBarTabBarStyle" parent="Widget.Sherlock.ActionBar.Solid">

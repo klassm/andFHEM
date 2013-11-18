@@ -66,8 +66,7 @@
                 <Spinner
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/connectionType"
-                    style="@style/spinner"/>
+                    android:id="@+id/connectionType"/>
             </TableRow>
         </TableLayout>
 
