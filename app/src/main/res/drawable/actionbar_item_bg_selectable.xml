@@ -26,7 +26,7 @@
 
 <selector xmlns:android="http://schemas.android.com/apk/res/android"
     android:exitFadeDuration="@android:integer/config_mediumAnimTime" >
-    <item android:state_pressed="true" android:drawable="@drawable/actionbar_item_bg_selected" />
-    <item android:state_focused="true" android:drawable="@drawable/actionbar_item_bg_selected" />
+    <item android:state_pressed="true" android:drawable="@color/andFHEMDarkGreen" />
+    <item android:state_focused="true" android:drawable="@color/andFHEMDarkGreen" />
     <item android:drawable="@android:color/transparent" />
 </selector>
