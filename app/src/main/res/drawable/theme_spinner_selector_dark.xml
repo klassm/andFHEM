@@ -25,14 +25,6 @@
   -->
 
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <!--<item android:state_pressed="true"-->
-          <!--android:state_window_focused="true" android:drawable="@drawable/theme_spinner_active" />-->
-    <!--<item android:state_focused="true"-->
-          <!--android:state_window_focused="true" android:drawable="@drawable/theme_spinner_active" />-->
-    <!--<item android:state_selected="true"-->
-          <!--android:state_window_focused="true" android:drawable="@drawable/theme_spinner_active"/>-->
-    <!--<item android:drawable="@drawable/theme_spinner" />-->
     <item android:state_enabled="false"
         android:drawable="@drawable/spinner_disabled_dark" />
     <item android:state_pressed="true"

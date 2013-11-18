@@ -21,3 +21,4 @@ jarlist.cache
 tmp
 *.*~
 gradle-app.setting
+images/*/*.png
