@@ -26,6 +26,10 @@ package li.klass.fhem.adapter.devices.core.showFieldAnnotation;
 
 import org.junit.Test;
 
+import java.lang.reflect.Method;
+
+import li.klass.fhem.domain.FHTDevice;
+
 import static li.klass.fhem.adapter.devices.core.showFieldAnnotation.AnnotatedDeviceClassMethod.getterNameToName;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -35,5 +39,17 @@ public class AnnotatedDeviceClassMethodTest {
     public void testGetterNameToName() throws Exception {
         assertThat(getterNameToName("getName"), is("name"));
         assertThat(getterNameToName("hello"), is("hello"));
+    }
+
+    @Test
+    public void testGetValue() throws Exception {
+        FHTDevice fhtDevice = new FHTDevice();
+        fhtDevice.setDesiredTemp(20.0);
+
+        Method method = FHTDevice.class.getMethod("getDesiredTemp");
+        AnnotatedDeviceClassMethod pseudoAnnotatedMethod = new AnnotatedDeviceClassMethod(method);
+
+        String value = pseudoAnnotatedMethod.getValueFor(fhtDevice);
+        assertThat(value, is("20.0"));
     }
 }

@@ -24,36 +24,25 @@
 
 package li.klass.fhem.adapter.devices.core.showFieldAnnotation;
 
+import org.junit.Test;
+
 import java.lang.reflect.Field;
 
-import li.klass.fhem.domain.genericview.ShowField;
+import li.klass.fhem.domain.FHTDevice;
 
-public class AnnotatedDeviceClassField extends AnnotatedDeviceClassItem {
-    public final Field field;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 
-    public AnnotatedDeviceClassField(Field field) {
-        this.field = field;
-        field.setAccessible(true);
-    }
+public class AnnotatedDeviceClassFieldTest {
+    @Test
+    public void testGetValue() throws Exception {
+        FHTDevice fhtDevice = new FHTDevice();
+        fhtDevice.setDesiredTemp(20.0);
 
-    @Override
-    public String getName() {
-        return field.getName();
-    }
+        Field field = FHTDevice.class.getDeclaredField("desiredTemp");
+        AnnotatedDeviceClassField pseudoAnnotatedField = new AnnotatedDeviceClassField(field);
 
-    @Override
-    public String getValueFor(Object object) {
-        try {
-            return String.valueOf(field.get(object));
-        } catch (IllegalAccessException e) {
-            // this may never happen as we set the field as being accessible!
-            throw new IllegalStateException(e);
-        }
-    }
-
-    @Override
-    public ShowField getShowFieldAnnotation() {
-        if (! field.isAnnotationPresent(ShowField.class)) return null;
-        return field.getAnnotation(ShowField.class);
+        String value = pseudoAnnotatedField.getValueFor(fhtDevice);
+        assertThat(value, is("20.0"));
     }
 }

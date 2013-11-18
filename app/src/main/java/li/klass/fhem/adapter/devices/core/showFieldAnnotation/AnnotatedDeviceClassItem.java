@@ -53,4 +53,9 @@ public abstract class AnnotatedDeviceClassItem {
     public int getDescriptionStringId() {
         return getShowFieldAnnotation().description().getId();
     }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + "::" + getName();
+    }
 }
