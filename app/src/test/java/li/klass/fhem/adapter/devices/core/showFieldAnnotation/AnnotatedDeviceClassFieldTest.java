@@ -31,18 +31,32 @@ import java.lang.reflect.Field;
 import li.klass.fhem.domain.FHTDevice;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 public class AnnotatedDeviceClassFieldTest {
     @Test
-    public void testGetValue() throws Exception {
+    public void testGetDoubleValue() throws Exception {
         FHTDevice fhtDevice = new FHTDevice();
         fhtDevice.setDesiredTemp(20.0);
 
-        Field field = FHTDevice.class.getDeclaredField("desiredTemp");
+        String value = getFieldValue(fhtDevice, "desiredTemp");
+        assertThat(value, is("20.0"));
+    }
+
+    @Test
+    public void testGetNullValue() throws Exception {
+        FHTDevice fhtDevice = new FHTDevice();
+        fhtDevice.setHeatingMode(null);
+
+        String value = getFieldValue(fhtDevice, "heatingMode");
+        assertThat(value, is(nullValue()));
+    }
+
+    private String getFieldValue(FHTDevice fhtDevice, String fieldName) throws NoSuchFieldException {
+        Field field = FHTDevice.class.getDeclaredField(fieldName);
         AnnotatedDeviceClassField pseudoAnnotatedField = new AnnotatedDeviceClassField(field);
 
-        String value = pseudoAnnotatedField.getValueFor(fhtDevice);
-        assertThat(value, is("20.0"));
+        return pseudoAnnotatedField.getValueFor(fhtDevice);
     }
 }

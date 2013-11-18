@@ -44,7 +44,10 @@ public class AnnotatedDeviceClassField extends AnnotatedDeviceClassItem {
     @Override
     public String getValueFor(Object object) {
         try {
-            return String.valueOf(field.get(object));
+            Object value = field.get(object);
+            if (value == null) return null;
+            
+            return String.valueOf(value);
         } catch (IllegalAccessException e) {
             // this may never happen as we set the field as being accessible!
             throw new IllegalStateException(e);

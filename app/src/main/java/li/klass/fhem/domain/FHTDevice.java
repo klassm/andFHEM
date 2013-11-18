@@ -234,6 +234,10 @@ public class FHTDevice extends Device<FHTDevice> implements DesiredTempDevice,
         this.windowOpenTemp = windowOpenTemp;
     }
 
+    public void setWarnings(String warnings) {
+        this.warnings = warnings;
+    }
+
     public String getWarnings() {
         return warnings;
     }

@@ -32,6 +32,7 @@ import li.klass.fhem.domain.FHTDevice;
 
 import static li.klass.fhem.adapter.devices.core.showFieldAnnotation.AnnotatedDeviceClassMethod.getterNameToName;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 public class AnnotatedDeviceClassMethodTest {
@@ -42,14 +43,27 @@ public class AnnotatedDeviceClassMethodTest {
     }
 
     @Test
-    public void testGetValue() throws Exception {
+    public void testGetDoubleValue() throws Exception {
         FHTDevice fhtDevice = new FHTDevice();
         fhtDevice.setDesiredTemp(20.0);
 
-        Method method = FHTDevice.class.getMethod("getDesiredTemp");
+        String value = getValueFor(fhtDevice, "getDesiredTemp");
+        assertThat(value, is("20.0"));
+    }
+
+    @Test
+    public void testGetNullValue() throws Exception {
+        FHTDevice fhtDevice = new FHTDevice();
+        fhtDevice.setWarnings(null);
+
+        String value = getValueFor(fhtDevice, "getWarnings");
+        assertThat(value, is(nullValue()));
+    }
+
+    private String getValueFor(FHTDevice fhtDevice, String methodName) throws NoSuchMethodException {
+        Method method = FHTDevice.class.getMethod(methodName);
         AnnotatedDeviceClassMethod pseudoAnnotatedMethod = new AnnotatedDeviceClassMethod(method);
 
-        String value = pseudoAnnotatedMethod.getValueFor(fhtDevice);
-        assertThat(value, is("20.0"));
+        return pseudoAnnotatedMethod.getValueFor(fhtDevice);
     }
 }

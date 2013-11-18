@@ -64,7 +64,10 @@ public class AnnotatedDeviceClassMethod extends AnnotatedDeviceClassItem {
     @Override
     public String getValueFor(Object object) {
         try {
-            return String.valueOf(method.invoke(object));
+            Object value = method.invoke(object);
+            if (value == null) return null;
+
+            return String.valueOf(value);
         } catch (Exception e) {
             throw new IllegalStateException(e);
         }
