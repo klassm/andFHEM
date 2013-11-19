@@ -62,10 +62,15 @@ import static li.klass.fhem.constants.ResultCodes.SUCCESS;
 
 public class ConnectionDetailFragment extends BaseFragment {
 
+    private interface ConnectionTypeDetailChangedListener {
+        void onChanged();
+    }
+
     private static final String TAG = ConnectionDetailFragment.class.getName();
     private String connectionId;
     private boolean isModify = false;
     private ServerType connectionType;
+    private ConnectionTypeDetailChangedListener detailChangedListener = null;
 
     @SuppressWarnings("unused")
     public ConnectionDetailFragment(Bundle bundle) {
@@ -138,7 +143,7 @@ public class ConnectionDetailFragment extends BaseFragment {
         return connectionTypes;
     }
 
-    private View handleConnectionTypeChange(ServerType connectionType) {
+    private void handleConnectionTypeChange(ServerType connectionType) {
         this.connectionType = connectionType;
         LayoutInflater inflater = LayoutInflater.from(getActivity());
 
@@ -175,7 +180,7 @@ public class ConnectionDetailFragment extends BaseFragment {
         connectionPreferences.removeAllViews();
         connectionPreferences.addView(view);
 
-        return view;
+        if (detailChangedListener != null) detailChangedListener.onChanged();
     }
 
     @Override
@@ -212,43 +217,55 @@ public class ConnectionDetailFragment extends BaseFragment {
         getActivity().startService(intent);
     }
 
-    private void setValuesForCurrentConnection(FHEMServerSpec connection) {
+    private void setValuesForCurrentConnection(final FHEMServerSpec connection) {
         final View view = getView();
         if (view == null) return;
 
-        Spinner connectionTypeSpinner = (Spinner) view.findViewById(R.id.connectionType);
-        connectionTypeSpinner.setSelection(selectionIndexFor(connectionType));
+        if (connection.getServerType() == connectionType) {
+            fillDetail(connection);
+        } else {
+            detailChangedListener = new ConnectionTypeDetailChangedListener() {
+                @Override
+                public void onChanged() {
+                    detailChangedListener = null;
 
-        View detailView = handleConnectionTypeChange(connection.getServerType());
+                    fillDetail(connection);
+                }
+            };
+            Spinner connectionTypeSpinner = (Spinner) view.findViewById(R.id.connectionType);
+            connectionTypeSpinner.setSelection(selectionIndexFor(connection.getServerType()), true);
+        }
+    }
 
+    private void fillDetail(FHEMServerSpec connection) {
         setTextViewContent(R.id.name, connection.getName());
 
         switch(connectionType) {
             case FHEMWEB:
-                fillFHEMWEB(connection, detailView);
+                fillFHEMWEB(connection);
                 break;
             case TELNET:
-                fillTelnet(connection, detailView);
+                fillTelnet(connection);
                 break;
         }
     }
 
-    private void fillTelnet(FHEMServerSpec connection, View detailView) {
+    private void fillTelnet(FHEMServerSpec connection) {
         View view = getView();
         if (view == null) return;
 
-        setTextViewContent(detailView, R.id.ip, connection.getIp());
-        setTextViewContent(detailView, R.id.port, connection.getPort() + "");
-        setTextViewContent(detailView, R.id.password, connection.getPassword());
+        setTextViewContent(view, R.id.ip, connection.getIp());
+        setTextViewContent(view, R.id.port, connection.getPort() + "");
+        setTextViewContent(view, R.id.password, connection.getPassword());
     }
 
-    private void fillFHEMWEB(FHEMServerSpec connection, View detailView) {
+    private void fillFHEMWEB(FHEMServerSpec connection) {
         View view = getView();
         if (view == null) return;
 
-        setTextViewContent(detailView, R.id.url, connection.getUrl());
-        setTextViewContent(detailView, R.id.username, connection.getUsername() + "");
-        setTextViewContent(detailView, R.id.password, connection.getPassword());
+        setTextViewContent(view, R.id.url, connection.getUrl());
+        setTextViewContent(view, R.id.username, connection.getUsername() + "");
+        setTextViewContent(view, R.id.password, connection.getPassword());
     }
 
     private void setTextViewContent(int id, String value) {
@@ -259,7 +276,9 @@ public class ConnectionDetailFragment extends BaseFragment {
         if (view == null) return;
 
         TextView textView = (TextView) view.findViewById(id);
-        textView.setText(value);
+        if (textView != null) {
+            textView.setText(value);
+        }
     }
 
     private String getTextViewContent(int id) {
