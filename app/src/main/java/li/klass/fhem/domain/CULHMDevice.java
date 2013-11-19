@@ -113,7 +113,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
     private String actuator;
     @ShowField(description = ResourceIdMapper.humidity, showInOverview = true)
     private String humidity;
-    @ShowField(description = ResourceIdMapper.model)
+    @ShowField(description = ResourceIdMapper.model, showAfter = "definition")
     private String subTypeRaw;
     @ShowField(description = ResourceIdMapper.commandAccepted)
     private String commandAccepted;

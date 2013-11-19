@@ -44,22 +44,26 @@ import static li.klass.fhem.service.room.RoomListService.NEVER_UPDATE_PERIOD;
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class AppWidgetListViewUpdateRemoteViewsService extends RemoteViewsService {
 
+    public static final String TAG =AppWidgetListViewUpdateRemoteViewsService.class.getName();
+
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
         int appWidgetId = intent.getIntExtra(APP_WIDGET_ID, -1);
         WidgetType widgetType = WidgetType.valueOf(intent.getStringExtra(APP_WIDGET_TYPE_NAME));
         String deviceName = intent.getStringExtra(DEVICE_NAME);
         Device device = RoomListService.INSTANCE.getDeviceForName(deviceName, NEVER_UPDATE_PERIOD);
+        if (device == null) {
+            Log.e(TAG, "device is null, at least in the current connection");
+        }
 
         if (appWidgetId == -1) {
-            Log.e(AppWidgetListViewUpdateRemoteViewsService.class.getName(),
-                    "no appwidget id given");
+            Log.e(TAG, "no appwidget id given");
             return null;
         }
 
         AppWidgetView view = widgetType.widgetView;
         if (! (view instanceof ListAppWidgetView)) {
-            Log.e(AppWidgetListViewUpdateRemoteViewsService.class.getName(),
+            Log.e(TAG,
                     "can only handle list widget views, got " + view.getClass().getName());
             return null;
         }
