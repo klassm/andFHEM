@@ -64,7 +64,7 @@ weight: 2
 
   <p>Installation Steps:
     <ul>
-      <li>Download and install the <a href="http://svn.code.sf.net/p/fhem/code/trunk/fhem/contrib/98_gcmsend.pm">98_gcmsend.pm</a> module for FHEM (copy the file to the FHEM directory, make sure that your Perl installation meets all the dependencies. FHEM will tell you if it can load the module, especially when issuing <span class="code">reload 99_gcmsend</span>. <br/>
+      <li>Download and install the <a href="http://svn.code.sf.net/p/fhem/code/trunk/fhem/contrib/98_gcmsend.pm">98_gcmsend.pm</a> module for FHEM (copy the file to the FHEM directory, make sure that your Perl installation meets all the dependencies. FHEM will tell you if it can load the module, especially when issuing <span class="code">reload 98_gcmsend</span>. You can also copy the file from the <span class="code">contrib</span> directory. If doing so, don't forget to modify the file permissions of <span class="code">98_gcmsend.pm</span> (the user running FHEM has to be able to read the file, so change the owner using <span class="code">chown fhem 98_gcmsend.pm</span> or give all users the permission to read the file using <span class="code">chmod a+r 98_gcmsend.pm</span>) <br/>
   The module depends on two perl modules, which have to be installed to <i>fhem/lib/perl5/site_perl/5.12.2/</i> (on FritzBoxes, otherwise choose your perl directory)
         <ul>
           <li><span class="code">LWP::Protocol::https</span> (download from <a href="http://search.cpan.org/~gaas/LWP-Protocol-https-6.04/lib/LWP/Protocol/https.pm">here</a>)</li>
@@ -91,21 +91,23 @@ weight: 2
           <li>We are directed to a new page containing the API-key we wanted to obtain: <br/>
             <a href="images/installation/gcm/05_browser_key.png"><img src="images/installation/gcm/05_browser_key.png" /></a>
           </li>
-          <li>We have to configure the plug-in to talk to GCM. This is why we have to issue an FHEM command: <br/>
+        </ul>
+       </li>
+       
+      <li>Now we create a GCM device. Issue <span class="code">define &lt;gcm_device_name&gt; gcmsend</span> within your FHEM instance.</span>
+      <li>Afterwards we need to configure the device to talk to GCM. This is why we have to issue another FHEM command: <br/>
             <span class="code">attr &lt;gcm_device_name&gt; apiKey &lt;apiKey&gt;</span><br />
             whereas <span class="code">&lt;gcm_device_name&gt;</span> is the name of the device you created before and <span class="code">&lt;apikey&gt;</span> is the key you just created within the Google console (number 2 within the image).
-          </li>
-          <li>
-            Link andFHEM
-            <ul>
-              <li>Enter the andFHEM settings and enter the GCM project number (from the Google console page in section "Overview") within the field "GCM Project Id".</li>
-              <li>Refresh your xmllist and look for your GCMSend device you just created. Open the detail page and click the button to register your device. Internally, andFHEM will add your device as regIds attribute of your gcm device. <br />
-                <a href="images/installation/gcm/gcm_app.png"><img src="images/installation/gcm/gcm_app.png" /></a>
-                </li>
-            </ul>
-          </li>
-        </ul>
       </li>
+          
+      <li>Link andFHEM
+        <ul>
+          <li>Enter the andFHEM settings and enter the GCM project number (from the Google console page in section "Overview") within the field "GCM Project Id".</li>
+          <li>Refresh your xmllist and look for your GCMSend device you just created. Open the detail page and click the button to register your device. Internally, andFHEM will add your device as regIds attribute of your gcm device. <br />
+              <a href="images/installation/gcm/gcm_app.png"><img src="images/installation/gcm/gcm_app.png" /></a>
+          </li>
+      </ul>
+    </li>
     </ul>
   </p>
 
