@@ -35,6 +35,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import li.klass.fhem.AndFHEMApplication;
+import li.klass.fhem.fhem.connection.DummyServerSpec;
 import li.klass.fhem.fhem.connection.FHEMServerSpec;
 import li.klass.fhem.fhem.connection.ServerType;
 import li.klass.fhem.license.LicenseManager;
@@ -50,21 +51,34 @@ public class ConnectionService {
 
     private static final String PREFERENCES_NAME = "fhemConnections";
     public static final String DUMMY_DATA_ID = "-1";
+    public static final String TEST_DATA_ID = "-2";
 
-    private static final FHEMServerSpec DUMMY_DATA = new FHEMServerSpec(DUMMY_DATA_ID);
-    static {
-        DUMMY_DATA.setName("DummyData");
-        DUMMY_DATA.setServerType(ServerType.DUMMY);
-    }
+    private FHEMServerSpec dummyData;
+    private DummyServerSpec testData;
+
 
     private ConnectionService() {
+        initialiseDummyData();
+    }
+
+    private void initialiseDummyData() {
+        dummyData = new DummyServerSpec(DUMMY_DATA_ID, "dummyData.xml");
+        dummyData.setName("DummyData");
+        dummyData.setServerType(ServerType.DUMMY);
+
+        if (LicenseManager.INSTANCE.isDebug()) {
+            testData = new DummyServerSpec(TEST_DATA_ID, "test.xml");
+            testData.setName("TestData");
+            testData.setServerType(ServerType.DUMMY);
+        }
     }
 
     public boolean create(String name, ServerType serverType, String username, String password,
                           String ip, int port, String url) {
         if (exists(name)) return false;
 
-        if (! LicenseManager.INSTANCE.isPro() && getCountWithoutDummy() >= PREMIUM_ALLOWED_FREE_CONNECTIONS) {
+        LicenseManager licenseManager = LicenseManager.INSTANCE;
+        if (! licenseManager.isPro() && getCountWithoutDummy() >= PREMIUM_ALLOWED_FREE_CONNECTIONS) {
             return false;
         }
 
@@ -80,7 +94,7 @@ public class ConnectionService {
     public boolean update(String id, String name, ServerType serverType, String username, String password,
                           String ip, int port, String url) {
 
-        FHEMServerSpec server = getForId(id);
+        FHEMServerSpec server = forId(id);
         if (server == null) return false;
 
         fillServerWith(name, server, serverType, username, password, ip, port, url);
@@ -102,6 +116,9 @@ public class ConnectionService {
     }
 
     public FHEMServerSpec forId(String id) {
+        if (DUMMY_DATA_ID.equals(id)) return dummyData;
+        if (TEST_DATA_ID.equals(id) && testData != null) return testData;
+
         String json = getPreferences().getString(id, null);
         if (json == null) return null;
         return deserialize(json);
@@ -138,14 +155,16 @@ public class ConnectionService {
             servers.add(server);
         }
 
-        servers.add(DUMMY_DATA);
+        servers.add(dummyData);
+        if (testData != null) servers.add(testData);
 
         return servers;
     }
 
     private String newUniqueId() {
         String id = null;
-        while (id == null || exists(id) || DUMMY_DATA_ID.equals(id)) {
+        while (id == null || exists(id) || DUMMY_DATA_ID.equals(id)
+                || TEST_DATA_ID.equals(id)) {
             id = UUID.randomUUID().toString();
         }
 
@@ -161,7 +180,8 @@ public class ConnectionService {
     }
 
     private boolean exists(String id) {
-        return DUMMY_DATA_ID.equals(id) || getPreferences().contains(id);
+        return DUMMY_DATA_ID.equals(id) || TEST_DATA_ID.equals(id)
+                || getPreferences().contains(id);
     }
 
     public boolean nameExists(String name) {
@@ -171,16 +191,9 @@ public class ConnectionService {
         return false;
     }
 
-    private FHEMServerSpec getForId(String id) {
-        if (DUMMY_DATA_ID.equals(id)) return DUMMY_DATA;
-
-        String json = getPreferences().getString(id, null);
-        if (json == null) return null;
-
-        return deserialize(json);
-    }
-
     private void saveToPreferences(FHEMServerSpec server) {
+        if (server.getServerType() == ServerType.DUMMY) return;
+
         String json = serialize(server);
         getPreferences().edit().putString(server.getId(), json).commit();
     }
@@ -203,6 +216,6 @@ public class ConnectionService {
     }
 
     public FHEMServerSpec getCurrentServer() {
-        return getForId(getSelectedId());
+        return forId(getSelectedId());
     }
 }

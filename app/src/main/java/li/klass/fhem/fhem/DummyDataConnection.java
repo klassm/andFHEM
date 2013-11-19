@@ -34,6 +34,7 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import li.klass.fhem.fhem.connection.DummyServerSpec;
 import li.klass.fhem.util.CloseableUtil;
 
 public class DummyDataConnection extends FHEMConnection {
@@ -47,7 +48,8 @@ public class DummyDataConnection extends FHEMConnection {
     public String xmllist() {
         InputStream inputStream = null;
         try {
-            inputStream = DummyDataConnection.class.getResourceAsStream("dummyData.xml");
+            DummyServerSpec dummyServerSpec = (DummyServerSpec) serverSpec;
+            inputStream = DummyDataConnection.class.getResourceAsStream(dummyServerSpec.fileName);
 
             String content = IOUtils.toString(inputStream);
             content = content.replaceAll("  ", "");

@@ -176,7 +176,8 @@ public abstract class DeviceListFragment extends BaseFragment {
                 }
 
                 View dummyConnectionNotification = view.findViewById(R.id.dummyConnectionNotification);
-                if (!DataConnectionSwitch.INSTANCE.getCurrentProvider().getClass().isAssignableFrom(DummyDataConnection.class)) {
+                if (!DataConnectionSwitch.INSTANCE.getCurrentProvider().getClass()
+                        .isAssignableFrom(DummyDataConnection.class)) {
                     dummyConnectionNotification.setVisibility(View.GONE);
                 } else {
                     dummyConnectionNotification.setVisibility(View.VISIBLE);

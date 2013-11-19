@@ -24,23 +24,12 @@
 
 package li.klass.fhem.fhem.connection;
 
-import li.klass.fhem.fhem.DummyDataConnection;
-import li.klass.fhem.fhem.FHEMConnection;
-import li.klass.fhem.fhem.FHEMWEBConnection;
-import li.klass.fhem.fhem.TelnetConnection;
+public class DummyServerSpec extends FHEMServerSpec {
 
-public enum ServerType {
-    DUMMY(DummyDataConnection.INSTANCE),
-    FHEMWEB(FHEMWEBConnection.INSTANCE),
-    TELNET(TelnetConnection.INSTANCE);
+    public final String fileName;
 
-    private final FHEMConnection connection;
-
-    ServerType(FHEMConnection connection) {
-        this.connection = connection;
-    }
-
-    public FHEMConnection getConnection() {
-        return connection;
+    public DummyServerSpec(String id, String fileName) {
+        super(id);
+        this.fileName = fileName;
     }
 }

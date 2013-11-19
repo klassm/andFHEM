@@ -166,7 +166,6 @@ public class ConnectionListFragment extends BaseFragment implements TopLevelFrag
                     for (FHEMServerSpec serverSpec : new ArrayList<FHEMServerSpec>(connectionList)) {
                         if (serverSpec.getServerType() == ServerType.DUMMY) {
                             connectionList.remove(serverSpec);
-                            break; // We only got one dummy
                         }
                     }
 

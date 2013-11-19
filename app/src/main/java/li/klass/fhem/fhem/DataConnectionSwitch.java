@@ -24,8 +24,6 @@
 
 package li.klass.fhem.fhem;
 
-import android.util.Log;
-
 import li.klass.fhem.fhem.connection.FHEMServerSpec;
 import li.klass.fhem.service.connection.ConnectionService;
 
@@ -38,28 +36,9 @@ public class DataConnectionSwitch {
     }
 
     public FHEMConnection getCurrentProvider() {
-        FHEMConnection currentConnection;
         FHEMServerSpec currentServer = ConnectionService.INSTANCE.getCurrentServer();
-
-        switch (currentServer.getServerType()) {
-            case TELNET:
-                currentConnection = TelnetConnection.INSTANCE;
-                break;
-            case FHEMWEB:
-                currentConnection = FHEMWEBConnection.INSTANCE;
-                break;
-            case DUMMY:
-                currentConnection = DummyDataConnection.INSTANCE;
-                break;
-            default:
-                throw new IllegalArgumentException("don't know how to handle " +
-                        currentServer.getServerType().name());
-        }
-
+        FHEMConnection currentConnection = currentServer.getServerType().getConnection();
         currentConnection.setServer(currentServer);
-
-        Log.d(DataConnectionSwitch.class.getName(), "current connection provider: " +
-                currentConnection.getClass().getName());
 
         return currentConnection;
     }
