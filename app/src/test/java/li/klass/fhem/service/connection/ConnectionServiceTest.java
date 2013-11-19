@@ -28,13 +28,14 @@ import org.junit.Test;
 
 import li.klass.fhem.fhem.connection.FHEMServerSpec;
 import li.klass.fhem.fhem.connection.ServerType;
+import li.klass.fhem.infra.basetest.RobolectricBaseTestCase;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsNot.not;
 
-public class ConnectionServiceTest {
+public class ConnectionServiceTest extends RobolectricBaseTestCase {
     @Test
     public void testFHEMServerSpecSerializeDeserialize() {
         FHEMServerSpec serverSpec = new FHEMServerSpec("test");
