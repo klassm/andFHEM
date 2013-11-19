@@ -221,9 +221,17 @@ public class ConnectionDetailFragment extends BaseFragment {
         final View view = getView();
         if (view == null) return;
 
+        // We do not need to change the type selector here, as the right one is already selected.
+        // We just overwrite values within the edit fields.
         if (connection.getServerType() == connectionType) {
             fillDetail(connection);
         } else {
+            // We have to change the detail view to the one which is right for the current
+            // connection type. However, we do not know when the selection changed listener
+            // of the combo box fires. This is why we register a global listener, which is called
+            // when the new view has been attached to the root view.
+            // Afterwards we can continue with filling the fields with the respective values
+            // of the current connection!
             detailChangedListener = new ConnectionTypeDetailChangedListener() {
                 @Override
                 public void onChanged() {
