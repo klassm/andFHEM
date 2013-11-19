@@ -77,7 +77,7 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
     private List<DeviceChart> deviceCharts = new ArrayList<DeviceChart>();
     private transient AssociatedDeviceCallback associatedDeviceCallback;
     private String widgetName;
-
+    private boolean alwaysHidden = false;
 
     public void readROOM(String value) {
         setRoomConcatenated(value);
@@ -120,6 +120,10 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
 
     public void readMEASURED(String value) {
         measured = value;
+    }
+
+    public void read_ALWAYS_HIDDEN(String value) {
+        alwaysHidden = "true".equalsIgnoreCase(value);
     }
 
     public void afterXMLRead() {
@@ -363,7 +367,7 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
     }
 
     public boolean isSupported() {
-        return true;
+        return ! alwaysHidden;
     }
 
     public String getEventMapStateForCurrentState() {

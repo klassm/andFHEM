@@ -75,13 +75,14 @@ public enum DeviceFunctionality {
     }
 
     public static DeviceFunctionality functionalityForDimmable(DimmableDevice device) {
+        if (device.isSpecialButtonDevice()) return SWITCH;
         if (device.supportsDim()) {
-            return DeviceFunctionality.DIMMER;
+            return DIMMER;
         }
         if (device.supportsToggle()) {
-            return DeviceFunctionality.SWITCH;
+            return SWITCH;
         }
-        return DeviceFunctionality.DUMMY;
+        return DUMMY;
     }
 
     public String getCaptionText(Context context) {

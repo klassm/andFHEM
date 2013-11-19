@@ -108,6 +108,18 @@ public class FS20DeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getDimDownPosition(), is(FS20Device.dimStates.indexOf("off")));
     }
 
+    @Test
+    public void testAlwaysHiddenHook() {
+        FS20Device device = new FS20Device();
+        assertThat(device.isSupported(), is(true));
+
+        device.read_ALWAYS_HIDDEN("true");
+        assertThat(device.isSupported(), is(false));
+
+        device.read_ALWAYS_HIDDEN("false");
+        assertThat(device.isSupported(), is(true));
+    }
+
     @Override
     protected String getFileName() {
         return "fs20.xml";
