@@ -50,6 +50,7 @@ import li.klass.fhem.exception.AndFHEMException;
 import li.klass.fhem.service.AbstractService;
 import li.klass.fhem.util.ApplicationProperties;
 
+import static li.klass.fhem.constants.Actions.DEVICE_LIST_REMOTE_NOTIFY;
 import static li.klass.fhem.util.SharedPreferencesUtil.getSharedPreferences;
 import static li.klass.fhem.util.SharedPreferencesUtil.getSharedPreferencesEditor;
 
@@ -97,7 +98,8 @@ public class RoomListService extends AbstractService {
 
         boolean updateWidgets = ApplicationProperties.INSTANCE.getBooleanSharedPreference(PreferenceKeys.GCM_WIDGET_UPDATE, false);
         if (updateWidgets) {
-            sendBroadcastWithAction(Actions.DEVICE_LIST_REMOTE_NOTIFY);
+            sendBroadcastWithAction(DEVICE_LIST_REMOTE_NOTIFY);
+            getContext().startService(new Intent(DEVICE_LIST_REMOTE_NOTIFY));
         }
     }
 
@@ -229,7 +231,8 @@ public class RoomListService extends AbstractService {
                         } finally {
                             currentlyUpdating.set(false);
                             sendBroadcastWithAction(Actions.DISMISS_UPDATING_DIALOG, null);
-                            sendBroadcastWithAction(Actions.DEVICE_LIST_REMOTE_NOTIFY, null);
+                            sendBroadcastWithAction(DEVICE_LIST_REMOTE_NOTIFY, null);
+                            getContext().startService(new Intent(DEVICE_LIST_REMOTE_NOTIFY));
 
                             updateLock.unlock();
                         }

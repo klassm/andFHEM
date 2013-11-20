@@ -27,29 +27,42 @@ package li.klass.fhem.appwidget.service;
 import android.app.IntentService;
 import android.appwidget.AppWidgetManager;
 import android.content.Intent;
+import android.util.Log;
 
 import li.klass.fhem.appwidget.AppWidgetDataHolder;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 
+import static li.klass.fhem.constants.Actions.DEVICE_LIST_REMOTE_NOTIFY;
+import static li.klass.fhem.constants.Actions.REDRAW_WIDGET;
+
 public class AppWidgetUpdateService extends IntentService {
+
+    public static final String TAG = AppWidgetUpdateService.class.getName();
+
     public AppWidgetUpdateService() {
         super(AppWidgetUpdateService.class.getName());
     }
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        if (intent.getAction() == null || ! intent.getAction().equalsIgnoreCase(Actions.REDRAW_WIDGET)) {
-            return;
-        }
+        String action = intent.getAction();
+        boolean allowRemoteUpdates = intent.getBooleanExtra(BundleExtraKeys.ALLOW_REMOTE_UPDATES, false);
 
-        if (! intent.hasExtra(BundleExtraKeys.APP_WIDGET_ID) ||
-                ! intent.hasExtra(BundleExtraKeys.ALLOW_REMOTE_UPDATES)) {
+        if (REDRAW_WIDGET.equals(action) || Actions.WIDGET_UPDATE.equals(action)) {
+            handleRedrawWidget(intent, allowRemoteUpdates);
+        } else if (DEVICE_LIST_REMOTE_NOTIFY.equals(action)) {
+            Log.i(TAG, "updating all widgets (received DEVICE_LIST_REMOTE_NOTIFY)");
+            AppWidgetDataHolder.INSTANCE.updateAllWidgets(this, allowRemoteUpdates);
+        }
+    }
+
+    private void handleRedrawWidget(Intent intent, boolean allowRemoteUpdates) {
+        if (! intent.hasExtra(BundleExtraKeys.APP_WIDGET_ID)) {
             return;
         }
 
         int widgetId = intent.getIntExtra(BundleExtraKeys.APP_WIDGET_ID, -1);
-        boolean allowRemoteUpdates = intent.getBooleanExtra(BundleExtraKeys.ALLOW_REMOTE_UPDATES, false);
 
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
 

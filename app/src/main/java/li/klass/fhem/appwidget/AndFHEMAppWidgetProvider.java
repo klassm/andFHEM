@@ -26,11 +26,6 @@ package li.klass.fhem.appwidget;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
-import android.content.Intent;
-import android.util.Log;
-
-import li.klass.fhem.constants.Actions;
-import li.klass.fhem.constants.BundleExtraKeys;
 
 public abstract class AndFHEMAppWidgetProvider extends AppWidgetProvider {
 
@@ -49,23 +44,6 @@ public abstract class AndFHEMAppWidgetProvider extends AppWidgetProvider {
         super.onDeleted(context, appWidgetIds);
         for (int appWidgetId : appWidgetIds) {
             AppWidgetDataHolder.INSTANCE.deleteWidget(context, appWidgetId);
-        }
-    }
-
-    @Override
-    public void onReceive(Context context, Intent intent) {
-        super.onReceive(context, intent);
-        if (intent.getAction().equals(Actions.WIDGET_UPDATE)) {
-            int appWidgetId = intent.getIntExtra(BundleExtraKeys.APP_WIDGET_ID, -1);
-            Log.d(TAG, "update widget " + appWidgetId);
-
-            AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-            if (appWidgetId != -1) {
-                onUpdate(context, appWidgetManager, new int[]{appWidgetId});
-            }
-        } else if (intent.getAction().equals(Actions.DEVICE_LIST_REMOTE_NOTIFY)) {
-            Log.i(TAG, "updating all widgets (received DEVICE_LIST_REMOTE_NOTIFY");
-            AppWidgetDataHolder.INSTANCE.updateAllWidgets(context, false);
         }
     }
 }

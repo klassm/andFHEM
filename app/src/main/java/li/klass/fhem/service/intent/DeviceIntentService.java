@@ -28,7 +28,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.ResultReceiver;
 import android.util.Log;
-import li.klass.fhem.constants.Actions;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
+
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.domain.FHTDevice;
@@ -39,20 +44,58 @@ import li.klass.fhem.domain.core.DimmableDevice;
 import li.klass.fhem.domain.core.ToggleableDevice;
 import li.klass.fhem.domain.fht.FHTMode;
 import li.klass.fhem.domain.floorplan.Coordinate;
-import li.klass.fhem.domain.heating.*;
-import li.klass.fhem.service.device.*;
+import li.klass.fhem.domain.heating.ComfortTempDevice;
+import li.klass.fhem.domain.heating.DesiredTempDevice;
+import li.klass.fhem.domain.heating.EcoTempDevice;
+import li.klass.fhem.domain.heating.HeatingDevice;
+import li.klass.fhem.domain.heating.WindowOpenTempDevice;
+import li.klass.fhem.service.device.AtService;
+import li.klass.fhem.service.device.DeviceService;
+import li.klass.fhem.service.device.DimmableDeviceService;
+import li.klass.fhem.service.device.FHTService;
+import li.klass.fhem.service.device.FloorplanService;
+import li.klass.fhem.service.device.GCMSendDeviceService;
+import li.klass.fhem.service.device.GenericDeviceService;
+import li.klass.fhem.service.device.HeatingService;
+import li.klass.fhem.service.device.ToggleableService;
+import li.klass.fhem.service.device.WOLService;
 import li.klass.fhem.service.graph.GraphEntry;
 import li.klass.fhem.service.graph.GraphService;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.service.room.RoomListService;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
-
-import static li.klass.fhem.constants.Actions.*;
-import static li.klass.fhem.constants.BundleExtraKeys.*;
+import static li.klass.fhem.constants.Actions.DEVICE_DELETE;
+import static li.klass.fhem.constants.Actions.DEVICE_DIM;
+import static li.klass.fhem.constants.Actions.DEVICE_FLOORPLAN_MOVE;
+import static li.klass.fhem.constants.Actions.DEVICE_GRAPH;
+import static li.klass.fhem.constants.Actions.DEVICE_MOVE_ROOM;
+import static li.klass.fhem.constants.Actions.DEVICE_REFRESH_STATE;
+import static li.klass.fhem.constants.Actions.DEVICE_REFRESH_VALUES;
+import static li.klass.fhem.constants.Actions.DEVICE_RENAME;
+import static li.klass.fhem.constants.Actions.DEVICE_RESET_WEEK_PROFILE;
+import static li.klass.fhem.constants.Actions.DEVICE_SET_ALIAS;
+import static li.klass.fhem.constants.Actions.DEVICE_SET_COMFORT_TEMPERATURE;
+import static li.klass.fhem.constants.Actions.DEVICE_SET_DAY_TEMPERATURE;
+import static li.klass.fhem.constants.Actions.DEVICE_SET_DESIRED_TEMPERATURE;
+import static li.klass.fhem.constants.Actions.DEVICE_SET_ECO_TEMPERATURE;
+import static li.klass.fhem.constants.Actions.DEVICE_SET_MODE;
+import static li.klass.fhem.constants.Actions.DEVICE_SET_NIGHT_TEMPERATURE;
+import static li.klass.fhem.constants.Actions.DEVICE_SET_STATE;
+import static li.klass.fhem.constants.Actions.DEVICE_SET_SUB_STATE;
+import static li.klass.fhem.constants.Actions.DEVICE_SET_WEEK_PROFILE;
+import static li.klass.fhem.constants.Actions.DEVICE_SET_WINDOW_OPEN_TEMPERATURE;
+import static li.klass.fhem.constants.Actions.DEVICE_TIMER_MODIFY;
+import static li.klass.fhem.constants.Actions.DEVICE_TIMER_NEW;
+import static li.klass.fhem.constants.Actions.DEVICE_TOGGLE_STATE;
+import static li.klass.fhem.constants.Actions.DEVICE_WAKE;
+import static li.klass.fhem.constants.Actions.DEVICE_WIDGET_TOGGLE;
+import static li.klass.fhem.constants.Actions.GCM_ADD_SELF;
+import static li.klass.fhem.constants.Actions.GCM_REMOVE_ID;
+import static li.klass.fhem.constants.Actions.WIDGET_UPDATE;
+import static li.klass.fhem.constants.BundleExtraKeys.APP_WIDGET_ID;
+import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_GRAPH_ENTRY_MAP;
+import static li.klass.fhem.constants.BundleExtraKeys.STATE_NAME;
+import static li.klass.fhem.constants.BundleExtraKeys.STATE_VALUE;
 import static li.klass.fhem.service.intent.ConvenientIntentService.STATE.ERROR;
 import static li.klass.fhem.service.intent.ConvenientIntentService.STATE.SUCCESS;
 
@@ -70,21 +113,21 @@ public class DeviceIntentService extends ConvenientIntentService {
         Log.d(DeviceIntentService.class.getName(), intent.getAction());
         String action = intent.getAction();
 
-        if (action.equals(DEVICE_GRAPH)) {
+        if (DEVICE_GRAPH.equals(action)) {
             return graphIntent(intent, device, resultReceiver);
-        } else if (action.equals(DEVICE_TOGGLE_STATE)) {
+        } else if (DEVICE_TOGGLE_STATE.equals(action)) {
             return toggleIntent(device);
-        } else if (action.equals(DEVICE_SET_STATE)) {
+        } else if (DEVICE_SET_STATE.equals(action)) {
             return setStateIntent(intent, device);
-        } else if (action.equals(DEVICE_DIM)) {
+        } else if (DEVICE_DIM.equals(action)) {
             return dimIntent(intent, device);
-        } else if (action.equals(DEVICE_SET_DAY_TEMPERATURE)) {
+        } else if (DEVICE_SET_DAY_TEMPERATURE.equals(action)) {
             double dayTemperature = intent.getDoubleExtra(BundleExtraKeys.DEVICE_TEMPERATURE, -1);
             FHTService.INSTANCE.setDayTemperature((FHTDevice) device, dayTemperature);
-        } else if (action.equals(DEVICE_SET_NIGHT_TEMPERATURE)) {
+        } else if (DEVICE_SET_NIGHT_TEMPERATURE.equals(action)) {
             double nightTemperature = intent.getDoubleExtra(BundleExtraKeys.DEVICE_TEMPERATURE, -1);
             FHTService.INSTANCE.setNightTemperature((FHTDevice) device, nightTemperature);
-        } else if (action.equals(DEVICE_SET_MODE)) {
+        } else if (DEVICE_SET_MODE.equals(action)) {
             if (device instanceof FHTDevice) {
                 FHTMode mode = (FHTMode) intent.getSerializableExtra(BundleExtraKeys.DEVICE_MODE);
                 double desiredTemperature = intent.getDoubleExtra(BundleExtraKeys.DEVICE_TEMPERATURE, FHTDevice.MINIMUM_TEMPERATURE);
@@ -99,73 +142,91 @@ public class DeviceIntentService extends ConvenientIntentService {
                 HeatingService.INSTANCE.setMode(heatingDevice, mode);
             }
 
-        } else if (action.equals(DEVICE_SET_WEEK_PROFILE)) {
+        } else if (DEVICE_SET_WEEK_PROFILE.equals(action)) {
             if (!(device instanceof HeatingDevice)) return ERROR;
             HeatingService.INSTANCE.setWeekProfileFor((HeatingDevice) device);
 
-        } else if (action.equals(DEVICE_SET_WINDOW_OPEN_TEMPERATURE)) {
+        } else if (DEVICE_SET_WINDOW_OPEN_TEMPERATURE.equals(action)) {
             if (!(device instanceof WindowOpenTempDevice)) return SUCCESS;
 
             double temperature = intent.getDoubleExtra(BundleExtraKeys.DEVICE_TEMPERATURE, -1);
             HeatingService.INSTANCE.setWindowOpenTemp((WindowOpenTempDevice) device, temperature);
-        } else if (action.equals(DEVICE_SET_DESIRED_TEMPERATURE)) {
+
+        } else if (DEVICE_SET_DESIRED_TEMPERATURE.equals(action)) {
             double temperature = intent.getDoubleExtra(BundleExtraKeys.DEVICE_TEMPERATURE, -1);
             if (device instanceof DesiredTempDevice) {
                 HeatingService.INSTANCE.setDesiredTemperature((DesiredTempDevice) device, temperature);
             }
-        } else if (action.equals(DEVICE_SET_COMFORT_TEMPERATURE)) {
+
+        } else if (DEVICE_SET_COMFORT_TEMPERATURE.equals(action)) {
             double temperature = intent.getDoubleExtra(BundleExtraKeys.DEVICE_TEMPERATURE, -1);
             if (device instanceof DesiredTempDevice) {
                 HeatingService.INSTANCE.setComfortTemperature((ComfortTempDevice) device, temperature);
             }
-        } else if (action.equals(DEVICE_SET_ECO_TEMPERATURE)) {
+
+        } else if (DEVICE_SET_ECO_TEMPERATURE.equals(action)) {
             double temperature = intent.getDoubleExtra(BundleExtraKeys.DEVICE_TEMPERATURE, -1);
             if (device instanceof DesiredTempDevice) {
                 HeatingService.INSTANCE.setEcoTemperature((EcoTempDevice) device, temperature);
             }
-        } else if (action.equals(DEVICE_RESET_WEEK_PROFILE)) {
+
+        } else if (DEVICE_RESET_WEEK_PROFILE.equals(action)) {
             if (!(device instanceof HeatingDevice)) return ERROR;
             HeatingService.INSTANCE.resetWeekProfile((HeatingDevice) device);
-        } else if (action.equals(DEVICE_REFRESH_VALUES)) {
+
+        } else if (DEVICE_REFRESH_VALUES.equals(action)) {
             FHTService.INSTANCE.refreshValues((FHTDevice) device);
-        } else if (action.equals(DEVICE_RENAME)) {
+
+        } else if (DEVICE_RENAME.equals(action)) {
             String newName = intent.getStringExtra(BundleExtraKeys.DEVICE_NEW_NAME);
             DeviceService.INSTANCE.renameDevice(device, newName);
-        } else if (action.equals(DEVICE_DELETE)) {
+
+        } else if (DEVICE_DELETE.equals(action)) {
             DeviceService.INSTANCE.deleteDevice(device);
-        } else if (action.equals(DEVICE_MOVE_ROOM)) {
+
+        } else if (DEVICE_MOVE_ROOM.equals(action)) {
             String newRoom = intent.getStringExtra(BundleExtraKeys.DEVICE_NEW_ROOM);
             DeviceService.INSTANCE.moveDevice(device, newRoom);
-        } else if (action.equals(DEVICE_SET_ALIAS)) {
+
+        } else if (DEVICE_SET_ALIAS.equals(action)) {
             String newAlias = intent.getStringExtra(BundleExtraKeys.DEVICE_NEW_ALIAS);
             DeviceService.INSTANCE.setAlias(device, newAlias);
-        } else if (action.equals(DEVICE_WAKE)) {
+
+        } else if (DEVICE_WAKE.equals(action)) {
             WOLService.INSTANCE.wake((WOLDevice) device);
-        } else if (action.equals(DEVICE_REFRESH_STATE)) {
+
+        } else if (DEVICE_REFRESH_STATE.equals(action)) {
             WOLService.INSTANCE.requestRefreshState((WOLDevice) device);
-        } else if (action.equals(DEVICE_FLOORPLAN_MOVE)) {
+
+        } else if (DEVICE_FLOORPLAN_MOVE.equals(action)) {
             moveFloorplanDevice(intent, device);
-        } else if (action.equals(DEVICE_WIDGET_TOGGLE)) {
+
+        } else if (DEVICE_WIDGET_TOGGLE.equals(action)) {
             STATE result = toggleIntent(device);
 
             int widgetId = intent.getIntExtra(APP_WIDGET_ID, -1);
             Intent widgetUpdateIntent = new Intent(WIDGET_UPDATE);
             widgetUpdateIntent.putExtra(APP_WIDGET_ID, widgetId);
-            sendBroadcast(widgetUpdateIntent);
+            startService(widgetUpdateIntent);
 
             return result;
-        } else if (action.equals(Actions.DEVICE_TIMER_MODIFY)) {
+
+        } else if (DEVICE_TIMER_MODIFY.equals(action)) {
             processTimerIntent(intent, true);
-        } else if (action.equals(Actions.DEVICE_TIMER_NEW)) {
+
+        } else if (DEVICE_TIMER_NEW.equals(action)) {
             processTimerIntent(intent, false);
-        } else if (action.equals(DEVICE_SET_SUB_STATE)) {
+
+        } else if (DEVICE_SET_SUB_STATE.equals(action)) {
             String name = intent.getStringExtra(STATE_NAME);
             String value = intent.getStringExtra(STATE_VALUE);
 
             GenericDeviceService.INSTANCE.setSubState(device, name, value);
-        } else if (action.equals(Actions.GCM_ADD_SELF)) {
+
+        } else if (GCM_ADD_SELF.equals(action)) {
             GCMSendDeviceService.INSTANCE.addSelf((GCMSendDevice) device);
-        } else if (action.equals(Actions.GCM_REMOVE_ID)) {
+
+        } else if (GCM_REMOVE_ID.equals(action)) {
             String registrationId = intent.getStringExtra(BundleExtraKeys.GCM_REGISTRATION_ID);
             GCMSendDeviceService.INSTANCE.removeRegistrationId((GCMSendDevice) device, registrationId);
         }
@@ -174,6 +235,9 @@ public class DeviceIntentService extends ConvenientIntentService {
 
     private STATE processTimerIntent(Intent intent, boolean isModify) {
         Bundle extras = intent.getExtras();
+
+        assert extras != null;
+
         String targetDeviceName = extras.getString(BundleExtraKeys.TIMER_TARGET_DEVICE_NAME);
         String targetState = extras.getString(BundleExtraKeys.TIMER_TARGET_STATE);
         int hour = extras.getInt(BundleExtraKeys.TIMER_HOUR, 0);
