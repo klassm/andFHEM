@@ -29,6 +29,16 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.locks.ReentrantLock;
+
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.constants.Actions;
@@ -39,15 +49,6 @@ import li.klass.fhem.domain.core.RoomDeviceList;
 import li.klass.fhem.exception.AndFHEMException;
 import li.klass.fhem.service.AbstractService;
 import li.klass.fhem.util.ApplicationProperties;
-
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.locks.ReentrantLock;
 
 import static li.klass.fhem.util.SharedPreferencesUtil.getSharedPreferences;
 import static li.klass.fhem.util.SharedPreferencesUtil.getSharedPreferencesEditor;
@@ -73,7 +74,7 @@ public class RoomListService extends AbstractService {
     public static final long NEVER_UPDATE_PERIOD = 0;
     public static final long ALWAYS_UPDATE_PERIOD = -1;
 
-    private final ReentrantLock reentrantLock = new ReentrantLock();
+    private final ReentrantLock updateLock = new ReentrantLock();
 
     private final AtomicBoolean currentlyUpdating = new AtomicBoolean(false);
 
@@ -211,38 +212,31 @@ public class RoomListService extends AbstractService {
         if (refresh || deviceListMap == null) {
 
             try {
-                if (currentlyUpdating.compareAndSet(false, true)) {
-                    reentrantLock.lock();
-
-                    new AsyncTask<Void, Void, Void>() {
-
-                        @Override
-                        protected Void doInBackground(Void... voids) {
-                            sendBroadcastWithAction(Actions.SHOW_UPDATING_DIALOG, null);
-                            try {
-                                deviceListMap = getRemoteRoomDeviceListMap();
-                            } finally {
-                                currentlyUpdating.set(false);
-                                sendBroadcastWithAction(Actions.DISMISS_UPDATING_DIALOG, null);
-                                sendBroadcastWithAction(Actions.DEVICE_LIST_REMOTE_NOTIFY, null);
-
-                                reentrantLock.unlock();
-                            }
-                            return null;
-                        }
-                    }.doInBackground();
-
-                } else {
-                    while (currentlyUpdating.get() && deviceListMap == null) {
-                        try {
-                            Log.i(TAG, "Update in progress, still got null device list, waiting ...");
-                            Thread.sleep(1000);
-                        } catch (Exception ignored) {
-                        }
-                    }
-                    Log.i(TAG, "should update, but update is currently in progress. Returning cached roomDeviceList");
+                if (! currentlyUpdating.compareAndSet(false, true)) {
                     return deviceListMap;
                 }
+
+                // In any case, make sure that only thread updates at the same time!
+                updateLock.lock();
+
+                new AsyncTask<Void, Void, Void>() {
+
+                    @Override
+                    protected Void doInBackground(Void... voids) {
+                        sendBroadcastWithAction(Actions.SHOW_UPDATING_DIALOG, null);
+                        try {
+                            deviceListMap = getRemoteRoomDeviceListMap();
+                        } finally {
+                            currentlyUpdating.set(false);
+                            sendBroadcastWithAction(Actions.DISMISS_UPDATING_DIALOG, null);
+                            sendBroadcastWithAction(Actions.DEVICE_LIST_REMOTE_NOTIFY, null);
+
+                            updateLock.unlock();
+                        }
+                        return null;
+                    }
+                }.doInBackground();
+
             } catch (AndFHEMException e) {
                 int errorStringId = e.getErrorMessageStringId();
                 sendErrorMessage(errorStringId);

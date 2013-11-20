@@ -73,11 +73,11 @@ public class AppWidgetDataHolder {
     }
 
     public void updateWidgetInCurrentThread(final AppWidgetManager appWidgetManager, final Context context,
-                                             final int appWidgetId, final boolean allowRemoteUpdate) {
+                                            final int appWidgetId, final boolean allowRemoteUpdate) {
         final WidgetConfiguration widgetConfiguration = getWidgetConfiguration(appWidgetId);
         AppWidgetProviderInfo widgetInfo = appWidgetManager.getAppWidgetInfo(appWidgetId);
         if (widgetInfo == null) {
-            Log.d(AppWidgetDataHolder.class.getName(), "cannot find widget for id " + appWidgetId);
+            Log.d(AppWidgetDataHolder.class.getName(), "cannot not find widget for id " + appWidgetId);
             deleteWidget(context, appWidgetId);
             return;
         }
@@ -93,31 +93,18 @@ public class AppWidgetDataHolder {
         scheduleUpdateIntent(context, widgetConfiguration, false, updateInterval);
 
         Device device = RoomListService.INSTANCE.getDeviceForName(widgetConfiguration.deviceName, updatePeriod);
-//        Intent deviceIntent = new Intent(Actions.GET_DEVICE_FOR_NAME);
-//        deviceIntent.putExtra(BundleExtraKeys.DEVICE_NAME, widgetConfiguration.deviceName);
-//        deviceIntent.putExtra(BundleExtraKeys.UPDATE_PERIOD, updatePeriod);
-//        deviceIntent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
-//            @Override
-//            protected void onReceiveResult(int resultCode, Bundle resultData) {
-//                if (resultCode == ResultCodes.SUCCESS) {
-//                    Device device = (Device) resultData.get(BundleExtraKeys.DEVICE);
-                    if (device == null) {
-                        Log.d(TAG, "cannot find device " + widgetConfiguration.deviceName);
-                        return;
-                    }
+        if (device == null) {
+            Log.d(TAG, "cannot find device " + widgetConfiguration.deviceName);
+            return;
+        }
 
-                    RemoteViews content = widgetView.createView(context, device, widgetConfiguration);
+        RemoteViews content = widgetView.createView(context, device, widgetConfiguration);
 
-                    try {
-                        appWidgetManager.updateAppWidget(appWidgetId, content);
-//                        saveWidgetConfigurationToPreferences(context, widgetConfiguration.updatedWithCurrentUpdateTime());
-                    } catch (Exception e) {
-                        Log.e(TAG, "something strange happened during appwidget update", e);
-                    }
-//                }
-//            }
-//        });
-//        context.startService(deviceIntent);
+        try {
+            appWidgetManager.updateAppWidget(appWidgetId, content);
+        } catch (Exception e) {
+            Log.e(TAG, "something strange happened during appwidget update", e);
+        }
     }
 
     public void deleteWidget(Context context, int appWidgetId) {

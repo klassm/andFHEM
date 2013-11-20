@@ -70,6 +70,10 @@ public class BigWeatherForecastWidget extends ListAppWidgetView {
         PendingIntent pendingIntent = createOpenDeviceDetailPagePendingIntent(device, widgetConfiguration.widgetId);
         view.setOnClickPendingIntent(R.id.main, pendingIntent);
         view.setPendingIntentTemplate(R.id.forecastList, pendingIntent);
+
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+        assert appWidgetManager != null;
+        appWidgetManager.notifyAppWidgetViewDataChanged(widgetConfiguration.widgetId, R.id.forecastList);
     }
 
     @Override
