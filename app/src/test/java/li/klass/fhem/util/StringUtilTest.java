@@ -27,8 +27,13 @@ package li.klass.fhem.util;
 import org.junit.Test;
 
 import static li.klass.fhem.util.StringUtil.concatenate;
+import static li.klass.fhem.util.StringUtil.endsWith;
 import static li.klass.fhem.util.StringUtil.isBlank;
-import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 public class StringUtilTest {
 
@@ -44,6 +49,14 @@ public class StringUtilTest {
         assertTrue(isBlank(" "));
         assertTrue(isBlank(null));
         assertFalse(isBlank("abc"));
+    }
 
+    @Test
+    public void testEndsWith() {
+        StringBuilder buffer = new StringBuilder("hallowelt123");
+        assertThat(endsWith(buffer, "123"), is(true));
+        assertThat(endsWith(buffer, "1235"), is(false));
+        assertThat(endsWith(buffer, "welt123"), is(true));
+        assertThat(endsWith(new StringBuilder(""), "welt123"), is(false));
     }
 }

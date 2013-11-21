@@ -55,7 +55,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.security.KeyStore;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.zip.GZIPInputStream;
 
@@ -78,35 +77,15 @@ public class FHEMWEBConnection extends FHEMConnection {
 
     public static final FHEMWEBConnection INSTANCE = new FHEMWEBConnection();
 
-    @Override
-    public String xmllist() {
-        return requestCommandResponse("xmllist");
-    }
 
     @Override
     public String fileLogData(String logName, Date fromDate, Date toDate,
                               String columnSpec) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH:mm");
-        String command = new StringBuilder().append("get ").append(logName)
-                .append(" - - ").append(dateFormat.format(fromDate))
-                .append(" ").append(dateFormat.format(toDate)).append(" ")
-                .append(columnSpec).toString();
-
-        return requestCommandResponse(command).replaceAll("#" + columnSpec, "");
+        return super.fileLogData(logName, fromDate, toDate, columnSpec).replaceAll("#" + columnSpec, "");
     }
 
     @Override
     public String executeCommand(String command) {
-        return requestCommandResponse(command);
-    }
-
-    @Override
-    public Bitmap requestBitmap(String relativePath) {
-        InputStream response = executeRequest(relativePath, client);
-        return BitmapFactory.decodeStream(response);
-    }
-
-    private String requestCommandResponse(String command) {
         String urlSuffix = null;
         try {
             urlSuffix = "?XHR=1&cmd=" + URLEncoder.encode(command, "UTF-8");
@@ -125,6 +104,12 @@ public class FHEMWEBConnection extends FHEMConnection {
         } catch (IOException e) {
             throw new HostConnectionException(e);
         }
+    }
+
+    @Override
+    public Bitmap requestBitmap(String relativePath) {
+        InputStream response = executeRequest(relativePath, client);
+        return BitmapFactory.decodeStream(response);
     }
 
     private InputStream executeRequest(String urlSuffix,

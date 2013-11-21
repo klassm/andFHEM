@@ -37,6 +37,21 @@ public class StringUtil {
         return out.toString();
     }
 
+    public static boolean endsWith(StringBuilder stringBuilder, String suffix) {
+        if (suffix.length() > stringBuilder.length()) return false;
+
+        for (int i = 0; i < suffix.length(); i++) {
+            char mustCharacter = suffix.charAt(i);
+            char isCharacter = stringBuilder.charAt(stringBuilder.length() - suffix.length() + i);
+
+            if (mustCharacter != isCharacter) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     public static boolean isBlank(String value) {
         return value == null || value.trim().equals("");
     }

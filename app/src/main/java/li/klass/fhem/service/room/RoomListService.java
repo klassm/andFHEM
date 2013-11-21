@@ -167,9 +167,12 @@ public class RoomListService extends AbstractService {
     public RoomDeviceList getAllRoomsDeviceList(long updatePeriod) {
         Map<String, RoomDeviceList> roomDeviceListMap = getRoomDeviceListMap(updatePeriod);
         RoomDeviceList allRoomsDeviceList = new RoomDeviceList(RoomDeviceList.ALL_DEVICES_ROOM);
-        for (String room : roomDeviceListMap.keySet()) {
-            for (Device device : roomDeviceListMap.get(room).getAllDevices()) {
-                allRoomsDeviceList.addDevice(device);
+
+        if (roomDeviceListMap != null) {
+            for (String room : roomDeviceListMap.keySet()) {
+                for (Device device : roomDeviceListMap.get(room).getAllDevices()) {
+                    allRoomsDeviceList.addDevice(device);
+                }
             }
         }
         return allRoomsDeviceList;

@@ -30,45 +30,30 @@ import android.util.Log;
 import org.apache.commons.net.telnet.TelnetClient;
 
 import java.io.BufferedOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.PrintWriter;
+import java.io.PrintStream;
 import java.net.SocketTimeoutException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import li.klass.fhem.exception.AndFHEMException;
+import li.klass.fhem.exception.AuthenticationException;
+import li.klass.fhem.exception.FHEMStrangeContentException;
 import li.klass.fhem.exception.HostConnectionException;
 import li.klass.fhem.exception.TimeoutException;
 import li.klass.fhem.util.CloseableUtil;
+import li.klass.fhem.util.StringUtil;
 
 public class TelnetConnection extends FHEMConnection {
     public static final String TELNET_URL = "TELNET_URL";
     public static final String TELNET_PORT = "TELNET_PORT";
     public static final String TELNET_PASSWORD = "TELNET_PASSWORD";
-
-    public static final String FHEM_PROMPT = "fhem>";
-
-    public static final TelnetConnection INSTANCE = new TelnetConnection();
     private static final String PASSWORD_PROMPT = "Password: ";
     public static final String TAG = TelnetConnection.class.getName();
 
+    public static final TelnetConnection INSTANCE = new TelnetConnection();
+
     private TelnetConnection() {
-    }
-
-    public String xmllist() {
-        return request("xmllist");
-    }
-
-    @Override
-    public String fileLogData(String logName, Date fromDate, Date toDate,
-                              String columnSpec) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH:mm");
-        String command = "get " + logName + " - - "
-                + dateFormat.format(fromDate) + " " + dateFormat.format(toDate)
-                + " " + columnSpec;
-
-        return request(command);
     }
 
     public String executeCommand(String command) {
@@ -84,12 +69,12 @@ public class TelnetConnection extends FHEMConnection {
     private String request(String command) {
         Log.i(TAG, "executeTask command " + command);
 
-        TelnetClient telnetClient = new TelnetClient();
+        final TelnetClient telnetClient = new TelnetClient();
         telnetClient.setConnectTimeout(4000);
 
         OutputStream outputStream = null;
         BufferedOutputStream bufferedOutputStream = null;
-        PrintWriter printWriter = null;
+        PrintStream printStream = null;
         InputStream inputStream = null;
 
         try {
@@ -99,36 +84,48 @@ public class TelnetConnection extends FHEMConnection {
             inputStream = telnetClient.getInputStream();
 
             bufferedOutputStream = new BufferedOutputStream(outputStream);
-            printWriter = new PrintWriter(bufferedOutputStream);
+            printStream = new PrintStream(outputStream);
 
-            handlePasswordVerification(inputStream, printWriter);
-
-            printWriter.write(command + "\r\n");
-            printWriter.write("exit" + "\r\n");
-            printWriter.flush();
-
-            int ch;
-            StringBuilder buffer = new StringBuilder();
-            while ((ch = inputStream.read()) != -1) {
-                buffer.append((char) ch);
+            String passwordRead = readUntil(inputStream, PASSWORD_PROMPT);
+            boolean passwordSent = false;
+            if (passwordRead.contains(PASSWORD_PROMPT)) {
+                Log.i(TAG, "sending password");
+                writeCommand(printStream, serverSpec.getPassword());
+                passwordSent = true;
             }
 
-            telnetClient.disconnect();
+            writeCommand(printStream, command);
 
-            String returnValue = buffer.toString();
-            int startPos = returnValue.indexOf(", try help");
+            // If we send an xmllist, we are done when finding the closing FHZINFO tag.
+            // If another command is used, the tag ending delimiter is obsolete, not found and
+            // therefore not used. We just read until the stream ends.
+            String result;
+            if (command.equals("xmllist")) {
+                result = readUntil(inputStream, "</FHZINFO>");
+            } else {
+                result = read(inputStream);
+            }
+            if (result == null && passwordSent) {
+                throw new AuthenticationException();
+            } else if (result == null) {
+                throw new FHEMStrangeContentException();
+            }
+
+            writeCommand(printStream, "exit");
+
+            int startPos = result.indexOf(", try help");
             if (startPos != -1) {
-                returnValue = returnValue.substring(startPos + ", try help".length());
+                result = result.substring(startPos + ", try help".length());
             }
 
-            startPos = returnValue.indexOf("<");
+            startPos = result.indexOf("<");
             if (startPos != -1) {
-                returnValue = returnValue.substring(startPos);
+                result = result.substring(startPos);
             }
 
-            returnValue = returnValue.replaceAll("Bye...", "");
-            Log.d(TAG, "result is :: " + returnValue);
-            return returnValue;
+            result = result.replaceAll("Bye...", "");
+            Log.d(TAG, "result is :: " + result);
+            return result;
         } catch (AndFHEMException e) {
             throw e;
         } catch (SocketTimeoutException e) {
@@ -138,62 +135,34 @@ public class TelnetConnection extends FHEMConnection {
             Log.e(TAG, "error occurred", e);
             throw new HostConnectionException(e);
         } finally {
-            CloseableUtil.close(printWriter, bufferedOutputStream,
+            CloseableUtil.close(printStream, bufferedOutputStream,
                     outputStream, inputStream);
         }
     }
 
-    private boolean handlePasswordVerification(InputStream inputStream,
-                                               PrintWriter printWriter) throws Exception {
-        String password = getPassword();
-        if (password == null || "".equals(password))
-            return true;
-
-        printWriter.write(password + "\n\r");
-        printWriter.flush();
-
-        return waitForPasswordPrompt(inputStream);
-    }
-
-    private boolean waitForPasswordPrompt(InputStream inputStream)
-            throws Exception {
+    private String readUntil(InputStream inputStream, String... blockers) throws IOException {
         int ch;
-        int passwordPointer = 0;
-        int fhemPromptPointer = 0;
-
-        boolean validCharacter;
+        StringBuilder buffer = new StringBuilder();
         while ((ch = inputStream.read()) != -1) {
-            validCharacter = false;
-            if (ch == PASSWORD_PROMPT.charAt(passwordPointer)) {
-                passwordPointer++;
-                validCharacter = true;
-            } else {
-                passwordPointer = 0;
-            }
-
-            if (passwordPointer >= PASSWORD_PROMPT.length()) {
-                return true;
-            }
-
-            if (ch == FHEM_PROMPT.charAt(fhemPromptPointer)) {
-                fhemPromptPointer++;
-                validCharacter = true;
-            } else {
-                fhemPromptPointer = 0;
-            }
-
-            if (fhemPromptPointer >= FHEM_PROMPT.length()) {
-                return false;
-            }
-
-            if (!validCharacter) {
-                return false;
+            buffer.append((char) ch);
+            for (String blocker : blockers) {
+                if (StringUtil.endsWith(buffer, blocker)) return buffer.toString();
             }
         }
-        return false;
+        return null;
     }
 
-    private String getPassword() {
-        return serverSpec.getPassword();
+    private String read(InputStream inputStream) throws IOException {
+        int ch;
+        StringBuilder buffer = new StringBuilder();
+        while ((ch = inputStream.read()) != -1) {
+            buffer.append((char) ch);
+        }
+        return buffer.toString();
+    }
+
+    private void writeCommand(PrintStream printStream, String command) {
+        printStream.println(command);
+        printStream.flush();
     }
 }

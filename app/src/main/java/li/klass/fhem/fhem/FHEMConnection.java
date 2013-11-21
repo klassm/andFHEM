@@ -26,6 +26,7 @@ package li.klass.fhem.fhem;
 
 import android.graphics.Bitmap;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import li.klass.fhem.fhem.connection.FHEMServerSpec;
@@ -33,9 +34,19 @@ import li.klass.fhem.fhem.connection.FHEMServerSpec;
 public abstract class FHEMConnection {
     protected FHEMServerSpec serverSpec;
 
-    public abstract String xmllist();
+    public String xmllist() {
+        return executeCommand("xmllist");
+    }
 
-    public abstract String fileLogData(String logName, Date fromDate, Date toDate, String columnSpec);
+    public String fileLogData(String logName, Date fromDate, Date toDate,
+                              String columnSpec) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH:mm");
+        String command = "get " + logName + " - - "
+                + dateFormat.format(fromDate) + " " + dateFormat.format(toDate)
+                + " " + columnSpec;
+
+        return executeCommand(command);
+    }
 
     public abstract String executeCommand(String command);
 
