@@ -24,26 +24,22 @@
 
 package li.klass.fhem.util;
 
-import java.io.UnsupportedEncodingException;
-
 public class StringEscapeUtil {
 
     public static String unescape(String content) {
 
-        content = content.replaceAll("#fc;", "ü");
-        content = content.replaceAll("#e4;", "ä");
-        content = content.replaceAll("#f6;", "ö");
-        content = content.replaceAll("#df;", "ß");
-
-        content = content.replace("Ã¼", "ü");
-
-        try {
-            content = new String(content.getBytes(), "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            // this should never happen, as UTF-8 is known!
-            e.printStackTrace();
-        }
-
+        // We replace UTF characters.
+        // The underlying table can be found on various pages, i.e.
+        // http://www.utf8-zeichentabelle.de/
+        content = content
+                .replaceAll("\u00c3\u00bc", "ü")
+                .replaceAll("\u00c3\u00a4", "ä")
+                .replaceAll("\u00c3\u00b6", "ö")
+                .replaceAll("\u00c3\u0096", "Ö")
+                .replaceAll("\u00c3\u0084", "Ä")
+                .replaceAll("\u00c3\u009c", "Ü")
+                .replaceAll("\u00c3\u009f", "ß")
+        ;
         return content.trim();
     }
 }

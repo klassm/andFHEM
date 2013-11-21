@@ -124,6 +124,7 @@ public class TelnetConnection extends FHEMConnection {
             }
 
             result = result.replaceAll("Bye...", "");
+            result = new String(result.getBytes("UTF8"));
             Log.d(TAG, "result is :: " + result);
             return result;
         } catch (AndFHEMException e) {
