@@ -47,6 +47,8 @@ import li.klass.fhem.constants.PreferenceKeys;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.RoomDeviceList;
 import li.klass.fhem.exception.AndFHEMException;
+import li.klass.fhem.fhem.DataConnectionSwitch;
+import li.klass.fhem.fhem.FHEMConnection;
 import li.klass.fhem.service.AbstractService;
 import li.klass.fhem.util.ApplicationProperties;
 
@@ -280,7 +282,11 @@ public class RoomListService extends AbstractService {
      */
     private synchronized Map<String, RoomDeviceList> getRemoteRoomDeviceListMap() {
         Log.i(TAG, "fetching device list from remote");
-        Map<String, RoomDeviceList> result = DeviceListParser.INSTANCE.listDevices();
+
+        FHEMConnection currentProvider = DataConnectionSwitch.INSTANCE.getCurrentProvider();
+        String xmlList = currentProvider.executeCommand("xmllist");
+        Map<String, RoomDeviceList> result = DeviceListParser.INSTANCE.parseAndWrapExceptions(xmlList);
+
         setLastUpdateToNow();
         return result;
     }

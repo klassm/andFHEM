@@ -57,16 +57,6 @@ public class TelnetConnection extends FHEMConnection {
     }
 
     public String executeCommand(String command) {
-        return request(command);
-    }
-
-    @Override
-    public Bitmap requestBitmap(String relativePath) {
-        Log.e(TAG, "get image: " + relativePath);
-        return null;
-    }
-
-    private String request(String command) {
         Log.i(TAG, "executeTask command " + command);
 
         final TelnetClient telnetClient = new TelnetClient();
@@ -139,6 +129,12 @@ public class TelnetConnection extends FHEMConnection {
             CloseableUtil.close(printStream, bufferedOutputStream,
                     outputStream, inputStream);
         }
+    }
+
+    @Override
+    public Bitmap requestBitmap(String relativePath) {
+        Log.e(TAG, "get image: " + relativePath);
+        return null;
     }
 
     private String readUntil(InputStream inputStream, String... blockers) throws IOException {

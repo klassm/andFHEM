@@ -56,8 +56,6 @@ import li.klass.fhem.domain.core.DeviceType;
 import li.klass.fhem.domain.core.RoomDeviceList;
 import li.klass.fhem.exception.AndFHEMException;
 import li.klass.fhem.exception.DeviceListParseException;
-import li.klass.fhem.exception.HostConnectionException;
-import li.klass.fhem.fhem.DataConnectionSwitch;
 import li.klass.fhem.util.StringEscapeUtil;
 import li.klass.fhem.util.StringUtil;
 
@@ -77,25 +75,8 @@ public class DeviceListParser {
     private DeviceListParser() {
     }
 
-    /**
-     * Reads the current device list, validates it by applying some regular expression replaces and extracts
-     * {@link RoomDeviceList} objects.
-     *
-     * @return Map of room names to their included devices.
-     * @throws HostConnectionException  if the current FHEM server cannot be contacted
-     * @throws DeviceListParseException if the read xml content cannot be parsed
-     * @throws RuntimeException         if some other exception occurred.
-     */
-    public Map<String, RoomDeviceList> listDevices() {
-        Log.i(TAG, "fetching devices for xmllist parsing ...");
-
+    public Map<String, RoomDeviceList> parseAndWrapExceptions(String xmlList) {
         try {
-            String xmlList = DataConnectionSwitch.INSTANCE.getCurrentProvider().xmllist();
-            if (xmlList != null) {
-                xmlList = xmlList.trim();
-            }
-            Log.d(TAG, "fetched xmllist :\n" + xmlList);
-
             return parseXMLList(xmlList);
         } catch (AndFHEMException e) {
             throw e;
@@ -105,7 +86,11 @@ public class DeviceListParser {
         }
     }
 
-    public Map<String, RoomDeviceList> parseXMLList(String xmlList) throws Exception {
+    private Map<String, RoomDeviceList> parseXMLList(String xmlList) throws Exception {
+        if (xmlList != null) {
+            xmlList = xmlList.trim();
+        }
+
         Map<String, RoomDeviceList> roomDeviceListMap = new HashMap<String, RoomDeviceList>();
         RoomDeviceList allDevicesRoom = new RoomDeviceList(RoomDeviceList.ALL_DEVICES_ROOM);
 

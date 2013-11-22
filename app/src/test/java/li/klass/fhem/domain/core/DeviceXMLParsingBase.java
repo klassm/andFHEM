@@ -51,12 +51,11 @@ public abstract class DeviceXMLParsingBase extends RobolectricBaseTestCase {
             inputStream = getTestFileBaseClass().getResourceAsStream(getFileName());
 
             if (inputStream == null) {
-                String path = getTestFileBaseClass().getResource(getFileName()).getPath();
                 throw new IllegalArgumentException("cannot find " + getFileName());
             }
             String content = IOUtils.toString(inputStream);
 
-            roomDeviceListMap = DeviceListParser.INSTANCE.parseXMLList(content);
+            roomDeviceListMap = DeviceListParser.INSTANCE.parseAndWrapExceptions(content);
         } finally {
             CloseableUtil.close(inputStream);
         }

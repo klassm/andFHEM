@@ -24,13 +24,13 @@
 
 package li.klass.fhem.service.room;
 
+import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.Map;
 
 import li.klass.fhem.domain.core.RoomDeviceList;
-import li.klass.fhem.fhem.DummyDataConnection;
 import li.klass.fhem.infra.AndFHEMRobolectricTestRunner;
 
 import static org.junit.Assert.assertNotNull;
@@ -40,11 +40,11 @@ public class TestDeviceListParser {
 
     @Test
     public void testParseDummyData() throws Exception {
-        String xmlList = DummyDataConnection.INSTANCE.xmllist();
+        String xmlList = IOUtils.toString(DeviceListParser.class.getResourceAsStream("dummyData.xml"));
         assertNotNull(xmlList);
 
         DeviceListParser deviceListParser = DeviceListParser.INSTANCE;
-        Map<String, RoomDeviceList> result = deviceListParser.parseXMLList(xmlList);
+        Map<String, RoomDeviceList> result = deviceListParser.parseAndWrapExceptions(xmlList);
 
         assertNotNull(result);
     }

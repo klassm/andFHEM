@@ -34,10 +34,6 @@ import li.klass.fhem.fhem.connection.FHEMServerSpec;
 public abstract class FHEMConnection {
     protected FHEMServerSpec serverSpec;
 
-    public String xmllist() {
-        return executeCommand("xmllist");
-    }
-
     public String fileLogData(String logName, Date fromDate, Date toDate,
                               String columnSpec) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH:mm");
