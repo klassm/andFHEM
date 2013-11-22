@@ -252,11 +252,14 @@
     <string name="error_update">Error während Update Vorgang.</string>
     <string name="error_timeout">Zeitüberschreitung der Anforderung.</string>
     <string name="error_command_execute">Error während Kommando Ausführung.</string>
-    <string name="error_authentication">Falscher Benutzer / Passwort.</string>
     <string name="error_host_connection">Keine Verbindung zum FHEM Server.</string>
     <string name="error_device_list_parse">Konnte xml Geräte Liste nicht lesen.</string>
+    <string name="error_authentication">Falscher Benutzer / Passwort.</string>
     <string name="error_graph_load">Graph Daten konnten nicht geladen werden.</string>
-    <string name="error_invalid_content">Seltsamer Inhalt wurde von FHEM geladen. Ist die URL wirklich richtig?</string>
+    <string name="error_invalid_content">Invalider Inhalt wurde geladen. Ist die URL wirklich richtig?</string>
+    <string name="error_internal_server_error">Interner Server-Fehler (500). Bitte Server Logs lesen.</string>
+    <string name="error_bad_request">Fehlerhafte Anfrage (400)"</string>
+    <string name="error_not_found">Seite nicht gefunden (404)"</string>
     <string name="retry">Wiederholen</string>
     <string name="prefUrlBeginningError">URL muss mit http beginnen!</string>
     <string name="incompleteConfigurationError">Konfiguration ist nicht vollständig!</string>

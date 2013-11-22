@@ -260,8 +260,8 @@
     <string name="error_authentication">Invalid username or password.</string>
     <string name="error_graph_load">Error while loading graph data.</string>
     <string name="error_invalid_content">Server returned some invalid content. Are you sure the URL is valid?</string>
-    <string name="error_internal_server_error">Internal Server Error. Read server logs!</string>
-    <string name="error_bad_request">Bad Request (500)!</string>
+    <string name="error_internal_server_error">Internal Server Error (500). Read server logs!</string>
+    <string name="error_bad_request">Bad Request (400)!</string>
     <string name="error_not_found">Not found (404)!</string>
     <string name="retry">Retry</string>
     <string name="prefUrlBeginningError">URL has to start with http!</string>
