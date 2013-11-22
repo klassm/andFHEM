@@ -57,9 +57,11 @@ public abstract class AppWidgetSelectionActivity extends DeviceNameSelectionActi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Intent intent = getIntent();
-        widgetId = intent.getExtras().getInt(EXTRA_APPWIDGET_ID, INVALID_APPWIDGET_ID);
+        widgetId = intent.getIntExtra(EXTRA_APPWIDGET_ID, INVALID_APPWIDGET_ID);
 
-        if (!intent.getAction().equals(ACTION_APPWIDGET_CONFIGURE) || widgetId == INVALID_APPWIDGET_ID) {
+        if (! ACTION_APPWIDGET_CONFIGURE.equals(intent.getAction())
+                || widgetId == INVALID_APPWIDGET_ID) {
+
             setResult(RESULT_CANCELED);
             finish();
             return;
@@ -98,9 +100,9 @@ public abstract class AppWidgetSelectionActivity extends DeviceNameSelectionActi
 
                                 AppWidgetDataHolder.INSTANCE.saveWidgetConfigurationToPreferences(widgetConfiguration);
 
-                                Intent intent = new Intent(Actions.WIDGET_UPDATE);
+                                Intent intent = new Intent(Actions.REDRAW_WIDGET);
                                 intent.putExtra(BundleExtraKeys.APP_WIDGET_ID, widgetId);
-                                sendBroadcast(intent);
+                                startService(intent);
 
                                 Intent resultIntent = new Intent();
                                 resultIntent.putExtra(EXTRA_APPWIDGET_ID, widgetId);

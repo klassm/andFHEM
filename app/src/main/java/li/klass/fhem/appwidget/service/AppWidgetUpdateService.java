@@ -30,7 +30,6 @@ import android.content.Intent;
 import android.util.Log;
 
 import li.klass.fhem.appwidget.AppWidgetDataHolder;
-import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 
 import static li.klass.fhem.constants.Actions.DEVICE_LIST_REMOTE_NOTIFY;
@@ -49,7 +48,7 @@ public class AppWidgetUpdateService extends IntentService {
         String action = intent.getAction();
         boolean allowRemoteUpdates = intent.getBooleanExtra(BundleExtraKeys.ALLOW_REMOTE_UPDATES, false);
 
-        if (REDRAW_WIDGET.equals(action) || Actions.WIDGET_UPDATE.equals(action)) {
+        if (REDRAW_WIDGET.equals(action)) {
             handleRedrawWidget(intent, allowRemoteUpdates);
         } else if (DEVICE_LIST_REMOTE_NOTIFY.equals(action)) {
             Log.i(TAG, "updating all widgets (received DEVICE_LIST_REMOTE_NOTIFY)");

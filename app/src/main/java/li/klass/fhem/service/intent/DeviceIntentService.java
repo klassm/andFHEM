@@ -91,7 +91,7 @@ import static li.klass.fhem.constants.Actions.DEVICE_WAKE;
 import static li.klass.fhem.constants.Actions.DEVICE_WIDGET_TOGGLE;
 import static li.klass.fhem.constants.Actions.GCM_ADD_SELF;
 import static li.klass.fhem.constants.Actions.GCM_REMOVE_ID;
-import static li.klass.fhem.constants.Actions.WIDGET_UPDATE;
+import static li.klass.fhem.constants.Actions.REDRAW_WIDGET;
 import static li.klass.fhem.constants.BundleExtraKeys.APP_WIDGET_ID;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_GRAPH_ENTRY_MAP;
 import static li.klass.fhem.constants.BundleExtraKeys.STATE_NAME;
@@ -205,7 +205,7 @@ public class DeviceIntentService extends ConvenientIntentService {
             STATE result = toggleIntent(device);
 
             int widgetId = intent.getIntExtra(APP_WIDGET_ID, -1);
-            Intent widgetUpdateIntent = new Intent(WIDGET_UPDATE);
+            Intent widgetUpdateIntent = new Intent(REDRAW_WIDGET);
             widgetUpdateIntent.putExtra(APP_WIDGET_ID, widgetId);
             startService(widgetUpdateIntent);
 

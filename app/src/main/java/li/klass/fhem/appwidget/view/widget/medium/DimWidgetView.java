@@ -62,9 +62,9 @@ public class DimWidgetView extends AppWidgetView {
             @Override
             protected void onReceiveResult(int resultCode, Bundle resultData) {
                 if (resultCode == ResultCodes.SUCCESS) {
-                    Intent intent = new Intent(Actions.WIDGET_UPDATE);
+                    Intent intent = new Intent(Actions.REDRAW_WIDGET);
                     intent.putExtra(BundleExtraKeys.APP_WIDGET_ID, widgetConfiguration.widgetId);
-                    context.sendBroadcast(intent);
+                    context.startService(intent);
                 }
             }
         };

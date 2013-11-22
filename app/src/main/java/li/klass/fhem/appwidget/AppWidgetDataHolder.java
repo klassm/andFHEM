@@ -33,6 +33,7 @@ import android.content.SharedPreferences;
 import android.util.Log;
 import android.widget.RemoteViews;
 
+import java.util.Map;
 import java.util.Set;
 
 import li.klass.fhem.appwidget.view.widget.base.AppWidgetView;
@@ -52,13 +53,12 @@ public class AppWidgetDataHolder {
     public static final String WIDGET_UPDATE_INTERVAL_PREFERENCES_KEY_WLAN = "WIDGET_UPDATE_INTERVAL_WLAN";
     public static final String WIDGET_UPDATE_INTERVAL_PREFERENCES_KEY_MOBILE = "WIDGET_UPDATE_INTERVAL_MOBILE";
     public static final String TAG = AppWidgetDataHolder.class.getName();
-    private String SAVE_SEPARATOR = "#";
 
     private AppWidgetDataHolder() {
     }
 
     public void updateAllWidgets(final Context context, final boolean allowRemoteUpdate) {
-        Set<String> appWidgetIds = getSharedPreferences(preferenceName).getAll().keySet();
+        Set<String> appWidgetIds = getAllAppWidgetIds();
         for (String appWidgetId : appWidgetIds) {
             updateWidget( context, Integer.parseInt(appWidgetId), allowRemoteUpdate);
         }
@@ -141,10 +141,10 @@ public class AppWidgetDataHolder {
     }
 
     private PendingIntent updatePendingIndentForWidgetId(Context context, int widgetId) {
-        Intent updateIntent = new Intent(Actions.WIDGET_UPDATE);
+        Intent updateIntent = new Intent(Actions.REDRAW_WIDGET);
         updateIntent.putExtra(BundleExtraKeys.APP_WIDGET_ID, widgetId);
 
-        return PendingIntent.getBroadcast(context, widgetId * (-1),
+        return PendingIntent.getService(context, widgetId * (-1),
                 updateIntent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
@@ -162,6 +162,15 @@ public class AppWidgetDataHolder {
         if (value == null) return null;
 
         return WidgetConfiguration.fromSaveString(value);
+    }
+
+    private Set<String> getAllAppWidgetIds() {
+        SharedPreferences sharedPreferences = getSharedPreferences(preferenceName);
+        Map<String,?> allEntries = sharedPreferences.getAll();
+
+        assert allEntries != null;
+
+        return allEntries.keySet();
     }
 
     private int getWidgetUpdateIntervalFor(String key) {
