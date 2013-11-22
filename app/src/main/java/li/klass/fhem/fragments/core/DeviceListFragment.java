@@ -106,7 +106,7 @@ public abstract class DeviceListFragment extends BaseFragment {
         GridViewWithSections nestedListView = (GridViewWithSections) view.findViewById(R.id.deviceMap1);
         assert nestedListView != null;
 
-        LinearLayout emptyView = (LinearLayout) getEmptyView(view);
+        LinearLayout emptyView = (LinearLayout) view.findViewById(R.id.emptyView);
         fillEmptyView(emptyView);
 
         if (! isNavigation()) {

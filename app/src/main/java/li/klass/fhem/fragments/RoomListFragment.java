@@ -70,8 +70,8 @@ public class RoomListFragment extends BaseFragment implements TopLevelFragment {
         AdvertisementUtil.addAd(layout, getActivity());
 
         assert layout != null;
-        
-        LinearLayout emptyView = (LinearLayout) getEmptyView(layout);
+
+        LinearLayout emptyView = (LinearLayout) layout.findViewById(R.id.emptyView);
         fillEmptyView(emptyView);
 
         ListView roomList = (ListView) layout.findViewById(R.id.roomList);
@@ -123,6 +123,7 @@ public class RoomListFragment extends BaseFragment implements TopLevelFragment {
                     assert roomList != null;
                     if (roomList.size() == 0) {
                         showEmptyView();
+                        getAdapter().updateData(roomList);
                     } else {
                         String selectedRoom = creationBundle.getString(BundleExtraKeys.ROOM_NAME);
                         getAdapter().updateData(roomList, selectedRoom);

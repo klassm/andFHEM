@@ -53,8 +53,8 @@ public class RequestResult<CONTENT> {
 
         Context context = AndFHEMApplication.getContext();
 
-        Intent intent = new Intent(Actions.SHOW_TOAST);
-        intent.putExtra(BundleExtraKeys.TOAST_STRING_ID, error.errorStringId);
+        Intent intent = new Intent(Actions.CONNECTION_ERROR);
+        intent.putExtra(BundleExtraKeys.STRING_ID, error.errorStringId);
         context.sendBroadcast(intent);
 
         return true;

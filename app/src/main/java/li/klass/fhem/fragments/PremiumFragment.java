@@ -29,6 +29,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.billing.BillingService;
@@ -121,7 +122,7 @@ public class PremiumFragment extends BaseFragment {
 
     private void showToast(int toastString) {
         Intent intent = new Intent(Actions.SHOW_TOAST);
-        intent.putExtra(BundleExtraKeys.TOAST_STRING_ID, toastString);
+        intent.putExtra(BundleExtraKeys.STRING_ID, toastString);
         getActivity().sendBroadcast(intent);
 
         getActivity().sendBroadcast(new Intent(Actions.BACK));

@@ -35,19 +35,24 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import java.io.Serializable;
 
 import li.klass.fhem.R;
 import li.klass.fhem.activities.core.Updateable;
 import li.klass.fhem.constants.Actions;
-import li.klass.fhem.constants.BundleExtraKeys;
 
+import static li.klass.fhem.constants.Actions.CONNECTION_ERROR;
 import static li.klass.fhem.constants.Actions.DEVICE_LIST_REMOTE_NOTIFY;
 import static li.klass.fhem.constants.Actions.DO_UPDATE;
 import static li.klass.fhem.constants.Actions.TOP_LEVEL_BACK;
+import static li.klass.fhem.constants.BundleExtraKeys.DO_REFRESH;
+import static li.klass.fhem.constants.BundleExtraKeys.STRING;
+import static li.klass.fhem.constants.BundleExtraKeys.STRING_ID;
 
 public abstract class BaseFragment extends Fragment implements Updateable, Serializable {
     private boolean isNavigation = false;
@@ -65,11 +70,12 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
             intentFilter = new IntentFilter();
             intentFilter.addAction(DO_UPDATE);
             intentFilter.addAction(TOP_LEVEL_BACK);
+            intentFilter.addAction(CONNECTION_ERROR);
             intentFilter.addAction(DEVICE_LIST_REMOTE_NOTIFY);
         }
 
         @Override
-        public void onReceive(Context context, final Intent intent) {
+        public void onReceive(final Context context, final Intent intent) {
             final String action = intent.getAction();
             activity.runOnUiThread(new Runnable() {
                 @Override
@@ -81,7 +87,8 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
 
                     try {
                         if (action.equals(DO_UPDATE)) {
-                            boolean doUpdate = intent.getBooleanExtra(BundleExtraKeys.DO_REFRESH, false);
+                            hideConnectionError();
+                            boolean doUpdate = intent.getBooleanExtra(DO_REFRESH, false);
                             updateable.update(doUpdate);
                         } else if (action.equals(TOP_LEVEL_BACK)) {
                             if (!isVisible()) return;
@@ -91,6 +98,14 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
                             }
                         } else if (action.equals(DEVICE_LIST_REMOTE_NOTIFY)) {
                             update(false);
+                        } else if (action.equals(CONNECTION_ERROR)) {
+                            String content;
+                            if (intent.hasExtra(STRING_ID)) {
+                                content = context.getString(intent.getIntExtra(STRING_ID, -1));
+                            } else {
+                                content = intent.getStringExtra(STRING);
+                            }
+                            showConnectionError(content);
                         }
                     } catch (Exception e) {
                         Log.e(UIBroadcastReceiver.class.getName(), "error occurred", e);
@@ -113,10 +128,10 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
     }
 
     public static final String CREATION_BUNDLE_KEY = "creationBundle";
+
     private transient UIBroadcastReceiver broadcastReceiver;
     private transient View contentView;
     private boolean backPressCalled = false;
-
     protected transient Bundle creationBundle;
 
     public BaseFragment() {
@@ -147,6 +162,17 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        Button retryButton = (Button) view.findViewById(R.id.retry);
+        if (retryButton != null) {
+            retryButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    hideConnectionError();
+                    update(true);
+                }
+            });
+        }
     }
 
     @Override
@@ -198,20 +224,22 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
     }
 
 
-    protected View getEmptyView(View view) {
-        return view.findViewById(R.id.emptyView);
-    }
-
     protected ProgressBar getUpdatingBar(View view) {
         return (ProgressBar) view.findViewById(R.id.updateProgress);
     }
 
     protected void hideEmptyView() {
-        getEmptyView(getView()).setVisibility(View.GONE);
+        View emptyView = getView().findViewById(R.id.emptyView);
+        if (emptyView == null) return;
+        emptyView.setVisibility(View.GONE);
     }
 
     protected void showEmptyView() {
-        getEmptyView(getView()).setVisibility(View.VISIBLE);
+        if (isNavigation) return;
+
+        View emptyView = getView().findViewById(R.id.emptyView);
+        if (emptyView == null) return;
+        emptyView.setVisibility(View.VISIBLE);
     }
 
     protected void hideUpdatingBar() {
@@ -233,4 +261,28 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
 
     protected void fillEmptyView(LinearLayout view) {}
 
+    private void hideConnectionError() {
+        if (isNavigation) return;
+
+        View view = getView();
+        if (view == null) return;
+
+        View errorLayout = view.findViewById(R.id.errorLayout);
+        if (errorLayout == null) return;
+        errorLayout.setVisibility(View.GONE);
+    }
+
+    private void showConnectionError(String content) {
+        if (isNavigation) return;
+
+        View view = getView();
+        if (view == null) return;
+
+        View errorLayout = view.findViewById(R.id.errorLayout);
+        if (errorLayout == null) return;
+        errorLayout.setVisibility(View.VISIBLE);
+
+        TextView errorView = (TextView) view.findViewById(R.id.errorView);
+        errorView.setText(content);
+    }
 }

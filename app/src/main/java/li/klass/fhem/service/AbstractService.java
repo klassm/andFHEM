@@ -3,6 +3,7 @@ package li.klass.fhem.service;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
@@ -28,7 +29,7 @@ public class AbstractService {
 
     protected void showToast(int stringId) {
         Intent intent = new Intent(Actions.SHOW_TOAST);
-        intent.putExtra(BundleExtraKeys.TOAST_STRING_ID, stringId);
+        intent.putExtra(BundleExtraKeys.STRING_ID, stringId);
         getContext().sendBroadcast(intent);
     }
 

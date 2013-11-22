@@ -263,6 +263,7 @@
     <string name="error_internal_server_error">Internal Server Error. Read server logs!</string>
     <string name="error_bad_request">Bad Request (500)!</string>
     <string name="error_not_found">Not found (404)!</string>
+    <string name="retry">Retry</string>
     <string name="prefUrlBeginningError">URL has to start with http!</string>
     <string name="incompleteConfigurationError">Incomplete configuration!</string>
     <string name="invalidInput">Invalid input!</string>

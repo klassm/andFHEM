@@ -257,6 +257,7 @@
     <string name="error_device_list_parse">Konnte xml Geräte Liste nicht lesen.</string>
     <string name="error_graph_load">Graph Daten konnten nicht geladen werden.</string>
     <string name="error_invalid_content">Seltsamer Inhalt wurde von FHEM geladen. Ist die URL wirklich richtig?</string>
+    <string name="retry">Wiederholen</string>
     <string name="prefUrlBeginningError">URL muss mit http beginnen!</string>
     <string name="incompleteConfigurationError">Konfiguration ist nicht vollständig!</string>
     <string name="invalidInput">Ungültige Eingabe!</string>

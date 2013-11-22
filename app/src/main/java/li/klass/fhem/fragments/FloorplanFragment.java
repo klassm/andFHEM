@@ -118,13 +118,13 @@ public class FloorplanFragment extends BaseFragment {
                         handler.cancel();
 
                         Intent intent = new Intent(Actions.SHOW_TOAST);
-                        intent.putExtra(BundleExtraKeys.TOAST_STRING_ID, R.string.error_authentication);
+                        intent.putExtra(BundleExtraKeys.STRING_ID, R.string.error_authentication);
                         getActivity().sendBroadcast(intent);
                     }
 
                 } catch (MalformedURLException e) {
                     Intent intent = new Intent(Actions.SHOW_TOAST);
-                    intent.putExtra(BundleExtraKeys.TOAST_STRING_ID, R.string.error_host_connection);
+                    intent.putExtra(BundleExtraKeys.STRING_ID, R.string.error_host_connection);
                     getActivity().sendBroadcast(intent);
                     Log.e(FloorplanFragment.class.getName(), "malformed URL: " + url, e);
 
@@ -203,7 +203,7 @@ public class FloorplanFragment extends BaseFragment {
             webView.loadUrl(getLoadUrl());
         } catch (MalformedURLException e) {
             Intent intent = new Intent(Actions.SHOW_TOAST);
-            intent.putExtra(BundleExtraKeys.TOAST_STRING_ID, R.string.error_host_connection);
+            intent.putExtra(BundleExtraKeys.STRING_ID, R.string.error_host_connection);
             getActivity().sendBroadcast(intent);
             Log.e(FloorplanFragment.class.getName(), "malformed URL: " + url, e);
         }

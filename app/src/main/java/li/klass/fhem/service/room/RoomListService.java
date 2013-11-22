@@ -265,7 +265,7 @@ public class RoomListService extends AbstractService {
 
     private void sendErrorMessage(int errorStringId) {
         Bundle bundle = new Bundle();
-        bundle.putInt(BundleExtraKeys.TOAST_STRING_ID, errorStringId);
+        bundle.putInt(BundleExtraKeys.STRING_ID, errorStringId);
         sendBroadcastWithAction(Actions.SHOW_TOAST, bundle);
     }
 

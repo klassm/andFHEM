@@ -27,6 +27,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Handler;
 import android.util.Log;
+
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.billing.BillingConstants;
@@ -139,7 +140,7 @@ public class PlayStoreProvider extends PlayStorePurchaseObserver implements Bill
         billingService.restoreTransactions();
 
         Intent intent = new Intent(Actions.SHOW_TOAST);
-        intent.putExtra(BundleExtraKeys.TOAST_STRING_ID, R.string.billing_restoringTransactions);
+        intent.putExtra(BundleExtraKeys.STRING_ID, R.string.billing_restoringTransactions);
         AndFHEMApplication.getContext().sendBroadcast(intent);
     }
 }

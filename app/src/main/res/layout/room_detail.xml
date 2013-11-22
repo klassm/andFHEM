@@ -28,17 +28,14 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
-    <TextView android:id="@+id/dummyConnectionNotification"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="5dp"
-        android:layout_margin="0dp"
-        android:text="@string/dummyConnectionNotification"
-        android:gravity="center"
-        android:background="@color/red"
-        android:textStyle="bold"
-        android:visibility="gone"
-        android:textColor="@color/whitegrey"/>
+    <ProgressBar
+        android:id="@+id/updateProgress"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true" />
+
+    <include layout="@layout/device_view_header"/>
 
     <ProgressBar
         android:id="@+id/updateProgress"
@@ -48,14 +45,6 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true" />
 
-    <LinearLayout android:id="@+id/emptyView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_below="@+id/dummyConnectionNotification"
-        android:visibility="gone"
-        />
-
     <li.klass.fhem.widget.GridViewWithSections
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -64,7 +53,7 @@
         android:divider="@drawable/empty"
         android:fastScrollEnabled="true"
         android:listSelector="@drawable/theme_listview_item"
-        android:layout_below="@id/dummyConnectionNotification"
+        android:layout_below="@+id/errorHeader"
         android:layout_above="@+id/adContainer"
         />
 

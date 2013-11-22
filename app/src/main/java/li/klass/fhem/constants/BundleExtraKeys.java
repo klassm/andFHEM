@@ -36,7 +36,8 @@ public class BundleExtraKeys {
     public static final String DEVICE_NEW_ALIAS = "DEVICENEWALIAS";
     public static final String DEVICE_LIST = "DEVICELIST";
     public static final String RESULT_RECEIVER = "RESULTRECEIVER";
-    public static final String TOAST_STRING_ID = "TOASTSTRINGID";
+    public static final String STRING_ID = "STRINGID";
+    public static final String STRING = "STRING";
     public static final String ALERT_CONTENT_ID = "ALERTCONTENTID";
     public static final String ALERT_TITLE_ID = "ALERTTITLEID";
     public static final String HAS_FAVORITES = "HAS_FAVORITES";

@@ -27,14 +27,20 @@ package li.klass.fhem.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.os.ResultReceiver;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
+
 import li.klass.fhem.R;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
@@ -254,7 +260,7 @@ public class TimerDetailFragment extends BaseFragment {
     private void save() {
         if (selectedTargetDevice == null || selectedTargetState == null) {
             Intent intent = new Intent(Actions.SHOW_TOAST);
-            intent.putExtra(BundleExtraKeys.TOAST_STRING_ID, R.string.incompleteConfigurationError);
+            intent.putExtra(BundleExtraKeys.STRING_ID, R.string.incompleteConfigurationError);
             getActivity().sendBroadcast(intent);
             return;
         }

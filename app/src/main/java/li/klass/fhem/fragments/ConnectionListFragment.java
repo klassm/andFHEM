@@ -85,7 +85,7 @@ public class ConnectionListFragment extends BaseFragment implements TopLevelFrag
         View layout = inflater.inflate(R.layout.connection_list, container, false);
         AdvertisementUtil.addAd(layout, getActivity());
 
-        LinearLayout emptyView = (LinearLayout) getEmptyView(layout);
+        LinearLayout emptyView = (LinearLayout) layout.findViewById(R.id.emptyView);
         fillEmptyView(emptyView);
 
         assert layout != null;
