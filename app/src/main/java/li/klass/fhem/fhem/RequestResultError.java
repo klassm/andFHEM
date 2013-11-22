@@ -22,28 +22,24 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.exception;
+package li.klass.fhem.fhem;
 
 import li.klass.fhem.R;
 
-public class AuthenticationException extends AndFHEMException {
-    public AuthenticationException() {
-    }
+public enum RequestResultError {
+    HOST_CONNECTION_ERROR(R.string.error_host_connection),
+    AUTHENTICATION_ERROR(R.string.error_authentication),
+    CONNECTION_TIMEOUT(R.string.error_timeout),
+    INTERNAL_SERVER_ERROR(R.string.error_internal_server_error),
+    BAD_REQUEST(R.string.error_bad_request),
+    NOT_FOUND(R.string.error_not_found),
+    INVALID_CONTENT(R.string.error_invalid_content),
+    DEVICE_LIST_PARSE(R.string.error_device_list_parse)
+    ;
 
-    public AuthenticationException(String detailMessage) {
-        super(detailMessage);
-    }
+    public final int errorStringId;
 
-    public AuthenticationException(String detailMessage, Throwable throwable) {
-        super(detailMessage, throwable);
-    }
-
-    public AuthenticationException(Throwable throwable) {
-        super(throwable);
-    }
-
-    @Override
-    public int getErrorMessageStringId() {
-        return R.string.authenticationError;
+    RequestResultError(int errorStringId) {
+        this.errorStringId = errorStringId;
     }
 }

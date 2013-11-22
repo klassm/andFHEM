@@ -54,8 +54,8 @@ import li.klass.fhem.domain.FileLogDevice;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceType;
 import li.klass.fhem.domain.core.RoomDeviceList;
-import li.klass.fhem.exception.AndFHEMException;
-import li.klass.fhem.exception.DeviceListParseException;
+import li.klass.fhem.fhem.RequestResult;
+import li.klass.fhem.fhem.RequestResultError;
 import li.klass.fhem.util.StringEscapeUtil;
 import li.klass.fhem.util.StringUtil;
 
@@ -78,11 +78,9 @@ public class DeviceListParser {
     public Map<String, RoomDeviceList> parseAndWrapExceptions(String xmlList) {
         try {
             return parseXMLList(xmlList);
-        } catch (AndFHEMException e) {
-            throw e;
         } catch (Exception e) {
-            Log.e(DeviceListParser.class.getName(), "error parsing device list", e);
-            throw new DeviceListParseException(e);
+            new RequestResult<String>(RequestResultError.DEVICE_LIST_PARSE).handleErrors();
+            return null;
         }
     }
 
@@ -350,15 +348,15 @@ public class DeviceListParser {
         }
     }
 
-
     @SuppressWarnings("unchecked")
     private <T extends Device> Map<String, Set<Method>> getDeviceClassCacheEntriesFor(Class<T> deviceClass) {
+        Class<Device> clazz = (Class<Device>) deviceClass;
         Map<Class<Device>, Map<String, Set<Method>>> cache = getDeviceClassCache();
-        if (!cache.containsKey(deviceClass)) {
-            cache.put((Class<Device>) deviceClass, initDeviceClassCacheEntries(deviceClass));
+        if (!cache.containsKey(clazz)) {
+            cache.put(clazz, initDeviceClassCacheEntries(deviceClass));
         }
 
-        return cache.get(deviceClass);
+        return cache.get(clazz);
     }
 
     /**

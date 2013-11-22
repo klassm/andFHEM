@@ -24,20 +24,19 @@
 
 package li.klass.fhem.service.graph;
 
-import android.content.Intent;
 import android.util.Log;
-import li.klass.fhem.AndFHEMApplication;
-import li.klass.fhem.R;
-import li.klass.fhem.constants.Actions;
-import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.domain.core.Device;
-import li.klass.fhem.exception.HostConnectionException;
-import li.klass.fhem.fhem.DataConnectionSwitch;
-import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+
+import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.service.CommandExecutionService;
+import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 
 public class GraphService {
     public static final GraphService INSTANCE = new GraphService();
@@ -64,19 +63,13 @@ public class GraphService {
 
         HashMap<ChartSeriesDescription, List<GraphEntry>> data = new HashMap<ChartSeriesDescription, List<GraphEntry>>();
 
-        try {
-            for (ChartSeriesDescription seriesDescription : seriesDescriptions) {
-                String columnSpec = seriesDescription.getColumnSpecification();
-                String fileLogDeviceName = device.getFileLog().getName();
+        for (ChartSeriesDescription seriesDescription : seriesDescriptions) {
+            String columnSpec = seriesDescription.getColumnSpecification();
+            String fileLogDeviceName = device.getFileLog().getName();
 
-                List<GraphEntry> valueEntries = getCurrentGraphEntriesFor(fileLogDeviceName, columnSpec, startDate, endDate);
+            List<GraphEntry> valueEntries = getCurrentGraphEntriesFor(fileLogDeviceName, columnSpec, startDate, endDate);
 
-                data.put(seriesDescription, valueEntries);
-            }
-        } catch (HostConnectionException e) {
-            Intent intent = new Intent(Actions.SHOW_TOAST);
-            intent.putExtra(BundleExtraKeys.TOAST_STRING_ID, R.string.updateErrorHostConnection);
-            AndFHEMApplication.getContext().sendBroadcast(intent);
+            data.put(seriesDescription, valueEntries);
         }
 
         return data;
@@ -94,10 +87,21 @@ public class GraphService {
      */
     private List<GraphEntry> getCurrentGraphEntriesFor(String fileLogName, String columnSpec,
                                                        Calendar startDate, Calendar endDate) {
-        String result = DataConnectionSwitch.INSTANCE.getCurrentProvider().fileLogData(fileLogName, startDate.getTime(), endDate.getTime(), columnSpec);
-        result = result.replace("#" + columnSpec, "");
-
+        String result = fileLogData(fileLogName, startDate.getTime(), endDate.getTime(), columnSpec);
         return findGraphEntries(result);
+    }
+
+    public String fileLogData(String logName, Date fromDate, Date toDate,
+                              String columnSpec) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH:mm");
+        String command = "get " + logName + " - - "
+                + dateFormat.format(fromDate) + " " + dateFormat.format(toDate)
+                + " " + columnSpec;
+
+        String data = CommandExecutionService.INSTANCE.executeSafely(command);
+        if (data == null) return null;
+
+        return data.replaceAll("#" + columnSpec, "");
     }
 
     /**
@@ -108,9 +112,11 @@ public class GraphService {
      * @return found {@link GraphEntry} objects.
      */
     List<GraphEntry> findGraphEntries(String content) {
-        content = content.replaceAll("\r", "");
-
         List<GraphEntry> result = new ArrayList<GraphEntry>();
+
+        if (content == null) return result;
+
+        content = content.replaceAll("\r", "");
 
         String[] entries = content.split("\n");
         for (String entry : entries) {

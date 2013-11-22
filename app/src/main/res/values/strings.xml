@@ -252,14 +252,17 @@
     <string name="prefGcmWidgetUpdate">Update widget upon GCM notification</string>
 
     <string name="notNumericError">Not numeric!</string>
-    <string name="updateError">Error while updating.</string>
-    <string name="timeoutError">Connection timed out.</string>
-    <string name="executeError">Error while executing command.</string>
-    <string name="updateErrorHostConnection">Cannot connect to host.</string>
-    <string name="updateErrorDeviceListParse">Could not parse xml device list.</string>
-    <string name="authenticationError">Invalid username or password.</string>
-    <string name="graphLoadError">Error while loading graph data.</string>
-    <string name="strangeContentError">FHEM returned some strange content. Are you sure the URL is valid?</string>
+    <string name="error_update">Error while updating.</string>
+    <string name="error_timeout">Connection timed out.</string>
+    <string name="error_command_execute">Error while executing command.</string>
+    <string name="error_host_connection">Cannot connect to host.</string>
+    <string name="error_device_list_parse">Could not parse xml device list.</string>
+    <string name="error_authentication">Invalid username or password.</string>
+    <string name="error_graph_load">Error while loading graph data.</string>
+    <string name="error_invalid_content">Server returned some invalid content. Are you sure the URL is valid?</string>
+    <string name="error_internal_server_error">Internal Server Error. Read server logs!</string>
+    <string name="error_bad_request">Bad Request (500)!</string>
+    <string name="error_not_found">Not found (404)!</string>
     <string name="prefUrlBeginningError">URL has to start with http!</string>
     <string name="incompleteConfigurationError">Incomplete configuration!</string>
     <string name="invalidInput">Invalid input!</string>

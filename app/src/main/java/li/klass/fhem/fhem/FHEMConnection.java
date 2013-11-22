@@ -26,27 +26,14 @@ package li.klass.fhem.fhem;
 
 import android.graphics.Bitmap;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import li.klass.fhem.fhem.connection.FHEMServerSpec;
 
 public abstract class FHEMConnection {
     protected FHEMServerSpec serverSpec;
 
-    public String fileLogData(String logName, Date fromDate, Date toDate,
-                              String columnSpec) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH:mm");
-        String command = "get " + logName + " - - "
-                + dateFormat.format(fromDate) + " " + dateFormat.format(toDate)
-                + " " + columnSpec;
+    public abstract RequestResult<String> executeCommand(String command);
 
-        return executeCommand(command);
-    }
-
-    public abstract String executeCommand(String command);
-
-    public abstract Bitmap requestBitmap(String relativePath);
+    public abstract RequestResult<Bitmap> requestBitmap(String relativePath);
 
     public void setServer(FHEMServerSpec serverSpec) {
         this.serverSpec = serverSpec;

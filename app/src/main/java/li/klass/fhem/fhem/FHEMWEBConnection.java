@@ -34,6 +34,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.conn.ClientConnectionManager;
 import org.apache.http.conn.ConnectTimeoutException;
@@ -53,23 +54,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.security.KeyStore;
-import java.util.Date;
 import java.util.zip.GZIPInputStream;
-
-import li.klass.fhem.exception.AndFHEMException;
-import li.klass.fhem.exception.AuthenticationException;
-import li.klass.fhem.exception.FHEMStrangeContentException;
-import li.klass.fhem.exception.HostConnectionException;
-import li.klass.fhem.exception.TimeoutException;
 
 public class FHEMWEBConnection extends FHEMConnection {
 
     public static final int CONNECTION_TIMEOUT = 3000;
     public static final int SOCKET_TIMEOUT = 20000;
     public static final String TAG = FHEMWEBConnection.class.getName();
-    private DefaultHttpClient client;
+    private DefaultHttpClient client = null;
 
     public static final String FHEMWEB_URL = "FHEMWEB_URL";
     public static final String FHEMWEB_USERNAME = "FHEMWEB_USERNAME";
@@ -77,15 +72,8 @@ public class FHEMWEBConnection extends FHEMConnection {
 
     public static final FHEMWEBConnection INSTANCE = new FHEMWEBConnection();
 
-
     @Override
-    public String fileLogData(String logName, Date fromDate, Date toDate,
-                              String columnSpec) {
-        return super.fileLogData(logName, fromDate, toDate, columnSpec).replaceAll("#" + columnSpec, "");
-    }
-
-    @Override
-    public String executeCommand(String command) {
+    public RequestResult<String> executeCommand(String command) {
         String urlSuffix = null;
         try {
             urlSuffix = "?XHR=1&cmd=" + URLEncoder.encode(command, "UTF-8");
@@ -93,27 +81,36 @@ public class FHEMWEBConnection extends FHEMConnection {
             Log.e(TAG, "unsupported encoding", e);
         }
 
-        InputStream response = executeRequest(urlSuffix, client);
+        RequestResult<InputStream> response = executeRequest(urlSuffix, client);
+        if (response.error != null) {
+            return new RequestResult<String>(response.error);
+        }
+
         try {
-            String content = IOUtils.toString(response);
+            String content = IOUtils.toString(response.content);
             if (content.contains("<title>") || content.contains("<div id=")) {
                 Log.e(TAG, "found strange content: " + content);
-                throw new FHEMStrangeContentException();
+                return new RequestResult<String>(RequestResultError.INVALID_CONTENT);
             }
-            return content;
+
+            return new RequestResult<String>(content);
         } catch (IOException e) {
-            throw new HostConnectionException(e);
+            throw new IllegalArgumentException(e);
         }
     }
 
     @Override
-    public Bitmap requestBitmap(String relativePath) {
-        InputStream response = executeRequest(relativePath, client);
-        return BitmapFactory.decodeStream(response);
+    public RequestResult<Bitmap> requestBitmap(String relativePath) {
+        RequestResult<InputStream> response = executeRequest(relativePath, client);
+        if (response.error != null) {
+            return new RequestResult<Bitmap>(response.error);
+        }
+        Bitmap bitmap = BitmapFactory.decodeStream(response.content);
+        return new RequestResult<Bitmap>(bitmap);
     }
 
-    private InputStream executeRequest(String urlSuffix,
-                                       DefaultHttpClient client) {
+    private RequestResult<InputStream> executeRequest(String urlSuffix,
+                                                      DefaultHttpClient client) {
         if (client == null) {
             client = createNewHTTPClient(CONNECTION_TIMEOUT, SOCKET_TIMEOUT);
         }
@@ -137,24 +134,27 @@ public class FHEMWEBConnection extends FHEMConnection {
             int statusCode = response.getStatusLine().getStatusCode();
             Log.d(TAG, "response status code is " + statusCode);
 
-            if (statusCode == 401) {
-                Log.d(TAG, "cannot authenticate (401 access denied)");
-                throw new AuthenticationException(response.getStatusLine()
-                        .toString());
+            RequestResult<InputStream> errorResult = handleHttpStatusCode(statusCode);
+            if (errorResult != null) {
+                Log.d(TAG, "found error " + errorResult.error.getClass().getSimpleName() + " for " +
+                        "status code " + statusCode);
+                return errorResult;
             }
 
             InputStream contentStream = response.getEntity().getContent();
             Header contentEncoding = response.getFirstHeader("Content-Encoding");
             if (contentEncoding != null && contentEncoding.getValue().equalsIgnoreCase("gzip")) {
-                return new GZIPInputStream(contentStream);
+                contentStream = new GZIPInputStream(contentStream);
             }
-            return contentStream;
-        } catch (AndFHEMException e) {
-            throw e;
+            return new RequestResult<InputStream>(contentStream);
         } catch (ConnectTimeoutException e) {
-            throw new TimeoutException(e);
-        } catch (Exception e) {
-            throw new HostConnectionException(e);
+            return new RequestResult<InputStream>(RequestResultError.CONNECTION_TIMEOUT);
+        } catch (ClientProtocolException e) {
+            return new RequestResult<InputStream>(RequestResultError.HOST_CONNECTION_ERROR);
+        } catch (IOException e) {
+            return new RequestResult<InputStream>(RequestResultError.HOST_CONNECTION_ERROR);
+        } catch (URISyntaxException e) {
+            throw new IllegalStateException("cannot parse URL " + urlSuffix, e);
         }
     }
 
@@ -192,5 +192,30 @@ public class FHEMWEBConnection extends FHEMConnection {
         } catch (Exception e) {
             return new DefaultHttpClient();
         }
+    }
+
+    static RequestResult<InputStream> handleHttpStatusCode(int statusCode) {
+        RequestResultError error;
+        switch (statusCode) {
+            case 400:
+                error = RequestResultError.BAD_REQUEST;
+                break;
+            case 401:
+                error = RequestResultError.AUTHENTICATION_ERROR;
+                break;
+            case 403:
+                error = RequestResultError.AUTHENTICATION_ERROR;
+                break;
+            case 404:
+                error = RequestResultError.NOT_FOUND;
+                break;
+            case 500:
+                error = RequestResultError.INTERNAL_SERVER_ERROR;
+                break;
+            default:
+                return null;
+
+        }
+        return new RequestResult<InputStream>(error);
     }
 }

@@ -22,29 +22,41 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.exception;
+package li.klass.fhem.fhem;
 
-import li.klass.fhem.R;
+import android.content.Context;
+import android.content.Intent;
 
-public class DeviceListParseException extends AndFHEMException {
+import li.klass.fhem.AndFHEMApplication;
+import li.klass.fhem.constants.Actions;
+import li.klass.fhem.constants.BundleExtraKeys;
 
-    public DeviceListParseException() {
+public class RequestResult<CONTENT> {
+    public final CONTENT content;
+    public final RequestResultError error;
+
+    public RequestResult(CONTENT content) {
+        this(content, null);
     }
 
-    public DeviceListParseException(String detailMessage) {
-        super(detailMessage);
+    public RequestResult(RequestResultError error) {
+        this(null, error);
     }
 
-    public DeviceListParseException(String detailMessage, Throwable throwable) {
-        super(detailMessage, throwable);
+    public RequestResult(CONTENT content, RequestResultError error) {
+        this.content = content;
+        this.error = error;
     }
 
-    public DeviceListParseException(Throwable throwable) {
-        super(throwable);
-    }
+    public boolean handleErrors() {
+        if (error  == null) return false;
 
-    @Override
-    public int getErrorMessageStringId() {
-        return R.string.updateErrorDeviceListParse;
+        Context context = AndFHEMApplication.getContext();
+
+        Intent intent = new Intent(Actions.SHOW_TOAST);
+        intent.putExtra(BundleExtraKeys.TOAST_STRING_ID, error.errorStringId);
+        context.sendBroadcast(intent);
+
+        return true;
     }
 }

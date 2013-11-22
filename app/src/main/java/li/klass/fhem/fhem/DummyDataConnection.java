@@ -45,7 +45,20 @@ public class DummyDataConnection extends FHEMConnection {
     }
 
     @Override
-    public String xmllist() {
+    public RequestResult<String> executeCommand(String command) {
+        if (command.equalsIgnoreCase("xmllist")) return xmllist();
+        if (command.startsWith("get")) return fileLogData(command);
+
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            Log.d(TAG, "ignored", e);
+        }
+        Log.e(TAG, "execute command: " + command);
+        return new RequestResult<String>("I am a dummy. Do you expect me to answer you?");
+    }
+
+    private RequestResult<String> xmllist() {
         InputStream inputStream = null;
         try {
             DummyServerSpec dummyServerSpec = (DummyServerSpec) serverSpec;
@@ -54,7 +67,7 @@ public class DummyDataConnection extends FHEMConnection {
             String content = IOUtils.toString(inputStream);
             content = content.replaceAll("  ", "");
 
-            return content;
+            return new RequestResult<String>(content);
         } catch (IOException e) {
             Log.e(DummyDataConnection.class.getName(), "cannot read file", e);
             throw new RuntimeException(e);
@@ -63,12 +76,14 @@ public class DummyDataConnection extends FHEMConnection {
         }
     }
 
-    @Override
-    public String fileLogData(String logName, Date fromDate, Date toDate, String columnSpec) {
+    public RequestResult<String> fileLogData(String command) {
+        int lastSpace = command.lastIndexOf(" ");
+        String columnSpec = command.substring(lastSpace + 1);
+
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String today = simpleDateFormat.format(new Date());
 
-        return today + "_00:16:48 4.2\r\n" +
+        String content = today + "_00:16:48 4.2\r\n" +
                 today + "_01:19:21 5.2\r\n" +
                 today + "_02:21:53 5.2\r\n" +
                 today + "_03:24:26 6.2\r\n" +
@@ -83,22 +98,13 @@ public class DummyDataConnection extends FHEMConnection {
                 today + "_12:54:56 2.3\r\n" +
                 today + "_13:57:28 1.3\r\n" +
                 "#" + columnSpec;
+
+        return new RequestResult<String>(content);
     }
 
     @Override
-    public String executeCommand(String command) {
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            Log.d(TAG, "ignored", e);
-        }
-        Log.e(TAG, "execute command: " + command);
-        return "I am a dummy. Do you expect me to answer you?";
-    }
-
-    @Override
-    public Bitmap requestBitmap(String relativePath) {
+    public RequestResult<Bitmap> requestBitmap(String relativePath) {
         Log.e(TAG, "get image: " + relativePath);
-        return null;
+        return new RequestResult<Bitmap>(null, null);
     }
 }

@@ -34,13 +34,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.io.UnsupportedEncodingException;
+import java.net.SocketException;
 import java.net.SocketTimeoutException;
 
-import li.klass.fhem.exception.AndFHEMException;
-import li.klass.fhem.exception.AuthenticationException;
-import li.klass.fhem.exception.FHEMStrangeContentException;
-import li.klass.fhem.exception.HostConnectionException;
-import li.klass.fhem.exception.TimeoutException;
 import li.klass.fhem.util.CloseableUtil;
 import li.klass.fhem.util.StringUtil;
 
@@ -56,7 +53,7 @@ public class TelnetConnection extends FHEMConnection {
     private TelnetConnection() {
     }
 
-    public String executeCommand(String command) {
+    public RequestResult<String> executeCommand(String command) {
         Log.i(TAG, "executeTask command " + command);
 
         final TelnetClient telnetClient = new TelnetClient();
@@ -76,8 +73,14 @@ public class TelnetConnection extends FHEMConnection {
             bufferedOutputStream = new BufferedOutputStream(outputStream);
             printStream = new PrintStream(outputStream);
 
-            String passwordRead = readUntil(inputStream, PASSWORD_PROMPT);
+            // If we don't receive an initial token during the first seconds, we haven't got
+            // a valid connection.
+            if (! waitForFilledStream(inputStream, 5000)) {
+                return new RequestResult<String>(RequestResultError.HOST_CONNECTION_ERROR);
+            }
+
             boolean passwordSent = false;
+            String passwordRead = readUntil(inputStream, PASSWORD_PROMPT);
             if (passwordRead.contains(PASSWORD_PROMPT)) {
                 Log.i(TAG, "sending password");
                 writeCommand(printStream, serverSpec.getPassword());
@@ -95,13 +98,14 @@ public class TelnetConnection extends FHEMConnection {
             } else {
                 result = read(inputStream);
             }
+
             if (result == null && passwordSent) {
-                throw new AuthenticationException();
+                return new RequestResult<String>(RequestResultError.AUTHENTICATION_ERROR);
             } else if (result == null) {
-                throw new FHEMStrangeContentException();
+                return new RequestResult<String>(RequestResultError.INVALID_CONTENT);
             }
 
-            writeCommand(printStream, "exit");
+            telnetClient.disconnect();
 
             int startPos = result.indexOf(", try help");
             if (startPos != -1) {
@@ -116,15 +120,24 @@ public class TelnetConnection extends FHEMConnection {
             result = result.replaceAll("Bye...", "");
             result = new String(result.getBytes("UTF8"));
             Log.d(TAG, "result is :: " + result);
-            return result;
-        } catch (AndFHEMException e) {
-            throw e;
+
+            return new RequestResult<String>(result);
+
         } catch (SocketTimeoutException e) {
             Log.e(TAG, "timeout", e);
-            throw new TimeoutException(e);
-        } catch (Exception e) {
-            Log.e(TAG, "error occurred", e);
-            throw new HostConnectionException(e);
+            return new RequestResult<String>(RequestResultError.CONNECTION_TIMEOUT);
+        } catch (UnsupportedEncodingException e) {
+            // this may never happen, as UTF8 is known ...
+            throw new IllegalStateException("unsupported encoding", e);
+        } catch (SocketException e) {
+            // We handle host connection errors directly after connecting to the server by waiting
+            // for some token for some seconds. Afterwards, the only possibility for an error
+            // is that the FHEM server ends the connection after receiving an invalid password.
+            Log.e(TAG, "SocketException", e);
+            return new RequestResult<String>(RequestResultError.AUTHENTICATION_ERROR);
+        } catch (IOException e) {
+            Log.e(TAG, "IOException", e);
+            return new RequestResult<String>(RequestResultError.HOST_CONNECTION_ERROR);
         } finally {
             CloseableUtil.close(printStream, bufferedOutputStream,
                     outputStream, inputStream);
@@ -132,12 +145,14 @@ public class TelnetConnection extends FHEMConnection {
     }
 
     @Override
-    public Bitmap requestBitmap(String relativePath) {
+    public RequestResult<Bitmap> requestBitmap(String relativePath) {
         Log.e(TAG, "get image: " + relativePath);
-        return null;
+        return new RequestResult<Bitmap>(null, null);
     }
 
     private String readUntil(InputStream inputStream, String... blockers) throws IOException {
+        waitForFilledStream(inputStream, 1000);
+
         int ch;
         StringBuilder buffer = new StringBuilder();
         while ((ch = inputStream.read()) != -1) {
@@ -150,10 +165,14 @@ public class TelnetConnection extends FHEMConnection {
     }
 
     private String read(InputStream inputStream) throws IOException {
+        waitForFilledStream(inputStream, 1000);
+
         int ch;
         StringBuilder buffer = new StringBuilder();
         while ((ch = inputStream.read()) != -1) {
-            buffer.append((char) ch);
+            char readChar = (char) ch;
+            System.out.println(ch + " " + readChar);
+            buffer.append(readChar);
         }
         return buffer.toString();
     }
@@ -161,5 +180,18 @@ public class TelnetConnection extends FHEMConnection {
     private void writeCommand(PrintStream printStream, String command) {
         printStream.println(command);
         printStream.flush();
+    }
+
+    private boolean waitForFilledStream(InputStream inputStream, int timeToWait) throws IOException {
+        long startTime = System.currentTimeMillis();
+        while(inputStream.available() == 0 &&
+                (System.currentTimeMillis() - startTime) < timeToWait) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                Log.e(TAG, "interrupted, ignoring", e);
+            }
+        }
+        return inputStream.available() > 0;
     }
 }

@@ -27,13 +27,11 @@ package li.klass.fhem.service;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.os.Bundle;
-import android.util.Log;
+
 import li.klass.fhem.AndFHEMApplication;
-import li.klass.fhem.constants.Actions;
-import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.exception.AndFHEMException;
 import li.klass.fhem.fhem.DataConnectionSwitch;
+import li.klass.fhem.fhem.FHEMConnection;
+import li.klass.fhem.fhem.RequestResult;
 
 import static li.klass.fhem.constants.Actions.DISMISS_EXECUTING_DIALOG;
 import static li.klass.fhem.constants.Actions.SHOW_EXECUTING_DIALOG;
@@ -49,15 +47,6 @@ public class CommandExecutionService extends AbstractService {
     }
 
     /**
-     * Execute a command without catching any exception or showing an update dialog. Executes synchronously.
-     *
-     * @param command command to execute
-     */
-    public String executeUnsafeCommand(String command) {
-        return DataConnectionSwitch.INSTANCE.getCurrentProvider().executeCommand(command);
-    }
-
-    /**
      * Executes a command safely by catching exceptions. Shows an update dialog during execution. Shows an update
      * dialog.
      *
@@ -68,26 +57,32 @@ public class CommandExecutionService extends AbstractService {
         Context context = showExecutingDialog();
 
         try {
-            return executeUnsafeCommand(command);
-        } catch (AndFHEMException e) {
-            handleAndFHEMException(e);
-
-            Log.e(CommandExecutionService.class.getName(), "error occurred while executing command " + command, e);
-            return "";
+            RequestResult<String> result = execute(command);
+            if (result.handleErrors()) return null;
+            return result.content;
         } finally {
             context.sendBroadcast(new Intent(DISMISS_EXECUTING_DIALOG));
         }
+    }
+
+    /**
+     * Execute a command without catching any exception or showing an update dialog. Executes synchronously.
+     *
+     * @param command command to execute
+     */
+    private RequestResult<String> execute(String command) {
+        return DataConnectionSwitch.INSTANCE.getCurrentProvider().executeCommand(command);
     }
 
     public Bitmap getBitmap(String relativePath) {
         Context context = showExecutingDialog();
 
         try {
-            return DataConnectionSwitch.INSTANCE.getCurrentProvider().requestBitmap(relativePath);
-        } catch (AndFHEMException e) {
-            handleAndFHEMException(e);
-            Log.e(CommandExecutionService.class.getName(), "error occurred while getting image " + relativePath, e);
-            return null;
+            FHEMConnection provider = DataConnectionSwitch.INSTANCE.getCurrentProvider();
+            RequestResult<Bitmap> result = provider.requestBitmap(relativePath);
+
+            if (result.handleErrors()) return null;
+            return result.content;
         } finally {
             context.sendBroadcast(new Intent(DISMISS_EXECUTING_DIALOG));
         }
@@ -97,11 +92,5 @@ public class CommandExecutionService extends AbstractService {
         Context context = AndFHEMApplication.getContext();
         context.sendBroadcast(new Intent(SHOW_EXECUTING_DIALOG));
         return context;
-    }
-
-    private void handleAndFHEMException(AndFHEMException e) {
-        Bundle bundle = new Bundle();
-        bundle.putInt(BundleExtraKeys.TOAST_STRING_ID, e.getErrorMessageStringId());
-        sendBroadcastWithAction(Actions.SHOW_TOAST, bundle);
     }
 }

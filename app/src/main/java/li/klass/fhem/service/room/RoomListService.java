@@ -47,9 +47,8 @@ import li.klass.fhem.constants.PreferenceKeys;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.RoomDeviceList;
 import li.klass.fhem.exception.AndFHEMException;
-import li.klass.fhem.fhem.DataConnectionSwitch;
-import li.klass.fhem.fhem.FHEMConnection;
 import li.klass.fhem.service.AbstractService;
+import li.klass.fhem.service.CommandExecutionService;
 import li.klass.fhem.util.ApplicationProperties;
 
 import static li.klass.fhem.constants.Actions.DEVICE_LIST_REMOTE_NOTIFY;
@@ -251,7 +250,7 @@ public class RoomListService extends AbstractService {
 
                 Log.e(TAG, "error occurred while fetching the remote device list", e);
             } catch (Exception e) {
-                sendErrorMessage(R.string.updateError);
+                sendErrorMessage(R.string.error_update);
                 Log.e(TAG, "unknown exception occurred while fetching the remote device list", e);
             }
         }
@@ -283,12 +282,14 @@ public class RoomListService extends AbstractService {
     private synchronized Map<String, RoomDeviceList> getRemoteRoomDeviceListMap() {
         Log.i(TAG, "fetching device list from remote");
 
-        FHEMConnection currentProvider = DataConnectionSwitch.INSTANCE.getCurrentProvider();
-        String xmlList = currentProvider.executeCommand("xmllist");
-        Map<String, RoomDeviceList> result = DeviceListParser.INSTANCE.parseAndWrapExceptions(xmlList);
+        String result = CommandExecutionService.INSTANCE.executeSafely("xmllist");
+        if (result == null) return null;
+
+        DeviceListParser parser = DeviceListParser.INSTANCE;
+        Map<String, RoomDeviceList> deviceList = parser.parseAndWrapExceptions(result);
 
         setLastUpdateToNow();
-        return result;
+        return deviceList;
     }
 
     /**
