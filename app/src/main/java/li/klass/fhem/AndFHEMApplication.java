@@ -24,10 +24,12 @@
 
 package li.klass.fhem;
 
+import android.annotation.TargetApi;
 import android.app.Application;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.os.StrictMode;
 import android.util.Log;
 
 import li.klass.fhem.util.ApplicationProperties;
@@ -57,10 +59,23 @@ public class AndFHEMApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
+        setStrictMode();
+
         context = getApplicationContext();
         INSTANCE = this;
 
         setApplicationInformation();
+    }
+
+    @TargetApi(Build.VERSION_CODES.GINGERBREAD)
+    private void setStrictMode() {
+        // We are trying to do as much as possible in worker threads. However, at some places,
+        // i.e. updating list widgets, using background threads is not possible.
+        // We therefore deactivate the NetworkOnMainThread exception here.
+        if (getAndroidSDKLevel() > Build.VERSION_CODES.GINGERBREAD) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
     }
 
     private void setApplicationInformation() {
