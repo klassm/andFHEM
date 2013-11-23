@@ -104,7 +104,7 @@ public class AndFHEMApplication extends Application {
     }
 
     public boolean isUpdate() {
-        return true;
+        return isUpdate;
     }
 
     public String getCurrentApplicationVersion() {
