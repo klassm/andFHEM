@@ -113,6 +113,7 @@ public class Actions {
     public static final String CONNECTION_GET_SELECTED = prefix + "CONNECTION_GET_SELECTED";
 
     public static final String CONNECTION_ERROR = prefix + "CONNECTION_ERROR";
+    public static final String CONNECTION_ERROR_HIDE = prefix + "CONNECTION_ERROR_HIDE";
 
 
 }

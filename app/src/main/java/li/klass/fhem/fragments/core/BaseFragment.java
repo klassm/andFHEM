@@ -47,6 +47,7 @@ import li.klass.fhem.activities.core.Updateable;
 import li.klass.fhem.constants.Actions;
 
 import static li.klass.fhem.constants.Actions.CONNECTION_ERROR;
+import static li.klass.fhem.constants.Actions.CONNECTION_ERROR_HIDE;
 import static li.klass.fhem.constants.Actions.DEVICE_LIST_REMOTE_NOTIFY;
 import static li.klass.fhem.constants.Actions.DO_UPDATE;
 import static li.klass.fhem.constants.Actions.TOP_LEVEL_BACK;
@@ -71,6 +72,7 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
             intentFilter.addAction(DO_UPDATE);
             intentFilter.addAction(TOP_LEVEL_BACK);
             intentFilter.addAction(CONNECTION_ERROR);
+            intentFilter.addAction(CONNECTION_ERROR_HIDE);
             intentFilter.addAction(DEVICE_LIST_REMOTE_NOTIFY);
         }
 
@@ -106,6 +108,8 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
                                 content = intent.getStringExtra(STRING);
                             }
                             showConnectionError(content);
+                        } else if (action.equals(CONNECTION_ERROR_HIDE)) {
+                            hideConnectionError();
                         }
                     } catch (Exception e) {
                         Log.e(UIBroadcastReceiver.class.getName(), "error occurred", e);

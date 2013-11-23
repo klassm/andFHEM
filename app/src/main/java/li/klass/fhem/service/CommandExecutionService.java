@@ -27,14 +27,22 @@ package li.klass.fhem.service;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.util.Log;
+
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 
 import li.klass.fhem.AndFHEMApplication;
+import li.klass.fhem.constants.Actions;
 import li.klass.fhem.fhem.DataConnectionSwitch;
 import li.klass.fhem.fhem.FHEMConnection;
 import li.klass.fhem.fhem.RequestResult;
 
+import static java.util.concurrent.TimeUnit.SECONDS;
 import static li.klass.fhem.constants.Actions.DISMISS_EXECUTING_DIALOG;
 import static li.klass.fhem.constants.Actions.SHOW_EXECUTING_DIALOG;
+import static li.klass.fhem.fhem.RequestResultError.CONNECTION_TIMEOUT;
+import static li.klass.fhem.fhem.RequestResultError.HOST_CONNECTION_ERROR;
 
 /**
  * Service serving as central interface to FHEM.
@@ -42,6 +50,24 @@ import static li.klass.fhem.constants.Actions.SHOW_EXECUTING_DIALOG;
 public class CommandExecutionService extends AbstractService {
 
     public static final CommandExecutionService INSTANCE = new CommandExecutionService();
+
+    public static final int MAX_TRIES = 3;
+    private transient ScheduledExecutorService scheduledExecutorService = null;
+
+    private class ResendCommand implements Runnable {
+        int currentTry;
+        String command;
+
+        protected ResendCommand(String command, int currentTry) {
+            this.command = command;
+            this.currentTry = currentTry;
+        }
+
+        @Override
+        public void run() {
+            execute(command, currentTry);
+        }
+    }
 
     private CommandExecutionService() {
     }
@@ -71,7 +97,40 @@ public class CommandExecutionService extends AbstractService {
      * @param command command to execute
      */
     private RequestResult<String> execute(String command) {
-        return DataConnectionSwitch.INSTANCE.getCurrentProvider().executeCommand(command);
+        return execute(command, 0);
+    }
+
+    private RequestResult<String> execute(String command, int currentTry) {
+        FHEMConnection currentProvider = DataConnectionSwitch.INSTANCE.getCurrentProvider();
+        RequestResult<String> result = currentProvider.executeCommand(command);
+
+        if (result.error == null) {
+            sendBroadcastWithAction(Actions.CONNECTION_ERROR_HIDE);
+        } else if (shouldTryResend(command, result, currentTry)) {
+            int timeoutForNextTry = secondsForTry(currentTry);
+            Log.e(CommandExecutionService.class.getName(),
+                    String.format("scheduling next resend of '%s' in %d seconds (try %d)",
+                            command, timeoutForNextTry, currentTry));
+
+            getScheduledExecutorService().schedule(new ResendCommand(command, currentTry + 1),
+                    timeoutForNextTry, SECONDS);
+        }
+
+        return result;
+    }
+
+    private int secondsForTry(int executionTry) {
+        return (int) Math.pow(3, executionTry);
+    }
+
+    private boolean shouldTryResend(String command, RequestResult<?> result, int currentTry) {
+        if (! command.startsWith("set") && ! command.startsWith("attr")) return false;
+        if (result.error == null) return false;
+        if (result.error != CONNECTION_TIMEOUT &&
+                result.error != HOST_CONNECTION_ERROR) return false;
+        if (currentTry > MAX_TRIES) return false;
+
+        return true;
     }
 
     public Bitmap getBitmap(String relativePath) {
@@ -92,5 +151,12 @@ public class CommandExecutionService extends AbstractService {
         Context context = AndFHEMApplication.getContext();
         context.sendBroadcast(new Intent(SHOW_EXECUTING_DIALOG));
         return context;
+    }
+
+    private ScheduledExecutorService getScheduledExecutorService() {
+        if (scheduledExecutorService == null) {
+            scheduledExecutorService = Executors.newScheduledThreadPool(1);
+        }
+        return scheduledExecutorService;
     }
 }
