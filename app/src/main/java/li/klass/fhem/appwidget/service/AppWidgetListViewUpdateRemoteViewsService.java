@@ -54,6 +54,7 @@ public class AppWidgetListViewUpdateRemoteViewsService extends RemoteViewsServic
         Device device = RoomListService.INSTANCE.getDeviceForName(deviceName, NEVER_UPDATE_PERIOD);
         if (device == null) {
             Log.e(TAG, "device is null, at least in the current connection");
+            return null;
         }
 
         if (appWidgetId == -1) {
