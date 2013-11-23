@@ -125,6 +125,29 @@ OR connect to your FHEMWEB instance and enter 'xmllist')</li>
     </ul>
   </p>
   
+  <h3 id="resend">The app tells me that it cannot send a command, but after a short time interval the device still switches. Why?</h3>
+  
+  <p>AndFHEM will try to resend commands 4 times after an error has been encountered. The error has to be a timeout or a general connection error. The resend will be startet for "set" and "attr" commands.</p>
+  
+  <p>As resend time intervals, powers of 3 for the current try are used: <br />
+    <table>
+      <tr>
+        <td>Initial send</td><td>0 seconds delay (synchronous)</td>
+      </tr>
+      <tr>
+        <td>1rst retry</td><td>3^0 = 1 second delay</td>
+      </tr>
+      <tr>
+        <td>2nd retry</td><td>3^1 = 3 seconds delay</td>
+      </tr>
+      <tr>
+        <td>3rd retry</td><td>3^2 = 9 seconds delay</td>
+      </tr>
+      <tr>
+        <td>4th retry</td><td>3^3 = 27 seconds delay</td>
+      </tr>
+    </table>
+  </p>
   
   
   <h3 id="unexpected_behaviour">Help, the App shows unexpected behavior.</h3>
