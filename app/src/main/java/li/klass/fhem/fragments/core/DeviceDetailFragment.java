@@ -32,6 +32,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ScrollView;
+
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.DeviceAdapter;
 import li.klass.fhem.constants.Actions;
@@ -40,9 +41,6 @@ import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceType;
 import li.klass.fhem.util.advertisement.AdvertisementUtil;
-
-import java.io.Serializable;
-import java.util.Map;
 
 public class DeviceDetailFragment extends BaseFragment {
 
@@ -68,6 +66,9 @@ public class DeviceDetailFragment extends BaseFragment {
 
     @Override
     public void update(boolean doUpdate) {
+        hideEmptyView();
+        showUpdatingBar();
+
         Intent intent = new Intent(Actions.GET_DEVICE_FOR_NAME);
         intent.putExtras(new Bundle());
         intent.putExtra(BundleExtraKeys.DO_REFRESH, doUpdate);
@@ -76,6 +77,9 @@ public class DeviceDetailFragment extends BaseFragment {
             @Override
             protected void onReceiveResult(int resultCode, Bundle resultData) {
                 super.onReceiveResult(resultCode, resultData);
+
+                hideUpdatingBar();
+
                 if (resultCode == ResultCodes.SUCCESS && getView() != null) {
                     Device device = (Device) resultData.getSerializable(BundleExtraKeys.DEVICE);
                     if (device == null) return;
