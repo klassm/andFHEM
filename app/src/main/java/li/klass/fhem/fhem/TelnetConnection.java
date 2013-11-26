@@ -73,18 +73,18 @@ public class TelnetConnection extends FHEMConnection {
             bufferedOutputStream = new BufferedOutputStream(outputStream);
             printStream = new PrintStream(outputStream);
 
-            // If we don't receive an initial token during the first seconds, we haven't got
-            // a valid connection.
-            if (! waitForFilledStream(inputStream, 5000)) {
-                return new RequestResult<String>(RequestResultError.HOST_CONNECTION_ERROR);
-            }
-
             boolean passwordSent = false;
             String passwordRead = readUntil(inputStream, PASSWORD_PROMPT);
-            if (passwordRead.contains(PASSWORD_PROMPT)) {
+            if (passwordRead != null && passwordRead.contains(PASSWORD_PROMPT)) {
                 Log.i(TAG, "sending password");
                 writeCommand(printStream, serverSpec.getPassword());
                 passwordSent = true;
+            }
+
+            writeCommand(printStream, "");
+
+            if (! waitForFilledStream(inputStream, 5000)) {
+                return new RequestResult<String>(RequestResultError.HOST_CONNECTION_ERROR);
             }
 
             writeCommand(printStream, command);
@@ -153,10 +153,10 @@ public class TelnetConnection extends FHEMConnection {
     private String readUntil(InputStream inputStream, String... blockers) throws IOException {
         waitForFilledStream(inputStream, 3000);
 
-        int ch;
         StringBuilder buffer = new StringBuilder();
-        while ((ch = inputStream.read()) != -1) {
-            buffer.append((char) ch);
+        while (inputStream.available() > 0 || waitForFilledStream(inputStream, 100)) {
+            char readChar = (char) inputStream.read();
+            buffer.append(readChar);
             for (String blocker : blockers) {
                 if (StringUtil.endsWith(buffer, blocker)) return buffer.toString();
             }
