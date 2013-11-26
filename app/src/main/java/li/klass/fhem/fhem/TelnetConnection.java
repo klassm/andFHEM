@@ -151,7 +151,7 @@ public class TelnetConnection extends FHEMConnection {
     }
 
     private String readUntil(InputStream inputStream, String... blockers) throws IOException {
-        waitForFilledStream(inputStream, 1000);
+        waitForFilledStream(inputStream, 3000);
 
         int ch;
         StringBuilder buffer = new StringBuilder();
@@ -165,13 +165,11 @@ public class TelnetConnection extends FHEMConnection {
     }
 
     private String read(InputStream inputStream) throws IOException {
-        waitForFilledStream(inputStream, 1000);
+        waitForFilledStream(inputStream, 3000);
 
-        int ch;
         StringBuilder buffer = new StringBuilder();
-        while ((ch = inputStream.read()) != -1) {
-            char readChar = (char) ch;
-            System.out.println(ch + " " + readChar);
+        while (inputStream.available() > 0 || waitForFilledStream(inputStream, 100)) {
+            char readChar = (char) inputStream.read();
             buffer.append(readChar);
         }
         return buffer.toString();
@@ -183,8 +181,10 @@ public class TelnetConnection extends FHEMConnection {
     }
 
     private boolean waitForFilledStream(InputStream inputStream, int timeToWait) throws IOException {
+        int initialFill = inputStream.available();
+
         long startTime = System.currentTimeMillis();
-        while(inputStream.available() == 0 &&
+        while(inputStream.available() == initialFill &&
                 (System.currentTimeMillis() - startTime) < timeToWait) {
             try {
                 Thread.sleep(100);

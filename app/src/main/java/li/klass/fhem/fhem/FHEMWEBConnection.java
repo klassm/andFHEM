@@ -111,6 +111,7 @@ public class FHEMWEBConnection extends FHEMConnection {
 
     private RequestResult<InputStream> executeRequest(String urlSuffix,
                                                       DefaultHttpClient client) {
+        String url = null;
         if (client == null) {
             client = createNewHTTPClient(CONNECTION_TIMEOUT, SOCKET_TIMEOUT);
         }
@@ -118,7 +119,7 @@ public class FHEMWEBConnection extends FHEMConnection {
             HttpGet request = new HttpGet();
             request.addHeader("Accept-Encoding", "gzip");
 
-            String url = serverSpec.getUrl() + urlSuffix;
+            url = serverSpec.getUrl() + urlSuffix;
 
             Log.i(TAG, "accessing URL " + url);
             URI uri = new URI(url);
@@ -148,12 +149,16 @@ public class FHEMWEBConnection extends FHEMConnection {
             }
             return new RequestResult<InputStream>(contentStream);
         } catch (ConnectTimeoutException e) {
+            Log.i(TAG, "connection timed out" ,e);
             return new RequestResult<InputStream>(RequestResultError.CONNECTION_TIMEOUT);
         } catch (ClientProtocolException e) {
+            Log.i(TAG, "cannot connect, invalid URL? (" + url + ")", e);
             return new RequestResult<InputStream>(RequestResultError.HOST_CONNECTION_ERROR);
         } catch (IOException e) {
+            Log.i(TAG, "cannot connect to host", e);
             return new RequestResult<InputStream>(RequestResultError.HOST_CONNECTION_ERROR);
         } catch (URISyntaxException e) {
+            Log.i(TAG, "invalid URL syntax", e);
             throw new IllegalStateException("cannot parse URL " + urlSuffix, e);
         }
     }
@@ -216,6 +221,7 @@ public class FHEMWEBConnection extends FHEMConnection {
                 return null;
 
         }
+        Log.i(TAG, "encountered http status code " + statusCode);
         return new RequestResult<InputStream>(error);
     }
 }
