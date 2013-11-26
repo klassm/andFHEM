@@ -93,6 +93,9 @@
     <string name="model">Modell</string>
     <string name="send">Senden</string>
     <string name="error">Fehler!</string>
+    <string name="error_send">Letzten Fehler senden</string>
+    <string name="error_send_content">AndFHEM kann den letzten Fehler als Mail an den Entwickler senden. Fortfahren?</string>
+    <string name="error_send_no_error">Es kann kein Error gesendet werden, da kein Error registriert wurde.</string>
     <string name="errorDeviceListLoad">Konnte %1$s Gerät(e) nicht laden (Typen: %2$s)!</string>
     <string name="hex2quat">Hex -> Quat</string>
     <string name="quat2hex">Quat -> Hex</string>

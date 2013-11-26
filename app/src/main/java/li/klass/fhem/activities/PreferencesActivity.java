@@ -38,6 +38,7 @@ import li.klass.fhem.R;
 import li.klass.fhem.adapter.rooms.DeviceGridAdapter;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
+import li.klass.fhem.error.ErrorHolder;
 import li.klass.fhem.util.DisplayUtil;
 
 import static li.klass.fhem.constants.PreferenceKeys.DEVICE_COLUMN_WIDTH;
@@ -68,6 +69,14 @@ public class PreferencesActivity extends PreferenceActivity
             public boolean onPreferenceChange(Preference preference, Object o) {
                 String projectId = (String) o;
                 GCMIntentService.registerWithGCM(PreferencesActivity.this, projectId);
+                return true;
+            }
+        });
+
+        findPreference("SEND_LAST_ERROR").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                ErrorHolder.sendLastErrorAsMail(PreferencesActivity.this);
                 return true;
             }
         });

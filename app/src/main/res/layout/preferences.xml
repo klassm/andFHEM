@@ -52,6 +52,10 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/prefOtherPreferencesCategory">
+        <Preference
+            android:key="SEND_LAST_ERROR"
+            android:title="@string/error_send"/>
+
         <CheckBoxPreference
                 android:key="prefShowHiddenDevices"
                 android:title="@string/prefShowHiddenDevices"

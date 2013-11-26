@@ -45,6 +45,7 @@ import java.io.Serializable;
 import li.klass.fhem.R;
 import li.klass.fhem.activities.core.Updateable;
 import li.klass.fhem.constants.Actions;
+import li.klass.fhem.error.ErrorHolder;
 
 import static li.klass.fhem.constants.Actions.CONNECTION_ERROR;
 import static li.klass.fhem.constants.Actions.CONNECTION_ERROR_HIDE;
@@ -56,6 +57,7 @@ import static li.klass.fhem.constants.BundleExtraKeys.STRING;
 import static li.klass.fhem.constants.BundleExtraKeys.STRING_ID;
 
 public abstract class BaseFragment extends Fragment implements Updateable, Serializable {
+
     private boolean isNavigation = false;
 
     public class UIBroadcastReceiver extends BroadcastReceiver {
@@ -284,6 +286,17 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
 
         View errorLayout = view.findViewById(R.id.errorLayout);
         if (errorLayout == null) return;
+
+        errorLayout.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+
+                ErrorHolder.sendLastErrorAsMail(getActivity());
+
+                return true;
+            }
+        });
+
         errorLayout.setVisibility(View.VISIBLE);
 
         TextView errorView = (TextView) view.findViewById(R.id.errorView);

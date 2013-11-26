@@ -64,6 +64,7 @@ public class TelnetConnection extends FHEMConnection {
         PrintStream printStream = null;
         InputStream inputStream = null;
 
+        String errorHost = serverSpec.getIp() + ":" + serverSpec.getPort();
         try {
             telnetClient.connect(serverSpec.getIp(), serverSpec.getPort());
 
@@ -125,18 +126,22 @@ public class TelnetConnection extends FHEMConnection {
 
         } catch (SocketTimeoutException e) {
             Log.e(TAG, "timeout", e);
+            setErrorInErrorHolderFor(e, errorHost, command);
             return new RequestResult<String>(RequestResultError.CONNECTION_TIMEOUT);
         } catch (UnsupportedEncodingException e) {
             // this may never happen, as UTF8 is known ...
+            setErrorInErrorHolderFor(e, errorHost, command);
             throw new IllegalStateException("unsupported encoding", e);
         } catch (SocketException e) {
             // We handle host connection errors directly after connecting to the server by waiting
             // for some token for some seconds. Afterwards, the only possibility for an error
             // is that the FHEM server ends the connection after receiving an invalid password.
             Log.e(TAG, "SocketException", e);
+            setErrorInErrorHolderFor(e, errorHost, command);
             return new RequestResult<String>(RequestResultError.AUTHENTICATION_ERROR);
         } catch (IOException e) {
             Log.e(TAG, "IOException", e);
+            setErrorInErrorHolderFor(e, errorHost, command);
             return new RequestResult<String>(RequestResultError.HOST_CONNECTION_ERROR);
         } finally {
             CloseableUtil.close(printStream, bufferedOutputStream,

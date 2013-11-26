@@ -94,6 +94,9 @@
     <string name="model">Model</string>
     <string name="send">Send</string>
     <string name="error">Error!</string>
+    <string name="error_send">Send last error</string>
+    <string name="error_send_content">AndFHEM can send the last error as mail to the developer. Continue?</string>
+    <string name="error_send_no_error">Cannot send an error, as none is registered!</string>
     <string name="errorDeviceListLoad">Could not load %1$s device(s) (types: %2$s)!</string>
     <string name="hex2quat">Hex -> Quat</string>
     <string name="quat2hex">Quat -> Hex</string>

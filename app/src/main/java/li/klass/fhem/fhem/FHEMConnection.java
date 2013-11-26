@@ -26,6 +26,7 @@ package li.klass.fhem.fhem;
 
 import android.graphics.Bitmap;
 
+import li.klass.fhem.error.ErrorHolder;
 import li.klass.fhem.fhem.connection.FHEMServerSpec;
 
 public abstract class FHEMConnection {
@@ -37,5 +38,12 @@ public abstract class FHEMConnection {
 
     public void setServer(FHEMServerSpec serverSpec) {
         this.serverSpec = serverSpec;
+    }
+
+    protected void setErrorInErrorHolderFor(Exception e, String host, String command) {
+        String text = "Error while accessing '" + host + "' with command '" + command + "'\r\n" +
+                serverSpec.toString() + "\r\n";
+
+        ErrorHolder.setError(e, text);
     }
 }

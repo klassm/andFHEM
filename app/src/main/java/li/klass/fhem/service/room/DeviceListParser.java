@@ -54,10 +54,12 @@ import li.klass.fhem.domain.FileLogDevice;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceType;
 import li.klass.fhem.domain.core.RoomDeviceList;
+import li.klass.fhem.error.ErrorHolder;
 import li.klass.fhem.fhem.RequestResult;
 import li.klass.fhem.fhem.RequestResultError;
 import li.klass.fhem.util.StringEscapeUtil;
 import li.klass.fhem.util.StringUtil;
+import li.klass.fhem.util.XMLUtil;
 
 import static li.klass.fhem.domain.core.DeviceType.FILE_LOG;
 
@@ -79,6 +81,8 @@ public class DeviceListParser {
         try {
             return parseXMLList(xmlList);
         } catch (Exception e) {
+            ErrorHolder.setError(e, "cannot parse xmllist.");
+
             new RequestResult<String>(RequestResultError.DEVICE_LIST_PARSE).handleErrors();
             return null;
         }
@@ -194,12 +198,19 @@ public class DeviceListParser {
         int errorCount = 0;
 
         NodeList nodes = document.getElementsByTagName(tagName);
+        String errorXML = "";
+
         for (int i = 0; i < nodes.getLength(); i++) {
             Node item = nodes.item(i);
 
             if (!deviceFromNode(deviceClass, roomDeviceListMap, item, allDevicesRoom)) {
                 errorCount++;
+                errorXML += XMLUtil.nodeToString(item) + "\r\n\r\n";
             }
+        }
+
+        if (errorCount > 0) {
+            ErrorHolder.setError("Cannot parse devices: \r\n" + errorXML);
         }
 
         return errorCount;

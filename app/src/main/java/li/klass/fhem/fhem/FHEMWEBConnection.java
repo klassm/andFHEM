@@ -59,6 +59,8 @@ import java.net.URLEncoder;
 import java.security.KeyStore;
 import java.util.zip.GZIPInputStream;
 
+import li.klass.fhem.error.ErrorHolder;
+
 public class FHEMWEBConnection extends FHEMConnection {
 
     public static final int CONNECTION_TIMEOUT = 3000;
@@ -74,6 +76,8 @@ public class FHEMWEBConnection extends FHEMConnection {
 
     @Override
     public RequestResult<String> executeCommand(String command) {
+        Log.i(TAG, "executeTask command " + command);
+
         String urlSuffix = null;
         try {
             urlSuffix = "?XHR=1&cmd=" + URLEncoder.encode(command, "UTF-8");
@@ -81,7 +85,7 @@ public class FHEMWEBConnection extends FHEMConnection {
             Log.e(TAG, "unsupported encoding", e);
         }
 
-        RequestResult<InputStream> response = executeRequest(urlSuffix, client);
+        RequestResult<InputStream> response = executeRequest(urlSuffix, client, command);
         if (response.error != null) {
             return new RequestResult<String>(response.error);
         }
@@ -90,6 +94,7 @@ public class FHEMWEBConnection extends FHEMConnection {
             String content = IOUtils.toString(response.content);
             if (content.contains("<title>") || content.contains("<div id=")) {
                 Log.e(TAG, "found strange content: " + content);
+                ErrorHolder.setError("found strange content in URL " + urlSuffix + ": \r\n\r\n" + content);
                 return new RequestResult<String>(RequestResultError.INVALID_CONTENT);
             }
 
@@ -101,7 +106,7 @@ public class FHEMWEBConnection extends FHEMConnection {
 
     @Override
     public RequestResult<Bitmap> requestBitmap(String relativePath) {
-        RequestResult<InputStream> response = executeRequest(relativePath, client);
+        RequestResult<InputStream> response = executeRequest(relativePath, client, "request bitmap");
         if (response.error != null) {
             return new RequestResult<Bitmap>(response.error);
         }
@@ -110,7 +115,7 @@ public class FHEMWEBConnection extends FHEMConnection {
     }
 
     private RequestResult<InputStream> executeRequest(String urlSuffix,
-                                                      DefaultHttpClient client) {
+                                                      DefaultHttpClient client, String command) {
         String url = null;
         if (client == null) {
             client = createNewHTTPClient(CONNECTION_TIMEOUT, SOCKET_TIMEOUT);
@@ -137,8 +142,10 @@ public class FHEMWEBConnection extends FHEMConnection {
 
             RequestResult<InputStream> errorResult = handleHttpStatusCode(statusCode);
             if (errorResult != null) {
-                Log.d(TAG, "found error " + errorResult.error.getClass().getSimpleName() + " for " +
-                        "status code " + statusCode);
+                String msg = "found error " + errorResult.error.getClass().getSimpleName() + " for " +
+                        "status code " + statusCode;
+                Log.d(TAG, msg);
+                ErrorHolder.setError(null, msg);
                 return errorResult;
             }
 
@@ -150,15 +157,20 @@ public class FHEMWEBConnection extends FHEMConnection {
             return new RequestResult<InputStream>(contentStream);
         } catch (ConnectTimeoutException e) {
             Log.i(TAG, "connection timed out" ,e);
+            setErrorInErrorHolderFor(e, url, command);
             return new RequestResult<InputStream>(RequestResultError.CONNECTION_TIMEOUT);
         } catch (ClientProtocolException e) {
-            Log.i(TAG, "cannot connect, invalid URL? (" + url + ")", e);
+            String errorText = "cannot connect, invalid URL? (" + url + ")";
+            setErrorInErrorHolderFor(e, url, command);
+            ErrorHolder.setError(e, errorText);
             return new RequestResult<InputStream>(RequestResultError.HOST_CONNECTION_ERROR);
         } catch (IOException e) {
             Log.i(TAG, "cannot connect to host", e);
+            setErrorInErrorHolderFor(e, url, command);
             return new RequestResult<InputStream>(RequestResultError.HOST_CONNECTION_ERROR);
         } catch (URISyntaxException e) {
             Log.i(TAG, "invalid URL syntax", e);
+            setErrorInErrorHolderFor(e, url, command);
             throw new IllegalStateException("cannot parse URL " + urlSuffix, e);
         }
     }

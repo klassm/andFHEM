@@ -26,6 +26,8 @@ package li.klass.fhem.fhem.connection;
 
 import java.io.Serializable;
 
+import li.klass.fhem.util.StringUtil;
+
 public class FHEMServerSpec implements Comparable<FHEMServerSpec>, Serializable {
     private final String id;
     private String name;
@@ -103,5 +105,19 @@ public class FHEMServerSpec implements Comparable<FHEMServerSpec>, Serializable 
     @Override
     public int compareTo(FHEMServerSpec fhemServerSpec) {
         return name.compareTo(fhemServerSpec.name);
+    }
+
+    @Override
+    public String toString() {
+        return "FHEMServerSpec{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", password='" + ! StringUtil.isBlank(password) + '\'' +
+                ", ip='" + ip + '\'' +
+                ", port=" + port +
+                ", url='" + url + '\'' +
+                ", username='" + ! StringUtil.isBlank(username) + '\'' +
+                ", serverType=" + serverType +
+                '}';
     }
 }
