@@ -28,6 +28,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.TableRow;
 import android.widget.TextView;
 
@@ -61,17 +62,24 @@ public class ColorPickerRow implements ColorPickerListener {
         TextView description = (TextView) view.findViewById(R.id.description);
         description.setText(descText);
 
+
+
         setButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 final View contentView = inflater.inflate(R.layout.colorpicker_dialog, null);
                 assert contentView != null;
 
+                final CheckBox sendEachChangeCheckbox =
+                        (CheckBox) contentView.findViewById(R.id.sendEachChange);
+
                 final ColorPicker picker = (ColorPicker) contentView.findViewById(R.id.colorPicker);
                 picker.setColor(value);
                 picker.setListener(new ColorPickerListener() {
                     @Override
                     public void onColorChange(int color) {
+                        if (! sendEachChangeCheckbox.isChecked()) return;
+
                         // remove alpha channel first!
                         ColorPickerRow.this.onColorChange(color & 0x00FFFFFF);
                     }

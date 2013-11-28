@@ -180,6 +180,7 @@
     <string name="channel">Sender</string>
     <string name="currentTitle">Aktueller Titel</string>
     <string name="shutterPosition">Rolladen-Position</string>
+    <string name="sendEachColorChange">Sende jede Farbänderung</string>
 
     <string name="connectionManage">Verwalten</string>
     <string name="connectionCreate">Neue Verbindung erstellen</string>
