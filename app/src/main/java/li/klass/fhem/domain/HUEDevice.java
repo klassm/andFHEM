@@ -5,6 +5,7 @@ import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.DimmableDevice;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
+import li.klass.fhem.util.StringUtil;
 import li.klass.fhem.util.ValueDescriptionUtil;
 import li.klass.fhem.util.ValueExtractUtil;
 
@@ -18,7 +19,7 @@ public class HUEDevice extends DimmableDevice<HUEDevice> {
 
     private SubType subType;
 
-    @ShowField(description = ResourceIdMapper.model)
+    @ShowField(description = ResourceIdMapper.model, showAfter = "definition")
     private String model;
 
     private Integer hue;
@@ -128,7 +129,8 @@ public class HUEDevice extends DimmableDevice<HUEDevice> {
 
     @ShowField(description = ResourceIdMapper.hue)
     public String getHueDesc() {
-        return hue + "";
+        String asHex = Integer.toHexString(hue).toUpperCase();
+        return "0x" + StringUtil.prefixPad(asHex, "0", 6);
     }
 
     public int getSaturation() {

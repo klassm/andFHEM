@@ -52,6 +52,15 @@ public class StringUtil {
         return true;
     }
 
+    public static String prefixPad(String toPad, String padLetter, int targetLength) {
+        if (toPad == null) toPad = "";
+        while(toPad.length() < targetLength) {
+            toPad = padLetter + toPad;
+        }
+
+        return toPad;
+    }
+
     public static boolean isBlank(String value) {
         return value == null || value.trim().equals("");
     }

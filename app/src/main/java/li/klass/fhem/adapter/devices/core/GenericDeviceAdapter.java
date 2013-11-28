@@ -75,6 +75,13 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
         this.deviceClass = deviceClass;
         inflater = (LayoutInflater) AndFHEMApplication.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         afterPropertiesSet();
+        registerFieldListener("state", new FieldNameAddedToDetailListener<D>() {
+            @Override
+            protected void onFieldNameAdded(Context context, TableLayout tableLayout, String field,
+                                            D device, TableRow fieldTableRow) {
+                createWebCmdTableRowIfRequired(inflater, tableLayout, device);
+            }
+        });
     }
 
     protected void afterPropertiesSet() {
@@ -147,14 +154,8 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         TableLayout layout = (TableLayout) view.findViewById(R.id.generic);
-        setTextView(view, R.id.deviceName, device.getAliasOrName());
 
         try {
-            TableRow webCmdTableRow = createWebCmdTableRowIfRequired(inflater, layout, device);
-            if (webCmdTableRow != null) {
-                notifyFieldListeners(context, device, layout, "webcmd", webCmdTableRow);
-            }
-
             DetailViewSettings annotation = device.getClass().getAnnotation(DetailViewSettings.class);
             List<AnnotatedDeviceClassItem> items = getSortedAnnotatedClassItems(device);
 

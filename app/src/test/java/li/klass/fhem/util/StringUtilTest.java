@@ -29,6 +29,7 @@ import org.junit.Test;
 import static li.klass.fhem.util.StringUtil.concatenate;
 import static li.klass.fhem.util.StringUtil.endsWith;
 import static li.klass.fhem.util.StringUtil.isBlank;
+import static li.klass.fhem.util.StringUtil.prefixPad;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -58,5 +59,13 @@ public class StringUtilTest {
         assertThat(endsWith(buffer, "1235"), is(false));
         assertThat(endsWith(buffer, "welt123"), is(true));
         assertThat(endsWith(new StringBuilder(""), "welt123"), is(false));
+    }
+
+    @Test
+    public void testPrefixPad() {
+        assertThat(prefixPad("aa", "0", 6), is("0000aa"));
+        assertThat(prefixPad("aa", "0", 1), is("aa"));
+        assertThat(prefixPad(null, "0", 1), is("0"));
+        assertThat(prefixPad("", "0", 1), is("0"));
     }
 }

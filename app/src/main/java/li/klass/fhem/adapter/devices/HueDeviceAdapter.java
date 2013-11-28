@@ -26,23 +26,18 @@ package li.klass.fhem.adapter.devices;
 
 import android.content.Context;
 import android.content.Intent;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.DimmableAdapter;
 import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
 import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
-import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewAction;
-import li.klass.fhem.adapter.devices.genericui.SeekBarActionRowFullWidthAndButton;
+import li.klass.fhem.adapter.devices.genericui.ColorPickerRow;
 import li.klass.fhem.adapter.devices.genericui.StateChangingSeekBar;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.HUEDevice;
-import li.klass.fhem.domain.SonosPlayerDevice;
 
 public class HueDeviceAdapter extends DimmableAdapter<HUEDevice> {
     public HueDeviceAdapter() {
@@ -55,9 +50,21 @@ public class HueDeviceAdapter extends DimmableAdapter<HUEDevice> {
 
         registerFieldListener("hueDesc", new FieldNameAddedToDetailListener<HUEDevice>() {
             @Override
-            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, HUEDevice device, TableRow fieldTableRow) {
-                tableLayout.addView(new StateChangingSeekBar<HUEDevice>(context, device.getHue(), 65535, "hue")
-                        .createRow(inflater, device));
+            public void onFieldNameAdded(final Context context, TableLayout tableLayout, String field,
+                                         final HUEDevice device, TableRow fieldTableRow) {
+                tableLayout.addView(new ColorPickerRow(device.getHue(), R.string.hue) {
+                    @Override
+                    public void onColorChange(int color) {
+                        Intent intent = new Intent(Actions.DEVICE_SET_SUB_STATE);
+                        intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
+                        intent.putExtra(BundleExtraKeys.STATE_NAME, "hue");
+                        intent.putExtra(BundleExtraKeys.STATE_VALUE, color + "");
+                        GenericDeviceAdapter.putUpdateExtra(intent);
+
+                        context.startService(intent);
+                    }
+                }
+                .createRow(context, inflater));
             }
         });
 

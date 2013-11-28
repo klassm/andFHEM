@@ -47,7 +47,7 @@ public class HUEDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getSaturationDesc(), is("144"));
 
         assertThat(device.getHue(), is(14922));
-        assertThat(device.getHueDesc(), is("14922"));
+        assertThat(device.getHueDesc(), is("0x003A4A"));
 
         assertThat(device.getPositionForDimState("off"), is(0));
     }
