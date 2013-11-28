@@ -27,12 +27,12 @@ package li.klass.fhem.error;
 import android.content.Context;
 import android.content.Intent;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
-
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.util.DialogUtil;
+
+import static li.klass.fhem.util.StackTraceUtil.exceptionAsString;
+import static li.klass.fhem.util.StackTraceUtil.whereAmI;
 
 public class ErrorHolder {
     private volatile transient Exception errorException;
@@ -56,19 +56,17 @@ public class ErrorHolder {
         ErrorHolder holder = ErrorHolder.ERROR_HOLDER;
         String text = holder.errorMessage;
 
+        String exceptionString;
         if (holder.errorException != null) {
-            text += "\r\n --------- \r\n\r\n" + holder.exceptionAsString();
+            exceptionString = exceptionAsString(holder.errorException);
+        } else {
+            exceptionString = whereAmI();
+        }
+
+        if (holder.errorException != null) {
+            text += "\r\n --------- \r\n\r\n" + exceptionString;
         }
         return text;
-    }
-
-    private String exceptionAsString() {
-        if (errorException == null) return null;
-
-        StringWriter errors = new StringWriter();
-        errorException.printStackTrace(new PrintWriter(errors));
-
-        return errors.toString();
     }
 
     public static void sendLastErrorAsMail(final Context context) {
