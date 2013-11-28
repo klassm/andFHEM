@@ -176,7 +176,7 @@ public enum DeviceType {
     OPENWEATHERMAP("openweathermap", OpenWeatherMapDevice.class),
     PCA301("PCA301", PCA301Device.class),
     REMOTECONTROL("remotecontrol", RemoteControlDevice.class, new RemoteControlAdapter(), DeviceVisibility.FHEMWEB_ONLY),
-    RPI_GPIO("RPI_GPIO", RPIGPIODevice.class),
+    RPI_GPIO("RPI_GPIO", RPIGPIODevice.class, new ToggleableAdapter<RPIGPIODevice>(RPIGPIODevice.class)),
     ;
 
     private String xmllistTag;

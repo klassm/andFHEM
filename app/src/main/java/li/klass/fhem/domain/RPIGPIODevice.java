@@ -27,12 +27,12 @@ package li.klass.fhem.domain;
 
 import org.w3c.dom.NamedNodeMap;
 
-import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceFunctionality;
+import li.klass.fhem.domain.core.ToggleableDevice;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
 
 @OverviewViewSettings(showState = true)
-public class RPIGPIODevice extends Device<RPIGPIODevice> {
+public class RPIGPIODevice extends ToggleableDevice<RPIGPIODevice> {
     @Override
     public DeviceFunctionality getDeviceFunctionality() {
         return DeviceFunctionality.SWITCH;
@@ -45,5 +45,10 @@ public class RPIGPIODevice extends Device<RPIGPIODevice> {
         if (tagName.equalsIgnoreCase("STATE") && key.equalsIgnoreCase("state")) {
             measured = attributes.getNamedItem("measured").getNodeValue();
         }
+    }
+
+    @Override
+    public boolean supportsToggle() {
+        return true;
     }
 }
