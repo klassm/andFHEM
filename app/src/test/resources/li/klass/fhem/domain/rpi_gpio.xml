@@ -1,0 +1,41 @@
+
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<RPI_GPIO_LIST>
+    <RPI_GPIO name="device" state="on" sets="readValue" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings poll_interval loglevel:0,1,2,3,4,5 direction:input,output pud_resistor:off,up,down interrupt:none,falling,rising,both toggletostate:no,yes DbLogExclude devStateIcon devStateStyle icon item1 item10 item11 item12 item13 item14 item15 item16 item17 item18 item19 item2 item20 item3 item4 item5 item6 item7 item8 item9 sortby webCmd">
+        <INT key="DEF" value="17"/>
+        <INT key="EXCEPT_FD" value="23"/>
+        <INT key="NAME" value="device"/>
+        <INT key="NR" value="47"/>
+        <INT key="RPI_pin" value="17"/>
+        <INT key="STATE" value="on"/>
+        <INT key="TYPE" value="RPI_GPIO"/>
+        <ATTR key="direction" value="input"/>
+        <ATTR key="interrupt" value="falling"/>
+        <ATTR key="room" value="room"/>
+        <STATE key="Pinlevel" value="high" measured="2013-11-25 20:06:26"/>
+        <STATE key="state" value="on" measured="2013-11-14 14:58:27"/>
+    </RPI_GPIO>
+</RPI_GPIO_LIST>

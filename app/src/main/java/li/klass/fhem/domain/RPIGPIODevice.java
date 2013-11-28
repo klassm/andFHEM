@@ -24,14 +24,26 @@
 
 package li.klass.fhem.domain;
 
+
+import org.w3c.dom.NamedNodeMap;
+
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
 
-@OverviewViewSettings(showMeasured = true, showState = true)
-public class UniRollDevice extends Device<UniRollDevice> {
+@OverviewViewSettings(showState = true)
+public class RPIGPIODevice extends Device<RPIGPIODevice> {
     @Override
     public DeviceFunctionality getDeviceFunctionality() {
-        return DeviceFunctionality.WINDOW;
+        return DeviceFunctionality.SWITCH;
+    }
+
+    @Override
+    public void onChildItemRead(String tagName, String key, String value, NamedNodeMap attributes) {
+        super.onChildItemRead(tagName, key, value, attributes);
+
+        if (tagName.equalsIgnoreCase("STATE") && key.equalsIgnoreCase("state")) {
+            measured = attributes.getNamedItem("measured").getNodeValue();
+        }
     }
 }

@@ -90,6 +90,7 @@ import li.klass.fhem.domain.PIDDevice;
 import li.klass.fhem.domain.PresenceDevice;
 import li.klass.fhem.domain.RFXCOMDevice;
 import li.klass.fhem.domain.RFXX10RECDevice;
+import li.klass.fhem.domain.RPIGPIODevice;
 import li.klass.fhem.domain.RemoteControlDevice;
 import li.klass.fhem.domain.SISPMSDevice;
 import li.klass.fhem.domain.SWAPDevice;
@@ -174,7 +175,8 @@ public enum DeviceType {
     FS20_ZDR("fs20_zdr", FS20ZDRDevice.class, new FS20ZDRDeviceAdapter()),
     OPENWEATHERMAP("openweathermap", OpenWeatherMapDevice.class),
     PCA301("PCA301", PCA301Device.class),
-    REMOTECONTROL("remotecontrol", RemoteControlDevice.class, new RemoteControlAdapter(), DeviceVisibility.FHEMWEB_ONLY)
+    REMOTECONTROL("remotecontrol", RemoteControlDevice.class, new RemoteControlAdapter(), DeviceVisibility.FHEMWEB_ONLY),
+    RPI_GPIO("RPI_GPIO", RPIGPIODevice.class),
     ;
 
     private String xmllistTag;

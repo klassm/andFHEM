@@ -24,14 +24,27 @@
 
 package li.klass.fhem.domain;
 
-import li.klass.fhem.domain.core.Device;
-import li.klass.fhem.domain.core.DeviceFunctionality;
-import li.klass.fhem.domain.genericview.OverviewViewSettings;
+import org.junit.Test;
 
-@OverviewViewSettings(showMeasured = true, showState = true)
-public class UniRollDevice extends Device<UniRollDevice> {
+import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
+
+public class RPIGPIODeviceTest extends DeviceXMLParsingBase {
+    @Test
+    public void testForCorrectlySetAttributes() {
+        RPIGPIODevice device = getDefaultDevice();
+
+        assertThat(device.getName(), is(DEFAULT_TEST_DEVICE_NAME));
+        assertThat(device.getRoomConcatenated(), is(DEFAULT_TEST_ROOM_NAME));
+
+        assertThat(device.getState(), is("on"));
+        assertThat(device.getMeasured(), is("2013-11-14 14:58:27"));
+    }
+
     @Override
-    public DeviceFunctionality getDeviceFunctionality() {
-        return DeviceFunctionality.WINDOW;
+    protected String getFileName() {
+        return "rpi_gpio.xml";
     }
 }

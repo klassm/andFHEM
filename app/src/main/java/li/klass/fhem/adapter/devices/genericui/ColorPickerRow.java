@@ -41,12 +41,12 @@ import li.klass.fhem.util.DialogUtil;
 public class ColorPickerRow implements ColorPickerListener {
     private final int originalValue;
     private int value;
-    private int descText;
+    private int alertDialogTitle;
 
-    public ColorPickerRow(int value, int descText) {
+    public ColorPickerRow(int value, int alertDialogTitle) {
         this.originalValue = value;
         this.value = value;
-        this.descText = descText;
+        this.alertDialogTitle = alertDialogTitle;
     }
 
     public TableRow createRow(final Context context, final LayoutInflater inflater) {
@@ -60,7 +60,7 @@ public class ColorPickerRow implements ColorPickerListener {
         Button setButton = (Button) view.findViewById(R.id.set);
 
         TextView description = (TextView) view.findViewById(R.id.description);
-        description.setText(descText);
+        description.setText("");
 
 
 
@@ -85,7 +85,7 @@ public class ColorPickerRow implements ColorPickerListener {
                     }
                 });
 
-                String title = context.getString(descText);
+                String title = context.getString(alertDialogTitle);
                 DialogUtil.showContentDialog(context, title, contentView, new DialogUtil.AlertOnClickListener() {
                     @Override
                     public void onClick() {
