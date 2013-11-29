@@ -88,6 +88,9 @@ public class TelnetConnection extends FHEMConnection {
                 return new RequestResult<String>(RequestResultError.HOST_CONNECTION_ERROR);
             }
 
+            // to discard
+            read(inputStream);
+
             writeCommand(printStream, command);
 
             // If we send an xmllist, we are done when finding the closing FHZINFO tag.
@@ -118,7 +121,9 @@ public class TelnetConnection extends FHEMConnection {
                 result = result.substring(startPos);
             }
 
-            result = result.replaceAll("Bye...", "");
+            result = result
+                    .replaceAll("Bye...", "")
+                    .replaceAll("fhem>", "");
             result = new String(result.getBytes("UTF8"));
             Log.d(TAG, "result is :: " + result);
 
