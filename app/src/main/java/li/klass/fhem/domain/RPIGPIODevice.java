@@ -30,6 +30,7 @@ import org.w3c.dom.NamedNodeMap;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.ToggleableDevice;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
+import li.klass.fhem.util.ArrayUtil;
 
 @OverviewViewSettings(showState = true)
 public class RPIGPIODevice extends ToggleableDevice<RPIGPIODevice> {
@@ -49,6 +50,7 @@ public class RPIGPIODevice extends ToggleableDevice<RPIGPIODevice> {
 
     @Override
     public boolean supportsToggle() {
-        return true;
+        String[] availableTargetStates = getAvailableTargetStates();
+        return ArrayUtil.contains(availableTargetStates, "on", "off");
     }
 }
