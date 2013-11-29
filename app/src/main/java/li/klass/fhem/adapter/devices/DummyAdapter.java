@@ -36,7 +36,9 @@ import java.util.Calendar;
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.DimmableAdapter;
 import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
+import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
 import li.klass.fhem.adapter.devices.genericui.ButtonActionRow;
+import li.klass.fhem.adapter.devices.genericui.ColorPickerRow;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.DummyDevice;
@@ -83,6 +85,25 @@ public class DummyAdapter extends DimmableAdapter<DummyDevice> {
             @Override
             public boolean supportsDevice(DummyDevice device) {
                 return device.isTimerDevice();
+            }
+        });
+
+        registerFieldListener("rgbDesc", new FieldNameAddedToDetailListener<DummyDevice>() {
+            @Override
+            public void onFieldNameAdded(final Context context, TableLayout tableLayout, String field,
+                                         final DummyDevice device, TableRow fieldTableRow) {
+                tableLayout.addView(new ColorPickerRow(device.getRGBColor(), R.string.hue) {
+                    @Override
+                    public void onColorChange(int color) {
+                        Intent intent = new Intent(Actions.DEVICE_SET_SUB_STATE);
+                        intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
+                        intent.putExtra(BundleExtraKeys.STATE_NAME, "rgb");
+                        intent.putExtra(BundleExtraKeys.STATE_VALUE, Integer.toHexString(color));
+                        GenericDeviceAdapter.putUpdateExtra(intent);
+
+                        context.startService(intent);
+                    }
+                } .createRow(context, inflater));
             }
         });
     }

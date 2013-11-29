@@ -26,9 +26,12 @@ package li.klass.fhem.util;
 
 import org.junit.Test;
 
+import static li.klass.fhem.util.NumberSystemUtil.hexToDecimal;
 import static li.klass.fhem.util.NumberSystemUtil.hexToQuaternary;
 import static li.klass.fhem.util.NumberSystemUtil.quaternaryToHex;
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 
 public class NumberSystemUtilTest {
 
@@ -51,5 +54,11 @@ public class NumberSystemUtilTest {
     @Test(expected = IllegalArgumentException.class)
     public void testIllegalQuaternaryToHex() {
         quaternaryToHex("3352229101");
+    }
+
+    @Test
+    public void testHexToDecimal() {
+        assertThat(hexToDecimal("F"), is(15));
+        assertThat(hexToDecimal("AB"), is(171));
     }
 }

@@ -1039,6 +1039,18 @@
 </HOL>
 </HOL_LIST>
 <dummy_LIST>
+<dummy name="LED1" state="rgb FF0000" sets="rgb:colorpicker,RGB" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings setList event-on-change-reading event-on-update-reading event-min-interval stateFormat DMX_B DMX_G DMX_M DMX_R DMX_S devStateIcon devStateStyle fp_Groundfloor icon sortby webCmd">
+    <INT key="NAME" value="LED1"/>
+    <INT key="NR" value="348"/>
+    <INT key="STATE" value="rgb FF0000"/>
+    <INT key="TYPE" value="dummy"/>
+    <ATTR key="alias" value="Fenster 1"/>
+    <ATTR key="group" value="LEDs"/>
+    <ATTR key="room" value="buero"/>
+    <ATTR key="setList" value="rgb:colorpicker,RGB"/>
+    <ATTR key="webCmd" value="rgb:rgb FF0000:rgb C8FF12:rgb 0000FF:toggle:on:off"/>
+    <STATE key="state" value="rgb FF0000" measured="2013-11-29 13:17:19"/>
+</dummy>
 <dummy name="timerDevice" state="???" sets="state:time"
        attrs="room group comment alias eventMap userReadings loglevel:0,1,2,3,4,5,6 setList event-on-change-reading event-on-update-reading event-min-interval stateFormat alias_map custom_graph devStateIcon fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon invertState measured-temp offDevice onDevice onOffDevice sortby structexclude toggleDevice webCmd">
     <INT key="CFGFN" value=""/>
@@ -1046,7 +1058,7 @@
     <INT key="NR" value="290"/>
     <INT key="STATE" value="???"/>
     <INT key="TYPE" value="dummy"/>
-    <ATTR key="room" value="room"/>
+    <ATTR key="room" value="buero"/>
     <ATTR key="setList" value="state:time"/>
 </dummy>
 <dummy name="myvar" state="7" sets="*"

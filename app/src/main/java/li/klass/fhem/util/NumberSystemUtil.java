@@ -55,6 +55,10 @@ public class NumberSystemUtil {
         return toNumberSystem(totalDecimal, 16);
     }
 
+    public static int hexToDecimal(String hex) {
+        return toDecimal(hex, 16);
+    }
+
     private static String toNumberSystem(int totalDecimal, int targetSystem) {
         StringBuilder result = new StringBuilder();
         do {

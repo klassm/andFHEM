@@ -24,11 +24,15 @@
 
 package li.klass.fhem.domain;
 
-import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 import org.junit.Test;
 
+import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.arrayContaining;
+import static org.hamcrest.Matchers.hasItemInArray;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.Is.is;
 
 public class DummyDeviceTest extends DeviceXMLParsingBase {
@@ -116,6 +120,14 @@ public class DummyDeviceTest extends DeviceXMLParsingBase {
         assertThat(eventMapStates, hasItemInArray("Unten"));
         assertThat(eventMapStates, hasItemInArray("Halbschatten"));
         assertThat(eventMapStates, hasItemInArray("Vollschatten"));
+    }
+
+    @Test
+    public void testRGBDevice() {
+        DummyDevice device = getDeviceFor("rgbDevice");
+
+        assertThat(device.getRgbDesc(), is("0xFFAB01"));
+        assertThat(device.getRGBColor(), is(16755457));
     }
 
     @Override

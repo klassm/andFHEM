@@ -30,10 +30,14 @@ import org.w3c.dom.NamedNodeMap;
 
 import java.util.Arrays;
 
+import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.DimmableDevice;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
+import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.util.ArrayUtil;
+
+import static li.klass.fhem.util.NumberSystemUtil.hexToDecimal;
 
 @OverviewViewSettings(showState = true)
 @SuppressWarnings("unused")
@@ -87,6 +91,9 @@ public class DummyDevice extends DimmableDevice<DummyDevice> {
 
     @Override
     public DeviceFunctionality getDeviceFunctionality() {
+        String[] availableTargetStates = getAvailableTargetStates();
+        if (ArrayUtil.contains(availableTargetStates, "rgb")) return DeviceFunctionality.SWITCH;
+
         return DeviceFunctionality.functionalityForDimmable(this);
     }
 
@@ -127,5 +134,28 @@ public class DummyDevice extends DimmableDevice<DummyDevice> {
     @Override
     public boolean supportsDim() {
         return dimLowerBound != null && dimUpperBound != null && dimStep != null;
+    }
+
+    @ShowField(description = ResourceIdMapper.hue)
+    public String getRgbDesc() {
+        return "0x" + getRgb();
+    }
+
+    private String getRgb() {
+        if (! ArrayUtil.contains(getAvailableTargetStates(), "rgb")) return null;
+        String state = getInternalState();
+        if (!state.startsWith("rgb")) return null;
+
+        return state.substring("rgb".length()).trim();
+    }
+
+    public int getRGBColor() {
+        String rgb = getRgb();
+        if (rgb == null) return 0;
+        return hexToDecimal(rgb);
+    }
+
+    public void readRGB(String value) {
+        setState("rgb " + value);
     }
 }
