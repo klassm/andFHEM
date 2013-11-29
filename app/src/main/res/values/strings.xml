@@ -184,6 +184,7 @@
     <string name="currentTitle">Current title</string>
     <string name="shutterPosition">Shutter position</string>
     <string name="sendEachColorChange">Send each color change</string>
+    <string name="level">Level</string>
 
     <string name="connectionManage">Manage</string>
     <string name="connectionCreate">Create a new connection</string>

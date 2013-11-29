@@ -27,13 +27,24 @@ package li.klass.fhem.domain;
 
 import org.w3c.dom.NamedNodeMap;
 
+import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.ToggleableDevice;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
+import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.util.ArrayUtil;
 
 @OverviewViewSettings(showState = true)
 public class RPIGPIODevice extends ToggleableDevice<RPIGPIODevice> {
+
+    @ShowField(description = ResourceIdMapper.level)
+    private String pinLevel;
+
+    @SuppressWarnings("unused")
+    public void readPINLEVEL(String value) {
+        this.pinLevel = value;
+    }
+
     @Override
     public DeviceFunctionality getDeviceFunctionality() {
         return DeviceFunctionality.SWITCH;
@@ -46,6 +57,10 @@ public class RPIGPIODevice extends ToggleableDevice<RPIGPIODevice> {
         if (tagName.equalsIgnoreCase("STATE") && key.equalsIgnoreCase("state")) {
             measured = attributes.getNamedItem("measured").getNodeValue();
         }
+    }
+
+    public String getPinLevel() {
+        return pinLevel;
     }
 
     @Override

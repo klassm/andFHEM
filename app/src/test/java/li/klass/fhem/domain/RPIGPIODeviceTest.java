@@ -41,6 +41,8 @@ public class RPIGPIODeviceTest extends DeviceXMLParsingBase {
 
         assertThat(device.getState(), is("on"));
         assertThat(device.getMeasured(), is("2013-11-14 14:58:27"));
+
+        assertThat(device.getPinLevel(), is("high"));
     }
 
     @Override
