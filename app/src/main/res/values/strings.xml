@@ -268,6 +268,7 @@
     <string name="error_internal_server_error">Internal Server Error (500). Read server logs!</string>
     <string name="error_bad_request">Bad Request (400)!</string>
     <string name="error_not_found">Not found (404)!</string>
+    <string name="error_timer_name_spaces">Timer names may not contain spaces!</string>
     <string name="retry">Retry</string>
     <string name="prefUrlBeginningError">URL has to start with http!</string>
     <string name="incompleteConfigurationError">Incomplete configuration!</string>

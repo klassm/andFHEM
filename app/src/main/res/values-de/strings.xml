@@ -265,6 +265,7 @@
     <string name="error_internal_server_error">Interner Server-Fehler (500). Bitte Server Logs lesen.</string>
     <string name="error_bad_request">Fehlerhafte Anfrage (400)"</string>
     <string name="error_not_found">Seite nicht gefunden (404)"</string>
+    <string name="error_timer_name_spaces">Der Name von Zeitschaltuhren darf keine Leerzeichen enthalten!</string>
     <string name="retry">Wiederholen</string>
     <string name="prefUrlBeginningError">URL muss mit http beginnen!</string>
     <string name="incompleteConfigurationError">Konfiguration ist nicht vollständig!</string>

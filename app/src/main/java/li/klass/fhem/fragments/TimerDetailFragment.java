@@ -51,6 +51,7 @@ import li.klass.fhem.domain.core.DeviceStateAdditionalInformationType;
 import li.klass.fhem.domain.core.DeviceStateRequiringAdditionalInformation;
 import li.klass.fhem.fragments.core.BaseFragment;
 import li.klass.fhem.fragments.device.DeviceNameSelectionFragment;
+import li.klass.fhem.util.DialogUtil;
 import li.klass.fhem.util.FhemResultReceiver;
 import li.klass.fhem.widget.TimePickerWithSecondsDialog;
 
@@ -285,6 +286,11 @@ public class TimerDetailFragment extends BaseFragment {
         if (!isModify) {
             EditText timerNameView = (EditText) getView().findViewById(R.id.timerName);
             timerDeviceName = timerNameView.getText().toString();
+
+            if (timerDeviceName.contains(" ")) {
+                DialogUtil.showAlertDialog(getActivity(), R.string.error, R.string.error_timer_name_spaces);
+                return;
+            }
         }
         bundle.putString(BundleExtraKeys.TIMER_NAME, timerDeviceName);
 
