@@ -139,12 +139,9 @@ a:hover {
   z-index: 10;
   position: absolute;
   overflow: hidden;
-  left: 0;
-  height: 0;
+  left: -230px;
   width: 230px;
   opacity: 0.9;
-  transition: height 1s;
-  -webkit-transition: height 1s; 
 }
 
 #navbar .nav {
