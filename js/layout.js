@@ -79,7 +79,6 @@ $(document).ready(function() {
       navbar.css("height", $(document).height()); 
       
       isNavbarPermanent = (width > height && width > 800);
-      isNavbarPermanent = false;
       
       var time = animationTime;
       if (! animate) time = 0;
