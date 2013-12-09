@@ -33,7 +33,7 @@ $(document).ready(function() {
     hideNavbar = function() {
       if (isNavbarPermanent) return;
       
-      if (isClickLinkTarget(event.target)) return;
+      if (isNavbarClickTarget(event.target)) return;
       
       var navbar = $("#navbar");
       if (!! isNavbarVisible()) {
@@ -62,10 +62,11 @@ $(document).ready(function() {
       return ! (left && left != "0px");
     }
     
-    function isClickLinkTarget(target) {
+    function isNavbarClickTarget(target) {
       if (! target) return false;
       if (target.nodeName == "A") return true;
-      return isClickLinkTarget(target.parentElement);
+      if (target.nodeName == "DIV" && target.id == "navbar") return true;
+      return isNavbarClickTarget(target.parentElement);
     }
     
     function handlePermanentNavbar(animate) {
@@ -78,6 +79,7 @@ $(document).ready(function() {
       navbar.css("height", $(document).height()); 
       
       isNavbarPermanent = (width > height && width > 800);
+      isNavbarPermanent = false;
       
       var time = animationTime;
       if (! animate) time = 0;
