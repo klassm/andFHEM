@@ -44,6 +44,10 @@
     <string name="time">Zeit</string>
     <string name="avgDay">Tagesschnitt</string>
     <string name="avgMonth">Monatsschnitt</string>
+    <string name="minDay">Tagesminimum</string>
+    <string name="minMonth">Monatsminimum</string>
+    <string name="maxDay">Tagesmaximum</string>
+    <string name="maxMonth">Monatsmaximum</string>
     <string name="isRaining">Regnet es?</string>
     <string name="desiredTemperature">Wunschtemperatur</string>
     <string name="comfortTemperature">Komfort-Temperatur</string>

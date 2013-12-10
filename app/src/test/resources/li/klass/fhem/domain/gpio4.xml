@@ -110,5 +110,39 @@
             <STATE key="state" value="T: 20.437" measured="2013-11-01 06:46:05"/>
             <STATE key="temperature" value="20.437" measured="2013-11-01 06:46:05"/>
         </GPIO4>
+
+        <GPIO4 name="additionalAttributes" state="20.937 °C (Mittelwert:
+20.6 °C)" sets="" attrs="verbose:0,1,2,3,4,5 room group comment alias
+eventMap userReadings tempOffset pollingInterval model
+loglevel:0,1,2,3,4,5,6 event-on-change-reading event-on-update-reading
+event-min-interval stateFormat DbLogExclude devStateIcon devStateStyle
+icon item1 item10 item11 item12 item13 item14 item15 item16 item17
+item18 item19 item2 item20 item3 item4 item5 item6 item7 item8 item9
+sortby webCmd">
+            <INT key="DEF" value="10-000802299fdc"/>
+            <INT key="NAME" value="additionalAttributes"/>
+            <INT key="NR" value="102"/>
+            <INT key="STATE" value="20.937 °C (Mittelwert: 20.6 °C)"/>
+            <INT key="TYPE" value="GPIO4"/>
+            <ATTR key="alias" value="Aktuell"/>
+            <ATTR key="group" value="Temperatur"/>
+            <ATTR key="icon" value="icoTemp"/>
+            <ATTR key="model" value="DS1820"/>
+            <ATTR key="room" value="room"/>
+            <ATTR key="sortby" value="B00"/>
+            <ATTR key="stateFormat" value="temperature °C (Mittelwert: T_avg_day °C)"/>
+            <STATE key="T_avg_day" value="20.6" measured="2013-11-29 15:56:09"/>
+            <STATE key="T_avg_month" value="20.3" measured="2013-11-29 15:56:09"/>
+            <STATE key="T_cum_day" value="1180986.216" measured="2013-11-29 15:56:09"/>
+            <STATE key="T_cum_month" value="52150296.5679963" measured="2013-11-29
+15:56:09"/>
+            <STATE key="T_max_day" value="22.2" measured="2013-11-29 00:07:58"/>
+            <STATE key="T_max_month" value="22.6" measured="2013-11-26 14:42:16"/>
+            <STATE key="T_min_day" value="20.1" measured="2013-11-29 12:24:23"/>
+            <STATE key="T_min_month" value="0.0" measured="2013-11-27 22:38:09"/>
+            <STATE key="failures" value="0" measured="2013-11-29 14:27:36"/>
+            <STATE key="state" value="T: 20.937" measured="2013-11-29 15:56:09"/>
+            <STATE key="temperature" value="20.937" measured="2013-11-29 15:56:09"/>
+        </GPIO4>
     </GPIO4_LIST>
 </FHZINFO>

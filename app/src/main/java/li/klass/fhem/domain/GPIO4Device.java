@@ -45,6 +45,24 @@ public class GPIO4Device extends Device<GPIO4Device> {
     @ShowField(description = ResourceIdMapper.temperature, showInOverview = true)
     private String temperature;
 
+    @ShowField(description = ResourceIdMapper.avgDay)
+    private String averageDay;
+
+    @ShowField(description = ResourceIdMapper.avgMonth)
+    private String averageMonth;
+
+    @ShowField(description = ResourceIdMapper.maxDay)
+    private String maxDay;
+
+    @ShowField(description = ResourceIdMapper.maxMonth)
+    private String maxMonth;
+
+    @ShowField(description = ResourceIdMapper.minDay)
+    private String minDay;
+
+    @ShowField(description = ResourceIdMapper.minMonth)
+    private String minMonth;
+
     private enum SubType {
         TEMPERATURE
     }
@@ -57,6 +75,30 @@ public class GPIO4Device extends Device<GPIO4Device> {
 
     public void readTEMPERATURE(String value) {
         temperature = ValueDescriptionUtil.appendTemperature(value);
+    }
+
+    public void readT_AVG_DAY(String value) {
+        this.averageDay = ValueDescriptionUtil.appendTemperature(value);
+    }
+
+    public void readT_AVG_MONTH(String value) {
+        this.averageMonth = ValueDescriptionUtil.appendTemperature(value);
+    }
+
+    public void readT_MIN_DAY(String value) {
+        this.minDay = ValueDescriptionUtil.appendTemperature(value);
+    }
+
+    public void readT_MIN_MONTH(String value) {
+        this.minMonth = ValueDescriptionUtil.appendTemperature(value);
+    }
+
+    public void readT_MAX_DAY(String value) {
+        this.maxDay = ValueDescriptionUtil.appendTemperature(value);
+    }
+
+    public void readT_MAX_MONTH(String value) {
+        this.maxMonth = ValueDescriptionUtil.appendTemperature(value);
     }
 
     public String getTemperature() {
@@ -76,6 +118,30 @@ public class GPIO4Device extends Device<GPIO4Device> {
     @Override
     public boolean isSupported() {
         return subType != null;
+    }
+
+    public String getAverageDay() {
+        return averageDay;
+    }
+
+    public String getAverageMonth() {
+        return averageMonth;
+    }
+
+    public String getMaxDay() {
+        return maxDay;
+    }
+
+    public String getMaxMonth() {
+        return maxMonth;
+    }
+
+    public String getMinDay() {
+        return minDay;
+    }
+
+    public String getMinMonth() {
+        return minMonth;
     }
 
     @Override

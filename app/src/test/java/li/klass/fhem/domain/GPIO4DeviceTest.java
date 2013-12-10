@@ -55,6 +55,19 @@ public class GPIO4DeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getTemperature(), is("20.437 (°C)"));
     }
 
+    @Test
+    public void testAdditionalAttributesDevice() {
+        GPIO4Device device = getDeviceFor("additionalAttributes");
+        assertThat(device, is(notNullValue()));
+
+        assertThat(device.getAverageDay(), is("20.6 (°C)"));
+        assertThat(device.getAverageMonth(), is("20.3 (°C)"));
+        assertThat(device.getMinDay(), is("20.1 (°C)"));
+        assertThat(device.getMinMonth(), is("0.0 (°C)"));
+        assertThat(device.getMaxDay(), is("22.2 (°C)"));
+        assertThat(device.getMaxMonth(), is("22.6 (°C)"));
+    }
+
     @Override
     protected String getFileName() {
         return "gpio4.xml";
