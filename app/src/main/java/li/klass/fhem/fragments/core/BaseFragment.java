@@ -175,7 +175,9 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
                 @Override
                 public void onClick(View view) {
                     hideConnectionError();
-                    update(true);
+
+                    Intent resendIntent = new Intent(Actions.RESEND_LAST_FAILED_COMMAND);
+                    getActivity().startService(resendIntent);
                 }
             });
         }

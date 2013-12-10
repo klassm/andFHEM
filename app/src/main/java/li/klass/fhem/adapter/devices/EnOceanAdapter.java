@@ -39,6 +39,7 @@ import li.klass.fhem.adapter.devices.genericui.ButtonActionRow;
 import li.klass.fhem.adapter.devices.genericui.SeekBarActionRowFullWidth;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
+import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.domain.EnOceanDevice;
 
 public class EnOceanAdapter extends DimmableAdapter<EnOceanDevice> {
@@ -90,6 +91,8 @@ public class EnOceanAdapter extends DimmableAdapter<EnOceanDevice> {
                         intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
                             @Override
                             protected void onReceiveResult(int resultCode, Bundle resultData) {
+                                if (resultCode != ResultCodes.SUCCESS) return;
+
                                 device.setShutterPosition(progress);
                                 context.sendBroadcast(new Intent(Actions.DO_UPDATE));
                             }

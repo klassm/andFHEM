@@ -248,6 +248,8 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
                 protected void onReceiveResult(int resultCode, Bundle resultData) {
                     super.onReceiveResult(resultCode, resultData);
 
+                    if (resultCode != ResultCodes.SUCCESS) return;
+
                     handleHasFavoritesResponse(resultCode, resultData);
                 }
             });

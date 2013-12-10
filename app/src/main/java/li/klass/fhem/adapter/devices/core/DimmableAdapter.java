@@ -26,9 +26,6 @@ package li.klass.fhem.adapter.devices.core;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.ResultReceiver;
 import android.view.View;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -71,12 +68,7 @@ public class DimmableAdapter<D extends DimmableDevice<D>> extends ToggleableAdap
             Intent intent = new Intent(Actions.DEVICE_DIM);
             intent.putExtra(BundleExtraKeys.DEVICE_DIM_PROGRESS, target);
             intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
-            intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
-                @Override
-                protected void onReceiveResult(int resultCode, Bundle resultData) {
-                    context.sendBroadcast(new Intent(Actions.DO_UPDATE));
-                }
-            });
+            intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver(context));
 
             context.startService(intent);
         }

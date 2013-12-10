@@ -201,11 +201,14 @@ public class RoomListService extends AbstractService {
     }
 
     /**
-     * Switch method deciding whether a FHEM has to be contacted, the cached list can be used or the map already has
-     * been loaded to the deviceListMap attribute.
+     * Switch method deciding whether a FHEM has to be contacted, the cached list can be used or
+     * the map already has been loaded to the deviceListMap attribute.
+     * Note that if a remote update is currently in progress, the calling thread will be locked
+     * until the current operation has completed. This is especially important, as we are
+     * called by a thread pool in {@link li.klass.fhem.service.intent.RoomListIntentService}.
      *
-     * @param updatePeriod -1 if the underlying list should always be updated, otherwise do update if the last update is
-     *                     longer ago than the given period
+     * @param updatePeriod -1 if the underlying list should always be updated, otherwise do update
+     *                     if the last update is longer ago than the given period
      * @return current room device list map
      */
     private Map<String, RoomDeviceList> getRoomDeviceListMap(long updatePeriod) {
@@ -219,6 +222,8 @@ public class RoomListService extends AbstractService {
 
             try {
                 if (! currentlyUpdating.compareAndSet(false, true)) {
+                    awaitUpdateCompletion();
+
                     return deviceListMap;
                 }
 
@@ -239,6 +244,9 @@ public class RoomListService extends AbstractService {
                             getContext().startService(new Intent(DEVICE_LIST_REMOTE_NOTIFY));
 
                             updateLock.unlock();
+                            synchronized (currentlyUpdating) {
+                                currentlyUpdating.notifyAll();
+                            }
                         }
                         return null;
                     }
@@ -261,6 +269,15 @@ public class RoomListService extends AbstractService {
         }
 
         return deviceListMap;
+    }
+
+    private void awaitUpdateCompletion() throws InterruptedException {
+        while (currentlyUpdating.get() && deviceListMap == null) {
+            Log.i(TAG, "Update in progress, still got null device list, waiting ...");
+            synchronized (currentlyUpdating) {
+                currentlyUpdating.wait();
+            }
+        }
     }
 
     private void sendErrorMessage(int errorStringId) {

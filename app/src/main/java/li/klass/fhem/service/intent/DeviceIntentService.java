@@ -34,6 +34,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
+import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.domain.FHTDevice;
@@ -49,6 +50,7 @@ import li.klass.fhem.domain.heating.DesiredTempDevice;
 import li.klass.fhem.domain.heating.EcoTempDevice;
 import li.klass.fhem.domain.heating.HeatingDevice;
 import li.klass.fhem.domain.heating.WindowOpenTempDevice;
+import li.klass.fhem.service.CommandExecutionService;
 import li.klass.fhem.service.device.AtService;
 import li.klass.fhem.service.device.DeviceService;
 import li.klass.fhem.service.device.DimmableDeviceService;
@@ -92,6 +94,7 @@ import static li.klass.fhem.constants.Actions.DEVICE_WIDGET_TOGGLE;
 import static li.klass.fhem.constants.Actions.GCM_ADD_SELF;
 import static li.klass.fhem.constants.Actions.GCM_REMOVE_ID;
 import static li.klass.fhem.constants.Actions.REDRAW_WIDGET;
+import static li.klass.fhem.constants.Actions.RESEND_LAST_FAILED_COMMAND;
 import static li.klass.fhem.constants.BundleExtraKeys.APP_WIDGET_ID;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_GRAPH_ENTRY_MAP;
 import static li.klass.fhem.constants.BundleExtraKeys.STATE_NAME;
@@ -229,7 +232,19 @@ public class DeviceIntentService extends ConvenientIntentService {
         } else if (GCM_REMOVE_ID.equals(action)) {
             String registrationId = intent.getStringExtra(BundleExtraKeys.GCM_REGISTRATION_ID);
             GCMSendDeviceService.INSTANCE.removeRegistrationId((GCMSendDevice) device, registrationId);
+
+        } else if (RESEND_LAST_FAILED_COMMAND.equals(action)) {
+
+            String lastFailedCommand = CommandExecutionService.INSTANCE.getLastFailedCommand();
+            if ("xmllist".equalsIgnoreCase(lastFailedCommand)) {
+                Intent updateIntent = new Intent(Actions.DO_UPDATE);
+                updateIntent.putExtra(BundleExtraKeys.DO_REFRESH, true);
+                sendBroadcast(updateIntent);
+            } else {
+                CommandExecutionService.INSTANCE.resendLastFailedCommand();
+            }
         }
+
         return SUCCESS;
     }
 

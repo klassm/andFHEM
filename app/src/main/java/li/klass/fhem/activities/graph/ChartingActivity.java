@@ -35,19 +35,12 @@ import android.os.Handler;
 import android.os.ResultReceiver;
 import android.preference.PreferenceManager;
 import android.util.Log;
+
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
-import li.klass.fhem.R;
-import li.klass.fhem.activities.core.Updateable;
-import li.klass.fhem.constants.Actions;
-import li.klass.fhem.constants.ResultCodes;
-import li.klass.fhem.domain.core.Device;
-import li.klass.fhem.service.graph.GraphEntry;
-import li.klass.fhem.service.graph.description.ChartSeriesDescription;
-import li.klass.fhem.service.graph.description.SeriesType;
-import li.klass.fhem.util.DisplayUtil;
+
 import org.achartengine.ChartFactory;
 import org.achartengine.GraphicalView;
 import org.achartengine.chart.PointStyle;
@@ -57,9 +50,34 @@ import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import org.achartengine.renderer.XYSeriesRenderer;
 
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 
-import static li.klass.fhem.constants.BundleExtraKeys.*;
+import li.klass.fhem.R;
+import li.klass.fhem.activities.core.Updateable;
+import li.klass.fhem.constants.Actions;
+import li.klass.fhem.constants.ResultCodes;
+import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.service.graph.GraphEntry;
+import li.klass.fhem.service.graph.description.ChartSeriesDescription;
+import li.klass.fhem.service.graph.description.SeriesType;
+import li.klass.fhem.util.DisplayUtil;
+
+import static li.klass.fhem.constants.BundleExtraKeys.DEVICE;
+import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_GRAPH_ENTRY_MAP;
+import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_GRAPH_SERIES_DESCRIPTIONS;
+import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_NAME;
+import static li.klass.fhem.constants.BundleExtraKeys.DO_REFRESH;
+import static li.klass.fhem.constants.BundleExtraKeys.END_DATE;
+import static li.klass.fhem.constants.BundleExtraKeys.RESULT_RECEIVER;
+import static li.klass.fhem.constants.BundleExtraKeys.START_DATE;
 import static li.klass.fhem.util.DisplayUtil.dpToPx;
 
 /**
@@ -178,6 +196,8 @@ public class ChartingActivity extends SherlockActivity implements Updateable {
         intent.putExtra(RESULT_RECEIVER, new ResultReceiver(new Handler()) {
             @Override
             protected void onReceiveResult(int resultCode, Bundle resultData) {
+                if (resultCode != ResultCodes.SUCCESS) return;
+
                 Device device = (Device) resultData.getSerializable(DEVICE);
                 readDataAndCreateChart(doUpdate, device);
             }

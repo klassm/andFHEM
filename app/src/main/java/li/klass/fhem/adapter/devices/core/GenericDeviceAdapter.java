@@ -26,9 +26,6 @@ package li.klass.fhem.adapter.devices.core;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.ResultReceiver;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,7 +46,6 @@ import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewAction;
 import li.klass.fhem.adapter.devices.genericui.WebCmdActionRow;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.genericview.DetailViewSettings;
@@ -273,6 +269,8 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
     private TableRow createTableRow(LayoutInflater inflater, TableLayout layout, int resource,
                                     Object value, int description) {
         TableRow tableRow = (TableRow) inflater.inflate(resource, null);
+        assert tableRow != null;
+
         fillTableRow(description, value, tableRow);
         layout.addView(tableRow);
         return tableRow;
@@ -290,6 +288,8 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
     private void addGraphButton(final Context context, LinearLayout graphLayout,
                                 LayoutInflater inflater, final D device, final DeviceChart chart) {
         Button button = (Button) inflater.inflate(R.layout.button_device_detail, graphLayout, false);
+        assert button != null;
+
         fillGraphButton(context, device, chart, button);
         graphLayout.addView(button);
     }
@@ -300,15 +300,7 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
     }
 
     public static void putUpdateExtra(Intent intent) {
-        intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
-            @Override
-            protected void onReceiveResult(int resultCode, Bundle resultData) {
-                if (resultCode == ResultCodes.SUCCESS) {
-                    Intent updateIntent = new Intent(Actions.DO_UPDATE);
-                    AndFHEMApplication.getContext().sendBroadcast(updateIntent);
-                }
-            }
-        });
+        intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver());
     }
 
     protected void sendStateAction(Context context, D device, String action) {

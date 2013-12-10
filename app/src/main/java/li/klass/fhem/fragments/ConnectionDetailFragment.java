@@ -52,6 +52,7 @@ import java.util.List;
 import li.klass.fhem.R;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
+import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.fhem.connection.FHEMServerSpec;
 import li.klass.fhem.fhem.connection.ServerType;
 import li.klass.fhem.fragments.core.BaseFragment;
@@ -336,6 +337,8 @@ public class ConnectionDetailFragment extends BaseFragment {
             @Override
             protected void onReceiveResult(int resultCode, Bundle resultData) {
                 super.onReceiveResult(resultCode, resultData);
+
+                if (resultCode != ResultCodes.SUCCESS) return;
 
                 Intent intent = new Intent(Actions.BACK);
                 getActivity().sendBroadcast(intent);

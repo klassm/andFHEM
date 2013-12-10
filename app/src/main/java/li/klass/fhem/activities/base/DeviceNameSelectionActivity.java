@@ -30,11 +30,12 @@ import android.os.Handler;
 import android.os.ResultReceiver;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+
 import li.klass.fhem.R;
 import li.klass.fhem.activities.core.FragmentBaseActivity;
 import li.klass.fhem.activities.device.DeviceNameListAdapter;
-import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
+import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.fragments.device.DeviceNameSelectionFragment;
 import li.klass.fhem.util.DialogUtil;
@@ -59,7 +60,8 @@ public class DeviceNameSelectionActivity extends FragmentActivity {
         bundle.putParcelable(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
             @Override
             protected void onReceiveResult(int resultCode, Bundle resultData) {
-                if (!resultData.containsKey(BundleExtraKeys.CLICKED_DEVICE)) return;
+                if (resultCode != ResultCodes.SUCCESS ||
+                        !resultData.containsKey(BundleExtraKeys.CLICKED_DEVICE)) return;
 
                 Device<?> clickedDevice = (Device<?>) resultData.getSerializable(BundleExtraKeys.CLICKED_DEVICE);
                 deviceClicked(clickedDevice);

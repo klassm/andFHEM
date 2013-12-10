@@ -137,6 +137,8 @@ public class TimerDetailFragment extends BaseFragment {
                 intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new FhemResultReceiver() {
                     @Override
                     protected void onReceiveResult(int resultCode, Bundle resultData) {
+                        if (resultCode != ResultCodes.SUCCESS) return;
+
                         if (!resultData.containsKey(CLICKED_DEVICE)) return;
 
                         selectedTargetDevice = (Device) resultData.get(CLICKED_DEVICE);

@@ -26,14 +26,12 @@ package li.klass.fhem.adapter.devices.genericui;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.ResultReceiver;
 import android.widget.TableLayout;
 import android.widget.TableRow;
-import li.klass.fhem.AndFHEMApplication;
+
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
+import li.klass.fhem.adapter.devices.core.UpdatingResultReceiver;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.core.Device;
@@ -68,12 +66,7 @@ public class HeatingModeListener<D extends Device<D> & HeatingDevice<M, ?, ?, ?>
     }
 
     private void putUpdateIntent(Intent intent) {
-        intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
-            @Override
-            protected void onReceiveResult(int resultCode, Bundle resultData) {
-                AndFHEMApplication.getContext().sendBroadcast(new Intent(Actions.DO_UPDATE));
-            }
-        });
+        intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver());
     }
 
     protected void changeMode(M newMode, D device, Context context) {

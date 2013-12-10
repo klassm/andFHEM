@@ -231,6 +231,8 @@ public abstract class DeviceListFragment extends BaseFragment {
                 favoriteAddIntent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
                     @Override
                     protected void onReceiveResult(int resultCode, Bundle resultData) {
+                        if (resultCode != ResultCodes.SUCCESS) return;
+
                         Toast.makeText(getActivity(), R.string.context_favoriteadded, Toast.LENGTH_SHORT).show();
                     }
                 });

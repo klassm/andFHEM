@@ -194,6 +194,7 @@
                 <action android:name="li.klass.fhem.constants.Actions.DEVICE_SET_SUB_STATE"/>
                 <action android:name="li.klass.fhem.constants.Actions.GCM_REMOVE_ID"/>
                 <action android:name="li.klass.fhem.constants.Actions.GCM_ADD_SELF"/>
+                <action android:name="li.klass.fhem.constants.Actions.RESEND_LAST_FAILED_COMMAND"/>
             </intent-filter>
         </service>
 

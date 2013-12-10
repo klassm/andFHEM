@@ -26,14 +26,13 @@ package li.klass.fhem.adapter.devices.genericui;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.ResultReceiver;
 import android.view.LayoutInflater;
 import android.widget.SeekBar;
 import android.widget.TableRow;
 import android.widget.TextView;
+
 import li.klass.fhem.R;
+import li.klass.fhem.adapter.devices.core.UpdatingResultReceiver;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.core.DimmableDevice;
@@ -99,12 +98,7 @@ public class DimActionRow<D extends DimmableDevice<D>> {
         Intent intent = new Intent(Actions.DEVICE_DIM);
         intent.putExtra(BundleExtraKeys.DEVICE_DIM_PROGRESS, progress);
         intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
-        intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
-            @Override
-            protected void onReceiveResult(int resultCode, Bundle resultData) {
-                context.sendBroadcast(new Intent(Actions.DO_UPDATE));
-            }
-        });
+        intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver(context));
 
         context.startService(intent);
     }

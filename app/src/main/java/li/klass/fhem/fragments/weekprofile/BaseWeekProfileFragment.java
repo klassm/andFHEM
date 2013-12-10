@@ -32,6 +32,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+
 import li.klass.fhem.R;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
@@ -77,6 +78,8 @@ public abstract class BaseWeekProfileFragment<H extends BaseHeatingInterval> ext
                     @Override
                     protected void onReceiveResult(int resultCode, Bundle resultData) {
                         super.onReceiveResult(resultCode, resultData);
+                        if (resultCode != ResultCodes.SUCCESS) return;
+
                         update(false);
                     }
                 });

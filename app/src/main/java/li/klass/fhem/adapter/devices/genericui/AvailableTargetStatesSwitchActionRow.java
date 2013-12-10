@@ -27,12 +27,10 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.ResultReceiver;
 import android.widget.EditText;
 
 import li.klass.fhem.R;
+import li.klass.fhem.adapter.devices.core.UpdatingResultReceiver;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.core.Device;
@@ -101,13 +99,7 @@ public class AvailableTargetStatesSwitchActionRow<D extends Device<D>> extends D
         Intent intent = new Intent(Actions.DEVICE_SET_STATE);
         intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
         intent.putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, newState);
-        intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
-            @Override
-            protected void onReceiveResult(int resultCode, Bundle resultData) {
-                super.onReceiveResult(resultCode, resultData);
-                context.sendBroadcast(new Intent(Actions.DO_UPDATE));
-            }
-        });
+        intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver(context));
         context.startService(intent);
     }
 

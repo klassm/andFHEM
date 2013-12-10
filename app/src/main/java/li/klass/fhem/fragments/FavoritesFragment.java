@@ -39,6 +39,7 @@ import android.widget.Toast;
 import li.klass.fhem.R;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
+import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.fragments.core.DeviceListFragment;
 import li.klass.fhem.fragments.core.TopLevelFragment;
@@ -84,6 +85,8 @@ public class FavoritesFragment extends DeviceListFragment implements TopLevelFra
                     favoriteRemoveIntent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
                         @Override
                         protected void onReceiveResult(int resultCode, Bundle resultData) {
+                            if (resultCode != ResultCodes.SUCCESS) return;
+
                             Toast.makeText(getActivity(), R.string.context_favoriteremoved, Toast.LENGTH_SHORT).show();
                             update(false);
                         }

@@ -25,21 +25,20 @@ package li.klass.fhem.adapter.devices.genericui;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.ResultReceiver;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.ToggleButton;
+
+import java.util.Map;
+
 import li.klass.fhem.R;
+import li.klass.fhem.adapter.devices.core.UpdatingResultReceiver;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.core.ToggleableDevice;
-
-import java.util.Map;
 
 public class OnOffActionRow<T extends ToggleableDevice> {
     private String description;
@@ -108,12 +107,7 @@ public class OnOffActionRow<T extends ToggleableDevice> {
         Intent intent = new Intent(Actions.DEVICE_SET_STATE);
         intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
         intent.putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, targetState);
-        intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
-            @Override
-            protected void onReceiveResult(int resultCode, Bundle resultData) {
-                context.sendBroadcast(new Intent(Actions.DO_UPDATE));
-            }
-        });
+        intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver(context));
 
         context.startService(intent);
     }

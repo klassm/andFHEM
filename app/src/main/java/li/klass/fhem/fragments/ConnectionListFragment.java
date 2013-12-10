@@ -242,6 +242,9 @@ public class ConnectionListFragment extends BaseFragment implements TopLevelFrag
                     @Override
                     protected void onReceiveResult(int resultCode, Bundle resultData) {
                         super.onReceiveResult(resultCode, resultData);
+
+                        if (resultCode != ResultCodes.SUCCESS) return;
+
                         update(false);
                     }
                 });

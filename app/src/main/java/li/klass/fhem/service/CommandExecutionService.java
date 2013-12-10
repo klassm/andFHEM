@@ -34,6 +34,7 @@ import java.util.concurrent.ScheduledExecutorService;
 
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.constants.Actions;
+import li.klass.fhem.exception.CommandExecutionException;
 import li.klass.fhem.fhem.DataConnectionSwitch;
 import li.klass.fhem.fhem.FHEMConnection;
 import li.klass.fhem.fhem.RequestResult;
@@ -54,6 +55,8 @@ public class CommandExecutionService extends AbstractService {
     public static final int MAX_TRIES = 3;
     private transient ScheduledExecutorService scheduledExecutorService = null;
 
+    private transient String lastFailedCommand = null;
+
     private class ResendCommand implements Runnable {
         int currentTry;
         String command;
@@ -72,6 +75,18 @@ public class CommandExecutionService extends AbstractService {
     private CommandExecutionService() {
     }
 
+    public void resendLastFailedCommand() {
+        if (lastFailedCommand != null) {
+            String command = lastFailedCommand;
+            lastFailedCommand = null;
+            executeSafely(command);
+        }
+    }
+
+    public String getLastFailedCommand() {
+        return lastFailedCommand;
+    }
+
     /**
      * Executes a command safely by catching exceptions. Shows an update dialog during execution. Shows an update
      * dialog.
@@ -84,7 +99,10 @@ public class CommandExecutionService extends AbstractService {
 
         try {
             RequestResult<String> result = execute(command);
-            if (result.handleErrors()) return null;
+            if (result.handleErrors()) {
+                lastFailedCommand = command;
+                throw new CommandExecutionException();
+            }
             return result.content;
         } finally {
             context.sendBroadcast(new Intent(DISMISS_EXECUTING_DIALOG));

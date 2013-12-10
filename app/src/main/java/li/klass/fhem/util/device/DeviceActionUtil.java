@@ -28,23 +28,17 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Bundle;
-import android.os.Handler;
 import android.os.ResultReceiver;
 import android.widget.EditText;
-import li.klass.fhem.AndFHEMApplication;
+
 import li.klass.fhem.R;
+import li.klass.fhem.adapter.devices.core.UpdatingResultReceiver;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.core.Device;
 
 public class DeviceActionUtil {
-    private static ResultReceiver updateReceiver = new ResultReceiver(new Handler()) {
-        @Override
-        protected void onReceiveResult(int resultCode, Bundle resultData) {
-            AndFHEMApplication.getContext().sendBroadcast(new Intent(Actions.DO_UPDATE));
-        }
-    };
+    private static ResultReceiver updateReceiver = new UpdatingResultReceiver();
 
     public static void renameDevice(final Context context, final Device device) {
         final EditText input = new EditText(context);
