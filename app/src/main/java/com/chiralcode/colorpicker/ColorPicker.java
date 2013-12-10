@@ -36,7 +36,6 @@ import android.graphics.SweepGradient;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -320,15 +319,20 @@ public class ColorPicker extends View {
 
                     invalidate();
                 }
+                notifyListener();
 
                 return true;
         }
 
+        notifyListener();
+
+        return super.onTouchEvent(event);
+    }
+
+    private void notifyListener() {
         if (listener != null) {
             listener.onColorChange(getColor());
         }
-
-        return super.onTouchEvent(event);
     }
 
     public void setColor(int color) {
