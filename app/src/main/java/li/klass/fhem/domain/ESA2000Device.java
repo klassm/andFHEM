@@ -38,6 +38,7 @@ import li.klass.fhem.util.ValueExtractUtil;
 
 import static li.klass.fhem.service.graph.description.SeriesType.CUMULATIVE_USAGE;
 import static li.klass.fhem.service.graph.description.SeriesType.CURRENT_USAGE;
+import static li.klass.fhem.service.graph.description.SeriesType.DAY_USAGE;
 
 @SuppressWarnings("unused")
 public class ESA2000Device extends Device<ESA2000Device> {
@@ -106,7 +107,9 @@ public class ESA2000Device extends Device<ESA2000Device> {
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.usageGraph,
                 ChartSeriesDescription.getDiscreteValuesInstance(R.string.currentUsage, "8:CUR\\x3a\\s[0-9]::", CURRENT_USAGE),
-                ChartSeriesDescription.getDiscreteValuesInstance(R.string.cumulativeKwH, "4:hour_last\\x3a\\s[0-9]:0:", CUMULATIVE_USAGE)), current);
+                ChartSeriesDescription.getDiscreteValuesInstance(R.string.cumulativeKwH, "4:hour_last\\x3a\\s[0-9]:0:", CUMULATIVE_USAGE),
+                ChartSeriesDescription.getDiscreteValuesInstance(R.string.dayUsage, "4:day\\x3a\\s[0-9]:0:", DAY_USAGE)
+                ), current);
     }
 
     @Override

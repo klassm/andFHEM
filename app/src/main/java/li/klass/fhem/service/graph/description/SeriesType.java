@@ -1,6 +1,7 @@
 package li.klass.fhem.service.graph.description;
 
 import android.graphics.Color;
+
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 
@@ -9,6 +10,7 @@ public enum SeriesType {
     DESIRED_TEMPERATURE(Color.YELLOW, R.string.yAxisTemperature),
     HUMIDITY(Color.GREEN, R.string.yAxisHumidity),
     CURRENT_USAGE(Color.RED, R.string.yAxisCurrentUsage),
+    DAY_USAGE(Color.BLUE, R.string.yAxisCurrentUsage),
     CUMULATIVE_USAGE(Color.GREEN, R.string.yAxisCumulativeUsage),
     ACTUATOR(Color.BLUE, R.string.yAxisActuator),
     LITRE_CONTENT(Color.RED, R.string.yAxisLitreContent),
