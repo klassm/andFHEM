@@ -60,4 +60,10 @@
         <item>Details</item>
         <item>Verschieben</item>
     </string-array>
+
+    <string-array name="startupViews">
+        <item>Favoriten</item>
+        <item>Alle Geräte</item>
+        <item>Räume</item>
+    </string-array>
 </resources>

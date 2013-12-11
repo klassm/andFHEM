@@ -223,6 +223,14 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
         update(false);
     }
 
+    public void invalidate() {
+        View view = getView();
+        if (view != null) {
+            view.invalidate();
+            view.requestLayout();
+        }
+    }
+
     public boolean isNavigation() {
         return isNavigation;
     }

@@ -111,8 +111,7 @@ public class DeviceListAdapter extends NestedListViewAdapter<DeviceFunctionality
     protected List<DeviceFunctionality> getParents() {
         List<DeviceFunctionality> parents = new ArrayList<DeviceFunctionality>();
         for (DeviceFunctionality deviceFunctionality : DeviceFunctionality.values()) {
-            if (getChildrenCountForParent(deviceFunctionality) > 0) {// &&
-//                    deviceFunctionality.mayShowInCurrentConnectionType()) {
+            if (getChildrenCountForParent(deviceFunctionality) > 0) {
                 parents.add(deviceFunctionality);
             }
         }

@@ -63,7 +63,12 @@ public class DeviceGridAdapter extends GridViewWithSectionsAdapter<DeviceFunctio
         }
     }
 
-    private void restoreParents() {
+    /**
+     * Load parents from the serialized state. This includes all visible devices from
+     * the {@link li.klass.fhem.constants.PreferenceKeys#DEVICE_FUNCTIONALITY_ORDER_VISIBLE}
+     * property.
+     */
+    public void restoreParents() {
         DeviceFunctionalityHolder holder = new DeviceFunctionalityHolder();
         parents = holder.getVisible();
         Log.d(TAG, "set visible parents: " + parents);

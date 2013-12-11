@@ -87,9 +87,7 @@ public class PreferencesActivity extends PreferenceActivity
         super.onStop();
         PreferenceManager.getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener(this);
 
-        if (preferencesChanged) {
-            sendBroadcast(new Intent(Actions.DO_UPDATE));
-        }
+        sendBroadcast(new Intent(Actions.REDRAW));
     }
 
     @Override

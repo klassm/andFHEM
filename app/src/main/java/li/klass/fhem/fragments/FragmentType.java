@@ -91,6 +91,14 @@ public enum FragmentType {
         }
     }
 
+    public static FragmentType forEnumName(String name) {
+        try {
+            return FragmentType.valueOf(name);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
     public Class<? extends BaseFragment> getNavigationClass() {
         return navigationFragment;
     }

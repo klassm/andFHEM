@@ -263,8 +263,12 @@ public abstract class DeviceListFragment extends BaseFragment {
     }
 
     protected DeviceGridAdapter getAdapter() {
-        GridViewWithSections listView = (GridViewWithSections) getView().findViewById(R.id.deviceMap1);
+        GridViewWithSections listView = getDeviceList();
         return (DeviceGridAdapter) listView.getAdapter();
+    }
+
+    private GridViewWithSections getDeviceList() {
+        return (GridViewWithSections) getView().findViewById(R.id.deviceMap1);
     }
 
     @Override
@@ -275,6 +279,16 @@ public abstract class DeviceListFragment extends BaseFragment {
         emptyText.setText(R.string.noDevices);
 
         view.addView(emptyView);
+    }
+
+    @Override
+    public void invalidate() {
+        getAdapter().restoreParents();
+
+        super.invalidate();
+
+//        getAdapter().notifyDataSetInvalidated();
+//        getDeviceList().invalidateViews();
     }
 
     protected abstract String getUpdateAction();

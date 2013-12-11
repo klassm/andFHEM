@@ -237,6 +237,8 @@
     <string name="send_command">Kommando senden</string>
 
     <string name="prefOtherPreferencesCategory">Andere Einstellungen</string>
+    <string name="prefAppearancePreferencesCategory">Darstellung</string>
+    <string name="prefErrorsPreferencesCategory">Fehlerbehandlung</string>
     <string name="prefWidgetCategory">Widgets</string>
     <string name="prefShowHiddenDevices">Zeige versteckte Geräte</string>
     <string name="prefDefaultTimespan">Graph Zeitspanne</string>
@@ -256,6 +258,8 @@
     <string name="prefShowSetValueButtons">Zeige "Ändern" Knöpfe für Temperaturänderungen</string>
     <string name="prefGCMProjectId">GCM Project ID</string>
     <string name="prefGcmWidgetUpdate">Widget-Aktualisierung bei GCM-Nachricht</string>
+    <string name="prefStartupView">Start-Ansicht</string>
+    <string name="prefStartupViewSummary">Ansicht, die beim Applikationsstart angezeigt wird</string>
 
     <string name="notNumericError">Nicht numerisch!</string>
     <string name="error_update">Error während Update Vorgang.</string>

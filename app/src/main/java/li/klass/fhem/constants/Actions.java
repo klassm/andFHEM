@@ -83,6 +83,7 @@ public class Actions {
 
 
     public static final String DO_UPDATE = prefix + "DO_UPDATE";
+    public static final String REDRAW = prefix + "REDRAW";
 
 
     public static final String EXECUTE_COMMAND = prefix + "EXECUTE_COMMAND";

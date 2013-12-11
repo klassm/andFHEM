@@ -69,11 +69,13 @@ import static li.klass.fhem.constants.Actions.BACK;
 import static li.klass.fhem.constants.Actions.CONNECTIONS_CHANGED;
 import static li.klass.fhem.constants.Actions.DISMISS_EXECUTING_DIALOG;
 import static li.klass.fhem.constants.Actions.DO_UPDATE;
+import static li.klass.fhem.constants.Actions.REDRAW;
 import static li.klass.fhem.constants.Actions.RELOAD;
 import static li.klass.fhem.constants.Actions.SHOW_ALERT;
 import static li.klass.fhem.constants.Actions.SHOW_EXECUTING_DIALOG;
 import static li.klass.fhem.constants.Actions.SHOW_TOAST;
 import static li.klass.fhem.constants.BundleExtraKeys.HAS_FAVORITES;
+import static li.klass.fhem.constants.PreferenceKeys.STARTUP_VIEW;
 
 public abstract class FragmentBaseActivity extends SherlockFragmentActivity implements Updateable {
 
@@ -148,6 +150,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
             intentFilter.addAction(BACK);
             intentFilter.addAction(RELOAD);
             intentFilter.addAction(CONNECTIONS_CHANGED);
+            intentFilter.addAction(REDRAW);
         }
 
         @Override
@@ -194,6 +197,8 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
                             if (availableConnectionDataAdapter != null) {
                                 availableConnectionDataAdapter.doLoad();
                             }
+                        } else if (REDRAW.equals(action)) {
+                            redrawContent();
                         }
                     } catch (Exception e) {
                         Log.e(TAG, "exception occurred while receiving broadcast", e);
@@ -242,6 +247,24 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
         initDrawerLayout();
 
         if (savedInstanceState == null) {
+            handleInitialFragment();
+        }
+    }
+
+    /**
+     * Switch to an initial fragment when starting up the application.
+     * This method depends on the {@link li.klass.fhem.constants.PreferenceKeys#STARTUP_VIEW}
+     * preference.
+     * Note that the favorites view will only be displayed if favorites are present.
+     */
+    private void handleInitialFragment() {
+        String startupView = ApplicationProperties.INSTANCE.getStringSharedPreference(STARTUP_VIEW,
+                FragmentType.FAVORITES.name());
+
+        FragmentType fragmentType = FragmentType.forEnumName(startupView);
+        if (fragmentType == null) fragmentType = FragmentType.FAVORITES;
+
+        if (fragmentType == FragmentType.FAVORITES) {
             Intent intent = new Intent(Actions.FAVORITES_PRESENT);
             intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
                 @Override
@@ -254,6 +277,8 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
                 }
             });
             startService(intent);
+        } else {
+            switchToFragment(fragmentType, new Bundle());
         }
     }
 
@@ -480,6 +505,15 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
         }
 
         updateNavigationVisibility();
+    }
+
+
+    private void redrawContent() {
+        BaseFragment contentFragment = getContentFragment();
+        if (contentFragment != null) contentFragment.invalidate();
+
+        BaseFragment navigationFragment = getNavigationFragment();
+        if (navigationFragment != null) navigationFragment.invalidate();
     }
 
     private BaseFragment getContentFragment() {

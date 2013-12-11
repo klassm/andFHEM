@@ -24,108 +24,135 @@
   -->
 
 <PreferenceScreen
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:key="first_preferencescreen"
-        android:layout_height="fill_parent"
-        android:layout_width="fill_parent">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:key="first_preferencescreen"
+    android:layout_height="fill_parent"
+    android:layout_width="fill_parent">
+
+    <PreferenceCategory android:title="@string/prefAppearancePreferencesCategory">
+        <ListPreference
+            android:title="@string/prefStartupView"
+            android:id="@+id/prefStartupView"
+            android:summary="@string/prefStartupViewSummary"
+            android:key="STARTUP_VIEW"
+            android:defaultValue="24"
+            android:entries="@array/startupViews"
+            android:entryValues="@array/startupViewsValues"/>
+
+        <CheckBoxPreference
+            android:key="SHOW_SET_VALUE_BUTTONS"
+            android:title="@string/prefShowSetValueButtons"
+            android:defaultValue="false"
+            />
+
+        <CheckBoxPreference
+            android:key="prefShowHiddenDevices"
+            android:title="@string/prefShowHiddenDevices"
+            android:defaultValue="false"
+            />
+
+
+        <com.hlidskialf.android.preference.SeekBarPreference xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:key="DEVICE_COLUMN_WIDTH"
+            android:title="@string/prefDeviceColumnWidth"
+            android:summary="@string/prefDeviceColumnWidthSummary"
+            android:dialogMessage=""
+            android:defaultValue="5"
+            android:text=" dp"
+            android:max="1000"
+            />
+        <com.hlidskialf.android.preference.SeekBarPreference xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:key="DEVICE_LIST_PADDING_RIGHT"
+            android:title="@string/prefDeviceListPaddingRight"
+            android:summary="@string/prefDeviceListPaddingRightSummary"
+            android:dialogMessage=""
+            android:defaultValue="0"
+            android:text=" dp"
+            android:max="1000"
+            />
+
+        <li.klass.fhem.widget.deviceFunctionality.DeviceFunctionalityOrderPreference
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:key="DEVICE_FUNCTIONALITY_ORDER_VISIBLE"
+            android:title="@string/prefDeviceFunctionalityOrder"
+            android:summary="@string/prefDeviceFunctionalityOrderSummary"/>
+
+        <ListPreference
+            android:title="@string/prefDefaultTimespan"
+            android:id="@+id/graphDefaultTimespanSelector"
+            android:summary=""
+            android:key="GRAPH_DEFAULT_TIMESPAN"
+            android:defaultValue="24"
+            android:entries="@array/graphDefaultTimespanEntries"
+            android:entryValues="@array/graphDefaultTimespanValues"/>
+
+    </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/prefWidgetCategory">
         <CheckBoxPreference
-                android:key="prefWidgetRemoteUpdate"
-                android:title="@string/prefWidgetRemoteUpdate"
-                android:defaultValue="true"
-                />
+            android:key="prefWidgetRemoteUpdate"
+            android:title="@string/prefWidgetRemoteUpdate"
+            android:defaultValue="true"
+            />
         <ListPreference
-                android:title="@string/prefWidgetUpdateTimeWLAN"
-                android:summary="@string/prefWidgetUpdateTimeSummary"
-                android:key="WIDGET_UPDATE_INTERVAL_WLAN"
-                android:defaultValue="3600"
-                android:entries="@array/widgetUpdateTimeEntries"
-                android:entryValues="@array/widgetUpdateTimeValues"/>
+            android:title="@string/prefWidgetUpdateTimeWLAN"
+            android:summary="@string/prefWidgetUpdateTimeSummary"
+            android:key="WIDGET_UPDATE_INTERVAL_WLAN"
+            android:defaultValue="3600"
+            android:entries="@array/widgetUpdateTimeEntries"
+            android:entryValues="@array/widgetUpdateTimeValues"/>
         <ListPreference
-                android:title="@string/prefWidgetUpdateTimeMobile"
-                android:summary="@string/prefWidgetUpdateTimeSummary"
-                android:key="WIDGET_UPDATE_INTERVAL_MOBILE"
-                android:defaultValue="3600"
-                android:entries="@array/widgetUpdateTimeEntries"
-                android:entryValues="@array/widgetUpdateTimeValues"/>
+            android:title="@string/prefWidgetUpdateTimeMobile"
+            android:summary="@string/prefWidgetUpdateTimeSummary"
+            android:key="WIDGET_UPDATE_INTERVAL_MOBILE"
+            android:defaultValue="3600"
+            android:entries="@array/widgetUpdateTimeEntries"
+            android:entryValues="@array/widgetUpdateTimeValues"/>
+
+        <CheckBoxPreference
+            android:key="GCM_WIDGET_UPDATE"
+            android:title="@string/prefGcmWidgetUpdate"
+            android:defaultValue="false"
+            />
+
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/prefOtherPreferencesCategory">
+    <PreferenceCategory android:title="@string/prefErrorsPreferencesCategory">
         <Preference
             android:key="SEND_LAST_ERROR"
             android:title="@string/error_send"/>
+    </PreferenceCategory>
+
+
+    <PreferenceCategory android:title="@string/prefOtherPreferencesCategory">
 
         <CheckBoxPreference
-                android:key="prefShowHiddenDevices"
-                android:title="@string/prefShowHiddenDevices"
-                android:defaultValue="false"
-                />
-        <CheckBoxPreference
-                android:key="UPDATE_ON_APPLICATION_START"
-                android:title="@string/prefUpdateOnApplicationStart"
-                android:defaultValue="false"
-                />
+            android:key="UPDATE_ON_APPLICATION_START"
+            android:title="@string/prefUpdateOnApplicationStart"
+            android:defaultValue="false"
+            />
+
         <EditTextPreference
-                android:key="GCM_PROJECT_ID"
-                android:title="@string/prefGCMProjectId"
-                android:inputType="number"
-                android:defaultValue=""
-                />
-        <CheckBoxPreference
-                android:key="GCM_WIDGET_UPDATE"
-                android:title="@string/prefGcmWidgetUpdate"
-                android:defaultValue="false"
-                />
-        <CheckBoxPreference
-                android:key="SHOW_SET_VALUE_BUTTONS"
-                android:title="@string/prefShowSetValueButtons"
-                android:defaultValue="false"
-                />
+            android:key="GCM_PROJECT_ID"
+            android:title="@string/prefGCMProjectId"
+            android:inputType="number"
+            android:defaultValue=""
+            />
+
         <ListPreference
-                android:title="@string/prefDefaultTimespan"
-                android:id="@+id/graphDefaultTimespanSelector"
-                android:summary=""
-                android:key="GRAPH_DEFAULT_TIMESPAN"
-                android:defaultValue="24"
-                android:entries="@array/graphDefaultTimespanEntries"
-                android:entryValues="@array/graphDefaultTimespanValues"/>
-        <ListPreference
-                android:title="@string/prefAutoUpdate"
-                android:summary="@string/prefAutoUpdateSummary"
-                android:id="@+id/autoUpdateTime"
-                android:key="AUTO_UPDATE_TIME"
-                android:defaultValue="-1"
-                android:entries="@array/updateRoomListTimeEntries"
-                android:entryValues="@array/updateRoomListTimeValues"/>
-        <com.hlidskialf.android.preference.SeekBarPreference xmlns:android="http://schemas.android.com/apk/res/android"
-                                                             android:layout_height="wrap_content"
-                                                             android:layout_width="wrap_content"
-                                                             android:key="DEVICE_COLUMN_WIDTH"
-                                                             android:title="@string/prefDeviceColumnWidth"
-                                                             android:summary="@string/prefDeviceColumnWidthSummary"
-                                                             android:dialogMessage=""
-                                                             android:defaultValue="5"
-                                                             android:text=" dp"
-                                                             android:max="1000"
-                />
-        <com.hlidskialf.android.preference.SeekBarPreference xmlns:android="http://schemas.android.com/apk/res/android"
-                                                             android:layout_height="wrap_content"
-                                                             android:layout_width="wrap_content"
-                                                             android:key="DEVICE_LIST_PADDING_RIGHT"
-                                                             android:title="@string/prefDeviceListPaddingRight"
-                                                             android:summary="@string/prefDeviceListPaddingRightSummary"
-                                                             android:dialogMessage=""
-                                                             android:defaultValue="0"
-                                                             android:text=" dp"
-                                                             android:max="1000"
-                />
-        <li.klass.fhem.widget.deviceFunctionality.DeviceFunctionalityOrderPreference
-                xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:key="DEVICE_FUNCTIONALITY_ORDER_VISIBLE"
-                android:title="@string/prefDeviceFunctionalityOrder"
-                android:summary="@string/prefDeviceFunctionalityOrderSummary"/>
+            android:title="@string/prefAutoUpdate"
+            android:summary="@string/prefAutoUpdateSummary"
+            android:id="@+id/autoUpdateTime"
+            android:key="AUTO_UPDATE_TIME"
+            android:defaultValue="-1"
+            android:entries="@array/updateRoomListTimeEntries"
+            android:entryValues="@array/updateRoomListTimeValues"/>
+
     </PreferenceCategory>
 </PreferenceScreen>

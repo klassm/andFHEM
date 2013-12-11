@@ -240,6 +240,8 @@
     <string name="send_command">Send Command</string>
 
     <string name="prefOtherPreferencesCategory">Other Preferences</string>
+    <string name="prefAppearancePreferencesCategory">Appearance</string>
+    <string name="prefErrorsPreferencesCategory">Error-Handling</string>
     <string name="prefWidgetCategory">Widgets</string>
     <string name="prefShowHiddenDevices">Show hidden devices</string>
     <string name="prefDefaultTimespan">Graph Timespan</string>
@@ -259,6 +261,8 @@
     <string name="prefShowSetValueButtons">Show set value buttons for temperature changes</string>
     <string name="prefGCMProjectId">GCM Project ID</string>
     <string name="prefGcmWidgetUpdate">Update widget upon GCM notification</string>
+    <string name="prefStartupView">Startup view</string>
+    <string name="prefStartupViewSummary">View shown upon application start</string>
 
     <string name="notNumericError">Not numeric!</string>
     <string name="error_update">Error while updating.</string>

@@ -172,7 +172,7 @@ public class DeviceFunctionalityOrderPreference extends DialogPreference {
             SharedPreferences sharedPreferences = getSharedPreferences();
             assert sharedPreferences != null;
             SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString(PreferenceKeys.DEVICE_TYPE_ORDER_INVISIBLE,
+            editor.putString(PreferenceKeys.DEVICE_TYPE_FUNCTIONALITY_ORDER_INVISIBLE,
                     ObjectSerializer.serialize(toPersist)).commit();
         }
     }
