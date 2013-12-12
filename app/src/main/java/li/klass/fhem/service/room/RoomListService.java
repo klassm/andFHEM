@@ -47,6 +47,7 @@ import li.klass.fhem.constants.PreferenceKeys;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.RoomDeviceList;
 import li.klass.fhem.exception.AndFHEMException;
+import li.klass.fhem.exception.CommandExecutionException;
 import li.klass.fhem.service.AbstractService;
 import li.klass.fhem.service.CommandExecutionService;
 import li.klass.fhem.util.ApplicationProperties;
@@ -287,26 +288,36 @@ public class RoomListService extends AbstractService {
     }
 
     /**
-     * Loads the most current room device list map from FHEM. Only one request can be active simultaneously. This is
-     * why a callable is used. If a request is in progress, the next request just waits for the same result.
-     * @return remotely loaded room device list map
-     */
-    /**
-     * Loads the most current room device list map from FHEM and saves it to the cache.
+     * Execute a "xmllist" request on the configured FHEM server. The result is parsed
+     * by {@link li.klass.fhem.service.room.DeviceListParser} and returned.
      *
-     * @return remotely loaded room device list map
+     * If the device list parser encounters an exception, null is returned. To make sure
+     * that we do not discard any old device list data upon encountering an error, we return
+     * the old device list map in this case.
+     *
+     * @return device list data.
      */
     private synchronized Map<String, RoomDeviceList> getRemoteRoomDeviceListMap() {
         Log.i(TAG, "fetching device list from remote");
 
-        String result = CommandExecutionService.INSTANCE.executeSafely("xmllist");
-        if (result == null) return null;
+        String result = null;
+        try {
+            result = CommandExecutionService.INSTANCE.executeSafely("xmllist");
+
+        } catch (CommandExecutionException e) {
+            Log.i(TAG, "error during command execution", e);
+        }
+        if (result == null) return deviceListMap;
 
         DeviceListParser parser = DeviceListParser.INSTANCE;
-        Map<String, RoomDeviceList> deviceList = parser.parseAndWrapExceptions(result);
+        Map<String, RoomDeviceList> newDeviceList = parser.parseAndWrapExceptions(result);
 
-        setLastUpdateToNow();
-        return deviceList;
+        if (newDeviceList != null) {
+            setLastUpdateToNow();
+            return newDeviceList;
+        }
+
+        return deviceListMap;
     }
 
     /**
