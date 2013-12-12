@@ -6,6 +6,7 @@ import li.klass.fhem.domain.core.ToggleableDevice;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.util.ValueDescriptionUtil;
 
+@SuppressWarnings("unused")
 public class PCA301Device extends ToggleableDevice<PCA301Device> {
 
     @ShowField(description = ResourceIdMapper.energyConsumption)
@@ -36,6 +37,6 @@ public class PCA301Device extends ToggleableDevice<PCA301Device> {
 
     @Override
     public DeviceFunctionality getDeviceFunctionality() {
-        return DeviceFunctionality.USAGE;
+        return DeviceFunctionality.SWITCH;
     }
 }
