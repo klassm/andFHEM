@@ -24,15 +24,15 @@
 
 package li.klass.fhem.domain.heating.schedule.configuration;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import li.klass.fhem.domain.CULHMDevice;
 import li.klass.fhem.domain.heating.schedule.DayProfile;
 import li.klass.fhem.domain.heating.schedule.WeekProfile;
 import li.klass.fhem.domain.heating.schedule.interval.FilledTemperatureInterval;
 import li.klass.fhem.util.DayUtil;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 public class CULHMConfiguration extends HeatingConfiguration<FilledTemperatureInterval, CULHMDevice, CULHMConfiguration> {
 
@@ -73,7 +73,9 @@ public class CULHMConfiguration extends HeatingConfiguration<FilledTemperatureIn
     }
 
     @Override
-    public DayProfile<FilledTemperatureInterval, CULHMDevice, CULHMConfiguration> createDayProfileFor(DayUtil.Day day, CULHMConfiguration configuration) {
+    public DayProfile<FilledTemperatureInterval, CULHMDevice, CULHMConfiguration>
+    createDayProfileFor(DayUtil.Day day, CULHMConfiguration configuration) {
+
         return new DayProfile<FilledTemperatureInterval, CULHMDevice, CULHMConfiguration>(day, configuration);
     }
 
@@ -106,5 +108,52 @@ public class CULHMConfiguration extends HeatingConfiguration<FilledTemperatureIn
         shortName = ((char) (firstChar - 'a' + 'A')) + shortName.substring(1);
 
         return "set " + device.getName() + " tempList" + shortName + " " + command.toString();
+    }
+
+    @Override
+    public void afterXMLRead(WeekProfile<FilledTemperatureInterval, CULHMConfiguration, CULHMDevice> weekProfile) {
+        super.afterXMLRead(weekProfile);
+
+        List<DayProfile<FilledTemperatureInterval, CULHMDevice, CULHMConfiguration>>
+                profiles = weekProfile.getSortedDayProfiles();
+
+        for (DayProfile<FilledTemperatureInterval, CULHMDevice, CULHMConfiguration> profile : profiles) {
+            addFixedMidnightIntervalIfRequired(profile);
+        }
+    }
+
+    /**
+     * One interval always has to relate to midnight. For CUL_HM, this is always the last one,
+     * representing the time _until_ midnight. The method adds this interval if not being already
+     * present.
+     * @param dayProfile day profile to add the midnight to.
+     */
+    private void addFixedMidnightIntervalIfRequired(
+            DayProfile<FilledTemperatureInterval, CULHMDevice, CULHMConfiguration> dayProfile) {
+
+        List<FilledTemperatureInterval> intervals = dayProfile.getHeatingIntervals();
+
+        boolean found = false;
+        for (FilledTemperatureInterval interval : intervals) {
+            if (interval.getSwitchTime().equals("24:00")) {
+                found = true;
+                break;
+            }
+        }
+
+        if (! found) {
+            FilledTemperatureInterval heatingInterval = createHeatingInterval();
+
+            heatingInterval.setChangedSwitchTime("24:00");
+            heatingInterval.setChangedTemperature(CULHMDevice.MINIMUM_TEMPERATURE);
+            heatingInterval.setTimeFixed(true);
+
+            dayProfile.addHeatingInterval(heatingInterval);
+        }
+    }
+
+    @Override
+    public IntervalType getIntervalType() {
+        return IntervalType.TO;
     }
 }

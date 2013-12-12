@@ -24,14 +24,14 @@
 
 package li.klass.fhem.domain.heating.schedule.configuration;
 
+import java.io.Serializable;
+import java.util.List;
+
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.heating.schedule.DayProfile;
 import li.klass.fhem.domain.heating.schedule.WeekProfile;
 import li.klass.fhem.domain.heating.schedule.interval.BaseHeatingInterval;
 import li.klass.fhem.util.DayUtil;
-
-import java.io.Serializable;
-import java.util.List;
 
 import static li.klass.fhem.util.DayUtil.Day;
 
@@ -76,5 +76,9 @@ public abstract class HeatingConfiguration<H extends BaseHeatingInterval, D exte
     }
 
     public void afterXMLRead(WeekProfile<H, C, D> weekProfile) {
+    }
+
+    public IntervalType getIntervalType() {
+        return null;
     }
 }

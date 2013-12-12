@@ -357,6 +357,7 @@
     <string name="manage">Manage</string>
     <string name="timetable">Timetable</string>
     <string name="from">from</string>
+    <string name="until">until</string>
     <string name="from1">(1) From</string>
     <string name="from2">(2) From</string>
     <string name="to1">(1) To</string>

@@ -355,6 +355,7 @@
     <string name="manage">Verwaltung</string>
     <string name="timetable">Schaltplan</string>
     <string name="from">ab</string>
+    <string name="until">bis</string>
     <string name="from1">(1) Von</string>
     <string name="from2">(2) Von</string>
     <string name="to1">(1) Bis</string>

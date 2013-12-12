@@ -31,7 +31,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TableRow;
+import android.widget.TextView;
 import android.widget.TimePicker;
+
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.genericui.TemperatureChangeTableRow;
 import li.klass.fhem.constants.Actions;
@@ -66,8 +68,13 @@ public class IntervalWeekProfileAdapter
         }
 
         final View view = layoutInflater.inflate(R.layout.weekprofile_interval_item, null);
+        assert view != null;
 
         boolean isNew = child.isNew();
+
+        int intervalStringId = weekProfile.getIntervalType().stringId;
+        TextView intervalTypeTextView = (TextView) view.findViewById(R.id.intervalType);
+        intervalTypeTextView.setText(intervalStringId);
 
         setDetailTextView(view, R.id.time, child.getChangedSwitchTime(), child.getSwitchTime(), isNew);
         setDetailTextView(view, R.id.temperature, appendTemperature(child.getChangedTemperature()),
@@ -99,9 +106,11 @@ public class IntervalWeekProfileAdapter
                 });
             }
         });
+
         if (child.isTimeFixed()) {
             deleteButton.setVisibility(View.GONE);
         }
+
         return view;
     }
 

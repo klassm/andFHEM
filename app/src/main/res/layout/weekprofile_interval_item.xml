@@ -25,27 +25,28 @@
   -->
 
 <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:layout_width="fill_parent"
-             android:layout_height="fill_parent" android:stretchColumns="1">
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" android:stretchColumns="1">
     <TableRow android:id="@+id/interval">
         <TextView android:text="@string/from"
-                  android:padding="5dp"/>
+            android:id="@+id/intervalType"
+            android:padding="5dp"/>
         <TextView android:text="HH:MM"
-                  android:id="@+id/time"
-                  android:padding="5dp"/>
+            android:id="@+id/time"
+            android:padding="5dp"/>
         <TextView android:text="°C"
-                  android:id="@+id/temperature"
-                  android:padding="5dp"
-                  android:paddingLeft="10dp"/>
+            android:id="@+id/temperature"
+            android:padding="5dp"
+            android:paddingLeft="10dp"/>
         <Button android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:id="@+id/set"
-                android:text="@string/change"
-                style="@style/button"/>
+            android:layout_width="wrap_content"
+            android:id="@+id/set"
+            android:text="@string/change"
+            style="@style/button"/>
         <Button android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:id="@+id/delete"
-                android:text="@string/delete"
-                style="@style/button"/>
+            android:layout_width="wrap_content"
+            android:id="@+id/delete"
+            android:text="@string/delete"
+            style="@style/button"/>
     </TableRow>
 </TableLayout>

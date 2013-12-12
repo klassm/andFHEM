@@ -24,15 +24,15 @@
 
 package li.klass.fhem.domain.heating.schedule.configuration;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import li.klass.fhem.domain.MaxDevice;
 import li.klass.fhem.domain.heating.schedule.DayProfile;
 import li.klass.fhem.domain.heating.schedule.WeekProfile;
 import li.klass.fhem.domain.heating.schedule.interval.FilledTemperatureInterval;
 import li.klass.fhem.util.DayUtil;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 public class MAXConfiguration extends HeatingConfiguration<FilledTemperatureInterval, MaxDevice, MAXConfiguration> {
 
@@ -119,7 +119,6 @@ public class MAXConfiguration extends HeatingConfiguration<FilledTemperatureInte
 
     protected <D extends DayProfile<FilledTemperatureInterval, MaxDevice, MAXConfiguration>>
     String generateCommandFor(MaxDevice device, D dayProfile) {
-        addMidnightIntervalIfNotAvailable(dayProfile);
 
         StringBuilder builder = new StringBuilder();
 
@@ -145,7 +144,22 @@ public class MAXConfiguration extends HeatingConfiguration<FilledTemperatureInte
         return "set " + device.getName() + " weekProfile " + shortName + " " + builder.toString();
     }
 
-    private <D extends DayProfile<FilledTemperatureInterval, MaxDevice, MAXConfiguration>> void addMidnightIntervalIfNotAvailable(D profile) {
+
+    @Override
+    public void afterXMLRead(WeekProfile<FilledTemperatureInterval, MAXConfiguration, MaxDevice> weekProfile) {
+        super.afterXMLRead(weekProfile);
+
+        List<DayProfile<FilledTemperatureInterval, MaxDevice, MAXConfiguration>>
+                profiles = weekProfile.getSortedDayProfiles();
+
+        for (DayProfile<FilledTemperatureInterval, MaxDevice, MAXConfiguration> profile : profiles) {
+            addMidnightIntervalIfNotAvailable(profile);
+        }
+    }
+
+    private <D extends DayProfile<FilledTemperatureInterval, MaxDevice, MAXConfiguration>> void
+    addMidnightIntervalIfNotAvailable(D profile) {
+
         boolean foundMidnightInterval = false;
         for (FilledTemperatureInterval interval : profile.getHeatingIntervals()) {
             if (interval.getChangedSwitchTime().equals("00:00")) {
@@ -157,10 +171,15 @@ public class MAXConfiguration extends HeatingConfiguration<FilledTemperatureInte
         if (!foundMidnightInterval) {
             FilledTemperatureInterval interval = new FilledTemperatureInterval();
             interval.setChangedSwitchTime("00:00");
-            interval.setChangedTemperature(5.5);
+            interval.setChangedTemperature(MaxDevice.MINIMUM_TEMPERATURE);
             interval.setTimeFixed(true);
 
             profile.addHeatingInterval(interval);
         }
+    }
+
+    @Override
+    public IntervalType getIntervalType() {
+        return IntervalType.FROM;
     }
 }

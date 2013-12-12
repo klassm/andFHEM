@@ -24,17 +24,18 @@
 
 package li.klass.fhem.domain.heating.schedule;
 
-import li.klass.fhem.AndFHEMApplication;
-import li.klass.fhem.R;
-import li.klass.fhem.domain.core.Device;
-import li.klass.fhem.domain.heating.schedule.configuration.HeatingConfiguration;
-import li.klass.fhem.domain.heating.schedule.interval.BaseHeatingInterval;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import li.klass.fhem.AndFHEMApplication;
+import li.klass.fhem.R;
+import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.heating.schedule.configuration.HeatingConfiguration;
+import li.klass.fhem.domain.heating.schedule.configuration.IntervalType;
+import li.klass.fhem.domain.heating.schedule.interval.BaseHeatingInterval;
 
 import static li.klass.fhem.util.DayUtil.Day;
 
@@ -111,6 +112,10 @@ public class WeekProfile<H extends BaseHeatingInterval, C extends HeatingConfigu
         } else {
             return time;
         }
+    }
+
+    public IntervalType getIntervalType() {
+        return configuration.getIntervalType();
     }
 
     public void afterXMLRead() {

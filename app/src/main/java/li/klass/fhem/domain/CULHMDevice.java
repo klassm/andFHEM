@@ -103,7 +103,8 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
     public static double MINIMUM_TEMPERATURE = 5.5;
 
     private static final CULHMConfiguration heatingConfiguration = new CULHMConfiguration();
-    private WeekProfile<FilledTemperatureInterval, CULHMConfiguration, CULHMDevice> weekProfile = new WeekProfile<FilledTemperatureInterval, CULHMConfiguration, CULHMDevice>(heatingConfiguration);
+    private WeekProfile<FilledTemperatureInterval, CULHMConfiguration, CULHMDevice> weekProfile =
+            new WeekProfile<FilledTemperatureInterval, CULHMConfiguration, CULHMDevice>(heatingConfiguration);
 
     private double desiredTemp = MINIMUM_TEMPERATURE;
     @ShowField(description = ResourceIdMapper.temperature, showInOverview = true)
@@ -249,7 +250,9 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
     public void afterXMLRead() {
         super.afterXMLRead();
 
-        weekProfile.afterXMLRead();
+        if (getDeviceFunctionality() == DeviceFunctionality.HEATING) {
+            weekProfile.afterXMLRead();
+        }
 
         if (getAssociatedDeviceCallback() != null) {
             CULHMDevice device = getAssociatedDeviceCallback().getAssociatedDevice();

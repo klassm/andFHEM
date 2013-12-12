@@ -30,6 +30,10 @@ import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import li.klass.fhem.R;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.heating.schedule.DayProfile;
@@ -37,9 +41,6 @@ import li.klass.fhem.domain.heating.schedule.WeekProfile;
 import li.klass.fhem.domain.heating.schedule.configuration.HeatingConfiguration;
 import li.klass.fhem.domain.heating.schedule.interval.BaseHeatingInterval;
 import li.klass.fhem.widget.NestedListViewAdapter;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public abstract class BaseWeekProfileAdapter<H extends BaseHeatingInterval>
         extends NestedListViewAdapter<DayProfile<H, ?, ?>, H> {
@@ -106,7 +107,8 @@ public abstract class BaseWeekProfileAdapter<H extends BaseHeatingInterval>
         super.updateData();
     }
 
-    protected void setDetailTextView(View view, int layoutItemId, String currentText, String originalText, boolean isNew) {
+    protected void setDetailTextView(View view, int layoutItemId, String currentText,
+                                     String originalText, boolean isNew) {
         TextView layoutItem = (TextView) view.findViewById(layoutItemId);
         layoutItem.setText(weekProfile.formatTime(currentText));
 
