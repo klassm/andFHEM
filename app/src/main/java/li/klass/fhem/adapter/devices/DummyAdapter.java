@@ -42,6 +42,7 @@ import li.klass.fhem.adapter.devices.genericui.ColorPickerRow;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.DummyDevice;
+import li.klass.fhem.util.StringUtil;
 
 public class DummyAdapter extends DimmableAdapter<DummyDevice> {
     public DummyAdapter() {
@@ -95,10 +96,15 @@ public class DummyAdapter extends DimmableAdapter<DummyDevice> {
                 tableLayout.addView(new ColorPickerRow(device.getRGBColor(), R.string.hue) {
                     @Override
                     public void onColorChange(int color) {
+                        String targetHexString = StringUtil.prefixPad(
+                                Integer.toHexString(color),
+                                "0", 6
+                        );
+
                         Intent intent = new Intent(Actions.DEVICE_SET_SUB_STATE);
                         intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
                         intent.putExtra(BundleExtraKeys.STATE_NAME, "rgb");
-                        intent.putExtra(BundleExtraKeys.STATE_VALUE, Integer.toHexString(color));
+                        intent.putExtra(BundleExtraKeys.STATE_VALUE, targetHexString);
                         GenericDeviceAdapter.putUpdateExtra(intent);
 
                         context.startService(intent);
