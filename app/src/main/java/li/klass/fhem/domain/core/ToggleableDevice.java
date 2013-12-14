@@ -24,6 +24,8 @@
 
 package li.klass.fhem.domain.core;
 
+import li.klass.fhem.util.ArrayUtil;
+
 import static li.klass.fhem.domain.core.ToggleableDevice.ButtonHookType.NORMAL;
 import static li.klass.fhem.domain.core.ToggleableDevice.ButtonHookType.OFF_DEVICE;
 import static li.klass.fhem.domain.core.ToggleableDevice.ButtonHookType.ON_DEVICE;
@@ -60,7 +62,10 @@ public abstract class ToggleableDevice<T extends Device> extends Device<T> {
         return isOn;
     }
 
-    public abstract boolean supportsToggle();
+    public boolean supportsToggle() {
+        return ArrayUtil.contains(getAvailableTargetStates(), "on", "off") ||
+                ArrayUtil.contains(getWebCmd(), "on", "off");
+    }
 
     public void readONOFFDEVICE(String value) {
         ButtonHookType target = ON_OFF_DEVICE;

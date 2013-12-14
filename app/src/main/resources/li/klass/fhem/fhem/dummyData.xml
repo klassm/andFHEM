@@ -46,6 +46,32 @@
           value="5.1 from 2011-07-08 ($Id: fhem.pl,v 1.145 2011-07-07 08:46:28 rudolfkoenig Exp $)"/>
 </_internal_>
 </_internal__LIST>
+<readingsProxy_LIST>
+<readingsProxy name="LED1a" state="Initialized" sets="rgb:colorpicker,RGB on off blink on-for-timer on-till off-for-timer intervals off-till" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings disable:1 getList setList getFn setFn valueFn event-on-change-reading event-on-update-reading event-min-interval stateFormat DMX_B DMX_G DMX_M DMX_R DMX_S devStateIcon devStateStyle fp_Groundfloor icon lightSceneParamsToSave sortby webCmd">
+    <INT key="DEF" value="RGB1:state"/>
+    <INT key="DEVICE" value="RGB1"/>
+    <INT key="NAME" value="LED1a"/>
+    <INT key="NR" value="400"/>
+    <INT key="NTFY_ORDER" value="50-LED1a"/>
+    <INT key="READING" value="state"/>
+    <INT key="STATE" value="Initialized"/>
+    <INT key="TYPE" value="readingsProxy"/>
+    <ATTR key="alias" value="Fenster 2"/>
+    <ATTR key="devStateIcon" value="{Color_devStateIcon (ReadingsVal($name,&quot;RGB&quot;,&quot;000000&quot;))}"/>
+    <ATTR key="fp_Groundfloor" value="1000,1000,5"/>
+    <ATTR key="getFn" value="{fhem (&quot;get RGB1 rgb&quot;);fhem (&quot;setreading LED1a RGB &quot;.ReadingsVal(&quot;RGB1&quot;,&quot;rgb&quot;,&quot;000000&quot;));(ReadingsVal($name,&quot;RGB&quot;,&quot;000000&quot;),1) }"/>
+    <ATTR key="getList" value="rgb"/>
+    <ATTR key="group" value="LEDs"/>
+    <ATTR key="lightSceneParamsToSave" value="RGB -> rgb"/>
+    <ATTR key="room" value="02_Arbeitszimmer,Lichtsteuerung"/>
+    <ATTR key="setFn" value="{fhem (&quot;attr RGB1 DMX_R &quot;.hex(substr($ARGS,0,2)));fhem (&quot;attr RGB1 DMX_G &quot;.hex(substr($ARGS,2,2)));fhem (&quot;attr RGB1 DMX_B &quot;.hex(substr($ARGS,4,2)));fhem (&quot;set RGB1 rgb&quot;);fhem (&quot;setreading $name RGB $ARGS&quot;);fhem (&quot;setreading $name rgb $ARGS&quot;);return undef}"/>
+    <ATTR key="setList" value="rgb:colorpicker,RGB on off"/>
+    <ATTR key="webCmd" value="rgb:rgb FF0000:rgb C8FF12:rgb 0000FF:rgb 000000"/>
+    <STATE key="RGB" value="000000" measured="2013-12-12 13:57:55"/>
+    <STATE key="rgb" value="FF0000" measured="2013-12-11 00:14:30"/>
+</readingsProxy>
+
+</readingsProxy_LIST>
 
 <RPI_GPIO_LIST>
 <RPI_GPIO name="Pin11" state="on" sets="readValue" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings poll_interval loglevel:0,1,2,3,4,5 direction:input,output pud_resistor:off,up,down interrupt:none,falling,rising,both toggletostate:no,yes DbLogExclude devStateIcon devStateStyle icon item1 item10 item11 item12 item13 item14 item15 item16 item17 item18 item19 item2 item20 item3 item4 item5 item6 item7 item8 item9 sortby webCmd">

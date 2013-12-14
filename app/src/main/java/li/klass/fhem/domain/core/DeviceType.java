@@ -34,6 +34,7 @@ import li.klass.fhem.adapter.devices.GCMSendDeviceAdapter;
 import li.klass.fhem.adapter.devices.HueDeviceAdapter;
 import li.klass.fhem.adapter.devices.MaxAdapter;
 import li.klass.fhem.adapter.devices.PidAdapter;
+import li.klass.fhem.adapter.devices.ReadingsProxyDeviceAdapter;
 import li.klass.fhem.adapter.devices.RemoteControlAdapter;
 import li.klass.fhem.adapter.devices.SonosPlayerAdapter;
 import li.klass.fhem.adapter.devices.SwitchActionRowAdapter;
@@ -91,6 +92,7 @@ import li.klass.fhem.domain.PresenceDevice;
 import li.klass.fhem.domain.RFXCOMDevice;
 import li.klass.fhem.domain.RFXX10RECDevice;
 import li.klass.fhem.domain.RPIGPIODevice;
+import li.klass.fhem.domain.ReadingsProxyDevice;
 import li.klass.fhem.domain.RemoteControlDevice;
 import li.klass.fhem.domain.SISPMSDevice;
 import li.klass.fhem.domain.SWAPDevice;
@@ -177,6 +179,7 @@ public enum DeviceType {
     PCA301("PCA301", PCA301Device.class),
     REMOTECONTROL("remotecontrol", RemoteControlDevice.class, new RemoteControlAdapter(), DeviceVisibility.FHEMWEB_ONLY),
     RPI_GPIO("RPI_GPIO", RPIGPIODevice.class, new ToggleableAdapter<RPIGPIODevice>(RPIGPIODevice.class)),
+    READINGS_PROXY("readingsProxy", ReadingsProxyDevice.class, new ReadingsProxyDeviceAdapter())
     ;
 
     private String xmllistTag;
