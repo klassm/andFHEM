@@ -39,16 +39,22 @@ import li.klass.fhem.R;
 import li.klass.fhem.activities.device.DeviceNameListAdapter;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
+import li.klass.fhem.constants.PreferenceKeys;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.RoomDeviceList;
 import li.klass.fhem.fragments.core.BaseFragment;
+import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.widget.GridViewWithSections;
+
+import static li.klass.fhem.constants.BundleExtraKeys.ROOM_NAME;
 
 public abstract class DeviceNameListFragment extends BaseFragment {
 
     private int columnWidth = Integer.MAX_VALUE;
+    private String roomName = null;
+    protected ResultReceiver resultReceiver;
 
     public interface DeviceFilter extends Serializable {
         boolean isSelectable(Device<?> device);
@@ -57,12 +63,24 @@ public abstract class DeviceNameListFragment extends BaseFragment {
     @SuppressWarnings("unused")
     public DeviceNameListFragment(Bundle bundle, int columnWidth) {
         super(bundle);
-        this.columnWidth = columnWidth;
+
+        resultReceiver = bundle.getParcelable(BundleExtraKeys.RESULT_RECEIVER);
+
+        if (columnWidth == -1) {
+            this.columnWidth = ApplicationProperties.INSTANCE.getIntegerSharedPreference(
+                    PreferenceKeys.DEVICE_COLUMN_WIDTH, Integer.MAX_VALUE);
+        } else {
+            this.columnWidth = columnWidth;
+        }
+
+        if (bundle.containsKey(ROOM_NAME)) {
+            roomName = bundle.getString(ROOM_NAME);
+        }
     }
 
     @SuppressWarnings("unused")
     public DeviceNameListFragment(Bundle bundle) {
-        super(bundle);
+        this(bundle, -1);
     }
 
     @SuppressWarnings("unused")
@@ -106,10 +124,15 @@ public abstract class DeviceNameListFragment extends BaseFragment {
 
     @Override
     public void update(boolean doUpdate) {
-        Intent allDevicesIntent = new Intent(Actions.GET_ALL_ROOMS_DEVICE_LIST);
-        allDevicesIntent.putExtras(new Bundle());
-        allDevicesIntent.putExtra(BundleExtraKeys.DO_REFRESH, false);
-        allDevicesIntent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
+        Intent loadIntent;
+        if (roomName == null) {
+            loadIntent = new Intent(Actions.GET_ALL_ROOMS_DEVICE_LIST);
+        } else {
+            loadIntent = new Intent(Actions.GET_ROOM_DEVICE_LIST);
+            loadIntent.putExtra(BundleExtraKeys.ROOM_NAME, roomName);
+        }
+        loadIntent.putExtra(BundleExtraKeys.DO_REFRESH, false);
+        loadIntent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
             @Override
             protected void onReceiveResult(int resultCode, Bundle resultData) {
                 super.onReceiveResult(resultCode, resultData);
@@ -122,7 +145,7 @@ public abstract class DeviceNameListFragment extends BaseFragment {
                 deviceListReceived(roomDeviceList);
             }
         });
-        getActivity().startService(allDevicesIntent);
+        getActivity().startService(loadIntent);
     }
 
     protected void deviceListReceived(RoomDeviceList roomDeviceList) {

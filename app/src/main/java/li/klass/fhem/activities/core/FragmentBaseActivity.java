@@ -447,6 +447,8 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
         BillingService.INSTANCE.bindActivity(this);
 
         registerReceiver(broadcastReceiver, broadcastReceiver.getIntentFilter());
+
+        updateNavigationVisibility();
     }
 
     @Override
@@ -619,6 +621,8 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
     }
 
     private boolean updateNavigationVisibility(BaseFragment navigationFragment, BaseFragment contentFragment) {
+        if (contentFragment == null) return false;
+
         FragmentType fragmentType = FragmentType.getFragmentFor(contentFragment.getClass());
 
         boolean hasNavigation = hasNavigation(navigationFragment, contentFragment);

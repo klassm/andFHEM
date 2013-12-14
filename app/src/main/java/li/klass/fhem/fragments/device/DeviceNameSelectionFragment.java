@@ -26,7 +26,6 @@ package li.klass.fhem.fragments.device;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.ResultReceiver;
 
 import li.klass.fhem.R;
 import li.klass.fhem.constants.Actions;
@@ -38,18 +37,15 @@ import li.klass.fhem.domain.core.RoomDeviceList;
 import li.klass.fhem.util.DialogUtil;
 
 public class DeviceNameSelectionFragment extends DeviceNameListFragment {
-    private ResultReceiver resultReceiver;
 
     @SuppressWarnings("unused")
     public DeviceNameSelectionFragment(Bundle bundle) {
         super(bundle);
-        resultReceiver = bundle.getParcelable(BundleExtraKeys.RESULT_RECEIVER);
     }
 
     @SuppressWarnings("unused")
     public DeviceNameSelectionFragment(Bundle bundle, int columnWidth) {
         super(bundle, columnWidth);
-        resultReceiver = bundle.getParcelable(BundleExtraKeys.RESULT_RECEIVER);
     }
 
     @SuppressWarnings("unused")

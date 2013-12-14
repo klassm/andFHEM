@@ -25,10 +25,14 @@ package li.klass.fhem.fragments.device;
 
 import android.content.Intent;
 import android.os.Bundle;
-import li.klass.fhem.constants.Actions;
-import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.fragments.FragmentType;
+
 import li.klass.fhem.fragments.RoomListFragment;
+
+import static li.klass.fhem.constants.Actions.SHOW_FRAGMENT;
+import static li.klass.fhem.constants.BundleExtraKeys.FRAGMENT;
+import static li.klass.fhem.constants.BundleExtraKeys.RESULT_RECEIVER;
+import static li.klass.fhem.constants.BundleExtraKeys.ROOM_NAME;
+import static li.klass.fhem.fragments.FragmentType.DEVICE_SELECTION;
 
 public class DeviceNameSelectionNavigationFragment extends RoomListFragment {
     @SuppressWarnings("unused")
@@ -42,9 +46,10 @@ public class DeviceNameSelectionNavigationFragment extends RoomListFragment {
 
     @Override
     public void onClick(String roomName) {
-        Intent intent = new Intent(Actions.SHOW_FRAGMENT);
-        intent.putExtra(BundleExtraKeys.FRAGMENT, FragmentType.DEVICE_SELECTION);
-        intent.putExtra(BundleExtraKeys.ROOM_NAME, roomName);
+        Intent intent = new Intent(SHOW_FRAGMENT);
+        intent.putExtra(FRAGMENT, DEVICE_SELECTION);
+        intent.putExtra(ROOM_NAME, roomName);
+        intent.putExtra(RESULT_RECEIVER, creationBundle.getParcelable(RESULT_RECEIVER));
 
         getActivity().sendBroadcast(intent);
     }

@@ -37,14 +37,9 @@ import li.klass.fhem.fragments.FragmentType;
  */
 public class DeviceNameListNavigationFragment extends DeviceNameListFragment {
 
-    private String selectedDeviceName;
-
     @SuppressWarnings("unused")
     public DeviceNameListNavigationFragment(Bundle bundle) {
         super(bundle);
-        if (bundle.containsKey(BundleExtraKeys.DEVICE_NAME)) {
-            selectedDeviceName = bundle.getString(BundleExtraKeys.DEVICE_NAME);
-        }
     }
 
     @SuppressWarnings("unused")
@@ -59,6 +54,7 @@ public class DeviceNameListNavigationFragment extends DeviceNameListFragment {
         intent.putExtra(BundleExtraKeys.FRAGMENT, FragmentType.DEVICE_DETAIL);
         intent.putExtra(BundleExtraKeys.DEVICE_NAME, child.getName());
         intent.putExtra(BundleExtraKeys.ROOM_NAME, creationBundle.getString(BundleExtraKeys.ROOM_NAME));
+        intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, resultReceiver);
 
         getActivity().sendBroadcast(intent);
     }

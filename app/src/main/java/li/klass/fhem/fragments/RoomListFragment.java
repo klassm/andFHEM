@@ -49,6 +49,8 @@ import li.klass.fhem.fragments.core.TopLevelFragment;
 import li.klass.fhem.util.Reject;
 import li.klass.fhem.util.advertisement.AdvertisementUtil;
 
+import static li.klass.fhem.constants.BundleExtraKeys.RESULT_RECEIVER;
+
 public class RoomListFragment extends BaseFragment implements TopLevelFragment {
 
     @SuppressWarnings("unused")
@@ -109,7 +111,7 @@ public class RoomListFragment extends BaseFragment implements TopLevelFragment {
         Intent intent = new Intent(Actions.GET_ROOM_NAME_LIST);
         intent.putExtras(new Bundle());
         intent.putExtra(BundleExtraKeys.DO_REFRESH, doUpdate);
-        intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
+        intent.putExtra(RESULT_RECEIVER, new ResultReceiver(new Handler()) {
             @Override
             protected void onReceiveResult(int resultCode, Bundle resultData) {
                 if (getView() == null) return;
