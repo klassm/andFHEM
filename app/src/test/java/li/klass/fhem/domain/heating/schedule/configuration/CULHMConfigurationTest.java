@@ -24,16 +24,17 @@
 
 package li.klass.fhem.domain.heating.schedule.configuration;
 
+import org.junit.Before;
+import org.junit.Test;
+
+import java.util.List;
+
 import li.klass.fhem.domain.CULHMDevice;
 import li.klass.fhem.domain.heating.schedule.DayProfile;
 import li.klass.fhem.domain.heating.schedule.WeekProfile;
 import li.klass.fhem.domain.heating.schedule.interval.FilledTemperatureInterval;
 import li.klass.fhem.util.DayUtil;
 import li.klass.fhem.util.Reject;
-import org.junit.Before;
-import org.junit.Test;
-
-import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -74,6 +75,13 @@ public class CULHMConfigurationTest {
         List<String> commands = configuration.generateScheduleCommands(device, weekProfile);
 
         assertThat(commands, hasItem("set name tempListSat 08:00 16.0 19:30 20.0 24:00 23.0"));
+    }
+
+    @Test
+    public void testSetPrefixCanBeStillRead() {
+        configuration.readNode(weekProfile, "TEMPLISTSAT", "set_  05:45 17.0 07:00 21.0 18:00 17.0 23:00 21.0 24:00 17.0");
+
+        assertThat(getHeatingIntervalAt(DayUtil.Day.SATURDAY, 0).getTemperature(), is(17.0));
     }
 
     private FilledTemperatureInterval getHeatingIntervalAt(DayUtil.Day saturday, int position) {
