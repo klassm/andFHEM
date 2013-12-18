@@ -53,7 +53,7 @@ public abstract class FHEMConnection {
     }
 
     protected int getConnectionTimeoutMilliSeconds() {
-        return ApplicationProperties.INSTANCE.getIntegerSharedPreference(
+        return 1000 * ApplicationProperties.INSTANCE.getIntegerSharedPreference(
                 PreferenceKeys.CONNECTION_TIMEOUT, CONNECTION_TIMEOUT_DEFAULT_SECONDS
         );
     }
