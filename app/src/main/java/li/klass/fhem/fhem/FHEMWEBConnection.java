@@ -63,7 +63,6 @@ import li.klass.fhem.error.ErrorHolder;
 
 public class FHEMWEBConnection extends FHEMConnection {
 
-    public static final int CONNECTION_TIMEOUT = 3000;
     public static final int SOCKET_TIMEOUT = 20000;
     public static final String TAG = FHEMWEBConnection.class.getName();
     private DefaultHttpClient client = null;
@@ -118,7 +117,7 @@ public class FHEMWEBConnection extends FHEMConnection {
                                                       DefaultHttpClient client, String command) {
         String url = null;
         if (client == null) {
-            client = createNewHTTPClient(CONNECTION_TIMEOUT, SOCKET_TIMEOUT);
+            client = createNewHTTPClient(getConnectionTimeoutMilliSeconds(), SOCKET_TIMEOUT);
         }
         try {
             HttpGet request = new HttpGet();

@@ -1,0 +1,250 @@
+/* The following code was written by Matthew Wiggins 
+ * and is released under the APACHE 2.0 license 
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ */
+package li.klass.fhem.widget.preference;
+
+import android.content.Context;
+import android.preference.DialogPreference;
+import android.util.AttributeSet;
+import android.view.Gravity;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.SeekBar;
+import android.widget.TextView;
+
+/**
+ * Preference showing a seek bar as dialog. The minimum, default and maximum values can
+ * be configured using the respective getters and (partly) the xml configuration.
+ *
+ * The main layout is overtaken by
+ * <a href="http://android.hlidskialf.com/blog/code/android-seekbar-preference">Hlidskialf Codes</a>.
+ * However, the source code was heavily refactored and changed to fit the needs of andFHEM.
+ *
+ * As Android's seek bars always handle minimum values to be 0, we recalculate each value
+ * to fit Android's needs. Each value is calculated to be <i>value - minimumValue</i>. That
+ * way we can handle non 0 minimum values properly.
+ *
+ * This is also why internal values are stored in this recalculated format and not in the original
+ * one provided by the using class. This concerns fields such as {@link #defaultValue},
+ * {@link #maximumValue}, {@link #minimumValue} and {@link #internalValue}.
+ */
+public class SeekBarPreference extends DialogPreference implements SeekBar.OnSeekBarChangeListener {
+    private static final String ANDROID_NS = "http://schemas.android.com/apk/res/android";
+
+    private Context context;
+
+    /**
+     * The seek bar users can use to change values.
+     */
+    private SeekBar seekBar;
+
+    /**
+     * A text field showing the current progress including a suffix value.
+     */
+    private TextView valueText;
+
+    /**
+     * Some message to show to the user.
+     */
+    private String dialogMessage;
+
+    /**
+     * A suffix shown after the value within the {@link #valueText} field.
+     */
+    private String suffix;
+
+    /**
+     * A default value which is used whenever no persisted value can be found.
+     */
+    private int defaultValue;
+
+    /**
+     * A maximum value.
+     * Internal note: Make sure that a progress which is set to the seek bar is always within bounds.
+     * If a value is bigger than the maximum value, the maximum value is used.
+     */
+    private int maximumValue;
+
+    /**
+     * A minimum value. This is used to recalculate all other values to the internal format.
+     */
+    private int minimumValue;
+
+    /**
+     * The current progress (internal format).
+     */
+    private int internalValue = 0;
+
+    public SeekBarPreference(Context context, AttributeSet attrs) {
+        super(context, attrs);
+
+        this.context = context;
+
+        dialogMessage = attrs.getAttributeValue(ANDROID_NS, "dialogMessage");
+        suffix = attrs.getAttributeValue(ANDROID_NS, "text");
+
+        setDefaultValue(attrs.getAttributeIntValue(ANDROID_NS, "defaultValue", 0));
+        setMaximumValue(attrs.getAttributeIntValue(ANDROID_NS, "max", 100));
+    }
+
+    @Override
+    protected View onCreateDialogView() {
+        LinearLayout.LayoutParams params;
+        LinearLayout layout = new LinearLayout(context);
+        layout.setOrientation(LinearLayout.VERTICAL);
+        layout.setPadding(6, 6, 6, 6);
+
+        TextView splashText = new TextView(context);
+        if (dialogMessage != null) {
+            splashText.setText(dialogMessage);
+        }
+        layout.addView(splashText);
+
+        valueText = new TextView(context);
+        valueText.setGravity(Gravity.CENTER_HORIZONTAL);
+        valueText.setTextSize(32);
+        params = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.FILL_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        layout.addView(valueText, params);
+
+        seekBar = new SeekBar(context);
+        seekBar.setOnSeekBarChangeListener(this);
+        layout.addView(seekBar, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
+        seekBar.setMax(maximumValue);
+
+        if (shouldPersist()) {
+            int externalDefault = toExternalValue(defaultValue, minimumValue);
+            int loadValue = getPersistedInt(externalDefault);
+            setValue(loadValue);
+        }
+
+        return layout;
+    }
+
+    @Override
+    protected void onBindDialogView(View v) {
+        super.onBindDialogView(v);
+
+        seekBar.setMax(maximumValue);
+        seekBar.setProgress(internalValue);
+    }
+
+    @Override
+    protected void onSetInitialValue(boolean restore, Object def) {
+        super.onSetInitialValue(restore, defaultValue);
+
+        if (restore) {
+            internalValue = getPersistedInt(defaultValue);
+        } else {
+            internalValue = defaultValue;
+        }
+
+        internalValue -= minimumValue;
+    }
+
+    public void onProgressChanged(SeekBar seek, int newValue, boolean fromTouch) {
+        this.internalValue = newValue;
+
+        updateValueText();
+    }
+
+    @Override
+    public void setDefaultValue(Object newDefaultValue) {
+        if (! (newDefaultValue instanceof Integer)) {
+            return;
+        }
+
+        int newDefaultValueExternal = (Integer) newDefaultValue;
+        int newDefaultValueInternal = toInternalValue(newDefaultValueExternal, minimumValue);
+
+        // Overwrite the current default.
+        if (defaultValue == internalValue) {
+            setValue(newDefaultValueExternal);
+        }
+
+        this.defaultValue = newDefaultValueInternal;
+
+        super.setDefaultValue(newDefaultValueInternal);
+    }
+
+    @Override
+    protected void onDialogClosed(boolean positiveResult) {
+        super.onDialogClosed(positiveResult);
+        if (! positiveResult) return;
+
+        if (shouldPersist()) {
+            persistInt(toExternalValue(internalValue, minimumValue));
+        }
+    }
+
+    public void onStartTrackingTouch(SeekBar seek) {
+    }
+
+    public void onStopTrackingTouch(SeekBar seek) {
+    }
+
+    /**
+     * Update the {@link #valueText} field to match the current progress.
+     */
+    private void updateValueText() {
+        int persistValue = getValue();
+
+        String text = String.valueOf(persistValue);
+        if (valueText != null) {
+            valueText.setText(suffix == null ? text : text.concat(suffix));
+        }
+
+        callChangeListener(persistValue);
+    }
+
+    /**
+     * Sets the minimum value and recalculates all internal values to match the new minimum value.
+     * (We do not want to loose state).
+     *
+     * @param newMinimumValue minimum to set.
+     */
+    public void setMinimumValue(int newMinimumValue) {
+        int maximumValueExternal = toExternalValue(maximumValue, minimumValue);
+        int defaultValueExternal = toExternalValue(defaultValue, minimumValue);
+        int currentValue = toExternalValue(internalValue, minimumValue);
+
+        this.minimumValue = newMinimumValue;
+
+        setMaximumValue(maximumValueExternal);
+        setDefaultValue(defaultValueExternal);
+        setValue(currentValue);
+    }
+
+    public void setMaximumValue(int maximumValue) {
+        this.maximumValue = toInternalValue(maximumValue, minimumValue);
+        if (internalValue > maximumValue) internalValue = maximumValue;
+
+        if (seekBar != null) {
+            seekBar.setMax(maximumValue);
+        }
+    }
+
+    public int getValue() {
+        return toExternalValue(internalValue, minimumValue);
+    }
+
+    public void setValue(int value) {
+        internalValue = toInternalValue(value, minimumValue);
+
+        if (seekBar != null) {
+            seekBar.setProgress(internalValue);
+        }
+    }
+
+    private static int toExternalValue(int value, int minimumValue) {
+        return value + minimumValue;
+    }
+
+    private static int toInternalValue(int value, int minimumValue) {
+        return value - minimumValue;
+    }
+}

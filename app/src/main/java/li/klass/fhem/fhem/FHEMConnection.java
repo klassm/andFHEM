@@ -26,10 +26,15 @@ package li.klass.fhem.fhem;
 
 import android.graphics.Bitmap;
 
+import li.klass.fhem.constants.PreferenceKeys;
 import li.klass.fhem.error.ErrorHolder;
 import li.klass.fhem.fhem.connection.FHEMServerSpec;
+import li.klass.fhem.util.ApplicationProperties;
 
 public abstract class FHEMConnection {
+
+    public static final int CONNECTION_TIMEOUT_DEFAULT_SECONDS = 4;
+
     protected FHEMServerSpec serverSpec;
 
     public abstract RequestResult<String> executeCommand(String command);
@@ -45,5 +50,11 @@ public abstract class FHEMConnection {
                 serverSpec.toString() + "\r\n";
 
         ErrorHolder.setError(e, text);
+    }
+
+    protected int getConnectionTimeoutMilliSeconds() {
+        return ApplicationProperties.INSTANCE.getIntegerSharedPreference(
+                PreferenceKeys.CONNECTION_TIMEOUT, CONNECTION_TIMEOUT_DEFAULT_SECONDS
+        );
     }
 }

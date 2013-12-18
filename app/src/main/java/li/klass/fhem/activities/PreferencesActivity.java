@@ -31,17 +31,20 @@ import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 
-import com.hlidskialf.android.preference.SeekBarPreference;
-
 import li.klass.fhem.GCMIntentService;
 import li.klass.fhem.R;
-import li.klass.fhem.adapter.rooms.DeviceGridAdapter;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.error.ErrorHolder;
 import li.klass.fhem.util.DisplayUtil;
+import li.klass.fhem.widget.preference.SeekBarPreference;
 
+import static li.klass.fhem.adapter.rooms.DeviceGridAdapter.DEFAULT_COLUMN_WIDTH;
+import static li.klass.fhem.constants.PreferenceKeys.CONNECTION_TIMEOUT;
 import static li.klass.fhem.constants.PreferenceKeys.DEVICE_COLUMN_WIDTH;
+import static li.klass.fhem.constants.PreferenceKeys.GCM_PROJECT_ID;
+import static li.klass.fhem.constants.PreferenceKeys.SEND_LAST_ERROR;
+import static li.klass.fhem.fhem.FHEMConnection.CONNECTION_TIMEOUT_DEFAULT_SECONDS;
 
 public class PreferencesActivity extends PreferenceActivity
         implements SharedPreferences.OnSharedPreferenceChangeListener {
@@ -60,11 +63,11 @@ public class PreferencesActivity extends PreferenceActivity
         addPreferencesFromResource(R.layout.preferences);
 
         SeekBarPreference deviceColumnWidthPreference = (SeekBarPreference) findPreference(DEVICE_COLUMN_WIDTH);
-        deviceColumnWidthPreference.setMin(200);
-        deviceColumnWidthPreference.setDefaultValue(DeviceGridAdapter.DEFAULT_COLUMN_WIDTH);
-        deviceColumnWidthPreference.setMax(DisplayUtil.getLargestDimensionInDP(this));
+        deviceColumnWidthPreference.setMinimumValue(200);
+        deviceColumnWidthPreference.setDefaultValue(DEFAULT_COLUMN_WIDTH);
+        deviceColumnWidthPreference.setMaximumValue(DisplayUtil.getLargestDimensionInDP(this));
 
-        findPreference("GCM_PROJECT_ID").setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+        findPreference(GCM_PROJECT_ID).setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object o) {
                 String projectId = (String) o;
@@ -73,13 +76,17 @@ public class PreferencesActivity extends PreferenceActivity
             }
         });
 
-        findPreference("SEND_LAST_ERROR").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+        findPreference(SEND_LAST_ERROR).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 ErrorHolder.sendLastErrorAsMail(PreferencesActivity.this);
                 return true;
             }
         });
+
+        SeekBarPreference connectionTimeoutPreference = (SeekBarPreference) findPreference(CONNECTION_TIMEOUT);
+        connectionTimeoutPreference.setMinimumValue(1);
+        connectionTimeoutPreference.setDefaultValue(CONNECTION_TIMEOUT_DEFAULT_SECONDS);
     }
 
     @Override

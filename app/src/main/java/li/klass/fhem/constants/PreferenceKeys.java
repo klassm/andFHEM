@@ -36,6 +36,7 @@ public class PreferenceKeys {
     public static final String GCM_WIDGET_UPDATE = "GCM_WIDGET_UPDATE";
     public static final String SEND_LAST_ERROR = "SEND_LAST_ERROR";
     public static final String STARTUP_VIEW = "STARTUP_VIEW";
+    public static final String CONNECTION_TIMEOUT = "CONNECTION_TIMEOUT";
 
     public static final String DEVICE_FUNCTIONALITY_ORDER_VISIBLE = "DEVICE_FUNCTIONALITY_ORDER_VISIBLE";
     public static final String DEVICE_TYPE_FUNCTIONALITY_ORDER_INVISIBLE = "DEVICE_TYPE_FUNCTIONALITY_ORDER_INVISIBLE";

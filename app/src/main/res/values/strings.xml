@@ -263,6 +263,7 @@
     <string name="prefGcmWidgetUpdate">Update widget upon GCM notification</string>
     <string name="prefStartupView">Startup view</string>
     <string name="prefStartupViewSummary">View shown upon application start</string>
+    <string name="prefConnectionTimeout">Connection timeout</string>
 
     <string name="notNumericError">Not numeric!</string>
     <string name="error_update">Error while updating.</string>

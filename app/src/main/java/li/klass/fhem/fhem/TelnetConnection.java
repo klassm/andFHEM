@@ -57,7 +57,7 @@ public class TelnetConnection extends FHEMConnection {
         Log.i(TAG, "executeTask command " + command);
 
         final TelnetClient telnetClient = new TelnetClient();
-        telnetClient.setConnectTimeout(4000);
+        telnetClient.setConnectTimeout(getConnectionTimeoutMilliSeconds());
 
         OutputStream outputStream = null;
         BufferedOutputStream bufferedOutputStream = null;
