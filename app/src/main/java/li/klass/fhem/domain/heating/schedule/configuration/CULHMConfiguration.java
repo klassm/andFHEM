@@ -50,7 +50,7 @@ public class CULHMConfiguration extends HeatingConfiguration<FilledTemperatureIn
         DayUtil.Day day = DayUtil.getDayForShortName(shortName);
         if (day == null) return;
 
-        String[] parts = value.split(" ");
+        String[] parts = value.replaceAll("set[_]?[ ]?", "").trim().split(" ");
         for (int i = 0; i < parts.length; i++) {
             String part = parts[i];
             int index = i / 2;
