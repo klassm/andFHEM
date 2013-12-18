@@ -26,9 +26,13 @@ package li.klass.fhem.adapter.devices;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.view.View;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+import android.widget.TextView;
+
+import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.DimmableAdapter;
 import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
@@ -94,6 +98,17 @@ public class CULHMAdapter extends DimmableAdapter<CULHMDevice> {
             }
         });
 
+        registerFieldListener("commandAccepted", new FieldNameAddedToDetailListener<CULHMDevice>() {
+            @Override
+            protected void onFieldNameAdded(Context context, TableLayout tableLayout, String field,
+                                            CULHMDevice device, TableRow fieldTableRow) {
+                if (! device.isLastCommandAccepted()) {
+                    TextView valueView = (TextView) fieldTableRow.findViewById(R.id.value);
+                    valueView.setTextColor(context.getResources().getColor(R.color.red));
+                }
+            }
+        });
+
         detailActions.add(new DeviceDetailViewButtonAction<CULHMDevice>(R.string.timetable) {
             @Override
             public void onButtonClick(Context context, CULHMDevice device) {
@@ -108,5 +123,16 @@ public class CULHMAdapter extends DimmableAdapter<CULHMDevice> {
                 return device.getSubType() == HEATING;
             }
         });
+    }
+
+    @Override
+    public void fillDeviceOverviewView(View view, CULHMDevice device) {
+        super.fillDeviceOverviewView(view, device);
+
+        if (! device.isLastCommandAccepted()) {
+            Resources resources = AndFHEMApplication.getContext().getResources();
+            int color = resources.getColor(R.color.errorBackground);
+            view.setBackgroundColor(color);
+        }
     }
 }

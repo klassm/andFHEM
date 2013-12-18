@@ -1443,7 +1443,7 @@ webCmd">
            value="03:00 04:32 05:64 07:FF 0B:66 83:00 84:32 85:64  87:FF 8B:66 00:00" measured="2013-02-04 15:39:21"/>
     <STATE key=".RegL_03:Flur_Wohnungstuer_Fernbedienung_Taste_02"
            value="03:00 04:32 05:64 07:FF 0B:33 83:00 84:32 85:64  87:FF 8B:88 00:00" measured="2013-02-04 15:39:20"/>
-    <STATE key="CommandAccepted" value="yes" measured="2013-02-05 09:00:00"/>
+    <STATE key="CommandAccepted" value="no" measured="2013-02-05 09:00:00"/>
     <STATE key="PairedTo" value="0x123456" measured="2013-02-04 15:39:18"/>
     <STATE key="R-pairCentral" value="0x123456" measured="2013-02-04 15:39:18"/>
     <STATE key="battery" value="ok" measured="2013-02-05 09:00:08"/>

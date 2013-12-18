@@ -48,6 +48,7 @@ import li.klass.fhem.domain.heating.schedule.configuration.CULHMConfiguration;
 import li.klass.fhem.domain.heating.schedule.interval.FilledTemperatureInterval;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.NumberUtil;
+import li.klass.fhem.util.StringUtil;
 import li.klass.fhem.util.ValueDescriptionUtil;
 import li.klass.fhem.util.ValueExtractUtil;
 
@@ -502,6 +503,10 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
                 break;
 
         }
+    }
+
+    public boolean isLastCommandAccepted() {
+        return StringUtil.isBlank(commandAccepted) || "yes".equalsIgnoreCase(commandAccepted);
     }
 
     @Override

@@ -222,7 +222,6 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
      * @param attributes additional tag attributes
      */
     public void onChildItemRead(String tagName, String key, String value, NamedNodeMap attributes) {
-        System.out.println(key + " -> " + value);
         if (key.endsWith("_TIME") && ! key.startsWith("WEEK")) {
             measured = value;
         }
