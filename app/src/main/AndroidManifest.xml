@@ -187,7 +187,6 @@
                 <action android:name="li.klass.fhem.constants.Actions.DEVICE_WAKE"/>
                 <action android:name="li.klass.fhem.constants.Actions.DEVICE_REFRESH_STATE"/>
                 <action android:name="li.klass.fhem.constants.Actions.DEVICE_REFRESH_VALUES"/>
-                <action android:name="li.klass.fhem.constants.Actions.DEVICE_FLOORPLAN_MOVE"/>
                 <action android:name="li.klass.fhem.constants.Actions.DEVICE_WIDGET_TOGGLE"/>
                 <action android:name="li.klass.fhem.constants.Actions.DEVICE_TIMER_NEW"/>
                 <action android:name="li.klass.fhem.constants.Actions.DEVICE_TIMER_MODIFY"/>

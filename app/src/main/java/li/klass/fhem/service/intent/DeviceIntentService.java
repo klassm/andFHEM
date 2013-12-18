@@ -44,7 +44,6 @@ import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DimmableDevice;
 import li.klass.fhem.domain.core.ToggleableDevice;
 import li.klass.fhem.domain.fht.FHTMode;
-import li.klass.fhem.domain.floorplan.Coordinate;
 import li.klass.fhem.domain.heating.ComfortTempDevice;
 import li.klass.fhem.domain.heating.DesiredTempDevice;
 import li.klass.fhem.domain.heating.EcoTempDevice;
@@ -55,7 +54,6 @@ import li.klass.fhem.service.device.AtService;
 import li.klass.fhem.service.device.DeviceService;
 import li.klass.fhem.service.device.DimmableDeviceService;
 import li.klass.fhem.service.device.FHTService;
-import li.klass.fhem.service.device.FloorplanService;
 import li.klass.fhem.service.device.GCMSendDeviceService;
 import li.klass.fhem.service.device.GenericDeviceService;
 import li.klass.fhem.service.device.HeatingService;
@@ -68,7 +66,6 @@ import li.klass.fhem.service.room.RoomListService;
 
 import static li.klass.fhem.constants.Actions.DEVICE_DELETE;
 import static li.klass.fhem.constants.Actions.DEVICE_DIM;
-import static li.klass.fhem.constants.Actions.DEVICE_FLOORPLAN_MOVE;
 import static li.klass.fhem.constants.Actions.DEVICE_GRAPH;
 import static li.klass.fhem.constants.Actions.DEVICE_MOVE_ROOM;
 import static li.klass.fhem.constants.Actions.DEVICE_REFRESH_STATE;
@@ -201,9 +198,6 @@ public class DeviceIntentService extends ConvenientIntentService {
         } else if (DEVICE_REFRESH_STATE.equals(action)) {
             WOLService.INSTANCE.requestRefreshState((WOLDevice) device);
 
-        } else if (DEVICE_FLOORPLAN_MOVE.equals(action)) {
-            moveFloorplanDevice(intent, device);
-
         } else if (DEVICE_WIDGET_TOGGLE.equals(action)) {
             STATE result = toggleIntent(device);
 
@@ -270,14 +264,6 @@ public class DeviceIntentService extends ConvenientIntentService {
             AtService.INSTANCE.createNew(timerName, hour, minute, second, repetition, type, targetDeviceName, targetState, stateAppendix, isActive);
         }
 
-        return SUCCESS;
-    }
-
-    private STATE moveFloorplanDevice(Intent intent, Device device) {
-        String floorplanName = intent.getStringExtra(BundleExtraKeys.FLOORPLAN_NAME);
-        Coordinate coordinate = (Coordinate) intent.getSerializableExtra(BundleExtraKeys.COORDINATE);
-
-        FloorplanService.INSTANCE.setDeviceLocation(floorplanName, device, coordinate);
         return SUCCESS;
     }
 
