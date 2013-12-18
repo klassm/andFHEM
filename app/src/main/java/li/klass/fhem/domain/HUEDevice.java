@@ -103,7 +103,7 @@ public class HUEDevice extends DimmableDevice<HUEDevice> {
 
     @Override
     public boolean isSupported() {
-        return subType != null;
+        return super.isSupported() && subType != null;
     }
 
     public SubType getSubType() {

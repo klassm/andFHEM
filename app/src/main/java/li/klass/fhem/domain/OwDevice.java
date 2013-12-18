@@ -91,7 +91,7 @@ public class OwDevice extends ToggleableDevice<OwDevice> {
 
     @Override
     public boolean isSupported() {
-        return subType != null;
+        return super.isSupported() && subType != null;
     }
 
     @Override

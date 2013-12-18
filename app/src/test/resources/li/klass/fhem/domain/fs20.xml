@@ -71,6 +71,22 @@
             <ATTR key="widget_name" value="widget_name" />
             <STATE key="state" value="off" measured="2012-11-17 18:04:20"/>
         </FS20>
+
+        <FS20 name="device3" state="on" sets="dim06% dim100% dim12% dim18% dim25% dim31% dim37% dim43% dim50% dim56% dim62% dim68% dim75% dim81% dim87% dim93% dimdown dimup dimupdown off off-for-timer on on-100-for-timer-prev on-for-timer on-old-for-timer on-old-for-timer-prev on-till ramp-off-time ramp-on-time reset sendstate timer toggle dim:slider,0,6.25,100 blink intervals off-till" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev follow-on-for-timer:1,0 follow-on-timer do_not_notify:1,0 ignore:1,0 dummy:1,0 showtime:1,0 event-on-change-reading event-on-update-reading event-min-interval stateFormat model:dummyDimmer,dummySender,dummySimple,fs20as1,fs20as4,fs20bf,fs20bs,fs20di,fs20di10,fs20du,fs20fms,fs20hgs,fs20irl,fs20kse,fs20ls,fs20ms2,fs20pira,fs20piri,fs20piru,fs20rgbsa,fs20rst,fs20rsu,fs20s16,fs20s20,fs20s4,fs20s4a,fs20s4m,fs20s4u,fs20s4ub,fs20s8,fs20s8m,fs20sa,fs20sd,fs20sig,fs20sm4,fs20sm8,fs20sn,fs20sr,fs20ss,fs20st,fs20st2,fs20str,fs20su,fs20sv,fs20tc1,fs20tc6,fs20tfk,fs20tk,fs20ue1,fs20usr,fs20uts,fs20ws1,fs20ze alias_map custom_graph devStateIcon devStateStyle fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon invertState measured-temp offDevice onDevice onOffDevice sortby structexclude toggleDevice webCmd webcmdDevice always_hidden">
+            <INT key="BTN" value="57"/>
+            <INT key="CFGFN" value="include/obergeschoss.cfg"/>
+            <INT key="DEF" value="11111111 2224 gm 4444 lm 2244"/>
+            <INT key="NAME" value="device3"/>
+            <INT key="NR" value="63"/>
+            <INT key="STATE" value="on"/>
+            <INT key="TYPE" value="FS20"/>
+            <INT key="XMIT" value="0000"/>
+            <INT key="IODev" value="CUL"/>
+            <ATTR key="always_hidden" value="true"/>
+            <ATTR key="fp_obergeschoss" value="500,210,1,"/>
+            <ATTR key="room" value="room"/>
+            <STATE key="state" value="on" measured="2013-12-18 09:57:58"/>
+        </FS20>
     </FS20_LIST>
 
     <FileLog_LIST>

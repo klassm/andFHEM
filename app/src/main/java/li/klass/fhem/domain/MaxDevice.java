@@ -312,7 +312,7 @@ public class MaxDevice extends ToggleableDevice<MaxDevice> implements DesiredTem
 
     @Override
     public boolean isSupported() {
-        return subType != null;
+        return super.isSupported() && subType != null;
     }
 
     @Override

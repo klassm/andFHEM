@@ -283,7 +283,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
 
     @Override
     public boolean isSupported() {
-        return subType != null;
+        return super.isSupported() && subType != null;
     }
 
     public boolean isOnByState() {

@@ -39,8 +39,6 @@ import li.klass.fhem.R;
 import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.appwidget.view.widget.base.AppWidgetView;
 import li.klass.fhem.domain.FileLogDevice;
-import li.klass.fhem.domain.floorplan.Coordinate;
-import li.klass.fhem.domain.floorplan.FloorplanPosition;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.service.room.AssociatedDeviceCallback;
@@ -70,8 +68,6 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
     protected Map<String, String> eventMapReverse = new HashMap<String, String>();
     protected Map<String, String> eventMap = new HashMap<String, String>();
     private String[] availableTargetStates;
-
-    private Map<String, FloorplanPosition> floorPlanPositionMap = new HashMap<String, FloorplanPosition>();
 
     protected volatile FileLogDevice fileLog;
     private List<DeviceChart> deviceCharts = new ArrayList<DeviceChart>();
@@ -122,7 +118,7 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
         measured = value;
     }
 
-    public void read_ALWAYS_HIDDEN(String value) {
+    public void readALWAYS_HIDDEN(String value) {
         alwaysHidden = "true".equalsIgnoreCase(value);
     }
 
@@ -226,17 +222,8 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
      * @param attributes additional tag attributes
      */
     public void onChildItemRead(String tagName, String key, String value, NamedNodeMap attributes) {
-        if (key.startsWith("FP_")) {
-            String[] commaParts = value.split(",");
-            if (commaParts.length <= 2) {
-                return;
-            }
-            int y = Integer.valueOf(commaParts[0]);
-            int x = Integer.valueOf(commaParts[1]);
-            int viewType = Integer.valueOf(commaParts[2]);
-
-            floorPlanPositionMap.put(key.substring(3), new FloorplanPosition(x, y, viewType));
-        } else if (key.endsWith("_TIME") && !key.startsWith("WEEK")) {
+        System.out.println(key + " -> " + value);
+        if (key.endsWith("_TIME") && ! key.startsWith("WEEK")) {
             measured = value;
         }
     }
@@ -386,25 +373,6 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
         return eventMap;
     }
 
-    public boolean isOnFloorplan(String floorplan) {
-        if (floorPlanPositionMap == null || floorplan == null) return false;
-        return floorPlanPositionMap.containsKey(floorplan.toUpperCase());
-    }
-
-    public FloorplanPosition getFloorplanPositionFor(String floorplan) {
-        return floorPlanPositionMap.get(floorplan.toUpperCase());
-    }
-
-    public void setCoordinateFor(String floorplan, Coordinate coordinate) {
-        String key = floorplan.toUpperCase();
-        if (!floorPlanPositionMap.containsKey(key)) return;
-
-        FloorplanPosition floorplanPosition = floorPlanPositionMap.get(key);
-        FloorplanPosition newPosition = new FloorplanPosition(coordinate.x, coordinate.y, floorplanPosition.viewType);
-
-        floorPlanPositionMap.put(key, newPosition);
-    }
-
     public String[] getAvailableTargetStates() {
         return availableTargetStates;
     }
@@ -467,7 +435,6 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
                 ", eventMapReverse=" + eventMapReverse +
                 ", eventMap=" + eventMap +
                 ", availableTargetStates=" + (availableTargetStates == null ? null : Arrays.asList(availableTargetStates)) +
-                ", floorPlanPositionMap=" + floorPlanPositionMap +
                 ", fileLog=" + fileLog +
                 ", deviceCharts=" + deviceCharts +
                 '}';

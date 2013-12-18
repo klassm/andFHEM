@@ -117,7 +117,7 @@ public class GPIO4Device extends Device<GPIO4Device> {
 
     @Override
     public boolean isSupported() {
-        return subType != null;
+        return super.isSupported() && subType != null;
     }
 
     public String getAverageDay() {

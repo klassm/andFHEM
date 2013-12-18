@@ -120,7 +120,7 @@ public class AtDevice extends Device<AtDevice> {
 
     @Override
     public boolean isSupported() {
-        return definition != null && targetDevice != null;
+        return super.isSupported() && definition != null && targetDevice != null;
     }
 
     public int getHours() {

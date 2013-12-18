@@ -40,7 +40,7 @@ public class WatchdogDevice extends Device<WatchdogDevice> {
 
     @Override
     public boolean isSupported() {
-        return measured != null;
+        return super.isSupported() && measured != null;
     }
 
     @Override
