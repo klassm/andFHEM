@@ -10,7 +10,7 @@ public enum SeriesType {
     DESIRED_TEMPERATURE(Color.YELLOW, R.string.yAxisTemperature),
     HUMIDITY(Color.GREEN, R.string.yAxisHumidity),
     CURRENT_USAGE(Color.RED, R.string.yAxisCurrentUsage),
-    DAY_USAGE(Color.BLUE, R.string.yAxisCurrentUsage),
+    DAY_USAGE(Color.BLUE, R.string.yAxisCumulativeUsage),
     CUMULATIVE_USAGE(Color.GREEN, R.string.yAxisCumulativeUsage),
     ACTUATOR(Color.BLUE, R.string.yAxisActuator),
     LITRE_CONTENT(Color.RED, R.string.yAxisLitreContent),
