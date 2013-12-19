@@ -32,6 +32,7 @@ import android.widget.RemoteViewsService;
 
 import li.klass.fhem.appwidget.view.WidgetType;
 import li.klass.fhem.appwidget.view.widget.base.AppWidgetView;
+import li.klass.fhem.appwidget.view.widget.base.EmptyRemoteViewsFactory;
 import li.klass.fhem.appwidget.view.widget.base.ListAppWidgetView;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.service.room.RoomListService;
@@ -44,7 +45,7 @@ import static li.klass.fhem.service.room.RoomListService.NEVER_UPDATE_PERIOD;
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class AppWidgetListViewUpdateRemoteViewsService extends RemoteViewsService {
 
-    public static final String TAG =AppWidgetListViewUpdateRemoteViewsService.class.getName();
+    public static final String TAG = AppWidgetListViewUpdateRemoteViewsService.class.getName();
 
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
@@ -66,7 +67,13 @@ public class AppWidgetListViewUpdateRemoteViewsService extends RemoteViewsServic
         if (! (view instanceof ListAppWidgetView)) {
             Log.e(TAG,
                     "can only handle list widget views, got " + view.getClass().getName());
-            return null;
+
+            /*
+            * We may not return null here, as the source code within {@link RemoteViewsService#onBind}
+            * depends on a factory which is _non_ null. This is why we simply return a factory
+            * handling no data at all.
+            */
+            return EmptyRemoteViewsFactory.INSTANCE;
         }
 
         ListAppWidgetView listView = (ListAppWidgetView) view;
