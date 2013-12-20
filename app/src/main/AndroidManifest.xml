@@ -25,8 +25,8 @@
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="li.klass.fhem"
-    android:versionCode="264"
-    android:versionName="2.6.4">
+    android:versionCode="265"
+    android:versionName="2.6.5">
 
 
     <uses-permission android:name="android.permission.INTERNET"/>
