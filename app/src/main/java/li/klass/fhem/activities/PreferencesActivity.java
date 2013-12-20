@@ -40,11 +40,13 @@ import li.klass.fhem.util.DisplayUtil;
 import li.klass.fhem.widget.preference.SeekBarPreference;
 
 import static li.klass.fhem.adapter.rooms.DeviceGridAdapter.DEFAULT_COLUMN_WIDTH;
+import static li.klass.fhem.constants.PreferenceKeys.COMMAND_EXECUTION_RETRIES;
 import static li.klass.fhem.constants.PreferenceKeys.CONNECTION_TIMEOUT;
 import static li.klass.fhem.constants.PreferenceKeys.DEVICE_COLUMN_WIDTH;
 import static li.klass.fhem.constants.PreferenceKeys.GCM_PROJECT_ID;
 import static li.klass.fhem.constants.PreferenceKeys.SEND_LAST_ERROR;
 import static li.klass.fhem.fhem.FHEMConnection.CONNECTION_TIMEOUT_DEFAULT_SECONDS;
+import static li.klass.fhem.service.CommandExecutionService.DEFAULT_NUMBER_OF_RETRIES;
 
 public class PreferencesActivity extends PreferenceActivity
         implements SharedPreferences.OnSharedPreferenceChangeListener {
@@ -87,6 +89,9 @@ public class PreferencesActivity extends PreferenceActivity
         SeekBarPreference connectionTimeoutPreference = (SeekBarPreference) findPreference(CONNECTION_TIMEOUT);
         connectionTimeoutPreference.setMinimumValue(1);
         connectionTimeoutPreference.setDefaultValue(CONNECTION_TIMEOUT_DEFAULT_SECONDS);
+
+        SeekBarPreference commandExecutionRetriesPreference = (SeekBarPreference) findPreference(COMMAND_EXECUTION_RETRIES);
+        commandExecutionRetriesPreference.setDefaultValue(DEFAULT_NUMBER_OF_RETRIES);
     }
 
     @Override

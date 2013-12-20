@@ -264,6 +264,9 @@
     <string name="prefStartupView">Startup view</string>
     <string name="prefStartupViewSummary">View shown upon application start</string>
     <string name="prefConnectionTimeout">Connection timeout</string>
+    <string name="prefCommandExecutionRetries">Command execution retries</string>
+    <string name="prefCommandExecutionRetriesSummary">Number of times a command is resend if the execution fails.</string>
+    <string name="prefCommandExecutionRetriesTimeDialogEntry">%1$d. try: %2$d s</string>
 
     <string name="notNumericError">Not numeric!</string>
     <string name="error_update">Error while updating.</string>

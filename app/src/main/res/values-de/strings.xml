@@ -260,6 +260,9 @@
     <string name="prefGcmWidgetUpdate">Widget-Aktualisierug bei GCM-Nachricht</string>
     <string name="prefStartupView">Start-Ansicht</string>
     <string name="prefConnectionTimeout">Verbindungs-Wartezeit</string>
+    <string name="prefCommandExecutionRetries">Kommando Wiederholungen</string>
+    <string name="prefCommandExecutionRetriesSummary">Anzahl, wie oft ein Kommando nochmals gesendet wird, wenn die Ausführung fehlschlägt.</string>
+    <string name="prefCommandExecutionRetriesTimeDialogEntry">%1$d. Versuch: %2$d s</string>
 
     <string name="notNumericError">Nicht numerisch!</string>
     <string name="error_update">Error während Update Vorgang.</string>

@@ -38,10 +38,12 @@ import li.klass.fhem.exception.CommandExecutionException;
 import li.klass.fhem.fhem.DataConnectionSwitch;
 import li.klass.fhem.fhem.FHEMConnection;
 import li.klass.fhem.fhem.RequestResult;
+import li.klass.fhem.util.ApplicationProperties;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static li.klass.fhem.constants.Actions.DISMISS_EXECUTING_DIALOG;
 import static li.klass.fhem.constants.Actions.SHOW_EXECUTING_DIALOG;
+import static li.klass.fhem.constants.PreferenceKeys.COMMAND_EXECUTION_RETRIES;
 import static li.klass.fhem.fhem.RequestResultError.CONNECTION_TIMEOUT;
 import static li.klass.fhem.fhem.RequestResultError.HOST_CONNECTION_ERROR;
 
@@ -52,7 +54,7 @@ public class CommandExecutionService extends AbstractService {
 
     public static final CommandExecutionService INSTANCE = new CommandExecutionService();
 
-    public static final int MAX_TRIES = 3;
+    public static final int DEFAULT_NUMBER_OF_RETRIES = 3;
     private transient ScheduledExecutorService scheduledExecutorService = null;
 
     private transient String lastFailedCommand = null;
@@ -137,7 +139,7 @@ public class CommandExecutionService extends AbstractService {
         return result;
     }
 
-    private int secondsForTry(int executionTry) {
+    public static int secondsForTry(int executionTry) {
         return (int) Math.pow(3, executionTry);
     }
 
@@ -146,7 +148,7 @@ public class CommandExecutionService extends AbstractService {
         if (result.error == null) return false;
         if (result.error != CONNECTION_TIMEOUT &&
                 result.error != HOST_CONNECTION_ERROR) return false;
-        if (currentTry > MAX_TRIES) return false;
+        if (currentTry > getNumberOfRetries()) return false;
 
         return true;
     }
@@ -176,5 +178,12 @@ public class CommandExecutionService extends AbstractService {
             scheduledExecutorService = Executors.newScheduledThreadPool(1);
         }
         return scheduledExecutorService;
+    }
+
+    private int getNumberOfRetries() {
+        ApplicationProperties applicationProperties = ApplicationProperties.INSTANCE;
+        return applicationProperties.getIntegerSharedPreference(
+                COMMAND_EXECUTION_RETRIES, DEFAULT_NUMBER_OF_RETRIES
+        );
     }
 }

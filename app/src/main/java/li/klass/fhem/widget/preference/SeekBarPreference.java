@@ -8,11 +8,12 @@ package li.klass.fhem.widget.preference;
 import android.content.Context;
 import android.preference.DialogPreference;
 import android.util.AttributeSet;
-import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
+import li.klass.fhem.R;
 
 /**
  * Preference showing a seek bar as dialog. The minimum, default and maximum values can
@@ -31,6 +32,7 @@ import android.widget.TextView;
  * {@link #maximumValue}, {@link #minimumValue} and {@link #internalValue}.
  */
 public class SeekBarPreference extends DialogPreference implements SeekBar.OnSeekBarChangeListener {
+
     private static final String ANDROID_NS = "http://schemas.android.com/apk/res/android";
 
     private Context context;
@@ -46,9 +48,27 @@ public class SeekBarPreference extends DialogPreference implements SeekBar.OnSee
     private TextView valueText;
 
     /**
-     * Some message to show to the user.
+     * Some message to show to the user. The message is shown above
+     * the seek bar!
      */
-    private String dialogMessage;
+    private String dialogMessageTop;
+
+    /**
+     * Text field for showing dialog messages,
+     */
+    private TextView dialogMessageTopTextView;
+
+
+    /**
+     * Some message to show to the user. The message is shown below
+     * the seek bar.
+     */
+    private String dialogMessageBottom;
+
+    /**
+     * Text field for showing dialog messages below the text field,
+     */
+    private TextView dialogMessageBottomTextView;
 
     /**
      * A suffix shown after the value within the {@link #valueText} field.
@@ -82,7 +102,7 @@ public class SeekBarPreference extends DialogPreference implements SeekBar.OnSee
 
         this.context = context;
 
-        dialogMessage = attrs.getAttributeValue(ANDROID_NS, "dialogMessage");
+        dialogMessageTop = attrs.getAttributeValue(ANDROID_NS, "dialogMessage");
         suffix = attrs.getAttributeValue(ANDROID_NS, "text");
 
         setDefaultValue(attrs.getAttributeIntValue(ANDROID_NS, "defaultValue", 0));
@@ -91,29 +111,20 @@ public class SeekBarPreference extends DialogPreference implements SeekBar.OnSee
 
     @Override
     protected View onCreateDialogView() {
-        LinearLayout.LayoutParams params;
-        LinearLayout layout = new LinearLayout(context);
-        layout.setOrientation(LinearLayout.VERTICAL);
-        layout.setPadding(6, 6, 6, 6);
+        View view = LayoutInflater.from(context).inflate(R.layout.seekbar_preference_dialog, null);
 
-        TextView splashText = new TextView(context);
-        if (dialogMessage != null) {
-            splashText.setText(dialogMessage);
-        }
-        layout.addView(splashText);
+        assert view != null;
 
-        valueText = new TextView(context);
-        valueText.setGravity(Gravity.CENTER_HORIZONTAL);
-        valueText.setTextSize(32);
-        params = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.FILL_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT);
-        layout.addView(valueText, params);
+        dialogMessageTopTextView = (TextView) view.findViewById(R.id.dialogMessageTop);
+        setDialogMessageTop(dialogMessageTop);
 
-        seekBar = new SeekBar(context);
+        dialogMessageBottomTextView = (TextView) view.findViewById(R.id.dialogMessageBottom);
+        setDialogMessageBottom(dialogMessageBottom);
+
+        valueText = (TextView) view.findViewById(R.id.value);
+
+        seekBar = (SeekBar) view.findViewById(R.id.seekBar);
         seekBar.setOnSeekBarChangeListener(this);
-        layout.addView(seekBar, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT));
         seekBar.setMax(maximumValue);
 
         if (shouldPersist()) {
@@ -122,7 +133,7 @@ public class SeekBarPreference extends DialogPreference implements SeekBar.OnSee
             setValue(loadValue);
         }
 
-        return layout;
+        return view;
     }
 
     @Override
@@ -237,6 +248,22 @@ public class SeekBarPreference extends DialogPreference implements SeekBar.OnSee
 
         if (seekBar != null) {
             seekBar.setProgress(internalValue);
+        }
+    }
+
+    public void setDialogMessageTop(String dialogMessageTop) {
+        this.dialogMessageTop = dialogMessageTop;
+
+        if (dialogMessageTop != null) {
+            dialogMessageTopTextView.setText(dialogMessageTop);
+        }
+    }
+
+    public void setDialogMessageBottom(String dialogMessageBottom) {
+        this.dialogMessageBottom = dialogMessageBottom;
+
+        if (dialogMessageBottom != null) {
+            dialogMessageBottomTextView.setText(dialogMessageBottom);
         }
     }
 
