@@ -2,7 +2,6 @@ gen
 bin
 bin/*
 gen/*
-log
 .idea
 *.iml
 *.ipr
