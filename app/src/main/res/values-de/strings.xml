@@ -319,7 +319,8 @@
     <string name="yAxisRainRate">Regenstärke (mm/hr)</string>
     <string name="yAxisRainTotal">Regenmenge (l/m2)</string>
     <string name="yAxisWindSpeed">Windgeschwindigkeit (km/h)</string>
-    <string name="yAxisCurrentUsage">aktueller Verbrauch (W)</string>
+    <string name="yAxisCurrentUsageW">aktueller Verbrauch (W)</string>
+    <string name="yAxisCurrentUsagekW">aktueller Verbrauch (kW)</string>
     <string name="yAxisCumulativeUsage">kumulativer Verbrauch (kWh)</string>
     <string name="yAxisToggleState">an (1) / aus(0)</string>
     <string name="yAxisLitreContent">Inhalt (l)</string>

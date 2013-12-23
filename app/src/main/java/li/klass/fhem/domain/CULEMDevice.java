@@ -41,7 +41,7 @@ import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ValueDescriptionUtil;
 import li.klass.fhem.util.ValueExtractUtil;
 
-import static li.klass.fhem.service.graph.description.SeriesType.CURRENT_USAGE;
+import static li.klass.fhem.service.graph.description.SeriesType.CURRENT_USAGE_WATT;
 
 @SupportsWidget(MediumInformationWidgetView.class)
 @SuppressWarnings("unused")
@@ -116,7 +116,7 @@ public class CULEMDevice extends Device<CULEMDevice> {
         super.fillDeviceCharts(chartSeries);
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.usageGraph,
-                ChartSeriesDescription.getSumInstance(R.string.currentUsage, "8::0:", getSumGraphDivisionFactor(), CURRENT_USAGE)), currentUsage);
+                ChartSeriesDescription.getSumInstance(R.string.currentUsage, "8::0:", getSumGraphDivisionFactor(), CURRENT_USAGE_WATT)), currentUsage);
     }
 
     @Override
