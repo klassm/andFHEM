@@ -115,7 +115,8 @@ public class FBCallmonitorDevice extends Device<FBCallmonitorDevice> {
             return;
         }
 
-        if (eventInternal == Event.DISCONNECT && missedCallNumber != null && missedCallNumber.equals(externalNumber)) {
+        if (eventInternal == Event.DISCONNECT && missedCallNumber != null
+                && missedCallNumber.equals(externalNumber)) {
             eventInternal = Event.MISSED;
         }
 
@@ -123,7 +124,8 @@ public class FBCallmonitorDevice extends Device<FBCallmonitorDevice> {
         event = eventString;
 
         String description = externalNumber;
-        if (externalName != null && !externalName.equalsIgnoreCase("unknown") && !externalName.equalsIgnoreCase("timeout")) {
+        if (externalName != null && !externalName.equalsIgnoreCase("unknown")
+                && !externalName.equalsIgnoreCase("timeout")) {
             description = externalName;
         }
 

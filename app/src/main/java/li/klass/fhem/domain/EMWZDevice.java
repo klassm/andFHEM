@@ -87,8 +87,12 @@ public class EMWZDevice extends Device<EMWZDevice> {
     protected void fillDeviceCharts(List<DeviceChart> chartSeries) {
         super.fillDeviceCharts(chartSeries);
 
-        addDeviceChartIfNotNull(new DeviceChart(R.string.powerGraph,
-                ChartSeriesDescription.getRegressionValuesInstance(R.string.power, "4:", POWER)));
+        addDeviceChartIfNotNull(
+                new DeviceChart(R.string.powerGraph,
+                        ChartSeriesDescription.getRegressionValuesInstance(R.string.power, "4:",
+                                "energy::int3", POWER)
+                )
+        );
     }
 
     @Override

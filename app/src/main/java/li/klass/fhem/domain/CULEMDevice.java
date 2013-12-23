@@ -116,7 +116,8 @@ public class CULEMDevice extends Device<CULEMDevice> {
         super.fillDeviceCharts(chartSeries);
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.usageGraph,
-                ChartSeriesDescription.getSumInstance(R.string.currentUsage, "8::0:", getSumGraphDivisionFactor(), CURRENT_USAGE_WATT)), currentUsage);
+                ChartSeriesDescription.getSumInstance(R.string.currentUsage, "8::0:", "current",
+                        getSumGraphDivisionFactor(), CURRENT_USAGE_WATT)), currentUsage);
     }
 
     @Override

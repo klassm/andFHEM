@@ -54,6 +54,8 @@ import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ValueDescriptionUtil;
 import li.klass.fhem.util.ValueExtractUtil;
 
+import static li.klass.fhem.service.graph.description.ChartSeriesDescription.getDiscreteValuesInstance;
+import static li.klass.fhem.service.graph.description.ChartSeriesDescription.getRegressionValuesInstance;
 import static li.klass.fhem.service.graph.description.SeriesType.ACTUATOR;
 import static li.klass.fhem.service.graph.description.SeriesType.DESIRED_TEMPERATURE;
 import static li.klass.fhem.service.graph.description.SeriesType.TEMPERATURE;
@@ -285,13 +287,18 @@ public class MaxDevice extends ToggleableDevice<MaxDevice> implements DesiredTem
 
         if (actuator != null) {
             addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureActuatorGraph,
-                    ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:temperature", TEMPERATURE),
-                    ChartSeriesDescription.getDiscreteValuesInstance(R.string.desiredTemperature, "4:desiredTemperature", DESIRED_TEMPERATURE),
-                    new ChartSeriesDescription(R.string.actuator, "4:valveposition", ACTUATOR)), temperature, actuator);
+                    getRegressionValuesInstance(R.string.temperature, "4:temperature",
+                            "temperature::int1", TEMPERATURE),
+                    getDiscreteValuesInstance(R.string.desiredTemperature, "4:desiredTemperature",
+                            "desiredTemperature::int", DESIRED_TEMPERATURE),
+                    new ChartSeriesDescription(R.string.actuator, "4:valveposition",
+                            "valveposition::int", ACTUATOR)
+            ), temperature, actuator);
         } else {
             addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureGraph,
-                    ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:temperature", TEMPERATURE)),
-                    temperature);
+                    getRegressionValuesInstance(R.string.temperature, "4:temperature",
+                            "temperature::int1", TEMPERATURE)
+            ), temperature);
         }
     }
 

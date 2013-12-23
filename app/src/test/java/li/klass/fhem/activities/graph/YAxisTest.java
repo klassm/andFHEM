@@ -1,27 +1,25 @@
 package li.klass.fhem.activities.graph;
 
-import android.app.Activity;
-
-import li.klass.fhem.AndFHEMApplication;
-import li.klass.fhem.R;
-import li.klass.fhem.infra.AndFHEMRobolectricTestRunner;
-import li.klass.fhem.infra.basetest.RobolectricBaseTestCase;
-import li.klass.fhem.service.graph.GraphEntry;
-import li.klass.fhem.service.graph.description.ChartSeriesDescription;
-import li.klass.fhem.service.graph.description.SeriesType;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.Robolectric;
-import org.robolectric.RobolectricTestRunner;
 
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-import static li.klass.fhem.activities.graph.ViewableChartSeries.ChartType.*;
+import li.klass.fhem.R;
+import li.klass.fhem.infra.AndFHEMRobolectricTestRunner;
+import li.klass.fhem.infra.basetest.RobolectricBaseTestCase;
+import li.klass.fhem.service.graph.GraphEntry;
+import li.klass.fhem.service.graph.description.ChartSeriesDescription;
+import li.klass.fhem.service.graph.description.SeriesType;
+
+import static li.klass.fhem.activities.graph.ViewableChartSeries.ChartType.NORMAL;
+import static li.klass.fhem.activities.graph.ViewableChartSeries.ChartType.REGRESSION;
+import static li.klass.fhem.activities.graph.ViewableChartSeries.ChartType.SUM;
+import static li.klass.fhem.service.graph.description.ChartSeriesDescription.getRegressionValuesInstance;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
@@ -34,8 +32,14 @@ public class YAxisTest extends RobolectricBaseTestCase {
     @Before
     public void before() {
         yAxis = new YAxis("someName");
-        yAxis.addChart(ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "abc", SeriesType.TEMPERATURE), dummyData);
-        yAxis.addChart(ChartSeriesDescription.getSumInstance(R.string.humidity, "abc1", 1, SeriesType.HUMIDITY), dummyData);
+
+        yAxis.addChart(
+                getRegressionValuesInstance(R.string.temperature, "abc", "def", SeriesType.TEMPERATURE),
+                dummyData
+        );
+
+        yAxis.addChart(ChartSeriesDescription.getSumInstance(R.string.humidity, "abc1", "def", 1,
+                SeriesType.HUMIDITY), dummyData);
     }
 
     @Test

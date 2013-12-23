@@ -54,6 +54,7 @@ import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ValueDescriptionUtil;
 
+import static li.klass.fhem.service.graph.description.ChartSeriesDescription.getRegressionValuesInstance;
 import static li.klass.fhem.service.graph.description.SeriesType.HUMIDITY;
 import static li.klass.fhem.service.graph.description.SeriesType.TEMPERATURE;
 
@@ -231,8 +232,10 @@ public class WeatherDevice extends Device<WeatherDevice> {
         super.fillDeviceCharts(chartSeries);
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureHumidityGraph,
-                ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:temperature:", TEMPERATURE),
-                new ChartSeriesDescription(R.string.humidity, "4:humidity:0:", HUMIDITY)), temperature, humidity);
+                getRegressionValuesInstance(R.string.temperature, "4:temperature:",
+                        "temperature::int1", TEMPERATURE),
+                new ChartSeriesDescription(R.string.humidity, "4:humidity:0:", "humidity::int", HUMIDITY)
+        ), temperature, humidity);
     }
 
     @Override

@@ -50,7 +50,7 @@ public class FS20DeviceTest extends DeviceXMLParsingBase {
 //
 //        assertThat(device.getAvailableTargetStates(), is(notNullValue()));
 //
-//        assertThat(device.getFileLog(), is(nullValue()));
+//        assertThat(device.getLogDevice(), is(nullValue()));
 //        assertThat(device.getDeviceCharts().size(), is(0));
 //    }
 //
@@ -74,7 +74,7 @@ public class FS20DeviceTest extends DeviceXMLParsingBase {
 //
 //        assertThat(device.getAvailableTargetStates(), is(notNullValue()));
 //
-//        assertThat(device.getFileLog(), is(notNullValue()));
+//        assertThat(device.getLogDevice(), is(notNullValue()));
 //        assertThat(device.getDeviceCharts().size(), is(1));
 //
 //        assertThat(device.getWidgetName(), is("myAlias"));

@@ -24,9 +24,10 @@
 
 package li.klass.fhem.domain.culhm;
 
+import org.junit.Test;
+
 import li.klass.fhem.domain.CULHMDevice;
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
-import org.junit.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -47,7 +48,7 @@ public class DimmerTest extends DeviceXMLParsingBase {
         assertThat(device.getDimPosition(), is(0));
         assertThat(device.supportsDim(), is(true));
 
-        assertThat(device.getFileLog(), is(nullValue()));
+        assertThat(device.getLogDevice(), is(nullValue()));
         assertThat(device.getDeviceCharts().size(), is(0));
     }
 

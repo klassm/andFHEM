@@ -213,7 +213,7 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
 
     private void addDetailGraphButtons(Context context, View view, D device, LayoutInflater inflater) {
         LinearLayout graphLayout = (LinearLayout) view.findViewById(R.id.graphButtons);
-        if (device.getDeviceCharts().size() == 0 || device.getFileLog() == null) {
+        if (device.getDeviceCharts().size() == 0 || device.getLogDevice() == null) {
             graphLayout.setVisibility(View.GONE);
             return;
         }

@@ -32,10 +32,10 @@ import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.genericview.ShowField;
-import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ValueDescriptionUtil;
 import li.klass.fhem.util.ValueExtractUtil;
 
+import static li.klass.fhem.service.graph.description.ChartSeriesDescription.getDiscreteValuesInstance;
 import static li.klass.fhem.service.graph.description.SeriesType.CURRENT_USAGE_KILOWATT;
 import static li.klass.fhem.service.graph.description.SeriesType.DAY_USAGE;
 
@@ -105,9 +105,11 @@ public class ESA2000Device extends Device<ESA2000Device> {
         super.fillDeviceCharts(chartSeries);
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.usageGraph,
-                ChartSeriesDescription.getDiscreteValuesInstance(R.string.currentUsage, "8:CUR\\x3a\\s[0-9]::", CURRENT_USAGE_KILOWATT),
-                ChartSeriesDescription.getDiscreteValuesInstance(R.string.dayUsage, "4:day\\x3a\\s[0-9]:0:", DAY_USAGE)
-                ), current);
+                getDiscreteValuesInstance(R.string.currentUsage, "8:CUR\\x3a\\s[0-9]::",
+                        "actual::int4", CURRENT_USAGE_KILOWATT),
+                getDiscreteValuesInstance(R.string.dayUsage, "4:day\\x3a\\s[0-9]:0:", "day::int2",
+                        DAY_USAGE)
+        ), current);
     }
 
     @Override

@@ -111,7 +111,9 @@ public class GPIO4Device extends Device<GPIO4Device> {
 
         if (subType == SubType.TEMPERATURE) {
             addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureGraph,
-                    ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:T", TEMPERATURE)), temperature);
+                    ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:T",
+                            "temperature::int2", TEMPERATURE)
+            ), temperature);
         }
     }
 

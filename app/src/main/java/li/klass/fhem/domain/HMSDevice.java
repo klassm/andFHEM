@@ -45,10 +45,11 @@ import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
-import li.klass.fhem.service.graph.description.SeriesType;
 import li.klass.fhem.util.ValueUtil;
 
+import static li.klass.fhem.service.graph.description.ChartSeriesDescription.getRegressionValuesInstance;
 import static li.klass.fhem.service.graph.description.SeriesType.HUMIDITY;
+import static li.klass.fhem.service.graph.description.SeriesType.TEMPERATURE;
 
 @SuppressWarnings("unused")
 @SupportsWidget({TemperatureWidgetView.class, MediumInformationWidgetView.class})
@@ -120,9 +121,13 @@ public class HMSDevice extends Device<HMSDevice> {
         super.fillDeviceCharts(chartSeries);
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureGraph,
-                ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:T\\x3a:0:", SeriesType.TEMPERATURE)), temperature);
+                getRegressionValuesInstance(R.string.temperature, "4:T\\x3a:0:",
+                        "temperature::int1", TEMPERATURE)
+        ), temperature);
+
         addDeviceChartIfNotNull(new DeviceChart(R.string.humidityGraph,
-                new ChartSeriesDescription(R.string.temperature, "6:H\\x3a:0:", HUMIDITY)), humidity);
+                new ChartSeriesDescription(R.string.temperature, "6:H\\x3a:0:", "humidity::int", HUMIDITY)
+        ), humidity);
     }
 
     @Override

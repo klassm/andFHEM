@@ -34,25 +34,70 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * Class to hold devices for a certain room.
+ */
 public class RoomDeviceList implements Serializable {
 
+    /**
+     * Name of the room.
+     */
     private String roomName;
+
+    /**
+     * True if the room is "empty", meaning that no devices or only devices that may not
+     * be shown within the current connection are contained.
+     */
     private boolean onlyContainsDoNotShowDevices = true;
 
+    /**
+     * Actual devices.
+     */
     private Map<DeviceFunctionality, HashSet<Device>> deviceMap = new HashMap<DeviceFunctionality, HashSet<Device>>();
 
+    /**
+     * Name of the room that contains _all_ devices.
+     */
     public static final String ALL_DEVICES_ROOM = "ALL_DEVICES_LIST";
 
+    /**
+     * Creates a new holder for a given room name.
+     * @param roomName room.
+     */
     public RoomDeviceList(String roomName) {
         this.roomName = roomName;
     }
 
+    /**
+     * Gets an amount of devices for a given functionality. Devices that may not be shown within
+     * the current connection or devices that are not supported are not included into the return
+     * value.
+     *
+     * @param functionality device functionality to filter.
+     * @param <T> class of the returned device list.
+     * @return list of devices matching the functionality.
+     */
     public <T extends Device> List<T> getDevicesOfFunctionality(DeviceFunctionality functionality) {
+        return getDevicesOfFunctionality(functionality, true);
+    }
+
+    /**
+     * Gets devices of a certain functionality.
+     *
+     * @param functionality functionality to filter.
+     * @param respectMayShowAndSupported set the parameter to false to also include devices that
+     *                                   may not be shown within the current connection.
+     * @param <T> class of the returned device list.
+     * @return list of devices matching the functionality.
+     */
+    public <T extends Device> List<T> getDevicesOfFunctionality(DeviceFunctionality functionality,
+                                                                boolean respectMayShowAndSupported) {
         Set<T> deviceSet = getOrCreateDeviceList(functionality);
         List<T> deviceList = new ArrayList<T>();
         for (T device : deviceSet) {
             DeviceType deviceType = DeviceType.getDeviceTypeFor(device);
-            if (device.isSupported() && deviceType.mayShowInCurrentConnectionType()) {
+            if (! respectMayShowAndSupported ||
+                    (device.isSupported() && deviceType.mayShowInCurrentConnectionType())) {
                 deviceList.add(device);
             }
         }

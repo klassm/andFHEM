@@ -36,6 +36,7 @@ import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.genericview.ShowField;
 
+@SuppressWarnings("unused")
 public class RemoteControlDevice extends Device<RemoteControlDevice> {
     public class Entry implements Serializable {
         public final String command;

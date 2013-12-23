@@ -26,55 +26,18 @@ package li.klass.fhem.domain;
 
 import org.w3c.dom.NamedNodeMap;
 
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
 
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceFunctionality;
+import li.klass.fhem.domain.log.CustomGraph;
+import li.klass.fhem.domain.log.LogDevice;
+import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 
 @SuppressWarnings("unused")
-public class FileLogDevice extends Device<FileLogDevice> {
+public class FileLogDevice extends LogDevice<FileLogDevice> {
 
-    public static class CustomGraph implements Serializable {
-        public final String columnSpecification;
-        public final String description;
-        public final String yAxisName;
-
-        public CustomGraph(String columnSpecification, String description, String yAxisName) {
-            this.columnSpecification = columnSpecification;
-            this.description = description;
-            this.yAxisName = yAxisName;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-
-            CustomGraph that = (CustomGraph) o;
-
-            return !(description != null ? !description.equals(that.description) : that.description != null) &&
-                    !(columnSpecification != null ? !columnSpecification.equals(that.columnSpecification) : that.columnSpecification != null) &&
-                    !(yAxisName != null ? !yAxisName.equals(that.yAxisName) : that.yAxisName != null);
-        }
-
-        @Override
-        public String toString() {
-            return "CustomGraph{" +
-                    "columnSpecification='" + columnSpecification + '\'' +
-                    ", description='" + description + '\'' +
-                    ", yAxisName='" + yAxisName + '\'' +
-                    '}';
-        }
-    }
-
-    private String concerningDeviceName;
-    private List<CustomGraph> customGraphs = new ArrayList<CustomGraph>();
-
-    public void readREGEXP(String value) {
-        this.concerningDeviceName = extractConcerningDeviceNameFromDefinition(value);
-    }
+    private static final String COMMAND_TEMPLATE = "get %s - - %s %s %s";
 
     @Override
     public void onChildItemRead(String tagName, String key, String value, NamedNodeMap attributes) {
@@ -86,10 +49,6 @@ public class FileLogDevice extends Device<FileLogDevice> {
     @Override
     public DeviceFunctionality getDeviceFunctionality() {
         return DeviceFunctionality.LOG;
-    }
-
-    public List<CustomGraph> getCustomGraphs() {
-        return customGraphs;
     }
 
     void parseCustomGraphAttribute(String value) {
@@ -104,16 +63,10 @@ public class FileLogDevice extends Device<FileLogDevice> {
         customGraphs.add(new CustomGraph(pattern, description, yAxisDescription));
     }
 
-    static String extractConcerningDeviceNameFromDefinition(String definition) {
-        int firstColonPosition = definition.indexOf(":");
-        if (firstColonPosition != -1) {
-            return definition.substring(0, firstColonPosition).replaceAll("\\(", "");
-        }
-
-        return definition;
-    }
-
-    public String getConcerningDeviceName() {
-        return concerningDeviceName;
+    @Override
+    public String getGraphCommandFor(Device device, String fromDateFormatted, String toDateFormatted,
+                                     ChartSeriesDescription seriesDescription) {
+        return String.format(name, fromDateFormatted, toDateFormatted,
+                seriesDescription.getFileLogSpec());
     }
 }

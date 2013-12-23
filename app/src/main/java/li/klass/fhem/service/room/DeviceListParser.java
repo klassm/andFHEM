@@ -54,6 +54,7 @@ import li.klass.fhem.domain.FileLogDevice;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceType;
 import li.klass.fhem.domain.core.RoomDeviceList;
+import li.klass.fhem.domain.log.LogDevice;
 import li.klass.fhem.error.ErrorHolder;
 import li.klass.fhem.fhem.RequestResult;
 import li.klass.fhem.fhem.RequestResultError;
@@ -61,7 +62,7 @@ import li.klass.fhem.util.StringEscapeUtil;
 import li.klass.fhem.util.StringUtil;
 import li.klass.fhem.util.XMLUtil;
 
-import static li.klass.fhem.domain.core.DeviceType.FILE_LOG;
+import static li.klass.fhem.domain.core.DeviceFunctionality.LOG;
 
 
 /**
@@ -147,7 +148,7 @@ public class DeviceListParser {
             }
         }
 
-        addFileLogsToDevices(allDevicesRoom);
+        addLogsToDevices(allDevicesRoom);
         performAfterReadOperations(allDevicesRoom, roomDeviceListMap);
 
         if (errorCount > 0) {
@@ -267,12 +268,12 @@ public class DeviceListParser {
      * Walks through all {@link li.klass.fhem.domain.FileLogDevice}s and tries to find the matching {@link Device} it
      * is associated to.
      */
-    private void addFileLogsToDevices(RoomDeviceList allDevicesRoom) {
+    private void addLogsToDevices(RoomDeviceList allDevicesRoom) {
         Collection<Device> devices = allDevicesRoom.getAllDevices();
 
-        Collection<FileLogDevice> fileLogDevices = allDevicesRoom.getDevicesOfType(FILE_LOG);
-        for (FileLogDevice fileLogDevice : fileLogDevices) {
-            addFileLogToDevices(fileLogDevice, devices);
+        Collection<LogDevice> logDevices = allDevicesRoom.getDevicesOfFunctionality(LOG, false);
+        for (LogDevice logDevice : logDevices) {
+            addLogToDevices(logDevice, devices);
         }
     }
 
@@ -282,10 +283,10 @@ public class DeviceListParser {
      * @param fileLogDevice {@link FileLogDevice}, of which the matching {@link Device} is searched
      * @param devices       devices to walk through.
      */
-    private void addFileLogToDevices(FileLogDevice fileLogDevice, Collection<Device> devices) {
+    private void addLogToDevices(LogDevice fileLogDevice, Collection<Device> devices) {
         for (Device device : devices) {
-            if (device.getName().equals(fileLogDevice.getConcerningDeviceName())) {
-                device.setFileLog(fileLogDevice);
+            if (fileLogDevice.concernsDevice(device.getName())) {
+                device.setLogDevice(fileLogDevice);
                 return;
             }
         }
@@ -434,7 +435,6 @@ public class DeviceListParser {
                 }
             }
         }
-
 
         if (deviceClass.getSuperclass() != null) {
             return changed | fillDeviceWith(device, updates, deviceClass.getSuperclass());

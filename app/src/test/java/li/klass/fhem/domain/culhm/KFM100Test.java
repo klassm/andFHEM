@@ -24,12 +24,15 @@
 
 package li.klass.fhem.domain.culhm;
 
-import li.klass.fhem.domain.CULHMDevice;
-import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 import org.junit.Test;
 
+import li.klass.fhem.domain.CULHMDevice;
+import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.closeTo;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
 
 public class KFM100Test extends DeviceXMLParsingBase {
 
@@ -51,7 +54,7 @@ public class KFM100Test extends DeviceXMLParsingBase {
         assertThat(device.getFillContentLitresRaw(), is(closeTo(171.3, 0.01)));
         assertThat(device.getRawToReadable(), is("10:0 255:4198"));
 
-        assertThat(device.getFileLog(), is(notNullValue()));
+        assertThat(device.getLogDevice(), is(notNullValue()));
         assertThat(device.getDeviceCharts().size(), is(1));
 
         assertThat(device.getMeasured(), is("2012-07-26 21:55:58"));

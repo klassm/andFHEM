@@ -24,11 +24,11 @@
 
 package li.klass.fhem.domain;
 
-import li.klass.fhem.domain.core.DeviceXMLParsingBase;
-import li.klass.fhem.testsuite.category.DeviceTestBase;
-
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
+
+import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+import li.klass.fhem.testsuite.category.DeviceTestBase;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.notNullValue;
@@ -50,7 +50,7 @@ public class TRXLightDeviceTest extends DeviceXMLParsingBase {
 
         assertThat(device.getAvailableTargetStates(), is(notNullValue()));
 
-        assertThat(device.getFileLog(), is(nullValue()));
+        assertThat(device.getLogDevice(), is(nullValue()));
         assertThat(device.getDeviceCharts().size(), is(0));
 
         assertThat(device.supportsToggle(), is(true));

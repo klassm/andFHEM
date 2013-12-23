@@ -24,10 +24,11 @@
 
 package li.klass.fhem.domain.culhm;
 
-import li.klass.fhem.domain.CULHMDevice;
-import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 import org.hamcrest.core.IsNull;
 import org.junit.Test;
+
+import li.klass.fhem.domain.CULHMDevice;
+import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -44,7 +45,7 @@ public class SmokeDetectorTest extends DeviceXMLParsingBase {
         assertThat(device.getSubType(), is(CULHMDevice.SubType.SMOKE_DETECTOR));
         assertThat(device.supportsDim(), is(false));
 
-        assertThat(device.getFileLog(), is(IsNull.nullValue()));
+        assertThat(device.getLogDevice(), is(IsNull.nullValue()));
         assertThat(device.getDeviceCharts().size(), is(0));
     }
 

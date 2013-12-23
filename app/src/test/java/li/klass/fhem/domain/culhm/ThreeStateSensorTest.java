@@ -24,10 +24,11 @@
 
 package li.klass.fhem.domain.culhm;
 
-import li.klass.fhem.domain.CULHMDevice;
-import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 import org.hamcrest.core.Is;
 import org.junit.Test;
+
+import li.klass.fhem.domain.CULHMDevice;
+import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -47,7 +48,7 @@ public class ThreeStateSensorTest extends DeviceXMLParsingBase {
         assertThat(device.supportsDim(), is(false));
         assertThat(device.getBattery(), is("ok"));
 
-        assertThat(device.getFileLog(), is(nullValue()));
+        assertThat(device.getLogDevice(), is(nullValue()));
         assertThat(device.getDeviceCharts().size(), Is.is(0));
     }
 

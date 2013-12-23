@@ -24,10 +24,14 @@
 
 package li.klass.fhem.domain;
 
-import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 import org.junit.Test;
 
-import static li.klass.fhem.domain.AtDevice.AtRepetition.*;
+import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+
+import static li.klass.fhem.domain.AtDevice.AtRepetition.FRIDAY;
+import static li.klass.fhem.domain.AtDevice.AtRepetition.ONCE;
+import static li.klass.fhem.domain.AtDevice.AtRepetition.WEEKDAY;
+import static li.klass.fhem.domain.AtDevice.AtRepetition.WEEKEND;
 import static li.klass.fhem.domain.AtDevice.TimerType.ABSOLUTE;
 import static li.klass.fhem.domain.AtDevice.TimerType.RELATIVE;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -133,7 +137,7 @@ public class AtDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getTargetState(), is("off"));
         assertThat(device.getTargetStateAddtionalInformation(), is(nullValue()));
 
-        assertThat(device.getFileLog(), is(nullValue()));
+        assertThat(device.getLogDevice(), is(nullValue()));
         assertThat(device.getDeviceCharts().size(), is(0));
     }
 

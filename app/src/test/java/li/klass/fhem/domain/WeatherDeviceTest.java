@@ -24,10 +24,11 @@
 
 package li.klass.fhem.domain;
 
-import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 import org.junit.Test;
 
 import java.util.List;
+
+import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.notNullValue;
@@ -78,7 +79,7 @@ public class WeatherDeviceTest extends DeviceXMLParsingBase {
 
         assertThat(device.getAvailableTargetStates(), is(nullValue()));
 
-        assertThat(device.getFileLog(), is(notNullValue()));
+        assertThat(device.getLogDevice(), is(notNullValue()));
         assertThat(device.getDeviceCharts().size(), is(1));
 
         device.readICON("");

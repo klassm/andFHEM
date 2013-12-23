@@ -57,6 +57,7 @@ import static li.klass.fhem.domain.CULHMDevice.SubType.HEATING;
 import static li.klass.fhem.domain.CULHMDevice.SubType.KEYMATIC;
 import static li.klass.fhem.domain.CULHMDevice.SubType.MOTION;
 import static li.klass.fhem.domain.CULHMDevice.SubType.THERMOSTAT;
+import static li.klass.fhem.service.graph.description.ChartSeriesDescription.getRegressionValuesInstance;
 import static li.klass.fhem.service.graph.description.SeriesType.ACTUATOR;
 import static li.klass.fhem.service.graph.description.SeriesType.HUMIDITY;
 import static li.klass.fhem.service.graph.description.SeriesType.LITRE_CONTENT;
@@ -466,39 +467,52 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
             case TEMPERATURE_HUMIDITY:
 
                 addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureHumidityGraph,
-                        ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:T\\x3a:0:", TEMPERATURE),
-                        new ChartSeriesDescription(R.string.humidity, "6:H\\x3a:0:", HUMIDITY)), humidity, measuredTemp);
+                        getRegressionValuesInstance(R.string.temperature,
+                                "4:T\\x3a:0:", "measured-temp", TEMPERATURE),
+                        new ChartSeriesDescription(R.string.humidity, "6:H\\x3a:0:", "humidity",
+                                HUMIDITY)
+                ), humidity, measuredTemp);
 
                 if (humidity == null) {
                     addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureGraph,
-                            ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:T\\x3a:0:", TEMPERATURE)),
-                            measuredTemp);
+                            getRegressionValuesInstance(R.string.temperature,
+                                    "4:T\\x3a:0:", "measured-temp", TEMPERATURE)
+                    ), measuredTemp);
                 }
 
                 break;
 
             case FILL_STATE:
                 addDeviceChartIfNotNull(new DeviceChart(R.string.contentGraph,
-                        ChartSeriesDescription.getRegressionValuesInstance(R.string.content, "4:content:0:", LITRE_CONTENT),
-                        new ChartSeriesDescription(R.string.rawValue, "4:rawValue:0:", RAW)), getState());
+                        getRegressionValuesInstance(R.string.content, "4:content:0:", "content",
+                                LITRE_CONTENT),
+                        new ChartSeriesDescription(R.string.rawValue, "4:rawValue:0:", "rawValue",
+                                RAW)
+                ), getState());
 
                 break;
 
             case THERMOSTAT:
 
                 addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureGraph,
-                        ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:measured-temp:0", TEMPERATURE)), measuredTemp);
+                        getRegressionValuesInstance(R.string.temperature, "4:measured-temp:0",
+                                "measured-temp", TEMPERATURE)
+                ), measuredTemp);
 
                 break;
 
             case HEATING:
                 addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureHumidityGraph,
-                        ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:T\\x3a:0:", TEMPERATURE),
-                        new ChartSeriesDescription(R.string.humidity, "6:H\\x3a:0:", HUMIDITY)), humidity, measuredTemp);
+                        getRegressionValuesInstance(R.string.temperature, "4:T\\x3a:0:",
+                                "measured-temp", TEMPERATURE),
+                        new ChartSeriesDescription(R.string.humidity, "6:H\\x3a:0:", "humidity",
+                                HUMIDITY)), humidity, measuredTemp);
 
                 addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureActuatorGraph,
-                        ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:measured-temp:0", TEMPERATURE),
-                        new ChartSeriesDescription(R.string.actuator, "4:actuator", ACTUATOR)), measuredTemp, actuator);
+                        getRegressionValuesInstance(R.string.temperature, "4:measured-temp:0",
+                                "measured-temp", TEMPERATURE),
+                        new ChartSeriesDescription(R.string.actuator, "4:actuator", "actuator::int",
+                                ACTUATOR)), measuredTemp, actuator);
 
                 break;
 

@@ -51,7 +51,7 @@ public class DummyDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getAvailableTargetStates(), hasItemInArray("on"));
         assertThat(device.getAvailableTargetStates(), hasItemInArray("off"));
 
-        assertThat(device.getFileLog(), is(nullValue()));
+        assertThat(device.getLogDevice(), is(nullValue()));
         assertThat(device.getDeviceCharts().size(), is(0));
         assertThat(device.supportsDim(), is(false));
     }
@@ -67,7 +67,7 @@ public class DummyDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.isSpecialButtonDevice(), is(false));
         assertThat(device.supportsToggle(), is(false));
 
-        assertThat(device.getFileLog(), is(nullValue()));
+        assertThat(device.getLogDevice(), is(nullValue()));
         assertThat(device.getDeviceCharts().size(), is(0));
         assertThat(device.supportsDim(), is(false));
     }

@@ -24,11 +24,14 @@
 
 package li.klass.fhem.domain;
 
-import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 import org.junit.Test;
 
+import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.arrayContaining;
+import static org.hamcrest.Matchers.hasItemInArray;
+import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.Is.is;
 
 public class StructureDeviceTest extends DeviceXMLParsingBase {
@@ -47,7 +50,7 @@ public class StructureDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getAvailableTargetStates(), hasItemInArray("on"));
         assertThat(device.getAvailableTargetStates(), hasItemInArray("off"));
 
-        assertThat(device.getFileLog(), is(nullValue()));
+        assertThat(device.getLogDevice(), is(nullValue()));
         assertThat(device.getDeviceCharts().size(), is(0));
     }
 

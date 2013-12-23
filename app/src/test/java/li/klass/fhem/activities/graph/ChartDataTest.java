@@ -14,6 +14,7 @@ import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 
 import static li.klass.fhem.activities.graph.ViewableChartSeries.ChartType.NORMAL;
 import static li.klass.fhem.activities.graph.ViewableChartSeries.ChartType.REGRESSION;
+import static li.klass.fhem.service.graph.description.ChartSeriesDescription.getRegressionValuesInstance;
 import static li.klass.fhem.service.graph.description.SeriesType.TEMPERATURE;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -25,19 +26,20 @@ public class ChartDataTest extends RobolectricBaseTestCase {
     @Test
     public void testNumberOfContainedSeries() {
         ChartData data = new ChartData(
-                ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "abc", TEMPERATURE),
+                getRegressionValuesInstance(R.string.temperature, "abc", "def",
+                        TEMPERATURE
+                ), dummyData
+        );
+        assertThat(data.getNumberOfContainedSeries(), is(2));
+
+        data = new ChartData(
+                ChartSeriesDescription.getSumInstance( R.string.temperature, "abc", "def", 1, TEMPERATURE),
                 dummyData
         );
         assertThat(data.getNumberOfContainedSeries(), is(2));
 
         data = new ChartData(
-                ChartSeriesDescription.getSumInstance( R.string.temperature, "abc", 1, TEMPERATURE),
-                dummyData
-        );
-        assertThat(data.getNumberOfContainedSeries(), is(2));
-
-        data = new ChartData(
-                new ChartSeriesDescription(R.string.temperature, "abc", TEMPERATURE),
+                new ChartSeriesDescription(R.string.temperature, "abc", "def", TEMPERATURE),
                 dummyData
         );
         assertThat(data.getNumberOfContainedSeries(), is(1));
@@ -46,7 +48,7 @@ public class ChartDataTest extends RobolectricBaseTestCase {
     @Test
     public void testIterator() {
         ChartData data = new ChartData(
-                ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "abc", TEMPERATURE),
+                getRegressionValuesInstance(R.string.temperature, "abc", "def", TEMPERATURE),
                 dummyData
         );
 

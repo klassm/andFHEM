@@ -53,6 +53,7 @@ import li.klass.fhem.domain.CULFHTTKDevice;
 import li.klass.fhem.domain.CULHMDevice;
 import li.klass.fhem.domain.CULTXDevice;
 import li.klass.fhem.domain.CULWSDevice;
+import li.klass.fhem.domain.DbLogDevice;
 import li.klass.fhem.domain.DummyDevice;
 import li.klass.fhem.domain.EIBDevice;
 import li.klass.fhem.domain.EMWZDevice;
@@ -136,6 +137,7 @@ public enum DeviceType {
     CUL_WS("CUL_WS", CULWSDevice.class),
     FS20("FS20", FS20Device.class, new DimmableAdapter<FS20Device>(FS20Device.class)),
     FILE_LOG("FileLog", FileLogDevice.class, null, DeviceVisibility.NEVER),
+    DB_LOG("DbLog", DbLogDevice.class, null, DeviceVisibility.NEVER),
     OWFS("OWFS", OWFSDevice.class),
     LGTV("LGTV", LGTVDevice.class),
     RFXCOM("RFXCOM", RFXCOMDevice.class),

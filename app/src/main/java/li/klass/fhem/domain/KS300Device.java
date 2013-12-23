@@ -44,6 +44,7 @@ import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ValueDescriptionUtil;
 
+import static li.klass.fhem.service.graph.description.ChartSeriesDescription.getRegressionValuesInstance;
 import static li.klass.fhem.service.graph.description.SeriesType.HUMIDITY;
 import static li.klass.fhem.service.graph.description.SeriesType.RAIN;
 import static li.klass.fhem.service.graph.description.SeriesType.TEMPERATURE;
@@ -155,11 +156,16 @@ public class KS300Device extends Device<KS300Device> implements Serializable {
         super.fillDeviceCharts(chartSeries);
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureHumidityGraph,
-                ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4::", TEMPERATURE),
-                new ChartSeriesDescription(R.string.humidity, "6::", HUMIDITY)), temperature, humidity);
+                getRegressionValuesInstance(R.string.temperature, "4::", "temperature::int1", TEMPERATURE),
+                new ChartSeriesDescription(R.string.humidity, "6::", "humidity", HUMIDITY)
+        ), temperature, humidity);
+
         addDeviceChartIfNotNull(new DeviceChart(R.string.windGraph,
-                new ChartSeriesDescription(R.string.wind, "8::", WIND)), wind);
+                new ChartSeriesDescription(R.string.wind, "8::", "wind::int1", WIND)
+        ), wind);
+
         addDeviceChartIfNotNull(new DeviceChart(R.string.rainGraph,
-                new ChartSeriesDescription(R.string.rain, "10::", RAIN)), rain);
+                new ChartSeriesDescription(R.string.rain, "10::", "rain::int1", RAIN)
+        ), rain);
     }
 }

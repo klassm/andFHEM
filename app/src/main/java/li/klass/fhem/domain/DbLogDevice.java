@@ -24,36 +24,17 @@
 
 package li.klass.fhem.domain;
 
-import org.junit.Test;
+import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.log.LogDevice;
+import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 
-import li.klass.fhem.domain.core.DeviceXMLParsingBase;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.nullValue;
-import static org.hamcrest.core.Is.is;
-
-public class WOLDeviceTest extends DeviceXMLParsingBase {
-    @Test
-    public void testForCorrectlySetAttributes() {
-        WOLDevice device = getDefaultDevice();
-
-        assertThat(device.getName(), is(DEFAULT_TEST_DEVICE_NAME));
-        assertThat(device.getRoomConcatenated(), is(DEFAULT_TEST_ROOM_NAME));
-
-        assertThat(device.getIp(), is("192.168.0.24"));
-        assertThat(device.getMac(), is("72:75:AD:4A:17:43"));
-        assertThat(device.isRunning(), is("off"));
-        assertThat(device.getState(), is("on"));
-        assertThat(device.getShutdownCommand(), is("sh /some/crazy/command.sh"));
-
-        assertThat(device.getAvailableTargetStates(), is(nullValue()));
-
-        assertThat(device.getLogDevice(), is(nullValue()));
-        assertThat(device.getDeviceCharts().size(), is(0));
-    }
+public class DbLogDevice extends LogDevice<DbLogDevice> {
+    private static final String COMMAND_TEMPLATE = "get %s - - %s %s %s:%s";
 
     @Override
-    protected String getFileName() {
-        return "wol.xml";
+    public String getGraphCommandFor(Device device, String fromDateFormatted, String toDateFormatted,
+                                     ChartSeriesDescription seriesDescription) {
+        return String.format(COMMAND_TEMPLATE, name, fromDateFormatted, toDateFormatted,
+                device.getName(), seriesDescription.getDbLogSpec());
     }
 }

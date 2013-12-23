@@ -50,11 +50,12 @@ import li.klass.fhem.domain.heating.WindowOpenTempDevice;
 import li.klass.fhem.domain.heating.schedule.WeekProfile;
 import li.klass.fhem.domain.heating.schedule.configuration.FHTConfiguration;
 import li.klass.fhem.domain.heating.schedule.interval.FromToHeatingInterval;
-import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ValueDescriptionUtil;
 import li.klass.fhem.util.ValueExtractUtil;
 import li.klass.fhem.util.ValueUtil;
 
+import static li.klass.fhem.service.graph.description.ChartSeriesDescription.getDiscreteValuesInstance;
+import static li.klass.fhem.service.graph.description.ChartSeriesDescription.getRegressionValuesInstance;
 import static li.klass.fhem.service.graph.description.SeriesType.ACTUATOR;
 import static li.klass.fhem.service.graph.description.SeriesType.DESIRED_TEMPERATURE;
 import static li.klass.fhem.service.graph.description.SeriesType.TEMPERATURE;
@@ -281,14 +282,19 @@ public class FHTDevice extends Device<FHTDevice> implements DesiredTempDevice,
 
         if (temperature != null && actuator != null) {
             addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureActuatorGraph,
-                    ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:measured", TEMPERATURE),
-                    ChartSeriesDescription.getDiscreteValuesInstance(R.string.desiredTemperature, "4:desired-temp", DESIRED_TEMPERATURE),
-                    ChartSeriesDescription.getDiscreteValuesInstance(R.string.actuator, "4:actuator.*[0-9]+%:0:int", ACTUATOR)),
+                    getRegressionValuesInstance(R.string.temperature, "4:measured", "measured-temp::int1",
+                            TEMPERATURE),
+                    getDiscreteValuesInstance(R.string.desiredTemperature, "4:desired-temp",
+                            "desired-temp::int1", DESIRED_TEMPERATURE),
+                    getDiscreteValuesInstance(R.string.actuator, "4:actuator.*[0-9]+%:0:int",
+                            "actuator::int", ACTUATOR)),
                     temperature, actuator);
         } else if (temperature == null && actuator != null) {
             addDeviceChartIfNotNull(new DeviceChart(R.string.actuatorGraph,
-                    ChartSeriesDescription.getDiscreteValuesInstance(R.string.desiredTemperature, "4:desired-temp", DESIRED_TEMPERATURE),
-                    ChartSeriesDescription.getDiscreteValuesInstance(R.string.actuator, "4:actuator.*[0-9]+%:0:int", ACTUATOR)),
+                    getDiscreteValuesInstance(R.string.desiredTemperature, "4:desired-temp",
+                            "desired-temp::int1", DESIRED_TEMPERATURE),
+                    getDiscreteValuesInstance(R.string.actuator, "4:actuator.*[0-9]+%:0:int",
+                            "actuator::int", ACTUATOR)),
                     actuator);
         }
     }

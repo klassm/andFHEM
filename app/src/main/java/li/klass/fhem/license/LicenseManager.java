@@ -48,7 +48,8 @@ public class LicenseManager {
         if (isDebug()) return true;
 
         Set<String> ownedItems = BillingService.INSTANCE.getOwnedItems();
-        return ownedItems.contains(AndFHEMApplication.PRODUCT_PREMIUM_ID) || ownedItems.contains(AndFHEMApplication.PRODUCT_PREMIUM_DONATOR_ID);
+        return ownedItems.contains(AndFHEMApplication.PRODUCT_PREMIUM_ID) ||
+                ownedItems.contains(AndFHEMApplication.PRODUCT_PREMIUM_DONATOR_ID);
     }
 
     public boolean isDebug() {

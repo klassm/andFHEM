@@ -65,6 +65,12 @@ public class AdvertisementUtil {
 
         AdView adView = new AdView(activity, AdSize.BANNER, AndFHEMApplication.AD_UNIT_ID);
 
+        addListener(activity, adContainer, adView);
+        adView.loadAd(new AdRequest());
+        adContainer.addView(adView);
+    }
+
+    private static void addListener(final Activity activity, final LinearLayout adContainer, AdView adView) {
         adView.setAdListener(new AdListener() {
             @Override
             public void onReceiveAd(Ad ad) {
@@ -89,8 +95,6 @@ public class AdvertisementUtil {
             public void onLeaveApplication(Ad ad) {
             }
         });
-        adView.loadAd(new AdRequest());
-        adContainer.addView(adView);
     }
 
     private static void addErrorView(final Activity activity, LinearLayout container) {

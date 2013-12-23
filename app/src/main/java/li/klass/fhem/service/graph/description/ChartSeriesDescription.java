@@ -27,51 +27,69 @@ package li.klass.fhem.service.graph.description;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
-import li.klass.fhem.AndFHEMApplication;
 
 import java.io.Serializable;
+
+import li.klass.fhem.AndFHEMApplication;
 
 public class ChartSeriesDescription implements Parcelable, Serializable {
 
     private String columnName;
-    private String columnSpecification;
+    private String fileLogSpec;
     private boolean showDiscreteValues = false;
     private boolean showRegression = false;
     private boolean showSum = false;
     private double sumDivisionFactor = 0;
     private SeriesType seriesType;
     private String fallBackYAxisName;
+    private String dbLogSpec;
 
 
-    public static ChartSeriesDescription getDiscreteValuesInstance(int columnName, String columnSpecification, SeriesType seriesType) {
-        return new ChartSeriesDescription(columnName, columnSpecification, true, false, false, 0, seriesType);
+    public static ChartSeriesDescription getDiscreteValuesInstance(int columnName,
+                                                                   String fileLogSpec,
+                                                                   String dbLogSpec,
+                                                                   SeriesType seriesType) {
+        return new ChartSeriesDescription(columnName, fileLogSpec, dbLogSpec, true, false,
+                false, 0, seriesType);
     }
 
-    public static ChartSeriesDescription getRegressionValuesInstance(int columnName, String columnSpecification,
+    public static ChartSeriesDescription getRegressionValuesInstance(int columnName,
+                                                                     String fileLogSpec,
+                                                                     String dbLogSpec,
                                                                      SeriesType seriesType) {
-        return new ChartSeriesDescription(columnName, columnSpecification, false, true, false, 0, seriesType);
+        return new ChartSeriesDescription(columnName, fileLogSpec, dbLogSpec, false, true,
+                false, 0, seriesType);
     }
 
-    public static ChartSeriesDescription getSumInstance(int columnName, String columnSpecification,
-                                                        double divisionFactor, SeriesType seriesType) {
-        return new ChartSeriesDescription(columnName, columnSpecification, false, false, true, divisionFactor, seriesType);
+    public static ChartSeriesDescription getSumInstance(int columnName, String fileLogSpec,
+                                                        String dbLogSpec,
+                                                        double divisionFactor,
+                                                        SeriesType seriesType) {
+        return new ChartSeriesDescription(columnName, fileLogSpec, dbLogSpec, false, false, true,
+                divisionFactor, seriesType);
     }
 
-    public ChartSeriesDescription(String columnName, String columnSpecification) {
+    public ChartSeriesDescription(String columnName, String fileLogSpec, String dbLogSpec) {
         this.columnName = columnName;
-        this.columnSpecification = columnSpecification;
+        this.dbLogSpec = dbLogSpec;
+        this.fileLogSpec = fileLogSpec;
     }
 
-    public ChartSeriesDescription(String columnName, String columnSpecification, String fallBackYAxisName) {
+    public ChartSeriesDescription(String columnName, String fileLogSpec,String dbLogSpec,
+                                  String fallBackYAxisName) {
         this.columnName = columnName;
-        this.columnSpecification = columnSpecification;
+        this.fileLogSpec = fileLogSpec;
+        this.dbLogSpec = dbLogSpec;
         this.fallBackYAxisName = fallBackYAxisName;
     }
 
-    public ChartSeriesDescription(int columnName, String columnSpecification, boolean showDiscreteValues,
-                                  boolean showRegression, boolean showSum, double sumDivisionFactor, SeriesType seriesType) {
+    public ChartSeriesDescription(int columnName, String fileLogSpec, String dbLogSpec,
+                                  boolean showDiscreteValues,
+                                  boolean showRegression, boolean showSum, double sumDivisionFactor,
+                                  SeriesType seriesType) {
         this.columnName = AndFHEMApplication.getContext().getString(columnName);
-        this.columnSpecification = columnSpecification;
+        this.fileLogSpec = fileLogSpec;
+        this.dbLogSpec = dbLogSpec;
         this.showDiscreteValues = showDiscreteValues;
         this.showRegression = showRegression;
         this.showSum = showSum;
@@ -95,13 +113,15 @@ public class ChartSeriesDescription implements Parcelable, Serializable {
         }
     };
 
-    public ChartSeriesDescription(int columnName, String columnSpecification, SeriesType seriesType) {
-        this(columnName, columnSpecification, false, false, false, 0, seriesType);
+    public ChartSeriesDescription(int columnName, String fileLogSpec, String dbLogSpec,
+                                  SeriesType seriesType) {
+        this(columnName, fileLogSpec, dbLogSpec, false, false, false, 0, seriesType);
     }
 
     private ChartSeriesDescription(Bundle bundle) {
         this.columnName = bundle.getString("COLUMN_NAME");
-        this.columnSpecification = bundle.getString("COLUMN_SPEC");
+        this.fileLogSpec = bundle.getString("FILELOG_SPEC");
+        this.dbLogSpec = bundle.getString("DBLOG_SPEC");
         this.showDiscreteValues = bundle.getBoolean("SHOW_DISCRETE_VALUES");
         this.showRegression = bundle.getBoolean("SHOW_REGRESSION");
         this.showSum = bundle.getBoolean("SHOW_SUM");
@@ -114,28 +134,25 @@ public class ChartSeriesDescription implements Parcelable, Serializable {
         }
     }
 
+    @Override
+    public void writeToParcel(Parcel parcel, int flags) {
+        Bundle bundle = new Bundle();
+        bundle.putString("COLUMN_NAME", columnName);
+        bundle.putString("FILELOG_SPEC", fileLogSpec);
+        bundle.putString("DBLOG_SPEC", dbLogSpec);
+        bundle.putString("FALLBACK_Y_AXIS_NAME", fallBackYAxisName);
+        bundle.putBoolean("SHOW_DISCRETE_VALUES", showDiscreteValues);
+        bundle.putBoolean("SHOW_SUM", showSum);
+        bundle.putBoolean("SHOW_REGRESSION", showRegression);
+        bundle.putDouble("SUM_DIVISION_FACTOR", sumDivisionFactor);
+        if (seriesType != null) {
+            bundle.putString("CHART_TYPE", seriesType.name());
+        }
+        parcel.writeBundle(bundle);
+    }
+
     public String getColumnName() {
         return columnName;
-    }
-
-    public boolean isShowDiscreteValues() {
-        return showDiscreteValues;
-    }
-
-    public boolean isShowSum() {
-        return showSum;
-    }
-
-    public boolean isShowRegression() {
-        return showRegression;
-    }
-
-    public double getSumDivisionFactor() {
-        return sumDivisionFactor;
-    }
-
-    public String getColumnSpecification() {
-        return columnSpecification;
     }
 
     public SeriesType getSeriesType() {
@@ -162,20 +179,27 @@ public class ChartSeriesDescription implements Parcelable, Serializable {
         return fallBackYAxisName;
     }
 
-    @Override
-    public void writeToParcel(Parcel parcel, int flags) {
-        Bundle bundle = new Bundle();
-        bundle.putString("COLUMN_NAME", columnName);
-        bundle.putString("COLUMN_SPEC", columnSpecification);
-        bundle.putString("FALLBACK_Y_AXIS_NAME", fallBackYAxisName);
-        bundle.putBoolean("SHOW_DISCRETE_VALUES", showDiscreteValues);
-        bundle.putBoolean("SHOW_SUM", showSum);
-        bundle.putBoolean("SHOW_REGRESSION", showRegression);
-        bundle.putDouble("SUM_DIVISION_FACTOR", sumDivisionFactor);
-        if (seriesType != null) {
-            bundle.putString("CHART_TYPE", seriesType.name());
-        }
-        parcel.writeBundle(bundle);
+    public boolean isShowDiscreteValues() {
+        return showDiscreteValues;
     }
 
+    public boolean isShowSum() {
+        return showSum;
+    }
+
+    public boolean isShowRegression() {
+        return showRegression;
+    }
+
+    public double getSumDivisionFactor() {
+        return sumDivisionFactor;
+    }
+
+    public String getFileLogSpec() {
+        return fileLogSpec;
+    }
+
+    public String getDbLogSpec() {
+        return dbLogSpec;
+    }
 }

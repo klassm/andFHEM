@@ -35,6 +35,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.log.LogDevice;
 import li.klass.fhem.service.CommandExecutionService;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 
@@ -59,15 +60,14 @@ public class GraphService {
     public HashMap<ChartSeriesDescription, List<GraphEntry>> getGraphData(Device device, ArrayList<ChartSeriesDescription> seriesDescriptions,
                                                                           final Calendar startDate, final Calendar endDate) {
 
-        if (device.getFileLog() == null) return null;
+        if (device.getLogDevice() == null) return null;
 
         HashMap<ChartSeriesDescription, List<GraphEntry>> data = new HashMap<ChartSeriesDescription, List<GraphEntry>>();
 
         for (ChartSeriesDescription seriesDescription : seriesDescriptions) {
-            String columnSpec = seriesDescription.getColumnSpecification();
-            String fileLogDeviceName = device.getFileLog().getName();
+            String columnSpec = seriesDescription.getFileLogSpec();
 
-            List<GraphEntry> valueEntries = getCurrentGraphEntriesFor(fileLogDeviceName, columnSpec, startDate, endDate);
+            List<GraphEntry> valueEntries = getCurrentGraphEntriesFor(device, seriesDescription, startDate, endDate);
 
             data.put(seriesDescription, valueEntries);
         }
@@ -79,29 +79,35 @@ public class GraphService {
      * Collects FileLog entries from FHEM matching a given column specification. The results will be turned into
      * {@link GraphEntry} objects and be returned.
      *
-     * @param fileLogName name of the fileLog. This usually equals to "FileLog_${deviceName}".
-     * @param columnSpec  column specification to read.
+     *
+     *
+     * @param device      device to load graph entries from.
+     * @param seriesDescription chart description
      * @param startDate   read FileLog entries from the given date
      * @param endDate     read FileLog entries up to the given date
-     * @return read fileLog entries converted to {@link GraphEntry} objects.
+     * @return read logDevice entries converted to {@link GraphEntry} objects.
      */
-    private List<GraphEntry> getCurrentGraphEntriesFor(String fileLogName, String columnSpec,
+    private List<GraphEntry> getCurrentGraphEntriesFor(Device device,
+                                                       ChartSeriesDescription seriesDescription,
                                                        Calendar startDate, Calendar endDate) {
-        String result = fileLogData(fileLogName, startDate.getTime(), endDate.getTime(), columnSpec);
+        String result = loadLogData(device, startDate.getTime(), endDate.getTime(), seriesDescription);
         return findGraphEntries(result);
     }
 
-    public String fileLogData(String logName, Date fromDate, Date toDate,
-                              String columnSpec) {
+    public String loadLogData(Device device, Date fromDate, Date toDate,
+                              ChartSeriesDescription seriesDescription) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH:mm");
-        String command = "get " + logName + " - - "
-                + dateFormat.format(fromDate) + " " + dateFormat.format(toDate)
-                + " " + columnSpec;
+        String fromDateFormatted = dateFormat.format(fromDate);
+        String toDateFormatted = dateFormat.format(toDate);
+
+        LogDevice logDevice = device.getLogDevice();
+        String command = logDevice.getGraphCommandFor(device, fromDateFormatted,
+                toDateFormatted, seriesDescription);
 
         String data = CommandExecutionService.INSTANCE.executeSafely(command);
         if (data == null) return null;
 
-        return data.replaceAll("#" + columnSpec, "");
+        return data.replaceAll("#" + seriesDescription, "");
     }
 
     /**

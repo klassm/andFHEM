@@ -24,12 +24,15 @@
 
 package li.klass.fhem.domain;
 
-import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 import org.junit.Test;
 
-import static li.klass.fhem.domain.FileLogDevice.extractConcerningDeviceNameFromDefinition;
+import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+import li.klass.fhem.domain.log.CustomGraph;
+
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.Is.is;
 
 public class FileLogDeviceTest extends DeviceXMLParsingBase {
@@ -40,23 +43,18 @@ public class FileLogDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getName(), is(DEFAULT_TEST_DEVICE_NAME));
         assertThat(device.getRoomConcatenated(), is(DEFAULT_TEST_ROOM_NAME));
 
-        assertThat(device.getConcerningDeviceName(), is("myRegexp"));
+        assertThat(device.getConcerningDeviceRegexp(), is("myRegexp"));
+        assertThat(device.concernsDevice("myRegexp"), is(true));
         assertThat(device.getState(), is("active"));
 
         assertThat(device.getAvailableTargetStates(), is(notNullValue()));
 
-        assertThat(device.getFileLog(), is(nullValue()));
+        assertThat(device.getLogDevice(), is(nullValue()));
         assertThat(device.getDeviceCharts().size(), is(0));
 
         assertThat(device.getCustomGraphs().size(), is(2));
-        assertThat(device.getCustomGraphs(), hasItem(new FileLogDevice.CustomGraph("4:", "someValue", "axis1")));
-        assertThat(device.getCustomGraphs(), hasItem(new FileLogDevice.CustomGraph("46:", "someValue with space", "axis")));
-    }
-
-    @Test
-    public void testExtractConcerningDeviceNameFromDefinition() {
-        assertThat(extractConcerningDeviceNameFromDefinition("(Thermostat_Bad:.*(temperature|battery|desiredTemperature|valveposition)):|(Temp_Sensor_Schlafzimmer:.*temperature).*"), is("Thermostat_Bad"));
-        assertThat(extractConcerningDeviceNameFromDefinition("CUL_TX_116:T:.*"), is("CUL_TX_116"));
+        assertThat(device.getCustomGraphs(), hasItem(new CustomGraph("4:", "someValue", "axis1")));
+        assertThat(device.getCustomGraphs(), hasItem(new CustomGraph("46:", "someValue with space", "axis")));
     }
 
     @Override

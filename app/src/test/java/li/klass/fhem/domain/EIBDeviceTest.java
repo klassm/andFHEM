@@ -24,9 +24,9 @@
 
 package li.klass.fhem.domain;
 
-import li.klass.fhem.domain.core.DeviceXMLParsingBase;
-import org.hamcrest.Matchers;
 import org.junit.Test;
+
+import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.notNullValue;
@@ -47,7 +47,7 @@ public class EIBDeviceTest extends DeviceXMLParsingBase {
 
         assertThat(device.getAvailableTargetStates(), is(notNullValue()));
 
-        assertThat(device.getFileLog(), is(nullValue()));
+        assertThat(device.getLogDevice(), is(nullValue()));
         assertThat(device.getDeviceCharts().size(), is(0));
 
         assertThat(device.supportsToggle(), is(true));

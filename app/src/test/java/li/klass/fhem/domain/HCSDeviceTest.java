@@ -24,8 +24,9 @@
 
 package li.klass.fhem.domain;
 
-import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 import org.junit.Test;
+
+import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -56,7 +57,7 @@ public class HCSDeviceTest extends DeviceXMLParsingBase {
 
         assertThat(device.getCommaSeparatedDemandDevices(), is("FHT_WOHNZIMMER, FHT_WOHNZIMMER1"));
 
-        assertThat(device.getFileLog(), is(nullValue()));
+        assertThat(device.getLogDevice(), is(nullValue()));
         assertThat(device.getDeviceCharts().size(), is(0));
     }
 

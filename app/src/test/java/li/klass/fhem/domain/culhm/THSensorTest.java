@@ -24,10 +24,11 @@
 
 package li.klass.fhem.domain.culhm;
 
-import li.klass.fhem.domain.CULHMDevice;
-import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 import org.hamcrest.Matchers;
 import org.junit.Test;
+
+import li.klass.fhem.domain.CULHMDevice;
+import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -48,7 +49,7 @@ public class THSensorTest extends DeviceXMLParsingBase {
         assertThat(device.getMeasuredTemp(), is("-2.4 (°C)"));
         assertThat(device.getHumidity(), is("67 (%)"));
 
-        assertThat(device.getFileLog(), Matchers.is(notNullValue()));
+        assertThat(device.getLogDevice(), Matchers.is(notNullValue()));
         assertThat(device.getDeviceCharts().size(), is(1));
     }
 

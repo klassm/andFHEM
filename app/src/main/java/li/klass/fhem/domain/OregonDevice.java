@@ -38,6 +38,7 @@ import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ValueDescriptionUtil;
 
+import static li.klass.fhem.service.graph.description.ChartSeriesDescription.getRegressionValuesInstance;
 import static li.klass.fhem.service.graph.description.SeriesType.HUMIDITY;
 import static li.klass.fhem.service.graph.description.SeriesType.PRESSURE;
 import static li.klass.fhem.service.graph.description.SeriesType.RAIN_RATE;
@@ -190,17 +191,34 @@ public class OregonDevice extends Device<OregonDevice> {
         super.fillDeviceCharts(chartSeries);
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureGraph,
-                ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:temperature:0:", TEMPERATURE)), temperature);
+                getRegressionValuesInstance(R.string.temperature, "4:temperature:0:",
+                        "temperature::int1", TEMPERATURE)
+        ), temperature);
+
         addDeviceChartIfNotNull(new DeviceChart(R.string.humidityGraph,
-                new ChartSeriesDescription(R.string.temperature, "4:humidity:0:", HUMIDITY)), humidity);
+                new ChartSeriesDescription(R.string.humidity, "4:humidity:0:", "humidity::int",
+                        HUMIDITY)
+        ), humidity);
+
         addDeviceChartIfNotNull(new DeviceChart(R.string.pressureGraph,
-                new ChartSeriesDescription(R.string.pressure, "4:pressure:0:", PRESSURE)), pressure);
+                new ChartSeriesDescription(R.string.pressure, "4:pressure:0:", "pressure::int",
+                        PRESSURE)
+        ), pressure);
+
         addDeviceChartIfNotNull(new DeviceChart(R.string.rainRate,
-                new ChartSeriesDescription(R.string.rainRate, "4:rain_rate:0:", RAIN_RATE)), rainRate);
+                new ChartSeriesDescription(R.string.rainRate, "4:rain_rate:0:", "rain_rate::int2",
+                        RAIN_RATE)
+        ), rainRate);
+
         addDeviceChartIfNotNull(new DeviceChart(R.string.rainTotal,
-                new ChartSeriesDescription(R.string.rainRate, "4:rain_total:0:", RAIN_TOTAL)), rainTotal);
+                new ChartSeriesDescription(R.string.rainRate, "4:rain_total:0:", "rain_total::int2",
+                        RAIN_TOTAL)
+        ), rainTotal);
+
         addDeviceChartIfNotNull(new DeviceChart(R.string.windSpeed,
-                new ChartSeriesDescription(R.string.rainRate, "4:wind_speed:0:", WIND)), windSpeed);
+                new ChartSeriesDescription(R.string.rainRate, "4:wind_speed:0:", "wind_speed::int2",
+                        WIND)
+        ), windSpeed);
     }
 
     @Override

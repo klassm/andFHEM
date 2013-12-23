@@ -47,7 +47,7 @@ public class CULFHTTKDeviceTest extends DeviceXMLParsingBase {
 
         assertThat(device.getAvailableTargetStates(), is(nullValue()));
 
-        assertThat(device.getFileLog(), is(nullValue()));
+        assertThat(device.getLogDevice(), is(nullValue()));
         assertThat(device.getDeviceCharts().size(), is(0));
     }
 

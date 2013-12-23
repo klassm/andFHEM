@@ -43,7 +43,8 @@ public class FHT8VDevice extends Device<FHT8VDevice> {
         super.fillDeviceCharts(chartSeries);
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.actuatorGraph,
-                ChartSeriesDescription.getDiscreteValuesInstance(R.string.actuator, "4:actuator.*[0-9]+%:0:int", ACTUATOR)));
+                ChartSeriesDescription.getDiscreteValuesInstance(R.string.actuator,
+                        "4:actuator.*[0-9]+%:0:int", "state::int", ACTUATOR)));
     }
 
     @Override

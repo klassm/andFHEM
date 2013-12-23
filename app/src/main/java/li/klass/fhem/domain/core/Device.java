@@ -38,8 +38,9 @@ import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.appwidget.view.widget.base.AppWidgetView;
-import li.klass.fhem.domain.FileLogDevice;
 import li.klass.fhem.domain.genericview.ShowField;
+import li.klass.fhem.domain.log.CustomGraph;
+import li.klass.fhem.domain.log.LogDevice;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.service.room.AssociatedDeviceCallback;
 import li.klass.fhem.util.ArrayUtil;
@@ -69,7 +70,7 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
     protected Map<String, String> eventMap = new HashMap<String, String>();
     private String[] availableTargetStates;
 
-    protected volatile FileLogDevice fileLog;
+    protected volatile LogDevice logDevice;
     private List<DeviceChart> deviceCharts = new ArrayList<DeviceChart>();
     private transient AssociatedDeviceCallback associatedDeviceCallback;
     private String widgetName;
@@ -123,7 +124,7 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
     }
 
     public void afterXMLRead() {
-        if (fileLog != null) {
+        if (logDevice != null) {
             fillDeviceCharts(deviceCharts);
         }
     }
@@ -283,12 +284,12 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
         return getAliasOrName().compareTo(t.getAliasOrName());
     }
 
-    public FileLogDevice getFileLog() {
-        return fileLog;
+    public LogDevice getLogDevice() {
+        return logDevice;
     }
 
-    public void setFileLog(FileLogDevice fileLog) {
-        this.fileLog = fileLog;
+    public void setLogDevice(LogDevice logDevice) {
+        this.logDevice = logDevice;
     }
 
     public List<DeviceChart> getDeviceCharts() {
@@ -302,9 +303,12 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
      */
     protected void fillDeviceCharts(List<DeviceChart> chartSeries) {
         deviceCharts.clear();
-        if (fileLog == null) return;
+        if (logDevice == null) return;
 
-        for (FileLogDevice.CustomGraph customGraph : fileLog.getCustomGraphs()) {
+        @SuppressWarnings("unchecked")
+        List<CustomGraph> customGraphs = logDevice.getCustomGraphs();
+
+        for (CustomGraph customGraph : customGraphs) {
             addDeviceChartIfNotNull(new DeviceChart(customGraph.description, new ChartSeriesDescription(
                     customGraph.description, customGraph.columnSpecification, customGraph.yAxisName
             )));
@@ -434,7 +438,7 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
                 ", eventMapReverse=" + eventMapReverse +
                 ", eventMap=" + eventMap +
                 ", availableTargetStates=" + (availableTargetStates == null ? null : Arrays.asList(availableTargetStates)) +
-                ", fileLog=" + fileLog +
+                ", logDevice=" + logDevice +
                 ", deviceCharts=" + deviceCharts +
                 '}';
     }
