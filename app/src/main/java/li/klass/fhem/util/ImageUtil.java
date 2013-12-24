@@ -102,12 +102,16 @@ public class ImageUtil {
             @Override
             protected Bitmap doInBackground(Void... voids) {
                 Bitmap bitmap = CommandExecutionService.INSTANCE.getBitmap(relativeImageUrl);
+                if (bitmap == null) return null;
+
                 return resizeBitmap(bitmap, scaleHeight, scaleWidth);
             }
 
             @Override
             protected void onPostExecute(final Bitmap bitmap) {
                 super.onPostExecute(bitmap);
+                if (bitmap == null) return;
+
                 handler.post(new Runnable() {
                     @Override
                     public void run() {

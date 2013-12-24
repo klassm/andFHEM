@@ -39,6 +39,7 @@ import li.klass.fhem.fhem.DataConnectionSwitch;
 import li.klass.fhem.fhem.FHEMConnection;
 import li.klass.fhem.fhem.RequestResult;
 import li.klass.fhem.util.ApplicationProperties;
+import li.klass.fhem.util.Cache;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static li.klass.fhem.constants.Actions.DISMISS_EXECUTING_DIALOG;
@@ -55,14 +56,17 @@ public class CommandExecutionService extends AbstractService {
     public static final CommandExecutionService INSTANCE = new CommandExecutionService();
 
     public static final int DEFAULT_NUMBER_OF_RETRIES = 3;
+    public static final int IMAGE_CACHE_SIZE = 20;
     private transient ScheduledExecutorService scheduledExecutorService = null;
 
     private transient String lastFailedCommand = null;
 
+    private transient Cache<Bitmap> imageCache = getImageCache();
+
     private class ResendCommand implements Runnable {
+
         int currentTry;
         String command;
-
         protected ResendCommand(String command, int currentTry) {
             this.command = command;
             this.currentTry = currentTry;
@@ -72,8 +76,8 @@ public class CommandExecutionService extends AbstractService {
         public void run() {
             execute(command, currentTry);
         }
-    }
 
+    }
     private CommandExecutionService() {
     }
 
@@ -97,7 +101,7 @@ public class CommandExecutionService extends AbstractService {
      */
     public String executeSafely(String command) {
         command = command.replaceAll("  ", " ");
-        Context context = showExecutingDialog();
+        showExecutingDialog();
 
         try {
             RequestResult<String> result = execute(command);
@@ -107,7 +111,7 @@ public class CommandExecutionService extends AbstractService {
             }
             return result.content;
         } finally {
-            context.sendBroadcast(new Intent(DISMISS_EXECUTING_DIALOG));
+            hideExecutingDialog();
         }
     }
 
@@ -154,23 +158,33 @@ public class CommandExecutionService extends AbstractService {
     }
 
     public Bitmap getBitmap(String relativePath) {
-        Context context = showExecutingDialog();
-
         try {
-            FHEMConnection provider = DataConnectionSwitch.INSTANCE.getCurrentProvider();
-            RequestResult<Bitmap> result = provider.requestBitmap(relativePath);
+            Cache<Bitmap> cache = getImageCache();
+            if (cache.containsKey(relativePath)) {
+                return cache.get(relativePath);
+            } else {
+               showExecutingDialog();
 
-            if (result.handleErrors()) return null;
-            return result.content;
+                FHEMConnection provider = DataConnectionSwitch.INSTANCE.getCurrentProvider();
+                RequestResult<Bitmap> result = provider.requestBitmap(relativePath);
+
+                if (result.handleErrors()) return null;
+                Bitmap bitmap = result.content;
+                cache.put(relativePath, bitmap);
+                return bitmap;
+            }
         } finally {
-            context.sendBroadcast(new Intent(DISMISS_EXECUTING_DIALOG));
+            hideExecutingDialog();
         }
     }
 
-    private Context showExecutingDialog() {
+    private void showExecutingDialog() {
         Context context = AndFHEMApplication.getContext();
         context.sendBroadcast(new Intent(SHOW_EXECUTING_DIALOG));
-        return context;
+    }
+
+    private void hideExecutingDialog() {
+        AndFHEMApplication.getContext().sendBroadcast(new Intent(DISMISS_EXECUTING_DIALOG));
     }
 
     private ScheduledExecutorService getScheduledExecutorService() {
@@ -185,5 +199,13 @@ public class CommandExecutionService extends AbstractService {
         return applicationProperties.getIntegerSharedPreference(
                 COMMAND_EXECUTION_RETRIES, DEFAULT_NUMBER_OF_RETRIES
         );
+    }
+
+    private Cache<Bitmap> getImageCache() {
+        if (imageCache == null) {
+            imageCache = new Cache<Bitmap>(IMAGE_CACHE_SIZE);
+        }
+
+        return imageCache;
     }
 }

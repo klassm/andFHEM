@@ -36,14 +36,15 @@ import android.widget.TableRow;
 import java.util.List;
 
 import li.klass.fhem.R;
-import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
+import li.klass.fhem.adapter.devices.core.ToggleableAdapter;
 import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewAction;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.RemoteControlDevice;
+import li.klass.fhem.util.DisplayUtil;
 import li.klass.fhem.util.ImageUtil;
 
-public class RemoteControlAdapter extends GenericDeviceAdapter<RemoteControlDevice> {
+public class RemoteControlAdapter extends ToggleableAdapter<RemoteControlDevice> {
     public RemoteControlAdapter() {
         super(RemoteControlDevice.class);
     }
@@ -62,7 +63,9 @@ public class RemoteControlAdapter extends GenericDeviceAdapter<RemoteControlDevi
     }
 
     private TableLayout createRemoteControlTable(Context context, RemoteControlDevice device, LayoutInflater layoutInflater) {
-        TableLayout tableLayout = new TableLayout(context);
+        TableLayout tableLayout = (TableLayout) inflater.inflate(R.layout.remote_control_layout, null);
+        assert tableLayout != null;
+
         for (List<RemoteControlDevice.Entry> row : device.getRows()) {
             tableLayout.addView(createTableRowForRemoteControlRow(row, context, device, layoutInflater));
         }
@@ -87,7 +90,9 @@ public class RemoteControlAdapter extends GenericDeviceAdapter<RemoteControlDevi
                                     final RemoteControlDevice device, LayoutInflater layoutInflater) {
         ImageButton imageButton = (ImageButton) layoutInflater.inflate(R.layout.remote_control_view, null);
 
-        ImageUtil.loadImageFromFHEMAndSetIn(imageButton, entry.getIconPath(), 120, 120);
+
+        int px = (int) DisplayUtil.dpToPx(50);
+        ImageUtil.loadImageFromFHEMAndSetIn(imageButton, entry.getIconPath(), px, px);
 
         assert imageButton != null;
         imageButton.setOnClickListener(new View.OnClickListener() {

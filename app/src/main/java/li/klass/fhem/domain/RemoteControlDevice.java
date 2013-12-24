@@ -32,12 +32,13 @@ import java.util.Collections;
 import java.util.List;
 
 import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
-import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceFunctionality;
+import li.klass.fhem.domain.core.ToggleableDevice;
 import li.klass.fhem.domain.genericview.ShowField;
+import li.klass.fhem.util.ArrayUtil;
 
 @SuppressWarnings("unused")
-public class RemoteControlDevice extends Device<RemoteControlDevice> {
+public class RemoteControlDevice extends ToggleableDevice<RemoteControlDevice> {
     public class Entry implements Serializable {
         public final String command;
         public final String icon;
@@ -56,8 +57,8 @@ public class RemoteControlDevice extends Device<RemoteControlDevice> {
         }
     }
 
-    private String iconPath;
-    private String iconPrefix;
+    private String iconPath = "icons/remotecontrol";
+    private String iconPrefix = "black_btn_";
 
     @ShowField(description = ResourceIdMapper.channel, showInOverview = true)
     private String channel;
@@ -135,5 +136,10 @@ public class RemoteControlDevice extends Device<RemoteControlDevice> {
 
     public List<List<Entry>> getRows() {
         return Collections.unmodifiableList(rows);
+    }
+
+    @Override
+    public boolean supportsToggle() {
+        return ArrayUtil.contains(getAvailableTargetStates(), "on", "off");
     }
 }

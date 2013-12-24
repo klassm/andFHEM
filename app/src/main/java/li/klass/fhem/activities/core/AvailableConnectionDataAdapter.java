@@ -29,6 +29,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -45,6 +46,7 @@ import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.fhem.connection.FHEMServerSpec;
 import li.klass.fhem.fragments.FragmentType;
+import li.klass.fhem.service.connection.ConnectionService;
 
 import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_ID;
 import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_LIST;
@@ -59,7 +61,7 @@ public class AvailableConnectionDataAdapter extends ListDataAdapter<FHEMServerSp
 
     private static class ManagementPill extends FHEMServerSpec {
         private ManagementPill() {
-            super("-2");
+            super(ConnectionService.MANAGEMENT_DATA_ID);
             setName("managementDummy");
         }
 
@@ -122,6 +124,8 @@ public class AvailableConnectionDataAdapter extends ListDataAdapter<FHEMServerSp
                     if (resultData.containsKey(CONNECTION_ID)) {
                         String selectedId = resultData.getString(CONNECTION_ID);
                         select(selectedId);
+                    } else {
+                        select(ConnectionService.DUMMY_DATA_ID);
                     }
                 }
             }
@@ -131,6 +135,7 @@ public class AvailableConnectionDataAdapter extends ListDataAdapter<FHEMServerSp
 
     private void select(String id) {
         for (int i = 0; i < data.size(); i++) {
+            Log.e(AvailableConnectionDataAdapter.class.getName(), data.get(i) + " - " + id);
             if (data.get(i).getId().equals(id)) {
                 actionBar.setSelectedNavigationItem(i);
             }

@@ -52,6 +52,7 @@ public class ConnectionService {
     private static final String PREFERENCES_NAME = "fhemConnections";
     public static final String DUMMY_DATA_ID = "-1";
     public static final String TEST_DATA_ID = "-2";
+    public static final String MANAGEMENT_DATA_ID = "-3";
 
     private FHEMServerSpec dummyData;
     private DummyServerSpec testData;
@@ -164,7 +165,7 @@ public class ConnectionService {
     private String newUniqueId() {
         String id = null;
         while (id == null || exists(id) || DUMMY_DATA_ID.equals(id)
-                || TEST_DATA_ID.equals(id)) {
+                || TEST_DATA_ID.equals(id) || MANAGEMENT_DATA_ID.equals(id)) {
             id = UUID.randomUUID().toString();
         }
 
