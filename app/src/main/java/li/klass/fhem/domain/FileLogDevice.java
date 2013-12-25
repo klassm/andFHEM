@@ -66,7 +66,7 @@ public class FileLogDevice extends LogDevice<FileLogDevice> {
     @Override
     public String getGraphCommandFor(Device device, String fromDateFormatted, String toDateFormatted,
                                      ChartSeriesDescription seriesDescription) {
-        return String.format(name, fromDateFormatted, toDateFormatted,
+        return String.format(COMMAND_TEMPLATE, name, fromDateFormatted, toDateFormatted,
                 seriesDescription.getFileLogSpec());
     }
 }
