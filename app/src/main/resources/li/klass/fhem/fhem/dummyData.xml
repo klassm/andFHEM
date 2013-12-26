@@ -63,7 +63,7 @@
     <ATTR key="getList" value="rgb"/>
     <ATTR key="group" value="LEDs"/>
     <ATTR key="lightSceneParamsToSave" value="RGB -> rgb"/>
-    <ATTR key="room" value="02_Arbeitszimmer,Lichtsteuerung"/>
+    <ATTR key="room" value="buero"/>
     <ATTR key="setFn" value="{fhem (&quot;attr RGB1 DMX_R &quot;.hex(substr($ARGS,0,2)));fhem (&quot;attr RGB1 DMX_G &quot;.hex(substr($ARGS,2,2)));fhem (&quot;attr RGB1 DMX_B &quot;.hex(substr($ARGS,4,2)));fhem (&quot;set RGB1 rgb&quot;);fhem (&quot;setreading $name RGB $ARGS&quot;);fhem (&quot;setreading $name rgb $ARGS&quot;);return undef}"/>
     <ATTR key="setList" value="rgb:colorpicker,RGB on off"/>
     <ATTR key="webCmd" value="rgb:rgb FF0000:rgb C8FF12:rgb 0000FF:rgb 000000"/>
@@ -72,6 +72,33 @@
 </readingsProxy>
 
 </readingsProxy_LIST>
+
+<LaCrosse_LIST>
+<LaCrosse name="Temp_Bad" state="T: 22 H: 41" sets="" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev ignore:1 filterThreshold event-on-change-reading event-on-update-reading event-min-interval stateFormat devStateIcon devStateStyle icon sortby webCmd">
+    <INT key="DEF" value="A8"/>
+    <INT key="JeeLinkTemp_MSGCNT" value="8803"/>
+    <INT key="JeeLinkTemp_RAWMSG" value="OK 9 168 1 4 196 41"/>
+    <INT key="JeeLinkTemp_TIME" value="2013-12-24 11:02:53"/>
+    <INT key="LASTInputDev" value="JeeLinkTemp"/>
+    <INT key="LaCrosse_lastRcv" value="2013-12-24 11:02:53"/>
+    <INT key="MSGCNT" value="8803"/>
+    <INT key="NAME" value="Temp_Bad"/>
+    <INT key="NR" value="34"/>
+    <INT key="STATE" value="T: 22 H: 41"/>
+    <INT key="TYPE" value="LaCrosse"/>
+    <INT key="addr" value="A8"/>
+    <INT key="battery_new" value="0"/>
+    <INT key="previousH" value="41"/>
+    <INT key="previousT" value="22"/>
+    <INT key="IODev" value=""/>
+    <ATTR key="icon" value="temperature_humidity"/>
+    <ATTR key="room" value="bad"/>
+    <STATE key="battery" value="ok" measured="2013-12-24 11:02:53"/>
+    <STATE key="humidity" value="41" measured="2013-12-24 11:02:53"/>
+    <STATE key="state" value="T: 22 H: 41" measured="2013-12-24 10:58:50"/>
+    <STATE key="temperature" value="22" measured="2013-12-24 11:02:53"/>
+</LaCrosse>
+</LaCrosse_LIST>
 
 <RPI_GPIO_LIST>
 <RPI_GPIO name="Pin11" state="on" sets="readValue" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings poll_interval loglevel:0,1,2,3,4,5 direction:input,output pud_resistor:off,up,down interrupt:none,falling,rising,both toggletostate:no,yes DbLogExclude devStateIcon devStateStyle icon item1 item10 item11 item12 item13 item14 item15 item16 item17 item18 item19 item2 item20 item3 item4 item5 item6 item7 item8 item9 sortby webCmd">

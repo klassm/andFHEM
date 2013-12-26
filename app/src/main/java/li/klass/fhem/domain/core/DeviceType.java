@@ -79,6 +79,7 @@ import li.klass.fhem.domain.HUEDevice;
 import li.klass.fhem.domain.IntertechnoDevice;
 import li.klass.fhem.domain.KS300Device;
 import li.klass.fhem.domain.LGTVDevice;
+import li.klass.fhem.domain.LaCrosseDevice;
 import li.klass.fhem.domain.MaxDevice;
 import li.klass.fhem.domain.OWFSDevice;
 import li.klass.fhem.domain.OpenWeatherMapDevice;
@@ -181,7 +182,8 @@ public enum DeviceType {
     PCA301("PCA301", PCA301Device.class),
     REMOTECONTROL("remotecontrol", RemoteControlDevice.class, new RemoteControlAdapter(), DeviceVisibility.FHEMWEB_ONLY),
     RPI_GPIO("RPI_GPIO", RPIGPIODevice.class, new ToggleableAdapter<RPIGPIODevice>(RPIGPIODevice.class)),
-    READINGS_PROXY("readingsProxy", ReadingsProxyDevice.class, new ReadingsProxyDeviceAdapter())
+    READINGS_PROXY("readingsProxy", ReadingsProxyDevice.class, new ReadingsProxyDeviceAdapter()),
+    LACROSSE("LaCrosse", LaCrosseDevice.class),
     ;
 
     private String xmllistTag;
