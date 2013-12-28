@@ -22,40 +22,38 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.domain;
+package li.klass.fhem.util;
 
 import org.junit.Test;
 
-import li.klass.fhem.domain.core.DeviceXMLParsingBase;
-
+import static li.klass.fhem.test.hamcrest.IntegerMatcher.closeTo;
+import static li.klass.fhem.util.ColorUtil.extractBlue;
+import static li.klass.fhem.util.ColorUtil.extractGreen;
+import static li.klass.fhem.util.ColorUtil.extractRed;
+import static li.klass.fhem.util.ColorUtil.rgbToXY;
+import static li.klass.fhem.util.ColorUtil.xyToRgb;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
-public class HUEDeviceTest extends DeviceXMLParsingBase {
+public class ColorUtilTest {
     @Test
-    public void testForCorrectlySetAttributes() {
-        HUEDevice device = getDefaultDevice();
-
-        assertThat(device.getName(), is(DEFAULT_TEST_DEVICE_NAME));
-        assertThat(device.getRoomConcatenated(), is(DEFAULT_TEST_ROOM_NAME));
-        assertThat(device.getAlias(), is("Extended color light 1"));
-
-        assertThat(device.getBrightness(), is(254));
-        assertThat(device.getBrightnessDesc(), is("254"));
-
-        assertThat(device.getSaturation(), is(144));
-        assertThat(device.getSaturationDesc(), is("144"));
-
-        assertThat(device.getHueDesc(), is("0xFFEE8B"));
-        assertThat(device.getHue(), is(16772747));
-
-        assertThat(device.getXy(), is(new double[] {0.4595,0.4105}));
-
-        assertThat(device.getPositionForDimState("off"), is(0));
+    public void testXY_RGB_Conversion() {
+        assertBidirectionalConvert(0xFFFFFF);
+        assertBidirectionalConvert(0xAAAAAA);
+        assertBidirectionalConvert(0x537645);
     }
 
-    @Override
-    protected String getFileName() {
-        return "hue.xml";
+    private void assertBidirectionalConvert(int color) {
+        int red = extractRed(color);
+        int green = extractGreen(color);
+        int blue = extractBlue(color);
+
+        ColorUtil.XYColor xyColor = rgbToXY(color);
+        int rgb = xyToRgb(xyColor.xy, xyColor.brightness);
+
+        assertThat(extractRed(rgb), is(closeTo(red, 2)));
+        assertThat(extractBlue(rgb), is(closeTo(blue, 2)));
+        assertThat(extractGreen(rgb), is(closeTo(green, 2)));
     }
+
 }

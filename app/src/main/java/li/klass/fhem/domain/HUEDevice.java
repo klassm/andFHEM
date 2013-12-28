@@ -5,13 +5,15 @@ import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.DimmableDevice;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
-import li.klass.fhem.util.StringUtil;
+import li.klass.fhem.util.ColorUtil;
 import li.klass.fhem.util.ValueDescriptionUtil;
 import li.klass.fhem.util.ValueExtractUtil;
 
 @SuppressWarnings("unused")
 @OverviewViewSettings(showState = true)
 public class HUEDevice extends DimmableDevice<HUEDevice> {
+
+    private double[] xy;
 
     public enum SubType {
         COLORDIMMER, DIMMER, SWITCH
@@ -59,6 +61,11 @@ public class HUEDevice extends DimmableDevice<HUEDevice> {
         setState(value);
     }
 
+    public void readXY(String value) {
+        String[] parts = value.split(",");
+        xy = new double[]{Double.valueOf(parts[0]), Double.valueOf(parts[1])};
+    }
+
     @Override
     public void setState(String state) {
         if (state.equals("off")) level = 0;
@@ -92,6 +99,13 @@ public class HUEDevice extends DimmableDevice<HUEDevice> {
     }
 
     @Override
+    public void afterXMLRead() {
+        super.afterXMLRead();
+
+
+    }
+
+    @Override
     public boolean supportsDim() {
         return subType == SubType.COLORDIMMER || subType == SubType.DIMMER;
     }
@@ -110,6 +124,10 @@ public class HUEDevice extends DimmableDevice<HUEDevice> {
         return subType;
     }
 
+    public void setBrightness(Integer brightness) {
+        this.brightness = brightness;
+    }
+
     public int getBrightness() {
         return brightness;
     }
@@ -124,13 +142,21 @@ public class HUEDevice extends DimmableDevice<HUEDevice> {
     }
 
     public int getHue() {
-        return hue;
+        return ColorUtil.xyToRgb(xy, brightness);
+    }
+
+    public void setXy(double[] xy) {
+        this.xy = xy;
+    }
+
+    public double[] getXy() {
+        return xy;
     }
 
     @ShowField(description = ResourceIdMapper.hue)
     public String getHueDesc() {
-        String asHex = Integer.toHexString(hue).toUpperCase();
-        return "0x" + StringUtil.prefixPad(asHex, "0", 6);
+        int rgb = ColorUtil.xyToRgb(xy, brightness);
+        return ColorUtil.toHexString(rgb, 6);
     }
 
     public int getSaturation() {
