@@ -157,6 +157,7 @@
     <string name="current">Current</string>
     <string name="saturation">Saturation</string>
     <string name="hue">Hue</string>
+    <string name="color">Colour</string>
     <string name="alarm">Alarm</string>
     <string name="apiKey">API Key</string>
     <string name="gcmAlreadyRegistered">Device is already registered!</string>

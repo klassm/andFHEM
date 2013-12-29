@@ -198,7 +198,6 @@
     <INT key="swversion" value="2.0.0.5206"/>
     <INT key="type" value="Color light"/>
     <INT key="IODev" value="Hue"/>
-    <ATTR key="alias" value="Color light 1"/>
     <ATTR key="alleGeraete" value="alleGeraete"/>
     <ATTR key="fp_Groundfloor" value="30,320"/>
     <ATTR key="model" value="LLC001"/>

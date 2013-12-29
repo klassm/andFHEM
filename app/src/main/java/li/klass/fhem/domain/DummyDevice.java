@@ -136,7 +136,7 @@ public class DummyDevice extends DimmableDevice<DummyDevice> {
         return dimLowerBound != null && dimUpperBound != null && dimStep != null;
     }
 
-    @ShowField(description = ResourceIdMapper.hue)
+    @ShowField(description = ResourceIdMapper.color)
     public String getRgbDesc() {
         return "0x" + getRgb();
     }

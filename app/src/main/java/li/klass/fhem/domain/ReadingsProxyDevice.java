@@ -35,7 +35,7 @@ import static li.klass.fhem.util.NumberSystemUtil.hexToDecimal;
 @SuppressWarnings("unused")
 public class ReadingsProxyDevice extends ToggleableDevice<ReadingsProxyDevice> {
 
-    @ShowField(description = ResourceIdMapper.hue)
+    @ShowField(description = ResourceIdMapper.color)
     public String getRgbDesc() {
         return "0x" + getRgb();
     }

@@ -136,6 +136,7 @@ public enum ResourceIdMapper {
     musicInfo(R.string.musicInfo),
     saturation(R.string.saturation),
     hue(R.string.hue),
+    color(R.string.color),
     alarm(R.string.alarm),
     apiKey(R.string.apiKey),
     callMonExternalNumber(R.string.callMonExternalNumber),

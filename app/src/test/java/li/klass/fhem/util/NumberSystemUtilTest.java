@@ -60,5 +60,7 @@ public class NumberSystemUtilTest {
     public void testHexToDecimal() {
         assertThat(hexToDecimal("F"), is(15));
         assertThat(hexToDecimal("AB"), is(171));
+        assertThat(hexToDecimal("244EEB"), is(2379499));
+        assertThat(hexToDecimal("244eeb"), is(2379499));
     }
 }

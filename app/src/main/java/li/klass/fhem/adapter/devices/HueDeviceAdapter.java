@@ -38,7 +38,6 @@ import li.klass.fhem.adapter.devices.genericui.StateChangingSeekBar;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.HUEDevice;
-import li.klass.fhem.util.ColorUtil;
 import li.klass.fhem.util.StringUtil;
 
 public class HueDeviceAdapter extends DimmableAdapter<HUEDevice> {
@@ -50,14 +49,6 @@ public class HueDeviceAdapter extends DimmableAdapter<HUEDevice> {
     protected void afterPropertiesSet() {
         super.afterPropertiesSet();
 
-        registerFieldListener("hueDesc", new FieldNameAddedToDetailListener<HUEDevice>() {
-            @Override
-            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, HUEDevice device, TableRow fieldTableRow) {
-                tableLayout.addView(new StateChangingSeekBar<HUEDevice>(context, device.getHue(), 65535, "hue")
-                        .createRow(inflater, device));
-            }
-        });
-
         registerFieldListener("saturationDesc", new FieldNameAddedToDetailListener<HUEDevice>() {
             @Override
             public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, HUEDevice device, TableRow fieldTableRow) {
@@ -66,27 +57,24 @@ public class HueDeviceAdapter extends DimmableAdapter<HUEDevice> {
             }
         });
 
-        registerFieldListener("hueDesc", new FieldNameAddedToDetailListener<HUEDevice>() {
+        registerFieldListener("rgbDesc", new FieldNameAddedToDetailListener<HUEDevice>() {
             @Override
             public void onFieldNameAdded(final Context context, TableLayout tableLayout, String field,
                                          final HUEDevice device, TableRow fieldTableRow) {
-                tableLayout.addView(new ColorPickerRow(device.getHue(), R.string.hue) {
+                tableLayout.addView(new ColorPickerRow(device.getRgb(), R.string.hue) {
                     @Override
                     public void onColorChange(int color) {
                         String targetHexString = StringUtil.prefixPad(
                                 Integer.toHexString(color),
                                 "0", 6
                         );
+                        System.out.println(targetHexString);
 
                         Intent intent = new Intent(Actions.DEVICE_SET_SUB_STATE);
                         intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
                         intent.putExtra(BundleExtraKeys.STATE_NAME, "rgb");
                         intent.putExtra(BundleExtraKeys.STATE_VALUE, targetHexString);
                         GenericDeviceAdapter.putUpdateExtra(intent);
-
-                        ColorUtil.XYColor xyColor = ColorUtil.rgbToXY(color);
-                        device.setBrightness(xyColor.brightness);
-                        device.setXy(xyColor.xy);
 
                         context.startService(intent);
                     }

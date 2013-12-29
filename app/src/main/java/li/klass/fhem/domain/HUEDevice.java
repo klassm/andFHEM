@@ -6,6 +6,7 @@ import li.klass.fhem.domain.core.DimmableDevice;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.util.ColorUtil;
+import li.klass.fhem.util.NumberSystemUtil;
 import li.klass.fhem.util.ValueDescriptionUtil;
 import li.klass.fhem.util.ValueExtractUtil;
 
@@ -14,6 +15,7 @@ import li.klass.fhem.util.ValueExtractUtil;
 public class HUEDevice extends DimmableDevice<HUEDevice> {
 
     private double[] xy;
+    private int rgb;
 
     public enum SubType {
         COLORDIMMER, DIMMER, SWITCH
@@ -24,7 +26,6 @@ public class HUEDevice extends DimmableDevice<HUEDevice> {
     @ShowField(description = ResourceIdMapper.model, showAfter = "definition")
     private String model;
 
-    private Integer hue;
     private Integer brightness;
     private Integer saturation;
     private int level;
@@ -46,7 +47,7 @@ public class HUEDevice extends DimmableDevice<HUEDevice> {
     }
 
     public void readHUE(String value) {
-        hue = ValueExtractUtil.extractLeadingInt(value);
+        Integer hue = ValueExtractUtil.extractLeadingInt(value);
     }
 
     public void readSAT(String value) {
@@ -64,6 +65,14 @@ public class HUEDevice extends DimmableDevice<HUEDevice> {
     public void readXY(String value) {
         String[] parts = value.split(",");
         xy = new double[]{Double.valueOf(parts[0]), Double.valueOf(parts[1])};
+    }
+
+    public void readRGB(String value) {
+        rgb = NumberSystemUtil.hexToDecimal(value);
+
+        ColorUtil.XYColor xyColor = ColorUtil.rgbToXY(rgb);
+        brightness = xyColor.brightness;
+        xy = xyColor.xy;
     }
 
     @Override
@@ -102,7 +111,7 @@ public class HUEDevice extends DimmableDevice<HUEDevice> {
     public void afterXMLRead() {
         super.afterXMLRead();
 
-
+        this.rgb = ColorUtil.xyToRgb(xy, brightness);
     }
 
     @Override
@@ -124,10 +133,6 @@ public class HUEDevice extends DimmableDevice<HUEDevice> {
         return subType;
     }
 
-    public void setBrightness(Integer brightness) {
-        this.brightness = brightness;
-    }
-
     public int getBrightness() {
         return brightness;
     }
@@ -141,21 +146,20 @@ public class HUEDevice extends DimmableDevice<HUEDevice> {
         return model;
     }
 
-    public int getHue() {
-        return ColorUtil.xyToRgb(xy, brightness);
+    public void setRgb(int rgb) {
+        this.rgb = rgb;
     }
 
-    public void setXy(double[] xy) {
-        this.xy = xy;
+    public int getRgb() {
+        return rgb;
     }
 
     public double[] getXy() {
         return xy;
     }
 
-    @ShowField(description = ResourceIdMapper.hue)
-    public String getHueDesc() {
-        int rgb = ColorUtil.xyToRgb(xy, brightness);
+    @ShowField(description = ResourceIdMapper.color)
+    public String getRgbDesc() {
         return ColorUtil.toHexString(rgb, 6);
     }
 

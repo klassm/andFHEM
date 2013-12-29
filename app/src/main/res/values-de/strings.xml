@@ -154,6 +154,7 @@
     <string name="cumulativeKwH">Gesamtzählerstand</string>
     <string name="saturation">Sättigung</string>
     <string name="hue">Farbton</string>
+    <string name="color">Farbe</string>
     <string name="alarm">Alarm</string>
     <string name="apiKey">API-Key</string>
     <string name="gcmAlreadyRegistered">Gerät ist bereits registriert!</string>

@@ -82,6 +82,8 @@ public class NumberSystemUtil {
     }
 
     private static int toDecimal(String input, int base) {
+        input = input.toUpperCase();
+
         int totalDecimal = 0;
         for (int i = 0; i < input.length(); i++) {
             char c = input.charAt(i);
