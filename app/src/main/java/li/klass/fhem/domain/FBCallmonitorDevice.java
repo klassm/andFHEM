@@ -102,7 +102,8 @@ public class FBCallmonitorDevice extends Device<FBCallmonitorDevice> {
     }
 
     public void readCALL_DURATION(String value) {
-        callDuration = ValueDescriptionUtil.append(value, "s");
+        int seconds = Integer.valueOf(value);
+        callDuration = ValueDescriptionUtil.secondsToTimeString(seconds);
     }
 
     @Override

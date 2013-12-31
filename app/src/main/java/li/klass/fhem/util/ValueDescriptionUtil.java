@@ -24,9 +24,6 @@
 
 package li.klass.fhem.util;
 
-import li.klass.fhem.AndFHEMApplication;
-import li.klass.fhem.R;
-
 public class ValueDescriptionUtil {
 
     public static final String C = "°C";
@@ -76,8 +73,38 @@ public class ValueDescriptionUtil {
         }
     }
 
-    public static String trueFalseToYesNo(boolean value) {
-        int resourceId = value ? R.string.yes : R.string.no;
-        return AndFHEMApplication.getContext().getString(resourceId);
+    public static String secondsToTimeString(int seconds) {
+        int hours = 0;
+        int minutes = 0;
+
+        hours = seconds / 3600;
+        seconds -= (hours * 3600);
+
+        minutes = seconds / 60;
+        seconds -= (minutes * 60);
+
+        String out = "";
+
+        if (hours > 0) {
+            out = appendToString(out, hours + " (h)");
+        }
+
+        if (minutes > 0) {
+            out = appendToString(out, minutes + " (m)");
+        }
+
+        if (seconds > 0) {
+            out = appendToString(out, seconds + " (s)");
+        }
+
+        return out;
+    }
+
+    private static String appendToString(String string, String toAppend) {
+        if (! StringUtil.isBlank(string)) {
+            string += " ";
+        }
+
+        return string + toAppend;
     }
 }
