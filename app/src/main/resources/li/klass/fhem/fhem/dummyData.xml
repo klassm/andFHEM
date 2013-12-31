@@ -150,7 +150,7 @@
     <ATTR key="alleGeraete" value="alleGeraete"/>
     <ATTR key="alleGeräte" value="alleGeraete"/>
     <ATTR key="fp_Groundfloor" value="490,487"/>
-    <ATTR key="room" value="Devices"/>
+    <ATTR key="room" value="wohnzimmer"/>
     <ATTR key="volume-smooth-change" value="1"/>
     <STATE key="input" value="netradio" measured="2013-06-05 17:20:09"/>
     <STATE key="input_name" value="NET RADIO" measured="2013-06-05 17:20:09"/>
@@ -213,7 +213,7 @@
     <ATTR key="alleGeraete" value="alleGeraete"/>
     <ATTR key="fp_Groundfloor" value="30,320"/>
     <ATTR key="model" value="LLC001"/>
-    <ATTR key="room" value="HUEDevice"/>
+    <ATTR key="room" value="gang"/>
     <ATTR key="subType" value="colordimmer"/>
     <ATTR key="webCmd" value="rgb:toggle:on:off"/>
     <STATE key="bri" value="0" measured="2013-06-04 22:45:40"/>
@@ -267,7 +267,7 @@
     <INT key="IODev" value="FIRMATA"/>
     <ATTR key="devStateIcon" value="off:on-for-timer on:off"/>
     <ATTR key="eventMap" value="/off-for-timer 0.5:Wechseln"/>
-    <ATTR key="room" value="Keller"/>
+    <ATTR key="room" value="keller"/>
     <ATTR key="stateFormat" value="value"/>
     <ATTR key="webCmd" value="Wechseln"/>
     <STATE key="state" value="Initialized" measured="2013-06-07 06:58:06"/>
@@ -286,7 +286,7 @@
     <INT key="IODev" value="FIRMATA"/>
     <ATTR key="devStateIcon" value="off:on-for-timer on:off"/>
     <ATTR key="eventMap" value="/off-for-timer 25:Hoch"/>
-    <ATTR key="room" value="Rollladen"/>
+    <ATTR key="room" value="wohnzimmer"/>
     <ATTR key="stateFormat" value="value"/>
     <ATTR key="webCmd" value="Hoch"/>
     <STATE key="state" value="Initialized" measured="2013-06-07 06:58:06"/>
@@ -333,7 +333,7 @@
     <INT key="IODev" value="COC"/>
     <ATTR key="event-on-update-reading" value="state,actual_ticks,diff_ticks,actual,raw_total,.*_last"/>
     <ATTR key="model" value="esa2000-led"/>
-    <ATTR key="room" value="ESA2000"/>
+    <ATTR key="room" value="dach"/>
     <STATE key="actual" value="0.0812182741116751" measured="2013-06-02 15:44:46"/>
     <STATE key="actual_ticks" value="0" measured="2013-06-02 15:44:46"/>
     <STATE key="day" value="1.04" measured="2013-06-02 15:44:46"/>
@@ -997,7 +997,7 @@
     <ATTR key="gwCmd" value="switching"/>
     <ATTR key="manufID" value="00D"/>
     <ATTR key="model" value="FSR14"/>
-    <ATTR key="room" value="EnOcean,Licht"/>
+    <ATTR key="room" value="wohnzimmer"/>
     <ATTR key="subDef" value="FFFABCDE"/>
     <ATTR key="subType" value="gateway"/>
     <ATTR key="webCmd" value="on:off"/>
@@ -1027,7 +1027,7 @@
     <ATTR key="fp_Test_EG" value="480,752,5,"/>
     <ATTR key="manufID" value="00D"/>
     <ATTR key="model" value="FSB14"/>
-    <ATTR key="room" value="EnOcean,Rollos"/>
+    <ATTR key="room" value="wohnzimmer"/>
     <ATTR key="shutTime" value="18"/>
     <ATTR key="shutTimeCloses" value="20"/>
     <ATTR key="subDef" value="FFFABCDE"/>
@@ -1468,7 +1468,7 @@ webCmd">
     <ATTR key="fp_Grundriss" value="348,768,0"/>
     <ATTR key="hmClass" value="receiver"/>
     <ATTR key="model" value="HM-SEC-KEY"/>
-    <ATTR key="room" value="Flur"/>
+    <ATTR key="room" value="gang"/>
     <ATTR key="serialNr" value="JEQ0466..."/>
     <ATTR key="subType" value="keyMatic"/>
     <ATTR key="webCmd" value="lock:unlock"/>
@@ -2156,7 +2156,7 @@ room structexclude webCmd eventMap">
     <ATTR key="group" value="Mobil"/>
     <ATTR key="icon" value="icoSONOSPLAYER_icon-S3"/>
     <ATTR key="model" value="Sonos_S3"/>
-    <ATTR key="room" value="Badezimmer"/>
+    <ATTR key="room" value="bad"/>
     <ATTR key="stateVariable" value="InfoSummarize2"/>
     <ATTR key="webCmd" value="Play:Pause:Previous:Next:VolumeD:VolumeU:MuteT"/>
     <STATE key="Balance" value="0" measured="2013-04-12 08:09:00"/>
@@ -4210,109 +4210,6 @@ room structexclude webCmd eventMap">
     <ATTR key="weblink_room" value="Plots"/>
 </autocreate>
 </autocreate_LIST>
-<weblink_LIST>
-<weblink name="weblink_CUL_WS_1" state="initial" sets=""
-         attrs="room comment alias fixedrange plotmode plotsize label title eventMap">
-    <INT key="DEF" value="fileplot FileLog_CUL_WS_1:hms:CURRENT"/>
-    <INT key="LINK" value="FileLog_CUL_WS_1:hms:CURRENT"/>
-    <INT key="NAME" value="weblink_CUL_WS_1"/>
-    <INT key="NR" value="89"/>
-    <INT key="STATE" value="initial"/>
-    <INT key="TYPE" value="weblink"/>
-    <INT key="WLTYPE" value="fileplot"/>
-    <ATTR key="label" value="&quot;CUL_WS_1 Min $data{min1}, Max $data{max1}, Last $data{currval1}&quot;"/>
-    <ATTR key="room" value="Plots"/>
-</weblink>
-<weblink name="weblink_CUL_WS_2" state="initial" sets=""
-         attrs="room comment alias fixedrange plotmode plotsize label title eventMap">
-    <INT key="DEF" value="fileplot FileLog_CUL_WS_2:hms:CURRENT"/>
-    <INT key="LINK" value="FileLog_CUL_WS_2:hms:CURRENT"/>
-    <INT key="NAME" value="weblink_CUL_WS_2"/>
-    <INT key="NR" value="237"/>
-    <INT key="STATE" value="initial"/>
-    <INT key="TYPE" value="weblink"/>
-    <INT key="WLTYPE" value="fileplot"/>
-    <ATTR key="label" value="&quot;CUL_WS_2 Min $data{min1}, Max $data{max1}, Last $data{currval1}&quot;"/>
-    <ATTR key="room" value="Plots"/>
-</weblink>
-<weblink name="weblink_FHT_194c" state="initial" sets=""
-         attrs="room comment alias fixedrange plotmode plotsize label title eventMap">
-    <INT key="DEF" value="fileplot FileLog_FHT_194c:fht:CURRENT"/>
-    <INT key="LINK" value="FileLog_FHT_194c:fht:CURRENT"/>
-    <INT key="NAME" value="weblink_FHT_194c"/>
-    <INT key="NR" value="49"/>
-    <INT key="STATE" value="initial"/>
-    <INT key="TYPE" value="weblink"/>
-    <INT key="WLTYPE" value="fileplot"/>
-    <ATTR key="label" value="&quot;FHT_194c Min $data{min1}, Max $data{max1}, Last $data{currval1}&quot;"/>
-    <ATTR key="room" value="Plots"/>
-</weblink>
-<weblink name="weblink_KS300" state="initial" sets=""
-         attrs="room comment alias fixedrange plotmode plotsize label title eventMap">
-    <INT key="DEF" value="fileplot FileLog_KS300:ks300:CURRENT"/>
-    <INT key="LINK" value="FileLog_KS300:ks300:CURRENT"/>
-    <INT key="NAME" value="weblink_KS300"/>
-    <INT key="NR" value="52"/>
-    <INT key="STATE" value="initial"/>
-    <INT key="TYPE" value="weblink"/>
-    <INT key="WLTYPE" value="fileplot"/>
-    <ATTR key="label" value="&quot;KS300 Min $data{min1}, Max $data{max1}, Last $data{currval1}&quot;"/>
-    <ATTR key="room" value="Plots"/>
-</weblink>
-<weblink name="weblink_CUL_WS_2" state="initial" sets=""
-         attrs="room comment alias fixedrange plotmode plotsize label title htmlattr webCmd fm_fav fm_name fm_order fm_groups eventMap">
-    <INT key="DEF" value="fileplot FileLog_CUL_WS_2:temp4hum6:CURRENT"/>
-    <INT key="LINK" value="FileLog_CUL_WS2:temp4hum6:CURRENT"/>
-    <INT key="NAME" value="weblink_CUL_WS_2"/>
-    <INT key="NR" value="34"/>
-    <INT key="STATE" value="initial"/>
-    <INT key="TYPE" value="weblink"/>
-    <INT key="WLTYPE" value="fileplot"/>
-    <ATTR key="label" value="&quot;CUL_WS_2 Min $data{min1}, Max $data{max1}, Last $data{currval1}&quot;"/>
-    <ATTR key="room" value="APlots"/>
-</weblink>
-<weblink name="weblink_KS300_2" state="initial" sets=""
-         attrs="room comment alias fixedrange plotmode plotsize label title eventMap">
-    <INT key="DEF" value="fileplot FileLog_KS300:ks300_2:CURRENT"/>
-    <INT key="LINK" value="FileLog_KS300:ks300_2:CURRENT"/>
-    <INT key="NAME" value="weblink_KS300_2"/>
-    <INT key="NR" value="53"/>
-    <INT key="STATE" value="initial"/>
-    <INT key="TYPE" value="weblink"/>
-    <INT key="WLTYPE" value="fileplot"/>
-    <ATTR key="label" value="&quot;KS300 Min $data{min1}, Max $data{max1}, Last $data{currval1}&quot;"/>
-    <ATTR key="label"
-          value="Gasverbrauch Summe $data{sum1} m³, Min $data{min1}, Max $data{max1}, Last $data{currval1} m³"/>
-    <ATTR key="room" value="Plots"/>
-</weblink>
-<weblink name="Wetter" state="initial" sets=""
-         attrs="room group comment alias eventMap fixedrange plotmode plotsize label title htmlattr Geschoss Haus fp_Lindenhof icon structexclude webCmd">
-    <INT key="DEF" value="iframe http://www.wetteronline.de/cgi-bin/hpweather?PLZ=15749"/>
-    <INT key="LINK" value="http://www.wetteronline.de/cgi-bin/hpweather?PLZ=15749"/>
-    <INT key="NAME" value="Wetter"/>
-    <INT key="NR" value="26"/>
-    <INT key="STATE" value="initial"/>
-    <INT key="TYPE" value="weblink"/>
-    <INT key="WLTYPE" value="iframe"/>
-    <ATTR key="fp_Lindenhof" value="420,25"/>
-    <ATTR key="htmlattr"
-          value="width=&quot;220&quot; height=&quot;330&quot; frameborder=&quot;0&quot; marginheight=&quot;0&quot; marginwidth=&quot;0&quot;"/>
-    <ATTR key="room" value="Plots"/>
-
-</weblink>
-<weblink name="weblink_Temp_Feuchte1.Aussen" state="initial" sets=""
-         attrs="room group comment alias eventMap fixedrange plotmode plotsize label title htmlattr icon structexclude webCmd">
-    <INT key="DEF" value="fileplot FileLog_Temp_Feuchte1.Aussen:temp4hum6:CURRENT"/>
-    <INT key="LINK" value="FileLog_Temp_Feuchte1.Aussen:temp4hum6:CURRENT"/>
-    <INT key="NAME" value="weblink_Temp_Feuchte1.Aussen"/>
-    <INT key="NR" value="54"/>
-    <INT key="STATE" value="initial"/>
-    <INT key="TYPE" value="weblink"/>
-    <INT key="WLTYPE" value="fileplot"/>
-    <ATTR key="label" value="&quot;Temp_Feuchte1.Aussen Min $data{min1}, Max $data{max1}, Last $data{currval1}&quot;"/>
-    <ATTR key="room" value="Plot"/>
-</weblink>
-</weblink_LIST>
 <FRM_IN_LIST>
 <FRM_IN name="Alarm_Status" state="off" sets="alarm"
         attrs="room group comment alias eventMap userReadings IODev count-mode count-threshold loglevel:0,1,2,3,4,5 event-on-change-reading event-on-update-reading event-min-interval stateFormat devStateIcon icon sortby webCmd">
@@ -4324,7 +4221,7 @@ room structexclude webCmd eventMap">
     <INT key="STATE" value="off"/>
     <INT key="TYPE" value="FRM_IN"/>
     <INT key="IODev" value="FIRMATA"/>
-    <ATTR key="room" value="Keller"/>
+    <ATTR key="room" value="keller"/>
     <ATTR key="stateFormat" value="reading"/>
     <STATE key="alarm" value="on" measured="2013-06-08 05:01:35"/>
     <STATE key="count" value="0" measured="2013-06-08 05:01:35"/>
@@ -4586,7 +4483,7 @@ room structexclude webCmd eventMap">
     <ATTR key="alias" value="Stehlampe"/>
     <ATTR key="classes" value="MANUFACTURER_SPECIFIC VERSION HAIL INDICATOR PROTECTION SWITCH_ALL SWITCH_MULTILEVEL"/>
     <ATTR key="model" value="Everspring_AN1582"/>
-    <ATTR key="room" value="Bedroom"/>
+    <ATTR key="room" value="schlafzimmer"/>
     <STATE key="state" value="off" measured="2013-07-05 23:29:17"/>
 </ZWave>
 </ZWave_LIST>
