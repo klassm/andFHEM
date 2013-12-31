@@ -74,8 +74,8 @@ public class ValueDescriptionUtil {
     }
 
     public static String secondsToTimeString(int seconds) {
-        int hours = 0;
-        int minutes = 0;
+        int hours;
+        int minutes;
 
         hours = seconds / 3600;
         seconds -= (hours * 3600);
