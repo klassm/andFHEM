@@ -84,7 +84,9 @@ public class RoomListService extends AbstractService {
     private RoomListService() {
     }
 
-    public void parseReceivedDeviceStateMap(String deviceName, Map<String, String> updateMap) {
+    public void parseReceivedDeviceStateMap(String deviceName, Map<String, String> updateMap,
+                                            boolean vibrateUponNotification) {
+
         Device device = getDeviceForName(deviceName, NEVER_UPDATE_PERIOD);
         if (device == null) return;
 
@@ -96,6 +98,7 @@ public class RoomListService extends AbstractService {
         intent.putExtra(BundleExtraKeys.DEVICE_NAME, deviceName);
         intent.putExtra(BundleExtraKeys.DEVICE, device);
         intent.putExtra(BundleExtraKeys.UPDATE_MAP, (Serializable) updateMap);
+        intent.putExtra(BundleExtraKeys.VIBRATE, vibrateUponNotification);
         AndFHEMApplication.getContext().startService(intent);
 
         boolean updateWidgets = ApplicationProperties.INSTANCE.getBooleanSharedPreference(PreferenceKeys.GCM_WIDGET_UPDATE, false);

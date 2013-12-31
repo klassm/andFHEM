@@ -163,6 +163,7 @@
     <string name="gcmAlreadyRegistered">Device is already registered!</string>
     <string name="gcmRegistrationNotActive">GCM not active! Is the project id valid?</string>
     <string name="gcmRegisterThis">Register this device</string>
+    <string name="gcmSuccessfullyRegistered">Device was registered.</string>
     <string name="notificationAllUpdates">All updates</string>
     <string name="notificationStateUpdates">Only state updates</string>
     <string name="notificationNoUpdates">None</string>
@@ -260,7 +261,7 @@
     <string name="prefDeviceFunctionalityOrderSummary">Order of device functionalities as well as hide and view</string>
     <string name="prefUpdateOnApplicationStart">Refresh on application start</string>
     <string name="prefShowSetValueButtons">Show set value buttons for temperature changes</string>
-    <string name="prefGCMProjectId">GCM Project ID</string>
+    <string name="prefGCMProjectId">GCM Project Number</string>
     <string name="prefGcmWidgetUpdate">Update widget upon GCM notification</string>
     <string name="prefStartupView">Startup view</string>
     <string name="prefStartupViewSummary">View shown upon application start</string>

@@ -135,7 +135,7 @@ public class AvailableConnectionDataAdapter extends ListDataAdapter<FHEMServerSp
 
     private void select(String id) {
         for (int i = 0; i < data.size(); i++) {
-            Log.e(AvailableConnectionDataAdapter.class.getName(), data.get(i) + " - " + id);
+            Log.d(AvailableConnectionDataAdapter.class.getName(), data.get(i) + " - " + id);
             if (data.get(i).getId().equals(id)) {
                 actionBar.setSelectedNavigationItem(i);
             }

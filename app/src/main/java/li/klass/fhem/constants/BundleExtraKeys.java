@@ -65,9 +65,6 @@ public class BundleExtraKeys {
 
     public static final String IMAGE_RELATIVE_PATH = "IMAGE_RELATIVE_PATH";
     public static final String IMAGE = "LOAD_IMAGE";
-    public static final String FLOORPLAN_NAME = "FLOORPLAN_NAME";
-
-    public static final String COORDINATE = "COORDINATE";
 
     public static final String APP_WIDGET_ID = "APP_WIDGET_ID";
     public static final String APP_WIDGET_TYPE_NAME = "APP_WIDGET_TYPE_NAME";
@@ -90,6 +87,7 @@ public class BundleExtraKeys {
     public static final String STATE_VALUE = "STATE_VALUE";
 
     public static final String UPDATE_MAP = "UPDATE_MAP";
+    public static final String VIBRATE = "VIBRATE";
     public static final String GCM_REGISTRATION_ID = "GCM_REGISTRATION_ID";
 
     public static final String NOTIFICATION_UPDATES = "NOTIFICATION_UPDATES";

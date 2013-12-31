@@ -26,18 +26,28 @@ package li.klass.fhem.service.intent;
 
 import android.content.Intent;
 import android.os.ResultReceiver;
+
+import java.util.ArrayList;
+import java.util.Map;
+
 import li.klass.fhem.constants.Actions;
-import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.RoomDeviceList;
 import li.klass.fhem.service.room.RoomListService;
 
-import java.util.ArrayList;
-import java.util.Map;
-
-import static li.klass.fhem.constants.Actions.*;
-import static li.klass.fhem.constants.BundleExtraKeys.*;
+import static li.klass.fhem.constants.Actions.GET_ALL_ROOMS_DEVICE_LIST;
+import static li.klass.fhem.constants.Actions.GET_DEVICE_FOR_NAME;
+import static li.klass.fhem.constants.Actions.GET_ROOM_DEVICE_LIST;
+import static li.klass.fhem.constants.Actions.GET_ROOM_NAME_LIST;
+import static li.klass.fhem.constants.Actions.UPDATE_DEVICE_WITH_UPDATE_MAP;
+import static li.klass.fhem.constants.BundleExtraKeys.DEVICE;
+import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_LIST;
+import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_NAME;
+import static li.klass.fhem.constants.BundleExtraKeys.ROOM_LIST;
+import static li.klass.fhem.constants.BundleExtraKeys.ROOM_NAME;
+import static li.klass.fhem.constants.BundleExtraKeys.UPDATE_MAP;
+import static li.klass.fhem.constants.BundleExtraKeys.VIBRATE;
 
 public class RoomListIntentService extends ConvenientIntentService {
 
@@ -66,9 +76,10 @@ public class RoomListIntentService extends ConvenientIntentService {
         } else if (intent.getAction().equals(UPDATE_DEVICE_WITH_UPDATE_MAP)) {
             String deviceName = intent.getStringExtra(DEVICE_NAME);
             @SuppressWarnings("unchecked")
-            Map<String, String> updates = (Map<String, String>) intent.getSerializableExtra(BundleExtraKeys.UPDATE_MAP);
+            Map<String, String> updates = (Map<String, String>) intent.getSerializableExtra(UPDATE_MAP);
+            boolean vibrateUponNotification = intent.getBooleanExtra(VIBRATE, false);
 
-            roomListService.parseReceivedDeviceStateMap(deviceName, updates);
+            roomListService.parseReceivedDeviceStateMap(deviceName, updates, vibrateUponNotification);
 
             sendBroadcast(new Intent(Actions.DO_UPDATE));
         }

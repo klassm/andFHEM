@@ -24,14 +24,19 @@
 
 package li.klass.fhem.service.device;
 
+import android.content.Intent;
+
 import li.klass.fhem.R;
-import li.klass.fhem.constants.PreferenceKeys;
+import li.klass.fhem.constants.Actions;
+import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.GCMSendDevice;
 import li.klass.fhem.service.AbstractService;
 import li.klass.fhem.service.CommandExecutionService;
 import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.ArrayUtil;
 import li.klass.fhem.util.StringUtil;
+
+import static li.klass.fhem.constants.PreferenceKeys.GCM_REGISTRATION_ID;
 
 public class GCMSendDeviceService extends AbstractService {
     public static final GCMSendDeviceService INSTANCE = new GCMSendDeviceService();
@@ -43,7 +48,8 @@ public class GCMSendDeviceService extends AbstractService {
 
     public void addSelf(GCMSendDevice device) {
 
-        String registrationId = ApplicationProperties.INSTANCE.getStringSharedPreference(PreferenceKeys.GCM_REGISTRATION_ID, null);
+        ApplicationProperties properties = ApplicationProperties.INSTANCE;
+        String registrationId = properties.getStringSharedPreference(GCM_REGISTRATION_ID, null);
         if (StringUtil.isBlank(registrationId)) {
             showToast(R.string.gcmRegistrationNotActive);
             return;
@@ -56,6 +62,12 @@ public class GCMSendDeviceService extends AbstractService {
 
         String[] newRegIds = ArrayUtil.addToArray(device.getRegIds(), registrationId);
         setRegIdsAttributeFor(device, newRegIds);
+
+        Intent intent = new Intent(Actions.DO_UPDATE);
+        intent.putExtra(BundleExtraKeys.DO_REFRESH, true);
+        getContext().sendBroadcast(intent);
+
+        showToast(R.string.gcmSuccessfullyRegistered);
     }
 
     public void removeRegistrationId(GCMSendDevice device, String registrationId) {

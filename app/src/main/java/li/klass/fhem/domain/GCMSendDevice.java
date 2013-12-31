@@ -29,6 +29,10 @@ import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
+import li.klass.fhem.util.ApplicationProperties;
+import li.klass.fhem.util.ArrayUtil;
+
+import static li.klass.fhem.constants.PreferenceKeys.GCM_REGISTRATION_ID;
 
 @OverviewViewSettings(showState = true)
 public class GCMSendDevice extends Device<GCMSendDevice> {
@@ -37,6 +41,7 @@ public class GCMSendDevice extends Device<GCMSendDevice> {
     private String apiKey;
     private String[] regIds;
 
+    @SuppressWarnings("unused")
     public void readAPIKEY(String value) {
         apiKey = value;
     }
@@ -51,6 +56,13 @@ public class GCMSendDevice extends Device<GCMSendDevice> {
 
     public String getApiKey() {
         return apiKey;
+    }
+
+    public boolean isRegistered() {
+        ApplicationProperties properties = ApplicationProperties.INSTANCE;
+        String registrationId = properties.getStringSharedPreference(GCM_REGISTRATION_ID, null);
+
+        return (registrationId != null && ArrayUtil.contains(regIds, registrationId));
     }
 
     @Override

@@ -24,9 +24,12 @@
 
 package li.klass.fhem.domain;
 
-import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 import org.junit.Test;
 
+import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+import li.klass.fhem.util.ApplicationProperties;
+
+import static li.klass.fhem.constants.BundleExtraKeys.GCM_REGISTRATION_ID;
 import static org.hamcrest.Matchers.hasItemInArray;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -39,6 +42,22 @@ public class GCMSendDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getApiKey(), is("AIzaSyCs7OxUcPp5"));
         assertThat(device.getRegIds(), hasItemInArray("APA91bHTAy8Xp4uE4FyCJuMnAn"));
         assertThat(device.getRegIds(), hasItemInArray("BAPA91bHTGy8Xp5uE4FyCJuMnAn"));
+    }
+
+    @Test
+    public void testIsDeviceRegistered() {
+        GCMSendDevice device = new GCMSendDevice();
+
+        assertThat(device.isRegistered(), is(false));
+
+        device.readREGIDS("abc|def");
+        assertThat(device.isRegistered(), is(false));
+
+        ApplicationProperties.INSTANCE.setSharedPreference(GCM_REGISTRATION_ID, "abc");
+        assertThat(device.isRegistered(), is(true));
+
+        ApplicationProperties.INSTANCE.setSharedPreference(GCM_REGISTRATION_ID, "def");
+        assertThat(device.isRegistered(), is(true));
     }
 
     @Override

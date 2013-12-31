@@ -158,8 +158,9 @@
     <string name="alarm">Alarm</string>
     <string name="apiKey">API-Key</string>
     <string name="gcmAlreadyRegistered">Gerät ist bereits registriert!</string>
-    <string name="gcmRegistrationNotActive">GCM ist nicht aktiv!</string>
+    <string name="gcmRegistrationNotActive">GCM ist nicht aktiv! Stimmt die Projekt-ID?</string>
     <string name="gcmRegisterThis">Registriere dieses Gerät</string>
+    <string name="gcmSuccessfullyRegistered">Gerät wurde registriert.</string>
     <string name="notificationAllUpdates">Alle Aktualisierungen</string>
     <string name="notificationStateUpdates">Nur Status-Updates</string>
     <string name="notificationNoUpdates">Keine Benachrichtigungen</string>
@@ -257,7 +258,7 @@
     <string name="prefDeviceFunctionalityOrderSummary">Veränderung der Reihenfolge sowie Anzeige / Ausblendung von Gerätefunktionen</string>
     <string name="prefUpdateOnApplicationStart">Aktualisierung beim Applikationsstart</string>
     <string name="prefShowSetValueButtons">Zeige "Ändern" Knöpfe für Temperaturänderungen</string>
-    <string name="prefGCMProjectId">GCM Project ID</string>
+    <string name="prefGCMProjectId">GCM Project Number</string>
     <string name="prefGcmWidgetUpdate">Widget-Aktualisierug bei GCM-Nachricht</string>
     <string name="prefStartupView">Start-Ansicht</string>
     <string name="prefConnectionTimeout">Verbindungs-Wartezeit</string>

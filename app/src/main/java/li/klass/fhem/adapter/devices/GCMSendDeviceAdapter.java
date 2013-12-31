@@ -26,6 +26,7 @@ package li.klass.fhem.adapter.devices;
 
 import android.content.Context;
 import android.content.Intent;
+
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
 import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewButtonAction;
@@ -49,6 +50,19 @@ public class GCMSendDeviceAdapter extends GenericDeviceAdapter<GCMSendDevice> {
                 intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
                 context.startService(intent);
             }
+
+            @Override
+            public boolean isVisible(GCMSendDevice device) {
+                return ! device.isRegistered();
+            }
         });
+    }
+
+    @Override
+    protected String getGeneralDetailsNotificationText(Context context, GCMSendDevice device) {
+        if (device.isRegistered()) {
+            return context.getString(R.string.gcmAlreadyRegistered);
+        }
+        return null;
     }
 }

@@ -26,6 +26,8 @@ package li.klass.fhem.domain;
 
 import android.content.Context;
 
+import org.w3c.dom.NamedNodeMap;
+
 import java.util.List;
 
 import li.klass.fhem.AndFHEMApplication;
@@ -96,6 +98,15 @@ public class HMSDevice extends Device<HMSDevice> {
                 ? context.getString(R.string.on) : context.getString(R.string.off);
     }
 
+    @Override
+    public void onChildItemRead(String tagName, String key, String value, NamedNodeMap attributes) {
+        super.onChildItemRead(tagName, key, value, attributes);
+
+        if ("temperature".equalsIgnoreCase(key)) {
+            measured = attributes.getNamedItem("measured").getNodeValue();
+        }
+    }
+
     public String getTemperature() {
         return temperature;
     }
@@ -138,5 +149,10 @@ public class HMSDevice extends Device<HMSDevice> {
     @Override
     public DeviceFunctionality getDeviceFunctionality() {
         return DeviceFunctionality.TEMPERATURE;
+    }
+
+    @Override
+    protected boolean useTimeAndWeekAttributesForMeasureTime() {
+        return false;
     }
 }

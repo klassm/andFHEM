@@ -223,7 +223,7 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
      * @param attributes additional tag attributes
      */
     public void onChildItemRead(String tagName, String key, String value, NamedNodeMap attributes) {
-        if (key.endsWith("_TIME") && ! key.startsWith("WEEK")) {
+        if (key.endsWith("_TIME") && ! key.startsWith("WEEK") && useTimeAndWeekAttributesForMeasureTime()) {
             measured = value;
         }
     }
@@ -480,4 +480,8 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
      * @return NEVER null!
      */
     public abstract DeviceFunctionality getDeviceFunctionality();
+
+    protected boolean useTimeAndWeekAttributesForMeasureTime() {
+        return true;
+    }
 }

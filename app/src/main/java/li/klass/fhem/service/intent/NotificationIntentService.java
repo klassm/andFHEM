@@ -25,19 +25,18 @@
 package li.klass.fhem.service.intent;
 
 import android.app.Activity;
-import android.app.Notification;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.ResultReceiver;
 import android.os.SystemClock;
-import android.support.v4.app.NotificationCompat;
 import android.util.Log;
-import android.widget.RemoteViews;
+
+import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.Map;
+
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.activities.AndFHEMMainActivity;
@@ -47,14 +46,10 @@ import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.fragments.core.DeviceDetailFragment;
+import li.klass.fhem.util.NotificationUtil;
 import li.klass.fhem.util.ReflectionUtil;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.Map;
-
-import static li.klass.fhem.constants.BundleExtraKeys.*;
+import static li.klass.fhem.constants.BundleExtraKeys.NOTIFICATION_UPDATES;
 
 public class NotificationIntentService extends ConvenientIntentService {
 
@@ -80,7 +75,9 @@ public class NotificationIntentService extends ConvenientIntentService {
             @SuppressWarnings("unchecked")
             Map<String, String> updateMap = (Map<String, String>) intent.getSerializableExtra(BundleExtraKeys.UPDATE_MAP);
             Device<?> device = (Device<?>) intent.getSerializableExtra(BundleExtraKeys.DEVICE);
-            deviceNotification(deviceName, updateMap, device);
+            boolean vibrate = intent.getBooleanExtra(BundleExtraKeys.VIBRATE, false);
+
+            deviceNotification(deviceName, updateMap, device, vibrate);
         } else if (intent.getAction().equals(Actions.DEVICE_RENAME)) {
             String newName = intent.getStringExtra(BundleExtraKeys.DEVICE_NEW_NAME);
             rename(deviceName, newName);
@@ -107,7 +104,7 @@ public class NotificationIntentService extends ConvenientIntentService {
         getPreferences().edit().putInt(deviceName, updateType).commit();
     }
 
-    private void deviceNotification(String deviceName, Map<String, String> updateMap, Device<?> device) {
+    private void deviceNotification(String deviceName, Map<String, String> updateMap, Device<?> device, boolean vibrate) {
         int value = getPreferences().getInt(deviceName, 0);
         if (device.triggerStateNotificationOnAttributeChange()) {
             updateMap.clear();
@@ -115,11 +112,11 @@ public class NotificationIntentService extends ConvenientIntentService {
         }
 
         if (isValueAllUpdates(value)) {
-            generateNotification(device, updateMap);
+            generateNotification(device, updateMap, vibrate);
         } else if (isValueStateUpdates(value) && updateMap.containsKey("STATE")) {
             Map<String, String> values = new HashMap<String, String>();
             values.put("STATE", updateMap.get("STATE"));
-            generateNotification(device, values);
+            generateNotification(device, values, vibrate);
         }
     }
 
@@ -135,7 +132,7 @@ public class NotificationIntentService extends ConvenientIntentService {
         return AndFHEMApplication.getContext().getSharedPreferences(PREFERENCES_NAME, Activity.MODE_PRIVATE);
     }
 
-    private void generateNotification(Device device, Map<String, String> updateMap) {
+    private void generateNotification(Device device, Map<String, String> updateMap, boolean vibrate) {
         Map<String, String> notificationMap = rebuildUpdateMap(device, updateMap);
         String deviceName = device.getAliasOrName();
 
@@ -158,20 +155,8 @@ public class NotificationIntentService extends ConvenientIntentService {
             }
         }
 
-        Notification notification = new NotificationCompat.Builder(this)
-                .setContentTitle(deviceName)
-                .setContentText(text)
-                .setSmallIcon(R.drawable.ic_launcher)
-                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher))
-                .setWhen(System.currentTimeMillis())
-                .setAutoCancel(true)
-                .setContentIntent(pendingIntent)
-                .build();
-
-
-        NotificationManager notificationManager = (NotificationManager)
-                this.getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(deviceName.hashCode(), notification);
+        NotificationUtil.notify(this, deviceName.hashCode(), pendingIntent, deviceName, text,
+                deviceName, vibrate);
     }
 
     private Map<String, String> rebuildUpdateMap(Device device, Map<String, String> updateMap) {

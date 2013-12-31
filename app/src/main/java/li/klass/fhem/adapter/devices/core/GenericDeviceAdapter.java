@@ -33,6 +33,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -51,6 +52,7 @@ import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.genericview.DetailViewSettings;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.util.ArrayUtil;
+import li.klass.fhem.util.StringUtil;
 
 public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> {
     private static final String TAG = GenericDeviceAdapter.class.getName();
@@ -178,8 +180,13 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
         }
 
         addDetailGraphButtons(context, view, device, inflater);
+
         addDetailActionButtons(context, view, device, inflater);
-        fillOtherStuffDetailLayout(context, (LinearLayout) view.findViewById(R.id.otherStuff), device, inflater);
+
+        LinearLayout otherStuffView = (LinearLayout) view.findViewById(R.id.otherStuff);
+        fillOtherStuffDetailLayout(context, otherStuffView, device, inflater);
+
+        updateGeneralDetailsNotificationText(context, view, device);
     }
 
     @Override
@@ -310,5 +317,22 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
         putUpdateExtra(intent);
 
         context.startService(intent);
+    }
+
+    private void updateGeneralDetailsNotificationText(Context context, View view, D device) {
+        String text = getGeneralDetailsNotificationText(context, device);
+        TextView notificationView = (TextView) view.findViewById(R.id.general_details_notification);
+
+        if (StringUtil.isBlank(text)) {
+            notificationView.setVisibility(View.GONE);
+            return;
+        }
+
+        notificationView.setText(text);
+        notificationView.setVisibility(View.VISIBLE);
+    }
+
+    protected String getGeneralDetailsNotificationText(Context context, D device) {
+        return null;
     }
 }
