@@ -490,6 +490,7 @@
     <string name="functionalityFHEM">FHEM</string>
     <string name="functionalityLog">Log</string>
     <string name="functionalityFloorplan">Grundriss</string>
+    <string name="functionalityWebView">Web Link</string>
     <string name="functionalityRemoteControl">Fernbedienung</string>
     <string name="functionalityUnknown">Unbekannt</string>
 </resources>

@@ -495,6 +495,7 @@
     <string name="functionalityLog">Log</string>
     <string name="functionalityFloorplan">Floorplan</string>
     <string name="functionalityRemoteControl">Remote Control</string>
+    <string name="functionalityWebView">Web Link</string>
     <string name="functionalityUnknown">Unknown</string>
 
 </resources>

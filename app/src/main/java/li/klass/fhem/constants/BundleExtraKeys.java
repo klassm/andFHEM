@@ -92,6 +92,8 @@ public class BundleExtraKeys {
 
     public static final String NOTIFICATION_UPDATES = "NOTIFICATION_UPDATES";
 
+    public static final String LOAD_URL = "LOAD_URL";
+
     public static final String CONNECTION_LIST = "CONNECTION_LIST";
     public static final String CONNECTION = "CONNECTION";
     public static final String CONNECTION_ID = "CONNECTION_ID";

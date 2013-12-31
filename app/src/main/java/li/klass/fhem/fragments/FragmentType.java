@@ -50,7 +50,8 @@ public enum FragmentType {
     TIMER_OVERVIEW(TimerListFragment.class, R.string.timer, null),
     TIMER_DETAIL(TimerDetailFragment.class),
     CONNECTION_LIST(ConnectionListFragment.class),
-    CONNECTION_DETAIL(ConnectionDetailFragment.class, ConnectionListFragment.class)
+    CONNECTION_DETAIL(ConnectionDetailFragment.class, ConnectionListFragment.class),
+    WEB_VIEW(WebViewFragment.class)
     ;
 
     private Class<? extends BaseFragment> fragmentClass;

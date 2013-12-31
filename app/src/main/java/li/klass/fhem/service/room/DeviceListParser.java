@@ -117,7 +117,6 @@ public class DeviceListParser {
 
         xmlList = xmlList.replaceAll("<_internal__LIST>[\\s\\S]*</_internal__LIST>", "");
         xmlList = xmlList.replaceAll("<notify_LIST[\\s\\S]*</notify_LIST>", "");
-        xmlList = xmlList.replaceAll("<weblink_LIST[\\s\\S]*</weblink_LIST>", "");
         xmlList = xmlList.replaceAll("<CUL_IR_LIST>[\\s\\S]*</CUL_IR_LIST>", "");
         xmlList = xmlList.replaceAll("<autocreate_LIST>[\\s\\S]*</autocreate_LIST>", "");
         xmlList = xmlList.replaceAll("<Global_LIST[\\s\\S]*</Global_LIST>", "");

@@ -44,6 +44,7 @@ import static li.klass.fhem.R.string.functionalityTemperature;
 import static li.klass.fhem.R.string.functionalityUnknown;
 import static li.klass.fhem.R.string.functionalityUsage;
 import static li.klass.fhem.R.string.functionalityWeather;
+import static li.klass.fhem.R.string.functionalityWebView;
 import static li.klass.fhem.R.string.functionalityWindow;
 
 public enum DeviceFunctionality {
@@ -65,6 +66,7 @@ public enum DeviceFunctionality {
     LOG(functionalityLog),
     FLOORPLAN(functionalityFloorplan),
     REMOTE_CONTROL(functionalityRemoteControl),
+    WEB_LINK(functionalityWebView),
 
     UNKNOWN(functionalityUnknown);
 
