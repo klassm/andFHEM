@@ -71,9 +71,9 @@ public class DeviceNameListAdapter extends DeviceGridAdapter {
         return view;
     }
 
-    public void updateData(RoomDeviceList roomDeviceList, String selectedDeviceName) {
+    public void updateData(RoomDeviceList roomDeviceList, String selectedDeviceName , long lastUpdate) {
         this.selectedDeviceName = selectedDeviceName;
-        super.updateData(roomDeviceList);
+        super.updateData(roomDeviceList, lastUpdate);
     }
 
     public int getSelectedDevicePosition() {

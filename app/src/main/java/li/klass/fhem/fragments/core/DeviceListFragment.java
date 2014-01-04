@@ -63,6 +63,7 @@ import li.klass.fhem.widget.notification.NotificationSettingView;
 import static li.klass.fhem.constants.Actions.FAVORITE_ADD;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_LIST;
 import static li.klass.fhem.constants.BundleExtraKeys.DO_REFRESH;
+import static li.klass.fhem.constants.BundleExtraKeys.LAST_UPDATE;
 import static li.klass.fhem.constants.BundleExtraKeys.RESULT_RECEIVER;
 import static li.klass.fhem.constants.PreferenceKeys.DEVICE_LIST_RIGHT_PADDING;
 import static li.klass.fhem.widget.GridViewWithSections.GridViewWithSectionsOnClickObserver;
@@ -166,7 +167,9 @@ public abstract class DeviceListFragment extends BaseFragment {
                     hideUpdatingBar();
 
                     RoomDeviceList deviceList = (RoomDeviceList) resultData.getSerializable(DEVICE_LIST);
-                    getAdapter().updateData(deviceList);
+                    long lastUpdate = resultData.getLong(LAST_UPDATE);
+
+                    getAdapter().updateData(deviceList, lastUpdate);
 
                     if (deviceList != null && deviceList.isEmptyOrOnlyContainsDoNotShowDevices()) {
                         showEmptyView();

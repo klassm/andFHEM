@@ -68,8 +68,8 @@ public class DeviceNameSelectionFragment extends DeviceNameListFragment {
     }
 
     @Override
-    protected void deviceListReceived(RoomDeviceList roomDeviceList) {
-        super.deviceListReceived(roomDeviceList);
+    protected void deviceListReceived(RoomDeviceList roomDeviceList, long lastUpdate) {
+        super.deviceListReceived(roomDeviceList, lastUpdate);
         if (roomDeviceList.isEmptyOrOnlyContainsDoNotShowDevices()) {
             onNoDevicesAvailable();
         }

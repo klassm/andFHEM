@@ -52,7 +52,8 @@ public class OwtempDevice extends Device<OwtempDevice> {
 
     public void readWARNINGS(String value, NamedNodeMap attributes)  {
         this.warnings = value;
-        measured = attributes.getNamedItem("measured").getNodeValue();
+        String measured = attributes.getNamedItem("measured").getNodeValue();
+        setMeasured(measured);
     }
 
     public String getTemperature() {
@@ -66,5 +67,15 @@ public class OwtempDevice extends Device<OwtempDevice> {
     @Override
     public DeviceFunctionality getDeviceFunctionality() {
         return DeviceFunctionality.TEMPERATURE;
+    }
+
+    @Override
+    public boolean isSensorDevice() {
+        return true;
+    }
+
+    @Override
+    public long getTimeRequiredForStateError() {
+        return OUTDATED_DATA_MS_DEFAULT;
     }
 }

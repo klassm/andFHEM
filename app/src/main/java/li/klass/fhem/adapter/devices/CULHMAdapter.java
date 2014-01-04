@@ -26,13 +26,11 @@ package li.klass.fhem.adapter.devices;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.view.View;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.DimmableAdapter;
 import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
@@ -126,13 +124,7 @@ public class CULHMAdapter extends DimmableAdapter<CULHMDevice> {
     }
 
     @Override
-    public void fillDeviceOverviewView(View view, CULHMDevice device) {
-        super.fillDeviceOverviewView(view, device);
-
-        if (! device.isLastCommandAccepted()) {
-            Resources resources = AndFHEMApplication.getContext().getResources();
-            int color = resources.getColor(R.color.errorBackground);
-            view.setBackgroundColor(color);
-        }
+    protected boolean isOverviewError(CULHMDevice device, long lastUpdate) {
+        return super.isOverviewError(device, lastUpdate) || ! device.isLastCommandAccepted();
     }
 }

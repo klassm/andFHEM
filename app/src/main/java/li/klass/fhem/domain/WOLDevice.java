@@ -60,7 +60,8 @@ public class WOLDevice extends Device<WOLDevice> {
         Context context = AndFHEMApplication.getContext();
         int isRunningId = Boolean.valueOf(value) ? R.string.on : R.string.off;
         isRunning = context.getString(isRunningId);
-        measured = attributes.getNamedItem("measured").getNodeValue();
+        String measured = attributes.getNamedItem("measured").getNodeValue();
+        setMeasured(measured);
     }
 
     public void readSHUTDOWNCMD(String value) {

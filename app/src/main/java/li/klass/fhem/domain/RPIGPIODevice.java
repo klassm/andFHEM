@@ -55,7 +55,8 @@ public class RPIGPIODevice extends ToggleableDevice<RPIGPIODevice> {
         super.onChildItemRead(tagName, key, value, attributes);
 
         if (tagName.equalsIgnoreCase("STATE") && key.equalsIgnoreCase("state")) {
-            measured = attributes.getNamedItem("measured").getNodeValue();
+            String measured = attributes.getNamedItem("measured").getNodeValue();
+            setMeasured(measured);
         }
     }
 

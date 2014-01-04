@@ -342,10 +342,6 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
         return DeviceFunctionality.UNKNOWN;
     }
 
-    public String getMeasured() {
-        return measured;
-    }
-
     @ShowField(description = ResourceIdMapper.desiredTemperature, showInOverview = true)
     public String getDesiredTempDesc() {
         if (subType != HEATING) return null;
@@ -531,5 +527,15 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
         }
 
         return super.supportsWidget(appWidgetClass);
+    }
+
+    @Override
+    public boolean isSensorDevice() {
+        return true;
+    }
+
+    @Override
+    public long getTimeRequiredForStateError() {
+        return OUTDATED_DATA_MS_DEFAULT;
     }
 }

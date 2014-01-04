@@ -75,9 +75,9 @@ public class DimmableAdapter<D extends DimmableDevice<D>> extends ToggleableAdap
     }
 
     @Override
-    public void fillDeviceOverviewView(View view, final D device) {
+    public void fillDeviceOverviewView(View view, final D device, long lastUpdate) {
         if (!device.supportsDim() || device.isSpecialButtonDevice()) {
-            super.fillDeviceOverviewView(view, device);
+            super.fillDeviceOverviewView(view, device, lastUpdate);
             return;
         }
 

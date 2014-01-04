@@ -24,6 +24,7 @@
 
 package li.klass.fhem.util;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -31,9 +32,23 @@ public class DateFormatUtil {
 
     private static SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm");
 
+    public static String toReadable(long ms) {
+        Date date = new Date(ms);
+        return toReadable(date);
+    }
+
     public static String toReadable(Date date) {
         if (date == null) return "--";
 
         return dateFormat.format(date);
+    }
+
+    public static long toMilliSeconds(String in) {
+        try {
+            Date date = dateFormat.parse(in);
+            return date.getTime();
+        } catch (ParseException e) {
+            return -1;
+        }
     }
 }

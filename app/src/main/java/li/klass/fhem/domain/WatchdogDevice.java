@@ -35,12 +35,13 @@ import li.klass.fhem.domain.genericview.OverviewViewSettings;
 public class WatchdogDevice extends Device<WatchdogDevice> {
 
     public void readTRIGGERED(String value, NamedNodeMap attributes) {
-        this.measured = attributes.getNamedItem("measured").getNodeValue();
+        String measured = attributes.getNamedItem("measured").getNodeValue();
+        setMeasured(measured);
     }
 
     @Override
     public boolean isSupported() {
-        return super.isSupported() && measured != null;
+        return super.isSupported() && getMeasured() != null;
     }
 
     @Override

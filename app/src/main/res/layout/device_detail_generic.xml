@@ -42,6 +42,17 @@
         android:visibility="gone"
         android:text=""/>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="6dp"
+        android:padding="5dp"
+        android:background="@color/red"
+        android:id="@+id/measure_error_notification"
+        android:textColor="@android:color/white"
+        android:visibility="gone"
+        android:text="@string/errorOutdatedData"/>
+
     <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
                  android:id="@+id/generic"
                  style="@style/deviceDetailTable">

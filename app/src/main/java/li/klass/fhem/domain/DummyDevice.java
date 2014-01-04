@@ -49,7 +49,8 @@ public class DummyDevice extends DimmableDevice<DummyDevice> {
     private Integer dimUpperBound;
 
     public void readSTATE(String tagName, String value, NamedNodeMap attributes) {
-        this.measured = attributes.getNamedItem("measured").getNodeValue();
+        String measured = attributes.getNamedItem("measured").getNodeValue();
+        setMeasured(measured);
     }
 
     @Override

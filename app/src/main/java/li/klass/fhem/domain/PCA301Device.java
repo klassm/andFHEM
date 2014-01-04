@@ -39,4 +39,14 @@ public class PCA301Device extends ToggleableDevice<PCA301Device> {
     public DeviceFunctionality getDeviceFunctionality() {
         return DeviceFunctionality.SWITCH;
     }
+
+    @Override
+    public boolean isSensorDevice() {
+        return true;
+    }
+
+    @Override
+    public long getTimeRequiredForStateError() {
+        return OUTDATED_DATA_MS_DEFAULT;
+    }
 }

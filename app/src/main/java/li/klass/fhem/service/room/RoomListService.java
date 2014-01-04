@@ -360,7 +360,7 @@ public class RoomListService extends AbstractService {
         }
     }
 
-    private long getLastUpdate() {
+    public long getLastUpdate() {
         return getSharedPreferences(PREFERENCES_NAME).getLong(LAST_UPDATE_PROPERTY, 0L);
     }
 

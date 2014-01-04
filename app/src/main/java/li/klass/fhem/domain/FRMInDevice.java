@@ -48,4 +48,14 @@ public class FRMInDevice extends Device<FRMInDevice> {
     public DeviceFunctionality getDeviceFunctionality() {
         return DeviceFunctionality.SMOKE_DETECTOR;
     }
+
+    @Override
+    public boolean isSensorDevice() {
+        return true;
+    }
+
+    @Override
+    public long getTimeRequiredForStateError() {
+        return OUTDATED_DATA_MS_DEFAULT;
+    }
 }

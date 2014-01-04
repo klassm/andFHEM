@@ -168,4 +168,14 @@ public class KS300Device extends Device<KS300Device> implements Serializable {
                 new ChartSeriesDescription(R.string.rain, "10::", "rain::int1", RAIN)
         ), rain);
     }
+
+    @Override
+    public boolean isSensorDevice() {
+        return true;
+    }
+
+    @Override
+    public long getTimeRequiredForStateError() {
+        return OUTDATED_DATA_MS_DEFAULT;
+    }
 }

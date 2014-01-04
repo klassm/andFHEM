@@ -43,11 +43,12 @@ import li.klass.fhem.widget.NestedListViewAdapter;
 
 public class DeviceListAdapter extends NestedListViewAdapter<DeviceFunctionality, Device<?>> {
     private RoomDeviceList roomDeviceList;
+    private long lastUpdate;
 
     public DeviceListAdapter(Context context, RoomDeviceList roomDeviceList) {
         super(context);
         if (roomDeviceList != null) {
-            updateData(roomDeviceList);
+            updateData(roomDeviceList, -1);
         }
     }
 
@@ -101,7 +102,7 @@ public class DeviceListAdapter extends NestedListViewAdapter<DeviceFunctionality
             throw new IllegalArgumentException("adapter was found for device type, but it will not support the device: " + child);
         }
 
-        view = deviceAdapter.createOverviewView(layoutInflater, child);
+        view = deviceAdapter.createOverviewView(layoutInflater, child, lastUpdate);
         view.setTag(child);
 
         return view;
@@ -118,8 +119,10 @@ public class DeviceListAdapter extends NestedListViewAdapter<DeviceFunctionality
         return parents;
     }
 
-    public void updateData(RoomDeviceList roomDeviceList) {
+    public void updateData(RoomDeviceList roomDeviceList, long lastUpdate) {
         if (roomDeviceList == null) return;
+
+        this.lastUpdate = lastUpdate;
         this.roomDeviceList = roomDeviceList;
         super.updateData();
     }

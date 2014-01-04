@@ -42,7 +42,7 @@ public class RFXX10RECDevice extends Device<RFXX10RECDevice> {
     private String lastState;
 
     public void readTIME(String value)  {
-        measured = value;
+        setMeasured(value);
     }
 
     public void readSTATECHANGE(String value, NamedNodeMap attributes)  {

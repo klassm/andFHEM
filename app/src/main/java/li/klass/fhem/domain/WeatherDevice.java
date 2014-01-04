@@ -140,7 +140,8 @@ public class WeatherDevice extends Device<WeatherDevice> {
 
     public void readCONDITION(String value, NamedNodeMap attributes) {
         this.condition = value;
-        this.measured = attributes.getNamedItem("measured").getNodeValue();
+        String measured = attributes.getNamedItem("measured").getNodeValue();
+        setMeasured(measured);
     }
 
     public void readHUMIDITY(String value) {
@@ -253,5 +254,15 @@ public class WeatherDevice extends Device<WeatherDevice> {
 
         int lastSlashIndex = icon.lastIndexOf("/");
         return icon.substring(lastSlashIndex + 1);
+    }
+
+    @Override
+    public boolean isSensorDevice() {
+        return true;
+    }
+
+    @Override
+    public long getTimeRequiredForStateError() {
+        return OUTDATED_DATA_MS_DEFAULT;
     }
 }

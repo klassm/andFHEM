@@ -31,6 +31,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.ListDataAdapter;
 import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
@@ -50,7 +51,7 @@ public class WeatherAdapter extends GenericDeviceAdapter<WeatherDevice> {
     }
 
     @Override
-    protected void fillDeviceOverviewView(final View view, WeatherDevice device) {
+    protected void fillDeviceOverviewView(final View view, WeatherDevice device, long lastUpdate) {
         setTextView(view, R.id.deviceName, device.getAliasOrName());
         setTextViewOrHideTableRow(view, R.id.tableRowTemperature, R.id.temperature, device.getTemperature());
         setTextViewOrHideTableRow(view, R.id.tableRowWind, R.id.wind, device.getWind());

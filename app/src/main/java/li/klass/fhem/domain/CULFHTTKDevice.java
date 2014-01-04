@@ -75,4 +75,9 @@ public class CULFHTTKDevice extends Device<CULFHTTKDevice> {
     public String getWindowState() {
         return windowState;
     }
+
+    @Override
+    public boolean isSensorDevice() {
+        return true;
+    }
 }

@@ -103,7 +103,8 @@ public class HMSDevice extends Device<HMSDevice> {
         super.onChildItemRead(tagName, key, value, attributes);
 
         if ("temperature".equalsIgnoreCase(key)) {
-            measured = attributes.getNamedItem("measured").getNodeValue();
+            String measured = attributes.getNamedItem("measured").getNodeValue();
+            setMeasured(measured);
         }
     }
 
@@ -154,5 +155,15 @@ public class HMSDevice extends Device<HMSDevice> {
     @Override
     protected boolean useTimeAndWeekAttributesForMeasureTime() {
         return false;
+    }
+
+    @Override
+    public boolean isSensorDevice() {
+        return true;
+    }
+
+    @Override
+    public long getTimeRequiredForStateError() {
+        return 5 * 60 * 60 * 1000;
     }
 }

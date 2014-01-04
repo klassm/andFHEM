@@ -142,13 +142,14 @@ public abstract class DeviceNameListFragment extends BaseFragment {
                 }
 
                 RoomDeviceList roomDeviceList = (RoomDeviceList) resultData.getSerializable(BundleExtraKeys.DEVICE_LIST);
-                deviceListReceived(roomDeviceList);
+                long lastUpdate = resultData.getLong(BundleExtraKeys.LAST_UPDATE);
+                deviceListReceived(roomDeviceList, lastUpdate);
             }
         });
         getActivity().startService(loadIntent);
     }
 
-    protected void deviceListReceived(RoomDeviceList roomDeviceList) {
+    protected void deviceListReceived(RoomDeviceList roomDeviceList, long lastUpdate) {
         DeviceNameListAdapter adapter = getAdapter();
         if (adapter == null || getView() == null) return;
         filterDevices(roomDeviceList);
@@ -157,7 +158,7 @@ public abstract class DeviceNameListFragment extends BaseFragment {
 
         Set<Device> allDevices = roomDeviceList.getAllDevices();
         if (allDevices.size() > 0) {
-            adapter.updateData(roomDeviceList, selectedDevice);
+            adapter.updateData(roomDeviceList, selectedDevice, lastUpdate);
 
             int selectedDevicePosition = adapter.getSelectedDevicePosition();
             getGridView().setSelection(selectedDevicePosition);

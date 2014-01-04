@@ -68,7 +68,7 @@ public class USBWXDevice extends Device<USBWXDevice> {
     }
 
     public void readTIME(String value) {
-        measured = value;
+        setMeasured(value);
     }
 
     public String getHumidity() {
@@ -101,5 +101,15 @@ public class USBWXDevice extends Device<USBWXDevice> {
     @Override
     public DeviceFunctionality getDeviceFunctionality() {
         return DeviceFunctionality.WEATHER;
+    }
+
+    @Override
+    public boolean isSensorDevice() {
+        return true;
+    }
+
+    @Override
+    public long getTimeRequiredForStateError() {
+        return OUTDATED_DATA_MS_DEFAULT;
     }
 }

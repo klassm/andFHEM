@@ -163,4 +163,14 @@ public class HCSDevice extends Device<HCSDevice> {
     public String getCommaSeparatedDemandDevices() {
         return commaSeparatedDemandDevices;
     }
+
+    @Override
+    public boolean isSensorDevice() {
+        return true;
+    }
+
+    @Override
+    public long getTimeRequiredForStateError() {
+        return OUTDATED_DATA_MS_DEFAULT;
+    }
 }

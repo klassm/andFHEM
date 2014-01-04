@@ -61,7 +61,8 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
     protected String alias;
 
     @ShowField(description = ResourceIdMapper.measured, showAfter = "definition")
-    protected String measured;
+    private String measured;
+    private long lastMeasureTime = -1;
 
     @ShowField(description = ResourceIdMapper.definition, showAfter = "roomConcatenated")
     protected String definition;
@@ -75,6 +76,9 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
     private transient AssociatedDeviceCallback associatedDeviceCallback;
     private String widgetName;
     private boolean alwaysHidden = false;
+
+    public static final long OUTDATED_DATA_MS_DEFAULT = 2 * 60 * 60 * 1000;
+    public static final long NEVER_OUTDATE_DATA = 0;
 
     public void readROOM(String value) {
         setRoomConcatenated(value);
@@ -100,7 +104,7 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
 
     public void gcmState(String value) {
         state = value;
-        measured = DateFormatUtil.toReadable(new Date());
+        setMeasured(DateFormatUtil.toReadable(new Date()));
     }
 
     public void readDEF(String value) {
@@ -116,7 +120,7 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
     }
 
     public void readMEASURED(String value) {
-        measured = value;
+        setMeasured(value);
     }
 
     public void readALWAYS_HIDDEN(String value) {
@@ -214,6 +218,10 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
         return measured;
     }
 
+    public long getLastMeasureTime() {
+        return lastMeasureTime;
+    }
+
     /**
      * Called for each device node in the <i>xmllist</i>.
      *
@@ -224,7 +232,7 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
      */
     public void onChildItemRead(String tagName, String key, String value, NamedNodeMap attributes) {
         if (key.endsWith("_TIME") && ! key.startsWith("WEEK") && useTimeAndWeekAttributesForMeasureTime()) {
-            measured = value;
+            setMeasured(value);
         }
     }
 
@@ -426,6 +434,11 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
         return true;
     }
 
+    public void setMeasured(String measured) {
+        this.measured = measured;
+        this.lastMeasureTime = DateFormatUtil.toMilliSeconds(measured);
+    }
+
     @Override
     public String toString() {
         return "Device{" +
@@ -483,5 +496,20 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
 
     protected boolean useTimeAndWeekAttributesForMeasureTime() {
         return true;
+    }
+
+    public long getTimeRequiredForStateError() {
+        return NEVER_OUTDATE_DATA;
+    }
+
+    public boolean isOutdatedData(long lastUpdateTime) {
+        long timeRequiredForStateError = getTimeRequiredForStateError();
+        if (timeRequiredForStateError == NEVER_OUTDATE_DATA) return false;
+
+        return lastMeasureTime != -1 && lastUpdateTime - lastMeasureTime > timeRequiredForStateError;
+    }
+
+    public boolean isSensorDevice() {
+        return false;
     }
 }

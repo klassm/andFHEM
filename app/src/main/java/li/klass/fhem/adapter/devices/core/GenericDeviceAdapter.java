@@ -26,6 +26,7 @@ package li.klass.fhem.adapter.devices.core;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -51,6 +52,8 @@ import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.genericview.DetailViewSettings;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
+import li.klass.fhem.fhem.DataConnectionSwitch;
+import li.klass.fhem.fhem.DummyDataConnection;
 import li.klass.fhem.util.ArrayUtil;
 import li.klass.fhem.util.StringUtil;
 
@@ -91,7 +94,7 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
     }
 
     @Override
-    protected void fillDeviceOverviewView(View view, D device) {
+    protected void fillDeviceOverviewView(View view, D device, long lastUpdate) {
         TableLayout layout = (TableLayout) view.findViewById(R.id.device_overview_generic);
         setTextView(view, R.id.deviceName, device.getAliasOrName());
 
@@ -117,9 +120,26 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
                     createTableRow(device, inflater, layout, item, R.layout.device_overview_generic_table_row);
                 }
             }
+
+            if (isOverviewError(device, lastUpdate)) {
+                Resources resources = AndFHEMApplication.getContext().getResources();
+                int color = resources.getColor(R.color.errorBackground);
+                view.setBackgroundColor(color);
+            }
         } catch (Exception e) {
             Log.e(TAG, "exception occurred while setting device overview values", e);
         }
+    }
+
+    protected boolean isOverviewError(D device, long lastUpdate) {
+        // It does not make sense to show measure errors for data stemming out of a prestored
+        // XML file.
+        if (DataConnectionSwitch.INSTANCE.getCurrentProvider() instanceof DummyDataConnection) {
+            return false;
+        }
+
+        return lastUpdate != -1 && device.isSensorDevice() && device.isOutdatedData(lastUpdate);
+
     }
 
     private List<AnnotatedDeviceClassItem> getSortedAnnotatedClassItems(D device) {
@@ -140,10 +160,17 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
     }
 
     @Override
-    protected final View getDeviceDetailView(Context context, D device) {
+    protected final View getDeviceDetailView(Context context, D device, long lastUpdate) {
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         View view = layoutInflater.inflate(getDetailViewLayout(), null);
         fillDeviceDetailView(context, view, device);
+
+        if (device.isSensorDevice() && device.isOutdatedData(lastUpdate)) {
+            View measureErrorView = view.findViewById(R.id.measure_error_notification);
+            if (measureErrorView != null) {
+                measureErrorView.setVisibility(View.VISIBLE);
+            }
+        }
 
         return view;
     }

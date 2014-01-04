@@ -51,4 +51,14 @@ public class FHT8VDevice extends Device<FHT8VDevice> {
     public DeviceFunctionality getDeviceFunctionality() {
         return DeviceFunctionality.HEATING;
     }
+
+    @Override
+    public boolean isSensorDevice() {
+        return true;
+    }
+
+    @Override
+    public long getTimeRequiredForStateError() {
+        return OUTDATED_DATA_MS_DEFAULT;
+    }
 }

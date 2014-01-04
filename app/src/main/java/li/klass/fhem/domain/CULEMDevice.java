@@ -124,4 +124,14 @@ public class CULEMDevice extends Device<CULEMDevice> {
     public DeviceFunctionality getDeviceFunctionality() {
         return DeviceFunctionality.USAGE;
     }
+
+    @Override
+    public boolean isSensorDevice() {
+        return true;
+    }
+
+    @Override
+    public long getTimeRequiredForStateError() {
+        return OUTDATED_DATA_MS_DEFAULT;
+    }
 }

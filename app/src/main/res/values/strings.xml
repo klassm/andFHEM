@@ -102,6 +102,7 @@
     <string name="error_send_content">AndFHEM can send the last error as mail to the developer. Continue?</string>
     <string name="error_send_no_error">Cannot send an error, as none is registered!</string>
     <string name="errorDeviceListLoad">Could not load %1$s device(s) (types: %2$s)!</string>
+    <string name="errorOutdatedData">Sensor data seems to be outdated. Make sure the device sends data.</string>
     <string name="hex2quat">Hex -> Quat</string>
     <string name="quat2hex">Quat -> Hex</string>
     <string name="result">Result</string>

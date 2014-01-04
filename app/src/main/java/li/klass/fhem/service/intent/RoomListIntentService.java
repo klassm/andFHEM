@@ -25,12 +25,15 @@
 package li.klass.fhem.service.intent;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.ResultReceiver;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Map;
 
 import li.klass.fhem.constants.Actions;
+import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.RoomDeviceList;
@@ -61,18 +64,18 @@ public class RoomListIntentService extends ConvenientIntentService {
         RoomListService roomListService = RoomListService.INSTANCE;
         if (intent.getAction().equals(GET_ALL_ROOMS_DEVICE_LIST)) {
             RoomDeviceList allRoomsDeviceList = roomListService.getAllRoomsDeviceList(updatePeriod);
-            sendSingleExtraResult(resultReceiver, ResultCodes.SUCCESS, DEVICE_LIST, allRoomsDeviceList);
+            sendResultWithLastUpdate(resultReceiver, ResultCodes.SUCCESS, DEVICE_LIST, allRoomsDeviceList);
         } else if (intent.getAction().equals(GET_ROOM_NAME_LIST)) {
             ArrayList<String> roomNameList = roomListService.getRoomNameList(updatePeriod);
-            sendSingleExtraResult(resultReceiver, ResultCodes.SUCCESS, ROOM_LIST, roomNameList);
+            sendResultWithLastUpdate(resultReceiver, ResultCodes.SUCCESS, ROOM_LIST, roomNameList);
         } else if (intent.getAction().equals(GET_ROOM_DEVICE_LIST)) {
             String roomName = intent.getStringExtra(ROOM_NAME);
             RoomDeviceList roomDeviceList = roomListService.getDeviceListForRoom(roomName, updatePeriod);
-            sendSingleExtraResult(resultReceiver, ResultCodes.SUCCESS, DEVICE_LIST, roomDeviceList);
+            sendResultWithLastUpdate(resultReceiver, ResultCodes.SUCCESS, DEVICE_LIST, roomDeviceList);
         } else if (intent.getAction().equals(GET_DEVICE_FOR_NAME)) {
             String deviceName = intent.getStringExtra(DEVICE_NAME);
             Device device = roomListService.getDeviceForName(deviceName, updatePeriod);
-            sendSingleExtraResult(resultReceiver, ResultCodes.SUCCESS, DEVICE, device);
+            sendResultWithLastUpdate(resultReceiver, ResultCodes.SUCCESS, DEVICE, device);
         } else if (intent.getAction().equals(UPDATE_DEVICE_WITH_UPDATE_MAP)) {
             String deviceName = intent.getStringExtra(DEVICE_NAME);
             @SuppressWarnings("unchecked")
@@ -86,4 +89,15 @@ public class RoomListIntentService extends ConvenientIntentService {
 
         return STATE.DONE;
     }
+
+    private void sendResultWithLastUpdate(ResultReceiver receiver, int resultCode,
+                                          String bundleExtrasKey, Serializable value) {
+        if (receiver != null) {
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(bundleExtrasKey, value);
+            bundle.putLong(BundleExtraKeys.LAST_UPDATE, RoomListService.INSTANCE.getLastUpdate());
+            receiver.send(resultCode, bundle);
+        }
+    }
+
 }

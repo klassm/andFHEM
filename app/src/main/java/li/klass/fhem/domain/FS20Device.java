@@ -82,7 +82,8 @@ public class FS20Device extends DimmableDiscreteStatesDevice<FS20Device> impleme
     public void readSTATE(String tagName, NamedNodeMap attributes, String value) {
         super.readSTATE(tagName, attributes, value);
         if (tagName.equals("STATE")) {
-            measured = attributes.getNamedItem("measured").getNodeValue();
+            String measured = attributes.getNamedItem("measured").getNodeValue();
+            setMeasured(measured);
         }
     }
 

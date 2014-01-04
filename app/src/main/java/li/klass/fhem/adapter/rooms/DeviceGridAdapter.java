@@ -54,12 +54,13 @@ public class DeviceGridAdapter extends GridViewWithSectionsAdapter<DeviceFunctio
     public static final int DEFAULT_COLUMN_WIDTH = 355;
     private int lastParentHeight;
     private List<DeviceFunctionality> parents;
+    private long lastUpdate;
 
     public DeviceGridAdapter(Context context, RoomDeviceList roomDeviceList) {
         super(context);
         restoreParents();
         if (roomDeviceList != null) {
-            updateData(roomDeviceList);
+            updateData(roomDeviceList, -1);
         }
     }
 
@@ -144,7 +145,7 @@ public class DeviceGridAdapter extends GridViewWithSectionsAdapter<DeviceFunctio
             throw new IllegalArgumentException(text);
         }
 
-        view = deviceAdapter.createOverviewView(layoutInflater, child);
+        view = deviceAdapter.createOverviewView(layoutInflater, child, lastUpdate);
         view.setTag(child);
         view.setLayoutParams(new AbsListView.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
@@ -174,8 +175,10 @@ public class DeviceGridAdapter extends GridViewWithSectionsAdapter<DeviceFunctio
         return width;
     }
 
-    public void updateData(RoomDeviceList roomDeviceList) {
+    public void updateData(RoomDeviceList roomDeviceList, long lastUpdate) {
         if (roomDeviceList == null) return;
+
+        this.lastUpdate = lastUpdate;
 
         ApplicationProperties applicationProperties = ApplicationProperties.INSTANCE;
         if (!applicationProperties.getBooleanSharedPreference(SHOW_HIDDEN_DEVICES, false)) {

@@ -35,7 +35,8 @@ import li.klass.fhem.domain.genericview.OverviewViewSettings;
 public class SISPMSDevice extends ToggleableDevice<SISPMSDevice> {
 
     public void readSTATE(NamedNodeMap attributes) {
-        this.measured = attributes.getNamedItem("measured").getNodeValue();
+        String measured = attributes.getNamedItem("measured").getNodeValue();
+        setMeasured(measured);
     }
 
     public boolean isOnByState() {

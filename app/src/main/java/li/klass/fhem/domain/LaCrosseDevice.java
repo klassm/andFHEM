@@ -89,4 +89,14 @@ public class LaCrosseDevice extends Device<LaCrosseDevice> {
     public String getHumidity() {
         return humidity;
     }
+
+    @Override
+    public boolean isSensorDevice() {
+        return true;
+    }
+
+    @Override
+    public long getTimeRequiredForStateError() {
+        return OUTDATED_DATA_MS_DEFAULT;
+    }
 }

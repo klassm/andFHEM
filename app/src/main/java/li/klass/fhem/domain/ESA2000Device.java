@@ -116,4 +116,15 @@ public class ESA2000Device extends Device<ESA2000Device> {
     public DeviceFunctionality getDeviceFunctionality() {
         return DeviceFunctionality.USAGE;
     }
+
+
+    @Override
+    public boolean isSensorDevice() {
+        return true;
+    }
+
+    @Override
+    public long getTimeRequiredForStateError() {
+        return OUTDATED_DATA_MS_DEFAULT;
+    }
 }

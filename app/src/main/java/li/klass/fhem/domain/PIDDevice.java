@@ -100,4 +100,14 @@ public class PIDDevice extends Device<PIDDevice> implements DesiredTempDevice {
     public DeviceFunctionality getDeviceFunctionality() {
         return DeviceFunctionality.HEATING;
     }
+
+    @Override
+    public boolean isSensorDevice() {
+        return true;
+    }
+
+    @Override
+    public long getTimeRequiredForStateError() {
+        return OUTDATED_DATA_MS_DEFAULT;
+    }
 }

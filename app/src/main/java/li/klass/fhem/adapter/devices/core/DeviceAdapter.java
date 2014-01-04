@@ -61,10 +61,10 @@ public abstract class DeviceAdapter<D extends Device> {
      * @return overview view
      */
     @SuppressWarnings("unchecked")
-    public View createOverviewView(LayoutInflater layoutInflater, Device rawDevice) {
+    public View createOverviewView(LayoutInflater layoutInflater, Device rawDevice, long lastUpdate) {
         D device = (D) rawDevice;
         View view = layoutInflater.inflate(getOverviewLayout(device), null);
-        fillDeviceOverviewView(view, device);
+        fillDeviceOverviewView(view, device, lastUpdate);
         return view;
     }
 
@@ -81,20 +81,22 @@ public abstract class DeviceAdapter<D extends Device> {
      *
      * @param view   view to fill
      * @param device content provider
+     * @param lastUpdate time when the data was last loaded from the FHEM server.
      */
-    protected abstract void fillDeviceOverviewView(View view, D device);
+    protected abstract void fillDeviceOverviewView(View view, D device, long lastUpdate);
 
     /**
      * Creates a filled detail view for a given device.
      *
      * @param context context used for inflating the layout.
      * @param device  device used for filling.
+     * @param lastUpdate time when the data was last loaded from the FHEM server.
      * @return filled view.
      */
     @SuppressWarnings("unchecked")
-    public View createDetailView(Context context, Device device) {
+    public View createDetailView(Context context, Device device, long lastUpdate) {
         if (supportsDetailView(device)) {
-            return getDeviceDetailView(context, (D) device);
+            return getDeviceDetailView(context, (D) device, lastUpdate);
         }
         return null;
     }
@@ -120,7 +122,7 @@ public abstract class DeviceAdapter<D extends Device> {
 
     public abstract int getDetailViewLayout();
 
-    protected abstract View getDeviceDetailView(Context context, D device);
+    protected abstract View getDeviceDetailView(Context context, D device, long lastUpdate);
 
     protected abstract Intent onFillDeviceDetailIntent(Context context, Device device, Intent intent);
 

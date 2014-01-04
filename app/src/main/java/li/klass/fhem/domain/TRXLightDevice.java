@@ -61,7 +61,8 @@ public class TRXLightDevice extends DimmableDiscreteStatesDevice<TRXLightDevice>
         super.readSTATE(tagName, attributes, value);
 
         if (tagName.equals("STATE")) {
-            this.measured = attributes.getNamedItem("measured").getNodeValue();
+            String measured = attributes.getNamedItem("measured").getNodeValue();
+            setMeasured(measured);
         }
     }
 

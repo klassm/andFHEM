@@ -298,4 +298,14 @@ public class FHTDevice extends Device<FHTDevice> implements DesiredTempDevice,
                     actuator);
         }
     }
+
+    @Override
+    public boolean isSensorDevice() {
+        return true;
+    }
+
+    @Override
+    public long getTimeRequiredForStateError() {
+        return OUTDATED_DATA_MS_DEFAULT;
+    }
 }

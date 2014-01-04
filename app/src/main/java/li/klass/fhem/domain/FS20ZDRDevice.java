@@ -40,7 +40,8 @@ public class FS20ZDRDevice extends ToggleableDevice<FS20ZDRDevice> {
     @Override
     public void onChildItemRead(String tagName, String key, String value, NamedNodeMap attributes) {
         if (tagName.equalsIgnoreCase("STATE") && key.equalsIgnoreCase("STATE")) {
-            measured = attributes.getNamedItem("measured").getNodeValue();
+            String measured = attributes.getNamedItem("measured").getNodeValue();
+            setMeasured(measured);
         }
     }
 
