@@ -26,10 +26,8 @@ package li.klass.fhem.domain;
 
 import org.junit.Test;
 
-import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 import li.klass.fhem.domain.core.ToggleableDevice;
-import li.klass.fhem.util.DateFormatUtil;
 
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -127,21 +125,6 @@ public class FS20DeviceTest extends DeviceXMLParsingBase {
         FS20Device device  = getDeviceFor("device3");
 
         assertThat(device, is(nullValue()));
-    }
-
-    @Test
-    public void testIsOutdated() {
-        FS20Device device = new FS20Device();
-
-        long now = System.currentTimeMillis();
-
-        device.readMEASURED(DateFormatUtil.toReadable(now));
-
-        assertThat(device.isOutdatedData(device.getLastMeasureTime() + Device.OUTDATED_DATA_MS + 600), is(true));
-        assertThat(device.isOutdatedData(device.getLastMeasureTime() + Device.OUTDATED_DATA_MS - 600), is(false));
-
-        device.readMEASURED("abc");
-        assertThat(device.isOutdatedData(1), is(false));
     }
 
     @Override
