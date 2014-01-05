@@ -87,7 +87,7 @@
             <ATTR key="room" value="room"/>
             <ATTR key="webCmd" value="Oben:Unten:Halbschatten:Vollschatten"/>
         </dummy>
-        <dummy name="rgbDevice" state="rgb FF0000" sets="rgb:colorpicker,RGB" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings setList event-on-change-reading event-on-update-reading event-min-interval stateFormat DMX_B DMX_G DMX_M DMX_R DMX_S devStateIcon devStateStyle fp_Groundfloor icon sortby webCmd">
+        <dummy name="rgbDevice" state="rgb FFAB01" sets="rgb:colorpicker,RGB" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings setList event-on-change-reading event-on-update-reading event-min-interval stateFormat DMX_B DMX_G DMX_M DMX_R DMX_S devStateIcon devStateStyle fp_Groundfloor icon sortby webCmd">
             <INT key="NAME" value="rgbDevice"/>
             <INT key="NR" value="348"/>
             <INT key="STATE" value="rgb FFAB01"/>
@@ -96,8 +96,8 @@
             <ATTR key="group" value="LEDs"/>
             <ATTR key="room" value="room"/>
             <ATTR key="setList" value="rgb:colorpicker,RGB"/>
-            <ATTR key="webCmd" value="rgb:rgb FF0000:rgb C8FF12:rgb 0000FF:toggle:on:off"/>
-            <STATE key="state" value="rgb FF0000" measured="2013-11-29 13:17:19"/>
+            <ATTR key="webCmd" value="rgb:rgb FFAB01:rgb C8FF12:rgb 0000FF:toggle:on:off"/>
+            <STATE key="state" value="rgb FFAB01" measured="2013-11-29 13:17:19"/>
         </dummy>
     </dummy_LIST>
 </FHZINFO>
