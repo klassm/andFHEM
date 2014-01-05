@@ -154,7 +154,7 @@
     <string name="newInterval">Neues Intervall</string>
     <string name="price">Preis</string>
     <string name="energy">Energie</string>
-    <string name="cumulativeKwH">Gesamtzählerstand</string>
+    <string name="cumulativeUsage">Gesamtzählerstand</string>
     <string name="saturation">Sättigung</string>
     <string name="hue">Farbton</string>
     <string name="color">Farbe</string>
@@ -310,6 +310,7 @@
     <string name="rainRateGraph">Regenstärke Graph</string>
     <string name="rainTotalGraph">Regenmenge Graph</string>
     <string name="usageGraph">Verbrauch Graph</string>
+    <string name="usageGraphCumulative">Verbrauch Graph (kumuliert)</string>
     <string name="windSpeedGraph">Windgeschwindigkeit Graph</string>
     <string name="stateGraph">Zustand-Graph</string>
     <string name="contentGraph">Inhalt Graph</string>
@@ -327,7 +328,8 @@
     <string name="yAxisWindSpeed">Windgeschwindigkeit (km/h)</string>
     <string name="yAxisCurrentUsageW">aktueller Verbrauch (W)</string>
     <string name="yAxisCurrentUsagekW">aktueller Verbrauch (kW)</string>
-    <string name="yAxisCumulativeUsage">kumulativer Verbrauch (kWh)</string>
+    <string name="yAxisCumulativeUsageKWh">kumulativer Verbrauch (kWh)</string>
+    <string name="yAxisCumulativeUsageWh">kumulativer Verbrauch (Wh)</string>
     <string name="yAxisToggleState">an (1) / aus(0)</string>
     <string name="yAxisLitreContent">Inhalt (l)</string>
     <string name="yAxisEnergy">Energie (W)</string>

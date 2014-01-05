@@ -58,7 +58,7 @@ public class CULEMDevice extends Device<CULEMDevice> {
     private String monthUsage;
     private double sumGraphDivisionFactor = 1d;
 
-    @ShowField(description = ResourceIdMapper.cumulativeKwh, showInOverview = true)
+    @ShowField(description = ResourceIdMapper.cumulativeUsage, showInOverview = true)
     private String cumulativeKwh;
 
     public void readCURRENT(String value) {

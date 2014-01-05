@@ -66,6 +66,7 @@ import static li.klass.fhem.domain.CULHMDevice.SubType.THERMOSTAT;
 import static li.klass.fhem.service.graph.description.ChartSeriesDescription.getRegressionValuesInstance;
 import static li.klass.fhem.service.graph.description.SeriesType.ACTUATOR;
 import static li.klass.fhem.service.graph.description.SeriesType.BRIGHTNESS;
+import static li.klass.fhem.service.graph.description.SeriesType.CUMULATIVE_USAGE_Wh;
 import static li.klass.fhem.service.graph.description.SeriesType.HUMIDITY;
 import static li.klass.fhem.service.graph.description.SeriesType.IS_RAINING;
 import static li.klass.fhem.service.graph.description.SeriesType.LITRE_CONTENT;
@@ -84,6 +85,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
 
     private HeatingMode heatingMode = HeatingMode.UNKNOWN;
     private String model;
+    private String level;
 
     public enum SubType {
         DIMMER(DeviceFunctionality.DIMMER),
@@ -160,6 +162,8 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
     private String currentUsage;
     @ShowField(description = ResourceIdMapper.currentVoltage)
     private String currentVoltage;
+    @ShowField(description = ResourceIdMapper.cumulativeUsage, showInOverview = true)
+    private String cumulativeUsage;
 
     @Override
     public void onChildItemRead(String tagName, String key, String value, NamedNodeMap attributes) {
@@ -296,12 +300,20 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
         rain = ValueDescriptionUtil.appendLm2(value);
     }
 
-    public void readCURRENT(String value) {
+    public void readPOWER(String value) {
         currentUsage = ValueDescriptionUtil.append(value, "W");
+    }
+
+    public void readENERGY(String value) {
+        cumulativeUsage = ValueDescriptionUtil.append(value, "W");
     }
 
     public void readVOLTAGE(String value) {
         currentVoltage = ValueDescriptionUtil.append(value, "A");
+    }
+
+    public void readLEVEL(String value) {
+        level = value;
     }
 
     @Override
@@ -334,6 +346,12 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
             fillContentPercentage = ValueDescriptionUtil.appendPercent((int) (fillContentPercentageRaw * 100));
 
             setState(fillContentPercentage);
+        }
+
+        if ("HM-Sen-Wa-Od".equals(model)) {
+            subType = FILL_STATE;
+            fillContentPercentageRaw = ValueExtractUtil.extractLeadingDouble(level) / 100;
+            fillContentPercentage = ValueDescriptionUtil.appendPercent((int) (fillContentPercentageRaw * 100));
         }
 
         super.afterXMLRead();
@@ -499,6 +517,10 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
         return rain;
     }
 
+    public String getCumulativeUsage() {
+        return cumulativeUsage;
+    }
+
     @Override
     public void setHeatingMode(HeatingMode heatingMode) {
         this.heatingMode = heatingMode;
@@ -617,6 +639,9 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
                         new ChartSeriesDescription(R.string.currentUsage, "4:current:0", "current",
                                 SeriesType.CURRENT_USAGE_WATT)), currentUsage);
 
+                addDeviceChartIfNotNull(new DeviceChart(R.string.usageGraphCumulative,
+                        new ChartSeriesDescription(R.string.cumulativeUsage, "4:energy", "energy",
+                                CUMULATIVE_USAGE_Wh)), cumulativeUsage);
                 break;
         }
     }

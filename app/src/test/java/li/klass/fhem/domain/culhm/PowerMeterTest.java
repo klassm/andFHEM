@@ -46,11 +46,12 @@ public class PowerMeterTest extends DeviceXMLParsingBase {
         assertThat(device.isOnByState(), is(true));
         assertThat(device.supportsToggle(), is(true));
 
-        assertThat(device.getCurrentUsage(), is("33 (W)"));
+        assertThat(device.getCurrentUsage(), is("3 (W)"));
         assertThat(device.getCurrentVoltage(), is("228.7 (A)"));
+        assertThat(device.getCumulativeUsage(), is("5 (W)"));
 
         assertThat(device.getLogDevice(), is(notNullValue()));
-        assertThat(device.getDeviceCharts().size(), is(1));
+        assertThat(device.getDeviceCharts().size(), is(2));
     }
 
     @Override

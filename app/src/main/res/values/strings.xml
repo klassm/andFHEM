@@ -155,7 +155,7 @@
     <string name="newInterval">New interval</string>
     <string name="price">Price</string>
     <string name="energy">Energy</string>
-    <string name="cumulativeKwH">Cumulative</string>
+    <string name="cumulativeUsage">Cumulative</string>
     <string name="voltage">Voltage</string>
     <string name="current">Current</string>
     <string name="saturation">Saturation</string>
@@ -314,6 +314,7 @@
     <string name="rainRateGraph">Rain Rate Graph</string>
     <string name="rainTotalGraph">Rain Total Graph</string>
     <string name="usageGraph">Usage Graph</string>
+    <string name="usageGraphCumulative">Usage Graph (cumulated)</string>
     <string name="windSpeedGraph">Wind Speed Graph</string>
     <string name="stateGraph">State Graph</string>
     <string name="contentGraph">Content Graph</string>
@@ -331,7 +332,8 @@
     <string name="yAxisWindSpeed">wind speed (km/h)</string>
     <string name="yAxisCurrentUsageW">current usage (W)</string>
     <string name="yAxisCurrentUsagekW">current usage (kW)</string>
-    <string name="yAxisCumulativeUsage">cumulative usage (kWh)</string>
+    <string name="yAxisCumulativeUsageKWh">cumulative usage (kWh)</string>
+    <string name="yAxisCumulativeUsageWh">cumulative usage (Wh)</string>
     <string name="yAxisToggleState">on (1) / off (0)</string>
     <string name="yAxisLitreContent">content (l)</string>
     <string name="yAxisEnergy">energy (W)</string>

@@ -1,8 +1,9 @@
 package li.klass.fhem.domain.culhm;
 
+import org.junit.Test;
+
 import li.klass.fhem.domain.CULHMDevice;
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
-import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -17,9 +18,9 @@ public class HMSenWaOdTest extends DeviceXMLParsingBase {
         CULHMDevice device = getDefaultDevice();
         assertThat(device, is(not(nullValue())));
 
-        assertThat(device.getState(), is("108 (%)"));
+        assertThat(device.getState(), is("24 (%)"));
         assertThat(device.getSubType(), is(CULHMDevice.SubType.FILL_STATE));
-        assertThat(device.getFillContentPercentageRaw(), is(closeTo(1.08, 0.001)));
+        assertThat(device.getFillContentPercentageRaw(), is(closeTo(0.24, 0.001)));
     }
 
     @Override

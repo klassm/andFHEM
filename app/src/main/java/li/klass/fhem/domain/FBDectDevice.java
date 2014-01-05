@@ -51,7 +51,7 @@ public class FBDectDevice extends ToggleableDevice<FBDectDevice> {
     @ShowField(description = ResourceIdMapper.voltage)
     private String voltage;
 
-    @ShowField(description = ResourceIdMapper.cumulativeKwh)
+    @ShowField(description = ResourceIdMapper.cumulativeUsage)
     private String current;
 
 

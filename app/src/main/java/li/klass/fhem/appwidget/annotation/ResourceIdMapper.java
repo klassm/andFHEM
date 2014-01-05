@@ -121,7 +121,7 @@ public enum ResourceIdMapper {
     demandDevices(R.string.demandDevices),
     price(R.string.price),
     energy(R.string.energy),
-    cumulativeKwh(R.string.cumulativeKwH),
+    cumulativeUsage(R.string.cumulativeUsage),
     voltage(R.string.voltage),
     current(R.string.current),
     musicMute(R.string.musicMute),

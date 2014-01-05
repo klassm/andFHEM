@@ -39,7 +39,7 @@ import static li.klass.fhem.service.graph.description.SeriesType.POWER;
 
 @SuppressWarnings("unused")
 public class EMWZDevice extends Device<EMWZDevice> {
-    @ShowField(description = ResourceIdMapper.cumulativeKwh, showInOverview = true)
+    @ShowField(description = ResourceIdMapper.cumulativeUsage, showInOverview = true)
     private String cumulativeKwh;
 
     @ShowField(description = ResourceIdMapper.energy)
