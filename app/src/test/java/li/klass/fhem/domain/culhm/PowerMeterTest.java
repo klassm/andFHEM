@@ -31,7 +31,7 @@ import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.nullValue;
+import static org.hamcrest.Matchers.notNullValue;
 
 public class PowerMeterTest extends DeviceXMLParsingBase {
     @Test
@@ -47,10 +47,10 @@ public class PowerMeterTest extends DeviceXMLParsingBase {
         assertThat(device.supportsToggle(), is(true));
 
         assertThat(device.getCurrentUsage(), is("33 (W)"));
-        assertThat(device.getCurrentVoltage(), is("3 (A)"));
+        assertThat(device.getCurrentVoltage(), is("228.7 (A)"));
 
-        assertThat(device.getLogDevice(), is(nullValue()));
-        assertThat(device.getDeviceCharts().size(), is(0));
+        assertThat(device.getLogDevice(), is(notNullValue()));
+        assertThat(device.getDeviceCharts().size(), is(1));
     }
 
     @Override
