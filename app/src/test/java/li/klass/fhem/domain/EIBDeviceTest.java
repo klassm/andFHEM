@@ -84,6 +84,13 @@ public class EIBDeviceTest extends DeviceXMLParsingBase {
 //        assertDeviceState("rainsensor", "0.9 (°C)");
     }
 
+    @Test
+    public void testPercentDeviceWithUnsetState() {
+        EIBDevice device = getDeviceFor("percent_with_unset_state");
+        assertThat(device.getState(), is(notNullValue()));
+        assertThat(device.getState(), is("0 (%)"));
+    }
+
     private void assertDeviceState(String deviceName, String expectedState) {
         EIBDevice device = getDeviceFor(deviceName);
         assertThat(device.getState(), is(expectedState));

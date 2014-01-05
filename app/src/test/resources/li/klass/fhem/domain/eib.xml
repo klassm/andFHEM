@@ -206,5 +206,18 @@
             <STATE key="state" value="13.10.2013 " measured="2013-10-13 00:00:00"/>
         </EIB>
 
+        <EIB name="percent_with_unset_state" state="???" sets="off on on-for-timer on-till raw value:slider,0,1,100" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev do_not_notify:1,0 ignore:0,1 dummy:1,0 showtime:1,0 loglevel:0,1,2,3,4,5,6 model:voltage-mV,pressuresensor,date,percent,power,powerdensity,percent255,current-mA2,dpt5,dpt12,dpt11,timeperiod-min,brightness,dpt10,speedsensor,dpt9,speedsensor-km/h,time,tempsensor,rainsensor,dpt5.003,lightsensor,time1sensor,dpt14,time2sensor,timeperiod-ms,dpt5.004,angle,current-mA,dpt7,humiditysensor,airqualitysensor,timeperiod-h,length-mm devStateIcon devStateStyle fp_Wohnzimmer icon onOffDevice sortby webCmd">
+            <INT key="DEF" value="1/0/10"/>
+            <INT key="GROUP" value="100a"/>
+            <INT key="NAME" value="percent_with_unset_state"/>
+            <INT key="NR" value="8"/>
+            <INT key="STATE" value="???"/>
+            <INT key="TYPE" value="EIB"/>
+            <INT key="IODev" value="tul"/>
+            <ATTR key="model" value="percent"/>
+            <ATTR key="room" value="room"/>
+            <STATE key="state" value="???" measured="2014-01-05 12:05:06"/>
+        </EIB>
+
     </EIB_LIST>
 </FHZINFO>

@@ -62,6 +62,10 @@ public class EIBDevice extends DimmableDevice<EIBDevice> {
     public void afterXMLRead() {
         super.afterXMLRead();
 
+        if ("percent".equalsIgnoreCase(model) && "???".equalsIgnoreCase(getInternalState())) {
+            setState("0 (%)");
+        }
+
         if (model == null || model.equals("time") || model.equals("date") ||
                 getInternalState().equalsIgnoreCase("???")) return;
 
@@ -73,9 +77,10 @@ public class EIBDevice extends DimmableDevice<EIBDevice> {
             description = ValueDescriptionUtil.C;
         } else if (model.equalsIgnoreCase("brightness") || model.equalsIgnoreCase("lightsensor")) {
             description = ValueDescriptionUtil.LUX;
-        } else if (model.equals("percent")) {
+        } else if (model.equalsIgnoreCase("percent")) {
             description = ValueDescriptionUtil.PERCENT;
-            setState(ValueDescriptionUtil.append(ValueExtractUtil.extractLeadingInt(getInternalState()), description));
+            int percent = ValueExtractUtil.extractLeadingInt(getInternalState());
+            setState(ValueDescriptionUtil.append(percent, description));
             return;
         }
 
