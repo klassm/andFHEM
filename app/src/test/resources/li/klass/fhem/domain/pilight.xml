@@ -1,0 +1,42 @@
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<FHZINFO>
+    <pilight_LIST>
+        <pilight name="device" state="on" sets="on off" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings protocol housecode number devStateIcon devStateStyle icon sortby webCmd">
+            <INT key="DEF" value="kaku_switch 12323578 1"/>
+            <INT key="NAME" value="device"/>
+            <INT key="NR" value="45"/>
+            <INT key="STATE" value="on"/>
+            <INT key="TYPE" value="pilight"/>
+            <INT key="housecode" value="12323578"/>
+            <INT key="number" value="1"/>
+            <INT key="protocol" value="kaku_switch"/>
+            <ATTR key="devStateIcon" value="on:general_an off:general_aus"/>
+            <ATTR key="icon" value="sani_heating"/>
+            <ATTR key="room" value="room"/>
+            <STATE key="state" value="on" measured="2014-01-02 19:53:28"/>
+        </pilight>
+    </pilight_LIST>
+</FHZINFO>
