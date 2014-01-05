@@ -24,10 +24,11 @@
   -->
 
 <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             style="@style/deviceOverviewTable"
-             android:id="@+id/device_overview_generic">
+    style="@style/deviceOverviewTable"
+    android:id="@+id/device_overview_generic">
+
     <TableRow>
         <TextView android:id="@+id/deviceName"
-                  style="@style/deviceOverviewLayoutDeviceName"/>
+            style="@style/deviceOverviewLayoutDeviceName"/>
     </TableRow>
 </TableLayout>

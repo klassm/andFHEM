@@ -102,6 +102,7 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
             OverviewViewSettings annotation = device.getClass().getAnnotation(OverviewViewSettings.class);
             List<AnnotatedDeviceClassItem> items = getSortedAnnotatedClassItems(device);
 
+            int i = 0;
             for (AnnotatedDeviceClassItem item : items) {
                 String name = item.getName();
                 boolean alwaysShow = false;
@@ -117,7 +118,8 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
                     }
                 }
                 if (alwaysShow || item.isShowInOverview()) {
-                    createTableRow(device, inflater, layout, item, R.layout.device_overview_generic_table_row);
+                    createTableRow(device, inflater, layout, item,
+                            R.layout.device_overview_generic_table_row);
                 }
             }
 
@@ -126,6 +128,7 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
                 int color = resources.getColor(R.color.errorBackground);
                 view.setBackgroundColor(color);
             }
+
         } catch (Exception e) {
             Log.e(TAG, "exception occurred while setting device overview values", e);
         }

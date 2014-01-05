@@ -179,7 +179,7 @@
 
     <style name="deviceOverviewTable">
         <item name="android:layout_width">fill_parent</item>
-        <item name="android:layout_height">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
         <!--<item name="android:stretchColumns">1</item>-->
 
         <item name="android:layout_marginLeft">5dp</item>
@@ -206,6 +206,8 @@
         <item name="android:layout_weight">1</item>
         <item name="android:maxWidth">120dp</item>
         <item name="android:textSize">16dp</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">end</item>
         <item name="android:gravity">center_vertical</item>
     </style>
 
