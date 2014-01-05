@@ -23,7 +23,11 @@ public enum SeriesType {
     RAIN_RATE(Color.RED, R.string.yAxisRainRate),
     RAIN_TOTAL(Color.RED, R.string.rainTotal),
     DEWPOINT(Color.GREEN, R.string.yAxisTemperature),
-    POWER(Color.RED, R.string.yAxisEnergy);
+    POWER(Color.RED, R.string.yAxisEnergy),
+    BRIGHTNESS(Color.RED, R.string.brightness),
+    SUNSHINE(Color.BLUE, R.string.sunshine),
+    IS_RAINING(Color.BLUE, R.string.isRaining)
+    ;
 
     private final int color;
     private final int yAxis;

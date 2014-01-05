@@ -65,8 +65,11 @@ import static li.klass.fhem.domain.CULHMDevice.SubType.SWITCH;
 import static li.klass.fhem.domain.CULHMDevice.SubType.THERMOSTAT;
 import static li.klass.fhem.service.graph.description.ChartSeriesDescription.getRegressionValuesInstance;
 import static li.klass.fhem.service.graph.description.SeriesType.ACTUATOR;
+import static li.klass.fhem.service.graph.description.SeriesType.BRIGHTNESS;
 import static li.klass.fhem.service.graph.description.SeriesType.HUMIDITY;
+import static li.klass.fhem.service.graph.description.SeriesType.IS_RAINING;
 import static li.klass.fhem.service.graph.description.SeriesType.LITRE_CONTENT;
+import static li.klass.fhem.service.graph.description.SeriesType.RAIN;
 import static li.klass.fhem.service.graph.description.SeriesType.RAW;
 import static li.klass.fhem.service.graph.description.SeriesType.TEMPERATURE;
 import static li.klass.fhem.util.ValueDescriptionUtil.appendPercent;
@@ -556,6 +559,22 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
                                     "4:T\\x3a:0:", "measured-temp", TEMPERATURE)
                     ), measuredTemp);
                 }
+
+                addDeviceChartIfNotNull(
+                        new DeviceChart(R.string.brightnessSunshineGraph,
+                                new ChartSeriesDescription(R.string.brightness, "4:brightness",
+                                        "brightness", BRIGHTNESS),
+                                new ChartSeriesDescription(R.string.sunshine,
+                                        "4:sunshine", "sunshine", SeriesType.SUNSHINE)
+                        ), sunshine, brightness);
+
+                addDeviceChartIfNotNull(
+                        new DeviceChart(R.string.rainGraph,
+                                ChartSeriesDescription.getDiscreteValuesInstance(R.string.isRaining,
+                                        "4:isRaining", "isRaining", IS_RAINING),
+                                new ChartSeriesDescription(R.string.rain, "4:rain", "rain", RAIN)
+                        ), isRaining, rain
+                );
 
                 break;
 
