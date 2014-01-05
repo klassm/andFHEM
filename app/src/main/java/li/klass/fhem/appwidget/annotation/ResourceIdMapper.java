@@ -152,6 +152,8 @@ public enum ResourceIdMapper {
     room(R.string.rooms),
     deviceName(R.string.deviceName),
     level(R.string.level),
+    currentVoltage(R.string.currentVoltage),
+    sunshine(R.string.sunshine),
 
     blank(R.string.blank),
     none(-1);

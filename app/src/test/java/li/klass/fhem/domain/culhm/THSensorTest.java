@@ -24,15 +24,14 @@
 
 package li.klass.fhem.domain.culhm;
 
-import org.hamcrest.Matchers;
 import org.junit.Test;
 
 import li.klass.fhem.domain.CULHMDevice;
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.core.IsNull.notNullValue;
 
 public class THSensorTest extends DeviceXMLParsingBase {
     @Test
@@ -49,8 +48,21 @@ public class THSensorTest extends DeviceXMLParsingBase {
         assertThat(device.getMeasuredTemp(), is("-2.4 (°C)"));
         assertThat(device.getHumidity(), is("67 (%)"));
 
-        assertThat(device.getLogDevice(), Matchers.is(notNullValue()));
+        assertThat(device.getLogDevice(), is(notNullValue()));
         assertThat(device.getDeviceCharts().size(), is(1));
+    }
+
+    @Test
+    public void testOC3Sensor() {
+        CULHMDevice device = getDeviceFor("oc3");
+
+        assertThat(device, is(notNullValue()));
+        assertThat(device.getMeasuredTemp(), is("5.1 (°C)"));
+        assertThat(device.getHumidity(), is("92 (%)"));
+        assertThat(device.getBrightness(), is("9"));
+        assertThat(device.getSunshine(), is("224"));
+        assertThat(device.getIsRaining(), is("no"));
+        assertThat(device.getRain(), is("74.045 (l/m2)"));
     }
 
     @Override

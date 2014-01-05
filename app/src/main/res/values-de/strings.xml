@@ -49,6 +49,7 @@
     <string name="maxDay">Tagesmaximum</string>
     <string name="maxMonth">Monatsmaximum</string>
     <string name="isRaining">Regnet es?</string>
+    <string name="sunshine">Sunshine</string>
     <string name="desiredTemperature">Wunschtemperatur</string>
     <string name="comfortTemperature">Komfort-Temperatur</string>
     <string name="ecoTemperature">Eco-Temperatur</string>
@@ -67,6 +68,7 @@
     <string name="counterB">Zähler B</string>
     <string name="present">Sendend</string>
     <string name="currentUsage">Aktueller Verbrauch</string>
+    <string name="currentVoltage">Aktuelle Spannung</string>
     <string name="dayUsage">Tagesverbrauch</string>
     <string name="dayLastUsage">Letzter Tagesverbrauch</string>
     <string name="monthUsage">Monatsverbrauch</string>

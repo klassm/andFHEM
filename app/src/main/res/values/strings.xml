@@ -50,6 +50,7 @@
     <string name="maxDay">Maximum Day</string>
     <string name="maxMonth">Maximum Month</string>
     <string name="isRaining">Is Raining?</string>
+    <string name="sunshine">Sonneneinstrahlung</string>
     <string name="desiredTemperature">Desired Temperature</string>
     <string name="comfortTemperature">Comfort-Temperature</string>
     <string name="ecoTemperature">Eco-Temperature</string>
@@ -68,6 +69,7 @@
     <string name="counterB">Counter B</string>
     <string name="present">Present</string>
     <string name="currentUsage">Current Usage</string>
+    <string name="currentVoltage">Current Voltage</string>
     <string name="dayUsage">Day Usage</string>
     <string name="dayLastUsage">Last day Usage</string>
     <string name="monthUsage">Month Usage</string>

@@ -24,12 +24,14 @@
 
 package li.klass.fhem.domain;
 
+import android.content.Context;
 import android.util.Log;
 
 import org.w3c.dom.NamedNodeMap;
 
 import java.util.List;
 
+import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.appwidget.annotation.SupportsWidget;
@@ -79,8 +81,6 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
 
     private HeatingMode heatingMode = HeatingMode.UNKNOWN;
     private String model;
-    private String currentUsage;
-    private String currentVoltage;
 
     public enum SubType {
         DIMMER(DeviceFunctionality.DIMMER),
@@ -143,6 +143,20 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
     private String brightness;
     @ShowField(description = ResourceIdMapper.motion)
     private String motion;
+    @ShowField(description = ResourceIdMapper.windSpeed)
+    private String windSpeed;
+    @ShowField(description = ResourceIdMapper.windDirection)
+    private String windDirection;
+    @ShowField(description = ResourceIdMapper.sunshine)
+    private String sunshine;
+    @ShowField(description = ResourceIdMapper.isRaining)
+    private String isRaining;
+    @ShowField(description = ResourceIdMapper.rain)
+    private String rain;
+    @ShowField(description = ResourceIdMapper.currentUsage)
+    private String currentUsage;
+    @ShowField(description = ResourceIdMapper.currentVoltage)
+    private String currentVoltage;
 
     @Override
     public void onChildItemRead(String tagName, String key, String value, NamedNodeMap attributes) {
@@ -255,6 +269,28 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
 
     public void readMODE(String value) {
         readCONTROLMODE(value);
+    }
+
+    public void readWINDSPEED(String value) {
+        windSpeed = ValueDescriptionUtil.append(value, "m/s");
+    }
+
+    public void readWINDDIRECTION(String value) {
+        windDirection = ValueDescriptionUtil.append(value, "°");
+    }
+
+    public void readSUNSHINE(String value) {
+        sunshine = value;
+    }
+
+    public void readISRAINING(String value) {
+        Context context = AndFHEMApplication.getContext();
+        int stringId = "0".equals(value) ? R.string.no : R.string.yes;
+        isRaining = context.getString(stringId);
+    }
+
+    public void readRAIN(String value) {
+        rain = ValueDescriptionUtil.appendLm2(value);
     }
 
     public void readCURRENT(String value) {
@@ -438,6 +474,26 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
 
     public String getMotion() {
         return motion;
+    }
+
+    public String getWindSpeed() {
+        return windSpeed;
+    }
+
+    public String getWindDirection() {
+        return windDirection;
+    }
+
+    public String getSunshine() {
+        return sunshine;
+    }
+
+    public String getIsRaining() {
+        return isRaining;
+    }
+
+    public String getRain() {
+        return rain;
     }
 
     @Override
