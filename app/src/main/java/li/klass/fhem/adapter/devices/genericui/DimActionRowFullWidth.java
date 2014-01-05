@@ -48,8 +48,10 @@ public class DimActionRowFullWidth<D extends DimmableDevice<D>> extends SeekBarA
     }
 
     public void onStopTrackingTouch(final Context context, D device, int progress) {
+        int dimProgress = dimProgressToDimState(progress, device.getDimLowerBound(), device.getDimStep());
+
         Intent intent = new Intent(Actions.DEVICE_DIM);
-        intent.putExtra(BundleExtraKeys.DEVICE_DIM_PROGRESS, progress);
+        intent.putExtra(BundleExtraKeys.DEVICE_DIM_PROGRESS, dimProgress);
         intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
         intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver(context));
 
@@ -66,7 +68,7 @@ public class DimActionRowFullWidth<D extends DimmableDevice<D>> extends SeekBarA
 
     @Override
     public String toUpdateText(D device, int progress) {
-        int dimProgress = toDimProgress(progress, device.getDimLowerBound(), device.getDimStep());
+        int dimProgress = dimProgressToDimState(progress, device.getDimLowerBound(), device.getDimStep());
         return device.getDimStateForPosition(dimProgress);
     }
 }

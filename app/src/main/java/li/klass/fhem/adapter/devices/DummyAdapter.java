@@ -91,6 +91,11 @@ public class DummyAdapter extends DimmableAdapter<DummyDevice> {
 
         registerFieldListener("rgbDesc", new FieldNameAddedToDetailListener<DummyDevice>() {
             @Override
+            public boolean supportsDevice(DummyDevice device) {
+                return device.getRgbDesc() != null;
+            }
+
+            @Override
             public void onFieldNameAdded(final Context context, TableLayout tableLayout, String field,
                                          final DummyDevice device, TableRow fieldTableRow) {
                 tableLayout.addView(new ColorPickerRow(device.getRGBColor(), R.string.hue) {
@@ -110,6 +115,8 @@ public class DummyAdapter extends DimmableAdapter<DummyDevice> {
                         context.startService(intent);
                     }
                 } .createRow(context, inflater));
+
+
             }
         });
     }

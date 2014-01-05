@@ -53,6 +53,10 @@ public class DummyDevice extends DimmableDevice<DummyDevice> {
         setMeasured(measured);
     }
 
+    public void readSTATE(String value) {
+        setState(value);
+    }
+
     @Override
     public boolean supportsToggle() {
         return ArrayUtil.contains(getAvailableTargetStates(), "on", "off") ||
@@ -139,7 +143,10 @@ public class DummyDevice extends DimmableDevice<DummyDevice> {
 
     @ShowField(description = ResourceIdMapper.color)
     public String getRgbDesc() {
-        return "0x" + getRgb();
+        String rgb = getRgb();
+        if (rgb == null) return null;
+
+        return "0x" + rgb;
     }
 
     private String getRgb() {

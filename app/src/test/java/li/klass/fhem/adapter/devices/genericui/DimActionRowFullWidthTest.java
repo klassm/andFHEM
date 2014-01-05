@@ -36,6 +36,15 @@ public class DimActionRowFullWidthTest {
     }
 
     @Test
+    public void test5_1_24_Conversion() {
+        assertThat(toDimProgress(5, 5, 1), is(0));
+        assertThat(dimProgressToDimState(0, 5, 1), is(5));
+
+        assertThat(toDimProgress(24, 5, 1), is(19));
+        assertThat(dimProgressToDimState(19, 5, 1), is(24));
+    }
+
+    @Test
     public void testStepDifferentFrom1AndShiftedLowerBoundConversion() {
         assertThat(toDimProgress(20, 10, 2), is(5));
         assertThat(dimProgressToDimState(5, 10, 2), is(20));
