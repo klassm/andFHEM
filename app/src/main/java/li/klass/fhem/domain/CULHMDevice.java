@@ -47,15 +47,19 @@ import li.klass.fhem.domain.heating.schedule.WeekProfile;
 import li.klass.fhem.domain.heating.schedule.configuration.CULHMConfiguration;
 import li.klass.fhem.domain.heating.schedule.interval.FilledTemperatureInterval;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
+import li.klass.fhem.service.graph.description.SeriesType;
 import li.klass.fhem.util.NumberUtil;
 import li.klass.fhem.util.StringUtil;
 import li.klass.fhem.util.ValueDescriptionUtil;
 import li.klass.fhem.util.ValueExtractUtil;
 
+import static li.klass.fhem.domain.CULHMDevice.SubType.DIMMER;
 import static li.klass.fhem.domain.CULHMDevice.SubType.FILL_STATE;
 import static li.klass.fhem.domain.CULHMDevice.SubType.HEATING;
 import static li.klass.fhem.domain.CULHMDevice.SubType.KEYMATIC;
 import static li.klass.fhem.domain.CULHMDevice.SubType.MOTION;
+import static li.klass.fhem.domain.CULHMDevice.SubType.POWERMETER;
+import static li.klass.fhem.domain.CULHMDevice.SubType.SWITCH;
 import static li.klass.fhem.domain.CULHMDevice.SubType.THERMOSTAT;
 import static li.klass.fhem.service.graph.description.ChartSeriesDescription.getRegressionValuesInstance;
 import static li.klass.fhem.service.graph.description.SeriesType.ACTUATOR;
@@ -75,6 +79,8 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
 
     private HeatingMode heatingMode = HeatingMode.UNKNOWN;
     private String model;
+    private String currentUsage;
+    private String currentVoltage;
 
     public enum SubType {
         DIMMER(DeviceFunctionality.DIMMER),
@@ -86,7 +92,8 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
         THERMOSTAT(DeviceFunctionality.HEATING),
         FILL_STATE(DeviceFunctionality.FILL_STATE),
         MOTION(DeviceFunctionality.MOTION_DETECTOR),
-        KEYMATIC(DeviceFunctionality.KEY);
+        KEYMATIC(DeviceFunctionality.KEY),
+        POWERMETER(DeviceFunctionality.SWITCH);
 
         private final DeviceFunctionality functionality;
 
@@ -214,24 +221,26 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
     }
 
     public void readSUBTYPE(String value) {
-        if (value.equalsIgnoreCase("DIMMER") || value.equalsIgnoreCase("BLINDACTUATOR")) {
-            subType = SubType.DIMMER;
-        } else if (value.equalsIgnoreCase("SWITCH")) {
-            subType = SubType.SWITCH;
-        } else if (value.equalsIgnoreCase("SMOKEDETECTOR")) {
+        if ("DIMMER".equalsIgnoreCase(value) || "BLINDACTUATOR".equalsIgnoreCase(value)) {
+            subType = DIMMER;
+        } else if ("SWITCH".equalsIgnoreCase(value)) {
+            subType = SWITCH;
+        } else if ("SMOKEDETECTOR".equalsIgnoreCase(value)) {
             subType = SubType.SMOKE_DETECTOR;
-        } else if (value.equalsIgnoreCase("THREESTATESENSOR")) {
+        } else if ("THREESTATESENSOR".equalsIgnoreCase(value)) {
             subType = SubType.THREE_STATE;
-        } else if (value.equalsIgnoreCase("THSensor")) {
+        } else if ("THSensor".equalsIgnoreCase(value)) {
             subType = SubType.TEMPERATURE_HUMIDITY;
-        } else if (value.equalsIgnoreCase("KFM100")) {
+        } else if ("KFM100".equalsIgnoreCase(value)) {
             subType = SubType.FILL_STATE;
-        } else if (value.equalsIgnoreCase("THERMOSTAT")) {
+        } else if ("THERMOSTAT".equalsIgnoreCase(value)) {
             subType = THERMOSTAT;
-        } else if (value.equalsIgnoreCase("MOTIONDETECTOR")) {
+        } else if ("MOTIONDETECTOR".equalsIgnoreCase(value)) {
             subType = MOTION;
-        } else if (value.equalsIgnoreCase("KEYMATIC")) {
+        } else if (("KEYMATIC").equalsIgnoreCase(value)) {
             subType = KEYMATIC;
+        } else if ("powerMeter".equalsIgnoreCase(value)) {
+            subType = POWERMETER;
         }
         subTypeRaw = value;
     }
@@ -246,6 +255,14 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
 
     public void readMODE(String value) {
         readCONTROLMODE(value);
+    }
+
+    public void readCURRENT(String value) {
+        currentUsage = ValueDescriptionUtil.append(value, "W");
+    }
+
+    public void readVOLTAGE(String value) {
+        currentVoltage = ValueDescriptionUtil.append(value, "A");
     }
 
     @Override
@@ -293,12 +310,12 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
 
         String internalState = getInternalState();
         return internalState.equalsIgnoreCase("on") || internalState.equalsIgnoreCase("on-for-timer") ||
-                (subType == SubType.DIMMER && getDimPosition() > 0);
+                (subType == DIMMER && getDimPosition() > 0);
     }
 
     @Override
     public boolean supportsToggle() {
-        return subType == SubType.SWITCH || subType == SubType.DIMMER;
+        return subType == SWITCH || subType == DIMMER || subType == POWERMETER;
     }
 
     @Override
@@ -308,12 +325,12 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
 
     @Override
     public boolean supportsDim() {
-        return subType == SubType.DIMMER;
+        return subType == DIMMER;
     }
 
     @Override
     public int getDimPosition() {
-        if (subType != SubType.DIMMER) return 0;
+        if (subType != DIMMER) return 0;
         return super.getDimPosition();
     }
 
@@ -328,7 +345,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
 
     @Override
     public String formatStateTextToSet(String stateToSet) {
-        if (getSubType() == SubType.DIMMER && NumberUtil.isNumeric(stateToSet)) {
+        if (getSubType() == DIMMER && NumberUtil.isNumeric(stateToSet)) {
             return stateToSet + " %";
         }
         return super.formatStateTextToSet(stateToSet);
@@ -443,6 +460,14 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
         return HeatingMode.values();
     }
 
+    public String getCurrentUsage() {
+        return currentUsage;
+    }
+
+    public String getCurrentVoltage() {
+        return currentVoltage;
+    }
+
     @Override
     public String getHeatingModeCommandField() {
         return "controlMode";
@@ -512,6 +537,12 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
 
                 break;
 
+            case POWERMETER:
+                addDeviceChartIfNotNull(new DeviceChart(R.string.usageGraph,
+                        new ChartSeriesDescription(R.string.currentUsage, "4:current:0", "current",
+                                SeriesType.CURRENT_USAGE_WATT)), currentUsage);
+
+                break;
         }
     }
 
