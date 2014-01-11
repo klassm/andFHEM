@@ -38,8 +38,10 @@ import java.io.StringReader;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -75,6 +77,45 @@ public class DeviceListParser {
 
     private Map<Class<Device>, Map<String, Set<Method>>> deviceClassCache;
 
+    private class ReadErrorHolder {
+        private Map<DeviceType, Integer> deviceTypeErrorCount = new HashMap<DeviceType, Integer>();
+
+        public int getErrorCount() {
+            int errors = 0;
+            for (Integer deviceTypeErrors : deviceTypeErrorCount.values()) {
+                errors += deviceTypeErrors;
+            }
+            return errors;
+        }
+
+        public boolean hasErrors() {
+            return deviceTypeErrorCount.size() != 0;
+        }
+
+        public void addError(DeviceType deviceType) {
+            addErrors(deviceType, 1);
+        }
+
+        public void addErrors(DeviceType deviceType, int errorCount) {
+            int count = 0;
+            if (deviceTypeErrorCount.containsKey(deviceType)) {
+                count = deviceTypeErrorCount.get(deviceType);
+            }
+            deviceTypeErrorCount.put(deviceType, count + errorCount);
+        }
+
+        public List<String> getErrorDeviceTypeNames() {
+            if (deviceTypeErrorCount.size() == 0) return Collections.emptyList();
+
+            List<String> errorDeviceTypeNames = new ArrayList<String>();
+            for (DeviceType deviceType : deviceTypeErrorCount.keySet()) {
+                errorDeviceTypeNames.add(deviceType.name());
+            }
+
+            return errorDeviceTypeNames;
+        }
+    }
+
     private DeviceListParser() {
     }
 
@@ -82,6 +123,7 @@ public class DeviceListParser {
         try {
             return parseXMLList(xmlList);
         } catch (Exception e) {
+            Log.e(TAG, "cannot parse xmllist", e);
             ErrorHolder.setError(e, "cannot parse xmllist.");
 
             new RequestResult<String>(RequestResultError.DEVICE_LIST_PARSE).handleErrors();
@@ -135,26 +177,25 @@ public class DeviceListParser {
         DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
         Document document = docBuilder.parse(new InputSource(new StringReader(xmlList)));
 
+        ReadErrorHolder errorHolder = new ReadErrorHolder();
+
         DeviceType[] deviceTypes = DeviceType.values();
-        int errorCount = 0;
-        ArrayList<String> errorDeviceTypes = new ArrayList<String>();
         for (DeviceType deviceType : deviceTypes) {
             int localErrorCount = devicesFromDocument(deviceType.getDeviceClass(), roomDeviceListMap, document, deviceType.getXmllistTag(),
                     allDevicesRoom);
             if (localErrorCount > 0) {
-                errorDeviceTypes.add(deviceType.name());
-                errorCount += localErrorCount;
+                errorHolder.addErrors(deviceType, localErrorCount);
             }
         }
 
         addLogsToDevices(allDevicesRoom);
-        performAfterReadOperations(allDevicesRoom, roomDeviceListMap);
+        performAfterReadOperations(allDevicesRoom, roomDeviceListMap, errorHolder);
 
-        if (errorCount > 0) {
+        if (errorHolder.hasErrors()) {
             Context context = AndFHEMApplication.getContext();
             String errorMessage = context.getString(R.string.errorDeviceListLoad);
-            String deviceTypesError = StringUtil.concatenate(errorDeviceTypes.toArray(new String[errorDeviceTypes.size()]), ",");
-            errorMessage = String.format(errorMessage, "" + errorCount, deviceTypesError);
+            String deviceTypesError = StringUtil.concatenate(errorHolder.getErrorDeviceTypeNames(), ",");
+            errorMessage = String.format(errorMessage, "" + errorHolder.getErrorCount(), deviceTypesError);
 
             Intent intent = new Intent(Actions.SHOW_TOAST);
             intent.putExtra(BundleExtraKeys.CONTENT, errorMessage);
@@ -166,16 +207,27 @@ public class DeviceListParser {
         return roomDeviceListMap;
     }
 
-    private void performAfterReadOperations(RoomDeviceList allDevicesRoom, Map<String, RoomDeviceList> roomDeviceListMap) {
+    private void performAfterReadOperations(RoomDeviceList allDevicesRoom,
+                                            Map<String, RoomDeviceList> roomDeviceListMap, ReadErrorHolder errorHolder) {
         for (Device device : allDevicesRoom.getAllDevices()) {
-            device.afterXMLRead();
-            removeIfUnsupported(device, allDevicesRoom, roomDeviceListMap);
+            try {
+                device.afterXMLRead();
+                removeIfUnsupported(device, allDevicesRoom, roomDeviceListMap);
+            } catch (Exception e) {
+                remove(device, allDevicesRoom, roomDeviceListMap);
+                errorHolder.addError(DeviceType.getDeviceTypeFor(device));
+                Log.e(TAG, "cannot perform after read operations", e);
+            }
         }
     }
 
     private void removeIfUnsupported(Device device, RoomDeviceList allDevicesRoom, Map<String, RoomDeviceList> roomDeviceListMap) {
         if (device.isSupported()) return;
 
+        remove(device, allDevicesRoom, roomDeviceListMap);
+    }
+
+    private void remove(Device device, RoomDeviceList allDevicesRoom, Map<String, RoomDeviceList> roomDeviceListMap) {
         for (String room : device.getRooms()) {
             RoomDeviceList roomDeviceList = roomDeviceListMap.get(room);
             roomDeviceList.removeDevice(device);

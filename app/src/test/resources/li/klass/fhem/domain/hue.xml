@@ -59,6 +59,36 @@
                 <STATE key="state" value="off" measured="2013-06-04 22:45:40"/>
                 <STATE key="xy" value="0.4595,0.4105" measured="2013-06-04 21:36:39"/>
             </HUEDevice>
+
+            <HUEDevice name="device1" state="off" sets="off:noArg on:noArg toggle:noArg statusRequest:noArg pct:slider,0,1,100 bri:slider,0,1,254 alert:none,select,lselect dimUp:noArg dimDown:noArg blink on-for-timer on-till off-for-timer intervals off-till" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev delayedUpdate:1 realtimePicker:1 color-icons:1,2 model:LCT001,LLC001,LLC005,LLC006,LLC007,LST001,LWB001,LWL001 subType:colordimmer,dimmer,switch event-on-change-reading event-on-update-reading event-min-interval stateFormat devStateIcon devStateStyle fp_Grundriss icon lightSceneParamsToSave sortby webCmd">
+                <INT key="DEF" value="3 "/>
+                <INT key="ID" value="3"/>
+                <INT key="INTERVAL" value="60"/>
+                <INT key="NAME" value="device1"/>
+                <INT key="NR" value="89"/>
+                <INT key="STATE" value="off"/>
+                <INT key="TYPE" value="HUEDevice"/>
+                <INT key="modelid" value="LWL001"/>
+                <INT key="name" value="Dimmable plug-in unit 2"/>
+                <INT key="swversion" value="1.0.1.4591"/>
+                <INT key="type" value="Dimmable plug-in unit"/>
+                <INT key="IODev" value="HUEbridge"/>
+                <ATTR key="IODev" value="HUEbridge"/>
+                <ATTR key="alias" value="Lichterkette"/>
+                <ATTR key="group" value="Licht"/>
+                <ATTR key="model" value="LWL001"/>
+                <ATTR key="room" value="room"/>
+                <ATTR key="subType" value="dimmer"/>
+                <ATTR key="webCmd" value="pct:toggle:on:off"/>
+                <STATE key="alert" value="none" measured="2014-01-08 21:30:08"/>
+                <STATE key="bri" value="0" measured="2014-01-08 21:30:08"/>
+                <STATE key="effect" value="none" measured="2014-01-08 21:30:08"/>
+                <STATE key="level" value="0 %" measured="2014-01-08 21:30:08"/>
+                <STATE key="onoff" value="0" measured="2014-01-08 21:30:08"/>
+                <STATE key="pct" value="0" measured="2014-01-08 21:30:08"/>
+                <STATE key="reachable" value="true" measured="2014-01-08 21:30:08"/>
+                <STATE key="state" value="off" measured="2014-01-08 21:30:08"/>
+            </HUEDevice>
         </HUEDevice_LIST>
     </FHZINFO>
 </FHZINFO>

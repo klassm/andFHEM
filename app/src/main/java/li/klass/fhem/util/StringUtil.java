@@ -23,11 +23,26 @@
 
 package li.klass.fhem.util;
 
+import java.util.List;
+
 public class StringUtil {
     public static String concatenate(String[] elements, String delimiter) {
         StringBuilder out = new StringBuilder();
         for (int i = 0; i < elements.length; i++) {
             String element = elements[i];
+
+            if (i > 0) {
+                out.append(delimiter);
+            }
+            out.append(element);
+        }
+        return out.toString();
+    }
+
+    public static String concatenate(List<String> elements, String delimiter) {
+        StringBuilder out = new StringBuilder();
+        for (int i = 0; i < elements.size(); i++) {
+            String element = elements.get(i);
 
             if (i > 0) {
                 out.append(delimiter);

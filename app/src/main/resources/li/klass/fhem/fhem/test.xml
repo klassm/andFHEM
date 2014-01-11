@@ -1,16 +1,268 @@
 
 <FHZINFO>
-    <weblink_LIST>
-        <weblink name="device" state="initialized" sets="" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings htmlattr CUL_HM CUL_HM_map PRESENCE PRESENCE_map Presence Presence_map Steffen Steffen_map devStateIcon devStateStyle dummy dummy_map fp_Lindenhof icon ite0m18 item0 item0.4 item1 item10 item11 item12 item13 item14 item15 item16 item17 item19 item2 item20 item21 item22 item23 item24 item25 item26 item27 item28 item29 item3 item30 item31 item32 item4 item4.4 item4.5 item5 item6 item6.1 item7 item7.1 item8 item8.1 item8.2 item8.3 item8.4 item9 item9.1 lightSceneParamsToSave sortby structexclude webCmd">
-            <INT key="DEF" value="iframe http://www.sbazv.de/frames/termin_2013/hm4.php?ortnr=184&amp;strnr=100"/>
-            <INT key="LINK" value="http://www.sbazv.de/frames/termin_2013/hm4.php?ortnr=184&amp;strnr=100"/>
-            <INT key="NAME" value="device"/>
-            <INT key="NR" value="389"/>
-            <INT key="STATE" value="initialized"/>
-            <INT key="TYPE" value="weblink"/>
-            <INT key="WLTYPE" value="iframe"/>
-            <ATTR key="htmlattr" value="width=&quot;900&quot; height=&quot;400&quot; frameborder=&quot;0&quot; marginheight=&quot;400&quot; marginwidth=&quot;900&quot;"/>
-            <ATTR key="room" value="room"/>
-        </weblink>
-    </weblink_LIST>
+    <HUEBridge_LIST>
+        <HUEBridge name="HUEbridge" state="Initialized" sets="statusRequest:noArg" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings key devStateIcon devStateStyle fp_Grundriss icon lightSceneParamsToSave sortby webCmd">
+            <INT key="DEF" value="192.168.177.139"/>
+            <INT key="Host" value="192.168.177.139"/>
+            <INT key="INTERVAL" value="300"/>
+            <INT key="NAME" value="HUEbridge"/>
+            <INT key="NR" value="87"/>
+            <INT key="STATE" value="Initialized"/>
+            <INT key="TYPE" value="HUEBridge"/>
+            <ATTR key="key" value="565f1c4bad0ceeb350f41778d7811b52"/>
+            <ATTR key="room" value="Admin"/>
+        </HUEBridge>
+    </HUEBridge_LIST>
+    <HUEDevice_LIST>
+        <HUEDevice name="HUEDevice1" state="off" sets="off:noArg on:noArg toggle:noArg statusRequest:noArg pct:slider,0,1,100 bri:slider,0,1,254 alert:none,select,lselect dimUp:noArg dimDown:noArg rgb:colorpicker,RGB color:slider,2000,1,6500 ct:slider,154,1,500 hue:slider,0,1,65535 sat:slider,0,1,254 xy effect:none,colorloop blink on-for-timer on-till off-for-timer intervals off-till" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev delayedUpdate:1 realtimePicker:1 color-icons:1,2 model:LCT001,LLC001,LLC005,LLC006,LLC007,LST001,LWB001,LWL001 subType:colordimmer,dimmer,switch event-on-change-reading event-on-update-reading event-min-interval stateFormat devStateIcon devStateStyle fp_Grundriss icon lightSceneParamsToSave sortby webCmd">
+            <INT key="DEF" value="1 "/>
+            <INT key="ID" value="1"/>
+            <INT key="INTERVAL" value="60"/>
+            <INT key="NAME" value="HUEDevice1"/>
+            <INT key="NR" value="88"/>
+            <INT key="STATE" value="off"/>
+            <INT key="TYPE" value="HUEDevice"/>
+            <INT key="modelid" value="LLC006"/>
+            <INT key="name" value="Color light 1"/>
+            <INT key="swversion" value="4.6.0.8274"/>
+            <INT key="type" value="Color light"/>
+            <INT key="IODev" value="HUEbridge"/>
+            <ATTR key="IODev" value="HUEbridge"/>
+            <ATTR key="alias" value="Iris"/>
+            <ATTR key="group" value="Licht"/>
+            <ATTR key="model" value="LLC006"/>
+            <ATTR key="realtimePicker" value="1"/>
+            <ATTR key="room" value="Wohnzimmer"/>
+            <ATTR key="subType" value="colordimmer"/>
+            <ATTR key="webCmd" value="rgb:rgb ff0000:rgb 98FF23:rgb 0000ff:toggle:on:off"/>
+            <STATE key="alert" value="none" measured="2014-01-08 21:30:08"/>
+            <STATE key="bri" value="0" measured="2014-01-08 21:30:08"/>
+            <STATE key="colormode" value="hs" measured="2014-01-08 21:30:08"/>
+            <STATE key="effect" value="none" measured="2014-01-08 21:30:08"/>
+            <STATE key="hue" value="6144" measured="2014-01-08 21:30:08"/>
+            <STATE key="level" value="0 %" measured="2014-01-08 21:30:08"/>
+            <STATE key="onoff" value="0" measured="2014-01-08 21:30:08"/>
+            <STATE key="pct" value="0" measured="2014-01-08 21:30:08"/>
+            <STATE key="reachable" value="true" measured="2014-01-08 21:30:08"/>
+            <STATE key="sat" value="186" measured="2014-01-08 21:30:08"/>
+            <STATE key="state" value="off" measured="2014-01-08 21:30:08"/>
+            <STATE key="xy" value="0.5834,0.3693" measured="2014-01-08 21:30:08"/>
+        </HUEDevice>
+        <HUEDevice name="HUEDevice2" state="off" sets="off:noArg on:noArg toggle:noArg statusRequest:noArg pct:slider,0,1,100 bri:slider,0,1,254 alert:none,select,lselect dimUp:noArg dimDown:noArg blink on-for-timer on-till off-for-timer intervals off-till" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev delayedUpdate:1 realtimePicker:1 color-icons:1,2 model:LCT001,LLC001,LLC005,LLC006,LLC007,LST001,LWB001,LWL001 subType:colordimmer,dimmer,switch event-on-change-reading event-on-update-reading event-min-interval stateFormat devStateIcon devStateStyle fp_Grundriss icon lightSceneParamsToSave sortby webCmd">
+            <INT key="DEF" value="2 "/>
+            <INT key="ID" value="2"/>
+            <INT key="INTERVAL" value="60"/>
+            <INT key="NAME" value="HUEDevice2"/>
+            <INT key="NR" value="90"/>
+            <INT key="STATE" value="off"/>
+            <INT key="TYPE" value="HUEDevice"/>
+            <INT key="modelid" value="LWL001"/>
+            <INT key="name" value="Dimmable plug-in unit 1"/>
+            <INT key="swversion" value="1.0.1.4591"/>
+            <INT key="type" value="Dimmable plug-in unit"/>
+            <INT key="IODev" value="HUEbridge"/>
+            <ATTR key="IODev" value="HUEbridge"/>
+            <ATTR key="alias" value="Lampe"/>
+            <ATTR key="group" value="Licht"/>
+            <ATTR key="model" value="LWL001"/>
+            <ATTR key="room" value="Wohnzimmer"/>
+            <ATTR key="subType" value="dimmer"/>
+            <ATTR key="webCmd" value="pct:toggle:on:off"/>
+            <STATE key="alert" value="none" measured="2014-01-08 21:30:08"/>
+            <STATE key="bri" value="0" measured="2014-01-08 21:30:08"/>
+            <STATE key="effect" value="none" measured="2014-01-08 21:30:08"/>
+            <STATE key="level" value="0 %" measured="2014-01-08 21:30:08"/>
+            <STATE key="onoff" value="0" measured="2014-01-08 21:30:08"/>
+            <STATE key="pct" value="0" measured="2014-01-08 21:30:08"/>
+            <STATE key="reachable" value="true" measured="2014-01-08 21:30:08"/>
+            <STATE key="state" value="off" measured="2014-01-08 21:30:08"/>
+        </HUEDevice>
+        <HUEDevice name="HUEDevice3" state="off" sets="off:noArg on:noArg toggle:noArg statusRequest:noArg pct:slider,0,1,100 bri:slider,0,1,254 alert:none,select,lselect dimUp:noArg dimDown:noArg blink on-for-timer on-till off-for-timer intervals off-till" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev delayedUpdate:1 realtimePicker:1 color-icons:1,2 model:LCT001,LLC001,LLC005,LLC006,LLC007,LST001,LWB001,LWL001 subType:colordimmer,dimmer,switch event-on-change-reading event-on-update-reading event-min-interval stateFormat devStateIcon devStateStyle fp_Grundriss icon lightSceneParamsToSave sortby webCmd">
+            <INT key="DEF" value="3 "/>
+            <INT key="ID" value="3"/>
+            <INT key="INTERVAL" value="60"/>
+            <INT key="NAME" value="HUEDevice3"/>
+            <INT key="NR" value="89"/>
+            <INT key="STATE" value="off"/>
+            <INT key="TYPE" value="HUEDevice"/>
+            <INT key="modelid" value="LWL001"/>
+            <INT key="name" value="Dimmable plug-in unit 2"/>
+            <INT key="swversion" value="1.0.1.4591"/>
+            <INT key="type" value="Dimmable plug-in unit"/>
+            <INT key="IODev" value="HUEbridge"/>
+            <ATTR key="IODev" value="HUEbridge"/>
+            <ATTR key="alias" value="Lichterkette"/>
+            <ATTR key="group" value="Licht"/>
+            <ATTR key="model" value="LWL001"/>
+            <ATTR key="room" value="Wohnzimmer"/>
+            <ATTR key="subType" value="dimmer"/>
+            <ATTR key="webCmd" value="pct:toggle:on:off"/>
+            <STATE key="alert" value="none" measured="2014-01-08 21:30:08"/>
+            <STATE key="bri" value="0" measured="2014-01-08 21:30:08"/>
+            <STATE key="effect" value="none" measured="2014-01-08 21:30:08"/>
+            <STATE key="level" value="0 %" measured="2014-01-08 21:30:08"/>
+            <STATE key="onoff" value="0" measured="2014-01-08 21:30:08"/>
+            <STATE key="pct" value="0" measured="2014-01-08 21:30:08"/>
+            <STATE key="reachable" value="true" measured="2014-01-08 21:30:08"/>
+            <STATE key="state" value="off" measured="2014-01-08 21:30:08"/>
+        </HUEDevice>
+        <HUEDevice name="HUEDevice4" state="on" sets="off:noArg on:noArg toggle:noArg statusRequest:noArg pct:slider,0,1,100 bri:slider,0,1,254 alert:none,select,lselect dimUp:noArg dimDown:noArg rgb:colorpicker,RGB color:slider,2000,1,6500 ct:slider,154,1,500 hue:slider,0,1,65535 sat:slider,0,1,254 xy effect:none,colorloop blink on-for-timer on-till off-for-timer intervals off-till" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev delayedUpdate:1 realtimePicker:1 color-icons:1,2 model:LCT001,LLC001,LLC005,LLC006,LLC007,LST001,LWB001,LWL001 subType:colordimmer,dimmer,switch event-on-change-reading event-on-update-reading event-min-interval stateFormat devStateIcon devStateStyle fp_Grundriss icon lightSceneParamsToSave sortby webCmd">
+            <INT key="DEF" value="4 "/>
+            <INT key="ID" value="4"/>
+            <INT key="INTERVAL" value="60"/>
+            <INT key="NAME" value="HUEDevice4"/>
+            <INT key="NR" value="95"/>
+            <INT key="STATE" value="on"/>
+            <INT key="TYPE" value="HUEDevice"/>
+            <INT key="modelid" value="LCT001"/>
+            <INT key="name" value="Hue Lamp 1"/>
+            <INT key="swversion" value="66010820"/>
+            <INT key="type" value="Extended color light"/>
+            <INT key="IODev" value="HUEbridge"/>
+            <ATTR key="IODev" value="HUEbridge"/>
+            <ATTR key="alias" value="Hue Lamp 1"/>
+            <ATTR key="fp_Grundriss" value="50,100,5,"/>
+            <ATTR key="group" value="Licht"/>
+            <ATTR key="model" value="LCT001"/>
+            <ATTR key="room" value="Wohnzimmer"/>
+            <ATTR key="subType" value="colordimmer"/>
+            <ATTR key="webCmd" value="rgb:rgb ff0000:rgb DEFF26:rgb 0000ff:toggle:on:off"/>
+            <STATE key="alert" value="none" measured="2014-01-08 21:30:08"/>
+            <STATE key="bri" value="254" measured="2014-01-08 21:31:08"/>
+            <STATE key="colormode" value="ct" measured="2014-01-08 21:30:08"/>
+            <STATE key="ct" value="337 (2967K)" measured="2014-01-08 21:30:08"/>
+            <STATE key="effect" value="none" measured="2014-01-08 21:30:08"/>
+            <STATE key="hue" value="15427" measured="2014-01-08 21:30:08"/>
+            <STATE key="level" value="100 %" measured="2014-01-08 21:31:08"/>
+            <STATE key="onoff" value="1" measured="2014-01-08 21:31:08"/>
+            <STATE key="pct" value="100" measured="2014-01-08 21:31:08"/>
+            <STATE key="reachable" value="true" measured="2014-01-08 21:30:08"/>
+            <STATE key="sat" value="115" measured="2014-01-08 21:30:08"/>
+            <STATE key="state" value="on" measured="2014-01-08 21:31:08"/>
+            <STATE key="xy" value="0.4412,0.4055" measured="2014-01-08 21:30:08"/>
+        </HUEDevice>
+        <HUEDevice name="HUEDevice5" state="on" sets="off:noArg on:noArg toggle:noArg statusRequest:noArg pct:slider,0,1,100 bri:slider,0,1,254 alert:none,select,lselect dimUp:noArg dimDown:noArg rgb:colorpicker,RGB color:slider,2000,1,6500 ct:slider,154,1,500 hue:slider,0,1,65535 sat:slider,0,1,254 xy effect:none,colorloop blink on-for-timer on-till off-for-timer intervals off-till" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev delayedUpdate:1 realtimePicker:1 color-icons:1,2 model:LCT001,LLC001,LLC005,LLC006,LLC007,LST001,LWB001,LWL001 subType:colordimmer,dimmer,switch event-on-change-reading event-on-update-reading event-min-interval stateFormat devStateIcon devStateStyle fp_Grundriss icon lightSceneParamsToSave sortby webCmd">
+            <INT key="DEF" value="5 "/>
+            <INT key="ID" value="5"/>
+            <INT key="INTERVAL" value="60"/>
+            <INT key="NAME" value="HUEDevice5"/>
+            <INT key="NR" value="96"/>
+            <INT key="STATE" value="on"/>
+            <INT key="TYPE" value="HUEDevice"/>
+            <INT key="modelid" value="LCT001"/>
+            <INT key="name" value="Hue Lamp 2"/>
+            <INT key="swversion" value="66010820"/>
+            <INT key="type" value="Extended color light"/>
+            <INT key="IODev" value="HUEbridge"/>
+            <ATTR key="IODev" value="HUEbridge"/>
+            <ATTR key="alias" value="Hue Lamp 2"/>
+            <ATTR key="group" value="Licht"/>
+            <ATTR key="model" value="LCT001"/>
+            <ATTR key="room" value="Wohnzimmer"/>
+            <ATTR key="subType" value="colordimmer"/>
+            <ATTR key="webCmd" value="rgb:rgb ff0000:rgb DEFF26:rgb 0000ff:toggle:on:off"/>
+            <STATE key="alert" value="none" measured="2014-01-08 21:30:09"/>
+            <STATE key="bri" value="254" measured="2014-01-08 21:31:09"/>
+            <STATE key="colormode" value="ct" measured="2014-01-08 21:30:09"/>
+            <STATE key="ct" value="334 (2994K)" measured="2014-01-08 21:30:09"/>
+            <STATE key="effect" value="none" measured="2014-01-08 21:30:09"/>
+            <STATE key="hue" value="15496" measured="2014-01-08 21:30:09"/>
+            <STATE key="level" value="100 %" measured="2014-01-08 21:31:09"/>
+            <STATE key="onoff" value="1" measured="2014-01-08 21:31:09"/>
+            <STATE key="pct" value="100" measured="2014-01-08 21:31:09"/>
+            <STATE key="reachable" value="true" measured="2014-01-08 21:30:09"/>
+            <STATE key="sat" value="110" measured="2014-01-08 21:30:09"/>
+            <STATE key="state" value="on" measured="2014-01-08 21:31:09"/>
+            <STATE key="xy" value="0.4383,0.4044" measured="2014-01-08 21:30:09"/>
+        </HUEDevice>
+        <HUEDevice name="HUEDevice6" state="on" sets="off:noArg on:noArg toggle:noArg statusRequest:noArg pct:slider,0,1,100 bri:slider,0,1,254 alert:none,select,lselect dimUp:noArg dimDown:noArg rgb:colorpicker,RGB color:slider,2000,1,6500 ct:slider,154,1,500 hue:slider,0,1,65535 sat:slider,0,1,254 xy effect:none,colorloop blink on-for-timer on-till off-for-timer intervals off-till" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev delayedUpdate:1 realtimePicker:1 color-icons:1,2 model:LCT001,LLC001,LLC005,LLC006,LLC007,LST001,LWB001,LWL001 subType:colordimmer,dimmer,switch event-on-change-reading event-on-update-reading event-min-interval stateFormat devStateIcon devStateStyle fp_Grundriss icon lightSceneParamsToSave sortby webCmd">
+            <INT key="DEF" value="6 "/>
+            <INT key="ID" value="6"/>
+            <INT key="INTERVAL" value="60"/>
+            <INT key="NAME" value="HUEDevice6"/>
+            <INT key="NR" value="94"/>
+            <INT key="STATE" value="on"/>
+            <INT key="TYPE" value="HUEDevice"/>
+            <INT key="modelid" value="LCT001"/>
+            <INT key="name" value="Hue Lamp 3"/>
+            <INT key="swversion" value="66010820"/>
+            <INT key="type" value="Extended color light"/>
+            <INT key="IODev" value="HUEbridge"/>
+            <ATTR key="IODev" value="HUEbridge"/>
+            <ATTR key="alias" value="Hue Lamp 3"/>
+            <ATTR key="group" value="Licht"/>
+            <ATTR key="model" value="LCT001"/>
+            <ATTR key="room" value="Wohnzimmer"/>
+            <ATTR key="subType" value="colordimmer"/>
+            <ATTR key="webCmd" value="rgb:rgb ff0000:rgb DEFF26:rgb 0000ff:toggle:on:off"/>
+            <STATE key="alert" value="none" measured="2014-01-08 21:30:08"/>
+            <STATE key="bri" value="254" measured="2014-01-08 21:30:08"/>
+            <STATE key="colormode" value="ct" measured="2014-01-08 21:30:08"/>
+            <STATE key="ct" value="369 (2710K)" measured="2014-01-08 21:30:08"/>
+            <STATE key="effect" value="none" measured="2014-01-08 21:30:08"/>
+            <STATE key="hue" value="14922" measured="2014-01-08 21:30:08"/>
+            <STATE key="level" value="100 %" measured="2014-01-08 21:30:08"/>
+            <STATE key="onoff" value="1" measured="2014-01-08 21:30:08"/>
+            <STATE key="pct" value="100" measured="2014-01-08 21:30:08"/>
+            <STATE key="reachable" value="true" measured="2014-01-08 21:30:08"/>
+            <STATE key="sat" value="144" measured="2014-01-08 21:30:08"/>
+            <STATE key="state" value="on" measured="2014-01-08 21:30:08"/>
+            <STATE key="xy" value="0.4595,0.4105" measured="2014-01-08 21:30:08"/>
+        </HUEDevice>
+        <HUEDevice name="HUEGroup0" state="Initialized" sets="off:noArg on:noArg toggle:noArg statusRequest:noArg pct:slider,0,1,100 bri:slider,0,1,254 alert:none,select,lselect rgb:colorpicker,RGB color:slider,2000,1,6500 ct:slider,154,1,500 hue:slider,0,1,65535 sat:slider,0,1,254 xy effect:none,colorloop blink on-for-timer on-till off-for-timer intervals off-till" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev delayedUpdate:1 realtimePicker:1 color-icons:1,2 model:LCT001,LLC001,LLC005,LLC006,LLC007,LST001,LWB001,LWL001 subType:colordimmer,dimmer,switch event-on-change-reading event-on-update-reading event-min-interval stateFormat devStateIcon devStateStyle fp_Grundriss icon lightSceneParamsToSave sortby webCmd">
+            <INT key="DEF" value="group 0 "/>
+            <INT key="ID" value="G0"/>
+            <INT key="NAME" value="HUEGroup0"/>
+            <INT key="NR" value="92"/>
+            <INT key="STATE" value="Initialized"/>
+            <INT key="TYPE" value="HUEDevice"/>
+            <INT key="lights" value="1,2,3,4,5,6"/>
+            <INT key="IODev" value="HUEbridge"/>
+            <ATTR key="IODev" value="HUEbridge"/>
+            <ATTR key="alias" value="Alle"/>
+            <ATTR key="room" value="Wohnzimmer"/>
+            <ATTR key="webCmd" value="on:off"/>
+        </HUEDevice>
+        <HUEDevice name="HUEGroup1" state="Initialized" sets="off:noArg on:noArg toggle:noArg statusRequest:noArg pct:slider,0,1,100 bri:slider,0,1,254 alert:none,select,lselect rgb:colorpicker,RGB color:slider,2000,1,6500 ct:slider,154,1,500 hue:slider,0,1,65535 sat:slider,0,1,254 xy effect:none,colorloop blink on-for-timer on-till off-for-timer intervals off-till" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev delayedUpdate:1 realtimePicker:1 color-icons:1,2 model:LCT001,LLC001,LLC005,LLC006,LLC007,LST001,LWB001,LWL001 subType:colordimmer,dimmer,switch event-on-change-reading event-on-update-reading event-min-interval stateFormat devStateIcon devStateStyle fp_Grundriss icon lightSceneParamsToSave sortby webCmd">
+            <INT key="DEF" value="group 1 "/>
+            <INT key="ID" value="G1"/>
+            <INT key="NAME" value="HUEGroup1"/>
+            <INT key="NR" value="91"/>
+            <INT key="STATE" value="Initialized"/>
+            <INT key="TYPE" value="HUEDevice"/>
+            <INT key="lights" value="1,2,3"/>
+            <INT key="IODev" value="HUEbridge"/>
+            <ATTR key="IODev" value="HUEbridge"/>
+            <ATTR key="alias" value="NoBulbs"/>
+            <ATTR key="room" value="Wohnzimmer"/>
+            <ATTR key="webCmd" value="on:off"/>
+        </HUEDevice>
+        <HUEDevice name="HUEGroup2" state="Initialized" sets="off:noArg on:noArg toggle:noArg statusRequest:noArg pct:slider,0,1,100 bri:slider,0,1,254 alert:none,select,lselect rgb:colorpicker,RGB color:slider,2000,1,6500 ct:slider,154,1,500 hue:slider,0,1,65535 sat:slider,0,1,254 xy effect:none,colorloop blink on-for-timer on-till off-for-timer intervals off-till" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev delayedUpdate:1 realtimePicker:1 color-icons:1,2 model:LCT001,LLC001,LLC005,LLC006,LLC007,LST001,LWB001,LWL001 subType:colordimmer,dimmer,switch event-on-change-reading event-on-update-reading event-min-interval stateFormat devStateIcon devStateStyle fp_Grundriss icon lightSceneParamsToSave sortby webCmd">
+            <INT key="DEF" value="group 2 "/>
+            <INT key="ID" value="G2"/>
+            <INT key="NAME" value="HUEGroup2"/>
+            <INT key="NR" value="93"/>
+            <INT key="STATE" value="Initialized"/>
+            <INT key="TYPE" value="HUEDevice"/>
+            <INT key="lights" value="4,5,6"/>
+            <INT key="IODev" value="HUEbridge"/>
+            <ATTR key="IODev" value="HUEbridge"/>
+            <ATTR key="alias" value="Bulb"/>
+            <ATTR key="room" value="Wohnzimmer"/>
+            <ATTR key="webCmd" value="on:off"/>
+        </HUEDevice>
+    </HUEDevice_LIST>
+    <LightScene_LIST>
+        <LightScene name="LichtTV" state="Initialized" sets="remove:An,Aus,Power,TV save set scene:An,Aus,Power,TV" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings devStateIcon devStateStyle fp_Grundriss icon lightSceneParamsToSave sortby webCmd">
+            <INT key="DEF" value="HUEDevice1 HUEDevice2 HUEDevice3 HUEDevice4 HUEDevice5 HUEDevice6"/>
+            <INT key="HAS_DataDumper" value="1"/>
+            <INT key="HAS_JSON" value="1"/>
+            <INT key="NAME" value="LichtTV"/>
+            <INT key="NR" value="110"/>
+            <INT key="NTFY_ORDER" value="50-LichtTV"/>
+            <INT key="STATE" value="Initialized"/>
+            <INT key="TYPE" value="LightScene"/>
+            <ATTR key="room" value="Admin"/>
+        </LightScene>
+    </LightScene_LIST>
 </FHZINFO>

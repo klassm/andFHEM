@@ -29,6 +29,7 @@ import org.junit.Test;
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.Is.is;
 
 public class HUEDeviceTest extends DeviceXMLParsingBase {
@@ -52,6 +53,12 @@ public class HUEDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getXy(), is(new double[] {0.4595,0.4105}));
 
         assertThat(device.getPositionForDimState("off"), is(0));
+    }
+
+    @Test
+    public void testDeviceWithoutXYAttribute() {
+        HUEDevice device = getDeviceFor("device1");
+        assertThat(device.getXy(), is(nullValue()));
     }
 
     @Override
