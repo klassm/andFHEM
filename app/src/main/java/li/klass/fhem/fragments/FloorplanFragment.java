@@ -25,7 +25,13 @@
 package li.klass.fhem.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.webkit.WebView;
+
+import org.apache.commons.io.IOUtils;
+
+import java.io.IOException;
+import java.io.InputStream;
 
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.service.connection.ConnectionService;
@@ -53,46 +59,13 @@ public class FloorplanFragment extends AbstractWebViewFragment {
             return;
         }
 
-        String script = "javascript:" +
-
-                // hide floorplan navigation elements
-                "var floorplans = document.getElementById(\"floorplans\");" +
-                "if (!! floorplans) floorplans.style.display=\"none\";" +
-
-                "var fpmenu = document.getElementById(\"fpmenu\");" +
-                "if (!! fpmenu) fpmenu.style.display=\"none\";" +
-
-                "var logo = document.getElementById(\"logo\");" +
-                "if (!! logo) logo.style.display=\"none\";" +
-
-                // shift the background image to left, compute the left offset
-                "var backImg = document.getElementById(\"backimg\"); " +
-                "if (!! backImg) {" +
-                "  var backImgOffset = window.getComputedStyle(backImg, null).getPropertyValue(\"left\").replace(\"px\", \"\");" +
-                "  document.getElementById(\"backimg\").style.left=\"0\";" +
-                "}" +
-
-                // move each child element to left by using the computed background image offset
-                "var elements = document.getElementById(\"floorplan\").getElementsByTagName(\"div\"); " +
-                "if (!! elements) {" +
-                "  for (var i = 0; i < elements.length; i++) { " +
-                "    var left = elements[i].style.left.replace(\"px\", \"\"); " +
-                "    elements[i].style.left = (left - backImgOffset) + \"px\" " +
-                "  }" +
-                "};" +
-
-                // override the implemented FW_cmd function to allow page
-                // reloading when the XMLHttpRequest is finished
-                "function FW_cmd(arg) { " +
-                "  var req = new XMLHttpRequest(); " +
-                "  req.onreadystatechange=function() { " +
-                "  if (req.readyState == 4 && req.status == 200) {" +
-                "    window.location.reload();" +
-                "  }" +
-                "};" +
-                "req.open(\"GET\", arg, true); " +
-                "req.send(null);}";
-        view.loadUrl(script);
+        InputStream modifyJsStream = FloorplanFragment.class.getResourceAsStream("floorplan-modify.js");
+        try {
+            String modifyJs = IOUtils.toString(modifyJsStream);
+            view.loadUrl("javascript:" + modifyJs);
+        } catch (IOException e) {
+            Log.e(TAG, "cannot load floorplan-modify.js", e);
+        }
     }
 
     protected String getLoadUrl() {
