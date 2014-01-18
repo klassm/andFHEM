@@ -138,5 +138,20 @@
             <STATE key="temperature" value="19.125" measured="2013-02-23 17:00:12"/>
             <ATTR key="room" value="room"/>
         </OWDevice>
+        <OWDevice name="OWDongle" state="present: 1" sets="interval " attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev uncached trimvalues polls interfaces model resolution:9,10,11,12 event-on-change-reading event-on-update-reading event-min-interval stateFormat DbLogExclude devStateIcon devStateStyle icon onOffDevice sortby webCmd widget_name yaf_1">
+            <INT key="DEF" value="81.8E0E2F000000"/>
+            <INT key="NAME" value="OWDongle"/>
+            <INT key="NR" value="78"/>
+            <INT key="NTFY_ORDER" value="50b-OWDongle"/>
+            <INT key="STATE" value="present: 1"/>
+            <INT key="TYPE" value="OWDevice"/>
+            <INT key="IODev" value="OWServer"/>
+            <ATTR key="model" value="DS1420"/>
+            <ATTR key="room" value="hidden"/>
+            <STATE key="id" value="8E0E2F000000" measured="2014-01-05 18:14:27"/>
+            <STATE key="location" value="bus.0" measured="2014-01-05 18:14:27"/>
+            <STATE key="present" value="1" measured="2014-01-05 18:14:27"/>
+            <STATE key="state" value="present: 1" measured="2014-01-05 18:14:27"/>
+        </OWDevice>
     </OWDevice_LIST>
 </FHZINFO>
