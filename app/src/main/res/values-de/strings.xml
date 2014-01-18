@@ -208,6 +208,7 @@
     <string name="connectionPort">Port</string>
     <string name="connectionPortDesc">z.B. 7072</string>
     <string name="connectionEmptyError">Feld \"%s\" darf nicht leer sein!</string>
+    <string name="connectionUrlHttp">URL muss mit "http" beginnen!</string>
 
     <string name="switchDevice">Schalte</string>
     <string name="preferences">Einstellungen</string>

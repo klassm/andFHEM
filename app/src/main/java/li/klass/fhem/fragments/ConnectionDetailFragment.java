@@ -363,13 +363,26 @@ public class ConnectionDetailFragment extends BaseFragment {
     private boolean handleFHEMWEBSave(Intent intent) {
         String url = getTextViewContent(R.id.url);
         if (enforceNotEmpty(R.string.connectionURL, url)) return false;
-        intent.putExtra(BundleExtraKeys.CONNECTION_URL, url);
+        if (enforceUrlStartsWithHttp(url)) return false;
 
+        intent.putExtra(BundleExtraKeys.CONNECTION_URL, url);
 
         String username = getTextViewContent(R.id.username);
         intent.putExtra(BundleExtraKeys.CONNECTION_USERNAME, username);
 
         return true;
+    }
+
+    private boolean enforceUrlStartsWithHttp(String url) {
+        if (! url.startsWith("http")) {
+            Context context = getActivity();
+            String emptyError = context.getString(R.string.connectionUrlHttp);
+
+            DialogUtil.showAlertDialog(context, R.string.error, emptyError);
+
+            return true;
+        }
+        return false;
     }
 
     private boolean enforceNotEmpty(int fieldName, String value) {
