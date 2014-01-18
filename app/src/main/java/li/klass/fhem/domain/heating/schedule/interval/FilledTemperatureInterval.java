@@ -82,7 +82,7 @@ public class FilledTemperatureInterval extends BaseHeatingInterval implements Co
         if (super.isModified()) return true;
 
         double temperatureDiff = Math.abs(temperature - changedTemperature);
-        return temperatureDiff > 0.1 || !switchTime.equals(changedSwitchTime);
+        return temperatureDiff > 0.1 || (switchTime != null && !switchTime.equals(changedSwitchTime));
     }
 
     @Override
