@@ -33,6 +33,7 @@ import li.klass.fhem.adapter.devices.FloorplanAdapter;
 import li.klass.fhem.adapter.devices.GCMSendDeviceAdapter;
 import li.klass.fhem.adapter.devices.HueDeviceAdapter;
 import li.klass.fhem.adapter.devices.MaxAdapter;
+import li.klass.fhem.adapter.devices.OwSwitchDeviceAdapter;
 import li.klass.fhem.adapter.devices.PidAdapter;
 import li.klass.fhem.adapter.devices.ReadingsProxyDeviceAdapter;
 import li.klass.fhem.adapter.devices.RemoteControlAdapter;
@@ -86,6 +87,7 @@ import li.klass.fhem.domain.OWFSDevice;
 import li.klass.fhem.domain.OpenWeatherMapDevice;
 import li.klass.fhem.domain.OregonDevice;
 import li.klass.fhem.domain.OwDevice;
+import li.klass.fhem.domain.OwSwitchDevice;
 import li.klass.fhem.domain.OwcountDevice;
 import li.klass.fhem.domain.OwtempDevice;
 import li.klass.fhem.domain.OwthermDevice;
@@ -189,6 +191,7 @@ public enum DeviceType {
     LACROSSE("LaCrosse", LaCrosseDevice.class),
     WEB_LINK("weblink", WebLinkDevice.class, new WebLinkAdapter()),
     PILIGHT("pilight", PilightDevice.class, new ToggleableAdapter<PilightDevice>(PilightDevice.class)),
+    OWSWITCH("OWSWITCH", OwSwitchDevice.class, new OwSwitchDeviceAdapter()),
     ;
 
     private String xmllistTag;

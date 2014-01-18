@@ -25,7 +25,6 @@
 package li.klass.fhem.adapter.devices.genericui;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -37,12 +36,13 @@ import java.util.Map;
 
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
-import li.klass.fhem.adapter.devices.core.UpdatingResultReceiver;
-import li.klass.fhem.constants.Actions;
-import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.domain.core.ToggleableDevice;
+import li.klass.fhem.domain.core.Device;
 
-public class ToggleActionRow<T extends ToggleableDevice> {
+public abstract class ToggleActionRow<D extends Device> {
+
+    protected abstract boolean isOn(D device);
+    protected abstract void onButtonClick(final Context context, D device, boolean isChecked);
+
     private String description;
     private int layout;
 
@@ -58,8 +58,10 @@ public class ToggleActionRow<T extends ToggleableDevice> {
         this.layout = layout;
     }
 
-    public TableRow createRow(Context context, LayoutInflater inflater, T device) {
+    public TableRow createRow(Context context, LayoutInflater inflater, D device) {
         TableRow row = (TableRow) inflater.inflate(layout, null);
+        assert row != null;
+
         ((TextView) row.findViewById(R.id.description)).setText(description);
         ToggleButton button = (ToggleButton) row.findViewById(R.id.toggleButton);
         button.setOnClickListener(createListener(context, device, button));
@@ -68,12 +70,7 @@ public class ToggleActionRow<T extends ToggleableDevice> {
 
         return row;
     }
-
-    public boolean isOn(T device) {
-        return device.isOnRespectingInvertHook();
-    }
-
-    private ToggleButton.OnClickListener createListener(final Context context, final T device, final ToggleButton button) {
+    private ToggleButton.OnClickListener createListener(final Context context, final D device, final ToggleButton button) {
         return new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -83,7 +80,7 @@ public class ToggleActionRow<T extends ToggleableDevice> {
     }
 
     @SuppressWarnings("unchecked")
-    protected void setToogleButtonText(T device, ToggleButton toggleButton) {
+    protected void setToogleButtonText(D device, ToggleButton toggleButton) {
         Map<String, String> eventMap = device.getEventMap();
         if (eventMap == null) return;
 
@@ -94,13 +91,5 @@ public class ToggleActionRow<T extends ToggleableDevice> {
         if (eventMap.containsKey("off")) {
             toggleButton.setTextOff(eventMap.get("off"));
         }
-    }
-
-    public void onButtonClick(final Context context, T device, boolean isChecked) {
-        Intent intent = new Intent(Actions.DEVICE_TOGGLE_STATE);
-        intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
-        intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver(context));
-
-        context.startService(intent);
     }
 }

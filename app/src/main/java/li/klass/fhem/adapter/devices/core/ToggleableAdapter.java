@@ -30,7 +30,7 @@ import android.widget.TableLayout;
 
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.genericui.OnOffActionRow;
-import li.klass.fhem.adapter.devices.genericui.ToggleActionRow;
+import li.klass.fhem.adapter.devices.genericui.ToggleDeviceActionRow;
 import li.klass.fhem.adapter.devices.genericui.WebCmdActionRow;
 import li.klass.fhem.domain.core.ToggleableDevice;
 
@@ -78,7 +78,7 @@ public class ToggleableAdapter<D extends ToggleableDevice<D>> extends GenericDev
                 addSwitchActionRow(context, device, layout, OnOffActionRow.LAYOUT_OVERVIEW);
             }
         } else {
-            addSwitchActionRow(context, device, layout, ToggleActionRow.LAYOUT_OVERVIEW);
+            addSwitchActionRow(context, device, layout, ToggleDeviceActionRow.LAYOUT_OVERVIEW);
         }
     }
 
@@ -87,7 +87,7 @@ public class ToggleableAdapter<D extends ToggleableDevice<D>> extends GenericDev
         if (device.isSpecialButtonDevice() && buttonHookType != TOGGLE_DEVICE) {
             addSwitchActionRow(context, device, layout, OnOffActionRow.LAYOUT_DETAIL);
         } else {
-            addSwitchActionRow(context, device, layout, ToggleActionRow.LAYOUT_DETAIL);
+            addSwitchActionRow(context, device, layout, ToggleDeviceActionRow.LAYOUT_DETAIL);
         }
     }
 
@@ -105,7 +105,7 @@ public class ToggleableAdapter<D extends ToggleableDevice<D>> extends GenericDev
             tableLayout.addView(new OnOffActionRow<T>(device.getAliasOrName(), layoutId)
                     .createRow(context, inflater, device));
         } else {
-            tableLayout.addView(new ToggleActionRow<T>(device.getAliasOrName(), layoutId)
+            tableLayout.addView(new ToggleDeviceActionRow<T>(device.getAliasOrName(), layoutId)
                     .createRow(context, inflater, device));
         }
     }

@@ -2729,6 +2729,28 @@ room structexclude webCmd eventMap">
 </USBWX>
 </USBWX_LIST>
 
+<OWSWITCH_LIST>
+<OWSWITCH name="kueche_licht" state="A: OFF B: OFF" sets="gpio init interval output" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev do_not_notify:0,1 showtime:0,1 model:DS2413,DS2406,DS2408 loglevel:0,1,2,3,4,5 stateS interval event-on-change-reading event-on-update-reading event-min-interval stateFormat AName AUnit BName BUnit CName CUnit DName DUnit EName EUnit FName FUnit GName GUnit HName HUnit devStateIcon devStateStyle icon sortby webCmd">
+    <INT key="DEF" value="DS2413 F54303000000"/>
+    <INT key="INTERVAL" value="300"/>
+    <INT key="NAME" value="kueche_licht"/>
+    <INT key="NR" value="27"/>
+    <INT key="OW_FAMILY" value="3A"/>
+    <INT key="OW_ID" value="F54303000000"/>
+    <INT key="PRESENT" value="1"/>
+    <INT key="ROM_ID" value="3A.F54303000000.29"/>
+    <INT key="STATE" value="A: OFF B: OFF"/>
+    <INT key="TYPE" value="OWSWITCH"/>
+    <INT key="IODev" value="OWio1"/>
+    <ATTR key="IODev" value="OWio1"/>
+    <ATTR key="model" value="DS2413"/>
+    <ATTR key="room" value="kueche"/>
+    <STATE key="A" value="TRUE" measured="2014-01-16 19:38:06"/>
+    <STATE key="B" value="OFF" measured="2014-01-16 19:38:06"/>
+    <STATE key="state" value="A: OFF B: OFF" measured="2014-01-16 19:38:06"/>
+</OWSWITCH>
+</OWSWITCH_LIST>
+
 <FS20_LIST>
 <FS20 name="FS20_897a14" state="on"
       sets="dim06% dim100% dim12% dim18% dim25% dim31% dim37% dim43% dim50% dim56% dim62% dim68% dim75% dim81% dim87% dim93% dimdown dimup dimupdown off off-for-timer on on-100-for-timer-prev on-for-timer on-old-for-timer on-old-for-timer-prev on-till ramp-off-time ramp-on-time reset sendstate timer toggle"

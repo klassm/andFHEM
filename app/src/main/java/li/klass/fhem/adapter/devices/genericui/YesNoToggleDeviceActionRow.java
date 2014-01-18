@@ -27,6 +27,9 @@ package li.klass.fhem.adapter.devices.genericui;
 import android.content.Context;
 import android.content.Intent;
 import android.widget.ToggleButton;
+
+import java.util.Map;
+
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
@@ -34,12 +37,12 @@ import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.core.ToggleableDevice;
 
-public abstract class YesNoToggleActionRow<D extends ToggleableDevice<D>> extends ToggleActionRow<D> {
+public abstract class YesNoToggleDeviceActionRow<D extends ToggleableDevice<D>> extends ToggleDeviceActionRow<D> {
 
     private final String commandAttribute;
 
-    public YesNoToggleActionRow(String commandAttribute, int description) {
-        super(description, ToggleActionRow.LAYOUT_DETAIL);
+    public YesNoToggleDeviceActionRow(String commandAttribute, int description) {
+        super(description, ToggleDeviceActionRow.LAYOUT_DETAIL);
         this.commandAttribute = commandAttribute;
     }
 
@@ -49,7 +52,6 @@ public abstract class YesNoToggleActionRow<D extends ToggleableDevice<D>> extend
         toggleButton.setTextOff(context.getString(R.string.no));
         toggleButton.setTextOn(context.getString(R.string.yes));
     }
-
     @Override
     public abstract boolean isOn(D device);
 

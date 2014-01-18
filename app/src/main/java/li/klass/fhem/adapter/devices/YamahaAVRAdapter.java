@@ -33,7 +33,7 @@ import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
 import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
 import li.klass.fhem.adapter.devices.genericui.SpinnerActionRow;
 import li.klass.fhem.adapter.devices.genericui.StateChangingSeekBar;
-import li.klass.fhem.adapter.devices.genericui.YesNoToggleActionRow;
+import li.klass.fhem.adapter.devices.genericui.YesNoToggleDeviceActionRow;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.YamahaAVRDevice;
@@ -58,7 +58,7 @@ public class YamahaAVRAdapter extends ToggleableAdapterWithSwitchActionRow<Yamah
         registerFieldListener("state", new FieldNameAddedToDetailListener<YamahaAVRDevice>() {
             @Override
             protected void onFieldNameAdded(Context context, TableLayout tableLayout, String field, YamahaAVRDevice device, TableRow fieldTableRow) {
-                tableLayout.addView(new YesNoToggleActionRow<YamahaAVRDevice>("mute", R.string.musicMute) {
+                tableLayout.addView(new YesNoToggleDeviceActionRow<YamahaAVRDevice>("mute", R.string.musicMute) {
 
                     @Override
                     public boolean isOn(YamahaAVRDevice device) {

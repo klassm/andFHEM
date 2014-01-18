@@ -1,268 +1,275 @@
-
 <FHZINFO>
-    <HUEBridge_LIST>
-        <HUEBridge name="HUEbridge" state="Initialized" sets="statusRequest:noArg" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings key devStateIcon devStateStyle fp_Grundriss icon lightSceneParamsToSave sortby webCmd">
-            <INT key="DEF" value="192.168.177.139"/>
-            <INT key="Host" value="192.168.177.139"/>
+    <Global_LIST>
+        <Global name="global" state="&lt;no definition&gt;" sets="" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings archivecmd apiversion archivedir configfile lastinclude logfile modpath nrarchive pidfilename port statefile title userattr mseclog:1,0 version nofork:1,0 logdir holiday2we autoload_undefined_devices:1,0 dupTimeout latitude longitude altitude backupcmd backupdir backupsymlink backup_before_update exclude_from_update motd updatebranch uniqueID sendStatistics:onUpdate,manually,never updateInBackground:1,0 showInternalValues:1,0  devStateIcon devStateStyle icon sortby webCmd">
+            <INT key="DEF" value="&lt;no definition&gt;"/>
+            <INT key="NAME" value="global"/>
+            <INT key="NR" value="1"/>
+            <INT key="STATE" value="&lt;no definition&gt;"/>
+            <INT key="TYPE" value="Global"/>
+            <INT key="currentlogfile" value="./log/fhem-2014-01.log"/>
+            <INT key="logfile" value="./log/fhem-%Y-%m.log"/>
+            <ATTR key="autoload_undefined_devices" value="1"/>
+            <ATTR key="configfile" value="fhem.cfg"/>
+            <ATTR key="logfile" value="./log/fhem-%Y-%m.log"/>
+            <ATTR key="modpath" value="."/>
+            <ATTR key="room" value="hidden"/>
+            <ATTR key="sendStatistics" value="onUpdate"/>
+            <ATTR key="statefile" value="./log/fhem.save"/>
+            <ATTR key="title" value="FHEM"/>
+            <ATTR key="uniqueID" value="./FHEM/FhemUtils/uniqueID"/>
+            <ATTR key="updateInBackground" value="1"/>
+            <ATTR key="userattr" value="devStateIcon devStateStyle icon sortby webCmd"/>
+            <ATTR key="verbose" value="3"/>
+            <ATTR key="version" value="$Id: fhem.pl 4603 2014-01-10 12:28:58Z rudolfkoenig $"/>
+        </Global>
+    </Global_LIST>
+    <OWX_LIST>
+        <OWX name="OWio1" state="Active" sets="followAlarms interval" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings loglevel:0,1,2,3,4,5,6 buspower:real,parasitic IODev devStateIcon devStateStyle icon sortby webCmd">
+            <INT key="ALARMED" value="no"/>
+            <INT key="DEF" value="/dev/ttyUSB0"/>
+            <INT key="DeviceName" value="/dev/ttyUSB0@9600"/>
+            <INT key="FD" value="10"/>
+            <INT key="INTERFACE" value="DS2480"/>
+            <INT key="NAME" value="OWio1"/>
+            <INT key="NR" value="21"/>
+            <INT key="PARTIAL" value=""/>
+            <INT key="PRESENT" value="1"/>
+            <INT key="ROM_ID" value="FF"/>
+            <INT key="STATE" value="Active"/>
+            <INT key="TYPE" value="OWX"/>
+            <INT key="followAlarms" value="off"/>
+            <INT key="interval" value="15"/>
+            <ATTR key="room" value="hidden"/>
+            <STATE key="state" value="defined" measured="2014-01-13 19:47:56"/>
+        </OWX>
+    </OWX_LIST>
+    <FHEMWEB_LIST>
+        <FHEMWEB name="FHEMWEB:192.168.1.77:52396" state="Connected" sets="clearSvgCache:noArg rereadicons:noArg" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings CORS:0,1 HTTPS:1,0 SVGcache:1,0 allowfrom basicAuth basicAuthMsg column endPlotNow:1,0 endPlotToday:1,0 fwcompress:0,1 hiddengroup hiddenroom iconPath longpoll:0,1 longpollSVG:1,0 menuEntries plotfork:1,0 plotmode:gnuplot,gnuplot-scroll,SVG plotsize nrAxis redirectCmds:0,1 refresh reverseLogs:0,1 roomIcons sortRooms smallscreen:unused stylesheetPrefix touchpad:unused webname devStateIcon devStateStyle icon sortby webCmd">
+            <INT key="FD" value="12"/>
+            <INT key="LASTACCESS" value="1389730217"/>
+            <INT key="NAME" value="FHEMWEB:192.168.1.77:52396"/>
+            <INT key="NR" value="123"/>
+            <INT key="NTFY_ORDER" value="FHEMWEB:192.168.1.77:52396"/>
+            <INT key="SNAME" value="WEB"/>
+            <INT key="STATE" value="Connected"/>
+            <INT key="TEMPORARY" value="1"/>
+            <INT key="TYPE" value="FHEMWEB"/>
+            <ATTR key="room" value="hidden"/>
+        </FHEMWEB>
+        <FHEMWEB name="FHEMWEB:192.168.1.77:55123" state="Connected" sets="clearSvgCache:noArg rereadicons:noArg" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings CORS:0,1 HTTPS:1,0 SVGcache:1,0 allowfrom basicAuth basicAuthMsg column endPlotNow:1,0 endPlotToday:1,0 fwcompress:0,1 hiddengroup hiddenroom iconPath longpoll:0,1 longpollSVG:1,0 menuEntries plotfork:1,0 plotmode:gnuplot,gnuplot-scroll,SVG plotsize nrAxis redirectCmds:0,1 refresh reverseLogs:0,1 roomIcons sortRooms smallscreen:unused stylesheetPrefix touchpad:unused webname devStateIcon devStateStyle icon sortby webCmd">
+            <INT key="FD" value="5"/>
+            <INT key="LASTACCESS" value="1389901119"/>
+            <INT key="NAME" value="FHEMWEB:192.168.1.77:55123"/>
+            <INT key="NR" value="262"/>
+            <INT key="SNAME" value="WEB"/>
+            <INT key="STATE" value="Connected"/>
+            <INT key="TEMPORARY" value="1"/>
+            <INT key="TYPE" value="FHEMWEB"/>
+            <ATTR key="room" value="hidden"/>
+        </FHEMWEB>
+        <FHEMWEB name="WEB" state="Initialized" sets="clearSvgCache:noArg rereadicons:noArg" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings CORS:0,1 HTTPS:1,0 SVGcache:1,0 allowfrom basicAuth basicAuthMsg column endPlotNow:1,0 endPlotToday:1,0 fwcompress:0,1 hiddengroup hiddenroom iconPath longpoll:0,1 longpollSVG:1,0 menuEntries plotfork:1,0 plotmode:gnuplot,gnuplot-scroll,SVG plotsize nrAxis redirectCmds:0,1 refresh reverseLogs:0,1 roomIcons sortRooms smallscreen:unused stylesheetPrefix touchpad:unused webname devStateIcon devStateStyle icon sortby webCmd">
+            <INT key="CONNECTS" value="14731"/>
+            <INT key="DEF" value="8083 global"/>
+            <INT key="FD" value="7"/>
+            <INT key="NAME" value="WEB"/>
+            <INT key="NR" value="6"/>
+            <INT key="NTFY_ORDER" value="50-WEB"/>
+            <INT key="PORT" value="8083"/>
+            <INT key="SSL" value="1"/>
+            <INT key="STATE" value="Initialized"/>
+            <INT key="TYPE" value="FHEMWEB"/>
+            <ATTR key="HTTPS" value="1"/>
+            <ATTR key="room" value="hidden"/>
+        </FHEMWEB>
+        <FHEMWEB name="WEBphone" state="Initialized" sets="clearSvgCache:noArg rereadicons:noArg" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings CORS:0,1 HTTPS:1,0 SVGcache:1,0 allowfrom basicAuth basicAuthMsg column endPlotNow:1,0 endPlotToday:1,0 fwcompress:0,1 hiddengroup hiddenroom iconPath longpoll:0,1 longpollSVG:1,0 menuEntries plotfork:1,0 plotmode:gnuplot,gnuplot-scroll,SVG plotsize nrAxis redirectCmds:0,1 refresh reverseLogs:0,1 roomIcons sortRooms smallscreen:unused stylesheetPrefix touchpad:unused webname devStateIcon devStateStyle icon sortby webCmd">
+            <INT key="CONNECTS" value="2"/>
+            <INT key="DEF" value="8084 global"/>
+            <INT key="FD" value="8"/>
+            <INT key="NAME" value="WEBphone"/>
+            <INT key="NR" value="7"/>
+            <INT key="NTFY_ORDER" value="50-WEBphone"/>
+            <INT key="PORT" value="8084"/>
+            <INT key="STATE" value="Initialized"/>
+            <INT key="TYPE" value="FHEMWEB"/>
+            <ATTR key="room" value="hidden"/>
+            <ATTR key="stylesheetPrefix" value="smallscreen"/>
+        </FHEMWEB>
+    </FHEMWEB_LIST>
+    <OWSWITCH_LIST>
+        <OWSWITCH name="3B_FK_Kueche" state="A: ON&amp;#x2607; B: OFF" sets="gpio init interval output" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev do_not_notify:0,1 showtime:0,1 model:DS2413,DS2406,DS2408 loglevel:0,1,2,3,4,5 stateS interval event-on-change-reading event-on-update-reading event-min-interval stateFormat AName AUnit BName BUnit CName CUnit DName DUnit EName EUnit FName FUnit GName GUnit HName HUnit devStateIcon devStateStyle icon sortby webCmd">
+            <INT key="DEF" value="DS2406 A19F9D000000"/>
             <INT key="INTERVAL" value="300"/>
-            <INT key="NAME" value="HUEbridge"/>
-            <INT key="NR" value="87"/>
+            <INT key="NAME" value="3B_FK_Kueche"/>
+            <INT key="NR" value="23"/>
+            <INT key="OW_FAMILY" value="12"/>
+            <INT key="OW_ID" value="A19F9D000000"/>
+            <INT key="PRESENT" value="1"/>
+            <INT key="ROM_ID" value="12.A19F9D000000.4E"/>
+            <INT key="STATE" value="A: ON&amp;#x2607; B: OFF"/>
+            <INT key="TYPE" value="OWSWITCH"/>
+            <INT key="IODev" value="OWio1"/>
+            <ATTR key="IODev" value="OWio1"/>
+            <ATTR key="model" value="DS2406"/>
+            <ATTR key="room" value="3B_Kueche"/>
+            <STATE key="A" value="ON&amp;#x2607;" measured="2014-01-16 19:38:07"/>
+            <STATE key="B" value="OFF" measured="2014-01-16 19:38:07"/>
+            <STATE key="state" value="A: ON&amp;#x2607; B: OFF" measured="2014-01-16 19:38:07"/>
+        </OWSWITCH>
+        <OWSWITCH name="3B_FK_SZ" state="A: ON&amp;#x2607; B: OFF" sets="gpio init interval output" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev do_not_notify:0,1 showtime:0,1 model:DS2413,DS2406,DS2408 loglevel:0,1,2,3,4,5 stateS interval event-on-change-reading event-on-update-reading event-min-interval stateFormat AName AUnit BName BUnit CName CUnit DName DUnit EName EUnit FName FUnit GName GUnit HName HUnit devStateIcon devStateStyle icon sortby webCmd">
+            <INT key="DEF" value="DS2406 598A9D000000"/>
+            <INT key="INTERVAL" value="300"/>
+            <INT key="NAME" value="3B_FK_SZ"/>
+            <INT key="NR" value="24"/>
+            <INT key="OW_FAMILY" value="12"/>
+            <INT key="OW_ID" value="598A9D000000"/>
+            <INT key="PRESENT" value="1"/>
+            <INT key="ROM_ID" value="12.598A9D000000.33"/>
+            <INT key="STATE" value="A: ON&amp;#x2607; B: OFF"/>
+            <INT key="TYPE" value="OWSWITCH"/>
+            <INT key="IODev" value="OWio1"/>
+            <ATTR key="IODev" value="OWio1"/>
+            <ATTR key="model" value="DS2406"/>
+            <ATTR key="room" value="3B_SZ"/>
+            <STATE key="A" value="ON&amp;#x2607;" measured="2014-01-16 19:38:07"/>
+            <STATE key="B" value="OFF" measured="2014-01-16 19:38:07"/>
+            <STATE key="state" value="A: ON&amp;#x2607; B: OFF" measured="2014-01-16 19:38:07"/>
+        </OWSWITCH>
+        <OWSWITCH name="3B_FK_WZ" state="A: ON&amp;#x2607; B: OFF" sets="gpio init interval output" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev do_not_notify:0,1 showtime:0,1 model:DS2413,DS2406,DS2408 loglevel:0,1,2,3,4,5 stateS interval event-on-change-reading event-on-update-reading event-min-interval stateFormat AName AUnit BName BUnit CName CUnit DName DUnit EName EUnit FName FUnit GName GUnit HName HUnit devStateIcon devStateStyle icon sortby webCmd">
+            <INT key="DEF" value="DS2406 269D9D000000"/>
+            <INT key="INTERVAL" value="300"/>
+            <INT key="NAME" value="3B_FK_WZ"/>
+            <INT key="NR" value="22"/>
+            <INT key="OW_FAMILY" value="12"/>
+            <INT key="OW_ID" value="269D9D000000"/>
+            <INT key="PRESENT" value="1"/>
+            <INT key="ROM_ID" value="12.269D9D000000.A2"/>
+            <INT key="STATE" value="A: ON&amp;#x2607; B: OFF"/>
+            <INT key="TYPE" value="OWSWITCH"/>
+            <INT key="IODev" value="OWio1"/>
+            <ATTR key="IODev" value="OWio1"/>
+            <ATTR key="model" value="DS2406"/>
+            <ATTR key="room" value="3B_WZ"/>
+            <STATE key="A" value="ON&amp;#x2607;" measured="2014-01-16 19:38:06"/>
+            <STATE key="B" value="OFF" measured="2014-01-16 19:38:06"/>
+            <STATE key="state" value="A: ON&amp;#x2607; B: OFF" measured="2014-01-16 19:38:06"/>
+        </OWSWITCH>
+        <OWSWITCH name="3B_RoLa_1" state="A: OFF B: OFF" sets="gpio init interval output" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev do_not_notify:0,1 showtime:0,1 model:DS2413,DS2406,DS2408 loglevel:0,1,2,3,4,5 stateS interval event-on-change-reading event-on-update-reading event-min-interval stateFormat AName AUnit BName BUnit CName CUnit DName DUnit EName EUnit FName FUnit GName GUnit HName HUnit devStateIcon devStateStyle icon sortby webCmd">
+            <INT key="DEF" value="DS2413 E13B03000000"/>
+            <INT key="INTERVAL" value="300"/>
+            <INT key="NAME" value="3B_RoLa_1"/>
+            <INT key="NR" value="26"/>
+            <INT key="OW_FAMILY" value="3A"/>
+            <INT key="OW_ID" value="E13B03000000"/>
+            <INT key="PRESENT" value="1"/>
+            <INT key="ROM_ID" value="3A.E13B03000000.FD"/>
+            <INT key="STATE" value="A: OFF B: OFF"/>
+            <INT key="TYPE" value="OWSWITCH"/>
+            <INT key="IODev" value="OWio1"/>
+            <ATTR key="IODev" value="OWio1"/>
+            <ATTR key="model" value="DS2413"/>
+            <ATTR key="room" value="OWX"/>
+            <STATE key="A" value="OFF" measured="2014-01-16 19:38:06"/>
+            <STATE key="B" value="OFF" measured="2014-01-16 19:38:06"/>
+            <STATE key="state" value="A: OFF B: OFF" measured="2014-01-16 19:38:06"/>
+        </OWSWITCH>
+        <OWSWITCH name="3B_RoLa_2" state="A: OFF B: OFF" sets="gpio init interval output" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev do_not_notify:0,1 showtime:0,1 model:DS2413,DS2406,DS2408 loglevel:0,1,2,3,4,5 stateS interval event-on-change-reading event-on-update-reading event-min-interval stateFormat AName AUnit BName BUnit CName CUnit DName DUnit EName EUnit FName FUnit GName GUnit HName HUnit devStateIcon devStateStyle icon sortby webCmd">
+            <INT key="DEF" value="DS2413 F03B03000000"/>
+            <INT key="INTERVAL" value="300"/>
+            <INT key="NAME" value="3B_RoLa_2"/>
+            <INT key="NR" value="25"/>
+            <INT key="OW_FAMILY" value="3A"/>
+            <INT key="OW_ID" value="F03B03000000"/>
+            <INT key="PRESENT" value="1"/>
+            <INT key="ROM_ID" value="3A.F03B03000000.91"/>
+            <INT key="STATE" value="A: OFF B: OFF"/>
+            <INT key="TYPE" value="OWSWITCH"/>
+            <INT key="IODev" value="OWio1"/>
+            <ATTR key="IODev" value="OWio1"/>
+            <ATTR key="model" value="DS2413"/>
+            <ATTR key="room" value="OWX"/>
+            <STATE key="A" value="OFF" measured="2014-01-16 19:38:06"/>
+            <STATE key="B" value="OFF" measured="2014-01-16 19:38:06"/>
+            <STATE key="state" value="A: OFF B: OFF" measured="2014-01-16 19:38:06"/>
+        </OWSWITCH>
+        <OWSWITCH name="3B_RoLa_3" state="A: OFF B: OFF" sets="gpio init interval output" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev do_not_notify:0,1 showtime:0,1 model:DS2413,DS2406,DS2408 loglevel:0,1,2,3,4,5 stateS interval event-on-change-reading event-on-update-reading event-min-interval stateFormat AName AUnit BName BUnit CName CUnit DName DUnit EName EUnit FName FUnit GName GUnit HName HUnit devStateIcon devStateStyle icon sortby webCmd">
+            <INT key="DEF" value="DS2413 F54303000000"/>
+            <INT key="INTERVAL" value="300"/>
+            <INT key="NAME" value="3B_RoLa_3"/>
+            <INT key="NR" value="27"/>
+            <INT key="OW_FAMILY" value="3A"/>
+            <INT key="OW_ID" value="F54303000000"/>
+            <INT key="PRESENT" value="1"/>
+            <INT key="ROM_ID" value="3A.F54303000000.29"/>
+            <INT key="STATE" value="A: OFF B: OFF"/>
+            <INT key="TYPE" value="OWSWITCH"/>
+            <INT key="IODev" value="OWio1"/>
+            <ATTR key="IODev" value="OWio1"/>
+            <ATTR key="model" value="DS2413"/>
+            <ATTR key="room" value="OWX"/>
+            <STATE key="A" value="OFF" measured="2014-01-16 19:38:06"/>
+            <STATE key="B" value="OFF" measured="2014-01-16 19:38:06"/>
+            <STATE key="state" value="A: OFF B: OFF" measured="2014-01-16 19:38:06"/>
+        </OWSWITCH>
+    </OWSWITCH_LIST>
+    <eventTypes_LIST>
+        <eventTypes name="eventTypes" state="active" sets="flush" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings disable:0,1 devStateIcon devStateStyle icon sortby webCmd">
+            <INT key="DEF" value="./log/eventTypes.txt"/>
+            <INT key="NAME" value="eventTypes"/>
+            <INT key="NR" value="17"/>
+            <INT key="NTFY_ORDER" value="50-eventTypes"/>
+            <INT key="STATE" value="active"/>
+            <INT key="TYPE" value="eventTypes"/>
+            <ATTR key="room" value="hidden"/>
+        </eventTypes>
+    </eventTypes_LIST>
+    <notify_LIST>
+        <notify name="initialUsbCheck" state="active" sets="" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings disable:0,1 forwardReturnValue:0,1 devStateIcon devStateStyle icon sortby webCmd">
+            <INT key="DEF" value="global:INITIALIZED usb create"/>
+            <INT key="NAME" value="initialUsbCheck"/>
+            <INT key="NR" value="20"/>
+            <INT key="NTFY_ORDER" value="50-initialUsbCheck"/>
+            <INT key="REGEXP" value="global:INITIALIZED"/>
+            <INT key="STATE" value="active"/>
+            <INT key="TYPE" value="notify"/>
+            <ATTR key="room" value="hidden"/>
+        </notify>
+    </notify_LIST>
+    <FileLog_LIST>
+        <FileLog name="Logfile" state="active" sets="absorb: addRegexpPart removeRegexpPart reopen" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings disable:0,1 logtype nrarchive archivedir archivecmd devStateIcon devStateStyle icon sortby webCmd">
+            <INT key="DEF" value="./log/fhem-%Y-%m.log fakelog"/>
+            <INT key="NAME" value="Logfile"/>
+            <INT key="NR" value="13"/>
+            <INT key="NTFY_ORDER" value="50-Logfile"/>
+            <INT key="REGEXP" value="fakelog"/>
+            <INT key="STATE" value="active"/>
+            <INT key="TYPE" value="FileLog"/>
+            <INT key="currentlogfile" value="./log/fhem-2014-01.log"/>
+            <INT key="logfile" value="./log/fhem-%Y-%m.log"/>
+            <ATTR key="room" value="hidden"/>
+        </FileLog>
+    </FileLog_LIST>
+    <autocreate_LIST>
+        <autocreate name="autocreate" state="active" sets="" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings autosave filelog device_room weblink weblink_room disable ignoreTypes devStateIcon devStateStyle icon sortby webCmd">
+            <INT key="NAME" value="autocreate"/>
+            <INT key="NR" value="15"/>
+            <INT key="NTFY_ORDER" value="50-autocreate"/>
+            <INT key="STATE" value="active"/>
+            <INT key="TYPE" value="autocreate"/>
+            <ATTR key="filelog" value="./log/%NAME-%Y.log"/>
+            <ATTR key="room" value="hidden"/>
+        </autocreate>
+    </autocreate_LIST>
+    <telnet_LIST>
+        <telnet name="telnetPort" state="Initialized" sets="" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings globalpassword password allowfrom SSL connectTimeout connectInterval encoding:utf8,latin1 devStateIcon devStateStyle icon sortby webCmd">
+            <INT key="CONNECTS" value="1"/>
+            <INT key="DEF" value="7072 global"/>
+            <INT key="FD" value="6"/>
+            <INT key="NAME" value="telnetPort"/>
+            <INT key="NR" value="4"/>
+            <INT key="PORT" value="7072"/>
             <INT key="STATE" value="Initialized"/>
-            <INT key="TYPE" value="HUEBridge"/>
-            <ATTR key="key" value="565f1c4bad0ceeb350f41778d7811b52"/>
-            <ATTR key="room" value="Admin"/>
-        </HUEBridge>
-    </HUEBridge_LIST>
-    <HUEDevice_LIST>
-        <HUEDevice name="HUEDevice1" state="off" sets="off:noArg on:noArg toggle:noArg statusRequest:noArg pct:slider,0,1,100 bri:slider,0,1,254 alert:none,select,lselect dimUp:noArg dimDown:noArg rgb:colorpicker,RGB color:slider,2000,1,6500 ct:slider,154,1,500 hue:slider,0,1,65535 sat:slider,0,1,254 xy effect:none,colorloop blink on-for-timer on-till off-for-timer intervals off-till" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev delayedUpdate:1 realtimePicker:1 color-icons:1,2 model:LCT001,LLC001,LLC005,LLC006,LLC007,LST001,LWB001,LWL001 subType:colordimmer,dimmer,switch event-on-change-reading event-on-update-reading event-min-interval stateFormat devStateIcon devStateStyle fp_Grundriss icon lightSceneParamsToSave sortby webCmd">
-            <INT key="DEF" value="1 "/>
-            <INT key="ID" value="1"/>
-            <INT key="INTERVAL" value="60"/>
-            <INT key="NAME" value="HUEDevice1"/>
-            <INT key="NR" value="88"/>
-            <INT key="STATE" value="off"/>
-            <INT key="TYPE" value="HUEDevice"/>
-            <INT key="modelid" value="LLC006"/>
-            <INT key="name" value="Color light 1"/>
-            <INT key="swversion" value="4.6.0.8274"/>
-            <INT key="type" value="Color light"/>
-            <INT key="IODev" value="HUEbridge"/>
-            <ATTR key="IODev" value="HUEbridge"/>
-            <ATTR key="alias" value="Iris"/>
-            <ATTR key="group" value="Licht"/>
-            <ATTR key="model" value="LLC006"/>
-            <ATTR key="realtimePicker" value="1"/>
-            <ATTR key="room" value="Wohnzimmer"/>
-            <ATTR key="subType" value="colordimmer"/>
-            <ATTR key="webCmd" value="rgb:rgb ff0000:rgb 98FF23:rgb 0000ff:toggle:on:off"/>
-            <STATE key="alert" value="none" measured="2014-01-08 21:30:08"/>
-            <STATE key="bri" value="0" measured="2014-01-08 21:30:08"/>
-            <STATE key="colormode" value="hs" measured="2014-01-08 21:30:08"/>
-            <STATE key="effect" value="none" measured="2014-01-08 21:30:08"/>
-            <STATE key="hue" value="6144" measured="2014-01-08 21:30:08"/>
-            <STATE key="level" value="0 %" measured="2014-01-08 21:30:08"/>
-            <STATE key="onoff" value="0" measured="2014-01-08 21:30:08"/>
-            <STATE key="pct" value="0" measured="2014-01-08 21:30:08"/>
-            <STATE key="reachable" value="true" measured="2014-01-08 21:30:08"/>
-            <STATE key="sat" value="186" measured="2014-01-08 21:30:08"/>
-            <STATE key="state" value="off" measured="2014-01-08 21:30:08"/>
-            <STATE key="xy" value="0.5834,0.3693" measured="2014-01-08 21:30:08"/>
-        </HUEDevice>
-        <HUEDevice name="HUEDevice2" state="off" sets="off:noArg on:noArg toggle:noArg statusRequest:noArg pct:slider,0,1,100 bri:slider,0,1,254 alert:none,select,lselect dimUp:noArg dimDown:noArg blink on-for-timer on-till off-for-timer intervals off-till" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev delayedUpdate:1 realtimePicker:1 color-icons:1,2 model:LCT001,LLC001,LLC005,LLC006,LLC007,LST001,LWB001,LWL001 subType:colordimmer,dimmer,switch event-on-change-reading event-on-update-reading event-min-interval stateFormat devStateIcon devStateStyle fp_Grundriss icon lightSceneParamsToSave sortby webCmd">
-            <INT key="DEF" value="2 "/>
-            <INT key="ID" value="2"/>
-            <INT key="INTERVAL" value="60"/>
-            <INT key="NAME" value="HUEDevice2"/>
-            <INT key="NR" value="90"/>
-            <INT key="STATE" value="off"/>
-            <INT key="TYPE" value="HUEDevice"/>
-            <INT key="modelid" value="LWL001"/>
-            <INT key="name" value="Dimmable plug-in unit 1"/>
-            <INT key="swversion" value="1.0.1.4591"/>
-            <INT key="type" value="Dimmable plug-in unit"/>
-            <INT key="IODev" value="HUEbridge"/>
-            <ATTR key="IODev" value="HUEbridge"/>
-            <ATTR key="alias" value="Lampe"/>
-            <ATTR key="group" value="Licht"/>
-            <ATTR key="model" value="LWL001"/>
-            <ATTR key="room" value="Wohnzimmer"/>
-            <ATTR key="subType" value="dimmer"/>
-            <ATTR key="webCmd" value="pct:toggle:on:off"/>
-            <STATE key="alert" value="none" measured="2014-01-08 21:30:08"/>
-            <STATE key="bri" value="0" measured="2014-01-08 21:30:08"/>
-            <STATE key="effect" value="none" measured="2014-01-08 21:30:08"/>
-            <STATE key="level" value="0 %" measured="2014-01-08 21:30:08"/>
-            <STATE key="onoff" value="0" measured="2014-01-08 21:30:08"/>
-            <STATE key="pct" value="0" measured="2014-01-08 21:30:08"/>
-            <STATE key="reachable" value="true" measured="2014-01-08 21:30:08"/>
-            <STATE key="state" value="off" measured="2014-01-08 21:30:08"/>
-        </HUEDevice>
-        <HUEDevice name="HUEDevice3" state="off" sets="off:noArg on:noArg toggle:noArg statusRequest:noArg pct:slider,0,1,100 bri:slider,0,1,254 alert:none,select,lselect dimUp:noArg dimDown:noArg blink on-for-timer on-till off-for-timer intervals off-till" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev delayedUpdate:1 realtimePicker:1 color-icons:1,2 model:LCT001,LLC001,LLC005,LLC006,LLC007,LST001,LWB001,LWL001 subType:colordimmer,dimmer,switch event-on-change-reading event-on-update-reading event-min-interval stateFormat devStateIcon devStateStyle fp_Grundriss icon lightSceneParamsToSave sortby webCmd">
-            <INT key="DEF" value="3 "/>
-            <INT key="ID" value="3"/>
-            <INT key="INTERVAL" value="60"/>
-            <INT key="NAME" value="HUEDevice3"/>
-            <INT key="NR" value="89"/>
-            <INT key="STATE" value="off"/>
-            <INT key="TYPE" value="HUEDevice"/>
-            <INT key="modelid" value="LWL001"/>
-            <INT key="name" value="Dimmable plug-in unit 2"/>
-            <INT key="swversion" value="1.0.1.4591"/>
-            <INT key="type" value="Dimmable plug-in unit"/>
-            <INT key="IODev" value="HUEbridge"/>
-            <ATTR key="IODev" value="HUEbridge"/>
-            <ATTR key="alias" value="Lichterkette"/>
-            <ATTR key="group" value="Licht"/>
-            <ATTR key="model" value="LWL001"/>
-            <ATTR key="room" value="Wohnzimmer"/>
-            <ATTR key="subType" value="dimmer"/>
-            <ATTR key="webCmd" value="pct:toggle:on:off"/>
-            <STATE key="alert" value="none" measured="2014-01-08 21:30:08"/>
-            <STATE key="bri" value="0" measured="2014-01-08 21:30:08"/>
-            <STATE key="effect" value="none" measured="2014-01-08 21:30:08"/>
-            <STATE key="level" value="0 %" measured="2014-01-08 21:30:08"/>
-            <STATE key="onoff" value="0" measured="2014-01-08 21:30:08"/>
-            <STATE key="pct" value="0" measured="2014-01-08 21:30:08"/>
-            <STATE key="reachable" value="true" measured="2014-01-08 21:30:08"/>
-            <STATE key="state" value="off" measured="2014-01-08 21:30:08"/>
-        </HUEDevice>
-        <HUEDevice name="HUEDevice4" state="on" sets="off:noArg on:noArg toggle:noArg statusRequest:noArg pct:slider,0,1,100 bri:slider,0,1,254 alert:none,select,lselect dimUp:noArg dimDown:noArg rgb:colorpicker,RGB color:slider,2000,1,6500 ct:slider,154,1,500 hue:slider,0,1,65535 sat:slider,0,1,254 xy effect:none,colorloop blink on-for-timer on-till off-for-timer intervals off-till" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev delayedUpdate:1 realtimePicker:1 color-icons:1,2 model:LCT001,LLC001,LLC005,LLC006,LLC007,LST001,LWB001,LWL001 subType:colordimmer,dimmer,switch event-on-change-reading event-on-update-reading event-min-interval stateFormat devStateIcon devStateStyle fp_Grundriss icon lightSceneParamsToSave sortby webCmd">
-            <INT key="DEF" value="4 "/>
-            <INT key="ID" value="4"/>
-            <INT key="INTERVAL" value="60"/>
-            <INT key="NAME" value="HUEDevice4"/>
-            <INT key="NR" value="95"/>
-            <INT key="STATE" value="on"/>
-            <INT key="TYPE" value="HUEDevice"/>
-            <INT key="modelid" value="LCT001"/>
-            <INT key="name" value="Hue Lamp 1"/>
-            <INT key="swversion" value="66010820"/>
-            <INT key="type" value="Extended color light"/>
-            <INT key="IODev" value="HUEbridge"/>
-            <ATTR key="IODev" value="HUEbridge"/>
-            <ATTR key="alias" value="Hue Lamp 1"/>
-            <ATTR key="fp_Grundriss" value="50,100,5,"/>
-            <ATTR key="group" value="Licht"/>
-            <ATTR key="model" value="LCT001"/>
-            <ATTR key="room" value="Wohnzimmer"/>
-            <ATTR key="subType" value="colordimmer"/>
-            <ATTR key="webCmd" value="rgb:rgb ff0000:rgb DEFF26:rgb 0000ff:toggle:on:off"/>
-            <STATE key="alert" value="none" measured="2014-01-08 21:30:08"/>
-            <STATE key="bri" value="254" measured="2014-01-08 21:31:08"/>
-            <STATE key="colormode" value="ct" measured="2014-01-08 21:30:08"/>
-            <STATE key="ct" value="337 (2967K)" measured="2014-01-08 21:30:08"/>
-            <STATE key="effect" value="none" measured="2014-01-08 21:30:08"/>
-            <STATE key="hue" value="15427" measured="2014-01-08 21:30:08"/>
-            <STATE key="level" value="100 %" measured="2014-01-08 21:31:08"/>
-            <STATE key="onoff" value="1" measured="2014-01-08 21:31:08"/>
-            <STATE key="pct" value="100" measured="2014-01-08 21:31:08"/>
-            <STATE key="reachable" value="true" measured="2014-01-08 21:30:08"/>
-            <STATE key="sat" value="115" measured="2014-01-08 21:30:08"/>
-            <STATE key="state" value="on" measured="2014-01-08 21:31:08"/>
-            <STATE key="xy" value="0.4412,0.4055" measured="2014-01-08 21:30:08"/>
-        </HUEDevice>
-        <HUEDevice name="HUEDevice5" state="on" sets="off:noArg on:noArg toggle:noArg statusRequest:noArg pct:slider,0,1,100 bri:slider,0,1,254 alert:none,select,lselect dimUp:noArg dimDown:noArg rgb:colorpicker,RGB color:slider,2000,1,6500 ct:slider,154,1,500 hue:slider,0,1,65535 sat:slider,0,1,254 xy effect:none,colorloop blink on-for-timer on-till off-for-timer intervals off-till" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev delayedUpdate:1 realtimePicker:1 color-icons:1,2 model:LCT001,LLC001,LLC005,LLC006,LLC007,LST001,LWB001,LWL001 subType:colordimmer,dimmer,switch event-on-change-reading event-on-update-reading event-min-interval stateFormat devStateIcon devStateStyle fp_Grundriss icon lightSceneParamsToSave sortby webCmd">
-            <INT key="DEF" value="5 "/>
-            <INT key="ID" value="5"/>
-            <INT key="INTERVAL" value="60"/>
-            <INT key="NAME" value="HUEDevice5"/>
-            <INT key="NR" value="96"/>
-            <INT key="STATE" value="on"/>
-            <INT key="TYPE" value="HUEDevice"/>
-            <INT key="modelid" value="LCT001"/>
-            <INT key="name" value="Hue Lamp 2"/>
-            <INT key="swversion" value="66010820"/>
-            <INT key="type" value="Extended color light"/>
-            <INT key="IODev" value="HUEbridge"/>
-            <ATTR key="IODev" value="HUEbridge"/>
-            <ATTR key="alias" value="Hue Lamp 2"/>
-            <ATTR key="group" value="Licht"/>
-            <ATTR key="model" value="LCT001"/>
-            <ATTR key="room" value="Wohnzimmer"/>
-            <ATTR key="subType" value="colordimmer"/>
-            <ATTR key="webCmd" value="rgb:rgb ff0000:rgb DEFF26:rgb 0000ff:toggle:on:off"/>
-            <STATE key="alert" value="none" measured="2014-01-08 21:30:09"/>
-            <STATE key="bri" value="254" measured="2014-01-08 21:31:09"/>
-            <STATE key="colormode" value="ct" measured="2014-01-08 21:30:09"/>
-            <STATE key="ct" value="334 (2994K)" measured="2014-01-08 21:30:09"/>
-            <STATE key="effect" value="none" measured="2014-01-08 21:30:09"/>
-            <STATE key="hue" value="15496" measured="2014-01-08 21:30:09"/>
-            <STATE key="level" value="100 %" measured="2014-01-08 21:31:09"/>
-            <STATE key="onoff" value="1" measured="2014-01-08 21:31:09"/>
-            <STATE key="pct" value="100" measured="2014-01-08 21:31:09"/>
-            <STATE key="reachable" value="true" measured="2014-01-08 21:30:09"/>
-            <STATE key="sat" value="110" measured="2014-01-08 21:30:09"/>
-            <STATE key="state" value="on" measured="2014-01-08 21:31:09"/>
-            <STATE key="xy" value="0.4383,0.4044" measured="2014-01-08 21:30:09"/>
-        </HUEDevice>
-        <HUEDevice name="HUEDevice6" state="on" sets="off:noArg on:noArg toggle:noArg statusRequest:noArg pct:slider,0,1,100 bri:slider,0,1,254 alert:none,select,lselect dimUp:noArg dimDown:noArg rgb:colorpicker,RGB color:slider,2000,1,6500 ct:slider,154,1,500 hue:slider,0,1,65535 sat:slider,0,1,254 xy effect:none,colorloop blink on-for-timer on-till off-for-timer intervals off-till" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev delayedUpdate:1 realtimePicker:1 color-icons:1,2 model:LCT001,LLC001,LLC005,LLC006,LLC007,LST001,LWB001,LWL001 subType:colordimmer,dimmer,switch event-on-change-reading event-on-update-reading event-min-interval stateFormat devStateIcon devStateStyle fp_Grundriss icon lightSceneParamsToSave sortby webCmd">
-            <INT key="DEF" value="6 "/>
-            <INT key="ID" value="6"/>
-            <INT key="INTERVAL" value="60"/>
-            <INT key="NAME" value="HUEDevice6"/>
-            <INT key="NR" value="94"/>
-            <INT key="STATE" value="on"/>
-            <INT key="TYPE" value="HUEDevice"/>
-            <INT key="modelid" value="LCT001"/>
-            <INT key="name" value="Hue Lamp 3"/>
-            <INT key="swversion" value="66010820"/>
-            <INT key="type" value="Extended color light"/>
-            <INT key="IODev" value="HUEbridge"/>
-            <ATTR key="IODev" value="HUEbridge"/>
-            <ATTR key="alias" value="Hue Lamp 3"/>
-            <ATTR key="group" value="Licht"/>
-            <ATTR key="model" value="LCT001"/>
-            <ATTR key="room" value="Wohnzimmer"/>
-            <ATTR key="subType" value="colordimmer"/>
-            <ATTR key="webCmd" value="rgb:rgb ff0000:rgb DEFF26:rgb 0000ff:toggle:on:off"/>
-            <STATE key="alert" value="none" measured="2014-01-08 21:30:08"/>
-            <STATE key="bri" value="254" measured="2014-01-08 21:30:08"/>
-            <STATE key="colormode" value="ct" measured="2014-01-08 21:30:08"/>
-            <STATE key="ct" value="369 (2710K)" measured="2014-01-08 21:30:08"/>
-            <STATE key="effect" value="none" measured="2014-01-08 21:30:08"/>
-            <STATE key="hue" value="14922" measured="2014-01-08 21:30:08"/>
-            <STATE key="level" value="100 %" measured="2014-01-08 21:30:08"/>
-            <STATE key="onoff" value="1" measured="2014-01-08 21:30:08"/>
-            <STATE key="pct" value="100" measured="2014-01-08 21:30:08"/>
-            <STATE key="reachable" value="true" measured="2014-01-08 21:30:08"/>
-            <STATE key="sat" value="144" measured="2014-01-08 21:30:08"/>
-            <STATE key="state" value="on" measured="2014-01-08 21:30:08"/>
-            <STATE key="xy" value="0.4595,0.4105" measured="2014-01-08 21:30:08"/>
-        </HUEDevice>
-        <HUEDevice name="HUEGroup0" state="Initialized" sets="off:noArg on:noArg toggle:noArg statusRequest:noArg pct:slider,0,1,100 bri:slider,0,1,254 alert:none,select,lselect rgb:colorpicker,RGB color:slider,2000,1,6500 ct:slider,154,1,500 hue:slider,0,1,65535 sat:slider,0,1,254 xy effect:none,colorloop blink on-for-timer on-till off-for-timer intervals off-till" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev delayedUpdate:1 realtimePicker:1 color-icons:1,2 model:LCT001,LLC001,LLC005,LLC006,LLC007,LST001,LWB001,LWL001 subType:colordimmer,dimmer,switch event-on-change-reading event-on-update-reading event-min-interval stateFormat devStateIcon devStateStyle fp_Grundriss icon lightSceneParamsToSave sortby webCmd">
-            <INT key="DEF" value="group 0 "/>
-            <INT key="ID" value="G0"/>
-            <INT key="NAME" value="HUEGroup0"/>
-            <INT key="NR" value="92"/>
-            <INT key="STATE" value="Initialized"/>
-            <INT key="TYPE" value="HUEDevice"/>
-            <INT key="lights" value="1,2,3,4,5,6"/>
-            <INT key="IODev" value="HUEbridge"/>
-            <ATTR key="IODev" value="HUEbridge"/>
-            <ATTR key="alias" value="Alle"/>
-            <ATTR key="room" value="Wohnzimmer"/>
-            <ATTR key="webCmd" value="on:off"/>
-        </HUEDevice>
-        <HUEDevice name="HUEGroup1" state="Initialized" sets="off:noArg on:noArg toggle:noArg statusRequest:noArg pct:slider,0,1,100 bri:slider,0,1,254 alert:none,select,lselect rgb:colorpicker,RGB color:slider,2000,1,6500 ct:slider,154,1,500 hue:slider,0,1,65535 sat:slider,0,1,254 xy effect:none,colorloop blink on-for-timer on-till off-for-timer intervals off-till" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev delayedUpdate:1 realtimePicker:1 color-icons:1,2 model:LCT001,LLC001,LLC005,LLC006,LLC007,LST001,LWB001,LWL001 subType:colordimmer,dimmer,switch event-on-change-reading event-on-update-reading event-min-interval stateFormat devStateIcon devStateStyle fp_Grundriss icon lightSceneParamsToSave sortby webCmd">
-            <INT key="DEF" value="group 1 "/>
-            <INT key="ID" value="G1"/>
-            <INT key="NAME" value="HUEGroup1"/>
-            <INT key="NR" value="91"/>
-            <INT key="STATE" value="Initialized"/>
-            <INT key="TYPE" value="HUEDevice"/>
-            <INT key="lights" value="1,2,3"/>
-            <INT key="IODev" value="HUEbridge"/>
-            <ATTR key="IODev" value="HUEbridge"/>
-            <ATTR key="alias" value="NoBulbs"/>
-            <ATTR key="room" value="Wohnzimmer"/>
-            <ATTR key="webCmd" value="on:off"/>
-        </HUEDevice>
-        <HUEDevice name="HUEGroup2" state="Initialized" sets="off:noArg on:noArg toggle:noArg statusRequest:noArg pct:slider,0,1,100 bri:slider,0,1,254 alert:none,select,lselect rgb:colorpicker,RGB color:slider,2000,1,6500 ct:slider,154,1,500 hue:slider,0,1,65535 sat:slider,0,1,254 xy effect:none,colorloop blink on-for-timer on-till off-for-timer intervals off-till" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev delayedUpdate:1 realtimePicker:1 color-icons:1,2 model:LCT001,LLC001,LLC005,LLC006,LLC007,LST001,LWB001,LWL001 subType:colordimmer,dimmer,switch event-on-change-reading event-on-update-reading event-min-interval stateFormat devStateIcon devStateStyle fp_Grundriss icon lightSceneParamsToSave sortby webCmd">
-            <INT key="DEF" value="group 2 "/>
-            <INT key="ID" value="G2"/>
-            <INT key="NAME" value="HUEGroup2"/>
-            <INT key="NR" value="93"/>
-            <INT key="STATE" value="Initialized"/>
-            <INT key="TYPE" value="HUEDevice"/>
-            <INT key="lights" value="4,5,6"/>
-            <INT key="IODev" value="HUEbridge"/>
-            <ATTR key="IODev" value="HUEbridge"/>
-            <ATTR key="alias" value="Bulb"/>
-            <ATTR key="room" value="Wohnzimmer"/>
-            <ATTR key="webCmd" value="on:off"/>
-        </HUEDevice>
-    </HUEDevice_LIST>
-    <LightScene_LIST>
-        <LightScene name="LichtTV" state="Initialized" sets="remove:An,Aus,Power,TV save set scene:An,Aus,Power,TV" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings devStateIcon devStateStyle fp_Grundriss icon lightSceneParamsToSave sortby webCmd">
-            <INT key="DEF" value="HUEDevice1 HUEDevice2 HUEDevice3 HUEDevice4 HUEDevice5 HUEDevice6"/>
-            <INT key="HAS_DataDumper" value="1"/>
-            <INT key="HAS_JSON" value="1"/>
-            <INT key="NAME" value="LichtTV"/>
-            <INT key="NR" value="110"/>
-            <INT key="NTFY_ORDER" value="50-LichtTV"/>
-            <INT key="STATE" value="Initialized"/>
-            <INT key="TYPE" value="LightScene"/>
-            <ATTR key="room" value="Admin"/>
-        </LightScene>
-    </LightScene_LIST>
+            <INT key="TYPE" value="telnet"/>
+            <ATTR key="room" value="hidden"/>
+        </telnet>
+    </telnet_LIST>
 </FHZINFO>
