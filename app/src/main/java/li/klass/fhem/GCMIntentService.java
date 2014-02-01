@@ -109,12 +109,7 @@ public class GCMIntentService extends GCMBaseIntentService {
             String key = parts[0].trim().toUpperCase();
             String value = parts[1].trim();
 
-            Intent taskerNotifyIntent = new Intent(Actions.EXT_DEVICE_STATE_NOTIFY);
-            taskerNotifyIntent.putExtra(BundleExtraKeys.ACTION, "deviceStateChange");
-            taskerNotifyIntent.putExtra(BundleExtraKeys.DEVICE_NAME, deviceName);
-            taskerNotifyIntent.putExtra(BundleExtraKeys.STATE_NAME, key);
-            taskerNotifyIntent.putExtra(BundleExtraKeys.STATE_VALUE, value);
-            sendBroadcast(taskerNotifyIntent);
+            sendTaskerNotifyIntent(deviceName, key, value);
 
             changeMap.put(key, value);
         }
@@ -124,6 +119,15 @@ public class GCMIntentService extends GCMBaseIntentService {
         parseIntent.putExtra(BundleExtraKeys.UPDATE_MAP, (Serializable) changeMap);
         parseIntent.putExtra(BundleExtraKeys.VIBRATE, shouldVibrate(extras));
         startService(parseIntent);
+    }
+
+    private void sendTaskerNotifyIntent(String deviceName, String key, String value) {
+        Intent taskerNotifyIntent = new Intent(Actions.EXT_DEVICE_STATE_NOTIFY);
+        taskerNotifyIntent.putExtra(BundleExtraKeys.ACTION, "deviceStateChange");
+        taskerNotifyIntent.putExtra(BundleExtraKeys.DEVICE_NAME, deviceName);
+        taskerNotifyIntent.putExtra(BundleExtraKeys.STATE_NAME, key);
+        taskerNotifyIntent.putExtra(BundleExtraKeys.STATE_VALUE, value);
+        sendBroadcast(taskerNotifyIntent);
     }
 
     @Override
