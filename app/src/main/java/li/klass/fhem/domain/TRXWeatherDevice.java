@@ -41,6 +41,7 @@ import li.klass.fhem.util.ValueDescriptionUtil;
 import static li.klass.fhem.service.graph.description.ChartSeriesDescription.getRegressionValuesInstance;
 import static li.klass.fhem.service.graph.description.SeriesType.DEWPOINT;
 import static li.klass.fhem.service.graph.description.SeriesType.HUMIDITY;
+import static li.klass.fhem.service.graph.description.SeriesType.PRESSURE;
 import static li.klass.fhem.service.graph.description.SeriesType.TEMPERATURE;
 
 @SupportsWidget(TemperatureWidgetView.class)
@@ -162,6 +163,9 @@ public class TRXWeatherDevice extends Device<TRXWeatherDevice> {
         addDeviceChartIfNotNull(new DeviceChart(R.string.humidityGraph,
                 new ChartSeriesDescription(R.string.humidity, "4:humidity:0:", "humidity", HUMIDITY)
         ), humidity);
+
+        addDeviceChartIfNotNull(new DeviceChart(R.string.pressureGraph,
+                new ChartSeriesDescription(R.string.pressure, "4:pressure:0:", "pressure", PRESSURE)));
     }
 
     @Override

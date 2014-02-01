@@ -59,7 +59,7 @@ public class TRXWeatherDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getDewpoint(), is("11.1 (°C)"));
 
         assertThat(device.getLogDevice(), is(notNullValue()));
-        assertThat(device.getDeviceCharts().size(), is(2));
+        assertThat(device.getDeviceCharts().size(), is(3));
     }
 
     @Test

@@ -22,10 +22,31 @@
   ~   Boston, MA  02110-1301  USA
   -->
 
+<!--
+Log file 01.02.2014
+2014-01-12_21:15:22 Raumfuehler T: 21 H: 34 P: 967 BAT: ok
+2014-01-12_21:25:30 Raumfuehler temperature: 21.1
+2014-01-12_21:25:30 Raumfuehler humidity: 34
+2014-01-12_21:25:30 Raumfuehler pressure: 967
+2014-01-12_21:25:30 Raumfuehler forecast: rain
+2014-01-12_21:25:30 Raumfuehler battery: ok
+2014-01-12_21:25:30 Raumfuehler T: 21.1 H: 34 P: 967 BAT: ok
+2014-01-12_21:35:38 Raumfuehler temperature: 21.2
+2014-01-12_21:35:38 Raumfuehler humidity: 34
+2014-01-12_21:35:38 Raumfuehler pressure: 967
+2014-01-12_21:35:38 Raumfuehler forecast: rain
+2014-01-12_21:35:38 Raumfuehler battery: ok
+2014-01-12_21:35:38 Raumfuehler T: 21.2 H: 34 P: 967 BAT: ok
+2014-01-12_21:45:46 Raumfuehler temperature: 21.2
+2014-01-12_21:45:46 Raumfuehler humidity: 34
+2014-01-12_21:45:46 Raumfuehler pressure: 967
+2014-01-12_21:45:46 Raumfuehler forecast: rain
+2014-01-12_21:45:46 Raumfuehler battery: ok
+-->
 <FHZINFO>
     <TRX_LIST>
         <TRX name="device" state="opened" sets="RFXTRXUSB => No Set function (?) implemented"
-             attrs="room comment alias do_not_notify:1,0 dummy:1,0 do_not_init:1:0 addvaltrigger:1:0 longids loglevel:0,1,2,3,4,5,6 icon webCmd eventMap">
+            attrs="room comment alias do_not_notify:1,0 dummy:1,0 do_not_init:1:0 addvaltrigger:1:0 longids loglevel:0,1,2,3,4,5,6 icon webCmd eventMap">
             <INT key="DEF" value="COM3@38400 noinit"/>
             <INT key="DeviceName" value="COM3@38400"/>
             <INT key="NAME" value="device"/>
