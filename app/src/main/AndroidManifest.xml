@@ -142,6 +142,12 @@
             </intent-filter>
         </service>
 
+        <service android:name=".service.intent.ExternalApiService" android:exported="true">
+            <intent-filter>
+                <action android:name="li.klass.fhem.constants.Actions.EXT_DEVICE_NAMES"/>
+            </intent-filter>
+        </service>
+
         <service
             android:name=".appwidget.service.AppWidgetListViewUpdateRemoteViewsService"
             android:permission="android.permission.BIND_REMOTEVIEWS" />

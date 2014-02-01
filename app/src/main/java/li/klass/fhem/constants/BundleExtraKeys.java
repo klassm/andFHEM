@@ -31,6 +31,7 @@ public class BundleExtraKeys {
     public static final String ROOM_LIST = "ROOMLIST";
     public static final String DEVICE = "DEVICE";
     public static final String DEVICE_NAME = "DEVICENAME";
+    public static final String DEVICE_NAMES = "DEVICENAMES";
     public static final String DEVICE_NEW_NAME = "DEVICENEWNAME";
     public static final String DEVICE_NEW_ROOM = "DEVICENEWROOM";
     public static final String DEVICE_NEW_ALIAS = "DEVICENEWALIAS";

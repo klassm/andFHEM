@@ -35,6 +35,7 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantLock;
@@ -118,6 +119,17 @@ public class RoomListService extends AbstractService {
      */
     public Device getDeviceForName(String deviceName, long updatePeriod) {
         return getAllRoomsDeviceList(updatePeriod).getDeviceFor(deviceName);
+    }
+
+    public ArrayList<String> getAvailableDeviceNames(long updatePeriod) {
+        ArrayList<String> deviceNames = new ArrayList<String>();
+        RoomDeviceList allRoomsDeviceList = getAllRoomsDeviceList(updatePeriod);
+
+        for (Device device : allRoomsDeviceList.getAllDevices()) {
+            deviceNames.add(device.getName());
+        }
+
+        return deviceNames;
     }
 
     /**

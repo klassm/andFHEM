@@ -117,4 +117,7 @@ public class Actions {
     public static final String CONNECTION_ERROR_HIDE = prefix + "CONNECTION_ERROR_HIDE";
 
 
+    public static final String EXT_DEVICE_NAMES = prefix + "EXT_DEVICE_NAMES";
+
+
 }
