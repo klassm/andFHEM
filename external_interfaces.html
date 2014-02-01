@@ -12,29 +12,65 @@ weight: 6
   
   <p>Apps like the ones mentioned above allow to execute actions based on external events. Those events may well be the connection to a WLAN, the entering of some area. Those events are pretty useful if combined with an FHEM instance. This is why andFHEM provides an external interface to those apps.</p>
   
-  <h3>UI based</h3>
+  <h3>Sending commands</h3>
   
   <p>Since version 2.1.4 andFHEM provides a UI for sending commands to FHEM. Just look for an andFHEM plugin in your favourite location aware switching app.</p>
 
   <p>You can also trigger actions based on device states. However, this works only in Locale and Tasker.</p>
   
   
-  <h3>Manual Switching</h3>
-  
-  In Llama, you have the option to send own android intents as event. Here are the details you need to enter to send actual commands to FHEM:
-  
+  <h2>Programmatic APIs</h2>
+
+  AndFHEM can be partially controlled using intents from external applications:
+
+  <h3>Sending commands</h3>
+
+  <p>Send a command programatically to andFHEM.</p>
+
   <table>
     <tbody>
-      <tr><td>Preset</td><td>Own Android Intent</td></tr>
-      <tr><td>Intent-Send-Mode</td><td>Start Service (Activity or Broadcast will NOT work!)</td></tr>
-      <tr><td>Package Name</td><td>li.klass.fhem</td></tr>
-      <tr><td>Class Name</td><td>li.klass.fhem.service.intent.SendCommandIntentService</td></tr>
-      <tr><td>Event</td><td>li.klass.fhem.constants.Actions.EXECUTE_COMMAND</td></tr>
-      <tr><td>Under 'Extras' specify a new key value pair containing</td>
-        <td>Key: COMMAND<br>
-        Datatype: string<br>
-        Value: &lt;ENTER YOUR COMMAND HERE&gt; (i.e. set abc on)</td>
-        </tr>
+    <tr>
+      <td>Class Name</td>
+      <td>li.klass.fhem.service.intent.SendCommandIntentService</td>
+    </tr>
+    <tr>
+      <td>Action</td>
+      <td>li.klass.fhem.constants.Actions.EXECUTE_COMMAND</td>
+    </tr>
+    <tr>
+      <td>Data</td>
+      <td>
+        Key: COMMAND <br/>
+        Value: The command to set (i.e. set abc on)
+      </td>
+    </tr>
     </tbody>
   </table>
+
+  <h3>Receiving all available device names</h3>
+
+  <p>Receive the device names of all devices available within the current andFHEM connection. (AndFHEM 2.7.0+)</p>
+
+  <table>
+    <tbody>
+    <tr>
+      <td>Class Name</td>
+      <td>li.klass.fhem.service.external.ExternalApiService</td>
+    </tr>
+    <tr>
+      <td>Action</td>
+      <td>li.klass.fhem.constants.Actions.EXT_DEVICE_NAMES</td>
+    </tr>
+    <tr>
+      <td>Data</td>
+      <td>none</td>
+    </tr>
+    <tr>
+      <td>Response Data</td>
+      <td>ArrayList&lt;String&gt;, that contains all available device names.</td>
+    </tr>
+    </tbody>
+  </table>
+
+
 </div>
