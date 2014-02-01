@@ -126,10 +126,17 @@ public class RoomListService extends AbstractService {
         RoomDeviceList allRoomsDeviceList = getAllRoomsDeviceList(updatePeriod);
 
         for (Device device : allRoomsDeviceList.getAllDevices()) {
-            deviceNames.add(device.getName());
+            deviceNames.add(device.getName() + "|" +
+                    emptyOrValue(device.getAlias()) + "|" +
+                    emptyOrValue(device.getWidgetName()));
         }
 
         return deviceNames;
+    }
+
+    private String emptyOrValue(String value) {
+        if (value == null) return "";
+        return value;
     }
 
     /**
