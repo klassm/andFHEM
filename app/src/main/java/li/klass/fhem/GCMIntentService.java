@@ -106,7 +106,16 @@ public class GCMIntentService extends GCMBaseIntentService {
             String[] parts = change.split(":");
             if (parts.length != 2) continue;
 
-            changeMap.put(parts[0].trim().toUpperCase(), parts[1].trim());
+            String key = parts[0].trim().toUpperCase();
+            String value = parts[1].trim();
+
+            Intent taskerNotifyIntent = new Intent(Actions.EXT_DEVICE_STATE_NOTIFY);
+            taskerNotifyIntent.putExtra(BundleExtraKeys.DEVICE_NAME, deviceName);
+            taskerNotifyIntent.putExtra(BundleExtraKeys.STATE_NAME, key);
+            taskerNotifyIntent.putExtra(BundleExtraKeys.STATE_VALUE, value);
+            sendBroadcast(taskerNotifyIntent);
+
+            changeMap.put(key, value);
         }
 
         Intent parseIntent = new Intent(Actions.UPDATE_DEVICE_WITH_UPDATE_MAP);
