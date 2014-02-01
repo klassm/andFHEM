@@ -14,11 +14,17 @@ weight: 6
   
   <h3>Sending commands</h3>
   
-  <p>Since version 2.1.4 andFHEM provides a UI for sending commands to FHEM. Just look for an andFHEM plugin in your favourite location aware switching app.</p>
+  <p>AndFHEM provides a UI for sending commands to FHEM. Just look for an andFHEM plugin in your favourite location aware switching app.(AndFHEM 2.1.4+)</p>
 
-  <p>You can also trigger actions based on device states. However, this works only in Locale and Tasker.</p>
+  <h3>Triggering actions based on device states</h3>
+
+  <p>You can trigger actions based on device states by adding the Device State Locale Plugin. You need to select a device and enter a desired device state. If the device state is found to match the desired state, the condition is met and an action is triggered. This plugin only works using Locale and Tasker.</p>
   
-  
+  <h3>Switching connections</h3>
+
+  <p>Using a Locale Plugin you can switch to another AndFHEM connection. This can be used to select a connection based on an available WLAN connection or a network cell. (AndFHEM 2.7.0+)</p>
+
+  <h3> 
   <h2>Programmatic APIs</h2>
 
   AndFHEM can be partially controlled using intents from external applications:
@@ -67,7 +73,7 @@ weight: 6
     </tr>
     <tr>
       <td>Response Data</td>
-      <td>ArrayList&lt;String&gt;, that contains all available device names.</td>
+      <td>ArrayList&lt;String&gt;, that contains information about device names. Each entry contains three values: device name, alias and widget name. The values are separated using a pipe (|) character. If a value is unset, the value is empty. <br/> Some examples: <br/> mat_halogen|halogenlampe|hal <br/> mat_halogen||</td>
     </tr>
     </tbody>
   </table>
