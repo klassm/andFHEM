@@ -110,6 +110,7 @@ public class GCMIntentService extends GCMBaseIntentService {
             String value = parts[1].trim();
 
             Intent taskerNotifyIntent = new Intent(Actions.EXT_DEVICE_STATE_NOTIFY);
+            taskerNotifyIntent.putExtra(BundleExtraKeys.ACTION, "deviceStateChange");
             taskerNotifyIntent.putExtra(BundleExtraKeys.DEVICE_NAME, deviceName);
             taskerNotifyIntent.putExtra(BundleExtraKeys.STATE_NAME, key);
             taskerNotifyIntent.putExtra(BundleExtraKeys.STATE_VALUE, value);
