@@ -22,7 +22,7 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.activities.locale.send_command;
+package li.klass.fhem.activities.locale;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -31,21 +31,26 @@ import android.util.Log;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 
-public class SendCommandLocaleReceiver extends BroadcastReceiver {
+public class FireSettingLocaleReceiver extends BroadcastReceiver {
 
-    public static final String TAG = SendCommandLocaleReceiver.class.getName();
+    public static final String TAG = FireSettingLocaleReceiver.class.getName();
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        String action = intent.getStringExtra(BundleExtraKeys.ACTION);
         String command = intent.getStringExtra(BundleExtraKeys.COMMAND);
         String connectionId = intent.getStringExtra(BundleExtraKeys.CONNECTION_ID);
 
-        Intent actionIntent = new Intent(Actions.EXECUTE_COMMAND);
-        actionIntent.putExtra(BundleExtraKeys.COMMAND, command);
-        actionIntent.putExtra(BundleExtraKeys.CONNECTION_ID, connectionId);
+        if (Actions.EXECUTE_COMMAND.equals(action)) {
+            Intent actionIntent = new Intent(Actions.EXECUTE_COMMAND);
+            actionIntent.putExtra(BundleExtraKeys.COMMAND, command);
+            actionIntent.putExtra(BundleExtraKeys.CONNECTION_ID, connectionId);
 
-        context.startService(actionIntent);
-
-        Log.e(TAG, command);
+            context.startService(actionIntent);
+        } else if (Actions.CONNECTION_UPDATE.equals(action)) {
+            Intent connectionChangeIntent = new Intent(Actions.CONNECTION_SET_SELECTED);
+            connectionChangeIntent.putExtra(BundleExtraKeys.CONNECTION_ID, connectionId);
+            context.startService(connectionChangeIntent);
+        }
     }
 }

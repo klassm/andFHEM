@@ -22,7 +22,7 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.activities.locale.condition_query;
+package li.klass.fhem.activities.locale;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

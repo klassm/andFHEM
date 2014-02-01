@@ -471,6 +471,8 @@
     <string name="localeDeviceStateInfo">Bitte ein Gerät auswählen und einen Zielstatus eingeben, bei dem das Ereignis
         als erfolgreich angesehen wird. (z.B. "off")
     </string>
+    <string name="localeConnectionChangePlugin">AndFHEM Verbindungswechsel</string>
+    <string name="localeConnectionChangePluginInfoText">Bitte eine Verbindung auswählen, auf die andFHEM wechseln soll.</string>
 
     <string name="drawerOpen">Drawer öffnen</string>
     <string name="drawerClose">Drawer schließen</string>

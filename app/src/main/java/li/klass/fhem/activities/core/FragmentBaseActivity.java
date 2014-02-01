@@ -448,6 +448,10 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
 
         registerReceiver(broadcastReceiver, broadcastReceiver.getIntentFilter());
 
+        if (availableConnectionDataAdapter != null) {
+            availableConnectionDataAdapter.doLoad();
+        }
+
         updateNavigationVisibility();
     }
 

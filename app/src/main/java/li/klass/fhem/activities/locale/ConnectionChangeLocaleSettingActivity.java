@@ -22,7 +22,7 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.activities.locale.send_command;
+package li.klass.fhem.activities.locale;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -32,7 +32,6 @@ import android.os.ResultReceiver;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Spinner;
 
 import java.util.ArrayList;
@@ -51,25 +50,20 @@ import static li.klass.fhem.constants.BundleExtraKeys.COMMAND;
 import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_ID;
 import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_LIST;
 
-public class SendCommandLocaleSettingActivity extends Activity {
-
+public class ConnectionChangeLocaleSettingActivity extends Activity {
     public static final String CURRENT_CONNECTION_ID = "current";
     private String selectedId = CURRENT_CONNECTION_ID;
+    private String selectedName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.locale_send_command);
-
-        final EditText commandView = (EditText) findViewById(R.id.fhemCommand);
+        setContentView(R.layout.locale_change_connection);
 
         Intent intent = getIntent();
         Bundle bundle = intent.getBundleExtra(LocaleIntentConstants.EXTRA_BUNDLE);
         if (bundle != null && bundle.containsKey(COMMAND)) {
-            if (bundle.containsKey(COMMAND)) {
-                commandView.setText(bundle.getString(COMMAND));
-            }
             if (bundle.containsKey(CONNECTION_ID)) {
                 selectedId = bundle.getString(CONNECTION_ID);
             }
@@ -82,6 +76,7 @@ public class SendCommandLocaleSettingActivity extends Activity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 selectedId = (String) view.getTag();
+                selectedName = connectionListAdapter.getData().get(i).getName();
             }
 
             @Override
@@ -106,18 +101,19 @@ public class SendCommandLocaleSettingActivity extends Activity {
             @Override
             public void onClick(View view) {
                 Intent resultIntent = new Intent();
-                assert commandView != null;
-                String command = commandView.getText().toString();
-
-                resultIntent.putExtra(LocaleIntentConstants.EXTRA_STRING_BLURB, command);
 
                 Bundle bundle = new Bundle();
-                bundle.putString(COMMAND, command);
+                bundle.putString(BundleExtraKeys.ACTION, Actions.CONNECTION_UPDATE);
                 resultIntent.putExtra(LocaleIntentConstants.EXTRA_BUNDLE, bundle);
 
                 if (selectedId != null && ! CURRENT_CONNECTION_ID.equals(selectedId)) {
                     bundle.putString(CONNECTION_ID, selectedId);
                 }
+
+                if (selectedName == null) {
+                    selectedName = getResources().getString(R.string.connectionCurrent);
+                }
+                resultIntent.putExtra(LocaleIntentConstants.EXTRA_STRING_BLURB, selectedName);
 
                 setResult(RESULT_OK, resultIntent);
                 finish();
@@ -156,6 +152,7 @@ public class SendCommandLocaleSettingActivity extends Activity {
             FHEMServerSpec spec = data.get(i);
             if (spec.getId().equals(selectedId)) {
                 spinner.setSelection(i);
+                selectedName = spec.getName();
                 break;
             }
         }

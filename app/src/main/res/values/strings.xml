@@ -475,6 +475,8 @@
     <string name="localeDeviceStateInfo">Please select a device and enter a target status, upon which the event will be
         regarded as successful! (i.e. "off")
     </string>
+    <string name="localeConnectionChangePlugin">AndFHEM Connection Change</string>
+    <string name="localeConnectionChangePluginInfoText">Please select a connection.</string>
 
     <string name="drawerOpen">Open drawer</string>
     <string name="drawerClose">Close drawer</string>

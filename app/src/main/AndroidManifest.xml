@@ -238,7 +238,7 @@
         <activity android:name=".activities.base.DeviceNameSelectionActivity"/>
 
         <activity
-            android:name=".activities.locale.condition_query.ConditionQueryLocaleSettingActivity"
+            android:name=".activities.locale.ConditionQueryLocaleSettingActivity"
             android:label="@string/localeDeviceState"
             android:icon="@drawable/ic_launcher" android:exported="true">
             <intent-filter>
@@ -247,7 +247,7 @@
         </activity>
 
         <activity
-            android:name=".activities.locale.send_command.SendCommandLocaleSettingActivity"
+            android:name=".activities.locale.SendCommandLocaleSettingActivity"
             android:label="@string/localeSendCommandPlugin"
             android:icon="@drawable/ic_launcher" android:exported="true">
             <intent-filter>
@@ -255,13 +255,22 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".activities.locale.condition_query.ConditionQueryLocaleReceiver" android:exported="true">
+        <activity
+            android:name=".activities.locale.ConnectionChangeLocaleSettingActivity"
+            android:label="@string/localeConnectionChangePlugin"
+            android:icon="@drawable/ic_launcher" android:exported="true">
+            <intent-filter>
+                <action android:name="com.twofortyfouram.locale.intent.action.EDIT_SETTING"/>
+            </intent-filter>
+        </activity>
+
+        <receiver android:name=".activities.locale.ConditionQueryLocaleReceiver" android:exported="true">
             <intent-filter>
                 <action android:name="com.twofortyfouram.locale.intent.action.QUERY_CONDITION"/>
             </intent-filter>
         </receiver>
 
-        <receiver android:name=".activities.locale.send_command.SendCommandLocaleReceiver" android:exported="true">
+        <receiver android:name=".activities.locale.FireSettingLocaleReceiver" android:exported="true">
             <intent-filter>
                 <action android:name="com.twofortyfouram.locale.intent.action.FIRE_SETTING"/>
             </intent-filter>

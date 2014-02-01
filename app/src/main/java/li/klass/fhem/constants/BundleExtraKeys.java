@@ -25,6 +25,8 @@
 package li.klass.fhem.constants;
 
 public class BundleExtraKeys {
+    public static final String ACTION = "ACTION";
+
     public static final String DO_REFRESH = "DOREFRESH";
     public static final String UPDATE_PERIOD = "UPDATE_PERIOD";
     public static final String ROOM_NAME = "ROOMNAME";
