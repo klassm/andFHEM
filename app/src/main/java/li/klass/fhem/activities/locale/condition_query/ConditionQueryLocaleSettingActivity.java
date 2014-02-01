@@ -22,7 +22,7 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.activities.locale;
+package li.klass.fhem.activities.locale.condition_query;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -32,15 +32,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
 import li.klass.fhem.R;
 import li.klass.fhem.activities.base.DeviceNameSelectionActivity;
+import li.klass.fhem.activities.locale.LocaleIntentConstants;
 import li.klass.fhem.domain.core.Device;
 
 import static li.klass.fhem.constants.BundleExtraKeys.*;
 
-public class LocaleEditConditionActivity extends Activity {
+public class ConditionQueryLocaleSettingActivity extends Activity {
 
-    public static final String TAG = LocaleEditConditionActivity.class.getName();
+    public static final String TAG = ConditionQueryLocaleSettingActivity.class.getName();
     private String selectedDeviceName = "";
 
     @Override
@@ -53,7 +55,7 @@ public class LocaleEditConditionActivity extends Activity {
         setButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivityForResult(new Intent(LocaleEditConditionActivity.this, DeviceNameSelectionActivity.class), 0);
+                startActivityForResult(new Intent(ConditionQueryLocaleSettingActivity.this, DeviceNameSelectionActivity.class), 0);
             }
         });
 

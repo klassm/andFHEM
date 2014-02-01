@@ -180,7 +180,7 @@ public class ConnectionService {
         return GSON.fromJson(json, FHEMServerSpec.class);
     }
 
-    private boolean exists(String id) {
+    public boolean exists(String id) {
         return DUMMY_DATA_ID.equals(id) || TEST_DATA_ID.equals(id)
                 || getPreferences().contains(id);
     }

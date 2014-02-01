@@ -212,6 +212,7 @@
     <string name="connectionPortDesc">i.e. 7072</string>
     <string name="connectionEmptyError">Field \"%s\" may not be empty!</string>
     <string name="connectionUrlHttp">URL must start with "http"!</string>
+    <string name="connectionCurrent">Current connection</string>
 
     <string name="switchDevice">Switch</string>
     <string name="preferences">Preferences</string>

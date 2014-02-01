@@ -22,7 +22,7 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.activities.locale;
+package li.klass.fhem.activities.locale.condition_query;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -35,9 +35,9 @@ import li.klass.fhem.service.room.RoomListService;
 
 import static li.klass.fhem.activities.locale.LocaleIntentConstants.*;
 
-public class LocaleConditionQueryReceiver extends BroadcastReceiver {
+public class ConditionQueryLocaleReceiver extends BroadcastReceiver {
 
-    public static final String TAG = LocaleConditionQueryReceiver.class.getName();
+    public static final String TAG = ConditionQueryLocaleReceiver.class.getName();
 
     @Override
     public void onReceive(Context context, Intent intent) {

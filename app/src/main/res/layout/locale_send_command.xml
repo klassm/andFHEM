@@ -40,6 +40,12 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/fhemCommand" android:text="set "/>
+
+    <Spinner
+        android:id="@+id/connectionList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
     <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

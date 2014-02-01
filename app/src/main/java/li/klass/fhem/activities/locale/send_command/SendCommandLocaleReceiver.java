@@ -22,7 +22,7 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.activities.locale;
+package li.klass.fhem.activities.locale.send_command;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -31,16 +31,18 @@ import android.util.Log;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 
-public class LocaleActionReceiver extends BroadcastReceiver {
+public class SendCommandLocaleReceiver extends BroadcastReceiver {
 
-    public static final String TAG = LocaleActionReceiver.class.getName();
+    public static final String TAG = SendCommandLocaleReceiver.class.getName();
 
     @Override
     public void onReceive(Context context, Intent intent) {
         String command = intent.getStringExtra(BundleExtraKeys.COMMAND);
+        String connectionId = intent.getStringExtra(BundleExtraKeys.CONNECTION_ID);
 
         Intent actionIntent = new Intent(Actions.EXECUTE_COMMAND);
         actionIntent.putExtra(BundleExtraKeys.COMMAND, command);
+        actionIntent.putExtra(BundleExtraKeys.CONNECTION_ID, connectionId);
 
         context.startService(actionIntent);
 

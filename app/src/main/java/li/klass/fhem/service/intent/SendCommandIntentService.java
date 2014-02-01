@@ -31,8 +31,14 @@ import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.service.CommandExecutionService;
+import li.klass.fhem.service.connection.ConnectionService;
+import li.klass.fhem.util.StringUtil;
 
 import java.util.ArrayList;
+
+import static li.klass.fhem.constants.Actions.EXECUTE_COMMAND;
+import static li.klass.fhem.constants.Actions.RECENT_COMMAND_LIST;
+import static li.klass.fhem.constants.BundleExtraKeys.RECENT_COMMANDS;
 
 public class SendCommandIntentService extends ConvenientIntentService {
     private static final String PREFERENCES_NAME = "SendCommandStorage";
@@ -49,10 +55,10 @@ public class SendCommandIntentService extends ConvenientIntentService {
         Log.d(SendCommandIntentService.class.getName(), intent.getAction());
         String action = intent.getAction();
 
-        if (action.equals(Actions.EXECUTE_COMMAND)) {
+        if (EXECUTE_COMMAND.equals(action)) {
             executeCommand(intent, resultReceiver);
-        } else if (action.equals(Actions.RECENT_COMMAND_LIST)) {
-            sendSingleExtraResult(resultReceiver, ResultCodes.SUCCESS, BundleExtraKeys.RECENT_COMMANDS, getRecentCommands());
+        } else if (RECENT_COMMAND_LIST.equals(action)) {
+            sendSingleExtraResult(resultReceiver, ResultCodes.SUCCESS, RECENT_COMMANDS, getRecentCommands());
         }
 
         return STATE.SUCCESS;
@@ -60,6 +66,12 @@ public class SendCommandIntentService extends ConvenientIntentService {
 
     private void executeCommand(Intent intent, ResultReceiver resultReceiver) {
         String command = intent.getStringExtra(BundleExtraKeys.COMMAND);
+        String connectionId = intent.getStringExtra(BundleExtraKeys.CONNECTION_ID);
+
+        if (!StringUtil.isBlank(connectionId) && ConnectionService.INSTANCE.exists(connectionId)) {
+            ConnectionService.INSTANCE.setSelectedId(connectionId);
+        }
+
         String result = CommandExecutionService.INSTANCE.executeSafely(command);
 
         sendSingleExtraResult(resultReceiver, ResultCodes.SUCCESS, BundleExtraKeys.COMMAND_RESULT, result);
