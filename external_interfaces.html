@@ -24,7 +24,32 @@ weight: 6
 
   <p>Using a Locale Plugin you can switch to another AndFHEM connection. This can be used to select a connection based on an available WLAN connection or a network cell. (AndFHEM 2.7.0+)</p>
 
-  <h3> 
+  <h3>Receiving device state change broadcasts</h3>
+
+  <p>Tasker allows to receive Intents from external applications and trigger events based on the contents (see <a href="http://tasker.dinglisch.net/userguide/en/intents.html" target="_blank">Tasker Documentation</a> for details, AndFHEM 2.7.0+).</p>
+
+  <p>Broadcasts are only sent if GCM is enabled. The broadcast intents contain the following information:
+    <table>
+      <tr>
+        <td>ACTION</td>
+        <td>deviceStateChange</td>
+      </tr>
+      <tr>
+        <td>DEVICENAME</td>
+        <td>The name of the changed device, i.e. "mat_halogen"</td>
+      </tr>
+      <tr>
+        <td>STATE_NAME</td>
+        <td>The name of the changed state. This is always uppercase and usually equals to "STATE".</td>
+      </tr>
+      <tr>
+        <td>STATE_VALUE</td>
+        <td>The actual value, i.e. "on".</td>
+      </tr>
+    </table>
+  </p>
+
+
   <h2>Programmatic APIs</h2>
 
   AndFHEM can be partially controlled using intents from external applications:
