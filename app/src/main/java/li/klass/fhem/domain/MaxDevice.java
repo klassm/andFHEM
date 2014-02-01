@@ -123,8 +123,8 @@ public class MaxDevice extends ToggleableDevice<MaxDevice> implements DesiredTem
     }
 
     @Override
-    public void afterXMLRead() {
-        super.afterXMLRead();
+    public void afterDeviceXMLRead() {
+        super.afterDeviceXMLRead();
         weekProfile.afterXMLRead();
     }
 

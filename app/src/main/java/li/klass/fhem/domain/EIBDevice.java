@@ -59,8 +59,8 @@ public class EIBDevice extends DimmableDevice<EIBDevice> {
     }
 
     @Override
-    public void afterXMLRead() {
-        super.afterXMLRead();
+    public void afterDeviceXMLRead() {
+        super.afterDeviceXMLRead();
 
         if ("percent".equalsIgnoreCase(model) && "???".equalsIgnoreCase(getInternalState())) {
             setState("0 (%)");

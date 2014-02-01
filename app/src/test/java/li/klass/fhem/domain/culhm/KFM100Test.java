@@ -60,7 +60,7 @@ public class KFM100Test extends DeviceXMLParsingBase {
         assertThat(device.getMeasured(), is("2012-07-26 21:55:58"));
 
         device.readCONTENT("4300l");
-        device.afterXMLRead();
+        device.afterDeviceXMLRead();
         assertThat(device.getFillContentPercentageRaw(), is(closeTo(1, 0.01)));
     }
 

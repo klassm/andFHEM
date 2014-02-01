@@ -67,8 +67,8 @@ public class OwDevice extends ToggleableDevice<OwDevice> {
     }
 
     @Override
-    public void afterXMLRead() {
-        super.afterXMLRead();
+    public void afterDeviceXMLRead() {
+        super.afterDeviceXMLRead();
         if (subType != SubType.TEMPERATURE) return;
 
         if (temperature == null && getInternalState().matches("[0-9]+\\.[0-9]+.*")) {

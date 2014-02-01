@@ -108,8 +108,8 @@ public class HUEDevice extends DimmableDevice<HUEDevice> {
     }
 
     @Override
-    public void afterXMLRead() {
-        super.afterXMLRead();
+    public void afterDeviceXMLRead() {
+        super.afterDeviceXMLRead();
 
         if (xy != null) {
             this.rgb = ColorUtil.xyToRgb(xy, brightness);

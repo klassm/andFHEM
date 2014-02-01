@@ -211,7 +211,7 @@ public class DeviceListParser {
                                             Map<String, RoomDeviceList> roomDeviceListMap, ReadErrorHolder errorHolder) {
         for (Device device : allDevicesRoom.getAllDevices()) {
             try {
-                device.afterXMLRead();
+                device.afterAllXMLRead();
                 removeIfUnsupported(device, allDevicesRoom, roomDeviceListMap);
             } catch (Exception e) {
                 remove(device, allDevicesRoom, roomDeviceListMap);
@@ -282,6 +282,8 @@ public class DeviceListParser {
                                                       Node node, RoomDeviceList allDevicesRoom) {
         try {
             T device = createAndFillDevice(deviceClass, node, allDevicesRoom);
+            device.afterDeviceXMLRead();
+
             Log.d(TAG, "loaded device with name " + device.getName());
 
             String[] rooms = device.getRooms();
@@ -459,7 +461,7 @@ public class DeviceListParser {
         Class<? extends Device> deviceClass = device.getClass();
 
         fillDeviceWith(device, updates, deviceClass);
-        device.afterXMLRead();
+        device.afterDeviceXMLRead();
     }
 
     private boolean fillDeviceWith(Device device, Map<String, String> updates, Class<?> deviceClass) {

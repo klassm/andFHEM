@@ -69,8 +69,8 @@ public class DummyDevice extends DimmableDevice<DummyDevice> {
     }
 
     @Override
-    public void afterXMLRead() {
-        super.afterXMLRead();
+    public void afterDeviceXMLRead() {
+        super.afterDeviceXMLRead();
 
         String[] availableTargetStates = getAvailableTargetStates();
         if (availableTargetStates == null) return;

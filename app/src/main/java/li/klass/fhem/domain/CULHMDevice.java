@@ -317,7 +317,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
     }
 
     @Override
-    public void afterXMLRead() {
+    public void afterDeviceXMLRead() {
         if (getDeviceFunctionality() == DeviceFunctionality.HEATING) {
             weekProfile.afterXMLRead();
         }
@@ -354,7 +354,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
             fillContentPercentage = ValueDescriptionUtil.appendPercent((int) (fillContentPercentageRaw * 100));
         }
 
-        super.afterXMLRead();
+        super.afterDeviceXMLRead();
     }
 
     @Override

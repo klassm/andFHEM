@@ -64,7 +64,7 @@ public class EnOceanDevice extends DimmableDevice<EnOceanDevice> {
         } else if (value.equalsIgnoreCase("sensor")) {
             subType = SubType.SENSOR;
         } else if (value.equalsIgnoreCase("gateway")) {
-            // handled in #afterXMLRead
+            // handled in #afterDeviceXMLRead
         } else {
             Log.e(TAG, "unknown subtype " + value);
             subType = null;
@@ -89,8 +89,8 @@ public class EnOceanDevice extends DimmableDevice<EnOceanDevice> {
     }
 
     @Override
-    public void afterXMLRead() {
-        super.afterXMLRead();
+    public void afterDeviceXMLRead() {
+        super.afterDeviceXMLRead();
 
         if (gwCmd != null) {
             if (gwCmd.equalsIgnoreCase("DIMMING")) {

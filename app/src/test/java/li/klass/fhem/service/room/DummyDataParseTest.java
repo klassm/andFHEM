@@ -36,7 +36,7 @@ import li.klass.fhem.infra.AndFHEMRobolectricTestRunner;
 import static org.junit.Assert.assertNotNull;
 
 @RunWith(AndFHEMRobolectricTestRunner.class)
-public class TestDeviceListParser {
+public class DummyDataParseTest {
 
     @Test
     public void testParseDummyData() throws Exception {

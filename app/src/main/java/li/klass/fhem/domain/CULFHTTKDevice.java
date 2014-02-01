@@ -50,7 +50,7 @@ public class CULFHTTKDevice extends Device<CULFHTTKDevice> {
     }
 
     @Override
-    public void afterXMLRead() {
+    public void afterDeviceXMLRead() {
         String stateChangeText = "";
         if (getLastWindowState() != null) {
             stateChangeText += getLastWindowState() + " => ";

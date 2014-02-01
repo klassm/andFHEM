@@ -63,8 +63,8 @@ public class OwthermDevice extends Device<OwthermDevice> {
     }
 
     @Override
-    public void afterXMLRead() {
-        super.afterXMLRead();
+    public void afterDeviceXMLRead() {
+        super.afterDeviceXMLRead();
 
         String state = getInternalState();
         if (state.contains("temperature")) {

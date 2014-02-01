@@ -113,8 +113,8 @@ public class FHTDevice extends Device<FHTDevice> implements DesiredTempDevice,
     }
 
     @Override
-    public void afterXMLRead() {
-        super.afterXMLRead();
+    public void afterDeviceXMLRead() {
+        super.afterDeviceXMLRead();
         weekProfile.afterXMLRead();
     }
 

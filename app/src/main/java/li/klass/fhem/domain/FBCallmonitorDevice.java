@@ -108,8 +108,8 @@ public class FBCallmonitorDevice extends Device<FBCallmonitorDevice> {
     }
 
     @Override
-    public void afterXMLRead() {
-        super.afterXMLRead();
+    public void afterDeviceXMLRead() {
+        super.afterDeviceXMLRead();
         Context context = AndFHEMApplication.getContext();
 
         int eventStringId;

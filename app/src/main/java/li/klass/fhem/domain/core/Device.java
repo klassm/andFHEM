@@ -127,7 +127,10 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
         alwaysHidden = "true".equalsIgnoreCase(value);
     }
 
-    public void afterXMLRead() {
+    public void afterDeviceXMLRead() {
+    }
+
+    public void afterAllXMLRead() {
         if (logDevice != null) {
             fillDeviceCharts(deviceCharts);
         }
