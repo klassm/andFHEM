@@ -28,24 +28,37 @@ import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.io.InputStream;
 import java.util.Map;
 
 import li.klass.fhem.domain.core.RoomDeviceList;
+import li.klass.fhem.fhem.DummyDataConnection;
 import li.klass.fhem.infra.AndFHEMRobolectricTestRunner;
 
+import static org.hamcrest.Matchers.nullValue;
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNot.not;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
 
 @RunWith(AndFHEMRobolectricTestRunner.class)
 public class DummyDataParseTest {
 
     @Test
     public void testParseDummyData() throws Exception {
-        String xmlList = IOUtils.toString(DeviceListParser.class.getResourceAsStream("dummyData.xml"));
-        assertNotNull(xmlList);
+        InputStream dummyDataStream = DummyDataConnection.class.getResourceAsStream("dummyData.xml");
+        assertThat(dummyDataStream, is(not(nullValue())));
 
-        DeviceListParser deviceListParser = DeviceListParser.INSTANCE;
-        Map<String, RoomDeviceList> result = deviceListParser.parseAndWrapExceptions(xmlList);
+        try {
+            String xmlList = IOUtils.toString(dummyDataStream);
+            assertNotNull(xmlList);
 
-        assertNotNull(result);
+            DeviceListParser deviceListParser = DeviceListParser.INSTANCE;
+            Map<String, RoomDeviceList> result = deviceListParser.parseAndWrapExceptions(xmlList);
+
+            assertNotNull(result);
+        } finally {
+            dummyDataStream.close();
+        }
     }
 }
