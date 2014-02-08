@@ -6,6 +6,7 @@ import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.DimmableDevice;
 import li.klass.fhem.domain.core.ToggleableDevice;
 import li.klass.fhem.util.ArrayUtil;
+import li.klass.fhem.util.NumberUtil;
 
 public class StructureDevice extends DimmableDevice<StructureDevice> {
     private int dimLowerBound;
@@ -51,6 +52,8 @@ public class StructureDevice extends DimmableDevice<StructureDevice> {
     @Override
     public int getPositionForDimState(String dimState) {
         dimState = dimState.replace("pct", "").trim();
+        if (! NumberUtil.isNumeric(dimState)) return 0;
+
         try {
             return Integer.valueOf(dimState.trim());
         } catch (Exception e) {
