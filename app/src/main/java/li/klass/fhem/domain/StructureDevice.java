@@ -4,7 +4,6 @@ import android.util.Log;
 
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.DimmableDevice;
-import li.klass.fhem.domain.core.ToggleableDevice;
 import li.klass.fhem.util.ArrayUtil;
 import li.klass.fhem.util.NumberUtil;
 
@@ -71,7 +70,7 @@ public class StructureDevice extends DimmableDevice<StructureDevice> {
     public void afterDeviceXMLRead() {
         super.afterDeviceXMLRead();
 
-        int[] slider = handleSliderTargetState(getAvailableTargetStates());
+        int[] slider = handleSliderTargetState();
         if (slider != null) {
             dimLowerBound = slider[0];
             dimStep = slider[1];

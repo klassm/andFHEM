@@ -28,8 +28,6 @@ import android.util.Log;
 
 import org.w3c.dom.NamedNodeMap;
 
-import java.util.Arrays;
-
 import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.DimmableDevice;
@@ -79,7 +77,7 @@ public class DummyDevice extends DimmableDevice<DummyDevice> {
             timerDevice = true;
         }
 
-        int[] slider = handleSliderTargetState(availableTargetStates);
+        int[] slider = handleSliderTargetState();
         if (slider != null) {
             dimLowerBound = slider[0];
             dimStep = slider[1];

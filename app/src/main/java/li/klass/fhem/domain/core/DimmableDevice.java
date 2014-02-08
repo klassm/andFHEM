@@ -98,7 +98,10 @@ public abstract class DimmableDevice<D extends Device<D>> extends ToggleableDevi
     }
 
 
-    protected int[] handleSliderTargetState(String[] availableTargetStates) {
+    protected int[] handleSliderTargetState() {
+        String[] availableTargetStates = getAvailableTargetStates();
+        if (availableTargetStates == null) return null;
+
         for (String targetState : availableTargetStates) {
             try {
                 if (targetState.startsWith("slider")) {
