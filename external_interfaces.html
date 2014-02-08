@@ -102,8 +102,27 @@ weight: 6
     </tr>
     <tr>
       <td>Response Data</td>
-      <td>ArrayList&lt;String&gt;, that contains information about device names. Each entry contains three values: device name, alias and widget name. The values are separated using a pipe (|) character. If a value is unset, the value is empty. <br/> Some examples: <br/> mat_halogen|halogenlampe|hal <br/> mat_halogen||</td>
+      <td>DEVICENAMES: ArrayList&lt;String&gt;, that contains information about device names. Each entry contains three values: device name, alias and widget name. The values are separated using a pipe (|) character. If a value is unset, the value is empty. <br/> Some examples: <br/> mat_halogen|halogenlampe|hal <br/> mat_halogen||</td>
     </tr>
+    <tr> 
+      <td>Example code</td>
+      <td>
+        <div class="code">
+{% highlight java %}
+Intent intent = new Intent("li.klass.fhem.constants.Actions.EXT_DEVICE_NAMES");
+intent.putExtra("RESULTRECEIVER", new ResultReceiver(new Handler()) {
+  @Override
+  protected void onReceiveResult(int resultCode, Bundle resultData) {
+    super.onReceiveResult(resultCode, resultData);
+    ArrayList<String> list = resultData.getStringArrayList("DEVICENAMES");
+    for (String s : list) {
+      Log.e(TAG, s);
+    }
+  }
+});
+{% endhighlight %}
+        </div>
+      </td>
     </tbody>
   </table>
 
