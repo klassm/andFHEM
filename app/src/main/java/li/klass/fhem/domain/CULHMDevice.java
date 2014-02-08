@@ -61,6 +61,7 @@ import static li.klass.fhem.domain.CULHMDevice.SubType.HEATING;
 import static li.klass.fhem.domain.CULHMDevice.SubType.KEYMATIC;
 import static li.klass.fhem.domain.CULHMDevice.SubType.MOTION;
 import static li.klass.fhem.domain.CULHMDevice.SubType.POWERMETER;
+import static li.klass.fhem.domain.CULHMDevice.SubType.SHUTTER;
 import static li.klass.fhem.domain.CULHMDevice.SubType.SWITCH;
 import static li.klass.fhem.domain.CULHMDevice.SubType.THERMOSTAT;
 import static li.klass.fhem.service.graph.description.ChartSeriesDescription.getRegressionValuesInstance;
@@ -98,7 +99,9 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
         FILL_STATE(DeviceFunctionality.FILL_STATE),
         MOTION(DeviceFunctionality.MOTION_DETECTOR),
         KEYMATIC(DeviceFunctionality.KEY),
-        POWERMETER(DeviceFunctionality.SWITCH);
+        POWERMETER(DeviceFunctionality.SWITCH),
+        SHUTTER(DeviceFunctionality.WINDOW)
+        ;
 
         private final DeviceFunctionality functionality;
 
@@ -359,6 +362,10 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
             fillContentPercentage = ValueDescriptionUtil.appendPercent((int) (fillContentPercentageRaw * 100));
         }
 
+        if ("HM-LC-BL1-FM".equals(model)) {
+            subType = SHUTTER;
+        }
+
         super.afterAllXMLRead();
     }
 
@@ -387,12 +394,12 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
 
     @Override
     public boolean supportsDim() {
-        return subType == DIMMER;
+        return subType == DIMMER || subType == SHUTTER;
     }
 
     @Override
     public int getDimPosition() {
-        if (subType != DIMMER) return 0;
+        if (subType != DIMMER && subType != SHUTTER) return 0;
         return super.getDimPosition();
     }
 
@@ -407,7 +414,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
 
     @Override
     public String formatStateTextToSet(String stateToSet) {
-        if (getSubType() == DIMMER && NumberUtil.isNumeric(stateToSet)) {
+        if ((getSubType() == DIMMER || getSubType() == SHUTTER) && NumberUtil.isNumeric(stateToSet)) {
             return stateToSet + " %";
         }
         return super.formatStateTextToSet(stateToSet);
