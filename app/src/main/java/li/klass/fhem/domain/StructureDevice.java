@@ -17,6 +17,9 @@ public class StructureDevice extends ToggleableDevice<StructureDevice> {
 
     @Override
     public DeviceFunctionality getDeviceFunctionality() {
+        if (supportsToggle()) {
+            return DeviceFunctionality.SWITCH;
+        }
         return DeviceFunctionality.FHEM;
     }
 }
