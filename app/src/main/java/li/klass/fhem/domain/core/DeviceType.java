@@ -156,7 +156,7 @@ public enum DeviceType {
     TRX_LIGHT("TRX_LIGHT", TRXLightDevice.class, new DimmableAdapter<TRXLightDevice>(TRXLightDevice.class)),
     TRX("TRX", TRXDevice.class),
     DUMMY("dummy", DummyDevice.class, new DummyAdapter()),
-    STRUCTURE("structure", StructureDevice.class, new ToggleableAdapterWithSwitchActionRow<StructureDevice>(StructureDevice.class)),
+    STRUCTURE("structure", StructureDevice.class, new DimmableAdapter<StructureDevice>(StructureDevice.class)),
     TWILIGHT("Twilight", TwilightDevice.class),
     AT("at", AtDevice.class, null, DeviceVisibility.NEVER),
     EN_OCEAN("EnOcean", EnOceanDevice.class, new EnOceanAdapter()),

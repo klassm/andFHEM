@@ -79,18 +79,11 @@ public class DummyDevice extends DimmableDevice<DummyDevice> {
             timerDevice = true;
         }
 
-        for (int i = 0; i < availableTargetStates.length; i++) {
-            String targetState = availableTargetStates[i];
-
-            try {
-                if (targetState.equals("slider")) {
-                    dimLowerBound = Integer.valueOf(availableTargetStates[i + 1]);
-                    dimStep = Integer.valueOf(availableTargetStates[i + 2]);
-                    dimUpperBound = Integer.valueOf(availableTargetStates[i + 3]);
-                }
-            } catch (Exception e) {
-                Log.e(DummyDevice.class.getName(), "cannot parse slider in " + Arrays.asList(availableTargetStates), e);
-            }
+        int[] slider = handleSliderTargetState(availableTargetStates);
+        if (slider != null) {
+            dimLowerBound = slider[0];
+            dimStep = slider[1];
+            dimUpperBound = slider[2];
         }
     }
 

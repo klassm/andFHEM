@@ -257,21 +257,33 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
             return;
         }
 
-        String[] targetStates;
-        if (setsText.startsWith("state:")) {
-            setsText = setsText.substring("state:".length());
+        String[] targetStates = setsText.split(" ");
+        List<String> outStates = new ArrayList<String>();
+        for (int i = 0; i < targetStates.length; i++) {
+            String targetState = targetStates[i];
+            if (targetState.startsWith("state:")) {
+                targetState = targetState.substring("state:".length());
 
-            targetStates = setsText.split(",");
-        } else {
-            targetStates = setsText.split(" ");
-            for (int i = 0; i < targetStates.length; i++) {
-                String targetState = targetStates[i];
-                if (targetState.contains(":")) {
-                    targetStates[i] = targetState.substring(0, targetState.indexOf(":"));
+                if (! targetState.contains("slider")) {
+                    outStates.addAll(Arrays.asList(targetState.split(",")));
+                    continue;
                 }
             }
+
+            if (targetState.startsWith("pct:")) {
+                int firstColon = targetState.indexOf(":");
+                targetState = targetState.substring(firstColon + 1);
+                if (! targetState.startsWith("slider")) {
+                    targetState = "slider," + targetState;
+                }
+                outStates.add(targetState);
+            } else if (targetState.contains(":")) {
+                outStates.add(targetState.substring(0, targetState.indexOf(":")));
+            } else {
+                outStates.add(targetState);
+            }
         }
-        this.availableTargetStates = targetStates;
+        this.availableTargetStates = outStates.toArray(new String[outStates.size()]);
     }
 
     @Override

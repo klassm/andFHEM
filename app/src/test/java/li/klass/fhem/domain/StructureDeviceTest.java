@@ -26,11 +26,17 @@ package li.klass.fhem.domain;
 
 import org.junit.Test;
 
+import java.util.Arrays;
+
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.arrayContaining;
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.hasEntry;
+import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasItemInArray;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.Is.is;
 
@@ -60,6 +66,17 @@ public class StructureDeviceTest extends DeviceXMLParsingBase {
 
         assertThat(device.getAvailableTargetStates(), is(arrayContaining("17", "18", "19", "20", "21", "21.5", "22")));
         assertThat(device.getAvailableTargetStates().length, is(7));
+    }
+
+    @Test
+    public void testSlider() {
+        StructureDevice device = getDeviceFor("slider");
+        assertThat(device, is(notNullValue()));
+        assertThat(device.getAvailableTargetStates(), hasItemInArray("slider,10,2,110"));
+        assertThat(device.supportsDim(), is(true));
+        assertThat(device.getDimLowerBound(), is(10));
+        assertThat(device.getDimStep(), is(2));
+        assertThat(device.getDimUpperBound(), is(110));
     }
 
     @Override

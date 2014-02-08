@@ -24,6 +24,10 @@
 
 package li.klass.fhem.domain.core;
 
+import android.util.Log;
+
+import java.util.Arrays;
+
 public abstract class DimmableDevice<D extends Device<D>> extends ToggleableDevice<D> {
     public int getDimPosition() {
         int position = getPositionForDimStateInternal(getDimStateFieldValue());
@@ -92,6 +96,28 @@ public abstract class DimmableDevice<D extends Device<D>> extends ToggleableDevi
 
         return getPositionForDimState(dimState);
     }
+
+
+    protected int[] handleSliderTargetState(String[] availableTargetStates) {
+        for (String targetState : availableTargetStates) {
+            try {
+                if (targetState.startsWith("slider")) {
+                    String[] parts = targetState.split(",");
+                    if (parts.length != 4) continue;
+
+                    int dimLowerBound = Integer.valueOf(parts[1]);
+                    int dimStep = Integer.valueOf(parts[2]);
+                    int dimUpperBound = Integer.valueOf(parts[3]);
+
+                    return new int[]{dimLowerBound, dimStep, dimUpperBound};
+                }
+            } catch (Exception e) {
+                Log.e(DimmableDevice.class.getName(), "cannot parse slider in " + Arrays.asList(availableTargetStates), e);
+            }
+        }
+        return null;
+    }
+
 
     /**
      * Get the dim state for a given position. This is sent to FHEM within the set command!
