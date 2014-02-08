@@ -100,7 +100,7 @@ public class EnOceanDevice extends DimmableDevice<EnOceanDevice> {
             }
         }
 
-        if ("00D".equalsIgnoreCase(manufacturerId) && ignoreCaseEither(model, "FSB14", "FSB61", "FSB70")) {
+        if (ignoreCaseEither(model, "FSB14", "FSB61", "FSB70")) {
             subType = SubType.SHUTTER;
             readONOFFDEVICE("true");
         }
@@ -169,10 +169,6 @@ public class EnOceanDevice extends DimmableDevice<EnOceanDevice> {
             return eventMapReverse.get("on");
         }
         return "B0";
-    }
-
-    public String getShutterPositionText() {
-        return shutterPositionText;
     }
 
     public void setShutterPosition(int shutterPosition) {
