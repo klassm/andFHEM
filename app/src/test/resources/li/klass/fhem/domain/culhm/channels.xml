@@ -1,0 +1,236 @@
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<FHZINFO>
+    <CULHM_LIST>
+
+
+        <CUL_HM name="Buero.Heiz_IN_Fenster" state="last:trigLast" sets="burstXmit clear:readings,register,rssi,msgEvents getConfig getRegRaw inhibit:on,off peerBulk regBulk regSet sign:on,off" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev do_not_notify:1,0 ignore:1,0 dummy:1,0 showtime:1,0 serialNr firmware rawToReadable unit peerIDs repPeers actCycle actStatus autoReadReg:0_off,1_restart,2_pon-restart,3_onChange,4_reqStatus,5_readMissing,8_stateOnly expert:0_off,1_on,2_full burstAccess:0_off,1_auto param msgRepeat .stc .devInfo event-on-change-reading event-on-update-reading event-min-interval stateFormat model:ASH550,ASH550I,CMM,DORMA_BRC-H,DORMA_RC-H,DORMA_atent,HM-CC-RT-DN,HM-CC-RT-DN-BoM,HM-CC-SCD,HM-CC-TC,HM-CC-VD,HM-Dis-TD-T,HM-ES-PMSw1-Pl,HM-LC-BL1-FM,HM-LC-BL1-PB-FM,HM-LC-BL1-SM,HM-LC-Bl1PBU-FM,HM-LC-DDC1-PCB,HM-LC-DIM1L-CV,HM-LC-DIM1L-PL,HM-LC-DIM1T-CV,HM-LC-DIM1T-FM,HM-LC-DIM1T-PL,HM-LC-DIM2L-CV,HM-LC-DIM2L-SM,HM-LC-DIM2T-SM,HM-LC-Dim1L-CV-2,HM-LC-Dim1L-CV-644,HM-LC-Dim1L-Pl-2,HM-LC-Dim1L-Pl-3,HM-LC-Dim1L-Pl-644,HM-LC-Dim1PWM-CV,HM-LC-Dim1PWM-CV-2,HM-LC-Dim1T-CV-2,HM-LC-Dim1T-CV-644,HM-LC-Dim1T-FM-2,HM-LC-Dim1T-FM-644,HM-LC-Dim1T-Pl-2,HM-LC-Dim1T-Pl-3,HM-LC-Dim1T-Pl-644,HM-LC-Dim1TPBU-FM,HM-LC-Dim1TPBU-FM-2,HM-LC-Dim2L-SM,HM-LC-Dim2L-SM-2,HM-LC-Dim2T-SM,HM-LC-Dim2T-SM-2,HM-LC-SW1-BA-PCB,HM-LC-SW1-FM,HM-LC-SW1-PB-FM,HM-LC-SW1-PL,HM-LC-SW1-PL-OM54,HM-LC-SW1-PL2,HM-LC-SW1-SM,HM-LC-SW1-SM-ATMEGA168,HM-LC-SW2-DR,HM-LC-SW2-FM,HM-LC-SW2-PB-FM,HM-LC-SW2-SM,HM-LC-SW4-BA-PCB,HM-LC-SW4-DR,HM-LC-SW4-PCB,HM-LC-SW4-SM,HM-LC-SW4-SM-ATMEGA168,HM-LC-SW4-WM,HM-LC-Sw1PBU-FM,HM-MOD-RC-8,HM-OU-CF-PL,HM-OU-CFM-PL,HM-OU-CM-PCB,HM-OU-LED16,HM-PB-2-FM,HM-PB-2-WM,HM-PB-2-WM55,HM-PB-2-WM55-2,HM-PB-4-WM,HM-PB-4DIS-WM,HM-PB-6-WM55,HM-PBI-4-FM,HM-RC-12,HM-RC-12-B,HM-RC-12-SW,HM-RC-19,HM-RC-19-B,HM-RC-19-SW,HM-RC-4,HM-RC-4-2,HM-RC-4-B,HM-RC-KEY3,HM-RC-KEY3-B,HM-RC-Key4-2,HM-RC-P1,HM-RC-SEC3,HM-RC-SEC3-B,HM-RC-Sec4-2,HM-SCI-3-FM,HM-SEC-KEY,HM-SEC-KEY-O,HM-SEC-KEY-S,HM-SEC-MDIR,HM-SEC-MDIR-2,HM-SEC-RHS,HM-SEC-SC,HM-SEC-SC-2,HM-SEC-SD,HM-SEC-SFA-SM,HM-SEC-TIS,HM-SEC-WDS,HM-SEC-WDS-2,HM-SEC-WIN,HM-SEN-EP,HM-SEN-MDIR-SM,HM-SWI-3-FM,HM-Sec-Cen,HM-Sen-MDIR-O,HM-Sen-MDIR-O-2,HM-Sen-RD-O,HM-Sen-Wa-Od,HM-Sys-sRP-Pl,HM-TC-IT-WM-W-EU,HM-WDC7000,HM-WDS10-TH-O,HM-WDS100-C6-O,HM-WDS20-TH-O,HM-WDS30-OT2-SM,HM-WDS30-T-O,HM-WDS40-TH-I,HM-WS550,HM-WS550LCB,HM-WS550LCW,HM-WS550Tech,IS-WDS-TH-OD-S-R3,IS-WDS-TH-OD-S-R3,KFM-Display,KFM-Sensor,KS550,KS550LC,KS550TECH,KS888,PS-Th-Sens,PS-switch,ROTO_ZEL-STG-RM-DWT-10,ROTO_ZEL-STG-RM-FDK,ROTO_ZEL-STG-RM-FEP-230V,ROTO_ZEL-STG-RM-FSA,ROTO_ZEL-STG-RM-FST-UP4,ROTO_ZEL-STG-RM-FWT,ROTO_ZEL-STG-RM-FZS,ROTO_ZEL-STG-RM-FZS-2,ROTO_ZEL-STG-RM-HS-4,ROTO_ZEL-STG-RM-WT-2,Roto_ZEL-STG-RM-FFK,Roto_ZEL-STG-RM-FSS-UP3,S550IA,Schueco_263-130,Schueco_263-131,Schueco_263-132,Schueco_263-133,Schueco_263-134,Schueco_263-135,Schueco_263-144,Schueco_263-145,Schueco_263-146,Schueco_263-147,Schueco_263-155,Schueco_263-158,Schueco_263-160,Schueco_263-162,Schueco_263-167,Schueco_263-xxx,WDF-solar,WS888 subType:AlarmControl,KFM100,THSensor,blindActuator,blindActuatorSol,dimmer,keyMatic,motionDetector,outputUnit,powerMeter,pushButton,remote,repeater,sensRain,sensor,singleButton,smokeDetector,swi,switch,thermostat,threeStateSensor,tipTronic,winMatic devStateIcon devStateStyle icon sortby webCmd">
+            <INT key="DEF" value="223F4D03"/>
+            <INT key="NAME" value="Buero.Heiz_IN_Fenster"/>
+            <INT key="NR" value="54"/>
+            <INT key="STATE" value="last:trigLast"/>
+            <INT key="TYPE" value="CUL_HM"/>
+            <INT key="chanNo" value="03"/>
+            <INT key="device" value="Buero.Heizung"/>
+            <ATTR key="model" value="HM-CC-RT-DN"/>
+            <ATTR key="peerIDs" value="00000000,"/>
+            <ATTR key="room" value="room"/>
+            <ATTR key="stateFormat" value="last:trigLast"/>
+            <STATE key="R-sign" value="off" measured="2014-02-01 18:47:44"/>
+            <STATE key="RegL_01:" value="08:00 00:00" measured="2014-02-01 18:47:44"/>
+            <STATE key="winOpnBoost" value="off " measured="2014-02-02 15:13:18"/>
+            <STATE key="winOpnDetFall" value="1.4 K" measured="2014-02-02 15:13:18"/>
+            <STATE key="winOpnMode" value="on " measured="2014-02-02 15:13:18"/>
+            <STATE key="winOpnPeriod" value="15 min" measured="2014-02-02 15:13:18"/>
+            <STATE key="winOpnTemp-int" value="12 C" measured="2014-02-02 15:13:18"/>
+        </CUL_HM>
+
+        <CUL_HM name="Buero.Heiz_IN_Klima" state="???" sets="burstXmit clear:readings,register,rssi,msgEvents getConfig getRegRaw inhibit:on,off peerBulk regBulk regSet sign:on,off sysTime" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev do_not_notify:1,0 ignore:1,0 dummy:1,0 showtime:1,0 serialNr firmware rawToReadable unit peerIDs repPeers actCycle actStatus autoReadReg:0_off,1_restart,2_pon-restart,3_onChange,4_reqStatus,5_readMissing,8_stateOnly expert:0_off,1_on,2_full burstAccess:0_off,1_auto param msgRepeat .stc .devInfo event-on-change-reading event-on-update-reading event-min-interval stateFormat model:ASH550,ASH550I,CMM,DORMA_BRC-H,DORMA_RC-H,DORMA_atent,HM-CC-RT-DN,HM-CC-RT-DN-BoM,HM-CC-SCD,HM-CC-TC,HM-CC-VD,HM-Dis-TD-T,HM-ES-PMSw1-Pl,HM-LC-BL1-FM,HM-LC-BL1-PB-FM,HM-LC-BL1-SM,HM-LC-Bl1PBU-FM,HM-LC-DDC1-PCB,HM-LC-DIM1L-CV,HM-LC-DIM1L-PL,HM-LC-DIM1T-CV,HM-LC-DIM1T-FM,HM-LC-DIM1T-PL,HM-LC-DIM2L-CV,HM-LC-DIM2L-SM,HM-LC-DIM2T-SM,HM-LC-Dim1L-CV-2,HM-LC-Dim1L-CV-644,HM-LC-Dim1L-Pl-2,HM-LC-Dim1L-Pl-3,HM-LC-Dim1L-Pl-644,HM-LC-Dim1PWM-CV,HM-LC-Dim1PWM-CV-2,HM-LC-Dim1T-CV-2,HM-LC-Dim1T-CV-644,HM-LC-Dim1T-FM-2,HM-LC-Dim1T-FM-644,HM-LC-Dim1T-Pl-2,HM-LC-Dim1T-Pl-3,HM-LC-Dim1T-Pl-644,HM-LC-Dim1TPBU-FM,HM-LC-Dim1TPBU-FM-2,HM-LC-Dim2L-SM,HM-LC-Dim2L-SM-2,HM-LC-Dim2T-SM,HM-LC-Dim2T-SM-2,HM-LC-SW1-BA-PCB,HM-LC-SW1-FM,HM-LC-SW1-PB-FM,HM-LC-SW1-PL,HM-LC-SW1-PL-OM54,HM-LC-SW1-PL2,HM-LC-SW1-SM,HM-LC-SW1-SM-ATMEGA168,HM-LC-SW2-DR,HM-LC-SW2-FM,HM-LC-SW2-PB-FM,HM-LC-SW2-SM,HM-LC-SW4-BA-PCB,HM-LC-SW4-DR,HM-LC-SW4-PCB,HM-LC-SW4-SM,HM-LC-SW4-SM-ATMEGA168,HM-LC-SW4-WM,HM-LC-Sw1PBU-FM,HM-MOD-RC-8,HM-OU-CF-PL,HM-OU-CFM-PL,HM-OU-CM-PCB,HM-OU-LED16,HM-PB-2-FM,HM-PB-2-WM,HM-PB-2-WM55,HM-PB-2-WM55-2,HM-PB-4-WM,HM-PB-4DIS-WM,HM-PB-6-WM55,HM-PBI-4-FM,HM-RC-12,HM-RC-12-B,HM-RC-12-SW,HM-RC-19,HM-RC-19-B,HM-RC-19-SW,HM-RC-4,HM-RC-4-2,HM-RC-4-B,HM-RC-KEY3,HM-RC-KEY3-B,HM-RC-Key4-2,HM-RC-P1,HM-RC-SEC3,HM-RC-SEC3-B,HM-RC-Sec4-2,HM-SCI-3-FM,HM-SEC-KEY,HM-SEC-KEY-O,HM-SEC-KEY-S,HM-SEC-MDIR,HM-SEC-MDIR-2,HM-SEC-RHS,HM-SEC-SC,HM-SEC-SC-2,HM-SEC-SD,HM-SEC-SFA-SM,HM-SEC-TIS,HM-SEC-WDS,HM-SEC-WDS-2,HM-SEC-WIN,HM-SEN-EP,HM-SEN-MDIR-SM,HM-SWI-3-FM,HM-Sec-Cen,HM-Sen-MDIR-O,HM-Sen-MDIR-O-2,HM-Sen-RD-O,HM-Sen-Wa-Od,HM-Sys-sRP-Pl,HM-TC-IT-WM-W-EU,HM-WDC7000,HM-WDS10-TH-O,HM-WDS100-C6-O,HM-WDS20-TH-O,HM-WDS30-OT2-SM,HM-WDS30-T-O,HM-WDS40-TH-I,HM-WS550,HM-WS550LCB,HM-WS550LCW,HM-WS550Tech,IS-WDS-TH-OD-S-R3,IS-WDS-TH-OD-S-R3,KFM-Display,KFM-Sensor,KS550,KS550LC,KS550TECH,KS888,PS-Th-Sens,PS-switch,ROTO_ZEL-STG-RM-DWT-10,ROTO_ZEL-STG-RM-FDK,ROTO_ZEL-STG-RM-FEP-230V,ROTO_ZEL-STG-RM-FSA,ROTO_ZEL-STG-RM-FST-UP4,ROTO_ZEL-STG-RM-FWT,ROTO_ZEL-STG-RM-FZS,ROTO_ZEL-STG-RM-FZS-2,ROTO_ZEL-STG-RM-HS-4,ROTO_ZEL-STG-RM-WT-2,Roto_ZEL-STG-RM-FFK,Roto_ZEL-STG-RM-FSS-UP3,S550IA,Schueco_263-130,Schueco_263-131,Schueco_263-132,Schueco_263-133,Schueco_263-134,Schueco_263-135,Schueco_263-144,Schueco_263-145,Schueco_263-146,Schueco_263-147,Schueco_263-155,Schueco_263-158,Schueco_263-160,Schueco_263-162,Schueco_263-167,Schueco_263-xxx,WDF-solar,WS888 subType:AlarmControl,KFM100,THSensor,blindActuator,blindActuatorSol,dimmer,keyMatic,motionDetector,outputUnit,powerMeter,pushButton,remote,repeater,sensRain,sensor,singleButton,smokeDetector,swi,switch,thermostat,threeStateSensor,tipTronic,winMatic devStateIcon devStateStyle icon sortby webCmd">
+            <INT key="DEF" value="223F4D02"/>
+            <INT key="NAME" value="Buero.Heiz_IN_Klima"/>
+            <INT key="NR" value="53"/>
+            <INT key="STATE" value="???"/>
+            <INT key="TYPE" value="CUL_HM"/>
+            <INT key="chanNo" value="02"/>
+            <INT key="device" value="Buero.Heizung"/>
+            <ATTR key="model" value="HM-CC-RT-DN"/>
+            <ATTR key="peerIDs" value="00000000,"/>
+            <ATTR key="room" value="room"/>
+            <STATE key="R-sign" value="off" measured="2014-02-01 18:47:43"/>
+            <STATE key="RegL_01:" value="08:00 00:00" measured="2014-02-01 18:47:43"/>
+        </CUL_HM>
+
+        <CUL_HM name="Buero.Heiz_IN_Wetter" state="???" sets="burstXmit clear:readings,register,rssi,msgEvents getConfig getRegRaw inhibit:on,off peerBulk regBulk regSet sign:on,off" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev do_not_notify:1,0 ignore:1,0 dummy:1,0 showtime:1,0 serialNr firmware rawToReadable unit peerIDs repPeers actCycle actStatus autoReadReg:0_off,1_restart,2_pon-restart,3_onChange,4_reqStatus,5_readMissing,8_stateOnly expert:0_off,1_on,2_full burstAccess:0_off,1_auto param msgRepeat .stc .devInfo event-on-change-reading event-on-update-reading event-min-interval stateFormat model:ASH550,ASH550I,CMM,DORMA_BRC-H,DORMA_RC-H,DORMA_atent,HM-CC-RT-DN,HM-CC-RT-DN-BoM,HM-CC-SCD,HM-CC-TC,HM-CC-VD,HM-Dis-TD-T,HM-ES-PMSw1-Pl,HM-LC-BL1-FM,HM-LC-BL1-PB-FM,HM-LC-BL1-SM,HM-LC-Bl1PBU-FM,HM-LC-DDC1-PCB,HM-LC-DIM1L-CV,HM-LC-DIM1L-PL,HM-LC-DIM1T-CV,HM-LC-DIM1T-FM,HM-LC-DIM1T-PL,HM-LC-DIM2L-CV,HM-LC-DIM2L-SM,HM-LC-DIM2T-SM,HM-LC-Dim1L-CV-2,HM-LC-Dim1L-CV-644,HM-LC-Dim1L-Pl-2,HM-LC-Dim1L-Pl-3,HM-LC-Dim1L-Pl-644,HM-LC-Dim1PWM-CV,HM-LC-Dim1PWM-CV-2,HM-LC-Dim1T-CV-2,HM-LC-Dim1T-CV-644,HM-LC-Dim1T-FM-2,HM-LC-Dim1T-FM-644,HM-LC-Dim1T-Pl-2,HM-LC-Dim1T-Pl-3,HM-LC-Dim1T-Pl-644,HM-LC-Dim1TPBU-FM,HM-LC-Dim1TPBU-FM-2,HM-LC-Dim2L-SM,HM-LC-Dim2L-SM-2,HM-LC-Dim2T-SM,HM-LC-Dim2T-SM-2,HM-LC-SW1-BA-PCB,HM-LC-SW1-FM,HM-LC-SW1-PB-FM,HM-LC-SW1-PL,HM-LC-SW1-PL-OM54,HM-LC-SW1-PL2,HM-LC-SW1-SM,HM-LC-SW1-SM-ATMEGA168,HM-LC-SW2-DR,HM-LC-SW2-FM,HM-LC-SW2-PB-FM,HM-LC-SW2-SM,HM-LC-SW4-BA-PCB,HM-LC-SW4-DR,HM-LC-SW4-PCB,HM-LC-SW4-SM,HM-LC-SW4-SM-ATMEGA168,HM-LC-SW4-WM,HM-LC-Sw1PBU-FM,HM-MOD-RC-8,HM-OU-CF-PL,HM-OU-CFM-PL,HM-OU-CM-PCB,HM-OU-LED16,HM-PB-2-FM,HM-PB-2-WM,HM-PB-2-WM55,HM-PB-2-WM55-2,HM-PB-4-WM,HM-PB-4DIS-WM,HM-PB-6-WM55,HM-PBI-4-FM,HM-RC-12,HM-RC-12-B,HM-RC-12-SW,HM-RC-19,HM-RC-19-B,HM-RC-19-SW,HM-RC-4,HM-RC-4-2,HM-RC-4-B,HM-RC-KEY3,HM-RC-KEY3-B,HM-RC-Key4-2,HM-RC-P1,HM-RC-SEC3,HM-RC-SEC3-B,HM-RC-Sec4-2,HM-SCI-3-FM,HM-SEC-KEY,HM-SEC-KEY-O,HM-SEC-KEY-S,HM-SEC-MDIR,HM-SEC-MDIR-2,HM-SEC-RHS,HM-SEC-SC,HM-SEC-SC-2,HM-SEC-SD,HM-SEC-SFA-SM,HM-SEC-TIS,HM-SEC-WDS,HM-SEC-WDS-2,HM-SEC-WIN,HM-SEN-EP,HM-SEN-MDIR-SM,HM-SWI-3-FM,HM-Sec-Cen,HM-Sen-MDIR-O,HM-Sen-MDIR-O-2,HM-Sen-RD-O,HM-Sen-Wa-Od,HM-Sys-sRP-Pl,HM-TC-IT-WM-W-EU,HM-WDC7000,HM-WDS10-TH-O,HM-WDS100-C6-O,HM-WDS20-TH-O,HM-WDS30-OT2-SM,HM-WDS30-T-O,HM-WDS40-TH-I,HM-WS550,HM-WS550LCB,HM-WS550LCW,HM-WS550Tech,IS-WDS-TH-OD-S-R3,IS-WDS-TH-OD-S-R3,KFM-Display,KFM-Sensor,KS550,KS550LC,KS550TECH,KS888,PS-Th-Sens,PS-switch,ROTO_ZEL-STG-RM-DWT-10,ROTO_ZEL-STG-RM-FDK,ROTO_ZEL-STG-RM-FEP-230V,ROTO_ZEL-STG-RM-FSA,ROTO_ZEL-STG-RM-FST-UP4,ROTO_ZEL-STG-RM-FWT,ROTO_ZEL-STG-RM-FZS,ROTO_ZEL-STG-RM-FZS-2,ROTO_ZEL-STG-RM-HS-4,ROTO_ZEL-STG-RM-WT-2,Roto_ZEL-STG-RM-FFK,Roto_ZEL-STG-RM-FSS-UP3,S550IA,Schueco_263-130,Schueco_263-131,Schueco_263-132,Schueco_263-133,Schueco_263-134,Schueco_263-135,Schueco_263-144,Schueco_263-145,Schueco_263-146,Schueco_263-147,Schueco_263-155,Schueco_263-158,Schueco_263-160,Schueco_263-162,Schueco_263-167,Schueco_263-xxx,WDF-solar,WS888 subType:AlarmControl,KFM100,THSensor,blindActuator,blindActuatorSol,dimmer,keyMatic,motionDetector,outputUnit,powerMeter,pushButton,remote,repeater,sensRain,sensor,singleButton,smokeDetector,swi,switch,thermostat,threeStateSensor,tipTronic,winMatic devStateIcon devStateStyle icon sortby webCmd">
+            <INT key="DEF" value="223F4D01"/>
+            <INT key="NAME" value="Buero.Heiz_IN_Wetter"/>
+            <INT key="NR" value="52"/>
+            <INT key="STATE" value="???"/>
+            <INT key="TYPE" value="CUL_HM"/>
+            <INT key="chanNo" value="01"/>
+            <INT key="device" value="Buero.Heizung"/>
+            <ATTR key="model" value="HM-CC-RT-DN"/>
+            <ATTR key="peerIDs" value="00000000,"/>
+            <ATTR key="room" value="room"/>
+            <STATE key="R-sign" value="off" measured="2014-02-01 18:47:43"/>
+            <STATE key="RegL_01:" value="08:00 00:00" measured="2014-02-01 18:47:43"/>
+        </CUL_HM>
+
+        <CUL_HM name="Buero.Heiz_Steuerung" state="T: 16.6 desired: 18.5 valve: 100 %" sets="burstXmit clear:readings,register,rssi,msgEvents controlManu:on,off,5.0,5.5,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,10.0,10.5,11.0,11.5,12.0,12.5,13.0,13.5,14.0,14.5,15.0,15.5,16.0,16.5,17.0,17.5,18.0,18.5,19.0,19.5,20.0,20.5,21.0,21.5,22.0,22.5,23.0,23.5,24.0,24.5,25.0,25.5,26.0,26.5,27.0,27.5,28.0,28.5,29.0,29.5,30.0 controlMode:auto,boost,day,night controlParty desired-temp:on,off,5.0,5.5,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,10.0,10.5,11.0,11.5,12.0,12.5,13.0,13.5,14.0,14.5,15.0,15.5,16.0,16.5,17.0,17.5,18.0,18.5,19.0,19.5,20.0,20.5,21.0,21.5,22.0,22.5,23.0,23.5,24.0,24.5,25.0,25.5,26.0,26.5,27.0,27.5,28.0,28.5,29.0,29.5,30.0 getConfig getRegRaw inhibit:on,off peerBulk regBulk regSet sign:on,off sysTime tempListFri tempListMon tempListSat tempListSun tempListThu tempListTue tempListWed" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev do_not_notify:1,0 ignore:1,0 dummy:1,0 showtime:1,0 serialNr firmware rawToReadable unit peerIDs repPeers actCycle actStatus autoReadReg:0_off,1_restart,2_pon-restart,3_onChange,4_reqStatus,5_readMissing,8_stateOnly expert:0_off,1_on,2_full burstAccess:0_off,1_auto param msgRepeat .stc .devInfo event-on-change-reading event-on-update-reading event-min-interval stateFormat model:ASH550,ASH550I,CMM,DORMA_BRC-H,DORMA_RC-H,DORMA_atent,HM-CC-RT-DN,HM-CC-RT-DN-BoM,HM-CC-SCD,HM-CC-TC,HM-CC-VD,HM-Dis-TD-T,HM-ES-PMSw1-Pl,HM-LC-BL1-FM,HM-LC-BL1-PB-FM,HM-LC-BL1-SM,HM-LC-Bl1PBU-FM,HM-LC-DDC1-PCB,HM-LC-DIM1L-CV,HM-LC-DIM1L-PL,HM-LC-DIM1T-CV,HM-LC-DIM1T-FM,HM-LC-DIM1T-PL,HM-LC-DIM2L-CV,HM-LC-DIM2L-SM,HM-LC-DIM2T-SM,HM-LC-Dim1L-CV-2,HM-LC-Dim1L-CV-644,HM-LC-Dim1L-Pl-2,HM-LC-Dim1L-Pl-3,HM-LC-Dim1L-Pl-644,HM-LC-Dim1PWM-CV,HM-LC-Dim1PWM-CV-2,HM-LC-Dim1T-CV-2,HM-LC-Dim1T-CV-644,HM-LC-Dim1T-FM-2,HM-LC-Dim1T-FM-644,HM-LC-Dim1T-Pl-2,HM-LC-Dim1T-Pl-3,HM-LC-Dim1T-Pl-644,HM-LC-Dim1TPBU-FM,HM-LC-Dim1TPBU-FM-2,HM-LC-Dim2L-SM,HM-LC-Dim2L-SM-2,HM-LC-Dim2T-SM,HM-LC-Dim2T-SM-2,HM-LC-SW1-BA-PCB,HM-LC-SW1-FM,HM-LC-SW1-PB-FM,HM-LC-SW1-PL,HM-LC-SW1-PL-OM54,HM-LC-SW1-PL2,HM-LC-SW1-SM,HM-LC-SW1-SM-ATMEGA168,HM-LC-SW2-DR,HM-LC-SW2-FM,HM-LC-SW2-PB-FM,HM-LC-SW2-SM,HM-LC-SW4-BA-PCB,HM-LC-SW4-DR,HM-LC-SW4-PCB,HM-LC-SW4-SM,HM-LC-SW4-SM-ATMEGA168,HM-LC-SW4-WM,HM-LC-Sw1PBU-FM,HM-MOD-RC-8,HM-OU-CF-PL,HM-OU-CFM-PL,HM-OU-CM-PCB,HM-OU-LED16,HM-PB-2-FM,HM-PB-2-WM,HM-PB-2-WM55,HM-PB-2-WM55-2,HM-PB-4-WM,HM-PB-4DIS-WM,HM-PB-6-WM55,HM-PBI-4-FM,HM-RC-12,HM-RC-12-B,HM-RC-12-SW,HM-RC-19,HM-RC-19-B,HM-RC-19-SW,HM-RC-4,HM-RC-4-2,HM-RC-4-B,HM-RC-KEY3,HM-RC-KEY3-B,HM-RC-Key4-2,HM-RC-P1,HM-RC-SEC3,HM-RC-SEC3-B,HM-RC-Sec4-2,HM-SCI-3-FM,HM-SEC-KEY,HM-SEC-KEY-O,HM-SEC-KEY-S,HM-SEC-MDIR,HM-SEC-MDIR-2,HM-SEC-RHS,HM-SEC-SC,HM-SEC-SC-2,HM-SEC-SD,HM-SEC-SFA-SM,HM-SEC-TIS,HM-SEC-WDS,HM-SEC-WDS-2,HM-SEC-WIN,HM-SEN-EP,HM-SEN-MDIR-SM,HM-SWI-3-FM,HM-Sec-Cen,HM-Sen-MDIR-O,HM-Sen-MDIR-O-2,HM-Sen-RD-O,HM-Sen-Wa-Od,HM-Sys-sRP-Pl,HM-TC-IT-WM-W-EU,HM-WDC7000,HM-WDS10-TH-O,HM-WDS100-C6-O,HM-WDS20-TH-O,HM-WDS30-OT2-SM,HM-WDS30-T-O,HM-WDS40-TH-I,HM-WS550,HM-WS550LCB,HM-WS550LCW,HM-WS550Tech,IS-WDS-TH-OD-S-R3,IS-WDS-TH-OD-S-R3,KFM-Display,KFM-Sensor,KS550,KS550LC,KS550TECH,KS888,PS-Th-Sens,PS-switch,ROTO_ZEL-STG-RM-DWT-10,ROTO_ZEL-STG-RM-FDK,ROTO_ZEL-STG-RM-FEP-230V,ROTO_ZEL-STG-RM-FSA,ROTO_ZEL-STG-RM-FST-UP4,ROTO_ZEL-STG-RM-FWT,ROTO_ZEL-STG-RM-FZS,ROTO_ZEL-STG-RM-FZS-2,ROTO_ZEL-STG-RM-HS-4,ROTO_ZEL-STG-RM-WT-2,Roto_ZEL-STG-RM-FFK,Roto_ZEL-STG-RM-FSS-UP3,S550IA,Schueco_263-130,Schueco_263-131,Schueco_263-132,Schueco_263-133,Schueco_263-134,Schueco_263-135,Schueco_263-144,Schueco_263-145,Schueco_263-146,Schueco_263-147,Schueco_263-155,Schueco_263-158,Schueco_263-160,Schueco_263-162,Schueco_263-167,Schueco_263-xxx,WDF-solar,WS888 subType:AlarmControl,KFM100,THSensor,blindActuator,blindActuatorSol,dimmer,keyMatic,motionDetector,outputUnit,powerMeter,pushButton,remote,repeater,sensRain,sensor,singleButton,smokeDetector,swi,switch,thermostat,threeStateSensor,tipTronic,winMatic devStateIcon devStateStyle icon sortby webCmd">
+            <INT key="DEF" value="223F4D04"/>
+            <INT key="NAME" value="Buero.Heiz_Steuerung"/>
+            <INT key="NR" value="55"/>
+            <INT key="STATE" value="T: 16.6 desired: 18.5 valve: 100 %"/>
+            <INT key="TYPE" value="CUL_HM"/>
+            <INT key="chanNo" value="04"/>
+            <INT key="device" value="Buero.Heizung"/>
+            <ATTR key="model" value="HM-CC-RT-DN"/>
+            <ATTR key="peerIDs" value=""/>
+            <ATTR key="room" value="room"/>
+            <STATE key="CommandAccepted" value="yes" measured="2014-02-03 05:48:47"/>
+            <STATE key="R-boostPeriod" value="5 min" measured="2014-01-28 18:38:38"/>
+            <STATE key="R-boostPos" value="80 %" measured="2014-01-28 18:38:38"/>
+            <STATE key="R-btnNoBckLight" value="off " measured="2014-02-02 13:47:25"/>
+            <STATE key="R-dayTemp" value="21 C" measured="2014-01-28 18:38:38"/>
+            <STATE key="R-daylightSaveTime" value="on " measured="2014-02-02 13:47:25"/>
+            <STATE key="R-decalcTime" value="11:00 " measured="2014-02-02 13:47:25"/>
+            <STATE key="R-decalcWeekday" value="Sat " measured="2014-02-02 13:47:25"/>
+            <STATE key="R-modePrioManu" value="all " measured="2014-02-02 13:47:25"/>
+            <STATE key="R-modePrioParty" value="all " measured="2014-02-02 13:47:25"/>
+            <STATE key="R-nightTemp" value="17 C" measured="2014-01-28 18:38:38"/>
+            <STATE key="R-noMinMax4Manu" value="off " measured="2014-02-02 13:47:25"/>
+            <STATE key="R-regAdaptive" value="on " measured="2014-02-02 13:47:25"/>
+            <STATE key="R-reguExtI" value="15 " measured="2014-02-02 13:47:25"/>
+            <STATE key="R-reguExtP" value="30 " measured="2014-02-02 13:47:25"/>
+            <STATE key="R-reguExtPstart" value="30 " measured="2014-02-02 13:47:25"/>
+            <STATE key="R-reguIntI" value="18 " measured="2014-02-02 13:47:25"/>
+            <STATE key="R-reguIntP" value="33 " measured="2014-02-02 13:47:25"/>
+            <STATE key="R-reguIntPstart" value="42 " measured="2014-02-02 13:47:25"/>
+            <STATE key="R-showInfo" value="time " measured="2014-02-02 13:47:25"/>
+            <STATE key="R-showWeekday" value="off " measured="2014-02-02 13:47:25"/>
+            <STATE key="R-sign" value="off " measured="2014-02-02 13:47:21"/>
+            <STATE key="R-tempMax" value="30.5 C" measured="2014-01-28 18:38:38"/>
+            <STATE key="R-tempMin" value="4.5 C" measured="2014-01-28 18:38:38"/>
+            <STATE key="R-tempOffset" value="0.0K " measured="2014-02-02 13:47:25"/>
+            <STATE key="R-valveErrPos" value="15 %" measured="2014-01-28 18:38:38"/>
+            <STATE key="R-valveMaxPos" value="100 %" measured="2014-01-28 18:38:38"/>
+            <STATE key="R-valveOffsetRt" value="0 %" measured="2014-01-28 18:38:38"/>
+            <STATE key="R-winOpnBoost" value="off " measured="2014-02-02 13:47:25"/>
+            <STATE key="R-winOpnDetFall" value="1.4 K" measured="2014-01-28 18:38:38"/>
+            <STATE key="R-winOpnMode" value="on " measured="2014-02-02 13:47:25"/>
+            <STATE key="R-winOpnPeriod" value="15 min" measured="2014-01-28 18:38:38"/>
+            <STATE key="R-winOpnTemp" value="12 C" measured="2014-01-28 18:38:38"/>
+            <STATE key="RegL_01:" value="  08:00 00:00" measured="2014-02-02 15:13:14"/>
+            <STATE key="RegL_07:" value=" 01:2A 02:22 03:09 04:3D 05:18 06:03 07:00 08:16 09:07 0A:30 0B:00 0C:64 0D:0F 0E:05 0F:00 10:00 11:00 12:09 13:8E 14:44 15:54 16:48 17:66 18:4A 19:B4 1A:4D 1B:0E 1C:45 1D:20 1E:45 1F:20 20:45 21:20 22:45 23:20 24:45 25:20 26:45 27:20 28:45 29:20 2A:45 2B:20 2C:45 2D:20 2E:44 2F:54 30:48 31:66 32:4A 33:B4 34:4D 35:0E 36:45 37:20 38:45 39:20 3A:45 3B:20 3C:45 3D:20 3E:45 3F:20 40:45 41:20 42:45 43:20 44:45 45:20 46:45 47:20 48:44 49:42 4A:48 4B:58 4C:4A 4D:78 4E:4D 4F:0E 50:45 51:20 52:45 53:20 54:45 55:20 56:45 57:20 58:45 59:20 5A:45 5B:20 5C:45 5D:20 5E:45 5F:20 60:45 61:20 62:44 63:42 64:48 65:58 66:4A 67:78 68:4D 69:0E 6A:45 6B:20 6C:45 6D:20 6E:45 6F:20 70:45 71:20 72:45 73:20 74:45 75:20 76:45 77:20 78:45 79:20 7A:45 7B:20 7C:44 7D:42 7E:48 7F:58 80:4A 81:78 82:4D 83:0E 84:45 85:20 86:45 87:20 88:45 89:20 8A:45 8B:20 8C:45 8D:20 8E:45 8F:20 90:45 91:20 92:45 93:20 94:45 95:20 96:44 97:42 98:48 99:58 9A:4A 9B:78 9C:4D 9D:0E 9E:45 9F:20 A0:45 A1:20 A2:45 A3:20 A4:45 A5:20 A6:45 A7:20 A8:45 A9:20 AA:45 AB:20 AC:45 AD:20 AE:45 AF:20 B0:44 B1:42 B2:48 B3:58 B4:4A B5:78 B6:4D B7:0E B8:45 B9:20 BA:45 BB:20 BC:45 BD:20 BE:45 BF:20 C0:45 C1:20 C2:45 C3:20 C4:45 C5:20 C6:45 C7:20 C8:45 C9:20 CA:12 CB:21 CC:2A CD:0F CE:1E CF:1E 00:00" measured="2014-02-02 15:13:18"/>
+            <STATE key="ValvePosition" value="100 %" measured="2014-02-03 07:32:26"/>
+            <STATE key="desired-temp" value="18.5" measured="2014-02-03 07:32:26"/>
+            <STATE key="measured-temp" value="16.6" measured="2014-02-03 07:32:26"/>
+            <STATE key="mode" value="auto" measured="2014-02-03 07:32:26"/>
+            <STATE key="motorErr" value="ok" measured="2014-02-03 07:32:26"/>
+            <STATE key="recentStateType" value="ack" measured="2014-02-03 05:48:47"/>
+            <STATE key="state" value="T: 16.6 desired: 18.5 valve: 100 %" measured="2014-02-03 07:32:26"/>
+            <STATE key="tempListFri" value="  05:30 17.0 07:20 18.0 10:00 18.5 22:30 19.0 24:00 17.0" measured="2014-02-02 15:13:18"/>
+            <STATE key="tempListMon" value="  05:30 17.0 07:20 18.0 10:00 18.5 22:30 19.0 24:00 17.0" measured="2014-02-02 15:13:18"/>
+            <STATE key="tempListSat" value="  07:00 17.0 08:30 18.0 15:00 18.5 22:30 19.0 24:00 17.0" measured="2014-02-02 15:13:18"/>
+            <STATE key="tempListSun" value="  07:00 17.0 08:30 18.0 15:00 18.5 22:30 19.0 24:00 17.0" measured="2014-02-02 15:13:18"/>
+            <STATE key="tempListThu" value="  05:30 17.0 07:20 18.0 10:00 18.5 22:30 19.0 24:00 17.0" measured="2014-02-02 15:13:18"/>
+            <STATE key="tempListTue" value="  05:30 17.0 07:20 18.0 10:00 18.5 22:30 19.0 24:00 17.0" measured="2014-02-02 15:13:18"/>
+            <STATE key="tempListWed" value="  05:30 17.0 07:20 18.0 10:00 18.5 22:30 19.0 24:00 17.0" measured="2014-02-02 15:13:18"/>
+            <STATE key="tempList_State" value="verified" measured="2014-02-02 15:13:18"/>
+        </CUL_HM>
+
+        <CUL_HM name="Buero.Heiz_Team" state="???" sets="burstXmit clear:readings,register,rssi,msgEvents getConfig getRegRaw inhibit:on,off peerBulk peerChan regBulk regSet sign:on,off" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev do_not_notify:1,0 ignore:1,0 dummy:1,0 showtime:1,0 serialNr firmware rawToReadable unit peerIDs repPeers actCycle actStatus autoReadReg:0_off,1_restart,2_pon-restart,3_onChange,4_reqStatus,5_readMissing,8_stateOnly expert:0_off,1_on,2_full burstAccess:0_off,1_auto param msgRepeat .stc .devInfo event-on-change-reading event-on-update-reading event-min-interval stateFormat model:ASH550,ASH550I,CMM,DORMA_BRC-H,DORMA_RC-H,DORMA_atent,HM-CC-RT-DN,HM-CC-RT-DN-BoM,HM-CC-SCD,HM-CC-TC,HM-CC-VD,HM-Dis-TD-T,HM-ES-PMSw1-Pl,HM-LC-BL1-FM,HM-LC-BL1-PB-FM,HM-LC-BL1-SM,HM-LC-Bl1PBU-FM,HM-LC-DDC1-PCB,HM-LC-DIM1L-CV,HM-LC-DIM1L-PL,HM-LC-DIM1T-CV,HM-LC-DIM1T-FM,HM-LC-DIM1T-PL,HM-LC-DIM2L-CV,HM-LC-DIM2L-SM,HM-LC-DIM2T-SM,HM-LC-Dim1L-CV-2,HM-LC-Dim1L-CV-644,HM-LC-Dim1L-Pl-2,HM-LC-Dim1L-Pl-3,HM-LC-Dim1L-Pl-644,HM-LC-Dim1PWM-CV,HM-LC-Dim1PWM-CV-2,HM-LC-Dim1T-CV-2,HM-LC-Dim1T-CV-644,HM-LC-Dim1T-FM-2,HM-LC-Dim1T-FM-644,HM-LC-Dim1T-Pl-2,HM-LC-Dim1T-Pl-3,HM-LC-Dim1T-Pl-644,HM-LC-Dim1TPBU-FM,HM-LC-Dim1TPBU-FM-2,HM-LC-Dim2L-SM,HM-LC-Dim2L-SM-2,HM-LC-Dim2T-SM,HM-LC-Dim2T-SM-2,HM-LC-SW1-BA-PCB,HM-LC-SW1-FM,HM-LC-SW1-PB-FM,HM-LC-SW1-PL,HM-LC-SW1-PL-OM54,HM-LC-SW1-PL2,HM-LC-SW1-SM,HM-LC-SW1-SM-ATMEGA168,HM-LC-SW2-DR,HM-LC-SW2-FM,HM-LC-SW2-PB-FM,HM-LC-SW2-SM,HM-LC-SW4-BA-PCB,HM-LC-SW4-DR,HM-LC-SW4-PCB,HM-LC-SW4-SM,HM-LC-SW4-SM-ATMEGA168,HM-LC-SW4-WM,HM-LC-Sw1PBU-FM,HM-MOD-RC-8,HM-OU-CF-PL,HM-OU-CFM-PL,HM-OU-CM-PCB,HM-OU-LED16,HM-PB-2-FM,HM-PB-2-WM,HM-PB-2-WM55,HM-PB-2-WM55-2,HM-PB-4-WM,HM-PB-4DIS-WM,HM-PB-6-WM55,HM-PBI-4-FM,HM-RC-12,HM-RC-12-B,HM-RC-12-SW,HM-RC-19,HM-RC-19-B,HM-RC-19-SW,HM-RC-4,HM-RC-4-2,HM-RC-4-B,HM-RC-KEY3,HM-RC-KEY3-B,HM-RC-Key4-2,HM-RC-P1,HM-RC-SEC3,HM-RC-SEC3-B,HM-RC-Sec4-2,HM-SCI-3-FM,HM-SEC-KEY,HM-SEC-KEY-O,HM-SEC-KEY-S,HM-SEC-MDIR,HM-SEC-MDIR-2,HM-SEC-RHS,HM-SEC-SC,HM-SEC-SC-2,HM-SEC-SD,HM-SEC-SFA-SM,HM-SEC-TIS,HM-SEC-WDS,HM-SEC-WDS-2,HM-SEC-WIN,HM-SEN-EP,HM-SEN-MDIR-SM,HM-SWI-3-FM,HM-Sec-Cen,HM-Sen-MDIR-O,HM-Sen-MDIR-O-2,HM-Sen-RD-O,HM-Sen-Wa-Od,HM-Sys-sRP-Pl,HM-TC-IT-WM-W-EU,HM-WDC7000,HM-WDS10-TH-O,HM-WDS100-C6-O,HM-WDS20-TH-O,HM-WDS30-OT2-SM,HM-WDS30-T-O,HM-WDS40-TH-I,HM-WS550,HM-WS550LCB,HM-WS550LCW,HM-WS550Tech,IS-WDS-TH-OD-S-R3,IS-WDS-TH-OD-S-R3,KFM-Display,KFM-Sensor,KS550,KS550LC,KS550TECH,KS888,PS-Th-Sens,PS-switch,ROTO_ZEL-STG-RM-DWT-10,ROTO_ZEL-STG-RM-FDK,ROTO_ZEL-STG-RM-FEP-230V,ROTO_ZEL-STG-RM-FSA,ROTO_ZEL-STG-RM-FST-UP4,ROTO_ZEL-STG-RM-FWT,ROTO_ZEL-STG-RM-FZS,ROTO_ZEL-STG-RM-FZS-2,ROTO_ZEL-STG-RM-HS-4,ROTO_ZEL-STG-RM-WT-2,Roto_ZEL-STG-RM-FFK,Roto_ZEL-STG-RM-FSS-UP3,S550IA,Schueco_263-130,Schueco_263-131,Schueco_263-132,Schueco_263-133,Schueco_263-134,Schueco_263-135,Schueco_263-144,Schueco_263-145,Schueco_263-146,Schueco_263-147,Schueco_263-155,Schueco_263-158,Schueco_263-160,Schueco_263-162,Schueco_263-167,Schueco_263-xxx,WDF-solar,WS888 subType:AlarmControl,KFM100,THSensor,blindActuator,blindActuatorSol,dimmer,keyMatic,motionDetector,outputUnit,powerMeter,pushButton,remote,repeater,sensRain,sensor,singleButton,smokeDetector,swi,switch,thermostat,threeStateSensor,tipTronic,winMatic devStateIcon devStateStyle icon sortby webCmd">
+            <INT key="DEF" value="223F4D05"/>
+            <INT key="NAME" value="Buero.Heiz_Team"/>
+            <INT key="NR" value="57"/>
+            <INT key="STATE" value="???"/>
+            <INT key="TYPE" value="CUL_HM"/>
+            <INT key="chanNo" value="05"/>
+            <INT key="device" value="Buero.Heizung"/>
+            <ATTR key="model" value="HM-CC-RT-DN"/>
+            <ATTR key="peerIDs" value="00000000,"/>
+            <ATTR key="room" value="room"/>
+            <STATE key="R-sign" value="off " measured="2014-02-02 13:49:43"/>
+            <STATE key="RegL_01:" value="  08:00 00:00" measured="2014-02-02 13:49:43"/>
+        </CUL_HM>
+
+        <CUL_HM name="Buero.Heiz_Fernbedienung" state="???" sets="burstXmit clear:readings,register,rssi,msgEvents getConfig getRegRaw inhibit:on,off peerBulk regBulk regSet sign:on,off" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev do_not_notify:1,0 ignore:1,0 dummy:1,0 showtime:1,0 serialNr firmware rawToReadable unit peerIDs repPeers actCycle actStatus autoReadReg:0_off,1_restart,2_pon-restart,3_onChange,4_reqStatus,5_readMissing,8_stateOnly expert:0_off,1_on,2_full burstAccess:0_off,1_auto param msgRepeat .stc .devInfo event-on-change-reading event-on-update-reading event-min-interval stateFormat model:ASH550,ASH550I,CMM,DORMA_BRC-H,DORMA_RC-H,DORMA_atent,HM-CC-RT-DN,HM-CC-RT-DN-BoM,HM-CC-SCD,HM-CC-TC,HM-CC-VD,HM-Dis-TD-T,HM-ES-PMSw1-Pl,HM-LC-BL1-FM,HM-LC-BL1-PB-FM,HM-LC-BL1-SM,HM-LC-Bl1PBU-FM,HM-LC-DDC1-PCB,HM-LC-DIM1L-CV,HM-LC-DIM1L-PL,HM-LC-DIM1T-CV,HM-LC-DIM1T-FM,HM-LC-DIM1T-PL,HM-LC-DIM2L-CV,HM-LC-DIM2L-SM,HM-LC-DIM2T-SM,HM-LC-Dim1L-CV-2,HM-LC-Dim1L-CV-644,HM-LC-Dim1L-Pl-2,HM-LC-Dim1L-Pl-3,HM-LC-Dim1L-Pl-644,HM-LC-Dim1PWM-CV,HM-LC-Dim1PWM-CV-2,HM-LC-Dim1T-CV-2,HM-LC-Dim1T-CV-644,HM-LC-Dim1T-FM-2,HM-LC-Dim1T-FM-644,HM-LC-Dim1T-Pl-2,HM-LC-Dim1T-Pl-3,HM-LC-Dim1T-Pl-644,HM-LC-Dim1TPBU-FM,HM-LC-Dim1TPBU-FM-2,HM-LC-Dim2L-SM,HM-LC-Dim2L-SM-2,HM-LC-Dim2T-SM,HM-LC-Dim2T-SM-2,HM-LC-SW1-BA-PCB,HM-LC-SW1-FM,HM-LC-SW1-PB-FM,HM-LC-SW1-PL,HM-LC-SW1-PL-OM54,HM-LC-SW1-PL2,HM-LC-SW1-SM,HM-LC-SW1-SM-ATMEGA168,HM-LC-SW2-DR,HM-LC-SW2-FM,HM-LC-SW2-PB-FM,HM-LC-SW2-SM,HM-LC-SW4-BA-PCB,HM-LC-SW4-DR,HM-LC-SW4-PCB,HM-LC-SW4-SM,HM-LC-SW4-SM-ATMEGA168,HM-LC-SW4-WM,HM-LC-Sw1PBU-FM,HM-MOD-RC-8,HM-OU-CF-PL,HM-OU-CFM-PL,HM-OU-CM-PCB,HM-OU-LED16,HM-PB-2-FM,HM-PB-2-WM,HM-PB-2-WM55,HM-PB-2-WM55-2,HM-PB-4-WM,HM-PB-4DIS-WM,HM-PB-6-WM55,HM-PBI-4-FM,HM-RC-12,HM-RC-12-B,HM-RC-12-SW,HM-RC-19,HM-RC-19-B,HM-RC-19-SW,HM-RC-4,HM-RC-4-2,HM-RC-4-B,HM-RC-KEY3,HM-RC-KEY3-B,HM-RC-Key4-2,HM-RC-P1,HM-RC-SEC3,HM-RC-SEC3-B,HM-RC-Sec4-2,HM-SCI-3-FM,HM-SEC-KEY,HM-SEC-KEY-O,HM-SEC-KEY-S,HM-SEC-MDIR,HM-SEC-MDIR-2,HM-SEC-RHS,HM-SEC-SC,HM-SEC-SC-2,HM-SEC-SD,HM-SEC-SFA-SM,HM-SEC-TIS,HM-SEC-WDS,HM-SEC-WDS-2,HM-SEC-WIN,HM-SEN-EP,HM-SEN-MDIR-SM,HM-SWI-3-FM,HM-Sec-Cen,HM-Sen-MDIR-O,HM-Sen-MDIR-O-2,HM-Sen-RD-O,HM-Sen-Wa-Od,HM-Sys-sRP-Pl,HM-TC-IT-WM-W-EU,HM-WDC7000,HM-WDS10-TH-O,HM-WDS100-C6-O,HM-WDS20-TH-O,HM-WDS30-OT2-SM,HM-WDS30-T-O,HM-WDS40-TH-I,HM-WS550,HM-WS550LCB,HM-WS550LCW,HM-WS550Tech,IS-WDS-TH-OD-S-R3,IS-WDS-TH-OD-S-R3,KFM-Display,KFM-Sensor,KS550,KS550LC,KS550TECH,KS888,PS-Th-Sens,PS-switch,ROTO_ZEL-STG-RM-DWT-10,ROTO_ZEL-STG-RM-FDK,ROTO_ZEL-STG-RM-FEP-230V,ROTO_ZEL-STG-RM-FSA,ROTO_ZEL-STG-RM-FST-UP4,ROTO_ZEL-STG-RM-FWT,ROTO_ZEL-STG-RM-FZS,ROTO_ZEL-STG-RM-FZS-2,ROTO_ZEL-STG-RM-HS-4,ROTO_ZEL-STG-RM-WT-2,Roto_ZEL-STG-RM-FFK,Roto_ZEL-STG-RM-FSS-UP3,S550IA,Schueco_263-130,Schueco_263-131,Schueco_263-132,Schueco_263-133,Schueco_263-134,Schueco_263-135,Schueco_263-144,Schueco_263-145,Schueco_263-146,Schueco_263-147,Schueco_263-155,Schueco_263-158,Schueco_263-160,Schueco_263-162,Schueco_263-167,Schueco_263-xxx,WDF-solar,WS888 subType:AlarmControl,KFM100,THSensor,blindActuator,blindActuatorSol,dimmer,keyMatic,motionDetector,outputUnit,powerMeter,pushButton,remote,repeater,sensRain,sensor,singleButton,smokeDetector,swi,switch,thermostat,threeStateSensor,tipTronic,winMatic devStateIcon devStateStyle icon sortby webCmd">
+            <INT key="DEF" value="223F4D06"/>
+            <INT key="NAME" value="Buero.Heiz_Fernbedienung"/>
+            <INT key="NR" value="58"/>
+            <INT key="STATE" value="???"/>
+            <INT key="TYPE" value="CUL_HM"/>
+            <INT key="chanNo" value="06"/>
+            <INT key="device" value="Buero.Heizung"/>
+            <ATTR key="model" value="HM-CC-RT-DN"/>
+            <ATTR key="peerIDs" value="00000000,"/>
+            <ATTR key="room" value="room"/>
+            <STATE key="R-sign" value="off" measured="2014-02-01 18:47:49"/>
+            <STATE key="RegL_01:" value="08:00 00:00" measured="2014-02-01 18:47:49"/>
+        </CUL_HM>
+
+        <CUL_HM name="Buero.Heizung" state="CMDs_done" sets="burstXmit clear:readings,register,rssi,msgEvents getConfig getRegRaw inhibit:on,off pair raw regBulk regSet reset sysTime unpair" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev do_not_notify:1,0 ignore:1,0 dummy:1,0 showtime:1,0 serialNr firmware rawToReadable unit peerIDs repPeers actCycle actStatus autoReadReg:0_off,1_restart,2_pon-restart,3_onChange,4_reqStatus,5_readMissing,8_stateOnly expert:0_off,1_on,2_full burstAccess:0_off,1_auto param msgRepeat .stc .devInfo event-on-change-reading event-on-update-reading event-min-interval stateFormat model:ASH550,ASH550I,CMM,DORMA_BRC-H,DORMA_RC-H,DORMA_atent,HM-CC-RT-DN,HM-CC-RT-DN-BoM,HM-CC-SCD,HM-CC-TC,HM-CC-VD,HM-Dis-TD-T,HM-ES-PMSw1-Pl,HM-LC-BL1-FM,HM-LC-BL1-PB-FM,HM-LC-BL1-SM,HM-LC-Bl1PBU-FM,HM-LC-DDC1-PCB,HM-LC-DIM1L-CV,HM-LC-DIM1L-PL,HM-LC-DIM1T-CV,HM-LC-DIM1T-FM,HM-LC-DIM1T-PL,HM-LC-DIM2L-CV,HM-LC-DIM2L-SM,HM-LC-DIM2T-SM,HM-LC-Dim1L-CV-2,HM-LC-Dim1L-CV-644,HM-LC-Dim1L-Pl-2,HM-LC-Dim1L-Pl-3,HM-LC-Dim1L-Pl-644,HM-LC-Dim1PWM-CV,HM-LC-Dim1PWM-CV-2,HM-LC-Dim1T-CV-2,HM-LC-Dim1T-CV-644,HM-LC-Dim1T-FM-2,HM-LC-Dim1T-FM-644,HM-LC-Dim1T-Pl-2,HM-LC-Dim1T-Pl-3,HM-LC-Dim1T-Pl-644,HM-LC-Dim1TPBU-FM,HM-LC-Dim1TPBU-FM-2,HM-LC-Dim2L-SM,HM-LC-Dim2L-SM-2,HM-LC-Dim2T-SM,HM-LC-Dim2T-SM-2,HM-LC-SW1-BA-PCB,HM-LC-SW1-FM,HM-LC-SW1-PB-FM,HM-LC-SW1-PL,HM-LC-SW1-PL-OM54,HM-LC-SW1-PL2,HM-LC-SW1-SM,HM-LC-SW1-SM-ATMEGA168,HM-LC-SW2-DR,HM-LC-SW2-FM,HM-LC-SW2-PB-FM,HM-LC-SW2-SM,HM-LC-SW4-BA-PCB,HM-LC-SW4-DR,HM-LC-SW4-PCB,HM-LC-SW4-SM,HM-LC-SW4-SM-ATMEGA168,HM-LC-SW4-WM,HM-LC-Sw1PBU-FM,HM-MOD-RC-8,HM-OU-CF-PL,HM-OU-CFM-PL,HM-OU-CM-PCB,HM-OU-LED16,HM-PB-2-FM,HM-PB-2-WM,HM-PB-2-WM55,HM-PB-2-WM55-2,HM-PB-4-WM,HM-PB-4DIS-WM,HM-PB-6-WM55,HM-PBI-4-FM,HM-RC-12,HM-RC-12-B,HM-RC-12-SW,HM-RC-19,HM-RC-19-B,HM-RC-19-SW,HM-RC-4,HM-RC-4-2,HM-RC-4-B,HM-RC-KEY3,HM-RC-KEY3-B,HM-RC-Key4-2,HM-RC-P1,HM-RC-SEC3,HM-RC-SEC3-B,HM-RC-Sec4-2,HM-SCI-3-FM,HM-SEC-KEY,HM-SEC-KEY-O,HM-SEC-KEY-S,HM-SEC-MDIR,HM-SEC-MDIR-2,HM-SEC-RHS,HM-SEC-SC,HM-SEC-SC-2,HM-SEC-SD,HM-SEC-SFA-SM,HM-SEC-TIS,HM-SEC-WDS,HM-SEC-WDS-2,HM-SEC-WIN,HM-SEN-EP,HM-SEN-MDIR-SM,HM-SWI-3-FM,HM-Sec-Cen,HM-Sen-MDIR-O,HM-Sen-MDIR-O-2,HM-Sen-RD-O,HM-Sen-Wa-Od,HM-Sys-sRP-Pl,HM-TC-IT-WM-W-EU,HM-WDC7000,HM-WDS10-TH-O,HM-WDS100-C6-O,HM-WDS20-TH-O,HM-WDS30-OT2-SM,HM-WDS30-T-O,HM-WDS40-TH-I,HM-WS550,HM-WS550LCB,HM-WS550LCW,HM-WS550Tech,IS-WDS-TH-OD-S-R3,IS-WDS-TH-OD-S-R3,KFM-Display,KFM-Sensor,KS550,KS550LC,KS550TECH,KS888,PS-Th-Sens,PS-switch,ROTO_ZEL-STG-RM-DWT-10,ROTO_ZEL-STG-RM-FDK,ROTO_ZEL-STG-RM-FEP-230V,ROTO_ZEL-STG-RM-FSA,ROTO_ZEL-STG-RM-FST-UP4,ROTO_ZEL-STG-RM-FWT,ROTO_ZEL-STG-RM-FZS,ROTO_ZEL-STG-RM-FZS-2,ROTO_ZEL-STG-RM-HS-4,ROTO_ZEL-STG-RM-WT-2,Roto_ZEL-STG-RM-FFK,Roto_ZEL-STG-RM-FSS-UP3,S550IA,Schueco_263-130,Schueco_263-131,Schueco_263-132,Schueco_263-133,Schueco_263-134,Schueco_263-135,Schueco_263-144,Schueco_263-145,Schueco_263-146,Schueco_263-147,Schueco_263-155,Schueco_263-158,Schueco_263-160,Schueco_263-162,Schueco_263-167,Schueco_263-xxx,WDF-solar,WS888 subType:AlarmControl,KFM100,THSensor,blindActuator,blindActuatorSol,dimmer,keyMatic,motionDetector,outputUnit,powerMeter,pushButton,remote,repeater,sensRain,sensor,singleButton,smokeDetector,swi,switch,thermostat,threeStateSensor,tipTronic,winMatic devStateIcon devStateStyle icon sortby webCmd">
+            <INT key="DEF" value="223F4D"/>
+            <INT key="LASTInputDev" value="hmusb"/>
+            <INT key="MSGCNT" value="474"/>
+            <INT key="NAME" value="Buero.Heizung"/>
+            <INT key="NR" value="50"/>
+            <INT key="STATE" value="CMDs_done"/>
+            <INT key="TYPE" value="CUL_HM"/>
+            <INT key="channel_01" value="Buero.Heiz_IN_Wetter"/>
+            <INT key="channel_02" value="Buero.Heiz_IN_Klima"/>
+            <INT key="channel_03" value="Buero.Heiz_IN_Fenster"/>
+            <INT key="channel_04" value="Buero.Heiz_Steuerung"/>
+            <INT key="channel_05" value="Buero.Heiz_Team"/>
+            <INT key="channel_06" value="Buero.Heiz_Fernbedienung"/>
+            <INT key="hmusb_MSGCNT" value="474"/>
+            <INT key="hmusb_RAWMSG" value="E223F4D,0000,07F1D29F,FF,FFCD,6F8610223F4D0000000A94A6106418"/>
+            <INT key="hmusb_RSSI" value="-51"/>
+            <INT key="hmusb_TIME" value="2014-02-03 07:32:26"/>
+            <INT key="lastMsg" value="No:6F - t:10 s:223F4D d:000000 0A94A6106418"/>
+            <INT key="protLastRcv" value="2014-02-03 07:32:26"/>
+            <INT key="protResnd" value="1 last_at:2014-02-02 15:08:09"/>
+            <INT key="protSnd" value="49 last_at:2014-02-03 05:48:47"/>
+            <INT key="protState" value="CMDs_done"/>
+            <INT key="rssi_at_hmusb" value="avg:-51.14 min:-60 max:-48 lst:-51 cnt:474 "/>
+            <INT key="rssi_hmusb" value="avg:-47.5 min:-48 max:-47 lst:-47 cnt:2 "/>
+            <INT key="IODev" value="hmusb"/>
+            <ATTR key="IODev" value="hmusb"/>
+            <ATTR key="actCycle" value="000:10"/>
+            <ATTR key="actStatus" value="alive"/>
+            <ATTR key="autoReadReg" value="4_reqStatus"/>
+            <ATTR key="expert" value="2_full"/>
+            <ATTR key="icon" value="hc_wht_regler"/>
+            <ATTR key="model" value="HM-CC-RT-DN"/>
+            <ATTR key="peerIDs" value=""/>
+            <ATTR key="room" value="room"/>
+            <ATTR key="serialNr" value="abcdefg"/>
+            <ATTR key="subType" value="thermostat"/>
+            <ATTR key="webCmd" value=":burstXmit"/>
+            <STATE key="Activity" value="alive" measured="2014-02-02 13:45:39"/>
+            <STATE key="CommandAccepted" value="yes" measured="2014-02-03 05:48:47"/>
+            <STATE key="PairedTo" value="0x123456" measured="2014-02-01 18:47:42"/>
+            <STATE key="R-backOnTime" value="10 s" measured="2014-01-28 18:38:31"/>
+            <STATE key="R-btnLock" value="unlock" measured="2014-02-01 18:47:42"/>
+            <STATE key="R-burstRx" value="off" measured="2014-02-01 18:47:42"/>
+            <STATE key="R-cyclicInfoMsg" value="on" measured="2014-02-01 18:47:42"/>
+            <STATE key="R-cyclicInfoMsgDis" value="0" measured="2014-02-01 18:47:42"/>
+            <STATE key="R-globalBtnLock" value="off" measured="2014-02-01 18:47:42"/>
+            <STATE key="R-localResDis" value="off" measured="2014-02-01 18:47:42"/>
+            <STATE key="R-lowBatLimitRT" value="2.1 V" measured="2014-01-28 18:38:31"/>
+            <STATE key="R-modusBtnLock" value="off" measured="2014-02-01 18:47:42"/>
+            <STATE key="R-pairCentral" value="0x123456" measured="2014-02-01 18:47:42"/>
+            <STATE key="RegL_00:" value="01:00 02:01 09:01 0A:12 0B:34 0C:56 0E:0A 0F:00  11:00 12:15 16:00 18:00 19:00 1A:00 00:00" measured="2014-02-01 18:47:42"/>
+            <STATE key="actuator" value="100 %" measured="2014-02-03 07:32:26"/>
+            <STATE key="battery" value="ok" measured="2014-02-03 07:32:26"/>
+            <STATE key="batteryLevel" value="3.1 V" measured="2014-02-03 07:32:26"/>
+            <STATE key="desired-temp" value="18.5" measured="2014-02-03 07:32:26"/>
+            <STATE key="measured-temp" value="16.6" measured="2014-02-03 07:32:26"/>
+            <STATE key="powerOn" value="-" measured="2014-02-01 18:40:29"/>
+            <STATE key="recentStateType" value="info" measured="2014-02-01 18:40:29"/>
+            <STATE key="state" value="CMDs_done" measured="2014-02-03 05:48:47"/>
+            <STATE key="time-request" value="-" measured="2014-02-02 17:25:49"/>
+        </CUL_HM>
+    </CULHM_LIST>
+</FHZINFO>

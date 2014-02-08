@@ -52,6 +52,8 @@ public class PowerMeterTest extends DeviceXMLParsingBase {
 
         assertThat(device.getLogDevice(), is(notNullValue()));
         assertThat(device.getDeviceCharts().size(), is(2));
+
+        assertThat(device.isSupported(), is(true));
     }
 
     @Override

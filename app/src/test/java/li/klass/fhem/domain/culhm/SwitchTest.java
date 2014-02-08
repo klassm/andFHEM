@@ -47,6 +47,8 @@ public class SwitchTest extends DeviceXMLParsingBase {
 
         assertThat(device.getLogDevice(), is(nullValue()));
         assertThat(device.getDeviceCharts().size(), is(0));
+
+        assertThat(device.isSupported(), is(true));
     }
 
     @Test

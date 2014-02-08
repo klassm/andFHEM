@@ -322,6 +322,11 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
             weekProfile.afterXMLRead();
         }
 
+        super.afterDeviceXMLRead();
+    }
+
+    @Override
+    public void afterAllXMLRead() {
         if (getAssociatedDeviceCallback() != null) {
             CULHMDevice device = getAssociatedDeviceCallback().getAssociatedDevice();
             if (device != null) {
@@ -354,7 +359,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
             fillContentPercentage = ValueDescriptionUtil.appendPercent((int) (fillContentPercentageRaw * 100));
         }
 
-        super.afterDeviceXMLRead();
+        super.afterAllXMLRead();
     }
 
     @Override

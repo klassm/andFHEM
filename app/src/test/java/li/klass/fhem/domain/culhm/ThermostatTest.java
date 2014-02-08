@@ -56,6 +56,8 @@ public class ThermostatTest extends DeviceXMLParsingBase {
         assertThat(device2.getDesiredTemp(), is(closeTo(16, 0.01)));
         assertThat(device2.getDesiredTempDesc(), is("16.0 (°C)"));
         assertThat(device2.getActuator(), is("86 (%)"));
+
+        assertThat(device.isSupported(), is(true));
     }
 
     @Override

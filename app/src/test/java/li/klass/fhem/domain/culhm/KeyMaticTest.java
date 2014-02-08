@@ -42,6 +42,8 @@ public class KeyMaticTest extends DeviceXMLParsingBase {
 
         assertThat(device.getState(), is("locked"));
         assertThat(device.getBattery(), is("ok"));
+
+        assertThat(device.isSupported(), is(true));
     }
 
     @Override

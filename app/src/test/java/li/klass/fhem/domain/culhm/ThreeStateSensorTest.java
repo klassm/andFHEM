@@ -49,7 +49,9 @@ public class ThreeStateSensorTest extends DeviceXMLParsingBase {
         assertThat(device.getBattery(), is("ok"));
 
         assertThat(device.getLogDevice(), is(nullValue()));
-        assertThat(device.getDeviceCharts().size(), Is.is(0));
+        assertThat(device.getDeviceCharts().size(), is(0));
+
+        assertThat(device.isSupported(), is(true));
     }
 
     @Override

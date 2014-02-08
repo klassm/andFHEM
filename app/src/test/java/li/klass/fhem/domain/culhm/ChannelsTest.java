@@ -31,44 +31,43 @@ import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.core.Is.is;
 
-public class THSensorTest extends DeviceXMLParsingBase {
+public class ChannelsTest extends DeviceXMLParsingBase {
     @Test
-    public void testForCorrectlySetAttributes() {
-        CULHMDevice device = getDefaultDevice();
+    public void testChannelsAreFoundAndRecognisedAsVisible() {
 
-        assertThat(device.getName(), is(DEFAULT_TEST_DEVICE_NAME));
-        assertThat(device.getRoomConcatenated(), is(DEFAULT_TEST_ROOM_NAME));
+        CULHMDevice heizung = getDeviceFor("Buero.Heizung");
+        assertThat(heizung, is(notNullValue()));
+        assertThat(heizung.isSupported(), is(true));
 
-        assertThat(device.getState(), is("T: 14.6 H: 67"));
-        assertThat(device.getSubType(), is(CULHMDevice.SubType.TEMPERATURE_HUMIDITY));
-        assertThat(device.supportsDim(), is(false));
+        CULHMDevice wetter = getDeviceFor("Buero.Heiz_IN_Wetter");
+        assertThat(wetter, is(notNullValue()));
+        assertThat(wetter.isSupported(), is(true));
 
-        assertThat(device.getMeasuredTemp(), is("-2.4 (°C)"));
-        assertThat(device.getHumidity(), is("67 (%)"));
+        CULHMDevice klima = getDeviceFor("Buero.Heiz_IN_Klima");
+        assertThat(klima, is(notNullValue()));
+        assertThat(klima.isSupported(), is(true));
 
-        assertThat(device.getLogDevice(), is(notNullValue()));
-        assertThat(device.getDeviceCharts().size(), is(1));
+        CULHMDevice fenster = getDeviceFor("Buero.Heiz_IN_Fenster");
+        assertThat(fenster, is(notNullValue()));
+        assertThat(fenster.isSupported(), is(true));
 
-        assertThat(device.isSupported(), is(true));
-    }
+        CULHMDevice steuerung = getDeviceFor("Buero.Heiz_Steuerung");
+        assertThat(steuerung, is(notNullValue()));
+        assertThat(steuerung.isSupported(), is(true));
 
-    @Test
-    public void testOC3Sensor() {
-        CULHMDevice device = getDeviceFor("oc3");
+        CULHMDevice team = getDeviceFor("Buero.Heiz_Team");
+        assertThat(team, is(notNullValue()));
+        assertThat(team.isSupported(), is(true));
 
-        assertThat(device, is(notNullValue()));
-        assertThat(device.getMeasuredTemp(), is("5.1 (°C)"));
-        assertThat(device.getHumidity(), is("92 (%)"));
-        assertThat(device.getBrightness(), is("9"));
-        assertThat(device.getSunshine(), is("224"));
-        assertThat(device.getIsRaining(), is("no"));
-        assertThat(device.getRain(), is("74.045 (l/m2)"));
+        CULHMDevice fernbedienung = getDeviceFor("Buero.Heiz_Fernbedienung");
+        assertThat(fernbedienung, is(notNullValue()));
+        assertThat(fernbedienung.isSupported(), is(true));
     }
 
     @Override
     protected String getFileName() {
-        return "THSensor.xml";
+        return "channels.xml";
     }
 }

@@ -24,6 +24,7 @@
 
 package li.klass.fhem.domain.culhm;
 
+import org.hamcrest.Matchers;
 import org.hamcrest.core.IsNull;
 import org.junit.Test;
 
@@ -47,6 +48,8 @@ public class SmokeDetectorTest extends DeviceXMLParsingBase {
 
         assertThat(device.getLogDevice(), is(IsNull.nullValue()));
         assertThat(device.getDeviceCharts().size(), is(0));
+
+        assertThat(device.isSupported(), Matchers.is(true));
     }
 
     @Override
