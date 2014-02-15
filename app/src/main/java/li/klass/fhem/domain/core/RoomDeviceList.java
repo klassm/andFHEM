@@ -125,6 +125,7 @@ public class RoomDeviceList implements Serializable {
 
     public <T extends Device> void addDevice(T device) {
         if (device == null) return;
+        if (! device.isSupported()) return;
 
         DeviceType deviceType = DeviceType.getDeviceTypeFor(device);
         if (deviceType.mayShowInCurrentConnectionType()) {
@@ -133,7 +134,6 @@ public class RoomDeviceList implements Serializable {
 
         DeviceFunctionality functionality = device.getDeviceFunctionality();
         getOrCreateDeviceList(functionality).add(device);
-
     }
 
     public <T extends Device> void removeDevice(T device) {

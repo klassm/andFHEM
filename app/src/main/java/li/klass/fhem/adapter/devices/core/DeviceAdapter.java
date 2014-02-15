@@ -33,6 +33,8 @@ import android.widget.Button;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.google.common.base.Preconditions;
+
 import li.klass.fhem.activities.graph.ChartingActivity;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
@@ -110,7 +112,7 @@ public abstract class DeviceAdapter<D extends Device> {
         intent.putExtras(new Bundle());
         intent.putExtra(BundleExtraKeys.FRAGMENT_NAME, DeviceDetailFragment.class.getName());
         intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
-        intent.putExtra(BundleExtraKeys.ROOM_NAME, device.getRooms()[0]);
+        intent.putExtra(BundleExtraKeys.ROOM_NAME, (String) device.getRooms().get(0));
 
         intent = onFillDeviceDetailIntent(context, device, intent);
         if (intent != null) {
@@ -139,7 +141,12 @@ public abstract class DeviceAdapter<D extends Device> {
     }
 
     protected void setTextView(View view, int textFieldLayoutId, int value) {
-        setTextView(view, textFieldLayoutId, view.getContext().getString(value));
+        Preconditions.checkNotNull(view);
+
+        Context context = view.getContext();
+        Preconditions.checkNotNull(context);
+
+        setTextView(view, textFieldLayoutId, context.getString(value));
     }
 
     protected void setTextView(View view, int textFieldLayoutId, String value) {

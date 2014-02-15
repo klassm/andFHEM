@@ -24,6 +24,8 @@
 
 package li.klass.fhem.domain.core;
 
+import com.google.common.collect.Lists;
+
 import org.w3c.dom.NamedNodeMap;
 
 import java.io.Serializable;
@@ -42,7 +44,7 @@ import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.domain.log.CustomGraph;
 import li.klass.fhem.domain.log.LogDevice;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
-import li.klass.fhem.service.room.AssociatedDeviceCallback;
+import li.klass.fhem.service.room.AllDevicesReadCallback;
 import li.klass.fhem.util.ArrayUtil;
 import li.klass.fhem.util.DateFormatUtil;
 import li.klass.fhem.util.StringUtil;
@@ -50,7 +52,7 @@ import li.klass.fhem.util.StringUtil;
 @SuppressWarnings("unused")
 public abstract class Device<T extends Device> implements Serializable, Comparable<T> {
 
-    protected String[] rooms;
+    protected List<String> rooms;
     protected String[] webCmd;
 
     protected String name;
@@ -73,7 +75,7 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
 
     protected volatile LogDevice logDevice;
     private List<DeviceChart> deviceCharts = new ArrayList<DeviceChart>();
-    private transient AssociatedDeviceCallback associatedDeviceCallback;
+    private transient AllDevicesReadCallback associatedDeviceCallback;
     private String widgetName;
     private boolean alwaysHidden = false;
 
@@ -131,9 +133,6 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
     }
 
     public void afterAllXMLRead() {
-        if (logDevice != null) {
-            fillDeviceCharts(deviceCharts);
-        }
     }
 
     private void parseEventMap(String content) {
@@ -186,9 +185,9 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
         return name;
     }
 
-    public String[] getRooms() {
-        if (rooms == null) {
-            return new String[]{AndFHEMApplication.getContext().getResources().getString(R.string.unsortedRoomName)};
+    public List<String> getRooms() {
+        if (rooms == null || rooms.size() == 0) {
+            return Lists.newArrayList(AndFHEMApplication.getContext().getResources().getString(R.string.unsortedRoomName));
         }
         return rooms;
     }
@@ -205,12 +204,7 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
      * @return true if the device is in the room
      */
     public boolean isInRoom(String room) {
-        for (String internalRoom : getRooms()) {
-            if (internalRoom.equals(room)) {
-                return true;
-            }
-        }
-        return false;
+        return getRooms().contains(room);
     }
 
     public void setName(String name) {
@@ -259,12 +253,11 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
 
         String[] targetStates = setsText.split(" ");
         List<String> outStates = new ArrayList<String>();
-        for (int i = 0; i < targetStates.length; i++) {
-            String targetState = targetStates[i];
+        for (String targetState : targetStates) {
             if (targetState.startsWith("state:")) {
                 targetState = targetState.substring("state:".length());
 
-                if (! targetState.contains("slider")) {
+                if (!targetState.contains("slider")) {
                     outStates.addAll(Arrays.asList(targetState.split(",")));
                     continue;
                 }
@@ -273,7 +266,7 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
             if (targetState.startsWith("pct:")) {
                 int firstColon = targetState.indexOf(":");
                 targetState = targetState.substring(firstColon + 1);
-                if (! targetState.startsWith("slider")) {
+                if (!targetState.startsWith("slider")) {
                     targetState = "slider," + targetState;
                 }
                 outStates.add(targetState);
@@ -313,6 +306,10 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
 
     public void setLogDevice(LogDevice logDevice) {
         this.logDevice = logDevice;
+
+        if (logDevice != null) {
+            fillDeviceCharts(deviceCharts);
+        }
     }
 
     public List<DeviceChart> getDeviceCharts() {
@@ -326,7 +323,6 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
      */
     protected void fillDeviceCharts(List<DeviceChart> chartSeries) {
         deviceCharts.clear();
-        if (logDevice == null) return;
 
         @SuppressWarnings("unchecked")
         List<CustomGraph> customGraphs = logDevice.getCustomGraphs();
@@ -364,7 +360,7 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
     }
 
     public void setRoomConcatenated(String roomsConcatenated) {
-        this.rooms = roomsConcatenated.split(",");
+        this.rooms = Lists.newArrayList(roomsConcatenated.split(","));
     }
 
     public void setAlias(String alias) {
@@ -457,7 +453,7 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
     @Override
     public String toString() {
         return "Device{" +
-                "rooms=" + (rooms == null ? null : Arrays.asList(rooms)) +
+                "rooms=" + (rooms == null ? null : rooms) +
                 ", name='" + name + '\'' +
                 ", state='" + state + '\'' +
                 ", alias='" + alias + '\'' +
@@ -471,11 +467,11 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
                 '}';
     }
 
-    public void setAssociatedDeviceCallback(AssociatedDeviceCallback associatedDeviceCallback) {
+    public void setDeviceReadCallback(AllDevicesReadCallback associatedDeviceCallback) {
         this.associatedDeviceCallback = associatedDeviceCallback;
     }
 
-    public AssociatedDeviceCallback getAssociatedDeviceCallback() {
+    public AllDevicesReadCallback getDeviceReadCallback() {
         return associatedDeviceCallback;
     }
 
@@ -519,9 +515,10 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
 
     public boolean isOutdatedData(long lastUpdateTime) {
         long timeRequiredForStateError = getTimeRequiredForStateError();
-        if (timeRequiredForStateError == NEVER_OUTDATE_DATA) return false;
+        return timeRequiredForStateError != NEVER_OUTDATE_DATA
+                && lastMeasureTime != -1
+                && lastUpdateTime - lastMeasureTime > timeRequiredForStateError;
 
-        return lastMeasureTime != -1 && lastUpdateTime - lastMeasureTime > timeRequiredForStateError;
     }
 
     public boolean isSensorDevice() {

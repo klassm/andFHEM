@@ -26,10 +26,13 @@ package li.klass.fhem.domain.log;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
+import li.klass.fhem.service.room.AllDevicesReadCallback;
+import li.klass.fhem.service.room.DeviceReadCallback;
 
 public abstract class LogDevice<T extends LogDevice> extends Device<T> {
 
@@ -136,4 +139,21 @@ public abstract class LogDevice<T extends LogDevice> extends Device<T> {
      */
     public abstract String getGraphCommandFor(Device device, String fromDateFormatted,
                                               String toDateFormatted, ChartSeriesDescription seriesDescription);
+
+    @Override
+    public void afterDeviceXMLRead() {
+        super.afterDeviceXMLRead();
+
+        setDeviceReadCallback(new AllDevicesReadCallback() {
+
+            @Override
+            public void devicesRead(Map<String, Device> allDevices) {
+                for (Device device : allDevices.values()) {
+                    if (concernsDevice(device.getName())) {
+                        device.setLogDevice(LogDevice.this);
+                    }
+                }
+            }
+        });
+    }
 }

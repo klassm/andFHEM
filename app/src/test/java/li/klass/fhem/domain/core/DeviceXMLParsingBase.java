@@ -33,7 +33,6 @@ import org.junit.Before;
 import org.junit.experimental.categories.Category;
 
 import java.io.InputStream;
-import java.util.Map;
 
 @Category(DeviceTestBase.class)
 public abstract class DeviceXMLParsingBase extends RobolectricBaseTestCase {
@@ -41,7 +40,7 @@ public abstract class DeviceXMLParsingBase extends RobolectricBaseTestCase {
     public static final String DEFAULT_TEST_ROOM_NAME = "room";
     public static final String DEFAULT_TEST_DEVICE_NAME = "device";
 
-    protected Map<String, RoomDeviceList> roomDeviceListMap;
+    protected RoomDeviceList roomDeviceList;
 
     @Before
     public void loadDevices() throws Exception {
@@ -55,7 +54,7 @@ public abstract class DeviceXMLParsingBase extends RobolectricBaseTestCase {
             }
             String content = IOUtils.toString(inputStream);
 
-            roomDeviceListMap = DeviceListParser.INSTANCE.parseAndWrapExceptions(content);
+            roomDeviceList = DeviceListParser.INSTANCE.parseAndWrapExceptions(content);
         } finally {
             CloseableUtil.close(inputStream);
         }
@@ -66,7 +65,7 @@ public abstract class DeviceXMLParsingBase extends RobolectricBaseTestCase {
     }
 
     protected <T extends Device<T>> T getDeviceFor(String deviceName) {
-        return roomDeviceListMap.get(DEFAULT_TEST_ROOM_NAME).getDeviceFor(deviceName);
+        return roomDeviceList.getDeviceFor(deviceName);
     }
 
     protected abstract String getFileName();

@@ -50,6 +50,7 @@ import li.klass.fhem.domain.heating.schedule.configuration.CULHMConfiguration;
 import li.klass.fhem.domain.heating.schedule.interval.FilledTemperatureInterval;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.service.graph.description.SeriesType;
+import li.klass.fhem.service.room.DeviceReadCallback;
 import li.klass.fhem.util.NumberUtil;
 import li.klass.fhem.util.StringUtil;
 import li.klass.fhem.util.ValueDescriptionUtil;
@@ -84,10 +85,6 @@ import static li.klass.fhem.util.ValueExtractUtil.extractLeadingInt;
 public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
         implements DesiredTempDevice, HeatingDevice<CULHMDevice.HeatingMode, CULHMConfiguration, FilledTemperatureInterval, CULHMDevice> {
 
-    private HeatingMode heatingMode = HeatingMode.UNKNOWN;
-    private String model;
-    private String level;
-
     public enum SubType {
         DIMMER(DeviceFunctionality.DIMMER),
         SWITCH(DeviceFunctionality.SWITCH),
@@ -114,6 +111,10 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
         MANUAL, AUTO, CENTRAL, UNKNOWN
     }
 
+    private HeatingMode heatingMode = HeatingMode.UNKNOWN;
+
+    private String model;
+    private String level;
     private SubType subType = null;
 
     public static double MAXIMUM_TEMPERATURE = 30.5;
@@ -244,6 +245,17 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
         model = value;
     }
 
+    public void readDEVICE(String value) {
+        setDeviceReadCallback(new DeviceReadCallback<CULHMDevice>(value) {
+            @Override
+            public void onCallbackDeviceRead(CULHMDevice callbackDevice) {
+                if (callbackDevice != null) {
+                    subType = callbackDevice.getSubType();
+                }
+            }
+        });
+    }
+
     public void readSUBTYPE(String value) {
         if ("DIMMER".equalsIgnoreCase(value) || "BLINDACTUATOR".equalsIgnoreCase(value)) {
             subType = DIMMER;
@@ -330,12 +342,6 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
 
     @Override
     public void afterAllXMLRead() {
-        if (getAssociatedDeviceCallback() != null) {
-            CULHMDevice device = getAssociatedDeviceCallback().getAssociatedDevice();
-            if (device != null) {
-                subType = device.getSubType();
-            }
-        }
 
         if (subType == SubType.FILL_STATE && fillContentLitresMaximum != null) {
             if (fillContentLitresRaw > fillContentLitresMaximum) {
@@ -575,6 +581,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
     protected void fillDeviceCharts(List<DeviceChart> chartSeries) {
         super.fillDeviceCharts(chartSeries);
 
+        System.out.println("subtype: " + subType);
         if (subType == null) return;
 
         switch (subType) {
@@ -647,6 +654,8 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
                 break;
 
             case POWERMETER:
+                System.out.println(currentUsage);
+                System.out.println(cumulativeUsage);
                 addDeviceChartIfNotNull(new DeviceChart(R.string.usageGraph,
                         new ChartSeriesDescription(R.string.currentUsage, "4:current:0", "current",
                                 SeriesType.CURRENT_USAGE_WATT)), currentUsage);

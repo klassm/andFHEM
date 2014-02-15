@@ -28,6 +28,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import com.google.common.collect.Lists;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -37,8 +39,8 @@ import org.xml.sax.InputSource;
 import java.io.StringReader;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -52,19 +54,15 @@ import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.domain.FileLogDevice;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceType;
 import li.klass.fhem.domain.core.RoomDeviceList;
-import li.klass.fhem.domain.log.LogDevice;
 import li.klass.fhem.error.ErrorHolder;
 import li.klass.fhem.fhem.RequestResult;
 import li.klass.fhem.fhem.RequestResultError;
 import li.klass.fhem.util.StringEscapeUtil;
 import li.klass.fhem.util.StringUtil;
 import li.klass.fhem.util.XMLUtil;
-
-import static li.klass.fhem.domain.core.DeviceFunctionality.LOG;
 
 
 /**
@@ -119,7 +117,7 @@ public class DeviceListParser {
     private DeviceListParser() {
     }
 
-    public Map<String, RoomDeviceList> parseAndWrapExceptions(String xmlList) {
+    public RoomDeviceList parseAndWrapExceptions(String xmlList) {
         try {
             return parseXMLList(xmlList);
         } catch (Exception e) {
@@ -131,19 +129,71 @@ public class DeviceListParser {
         }
     }
 
-    private Map<String, RoomDeviceList> parseXMLList(String xmlList) throws Exception {
+    private RoomDeviceList parseXMLList(String xmlList) throws Exception {
         if (xmlList != null) {
             xmlList = xmlList.trim();
         }
 
-        Map<String, RoomDeviceList> roomDeviceListMap = new HashMap<String, RoomDeviceList>();
         RoomDeviceList allDevicesRoom = new RoomDeviceList(RoomDeviceList.ALL_DEVICES_ROOM);
 
         if (xmlList == null || "".equals(xmlList)) {
             Log.e(TAG, "xmlList is null or blank");
-            return roomDeviceListMap;
+            return allDevicesRoom;
+        }
+        xmlList = validateXmllist(xmlList);
+
+
+        DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
+        Document document = docBuilder.parse(new InputSource(new StringReader(xmlList)));
+
+        ReadErrorHolder errorHolder = new ReadErrorHolder();
+
+        Map<String, Device> allDevices = new HashMap<String, Device>();
+
+        DeviceType[] deviceTypes = DeviceType.values();
+        for (DeviceType deviceType : deviceTypes) {
+            int localErrorCount = devicesFromDocument(deviceType.getDeviceClass(), document,
+                    deviceType.getXmllistTag(), allDevices);
+            if (localErrorCount > 0) {
+                errorHolder.addErrors(deviceType, localErrorCount);
+            }
         }
 
+
+        performAfterReadOperations(allDevices, errorHolder);
+        RoomDeviceList roomDeviceList = buildRoomDeviceList(allDevices);
+
+        handleErrors(errorHolder);
+
+        Log.e(TAG, "loaded " + allDevices.size() + " devices!");
+
+        return roomDeviceList;
+    }
+
+    private RoomDeviceList buildRoomDeviceList(Map<String, Device> allDevices) {
+        RoomDeviceList roomDeviceList = new RoomDeviceList(RoomDeviceList.ALL_DEVICES_ROOM);
+        for (Device device : allDevices.values()) {
+            roomDeviceList.addDevice(device);
+        }
+
+        return roomDeviceList;
+    }
+
+    private void handleErrors(ReadErrorHolder errorHolder) {
+        if (errorHolder.hasErrors()) {
+            Context context = AndFHEMApplication.getContext();
+            String errorMessage = context.getString(R.string.errorDeviceListLoad);
+            String deviceTypesError = StringUtil.concatenate(errorHolder.getErrorDeviceTypeNames(), ",");
+            errorMessage = String.format(errorMessage, "" + errorHolder.getErrorCount(), deviceTypesError);
+
+            Intent intent = new Intent(Actions.SHOW_TOAST);
+            intent.putExtra(BundleExtraKeys.CONTENT, errorMessage);
+            context.sendBroadcast(intent);
+        }
+    }
+
+    private String validateXmllist(String xmlList) {
         // if a newline happens after a set followed by an attrs, both attributes are appended together without
         // adding a whitespace
         xmlList = xmlList.replaceAll("=\"\"attrs", "=\"\" attrs");
@@ -172,80 +222,50 @@ public class DeviceListParser {
         xmlList = xmlList.replaceAll("(?:[^=])\"\"+", "\"");
         xmlList = xmlList.replaceAll("\\\\B0", "°");
         xmlList = xmlList.replaceAll("Â", "");
-
-        DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
-        Document document = docBuilder.parse(new InputSource(new StringReader(xmlList)));
-
-        ReadErrorHolder errorHolder = new ReadErrorHolder();
-
-        DeviceType[] deviceTypes = DeviceType.values();
-        for (DeviceType deviceType : deviceTypes) {
-            int localErrorCount = devicesFromDocument(deviceType.getDeviceClass(), roomDeviceListMap, document, deviceType.getXmllistTag(),
-                    allDevicesRoom);
-            if (localErrorCount > 0) {
-                errorHolder.addErrors(deviceType, localErrorCount);
-            }
-        }
-
-        addLogsToDevices(allDevicesRoom);
-        performAfterReadOperations(allDevicesRoom, roomDeviceListMap, errorHolder);
-
-        if (errorHolder.hasErrors()) {
-            Context context = AndFHEMApplication.getContext();
-            String errorMessage = context.getString(R.string.errorDeviceListLoad);
-            String deviceTypesError = StringUtil.concatenate(errorHolder.getErrorDeviceTypeNames(), ",");
-            errorMessage = String.format(errorMessage, "" + errorHolder.getErrorCount(), deviceTypesError);
-
-            Intent intent = new Intent(Actions.SHOW_TOAST);
-            intent.putExtra(BundleExtraKeys.CONTENT, errorMessage);
-            context.sendBroadcast(intent);
-        }
-
-        Log.e(TAG, "loaded " + allDevicesRoom.getAllDevices().size() + " devices!");
-
-        return roomDeviceListMap;
+        return xmlList;
     }
 
-    private void performAfterReadOperations(RoomDeviceList allDevicesRoom,
-                                            Map<String, RoomDeviceList> roomDeviceListMap, ReadErrorHolder errorHolder) {
-        for (Device device : allDevicesRoom.getAllDevices()) {
+    private void performAfterReadOperations(Map<String, Device> allDevices, ReadErrorHolder errorHolder) {
+        List<Device> callbackDevices = Lists.newArrayList();
+
+        for (Device device : allDevices.values()) {
             try {
                 device.afterAllXMLRead();
-                removeIfUnsupported(device, allDevicesRoom, roomDeviceListMap);
+                if (device.getDeviceReadCallback() != null) callbackDevices.add(device);
             } catch (Exception e) {
-                remove(device, allDevicesRoom, roomDeviceListMap);
+                allDevices.remove(device.getName());
                 errorHolder.addError(DeviceType.getDeviceTypeFor(device));
                 Log.e(TAG, "cannot perform after read operations", e);
             }
         }
-    }
 
-    private void removeIfUnsupported(Device device, RoomDeviceList allDevicesRoom, Map<String, RoomDeviceList> roomDeviceListMap) {
-        if (device.isSupported()) return;
+        Collections.sort(callbackDevices, new Comparator<Device>() {
+            @Override
+            public int compare(Device device, Device device2) {
+                return device.getDeviceReadCallback().compareTo(device2.getDeviceReadCallback());
+            }
+        });
 
-        remove(device, allDevicesRoom, roomDeviceListMap);
-    }
-
-    private void remove(Device device, RoomDeviceList allDevicesRoom, Map<String, RoomDeviceList> roomDeviceListMap) {
-        for (String room : device.getRooms()) {
-            RoomDeviceList roomDeviceList = roomDeviceListMap.get(room);
-            roomDeviceList.removeDevice(device);
+        for (Device device : callbackDevices) {
+            try {
+                device.getDeviceReadCallback().devicesRead(allDevices);
+            } catch (Exception e) {
+                allDevices.remove(device.getName());
+                errorHolder.addError(DeviceType.getDeviceTypeFor(device));
+                Log.e(TAG, "cannot handle associated devices callbacks", e);
+            }
         }
-
-        allDevicesRoom.removeDevice(device);
     }
 
     /**
      * @param deviceClass       class of the device to read
-     * @param roomDeviceListMap rooms device list map to read the device into.
      * @param document          xml document to read
      * @param tagName           current tag name to read
      * @param <T>               type of device
      * @return error count while parsing the device list
      */
-    private <T extends Device> int devicesFromDocument(Class<T> deviceClass, Map<String,
-            RoomDeviceList> roomDeviceListMap, Document document, String tagName, RoomDeviceList allDevicesRoom) {
+    private <T extends Device> int devicesFromDocument(Class<T> deviceClass, Document document,
+                                                       String tagName, Map<String, Device> allDevices) {
 
         int errorCount = 0;
 
@@ -255,7 +275,7 @@ public class DeviceListParser {
         for (int i = 0; i < nodes.getLength(); i++) {
             Node item = nodes.item(i);
 
-            if (!deviceFromNode(deviceClass, roomDeviceListMap, item, allDevicesRoom)) {
+            if (!deviceFromNode(deviceClass, item, allDevices)) {
                 errorCount++;
                 errorXML += XMLUtil.nodeToString(item) + "\r\n\r\n";
             }
@@ -273,25 +293,19 @@ public class DeviceListParser {
      * the device, so that it can extract any values.
      *
      * @param deviceClass       class to instantiate
-     * @param roomDeviceListMap map used for saving the device
      * @param node              current xml node
      * @param <T>               specific device type
      * @return true if everything went well
      */
-    private <T extends Device> boolean deviceFromNode(Class<T> deviceClass, Map<String, RoomDeviceList> roomDeviceListMap,
-                                                      Node node, RoomDeviceList allDevicesRoom) {
+    private <T extends Device> boolean deviceFromNode(Class<T> deviceClass,
+                                                      Node node, Map<String, Device> allDevices) {
         try {
-            T device = createAndFillDevice(deviceClass, node, allDevicesRoom);
+            T device = createAndFillDevice(deviceClass, node);
             device.afterDeviceXMLRead();
 
             Log.d(TAG, "loaded device with name " + device.getName());
 
-            String[] rooms = device.getRooms();
-            for (String room : rooms) {
-                RoomDeviceList roomDeviceList = getOrCreateRoomDeviceList(room, roomDeviceListMap);
-                roomDeviceList.addDevice(device);
-            }
-            allDevicesRoom.addDevice(device);
+            allDevices.put(device.getName(), device);
 
             return true;
         } catch (Exception e) {
@@ -300,52 +314,7 @@ public class DeviceListParser {
         }
     }
 
-    /**
-     * Returns the {@link RoomDeviceList} if it is already included within the room-device list map. Otherwise,
-     * the appropriate list will be created, put into the map and returned.
-     *
-     * @param roomName          room name
-     * @param roomDeviceListMap current map including room names and associated device lists.
-     * @return matching {@link RoomDeviceList}
-     */
-    private RoomDeviceList getOrCreateRoomDeviceList(String roomName, Map<String, RoomDeviceList> roomDeviceListMap) {
-        if (roomDeviceListMap.containsKey(roomName)) {
-            return roomDeviceListMap.get(roomName);
-        }
-        RoomDeviceList roomDeviceList = new RoomDeviceList(roomName);
-        roomDeviceListMap.put(roomName, roomDeviceList);
-        return roomDeviceList;
-    }
-
-    /**
-     * Walks through all {@link li.klass.fhem.domain.FileLogDevice}s and tries to find the matching {@link Device} it
-     * is associated to.
-     */
-    private void addLogsToDevices(RoomDeviceList allDevicesRoom) {
-        Collection<Device> devices = allDevicesRoom.getAllDevices();
-
-        Collection<LogDevice> logDevices = allDevicesRoom.getDevicesOfFunctionality(LOG, false);
-        for (LogDevice logDevice : logDevices) {
-            addLogToDevices(logDevice, devices);
-        }
-    }
-
-    /**
-     * Walks through all devices and tries to find the matching {@link Device} for one given {@link FileLogDevice}.
-     *
-     * @param fileLogDevice {@link FileLogDevice}, of which the matching {@link Device} is searched
-     * @param devices       devices to walk through.
-     */
-    private void addLogToDevices(LogDevice fileLogDevice, Collection<Device> devices) {
-        for (Device device : devices) {
-            if (fileLogDevice.concernsDevice(device.getName())) {
-                device.setLogDevice(fileLogDevice);
-                return;
-            }
-        }
-    }
-
-    private <T extends Device> T createAndFillDevice(Class<T> deviceClass, Node node, RoomDeviceList allDevicesRoom) throws Exception {
+    private <T extends Device> T createAndFillDevice(Class<T> deviceClass, Node node) throws Exception {
         T device = deviceClass.newInstance();
         Map<String, Set<Method>> cache = getDeviceClassCacheEntriesFor(deviceClass);
 
@@ -376,10 +345,6 @@ public class DeviceListParser {
 
             if (nodeContent == null || nodeContent.length() == 0) {
                 continue;
-            }
-
-            if (keyValue.equalsIgnoreCase("device")) {
-                device.setAssociatedDeviceCallback(new AssociatedDeviceCallback(nodeContent, allDevicesRoom));
             }
 
             invokeDeviceAttributeMethod(cache, device, keyValue, nodeContent, item.getAttributes(), item.getNodeName());
@@ -495,5 +460,4 @@ public class DeviceListParser {
             return changed;
         }
     }
-
 }

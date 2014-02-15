@@ -64,43 +64,7 @@ public class DeviceService {
     public void deleteDevice(final Device device) {
         CommandExecutionService.INSTANCE.executeSafely("delete " + device.getName());
         RoomListService.INSTANCE.getAllRoomsDeviceList(NEVER_UPDATE_PERIOD).removeDevice(device);
-
-        String[] rooms = device.getRooms();
-        removeDeviceFromRooms(device, rooms);
-
     }
-
-    /**
-     * Remove a device from all given rooms. If the device is the only device in the room, also remove the room itself.
-     *
-     * @param device device to remove
-     * @param rooms  associated rooms
-     */
-    private void removeDeviceFromRooms(Device device, String[] rooms) {
-        for (String room : rooms) {
-            RoomDeviceList deviceListForRoom = RoomListService.INSTANCE.getDeviceListForRoom(room, NEVER_UPDATE_PERIOD);
-            if (deviceListForRoom != null) {
-                deviceListForRoom.removeDevice(device);
-                if (deviceListForRoom.getAllDevices().size() == 0) {
-                    RoomListService.INSTANCE.removeDeviceListForRoom(room);
-                }
-            }
-        }
-    }
-
-    /**
-     * Adds a device to all given rooms.
-     *
-     * @param device device to add
-     * @param rooms  rooms to add the device to.
-     */
-    private void addDeviceToRooms(Device device, String[] rooms) {
-        for (String room : rooms) {
-            RoomDeviceList deviceListForRoom = RoomListService.INSTANCE.getOrCreateRoomDeviceList(room, NEVER_UPDATE_PERIOD);
-            deviceListForRoom.addDevice(device);
-        }
-    }
-
 
     /**
      * Sets an alias for a device.
@@ -125,13 +89,8 @@ public class DeviceService {
      */
     public void moveDevice(final Device device, final String newRoomConcatenated) {
         CommandExecutionService.INSTANCE.executeSafely("attr " + device.getName() + " room " + newRoomConcatenated);
-        String[] oldRooms = device.getRooms();
 
         device.setRoomConcatenated(newRoomConcatenated);
-        String[] newRooms = device.getRooms();
-
-        removeDeviceFromRooms(device, oldRooms);
-        addDeviceToRooms(device, newRooms);
 
         AndFHEMApplication.getContext().sendBroadcast(new Intent(Actions.DO_UPDATE));
     }

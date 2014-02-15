@@ -54,7 +54,7 @@ public class DummyDataParseTest {
             assertNotNull(xmlList);
 
             DeviceListParser deviceListParser = DeviceListParser.INSTANCE;
-            Map<String, RoomDeviceList> result = deviceListParser.parseAndWrapExceptions(xmlList);
+            RoomDeviceList result = deviceListParser.parseAndWrapExceptions(xmlList);
 
             assertNotNull(result);
         } finally {
