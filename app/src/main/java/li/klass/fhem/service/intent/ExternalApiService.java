@@ -24,31 +24,49 @@
 
 package li.klass.fhem.service.intent;
 
+import android.app.Service;
 import android.content.Intent;
-import android.os.ResultReceiver;
+import android.os.Handler;
+import android.os.IBinder;
+import android.os.Message;
+import android.os.Messenger;
+import android.os.RemoteException;
+import android.util.Log;
 
 import java.util.ArrayList;
 
-import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.service.room.RoomListService;
 
-import static li.klass.fhem.constants.Actions.EXT_DEVICE_NAMES;
+import static li.klass.fhem.service.room.RoomListService.NEVER_UPDATE_PERIOD;
 
-public class ExternalApiService extends ConvenientIntentService {
+public class ExternalApiService extends Service {
 
-    public ExternalApiService() {
-        super(ExternalApiService.class.getName());
-    }
+    public static final int ROOM_LIST = 1;
 
-    @Override
-    protected STATE handleIntent(Intent intent, long updatePeriod, ResultReceiver resultReceiver) {
+    private final Messenger messenger = new Messenger(new IncomingHandler());
 
-        String action = intent.getAction();
-        if (EXT_DEVICE_NAMES.equals(action)) {
-            ArrayList<String> deviceNames = RoomListService.INSTANCE.getAvailableDeviceNames(updatePeriod);
-            sendSingleExtraResult(resultReceiver, ResultCodes.SUCCESS, BundleExtraKeys.DEVICE_NAMES, deviceNames);
+    class IncomingHandler extends Handler {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case ROOM_LIST:
+                    ArrayList<String> deviceNames = RoomListService.INSTANCE
+                            .getAvailableDeviceNames(NEVER_UPDATE_PERIOD);
+                    Message message = Message.obtain(null, 1, deviceNames);
+                    try {
+                        messenger.send(message);
+                    } catch (RemoteException e) {
+                        Log.e(ExternalApiService.class.getName(), "cannot send message", e);
+                        e.printStackTrace();
+                    }
+                    break;
+                default:
+                    super.handleMessage(msg);
+            }
         }
-        return null;
+    }
+    @Override
+    public IBinder onBind(Intent intent) {
+        return messenger.getBinder();
     }
 }
