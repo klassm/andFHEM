@@ -33,6 +33,7 @@ import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.DimmableDevice;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
+import li.klass.fhem.util.NumberUtil;
 import li.klass.fhem.util.ValueDescriptionUtil;
 import li.klass.fhem.util.ValueExtractUtil;
 
@@ -123,7 +124,10 @@ public class EnOceanDevice extends DimmableDevice<EnOceanDevice> {
 
     @Override
     public int getPositionForDimState(String dimState) {
-        dimState = dimState.replaceAll("dim", "").replaceAll("%", "");
+        dimState = dimState.replaceAll("dim", "").replaceAll("%", "").trim();
+        if (!NumberUtil.isNumeric(dimState)) {
+            return 0;
+        }
         return ValueExtractUtil.extractLeadingInt(dimState);
     }
 
