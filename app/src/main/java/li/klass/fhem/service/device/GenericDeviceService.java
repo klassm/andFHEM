@@ -25,10 +25,13 @@
 package li.klass.fhem.service.device;
 
 import android.util.Log;
-import li.klass.fhem.domain.core.Device;
-import li.klass.fhem.service.CommandExecutionService;
 
 import java.lang.reflect.Method;
+
+import li.klass.fhem.AndFHEMApplication;
+import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.service.CommandExecutionService;
+import li.klass.fhem.util.Tasker;
 
 public class GenericDeviceService {
     public static final GenericDeviceService INSTANCE = new GenericDeviceService();
@@ -44,10 +47,15 @@ public class GenericDeviceService {
         if (device.shouldUpdateStateOnDevice(targetState)) {
             device.setState(device.formatStateTextToSet(targetState));
         }
+
+        Tasker.sendTaskerNotifyIntent(AndFHEMApplication.getContext(), device.getName(),
+                "state", targetState);
     }
 
     public void setSubState(Device<?> device, String subStateName, String value) {
         CommandExecutionService.INSTANCE.executeSafely("set " + device.getName() + " " + subStateName + " " + value);
+        Tasker.sendTaskerNotifyIntent(AndFHEMApplication.getContext(), device.getName(),
+                subStateName, value);
 
         String methodName = "read" + subStateName.toUpperCase();
         try {
