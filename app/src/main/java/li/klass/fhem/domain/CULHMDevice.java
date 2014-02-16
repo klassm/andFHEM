@@ -290,6 +290,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
     }
 
     public void readMODE(String value) {
+        if (value.equalsIgnoreCase("MANU")) value = "MANUAL";
         readCONTROLMODE(value);
     }
 
