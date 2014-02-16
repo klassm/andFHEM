@@ -144,7 +144,7 @@ public abstract class LogDevice<T extends LogDevice> extends Device<T> {
     public void afterDeviceXMLRead() {
         super.afterDeviceXMLRead();
 
-        setDeviceReadCallback(new AllDevicesReadCallback() {
+        setAllDeviceReadCallback(new AllDevicesReadCallback() {
 
             @Override
             public void devicesRead(Map<String, Device> allDevices) {

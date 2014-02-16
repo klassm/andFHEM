@@ -18,9 +18,4 @@ public abstract class DeviceReadCallback<D extends Device<D>> extends AllDevices
     }
 
     public abstract void onCallbackDeviceRead(D callbackDevice);
-
-    @Override
-    protected int getCompareIndex() {
-        return -1;
-    }
 }

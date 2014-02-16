@@ -226,12 +226,15 @@ public class DeviceListParser {
     }
 
     private void performAfterReadOperations(Map<String, Device> allDevices, ReadErrorHolder errorHolder) {
-        List<Device> callbackDevices = Lists.newArrayList();
+
+        List<Device> allDevicesReadCallbacks = Lists.newArrayList();
+        List<Device> deviceReadCallbacks = Lists.newArrayList();
 
         for (Device device : allDevices.values()) {
             try {
                 device.afterAllXMLRead();
-                if (device.getDeviceReadCallback() != null) callbackDevices.add(device);
+                if (device.getDeviceReadCallback() != null) deviceReadCallbacks.add(device);
+                if (device.getAllDeviceReadCallback() != null) allDevicesReadCallbacks.add(device);
             } catch (Exception e) {
                 allDevices.remove(device.getName());
                 errorHolder.addError(DeviceType.getDeviceTypeFor(device));
@@ -239,16 +242,18 @@ public class DeviceListParser {
             }
         }
 
-        Collections.sort(callbackDevices, new Comparator<Device>() {
-            @Override
-            public int compare(Device device, Device device2) {
-                return device.getDeviceReadCallback().compareTo(device2.getDeviceReadCallback());
-            }
-        });
+        List<Device> callbackDevices = Lists.newArrayList();
+        callbackDevices.addAll(deviceReadCallbacks);
+        callbackDevices.addAll(allDevicesReadCallbacks);
 
         for (Device device : callbackDevices) {
             try {
-                device.getDeviceReadCallback().devicesRead(allDevices);
+                if (device.getDeviceReadCallback() != null) {
+                    device.getDeviceReadCallback().devicesRead(allDevices);
+                }
+                if (device.getAllDeviceReadCallback() != null) {
+                    device.getAllDeviceReadCallback().devicesRead(allDevices);
+                }
             } catch (Exception e) {
                 allDevices.remove(device.getName());
                 errorHolder.addError(DeviceType.getDeviceTypeFor(device));

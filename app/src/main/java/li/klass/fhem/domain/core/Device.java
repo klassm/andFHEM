@@ -45,6 +45,7 @@ import li.klass.fhem.domain.log.CustomGraph;
 import li.klass.fhem.domain.log.LogDevice;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.service.room.AllDevicesReadCallback;
+import li.klass.fhem.service.room.DeviceReadCallback;
 import li.klass.fhem.util.ArrayUtil;
 import li.klass.fhem.util.DateFormatUtil;
 import li.klass.fhem.util.StringUtil;
@@ -75,12 +76,14 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
 
     protected volatile LogDevice logDevice;
     private List<DeviceChart> deviceCharts = new ArrayList<DeviceChart>();
-    private transient AllDevicesReadCallback associatedDeviceCallback;
+    private transient AllDevicesReadCallback allDevicesReadCallback;
+    private DeviceReadCallback deviceReadCallback;
     private String widgetName;
     private boolean alwaysHidden = false;
 
     public static final long OUTDATED_DATA_MS_DEFAULT = 2 * 60 * 60 * 1000;
     public static final long NEVER_OUTDATE_DATA = 0;
+
 
     public void readROOM(String value) {
         setRoomConcatenated(value);
@@ -467,12 +470,20 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
                 '}';
     }
 
-    public void setDeviceReadCallback(AllDevicesReadCallback associatedDeviceCallback) {
-        this.associatedDeviceCallback = associatedDeviceCallback;
+    public void setDeviceReadCallback(DeviceReadCallback deviceReadCallback) {
+        this.deviceReadCallback = deviceReadCallback;
     }
 
     public AllDevicesReadCallback getDeviceReadCallback() {
-        return associatedDeviceCallback;
+        return deviceReadCallback;
+    }
+
+    public void setAllDeviceReadCallback(AllDevicesReadCallback allDevicesReadCallback) {
+        this.allDevicesReadCallback = allDevicesReadCallback;
+    }
+
+    public AllDevicesReadCallback getAllDeviceReadCallback() {
+        return allDevicesReadCallback;
     }
 
     /**

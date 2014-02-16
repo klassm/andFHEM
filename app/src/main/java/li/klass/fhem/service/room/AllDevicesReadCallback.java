@@ -28,20 +28,11 @@ import java.util.Map;
 
 import li.klass.fhem.domain.core.Device;
 
-public abstract class AllDevicesReadCallback implements Comparable<AllDevicesReadCallback> {
+public abstract class AllDevicesReadCallback {
 
     public AllDevicesReadCallback() {
     }
 
     @SuppressWarnings("unchecked")
     public abstract void devicesRead(Map<String, Device> allDevices);
-
-    @Override
-    public int compareTo(AllDevicesReadCallback allDevicesReadCallback) {
-        return getCompareIndex();
-    }
-
-    protected int getCompareIndex() {
-        return 1;
-    }
 }
