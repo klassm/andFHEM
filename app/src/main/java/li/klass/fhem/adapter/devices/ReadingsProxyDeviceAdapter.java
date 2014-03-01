@@ -69,6 +69,11 @@ public class ReadingsProxyDeviceAdapter extends ToggleableAdapterWithSwitchActio
                     }
                 } .createRow(context, inflater));
             }
+
+            @Override
+            public boolean supportsDevice(ReadingsProxyDevice device) {
+                return device.getRgbDesc() != null;
+            }
         });
     }
 }

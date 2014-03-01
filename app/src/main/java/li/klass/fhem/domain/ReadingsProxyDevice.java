@@ -37,7 +37,9 @@ public class ReadingsProxyDevice extends ToggleableDevice<ReadingsProxyDevice> {
 
     @ShowField(description = ResourceIdMapper.color)
     public String getRgbDesc() {
-        return "0x" + getRgb();
+        String rgb = getRgb();
+        if (rgb == null) return null;
+        return "0x" + rgb;
     }
 
     private String getRgb() {
@@ -68,6 +70,7 @@ public class ReadingsProxyDevice extends ToggleableDevice<ReadingsProxyDevice> {
 
     @Override
     public boolean acceptXmlKey(String key) {
+        // we only want uppercase RGB values
         return !"rgb".equals(key);
     }
 }

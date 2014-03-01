@@ -47,5 +47,21 @@
             <STATE key="RGB" value="FFFF00" measured="2013-12-12 13:57:55"/>
             <STATE key="rgb" value="FF0000" measured="2013-12-11 00:14:30"/>
         </readingsProxy>
+        <readingsProxy name="Bild" state="aus" sets="an:noArg aus:noArg on off blink on-for-timer on-till off-for-timer intervals off-till" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings disable:1 getList setList getFn setFn valueFn event-on-change-reading event-on-update-reading event-min-interval stateFormat DbLogExclude devStateIcon devStateStyle icon sortby webCmd">
+            <INT key="DEF" value="PCA9532:Port9"/>
+            <INT key="DEVICE" value="PCA9532"/>
+            <INT key="NAME" value="Bild"/>
+            <INT key="NR" value="145"/>
+            <INT key="NTFY_ORDER" value="50-Bild"/>
+            <INT key="READING" value="Port9"/>
+            <INT key="STATE" value="aus"/>
+            <INT key="TYPE" value="readingsProxy"/>
+            <ATTR key="alias" value="Beleuchtung Bild"/>
+            <ATTR key="eventMap" value="on:an:noArg off:aus:noArg"/>
+            <ATTR key="group" value="Schrankwand"/>
+            <ATTR key="room" value="Wohnzimmer"/>
+            <ATTR key="setList" value="on off"/>
+            <STATE key="state" value="off" measured="2014-02-17 23:29:36"/>
+        </readingsProxy>
     </readingsProxy_LIST>
 </FHZINFO>
