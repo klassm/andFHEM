@@ -65,8 +65,6 @@ public class ExternalApiService extends Service {
         try {
             if (incoming.replyTo != null) {
                 incoming.replyTo.send(outgoing);
-            } else {
-                messenger.send(outgoing);
             }
         } catch (RemoteException e) {
             Log.e(ExternalApiService.class.getName(), "cannot send message", e);
