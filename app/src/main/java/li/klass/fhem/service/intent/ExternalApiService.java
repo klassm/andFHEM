@@ -52,19 +52,27 @@ public class ExternalApiService extends Service {
                 case ROOM_LIST:
                     ArrayList<String> deviceNames = RoomListService.INSTANCE
                             .getAvailableDeviceNames(NEVER_UPDATE_PERIOD);
-                    Message message = Message.obtain(null, 1, deviceNames);
-                    try {
-                        messenger.send(message);
-                    } catch (RemoteException e) {
-                        Log.e(ExternalApiService.class.getName(), "cannot send message", e);
-                        e.printStackTrace();
-                    }
+                    replyTo(msg, Message.obtain(null, 1, deviceNames));
+
                     break;
                 default:
                     super.handleMessage(msg);
             }
         }
     }
+
+    private void replyTo(Message incoming, Message outgoing) {
+        try {
+            if (incoming.replyTo != null) {
+                incoming.replyTo.send(outgoing);
+            } else {
+                messenger.send(outgoing);
+            }
+        } catch (RemoteException e) {
+            Log.e(ExternalApiService.class.getName(), "cannot send message", e);
+        }
+    }
+
     @Override
     public IBinder onBind(Intent intent) {
         return messenger.getBinder();
