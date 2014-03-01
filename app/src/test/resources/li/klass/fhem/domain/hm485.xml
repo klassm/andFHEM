@@ -1,0 +1,65 @@
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<FHZINFO>
+    <HM485_LIST>
+        <HM485 name="dim" state="level_5" sets=" config level:slider,0,1,100 off on " attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings do_not_notify:0,1 ignore:1,0 dummy:1,0 showtime:1,0 serialNr model:HMW_IO_12_Sw14_DR,HMW_IO_12_FM,HMW_LC_Bl1_DR,HMW_IO_12_Sw7_DR,HMW_SEN_SC_12_FM,HMW_LC_Dim1L_DR,HMW_LC_Sw2_DR,HMW_Sen_SC_12_DR,HMW_IO_4_FM subType stateFormat firmwareVersion setList devStateIcon devStateStyle icon sortby webCmd">
+            <INT key="DEF" value="0000A544_03"/>
+            <INT key="FW_VERSION" value="3.06"/>
+            <INT key="MODEL" value="HMW_LC_Bl1_DR"/>
+            <INT key="NAME" value="dim"/>
+            <INT key="NR" value="54"/>
+            <INT key="STATE" value="level_5"/>
+            <INT key="TYPE" value="HM485"/>
+            <INT key="chanNo" value="03"/>
+            <INT key="device" value="HMW_LC_Bl1_DR_KEQ0021055"/>
+            <INT key="IODev" value=""/>
+            <ATTR key="firmwareVersion" value="3.06"/>
+            <ATTR key="model" value="HMW_LC_Bl1_DR"/>
+            <ATTR key="room" value="HM485"/>
+            <ATTR key="serialNr" value="KEQ0021055"/>
+            <ATTR key="subType" value="blind"/>
+            <STATE key="level" value="5" measured="2014-02-22 23:41:01"/>
+        </HM485>
+
+        <HM485 name="switch" state="off" sets=" config off on " attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings do_not_notify:0,1 ignore:1,0 dummy:1,0 showtime:1,0 serialNr model:HMW_IO_12_Sw14_DR,HMW_IO_12_FM,HMW_LC_Bl1_DR,HMW_IO_12_Sw7_DR,HMW_SEN_SC_12_FM,HMW_LC_Dim1L_DR,HMW_LC_Sw2_DR,HMW_Sen_SC_12_DR,HMW_IO_4_FM subType stateFormat firmwareVersion setList devStateIcon devStateStyle icon sortby webCmd">
+            <INT key="DEF" value="0000C659_19"/>
+            <INT key="FW_VERSION" value="3.06"/>
+            <INT key="MODEL" value="HMW_IO_12_Sw7_DR"/>
+            <INT key="NAME" value="switch"/>
+            <INT key="NR" value="53"/>
+            <INT key="STATE" value="off"/>
+            <INT key="TYPE" value="HM485"/>
+            <INT key="chanNo" value="19"/>
+            <INT key="device" value="HMW_IO_12_Sw7_DR_KEQ0054855"/>
+            <INT key="IODev" value=""/>
+            <ATTR key="firmwareVersion" value="3.06"/>
+            <ATTR key="model" value="HMW_IO_12_Sw7_DR"/>
+            <ATTR key="room" value="HM485"/>
+            <ATTR key="serialNr" value="KEQ0054855"/>
+            <ATTR key="subType" value="switch"/>
+            <STATE key="state" value="off" measured="2014-02-22 23:22:08"/>
+        </HM485>
+    </HM485_LIST>
+</FHZINFO>

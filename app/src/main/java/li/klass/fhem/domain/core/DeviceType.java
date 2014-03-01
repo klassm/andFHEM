@@ -75,6 +75,7 @@ import li.klass.fhem.domain.GCMSendDevice;
 import li.klass.fhem.domain.GPIO4Device;
 import li.klass.fhem.domain.GenShellSwitchDevice;
 import li.klass.fhem.domain.HCSDevice;
+import li.klass.fhem.domain.HM485Device;
 import li.klass.fhem.domain.HMSDevice;
 import li.klass.fhem.domain.HOLDevice;
 import li.klass.fhem.domain.HUEDevice;
@@ -192,6 +193,7 @@ public enum DeviceType {
     WEB_LINK("weblink", WebLinkDevice.class, new WebLinkAdapter()),
     PILIGHT("pilight", PilightDevice.class, new ToggleableAdapter<PilightDevice>(PilightDevice.class)),
     OWSWITCH("OWSWITCH", OwSwitchDevice.class, new OwSwitchDeviceAdapter()),
+    HM485("HM485", HM485Device.class, new DimmableAdapter<HM485Device>(HM485Device.class)),
     ;
 
     private String xmllistTag;
