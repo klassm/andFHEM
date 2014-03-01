@@ -77,7 +77,7 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
     protected volatile LogDevice logDevice;
     private List<DeviceChart> deviceCharts = new ArrayList<DeviceChart>();
     private transient AllDevicesReadCallback allDevicesReadCallback;
-    private DeviceReadCallback deviceReadCallback;
+    private transient DeviceReadCallback deviceReadCallback;
     private String widgetName;
     private boolean alwaysHidden = false;
 
