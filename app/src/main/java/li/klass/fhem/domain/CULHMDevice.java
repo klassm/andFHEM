@@ -284,6 +284,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
     public void readCONTROLMODE(String value) {
         try {
             heatingMode = HeatingMode.valueOf(value.toUpperCase());
+            subType = HEATING;
         } catch (Exception e) {
             Log.e(CULHMDevice.class.getName(), "cannot set heating mode from value " + value, e);
         }
