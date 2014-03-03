@@ -62,12 +62,12 @@ public class ExternalApiService extends Service {
         }
     }
 
-    private void replyTo(Message incoming, String outgoing) {
+    private void replyTo(Message incoming, ArrayList<String> outgoing) {
         try {
             if (incoming.replyTo != null) {
                 Message msg = Message.obtain(null, 1);
                 Bundle bundle = new Bundle();
-                bundle.putString("data", outgoing);
+                bundle.putStringArrayList("data", outgoing);
                 msg.setData(bundle);
                 incoming.replyTo.send(msg);
             }
