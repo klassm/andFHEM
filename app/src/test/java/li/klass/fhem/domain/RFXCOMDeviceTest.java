@@ -31,6 +31,7 @@ import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNot.not;
 
 public class RFXCOMDeviceTest extends DeviceXMLParsingBase {
     @Test
@@ -42,7 +43,7 @@ public class RFXCOMDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getState(), is("Initialized"));
 
 
-        assertThat(device.getAvailableTargetStates(), is(nullValue()));
+        assertThat(device.getSetList().size(), is(not(0)));
 
         assertThat(device.getLogDevice(), is(nullValue()));
         assertThat(device.getDeviceCharts().size(), is(0));

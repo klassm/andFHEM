@@ -35,7 +35,6 @@ import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.ToggleableDevice;
 import li.klass.fhem.domain.genericview.ShowField;
-import li.klass.fhem.util.ArrayUtil;
 
 @SuppressWarnings("unused")
 public class RemoteControlDevice extends ToggleableDevice<RemoteControlDevice> {
@@ -136,10 +135,5 @@ public class RemoteControlDevice extends ToggleableDevice<RemoteControlDevice> {
 
     public List<List<Entry>> getRows() {
         return Collections.unmodifiableList(rows);
-    }
-
-    @Override
-    public boolean supportsToggle() {
-        return ArrayUtil.contains(getAvailableTargetStates(), "on", "off");
     }
 }

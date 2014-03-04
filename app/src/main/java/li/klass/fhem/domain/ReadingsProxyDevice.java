@@ -28,7 +28,6 @@ import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.ToggleableDevice;
 import li.klass.fhem.domain.genericview.ShowField;
-import li.klass.fhem.util.ArrayUtil;
 
 import static li.klass.fhem.util.NumberSystemUtil.hexToDecimal;
 
@@ -43,7 +42,7 @@ public class ReadingsProxyDevice extends ToggleableDevice<ReadingsProxyDevice> {
     }
 
     private String getRgb() {
-        if (! ArrayUtil.contains(getAvailableTargetStates(), "rgb")) return null;
+        if (! getSetList().contains("rgb")) return null;
         String state = getInternalState();
         if (!state.startsWith("rgb")) return null;
 

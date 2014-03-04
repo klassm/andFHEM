@@ -29,9 +29,9 @@ import org.junit.Test;
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNot.not;
 
 public class IntertechnoDeviceTest extends DeviceXMLParsingBase {
     @Test
@@ -45,7 +45,7 @@ public class IntertechnoDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getState(), is("on"));
         assertThat(device.getModel(), is("itswitch"));
 
-        assertThat(device.getAvailableTargetStates(), is(notNullValue()));
+        assertThat(device.getSetList().getEntries().size(), is(not(0)));
 
         assertThat(device.getLogDevice(), is(nullValue()));
         assertThat(device.getDeviceCharts().size(), is(0));

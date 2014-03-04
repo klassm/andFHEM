@@ -33,7 +33,10 @@ import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.DimmableDevice;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
-import li.klass.fhem.util.ArrayUtil;
+import li.klass.fhem.domain.setlist.SetListSliderValue;
+import li.klass.fhem.domain.setlist.SetListTypedValue;
+import li.klass.fhem.domain.setlist.SetListValue;
+import li.klass.fhem.util.NumberUtil;
 
 import static li.klass.fhem.util.NumberSystemUtil.hexToDecimal;
 
@@ -42,9 +45,7 @@ import static li.klass.fhem.util.NumberSystemUtil.hexToDecimal;
 public class DummyDevice extends DimmableDevice<DummyDevice> {
 
     private boolean timerDevice = false;
-    private Integer dimLowerBound;
-    private Integer dimStep;
-    private Integer dimUpperBound;
+    private SetListSliderValue sliderValue = null;
 
     public void readSTATE(String tagName, String value, NamedNodeMap attributes) {
         String measured = attributes.getNamedItem("measured").getNodeValue();
@@ -57,8 +58,8 @@ public class DummyDevice extends DimmableDevice<DummyDevice> {
 
     @Override
     public boolean supportsToggle() {
-        return ArrayUtil.contains(getAvailableTargetStates(), "on", "off") ||
-                ArrayUtil.contains(getWebCmd(), "on", "off");
+        return getSetList().contains("on", "off") ||
+                getSetList().contains(getWebCmd()) && getSetList().contains("on", "off");
     }
 
     @Override
@@ -70,25 +71,22 @@ public class DummyDevice extends DimmableDevice<DummyDevice> {
     public void afterDeviceXMLRead() {
         super.afterDeviceXMLRead();
 
-        String[] availableTargetStates = getAvailableTargetStates();
-        if (availableTargetStates == null) return;
+        SetListValue value = getSetList().get("state");
 
-        if (ArrayUtil.contains(availableTargetStates, "time")) {
+        if (value instanceof SetListTypedValue && ((SetListTypedValue) value).getType().equalsIgnoreCase("time")) {
             timerDevice = true;
         }
 
-        int[] slider = handleSliderTargetState();
-        if (slider != null) {
-            dimLowerBound = slider[0];
-            dimStep = slider[1];
-            dimUpperBound = slider[2];
+        if (value instanceof SetListSliderValue) {
+            sliderValue = (SetListSliderValue) value;
         }
     }
 
     @Override
     public DeviceFunctionality getDeviceFunctionality() {
-        String[] availableTargetStates = getAvailableTargetStates();
-        if (ArrayUtil.contains(availableTargetStates, "rgb")) return DeviceFunctionality.SWITCH;
+        if (getSetList().contains("rgb")) {
+            return DeviceFunctionality.SWITCH;
+        }
 
         return DeviceFunctionality.functionalityForDimmable(this);
     }
@@ -99,17 +97,17 @@ public class DummyDevice extends DimmableDevice<DummyDevice> {
 
     @Override
     public int getDimLowerBound() {
-        return dimLowerBound;
+        return sliderValue.getStart();
     }
 
     @Override
     public int getDimUpperBound() {
-        return dimUpperBound;
+        return sliderValue.getStop();
     }
 
     @Override
     public int getDimStep() {
-        return dimStep;
+        return sliderValue.getStep();
     }
 
     @Override
@@ -119,6 +117,7 @@ public class DummyDevice extends DimmableDevice<DummyDevice> {
 
     @Override
     public int getPositionForDimState(String dimState) {
+        if (!NumberUtil.isNumeric(dimState)) return 0;
         try {
             return Integer.valueOf(dimState.trim());
         } catch (Exception e) {
@@ -129,7 +128,7 @@ public class DummyDevice extends DimmableDevice<DummyDevice> {
 
     @Override
     public boolean supportsDim() {
-        return dimLowerBound != null && dimUpperBound != null && dimStep != null;
+        return sliderValue != null;
     }
 
     @ShowField(description = ResourceIdMapper.color)
@@ -141,7 +140,7 @@ public class DummyDevice extends DimmableDevice<DummyDevice> {
     }
 
     private String getRgb() {
-        if (! ArrayUtil.contains(getAvailableTargetStates(), "rgb")) return null;
+        if (! getSetList().contains("rgb")) return null;
         String state = getInternalState();
         if (!state.startsWith("rgb")) return null;
 

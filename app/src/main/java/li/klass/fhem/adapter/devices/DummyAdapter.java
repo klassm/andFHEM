@@ -115,8 +115,6 @@ public class DummyAdapter extends DimmableAdapter<DummyDevice> {
                         context.startService(intent);
                     }
                 } .createRow(context, inflater));
-
-
             }
         });
     }

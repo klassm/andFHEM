@@ -4,19 +4,12 @@ import android.util.Log;
 
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.DimmableDevice;
-import li.klass.fhem.util.ArrayUtil;
+import li.klass.fhem.domain.setlist.SetListSliderValue;
+import li.klass.fhem.domain.setlist.SetListValue;
 import li.klass.fhem.util.NumberUtil;
 
 public class StructureDevice extends DimmableDevice<StructureDevice> {
-    private int dimLowerBound;
-    private int dimStep;
-    private int dimUpperBound;
-    private boolean supportDim;
-
-    @Override
-    public boolean supportsToggle() {
-        return ArrayUtil.contains(getAvailableTargetStates(), "on", "off");
-    }
+    private SetListSliderValue sliderValue = null;
 
     @Override
     public boolean isOnByState() {
@@ -30,17 +23,17 @@ public class StructureDevice extends DimmableDevice<StructureDevice> {
 
     @Override
     public int getDimUpperBound() {
-        return dimUpperBound;
+        return sliderValue.getStop();
     }
 
     @Override
     public int getDimLowerBound() {
-        return dimLowerBound;
+        return sliderValue.getStart();
     }
 
     @Override
     public int getDimStep() {
-        return dimStep;
+        return sliderValue.getStep();
     }
 
     @Override
@@ -63,20 +56,16 @@ public class StructureDevice extends DimmableDevice<StructureDevice> {
 
     @Override
     public boolean supportsDim() {
-        return supportDim;
+        return sliderValue != null;
     }
 
     @Override
     public void afterDeviceXMLRead() {
         super.afterDeviceXMLRead();
 
-        int[] slider = handleSliderTargetState();
-        if (slider != null) {
-            dimLowerBound = slider[0];
-            dimStep = slider[1];
-            dimUpperBound = slider[2];
-
-            supportDim = true;
+        SetListValue setListValue = getSetList().get("state");
+        if (setListValue instanceof SetListSliderValue) {
+            this.sliderValue = (SetListSliderValue) setListValue;
         }
     }
 }

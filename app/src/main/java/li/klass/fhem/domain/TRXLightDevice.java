@@ -34,7 +34,6 @@ import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.DimmableDiscreteStatesDevice;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
-import li.klass.fhem.util.ArrayUtil;
 
 @SuppressWarnings("unused")
 @OverviewViewSettings(showState = true)
@@ -90,7 +89,7 @@ public class TRXLightDevice extends DimmableDiscreteStatesDevice<TRXLightDevice>
 
     @Override
     public boolean supportsDim() {
-        return ArrayUtil.contains(getAvailableTargetStates(), "all_level");
+        return getSetList().contains("all_level");
     }
 
     @Override

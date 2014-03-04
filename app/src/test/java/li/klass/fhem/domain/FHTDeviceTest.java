@@ -31,9 +31,9 @@ import li.klass.fhem.domain.fht.FHTMode;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.closeTo;
-import static org.hamcrest.Matchers.hasItemInArray;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNot.not;
 
 public class FHTDeviceTest extends DeviceXMLParsingBase {
     @Test
@@ -58,16 +58,12 @@ public class FHTDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getDesiredTemp(), is(closeTo(6.5, 0.01)));
         assertThat(device.getDesiredTempDesc(), is("6.5 (°C)"));
 
-        assertThat(device.getAvailableTargetStates(), is(notNullValue()));
+        assertThat(device.getSetList().getEntries().size(), is(not(0)));
 
         assertThat(device.getLogDevice(), is(notNullValue()));
         assertThat(device.getDeviceCharts().size(), is(1));
 
-        assertThat(device.getAvailableTargetStates(), hasItemInArray("day-temp"));
-        assertThat(device.getAvailableTargetStates(), hasItemInArray("desired-temp"));
-        assertThat(device.getAvailableTargetStates(), hasItemInArray("manu-temp"));
-        assertThat(device.getAvailableTargetStates(), hasItemInArray("night-temp"));
-        assertThat(device.getAvailableTargetStates(), hasItemInArray("windowopen-temp"));
+        assertThat(device.getSetList().contains("day-temp", "desired-temp", "manu-temp", "night-temp", "windowopen-temp"), is(true));
     }
 
     @Test

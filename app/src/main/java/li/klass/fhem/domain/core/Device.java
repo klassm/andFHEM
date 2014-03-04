@@ -24,13 +24,10 @@
 
 package li.klass.fhem.domain.core;
 
-import com.google.common.collect.Lists;
-
 import org.w3c.dom.NamedNodeMap;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -43,12 +40,14 @@ import li.klass.fhem.appwidget.view.widget.base.AppWidgetView;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.domain.log.CustomGraph;
 import li.klass.fhem.domain.log.LogDevice;
+import li.klass.fhem.domain.setlist.SetList;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.service.room.AllDevicesReadCallback;
 import li.klass.fhem.service.room.DeviceReadCallback;
-import li.klass.fhem.util.ArrayUtil;
 import li.klass.fhem.util.DateFormatUtil;
 import li.klass.fhem.util.StringUtil;
+
+import static com.google.common.collect.Lists.newArrayList;
 
 @SuppressWarnings("unused")
 public abstract class Device<T extends Device> implements Serializable, Comparable<T> {
@@ -72,7 +71,8 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
 
     protected Map<String, String> eventMapReverse = new HashMap<String, String>();
     protected Map<String, String> eventMap = new HashMap<String, String>();
-    private String[] availableTargetStates;
+
+    protected SetList setList = new SetList();
 
     protected volatile LogDevice logDevice;
     private List<DeviceChart> deviceCharts = new ArrayList<DeviceChart>();
@@ -190,7 +190,7 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
 
     public List<String> getRooms() {
         if (rooms == null || rooms.size() == 0) {
-            return Lists.newArrayList(AndFHEMApplication.getContext().getResources().getString(R.string.unsortedRoomName));
+            return newArrayList(AndFHEMApplication.getContext().getResources().getString(R.string.unsortedRoomName));
         }
         return rooms;
     }
@@ -241,45 +241,8 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
             String setsText = attributeValue.replaceAll("\\*", "");
             if (StringUtil.isBlank(setsText)) return;
 
-            parseAvailableTargetStates(setsText);
+            setList.parse(setsText);
         }
-    }
-
-    private void parseAvailableTargetStates(String setsText) {
-        setsText = setsText.trim();
-        String lowercase = setsText.toLowerCase();
-
-        if (lowercase.equals("") || lowercase.equals("*") || lowercase.contains("no set function")
-                || lowercase.contains("needs one parameter")) {
-            return;
-        }
-
-        String[] targetStates = setsText.split(" ");
-        List<String> outStates = new ArrayList<String>();
-        for (String targetState : targetStates) {
-            if (targetState.startsWith("state:")) {
-                targetState = targetState.substring("state:".length());
-
-                if (!targetState.contains("slider")) {
-                    outStates.addAll(Arrays.asList(targetState.split(",")));
-                    continue;
-                }
-            }
-
-            if (targetState.startsWith("pct:")) {
-                int firstColon = targetState.indexOf(":");
-                targetState = targetState.substring(firstColon + 1);
-                if (!targetState.startsWith("slider")) {
-                    targetState = "slider," + targetState;
-                }
-                outStates.add(targetState);
-            } else if (targetState.contains(":")) {
-                outStates.add(targetState.substring(0, targetState.indexOf(":")));
-            } else {
-                outStates.add(targetState);
-            }
-        }
-        this.availableTargetStates = outStates.toArray(new String[outStates.size()]);
     }
 
     @Override
@@ -363,7 +326,7 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
     }
 
     public void setRoomConcatenated(String roomsConcatenated) {
-        this.rooms = Lists.newArrayList(roomsConcatenated.split(","));
+        this.rooms = newArrayList(roomsConcatenated.split(","));
     }
 
     public void setAlias(String alias) {
@@ -398,8 +361,9 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
         return eventMap;
     }
 
-    public String[] getAvailableTargetStates() {
-        return availableTargetStates;
+
+    public SetList getSetList() {
+        return setList;
     }
 
     /**
@@ -408,14 +372,15 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
      * @return array of available target states
      */
     public String[] getAvailableTargetStatesEventMapTexts() {
-        String[] ret = ArrayUtil.copyOf(availableTargetStates);
-        for (int i = 0; i < ret.length; i++) {
-            String state = ret[i];
-            if (eventMapReverse.containsKey(state)) {
-                ret[i] = eventMapReverse.get(state);
-            }
+        if (setList == null) return new String[] {};
+
+        List<String> sortedKeys = setList.getSortedKeys();
+        List<String> eventMapKeys = newArrayList();
+        for (String key : sortedKeys) {
+            String eventMapKey = eventMapReverse.containsKey(key) ? eventMapReverse.get(key) : key;
+            eventMapKeys.add(eventMapKey);
         }
-        return ret;
+        return eventMapKeys.toArray(new String[eventMapKeys.size()]);
     }
 
     public boolean supportsWidget(Class<? extends AppWidgetView> appWidgetClass) {
@@ -464,7 +429,7 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
                 ", definition='" + definition + '\'' +
                 ", eventMapReverse=" + eventMapReverse +
                 ", eventMap=" + eventMap +
-                ", availableTargetStates=" + (availableTargetStates == null ? null : Arrays.asList(availableTargetStates)) +
+                ", setList=" + setList.toString() +
                 ", logDevice=" + logDevice +
                 ", deviceCharts=" + deviceCharts +
                 '}';

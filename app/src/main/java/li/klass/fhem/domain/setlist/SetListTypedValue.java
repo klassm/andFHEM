@@ -22,33 +22,38 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.domain;
+package li.klass.fhem.domain.setlist;
 
-import org.junit.Test;
+public class SetListTypedValue implements SetListValue {
+    private final String type;
 
-import li.klass.fhem.domain.core.DeviceXMLParsingBase;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.nullValue;
-import static org.hamcrest.core.Is.is;
-
-public class WatchdogDeviceTest extends DeviceXMLParsingBase {
-    @Test
-    public void testForCorrectlySetAttributes() {
-        WatchdogDevice device = getDefaultDevice();
-
-        assertThat(device.getName(), is(DEFAULT_TEST_DEVICE_NAME));
-        assertThat(device.getRoomConcatenated(), is(DEFAULT_TEST_ROOM_NAME));
-        assertThat(device.getState(), is("defined"));
-
-        assertThat(device.getSetList().getEntries().size(), is(0));
-
-        assertThat(device.getLogDevice(), is(nullValue()));
-        assertThat(device.getDeviceCharts().size(), is(0));
+    public SetListTypedValue(String type) {
+        this.type = type;
     }
 
     @Override
-    protected String getFileName() {
-        return "watchdog.xml";
+    public String asText() {
+        return type;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        SetListTypedValue that = (SetListTypedValue) o;
+
+        if (type != null ? !type.equals(that.type) : that.type != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return type != null ? type.hashCode() : 0;
     }
 }

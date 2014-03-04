@@ -24,14 +24,15 @@
 
 package li.klass.fhem.appwidget.view.widget.medium;
 
-import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.widget.RemoteViews;
 
+import org.apache.commons.lang3.StringUtils;
+
 import li.klass.fhem.R;
+import li.klass.fhem.adapter.devices.genericui.AvailableTargetStatesDialogUtil;
 import li.klass.fhem.appwidget.WidgetConfiguration;
 import li.klass.fhem.appwidget.WidgetConfigurationCreatedCallback;
 import li.klass.fhem.appwidget.view.WidgetType;
@@ -40,7 +41,6 @@ import li.klass.fhem.appwidget.view.widget.base.AppWidgetView;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.core.Device;
-import li.klass.fhem.util.ArrayUtil;
 
 import static android.app.PendingIntent.FLAG_UPDATE_CURRENT;
 import static li.klass.fhem.domain.core.DeviceStateRequiringAdditionalInformation.requiresAdditionalInformation;
@@ -90,27 +90,29 @@ public class TargetStateWidgetView extends AppWidgetView {
     public void createWidgetConfiguration(final Context context, final WidgetType widgetType,
                                           final int appWidgetId, final Device device,
                                           final WidgetConfigurationCreatedCallback callback) {
-        final String[] availableTargetStates = device.getAvailableTargetStates();
-        String[] eventMapStates = device.getAvailableTargetStatesEventMapTexts();
+        AvailableTargetStatesDialogUtil.showSwitchOptionsMenu(context, device,
+                new AvailableTargetStatesDialogUtil.TargetStateSelectedCallback() {
+                    @Override
+                    public <D extends Device<D>> void onTargetStateSelected(String state, String subState,
+                                                                            D device, Context context) {
+                        if (state.equals("state")) {
+                            state = subState;
+                            subState = null;
+                        }
 
-        final AlertDialog.Builder contextMenu = new AlertDialog.Builder(context);
-        contextMenu.setTitle(R.string.widget_targetstate);
-        contextMenu.setItems(eventMapStates, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int position) {
-                dialogInterface.dismiss();
+                        String toSet = state;
+                        if (!StringUtils.isBlank(subState)) {
+                            toSet += " " + subState;
+                        }
 
-                String targetState = availableTargetStates[position];
-
-                callback.widgetConfigurationCreated(new WidgetConfiguration(appWidgetId, device.getName(), widgetType,
-                        targetState));
-            }
-        });
-        contextMenu.show();
+                        callback.widgetConfigurationCreated(new WidgetConfiguration(appWidgetId,
+                                device.getName(), widgetType, toSet));
+                    }
+                });
     }
 
     @Override
     public boolean supports(Device<?> device) {
-        return !ArrayUtil.isEmpty(device.getAvailableTargetStates());
+        return ! device.getSetList().getEntries().isEmpty();
     }
 }

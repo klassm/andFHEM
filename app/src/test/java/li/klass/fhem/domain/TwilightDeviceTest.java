@@ -57,7 +57,7 @@ public class TwilightDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getSunsetWeather(), is("21:05:07"));
         assertThat(device.getState(), is("6"));
 
-        assertThat(device.getAvailableTargetStates(), is(nullValue()));
+        assertThat(device.getSetList().getEntries().size(), is(0));
 
         assertThat(device.getLogDevice(), is(nullValue()));
         assertThat(device.getDeviceCharts().size(), is(0));

@@ -31,9 +31,9 @@ import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 import li.klass.fhem.testsuite.category.DeviceTestBase;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNot.not;
 
 @Category(DeviceTestBase.class)
 public class TRXLightDeviceTest extends DeviceXMLParsingBase {
@@ -48,7 +48,7 @@ public class TRXLightDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getState(), is("off"));
         assertThat(device.getType(), is("ARC"));
 
-        assertThat(device.getAvailableTargetStates(), is(notNullValue()));
+        assertThat(device.getSetList().getEntries().size(), is(not(0)));
 
         assertThat(device.getLogDevice(), is(nullValue()));
         assertThat(device.getDeviceCharts().size(), is(0));

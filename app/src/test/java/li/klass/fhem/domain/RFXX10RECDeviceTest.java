@@ -44,7 +44,7 @@ public class RFXX10RECDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getLastStateChangedTime(), is("2011-09-25 22:12:11"));
         assertThat(device.getState(), is("Open"));
 
-        assertThat(device.getAvailableTargetStates(), is(nullValue()));
+        assertThat(device.getSetList().getEntries().size(), is(0));
 
         assertThat(device.getLogDevice(), is(nullValue()));
         assertThat(device.getDeviceCharts().size(), is(0));

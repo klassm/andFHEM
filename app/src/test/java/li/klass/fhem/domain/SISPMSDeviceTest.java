@@ -29,9 +29,9 @@ import org.junit.Test;
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNot.not;
 
 public class SISPMSDeviceTest extends DeviceXMLParsingBase {
     @Test
@@ -44,7 +44,7 @@ public class SISPMSDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.isOnByState(), is(false));
         assertThat(device.getState(), is("off"));
 
-        assertThat(device.getAvailableTargetStates(), is(notNullValue()));
+        assertThat(device.getSetList().getEntries().size(), is(not(0)));
 
         assertThat(device.getLogDevice(), is(nullValue()));
         assertThat(device.getDeviceCharts().size(), is(0));

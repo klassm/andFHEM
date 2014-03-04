@@ -31,6 +31,7 @@ import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNot.not;
 
 public class OwtempDeviceTest extends DeviceXMLParsingBase {
     @Test
@@ -45,7 +46,7 @@ public class OwtempDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getState(), is("T: 24.1250  L: 15  H: 35  P: 1  A: 0  W: none"));
 
 
-        assertThat(device.getAvailableTargetStates(), is(nullValue()));
+        assertThat(device.getSetList().getEntries().size(), is(not(0)));
 
         assertThat(device.getLogDevice(), is(nullValue()));
         assertThat(device.getDeviceCharts().size(), is(0));

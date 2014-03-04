@@ -30,8 +30,8 @@ import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.notNullValue;
-import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNot.not;
 
 public class USBWXDeviceTest extends DeviceXMLParsingBase {
     @Test
@@ -47,7 +47,7 @@ public class USBWXDeviceTest extends DeviceXMLParsingBase {
 
         assertThat(device.getState(), is("T: 18.2  H: 60"));
 
-        assertThat(device.getAvailableTargetStates(), is(nullValue()));
+        assertThat(device.getSetList().size(), is(not(0)));
 
         assertThat(device.getLogDevice(), is(notNullValue()));
         assertThat(device.getDeviceCharts().size(), is(2));

@@ -26,7 +26,6 @@ package li.klass.fhem.domain;
 
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.DimmableDevice;
-import li.klass.fhem.util.ArrayUtil;
 
 public class HM485Device extends DimmableDevice<HM485Device> {
     @Override
@@ -48,7 +47,7 @@ public class HM485Device extends DimmableDevice<HM485Device> {
 
     @Override
     public boolean supportsDim() {
-        return ArrayUtil.contains(getAvailableTargetStates(), "level");
+        return getSetList().contains("level");
     }
 
     @Override

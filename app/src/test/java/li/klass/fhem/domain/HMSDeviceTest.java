@@ -30,10 +30,14 @@ import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.notNullValue;
-import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.Is.is;
 
 public class HMSDeviceTest extends DeviceXMLParsingBase {
+    @Override
+    public void loadDevices() throws Exception {
+        super.loadDevices();
+    }
+
     @Test
     public void testForCorrectlySetAttributes() {
         HMSDevice device = getDefaultDevice();
@@ -49,7 +53,7 @@ public class HMSDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getState(), is("T: 12.6  Bat: ok"));
         assertThat(device.getMeasured(), is("2010-04-05 14:06:52"));
 
-        assertThat(device.getAvailableTargetStates(), is(nullValue()));
+        assertThat(device.getSetList().getEntries().size(), is(0));
 
         assertThat(device.getLogDevice(), is(notNullValue()));
         assertThat(device.getDeviceCharts().size(), is(2));

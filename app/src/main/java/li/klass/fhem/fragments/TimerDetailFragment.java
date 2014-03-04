@@ -41,6 +41,8 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.util.List;
+
 import li.klass.fhem.R;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
@@ -62,8 +64,7 @@ public class TimerDetailFragment extends BaseFragment {
     private static final DeviceNameSelectionFragment.DeviceFilter deviceFilter = new DeviceNameSelectionFragment.DeviceFilter() {
         @Override
         public boolean isSelectable(Device<?> device) {
-            return device.getAvailableTargetStates() != null &&
-                    device.getAvailableTargetStates().length > 0;
+            return device.getSetList().size() > 0;
         }
     };
 
@@ -216,18 +217,19 @@ public class TimerDetailFragment extends BaseFragment {
         targetStateAdapter = new ArrayAdapter<String>(getActivity(), R.layout.spinnercontent);
         targetState.setAdapter(targetStateAdapter);
         view.findViewById(R.id.targetStateRow).setVisibility(View.GONE);
+
         targetState.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (selectedTargetDevice == null) {
                     Log.e(TAG, "cannot select new target state, as new target device is set!");
                     return;
-                } else if (selectedTargetDevice.getAvailableTargetStates() == null) {
+                } else if (selectedTargetDevice.getSetList().size() == 0) {
                     Log.e(TAG, "cannot select new target state, as the new device does not contain any target states!");
                     return;
                 }
 
-                String newTargetState = selectedTargetDevice.getAvailableTargetStates()[i];
+                String newTargetState = selectedTargetDevice.getSetList().getSortedKeys().get(i);
 
                 if (selectedTargetState == null || !selectedTargetState.equals(newTargetState)) {
                     selectTargetState(newTargetState);
@@ -363,8 +365,9 @@ public class TimerDetailFragment extends BaseFragment {
             return;
         }
 
-        for (int i = 0; i < selectedTargetDevice.getAvailableTargetStates().length; i++) {
-            String availableTargetState = selectedTargetDevice.getAvailableTargetStates()[i];
+        List<String> targetStates = selectedTargetDevice.getSetList().getSortedKeys();
+        for (int i = 0; i < targetStates.size(); i++) {
+            String availableTargetState = targetStates.get(i);
             if (availableTargetState.equals(targetState)) {
                 targetStateSpinner.setSelection(i);
                 break;
@@ -373,10 +376,8 @@ public class TimerDetailFragment extends BaseFragment {
     }
 
     private void setNewTargetStatesInSpinner() {
-        String[] availableTargetStates = selectedTargetDevice.getAvailableTargetStates();
+        List<String> availableTargetStates = selectedTargetDevice.getSetList().getSortedKeys();
         targetStateAdapter.clear();
-
-        if (availableTargetStates == null || availableTargetStates.length == 0) return;
 
         for (String availableTargetState : availableTargetStates) {
             targetStateAdapter.add(availableTargetState);

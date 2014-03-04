@@ -23,21 +23,12 @@
 
 package li.klass.fhem.adapter.devices.genericui;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.widget.EditText;
 
 import li.klass.fhem.R;
-import li.klass.fhem.adapter.devices.core.UpdatingResultReceiver;
-import li.klass.fhem.constants.Actions;
-import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.core.Device;
-import li.klass.fhem.domain.core.DeviceStateRequiringAdditionalInformation;
-import li.klass.fhem.util.DialogUtil;
 
-import static li.klass.fhem.domain.core.DeviceStateRequiringAdditionalInformation.isValidAdditionalInformationValue;
+import static li.klass.fhem.adapter.devices.genericui.AvailableTargetStatesDialogUtil.STATE_SENDING_CALLBACK;
 
 public class AvailableTargetStatesSwitchActionRow<D extends Device<D>> extends DeviceDetailViewButtonAction<D> {
     public AvailableTargetStatesSwitchActionRow() {
@@ -50,62 +41,11 @@ public class AvailableTargetStatesSwitchActionRow<D extends Device<D>> extends D
     }
 
     private void showSwitchOptionsMenu(final Context context, final D device) {
-        AlertDialog.Builder contextMenu = new AlertDialog.Builder(context);
-        contextMenu.setTitle(context.getResources().getString(R.string.switchDevice));
-        final String[] setOptions = device.getAvailableTargetStates();
-        final String[] eventMapOptions = device.getAvailableTargetStatesEventMapTexts();
-
-        contextMenu.setItems(eventMapOptions, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int item) {
-                final String option = setOptions[item];
-
-                final DeviceStateRequiringAdditionalInformation specialDeviceState =
-                        DeviceStateRequiringAdditionalInformation.deviceStateForFHEM(option);
-
-                if (specialDeviceState != null) {
-                    final EditText input = new EditText(context);
-                    new AlertDialog.Builder(context)
-                            .setTitle(R.string.stateAppendix)
-                            .setView(input)
-                            .setPositiveButton(R.string.okButton, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int whichButton) {
-                                    String value = input.getText().toString();
-                                    handleAdditionalInformationValue(value, specialDeviceState, option, device, context);
-                                }
-                            }).setNegativeButton(R.string.cancelButton, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int whichButton) {
-                        }
-                    }).show();
-                } else {
-                    switchDeviceState(option, device, context);
-                }
-                dialog.dismiss();
-            }
-        });
-        contextMenu.show();
-    }
-
-    private void handleAdditionalInformationValue(String value, DeviceStateRequiringAdditionalInformation specialDeviceState,
-                                                  String option, D device, Context context) {
-
-        if (isValidAdditionalInformationValue(value, specialDeviceState)) {
-            switchDeviceState(option + " " + value, device, context);
-        } else {
-            DialogUtil.showAlertDialog(context, R.string.error, R.string.invalidInput);
-        }
-    }
-
-    private void switchDeviceState(String newState, D device, final Context context) {
-        Intent intent = new Intent(Actions.DEVICE_SET_STATE);
-        intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
-        intent.putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, newState);
-        intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver(context));
-        context.startService(intent);
+        AvailableTargetStatesDialogUtil.showSwitchOptionsMenu(context, device, STATE_SENDING_CALLBACK);
     }
 
     @Override
     public boolean isVisible(D device) {
-        String[] availableTargetStates = device.getAvailableTargetStates();
-        return availableTargetStates != null && availableTargetStates.length > 0;
+        return device.getSetList().size() > 0;
     }
 }

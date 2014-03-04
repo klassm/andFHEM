@@ -24,14 +24,13 @@
 
 package li.klass.fhem.domain.core;
 
-import li.klass.fhem.util.ArrayUtil;
-
 import static li.klass.fhem.domain.core.ToggleableDevice.ButtonHookType.NORMAL;
 import static li.klass.fhem.domain.core.ToggleableDevice.ButtonHookType.OFF_DEVICE;
 import static li.klass.fhem.domain.core.ToggleableDevice.ButtonHookType.ON_DEVICE;
 import static li.klass.fhem.domain.core.ToggleableDevice.ButtonHookType.ON_OFF_DEVICE;
 import static li.klass.fhem.domain.core.ToggleableDevice.ButtonHookType.TOGGLE_DEVICE;
 import static li.klass.fhem.domain.core.ToggleableDevice.ButtonHookType.WEBCMD_DEVICE;
+import static li.klass.fhem.util.ArrayUtil.contains;
 
 @SuppressWarnings("unused")
 public abstract class ToggleableDevice<T extends Device> extends Device<T> {
@@ -63,8 +62,8 @@ public abstract class ToggleableDevice<T extends Device> extends Device<T> {
     }
 
     public boolean supportsToggle() {
-        return ArrayUtil.contains(getAvailableTargetStates(), "on", "off") ||
-                ArrayUtil.contains(getWebCmd(), "on", "off");
+        return getSetList().contains("on", "off") ||
+                contains(getWebCmd(), "on", "off");
     }
 
     public void readONOFFDEVICE(String value) {

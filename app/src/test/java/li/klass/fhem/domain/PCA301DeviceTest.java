@@ -24,11 +24,11 @@
 
 package li.klass.fhem.domain;
 
-import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 import org.junit.Test;
 
+import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
 import static org.hamcrest.core.Is.is;
 
 public class PCA301DeviceTest extends DeviceXMLParsingBase {
@@ -39,8 +39,7 @@ public class PCA301DeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getName(), is(DEFAULT_TEST_DEVICE_NAME));
         assertThat(device.getRoomConcatenated(), is(DEFAULT_TEST_ROOM_NAME));
 
-        assertThat(device.getAvailableTargetStates(), hasItemInArray("on"));
-        assertThat(device.getAvailableTargetStates(), hasItemInArray("off"));
+        assertThat(device.getSetList().contains("on", "off"), is(true));
         assertThat(device.supportsToggle(), is(true));
 
         assertThat(device.getConsumption(), is("5 (kWh)"));

@@ -26,16 +26,14 @@ package li.klass.fhem.domain;
 
 import org.junit.Test;
 
-import java.util.Arrays;
-
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+import li.klass.fhem.domain.setlist.SetListGroupValue;
+import li.klass.fhem.domain.setlist.SetListSliderValue;
+import li.klass.fhem.domain.setlist.SetListValue;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.arrayContaining;
-import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.hasEntry;
-import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.hasItemInArray;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.Is.is;
@@ -53,8 +51,7 @@ public class StructureDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.supportsToggle(), is(true));
         assertThat(device.isOnByState(), is(true));
 
-        assertThat(device.getAvailableTargetStates(), hasItemInArray("on"));
-        assertThat(device.getAvailableTargetStates(), hasItemInArray("off"));
+        assertThat(device.getSetList().contains("on", "off"), is(true));
 
         assertThat(device.getLogDevice(), is(nullValue()));
         assertThat(device.getDeviceCharts().size(), is(0));
@@ -64,15 +61,18 @@ public class StructureDeviceTest extends DeviceXMLParsingBase {
     public void testDeviceWithSetList() {
         StructureDevice device = getDeviceFor("deviceWithSetlist");
 
-        assertThat(device.getAvailableTargetStates(), is(arrayContaining("17", "18", "19", "20", "21", "21.5", "22")));
-        assertThat(device.getAvailableTargetStates().length, is(7));
+        assertThat((SetListGroupValue) device.getSetList().get("state"), is(equalTo(new SetListGroupValue("17", "18", "19", "20", "21", "21.5", "22"))));
     }
 
     @Test
     public void testSlider() {
         StructureDevice device = getDeviceFor("slider");
         assertThat(device, is(notNullValue()));
-        assertThat(device.getAvailableTargetStates(), hasItemInArray("slider,10,2,110"));
+
+        SetListValue value = device.getSetList().get("state");
+        assertThat(value, is(instanceOf(SetListSliderValue.class)));
+        assertThat((SetListSliderValue) value, is(new SetListSliderValue(10, 2, 110)));
+
         assertThat(device.supportsDim(), is(true));
         assertThat(device.getDimLowerBound(), is(10));
         assertThat(device.getDimStep(), is(2));

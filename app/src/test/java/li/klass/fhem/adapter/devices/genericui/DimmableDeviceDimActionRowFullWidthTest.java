@@ -2,12 +2,12 @@ package li.klass.fhem.adapter.devices.genericui;
 
 import org.junit.Test;
 
-import static li.klass.fhem.adapter.devices.genericui.DimActionRowFullWidth.dimProgressToDimState;
-import static li.klass.fhem.adapter.devices.genericui.DimActionRowFullWidth.toDimProgress;
+import static li.klass.fhem.adapter.devices.genericui.DimmableDeviceDimActionRowFullWidth.dimProgressToDimState;
+import static li.klass.fhem.adapter.devices.genericui.DimmableDeviceDimActionRowFullWidth.toDimProgress;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-public class DimActionRowFullWidthTest {
+public class DimmableDeviceDimActionRowFullWidthTest {
 
     @Test
     public void testOneToHundredDimProgressConversion() {

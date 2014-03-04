@@ -29,14 +29,15 @@ import android.view.LayoutInflater;
 import android.widget.SeekBar;
 import android.widget.TableRow;
 import android.widget.TextView;
+
 import li.klass.fhem.R;
 import li.klass.fhem.domain.core.Device;
 
 public abstract class SeekBarActionRowFullWidth<T extends Device> {
     protected int initialProgress;
     private int layoutId;
-    private int maximumProgress;
-    private int minimumProgress;
+    protected int maximumProgress;
+    protected int minimumProgress;
     private TextView updateView;
 
     public SeekBarActionRowFullWidth(int initialProgress, int maximumProgress, int layoutId) {

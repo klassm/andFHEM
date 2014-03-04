@@ -31,9 +31,9 @@ import li.klass.fhem.domain.log.CustomGraph;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNot.not;
 
 public class FileLogDeviceTest extends DeviceXMLParsingBase {
     @Test
@@ -47,7 +47,7 @@ public class FileLogDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.concernsDevice("myRegexp"), is(true));
         assertThat(device.getState(), is("active"));
 
-        assertThat(device.getAvailableTargetStates(), is(notNullValue()));
+        assertThat(device.getSetList().getEntries().size(), is(not(0)));
 
         assertThat(device.getLogDevice(), is(nullValue()));
         assertThat(device.getDeviceCharts().size(), is(0));

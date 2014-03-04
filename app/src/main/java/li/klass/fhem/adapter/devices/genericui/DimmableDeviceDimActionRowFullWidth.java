@@ -33,18 +33,11 @@ import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.core.DimmableDevice;
 
-public class DimActionRowFullWidth<D extends DimmableDevice<D>> extends SeekBarActionRowFullWidth<D> {
+public class DimmableDeviceDimActionRowFullWidth<D extends DimmableDevice<D>> extends DeviceDimActionRowFullWidth<D> {
 
-    public DimActionRowFullWidth(D device, int layoutId) {
-        this(device, layoutId, null);
-    }
-
-    public DimActionRowFullWidth(D device, int layoutId, TableRow updateRow) {
-        super(
-                toDimProgress(device.getDimPosition(), device.getDimLowerBound(), device.getDimStep()),
-                0,
-                toDimProgress(device.getDimUpperBound(), device.getDimLowerBound(), device.getDimStep()),
-                layoutId, updateRow);
+    public DimmableDeviceDimActionRowFullWidth(D device, int layoutId, TableRow updateRow) {
+        super(device.getDimPosition(), device.getDimLowerBound(), device.getDimStep(),
+                device.getDimUpperBound(), updateRow, layoutId);
     }
 
     public void onStopTrackingTouch(final Context context, D device, int progress) {
@@ -58,17 +51,18 @@ public class DimActionRowFullWidth<D extends DimmableDevice<D>> extends SeekBarA
         context.startService(intent);
     }
 
-    static int toDimProgress(int progress, int lowerBound, int step) {
-        return (progress - lowerBound) / step;
-    }
+    @Override
+    public void onStopDim(Context context, D device, int progress) {
+        Intent intent = new Intent(Actions.DEVICE_DIM);
+        intent.putExtra(BundleExtraKeys.DEVICE_DIM_PROGRESS, progress);
+        intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
+        intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver(context));
 
-    static int dimProgressToDimState(int progress, int lowerBound, int step) {
-        return progress * step + lowerBound;
+        context.startService(intent);
     }
 
     @Override
-    public String toUpdateText(D device, int progress) {
-        int dimProgress = dimProgressToDimState(progress, device.getDimLowerBound(), device.getDimStep());
-        return device.getDimStateForPosition(dimProgress);
+    public String toDimUpdateText(D device, int progress) {
+        return device.getDimStateForPosition(progress);
     }
 }

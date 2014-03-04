@@ -31,6 +31,7 @@ import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNot.not;
 
 public class TRXDeviceTest extends DeviceXMLParsingBase {
     @Test
@@ -41,8 +42,7 @@ public class TRXDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getRoomConcatenated(), is(DEFAULT_TEST_ROOM_NAME));
         assertThat(device.getState(), is("opened"));
 
-
-        assertThat(device.getAvailableTargetStates(), is(nullValue()));
+        assertThat(device.getSetList().size(), is(not(0)));
 
         assertThat(device.getLogDevice(), is(nullValue()));
         assertThat(device.getDeviceCharts().size(), is(0));

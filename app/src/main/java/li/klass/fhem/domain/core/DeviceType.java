@@ -83,6 +83,7 @@ import li.klass.fhem.domain.IntertechnoDevice;
 import li.klass.fhem.domain.KS300Device;
 import li.klass.fhem.domain.LGTVDevice;
 import li.klass.fhem.domain.LaCrosseDevice;
+import li.klass.fhem.domain.LightSceneDevice;
 import li.klass.fhem.domain.MaxDevice;
 import li.klass.fhem.domain.OWFSDevice;
 import li.klass.fhem.domain.OpenWeatherMapDevice;
@@ -194,6 +195,7 @@ public enum DeviceType {
     PILIGHT("pilight", PilightDevice.class, new ToggleableAdapter<PilightDevice>(PilightDevice.class)),
     OWSWITCH("OWSWITCH", OwSwitchDevice.class, new OwSwitchDeviceAdapter()),
     HM485("HM485", HM485Device.class, new DimmableAdapter<HM485Device>(HM485Device.class)),
+    LIGHT_SCENE("LightScene", LightSceneDevice.class)
     ;
 
     private String xmllistTag;

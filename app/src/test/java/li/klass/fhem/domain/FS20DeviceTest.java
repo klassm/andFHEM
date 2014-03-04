@@ -33,6 +33,7 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNot.not;
 
 public class FS20DeviceTest extends DeviceXMLParsingBase {
     @Test
@@ -50,7 +51,7 @@ public class FS20DeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getEventMap().get("off"), is("Ab"));
         assertThat(device.getEventMap().get("on"), is("Auf"));
 
-        assertThat(device.getAvailableTargetStates(), is(notNullValue()));
+        assertThat(device.getSetList().getEntries().size(), is(not(0)));
 
         assertThat(device.getLogDevice(), is(nullValue()));
         assertThat(device.getDeviceCharts().size(), is(0));
@@ -74,7 +75,7 @@ public class FS20DeviceTest extends DeviceXMLParsingBase {
         assertThat(device.isSpecialButtonDevice(), is(true));
         assertThat(device.getButtonHookType(), is(ToggleableDevice.ButtonHookType.ON_OFF_DEVICE));
 
-        assertThat(device.getAvailableTargetStates(), is(notNullValue()));
+        assertThat(device.getSetList().getEntries().size(), is(not(0)));
 
         assertThat(device.getLogDevice(), is(notNullValue()));
         assertThat(device.getDeviceCharts().size(), is(1));

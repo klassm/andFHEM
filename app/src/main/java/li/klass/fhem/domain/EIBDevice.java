@@ -32,7 +32,6 @@ import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.DimmableDevice;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
-import li.klass.fhem.util.ArrayUtil;
 import li.klass.fhem.util.ValueDescriptionUtil;
 import li.klass.fhem.util.ValueExtractUtil;
 
@@ -94,7 +93,7 @@ public class EIBDevice extends DimmableDevice<EIBDevice> {
     @Override
     public boolean supportsToggle() {
         if (model != null && model.equalsIgnoreCase("time")) return false;
-        return ArrayUtil.contains(getAvailableTargetStates(), "on", "off");
+        return getSetList().contains("on", "off");
     }
 
     @Override

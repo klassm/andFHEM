@@ -27,9 +27,11 @@ package li.klass.fhem.domain;
 import org.junit.Test;
 
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+import li.klass.fhem.domain.setlist.SetList;
+import li.klass.fhem.domain.setlist.SetListGroupValue;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.arrayContaining;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItemInArray;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
@@ -48,8 +50,7 @@ public class DummyDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.supportsToggle(), is(true));
         assertThat(device.isOnByState(), is(true));
 
-        assertThat(device.getAvailableTargetStates(), hasItemInArray("on"));
-        assertThat(device.getAvailableTargetStates(), hasItemInArray("off"));
+        assertThat(device.getSetList().contains("on", "off"), is(true));
 
         assertThat(device.getLogDevice(), is(nullValue()));
         assertThat(device.getDeviceCharts().size(), is(0));
@@ -76,8 +77,7 @@ public class DummyDeviceTest extends DeviceXMLParsingBase {
     public void testDeviceWithSetList() {
         DummyDevice device = getDeviceFor("deviceWithSetlist");
 
-        assertThat(device.getAvailableTargetStates(), is(arrayContaining("17", "18", "19", "20", "21", "21.5", "22")));
-        assertThat(device.getAvailableTargetStates().length, is(7));
+        assertThat((SetListGroupValue) device.getSetList().get("state"), is(equalTo(new SetListGroupValue("17", "18", "19", "20", "21", "21.5", "22"))));
         assertThat(device.supportsDim(), is(false));
     }
 
@@ -106,15 +106,12 @@ public class DummyDeviceTest extends DeviceXMLParsingBase {
         String[] eventMapStates = device.getAvailableTargetStatesEventMapTexts();
         assertThat(eventMapStates, is(notNullValue()));
 
-        String[] targetStates = device.getAvailableTargetStates();
-        assertThat(targetStates, is(notNullValue()));
+        SetList setList = device.getSetList();
+        assertThat(setList, is(notNullValue()));
 
-        assertThat(targetStates.length, is(eventMapStates.length));
+        assertThat(setList.size(), is(eventMapStates.length));
 
-        assertThat(targetStates, hasItemInArray("oben"));
-        assertThat(targetStates, hasItemInArray("unten"));
-        assertThat(targetStates, hasItemInArray("65"));
-        assertThat(targetStates, hasItemInArray("40"));
+        assertThat(setList.contains("oben", "unten", "65", "40"), is(true));
 
         assertThat(eventMapStates, hasItemInArray("Oben"));
         assertThat(eventMapStates, hasItemInArray("Unten"));

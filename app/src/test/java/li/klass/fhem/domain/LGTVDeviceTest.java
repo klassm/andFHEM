@@ -29,7 +29,6 @@ import org.junit.Test;
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.hasItemInArray;
 import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.Is.is;
 
@@ -46,9 +45,7 @@ public class LGTVDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getInput(), is("HDMI1"));
         assertThat(device.getPower(), is("off"));
 
-        assertThat(device.getAvailableTargetStates(), hasItemInArray("power"));
-        assertThat(device.getAvailableTargetStates(), hasItemInArray("input"));
-        assertThat(device.getAvailableTargetStates(), hasItemInArray("audio"));
+        assertThat(device.getSetList().contains("power", "input", "audio"), is(true));
 
         assertThat(device.getLogDevice(), is(nullValue()));
         assertThat(device.getDeviceCharts().size(), is(0));

@@ -30,7 +30,6 @@ import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.notNullValue;
-import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.Is.is;
 
 public class CULTXDeviceTest extends DeviceXMLParsingBase {
@@ -45,7 +44,7 @@ public class CULTXDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getTemperature(), is("16.5 (°C)"));
         assertThat(device.getState(), is("T: 16.5 H: 73.0"));
 
-        assertThat(device.getAvailableTargetStates(), is(nullValue()));
+        assertThat(device.getSetList().getEntries().size(), is(0));
 
         assertThat(device.getLogDevice(), is(notNullValue()));
         assertThat(device.getDeviceCharts().size(), is(1));
