@@ -29,6 +29,7 @@ import android.view.View;
 import android.widget.TableLayout;
 
 import li.klass.fhem.R;
+import li.klass.fhem.adapter.devices.genericui.HolderActionRow;
 import li.klass.fhem.adapter.devices.genericui.OnOffActionRow;
 import li.klass.fhem.adapter.devices.genericui.ToggleDeviceActionRow;
 import li.klass.fhem.adapter.devices.genericui.WebCmdActionRow;
@@ -93,7 +94,7 @@ public class ToggleableAdapter<D extends ToggleableDevice<D>> extends GenericDev
 
     private <T extends ToggleableDevice<T>> void addWebCmdOverviewActionRow(Context context, T device,
                                                                             TableLayout tableLayout) {
-        tableLayout.addView(new WebCmdActionRow<T>(device.getName(), WebCmdActionRow.LAYOUT_OVERVIEW)
+        tableLayout.addView(new WebCmdActionRow<T>(device.getName(), HolderActionRow.LAYOUT_OVERVIEW)
                 .createRow(context, inflater, device));
     }
 

@@ -28,68 +28,55 @@ import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.TableRow;
-import android.widget.TextView;
 import android.widget.ToggleButton;
 
-import com.ensequence.socialmediatestharness.ui.FlowLayout;
+import java.util.List;
 
 import li.klass.fhem.R;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.core.Device;
 
-public class WebCmdActionRow<T extends Device<T>> {
-    private String description;
-    private int layout;
+import static com.google.common.collect.Lists.newArrayList;
 
-    public static final int LAYOUT_DETAIL = R.layout.device_detail_webcmd;
-    public static final int LAYOUT_OVERVIEW = R.layout.device_overview_webcmd;
-
+public class WebCmdActionRow<D extends Device<D>> extends HolderActionRow<D, String> {
     public WebCmdActionRow(int layout) {
-        this(null, layout);
+        super(layout);
     }
 
     public WebCmdActionRow(String description, int layout) {
-        this.description = description;
-        this.layout = layout;
+        super(description, layout);
     }
 
-    public TableRow createRow(final Context context, LayoutInflater inflater, final T device) {
-        TableRow row = (TableRow) inflater.inflate(layout, null);
+    @Override
+    public List<String> getItems(D device) {
+        return newArrayList(device.getWebCmd());
+    }
 
-        assert row != null;
+    @Override
+    public View viewFor(final String command, final D device, LayoutInflater inflater,
+                        final Context context) {
 
-        TextView descriptionView = (TextView) row.findViewById(R.id.description);
-        if (descriptionView != null) {
-            descriptionView.setText(description);
-        }
+        ToggleButton button = (ToggleButton) inflater.inflate(R.layout.device_detail_togglebutton, null);
+        assert button != null;
 
-        FlowLayout holder = (FlowLayout) row.findViewById(R.id.webcmdHolder);
+        button.setBackgroundDrawable(
+                context.getResources().getDrawable(R.drawable.theme_toggle_default_normal));
 
-        for (final String cmd : device.getWebCmd()) {
-            ToggleButton button = (ToggleButton) inflater.inflate(R.layout.device_detail_togglebutton, null);
-            assert button != null;
+        button.setText(command);
+        button.setTextOn(command);
+        button.setTextOff(command);
 
-            button.setBackgroundDrawable(
-                    context.getResources().getDrawable(R.drawable.theme_toggle_default_normal));
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Actions.DEVICE_SET_STATE);
+                intent.putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, command);
+                intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
+                context.startService(intent);
+            }
+        });
 
-            button.setText(cmd);
-            button.setTextOn(cmd);
-            button.setTextOff(cmd);
-
-            button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(Actions.DEVICE_SET_STATE);
-                    intent.putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, cmd);
-                    intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
-                    context.startService(intent);
-                }
-            });
-            holder.addView(button);
-        }
-
-        return row;
+        return button;
     }
 }

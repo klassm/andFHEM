@@ -1,5 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
-
 <!--
   ~ AndFHEM - Open Source Android application to control a FHEM home automation
   ~ server.
@@ -24,20 +22,16 @@
   ~   Boston, MA  02110-1301  USA
   -->
 
-<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
-          android:layout_width="fill_parent"
-          android:layout_height="wrap_content">
-    <TextView style="@style/deviceOverviewLayoutDeviceName"
-              android:id="@+id/description"
-              android:layout_width="match_parent"
-              android:layout_gravity="center_vertical"
-              android:layout_column="1"
-              android:text="text"/>
-
-    <com.ensequence.socialmediatestharness.ui.FlowLayout android:id="@+id/webcmdHolder"
-        style="@style/deviceDetailContent"
-        android:layout_gravity="right"
-        android:gravity="right"
-        android:paddingRight="0dp"
-        />
-</TableRow>
+<FHZINFO>
+    <LightScene_LIST>
+        <LightScene name="device" state="off" sets="remove:off,on save set scene:off,on" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings alias_map always_hidden custom_graph devStateIcon devStateStyle fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon invertState measured-temp offDevice onDevice onOffDevice sortby structexclude toggleDevice webCmd webcmdDevice">
+            <INT key="CFGFN" value=""/>
+            <INT key="DEF" value="mat_halogen"/>
+            <INT key="NAME" value="device"/>
+            <INT key="NR" value="1379"/>
+            <INT key="NTFY_ORDER" value="50-a"/>
+            <INT key="STATE" value="off"/>
+            <INT key="TYPE" value="LightScene"/>
+        </LightScene>
+    </LightScene_LIST>
+</FHZINFO>

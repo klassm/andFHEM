@@ -32,6 +32,7 @@ import li.klass.fhem.adapter.devices.FS20ZDRDeviceAdapter;
 import li.klass.fhem.adapter.devices.FloorplanAdapter;
 import li.klass.fhem.adapter.devices.GCMSendDeviceAdapter;
 import li.klass.fhem.adapter.devices.HueDeviceAdapter;
+import li.klass.fhem.adapter.devices.LightSceneAdapter;
 import li.klass.fhem.adapter.devices.MaxAdapter;
 import li.klass.fhem.adapter.devices.OwSwitchDeviceAdapter;
 import li.klass.fhem.adapter.devices.PidAdapter;
@@ -195,7 +196,7 @@ public enum DeviceType {
     PILIGHT("pilight", PilightDevice.class, new ToggleableAdapter<PilightDevice>(PilightDevice.class)),
     OWSWITCH("OWSWITCH", OwSwitchDevice.class, new OwSwitchDeviceAdapter()),
     HM485("HM485", HM485Device.class, new DimmableAdapter<HM485Device>(HM485Device.class)),
-    LIGHT_SCENE("LightScene", LightSceneDevice.class)
+    LIGHT_SCENE("LightScene", LightSceneDevice.class, new LightSceneAdapter())
     ;
 
     private String xmllistTag;

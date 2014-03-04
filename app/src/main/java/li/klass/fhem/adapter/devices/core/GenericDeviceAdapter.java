@@ -45,6 +45,7 @@ import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.showFieldAnnotation.AnnotatedDeviceClassItem;
 import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewAction;
+import li.klass.fhem.adapter.devices.genericui.HolderActionRow;
 import li.klass.fhem.adapter.devices.genericui.WebCmdActionRow;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
@@ -295,7 +296,7 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
         if (ArrayUtil.isEmpty(device.getWebCmd())) return null;
         final Context context = inflater.getContext();
 
-        TableRow tableRow = new WebCmdActionRow<D>(WebCmdActionRow.LAYOUT_DETAIL)
+        TableRow tableRow = new WebCmdActionRow<D>(HolderActionRow.LAYOUT_DETAIL)
                 .createRow(context, inflater, device);
 
         layout.addView(tableRow);

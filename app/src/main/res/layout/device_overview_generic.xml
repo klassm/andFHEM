@@ -27,7 +27,7 @@
     style="@style/deviceOverviewTable"
     android:id="@+id/device_overview_generic">
 
-    <TableRow>
+    <TableRow android:id="@+id/overviewRow">
         <TextView android:id="@+id/deviceName"
             style="@style/deviceOverviewLayoutDeviceName"/>
     </TableRow>

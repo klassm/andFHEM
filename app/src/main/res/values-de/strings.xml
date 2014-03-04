@@ -191,6 +191,7 @@
     <string name="shutterPosition">Rolladen-Position</string>
     <string name="sendEachColorChange">Sende jede Farbänderung</string>
     <string name="level">Level</string>
+    <string name="activateScene">Szene %s</string>
 
     <string name="connectionManage">Verwalten</string>
     <string name="connectionCreate">Neue Verbindung erstellen</string>
