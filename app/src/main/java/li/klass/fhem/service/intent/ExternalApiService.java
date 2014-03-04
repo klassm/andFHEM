@@ -26,6 +26,7 @@ package li.klass.fhem.service.intent;
 
 import android.app.Service;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
@@ -52,7 +53,7 @@ public class ExternalApiService extends Service {
                 case ROOM_LIST:
                     ArrayList<String> deviceNames = RoomListService.INSTANCE
                             .getAvailableDeviceNames(NEVER_UPDATE_PERIOD);
-                    replyTo(msg, Message.obtain(null, 1, deviceNames));
+                    replyTo(msg, deviceNames);
 
                     break;
                 default:
@@ -61,10 +62,14 @@ public class ExternalApiService extends Service {
         }
     }
 
-    private void replyTo(Message incoming, Message outgoing) {
+    private void replyTo(Message incoming, ArrayList<String> outgoing) {
         try {
             if (incoming.replyTo != null) {
-                incoming.replyTo.send(outgoing);
+                Message msg = Message.obtain(null, 1);
+                Bundle bundle = new Bundle();
+                bundle.putStringArrayList("data", outgoing);
+                msg.setData(bundle);
+                incoming.replyTo.send(msg);
             }
         } catch (RemoteException e) {
             Log.e(ExternalApiService.class.getName(), "cannot send message", e);
