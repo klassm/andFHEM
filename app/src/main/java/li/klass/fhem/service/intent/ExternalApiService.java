@@ -26,6 +26,7 @@ package li.klass.fhem.service.intent;
 
 import android.app.Service;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -36,6 +37,7 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
+import li.klass.fhem.service.CommandExecutionService;
 import li.klass.fhem.service.room.RoomListService;
 
 import static li.klass.fhem.service.room.RoomListService.NEVER_UPDATE_PERIOD;
@@ -43,8 +45,10 @@ import static li.klass.fhem.service.room.RoomListService.NEVER_UPDATE_PERIOD;
 public class ExternalApiService extends Service {
 
     public static final int ROOM_LIST = 1;
-
+    public static final int READINGS_VALUE = 2;
     private final Messenger messenger = new Messenger(new IncomingHandler());
+
+    private Message replyMsg;
 
     class IncomingHandler extends Handler {
         @Override
@@ -56,20 +60,76 @@ public class ExternalApiService extends Service {
                     replyTo(msg, deviceNames);
 
                     break;
+                case READINGS_VALUE:
+                    String deviceName = null;
+                    String readingName = null;
+                    String defaultVal = null;
+                    //FIXME: create a new Message to reply with because we will loose msg somewhere in the AsyncTask below
+                    replyMsg = Message.obtain(null, msg.what);
+                    replyMsg.setData(msg.getData());
+                    replyMsg.replyTo = msg.replyTo;
+                    if (msg.getData() != null) {
+                        if (msg.getData().getString("device") != null) {
+                            deviceName = msg.getData().getString("device");
+                        }
+                        if (msg.getData().getString("reading") != null) {
+                            readingName = msg.getData().getString("reading");
+                        }
+                        if (msg.getData().getString("default") != null) {
+                            defaultVal = msg.getData().getString("default");
+                        }
+                        if (deviceName != null && readingName != null && defaultVal != null) {
+                            final Handler handler = new Handler();
+                            new AsyncTask<String, Void, String>() {
+
+                                @Override
+                                protected String doInBackground(String... params) {
+                                    return CommandExecutionService.INSTANCE.executeSafely(String.format("{ReadingsVal('%s','%s','%s')}", params[0], params[1], params[2]));
+                                }
+
+                                @Override
+                                protected void onPostExecute(final String result) {
+                                    // onPostExecute is run from within the UI thread, but Android allows to run multiple UI threads.
+                                    // We cannot be sure which one is chosen, so we enforce the right UI thread by using an explicit
+                                    // handler.
+                                    // see http://stackoverflow.com/questions/10426120/android-got-calledfromwrongthreadexception-in-onpostexecute-how-could-it-be
+                                    handler.post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            ArrayList<String> readingsVal = new ArrayList<String>();
+                                            readingsVal.add(result);
+                                            replyTo(readingsVal);
+                                        }
+                                    });
+                                }
+                            }.execute(deviceName, readingName, defaultVal);
+                        }
+                    }
+                    break;
                 default:
                     super.handleMessage(msg);
             }
         }
     }
 
+    private void replyTo(ArrayList<String> outgoing) {
+        replyTo(replyMsg, outgoing);
+    }
+
     private void replyTo(Message incoming, ArrayList<String> outgoing) {
         try {
             if (incoming.replyTo != null) {
-                Message msg = Message.obtain(null, 1);
+                Message msg = Message.obtain(null, incoming.what);
                 Bundle bundle = new Bundle();
+                if (incoming.getData() != null) {
+                    //if incoming message has data send it back along with the results
+                    bundle = incoming.getData();
+                }
                 bundle.putStringArrayList("data", outgoing);
                 msg.setData(bundle);
                 incoming.replyTo.send(msg);
+            } else {
+                Log.e(ExternalApiService.class.getName(), "cannot send message, no replyTo Messenger set.");
             }
         } catch (RemoteException e) {
             Log.e(ExternalApiService.class.getName(), "cannot send message", e);
