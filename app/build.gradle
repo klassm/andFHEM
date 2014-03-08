@@ -131,8 +131,8 @@ android {
     }
 
     productFlavors {
-        premium {
-        }
+        inapp {}
+        premium {}
     }
 }
 
