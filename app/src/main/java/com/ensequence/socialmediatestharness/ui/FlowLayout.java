@@ -83,7 +83,7 @@ public class FlowLayout extends ViewGroup {
             final LayoutParams childLayoutParams = (LayoutParams) child.getLayoutParams();
 
             child.measure(MeasureSpec.makeMeasureSpec(maxWidth,
-                    MeasureSpec.AT_MOST), childHeightMeasureSpec);
+                    MeasureSpec.EXACTLY), childHeightMeasureSpec);
 
             final int childWidth = child.getMeasuredWidth();
 

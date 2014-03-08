@@ -52,9 +52,9 @@ public class LightSceneAdapter extends GenericDeviceAdapter<LightSceneDevice> {
     }
 
     @Override
-    protected void fillDeviceOverviewView(View view, LightSceneDevice device, long lastUpdate) {
+    protected void fillDeviceOverviewView(final View view, LightSceneDevice device, long lastUpdate) {
         TableLayout layout = (TableLayout) view.findViewById(R.id.device_overview_generic);
-        layout.findViewById(R.id.overviewRow).setVisibility(View.GONE);
+        layout.removeAllViews();
 
         layout.addView(new HolderActionRow<LightSceneDevice, String>(device.getAliasOrName(),
                 HolderActionRow.LAYOUT_OVERVIEW) {
