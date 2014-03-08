@@ -37,6 +37,7 @@ import java.util.List;
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
 import li.klass.fhem.adapter.devices.core.UpdatingResultReceiver;
+import li.klass.fhem.adapter.devices.genericui.AvailableTargetStatesSwitchActionRow;
 import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewAction;
 import li.klass.fhem.adapter.devices.genericui.HolderActionRow;
 import li.klass.fhem.constants.Actions;
@@ -75,6 +76,7 @@ public class LightSceneAdapter extends GenericDeviceAdapter<LightSceneDevice> {
     @Override
     protected void afterPropertiesSet() {
         super.afterPropertiesSet();
+
         detailActions.add(new DeviceDetailViewAction<LightSceneDevice>() {
             @Override
             public View createView(final Context context, LayoutInflater inflater,
@@ -84,7 +86,7 @@ public class LightSceneAdapter extends GenericDeviceAdapter<LightSceneDevice> {
 
                 for (final String scene : device.getScenes()) {
 
-                    Button button = (Button) inflater.inflate(R.layout.button_device_detail, null, false);
+                    Button button = (Button) inflater.inflate(R.layout.button_device_detail, parent, false);
                     assert(button != null);
 
                     String buttonText = String.format(context.getString(R.string.activateScene), scene);
@@ -96,6 +98,7 @@ public class LightSceneAdapter extends GenericDeviceAdapter<LightSceneDevice> {
                 return layout;
             }
         });
+        detailActions.add(new AvailableTargetStatesSwitchActionRow<LightSceneDevice>());
     }
 
     private void setSceneButtonProperties(final Context context, final LightSceneDevice device, final String scene, Button button, String buttonText) {
