@@ -31,7 +31,7 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 
 import li.klass.fhem.R;
-import li.klass.fhem.adapter.devices.genericui.AvailableTargetStatesSwitchActionRow;
+import li.klass.fhem.adapter.devices.ToggleableAdapterWithSwitchActionRow;
 import li.klass.fhem.adapter.devices.genericui.DimActionRow;
 import li.klass.fhem.adapter.devices.genericui.DimmableDeviceDimActionRowFullWidth;
 import li.klass.fhem.adapter.devices.genericui.UpDownButtonRow;
@@ -41,7 +41,7 @@ import li.klass.fhem.domain.core.DimmableDevice;
 
 import static li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener.NotificationDeviceType.DIMMER;
 
-public class DimmableAdapter<D extends DimmableDevice<D>> extends ToggleableAdapter<D> {
+public class DimmableAdapter<D extends DimmableDevice<D>> extends ToggleableAdapterWithSwitchActionRow<D> {
 
     public DimmableAdapter(Class<D> deviceClass) {
         super(deviceClass);
@@ -106,7 +106,5 @@ public class DimmableAdapter<D extends DimmableDevice<D>> extends ToggleableAdap
                 return device.supportsDim();
             }
         });
-
-        detailActions.add(new AvailableTargetStatesSwitchActionRow<D>());
     }
 }

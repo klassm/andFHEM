@@ -63,5 +63,23 @@
             <ATTR key="setList" value="on off"/>
             <STATE key="state" value="off" measured="2014-02-17 23:29:36"/>
         </readingsProxy>
+        <readingsProxy name="dimmable" state="100.0" sets="an:noArg aus:noArg off:noArg on:noArg state:slider,4,1,105 blink on-for-timer on-till off-for-timer intervals off-till" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings disable:1 getList setList getFn setFn valueFn event-on-change-reading event-on-update-reading event-min-interval stateFormat DbLogExclude devStateIcon devStateStyle icon sortby webCmd">
+            <INT key="DEF" value="PCA9532:PWM1"/>
+            <INT key="DEVICE" value="PCA9532"/>
+            <INT key="NAME" value="dimmable"/>
+            <INT key="NR" value="145"/>
+            <INT key="NTFY_ORDER" value="50-Regal"/>
+            <INT key="READING" value="PWM1"/>
+            <INT key="STATE" value="100.0"/>
+            <INT key="TYPE" value="readingsProxy"/>
+            <ATTR key="alias" value="Beleuchtung Regale"/>
+            <ATTR key="devStateIcon" value="0:off 100:on \d:dim06% 1\d.*:dim12% 2\d.*:dim25% 3\d.*:dim37% 4\d.*:dim43% 5\d.*:dim50% 6\d.*:dim62% 7\d.*:dim75% 8\d.*:dim87% 9\d.*:dim93%"/>
+            <ATTR key="eventMap" value="on:an:noArg off:aus:noArg"/>
+            <ATTR key="group" value="Schrankwand"/>
+            <ATTR key="room" value="Wohnzimmer"/>
+            <ATTR key="setList" value="off:noArg on:noArg state:slider,0,1,100"/>
+            <ATTR key="webCmd" value="state"/>
+            <STATE key="state" value="100.0" measured="2014-03-02 21:12:54"/>
+        </readingsProxy>
     </readingsProxy_LIST>
 </FHZINFO>

@@ -69,7 +69,7 @@ public class StructureDeviceTest extends DeviceXMLParsingBase {
         StructureDevice device = getDeviceFor("slider");
         assertThat(device, is(notNullValue()));
 
-        SetListValue value = device.getSetList().get("state");
+        SetListValue value = device.getSetList().get("pct");
         assertThat(value, is(instanceOf(SetListSliderValue.class)));
         assertThat((SetListSliderValue) value, is(new SetListSliderValue(10, 2, 110)));
 

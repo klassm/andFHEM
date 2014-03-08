@@ -24,15 +24,9 @@
 
 package li.klass.fhem.domain;
 
-import li.klass.fhem.domain.core.DeviceFunctionality;
-import li.klass.fhem.domain.core.DimmableDevice;
+import li.klass.fhem.domain.core.DimmableContinuousStatesDevice;
 
-public class HM485Device extends DimmableDevice<HM485Device> {
-    @Override
-    public int getDimUpperBound() {
-        return 100;
-    }
-
+public class HM485Device extends DimmableContinuousStatesDevice<HM485Device> {
     @Override
     public String getDimStateForPosition(int position) {
         return "level " + position;
@@ -46,12 +40,7 @@ public class HM485Device extends DimmableDevice<HM485Device> {
     }
 
     @Override
-    public boolean supportsDim() {
-        return getSetList().contains("level");
-    }
-
-    @Override
-    public DeviceFunctionality getDeviceFunctionality() {
-        return DeviceFunctionality.functionalityForDimmable(this);
+    protected String getSetListDimStateAttributeName() {
+        return "level";
     }
 }

@@ -26,13 +26,14 @@ package li.klass.fhem.domain;
 
 import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.domain.core.DeviceFunctionality;
-import li.klass.fhem.domain.core.ToggleableDevice;
+import li.klass.fhem.domain.core.DimmableContinuousStatesDevice;
 import li.klass.fhem.domain.genericview.ShowField;
 
+import static li.klass.fhem.domain.core.DeviceFunctionality.functionalityForDimmable;
 import static li.klass.fhem.util.NumberSystemUtil.hexToDecimal;
 
 @SuppressWarnings("unused")
-public class ReadingsProxyDevice extends ToggleableDevice<ReadingsProxyDevice> {
+public class ReadingsProxyDevice extends DimmableContinuousStatesDevice<ReadingsProxyDevice> {
 
     @ShowField(description = ResourceIdMapper.color)
     public String getRgbDesc() {
@@ -61,10 +62,7 @@ public class ReadingsProxyDevice extends ToggleableDevice<ReadingsProxyDevice> {
 
     @Override
     public DeviceFunctionality getDeviceFunctionality() {
-        if (supportsToggle()) {
-            return DeviceFunctionality.SWITCH;
-        }
-        return DeviceFunctionality.UNKNOWN;
+        return functionalityForDimmable(this);
     }
 
     @Override

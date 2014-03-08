@@ -26,7 +26,6 @@ package li.klass.fhem.domain;
 
 import org.junit.Test;
 
-import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 
 import static li.klass.fhem.domain.core.DeviceFunctionality.SWITCH;
@@ -52,6 +51,18 @@ public class ReadingsProxyDeviceTest extends DeviceXMLParsingBase {
         assertThat(device).isNotNull();
         assertThat(device.getDeviceFunctionality()).isEqualTo(SWITCH);
         assertThat(device.getRgbDesc()).isNull();
+    }
+
+    @Test
+    public void testDimmable() {
+        ReadingsProxyDevice device = getDeviceFor("dimmable");
+
+        assertThat(device).isNotNull();
+        assertThat(device.supportsDim()).isTrue();
+        assertThat(device.getDimPosition()).isEqualTo(100);
+        assertThat(device.getDimLowerBound()).isEqualTo(4);
+        assertThat(device.getDimUpperBound()).isEqualTo(105);
+        assertThat(device.getDimStep()).isEqualTo(1);
     }
 
     @Override

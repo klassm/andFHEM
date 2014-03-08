@@ -1,8 +1,7 @@
 package li.klass.fhem.domain;
 
 import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
-import li.klass.fhem.domain.core.DeviceFunctionality;
-import li.klass.fhem.domain.core.DimmableDevice;
+import li.klass.fhem.domain.core.DimmableContinuousStatesDevice;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.util.ColorUtil;
@@ -12,7 +11,7 @@ import li.klass.fhem.util.ValueExtractUtil;
 
 @SuppressWarnings("unused")
 @OverviewViewSettings(showState = true)
-public class HUEDevice extends DimmableDevice<HUEDevice> {
+public class HUEDevice extends DimmableContinuousStatesDevice<HUEDevice> {
 
     private double[] xy;
     private int rgb;
@@ -86,25 +85,6 @@ public class HUEDevice extends DimmableDevice<HUEDevice> {
         } else {
             super.setState(state);
         }
-    }
-
-    @Override
-    public int getDimUpperBound() {
-        return 100;
-    }
-
-    @Override
-    public String getDimStateForPosition(int position) {
-        return "pct " + position;
-    }
-
-    @Override
-    public int getPositionForDimState(String dimState) {
-        String value = dimState.replace("pct ", "").trim();
-        if (value.equals("on")) return getDimUpperBound();
-        if (value.equals("off")) return 0;
-
-        return ValueExtractUtil.extractLeadingInt(value);
     }
 
     @Override
@@ -186,7 +166,7 @@ public class HUEDevice extends DimmableDevice<HUEDevice> {
     }
 
     @Override
-    public DeviceFunctionality getDeviceFunctionality() {
-        return DeviceFunctionality.functionalityForDimmable(this);
+    public boolean supportsOnOffDimMapping() {
+        return false;
     }
 }

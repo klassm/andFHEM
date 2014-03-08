@@ -396,7 +396,26 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
     }
 
     @Override
+    public int getDimLowerBound() {
+        if (getStateSliderValue() != null) {
+            return super.getDimLowerBound();
+        }
+        return 0;
+    }
+
+    @Override
+    public int getDimStep() {
+        if (getStateSliderValue() != null) {
+            return super.getDimStep();
+        }
+        return 1;
+    }
+
+    @Override
     public int getDimUpperBound() {
+        if (getStateSliderValue() != null) {
+            return super.getDimUpperBound();
+        }
         return 100;
     }
 
@@ -409,15 +428,6 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
     public int getDimPosition() {
         if (subType != DIMMER && subType != SHUTTER) return 0;
         return super.getDimPosition();
-    }
-
-    @Override
-    public int getPositionForDimState(String dimState) {
-        if (eventMapReverse.containsKey(dimState)) {
-            dimState = eventMapReverse.get(dimState);
-        }
-        dimState = dimState.replaceAll("[ ]?%", "");
-        return super.getPositionForDimState(dimState);
     }
 
     @Override
@@ -691,5 +701,10 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
     @Override
     public long getTimeRequiredForStateError() {
         return OUTDATED_DATA_MS_DEFAULT;
+    }
+
+    @Override
+    protected String getSetListDimStateAttributeName() {
+        return "pct";
     }
 }

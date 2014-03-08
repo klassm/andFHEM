@@ -24,22 +24,85 @@
 
 package li.klass.fhem.domain.core;
 
-import li.klass.fhem.util.NumberUtil;
+import li.klass.fhem.domain.setlist.SetListSliderValue;
+import li.klass.fhem.domain.setlist.SetListValue;
+
+import static com.google.common.base.Preconditions.checkNotNull;
+import static li.klass.fhem.domain.core.DeviceFunctionality.functionalityForDimmable;
+import static li.klass.fhem.util.NumberUtil.isNumeric;
+import static li.klass.fhem.util.ValueExtractUtil.extractLeadingInt;
 
 public abstract class DimmableContinuousStatesDevice<D extends Device<D>> extends DimmableDevice<D> {
     @Override
     public String getDimStateForPosition(int position) {
-        if (position == getDimUpperBound()) return "on";
-        if (position == getDimLowerBound()) return "off";
-        return position + "";
+        if (supportsOnOffDimMapping()) {
+            if (position == getDimUpperBound()) return getEventMapStateFor("on");
+            if (position == getDimLowerBound()) return getEventMapStateFor("off");
+        }
+
+        String prefix = getSetListDimStateAttributeName().equals("state") ? "" : getSetListDimStateAttributeName() + " ";
+        return prefix + position;
     }
 
     @Override
     public int getPositionForDimState(String dimState) {
-        if (dimState.equals("on")) return getDimUpperBound();
-        if (dimState.equals("off")) return getDimLowerBound();
-        if (!NumberUtil.isNumeric(dimState)) return 0;
+        dimState = dimState.replaceAll(getSetListDimStateAttributeName(), "").replaceAll("[% ]", "");
+        if (dimState.equals(getEventMapStateFor("on")) || "on".equals(dimState)) return getDimUpperBound();
+        if (dimState.equals(getEventMapStateFor("off")) || "off".equals(dimState)) return getDimLowerBound();
+        if (!isNumeric(dimState)) return 0;
 
-        return Integer.valueOf(dimState);
+        return extractLeadingInt(dimState);
+    }
+
+
+
+    @Override
+    public boolean supportsDim() {
+        return getStateSliderValue() != null;
+    }
+
+    protected SetListSliderValue getStateSliderValue() {
+        SetListValue stateEntry = getSetList().get(getSetListDimStateAttributeName());
+        if (stateEntry instanceof SetListSliderValue) {
+            return (SetListSliderValue) stateEntry;
+        }
+        return null;
+    }
+
+    protected String getSetListDimStateAttributeName() {
+        return "state";
+    }
+
+    @Override
+    public int getDimLowerBound() {
+        SetListSliderValue stateSliderValue = getStateSliderValue();
+        if (stateSliderValue == null) return 0;
+
+        return stateSliderValue.getStart();
+    }
+
+    @Override
+    public int getDimUpperBound() {
+        SetListSliderValue stateSliderValue = getStateSliderValue();
+        checkNotNull(stateSliderValue);
+
+        return stateSliderValue.getStop();
+    }
+
+    @Override
+    public int getDimStep() {
+        SetListSliderValue stateSliderValue = getStateSliderValue();
+        if (stateSliderValue == null) return 1;
+
+        return stateSliderValue.getStep();
+    }
+
+    @Override
+    public DeviceFunctionality getDeviceFunctionality() {
+        return functionalityForDimmable(this);
+    }
+
+    public boolean supportsOnOffDimMapping() {
+        return true;
     }
 }

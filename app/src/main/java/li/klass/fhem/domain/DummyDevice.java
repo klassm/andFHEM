@@ -24,28 +24,23 @@
 
 package li.klass.fhem.domain;
 
-import android.util.Log;
-
 import org.w3c.dom.NamedNodeMap;
 
 import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.domain.core.DeviceFunctionality;
-import li.klass.fhem.domain.core.DimmableDevice;
+import li.klass.fhem.domain.core.DimmableContinuousStatesDevice;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
-import li.klass.fhem.domain.setlist.SetListSliderValue;
 import li.klass.fhem.domain.setlist.SetListTypedValue;
 import li.klass.fhem.domain.setlist.SetListValue;
-import li.klass.fhem.util.NumberUtil;
 
 import static li.klass.fhem.util.NumberSystemUtil.hexToDecimal;
 
 @OverviewViewSettings(showState = true)
 @SuppressWarnings("unused")
-public class DummyDevice extends DimmableDevice<DummyDevice> {
+public class DummyDevice extends DimmableContinuousStatesDevice<DummyDevice> {
 
     private boolean timerDevice = false;
-    private SetListSliderValue sliderValue = null;
 
     public void readSTATE(String tagName, String value, NamedNodeMap attributes) {
         String measured = attributes.getNamedItem("measured").getNodeValue();
@@ -76,10 +71,6 @@ public class DummyDevice extends DimmableDevice<DummyDevice> {
         if (value instanceof SetListTypedValue && ((SetListTypedValue) value).getType().equalsIgnoreCase("time")) {
             timerDevice = true;
         }
-
-        if (value instanceof SetListSliderValue) {
-            sliderValue = (SetListSliderValue) value;
-        }
     }
 
     @Override
@@ -93,42 +84,6 @@ public class DummyDevice extends DimmableDevice<DummyDevice> {
 
     public boolean isTimerDevice() {
         return timerDevice;
-    }
-
-    @Override
-    public int getDimLowerBound() {
-        return sliderValue.getStart();
-    }
-
-    @Override
-    public int getDimUpperBound() {
-        return sliderValue.getStop();
-    }
-
-    @Override
-    public int getDimStep() {
-        return sliderValue.getStep();
-    }
-
-    @Override
-    public String getDimStateForPosition(int position) {
-        return position + "";
-    }
-
-    @Override
-    public int getPositionForDimState(String dimState) {
-        if (!NumberUtil.isNumeric(dimState)) return 0;
-        try {
-            return Integer.valueOf(dimState.trim());
-        } catch (Exception e) {
-            Log.e(DummyDevice.class.getName(), "cannot parse dimState " + dimState, e);
-            return 0;
-        }
-    }
-
-    @Override
-    public boolean supportsDim() {
-        return sliderValue != null;
     }
 
     @ShowField(description = ResourceIdMapper.color)

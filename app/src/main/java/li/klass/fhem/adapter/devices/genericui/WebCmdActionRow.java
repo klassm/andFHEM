@@ -38,10 +38,11 @@ import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.core.Device;
 
 import static com.google.common.collect.Lists.newArrayList;
+import static li.klass.fhem.AndFHEMApplication.getContext;
 
 public class WebCmdActionRow<D extends Device<D>> extends HolderActionRow<D, String> {
     public WebCmdActionRow(int layout) {
-        super(layout);
+        super(getContext().getString(R.string.webcmd), layout);
     }
 
     public WebCmdActionRow(String description, int layout) {

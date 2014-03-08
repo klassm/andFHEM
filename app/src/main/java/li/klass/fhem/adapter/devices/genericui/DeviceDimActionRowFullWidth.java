@@ -54,7 +54,7 @@ public abstract class DeviceDimActionRowFullWidth<D extends Device<D>> extends S
 
     @Override
     public String toUpdateText(D device, int progress) {
-        int dimProgress = dimProgressToDimState(progress, lowerBound, upperBound);
+        int dimProgress = dimProgressToDimState(progress, lowerBound, dimStep);
         return toDimUpdateText(device, dimProgress);
     }
 

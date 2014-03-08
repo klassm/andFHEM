@@ -24,27 +24,11 @@
 
 package li.klass.fhem.domain;
 
-import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.DimmableContinuousStatesDevice;
 
 public class ZWaveDevice extends DimmableContinuousStatesDevice<ZWaveDevice> {
     @Override
-    public int getDimUpperBound() {
-        return 100;
-    }
-
-    @Override
-    public boolean supportsDim() {
-        return true;
-    }
-
-    @Override
-    public boolean supportsToggle() {
-        return true;
-    }
-
-    @Override
-    public DeviceFunctionality getDeviceFunctionality() {
-        return DeviceFunctionality.functionalityForDimmable(this);
+    protected String getSetListDimStateAttributeName() {
+        return "dim";
     }
 }

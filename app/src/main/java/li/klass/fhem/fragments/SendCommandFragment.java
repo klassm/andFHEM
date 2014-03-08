@@ -33,7 +33,14 @@ import android.os.ResultReceiver;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
+
+import java.util.ArrayList;
+
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.constants.Actions;
@@ -42,7 +49,7 @@ import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.fragments.core.BaseFragment;
 import li.klass.fhem.util.ListViewUtil;
 
-import java.util.ArrayList;
+import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 public class SendCommandFragment extends BaseFragment {
 
@@ -109,7 +116,7 @@ public class SendCommandFragment extends BaseFragment {
                         return;
                     }
 
-                    if (result.replaceAll("[\\r\\n]", "").isEmpty()) return;
+                    if (isEmpty(result.replaceAll("[\\r\\n]", ""))) return;
                     new AlertDialog.Builder(context)
                             .setTitle(R.string.command_execution_result)
                             .setMessage(result)

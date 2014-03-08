@@ -30,6 +30,7 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 
 import li.klass.fhem.R;
+import li.klass.fhem.adapter.devices.core.DimmableAdapter;
 import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
 import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
 import li.klass.fhem.adapter.devices.genericui.ColorPickerRow;
@@ -38,7 +39,7 @@ import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.ReadingsProxyDevice;
 import li.klass.fhem.util.StringUtil;
 
-public class ReadingsProxyDeviceAdapter extends ToggleableAdapterWithSwitchActionRow<ReadingsProxyDevice> {
+public class ReadingsProxyDeviceAdapter extends DimmableAdapter<ReadingsProxyDevice> {
     public ReadingsProxyDeviceAdapter() {
         super(ReadingsProxyDevice.class);
     }

@@ -28,8 +28,7 @@ import java.util.List;
 
 import li.klass.fhem.R;
 import li.klass.fhem.domain.core.DeviceChart;
-import li.klass.fhem.domain.core.DeviceFunctionality;
-import li.klass.fhem.domain.core.DimmableDevice;
+import li.klass.fhem.domain.core.DimmableContinuousStatesDevice;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ValueDescriptionUtil;
@@ -39,7 +38,7 @@ import static li.klass.fhem.service.graph.description.SeriesType.TEMPERATURE;
 
 @OverviewViewSettings(showState = true)
 @SuppressWarnings("unused")
-public class EIBDevice extends DimmableDevice<EIBDevice> {
+public class EIBDevice extends DimmableContinuousStatesDevice<EIBDevice> {
 
     private String model;
 
@@ -97,11 +96,6 @@ public class EIBDevice extends DimmableDevice<EIBDevice> {
     }
 
     @Override
-    public int getDimUpperBound() {
-        return 100;
-    }
-
-    @Override
     public String getDimStateForPosition(int position) {
         return "value " + position + "";
     }
@@ -144,7 +138,7 @@ public class EIBDevice extends DimmableDevice<EIBDevice> {
     }
 
     @Override
-    public DeviceFunctionality getDeviceFunctionality() {
-        return DeviceFunctionality.functionalityForDimmable(this);
+    protected String getSetListDimStateAttributeName() {
+        return "value";
     }
 }
