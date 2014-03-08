@@ -105,6 +105,7 @@
     <string name="error_send_no_error">Cannot send an error, as none is registered!</string>
     <string name="errorDeviceListLoad">Could not load %1$s device(s) (types: %2$s)!</string>
     <string name="errorOutdatedData">Sensor data seems to be outdated. Make sure the device sends data.</string>
+    <string name="errorDuplicateInstall">The application was installed twice. Have you installed the Premium version and the normal version in parallel? Please make sure you have only one AndFHEM version installed.</string>
     <string name="hex2quat">Hex -> Quat</string>
     <string name="quat2hex">Quat -> Hex</string>
     <string name="result">Result</string>

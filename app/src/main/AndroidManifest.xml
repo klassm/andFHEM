@@ -58,6 +58,7 @@
         android:name="li.klass.fhem.AndFHEMApplication"
         android:theme="@style/ApplicationTheme">
 
+        <activity android:name="li.klass.fhem.activities.DuplicateInstallActivity" />
         <activity android:name="li.klass.fhem.activities.AndFHEMMainActivity"
             android:label="@string/app_name"
             android:alwaysRetainTaskState="true"

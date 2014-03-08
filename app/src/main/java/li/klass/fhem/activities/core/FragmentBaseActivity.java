@@ -54,6 +54,7 @@ import java.lang.reflect.Constructor;
 
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
+import li.klass.fhem.activities.DuplicateInstallActivity;
 import li.klass.fhem.billing.BillingService;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
@@ -220,6 +221,12 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
         } catch (Exception e) {
             Log.e(TAG, "error while creating activity", e);
         }
+
+        if (AndFHEMApplication.INSTANCE.isAndFHEMAlreadyInstalled()) {
+            startActivity(new Intent(this, DuplicateInstallActivity.class));
+            return;
+        }
+
         saveInstanceStateCalled = false;
         isActivityStart = true;
 
@@ -361,7 +368,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        mDrawerToggle.syncState();
+        if (mDrawerToggle != null) mDrawerToggle.syncState();
     }
 
     @Override
@@ -447,7 +454,9 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
         saveInstanceStateCalled = false;
         BillingService.INSTANCE.bindActivity(this);
 
-        registerReceiver(broadcastReceiver, broadcastReceiver.getIntentFilter());
+        if (broadcastReceiver != null) {
+            registerReceiver(broadcastReceiver, broadcastReceiver.getIntentFilter());
+        }
 
         if (availableConnectionDataAdapter != null) {
             availableConnectionDataAdapter.doLoad();
@@ -470,7 +479,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
             Log.i(TAG, "receiver was not registered, ignore ...");
         }
 
-        autoUpdateHandler.removeCallbacks(autoUpdateCallback);
+        if (autoUpdateHandler != null) autoUpdateHandler.removeCallbacks(autoUpdateCallback);
         setShowRefreshProgressIcon(false);
     }
 
@@ -619,7 +628,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
         BaseFragment navigationFragment = getNavigationFragment();
         BaseFragment contentFragment = getContentFragment();
 
-        return updateNavigationVisibility(navigationFragment , contentFragment);
+        return updateNavigationVisibility(navigationFragment, contentFragment);
     }
 
     private boolean hasNavigation(BaseFragment navigationFragment, BaseFragment contentFragment) {

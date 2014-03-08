@@ -122,6 +122,7 @@ android {
         }
         main {
             aidl.srcDirs = ['src/main/java']
+            java.srcDir file('src/main/java')
         }
     }
 
@@ -132,7 +133,9 @@ android {
 
     productFlavors {
         inapp {}
-        premium {}
+        premium {
+            packageName "li.klass.fhempremium"
+        }
     }
 }
 

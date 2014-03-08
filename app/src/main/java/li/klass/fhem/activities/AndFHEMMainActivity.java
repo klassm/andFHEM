@@ -40,6 +40,7 @@ import li.klass.fhem.fragments.PremiumFragment;
 import li.klass.fhem.update.UpdateHandler;
 import li.klass.fhem.util.DialogUtil;
 
+import static li.klass.fhem.AndFHEMApplication.getContext;
 import static li.klass.fhem.GCMIntentService.registerWithGCM;
 import static li.klass.fhem.constants.BundleExtraKeys.DO_REFRESH;
 
@@ -86,7 +87,7 @@ public class AndFHEMMainActivity extends FragmentBaseActivity {
                 version = "?";
             }
             DialogUtil.showAlertDialog(this, R.string.about, "Matthias Klass\r\nVersion: " + version + "\r\n" +
-                    "andFHEM.klass.li\r\nandFHEM@klass.li");
+                    "andFHEM.klass.li\r\nandFHEM@klass.li\r\n" + getContext().getPackageName());
             return true;
         }
 

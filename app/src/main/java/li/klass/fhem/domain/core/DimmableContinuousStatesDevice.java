@@ -27,7 +27,6 @@ package li.klass.fhem.domain.core;
 import li.klass.fhem.domain.setlist.SetListSliderValue;
 import li.klass.fhem.domain.setlist.SetListValue;
 
-import static com.google.common.base.Preconditions.checkNotNull;
 import static li.klass.fhem.domain.core.DeviceFunctionality.functionalityForDimmable;
 import static li.klass.fhem.util.NumberUtil.isNumeric;
 import static li.klass.fhem.util.ValueExtractUtil.extractLeadingInt;
@@ -84,7 +83,7 @@ public abstract class DimmableContinuousStatesDevice<D extends Device<D>> extend
     @Override
     public int getDimUpperBound() {
         SetListSliderValue stateSliderValue = getStateSliderValue();
-        checkNotNull(stateSliderValue);
+        if (stateSliderValue == null) return 100;
 
         return stateSliderValue.getStop();
     }

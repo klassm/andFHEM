@@ -32,7 +32,10 @@ import android.os.Build;
 import android.os.StrictMode;
 import android.util.Log;
 
+import java.util.List;
+
 import li.klass.fhem.util.ApplicationProperties;
+import li.klass.fhem.util.InstalledApplications;
 
 import static li.klass.fhem.constants.PreferenceKeys.APPLICATION_VERSION;
 
@@ -108,6 +111,17 @@ public class AndFHEMApplication extends Application {
             Log.e(AndFHEMApplication.class.getName(), "cannot find the application version", e);
             return "";
         }
+    }
+
+    public boolean isAndFHEMAlreadyInstalled() {
+        List<InstalledApplications.InstalledApplication> installedApps = InstalledApplications.getInstalledApps();
+        for (InstalledApplications.InstalledApplication installedApp : installedApps) {
+            if (installedApp.getPackageName().startsWith("li.klass.fhem")
+                    && ! installedApp.getPackageName().equals(getPackageName())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public boolean isUpdate() {
