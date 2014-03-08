@@ -54,6 +54,7 @@ import li.klass.fhem.util.DialogUtil;
 
 import static li.klass.fhem.domain.core.DeviceStateRequiringAdditionalInformation.isValidAdditionalInformationValue;
 import static org.apache.commons.lang3.StringUtils.isBlank;
+import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 public class AvailableTargetStatesDialogUtil {
 
@@ -78,8 +79,8 @@ public class AvailableTargetStatesDialogUtil {
         }
 
         private <D extends Device<D>> void switchDeviceSubState(String newState, String newSubState, D device, final Context context) {
-            if (newState.equalsIgnoreCase("state")) {
-                switchDeviceState(newSubState, device, context);
+            if (newState.equalsIgnoreCase("state") || isEmpty(newSubState)) {
+                switchDeviceState(newState, device, context);
                 return;
             }
             Intent intent = new Intent(Actions.DEVICE_SET_SUB_STATE);
