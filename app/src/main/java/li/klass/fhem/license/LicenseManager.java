@@ -35,6 +35,7 @@ import javax.security.cert.X509Certificate;
 
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.billing.BillingService;
+import li.klass.fhem.util.ApplicationProperties;
 
 public class LicenseManager {
     public static final LicenseManager INSTANCE = new LicenseManager();
@@ -45,7 +46,8 @@ public class LicenseManager {
 
     public boolean isPro() {
         if (isPremium) return true;
-        if (isDebug()) return true;
+        if (ApplicationProperties.INSTANCE.getBooleanApplicationProperty("IS_PREMIUM")) return true;
+//        if (isDebug()) return true;
 
         Set<String> ownedItems = BillingService.INSTANCE.getOwnedItems();
         return ownedItems.contains(AndFHEMApplication.PRODUCT_PREMIUM_ID) ||

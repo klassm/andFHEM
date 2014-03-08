@@ -61,6 +61,7 @@ import li.klass.fhem.constants.PreferenceKeys;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.fragments.FragmentType;
 import li.klass.fhem.fragments.core.BaseFragment;
+import li.klass.fhem.license.LicenseManager;
 import li.klass.fhem.service.room.RoomListService;
 import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.DialogUtil;
@@ -476,6 +477,9 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
     @Override
     public boolean onCreatePanelMenu(int featureId, com.actionbarsherlock.view.Menu menu) {
         getSupportMenuInflater().inflate(R.menu.main_menu, menu);
+        if (LicenseManager.INSTANCE.isPro()) {
+            menu.removeItem(R.id.menu_premium);
+        }
         this.optionsMenu = menu;
         return super.onCreateOptionsMenu(menu);
     }

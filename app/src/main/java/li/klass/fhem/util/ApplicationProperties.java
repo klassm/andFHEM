@@ -76,6 +76,12 @@ public class ApplicationProperties {
         return properties.getProperty(key);
     }
 
+    public boolean getBooleanApplicationProperty(String key) {
+        String value = getStringApplicationProperty(key);
+        return value != null ? Boolean.valueOf(value) : false;
+    }
+
+
     public boolean getBooleanSharedPreference(String key, boolean defaultValue) {
         SharedPreferences preferences = getPreferences();
         return preferences.getBoolean(key, defaultValue);

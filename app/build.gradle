@@ -129,6 +129,11 @@ android {
         exclude 'META-INF/NOTICE.txt'
         exclude 'META-INF/LICENSE.txt'
     }
+
+    productFlavors {
+        premium {
+        }
+    }
 }
 
 task readSigningPasswordsFromConsole(
