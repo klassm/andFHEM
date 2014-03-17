@@ -45,7 +45,6 @@ import static android.appwidget.AppWidgetManager.INVALID_APPWIDGET_ID;
 
 public abstract class AppWidgetSelectionActivity extends DeviceNameSelectionActivity {
 
-
     private int widgetId;
     private WidgetSize widgetSize;
 

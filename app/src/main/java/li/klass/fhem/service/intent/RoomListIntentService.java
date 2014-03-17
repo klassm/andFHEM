@@ -56,27 +56,26 @@ public class RoomListIntentService extends ConvenientIntentService {
 
     public RoomListIntentService() {
         super(RoomListIntentService.class.getName());
-//        super(RoomListIntentService.class.getName(), 2);
     }
 
     @Override
     protected STATE handleIntent(Intent intent, long updatePeriod, ResultReceiver resultReceiver) {
         RoomListService roomListService = RoomListService.INSTANCE;
-        if (intent.getAction().equals(GET_ALL_ROOMS_DEVICE_LIST)) {
+        if (GET_ALL_ROOMS_DEVICE_LIST.equals(intent.getAction())) {
             RoomDeviceList allRoomsDeviceList = roomListService.getAllRoomsDeviceList(updatePeriod);
             sendResultWithLastUpdate(resultReceiver, ResultCodes.SUCCESS, DEVICE_LIST, allRoomsDeviceList);
-        } else if (intent.getAction().equals(GET_ROOM_NAME_LIST)) {
+        } else if (GET_ROOM_NAME_LIST.equals(intent.getAction())) {
             ArrayList<String> roomNameList = roomListService.getRoomNameList(updatePeriod);
             sendResultWithLastUpdate(resultReceiver, ResultCodes.SUCCESS, ROOM_LIST, roomNameList);
-        } else if (intent.getAction().equals(GET_ROOM_DEVICE_LIST)) {
+        } else if (GET_ROOM_DEVICE_LIST.equals(intent.getAction())) {
             String roomName = intent.getStringExtra(ROOM_NAME);
             RoomDeviceList roomDeviceList = roomListService.getDeviceListForRoom(roomName, updatePeriod);
             sendResultWithLastUpdate(resultReceiver, ResultCodes.SUCCESS, DEVICE_LIST, roomDeviceList);
-        } else if (intent.getAction().equals(GET_DEVICE_FOR_NAME)) {
+        } else if (GET_DEVICE_FOR_NAME.equals(intent.getAction())) {
             String deviceName = intent.getStringExtra(DEVICE_NAME);
             Device device = roomListService.getDeviceForName(deviceName, updatePeriod);
             sendResultWithLastUpdate(resultReceiver, ResultCodes.SUCCESS, DEVICE, device);
-        } else if (intent.getAction().equals(UPDATE_DEVICE_WITH_UPDATE_MAP)) {
+        } else if (UPDATE_DEVICE_WITH_UPDATE_MAP.equals(intent.getAction())) {
             String deviceName = intent.getStringExtra(DEVICE_NAME);
             @SuppressWarnings("unchecked")
             Map<String, String> updates = (Map<String, String>) intent.getSerializableExtra(UPDATE_MAP);

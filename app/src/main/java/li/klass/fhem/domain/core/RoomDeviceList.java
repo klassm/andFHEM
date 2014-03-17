@@ -34,21 +34,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import static li.klass.fhem.domain.core.DeviceType.getDeviceTypeFor;
+
 /**
  * Class to hold devices for a certain room.
  */
-public class RoomDeviceList implements Serializable {
+public class RoomDeviceList implements Serializable, Cloneable {
 
     /**
      * Name of the room.
      */
     private String roomName;
-
-    /**
-     * True if the room is "empty", meaning that no devices or only devices that may not
-     * be shown within the current connection are contained.
-     */
-    private boolean onlyContainsDoNotShowDevices = true;
 
     /**
      * Actual devices.
@@ -95,7 +91,7 @@ public class RoomDeviceList implements Serializable {
         Set<T> deviceSet = getOrCreateDeviceList(functionality);
         List<T> deviceList = new ArrayList<T>();
         for (T device : deviceSet) {
-            DeviceType deviceType = DeviceType.getDeviceTypeFor(device);
+            DeviceType deviceType = getDeviceTypeFor(device);
             if (! respectMayShowAndSupported ||
                     (device.isSupported() && deviceType.mayShowInCurrentConnectionType())) {
                 deviceList.add(device);
@@ -110,7 +106,7 @@ public class RoomDeviceList implements Serializable {
         Set<Device> allDevices = getAllDevices();
         List<T> deviceList = new ArrayList<T>();
         for (Device device : allDevices) {
-            if (DeviceType.getDeviceTypeFor(device) != deviceType) {
+            if (getDeviceTypeFor(device) != deviceType) {
                 continue;
             }
 
@@ -127,11 +123,6 @@ public class RoomDeviceList implements Serializable {
         if (device == null) return;
         if (! device.isSupported()) return;
 
-        DeviceType deviceType = DeviceType.getDeviceTypeFor(device);
-        if (deviceType.mayShowInCurrentConnectionType()) {
-            onlyContainsDoNotShowDevices = false;
-        }
-
         DeviceFunctionality functionality = device.getDeviceFunctionality();
         getOrCreateDeviceList(functionality).add(device);
     }
@@ -139,17 +130,6 @@ public class RoomDeviceList implements Serializable {
     public <T extends Device> void removeDevice(T device) {
         HashSet<Device> functionalitySet = deviceMap.get(device.getDeviceFunctionality());
         functionalitySet.remove(device);
-
-        for (Map.Entry<DeviceFunctionality, HashSet<Device>> functionalityEntry : deviceMap.entrySet()) {
-            for (Device deviceItem : functionalityEntry.getValue()) {
-                if (DeviceType.getDeviceTypeFor(deviceItem).mayShowInCurrentConnectionType()) {
-                    onlyContainsDoNotShowDevices = false;
-                    return;
-                }
-            }
-        }
-
-        onlyContainsDoNotShowDevices = true;
     }
 
     public Set<Device> getAllDevices() {
@@ -173,7 +153,16 @@ public class RoomDeviceList implements Serializable {
     }
 
     public boolean isEmptyOrOnlyContainsDoNotShowDevices() {
-        return onlyContainsDoNotShowDevices;
+        for (HashSet<Device> devices : deviceMap.values()) {
+            for (Device device : devices) {
+                if (getDeviceTypeFor(device).mayShowInCurrentConnectionType()
+                        && device.isSupported()) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 
     @SuppressWarnings("unchecked")
@@ -186,5 +175,16 @@ public class RoomDeviceList implements Serializable {
 
     public String getRoomName() {
         return roomName;
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        RoomDeviceList roomDeviceList = (RoomDeviceList) super.clone();
+        roomDeviceList.roomName = roomName;
+        for (Device device : getAllDevices()) {
+            roomDeviceList.addDevice(device);
+        }
+
+        return roomDeviceList;
     }
 }

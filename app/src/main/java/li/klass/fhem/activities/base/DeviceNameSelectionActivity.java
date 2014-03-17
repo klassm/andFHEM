@@ -88,7 +88,7 @@ public class DeviceNameSelectionActivity extends FragmentActivity {
                     .commitAllowingStateLoss();
         } catch (IllegalStateException e) {
             Log.e(FragmentBaseActivity.class.getName(), "error while switching to fragment " +
-                    deviceSelectionFragment.getClass().getName(), e);
+                    DeviceNameSelectionFragment.class.getName(), e);
         }
     }
 

@@ -171,7 +171,11 @@ public class RoomListService extends AbstractService {
      * @return {@link RoomDeviceList} containing all devices
      */
     public RoomDeviceList getAllRoomsDeviceList(long updatePeriod) {
-        return getRoomDeviceList(updatePeriod);
+        try {
+            return (RoomDeviceList) getRoomDeviceList(updatePeriod).clone();
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**

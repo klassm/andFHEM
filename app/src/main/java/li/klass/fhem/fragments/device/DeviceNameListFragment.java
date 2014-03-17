@@ -33,7 +33,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.io.Serializable;
-import java.util.Set;
 
 import li.klass.fhem.R;
 import li.klass.fhem.activities.device.DeviceNameListAdapter;
@@ -111,15 +110,17 @@ public abstract class DeviceNameListFragment extends BaseFragment {
 
     protected abstract void onDeviceNameClick(DeviceFunctionality parent, Device<?> child);
 
-    private void filterDevices(RoomDeviceList roomDeviceList) {
-        DeviceFilter deviceFilter = getDeviceFilter();
-        if (deviceFilter == null) return;
+    private RoomDeviceList filterDevices(RoomDeviceList roomDeviceList) {
+        RoomDeviceList filteredList = new RoomDeviceList(roomDeviceList.getRoomName());
 
+        DeviceFilter deviceFilter = getDeviceFilter();
         for (Device<?> device : roomDeviceList.getAllDevices()) {
-            if (!deviceFilter.isSelectable(device)) {
-                roomDeviceList.removeDevice(device);
+            if (deviceFilter == null || deviceFilter.isSelectable(device)) {
+                filteredList.addDevice(device);
             }
         }
+
+        return filteredList;
     }
 
     @Override
@@ -149,20 +150,22 @@ public abstract class DeviceNameListFragment extends BaseFragment {
         getActivity().startService(loadIntent);
     }
 
-    protected void deviceListReceived(RoomDeviceList roomDeviceList, long lastUpdate) {
+    protected RoomDeviceList deviceListReceived(RoomDeviceList roomDeviceList, long lastUpdate) {
         DeviceNameListAdapter adapter = getAdapter();
-        if (adapter == null || getView() == null) return;
-        filterDevices(roomDeviceList);
+        if (adapter == null || getView() == null) return roomDeviceList;
+
+        RoomDeviceList filteredList = filterDevices(roomDeviceList);
 
         String selectedDevice = creationBundle.getString(BundleExtraKeys.DEVICE_NAME);
 
-        Set<Device> allDevices = roomDeviceList.getAllDevices();
-        if (allDevices.size() > 0) {
-            adapter.updateData(roomDeviceList, selectedDevice, lastUpdate);
+        if (! filteredList.isEmptyOrOnlyContainsDoNotShowDevices()) {
+            adapter.updateData(filteredList, selectedDevice, lastUpdate);
 
             int selectedDevicePosition = adapter.getSelectedDevicePosition();
             getGridView().setSelection(selectedDevicePosition);
         }
+
+        return filteredList;
     }
 
     private DeviceFilter getDeviceFilter() {
