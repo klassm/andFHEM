@@ -155,7 +155,7 @@ task readSigningKeyAliasPasswordFromConsole << {
 }
 
 tasks.whenTaskAdded { task ->
-    if (task.name == 'packageRelease') {
+    if (task.name == 'packageInappRelease' || task.name == 'packagePremiumRelease') {
         task.dependsOn readSigningPasswordsFromConsole
     }
 }
@@ -234,7 +234,7 @@ def updateGoogleSitesAPK(service) {
     def mediaTypes = new MimetypesFileTypeMap()
     mediaTypes.addMimeTypes("application/vnd.android.package-archive")
 
-    def file = new File("app/build/apk/app-release.apk")
+    def file = new File("app/build/apk/app-inapp-release.apk")
 
     def newAttachment = new AttachmentEntry();
     newAttachment.setMediaSource(new MediaFileSource(file, mediaTypes.getContentType(file)));

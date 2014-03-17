@@ -491,7 +491,7 @@
     <string name="functionalityHeating">Heizung</string>
     <string name="functionalityTemperature">Temperatur</string>
     <string name="functionalityNetwork">Netzwerk</string>
-    <string name="functionalityUsage">Vebrauch</string>
+    <string name="functionalityUsage">Verbrauch</string>
     <string name="functionalityWindow">Tür &amp; Fenster</string>
     <string name="functionalitySmokeDetector">Rauchmelder</string>
     <string name="functionalityFillState">Füllstand</string>
