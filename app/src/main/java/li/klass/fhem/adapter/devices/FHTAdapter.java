@@ -29,10 +29,18 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.LayoutInflater;
-import android.widget.*;
+import android.widget.DatePicker;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
+import android.widget.TimePicker;
+
+import java.util.Calendar;
+
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
 import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
+import li.klass.fhem.adapter.devices.genericui.AvailableTargetStatesSwitchActionRow;
 import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewButtonAction;
 import li.klass.fhem.adapter.devices.genericui.SpinnerActionRow;
 import li.klass.fhem.adapter.devices.genericui.TemperatureChangeTableRow;
@@ -44,8 +52,6 @@ import li.klass.fhem.fragments.FragmentType;
 import li.klass.fhem.util.DateFormatUtil;
 import li.klass.fhem.util.DatePickerUtil;
 import li.klass.fhem.util.EnumUtils;
-
-import java.util.Calendar;
 
 import static li.klass.fhem.domain.FHTDevice.MAXIMUM_TEMPERATURE;
 import static li.klass.fhem.domain.FHTDevice.MINIMUM_TEMPERATURE;
@@ -127,6 +133,8 @@ public class FHTAdapter extends GenericDeviceAdapter<FHTDevice> {
                 context.startService(intent);
             }
         });
+
+        detailActions.add(new AvailableTargetStatesSwitchActionRow<FHTDevice>());
     }
 
     private void setMode(final Context context, FHTDevice device, FHTMode mode, final SpinnerActionRow<FHTDevice> spinnerActionRow) {

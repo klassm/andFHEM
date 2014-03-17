@@ -69,7 +69,7 @@ public class AvailableTargetStatesDialogUtil {
         public <D extends Device<D>> void onTargetStateSelected(String state, String subState, D device, Context context) {
             if (isBlank(state)) return;
 
-            if (isBlank(subState)) {
+            if (! isBlank(subState)) {
                 switchDeviceSubState(state, subState, device, context);
             } else {
                 switchDeviceState(state, device, context);
