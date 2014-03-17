@@ -265,7 +265,7 @@
     <string name="prefDeviceFunctionalityOrderSummary">Veränderung der Reihenfolge sowie Anzeige / Ausblendung von Gerätefunktionen</string>
     <string name="prefUpdateOnApplicationStart">Aktualisierung beim Applikationsstart</string>
     <string name="prefShowSetValueButtons">Zeige "Ändern" Knöpfe für Temperaturänderungen</string>
-    <string name="prefGCMProjectId">GCM Prokenummer</string>
+    <string name="prefGCMProjectId">GCM Projektnummer</string>
     <string name="prefGcmWidgetUpdate">Widget-Aktualisierug bei GCM-Nachricht</string>
     <string name="prefStartupView">Start-Ansicht</string>
     <string name="prefConnectionTimeout">Verbindungs-Wartezeit</string>
