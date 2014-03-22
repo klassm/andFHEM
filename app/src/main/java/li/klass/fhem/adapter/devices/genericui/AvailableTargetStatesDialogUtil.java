@@ -86,7 +86,7 @@ public class AvailableTargetStatesDialogUtil {
 
         private <D extends Device<D>> void switchDeviceSubState(String newState, String newSubState, D device, final Context context) {
             if (newState.equalsIgnoreCase("state") || isEmpty(newSubState)) {
-                switchDeviceState(newState, device, context);
+                switchDeviceState(newSubState, device, context);
                 return;
             }
             Intent intent = new Intent(Actions.DEVICE_SET_SUB_STATE);
