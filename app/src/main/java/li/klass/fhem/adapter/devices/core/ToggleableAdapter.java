@@ -39,7 +39,7 @@ import static li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener.
 import static li.klass.fhem.domain.core.ToggleableDevice.ButtonHookType.TOGGLE_DEVICE;
 import static li.klass.fhem.domain.core.ToggleableDevice.ButtonHookType.WEBCMD_DEVICE;
 
-public class ToggleableAdapter<D extends ToggleableDevice<D>> extends GenericDeviceAdapter<D> {
+public abstract class ToggleableAdapter<D extends ToggleableDevice<D>> extends GenericDeviceAdapter<D> {
     public ToggleableAdapter(Class<D> deviceClass) {
         super(deviceClass);
     }

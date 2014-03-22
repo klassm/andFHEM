@@ -49,7 +49,6 @@ import li.klass.fhem.adapter.devices.YamahaAVRAdapter;
 import li.klass.fhem.adapter.devices.core.DeviceAdapter;
 import li.klass.fhem.adapter.devices.core.DimmableAdapter;
 import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
-import li.klass.fhem.adapter.devices.core.ToggleableAdapter;
 import li.klass.fhem.domain.AtDevice;
 import li.klass.fhem.domain.CULEMDevice;
 import li.klass.fhem.domain.CULFHTTKDevice;
@@ -58,6 +57,7 @@ import li.klass.fhem.domain.CULTXDevice;
 import li.klass.fhem.domain.CULWSDevice;
 import li.klass.fhem.domain.DbLogDevice;
 import li.klass.fhem.domain.DummyDevice;
+import li.klass.fhem.domain.EGPMDevice;
 import li.klass.fhem.domain.EIBDevice;
 import li.klass.fhem.domain.EMWZDevice;
 import li.klass.fhem.domain.ESA2000Device;
@@ -134,14 +134,14 @@ public enum DeviceType {
     HMS("HMS", HMSDevice.class),
     MAX("MAX", MaxDevice.class, new MaxAdapter()),
     WOL("WOL", WOLDevice.class, new WOLAdapter()),
-    IT("IT", IntertechnoDevice.class, new ToggleableAdapter<IntertechnoDevice>(IntertechnoDevice.class)),
+    IT("IT", IntertechnoDevice.class, new ToggleableAdapterWithSwitchActionRow<IntertechnoDevice>(IntertechnoDevice.class)),
     OWTEMP("OWTEMP", OwtempDevice.class),
     CUL_FHTTK("CUL_FHTTK", CULFHTTKDevice.class),
     RFXX10REC("RFXX10REC", RFXX10RECDevice.class),
     OREGON("OREGON", OregonDevice.class),
     CUL_EM("CUL_EM", CULEMDevice.class),
     OWCOUNT("OWCOUNT", OwcountDevice.class),
-    SIS_PMS("SIS_PMS", SISPMSDevice.class, new ToggleableAdapter<SISPMSDevice>(SISPMSDevice.class)),
+    SIS_PMS("SIS_PMS", SISPMSDevice.class, new ToggleableAdapterWithSwitchActionRow<SISPMSDevice>(SISPMSDevice.class)),
     USBWX("USBWX", USBWXDevice.class),
     CUL_WS("CUL_WS", CULWSDevice.class),
     FS20("FS20", FS20Device.class, new DimmableAdapter<FS20Device>(FS20Device.class)),
@@ -152,7 +152,7 @@ public enum DeviceType {
     RFXCOM("RFXCOM", RFXCOMDevice.class),
     CUL_HM("CUL_HM", CULHMDevice.class, new CULHMAdapter()),
     WATCHDOG("watchdog", WatchdogDevice.class),
-    HOLIDAY("HOL", HOLDevice.class, new ToggleableAdapter<HOLDevice>(HOLDevice.class)),
+    HOLIDAY("HOL", HOLDevice.class, new ToggleableAdapterWithSwitchActionRow<HOLDevice>(HOLDevice.class)),
     PID("PID", PIDDevice.class, new PidAdapter(PIDDevice.class)),
     FHT8V("FHT8V", FHT8VDevice.class),
     TRX_WEATHER("TRX_WEATHER", TRXWeatherDevice.class),
@@ -189,14 +189,15 @@ public enum DeviceType {
     OPENWEATHERMAP("openweathermap", OpenWeatherMapDevice.class),
     PCA301("PCA301", PCA301Device.class),
     REMOTECONTROL("remotecontrol", RemoteControlDevice.class, new RemoteControlAdapter(), DeviceVisibility.FHEMWEB_ONLY),
-    RPI_GPIO("RPI_GPIO", RPIGPIODevice.class, new ToggleableAdapter<RPIGPIODevice>(RPIGPIODevice.class)),
+    RPI_GPIO("RPI_GPIO", RPIGPIODevice.class, new ToggleableAdapterWithSwitchActionRow<RPIGPIODevice>(RPIGPIODevice.class)),
     READINGS_PROXY("readingsProxy", ReadingsProxyDevice.class, new ReadingsProxyDeviceAdapter()),
     LACROSSE("LaCrosse", LaCrosseDevice.class),
     WEB_LINK("weblink", WebLinkDevice.class, new WebLinkAdapter()),
-    PILIGHT("pilight", PilightDevice.class, new ToggleableAdapter<PilightDevice>(PilightDevice.class)),
+    PILIGHT("pilight", PilightDevice.class, new ToggleableAdapterWithSwitchActionRow<PilightDevice>(PilightDevice.class)),
     OWSWITCH("OWSWITCH", OwSwitchDevice.class, new OwSwitchDeviceAdapter()),
     HM485("HM485", HM485Device.class, new DimmableAdapter<HM485Device>(HM485Device.class)),
-    LIGHT_SCENE("LightScene", LightSceneDevice.class, new LightSceneAdapter())
+    LIGHT_SCENE("LightScene", LightSceneDevice.class, new LightSceneAdapter()),
+    EPGM("EGPM", EGPMDevice.class, new ToggleableAdapterWithSwitchActionRow<EGPMDevice>(EGPMDevice.class))
     ;
 
     private String xmllistTag;
