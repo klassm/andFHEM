@@ -42,6 +42,7 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
     <uses-permission android:name="li.klass.fhem.permission.C2D_MESSAGE"/>
+    <uses-permission android:name="li.klass.fhempremium.permission.C2D_MESSAGE"/>
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <uses-feature android:name="android.hardware.touchscreen"/>
