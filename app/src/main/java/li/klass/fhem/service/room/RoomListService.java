@@ -57,6 +57,7 @@ import li.klass.fhem.service.CommandExecutionService;
 import li.klass.fhem.util.ApplicationProperties;
 
 import static li.klass.fhem.constants.Actions.DEVICE_LIST_REMOTE_NOTIFY;
+import static li.klass.fhem.domain.core.DeviceType.getDeviceTypeFor;
 import static li.klass.fhem.util.SharedPreferencesUtil.getSharedPreferences;
 import static li.klass.fhem.util.SharedPreferencesUtil.getSharedPreferencesEditor;
 
@@ -155,9 +156,11 @@ public class RoomListService extends AbstractService {
 
         Set<String> roomNames = Sets.newHashSet();
         for (Device device : roomDeviceList.getAllDevices()) {
-            @SuppressWarnings("unchecked")
-            List<String> rooms = device.getRooms();
-            roomNames.addAll(rooms);
+            if (device.isSupported() && getDeviceTypeFor(device).mayShowInCurrentConnectionType()) {
+                @SuppressWarnings("unchecked")
+                List<String> deviceRooms = device.getRooms();
+                roomNames.addAll(deviceRooms);
+            }
         }
 
         return Lists.newArrayList(roomNames);

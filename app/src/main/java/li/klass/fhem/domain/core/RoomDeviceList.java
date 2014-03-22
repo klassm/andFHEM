@@ -26,7 +26,6 @@ package li.klass.fhem.domain.core;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -34,6 +33,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static li.klass.fhem.domain.core.DeviceType.getDeviceTypeFor;
 
 /**
@@ -134,7 +134,7 @@ public class RoomDeviceList implements Serializable, Cloneable {
 
     public Set<Device> getAllDevices() {
         Set<Device> devices = new HashSet<Device>();
-        Collection<HashSet<Device>> devicesCollection = deviceMap.values();
+        List<HashSet<Device>> devicesCollection = newArrayList(deviceMap.values());
         for (HashSet<Device> deviceHashSet : devicesCollection) {
             devices.addAll(deviceHashSet);
         }
