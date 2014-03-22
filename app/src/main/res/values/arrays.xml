@@ -103,6 +103,13 @@
         <item>5 minutes</item>
         <item>30 minutes</item>
         <item>1 hour</item>
+        <item>2 hours</item>
+        <item>4 hours</item>
+        <item>8 hours</item>
+        <item>12 hours</item>
+        <item>24 hours</item>
+        <item>36 hours</item>
+        <item>48 hours</item>
     </string-array>
 
     <string-array name="updateRoomListTimeValues">
@@ -111,6 +118,12 @@
         <item>300000</item>
         <item>1800000</item>
         <item>3600000</item>
+        <item>14400</item>
+        <item>28800</item>
+        <item>43200</item>
+        <item>86400</item>
+        <item>129600</item>
+        <item>172800</item>
     </string-array>
 
     <string-array name="floorplanDeviceDetail">
