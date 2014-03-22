@@ -69,7 +69,7 @@ public class RoomListService extends AbstractService {
     /**
      * Currently loaded device list map.
      */
-    private volatile RoomDeviceList deviceList;
+    volatile RoomDeviceList deviceList;
 
     /**
      * file name of the current cache object.
@@ -86,7 +86,7 @@ public class RoomListService extends AbstractService {
 
     private final AtomicBoolean currentlyUpdating = new AtomicBoolean(false);
 
-    private RoomListService() {
+    RoomListService() {
     }
 
     public void parseReceivedDeviceStateMap(String deviceName, Map<String, String> updateMap,

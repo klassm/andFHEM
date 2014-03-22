@@ -341,6 +341,10 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
         return definition;
     }
 
+    public void setRooms(List<String> rooms) {
+        this.rooms = rooms;
+    }
+
     public boolean isSupported() {
         return ! alwaysHidden;
     }
