@@ -34,6 +34,7 @@ import android.widget.TextView;
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.DimmableAdapter;
 import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
+import li.klass.fhem.adapter.devices.genericui.AvailableTargetStatesSwitchActionRow;
 import li.klass.fhem.adapter.devices.genericui.CustomViewTableRow;
 import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewButtonAction;
 import li.klass.fhem.adapter.devices.genericui.HeatingModeListener;
@@ -121,6 +122,8 @@ public class CULHMAdapter extends DimmableAdapter<CULHMDevice> {
                 return device.getSubType() == HEATING;
             }
         });
+
+        detailActions.add(new AvailableTargetStatesSwitchActionRow<CULHMDevice>());
     }
 
     @Override
