@@ -52,12 +52,6 @@ public class DummyDevice extends DimmableContinuousStatesDevice<DummyDevice> {
     }
 
     @Override
-    public boolean supportsToggle() {
-        return getSetList().contains("on", "off") ||
-                getSetList().contains(getWebCmd()) && getSetList().contains("on", "off");
-    }
-
-    @Override
     public boolean isOnByState() {
         return super.isOnByState() || getState().equalsIgnoreCase("on");
     }
