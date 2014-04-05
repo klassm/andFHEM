@@ -228,7 +228,6 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
         }
 
         saveInstanceStateCalled = false;
-        isActivityStart = true;
 
         if (getIntent() != null) {
             waitingIntent = getIntent();
@@ -392,15 +391,21 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
         boolean updateOnApplicationStart = applicationProperties
                 .getBooleanSharedPreference(PreferenceKeys.UPDATE_ON_APPLICATION_START, false);
 
-        if (hasFocus && isActivityStart) {
+        if (hasFocus && isActivityStart && updateOnApplicationStart) {
             Log.i(TAG, "request update on application start preference");
             Intent intent = new Intent(Actions.DO_UPDATE);
-            intent.putExtra(BundleExtraKeys.DO_REFRESH, updateOnApplicationStart);
+            intent.putExtra(BundleExtraKeys.DO_REFRESH, true);
             sendBroadcast(intent);
         }
 
         // reset the attribute!
         isActivityStart = false;
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        isActivityStart = true;
     }
 
     @Override
