@@ -234,16 +234,15 @@ div.code {
   max-width: 50px; 
 }
 
-#screenshots img {
-  width: 100%;
+a img {
   max-width: 200px;
 }
 
-#faq img {
-  max-width: 200px;
+.ui-accordion-header {
+  font-size: 12px;
+  font-weight: bold;
 }
 
-#installation img {
-  width: 100%;
-  max-width: 200px;
+.ui-accordion-content {
+  font-size: 12px;
 }

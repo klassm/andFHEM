@@ -1,3 +1,14 @@
+$(document).ready(function() {
+  $(function() {
+    $(".ui-accordion").each(function(i, obj) {
+      $(obj).accordion({
+        collapsible: true,
+        active: false
+      });
+    });
+  });
+});
+
 $(document).ready(function() {    
     navbarWidth = ($("#navbar").css("width").replace("px", "") * 1);
     
