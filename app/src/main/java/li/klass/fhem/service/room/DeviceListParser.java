@@ -40,7 +40,6 @@ import java.io.StringReader;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -222,6 +221,11 @@ public class DeviceListParser {
         xmlList = xmlList.replaceAll("(?:[^=])\"\"+", "\"");
         xmlList = xmlList.replaceAll("\\\\B0", "°");
         xmlList = xmlList.replaceAll("Â", "");
+
+        // replace xmllist device tag extensions
+        xmlList = xmlList.replaceAll("_[0-9]+_LIST", "_LIST");
+        xmlList = xmlList.replaceAll("(<[/]?[A-Z0-9]+)_[0-9]+([ >])", "$1$2");
+
         return xmlList;
     }
 
