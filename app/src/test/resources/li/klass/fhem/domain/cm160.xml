@@ -1,0 +1,55 @@
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<FHZINFO>
+    <CM160_LIST>
+        <CM160 name="device" state="A: 3.92 A, W: 901.60 W, C: 0.2461 €/h, CO2: 0.4147 kg/h" sets="" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings do_not_notify:0,1 dummy:1,0 showtime:1,0 loglevel:0,1,2,3,4,5,6 ignore:0,1 model:CM160 costPerKwh currency voltage co2Factor devStateIcon devStateStyle icon sortby webCmd">
+            <INT key="DEF" value="/dev/ttyUSB0"/>
+            <INT key="DeviceName" value="/dev/ttyUSB0"/>
+            <INT key="FD" value="5"/>
+            <INT key="MODE" value="live data"/>
+            <INT key="NAME" value="device"/>
+            <INT key="NR" value="105"/>
+            <INT key="PARTIAL" value=""/>
+            <INT key="PORTSTATE" value="open"/>
+            <INT key="STATE" value="A: 3.92 A, W: 901.60 W, C: 0.2461 €/h, CO2: 0.4147 kg/h"/>
+            <INT key="TYPE" value="CM160"/>
+            <ATTR key="co2Factor" value="0.46"/>
+            <ATTR key="costPerKwh" value="0.273"/>
+            <ATTR key="currency" value="€"/>
+            <ATTR key="loglevel" value="6"/>
+            <ATTR key="room" value="Küche"/>
+            <ATTR key="voltage" value="230"/>
+            <STATE key="A" value="3.92 A" measured="2014-03-23 20:30:13"/>
+            <STATE key="C" value="0.2461 €/h" measured="2014-03-23 20:30:13"/>
+            <STATE key="CO2" value="0.4147 kg/h" measured="2014-03-23 20:30:13"/>
+            <STATE key="W" value="901.60 W" measured="2014-03-23 20:30:13"/>
+            <STATE key="cumDay" value="W: 4026875 W, P: 67.11 kWh, C: 18.32 €, CO2: 30.87 kg" measured="2014-03-23 20:30:13"/>
+            <STATE key="cumHour" value="W: 101772 W, P: 1.70 kWh, C: 0.46 €, CO2: 0.78 kg" measured="2014-03-23 20:30:13"/>
+            <STATE key="cumMonth" value="W: 5948688 W, P: 99.14 kWh, C: 27.07 €, CO2: 45.61 kg" measured="2014-03-23 20:30:13"/>
+            <STATE key="cumYear" value="W: 5948688 W, P: 99.14 kWh, C: 27.07 €, CO2: 45.61 kg" measured="2014-03-23 20:30:13"/>
+            <STATE key="state" value="A: 3.92 A, W: 901.60 W, C: 0.2461 €/h, CO2: 0.4147 kg/h" measured="2014-03-23 20:30:13"/>
+        </CM160>
+    </CM160_LIST>
+</FHZINFO>

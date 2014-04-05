@@ -28,6 +28,7 @@ import li.klass.fhem.R;
 
 public enum ResourceIdMapper {
     currentUsage(R.string.currentUsage),
+    hourUsage(R.string.hourUsage),
     dayUsage(R.string.dayUsage),
     dayLastUsage(R.string.dayLastUsage),
     monthUsage(R.string.monthUsage),
@@ -146,6 +147,7 @@ public enum ResourceIdMapper {
     callMonEvent(R.string.callMonEvent),
     energyPower(R.string.energy_power),
     energyConsumption(R.string.energy_consumption),
+    energyCurrent(R.string.energy_current),
     channel(R.string.channel),
     currentTitle(R.string.currentTitle),
     shutterPosition(R.string.shutterPosition),
@@ -154,6 +156,8 @@ public enum ResourceIdMapper {
     level(R.string.level),
     currentVoltage(R.string.currentVoltage),
     sunshine(R.string.sunshine),
+    cost(R.string.cost),
+    co2(R.string.co2),
 
     blank(R.string.blank),
     none(-1);

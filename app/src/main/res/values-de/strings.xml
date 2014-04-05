@@ -69,6 +69,7 @@
     <string name="present">Sendend</string>
     <string name="currentUsage">Aktueller Verbrauch</string>
     <string name="currentVoltage">Aktuelle Spannung</string>
+    <string name="hourUsage">Stundenverbrauch</string>
     <string name="dayUsage">Tagesverbrauch</string>
     <string name="dayLastUsage">Letzter Tagesverbrauch</string>
     <string name="monthUsage">Monatsverbrauch</string>
@@ -184,6 +185,7 @@
     <string name="sunrise">Sonnenaufgang</string>
     <string name="sunset">Sonnenuntergang</string>
     <string name="devicelist_empty">Entschuldigung! Keine Geräte verfügbar!</string>
+    <string name="energy_current">Stromverbrauch</string>
     <string name="energy_power">Leistung</string>
     <string name="energy_consumption">Verbrauch</string>
     <string name="additional_information">Zusatzinformationen</string>
@@ -193,6 +195,8 @@
     <string name="sendEachColorChange">Sende jede Farbänderung</string>
     <string name="level">Level</string>
     <string name="activateScene">Szene %s</string>
+    <string name="cost">Kosten</string>
+    <string name="co2">CO2</string>
 
     <string name="connectionManage">Verwalten</string>
     <string name="connectionCreate">Neue Verbindung erstellen</string>

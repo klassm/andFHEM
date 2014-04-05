@@ -70,6 +70,7 @@
     <string name="present">Present</string>
     <string name="currentUsage">Current Usage</string>
     <string name="currentVoltage">Current Voltage</string>
+    <string name="hourUsage">Hour usage</string>
     <string name="dayUsage">Day Usage</string>
     <string name="dayLastUsage">Last day Usage</string>
     <string name="monthUsage">Month Usage</string>
@@ -187,6 +188,7 @@
     <string name="sunrise">Sunrise</string>
     <string name="sunset">Sunset</string>
     <string name="devicelist_empty">Sorry! No devices found!</string>
+    <string name="energy_current">Current</string>
     <string name="energy_power">Power</string>
     <string name="energy_consumption">Consumption</string>
     <string name="additional_information">Additional information</string>
@@ -196,6 +198,8 @@
     <string name="sendEachColorChange">Send each color change</string>
     <string name="level">Level</string>
     <string name="activateScene">Scene %s</string>
+    <string name="cost">Cost</string>
+    <string name="co2">CO2</string>
 
     <string name="connectionManage">Manage</string>
     <string name="connectionCreate">Create a new connection</string>

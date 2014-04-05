@@ -50,6 +50,7 @@ import li.klass.fhem.adapter.devices.core.DeviceAdapter;
 import li.klass.fhem.adapter.devices.core.DimmableAdapter;
 import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
 import li.klass.fhem.domain.AtDevice;
+import li.klass.fhem.domain.CM160Device;
 import li.klass.fhem.domain.CULEMDevice;
 import li.klass.fhem.domain.CULFHTTKDevice;
 import li.klass.fhem.domain.CULHMDevice;
@@ -197,7 +198,8 @@ public enum DeviceType {
     OWSWITCH("OWSWITCH", OwSwitchDevice.class, new OwSwitchDeviceAdapter()),
     HM485("HM485", HM485Device.class, new DimmableAdapter<HM485Device>(HM485Device.class)),
     LIGHT_SCENE("LightScene", LightSceneDevice.class, new LightSceneAdapter()),
-    EPGM("EGPM", EGPMDevice.class, new ToggleableAdapterWithSwitchActionRow<EGPMDevice>(EGPMDevice.class))
+    EPGM("EGPM", EGPMDevice.class, new ToggleableAdapterWithSwitchActionRow<EGPMDevice>(EGPMDevice.class)),
+    CM160("CM160", CM160Device.class)
     ;
 
     private String xmllistTag;
