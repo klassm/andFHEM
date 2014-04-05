@@ -22,10 +22,6 @@
  *   Boston, MA  02110-1301  USA
  */
 
-
-
-
-
 buildscript {
     repositories {
         mavenCentral()
@@ -38,7 +34,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.7.+'
+        classpath 'com.android.tools.build:gradle:0.9.+'
         classpath fileTree(dir: './build-libs', include: '*.jar')
 
         // google sites dependencies ...
@@ -80,16 +76,11 @@ dependencies {
     testCompile 'junit:junit:4.10'
     testCompile 'org.robolectric:robolectric:2.1.+'
     testCompile 'com.squareup:fest-android:1.0.+'
-
-    instrumentTestCompile 'org.hamcrest:hamcrest-all:1.3'
-    instrumentTestCompile 'junit:junit:4.10'
-    instrumentTestCompile 'org.robolectric:robolectric:2.1.+'
-    instrumentTestCompile 'com.squareup:fest-android:1.0.+'
 }
 
 android {
     compileSdkVersion 17
-    buildToolsVersion "17.0.0"
+    buildToolsVersion "19.0.0"
 
     defaultConfig {
         minSdkVersion 7
@@ -185,16 +176,12 @@ task uploadToGoogleSites(dependsOn: 'readSigningKeyAliasPasswordFromConsole') <<
     uploadApkToGoogleSites();
 }
 
-import com.google.gdata.client.*;
-import com.google.gdata.client.sites.*;
-import com.google.gdata.data.*;
-import com.google.gdata.data.acl.*;
-import com.google.gdata.data.media.*;
-import com.google.gdata.data.sites.*;
-import com.google.gdata.data.spreadsheet.*;
-import com.google.gdata.util.*;
 import com.google.gdata.client.sites.SitesService
-import com.google.gdata.data.Link.*
+import com.google.gdata.data.PlainTextConstruct
+import com.google.gdata.data.media.MediaFileSource
+import com.google.gdata.data.sites.AttachmentEntry
+import com.google.gdata.data.sites.ContentFeed
+import com.google.gdata.data.sites.FileCabinetPageEntry
 
 import javax.activation.MimetypesFileTypeMap
 
