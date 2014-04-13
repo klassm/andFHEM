@@ -72,6 +72,7 @@ public enum ResourceIdMapper {
     forecast(R.string.forecast),
     dewpoint(R.string.dewpoint),
     pressure(R.string.pressure),
+    pressureNN(R.string.pressureNN),
     rainRate(R.string.rainRate),
     rainTotal(R.string.rainTotal),
     windAvgSpeed(R.string.windAvgSpeed),

@@ -1,0 +1,54 @@
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<FHZINFO>
+    <I2C_SHT21_LIST>
+        <I2C_SHT21 name="SHT21" state="T: 24.3 H: 49.6 D: 13.1" sets="readValues" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev do_not_notify:0,1 showtime:0,1 poll_interval:1,2,5,10,20,30 roundHumidityDecimal:0,1,2 roundTemperatureDecimal:0,1,2 event-on-change-reading event-on-update-reading event-min-interval stateFormat DbLogExclude devStateIcon devStateStyle icon sortby webCmd">             <INT key="I2C_Address" value="64"/>
+            <INT key="NAME" value="SHT21"/>
+            <INT key="NR" value="180"/>
+            <INT key="RPiI2C_RAWMSG" value="197"/>
+            <INT key="RPiI2C_SENDSTAT" value="Ok"/>
+            <INT key="STATE" value="T: 24.3 H: 49.6 D: 13.1"/>
+            <INT key="TYPE" value="I2C_SHT21"/>
+            <INT key="IODev" value="RPiI2C"/>
+            <ATTR key="IODev" value="RPiI2C"/>
+            <ATTR key="poll_interval" value="5"/>
+            <ATTR key="room" value="GPIO4"/>
+            <STATE key="dewpoint" value="13.1" measured="2014-04-06 23:17:59"/>
+            <STATE key="humidity" value="49.6" measured="2014-04-06 23:17:59"/>
+            <STATE key="humidity_avg_day" value="49.1" measured="2014-04-06 23:17:59"/>
+            <STATE key="humidity_avg_month" value="49.1" measured="2014-04-06 23:17:59"/>
+            <STATE key="humidity_cum_day" value="4118759.4" measured="2014-04-06 23:17:59"/>
+            <STATE key="humidity_cum_month" value="29572199.4" measured="2014-04-06 23:17:59"/>
+            <STATE key="humidity_max_day" value="49.6" measured="2014-04-06 23:12:58"/>
+            <STATE key="humidity_max_month" value="49.6" measured="2014-04-06 23:12:58"/>
+            <STATE key="state" value="T: 24.3 H: 49.6" measured="2014-04-06 23:17:59"/>
+            <STATE key="temperature" value="24.3" measured="2014-04-06 23:17:58"/>
+            <STATE key="temperature_avg_day" value="24.3" measured="2014-04-06 23:17:58"/>
+            <STATE key="temperature_avg_month" value="24.3" measured="2014-04-06 23:17:58"/>
+            <STATE key="temperature_cum_day" value="2038235.4" measured="2014-04-06 23:17:58"/>
+            <STATE key="temperature_cum_month" value="14635355.4" measured="2014-04-06 23:17:58"/>
+        </I2C_SHT21>
+    </I2C_SHT21_LIST>
+</FHZINFO>
