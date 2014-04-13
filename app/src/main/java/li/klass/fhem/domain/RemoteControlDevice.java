@@ -93,8 +93,8 @@ public class RemoteControlDevice extends ToggleableDevice<RemoteControlDevice> {
 
         int rowNr = Integer.valueOf(key.replace("ROW", ""));
         if (rows.size() != rowNr) {
-            String errorString = String.format("invalid row! (expected size: %d, was: %d)",
-                    rowNr - 1, rows.size());
+            String errorString = String.format("invalid row '%s'! (expected size: %d, was: %d)",
+                    key, rowNr - 1, rows.size());
             throw new IllegalArgumentException(errorString);
         }
 

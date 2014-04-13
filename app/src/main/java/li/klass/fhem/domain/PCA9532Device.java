@@ -22,32 +22,42 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.activities.device;
+package li.klass.fhem.domain;
 
-import android.content.Context;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
+import org.w3c.dom.NamedNodeMap;
 
-import li.klass.fhem.adapter.rooms.DeviceListAdapter;
+import java.util.Map;
+
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceFunctionality;
-import li.klass.fhem.domain.core.RoomDeviceList;
 
-public class DeviceSelectionAdapter extends DeviceListAdapter {
+import static com.google.common.collect.Maps.newHashMap;
 
-    public DeviceSelectionAdapter(Context context, RoomDeviceList roomDeviceList) {
-        super(context, roomDeviceList);
+public class PCA9532Device extends Device<PCA9532Device> {
 
+    private Map<String, Boolean> portsIsOnMap = newHashMap();
+
+    @Override
+    public void onChildItemRead(String tagName, String key, String value, NamedNodeMap attributes) {
+        super.onChildItemRead(tagName, key, value, attributes);
+
+        if (key.matches("PORT[0-9]+")) {
+            portsIsOnMap.put(
+                    key.replace("PORT", "Port"),
+                    value.equalsIgnoreCase("on") || value.equalsIgnoreCase("1"));
+        }
     }
 
     @Override
-    protected View getChildView(DeviceFunctionality parent, int parentPosition, Device<?> child,
-                                View view, ViewGroup viewGroup, int relativeChildPosition) {
-        view = layoutInflater.inflate(android.R.layout.simple_list_item_1, null);
-        TextView content = (TextView) view.findViewById(android.R.id.text1);
-        content.setText(child.getAliasOrName());
+    public DeviceFunctionality getDeviceFunctionality() {
+        return DeviceFunctionality.SWITCH;
+    }
 
-        return view;
+    public Map<String, Boolean> getPortsIsOnMap() {
+        return portsIsOnMap;
+    }
+
+    public void setPortState(String port, boolean portState) {
+        portsIsOnMap.put(port, portState);
     }
 }
