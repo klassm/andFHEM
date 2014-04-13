@@ -73,7 +73,7 @@ public class RoomDeviceList implements Serializable, Cloneable {
      * @param <T> class of the returned device list.
      * @return list of devices matching the functionality.
      */
-    public <T extends Device> List<T> getDevicesOfFunctionality(DeviceFunctionality functionality) {
+    public <T extends Device<T>> List<T> getDevicesOfFunctionality(DeviceFunctionality functionality) {
         return getDevicesOfFunctionality(functionality, true);
     }
 

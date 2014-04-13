@@ -57,12 +57,13 @@ public class GenericDeviceService {
         Tasker.sendTaskerNotifyIntent(AndFHEMApplication.getContext(), device.getName(),
                 subStateName, value);
 
-        String methodName = "read" + subStateName.toUpperCase();
+        String subState = subStateName.toUpperCase();
+        String methodName = "read" + subState;
         try {
             Method method = device.getClass().getMethod(methodName, String.class);
             method.invoke(device, value);
         } catch (NoSuchMethodException e) {
-            Log.e(GenericDeviceService.class.getName(), "could not find " + methodName + " for device " + device.getClass().getSimpleName(), e);
+            device.onChildItemRead("UPDATE", subState, value, null);
         } catch (Exception e) {
             Log.e(GenericDeviceService.class.getName(), "error during invoke of " + methodName + " for device " + device.getClass().getSimpleName(), e);
         }

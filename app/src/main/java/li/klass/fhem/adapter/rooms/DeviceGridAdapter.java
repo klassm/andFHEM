@@ -48,7 +48,7 @@ import li.klass.fhem.widget.deviceFunctionality.DeviceFunctionalityHolder;
 import static li.klass.fhem.constants.PreferenceKeys.DEVICE_COLUMN_WIDTH;
 import static li.klass.fhem.constants.PreferenceKeys.SHOW_HIDDEN_DEVICES;
 
-public class DeviceGridAdapter extends GridViewWithSectionsAdapter<DeviceFunctionality, Device<?>> {
+public class DeviceGridAdapter<T extends Device<T>> extends GridViewWithSectionsAdapter<DeviceFunctionality, T> {
     public static final String TAG = DeviceGridAdapter.class.getName();
     protected RoomDeviceList roomDeviceList;
     public static final int DEFAULT_COLUMN_WIDTH = 355;
@@ -76,10 +76,10 @@ public class DeviceGridAdapter extends GridViewWithSectionsAdapter<DeviceFunctio
     }
 
     @Override
-    protected Device<?> getChildForParentAndChildPosition(DeviceFunctionality parent, int childPosition) {
+    protected T getChildForParentAndChildPosition(DeviceFunctionality parent, int childPosition) {
         if (childPosition < 0) return null;
 
-        List<Device<?>> childrenForDeviceType = getChildrenForDeviceFunctionality(parent);
+        List<T> childrenForDeviceType = getChildrenForDeviceFunctionality(parent);
         if (childPosition >= childrenForDeviceType.size()) {
             return null;
         } else {
@@ -92,8 +92,8 @@ public class DeviceGridAdapter extends GridViewWithSectionsAdapter<DeviceFunctio
         return getChildrenForDeviceFunctionality(parent).size();
     }
 
-    private List<Device<?>> getChildrenForDeviceFunctionality(DeviceFunctionality deviceFunctionality) {
-        if (roomDeviceList == null) return new ArrayList<Device<?>>();
+    private List<T> getChildrenForDeviceFunctionality(DeviceFunctionality deviceFunctionality) {
+        if (roomDeviceList == null) return new ArrayList<T>();
 
         return roomDeviceList.getDevicesOfFunctionality(deviceFunctionality);
     }
@@ -125,7 +125,7 @@ public class DeviceGridAdapter extends GridViewWithSectionsAdapter<DeviceFunctio
 
     @Override
     protected View getChildView(final DeviceFunctionality parent, int parentPosition,
-                                Device<?> child, View view, ViewGroup viewGroup) {
+                                T child, View view, ViewGroup viewGroup) {
 
         final DeviceAdapter<? extends Device<?>> deviceAdapter = DeviceType.getAdapterFor(child);
         if (deviceAdapter == null) {

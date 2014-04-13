@@ -41,7 +41,9 @@ import li.klass.fhem.domain.core.DeviceType;
 import li.klass.fhem.domain.core.RoomDeviceList;
 import li.klass.fhem.widget.NestedListViewAdapter;
 
-public class DeviceListAdapter extends NestedListViewAdapter<DeviceFunctionality, Device<?>> {
+public class DeviceListAdapter<DEVICE extends Device<DEVICE>> extends
+        NestedListViewAdapter<DeviceFunctionality, DEVICE> {
+
     private RoomDeviceList roomDeviceList;
     private long lastUpdate;
 
@@ -53,10 +55,10 @@ public class DeviceListAdapter extends NestedListViewAdapter<DeviceFunctionality
     }
 
     @Override
-    protected Device getChildForParentAndChildPosition(DeviceFunctionality parent, int childPosition) {
+    protected DEVICE getChildForParentAndChildPosition(DeviceFunctionality parent, int childPosition) {
         if (childPosition == -1) return null;
 
-        List<Device> childrenForDeviceType = getChildrenForDeviceFunctionality(parent);
+        List<DEVICE> childrenForDeviceType = getChildrenForDeviceFunctionality(parent);
         if (childPosition >= childrenForDeviceType.size()) {
             return null;
         } else {
@@ -69,10 +71,10 @@ public class DeviceListAdapter extends NestedListViewAdapter<DeviceFunctionality
         return getChildrenForDeviceFunctionality(parent).size();
     }
 
-    private List<Device> getChildrenForDeviceFunctionality(DeviceFunctionality deviceFunctionality) {
-        if (roomDeviceList == null) return new ArrayList<Device>();
+    private List<DEVICE> getChildrenForDeviceFunctionality(DeviceFunctionality deviceFunctionality) {
+        if (roomDeviceList == null) return new ArrayList<DEVICE>();
 
-        return new ArrayList<Device>(roomDeviceList.getDevicesOfFunctionality(deviceFunctionality));
+        return new ArrayList<DEVICE>(roomDeviceList.<DEVICE>getDevicesOfFunctionality(deviceFunctionality));
     }
 
     @Override
@@ -89,7 +91,7 @@ public class DeviceListAdapter extends NestedListViewAdapter<DeviceFunctionality
     }
 
     @Override
-    protected View getChildView(final DeviceFunctionality parent, int parentPosition, Device<?> child,
+    protected View getChildView(final DeviceFunctionality parent, int parentPosition, DEVICE child,
                                 View view, ViewGroup viewGroup, int relativeChildPosition) {
         final DeviceAdapter<? extends Device<?>> deviceAdapter = DeviceType.getAdapterFor(child);
         if (deviceAdapter == null) {

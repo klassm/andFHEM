@@ -127,8 +127,8 @@ public abstract class DeviceListFragment extends BaseFragment {
                 if (child == null || !(child instanceof Device)) {
                     return;
                 }
-                Device<?> device = (Device<?>) child;
-                DeviceAdapter<? extends Device<?>> adapter = DeviceType.getAdapterFor(device);
+                Device device = (Device) child;
+                DeviceAdapter<? extends Device> adapter = DeviceType.getAdapterFor(device);
                 if (adapter != null && adapter.supportsDetailView(device)) {
                     adapter.gotoDetailView(getActivity(), device);
                 }
