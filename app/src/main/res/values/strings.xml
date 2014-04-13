@@ -56,6 +56,7 @@
     <string name="ecoTemperature">Eco-Temperature</string>
     <string name="forecast">Forecast</string>
     <string name="pressure">Pressure</string>
+    <string name="pressureNN">Pressure NN</string>
     <string name="dewpoint">Dewpoint</string>
     <string name="rainRate">Rain Rate</string>
     <string name="rainTotal">Rain Total</string>
@@ -335,6 +336,7 @@
     <string name="yAxisRain">rain (l/m2)</string>
     <string name="yAxisActuator">actuator (%)</string>
     <string name="yAxisPressure">pressure (hPa)</string>
+    <string name="yAxisPressureNN">pressure nn (hPa)</string>
     <string name="yAxisRainRate">rain rate (mm/hr)</string>
     <string name="yAxisRainTotal">rain toal (l/m2)</string>
     <string name="yAxisWindSpeed">wind speed (km/h)</string>

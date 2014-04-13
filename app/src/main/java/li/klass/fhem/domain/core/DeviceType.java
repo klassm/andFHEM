@@ -35,6 +35,7 @@ import li.klass.fhem.adapter.devices.HueDeviceAdapter;
 import li.klass.fhem.adapter.devices.LightSceneAdapter;
 import li.klass.fhem.adapter.devices.MaxAdapter;
 import li.klass.fhem.adapter.devices.OwSwitchDeviceAdapter;
+import li.klass.fhem.adapter.devices.PCA9532DeviceAdapter;
 import li.klass.fhem.adapter.devices.PidAdapter;
 import li.klass.fhem.adapter.devices.ReadingsProxyDeviceAdapter;
 import li.klass.fhem.adapter.devices.RemoteControlAdapter;
@@ -51,6 +52,7 @@ import li.klass.fhem.adapter.devices.core.DeviceAdapter;
 import li.klass.fhem.adapter.devices.core.DimmableAdapter;
 import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
 import li.klass.fhem.domain.AtDevice;
+import li.klass.fhem.domain.BMP180Device;
 import li.klass.fhem.domain.CM160Device;
 import li.klass.fhem.domain.CULEMDevice;
 import li.klass.fhem.domain.CULFHTTKDevice;
@@ -97,6 +99,7 @@ import li.klass.fhem.domain.OwcountDevice;
 import li.klass.fhem.domain.OwtempDevice;
 import li.klass.fhem.domain.OwthermDevice;
 import li.klass.fhem.domain.PCA301Device;
+import li.klass.fhem.domain.PCA9532Device;
 import li.klass.fhem.domain.PIDDevice;
 import li.klass.fhem.domain.PilightDevice;
 import li.klass.fhem.domain.PresenceDevice;
@@ -105,6 +108,7 @@ import li.klass.fhem.domain.RFXX10RECDevice;
 import li.klass.fhem.domain.RPIGPIODevice;
 import li.klass.fhem.domain.ReadingsProxyDevice;
 import li.klass.fhem.domain.RemoteControlDevice;
+import li.klass.fhem.domain.SHT21Device;
 import li.klass.fhem.domain.SISPMSDevice;
 import li.klass.fhem.domain.SWAPDevice;
 import li.klass.fhem.domain.SonosDevice;
@@ -200,7 +204,10 @@ public enum DeviceType {
     HM485("HM485", HM485Device.class, new DimmableAdapter<HM485Device>(HM485Device.class)),
     LIGHT_SCENE("LightScene", LightSceneDevice.class, new LightSceneAdapter()),
     EPGM("EGPM", EGPMDevice.class, new ToggleableAdapterWithSwitchActionRow<EGPMDevice>(EGPMDevice.class)),
-    CM160("CM160", CM160Device.class)
+    CM160("CM160", CM160Device.class),
+    BMP180("I2C_BMP180", BMP180Device.class),
+    SHT21("I2C_SHT21", SHT21Device.class),
+    PCA9532("I2C_PCA9532", PCA9532Device.class, new PCA9532DeviceAdapter())
     ;
 
     private String xmllistTag;
@@ -232,7 +239,7 @@ public enum DeviceType {
     }
 
     @SuppressWarnings("unchecked")
-    public <T extends Device> DeviceAdapter<T> getAdapter() {
+    public <T extends Device<T>> DeviceAdapter<T> getAdapter() {
         return (DeviceAdapter<T>) adapter;
     }
 
@@ -247,7 +254,7 @@ public enum DeviceType {
         return showOnlyIn == null || serverType == showOnlyIn;
     }
 
-    public static <T extends Device> DeviceAdapter<T> getAdapterFor(T device) {
+    public static <T extends Device<T>> DeviceAdapter<T> getAdapterFor(T device) {
         DeviceType deviceType = getDeviceTypeFor(device);
         if (deviceType == null) {
             return null;

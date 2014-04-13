@@ -55,6 +55,7 @@
     <string name="ecoTemperature">Eco-Temperatur</string>
     <string name="forecast">Vorhersage</string>
     <string name="pressure">Luftdruck</string>
+    <string name="pressureNN">Luftdruck NN</string>
     <string name="dewpoint">Taupunkt</string>
     <string name="rainRate">Regenstärke</string>
     <string name="rainTotal">Regenmenge</string>
@@ -331,6 +332,7 @@
     <string name="yAxisRain">Regen (l/m2)</string>
     <string name="yAxisActuator">Regler (%)</string>
     <string name="yAxisPressure">Luftdruck (hPa)</string>
+    <string name="yAxisPressureNN">Luftdruck NN (hPa)</string>
     <string name="yAxisRainRate">Regenstärke (mm/hr)</string>
     <string name="yAxisRainTotal">Regenmenge (l/m2)</string>
     <string name="yAxisWindSpeed">Windgeschwindigkeit (km/h)</string>
