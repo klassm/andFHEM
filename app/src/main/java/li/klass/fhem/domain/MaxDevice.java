@@ -313,7 +313,7 @@ public class MaxDevice extends ToggleableDevice<MaxDevice> implements DesiredTem
     }
 
     @Override
-    public DeviceFunctionality getDeviceFunctionality() {
+    public DeviceFunctionality getDeviceGroup() {
         return DeviceFunctionality.HEATING;
     }
 

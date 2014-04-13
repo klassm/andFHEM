@@ -62,7 +62,7 @@ public class LGTVDevice extends Device<LGTVDevice> {
     }
 
     @Override
-    public DeviceFunctionality getDeviceFunctionality() {
+    public DeviceFunctionality getDeviceGroup() {
         return DeviceFunctionality.REMOTE_CONTROL;
     }
 }

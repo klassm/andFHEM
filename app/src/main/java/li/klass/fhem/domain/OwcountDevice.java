@@ -106,7 +106,7 @@ public class OwcountDevice extends Device<OwcountDevice> {
     }
 
     @Override
-    public DeviceFunctionality getDeviceFunctionality() {
+    public DeviceFunctionality getDeviceGroup() {
         return DeviceFunctionality.USAGE;
     }
 

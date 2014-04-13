@@ -222,7 +222,7 @@ public class OregonDevice extends Device<OregonDevice> {
     }
 
     @Override
-    public DeviceFunctionality getDeviceFunctionality() {
+    public DeviceFunctionality getDeviceGroup() {
         return DeviceFunctionality.WEATHER;
     }
 

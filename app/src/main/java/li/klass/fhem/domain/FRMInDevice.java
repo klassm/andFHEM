@@ -45,7 +45,7 @@ public class FRMInDevice extends Device<FRMInDevice> {
     }
 
     @Override
-    public DeviceFunctionality getDeviceFunctionality() {
+    public DeviceFunctionality getDeviceGroup() {
         return DeviceFunctionality.SMOKE_DETECTOR;
     }
 

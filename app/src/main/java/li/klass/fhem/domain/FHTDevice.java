@@ -169,7 +169,7 @@ public class FHTDevice extends Device<FHTDevice> implements DesiredTempDevice,
     }
 
     @Override
-    public DeviceFunctionality getDeviceFunctionality() {
+    public DeviceFunctionality getDeviceGroup() {
         return DeviceFunctionality.HEATING;
     }
 

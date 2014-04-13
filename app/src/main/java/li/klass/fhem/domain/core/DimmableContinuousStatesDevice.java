@@ -97,7 +97,7 @@ public abstract class DimmableContinuousStatesDevice<D extends Device<D>> extend
     }
 
     @Override
-    public DeviceFunctionality getDeviceFunctionality() {
+    public DeviceFunctionality getDeviceGroup() {
         return functionalityForDimmable(this);
     }
 

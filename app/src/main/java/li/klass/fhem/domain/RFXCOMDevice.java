@@ -31,7 +31,7 @@ import li.klass.fhem.domain.genericview.OverviewViewSettings;
 @OverviewViewSettings(showState = true)
 public class RFXCOMDevice extends Device<RFXCOMDevice> {
     @Override
-    public DeviceFunctionality getDeviceFunctionality() {
+    public DeviceFunctionality getDeviceGroup() {
         return DeviceFunctionality.FHEM;
     }
 }

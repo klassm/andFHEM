@@ -51,7 +51,7 @@ public class SISPMSDevice extends ToggleableDevice<SISPMSDevice> {
     }
 
     @Override
-    public DeviceFunctionality getDeviceFunctionality() {
+    public DeviceFunctionality getDeviceGroup() {
         return DeviceFunctionality.SWITCH;
     }
 }

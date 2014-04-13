@@ -68,7 +68,7 @@ public class DummyDevice extends DimmableContinuousStatesDevice<DummyDevice> {
     }
 
     @Override
-    public DeviceFunctionality getDeviceFunctionality() {
+    public DeviceFunctionality getDeviceGroup() {
         if (getSetList().contains("rgb")) {
             return DeviceFunctionality.SWITCH;
         }

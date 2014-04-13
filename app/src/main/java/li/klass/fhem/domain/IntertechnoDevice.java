@@ -56,7 +56,7 @@ public class IntertechnoDevice extends ToggleableDevice<IntertechnoDevice> {
     }
 
     @Override
-    public DeviceFunctionality getDeviceFunctionality() {
+    public DeviceFunctionality getDeviceGroup() {
         return DeviceFunctionality.SWITCH;
     }
 }

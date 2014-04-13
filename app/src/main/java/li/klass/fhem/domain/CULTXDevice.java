@@ -80,7 +80,7 @@ public class CULTXDevice extends Device<CULTXDevice> {
     }
 
     @Override
-    public DeviceFunctionality getDeviceFunctionality() {
+    public DeviceFunctionality getDeviceGroup() {
         return DeviceFunctionality.TEMPERATURE;
     }
 

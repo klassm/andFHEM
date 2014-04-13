@@ -164,7 +164,7 @@ public class FBCallmonitorDevice extends Device<FBCallmonitorDevice> {
     }
 
     @Override
-    public DeviceFunctionality getDeviceFunctionality() {
+    public DeviceFunctionality getDeviceGroup() {
         return DeviceFunctionality.CALL_MONITOR;
     }
 }

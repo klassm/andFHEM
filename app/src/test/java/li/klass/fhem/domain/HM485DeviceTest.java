@@ -39,7 +39,7 @@ public class HM485DeviceTest extends DeviceXMLParsingBase {
         HM485Device device = getDeviceFor("dim");
         assertThat(device.getDimPosition()).isEqualTo(5);
         assertThat(device.supportsDim()).isTrue();
-        assertThat(device.getDeviceFunctionality()).isEqualTo(DIMMER);
+        assertThat(device.getDeviceGroup()).isEqualTo(DIMMER);
     }
 
     @Test
@@ -47,7 +47,7 @@ public class HM485DeviceTest extends DeviceXMLParsingBase {
         HM485Device device = getDeviceFor("switch");
         assertThat(device.supportsDim()).isFalse();
         assertThat(device.supportsToggle()).isTrue();
-        assertThat(device.getDeviceFunctionality()).isEqualTo(SWITCH);
+        assertThat(device.getDeviceGroup()).isEqualTo(SWITCH);
     }
 
     @Override

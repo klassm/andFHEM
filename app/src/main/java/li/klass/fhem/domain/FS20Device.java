@@ -129,7 +129,7 @@ public class FS20Device extends DimmableDiscreteStatesDevice<FS20Device> impleme
     }
 
     @Override
-    public DeviceFunctionality getDeviceFunctionality() {
+    public DeviceFunctionality getDeviceGroup() {
         return DeviceFunctionality.functionalityForDimmable(this);
     }
 

@@ -49,7 +49,7 @@ public class PCA9532Device extends Device<PCA9532Device> {
     }
 
     @Override
-    public DeviceFunctionality getDeviceFunctionality() {
+    public DeviceFunctionality getDeviceGroup() {
         return DeviceFunctionality.SWITCH;
     }
 

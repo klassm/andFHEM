@@ -102,7 +102,7 @@ public class OpenWeatherMapDevice extends Device<OpenWeatherMapDevice> {
     }
 
     @Override
-    public DeviceFunctionality getDeviceFunctionality() {
+    public DeviceFunctionality getDeviceGroup() {
         return DeviceFunctionality.WEATHER;
     }
 

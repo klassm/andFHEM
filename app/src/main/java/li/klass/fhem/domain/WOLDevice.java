@@ -93,7 +93,7 @@ public class WOLDevice extends Device<WOLDevice> {
     }
 
     @Override
-    public DeviceFunctionality getDeviceFunctionality() {
+    public DeviceFunctionality getDeviceGroup() {
         return DeviceFunctionality.NETWORK;
     }
 }

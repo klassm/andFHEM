@@ -31,7 +31,6 @@ import android.widget.GridView;
 import android.widget.HeaderViewListAdapter;
 import android.widget.ListAdapter;
 
-import java.util.HashSet;
 import java.util.Set;
 
 public class GridViewWithSections extends GridView {
@@ -86,7 +85,7 @@ public class GridViewWithSections extends GridView {
     private void performParentChildItemClick(View view, int parentPosition, int childPosition) {
         Set<GridViewWithSectionsOnClickObserver> parentChildClickObservers = getGridViewWithSectionsAdapter().getClickObservers();
         for (GridViewWithSectionsOnClickObserver parentChildClickObserver : parentChildClickObservers) {
-            Object parent = getGridViewWithSectionsAdapter().getParents().get(parentPosition);
+            Object parent = getGridViewWithSectionsAdapter().getDeviceGroupParents().get(parentPosition);
             Object child = getGridViewWithSectionsAdapter().getChildForParentAndChildPosition(parent, childPosition);
 
             parentChildClickObserver.onItemClick(view, parent, child, parentPosition, childPosition);

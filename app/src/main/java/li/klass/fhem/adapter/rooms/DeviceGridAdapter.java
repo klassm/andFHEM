@@ -43,17 +43,19 @@ import li.klass.fhem.domain.core.DeviceType;
 import li.klass.fhem.domain.core.RoomDeviceList;
 import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.widget.GridViewWithSectionsAdapter;
-import li.klass.fhem.widget.deviceFunctionality.DeviceFunctionalityHolder;
+import li.klass.fhem.widget.deviceFunctionality.DeviceGroupHolder;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static li.klass.fhem.constants.PreferenceKeys.DEVICE_COLUMN_WIDTH;
 import static li.klass.fhem.constants.PreferenceKeys.SHOW_HIDDEN_DEVICES;
 
-public class DeviceGridAdapter<T extends Device<T>> extends GridViewWithSectionsAdapter<DeviceFunctionality, T> {
+public class DeviceGridAdapter<T extends Device<T>> extends GridViewWithSectionsAdapter<String, T> {
     public static final String TAG = DeviceGridAdapter.class.getName();
     protected RoomDeviceList roomDeviceList;
     public static final int DEFAULT_COLUMN_WIDTH = 355;
     private int lastParentHeight;
-    private List<DeviceFunctionality> parents;
+    private List<String> deviceGroupParents = newArrayList();
+    private List<String> parents = newArrayList();
     private long lastUpdate;
 
     public DeviceGridAdapter(Context context, RoomDeviceList roomDeviceList) {
@@ -65,21 +67,26 @@ public class DeviceGridAdapter<T extends Device<T>> extends GridViewWithSections
     }
 
     /**
-     * Load parents from the serialized state. This includes all visible devices from
+     * Load deviceGroupParents from the serialized state. This includes all visible devices from
      * the {@link li.klass.fhem.constants.PreferenceKeys#DEVICE_FUNCTIONALITY_ORDER_VISIBLE}
      * property.
      */
     public void restoreParents() {
-        DeviceFunctionalityHolder holder = new DeviceFunctionalityHolder();
-        parents = holder.getVisible();
-        Log.d(TAG, "set visible parents: " + parents);
+        DeviceGroupHolder holder = new DeviceGroupHolder();
+
+        for (DeviceFunctionality deviceFunctionality : holder.getVisible()) {
+            deviceGroupParents.add(deviceFunctionality.getCaptionText(context));
+        }
+        parents.addAll(deviceGroupParents);
+
+        Log.d(TAG, "set visible deviceGroupParents: " + deviceGroupParents);
     }
 
     @Override
-    protected T getChildForParentAndChildPosition(DeviceFunctionality parent, int childPosition) {
+    protected T getChildForParentAndChildPosition(String parent, int childPosition) {
         if (childPosition < 0) return null;
 
-        List<T> childrenForDeviceType = getChildrenForDeviceFunctionality(parent);
+        List<T> childrenForDeviceType = getChildrenForDeviceGroup(parent);
         if (childPosition >= childrenForDeviceType.size()) {
             return null;
         } else {
@@ -88,18 +95,18 @@ public class DeviceGridAdapter<T extends Device<T>> extends GridViewWithSections
     }
 
     @Override
-    protected int getChildrenCountForParent(DeviceFunctionality parent) {
-        return getChildrenForDeviceFunctionality(parent).size();
+    protected int getChildrenCountForParent(String parent) {
+        return getChildrenForDeviceGroup(parent).size();
     }
 
-    private List<T> getChildrenForDeviceFunctionality(DeviceFunctionality deviceFunctionality) {
+    private List<T> getChildrenForDeviceGroup(String deviceGroup) {
         if (roomDeviceList == null) return new ArrayList<T>();
 
-        return roomDeviceList.getDevicesOfFunctionality(deviceFunctionality);
+        return roomDeviceList.getDevicesOfFunctionality(deviceGroup);
     }
 
     @Override
-    protected View getParentView(DeviceFunctionality parent, int parentOffset, View view, ViewGroup viewGroup) {
+    protected View getParentView(String parent, int parentOffset, View view, ViewGroup viewGroup) {
         view = layoutInflater.inflate(R.layout.room_detail_parent, null);
         assert view != null;
 
@@ -107,7 +114,7 @@ public class DeviceGridAdapter<T extends Device<T>> extends GridViewWithSections
         if (parentOffset != 0) {
             textView.setText("");
         } else {
-            textView.setText(parent.getCaptionText(context));
+            textView.setText(parent);
         }
 
         int widthMeasureSpec = View.MeasureSpec.UNSPECIFIED;
@@ -124,7 +131,7 @@ public class DeviceGridAdapter<T extends Device<T>> extends GridViewWithSections
     }
 
     @Override
-    protected View getChildView(final DeviceFunctionality parent, int parentPosition,
+    protected View getChildView(final String parent, int parentPosition,
                                 T child, View view, ViewGroup viewGroup) {
 
         final DeviceAdapter<? extends Device<?>> deviceAdapter = DeviceType.getAdapterFor(child);
@@ -155,13 +162,13 @@ public class DeviceGridAdapter<T extends Device<T>> extends GridViewWithSections
     }
 
     @Override
-    protected List<DeviceFunctionality> getParents() {
-        List<DeviceFunctionality> viewableParents = new ArrayList<DeviceFunctionality>();
-        for (DeviceFunctionality deviceType : parents) {
-            if (getChildrenCountForParent(deviceType) <= 0) {
-                Log.d(TAG, "deviceType " + deviceType + " has no children, filtered!");
+    protected List<String> getDeviceGroupParents() {
+        List<String> viewableParents = new ArrayList<String>();
+        for (String group : parents) {
+            if (getChildrenCountForParent(group) <= 0) {
+                Log.d(TAG, "group " + group + " has no children, filtered!");
             } else {
-                viewableParents.add(deviceType);
+                viewableParents.add(group);
             }
         }
         return viewableParents;
@@ -179,6 +186,8 @@ public class DeviceGridAdapter<T extends Device<T>> extends GridViewWithSections
         if (roomDeviceList == null) return;
 
         this.lastUpdate = lastUpdate;
+        parents.clear();
+        parents.addAll(deviceGroupParents);
 
         ApplicationProperties applicationProperties = ApplicationProperties.INSTANCE;
         if (!applicationProperties.getBooleanSharedPreference(SHOW_HIDDEN_DEVICES, false)) {
@@ -186,6 +195,11 @@ public class DeviceGridAdapter<T extends Device<T>> extends GridViewWithSections
             for (Device device : allDevices) {
                 if (device.isInRoom("hidden")) {
                     roomDeviceList.removeDevice(device);
+                } else {
+                    String group = device.getInternalDeviceGroupOrGroupAttribute();
+                    if (! parents.contains(group)) {
+                        parents.add(group);
+                    }
                 }
             }
         }

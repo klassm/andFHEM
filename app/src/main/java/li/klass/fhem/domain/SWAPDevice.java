@@ -21,7 +21,7 @@ public class SWAPDevice extends ToggleableDevice<SWAPDevice> {
     }
 
     @Override
-    public DeviceFunctionality getDeviceFunctionality() {
+    public DeviceFunctionality getDeviceGroup() {
         return DeviceFunctionality.TEMPERATURE;
     }
 }

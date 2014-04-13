@@ -41,7 +41,7 @@ public class ShutterTest extends DeviceXMLParsingBase {
         CULHMDevice device = getDefaultDevice();
         assertThat(device, is(notNullValue()));
         assertThat(device.getSubType(), is(SHUTTER));
-        assertThat(device.getDeviceFunctionality(), is(WINDOW));
+        assertThat(device.getDeviceGroup(), is(WINDOW));
         assertThat(device.supportsDim(), is(true));
     }
 

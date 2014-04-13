@@ -99,7 +99,7 @@ public class DeviceFunctionalityOrderPreference extends DialogPreference {
     protected void onSetInitialValue(boolean restore, Object defaultValue) {
         super.onSetInitialValue(restore, defaultValue);
 
-        DeviceFunctionalityHolder deviceTypeHolder = new DeviceFunctionalityHolder();
+        DeviceGroupHolder deviceTypeHolder = new DeviceGroupHolder();
         List<DeviceFunctionality> visible = deviceTypeHolder.getVisible();
         List<DeviceFunctionality> invisible = deviceTypeHolder.getInvisible();
 

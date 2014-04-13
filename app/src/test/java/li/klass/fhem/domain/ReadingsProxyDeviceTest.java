@@ -39,7 +39,7 @@ public class ReadingsProxyDeviceTest extends DeviceXMLParsingBase {
 
         assertThat(device).isNotNull();
         assertThat(device.getName()).isEqualTo("rgb");
-        assertThat(device.getDeviceFunctionality()).isEqualTo(SWITCH);
+        assertThat(device.getDeviceGroup()).isEqualTo(SWITCH);
         assertThat(device.getRGBColor()).isEqualTo(16776960);
         assertThat(device.getRgbDesc()).isEqualTo("0xFFFF00");
     }
@@ -49,7 +49,7 @@ public class ReadingsProxyDeviceTest extends DeviceXMLParsingBase {
         ReadingsProxyDevice device = getDeviceFor("Bild");
 
         assertThat(device).isNotNull();
-        assertThat(device.getDeviceFunctionality()).isEqualTo(SWITCH);
+        assertThat(device.getDeviceGroup()).isEqualTo(SWITCH);
         assertThat(device.getRgbDesc()).isNull();
     }
 

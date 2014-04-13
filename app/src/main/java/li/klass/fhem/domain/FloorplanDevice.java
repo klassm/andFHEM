@@ -28,7 +28,7 @@ import li.klass.fhem.domain.core.DeviceFunctionality;
 
 public class FloorplanDevice extends Device<FloorplanDevice> {
     @Override
-    public DeviceFunctionality getDeviceFunctionality() {
+    public DeviceFunctionality getDeviceGroup() {
         return DeviceFunctionality.FLOORPLAN;
     }
 }

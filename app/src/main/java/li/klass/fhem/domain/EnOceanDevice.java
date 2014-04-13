@@ -150,7 +150,7 @@ public class EnOceanDevice extends DimmableDevice<EnOceanDevice> {
     }
 
     @Override
-    public DeviceFunctionality getDeviceFunctionality() {
+    public DeviceFunctionality getDeviceGroup() {
         if (subType == SubType.SHUTTER) return DeviceFunctionality.WINDOW;
         return DeviceFunctionality.functionalityForDimmable(this);
     }

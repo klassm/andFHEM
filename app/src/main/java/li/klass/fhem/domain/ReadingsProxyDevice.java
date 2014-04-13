@@ -61,7 +61,7 @@ public class ReadingsProxyDevice extends DimmableContinuousStatesDevice<Readings
     }
 
     @Override
-    public DeviceFunctionality getDeviceFunctionality() {
+    public DeviceFunctionality getDeviceGroup() {
         return functionalityForDimmable(this);
     }
 

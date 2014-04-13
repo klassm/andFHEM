@@ -60,7 +60,7 @@ public class CULFHTTKDevice extends Device<CULFHTTKDevice> {
     }
 
     @Override
-    public DeviceFunctionality getDeviceFunctionality() {
+    public DeviceFunctionality getDeviceGroup() {
         return DeviceFunctionality.WINDOW;
     }
 

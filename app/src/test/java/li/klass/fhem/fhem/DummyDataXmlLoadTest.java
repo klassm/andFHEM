@@ -14,7 +14,7 @@ public class DummyDataXmlLoadTest extends DeviceXMLParsingBase {
     @Test
     public void testFunctionalityIsSetOnAllDevices() {
         for (Device device : roomDeviceList.getAllDevices()) {
-            assertThat(device.getDeviceFunctionality(), is(not(nullValue())));
+            assertThat(device.getDeviceGroup(), is(not(nullValue())));
         }
     }
 

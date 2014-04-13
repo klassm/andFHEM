@@ -31,7 +31,7 @@ import li.klass.fhem.domain.genericview.OverviewViewSettings;
 @OverviewViewSettings(showState = true, showMeasured = true)
 public class TRXSecurityDevice extends Device<TRXSecurityDevice> {
     @Override
-    public DeviceFunctionality getDeviceFunctionality() {
+    public DeviceFunctionality getDeviceGroup() {
         return DeviceFunctionality.SMOKE_DETECTOR;
     }
 }

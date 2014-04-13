@@ -31,7 +31,7 @@ import static li.klass.fhem.domain.core.DeviceFunctionality.SWITCH;
 
 public class EGPMDevice extends ToggleableDevice<EGPMDevice> {
     @Override
-    public DeviceFunctionality getDeviceFunctionality() {
+    public DeviceFunctionality getDeviceGroup() {
         return SWITCH;
     }
 }

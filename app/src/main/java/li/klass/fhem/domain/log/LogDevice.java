@@ -32,7 +32,6 @@ import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.service.room.AllDevicesReadCallback;
-import li.klass.fhem.service.room.DeviceReadCallback;
 
 public abstract class LogDevice<T extends LogDevice> extends Device<T> {
 
@@ -46,7 +45,7 @@ public abstract class LogDevice<T extends LogDevice> extends Device<T> {
     }
 
     @Override
-    public DeviceFunctionality getDeviceFunctionality() {
+    public DeviceFunctionality getDeviceGroup() {
         return DeviceFunctionality.LOG;
     }
 

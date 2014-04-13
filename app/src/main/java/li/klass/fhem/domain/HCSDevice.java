@@ -108,7 +108,7 @@ public class HCSDevice extends Device<HCSDevice> {
     }
 
     @Override
-    public DeviceFunctionality getDeviceFunctionality() {
+    public DeviceFunctionality getDeviceGroup() {
         return DeviceFunctionality.HEATING;
     }
 

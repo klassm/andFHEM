@@ -358,7 +358,7 @@ public class AtDevice extends Device<AtDevice> {
     }
 
     @Override
-    public DeviceFunctionality getDeviceFunctionality() {
+    public DeviceFunctionality getDeviceGroup() {
         return DeviceFunctionality.FHEM;
     }
 }

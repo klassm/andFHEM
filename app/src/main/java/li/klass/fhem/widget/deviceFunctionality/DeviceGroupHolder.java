@@ -43,9 +43,9 @@ import li.klass.fhem.util.ApplicationProperties;
 import static li.klass.fhem.constants.PreferenceKeys.DEVICE_FUNCTIONALITY_ORDER_VISIBLE;
 import static li.klass.fhem.constants.PreferenceKeys.DEVICE_TYPE_FUNCTIONALITY_ORDER_INVISIBLE;
 
-public class DeviceFunctionalityHolder {
+public class DeviceGroupHolder {
 
-    public static final String TAG = DeviceFunctionalityHolder.class.getName();
+    public static final String TAG = DeviceGroupHolder.class.getName();
 
     private volatile boolean isLoaded = false;
     private List<DeviceFunctionality> invisible;

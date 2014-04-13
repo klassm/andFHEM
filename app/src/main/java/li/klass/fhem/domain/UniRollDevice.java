@@ -31,7 +31,7 @@ import li.klass.fhem.domain.genericview.OverviewViewSettings;
 @OverviewViewSettings(showMeasured = true, showState = true)
 public class UniRollDevice extends Device<UniRollDevice> {
     @Override
-    public DeviceFunctionality getDeviceFunctionality() {
+    public DeviceFunctionality getDeviceGroup() {
         return DeviceFunctionality.WINDOW;
     }
 }

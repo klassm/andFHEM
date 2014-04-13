@@ -66,7 +66,7 @@ public class GCMSendDevice extends Device<GCMSendDevice> {
     }
 
     @Override
-    public DeviceFunctionality getDeviceFunctionality() {
+    public DeviceFunctionality getDeviceGroup() {
         return DeviceFunctionality.FHEM;
     }
 }

@@ -36,7 +36,7 @@ public class PCA301Device extends ToggleableDevice<PCA301Device> {
     }
 
     @Override
-    public DeviceFunctionality getDeviceFunctionality() {
+    public DeviceFunctionality getDeviceGroup() {
         return DeviceFunctionality.SWITCH;
     }
 

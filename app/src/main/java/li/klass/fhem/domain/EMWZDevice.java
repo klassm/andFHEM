@@ -96,7 +96,7 @@ public class EMWZDevice extends Device<EMWZDevice> {
     }
 
     @Override
-    public DeviceFunctionality getDeviceFunctionality() {
+    public DeviceFunctionality getDeviceGroup() {
         return DeviceFunctionality.USAGE;
     }
 

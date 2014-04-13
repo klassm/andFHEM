@@ -48,7 +48,7 @@ public class FHT8VDevice extends Device<FHT8VDevice> {
     }
 
     @Override
-    public DeviceFunctionality getDeviceFunctionality() {
+    public DeviceFunctionality getDeviceGroup() {
         return DeviceFunctionality.HEATING;
     }
 

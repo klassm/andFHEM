@@ -90,7 +90,7 @@ public class HOLDevice extends ToggleableDevice<HOLDevice> {
     }
 
     @Override
-    public DeviceFunctionality getDeviceFunctionality() {
+    public DeviceFunctionality getDeviceGroup() {
         return DeviceFunctionality.FHEM;
     }
 }

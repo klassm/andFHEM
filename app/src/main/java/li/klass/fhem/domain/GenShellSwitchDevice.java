@@ -34,7 +34,7 @@ public class GenShellSwitchDevice extends ToggleableDevice<GenShellSwitchDevice>
     }
 
     @Override
-    public DeviceFunctionality getDeviceFunctionality() {
+    public DeviceFunctionality getDeviceGroup() {
         return DeviceFunctionality.SWITCH;
     }
 }

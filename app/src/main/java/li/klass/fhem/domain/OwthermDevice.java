@@ -73,7 +73,7 @@ public class OwthermDevice extends Device<OwthermDevice> {
     }
 
     @Override
-    public DeviceFunctionality getDeviceFunctionality() {
+    public DeviceFunctionality getDeviceGroup() {
         return DeviceFunctionality.TEMPERATURE;
     }
 

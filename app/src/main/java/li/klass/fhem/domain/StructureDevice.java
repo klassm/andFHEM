@@ -11,7 +11,7 @@ public class StructureDevice extends DimmableContinuousStatesDevice<StructureDev
     }
 
     @Override
-    public DeviceFunctionality getDeviceFunctionality() {
+    public DeviceFunctionality getDeviceGroup() {
         return DeviceFunctionality.functionalityForDimmable(this);
     }
 

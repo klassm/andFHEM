@@ -31,7 +31,7 @@ import li.klass.fhem.domain.genericview.OverviewViewSettings;
 @OverviewViewSettings(showState = true)
 public class OWFSDevice extends Device<OWFSDevice> {
     @Override
-    public DeviceFunctionality getDeviceFunctionality() {
+    public DeviceFunctionality getDeviceGroup() {
         return DeviceFunctionality.FHEM;
     }
 }

@@ -128,7 +128,7 @@ public class CM160Device extends Device<CM160Device> {
     }
 
     @Override
-    public DeviceFunctionality getDeviceFunctionality() {
+    public DeviceFunctionality getDeviceGroup() {
         return DeviceFunctionality.USAGE;
     }
 }

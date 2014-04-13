@@ -48,7 +48,7 @@ public class PresenceDevice extends Device<PresenceDevice> {
     }
 
     @Override
-    public DeviceFunctionality getDeviceFunctionality() {
+    public DeviceFunctionality getDeviceGroup() {
         return DeviceFunctionality.NETWORK;
     }
 

@@ -51,7 +51,7 @@ public class FS20ZDRDevice extends ToggleableDevice<FS20ZDRDevice> {
     }
 
     @Override
-    public DeviceFunctionality getDeviceFunctionality() {
+    public DeviceFunctionality getDeviceGroup() {
         return DeviceFunctionality.REMOTE_CONTROL;
     }
 }

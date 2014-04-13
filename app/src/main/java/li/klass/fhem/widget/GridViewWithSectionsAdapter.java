@@ -63,7 +63,7 @@ public abstract class GridViewWithSectionsAdapter<P, C> extends BaseAdapter {
     }
 
     public void updateParentPositions() {
-        List<P> parents = getParents();
+        List<P> parents = getDeviceGroupParents();
         Log.d(TAG, "updating parent positions for parent count " + parents.size());
 
         parentPositions = new HashMap<Integer, P>();
@@ -223,7 +223,7 @@ public abstract class GridViewWithSectionsAdapter<P, C> extends BaseAdapter {
             parent = parentPositions.get(findParentPositionForChildPosition(flatPosition));
         }
 
-        List<P> parents = getParents();
+        List<P> parents = getDeviceGroupParents();
         for (int i = 0; i < parents.size(); i++) {
             if (parents.get(i).equals(parent)) {
                 return i;
@@ -297,7 +297,7 @@ public abstract class GridViewWithSectionsAdapter<P, C> extends BaseAdapter {
 
     protected abstract View getChildView(P parent, int parentPosition, C child, View view, ViewGroup viewGroup);
 
-    protected abstract List<P> getParents();
+    protected abstract List<P> getDeviceGroupParents();
 
     protected abstract int getRequiredColumnWidth();
 }

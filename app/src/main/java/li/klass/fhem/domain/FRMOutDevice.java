@@ -36,7 +36,7 @@ public class FRMOutDevice extends ToggleableDevice<FRMOutDevice> {
     }
 
     @Override
-    public DeviceFunctionality getDeviceFunctionality() {
+    public DeviceFunctionality getDeviceGroup() {
         return DeviceFunctionality.SWITCH;
     }
 

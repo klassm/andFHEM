@@ -97,7 +97,7 @@ public class PIDDevice extends Device<PIDDevice> implements DesiredTempDevice {
     }
 
     @Override
-    public DeviceFunctionality getDeviceFunctionality() {
+    public DeviceFunctionality getDeviceGroup() {
         return DeviceFunctionality.HEATING;
     }
 

@@ -113,7 +113,7 @@ public class RemoteControlDevice extends ToggleableDevice<RemoteControlDevice> {
     }
 
     @Override
-    public DeviceFunctionality getDeviceFunctionality() {
+    public DeviceFunctionality getDeviceGroup() {
         return DeviceFunctionality.REMOTE_CONTROL;
     }
 

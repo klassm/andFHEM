@@ -66,7 +66,7 @@ public class TRXLightDevice extends DimmableDiscreteStatesDevice<TRXLightDevice>
     }
 
     @Override
-    public DeviceFunctionality getDeviceFunctionality() {
+    public DeviceFunctionality getDeviceGroup() {
         return DeviceFunctionality.functionalityForDimmable(this);
     }
 

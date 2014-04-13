@@ -66,14 +66,14 @@ public class EnOceanDeviceTest extends DeviceXMLParsingBase {
     public void testGatewaySwitchDevice() {
         EnOceanDevice device = getDeviceFor("device3");
         assertThat(device.getSubType(), is(EnOceanDevice.SubType.SWITCH));
-        assertThat(device.getDeviceFunctionality(), is(SWITCH));
+        assertThat(device.getDeviceGroup(), is(SWITCH));
     }
 
     @Test
     public void testShutterDevice() {
         EnOceanDevice device = getDeviceFor("shutter");
 
-        assertThat(device.getDeviceFunctionality(), is(WINDOW));
+        assertThat(device.getDeviceGroup(), is(WINDOW));
         assertThat(device.getSubType(), is(EnOceanDevice.SubType.SHUTTER));
 
         assertThat(device.getShutterPosition(), is(100));

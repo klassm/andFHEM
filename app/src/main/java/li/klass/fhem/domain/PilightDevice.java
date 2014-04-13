@@ -29,7 +29,7 @@ import li.klass.fhem.domain.core.ToggleableDevice;
 
 public class PilightDevice extends ToggleableDevice<PilightDevice> {
     @Override
-    public DeviceFunctionality getDeviceFunctionality() {
+    public DeviceFunctionality getDeviceGroup() {
         return DeviceFunctionality.SWITCH;
     }
 }

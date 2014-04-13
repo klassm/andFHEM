@@ -37,7 +37,7 @@ import static com.google.common.collect.Lists.newArrayList;
 @DetailViewSettings(showMeasured = true, showState = true)
 public class LightSceneDevice extends Device<LightSceneDevice> {
     @Override
-    public DeviceFunctionality getDeviceFunctionality() {
+    public DeviceFunctionality getDeviceGroup() {
         return DeviceFunctionality.SWITCH;
     }
 

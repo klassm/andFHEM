@@ -47,7 +47,7 @@ public class FileLogDevice extends LogDevice<FileLogDevice> {
     }
 
     @Override
-    public DeviceFunctionality getDeviceFunctionality() {
+    public DeviceFunctionality getDeviceGroup() {
         return DeviceFunctionality.LOG;
     }
 

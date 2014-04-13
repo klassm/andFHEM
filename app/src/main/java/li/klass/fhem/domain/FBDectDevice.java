@@ -101,7 +101,7 @@ public class FBDectDevice extends ToggleableDevice<FBDectDevice> {
     }
 
     @Override
-    public DeviceFunctionality getDeviceFunctionality() {
+    public DeviceFunctionality getDeviceGroup() {
         return DeviceFunctionality.USAGE;
     }
 

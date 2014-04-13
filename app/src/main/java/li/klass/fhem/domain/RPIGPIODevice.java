@@ -45,7 +45,7 @@ public class RPIGPIODevice extends ToggleableDevice<RPIGPIODevice> {
     }
 
     @Override
-    public DeviceFunctionality getDeviceFunctionality() {
+    public DeviceFunctionality getDeviceGroup() {
         return DeviceFunctionality.SWITCH;
     }
 

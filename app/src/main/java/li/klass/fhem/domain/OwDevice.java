@@ -95,7 +95,7 @@ public class OwDevice extends ToggleableDevice<OwDevice> {
     }
 
     @Override
-    public DeviceFunctionality getDeviceFunctionality() {
+    public DeviceFunctionality getDeviceGroup() {
         if (subType == null) return null;
         return subType.functionality;
     }

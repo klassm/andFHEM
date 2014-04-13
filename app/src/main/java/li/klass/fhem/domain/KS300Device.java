@@ -147,7 +147,7 @@ public class KS300Device extends Device<KS300Device> implements Serializable {
     }
 
     @Override
-    public DeviceFunctionality getDeviceFunctionality() {
+    public DeviceFunctionality getDeviceGroup() {
         return DeviceFunctionality.WEATHER;
     }
 

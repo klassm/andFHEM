@@ -147,7 +147,7 @@ public class GPIO4Device extends Device<GPIO4Device> {
     }
 
     @Override
-    public DeviceFunctionality getDeviceFunctionality() {
+    public DeviceFunctionality getDeviceGroup() {
         return DeviceFunctionality.TEMPERATURE;
     }
 

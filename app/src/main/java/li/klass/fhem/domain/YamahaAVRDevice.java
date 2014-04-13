@@ -89,7 +89,7 @@ public class YamahaAVRDevice extends ToggleableDevice<YamahaAVRDevice> {
     }
 
     @Override
-    public DeviceFunctionality getDeviceFunctionality() {
+    public DeviceFunctionality getDeviceGroup() {
         return DeviceFunctionality.REMOTE_CONTROL;
     }
 }

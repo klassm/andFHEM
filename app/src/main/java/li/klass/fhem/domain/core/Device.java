@@ -24,6 +24,7 @@
 
 package li.klass.fhem.domain.core;
 
+import org.apache.commons.lang3.StringUtils;
 import org.w3c.dom.NamedNodeMap;
 
 import java.io.Serializable;
@@ -68,6 +69,8 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
 
     @ShowField(description = ResourceIdMapper.definition, showAfter = "roomConcatenated")
     protected String definition;
+
+    private String group;
 
     protected Map<String, String> eventMapReverse = new HashMap<String, String>();
     protected Map<String, String> eventMap = new HashMap<String, String>();
@@ -130,6 +133,10 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
 
     public void readALWAYS_HIDDEN(String value) {
         alwaysHidden = "true".equalsIgnoreCase(value);
+    }
+
+    public void readGROUP(String value) {
+        group = value;
     }
 
     public void afterDeviceXMLRead() {
@@ -483,7 +490,17 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
      * Functionality of the device.
      * @return NEVER null!
      */
-    public abstract DeviceFunctionality getDeviceFunctionality();
+    public abstract DeviceFunctionality getDeviceGroup();
+
+    public String getInternalDeviceGroupOrGroupAttribute() {
+        String foundGroup;
+        if (!StringUtils.isEmpty(group)) {
+            foundGroup = group;
+        } else {
+            foundGroup = getDeviceGroup().getCaptionText(AndFHEMApplication.getContext());
+        }
+        return foundGroup;
+    }
 
     protected boolean useTimeAndWeekAttributesForMeasureTime() {
         return true;

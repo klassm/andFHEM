@@ -41,7 +41,7 @@ public class WebLinkDevice extends Device<WebLinkDevice> {
     }
 
     @Override
-    public DeviceFunctionality getDeviceFunctionality() {
+    public DeviceFunctionality getDeviceGroup() {
         return DeviceFunctionality.WEB_LINK;
     }
 }

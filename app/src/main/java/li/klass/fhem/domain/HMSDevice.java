@@ -148,7 +148,7 @@ public class HMSDevice extends Device<HMSDevice> {
     }
 
     @Override
-    public DeviceFunctionality getDeviceFunctionality() {
+    public DeviceFunctionality getDeviceGroup() {
         return DeviceFunctionality.TEMPERATURE;
     }
 

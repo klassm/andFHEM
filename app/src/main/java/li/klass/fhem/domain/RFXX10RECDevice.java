@@ -59,7 +59,7 @@ public class RFXX10RECDevice extends Device<RFXX10RECDevice> {
     }
 
     @Override
-    public DeviceFunctionality getDeviceFunctionality() {
+    public DeviceFunctionality getDeviceGroup() {
         return DeviceFunctionality.WINDOW;
     }
 }

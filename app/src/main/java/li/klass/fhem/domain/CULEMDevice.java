@@ -121,7 +121,7 @@ public class CULEMDevice extends Device<CULEMDevice> {
     }
 
     @Override
-    public DeviceFunctionality getDeviceFunctionality() {
+    public DeviceFunctionality getDeviceGroup() {
         return DeviceFunctionality.USAGE;
     }
 

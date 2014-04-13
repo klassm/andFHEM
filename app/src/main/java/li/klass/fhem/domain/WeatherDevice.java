@@ -240,7 +240,7 @@ public class WeatherDevice extends Device<WeatherDevice> {
     }
 
     @Override
-    public DeviceFunctionality getDeviceFunctionality() {
+    public DeviceFunctionality getDeviceGroup() {
         return DeviceFunctionality.WEATHER;
     }
 

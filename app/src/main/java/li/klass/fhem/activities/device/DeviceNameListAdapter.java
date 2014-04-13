@@ -33,7 +33,6 @@ import android.widget.TextView;
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.rooms.DeviceGridAdapter;
 import li.klass.fhem.domain.core.Device;
-import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.RoomDeviceList;
 
 import static android.view.ViewGroup.LayoutParams;
@@ -50,7 +49,7 @@ public class DeviceNameListAdapter<DEVICE extends Device<DEVICE>> extends Device
     }
 
     @Override
-    protected View getChildView(DeviceFunctionality parent, int parentPosition, DEVICE child, View view, ViewGroup viewGroup) {
+    protected View getChildView(String parent, int parentPosition, DEVICE child, View view, ViewGroup viewGroup) {
         if (child == null) {
             TextView fillerView = new TextView(context);
             fillerView.setLayoutParams(new AbsListView.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
@@ -80,7 +79,7 @@ public class DeviceNameListAdapter<DEVICE extends Device<DEVICE>> extends Device
         DEVICE device = roomDeviceList.getDeviceFor(selectedDeviceName);
         if (device == null) return 0;
 
-        return getFlatPositionForParentAndChild(device.getDeviceFunctionality(), device);
+        return getFlatPositionForParentAndChild(device.getInternalDeviceGroupOrGroupAttribute(), device);
     }
 
     @Override

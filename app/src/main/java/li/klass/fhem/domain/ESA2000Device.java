@@ -113,7 +113,7 @@ public class ESA2000Device extends Device<ESA2000Device> {
     }
 
     @Override
-    public DeviceFunctionality getDeviceFunctionality() {
+    public DeviceFunctionality getDeviceGroup() {
         return DeviceFunctionality.USAGE;
     }
 

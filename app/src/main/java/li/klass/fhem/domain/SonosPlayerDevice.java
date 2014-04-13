@@ -175,7 +175,7 @@ public class SonosPlayerDevice extends Device<SonosPlayerDevice> {
     }
 
     @Override
-    public DeviceFunctionality getDeviceFunctionality() {
+    public DeviceFunctionality getDeviceGroup() {
         return DeviceFunctionality.REMOTE_CONTROL;
     }
 }

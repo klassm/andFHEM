@@ -63,7 +63,7 @@ public class BMP180Device extends Device<BMP180Device> {
     }
 
     @Override
-    public DeviceFunctionality getDeviceFunctionality() {
+    public DeviceFunctionality getDeviceGroup() {
         return DeviceFunctionality.WEATHER;
     }
 
