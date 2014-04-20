@@ -32,6 +32,7 @@ import android.widget.AbsListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -155,7 +156,7 @@ public class DeviceGridAdapter<T extends Device<T>> extends GridViewWithSections
         view = deviceAdapter.createOverviewView(layoutInflater, child, lastUpdate);
         view.setTag(child);
         view.setLayoutParams(new AbsListView.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+                        ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
         );
 
         return view;
@@ -189,20 +190,28 @@ public class DeviceGridAdapter<T extends Device<T>> extends GridViewWithSections
         parents.clear();
         parents.addAll(deviceGroupParents);
 
+        List<String> customParents = newArrayList();
+
         ApplicationProperties applicationProperties = ApplicationProperties.INSTANCE;
-        if (!applicationProperties.getBooleanSharedPreference(SHOW_HIDDEN_DEVICES, false)) {
-            Set<Device> allDevices = roomDeviceList.getAllDevices();
-            for (Device device : allDevices) {
-                if (device.isInRoom("hidden")) {
-                    roomDeviceList.removeDevice(device);
-                } else {
-                    String group = device.getInternalDeviceGroupOrGroupAttribute();
-                    if (! parents.contains(group)) {
-                        parents.add(group);
-                    }
-                }
+        boolean showHiddenDevices = applicationProperties.getBooleanSharedPreference(SHOW_HIDDEN_DEVICES, false);
+        Set<Device> allDevices = roomDeviceList.getAllDevices();
+        for (Device device : allDevices) {
+            if (device.isInRoom("hidden") && ! showHiddenDevices ||
+                    device.isInAnyRoomOf(roomDeviceList.getHiddenRooms())) {
+                roomDeviceList.removeDevice(device);
+                continue;
+            }
+
+            String group = device.getInternalDeviceGroupOrGroupAttribute();
+            if (! parents.contains(group) && ! customParents.contains(group)) {
+                customParents.add(group);
             }
         }
+
+        Collections.sort(customParents);
+
+        parents.addAll(customParents);
+        parents.removeAll(roomDeviceList.getHiddenGroups());
 
         this.roomDeviceList = roomDeviceList;
         super.updateData();
