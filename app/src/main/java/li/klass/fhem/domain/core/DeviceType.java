@@ -68,6 +68,7 @@ import li.klass.fhem.domain.ESA2000Device;
 import li.klass.fhem.domain.EnOceanDevice;
 import li.klass.fhem.domain.FBCallmonitorDevice;
 import li.klass.fhem.domain.FBDectDevice;
+import li.klass.fhem.domain.FHEMWEBDevice;
 import li.klass.fhem.domain.FHT8VDevice;
 import li.klass.fhem.domain.FHTDevice;
 import li.klass.fhem.domain.FRMInDevice;
@@ -207,7 +208,8 @@ public enum DeviceType {
     CM160("CM160", CM160Device.class),
     BMP180("I2C_BMP180", BMP180Device.class),
     SHT21("I2C_SHT21", SHT21Device.class),
-    PCA9532("I2C_PCA9532", PCA9532Device.class, new PCA9532DeviceAdapter())
+    PCA9532("I2C_PCA9532", PCA9532Device.class, new PCA9532DeviceAdapter()),
+    FHEMWEB("FHEMWEB", FHEMWEBDevice.class)
     ;
 
     private String xmllistTag;

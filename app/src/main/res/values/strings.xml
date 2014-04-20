@@ -201,6 +201,10 @@
     <string name="activateScene">Scene %s</string>
     <string name="cost">Cost</string>
     <string name="co2">CO2</string>
+    <string name="hiddenRooms">Hidden rooms</string>
+    <string name="hiddenGroups">Hidden groups</string>
+    <string name="sortRooms">Room sort</string>
+
 
     <string name="connectionManage">Manage</string>
     <string name="connectionCreate">Create a new connection</string>
@@ -406,7 +410,7 @@
     <string name="shop_buyPemium">Buy andFHEM Premium</string>
     <string name="premium_multipleConnections">AndFHEM Premium is required to use more than one connection.</string>
 
-    <string name="blank"></string>
+    <string name="blank" translatable="false"></string>
     <string name="deviceListEmpty">No matching devices found!</string>
 
     <string name="widget_small">andFHEM Small</string>

@@ -48,7 +48,9 @@ import li.klass.fhem.R;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.PreferenceKeys;
+import li.klass.fhem.domain.FHEMWEBDevice;
 import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.DeviceType;
 import li.klass.fhem.domain.core.RoomDeviceList;
 import li.klass.fhem.exception.AndFHEMException;
 import li.klass.fhem.exception.CommandExecutionException;
@@ -162,6 +164,7 @@ public class RoomListService extends AbstractService {
                 roomNames.addAll(deviceRooms);
             }
         }
+        roomNames.removeAll(roomDeviceList.getHiddenRooms());
 
         return Lists.newArrayList(roomNames);
     }
@@ -192,13 +195,31 @@ public class RoomListService extends AbstractService {
     public RoomDeviceList getDeviceListForRoom(String roomName, long updatePeriod) {
         RoomDeviceList roomDeviceList = new RoomDeviceList(roomName);
 
-        for (Device device : getRoomDeviceList(updatePeriod).getAllDevices()) {
+        RoomDeviceList allRoomDeviceList = getRoomDeviceList(updatePeriod);
+        for (Device device : allRoomDeviceList.getAllDevices()) {
             if (device.isInRoom(roomName)) {
                 roomDeviceList.addDevice(device);
             }
         }
+        roomDeviceList.setHiddenGroups(allRoomDeviceList.getHiddenGroups());
+        roomDeviceList.setHiddenRooms(allRoomDeviceList.getHiddenRooms());
 
         return roomDeviceList;
+    }
+
+    private void fillHiddenRoomsAndHiddenGroups(RoomDeviceList newRoomDeviceList,
+                                                FHEMWEBDevice fhemwebDevice) {
+        newRoomDeviceList.setHiddenGroups(fhemwebDevice.getHiddenGroups());
+        newRoomDeviceList.setHiddenRooms(fhemwebDevice.getHiddenRooms());
+    }
+
+    private FHEMWEBDevice findFHEMWEBDevice(RoomDeviceList allRoomDeviceList) {
+        List<Device> devicesOfType = allRoomDeviceList.getDevicesOfType(DeviceType.FHEMWEB);
+        if (! devicesOfType.isEmpty()) {
+            return (FHEMWEBDevice) devicesOfType.get(0);
+        } else {
+            return new FHEMWEBDevice();
+        }
     }
 
     /**
@@ -238,6 +259,7 @@ public class RoomListService extends AbstractService {
                         sendBroadcastWithAction(Actions.SHOW_UPDATING_DIALOG, null);
                         try {
                             deviceList = getRemoteRoomDeviceListMap();
+                            fillHiddenRoomsAndHiddenGroups(deviceList, findFHEMWEBDevice(deviceList));
                         } finally {
                             currentlyUpdating.set(false);
                             sendBroadcastWithAction(Actions.DISMISS_UPDATING_DIALOG, null);

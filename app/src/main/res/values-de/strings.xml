@@ -157,6 +157,8 @@
     <string name="newInterval">Neues Intervall</string>
     <string name="price">Preis</string>
     <string name="energy">Energie</string>
+    <string name="voltage">Spannung</string>
+    <string name="current">Stromstärke</string>
     <string name="cumulativeUsage">Gesamtzählerstand</string>
     <string name="saturation">Sättigung</string>
     <string name="hue">Farbton</string>
@@ -198,6 +200,9 @@
     <string name="activateScene">Szene %s</string>
     <string name="cost">Kosten</string>
     <string name="co2">CO2</string>
+    <string name="hiddenRooms">Versteckte Räume</string>
+    <string name="hiddenGroups">Versteckte Gruppen</string>
+    <string name="sortRooms">Raumsortierung</string>
 
     <string name="connectionManage">Verwalten</string>
     <string name="connectionCreate">Neue Verbindung erstellen</string>
@@ -273,6 +278,7 @@
     <string name="prefGCMProjectId">GCM Projektnummer</string>
     <string name="prefGcmWidgetUpdate">Widget-Aktualisierug bei GCM-Nachricht</string>
     <string name="prefStartupView">Start-Ansicht</string>
+    <string name="prefStartupViewSummary">Ansicht, die beim Applikationsstart angezeigt wird.</string>
     <string name="prefConnectionTimeout">Verbindungs-Wartezeit</string>
     <string name="prefCommandExecutionRetries">Kommando Wiederholungen</string>
     <string name="prefCommandExecutionRetriesSummary">Anzahl, wie oft ein Kommando nochmals gesendet wird, wenn die Ausführung fehlschlägt.</string>

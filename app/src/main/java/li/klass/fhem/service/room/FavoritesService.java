@@ -72,6 +72,9 @@ public class FavoritesService {
 
         RoomDeviceList allRoomsDeviceList = RoomListService.INSTANCE.getAllRoomsDeviceList(updatePeriod);
         RoomDeviceList favoritesList = new RoomDeviceList("favorites");
+        favoritesList.setHiddenGroups(allRoomsDeviceList.getHiddenGroups());
+        favoritesList.setHiddenRooms(allRoomsDeviceList.getHiddenRooms());
+
         Set<String> favoriteDeviceNames = getPreferences().getAll().keySet();
         for (String favoriteDeviceName : favoriteDeviceNames) {
             Device device = allRoomsDeviceList.getDeviceFor(favoriteDeviceName);

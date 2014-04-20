@@ -56,6 +56,10 @@ public class RoomDeviceList implements Serializable, Cloneable {
      */
     public static final String ALL_DEVICES_ROOM = "ALL_DEVICES_LIST";
 
+    private List<String> hiddenRooms = newArrayList();
+
+    private List<String> hiddenGroups = newArrayList();
+
     /**
      * Creates a new holder for a given room name.
      * @param roomName room.
@@ -175,6 +179,22 @@ public class RoomDeviceList implements Serializable, Cloneable {
 
     public String getRoomName() {
         return roomName;
+    }
+
+    public List<String> getHiddenGroups() {
+        return hiddenGroups;
+    }
+
+    public List<String> getHiddenRooms() {
+        return hiddenRooms;
+    }
+
+    public void setHiddenRooms(List<String> hiddenRooms) {
+        this.hiddenRooms = hiddenRooms;
+    }
+
+    public void setHiddenGroups(List<String> hiddenGroups) {
+        this.hiddenGroups = hiddenGroups;
     }
 
     @Override

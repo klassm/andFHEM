@@ -29,7 +29,7 @@
         <item>FHEMWEB</item>
     </string-array>
 
-    <string-array name="dataOriginValues">
+    <string-array name="dataOriginValues" translatable="false">
         <item>DUMMYDATA</item>
         <item>TELNET</item>
         <item>FHEMWEB</item>
@@ -43,7 +43,7 @@
         <item>36 hours</item>
         <item>48 hours</item>
     </string-array>
-    <string-array name="graphDefaultTimespanValues">
+    <string-array name="graphDefaultTimespanValues" translatable="false">
         <item>4</item>
         <item>8</item>
         <item>12</item>
@@ -68,7 +68,7 @@
         <item>never</item>
     </string-array>
 
-    <string-array name="widgetUpdateTimeValues">
+    <string-array name="widgetUpdateTimeValues" translatable="false">
         <item>300</item>
         <!-- 5 minutes -->
         <item>600</item>
@@ -112,7 +112,7 @@
         <item>48 hours</item>
     </string-array>
 
-    <string-array name="updateRoomListTimeValues">
+    <string-array name="updateRoomListTimeValues" translatable="false">
         <item>-1</item>
         <item>60000</item>
         <item>300000</item>
@@ -137,7 +137,7 @@
         <item>Room List</item>
     </string-array>
 
-    <string-array name="startupViewsValues">
+    <string-array name="startupViewsValues" translatable="false">
         <item>FAVORITES</item>
         <item>ALL_DEVICES</item>
         <item>ROOM_LIST</item>

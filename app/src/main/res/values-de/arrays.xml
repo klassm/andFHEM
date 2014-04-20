@@ -23,6 +23,12 @@
   -->
 
 <resources>
+    <string-array name="dataOriginEntries">
+        <item>Dummy-Daten</item>
+        <item>Telnet</item>
+        <item>FHEMWEB</item>
+    </string-array>
+
     <string-array name="graphDefaultTimespanEntries">
         <item>4 Stunden</item>
         <item>8 Stunden</item>

@@ -217,6 +217,15 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
         return getRooms().contains(room);
     }
 
+    public boolean isInAnyRoomOf(List<String> rooms) {
+        for (String room : rooms) {
+            if (isInRoom(room)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void setName(String name) {
         this.name = name;
     }

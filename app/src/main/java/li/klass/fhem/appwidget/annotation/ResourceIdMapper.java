@@ -159,6 +159,9 @@ public enum ResourceIdMapper {
     sunshine(R.string.sunshine),
     cost(R.string.cost),
     co2(R.string.co2),
+    hiddenRooms(R.string.hiddenRooms),
+    hiddenGroups(R.string.hiddenGroups),
+    sortRooms(R.string.sortRooms),
 
     blank(R.string.blank),
     none(-1);
