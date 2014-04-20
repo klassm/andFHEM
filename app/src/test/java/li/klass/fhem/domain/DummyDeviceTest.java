@@ -127,6 +127,14 @@ public class DummyDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getRGBColor(), is(16755457));
     }
 
+    @Test
+    public void testOnOffEventMapDevice() {
+        DummyDevice device = getDeviceFor("onOffEventMap");
+
+        assertThat(device.supportsToggle(), is(true));
+        assertThat(device.isOnByState(), is(true));
+    }
+
     @Override
     protected String getFileName() {
         return "dummy.xml";

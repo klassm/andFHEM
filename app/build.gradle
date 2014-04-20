@@ -25,12 +25,8 @@
 buildscript {
     repositories {
         mavenCentral()
-        maven {
-            url 'https://oss.sonatype.org/content/repositories/snapshots/'
-        }
-        maven {
-            url 'https://raw.github.com/eburtsev/gdata-maven/master'
-        }
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
+        maven { url 'https://raw.github.com/eburtsev/gdata-maven/master' }
     }
 
     dependencies {
@@ -56,14 +52,11 @@ apply plugin: 'android-test'
 
 repositories {
     mavenCentral()
-    maven {
-        url 'https://oss.sonatype.org/content/repositories/snapshots/'
-    }
+    maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
 }
 
 dependencies {
     compile fileTree(dir: './libs', include: '*.jar')
-
     compile 'com.actionbarsherlock:actionbarsherlock:4.4.0@aar'
     compile 'com.android.support:support-v4:13.0.+'
     compile 'org.apache.commons:commons-io:1.3.2'
@@ -71,12 +64,10 @@ dependencies {
     compile 'com.google.code.gson:gson:2.2.4'
     compile 'com.google.guava:guava:16.0.1'
     compile 'org.apache.commons:commons-lang3:3.2.1'
-
     testCompile 'org.hamcrest:hamcrest-all:1.3'
     testCompile 'junit:junit:4.10'
     testCompile 'org.robolectric:robolectric:2.1.+'
     testCompile 'com.squareup:fest-android:1.0.+'
-
     // make buggy android studio resolve test dependencies...
     androidTestCompile 'org.hamcrest:hamcrest-all:1.3'
     androidTestCompile 'junit:junit:4.10'
@@ -86,7 +77,7 @@ dependencies {
 
 android {
     compileSdkVersion 17
-    buildToolsVersion "19.0.0"
+    buildToolsVersion '19.0.0'
 
     defaultConfig {
         minSdkVersion 7

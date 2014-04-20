@@ -99,5 +99,15 @@
             <ATTR key="webCmd" value="rgb:rgb FFAB01:rgb C8FF12:rgb 0000FF:toggle:on:off"/>
             <STATE key="state" value="rgb FFAB01" measured="2013-11-29 13:17:19"/>
         </dummy>
+        <dummy_LIST>
+            <dummy name="onOffEventMap" state="Hoch" sets="Hoch Runter  " attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings setList event-on-change-reading event-on-update-reading event-min-interval stateFormat alias_map always_hidden custom_graph devStateIcon devStateStyle fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon invertState measured-temp offDevice onDevice onOffDevice sortby structexclude toggleDevice webCmd webcmdDevice">
+                <INT key="CFGFN" value=""/>
+                <INT key="NAME" value="onOffEventMap"/>
+                <INT key="NR" value="742"/>
+                <INT key="STATE" value="Hoch"/>
+                <INT key="TYPE" value="dummy"/>
+                <ATTR key="eventMap" value="on:Hoch off:Runter"/>
+            </dummy>
+        </dummy_LIST>
     </dummy_LIST>
 </FHZINFO>

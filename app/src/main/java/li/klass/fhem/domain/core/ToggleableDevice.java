@@ -63,7 +63,8 @@ public abstract class ToggleableDevice<T extends Device> extends Device<T> {
 
     public boolean supportsToggle() {
         return getSetList().contains("on", "off") ||
-                contains(getWebCmd(), "on", "off");
+                contains(getWebCmd(), "on", "off") ||
+                eventMap.containsKey("on") && eventMap.containsKey("off");
     }
 
     public void readONOFFDEVICE(String value) {

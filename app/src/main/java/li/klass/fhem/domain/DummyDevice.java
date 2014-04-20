@@ -52,11 +52,6 @@ public class DummyDevice extends DimmableContinuousStatesDevice<DummyDevice> {
     }
 
     @Override
-    public boolean isOnByState() {
-        return super.isOnByState() || getState().equalsIgnoreCase("on");
-    }
-
-    @Override
     public void afterDeviceXMLRead() {
         super.afterDeviceXMLRead();
 
