@@ -119,6 +119,7 @@ import li.klass.fhem.domain.TRXDevice;
 import li.klass.fhem.domain.TRXLightDevice;
 import li.klass.fhem.domain.TRXSecurityDevice;
 import li.klass.fhem.domain.TRXWeatherDevice;
+import li.klass.fhem.domain.ThresholdDevice;
 import li.klass.fhem.domain.TwilightDevice;
 import li.klass.fhem.domain.USBWXDevice;
 import li.klass.fhem.domain.UniRollDevice;
@@ -209,7 +210,8 @@ public enum DeviceType {
     BMP180("I2C_BMP180", BMP180Device.class),
     SHT21("I2C_SHT21", SHT21Device.class),
     PCA9532("I2C_PCA9532", PCA9532Device.class, new PCA9532DeviceAdapter()),
-    FHEMWEB("FHEMWEB", FHEMWEBDevice.class)
+    FHEMWEB("FHEMWEB", FHEMWEBDevice.class),
+    THRESHOLD("THRESHOLD", ThresholdDevice.class)
     ;
 
     private String xmllistTag;
