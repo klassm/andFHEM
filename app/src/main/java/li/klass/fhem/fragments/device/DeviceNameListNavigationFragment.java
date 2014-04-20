@@ -29,7 +29,6 @@ import android.os.Bundle;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.core.Device;
-import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.fragments.FragmentType;
 
 /**
@@ -47,7 +46,7 @@ public class DeviceNameListNavigationFragment extends DeviceNameListFragment {
     }
 
     @Override
-    protected void onDeviceNameClick(DeviceFunctionality parent, Device<?> child) {
+    protected void onDeviceNameClick(String parent, Device<?> child) {
         if (child == null) return;
 
         Intent intent = new Intent(Actions.SHOW_FRAGMENT);

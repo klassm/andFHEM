@@ -41,7 +41,6 @@ import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.PreferenceKeys;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.domain.core.Device;
-import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.RoomDeviceList;
 import li.klass.fhem.fragments.core.BaseFragment;
 import li.klass.fhem.util.ApplicationProperties;
@@ -100,7 +99,7 @@ public abstract class DeviceNameListFragment extends BaseFragment {
         adapter.registerOnClickObserver(new GridViewWithSections.GridViewWithSectionsOnClickObserver() {
             @Override
             public void onItemClick(View view, Object parent, Object child, int parentPosition, int childPosition) {
-                onDeviceNameClick((DeviceFunctionality) parent, (Device<?>) child);
+                onDeviceNameClick((String) parent, (Device<?>) child);
             }
         });
         deviceList.setAdapter(adapter);
@@ -108,7 +107,7 @@ public abstract class DeviceNameListFragment extends BaseFragment {
         return view;
     }
 
-    protected abstract void onDeviceNameClick(DeviceFunctionality parent, Device<?> child);
+    protected abstract void onDeviceNameClick(String parent, Device<?> child);
 
     private RoomDeviceList filterDevices(RoomDeviceList roomDeviceList) {
         RoomDeviceList filteredList = new RoomDeviceList(roomDeviceList.getRoomName());

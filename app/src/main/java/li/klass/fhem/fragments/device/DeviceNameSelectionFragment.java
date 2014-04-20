@@ -32,7 +32,6 @@ import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.domain.core.Device;
-import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.RoomDeviceList;
 import li.klass.fhem.util.DialogUtil;
 
@@ -53,7 +52,7 @@ public class DeviceNameSelectionFragment extends DeviceNameListFragment {
     }
 
     @Override
-    protected void onDeviceNameClick(DeviceFunctionality parent, Device<?> child) {
+    protected void onDeviceNameClick(String parent, Device<?> child) {
         if (child == null) return;
 
         if (resultReceiver != null) {
