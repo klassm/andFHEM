@@ -50,7 +50,7 @@ public abstract class ToggleableDevice<T extends Device> extends Device<T> {
         if (internalState == null) return false;
 
         return internalState.equalsIgnoreCase(getOnStateName())
-                || internalState.equalsIgnoreCase(eventMap.get(getOnStateName()));
+                || internalState.equalsIgnoreCase(eventMapReverse.get(getOnStateName()));
 
     }
 
