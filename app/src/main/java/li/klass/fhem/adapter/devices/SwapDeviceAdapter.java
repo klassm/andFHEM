@@ -56,7 +56,7 @@ public class SwapDeviceAdapter extends ToggleableAdapterWithSwitchActionRow<SWAP
             @Override
             public void onFieldNameAdded(final Context context, TableLayout tableLayout, String field,
                                          final SWAPDevice device, TableRow fieldTableRow) {
-                tableLayout.addView(new ColorPickerRow(0, R.string.hue) {
+                tableLayout.addView(new ColorPickerRow(device.getRgb(), R.string.hue) {
                     @Override
                     public void onColorChange(int color) {
                         String targetHexString = StringUtil.prefixPad(

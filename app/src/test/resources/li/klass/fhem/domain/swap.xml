@@ -123,7 +123,7 @@ devStateIcon icon sortby webCmd">
             <ATTR key="alias" value="LED_Bad"/>
             <ATTR key="room" value="HUEDevice"/>
             <ATTR key="webCmd" value="rgb:rgb ff0000:rgb 00ff00:rgb 0000ff:toggle:on:off:dimUp:dimDown"/>
-            <STATE key="0B-RGBlevel" value="00000000" measured="2014-02-06 13:03:41"/>
+            <STATE key="0B-RGBlevel" value="FFFF00F0" measured="2014-02-06 13:03:41"/>
             <STATE key="0B.1-Red" value="00" measured="2014-02-06 13:03:41"/>
             <STATE key="0B.2-Green" value="00" measured="2014-02-06 13:03:41"/>
             <STATE key="0B.3-Blue" value="00" measured="2014-02-06 13:03:41"/>

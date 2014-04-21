@@ -28,6 +28,7 @@ import org.junit.Test;
 
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 
+import static li.klass.fhem.util.NumberSystemUtil.hexToDecimal;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.core.Is.is;
@@ -48,6 +49,7 @@ public class SWAPDeviceTest extends DeviceXMLParsingBase {
         SWAPDevice device = getDeviceFor("SWAP_05");
         assertThat(device, is(notNullValue()));
         assertThat(device.supportsRGB(), is(true));
+        assertThat(device.getRgb(), is(hexToDecimal("FF00F0")));
     }
 
     @Override
