@@ -162,6 +162,8 @@ public enum ResourceIdMapper {
     hiddenRooms(R.string.hiddenRooms),
     hiddenGroups(R.string.hiddenGroups),
     sortRooms(R.string.sortRooms),
+    pwm0(R.string.pwm0),
+    pwm1(R.string.pwm1),
 
     blank(R.string.blank),
     none(-1);

@@ -204,6 +204,8 @@
     <string name="hiddenRooms">Hidden rooms</string>
     <string name="hiddenGroups">Hidden groups</string>
     <string name="sortRooms">Room sort</string>
+    <string name="pwm0">PWM0</string>
+    <string name="pwm1">PWM1</string>
 
 
     <string name="connectionManage">Manage</string>

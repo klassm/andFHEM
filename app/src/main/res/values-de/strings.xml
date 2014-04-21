@@ -203,6 +203,8 @@
     <string name="hiddenRooms">Versteckte Räume</string>
     <string name="hiddenGroups">Versteckte Gruppen</string>
     <string name="sortRooms">Raumsortierung</string>
+    <string name="pwm0">PWM0</string>
+    <string name="pwm1">PWM1</string>
 
     <string name="connectionManage">Verwalten</string>
     <string name="connectionCreate">Neue Verbindung erstellen</string>

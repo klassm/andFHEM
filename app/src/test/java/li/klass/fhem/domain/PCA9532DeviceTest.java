@@ -48,6 +48,9 @@ public class PCA9532DeviceTest extends DeviceXMLParsingBase {
                 entry("Port4", false),
                 entry("Port5", false)
         );
+
+        assertThat(device.getPwm0()).isEqualTo(128);
+        assertThat(device.getPwm1()).isEqualTo(129);
     }
 
     @Override

@@ -28,14 +28,20 @@ import org.w3c.dom.NamedNodeMap;
 
 import java.util.Map;
 
+import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceFunctionality;
+import li.klass.fhem.domain.genericview.ShowField;
 
 import static com.google.common.collect.Maps.newHashMap;
+import static li.klass.fhem.util.ValueExtractUtil.extractLeadingInt;
 
 public class PCA9532Device extends Device<PCA9532Device> {
 
     private Map<String, Boolean> portsIsOnMap = newHashMap();
+
+    private int pwm0;
+    private int pwm1;
 
     @Override
     public void onChildItemRead(String tagName, String key, String value, NamedNodeMap attributes) {
@@ -46,6 +52,24 @@ public class PCA9532Device extends Device<PCA9532Device> {
                     key.replace("PORT", "Port"),
                     value.equalsIgnoreCase("on") || value.equalsIgnoreCase("1"));
         }
+    }
+
+    public void readPWM0(String value) {
+        pwm0 = extractLeadingInt(value);
+    }
+
+    public void readPWM1(String value) {
+        pwm1 = extractLeadingInt(value);
+    }
+
+    @ShowField(description = ResourceIdMapper.pwm0)
+    public int getPwm0() {
+        return pwm0;
+    }
+
+    @ShowField(description = ResourceIdMapper.pwm1)
+    public int getPwm1() {
+        return pwm1;
     }
 
     @Override

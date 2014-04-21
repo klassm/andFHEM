@@ -51,7 +51,7 @@ icon sortby webCmd">
             <ATTR key="IODev" value="RPiI2C"/>
             <ATTR key="InputPorts" value="0 1 2"/>
             <STATE key="PWM0" value="128" measured="2014-04-06 23:37:29"/>
-            <STATE key="PWM1" value="128" measured="2014-04-06 23:37:29"/>
+            <STATE key="PWM1" value="129" measured="2014-04-06 23:37:29"/>
             <STATE key="Port0" value="1" measured="2014-04-06 23:37:29"/>
             <STATE key="Port1" value="0" measured="2014-04-06 23:37:29"/>
             <STATE key="Port2" value="1" measured="2014-04-06 23:37:29"/>

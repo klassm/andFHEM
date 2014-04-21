@@ -26,10 +26,12 @@ package li.klass.fhem.adapter.devices.genericui;
 
 import android.content.Context;
 import android.content.Intent;
+
 import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.setlist.SetListSliderValue;
 
 public class StateChangingSeekBar<D extends Device<D>> extends SeekBarActionRowFullWidthAndButton<D> {
 
@@ -39,10 +41,16 @@ public class StateChangingSeekBar<D extends Device<D>> extends SeekBarActionRowF
         this(context, initialProgress, 0, maximumProgress, commandAttribute);
     }
 
+
+    public StateChangingSeekBar(Context context, int initialProgress, SetListSliderValue sliderValue, String commandAttribute) {
+        this(context, initialProgress, sliderValue.getStart(), sliderValue.getStop(), commandAttribute);
+    }
+
     public StateChangingSeekBar(Context context, int initialProgress, int minimumProgress, int maximumProgress, String commandAttribute) {
         super(context, initialProgress, minimumProgress, maximumProgress);
         this.commandAttribute = commandAttribute;
     }
+
 
     @Override
     public void onButtonSetValue(D device, int value) {

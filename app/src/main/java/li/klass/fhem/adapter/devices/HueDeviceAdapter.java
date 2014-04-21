@@ -68,7 +68,6 @@ public class HueDeviceAdapter extends DimmableAdapter<HUEDevice> {
                                 Integer.toHexString(color),
                                 "0", 6
                         );
-                        System.out.println(targetHexString);
 
                         Intent intent = new Intent(Actions.DEVICE_SET_SUB_STATE);
                         intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
