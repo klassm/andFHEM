@@ -36,6 +36,7 @@ import li.klass.fhem.adapter.devices.LightSceneAdapter;
 import li.klass.fhem.adapter.devices.MaxAdapter;
 import li.klass.fhem.adapter.devices.OwSwitchDeviceAdapter;
 import li.klass.fhem.adapter.devices.PCA9532DeviceAdapter;
+import li.klass.fhem.adapter.devices.PCF8574DeviceAdapter;
 import li.klass.fhem.adapter.devices.PidAdapter;
 import li.klass.fhem.adapter.devices.ReadingsProxyDeviceAdapter;
 import li.klass.fhem.adapter.devices.RemoteControlAdapter;
@@ -101,6 +102,7 @@ import li.klass.fhem.domain.OwtempDevice;
 import li.klass.fhem.domain.OwthermDevice;
 import li.klass.fhem.domain.PCA301Device;
 import li.klass.fhem.domain.PCA9532Device;
+import li.klass.fhem.domain.PCF8574Device;
 import li.klass.fhem.domain.PIDDevice;
 import li.klass.fhem.domain.PilightDevice;
 import li.klass.fhem.domain.PresenceDevice;
@@ -210,6 +212,7 @@ public enum DeviceType {
     BMP180("I2C_BMP180", BMP180Device.class),
     SHT21("I2C_SHT21", SHT21Device.class),
     PCA9532("I2C_PCA9532", PCA9532Device.class, new PCA9532DeviceAdapter()),
+    PCF8574("I2C_PCF8574", PCF8574Device.class, new PCF8574DeviceAdapter()),
     FHEMWEB("FHEMWEB", FHEMWEBDevice.class),
     THRESHOLD("THRESHOLD", ThresholdDevice.class)
     ;
