@@ -39,6 +39,7 @@ import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ValueDescriptionUtil;
 
+import static li.klass.fhem.service.graph.description.SeriesType.DEWPOINT;
 import static li.klass.fhem.service.graph.description.SeriesType.HUMIDITY;
 import static li.klass.fhem.service.graph.description.SeriesType.TEMPERATURE;
 
@@ -52,6 +53,8 @@ public class CULWSDevice extends Device<CULWSDevice> {
     @ShowField(description = ResourceIdMapper.temperature, showInOverview = true)
     @WidgetTemperatureField
     private String temperature;
+    @ShowField(description = ResourceIdMapper.dewpoint)
+    private String dewpoint;
 
     public void readTEMPERATURE(String value) {
         this.temperature = ValueDescriptionUtil.appendTemperature(value);
@@ -61,6 +64,9 @@ public class CULWSDevice extends Device<CULWSDevice> {
         this.humidity = ValueDescriptionUtil.appendPercent(value);
     }
 
+    public void readDEWPOINT(String value) {
+        this.dewpoint = ValueDescriptionUtil.appendTemperature(value);
+    }
 
     public String getHumidity() {
         return humidity;
@@ -74,7 +80,14 @@ public class CULWSDevice extends Device<CULWSDevice> {
     protected void fillDeviceCharts(List<DeviceChart> chartSeries) {
         super.fillDeviceCharts(chartSeries);
 
-        if (humidity != null) {
+        if (humidity != null && dewpoint != null) {
+            addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureHumidityDewpointGraph,
+                    ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:T:0:",
+                            "temperature", TEMPERATURE),
+                    new ChartSeriesDescription(R.string.humidity, "6:H:0", "humidity", HUMIDITY),
+                    new ChartSeriesDescription(R.string.dewpoint, "8:D\\x3a:0:", "dewpoint", DEWPOINT)
+            ), temperature, humidity, dewpoint);
+        } else if (humidity != null) {
             addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureHumidityGraph,
                     ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:T:0:",
                             "temperature", TEMPERATURE),
