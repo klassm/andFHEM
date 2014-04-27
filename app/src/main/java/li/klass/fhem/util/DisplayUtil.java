@@ -23,32 +23,40 @@
 
 package li.klass.fhem.util;
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.res.Resources;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
+import android.view.WindowManager;
+
 import li.klass.fhem.AndFHEMApplication;
 
 public class DisplayUtil {
-    /**
-     * @return either the x or the y dimension in dp. Which dimension is returned depends on whether x or y is bigger.
-     */
-    public static int getLargestDimensionInDP(Activity activity) {
-        DisplayMetrics metrics = getDisplayMetrics(activity);
-        int heightPixels = metrics.heightPixels;
-        int widthPixels = metrics.widthPixels;
-
-        int largerDimension = heightPixels > widthPixels ? heightPixels : widthPixels;
-        return (int) (largerDimension * metrics.density);
+    public static int getLargestDimensionInDP() {
+        return (int) dpToPx(getLargestDimensionInPx());
     }
 
-    public static int getWidthInDP(Activity activity) {
-        return getDisplayMetrics(activity).widthPixels;
+    public static int getLargestDimensionInPx() {
+        DisplayMetrics metrics = getDisplayMetrics();
+
+        return metrics.heightPixels > metrics.widthPixels ? metrics.heightPixels : metrics.widthPixels;
     }
 
-    private static DisplayMetrics getDisplayMetrics(Activity activity) {
+    public static int getSmallestDimensionInPx() {
+        DisplayMetrics metrics = getDisplayMetrics();
+
+        return metrics.heightPixels < metrics.widthPixels ? metrics.heightPixels : metrics.widthPixels;
+    }
+
+    public static int getWidthInDP() {
+        return getDisplayMetrics().widthPixels;
+    }
+
+    private static DisplayMetrics getDisplayMetrics() {
+        Context context = AndFHEMApplication.getContext();
+        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         DisplayMetrics metrics = new DisplayMetrics();
-        activity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        windowManager.getDefaultDisplay().getMetrics(metrics);
 
         return metrics;
     }

@@ -24,11 +24,20 @@
 package li.klass.fhem.widget;
 
 import android.content.Context;
-import android.graphics.*;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.LinearGradient;
+import android.graphics.Paint;
+import android.graphics.Region;
+import android.graphics.Shader;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.RelativeLayout;
+
+import li.klass.fhem.util.DisplayUtil;
 import li.klass.fhem.util.ValueDescriptionUtil;
+
+import static li.klass.fhem.util.DisplayUtil.dpToPx;
 
 public class LitreContentView extends View {
 
@@ -38,17 +47,19 @@ public class LitreContentView extends View {
 
     public static final int DARK_BLUE = 0xFF0808ff;
     public static final int LIGHT_BLUE = 0XFFC3E6FF;
-    public static final int WIDTH = 150;
-    public static final int HEIGHT = 150;
 
     public static final int BORDER_WIDTH = 3;
+
     private double fillPercentage;
+    private int size;
+
+    public static final int FONT_SIZE_DP = 15;
 
     static {
         WHITE_PAINT.setColor(Color.WHITE);
 
         TEXT_PAINT.setColor(Color.RED);
-        TEXT_PAINT.setTextSize(18);
+        TEXT_PAINT.setTextSize(dpToPx(FONT_SIZE_DP));
         TEXT_PAINT.setTextAlign(Paint.Align.CENTER);
 
         BORDER_PAINT.setStyle(Paint.Style.STROKE);
@@ -73,7 +84,9 @@ public class LitreContentView extends View {
     }
 
     private void init() {
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(WIDTH, HEIGHT);
+        size = DisplayUtil.getSmallestDimensionInPx() / 3;
+
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(size, size);
         params.rightMargin = 0;
         setLayoutParams(params);
     }
@@ -83,11 +96,11 @@ public class LitreContentView extends View {
         super.onDraw(canvas);
         int xStart = 0;
 
-        int innerCircleYCenter = (int) (HEIGHT * 0.6);
-        int innerCircleXCenter = xStart + WIDTH / 2;
-        int innerCircleRadius = HEIGHT - innerCircleYCenter - BORDER_WIDTH;
+        int innerCircleYCenter = (int) (size * 0.6);
+        int innerCircleXCenter = xStart + size / 2;
+        int innerCircleRadius = size - innerCircleYCenter - BORDER_WIDTH;
 
-        int topDimension = WIDTH / 10;
+        int topDimension = size / 10;
 
         drawFillstateCircle(canvas, innerCircleRadius, innerCircleYCenter, innerCircleXCenter, xStart);
         drawTop(canvas, innerCircleYCenter, innerCircleXCenter, innerCircleRadius, topDimension);
@@ -114,7 +127,7 @@ public class LitreContentView extends View {
         canvas.save();
 
         float contentHeight = (float) (2 * innerCircleRadius * fillPercentage);
-        canvas.clipRect(xStart, innerCircleYCenter + innerCircleRadius - contentHeight, innerCircleXCenter + innerCircleRadius, HEIGHT, Region.Op.REPLACE);
+        canvas.clipRect(xStart, innerCircleYCenter + innerCircleRadius - contentHeight, innerCircleXCenter + innerCircleRadius, size, Region.Op.REPLACE);
 
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setShader(new LinearGradient(0, 0, 0, getHeight(), DARK_BLUE, LIGHT_BLUE, Shader.TileMode.MIRROR));

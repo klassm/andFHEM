@@ -59,12 +59,13 @@ public class CULHMAdapter extends DimmableAdapter<CULHMDevice> {
         super.afterPropertiesSet();
         registerFieldListener("state", new FieldNameAddedToDetailListener<CULHMDevice>() {
             @Override
-            public void onFieldNameAdded(final Context context, TableLayout tableLayout, String field, final CULHMDevice device, TableRow fieldTableRow) {
+            public void onFieldNameAdded(final Context context, final TableLayout tableLayout, String field, final CULHMDevice device, TableRow fieldTableRow) {
                 switch (device.getSubType()) {
                     case FILL_STATE:
                         tableLayout.addView(new CustomViewTableRow() {
                             @Override
                             public View getContentView() {
+                                int width = tableLayout.getLayoutParams().width;
                                 return new LitreContentView(context, device.getFillContentPercentageRaw());
                             }
                         }.createRow(inflater));

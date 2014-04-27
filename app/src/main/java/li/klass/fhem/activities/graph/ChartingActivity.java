@@ -260,7 +260,7 @@ public class ChartingActivity extends SherlockActivity implements Updateable {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
         String title;
-        if (DisplayUtil.getWidthInDP(this) < 500) {
+        if (DisplayUtil.getWidthInDP() < 500) {
             title = device.getAliasOrName() + "\n\r" +
                     dateFormat.format(startDate.getTime()) + " - " + dateFormat.format(endDate.getTime());
             renderer.setMargins(new int[]{(int) dpToPx(50), (int) dpToPx(18), (int) dpToPx(20), (int) dpToPx(18)});
