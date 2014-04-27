@@ -666,8 +666,6 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
                 break;
 
             case POWERMETER:
-                System.out.println(currentUsage);
-                System.out.println(cumulativeUsage);
                 addDeviceChartIfNotNull(new DeviceChart(R.string.usageGraph,
                         new ChartSeriesDescription(R.string.currentUsage, "4:current:0", "current",
                                 SeriesType.CURRENT_USAGE_WATT)), currentUsage);
