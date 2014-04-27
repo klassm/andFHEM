@@ -35,6 +35,10 @@ import android.os.Handler;
 import android.os.ResultReceiver;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockActivity;
@@ -126,7 +130,6 @@ public class ChartingActivity extends SherlockActivity implements Updateable {
 
         Bundle extras = getIntent().getExtras();
         deviceName = extras.getString(DEVICE_NAME);
-
 
         seriesDescriptions = extras.getParcelableArrayList(DEVICE_GRAPH_SERIES_DESCRIPTIONS);
 
@@ -271,9 +274,36 @@ public class ChartingActivity extends SherlockActivity implements Updateable {
         }
         getSupportActionBar().setTitle(title);
 
-        GraphicalView timeChartView = ChartFactory.getTimeChartView(this, dataSet, renderer, "MM-dd HH:mm");
+        View view = LayoutInflater.from(this).inflate(R.layout.chart, null);
+        final LinearLayout chartLayout = (LinearLayout) view.findViewById(R.id.chart);
+        final GraphicalView timeChartView = ChartFactory.getTimeChartView(this, dataSet, renderer, "MM-dd HH:mm");
+        chartLayout.addView(timeChartView);
 
-        setContentView(timeChartView);
+        ImageButton zoomOutButton= (ImageButton) view.findViewById(R.id.zoomOut);
+        zoomOutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                timeChartView.zoomOut();
+            }
+        });
+
+        ImageButton zoomInButton= (ImageButton) view.findViewById(R.id.zoomIn);
+        zoomInButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                timeChartView.zoomIn();
+            }
+        });
+
+        ImageButton zoomResetButton= (ImageButton) view.findViewById(R.id.zoomReset);
+        zoomResetButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                timeChartView.zoomReset();
+            }
+        });
+
+        setContentView(view);
     }
 
     /**
@@ -403,15 +433,12 @@ public class ChartingActivity extends SherlockActivity implements Updateable {
      * @param renderer renderer
      */
     private void setRendererDefaults(XYMultipleSeriesRenderer renderer) {
-        renderer.setAxisTitleTextSize(16);
-        renderer.setChartTitleTextSize(20);
-        renderer.setLabelsTextSize(15);
-        renderer.setLegendTextSize(15);
         renderer.setPointSize(5f);
         renderer.setMargins(new int[]{20, 30, 15, 20});
         renderer.setShowGrid(true);
         renderer.setXLabelsAlign(Paint.Align.CENTER);
-        renderer.setZoomButtonsVisible(true);
+        renderer.setZoomButtonsVisible(false);
+        renderer.setExternalZoomEnabled(true);
         renderer.setXTitle(getResources().getString(R.string.time));
         renderer.setChartTitle("");
         renderer.setAxesColor(Color.WHITE);
