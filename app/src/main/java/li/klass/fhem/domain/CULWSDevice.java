@@ -80,14 +80,14 @@ public class CULWSDevice extends Device<CULWSDevice> {
     protected void fillDeviceCharts(List<DeviceChart> chartSeries) {
         super.fillDeviceCharts(chartSeries);
 
-        if (humidity != null && dewpoint != null) {
+        if (temperature != null && humidity != null && dewpoint != null) {
             addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureHumidityDewpointGraph,
                     ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:T:0:",
                             "temperature", TEMPERATURE),
                     new ChartSeriesDescription(R.string.humidity, "6:H:0", "humidity", HUMIDITY),
                     new ChartSeriesDescription(R.string.dewpoint, "8:D\\x3a:0:", "dewpoint", DEWPOINT)
             ), temperature, humidity, dewpoint);
-        } else if (humidity != null) {
+        } else if (temperature != null && humidity != null) {
             addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureHumidityGraph,
                     ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:T:0:",
                             "temperature", TEMPERATURE),

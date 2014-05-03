@@ -24,7 +24,7 @@ public enum SeriesType {
     PRESSURE_NN(Color.BLUE, R.string.yAxisPressureNN),
     RAIN_RATE(Color.RED, R.string.yAxisRainRate),
     RAIN_TOTAL(Color.RED, R.string.rainTotal),
-    DEWPOINT(Color.GREEN, R.string.yAxisTemperature),
+    DEWPOINT(Color.YELLOW, R.string.yAxisTemperature),
     POWER(Color.RED, R.string.yAxisEnergy),
     BRIGHTNESS(Color.RED, R.string.brightness),
     SUNSHINE(Color.BLUE, R.string.sunshine),
