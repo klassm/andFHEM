@@ -34,7 +34,6 @@ import java.util.List;
 import java.util.Map;
 
 import static com.google.common.collect.Lists.newArrayList;
-import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 public class SetList implements Serializable  {
@@ -66,10 +65,6 @@ public class SetList implements Serializable  {
 
     private SetListValue handleValue(String value) {
         String[] parts = value.split(",");
-
-        if (parts.length == 1 && ! isBlank(value)) {
-            return new SetListTypedValue(parts[0]);
-        }
 
         if (parts.length == 4 && parts[0].equals("slider")) {
             return new SetListSliderValue(parts);

@@ -51,7 +51,10 @@ public class SetListTest {
     public void testTypedValueSetList() {
         setList.parse("state:time");
         assertThat(setList.getEntries()).hasSize(1);
-        assertThat(setList.getEntries().get("state")).isEqualTo(new SetListTypedValue("time"));
+
+        SetListGroupValue state = (SetListGroupValue) setList.getEntries().get("state");
+        assertThat(state).isEqualTo(new SetListGroupValue("time"));
+        assertThat(state.asText()).isEqualTo("time");
     }
 
     @Test

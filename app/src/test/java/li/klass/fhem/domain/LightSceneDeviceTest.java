@@ -39,6 +39,13 @@ public class LightSceneDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getScenes()).contains("on", "off");
     }
 
+    @Test
+    public void testDeviceWithOnlyOneScene() {
+        LightSceneDevice device = getDeviceFor("device1");
+
+        assertThat(device.getScenes()).contains("absent");
+    }
+
     @Override
     protected String getFileName() {
         return "lightscene.xml";
