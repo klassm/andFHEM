@@ -76,8 +76,11 @@ import static li.klass.fhem.constants.Actions.RELOAD;
 import static li.klass.fhem.constants.Actions.SHOW_ALERT;
 import static li.klass.fhem.constants.Actions.SHOW_EXECUTING_DIALOG;
 import static li.klass.fhem.constants.Actions.SHOW_TOAST;
+import static li.klass.fhem.constants.BundleExtraKeys.FRAGMENT;
+import static li.klass.fhem.constants.BundleExtraKeys.FRAGMENT_NAME;
 import static li.klass.fhem.constants.BundleExtraKeys.HAS_FAVORITES;
 import static li.klass.fhem.constants.PreferenceKeys.STARTUP_VIEW;
+import static li.klass.fhem.fragments.FragmentType.getFragmentFor;
 
 public abstract class FragmentBaseActivity extends SherlockFragmentActivity implements Updateable {
 
@@ -168,11 +171,11 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
                             Bundle bundle = intent.getExtras();
                             if (bundle == null) throw new IllegalArgumentException("need a content fragment");
                             FragmentType fragmentType;
-                            if (bundle.containsKey(BundleExtraKeys.FRAGMENT)) {
-                                fragmentType = (FragmentType) bundle.getSerializable(BundleExtraKeys.FRAGMENT);
+                            if (bundle.containsKey(FRAGMENT)) {
+                                fragmentType = (FragmentType) bundle.getSerializable(FRAGMENT);
                             } else {
-                                String fragmentName = bundle.getString(BundleExtraKeys.FRAGMENT_NAME);
-                                fragmentType = FragmentType.getFragmentFor(fragmentName);
+                                String fragmentName = bundle.getString(FRAGMENT_NAME);
+                                fragmentType = getFragmentFor(fragmentName);
                             }
                             switchToFragment(fragmentType, intent.getExtras());
                         } else if (action.equals(Actions.DISMISS_UPDATING_DIALOG)) {
@@ -423,33 +426,28 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
     protected void onPostResume() {
         super.onPostResume();
         Log.e(TAG, "onPostResume()");
-        // process the intent received in onNewIntent()
-        if (waitingIntent == null || !waitingIntent.hasExtra(BundleExtraKeys.FRAGMENT_NAME)) {
-            return;
-        }
 
-        final String fragmentName = waitingIntent.getStringExtra(BundleExtraKeys.FRAGMENT_NAME);
-        Log.e(TAG, "resume waiting intent " + fragmentName);
+        if (waitingIntent != null) {
+            if (waitingIntent.hasExtra(FRAGMENT_NAME) || waitingIntent.hasExtra(FRAGMENT)) {
+                final Bundle extras = waitingIntent.getExtras();
+                if (waitingIntent.hasExtra(FRAGMENT_NAME)) {
+                    extras.putSerializable(FRAGMENT, getFragmentFor(waitingIntent.getStringExtra(FRAGMENT_NAME)));
+                }
 
-        int delay = 0;
-        if (isActivityStart) {
-            delay = 1000;
-        }
+                int delay = isActivityStart ? 1000 : 0;
 
-        final Bundle extras = waitingIntent.getExtras();
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Intent intent = new Intent(Actions.SHOW_FRAGMENT);
-
-                if (extras != null) intent.putExtras(extras);
-                intent.putExtra(BundleExtraKeys.FRAGMENT, FragmentType.getFragmentFor(fragmentName));
-                sendBroadcast(intent);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent intent = new Intent(Actions.SHOW_FRAGMENT);
+                        intent.putExtras(extras);
+                        sendBroadcast(intent);
+                    }
+                }, delay);
             }
-        }, delay);
 
-
-        waitingIntent = null;
+            waitingIntent = null;
+        }
     }
 
     @Override
@@ -509,7 +507,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
             finish();
             return;
         }
-        FragmentType contentFragmentType = FragmentType.getFragmentFor(contentFragment.getClass());
+        FragmentType contentFragmentType = getFragmentFor(contentFragment.getClass());
         while (true) {
             if (! getSupportFragmentManager().popBackStackImmediate()) {
                 finish();
@@ -522,7 +520,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
                 return;
             }
 
-            FragmentType currentFragmentType = FragmentType.getFragmentFor(current.getClass());
+            FragmentType currentFragmentType = getFragmentFor(current.getClass());
             if (currentFragmentType != contentFragmentType) {
                 break;
             }
@@ -637,7 +635,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
     }
 
     private boolean hasNavigation(BaseFragment navigationFragment, BaseFragment contentFragment) {
-        FragmentType fragmentType = FragmentType.getFragmentFor(contentFragment.getClass());
+        FragmentType fragmentType = getFragmentFor(contentFragment.getClass());
         View navigationView = findViewById(R.id.navigation);
         return navigationView != null && !(navigationFragment == null || fragmentType.getNavigationClass() == null);
     }
@@ -645,7 +643,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
     private boolean updateNavigationVisibility(BaseFragment navigationFragment, BaseFragment contentFragment) {
         if (contentFragment == null) return false;
 
-        FragmentType fragmentType = FragmentType.getFragmentFor(contentFragment.getClass());
+        FragmentType fragmentType = getFragmentFor(contentFragment.getClass());
 
         boolean hasNavigation = hasNavigation(navigationFragment, contentFragment);
         View navigationView = findViewById(R.id.navigation);
