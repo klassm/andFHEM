@@ -37,7 +37,9 @@ import li.klass.fhem.R;
 import li.klass.fhem.activities.base.DeviceNameSelectionActivity;
 import li.klass.fhem.domain.core.Device;
 
-import static li.klass.fhem.constants.BundleExtraKeys.*;
+import static li.klass.fhem.constants.BundleExtraKeys.DEVICE;
+import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_NAME;
+import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_TARGET_STATE;
 
 public class ConditionQueryLocaleSettingActivity extends Activity {
 
@@ -58,7 +60,7 @@ public class ConditionQueryLocaleSettingActivity extends Activity {
             }
         });
 
-        final EditText targetStateView = (EditText) findViewById(R.id.targetState);
+        final EditText targetStateView = (EditText) findViewById(R.id.targetStateText);
 
         Intent intent = getIntent();
         if (intent != null) {

@@ -39,7 +39,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import li.klass.fhem.R;
-import li.klass.fhem.activities.locale.LocaleIntentConstants;
 import li.klass.fhem.adapter.ConnectionListAdapter;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
@@ -47,6 +46,10 @@ import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.fhem.connection.FHEMServerSpec;
 import li.klass.fhem.fhem.connection.ServerType;
 
+import static li.klass.fhem.activities.locale.LocaleIntentConstants.EXTRA_BUNDLE;
+import static li.klass.fhem.activities.locale.LocaleIntentConstants.EXTRA_STRING_BLURB;
+import static li.klass.fhem.activities.locale.TaskerPlugin.Setting.hostSupportsOnFireVariableReplacement;
+import static li.klass.fhem.constants.Actions.EXECUTE_COMMAND;
 import static li.klass.fhem.constants.BundleExtraKeys.COMMAND;
 import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_ID;
 import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_LIST;
@@ -65,7 +68,7 @@ public class SendCommandLocaleSettingActivity extends Activity {
         final EditText commandView = (EditText) findViewById(R.id.fhemCommand);
 
         Intent intent = getIntent();
-        Bundle bundle = intent.getBundleExtra(LocaleIntentConstants.EXTRA_BUNDLE);
+        Bundle bundle = intent.getBundleExtra(EXTRA_BUNDLE);
         if (bundle != null && bundle.containsKey(COMMAND)) {
             if (bundle.containsKey(COMMAND)) {
                 commandView.setText(bundle.getString(COMMAND));
@@ -75,7 +78,7 @@ public class SendCommandLocaleSettingActivity extends Activity {
             }
         }
 
-        final Spinner spinner = (Spinner) findViewById(R.id.connectionList);
+        final Spinner spinner = (Spinner) findViewById(R.id.connectionListSpinner);
         final ConnectionListAdapter connectionListAdapter = new ConnectionListAdapter(this, new ArrayList<FHEMServerSpec>());
         spinner.setAdapter(connectionListAdapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -106,18 +109,23 @@ public class SendCommandLocaleSettingActivity extends Activity {
             @Override
             public void onClick(View view) {
                 Intent resultIntent = new Intent();
+
                 assert commandView != null;
                 String command = commandView.getText().toString();
 
-                resultIntent.putExtra(LocaleIntentConstants.EXTRA_STRING_BLURB, command);
+                resultIntent.putExtra(EXTRA_STRING_BLURB, command);
 
                 Bundle bundle = new Bundle();
-                bundle.putString(BundleExtraKeys.ACTION, Actions.EXECUTE_COMMAND);
+                bundle.putString(BundleExtraKeys.ACTION, EXECUTE_COMMAND);
                 bundle.putString(COMMAND, command);
-                resultIntent.putExtra(LocaleIntentConstants.EXTRA_BUNDLE, bundle);
+                resultIntent.putExtra(EXTRA_BUNDLE, bundle);
 
                 if (selectedId != null && ! CURRENT_CONNECTION_ID.equals(selectedId)) {
                     bundle.putString(CONNECTION_ID, selectedId);
+                }
+
+                if (hostSupportsOnFireVariableReplacement(SendCommandLocaleSettingActivity.this)) {
+                    TaskerPlugin.addRelevantVariableList(resultIntent, EXTRA_STRING_BLURB);
                 }
 
                 setResult(RESULT_OK, resultIntent);
@@ -151,7 +159,7 @@ public class SendCommandLocaleSettingActivity extends Activity {
     }
 
     private void selectConnection(ConnectionListAdapter connectionListAdapter) {
-        Spinner spinner = (Spinner) findViewById(R.id.connectionList);
+        Spinner spinner = (Spinner) findViewById(R.id.connectionListSpinner);
         List<FHEMServerSpec> data = connectionListAdapter.getData();
         for (int i = 0; i < data.size(); i++) {
             FHEMServerSpec spec = data.get(i);

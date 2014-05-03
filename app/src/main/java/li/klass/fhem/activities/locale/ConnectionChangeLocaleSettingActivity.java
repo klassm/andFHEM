@@ -38,7 +38,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import li.klass.fhem.R;
-import li.klass.fhem.activities.locale.LocaleIntentConstants;
 import li.klass.fhem.adapter.ConnectionListAdapter;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
@@ -69,7 +68,7 @@ public class ConnectionChangeLocaleSettingActivity extends Activity {
             }
         }
 
-        final Spinner spinner = (Spinner) findViewById(R.id.connectionList);
+        final Spinner spinner = (Spinner) findViewById(R.id.connectionListSpinner);
         final ConnectionListAdapter connectionListAdapter = new ConnectionListAdapter(this, new ArrayList<FHEMServerSpec>());
         spinner.setAdapter(connectionListAdapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -146,7 +145,7 @@ public class ConnectionChangeLocaleSettingActivity extends Activity {
     }
 
     private void selectConnection(ConnectionListAdapter connectionListAdapter) {
-        Spinner spinner = (Spinner) findViewById(R.id.connectionList);
+        Spinner spinner = (Spinner) findViewById(R.id.connectionListSpinner);
         List<FHEMServerSpec> data = connectionListAdapter.getData();
         for (int i = 0; i < data.size(); i++) {
             FHEMServerSpec spec = data.get(i);
