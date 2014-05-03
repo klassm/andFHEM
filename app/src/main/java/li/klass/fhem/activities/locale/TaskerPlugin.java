@@ -128,7 +128,7 @@ public class TaskerPlugin {
      *	@see #hostSupportsRelevantVariables(Bundle)
      *  @see #getRelevantVariableList(Bundle)
      */
-    private final static String	BUNDLE_KEY_RELEVANT_VARIABLES = BASE_KEY + ".RELEVANT_VARIABLES";
+    public final static String	BUNDLE_KEY_RELEVANT_VARIABLES = BASE_KEY + ".RELEVANT_VARIABLES";
 
     public static boolean hostSupportsRelevantVariables( Bundle extrasFromHost ) {
         return hostSupports( extrasFromHost,  EXTRA_HOST_CAPABILITY_RELEVANT_VARIABLES );

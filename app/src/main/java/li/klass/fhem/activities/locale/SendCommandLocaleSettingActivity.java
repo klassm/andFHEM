@@ -125,7 +125,7 @@ public class SendCommandLocaleSettingActivity extends Activity {
                 }
 
                 if (hostSupportsOnFireVariableReplacement(SendCommandLocaleSettingActivity.this)) {
-                    TaskerPlugin.addRelevantVariableList(resultIntent, EXTRA_STRING_BLURB);
+                    bundle.putStringArray(TaskerPlugin.BUNDLE_KEY_RELEVANT_VARIABLES, new String[] {COMMAND});
                 }
 
                 setResult(RESULT_OK, resultIntent);
