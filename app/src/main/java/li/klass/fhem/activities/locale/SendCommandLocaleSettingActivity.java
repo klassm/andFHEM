@@ -67,7 +67,7 @@ public class SendCommandLocaleSettingActivity extends Activity {
 
         final EditText commandView = (EditText) findViewById(R.id.fhemCommand);
 
-        Intent intent = getIntent();
+        final Intent intent = getIntent();
         Bundle bundle = intent.getBundleExtra(EXTRA_BUNDLE);
         if (bundle != null && bundle.containsKey(COMMAND)) {
             if (bundle.containsKey(COMMAND)) {
@@ -125,7 +125,7 @@ public class SendCommandLocaleSettingActivity extends Activity {
                 }
 
                 if (hostSupportsOnFireVariableReplacement(SendCommandLocaleSettingActivity.this)) {
-                    bundle.putStringArray(TaskerPlugin.BUNDLE_KEY_RELEVANT_VARIABLES, new String[] {COMMAND});
+                    TaskerPlugin.addRelevantVariableList(intent, new String[]{COMMAND});
                 }
 
                 setResult(RESULT_OK, resultIntent);
