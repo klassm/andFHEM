@@ -53,8 +53,6 @@ public abstract class DimmableContinuousStatesDevice<D extends Device<D>> extend
         return extractLeadingInt(dimState);
     }
 
-
-
     @Override
     public boolean supportsDim() {
         return getStateSliderValue() != null;

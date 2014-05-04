@@ -27,7 +27,7 @@ public class HUEDevice extends DimmableContinuousStatesDevice<HUEDevice> {
 
     private Integer brightness;
     private Integer saturation;
-    private int level;
+    private int pct;
 
     public void readSUBTYPE(String value) {
         try {
@@ -53,8 +53,8 @@ public class HUEDevice extends DimmableContinuousStatesDevice<HUEDevice> {
         saturation = ValueExtractUtil.extractLeadingInt(value);
     }
 
-    public void readLEVEL(String value) {
-        level = ValueExtractUtil.extractLeadingInt(value);
+    public void readPCT(String value) {
+        pct = ValueExtractUtil.extractLeadingInt(value);
     }
 
     public void readSTATE(String value) {
@@ -76,12 +76,12 @@ public class HUEDevice extends DimmableContinuousStatesDevice<HUEDevice> {
 
     @Override
     public void setState(String state) {
-        if (state.equals("off")) level = 0;
-        if (state.equals("on")) level = getDimUpperBound();
+        if (state.equals("off")) pct = 0;
+        if (state.equals("on")) pct = getDimUpperBound();
 
         if (state.startsWith("pct")) {
-            level = getPositionForDimState(state);
-            super.setState(ValueDescriptionUtil.appendPercent(level));
+            pct = getPositionForDimState(state);
+            super.setState(ValueDescriptionUtil.appendPercent(pct));
         } else {
             super.setState(state);
         }
@@ -156,7 +156,7 @@ public class HUEDevice extends DimmableContinuousStatesDevice<HUEDevice> {
 
     @Override
     public String getDimStateFieldValue() {
-        return level + "";
+        return pct + "";
     }
 
     @Override
@@ -168,5 +168,10 @@ public class HUEDevice extends DimmableContinuousStatesDevice<HUEDevice> {
     @Override
     public boolean supportsOnOffDimMapping() {
         return false;
+    }
+
+    @Override
+    protected String getSetListDimStateAttributeName() {
+        return "pct";
     }
 }
