@@ -43,6 +43,7 @@ import li.klass.fhem.adapter.devices.RemoteControlAdapter;
 import li.klass.fhem.adapter.devices.SonosPlayerAdapter;
 import li.klass.fhem.adapter.devices.SwapDeviceAdapter;
 import li.klass.fhem.adapter.devices.SwitchActionRowAdapter;
+import li.klass.fhem.adapter.devices.ThresholdAdapter;
 import li.klass.fhem.adapter.devices.ToggleableAdapterWithSwitchActionRow;
 import li.klass.fhem.adapter.devices.UniRollAdapter;
 import li.klass.fhem.adapter.devices.WOLAdapter;
@@ -216,7 +217,7 @@ public enum DeviceType {
     PCA9532("I2C_PCA9532", PCA9532Device.class, new PCA9532DeviceAdapter()),
     PCF8574("I2C_PCF8574", PCF8574Device.class, new PCF8574DeviceAdapter()),
     FHEMWEB("FHEMWEB", FHEMWEBDevice.class),
-    THRESHOLD("THRESHOLD", ThresholdDevice.class),
+    THRESHOLD("THRESHOLD", ThresholdDevice.class, new ThresholdAdapter()),
     WIFILIGHT("WifiLight", WifiLightDevice.class, new WifiLightDeviceAdapter())
     ;
 
