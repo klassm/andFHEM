@@ -41,8 +41,8 @@ import li.klass.fhem.update.UpdateHandler;
 import li.klass.fhem.util.DialogUtil;
 
 import static li.klass.fhem.AndFHEMApplication.getContext;
-import static li.klass.fhem.GCMIntentService.registerWithGCM;
 import static li.klass.fhem.constants.BundleExtraKeys.DO_REFRESH;
+import static li.klass.fhem.gcm.GCMIntentService.registerWithGCM;
 
 public class AndFHEMMainActivity extends FragmentBaseActivity {
 

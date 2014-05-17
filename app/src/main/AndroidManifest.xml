@@ -271,7 +271,7 @@
         </receiver>
 
         <receiver
-            android:name="com.google.android.gcm.GCMBroadcastReceiver"
+            android:name="li.klass.fhem.gcm.AndFHEMGCMBroadcastReceiver"
             android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
@@ -279,7 +279,8 @@
                 <category android:name="li.klass.fhem"/>
             </intent-filter>
         </receiver>
-        <service android:name="li.klass.fhem.GCMIntentService"/>
+        <service android:name=".gcm.GCMIntentService"/>
+        <service android:name="li.klass.fhempremium.GCMIntentService"/>
 
         <activity
             android:name="li.klass.fhem.activities.FHEMUrlActivity"

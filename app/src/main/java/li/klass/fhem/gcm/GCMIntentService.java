@@ -1,4 +1,4 @@
-package li.klass.fhem;
+package li.klass.fhem.gcm;
 
 import android.app.PendingIntent;
 import android.content.Context;

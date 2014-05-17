@@ -50,6 +50,8 @@ public class AndFHEMApplication extends Application {
     public static final String PRODUCT_PREMIUM_ID = "li.klass.fhem.premium";
     public static final String PRODUCT_PREMIUM_DONATOR_ID = "li.klass.fhem.premiumdonator";
 
+    public static final String DEFAULT_PACKAGE = "li.klass.fhem";
+
     public static final int PREMIUM_ALLOWED_FREE_CONNECTIONS = 1;
 
     private boolean isUpdate = false;
