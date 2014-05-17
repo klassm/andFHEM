@@ -26,17 +26,21 @@ package li.klass.fhem.util;
 
 public class ValueExtractUtil {
     public static double extractLeadingDouble(String text) {
-        text = extractLeadingNumericText(text);
+        return extractLeadingDouble(text, -1);
+    }
+
+    public static double extractLeadingDouble(String text, int digits) {
+        text = extractLeadingNumericText(text, digits);
         if (StringUtil.isBlank(text)) return 0;
         return Double.valueOf(text);
     }
 
     public static int extractLeadingInt(String text) {
-        double value = extractLeadingDouble(text);
+        double value = extractLeadingDouble(text, 0);
         return (int) value;
     }
 
-    static String extractLeadingNumericText(String text) {
+    static String extractLeadingNumericText(String text, int digits) {
         if (StringUtil.isBlank(text)) return "";
 
         text = text.trim();
@@ -45,7 +49,16 @@ public class ValueExtractUtil {
         if (spacePosition != -1) {
             text = text.substring(0, spacePosition);
         }
-        return text;
+
+        if (digits > 0) {
+            double number = Double.valueOf(text);
+            double roundFactor = Math.pow(10, digits);
+            double rounded = ((int) (number * roundFactor)) / roundFactor;
+
+            return rounded + "";
+        } else {
+            return text;
+        }
     }
 
     public static boolean onOffToTrueFalse(String value) {

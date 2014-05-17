@@ -38,10 +38,10 @@ public class ValueExtractUtilTest {
 
     @Test
     public void testExtractLeadingNumericText() {
-        assertThat(extractLeadingNumericText("abc def"), is(""));
-        assertThat(extractLeadingNumericText("5 abc def ds"), is("5"));
-        assertThat(extractLeadingNumericText("5.0 abc def ds"), is("5.0"));
-        assertThat(extractLeadingNumericText("abc"), is(""));
+        assertThat(extractLeadingNumericText("abc def", -1), is(""));
+        assertThat(extractLeadingNumericText("5 abc def ds", 1), is("5.0"));
+        assertThat(extractLeadingNumericText("5.0 abc def ds", 3), is("5.0"));
+        assertThat(extractLeadingNumericText("abc", 0), is(""));
     }
 
     @Test

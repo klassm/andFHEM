@@ -64,6 +64,7 @@ import li.klass.fhem.domain.CULTXDevice;
 import li.klass.fhem.domain.CULWSDevice;
 import li.klass.fhem.domain.DbLogDevice;
 import li.klass.fhem.domain.DummyDevice;
+import li.klass.fhem.domain.EC3000Device;
 import li.klass.fhem.domain.EGPMDevice;
 import li.klass.fhem.domain.EIBDevice;
 import li.klass.fhem.domain.EMWZDevice;
@@ -218,7 +219,8 @@ public enum DeviceType {
     PCF8574("I2C_PCF8574", PCF8574Device.class, new PCF8574DeviceAdapter()),
     FHEMWEB("FHEMWEB", FHEMWEBDevice.class),
     THRESHOLD("THRESHOLD", ThresholdDevice.class, new ThresholdAdapter()),
-    WIFILIGHT("WifiLight", WifiLightDevice.class, new WifiLightDeviceAdapter())
+    WIFILIGHT("WifiLight", WifiLightDevice.class, new WifiLightDeviceAdapter()),
+    EC3000("EC3000", EC3000Device.class)
     ;
 
     private String xmllistTag;

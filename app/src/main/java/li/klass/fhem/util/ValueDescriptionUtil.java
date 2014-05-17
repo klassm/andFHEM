@@ -32,7 +32,7 @@ public class ValueDescriptionUtil {
     public static final String M_S = "m/s";
     public static final String L_M2 = "l/m2";
     public static final String L = "l";
-    public static final String KWH = "kwh";
+    public static final String KWH = "kWh";
     public static final String LUX = "lux";
 
     public static String appendTemperature(Object text) {

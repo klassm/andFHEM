@@ -1,0 +1,58 @@
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<FHZINFO>
+    <EC3000_LIST>
+        <EC3000 name="device" state="68" sets="" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev event-on-change-reading event-on-update-reading event-min-interval stateFormat devStateIcon devStateStyle fp_1_Start icon sortby webCmd">
+            <INT key="CFGFN" value="/opt/fhem/FHEM/EC3000.cfg"/>
+            <INT key="CHANGED" value=""/>
+            <INT key="DEF" value="626E"/>
+            <INT key="EC3000_lastRcv" value="2014-05-04 14:14:37"/>
+            <INT key="LASTInputDev" value="myJeeLink"/>
+            <INT key="MSGCNT" value="391"/>
+            <INT key="NAME" value="device"/>
+            <INT key="NR" value="108"/>
+            <INT key="STATE" value="68"/>
+            <INT key="TYPE" value="EC3000"/>
+            <INT key="addr" value="626E"/>
+            <INT key="myJeeLink_MSGCNT" value="391"/>
+            <INT key="myJeeLink_RAWMSG" value="OK 22 98 110 0 78 108 102 0 78 90 65 0 0 53 214 2 168 4 49 1 1"/>
+            <INT key="myJeeLink_TIME" value="2014-05-04 14:14:37"/>
+            <INT key="reception" value="1"/>
+            <INT key="resets" value="1"/>
+            <INT key="secondsOn" value="5114945"/>
+            <INT key="secondsTotal" value="5119590"/>
+            <INT key="IODev" value="myJeeLink"/>
+            <ATTR key="IODev" value="myJeeLink"/>
+            <ATTR key="event-min-interval" value="*:60"/>
+            <ATTR key="room" value="room"/>
+            <STATE key="Euro" value="3.2929 " measured="2014-04-26 18:44:26"/>
+            <STATE key="Zeit" value="1235.32222222222 Stunden" measured="2014-04-26 18:44:26"/>
+            <STATE key="consumption" value="13.782" measured="2014-05-04 14:14:37"/>
+            <STATE key="power" value="68" measured="2014-05-04 14:14:37"/>
+            <STATE key="powerMax" value="107.3" measured="2014-05-04 14:14:37"/>
+            <STATE key="state" value="68" measured="2014-05-04 14:14:37"/>
+        </EC3000>
+    </EC3000_LIST>
+</FHZINFO>

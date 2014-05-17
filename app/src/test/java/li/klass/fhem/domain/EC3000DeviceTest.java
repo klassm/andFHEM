@@ -28,35 +28,24 @@ import org.junit.Test;
 
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.closeTo;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.hamcrest.core.Is.is;
+import static org.fest.assertions.api.Assertions.assertThat;
 
-public class CULEMDeviceTest extends DeviceXMLParsingBase {
+public class EC3000DeviceTest extends DeviceXMLParsingBase {
+
     @Test
-    public void testForCorrectlySetAttributes() {
-        CULEMDevice device = getDefaultDevice();
+    public void should_read_device_correctly() {
+        EC3000Device device = getDefaultDevice();
 
-        assertThat(device.getName(), is(DEFAULT_TEST_DEVICE_NAME));
-        assertThat(device.getRoomConcatenated(), is(DEFAULT_TEST_ROOM_NAME));
-
-        assertThat(device.getDayUsage(), is("9.490 (kWh)"));
-        assertThat(device.getMonthUsage(), is("60.385 (kWh)"));
-        assertThat(device.getSumGraphDivisionFactor(), is(closeTo(2, 0.01)));
-        assertThat(device.getCurrentUsage(), is("0 (kWh)"));
-        assertThat(device.getState(), is("CNT: 62 CUM: 1254.521  5MIN: 0.000  TOP: 0.000"));
-        assertThat(device.getCumulativeKwh(), is("1254.52 (kWh)"));
-
-
-        assertThat(device.getSetList().getEntries().size(), is(0));
-
-        assertThat(device.getLogDevice(), is(notNullValue()));
-        assertThat(device.getDeviceCharts().size(), is(1));
+        assertThat(device.getState()).isEqualTo("68 (W)");
+        assertThat(device.getConsumption()).isEqualTo("13.782 (kWh)");
+        assertThat(device.getPower()).isEqualTo("68 (W)");
+        assertThat(device.getMeasured()).isEqualTo("2014-05-04 14:14:37");
+        assertThat(device.getPrice()).isEqualTo("3.29 (€)");
+        assertThat(device.getWidgetInfoLine()).isEqualTo("3.29 (€), 13.782 (kWh)");
     }
 
     @Override
     protected String getFileName() {
-        return "cul_em.xml";
+        return "ec3000.xml";
     }
 }
