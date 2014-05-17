@@ -30,7 +30,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
 import java.io.ObjectInputStream;
@@ -61,6 +60,7 @@ import li.klass.fhem.service.AbstractService;
 import li.klass.fhem.service.CommandExecutionService;
 import li.klass.fhem.util.ApplicationProperties;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static li.klass.fhem.constants.Actions.DEVICE_LIST_REMOTE_NOTIFY;
 import static li.klass.fhem.domain.core.DeviceType.getDeviceTypeFor;
 import static li.klass.fhem.util.SharedPreferencesUtil.getSharedPreferences;
@@ -170,8 +170,11 @@ public class RoomListService extends AbstractService {
         roomNames.removeAll(roomDeviceList.getHiddenRooms());
 
         FHEMWEBDevice fhemwebDevice = findFHEMWEBDevice(roomDeviceList);
-        final List<String> sortRooms = Arrays.asList(fhemwebDevice.getSortRooms().split(","));
-        ArrayList<String> roomNamesCopy = Lists.newArrayList(roomNames);
+        final List<String> sortRooms = newArrayList();
+        if (fhemwebDevice != null && fhemwebDevice.getSortRooms() != null) {
+            sortRooms.addAll(Arrays.asList(fhemwebDevice.getSortRooms().split(",")));
+        }
+        ArrayList<String> roomNamesCopy = newArrayList(roomNames);
         Collections.sort(roomNamesCopy, new Comparator<String>() {
             @Override
             public int compare(String lhs, String rhs) {
