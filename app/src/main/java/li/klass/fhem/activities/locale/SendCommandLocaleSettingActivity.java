@@ -118,14 +118,15 @@ public class SendCommandLocaleSettingActivity extends Activity {
                 Bundle bundle = new Bundle();
                 bundle.putString(BundleExtraKeys.ACTION, EXECUTE_COMMAND);
                 bundle.putString(COMMAND, command);
-                resultIntent.putExtra(EXTRA_BUNDLE, bundle);
 
                 if (selectedId != null && ! CURRENT_CONNECTION_ID.equals(selectedId)) {
                     bundle.putString(CONNECTION_ID, selectedId);
                 }
 
+                resultIntent.putExtra(EXTRA_BUNDLE, bundle);
+
                 if (hostSupportsOnFireVariableReplacement(SendCommandLocaleSettingActivity.this)) {
-                    TaskerPlugin.addRelevantVariableList(intent, new String[]{COMMAND});
+                    TaskerPlugin.Setting.setVariableReplaceKeys( bundle, new String [] { COMMAND } );
                 }
 
                 setResult(RESULT_OK, resultIntent);
