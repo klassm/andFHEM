@@ -51,9 +51,15 @@ public class HueDeviceAdapter extends DimmableAdapter<HUEDevice> {
 
         registerFieldListener("saturationDesc", new FieldNameAddedToDetailListener<HUEDevice>() {
             @Override
+            public boolean supportsDevice(HUEDevice device) {
+                return device.getSaturationDesc() != null;
+            }
+
+            @Override
             public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, HUEDevice device, TableRow fieldTableRow) {
                 tableLayout.addView(new StateChangingSeekBar<HUEDevice>(context, device.getSaturation(), 254, "sat")
                         .createRow(inflater, device));
+
             }
         });
 

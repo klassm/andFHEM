@@ -37,6 +37,9 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -166,7 +169,30 @@ public class RoomListService extends AbstractService {
         }
         roomNames.removeAll(roomDeviceList.getHiddenRooms());
 
-        return Lists.newArrayList(roomNames);
+        FHEMWEBDevice fhemwebDevice = findFHEMWEBDevice(roomDeviceList);
+        final List<String> sortRooms = Arrays.asList(fhemwebDevice.getSortRooms().split(","));
+        ArrayList<String> roomNamesCopy = Lists.newArrayList(roomNames);
+        Collections.sort(roomNamesCopy, new Comparator<String>() {
+            @Override
+            public int compare(String lhs, String rhs) {
+                int lhsIndex = sortRooms.indexOf(lhs);
+                int rhsIndex = sortRooms.indexOf(rhs);
+
+                if (lhsIndex == rhsIndex) {
+                    if (lhsIndex == -1) {
+                        return lhs.compareTo(rhs);
+                    } else {
+                        return ((Integer) lhsIndex).compareTo(rhsIndex);
+                    }
+
+                } else if (lhsIndex == -1) {
+                    return 1;
+                } else {
+                    return -1;
+                }
+            }
+        });
+        return roomNamesCopy;
     }
 
     /**

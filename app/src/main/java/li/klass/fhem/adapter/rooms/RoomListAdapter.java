@@ -82,4 +82,9 @@ public class RoomListAdapter extends ListDataAdapter<String> {
 
         updateData(newData);
     }
+
+    @Override
+    protected boolean doSort() {
+        return false;
+    }
 }

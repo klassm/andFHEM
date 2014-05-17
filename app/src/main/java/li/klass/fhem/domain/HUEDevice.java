@@ -121,7 +121,7 @@ public class HUEDevice extends DimmableContinuousStatesDevice<HUEDevice> {
 
     @ShowField(description = ResourceIdMapper.brightness)
     public String getBrightnessDesc() {
-        return brightness + "";
+        return brightness == null ? null : brightness + "";
     }
 
     public String getModel() {
@@ -151,7 +151,7 @@ public class HUEDevice extends DimmableContinuousStatesDevice<HUEDevice> {
 
     @ShowField(description = ResourceIdMapper.saturation)
     public String getSaturationDesc() {
-        return saturation + "";
+        return saturation == null ? null : saturation + "";
     }
 
     @Override
