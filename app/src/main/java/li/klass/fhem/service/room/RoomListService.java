@@ -242,7 +242,17 @@ public class RoomListService extends AbstractService {
     private FHEMWEBDevice findFHEMWEBDevice(RoomDeviceList allRoomDeviceList) {
         List<Device> devicesOfType = allRoomDeviceList.getDevicesOfType(DeviceType.FHEMWEB);
         if (! devicesOfType.isEmpty()) {
-            return (FHEMWEBDevice) devicesOfType.get(0);
+            FHEMWEBDevice foundDevice = null;
+            for (Device device : devicesOfType) {
+                if (device.getName().contains("andFHEM")) {
+                    foundDevice = (FHEMWEBDevice) device;
+                }
+            }
+            if (foundDevice != null) {
+                return foundDevice;
+            } else {
+                return (FHEMWEBDevice) devicesOfType.get(0);
+            }
         } else {
             return new FHEMWEBDevice();
         }
