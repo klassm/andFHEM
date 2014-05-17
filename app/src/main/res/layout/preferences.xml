@@ -174,5 +174,13 @@
             android:text=""
             android:max="20"
             />
+
+        <EditTextPreference
+            android:key="DEVICE_NAME"
+            android:title="@string/prefDeviceName"
+            android:summary="@string/prefDeviceNameSummary"
+            android:inputType="text"
+            android:defaultValue=""
+            />
     </PreferenceCategory>
 </PreferenceScreen>

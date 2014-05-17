@@ -62,6 +62,7 @@ import li.klass.fhem.util.ApplicationProperties;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static li.klass.fhem.constants.Actions.DEVICE_LIST_REMOTE_NOTIFY;
+import static li.klass.fhem.constants.PreferenceKeys.DEVICE_NAME;
 import static li.klass.fhem.domain.core.DeviceType.getDeviceTypeFor;
 import static li.klass.fhem.util.SharedPreferencesUtil.getSharedPreferences;
 import static li.klass.fhem.util.SharedPreferencesUtil.getSharedPreferencesEditor;
@@ -243,11 +244,12 @@ public class RoomListService extends AbstractService {
     }
 
     private FHEMWEBDevice findFHEMWEBDevice(RoomDeviceList allRoomDeviceList) {
+        String qualifier = ApplicationProperties.INSTANCE.getStringSharedPreference(DEVICE_NAME, "andFHEM").toUpperCase();
         List<Device> devicesOfType = allRoomDeviceList.getDevicesOfType(DeviceType.FHEMWEB);
         if (! devicesOfType.isEmpty()) {
             FHEMWEBDevice foundDevice = null;
             for (Device device : devicesOfType) {
-                if (device.getName().contains("andFHEM")) {
+                if (device.getName().toUpperCase().contains(qualifier)) {
                     foundDevice = (FHEMWEBDevice) device;
                 }
             }

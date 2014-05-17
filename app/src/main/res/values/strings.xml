@@ -287,6 +287,8 @@
     <string name="prefCommandExecutionRetries">Command execution retries</string>
     <string name="prefCommandExecutionRetriesSummary">Number of times a command is resend if the execution fails.</string>
     <string name="prefCommandExecutionRetriesTimeDialogEntry">%1$d. try: %2$d s</string>
+    <string name="prefDeviceName">Device name</string>
+    <string name="prefDeviceNameSummary">If a FHEMWEB device name matches this value, the respective FHEMWEB device will be preferred. This can be used to hide or sort rooms for specific devices.</string>
 
     <string name="notNumericError">Not numeric!</string>
     <string name="error_update">Error while updating.</string>

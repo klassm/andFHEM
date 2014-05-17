@@ -285,6 +285,9 @@
     <string name="prefCommandExecutionRetries">Kommando Wiederholungen</string>
     <string name="prefCommandExecutionRetriesSummary">Anzahl, wie oft ein Kommando nochmals gesendet wird, wenn die Ausführung fehlschlägt.</string>
     <string name="prefCommandExecutionRetriesTimeDialogEntry">%1$d. Versuch: %2$d s</string>
+    <string name="prefDeviceName">Gerätename</string>
+    <string name="prefDeviceNameSummary">Passt ein FHEMWEB-Gerätename zu dem Inhalt dieser Einstellung, so wird das FHEMWEB-Gerät bevorzugt verwendet. Damit können gerätespezifisch Räume ausgeblendet oder anders sortiert werden.</string>
+
 
     <string name="notNumericError">Nicht numerisch!</string>
     <string name="error_update">Error während Update Vorgang.</string>
