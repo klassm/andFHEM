@@ -43,7 +43,7 @@
         android:id="@+id/type"
         android:gravity="center_vertical|center_horizontal"
         android:layout_marginTop="-4dp"
-        android:text="Dummy"
+        android:text=""
         android:textSize="12dp" />
 
 </LinearLayout>

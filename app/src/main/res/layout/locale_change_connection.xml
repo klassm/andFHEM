@@ -38,7 +38,7 @@
             android:id="@+id/localeConnectionChangePluginInfoText" android:layout_gravity="center"/>
 
     <Spinner
-        android:id="@+id/connectionList"
+        android:id="@+id/connectionListSpinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
