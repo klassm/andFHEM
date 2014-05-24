@@ -279,8 +279,7 @@
                 <category android:name="li.klass.fhem"/>
             </intent-filter>
         </receiver>
-        <service android:name=".gcm.GCMIntentService"/>
-        <service android:name="li.klass.fhempremium.GCMIntentService"/>
+        <service android:name="li.klass.fhem.gcm.GCMIntentService"/>
 
         <activity
             android:name="li.klass.fhem.activities.FHEMUrlActivity"
