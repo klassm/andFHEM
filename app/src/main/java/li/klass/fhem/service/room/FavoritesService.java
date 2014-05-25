@@ -96,4 +96,8 @@ public class FavoritesService {
     private SharedPreferences getPreferences() {
         return AndFHEMApplication.getContext().getSharedPreferences(PREFERENCES_NAME, Activity.MODE_PRIVATE);
     }
+
+    public boolean isFavorite(String deviceName) {
+        return getPreferences().getAll().keySet().contains(deviceName);
+    }
 }

@@ -43,8 +43,8 @@ public abstract class GridViewWithSectionsAdapter<P, C> extends BaseAdapter {
 
     public static final String TAG = GridViewWithSectionsAdapter.class.getName();
 
-    protected Set<GridViewWithSections.GridViewWithSectionsOnClickObserver> clickObservers =
-            new HashSet<GridViewWithSections.GridViewWithSectionsOnClickObserver>();
+    protected Set<GridViewWithSections.OnClickListener> clickObservers =
+            new HashSet<GridViewWithSections.OnClickListener>();
 
     private Map<Integer, P> parentPositions;
     private int totalNumberOfItems;
@@ -237,11 +237,11 @@ public abstract class GridViewWithSectionsAdapter<P, C> extends BaseAdapter {
         return totalNumberOfItems == 0;
     }
 
-    public void registerOnClickObserver(GridViewWithSections.GridViewWithSectionsOnClickObserver observer) {
+    public void registerOnClickObserver(GridViewWithSections.OnClickListener observer) {
         this.clickObservers.add(observer);
     }
 
-    public Set<GridViewWithSections.GridViewWithSectionsOnClickObserver> getClickObservers() {
+    public Set<GridViewWithSections.OnClickListener> getClickObservers() {
         return Collections.unmodifiableSet(clickObservers);
     }
 

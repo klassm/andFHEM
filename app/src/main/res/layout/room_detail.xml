@@ -37,14 +37,6 @@
 
     <include layout="@layout/device_view_header"/>
 
-    <ProgressBar
-        android:id="@+id/updateProgress"
-        android:visibility="gone"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true" />
-
     <li.klass.fhem.widget.GridViewWithSections
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"

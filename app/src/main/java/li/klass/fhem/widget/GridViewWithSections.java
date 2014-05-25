@@ -27,16 +27,15 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.HeaderViewListAdapter;
 import android.widget.ListAdapter;
 
-import java.util.Set;
-
 public class GridViewWithSections extends GridView {
 
-    public interface GridViewWithSectionsOnClickObserver {
-        void onItemClick(View view, Object parent, Object child, int parentPosition, int childPosition);
+    public interface OnClickListener<PARENT, CHILD> {
+        boolean onItemClick(View view, PARENT parent, CHILD child, int parentPosition, int childPosition);
     }
 
     public GridViewWithSections(Context context) {
@@ -59,6 +58,23 @@ public class GridViewWithSections extends GridView {
         return (GridViewWithSectionsAdapter) adapter;
     }
 
+    public void setOnLongClickListener(final OnClickListener listener) {
+        setOnItemLongClickListener(new OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                return performParentChildItemClick(view, position, listener);
+            }
+        });
+    }
+
+    public void setOnClickListener(final OnClickListener listener) {
+        setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                performParentChildItemClick(view, position, listener);
+            }
+        });
+    }
 
     @Override
     public void setAdapter(ListAdapter adapter) {
@@ -70,26 +86,17 @@ public class GridViewWithSections extends GridView {
         setVerticalSpacing(10);
     }
 
-    @Override
-    public boolean performItemClick(View view, int position, long id) {
+    @SuppressWarnings("unchecked")
+    private boolean performParentChildItemClick(View view, int position, OnClickListener listener) {
         GridViewWithSectionsAdapter adapter = getGridViewWithSectionsAdapter();
 
         int parentPosition = adapter.findOriginalParentPosition(position);
         int childPosition = position - adapter.findParentPositionForChildPosition(position) - adapter.getNumberOfColumns();
 
-        performParentChildItemClick(view, parentPosition, childPosition);
-        return super.performItemClick(view, parentPosition, id);
-    }
+        Object parent = getGridViewWithSectionsAdapter().getDeviceGroupParents().get(parentPosition);
+        Object child = getGridViewWithSectionsAdapter().getChildForParentAndChildPosition(parent, childPosition);
 
-    @SuppressWarnings("unchecked")
-    private void performParentChildItemClick(View view, int parentPosition, int childPosition) {
-        Set<GridViewWithSectionsOnClickObserver> parentChildClickObservers = getGridViewWithSectionsAdapter().getClickObservers();
-        for (GridViewWithSectionsOnClickObserver parentChildClickObserver : parentChildClickObservers) {
-            Object parent = getGridViewWithSectionsAdapter().getDeviceGroupParents().get(parentPosition);
-            Object child = getGridViewWithSectionsAdapter().getChildForParentAndChildPosition(parent, childPosition);
-
-            parentChildClickObserver.onItemClick(view, parent, child, parentPosition, childPosition);
-        }
+        return listener.onItemClick(view, parent, child, parentPosition, childPosition);
     }
 
     @Override

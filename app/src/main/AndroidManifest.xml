@@ -162,6 +162,7 @@
                 <action android:name="li.klass.fhem.constants.Actions.ADD_FAVORITE"/>
                 <action android:name="li.klass.fhem.constants.Actions.REMOVE_FAVORITE"/>
                 <action android:name="li.klass.fhem.constants.Actions.FAVORITES_PRESENT"/>
+                <action android:name="li.klass.fhem.constants.Actions.FAVORITES_IS_FAVORITE"/>
             </intent-filter>
         </service>
 

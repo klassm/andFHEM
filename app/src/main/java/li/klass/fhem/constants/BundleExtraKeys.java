@@ -44,6 +44,7 @@ public class BundleExtraKeys {
     public static final String ALERT_CONTENT_ID = "ALERTCONTENTID";
     public static final String ALERT_TITLE_ID = "ALERTTITLEID";
     public static final String HAS_FAVORITES = "HAS_FAVORITES";
+    public static final String IS_FAVORITE = "IS_FAVORITE";
     public static final String ALLOW_REMOTE_UPDATES = "ALLOW_REMOTE_UPDATES";
 
     public static final String DEVICE_GRAPH_ENTRY_MAP = "GRAPHENTRYMAP";

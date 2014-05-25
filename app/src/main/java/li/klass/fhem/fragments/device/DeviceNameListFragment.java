@@ -96,12 +96,14 @@ public abstract class DeviceNameListFragment extends BaseFragment {
 
         DeviceNameListAdapter adapter = new DeviceNameListAdapter(inflater.getContext(),
                 new RoomDeviceList(""), columnWidth);
-        adapter.registerOnClickObserver(new GridViewWithSections.GridViewWithSectionsOnClickObserver() {
+        adapter.registerOnClickObserver(new GridViewWithSections.OnClickListener<String, Device<?>>() {
             @Override
-            public void onItemClick(View view, Object parent, Object child, int parentPosition, int childPosition) {
-                onDeviceNameClick((String) parent, (Device<?>) child);
+            public boolean onItemClick(View view, String parent, Device<?> child, int parentPosition, int childPosition) {
+                onDeviceNameClick(parent, child);
+                return true;
             }
         });
+        deviceList.setLongClickable(true);
         deviceList.setAdapter(adapter);
 
         return view;

@@ -498,7 +498,7 @@
     <string name="drawerClose">Drawer schließen</string>
 
     <string name="noFavoritesCaption">Keine Favoriten gefunden!</string>
-    <string name="noFavoritesMessage">Um einen Favoriten zu erstellen klicken Sie bitte in der Geräteliste lange auf ein Gerät. Wählen Sie anschließend "Zu Favoriten hinzufügen".</string>
+    <string name="noFavoritesMessage">Um einen Favoriten zu erstellen klicken Sie bitte in der Geräteliste lange auf ein Gerät. Klicken Sie anschließend auf den Stern.</string>
     <string name="noRooms">Keine Räume gefunden!</string>
     <string name="noConnections">Keine Verbindungen gefunden!</string>
     <string name="noDevices">Keine Geräte gefunden!</string>

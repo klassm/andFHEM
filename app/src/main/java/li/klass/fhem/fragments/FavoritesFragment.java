@@ -24,23 +24,12 @@
 
 package li.klass.fhem.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.ResultReceiver;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import li.klass.fhem.R;
 import li.klass.fhem.constants.Actions;
-import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.constants.ResultCodes;
-import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.fragments.core.DeviceListFragment;
 import li.klass.fhem.fragments.core.TopLevelFragment;
 import li.klass.fhem.util.Reject;
@@ -59,43 +48,6 @@ public class FavoritesFragment extends DeviceListFragment implements TopLevelFra
     @Override
     protected String getUpdateAction() {
         return Actions.FAVORITE_ROOM_LIST;
-    }
-
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View view, ContextMenu.ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, view, menuInfo);
-
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
-        Object tag = info.targetView.getTag();
-
-        if (tag == null) return;
-        if (tag instanceof Device) {
-            menu.removeItem(CONTEXT_MENU_FAVORITES_ADD);
-            menu.add(0, CONTEXT_MENU_FAVORITES_DELETE, 0, R.string.context_removefavorite);
-        }
-    }
-
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
-        if (!super.onContextItemSelected(item)) {
-            switch (item.getItemId()) {
-                case CONTEXT_MENU_FAVORITES_DELETE:
-                    Intent favoriteRemoveIntent = new Intent(Actions.FAVORITE_REMOVE);
-                    favoriteRemoveIntent.putExtra(BundleExtraKeys.DEVICE, contextMenuClickedDevice.get());
-                    favoriteRemoveIntent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
-                        @Override
-                        protected void onReceiveResult(int resultCode, Bundle resultData) {
-                            if (resultCode != ResultCodes.SUCCESS) return;
-
-                            Toast.makeText(getActivity(), R.string.context_favoriteremoved, Toast.LENGTH_SHORT).show();
-                            update(false);
-                        }
-                    });
-                    getActivity().startService(favoriteRemoveIntent);
-                    return true;
-            }
-        }
-        return false;
     }
 
     @Override

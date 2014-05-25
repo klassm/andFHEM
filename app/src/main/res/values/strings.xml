@@ -499,7 +499,7 @@
     <string name="drawerClose">Close drawer</string>
 
     <string name="noFavoritesCaption">No favorite devices found!</string>
-    <string name="noFavoritesMessage">To create a favorite device, long click the view within the list. Choose \"Add to favorites\" within the popup window.</string>
+    <string name="noFavoritesMessage">To create a favorite device, long click the view within the list. Click on the star within the action menu.</string>
     <string name="noConnections">No connections found!</string>
     <string name="noRooms">No rooms found!</string>
     <string name="noDevices">No devices found!</string>

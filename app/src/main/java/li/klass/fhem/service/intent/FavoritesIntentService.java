@@ -27,10 +27,12 @@ package li.klass.fhem.service.intent;
 import android.content.Intent;
 import android.os.ResultReceiver;
 
+import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.RoomDeviceList;
 import li.klass.fhem.service.room.FavoritesService;
 
+import static li.klass.fhem.constants.Actions.FAVORITES_IS_FAVORITES;
 import static li.klass.fhem.constants.Actions.FAVORITES_PRESENT;
 import static li.klass.fhem.constants.Actions.FAVORITE_ADD;
 import static li.klass.fhem.constants.Actions.FAVORITE_REMOVE;
@@ -38,6 +40,7 @@ import static li.klass.fhem.constants.Actions.FAVORITE_ROOM_LIST;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_LIST;
 import static li.klass.fhem.constants.BundleExtraKeys.HAS_FAVORITES;
+import static li.klass.fhem.constants.BundleExtraKeys.IS_FAVORITE;
 import static li.klass.fhem.constants.ResultCodes.SUCCESS;
 
 public class FavoritesIntentService extends ConvenientIntentService {
@@ -54,20 +57,23 @@ public class FavoritesIntentService extends ConvenientIntentService {
             return STATE.ERROR;
         }
 
-        if (action.equals(FAVORITE_ROOM_LIST)) {
+        if (FAVORITE_ROOM_LIST.equals(action)) {
             RoomDeviceList favorites = service.getFavorites(updatePeriod);
             sendSingleExtraResult(resultReceiver, SUCCESS, DEVICE_LIST, favorites);
-        } else if (action.equals(FAVORITE_ADD)) {
+        } else if (FAVORITE_ADD.equals(action)) {
             Device device = (Device) intent.getSerializableExtra(DEVICE);
             service.addFavorite(device);
             if (resultReceiver != null) sendNoResult(resultReceiver, SUCCESS);
-        } else if (action.equals(FAVORITE_REMOVE)) {
+        } else if (FAVORITE_REMOVE.equals(action)) {
             Device device = (Device) intent.getSerializableExtra(DEVICE);
             service.removeFavorite(device);
             if (resultReceiver != null) sendNoResult(resultReceiver, SUCCESS);
-        } else if (action.equals(FAVORITES_PRESENT)) {
+        } else if (FAVORITES_PRESENT.equals(action)) {
             boolean hasFavorites = service.hasFavorites();
             sendSingleExtraResult(resultReceiver, SUCCESS, HAS_FAVORITES, hasFavorites);
+        } else if (FAVORITES_IS_FAVORITES.equalsIgnoreCase(action)) {
+            boolean isFavorite = service.isFavorite(intent.getStringExtra(BundleExtraKeys.DEVICE_NAME));
+            sendSingleExtraResult(resultReceiver, SUCCESS, IS_FAVORITE, isFavorite);
         }
 
         return STATE.DONE;
