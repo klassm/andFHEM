@@ -16,7 +16,7 @@ if (!! logo) logo.style.display="none";
 var backImg = document.getElementById("backimg");
 var backImgOffset = 0;
 if (!! backImg) {
-  backImgOffset = window.getComputedStyle(backImg, null).getPropertyValue("left").replace("px", "");
+  backImgOffset = window.getComputedStyle(backImg, null).getPropertyValue("left").replace("px", "").replace("auto", "0");
   document.getElementById("backimg").style.left="0";
 }
 
