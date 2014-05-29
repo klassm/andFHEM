@@ -96,7 +96,7 @@ public abstract class DeviceNameListFragment extends BaseFragment {
 
         DeviceNameListAdapter adapter = new DeviceNameListAdapter(inflater.getContext(),
                 new RoomDeviceList(""), columnWidth);
-        adapter.registerOnClickObserver(new GridViewWithSections.OnClickListener<String, Device<?>>() {
+        deviceList.setOnClickListener(new GridViewWithSections.OnClickListener<String, Device<?>>() {
             @Override
             public boolean onItemClick(View view, String parent, Device<?> child, int parentPosition, int childPosition) {
                 onDeviceNameClick(parent, child);

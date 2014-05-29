@@ -31,10 +31,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
+import com.google.common.collect.Maps;
+
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -42,9 +41,6 @@ import java.util.Set;
 public abstract class GridViewWithSectionsAdapter<P, C> extends BaseAdapter {
 
     public static final String TAG = GridViewWithSectionsAdapter.class.getName();
-
-    protected Set<GridViewWithSections.OnClickListener> clickObservers =
-            new HashSet<GridViewWithSections.OnClickListener>();
 
     private Map<Integer, P> parentPositions;
     private int totalNumberOfItems;
@@ -66,7 +62,7 @@ public abstract class GridViewWithSectionsAdapter<P, C> extends BaseAdapter {
         List<P> parents = getDeviceGroupParents();
         Log.d(TAG, "updating parent positions for parent count " + parents.size());
 
-        parentPositions = new HashMap<Integer, P>();
+        parentPositions = Maps.newHashMap();
 
         int numberOfColumns = getNumberOfColumns();
         int currentPosition = 0;
@@ -235,14 +231,6 @@ public abstract class GridViewWithSectionsAdapter<P, C> extends BaseAdapter {
     @Override
     public boolean isEmpty() {
         return totalNumberOfItems == 0;
-    }
-
-    public void registerOnClickObserver(GridViewWithSections.OnClickListener observer) {
-        this.clickObservers.add(observer);
-    }
-
-    public Set<GridViewWithSections.OnClickListener> getClickObservers() {
-        return Collections.unmodifiableSet(clickObservers);
     }
 
     protected int getNumberOfColumns() {
