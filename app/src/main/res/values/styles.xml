@@ -254,11 +254,10 @@
 
 
     <style name="deviceDetailDescription" parent="@android:style/TextAppearance.Small">
-        <item name="android:layout_weight">1</item>
+        <item name="android:layout_weight">0.5</item>
         <item name="android:layout_gravity">top|left</item>
         <item name="android:layout_marginLeft">10dp</item>
-        <item name="android:minWidth">160dp</item>
-        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_width">0dp</item>
         <item name="android:textColor">@android:color/black</item>
         <item name="android:ellipsize">end</item>
         <item name="android:singleLine">true</item>
@@ -269,8 +268,7 @@
         <item name="android:layout_gravity">right|center_vertical</item>
         <item name="android:gravity">right</item>
         <item name="android:paddingRight">5dp</item>
-        <item name="android:layout_width">fill_parent</item>
-        <item name="android:minWidth">160dp</item>
+        <item name="android:layout_width">0dp</item>
     </style>
 
     <style name="deviceDetailContentSeek" parent="seekBar">
@@ -289,7 +287,7 @@
     <style name="deviceDetailTable">
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:stretchColumns">3</item>
+        <item name="android:stretchColumns">2</item>
         <item name="android:padding">5dp</item>
         <item name="android:paddingLeft">20dp</item>
         <item name="android:paddingRight">20dp</item>
