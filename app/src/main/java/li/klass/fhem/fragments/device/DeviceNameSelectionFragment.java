@@ -36,10 +36,6 @@ import li.klass.fhem.domain.core.RoomDeviceList;
 import li.klass.fhem.util.DialogUtil;
 
 public class DeviceNameSelectionFragment extends DeviceNameListFragment {
-    @SuppressWarnings("unused")
-    public DeviceNameSelectionFragment() {
-    }
-
     @Override
     protected void onDeviceNameClick(String parent, Device<?> child) {
         if (child == null) return;
