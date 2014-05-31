@@ -43,14 +43,6 @@ public class PremiumFragment extends BaseFragment {
     private static final String TAG = PremiumFragment.class.getName();
     private boolean billingSupported;
 
-    @SuppressWarnings("unused")
-    public PremiumFragment(Bundle bundle) {
-        super(bundle);
-    }
-
-    @SuppressWarnings("unused")
-    public PremiumFragment() {}
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

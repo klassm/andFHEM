@@ -26,19 +26,17 @@ package li.klass.fhem.activities.base;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.ResultReceiver;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 
 import li.klass.fhem.R;
 import li.klass.fhem.activities.core.FragmentBaseActivity;
-import li.klass.fhem.activities.device.DeviceNameListAdapter;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.fragments.device.DeviceNameSelectionFragment;
 import li.klass.fhem.util.DialogUtil;
+import li.klass.fhem.util.FhemResultReceiver;
 
 public class DeviceNameSelectionActivity extends FragmentActivity {
 
@@ -57,7 +55,7 @@ public class DeviceNameSelectionActivity extends FragmentActivity {
             }
         });
 
-        bundle.putParcelable(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
+        bundle.putParcelable(BundleExtraKeys.RESULT_RECEIVER, new FhemResultReceiver() {
             @Override
             protected void onReceiveResult(int resultCode, Bundle resultData) {
                 if (resultCode != ResultCodes.SUCCESS ||
@@ -68,8 +66,7 @@ public class DeviceNameSelectionActivity extends FragmentActivity {
             }
         });
 
-        DeviceNameSelectionFragment deviceSelectionFragment = new DeviceNameSelectionFragment(bundle,
-                DeviceNameListAdapter.DEFAULT_REQUIRED_COLUMN_WIDTH) {
+        DeviceNameSelectionFragment deviceSelectionFragment = new DeviceNameSelectionFragment() {
             @Override
             protected void onNoDevicesAvailable() {
                 DialogUtil.showAlertDialog(getActivity(), R.string.error, R.string.devicelist_empty, new DialogUtil.AlertOnClickListener() {
@@ -80,6 +77,7 @@ public class DeviceNameSelectionActivity extends FragmentActivity {
                 });
             }
         };
+        deviceSelectionFragment.setArguments(bundle);
 
         try {
             getSupportFragmentManager()

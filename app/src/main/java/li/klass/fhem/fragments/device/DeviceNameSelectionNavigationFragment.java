@@ -24,7 +24,6 @@
 package li.klass.fhem.fragments.device;
 
 import android.content.Intent;
-import android.os.Bundle;
 
 import li.klass.fhem.fragments.RoomListFragment;
 
@@ -35,15 +34,6 @@ import static li.klass.fhem.constants.BundleExtraKeys.ROOM_NAME;
 import static li.klass.fhem.fragments.FragmentType.DEVICE_SELECTION;
 
 public class DeviceNameSelectionNavigationFragment extends RoomListFragment {
-    @SuppressWarnings("unused")
-    public DeviceNameSelectionNavigationFragment(Bundle bundle) {
-        super(bundle);
-    }
-
-    @SuppressWarnings("unused")
-    public DeviceNameSelectionNavigationFragment() {
-    }
-
     @Override
     public void onClick(String roomName) {
         Intent intent = new Intent(SHOW_FRAGMENT);

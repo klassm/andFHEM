@@ -36,17 +36,6 @@ import li.klass.fhem.domain.core.RoomDeviceList;
 import li.klass.fhem.util.DialogUtil;
 
 public class DeviceNameSelectionFragment extends DeviceNameListFragment {
-
-    @SuppressWarnings("unused")
-    public DeviceNameSelectionFragment(Bundle bundle) {
-        super(bundle);
-    }
-
-    @SuppressWarnings("unused")
-    public DeviceNameSelectionFragment(Bundle bundle, int columnWidth) {
-        super(bundle, columnWidth);
-    }
-
     @SuppressWarnings("unused")
     public DeviceNameSelectionFragment() {
     }

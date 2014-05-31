@@ -30,8 +30,20 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
 import android.util.Log;
-import android.view.*;
-import android.widget.*;
+import android.view.ContextMenu;
+import android.view.LayoutInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.timer.TimerListAdapter;
@@ -44,27 +56,14 @@ import li.klass.fhem.domain.core.RoomDeviceList;
 import li.klass.fhem.fragments.core.BaseFragment;
 import li.klass.fhem.util.device.DeviceActionUtil;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class TimerListFragment extends BaseFragment {
 
     private static final String TAG = TimerListFragment.class.getName();
-//    private transient TimerListAdapter listAdapter;
 
     private static final int CONTEXT_MENU_DELETE = 1;
     private AtDevice contextMenuClickedDevice;
 
     private boolean createNewDeviceCalled = false;
-
-    @SuppressWarnings("unused")
-    public TimerListFragment(Bundle bundle) {
-        super(bundle);
-    }
-
-    @SuppressWarnings("unused")
-    public TimerListFragment() {
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

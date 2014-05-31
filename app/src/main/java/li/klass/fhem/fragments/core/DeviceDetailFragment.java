@@ -44,13 +44,12 @@ import li.klass.fhem.util.advertisement.AdvertisementUtil;
 
 public class DeviceDetailFragment extends BaseFragment {
 
-    @SuppressWarnings("unused")
-    public DeviceDetailFragment(Bundle bundle) {
-        super(bundle);
-    }
+    private String deviceName;
 
-    @SuppressWarnings("unused")
-    public DeviceDetailFragment() {
+    @Override
+    public void setArguments(Bundle args) {
+        super.setArguments(args);
+        deviceName = args.getString(BundleExtraKeys.DEVICE_NAME);
     }
 
     @Override
@@ -72,7 +71,7 @@ public class DeviceDetailFragment extends BaseFragment {
         Intent intent = new Intent(Actions.GET_DEVICE_FOR_NAME);
         intent.putExtras(new Bundle());
         intent.putExtra(BundleExtraKeys.DO_REFRESH, doUpdate);
-        intent.putExtra(BundleExtraKeys.DEVICE_NAME, creationBundle.getString(BundleExtraKeys.DEVICE_NAME));
+        intent.putExtra(BundleExtraKeys.DEVICE_NAME, deviceName);
         intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
             @Override
             protected void onReceiveResult(int resultCode, Bundle resultData) {

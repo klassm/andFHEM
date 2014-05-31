@@ -38,51 +38,33 @@ import li.klass.fhem.R;
 import li.klass.fhem.activities.device.DeviceNameListAdapter;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.constants.PreferenceKeys;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.RoomDeviceList;
 import li.klass.fhem.fragments.core.BaseFragment;
-import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.widget.GridViewWithSections;
-
-import static li.klass.fhem.constants.BundleExtraKeys.ROOM_NAME;
 
 public abstract class DeviceNameListFragment extends BaseFragment {
 
-    private int columnWidth = Integer.MAX_VALUE;
-    private String roomName = null;
+    private int columnWidth;
+    private String roomName;
     protected ResultReceiver resultReceiver;
 
     public interface DeviceFilter extends Serializable {
         boolean isSelectable(Device<?> device);
     }
 
-    @SuppressWarnings("unused")
-    public DeviceNameListFragment(Bundle bundle, int columnWidth) {
-        super(bundle);
+    @Override
+    public void setArguments(Bundle args) {
+        super.setArguments(args);
 
-        resultReceiver = bundle.getParcelable(BundleExtraKeys.RESULT_RECEIVER);
-
-        if (columnWidth == -1) {
-            this.columnWidth = ApplicationProperties.INSTANCE.getIntegerSharedPreference(
-                    PreferenceKeys.DEVICE_COLUMN_WIDTH, Integer.MAX_VALUE);
+        if (args.containsKey(BundleExtraKeys.COLUMN_WIDTH)) {
+            columnWidth = args.getInt(BundleExtraKeys.COLUMN_WIDTH);
         } else {
-            this.columnWidth = columnWidth;
+            columnWidth = DeviceNameListAdapter.DEFAULT_COLUMN_WIDTH;
         }
-
-        if (bundle.containsKey(ROOM_NAME)) {
-            roomName = bundle.getString(ROOM_NAME);
-        }
-    }
-
-    @SuppressWarnings("unused")
-    public DeviceNameListFragment(Bundle bundle) {
-        this(bundle, -1);
-    }
-
-    @SuppressWarnings("unused")
-    public DeviceNameListFragment() {
+        roomName = args.getString(BundleExtraKeys.ROOM_NAME);
+        resultReceiver = args.getParcelable(BundleExtraKeys.RESULT_RECEIVER);
     }
 
     @Override

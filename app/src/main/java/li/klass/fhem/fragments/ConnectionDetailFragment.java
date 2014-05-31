@@ -73,17 +73,13 @@ public class ConnectionDetailFragment extends BaseFragment {
     private ServerType connectionType;
     private ConnectionTypeDetailChangedListener detailChangedListener = null;
 
-    @SuppressWarnings("unused")
-    public ConnectionDetailFragment(Bundle bundle) {
-        super(bundle);
-        if (bundle.containsKey(BundleExtraKeys.CONNECTION_ID)) {
-            connectionId = bundle.getString(BundleExtraKeys.CONNECTION_ID);
+    @Override
+    public void setArguments(Bundle args) {
+        super.setArguments(args);
+        if (args.containsKey(BundleExtraKeys.CONNECTION_ID)) {
+            connectionId = args.getString(BundleExtraKeys.CONNECTION_ID);
             isModify = true;
         }
-    }
-
-    @SuppressWarnings("unused")
-    public ConnectionDetailFragment() {
     }
 
     @Override

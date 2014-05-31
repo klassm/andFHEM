@@ -154,13 +154,6 @@ public abstract class DeviceListFragment extends BaseFragment {
     };
     private ActionMode actionMode;
 
-    public DeviceListFragment() {
-    }
-
-    public DeviceListFragment(Bundle bundle) {
-        super(bundle);
-    }
-
     protected static AtomicReference<Device> contextMenuClickedDevice = new AtomicReference<Device>();
     protected static AtomicReference<DeviceListFragment> currentClickFragment = new AtomicReference<DeviceListFragment>();
     protected static AtomicBoolean isClickedDeviceFavorite = new AtomicBoolean(false);

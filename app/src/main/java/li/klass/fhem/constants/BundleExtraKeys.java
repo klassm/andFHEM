@@ -46,6 +46,7 @@ public class BundleExtraKeys {
     public static final String HAS_FAVORITES = "HAS_FAVORITES";
     public static final String IS_FAVORITE = "IS_FAVORITE";
     public static final String ALLOW_REMOTE_UPDATES = "ALLOW_REMOTE_UPDATES";
+    public static final String COLUMN_WIDTH = "COLUMN_WIDTH";
 
     public static final String DEVICE_GRAPH_ENTRY_MAP = "GRAPHENTRYMAP";
     public static final String DEVICE_GRAPH_SERIES_DESCRIPTIONS = "DEVICEGRAPHSERIESDESCRIPTIONS";

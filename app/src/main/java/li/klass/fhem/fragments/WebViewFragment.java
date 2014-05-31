@@ -31,15 +31,10 @@ import li.klass.fhem.constants.BundleExtraKeys;
 public class WebViewFragment extends AbstractWebViewFragment {
     private String loadUrl;
 
-    @SuppressWarnings("unused")
-    public WebViewFragment() {
-    }
-
-    @SuppressWarnings("unused")
-    public WebViewFragment(Bundle bundle) {
-        super(bundle);
-
-        loadUrl = bundle.getString(BundleExtraKeys.LOAD_URL);
+    @Override
+    public void setArguments(Bundle args) {
+        super.setArguments(args);
+        loadUrl = args.getString(BundleExtraKeys.LOAD_URL);
     }
 
     @Override

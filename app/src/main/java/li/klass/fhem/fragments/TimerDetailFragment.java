@@ -85,17 +85,12 @@ public class TimerDetailFragment extends BaseFragment {
     private AtDevice.TimerType type;
     private boolean requiresStateAppendix;
 
-    @SuppressWarnings("unused")
-    public TimerDetailFragment(Bundle bundle) {
-        super(bundle);
-        if (bundle.containsKey(BundleExtraKeys.DEVICE_NAME)) {
-            timerDeviceName = bundle.getString(BundleExtraKeys.DEVICE_NAME);
+    @Override
+    public void setArguments(Bundle args) {
+        if (args.containsKey(BundleExtraKeys.DEVICE_NAME)) {
+            timerDeviceName = args.getString(BundleExtraKeys.DEVICE_NAME);
             isModify = true;
         }
-    }
-
-    @SuppressWarnings("unused")
-    public TimerDetailFragment() {
     }
 
     @Override

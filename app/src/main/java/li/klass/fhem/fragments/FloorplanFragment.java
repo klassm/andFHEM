@@ -41,15 +41,10 @@ public class FloorplanFragment extends AbstractWebViewFragment {
     public static final String TAG = FloorplanFragment.class.getName();
     private String deviceName;
 
-    @SuppressWarnings("unused")
-    public FloorplanFragment() {
-    }
-
-    @SuppressWarnings("unused")
-    public FloorplanFragment(Bundle bundle) {
-        super(bundle);
-
-        deviceName = bundle.getString(BundleExtraKeys.DEVICE_NAME);
+    @Override
+    public void setArguments(Bundle args) {
+        super.setArguments(args);
+        deviceName = args.getString(BundleExtraKeys.DEVICE_NAME);
     }
 
     @Override

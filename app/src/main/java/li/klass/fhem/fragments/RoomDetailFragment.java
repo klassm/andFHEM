@@ -26,30 +26,27 @@ package li.klass.fhem.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.fragments.core.DeviceListFragment;
-
-import java.io.Serializable;
-import java.util.Map;
 
 import static li.klass.fhem.constants.BundleExtraKeys.ROOM_NAME;
 
 public class RoomDetailFragment extends DeviceListFragment {
 
-    @SuppressWarnings("unused")
-    public RoomDetailFragment(Bundle bundle) {
-        super(bundle);
-    }
+    private String roomName;
 
-    @SuppressWarnings("unused")
-    public RoomDetailFragment() {
+    @Override
+    public void setArguments(Bundle args) {
+        super.setArguments(args);
+        roomName = args.getString(BundleExtraKeys.ROOM_NAME);
     }
 
     @Override
     protected void fillIntent(Intent intent) {
         super.fillIntent(intent);
-        intent.putExtra(ROOM_NAME, creationBundle.getString(BundleExtraKeys.ROOM_NAME));
+        intent.putExtra(ROOM_NAME, roomName);
     }
 
     @Override

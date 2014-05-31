@@ -56,15 +56,6 @@ public class SendCommandFragment extends BaseFragment {
     private transient ArrayAdapter<String> recentCommandsAdapter;
     private ArrayList<String> recentCommands;
 
-    @SuppressWarnings("unused")
-    public SendCommandFragment(Bundle bundle) {
-        super(bundle);
-    }
-
-    @SuppressWarnings("unused")
-    public SendCommandFragment() {
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);

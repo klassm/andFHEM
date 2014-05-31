@@ -52,16 +52,6 @@ import li.klass.fhem.service.connection.ConnectionService;
 public abstract class AbstractWebViewFragment extends BaseFragment {
     public static final String TAG = AbstractWebViewFragment.class.getName();
 
-    @SuppressWarnings("unused")
-    public AbstractWebViewFragment() {
-    }
-
-    @SuppressWarnings("unused")
-    public AbstractWebViewFragment(Bundle bundle) {
-        super(bundle);
-    }
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);

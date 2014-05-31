@@ -24,7 +24,6 @@
 
 package li.klass.fhem.fragments;
 
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 
@@ -35,15 +34,6 @@ import li.klass.fhem.fragments.core.TopLevelFragment;
 import li.klass.fhem.util.Reject;
 
 public class FavoritesFragment extends DeviceListFragment implements TopLevelFragment {
-
-    @SuppressWarnings("unused")
-    public FavoritesFragment(Bundle bundle) {
-        super(bundle);
-    }
-
-    @SuppressWarnings("unused")
-    public FavoritesFragment() {
-    }
 
     @Override
     protected String getUpdateAction() {

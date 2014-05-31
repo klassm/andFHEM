@@ -50,8 +50,6 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
-import java.lang.reflect.Constructor;
-
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.activities.DuplicateInstallActivity;
@@ -661,8 +659,9 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
     private BaseFragment createFragmentForClass(Bundle data, Class<? extends BaseFragment> fragmentClass) throws Exception {
         if (fragmentClass == null) return null;
 
-        Constructor<? extends BaseFragment> constructor = fragmentClass.getConstructor(Bundle.class);
-        return constructor.newInstance(data);
+        BaseFragment fragment = fragmentClass.newInstance();
+        fragment.setArguments(data);
+        return fragment;
     }
 
     private void clearBackStack() {

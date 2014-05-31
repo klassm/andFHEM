@@ -53,15 +53,6 @@ import static li.klass.fhem.constants.BundleExtraKeys.RESULT_RECEIVER;
 
 public class RoomListFragment extends BaseFragment implements TopLevelFragment {
 
-    @SuppressWarnings("unused")
-    public RoomListFragment(Bundle bundle) {
-        super(bundle);
-    }
-
-    @SuppressWarnings("unused")
-    public RoomListFragment() {
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View superView = super.onCreateView(inflater, container, savedInstanceState);

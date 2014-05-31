@@ -66,15 +66,6 @@ public class ConnectionListFragment extends BaseFragment implements TopLevelFrag
 
     public static final int CONTEXT_MENU_DELETE = 1;
 
-    @SuppressWarnings("unused")
-    public ConnectionListFragment(Bundle bundle) {
-        super(bundle);
-    }
-
-    @SuppressWarnings("unused")
-    public ConnectionListFragment() {
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View superView = super.onCreateView(inflater, container, savedInstanceState);

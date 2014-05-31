@@ -30,6 +30,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
 import li.klass.fhem.R;
 import li.klass.fhem.fragments.core.BaseFragment;
 import li.klass.fhem.util.NumberSystemUtil;
@@ -38,14 +39,6 @@ public class ConversionFragment extends BaseFragment {
 
     private transient EditText inputField;
     private transient TextView resultField;
-
-    @SuppressWarnings("unused")
-    public ConversionFragment(Bundle bundle) {
-        super(bundle);
-    }
-
-    @SuppressWarnings("unused")
-    public ConversionFragment() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

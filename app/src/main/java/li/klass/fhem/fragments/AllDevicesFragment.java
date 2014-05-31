@@ -24,22 +24,11 @@
 
 package li.klass.fhem.fragments;
 
-import android.os.Bundle;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.fragments.core.DeviceListFragment;
 import li.klass.fhem.fragments.core.TopLevelFragment;
 
 public class AllDevicesFragment extends DeviceListFragment implements TopLevelFragment {
-
-    @SuppressWarnings("unused")
-    public AllDevicesFragment(Bundle bundle) {
-        super(bundle);
-    }
-
-    @SuppressWarnings("unused")
-    public AllDevicesFragment() {
-    }
-
     @Override
     protected String getUpdateAction() {
         return Actions.GET_ALL_ROOMS_DEVICE_LIST;

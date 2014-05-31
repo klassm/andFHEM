@@ -24,7 +24,6 @@
 package li.klass.fhem.fragments.device;
 
 import android.content.Intent;
-import android.os.Bundle;
 
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
@@ -35,16 +34,6 @@ import li.klass.fhem.fragments.FragmentType;
  * Show all devices for a specific room and switch to the device detail when the name is clicked.
  */
 public class DeviceNameListNavigationFragment extends DeviceNameListFragment {
-
-    @SuppressWarnings("unused")
-    public DeviceNameListNavigationFragment(Bundle bundle) {
-        super(bundle);
-    }
-
-    @SuppressWarnings("unused")
-    public DeviceNameListNavigationFragment() {
-    }
-
     @Override
     protected void onDeviceNameClick(String parent, Device<?> child) {
         if (child == null) return;
