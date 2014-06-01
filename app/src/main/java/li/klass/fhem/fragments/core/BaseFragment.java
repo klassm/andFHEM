@@ -36,7 +36,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -133,37 +132,9 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
         }
     }
 
-    public static final String CREATION_BUNDLE_KEY = "creationBundle";
-
     private transient UIBroadcastReceiver broadcastReceiver;
     private transient View contentView;
     private boolean backPressCalled = false;
-    protected transient Bundle creationBundle;
-
-    public BaseFragment() {
-    }
-
-    public BaseFragment(Bundle bundle) {
-        this.creationBundle = bundle;
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        outState.putBundle("creationBundle", creationBundle);
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (savedInstanceState != null && savedInstanceState.containsKey(CREATION_BUNDLE_KEY)) {
-            creationBundle = savedInstanceState.getBundle("creationBundle");
-        }
-
-        if (creationBundle == null) {
-            creationBundle = new Bundle();
-        }
-    }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -274,8 +245,6 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
     protected void showUpdatingBar() {
         getUpdatingBar(getView()).setVisibility(View.VISIBLE);
     }
-
-    protected void fillEmptyView(LinearLayout view) {}
 
     private void hideConnectionError() {
         if (isNavigation) return;

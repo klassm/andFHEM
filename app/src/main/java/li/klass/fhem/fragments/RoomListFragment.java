@@ -158,7 +158,6 @@ public class RoomListFragment extends BaseFragment implements TopLevelFragment {
         return (RoomListAdapter) listView.getAdapter();
     }
 
-    @Override
     protected void fillEmptyView(LinearLayout view) {
         View emptyView = LayoutInflater.from(getActivity()).inflate(R.layout.empty_view, null);
         assert emptyView != null;

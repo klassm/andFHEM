@@ -318,7 +318,6 @@ public abstract class DeviceListFragment extends BaseFragment {
         return (GridViewWithSections) getView().findViewById(R.id.deviceMap1);
     }
 
-    @Override
     protected void fillEmptyView(LinearLayout view) {
         View emptyView = LayoutInflater.from(getActivity()).inflate(R.layout.empty_view, null);
         assert emptyView != null;

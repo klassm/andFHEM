@@ -24,16 +24,28 @@
 package li.klass.fhem.fragments.device;
 
 import android.content.Intent;
+import android.os.Bundle;
 
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.fragments.FragmentType;
 
+import static li.klass.fhem.constants.BundleExtraKeys.ROOM_NAME;
+
 /**
  * Show all devices for a specific room and switch to the device detail when the name is clicked.
  */
 public class DeviceNameListNavigationFragment extends DeviceNameListFragment {
+
+    private String roomName;
+
+    @Override
+    public void setArguments(Bundle args) {
+        super.setArguments(args);
+        roomName = args.getString(ROOM_NAME);
+    }
+
     @Override
     protected void onDeviceNameClick(String parent, Device<?> child) {
         if (child == null) return;
@@ -41,7 +53,7 @@ public class DeviceNameListNavigationFragment extends DeviceNameListFragment {
         Intent intent = new Intent(Actions.SHOW_FRAGMENT);
         intent.putExtra(BundleExtraKeys.FRAGMENT, FragmentType.DEVICE_DETAIL);
         intent.putExtra(BundleExtraKeys.DEVICE_NAME, child.getName());
-        intent.putExtra(BundleExtraKeys.ROOM_NAME, creationBundle.getString(BundleExtraKeys.ROOM_NAME));
+        intent.putExtra(ROOM_NAME, roomName);
         intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, resultReceiver);
 
         getActivity().sendBroadcast(intent);

@@ -63,8 +63,15 @@ public class ConnectionListFragment extends BaseFragment implements TopLevelFrag
 
     public static final String TAG = ConnectionListFragment.class.getName();
     private String clickedConnectionId;
+    private String connectionId;
 
     public static final int CONTEXT_MENU_DELETE = 1;
+
+    @Override
+    public void setArguments(Bundle args) {
+        super.setArguments(args);
+        connectionId = args.getString(CONNECTION_ID);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -79,7 +86,6 @@ public class ConnectionListFragment extends BaseFragment implements TopLevelFrag
         LinearLayout emptyView = (LinearLayout) layout.findViewById(R.id.emptyView);
         fillEmptyView(emptyView);
 
-        assert layout != null;
         ListView connectionList = (ListView) layout.findViewById(R.id.connectionList);
         Reject.ifNull(connectionList);
         connectionList.setAdapter(adapter);
@@ -122,7 +128,7 @@ public class ConnectionListFragment extends BaseFragment implements TopLevelFrag
     protected void onClick(String connectionId) {
         Intent intent = new Intent(Actions.SHOW_FRAGMENT);
         intent.putExtra(BundleExtraKeys.FRAGMENT, FragmentType.CONNECTION_DETAIL);
-        intent.putExtra(BundleExtraKeys.CONNECTION_ID, connectionId);
+        intent.putExtra(CONNECTION_ID, connectionId);
 
         getActivity().sendBroadcast(intent);
     }
@@ -163,9 +169,8 @@ public class ConnectionListFragment extends BaseFragment implements TopLevelFrag
                     if (connectionList.size() == 0) {
                         showEmptyView();
                     }
-                    String selectedId = creationBundle.getString(CONNECTION_ID);
-                    getAdapter().updateData(connectionList, selectedId);
-                    scrollToSelected(selectedId, getAdapter().getData());
+                    getAdapter().updateData(connectionList, connectionId);
+                    scrollToSelected(connectionId, getAdapter().getData());
                 }
             }
         });
@@ -195,14 +200,11 @@ public class ConnectionListFragment extends BaseFragment implements TopLevelFrag
         return (ConnectionListAdapter) listView.getAdapter();
     }
 
-    @Override
     protected void fillEmptyView(LinearLayout view) {
-        View emptyView = LayoutInflater.from(getActivity()).inflate(R.layout.empty_view, null);
+        View emptyView = LayoutInflater.from(getActivity()).inflate(R.layout.empty_view, view);
         assert emptyView != null;
         TextView emptyText = (TextView) emptyView.findViewById(R.id.emptyText);
         emptyText.setText(R.string.noConnections);
-
-        view.addView(emptyView);
     }
 
     @Override
@@ -228,7 +230,7 @@ public class ConnectionListFragment extends BaseFragment implements TopLevelFrag
         switch (item.getItemId()) {
             case CONTEXT_MENU_DELETE:
                 Intent intent = new Intent(Actions.CONNECTION_DELETE);
-                intent.putExtra(BundleExtraKeys.CONNECTION_ID, clickedConnectionId);
+                intent.putExtra(CONNECTION_ID, clickedConnectionId);
                 intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
                     @Override
                     protected void onReceiveResult(int resultCode, Bundle resultData) {

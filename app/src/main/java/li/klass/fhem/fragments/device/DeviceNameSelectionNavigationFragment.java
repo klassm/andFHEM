@@ -24,6 +24,8 @@
 package li.klass.fhem.fragments.device;
 
 import android.content.Intent;
+import android.os.Bundle;
+import android.os.Parcelable;
 
 import li.klass.fhem.fragments.RoomListFragment;
 
@@ -34,12 +36,21 @@ import static li.klass.fhem.constants.BundleExtraKeys.ROOM_NAME;
 import static li.klass.fhem.fragments.FragmentType.DEVICE_SELECTION;
 
 public class DeviceNameSelectionNavigationFragment extends RoomListFragment {
+
+    private Parcelable resultReceiver;
+
+    @Override
+    public void setArguments(Bundle args) {
+        super.setArguments(args);
+        resultReceiver = args.getParcelable(RESULT_RECEIVER);
+    }
+
     @Override
     public void onClick(String roomName) {
         Intent intent = new Intent(SHOW_FRAGMENT);
         intent.putExtra(FRAGMENT, DEVICE_SELECTION);
         intent.putExtra(ROOM_NAME, roomName);
-        intent.putExtra(RESULT_RECEIVER, creationBundle.getParcelable(RESULT_RECEIVER));
+        intent.putExtra(RESULT_RECEIVER, resultReceiver);
 
         getActivity().sendBroadcast(intent);
     }
