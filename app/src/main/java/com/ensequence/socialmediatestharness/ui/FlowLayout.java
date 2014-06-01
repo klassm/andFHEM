@@ -48,7 +48,7 @@ public class FlowLayout extends ViewGroup {
     @Override
     protected void onMeasure(final int widthMeasureSpec,
                              final int heightMeasureSpec) {
-        assert (MeasureSpec.getMode(widthMeasureSpec) != MeasureSpec.UNSPECIFIED);
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
         final int maxWidth = MeasureSpec.getSize(widthMeasureSpec) - getPaddingLeft() - getPaddingRight();
         int width = 0;
@@ -83,7 +83,7 @@ public class FlowLayout extends ViewGroup {
             final LayoutParams childLayoutParams = (LayoutParams) child.getLayoutParams();
 
             child.measure(MeasureSpec.makeMeasureSpec(maxWidth,
-                    MeasureSpec.EXACTLY), childHeightMeasureSpec);
+                    MeasureSpec.UNSPECIFIED), childHeightMeasureSpec);
 
             final int childWidth = child.getMeasuredWidth();
 

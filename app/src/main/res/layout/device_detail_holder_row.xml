@@ -9,6 +9,7 @@
         style="@style/deviceDetailDescription"/>
     <com.ensequence.socialmediatestharness.ui.FlowLayout android:id="@+id/holder"
         style="@style/deviceDetailContent"
+        android:layout_width="match_parent"
         android:layout_gravity="right"
         android:gravity="right"
         android:paddingRight="0dp"

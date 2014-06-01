@@ -56,7 +56,7 @@ public class LightSceneAdapter extends GenericDeviceAdapter<LightSceneDevice> {
         TableLayout layout = (TableLayout) view.findViewById(R.id.device_overview_generic);
         layout.removeAllViews();
 
-        layout.addView(new HolderActionRow<LightSceneDevice, String>(device.getAliasOrName(),
+        new HolderActionRow<LightSceneDevice, String>(device.getAliasOrName(),
                 HolderActionRow.LAYOUT_OVERVIEW) {
 
             @Override
@@ -70,7 +70,7 @@ public class LightSceneAdapter extends GenericDeviceAdapter<LightSceneDevice> {
                 setSceneButtonProperties(context, device, scene, button, scene);
                 return button;
             }
-        }.createRow(view.getContext(), inflater, device));
+        }.createRow(view.getContext(), inflater, layout, device);
     }
 
     @Override

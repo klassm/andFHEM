@@ -27,6 +27,7 @@ package li.klass.fhem.adapter.devices.genericui;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TableRow;
 import android.widget.TextView;
 
@@ -53,17 +54,16 @@ public abstract class HolderActionRow<D extends Device<D>, I> {
         this.layout = layout;
     }
 
-    public TableRow createRow(final Context context, LayoutInflater inflater, final D device) {
+    public TableRow createRow(final Context context, LayoutInflater inflater, ViewGroup viewGroup, final D device) {
         TableRow row = (TableRow) inflater.inflate(layout, null);
+        viewGroup.addView(row);
 
-        assert row != null;
+        FlowLayout holder = (FlowLayout) row.findViewById(R.id.holder);
 
         TextView descriptionView = (TextView) row.findViewById(R.id.description);
         if (descriptionView != null) {
             descriptionView.setText(description);
         }
-
-        FlowLayout holder = (FlowLayout) row.findViewById(R.id.holder);
 
         for (I item : getItems(device)) {
             View view = viewFor(item, device, inflater, context);

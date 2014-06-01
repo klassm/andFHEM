@@ -296,12 +296,8 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
         if (ArrayUtil.isEmpty(device.getWebCmd())) return null;
         final Context context = inflater.getContext();
 
-        TableRow tableRow = new WebCmdActionRow<D>(HolderActionRow.LAYOUT_DETAIL)
-                .createRow(context, inflater, device);
-
-        layout.addView(tableRow);
-
-        return tableRow;
+        return new WebCmdActionRow<D>(HolderActionRow.LAYOUT_DETAIL)
+                .createRow(context, inflater, layout, device);
     }
 
     private TableRow createTableRow(LayoutInflater inflater, TableLayout layout, int resource,

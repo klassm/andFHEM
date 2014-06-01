@@ -94,8 +94,8 @@ public abstract class ToggleableAdapter<D extends ToggleableDevice<D>> extends G
 
     private <T extends ToggleableDevice<T>> void addWebCmdOverviewActionRow(Context context, T device,
                                                                             TableLayout tableLayout) {
-        tableLayout.addView(new WebCmdActionRow<T>(device.getName(), HolderActionRow.LAYOUT_OVERVIEW)
-                .createRow(context, inflater, device));
+        new WebCmdActionRow<T>(device.getName(), HolderActionRow.LAYOUT_OVERVIEW)
+                .createRow(context, inflater, tableLayout, device);
     }
 
     @SuppressWarnings("unchecked")
