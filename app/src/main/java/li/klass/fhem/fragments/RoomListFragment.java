@@ -26,8 +26,6 @@ package li.klass.fhem.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.ResultReceiver;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,12 +44,23 @@ import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.fragments.core.BaseFragment;
 import li.klass.fhem.fragments.core.TopLevelFragment;
+import li.klass.fhem.util.FhemResultReceiver;
 import li.klass.fhem.util.Reject;
 import li.klass.fhem.util.advertisement.AdvertisementUtil;
 
 import static li.klass.fhem.constants.BundleExtraKeys.RESULT_RECEIVER;
+import static li.klass.fhem.constants.BundleExtraKeys.ROOM_LIST;
+import static li.klass.fhem.constants.BundleExtraKeys.ROOM_NAME;
 
 public class RoomListFragment extends BaseFragment implements TopLevelFragment {
+
+    private String roomName;
+
+    @Override
+    public void setArguments(Bundle args) {
+        super.setArguments(args);
+        roomName = args.getString(ROOM_NAME);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -86,7 +95,7 @@ public class RoomListFragment extends BaseFragment implements TopLevelFragment {
     protected void onClick(String roomName) {
         Intent intent = new Intent(Actions.SHOW_FRAGMENT);
         intent.putExtra(BundleExtraKeys.FRAGMENT, FragmentType.ROOM_DETAIL);
-        intent.putExtra(BundleExtraKeys.ROOM_NAME, roomName);
+        intent.putExtra(ROOM_NAME, roomName);
 
         getActivity().sendBroadcast(intent);
     }
@@ -102,7 +111,7 @@ public class RoomListFragment extends BaseFragment implements TopLevelFragment {
         Intent intent = new Intent(Actions.GET_ROOM_NAME_LIST);
         intent.putExtras(new Bundle());
         intent.putExtra(BundleExtraKeys.DO_REFRESH, doUpdate);
-        intent.putExtra(RESULT_RECEIVER, new ResultReceiver(new Handler()) {
+        intent.putExtra(RESULT_RECEIVER, new FhemResultReceiver() {
             @Override
             protected void onReceiveResult(int resultCode, Bundle resultData) {
                 if (getView() == null) return;
@@ -110,17 +119,15 @@ public class RoomListFragment extends BaseFragment implements TopLevelFragment {
                 hideUpdatingBar();
 
                 if (resultCode == ResultCodes.SUCCESS) {
-                    super.onReceiveResult(resultCode, resultData);
-                    List<String> roomList = (ArrayList<String>) resultData.getSerializable(BundleExtraKeys.ROOM_LIST);
+                    List<String> roomList = (ArrayList<String>) resultData.getSerializable(ROOM_LIST);
 
                     assert roomList != null;
                     if (roomList.size() == 0) {
                         showEmptyView();
                         getAdapter().updateData(roomList);
                     } else {
-                        String selectedRoom = creationBundle.getString(BundleExtraKeys.ROOM_NAME);
-                        getAdapter().updateData(roomList, selectedRoom);
-                        scrollToSelectedRoom(selectedRoom, getAdapter().getData());
+                        getAdapter().updateData(roomList, roomName);
+                        scrollToSelectedRoom(roomName, getAdapter().getData());
                     }
                 }
             }
