@@ -24,7 +24,6 @@
 
 package li.klass.fhem.fragments.weekprofile;
 
-import android.os.Bundle;
 import li.klass.fhem.adapter.weekprofile.FromToWeekProfileAdapter;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.heating.schedule.WeekProfile;
@@ -34,10 +33,6 @@ import li.klass.fhem.widget.NestedListViewAdapter;
 public class FromToWeekProfileFragment extends BaseWeekProfileFragment<FromToHeatingInterval> {
 
     private FromToWeekProfileAdapter adapter;
-
-    public FromToWeekProfileFragment(Bundle bundle) {
-        super(bundle);
-    }
 
     @Override
     protected void updateAdapterWith(WeekProfile<FromToHeatingInterval, ?, ? extends Device> weekProfile) {

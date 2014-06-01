@@ -33,6 +33,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.google.common.base.Preconditions;
+
 import li.klass.fhem.R;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
@@ -45,17 +47,17 @@ import li.klass.fhem.fragments.core.BaseFragment;
 import li.klass.fhem.widget.NestedListView;
 import li.klass.fhem.widget.NestedListViewAdapter;
 
+import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_NAME;
+
 public abstract class BaseWeekProfileFragment<H extends BaseHeatingInterval> extends BaseFragment {
     private String deviceName;
 
-    @SuppressWarnings("unused")
-    public BaseWeekProfileFragment(Bundle bundle) {
-        super(bundle);
-        deviceName = bundle.getString(BundleExtraKeys.DEVICE_NAME);
-    }
+    @Override
+    public void setArguments(Bundle args) {
+        super.setArguments(args);
 
-    @SuppressWarnings("unused")
-    public BaseWeekProfileFragment() {
+        Preconditions.checkArgument(args.containsKey(DEVICE_NAME));
+        deviceName = args.getString(DEVICE_NAME);
     }
 
     @Override
@@ -73,7 +75,7 @@ public abstract class BaseWeekProfileFragment<H extends BaseHeatingInterval> ext
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Actions.DEVICE_SET_WEEK_PROFILE);
-                intent.putExtra(BundleExtraKeys.DEVICE_NAME, deviceName);
+                intent.putExtra(DEVICE_NAME, deviceName);
                 intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
                     @Override
                     protected void onReceiveResult(int resultCode, Bundle resultData) {
@@ -92,7 +94,7 @@ public abstract class BaseWeekProfileFragment<H extends BaseHeatingInterval> ext
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Actions.DEVICE_RESET_WEEK_PROFILE);
-                intent.putExtra(BundleExtraKeys.DEVICE_NAME, deviceName);
+                intent.putExtra(DEVICE_NAME, deviceName);
                 intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
                     @Override
                     protected void onReceiveResult(int resultCode, Bundle resultData) {
@@ -116,7 +118,7 @@ public abstract class BaseWeekProfileFragment<H extends BaseHeatingInterval> ext
         Intent intent = new Intent(Actions.GET_DEVICE_FOR_NAME);
         intent.putExtras(new Bundle());
         intent.putExtra(BundleExtraKeys.DO_REFRESH, doUpdate);
-        intent.putExtra(BundleExtraKeys.DEVICE_NAME, deviceName);
+        intent.putExtra(DEVICE_NAME, deviceName);
         intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
             @Override
             protected void onReceiveResult(int resultCode, Bundle resultData) {
