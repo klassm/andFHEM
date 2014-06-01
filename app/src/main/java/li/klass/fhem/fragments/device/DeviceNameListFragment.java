@@ -44,11 +44,20 @@ import li.klass.fhem.domain.core.RoomDeviceList;
 import li.klass.fhem.fragments.core.BaseFragment;
 import li.klass.fhem.widget.GridViewWithSections;
 
+import static li.klass.fhem.adapter.rooms.DeviceGridAdapter.DEFAULT_COLUMN_WIDTH;
+import static li.klass.fhem.constants.BundleExtraKeys.COLUMN_WIDTH;
+import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_FILTER;
+import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_NAME;
+import static li.klass.fhem.constants.BundleExtraKeys.RESULT_RECEIVER;
+import static li.klass.fhem.constants.BundleExtraKeys.ROOM_NAME;
+
 public abstract class DeviceNameListFragment extends BaseFragment {
 
     private int columnWidth;
     private String roomName;
     protected ResultReceiver resultReceiver;
+    private String deviceName;
+    private DeviceFilter deviceFilter;
 
     public interface DeviceFilter extends Serializable {
         boolean isSelectable(Device<?> device);
@@ -58,13 +67,15 @@ public abstract class DeviceNameListFragment extends BaseFragment {
     public void setArguments(Bundle args) {
         super.setArguments(args);
 
-        if (args.containsKey(BundleExtraKeys.COLUMN_WIDTH)) {
-            columnWidth = args.getInt(BundleExtraKeys.COLUMN_WIDTH);
+        if (args.containsKey(COLUMN_WIDTH)) {
+            columnWidth = args.getInt(COLUMN_WIDTH);
         } else {
-            columnWidth = DeviceNameListAdapter.DEFAULT_COLUMN_WIDTH;
+            columnWidth = DEFAULT_COLUMN_WIDTH;
         }
-        roomName = args.getString(BundleExtraKeys.ROOM_NAME);
-        resultReceiver = args.getParcelable(BundleExtraKeys.RESULT_RECEIVER);
+        roomName = args.getString(ROOM_NAME);
+        resultReceiver = args.getParcelable(RESULT_RECEIVER);
+        deviceName = args.getString(DEVICE_NAME);
+        deviceFilter = (DeviceFilter) args.getSerializable(DEVICE_FILTER);
     }
 
     @Override
@@ -96,7 +107,6 @@ public abstract class DeviceNameListFragment extends BaseFragment {
     private RoomDeviceList filterDevices(RoomDeviceList roomDeviceList) {
         RoomDeviceList filteredList = new RoomDeviceList(roomDeviceList.getRoomName());
 
-        DeviceFilter deviceFilter = getDeviceFilter();
         for (Device<?> device : roomDeviceList.getAllDevices()) {
             if (deviceFilter == null || deviceFilter.isSelectable(device)) {
                 filteredList.addDevice(device);
@@ -113,10 +123,10 @@ public abstract class DeviceNameListFragment extends BaseFragment {
             loadIntent = new Intent(Actions.GET_ALL_ROOMS_DEVICE_LIST);
         } else {
             loadIntent = new Intent(Actions.GET_ROOM_DEVICE_LIST);
-            loadIntent.putExtra(BundleExtraKeys.ROOM_NAME, roomName);
+            loadIntent.putExtra(ROOM_NAME, roomName);
         }
         loadIntent.putExtra(BundleExtraKeys.DO_REFRESH, false);
-        loadIntent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
+        loadIntent.putExtra(RESULT_RECEIVER, new ResultReceiver(new Handler()) {
             @Override
             protected void onReceiveResult(int resultCode, Bundle resultData) {
                 super.onReceiveResult(resultCode, resultData);
@@ -139,20 +149,14 @@ public abstract class DeviceNameListFragment extends BaseFragment {
 
         RoomDeviceList filteredList = filterDevices(roomDeviceList);
 
-        String selectedDevice = creationBundle.getString(BundleExtraKeys.DEVICE_NAME);
-
         if (! filteredList.isEmptyOrOnlyContainsDoNotShowDevices()) {
-            adapter.updateData(filteredList, selectedDevice, lastUpdate);
+            adapter.updateData(filteredList, deviceName, lastUpdate);
 
             int selectedDevicePosition = adapter.getSelectedDevicePosition();
             getGridView().setSelection(selectedDevicePosition);
         }
 
         return filteredList;
-    }
-
-    private DeviceFilter getDeviceFilter() {
-        return (DeviceFilter) creationBundle.getSerializable(BundleExtraKeys.DEVICE_FILTER);
     }
 
     protected DeviceNameListAdapter getAdapter() {
