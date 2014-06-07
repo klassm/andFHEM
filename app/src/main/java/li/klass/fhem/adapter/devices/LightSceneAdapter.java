@@ -114,7 +114,7 @@ public class LightSceneAdapter extends GenericDeviceAdapter<LightSceneDevice> {
     private void activateScene(LightSceneDevice device, String scene, Context context) {
         Intent intent = new Intent(Actions.DEVICE_SET_SUB_STATE);
         intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
-        intent.putExtra(BundleExtraKeys.STATE_NAME, "set");
+        intent.putExtra(BundleExtraKeys.STATE_NAME, "scene");
         intent.putExtra(BundleExtraKeys.STATE_VALUE, scene);
         intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver(context));
         context.startService(intent);
