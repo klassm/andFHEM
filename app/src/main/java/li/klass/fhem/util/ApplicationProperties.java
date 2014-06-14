@@ -36,6 +36,8 @@ import java.util.Properties;
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.AndFHEMBase;
 
+import static com.google.common.base.Strings.isNullOrEmpty;
+
 public class ApplicationProperties {
     public static final ApplicationProperties INSTANCE = new ApplicationProperties();
     public static final String TAG = ApplicationProperties.class.getName();
@@ -99,7 +101,12 @@ public class ApplicationProperties {
 
     public String getStringSharedPreference(String key, String defaultValue) {
         SharedPreferences preferences = getPreferences();
-        return preferences.getString(key, defaultValue);
+        String value = preferences.getString(key, defaultValue);
+        if (isNullOrEmpty(value)) {
+            return defaultValue;
+        } else {
+            return value;
+        }
     }
 
     public void setSharedPreference(String key, boolean value) {
