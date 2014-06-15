@@ -33,7 +33,6 @@ import android.preference.PreferenceManager;
 
 import li.klass.fhem.R;
 import li.klass.fhem.constants.Actions;
-import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.error.ErrorHolder;
 import li.klass.fhem.gcm.GCMIntentService;
 import li.klass.fhem.util.DisplayUtil;
@@ -105,15 +104,5 @@ public class PreferencesActivity extends PreferenceActivity
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
         preferencesChanged = true;
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        if (preferencesChanged) {
-            Intent intent = new Intent(Actions.GET_ALL_ROOMS_DEVICE_LIST);
-            intent.putExtra(BundleExtraKeys.DO_REFRESH, true);
-            startService(intent);
-        }
     }
 }

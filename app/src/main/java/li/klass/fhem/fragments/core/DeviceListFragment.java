@@ -329,9 +329,12 @@ public abstract class DeviceListFragment extends BaseFragment {
 
     @Override
     public void invalidate() {
+        super.invalidate();
+
         getAdapter().restoreParents();
 
-        super.invalidate();
+        getDeviceList().updateNumberOfColumns();
+        getAdapter().notifyDataSetInvalidated();
     }
 
     protected abstract String getUpdateAction();

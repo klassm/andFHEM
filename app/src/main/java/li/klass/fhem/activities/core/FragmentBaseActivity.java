@@ -529,6 +529,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
 
 
     private void redrawContent() {
+
         BaseFragment contentFragment = getContentFragment();
         if (contentFragment != null) contentFragment.invalidate();
 
