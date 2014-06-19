@@ -53,6 +53,7 @@ apply plugin: 'android-test'
 repositories {
     mavenCentral()
     maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
+    maven { url 'http://partnerdemo.artifactoryonline.com/partnerdemo/snapshots' }
 }
 
 dependencies {
