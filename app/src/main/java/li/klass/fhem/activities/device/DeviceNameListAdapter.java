@@ -79,7 +79,7 @@ public class DeviceNameListAdapter<DEVICE extends Device<DEVICE>> extends Device
         DEVICE device = roomDeviceList.getDeviceFor(selectedDeviceName);
         if (device == null) return 0;
 
-        return getFlatPositionForParentAndChild(device.getInternalDeviceGroupOrGroupAttribute(), device);
+        return getFlatPositionForParentAndChild(device.getInternalDeviceGroupOrGroupAttributes().get(0), device);
     }
 
     @Override

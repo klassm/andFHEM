@@ -31,6 +31,8 @@ import li.klass.fhem.domain.core.ToggleableDevice;
 
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNot.not;
@@ -79,6 +81,9 @@ public class FS20DeviceTest extends DeviceXMLParsingBase {
 
         assertThat(device.getLogDevice(), is(notNullValue()));
         assertThat(device.getDeviceCharts().size(), is(1));
+
+        assertThat(device.getInternalDeviceGroupOrGroupAttributes(), contains("dimmer", "switch", "temperature"));
+        assertThat(device.getInternalDeviceGroupOrGroupAttributes(), hasSize(3));
 
         assertThat(device.getWidgetName(), is("myAlias"));
     }

@@ -24,7 +24,6 @@
 
 package li.klass.fhem.domain.core;
 
-import org.apache.commons.lang3.StringUtils;
 import org.w3c.dom.NamedNodeMap;
 
 import java.io.Serializable;
@@ -48,7 +47,9 @@ import li.klass.fhem.service.room.DeviceReadCallback;
 import li.klass.fhem.util.DateFormatUtil;
 import li.klass.fhem.util.StringUtil;
 
+import static com.google.common.base.Strings.isNullOrEmpty;
 import static com.google.common.collect.Lists.newArrayList;
+import static java.util.Arrays.asList;
 
 @SuppressWarnings("unused")
 public abstract class Device<T extends Device> implements Serializable, Comparable<T> {
@@ -501,14 +502,14 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
      */
     public abstract DeviceFunctionality getDeviceGroup();
 
-    public String getInternalDeviceGroupOrGroupAttribute() {
-        String foundGroup;
-        if (!StringUtils.isEmpty(group)) {
-            foundGroup = group;
+    public List<String> getInternalDeviceGroupOrGroupAttributes() {
+        List<String> groups = newArrayList();
+        if (!isNullOrEmpty(group)) {
+            groups.addAll(asList(group.split(",")));
         } else {
-            foundGroup = getDeviceGroup().getCaptionText(AndFHEMApplication.getContext());
+            groups.add(getDeviceGroup().getCaptionText(AndFHEMApplication.getContext()));
         }
-        return foundGroup;
+        return groups;
     }
 
     protected boolean useTimeAndWeekAttributesForMeasureTime() {

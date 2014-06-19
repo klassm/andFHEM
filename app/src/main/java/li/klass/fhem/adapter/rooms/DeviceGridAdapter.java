@@ -31,6 +31,8 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.TextView;
 
+import com.google.common.collect.Sets;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -183,6 +185,7 @@ public class DeviceGridAdapter<T extends Device<T>> extends GridViewWithSections
         return width;
     }
 
+    @SuppressWarnings("unchecked")
     public void updateData(RoomDeviceList roomDeviceList, long lastUpdate) {
         if (roomDeviceList == null) return;
 
@@ -190,7 +193,7 @@ public class DeviceGridAdapter<T extends Device<T>> extends GridViewWithSections
         parents.clear();
         parents.addAll(deviceGroupParents);
 
-        List<String> customParents = newArrayList();
+        Set<String> customParents = Sets.newHashSet();
 
         ApplicationProperties applicationProperties = ApplicationProperties.INSTANCE;
         boolean showHiddenDevices = applicationProperties.getBooleanSharedPreference(SHOW_HIDDEN_DEVICES, false);
@@ -202,13 +205,11 @@ public class DeviceGridAdapter<T extends Device<T>> extends GridViewWithSections
                 continue;
             }
 
-            String group = device.getInternalDeviceGroupOrGroupAttribute();
-            if (! parents.contains(group) && ! customParents.contains(group)) {
-                customParents.add(group);
-            }
+
+            customParents.addAll(device.getInternalDeviceGroupOrGroupAttributes());
         }
 
-        Collections.sort(customParents);
+        Collections.sort(newArrayList(customParents));
 
         parents.addAll(customParents);
         parents.removeAll(roomDeviceList.getHiddenGroups());

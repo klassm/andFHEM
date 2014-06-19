@@ -124,16 +124,23 @@ public class RoomDeviceList implements Serializable, Cloneable {
         return deviceList;
     }
 
+    @SuppressWarnings("unchecked")
     public <T extends Device> void addDevice(T device) {
         if (device == null) return;
         if (! device.isSupported()) return;
 
-        String group = device.getInternalDeviceGroupOrGroupAttribute();
-        getOrCreateDeviceList(group).add(device);
+        List<String> groups = device.getInternalDeviceGroupOrGroupAttributes();
+        for (String group : groups) {
+            getOrCreateDeviceList(group).add(device);
+        }
     }
 
+    @SuppressWarnings("unchecked")
     public <T extends Device> void removeDevice(T device) {
-        deviceMap.get(device.getInternalDeviceGroupOrGroupAttribute()).remove(device);
+        List<String> groups = device.getInternalDeviceGroupOrGroupAttributes();
+        for (String group : groups) {
+            deviceMap.get(group).remove(device);
+        }
     }
 
     public Set<Device> getAllDevices() {

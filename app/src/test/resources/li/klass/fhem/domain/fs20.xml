@@ -53,6 +53,7 @@
             <ATTR key="room" value="room"/>
             <ATTR key="alias" value="myAlias"/>
             <ATTR key="onoffdevice" value="true"/>
+            <ATTR key="group" value="dimmer,switch,temperature"/>
             <ATTR key="eventMap" value="on:open off:closed"/>
         </FS20>
 
