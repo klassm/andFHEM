@@ -31,8 +31,6 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.TextView;
 
-import com.google.common.collect.Sets;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -49,6 +47,7 @@ import li.klass.fhem.widget.GridViewWithSectionsAdapter;
 import li.klass.fhem.widget.deviceFunctionality.DeviceGroupHolder;
 
 import static com.google.common.collect.Lists.newArrayList;
+import static com.google.common.collect.Sets.newHashSet;
 import static li.klass.fhem.constants.PreferenceKeys.DEVICE_COLUMN_WIDTH;
 import static li.klass.fhem.constants.PreferenceKeys.SHOW_HIDDEN_DEVICES;
 
@@ -80,7 +79,6 @@ public class DeviceGridAdapter<T extends Device<T>> extends GridViewWithSections
         for (DeviceFunctionality deviceFunctionality : holder.getVisible()) {
             deviceGroupParents.add(deviceFunctionality.getCaptionText(context));
         }
-        parents.addAll(deviceGroupParents);
 
         Log.d(TAG, "set visible deviceGroupParents: " + deviceGroupParents);
     }
@@ -193,22 +191,22 @@ public class DeviceGridAdapter<T extends Device<T>> extends GridViewWithSections
         parents.clear();
         parents.addAll(deviceGroupParents);
 
-        Set<String> customParents = Sets.newHashSet();
+        Set<String> customParents = newHashSet();
 
         ApplicationProperties applicationProperties = ApplicationProperties.INSTANCE;
         boolean showHiddenDevices = applicationProperties.getBooleanSharedPreference(SHOW_HIDDEN_DEVICES, false);
+
         Set<Device> allDevices = roomDeviceList.getAllDevices();
         for (Device device : allDevices) {
             if (device.isInRoom("hidden") && ! showHiddenDevices ||
                     device.isInAnyRoomOf(roomDeviceList.getHiddenRooms())) {
                 roomDeviceList.removeDevice(device);
-                continue;
+            } else  {
+                customParents.addAll(device.getInternalDeviceGroupOrGroupAttributes());
             }
-
-
-            customParents.addAll(device.getInternalDeviceGroupOrGroupAttributes());
         }
 
+        customParents.removeAll(parents);
         Collections.sort(newArrayList(customParents));
 
         parents.addAll(customParents);
