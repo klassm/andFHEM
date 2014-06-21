@@ -182,5 +182,13 @@
             android:inputType="text"
             android:defaultValue=""
             />
+
+        <EditTextPreference
+            android:key="PASSWORD"
+            android:title="@string/prefApplicationPassword"
+            android:summary="@string/prefApplicationPasswordSummary"
+            android:password="true"
+            android:defaultValue=""
+            />
     </PreferenceCategory>
 </PreferenceScreen>

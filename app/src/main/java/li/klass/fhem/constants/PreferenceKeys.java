@@ -39,6 +39,7 @@ public class PreferenceKeys {
     public static final String CONNECTION_TIMEOUT = "CONNECTION_TIMEOUT";
     public static final String COMMAND_EXECUTION_RETRIES = "COMMAND_EXECUTION_RETRIES";
     public static final String DEVICE_NAME = "DEVICE_NAME";
+    public static final String STARTUP_PASSWORD = "PASSWORD";
 
     public static final String DEVICE_FUNCTIONALITY_ORDER_VISIBLE = "DEVICE_FUNCTIONALITY_ORDER_VISIBLE";
     public static final String DEVICE_TYPE_FUNCTIONALITY_ORDER_INVISIBLE = "DEVICE_TYPE_FUNCTIONALITY_ORDER_INVISIBLE";

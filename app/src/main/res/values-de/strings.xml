@@ -205,6 +205,9 @@
     <string name="sortRooms">Raumsortierung</string>
     <string name="pwm0">PWM0</string>
     <string name="pwm1">PWM1</string>
+    <string name="wrongPassword">Falsches Passwort!</string>
+    <string name="password">Passwort</string>
+    <string name="login">Login</string>
 
     <string name="connectionManage">Verwalten</string>
     <string name="connectionCreate">Neue Verbindung erstellen</string>
@@ -287,6 +290,8 @@
     <string name="prefCommandExecutionRetriesTimeDialogEntry">%1$d. Versuch: %2$d s</string>
     <string name="prefDeviceName">Gerätename</string>
     <string name="prefDeviceNameSummary">Passt ein FHEMWEB-Gerätename zu dem Inhalt dieser Einstellung, so wird das FHEMWEB-Gerät bevorzugt verwendet. Damit können gerätespezifisch Räume ausgeblendet oder anders sortiert werden.</string>
+    <string name="prefApplicationPassword">Passwort</string>
+    <string name="prefApplicationPasswordSummary">Passwort, dass beim Applikationsstart abgefragt wird.</string>
 
 
     <string name="notNumericError">Nicht numerisch!</string>

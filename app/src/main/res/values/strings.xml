@@ -206,7 +206,9 @@
     <string name="sortRooms">Room sort</string>
     <string name="pwm0">PWM0</string>
     <string name="pwm1">PWM1</string>
-
+    <string name="wrongPassword">Invalid password!</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
 
     <string name="connectionManage">Manage</string>
     <string name="connectionCreate">Create a new connection</string>
@@ -289,6 +291,8 @@
     <string name="prefCommandExecutionRetriesTimeDialogEntry">%1$d. try: %2$d s</string>
     <string name="prefDeviceName">Device name</string>
     <string name="prefDeviceNameSummary">If a FHEMWEB device name matches this value, the respective FHEMWEB device will be preferred. This can be used to hide or sort rooms for specific devices.</string>
+    <string name="prefApplicationPassword">Password</string>
+    <string name="prefApplicationPasswordSummary">Password which will be asked upon application start.</string>
 
     <string name="notNumericError">Not numeric!</string>
     <string name="error_update">Error while updating.</string>

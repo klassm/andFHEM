@@ -52,9 +52,10 @@
         android:theme="@style/ApplicationTheme">
 
         <activity android:name="li.klass.fhem.activities.DuplicateInstallActivity" />
-        <activity android:name="li.klass.fhem.activities.AndFHEMMainActivity"
+        <activity android:name="li.klass.fhem.activities.StartupActivity"
+            android:noHistory="true"
             android:label="@string/app_name"
-            android:alwaysRetainTaskState="true"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"
             android:launchMode="singleTask"
             android:configChanges="orientation|keyboardHidden|screenSize">
             <intent-filter>
@@ -62,6 +63,11 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
+        <activity android:name="li.klass.fhem.activities.AndFHEMMainActivity"
+            android:alwaysRetainTaskState="true"
+            android:launchMode="singleTask"
+            android:configChanges="orientation|keyboardHidden|screenSize" />
 
         <activity android:name="li.klass.fhem.activities.PreferencesActivity"/>
 
