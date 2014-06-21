@@ -114,7 +114,7 @@ android {
             resources.srcDir file('src/test/resources')
         }
         main {
-            aidl.srcDirs = ['src/main/java']
+            aidl.srcDirs = ['src/main/aidl']
             java.srcDir file('src/main/java')
         }
     }

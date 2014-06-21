@@ -34,39 +34,30 @@ import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.billing.BillingService;
 import li.klass.fhem.constants.Actions;
-import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.fragments.core.BaseFragment;
 import li.klass.fhem.license.LicenseManager;
 
-public class PremiumFragment extends BaseFragment {
+public class PremiumFragment extends BaseFragment implements BillingService.ProductPurchasedListener {
 
     private static final String TAG = PremiumFragment.class.getName();
-    private boolean billingSupported;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        billingSupported = BillingService.INSTANCE.isBillingSupported();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View superView = super.onCreateView(inflater, container, savedInstanceState);
-        if (! billingSupported) {
-            return superView;
-        }
-
         View view = inflater.inflate(R.layout.shop_premium, null);
         view.findViewById(R.id.shop_premium_bought).setVisibility(View.GONE);
-        view.findViewById(R.id.shop_premium_pending).setVisibility(View.GONE);
         view.findViewById(R.id.shop_premium_buy).setVisibility(View.GONE);
 
         view.findViewById(R.id.shop_premium_buy).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.i(TAG, "request purchase for product " + AndFHEMApplication.PRODUCT_PREMIUM_ID);
-                BillingService.INSTANCE.requestPurchase(AndFHEMApplication.PRODUCT_PREMIUM_ID, null);
+                BillingService.INSTANCE.requestPurchase(getActivity(), AndFHEMApplication.PRODUCT_PREMIUM_ID,
+                        null, PremiumFragment.this);
             }
         });
 
@@ -77,21 +68,15 @@ public class PremiumFragment extends BaseFragment {
 
     @Override
     public void update(boolean doUpdate) {
-        if (! billingSupported) return;
-
         update(getView());
-        BillingService.INSTANCE.onActivityUpdate();
     }
 
     public void update(View view) {
         view.findViewById(R.id.shop_premium_bought).setVisibility(View.GONE);
-        view.findViewById(R.id.shop_premium_pending).setVisibility(View.GONE);
         view.findViewById(R.id.shop_premium_buy).setVisibility(View.GONE);
 
         if (LicenseManager.INSTANCE.isPro()) {
             view.findViewById(R.id.shop_premium_bought).setVisibility(View.VISIBLE);
-        } else if(BillingService.INSTANCE.hasPendingRequestFor(AndFHEMApplication.PRODUCT_PREMIUM_ID)) {
-            view.findViewById(R.id.shop_premium_pending).setVisibility(View.VISIBLE);
         } else {
             view.findViewById(R.id.shop_premium_buy).setVisibility(View.VISIBLE);
         }
@@ -101,22 +86,7 @@ public class PremiumFragment extends BaseFragment {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        if (! BillingService.INSTANCE.isBillingSupported()) {
-            showBillingNotSupportedToast();
-        }
-    }
-
-    private void showBillingNotSupportedToast() {
-        showToast(R.string.billing_notSupported);
-    }
-
-    private void showToast(int toastString) {
-        Intent intent = new Intent(Actions.SHOW_TOAST);
-        intent.putExtra(BundleExtraKeys.STRING_ID, toastString);
-        getActivity().sendBroadcast(intent);
-
-        getActivity().sendBroadcast(new Intent(Actions.BACK));
+    public void onProductPurchased(String orderId, String productId) {
+        update(false);
     }
 }

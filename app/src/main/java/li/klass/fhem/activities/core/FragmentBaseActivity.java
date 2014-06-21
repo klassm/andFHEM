@@ -88,7 +88,8 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
 
     ApplicationProperties applicationProperties = ApplicationProperties.INSTANCE;
     private Receiver broadcastReceiver;
-    private Menu optionsMenu;
+
+    protected Menu optionsMenu;
 
     /**
      * an intent waiting to be processed, but received in the wrong activity state (widget problem ..)
@@ -451,9 +452,9 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
     @Override
     protected void onResume() {
         super.onResume();
+        BillingService.INSTANCE.start();
 
         saveInstanceStateCalled = false;
-        BillingService.INSTANCE.bindActivity(this);
 
         if (broadcastReceiver != null) {
             registerReceiver(broadcastReceiver, broadcastReceiver.getIntentFilter());
@@ -469,8 +470,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
     @Override
     protected void onStop() {
         super.onStop();
-
-        BillingService.INSTANCE.unbindActivity(this);
+        BillingService.INSTANCE.stop();
 
         RoomListService.INSTANCE.storeDeviceListMap();
 
@@ -484,15 +484,6 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
         setShowRefreshProgressIcon(false);
     }
 
-    @Override
-    public boolean onCreatePanelMenu(int featureId, com.actionbarsherlock.view.Menu menu) {
-        getSupportMenuInflater().inflate(R.menu.main_menu, menu);
-        if (LicenseManager.INSTANCE.isPro()) {
-            menu.removeItem(R.id.menu_premium);
-        }
-        this.optionsMenu = menu;
-        return super.onCreateOptionsMenu(menu);
-    }
 
     @Override
     public void onBackPressed() {
@@ -671,6 +662,17 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
             getSupportFragmentManager().popBackStack();
         }
     }
+
+    @Override
+    public boolean onCreatePanelMenu(int featureId, com.actionbarsherlock.view.Menu menu) {
+        getSupportMenuInflater().inflate(R.menu.main_menu, menu);
+        if (LicenseManager.INSTANCE.isPro()) {
+            menu.removeItem(R.id.menu_premium);
+        }
+        this.optionsMenu = menu;
+        return super.onCreateOptionsMenu(menu);
+    }
+
 
     private void setShowRefreshProgressIcon(boolean show) {
         if (optionsMenu == null) return;

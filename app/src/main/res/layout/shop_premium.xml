@@ -48,16 +48,6 @@
                     android:id="@+id/shop_premium_buy"
                     android:textSize="15dp"
                     android:gravity="center"/>
-            <TextView android:id="@+id/shop_premium_pending"
-                      android:layout_marginLeft="10dp"
-                      android:layout_marginRight="10dp"
-                      android:padding="5dp"
-                      android:background="@color/lightBlue"
-                      android:layout_width="fill_parent"
-                      android:layout_height="wrap_content"
-                      android:text="@string/billing_state_pending"
-                      android:gravity="center"
-                    />
             <TextView android:id="@+id/shop_premium_bought"
                       android:layout_marginLeft="10dp"
                       android:layout_marginRight="10dp"

@@ -48,6 +48,7 @@ public class AndFHEMMainActivity extends FragmentBaseActivity {
 
     public static final String TAG = AndFHEMMainActivity.class.getName();
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +56,7 @@ public class AndFHEMMainActivity extends FragmentBaseActivity {
 
         registerWithGCM(this);
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

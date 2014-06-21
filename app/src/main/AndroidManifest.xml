@@ -220,16 +220,6 @@
             </intent-filter>
         </service>
 
-        <service android:name="li.klass.fhem.billing.playstore.PlayStoreBillingService"/>
-
-        <receiver android:name="li.klass.fhem.billing.playstore.PlayStoreBillingReceiver">
-            <intent-filter>
-                <action android:name="com.android.vending.billing.IN_APP_NOTIFY"/>
-                <action android:name="com.android.vending.billing.RESPONSE_CODE"/>
-                <action android:name="com.android.vending.billing.PURCHASE_STATE_CHANGED"/>
-            </intent-filter>
-        </receiver>
-
         <activity android:name="li.klass.fhem.activities.base.DeviceNameSelectionActivity"/>
 
         <activity

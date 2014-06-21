@@ -26,126 +26,92 @@ package li.klass.fhem.billing;
 import android.app.Activity;
 import android.util.Log;
 
-import java.util.HashSet;
+import com.android.vending.billing.IabException;
+import com.android.vending.billing.IabHelper;
+import com.android.vending.billing.IabResult;
+import com.android.vending.billing.Inventory;
+import com.android.vending.billing.Purchase;
+
 import java.util.Set;
 
-import li.klass.fhem.billing.playstore.PlayStoreProvider;
-import li.klass.fhem.constants.PreferenceKeys;
-import li.klass.fhem.license.LicenseManager;
-import li.klass.fhem.util.ApplicationProperties;
+import li.klass.fhem.AndFHEMApplication;
+
+import static com.google.common.collect.Sets.newHashSet;
 
 public class BillingService {
-    public interface BeforeProductPurchasedListener {
-        void productPurchased(String orderId, String productId);
+
+    public interface ProductPurchasedListener {
+        void onProductPurchased(String orderId, String productId);
     }
 
-    public static final String BILLING_PROVIDER_PROPERTIES_KEY = "billing.provider";
     public static final String TAG = BillingService.class.getName();
 
-    private Set<BeforeProductPurchasedListener> beforeProductPurchasedListeners = new HashSet<BeforeProductPurchasedListener>();
 
-    private enum ProviderType {
-        GOOGLE(PlayStoreProvider.INSTANCE);
-
-        private final BillingProvider storeProvider;
-
-        ProviderType(BillingProvider storeProvider) {
-            this.storeProvider = storeProvider;
-        }
-
-        public BillingProvider getStoreProvider() {
-            return storeProvider;
-        }
-
-    }
     public static final BillingService INSTANCE = new BillingService();
+
+    private IabHelper iabHelper;
+    private Inventory inventory;
+
+
+    private IabHelper.QueryInventoryFinishedListener queryInventoryFinishedListener = new IabHelper.QueryInventoryFinishedListener() {
+        @Override
+        public void onQueryInventoryFinished(IabResult result, Inventory inv) {
+            if (result.isSuccess()) {
+                inventory = inv;
+            }
+        }
+    };
 
     private BillingService() {
     }
 
-    private ProviderType billingProvider;
-
-    public void rebuildDatabaseFromRemote() {
-        if (!isBillingSupported()) return;
-
-        Log.e(TAG, "request rebuild database from remote");
-        getCurrentProvider().rebuildDatabaseFromRemote();
+    public void start() {
+        iabHelper = new IabHelper(AndFHEMApplication.getContext(), AndFHEMApplication.PUBLIC_KEY_ENCODED);
+        iabHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
+            @Override
+            public void onIabSetupFinished(IabResult result) {
+                if (result.isSuccess()) {
+                    loadInventory();
+                }
+            }
+        });
     }
 
-    public boolean hasPendingRequestFor(String productId) {
-        return getCurrentProvider().hasPendingRequestFor(productId);
+    public void stop() {
+        iabHelper.dispose();
     }
 
-    public void bindActivity(Activity activity) {
-        getCurrentProvider().bindActivity(activity);
+    public void requestPurchase(Activity activity, String itemId, String payload, final ProductPurchasedListener listener) {
+        iabHelper.launchPurchaseFlow(activity, itemId, 0, new IabHelper.OnIabPurchaseFinishedListener() {
+            @Override
+            public void onIabPurchaseFinished(IabResult result, Purchase info) {
+                if (result.isSuccess()) {
+                    loadInventory();
+                    listener.onProductPurchased(info.getOrderId(), info.getSku());
+                }
+            }
+        }, payload);
     }
 
-    public void unbindActivity(Activity activity) {
-        getCurrentProvider().unbindActivity(activity);
-    }
-
-    public void markProductAsPurchased(String orderId, String productId,
-                                       BillingConstants.PurchaseState purchaseState, long purchaseTime, String developerPayload) {
-        Log.i(TAG, "marking " + productId + " as " + purchaseState.name());
-        notifyProductPurchasedListeners(orderId, productId);
-        PurchaseDatabase.INSTANCE.updatePurchase(orderId, productId, purchaseState, purchaseTime, developerPayload);
-    }
-
-    public void requestPurchase(String itemId, String payload) {
-        getCurrentProvider().requestPurchase(itemId, payload);
+    public void loadInventory() {
+        try {
+            inventory = iabHelper.queryInventory(false, null, null);
+        } catch (IabException e) {
+            inventory = null;
+        }
     }
 
     public Set<String> getOwnedItems() {
-        Set<String> ownedItems = PurchaseDatabase.INSTANCE.getOwnedItems();
+        Set<String> ownedItems;
+
+        if (inventory == null) {
+            ownedItems = newHashSet();
+        } else {
+            ownedItems = inventory.getAllOwnedSkus();
+        }
+
         Log.i(TAG, "owned items: " + ownedItems);
+
         return ownedItems;
-    }
-
-    public void onActivityUpdate() {
-        getCurrentProvider().onActivityUpdate();
-    }
-
-    public boolean isBillingSupported() {
-        return ! LicenseManager.INSTANCE.isDebug() && getCurrentProvider().isBillingSupported();
-    }
-
-    public boolean isBillingDatabaseInitialised() {
-        return ApplicationProperties.INSTANCE.getBooleanSharedPreference(PreferenceKeys.BILLING_DATABASE_INITIALISED, false);
-    }
-
-    public void setBillingDatabaseInitialised(boolean isInitialised) {
-        ApplicationProperties.INSTANCE.setSharedPreference(PreferenceKeys.BILLING_DATABASE_INITIALISED, isInitialised);
-    }
-
-    public void clearDatabase() {
-        PurchaseDatabase.INSTANCE.removeAllPurchases();
-    }
-
-    public void registerBeforeProductPurchasedListener(BeforeProductPurchasedListener listener) {
-        beforeProductPurchasedListeners.add(listener);
-    }
-
-    public void removeBeforeProductPurchasedListener(BeforeProductPurchasedListener listener) {
-        beforeProductPurchasedListeners.remove(listener);
-    }
-
-    private void notifyProductPurchasedListeners(String orderId, String productId) {
-        for (BeforeProductPurchasedListener beforeProductPurchasedListener : beforeProductPurchasedListeners) {
-            beforeProductPurchasedListener.productPurchased(orderId, productId);
-        }
-    }
-
-    private BillingProvider getCurrentProvider() {
-        if (billingProvider == null) {
-            try {
-                String provider = ApplicationProperties.INSTANCE.getStringApplicationProperty(BILLING_PROVIDER_PROPERTIES_KEY);
-                billingProvider = ProviderType.valueOf(provider);
-            } catch (Exception e) {
-                Log.e(BillingService.class.getName(), "cannot find billing provider property, falling back to Google");
-                billingProvider = ProviderType.GOOGLE;
-            }
-            Log.e(BillingService.class.getName(), "set " + billingProvider.name() + " as billing provider!");
-        }
-        return billingProvider.getStoreProvider();
     }
 }
