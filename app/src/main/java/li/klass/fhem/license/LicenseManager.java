@@ -47,6 +47,9 @@ public class LicenseManager {
     public boolean isPro() {
         if (isPremium) return true;
         if (ApplicationProperties.INSTANCE.getBooleanApplicationProperty("IS_PREMIUM")) return true;
+        if (AndFHEMApplication.getContext().getPackageName().equals("li.klass.fhempremium")) {
+            return true;
+        }
         if (isDebug()) return true;
 
         Set<String> ownedItems = BillingService.INSTANCE.getOwnedItems();
