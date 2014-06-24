@@ -36,6 +36,7 @@ import java.util.Set;
 
 import li.klass.fhem.AndFHEMApplication;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Sets.newHashSet;
 
 public class BillingService {
@@ -44,41 +45,50 @@ public class BillingService {
         void onProductPurchased(String orderId, String productId);
     }
 
-    public static final String TAG = BillingService.class.getName();
 
+    public interface SetupFinishedListener {
+        void onSetupFinished();
+    }
+
+    public static final String TAG = BillingService.class.getName();
 
     public static final BillingService INSTANCE = new BillingService();
 
     private IabHelper iabHelper;
     private Inventory inventory;
 
+    private boolean isSetup = false;
 
-    private IabHelper.QueryInventoryFinishedListener queryInventoryFinishedListener = new IabHelper.QueryInventoryFinishedListener() {
-        @Override
-        public void onQueryInventoryFinished(IabResult result, Inventory inv) {
-            if (result.isSuccess()) {
-                inventory = inv;
-            }
-        }
-    };
 
     private BillingService() {
     }
 
-    public void start() {
-        iabHelper = new IabHelper(AndFHEMApplication.getContext(), AndFHEMApplication.PUBLIC_KEY_ENCODED);
-        iabHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
-            @Override
-            public void onIabSetupFinished(IabResult result) {
-                if (result.isSuccess()) {
-                    loadInventory();
+    public void start(final SetupFinishedListener listener) {
+        checkNotNull(listener);
+
+        if (isSetup) {
+            listener.onSetupFinished();
+        } else {
+            iabHelper = new IabHelper(AndFHEMApplication.getContext(), AndFHEMApplication.PUBLIC_KEY_ENCODED);
+            iabHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
+                @Override
+                public void onIabSetupFinished(IabResult result) {
+                    if (result.isSuccess()) {
+                        loadInventory();
+                        isSetup = true;
+                    } else {
+                        Log.e(TAG, result.toString());
+                    }
+                    listener.onSetupFinished();
                 }
-            }
-        });
+            });
+        }
     }
 
-    public void stop() {
+    @Override
+    protected void finalize() throws Throwable {
         iabHelper.dispose();
+        super.finalize();
     }
 
     public void requestPurchase(Activity activity, String itemId, String payload, final ProductPurchasedListener listener) {

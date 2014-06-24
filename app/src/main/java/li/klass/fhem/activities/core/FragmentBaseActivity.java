@@ -217,7 +217,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         try {
             super.onCreate(savedInstanceState);
         } catch (Exception e) {
@@ -255,9 +255,14 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
 
         initDrawerLayout();
 
-        if (savedInstanceState == null) {
-            handleInitialFragment();
-        }
+        BillingService.INSTANCE.start(new BillingService.SetupFinishedListener() {
+            @Override
+            public void onSetupFinished() {
+                if (savedInstanceState == null) {
+                    handleInitialFragment();
+                }
+            }
+        });
     }
 
     /**
@@ -452,7 +457,6 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
     @Override
     protected void onResume() {
         super.onResume();
-        BillingService.INSTANCE.start();
 
         saveInstanceStateCalled = false;
 
@@ -470,7 +474,6 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
     @Override
     protected void onStop() {
         super.onStop();
-        BillingService.INSTANCE.stop();
 
         RoomListService.INSTANCE.storeDeviceListMap();
 
