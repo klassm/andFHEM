@@ -39,22 +39,31 @@ import li.klass.fhem.util.ApplicationProperties;
 
 public class LicenseManager {
     public static final LicenseManager INSTANCE = new LicenseManager();
-    private final static boolean isPremium = false;
+    private static final String TAG = LicenseManager.class.getName();
 
     private LicenseManager() {
     }
 
     public boolean isPro() {
-        if (isPremium) return true;
-        if (ApplicationProperties.INSTANCE.getBooleanApplicationProperty("IS_PREMIUM")) return true;
-        if (AndFHEMApplication.getContext().getPackageName().equals("li.klass.fhempremium")) {
-            return true;
-        }
-        if (isDebug()) return true;
+        boolean isPremium = false;
 
         Set<String> ownedItems = BillingService.INSTANCE.getOwnedItems();
-        return ownedItems.contains(AndFHEMApplication.PRODUCT_PREMIUM_ID) ||
-                ownedItems.contains(AndFHEMApplication.PRODUCT_PREMIUM_DONATOR_ID);
+        if (ApplicationProperties.INSTANCE.getBooleanApplicationProperty("IS_PREMIUM")) {
+            Log.i(TAG, "found IS_PREMIUM application property to be true => premium");
+            isPremium = true;
+        } else if  (AndFHEMApplication.getContext().getPackageName().equals("li.klass.fhempremium")) {
+            Log.i(TAG, "found package name to be li.klass.fhempremium => premium");
+            isPremium = true;
+        } else if (isDebug()) {
+            Log.i(TAG, "running in debug => premium");
+            isPremium = true;
+        } else if (ownedItems.contains(AndFHEMApplication.PRODUCT_PREMIUM_ID) ||
+                ownedItems.contains(AndFHEMApplication.PRODUCT_PREMIUM_DONATOR_ID)) {
+            Log.i(TAG, "found inapp premium purchase => premium");
+            isPremium = true;
+        }
+
+        return isPremium;
     }
 
     public boolean isDebug() {

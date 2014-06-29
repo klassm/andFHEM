@@ -45,7 +45,6 @@ public class BillingService {
         void onProductPurchased(String orderId, String productId);
     }
 
-
     public interface SetupFinishedListener {
         void onSetupFinished();
     }
@@ -67,6 +66,7 @@ public class BillingService {
         checkNotNull(listener);
 
         if (isSetup) {
+            loadInventory();
             listener.onSetupFinished();
         } else {
             iabHelper = new IabHelper(AndFHEMApplication.getContext(), AndFHEMApplication.PUBLIC_KEY_ENCODED);

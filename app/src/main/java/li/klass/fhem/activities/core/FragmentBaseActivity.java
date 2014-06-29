@@ -460,7 +460,6 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
     @Override
     protected void onResume() {
         super.onResume();
-
         saveInstanceStateCalled = false;
 
         if (broadcastReceiver != null) {

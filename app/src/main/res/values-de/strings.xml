@@ -107,6 +107,7 @@
     <string name="errorDeviceListLoad">Konnte %1$s Gerät(e) nicht laden (Typen: %2$s)!</string>
     <string name="errorOutdatedData">Die Sensor Daten scheinen veraltet zu sein. Bitte prüfe die Geräteverbindung.</string>
     <string name="errorDuplicateInstall">Die Applikation wurde zweimal installiert? Hast du die Premium Version und die normale Version parallel installiert? Bitte stelle sicher, dass nur eine Version installiert ist.</string>
+    <string name="application_log_send">Sende Applikations-Log</string>
     <string name="hex2quat">Hex -> Quat</string>
     <string name="quat2hex">Quat -> Hex</string>
     <string name="result">Ergebnis</string>

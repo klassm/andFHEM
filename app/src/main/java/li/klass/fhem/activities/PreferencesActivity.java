@@ -43,6 +43,7 @@ import static li.klass.fhem.constants.PreferenceKeys.COMMAND_EXECUTION_RETRIES;
 import static li.klass.fhem.constants.PreferenceKeys.CONNECTION_TIMEOUT;
 import static li.klass.fhem.constants.PreferenceKeys.DEVICE_COLUMN_WIDTH;
 import static li.klass.fhem.constants.PreferenceKeys.GCM_PROJECT_ID;
+import static li.klass.fhem.constants.PreferenceKeys.SEND_APP_LOG;
 import static li.klass.fhem.constants.PreferenceKeys.SEND_LAST_ERROR;
 import static li.klass.fhem.fhem.FHEMConnection.CONNECTION_TIMEOUT_DEFAULT_SECONDS;
 import static li.klass.fhem.service.CommandExecutionService.DEFAULT_NUMBER_OF_RETRIES;
@@ -81,6 +82,14 @@ public class PreferencesActivity extends PreferenceActivity
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 ErrorHolder.sendLastErrorAsMail(PreferencesActivity.this);
+                return true;
+            }
+        });
+
+        findPreference(SEND_APP_LOG).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                ErrorHolder.sendApplicationLogAsMail(PreferencesActivity.this);
                 return true;
             }
         });

@@ -40,6 +40,7 @@ public class PreferenceKeys {
     public static final String COMMAND_EXECUTION_RETRIES = "COMMAND_EXECUTION_RETRIES";
     public static final String DEVICE_NAME = "DEVICE_NAME";
     public static final String STARTUP_PASSWORD = "PASSWORD";
+    public static final String SEND_APP_LOG = "SEND_APP_LOG";
 
     public static final String DEVICE_FUNCTIONALITY_ORDER_VISIBLE = "DEVICE_FUNCTIONALITY_ORDER_VISIBLE";
     public static final String DEVICE_TYPE_FUNCTIONALITY_ORDER_INVISIBLE = "DEVICE_TYPE_FUNCTIONALITY_ORDER_INVISIBLE";

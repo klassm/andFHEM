@@ -126,6 +126,10 @@
         <Preference
             android:key="SEND_LAST_ERROR"
             android:title="@string/error_send"/>
+
+        <Preference
+            android:key="SEND_APP_LOG"
+            android:title="@string/application_log_send"/>
     </PreferenceCategory>
 
 

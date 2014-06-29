@@ -27,6 +27,7 @@ package li.klass.fhem.util.advertisement;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -45,29 +46,42 @@ import li.klass.fhem.fragments.FragmentType;
 import li.klass.fhem.license.LicenseManager;
 
 public class AdvertisementUtil {
-    private static long lastError = 0;
+    private static long lastErrorTimestamp = 0;
+    private static final String TAG = AdvertisementUtil.class.getName();
 
     public static void addAd(View view, final Activity activity) {
         final LinearLayout adContainer = (LinearLayout) view.findViewById(R.id.adContainer);
-        if (adContainer == null) return;
 
-        if (LicenseManager.INSTANCE.isPro() ||
-                activity.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        boolean showAds = true;
+
+        if (adContainer == null) {
+            showAds = false;
+            Log.i(TAG, "cannot find adContainer");
+        } else if (LicenseManager.INSTANCE.isPro()) {
+            showAds = false;
+            Log.i(TAG, "found premium version, skipping ads");
+        } else if (activity.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            showAds = false;
+            Log.i(TAG, "found landscape orientation, skipping ads");
+        }
+
+        if (! showAds) {
             adContainer.setVisibility(View.GONE);
-            return;
+        } else {
+            adContainer.setVisibility(View.VISIBLE);
+
+            if (System.currentTimeMillis() - lastErrorTimestamp < 1000 * 60 * 10) {
+                addErrorView(activity, adContainer);
+                Log.i(TAG, "still in timeout, showing error view");
+                return;
+            }
+
+            AdView adView = new AdView(activity, AdSize.BANNER, AndFHEMApplication.AD_UNIT_ID);
+
+            addListener(activity, adContainer, adView);
+            adView.loadAd(new AdRequest());
+            adContainer.addView(adView);
         }
-        adContainer.setVisibility(View.VISIBLE);
-
-        if (System.currentTimeMillis() - lastError < 1000 * 60 * 10) {
-            addErrorView(activity, adContainer);
-            return;
-        }
-
-        AdView adView = new AdView(activity, AdSize.BANNER, AndFHEMApplication.AD_UNIT_ID);
-
-        addListener(activity, adContainer, adView);
-        adView.loadAd(new AdRequest());
-        adContainer.addView(adView);
     }
 
     private static void addListener(final Activity activity, final LinearLayout adContainer, AdView adView) {
@@ -80,7 +94,8 @@ public class AdvertisementUtil {
             public void onFailedToReceiveAd(Ad ad, AdRequest.ErrorCode errorCode) {
                 adContainer.removeAllViews();
                 addErrorView(activity, adContainer);
-                lastError = System.currentTimeMillis();
+                lastErrorTimestamp = System.currentTimeMillis();
+                Log.i(TAG, "failed to receive ads, showing error view");
             }
 
             @Override
