@@ -261,6 +261,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
         BillingService.INSTANCE.start(new BillingService.SetupFinishedListener() {
             @Override
             public void onSetupFinished() {
+                Log.i(TAG, "Billing initialized, creating initial fragment");
                 if (savedInstanceState == null) {
                     handleInitialFragment();
                 }
@@ -277,6 +278,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
     private void handleInitialFragment() {
         String startupView = ApplicationProperties.INSTANCE.getStringSharedPreference(STARTUP_VIEW,
                 FragmentType.FAVORITES.name());
+        Log.d(TAG, "startup view is " + startupView);
 
         FragmentType fragmentType = FragmentType.forEnumName(startupView);
         if (fragmentType == null) fragmentType = FragmentType.FAVORITES;

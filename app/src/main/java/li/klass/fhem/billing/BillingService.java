@@ -69,15 +69,17 @@ public class BillingService {
             loadInventory();
             listener.onSetupFinished();
         } else {
+            Log.d(TAG, "Starting setup");
             iabHelper = new IabHelper(AndFHEMApplication.getContext(), AndFHEMApplication.PUBLIC_KEY_ENCODED);
             iabHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
                 @Override
                 public void onIabSetupFinished(IabResult result) {
                     if (result.isSuccess()) {
+                        Log.d(TAG, "=> SUCCESS");
                         loadInventory();
                         isSetup = true;
                     } else {
-                        Log.e(TAG, result.toString());
+                        Log.e(TAG, "=> ERROR " + result.toString());
                     }
                     listener.onSetupFinished();
                 }
@@ -90,12 +92,16 @@ public class BillingService {
     }
 
     public void requestPurchase(Activity activity, String itemId, String payload, final ProductPurchasedListener listener) {
+        Log.i(TAG, "requesting purchase of " + itemId);
         iabHelper.launchPurchaseFlow(activity, itemId, 0, new IabHelper.OnIabPurchaseFinishedListener() {
             @Override
             public void onIabPurchaseFinished(IabResult result, Purchase info) {
                 if (result.isSuccess()) {
+                    Log.i(TAG, "purchase result: SUCCESS");
                     loadInventory();
                     listener.onProductPurchased(info.getOrderId(), info.getSku());
+                } else {
+                    Log.e(TAG, "purchase result: " + result.toString());
                 }
             }
         }, payload);
@@ -103,6 +109,7 @@ public class BillingService {
 
     public void loadInventory() {
         try {
+            Log.i(TAG, "loading inventory");
             inventory = iabHelper.queryInventory(false, null, null);
         } catch (IabException e) {
             inventory = null;
