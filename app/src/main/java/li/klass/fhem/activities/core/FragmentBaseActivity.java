@@ -262,7 +262,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
             @Override
             public void onSetupFinished() {
                 Log.i(TAG, "Billing initialized, creating initial fragment");
-                if (savedInstanceState == null) {
+                if (savedInstanceState == null && ! saveInstanceStateCalled) {
                     handleInitialFragment();
                 }
             }
@@ -547,17 +547,19 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
     }
 
     private void switchToFragment(FragmentType fragmentType, Bundle data) {
-        if (data == null) data = new Bundle();
+        if (! saveInstanceStateCalled) {
+            if (data == null) data = new Bundle();
 
-        Log.i(TAG, "switch to " + fragmentType.name() + " with " + data.toString());
-        if (fragmentType.isTopLevelFragment()) {
-            clearBackStack();
+            Log.i(TAG, "switch to " + fragmentType.name() + " with " + data.toString());
+            if (fragmentType.isTopLevelFragment()) {
+                clearBackStack();
+            }
+
+            BaseFragment contentFragment = createContentFragment(fragmentType, data);
+            BaseFragment navigationFragment = createNavigationFragment(fragmentType, data);
+
+            setContent(navigationFragment, contentFragment);
         }
-
-        BaseFragment contentFragment = createContentFragment(fragmentType, data);
-        BaseFragment navigationFragment = createNavigationFragment(fragmentType, data);
-
-        setContent(navigationFragment, contentFragment);
     }
 
 

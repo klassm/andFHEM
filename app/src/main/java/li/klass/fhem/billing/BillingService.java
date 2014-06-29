@@ -56,35 +56,26 @@ public class BillingService {
     private IabHelper iabHelper;
     private Inventory inventory;
 
-    private boolean isSetup = false;
-
-
     private BillingService() {
     }
 
     public void start(final SetupFinishedListener listener) {
         checkNotNull(listener);
 
-        if (isSetup) {
-            loadInventory();
-            listener.onSetupFinished();
-        } else {
-            Log.d(TAG, "Starting setup");
-            iabHelper = new IabHelper(AndFHEMApplication.getContext(), AndFHEMApplication.PUBLIC_KEY_ENCODED);
-            iabHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
-                @Override
-                public void onIabSetupFinished(IabResult result) {
-                    if (result.isSuccess()) {
-                        Log.d(TAG, "=> SUCCESS");
-                        loadInventory();
-                        isSetup = true;
-                    } else {
-                        Log.e(TAG, "=> ERROR " + result.toString());
-                    }
-                    listener.onSetupFinished();
+        Log.d(TAG, "Starting setup");
+        iabHelper = new IabHelper(AndFHEMApplication.getContext(), AndFHEMApplication.PUBLIC_KEY_ENCODED);
+        iabHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
+            @Override
+            public void onIabSetupFinished(IabResult result) {
+                if (result.isSuccess()) {
+                    Log.d(TAG, "=> SUCCESS");
+                    loadInventory();
+                } else {
+                    Log.e(TAG, "=> ERROR " + result.toString());
                 }
-            });
-        }
+                listener.onSetupFinished();
+            }
+        });
     }
 
     public void stop() {
