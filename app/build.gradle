@@ -30,24 +30,19 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.9.+'
-        classpath fileTree(dir: './build-libs', include: '*.jar')
+        classpath 'com.android.tools.build:gradle:0.12.+'
 
         // google sites dependencies ...
         classpath 'com.google.gdata.gdata-java-client:gdata-sites-2.0:1.47.1'
         classpath 'javax.mail:mail:1.4.7'
         classpath 'com.google.oauth-client:google-oauth-client:1.17.0-rc'
 
-        // currently not working, as we need some modifications to work with src/main/resources
-        // within tests. This is why the dependency was replaced by a manually assembled
-        // jar file. The respective code can be found in
-        // https://github.com/klassm/gradle-android-test-plugin
-        //
-        // classpath 'com.squareup.gradle:gradle-android-test-plugin:0.9.1-SNAPSHOT'
+        // Original plugin of Jake Wharton is no longer supported. => Switch to a fork
+        classpath 'com.github.cowst:gradle-android-test-plugin:0.11.0-SNAPSHOT'
     }
 }
 
-apply plugin: 'android'
+apply plugin: 'com.android.application'
 apply plugin: 'android-test'
 
 repositories {
@@ -81,12 +76,16 @@ dependencies {
 }
 
 android {
-    compileSdkVersion 17
-    buildToolsVersion '19.1'
+    // temporary fix until Android Studio 0.8.1 is released
+    // (https://code.google.com/p/android/issues/detail?id=72450)
+    useOldManifestMerger true
+
+    compileSdkVersion 20
+    buildToolsVersion '20'
 
     defaultConfig {
         minSdkVersion 7
-        targetSdkVersion 17
+        targetSdkVersion 20
     }
 
     signingConfigs {
@@ -105,10 +104,6 @@ android {
     }
 
     sourceSets {
-        test {
-            java.srcDir file('src/test/java')
-            resources.srcDir file('src/test/resources')
-        }
         androidTest {
             java.srcDir file('src/test/java')
             resources.srcDir file('src/test/resources')
@@ -125,7 +120,9 @@ android {
     }
 
     productFlavors {
-        inapp {}
+        inapp {
+            packageName "li.klass.fhem"
+        }
         premium {
             packageName "li.klass.fhempremium"
         }
@@ -246,11 +243,12 @@ def updateGoogleSitesAPK(service) {
  *********************************** */
 
 android.applicationVariants.all { variant ->
-    def name = variant.name
-    task "javadoc$name"(type: Javadoc) {
-        description = "Generates javadoc for build $name"
-        destinationDir = new File(destinationDir, variant.baseName)
-        source = files(variant.javaCompile.source)
-        classpath = files(android.plugin.runtimeJarList, variant.javaCompile.classpath)
+    task("javadoc${variant.name}", type: Javadoc) {
+        description "Generates Javadoc for $variant.name."
+        source = variant.javaCompile.source
+        ext.androidJar = "${android.sdkDirectory}/platforms/${android.compileSdkVersion}/android.jar"
+        classpath = files(variant.javaCompile.classpath.files) + files(ext.androidJar)
+        options.links("http://docs.oracle.com/javase/7/docs/api/");
+        options.links("http://d.android.com/reference/");
     }
 }
