@@ -159,56 +159,59 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
 
         @Override
         public void onReceive(Context context, final Intent intent) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        String action = intent.getAction();
-                        if (action == null) return;
+            if (! saveInstanceStateCalled) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            String action = intent.getAction();
+                            if (action == null) return;
 
-                        if (Actions.SHOW_FRAGMENT.equals(action)) {
-                            Bundle bundle = intent.getExtras();
-                            if (bundle == null) throw new IllegalArgumentException("need a content fragment");
-                            FragmentType fragmentType;
-                            if (bundle.containsKey(FRAGMENT)) {
-                                fragmentType = (FragmentType) bundle.getSerializable(FRAGMENT);
-                            } else {
-                                String fragmentName = bundle.getString(FRAGMENT_NAME);
-                                fragmentType = getFragmentFor(fragmentName);
+                            if (Actions.SHOW_FRAGMENT.equals(action)) {
+                                Bundle bundle = intent.getExtras();
+                                if (bundle == null)
+                                    throw new IllegalArgumentException("need a content fragment");
+                                FragmentType fragmentType;
+                                if (bundle.containsKey(FRAGMENT)) {
+                                    fragmentType = (FragmentType) bundle.getSerializable(FRAGMENT);
+                                } else {
+                                    String fragmentName = bundle.getString(FRAGMENT_NAME);
+                                    fragmentType = getFragmentFor(fragmentName);
+                                }
+                                switchToFragment(fragmentType, intent.getExtras());
+                            } else if (action.equals(Actions.DISMISS_UPDATING_DIALOG)) {
+                                setShowRefreshProgressIcon(false);
+                            } else if (intent.getBooleanExtra(BundleExtraKeys.DO_REFRESH, false) && action.equals(Actions.DO_UPDATE)) {
+                                setShowRefreshProgressIcon(true);
+                            } else if (action.equals(SHOW_EXECUTING_DIALOG)) {
+                                setShowRefreshProgressIcon(true);
+                            } else if (action.equals(DISMISS_EXECUTING_DIALOG)) {
+                                setShowRefreshProgressIcon(false);
+                            } else if (action.equals(SHOW_TOAST)) {
+                                String content = intent.getStringExtra(BundleExtraKeys.CONTENT);
+                                if (content == null) {
+                                    content = getString(intent.getIntExtra(BundleExtraKeys.STRING_ID, 0));
+                                }
+                                Toast.makeText(FragmentBaseActivity.this, content, Toast.LENGTH_SHORT).show();
+                            } else if (action.equals(SHOW_ALERT)) {
+                                DialogUtil.showAlertDialog(FragmentBaseActivity.this,
+                                        intent.getIntExtra(BundleExtraKeys.ALERT_TITLE_ID, R.string.blank),
+                                        intent.getIntExtra(BundleExtraKeys.ALERT_CONTENT_ID, R.string.blank));
+                            } else if (action.equals(BACK)) {
+                                onBackPressed();
+                            } else if (CONNECTIONS_CHANGED.equals(action)) {
+                                if (availableConnectionDataAdapter != null) {
+                                    availableConnectionDataAdapter.doLoad();
+                                }
+                            } else if (REDRAW.equals(action)) {
+                                redrawContent();
                             }
-                            switchToFragment(fragmentType, intent.getExtras());
-                        } else if (action.equals(Actions.DISMISS_UPDATING_DIALOG)) {
-                            setShowRefreshProgressIcon(false);
-                        } else if (intent.getBooleanExtra(BundleExtraKeys.DO_REFRESH, false) && action.equals(Actions.DO_UPDATE)) {
-                            setShowRefreshProgressIcon(true);
-                        } else if (action.equals(SHOW_EXECUTING_DIALOG)) {
-                            setShowRefreshProgressIcon(true);
-                        } else if (action.equals(DISMISS_EXECUTING_DIALOG)) {
-                            setShowRefreshProgressIcon(false);
-                        } else if (action.equals(SHOW_TOAST)) {
-                            String content = intent.getStringExtra(BundleExtraKeys.CONTENT);
-                            if (content == null) {
-                                content = getString(intent.getIntExtra(BundleExtraKeys.STRING_ID, 0));
-                            }
-                            Toast.makeText(FragmentBaseActivity.this, content, Toast.LENGTH_SHORT).show();
-                        } else if (action.equals(SHOW_ALERT)) {
-                            DialogUtil.showAlertDialog(FragmentBaseActivity.this,
-                                    intent.getIntExtra(BundleExtraKeys.ALERT_TITLE_ID, R.string.blank),
-                                    intent.getIntExtra(BundleExtraKeys.ALERT_CONTENT_ID, R.string.blank));
-                        } else if (action.equals(BACK)) {
-                            onBackPressed();
-                        } else if (CONNECTIONS_CHANGED.equals(action)) {
-                            if (availableConnectionDataAdapter != null) {
-                                availableConnectionDataAdapter.doLoad();
-                            }
-                        } else if (REDRAW.equals(action)) {
-                            redrawContent();
+                        } catch (Exception e) {
+                            Log.e(TAG, "exception occurred while receiving broadcast", e);
                         }
-                    } catch (Exception e) {
-                        Log.e(TAG, "exception occurred while receiving broadcast", e);
                     }
-                }
-            });
+                });
+            }
         }
 
         public IntentFilter getIntentFilter() {
@@ -285,7 +288,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
                 protected void onReceiveResult(int resultCode, Bundle resultData) {
                     super.onReceiveResult(resultCode, resultData);
 
-                    if (resultCode != ResultCodes.SUCCESS) return;
+                    if (resultCode != ResultCodes.SUCCESS || saveInstanceStateCalled) return;
 
                     handleHasFavoritesResponse(resultCode, resultData);
                 }
@@ -305,7 +308,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
     private void handleHasFavoritesResponse(int resultCode, Bundle resultData) {
         if (resultCode == ResultCodes.SUCCESS && resultData.containsKey(HAS_FAVORITES)) {
             boolean hasFavorites = resultData.getBoolean(HAS_FAVORITES, false);
-            if (hasFavorites) {
+            if (hasFavorites && ! saveInstanceStateCalled) {
                 switchToFragment(FragmentType.FAVORITES, null);
                 return;
             }
@@ -494,6 +497,8 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
         // - there are more fragments within the back stack
         // - the popped fragment type is not equals to the current fragment type
 
+        boolean doFinish = false;
+
         BaseFragment contentFragment = getContentFragment();
         if (contentFragment == null) {
             finish();
@@ -502,14 +507,14 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
         FragmentType contentFragmentType = getFragmentFor(contentFragment.getClass());
         while (true) {
             if (! getSupportFragmentManager().popBackStackImmediate()) {
-                finish();
-                return;
+                doFinish = true;
+                break;
             }
 
             BaseFragment current = getContentFragment();
             if (current == null) {
-                finish();
-                return;
+                doFinish = true;
+                break;
             }
 
             FragmentType currentFragmentType = getFragmentFor(current.getClass());
@@ -518,7 +523,12 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
             }
         }
 
-        updateNavigationVisibility();
+        if (doFinish) {
+            finish();
+            BillingService.INSTANCE.stop();
+        } else {
+            updateNavigationVisibility();
+        }
     }
 
 
@@ -682,4 +692,6 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
         optionsMenu.findItem(R.id.menu_refresh).setVisible(!show);
         optionsMenu.findItem(R.id.menu_refresh_progress).setVisible(show);
     }
+
+
 }

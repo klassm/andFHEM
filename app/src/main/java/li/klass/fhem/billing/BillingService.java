@@ -85,10 +85,8 @@ public class BillingService {
         }
     }
 
-    @Override
-    protected void finalize() throws Throwable {
+    public void stop() {
         iabHelper.dispose();
-        super.finalize();
     }
 
     public void requestPurchase(Activity activity, String itemId, String payload, final ProductPurchasedListener listener) {
