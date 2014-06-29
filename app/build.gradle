@@ -80,12 +80,12 @@ android {
     // (https://code.google.com/p/android/issues/detail?id=72450)
     useOldManifestMerger true
 
-    compileSdkVersion 20
+    compileSdkVersion 19
     buildToolsVersion '20'
 
     defaultConfig {
         minSdkVersion 7
-        targetSdkVersion 20
+        targetSdkVersion 19
     }
 
     signingConfigs {
