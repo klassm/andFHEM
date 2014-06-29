@@ -228,7 +228,7 @@ def updateGoogleSitesAPK(service) {
     def mediaTypes = new MimetypesFileTypeMap()
     mediaTypes.addMimeTypes("application/vnd.android.package-archive")
 
-    def file = new File("app/build/apk/app-inapp-release.apk")
+    def file = new File("app/build/outputs/apk/app-inapp-release.apk")
 
     def newAttachment = new AttachmentEntry();
     newAttachment.setMediaSource(new MediaFileSource(file, mediaTypes.getContentType(file)));
