@@ -24,17 +24,19 @@
 
 package li.klass.fhem.fragments;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.webkit.WebView;
 
-import org.apache.commons.io.IOUtils;
+import com.google.common.io.Resources;
 
-import java.io.IOException;
-import java.io.InputStream;
+import java.net.URL;
+import java.nio.charset.Charset;
 
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.service.connection.ConnectionService;
+import li.klass.fhem.util.BuildVersion;
 
 public class FloorplanFragment extends AbstractWebViewFragment {
 
@@ -47,18 +49,31 @@ public class FloorplanFragment extends AbstractWebViewFragment {
         deviceName = args.getString(BundleExtraKeys.DEVICE_NAME);
     }
 
+
     @Override
-    protected void onPageLoadFinishedCallback(WebView view, String url) {
+    protected void onPageLoadFinishedCallback(final WebView view, String url) {
         if (url.contains("&XHR=1")) {
             view.loadUrl(getLoadUrl());
             return;
         }
 
-        InputStream modifyJsStream = FloorplanFragment.class.getResourceAsStream("floorplan-modify.js");
+        URL modifyJsUrl = FloorplanFragment.class.getResource("floorplan-modify.js");
         try {
-            String modifyJs = IOUtils.toString(modifyJsStream);
+            final String modifyJs = Resources.toString(modifyJsUrl, Charset.forName("UTF-8"));
+            BuildVersion.execute(new BuildVersion.VersionDependent() {
+                @Override
+                public void ifBelow() {
+                    view.loadUrl("javascript:" + modifyJs);
+                }
+
+                @Override
+                @SuppressLint("NewApi")
+                public void ifAboveOrEqual() {
+                    view.evaluateJavascript(modifyJs, null);
+                }
+            }, 19);
             view.loadUrl("javascript:" + modifyJs);
-        } catch (IOException e) {
+        } catch (Exception e) {
             Log.e(TAG, "cannot load floorplan-modify.js", e);
         }
     }

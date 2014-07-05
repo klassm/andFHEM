@@ -1,16 +1,21 @@
+var idsToHide = [ "floorplans", "fpmenu", "menu", "logo" ];
+
 document.body.setAttribute("style", "background-image: none");
 
-var floorplans = document.getElementById("floorplans");
-if (!! floorplans) floorplans.style.display="none";
+var hideId = function(id) {
+    var element = document.getElementById(id);
+    if (element) {
+        element.style.display = "none";
+    }
+}
 
-var fpmenu = document.getElementById("fpmenu");
-if (!! fpmenu) fpmenu.style.display="none";
-
-var menu = document.getElementById("menu");
-if (!! menu) menu.style.display="none";
-
-var logo = document.getElementById("logo");
-if (!! logo) logo.style.display="none";
+for (var i = 0; i < idsToHide.length; i++) {
+    try {
+        hideId(idsToHide[i]);
+    } catch (e) {
+        console.log("cannot hide " + idsToHide[i] + ": " + e);
+    }
+}
 
 // shift the background image to left, compute the left offset
 var backImg = document.getElementById("backimg");

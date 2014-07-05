@@ -141,14 +141,18 @@ task readSigningPasswordsFromConsole(
         dependsOn: ['readSigningStorePasswordFromConsole', 'readSigningKeyAliasPasswordFromConsole'])
 
 task readSigningStorePasswordFromConsole << {
-    def console = System.console()
-    def storePassword = new String(console.readPassword('\n\nEnter store password: \n> '))
+    def storePassword = getBuildProperty("storePassword");
+    if (! storePassword) {
+        storePassword = readFromConsole("Store password")
+    }
     android.signingConfigs.release.storePassword = storePassword
 }
 
 task readSigningKeyAliasPasswordFromConsole << {
-    def console = System.console()
-    def aliasPassword = new String(console.readPassword('\nEnter alias / google sites password: \n>'))
+    def aliasPassword = getBuildProperty("aliasPassword");
+    if (! aliasPassword) {
+        aliasPassword = readFromConsole("Alias / Google Sites password")
+    }
     android.signingConfigs.release.keyPassword = aliasPassword
 }
 
@@ -173,6 +177,23 @@ task artifacts {
 }
 
 task release(dependsOn: ['assembleRelease', 'uploadToGoogleSites']) << {
+}
+
+def readFromConsole(String prompt) {
+    def console = System.console()
+    return new String(console.readPassword('\n\n' + prompt + '\n> '))
+}
+
+def getBuildProperty(String key) {
+    return getBuildProperties().get(key)
+}
+
+def getBuildProperties() {
+    def props = new Properties()
+    new File(System.getProperty("user.home") + "/andFHEM.properties").withInputStream {
+        stream -> props.load(stream)
+    }
+    return props
 }
 
 /*************************************
