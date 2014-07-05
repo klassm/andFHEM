@@ -33,11 +33,11 @@ import com.android.vending.billing.Inventory;
 import com.android.vending.billing.Purchase;
 
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicReference;
 
 import li.klass.fhem.AndFHEMApplication;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.collect.Sets.newHashSet;
 
 public class BillingService {
 
@@ -54,12 +54,12 @@ public class BillingService {
     public static final BillingService INSTANCE = new BillingService();
 
     private IabHelper iabHelper;
-    private Inventory inventory = Inventory.empty();
+    private AtomicReference<Inventory> inventory = new AtomicReference<Inventory>(Inventory.empty());
 
     private BillingService() {
     }
 
-    public void start(final SetupFinishedListener listener) {
+    public synchronized void start(final SetupFinishedListener listener) {
         checkNotNull(listener);
 
         try {
@@ -82,11 +82,11 @@ public class BillingService {
         }
     }
 
-    public void stop() {
+    public synchronized void stop() {
         iabHelper.dispose();
     }
 
-    public void requestPurchase(Activity activity, String itemId, String payload, final ProductPurchasedListener listener) {
+    public synchronized void requestPurchase(Activity activity, String itemId, String payload, final ProductPurchasedListener listener) {
         Log.i(TAG, "requesting purchase of " + itemId);
         iabHelper.launchPurchaseFlow(activity, itemId, 0, new IabHelper.OnIabPurchaseFinishedListener() {
             @Override
@@ -102,23 +102,17 @@ public class BillingService {
         }, payload);
     }
 
-    public void loadInventory() {
+    public synchronized void loadInventory() {
         try {
             Log.i(TAG, "loading inventory");
-            inventory = iabHelper.queryInventory(false, null, null);
+            inventory.set(iabHelper.queryInventory(false, null, null));
         } catch (IabException e) {
-            inventory = Inventory.empty();
+            Log.e(TAG, "cannot load inventory", e);
         }
     }
 
-    public Set<String> getOwnedItems() {
-        Set<String> ownedItems;
-
-        if (inventory == null) {
-            ownedItems = newHashSet();
-        } else {
-            ownedItems = inventory.getAllOwnedSkus();
-        }
+    public synchronized Set<String> getOwnedItems() {
+        Set<String> ownedItems = inventory.get().getAllOwnedSkus();
 
         Log.i(TAG, "owned items: " + ownedItems);
 

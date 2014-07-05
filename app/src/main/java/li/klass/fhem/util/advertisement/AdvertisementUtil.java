@@ -76,6 +76,8 @@ public class AdvertisementUtil {
                 return;
             }
 
+            Log.i(TAG, "showing ad");
+
             AdView adView = new AdView(activity, AdSize.BANNER, AndFHEMApplication.AD_UNIT_ID);
 
             addListener(activity, adContainer, adView);

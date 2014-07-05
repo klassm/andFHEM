@@ -61,6 +61,8 @@ public class LicenseManager {
                 ownedItems.contains(AndFHEMApplication.PRODUCT_PREMIUM_DONATOR_ID)) {
             Log.i(TAG, "found inapp premium purchase => premium");
             isPremium = true;
+        } else {
+            Log.i(TAG, "seems that I am not Premium...");
         }
 
         return isPremium;

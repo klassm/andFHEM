@@ -520,6 +520,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
 
             FragmentType currentFragmentType = getFragmentFor(current.getClass());
             if (currentFragmentType != contentFragmentType) {
+                Log.i(TAG, "backpress => switched to " + currentFragmentType);
                 break;
             }
         }
@@ -527,6 +528,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
         if (doFinish) {
             finish();
             BillingService.INSTANCE.stop();
+            Log.i(TAG, "cannot find more fragments on backstack => exiting");
         } else {
             updateNavigationVisibility();
         }
