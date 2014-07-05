@@ -54,7 +54,7 @@ public class BillingService {
     public static final BillingService INSTANCE = new BillingService();
 
     private IabHelper iabHelper;
-    private Inventory inventory;
+    private Inventory inventory = Inventory.empty();
 
     private BillingService() {
     }
@@ -62,20 +62,24 @@ public class BillingService {
     public void start(final SetupFinishedListener listener) {
         checkNotNull(listener);
 
-        Log.d(TAG, "Starting setup");
-        iabHelper = new IabHelper(AndFHEMApplication.getContext(), AndFHEMApplication.PUBLIC_KEY_ENCODED);
-        iabHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
-            @Override
-            public void onIabSetupFinished(IabResult result) {
-                if (result.isSuccess()) {
-                    Log.d(TAG, "=> SUCCESS");
-                    loadInventory();
-                } else {
-                    Log.e(TAG, "=> ERROR " + result.toString());
+        try {
+            Log.d(TAG, "Starting setup");
+            iabHelper = new IabHelper(AndFHEMApplication.getContext(), AndFHEMApplication.PUBLIC_KEY_ENCODED);
+            iabHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
+                @Override
+                public void onIabSetupFinished(IabResult result) {
+                    if (result.isSuccess()) {
+                        Log.d(TAG, "=> SUCCESS");
+                        loadInventory();
+                    } else {
+                        Log.e(TAG, "=> ERROR " + result.toString());
+                    }
+                    listener.onSetupFinished();
                 }
-                listener.onSetupFinished();
-            }
-        });
+            });
+        } catch (Exception e) {
+            Log.e(TAG, "Error while trying to start billing", e);
+        }
     }
 
     public void stop() {
@@ -103,7 +107,7 @@ public class BillingService {
             Log.i(TAG, "loading inventory");
             inventory = iabHelper.queryInventory(false, null, null);
         } catch (IabException e) {
-            inventory = null;
+            inventory = Inventory.empty();
         }
     }
 

@@ -100,4 +100,8 @@ public class Inventory {
     void addPurchase(Purchase p) {
         mPurchaseMap.put(p.getSku(), p);
     }
+
+    public static Inventory empty() {
+        return new Inventory();
+    }
 }
