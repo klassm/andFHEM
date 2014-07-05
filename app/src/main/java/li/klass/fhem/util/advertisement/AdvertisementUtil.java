@@ -32,11 +32,12 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.google.ads.Ad;
-import com.google.ads.AdListener;
-import com.google.ads.AdRequest;
-import com.google.ads.AdSize;
-import com.google.ads.AdView;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
@@ -67,6 +68,9 @@ public class AdvertisementUtil {
 
         if (! showAds) {
             adContainer.setVisibility(View.GONE);
+        } else if (GooglePlayServicesUtil.isGooglePlayServicesAvailable(activity) != ConnectionResult.SUCCESS) {
+            addErrorView(activity, adContainer);
+            Log.e(TAG, "cannot find PlayServices");
         } else {
             adContainer.setVisibility(View.VISIBLE);
 
@@ -78,10 +82,12 @@ public class AdvertisementUtil {
 
             Log.i(TAG, "showing ad");
 
-            AdView adView = new AdView(activity, AdSize.BANNER, AndFHEMApplication.AD_UNIT_ID);
+            AdView adView = new AdView(activity);
+            adView.setAdUnitId(AndFHEMApplication.AD_UNIT_ID);
+            adView.setAdSize(AdSize.BANNER);
 
             addListener(activity, adContainer, adView);
-            adView.loadAd(new AdRequest());
+            adView.loadAd(new AdRequest.Builder().build());
             adContainer.addView(adView);
         }
     }
@@ -89,27 +95,13 @@ public class AdvertisementUtil {
     private static void addListener(final Activity activity, final LinearLayout adContainer, AdView adView) {
         adView.setAdListener(new AdListener() {
             @Override
-            public void onReceiveAd(Ad ad) {
-            }
+            public void onAdFailedToLoad(int errorCode) {
+                super.onAdFailedToLoad(errorCode);
 
-            @Override
-            public void onFailedToReceiveAd(Ad ad, AdRequest.ErrorCode errorCode) {
                 adContainer.removeAllViews();
                 addErrorView(activity, adContainer);
                 lastErrorTimestamp = System.currentTimeMillis();
                 Log.i(TAG, "failed to receive ads, showing error view");
-            }
-
-            @Override
-            public void onPresentScreen(Ad ad) {
-            }
-
-            @Override
-            public void onDismissScreen(Ad ad) {
-            }
-
-            @Override
-            public void onLeaveApplication(Ad ad) {
             }
         });
     }

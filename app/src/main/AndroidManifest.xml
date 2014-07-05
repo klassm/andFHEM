@@ -31,7 +31,6 @@
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="com.android.vending.BILLING"/>
-
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE"/>
     <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
@@ -45,11 +44,14 @@
         android:normalScreens="true"
         android:smallScreens="true"/>
 
-    <uses-sdk android:minSdkVersion="7" android:targetSdkVersion="17"/>
+    <uses-sdk android:minSdkVersion="9" android:targetSdkVersion="17"/>
 
     <application android:label="@string/app_name" android:icon="@drawable/ic_launcher"
         android:name="li.klass.fhem.AndFHEMApplication"
         android:theme="@style/ApplicationTheme">
+
+        <meta-data android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
 
         <activity android:name="li.klass.fhem.activities.DuplicateInstallActivity" />
         <activity android:name="li.klass.fhem.activities.StartupActivity"
@@ -74,7 +76,7 @@
         <activity android:name="li.klass.fhem.activities.graph.ChartingActivity" android:theme="@style/Theme.Sherlock"/>
         <activity android:name="li.klass.fhem.activities.graph.ChartingDateSelectionActivity"/>
 
-        <activity android:name="com.google.ads.AdActivity"
+        <activity android:name="com.google.android.gms.ads.AdActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"/>
 
         <activity android:name="li.klass.fhem.appwidget.type.small.SmallWidgetSelectionActivity">
