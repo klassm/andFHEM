@@ -45,12 +45,7 @@ public class ApplicationProperties {
     private final Properties properties = new Properties();
 
     private ApplicationProperties() {
-        loadApplicationProperties();
-    }
-
-    private void loadApplicationProperties() {
         load("application.properties");
-        load("billing.properties");
     }
 
     private void load(String fileName) {
@@ -70,7 +65,7 @@ public class ApplicationProperties {
         try {
             properties.load(inputStream);
         } catch (IOException e) {
-            Log.e(TAG, "cannot load application.properties", e);
+            Log.e(TAG, "error while loading file", e);
         }
     }
 
@@ -89,11 +84,6 @@ public class ApplicationProperties {
         return preferences.getBoolean(key, defaultValue);
     }
 
-    public void setBooleanSharedPreference(String key, boolean value) {
-        SharedPreferences preferences = getPreferences();
-        preferences.edit().putBoolean(key, value).commit();
-    }
-
     public int getIntegerSharedPreference(String key, int defaultValue) {
         SharedPreferences preferences = getPreferences();
         return preferences.getInt(key, defaultValue);
@@ -109,19 +99,14 @@ public class ApplicationProperties {
         }
     }
 
-    public void setSharedPreference(String key, boolean value) {
-        SharedPreferences preferences = getPreferences();
-        preferences.edit().putBoolean(key, value).commit();
-    }
-
     public void setSharedPreference(String key, String value) {
         SharedPreferences preferences = getPreferences();
-        preferences.edit().putString(key, value).commit();
+        preferences.edit().putString(key, value).apply();
     }
 
     public void deleteSharedPreference(String key) {
         SharedPreferences preferences = getPreferences();
-        preferences.edit().remove(key).commit();
+        preferences.edit().remove(key).apply();
     }
 
     private SharedPreferences getPreferences() {

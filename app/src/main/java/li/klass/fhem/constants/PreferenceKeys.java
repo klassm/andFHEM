@@ -27,7 +27,6 @@ public class PreferenceKeys {
     public static final String SHOW_HIDDEN_DEVICES = "prefShowHiddenDevices";
     public static final String DEVICE_COLUMN_WIDTH = "DEVICE_COLUMN_WIDTH";
     public static final String APPLICATION_VERSION = "APPLICATION_VERSION";
-    public static final String BILLING_DATABASE_INITIALISED = "BILLING_DATABASE_INITIALISED";
     public static final String UPDATE_ON_APPLICATION_START = "UPDATE_ON_APPLICATION_START";
     public static final String SHOW_SET_VALUE_BUTTONS = "SHOW_SET_VALUE_BUTTONS";
     public static final String DEVICE_LIST_RIGHT_PADDING = "DEVICE_LIST_PADDING_RIGHT";
@@ -41,6 +40,7 @@ public class PreferenceKeys {
     public static final String DEVICE_NAME = "DEVICE_NAME";
     public static final String STARTUP_PASSWORD = "PASSWORD";
     public static final String SEND_APP_LOG = "SEND_APP_LOG";
+    public static final String AUTO_UPDATE_TIME_IN_ACTIVITY = "AUTO_UPDATE_TIME";
 
     public static final String DEVICE_FUNCTIONALITY_ORDER_VISIBLE = "DEVICE_FUNCTIONALITY_ORDER_VISIBLE";
     public static final String DEVICE_TYPE_FUNCTIONALITY_ORDER_INVISIBLE = "DEVICE_TYPE_FUNCTIONALITY_ORDER_INVISIBLE";

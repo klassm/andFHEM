@@ -60,7 +60,7 @@ public abstract class GridViewWithSectionsAdapter<P, C> extends BaseAdapter {
 
     public void updateParentPositions() {
         List<P> parents = getDeviceGroupParents();
-        Log.d(TAG, "updating parent positions for parent count " + parents.size());
+        Log.v(TAG, "updating parent positions for parent count " + parents.size());
 
         parentPositions = Maps.newHashMap();
 
@@ -80,12 +80,12 @@ public abstract class GridViewWithSectionsAdapter<P, C> extends BaseAdapter {
             currentPosition += numberOfColumns;
         }
         totalNumberOfItems = currentPosition;
-        Log.d(TAG, "found " + totalNumberOfItems + " items");
+        Log.v(TAG, "found " + totalNumberOfItems + " items");
     }
 
     @Override
     public int getCount() {
-        Log.d(TAG, "returning totalNumberOfItems: " + totalNumberOfItems);
+        Log.v(TAG, "returning totalNumberOfItems: " + totalNumberOfItems);
         return totalNumberOfItems;
     }
 

@@ -165,7 +165,7 @@ public class DeviceListParser {
 
         handleErrors(errorHolder);
 
-        Log.e(TAG, "loaded " + allDevices.size() + " devices!");
+        Log.i(TAG, "loaded " + allDevices.size() + " devices!");
 
         return roomDeviceList;
     }
@@ -312,7 +312,7 @@ public class DeviceListParser {
             T device = createAndFillDevice(deviceClass, node);
             device.afterDeviceXMLRead();
 
-            Log.d(TAG, "loaded device with name " + device.getName());
+            Log.v(TAG, "loaded device with name " + device.getName());
 
             allDevices.put(device.getName(), device);
 

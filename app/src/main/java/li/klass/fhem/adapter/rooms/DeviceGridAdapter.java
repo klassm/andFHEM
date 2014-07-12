@@ -80,7 +80,7 @@ public class DeviceGridAdapter<T extends Device<T>> extends GridViewWithSections
             deviceGroupParents.add(deviceFunctionality.getCaptionText(context));
         }
 
-        Log.d(TAG, "set visible deviceGroupParents: " + deviceGroupParents);
+        Log.v(TAG, "set visible deviceGroupParents: " + deviceGroupParents);
     }
 
     @Override
@@ -167,7 +167,7 @@ public class DeviceGridAdapter<T extends Device<T>> extends GridViewWithSections
         List<String> viewableParents = new ArrayList<String>();
         for (String group : parents) {
             if (getChildrenCountForParent(group) <= 0) {
-                Log.d(TAG, "group " + group + " has no children, filtered!");
+                Log.v(TAG, "group " + group + " has no children, filtered!");
             } else {
                 viewableParents.add(group);
             }

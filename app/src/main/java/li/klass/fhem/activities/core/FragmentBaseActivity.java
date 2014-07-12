@@ -33,7 +33,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
-import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -51,13 +50,15 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.google.common.base.Optional;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.activities.DuplicateInstallActivity;
 import li.klass.fhem.billing.BillingService;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.constants.PreferenceKeys;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.fragments.FragmentType;
 import li.klass.fhem.fragments.core.BaseFragment;
@@ -78,7 +79,9 @@ import static li.klass.fhem.constants.Actions.SHOW_TOAST;
 import static li.klass.fhem.constants.BundleExtraKeys.FRAGMENT;
 import static li.klass.fhem.constants.BundleExtraKeys.FRAGMENT_NAME;
 import static li.klass.fhem.constants.BundleExtraKeys.HAS_FAVORITES;
+import static li.klass.fhem.constants.PreferenceKeys.AUTO_UPDATE_TIME_IN_ACTIVITY;
 import static li.klass.fhem.constants.PreferenceKeys.STARTUP_VIEW;
+import static li.klass.fhem.constants.PreferenceKeys.UPDATE_ON_APPLICATION_START;
 import static li.klass.fhem.fragments.FragmentType.ALL_DEVICES;
 import static li.klass.fhem.fragments.FragmentType.FAVORITES;
 import static li.klass.fhem.fragments.FragmentType.getFragmentFor;
@@ -89,46 +92,16 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
     public static final String NAVIGATION_TAG = "NAVIGATION_TAG";
     public static final String CONTENT_TAG = "CONTENT_TAG";
 
-    ApplicationProperties applicationProperties = ApplicationProperties.INSTANCE;
+    private ApplicationProperties applicationProperties = ApplicationProperties.INSTANCE;
     private Receiver broadcastReceiver;
 
     protected Menu optionsMenu;
 
-    /**
-     * Attribute is true if the activity has been resumed instead of being newly created
-     */
-    boolean isActivityStart = true;
-
-    private Handler autoUpdateHandler;
-
-    private final Runnable autoUpdateCallback = new Runnable() {
-        boolean firstRun = true;
-
-        @Override
-        public void run() {
-            String updateTime = PreferenceManager.getDefaultSharedPreferences(FragmentBaseActivity.this).getString("AUTO_UPDATE_TIME", "-1");
-            Long millis = Long.valueOf(updateTime);
-
-            if (!firstRun && millis != -1) {
-                Intent updateIntent = new Intent(Actions.DO_UPDATE);
-                updateIntent.putExtra(BundleExtraKeys.DO_REFRESH, true);
-                sendBroadcast(updateIntent);
-
-                Log.d(TAG, "update");
-            }
-
-            if (millis == -1) {
-                millis = 30 * 1000L;
-            }
-            autoUpdateHandler.postDelayed(this, millis);
-
-            firstRun = false;
-        }
-    };
+    private Timer timer;
 
     private RepairedDrawerLayout mDrawerLayout;
     private ListView mDrawerList;
-    private ActionBarDrawerToggle mDrawerToggle;
+    private ActionBarDrawerToggle actionBarDrawerToggle;
     private boolean saveInstanceStateCalled;
     private AvailableConnectionDataAdapter availableConnectionDataAdapter;
 
@@ -236,9 +209,6 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
         if (findViewById(R.id.tabletIndicator) != null) {
             AndFHEMApplication.INSTANCE.setIsTablet(true);
         }
-
-        autoUpdateHandler = new Handler();
-        autoUpdateHandler.postDelayed(autoUpdateCallback, 0);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowTitleEnabled(false);
@@ -372,7 +342,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.drawable.ic_drawer,
+        actionBarDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.drawable.ic_drawer,
                 R.string.drawerOpen, R.string.drawerClose) {
             public void onDrawerClosed(View view) {
                 getSupportActionBar().setTitle(R.string.app_name);
@@ -384,7 +354,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
                 supportInvalidateOptionsMenu();
             }
         };
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
+        mDrawerLayout.setDrawerListener(actionBarDrawerToggle);
     }
 
     @Override
@@ -402,50 +372,20 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        if (mDrawerToggle != null) mDrawerToggle.syncState();
+        if (actionBarDrawerToggle != null) actionBarDrawerToggle.syncState();
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        mDrawerToggle.onConfigurationChanged(newConfig);
+        actionBarDrawerToggle.onConfigurationChanged(newConfig);
         updateNavigationVisibility();
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        Log.i(TAG, "onRestart");
-        sendBroadcast(new Intent(Actions.BACK));
-    }
-
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
-
-        boolean updateOnApplicationStart = applicationProperties
-                .getBooleanSharedPreference(PreferenceKeys.UPDATE_ON_APPLICATION_START, false);
-
-        if (hasFocus && isActivityStart && updateOnApplicationStart) {
-            Log.i(TAG, "request update on application start preference");
-            Intent intent = new Intent(Actions.DO_UPDATE);
-            intent.putExtra(BundleExtraKeys.DO_REFRESH, true);
-            sendBroadcast(intent);
-        }
-
-        // reset the attribute!
-        isActivityStart = false;
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        isActivityStart = true;
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+
         saveInstanceStateCalled = false;
 
         if (broadcastReceiver != null) {
@@ -456,7 +396,46 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
             availableConnectionDataAdapter.doLoad();
         }
 
+        handleTimerUpdates();
+
         updateNavigationVisibility();
+    }
+
+    private void handleTimerUpdates() {
+        // We post this delayed, as otherwise we will block the application startup (causing
+        // ugly ANRs).
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                boolean updateOnApplicationStart = applicationProperties.getBooleanSharedPreference(UPDATE_ON_APPLICATION_START, false);
+                int updateInterval = Integer.valueOf(applicationProperties.getStringSharedPreference(AUTO_UPDATE_TIME_IN_ACTIVITY, "-1"));
+
+                if (timer == null && (updateOnApplicationStart || updateInterval != -1)) {
+                    timer = new Timer();
+                }
+
+                if (updateInterval != -1) {
+                    int initialDelay = updateOnApplicationStart ? updateInterval : 0;
+                    timer.scheduleAtFixedRate(new UpdateTimerTask(FragmentBaseActivity.this), initialDelay, updateInterval);
+                    Log.i(TAG, "scheduling update every " + (updateInterval / 1000 / 60) + "min");
+                }
+
+                if (updateOnApplicationStart) {
+                    Log.i(TAG, "update on application start started");
+                    timer.schedule(new UpdateTimerTask(FragmentBaseActivity.this), 0);
+                }
+            }
+        });
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (timer != null) {
+            timer.cancel();
+            timer.purge();
+            timer = null;
+        }
     }
 
     @Override
@@ -471,7 +450,6 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
             Log.i(TAG, "receiver was not registered, ignore ...");
         }
 
-        if (autoUpdateHandler != null) autoUpdateHandler.removeCallbacks(autoUpdateCallback);
         setShowRefreshProgressIcon(false);
     }
 
