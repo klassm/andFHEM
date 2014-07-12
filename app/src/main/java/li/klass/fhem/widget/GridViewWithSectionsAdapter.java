@@ -126,7 +126,7 @@ public abstract class GridViewWithSectionsAdapter<P, C> extends BaseAdapter {
 
     @Override
     public View getView(int flatPosition, View view, ViewGroup viewGroup) {
-        Log.d(TAG, "drawing flatPosition " + flatPosition + "/" + totalNumberOfItems);
+        Log.v(TAG, "drawing flatPosition " + flatPosition + "/" + totalNumberOfItems);
         try {
             int parentBasePosition = getParentBasePosition(flatPosition);
             if (parentBasePosition != -1) {

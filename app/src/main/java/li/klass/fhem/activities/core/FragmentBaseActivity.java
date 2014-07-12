@@ -49,6 +49,7 @@ import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+import com.google.common.base.Optional;
 
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
@@ -78,6 +79,8 @@ import static li.klass.fhem.constants.BundleExtraKeys.FRAGMENT;
 import static li.klass.fhem.constants.BundleExtraKeys.FRAGMENT_NAME;
 import static li.klass.fhem.constants.BundleExtraKeys.HAS_FAVORITES;
 import static li.klass.fhem.constants.PreferenceKeys.STARTUP_VIEW;
+import static li.klass.fhem.fragments.FragmentType.ALL_DEVICES;
+import static li.klass.fhem.fragments.FragmentType.FAVORITES;
 import static li.klass.fhem.fragments.FragmentType.getFragmentFor;
 
 public abstract class FragmentBaseActivity extends SherlockFragmentActivity implements Updateable {
@@ -92,12 +95,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
     protected Menu optionsMenu;
 
     /**
-     * an intent waiting to be processed, but received in the wrong activity state (widget problem ..)
-     */
-    private Intent waitingIntent;
-
-    /**
-     * Attribute is true if the activity has been restarted instead of being newly created
+     * Attribute is true if the activity has been resumed instead of being newly created
      */
     boolean isActivityStart = true;
 
@@ -234,10 +232,6 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
 
         saveInstanceStateCalled = false;
 
-        if (getIntent() != null) {
-            waitingIntent = getIntent();
-        }
-
         setContentView(R.layout.main_view);
         if (findViewById(R.id.tabletIndicator) != null) {
             AndFHEMApplication.INSTANCE.setIsTablet(true);
@@ -263,42 +257,68 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
             public void onSetupFinished() {
                 Log.i(TAG, "Billing initialized, creating initial fragment");
                 if (savedInstanceState == null && ! saveInstanceStateCalled) {
-                    handleInitialFragment();
+                    handleStartupFragment();
                 }
             }
         });
     }
 
-    /**
-     * Switch to an initial fragment when starting up the application.
-     * This method depends on the {@link li.klass.fhem.constants.PreferenceKeys#STARTUP_VIEW}
-     * preference.
-     * Note that the favorites view will only be displayed if favorites are present.
-     */
-    private void handleInitialFragment() {
+    private void handleStartupFragment() {
+        Optional<FragmentType> intentFragment = getFragmentTypeFromStartupIntent();
+
         String startupView = ApplicationProperties.INSTANCE.getStringSharedPreference(STARTUP_VIEW,
                 FragmentType.FAVORITES.name());
-        Log.d(TAG, "startup view is " + startupView);
+        FragmentType preferencesStartupFragment = FragmentType.forEnumName(startupView);
+        Log.d(TAG, "startup view is " + preferencesStartupFragment);
 
-        FragmentType fragmentType = FragmentType.forEnumName(startupView);
-        if (fragmentType == null) fragmentType = FragmentType.FAVORITES;
+        Bundle startupBundle = new Bundle();
 
-        if (fragmentType == FragmentType.FAVORITES) {
-            Intent intent = new Intent(Actions.FAVORITES_PRESENT);
-            intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
-                @Override
-                protected void onReceiveResult(int resultCode, Bundle resultData) {
-                    super.onReceiveResult(resultCode, resultData);
+        FragmentType fragmentType = FragmentType.ALL_DEVICES;
+        if (intentFragment.isPresent()) {
+            fragmentType = intentFragment.get();
+            startupBundle = getIntent().getExtras();
+        } else if (preferencesStartupFragment != null) {
+            if (preferencesStartupFragment == FAVORITES) {
+                Log.i(TAG, "startup with " + FAVORITES);
+                Intent intent = new Intent(Actions.FAVORITES_PRESENT);
+                intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
+                    @Override
+                    protected void onReceiveResult(int resultCode, Bundle resultData) {
+                        super.onReceiveResult(resultCode, resultData);
 
-                    if (resultCode != ResultCodes.SUCCESS || saveInstanceStateCalled) return;
-
-                    handleHasFavoritesResponse(resultCode, resultData);
-                }
-            });
-            startService(intent);
-        } else {
-            switchToFragment(fragmentType, new Bundle());
+                        if (resultCode != ResultCodes.SUCCESS || saveInstanceStateCalled) {
+                            Log.e(TAG, "favorites response was " + resultData + " (" + resultCode + ")");
+                        } else {
+                            handleHasFavoritesResponse(resultCode, resultData);
+                        }
+                    }
+                });
+                startService(intent);
+                fragmentType = null;
+            } else {
+                fragmentType = preferencesStartupFragment;
+            }
         }
+
+        if (fragmentType != null) {
+            Log.i(TAG, "startup with " + fragmentType + " (extras: " + startupBundle + ")");
+            switchToFragment(fragmentType, startupBundle);
+        }
+    }
+
+    private Optional<FragmentType> getFragmentTypeFromStartupIntent() {
+        Optional<FragmentType> toReturn = Optional.absent();
+
+        Intent intent = getIntent();
+        if (intent != null) {
+            if (intent.hasExtra(FRAGMENT)) {
+                toReturn = Optional.of((FragmentType) intent.getSerializableExtra(BundleExtraKeys.FRAGMENT));
+            } else if (intent.hasExtra(FRAGMENT_NAME)) {
+                String fragmentName = intent.getStringExtra(BundleExtraKeys.FRAGMENT_NAME);
+                toReturn = Optional.of(FragmentType.valueOf(fragmentName));
+            }
+        }
+        return toReturn;
     }
 
     private void handleConnectionSpinner(ActionBar actionBar) {
@@ -308,14 +328,17 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
     }
 
     private void handleHasFavoritesResponse(int resultCode, Bundle resultData) {
+        FragmentType toSwitchTo = ALL_DEVICES;
         if (resultCode == ResultCodes.SUCCESS && resultData.containsKey(HAS_FAVORITES)) {
             boolean hasFavorites = resultData.getBoolean(HAS_FAVORITES, false);
             if (hasFavorites && ! saveInstanceStateCalled) {
-                switchToFragment(FragmentType.FAVORITES, null);
-                return;
+                toSwitchTo = FAVORITES;
+                Log.d(TAG, "found favorites, switching");
+            } else {
+                Log.d(TAG, "no favorites found");
             }
         }
-        switchToFragment(FragmentType.ALL_DEVICES, null);
+        switchToFragment(toSwitchTo, null);
     }
 
     @Override
@@ -421,45 +444,6 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
     }
 
     @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        // we're in the wrong lifecycle (activity is not yet resumed)
-        // save the intent intermediately and process it in onPostResume();
-        if (intent != null) {
-            waitingIntent = intent;
-            Log.e(TAG, "waiting intent: " + intent);
-        }
-    }
-
-    @Override
-    protected void onPostResume() {
-        super.onPostResume();
-        Log.e(TAG, "onPostResume()");
-
-        if (waitingIntent != null) {
-            if (waitingIntent.hasExtra(FRAGMENT_NAME) || waitingIntent.hasExtra(FRAGMENT)) {
-                final Bundle extras = waitingIntent.getExtras();
-                if (waitingIntent.hasExtra(FRAGMENT_NAME)) {
-                    extras.putSerializable(FRAGMENT, getFragmentFor(waitingIntent.getStringExtra(FRAGMENT_NAME)));
-                }
-
-                int delay = isActivityStart ? 1000 : 0;
-
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        Intent intent = new Intent(Actions.SHOW_FRAGMENT);
-                        intent.putExtras(extras);
-                        sendBroadcast(intent);
-                    }
-                }, delay);
-            }
-
-            waitingIntent = null;
-        }
-    }
-
-    @Override
     protected void onResume() {
         super.onResume();
         saveInstanceStateCalled = false;
@@ -490,7 +474,6 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
         if (autoUpdateHandler != null) autoUpdateHandler.removeCallbacks(autoUpdateCallback);
         setShowRefreshProgressIcon(false);
     }
-
 
     @Override
     public void onBackPressed() {
@@ -534,7 +517,6 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
         }
     }
 
-
     private void redrawContent() {
 
         BaseFragment contentFragment = getContentFragment();
@@ -563,7 +545,6 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
             setContent(navigationFragment, contentFragment);
         }
     }
-
 
     private BaseFragment createContentFragment(FragmentType fragmentType, Bundle data) {
         if (fragmentType == null) {
@@ -600,7 +581,6 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
             return null;
         }
     }
-
 
     private void setContent(BaseFragment navigationFragment, BaseFragment contentFragment) {
         if (saveInstanceStateCalled) return;
@@ -665,7 +645,6 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
         return hasNavigation;
     }
 
-
     private BaseFragment createFragmentForClass(Bundle data, Class<? extends BaseFragment> fragmentClass) throws Exception {
         if (fragmentClass == null) return null;
 
@@ -691,12 +670,9 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
         return super.onCreateOptionsMenu(menu);
     }
 
-
     private void setShowRefreshProgressIcon(boolean show) {
         if (optionsMenu == null) return;
         optionsMenu.findItem(R.id.menu_refresh).setVisible(!show);
         optionsMenu.findItem(R.id.menu_refresh_progress).setVisible(show);
     }
-
-
 }
