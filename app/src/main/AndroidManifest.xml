@@ -103,21 +103,30 @@
             android:launchMode="singleInstance"
             android:theme="@style/Theme.Dialog.Light" />
 
-        <receiver android:name="li.klass.fhem.appwidget.type.small.SmallAppWidgetProvider" android:label="@string/widget_small">
+        <receiver
+            android:name="li.klass.fhem.appwidget.type.small.SmallAppWidgetProvider"
+            android:label="@string/widget_small"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
             </intent-filter>
             <meta-data android:name="android.appwidget.provider" android:resource="@xml/andfhem_appwidget_small"/>
         </receiver>
 
-        <receiver android:name="li.klass.fhem.appwidget.type.medium.MediumAppWidgetProvider" android:label="@string/widget_medium">
+        <receiver
+            android:name="li.klass.fhem.appwidget.type.medium.MediumAppWidgetProvider"
+            android:label="@string/widget_medium"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
             </intent-filter>
             <meta-data android:name="android.appwidget.provider" android:resource="@xml/andfhem_appwidget_medium"/>
         </receiver>
 
-        <receiver android:name="li.klass.fhem.appwidget.type.big.BigAppWidgetProvider" android:label="@string/widget_big">
+        <receiver
+            android:name="li.klass.fhem.appwidget.type.big.BigAppWidgetProvider"
+            android:label="@string/widget_big"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
             </intent-filter>
@@ -129,6 +138,7 @@
                 <action android:name="li.klass.fhem.constants.Actions.REDRAW_WIDGET"/>
                 <action android:name="li.klass.fhem.constants.Actions.WIDGET_UPDATE"/>
                 <action android:name="li.klass.fhem.constants.Actions.DEVICE_LIST_REMOTE_NOTIFY"/>
+                <action android:name="li.klass.fhem.constants.Actions.WIDGET_REQUEST_UPDATE"/>
             </intent-filter>
         </service>
 

@@ -27,13 +27,19 @@ package li.klass.fhem.appwidget.service;
 import android.app.IntentService;
 import android.appwidget.AppWidgetManager;
 import android.content.Intent;
+import android.os.Handler;
 import android.util.Log;
+import android.widget.Toast;
 
+import li.klass.fhem.AndFHEMApplication;
+import li.klass.fhem.R;
 import li.klass.fhem.appwidget.AppWidgetDataHolder;
+import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 
 import static li.klass.fhem.constants.Actions.DEVICE_LIST_REMOTE_NOTIFY;
 import static li.klass.fhem.constants.Actions.REDRAW_WIDGET;
+import static li.klass.fhem.constants.Actions.WIDGET_REQUEST_UPDATE;
 
 public class AppWidgetUpdateService extends IntentService {
 
@@ -53,6 +59,16 @@ public class AppWidgetUpdateService extends IntentService {
         } else if (DEVICE_LIST_REMOTE_NOTIFY.equals(action)) {
             Log.i(TAG, "updating all widgets (received DEVICE_LIST_REMOTE_NOTIFY)");
             AppWidgetDataHolder.INSTANCE.updateAllWidgets(this, allowRemoteUpdates);
+        } else if (WIDGET_REQUEST_UPDATE.equals(action)) {
+            new Handler(getMainLooper()).post(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(AndFHEMApplication.getContext(), R.string.widget_remote_update_started, Toast.LENGTH_LONG).show();
+                }
+            });
+            Intent updateIntent = new Intent(Actions.DO_UPDATE);
+            updateIntent.putExtra(BundleExtraKeys.DO_REFRESH, true);
+            sendBroadcast(updateIntent);
         }
     }
 
@@ -62,6 +78,7 @@ public class AppWidgetUpdateService extends IntentService {
         }
 
         int widgetId = intent.getIntExtra(BundleExtraKeys.APP_WIDGET_ID, -1);
+        Log.d(TAG, "updating widget " + widgetId + ", remote update is " + allowRemoteUpdates);
 
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
 

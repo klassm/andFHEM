@@ -37,9 +37,9 @@ import java.util.Map;
 import java.util.Set;
 
 import li.klass.fhem.appwidget.view.widget.base.AppWidgetView;
+import li.klass.fhem.appwidget.view.widget.base.DeviceAppWidgetView;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.service.room.RoomListService;
 import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.NetworkState;
@@ -90,15 +90,10 @@ public class AppWidgetDataHolder {
         boolean doRemoteWidgetUpdates = ApplicationProperties.INSTANCE.getBooleanSharedPreference("prefWidgetRemoteUpdate", true);
 
         long updatePeriod = doRemoteWidgetUpdates && allowRemoteUpdate ? updateInterval : RoomListService.NEVER_UPDATE_PERIOD;
+        Log.d(TAG, "remote widget pref: " + doRemoteWidgetUpdates + ", allow remote update: " + allowRemoteUpdate +  " => update period " + updatePeriod);
         scheduleUpdateIntent(context, widgetConfiguration, false, updateInterval);
 
-        Device device = RoomListService.INSTANCE.getDeviceForName(widgetConfiguration.deviceName, updatePeriod);
-        if (device == null) {
-            Log.d(TAG, "cannot find device " + widgetConfiguration.deviceName);
-            return;
-        }
-
-        RemoteViews content = widgetView.createView(context, device, widgetConfiguration);
+        RemoteViews content = widgetView.createView(context, widgetConfiguration, updatePeriod);
 
         try {
             appWidgetManager.updateAppWidget(appWidgetId, content);
@@ -143,17 +138,24 @@ public class AppWidgetDataHolder {
     private PendingIntent updatePendingIndentForWidgetId(Context context, int widgetId) {
         Intent updateIntent = new Intent(Actions.REDRAW_WIDGET);
         updateIntent.putExtra(BundleExtraKeys.APP_WIDGET_ID, widgetId);
+        updateIntent.putExtra(BundleExtraKeys.ALLOW_REMOTE_UPDATES, true);
 
         return PendingIntent.getService(context, widgetId * (-1),
                 updateIntent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     private long getConnectionDependentUpdateInterval(Context context) {
-        if (!NetworkState.isConnected(context)) return RoomListService.NEVER_UPDATE_PERIOD;
-        if (NetworkState.isConnectedMobile(context)) {
-            return getWidgetUpdateIntervalFor(WIDGET_UPDATE_INTERVAL_PREFERENCES_KEY_MOBILE);
+        long updateInterval;
+
+        if (!NetworkState.isConnected(context)) {
+            updateInterval = RoomListService.NEVER_UPDATE_PERIOD;
+        } else  if (NetworkState.isConnectedMobile(context)) {
+            updateInterval = getWidgetUpdateIntervalFor(WIDGET_UPDATE_INTERVAL_PREFERENCES_KEY_MOBILE);
+        } else {
+            updateInterval = getWidgetUpdateIntervalFor(WIDGET_UPDATE_INTERVAL_PREFERENCES_KEY_WLAN);
         }
-        return getWidgetUpdateIntervalFor(WIDGET_UPDATE_INTERVAL_PREFERENCES_KEY_WLAN);
+
+        return updateInterval;
     }
 
     private WidgetConfiguration getWidgetConfiguration(int widgetId) {
@@ -161,7 +163,12 @@ public class AppWidgetDataHolder {
         String value = sharedPreferences.getString(String.valueOf(widgetId), null);
         if (value == null) return null;
 
-        return WidgetConfiguration.fromSaveString(value);
+        WidgetConfiguration configuration = WidgetConfiguration.fromSaveString(value);
+        if (configuration.isOld) {
+            Log.e(TAG, "updated widget " + configuration);
+            saveWidgetConfigurationToPreferences(configuration);
+        }
+        return configuration;
     }
 
     private Set<String> getAllAppWidgetIds() {

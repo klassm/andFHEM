@@ -32,8 +32,8 @@ import android.widget.RemoteViewsService;
 
 import li.klass.fhem.appwidget.view.WidgetType;
 import li.klass.fhem.appwidget.view.widget.base.AppWidgetView;
+import li.klass.fhem.appwidget.view.widget.base.DeviceListAppWidgetView;
 import li.klass.fhem.appwidget.view.widget.base.EmptyRemoteViewsFactory;
-import li.klass.fhem.appwidget.view.widget.base.ListAppWidgetView;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.service.room.RoomListService;
 
@@ -64,7 +64,7 @@ public class AppWidgetListViewUpdateRemoteViewsService extends RemoteViewsServic
         }
 
         AppWidgetView view = widgetType.widgetView;
-        if (! (view instanceof ListAppWidgetView)) {
+        if (! (view instanceof DeviceListAppWidgetView)) {
             Log.e(TAG,
                     "can only handle list widget views, got " + view.getClass().getName());
 
@@ -76,7 +76,7 @@ public class AppWidgetListViewUpdateRemoteViewsService extends RemoteViewsServic
             return EmptyRemoteViewsFactory.INSTANCE;
         }
 
-        ListAppWidgetView listView = (ListAppWidgetView) view;
+        DeviceListAppWidgetView listView = (DeviceListAppWidgetView) view;
 
         return listView.getRemoteViewsFactory(this, device, appWidgetId);
     }

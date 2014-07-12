@@ -412,7 +412,7 @@
     <string name="deviceNotFound">Device %1$s was not found.</string>
 
     <string name="billing_notSupported">Cannot connect to Google Billing.</string>
-    <string name="billing_restoringTransactions">Restoring transactions ...</string>
+    <string name="billing_restoringTransactions">Restoring transactions &#8230;</string>
     <string name="billing_state_bought">Thanks for buying andFHEM Premium!</string>
     <string name="premium">AndFHEM Premium</string>
     <string name="premium_desc">AndFHEM Premium disables advertisements within the app and enables connection to more than one FHEM server!</string>
@@ -435,6 +435,15 @@
     <string name="widget_heating">Heating</string>
     <string name="widget_dim">Dim</string>
     <string name="widget_targetstate">Target State</string>
+    <string name="widget_favorites_link">Favorites</string>
+    <string name="widget_room_link">Rooms</string>
+    <string name="widget_all_devices_link">All Devices</string>
+    <string name="widget_conversion_link">Conversion</string>
+    <string name="widget_timer_link">Timers</string>
+    <string name="widget_send_command_link">Send command</string>
+    <string name="widget_device_list_update">Refresh device list</string>
+    <string name="widget_room_detail">Link</string>
+    <string name="widget_remote_update_started">Device list update started &#8230;</string>
 
     <string name="timer_overview">Switch %1$s %2$s %3$s %4$s to %5$s.</string>
     <string name="timer_overview_every_day">every day</string>
@@ -529,4 +538,7 @@
     <string name="functionalityWebView">Web Link</string>
     <string name="functionalityUnknown">Unknown</string>
 
+    <string name="widgetNoDevices">No devices are applicable for this widget size.</string>
+    <string name="widgetNoRooms">No room widgets are applicable for this widget size.</string>
+    <string name="widgetNoOther">No other widgets are available for this widget size.</string>
 </resources>

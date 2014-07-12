@@ -37,12 +37,12 @@ import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.appwidget.WidgetConfiguration;
 import li.klass.fhem.appwidget.service.AppWidgetListViewUpdateRemoteViewsService;
-import li.klass.fhem.appwidget.view.widget.base.ListAppWidgetView;
+import li.klass.fhem.appwidget.view.widget.base.DeviceListAppWidgetView;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.WeatherDevice;
 import li.klass.fhem.domain.core.Device;
 
-public class BigWeatherForecastWidget extends ListAppWidgetView {
+public class BigWeatherForecastWidget extends DeviceListAppWidgetView {
     @Override
     public int getWidgetName() {
         return R.string.widget_weather_forecast;

@@ -26,6 +26,7 @@ package li.klass.fhem.appwidget;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
+import android.util.Log;
 
 public abstract class AndFHEMAppWidgetProvider extends AppWidgetProvider {
 
@@ -35,6 +36,7 @@ public abstract class AndFHEMAppWidgetProvider extends AppWidgetProvider {
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         super.onUpdate(context, appWidgetManager, appWidgetIds);
         for (int appWidgetId : appWidgetIds) {
+            Log.i(TAG, "update of appwidget id " + appWidgetId + " requested");
             AppWidgetDataHolder.INSTANCE.updateWidget(context, appWidgetId, true);
         }
     }

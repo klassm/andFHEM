@@ -34,6 +34,10 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,6 +52,7 @@ import li.klass.fhem.util.FhemResultReceiver;
 import li.klass.fhem.util.Reject;
 import li.klass.fhem.util.advertisement.AdvertisementUtil;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static li.klass.fhem.constants.BundleExtraKeys.RESULT_RECEIVER;
 import static li.klass.fhem.constants.BundleExtraKeys.ROOM_LIST;
 import static li.klass.fhem.constants.BundleExtraKeys.ROOM_NAME;
@@ -74,7 +79,7 @@ public class RoomListFragment extends BaseFragment implements TopLevelFragment {
         assert layout != null;
 
         LinearLayout emptyView = (LinearLayout) layout.findViewById(R.id.emptyView);
-        fillEmptyView(emptyView);
+        fillEmptyView(emptyView, getEmptyTextId());
 
         ListView roomList = (ListView) layout.findViewById(R.id.roomList);
         Reject.ifNull(roomList);
@@ -120,6 +125,12 @@ public class RoomListFragment extends BaseFragment implements TopLevelFragment {
 
                 if (resultCode == ResultCodes.SUCCESS) {
                     List<String> roomList = (ArrayList<String>) resultData.getSerializable(ROOM_LIST);
+                    roomList = newArrayList(Iterables.filter(roomList, new Predicate<String>() {
+                        @Override
+                        public boolean apply(String input) {
+                            return isRoomSelectable(roomName);
+                        }
+                    }));
 
                     assert roomList != null;
                     if (roomList.size() == 0) {
@@ -133,6 +144,10 @@ public class RoomListFragment extends BaseFragment implements TopLevelFragment {
             }
         });
         getActivity().startService(intent);
+    }
+
+    protected boolean isRoomSelectable(String roomName) {
+        return true;
     }
 
     private void scrollToSelectedRoom(String selectedRoom, List<String> roomList) {
@@ -162,8 +177,12 @@ public class RoomListFragment extends BaseFragment implements TopLevelFragment {
         View emptyView = LayoutInflater.from(getActivity()).inflate(R.layout.empty_view, null);
         assert emptyView != null;
         TextView emptyText = (TextView) emptyView.findViewById(R.id.emptyText);
-        emptyText.setText(R.string.noRooms);
+        emptyText.setText(getEmptyTextId());
 
         view.addView(emptyView);
+    }
+
+    protected int getEmptyTextId() {
+        return R.string.noRooms;
     }
 }

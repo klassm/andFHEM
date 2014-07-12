@@ -36,6 +36,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -216,9 +217,12 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
     }
 
     protected void hideEmptyView() {
-        View emptyView = getView().findViewById(R.id.emptyView);
-        if (emptyView == null) return;
-        emptyView.setVisibility(View.GONE);
+        View view = getView();
+        if (view != null) {
+            View emptyView = view.findViewById(R.id.emptyView);
+            if (emptyView == null) return;
+            emptyView.setVisibility(View.GONE);
+        }
     }
 
     protected void showEmptyView() {
@@ -256,6 +260,16 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
         if (errorLayout == null) return;
         errorLayout.setVisibility(View.GONE);
     }
+
+    protected void fillEmptyView(LinearLayout view, int text) {
+        View emptyView = LayoutInflater.from(getActivity()).inflate(R.layout.empty_view, null);
+        assert emptyView != null;
+        TextView emptyText = (TextView) emptyView.findViewById(R.id.emptyText);
+        emptyText.setText(text);
+
+        view.addView(emptyView);
+    }
+
 
     private void showConnectionError(String content) {
         if (isNavigation) return;

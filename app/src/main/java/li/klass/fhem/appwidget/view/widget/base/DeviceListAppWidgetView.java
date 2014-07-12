@@ -33,7 +33,7 @@ import android.widget.RemoteViewsService;
 import li.klass.fhem.domain.core.Device;
 
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-public abstract class ListAppWidgetView extends AppWidgetView {
+public abstract class DeviceListAppWidgetView extends DeviceAppWidgetView {
 
     public class ListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 

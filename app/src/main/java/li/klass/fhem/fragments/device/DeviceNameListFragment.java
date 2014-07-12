@@ -31,6 +31,7 @@ import android.os.ResultReceiver;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import java.io.Serializable;
 
@@ -99,6 +100,9 @@ public abstract class DeviceNameListFragment extends BaseFragment {
         deviceList.setLongClickable(true);
         deviceList.setAdapter(adapter);
 
+        LinearLayout emptyView = (LinearLayout) view.findViewById(R.id.emptyView);
+        fillEmptyView(emptyView, getEmptyTextId());
+
         return view;
     }
 
@@ -154,6 +158,9 @@ public abstract class DeviceNameListFragment extends BaseFragment {
 
             int selectedDevicePosition = adapter.getSelectedDevicePosition();
             getGridView().setSelection(selectedDevicePosition);
+            hideEmptyView();
+        } else {
+            showEmptyView();
         }
 
         return filteredList;
@@ -171,5 +178,9 @@ public abstract class DeviceNameListFragment extends BaseFragment {
         if (view == null) return null;
 
         return (GridViewWithSections) view.findViewById(R.id.deviceMap1);
+    }
+
+    protected int getEmptyTextId() {
+        return R.string.devicelist_empty;
     }
 }

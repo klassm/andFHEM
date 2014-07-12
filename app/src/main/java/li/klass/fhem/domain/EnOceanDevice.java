@@ -27,7 +27,7 @@ package li.klass.fhem.domain;
 import android.util.Log;
 
 import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
-import li.klass.fhem.appwidget.view.widget.base.AppWidgetView;
+import li.klass.fhem.appwidget.view.widget.base.DeviceAppWidgetView;
 import li.klass.fhem.appwidget.view.widget.medium.ToggleWidgetView;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.DimmableDevice;
@@ -141,7 +141,7 @@ public class EnOceanDevice extends DimmableDevice<EnOceanDevice> {
     }
 
     @Override
-    public boolean supportsWidget(Class<? extends AppWidgetView> appWidgetClass) {
+    public boolean supportsWidget(Class<? extends DeviceAppWidgetView> appWidgetClass) {
         if (appWidgetClass.equals(ToggleWidgetView.class) && subType != SubType.SWITCH) {
             return false;
         }

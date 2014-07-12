@@ -36,7 +36,7 @@ import li.klass.fhem.R;
 import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.appwidget.annotation.SupportsWidget;
 import li.klass.fhem.appwidget.annotation.WidgetTemperatureField;
-import li.klass.fhem.appwidget.view.widget.base.AppWidgetView;
+import li.klass.fhem.appwidget.view.widget.base.DeviceAppWidgetView;
 import li.klass.fhem.appwidget.view.widget.medium.TemperatureWidgetView;
 import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.DeviceFunctionality;
@@ -682,7 +682,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
     }
 
     @Override
-    public boolean supportsWidget(Class<? extends AppWidgetView> appWidgetClass) {
+    public boolean supportsWidget(Class<? extends DeviceAppWidgetView> appWidgetClass) {
         if (appWidgetClass.equals(TemperatureWidgetView.class) &&
                 !(subType == SubType.TEMPERATURE_HUMIDITY || subType == HEATING)) {
             return false;

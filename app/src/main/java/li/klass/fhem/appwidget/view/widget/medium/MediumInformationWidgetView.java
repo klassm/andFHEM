@@ -31,12 +31,12 @@ import li.klass.fhem.appwidget.WidgetConfiguration;
 import li.klass.fhem.appwidget.annotation.WidgetMediumLine1;
 import li.klass.fhem.appwidget.annotation.WidgetMediumLine2;
 import li.klass.fhem.appwidget.annotation.WidgetMediumLine3;
-import li.klass.fhem.appwidget.view.widget.base.AppWidgetView;
+import li.klass.fhem.appwidget.view.widget.base.DeviceAppWidgetView;
 import li.klass.fhem.domain.core.Device;
 
 import static li.klass.fhem.util.ReflectionUtil.getValueAndDescriptionForAnnotation;
 
-public class MediumInformationWidgetView extends AppWidgetView {
+public class MediumInformationWidgetView extends DeviceAppWidgetView {
     @Override
     public int getWidgetName() {
         return R.string.widget_information;

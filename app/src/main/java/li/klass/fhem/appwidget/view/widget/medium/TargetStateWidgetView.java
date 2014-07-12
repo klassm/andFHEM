@@ -37,15 +37,17 @@ import li.klass.fhem.appwidget.WidgetConfiguration;
 import li.klass.fhem.appwidget.WidgetConfigurationCreatedCallback;
 import li.klass.fhem.appwidget.view.WidgetType;
 import li.klass.fhem.appwidget.view.widget.activity.TargetStateAdditionalInformationActivity;
-import li.klass.fhem.appwidget.view.widget.base.AppWidgetView;
+import li.klass.fhem.appwidget.view.widget.base.DeviceAppWidgetView;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.service.room.RoomListService;
 
 import static android.app.PendingIntent.FLAG_UPDATE_CURRENT;
 import static li.klass.fhem.domain.core.DeviceStateRequiringAdditionalInformation.requiresAdditionalInformation;
+import static li.klass.fhem.service.room.RoomListService.NEVER_UPDATE_PERIOD;
 
-public class TargetStateWidgetView extends AppWidgetView {
+public class TargetStateWidgetView extends DeviceAppWidgetView {
     @Override
     public int getWidgetName() {
         return R.string.widget_targetstate;
@@ -58,7 +60,7 @@ public class TargetStateWidgetView extends AppWidgetView {
 
     @Override
     protected void fillWidgetView(Context context, RemoteViews view, Device<?> device, WidgetConfiguration widgetConfiguration) {
-        String payload = widgetConfiguration.payload;
+        String payload = widgetConfiguration.payload.get(1);
         String state = device.getEventMapStateFor(payload);
 
         view.setTextViewText(R.id.button, state);
@@ -86,10 +88,11 @@ public class TargetStateWidgetView extends AppWidgetView {
         openDeviceDetailPageWhenClicking(R.id.main, view, device, widgetConfiguration);
     }
 
+
     @Override
-    public void createWidgetConfiguration(final Context context, final WidgetType widgetType,
-                                          final int appWidgetId, final Device device,
-                                          final WidgetConfigurationCreatedCallback callback) {
+    protected void createDeviceWidgetConfiguration(Context context, final WidgetType widgetType,
+                                                   final int appWidgetId, Device device,
+                                                   final WidgetConfigurationCreatedCallback callback) {
         AvailableTargetStatesDialogUtil.showSwitchOptionsMenu(context, device,
                 new AvailableTargetStatesDialogUtil.TargetStateSelectedCallback() {
                     @Override
@@ -106,9 +109,10 @@ public class TargetStateWidgetView extends AppWidgetView {
                         }
 
                         callback.widgetConfigurationCreated(new WidgetConfiguration(appWidgetId,
-                                device.getName(), widgetType, toSet));
+                                widgetType, device.getName(), toSet));
                     }
-                });
+                }
+        );
     }
 
     @Override

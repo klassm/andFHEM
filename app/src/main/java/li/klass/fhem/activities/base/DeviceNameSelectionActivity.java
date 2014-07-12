@@ -66,17 +66,7 @@ public class DeviceNameSelectionActivity extends FragmentActivity {
             }
         });
 
-        DeviceNameSelectionFragment deviceSelectionFragment = new DeviceNameSelectionFragment() {
-            @Override
-            protected void onNoDevicesAvailable() {
-                DialogUtil.showAlertDialog(getActivity(), R.string.error, R.string.devicelist_empty, new DialogUtil.AlertOnClickListener() {
-                    @Override
-                    public void onClick() {
-                        getActivity().finish();
-                    }
-                });
-            }
-        };
+        DeviceNameSelectionFragment deviceSelectionFragment = new DeviceNameSelectionFragment();
         deviceSelectionFragment.setArguments(bundle);
 
         try {

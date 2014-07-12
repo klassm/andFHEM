@@ -413,7 +413,7 @@
     <string name="deviceNotFound">Gerät %1$s wurde nicht gefunden.</string>
 
     <string name="billing_notSupported">Kann keine Verbindung zu Google Billing herstellen.</string>
-    <string name="billing_restoringTransactions">Stelle Transaktionen wieder her ...</string>
+    <string name="billing_restoringTransactions">Stelle Transaktionen wieder her &#8230;</string>
     <string name="billing_state_bought">Vielen Dank für den Kauf von andFHEM Premium!</string>
     <string name="premium">AndFHEM Premium</string>
     <string name="premium_desc">AndFHEM Premium beinhaltet die Abschaltung der Werbung in der Applikation und erlaubt die Verwendung von mehr als einem FHEM-Server!</string>
@@ -435,6 +435,15 @@
     <string name="widget_heating">Heizung</string>
     <string name="widget_dim">Dim</string>
     <string name="widget_targetstate">Zielzustand</string>
+    <string name="widget_favorites_link">Favoriten</string>
+    <string name="widget_room_link">Räume</string>
+    <string name="widget_all_devices_link">Alle Geräte</string>
+    <string name="widget_conversion_link">Konvertierung</string>
+    <string name="widget_timer_link">Zeitschaltuhren</string>
+    <string name="widget_send_command_link">Kommando senden</string>
+    <string name="widget_device_list_update">Geräteliste aktualisieren</string>
+    <string name="widget_room_detail">Verknüpfung</string>
+    <string name="widget_remote_update_started">Geräteliste wird aktualisiert &#8230;</string>
 
     <string name="timer_overview">Schalte %1$s %2$s %3$s %4$s auf %5$s.</string>
     <string name="timer_overview_every_day">an jedem Tag</string>
@@ -528,4 +537,8 @@
     <string name="functionalityWebView">Web Link</string>
     <string name="functionalityRemoteControl">Fernbedienung</string>
     <string name="functionalityUnknown">Unbekannt</string>
+
+    <string name="widgetNoDevices">Es wurden keine Geräte für diese Widget-Größe gefunden.</string>
+    <string name="widgetNoRooms">Es wurden keine Raum-Widgets für diese Widget-Größe gefunden.</string>
+    <string name="widgetNoOther">Es sind keine weiteren Widgets für diese Widget-Größe verfügbar.</string>
 </resources>

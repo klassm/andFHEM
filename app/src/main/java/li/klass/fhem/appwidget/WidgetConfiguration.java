@@ -24,83 +24,124 @@
 package li.klass.fhem.appwidget;
 
 import android.util.Log;
+
+import com.google.common.base.Joiner;
+import com.google.common.collect.Lists;
+
 import li.klass.fhem.appwidget.view.WidgetType;
 
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.List;
+
+import static com.google.common.collect.Lists.newArrayList;
+import static java.util.Arrays.asList;
 
 public class WidgetConfiguration implements Serializable {
     public static final String SAVE_SEPARATOR = "#";
-    public static final String ESCAPE_HASH_REPLACEMENT = "\\\\@";
+    public static final String PAYLOAD_SEPARATOR = "+";
+    public static final String PAYLOAD_SEPARATOR_REGEXP = "\\" + PAYLOAD_SEPARATOR;
+    public static final String ESCAPED_HASH_REPLACEMENT = "\\\\@";
 
     public final int widgetId;
-    public final String deviceName;
     public final WidgetType widgetType;
-    public final String payload;
+    public final List<String> payload;
 
-    public WidgetConfiguration(int widgetId, String deviceName, WidgetType widgetType) {
-        this(widgetId, deviceName, widgetType, null);
+    // TODO remove me in one of the next versions (when all old widget configurations have been updated!
+    @Deprecated
+    public final boolean isOld;
+
+    public WidgetConfiguration(int widgetId, WidgetType widgetType, String... payload) {
+        this(widgetId, widgetType, asList(payload), false);
     }
 
-    public WidgetConfiguration(int widgetId, String deviceName, WidgetType widgetType, String payload) {
+    public WidgetConfiguration(int widgetId, WidgetType widgetType, List<String> payload, boolean isOld) {
         this.widgetId = widgetId;
-        this.deviceName = deviceName;
         this.widgetType = widgetType;
         this.payload = payload;
+        this.isOld = isOld;
     }
 
     public String toSaveString() {
-        String deviceNameValidated = escape(deviceName);
-        String saveString = widgetId + SAVE_SEPARATOR
-                + deviceNameValidated + SAVE_SEPARATOR
-                + widgetType.name();
+        return widgetId + SAVE_SEPARATOR
+                + widgetType.name() + SAVE_SEPARATOR +
+                escape(payloadAsSaveString());
+    }
 
-        if (payload != null) {
-            saveString += SAVE_SEPARATOR + escape(payload);
-        }
-
-        return saveString;
+    private String payloadAsSaveString() {
+        return Joiner.on(PAYLOAD_SEPARATOR).join(payload);
     }
 
     public static WidgetConfiguration fromSaveString(String value) {
         if (value == null) return null;
 
         String[] parts = value.split(SAVE_SEPARATOR);
-        if (parts.length < 3) return null;
+
+        boolean isDeprecatedWidget = parts.length > 3 && getWidgetTypeFromName(parts[2]) != null;
+
+        if (! isDeprecatedWidget) {
+            return handleWidgetConfiguration(parts);
+        } else {
+            return handleDeprecatedWidgetConfiguration(parts);
+        }
+    }
+
+    private static WidgetConfiguration handleWidgetConfiguration(String[] parts) {
+        String widgetId = parts[0];
+        WidgetType widgetType = getWidgetTypeFromName(parts[1]);
+
+        List<String> payload;
+        if (parts.length >= 3) {
+            payload = Arrays.asList(unescape(parts[2]).split(PAYLOAD_SEPARATOR_REGEXP));
+        } else {
+            payload = newArrayList();
+        }
+
+        return new WidgetConfiguration(Integer.valueOf(widgetId), widgetType, payload, false);
+    }
+
+    private static WidgetConfiguration handleDeprecatedWidgetConfiguration(String[] parts) {
 
         String widgetTypeName = parts[2];
-
         WidgetType widgetType = getWidgetTypeFromName(widgetTypeName);
-        if (widgetType == null) {
-            return null;
-        }
 
         String widgetId = parts[0];
-        String deviceName = unescape(parts[1]);
 
-        String payload = null;
+        List<String> payload = newArrayList();
+        payload.add(parts[1]);
         if (parts.length == 4) {
-            payload = unescape(parts[3]);
+            payload.add(unescape(parts[3]));
         }
 
-        return new WidgetConfiguration(Integer.valueOf(widgetId), deviceName, widgetType, payload);
+        return new WidgetConfiguration(Integer.valueOf(widgetId), widgetType, payload, true);
     }
 
     private static WidgetType getWidgetTypeFromName(String widgetTypeName) {
         try {
             return WidgetType.valueOf(widgetTypeName);
         } catch (Exception e) {
-            Log.e(WidgetConfiguration.class.getName(), "cannot find widget type for name " + widgetTypeName, e);
+            Log.v(WidgetConfiguration.class.getName(), "cannot find widget type for name " + widgetTypeName, e);
             return null;
         }
     }
 
     static String escape(String value) {
         if (value == null) return null;
-        return value.replaceAll(SAVE_SEPARATOR, ESCAPE_HASH_REPLACEMENT);
+        return value.replaceAll(SAVE_SEPARATOR, ESCAPED_HASH_REPLACEMENT);
     }
 
     static String unescape(String value) {
         if (value == null) return null;
-        return value.replaceAll(ESCAPE_HASH_REPLACEMENT, SAVE_SEPARATOR);
+        return value.replaceAll(ESCAPED_HASH_REPLACEMENT, SAVE_SEPARATOR);
+    }
+
+    @Override
+    public String toString() {
+        return "WidgetConfiguration{" +
+                "widgetId=" + widgetId +
+                ", widgetType=" + widgetType +
+                ", payload=" + payload +
+                ", isOld=" + isOld +
+                '}';
     }
 }

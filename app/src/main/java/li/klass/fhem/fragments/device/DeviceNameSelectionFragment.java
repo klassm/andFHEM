@@ -27,13 +27,10 @@ package li.klass.fhem.fragments.device;
 import android.content.Intent;
 import android.os.Bundle;
 
-import li.klass.fhem.R;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.domain.core.Device;
-import li.klass.fhem.domain.core.RoomDeviceList;
-import li.klass.fhem.util.DialogUtil;
 
 public class DeviceNameSelectionFragment extends DeviceNameListFragment {
     @Override
@@ -49,25 +46,5 @@ public class DeviceNameSelectionFragment extends DeviceNameListFragment {
         Intent intent = new Intent(Actions.BACK);
         intent.putExtra(BundleExtraKeys.CLICKED_DEVICE, child);
         getActivity().sendBroadcast(intent);
-    }
-
-    @Override
-    protected RoomDeviceList deviceListReceived(RoomDeviceList roomDeviceList, long lastUpdate) {
-        roomDeviceList = super.deviceListReceived(roomDeviceList, lastUpdate);
-        if (roomDeviceList.isEmptyOrOnlyContainsDoNotShowDevices()) {
-            onNoDevicesAvailable();
-        }
-
-        return roomDeviceList;
-    }
-
-    protected void onNoDevicesAvailable() {
-        DialogUtil.showAlertDialog(getActivity(), R.string.error, R.string.devicelist_empty, new DialogUtil.AlertOnClickListener() {
-            @Override
-            public void onClick() {
-                Intent intent = new Intent(Actions.BACK);
-                getActivity().sendBroadcast(intent);
-            }
-        });
     }
 }

@@ -34,14 +34,14 @@ import android.widget.RemoteViews;
 
 import li.klass.fhem.R;
 import li.klass.fhem.appwidget.WidgetConfiguration;
-import li.klass.fhem.appwidget.view.widget.base.AppWidgetView;
+import li.klass.fhem.appwidget.view.widget.base.DeviceAppWidgetView;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DimmableDevice;
 
-public class DimWidgetView extends AppWidgetView {
+public class DimWidgetView extends DeviceAppWidgetView {
 
 
     @Override

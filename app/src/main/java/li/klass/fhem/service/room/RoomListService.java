@@ -28,6 +28,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.format.DateUtils;
 import android.util.Log;
 
 import com.google.common.collect.Sets;
@@ -59,11 +60,13 @@ import li.klass.fhem.exception.CommandExecutionException;
 import li.klass.fhem.service.AbstractService;
 import li.klass.fhem.service.CommandExecutionService;
 import li.klass.fhem.util.ApplicationProperties;
+import li.klass.fhem.util.DateFormatUtil;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static li.klass.fhem.constants.Actions.DEVICE_LIST_REMOTE_NOTIFY;
 import static li.klass.fhem.constants.PreferenceKeys.DEVICE_NAME;
 import static li.klass.fhem.domain.core.DeviceType.getDeviceTypeFor;
+import static li.klass.fhem.util.DateFormatUtil.toReadable;
 import static li.klass.fhem.util.SharedPreferencesUtil.getSharedPreferences;
 import static li.klass.fhem.util.SharedPreferencesUtil.getSharedPreferencesEditor;
 
@@ -440,8 +443,11 @@ public class RoomListService extends AbstractService {
 
         long lastUpdate = getLastUpdate();
         boolean shouldUpdate = lastUpdate + updatePeriod < System.currentTimeMillis();
-        Log.i(TAG, "recommend " + (!shouldUpdate ? "no " : "") + "update (lastUpdate: " + lastUpdate +
-                ", updatePeriod: " + updatePeriod + ")");
+
+        Log.i(TAG, "recommend " + (!shouldUpdate ? "no " : "") + "update (lastUpdate: " + toReadable(lastUpdate) +
+                ", updatePeriod: " + (updatePeriod / 1000 / 60) + " min)");
+
+        shouldUpdate = true;
         return shouldUpdate;
     }
 }

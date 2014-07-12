@@ -74,6 +74,7 @@ public class BundleExtraKeys {
 
     public static final String APP_WIDGET_ID = "APP_WIDGET_ID";
     public static final String APP_WIDGET_TYPE_NAME = "APP_WIDGET_TYPE_NAME";
+    public static final String APP_WIDGET_SIZE = "APP_WIDGET_SIZE";
 
     public static final String DEVICE_FILTER = "DEVICE_FILTER";
     public static final String CLICKED_DEVICE = "CLICKED_DEVICE";

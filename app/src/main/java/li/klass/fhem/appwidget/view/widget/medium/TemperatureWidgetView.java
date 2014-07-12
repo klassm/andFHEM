@@ -30,13 +30,13 @@ import li.klass.fhem.R;
 import li.klass.fhem.appwidget.WidgetConfiguration;
 import li.klass.fhem.appwidget.annotation.WidgetTemperatureAdditionalField;
 import li.klass.fhem.appwidget.annotation.WidgetTemperatureField;
-import li.klass.fhem.appwidget.view.widget.base.AppWidgetView;
+import li.klass.fhem.appwidget.view.widget.base.DeviceAppWidgetView;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.util.ReflectionUtil;
 
 import static li.klass.fhem.util.ReflectionUtil.getStringForAnnotation;
 
-public class TemperatureWidgetView extends AppWidgetView {
+public class TemperatureWidgetView extends DeviceAppWidgetView {
     @Override
     public int getWidgetName() {
         return R.string.widget_temperature;
@@ -49,12 +49,14 @@ public class TemperatureWidgetView extends AppWidgetView {
 
     @Override
     public void fillWidgetView(Context context, RemoteViews view, Device<?> device, WidgetConfiguration widgetConfiguration) {
-        String temperature = getStringForAnnotation(device, WidgetTemperatureField.class);
-        String additionalFieldValue = ReflectionUtil.getValueAndDescriptionForAnnotation(device, WidgetTemperatureAdditionalField.class);
-        setTextViewOrHide(view, R.id.additional, additionalFieldValue);
+        if (device != null) {
+            String temperature = getStringForAnnotation(device, WidgetTemperatureField.class);
+            String additionalFieldValue = ReflectionUtil.getValueAndDescriptionForAnnotation(device, WidgetTemperatureAdditionalField.class);
+            setTextViewOrHide(view, R.id.additional, additionalFieldValue);
 
-        view.setTextViewText(R.id.temperature, temperature);
+            view.setTextViewText(R.id.temperature, temperature);
 
-        openDeviceDetailPageWhenClicking(R.id.main, view, device, widgetConfiguration);
+            openDeviceDetailPageWhenClicking(R.id.main, view, device, widgetConfiguration);
+        }
     }
 }

@@ -25,24 +25,40 @@ package li.klass.fhem.appwidget.view;
 
 import android.content.Context;
 
-import java.util.ArrayList;
+import com.google.common.base.Predicate;
+
 import java.util.List;
 
 import li.klass.fhem.appwidget.WidgetConfigurationCreatedCallback;
 import li.klass.fhem.appwidget.view.widget.base.AppWidgetView;
+import li.klass.fhem.appwidget.view.widget.base.DeviceAppWidgetView;
+import li.klass.fhem.appwidget.view.widget.base.OtherAppWidgetView;
+import li.klass.fhem.appwidget.view.widget.base.RoomAppWidgetView;
 import li.klass.fhem.appwidget.view.widget.big.BigWeatherForecastWidget;
 import li.klass.fhem.appwidget.view.widget.medium.DimWidgetView;
 import li.klass.fhem.appwidget.view.widget.medium.HeatingWidgetView;
 import li.klass.fhem.appwidget.view.widget.medium.MediumInformationWidgetView;
 import li.klass.fhem.appwidget.view.widget.medium.MediumWeatherForecastWidget;
+import li.klass.fhem.appwidget.view.widget.medium.RoomDetailLinkWidget;
 import li.klass.fhem.appwidget.view.widget.medium.StatusWidgetView;
 import li.klass.fhem.appwidget.view.widget.medium.TargetStateWidgetView;
 import li.klass.fhem.appwidget.view.widget.medium.TemperatureWidgetView;
 import li.klass.fhem.appwidget.view.widget.medium.ToggleWidgetView;
+import li.klass.fhem.appwidget.view.widget.small.AllDevicesLinkWidget;
+import li.klass.fhem.appwidget.view.widget.small.ConversionLinkWidget;
+import li.klass.fhem.appwidget.view.widget.small.DeviceListUpdateWidget;
+import li.klass.fhem.appwidget.view.widget.small.FavoritesLinkWidget;
+import li.klass.fhem.appwidget.view.widget.small.RoomsLinkWidget;
+import li.klass.fhem.appwidget.view.widget.small.SendCommandLinkWidget;
 import li.klass.fhem.appwidget.view.widget.small.SmallToggleWidget;
+import li.klass.fhem.appwidget.view.widget.small.TimersLinkWidget;
 import li.klass.fhem.domain.core.Device;
 
+import static com.google.common.collect.Iterables.filter;
+import static com.google.common.collect.Lists.newArrayList;
+
 public enum WidgetType {
+
     TEMPERATURE(new TemperatureWidgetView(), WidgetSize.MEDIUM),
     TOGGLE(new ToggleWidgetView(), WidgetSize.MEDIUM),
     TOGGLE_SMALL(new SmallToggleWidget(), WidgetSize.SMALL),
@@ -52,7 +68,16 @@ public enum WidgetType {
     WEATHER_FORECAST(new MediumWeatherForecastWidget(), WidgetSize.MEDIUM),
     WEATHER_FORECAST_BIG(new BigWeatherForecastWidget(), WidgetSize.BIG),
     DIM(new DimWidgetView(), WidgetSize.MEDIUM),
-    TARGET_STATE(new TargetStateWidgetView(), WidgetSize.MEDIUM);
+    TARGET_STATE(new TargetStateWidgetView(), WidgetSize.MEDIUM),
+    ROOM_DETAIL_LINK(new RoomDetailLinkWidget(), WidgetSize.MEDIUM),
+    FAVORITES_LINK(new FavoritesLinkWidget(), WidgetSize.SMALL),
+    ROOMS_LINK(new RoomsLinkWidget(), WidgetSize.SMALL),
+    ALL_DEVICES_LINK(new AllDevicesLinkWidget(), WidgetSize.SMALL),
+    CONVERSION_LINK(new ConversionLinkWidget(), WidgetSize.SMALL),
+    TIMERS_LINK(new TimersLinkWidget(), WidgetSize.SMALL),
+    SEND_COMMAND_LINK(new SendCommandLinkWidget(), WidgetSize.SMALL),
+    UPDATE_WIDGET(new DeviceListUpdateWidget(), WidgetSize.SMALL),
+    ;
 
     public final AppWidgetView widgetView;
     public final WidgetSize widgetSize;
@@ -62,18 +87,40 @@ public enum WidgetType {
         this.widgetSize = widgetSize;
     }
 
-    public static List<WidgetType> getSupportedWidgetTypesFor(WidgetSize size, Device<?> device) {
-        List<WidgetType> widgetTypes = new ArrayList<WidgetType>();
-        for (WidgetType widgetType : WidgetType.values()) {
-            if (widgetType.widgetSize == size && widgetType.widgetView.supports(device)) {
-                widgetTypes.add(widgetType);
+    public static List<WidgetType> getSupportedDeviceWidgetsFor(final WidgetSize size, final Device<?> device) {
+        return newArrayList(filter(newArrayList(WidgetType.values()), new Predicate<WidgetType>() {
+            @Override
+            public boolean apply(WidgetType widgetType) {
+                return widgetType.widgetSize == size &&
+                        widgetType.widgetView instanceof DeviceAppWidgetView &&
+                        ((DeviceAppWidgetView) widgetType.widgetView).supports(device);
             }
-        }
-        return widgetTypes;
+        }));
     }
 
-    public void createWidgetConfiguration(Context context, int appWidgetId, Device device,
-                                          WidgetConfigurationCreatedCallback callback) {
-        widgetView.createWidgetConfiguration(context, this, appWidgetId, device, callback);
+    public static List<WidgetType> getSupportedRoomWidgetsFor(final WidgetSize size) {
+        return newArrayList(filter(newArrayList(WidgetType.values()), new Predicate<WidgetType>() {
+            @Override
+            public boolean apply(WidgetType widgetType) {
+                return widgetType.widgetSize == size &&
+                        widgetType.widgetView instanceof RoomAppWidgetView;
+            }
+        }));
+    }
+
+    public static List<WidgetType> getOtherWidgetsFor(final WidgetSize size) {
+        return newArrayList(filter(newArrayList(WidgetType.values()), new Predicate<WidgetType>() {
+            @Override
+            public boolean apply(WidgetType widgetType) {
+                return widgetType.widgetSize == size &&
+                        widgetType.widgetView instanceof OtherAppWidgetView;
+            }
+        }));
+    }
+
+    public void createWidgetConfiguration(Context context, int appWidgetId,
+                                          WidgetConfigurationCreatedCallback callback,
+                                          String... payload) {
+        widgetView.createWidgetConfiguration(context, this, appWidgetId, callback, payload);
     }
 }

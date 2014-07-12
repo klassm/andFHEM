@@ -36,7 +36,7 @@ import java.util.Map;
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
-import li.klass.fhem.appwidget.view.widget.base.AppWidgetView;
+import li.klass.fhem.appwidget.view.widget.base.DeviceAppWidgetView;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.domain.log.CustomGraph;
 import li.klass.fhem.domain.log.LogDevice;
@@ -404,7 +404,7 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
         return eventMapKeys.toArray(new String[eventMapKeys.size()]);
     }
 
-    public boolean supportsWidget(Class<? extends AppWidgetView> appWidgetClass) {
+    public boolean supportsWidget(Class<? extends DeviceAppWidgetView> appWidgetClass) {
         return true;
     }
 

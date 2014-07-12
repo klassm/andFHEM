@@ -30,11 +30,11 @@ import android.widget.RemoteViews;
 
 import li.klass.fhem.R;
 import li.klass.fhem.appwidget.WidgetConfiguration;
-import li.klass.fhem.appwidget.view.widget.base.AppWidgetView;
+import li.klass.fhem.appwidget.view.widget.base.DeviceAppWidgetView;
 import li.klass.fhem.domain.FHTDevice;
 import li.klass.fhem.domain.core.Device;
 
-public class HeatingWidgetView extends AppWidgetView {
+public class HeatingWidgetView extends DeviceAppWidgetView {
     @Override
     public int getWidgetName() {
         return R.string.widget_heating;

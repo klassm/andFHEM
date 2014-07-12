@@ -30,11 +30,11 @@ import java.util.List;
 
 import li.klass.fhem.R;
 import li.klass.fhem.appwidget.WidgetConfiguration;
-import li.klass.fhem.appwidget.view.widget.base.AppWidgetView;
+import li.klass.fhem.appwidget.view.widget.base.DeviceAppWidgetView;
 import li.klass.fhem.domain.WeatherDevice;
 import li.klass.fhem.domain.core.Device;
 
-public class MediumWeatherForecastWidget extends AppWidgetView {
+public class MediumWeatherForecastWidget extends DeviceAppWidgetView {
     @Override
     public int getWidgetName() {
         return R.string.widget_weather_forecast;

@@ -39,7 +39,7 @@ import li.klass.fhem.appwidget.annotation.WidgetMediumLine2;
 import li.klass.fhem.appwidget.annotation.WidgetMediumLine3;
 import li.klass.fhem.appwidget.annotation.WidgetTemperatureAdditionalField;
 import li.klass.fhem.appwidget.annotation.WidgetTemperatureField;
-import li.klass.fhem.appwidget.view.widget.base.AppWidgetView;
+import li.klass.fhem.appwidget.view.widget.base.DeviceAppWidgetView;
 import li.klass.fhem.appwidget.view.widget.medium.MediumInformationWidgetView;
 import li.klass.fhem.appwidget.view.widget.medium.TemperatureWidgetView;
 import li.klass.fhem.domain.core.Device;
@@ -143,7 +143,7 @@ public class HMSDevice extends Device<HMSDevice> {
     }
 
     @Override
-    public boolean supportsWidget(Class<? extends AppWidgetView> appWidgetClass) {
+    public boolean supportsWidget(Class<? extends DeviceAppWidgetView> appWidgetClass) {
         return !(appWidgetClass.equals(TemperatureWidgetView.class) && model.equals("HMS100TFK"));
     }
 

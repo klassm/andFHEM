@@ -31,7 +31,7 @@ import android.widget.RemoteViews;
 
 import li.klass.fhem.R;
 import li.klass.fhem.appwidget.WidgetConfiguration;
-import li.klass.fhem.appwidget.view.widget.base.AppWidgetView;
+import li.klass.fhem.appwidget.view.widget.base.DeviceAppWidgetView;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.core.Device;
@@ -39,7 +39,7 @@ import li.klass.fhem.domain.core.ToggleableDevice;
 
 import static li.klass.fhem.domain.core.ToggleableDevice.ButtonHookType.ON_OFF_DEVICE;
 
-public class ToggleWidgetView extends AppWidgetView {
+public class ToggleWidgetView extends DeviceAppWidgetView {
     @Override
     public int getWidgetName() {
         return R.string.widget_toggle;

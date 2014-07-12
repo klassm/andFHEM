@@ -90,6 +90,7 @@ public class Actions {
     public static final String RECENT_COMMAND_LIST = prefix + "RECENT_COMMANDS_LIST";
 
     public static final String REDRAW_WIDGET = prefix + "REDRAW_WIDGET";
+    public static final String WIDGET_REQUEST_UPDATE = prefix + "WIDGET_REQUEST_UPDATE";
     public static final String DEVICE_LIST_REMOTE_NOTIFY = prefix + "DEVICE_LIST_REMOTE_NOTIFY";
 
     public static final String RELOAD = prefix + "RELOAD";

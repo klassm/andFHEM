@@ -26,9 +26,9 @@ package li.klass.fhem.appwidget.annotation;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-import li.klass.fhem.appwidget.view.widget.base.AppWidgetView;
+import li.klass.fhem.appwidget.view.widget.base.DeviceAppWidgetView;
 
 @Retention(RetentionPolicy.RUNTIME)
 public @interface SupportsWidget {
-    Class<? extends AppWidgetView>[] value();
+    Class<? extends DeviceAppWidgetView>[] value();
 }

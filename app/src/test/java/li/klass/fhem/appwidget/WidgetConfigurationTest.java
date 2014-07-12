@@ -24,29 +24,32 @@
 
 package li.klass.fhem.appwidget;
 
-import li.klass.fhem.appwidget.view.WidgetType;
 import org.junit.Test;
+
+import li.klass.fhem.appwidget.view.WidgetType;
+import li.klass.fhem.infra.basetest.RobolectricBaseTestCase;
 
 import static li.klass.fhem.appwidget.WidgetConfiguration.escape;
 import static li.klass.fhem.appwidget.WidgetConfiguration.unescape;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 
-public class TestWidgetConfiguration {
+public class WidgetConfigurationTest extends RobolectricBaseTestCase {
 
     @Test
-    public void testWidgetConfigurationSerialization() {
-        assertConfigurationSerialization(new WidgetConfiguration(5, "abc", WidgetType.DIM));
-        assertConfigurationSerialization(new WidgetConfiguration(50000, "def", WidgetType.STATUS));
-        assertConfigurationSerialization(new WidgetConfiguration(50000, "d#ef", WidgetType.STATUS));
+    public void should_serialize_correctly() {
+        assertConfigurationSerialization(new WidgetConfiguration(5, WidgetType.DIM, "abc"));
+        assertConfigurationSerialization(new WidgetConfiguration(50000, WidgetType.STATUS, "def"));
+        assertConfigurationSerialization(new WidgetConfiguration(50000, WidgetType.STATUS, "d#ef"));
 
-        assertConfigurationSerialization(new WidgetConfiguration(50000, "def", WidgetType.STATUS, "hello"));
-        assertConfigurationSerialization(new WidgetConfiguration(50000, "def", WidgetType.STATUS, null));
+        assertConfigurationSerialization(new WidgetConfiguration(50000, WidgetType.STATUS, "def", "hello"));
     }
 
     @Test
-    public void testEscape() {
+    public void should_escape_hashes_correctly() {
         assertThat(escape("d#ef"), is("d\\@ef"));
         assertThat(escape("d@ef"), is("d@ef"));
         assertThat(escape("def"), is("def"));
@@ -54,18 +57,46 @@ public class TestWidgetConfiguration {
     }
 
     @Test
-    public void testUnescape() {
+    public void should_unescape_hashes_correctly() {
         assertThat(unescape("d\\@ef"), is("d#ef"));
         assertThat(unescape("d@ef"), is("d@ef"));
         assertThat(unescape("def"), is("def"));
         assertThat(unescape(null), is(nullValue()));
     }
 
+    @Test
+    public void should_deserialize_deprecated_WidgetConfigurations_with_payload_correctly() {
+        WidgetConfiguration configuration = WidgetConfiguration.fromSaveString("123#myDevice#" + WidgetType.STATUS.name() + "#abc");
+
+        assertThat(configuration.widgetId, is(123));
+        assertThat(configuration.payload, contains("myDevice", "abc"));
+        assertThat(configuration.payload, hasSize(2));
+        assertThat(configuration.widgetType, is(WidgetType.STATUS));
+    }
+
+    @Test
+    public void should_deserialize_new_WidgetConfiguration_correctly() {
+        WidgetConfiguration configuration = WidgetConfiguration.fromSaveString("123#" + WidgetType.STATUS.name() + "#abc");
+
+        assertThat(configuration.widgetId, is(123));
+        assertThat(configuration.payload, contains("abc"));
+        assertThat(configuration.payload, hasSize(1));
+        assertThat(configuration.widgetType, is(WidgetType.STATUS));
+    }
+
+    @Test
+    public void should_handle_WidgetConfigurations_without_Payload() {
+        WidgetConfiguration configuration = WidgetConfiguration.fromSaveString("123#" + WidgetType.STATUS.name());
+
+        assertThat(configuration.widgetId, is(123));
+        assertThat(configuration.payload, hasSize(0));
+        assertThat(configuration.widgetType, is(WidgetType.STATUS));
+    }
+
     private void assertConfigurationSerialization(WidgetConfiguration widgetConfiguration) {
         String saveString = widgetConfiguration.toSaveString();
         WidgetConfiguration loaded = WidgetConfiguration.fromSaveString(saveString);
 
-        assertThat(loaded.deviceName, is(widgetConfiguration.deviceName));
         assertThat(loaded.payload, is(widgetConfiguration.payload));
         assertThat(loaded.widgetId, is(widgetConfiguration.widgetId));
         assertThat(loaded.widgetType, is(widgetConfiguration.widgetType));
