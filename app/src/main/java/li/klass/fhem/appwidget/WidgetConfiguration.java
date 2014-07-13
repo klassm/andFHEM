@@ -77,7 +77,7 @@ public class WidgetConfiguration implements Serializable {
 
         String[] parts = value.split(SAVE_SEPARATOR);
 
-        boolean isDeprecatedWidget = parts.length > 3 && getWidgetTypeFromName(parts[2]) != null;
+        boolean isDeprecatedWidget = getWidgetTypeFromName(parts[1]) == null;
 
         if (! isDeprecatedWidget) {
             return handleWidgetConfiguration(parts);

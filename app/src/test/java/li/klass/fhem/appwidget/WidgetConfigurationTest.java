@@ -68,6 +68,7 @@ public class WidgetConfigurationTest extends RobolectricBaseTestCase {
     public void should_deserialize_deprecated_WidgetConfigurations_with_payload_correctly() {
         WidgetConfiguration configuration = WidgetConfiguration.fromSaveString("123#myDevice#" + WidgetType.STATUS.name() + "#abc");
 
+        assertThat(configuration.isOld, is(true));
         assertThat(configuration.widgetId, is(123));
         assertThat(configuration.payload, contains("myDevice", "abc"));
         assertThat(configuration.payload, hasSize(2));
@@ -75,9 +76,22 @@ public class WidgetConfigurationTest extends RobolectricBaseTestCase {
     }
 
     @Test
+    public void should_deserialize_deprecated_WidgetConfigurations_without_payload_correctly() {
+        WidgetConfiguration configuration = WidgetConfiguration.fromSaveString("123#myDevice#" + WidgetType.STATUS.name());
+
+        assertThat(configuration.isOld, is(true));
+        assertThat(configuration.widgetId, is(123));
+        assertThat(configuration.payload, contains("myDevice"));
+        assertThat(configuration.payload, hasSize(1));
+        assertThat(configuration.widgetType, is(WidgetType.STATUS));
+    }
+
+
+    @Test
     public void should_deserialize_new_WidgetConfiguration_correctly() {
         WidgetConfiguration configuration = WidgetConfiguration.fromSaveString("123#" + WidgetType.STATUS.name() + "#abc");
 
+        assertThat(configuration.isOld, is(false));
         assertThat(configuration.widgetId, is(123));
         assertThat(configuration.payload, contains("abc"));
         assertThat(configuration.payload, hasSize(1));
@@ -88,6 +102,7 @@ public class WidgetConfigurationTest extends RobolectricBaseTestCase {
     public void should_handle_WidgetConfigurations_without_Payload() {
         WidgetConfiguration configuration = WidgetConfiguration.fromSaveString("123#" + WidgetType.STATUS.name());
 
+        assertThat(configuration.isOld, is(false));
         assertThat(configuration.widgetId, is(123));
         assertThat(configuration.payload, hasSize(0));
         assertThat(configuration.widgetType, is(WidgetType.STATUS));
