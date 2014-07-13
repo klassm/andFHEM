@@ -445,6 +445,10 @@
     <string name="widget_room_detail">Verknüpfung</string>
     <string name="widget_remote_update_started">Geräteliste wird aktualisiert &#8230;</string>
 
+    <string name="widget_devices">Geräte-Widgets</string>
+    <string name="widget_rooms">Raum-Widgets</string>
+    <string name="widget_others">Andere</string>
+
     <string name="timer_overview">Schalte %1$s %2$s %3$s %4$s auf %5$s.</string>
     <string name="timer_overview_every_day">an jedem Tag</string>
     <string name="timer_overview_once">einmal</string>

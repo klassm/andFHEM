@@ -445,6 +445,10 @@
     <string name="widget_room_detail">Link</string>
     <string name="widget_remote_update_started">Device list update started &#8230;</string>
 
+    <string name="widget_devices">Device widgets</string>
+    <string name="widget_rooms">Room widgets</string>
+    <string name="widget_others">Other</string>
+
     <string name="timer_overview">Switch %1$s %2$s %3$s %4$s to %5$s.</string>
     <string name="timer_overview_every_day">every day</string>
     <string name="timer_overview_once">once</string>

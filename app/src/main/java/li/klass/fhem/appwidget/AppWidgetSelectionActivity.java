@@ -88,11 +88,11 @@ public abstract class AppWidgetSelectionActivity extends SherlockFragmentActivit
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
-        actionBar.addTab(actionBar.newTab().setText("Devices+")
+        actionBar.addTab(actionBar.newTab().setText(R.string.widget_devices)
                 .setTabListener(this).setTag(TAG_DEVICES));
-        actionBar.addTab(actionBar.newTab().setText("Rooms+")
+        actionBar.addTab(actionBar.newTab().setText(R.string.widget_rooms)
                 .setTabListener(this).setTag(TAG_ROOMS));
-        actionBar.addTab(actionBar.newTab().setText("Other+")
+        actionBar.addTab(actionBar.newTab().setText(R.string.widget_others)
                 .setTabListener(this).setTag(TAG_OTHER));
 
         super.onCreate(savedInstanceState);
