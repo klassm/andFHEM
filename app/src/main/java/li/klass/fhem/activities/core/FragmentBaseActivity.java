@@ -234,8 +234,6 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
     }
 
     private void handleStartupFragment() {
-        Optional<FragmentType> intentFragment = getFragmentTypeFromStartupIntent();
-
         String startupView = ApplicationProperties.INSTANCE.getStringSharedPreference(STARTUP_VIEW,
                 FragmentType.FAVORITES.name());
         FragmentType preferencesStartupFragment = FragmentType.forEnumName(startupView);
@@ -244,10 +242,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
         Bundle startupBundle = new Bundle();
 
         FragmentType fragmentType = FragmentType.ALL_DEVICES;
-        if (intentFragment.isPresent()) {
-            fragmentType = intentFragment.get();
-            startupBundle = getIntent().getExtras();
-        } else if (preferencesStartupFragment != null) {
+        if (preferencesStartupFragment != null) {
             if (preferencesStartupFragment == FAVORITES) {
                 Log.i(TAG, "startup with " + FAVORITES);
                 Intent intent = new Intent(Actions.FAVORITES_PRESENT);
@@ -274,21 +269,6 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
             Log.i(TAG, "startup with " + fragmentType + " (extras: " + startupBundle + ")");
             switchToFragment(fragmentType, startupBundle);
         }
-    }
-
-    private Optional<FragmentType> getFragmentTypeFromStartupIntent() {
-        Optional<FragmentType> toReturn = Optional.absent();
-
-        Intent intent = getIntent();
-        if (intent != null) {
-            if (intent.hasExtra(FRAGMENT)) {
-                toReturn = Optional.of((FragmentType) intent.getSerializableExtra(BundleExtraKeys.FRAGMENT));
-            } else if (intent.hasExtra(FRAGMENT_NAME)) {
-                String fragmentName = intent.getStringExtra(BundleExtraKeys.FRAGMENT_NAME);
-                toReturn = Optional.of(FragmentType.valueOf(fragmentName));
-            }
-        }
-        return toReturn;
     }
 
     private void handleConnectionSpinner(ActionBar actionBar) {
@@ -399,6 +379,42 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
         handleTimerUpdates();
 
         updateNavigationVisibility();
+
+        handleOpenIntent();
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+    }
+
+    private void handleOpenIntent() {
+        final Optional<FragmentType> intentFragment = getFragmentTypeFromStartupIntent();
+        if (intentFragment.isPresent()) {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    switchToFragment(intentFragment.get(), getIntent().getExtras());
+                    setIntent(null);
+                }
+            }, 500);
+        }
+    }
+
+    private Optional<FragmentType> getFragmentTypeFromStartupIntent() {
+        Optional<FragmentType> toReturn = Optional.absent();
+
+        Intent intent = getIntent();
+        if (intent != null) {
+            if (intent.hasExtra(FRAGMENT)) {
+                toReturn = Optional.of((FragmentType) intent.getSerializableExtra(BundleExtraKeys.FRAGMENT));
+            } else if (intent.hasExtra(FRAGMENT_NAME)) {
+                String fragmentName = intent.getStringExtra(BundleExtraKeys.FRAGMENT_NAME);
+                toReturn = Optional.of(FragmentType.valueOf(fragmentName));
+            }
+        }
+        return toReturn;
     }
 
     private void handleTimerUpdates() {
