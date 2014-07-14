@@ -28,7 +28,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.text.format.DateUtils;
 import android.util.Log;
 
 import com.google.common.collect.Sets;
@@ -60,10 +59,9 @@ import li.klass.fhem.exception.CommandExecutionException;
 import li.klass.fhem.service.AbstractService;
 import li.klass.fhem.service.CommandExecutionService;
 import li.klass.fhem.util.ApplicationProperties;
-import li.klass.fhem.util.DateFormatUtil;
 
 import static com.google.common.collect.Lists.newArrayList;
-import static li.klass.fhem.constants.Actions.DEVICE_LIST_REMOTE_NOTIFY;
+import static li.klass.fhem.constants.Actions.REDRAW_ALL_WIDGETS;
 import static li.klass.fhem.constants.PreferenceKeys.DEVICE_NAME;
 import static li.klass.fhem.domain.core.DeviceType.getDeviceTypeFor;
 import static li.klass.fhem.util.DateFormatUtil.toReadable;
@@ -117,8 +115,8 @@ public class RoomListService extends AbstractService {
 
         boolean updateWidgets = ApplicationProperties.INSTANCE.getBooleanSharedPreference(PreferenceKeys.GCM_WIDGET_UPDATE, false);
         if (updateWidgets) {
-            sendBroadcastWithAction(DEVICE_LIST_REMOTE_NOTIFY);
-            getContext().startService(new Intent(DEVICE_LIST_REMOTE_NOTIFY));
+            sendBroadcastWithAction(REDRAW_ALL_WIDGETS);
+            getContext().startService(new Intent(REDRAW_ALL_WIDGETS));
         }
     }
 
@@ -307,8 +305,8 @@ public class RoomListService extends AbstractService {
                         } finally {
                             currentlyUpdating.set(false);
                             sendBroadcastWithAction(Actions.DISMISS_UPDATING_DIALOG, null);
-                            sendBroadcastWithAction(DEVICE_LIST_REMOTE_NOTIFY, null);
-                            getContext().startService(new Intent(DEVICE_LIST_REMOTE_NOTIFY));
+                            sendBroadcastWithAction(REDRAW_ALL_WIDGETS, null);
+                            getContext().startService(new Intent(REDRAW_ALL_WIDGETS));
 
                             updateLock.unlock();
                             synchronized (currentlyUpdating) {
@@ -447,7 +445,6 @@ public class RoomListService extends AbstractService {
         Log.i(TAG, "recommend " + (!shouldUpdate ? "no " : "") + "update (lastUpdate: " + toReadable(lastUpdate) +
                 ", updatePeriod: " + (updatePeriod / 1000 / 60) + " min)");
 
-        shouldUpdate = true;
         return shouldUpdate;
     }
 }

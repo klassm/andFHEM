@@ -37,7 +37,7 @@ import li.klass.fhem.appwidget.AppWidgetDataHolder;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 
-import static li.klass.fhem.constants.Actions.DEVICE_LIST_REMOTE_NOTIFY;
+import static li.klass.fhem.constants.Actions.REDRAW_ALL_WIDGETS;
 import static li.klass.fhem.constants.Actions.REDRAW_WIDGET;
 import static li.klass.fhem.constants.Actions.WIDGET_REQUEST_UPDATE;
 
@@ -56,8 +56,8 @@ public class AppWidgetUpdateService extends IntentService {
 
         if (REDRAW_WIDGET.equals(action)) {
             handleRedrawWidget(intent, allowRemoteUpdates);
-        } else if (DEVICE_LIST_REMOTE_NOTIFY.equals(action)) {
-            Log.i(TAG, "updating all widgets (received DEVICE_LIST_REMOTE_NOTIFY)");
+        } else if (REDRAW_ALL_WIDGETS.equals(action)) {
+            Log.i(TAG, "updating all widgets (received REDRAW_ALL_WIDGETS)");
             AppWidgetDataHolder.INSTANCE.updateAllWidgets(this, allowRemoteUpdates);
         } else if (WIDGET_REQUEST_UPDATE.equals(action)) {
             new Handler(getMainLooper()).post(new Runnable() {

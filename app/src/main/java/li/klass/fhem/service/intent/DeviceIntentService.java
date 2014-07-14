@@ -90,9 +90,7 @@ import static li.klass.fhem.constants.Actions.DEVICE_WAKE;
 import static li.klass.fhem.constants.Actions.DEVICE_WIDGET_TOGGLE;
 import static li.klass.fhem.constants.Actions.GCM_ADD_SELF;
 import static li.klass.fhem.constants.Actions.GCM_REMOVE_ID;
-import static li.klass.fhem.constants.Actions.REDRAW_WIDGET;
 import static li.klass.fhem.constants.Actions.RESEND_LAST_FAILED_COMMAND;
-import static li.klass.fhem.constants.BundleExtraKeys.APP_WIDGET_ID;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_GRAPH_ENTRY_MAP;
 import static li.klass.fhem.constants.BundleExtraKeys.STATE_NAME;
 import static li.klass.fhem.constants.BundleExtraKeys.STATE_VALUE;
@@ -113,14 +111,15 @@ public class DeviceIntentService extends ConvenientIntentService {
         Log.d(DeviceIntentService.class.getName(), intent.getAction());
         String action = intent.getAction();
 
+        STATE result = STATE.SUCCESS;
         if (DEVICE_GRAPH.equals(action)) {
-            return graphIntent(intent, device, resultReceiver);
+            result = graphIntent(intent, device, resultReceiver);
         } else if (DEVICE_TOGGLE_STATE.equals(action)) {
-            return toggleIntent(device);
+            result = toggleIntent(device);
         } else if (DEVICE_SET_STATE.equals(action)) {
-            return setStateIntent(intent, device);
+            result = setStateIntent(intent, device);
         } else if (DEVICE_DIM.equals(action)) {
-            return dimIntent(intent, device);
+            result = dimIntent(intent, device);
         } else if (DEVICE_SET_DAY_TEMPERATURE.equals(action)) {
             double dayTemperature = intent.getDoubleExtra(BundleExtraKeys.DEVICE_TEMPERATURE, -1);
             FHTService.INSTANCE.setDayTemperature((FHTDevice) device, dayTemperature);
@@ -197,16 +196,8 @@ public class DeviceIntentService extends ConvenientIntentService {
 
         } else if (DEVICE_REFRESH_STATE.equals(action)) {
             WOLService.INSTANCE.requestRefreshState((WOLDevice) device);
-
         } else if (DEVICE_WIDGET_TOGGLE.equals(action)) {
-            STATE result = toggleIntent(device);
-
-            int widgetId = intent.getIntExtra(APP_WIDGET_ID, -1);
-            Intent widgetUpdateIntent = new Intent(REDRAW_WIDGET);
-            widgetUpdateIntent.putExtra(APP_WIDGET_ID, widgetId);
-            startService(widgetUpdateIntent);
-
-            return result;
+            result = toggleIntent(device);
 
         } else if (DEVICE_TIMER_MODIFY.equals(action)) {
             processTimerIntent(intent, true);
@@ -239,7 +230,9 @@ public class DeviceIntentService extends ConvenientIntentService {
             }
         }
 
-        return SUCCESS;
+        startService(new Intent(Actions.REDRAW_ALL_WIDGETS));
+
+        return result;
     }
 
     private STATE processTimerIntent(Intent intent, boolean isModify) {

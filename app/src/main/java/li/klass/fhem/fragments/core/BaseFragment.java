@@ -49,7 +49,7 @@ import li.klass.fhem.error.ErrorHolder;
 
 import static li.klass.fhem.constants.Actions.CONNECTION_ERROR;
 import static li.klass.fhem.constants.Actions.CONNECTION_ERROR_HIDE;
-import static li.klass.fhem.constants.Actions.DEVICE_LIST_REMOTE_NOTIFY;
+import static li.klass.fhem.constants.Actions.REDRAW_ALL_WIDGETS;
 import static li.klass.fhem.constants.Actions.DO_UPDATE;
 import static li.klass.fhem.constants.Actions.TOP_LEVEL_BACK;
 import static li.klass.fhem.constants.BundleExtraKeys.DO_REFRESH;
@@ -75,7 +75,7 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
             intentFilter.addAction(TOP_LEVEL_BACK);
             intentFilter.addAction(CONNECTION_ERROR);
             intentFilter.addAction(CONNECTION_ERROR_HIDE);
-            intentFilter.addAction(DEVICE_LIST_REMOTE_NOTIFY);
+            intentFilter.addAction(REDRAW_ALL_WIDGETS);
         }
 
         @Override
@@ -100,7 +100,7 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
                                 backPressCalled = true;
                                 onBackPressResult();
                             }
-                        } else if (action.equals(DEVICE_LIST_REMOTE_NOTIFY)) {
+                        } else if (action.equals(REDRAW_ALL_WIDGETS)) {
                             update(false);
                         } else if (action.equals(CONNECTION_ERROR)) {
                             String content;

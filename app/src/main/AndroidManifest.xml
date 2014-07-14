@@ -137,7 +137,7 @@
             <intent-filter>
                 <action android:name="li.klass.fhem.constants.Actions.REDRAW_WIDGET"/>
                 <action android:name="li.klass.fhem.constants.Actions.WIDGET_UPDATE"/>
-                <action android:name="li.klass.fhem.constants.Actions.DEVICE_LIST_REMOTE_NOTIFY"/>
+                <action android:name="li.klass.fhem.constants.Actions.REDRAW_ALL_WIDGETS"/>
                 <action android:name="li.klass.fhem.constants.Actions.WIDGET_REQUEST_UPDATE"/>
             </intent-filter>
         </service>

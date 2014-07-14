@@ -91,7 +91,7 @@ public class Actions {
 
     public static final String REDRAW_WIDGET = prefix + "REDRAW_WIDGET";
     public static final String WIDGET_REQUEST_UPDATE = prefix + "WIDGET_REQUEST_UPDATE";
-    public static final String DEVICE_LIST_REMOTE_NOTIFY = prefix + "DEVICE_LIST_REMOTE_NOTIFY";
+    public static final String REDRAW_ALL_WIDGETS = prefix + "REDRAW_ALL_WIDGETS";
 
     public static final String RELOAD = prefix + "RELOAD";
 
@@ -119,6 +119,5 @@ public class Actions {
     public static final String CONNECTION_ERROR_HIDE = prefix + "CONNECTION_ERROR_HIDE";
 
 
-    public static final String EXT_DEVICE_NAMES = prefix + "EXT_DEVICE_NAMES";
     public static final String EXT_DEVICE_STATE_NOTIFY = prefix + "EXT_DEVICE_STATE_NOTIFY";
 }
