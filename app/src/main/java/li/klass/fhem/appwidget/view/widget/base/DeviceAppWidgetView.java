@@ -42,6 +42,7 @@ import li.klass.fhem.appwidget.view.WidgetType;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.RoomDeviceList;
+import li.klass.fhem.fragments.FragmentType;
 import li.klass.fhem.fragments.core.DeviceDetailFragment;
 import li.klass.fhem.service.room.RoomListService;
 import li.klass.fhem.util.ImageUtil;
@@ -116,7 +117,7 @@ public abstract class DeviceAppWidgetView extends AppWidgetView {
     protected Intent createOpenDeviceDetailPageIntent(Device device, Context context) {
         Intent openIntent = new Intent(context, AndFHEMMainActivity.class);
         openIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        openIntent.putExtra(BundleExtraKeys.FRAGMENT_NAME, DeviceDetailFragment.class.getName());
+        openIntent.putExtra(BundleExtraKeys.FRAGMENT, FragmentType.DEVICE_DETAIL);
         openIntent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
         openIntent.putExtra("unique", "foobar://" + SystemClock.elapsedRealtime());
         return openIntent;

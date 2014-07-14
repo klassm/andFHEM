@@ -47,6 +47,8 @@ public class LicenseManager {
     public boolean isPro() {
         boolean isPremium = false;
 
+        BillingService.INSTANCE.loadInventory();
+
         Set<String> ownedItems = BillingService.INSTANCE.getOwnedItems();
         if (ApplicationProperties.INSTANCE.getBooleanApplicationProperty("IS_PREMIUM")) {
             Log.i(TAG, "found IS_PREMIUM application property to be true => premium");
