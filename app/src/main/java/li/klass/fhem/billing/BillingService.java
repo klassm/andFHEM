@@ -31,7 +31,9 @@ import com.android.vending.billing.IabHelper;
 import com.android.vending.billing.IabResult;
 import com.android.vending.billing.Inventory;
 import com.android.vending.billing.Purchase;
+import com.google.common.collect.Lists;
 
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -49,12 +51,19 @@ public class BillingService {
         void onSetupFinished();
     }
 
+    public interface OnLoadInventoryFinishedListener {
+        void onInventoryLoadFinished();
+    }
+
     public static final String TAG = BillingService.class.getName();
 
     public static final BillingService INSTANCE = new BillingService();
 
     private IabHelper iabHelper;
     private AtomicReference<Inventory> inventory = new AtomicReference<Inventory>(Inventory.empty());
+    private List<OnLoadInventoryFinishedListener> onLoadInventoryFinishedListeners = Lists.newArrayList();
+
+    private volatile boolean isSetup = false;
 
     private BillingService() {
     }
@@ -69,8 +78,9 @@ public class BillingService {
                 @Override
                 public void onIabSetupFinished(IabResult result) {
                     if (result.isSuccess()) {
+                        isSetup = true;
                         Log.d(TAG, "=> SUCCESS");
-                        loadInventory();
+                        loadInventory(null);
                     } else {
                         Log.e(TAG, "=> ERROR " + result.toString());
                     }
@@ -93,7 +103,7 @@ public class BillingService {
             public void onIabPurchaseFinished(IabResult result, Purchase info) {
                 if (result.isSuccess()) {
                     Log.i(TAG, "purchase result: SUCCESS");
-                    loadInventory();
+                    loadInventory(null);
                     listener.onProductPurchased(info.getOrderId(), info.getSku());
                 } else {
                     Log.e(TAG, "purchase result: " + result.toString());
@@ -102,10 +112,23 @@ public class BillingService {
         }, payload);
     }
 
-    public synchronized void loadInventory() {
+    public synchronized void loadInventory(final OnLoadInventoryFinishedListener listener) {
+        if (! isSetup) {
+            start(new SetupFinishedListener() {
+                @Override
+                public void onSetupFinished() {
+                    if (listener != null) {
+                        listener.onInventoryLoadFinished();
+                    }
+                }
+            });
+        }
         try {
             Log.i(TAG, "loading inventory");
             inventory.set(iabHelper.queryInventory(false, null, null));
+            if (listener != null) {
+                listener.onInventoryLoadFinished();
+            }
         } catch (IabException e) {
             Log.e(TAG, "cannot load inventory", e);
         }

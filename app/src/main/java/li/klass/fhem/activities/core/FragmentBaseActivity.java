@@ -51,7 +51,6 @@ import com.actionbarsherlock.view.MenuItem;
 import com.google.common.base.Optional;
 
 import java.util.Timer;
-import java.util.TimerTask;
 
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
@@ -657,7 +656,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
     @Override
     public boolean onCreatePanelMenu(int featureId, com.actionbarsherlock.view.Menu menu) {
         getSupportMenuInflater().inflate(R.menu.main_menu, menu);
-        if (LicenseManager.INSTANCE.isPro()) {
+        if (LicenseManager.INSTANCE.isPremiumApk()) {
             menu.removeItem(R.id.menu_premium);
         }
         this.optionsMenu = menu;

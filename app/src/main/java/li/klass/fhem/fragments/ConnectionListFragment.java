@@ -105,20 +105,27 @@ public class ConnectionListFragment extends BaseFragment implements TopLevelFrag
         createButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int size = getAdapter().getData().size();
-                if (! LicenseManager.INSTANCE.isPro() && size >= AndFHEMApplication.PREMIUM_ALLOWED_FREE_CONNECTIONS) {
-                    Intent intent = new Intent(Actions.SHOW_ALERT);
-                    intent.putExtra(BundleExtraKeys.ALERT_CONTENT_ID, R.string.premium_multipleConnections);
-                    intent.putExtra(BundleExtraKeys.ALERT_TITLE_ID, R.string.premium);
-                    AndFHEMApplication.getContext().sendBroadcast(intent);
+                final int size = getAdapter().getData().size();
+                LicenseManager licenseManager = LicenseManager.INSTANCE;
 
-                    return;
-                }
+                licenseManager.isPremium(new LicenseManager.IsPremiumListener() {
+                    @Override
+                    public void onIsPremiumDetermined(boolean isPremium) {
+                        if (! isPremium && size >= AndFHEMApplication.PREMIUM_ALLOWED_FREE_CONNECTIONS) {
+                            Intent intent = new Intent(Actions.SHOW_ALERT);
+                            intent.putExtra(BundleExtraKeys.ALERT_CONTENT_ID, R.string.premium_multipleConnections);
+                            intent.putExtra(BundleExtraKeys.ALERT_TITLE_ID, R.string.premium);
+                            getActivity().sendBroadcast(intent);
+                        } else {
 
-                Intent intent = new Intent(Actions.SHOW_FRAGMENT);
-                intent.putExtra(BundleExtraKeys.FRAGMENT, FragmentType.CONNECTION_DETAIL);
+                            Intent intent = new Intent(Actions.SHOW_FRAGMENT);
+                            intent.putExtra(BundleExtraKeys.FRAGMENT, FragmentType.CONNECTION_DETAIL);
 
-                getActivity().sendBroadcast(intent);
+                            getActivity().sendBroadcast(intent);
+                        }
+                    }
+                });
+
             }
         });
 

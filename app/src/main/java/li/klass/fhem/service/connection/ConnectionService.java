@@ -74,22 +74,24 @@ public class ConnectionService {
         }
     }
 
-    public boolean create(String name, ServerType serverType, String username, String password,
-                          String ip, int port, String url) {
-        if (exists(name)) return false;
+    public void create(final String name, final ServerType serverType, final String username, final String password,
+                          final String ip, final int port, final String url) {
+        if (exists(name)) return;
 
         LicenseManager licenseManager = LicenseManager.INSTANCE;
-        if (! licenseManager.isPro() && getCountWithoutDummy() >= PREMIUM_ALLOWED_FREE_CONNECTIONS) {
-            return false;
-        }
+        licenseManager.isPremium(new LicenseManager.IsPremiumListener() {
+            @Override
+            public void onIsPremiumDetermined(boolean isPremium) {
+                if (isPremium || getCountWithoutDummy() < PREMIUM_ALLOWED_FREE_CONNECTIONS) {
 
-        FHEMServerSpec server = new FHEMServerSpec(newUniqueId());
+                    FHEMServerSpec server = new FHEMServerSpec(newUniqueId());
 
-        fillServerWith(name, server, serverType, username, password, ip, port, url);
+                    fillServerWith(name, server, serverType, username, password, ip, port, url);
 
-        saveToPreferences(server);
-
-        return true;
+                    saveToPreferences(server);
+                }
+            }
+        });
     }
 
     public boolean update(String id, String name, ServerType serverType, String username, String password,

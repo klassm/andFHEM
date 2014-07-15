@@ -71,15 +71,20 @@ public class PremiumFragment extends BaseFragment implements BillingService.Prod
         update(getView());
     }
 
-    public void update(View view) {
+    public void update(final View view) {
         view.findViewById(R.id.shop_premium_bought).setVisibility(View.GONE);
         view.findViewById(R.id.shop_premium_buy).setVisibility(View.GONE);
 
-        if (LicenseManager.INSTANCE.isPro()) {
-            view.findViewById(R.id.shop_premium_bought).setVisibility(View.VISIBLE);
-        } else {
-            view.findViewById(R.id.shop_premium_buy).setVisibility(View.VISIBLE);
-        }
+        LicenseManager.INSTANCE.isPremium(new LicenseManager.IsPremiumListener() {
+            @Override
+            public void onIsPremiumDetermined(boolean isPremium) {
+                if (isPremium) {
+                    view.findViewById(R.id.shop_premium_bought).setVisibility(View.VISIBLE);
+                } else {
+                    view.findViewById(R.id.shop_premium_buy).setVisibility(View.VISIBLE);
+                }
+            }
+        });
 
         Intent intent = new Intent(Actions.DISMISS_UPDATING_DIALOG);
         getActivity().sendBroadcast(intent);

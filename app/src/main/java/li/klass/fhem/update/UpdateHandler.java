@@ -24,6 +24,8 @@
 
 package li.klass.fhem.update;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 
 import li.klass.fhem.AndFHEMApplication;
@@ -51,72 +53,8 @@ public class UpdateHandler {
 
     public void onApplicationUpdate() {
         AndFHEMApplication application = AndFHEMApplication.INSTANCE;
-        if (!application.isUpdate()) return;
-
-        ApplicationProperties applicationProperties = ApplicationProperties.INSTANCE;
-
-
-        handleConnectionUpdate(applicationProperties);
-    }
-
-    private void handleConnectionUpdate(ApplicationProperties applicationProperties) {
-        String selectedConnection = applicationProperties.getStringSharedPreference(CONNECTION_TYPE, null);
-        ConnectionService connectionService = ConnectionService.INSTANCE;
-
-        applicationProperties.deleteSharedPreference(CONNECTION_TYPE);
-
-        String fhemwebUrl = applicationProperties.getStringSharedPreference(FHEMWEB_URL, null);
-        String fhemwebUser = applicationProperties.getStringSharedPreference(FHEMWEB_USERNAME, "");
-        String fhemwebPassword = applicationProperties.getStringSharedPreference(FHEMWEB_PASSWORD, "");
-
-        if (! StringUtil.isBlank(fhemwebUrl)) {
-            if (! connectionService.nameExists("FHEMWEB")) {
-                if (connectionService.create("FHEMWEB", ServerType.FHEMWEB, fhemwebUser, fhemwebPassword,
-                        null, 0, fhemwebUrl)) {
-                    applicationProperties.deleteSharedPreference(FHEMWEB_URL);
-                    applicationProperties.deleteSharedPreference(FHEMWEB_PASSWORD);
-                    applicationProperties.deleteSharedPreference(FHEMWEB_USERNAME);
-                }
-            }
-        }
-
-        String telnetIp = applicationProperties.getStringSharedPreference(TELNET_URL, "");
-        String telnetPort = applicationProperties.getStringSharedPreference(TELNET_PORT, "0");
-        String telnetPassword = applicationProperties.getStringSharedPreference(TELNET_PASSWORD, "");
-
-        if (!StringUtil.isBlank(telnetIp)) {
-
-            Integer port;
-            try {
-                port = Integer.valueOf(telnetPort);
-            } catch (Exception e) {
-                port = 0;
-            }
-            if (! connectionService.nameExists("Telnet")) {
-                if (connectionService.create("Telnet", ServerType.TELNET, null, telnetPassword,
-                        telnetIp, port, null)) {
-                    applicationProperties.deleteSharedPreference(TELNET_URL);
-                    applicationProperties.deleteSharedPreference(TELNET_PORT);
-                    applicationProperties.deleteSharedPreference(TELNET_PASSWORD);
-                }
-            }
-        }
-
-        try {
-
-
-            ArrayList<FHEMServerSpec> allServers = connectionService.listAll();
-            if (selectedConnection != null) {
-                ServerType serverType = ServerType.valueOf(selectedConnection.toUpperCase());
-                for (FHEMServerSpec server : allServers) {
-                    if (server.getServerType() == serverType) {
-                        connectionService.setSelectedId(server.getId());
-                        break;
-                    }
-                }
-            }
-        } catch (Exception e) {
-            // ignore
+        if (!application.isUpdate()) {
+            Log.i(UpdateHandler.class.getName(), "not an update");
         }
     }
 }

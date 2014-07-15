@@ -50,46 +50,54 @@ public class AdvertisementUtil {
     private static long lastErrorTimestamp = 0;
     private static final String TAG = AdvertisementUtil.class.getName();
 
-    public static void addAd(View view, final Activity activity) {
-        final LinearLayout adContainer = (LinearLayout) view.findViewById(R.id.adContainer);
+    public static void addAd(final View view, final Activity activity) {
 
-        boolean showAds = true;
 
-        if (adContainer == null) {
-            showAds = false;
-            Log.i(TAG, "cannot find adContainer");
-        } else if (LicenseManager.INSTANCE.isPro()) {
-            showAds = false;
-            Log.i(TAG, "found premium version, skipping ads");
-        } else if (activity.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            showAds = false;
-            Log.i(TAG, "found landscape orientation, skipping ads");
-        }
+        LicenseManager.INSTANCE.isPremium(new LicenseManager.IsPremiumListener() {
+            @Override
+            public void onIsPremiumDetermined(boolean isPremium) {
+                boolean showAds = true;
+                final LinearLayout adContainer = (LinearLayout) view.findViewById(R.id.adContainer);
 
-        if (! showAds) {
-            adContainer.setVisibility(View.GONE);
-        } else if (GooglePlayServicesUtil.isGooglePlayServicesAvailable(activity) != ConnectionResult.SUCCESS) {
-            addErrorView(activity, adContainer);
-            Log.e(TAG, "cannot find PlayServices");
-        } else {
-            adContainer.setVisibility(View.VISIBLE);
+                if (adContainer == null) {
+                    showAds = false;
+                    Log.i(TAG, "cannot find adContainer");
+                    return;
+                } else if (isPremium) {
+                    showAds = false;
+                    Log.i(TAG, "found premium version, skipping ads");
+                } else if (activity.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                    showAds = false;
+                    Log.i(TAG, "found landscape orientation, skipping ads");
+                }
 
-            if (System.currentTimeMillis() - lastErrorTimestamp < 1000 * 60 * 10) {
-                addErrorView(activity, adContainer);
-                Log.i(TAG, "still in timeout, showing error view");
-                return;
+                if (! showAds) {
+                    adContainer.setVisibility(View.GONE);
+                } else if (GooglePlayServicesUtil.isGooglePlayServicesAvailable(activity) != ConnectionResult.SUCCESS) {
+                    addErrorView(activity, adContainer);
+                    Log.e(TAG, "cannot find PlayServices");
+                } else {
+                    adContainer.setVisibility(View.VISIBLE);
+
+                    if (System.currentTimeMillis() - lastErrorTimestamp < 1000 * 60 * 10) {
+                        addErrorView(activity, adContainer);
+                        Log.i(TAG, "still in timeout, showing error view");
+                        return;
+                    }
+
+                    Log.i(TAG, "showing ad");
+
+                    AdView adView = new AdView(activity);
+                    adView.setAdUnitId(AndFHEMApplication.AD_UNIT_ID);
+                    adView.setAdSize(AdSize.BANNER);
+
+                    addListener(activity, adContainer, adView);
+                    adView.loadAd(new AdRequest.Builder().build());
+                    adContainer.addView(adView);
+                }
             }
+        });
 
-            Log.i(TAG, "showing ad");
-
-            AdView adView = new AdView(activity);
-            adView.setAdUnitId(AndFHEMApplication.AD_UNIT_ID);
-            adView.setAdSize(AdSize.BANNER);
-
-            addListener(activity, adContainer, adView);
-            adView.loadAd(new AdRequest.Builder().build());
-            adContainer.addView(adView);
-        }
     }
 
     private static void addListener(final Activity activity, final LinearLayout adContainer, AdView adView) {

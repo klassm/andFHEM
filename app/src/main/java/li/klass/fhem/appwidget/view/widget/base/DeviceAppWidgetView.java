@@ -142,7 +142,11 @@ public abstract class DeviceAppWidgetView extends AppWidgetView {
     protected void fillWidgetView(Context context, RemoteViews view,
                                            WidgetConfiguration widgetConfiguration) {
         Device<?> device = getDeviceFor(NEVER_UPDATE_PERIOD, widgetConfiguration.payload.get(0));
-        fillWidgetView(context, view, device, widgetConfiguration);
+        if (device != null) {
+            fillWidgetView(context, view, device, widgetConfiguration);
+        } else {
+            Log.e(TAG, "cannot find device for " + widgetConfiguration.payload.get(0));
+        }
     }
 
     protected abstract void fillWidgetView(Context context, RemoteViews view, Device<?> device,
