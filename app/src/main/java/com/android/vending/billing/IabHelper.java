@@ -82,10 +82,10 @@ public class IabHelper {
     String mDebugTag = "IabHelper";
 
     // Is setup done?
-    boolean mSetupDone = false;
+    volatile boolean mSetupDone = false;
 
     // Has this object been disposed of? (If so, we should ignore callbacks, etc)
-    boolean mDisposed = false;
+    volatile boolean mDisposed = false;
 
     // Are subscriptions supported?
     boolean mSubscriptionsSupported = false;
@@ -982,6 +982,10 @@ public class IabHelper {
                 }
             }
         })).start();
+    }
+
+    public boolean isSetupDone() {
+        return mSetupDone;
     }
 
     void logDebug(String msg) {

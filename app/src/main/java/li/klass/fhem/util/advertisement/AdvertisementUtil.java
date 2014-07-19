@@ -27,6 +27,7 @@ package li.klass.fhem.util.advertisement;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -45,14 +46,13 @@ import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.fragments.FragmentType;
 import li.klass.fhem.license.LicenseManager;
+import li.klass.fhem.util.DisplayUtil;
 
 public class AdvertisementUtil {
     private static long lastErrorTimestamp = 0;
     private static final String TAG = AdvertisementUtil.class.getName();
 
     public static void addAd(final View view, final Activity activity) {
-
-
         LicenseManager.INSTANCE.isPremium(new LicenseManager.IsPremiumListener() {
             @Override
             public void onIsPremiumDetermined(boolean isPremium) {
@@ -60,15 +60,18 @@ public class AdvertisementUtil {
                 final LinearLayout adContainer = (LinearLayout) view.findViewById(R.id.adContainer);
 
                 if (adContainer == null) {
-                    showAds = false;
                     Log.i(TAG, "cannot find adContainer");
                     return;
                 } else if (isPremium) {
                     showAds = false;
                     Log.i(TAG, "found premium version, skipping ads");
-                } else if (activity.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                    showAds = false;
-                    Log.i(TAG, "found landscape orientation, skipping ads");
+                } else {
+                    Resources resources = activity.getResources();
+                    if (resources.getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE
+                            && !resources.getBoolean(R.bool.isTablet)) {
+                        showAds = false;
+                        Log.i(TAG, "found landscape orientation, skipping ads");
+                    }
                 }
 
                 if (! showAds) {

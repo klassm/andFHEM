@@ -51,19 +51,18 @@ public class LicenseManager {
 
     public void isPremium(final IsPremiumListener isPremiumListener) {
 
-        BillingService.INSTANCE.loadInventory(new BillingService.OnLoadInventoryFinishedListener() {
+        BillingService.INSTANCE.getOwnedItems(new BillingService.OwnedItemsLoadedListener() {
             @Override
-            public void onInventoryLoadFinished() {
+            public void onItemsLoaded(Set<String> ownedItems) {
                 boolean isPremium = false;
 
-                Set<String> ownedItems = BillingService.INSTANCE.getOwnedItems();
                 if (ApplicationProperties.INSTANCE.getBooleanApplicationProperty("IS_PREMIUM")) {
                     Log.i(TAG, "found IS_PREMIUM application property to be true => premium");
                     isPremium = true;
                 } else if  (isPremiumApk()) {
                     Log.i(TAG, "found package name to be li.klass.fhempremium => premium");
                     isPremium = true;
-                } else if (isDebug()) {
+                } else if (false && isDebug()) {
                     Log.i(TAG, "running in debug => premium");
                     isPremium = true;
                 } else if (ownedItems.contains(AndFHEMApplication.PRODUCT_PREMIUM_ID) ||

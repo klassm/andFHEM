@@ -55,6 +55,10 @@ public class BillingService {
         void onInventoryLoadFinished();
     }
 
+    public interface OwnedItemsLoadedListener {
+        void onItemsLoaded(Set<String> items);
+    }
+
     public static final String TAG = BillingService.class.getName();
 
     public static final BillingService INSTANCE = new BillingService();
@@ -62,8 +66,6 @@ public class BillingService {
     private IabHelper iabHelper;
     private AtomicReference<Inventory> inventory = new AtomicReference<Inventory>(Inventory.empty());
     private List<OnLoadInventoryFinishedListener> onLoadInventoryFinishedListeners = Lists.newArrayList();
-
-    private volatile boolean isSetup = false;
 
     private BillingService() {
     }
@@ -78,13 +80,16 @@ public class BillingService {
                 @Override
                 public void onIabSetupFinished(IabResult result) {
                     if (result.isSuccess()) {
-                        isSetup = true;
                         Log.d(TAG, "=> SUCCESS");
-                        loadInventory(null);
+                        loadInventory(new OnLoadInventoryFinishedListener() {
+                            @Override
+                            public void onInventoryLoadFinished() {
+                                listener.onSetupFinished();
+                            }
+                        });
                     } else {
                         Log.e(TAG, "=> ERROR " + result.toString());
                     }
-                    listener.onSetupFinished();
                 }
             });
         } catch (Exception e) {
@@ -96,49 +101,66 @@ public class BillingService {
         iabHelper.dispose();
     }
 
-    public synchronized void requestPurchase(Activity activity, String itemId, String payload, final ProductPurchasedListener listener) {
+    public synchronized void requestPurchase(final Activity activity, final String itemId,
+                                             final String payload,
+                                             final ProductPurchasedListener listener) {
         Log.i(TAG, "requesting purchase of " + itemId);
-        iabHelper.launchPurchaseFlow(activity, itemId, 0, new IabHelper.OnIabPurchaseFinishedListener() {
+        ensureSetup(new SetupFinishedListener() {
             @Override
-            public void onIabPurchaseFinished(IabResult result, Purchase info) {
-                if (result.isSuccess()) {
-                    Log.i(TAG, "purchase result: SUCCESS");
-                    loadInventory(null);
-                    listener.onProductPurchased(info.getOrderId(), info.getSku());
-                } else {
-                    Log.e(TAG, "purchase result: " + result.toString());
-                }
+            public void onSetupFinished() {
+                iabHelper.launchPurchaseFlow(activity, itemId, 0, new IabHelper.OnIabPurchaseFinishedListener() {
+                    @Override
+                    public void onIabPurchaseFinished(IabResult result, Purchase info) {
+                        if (result.isSuccess()) {
+                            Log.i(TAG, "purchase result: SUCCESS");
+                            loadInventory(null);
+                            listener.onProductPurchased(info.getOrderId(), info.getSku());
+                        } else {
+                            Log.e(TAG, "purchase result: " + result.toString());
+                        }
+                    }
+                }, payload);
             }
-        }, payload);
+        });
     }
 
     public synchronized void loadInventory(final OnLoadInventoryFinishedListener listener) {
-        if (! isSetup) {
-            start(new SetupFinishedListener() {
-                @Override
-                public void onSetupFinished() {
+        ensureSetup(new SetupFinishedListener() {
+            @Override
+            public void onSetupFinished() {
+                try {
+                    Log.i(TAG, "loading inventory");
+                    inventory.set(iabHelper.queryInventory(false, null, null));
                     if (listener != null) {
                         listener.onInventoryLoadFinished();
                     }
+                } catch (IabException e) {
+                    Log.e(TAG, "cannot load inventory", e);
                 }
-            });
-        }
-        try {
-            Log.i(TAG, "loading inventory");
-            inventory.set(iabHelper.queryInventory(false, null, null));
-            if (listener != null) {
-                listener.onInventoryLoadFinished();
             }
-        } catch (IabException e) {
-            Log.e(TAG, "cannot load inventory", e);
+        });
+    }
+
+    private void ensureSetup(SetupFinishedListener listener) {
+        if (isSetup()) {
+            listener.onSetupFinished();
+        } else {
+            start(listener);
         }
     }
 
-    public synchronized Set<String> getOwnedItems() {
-        Set<String> ownedItems = inventory.get().getAllOwnedSkus();
+    public synchronized void getOwnedItems(final OwnedItemsLoadedListener listener) {
+        ensureSetup(new SetupFinishedListener() {
+            @Override
+            public void onSetupFinished() {
+                Set<String> ownedItems = inventory.get().getAllOwnedSkus();
+                Log.i(TAG, "owned items: " + ownedItems);
+                listener.onItemsLoaded(ownedItems);
+            }
+        });
+    }
 
-        Log.i(TAG, "owned items: " + ownedItems);
-
-        return ownedItems;
+    private boolean isSetup() {
+        return iabHelper != null && inventory != null && iabHelper.isSetupDone();
     }
 }

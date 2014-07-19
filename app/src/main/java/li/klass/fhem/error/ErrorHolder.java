@@ -51,7 +51,8 @@ public class ErrorHolder {
             return !input.contains("D/li.klass") &&
                     ! input.contains("dalvikvm") &&
                     ! input.contains("W/Resources") &&
-                    ! input.contains("requestLayout() improperly");
+                    ! input.contains("requestLayout() improperly") &&
+                    ! input.contains("V/li.klass");
         }
     };
 
