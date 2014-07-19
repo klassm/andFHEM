@@ -365,6 +365,8 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
     protected void onResume() {
         super.onResume();
 
+        Log.i(TAG, "resuming " + getClass().getName());
+
         saveInstanceStateCalled = false;
 
         if (broadcastReceiver != null) {
