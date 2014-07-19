@@ -431,18 +431,18 @@ public class RoomListService extends AbstractService {
 
     private boolean shouldUpdate(long updatePeriod) {
         if (updatePeriod == ALWAYS_UPDATE_PERIOD) {
-            Log.i(TAG, "recommend update, as updatePeriod is set to ALWAYS_UPDATE");
+            Log.d(TAG, "recommend update, as updatePeriod is set to ALWAYS_UPDATE");
             return true;
         }
         if (updatePeriod == NEVER_UPDATE_PERIOD) {
-            Log.i(TAG, "recommend no update, as updatePeriod is set to NEVER_UPDATE");
+            Log.d(TAG, "recommend no update, as updatePeriod is set to NEVER_UPDATE");
             return false;
         }
 
         long lastUpdate = getLastUpdate();
         boolean shouldUpdate = lastUpdate + updatePeriod < System.currentTimeMillis();
 
-        Log.i(TAG, "recommend " + (!shouldUpdate ? "no " : "") + "update (lastUpdate: " + toReadable(lastUpdate) +
+        Log.d(TAG, "recommend " + (!shouldUpdate ? "no " : "") + "update (lastUpdate: " + toReadable(lastUpdate) +
                 ", updatePeriod: " + (updatePeriod / 1000 / 60) + " min)");
 
         return shouldUpdate;
