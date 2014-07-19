@@ -593,7 +593,6 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
     protected void fillDeviceCharts(List<DeviceChart> chartSeries) {
         super.fillDeviceCharts(chartSeries);
 
-        System.out.println("subtype: " + subType);
         if (subType == null) return;
 
         switch (subType) {

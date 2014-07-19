@@ -25,15 +25,14 @@ package li.klass.fhem.util;
 
 import android.content.Context;
 import android.util.Log;
-import li.klass.fhem.AndFHEMApplication;
-import li.klass.fhem.appwidget.annotation.WidgetTemperatureField;
-import li.klass.fhem.domain.FHTDevice;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+
+import li.klass.fhem.AndFHEMApplication;
 
 public class ReflectionUtil {
     public static final String TAG = ReflectionUtil.class.getName();
@@ -118,17 +117,6 @@ public class ReflectionUtil {
     public static String getFieldValueAsString(Object object, Field field) {
         Object value = getFieldValue(object, field);
         return String.valueOf(value);
-    }
-
-    public static void main(String[] args) {
-        System.out.println(getFieldsWithAnnotation(FHTDevice.class, WidgetTemperatureField.class));
-    }
-
-    public static String methodNameToFieldName(Method method) {
-        Reject.ifNull(method);
-
-        String methodName = method.getName();
-        return methodNameToFieldName(methodName);
     }
 
     public static String methodNameToFieldName(String methodName) {

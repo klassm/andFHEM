@@ -26,6 +26,7 @@ package li.klass.fhem.util;
 
 import android.annotation.TargetApi;
 import android.os.Build;
+import android.util.Log;
 
 import org.w3c.dom.Node;
 
@@ -54,7 +55,7 @@ public class XMLUtil {
             t.setOutputProperty(OutputKeys.INDENT, "yes");
             t.transform(new DOMSource(node), new StreamResult(sw));
         } catch (TransformerException te) {
-            System.out.println("nodeToString Transformer Exception");
+            Log.e(XMLUtil.class.getName(), "nodeToString Transformer Exception", te);
         }
         return sw.toString();
     }
