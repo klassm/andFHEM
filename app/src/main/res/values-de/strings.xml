@@ -209,6 +209,12 @@
     <string name="wrongPassword">Falsches Passwort!</string>
     <string name="password">Passwort</string>
     <string name="login">Login</string>
+    <string name="fatFreeMass">Masse fettfrei</string>
+    <string name="fatMass">Masse Fett</string>
+    <string name="fatRatio">Anteil Fett</string>
+    <string name="heartPulse">Puls</string>
+    <string name="height">Größe</string>
+    <string name="weight">Gewicht</string>
 
     <string name="connectionManage">Verwalten</string>
     <string name="connectionCreate">Neue Verbindung erstellen</string>
@@ -343,6 +349,8 @@
     <string name="contentGraph">Inhalt Graph</string>
     <string name="dewpointGraph">Taupunkt Graph</string>
     <string name="powerGraph">Energie Graph</string>
+    <string name="co2Graph">CO2 Graph</string>
+    <string name="weightGraph">Gewichtsgraph</string>
 
     <string name="yAxisWind">Wind (km/h)</string>
     <string name="yAxisHumidity">Luftfeuchtigkeit (%)</string>
@@ -362,6 +370,9 @@
     <string name="yAxisLitreContent">Inhalt (l)</string>
     <string name="yAxisEnergy">Energie (W)</string>
     <string name="yAxisRaw">Roh-Wert</string>
+    <string name="yAxisCO2">co2 (ppm)</string>
+    <string name="yAxisWeight">Gewicht (kg)</string>
+    <string name="yAxisFatRatio">Fettanteil</string>
 
     <string name="startDate">Start-Datum</string>
     <string name="endDate">End-Datum</string>

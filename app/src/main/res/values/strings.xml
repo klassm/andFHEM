@@ -210,6 +210,12 @@
     <string name="wrongPassword">Invalid password!</string>
     <string name="password">Password</string>
     <string name="login">Login</string>
+    <string name="fatFreeMass">Mass fatfree</string>
+    <string name="fatMass">Mass fat</string>
+    <string name="fatRatio">Ratio fat</string>
+    <string name="heartPulse">Pulse</string>
+    <string name="height">Height</string>
+    <string name="weight">Weight</string>
 
     <string name="connectionManage">Manage</string>
     <string name="connectionCreate">Create a new connection</string>
@@ -343,6 +349,8 @@
     <string name="contentGraph">Content Graph</string>
     <string name="dewpointGraph">Dewpoint Graph</string>
     <string name="powerGraph">Power Graph</string>
+    <string name="co2Graph">CO2 Graph</string>
+    <string name="weightGraph">Weight Graph</string>
 
     <string name="yAxisWind">wind (km/h)</string>
     <string name="yAxisHumidity">humidity (%)</string>
@@ -362,6 +370,9 @@
     <string name="yAxisLitreContent">content (l)</string>
     <string name="yAxisEnergy">energy (W)</string>
     <string name="yAxisRaw">raw value</string>
+    <string name="yAxisCO2">co2 (ppm)</string>
+    <string name="yAxisWeight">weight (kg)</string>
+    <string name="yAxisFatRatio">fat ratio</string>
 
     <string name="startDate">Start Date</string>
     <string name="endDate">End Date</string>

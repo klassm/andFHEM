@@ -28,7 +28,10 @@ public enum SeriesType {
     POWER(Color.RED, R.string.yAxisEnergy),
     BRIGHTNESS(Color.RED, R.string.brightness),
     SUNSHINE(Color.BLUE, R.string.sunshine),
-    IS_RAINING(Color.BLUE, R.string.isRaining)
+    IS_RAINING(Color.BLUE, R.string.isRaining),
+    CO2(Color.RED, R.string.yAxisCO2),
+    WEIGHT(Color.RED, R.string.yAxisWeight),
+    FAT_RATIO(Color.BLUE, R.string.yAxisFatRatio)
     ;
 
     private final int color;

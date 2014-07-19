@@ -164,6 +164,12 @@ public enum ResourceIdMapper {
     sortRooms(R.string.sortRooms),
     pwm0(R.string.pwm0),
     pwm1(R.string.pwm1),
+    fatFreeMass(R.string.fatFreeMass),
+    fatMass(R.string.fatMass),
+    fatRatio(R.string.fatRatio),
+    heartPulse(R.string.heartPulse),
+    height(R.string.height),
+    weight(R.string.weight),
 
     blank(R.string.blank),
     none(-1);

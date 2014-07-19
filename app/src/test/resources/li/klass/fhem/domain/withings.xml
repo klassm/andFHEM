@@ -1,0 +1,81 @@
+<withings_LIST>
+    <withings name="body" state="85.000 kg, 20.000 %" sets="" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev disable:1 interval logfile nossl:1 event-on-change-reading event-on-update-reading event-min-interval stateFormat devStateIcon devStateStyle einheit einheit_map fm_type icon onOffDevice sortby structexclude webCmd widgetOverride">
+        <INT key="CFGFN" value="./FHEM/withings.cfg"/>
+        <INT key="CHANGED" value=""/>
+        <INT key="DEF" value="1234567 abcdefghij"/>
+        <INT key="INTERVAL" value="3600"/>
+        <INT key="Key" value="abcdefghij"/>
+        <INT key="LAST_POLL" value="2014-07-13 16:23:37"/>
+        <INT key="NAME" value="body"/>
+        <INT key="NR" value="184"/>
+        <INT key="NTFY_ORDER" value="50-Body"/>
+        <INT key="STATE" value="85.000 kg, 20.000 %"/>
+        <INT key="SUBTYPE" value="USER"/>
+        <INT key="TYPE" value="withings"/>
+        <INT key="User" value="1234567"/>
+        <INT key="birthdate" value="1983-04-08"/>
+        <INT key="gender" value="male"/>
+        <INT key="shortName" value="MIC"/>
+        <INT key="status" value="0"/>
+        <INT key="userName" value="Michael"/>
+        <INT key="IODev" value="Withings"/>
+        <ATTR key="IODev" value="Withings"/>
+        <ATTR key="group" value="Smart_Body_Analyzer"/>
+        <ATTR key="room" value="Withings"/>
+        <ATTR key="stateFormat" value="weight kg, fatRatio %"/>
+        <STATE key="fatFreeMass" value="68.000" measured="2014-07-13 13:18:55"/>
+        <STATE key="fatMassWeight" value="17.000" measured="2014-07-13 13:18:55"/>
+        <STATE key="fatRatio" value="20.000" measured="2014-07-13 13:18:55"/>
+        <STATE key="heartPulse" value="70" measured="2014-07-13 13:18:55"/>
+        <STATE key="height" value="1.9" measured="2014-06-25 10:46:36"/>
+        <STATE key="weight" value="85.000" measured="2014-07-13 13:18:55"/>
+    </withings>
+    <withings name="scale" state="23.6 °C, 967 ppm" sets="" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev disable:1 interval logfile nossl:1 event-on-change-reading event-on-update-reading event-min-interval stateFormat devStateIcon devStateStyle einheit einheit_map fm_type icon onOffDevice sortby structexclude webCmd widgetOverride">
+        <INT key="CFGFN" value="./FHEM/withings.cfg"/>
+        <INT key="DEF" value="1234567"/>
+        <INT key="Device" value="1234567"/>
+        <INT key="DeviceType" value="Body scale"/>
+        <INT key="INTERVAL" value="3600"/>
+        <INT key="LAST_POLL" value="2014-07-13 13:23:08"/>
+        <INT key="NAME" value="scale"/>
+        <INT key="NR" value="192"/>
+        <INT key="NTFY_ORDER" value="50-Waage"/>
+        <INT key="STATE" value="23.6 °C, 967 ppm"/>
+        <INT key="SUBTYPE" value="DEVICE"/>
+        <INT key="TYPE" value="withings"/>
+        <INT key="fw" value="1011"/>
+        <INT key="model" value="Body analyzer"/>
+        <INT key="sn" value="SN-00:24:e4:19:7b:70"/>
+        <INT key="status" value="0"/>
+        <INT key="IODev" value="Withings"/>
+        <ATTR key="IODev" value="Withings"/>
+        <ATTR key="group" value="Smart_Body_Analyzer"/>
+        <ATTR key="room" value="Withings"/>
+        <ATTR key="stateFormat" value="temperature °C, co2 ppm"/>
+        <STATE key="battery" value="ok" measured="2014-07-13 16:23:13"/>
+        <STATE key="batteryLevel" value="91" measured="2014-07-13 16:23:13"/>
+        <STATE key="co2" value="967" measured="2014-07-13 13:00:13"/>
+        <STATE key="lastWeighinDate" value="2014-07-13 13:20:58" measured="2014-07-13 16:23:13"/>
+        <STATE key="temperature" value="23.6" measured="2014-07-13 13:00:13"/>
+    </withings>
+    <withings name="withings" state="Connected" sets="" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev disable:1 interval logfile nossl:1 event-on-change-reading event-on-update-reading event-min-interval stateFormat devStateIcon devStateStyle einheit einheit_map fm_type icon onOffDevice sortby structexclude webCmd widgetOverride">
+        <INT key="AccountID" value="1234567"/>
+        <INT key="CFGFN" value="./FHEM/withings.cfg"/>
+        <INT key="Clients" value=":withings:"/>
+        <INT key="DEF" value="test@test.de password"/>
+        <INT key="Hash" value="abcdefghijkl"/>
+        <INT key="Login" value="test@test.de"/>
+        <INT key="NAME" value="withings"/>
+        <INT key="NR" value="182"/>
+        <INT key="NTFY_ORDER" value="50-Withings"/>
+        <INT key="Password" value="password"/>
+        <INT key="STATE" value="Connected"/>
+        <INT key="SUBTYPE" value="ACCOUNT"/>
+        <INT key="SessionKey" value="123046789"/>
+        <INT key="SessionTimestamp" value="1405261393"/>
+        <INT key="TYPE" value="withings"/>
+        <INT key="Token" value="123456789"/>
+        <ATTR key="group" value="Smart_Body_Analyzer"/>
+        <ATTR key="room" value="Withings"/>
+    </withings>
+</withings_LIST>

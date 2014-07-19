@@ -133,6 +133,7 @@ import li.klass.fhem.domain.WatchdogDevice;
 import li.klass.fhem.domain.WeatherDevice;
 import li.klass.fhem.domain.WebLinkDevice;
 import li.klass.fhem.domain.WifiLightDevice;
+import li.klass.fhem.domain.WithingsDevice;
 import li.klass.fhem.domain.YamahaAVRDevice;
 import li.klass.fhem.domain.ZWaveDevice;
 import li.klass.fhem.fhem.connection.ServerType;
@@ -220,7 +221,8 @@ public enum DeviceType {
     FHEMWEB("FHEMWEB", FHEMWEBDevice.class),
     THRESHOLD("THRESHOLD", ThresholdDevice.class, new ThresholdAdapter()),
     WIFILIGHT("WifiLight", WifiLightDevice.class, new WifiLightDeviceAdapter()),
-    EC3000("EC3000", EC3000Device.class)
+    EC3000("EC3000", EC3000Device.class),
+    WITHINGS("withings", WithingsDevice.class)
     ;
 
     private String xmllistTag;
