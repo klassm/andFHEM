@@ -62,7 +62,7 @@ public class LicenseManager {
                 } else if  (isPremiumApk()) {
                     Log.i(TAG, "found package name to be li.klass.fhempremium => premium");
                     isPremium = true;
-                } else if (false && isDebug()) {
+                } else if (isDebug()) {
                     Log.i(TAG, "running in debug => premium");
                     isPremium = true;
                 } else if (ownedItems.contains(AndFHEMApplication.PRODUCT_PREMIUM_ID) ||

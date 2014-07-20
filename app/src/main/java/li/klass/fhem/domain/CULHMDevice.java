@@ -249,7 +249,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
         setDeviceReadCallback(new DeviceReadCallback<CULHMDevice>(value) {
             @Override
             public void onCallbackDeviceRead(CULHMDevice callbackDevice) {
-                if (callbackDevice != null) {
+                if (callbackDevice != null && callbackDevice.getSubType() != null) {
                     subType = callbackDevice.getSubType();
                 }
             }
