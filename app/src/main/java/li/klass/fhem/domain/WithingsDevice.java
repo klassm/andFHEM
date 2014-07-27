@@ -23,6 +23,7 @@ import static li.klass.fhem.service.graph.description.SeriesType.WEIGHT;
 import static li.klass.fhem.util.ValueExtractUtil.extractLeadingDouble;
 import static li.klass.fhem.util.ValueExtractUtil.extractLeadingInt;
 
+@SuppressWarnings("unused")
 @DetailViewSettings(showState = false)
 public class WithingsDevice extends Device<WithingsDevice> {
     public enum SubType {
@@ -164,14 +165,14 @@ public class WithingsDevice extends Device<WithingsDevice> {
                         "temperature", TEMPERATURE)), temperature);
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.co2Graph,
-                getRegressionValuesInstance(R.string.co2, "4:co2:0",
-                        "temperature", CO2)), co2);
+                getRegressionValuesInstance(R.string.co2, "4:co2:0:int",
+                        "co2", CO2)), co2);
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.weightGraph),
-                getRegressionValuesInstance(R.string.weight, "4:weight:0",
+                getRegressionValuesInstance(R.string.weight, "4:weight:0:int",
                         "weight", WEIGHT),
                 getRegressionValuesInstance(R.string.fatRatio, "4:fatRatio:0",
-                        "fatRatio", FAT_RATIO)
+                        "fatRatio", FAT_RATIO), fatRatio, weight
         );
     }
 
