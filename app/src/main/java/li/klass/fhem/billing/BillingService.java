@@ -31,9 +31,7 @@ import com.android.vending.billing.IabHelper;
 import com.android.vending.billing.IabResult;
 import com.android.vending.billing.Inventory;
 import com.android.vending.billing.Purchase;
-import com.google.common.collect.Lists;
 
-import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -43,29 +41,10 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public class BillingService {
 
-    public interface ProductPurchasedListener {
-        void onProductPurchased(String orderId, String productId);
-    }
-
-    public interface SetupFinishedListener {
-        void onSetupFinished();
-    }
-
-    public interface OnLoadInventoryFinishedListener {
-        void onInventoryLoadFinished();
-    }
-
-    public interface OwnedItemsLoadedListener {
-        void onItemsLoaded(Set<String> items);
-    }
-
     public static final String TAG = BillingService.class.getName();
-
     public static final BillingService INSTANCE = new BillingService();
-
     private IabHelper iabHelper;
     private AtomicReference<Inventory> inventory = new AtomicReference<Inventory>(Inventory.empty());
-    private List<OnLoadInventoryFinishedListener> onLoadInventoryFinishedListeners = Lists.newArrayList();
 
     private BillingService() {
     }
@@ -89,6 +68,8 @@ public class BillingService {
                         });
                     } else {
                         Log.e(TAG, "=> ERROR " + result.toString());
+                        inventory.set(Inventory.empty());
+                        listener.onSetupFinished();
                     }
                 }
             });
@@ -131,11 +112,14 @@ public class BillingService {
                 try {
                     Log.i(TAG, "loading inventory");
                     inventory.set(iabHelper.queryInventory(false, null, null));
+
+                } catch (IabException e) {
+                    Log.e(TAG, "cannot load inventory", e);
+                    inventory.set(Inventory.empty());
+                } finally {
                     if (listener != null) {
                         listener.onInventoryLoadFinished();
                     }
-                } catch (IabException e) {
-                    Log.e(TAG, "cannot load inventory", e);
                 }
             }
         });
@@ -162,5 +146,21 @@ public class BillingService {
 
     private boolean isSetup() {
         return iabHelper != null && inventory != null && iabHelper.isSetupDone();
+    }
+
+    public interface ProductPurchasedListener {
+        void onProductPurchased(String orderId, String productId);
+    }
+
+    public interface SetupFinishedListener {
+        void onSetupFinished();
+    }
+
+    public interface OnLoadInventoryFinishedListener {
+        void onInventoryLoadFinished();
+    }
+
+    public interface OwnedItemsLoadedListener {
+        void onItemsLoaded(Set<String> items);
     }
 }

@@ -113,6 +113,7 @@ public class GPIO4Device extends Device<GPIO4Device> {
                             .withDbLogSpec("temperature::int2")
                             .withSeriesType(TEMPERATURE)
                             .withShowRegression(true)
+                            .withYAxisMinMaxValue(getLogDevice().getYAxisMinMaxValueFor("temperature", 0, 30))
                             .build()
             ), temperature);
         }

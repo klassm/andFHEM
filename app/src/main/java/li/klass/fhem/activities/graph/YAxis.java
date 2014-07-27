@@ -1,9 +1,13 @@
 package li.klass.fhem.activities.graph;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+
 import li.klass.fhem.service.graph.GraphEntry;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
-
-import java.util.*;
 
 public class YAxis implements Comparable<YAxis>, Iterable<ViewableChartSeries> {
     private String name;
@@ -22,6 +26,17 @@ public class YAxis implements Comparable<YAxis>, Iterable<ViewableChartSeries> {
     public void addChart(ChartSeriesDescription series, List<GraphEntry> graphData) {
         ChartData chart = new ChartData(series, graphData);
 
+        double seriesMaxValue = series.getYAxisMaxValue();
+        double seriesMinValue = series.getYAxisMinValue();
+
+        if (isSet(seriesMinValue) && seriesMinValue < minimumY) {
+            minimumY = seriesMinValue;
+        }
+
+        if (isSet(seriesMaxValue) && seriesMaxValue > maximumY) {
+            maximumY = seriesMaxValue;
+        }
+
         if (chart.getMaximumY() > maximumY) {
             maximumY = chart.getMaximumY();
         }
@@ -39,6 +54,10 @@ public class YAxis implements Comparable<YAxis>, Iterable<ViewableChartSeries> {
         }
 
         charts.add(chart);
+    }
+
+    private boolean isSet(double value) {
+        return Math.abs(value) > 0.1;
     }
 
     public String getName() {

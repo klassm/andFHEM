@@ -268,17 +268,20 @@ public class MaxDevice extends ToggleableDevice<MaxDevice> implements DesiredTem
                             .withDbLogSpec("temperature::int1")
                             .withSeriesType(TEMPERATURE)
                             .withShowRegression(true)
+                            .withYAxisMinMaxValue(getLogDevice().getYAxisMinMaxValueFor("temperature", 0, 30))
                             .build(),
                     new ChartSeriesDescription.Builder().withColumnName(R.string.desiredTemperature)
                             .withFileLogSpec("4:desiredTemperature")
                             .withDbLogSpec("desiredTemperature::int")
                             .withSeriesType(DESIRED_TEMPERATURE)
                             .withShowDiscreteValues(true)
+                            .withYAxisMinMaxValue(getLogDevice().getYAxisMinMaxValueFor("desiredTemperature", 0, 30))
                             .build(),
                     new ChartSeriesDescription.Builder()
                             .withColumnName(R.string.actuator).withFileLogSpec("4:valveposition")
                             .withDbLogSpec("valveposition::int")
                             .withSeriesType(ACTUATOR)
+                            .withYAxisMinMaxValue(getLogDevice().getYAxisMinMaxValueFor("valveposition", 0, 100))
                             .build()
             ), temperature, actuator);
         } else {
@@ -289,6 +292,7 @@ public class MaxDevice extends ToggleableDevice<MaxDevice> implements DesiredTem
                             .withDbLogSpec("temperature::int1")
                             .withSeriesType(TEMPERATURE)
                             .withShowRegression(true)
+                            .withYAxisMinMaxValue(getLogDevice().getYAxisMinMaxValueFor("temperature", 0, 30))
                             .build()
             ), temperature);
         }

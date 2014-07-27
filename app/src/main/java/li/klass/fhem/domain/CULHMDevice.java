@@ -575,11 +575,13 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
                                 .withDbLogSpec("measured-temp")
                                 .withSeriesType(TEMPERATURE)
                                 .withShowRegression(true)
+                                .withYAxisMinMaxValue(getLogDevice().getYAxisMinMaxValueFor("measured-temp", 0, 30))
                                 .build(),
                         new ChartSeriesDescription.Builder()
                                 .withColumnName(R.string.humidity).withFileLogSpec("6:H\\x3a:0:")
                                 .withDbLogSpec("humidity")
                                 .withSeriesType(HUMIDITY)
+                                .withYAxisMinMaxValue(getLogDevice().getYAxisMinMaxValueFor("humidity", 0, 100))
                                 .build()
                 ), humidity, measuredTemp);
 
@@ -591,6 +593,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
                                     .withDbLogSpec("measured-temp")
                                     .withSeriesType(TEMPERATURE)
                                     .withShowRegression(true)
+                                    .withYAxisMinMaxValue(getLogDevice().getYAxisMinMaxValueFor("measured-temp", 0, 30))
                                     .build()
                     ), measuredTemp);
                 }
@@ -601,11 +604,13 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
                                         .withColumnName(R.string.brightness).withFileLogSpec("4:brightness")
                                         .withDbLogSpec("brightness")
                                         .withSeriesType(BRIGHTNESS)
+                                        .withYAxisMinMaxValue(getLogDevice().getYAxisMinMaxValueFor("brightness", 0, 1000))
                                         .build(),
                                 new ChartSeriesDescription.Builder()
                                         .withColumnName(R.string.sunshine).withFileLogSpec("4:sunshine")
                                         .withDbLogSpec("sunshine")
                                         .withSeriesType(SeriesType.SUNSHINE)
+                                        .withYAxisMinMaxValue(getLogDevice().getYAxisMinMaxValueFor("sunshine", 0, 0))
                                         .build()
                         ), sunshine, brightness
                 );
@@ -617,11 +622,13 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
                                         .withDbLogSpec("isRaining")
                                         .withSeriesType(IS_RAINING)
                                         .withShowDiscreteValues(true)
+                                        .withYAxisMinMaxValue(getLogDevice().getYAxisMinMaxValueFor("isRaining", 0, 1))
                                         .build(),
                                 new ChartSeriesDescription.Builder()
                                         .withColumnName(R.string.rain).withFileLogSpec("4:rain")
                                         .withDbLogSpec("rain")
                                         .withSeriesType(RAIN)
+                                        .withYAxisMinMaxValue(getLogDevice().getYAxisMinMaxValueFor("rain", 0, 70))
                                         .build()
                         ), isRaining, rain
                 );
@@ -636,11 +643,13 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
                                 .withDbLogSpec("content")
                                 .withSeriesType(LITRE_CONTENT)
                                 .withShowRegression(true)
+                                .withYAxisMinMaxValue(getLogDevice().getYAxisMinMaxValueFor("content", 0, 1000))
                                 .build(),
                         new ChartSeriesDescription.Builder()
                                 .withColumnName(R.string.rawValue).withFileLogSpec("4:rawValue:0:")
                                 .withDbLogSpec("rawValue")
                                 .withSeriesType(RAW)
+                                .withYAxisMinMaxValue(getLogDevice().getYAxisMinMaxValueFor("rawValue", 0, 300))
                                 .build()
                 ), getState());
 
@@ -655,6 +664,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
                                 .withDbLogSpec("measured-temp")
                                 .withSeriesType(TEMPERATURE)
                                 .withShowRegression(true)
+                                .withYAxisMinMaxValue(getLogDevice().getYAxisMinMaxValueFor("measured-temp", 0, 30))
                                 .build()
                 ), measuredTemp);
 
@@ -668,11 +678,13 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
                                 .withDbLogSpec("measured-temp")
                                 .withSeriesType(TEMPERATURE)
                                 .withShowRegression(true)
+                                .withYAxisMinMaxValue(getLogDevice().getYAxisMinMaxValueFor("measured-temp", 0, 30))
                                 .build(),
                         new ChartSeriesDescription.Builder()
                                 .withColumnName(R.string.humidity).withFileLogSpec("6:H\\x3a:0:")
                                 .withDbLogSpec("humidity")
                                 .withSeriesType(HUMIDITY)
+                                .withYAxisMinMaxValue(getLogDevice().getYAxisMinMaxValueFor("humidity", 0, 100))
                                 .build()
                 ), humidity, measuredTemp);
 
@@ -683,11 +695,13 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
                                 .withDbLogSpec("measured-temp")
                                 .withSeriesType(TEMPERATURE)
                                 .withShowRegression(true)
+                                .withYAxisMinMaxValue(getLogDevice().getYAxisMinMaxValueFor("measured-temp", 0, 30))
                                 .build(),
                         new ChartSeriesDescription.Builder()
                                 .withColumnName(R.string.actuator).withFileLogSpec("4:actuator")
                                 .withDbLogSpec("actuator::int")
                                 .withSeriesType(ACTUATOR)
+                                .withYAxisMinMaxValue(getLogDevice().getYAxisMinMaxValueFor("actuator", 0, 100))
                                 .build()
                 ), measuredTemp, actuator);
 
@@ -699,6 +713,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
                                 .withColumnName(R.string.currentUsage).withFileLogSpec("4:current:0")
                                 .withDbLogSpec("current")
                                 .withSeriesType(CURRENT_USAGE_WATT)
+                                .withYAxisMinMaxValue(getLogDevice().getYAxisMinMaxValueFor("current", 0, 200))
                                 .build()
                 ), currentUsage);
 
@@ -707,6 +722,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
                                 .withColumnName(R.string.cumulativeUsage).withFileLogSpec("4:energy")
                                 .withDbLogSpec("energy")
                                 .withSeriesType(CUMULATIVE_USAGE_Wh)
+                                .withYAxisMinMaxValue(getLogDevice().getYAxisMinMaxValueFor("energy", 0, 100))
                                 .build()
                 ), cumulativeUsage);
                 break;

@@ -123,6 +123,7 @@ public class FS20Device extends DimmableDiscreteStatesDevice<FS20Device> impleme
                         .withDbLogSpec("data:::$val=~s/(on|off).*/$1eq\"on\"?1:0/eg")
                         .withShowDiscreteValues(true)
                         .withSeriesType(TOGGLE_STATE)
+                        .withYAxisMinMaxValue(getLogDevice().getYAxisMinMaxValueFor("state", 0, 1))
                         .build()
         ), getState());
     }

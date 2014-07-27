@@ -161,6 +161,7 @@ public class WithingsDevice extends Device<WithingsDevice> {
                         .withDbLogSpec("temperature")
                         .withSeriesType(TEMPERATURE)
                         .withShowRegression(true)
+                        .withYAxisMinMaxValue(getLogDevice().getYAxisMinMaxValueFor("temperature", 0, 30))
                         .build()
         ), temperature);
 
@@ -171,6 +172,7 @@ public class WithingsDevice extends Device<WithingsDevice> {
                         .withDbLogSpec("co2")
                         .withSeriesType(CO2)
                         .withShowRegression(true)
+                        .withYAxisMinMaxValue(getLogDevice().getYAxisMinMaxValueFor("co2", 300, 400))
                         .build()
         ), co2);
 
@@ -181,6 +183,7 @@ public class WithingsDevice extends Device<WithingsDevice> {
                         .withDbLogSpec("weight")
                         .withSeriesType(WEIGHT)
                         .withShowRegression(true)
+                        .withYAxisMinMaxValue(getLogDevice().getYAxisMinMaxValueFor("weight", 0, 70))
                         .build(),
                 new ChartSeriesDescription.Builder()
                         .withColumnName(R.string.fatRatio)
@@ -188,6 +191,7 @@ public class WithingsDevice extends Device<WithingsDevice> {
                         .withDbLogSpec("fatRatio")
                         .withSeriesType(FAT_RATIO)
                         .withShowRegression(true)
+                        .withYAxisMinMaxValue(getLogDevice().getYAxisMinMaxValueFor("fatRatio", 0, 100))
                         .build(), fatRatio, weight
         );
     }

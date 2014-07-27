@@ -159,11 +159,13 @@ public class TRXWeatherDevice extends Device<TRXWeatherDevice> {
                         .withDbLogSpec("temperature::int2")
                         .withSeriesType(TEMPERATURE)
                         .withShowRegression(true)
+                        .withYAxisMinMaxValue(getLogDevice().getYAxisMinMaxValueFor("temperature", 0, 30))
                         .build(),
                 new ChartSeriesDescription.Builder()
                         .withColumnName(R.string.dewpoint).withFileLogSpec("4:dewpoint:0:")
                         .withDbLogSpec("dewpoint::int1")
                         .withSeriesType(DEWPOINT)
+                        .withYAxisMinMaxValue(getLogDevice().getYAxisMinMaxValueFor("dewpoint", -10, 10))
                         .build()
         ), temperature);
 
@@ -172,6 +174,7 @@ public class TRXWeatherDevice extends Device<TRXWeatherDevice> {
                         .withColumnName(R.string.humidity).withFileLogSpec("4:humidity:0:")
                         .withDbLogSpec("humidity")
                         .withSeriesType(HUMIDITY)
+                        .withYAxisMinMaxValue(getLogDevice().getYAxisMinMaxValueFor("humidity", 0, 100))
                         .build()
         ), humidity);
 
@@ -180,6 +183,7 @@ public class TRXWeatherDevice extends Device<TRXWeatherDevice> {
                         .withColumnName(R.string.pressure).withFileLogSpec("4:pressure:0:")
                         .withDbLogSpec("pressure")
                         .withSeriesType(PRESSURE)
+                        .withYAxisMinMaxValue(getLogDevice().getYAxisMinMaxValueFor("pressure", 700, 1200))
                         .build()
         ));
     }

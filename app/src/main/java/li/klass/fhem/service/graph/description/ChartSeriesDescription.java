@@ -31,6 +31,7 @@ import android.os.Parcelable;
 import java.io.Serializable;
 
 import li.klass.fhem.AndFHEMApplication;
+import li.klass.fhem.domain.log.LogDevice;
 
 public class ChartSeriesDescription implements Parcelable, Serializable {
 
@@ -58,6 +59,8 @@ public class ChartSeriesDescription implements Parcelable, Serializable {
     private SeriesType seriesType;
     private String fallBackYAxisName;
     private String dbLogSpec;
+    private double yAxisMinValue;
+    private double yAxisMaxValue;
 
     private ChartSeriesDescription() {
     }
@@ -71,6 +74,8 @@ public class ChartSeriesDescription implements Parcelable, Serializable {
         this.showSum = bundle.getBoolean("SHOW_SUM");
         this.sumDivisionFactor = bundle.getDouble("SUM_DIVISION_FACTOR");
         this.fallBackYAxisName = bundle.getString("FALLBACK_Y_AXIS_NAME");
+        this.yAxisMinValue = bundle.getDouble("Y_AXIS_MIN_VALUE");
+        this.yAxisMaxValue = bundle.getDouble("Y_AXIS_MAX_VALUE");
 
         String chart_type = bundle.getString("CHART_TYPE");
         if (chart_type != null) {
@@ -89,6 +94,8 @@ public class ChartSeriesDescription implements Parcelable, Serializable {
         bundle.putBoolean("SHOW_SUM", showSum);
         bundle.putBoolean("SHOW_REGRESSION", showRegression);
         bundle.putDouble("SUM_DIVISION_FACTOR", sumDivisionFactor);
+        bundle.putDouble("Y_AXIS_MIN_VALUE", yAxisMinValue);
+        bundle.putDouble("Y_AXIS_MAX_VALUE", yAxisMaxValue);
         if (seriesType != null) {
             bundle.putString("CHART_TYPE", seriesType.name());
         }
@@ -147,6 +154,14 @@ public class ChartSeriesDescription implements Parcelable, Serializable {
         return dbLogSpec;
     }
 
+    public double getYAxisMinValue() {
+        return yAxisMinValue;
+    }
+
+    public double getYAxisMaxValue() {
+        return yAxisMaxValue;
+    }
+
     public static class Builder {
         private ChartSeriesDescription description = new ChartSeriesDescription();
 
@@ -201,6 +216,12 @@ public class ChartSeriesDescription implements Parcelable, Serializable {
 
         public Builder withDbLogSpec(String dbLogSpec) {
             description.dbLogSpec = dbLogSpec;
+            return this;
+        }
+
+        public Builder withYAxisMinMaxValue(LogDevice.YAxisMinMaxValue minMaxValue) {
+            description.yAxisMinValue = minMaxValue.minValue;
+            description.yAxisMaxValue = minMaxValue.maxValue;
             return this;
         }
     }

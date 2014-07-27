@@ -48,6 +48,7 @@ public class FHT8VDevice extends Device<FHT8VDevice> {
                         .withDbLogSpec("state::int")
                         .withSeriesType(ACTUATOR)
                         .withShowDiscreteValues(true)
+                        .withYAxisMinMaxValue(getLogDevice().getYAxisMinMaxValueFor("actuator", 0, 100))
                         .build()
         ));
     }

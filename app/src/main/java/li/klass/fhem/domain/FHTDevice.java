@@ -280,18 +280,21 @@ public class FHTDevice extends Device<FHTDevice> implements DesiredTempDevice,
                                     .withDbLogSpec("measured-temp::int1")
                                     .withSeriesType(TEMPERATURE)
                                     .withShowRegression(true)
+                                    .withYAxisMinMaxValue(getLogDevice().getYAxisMinMaxValueFor("measured-temp", 0, 30))
                                     .build(),
                             new ChartSeriesDescription.Builder().withColumnName(R.string.desiredTemperature)
                                     .withFileLogSpec("4:desired-temp")
                                     .withDbLogSpec("desired-temp::int1")
                                     .withSeriesType(DESIRED_TEMPERATURE)
                                     .withShowDiscreteValues(true)
+                                    .withYAxisMinMaxValue(getLogDevice().getYAxisMinMaxValueFor("desired-temp", 0, 30))
                                     .build(),
                             new ChartSeriesDescription.Builder().withColumnName(R.string.actuator)
                                     .withFileLogSpec("4:actuator.*[0-9]+%:0:int")
                                     .withDbLogSpec("actuator::int")
                                     .withSeriesType(ACTUATOR)
                                     .withShowDiscreteValues(true)
+                                    .withYAxisMinMaxValue(getLogDevice().getYAxisMinMaxValueFor("actuator", 0, 100))
                                     .build()
                     ),
                     temperature, actuator
@@ -303,12 +306,14 @@ public class FHTDevice extends Device<FHTDevice> implements DesiredTempDevice,
                                     .withDbLogSpec("desired-temp::int1")
                                     .withSeriesType(DESIRED_TEMPERATURE)
                                     .withShowDiscreteValues(true)
+                                    .withYAxisMinMaxValue(getLogDevice().getYAxisMinMaxValueFor("desired-temp", 0, 100))
                                     .build(),
                             new ChartSeriesDescription.Builder().withColumnName(R.string.actuator)
                                     .withFileLogSpec("4:actuator.*[0-9]+%:0:int")
                                     .withDbLogSpec("actuator::int")
                                     .withSeriesType(ACTUATOR)
                                     .withShowDiscreteValues(true)
+                                    .withYAxisMinMaxValue(getLogDevice().getYAxisMinMaxValueFor("actuator", 0, 100))
                                     .build()
                     ),
                     actuator

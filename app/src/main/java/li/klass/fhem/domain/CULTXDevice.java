@@ -78,11 +78,13 @@ public class CULTXDevice extends Device<CULTXDevice> {
                         .withColumnName(R.string.humidity).withFileLogSpec("4:humidity:0:")
                         .withDbLogSpec("humidity")
                         .withSeriesType(HUMIDITY)
+                        .withYAxisMinMaxValue(getLogDevice().getYAxisMinMaxValueFor("humidity", 0, 100))
                         .build(),
                 new ChartSeriesDescription.Builder()
                         .withColumnName(R.string.temperature).withFileLogSpec("4:temperature:0:")
                         .withDbLogSpec("temperature")
                         .withSeriesType(TEMPERATURE)
+                        .withYAxisMinMaxValue(getLogDevice().getYAxisMinMaxValueFor("temperature", 0, 30))
                         .build()
         ), humidity, temperature);
     }

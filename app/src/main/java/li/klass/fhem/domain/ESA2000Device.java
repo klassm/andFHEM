@@ -110,12 +110,14 @@ public class ESA2000Device extends Device<ESA2000Device> {
                         .withDbLogSpec("actual::int4")
                         .withSeriesType(CURRENT_USAGE_KILOWATT)
                         .withShowDiscreteValues(true)
+                        .withYAxisMinMaxValue(getLogDevice().getYAxisMinMaxValueFor("actual", 0, 10))
                         .build(),
                 new ChartSeriesDescription.Builder().withColumnName(R.string.dayUsage)
                         .withFileLogSpec("4:day\\x3a\\s[0-9]:0:")
                         .withDbLogSpec("day::int2")
                         .withSeriesType(DAY_USAGE)
                         .withShowDiscreteValues(true)
+                        .withYAxisMinMaxValue(getLogDevice().getYAxisMinMaxValueFor("day", 0, 100))
                         .build()
         ), current);
     }

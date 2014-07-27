@@ -161,11 +161,13 @@ public class KS300Device extends Device<KS300Device> implements Serializable {
                         .withDbLogSpec("temperature::int1")
                         .withSeriesType(TEMPERATURE)
                         .withShowRegression(true)
+                        .withYAxisMinMaxValue(getLogDevice().getYAxisMinMaxValueFor("temperature", 0, 30))
                         .build(),
                 new ChartSeriesDescription.Builder()
                         .withColumnName(R.string.humidity).withFileLogSpec("6::")
                         .withDbLogSpec("humidity")
                         .withSeriesType(HUMIDITY)
+                        .withYAxisMinMaxValue(getLogDevice().getYAxisMinMaxValueFor("humidity", 0, 100))
                         .build()
         ), temperature, humidity);
 
@@ -174,6 +176,7 @@ public class KS300Device extends Device<KS300Device> implements Serializable {
                         .withColumnName(R.string.wind).withFileLogSpec("8::")
                         .withDbLogSpec("wind::int1")
                         .withSeriesType(WIND)
+                        .withYAxisMinMaxValue(getLogDevice().getYAxisMinMaxValueFor("wind", 0, 100))
                         .build()
         ), wind);
 
@@ -182,6 +185,7 @@ public class KS300Device extends Device<KS300Device> implements Serializable {
                         .withColumnName(R.string.rain).withFileLogSpec("10::")
                         .withDbLogSpec("rain::int1")
                         .withSeriesType(RAIN)
+                        .withYAxisMinMaxValue(getLogDevice().getYAxisMinMaxValueFor("rain", 0, 100))
                         .build()
         ), rain);
     }

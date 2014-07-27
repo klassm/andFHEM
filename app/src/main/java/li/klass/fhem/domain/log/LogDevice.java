@@ -33,30 +33,20 @@ import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.service.room.AllDevicesReadCallback;
 
+import static com.google.common.collect.Maps.newHashMap;
+import static li.klass.fhem.util.NumberUtil.isNumeric;
+import static li.klass.fhem.util.ValueExtractUtil.extractLeadingDouble;
+
 public abstract class LogDevice<T extends LogDevice> extends Device<T> {
 
     protected List<CustomGraph> customGraphs = new ArrayList<CustomGraph>();
     private String concerningDeviceRegexp;
-
-    @SuppressWarnings("unused")
-    public void readREGEXP(String value) {
-        if (".".equals(value)) value = ".*";
-        this.concerningDeviceRegexp = extractConcerningDeviceRegexpFromDefinition(value);
-    }
-
-    @Override
-    public DeviceFunctionality getDeviceGroup() {
-        return DeviceFunctionality.LOG;
-    }
-
-    public List<CustomGraph> getCustomGraphs() {
-        return customGraphs;
-    }
+    private Map<String, YAxisMinMaxValue> yAxisConfiguration = newHashMap();
 
     /**
      * We extract the device names from the current log regexp. As the regexp always concerns
      * device name and reading, we have to skip the reading.
-     *
+     * <p/>
      * The default format is <i>deviceName:reading </i>, so we have to skip the reading part and
      * the colon. In addition, we have to make sure that we can still write regexp style expression,
      * including OR expressions on different levels.
@@ -78,16 +68,16 @@ public abstract class LogDevice<T extends LogDevice> extends Device<T> {
             char c = definition.charAt(i);
 
             if (c == '(' || c == ')') {
-                if (c == '(') level ++;
-                if (c == ')') level --;
+                if (c == '(') level++;
+                if (c == ')') level--;
             }
 
-            if (! firstCharFound && c != '(') {
+            if (!firstCharFound && c != '(') {
                 baseLevel = level;
                 firstCharFound = true;
             }
 
-            if (! firstCharFound || c == '(' || c == ')') continue;
+            if (!firstCharFound || c == '(' || c == ')') continue;
 
             if (level <= baseLevel) {
                 if (isName && c != '|' && c != ':') {
@@ -100,7 +90,7 @@ public abstract class LogDevice<T extends LogDevice> extends Device<T> {
                     continue;
                 }
 
-                if (c == '|' && ! isName) {
+                if (c == '|' && !isName) {
                     isName = true;
                 }
 
@@ -118,6 +108,21 @@ public abstract class LogDevice<T extends LogDevice> extends Device<T> {
                 .replaceAll("\\.$", ".*");
     }
 
+    @SuppressWarnings("unused")
+    public void readREGEXP(String value) {
+        if (".".equals(value)) value = ".*";
+        this.concerningDeviceRegexp = extractConcerningDeviceRegexpFromDefinition(value);
+    }
+
+    @Override
+    public DeviceFunctionality getDeviceGroup() {
+        return DeviceFunctionality.LOG;
+    }
+
+    public List<CustomGraph> getCustomGraphs() {
+        return customGraphs;
+    }
+
     public boolean concernsDevice(String deviceName) {
         return deviceName.matches(concerningDeviceRegexp);
     }
@@ -129,10 +134,9 @@ public abstract class LogDevice<T extends LogDevice> extends Device<T> {
     /**
      * Create a graph command for the given parameters.
      *
-     *
-     * @param device device which created the log entries.
+     * @param device            device which created the log entries.
      * @param fromDateFormatted formatted from log date (yyyy-MM-dd_HH:mm)
-     * @param toDateFormatted formatted to log date (yyyy-MM-dd_HH:mm)
+     * @param toDateFormatted   formatted to log date (yyyy-MM-dd_HH:mm)
      * @param seriesDescription series specification.
      * @return command
      */
@@ -154,5 +158,36 @@ public abstract class LogDevice<T extends LogDevice> extends Device<T> {
                 }
             }
         });
+    }
+
+    @SuppressWarnings("unused")
+    public void readYAXISMINMAX(String definition) {
+        String[] definitions = definition.split("@");
+        for (String graphDef : definitions) {
+            String[] graphDefParts = graphDef.split(",");
+            if (graphDefParts.length == 3 && isNumeric(graphDefParts[1]) && isNumeric(graphDefParts[2])) {
+                yAxisConfiguration.put(graphDefParts[0],
+                        new YAxisMinMaxValue(extractLeadingDouble(graphDefParts[1]),
+                                extractLeadingDouble(graphDefParts[2])));
+            }
+        }
+    }
+
+    public YAxisMinMaxValue getYAxisMinMaxValueFor(String attribute, double defaultMin, double defaultMax) {
+        if (yAxisConfiguration.containsKey(attribute)) {
+            return yAxisConfiguration.get(attribute);
+        } else {
+            return new YAxisMinMaxValue(defaultMin, defaultMax);
+        }
+    }
+
+    public class YAxisMinMaxValue {
+        public final double minValue;
+        public final double maxValue;
+
+        YAxisMinMaxValue(double minValue, double maxValue) {
+            this.minValue = minValue;
+            this.maxValue = maxValue;
+        }
     }
 }

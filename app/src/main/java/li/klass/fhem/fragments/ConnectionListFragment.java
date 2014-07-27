@@ -62,10 +62,9 @@ import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_LIST;
 public class ConnectionListFragment extends BaseFragment implements TopLevelFragment {
 
     public static final String TAG = ConnectionListFragment.class.getName();
+    public static final int CONTEXT_MENU_DELETE = 1;
     private String clickedConnectionId;
     private String connectionId;
-
-    public static final int CONTEXT_MENU_DELETE = 1;
 
     @Override
     public void setArguments(Bundle args) {
@@ -117,7 +116,6 @@ public class ConnectionListFragment extends BaseFragment implements TopLevelFrag
                             intent.putExtra(BundleExtraKeys.ALERT_TITLE_ID, R.string.premium);
                             getActivity().sendBroadcast(intent);
                         } else {
-
                             Intent intent = new Intent(Actions.SHOW_FRAGMENT);
                             intent.putExtra(BundleExtraKeys.FRAGMENT, FragmentType.CONNECTION_DETAIL);
 

@@ -36,7 +36,6 @@ import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 
 @SuppressWarnings("unused")
 public class FileLogDevice extends LogDevice<FileLogDevice> {
-
     private static final String COMMAND_TEMPLATE = "get %s - - %s %s %s";
 
     @Override
@@ -69,4 +68,6 @@ public class FileLogDevice extends LogDevice<FileLogDevice> {
         return String.format(COMMAND_TEMPLATE, name, fromDateFormatted, toDateFormatted,
                 seriesDescription.getFileLogSpec());
     }
+
+
 }
