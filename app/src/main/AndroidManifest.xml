@@ -25,8 +25,8 @@
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="li.klass.fhem"
-    android:versionCode="300"
-    android:versionName="3.0.0">
+    android:versionCode="301"
+    android:versionName="3.0.1">
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
@@ -38,16 +38,19 @@
 
     <uses-feature android:name="android.hardware.touchscreen"/>
 
-    <supports-screens android:xlargeScreens="true"
+    <supports-screens
         android:anyDensity="true"
         android:largeScreens="true"
         android:normalScreens="true"
-        android:smallScreens="true"/>
+        android:smallScreens="true"
+        android:xlargeScreens="true" />
 
     <uses-sdk android:minSdkVersion="9" android:targetSdkVersion="17"/>
 
-    <application android:label="@string/app_name" android:icon="@drawable/ic_launcher"
+    <application
         android:name="li.klass.fhem.AndFHEMApplication"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
         android:theme="@style/ApplicationTheme">
 
         <meta-data android:name="com.google.android.gms.version"
@@ -55,12 +58,12 @@
 
         <activity android:name="li.klass.fhem.activities.DuplicateInstallActivity" />
         <activity android:name="li.klass.fhem.activities.StartupActivity"
-            android:noHistory="true"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name"
-            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"
             android:launchMode="singleTask"
-            android:configChanges="orientation|keyboardHidden|screenSize">
-            <intent-filter>
+            android:noHistory="true"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen">
+        <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
@@ -68,8 +71,8 @@
 
         <activity android:name="li.klass.fhem.activities.AndFHEMMainActivity"
             android:alwaysRetainTaskState="true"
-            android:launchMode="singleTask"
-            android:configChanges="orientation|keyboardHidden|screenSize" />
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:launchMode="singleTask" />
 
         <activity android:name="li.klass.fhem.activities.PreferencesActivity"/>
 
@@ -99,15 +102,15 @@
 
         <activity
             android:name="li.klass.fhem.appwidget.view.widget.activity.TargetStateAdditionalInformationActivity"
-            android:noHistory="true"
             android:launchMode="singleInstance"
+            android:noHistory="true"
             android:theme="@style/Theme.Dialog.Light" />
 
         <receiver
             android:name="li.klass.fhem.appwidget.type.small.SmallAppWidgetProvider"
-            android:label="@string/widget_small"
-            android:exported="true">
-            <intent-filter>
+            android:exported="true"
+            android:label="@string/widget_small">
+        <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
             </intent-filter>
             <meta-data android:name="android.appwidget.provider" android:resource="@xml/andfhem_appwidget_small"/>
@@ -115,9 +118,9 @@
 
         <receiver
             android:name="li.klass.fhem.appwidget.type.medium.MediumAppWidgetProvider"
-            android:label="@string/widget_medium"
-            android:exported="true">
-            <intent-filter>
+            android:exported="true"
+            android:label="@string/widget_medium">
+        <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
             </intent-filter>
             <meta-data android:name="android.appwidget.provider" android:resource="@xml/andfhem_appwidget_medium"/>
@@ -125,9 +128,9 @@
 
         <receiver
             android:name="li.klass.fhem.appwidget.type.big.BigAppWidgetProvider"
-            android:label="@string/widget_big"
-            android:exported="true">
-            <intent-filter>
+            android:exported="true"
+            android:label="@string/widget_big">
+        <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
             </intent-filter>
             <meta-data android:name="android.appwidget.provider" android:resource="@xml/andfhem_appwidget_big"/>
@@ -242,27 +245,30 @@
 
         <activity
             android:name="li.klass.fhem.activities.locale.ConditionQueryLocaleSettingActivity"
-            android:label="@string/localeDeviceState"
-            android:icon="@drawable/ic_launcher" android:exported="true">
-            <intent-filter>
+            android:exported="true"
+            android:icon="@drawable/ic_launcher"
+            android:label="@string/localeDeviceState">
+        <intent-filter>
                 <action android:name="com.twofortyfouram.locale.intent.action.EDIT_CONDITION"/>
             </intent-filter>
         </activity>
 
         <activity
             android:name="li.klass.fhem.activities.locale.SendCommandLocaleSettingActivity"
-            android:label="@string/localeSendCommandPlugin"
-            android:icon="@drawable/ic_launcher" android:exported="true">
-            <intent-filter>
+            android:exported="true"
+            android:icon="@drawable/ic_launcher"
+            android:label="@string/localeSendCommandPlugin">
+        <intent-filter>
                 <action android:name="com.twofortyfouram.locale.intent.action.EDIT_SETTING"/>
             </intent-filter>
         </activity>
 
         <activity
             android:name="li.klass.fhem.activities.locale.ConnectionChangeLocaleSettingActivity"
-            android:label="@string/localeConnectionChangePlugin"
-            android:icon="@drawable/ic_launcher" android:exported="true">
-            <intent-filter>
+            android:exported="true"
+            android:icon="@drawable/ic_launcher"
+            android:label="@string/localeConnectionChangePlugin">
+        <intent-filter>
                 <action android:name="com.twofortyfouram.locale.intent.action.EDIT_SETTING"/>
             </intent-filter>
         </activity>
