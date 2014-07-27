@@ -49,7 +49,6 @@ import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ValueUtil;
 
-import static li.klass.fhem.service.graph.description.ChartSeriesDescription.getRegressionValuesInstance;
 import static li.klass.fhem.service.graph.description.SeriesType.HUMIDITY;
 import static li.klass.fhem.service.graph.description.SeriesType.TEMPERATURE;
 
@@ -133,12 +132,21 @@ public class HMSDevice extends Device<HMSDevice> {
         super.fillDeviceCharts(chartSeries);
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureGraph,
-                getRegressionValuesInstance(R.string.temperature, "4:T\\x3a:0:",
-                        "temperature::int1", TEMPERATURE)
+                new ChartSeriesDescription.Builder()
+                        .withColumnName(R.string.temperature)
+                        .withFileLogSpec("4:T\\x3a:0:")
+                        .withDbLogSpec("temperature::int1")
+                        .withSeriesType(TEMPERATURE)
+                        .withShowRegression(true)
+                        .build()
         ), temperature);
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.humidityGraph,
-                new ChartSeriesDescription(R.string.temperature, "6:H\\x3a:0:", "humidity::int", HUMIDITY)
+                new ChartSeriesDescription.Builder()
+                        .withColumnName(R.string.temperature).withFileLogSpec("6:H\\x3a:0:")
+                        .withDbLogSpec("humidity::int")
+                        .withSeriesType(HUMIDITY)
+                        .build()
         ), humidity);
     }
 

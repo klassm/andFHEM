@@ -88,13 +88,21 @@ public class USBWXDevice extends Device<USBWXDevice> {
         super.fillDeviceCharts(chartSeries);
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureGraph,
-                ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature,
-                        "4:temperature:0:", "temperature::int1", TEMPERATURE)
+                new ChartSeriesDescription.Builder()
+                        .withColumnName(R.string.temperature)
+                        .withFileLogSpec("4:temperature:0:")
+                        .withDbLogSpec("temperature::int1")
+                        .withSeriesType(TEMPERATURE)
+                        .withShowRegression(true)
+                        .build()
         ), temperature);
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.humidityGraph,
-                new ChartSeriesDescription(R.string.humidity, "4:humidity:0:", "humidity::int",
-                        HUMIDITY)
+                new ChartSeriesDescription.Builder()
+                        .withColumnName(R.string.humidity).withFileLogSpec("4:humidity:0:")
+                        .withDbLogSpec("humidity::int")
+                        .withSeriesType(HUMIDITY)
+                        .build()
         ), humidity);
     }
 

@@ -43,8 +43,13 @@ public class FHT8VDevice extends Device<FHT8VDevice> {
         super.fillDeviceCharts(chartSeries);
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.actuatorGraph,
-                ChartSeriesDescription.getDiscreteValuesInstance(R.string.actuator,
-                        "4:actuator.*[0-9]+%:0:int", "state::int", ACTUATOR)));
+                new ChartSeriesDescription.Builder().withColumnName(R.string.actuator)
+                        .withFileLogSpec("4:actuator.*[0-9]+%:0:int")
+                        .withDbLogSpec("state::int")
+                        .withSeriesType(ACTUATOR)
+                        .withShowDiscreteValues(true)
+                        .build()
+        ));
     }
 
     @Override

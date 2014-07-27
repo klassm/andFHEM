@@ -34,69 +34,6 @@ import li.klass.fhem.AndFHEMApplication;
 
 public class ChartSeriesDescription implements Parcelable, Serializable {
 
-    private String columnName;
-    private String fileLogSpec;
-    private boolean showDiscreteValues = false;
-    private boolean showRegression = false;
-    private boolean showSum = false;
-    private double sumDivisionFactor = 0;
-    private SeriesType seriesType;
-    private String fallBackYAxisName;
-    private String dbLogSpec;
-
-
-    public static ChartSeriesDescription getDiscreteValuesInstance(int columnName,
-                                                                   String fileLogSpec,
-                                                                   String dbLogSpec,
-                                                                   SeriesType seriesType) {
-        return new ChartSeriesDescription(columnName, fileLogSpec, dbLogSpec, true, false,
-                false, 0, seriesType);
-    }
-
-    public static ChartSeriesDescription getRegressionValuesInstance(int columnName,
-                                                                     String fileLogSpec,
-                                                                     String dbLogSpec,
-                                                                     SeriesType seriesType) {
-        return new ChartSeriesDescription(columnName, fileLogSpec, dbLogSpec, false, true,
-                false, 0, seriesType);
-    }
-
-    public static ChartSeriesDescription getSumInstance(int columnName, String fileLogSpec,
-                                                        String dbLogSpec,
-                                                        double divisionFactor,
-                                                        SeriesType seriesType) {
-        return new ChartSeriesDescription(columnName, fileLogSpec, dbLogSpec, false, false, true,
-                divisionFactor, seriesType);
-    }
-
-    public ChartSeriesDescription(String columnName, String fileLogSpec, String dbLogSpec) {
-        this.columnName = columnName;
-        this.dbLogSpec = dbLogSpec;
-        this.fileLogSpec = fileLogSpec;
-    }
-
-    public ChartSeriesDescription(String columnName, String fileLogSpec,String dbLogSpec,
-                                  String fallBackYAxisName) {
-        this.columnName = columnName;
-        this.fileLogSpec = fileLogSpec;
-        this.dbLogSpec = dbLogSpec;
-        this.fallBackYAxisName = fallBackYAxisName;
-    }
-
-    public ChartSeriesDescription(int columnName, String fileLogSpec, String dbLogSpec,
-                                  boolean showDiscreteValues,
-                                  boolean showRegression, boolean showSum, double sumDivisionFactor,
-                                  SeriesType seriesType) {
-        this.columnName = AndFHEMApplication.getContext().getString(columnName);
-        this.fileLogSpec = fileLogSpec;
-        this.dbLogSpec = dbLogSpec;
-        this.showDiscreteValues = showDiscreteValues;
-        this.showRegression = showRegression;
-        this.showSum = showSum;
-        this.sumDivisionFactor = sumDivisionFactor;
-        this.seriesType = seriesType;
-    }
-
     // I am actually used by Android to create the parcel!!
     @SuppressWarnings("unused")
     public static final Creator<ChartSeriesDescription> CREATOR = new Creator<ChartSeriesDescription>() {
@@ -112,10 +49,17 @@ public class ChartSeriesDescription implements Parcelable, Serializable {
             return new ChartSeriesDescription[size];
         }
     };
+    private String columnName;
+    private String fileLogSpec;
+    private boolean showDiscreteValues = false;
+    private boolean showRegression = false;
+    private boolean showSum = false;
+    private double sumDivisionFactor = 0;
+    private SeriesType seriesType;
+    private String fallBackYAxisName;
+    private String dbLogSpec;
 
-    public ChartSeriesDescription(int columnName, String fileLogSpec, String dbLogSpec,
-                                  SeriesType seriesType) {
-        this(columnName, fileLogSpec, dbLogSpec, false, false, false, 0, seriesType);
+    private ChartSeriesDescription() {
     }
 
     private ChartSeriesDescription(Bundle bundle) {
@@ -201,5 +145,63 @@ public class ChartSeriesDescription implements Parcelable, Serializable {
 
     public String getDbLogSpec() {
         return dbLogSpec;
+    }
+
+    public static class Builder {
+        private ChartSeriesDescription description = new ChartSeriesDescription();
+
+        public ChartSeriesDescription build() {
+            return description;
+        }
+
+        public Builder withColumnName(String columnName) {
+            description.columnName = columnName;
+            return this;
+        }
+
+        public Builder withColumnName(int columName) {
+            description.columnName = AndFHEMApplication.getContext().getString(columName);
+            return this;
+        }
+
+        public Builder withFileLogSpec(String fileLogSpec) {
+            description.fileLogSpec = fileLogSpec;
+            return this;
+        }
+
+        public Builder withShowDiscreteValues(boolean showDiscreteValues) {
+            description.showDiscreteValues = showDiscreteValues;
+            return this;
+        }
+
+        public Builder withShowRegression(boolean showRegression) {
+            description.showRegression = showRegression;
+            return this;
+        }
+
+        public Builder withShowSum(boolean showSum) {
+            description.showSum = showSum;
+            return this;
+        }
+
+        public Builder withSumDivisionFactor(double sumDivisionFactor) {
+            description.sumDivisionFactor = sumDivisionFactor;
+            return this;
+        }
+
+        public Builder withSeriesType(SeriesType seriesType) {
+            description.seriesType = seriesType;
+            return this;
+        }
+
+        public Builder withFallbackYAxisName(String fallbackYAxisName) {
+            description.fallBackYAxisName = fallbackYAxisName;
+            return this;
+        }
+
+        public Builder withDbLogSpec(String dbLogSpec) {
+            description.dbLogSpec = dbLogSpec;
+            return this;
+        }
     }
 }

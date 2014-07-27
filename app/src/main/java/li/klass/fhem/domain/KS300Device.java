@@ -44,7 +44,6 @@ import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ValueDescriptionUtil;
 
-import static li.klass.fhem.service.graph.description.ChartSeriesDescription.getRegressionValuesInstance;
 import static li.klass.fhem.service.graph.description.SeriesType.HUMIDITY;
 import static li.klass.fhem.service.graph.description.SeriesType.RAIN;
 import static li.klass.fhem.service.graph.description.SeriesType.TEMPERATURE;
@@ -156,16 +155,34 @@ public class KS300Device extends Device<KS300Device> implements Serializable {
         super.fillDeviceCharts(chartSeries);
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureHumidityGraph,
-                getRegressionValuesInstance(R.string.temperature, "4::", "temperature::int1", TEMPERATURE),
-                new ChartSeriesDescription(R.string.humidity, "6::", "humidity", HUMIDITY)
+                new ChartSeriesDescription.Builder()
+                        .withColumnName(R.string.temperature)
+                        .withFileLogSpec("4::")
+                        .withDbLogSpec("temperature::int1")
+                        .withSeriesType(TEMPERATURE)
+                        .withShowRegression(true)
+                        .build(),
+                new ChartSeriesDescription.Builder()
+                        .withColumnName(R.string.humidity).withFileLogSpec("6::")
+                        .withDbLogSpec("humidity")
+                        .withSeriesType(HUMIDITY)
+                        .build()
         ), temperature, humidity);
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.windGraph,
-                new ChartSeriesDescription(R.string.wind, "8::", "wind::int1", WIND)
+                new ChartSeriesDescription.Builder()
+                        .withColumnName(R.string.wind).withFileLogSpec("8::")
+                        .withDbLogSpec("wind::int1")
+                        .withSeriesType(WIND)
+                        .build()
         ), wind);
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.rainGraph,
-                new ChartSeriesDescription(R.string.rain, "10::", "rain::int1", RAIN)
+                new ChartSeriesDescription.Builder()
+                        .withColumnName(R.string.rain).withFileLogSpec("10::")
+                        .withDbLogSpec("rain::int1")
+                        .withSeriesType(RAIN)
+                        .build()
         ), rain);
     }
 

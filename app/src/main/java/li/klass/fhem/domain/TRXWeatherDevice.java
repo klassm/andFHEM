@@ -38,7 +38,6 @@ import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ValueDescriptionUtil;
 
-import static li.klass.fhem.service.graph.description.ChartSeriesDescription.getRegressionValuesInstance;
 import static li.klass.fhem.service.graph.description.SeriesType.DEWPOINT;
 import static li.klass.fhem.service.graph.description.SeriesType.HUMIDITY;
 import static li.klass.fhem.service.graph.description.SeriesType.PRESSURE;
@@ -154,18 +153,35 @@ public class TRXWeatherDevice extends Device<TRXWeatherDevice> {
         super.fillDeviceCharts(chartSeries);
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureGraph,
-                getRegressionValuesInstance(R.string.temperature, "4:temperature:",
-                        "temperature::int2", TEMPERATURE),
-                new ChartSeriesDescription(R.string.dewpoint, "4:dewpoint:0:", "dewpoint::int1",
-                        DEWPOINT)
+                new ChartSeriesDescription.Builder()
+                        .withColumnName(R.string.temperature)
+                        .withFileLogSpec("4:temperature:")
+                        .withDbLogSpec("temperature::int2")
+                        .withSeriesType(TEMPERATURE)
+                        .withShowRegression(true)
+                        .build(),
+                new ChartSeriesDescription.Builder()
+                        .withColumnName(R.string.dewpoint).withFileLogSpec("4:dewpoint:0:")
+                        .withDbLogSpec("dewpoint::int1")
+                        .withSeriesType(DEWPOINT)
+                        .build()
         ), temperature);
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.humidityGraph,
-                new ChartSeriesDescription(R.string.humidity, "4:humidity:0:", "humidity", HUMIDITY)
+                new ChartSeriesDescription.Builder()
+                        .withColumnName(R.string.humidity).withFileLogSpec("4:humidity:0:")
+                        .withDbLogSpec("humidity")
+                        .withSeriesType(HUMIDITY)
+                        .build()
         ), humidity);
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.pressureGraph,
-                new ChartSeriesDescription(R.string.pressure, "4:pressure:0:", "pressure", PRESSURE)));
+                new ChartSeriesDescription.Builder()
+                        .withColumnName(R.string.pressure).withFileLogSpec("4:pressure:0:")
+                        .withDbLogSpec("pressure")
+                        .withSeriesType(PRESSURE)
+                        .build()
+        ));
     }
 
     @Override

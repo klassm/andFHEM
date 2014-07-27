@@ -96,7 +96,11 @@ public class FBDectDevice extends ToggleableDevice<FBDectDevice> {
         super.fillDeviceCharts(chartSeries);
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.powerGraph,
-                new ChartSeriesDescription(R.string.power, "4:power", "power::int2", POWER)
+                new ChartSeriesDescription.Builder()
+                        .withColumnName(R.string.power).withFileLogSpec("4:power")
+                        .withDbLogSpec("power::int2")
+                        .withSeriesType(POWER)
+                        .build()
         ), energy);
     }
 

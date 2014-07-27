@@ -54,40 +54,29 @@ import static java.util.Arrays.asList;
 @SuppressWarnings("unused")
 public abstract class Device<T extends Device> implements Serializable, Comparable<T> {
 
+    public static final long OUTDATED_DATA_MS_DEFAULT = 2 * 60 * 60 * 1000;
+    public static final long NEVER_OUTDATE_DATA = 0;
     protected List<String> rooms;
     protected String[] webCmd;
-
     protected String name;
-
+    protected String alias;
+    @ShowField(description = ResourceIdMapper.definition, showAfter = "roomConcatenated")
+    protected String definition;
+    protected Map<String, String> eventMapReverse = new HashMap<String, String>();
+    protected Map<String, String> eventMap = new HashMap<String, String>();
+    protected SetList setList = new SetList();
+    protected volatile LogDevice logDevice;
     @ShowField(description = ResourceIdMapper.state, showAfter = "measured")
     private String state;
-
-    protected String alias;
-
     @ShowField(description = ResourceIdMapper.measured, showAfter = "definition")
     private String measured;
     private long lastMeasureTime = -1;
-
-    @ShowField(description = ResourceIdMapper.definition, showAfter = "roomConcatenated")
-    protected String definition;
-
     private String group;
-
-    protected Map<String, String> eventMapReverse = new HashMap<String, String>();
-    protected Map<String, String> eventMap = new HashMap<String, String>();
-
-    protected SetList setList = new SetList();
-
-    protected volatile LogDevice logDevice;
     private List<DeviceChart> deviceCharts = new ArrayList<DeviceChart>();
     private transient AllDevicesReadCallback allDevicesReadCallback;
     private transient DeviceReadCallback deviceReadCallback;
     private String widgetName;
     private boolean alwaysHidden = false;
-
-    public static final long OUTDATED_DATA_MS_DEFAULT = 2 * 60 * 60 * 1000;
-    public static final long NEVER_OUTDATE_DATA = 0;
-
 
     public void readROOM(String value) {
         setRoomConcatenated(value);
@@ -196,6 +185,10 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public List<String> getRooms() {
         if (rooms == null || rooms.size() == 0) {
             return newArrayList(AndFHEMApplication.getContext().getResources().getString(R.string.unsortedRoomName));
@@ -203,9 +196,17 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
         return rooms;
     }
 
+    public void setRooms(List<String> rooms) {
+        this.rooms = rooms;
+    }
+
     @ShowField(description = ResourceIdMapper.room, showAfter = "aliasOrName")
     public String getRoomConcatenated() {
         return StringUtil.concatenate(getRooms(), ",");
+    }
+
+    public void setRoomConcatenated(String roomsConcatenated) {
+        this.rooms = newArrayList(roomsConcatenated.split(","));
     }
 
     /**
@@ -227,12 +228,13 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
         return false;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getMeasured() {
         return measured;
+    }
+
+    public void setMeasured(String measured) {
+        this.measured = measured;
+        this.lastMeasureTime = DateFormatUtil.toMilliSeconds(measured);
     }
 
     public long getLastMeasureTime() {
@@ -248,7 +250,7 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
      * @param attributes additional tag attributes
      */
     public void onChildItemRead(String tagName, String key, String value, NamedNodeMap attributes) {
-        if (key.endsWith("_TIME") && ! key.startsWith("WEEK") && useTimeAndWeekAttributesForMeasureTime()) {
+        if (key.endsWith("_TIME") && !key.startsWith("WEEK") && useTimeAndWeekAttributesForMeasureTime()) {
             setMeasured(value);
         }
     }
@@ -311,9 +313,14 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
         List<CustomGraph> customGraphs = logDevice.getCustomGraphs();
 
         for (CustomGraph customGraph : customGraphs) {
-            addDeviceChartIfNotNull(new DeviceChart(customGraph.description, new ChartSeriesDescription(
-                    customGraph.description, customGraph.columnSpecification, customGraph.yAxisName
-            )));
+            ChartSeriesDescription seriesDescription = new ChartSeriesDescription.Builder()
+                    .withColumnName(customGraph.description)
+                    .withFileLogSpec(customGraph.columnSpecification)
+                    .withDbLogSpec(customGraph.columnSpecification)
+                    .withFallbackYAxisName(customGraph.yAxisName)
+                    .build();
+
+            addDeviceChartIfNotNull(new DeviceChart(customGraph.description, seriesDescription));
         }
     }
 
@@ -342,28 +349,20 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
         return eventMapReverse.get(state);
     }
 
-    public void setRoomConcatenated(String roomsConcatenated) {
-        this.rooms = newArrayList(roomsConcatenated.split(","));
+    public String getAlias() {
+        return alias;
     }
 
     public void setAlias(String alias) {
         this.alias = alias;
     }
 
-    public String getAlias() {
-        return alias;
-    }
-
     public String getDefinition() {
         return definition;
     }
 
-    public void setRooms(List<String> rooms) {
-        this.rooms = rooms;
-    }
-
     public boolean isSupported() {
-        return ! alwaysHidden;
+        return !alwaysHidden;
     }
 
     public String getEventMapStateForCurrentState() {
@@ -382,7 +381,6 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
         return eventMap;
     }
 
-
     public SetList getSetList() {
         return setList;
     }
@@ -393,7 +391,7 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
      * @return array of available target states
      */
     public String[] getAvailableTargetStatesEventMapTexts() {
-        if (setList == null) return new String[] {};
+        if (setList == null) return new String[]{};
 
         List<String> sortedKeys = setList.getSortedKeys();
         List<String> eventMapKeys = newArrayList();
@@ -434,11 +432,6 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
         return true;
     }
 
-    public void setMeasured(String measured) {
-        this.measured = measured;
-        this.lastMeasureTime = DateFormatUtil.toMilliSeconds(measured);
-    }
-
     @Override
     public String toString() {
         return "Device{" +
@@ -456,20 +449,20 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
                 '}';
     }
 
-    public void setDeviceReadCallback(DeviceReadCallback deviceReadCallback) {
-        this.deviceReadCallback = deviceReadCallback;
-    }
-
     public AllDevicesReadCallback getDeviceReadCallback() {
         return deviceReadCallback;
     }
 
-    public void setAllDeviceReadCallback(AllDevicesReadCallback allDevicesReadCallback) {
-        this.allDevicesReadCallback = allDevicesReadCallback;
+    public void setDeviceReadCallback(DeviceReadCallback deviceReadCallback) {
+        this.deviceReadCallback = deviceReadCallback;
     }
 
     public AllDevicesReadCallback getAllDeviceReadCallback() {
         return allDevicesReadCallback;
+    }
+
+    public void setAllDeviceReadCallback(AllDevicesReadCallback allDevicesReadCallback) {
+        this.allDevicesReadCallback = allDevicesReadCallback;
     }
 
     /**
@@ -489,6 +482,7 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
      * Hook called for each xml attribute of a device. If false is returned, the attribute is ignored.
      * Note that the given key is provided in the form it is present within the xmllist. Thus,
      * it is not, as provided within #onChildItemRead, uppercase.
+     *
      * @param key node key
      * @return true if the attribute is accepted, else false
      */
@@ -498,6 +492,7 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
 
     /**
      * Functionality of the device.
+     *
      * @return NEVER null!
      */
     public abstract DeviceFunctionality getDeviceGroup();

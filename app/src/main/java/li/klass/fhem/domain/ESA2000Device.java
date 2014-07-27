@@ -32,10 +32,10 @@ import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.genericview.ShowField;
+import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ValueDescriptionUtil;
 import li.klass.fhem.util.ValueExtractUtil;
 
-import static li.klass.fhem.service.graph.description.ChartSeriesDescription.getDiscreteValuesInstance;
 import static li.klass.fhem.service.graph.description.SeriesType.CURRENT_USAGE_KILOWATT;
 import static li.klass.fhem.service.graph.description.SeriesType.DAY_USAGE;
 
@@ -105,10 +105,18 @@ public class ESA2000Device extends Device<ESA2000Device> {
         super.fillDeviceCharts(chartSeries);
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.usageGraph,
-                getDiscreteValuesInstance(R.string.currentUsage, "8:CUR\\x3a\\s[0-9]::",
-                        "actual::int4", CURRENT_USAGE_KILOWATT),
-                getDiscreteValuesInstance(R.string.dayUsage, "4:day\\x3a\\s[0-9]:0:", "day::int2",
-                        DAY_USAGE)
+                new ChartSeriesDescription.Builder().withColumnName(R.string.currentUsage)
+                        .withFileLogSpec("8:CUR\\x3a\\s[0-9]::")
+                        .withDbLogSpec("actual::int4")
+                        .withSeriesType(CURRENT_USAGE_KILOWATT)
+                        .withShowDiscreteValues(true)
+                        .build(),
+                new ChartSeriesDescription.Builder().withColumnName(R.string.dayUsage)
+                        .withFileLogSpec("4:day\\x3a\\s[0-9]:0:")
+                        .withDbLogSpec("day::int2")
+                        .withSeriesType(DAY_USAGE)
+                        .withShowDiscreteValues(true)
+                        .build()
         ), current);
     }
 

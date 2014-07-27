@@ -54,8 +54,6 @@ import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ValueDescriptionUtil;
 import li.klass.fhem.util.ValueExtractUtil;
 
-import static li.klass.fhem.service.graph.description.ChartSeriesDescription.getDiscreteValuesInstance;
-import static li.klass.fhem.service.graph.description.ChartSeriesDescription.getRegressionValuesInstance;
 import static li.klass.fhem.service.graph.description.SeriesType.ACTUATOR;
 import static li.klass.fhem.service.graph.description.SeriesType.DESIRED_TEMPERATURE;
 import static li.klass.fhem.service.graph.description.SeriesType.TEMPERATURE;
@@ -68,52 +66,29 @@ public class MaxDevice extends ToggleableDevice<MaxDevice> implements DesiredTem
         HeatingDevice<MaxDevice.HeatingMode, MAXConfiguration, FilledTemperatureInterval, MaxDevice>,
         WindowOpenTempDevice, EcoTempDevice, ComfortTempDevice {
 
-    public enum HeatingMode {
-        ECO, COMFORT, BOOST, AUTO, MANUAL
-    }
-
-    public enum SubType {
-        CUBE, SWITCH, WINDOW, TEMPERATURE
-    }
-
+    public static final MAXConfiguration heatingConfiguration = new MAXConfiguration();
+    private WeekProfile<FilledTemperatureInterval, MAXConfiguration, MaxDevice> weekProfile = new WeekProfile<FilledTemperatureInterval, MAXConfiguration, MaxDevice>(heatingConfiguration);
     public static double MAXIMUM_TEMPERATURE = 30.5;
     public static double MINIMUM_TEMPERATURE = 4.5;
-
-    public static final MAXConfiguration heatingConfiguration = new MAXConfiguration();
-
-    private WeekProfile<FilledTemperatureInterval, MAXConfiguration, MaxDevice> weekProfile = new WeekProfile<FilledTemperatureInterval, MAXConfiguration, MaxDevice>(heatingConfiguration);
-
     private SubType subType;
-
     @ShowField(description = ResourceIdMapper.type)
     private String type;
-
     @ShowField(description = ResourceIdMapper.battery, showInOverview = true)
     private String battery;
-
     @ShowField(description = ResourceIdMapper.windowOpenTemp)
     private double windowOpenTemp;
-
     @ShowField(description = ResourceIdMapper.temperature, showInOverview = true)
     @WidgetTemperatureField
     private String temperature;
-
     @ShowField(description = ResourceIdMapper.actuator)
     private String actuator;
-
     @ShowField(description = ResourceIdMapper.ecoTemp)
     private double ecoTemp;
-
     @ShowField(description = ResourceIdMapper.comfortTemp)
     private double comfortTemp;
-
-
     private double desiredTemp;
-
     @ShowField(description = ResourceIdMapper.desiredTemperature, showInOverview = true, showAfter = "temperature")
     private String desiredTempDesc;
-
-
     private HeatingMode heatingMode;
 
     @Override
@@ -209,13 +184,13 @@ public class MaxDevice extends ToggleableDevice<MaxDevice> implements DesiredTem
         return battery;
     }
 
+    public Double getWindowOpenTemp() {
+        return windowOpenTemp;
+    }
+
     @Override
     public void setWindowOpenTemp(double windowOpenTemp) {
         this.windowOpenTemp = windowOpenTemp;
-    }
-
-    public Double getWindowOpenTemp() {
-        return windowOpenTemp;
     }
 
     @Override
@@ -229,13 +204,13 @@ public class MaxDevice extends ToggleableDevice<MaxDevice> implements DesiredTem
     }
 
     @Override
-    public void setEcoTemp(double ecoTemp) {
-        this.ecoTemp = ecoTemp;
+    public Double getEcoTemp() {
+        return ecoTemp;
     }
 
     @Override
-    public Double getEcoTemp() {
-        return ecoTemp;
+    public void setEcoTemp(double ecoTemp) {
+        this.ecoTemp = ecoTemp;
     }
 
     @Override
@@ -249,13 +224,13 @@ public class MaxDevice extends ToggleableDevice<MaxDevice> implements DesiredTem
     }
 
     @Override
-    public void setComfortTemp(double comfortTemp) {
-        this.comfortTemp = comfortTemp;
+    public Double getComfortTemp() {
+        return comfortTemp;
     }
 
     @Override
-    public Double getComfortTemp() {
-        return comfortTemp;
+    public void setComfortTemp(double comfortTemp) {
+        this.comfortTemp = comfortTemp;
     }
 
     @Override
@@ -287,17 +262,34 @@ public class MaxDevice extends ToggleableDevice<MaxDevice> implements DesiredTem
 
         if (actuator != null) {
             addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureActuatorGraph,
-                    getRegressionValuesInstance(R.string.temperature, "4:temperature",
-                            "temperature::int1", TEMPERATURE),
-                    getDiscreteValuesInstance(R.string.desiredTemperature, "4:desiredTemperature",
-                            "desiredTemperature::int", DESIRED_TEMPERATURE),
-                    new ChartSeriesDescription(R.string.actuator, "4:valveposition",
-                            "valveposition::int", ACTUATOR)
+                    new ChartSeriesDescription.Builder()
+                            .withColumnName(R.string.temperature)
+                            .withFileLogSpec("4:temperature")
+                            .withDbLogSpec("temperature::int1")
+                            .withSeriesType(TEMPERATURE)
+                            .withShowRegression(true)
+                            .build(),
+                    new ChartSeriesDescription.Builder().withColumnName(R.string.desiredTemperature)
+                            .withFileLogSpec("4:desiredTemperature")
+                            .withDbLogSpec("desiredTemperature::int")
+                            .withSeriesType(DESIRED_TEMPERATURE)
+                            .withShowDiscreteValues(true)
+                            .build(),
+                    new ChartSeriesDescription.Builder()
+                            .withColumnName(R.string.actuator).withFileLogSpec("4:valveposition")
+                            .withDbLogSpec("valveposition::int")
+                            .withSeriesType(ACTUATOR)
+                            .build()
             ), temperature, actuator);
         } else {
             addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureGraph,
-                    getRegressionValuesInstance(R.string.temperature, "4:temperature",
-                            "temperature::int1", TEMPERATURE)
+                    new ChartSeriesDescription.Builder()
+                            .withColumnName(R.string.temperature)
+                            .withFileLogSpec("4:temperature")
+                            .withDbLogSpec("temperature::int1")
+                            .withSeriesType(TEMPERATURE)
+                            .withShowRegression(true)
+                            .build()
             ), temperature);
         }
     }
@@ -323,14 +315,14 @@ public class MaxDevice extends ToggleableDevice<MaxDevice> implements DesiredTem
     }
 
     @Override
-    public void setDesiredTemp(double desiredTemp) {
-        this.desiredTemp = desiredTemp;
-        this.desiredTempDesc = desiredTemperatureToString(desiredTemp, MINIMUM_TEMPERATURE, MAXIMUM_TEMPERATURE);
+    public double getDesiredTemp() {
+        return desiredTemp;
     }
 
     @Override
-    public double getDesiredTemp() {
-        return desiredTemp;
+    public void setDesiredTemp(double desiredTemp) {
+        this.desiredTemp = desiredTemp;
+        this.desiredTempDesc = desiredTemperatureToString(desiredTemp, MINIMUM_TEMPERATURE, MAXIMUM_TEMPERATURE);
     }
 
     @Override
@@ -338,14 +330,14 @@ public class MaxDevice extends ToggleableDevice<MaxDevice> implements DesiredTem
         return desiredTempDesc;
     }
 
+    public HeatingMode getHeatingMode() {
+        return heatingMode;
+    }
+
     @Override
     public void setHeatingMode(HeatingMode heatingMode) {
         this.heatingMode = heatingMode;
         this.desiredTemp = MINIMUM_TEMPERATURE;
-    }
-
-    public HeatingMode getHeatingMode() {
-        return heatingMode;
     }
 
     @Override
@@ -381,5 +373,13 @@ public class MaxDevice extends ToggleableDevice<MaxDevice> implements DesiredTem
     @Override
     public long getTimeRequiredForStateError() {
         return OUTDATED_DATA_MS_DEFAULT;
+    }
+
+    public enum HeatingMode {
+        ECO, COMFORT, BOOST, AUTO, MANUAL
+    }
+
+    public enum SubType {
+        CUBE, SWITCH, WINDOW, TEMPERATURE
     }
 }

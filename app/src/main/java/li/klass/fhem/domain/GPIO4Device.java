@@ -63,10 +63,6 @@ public class GPIO4Device extends Device<GPIO4Device> {
     @ShowField(description = ResourceIdMapper.minMonth)
     private String minMonth;
 
-    private enum SubType {
-        TEMPERATURE
-    }
-
     public void readMODEL(String value) {
         if (value.equals("DS1820") || value.equalsIgnoreCase("DS18B20")) {
             subType = SubType.TEMPERATURE;
@@ -111,8 +107,13 @@ public class GPIO4Device extends Device<GPIO4Device> {
 
         if (subType == SubType.TEMPERATURE) {
             addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureGraph,
-                    ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:T",
-                            "temperature::int2", TEMPERATURE)
+                    new ChartSeriesDescription.Builder()
+                            .withColumnName(R.string.temperature)
+                            .withFileLogSpec("4:T")
+                            .withDbLogSpec("temperature::int2")
+                            .withSeriesType(TEMPERATURE)
+                            .withShowRegression(true)
+                            .build()
             ), temperature);
         }
     }
@@ -159,5 +160,9 @@ public class GPIO4Device extends Device<GPIO4Device> {
     @Override
     public long getTimeRequiredForStateError() {
         return OUTDATED_DATA_MS_DEFAULT;
+    }
+
+    private enum SubType {
+        TEMPERATURE
     }
 }

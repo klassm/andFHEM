@@ -82,21 +82,48 @@ public class CULWSDevice extends Device<CULWSDevice> {
 
         if (temperature != null && humidity != null && dewpoint != null) {
             addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureHumidityDewpointGraph,
-                    ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:T:0:",
-                            "temperature", TEMPERATURE),
-                    new ChartSeriesDescription(R.string.humidity, "6:H:0", "humidity", HUMIDITY),
-                    new ChartSeriesDescription(R.string.dewpoint, "8:D\\x3a:0:", "dewpoint", DEWPOINT)
+                    new ChartSeriesDescription.Builder()
+                            .withColumnName(R.string.temperature)
+                            .withFileLogSpec("4:T:0:")
+                            .withDbLogSpec("temperature")
+                            .withSeriesType(TEMPERATURE)
+                            .withShowRegression(true)
+                            .build(),
+                    new ChartSeriesDescription.Builder()
+                            .withColumnName(R.string.humidity).withFileLogSpec("6:H:0")
+                            .withDbLogSpec("humidity")
+                            .withSeriesType(HUMIDITY)
+                            .build(),
+                    new ChartSeriesDescription.Builder()
+                            .withColumnName(R.string.dewpoint).withFileLogSpec("8:D\\x3a:0:")
+                            .withDbLogSpec("dewpoint")
+                            .withSeriesType(DEWPOINT)
+                            .build()
             ), temperature, humidity, dewpoint);
         } else if (temperature != null && humidity != null) {
             addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureHumidityGraph,
-                    ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature, "4:T:0:",
-                            "temperature", TEMPERATURE),
-                    new ChartSeriesDescription(R.string.humidity, "6:H:0", "humidity", HUMIDITY)
+                    new ChartSeriesDescription.Builder()
+                            .withColumnName(R.string.temperature)
+                            .withFileLogSpec("4:T:0:")
+                            .withDbLogSpec("temperature")
+                            .withSeriesType(TEMPERATURE)
+                            .withShowRegression(true)
+                            .build(),
+                    new ChartSeriesDescription.Builder()
+                            .withColumnName(R.string.humidity).withFileLogSpec("6:H:0")
+                            .withDbLogSpec("humidity")
+                            .withSeriesType(HUMIDITY)
+                            .build()
             ), temperature, humidity);
         } else {
             addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureGraph,
-                    ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature,
-                            "4:T:0:", "temperature", TEMPERATURE)
+                    new ChartSeriesDescription.Builder()
+                            .withColumnName(R.string.temperature)
+                            .withFileLogSpec("4:T:0:")
+                            .withDbLogSpec("temperature")
+                            .withSeriesType(TEMPERATURE)
+                            .withShowRegression(true)
+                            .build()
             ), temperature);
         }
     }

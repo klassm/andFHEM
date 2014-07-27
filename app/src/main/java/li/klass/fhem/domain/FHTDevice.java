@@ -50,12 +50,11 @@ import li.klass.fhem.domain.heating.WindowOpenTempDevice;
 import li.klass.fhem.domain.heating.schedule.WeekProfile;
 import li.klass.fhem.domain.heating.schedule.configuration.FHTConfiguration;
 import li.klass.fhem.domain.heating.schedule.interval.FromToHeatingInterval;
+import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ValueDescriptionUtil;
 import li.klass.fhem.util.ValueExtractUtil;
 import li.klass.fhem.util.ValueUtil;
 
-import static li.klass.fhem.service.graph.description.ChartSeriesDescription.getDiscreteValuesInstance;
-import static li.klass.fhem.service.graph.description.ChartSeriesDescription.getRegressionValuesInstance;
 import static li.klass.fhem.service.graph.description.SeriesType.ACTUATOR;
 import static li.klass.fhem.service.graph.description.SeriesType.DESIRED_TEMPERATURE;
 import static li.klass.fhem.service.graph.description.SeriesType.TEMPERATURE;
@@ -64,16 +63,10 @@ import static li.klass.fhem.service.graph.description.SeriesType.TEMPERATURE;
 @SuppressWarnings("unused")
 public class FHTDevice extends Device<FHTDevice> implements DesiredTempDevice,
         WindowOpenTempDevice, HeatingDevice<FHTMode, FHTConfiguration, FromToHeatingInterval, FHTDevice>, TemperatureDevice {
+    private static final FHTConfiguration heatingConfiguration = new FHTConfiguration();
+    private WeekProfile<FromToHeatingInterval, FHTConfiguration, FHTDevice> weekProfile = new WeekProfile<FromToHeatingInterval, FHTConfiguration, FHTDevice>(heatingConfiguration);
     public static double MAXIMUM_TEMPERATURE = 30.5;
     public static double MINIMUM_TEMPERATURE = 5.5;
-
-    @ShowField(description = ResourceIdMapper.actuator, showInOverview = true)
-    @WidgetTemperatureAdditionalField(description = ResourceIdMapper.actuator)
-    @WidgetMediumLine3(description = ResourceIdMapper.actuator)
-    private String actuator;
-
-    private FHTMode heatingMode;
-
     @ShowField(description = ResourceIdMapper.desiredTemperature, showAfter = "temperature")
     @WidgetMediumLine2(description = ResourceIdMapper.desiredTemperature)
     private double desiredTemp = MINIMUM_TEMPERATURE;
@@ -86,20 +79,19 @@ public class FHTDevice extends Device<FHTDevice> implements DesiredTempDevice,
 
     @ShowField(description = ResourceIdMapper.windowOpenTemp, showAfter = "nightTemperature")
     private double windowOpenTemp = MINIMUM_TEMPERATURE;
-
+    @ShowField(description = ResourceIdMapper.actuator, showInOverview = true)
+    @WidgetTemperatureAdditionalField(description = ResourceIdMapper.actuator)
+    @WidgetMediumLine3(description = ResourceIdMapper.actuator)
+    private String actuator;
+    private FHTMode heatingMode;
     @ShowField(description = ResourceIdMapper.warnings)
     private String warnings;
-
     @ShowField(description = ResourceIdMapper.temperature, showInOverview = true)
     @WidgetTemperatureField
     @WidgetMediumLine1
     private String temperature;
-
     @ShowField(description = ResourceIdMapper.battery)
     private String battery;
-
-    private static final FHTConfiguration heatingConfiguration = new FHTConfiguration();
-    private WeekProfile<FromToHeatingInterval, FHTConfiguration, FHTDevice> weekProfile = new WeekProfile<FromToHeatingInterval, FHTConfiguration, FHTDevice>(heatingConfiguration);
 
     @Override
     public void onChildItemRead(String tagName, String key, String value, NamedNodeMap nodeAttributes) {
@@ -177,10 +169,6 @@ public class FHTDevice extends Device<FHTDevice> implements DesiredTempDevice,
         return temperature;
     }
 
-    public void setDesiredTemp(double desiredTemp) {
-        this.desiredTemp = desiredTemp;
-    }
-
     public String getDesiredTempDesc() {
         return ValueDescriptionUtil.desiredTemperatureToString(desiredTemp, MINIMUM_TEMPERATURE, MAXIMUM_TEMPERATURE);
     }
@@ -192,6 +180,10 @@ public class FHTDevice extends Device<FHTDevice> implements DesiredTempDevice,
 
     public double getDesiredTemp() {
         return desiredTemp;
+    }
+
+    public void setDesiredTemp(double desiredTemp) {
+        this.desiredTemp = desiredTemp;
     }
 
     public String getDayTemperatureDesc() {
@@ -235,17 +227,21 @@ public class FHTDevice extends Device<FHTDevice> implements DesiredTempDevice,
         this.windowOpenTemp = windowOpenTemp;
     }
 
-    public void setWarnings(String warnings) {
-        this.warnings = warnings;
-    }
-
     public String getWarnings() {
         return warnings;
+    }
+
+    public void setWarnings(String warnings) {
+        this.warnings = warnings;
     }
 
     public FHTMode getHeatingMode() {
         if (heatingMode == null) return FHTMode.UNKNOWN;
         return heatingMode;
+    }
+
+    public void setHeatingMode(FHTMode heatingMode) {
+        this.heatingMode = heatingMode;
     }
 
     @Override
@@ -268,10 +264,6 @@ public class FHTDevice extends Device<FHTDevice> implements DesiredTempDevice,
         return weekProfile;
     }
 
-    public void setHeatingMode(FHTMode heatingMode) {
-        this.heatingMode = heatingMode;
-    }
-
     public String getBattery() {
         return battery;
     }
@@ -282,20 +274,45 @@ public class FHTDevice extends Device<FHTDevice> implements DesiredTempDevice,
 
         if (temperature != null && actuator != null) {
             addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureActuatorGraph,
-                    getRegressionValuesInstance(R.string.temperature, "4:measured", "measured-temp::int1",
-                            TEMPERATURE),
-                    getDiscreteValuesInstance(R.string.desiredTemperature, "4:desired-temp",
-                            "desired-temp::int1", DESIRED_TEMPERATURE),
-                    getDiscreteValuesInstance(R.string.actuator, "4:actuator.*[0-9]+%:0:int",
-                            "actuator::int", ACTUATOR)),
-                    temperature, actuator);
+                            new ChartSeriesDescription.Builder()
+                                    .withColumnName(R.string.temperature)
+                                    .withFileLogSpec("4:measured")
+                                    .withDbLogSpec("measured-temp::int1")
+                                    .withSeriesType(TEMPERATURE)
+                                    .withShowRegression(true)
+                                    .build(),
+                            new ChartSeriesDescription.Builder().withColumnName(R.string.desiredTemperature)
+                                    .withFileLogSpec("4:desired-temp")
+                                    .withDbLogSpec("desired-temp::int1")
+                                    .withSeriesType(DESIRED_TEMPERATURE)
+                                    .withShowDiscreteValues(true)
+                                    .build(),
+                            new ChartSeriesDescription.Builder().withColumnName(R.string.actuator)
+                                    .withFileLogSpec("4:actuator.*[0-9]+%:0:int")
+                                    .withDbLogSpec("actuator::int")
+                                    .withSeriesType(ACTUATOR)
+                                    .withShowDiscreteValues(true)
+                                    .build()
+                    ),
+                    temperature, actuator
+            );
         } else if (temperature == null && actuator != null) {
             addDeviceChartIfNotNull(new DeviceChart(R.string.actuatorGraph,
-                    getDiscreteValuesInstance(R.string.desiredTemperature, "4:desired-temp",
-                            "desired-temp::int1", DESIRED_TEMPERATURE),
-                    getDiscreteValuesInstance(R.string.actuator, "4:actuator.*[0-9]+%:0:int",
-                            "actuator::int", ACTUATOR)),
-                    actuator);
+                            new ChartSeriesDescription.Builder().withColumnName(R.string.desiredTemperature)
+                                    .withFileLogSpec("4:desired-temp")
+                                    .withDbLogSpec("desired-temp::int1")
+                                    .withSeriesType(DESIRED_TEMPERATURE)
+                                    .withShowDiscreteValues(true)
+                                    .build(),
+                            new ChartSeriesDescription.Builder().withColumnName(R.string.actuator)
+                                    .withFileLogSpec("4:actuator.*[0-9]+%:0:int")
+                                    .withDbLogSpec("actuator::int")
+                                    .withSeriesType(ACTUATOR)
+                                    .withShowDiscreteValues(true)
+                                    .build()
+                    ),
+                    actuator
+            );
         }
     }
 

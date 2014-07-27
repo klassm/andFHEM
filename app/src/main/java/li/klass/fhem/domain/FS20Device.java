@@ -59,11 +59,6 @@ public class FS20Device extends DimmableDiscreteStatesDevice<FS20Device> impleme
     @ShowField(description = ResourceIdMapper.model, showAfter = "definition")
     private String model;
 
-
-    public enum FS20State {
-        ON, OFF
-    }
-
     public void readMODEL(String value) {
         this.model = value.toUpperCase();
     }
@@ -122,9 +117,13 @@ public class FS20Device extends DimmableDiscreteStatesDevice<FS20Device> impleme
         super.fillDeviceCharts(chartSeries);
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.stateGraph,
-                new ChartSeriesDescription(R.string.state, "3:::$fld[2]=~/on.*/?1:0",
-                        "data:::$val=~s/(on|off).*/$1eq\"on\"?1:0/eg", true, false, false, 1,
-                        TOGGLE_STATE)
+                new ChartSeriesDescription.Builder()
+                        .withColumnName(R.string.state)
+                        .withFileLogSpec("3:::$fld[2]=~/on.*/?1:0")
+                        .withDbLogSpec("data:::$val=~s/(on|off).*/$1eq\"on\"?1:0/eg")
+                        .withShowDiscreteValues(true)
+                        .withSeriesType(TOGGLE_STATE)
+                        .build()
         ), getState());
     }
 
@@ -135,5 +134,9 @@ public class FS20Device extends DimmableDiscreteStatesDevice<FS20Device> impleme
 
     private String transformHexTo4System(String input) {
         return NumberSystemUtil.hexToQuaternary(input, 4);
+    }
+
+    public enum FS20State {
+        ON, OFF
     }
 }

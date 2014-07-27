@@ -34,7 +34,6 @@ import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 
-import static li.klass.fhem.service.graph.description.ChartSeriesDescription.getRegressionValuesInstance;
 import static li.klass.fhem.service.graph.description.SeriesType.DEWPOINT;
 import static li.klass.fhem.service.graph.description.SeriesType.HUMIDITY;
 import static li.klass.fhem.service.graph.description.SeriesType.TEMPERATURE;
@@ -43,11 +42,11 @@ import static li.klass.fhem.util.ValueDescriptionUtil.appendTemperature;
 
 @SuppressWarnings("unused")
 public class SHT21Device extends Device<SHT21Device> {
-    @ShowField(description = ResourceIdMapper.humidity, showInOverview =  true)
+    @ShowField(description = ResourceIdMapper.humidity, showInOverview = true)
     public String humidity;
-    @ShowField(description = ResourceIdMapper.temperature, showInOverview =  true)
+    @ShowField(description = ResourceIdMapper.temperature, showInOverview = true)
     public String temperature;
-    @ShowField(description = ResourceIdMapper.dewpoint, showInOverview =  true)
+    @ShowField(description = ResourceIdMapper.dewpoint, showInOverview = true)
     public String dewpoint;
 
     public void readHUMIDITY(String value) {
@@ -72,15 +71,29 @@ public class SHT21Device extends Device<SHT21Device> {
         super.fillDeviceCharts(chartSeries);
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureGraph,
-                getRegressionValuesInstance(R.string.temperature, "4::", "temperature::int1", TEMPERATURE)
+                new ChartSeriesDescription.Builder()
+                        .withColumnName(R.string.temperature)
+                        .withFileLogSpec("4::")
+                        .withDbLogSpec("temperature::int1")
+                        .withSeriesType(TEMPERATURE)
+                        .withShowRegression(true)
+                        .build()
         ), temperature);
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.humidityGraph,
-                new ChartSeriesDescription(R.string.humidity, "6::", "humidity::int1", HUMIDITY)
+                new ChartSeriesDescription.Builder()
+                        .withColumnName(R.string.humidity).withFileLogSpec("6::")
+                        .withDbLogSpec("humidity::int1")
+                        .withSeriesType(HUMIDITY)
+                        .build()
         ), humidity);
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.dewpointGraph,
-                new ChartSeriesDescription(R.string.dewpoint, "8::", "humidity::int1", DEWPOINT)
+                new ChartSeriesDescription.Builder()
+                        .withColumnName(R.string.dewpoint).withFileLogSpec("8::")
+                        .withDbLogSpec("humidity::int1")
+                        .withSeriesType(DEWPOINT)
+                        .build()
         ), dewpoint);
     }
 

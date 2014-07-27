@@ -19,7 +19,6 @@ import li.klass.fhem.service.graph.description.SeriesType;
 import static li.klass.fhem.activities.graph.ViewableChartSeries.ChartType.NORMAL;
 import static li.klass.fhem.activities.graph.ViewableChartSeries.ChartType.REGRESSION;
 import static li.klass.fhem.activities.graph.ViewableChartSeries.ChartType.SUM;
-import static li.klass.fhem.service.graph.description.ChartSeriesDescription.getRegressionValuesInstance;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
@@ -34,12 +33,24 @@ public class YAxisTest extends RobolectricBaseTestCase {
         yAxis = new YAxis("someName");
 
         yAxis.addChart(
-                getRegressionValuesInstance(R.string.temperature, "abc", "def", SeriesType.TEMPERATURE),
+                new ChartSeriesDescription.Builder()
+                        .withColumnName(R.string.temperature)
+                        .withFileLogSpec("abc")
+                        .withDbLogSpec("def")
+                        .withSeriesType(SeriesType.TEMPERATURE)
+                        .withShowRegression(true)
+                        .build(),
                 dummyData
         );
 
-        yAxis.addChart(ChartSeriesDescription.getSumInstance(R.string.humidity, "abc1", "def", 1,
-                SeriesType.HUMIDITY), dummyData);
+        yAxis.addChart(new ChartSeriesDescription.Builder()
+                .withColumnName(R.string.humidity)
+                .withFileLogSpec("abc1")
+                .withDbLogSpec("def")
+                .withSumDivisionFactor((double) 1)
+                .withShowSum(true)
+                .withSeriesType(SeriesType.HUMIDITY)
+                .build(), dummyData);
     }
 
     @Test

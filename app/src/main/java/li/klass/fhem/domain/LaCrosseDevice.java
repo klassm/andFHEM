@@ -35,7 +35,6 @@ import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ValueDescriptionUtil;
 
-import static li.klass.fhem.service.graph.description.ChartSeriesDescription.getRegressionValuesInstance;
 import static li.klass.fhem.service.graph.description.SeriesType.HUMIDITY;
 import static li.klass.fhem.service.graph.description.SeriesType.TEMPERATURE;
 
@@ -68,8 +67,18 @@ public class LaCrosseDevice extends Device<LaCrosseDevice> {
         super.fillDeviceCharts(chartSeries);
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureHumidityGraph,
-                getRegressionValuesInstance(R.string.temperature, "4:temperature:0:", "temperature::int1", TEMPERATURE),
-                new ChartSeriesDescription(R.string.humidity, "4:humidity:0:", "humidity", HUMIDITY)
+                new ChartSeriesDescription.Builder()
+                        .withColumnName(R.string.temperature)
+                        .withFileLogSpec("4:temperature:0:")
+                        .withDbLogSpec("temperature::int1")
+                        .withSeriesType(TEMPERATURE)
+                        .withShowRegression(true)
+                        .build(),
+                new ChartSeriesDescription.Builder()
+                        .withColumnName(R.string.humidity).withFileLogSpec("4:humidity:0:")
+                        .withDbLogSpec("humidity")
+                        .withSeriesType(HUMIDITY)
+                        .build()
         ), temperature, humidity);
     }
 

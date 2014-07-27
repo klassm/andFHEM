@@ -114,6 +114,25 @@ public class ChartingActivity extends SherlockActivity implements Updateable {
      */
     private Calendar endDate = Calendar.getInstance();
 
+    /**
+     * Jumps to the charting activity.
+     *
+     * @param context            calling intent
+     * @param device             concerned device
+     * @param seriesDescriptions series descriptions each representing one series in the resulting chart
+     */
+    @SuppressWarnings("unchecked")
+    public static void showChart(Context context, Device device, ChartSeriesDescription... seriesDescriptions) {
+
+        ArrayList<ChartSeriesDescription> seriesList = new ArrayList<ChartSeriesDescription>(Arrays.asList(seriesDescriptions));
+        Intent timeChartIntent = new Intent(context, ChartingActivity.class);
+        timeChartIntent.putExtras(new Bundle());
+        timeChartIntent.putExtra(DEVICE_NAME, device.getName());
+        timeChartIntent.putExtra(DEVICE_GRAPH_SERIES_DESCRIPTIONS, seriesList);
+
+        context.startActivity(timeChartIntent);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -148,7 +167,6 @@ public class ChartingActivity extends SherlockActivity implements Updateable {
         getSupportMenuInflater().inflate(R.menu.graph_menu, menu);
         return super.onCreatePanelMenu(featureId, menu);
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -279,7 +297,7 @@ public class ChartingActivity extends SherlockActivity implements Updateable {
         final GraphicalView timeChartView = ChartFactory.getTimeChartView(this, dataSet, renderer, "MM-dd HH:mm");
         chartLayout.addView(timeChartView);
 
-        ImageButton zoomOutButton= (ImageButton) view.findViewById(R.id.zoomOut);
+        ImageButton zoomOutButton = (ImageButton) view.findViewById(R.id.zoomOut);
         zoomOutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -287,7 +305,7 @@ public class ChartingActivity extends SherlockActivity implements Updateable {
             }
         });
 
-        ImageButton zoomInButton= (ImageButton) view.findViewById(R.id.zoomIn);
+        ImageButton zoomInButton = (ImageButton) view.findViewById(R.id.zoomIn);
         zoomInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -295,7 +313,7 @@ public class ChartingActivity extends SherlockActivity implements Updateable {
             }
         });
 
-        ImageButton zoomResetButton= (ImageButton) view.findViewById(R.id.zoomReset);
+        ImageButton zoomResetButton = (ImageButton) view.findViewById(R.id.zoomReset);
         zoomResetButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -352,7 +370,6 @@ public class ChartingActivity extends SherlockActivity implements Updateable {
 
         List<Integer> availableColors = new ArrayList<Integer>(AVAILABLE_COLORS);
 
-        int i = 0;
         for (int axisNumber = 0; axisNumber < yAxisList.size(); axisNumber++) {
             YAxis yAxis = yAxisList.get(axisNumber);
 
@@ -400,8 +417,6 @@ public class ChartingActivity extends SherlockActivity implements Updateable {
                     default:
                         seriesRenderer.setLineWidth(2);
                 }
-
-                i++;
             }
         }
 
@@ -409,7 +424,10 @@ public class ChartingActivity extends SherlockActivity implements Updateable {
             throw new IllegalArgumentException();
         }
 
-        renderer.setPanLimits(new double[]{minDate.getTime(), maxDate.getTime(), minY, maxY});
+        minY -= 1;
+        maxY += 1;
+
+        renderer.setPanLimits(new double[]{minDate.getTime(), maxDate.getTime(), Double.MIN_VALUE, Double.MAX_VALUE});
         renderer.setZoomLimits(new double[]{minDate.getTime(), maxDate.getTime(), minY, maxY});
 
         return renderer;
@@ -534,7 +552,6 @@ public class ChartingActivity extends SherlockActivity implements Updateable {
         return yAxisList;
     }
 
-
     @Override
     protected Dialog onCreateDialog(int id) {
         super.onCreateDialog(id);
@@ -549,24 +566,5 @@ public class ChartingActivity extends SherlockActivity implements Updateable {
     private int getChartingDefaultTimespan() {
         String timeSpan = PreferenceManager.getDefaultSharedPreferences(this).getString("GRAPH_DEFAULT_TIMESPAN", "24");
         return Integer.valueOf(timeSpan.trim());
-    }
-
-    /**
-     * Jumps to the charting activity.
-     *
-     * @param context            calling intent
-     * @param device             concerned device
-     * @param seriesDescriptions series descriptions each representing one series in the resulting chart
-     */
-    @SuppressWarnings("unchecked")
-    public static void showChart(Context context, Device device, ChartSeriesDescription... seriesDescriptions) {
-
-        ArrayList<ChartSeriesDescription> seriesList = new ArrayList<ChartSeriesDescription>(Arrays.asList(seriesDescriptions));
-        Intent timeChartIntent = new Intent(context, ChartingActivity.class);
-        timeChartIntent.putExtras(new Bundle());
-        timeChartIntent.putExtra(DEVICE_NAME, device.getName());
-        timeChartIntent.putExtra(DEVICE_GRAPH_SERIES_DESCRIPTIONS, seriesList);
-
-        context.startActivity(timeChartIntent);
     }
 }

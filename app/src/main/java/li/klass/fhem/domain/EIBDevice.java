@@ -130,8 +130,13 @@ public class EIBDevice extends DimmableContinuousStatesDevice<EIBDevice> {
         if (model != null && model.equals("tempsensor")) {
             addDeviceChartIfNotNull(
                     new DeviceChart(R.string.temperatureGraph,
-                            ChartSeriesDescription.getRegressionValuesInstance(R.string.temperature,
-                                    "3:", "state::int1", TEMPERATURE)
+                            new ChartSeriesDescription.Builder()
+                                    .withColumnName(R.string.temperature)
+                                    .withFileLogSpec("3:")
+                                    .withDbLogSpec("state::int1")
+                                    .withSeriesType(TEMPERATURE)
+                                    .withShowRegression(true)
+                                    .build()
                     ), getInternalState()
             );
         }

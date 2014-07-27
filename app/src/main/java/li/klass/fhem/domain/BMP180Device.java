@@ -34,7 +34,6 @@ import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 
-import static li.klass.fhem.service.graph.description.ChartSeriesDescription.getRegressionValuesInstance;
 import static li.klass.fhem.service.graph.description.SeriesType.PRESSURE;
 import static li.klass.fhem.service.graph.description.SeriesType.PRESSURE_NN;
 import static li.klass.fhem.service.graph.description.SeriesType.TEMPERATURE;
@@ -72,12 +71,26 @@ public class BMP180Device extends Device<BMP180Device> {
         super.fillDeviceCharts(chartSeries);
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureGraph,
-                getRegressionValuesInstance(R.string.temperature, "4::", "temperature::int1", TEMPERATURE)
+                new ChartSeriesDescription.Builder()
+                        .withColumnName(R.string.temperature)
+                        .withFileLogSpec("4::")
+                        .withDbLogSpec("temperature::int1")
+                        .withSeriesType(TEMPERATURE)
+                        .withShowRegression(true)
+                        .build()
         ), temperature);
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.pressureGraph,
-                new ChartSeriesDescription(R.string.pressure, "6::", "pressure::int1", PRESSURE),
-                new ChartSeriesDescription(R.string.pressure, "8::", "pressure-nn::int1", PRESSURE_NN)
+                new ChartSeriesDescription.Builder()
+                        .withColumnName(R.string.pressure).withFileLogSpec("6::")
+                        .withDbLogSpec("pressure::int1")
+                        .withSeriesType(PRESSURE)
+                        .build(),
+                new ChartSeriesDescription.Builder()
+                        .withColumnName(R.string.pressure).withFileLogSpec("8::")
+                        .withDbLogSpec("pressure-nn::int1")
+                        .withSeriesType(PRESSURE_NN)
+                        .build()
         ), pressure, pressureNN);
     }
 

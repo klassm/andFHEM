@@ -65,10 +65,10 @@ import static li.klass.fhem.domain.CULHMDevice.SubType.POWERMETER;
 import static li.klass.fhem.domain.CULHMDevice.SubType.SHUTTER;
 import static li.klass.fhem.domain.CULHMDevice.SubType.SWITCH;
 import static li.klass.fhem.domain.CULHMDevice.SubType.THERMOSTAT;
-import static li.klass.fhem.service.graph.description.ChartSeriesDescription.getRegressionValuesInstance;
 import static li.klass.fhem.service.graph.description.SeriesType.ACTUATOR;
 import static li.klass.fhem.service.graph.description.SeriesType.BRIGHTNESS;
 import static li.klass.fhem.service.graph.description.SeriesType.CUMULATIVE_USAGE_Wh;
+import static li.klass.fhem.service.graph.description.SeriesType.CURRENT_USAGE_WATT;
 import static li.klass.fhem.service.graph.description.SeriesType.HUMIDITY;
 import static li.klass.fhem.service.graph.description.SeriesType.IS_RAINING;
 import static li.klass.fhem.service.graph.description.SeriesType.LITRE_CONTENT;
@@ -85,46 +85,16 @@ import static li.klass.fhem.util.ValueExtractUtil.extractLeadingInt;
 public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
         implements DesiredTempDevice, HeatingDevice<CULHMDevice.HeatingMode, CULHMConfiguration, FilledTemperatureInterval, CULHMDevice> {
 
-    public enum SubType {
-        DIMMER(DeviceFunctionality.DIMMER),
-        SWITCH(DeviceFunctionality.SWITCH),
-        HEATING(DeviceFunctionality.HEATING),
-        SMOKE_DETECTOR(DeviceFunctionality.SMOKE_DETECTOR),
-        THREE_STATE(DeviceFunctionality.WINDOW),
-        TEMPERATURE_HUMIDITY(DeviceFunctionality.TEMPERATURE),
-        THERMOSTAT(DeviceFunctionality.HEATING),
-        FILL_STATE(DeviceFunctionality.FILL_STATE),
-        MOTION(DeviceFunctionality.MOTION_DETECTOR),
-        KEYMATIC(DeviceFunctionality.KEY),
-        POWERMETER(DeviceFunctionality.SWITCH),
-        SHUTTER(DeviceFunctionality.WINDOW)
-        ;
-
-        private final DeviceFunctionality functionality;
-
-        SubType(DeviceFunctionality functionality) {
-            this.functionality = functionality;
-        }
-    }
-
-    public enum HeatingMode {
-        MANUAL, AUTO, CENTRAL, UNKNOWN
-    }
-
-    private HeatingMode heatingMode = HeatingMode.UNKNOWN;
-
-    private String model;
-    private String level;
-    private SubType subType = null;
-
-    public static double MAXIMUM_TEMPERATURE = 30.5;
-    public static double MINIMUM_TEMPERATURE = 5.5;
-
     private static final CULHMConfiguration heatingConfiguration = new CULHMConfiguration();
     private WeekProfile<FilledTemperatureInterval, CULHMConfiguration, CULHMDevice> weekProfile =
             new WeekProfile<FilledTemperatureInterval, CULHMConfiguration, CULHMDevice>(heatingConfiguration);
-
+    public static double MAXIMUM_TEMPERATURE = 30.5;
+    public static double MINIMUM_TEMPERATURE = 5.5;
     private double desiredTemp = MINIMUM_TEMPERATURE;
+    private HeatingMode heatingMode = HeatingMode.UNKNOWN;
+    private String model;
+    private String level;
+    private SubType subType = null;
     @ShowField(description = ResourceIdMapper.temperature, showInOverview = true)
     @WidgetTemperatureField
     private String measuredTemp;
@@ -458,13 +428,13 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
         return "desired-temp";
     }
 
+    public double getDesiredTemp() {
+        return desiredTemp;
+    }
+
     @Override
     public void setDesiredTemp(double desiredTemp) {
         this.desiredTemp = desiredTemp;
-    }
-
-    public double getDesiredTemp() {
-        return desiredTemp;
     }
 
     public String getMeasuredTemp() {
@@ -552,13 +522,13 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
     }
 
     @Override
-    public void setHeatingMode(HeatingMode heatingMode) {
-        this.heatingMode = heatingMode;
+    public HeatingMode getHeatingMode() {
+        return heatingMode;
     }
 
     @Override
-    public HeatingMode getHeatingMode() {
-        return heatingMode;
+    public void setHeatingMode(HeatingMode heatingMode) {
+        this.heatingMode = heatingMode;
     }
 
     @Override
@@ -599,32 +569,60 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
             case TEMPERATURE_HUMIDITY:
 
                 addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureHumidityGraph,
-                        getRegressionValuesInstance(R.string.temperature,
-                                "4:T\\x3a:0:", "measured-temp", TEMPERATURE),
-                        new ChartSeriesDescription(R.string.humidity, "6:H\\x3a:0:", "humidity",
-                                HUMIDITY)
+                        new ChartSeriesDescription.Builder()
+                                .withColumnName(R.string.temperature)
+                                .withFileLogSpec("4:T\\x3a:0:")
+                                .withDbLogSpec("measured-temp")
+                                .withSeriesType(TEMPERATURE)
+                                .withShowRegression(true)
+                                .build(),
+                        new ChartSeriesDescription.Builder()
+                                .withColumnName(R.string.humidity).withFileLogSpec("6:H\\x3a:0:")
+                                .withDbLogSpec("humidity")
+                                .withSeriesType(HUMIDITY)
+                                .build()
                 ), humidity, measuredTemp);
 
                 if (humidity == null) {
                     addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureGraph,
-                            getRegressionValuesInstance(R.string.temperature,
-                                    "4:T\\x3a:0:", "measured-temp", TEMPERATURE)
+                            new ChartSeriesDescription.Builder()
+                                    .withColumnName(R.string.temperature)
+                                    .withFileLogSpec("4:T\\x3a:0:")
+                                    .withDbLogSpec("measured-temp")
+                                    .withSeriesType(TEMPERATURE)
+                                    .withShowRegression(true)
+                                    .build()
                     ), measuredTemp);
                 }
 
                 addDeviceChartIfNotNull(
                         new DeviceChart(R.string.brightnessSunshineGraph,
-                                new ChartSeriesDescription(R.string.brightness, "4:brightness",
-                                        "brightness", BRIGHTNESS),
-                                new ChartSeriesDescription(R.string.sunshine,
-                                        "4:sunshine", "sunshine", SeriesType.SUNSHINE)
-                        ), sunshine, brightness);
+                                new ChartSeriesDescription.Builder()
+                                        .withColumnName(R.string.brightness).withFileLogSpec("4:brightness")
+                                        .withDbLogSpec("brightness")
+                                        .withSeriesType(BRIGHTNESS)
+                                        .build(),
+                                new ChartSeriesDescription.Builder()
+                                        .withColumnName(R.string.sunshine).withFileLogSpec("4:sunshine")
+                                        .withDbLogSpec("sunshine")
+                                        .withSeriesType(SeriesType.SUNSHINE)
+                                        .build()
+                        ), sunshine, brightness
+                );
 
                 addDeviceChartIfNotNull(
                         new DeviceChart(R.string.rainGraph,
-                                ChartSeriesDescription.getDiscreteValuesInstance(R.string.isRaining,
-                                        "4:isRaining", "isRaining", IS_RAINING),
-                                new ChartSeriesDescription(R.string.rain, "4:rain", "rain", RAIN)
+                                new ChartSeriesDescription.Builder().withColumnName(R.string.isRaining)
+                                        .withFileLogSpec("4:isRaining")
+                                        .withDbLogSpec("isRaining")
+                                        .withSeriesType(IS_RAINING)
+                                        .withShowDiscreteValues(true)
+                                        .build(),
+                                new ChartSeriesDescription.Builder()
+                                        .withColumnName(R.string.rain).withFileLogSpec("4:rain")
+                                        .withDbLogSpec("rain")
+                                        .withSeriesType(RAIN)
+                                        .build()
                         ), isRaining, rain
                 );
 
@@ -632,10 +630,18 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
 
             case FILL_STATE:
                 addDeviceChartIfNotNull(new DeviceChart(R.string.contentGraph,
-                        getRegressionValuesInstance(R.string.content, "4:content:0:", "content",
-                                LITRE_CONTENT),
-                        new ChartSeriesDescription(R.string.rawValue, "4:rawValue:0:", "rawValue",
-                                RAW)
+                        new ChartSeriesDescription.Builder()
+                                .withColumnName(R.string.content)
+                                .withFileLogSpec("4:content:0:")
+                                .withDbLogSpec("content")
+                                .withSeriesType(LITRE_CONTENT)
+                                .withShowRegression(true)
+                                .build(),
+                        new ChartSeriesDescription.Builder()
+                                .withColumnName(R.string.rawValue).withFileLogSpec("4:rawValue:0:")
+                                .withDbLogSpec("rawValue")
+                                .withSeriesType(RAW)
+                                .build()
                 ), getState());
 
                 break;
@@ -643,35 +649,66 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
             case THERMOSTAT:
 
                 addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureGraph,
-                        getRegressionValuesInstance(R.string.temperature, "4:measured-temp:0",
-                                "measured-temp", TEMPERATURE)
+                        new ChartSeriesDescription.Builder()
+                                .withColumnName(R.string.temperature)
+                                .withFileLogSpec("4:measured-temp:0")
+                                .withDbLogSpec("measured-temp")
+                                .withSeriesType(TEMPERATURE)
+                                .withShowRegression(true)
+                                .build()
                 ), measuredTemp);
 
                 break;
 
             case HEATING:
                 addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureHumidityGraph,
-                        getRegressionValuesInstance(R.string.temperature, "4:T\\x3a:0:",
-                                "measured-temp", TEMPERATURE),
-                        new ChartSeriesDescription(R.string.humidity, "6:H\\x3a:0:", "humidity",
-                                HUMIDITY)), humidity, measuredTemp);
+                        new ChartSeriesDescription.Builder()
+                                .withColumnName(R.string.temperature)
+                                .withFileLogSpec("4:T\\x3a:0:")
+                                .withDbLogSpec("measured-temp")
+                                .withSeriesType(TEMPERATURE)
+                                .withShowRegression(true)
+                                .build(),
+                        new ChartSeriesDescription.Builder()
+                                .withColumnName(R.string.humidity).withFileLogSpec("6:H\\x3a:0:")
+                                .withDbLogSpec("humidity")
+                                .withSeriesType(HUMIDITY)
+                                .build()
+                ), humidity, measuredTemp);
 
                 addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureActuatorGraph,
-                        getRegressionValuesInstance(R.string.temperature, "4:measured-temp:0",
-                                "measured-temp", TEMPERATURE),
-                        new ChartSeriesDescription(R.string.actuator, "4:actuator", "actuator::int",
-                                ACTUATOR)), measuredTemp, actuator);
+                        new ChartSeriesDescription.Builder()
+                                .withColumnName(R.string.temperature)
+                                .withFileLogSpec("4:measured-temp:0")
+                                .withDbLogSpec("measured-temp")
+                                .withSeriesType(TEMPERATURE)
+                                .withShowRegression(true)
+                                .build(),
+                        new ChartSeriesDescription.Builder()
+                                .withColumnName(R.string.actuator).withFileLogSpec("4:actuator")
+                                .withDbLogSpec("actuator::int")
+                                .withSeriesType(ACTUATOR)
+                                .build()
+                ), measuredTemp, actuator);
 
                 break;
 
             case POWERMETER:
                 addDeviceChartIfNotNull(new DeviceChart(R.string.usageGraph,
-                        new ChartSeriesDescription(R.string.currentUsage, "4:current:0", "current",
-                                SeriesType.CURRENT_USAGE_WATT)), currentUsage);
+                        new ChartSeriesDescription.Builder()
+                                .withColumnName(R.string.currentUsage).withFileLogSpec("4:current:0")
+                                .withDbLogSpec("current")
+                                .withSeriesType(CURRENT_USAGE_WATT)
+                                .build()
+                ), currentUsage);
 
                 addDeviceChartIfNotNull(new DeviceChart(R.string.usageGraphCumulative,
-                        new ChartSeriesDescription(R.string.cumulativeUsage, "4:energy", "energy",
-                                CUMULATIVE_USAGE_Wh)), cumulativeUsage);
+                        new ChartSeriesDescription.Builder()
+                                .withColumnName(R.string.cumulativeUsage).withFileLogSpec("4:energy")
+                                .withDbLogSpec("energy")
+                                .withSeriesType(CUMULATIVE_USAGE_Wh)
+                                .build()
+                ), cumulativeUsage);
                 break;
         }
     }
@@ -703,5 +740,30 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
     @Override
     protected String getSetListDimStateAttributeName() {
         return "pct";
+    }
+
+    public enum SubType {
+        DIMMER(DeviceFunctionality.DIMMER),
+        SWITCH(DeviceFunctionality.SWITCH),
+        HEATING(DeviceFunctionality.HEATING),
+        SMOKE_DETECTOR(DeviceFunctionality.SMOKE_DETECTOR),
+        THREE_STATE(DeviceFunctionality.WINDOW),
+        TEMPERATURE_HUMIDITY(DeviceFunctionality.TEMPERATURE),
+        THERMOSTAT(DeviceFunctionality.HEATING),
+        FILL_STATE(DeviceFunctionality.FILL_STATE),
+        MOTION(DeviceFunctionality.MOTION_DETECTOR),
+        KEYMATIC(DeviceFunctionality.KEY),
+        POWERMETER(DeviceFunctionality.SWITCH),
+        SHUTTER(DeviceFunctionality.WINDOW);
+
+        private final DeviceFunctionality functionality;
+
+        SubType(DeviceFunctionality functionality) {
+            this.functionality = functionality;
+        }
+    }
+
+    public enum HeatingMode {
+        MANUAL, AUTO, CENTRAL, UNKNOWN
     }
 }

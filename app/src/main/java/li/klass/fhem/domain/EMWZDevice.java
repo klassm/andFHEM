@@ -89,8 +89,13 @@ public class EMWZDevice extends Device<EMWZDevice> {
 
         addDeviceChartIfNotNull(
                 new DeviceChart(R.string.powerGraph,
-                        ChartSeriesDescription.getRegressionValuesInstance(R.string.power, "4:",
-                                "energy::int3", POWER)
+                        new ChartSeriesDescription.Builder()
+                                .withColumnName(R.string.power)
+                                .withFileLogSpec("4:")
+                                .withDbLogSpec("energy::int3")
+                                .withSeriesType(POWER)
+                                .withShowRegression(true)
+                                .build()
                 )
         );
     }

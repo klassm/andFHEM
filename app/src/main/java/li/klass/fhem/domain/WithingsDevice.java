@@ -13,9 +13,9 @@ import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.genericview.DetailViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
+import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ValueDescriptionUtil;
 
-import static li.klass.fhem.service.graph.description.ChartSeriesDescription.getRegressionValuesInstance;
 import static li.klass.fhem.service.graph.description.SeriesType.CO2;
 import static li.klass.fhem.service.graph.description.SeriesType.FAT_RATIO;
 import static li.klass.fhem.service.graph.description.SeriesType.TEMPERATURE;
@@ -26,10 +26,6 @@ import static li.klass.fhem.util.ValueExtractUtil.extractLeadingInt;
 @SuppressWarnings("unused")
 @DetailViewSettings(showState = false)
 public class WithingsDevice extends Device<WithingsDevice> {
-    public enum SubType {
-        USER, DEVICE
-    }
-
     @ShowField(description = ResourceIdMapper.fatFreeMass)
     private String fatFreeMass;
     @ShowField(description = ResourceIdMapper.fatMass)
@@ -42,14 +38,12 @@ public class WithingsDevice extends Device<WithingsDevice> {
     private String height;
     @ShowField(description = ResourceIdMapper.weight, showInOverview = true)
     private String weight;
-
     @ShowField(description = ResourceIdMapper.temperature, showInOverview = true)
     private String temperature;
     @ShowField(description = ResourceIdMapper.co2, showInOverview = true)
     private String co2;
     @ShowField(description = ResourceIdMapper.battery)
     private String batteryLevel;
-
     private SubType subType;
 
     @Override
@@ -161,23 +155,49 @@ public class WithingsDevice extends Device<WithingsDevice> {
         super.fillDeviceCharts(chartSeries);
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureGraph,
-                getRegressionValuesInstance(R.string.temperature, "4:temperature:0",
-                        "temperature", TEMPERATURE)), temperature);
+                new ChartSeriesDescription.Builder()
+                        .withColumnName(R.string.temperature)
+                        .withFileLogSpec("4:temperature:0")
+                        .withDbLogSpec("temperature")
+                        .withSeriesType(TEMPERATURE)
+                        .withShowRegression(true)
+                        .build()
+        ), temperature);
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.co2Graph,
-                getRegressionValuesInstance(R.string.co2, "4:co2:0:int",
-                        "co2", CO2)), co2);
+                new ChartSeriesDescription.Builder()
+                        .withColumnName(R.string.co2)
+                        .withFileLogSpec("4:co2:0:int")
+                        .withDbLogSpec("co2")
+                        .withSeriesType(CO2)
+                        .withShowRegression(true)
+                        .build()
+        ), co2);
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.weightGraph),
-                getRegressionValuesInstance(R.string.weight, "4:weight:0:int",
-                        "weight", WEIGHT),
-                getRegressionValuesInstance(R.string.fatRatio, "4:fatRatio:0",
-                        "fatRatio", FAT_RATIO), fatRatio, weight
+                new ChartSeriesDescription.Builder()
+                        .withColumnName(R.string.weight)
+                        .withFileLogSpec("4:weight:0:int")
+                        .withDbLogSpec("weight")
+                        .withSeriesType(WEIGHT)
+                        .withShowRegression(true)
+                        .build(),
+                new ChartSeriesDescription.Builder()
+                        .withColumnName(R.string.fatRatio)
+                        .withFileLogSpec("4:fatRatio:0")
+                        .withDbLogSpec("fatRatio")
+                        .withSeriesType(FAT_RATIO)
+                        .withShowRegression(true)
+                        .build(), fatRatio, weight
         );
     }
 
     @Override
     public boolean isSupported() {
         return subType != null;
+    }
+
+    public enum SubType {
+        USER, DEVICE
     }
 }

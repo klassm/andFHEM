@@ -54,82 +54,37 @@ import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ValueDescriptionUtil;
 
-import static li.klass.fhem.service.graph.description.ChartSeriesDescription.getRegressionValuesInstance;
 import static li.klass.fhem.service.graph.description.SeriesType.HUMIDITY;
 import static li.klass.fhem.service.graph.description.SeriesType.TEMPERATURE;
 
 @SupportsWidget({TemperatureWidgetView.class, MediumInformationWidgetView.class})
 @SuppressWarnings("unused")
 public class WeatherDevice extends Device<WeatherDevice> {
-    public static class WeatherDeviceForecast implements Comparable<WeatherDeviceForecast>, Serializable {
-        private static final SimpleDateFormat forecastDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
-        private String date;
-
-        private String condition;
-        private String dayOfWeek;
-        private String highTemperature;
-        private String lowTemperature;
-        private String icon;
-
-        WeatherDeviceForecast(String date) {
-            this.date = date;
-        }
-
-        @Override
-        public int compareTo(WeatherDeviceForecast weatherDeviceForecast) {
-            return date.compareTo(weatherDeviceForecast.date);
-        }
-
-        public String getDate() {
-            return date;
-        }
-
-        public String getCondition() {
-            return condition;
-        }
-
-        public String getDayOfWeek() {
-            return dayOfWeek;
-        }
-
-        public String getHighTemperature() {
-            return highTemperature;
-        }
-
-        public String getLowTemperature() {
-            return lowTemperature;
-        }
-
-        public String getIcon() {
-            return parseIcon(icon);
-        }
-
-        public String getUrl() {
-            return WeatherDevice.IMAGE_URL_PREFIX + getIcon() + ".png";
-        }
-    }
-
     public static final String IMAGE_URL_PREFIX = "http://andfhem.klass.li/images/weatherIcons/";
-
     private static final SimpleDateFormat parseDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
     @WidgetMediumLine3
     private String condition;
-
     @WidgetTemperatureAdditionalField
     @WidgetMediumLine2
     private String humidity;
-
     private String icon;
-
     @WidgetTemperatureField
     @WidgetMediumLine1
     private String temperature;
-
     private String wind;
-
     private Map<Integer, WeatherDeviceForecast> forecastMap = new HashMap<Integer, WeatherDeviceForecast>();
+
+    public static String parseIcon(String icon) {
+        if (icon == null) return null;
+        if (!icon.endsWith(".png") && icon.lastIndexOf(".") != -1) {
+            icon = icon.substring(0, icon.lastIndexOf(".")) + ".png";
+        }
+
+        if (!icon.contains("/")) return icon;
+
+        int lastSlashIndex = icon.lastIndexOf("/");
+        return icon.substring(lastSlashIndex + 1);
+    }
 
     @Override
     public void onChildItemRead(String tagName, String key, String value, NamedNodeMap attributes) {
@@ -233,27 +188,24 @@ public class WeatherDevice extends Device<WeatherDevice> {
         super.fillDeviceCharts(chartSeries);
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureHumidityGraph,
-                getRegressionValuesInstance(R.string.temperature, "4:temperature:",
-                        "temperature::int1", TEMPERATURE),
-                new ChartSeriesDescription(R.string.humidity, "4:humidity:0:", "humidity::int", HUMIDITY)
+                new ChartSeriesDescription.Builder()
+                        .withColumnName(R.string.temperature)
+                        .withFileLogSpec("4:temperature:")
+                        .withDbLogSpec("temperature::int1")
+                        .withSeriesType(TEMPERATURE)
+                        .withShowRegression(true)
+                        .build(),
+                new ChartSeriesDescription.Builder()
+                        .withColumnName(R.string.humidity).withFileLogSpec("4:humidity:0:")
+                        .withDbLogSpec("humidity::int")
+                        .withSeriesType(HUMIDITY)
+                        .build()
         ), temperature, humidity);
     }
 
     @Override
     public DeviceFunctionality getDeviceGroup() {
         return DeviceFunctionality.WEATHER;
-    }
-
-    public static String parseIcon(String icon) {
-        if (icon == null) return null;
-        if (!icon.endsWith(".png") && icon.lastIndexOf(".") != -1) {
-            icon = icon.substring(0, icon.lastIndexOf(".")) + ".png";
-        }
-
-        if (!icon.contains("/")) return icon;
-
-        int lastSlashIndex = icon.lastIndexOf("/");
-        return icon.substring(lastSlashIndex + 1);
     }
 
     @Override
@@ -264,5 +216,54 @@ public class WeatherDevice extends Device<WeatherDevice> {
     @Override
     public long getTimeRequiredForStateError() {
         return OUTDATED_DATA_MS_DEFAULT;
+    }
+
+    public static class WeatherDeviceForecast implements Comparable<WeatherDeviceForecast>, Serializable {
+        private static final SimpleDateFormat forecastDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+        private String date;
+
+        private String condition;
+        private String dayOfWeek;
+        private String highTemperature;
+        private String lowTemperature;
+        private String icon;
+
+        WeatherDeviceForecast(String date) {
+            this.date = date;
+        }
+
+        @Override
+        public int compareTo(WeatherDeviceForecast weatherDeviceForecast) {
+            return date.compareTo(weatherDeviceForecast.date);
+        }
+
+        public String getDate() {
+            return date;
+        }
+
+        public String getCondition() {
+            return condition;
+        }
+
+        public String getDayOfWeek() {
+            return dayOfWeek;
+        }
+
+        public String getHighTemperature() {
+            return highTemperature;
+        }
+
+        public String getLowTemperature() {
+            return lowTemperature;
+        }
+
+        public String getIcon() {
+            return parseIcon(icon);
+        }
+
+        public String getUrl() {
+            return WeatherDevice.IMAGE_URL_PREFIX + getIcon() + ".png";
+        }
     }
 }

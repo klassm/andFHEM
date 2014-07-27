@@ -38,7 +38,6 @@ import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ValueDescriptionUtil;
 
-import static li.klass.fhem.service.graph.description.ChartSeriesDescription.getRegressionValuesInstance;
 import static li.klass.fhem.service.graph.description.SeriesType.HUMIDITY;
 import static li.klass.fhem.service.graph.description.SeriesType.PRESSURE;
 import static li.klass.fhem.service.graph.description.SeriesType.RAIN_RATE;
@@ -191,33 +190,53 @@ public class OregonDevice extends Device<OregonDevice> {
         super.fillDeviceCharts(chartSeries);
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureGraph,
-                getRegressionValuesInstance(R.string.temperature, "4:temperature:0:",
-                        "temperature::int1", TEMPERATURE)
+                new ChartSeriesDescription.Builder()
+                        .withColumnName(R.string.temperature)
+                        .withFileLogSpec("4:temperature:0:")
+                        .withDbLogSpec("temperature::int1")
+                        .withSeriesType(TEMPERATURE)
+                        .withShowRegression(true)
+                        .build()
         ), temperature);
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.humidityGraph,
-                new ChartSeriesDescription(R.string.humidity, "4:humidity:0:", "humidity::int",
-                        HUMIDITY)
+                new ChartSeriesDescription.Builder()
+                        .withColumnName(R.string.humidity).withFileLogSpec("4:humidity:0:")
+                        .withDbLogSpec("humidity::int")
+                        .withSeriesType(HUMIDITY)
+                        .build()
         ), humidity);
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.pressureGraph,
-                new ChartSeriesDescription(R.string.pressure, "4:pressure:0:", "pressure::int",
-                        PRESSURE)
+                new ChartSeriesDescription.Builder()
+                        .withColumnName(R.string.pressure).withFileLogSpec("4:pressure:0:")
+                        .withDbLogSpec("pressure::int")
+                        .withSeriesType(PRESSURE)
+                        .build()
         ), pressure);
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.rainRate,
-                new ChartSeriesDescription(R.string.rainRate, "4:rain_rate:0:", "rain_rate::int2",
-                        RAIN_RATE)
+                new ChartSeriesDescription.Builder()
+                        .withColumnName(R.string.rainRate).withFileLogSpec("4:rain_rate:0:")
+                        .withDbLogSpec("rain_rate::int2")
+                        .withSeriesType(RAIN_RATE)
+                        .build()
         ), rainRate);
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.rainTotal,
-                new ChartSeriesDescription(R.string.rainRate, "4:rain_total:0:", "rain_total::int2",
-                        RAIN_TOTAL)
+                new ChartSeriesDescription.Builder()
+                        .withColumnName(R.string.rainRate).withFileLogSpec("4:rain_total:0:")
+                        .withDbLogSpec("rain_total::int2")
+                        .withSeriesType(RAIN_TOTAL)
+                        .build()
         ), rainTotal);
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.windSpeed,
-                new ChartSeriesDescription(R.string.rainRate, "4:wind_speed:0:", "wind_speed::int2",
-                        WIND)
+                new ChartSeriesDescription.Builder()
+                        .withColumnName(R.string.rainRate).withFileLogSpec("4:wind_speed:0:")
+                        .withDbLogSpec("wind_speed::int2")
+                        .withSeriesType(WIND)
+                        .build()
         ), windSpeed);
     }
 
