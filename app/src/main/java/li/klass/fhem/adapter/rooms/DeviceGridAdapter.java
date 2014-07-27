@@ -34,6 +34,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import li.klass.fhem.R;
@@ -47,6 +48,7 @@ import li.klass.fhem.widget.GridViewWithSectionsAdapter;
 import li.klass.fhem.widget.deviceFunctionality.DeviceGroupHolder;
 
 import static com.google.common.collect.Lists.newArrayList;
+import static com.google.common.collect.Maps.newHashMap;
 import static com.google.common.collect.Sets.newHashSet;
 import static li.klass.fhem.constants.PreferenceKeys.DEVICE_COLUMN_WIDTH;
 import static li.klass.fhem.constants.PreferenceKeys.SHOW_HIDDEN_DEVICES;
@@ -58,6 +60,7 @@ public class DeviceGridAdapter<T extends Device<T>> extends GridViewWithSections
     private int lastParentHeight;
     private List<String> deviceGroupParents = newArrayList();
     private List<String> parents = newArrayList();
+    private Map<String, List<T>> parentChildMap = newHashMap();
     private long lastUpdate;
 
     public DeviceGridAdapter(Context context, RoomDeviceList roomDeviceList) {
@@ -100,10 +103,15 @@ public class DeviceGridAdapter<T extends Device<T>> extends GridViewWithSections
         return getChildrenForDeviceGroup(parent).size();
     }
 
+    @SuppressWarnings("unchecked")
     private List<T> getChildrenForDeviceGroup(String deviceGroup) {
-        if (roomDeviceList == null) return new ArrayList<T>();
+        if (roomDeviceList == null) {
+            return newArrayList();
+        } else if (! parentChildMap.containsKey(deviceGroup)) {
+            parentChildMap.put(deviceGroup, (List<T>) roomDeviceList.getDevicesOfFunctionality(deviceGroup));
+        }
 
-        return roomDeviceList.getDevicesOfFunctionality(deviceGroup);
+        return parentChildMap.get(deviceGroup);
     }
 
     @Override
@@ -211,6 +219,7 @@ public class DeviceGridAdapter<T extends Device<T>> extends GridViewWithSections
 
         parents.addAll(customParents);
         parents.removeAll(roomDeviceList.getHiddenGroups());
+        parentChildMap = newHashMap();
 
         this.roomDeviceList = roomDeviceList;
         super.updateData();
