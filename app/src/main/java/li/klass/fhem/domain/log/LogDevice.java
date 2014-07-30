@@ -24,6 +24,7 @@
 
 package li.klass.fhem.domain.log;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -181,7 +182,7 @@ public abstract class LogDevice<T extends LogDevice> extends Device<T> {
         }
     }
 
-    public class YAxisMinMaxValue {
+    public class YAxisMinMaxValue implements Serializable {
         public final double minValue;
         public final double maxValue;
 
