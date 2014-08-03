@@ -75,6 +75,7 @@ public class BillingService {
             });
         } catch (Exception e) {
             Log.e(TAG, "Error while trying to start billing", e);
+            listener.onSetupFinished();
         }
     }
 
@@ -89,18 +90,22 @@ public class BillingService {
         ensureSetup(new SetupFinishedListener() {
             @Override
             public void onSetupFinished() {
-                iabHelper.launchPurchaseFlow(activity, itemId, 0, new IabHelper.OnIabPurchaseFinishedListener() {
-                    @Override
-                    public void onIabPurchaseFinished(IabResult result, Purchase info) {
-                        if (result.isSuccess()) {
-                            Log.i(TAG, "purchase result: SUCCESS");
-                            loadInventory(null);
-                            listener.onProductPurchased(info.getOrderId(), info.getSku());
-                        } else {
-                            Log.e(TAG, "purchase result: " + result.toString());
+                try {
+                    iabHelper.launchPurchaseFlow(activity, itemId, 0, new IabHelper.OnIabPurchaseFinishedListener() {
+                        @Override
+                        public void onIabPurchaseFinished(IabResult result, Purchase info) {
+                            if (result.isSuccess()) {
+                                Log.i(TAG, "purchase result: SUCCESS");
+                                loadInventory(null);
+                                listener.onProductPurchased(info.getOrderId(), info.getSku());
+                            } else {
+                                Log.e(TAG, "purchase result: " + result.toString());
+                            }
                         }
-                    }
-                }, payload);
+                    }, payload);
+                } catch (Exception e) {
+                    Log.e(TAG, "error while launching purchase flow", e);
+                }
             }
         });
     }
@@ -112,7 +117,6 @@ public class BillingService {
                 try {
                     Log.i(TAG, "loading inventory");
                     inventory.set(iabHelper.queryInventory(false, null, null));
-
                 } catch (IabException e) {
                     Log.e(TAG, "cannot load inventory", e);
                     inventory.set(Inventory.empty());
