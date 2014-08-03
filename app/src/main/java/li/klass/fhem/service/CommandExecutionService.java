@@ -42,6 +42,7 @@ import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.Cache;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
+import static li.klass.fhem.constants.Actions.DISMISS_EXECUTING_DIALOG;
 import static li.klass.fhem.constants.Actions.SHOW_EXECUTING_DIALOG;
 import static li.klass.fhem.constants.PreferenceKeys.COMMAND_EXECUTION_RETRIES;
 import static li.klass.fhem.fhem.RequestResultError.CONNECTION_TIMEOUT;
@@ -112,16 +113,23 @@ public class CommandExecutionService extends AbstractService {
         FHEMConnection currentProvider = DataConnectionSwitch.INSTANCE.getCurrentProvider();
         RequestResult<String> result = currentProvider.executeCommand(command);
 
-        if (result.error == null) {
-            sendBroadcastWithAction(Actions.CONNECTION_ERROR_HIDE);
-        } else if (shouldTryResend(command, result, currentTry)) {
-            int timeoutForNextTry = secondsForTry(currentTry);
-            Log.e(CommandExecutionService.class.getName(),
-                    String.format("scheduling next resend of '%s' in %d seconds (try %d)",
-                            command, timeoutForNextTry, currentTry));
+        try {
+            if (result.error == null) {
+                sendBroadcastWithAction(Actions.CONNECTION_ERROR_HIDE);
+            } else if (shouldTryResend(command, result, currentTry)) {
+                int timeoutForNextTry = secondsForTry(currentTry);
+                Log.e(CommandExecutionService.class.getName(),
+                        String.format("scheduling next resend of '%s' in %d seconds (try %d)",
+                                command, timeoutForNextTry, currentTry)
+                );
 
-            getScheduledExecutorService().schedule(new ResendCommand(command, currentTry + 1),
-                    timeoutForNextTry, SECONDS);
+                getScheduledExecutorService().schedule(new ResendCommand(command, currentTry + 1),
+                        timeoutForNextTry, SECONDS);
+            }
+        } finally {
+            if (!command.equalsIgnoreCase("xmllist")) {
+                hideExecutingDialog();
+            }
         }
 
         return result;
@@ -138,25 +146,33 @@ public class CommandExecutionService extends AbstractService {
     }
 
     public Bitmap getBitmap(String relativePath) {
-        Cache<Bitmap> cache = getImageCache();
-        if (cache.containsKey(relativePath)) {
-            return cache.get(relativePath);
-        } else {
-            showExecutingDialog();
+        try {
+            Cache<Bitmap> cache = getImageCache();
+            if (cache.containsKey(relativePath)) {
+                return cache.get(relativePath);
+            } else {
+                showExecutingDialog();
 
-            FHEMConnection provider = DataConnectionSwitch.INSTANCE.getCurrentProvider();
-            RequestResult<Bitmap> result = provider.requestBitmap(relativePath);
+                FHEMConnection provider = DataConnectionSwitch.INSTANCE.getCurrentProvider();
+                RequestResult<Bitmap> result = provider.requestBitmap(relativePath);
 
-            if (result.handleErrors()) return null;
-            Bitmap bitmap = result.content;
-            cache.put(relativePath, bitmap);
-            return bitmap;
+                if (result.handleErrors()) return null;
+                Bitmap bitmap = result.content;
+                cache.put(relativePath, bitmap);
+                return bitmap;
+            }
+        } finally {
+            hideExecutingDialog();
         }
     }
 
     private void showExecutingDialog() {
         Context context = AndFHEMApplication.getContext();
         context.sendBroadcast(new Intent(SHOW_EXECUTING_DIALOG));
+    }
+
+    private void hideExecutingDialog() {
+        AndFHEMApplication.getContext().sendBroadcast(new Intent(DISMISS_EXECUTING_DIALOG));
     }
 
     private ScheduledExecutorService getScheduledExecutorService() {
