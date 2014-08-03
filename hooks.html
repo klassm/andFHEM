@@ -79,8 +79,12 @@ weight: 4
       <tr>
         <td><b>CustomGraph</b><br>Add a custom graph to a FileLog in andFHEM. You will be required to provide a regexp, a y-axis-name and a name for the graph.</td>
         <td><span class="code">custom_graph</span><br>A custom graph. You can specify any number of custom graphs by adding text after the user attribute. For example, you can use <span class="code">custom_graph1, custom_graph123</span> as user attributes.<br></td>
-        <td><span class="code">attr FileLog_mat_heizung custom_graph 4:measured@axis@someText</span><br># and @ (&gt;= 2.4.8) can be used as delimiters.</span></td>
-        <td>2.2.3</td>
+        <td><span class="code">attr FileLog_mat_heizung custom_graph 4:measured@axis@someText</span><br/>
+            <span class="code">attr FileLog mat_heizung custom_graph 4:measured@axis@someText@0@1000</span></br/>
+            <span># and @ (&gt;= 2.4.8) can be used as delimiters.</span><br/>
+            <span>The second example specifies a minimum and a maximum y axis value</span>
+        </td>
+        <td>2.2.3 (min max values &gt;= 3.0.3)</td>
       </tr>
       
       
