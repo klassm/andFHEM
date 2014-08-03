@@ -36,8 +36,8 @@ import android.widget.RemoteViews;
 import java.util.Map;
 import java.util.Set;
 
+import li.klass.fhem.appwidget.service.AppWidgetUpdateService;
 import li.klass.fhem.appwidget.view.widget.base.AppWidgetView;
-import li.klass.fhem.appwidget.view.widget.base.DeviceAppWidgetView;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.service.room.RoomListService;
@@ -49,10 +49,10 @@ import static li.klass.fhem.util.SharedPreferencesUtil.getSharedPreferencesEdito
 
 public class AppWidgetDataHolder {
     public static final AppWidgetDataHolder INSTANCE = new AppWidgetDataHolder();
-    private static final String preferenceName = AppWidgetDataHolder.class.getName();
     public static final String WIDGET_UPDATE_INTERVAL_PREFERENCES_KEY_WLAN = "WIDGET_UPDATE_INTERVAL_WLAN";
     public static final String WIDGET_UPDATE_INTERVAL_PREFERENCES_KEY_MOBILE = "WIDGET_UPDATE_INTERVAL_MOBILE";
     public static final String TAG = AppWidgetDataHolder.class.getName();
+    private static final String preferenceName = AppWidgetDataHolder.class.getName();
 
     private AppWidgetDataHolder() {
     }
@@ -67,6 +67,7 @@ public class AppWidgetDataHolder {
     public void updateWidget(final Context context, final int appWidgetId,
                              final boolean allowRemoteUpdate) {
         Intent intent = new Intent(Actions.REDRAW_WIDGET);
+        intent.setClass(context, AppWidgetUpdateService.class);
         intent.putExtra(BundleExtraKeys.APP_WIDGET_ID, appWidgetId);
         intent.putExtra(BundleExtraKeys.ALLOW_REMOTE_UPDATES, allowRemoteUpdate);
         context.startService(intent);

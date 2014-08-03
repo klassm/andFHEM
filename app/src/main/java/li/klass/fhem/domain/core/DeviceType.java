@@ -25,6 +25,7 @@
 package li.klass.fhem.domain.core;
 
 import li.klass.fhem.adapter.devices.CULHMAdapter;
+import li.klass.fhem.adapter.devices.DmxAdapter;
 import li.klass.fhem.adapter.devices.DummyAdapter;
 import li.klass.fhem.adapter.devices.EnOceanAdapter;
 import li.klass.fhem.adapter.devices.FHTAdapter;
@@ -62,6 +63,7 @@ import li.klass.fhem.domain.CULFHTTKDevice;
 import li.klass.fhem.domain.CULHMDevice;
 import li.klass.fhem.domain.CULTXDevice;
 import li.klass.fhem.domain.CULWSDevice;
+import li.klass.fhem.domain.DMXDevice;
 import li.klass.fhem.domain.DbLogDevice;
 import li.klass.fhem.domain.DummyDevice;
 import li.klass.fhem.domain.EC3000Device;
@@ -222,8 +224,8 @@ public enum DeviceType {
     THRESHOLD("THRESHOLD", ThresholdDevice.class, new ThresholdAdapter()),
     WIFILIGHT("WifiLight", WifiLightDevice.class, new WifiLightDeviceAdapter()),
     EC3000("EC3000", EC3000Device.class),
-    WITHINGS("withings", WithingsDevice.class)
-    ;
+    WITHINGS("withings", WithingsDevice.class),
+    DMX("DMXDevice", DMXDevice.class, new DmxAdapter());
 
     private String xmllistTag;
     private Class<? extends Device> deviceClass;
@@ -243,6 +245,27 @@ public enum DeviceType {
     DeviceType(String xmllistTag, Class<? extends Device> deviceClass, DeviceAdapter<? extends Device<?>> adapter, DeviceVisibility visibility) {
         this(xmllistTag, deviceClass, adapter);
         this.visibility = visibility;
+    }
+
+    public static <T extends Device<T>> DeviceAdapter<T> getAdapterFor(T device) {
+        DeviceType deviceType = getDeviceTypeFor(device);
+        if (deviceType == null) {
+            return null;
+        } else {
+            return deviceType.getAdapter();
+        }
+    }
+
+    public static <T extends Device> DeviceType getDeviceTypeFor(T device) {
+        if (device == null) return null;
+
+        DeviceType[] deviceTypes = DeviceType.values();
+        for (DeviceType deviceType : deviceTypes) {
+            if (deviceType.getDeviceClass().isAssignableFrom(device.getClass())) {
+                return deviceType;
+            }
+        }
+        return null;
     }
 
     public String getXmllistTag() {
@@ -267,26 +290,5 @@ public enum DeviceType {
 
         ServerType showOnlyIn = visibility.getShowOnlyIn();
         return showOnlyIn == null || serverType == showOnlyIn;
-    }
-
-    public static <T extends Device<T>> DeviceAdapter<T> getAdapterFor(T device) {
-        DeviceType deviceType = getDeviceTypeFor(device);
-        if (deviceType == null) {
-            return null;
-        } else {
-            return deviceType.getAdapter();
-        }
-    }
-
-    public static <T extends Device> DeviceType getDeviceTypeFor(T device) {
-        if (device == null) return null;
-
-        DeviceType[] deviceTypes = DeviceType.values();
-        for (DeviceType deviceType : deviceTypes) {
-            if (deviceType.getDeviceClass().isAssignableFrom(device.getClass())) {
-                return deviceType;
-            }
-        }
-        return null;
     }
 }

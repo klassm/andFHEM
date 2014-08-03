@@ -26,10 +26,8 @@ package li.klass.fhem.appwidget.view.widget.base;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.SystemClock;
 import android.util.Log;
-import android.view.View;
 import android.widget.RemoteViews;
 
 import li.klass.fhem.AndFHEMApplication;
@@ -41,11 +39,8 @@ import li.klass.fhem.appwidget.annotation.SupportsWidget;
 import li.klass.fhem.appwidget.view.WidgetType;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.core.Device;
-import li.klass.fhem.domain.core.RoomDeviceList;
 import li.klass.fhem.fragments.FragmentType;
-import li.klass.fhem.fragments.core.DeviceDetailFragment;
 import li.klass.fhem.service.room.RoomListService;
-import li.klass.fhem.util.ImageUtil;
 
 import static li.klass.fhem.service.room.RoomListService.NEVER_UPDATE_PERIOD;
 
@@ -89,7 +84,7 @@ public abstract class DeviceAppWidgetView extends AppWidgetView {
     private Device getDeviceFor(long updatePeriod, String deviceName) {
         Device device = RoomListService.INSTANCE.getDeviceForName(deviceName, updatePeriod);
         if (device == null) {
-            Log.e(TAG, "cannot find device " + deviceName);
+            Log.i(TAG, "cannot find device " + deviceName);
             return null;
         } else {
             return device;
