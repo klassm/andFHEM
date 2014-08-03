@@ -49,8 +49,9 @@ import li.klass.fhem.error.ErrorHolder;
 
 import static li.klass.fhem.constants.Actions.CONNECTION_ERROR;
 import static li.klass.fhem.constants.Actions.CONNECTION_ERROR_HIDE;
-import static li.klass.fhem.constants.Actions.REDRAW_ALL_WIDGETS;
 import static li.klass.fhem.constants.Actions.DO_UPDATE;
+import static li.klass.fhem.constants.Actions.REDRAW_ALL_WIDGETS;
+import static li.klass.fhem.constants.Actions.SHOW_EXECUTING_DIALOG;
 import static li.klass.fhem.constants.Actions.TOP_LEVEL_BACK;
 import static li.klass.fhem.constants.BundleExtraKeys.DO_REFRESH;
 import static li.klass.fhem.constants.BundleExtraKeys.STRING;
@@ -59,80 +60,6 @@ import static li.klass.fhem.constants.BundleExtraKeys.STRING_ID;
 public abstract class BaseFragment extends Fragment implements Updateable, Serializable {
 
     private boolean isNavigation = false;
-
-    public class UIBroadcastReceiver extends BroadcastReceiver {
-
-        private final IntentFilter intentFilter;
-        private FragmentActivity activity;
-        private Updateable updateable;
-
-        public UIBroadcastReceiver(FragmentActivity activity, Updateable updateable) {
-            this.activity = activity;
-            this.updateable = updateable;
-
-            intentFilter = new IntentFilter();
-            intentFilter.addAction(DO_UPDATE);
-            intentFilter.addAction(TOP_LEVEL_BACK);
-            intentFilter.addAction(CONNECTION_ERROR);
-            intentFilter.addAction(CONNECTION_ERROR_HIDE);
-            intentFilter.addAction(REDRAW_ALL_WIDGETS);
-        }
-
-        @Override
-        public void onReceive(final Context context, final Intent intent) {
-            final String action = intent.getAction();
-            activity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-
-                    Log.d(UIBroadcastReceiver.class.getName(), "received action " + action);
-
-                    if (action == null) return;
-
-                    try {
-                        if (action.equals(DO_UPDATE)) {
-                            hideConnectionError();
-                            boolean doUpdate = intent.getBooleanExtra(DO_REFRESH, false);
-                            updateable.update(doUpdate);
-                        } else if (action.equals(TOP_LEVEL_BACK)) {
-                            if (!isVisible()) return;
-                            if (!backPressCalled) {
-                                backPressCalled = true;
-                                onBackPressResult();
-                            }
-                        } else if (action.equals(REDRAW_ALL_WIDGETS)) {
-                            update(false);
-                        } else if (action.equals(CONNECTION_ERROR)) {
-                            String content;
-                            if (intent.hasExtra(STRING_ID)) {
-                                content = context.getString(intent.getIntExtra(STRING_ID, -1));
-                            } else {
-                                content = intent.getStringExtra(STRING);
-                            }
-                            showConnectionError(content);
-                        } else if (action.equals(CONNECTION_ERROR_HIDE)) {
-                            hideConnectionError();
-                        }
-                    } catch (Exception e) {
-                        Log.e(UIBroadcastReceiver.class.getName(), "error occurred", e);
-                    }
-                }
-            });
-        }
-
-        public void attach() {
-            activity.registerReceiver(this, intentFilter);
-        }
-
-        public void detach() {
-            try {
-                activity.unregisterReceiver(this);
-            } catch (IllegalArgumentException e) {
-                Log.e(UIBroadcastReceiver.class.getName(), "error while detaching", e);
-            }
-        }
-    }
-
     private transient UIBroadcastReceiver broadcastReceiver;
     private transient View contentView;
     private boolean backPressCalled = false;
@@ -211,7 +138,6 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
         this.isNavigation = isNavigation;
     }
 
-
     protected ProgressBar getUpdatingBar(View view) {
         return (ProgressBar) view.findViewById(R.id.updateProgress);
     }
@@ -270,7 +196,6 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
         view.addView(emptyView);
     }
 
-
     private void showConnectionError(String content) {
         if (isNavigation) return;
 
@@ -294,5 +219,81 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
 
         TextView errorView = (TextView) view.findViewById(R.id.errorView);
         errorView.setText(content);
+    }
+
+    public class UIBroadcastReceiver extends BroadcastReceiver {
+
+        private final IntentFilter intentFilter;
+        private FragmentActivity activity;
+        private Updateable updateable;
+
+        public UIBroadcastReceiver(FragmentActivity activity, Updateable updateable) {
+            this.activity = activity;
+            this.updateable = updateable;
+
+            intentFilter = new IntentFilter();
+            intentFilter.addAction(DO_UPDATE);
+            intentFilter.addAction(TOP_LEVEL_BACK);
+            intentFilter.addAction(CONNECTION_ERROR);
+            intentFilter.addAction(CONNECTION_ERROR_HIDE);
+            intentFilter.addAction(REDRAW_ALL_WIDGETS);
+            intentFilter.addAction(SHOW_EXECUTING_DIALOG);
+        }
+
+        @Override
+        public void onReceive(final Context context, final Intent intent) {
+            final String action = intent.getAction();
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+
+                    Log.d(UIBroadcastReceiver.class.getName(), "received action " + action);
+
+                    if (action == null) return;
+
+                    try {
+                        if (action.equals(DO_UPDATE)) {
+                            hideConnectionError();
+                            boolean doUpdate = intent.getBooleanExtra(DO_REFRESH, false);
+                            updateable.update(doUpdate);
+                        } else if (action.equals(TOP_LEVEL_BACK)) {
+                            if (!isVisible()) return;
+                            if (!backPressCalled) {
+                                backPressCalled = true;
+                                onBackPressResult();
+                            }
+                        } else if (action.equals(REDRAW_ALL_WIDGETS)) {
+                            update(false);
+                        } else if (action.equals(CONNECTION_ERROR)) {
+                            String content;
+                            if (intent.hasExtra(STRING_ID)) {
+                                content = context.getString(intent.getIntExtra(STRING_ID, -1));
+                            } else {
+                                content = intent.getStringExtra(STRING);
+                            }
+                            showConnectionError(content);
+                        } else if (action.equals(CONNECTION_ERROR_HIDE)) {
+                            hideConnectionError();
+                        } else if (action.equalsIgnoreCase(SHOW_EXECUTING_DIALOG)) {
+                            showUpdatingBar();
+                        }
+                    } catch (Exception e) {
+                        Log.e(UIBroadcastReceiver.class.getName(), "error occurred", e);
+                    }
+                }
+            });
+        }
+
+        public void attach() {
+            activity.registerReceiver(this, intentFilter);
+        }
+
+        public void detach() {
+            try {
+                activity.unregisterReceiver(this);
+            } catch (IllegalArgumentException e) {
+                Log.e(UIBroadcastReceiver.class.getName(), "error while detaching", e);
+            }
+        }
     }
 }

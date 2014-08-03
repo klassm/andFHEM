@@ -42,7 +42,6 @@ import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.Cache;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
-import static li.klass.fhem.constants.Actions.DISMISS_EXECUTING_DIALOG;
 import static li.klass.fhem.constants.Actions.SHOW_EXECUTING_DIALOG;
 import static li.klass.fhem.constants.PreferenceKeys.COMMAND_EXECUTION_RETRIES;
 import static li.klass.fhem.fhem.RequestResultError.CONNECTION_TIMEOUT;
@@ -63,22 +62,11 @@ public class CommandExecutionService extends AbstractService {
 
     private transient Cache<Bitmap> imageCache = getImageCache();
 
-    private class ResendCommand implements Runnable {
-
-        int currentTry;
-        String command;
-        protected ResendCommand(String command, int currentTry) {
-            this.command = command;
-            this.currentTry = currentTry;
-        }
-
-        @Override
-        public void run() {
-            execute(command, currentTry);
-        }
-
-    }
     private CommandExecutionService() {
+    }
+
+    public static int secondsForTry(int executionTry) {
+        return (int) Math.pow(3, executionTry);
     }
 
     public void resendLastFailedCommand() {
@@ -103,16 +91,12 @@ public class CommandExecutionService extends AbstractService {
         command = command.replaceAll("  ", " ");
         showExecutingDialog();
 
-        try {
-            RequestResult<String> result = execute(command);
-            if (result.handleErrors()) {
-                lastFailedCommand = command;
-                throw new CommandExecutionException();
-            }
-            return result.content;
-        } finally {
-            hideExecutingDialog();
+        RequestResult<String> result = execute(command);
+        if (result.handleErrors()) {
+            lastFailedCommand = command;
+            throw new CommandExecutionException();
         }
+        return result.content;
     }
 
     /**
@@ -143,12 +127,8 @@ public class CommandExecutionService extends AbstractService {
         return result;
     }
 
-    public static int secondsForTry(int executionTry) {
-        return (int) Math.pow(3, executionTry);
-    }
-
     private boolean shouldTryResend(String command, RequestResult<?> result, int currentTry) {
-        if (! command.startsWith("set") && ! command.startsWith("attr")) return false;
+        if (!command.startsWith("set") && !command.startsWith("attr")) return false;
         if (result.error == null) return false;
         if (result.error != CONNECTION_TIMEOUT &&
                 result.error != HOST_CONNECTION_ERROR) return false;
@@ -158,33 +138,25 @@ public class CommandExecutionService extends AbstractService {
     }
 
     public Bitmap getBitmap(String relativePath) {
-        try {
-            Cache<Bitmap> cache = getImageCache();
-            if (cache.containsKey(relativePath)) {
-                return cache.get(relativePath);
-            } else {
-               showExecutingDialog();
+        Cache<Bitmap> cache = getImageCache();
+        if (cache.containsKey(relativePath)) {
+            return cache.get(relativePath);
+        } else {
+            showExecutingDialog();
 
-                FHEMConnection provider = DataConnectionSwitch.INSTANCE.getCurrentProvider();
-                RequestResult<Bitmap> result = provider.requestBitmap(relativePath);
+            FHEMConnection provider = DataConnectionSwitch.INSTANCE.getCurrentProvider();
+            RequestResult<Bitmap> result = provider.requestBitmap(relativePath);
 
-                if (result.handleErrors()) return null;
-                Bitmap bitmap = result.content;
-                cache.put(relativePath, bitmap);
-                return bitmap;
-            }
-        } finally {
-            hideExecutingDialog();
+            if (result.handleErrors()) return null;
+            Bitmap bitmap = result.content;
+            cache.put(relativePath, bitmap);
+            return bitmap;
         }
     }
 
     private void showExecutingDialog() {
         Context context = AndFHEMApplication.getContext();
         context.sendBroadcast(new Intent(SHOW_EXECUTING_DIALOG));
-    }
-
-    private void hideExecutingDialog() {
-        AndFHEMApplication.getContext().sendBroadcast(new Intent(DISMISS_EXECUTING_DIALOG));
     }
 
     private ScheduledExecutorService getScheduledExecutorService() {
@@ -207,5 +179,22 @@ public class CommandExecutionService extends AbstractService {
         }
 
         return imageCache;
+    }
+
+    private class ResendCommand implements Runnable {
+
+        int currentTry;
+        String command;
+
+        protected ResendCommand(String command, int currentTry) {
+            this.command = command;
+            this.currentTry = currentTry;
+        }
+
+        @Override
+        public void run() {
+            execute(command, currentTry);
+        }
+
     }
 }
