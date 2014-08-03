@@ -24,17 +24,29 @@
 
 package li.klass.fhem.domain.log;
 
+import com.google.common.base.Optional;
+
 import java.io.Serializable;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 public class CustomGraph implements Serializable {
     public final String columnSpecification;
     public final String description;
     public final String yAxisName;
+    public final Optional<LogDevice.YAxisMinMaxValue> yAxisMinMax;
 
-    public CustomGraph(String columnSpecification, String description, String yAxisName) {
+    public CustomGraph(String columnSpecification, String description, String yAxisName,
+                       Optional<LogDevice.YAxisMinMaxValue> yAxisMinMaxValue) {
+        checkNotNull(columnSpecification);
+        checkNotNull(description);
+        checkNotNull(yAxisName);
+        checkNotNull(yAxisMinMaxValue);
+
         this.columnSpecification = columnSpecification;
         this.description = description;
         this.yAxisName = yAxisName;
+        this.yAxisMinMax = yAxisMinMaxValue;
     }
 
     @Override
@@ -44,9 +56,20 @@ public class CustomGraph implements Serializable {
 
         CustomGraph that = (CustomGraph) o;
 
-        return !(description != null ? !description.equals(that.description) : that.description != null) &&
-                !(columnSpecification != null ? !columnSpecification.equals(that.columnSpecification) : that.columnSpecification != null) &&
-                !(yAxisName != null ? !yAxisName.equals(that.yAxisName) : that.yAxisName != null);
+        return columnSpecification.equals(that.columnSpecification) &&
+                description.equals(that.description) &&
+                yAxisMinMax.equals(that.yAxisMinMax) &&
+                yAxisName.equals(that.yAxisName);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = columnSpecification.hashCode();
+        result = 31 * result + (description.hashCode());
+        result = 31 * result + (yAxisName.hashCode());
+        result = 31 * result + (yAxisMinMax.hashCode());
+        return result;
     }
 
     @Override
@@ -55,6 +78,7 @@ public class CustomGraph implements Serializable {
                 "columnSpecification='" + columnSpecification + '\'' +
                 ", description='" + description + '\'' +
                 ", yAxisName='" + yAxisName + '\'' +
+                ", yAxisMinMax=" + yAxisMinMax +
                 '}';
     }
 }

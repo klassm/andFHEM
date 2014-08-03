@@ -24,15 +24,18 @@
 
 package li.klass.fhem.domain;
 
-import org.w3c.dom.NamedNodeMap;
+import com.google.common.base.Optional;
 
-import java.util.ArrayList;
+import org.w3c.dom.NamedNodeMap;
 
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.log.CustomGraph;
 import li.klass.fhem.domain.log.LogDevice;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
+
+import static li.klass.fhem.util.NumberUtil.isNumeric;
+import static li.klass.fhem.util.ValueExtractUtil.extractLeadingDouble;
 
 @SuppressWarnings("unused")
 public class FileLogDevice extends LogDevice<FileLogDevice> {
@@ -52,14 +55,24 @@ public class FileLogDevice extends LogDevice<FileLogDevice> {
 
     void parseCustomGraphAttribute(String value) {
         String[] parts = value.split("[#@]");
-        if (parts.length != 3) return;
 
-        String pattern = parts[0];
-        String yAxisDescription = parts[1];
-        String description = parts[2];
+        if (parts.length == 3 || parts.length == 5) {
+            String pattern = parts[0];
+            String yAxisDescription = parts[1];
+            String description = parts[2];
 
-        if (customGraphs == null) customGraphs = new ArrayList<CustomGraph>();
-        customGraphs.add(new CustomGraph(pattern, description, yAxisDescription));
+            Optional<YAxisMinMaxValue> minMaxValue;
+            if (parts.length == 5 && isNumeric(parts[3]) && isNumeric(parts[4])) {
+                minMaxValue = Optional.of(
+                        new YAxisMinMaxValue(extractLeadingDouble(parts[3]),
+                                extractLeadingDouble(parts[4]))
+                );
+            } else {
+                minMaxValue = Optional.absent();
+            }
+
+            customGraphs.add(new CustomGraph(pattern, description, yAxisDescription, minMaxValue));
+        }
     }
 
     @Override

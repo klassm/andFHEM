@@ -318,6 +318,7 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
                     .withFileLogSpec(customGraph.columnSpecification)
                     .withDbLogSpec(customGraph.columnSpecification)
                     .withFallbackYAxisName(customGraph.yAxisName)
+                    .withYAxisMinMaxValue(customGraph.yAxisMinMax)
                     .build();
 
             addDeviceChartIfNotNull(new DeviceChart(customGraph.description, seriesDescription));

@@ -24,8 +24,9 @@
 
 <FHZINFO>
     <FileLog_LIST>
-        <FileLog name="device" state="active" sets="reopen"
-                 attrs="room group comment alias eventMap disable:0,1 logtype nrarchive archivedir archivecmd icon webCmd">
+        <FileLog name="device"
+            attrs="room group comment alias eventMap disable:0,1 logtype nrarchive archivedir archivecmd icon webCmd"
+            sets="reopen" state="active">
             <INT key="DEF" value="/var/InternerSpeicher/fhem/log/CUL_HM_KFM100_122334-%Y.log CUL_HM_KFM100_122334"/>
             <INT key="NAME" value="device"/>
             <INT key="NR" value="91"/>
@@ -37,6 +38,7 @@
             <INT key="logfile" value="/var/InternerSpeicher/fhem/log/CUL_HM_KFM100_122334-%Y.log"/>
             <ATTR key="custom_graph" value="4:#axis1#someValue"/>
             <ATTR key="custom_graph1" value="46:#axis#someValue with space"/>
+            <ATTR key="custom_graph2" value="48:#axis2#some other value#1#100" />
             <ATTR key="logtype" value="text,vol5"/>
             <ATTR key="room" value="room"/>
         </FileLog>

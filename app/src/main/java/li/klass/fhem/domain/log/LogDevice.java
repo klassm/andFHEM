@@ -24,8 +24,9 @@
 
 package li.klass.fhem.domain.log;
 
+import com.google.common.collect.Lists;
+
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -40,7 +41,7 @@ import static li.klass.fhem.util.ValueExtractUtil.extractLeadingDouble;
 
 public abstract class LogDevice<T extends LogDevice> extends Device<T> {
 
-    protected List<CustomGraph> customGraphs = new ArrayList<CustomGraph>();
+    protected List<CustomGraph> customGraphs = Lists.newArrayList();
     private String concerningDeviceRegexp;
     private Map<String, YAxisMinMaxValue> yAxisConfiguration = newHashMap();
 
@@ -182,13 +183,45 @@ public abstract class LogDevice<T extends LogDevice> extends Device<T> {
         }
     }
 
-    public class YAxisMinMaxValue implements Serializable {
+    public static class YAxisMinMaxValue implements Serializable {
         public final double minValue;
         public final double maxValue;
 
-        YAxisMinMaxValue(double minValue, double maxValue) {
+        public YAxisMinMaxValue(double minValue, double maxValue) {
             this.minValue = minValue;
             this.maxValue = maxValue;
+        }
+
+        @Override
+        public String toString() {
+            return "YAxisMinMaxValue{" +
+                    "minValue=" + minValue +
+                    ", maxValue=" + maxValue +
+                    '}';
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            YAxisMinMaxValue that = (YAxisMinMaxValue) o;
+
+            if (Double.compare(that.maxValue, maxValue) != 0) return false;
+            if (Double.compare(that.minValue, minValue) != 0) return false;
+
+            return true;
+        }
+
+        @Override
+        public int hashCode() {
+            int result;
+            long temp;
+            temp = Double.doubleToLongBits(minValue);
+            result = (int) (temp ^ (temp >>> 32));
+            temp = Double.doubleToLongBits(maxValue);
+            result = 31 * result + (int) (temp ^ (temp >>> 32));
+            return result;
         }
     }
 }

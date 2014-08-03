@@ -28,6 +28,8 @@ import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.common.base.Optional;
+
 import java.io.Serializable;
 
 import li.klass.fhem.AndFHEMApplication;
@@ -216,6 +218,13 @@ public class ChartSeriesDescription implements Parcelable, Serializable {
 
         public Builder withDbLogSpec(String dbLogSpec) {
             description.dbLogSpec = dbLogSpec;
+            return this;
+        }
+
+        public Builder withYAxisMinMaxValue(Optional<LogDevice.YAxisMinMaxValue> minMaxValue) {
+            if (minMaxValue.isPresent()) {
+                withYAxisMinMaxValue(minMaxValue.get());
+            }
             return this;
         }
 
