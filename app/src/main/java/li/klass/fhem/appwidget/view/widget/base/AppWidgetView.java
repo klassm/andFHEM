@@ -29,24 +29,21 @@ import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
 
-import li.klass.fhem.R;
 import li.klass.fhem.appwidget.WidgetConfiguration;
 import li.klass.fhem.appwidget.WidgetConfigurationCreatedCallback;
 import li.klass.fhem.appwidget.view.WidgetType;
-import li.klass.fhem.domain.core.Device;
-import li.klass.fhem.service.room.RoomListService;
 import li.klass.fhem.util.ImageUtil;
-
-import static li.klass.fhem.service.room.RoomListService.NEVER_UPDATE_PERIOD;
 
 public abstract class AppWidgetView {
 
     public static final String TAG = AppWidgetView.class.getName();
 
     public abstract void createWidgetConfiguration(Context context, WidgetType widgetType, int appWidgetId,
-                                          WidgetConfigurationCreatedCallback callback, String... payload);
+                                                   WidgetConfigurationCreatedCallback callback, String... payload);
 
     public RemoteViews createView(Context context, WidgetConfiguration widgetConfiguration, long updatePeriod) {
+        Log.d(TAG, String.format("creating widget view for %s, period %s", widgetConfiguration.toString(), (updatePeriod / 1000) + "s"));
+
         RemoteViews views = new RemoteViews(context.getPackageName(), getContentView());
 
         fillWidgetView(context, views, widgetConfiguration);

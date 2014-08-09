@@ -40,6 +40,8 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.common.base.Optional;
+
 import java.io.Serializable;
 
 import li.klass.fhem.R;
@@ -112,6 +114,7 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
     @Override
     public void onDetach() {
         super.onDetach();
+
         if (broadcastReceiver != null) {
             broadcastReceiver.detach();
             broadcastReceiver = null;
@@ -138,8 +141,12 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
         this.isNavigation = isNavigation;
     }
 
-    protected ProgressBar getUpdatingBar(View view) {
-        return (ProgressBar) view.findViewById(R.id.updateProgress);
+    protected Optional<ProgressBar> getUpdatingBar(View view) {
+        if (view == null) {
+            return Optional.absent();
+        } else {
+            return Optional.fromNullable((ProgressBar) view.findViewById(R.id.updateProgress));
+        }
     }
 
     protected void hideEmptyView() {
@@ -163,17 +170,20 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
         View view = getView();
         if (view == null) return;
 
-        ProgressBar updatingBar = getUpdatingBar(view);
-        if (updatingBar == null) return;
-
-        updatingBar.setVisibility(View.GONE);
+        Optional<ProgressBar> updatingBar = getUpdatingBar(view);
+        if (updatingBar.isPresent()) {
+            updatingBar.get().setVisibility(View.GONE);
+        }
 
         Intent intent = new Intent(Actions.DISMISS_UPDATING_DIALOG);
         getActivity().sendBroadcast(intent);
     }
 
     protected void showUpdatingBar() {
-        getUpdatingBar(getView()).setVisibility(View.VISIBLE);
+        Optional<ProgressBar> updatingBar = getUpdatingBar(getView());
+        if (updatingBar.isPresent()) {
+            updatingBar.get().setVisibility(View.VISIBLE);
+        }
     }
 
     private void hideConnectionError() {

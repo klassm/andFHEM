@@ -45,11 +45,9 @@ import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.domain.core.Device;
-import li.klass.fhem.domain.core.DeviceType;
 import li.klass.fhem.fragments.RoomListFragment;
 import li.klass.fhem.fragments.core.BaseFragment;
 import li.klass.fhem.fragments.device.DeviceNameSelectionFragment;
-import li.klass.fhem.util.DialogUtil;
 import li.klass.fhem.util.FhemResultReceiver;
 
 import static android.appwidget.AppWidgetManager.ACTION_APPWIDGET_CONFIGURE;
@@ -73,6 +71,8 @@ public abstract class AppWidgetSelectionActivity extends SherlockFragmentActivit
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
         Intent intent = getIntent();
         widgetId = intent.getIntExtra(EXTRA_APPWIDGET_ID, INVALID_APPWIDGET_ID);
 
@@ -94,8 +94,6 @@ public abstract class AppWidgetSelectionActivity extends SherlockFragmentActivit
                 .setTabListener(this).setTag(TAG_ROOMS));
         actionBar.addTab(actionBar.newTab().setText(R.string.widget_others)
                 .setTabListener(this).setTag(TAG_OTHER));
-
-        super.onCreate(savedInstanceState);
     }
 
     @Override
@@ -242,7 +240,6 @@ public abstract class AppWidgetSelectionActivity extends SherlockFragmentActivit
         type.createWidgetConfiguration(this, widgetId, new WidgetConfigurationCreatedCallback() {
                     @Override
                     public void widgetConfigurationCreated(WidgetConfiguration widgetConfiguration) {
-
                         AppWidgetDataHolder.INSTANCE.saveWidgetConfigurationToPreferences(widgetConfiguration);
 
                         Intent intent = new Intent(Actions.REDRAW_WIDGET);

@@ -52,11 +52,10 @@ public class AndFHEMMainActivity extends FragmentBaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        UpdateHandler.INSTANCE.onApplicationUpdate();
 
+        UpdateHandler.INSTANCE.onApplicationUpdate();
         registerWithGCM(this);
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

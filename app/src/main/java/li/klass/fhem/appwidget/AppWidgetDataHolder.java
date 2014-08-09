@@ -25,13 +25,15 @@ package li.klass.fhem.appwidget;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.appwidget.AppWidgetHost;
 import android.appwidget.AppWidgetManager;
-import android.appwidget.AppWidgetProviderInfo;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
 import android.widget.RemoteViews;
+
+import com.google.common.base.Optional;
 
 import java.util.Map;
 import java.util.Set;
@@ -44,6 +46,7 @@ import li.klass.fhem.service.room.RoomListService;
 import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.NetworkState;
 
+import static li.klass.fhem.constants.PreferenceKeys.ALLOW_REMOTE_UPDATE;
 import static li.klass.fhem.util.SharedPreferencesUtil.getSharedPreferences;
 import static li.klass.fhem.util.SharedPreferencesUtil.getSharedPreferencesEditor;
 
@@ -75,40 +78,43 @@ public class AppWidgetDataHolder {
 
     public void updateWidgetInCurrentThread(final AppWidgetManager appWidgetManager, final Context context,
                                             final int appWidgetId, final boolean allowRemoteUpdate) {
-        final WidgetConfiguration widgetConfiguration = getWidgetConfiguration(appWidgetId);
-        AppWidgetProviderInfo widgetInfo = appWidgetManager.getAppWidgetInfo(appWidgetId);
-        if (widgetInfo == null) {
-            Log.d(AppWidgetDataHolder.class.getName(), "cannot not find widget for id " + appWidgetId);
+        Optional<WidgetConfiguration> widgetConfigurationOptional = getWidgetConfiguration(appWidgetId);
+
+        if (widgetConfigurationOptional.isPresent()) {
+            WidgetConfiguration configuration = widgetConfigurationOptional.get();
+
+            final AppWidgetView widgetView = configuration.widgetType.widgetView;
+
+            long updateInterval = getConnectionDependentUpdateInterval(context);
+            scheduleUpdateIntent(context, configuration, false, updateInterval);
+
+            boolean doRemoteWidgetUpdates = ApplicationProperties.INSTANCE.getBooleanSharedPreference(ALLOW_REMOTE_UPDATE, true);
+            long viewCreateUpdateInterval = doRemoteWidgetUpdates && allowRemoteUpdate ? updateInterval : RoomListService.NEVER_UPDATE_PERIOD;
+            RemoteViews content = widgetView.createView(context, configuration, viewCreateUpdateInterval);
+
+            try {
+                appWidgetManager.updateAppWidget(appWidgetId, content);
+            } catch (Exception e) {
+                Log.e(TAG, "something strange happened during appwidget update", e);
+            }
+        } else {
             deleteWidget(context, appWidgetId);
-            return;
-        }
-        if (widgetConfiguration == null) return;
-
-        long updateInterval = getConnectionDependentUpdateInterval(context);
-
-        final AppWidgetView widgetView = widgetConfiguration.widgetType.widgetView;
-
-        boolean doRemoteWidgetUpdates = ApplicationProperties.INSTANCE.getBooleanSharedPreference("prefWidgetRemoteUpdate", true);
-
-        long updatePeriod = doRemoteWidgetUpdates && allowRemoteUpdate ? updateInterval : RoomListService.NEVER_UPDATE_PERIOD;
-        Log.d(TAG, "remote widget pref: " + doRemoteWidgetUpdates + ", allow remote update: " + allowRemoteUpdate +  " => update period " + updatePeriod);
-        scheduleUpdateIntent(context, widgetConfiguration, false, updateInterval);
-
-        RemoteViews content = widgetView.createView(context, widgetConfiguration, updatePeriod);
-
-        try {
-            appWidgetManager.updateAppWidget(appWidgetId, content);
-        } catch (Exception e) {
-            Log.e(TAG, "something strange happened during appwidget update", e);
         }
     }
 
     public void deleteWidget(Context context, int appWidgetId) {
-        SharedPreferences.Editor editor = getSharedPreferencesEditor(preferenceName);
-        editor.remove(String.valueOf(appWidgetId));
+        Log.d(AppWidgetDataHolder.class.getName(), String.format("deleting widget for id %d", appWidgetId));
+
+        SharedPreferences preferences = getSharedPreferences(preferenceName);
+        String key = String.valueOf(appWidgetId);
+        if (preferences.contains(key)) {
+            preferences.edit().remove(key).apply();
+
+            AppWidgetHost host = new AppWidgetHost(context, 0);
+            host.deleteAppWidgetId(appWidgetId);
+        }
 
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-
         cancelUpdating(context, appWidgetId, alarmManager);
     }
 
@@ -126,6 +132,8 @@ public class AppWidgetDataHolder {
 
     private void scheduleUpdateIntent(Context context, WidgetConfiguration widgetConfiguration, boolean updateNow, long widgetUpdateInterval) {
         if (widgetUpdateInterval > 0) {
+            Log.d(TAG, String.format("scheduling widget update %s => %s ", widgetConfiguration.toString(), (widgetUpdateInterval / 1000) + "s"));
+
             AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
             PendingIntent pendingIntent = updatePendingIndentForWidgetId(context, widgetConfiguration.widgetId);
             long now = System.currentTimeMillis();
@@ -159,17 +167,20 @@ public class AppWidgetDataHolder {
         return updateInterval;
     }
 
-    private WidgetConfiguration getWidgetConfiguration(int widgetId) {
+    private Optional<WidgetConfiguration> getWidgetConfiguration(int widgetId) {
         SharedPreferences sharedPreferences = getSharedPreferences(preferenceName);
         String value = sharedPreferences.getString(String.valueOf(widgetId), null);
-        if (value == null) return null;
 
-        WidgetConfiguration configuration = WidgetConfiguration.fromSaveString(value);
-        if (configuration.isOld) {
-            Log.e(TAG, "updated widget " + configuration);
-            saveWidgetConfigurationToPreferences(configuration);
+        if (value == null) {
+            return Optional.absent();
+        } else {
+            WidgetConfiguration configuration = WidgetConfiguration.fromSaveString(value);
+            if (configuration.isOld) {
+                Log.e(TAG, "updated widget " + configuration);
+                saveWidgetConfigurationToPreferences(configuration);
+            }
+            return Optional.fromNullable(configuration);
         }
-        return configuration;
     }
 
     private Set<String> getAllAppWidgetIds() {
