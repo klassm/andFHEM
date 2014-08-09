@@ -168,7 +168,7 @@ public class WithingsDevice extends Device<WithingsDevice> {
         addDeviceChartIfNotNull(new DeviceChart(R.string.co2Graph,
                 new ChartSeriesDescription.Builder()
                         .withColumnName(R.string.co2)
-                        .withFileLogSpec("4:co2:0:int")
+                        .withFileLogSpec("4:co2")
                         .withDbLogSpec("co2")
                         .withSeriesType(CO2)
                         .withShowRegression(true)
@@ -179,7 +179,7 @@ public class WithingsDevice extends Device<WithingsDevice> {
         addDeviceChartIfNotNull(new DeviceChart(R.string.weightGraph),
                 new ChartSeriesDescription.Builder()
                         .withColumnName(R.string.weight)
-                        .withFileLogSpec("4:weight:0:int")
+                        .withFileLogSpec("4:weight")
                         .withDbLogSpec("weight")
                         .withSeriesType(WEIGHT)
                         .withShowRegression(true)
@@ -187,7 +187,7 @@ public class WithingsDevice extends Device<WithingsDevice> {
                         .build(),
                 new ChartSeriesDescription.Builder()
                         .withColumnName(R.string.fatRatio)
-                        .withFileLogSpec("4:fatRatio:0")
+                        .withFileLogSpec("4:fatRatio")
                         .withDbLogSpec("fatRatio")
                         .withSeriesType(FAT_RATIO)
                         .withShowRegression(true)
