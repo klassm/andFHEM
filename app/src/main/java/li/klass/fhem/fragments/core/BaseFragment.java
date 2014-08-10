@@ -51,6 +51,7 @@ import li.klass.fhem.error.ErrorHolder;
 
 import static li.klass.fhem.constants.Actions.CONNECTION_ERROR;
 import static li.klass.fhem.constants.Actions.CONNECTION_ERROR_HIDE;
+import static li.klass.fhem.constants.Actions.DISMISS_EXECUTING_DIALOG;
 import static li.klass.fhem.constants.Actions.DO_UPDATE;
 import static li.klass.fhem.constants.Actions.REDRAW_ALL_WIDGETS;
 import static li.klass.fhem.constants.Actions.SHOW_EXECUTING_DIALOG;
@@ -248,6 +249,7 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
             intentFilter.addAction(CONNECTION_ERROR_HIDE);
             intentFilter.addAction(REDRAW_ALL_WIDGETS);
             intentFilter.addAction(SHOW_EXECUTING_DIALOG);
+            intentFilter.addAction(DISMISS_EXECUTING_DIALOG);
         }
 
         @Override
@@ -286,6 +288,8 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
                             hideConnectionError();
                         } else if (action.equalsIgnoreCase(SHOW_EXECUTING_DIALOG)) {
                             showUpdatingBar();
+                        } else if (action.equalsIgnoreCase(DISMISS_EXECUTING_DIALOG)) {
+                            hideUpdatingBar();
                         }
                     } catch (Exception e) {
                         Log.e(UIBroadcastReceiver.class.getName(), "error occurred", e);
