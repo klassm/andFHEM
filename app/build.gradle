@@ -40,8 +40,6 @@ buildscript {
         classpath 'com.google.oauth-client:google-oauth-client:1.17.0-rc'
 
         classpath 'com.github.jcandksolutions.gradle:android-unit-test:1.2.+'
-        // Original plugin of Jake Wharton is no longer supported. => Switch to a fork
-//        classpath 'com.github.cowst:gradle-android-test-plugin:0.11.0-SNAPSHOT'
     }
 }
 
@@ -63,6 +61,7 @@ android {
     defaultConfig {
         minSdkVersion 9
         targetSdkVersion 19
+        testPackageName "li.klass.fhem.test"
     }
 
     signingConfigs {
@@ -82,7 +81,7 @@ android {
 
     sourceSets {
         androidTest {
-            java.srcDir file('src/test/java')
+            java.srcDirs = ['src/test/java', 'src/instrumentTest/java']
             resources.srcDir file('src/test/resources')
         }
         main {
@@ -125,7 +124,7 @@ dependencies {
     compile 'org.apache.commons:commons-io:1.3.2'
     compile 'commons-net:commons-net:3.3'
     compile 'com.google.code.gson:gson:2.2.4'
-    compile 'com.google.guava:guava:16.0.1'
+    compile 'com.google.guava:guava:17.0'
     compile 'org.apache.commons:commons-lang3:3.2.1'
     compile 'org.achartengine:achartengine:1.2.0'
     compile 'org.apache.commons:commons-lang3:3.3.2'
@@ -166,6 +165,13 @@ tasks.whenTaskAdded { task ->
     }
 }
 
+task release(dependsOn: ['testInappDebug', 'assembleRelease', 'uploadToGoogleSites']) << {}
+
+def readFromConsole(String prompt) {
+    def console = System.console()
+    return new String(console.readPassword('\n\n' + prompt + '\n> '))
+}
+
 task artifacts {
     group = "Help"
     description = "Displays the artifacts associated with each configuration of " + project
@@ -178,14 +184,6 @@ task artifacts {
             }
         }
     }
-}
-
-task release(dependsOn: ['assembleRelease', 'uploadToGoogleSites']) << {
-}
-
-def readFromConsole(String prompt) {
-    def console = System.console()
-    return new String(console.readPassword('\n\n' + prompt + '\n> '))
 }
 
 def getBuildProperty(String key) {
