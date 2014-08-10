@@ -51,17 +51,12 @@ repositories {
 }
 
 android {
-    // temporary fix until Android Studio 0.8.1 is released
-    // (https://code.google.com/p/android/issues/detail?id=72450)
-    useOldManifestMerger true
-
     compileSdkVersion 19
     buildToolsVersion '20'
 
     defaultConfig {
         minSdkVersion 9
         targetSdkVersion 19
-        testPackageName "li.klass.fhem.test"
     }
 
     signingConfigs {
