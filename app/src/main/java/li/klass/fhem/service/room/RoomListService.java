@@ -59,39 +59,34 @@ import li.klass.fhem.exception.CommandExecutionException;
 import li.klass.fhem.service.AbstractService;
 import li.klass.fhem.service.CommandExecutionService;
 import li.klass.fhem.util.ApplicationProperties;
+import li.klass.fhem.util.SharedPreferencesUtil;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static li.klass.fhem.constants.Actions.REDRAW_ALL_WIDGETS;
 import static li.klass.fhem.constants.PreferenceKeys.DEVICE_NAME;
 import static li.klass.fhem.domain.core.DeviceType.getDeviceTypeFor;
 import static li.klass.fhem.util.DateFormatUtil.toReadable;
-import static li.klass.fhem.util.SharedPreferencesUtil.getSharedPreferences;
-import static li.klass.fhem.util.SharedPreferencesUtil.getSharedPreferencesEditor;
+import static li.klass.fhem.util.SharedPreferencesUtil.SHARED_PREFERENCES_UTIL;
 
 public class RoomListService extends AbstractService {
 
     public static final RoomListService INSTANCE = new RoomListService();
     public static final String TAG = RoomListService.class.getName();
-
-    /**
-     * Currently loaded device list map.
-     */
-    volatile RoomDeviceList deviceList;
-
+    public static final String PREFERENCES_NAME = TAG;
     /**
      * file name of the current cache object.
      */
     public static final String CACHE_FILENAME = "cache.obj";
-
-    public static final String PREFERENCES_NAME = TAG;
     public static final String LAST_UPDATE_PROPERTY = "LAST_UPDATE";
-
     public static final long NEVER_UPDATE_PERIOD = 0;
     public static final long ALWAYS_UPDATE_PERIOD = -1;
-
     private final ReentrantLock updateLock = new ReentrantLock();
-
     private final AtomicBoolean currentlyUpdating = new AtomicBoolean(false);
+    /**
+     * Currently loaded device list map.
+     */
+    volatile RoomDeviceList deviceList;
+    private SharedPreferencesUtil sharedPreferencesUtil = SHARED_PREFERENCES_UTIL;
 
     RoomListService() {
     }
@@ -422,11 +417,11 @@ public class RoomListService extends AbstractService {
     }
 
     public long getLastUpdate() {
-        return getSharedPreferences(PREFERENCES_NAME).getLong(LAST_UPDATE_PROPERTY, 0L);
+        return sharedPreferencesUtil.getSharedPreferences(PREFERENCES_NAME).getLong(LAST_UPDATE_PROPERTY, 0L);
     }
 
     private void setLastUpdateToNow() {
-        getSharedPreferencesEditor(PREFERENCES_NAME).putLong(LAST_UPDATE_PROPERTY, System.currentTimeMillis()).commit();
+        sharedPreferencesUtil.getSharedPreferencesEditor(PREFERENCES_NAME).putLong(LAST_UPDATE_PROPERTY, System.currentTimeMillis()).commit();
     }
 
     private boolean shouldUpdate(long updatePeriod) {

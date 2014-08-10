@@ -25,15 +25,21 @@ package li.klass.fhem.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+
 import li.klass.fhem.AndFHEMApplication;
 
 public class SharedPreferencesUtil {
-    public static SharedPreferences.Editor getSharedPreferencesEditor(String preferencesName) {
+    public static final SharedPreferencesUtil SHARED_PREFERENCES_UTIL = new SharedPreferencesUtil();
+
+    private SharedPreferencesUtil() {
+    }
+
+    public SharedPreferences.Editor getSharedPreferencesEditor(String preferencesName) {
         SharedPreferences sharedPreferences = getSharedPreferences(preferencesName);
         return sharedPreferences.edit();
     }
 
-    public static SharedPreferences getSharedPreferences(String preferencesName) {
+    public SharedPreferences getSharedPreferences(String preferencesName) {
         Context context = AndFHEMApplication.getContext();
         return context.getSharedPreferences(preferencesName, Context.MODE_PRIVATE);
     }

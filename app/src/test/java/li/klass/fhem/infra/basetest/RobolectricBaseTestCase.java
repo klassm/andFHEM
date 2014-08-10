@@ -25,9 +25,11 @@
 package li.klass.fhem.infra.basetest;
 
 import org.junit.runner.RunWith;
+import org.robolectric.annotation.Config;
 
 import li.klass.fhem.infra.AndFHEMRobolectricTestRunner;
 
 @RunWith(AndFHEMRobolectricTestRunner.class)
+@Config(emulateSdk = 18)
 public abstract class RobolectricBaseTestCase {
 }

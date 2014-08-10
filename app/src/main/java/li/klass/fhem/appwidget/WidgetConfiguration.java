@@ -26,16 +26,17 @@ package li.klass.fhem.appwidget;
 import android.util.Log;
 
 import com.google.common.base.Joiner;
-import com.google.common.collect.Lists;
-
-import li.klass.fhem.appwidget.view.WidgetType;
 
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
+import li.klass.fhem.appwidget.view.WidgetType;
+
 import static com.google.common.collect.Lists.newArrayList;
 import static java.util.Arrays.asList;
+import static org.apache.commons.lang3.builder.EqualsBuilder.reflectionEquals;
+import static org.apache.commons.lang3.builder.HashCodeBuilder.reflectionHashCode;
 
 public class WidgetConfiguration implements Serializable {
     public static final String SAVE_SEPARATOR = "#";
@@ -62,16 +63,6 @@ public class WidgetConfiguration implements Serializable {
         this.isOld = isOld;
     }
 
-    public String toSaveString() {
-        return widgetId + SAVE_SEPARATOR
-                + widgetType.name() + SAVE_SEPARATOR +
-                escape(payloadAsSaveString());
-    }
-
-    private String payloadAsSaveString() {
-        return Joiner.on(PAYLOAD_SEPARATOR).join(payload);
-    }
-
     public static WidgetConfiguration fromSaveString(String value) {
         if (value == null) return null;
 
@@ -79,7 +70,7 @@ public class WidgetConfiguration implements Serializable {
 
         boolean isDeprecatedWidget = getWidgetTypeFromName(parts[1]) == null;
 
-        if (! isDeprecatedWidget) {
+        if (!isDeprecatedWidget) {
             return handleWidgetConfiguration(parts);
         } else {
             return handleDeprecatedWidgetConfiguration(parts);
@@ -135,6 +126,15 @@ public class WidgetConfiguration implements Serializable {
         return value.replaceAll(ESCAPED_HASH_REPLACEMENT, SAVE_SEPARATOR);
     }
 
+    public String toSaveString() {
+        return Joiner.on(SAVE_SEPARATOR).skipNulls().join(widgetId, widgetType.name(),
+                escape(payloadAsSaveString()));
+    }
+
+    private String payloadAsSaveString() {
+        return Joiner.on(PAYLOAD_SEPARATOR).join(payload);
+    }
+
     @Override
     public String toString() {
         return "WidgetConfiguration{" +
@@ -143,5 +143,15 @@ public class WidgetConfiguration implements Serializable {
                 ", payload=" + payload +
                 ", isOld=" + isOld +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return o instanceof WidgetConfiguration && reflectionEquals(this, o);
+    }
+
+    @Override
+    public int hashCode() {
+        return reflectionHashCode(this);
     }
 }

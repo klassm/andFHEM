@@ -27,6 +27,7 @@ package li.klass.fhem.infra;
 import org.junit.runners.model.InitializationError;
 import org.robolectric.AndroidManifest;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.SdkConfig;
 import org.robolectric.annotation.Config;
 import org.robolectric.res.Fs;
 
@@ -47,15 +48,8 @@ public class AndFHEMRobolectricTestRunner extends RobolectricTestRunner {
         return super.getAppManifest(config);
     }
 
-//    @Override
-//    protected Statement withBeforeClasses(Statement statement) {
-//        AndFHEMApplication.setContext(Robolectric.buildActivity(Activity.class).create().get());
-//        return super.withBeforeClasses(statement);
-//    }
-
-    //    @Override
-//    public void beforeTest(Method method) {
-//        AndFHEMApplication.setContext(new Activity());
-//        super.beforeTest(method);
-//    }
+    @Override
+    protected SdkConfig pickSdkVersion(AndroidManifest appManifest, Config config) {
+        return new SdkConfig(18);
+    }
 }

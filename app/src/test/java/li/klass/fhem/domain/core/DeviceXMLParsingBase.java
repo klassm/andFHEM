@@ -24,15 +24,16 @@
 
 package li.klass.fhem.domain.core;
 
-import li.klass.fhem.infra.basetest.RobolectricBaseTestCase;
-import li.klass.fhem.service.room.DeviceListParser;
-import li.klass.fhem.testsuite.category.DeviceTestBase;
-import li.klass.fhem.util.CloseableUtil;
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.experimental.categories.Category;
 
 import java.io.InputStream;
+
+import li.klass.fhem.infra.basetest.RobolectricBaseTestCase;
+import li.klass.fhem.service.room.DeviceListParser;
+import li.klass.fhem.testsuite.category.DeviceTestBase;
+import li.klass.fhem.util.CloseableUtil;
 
 @Category(DeviceTestBase.class)
 public abstract class DeviceXMLParsingBase extends RobolectricBaseTestCase {
@@ -72,6 +73,7 @@ public abstract class DeviceXMLParsingBase extends RobolectricBaseTestCase {
 
     /**
      * Base class used as context for loading the input file.
+     *
      * @return base class
      */
     protected Class<?> getTestFileBaseClass() {

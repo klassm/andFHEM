@@ -22,6 +22,8 @@
  *   Boston, MA  02110-1301  USA
  */
 
+apply plugin: 'com.android.application'
+
 buildscript {
     repositories {
         mavenCentral()
@@ -37,46 +39,17 @@ buildscript {
         classpath 'javax.mail:mail:1.4.7'
         classpath 'com.google.oauth-client:google-oauth-client:1.17.0-rc'
 
+        classpath 'com.github.jcandksolutions.gradle:android-unit-test:1.2.+'
         // Original plugin of Jake Wharton is no longer supported. => Switch to a fork
-        classpath 'com.github.cowst:gradle-android-test-plugin:0.11.0-SNAPSHOT'
+//        classpath 'com.github.cowst:gradle-android-test-plugin:0.11.0-SNAPSHOT'
     }
 }
-
-apply plugin: 'com.android.application'
-apply plugin: 'android-test'
 
 repositories {
     mavenCentral()
     maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
     maven { url 'http://partnerdemo.artifactoryonline.com/partnerdemo/snapshots' }
     maven { url 'https://repository-achartengine.forge.cloudbees.com/snapshot' }
-}
-
-dependencies {
-    compile fileTree(dir: './libs', include: '*.jar')
-    compile 'com.actionbarsherlock:actionbarsherlock:4.4.0@aar'
-    compile 'com.android.support:support-v4:19.+'
-    compile 'com.google.android.gms:play-services:5.0.77'
-    compile 'org.apache.commons:commons-io:1.3.2'
-    compile 'commons-net:commons-net:3.3'
-    compile 'com.google.code.gson:gson:2.2.4'
-    compile 'com.google.guava:guava:16.0.1'
-    compile 'org.apache.commons:commons-lang3:3.2.1'
-    compile 'org.achartengine:achartengine:1.2.0'
-
-    testCompile 'org.hamcrest:hamcrest-all:1.3'
-    testCompile 'junit:junit:4.10'
-    testCompile 'org.robolectric:robolectric:2.1.+'
-    testCompile('com.squareup:fest-android:1.0.+') {
-        exclude group: 'com.android.support', module: 'support-v4'
-    }
-    // make buggy android studio resolve test dependencies...
-    androidTestCompile 'org.hamcrest:hamcrest-all:1.3'
-    androidTestCompile 'junit:junit:4.10'
-    androidTestCompile 'org.robolectric:robolectric:2.1.+'
-    androidTestCompile('com.squareup:fest-android:1.0.+') {
-        exclude group: 'com.android.support', module: 'support-v4'
-    }
 }
 
 android {
@@ -140,6 +113,33 @@ android {
         abortOnError false
     }
 }
+
+apply plugin: 'android-unit-test'
+
+
+dependencies {
+    compile fileTree(dir: './libs', include: '*.jar')
+    compile 'com.actionbarsherlock:actionbarsherlock:4.4.0@aar'
+    compile 'com.android.support:support-v4:19.+'
+    compile 'com.google.android.gms:play-services:5.0.77'
+    compile 'org.apache.commons:commons-io:1.3.2'
+    compile 'commons-net:commons-net:3.3'
+    compile 'com.google.code.gson:gson:2.2.4'
+    compile 'com.google.guava:guava:16.0.1'
+    compile 'org.apache.commons:commons-lang3:3.2.1'
+    compile 'org.achartengine:achartengine:1.2.0'
+    compile 'org.apache.commons:commons-lang3:3.3.2'
+
+    testCompile 'org.hamcrest:hamcrest-all:1.3'
+    testCompile 'junit:junit:4.11'
+    testCompile 'org.robolectric:robolectric:2.3'
+    testCompile('com.squareup:fest-android:1.0.+') {
+        exclude group: 'com.android.support', module: 'support-v4'
+    }
+    testCompile 'org.mockito:mockito-core:1.9.5'
+}
+
+
 
 task readSigningPasswordsFromConsole(
         dependsOn: ['readSigningStorePasswordFromConsole', 'readSigningKeyAliasPasswordFromConsole'])
