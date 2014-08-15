@@ -37,6 +37,7 @@ import static li.klass.fhem.R.string.functionalityKey;
 import static li.klass.fhem.R.string.functionalityLog;
 import static li.klass.fhem.R.string.functionalityMotionDetector;
 import static li.klass.fhem.R.string.functionalityNetwork;
+import static li.klass.fhem.R.string.functionalityPresence;
 import static li.klass.fhem.R.string.functionalityRemoteControl;
 import static li.klass.fhem.R.string.functionalitySmokeDetector;
 import static li.klass.fhem.R.string.functionalitySwitch;
@@ -67,8 +68,8 @@ public enum DeviceFunctionality {
     FLOORPLAN(functionalityFloorplan),
     REMOTE_CONTROL(functionalityRemoteControl),
     WEB_LINK(functionalityWebView),
-
-    UNKNOWN(functionalityUnknown);
+    UNKNOWN(functionalityUnknown),
+    PRESENCE(functionalityPresence);
 
     private final int captionId;
 

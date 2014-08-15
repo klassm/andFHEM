@@ -216,6 +216,8 @@
     <string name="height">Größe</string>
     <string name="weight">Gewicht</string>
     <string name="noise">Lärm</string>
+    <string name="location">Ort</string>
+    <string name="mood">Laune</string>
 
     <string name="connectionManage">Verwalten</string>
     <string name="connectionCreate">Neue Verbindung erstellen</string>
@@ -552,6 +554,7 @@
     <string name="functionalityFloorplan">Grundriss</string>
     <string name="functionalityWebView">Web Link</string>
     <string name="functionalityRemoteControl">Fernbedienung</string>
+    <string name="functionalityPresence">Anwesenheit</string>
     <string name="functionalityUnknown">Unbekannt</string>
 
     <string name="widgetNoDevices">Es wurden keine Geräte für diese Widget-Größe gefunden.</string>

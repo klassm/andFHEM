@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ AndFHEM - Open Source Android application to control a FHEM home automation
   ~ server.
   ~
@@ -217,6 +216,8 @@
     <string name="height">Height</string>
     <string name="weight">Weight</string>
     <string name="noise">Noise</string>
+    <string name="location">Location</string>
+    <string name="mood">Mood</string>
 
     <string name="connectionManage">Manage</string>
     <string name="connectionCreate">Create a new connection</string>
@@ -552,6 +553,7 @@
     <string name="functionalityFloorplan">Floorplan</string>
     <string name="functionalityRemoteControl">Remote Control</string>
     <string name="functionalityWebView">Web Link</string>
+    <string name="functionalityPresence">Presence</string>
     <string name="functionalityUnknown">Unknown</string>
 
     <string name="widgetNoDevices">No devices are applicable for this widget size.</string>

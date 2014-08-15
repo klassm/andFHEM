@@ -117,6 +117,7 @@ import li.klass.fhem.domain.RFXX10RECDevice;
 import li.klass.fhem.domain.RPIGPIODevice;
 import li.klass.fhem.domain.ReadingsProxyDevice;
 import li.klass.fhem.domain.RemoteControlDevice;
+import li.klass.fhem.domain.RoommateDevice;
 import li.klass.fhem.domain.SHT21Device;
 import li.klass.fhem.domain.SISPMSDevice;
 import li.klass.fhem.domain.SWAPDevice;
@@ -227,7 +228,8 @@ public enum DeviceType {
     EC3000("EC3000", EC3000Device.class),
     WITHINGS("withings", WithingsDevice.class),
     DMX("DMXDevice", DMXDevice.class, new DmxAdapter()),
-    NETATMO("netatmo", NetatmoDevice.class);
+    NETATMO("netatmo", NetatmoDevice.class),
+    ROOMMATE("ROOMMATE", RoommateDevice.class);
 
     private String xmllistTag;
     private Class<? extends Device> deviceClass;

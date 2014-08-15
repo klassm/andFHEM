@@ -171,6 +171,8 @@ public enum ResourceIdMapper {
     height(R.string.height),
     weight(R.string.weight),
     noise(R.string.noise),
+    location(R.string.location),
+    mood(R.string.mood),
 
     blank(R.string.blank),
     none(-1);
