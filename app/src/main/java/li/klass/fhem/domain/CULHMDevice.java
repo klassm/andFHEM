@@ -361,11 +361,6 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
     }
 
     @Override
-    public boolean supportsToggle() {
-        return subType == SWITCH || subType == DIMMER || subType == POWERMETER;
-    }
-
-    @Override
     public int getDimLowerBound() {
         if (getStateSliderValue() != null) {
             return super.getDimLowerBound();
@@ -735,12 +730,9 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
 
     @Override
     public boolean supportsWidget(Class<? extends DeviceAppWidgetView> appWidgetClass) {
-        if (appWidgetClass.equals(TemperatureWidgetView.class) &&
-                !(subType == SubType.TEMPERATURE_HUMIDITY || subType == HEATING)) {
-            return false;
-        }
-
-        return super.supportsWidget(appWidgetClass);
+        return !(appWidgetClass.equals(TemperatureWidgetView.class) &&
+                !(subType == SubType.TEMPERATURE_HUMIDITY || subType == HEATING)) &&
+                super.supportsWidget(appWidgetClass);
     }
 
     @Override

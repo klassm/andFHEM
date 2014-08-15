@@ -44,7 +44,7 @@ public class PowerMeterTest extends DeviceXMLParsingBase {
         assertThat(device.getSubType(), is(CULHMDevice.SubType.POWERMETER));
         assertThat(device.getState(), is("on"));
         assertThat(device.isOnByState(), is(true));
-        assertThat(device.supportsToggle(), is(true));
+        assertThat(device.supportsToggle(), is(false));
 
         assertThat(device.getCurrentUsage(), is("3 (W)"));
         assertThat(device.getCurrentVoltage(), is("228.7 (A)"));
