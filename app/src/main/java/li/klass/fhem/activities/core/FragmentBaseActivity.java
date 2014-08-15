@@ -90,12 +90,9 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
     public static final String TAG = FragmentBaseActivity.class.getName();
     public static final String NAVIGATION_TAG = "NAVIGATION_TAG";
     public static final String CONTENT_TAG = "CONTENT_TAG";
-
+    protected Menu optionsMenu;
     private ApplicationProperties applicationProperties = ApplicationProperties.INSTANCE;
     private Receiver broadcastReceiver;
-
-    protected Menu optionsMenu;
-
     private Timer timer;
 
     private RepairedDrawerLayout mDrawerLayout;
@@ -105,88 +102,6 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
     private AvailableConnectionDataAdapter availableConnectionDataAdapter;
 
     protected FragmentBaseActivity() {
-    }
-
-    private class Receiver extends BroadcastReceiver {
-
-        private final IntentFilter intentFilter;
-
-        private Receiver() {
-            intentFilter = new IntentFilter();
-            intentFilter.addAction(Actions.SHOW_FRAGMENT);
-            intentFilter.addAction(Actions.DISMISS_UPDATING_DIALOG);
-            intentFilter.addAction(Actions.DO_UPDATE);
-            intentFilter.addAction(SHOW_EXECUTING_DIALOG);
-            intentFilter.addAction(DISMISS_EXECUTING_DIALOG);
-            intentFilter.addAction(SHOW_TOAST);
-            intentFilter.addAction(SHOW_ALERT);
-            intentFilter.addAction(DO_UPDATE);
-            intentFilter.addAction(BACK);
-            intentFilter.addAction(RELOAD);
-            intentFilter.addAction(CONNECTIONS_CHANGED);
-            intentFilter.addAction(REDRAW);
-        }
-
-        @Override
-        public void onReceive(Context context, final Intent intent) {
-            if (! saveInstanceStateCalled) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            String action = intent.getAction();
-                            if (action == null) return;
-
-                            if (Actions.SHOW_FRAGMENT.equals(action)) {
-                                Bundle bundle = intent.getExtras();
-                                if (bundle == null)
-                                    throw new IllegalArgumentException("need a content fragment");
-                                FragmentType fragmentType;
-                                if (bundle.containsKey(FRAGMENT)) {
-                                    fragmentType = (FragmentType) bundle.getSerializable(FRAGMENT);
-                                } else {
-                                    String fragmentName = bundle.getString(FRAGMENT_NAME);
-                                    fragmentType = getFragmentFor(fragmentName);
-                                }
-                                switchToFragment(fragmentType, intent.getExtras());
-                            } else if (action.equals(Actions.DISMISS_UPDATING_DIALOG)) {
-                                setShowRefreshProgressIcon(false);
-                            } else if (intent.getBooleanExtra(BundleExtraKeys.DO_REFRESH, false) && action.equals(Actions.DO_UPDATE)) {
-                                setShowRefreshProgressIcon(true);
-                            } else if (action.equals(SHOW_EXECUTING_DIALOG)) {
-                                setShowRefreshProgressIcon(true);
-                            } else if (action.equals(DISMISS_EXECUTING_DIALOG)) {
-                                setShowRefreshProgressIcon(false);
-                            } else if (action.equals(SHOW_TOAST)) {
-                                String content = intent.getStringExtra(BundleExtraKeys.CONTENT);
-                                if (content == null) {
-                                    content = getString(intent.getIntExtra(BundleExtraKeys.STRING_ID, 0));
-                                }
-                                Toast.makeText(FragmentBaseActivity.this, content, Toast.LENGTH_SHORT).show();
-                            } else if (action.equals(SHOW_ALERT)) {
-                                DialogUtil.showAlertDialog(FragmentBaseActivity.this,
-                                        intent.getIntExtra(BundleExtraKeys.ALERT_TITLE_ID, R.string.blank),
-                                        intent.getIntExtra(BundleExtraKeys.ALERT_CONTENT_ID, R.string.blank));
-                            } else if (action.equals(BACK)) {
-                                onBackPressed();
-                            } else if (CONNECTIONS_CHANGED.equals(action)) {
-                                if (availableConnectionDataAdapter != null) {
-                                    availableConnectionDataAdapter.doLoad();
-                                }
-                            } else if (REDRAW.equals(action)) {
-                                redrawContent();
-                            }
-                        } catch (Exception e) {
-                            Log.e(TAG, "exception occurred while receiving broadcast", e);
-                        }
-                    }
-                });
-            }
-        }
-
-        public IntentFilter getIntentFilter() {
-            return intentFilter;
-        }
     }
 
     @Override
@@ -221,11 +136,11 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
 
         initDrawerLayout();
 
-        BillingService.INSTANCE.start(new BillingService.SetupFinishedListener() {
+        BillingService.INSTANCE.setup(new BillingService.SetupFinishedListener() {
             @Override
             public void onSetupFinished() {
                 Log.i(TAG, "Billing initialized, creating initial fragment");
-                if (savedInstanceState == null && ! saveInstanceStateCalled) {
+                if (savedInstanceState == null && !saveInstanceStateCalled) {
                     handleStartupFragment();
                 }
             }
@@ -280,7 +195,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
         FragmentType toSwitchTo = ALL_DEVICES;
         if (resultCode == ResultCodes.SUCCESS && resultData.containsKey(HAS_FAVORITES)) {
             boolean hasFavorites = resultData.getBoolean(HAS_FAVORITES, false);
-            if (hasFavorites && ! saveInstanceStateCalled) {
+            if (hasFavorites && !saveInstanceStateCalled) {
                 toSwitchTo = FAVORITES;
                 Log.d(TAG, "found favorites, switching");
             } else {
@@ -485,7 +400,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
         }
         FragmentType contentFragmentType = getFragmentFor(contentFragment.getClass());
         while (true) {
-            if (! getSupportFragmentManager().popBackStackImmediate()) {
+            if (!getSupportFragmentManager().popBackStackImmediate()) {
                 doFinish = true;
                 break;
             }
@@ -526,7 +441,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
     }
 
     private void switchToFragment(FragmentType fragmentType, Bundle data) {
-        if (! saveInstanceStateCalled) {
+        if (!saveInstanceStateCalled) {
             if (data == null) data = new Bundle();
 
             Log.i(TAG, "switch to " + fragmentType.name() + " with " + data.toString());
@@ -669,5 +584,87 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
         if (optionsMenu == null) return;
         optionsMenu.findItem(R.id.menu_refresh).setVisible(!show);
         optionsMenu.findItem(R.id.menu_refresh_progress).setVisible(show);
+    }
+
+    private class Receiver extends BroadcastReceiver {
+
+        private final IntentFilter intentFilter;
+
+        private Receiver() {
+            intentFilter = new IntentFilter();
+            intentFilter.addAction(Actions.SHOW_FRAGMENT);
+            intentFilter.addAction(Actions.DISMISS_UPDATING_DIALOG);
+            intentFilter.addAction(Actions.DO_UPDATE);
+            intentFilter.addAction(SHOW_EXECUTING_DIALOG);
+            intentFilter.addAction(DISMISS_EXECUTING_DIALOG);
+            intentFilter.addAction(SHOW_TOAST);
+            intentFilter.addAction(SHOW_ALERT);
+            intentFilter.addAction(DO_UPDATE);
+            intentFilter.addAction(BACK);
+            intentFilter.addAction(RELOAD);
+            intentFilter.addAction(CONNECTIONS_CHANGED);
+            intentFilter.addAction(REDRAW);
+        }
+
+        @Override
+        public void onReceive(Context context, final Intent intent) {
+            if (!saveInstanceStateCalled) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            String action = intent.getAction();
+                            if (action == null) return;
+
+                            if (Actions.SHOW_FRAGMENT.equals(action)) {
+                                Bundle bundle = intent.getExtras();
+                                if (bundle == null)
+                                    throw new IllegalArgumentException("need a content fragment");
+                                FragmentType fragmentType;
+                                if (bundle.containsKey(FRAGMENT)) {
+                                    fragmentType = (FragmentType) bundle.getSerializable(FRAGMENT);
+                                } else {
+                                    String fragmentName = bundle.getString(FRAGMENT_NAME);
+                                    fragmentType = getFragmentFor(fragmentName);
+                                }
+                                switchToFragment(fragmentType, intent.getExtras());
+                            } else if (action.equals(Actions.DISMISS_UPDATING_DIALOG)) {
+                                setShowRefreshProgressIcon(false);
+                            } else if (intent.getBooleanExtra(BundleExtraKeys.DO_REFRESH, false) && action.equals(Actions.DO_UPDATE)) {
+                                setShowRefreshProgressIcon(true);
+                            } else if (action.equals(SHOW_EXECUTING_DIALOG)) {
+                                setShowRefreshProgressIcon(true);
+                            } else if (action.equals(DISMISS_EXECUTING_DIALOG)) {
+                                setShowRefreshProgressIcon(false);
+                            } else if (action.equals(SHOW_TOAST)) {
+                                String content = intent.getStringExtra(BundleExtraKeys.CONTENT);
+                                if (content == null) {
+                                    content = getString(intent.getIntExtra(BundleExtraKeys.STRING_ID, 0));
+                                }
+                                Toast.makeText(FragmentBaseActivity.this, content, Toast.LENGTH_SHORT).show();
+                            } else if (action.equals(SHOW_ALERT)) {
+                                DialogUtil.showAlertDialog(FragmentBaseActivity.this,
+                                        intent.getIntExtra(BundleExtraKeys.ALERT_TITLE_ID, R.string.blank),
+                                        intent.getIntExtra(BundleExtraKeys.ALERT_CONTENT_ID, R.string.blank));
+                            } else if (action.equals(BACK)) {
+                                onBackPressed();
+                            } else if (CONNECTIONS_CHANGED.equals(action)) {
+                                if (availableConnectionDataAdapter != null) {
+                                    availableConnectionDataAdapter.doLoad();
+                                }
+                            } else if (REDRAW.equals(action)) {
+                                redrawContent();
+                            }
+                        } catch (Exception e) {
+                            Log.e(TAG, "exception occurred while receiving broadcast", e);
+                        }
+                    }
+                });
+            }
+        }
+
+        public IntentFilter getIntentFilter() {
+            return intentFilter;
+        }
     }
 }

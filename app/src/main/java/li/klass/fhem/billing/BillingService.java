@@ -49,7 +49,7 @@ public class BillingService {
     private BillingService() {
     }
 
-    public synchronized void start(final SetupFinishedListener listener) {
+    public synchronized void setup(final SetupFinishedListener listener) {
         checkNotNull(listener);
 
         try {
@@ -60,17 +60,12 @@ public class BillingService {
                 public void onIabSetupFinished(IabResult result) {
                     if (result.isSuccess()) {
                         Log.d(TAG, "=> SUCCESS");
-                        loadInventory(new OnLoadInventoryFinishedListener() {
-                            @Override
-                            public void onInventoryLoadFinished() {
-                                listener.onSetupFinished();
-                            }
-                        });
+                        loadInternal(null);
                     } else {
                         Log.e(TAG, "=> ERROR " + result.toString());
                         inventory.set(Inventory.empty());
-                        listener.onSetupFinished();
                     }
+                    listener.onSetupFinished();
                 }
             });
         } catch (Exception e) {
@@ -114,26 +109,30 @@ public class BillingService {
         ensureSetup(new SetupFinishedListener() {
             @Override
             public void onSetupFinished() {
-                try {
-                    Log.i(TAG, "loading inventory");
-                    inventory.set(iabHelper.queryInventory(false, null, null));
-                } catch (IabException e) {
-                    Log.e(TAG, "cannot load inventory", e);
-                    inventory.set(Inventory.empty());
-                } finally {
-                    if (listener != null) {
-                        listener.onInventoryLoadFinished();
-                    }
-                }
+                loadInternal(listener);
             }
         });
+    }
+
+    private void loadInternal(OnLoadInventoryFinishedListener listener) {
+        try {
+            Log.i(TAG, "loading inventory");
+            inventory.set(iabHelper.queryInventory(false, null, null));
+        } catch (IabException e) {
+            Log.e(TAG, "cannot load inventory", e);
+            inventory.set(Inventory.empty());
+        } finally {
+            if (listener != null) {
+                listener.onInventoryLoadFinished();
+            }
+        }
     }
 
     private void ensureSetup(SetupFinishedListener listener) {
         if (isSetup()) {
             listener.onSetupFinished();
         } else {
-            start(listener);
+            setup(listener);
         }
     }
 
