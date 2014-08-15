@@ -30,73 +30,69 @@ import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 import li.klass.fhem.domain.setlist.SetList;
 import li.klass.fhem.domain.setlist.SetListGroupValue;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasItemInArray;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.hamcrest.Matchers.nullValue;
-import static org.hamcrest.core.Is.is;
+import static org.fest.assertions.api.Assertions.assertThat;
 
 public class DummyDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributesInOnOffDummy() {
         DummyDevice device = getDefaultDevice();
 
-        assertThat(device.getName(), is(DEFAULT_TEST_DEVICE_NAME));
-        assertThat(device.getRoomConcatenated(), is(DEFAULT_TEST_ROOM_NAME));
+        assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
+        assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
 
-        assertThat(device.getState(), is("on"));
-        assertThat(device.isSpecialButtonDevice(), is(false));
-        assertThat(device.supportsToggle(), is(true));
-        assertThat(device.isOnByState(), is(true));
+        assertThat(device.getState()).isEqualTo("on");
+        assertThat(device.isSpecialButtonDevice()).isEqualTo(false);
+        assertThat(device.supportsToggle()).isEqualTo(true);
+        assertThat(device.isOnByState()).isEqualTo(true);
 
-        assertThat(device.getSetList().contains("on", "off"), is(true));
+        assertThat(device.getSetList().contains("on", "off")).isEqualTo(true);
 
-        assertThat(device.getLogDevice(), is(nullValue()));
-        assertThat(device.getDeviceCharts().size(), is(0));
-        assertThat(device.supportsDim(), is(false));
+        assertThat(device.getLogDevices()).isEmpty();
+        assertThat(device.getDeviceCharts().size()).isEqualTo(0);
+        assertThat(device.supportsDim()).isEqualTo(false);
     }
 
     @Test
     public void testForCorrectlySetAttributesInCommonDummy() {
         DummyDevice device = getDeviceFor("device1");
 
-        assertThat(device.getName(), is("device1"));
-        assertThat(device.getRoomConcatenated(), is(DEFAULT_TEST_ROOM_NAME));
+        assertThat(device.getName()).isEqualTo("device1");
+        assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
 
-        assertThat(device.getState(), is("??"));
-        assertThat(device.isSpecialButtonDevice(), is(false));
-        assertThat(device.supportsToggle(), is(false));
+        assertThat(device.getState()).isEqualTo("??");
+        assertThat(device.isSpecialButtonDevice()).isEqualTo(false);
+        assertThat(device.supportsToggle()).isEqualTo(false);
 
-        assertThat(device.getLogDevice(), is(nullValue()));
-        assertThat(device.getDeviceCharts().size(), is(0));
-        assertThat(device.supportsDim(), is(false));
+        assertThat(device.getLogDevices()).isEmpty();
+        assertThat(device.getDeviceCharts().size()).isEqualTo(0);
+        assertThat(device.supportsDim()).isEqualTo(false);
     }
 
     @Test
     public void testDeviceWithSetList() {
         DummyDevice device = getDeviceFor("deviceWithSetlist");
 
-        assertThat((SetListGroupValue) device.getSetList().get("state"), is(equalTo(new SetListGroupValue("17", "18", "19", "20", "21", "21.5", "22"))));
-        assertThat(device.supportsDim(), is(false));
+        assertThat((SetListGroupValue) device.getSetList().get("state"))
+                .isEqualTo(new SetListGroupValue("17", "18", "19", "20", "21", "21.5", "22"));
+        assertThat(device.supportsDim()).isEqualTo(false);
     }
 
     @Test
     public void testDeviceWithTimer() {
         DummyDevice device = getDeviceFor("timerDevice");
 
-        assertThat(device.isTimerDevice(), is(true));
-        assertThat(device.supportsDim(), is(false));
+        assertThat(device.isTimerDevice()).isEqualTo(true);
+        assertThat(device.supportsDim()).isEqualTo(false);
     }
 
     @Test
     public void testSliderDevice() {
         DummyDevice device = getDeviceFor("sliderDevice");
-        assertThat(device.supportsDim(), is(true));
+        assertThat(device.supportsDim()).isEqualTo(true);
 
-        assertThat(device.getDimUpperBound(), is(50));
-        assertThat(device.getDimLowerBound(), is(10));
-        assertThat(device.getDimStep(), is(2));
+        assertThat(device.getDimUpperBound()).isEqualTo(50);
+        assertThat(device.getDimLowerBound()).isEqualTo(10);
+        assertThat(device.getDimStep()).isEqualTo(2);
     }
 
     @Test
@@ -104,35 +100,32 @@ public class DummyDeviceTest extends DeviceXMLParsingBase {
         DummyDevice device = getDeviceFor("eventMapDevice");
 
         String[] eventMapStates = device.getAvailableTargetStatesEventMapTexts();
-        assertThat(eventMapStates, is(notNullValue()));
+        assertThat(eventMapStates).isNotNull();
 
         SetList setList = device.getSetList();
-        assertThat(setList, is(notNullValue()));
+        assertThat(setList).isNotNull();
 
-        assertThat(setList.size(), is(eventMapStates.length));
+        assertThat(setList.size()).isEqualTo(eventMapStates.length);
 
-        assertThat(setList.contains("oben", "unten", "65", "40"), is(true));
+        assertThat(setList.contains("oben", "unten", "65", "40")).isEqualTo(true);
 
-        assertThat(eventMapStates, hasItemInArray("Oben"));
-        assertThat(eventMapStates, hasItemInArray("Unten"));
-        assertThat(eventMapStates, hasItemInArray("Halbschatten"));
-        assertThat(eventMapStates, hasItemInArray("Vollschatten"));
+        assertThat(eventMapStates).contains("Oben", "Unten", "Halbschatten", "Vollschatten");
     }
 
     @Test
     public void testRGBDevice() {
         DummyDevice device = getDeviceFor("rgbDevice");
 
-        assertThat(device.getRgbDesc(), is("0xFFAB01"));
-        assertThat(device.getRGBColor(), is(16755457));
+        assertThat(device.getRgbDesc()).isEqualTo("0xFFAB01");
+        assertThat(device.getRGBColor()).isEqualTo(16755457);
     }
 
     @Test
     public void testOnOffEventMapDevice() {
         DummyDevice device = getDeviceFor("onOffEventMap");
 
-        assertThat(device.supportsToggle(), is(true));
-        assertThat(device.isOnByState(), is(true));
+        assertThat(device.supportsToggle()).isEqualTo(true);
+        assertThat(device.isOnByState()).isEqualTo(true);
     }
 
     @Override

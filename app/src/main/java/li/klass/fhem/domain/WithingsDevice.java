@@ -1,3 +1,27 @@
+/*
+ * AndFHEM - Open Source Android application to control a FHEM home automation
+ * server.
+ *
+ * Copyright (c) 2011, Matthias Klass or third-party contributors as
+ * indicated by the @author tags or express copyright attribution
+ * statements applied by the authors.  All third-party contributions are
+ * distributed under license by Red Hat Inc.
+ *
+ * This copyrighted material is made available to anyone wishing to use, modify,
+ * copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+ * for more details.
+ *
+ * You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+ * along with this distribution; if not, write to:
+ *   Free Software Foundation, Inc.
+ *   51 Franklin Street, Fifth Floor
+ *   Boston, MA  02110-1301  USA
+ */
+
 package li.klass.fhem.domain;
 
 import android.util.Log;
@@ -157,11 +181,11 @@ public class WithingsDevice extends Device<WithingsDevice> {
         addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureGraph,
                 new ChartSeriesDescription.Builder()
                         .withColumnName(R.string.temperature)
-                        .withFileLogSpec("4:temperature:0")
+                        .withFileLogSpec("4:temperature")
                         .withDbLogSpec("temperature")
                         .withSeriesType(TEMPERATURE)
                         .withShowRegression(true)
-                        .withYAxisMinMaxValue(getLogDevice().getYAxisMinMaxValueFor("temperature", 0, 30))
+                        .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("temperature", 0, 30))
                         .build()
         ), temperature);
 
@@ -172,27 +196,28 @@ public class WithingsDevice extends Device<WithingsDevice> {
                         .withDbLogSpec("co2")
                         .withSeriesType(CO2)
                         .withShowRegression(true)
-                        .withYAxisMinMaxValue(getLogDevice().getYAxisMinMaxValueFor("co2", 300, 400))
+                        .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("co2", 300, 400))
                         .build()
         ), co2);
 
-        addDeviceChartIfNotNull(new DeviceChart(R.string.weightGraph),
-                new ChartSeriesDescription.Builder()
-                        .withColumnName(R.string.weight)
-                        .withFileLogSpec("4:weight")
-                        .withDbLogSpec("weight")
-                        .withSeriesType(WEIGHT)
-                        .withShowRegression(true)
-                        .withYAxisMinMaxValue(getLogDevice().getYAxisMinMaxValueFor("weight", 0, 70))
-                        .build(),
-                new ChartSeriesDescription.Builder()
-                        .withColumnName(R.string.fatRatio)
-                        .withFileLogSpec("4:fatRatio")
-                        .withDbLogSpec("fatRatio")
-                        .withSeriesType(FAT_RATIO)
-                        .withShowRegression(true)
-                        .withYAxisMinMaxValue(getLogDevice().getYAxisMinMaxValueFor("fatRatio", 0, 100))
-                        .build(), fatRatio, weight
+        addDeviceChartIfNotNull(new DeviceChart(R.string.weightGraph,
+                        new ChartSeriesDescription.Builder()
+                                .withColumnName(R.string.weight)
+                                .withFileLogSpec("4:weight")
+                                .withDbLogSpec("weight")
+                                .withSeriesType(WEIGHT)
+                                .withShowRegression(true)
+                                .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("weight", 0, 70))
+                                .build(),
+                        new ChartSeriesDescription.Builder()
+                                .withColumnName(R.string.fatRatio)
+                                .withFileLogSpec("4:fatRatio")
+                                .withDbLogSpec("fatRatio")
+                                .withSeriesType(FAT_RATIO)
+                                .withShowRegression(true)
+                                .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("fatRatio", 0, 100))
+                                .build()),
+                fatRatio, weight
         );
     }
 

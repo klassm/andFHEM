@@ -88,19 +88,19 @@ public class CULWSDevice extends Device<CULWSDevice> {
                             .withDbLogSpec("temperature")
                             .withSeriesType(TEMPERATURE)
                             .withShowRegression(true)
-                            .withYAxisMinMaxValue(getLogDevice().getYAxisMinMaxValueFor("temperature", 0, 30))
+                            .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("temperature", 0, 30))
                             .build(),
                     new ChartSeriesDescription.Builder()
                             .withColumnName(R.string.humidity).withFileLogSpec("6:H:0")
                             .withDbLogSpec("humidity")
                             .withSeriesType(HUMIDITY)
-                            .withYAxisMinMaxValue(getLogDevice().getYAxisMinMaxValueFor("humidity", 0, 100))
+                            .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("humidity", 0, 100))
                             .build(),
                     new ChartSeriesDescription.Builder()
                             .withColumnName(R.string.dewpoint).withFileLogSpec("8:D\\x3a:0:")
                             .withDbLogSpec("dewpoint")
                             .withSeriesType(DEWPOINT)
-                            .withYAxisMinMaxValue(getLogDevice().getYAxisMinMaxValueFor("dewpoint", -10, 10))
+                            .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("dewpoint", -10, 10))
                             .build()
             ), temperature, humidity, dewpoint);
         } else if (temperature != null && humidity != null) {
@@ -111,13 +111,13 @@ public class CULWSDevice extends Device<CULWSDevice> {
                             .withDbLogSpec("temperature")
                             .withSeriesType(TEMPERATURE)
                             .withShowRegression(true)
-                            .withYAxisMinMaxValue(getLogDevice().getYAxisMinMaxValueFor("temperature", 0, 30))
+                            .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("temperature", 0, 30))
                             .build(),
                     new ChartSeriesDescription.Builder()
                             .withColumnName(R.string.humidity).withFileLogSpec("6:H:0")
                             .withDbLogSpec("humidity")
                             .withSeriesType(HUMIDITY)
-                            .withYAxisMinMaxValue(getLogDevice().getYAxisMinMaxValueFor("humidity", 0, 30))
+                            .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("humidity", 0, 30))
                             .build()
             ), temperature, humidity);
         } else {
@@ -128,7 +128,7 @@ public class CULWSDevice extends Device<CULWSDevice> {
                             .withDbLogSpec("temperature")
                             .withSeriesType(TEMPERATURE)
                             .withShowRegression(true)
-                            .withYAxisMinMaxValue(getLogDevice().getYAxisMinMaxValueFor("temperature", 0, 30))
+                            .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("temperature", 0, 30))
                             .build()
             ), temperature);
         }

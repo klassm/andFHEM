@@ -194,13 +194,13 @@ public class WeatherDevice extends Device<WeatherDevice> {
                         .withDbLogSpec("temperature::int1")
                         .withSeriesType(TEMPERATURE)
                         .withShowRegression(true)
-                        .withYAxisMinMaxValue(getLogDevice().getYAxisMinMaxValueFor("temperature", 0, 30))
+                        .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("temperature", 0, 30))
                         .build(),
                 new ChartSeriesDescription.Builder()
                         .withColumnName(R.string.humidity).withFileLogSpec("4:humidity:0:")
                         .withDbLogSpec("humidity::int")
                         .withSeriesType(HUMIDITY)
-                        .withYAxisMinMaxValue(getLogDevice().getYAxisMinMaxValueFor("humidity", 0, 100))
+                        .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("humidity", 0, 100))
                         .build()
         ), temperature, humidity);
     }

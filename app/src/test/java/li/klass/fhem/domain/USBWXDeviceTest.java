@@ -49,7 +49,7 @@ public class USBWXDeviceTest extends DeviceXMLParsingBase {
 
         assertThat(device.getSetList().size(), is(not(0)));
 
-        assertThat(device.getLogDevice(), is(notNullValue()));
+        assertThat(device.getLogDevices(), is(notNullValue()));
         assertThat(device.getDeviceCharts().size(), is(2));
     }
 

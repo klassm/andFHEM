@@ -29,29 +29,27 @@ import org.junit.Test;
 import li.klass.fhem.domain.CULHMDevice;
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.nullValue;
+import static org.fest.assertions.api.Assertions.assertThat;
 
 public class DimmerTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
         CULHMDevice device = getDefaultDevice();
 
-        assertThat(device.getName(), is(DEFAULT_TEST_DEVICE_NAME));
-        assertThat(device.getRoomConcatenated(), is(DEFAULT_TEST_ROOM_NAME));
+        assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
+        assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
 
-        assertThat(device.getState(), is("off"));
-        assertThat(device.getSubType(), is(CULHMDevice.SubType.DIMMER));
+        assertThat(device.getState()).isEqualTo("off");
+        assertThat(device.getSubType()).isEqualTo(CULHMDevice.SubType.DIMMER);
 
-        assertThat(device.isOnByState(), is(false));
-        assertThat(device.getDimPosition(), is(0));
-        assertThat(device.supportsDim(), is(true));
+        assertThat(device.isOnByState()).isEqualTo(false);
+        assertThat(device.getDimPosition()).isEqualTo(0);
+        assertThat(device.supportsDim()).isEqualTo(true);
 
-        assertThat(device.getLogDevice(), is(nullValue()));
-        assertThat(device.getDeviceCharts().size(), is(0));
+        assertThat(device.getLogDevices()).isEmpty();
+        assertThat(device.getDeviceCharts().size()).isEqualTo(0);
 
-        assertThat(device.isSupported(), is(true));
+        assertThat(device.isSupported()).isEqualTo(true);
     }
 
     @Test
@@ -59,14 +57,14 @@ public class DimmerTest extends DeviceXMLParsingBase {
         CULHMDevice device = getDefaultDevice();
         device.setState("5 %");
 
-        assertThat(device.getDimPosition(), is(5));
-        assertThat(device.getDimDownPosition(), is(4));
-        assertThat(device.getDimUpPosition(), is(6));
+        assertThat(device.getDimPosition()).isEqualTo(5);
+        assertThat(device.getDimDownPosition()).isEqualTo(4);
+        assertThat(device.getDimUpPosition()).isEqualTo(6);
 
         device.setState("on");
-        assertThat(device.getDimPosition(), is(100));
+        assertThat(device.getDimPosition()).isEqualTo(100);
         device.setState("off");
-        assertThat(device.getDimPosition(), is(0));
+        assertThat(device.getDimPosition()).isEqualTo(0);
     }
 
     @Override

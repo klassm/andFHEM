@@ -60,16 +60,12 @@ public class GraphService {
     public HashMap<ChartSeriesDescription, List<GraphEntry>> getGraphData(Device device, ArrayList<ChartSeriesDescription> seriesDescriptions,
                                                                           final Calendar startDate, final Calendar endDate) {
 
-        if (device.getLogDevice() == null) return null;
+        if (device.getLogDevices().isEmpty()) return null;
 
         HashMap<ChartSeriesDescription, List<GraphEntry>> data = new HashMap<ChartSeriesDescription, List<GraphEntry>>();
 
         for (ChartSeriesDescription seriesDescription : seriesDescriptions) {
-            String columnSpec = seriesDescription.getFileLogSpec();
-
-            List<GraphEntry> valueEntries = getCurrentGraphEntriesFor(device, seriesDescription, startDate, endDate);
-
-            data.put(seriesDescription, valueEntries);
+            data.put(seriesDescription, getCurrentGraphEntriesFor(device, seriesDescription, startDate, endDate));
         }
 
         return data;
@@ -85,7 +81,7 @@ public class GraphService {
      * @param seriesDescription chart description
      * @param startDate   read FileLog entries from the given date
      * @param endDate     read FileLog entries up to the given date
-     * @return read logDevice entries converted to {@link GraphEntry} objects.
+     * @return read logDevices entries converted to {@link GraphEntry} objects.
      */
     private List<GraphEntry> getCurrentGraphEntriesFor(Device device,
                                                        ChartSeriesDescription seriesDescription,
@@ -100,14 +96,21 @@ public class GraphService {
         String fromDateFormatted = dateFormat.format(fromDate);
         String toDateFormatted = dateFormat.format(toDate);
 
-        LogDevice logDevice = device.getLogDevice();
-        String command = logDevice.getGraphCommandFor(device, fromDateFormatted,
-                toDateFormatted, seriesDescription);
+        StringBuilder result = new StringBuilder();
 
-        String data = CommandExecutionService.INSTANCE.executeSafely(command);
-        if (data == null) return null;
+        @SuppressWarnings("unchecked")
+        List<LogDevice<?>> logDevices = device.getLogDevices();
+        for (LogDevice<?> logDevice : logDevices) {
+            String command = logDevice.getGraphCommandFor(device, fromDateFormatted,
+                    toDateFormatted, seriesDescription);
 
-        return data.replaceAll("#" + seriesDescription, "");
+            String data = CommandExecutionService.INSTANCE.executeSafely(command);
+            if (data != null) {
+                result.append("\n\r").append(data.replaceAll("#" + seriesDescription, ""));
+            }
+        }
+
+        return result.toString();
     }
 
     /**

@@ -123,7 +123,7 @@ public class CULEMDevice extends Device<CULEMDevice> {
                         .withSumDivisionFactor(getSumGraphDivisionFactor())
                         .withShowSum(true)
                         .withSeriesType(CURRENT_USAGE_WATT)
-                        .withYAxisMinMaxValue(getLogDevice().getYAxisMinMaxValueFor("current", 0, 300))
+                        .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("current", 0, 300))
                         .build()
         ), currentUsage);
     }

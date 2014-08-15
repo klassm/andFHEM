@@ -32,36 +32,31 @@ import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 import li.klass.fhem.domain.log.CustomGraph;
 
 import static li.klass.fhem.domain.log.LogDevice.YAxisMinMaxValue;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.nullValue;
-import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsNot.not;
+import static org.fest.assertions.api.Assertions.assertThat;
 
 public class FileLogDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
         FileLogDevice device = getDefaultDevice();
 
-        assertThat(device.getName(), is(DEFAULT_TEST_DEVICE_NAME));
-        assertThat(device.getRoomConcatenated(), is(DEFAULT_TEST_ROOM_NAME));
+        assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
+        assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
 
-        assertThat(device.getConcerningDeviceRegexp(), is("myRegexp"));
-        assertThat(device.concernsDevice("myRegexp"), is(true));
-        assertThat(device.getState(), is("active"));
+        assertThat(device.getConcerningDeviceRegexp()).isEqualTo("myRegexp");
+        assertThat(device.concernsDevice("myRegexp")).isEqualTo(true);
+        assertThat(device.getState()).isEqualTo("active");
 
-        assertThat(device.getSetList().getEntries().size(), is(not(0)));
+        assertThat(device.getSetList().getEntries()).isNotEmpty();
 
-        assertThat(device.getLogDevice(), is(nullValue()));
-        assertThat(device.getDeviceCharts().size(), is(0));
+        assertThat(device.getLogDevices()).isEmpty();
+        assertThat(device.getDeviceCharts().size()).isEqualTo(0);
 
-        assertThat(device.getCustomGraphs().size(), is(3));
-        assertThat(device.getCustomGraphs(), hasItem(new CustomGraph("4:", "someValue", "axis1",
-                Optional.<YAxisMinMaxValue>absent())));
-        assertThat(device.getCustomGraphs(), hasItem(new CustomGraph("46:", "someValue with space", "axis",
-                Optional.<YAxisMinMaxValue>absent())));
-        assertThat(device.getCustomGraphs(), hasItem(new CustomGraph("48:", "some other value", "axis2",
-                Optional.of(new YAxisMinMaxValue(1, 100)))));
+        assertThat(device.getCustomGraphs().size()).isEqualTo(3);
+        assertThat(device.getCustomGraphs()).contains(
+                new CustomGraph("4:", "someValue", "axis1", Optional.<YAxisMinMaxValue>absent()),
+                new CustomGraph("46:", "someValue with space", "axis", Optional.<YAxisMinMaxValue>absent()),
+                new CustomGraph("48:", "some other value", "axis2", Optional.of(new YAxisMinMaxValue(1, 100)))
+        );
     }
 
     @Override

@@ -91,8 +91,8 @@ public class EIBDevice extends DimmableContinuousStatesDevice<EIBDevice> {
 
     @Override
     public boolean supportsToggle() {
-        if (model != null && model.equalsIgnoreCase("time")) return false;
-        return getSetList().contains("on", "off");
+        return !(model != null && model.equalsIgnoreCase("time")) &&
+                getSetList().contains("on", "off");
     }
 
     @Override
@@ -136,7 +136,7 @@ public class EIBDevice extends DimmableContinuousStatesDevice<EIBDevice> {
                                     .withDbLogSpec("state::int1")
                                     .withSeriesType(TEMPERATURE)
                                     .withShowRegression(true)
-                                    .withYAxisMinMaxValue(getLogDevice().getYAxisMinMaxValueFor("temperature", 0, 30))
+                                    .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("temperature", 0, 30))
                                     .build()
                     ), getInternalState()
             );

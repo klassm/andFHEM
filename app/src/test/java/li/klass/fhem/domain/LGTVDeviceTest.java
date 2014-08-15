@@ -28,27 +28,25 @@ import org.junit.Test;
 
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.nullValue;
-import static org.hamcrest.core.Is.is;
+import static org.fest.assertions.api.Assertions.assertThat;
 
 public class LGTVDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
         LGTVDevice device = getDefaultDevice();
 
-        assertThat(device.getName(), is(DEFAULT_TEST_DEVICE_NAME));
-        assertThat(device.getRoomConcatenated(), is(DEFAULT_TEST_ROOM_NAME));
+        assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
+        assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
 
-        assertThat(device.getState(), is("off"));
-        assertThat(device.getAudio(), is("mute"));
-        assertThat(device.getInput(), is("HDMI1"));
-        assertThat(device.getPower(), is("off"));
+        assertThat(device.getState()).isEqualTo("off");
+        assertThat(device.getAudio()).isEqualTo("mute");
+        assertThat(device.getInput()).isEqualTo("HDMI1");
+        assertThat(device.getPower()).isEqualTo("off");
 
-        assertThat(device.getSetList().contains("power", "input", "audio"), is(true));
+        assertThat(device.getSetList().contains("power", "input", "audio")).isEqualTo(true);
 
-        assertThat(device.getLogDevice(), is(nullValue()));
-        assertThat(device.getDeviceCharts().size(), is(0));
+        assertThat(device.getLogDevices()).isEmpty();
+        assertThat(device.getDeviceCharts()).isEmpty();
     }
 
     @Override

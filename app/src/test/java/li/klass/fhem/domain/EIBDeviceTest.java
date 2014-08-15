@@ -28,30 +28,26 @@ import org.junit.Test;
 
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.hamcrest.Matchers.nullValue;
-import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsNot.not;
+import static org.fest.assertions.api.Assertions.assertThat;
 
 public class EIBDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
         EIBDevice device = getDefaultDevice();
 
-        assertThat(device.getName(), is(DEFAULT_TEST_DEVICE_NAME));
-        assertThat(device.getRoomConcatenated(), is(DEFAULT_TEST_ROOM_NAME));
+        assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
+        assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
 
-        assertThat(device.getState(), is("on"));
-        assertThat(device.isOnByState(), is(true));
-        assertThat(device.isSpecialButtonDevice(), is(false));
+        assertThat(device.getState()).isEqualTo("on");
+        assertThat(device.isOnByState()).isEqualTo(true);
+        assertThat(device.isSpecialButtonDevice()).isEqualTo(false);
 
-        assertThat(device.getSetList().getEntries().size(), is(not(0)));
+        assertThat(device.getSetList().getEntries()).isNotEmpty();
 
-        assertThat(device.getLogDevice(), is(nullValue()));
-        assertThat(device.getDeviceCharts().size(), is(0));
+        assertThat(device.getLogDevices()).isEmpty();
+        assertThat(device.getDeviceCharts().size()).isEqualTo(0);
 
-        assertThat(device.supportsToggle(), is(true));
+        assertThat(device.supportsToggle()).isEqualTo(true);
     }
 
     @Test
@@ -59,17 +55,17 @@ public class EIBDeviceTest extends DeviceXMLParsingBase {
         EIBDevice timeDevice = getDeviceFor("time");
         EIBDevice dpt10Device = getDeviceFor("dpt10");
 
-        assertThat(timeDevice.getModel(), is("time"));
-        assertThat(dpt10Device.getModel(), is("time"));
+        assertThat(timeDevice.getModel()).isEqualTo("time");
+        assertThat(dpt10Device.getModel()).isEqualTo("time");
     }
 
     @Test
     public void testDimmerDevice() {
         EIBDevice device = getDeviceFor("dimmer");
 
-        assertThat(device.supportsDim(), is(true));
-        assertThat(device.getDimPosition(), is(20));
-        assertThat(device.getState(), is("20 (%)"));
+        assertThat(device.supportsDim()).isEqualTo(true);
+        assertThat(device.getDimPosition()).isEqualTo(20);
+        assertThat(device.getState()).isEqualTo("20 (%)");
     }
 
     @Test
@@ -88,14 +84,14 @@ public class EIBDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testPercentDeviceWithUnsetState() {
         EIBDevice device = getDeviceFor("percent_with_unset_state");
-        assertThat(device.getState(), is(notNullValue()));
-        assertThat(device.getState(), is("0 (%)"));
+        assertThat(device.getState()).isNotNull();
+        assertThat(device.getState()).isEqualTo("0 (%)");
     }
 
     private void assertDeviceState(String deviceName, String expectedState) {
         EIBDevice device = getDeviceFor(deviceName);
-        assertThat(device.getState(), is(expectedState));
-        assertThat(device.supportsToggle(), is(false));
+        assertThat(device.getState()).isEqualTo(expectedState);
+        assertThat(device.supportsToggle()).isEqualTo(false);
     }
 
     @Override

@@ -77,7 +77,7 @@ public class SHT21Device extends Device<SHT21Device> {
                         .withDbLogSpec("temperature::int1")
                         .withSeriesType(TEMPERATURE)
                         .withShowRegression(true)
-                        .withYAxisMinMaxValue(getLogDevice().getYAxisMinMaxValueFor("temperature", 0, 30))
+                        .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("temperature", 0, 30))
                         .build()
         ), temperature);
 
@@ -86,7 +86,7 @@ public class SHT21Device extends Device<SHT21Device> {
                         .withColumnName(R.string.humidity).withFileLogSpec("6::")
                         .withDbLogSpec("humidity::int1")
                         .withSeriesType(HUMIDITY)
-                        .withYAxisMinMaxValue(getLogDevice().getYAxisMinMaxValueFor("humidity", 0, 100))
+                        .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("humidity", 0, 100))
                         .build()
         ), humidity);
 
@@ -95,7 +95,7 @@ public class SHT21Device extends Device<SHT21Device> {
                         .withColumnName(R.string.dewpoint).withFileLogSpec("8::")
                         .withDbLogSpec("humidity::int1")
                         .withSeriesType(DEWPOINT)
-                        .withYAxisMinMaxValue(getLogDevice().getYAxisMinMaxValueFor("humidity", 0, 100))
+                        .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("humidity", 0, 100))
                         .build()
         ), dewpoint);
     }

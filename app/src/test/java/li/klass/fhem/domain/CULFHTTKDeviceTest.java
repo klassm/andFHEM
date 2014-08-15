@@ -28,27 +28,25 @@ import org.junit.Test;
 
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.nullValue;
-import static org.hamcrest.core.Is.is;
+import static org.fest.assertions.api.Assertions.assertThat;
 
 public class CULFHTTKDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
         CULFHTTKDevice device = getDefaultDevice();
 
-        assertThat(device.getName(), is(DEFAULT_TEST_DEVICE_NAME));
-        assertThat(device.getRoomConcatenated(), is(DEFAULT_TEST_ROOM_NAME));
+        assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
+        assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
 
-        assertThat(device.getLastStateChangeTime(), is("2012-08-14 23:05:51"));
-        assertThat(device.getLastWindowState(), is("Closed"));
-        assertThat(device.getWindowState(), is("Open"));
-        assertThat(device.getState(), is("Closed => Open"));
+        assertThat(device.getLastStateChangeTime()).isEqualTo("2012-08-14 23:05:51");
+        assertThat(device.getLastWindowState()).isEqualTo("Closed");
+        assertThat(device.getWindowState()).isEqualTo("Open");
+        assertThat(device.getState()).isEqualTo("Closed => Open");
 
-        assertThat(device.getSetList().getEntries().size(), is(0));
+        assertThat(device.getSetList().getEntries().size()).isEqualTo(0);
 
-        assertThat(device.getLogDevice(), is(nullValue()));
-        assertThat(device.getDeviceCharts().size(), is(0));
+        assertThat(device.getLogDevices()).isEmpty();
+        assertThat(device.getDeviceCharts().size()).isEqualTo(0);
     }
 
     @Override

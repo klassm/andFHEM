@@ -60,12 +60,10 @@ import li.klass.fhem.util.StringUtil;
 
 public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> {
     private static final String TAG = GenericDeviceAdapter.class.getName();
-
-    private Class<D> deviceClass;
-    protected List<DeviceDetailViewAction<D>> detailActions = new ArrayList<DeviceDetailViewAction<D>>();
-    private Map<String, List<FieldNameAddedToDetailListener<D>>> fieldNameAddedListeners = new HashMap<String, List<FieldNameAddedToDetailListener<D>>>();
     protected final LayoutInflater inflater;
-
+    protected List<DeviceDetailViewAction<D>> detailActions = new ArrayList<DeviceDetailViewAction<D>>();
+    private Class<D> deviceClass;
+    private Map<String, List<FieldNameAddedToDetailListener<D>>> fieldNameAddedListeners = new HashMap<String, List<FieldNameAddedToDetailListener<D>>>();
     /**
      * Field to cache our sorted and annotated class members. This is especially useful as
      * recreating this list on each view creation is really really expensive (involves reflection,
@@ -86,6 +84,10 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
         });
     }
 
+    public static void putUpdateExtra(Intent intent) {
+        intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver());
+    }
+
     protected void afterPropertiesSet() {
     }
 
@@ -103,18 +105,17 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
             OverviewViewSettings annotation = device.getClass().getAnnotation(OverviewViewSettings.class);
             List<AnnotatedDeviceClassItem> items = getSortedAnnotatedClassItems(device);
 
-            int i = 0;
             for (AnnotatedDeviceClassItem item : items) {
                 String name = item.getName();
                 boolean alwaysShow = false;
                 if (annotation != null) {
                     if (name.equalsIgnoreCase("state")) {
-                        if (! annotation.showState()) continue;
+                        if (!annotation.showState()) continue;
                         alwaysShow = true;
                     }
 
                     if (name.equalsIgnoreCase("measured")) {
-                        if (! annotation.showMeasured()) continue;
+                        if (!annotation.showMeasured()) continue;
                         alwaysShow = true;
                     }
                 }
@@ -138,11 +139,10 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
     protected boolean isOverviewError(D device, long lastUpdate) {
         // It does not make sense to show measure errors for data stemming out of a prestored
         // XML file.
-        if (DataConnectionSwitch.INSTANCE.getCurrentProvider() instanceof DummyDataConnection) {
-            return false;
-        }
-
-        return lastUpdate != -1 && device.isSensorDevice() && device.isOutdatedData(lastUpdate);
+        return !(DataConnectionSwitch.INSTANCE.getCurrentProvider() instanceof DummyDataConnection) &&
+                lastUpdate != -1 &&
+                device.isSensorDevice() &&
+                device.isOutdatedData(lastUpdate);
 
     }
 
@@ -192,11 +192,11 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
                 String name = item.getName();
 
                 if (annotation != null) {
-                    if (name.equalsIgnoreCase("state") && ! annotation.showState()) {
+                    if (name.equalsIgnoreCase("state") && !annotation.showState()) {
                         continue;
                     }
 
-                    if (name.equalsIgnoreCase("measured") && ! annotation.showMeasured()) {
+                    if (name.equalsIgnoreCase("measured") && !annotation.showMeasured()) {
                         continue;
                     }
                 }
@@ -251,7 +251,7 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
 
     private void addDetailGraphButtons(Context context, View view, D device, LayoutInflater inflater) {
         LinearLayout graphLayout = (LinearLayout) view.findViewById(R.id.graphButtons);
-        if (device.getDeviceCharts().size() == 0 || device.getLogDevice() == null) {
+        if (device.getDeviceCharts().size() == 0 || device.getLogDevices() == null) {
             graphLayout.setVisibility(View.GONE);
             return;
         }
@@ -331,10 +331,6 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
     @Override
     public Class<? extends Device> getSupportedDeviceClass() {
         return deviceClass;
-    }
-
-    public static void putUpdateExtra(Intent intent) {
-        intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver());
     }
 
     protected void sendStateAction(Context context, D device, String action) {

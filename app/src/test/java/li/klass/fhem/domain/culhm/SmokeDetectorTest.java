@@ -24,32 +24,29 @@
 
 package li.klass.fhem.domain.culhm;
 
-import org.hamcrest.Matchers;
-import org.hamcrest.core.IsNull;
 import org.junit.Test;
 
 import li.klass.fhem.domain.CULHMDevice;
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
+import static org.fest.assertions.api.Assertions.assertThat;
 
 public class SmokeDetectorTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
         CULHMDevice device = getDefaultDevice();
 
-        assertThat(device.getName(), is(DEFAULT_TEST_DEVICE_NAME));
-        assertThat(device.getRoomConcatenated(), is(DEFAULT_TEST_ROOM_NAME));
+        assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
+        assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
 
-        assertThat(device.getState(), is("NACK"));
-        assertThat(device.getSubType(), is(CULHMDevice.SubType.SMOKE_DETECTOR));
-        assertThat(device.supportsDim(), is(false));
+        assertThat(device.getState()).isEqualTo("NACK");
+        assertThat(device.getSubType()).isEqualTo(CULHMDevice.SubType.SMOKE_DETECTOR);
+        assertThat(device.supportsDim()).isEqualTo(false);
 
-        assertThat(device.getLogDevice(), is(IsNull.nullValue()));
-        assertThat(device.getDeviceCharts().size(), is(0));
+        assertThat(device.getLogDevices()).isEmpty();
+        assertThat(device.getDeviceCharts().size()).isEqualTo(0);
 
-        assertThat(device.isSupported(), Matchers.is(true));
+        assertThat(device.isSupported()).isTrue();
     }
 
     @Override

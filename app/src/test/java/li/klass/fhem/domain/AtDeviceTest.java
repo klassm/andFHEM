@@ -34,9 +34,7 @@ import static li.klass.fhem.domain.AtDevice.AtRepetition.WEEKDAY;
 import static li.klass.fhem.domain.AtDevice.AtRepetition.WEEKEND;
 import static li.klass.fhem.domain.AtDevice.TimerType.ABSOLUTE;
 import static li.klass.fhem.domain.AtDevice.TimerType.RELATIVE;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsNull.nullValue;
+import static org.fest.assertions.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 
 public class AtDeviceTest extends DeviceXMLParsingBase {
@@ -102,15 +100,15 @@ public class AtDeviceTest extends DeviceXMLParsingBase {
         AtDevice device = new AtDevice();
         device.parseDefinition(definition);
 
-        assertEquals(expectedHours, device.getHours());
-        assertEquals(expectedMinutes, device.getMinutes());
-        assertEquals(expectedSeconds, device.getSeconds());
-        assertEquals(expectedTargetState, device.getTargetState());
-        assertEquals(expectedTargetDevice, device.getTargetDevice());
-        assertEquals(expectedAdditionalInformation, device.getTargetStateAddtionalInformation());
-        assertEquals(expectedRepetition, device.getRepetition());
-        assertEquals(expectedTimerType, device.getTimerType());
-        assertEquals(isActive, device.isActive());
+        assertThat(device.getHours()).isEqualTo(expectedHours);
+        assertThat(device.getMinutes()).isEqualTo(expectedMinutes);
+        assertThat(device.getSeconds()).isEqualTo(expectedSeconds);
+        assertThat(device.getTargetState()).isEqualTo(expectedTargetState);
+        assertThat(device.getTargetDevice()).isEqualTo(expectedTargetDevice);
+        assertThat(device.getTargetStateAddtionalInformation()).isEqualTo(expectedAdditionalInformation);
+        assertThat(device.getRepetition()).isEqualTo(expectedRepetition);
+        assertThat(device.getTimerType()).isEqualTo(expectedTimerType);
+        assertThat(device.isActive()).isEqualTo(isActive);
 
         return device;
     }
@@ -123,22 +121,22 @@ public class AtDeviceTest extends DeviceXMLParsingBase {
     public void testForCorrectlySetAttributes() {
         AtDevice device = getDefaultDevice();
 
-        assertThat(device.getName(), is(DEFAULT_TEST_DEVICE_NAME));
-        assertThat(device.getRoomConcatenated(), is(DEFAULT_TEST_ROOM_NAME));
+        assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
+        assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
 
-        assertThat(device.getTimerType(), is(ABSOLUTE));
-        assertThat(device.getFormattedSwitchTime(), is("23:00:00"));
-        assertThat(device.getHours(), is(23));
-        assertThat(device.getMinutes(), is(0));
-        assertThat(device.getSeconds(), is(0));
-        assertThat(device.getNextTrigger(), is("23:00:00"));
-        assertThat(device.getRepetition(), is(WEEKEND));
-        assertThat(device.getTargetDevice(), is("lamp"));
-        assertThat(device.getTargetState(), is("off"));
-        assertThat(device.getTargetStateAddtionalInformation(), is(nullValue()));
+        assertThat(device.getTimerType()).isEqualTo(ABSOLUTE);
+        assertThat(device.getFormattedSwitchTime()).isEqualTo("23:00:00");
+        assertThat(device.getHours()).isEqualTo(23);
+        assertThat(device.getMinutes()).isEqualTo(0);
+        assertThat(device.getSeconds()).isEqualTo(0);
+        assertThat(device.getNextTrigger()).isEqualTo("23:00:00");
+        assertThat(device.getRepetition()).isEqualTo(WEEKEND);
+        assertThat(device.getTargetDevice()).isEqualTo("lamp");
+        assertThat(device.getTargetState()).isEqualTo("off");
+        assertThat(device.getTargetStateAddtionalInformation()).isNullOrEmpty();
 
-        assertThat(device.getLogDevice(), is(nullValue()));
-        assertThat(device.getDeviceCharts().size(), is(0));
+        assertThat(device.getLogDevices()).isEmpty();
+        assertThat(device.getDeviceCharts().size()).isEqualTo(0);
     }
 
     @Override

@@ -28,39 +28,37 @@ import org.junit.Test;
 
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.nullValue;
-import static org.hamcrest.core.Is.is;
+import static org.fest.assertions.api.Assertions.assertThat;
 
 public class TwilightDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
         TwilightDevice device = getDefaultDevice();
 
-        assertThat(device.getName(), is(DEFAULT_TEST_DEVICE_NAME));
-        assertThat(device.getRoomConcatenated(), is(DEFAULT_TEST_ROOM_NAME));
+        assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
+        assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
 
-        assertThat(device.getLight(), is("Daylight"));
-        assertThat(device.getNextEvent(), is("ss_weather"));
-        assertThat(device.getNextEventTime(), is("21:05:07"));
-        assertThat(device.getSunrise(), is("05:39:59"));
-        assertThat(device.getSunriseAstronomical(), is("02:48:05"));
-        assertThat(device.getSunriseCivil(), is("04:54:41"));
-        assertThat(device.getSunriseIndoor(), is("06:07:50"));
-        assertThat(device.getSunriseNautical(), is("04:01:49"));
-        assertThat(device.getSunriseWeather(), is("05:39:59"));
-        assertThat(device.getSunset(), is("21:05:07"));
-        assertThat(device.getSunsetAstronomical(), is("23:57:00"));
-        assertThat(device.getSunsetCivil(), is("21:50:24"));
-        assertThat(device.getSunsetIndoor(), is("20:37:15"));
-        assertThat(device.getSunsetNautical(), is("22:43:16"));
-        assertThat(device.getSunsetWeather(), is("21:05:07"));
-        assertThat(device.getState(), is("6"));
+        assertThat(device.getLight()).isEqualTo("Daylight");
+        assertThat(device.getNextEvent()).isEqualTo("ss_weather");
+        assertThat(device.getNextEventTime()).isEqualTo("21:05:07");
+        assertThat(device.getSunrise()).isEqualTo("05:39:59");
+        assertThat(device.getSunriseAstronomical()).isEqualTo("02:48:05");
+        assertThat(device.getSunriseCivil()).isEqualTo("04:54:41");
+        assertThat(device.getSunriseIndoor()).isEqualTo("06:07:50");
+        assertThat(device.getSunriseNautical()).isEqualTo("04:01:49");
+        assertThat(device.getSunriseWeather()).isEqualTo("05:39:59");
+        assertThat(device.getSunset()).isEqualTo("21:05:07");
+        assertThat(device.getSunsetAstronomical()).isEqualTo("23:57:00");
+        assertThat(device.getSunsetCivil()).isEqualTo("21:50:24");
+        assertThat(device.getSunsetIndoor()).isEqualTo("20:37:15");
+        assertThat(device.getSunsetNautical()).isEqualTo("22:43:16");
+        assertThat(device.getSunsetWeather()).isEqualTo("21:05:07");
+        assertThat(device.getState()).isEqualTo("6");
 
-        assertThat(device.getSetList().getEntries().size(), is(0));
+        assertThat(device.getSetList().getEntries().size()).isEqualTo(0);
 
-        assertThat(device.getLogDevice(), is(nullValue()));
-        assertThat(device.getDeviceCharts().size(), is(0));
+        assertThat(device.getLogDevices()).isEmpty();
+        assertThat(device.getDeviceCharts().size()).isEqualTo(0);
     }
 
     @Override

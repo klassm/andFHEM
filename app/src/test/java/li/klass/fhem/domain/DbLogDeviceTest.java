@@ -28,19 +28,19 @@ import org.junit.Test;
 
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 
-import static org.hamcrest.Matchers.notNullValue;
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
+import static org.fest.assertions.api.Assertions.assertThat;
+
 
 public class DbLogDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void testDbLogIsAssociated() {
         KS300Device device = getDefaultDevice();
-        assertThat(device, is(notNullValue()));
-        assertThat(device.getLogDevice(), is(notNullValue()));
+        assertThat(device).isNotNull();
+        assertThat(device.getLogDevices()).isNotEmpty();
 
-        assertThat(device.getLogDevice() instanceof DbLogDevice, is(true));
+        assertThat(device.getLogDevices()).isNotEmpty();
+        assertThat(device.getLogDevices().get(0)).isInstanceOf(DbLogDevice.class);
     }
 
     @Override

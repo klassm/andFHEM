@@ -24,15 +24,12 @@
 
 package li.klass.fhem.domain.culhm;
 
-import org.hamcrest.core.Is;
 import org.junit.Test;
 
 import li.klass.fhem.domain.CULHMDevice;
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.nullValue;
+import static org.fest.assertions.api.Assertions.assertThat;
 
 public class ThreeStateSensorTest extends DeviceXMLParsingBase {
 
@@ -40,18 +37,18 @@ public class ThreeStateSensorTest extends DeviceXMLParsingBase {
     public void testForCorrectlySetAttributes() {
         CULHMDevice device = getDefaultDevice();
 
-        assertThat(device.getName(), is(DEFAULT_TEST_DEVICE_NAME));
-        assertThat(device.getRoomConcatenated(), is(DEFAULT_TEST_ROOM_NAME));
+        assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
+        assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
 
-        assertThat(device.getState(), is("closed"));
-        assertThat(device.getSubType(), is(CULHMDevice.SubType.THREE_STATE));
-        assertThat(device.supportsDim(), is(false));
-        assertThat(device.getBattery(), is("ok"));
+        assertThat(device.getState()).isEqualTo("closed");
+        assertThat(device.getSubType()).isEqualTo(CULHMDevice.SubType.THREE_STATE);
+        assertThat(device.supportsDim()).isEqualTo(false);
+        assertThat(device.getBattery()).isEqualTo("ok");
 
-        assertThat(device.getLogDevice(), is(nullValue()));
-        assertThat(device.getDeviceCharts().size(), is(0));
+        assertThat(device.getLogDevices()).isEmpty();
+        assertThat(device.getDeviceCharts().size()).isEqualTo(0);
 
-        assertThat(device.isSupported(), is(true));
+        assertThat(device.isSupported()).isEqualTo(true);
     }
 
     @Override

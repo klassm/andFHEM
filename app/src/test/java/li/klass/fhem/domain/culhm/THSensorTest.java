@@ -48,7 +48,7 @@ public class THSensorTest extends DeviceXMLParsingBase {
         assertThat(device.getMeasuredTemp(), is("-2.4 (°C)"));
         assertThat(device.getHumidity(), is("67 (%)"));
 
-        assertThat(device.getLogDevice(), is(notNullValue()));
+        assertThat(device.getLogDevices(), is(notNullValue()));
         assertThat(device.getDeviceCharts().size(), is(1));
 
         assertThat(device.isSupported(), is(true));

@@ -28,37 +28,36 @@ import org.junit.Test;
 
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.nullValue;
+import static org.fest.assertions.api.Assertions.assertThat;
+
 
 public class HCSDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
         HCSDevice device = getDefaultDevice();
 
-        assertThat(device.getName(), is(DEFAULT_TEST_DEVICE_NAME));
-        assertThat(device.getRoomConcatenated(), is(DEFAULT_TEST_ROOM_NAME));
+        assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
+        assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
 
-        assertThat(device.getState(), is("demand"));
+        assertThat(device.getState()).isEqualTo("demand");
 
-        assertThat(device.getEcoTemperatureOff(), is("23 (°C)"));
-        assertThat(device.getEcoTemperatureOn(), is("12 (°C)"));
-        assertThat(device.getThermostatThresholdOff(), is("0.5 (°C)"));
-        assertThat(device.getThermostatThresholdOn(), is("0.5 (°C)"));
-        assertThat(device.getValveThresholdOff(), is("25 (%)"));
-        assertThat(device.getValveThresholdOn(), is("30 (%)"));
+        assertThat(device.getEcoTemperatureOff()).isEqualTo("23 (°C)");
+        assertThat(device.getEcoTemperatureOn()).isEqualTo("12 (°C)");
+        assertThat(device.getThermostatThresholdOff()).isEqualTo("0.5 (°C)");
+        assertThat(device.getThermostatThresholdOn()).isEqualTo("0.5 (°C)");
+        assertThat(device.getValveThresholdOff()).isEqualTo("25 (%)");
+        assertThat(device.getValveThresholdOn()).isEqualTo("30 (%)");
 
-        assertThat(device.getMode(), is("valve"));
+        assertThat(device.getMode()).isEqualTo("valve");
 
-        assertThat(device.getNumberOfDemandDevices(), is(2));
-        assertThat(device.getNumberOfExcludedDevices(), is(3));
-        assertThat(device.getNumberOfIdleDevices(), is(3));
+        assertThat(device.getNumberOfDemandDevices()).isEqualTo(2);
+        assertThat(device.getNumberOfExcludedDevices()).isEqualTo(3);
+        assertThat(device.getNumberOfIdleDevices()).isEqualTo(3);
 
-        assertThat(device.getCommaSeparatedDemandDevices(), is("FHT_WOHNZIMMER, FHT_WOHNZIMMER1"));
+        assertThat(device.getCommaSeparatedDemandDevices()).isEqualTo("FHT_WOHNZIMMER, FHT_WOHNZIMMER1");
 
-        assertThat(device.getLogDevice(), is(nullValue()));
-        assertThat(device.getDeviceCharts().size(), is(0));
+        assertThat(device.getLogDevices()).isEmpty();
+        assertThat(device.getDeviceCharts().size()).isEqualTo(0);
     }
 
     @Override

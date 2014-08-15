@@ -28,53 +28,50 @@ import org.junit.Test;
 
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.hamcrest.Matchers.nullValue;
-import static org.hamcrest.core.Is.is;
+import static org.fest.assertions.api.Assertions.assertThat;
 
 public class TRXWeatherDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
         TRXWeatherDevice device = getDefaultDevice();
 
-        assertThat(device.getName(), is(DEFAULT_TEST_DEVICE_NAME));
-        assertThat(device.getRoomConcatenated(), is(DEFAULT_TEST_ROOM_NAME));
+        assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
+        assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
 
-        assertThat(device.getTemperature(), is("21.1 (°C)"));
-        assertThat(device.getBattery(), is("ok"));
-        assertThat(device.getState(), is("T: 21.1 BAT: ok"));
+        assertThat(device.getTemperature()).isEqualTo("21.1 (°C)");
+        assertThat(device.getBattery()).isEqualTo("ok");
+        assertThat(device.getState()).isEqualTo("T: 21.1 BAT: ok");
 
-        assertThat(device.getSetList().getEntries().size(), is(0));
+        assertThat(device.getSetList().getEntries().size()).isEqualTo(0);
 
-        assertThat(device.getLogDevice(), is(nullValue()));
-        assertThat(device.getDeviceCharts().size(), is(0));
+        assertThat(device.getLogDevices()).isEmpty();
+        assertThat(device.getDeviceCharts().size()).isEqualTo(0);
     }
 
     @Test
     public void testForCorrectlySetAttributesInHumidityDevice() {
         TRXWeatherDevice device = getDeviceFor("device1");
 
-        assertThat(device.getHumidity(), is("59 (%)"));
-        assertThat(device.getDewpoint(), is("11.1 (°C)"));
+        assertThat(device.getHumidity()).isEqualTo("59 (%)");
+        assertThat(device.getDewpoint()).isEqualTo("11.1 (°C)");
 
-        assertThat(device.getLogDevice(), is(notNullValue()));
-        assertThat(device.getDeviceCharts().size(), is(3));
+        assertThat(device.getLogDevices()).isNotEmpty();
+        assertThat(device.getDeviceCharts().size()).isEqualTo(3);
     }
 
     @Test
     public void testRainAttributes() {
         TRXWeatherDevice device = getDeviceFor("rain");
-        assertThat(device.getRain(), is("343 (l/m2)"));
+        assertThat(device.getRain()).isEqualTo("343 (l/m2)");
     }
 
     @Test
     public void testWindAttributes() {
         TRXWeatherDevice device = getDeviceFor("wind");
-        assertThat(device.getWindAverageSpeed(), is("3 (km/h)"));
-        assertThat(device.getWindDirection(), is("180 S"));
-        assertThat(device.getWindSpeed(), is("0 (km/h)"));
-        assertThat(device.getWindchill(), is("10.4 (°C)"));
+        assertThat(device.getWindAverageSpeed()).isEqualTo("3 (km/h)");
+        assertThat(device.getWindDirection()).isEqualTo("180 S");
+        assertThat(device.getWindSpeed()).isEqualTo("0 (km/h)");
+        assertThat(device.getWindchill()).isEqualTo("10.4 (°C)");
     }
 
     @Override

@@ -155,7 +155,7 @@ public abstract class LogDevice<T extends LogDevice> extends Device<T> {
             public void devicesRead(Map<String, Device> allDevices) {
                 for (Device device : allDevices.values()) {
                     if (concernsDevice(device.getName())) {
-                        device.setLogDevice(LogDevice.this);
+                        device.addLogDevice(LogDevice.this);
                     }
                 }
             }
@@ -207,10 +207,8 @@ public abstract class LogDevice<T extends LogDevice> extends Device<T> {
 
             YAxisMinMaxValue that = (YAxisMinMaxValue) o;
 
-            if (Double.compare(that.maxValue, maxValue) != 0) return false;
-            if (Double.compare(that.minValue, minValue) != 0) return false;
-
-            return true;
+            return Double.compare(that.maxValue, maxValue) == 0
+                    && Double.compare(that.minValue, minValue) == 0;
         }
 
         @Override

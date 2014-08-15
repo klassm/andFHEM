@@ -28,31 +28,29 @@ import org.junit.Test;
 
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.closeTo;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.hamcrest.core.Is.is;
+import static org.fest.assertions.api.Assertions.assertThat;
+import static org.fest.assertions.data.Offset.offset;
 
 public class CULEMDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
         CULEMDevice device = getDefaultDevice();
 
-        assertThat(device.getName(), is(DEFAULT_TEST_DEVICE_NAME));
-        assertThat(device.getRoomConcatenated(), is(DEFAULT_TEST_ROOM_NAME));
+        assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
+        assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
 
-        assertThat(device.getDayUsage(), is("9.490 (kWh)"));
-        assertThat(device.getMonthUsage(), is("60.385 (kWh)"));
-        assertThat(device.getSumGraphDivisionFactor(), is(closeTo(2, 0.01)));
-        assertThat(device.getCurrentUsage(), is("0 (kWh)"));
-        assertThat(device.getState(), is("CNT: 62 CUM: 1254.521  5MIN: 0.000  TOP: 0.000"));
-        assertThat(device.getCumulativeKwh(), is("1254.52 (kWh)"));
+        assertThat(device.getDayUsage()).isEqualTo("9.490 (kWh)");
+        assertThat(device.getMonthUsage()).isEqualTo("60.385 (kWh)");
+        assertThat(device.getSumGraphDivisionFactor()).isEqualTo(2, offset(0.01));
+        assertThat(device.getCurrentUsage()).isEqualTo("0 (kWh)");
+        assertThat(device.getState()).isEqualTo("CNT: 62 CUM: 1254.521  5MIN: 0.000  TOP: 0.000");
+        assertThat(device.getCumulativeKwh()).isEqualTo("1254.52 (kWh)");
 
 
-        assertThat(device.getSetList().getEntries().size(), is(0));
+        assertThat(device.getSetList().getEntries().size()).isEqualTo(0);
 
-        assertThat(device.getLogDevice(), is(notNullValue()));
-        assertThat(device.getDeviceCharts().size(), is(1));
+        assertThat(device.getLogDevices()).hasSize(1);
+        assertThat(device.getDeviceCharts().size()).isEqualTo(1);
     }
 
     @Override

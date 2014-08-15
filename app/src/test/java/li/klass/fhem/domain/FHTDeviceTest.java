@@ -60,7 +60,7 @@ public class FHTDeviceTest extends DeviceXMLParsingBase {
 
         assertThat(device.getSetList().getEntries().size(), is(not(0)));
 
-        assertThat(device.getLogDevice(), is(notNullValue()));
+        assertThat(device.getLogDevices(), is(notNullValue()));
         assertThat(device.getDeviceCharts().size(), is(1));
 
         assertThat(device.getSetList().contains("day-temp", "desired-temp", "manu-temp", "night-temp", "windowopen-temp"), is(true));
@@ -71,7 +71,7 @@ public class FHTDeviceTest extends DeviceXMLParsingBase {
         FHTDevice device = getDeviceFor("fht_multi_actuators");
         assertThat(device, is(notNullValue()));
 
-        assertThat(device.getLogDevice(), is(notNullValue()));
+        assertThat(device.getLogDevices(), is(notNullValue()));
         assertThat(device.getDeviceCharts().size(), is(1));
     }
 

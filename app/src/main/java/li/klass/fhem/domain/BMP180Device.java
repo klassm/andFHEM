@@ -77,7 +77,7 @@ public class BMP180Device extends Device<BMP180Device> {
                         .withDbLogSpec("temperature::int1")
                         .withSeriesType(TEMPERATURE)
                         .withShowRegression(true)
-                        .withYAxisMinMaxValue(getLogDevice().getYAxisMinMaxValueFor("temperature", 0, 30))
+                        .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("temperature", 0, 30))
                         .build()
         ), temperature);
 
@@ -86,12 +86,12 @@ public class BMP180Device extends Device<BMP180Device> {
                         .withColumnName(R.string.pressure).withFileLogSpec("6::")
                         .withDbLogSpec("pressure::int1")
                         .withSeriesType(PRESSURE)
-                        .withYAxisMinMaxValue(getLogDevice().getYAxisMinMaxValueFor("pressure", 700, 1200))
+                        .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("pressure", 700, 1200))
                         .build(),
                 new ChartSeriesDescription.Builder()
                         .withColumnName(R.string.pressure).withFileLogSpec("8::")
                         .withDbLogSpec("pressure-nn::int1")
-                        .withYAxisMinMaxValue(getLogDevice().getYAxisMinMaxValueFor("pressure-nn", 700, 1200))
+                        .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("pressure-nn", 700, 1200))
                         .withSeriesType(PRESSURE_NN)
                         .build()
         ), pressure, pressureNN);

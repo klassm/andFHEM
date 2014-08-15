@@ -65,7 +65,7 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
     protected Map<String, String> eventMapReverse = new HashMap<String, String>();
     protected Map<String, String> eventMap = new HashMap<String, String>();
     protected SetList setList = new SetList();
-    protected volatile LogDevice logDevice;
+    protected volatile List<LogDevice> logDevices = newArrayList();
     @ShowField(description = ResourceIdMapper.state, showAfter = "measured")
     private String state;
     @ShowField(description = ResourceIdMapper.measured, showAfter = "definition")
@@ -285,14 +285,17 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
         return getAliasOrName().compareTo(t.getAliasOrName());
     }
 
-    public LogDevice getLogDevice() {
-        return logDevice;
+    public List<LogDevice> getLogDevices() {
+        return logDevices;
     }
 
-    public void setLogDevice(LogDevice logDevice) {
-        this.logDevice = logDevice;
+    public void addLogDevice(LogDevice logDevice) {
+        logDevices.add(logDevice);
 
-        if (logDevice != null) {
+        // Unfortunately, this is called multiple times (whenever a log devices registers
+        // itself for the device. However, we have no idea in which order the callbacks are
+        // called, so we cannot register a listeners when all devices have been read ...
+        if (!logDevices.isEmpty()) {
             fillDeviceCharts(deviceCharts);
         }
     }
@@ -309,19 +312,20 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
     protected void fillDeviceCharts(List<DeviceChart> chartSeries) {
         deviceCharts.clear();
 
-        @SuppressWarnings("unchecked")
-        List<CustomGraph> customGraphs = logDevice.getCustomGraphs();
+        for (LogDevice<?> logDevice : logDevices) {
+            List<CustomGraph> customGraphs = logDevice.getCustomGraphs();
 
-        for (CustomGraph customGraph : customGraphs) {
-            ChartSeriesDescription seriesDescription = new ChartSeriesDescription.Builder()
-                    .withColumnName(customGraph.description)
-                    .withFileLogSpec(customGraph.columnSpecification)
-                    .withDbLogSpec(customGraph.columnSpecification)
-                    .withFallbackYAxisName(customGraph.yAxisName)
-                    .withYAxisMinMaxValue(customGraph.yAxisMinMax)
-                    .build();
+            for (CustomGraph customGraph : customGraphs) {
+                ChartSeriesDescription seriesDescription = new ChartSeriesDescription.Builder()
+                        .withColumnName(customGraph.description)
+                        .withFileLogSpec(customGraph.columnSpecification)
+                        .withDbLogSpec(customGraph.columnSpecification)
+                        .withFallbackYAxisName(customGraph.yAxisName)
+                        .withYAxisMinMaxValue(customGraph.yAxisMinMax)
+                        .build();
 
-            addDeviceChartIfNotNull(new DeviceChart(customGraph.description, seriesDescription));
+                addDeviceChartIfNotNull(new DeviceChart(customGraph.description, seriesDescription));
+            }
         }
     }
 
@@ -445,7 +449,7 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
                 ", eventMapReverse=" + eventMapReverse +
                 ", eventMap=" + eventMap +
                 ", setList=" + setList.toString() +
-                ", logDevice=" + logDevice +
+                ", logDevices=" + logDevices.size() +
                 ", deviceCharts=" + deviceCharts +
                 '}';
     }

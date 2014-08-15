@@ -31,52 +31,47 @@ import li.klass.fhem.domain.setlist.SetListGroupValue;
 import li.klass.fhem.domain.setlist.SetListSliderValue;
 import li.klass.fhem.domain.setlist.SetListValue;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.instanceOf;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.hamcrest.Matchers.nullValue;
-import static org.hamcrest.core.Is.is;
+import static org.fest.assertions.api.Assertions.assertThat;
 
 public class StructureDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributesInOnOffDummy() {
         StructureDevice device = getDefaultDevice();
 
-        assertThat(device.getName(), is(DEFAULT_TEST_DEVICE_NAME));
-        assertThat(device.getRoomConcatenated(), is(DEFAULT_TEST_ROOM_NAME));
+        assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
+        assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
 
-        assertThat(device.getState(), is("on"));
-        assertThat(device.isSpecialButtonDevice(), is(false));
-        assertThat(device.supportsToggle(), is(true));
-        assertThat(device.isOnByState(), is(true));
+        assertThat(device.getState()).isEqualTo("on");
+        assertThat(device.isSpecialButtonDevice()).isEqualTo(false);
+        assertThat(device.supportsToggle()).isEqualTo(true);
+        assertThat(device.isOnByState()).isEqualTo(true);
 
-        assertThat(device.getSetList().contains("on", "off"), is(true));
+        assertThat(device.getSetList().contains("on", "off")).isEqualTo(true);
 
-        assertThat(device.getLogDevice(), is(nullValue()));
-        assertThat(device.getDeviceCharts().size(), is(0));
+        assertThat(device.getLogDevices()).isEmpty();
+        assertThat(device.getDeviceCharts().size()).isEqualTo(0);
     }
 
     @Test
     public void testDeviceWithSetList() {
         StructureDevice device = getDeviceFor("deviceWithSetlist");
 
-        assertThat((SetListGroupValue) device.getSetList().get("state"), is(equalTo(new SetListGroupValue("17", "18", "19", "20", "21", "21.5", "22"))));
+        assertThat((SetListGroupValue) device.getSetList().get("state")).isEqualTo(new SetListGroupValue("17", "18", "19", "20", "21", "21.5", "22"));
     }
 
     @Test
     public void testSlider() {
         StructureDevice device = getDeviceFor("slider");
-        assertThat(device, is(notNullValue()));
+        assertThat(device).isNotNull();
 
         SetListValue value = device.getSetList().get("pct");
-        assertThat(value, is(instanceOf(SetListSliderValue.class)));
-        assertThat((SetListSliderValue) value, is(new SetListSliderValue(10, 2, 110)));
+        assertThat(value).isInstanceOf(SetListSliderValue.class);
+        assertThat((SetListSliderValue) value).isEqualTo(new SetListSliderValue(10, 2, 110));
 
-        assertThat(device.supportsDim(), is(true));
-        assertThat(device.getDimLowerBound(), is(10));
-        assertThat(device.getDimStep(), is(2));
-        assertThat(device.getDimUpperBound(), is(110));
+        assertThat(device.supportsDim()).isEqualTo(true);
+        assertThat(device.getDimLowerBound()).isEqualTo(10);
+        assertThat(device.getDimStep()).isEqualTo(2);
+        assertThat(device.getDimUpperBound()).isEqualTo(110);
     }
 
     @Override

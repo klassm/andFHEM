@@ -94,7 +94,7 @@ public class USBWXDevice extends Device<USBWXDevice> {
                         .withDbLogSpec("temperature::int1")
                         .withSeriesType(TEMPERATURE)
                         .withShowRegression(true)
-                        .withYAxisMinMaxValue(getLogDevice().getYAxisMinMaxValueFor("temperature", 0, 30))
+                        .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("temperature", 0, 30))
                         .build()
         ), temperature);
 
@@ -103,7 +103,7 @@ public class USBWXDevice extends Device<USBWXDevice> {
                         .withColumnName(R.string.humidity).withFileLogSpec("4:humidity:0:")
                         .withDbLogSpec("humidity::int")
                         .withSeriesType(HUMIDITY)
-                        .withYAxisMinMaxValue(getLogDevice().getYAxisMinMaxValueFor("humidity", 0, 100))
+                        .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("humidity", 0, 100))
                         .build()
         ), humidity);
     }

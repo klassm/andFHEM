@@ -196,7 +196,7 @@ public class OregonDevice extends Device<OregonDevice> {
                         .withDbLogSpec("temperature::int1")
                         .withSeriesType(TEMPERATURE)
                         .withShowRegression(true)
-                        .withYAxisMinMaxValue(getLogDevice().getYAxisMinMaxValueFor("temperature", 0, 30))
+                        .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("temperature", 0, 30))
                         .build()
         ), temperature);
 
@@ -205,7 +205,7 @@ public class OregonDevice extends Device<OregonDevice> {
                         .withColumnName(R.string.humidity).withFileLogSpec("4:humidity:0:")
                         .withDbLogSpec("humidity::int")
                         .withSeriesType(HUMIDITY)
-                        .withYAxisMinMaxValue(getLogDevice().getYAxisMinMaxValueFor("humidity", 0, 100))
+                        .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("humidity", 0, 100))
                         .build()
         ), humidity);
 
@@ -214,7 +214,7 @@ public class OregonDevice extends Device<OregonDevice> {
                         .withColumnName(R.string.pressure).withFileLogSpec("4:pressure:0:")
                         .withDbLogSpec("pressure::int")
                         .withSeriesType(PRESSURE)
-                        .withYAxisMinMaxValue(getLogDevice().getYAxisMinMaxValueFor("pressure", 700, 1200))
+                        .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("pressure", 700, 1200))
                         .build()
         ), pressure);
 
@@ -223,7 +223,7 @@ public class OregonDevice extends Device<OregonDevice> {
                         .withColumnName(R.string.rainRate).withFileLogSpec("4:rain_rate:0:")
                         .withDbLogSpec("rain_rate::int2")
                         .withSeriesType(RAIN_RATE)
-                        .withYAxisMinMaxValue(getLogDevice().getYAxisMinMaxValueFor("rain_rate", 0, 30))
+                        .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("rain_rate", 0, 30))
                         .build()
         ), rainRate);
 
@@ -232,7 +232,7 @@ public class OregonDevice extends Device<OregonDevice> {
                         .withColumnName(R.string.rainRate).withFileLogSpec("4:rain_total:0:")
                         .withDbLogSpec("rain_total::int2")
                         .withSeriesType(RAIN_TOTAL)
-                        .withYAxisMinMaxValue(getLogDevice().getYAxisMinMaxValueFor("rain_total", 0, 100))
+                        .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("rain_total", 0, 100))
                         .build()
         ), rainTotal);
 
@@ -241,7 +241,7 @@ public class OregonDevice extends Device<OregonDevice> {
                         .withColumnName(R.string.rainRate).withFileLogSpec("4:wind_speed:0:")
                         .withDbLogSpec("wind_speed::int2")
                         .withSeriesType(WIND)
-                        .withYAxisMinMaxValue(getLogDevice().getYAxisMinMaxValueFor("wind_speed", 0, 100))
+                        .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("wind_speed", 0, 100))
                         .build()
         ), windSpeed);
     }

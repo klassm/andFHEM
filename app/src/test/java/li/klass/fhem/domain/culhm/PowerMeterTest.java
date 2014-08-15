@@ -50,7 +50,7 @@ public class PowerMeterTest extends DeviceXMLParsingBase {
         assertThat(device.getCurrentVoltage(), is("228.7 (A)"));
         assertThat(device.getCumulativeUsage(), is("5 (W)"));
 
-        assertThat(device.getLogDevice(), is(notNullValue()));
+        assertThat(device.getLogDevices(), is(notNullValue()));
         assertThat(device.getDeviceCharts().size(), is(2));
 
         assertThat(device.isSupported(), is(true));

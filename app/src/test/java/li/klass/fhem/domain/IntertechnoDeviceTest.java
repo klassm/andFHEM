@@ -28,27 +28,24 @@ import org.junit.Test;
 
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.nullValue;
-import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsNot.not;
+import static org.fest.assertions.api.Assertions.assertThat;
 
 public class IntertechnoDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
         IntertechnoDevice device = getDefaultDevice();
 
-        assertThat(device.getName(), is(DEFAULT_TEST_DEVICE_NAME));
-        assertThat(device.getRoomConcatenated(), is(DEFAULT_TEST_ROOM_NAME));
+        assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
+        assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
 
-        assertThat(device.isOnByState(), is(true));
-        assertThat(device.getState(), is("on"));
-        assertThat(device.getModel(), is("itswitch"));
+        assertThat(device.isOnByState()).isEqualTo(true);
+        assertThat(device.getState()).isEqualTo("on");
+        assertThat(device.getModel()).isEqualTo("itswitch");
 
-        assertThat(device.getSetList().getEntries().size(), is(not(0)));
+        assertThat(device.getSetList().getEntries()).isNotEmpty();
 
-        assertThat(device.getLogDevice(), is(nullValue()));
-        assertThat(device.getDeviceCharts().size(), is(0));
+        assertThat(device.getLogDevices()).isEmpty();
+        assertThat(device.getDeviceCharts().size()).isEqualTo(0);
     }
 
     @Override

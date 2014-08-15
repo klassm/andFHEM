@@ -81,6 +81,4 @@ public class FileLogDevice extends LogDevice<FileLogDevice> {
         return String.format(COMMAND_TEMPLATE, name, fromDateFormatted, toDateFormatted,
                 seriesDescription.getFileLogSpec());
     }
-
-
 }

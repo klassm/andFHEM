@@ -29,36 +29,34 @@ import org.junit.Test;
 import li.klass.fhem.domain.CULHMDevice;
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.nullValue;
+import static org.fest.assertions.api.Assertions.assertThat;
 
 public class BlindActuatorTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
         CULHMDevice device = getDefaultDevice();
 
-        assertThat(device.getName(), is(DEFAULT_TEST_DEVICE_NAME));
-        assertThat(device.getRoomConcatenated(), is(DEFAULT_TEST_ROOM_NAME));
+        assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
+        assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
 
-        assertThat(device.getState(), is("75 %"));
-        assertThat(device.getSubType(), is(CULHMDevice.SubType.DIMMER));
-        assertThat(device.supportsDim(), is(true));
-        assertThat(device.getDimPosition(), is(75));
+        assertThat(device.getState()).isEqualTo("75 %");
+        assertThat(device.getSubType()).isEqualTo(CULHMDevice.SubType.DIMMER);
+        assertThat(device.supportsDim()).isEqualTo(true);
+        assertThat(device.getDimPosition()).isEqualTo(75);
 
-        assertThat(device.isOnByState(), is(true));
+        assertThat(device.isOnByState()).isEqualTo(true);
 
-        assertThat(device.getLogDevice(), is(nullValue()));
-        assertThat(device.getDeviceCharts().size(), is(0));
+        assertThat(device.getLogDevices()).isEmpty();
+        assertThat(device.getDeviceCharts().size()).isEqualTo(0);
 
-        assertThat(device.isSupported(), is(true));
+        assertThat(device.isSupported()).isEqualTo(true);
     }
 
     @Test
     public void testEventMap() {
         CULHMDevice device = getDeviceFor("device1");
         device.setState("on");
-        assertThat(device.getDimPosition(), is(device.getDimUpperBound()));
+        assertThat(device.getDimPosition()).isEqualTo(device.getDimUpperBound());
     }
 
     @Override

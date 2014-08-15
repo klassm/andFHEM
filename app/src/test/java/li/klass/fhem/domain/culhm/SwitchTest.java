@@ -29,32 +29,30 @@ import org.junit.Test;
 import li.klass.fhem.domain.CULHMDevice;
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.nullValue;
+import static org.fest.assertions.api.Assertions.assertThat;
 
 public class SwitchTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
         CULHMDevice device = getDefaultDevice();
 
-        assertThat(device.getName(), is(DEFAULT_TEST_DEVICE_NAME));
-        assertThat(device.getRoomConcatenated(), is(DEFAULT_TEST_ROOM_NAME));
+        assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
+        assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
 
-        assertThat(device.getState(), is("off"));
-        assertThat(device.getSubType(), is(CULHMDevice.SubType.SWITCH));
-        assertThat(device.supportsDim(), is(false));
+        assertThat(device.getState()).isEqualTo("off");
+        assertThat(device.getSubType()).isEqualTo(CULHMDevice.SubType.SWITCH);
+        assertThat(device.supportsDim()).isEqualTo(false);
 
-        assertThat(device.getLogDevice(), is(nullValue()));
-        assertThat(device.getDeviceCharts().size(), is(0));
+        assertThat(device.getLogDevices()).isEmpty();
+        assertThat(device.getDeviceCharts().size()).isEqualTo(0);
 
-        assertThat(device.isSupported(), is(true));
+        assertThat(device.isSupported()).isEqualTo(true);
     }
 
     @Test
     public void testRelaxedEventMap() {
         CULHMDevice relaxedEventMapDevice = getDeviceFor("device_relaxedEventMap");
-        assertThat(relaxedEventMapDevice.getEventMapStateFor("off"), is("off"));
+        assertThat(relaxedEventMapDevice.getEventMapStateFor("off")).isEqualTo("off");
     }
 
     @Override
