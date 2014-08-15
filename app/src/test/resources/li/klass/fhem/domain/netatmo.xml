@@ -1,0 +1,113 @@
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<FHZINFO>
+    <netatmo_LIST>
+        <netatmo name="netatmo"
+            attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev debug:1 disable:1 interval logfile nossl:1 event-on-change-reading event-on-update-reading event-min-interval stateFormat devStateIcon devStateStyle fm_fav fm_groups fm_name fm_order fm_type fp_Wohnung fp_image icon sortby structexclude webCmd widgetOverride wzFlutlicht wzFlutlicht_map"
+            sets="" state="Connected">
+            <INT key="Clients" value=":netatmo:" />
+            <INT key="DEF"
+                value="ACCOUNT markus.hochstrasser@gmail.com jjkliijjjj kljlkjijlkj kljljlkjljkkiii" />
+            <INT key="NAME" value="netatmo" />
+            <INT key="NR" value="163" />
+            <INT key="NTFY_ORDER" value="50-netatmo" />
+            <INT key="STATE" value="Connected" />
+            <INT key="SUBTYPE" value="ACCOUNT" />
+            <INT key="TYPE" value="netatmo" />
+            <INT key="access_token" value="lkjljkjlkj" />
+            <INT key="client_id" value="kljljljijlkjk" />
+            <INT key="client_secret" value="kljijljkjlkjl" />
+            <INT key="expires_at" value="1407689484" />
+            <INT key="https" value="https" />
+            <INT key="password" value="kljlkjli" />
+            <INT key="refresh_token" value="kljljlkjlkj|kljlkjlkjlkj" />
+            <INT key="username" value="markus.hochstrasser@gmail.com" />
+        </netatmo>
+        <netatmo name="netatmo_device"
+            attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev debug:1 disable:1 interval logfile nossl:1 event-on-change-reading event-on-update-reading event-min-interval stateFormat devStateIcon devStateStyle fm_fav fm_groups fm_name fm_order fm_type fp_Wohnung fp_image icon sortby structexclude webCmd widgetOverride wzFlutlicht wzFlutlicht_map"
+            sets="" state="T: 26.6 H: 66">
+            <INT key="DEF" value="70:ee:50:01:58:04" />
+            <INT key="Device" value="70:ee:50:01:58:04" />
+            <INT key="INTERVAL" value="300" />
+            <INT key="LAST_POLL" value="2014-08-10 17:56:27" />
+            <INT key="NAME" value="netatmo_device" />
+            <INT key="NR" value="166" />
+            <INT key="NTFY_ORDER" value="50-netatmo_D70:ee:50:01:58:04" />
+            <INT key="STATE" value="T: 26.6 H: 66" />
+            <INT key="SUBTYPE" value="DEVICE" />
+            <INT key="TYPE" value="netatmo" />
+            <INT key="altitude" value="" />
+            <INT key="bssid" value="20:e5:2a:0c:42:26" />
+            <INT key="city" value="Rheinfelden" />
+            <INT key="country" value="CH" />
+            <INT key="dataTypes" value="Temperature,Co2,Humidity,Noise,Pressure" />
+            <INT key="firmware" value="86" />
+            <INT key="location" value="8,47" />
+            <INT key="model" value="NAMain" />
+            <INT key="openRequests" value="0" />
+            <INT key="stationName" value="merlin2010" />
+            <INT key="status" value="ok" />
+            <INT key="IODev" value="netatmo" />
+            <ATTR key="IODev" value="netatmo" />
+            <ATTR key="alias" value="Indoor" />
+            <ATTR key="room" value="Wohnung" />
+            <ATTR key="stateFormat" value="T: temperature H: humidity" />
+            <ATTR key="verbose" value="0" />
+            <STATE key="co2" measured="2014-08-10 17:53:29" value="650" />
+            <STATE key="humidity" measured="2014-08-10 17:53:29" value="66" />
+            <STATE key="noise" measured="2014-08-10 17:53:29" value="52" />
+            <STATE key="pressure" measured="2014-08-10 17:53:29" value="960.2" />
+            <STATE key="temperature" measured="2014-08-10 17:53:29" value="26.6" />
+        </netatmo>
+        <netatmo name="netatmo_module"
+            attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev debug:1 disable:1 interval logfile nossl:1 event-on-change-reading event-on-update-reading event-min-interval stateFormat devStateIcon devStateStyle fm_fav fm_groups fm_name fm_order fm_type fp_Wohnung fp_image icon sortby structexclude webCmd widgetOverride wzFlutlicht wzFlutlicht_map"
+            sets="" state="T: 28.2 H: 60">
+            <INT key="DEF" value="MODULE 70:ee:50:01:58:04 02:00:00:01:39:7a" />
+            <INT key="Device" value="70:ee:50:01:58:04" />
+            <INT key="INTERVAL" value="300" />
+            <INT key="LAST_POLL" value="2014-08-10 17:56:27" />
+            <INT key="Module" value="02:00:00:01:39:7a" />
+            <INT key="NAME" value="netatmo_module" />
+            <INT key="NR" value="167" />
+            <INT key="NTFY_ORDER" value="50-netatmo_M02:00:00:01:39:7a" />
+            <INT key="STATE" value="T: 28.2 H: 60" />
+            <INT key="SUBTYPE" value="MODULE" />
+            <INT key="TYPE" value="netatmo" />
+            <INT key="dataTypes" value="Temperature,Humidity" />
+            <INT key="firmware" value="37" />
+            <INT key="model" value="NAModule1" />
+            <INT key="openRequests" value="0" />
+            <INT key="status" value="ok" />
+            <INT key="IODev" value="netatmo" />
+            <ATTR key="IODev" value="netatmo" />
+            <ATTR key="alias" value="Outdoor" />
+            <ATTR key="room" value="Wetter" />
+            <ATTR key="stateFormat" value="T: temperature H: humidity" />
+            <ATTR key="verbose" value="0" />
+            <STATE key="humidity" measured="2014-08-10 17:52:49" value="60" />
+            <STATE key="temperature" measured="2014-08-10 17:52:49" value="28.2" />
+        </netatmo>
+    </netatmo_LIST>
+</FHZINFO>

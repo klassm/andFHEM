@@ -216,6 +216,7 @@
     <string name="heartPulse">Pulse</string>
     <string name="height">Height</string>
     <string name="weight">Weight</string>
+    <string name="noise">Noise</string>
 
     <string name="connectionManage">Manage</string>
     <string name="connectionCreate">Create a new connection</string>
@@ -430,7 +431,7 @@
     <string name="shop_buyPemium">Buy andFHEM Premium</string>
     <string name="premium_multipleConnections">AndFHEM Premium is required to use more than one connection.</string>
 
-    <string name="blank" translatable="false"></string>
+    <string name="blank" translatable="false" />
     <string name="deviceListEmpty">No matching devices found!</string>
 
     <string name="widget_small">andFHEM Small</string>

@@ -56,6 +56,7 @@ import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceType;
 import li.klass.fhem.domain.core.RoomDeviceList;
+import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.error.ErrorHolder;
 import li.klass.fhem.fhem.RequestResult;
 import li.klass.fhem.fhem.RequestResultError;
@@ -73,45 +74,6 @@ public class DeviceListParser {
     public static final String TAG = DeviceListParser.class.getName();
 
     private Map<Class<Device>, Map<String, Set<Method>>> deviceClassCache;
-
-    private class ReadErrorHolder {
-        private Map<DeviceType, Integer> deviceTypeErrorCount = new HashMap<DeviceType, Integer>();
-
-        public int getErrorCount() {
-            int errors = 0;
-            for (Integer deviceTypeErrors : deviceTypeErrorCount.values()) {
-                errors += deviceTypeErrors;
-            }
-            return errors;
-        }
-
-        public boolean hasErrors() {
-            return deviceTypeErrorCount.size() != 0;
-        }
-
-        public void addError(DeviceType deviceType) {
-            addErrors(deviceType, 1);
-        }
-
-        public void addErrors(DeviceType deviceType, int errorCount) {
-            int count = 0;
-            if (deviceTypeErrorCount.containsKey(deviceType)) {
-                count = deviceTypeErrorCount.get(deviceType);
-            }
-            deviceTypeErrorCount.put(deviceType, count + errorCount);
-        }
-
-        public List<String> getErrorDeviceTypeNames() {
-            if (deviceTypeErrorCount.size() == 0) return Collections.emptyList();
-
-            List<String> errorDeviceTypeNames = new ArrayList<String>();
-            for (DeviceType deviceType : deviceTypeErrorCount.keySet()) {
-                errorDeviceTypeNames.add(deviceType.name());
-            }
-
-            return errorDeviceTypeNames;
-        }
-    }
 
     private DeviceListParser() {
     }
@@ -267,10 +229,10 @@ public class DeviceListParser {
     }
 
     /**
-     * @param deviceClass       class of the device to read
-     * @param document          xml document to read
-     * @param tagName           current tag name to read
-     * @param <T>               type of device
+     * @param deviceClass class of the device to read
+     * @param document    xml document to read
+     * @param tagName     current tag name to read
+     * @param <T>         type of device
      * @return error count while parsing the device list
      */
     private <T extends Device> int devicesFromDocument(Class<T> deviceClass, Document document,
@@ -345,7 +307,7 @@ public class DeviceListParser {
             if (keyAttribute == null) continue;
 
             String originalKey = keyAttribute.getNodeValue().trim().replaceAll("[-\\.]", "_");
-            if (! device.acceptXmlKey(originalKey)) {
+            if (!device.acceptXmlKey(originalKey)) {
                 continue;
             }
 
@@ -409,18 +371,24 @@ public class DeviceListParser {
         Map<String, Set<Method>> cache = new HashMap<String, Set<Method>>();
         Method[] methods = deviceClass.getMethods();
         for (Method method : methods) {
-            String methodName = method.getName();
-            if (!methodName.startsWith("read")) continue;
-
-            String attributeName = methodName.substring("read".length());
-            if (!cache.containsKey(attributeName)) {
-                cache.put(attributeName, new HashSet<Method>());
+            if (method.isAnnotationPresent(XmllistAttribute.class)) {
+                XmllistAttribute annotation = method.getAnnotation(XmllistAttribute.class);
+                addToCache(cache, method, annotation.value());
+            } else if (method.getName().startsWith("read")) {
+                String attribute = method.getName().substring("read".length());
+                addToCache(cache, method, attribute);
             }
-            cache.get(attributeName).add(method);
-            method.setAccessible(true);
         }
 
         return cache;
+    }
+
+    private void addToCache(Map<String, Set<Method>> cache, Method method, String attribute) {
+        if (!cache.containsKey(attribute)) {
+            cache.put(attribute, new HashSet<Method>());
+        }
+        cache.get(attribute).add(method);
+        method.setAccessible(true);
     }
 
     private Map<Class<Device>, Map<String, Set<Method>>> getDeviceClassCache() {
@@ -467,6 +435,45 @@ public class DeviceListParser {
             return changed | fillDeviceWith(device, updates, deviceClass.getSuperclass());
         } else {
             return changed;
+        }
+    }
+
+    private class ReadErrorHolder {
+        private Map<DeviceType, Integer> deviceTypeErrorCount = new HashMap<DeviceType, Integer>();
+
+        public int getErrorCount() {
+            int errors = 0;
+            for (Integer deviceTypeErrors : deviceTypeErrorCount.values()) {
+                errors += deviceTypeErrors;
+            }
+            return errors;
+        }
+
+        public boolean hasErrors() {
+            return deviceTypeErrorCount.size() != 0;
+        }
+
+        public void addError(DeviceType deviceType) {
+            addErrors(deviceType, 1);
+        }
+
+        public void addErrors(DeviceType deviceType, int errorCount) {
+            int count = 0;
+            if (deviceTypeErrorCount.containsKey(deviceType)) {
+                count = deviceTypeErrorCount.get(deviceType);
+            }
+            deviceTypeErrorCount.put(deviceType, count + errorCount);
+        }
+
+        public List<String> getErrorDeviceTypeNames() {
+            if (deviceTypeErrorCount.size() == 0) return Collections.emptyList();
+
+            List<String> errorDeviceTypeNames = new ArrayList<String>();
+            for (DeviceType deviceType : deviceTypeErrorCount.keySet()) {
+                errorDeviceTypeNames.add(deviceType.name());
+            }
+
+            return errorDeviceTypeNames;
         }
     }
 }

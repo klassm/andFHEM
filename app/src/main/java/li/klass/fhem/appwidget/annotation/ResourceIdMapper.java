@@ -170,6 +170,7 @@ public enum ResourceIdMapper {
     heartPulse(R.string.heartPulse),
     height(R.string.height),
     weight(R.string.weight),
+    noise(R.string.noise),
 
     blank(R.string.blank),
     none(-1);

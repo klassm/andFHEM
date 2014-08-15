@@ -34,6 +34,8 @@ public class ValueDescriptionUtil {
     public static final String L = "l";
     public static final String KWH = "kWh";
     public static final String LUX = "lux";
+    public static final String PPM = "ppm";
+    public static final String DB = "dB";
 
     public static String appendTemperature(Object text) {
         return append(text, C);
@@ -58,6 +60,20 @@ public class ValueDescriptionUtil {
     public static String appendKwh(Object text) {
         return append(text, KWH);
     }
+
+    public static String appendPpm(Object text) {
+        return append(text, PPM);
+    }
+
+    public static String appendDb(Object text) {
+        return append(text, DB);
+    }
+
+    public static String appendHPa(Object text) {
+        return append(text, "hPa");
+    }
+
+
 
     public static String append(Object text, String appendix) {
         return text + " (" + appendix + ")";

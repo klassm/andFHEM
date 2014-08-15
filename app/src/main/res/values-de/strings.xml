@@ -215,6 +215,7 @@
     <string name="heartPulse">Puls</string>
     <string name="height">Größe</string>
     <string name="weight">Gewicht</string>
+    <string name="noise">Lärm</string>
 
     <string name="connectionManage">Verwalten</string>
     <string name="connectionCreate">Neue Verbindung erstellen</string>

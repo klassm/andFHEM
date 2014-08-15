@@ -97,6 +97,7 @@ import li.klass.fhem.domain.LGTVDevice;
 import li.klass.fhem.domain.LaCrosseDevice;
 import li.klass.fhem.domain.LightSceneDevice;
 import li.klass.fhem.domain.MaxDevice;
+import li.klass.fhem.domain.NetatmoDevice;
 import li.klass.fhem.domain.OWFSDevice;
 import li.klass.fhem.domain.OpenWeatherMapDevice;
 import li.klass.fhem.domain.OregonDevice;
@@ -225,7 +226,8 @@ public enum DeviceType {
     WIFILIGHT("WifiLight", WifiLightDevice.class, new WifiLightDeviceAdapter()),
     EC3000("EC3000", EC3000Device.class),
     WITHINGS("withings", WithingsDevice.class),
-    DMX("DMXDevice", DMXDevice.class, new DmxAdapter());
+    DMX("DMXDevice", DMXDevice.class, new DmxAdapter()),
+    NETATMO("netatmo", NetatmoDevice.class);
 
     private String xmllistTag;
     private Class<? extends Device> deviceClass;
@@ -285,7 +287,6 @@ public enum DeviceType {
         if (visibility == null) return true;
 
         ServerType serverType = ConnectionService.INSTANCE.getCurrentServer().getServerType();
-        if (visibility == null) return true;
         if (visibility == DeviceVisibility.NEVER) return false;
 
         ServerType showOnlyIn = visibility.getShowOnlyIn();
