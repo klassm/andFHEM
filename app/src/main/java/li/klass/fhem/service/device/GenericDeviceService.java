@@ -30,6 +30,7 @@ import java.lang.reflect.Method;
 
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.service.CommandExecutionService;
 import li.klass.fhem.util.Tasker;
 
@@ -57,15 +58,27 @@ public class GenericDeviceService {
         Tasker.sendTaskerNotifyIntent(AndFHEMApplication.getContext(), device.getName(),
                 subStateName, value);
 
-        String subState = subStateName.toUpperCase();
-        String methodName = "read" + subState;
-        try {
-            Method method = device.getClass().getMethod(methodName, String.class);
-            method.invoke(device, value);
-        } catch (NoSuchMethodException e) {
-            device.onChildItemRead("UPDATE", subState, value, null);
-        } catch (Exception e) {
-            Log.e(GenericDeviceService.class.getName(), "error during invoke of " + methodName + " for device " + device.getClass().getSimpleName(), e);
+        invokeDeviceUpdateFor(device, subStateName, value);
+    }
+
+    private void invokeDeviceUpdateFor(Device<?> device, String subStateName, String value) {
+
+        Class<? extends Device> clazz = device.getClass();
+        for (Method method : clazz.getMethods()) {
+            try {
+                if (method.getParameterTypes().length == 1 && method.getParameterTypes()[0].isAssignableFrom(String.class)) {
+                    if (method.isAnnotationPresent(XmllistAttribute.class)) {
+                        if (method.getAnnotation(XmllistAttribute.class).value().equalsIgnoreCase(subStateName)) {
+                            method.invoke(device, value);
+                        }
+                    } else if (method.getName().equalsIgnoreCase("read" + subStateName)) {
+                        method.invoke(device, value);
+                    }
+                }
+            } catch (Exception e) {
+                Log.e(GenericDeviceService.class.getName(), "error during invoke of " + method.getName() + " for device " + clazz.getSimpleName(), e);
+            }
         }
+
     }
 }

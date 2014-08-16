@@ -26,6 +26,7 @@ package li.klass.fhem.domain;
 
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.ToggleableDevice;
+import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.util.NumberSystemUtil;
 
 public class WifiLightDevice extends ToggleableDevice<WifiLightDevice> {
@@ -36,8 +37,10 @@ public class WifiLightDevice extends ToggleableDevice<WifiLightDevice> {
         return DeviceFunctionality.SWITCH;
     }
 
-    public void readRGB(String value) {
-        if (value != null && value.matches("[0-9A-F]{6}")) {
+    @XmllistAttribute("RGB")
+    public void setRGB(String value) {
+        value = value.toUpperCase();
+        if (value.matches("[0-9A-F]{6}")) {
             rgb = NumberSystemUtil.hexToDecimal(value);
         }
     }

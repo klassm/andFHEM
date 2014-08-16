@@ -62,7 +62,7 @@ public class WifiLightDeviceAdapter extends ToggleableAdapterWithSwitchActionRow
 
                         Intent intent = new Intent(Actions.DEVICE_SET_SUB_STATE);
                         intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
-                        intent.putExtra(BundleExtraKeys.STATE_NAME, "rgb");
+                        intent.putExtra(BundleExtraKeys.STATE_NAME, "RGB");
                         intent.putExtra(BundleExtraKeys.STATE_VALUE, targetHexString);
                         GenericDeviceAdapter.putUpdateExtra(intent);
 
