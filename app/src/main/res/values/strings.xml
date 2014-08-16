@@ -237,6 +237,10 @@
     <string name="connectionEmptyError">Field \"%s\" may not be empty!</string>
     <string name="connectionUrlHttp">URL must start with "http"!</string>
     <string name="connectionCurrent">Current connection</string>
+    <string name="connectionClientCertificate">Client certificate</string>
+    <string name="connectionClientCertificatePassword">Client password</string>
+    <string name="connectionServerCertificate">Server certificate</string>
+    <string name="connectionCertificateAuthentication">Certificate authentication (optional)</string>
 
     <string name="switchDevice">Switch</string>
     <string name="preferences">Preferences</string>
@@ -432,7 +436,7 @@
     <string name="shop_buyPemium">Buy andFHEM Premium</string>
     <string name="premium_multipleConnections">AndFHEM Premium is required to use more than one connection.</string>
 
-    <string name="blank" translatable="false" />
+    <string name="blank" translatable="false"/>
     <string name="deviceListEmpty">No matching devices found!</string>
 
     <string name="widget_small">andFHEM Small</string>

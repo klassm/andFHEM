@@ -237,6 +237,10 @@
     <string name="connectionEmptyError">Feld \"%s\" darf nicht leer sein!</string>
     <string name="connectionUrlHttp">URL muss mit "http" beginnen!</string>
     <string name="connectionCurrent">Aktuelle Verbindung</string>
+    <string name="connectionClientCertificate">Client-Zertifikat</string>
+    <string name="connectionClientCertificatePassword">Client-Passwort</string>
+    <string name="connectionServerCertificate">Server-Zertifikat</string>
+    <string name="connectionCertificateAuthentication">Authentifizierung durch Zertifikat (optional)</string>
 
     <string name="switchDevice">Schalte</string>
     <string name="preferences">Einstellungen</string>

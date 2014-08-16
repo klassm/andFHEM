@@ -46,14 +46,11 @@ import static li.klass.fhem.constants.PreferenceKeys.SELECTED_CONNECTION;
 
 public class ConnectionService {
     public static final ConnectionService INSTANCE = new ConnectionService();
-
-    private static final Gson GSON = new Gson();
-
-    private static final String PREFERENCES_NAME = "fhemConnections";
     public static final String DUMMY_DATA_ID = "-1";
     public static final String TEST_DATA_ID = "-2";
     public static final String MANAGEMENT_DATA_ID = "-3";
-
+    private static final Gson GSON = new Gson();
+    private static final String PREFERENCES_NAME = "fhemConnections";
     private FHEMServerSpec dummyData;
     private DummyServerSpec testData;
 
@@ -74,8 +71,10 @@ public class ConnectionService {
         }
     }
 
-    public void create(final String name, final ServerType serverType, final String username, final String password,
-                          final String ip, final int port, final String url) {
+    public void create(final String name, final ServerType serverType, final String username,
+                       final String password, final String ip, final int port, final String url,
+                       final String clientCertificatePath, final String serverCertificatePath,
+                       final boolean clientCertificateEnabled, final String clientCertificatePassword) {
         if (exists(name)) return;
 
         LicenseManager licenseManager = LicenseManager.INSTANCE;
@@ -86,7 +85,8 @@ public class ConnectionService {
 
                     FHEMServerSpec server = new FHEMServerSpec(newUniqueId());
 
-                    fillServerWith(name, server, serverType, username, password, ip, port, url);
+                    fillServerWith(name, server, serverType, username, password, ip, port, url,
+                            clientCertificatePath, serverCertificatePath, clientCertificateEnabled, clientCertificatePassword);
 
                     saveToPreferences(server);
                 }
@@ -94,21 +94,31 @@ public class ConnectionService {
         });
     }
 
-    public boolean update(String id, String name, ServerType serverType, String username, String password,
-                          String ip, int port, String url) {
+    public boolean exists(String id) {
+        return DUMMY_DATA_ID.equals(id) || TEST_DATA_ID.equals(id)
+                || getPreferences().contains(id);
+    }
 
-        FHEMServerSpec server = forId(id);
-        if (server == null) return false;
+    private int getCountWithoutDummy() {
+        Map<String, ?> all = getPreferences().getAll();
+        if (all == null) return 0;
+        return all.size();
+    }
 
-        fillServerWith(name, server, serverType, username, password, ip, port, url);
+    private String newUniqueId() {
+        String id = null;
+        while (id == null || exists(id) || DUMMY_DATA_ID.equals(id)
+                || TEST_DATA_ID.equals(id) || MANAGEMENT_DATA_ID.equals(id)) {
+            id = UUID.randomUUID().toString();
+        }
 
-        saveToPreferences(server);
-
-        return true;
+        return id;
     }
 
     private void fillServerWith(String name, FHEMServerSpec server, ServerType serverType, String username,
-                                String password, String ip, int port, String url) {
+                                String password, String ip, int port, String url,
+                                String clientCertificatePath, String serverCertificatePath,
+                                boolean clientCertificateEnabled, String clientCertificatePassword) {
         server.setName(name);
         server.setServerType(serverType);
         server.setUsername(username);
@@ -116,6 +126,40 @@ public class ConnectionService {
         server.setPassword(password);
         server.setIp(ip);
         server.setUrl(url);
+        server.setClientCertificatePath(clientCertificatePath);
+        server.setServerCertificatePath(serverCertificatePath);
+        server.setClientCertificateEnabled(clientCertificateEnabled);
+        server.setClientCertificatePassword(clientCertificatePassword);
+    }
+
+    private void saveToPreferences(FHEMServerSpec server) {
+        if (server.getServerType() == ServerType.DUMMY) return;
+
+        String json = serialize(server);
+        getPreferences().edit().putString(server.getId(), json).commit();
+    }
+
+    private SharedPreferences getPreferences() {
+        return AndFHEMApplication.getContext().getSharedPreferences(PREFERENCES_NAME, Activity.MODE_PRIVATE);
+    }
+
+    String serialize(FHEMServerSpec serverSpec) {
+        return GSON.toJson(serverSpec);
+    }
+
+    public boolean update(String id, String name, ServerType serverType, String username, String password,
+                          String ip, int port, String url, String clientCertificatePath, String serverCertificatePath, boolean clientCertificateEnabled, String clientCertificatePassword) {
+
+        FHEMServerSpec server = forId(id);
+        if (server == null) return false;
+
+        fillServerWith(name, server, serverType, username, password, ip, port, url,
+                clientCertificatePath, serverCertificatePath, clientCertificateEnabled,
+                clientCertificatePassword);
+
+        saveToPreferences(server);
+
+        return true;
     }
 
     public FHEMServerSpec forId(String id) {
@@ -127,18 +171,23 @@ public class ConnectionService {
         return deserialize(json);
     }
 
+    FHEMServerSpec deserialize(String json) {
+        return GSON.fromJson(json, FHEMServerSpec.class);
+    }
+
     public boolean delete(String id) {
-        if (! exists(id)) return false;
+        if (!exists(id)) return false;
 
         getPreferences().edit().remove(id).commit();
 
         return true;
     }
 
-    private int getCountWithoutDummy() {
-        Map<String, ?> all = getPreferences().getAll();
-        if (all == null) return 0;
-        return all.size();
+    public boolean nameExists(String name) {
+        for (FHEMServerSpec serverSpec : listAll()) {
+            if (serverSpec.getName().equalsIgnoreCase(name)) return true;
+        }
+        return false;
     }
 
     public ArrayList<FHEMServerSpec> listAll() {
@@ -164,61 +213,20 @@ public class ConnectionService {
         return servers;
     }
 
-    private String newUniqueId() {
-        String id = null;
-        while (id == null || exists(id) || DUMMY_DATA_ID.equals(id)
-                || TEST_DATA_ID.equals(id) || MANAGEMENT_DATA_ID.equals(id)) {
-            id = UUID.randomUUID().toString();
-        }
-
-        return id;
-    }
-
-    String serialize(FHEMServerSpec serverSpec) {
-        return GSON.toJson(serverSpec);
-    }
-
-    FHEMServerSpec deserialize(String json) {
-        return GSON.fromJson(json, FHEMServerSpec.class);
-    }
-
-    public boolean exists(String id) {
-        return DUMMY_DATA_ID.equals(id) || TEST_DATA_ID.equals(id)
-                || getPreferences().contains(id);
-    }
-
-    public boolean nameExists(String name) {
-        for (FHEMServerSpec serverSpec : listAll()) {
-            if (serverSpec.getName().equalsIgnoreCase(name)) return true;
-        }
-        return false;
-    }
-
-    private void saveToPreferences(FHEMServerSpec server) {
-        if (server.getServerType() == ServerType.DUMMY) return;
-
-        String json = serialize(server);
-        getPreferences().edit().putString(server.getId(), json).commit();
-    }
-
-    private SharedPreferences getPreferences() {
-        return AndFHEMApplication.getContext().getSharedPreferences(PREFERENCES_NAME, Activity.MODE_PRIVATE);
-    }
-
-    public void setSelectedId(String id) {
-        if (! exists(id)) id = DUMMY_DATA_ID;
-        ApplicationProperties.INSTANCE.setSharedPreference(SELECTED_CONNECTION, id);
+    public FHEMServerSpec getCurrentServer() {
+        return forId(getSelectedId());
     }
 
     public String getSelectedId() {
         ApplicationProperties applicationProperties = ApplicationProperties.INSTANCE;
         String id = applicationProperties.getStringSharedPreference(SELECTED_CONNECTION, DUMMY_DATA_ID);
-        if (! exists(id)) id = DUMMY_DATA_ID;
+        if (!exists(id)) id = DUMMY_DATA_ID;
 
         return id;
     }
 
-    public FHEMServerSpec getCurrentServer() {
-        return forId(getSelectedId());
+    public void setSelectedId(String id) {
+        if (!exists(id)) id = DUMMY_DATA_ID;
+        ApplicationProperties.INSTANCE.setSharedPreference(SELECTED_CONNECTION, id);
     }
 }

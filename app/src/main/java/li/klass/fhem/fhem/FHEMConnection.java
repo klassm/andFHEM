@@ -43,7 +43,10 @@ public abstract class FHEMConnection {
 
     public void setServer(FHEMServerSpec serverSpec) {
         this.serverSpec = serverSpec;
+        onSetServerSpec();
     }
+
+    protected void onSetServerSpec() {}
 
     protected void setErrorInErrorHolderFor(Exception e, String host, String command) {
         String text = "Error while accessing '" + host + "' with command '" + command + "'\r\n" +

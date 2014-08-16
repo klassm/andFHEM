@@ -23,8 +23,9 @@
   ~   Boston, MA  02110-1301  USA
   -->
 
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest
     package="li.klass.fhem"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:versionCode="304"
     android:versionName="3.0.4">
 
@@ -35,6 +36,7 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <uses-feature android:name="android.hardware.touchscreen"/>
 

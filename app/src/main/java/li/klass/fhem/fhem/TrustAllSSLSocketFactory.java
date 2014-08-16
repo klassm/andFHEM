@@ -26,15 +26,19 @@ package li.klass.fhem.fhem;
 
 import org.apache.http.conn.ssl.SSLSocketFactory;
 
+import java.io.IOException;
+import java.net.Socket;
+import java.security.KeyManagementException;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.UnrecoverableKeyException;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
+
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
-import java.io.IOException;
-import java.net.Socket;
-import java.net.UnknownHostException;
-import java.security.*;
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
 
 /**
  * Custom implementation for SSL.
@@ -42,14 +46,15 @@ import java.security.cert.X509Certificate;
  * http://stackoverflow.com/questions/2642777/trusting-all-certificates-using-httpclient-over-https
  * for details
  */
-public class CustomSSLSocketFactory extends SSLSocketFactory {
+public class TrustAllSSLSocketFactory extends SSLSocketFactory {
     SSLContext sslContext = SSLContext.getInstance("TLS");
 
-    public CustomSSLSocketFactory(KeyStore truststore) throws NoSuchAlgorithmException, KeyManagementException, KeyStoreException, UnrecoverableKeyException {
+    public TrustAllSSLSocketFactory(KeyStore truststore) throws NoSuchAlgorithmException, KeyManagementException, KeyStoreException, UnrecoverableKeyException {
         super(truststore);
 
+        setHostnameVerifier(SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
 
-        TrustManager tm = new X509TrustManager() {
+        TrustManager trustManager = new X509TrustManager() {
             public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
             }
 
@@ -61,11 +66,11 @@ public class CustomSSLSocketFactory extends SSLSocketFactory {
             }
         };
 
-        sslContext.init(null, new TrustManager[]{tm}, null);
+        sslContext.init(null, new TrustManager[]{trustManager}, null);
     }
 
     @Override
-    public Socket createSocket(Socket socket, String host, int port, boolean autoClose) throws IOException, UnknownHostException {
+    public Socket createSocket(Socket socket, String host, int port, boolean autoClose) throws IOException {
         return sslContext.getSocketFactory().createSocket(socket, host, port, autoClose);
     }
 

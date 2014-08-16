@@ -44,6 +44,7 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -56,16 +57,19 @@ import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.fhem.connection.FHEMServerSpec;
 import li.klass.fhem.fhem.connection.ServerType;
 import li.klass.fhem.fragments.core.BaseFragment;
+import li.klass.fhem.ui.FileDialog;
 import li.klass.fhem.util.DialogUtil;
 
 import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION;
+import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_CLIENT_CERTIFICATE_PASSWORD;
+import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_CLIENT_CERTIFICATE_PATH;
+import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_ENABLE_CLIENT_CERTIFICATE;
+import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_SERVER_CERTIFICATE_PATH;
+import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_URL;
+import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_USERNAME;
 import static li.klass.fhem.constants.ResultCodes.SUCCESS;
 
 public class ConnectionDetailFragment extends BaseFragment {
-
-    private interface ConnectionTypeDetailChangedListener {
-        void onChanged();
-    }
 
     private static final String TAG = ConnectionDetailFragment.class.getName();
     private String connectionId;
@@ -125,14 +129,6 @@ public class ConnectionDetailFragment extends BaseFragment {
         return view;
     }
 
-    private int selectionIndexFor(ServerType serverType) {
-        List<ServerType> serverTypes = getServerTypes();
-        for (int i = 0; i < serverTypes.size(); i++) {
-            if (serverType == serverTypes.get(i)) return i;
-        }
-        return -1;
-    }
-
     private List<ServerType> getServerTypes() {
         final List<ServerType> connectionTypes = new ArrayList<ServerType>();
         connectionTypes.addAll(Arrays.asList(ServerType.values()));
@@ -147,8 +143,10 @@ public class ConnectionDetailFragment extends BaseFragment {
         View view;
         if (connectionType == ServerType.FHEMWEB) {
             view = inflater.inflate(R.layout.connection_fhemweb, null);
+            handleFHEMWEBView(view);
         } else if (connectionType == ServerType.TELNET) {
             view = inflater.inflate(R.layout.connection_telnet, null);
+            handleFHEMWEBView(view);
         } else {
             throw new IllegalArgumentException("cannot handle connection type " + connectionType);
         }
@@ -180,9 +178,167 @@ public class ConnectionDetailFragment extends BaseFragment {
         if (detailChangedListener != null) detailChangedListener.onChanged();
     }
 
+    private void handleSave() {
+        Intent intent = new Intent();
+        if (isModify) {
+            intent.setAction(Actions.CONNECTION_UPDATE);
+            intent.putExtra(BundleExtraKeys.CONNECTION_ID, connectionId);
+        } else {
+            intent.setAction(Actions.CONNECTION_CREATE);
+        }
+
+        intent.putExtra(BundleExtraKeys.CONNECTION_TYPE, connectionType.name());
+
+        String name = getTextViewContent(R.id.name);
+        if (enforceNotEmpty(R.string.connectionName, name)) return;
+        intent.putExtra(BundleExtraKeys.CONNECTION_NAME, name);
+
+        intent.putExtra(BundleExtraKeys.CONNECTION_PASSWORD, getTextViewContent(R.id.password));
+
+        switch (connectionType) {
+            case TELNET:
+                if (!handleTelnetSave(intent)) {
+                    return;
+                }
+                break;
+
+            case FHEMWEB:
+                if (!handleFHEMWEBSave(intent)) {
+                    return;
+                }
+                break;
+        }
+
+        intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
+            @Override
+            protected void onReceiveResult(int resultCode, Bundle resultData) {
+                super.onReceiveResult(resultCode, resultData);
+
+                if (resultCode != ResultCodes.SUCCESS) return;
+
+                Intent intent = new Intent(Actions.BACK);
+                getActivity().sendBroadcast(intent);
+            }
+        });
+
+        getActivity().startService(intent);
+    }
+
+    private void handleFHEMWEBView(View view) {
+        Button setClientCertificate = (Button) view.findViewById(R.id.setClientCertificatePath);
+        setClientCertificate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final TextView clientCertificatePath = (TextView) getView().findViewById(R.id.clientCertificatePath);
+                File initialPath = new File(clientCertificatePath.getText().toString());
+
+                FileDialog fileDialog = new FileDialog(view.getContext(), initialPath);
+                fileDialog.addFileListener(new FileDialog.FileSelectedListener() {
+                    @Override
+                    public void fileSelected(File file) {
+                        clientCertificatePath.setText(file.getAbsolutePath());
+                    }
+                });
+                fileDialog.showDialog();
+            }
+        });
+
+        Button setServerCertificate = (Button) view.findViewById(R.id.setServerCertificatePath);
+        setServerCertificate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final TextView serverCertificatePath = (TextView) getView().findViewById(R.id.serverCertificatePath);
+                File initialPath = new File(serverCertificatePath.getText().toString());
+
+                FileDialog fileDialog = new FileDialog(view.getContext(), initialPath);
+                fileDialog.addFileListener(new FileDialog.FileSelectedListener() {
+                    @Override
+                    public void fileSelected(File file) {
+                        serverCertificatePath.setText(file.getAbsolutePath());
+                    }
+                });
+                fileDialog.showDialog();
+            }
+        });
+    }
+
+    private String getTextViewContent(int id) {
+        View view = getView();
+        if (view == null) return null;
+
+        TextView textView = (TextView) view.findViewById(id);
+        if (textView == null) {
+            Log.e(TAG, "cannot find " + id);
+            return null;
+        }
+        return String.valueOf(textView.getText());
+    }
+
+    private boolean enforceNotEmpty(int fieldName, String value) {
+        if (value != null && value.trim().length() > 0) {
+            return false;
+        }
+
+        Context context = getActivity();
+        String emptyError = context.getString(R.string.connectionEmptyError);
+        String errorMessage = String.format(emptyError, context.getString(fieldName));
+
+        DialogUtil.showAlertDialog(context, R.string.error, errorMessage);
+
+        return true;
+    }
+
+    private boolean handleTelnetSave(Intent intent) {
+        String ip = getTextViewContent(R.id.ip);
+        if (enforceNotEmpty(R.string.connectionIP, ip)) return false;
+        intent.putExtra(BundleExtraKeys.CONNECTION_IP, ip);
+
+        String port = getTextViewContent(R.id.port);
+        if (enforceNotEmpty(R.string.connectionPort, port)) return false;
+        intent.putExtra(BundleExtraKeys.CONNECTION_PORT, port);
+
+        return true;
+    }
+
+    private boolean handleFHEMWEBSave(Intent intent) {
+        String url = getTextViewContent(R.id.url);
+        if (enforceNotEmpty(R.string.connectionURL, url)) return false;
+        if (enforceUrlStartsWithHttp(url)) return false;
+
+        intent.putExtra(CONNECTION_URL, url);
+
+        String username = getTextViewContent(R.id.username);
+        intent.putExtra(CONNECTION_USERNAME, username);
+
+        String clientCertificatePath = getTextViewContent(R.id.clientCertificatePath);
+        String serverCertificatePath = getTextViewContent(R.id.serverCertificatePath);
+
+        CheckBox clientCertificateCheckbox = (CheckBox) getView().findViewById(R.id.enableCertificateAuthentication);
+        boolean clientCertificateEnabled = clientCertificateCheckbox.isEnabled();
+
+        intent.putExtra(CONNECTION_CLIENT_CERTIFICATE_PATH, clientCertificatePath);
+        intent.putExtra(CONNECTION_SERVER_CERTIFICATE_PATH, serverCertificatePath);
+        intent.putExtra(CONNECTION_ENABLE_CLIENT_CERTIFICATE, clientCertificateEnabled);
+        intent.putExtra(CONNECTION_CLIENT_CERTIFICATE_PASSWORD, getTextViewContent(R.id.clientCertificatePassword));
+
+        return true;
+    }
+
+    private boolean enforceUrlStartsWithHttp(String url) {
+        if (!url.startsWith("http")) {
+            Context context = getActivity();
+            String emptyError = context.getString(R.string.connectionUrlHttp);
+
+            DialogUtil.showAlertDialog(context, R.string.error, emptyError);
+
+            return true;
+        }
+        return false;
+    }
+
     @Override
     public void update(boolean doUpdate) {
-        if (! isModify) {
+        if (!isModify) {
             Log.e(TAG, "I can only update if a connection is being modified!");
             hideUpdatingBar();
             return;
@@ -194,7 +350,7 @@ public class ConnectionDetailFragment extends BaseFragment {
 
             @Override
             protected void onReceiveResult(int resultCode, Bundle resultData) {
-                if (resultCode != SUCCESS || ! resultData.containsKey(CONNECTION)) {
+                if (resultCode != SUCCESS || !resultData.containsKey(CONNECTION)) {
                     return;
                 }
 
@@ -245,7 +401,7 @@ public class ConnectionDetailFragment extends BaseFragment {
     private void fillDetail(FHEMServerSpec connection) {
         setTextViewContent(R.id.name, connection.getName());
 
-        switch(connectionType) {
+        switch (connectionType) {
             case FHEMWEB:
                 fillFHEMWEB(connection);
                 break;
@@ -253,6 +409,33 @@ public class ConnectionDetailFragment extends BaseFragment {
                 fillTelnet(connection);
                 break;
         }
+    }
+
+    private int selectionIndexFor(ServerType serverType) {
+        List<ServerType> serverTypes = getServerTypes();
+        for (int i = 0; i < serverTypes.size(); i++) {
+            if (serverType == serverTypes.get(i)) return i;
+        }
+        return -1;
+    }
+
+    private void setTextViewContent(int id, String value) {
+        setTextViewContent(getView(), id, value);
+    }
+
+    private void fillFHEMWEB(FHEMServerSpec connection) {
+        View view = getView();
+        if (view == null) return;
+
+        setTextViewContent(view, R.id.url, connection.getUrl());
+        setTextViewContent(view, R.id.username, connection.getUsername() + "");
+        setTextViewContent(view, R.id.password, connection.getPassword());
+        setTextViewContent(view, R.id.clientCertificatePath, connection.getClientCertificatePath());
+        setTextViewContent(view, R.id.serverCertificatePath, connection.getServerCertificatePath());
+        setTextViewContent(view, R.id.clientCertificatePassword, connection.getClientCertificatePassword());
+
+        CheckBox clientCertificateCheckbox = (CheckBox) getView().findViewById(R.id.enableCertificateAuthentication);
+        clientCertificateCheckbox.setChecked(connection.isClientCertificateEnabled());
     }
 
     private void fillTelnet(FHEMServerSpec connection) {
@@ -264,19 +447,6 @@ public class ConnectionDetailFragment extends BaseFragment {
         setTextViewContent(view, R.id.password, connection.getPassword());
     }
 
-    private void fillFHEMWEB(FHEMServerSpec connection) {
-        View view = getView();
-        if (view == null) return;
-
-        setTextViewContent(view, R.id.url, connection.getUrl());
-        setTextViewContent(view, R.id.username, connection.getUsername() + "");
-        setTextViewContent(view, R.id.password, connection.getPassword());
-    }
-
-    private void setTextViewContent(int id, String value) {
-        setTextViewContent(getView(), id, value);
-    }
-
     private void setTextViewContent(View view, int id, String value) {
         if (view == null) return;
 
@@ -286,112 +456,7 @@ public class ConnectionDetailFragment extends BaseFragment {
         }
     }
 
-    private String getTextViewContent(int id) {
-        View view = getView();
-        if (view == null) return null;
-
-        TextView textView = (TextView) view.findViewById(id);
-        if (textView == null) {
-            Log.e(TAG, "cannot find " + id);
-            return null;
-        }
-        return String.valueOf(textView.getText());
-    }
-
-    private void handleSave() {
-        Intent intent = new Intent();
-        if (isModify) {
-            intent.setAction(Actions.CONNECTION_UPDATE);
-            intent.putExtra(BundleExtraKeys.CONNECTION_ID, connectionId);
-        } else {
-            intent.setAction(Actions.CONNECTION_CREATE);
-        }
-
-        intent.putExtra(BundleExtraKeys.CONNECTION_TYPE, connectionType.name());
-
-        String name = getTextViewContent(R.id.name);
-        if (enforceNotEmpty(R.string.connectionName, name)) return;
-        intent.putExtra(BundleExtraKeys.CONNECTION_NAME, name);
-
-        intent.putExtra(BundleExtraKeys.CONNECTION_PASSWORD, getTextViewContent(R.id.password));
-
-        switch (connectionType) {
-            case TELNET:
-                if (! handleTelnetSave(intent)) {
-                    return;
-                }
-                break;
-
-            case FHEMWEB:
-                if (! handleFHEMWEBSave(intent)) {
-                    return;
-                }
-                break;
-        }
-
-        intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
-            @Override
-            protected void onReceiveResult(int resultCode, Bundle resultData) {
-                super.onReceiveResult(resultCode, resultData);
-
-                if (resultCode != ResultCodes.SUCCESS) return;
-
-                Intent intent = new Intent(Actions.BACK);
-                getActivity().sendBroadcast(intent);
-            }
-        });
-
-        getActivity().startService(intent);
-    }
-
-    private boolean handleTelnetSave(Intent intent) {
-        String ip = getTextViewContent(R.id.ip);
-        if (enforceNotEmpty(R.string.connectionIP, ip)) return false;
-        intent.putExtra(BundleExtraKeys.CONNECTION_IP, ip);
-
-        String port = getTextViewContent(R.id.port);
-        if (enforceNotEmpty(R.string.connectionPort, port)) return false;
-        intent.putExtra(BundleExtraKeys.CONNECTION_PORT, port);
-
-        return true;
-    }
-
-    private boolean handleFHEMWEBSave(Intent intent) {
-        String url = getTextViewContent(R.id.url);
-        if (enforceNotEmpty(R.string.connectionURL, url)) return false;
-        if (enforceUrlStartsWithHttp(url)) return false;
-
-        intent.putExtra(BundleExtraKeys.CONNECTION_URL, url);
-
-        String username = getTextViewContent(R.id.username);
-        intent.putExtra(BundleExtraKeys.CONNECTION_USERNAME, username);
-
-        return true;
-    }
-
-    private boolean enforceUrlStartsWithHttp(String url) {
-        if (! url.startsWith("http")) {
-            Context context = getActivity();
-            String emptyError = context.getString(R.string.connectionUrlHttp);
-
-            DialogUtil.showAlertDialog(context, R.string.error, emptyError);
-
-            return true;
-        }
-        return false;
-    }
-
-    private boolean enforceNotEmpty(int fieldName, String value) {
-        if (value != null && value.trim().length() > 0) {
-            return false;
-        }
-
-        Context context = getActivity();
-        String emptyError = context.getString(R.string.connectionEmptyError);
-        String errorMessage = String.format(emptyError, context.getString(fieldName));
-
-        DialogUtil.showAlertDialog(context, R.string.error, errorMessage);
-
-        return true;
+    private interface ConnectionTypeDetailChangedListener {
+        void onChanged();
     }
 }

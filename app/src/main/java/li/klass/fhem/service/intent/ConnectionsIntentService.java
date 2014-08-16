@@ -39,12 +39,16 @@ import li.klass.fhem.service.connection.ConnectionService;
 import li.klass.fhem.util.StringUtil;
 
 import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION;
+import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_CLIENT_CERTIFICATE_PASSWORD;
+import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_CLIENT_CERTIFICATE_PATH;
+import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_ENABLE_CLIENT_CERTIFICATE;
 import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_ID;
 import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_IP;
 import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_LIST;
 import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_NAME;
 import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_PASSWORD;
 import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_PORT;
+import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_SERVER_CERTIFICATE_PATH;
 import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_TYPE;
 import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_URL;
 import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_USERNAME;
@@ -67,7 +71,7 @@ public class ConnectionsIntentService extends ConvenientIntentService {
             bundle.putSerializable(CONNECTION_LIST, serverSpecs);
             bundle.putString(CONNECTION_ID, connectionService.getSelectedId());
             sendResult(resultReceiver, SUCCESS, bundle);
-        } else if(Actions.CONNECTION_CREATE.equals(action)
+        } else if (Actions.CONNECTION_CREATE.equals(action)
                 || Actions.CONNECTION_UPDATE.equals(action)) {
 
             String id = intent.getStringExtra(CONNECTION_ID);
@@ -77,6 +81,10 @@ public class ConnectionsIntentService extends ConvenientIntentService {
             String username = intent.getStringExtra(CONNECTION_USERNAME);
             String password = intent.getStringExtra(CONNECTION_PASSWORD);
             String ip = intent.getStringExtra(CONNECTION_IP);
+            String clientCertificatePath = intent.getStringExtra(CONNECTION_CLIENT_CERTIFICATE_PATH);
+            String clientCertificatePassword = intent.getStringExtra(CONNECTION_CLIENT_CERTIFICATE_PASSWORD);
+            String serverCertificatePath = intent.getStringExtra(CONNECTION_SERVER_CERTIFICATE_PATH);
+            boolean clientCertificateEnabled = intent.getBooleanExtra(CONNECTION_ENABLE_CLIENT_CERTIFICATE, false);
 
             String portString = intent.getStringExtra(CONNECTION_PORT);
             if (StringUtil.isBlank(portString)) portString = "0";
@@ -84,10 +92,12 @@ public class ConnectionsIntentService extends ConvenientIntentService {
 
             if (Actions.CONNECTION_CREATE.equals(action)) {
                 connectionService.create(name, serverType, username,
-                        password, ip, port, url);
+                        password, ip, port, url, clientCertificatePath, serverCertificatePath,
+                        clientCertificateEnabled, clientCertificatePassword);
             } else {
                 connectionService.update(id, name, serverType, username, password, ip,
-                        port, url);
+                        port, url, clientCertificatePath, serverCertificatePath,
+                        clientCertificateEnabled, clientCertificatePassword);
             }
 
             sendChangedBroadcast();

@@ -50,6 +50,7 @@ import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
 import org.apache.http.protocol.HTTP;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
@@ -65,13 +66,11 @@ public class FHEMWEBConnection extends FHEMConnection {
 
     public static final int SOCKET_TIMEOUT = 20000;
     public static final String TAG = FHEMWEBConnection.class.getName();
-    private DefaultHttpClient client = null;
-
     public static final String FHEMWEB_URL = "FHEMWEB_URL";
     public static final String FHEMWEB_USERNAME = "FHEMWEB_USERNAME";
     public static final String FHEMWEB_PASSWORD = "FHEMWEB_PASSWORD";
-
     public static final FHEMWEBConnection INSTANCE = new FHEMWEBConnection();
+    private DefaultHttpClient client = null;
 
     @Override
     public RequestResult<String> executeCommand(String command) {
@@ -101,16 +100,6 @@ public class FHEMWEBConnection extends FHEMConnection {
         } catch (IOException e) {
             throw new IllegalArgumentException(e);
         }
-    }
-
-    @Override
-    public RequestResult<Bitmap> requestBitmap(String relativePath) {
-        RequestResult<InputStream> response = executeRequest(relativePath, client, "request bitmap");
-        if (response.error != null) {
-            return new RequestResult<Bitmap>(response.error);
-        }
-        Bitmap bitmap = BitmapFactory.decodeStream(response.content);
-        return new RequestResult<Bitmap>(bitmap);
     }
 
     private RequestResult<InputStream> executeRequest(String urlSuffix,
@@ -155,7 +144,7 @@ public class FHEMWEBConnection extends FHEMConnection {
             }
             return new RequestResult<InputStream>(contentStream);
         } catch (ConnectTimeoutException e) {
-            Log.i(TAG, "connection timed out" ,e);
+            Log.i(TAG, "connection timed out", e);
             setErrorInErrorHolderFor(e, url, command);
             return new RequestResult<InputStream>(RequestResultError.CONNECTION_TIMEOUT);
         } catch (ClientProtocolException e) {
@@ -174,23 +163,15 @@ public class FHEMWEBConnection extends FHEMConnection {
         }
     }
 
-    public String getPassword() {
-        return serverSpec.getPassword();
-    }
-
-    private DefaultHttpClient createNewHTTPClient(int connectionTimeout,
-                                                  int socketTimeout) {
+    private DefaultHttpClient createNewHTTPClient(int connectionTimeout, int socketTimeout) {
         try {
-            KeyStore trustStore;
             SSLSocketFactory socketFactory;
 
-            trustStore = KeyStore.getInstance(KeyStore.getDefaultType());
-            trustStore.load(null, null);
-
-
-            socketFactory = new CustomSSLSocketFactory(trustStore);
-            socketFactory.setHostnameVerifier(SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
-
+            if (serverSpec.isClientCertificateEnabled()) {
+                socketFactory = createClientCertSocketFactory();
+            } else {
+                socketFactory = createDefaultSocketFactory();
+            }
 
             HttpParams params = new BasicHttpParams();
             HttpProtocolParams.setVersion(params, HttpVersion.HTTP_1_1);
@@ -206,8 +187,13 @@ public class FHEMWEBConnection extends FHEMConnection {
 
             return new DefaultHttpClient(ccm, params);
         } catch (Exception e) {
+            Log.e(TAG, "error while creating client", e);
             return new DefaultHttpClient();
         }
+    }
+
+    public String getPassword() {
+        return serverSpec.getPassword();
     }
 
     static RequestResult<InputStream> handleHttpStatusCode(int statusCode) {
@@ -234,5 +220,40 @@ public class FHEMWEBConnection extends FHEMConnection {
         }
         Log.i(TAG, "encountered http status code " + statusCode);
         return new RequestResult<InputStream>(error);
+    }
+
+    private SSLSocketFactory createClientCertSocketFactory() throws Exception {
+        return new ClientCertSSLSocketFactory(null,
+                new File(serverSpec.getClientCertificatePath()),
+                serverSpec.getClientCertificatePassword(),
+                new File(serverSpec.getServerCertificatePath())
+        );
+    }
+
+    private SSLSocketFactory createDefaultSocketFactory() throws Exception {
+        KeyStore trustStore;
+        SSLSocketFactory socketFactory;
+        trustStore = KeyStore.getInstance(KeyStore.getDefaultType());
+        trustStore.load(null, null);
+
+        socketFactory = new TrustAllSSLSocketFactory(trustStore);
+        return socketFactory;
+    }
+
+    @Override
+    public RequestResult<Bitmap> requestBitmap(String relativePath) {
+        RequestResult<InputStream> response = executeRequest(relativePath, client, "request bitmap");
+        if (response.error != null) {
+            return new RequestResult<Bitmap>(response.error);
+        }
+        Bitmap bitmap = BitmapFactory.decodeStream(response.content);
+        return new RequestResult<Bitmap>(bitmap);
+    }
+
+    @Override
+    protected void onSetServerSpec() {
+        // Reset the client, so that it will be recreated upon the next request. This
+        // enables us to change between client cert and not client cert support.
+        client = null;
     }
 }

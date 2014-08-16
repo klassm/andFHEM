@@ -25,73 +25,169 @@
   -->
 
 <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:stretchColumns="*">
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:stretchColumns="*">
 
     <TableRow>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/connectionURL"
             android:textStyle="bold"/>
+
         <EditText
+            android:id="@+id/url"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textUri"
-            android:id="@+id/url"/>
+            android:inputType="textUri"/>
     </TableRow>
 
     <TableRow>
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/connectionURLDesc"
-            android:layout_span="2"/>
+            android:layout_span="2"
+            android:text="@string/connectionURLDesc"/>
     </TableRow>
 
     <TableRow android:layout_marginTop="8dp">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:text="@string/connectionUsername"/>
+            android:text="@string/connectionUsername"
+            android:textStyle="bold"/>
+
         <EditText
+            android:id="@+id/username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/username"/>
+            android:inputType="text"/>
     </TableRow>
 
     <TableRow>
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/connectionUsernameDesc"
-            android:layout_span="2"/>
+            android:layout_span="2"
+            android:text="@string/connectionUsernameDesc"/>
     </TableRow>
 
     <TableRow android:layout_marginTop="8dp">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:text="@string/connectionPassword" />
+            android:text="@string/connectionPassword"
+            android:textStyle="bold"/>
+
         <EditText
+            android:id="@+id/password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPassword"
-            android:id="@+id/password"/>
+            android:inputType="textPassword"/>
     </TableRow>
 
     <TableRow>
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/connectionPasswordDesc"/>
+
         <CheckBox
+            android:id="@+id/showPasswordCheckbox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/showPasswordCheckbox"
             android:text="@string/connectionShowPassword"/>
+    </TableRow>
+
+    <TableRow android:layout_marginTop="15dp">
+
+        <CheckBox
+            android:id="@+id/enableCertificateAuthentication"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_span="2"
+            android:text="@string/connectionCertificateAuthentication"
+            android:textSize="14sp"
+            android:textStyle="bold"/>
+    </TableRow>
+
+    <TableRow>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/connectionClientCertificate"
+            android:textStyle="bold"/>
+
+        <LinearLayout
+            android:layout_gravity="end|center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/clientCertificatePath"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="start"
+                android:maxWidth="130dp"
+                android:singleLine="true"/>
+
+            <Button
+                android:id="@+id/setClientCertificatePath"
+                style="@style/button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/change"/>
+        </LinearLayout>
+    </TableRow>
+
+    <TableRow android:layout_marginTop="8dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/connectionClientCertificatePassword"
+            android:textStyle="bold"/>
+
+        <EditText
+            android:id="@+id/clientCertificatePassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"/>
+    </TableRow>
+
+    <TableRow>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/connectionServerCertificate"
+            android:textStyle="bold"/>
+
+        <LinearLayout
+            android:layout_gravity="end|center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/serverCertificatePath"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="start"
+                android:maxWidth="130dp"
+                android:singleLine="true"/>
+
+            <Button
+                android:id="@+id/setServerCertificatePath"
+                style="@style/button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/change"/>
+        </LinearLayout>
     </TableRow>
 </TableLayout>

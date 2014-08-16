@@ -24,9 +24,9 @@
 
 package li.klass.fhem.fhem.connection;
 
-import java.io.Serializable;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import li.klass.fhem.util.StringUtil;
+import java.io.Serializable;
 
 public class FHEMServerSpec implements Comparable<FHEMServerSpec>, Serializable {
     private final String id;
@@ -36,6 +36,10 @@ public class FHEMServerSpec implements Comparable<FHEMServerSpec>, Serializable 
     private int port;
     private String url;
     private String username;
+    private String clientCertificatePath;
+    private String serverCertificatePath;
+    private boolean clientCertificateEnabled = false;
+    private String clientCertificatePassword;
     private ServerType serverType;
 
     public FHEMServerSpec(String id) {
@@ -90,6 +94,38 @@ public class FHEMServerSpec implements Comparable<FHEMServerSpec>, Serializable 
         this.username = username;
     }
 
+    public String getClientCertificatePath() {
+        return clientCertificatePath;
+    }
+
+    public void setClientCertificatePath(String clientCertificatePath) {
+        this.clientCertificatePath = clientCertificatePath;
+    }
+
+    public String getServerCertificatePath() {
+        return serverCertificatePath;
+    }
+
+    public void setServerCertificatePath(String serverCertificatePath) {
+        this.serverCertificatePath = serverCertificatePath;
+    }
+
+    public boolean isClientCertificateEnabled() {
+        return clientCertificateEnabled;
+    }
+
+    public void setClientCertificateEnabled(boolean clientCertificateEnabled) {
+        this.clientCertificateEnabled = clientCertificateEnabled;
+    }
+
+    public String getClientCertificatePassword() {
+        return clientCertificatePassword;
+    }
+
+    public void setClientCertificatePassword(String clientCertificatePassword) {
+        this.clientCertificatePassword = clientCertificatePassword;
+    }
+
     public ServerType getServerType() {
         return serverType;
     }
@@ -109,15 +145,6 @@ public class FHEMServerSpec implements Comparable<FHEMServerSpec>, Serializable 
 
     @Override
     public String toString() {
-        return "FHEMServerSpec{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", password='" + ! StringUtil.isBlank(password) + '\'' +
-                ", ip='" + ip + '\'' +
-                ", port=" + port +
-                ", url='" + url + '\'' +
-                ", username='" + ! StringUtil.isBlank(username) + '\'' +
-                ", serverType=" + serverType +
-                '}';
+        return ToStringBuilder.reflectionToString(this);
     }
 }
