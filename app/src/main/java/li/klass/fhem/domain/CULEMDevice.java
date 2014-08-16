@@ -41,7 +41,7 @@ import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ValueDescriptionUtil;
 import li.klass.fhem.util.ValueExtractUtil;
 
-import static li.klass.fhem.service.graph.description.SeriesType.CURRENT_USAGE_WATT;
+import static li.klass.fhem.service.graph.description.SeriesType.CURRENT_USAGE_KILOWATT;
 
 @SupportsWidget(MediumInformationWidgetView.class)
 @SuppressWarnings("unused")
@@ -69,6 +69,11 @@ public class CULEMDevice extends Device<CULEMDevice> {
         dayUsage = ValueDescriptionUtil.appendKwh(extractCumUsage(value, "CUM_DAY"));
     }
 
+    private String extractCumUsage(String cumString, String cumToken) {
+        cumToken = cumToken + ": ";
+        return cumString.substring(cumToken.length(), cumString.indexOf(" ", cumToken.length() + 1));
+    }
+
     public void readCUM_MONTH(String value) {
         monthUsage = ValueDescriptionUtil.appendKwh(extractCumUsage(value, "CUM_MONTH"));
     }
@@ -94,21 +99,12 @@ public class CULEMDevice extends Device<CULEMDevice> {
         return monthUsage;
     }
 
-    public double getSumGraphDivisionFactor() {
-        return sumGraphDivisionFactor;
-    }
-
     public String getCurrentUsage() {
         return currentUsage;
     }
 
     public String getCumulativeKwh() {
         return cumulativeKwh;
-    }
-
-    private String extractCumUsage(String cumString, String cumToken) {
-        cumToken = cumToken + ": ";
-        return cumString.substring(cumToken.length(), cumString.indexOf(" ", cumToken.length() + 1));
     }
 
     @Override
@@ -122,10 +118,14 @@ public class CULEMDevice extends Device<CULEMDevice> {
                         .withDbLogSpec("current")
                         .withSumDivisionFactor(getSumGraphDivisionFactor())
                         .withShowSum(true)
-                        .withSeriesType(CURRENT_USAGE_WATT)
-                        .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("current", 0, 300))
+                        .withSeriesType(CURRENT_USAGE_KILOWATT)
+                        .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("current", 0, 10))
                         .build()
         ), currentUsage);
+    }
+
+    public double getSumGraphDivisionFactor() {
+        return sumGraphDivisionFactor;
     }
 
     @Override
