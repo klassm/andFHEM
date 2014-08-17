@@ -36,9 +36,7 @@ import li.klass.fhem.domain.heating.schedule.interval.FilledTemperatureInterval;
 import li.klass.fhem.util.DayUtil;
 import li.klass.fhem.util.Reject;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.hasItem;
+import static org.fest.assertions.api.Assertions.assertThat;
 
 public class CULHMConfigurationTest {
     private CULHMConfiguration configuration = new CULHMConfiguration();
@@ -53,14 +51,29 @@ public class CULHMConfigurationTest {
     public void testDayRead() {
         configuration.readNode(weekProfile, "TEMPLISTSAT", "08:00 16.5 19:30 20 24:00 16.0");
 
-        assertThat(getHeatingIntervalAt(DayUtil.Day.SATURDAY, 0).getSwitchTime(), is("08:00"));
-        assertThat(getHeatingIntervalAt(DayUtil.Day.SATURDAY, 1).getSwitchTime(), is("19:30"));
-        assertThat(getHeatingIntervalAt(DayUtil.Day.SATURDAY, 2).getSwitchTime(), is("24:00"));
-        assertThat(getHeatingIntervalAt(DayUtil.Day.SATURDAY, 2).isTimeFixed(), is(true));
+        assertThat(getHeatingIntervalAt(DayUtil.Day.SATURDAY, 0).getSwitchTime()).isEqualTo("08:00");
+        assertThat(getHeatingIntervalAt(DayUtil.Day.SATURDAY, 1).getSwitchTime()).isEqualTo("19:30");
+        assertThat(getHeatingIntervalAt(DayUtil.Day.SATURDAY, 2).getSwitchTime()).isEqualTo("24:00");
+        assertThat(getHeatingIntervalAt(DayUtil.Day.SATURDAY, 2).isTimeFixed()).isEqualTo(true);
 
-        assertThat(getHeatingIntervalAt(DayUtil.Day.SATURDAY, 0).getTemperature(), is(16.5));
-        assertThat(getHeatingIntervalAt(DayUtil.Day.SATURDAY, 1).getTemperature(), is(20.0));
-        assertThat(getHeatingIntervalAt(DayUtil.Day.SATURDAY, 2).getTemperature(), is(16.0));
+        assertThat(getHeatingIntervalAt(DayUtil.Day.SATURDAY, 0).getTemperature()).isEqualTo(16.5);
+        assertThat(getHeatingIntervalAt(DayUtil.Day.SATURDAY, 1).getTemperature()).isEqualTo(20.0);
+        assertThat(getHeatingIntervalAt(DayUtil.Day.SATURDAY, 2).getTemperature()).isEqualTo(16.0);
+    }
+
+    private FilledTemperatureInterval getHeatingIntervalAt(DayUtil.Day saturday, int position) {
+        DayProfile<FilledTemperatureInterval, CULHMDevice, CULHMConfiguration> dayProfile = weekProfile.getDayProfileFor(saturday);
+        Reject.ifNull(dayProfile);
+
+        FilledTemperatureInterval interval = dayProfile.getHeatingIntervalAt(position);
+        Reject.ifNull(interval);
+        return interval;
+    }
+
+    @Test
+    public void shouldIgnoreR_0_Pefixes() {
+        configuration.readNode(weekProfile, "R_0_TEMPLISTSAT", "08:00 16.5 19:30 20 24:00 16.0");
+        assertThat(weekProfile.getDayProfileFor(DayUtil.Day.SATURDAY)).isNotNull();
     }
 
     @Test
@@ -74,22 +87,13 @@ public class CULHMConfigurationTest {
 
         List<String> commands = configuration.generateScheduleCommands(device, weekProfile);
 
-        assertThat(commands, hasItem("set name tempListSat 08:00 16.0 19:30 20.0 24:00 23.0"));
+        assertThat(commands).contains("set name tempListSat 08:00 16.0 19:30 20.0 24:00 23.0");
     }
 
     @Test
     public void testSetPrefixCanBeStillRead() {
         configuration.readNode(weekProfile, "TEMPLISTSAT", "set_  05:45 17.0 07:00 21.0 18:00 17.0 23:00 21.0 24:00 17.0");
 
-        assertThat(getHeatingIntervalAt(DayUtil.Day.SATURDAY, 0).getTemperature(), is(17.0));
-    }
-
-    private FilledTemperatureInterval getHeatingIntervalAt(DayUtil.Day saturday, int position) {
-        DayProfile<FilledTemperatureInterval, CULHMDevice, CULHMConfiguration> dayProfile = weekProfile.getDayProfileFor(saturday);
-        Reject.ifNull(dayProfile);
-
-        FilledTemperatureInterval interval = dayProfile.getHeatingIntervalAt(position);
-        Reject.ifNull(interval);
-        return interval;
+        assertThat(getHeatingIntervalAt(DayUtil.Day.SATURDAY, 0).getTemperature()).isEqualTo(17.0);
     }
 }

@@ -44,9 +44,9 @@ public class CULHMConfiguration extends HeatingConfiguration<FilledTemperatureIn
 
     @Override
     public void readNode(WeekProfile<FilledTemperatureInterval, CULHMConfiguration, CULHMDevice> weekProfile, String key, String value) {
-        if (!key.startsWith("TEMPLIST")) return;
+        if (!key.matches("(R_[0-9]_)?TEMPLIST([A-Z]{3})")) return;
 
-        String shortName = key.substring("TEMPLIST".length());
+        String shortName = key.replaceAll("(R_[0-9]_)?TEMPLIST", "");
         DayUtil.Day day = DayUtil.getDayForShortName(shortName);
         if (day == null) return;
 
@@ -65,11 +65,6 @@ public class CULHMConfiguration extends HeatingConfiguration<FilledTemperatureIn
                 interval.setTemperature(Double.valueOf(part));
             }
         }
-    }
-
-    @Override
-    public FilledTemperatureInterval createHeatingInterval() {
-        return new FilledTemperatureInterval();
     }
 
     @Override
@@ -126,6 +121,7 @@ public class CULHMConfiguration extends HeatingConfiguration<FilledTemperatureIn
      * One interval always has to relate to midnight. For CUL_HM, this is always the last one,
      * representing the time _until_ midnight. The method adds this interval if not being already
      * present.
+     *
      * @param dayProfile day profile to add the midnight to.
      */
     private void addFixedMidnightIntervalIfRequired(
@@ -141,7 +137,7 @@ public class CULHMConfiguration extends HeatingConfiguration<FilledTemperatureIn
             }
         }
 
-        if (! found) {
+        if (!found) {
             FilledTemperatureInterval heatingInterval = createHeatingInterval();
 
             heatingInterval.setChangedSwitchTime("24:00");
@@ -150,6 +146,11 @@ public class CULHMConfiguration extends HeatingConfiguration<FilledTemperatureIn
 
             dayProfile.addHeatingInterval(heatingInterval);
         }
+    }
+
+    @Override
+    public FilledTemperatureInterval createHeatingInterval() {
+        return new FilledTemperatureInterval();
     }
 
     @Override

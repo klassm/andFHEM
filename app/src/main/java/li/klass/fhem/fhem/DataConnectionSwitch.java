@@ -36,9 +36,13 @@ public class DataConnectionSwitch {
     }
 
     public FHEMConnection getCurrentProvider() {
-        FHEMServerSpec currentServer = ConnectionService.INSTANCE.getCurrentServer();
-        FHEMConnection currentConnection = currentServer.getServerType().getConnection();
-        currentConnection.setServer(currentServer);
+        FHEMServerSpec selectedServer = ConnectionService.INSTANCE.getCurrentServer();
+        FHEMConnection currentConnection = selectedServer.getServerType().getConnection();
+
+        FHEMServerSpec currentServer = currentConnection.getServer();
+        if (currentServer == null || !currentServer.equals(selectedServer)) {
+            currentConnection.setServer(selectedServer);
+        }
 
         return currentConnection;
     }

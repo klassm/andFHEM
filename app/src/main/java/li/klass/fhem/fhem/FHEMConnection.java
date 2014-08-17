@@ -41,12 +41,17 @@ public abstract class FHEMConnection {
 
     public abstract RequestResult<Bitmap> requestBitmap(String relativePath);
 
+    public FHEMServerSpec getServer() {
+        return serverSpec;
+    }
+
     public void setServer(FHEMServerSpec serverSpec) {
         this.serverSpec = serverSpec;
         onSetServerSpec();
     }
 
-    protected void onSetServerSpec() {}
+    protected void onSetServerSpec() {
+    }
 
     protected void setErrorInErrorHolderFor(Exception e, String host, String command) {
         String text = "Error while accessing '" + host + "' with command '" + command + "'\r\n" +

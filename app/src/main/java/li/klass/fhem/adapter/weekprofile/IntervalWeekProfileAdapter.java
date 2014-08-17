@@ -46,10 +46,6 @@ import static li.klass.fhem.util.ValueDescriptionUtil.appendTemperature;
 public class IntervalWeekProfileAdapter
         extends BaseWeekProfileAdapter<FilledTemperatureInterval> {
 
-    private interface OnIntervalTemperatureChangedListener {
-        void onIntervalTemperatureChanged(String time, double temperature);
-    }
-
     public IntervalWeekProfileAdapter(Context context) {
         super(context);
     }
@@ -108,7 +104,7 @@ public class IntervalWeekProfileAdapter
         });
 
         if (child.isTimeFixed()) {
-            deleteButton.setVisibility(View.GONE);
+            deleteButton.setVisibility(View.INVISIBLE);
         }
 
         return view;
@@ -194,5 +190,9 @@ public class IntervalWeekProfileAdapter
                 });
             }
         });
+    }
+
+    private interface OnIntervalTemperatureChangedListener {
+        void onIntervalTemperatureChanged(String time, double temperature);
     }
 }

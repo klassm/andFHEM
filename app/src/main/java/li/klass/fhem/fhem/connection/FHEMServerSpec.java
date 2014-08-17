@@ -28,6 +28,9 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.io.Serializable;
 
+import static org.apache.commons.lang3.builder.EqualsBuilder.reflectionEquals;
+import static org.apache.commons.lang3.builder.HashCodeBuilder.reflectionHashCode;
+
 public class FHEMServerSpec implements Comparable<FHEMServerSpec>, Serializable {
     private final String id;
     private String name;
@@ -141,6 +144,16 @@ public class FHEMServerSpec implements Comparable<FHEMServerSpec>, Serializable 
     @Override
     public int compareTo(FHEMServerSpec fhemServerSpec) {
         return name.compareTo(fhemServerSpec.name);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return o instanceof FHEMServerSpec && reflectionEquals(o, this);
+    }
+
+    @Override
+    public int hashCode() {
+        return reflectionHashCode(this);
     }
 
     @Override
