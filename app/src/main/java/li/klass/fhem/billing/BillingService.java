@@ -2,13 +2,13 @@
  * AndFHEM - Open Source Android application to control a FHEM home automation
  * server.
  *
- * Copyright (c) 2012, Matthias Klass or third-party contributors as
+ * Copyright (c) 2011, Matthias Klass or third-party contributors as
  * indicated by the @author tags or express copyright attribution
  * statements applied by the authors.  All third-party contributions are
  * distributed under license by Red Hat Inc.
  *
  * This copyrighted material is made available to anyone wishing to use, modify,
- * copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLICLICENSE, as published by the Free Software Foundation.
+ * copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
@@ -19,6 +19,7 @@
  * along with this distribution; if not, write to:
  *   Free Software Foundation, Inc.
  *   51 Franklin Street, Fifth Floor
+ *   Boston, MA  02110-1301  USA
  */
 
 package li.klass.fhem.billing;
@@ -47,31 +48,6 @@ public class BillingService {
     private AtomicReference<Inventory> inventory = new AtomicReference<Inventory>(Inventory.empty());
 
     private BillingService() {
-    }
-
-    public synchronized void setup(final SetupFinishedListener listener) {
-        checkNotNull(listener);
-
-        try {
-            Log.d(TAG, "Starting setup");
-            iabHelper = new IabHelper(AndFHEMApplication.getContext(), AndFHEMApplication.PUBLIC_KEY_ENCODED);
-            iabHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
-                @Override
-                public void onIabSetupFinished(IabResult result) {
-                    if (result.isSuccess()) {
-                        Log.d(TAG, "=> SUCCESS");
-                        loadInternal(null);
-                    } else {
-                        Log.e(TAG, "=> ERROR " + result.toString());
-                        inventory.set(Inventory.empty());
-                    }
-                    listener.onSetupFinished();
-                }
-            });
-        } catch (Exception e) {
-            Log.e(TAG, "Error while trying to start billing", e);
-            listener.onSetupFinished();
-        }
     }
 
     public synchronized void stop() {
@@ -114,6 +90,54 @@ public class BillingService {
         });
     }
 
+    public synchronized void getOwnedItems(final OwnedItemsLoadedListener listener) {
+        ensureSetup(new SetupFinishedListener() {
+            @Override
+            public void onSetupFinished() {
+                Set<String> ownedItems = inventory.get().getAllOwnedSkus();
+                Log.i(TAG, "owned items: " + ownedItems);
+                listener.onItemsLoaded(ownedItems);
+            }
+        });
+    }
+
+    private void ensureSetup(SetupFinishedListener listener) {
+        if (isSetup()) {
+            listener.onSetupFinished();
+        } else {
+            setup(listener);
+        }
+    }
+
+    private boolean isSetup() {
+        return iabHelper != null && inventory != null && iabHelper.isSetupDone();
+    }
+
+    public synchronized void setup(final SetupFinishedListener listener) {
+        checkNotNull(listener);
+
+        try {
+            Log.d(TAG, "Starting setup");
+            iabHelper = new IabHelper(AndFHEMApplication.getContext(), AndFHEMApplication.PUBLIC_KEY_ENCODED);
+            iabHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
+                @Override
+                public void onIabSetupFinished(IabResult result) {
+                    if (result.isSuccess()) {
+                        Log.d(TAG, "=> SUCCESS");
+                        loadInternal(null);
+                    } else {
+                        Log.e(TAG, "=> ERROR " + result.toString());
+                        inventory.set(Inventory.empty());
+                    }
+                    listener.onSetupFinished();
+                }
+            });
+        } catch (Exception e) {
+            Log.i(TAG, "Error while trying to start billing", e);
+            listener.onSetupFinished();
+        }
+    }
+
     private void loadInternal(OnLoadInventoryFinishedListener listener) {
         try {
             Log.i(TAG, "loading inventory");
@@ -126,29 +150,6 @@ public class BillingService {
                 listener.onInventoryLoadFinished();
             }
         }
-    }
-
-    private void ensureSetup(SetupFinishedListener listener) {
-        if (isSetup()) {
-            listener.onSetupFinished();
-        } else {
-            setup(listener);
-        }
-    }
-
-    public synchronized void getOwnedItems(final OwnedItemsLoadedListener listener) {
-        ensureSetup(new SetupFinishedListener() {
-            @Override
-            public void onSetupFinished() {
-                Set<String> ownedItems = inventory.get().getAllOwnedSkus();
-                Log.i(TAG, "owned items: " + ownedItems);
-                listener.onItemsLoaded(ownedItems);
-            }
-        });
-    }
-
-    private boolean isSetup() {
-        return iabHelper != null && inventory != null && iabHelper.isSetupDone();
     }
 
     public interface ProductPurchasedListener {

@@ -24,36 +24,48 @@
   ~   Boston, MA  02110-1301  USA
   -->
 
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:orientation="vertical"
+<TableLayout
+    android:id="@+id/layout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
              android:layout_width="wrap_content"
              android:layout_height="match_parent"
+             android:background="@color/whitegrey"
+             android:orientation="vertical">
 
-             android:id="@+id/layout">
     <TableRow>
-        <TextView android:text="@string/time"
+
+        <TextView
+            style="@style/deviceDetailSectionCaption"
                   android:layout_column="0"
-                  style="@style/deviceDetailSectionCaption"/>
+                  android:text="@string/time"/>
     </TableRow>
 
     <TableRow>
-        <TimePicker android:layout_height="wrap_content"
+
+        <TimePicker
+            android:id="@+id/time"
                     android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_column="0"
-                    android:id="@+id/time" android:layout_gravity="center_horizontal"/>
+                    android:layout_gravity="center_horizontal"/>
     </TableRow>
 
     <TableRow>
-        <TextView android:text="@string/temperature"
+
+        <TextView
+            style="@style/deviceDetailSectionCaption"
                   android:paddingTop="10dp"
-                  style="@style/deviceDetailSectionCaption"/>
+                  android:text="@string/temperature"/>
 
     </TableRow>
     <TableRow android:id="@+id/updateRow">
-        <TextView android:text="123 °C"
-                  android:minWidth="400dp"
+
+        <TextView
+            android:id="@id/value"
+            android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
-                  android:layout_width="wrap_content"
-                  android:id="@id/value" android:gravity="center_horizontal"/>
+                  android:gravity="center_horizontal"
+                  android:minWidth="400dp"
+                  android:text="123 °C"/>
     </TableRow>
 </TableLayout>
