@@ -27,7 +27,6 @@ package li.klass.fhem.billing;
 import android.app.Activity;
 import android.util.Log;
 
-import com.android.vending.billing.IabException;
 import com.android.vending.billing.IabHelper;
 import com.android.vending.billing.IabResult;
 import com.android.vending.billing.Inventory;
@@ -39,6 +38,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import li.klass.fhem.AndFHEMApplication;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static li.klass.fhem.AndFHEMApplication.PUBLIC_KEY_ENCODED;
 
 public class BillingService {
 
@@ -47,11 +47,12 @@ public class BillingService {
     private IabHelper iabHelper;
     private AtomicReference<Inventory> inventory = new AtomicReference<Inventory>(Inventory.empty());
 
-    private BillingService() {
+    BillingService() {
     }
 
     public synchronized void stop() {
         iabHelper.dispose();
+        iabHelper = null;
     }
 
     public synchronized void requestPurchase(final Activity activity, final String itemId,
@@ -67,7 +68,7 @@ public class BillingService {
                         public void onIabPurchaseFinished(IabResult result, Purchase info) {
                             if (result.isSuccess()) {
                                 Log.i(TAG, "purchase result: SUCCESS");
-                                loadInventory(null);
+                                loadInventory();
                                 listener.onProductPurchased(info.getOrderId(), info.getSku());
                             } else {
                                 Log.e(TAG, "purchase result: " + result.toString());
@@ -79,6 +80,10 @@ public class BillingService {
                 }
             }
         });
+    }
+
+    private synchronized void loadInventory() {
+        loadInventory(null);
     }
 
     public synchronized void loadInventory(final OnLoadInventoryFinishedListener listener) {
@@ -103,8 +108,10 @@ public class BillingService {
 
     private void ensureSetup(SetupFinishedListener listener) {
         if (isSetup()) {
+            Log.i(TAG, "I am already setup");
             listener.onSetupFinished();
         } else {
+            Log.i(TAG, "Setting up ...");
             setup(listener);
         }
     }
@@ -113,21 +120,19 @@ public class BillingService {
         return iabHelper != null && inventory != null && iabHelper.isSetupDone();
     }
 
-    public synchronized void setup(final SetupFinishedListener listener) {
+    synchronized void setup(final SetupFinishedListener listener) {
         checkNotNull(listener);
 
         try {
             Log.d(TAG, "Starting setup");
-            iabHelper = new IabHelper(AndFHEMApplication.getContext(), AndFHEMApplication.PUBLIC_KEY_ENCODED);
+            iabHelper = createIabHelper();
             iabHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
                 @Override
                 public void onIabSetupFinished(IabResult result) {
                     if (result.isSuccess()) {
                         Log.d(TAG, "=> SUCCESS");
-                        loadInternal(null);
                     } else {
                         Log.e(TAG, "=> ERROR " + result.toString());
-                        inventory.set(Inventory.empty());
                     }
                     listener.onSetupFinished();
                 }
@@ -138,18 +143,41 @@ public class BillingService {
         }
     }
 
-    private void loadInternal(OnLoadInventoryFinishedListener listener) {
+    IabHelper createIabHelper() {
+        return new IabHelper(AndFHEMApplication.getContext(), PUBLIC_KEY_ENCODED);
+    }
+
+    private void loadInternal(final OnLoadInventoryFinishedListener listener) {
         try {
             Log.i(TAG, "loading inventory");
-            inventory.set(iabHelper.queryInventory(false, null, null));
-        } catch (IabException e) {
+            iabHelper.queryInventoryAsync(new IabHelper.QueryInventoryFinishedListener() {
+                @Override
+                public void onQueryInventoryFinished(IabResult result, Inventory inv) {
+                    if (result.isSuccess()) {
+                        inventory.set(inv);
+                    } else {
+                        inventory.set(Inventory.empty());
+                    }
+                    if (listener != null) {
+                        listener.onInventoryLoadFinished();
+                    }
+                }
+            });
+        } catch (Exception e) {
             Log.e(TAG, "cannot load inventory", e);
             inventory.set(Inventory.empty());
-        } finally {
             if (listener != null) {
                 listener.onInventoryLoadFinished();
             }
         }
+    }
+
+    IabHelper getIabHelper() {
+        return iabHelper;
+    }
+
+    Inventory getInventory() {
+        return inventory.get();
     }
 
     public interface ProductPurchasedListener {

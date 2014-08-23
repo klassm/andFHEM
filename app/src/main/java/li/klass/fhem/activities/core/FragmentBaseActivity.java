@@ -136,9 +136,9 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
 
         initDrawerLayout();
 
-        BillingService.INSTANCE.setup(new BillingService.SetupFinishedListener() {
+        BillingService.INSTANCE.loadInventory(new BillingService.OnLoadInventoryFinishedListener() {
             @Override
-            public void onSetupFinished() {
+            public void onInventoryLoadFinished() {
                 Log.i(TAG, "Billing initialized, creating initial fragment");
                 if (savedInstanceState == null && !saveInstanceStateCalled) {
                     handleStartupFragment();
@@ -276,6 +276,47 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
         updateNavigationVisibility();
     }
 
+    private boolean updateNavigationVisibility() {
+        BaseFragment navigationFragment = getNavigationFragment();
+        BaseFragment contentFragment = getContentFragment();
+
+        return updateNavigationVisibility(navigationFragment, contentFragment);
+    }
+
+    private BaseFragment getNavigationFragment() {
+        FragmentManager supportFragmentManager = getSupportFragmentManager();
+        if (supportFragmentManager == null) return null;
+        return (BaseFragment) supportFragmentManager
+                .findFragmentByTag(NAVIGATION_TAG);
+    }
+
+    private BaseFragment getContentFragment() {
+        return (BaseFragment) getSupportFragmentManager().findFragmentByTag(CONTENT_TAG);
+    }
+
+    private boolean updateNavigationVisibility(BaseFragment navigationFragment, BaseFragment contentFragment) {
+        if (contentFragment == null) return false;
+
+        FragmentType fragmentType = getFragmentFor(contentFragment.getClass());
+
+        boolean hasNavigation = hasNavigation(navigationFragment, contentFragment);
+        View navigationView = findViewById(R.id.navigation);
+        if (navigationView != null) {
+            if (navigationFragment == null || fragmentType.getNavigationClass() == null) {
+                navigationView.setVisibility(View.GONE);
+            } else {
+                navigationView.setVisibility(View.VISIBLE);
+            }
+        }
+        return hasNavigation;
+    }
+
+    private boolean hasNavigation(BaseFragment navigationFragment, BaseFragment contentFragment) {
+        FragmentType fragmentType = getFragmentFor(contentFragment.getClass());
+        View navigationView = findViewById(R.id.navigation);
+        return navigationView != null && !(navigationFragment == null || fragmentType.getNavigationClass() == null);
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -363,6 +404,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
     @Override
     protected void onPause() {
         super.onPause();
+        BillingService.INSTANCE.stop();
         if (timer != null) {
             timer.cancel();
             timer.purge();
@@ -385,11 +427,17 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
         setShowRefreshProgressIcon(false);
     }
 
+    private void setShowRefreshProgressIcon(boolean show) {
+        if (optionsMenu == null) return;
+        optionsMenu.findItem(R.id.menu_refresh).setVisible(!show);
+        optionsMenu.findItem(R.id.menu_refresh_progress).setVisible(show);
+    }
+
     @Override
     public void onBackPressed() {
         // We pop fragments as long as:
-        // - there are more fragments within the back stack
-        // - the popped fragment type is not equals to the current fragment type
+        // - there are more fragments on the back stack or
+        // - the popped fragment type is not equal to the current fragment type
 
         boolean doFinish = false;
 
@@ -434,10 +482,6 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
 
         BaseFragment navigationFragment = getNavigationFragment();
         if (navigationFragment != null) navigationFragment.invalidate();
-    }
-
-    private BaseFragment getContentFragment() {
-        return (BaseFragment) getSupportFragmentManager().findFragmentByTag(CONTENT_TAG);
     }
 
     private void switchToFragment(FragmentType fragmentType, Bundle data) {
@@ -518,43 +562,6 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
         updateNavigationVisibility(navigationFragment, contentFragment);
     }
 
-    private BaseFragment getNavigationFragment() {
-        FragmentManager supportFragmentManager = getSupportFragmentManager();
-        if (supportFragmentManager == null) return null;
-        return (BaseFragment) supportFragmentManager
-                .findFragmentByTag(NAVIGATION_TAG);
-    }
-
-    private boolean updateNavigationVisibility() {
-        BaseFragment navigationFragment = getNavigationFragment();
-        BaseFragment contentFragment = getContentFragment();
-
-        return updateNavigationVisibility(navigationFragment, contentFragment);
-    }
-
-    private boolean hasNavigation(BaseFragment navigationFragment, BaseFragment contentFragment) {
-        FragmentType fragmentType = getFragmentFor(contentFragment.getClass());
-        View navigationView = findViewById(R.id.navigation);
-        return navigationView != null && !(navigationFragment == null || fragmentType.getNavigationClass() == null);
-    }
-
-    private boolean updateNavigationVisibility(BaseFragment navigationFragment, BaseFragment contentFragment) {
-        if (contentFragment == null) return false;
-
-        FragmentType fragmentType = getFragmentFor(contentFragment.getClass());
-
-        boolean hasNavigation = hasNavigation(navigationFragment, contentFragment);
-        View navigationView = findViewById(R.id.navigation);
-        if (navigationView != null) {
-            if (navigationFragment == null || fragmentType.getNavigationClass() == null) {
-                navigationView.setVisibility(View.GONE);
-            } else {
-                navigationView.setVisibility(View.VISIBLE);
-            }
-        }
-        return hasNavigation;
-    }
-
     private BaseFragment createFragmentForClass(Bundle data, Class<? extends BaseFragment> fragmentClass) throws Exception {
         if (fragmentClass == null) return null;
 
@@ -578,12 +585,6 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
         }
         this.optionsMenu = menu;
         return super.onCreateOptionsMenu(menu);
-    }
-
-    private void setShowRefreshProgressIcon(boolean show) {
-        if (optionsMenu == null) return;
-        optionsMenu.findItem(R.id.menu_refresh).setVisible(!show);
-        optionsMenu.findItem(R.id.menu_refresh_progress).setVisible(show);
     }
 
     private class Receiver extends BroadcastReceiver {
