@@ -146,7 +146,6 @@ public class ConnectionDetailFragment extends BaseFragment {
             handleFHEMWEBView(view);
         } else if (connectionType == ServerType.TELNET) {
             view = inflater.inflate(R.layout.connection_telnet, null);
-            handleFHEMWEBView(view);
         } else {
             throw new IllegalArgumentException("cannot handle connection type " + connectionType);
         }
