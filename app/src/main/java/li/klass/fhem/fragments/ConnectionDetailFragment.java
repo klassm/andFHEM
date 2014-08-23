@@ -314,7 +314,7 @@ public class ConnectionDetailFragment extends BaseFragment {
         String serverCertificatePath = getTextViewContent(R.id.serverCertificatePath);
 
         CheckBox clientCertificateCheckbox = (CheckBox) getView().findViewById(R.id.enableCertificateAuthentication);
-        boolean clientCertificateEnabled = clientCertificateCheckbox.isEnabled();
+        boolean clientCertificateEnabled = clientCertificateCheckbox.isChecked();
 
         intent.putExtra(CONNECTION_CLIENT_CERTIFICATE_PATH, clientCertificatePath);
         intent.putExtra(CONNECTION_SERVER_CERTIFICATE_PATH, serverCertificatePath);
