@@ -226,6 +226,10 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
         });
     }
 
+    public SubType getSubType() {
+        return subType;
+    }
+
     public void readSUBTYPE(String value) {
         if ("DIMMER".equalsIgnoreCase(value) || "BLINDACTUATOR".equalsIgnoreCase(value)) {
             subType = DIMMER;
@@ -251,6 +255,11 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
         subTypeRaw = value;
     }
 
+    public void readMODE(String value) {
+        if (value.equalsIgnoreCase("MANU")) value = "MANUAL";
+        readCONTROLMODE(value);
+    }
+
     public void readCONTROLMODE(String value) {
         try {
             heatingMode = HeatingMode.valueOf(value.toUpperCase());
@@ -258,11 +267,6 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
         } catch (Exception e) {
             Log.e(CULHMDevice.class.getName(), "cannot set heating mode from value " + value, e);
         }
-    }
-
-    public void readMODE(String value) {
-        if (value.equalsIgnoreCase("MANU")) value = "MANUAL";
-        readCONTROLMODE(value);
     }
 
     public void readWINDSPEED(String value) {
@@ -310,6 +314,14 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
         }
 
         super.afterDeviceXMLRead();
+    }
+
+    @Override
+    public DeviceFunctionality getDeviceGroup() {
+        if (subType != null) {
+            return subType.functionality;
+        }
+        return DeviceFunctionality.UNKNOWN;
     }
 
     @Override
@@ -361,6 +373,12 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
     }
 
     @Override
+    public int getDimPosition() {
+        if (subType != DIMMER && subType != SHUTTER) return 0;
+        return super.getDimPosition();
+    }
+
+    @Override
     public int getDimLowerBound() {
         if (getStateSliderValue() != null) {
             return super.getDimLowerBound();
@@ -390,25 +408,11 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
     }
 
     @Override
-    public int getDimPosition() {
-        if (subType != DIMMER && subType != SHUTTER) return 0;
-        return super.getDimPosition();
-    }
-
-    @Override
     public String formatStateTextToSet(String stateToSet) {
         if ((getSubType() == DIMMER || getSubType() == SHUTTER) && NumberUtil.isNumeric(stateToSet)) {
             return stateToSet + " %";
         }
         return super.formatStateTextToSet(stateToSet);
-    }
-
-    @Override
-    public DeviceFunctionality getDeviceGroup() {
-        if (subType != null) {
-            return subType.functionality;
-        }
-        return DeviceFunctionality.UNKNOWN;
     }
 
     @ShowField(description = ResourceIdMapper.desiredTemperature, showInOverview = true)
@@ -438,10 +442,6 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
 
     public String getActuator() {
         return actuator;
-    }
-
-    public SubType getSubType() {
-        return subType;
     }
 
     public String getHumidity() {
@@ -612,7 +612,8 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
 
                 addDeviceChartIfNotNull(
                         new DeviceChart(R.string.rainGraph,
-                                new ChartSeriesDescription.Builder().withColumnName(R.string.isRaining)
+                                new ChartSeriesDescription.Builder()
+                                        .withColumnName(R.string.isRaining)
                                         .withFileLogSpec("4:isRaining")
                                         .withDbLogSpec("isRaining")
                                         .withSeriesType(IS_RAINING)
@@ -626,6 +627,18 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
                                         .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("rain", 0, 70))
                                         .build()
                         ), isRaining, rain
+                );
+
+                addDeviceChartIfNotNull(
+                        new DeviceChart(R.string.windSpeedGraph,
+                                new ChartSeriesDescription.Builder()
+                                        .withColumnName(R.string.windSpeed)
+                                        .withFileLogSpec("4:windSpeed")
+                                        .withDbLogSpec("windSpeed")
+                                        .withSeriesType(SeriesType.WIND)
+                                        .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("windSpeed", 0, 0))
+                                        .build()),
+                        windSpeed
                 );
 
                 break;
