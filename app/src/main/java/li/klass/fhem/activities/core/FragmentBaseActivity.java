@@ -136,6 +136,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
 
         initDrawerLayout();
 
+        Log.i(TAG, "onCreate => starting BillingService");
         BillingService.INSTANCE.loadInventory(new BillingService.OnLoadInventoryFinishedListener() {
             @Override
             public void onInventoryLoadFinished() {
@@ -321,6 +322,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
     protected void onResume() {
         super.onResume();
 
+        Log.i(TAG, "resuming");
         Log.i(TAG, "resuming " + getClass().getName());
 
         saveInstanceStateCalled = false;
@@ -404,7 +406,6 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
     @Override
     protected void onPause() {
         super.onPause();
-        BillingService.INSTANCE.stop();
         if (timer != null) {
             timer.cancel();
             timer.purge();

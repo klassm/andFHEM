@@ -46,13 +46,16 @@ public class BillingService {
     public static final BillingService INSTANCE = new BillingService();
     private IabHelper iabHelper;
     private AtomicReference<Inventory> inventory = new AtomicReference<Inventory>(Inventory.empty());
+    private volatile boolean setupInProgress = false;
 
     BillingService() {
     }
 
     public synchronized void stop() {
-        iabHelper.dispose();
-        iabHelper = null;
+        if (iabHelper != null) {
+            iabHelper.dispose();
+            iabHelper = null;
+        }
     }
 
     public synchronized void requestPurchase(final Activity activity, final String itemId,
@@ -106,40 +109,65 @@ public class BillingService {
         });
     }
 
-    private void ensureSetup(SetupFinishedListener listener) {
+    private synchronized void ensureSetup(SetupFinishedListener listener) {
+        awaitSetupCompletion();
         if (isSetup()) {
             Log.i(TAG, "I am already setup");
             listener.onSetupFinished();
         } else {
-            Log.i(TAG, "Setting up ...");
+            Log.i(TAG, "Setting up ... (" + iabHelper + (iabHelper != null ? " " + iabHelper.isSetupDone() : "") + ")");
             setup(listener);
         }
     }
 
+    private void awaitSetupCompletion() {
+        boolean waited = false;
+        while (setupInProgress) {
+            waited = true;
+            try {
+                Log.d(TAG, "wait for setup completion");
+                synchronized (BillingService.INSTANCE) {
+                    BillingService.INSTANCE.wait();
+                }
+            } catch (InterruptedException e) {
+                Log.e(TAG, "interrupted", e);
+            }
+        }
+        if (waited) {
+            Log.d(TAG, "notified => setup complete");
+        }
+    }
+
     private boolean isSetup() {
-        return iabHelper != null && inventory != null && iabHelper.isSetupDone();
+        return iabHelper != null && iabHelper.isSetupDone();
     }
 
     synchronized void setup(final SetupFinishedListener listener) {
         checkNotNull(listener);
 
+        setupInProgress = true;
         try {
             Log.d(TAG, "Starting setup");
             iabHelper = createIabHelper();
             iabHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
                 @Override
                 public void onIabSetupFinished(IabResult result) {
-                    if (result.isSuccess()) {
-                        Log.d(TAG, "=> SUCCESS");
-                    } else {
-                        Log.e(TAG, "=> ERROR " + result.toString());
+                    try {
+                        if (result.isSuccess()) {
+                            Log.d(TAG, "setup => SUCCESS");
+                        } else {
+                            Log.e(TAG, "setup => ERROR " + result.toString());
+                        }
+                        listener.onSetupFinished();
+                    } finally {
+                        notifySetupWaitingThreads();
                     }
-                    listener.onSetupFinished();
                 }
             });
         } catch (Exception e) {
             Log.i(TAG, "Error while trying to start billing", e);
             listener.onSetupFinished();
+            notifySetupWaitingThreads();
         }
     }
 
@@ -147,27 +175,35 @@ public class BillingService {
         return new IabHelper(AndFHEMApplication.getContext(), PUBLIC_KEY_ENCODED);
     }
 
+    private void notifySetupWaitingThreads() {
+        synchronized (BillingService.INSTANCE) {
+            setupInProgress = false;
+            BillingService.INSTANCE.notifyAll();
+            Log.d(TAG, "setup complete => notifying all waiting threads");
+        }
+    }
+
     private void loadInternal(final OnLoadInventoryFinishedListener listener) {
-        try {
-            Log.i(TAG, "loading inventory");
-            iabHelper.queryInventoryAsync(new IabHelper.QueryInventoryFinishedListener() {
-                @Override
-                public void onQueryInventoryFinished(IabResult result, Inventory inv) {
-                    if (result.isSuccess()) {
-                        inventory.set(inv);
-                    } else {
-                        inventory.set(Inventory.empty());
-                    }
-                    if (listener != null) {
-                        listener.onInventoryLoadFinished();
-                    }
-                }
-            });
-        } catch (Exception e) {
-            Log.e(TAG, "cannot load inventory", e);
+        checkNotNull(iabHelper);
+
+        if (!iabHelper.isSetupDone()) {
             inventory.set(Inventory.empty());
-            if (listener != null) {
-                listener.onInventoryLoadFinished();
+            Log.e(TAG, "setup was not done, initializing with empty inventory");
+        } else if (inventory.get() != null && !inventory.get().getAllOwnedSkus().isEmpty()) {
+            listener.onInventoryLoadFinished();
+            Log.d(TAG, "inventory was already loaded, as found to not being empty, skipping load");
+        } else {
+            try {
+                Log.i(TAG, "loading inventory");
+                inventory.set(iabHelper.queryInventory(false, null));
+            } catch (Exception e) {
+                Log.e(TAG, "cannot load inventory", e);
+                inventory.set(Inventory.empty());
+
+            } finally {
+                if (listener != null) {
+                    listener.onInventoryLoadFinished();
+                }
             }
         }
     }
