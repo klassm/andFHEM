@@ -37,6 +37,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import li.klass.fhem.AndFHEMApplication;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static li.klass.fhem.AndFHEMApplication.PUBLIC_KEY_ENCODED;
 
@@ -44,7 +45,7 @@ public class BillingService {
 
     public static final String TAG = BillingService.class.getName();
     public static final BillingService INSTANCE = new BillingService();
-    private IabHelper iabHelper;
+    IabHelper iabHelper;
     private AtomicReference<Inventory> inventory = new AtomicReference<Inventory>(Inventory.empty());
     private volatile boolean setupInProgress = false;
 
@@ -90,23 +91,32 @@ public class BillingService {
     }
 
     public synchronized void loadInventory(final OnLoadInventoryFinishedListener listener) {
-        ensureSetup(new SetupFinishedListener() {
-            @Override
-            public void onSetupFinished() {
-                loadInternal(listener);
-            }
-        });
+        if (isSetup() && isLoaded()) {
+            if (listener != null) listener.onInventoryLoadFinished();
+        } else {
+            ensureSetup(new SetupFinishedListener() {
+                @Override
+                public void onSetupFinished() {
+                    loadInternal(listener);
+                }
+            });
+        }
     }
 
     public synchronized void getOwnedItems(final OwnedItemsLoadedListener listener) {
-        ensureSetup(new SetupFinishedListener() {
-            @Override
-            public void onSetupFinished() {
-                Set<String> ownedItems = inventory.get().getAllOwnedSkus();
-                Log.i(TAG, "owned items: " + ownedItems);
-                listener.onItemsLoaded(ownedItems);
-            }
-        });
+        checkArgument(inventory.get() != null);
+
+        Set<String> ownedItems = inventory.get().getAllOwnedSkus();
+        Log.i(TAG, "owned items: " + ownedItems);
+        listener.onItemsLoaded(ownedItems, isSetup() && isLoaded());
+    }
+
+    private boolean isSetup() {
+        return iabHelper != null && iabHelper.isSetupDone();
+    }
+
+    private boolean isLoaded() {
+        return inventory.get() != null && !inventory.get().getAllOwnedSkus().isEmpty();
     }
 
     private synchronized void ensureSetup(SetupFinishedListener listener) {
@@ -138,14 +148,11 @@ public class BillingService {
         }
     }
 
-    private boolean isSetup() {
-        return iabHelper != null && iabHelper.isSetupDone();
-    }
-
     synchronized void setup(final SetupFinishedListener listener) {
         checkNotNull(listener);
 
         setupInProgress = true;
+
         try {
             Log.d(TAG, "Starting setup");
             iabHelper = createIabHelper();
@@ -183,14 +190,14 @@ public class BillingService {
         }
     }
 
-    private void loadInternal(final OnLoadInventoryFinishedListener listener) {
+    private synchronized void loadInternal(final OnLoadInventoryFinishedListener listener) {
         checkNotNull(iabHelper);
 
         if (!iabHelper.isSetupDone()) {
             inventory.set(Inventory.empty());
             Log.e(TAG, "setup was not done, initializing with empty inventory");
-        } else if (inventory.get() != null && !inventory.get().getAllOwnedSkus().isEmpty()) {
-            listener.onInventoryLoadFinished();
+        } else if (isLoaded()) {
+            if (listener != null) listener.onInventoryLoadFinished();
             Log.d(TAG, "inventory was already loaded, as found to not being empty, skipping load");
         } else {
             try {
@@ -204,6 +211,7 @@ public class BillingService {
                 if (listener != null) {
                     listener.onInventoryLoadFinished();
                 }
+                BillingService.this.notifyAll();
             }
         }
     }
@@ -220,15 +228,15 @@ public class BillingService {
         void onProductPurchased(String orderId, String productId);
     }
 
-    public interface SetupFinishedListener {
-        void onSetupFinished();
-    }
-
     public interface OnLoadInventoryFinishedListener {
         void onInventoryLoadFinished();
     }
 
     public interface OwnedItemsLoadedListener {
-        void onItemsLoaded(Set<String> items);
+        void onItemsLoaded(Set<String> items, boolean isInitialized);
+    }
+
+    public interface SetupFinishedListener {
+        void onSetupFinished();
     }
 }

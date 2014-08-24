@@ -2,13 +2,13 @@
  * AndFHEM - Open Source Android application to control a FHEM home automation
  * server.
  *
- * Copyright (c) 2012, Matthias Klass or third-party contributors as
+ * Copyright (c) 2011, Matthias Klass or third-party contributors as
  * indicated by the @author tags or express copyright attribution
  * statements applied by the authors.  All third-party contributions are
  * distributed under license by Red Hat Inc.
  *
  * This copyrighted material is made available to anyone wishing to use, modify,
- * copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLICLICENSE, as published by the Free Software Foundation.
+ * copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
@@ -19,6 +19,7 @@
  * along with this distribution; if not, write to:
  *   Free Software Foundation, Inc.
  *   51 Franklin Street, Fifth Floor
+ *   Boston, MA  02110-1301  USA
  */
 
 package li.klass.fhem.license;
@@ -38,13 +39,8 @@ import li.klass.fhem.billing.BillingService;
 import li.klass.fhem.util.ApplicationProperties;
 
 public class LicenseManager {
-    public interface IsPremiumListener {
-        void onIsPremiumDetermined(boolean isPremium);
-    }
-
     public static final LicenseManager INSTANCE = new LicenseManager();
     private static final String TAG = LicenseManager.class.getName();
-
 
     private LicenseManager() {
     }
@@ -53,13 +49,13 @@ public class LicenseManager {
 
         BillingService.INSTANCE.getOwnedItems(new BillingService.OwnedItemsLoadedListener() {
             @Override
-            public void onItemsLoaded(Set<String> ownedItems) {
-                boolean isPremium = false;
+            public void onItemsLoaded(Set<String> ownedItems, boolean isInitialized) {
+                boolean isPremium = !isInitialized;
 
                 if (ApplicationProperties.INSTANCE.getBooleanApplicationProperty("IS_PREMIUM")) {
                     Log.i(TAG, "found IS_PREMIUM application property to be true => premium");
                     isPremium = true;
-                } else if  (isPremiumApk()) {
+                } else if (isPremiumApk()) {
                     Log.i(TAG, "found package name to be li.klass.fhempremium => premium");
                     isPremium = true;
                 } else if (isDebug()) {
@@ -97,5 +93,9 @@ public class LicenseManager {
             Log.e(LicenseManager.class.getName(), "some exception occurred while reading app signatures", e);
         }
         return false;
+    }
+
+    public interface IsPremiumListener {
+        void onIsPremiumDetermined(boolean isPremium);
     }
 }

@@ -323,7 +323,6 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
         super.onResume();
 
         Log.i(TAG, "resuming");
-        Log.i(TAG, "resuming " + getClass().getName());
 
         saveInstanceStateCalled = false;
 
@@ -334,12 +333,16 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
         if (availableConnectionDataAdapter != null) {
             availableConnectionDataAdapter.doLoad();
         }
-
-        handleTimerUpdates();
-
         updateNavigationVisibility();
 
+        handleTimerUpdates();
         handleOpenIntent();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        BillingService.INSTANCE.loadInventory(null);
     }
 
     @Override
@@ -416,6 +419,8 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
     @Override
     protected void onStop() {
         super.onStop();
+
+        BillingService.INSTANCE.stop();
 
         RoomListService.INSTANCE.storeDeviceListMap();
 

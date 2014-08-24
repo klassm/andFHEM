@@ -24,6 +24,7 @@
 
 package li.klass.fhem.billing;
 
+import com.android.vending.billing.IabException;
 import com.android.vending.billing.IabHelper;
 import com.android.vending.billing.IabResult;
 import com.android.vending.billing.Inventory;
@@ -41,7 +42,6 @@ import li.klass.fhem.infra.basetest.RobolectricBaseTestCase;
 import li.klass.fhem.testutil.MockitoTestRule;
 
 import static li.klass.fhem.billing.BillingService.OnLoadInventoryFinishedListener;
-import static li.klass.fhem.billing.BillingService.SetupFinishedListener;
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
@@ -78,6 +78,18 @@ public class BillingServiceTest extends RobolectricBaseTestCase {
     }
 
     @Test
+    public void should_dispose_null_IABHelper() {
+        // given
+        billingService.iabHelper = null;
+
+        // when
+        iabHelper.dispose();
+
+        // then
+        // verify no exception
+    }
+
+    @Test
     public void should_call_setup_before_loading_the_inventory() {
         // given
         given(iabHelper.isSetupDone()).willReturn(false);
@@ -92,7 +104,7 @@ public class BillingServiceTest extends RobolectricBaseTestCase {
     @Test
     public void should_call_Listener_if_Exception_occurs_during_setup() {
         // given
-        SetupFinishedListener listener = mock(SetupFinishedListener.class);
+        BillingService.SetupFinishedListener listener = mock(BillingService.SetupFinishedListener.class);
         doThrow(new IllegalStateException("some IAB Exception")).when(iabHelper).startSetup(any(IabHelper.OnIabSetupFinishedListener.class));
 
         // when
@@ -106,7 +118,7 @@ public class BillingServiceTest extends RobolectricBaseTestCase {
     @Test
     public void should_call_Listener_if_Setup_was_successful() {
         // given
-        SetupFinishedListener listener = mock(SetupFinishedListener.class);
+        BillingService.SetupFinishedListener listener = mock(BillingService.SetupFinishedListener.class);
         doAnswer(new Answer() {
             @Override
             public Object answer(InvocationOnMock invocationOnMock) throws Throwable {
@@ -127,44 +139,37 @@ public class BillingServiceTest extends RobolectricBaseTestCase {
     }
 
     @Test
-    public void should_handle_Exception_during_load_Inventory() {
+    public void should_handle_Exception_during_load_Inventory() throws IabException {
         // given
         given(iabHelper.isSetupDone()).willReturn(true);
         doThrow(new IllegalStateException("IAB Helper is not setup"))
-                .when(iabHelper).queryInventoryAsync(any(IabHelper.QueryInventoryFinishedListener.class));
+                .when(iabHelper).queryInventory(false, null);
         OnLoadInventoryFinishedListener listener = mock(OnLoadInventoryFinishedListener.class);
 
         // when
         billingService.loadInventory(listener);
 
         // then
-        verify(iabHelper).queryInventoryAsync(any(IabHelper.QueryInventoryFinishedListener.class));
+        verify(iabHelper).queryInventory(false, null);
         verify(listener).onInventoryLoadFinished();
     }
 
     @Test
-    public void should_handle_successful_query_Inventory() {
+    public void should_handle_successful_query_Inventory() throws IabException {
         // given
         given(iabHelper.isSetupDone()).willReturn(true);
         OnLoadInventoryFinishedListener listener = mock(OnLoadInventoryFinishedListener.class);
-        final IabResult result = mock(IabResult.class);
+        IabResult result = mock(IabResult.class);
         given(result.isSuccess()).willReturn(true);
-        final Inventory inventory = mock(Inventory.class);
+        Inventory inventory = mock(Inventory.class);
 
-        doAnswer(new Answer() {
-            @Override
-            public Object answer(InvocationOnMock invocationOnMock) throws Throwable {
-                IabHelper.QueryInventoryFinishedListener listener = (IabHelper.QueryInventoryFinishedListener) invocationOnMock.getArguments()[0];
-                listener.onQueryInventoryFinished(result, inventory);
-                return null;
-            }
-        }).when(iabHelper).queryInventoryAsync(any(IabHelper.QueryInventoryFinishedListener.class));
+        given(iabHelper.queryInventory(false, null)).willReturn(inventory);
 
         // when
         billingService.loadInventory(listener);
 
         // then
-        verify(iabHelper).queryInventoryAsync(any(IabHelper.QueryInventoryFinishedListener.class));
+        verify(iabHelper).queryInventory(false, null);
         verify(listener).onInventoryLoadFinished();
         assertThat(billingService.getInventory()).isEqualTo(inventory);
     }
