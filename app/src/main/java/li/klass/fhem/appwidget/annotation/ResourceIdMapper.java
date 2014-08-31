@@ -51,6 +51,7 @@ public enum ResourceIdMapper {
     fillPercentage(R.string.fillPercentage),
     conversion(R.string.conversion),
     battery(R.string.battery),
+    batteryVoltage(R.string.batteryVoltage),
     dayTemperature(R.string.dayTemperature),
     nightTemperature(R.string.nightTemperature),
     windowOpenTemp(R.string.windowOpenTemp),

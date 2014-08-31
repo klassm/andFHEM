@@ -29,42 +29,42 @@ import org.junit.Test;
 import li.klass.fhem.domain.CULHMDevice;
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
+import static org.fest.assertions.api.Assertions.assertThat;
 
 public class THSensorTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
         CULHMDevice device = getDefaultDevice();
 
-        assertThat(device.getName(), is(DEFAULT_TEST_DEVICE_NAME));
-        assertThat(device.getRoomConcatenated(), is(DEFAULT_TEST_ROOM_NAME));
+        assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
+        assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
 
-        assertThat(device.getState(), is("T: 14.6 H: 67"));
-        assertThat(device.getSubType(), is(CULHMDevice.SubType.TEMPERATURE_HUMIDITY));
-        assertThat(device.supportsDim(), is(false));
+        assertThat(device.getState()).isEqualTo("T: 14.6 H: 67");
+        assertThat(device.getSubType()).isEqualTo(CULHMDevice.SubType.TH);
+        assertThat(device.supportsDim()).isEqualTo(false);
 
-        assertThat(device.getMeasuredTemp(), is("-2.4 (°C)"));
-        assertThat(device.getHumidity(), is("67 (%)"));
+        assertThat(device.getMeasuredTemp()).isEqualTo("-2.4 (°C)");
+        assertThat(device.getHumidity()).isEqualTo("67 (%)");
 
-        assertThat(device.getLogDevices(), is(notNullValue()));
-        assertThat(device.getDeviceCharts().size(), is(1));
+        assertThat(device.getLogDevices()).isNotNull();
+        assertThat(device.getDeviceCharts().size()).isEqualTo(1);
 
-        assertThat(device.isSupported(), is(true));
+        assertThat(device.isSupported()).isEqualTo(true);
     }
 
     @Test
     public void testOC3Sensor() {
         CULHMDevice device = getDeviceFor("oc3");
 
-        assertThat(device, is(notNullValue()));
-        assertThat(device.getMeasuredTemp(), is("5.1 (°C)"));
-        assertThat(device.getHumidity(), is("92 (%)"));
-        assertThat(device.getBrightness(), is("9"));
-        assertThat(device.getSunshine(), is("224"));
-        assertThat(device.getIsRaining(), is("no"));
-        assertThat(device.getRain(), is("74.045 (l/m2)"));
+        assertThat(device).isNotNull();
+        assertThat(device.getMeasuredTemp()).isEqualTo("5.1 (°C)");
+        assertThat(device.getHumidity()).isEqualTo("92 (%)");
+        assertThat(device.getBrightness()).isEqualTo("9");
+        assertThat(device.getSunshine()).isEqualTo("224");
+        assertThat(device.getIsRaining()).isEqualTo("no");
+        assertThat(device.getRain()).isEqualTo("74.045 (l/m2)");
+        assertThat(device.getWindDirection()).isEqualTo("300 (°)");
+        assertThat(device.getWindSpeed()).isEqualTo("6.4 (m/s)");
     }
 
     @Override

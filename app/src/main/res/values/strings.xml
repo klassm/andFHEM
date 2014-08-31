@@ -39,6 +39,7 @@
     <string name="actuator">Actuator</string>
     <string name="state">State</string>
     <string name="battery">Battery</string>
+    <string name="batteryVoltage">Battery voltage</string>
     <string name="measured">Measured</string>
     <string name="warnings">Warnings</string>
     <string name="time">Time</string>

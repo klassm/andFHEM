@@ -41,6 +41,7 @@ import li.klass.fhem.appwidget.view.widget.medium.TemperatureWidgetView;
 import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.DimmableContinuousStatesDevice;
+import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.domain.heating.DesiredTempDevice;
@@ -65,6 +66,7 @@ import static li.klass.fhem.domain.CULHMDevice.SubType.POWERMETER;
 import static li.klass.fhem.domain.CULHMDevice.SubType.SHUTTER;
 import static li.klass.fhem.domain.CULHMDevice.SubType.SWITCH;
 import static li.klass.fhem.domain.CULHMDevice.SubType.THERMOSTAT;
+import static li.klass.fhem.domain.CULHMDevice.SubType.THPL;
 import static li.klass.fhem.service.graph.description.SeriesType.ACTUATOR;
 import static li.klass.fhem.service.graph.description.SeriesType.BRIGHTNESS;
 import static li.klass.fhem.service.graph.description.SeriesType.CUMULATIVE_USAGE_Wh;
@@ -75,11 +77,13 @@ import static li.klass.fhem.service.graph.description.SeriesType.LITRE_CONTENT;
 import static li.klass.fhem.service.graph.description.SeriesType.RAIN;
 import static li.klass.fhem.service.graph.description.SeriesType.RAW;
 import static li.klass.fhem.service.graph.description.SeriesType.TEMPERATURE;
+import static li.klass.fhem.util.ValueDescriptionUtil.appendHPa;
+import static li.klass.fhem.util.ValueDescriptionUtil.appendLm;
 import static li.klass.fhem.util.ValueDescriptionUtil.appendPercent;
+import static li.klass.fhem.util.ValueDescriptionUtil.appendV;
 import static li.klass.fhem.util.ValueExtractUtil.extractLeadingDouble;
 import static li.klass.fhem.util.ValueExtractUtil.extractLeadingInt;
 
-@SuppressWarnings("unused")
 @OverviewViewSettings(showState = true)
 @SupportsWidget(TemperatureWidgetView.class)
 public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
@@ -87,7 +91,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
 
     private static final CULHMConfiguration heatingConfiguration = new CULHMConfiguration();
     private WeekProfile<FilledTemperatureInterval, CULHMConfiguration, CULHMDevice> weekProfile =
-            new WeekProfile<FilledTemperatureInterval, CULHMConfiguration, CULHMDevice>(heatingConfiguration);
+            new WeekProfile<>(heatingConfiguration);
     public static double MAXIMUM_TEMPERATURE = 30.5;
     public static double MINIMUM_TEMPERATURE = 5.5;
     private double desiredTemp = MINIMUM_TEMPERATURE;
@@ -138,6 +142,14 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
     private String currentVoltage;
     @ShowField(description = ResourceIdMapper.cumulativeUsage, showInOverview = true)
     private String cumulativeUsage;
+    @ShowField(description = ResourceIdMapper.brightness)
+    private String luminosity;
+    @ShowField(description = ResourceIdMapper.batteryVoltage)
+    private String batteryVoltage;
+    @ShowField(description = ResourceIdMapper.pressure)
+    private String pressure;
+    @ShowField(description = ResourceIdMapper.pressureNN)
+    private String pressureNN;
 
     @Override
     public void onChildItemRead(String tagName, String key, String value, NamedNodeMap attributes) {
@@ -145,77 +157,28 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
         weekProfile.readNode(key, value);
     }
 
-    public void readRAWTOREADABLE(String value) {
-        this.rawToReadable = value;
-
-        int lastSpace = value.lastIndexOf(" ");
-        String lastDefinition = lastSpace == -1 ? value : value.substring(lastSpace + 1);
-        String[] parts = lastDefinition.split(":");
-        if (parts.length != 2) return;
-
-        int rawValue = Integer.parseInt(parts[0]);
-
-        fillContentLitresMaximum = Integer.parseInt(parts[1]);
-    }
-
-    public void readRAWVALUE(String value) {
-        this.rawValue = value;
-    }
-
-    public void readCONTENT(String value) {
+    @XmllistAttribute("CONTENT")
+    public void setContent(String value) {
         fillContentLitresRaw = extractLeadingDouble(value.replace("l", ""));
         String fillContentLitres = ValueDescriptionUtil.appendL(fillContentLitresRaw);
         setState(fillContentLitres);
     }
 
-    public void readCOMMANDACCEPTED(String value) {
-        this.commandAccepted = value;
-    }
-
-    public void readHUMIDITY(String value) {
-        humidity = appendPercent(value);
-    }
-
-    public void readACTUATOR(String value) {
-        subType = HEATING;
-        if (value != null && value.endsWith("%")) {
-            value = appendPercent(extractLeadingInt(value));
-        }
-        actuator = value;
-    }
-
-    public void readMEASURED_TEMP(String value) {
-        measuredTemp = ValueDescriptionUtil.appendTemperature(value);
-    }
-
-    public void readTEMPERATURE(String value) {
-        measuredTemp = ValueDescriptionUtil.appendTemperature(value);
-    }
-
-    public void readDESIRED_TEMP(String value) {
+    @XmllistAttribute("DESIRED_TEMP")
+    public void setDesiredTemp(String value) {
         if (value.equalsIgnoreCase("off")) value = "5.5";
         if (value.equalsIgnoreCase("on")) value = "30.5";
 
         desiredTemp = extractLeadingDouble(value);
     }
 
-    public void readBATTERY(String value) {
-        battery = value;
-    }
-
-    public void readBRIGHTNESS(String value) {
-        brightness = value;
-    }
-
-    public void readMOTION(String value) {
-        motion = value;
-    }
-
-    public void readMODEL(String value) {
+    @XmllistAttribute("MODEL")
+    public void setModel(String value) {
         model = value;
     }
 
-    public void readDEVICE(String value) {
+    @XmllistAttribute("DEVICE")
+    public void setDevice(String value) {
         setDeviceReadCallback(new DeviceReadCallback<CULHMDevice>(value) {
             @Override
             public void onCallbackDeviceRead(CULHMDevice callbackDevice) {
@@ -230,7 +193,8 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
         return subType;
     }
 
-    public void readSUBTYPE(String value) {
+    @XmllistAttribute("SUBTYPE")
+    public void setSubType(String value) {
         if ("DIMMER".equalsIgnoreCase(value) || "BLINDACTUATOR".equalsIgnoreCase(value)) {
             subType = DIMMER;
         } else if ("SWITCH".equalsIgnoreCase(value)) {
@@ -240,7 +204,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
         } else if ("THREESTATESENSOR".equalsIgnoreCase(value)) {
             subType = SubType.THREE_STATE;
         } else if ("THSensor".equalsIgnoreCase(value)) {
-            subType = SubType.TEMPERATURE_HUMIDITY;
+            subType = SubType.TH;
         } else if ("KFM100".equalsIgnoreCase(value)) {
             subType = SubType.FILL_STATE;
         } else if ("THERMOSTAT".equalsIgnoreCase(value)) {
@@ -251,16 +215,20 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
             subType = KEYMATIC;
         } else if ("powerMeter".equalsIgnoreCase(value)) {
             subType = POWERMETER;
+        } else if ("THPLSensor".equalsIgnoreCase(value)) {
+            subType = THPL;
         }
         subTypeRaw = value;
     }
 
-    public void readMODE(String value) {
+    @XmllistAttribute("MODE")
+    public void setMode(String value) {
         if (value.equalsIgnoreCase("MANU")) value = "MANUAL";
-        readCONTROLMODE(value);
+        setControlMode(value);
     }
 
-    public void readCONTROLMODE(String value) {
+    @XmllistAttribute("CONTROLMODE")
+    public void setControlMode(String value) {
         try {
             heatingMode = HeatingMode.valueOf(value.toUpperCase());
             subType = HEATING;
@@ -269,41 +237,23 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
         }
     }
 
-    public void readWINDSPEED(String value) {
-        windSpeed = ValueDescriptionUtil.append(value, "m/s");
-    }
-
-    public void readWINDDIRECTION(String value) {
-        windDirection = ValueDescriptionUtil.append(value, "°");
-    }
-
-    public void readSUNSHINE(String value) {
-        sunshine = value;
-    }
-
-    public void readISRAINING(String value) {
-        Context context = AndFHEMApplication.getContext();
-        int stringId = "0".equals(value) ? R.string.no : R.string.yes;
-        isRaining = context.getString(stringId);
-    }
-
-    public void readRAIN(String value) {
-        rain = ValueDescriptionUtil.appendLm2(value);
-    }
-
-    public void readPOWER(String value) {
+    @XmllistAttribute("POWER")
+    public void setPower(String value) {
         currentUsage = ValueDescriptionUtil.append(value, "W");
     }
 
-    public void readENERGY(String value) {
+    @XmllistAttribute("ENERGY")
+    public void setEnergy(String value) {
         cumulativeUsage = ValueDescriptionUtil.append(value, "W");
     }
 
-    public void readVOLTAGE(String value) {
+    @XmllistAttribute("VOLTAGE")
+    public void setVoltage(String value) {
         currentVoltage = ValueDescriptionUtil.append(value, "A");
     }
 
-    public void readLEVEL(String value) {
+    @XmllistAttribute("LEVEL")
+    public void setLevel(String value) {
         level = value;
     }
 
@@ -440,28 +390,56 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
         return measuredTemp;
     }
 
+    @XmllistAttribute({"MEASURED_TEMP", "TEMPERATURE"})
+    public void setMeasuredTemp(String value) {
+        measuredTemp = ValueDescriptionUtil.appendTemperature(value);
+    }
+
     public String getActuator() {
         return actuator;
+    }
+
+    @XmllistAttribute("ACTUATOR")
+    public void setActuator(String value) {
+        subType = HEATING;
+        if (value != null && value.endsWith("%")) {
+            value = appendPercent(extractLeadingInt(value));
+        }
+        actuator = value;
     }
 
     public String getHumidity() {
         return humidity;
     }
 
-    public String getSubTypeRaw() {
-        return subTypeRaw;
-    }
-
-    public String getCommandAccepted() {
-        return commandAccepted;
+    @XmllistAttribute("HUMIDITY")
+    public void setHumidity(String value) {
+        humidity = appendPercent(value);
     }
 
     public String getRawValue() {
         return rawValue;
     }
 
+    @XmllistAttribute("RAWVALUE")
+    public void setRawValue(String value) {
+        this.rawValue = value;
+    }
+
     public String getRawToReadable() {
         return rawToReadable;
+    }
+
+    @XmllistAttribute("RAWTOREADABLE")
+    public void setRawToReadable(String value) {
+        this.rawToReadable = value;
+
+        int lastSpace = value.lastIndexOf(" ");
+        String lastDefinition = lastSpace == -1 ? value : value.substring(lastSpace + 1);
+        String[] parts = lastDefinition.split(":");
+        if (parts.length != 2) return;
+
+        fillContentLitresMaximum = Integer.parseInt(parts[1]);
     }
 
     public double getFillContentPercentageRaw() {
@@ -484,32 +462,74 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
         return battery;
     }
 
+    @XmllistAttribute("BATTERY")
+    public void setBattery(String value) {
+        battery = value;
+    }
+
     public String getBrightness() {
         return brightness;
+    }
+
+    @XmllistAttribute("BRIGHTNESS")
+    public void setBrightness(String value) {
+        brightness = value;
     }
 
     public String getMotion() {
         return motion;
     }
 
+    @XmllistAttribute("MOTION")
+    public void setMotion(String value) {
+        motion = value;
+    }
+
     public String getWindSpeed() {
         return windSpeed;
+    }
+
+    @XmllistAttribute("WINDSPEED")
+    public void setWindSpeed(String value) {
+        windSpeed = ValueDescriptionUtil.append(value, "m/s");
     }
 
     public String getWindDirection() {
         return windDirection;
     }
 
+    @XmllistAttribute("WINDDIRECTION")
+    public void setWindDirection(String value) {
+        windDirection = ValueDescriptionUtil.append(value, "°");
+    }
+
     public String getSunshine() {
         return sunshine;
+    }
+
+    @XmllistAttribute("SUNSHINE")
+    public void setSunshine(String value) {
+        sunshine = value;
     }
 
     public String getIsRaining() {
         return isRaining;
     }
 
+    @XmllistAttribute("ISRAINING")
+    public void setIsRaining(String value) {
+        Context context = AndFHEMApplication.getContext();
+        int stringId = "0".equals(value) ? R.string.no : R.string.yes;
+        isRaining = context.getString(stringId);
+    }
+
     public String getRain() {
         return rain;
+    }
+
+    @XmllistAttribute("RAIN")
+    public void setRain(String value) {
+        rain = ValueDescriptionUtil.appendLm2(value);
     }
 
     public String getCumulativeUsage() {
@@ -549,6 +569,42 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
         return "controlMode";
     }
 
+    public String getLuminosity() {
+        return luminosity;
+    }
+
+    @XmllistAttribute("LUMINOSITY")
+    public void setLuminosity(String luminosity) {
+        this.luminosity = appendLm(luminosity);
+    }
+
+    public String getBatteryVoltage() {
+        return batteryVoltage;
+    }
+
+    @XmllistAttribute("BATVOLTAGE")
+    public void setBatteryVoltage(String batteryVoltage) {
+        this.batteryVoltage = appendV(batteryVoltage);
+    }
+
+    public String getPressure() {
+        return pressure;
+    }
+
+    @XmllistAttribute("PRESSURE")
+    public void setPressure(String pressure) {
+        this.pressure = appendHPa(pressure);
+    }
+
+    public String getPressureNN() {
+        return pressureNN;
+    }
+
+    @XmllistAttribute("PRESSURE_NN")
+    public void setPressureNN(String pressureNN) {
+        this.pressureNN = appendHPa(pressureNN);
+    }
+
     @Override
     public WeekProfile<FilledTemperatureInterval, CULHMConfiguration, CULHMDevice> getWeekProfile() {
         return weekProfile;
@@ -561,7 +617,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
         if (subType == null) return;
 
         switch (subType) {
-            case TEMPERATURE_HUMIDITY:
+            case TH:
 
                 addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureHumidityGraph,
                         new ChartSeriesDescription.Builder()
@@ -744,7 +800,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
     @Override
     public boolean supportsWidget(Class<? extends DeviceAppWidgetView> appWidgetClass) {
         return !(appWidgetClass.equals(TemperatureWidgetView.class) &&
-                !(subType == SubType.TEMPERATURE_HUMIDITY || subType == HEATING)) &&
+                !(subType == SubType.TH || subType == HEATING)) &&
                 super.supportsWidget(appWidgetClass);
     }
 
@@ -763,13 +819,27 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
         return "pct";
     }
 
+    public String getSubTypeRaw() {
+        return subTypeRaw;
+    }
+
+    public String getCommandAccepted() {
+        return commandAccepted;
+    }
+
+    @XmllistAttribute("COMMANDACCEPTED")
+    public void setCommandAccepted(String value) {
+        this.commandAccepted = value;
+    }
+
     public enum SubType {
         DIMMER(DeviceFunctionality.DIMMER),
         SWITCH(DeviceFunctionality.SWITCH),
         HEATING(DeviceFunctionality.HEATING),
         SMOKE_DETECTOR(DeviceFunctionality.SMOKE_DETECTOR),
         THREE_STATE(DeviceFunctionality.WINDOW),
-        TEMPERATURE_HUMIDITY(DeviceFunctionality.TEMPERATURE),
+        TH(DeviceFunctionality.TEMPERATURE),
+        THPL(DeviceFunctionality.TEMPERATURE),
         THERMOSTAT(DeviceFunctionality.HEATING),
         FILL_STATE(DeviceFunctionality.FILL_STATE),
         MOTION(DeviceFunctionality.MOTION_DETECTOR),

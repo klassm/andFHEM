@@ -76,8 +76,11 @@ public class GenericDeviceService {
             try {
                 if (method.getParameterTypes().length == 1 && method.getParameterTypes()[0].isAssignableFrom(String.class)) {
                     if (method.isAnnotationPresent(XmllistAttribute.class)) {
-                        if (method.getAnnotation(XmllistAttribute.class).value().equalsIgnoreCase(subStateName)) {
-                            method.invoke(device, value);
+                        String[] attributeValues = method.getAnnotation(XmllistAttribute.class).value();
+                        for (String attributeValue : attributeValues) {
+                            if (attributeValue.equalsIgnoreCase(subStateName)) {
+                                method.invoke(device, value);
+                            }
                         }
                     } else if (method.getName().equalsIgnoreCase("read" + subStateName)) {
                         method.invoke(device, value);

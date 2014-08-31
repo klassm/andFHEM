@@ -29,5 +29,5 @@ import java.lang.annotation.RetentionPolicy;
 
 @Retention(RetentionPolicy.RUNTIME)
 public @interface XmllistAttribute {
-    String value();
+    String[] value();
 }

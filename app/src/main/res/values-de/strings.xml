@@ -39,6 +39,7 @@
     <string name="actuator">Regler</string>
     <string name="state">Zustand</string>
     <string name="battery">Batterie</string>
+    <string name="batteryVoltage">Batterie-Spannung</string>
     <string name="measured">Messzeit</string>
     <string name="warnings">Warnungen</string>
     <string name="time">Zeit</string>

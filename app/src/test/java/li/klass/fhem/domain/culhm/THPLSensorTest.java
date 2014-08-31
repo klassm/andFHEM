@@ -31,39 +31,43 @@ import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 
-public class BlindActuatorTest extends DeviceXMLParsingBase {
+public class THPLSensorTest extends DeviceXMLParsingBase {
     @Test
-    public void testForCorrectlySetAttributes() {
-        CULHMDevice device = getDefaultDevice();
+    public void should_set_default_device_attributes() {
+        CULHMDevice device = getDeviceFor("default");
 
-        assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
-        assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
+        assertThat(device.getName()).isEqualTo("default");
 
-        assertThat(device.getState()).isEqualTo("75 %");
-        assertThat(device.getSubType()).isEqualTo(CULHMDevice.SubType.DIMMER);
-        assertThat(device.supportsDim()).isEqualTo(true);
-        assertThat(device.getDimPosition()).isEqualTo(75);
+        assertThat(device.getState()).isEqualTo("T: 25.0 H: 54 L: 0.56 batVoltage: 2.58");
+        assertThat(device.getSubType()).isEqualTo(CULHMDevice.SubType.THPL);
+        assertThat(device.supportsDim()).isEqualTo(false);
 
-        assertThat(device.isOnByState()).isEqualTo(true);
+        assertThat(device.getMeasuredTemp()).isEqualTo("25.0 (°C)");
+        assertThat(device.getBattery()).isEqualTo("ok");
+        assertThat(device.getHumidity()).isEqualTo("54 (%)");
+        assertThat(device.getLuminosity()).isEqualTo("0.56 (lm)");
+        assertThat(device.getBatteryVoltage()).isEqualTo("2.58 (V)");
 
         assertThat(device.getLogDevices()).isEmpty();
-        assertThat(device.getDeviceCharts().size()).isEqualTo(0);
+        assertThat(device.getDeviceCharts()).isEmpty();
 
         assertThat(device.isSupported()).isEqualTo(true);
-
-        assertThat(device.getCommandAccepted()).isEqualTo("yes");
-        assertThat(device.getSubTypeRaw()).isEqualTo("blindActuator");
     }
 
     @Test
-    public void testEventMap() {
-        CULHMDevice device = getDeviceFor("device1");
-        device.setState("on");
-        assertThat(device.getDimPosition()).isEqualTo(device.getDimUpperBound());
+    public void should_set_pressure_device_attributes() {
+        CULHMDevice device = getDeviceFor("pressure");
+
+        assertThat(device.getName()).isEqualTo("pressure");
+
+        assertThat(device.getPressure()).isEqualTo("998 (hPa)");
+        assertThat(device.getPressureNN()).isEqualTo("1024 (hPa)");
+
+        assertThat(device.isSupported()).isTrue();
     }
 
     @Override
     protected String getFileName() {
-        return "blindActuator.xml";
+        return "THPLSensor.xml";
     }
 }

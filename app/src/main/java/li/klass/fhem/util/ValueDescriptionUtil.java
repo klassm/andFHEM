@@ -37,12 +37,12 @@ public class ValueDescriptionUtil {
     public static final String PPM = "ppm";
     public static final String DB = "dB";
 
-    public static String appendTemperature(Object text) {
-        return append(text, C);
-    }
-
     public static String appendPercent(Object text) {
         return append(text, PERCENT);
+    }
+
+    public static String append(Object text, String appendix) {
+        return text + " (" + appendix + ")";
     }
 
     public static String appendKmH(Object text) {
@@ -73,10 +73,12 @@ public class ValueDescriptionUtil {
         return append(text, "hPa");
     }
 
+    public static String appendLm(String luminosity) {
+        return append(luminosity, "lm");
+    }
 
-
-    public static String append(Object text, String appendix) {
-        return text + " (" + appendix + ")";
+    public static String appendV(String voltage) {
+        return append(voltage, "V");
     }
 
     public static String desiredTemperatureToString(double temperature, double minTemp, double maxTemp) {
@@ -87,6 +89,10 @@ public class ValueDescriptionUtil {
         } else {
             return ValueDescriptionUtil.appendTemperature(temperature);
         }
+    }
+
+    public static String appendTemperature(Object text) {
+        return append(text, C);
     }
 
     public static String secondsToTimeString(int seconds) {

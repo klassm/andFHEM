@@ -388,7 +388,9 @@ public class DeviceListParser {
         for (Method method : methods) {
             if (method.isAnnotationPresent(XmllistAttribute.class)) {
                 XmllistAttribute annotation = method.getAnnotation(XmllistAttribute.class);
-                addToCache(cache, method, annotation.value());
+                for (String value : annotation.value()) {
+                    addToCache(cache, method, value);
+                }
             } else if (method.getName().startsWith("read")) {
                 String attribute = method.getName().substring("read".length());
                 addToCache(cache, method, attribute);
