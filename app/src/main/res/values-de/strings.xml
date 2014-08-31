@@ -68,6 +68,8 @@
     <string name="rooms">Raum</string>
     <string name="counterA">Zähler A</string>
     <string name="counterB">Zähler B</string>
+    <string name="counterReadingTariff1">Zählerstand Tarif1</string>
+    <string name="counterReading">Zählerstand</string>
     <string name="present">Sendend</string>
     <string name="currentUsage">Aktueller Verbrauch</string>
     <string name="currentVoltage">Aktuelle Spannung</string>

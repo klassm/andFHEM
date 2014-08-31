@@ -38,7 +38,7 @@ import li.klass.fhem.domain.genericview.ShowField;
 
 import static li.klass.fhem.domain.core.DeviceFunctionality.USAGE;
 import static li.klass.fhem.util.ValueDescriptionUtil.append;
-import static li.klass.fhem.util.ValueDescriptionUtil.appendKwh;
+import static li.klass.fhem.util.ValueDescriptionUtil.appendKWh;
 import static li.klass.fhem.util.ValueExtractUtil.extractLeadingDouble;
 
 @OverviewViewSettings(showState = false)
@@ -64,7 +64,7 @@ public class EC3000Device extends Device<EC3000Device> {
     }
 
     public void readCONSUMPTION(String value) {
-        this.consumption = appendKwh(value);
+        this.consumption = appendKWh(value);
     }
 
     public void readPOWER(String value) {

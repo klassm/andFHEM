@@ -120,6 +120,7 @@ import li.klass.fhem.domain.RemoteControlDevice;
 import li.klass.fhem.domain.RoommateDevice;
 import li.klass.fhem.domain.SHT21Device;
 import li.klass.fhem.domain.SISPMSDevice;
+import li.klass.fhem.domain.SMLUSBDevice;
 import li.klass.fhem.domain.SWAPDevice;
 import li.klass.fhem.domain.SonosDevice;
 import li.klass.fhem.domain.SonosPlayerDevice;
@@ -227,7 +228,8 @@ public enum DeviceType {
     WITHINGS("withings", WithingsDevice.class),
     DMX("DMXDevice", DMXDevice.class, new DmxAdapter()),
     NETATMO("netatmo", NetatmoDevice.class),
-    ROOMMATE("ROOMMATE", RoommateDevice.class);
+    ROOMMATE("ROOMMATE", RoommateDevice.class),
+    SMLUSB("SMLUSB", SMLUSBDevice.class),;
 
     private String xmllistTag;
     private Class<? extends Device> deviceClass;

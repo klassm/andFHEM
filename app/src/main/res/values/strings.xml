@@ -68,6 +68,8 @@
     <string name="rooms">Room</string>
     <string name="counterA">Counter A</string>
     <string name="counterB">Counter B</string>
+    <string name="counterReadingTariff1">Counter reading tariff 1</string>
+    <string name="counterReading">Counter reading</string>
     <string name="present">Present</string>
     <string name="currentUsage">Current Usage</string>
     <string name="currentVoltage">Current Voltage</string>

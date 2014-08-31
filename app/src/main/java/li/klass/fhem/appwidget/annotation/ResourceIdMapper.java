@@ -174,6 +174,8 @@ public enum ResourceIdMapper {
     noise(R.string.noise),
     location(R.string.location),
     mood(R.string.mood),
+    counterReading(R.string.counterReading),
+    counterReadingTariff1(R.string.counterReadingTariff1),
 
     blank(R.string.blank),
     none(-1);

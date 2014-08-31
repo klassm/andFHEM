@@ -62,11 +62,11 @@ public class CULEMDevice extends Device<CULEMDevice> {
     private String cumulativeKwh;
 
     public void readCURRENT(String value) {
-        currentUsage = ValueDescriptionUtil.appendKwh(value);
+        currentUsage = ValueDescriptionUtil.appendKWh(value);
     }
 
     public void readCUM_DAY(String value) {
-        dayUsage = ValueDescriptionUtil.appendKwh(extractCumUsage(value, "CUM_DAY"));
+        dayUsage = ValueDescriptionUtil.appendKWh(extractCumUsage(value, "CUM_DAY"));
     }
 
     private String extractCumUsage(String cumString, String cumToken) {
@@ -75,7 +75,7 @@ public class CULEMDevice extends Device<CULEMDevice> {
     }
 
     public void readCUM_MONTH(String value) {
-        monthUsage = ValueDescriptionUtil.appendKwh(extractCumUsage(value, "CUM_MONTH"));
+        monthUsage = ValueDescriptionUtil.appendKWh(extractCumUsage(value, "CUM_MONTH"));
     }
 
     public void readSUM_GRAPH_DIVISION_FACTOR(String value) {
@@ -84,7 +84,7 @@ public class CULEMDevice extends Device<CULEMDevice> {
 
     public void readTOTAL(String value) {
         double val = ValueExtractUtil.extractLeadingDouble(value);
-        cumulativeKwh = ValueDescriptionUtil.appendKwh("" + (((int) (val * 100)) / 100d));
+        cumulativeKwh = ValueDescriptionUtil.appendKWh("" + (((int) (val * 100)) / 100d));
     }
 
     public String readCurrentUsage() {

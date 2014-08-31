@@ -57,7 +57,7 @@ public class ValueDescriptionUtil {
         return append(text, L);
     }
 
-    public static String appendKwh(Object text) {
+    public static String appendKWh(Object text) {
         return append(text, KWH);
     }
 
@@ -79,6 +79,10 @@ public class ValueDescriptionUtil {
 
     public static String appendV(String voltage) {
         return append(voltage, "V");
+    }
+
+    public static String appendW(String power) {
+        return append(power, "W");
     }
 
     public static String desiredTemperatureToString(double temperature, double minTemp, double maxTemp) {
