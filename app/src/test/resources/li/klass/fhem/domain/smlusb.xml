@@ -43,4 +43,24 @@
             <STATE key="Zählerstand-Tarif-1-Bezug" measured="2014-08-26 20:51:48" value="6362.92"/>
         </SMLUSB>
     </SMLUSB_LIST>
+
+    <FileLog_LIST>
+        <FileLog name="eg.hw.sz.haushalt.log"
+                 attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings disable:0,1 logtype nrarchive archivedir archivecmd custom_graph devStateIcon devStateStyle icon sortby webCmd"
+                 sets="absorb:FileLog_og.bz.sd.heizung,Logfile addRegexpPart removeRegexpPart reopen"
+                 state="active">
+            <INT key="DEF" value="./log/HH-%Y-%m.log eg.hw.sz.haushalt"/>
+            <INT key="NAME" value="eg.hw.sz.haushalt.log"/>
+            <INT key="NR" value="41"/>
+            <INT key="NTFY_ORDER" value="50-eg.hw.sz.haushalt.log"/>
+            <INT key="REGEXP" value="eg.hw.sz.haushalt"/>
+            <INT key="STATE" value="active"/>
+            <INT key="TYPE" value="FileLog"/>
+            <INT key="currentlogfile" value="./log/HH-2014-08.log"/>
+            <INT key="logfile" value="./log/HH-%Y-%m.log"/>
+            <ATTR key="custom_graph" value="4:measured@deg@measured"/>
+            <ATTR key="logtype" value="power8:power,text"/>
+            <ATTR key="room" value="HWR"/>
+        </FileLog>
+    </FileLog_LIST>
 </FHZINFO>
