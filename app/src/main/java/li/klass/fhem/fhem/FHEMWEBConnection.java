@@ -85,7 +85,7 @@ public class FHEMWEBConnection extends FHEMConnection {
 
         RequestResult<InputStream> response = executeRequest(urlSuffix, client, command);
         if (response.error != null) {
-            return new RequestResult<String>(response.error);
+            return new RequestResult<>(response.error);
         }
 
         try {
@@ -93,10 +93,10 @@ public class FHEMWEBConnection extends FHEMConnection {
             if (content.contains("<title>") || content.contains("<div id=")) {
                 Log.e(TAG, "found strange content: " + content);
                 ErrorHolder.setError("found strange content in URL " + urlSuffix + ": \r\n\r\n" + content);
-                return new RequestResult<String>(RequestResultError.INVALID_CONTENT);
+                return new RequestResult<>(RequestResultError.INVALID_CONTENT);
             }
 
-            return new RequestResult<String>(content);
+            return new RequestResult<>(content);
         } catch (IOException e) {
             throw new IllegalArgumentException(e);
         }
@@ -142,20 +142,20 @@ public class FHEMWEBConnection extends FHEMConnection {
             if (contentEncoding != null && contentEncoding.getValue().equalsIgnoreCase("gzip")) {
                 contentStream = new GZIPInputStream(contentStream);
             }
-            return new RequestResult<InputStream>(contentStream);
+            return new RequestResult<>(contentStream);
         } catch (ConnectTimeoutException e) {
             Log.i(TAG, "connection timed out", e);
             setErrorInErrorHolderFor(e, url, command);
-            return new RequestResult<InputStream>(RequestResultError.CONNECTION_TIMEOUT);
+            return new RequestResult<>(RequestResultError.CONNECTION_TIMEOUT);
         } catch (ClientProtocolException e) {
             String errorText = "cannot connect, invalid URL? (" + url + ")";
             setErrorInErrorHolderFor(e, url, command);
             ErrorHolder.setError(e, errorText);
-            return new RequestResult<InputStream>(RequestResultError.HOST_CONNECTION_ERROR);
+            return new RequestResult<>(RequestResultError.HOST_CONNECTION_ERROR);
         } catch (IOException e) {
             Log.i(TAG, "cannot connect to host", e);
             setErrorInErrorHolderFor(e, url, command);
-            return new RequestResult<InputStream>(RequestResultError.HOST_CONNECTION_ERROR);
+            return new RequestResult<>(RequestResultError.HOST_CONNECTION_ERROR);
         } catch (URISyntaxException e) {
             Log.i(TAG, "invalid URL syntax", e);
             setErrorInErrorHolderFor(e, url, command);
@@ -219,7 +219,7 @@ public class FHEMWEBConnection extends FHEMConnection {
 
         }
         Log.i(TAG, "encountered http status code " + statusCode);
-        return new RequestResult<InputStream>(error);
+        return new RequestResult<>(error);
     }
 
     private SSLSocketFactory createClientCertSocketFactory() throws Exception {
@@ -244,10 +244,10 @@ public class FHEMWEBConnection extends FHEMConnection {
     public RequestResult<Bitmap> requestBitmap(String relativePath) {
         RequestResult<InputStream> response = executeRequest(relativePath, client, "request bitmap");
         if (response.error != null) {
-            return new RequestResult<Bitmap>(response.error);
+            return new RequestResult<>(response.error);
         }
         Bitmap bitmap = BitmapFactory.decodeStream(response.content);
-        return new RequestResult<Bitmap>(bitmap);
+        return new RequestResult<>(bitmap);
     }
 
     @Override

@@ -29,6 +29,8 @@ import android.content.Intent;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 
+import javax.inject.Inject;
+
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
 import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
@@ -40,12 +42,16 @@ import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.MaxDevice;
 import li.klass.fhem.fragments.FragmentType;
+import li.klass.fhem.util.ApplicationProperties;
 
 import static li.klass.fhem.domain.FHTDevice.MAXIMUM_TEMPERATURE;
 import static li.klass.fhem.domain.FHTDevice.MINIMUM_TEMPERATURE;
 import static li.klass.fhem.domain.MaxDevice.HeatingMode;
 
 public class MaxAdapter extends GenericDeviceAdapter<MaxDevice> {
+    @Inject
+    ApplicationProperties applicationProperties;
+
     public MaxAdapter() {
         super(MaxDevice.class);
     }
@@ -66,13 +72,19 @@ public class MaxAdapter extends GenericDeviceAdapter<MaxDevice> {
                 if (device.getHeatingMode() != HeatingMode.MANUAL) return;
 
                 tableLayout.addView(new TemperatureChangeTableRow<MaxDevice>(context, device.getDesiredTemp(), fieldTableRow,
-                        Actions.DEVICE_SET_DESIRED_TEMPERATURE, R.string.desiredTemperature, MINIMUM_TEMPERATURE, MAXIMUM_TEMPERATURE) {
+                        Actions.DEVICE_SET_DESIRED_TEMPERATURE, R.string.desiredTemperature,
+                        MINIMUM_TEMPERATURE, MAXIMUM_TEMPERATURE, applicationProperties) {
                     @Override
                     protected void onIntentCreation(Intent intent) {
                         putUpdateIntent(intent);
                     }
+
+                    @Override
+                    protected ApplicationProperties getApplicationProperties() {
+                        return applicationProperties;
+                    }
                 }
-                        .createRow(inflater, device));
+                        .createRow(getInflater(), device));
             }
         });
 
@@ -80,8 +92,9 @@ public class MaxAdapter extends GenericDeviceAdapter<MaxDevice> {
             @Override
             public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, MaxDevice device, TableRow fieldTableRow) {
                 tableLayout.addView(new TemperatureChangeTableRow<MaxDevice>(context, device.getWindowOpenTemp(), fieldTableRow,
-                        Actions.DEVICE_SET_WINDOW_OPEN_TEMPERATURE, R.string.windowOpenTemp, MINIMUM_TEMPERATURE, MAXIMUM_TEMPERATURE)
-                        .createRow(inflater, device));
+                        Actions.DEVICE_SET_WINDOW_OPEN_TEMPERATURE, R.string.windowOpenTemp,
+                        MINIMUM_TEMPERATURE, MAXIMUM_TEMPERATURE, applicationProperties)
+                        .createRow(getInflater(), device));
             }
         });
 
@@ -89,8 +102,9 @@ public class MaxAdapter extends GenericDeviceAdapter<MaxDevice> {
             @Override
             public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, MaxDevice device, TableRow fieldTableRow) {
                 tableLayout.addView(new TemperatureChangeTableRow<MaxDevice>(context, device.getEcoTemp(), fieldTableRow,
-                        Actions.DEVICE_SET_ECO_TEMPERATURE, R.string.ecoTemperature, MINIMUM_TEMPERATURE, MAXIMUM_TEMPERATURE)
-                        .createRow(inflater, device));
+                        Actions.DEVICE_SET_ECO_TEMPERATURE, R.string.ecoTemperature,
+                        MINIMUM_TEMPERATURE, MAXIMUM_TEMPERATURE, applicationProperties)
+                        .createRow(getInflater(), device));
             }
         });
 
@@ -98,8 +112,9 @@ public class MaxAdapter extends GenericDeviceAdapter<MaxDevice> {
             @Override
             public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, MaxDevice device, TableRow fieldTableRow) {
                 tableLayout.addView(new TemperatureChangeTableRow<MaxDevice>(context, device.getComfortTemp(), fieldTableRow,
-                        Actions.DEVICE_SET_COMFORT_TEMPERATURE, R.string.comfortTemperature, MINIMUM_TEMPERATURE, MAXIMUM_TEMPERATURE)
-                        .createRow(inflater, device));
+                        Actions.DEVICE_SET_COMFORT_TEMPERATURE, R.string.comfortTemperature,
+                        MINIMUM_TEMPERATURE, MAXIMUM_TEMPERATURE, applicationProperties)
+                        .createRow(getInflater(), device));
             }
         });
 
@@ -120,6 +135,6 @@ public class MaxAdapter extends GenericDeviceAdapter<MaxDevice> {
     }
 
     private void putUpdateIntent(Intent intent) {
-        intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver());
+        intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver(getContext()));
     }
 }

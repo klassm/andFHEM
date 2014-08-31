@@ -30,17 +30,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
 
-import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.ResultCodes;
 
 public class UpdatingResultReceiver extends ResultReceiver {
 
     private final Context context;
-
-    public UpdatingResultReceiver() {
-        this(AndFHEMApplication.getContext());
-    }
 
     public UpdatingResultReceiver(Context context) {
         super(new Handler());

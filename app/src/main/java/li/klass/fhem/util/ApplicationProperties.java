@@ -24,53 +24,66 @@
 
 package li.klass.fhem.util;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
+
+import com.google.common.io.Closer;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Properties;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import li.klass.fhem.AndFHEMApplication;
-import li.klass.fhem.AndFHEMBase;
+import li.klass.fhem.dagger.ForApplication;
 
 import static com.google.common.base.Strings.isNullOrEmpty;
 
+@Singleton
 public class ApplicationProperties {
-    public static final ApplicationProperties INSTANCE = new ApplicationProperties();
     public static final String TAG = ApplicationProperties.class.getName();
 
     private final Properties properties = new Properties();
 
-    private ApplicationProperties() {
-        load("application.properties");
+    @Inject
+    @ForApplication
+    Context applicationContext;
+
+    public ApplicationProperties() {
+        load("/application.properties");
     }
 
     private void load(String fileName) {
-        try {
-            URL resource = AndFHEMBase.class.getResource(fileName);
-            if (resource == null) {
-                Log.i(TAG, "cannot load " + fileName + " (not found)");
-            } else {
-                load(resource.openStream());
+        URL resource = AndFHEMApplication.class.getResource(fileName);
+        if (resource == null) {
+            Log.i(TAG, "cannot load " + fileName + " (not found)");
+        } else {
+            Log.i(TAG, "loading " + resource.getPath());
+            try {
+                load(resource);
+            } catch (Exception e) {
+                Log.e(TAG, "error while loading file", e);
             }
-        } catch (IOException e) {
-            Log.e(TAG, "cannot load " + fileName, e);
+            Log.i(TAG, "load completed, now contains " + properties.size() + " properties");
         }
     }
 
-    void load(InputStream inputStream) {
+    void load(URL url) throws Exception {
+        Closer closer = Closer.create();
+        InputStream stream = url.openStream();
+        closer.register(stream);
         try {
-            properties.load(inputStream);
+            properties.load(stream);
         } catch (IOException e) {
-            Log.e(TAG, "error while loading file", e);
+            Log.e(TAG, "error while loading url", e);
+        } finally {
+            closer.close();
         }
-    }
-
-    public String getStringApplicationProperty(String key) {
-        return properties.getProperty(key);
     }
 
     public boolean getBooleanApplicationProperty(String key) {
@@ -78,10 +91,17 @@ public class ApplicationProperties {
         return value != null ? Boolean.valueOf(value) : false;
     }
 
+    public String getStringApplicationProperty(String key) {
+        return properties.getProperty(key);
+    }
 
     public boolean getBooleanSharedPreference(String key, boolean defaultValue) {
         SharedPreferences preferences = getPreferences();
         return preferences.getBoolean(key, defaultValue);
+    }
+
+    private SharedPreferences getPreferences() {
+        return PreferenceManager.getDefaultSharedPreferences(applicationContext);
     }
 
     public int getIntegerSharedPreference(String key, int defaultValue) {
@@ -102,14 +122,5 @@ public class ApplicationProperties {
     public void setSharedPreference(String key, String value) {
         SharedPreferences preferences = getPreferences();
         preferences.edit().putString(key, value).apply();
-    }
-
-    public void deleteSharedPreference(String key) {
-        SharedPreferences preferences = getPreferences();
-        preferences.edit().remove(key).apply();
-    }
-
-    private SharedPreferences getPreferences() {
-        return PreferenceManager.getDefaultSharedPreferences(AndFHEMApplication.getContext());
     }
 }

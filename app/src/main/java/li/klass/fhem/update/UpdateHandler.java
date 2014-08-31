@@ -26,33 +26,18 @@ package li.klass.fhem.update;
 
 import android.util.Log;
 
-import java.util.ArrayList;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import li.klass.fhem.AndFHEMApplication;
-import li.klass.fhem.fhem.connection.FHEMServerSpec;
-import li.klass.fhem.fhem.connection.ServerType;
-import li.klass.fhem.service.connection.ConnectionService;
-import li.klass.fhem.util.ApplicationProperties;
-import li.klass.fhem.util.StringUtil;
 
-import static li.klass.fhem.fhem.DataConnectionSwitch.CONNECTION_TYPE;
-import static li.klass.fhem.fhem.FHEMWEBConnection.FHEMWEB_PASSWORD;
-import static li.klass.fhem.fhem.FHEMWEBConnection.FHEMWEB_URL;
-import static li.klass.fhem.fhem.FHEMWEBConnection.FHEMWEB_USERNAME;
-import static li.klass.fhem.fhem.TelnetConnection.TELNET_PASSWORD;
-import static li.klass.fhem.fhem.TelnetConnection.TELNET_PORT;
-import static li.klass.fhem.fhem.TelnetConnection.TELNET_URL;
-
+@Singleton
 public class UpdateHandler {
-    public static final UpdateHandler INSTANCE = new UpdateHandler();
 
-    private UpdateHandler() {
-    }
-
-    private static final String TAG = UpdateHandler.class.getName();
+    @Inject
+    AndFHEMApplication application;
 
     public void onApplicationUpdate() {
-        AndFHEMApplication application = AndFHEMApplication.INSTANCE;
         if (!application.isUpdate()) {
             Log.i(UpdateHandler.class.getName(), "not an update");
         }

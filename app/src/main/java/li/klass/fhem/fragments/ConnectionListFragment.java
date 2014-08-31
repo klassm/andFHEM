@@ -42,6 +42,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.ConnectionListAdapter;
@@ -52,9 +54,9 @@ import li.klass.fhem.fhem.connection.FHEMServerSpec;
 import li.klass.fhem.fhem.connection.ServerType;
 import li.klass.fhem.fragments.core.BaseFragment;
 import li.klass.fhem.fragments.core.TopLevelFragment;
-import li.klass.fhem.license.LicenseManager;
+import li.klass.fhem.license.LicenseService;
+import li.klass.fhem.service.advertisement.AdvertisementService;
 import li.klass.fhem.util.Reject;
-import li.klass.fhem.util.advertisement.AdvertisementUtil;
 
 import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_ID;
 import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_LIST;
@@ -63,6 +65,10 @@ public class ConnectionListFragment extends BaseFragment implements TopLevelFrag
 
     public static final String TAG = ConnectionListFragment.class.getName();
     public static final int CONTEXT_MENU_DELETE = 1;
+    @Inject
+    LicenseService licenseService;
+    @Inject
+    AdvertisementService advertisementService;
     private String clickedConnectionId;
     private String connectionId;
 
@@ -80,7 +86,7 @@ public class ConnectionListFragment extends BaseFragment implements TopLevelFrag
         ConnectionListAdapter adapter = new ConnectionListAdapter(getActivity(),
                 new ArrayList<FHEMServerSpec>());
         View layout = inflater.inflate(R.layout.connection_list, container, false);
-        AdvertisementUtil.addAd(layout, getActivity());
+        advertisementService.addAd(layout, getActivity());
 
         LinearLayout emptyView = (LinearLayout) layout.findViewById(R.id.emptyView);
         fillEmptyView(emptyView);
@@ -105,12 +111,11 @@ public class ConnectionListFragment extends BaseFragment implements TopLevelFrag
             @Override
             public void onClick(View view) {
                 final int size = getAdapter().getData().size();
-                LicenseManager licenseManager = LicenseManager.INSTANCE;
 
-                licenseManager.isPremium(new LicenseManager.IsPremiumListener() {
+                licenseService.isPremium(new LicenseService.IsPremiumListener() {
                     @Override
                     public void onIsPremiumDetermined(boolean isPremium) {
-                        if (! isPremium && size >= AndFHEMApplication.PREMIUM_ALLOWED_FREE_CONNECTIONS) {
+                        if (!isPremium && size >= AndFHEMApplication.PREMIUM_ALLOWED_FREE_CONNECTIONS) {
                             Intent intent = new Intent(Actions.SHOW_ALERT);
                             intent.putExtra(BundleExtraKeys.ALERT_CONTENT_ID, R.string.premium_multipleConnections);
                             intent.putExtra(BundleExtraKeys.ALERT_TITLE_ID, R.string.premium);
@@ -130,12 +135,64 @@ public class ConnectionListFragment extends BaseFragment implements TopLevelFrag
         return layout;
     }
 
+    protected void fillEmptyView(LinearLayout view) {
+        View emptyView = LayoutInflater.from(getActivity()).inflate(R.layout.empty_view, view);
+        assert emptyView != null;
+        TextView emptyText = (TextView) emptyView.findViewById(R.id.emptyText);
+        emptyText.setText(R.string.noConnections);
+    }
+
     protected void onClick(String connectionId) {
         Intent intent = new Intent(Actions.SHOW_FRAGMENT);
         intent.putExtra(BundleExtraKeys.FRAGMENT, FragmentType.CONNECTION_DETAIL);
         intent.putExtra(CONNECTION_ID, connectionId);
 
         getActivity().sendBroadcast(intent);
+    }
+
+    private ConnectionListAdapter getAdapter() {
+        ListView listView = (ListView) getView().findViewById(R.id.connectionList);
+        return (ConnectionListAdapter) listView.getAdapter();
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+        Object tag = info.targetView.getTag();
+
+        if (tag == null || !(tag instanceof String)) return;
+
+        clickedConnectionId = (String) tag;
+
+        menu.add(0, CONTEXT_MENU_DELETE, 0, R.string.context_delete);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        super.onContextItemSelected(item);
+
+        if (clickedConnectionId == null) return false;
+
+        switch (item.getItemId()) {
+            case CONTEXT_MENU_DELETE:
+                Intent intent = new Intent(Actions.CONNECTION_DELETE);
+                intent.putExtra(CONNECTION_ID, clickedConnectionId);
+                intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
+                    @Override
+                    protected void onReceiveResult(int resultCode, Bundle resultData) {
+                        super.onReceiveResult(resultCode, resultData);
+
+                        if (resultCode != ResultCodes.SUCCESS) return;
+
+                        update(false);
+                    }
+                });
+                getActivity().startService(intent);
+                return true;
+        }
+        return false;
     }
 
     @Override
@@ -198,57 +255,5 @@ public class ConnectionListFragment extends BaseFragment implements TopLevelFrag
                 return;
             }
         }
-    }
-
-    private ConnectionListAdapter getAdapter() {
-        ListView listView = (ListView) getView().findViewById(R.id.connectionList);
-        return (ConnectionListAdapter) listView.getAdapter();
-    }
-
-    protected void fillEmptyView(LinearLayout view) {
-        View emptyView = LayoutInflater.from(getActivity()).inflate(R.layout.empty_view, view);
-        assert emptyView != null;
-        TextView emptyText = (TextView) emptyView.findViewById(R.id.emptyText);
-        emptyText.setText(R.string.noConnections);
-    }
-
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
-
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
-        Object tag = info.targetView.getTag();
-
-        if (tag == null || ! (tag instanceof String)) return;
-
-        clickedConnectionId = (String) tag;
-
-        menu.add(0, CONTEXT_MENU_DELETE, 0, R.string.context_delete);
-    }
-
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
-        super.onContextItemSelected(item);
-
-        if (clickedConnectionId == null) return false;
-
-        switch (item.getItemId()) {
-            case CONTEXT_MENU_DELETE:
-                Intent intent = new Intent(Actions.CONNECTION_DELETE);
-                intent.putExtra(CONNECTION_ID, clickedConnectionId);
-                intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
-                    @Override
-                    protected void onReceiveResult(int resultCode, Bundle resultData) {
-                        super.onReceiveResult(resultCode, resultData);
-
-                        if (resultCode != ResultCodes.SUCCESS) return;
-
-                        update(false);
-                    }
-                });
-                getActivity().startService(intent);
-                return true;
-        }
-        return false;
     }
 }

@@ -31,7 +31,8 @@ import android.os.SystemClock;
 import android.util.Log;
 import android.widget.RemoteViews;
 
-import li.klass.fhem.AndFHEMApplication;
+import javax.inject.Inject;
+
 import li.klass.fhem.R;
 import li.klass.fhem.activities.AndFHEMMainActivity;
 import li.klass.fhem.appwidget.WidgetConfiguration;
@@ -39,6 +40,7 @@ import li.klass.fhem.appwidget.WidgetConfigurationCreatedCallback;
 import li.klass.fhem.appwidget.annotation.SupportsWidget;
 import li.klass.fhem.appwidget.view.WidgetType;
 import li.klass.fhem.constants.BundleExtraKeys;
+import li.klass.fhem.dagger.ForApplication;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.fragments.FragmentType;
 import li.klass.fhem.service.room.RoomListService;
@@ -48,6 +50,13 @@ import static li.klass.fhem.service.room.RoomListService.NEVER_UPDATE_PERIOD;
 public abstract class DeviceAppWidgetView extends AppWidgetView {
 
     public static final String TAG = DeviceAppWidgetView.class.getName();
+
+    @Inject
+    RoomListService roomListService;
+
+    @Inject
+    @ForApplication
+    Context applicationContext;
 
     public boolean supports(Device<?> device) {
         if (!device.getClass().isAnnotationPresent(SupportsWidget.class)) return false;
@@ -87,7 +96,7 @@ public abstract class DeviceAppWidgetView extends AppWidgetView {
     }
 
     private Device getDeviceFor(long updatePeriod, String deviceName) {
-        Device device = RoomListService.INSTANCE.getDeviceForName(deviceName, updatePeriod);
+        Device device = roomListService.getDeviceForName(deviceName, updatePeriod);
         if (device == null) {
             return null;
         } else {
@@ -106,10 +115,8 @@ public abstract class DeviceAppWidgetView extends AppWidgetView {
     }
 
     protected PendingIntent createOpenDeviceDetailPagePendingIntent(Device device, int widgetId) {
-        Context context = AndFHEMApplication.getContext();
-
-        Intent openIntent = createOpenDeviceDetailPageIntent(device, context);
-        return PendingIntent.getActivity(context, widgetId, openIntent,
+        Intent openIntent = createOpenDeviceDetailPageIntent(device, applicationContext);
+        return PendingIntent.getActivity(applicationContext, widgetId, openIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
@@ -125,17 +132,17 @@ public abstract class DeviceAppWidgetView extends AppWidgetView {
     @Override
     public void createWidgetConfiguration(Context context, WidgetType widgetType, int appWidgetId,
                                           WidgetConfigurationCreatedCallback callback, String... payload) {
-        Device device = RoomListService.INSTANCE.getDeviceForName(payload[0], NEVER_UPDATE_PERIOD);
+        Device device = roomListService.getDeviceForName(payload[0], NEVER_UPDATE_PERIOD);
         createDeviceWidgetConfiguration(context, widgetType, appWidgetId, device, callback);
     }
 
     protected void createDeviceWidgetConfiguration(Context context, WidgetType widgetType, int appWidgetId,
-                                                Device device, WidgetConfigurationCreatedCallback callback) {
+                                                   Device device, WidgetConfigurationCreatedCallback callback) {
         callback.widgetConfigurationCreated(new WidgetConfiguration(appWidgetId, widgetType, device.getName()));
     }
 
     protected void fillWidgetView(Context context, RemoteViews view,
-                                           WidgetConfiguration widgetConfiguration) {
+                                  WidgetConfiguration widgetConfiguration) {
         Device<?> device = getDeviceFor(NEVER_UPDATE_PERIOD, widgetConfiguration.payload.get(0));
         if (device != null) {
             fillWidgetView(context, view, device, widgetConfiguration);
@@ -145,5 +152,5 @@ public abstract class DeviceAppWidgetView extends AppWidgetView {
     }
 
     protected abstract void fillWidgetView(Context context, RemoteViews view, Device<?> device,
-                                  WidgetConfiguration widgetConfiguration);
+                                           WidgetConfiguration widgetConfiguration);
 }

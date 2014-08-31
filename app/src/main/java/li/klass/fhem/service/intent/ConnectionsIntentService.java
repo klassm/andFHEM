@@ -30,6 +30,8 @@ import android.os.ResultReceiver;
 
 import java.util.ArrayList;
 
+import javax.inject.Inject;
+
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
@@ -55,6 +57,10 @@ import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_USERNAME;
 import static li.klass.fhem.constants.ResultCodes.SUCCESS;
 
 public class ConnectionsIntentService extends ConvenientIntentService {
+
+    @Inject
+    ConnectionService connectionService;
+
     public ConnectionsIntentService() {
         super(ConnectionsIntentService.class.getName());
     }
@@ -63,7 +69,6 @@ public class ConnectionsIntentService extends ConvenientIntentService {
     protected STATE handleIntent(Intent intent, long updatePeriod, ResultReceiver resultReceiver) {
         String action = intent.getAction();
 
-        ConnectionService connectionService = ConnectionService.INSTANCE;
         if (Actions.CONNECTIONS_LIST.equals(action)) {
             ArrayList<FHEMServerSpec> serverSpecs = connectionService.listAll();
 

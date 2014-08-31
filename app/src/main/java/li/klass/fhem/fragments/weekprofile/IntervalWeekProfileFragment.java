@@ -24,14 +24,19 @@
 
 package li.klass.fhem.fragments.weekprofile;
 
+import javax.inject.Inject;
+
 import li.klass.fhem.adapter.weekprofile.IntervalWeekProfileAdapter;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.heating.schedule.WeekProfile;
 import li.klass.fhem.domain.heating.schedule.interval.FilledTemperatureInterval;
+import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.widget.NestedListViewAdapter;
 
 public class IntervalWeekProfileFragment extends BaseWeekProfileFragment<FilledTemperatureInterval> {
 
+    @Inject
+    ApplicationProperties applicationProperties;
     private IntervalWeekProfileAdapter adapter;
 
     @Override
@@ -41,7 +46,7 @@ public class IntervalWeekProfileFragment extends BaseWeekProfileFragment<FilledT
 
     @Override
     protected void beforeCreateView() {
-        adapter = new IntervalWeekProfileAdapter(getActivity());
+        adapter = new IntervalWeekProfileAdapter(getActivity(), applicationProperties);
     }
 
     @Override

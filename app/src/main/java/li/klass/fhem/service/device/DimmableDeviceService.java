@@ -24,16 +24,19 @@
 
 package li.klass.fhem.service.device;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import li.klass.fhem.domain.core.DimmableDevice;
 
 /**
  * Class accumulating dimmable device specific operations. Changes will be executed using FHEM.
  */
+@Singleton
 public class DimmableDeviceService {
-    public static final DimmableDeviceService INSTANCE = new DimmableDeviceService();
 
-    private DimmableDeviceService() {
-    }
+    @Inject
+    GenericDeviceService genericDeviceService;
 
     /**
      * Dims a device.
@@ -45,6 +48,6 @@ public class DimmableDeviceService {
         if (!device.supportsDim()) return;
         String newState = device.getDimStateForPosition(dimProgress);
 
-        GenericDeviceService.INSTANCE.setState(device, newState);
+        genericDeviceService.setState(device, newState);
     }
 }

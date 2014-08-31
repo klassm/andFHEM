@@ -31,7 +31,6 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -55,16 +54,18 @@ import static li.klass.fhem.constants.PreferenceKeys.SHOW_HIDDEN_DEVICES;
 
 public class DeviceGridAdapter<T extends Device<T>> extends GridViewWithSectionsAdapter<String, T> {
     public static final String TAG = DeviceGridAdapter.class.getName();
-    protected RoomDeviceList roomDeviceList;
     public static final int DEFAULT_COLUMN_WIDTH = 355;
+    private final ApplicationProperties applicationProperties;
+    protected RoomDeviceList roomDeviceList;
     private int lastParentHeight;
     private List<String> deviceGroupParents = newArrayList();
     private List<String> parents = newArrayList();
     private Map<String, List<T>> parentChildMap = newHashMap();
     private long lastUpdate;
 
-    public DeviceGridAdapter(Context context, RoomDeviceList roomDeviceList) {
+    public DeviceGridAdapter(Context context, RoomDeviceList roomDeviceList, ApplicationProperties applicationProperties) {
         super(context);
+        this.applicationProperties = applicationProperties;
         restoreParents();
         if (roomDeviceList != null) {
             updateData(roomDeviceList, -1);
@@ -77,13 +78,46 @@ public class DeviceGridAdapter<T extends Device<T>> extends GridViewWithSections
      * property.
      */
     public void restoreParents() {
-        DeviceGroupHolder holder = new DeviceGroupHolder();
+        DeviceGroupHolder holder = new DeviceGroupHolder(applicationProperties);
 
         for (DeviceFunctionality deviceFunctionality : holder.getVisible()) {
             deviceGroupParents.add(deviceFunctionality.getCaptionText(context));
         }
 
         Log.v(TAG, "set visible deviceGroupParents: " + deviceGroupParents);
+    }
+
+    @SuppressWarnings("unchecked")
+    public void updateData(RoomDeviceList roomDeviceList, long lastUpdate) {
+        if (roomDeviceList == null) return;
+
+        this.lastUpdate = lastUpdate;
+        parents.clear();
+        parents.addAll(deviceGroupParents);
+
+        Set<String> customParents = newHashSet();
+
+        boolean showHiddenDevices = applicationProperties.getBooleanSharedPreference(SHOW_HIDDEN_DEVICES, false);
+
+        Set<Device> allDevices = roomDeviceList.getAllDevices();
+        for (Device device : allDevices) {
+            if (device.isInRoom("hidden") && !showHiddenDevices ||
+                    device.isInAnyRoomOf(roomDeviceList.getHiddenRooms())) {
+                roomDeviceList.removeDevice(device);
+            } else {
+                customParents.addAll(device.getInternalDeviceGroupOrGroupAttributes());
+            }
+        }
+
+        customParents.removeAll(parents);
+        Collections.sort(newArrayList(customParents));
+
+        parents.addAll(customParents);
+        parents.removeAll(roomDeviceList.getHiddenGroups());
+        parentChildMap = newHashMap();
+
+        this.roomDeviceList = roomDeviceList;
+        super.updateData();
     }
 
     @Override
@@ -98,16 +132,11 @@ public class DeviceGridAdapter<T extends Device<T>> extends GridViewWithSections
         }
     }
 
-    @Override
-    protected int getChildrenCountForParent(String parent) {
-        return getChildrenForDeviceGroup(parent).size();
-    }
-
     @SuppressWarnings("unchecked")
     private List<T> getChildrenForDeviceGroup(String deviceGroup) {
         if (roomDeviceList == null) {
             return newArrayList();
-        } else if (! parentChildMap.containsKey(deviceGroup)) {
+        } else if (!parentChildMap.containsKey(deviceGroup)) {
             parentChildMap.put(deviceGroup, (List<T>) roomDeviceList.getDevicesOfFunctionality(deviceGroup));
         }
 
@@ -144,6 +173,7 @@ public class DeviceGridAdapter<T extends Device<T>> extends GridViewWithSections
                                 T child, View view, ViewGroup viewGroup) {
 
         final DeviceAdapter<? extends Device<?>> deviceAdapter = DeviceType.getAdapterFor(child);
+
         if (deviceAdapter == null) {
             Log.d(DeviceGridAdapter.class.getName(), "unsupported device type " + child);
             View ret = layoutInflater.inflate(android.R.layout.simple_list_item_1, null);
@@ -161,6 +191,8 @@ public class DeviceGridAdapter<T extends Device<T>> extends GridViewWithSections
             throw new IllegalArgumentException(text);
         }
 
+        deviceAdapter.attach(context);
+
         view = deviceAdapter.createOverviewView(layoutInflater, child, lastUpdate);
         view.setTag(child);
         view.setLayoutParams(new AbsListView.LayoutParams(
@@ -172,7 +204,7 @@ public class DeviceGridAdapter<T extends Device<T>> extends GridViewWithSections
 
     @Override
     protected List<String> getDeviceGroupParents() {
-        List<String> viewableParents = new ArrayList<String>();
+        List<String> viewableParents = newArrayList();
         for (String group : parents) {
             if (getChildrenCountForParent(group) <= 0) {
                 Log.v(TAG, "group " + group + " has no children, filtered!");
@@ -184,44 +216,14 @@ public class DeviceGridAdapter<T extends Device<T>> extends GridViewWithSections
     }
 
     @Override
+    protected int getChildrenCountForParent(String parent) {
+        return getChildrenForDeviceGroup(parent).size();
+    }
+
+    @Override
     protected int getRequiredColumnWidth() {
-        ApplicationProperties applicationProperties = ApplicationProperties.INSTANCE;
         int width = applicationProperties.getIntegerSharedPreference(DEVICE_COLUMN_WIDTH, DEFAULT_COLUMN_WIDTH);
         Log.d(TAG, "column width: " + width);
         return width;
-    }
-
-    @SuppressWarnings("unchecked")
-    public void updateData(RoomDeviceList roomDeviceList, long lastUpdate) {
-        if (roomDeviceList == null) return;
-
-        this.lastUpdate = lastUpdate;
-        parents.clear();
-        parents.addAll(deviceGroupParents);
-
-        Set<String> customParents = newHashSet();
-
-        ApplicationProperties applicationProperties = ApplicationProperties.INSTANCE;
-        boolean showHiddenDevices = applicationProperties.getBooleanSharedPreference(SHOW_HIDDEN_DEVICES, false);
-
-        Set<Device> allDevices = roomDeviceList.getAllDevices();
-        for (Device device : allDevices) {
-            if (device.isInRoom("hidden") && ! showHiddenDevices ||
-                    device.isInAnyRoomOf(roomDeviceList.getHiddenRooms())) {
-                roomDeviceList.removeDevice(device);
-            } else  {
-                customParents.addAll(device.getInternalDeviceGroupOrGroupAttributes());
-            }
-        }
-
-        customParents.removeAll(parents);
-        Collections.sort(newArrayList(customParents));
-
-        parents.addAll(customParents);
-        parents.removeAll(roomDeviceList.getHiddenGroups());
-        parentChildMap = newHashMap();
-
-        this.roomDeviceList = roomDeviceList;
-        super.updateData();
     }
 }

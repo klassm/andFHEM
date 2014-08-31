@@ -30,6 +30,9 @@ import android.os.Build;
 import android.util.Log;
 import android.widget.RemoteViewsService;
 
+import javax.inject.Inject;
+
+import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.appwidget.view.WidgetType;
 import li.klass.fhem.appwidget.view.widget.base.AppWidgetView;
 import li.klass.fhem.appwidget.view.widget.base.DeviceListAppWidgetView;
@@ -47,12 +50,21 @@ public class AppWidgetListViewUpdateRemoteViewsService extends RemoteViewsServic
 
     public static final String TAG = AppWidgetListViewUpdateRemoteViewsService.class.getName();
 
+    @Inject
+    RoomListService roomListService;
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        ((AndFHEMApplication) getApplication()).inject(this);
+    }
+
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
         int appWidgetId = intent.getIntExtra(APP_WIDGET_ID, -1);
         WidgetType widgetType = WidgetType.valueOf(intent.getStringExtra(APP_WIDGET_TYPE_NAME));
         String deviceName = intent.getStringExtra(DEVICE_NAME);
-        Device device = RoomListService.INSTANCE.getDeviceForName(deviceName, NEVER_UPDATE_PERIOD);
+        Device device = roomListService.getDeviceForName(deviceName, NEVER_UPDATE_PERIOD);
         if (device == null) {
             Log.e(TAG, "device is null, at least in the current connection");
             return null;
@@ -64,7 +76,7 @@ public class AppWidgetListViewUpdateRemoteViewsService extends RemoteViewsServic
         }
 
         AppWidgetView view = widgetType.widgetView;
-        if (! (view instanceof DeviceListAppWidgetView)) {
+        if (!(view instanceof DeviceListAppWidgetView)) {
             Log.e(TAG,
                     "can only handle list widget views, got " + view.getClass().getName());
 

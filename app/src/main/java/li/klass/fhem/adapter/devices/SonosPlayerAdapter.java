@@ -32,6 +32,9 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+
+import javax.inject.Inject;
+
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
 import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
@@ -40,8 +43,13 @@ import li.klass.fhem.adapter.devices.genericui.SeekBarActionRowFullWidthAndButto
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.SonosPlayerDevice;
+import li.klass.fhem.util.ApplicationProperties;
 
 public class SonosPlayerAdapter extends GenericDeviceAdapter<SonosPlayerDevice> {
+
+    @Inject
+    ApplicationProperties applicationProperties;
+
     public SonosPlayerAdapter() {
         super(SonosPlayerDevice.class);
     }
@@ -59,6 +67,11 @@ public class SonosPlayerAdapter extends GenericDeviceAdapter<SonosPlayerDevice> 
                     }
 
                     @Override
+                    protected ApplicationProperties getApplicationProperties() {
+                        return applicationProperties;
+                    }
+
+                    @Override
                     public void onStopTrackingTouch(Context context, SonosPlayerDevice device, int progress) {
                         Intent intent = new Intent(Actions.DEVICE_SET_SUB_STATE);
                         intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
@@ -68,7 +81,7 @@ public class SonosPlayerAdapter extends GenericDeviceAdapter<SonosPlayerDevice> 
 
                         context.startService(intent);
                     }
-                }.createRow(inflater, device));
+                }.createRow(getInflater(), device));
             }
         });
 

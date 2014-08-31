@@ -34,6 +34,8 @@ import com.google.common.collect.Lists;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
 import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
 import li.klass.fhem.adapter.devices.genericui.StateChangingSeekBar;
@@ -42,10 +44,14 @@ import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.PCA9532Device;
 import li.klass.fhem.domain.setlist.SetListSliderValue;
+import li.klass.fhem.util.ApplicationProperties;
 
 import static java.util.Collections.sort;
 
 public class PCA9532DeviceAdapter extends GenericDeviceAdapter<PCA9532Device> {
+    @Inject
+    ApplicationProperties applicationProperties;
+
     public PCA9532DeviceAdapter() {
         super(PCA9532Device.class);
     }
@@ -79,7 +85,7 @@ public class PCA9532DeviceAdapter extends GenericDeviceAdapter<PCA9532Device> {
                         intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
                         intent.putExtra(BundleExtraKeys.STATE_NAME, port);
                         intent.putExtra(BundleExtraKeys.STATE_VALUE, isChecked ? "on" : "off");
-                        GenericDeviceAdapter.putUpdateExtra(intent);
+                        putUpdateExtra(intent);
                         context.startService(intent);
                     }
                 }.createRow(context, LayoutInflater.from(context), device));
@@ -91,8 +97,8 @@ public class PCA9532DeviceAdapter extends GenericDeviceAdapter<PCA9532Device> {
             public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, PCA9532Device device, TableRow fieldTableRow) {
                 tableLayout.addView(new StateChangingSeekBar<PCA9532Device>(
                         context, device.getPwm0(),
-                        (SetListSliderValue) device.getSetList().get("PWM0"), "PWM0")
-                        .createRow(inflater, device));
+                        (SetListSliderValue) device.getSetList().get("PWM0"), "PWM0", applicationProperties)
+                        .createRow(getInflater(), device));
             }
         });
 
@@ -101,8 +107,8 @@ public class PCA9532DeviceAdapter extends GenericDeviceAdapter<PCA9532Device> {
             public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, PCA9532Device device, TableRow fieldTableRow) {
                 tableLayout.addView(new StateChangingSeekBar<PCA9532Device>(
                         context, device.getPwm1(),
-                        (SetListSliderValue) device.getSetList().get("PWM1"), "PWM1")
-                        .createRow(inflater, device));
+                        (SetListSliderValue) device.getSetList().get("PWM1"), "PWM1", applicationProperties)
+                        .createRow(getInflater(), device));
             }
         });
     }

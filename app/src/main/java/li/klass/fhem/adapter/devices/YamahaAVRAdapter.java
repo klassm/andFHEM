@@ -28,17 +28,23 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+
+import javax.inject.Inject;
+
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
-import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
 import li.klass.fhem.adapter.devices.genericui.SpinnerActionRow;
 import li.klass.fhem.adapter.devices.genericui.StateChangingSeekBar;
 import li.klass.fhem.adapter.devices.genericui.YesNoToggleDeviceActionRow;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.YamahaAVRDevice;
+import li.klass.fhem.util.ApplicationProperties;
 
 public class YamahaAVRAdapter extends ToggleableAdapterWithSwitchActionRow<YamahaAVRDevice> {
+    @Inject
+    ApplicationProperties applicationProperties;
+
     public YamahaAVRAdapter() {
         super(YamahaAVRDevice.class);
     }
@@ -50,21 +56,22 @@ public class YamahaAVRAdapter extends ToggleableAdapterWithSwitchActionRow<Yamah
         registerFieldListener("volumeDesc", new FieldNameAddedToDetailListener<YamahaAVRDevice>() {
             @Override
             public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, YamahaAVRDevice device, TableRow fieldTableRow) {
-                tableLayout.addView(new StateChangingSeekBar<YamahaAVRDevice>(context, device.getVolume(), -80, 16, "volume")
-                        .createRow(inflater, device));
+                tableLayout.addView(new StateChangingSeekBar<YamahaAVRDevice>(context,
+                        device.getVolume(), -80, 16, "volume", applicationProperties)
+                        .createRow(getInflater(), device));
             }
         });
 
         registerFieldListener("state", new FieldNameAddedToDetailListener<YamahaAVRDevice>() {
             @Override
             protected void onFieldNameAdded(Context context, TableLayout tableLayout, String field, YamahaAVRDevice device, TableRow fieldTableRow) {
-                tableLayout.addView(new YesNoToggleDeviceActionRow<YamahaAVRDevice>("mute", R.string.musicMute) {
+                tableLayout.addView(new YesNoToggleDeviceActionRow<YamahaAVRDevice>(context, "mute", R.string.musicMute) {
 
                     @Override
                     public boolean isOn(YamahaAVRDevice device) {
                         return device.isMuted();
                     }
-                }.createRow(context, inflater, device));
+                }.createRow(context, getInflater(), device));
             }
         });
 
@@ -80,7 +87,7 @@ public class YamahaAVRAdapter extends ToggleableAdapterWithSwitchActionRow<Yamah
                         intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
                         intent.putExtra(BundleExtraKeys.STATE_NAME, "input");
                         intent.putExtra(BundleExtraKeys.STATE_VALUE, item);
-                        GenericDeviceAdapter.putUpdateExtra(intent);
+                        putUpdateExtra(intent);
 
                         context.startService(intent);
                     }

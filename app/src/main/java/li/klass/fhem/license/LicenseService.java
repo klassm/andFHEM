@@ -32,27 +32,37 @@ import android.util.Log;
 
 import java.util.Set;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import javax.security.cert.X509Certificate;
 
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.billing.BillingService;
+import li.klass.fhem.dagger.ForApplication;
 import li.klass.fhem.util.ApplicationProperties;
 
-public class LicenseManager {
-    public static final LicenseManager INSTANCE = new LicenseManager();
-    private static final String TAG = LicenseManager.class.getName();
+@Singleton
+public class LicenseService {
+    private static final String TAG = LicenseService.class.getName();
 
-    private LicenseManager() {
-    }
+    @Inject
+    @ForApplication
+    Context applicationContext;
+
+    @Inject
+    BillingService billingService;
+
+    @Inject
+    ApplicationProperties applicationProperties;
 
     public void isPremium(final IsPremiumListener isPremiumListener) {
 
-        BillingService.INSTANCE.getOwnedItems(new BillingService.OwnedItemsLoadedListener() {
+        billingService.getOwnedItems(new BillingService.OwnedItemsLoadedListener() {
             @Override
             public void onItemsLoaded(Set<String> ownedItems, boolean isInitialized) {
                 boolean isPremium = !isInitialized;
 
-                if (ApplicationProperties.INSTANCE.getBooleanApplicationProperty("IS_PREMIUM")) {
+                if (applicationProperties.getBooleanApplicationProperty("IS_PREMIUM")) {
                     Log.i(TAG, "found IS_PREMIUM application property to be true => premium");
                     isPremium = true;
                 } else if (isPremiumApk()) {
@@ -75,13 +85,13 @@ public class LicenseManager {
     }
 
     public boolean isPremiumApk() {
-        return AndFHEMApplication.getContext().getPackageName().equals("li.klass.fhempremium");
+        return applicationContext.getPackageName().equals("li.klass.fhempremium");
     }
 
     public boolean isDebug() {
         try {
-            Context context = AndFHEMApplication.getContext();
-            PackageInfo pkgInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), PackageManager.GET_SIGNATURES);
+            PackageInfo pkgInfo = applicationContext.getPackageManager()
+                    .getPackageInfo(applicationContext.getPackageName(), PackageManager.GET_SIGNATURES);
 
             for (Signature appSignature : pkgInfo.signatures) {
                 X509Certificate appCertificate = X509Certificate.getInstance(appSignature.toByteArray());
@@ -90,7 +100,7 @@ public class LicenseManager {
                 }
             }
         } catch (Exception e) {
-            Log.e(LicenseManager.class.getName(), "some exception occurred while reading app signatures", e);
+            Log.e(LicenseService.class.getName(), "some exception occurred while reading app signatures", e);
         }
         return false;
     }

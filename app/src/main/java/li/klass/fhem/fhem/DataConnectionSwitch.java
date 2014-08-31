@@ -24,20 +24,25 @@
 
 package li.klass.fhem.fhem;
 
+import javax.inject.Inject;
+
 import li.klass.fhem.fhem.connection.FHEMServerSpec;
 import li.klass.fhem.service.connection.ConnectionService;
+import li.klass.fhem.util.ApplicationProperties;
 
 public class DataConnectionSwitch {
-    public static final DataConnectionSwitch INSTANCE = new DataConnectionSwitch();
-
     public static final String CONNECTION_TYPE = "CONNECTION_TYPE";
 
-    private DataConnectionSwitch() {
-    }
+    @Inject
+    ConnectionService connectionService;
+
+    @Inject
+    ApplicationProperties applicationProperties;
 
     public FHEMConnection getCurrentProvider() {
-        FHEMServerSpec selectedServer = ConnectionService.INSTANCE.getCurrentServer();
+        FHEMServerSpec selectedServer = connectionService.getCurrentServer();
         FHEMConnection currentConnection = selectedServer.getServerType().getConnection();
+        currentConnection.setApplicationProperties(applicationProperties);
 
         FHEMServerSpec currentServer = currentConnection.getServer();
         if (currentServer == null || !currentServer.equals(selectedServer)) {

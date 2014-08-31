@@ -30,6 +30,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+
 import li.klass.fhem.R;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.util.ApplicationProperties;
@@ -41,7 +42,6 @@ import static li.klass.fhem.util.NumberUtil.isNumeric;
 public abstract class SeekBarActionRowFullWidthAndButton<T extends Device<T>> extends SeekBarActionRowFullWidth<T> {
 
     protected Context context;
-
 
     public SeekBarActionRowFullWidthAndButton(Context context, int initialProgress, int maximumProgress) {
         this(context, initialProgress, 0, maximumProgress);
@@ -63,14 +63,6 @@ public abstract class SeekBarActionRowFullWidthAndButton<T extends Device<T>> ex
             layoutParams.span = layoutSpan;
             layout.setLayoutParams(layoutParams);
         }
-
-        return row;
-    }
-
-    @Override
-    public TableRow createRow(final LayoutInflater inflater, final T device) {
-        TableRow row = super.createRow(inflater, device);
-        applySetButtonIfRequired(device, row);
 
         return row;
     }
@@ -103,6 +95,16 @@ public abstract class SeekBarActionRowFullWidthAndButton<T extends Device<T>> ex
     public abstract void onButtonSetValue(T device, int value);
 
     protected boolean showButton() {
-        return ApplicationProperties.INSTANCE.getBooleanSharedPreference(SHOW_SET_VALUE_BUTTONS, false);
+        return getApplicationProperties().getBooleanSharedPreference(SHOW_SET_VALUE_BUTTONS, false);
+    }
+
+    protected abstract ApplicationProperties getApplicationProperties();
+
+    @Override
+    public TableRow createRow(final LayoutInflater inflater, final T device) {
+        TableRow row = super.createRow(inflater, device);
+        applySetButtonIfRequired(device, row);
+
+        return row;
     }
 }

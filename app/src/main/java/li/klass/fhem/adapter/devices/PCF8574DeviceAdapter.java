@@ -77,7 +77,7 @@ public class PCF8574DeviceAdapter extends GenericDeviceAdapter<PCF8574Device> {
                         intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
                         intent.putExtra(BundleExtraKeys.STATE_NAME, port);
                         intent.putExtra(BundleExtraKeys.STATE_VALUE, isChecked ? "on" : "off");
-                        GenericDeviceAdapter.putUpdateExtra(intent);
+                        putUpdateExtra(intent);
                         context.startService(intent);
                     }
                 }.createRow(context, LayoutInflater.from(context), device));

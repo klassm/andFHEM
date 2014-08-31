@@ -25,6 +25,10 @@
 package li.klass.fhem.service.device;
 
 import android.util.Log;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import li.klass.fhem.domain.FHTDevice;
 import li.klass.fhem.domain.fht.FHTMode;
 import li.klass.fhem.service.CommandExecutionService;
@@ -32,11 +36,11 @@ import li.klass.fhem.service.CommandExecutionService;
 /**
  * Class accumulating operations for FHT devices.
  */
+@Singleton
 public class FHTService {
-    public static final FHTService INSTANCE = new FHTService();
 
-    private FHTService() {
-    }
+    @Inject
+    CommandExecutionService commandExecutionService;
 
     /**
      * Sets the mode attribute of a given FHT device. The action will only be executed if the new mode is different to
@@ -59,7 +63,7 @@ public class FHTService {
                 command += " holiday1 " + holiday1 + " holiday2 " + holiday2 + " desired-temp " + desiredTemperature;
             }
 
-            CommandExecutionService.INSTANCE.executeSafely(command);
+            commandExecutionService.executeSafely(command);
             device.setHeatingMode(mode);
         }
     }
@@ -74,7 +78,7 @@ public class FHTService {
     public void setDayTemperature(FHTDevice device, double dayTemperature) {
         if (device.getDayTemperature() != dayTemperature) {
             String command = "set " + device.getName() + " day-temp " + dayTemperature;
-            CommandExecutionService.INSTANCE.executeSafely(command);
+            commandExecutionService.executeSafely(command);
             device.setDayTemperature(dayTemperature);
         }
     }
@@ -89,12 +93,12 @@ public class FHTService {
     public void setNightTemperature(FHTDevice device, double nightTemperature) {
         if (device.getNightTemperature() != nightTemperature) {
             String command = "set " + device.getName() + " night-temp " + nightTemperature;
-            CommandExecutionService.INSTANCE.executeSafely(command);
+            commandExecutionService.executeSafely(command);
             device.setNightTemperature(nightTemperature);
         }
     }
 
     public void refreshValues(FHTDevice device) {
-        CommandExecutionService.INSTANCE.executeSafely("set " + device.getName() + " refreshvalues");
+        commandExecutionService.executeSafely("set " + device.getName() + " refreshvalues");
     }
 }

@@ -27,30 +27,35 @@ package li.klass.fhem.adapter.devices.genericui;
 import android.content.Context;
 import android.content.Intent;
 
-import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
+import li.klass.fhem.adapter.devices.core.UpdatingResultReceiver;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.setlist.SetListSliderValue;
+import li.klass.fhem.util.ApplicationProperties;
 
 public class StateChangingSeekBar<D extends Device<D>> extends SeekBarActionRowFullWidthAndButton<D> {
 
     private String commandAttribute;
+    private ApplicationProperties applicationProperties;
 
-    public StateChangingSeekBar(Context context, int initialProgress, int maximumProgress, String commandAttribute) {
-        this(context, initialProgress, 0, maximumProgress, commandAttribute);
+    public StateChangingSeekBar(Context context, int initialProgress, int maximumProgress,
+                                String commandAttribute, ApplicationProperties applicationProperties) {
+        this(context, initialProgress, 0, maximumProgress, commandAttribute, applicationProperties);
     }
 
-
-    public StateChangingSeekBar(Context context, int initialProgress, SetListSliderValue sliderValue, String commandAttribute) {
-        this(context, initialProgress, sliderValue.getStart(), sliderValue.getStop(), commandAttribute);
-    }
-
-    public StateChangingSeekBar(Context context, int initialProgress, int minimumProgress, int maximumProgress, String commandAttribute) {
+    public StateChangingSeekBar(Context context, int initialProgress, int minimumProgress, int maximumProgress, String commandAttribute,
+                                ApplicationProperties applicationProperties) {
         super(context, initialProgress, minimumProgress, maximumProgress);
         this.commandAttribute = commandAttribute;
+        this.applicationProperties = applicationProperties;
     }
 
+    public StateChangingSeekBar(Context context, int initialProgress, SetListSliderValue sliderValue,
+                                String commandAttribute, ApplicationProperties applicationProperties) {
+        this(context, initialProgress, sliderValue.getStart(), sliderValue.getStop(),
+                commandAttribute, applicationProperties);
+    }
 
     @Override
     public void onButtonSetValue(D device, int value) {
@@ -63,8 +68,13 @@ public class StateChangingSeekBar<D extends Device<D>> extends SeekBarActionRowF
         intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
         intent.putExtra(BundleExtraKeys.STATE_NAME, commandAttribute);
         intent.putExtra(BundleExtraKeys.STATE_VALUE, progress + "");
-        GenericDeviceAdapter.putUpdateExtra(intent);
+        intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver(context));
 
         context.startService(intent);
+    }
+
+    @Override
+    protected ApplicationProperties getApplicationProperties() {
+        return applicationProperties;
     }
 }

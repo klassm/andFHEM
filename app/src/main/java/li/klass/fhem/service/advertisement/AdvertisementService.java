@@ -22,7 +22,7 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.util.advertisement;
+package li.klass.fhem.service.advertisement;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -40,20 +40,23 @@ import com.google.android.gms.ads.AdView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 
+import javax.inject.Inject;
+
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.fragments.FragmentType;
-import li.klass.fhem.license.LicenseManager;
-import li.klass.fhem.util.DisplayUtil;
+import li.klass.fhem.license.LicenseService;
 
-public class AdvertisementUtil {
+public class AdvertisementService {
+    private static final String TAG = AdvertisementService.class.getName();
     private static long lastErrorTimestamp = 0;
-    private static final String TAG = AdvertisementUtil.class.getName();
+    @Inject
+    LicenseService licenseService;
 
-    public static void addAd(final View view, final Activity activity) {
-        LicenseManager.INSTANCE.isPremium(new LicenseManager.IsPremiumListener() {
+    public void addAd(final View view, final Activity activity) {
+        licenseService.isPremium(new LicenseService.IsPremiumListener() {
             @Override
             public void onIsPremiumDetermined(boolean isPremium) {
                 boolean showAds = true;
@@ -74,7 +77,7 @@ public class AdvertisementUtil {
                     }
                 }
 
-                if (! showAds) {
+                if (!showAds) {
                     adContainer.setVisibility(View.GONE);
                 } else if (GooglePlayServicesUtil.isGooglePlayServicesAvailable(activity) != ConnectionResult.SUCCESS) {
                     addErrorView(activity, adContainer);
@@ -103,6 +106,19 @@ public class AdvertisementUtil {
 
     }
 
+    private static void addErrorView(final Activity activity, LinearLayout container) {
+        ImageView selfAd = (ImageView) activity.getLayoutInflater().inflate(R.layout.selfad, null);
+        selfAd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Actions.SHOW_FRAGMENT);
+                intent.putExtra(BundleExtraKeys.FRAGMENT, FragmentType.PREMIUM);
+                activity.sendBroadcast(intent);
+            }
+        });
+        container.addView(selfAd);
+    }
+
     private static void addListener(final Activity activity, final LinearLayout adContainer, AdView adView) {
         adView.setAdListener(new AdListener() {
             @Override
@@ -115,18 +131,5 @@ public class AdvertisementUtil {
                 Log.i(TAG, "failed to receive ads, showing error view");
             }
         });
-    }
-
-    private static void addErrorView(final Activity activity, LinearLayout container) {
-        ImageView selfAd = (ImageView) activity.getLayoutInflater().inflate(R.layout.selfad, null);
-        selfAd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Actions.SHOW_FRAGMENT);
-                intent.putExtra(BundleExtraKeys.FRAGMENT, FragmentType.PREMIUM);
-                activity.sendBroadcast(intent);
-            }
-        });
-        container.addView(selfAd);
     }
 }

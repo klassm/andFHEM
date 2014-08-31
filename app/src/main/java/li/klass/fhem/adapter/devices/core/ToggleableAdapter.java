@@ -57,19 +57,6 @@ public abstract class ToggleableAdapter<D extends ToggleableDevice<D>> extends G
         addOverviewSwitchActionRow(view.getContext(), device, layout);
     }
 
-    @Override
-    protected void afterPropertiesSet() {
-        registerFieldListener("state", new FieldNameAddedToDetailListener<D>(TOGGLEABLE_AND_NOT_DIMMABLE) {
-            @Override
-            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, D device, android.widget.TableRow fieldTableRow) {
-                if (!device.supportsToggle()) {
-                    return;
-                }
-                addDetailSwitchActionRow(context, device, tableLayout);
-            }
-        });
-    }
-
     protected <T extends ToggleableDevice<T>> void addOverviewSwitchActionRow(Context context, T device, TableLayout layout) {
         ToggleableDevice.ButtonHookType buttonHookType = device.getButtonHookType();
         if (device.isSpecialButtonDevice() && buttonHookType != TOGGLE_DEVICE) {
@@ -83,19 +70,10 @@ public abstract class ToggleableAdapter<D extends ToggleableDevice<D>> extends G
         }
     }
 
-    protected <T extends ToggleableDevice<T>> void addDetailSwitchActionRow(Context context, T device, TableLayout layout) {
-        ToggleableDevice.ButtonHookType buttonHookType = device.getButtonHookType();
-        if (device.isSpecialButtonDevice() && buttonHookType != TOGGLE_DEVICE) {
-            addSwitchActionRow(context, device, layout, OnOffActionRow.LAYOUT_DETAIL);
-        } else {
-            addSwitchActionRow(context, device, layout, ToggleDeviceActionRow.LAYOUT_DETAIL);
-        }
-    }
-
     private <T extends ToggleableDevice<T>> void addWebCmdOverviewActionRow(Context context, T device,
                                                                             TableLayout tableLayout) {
         new WebCmdActionRow<T>(device.getName(), HolderActionRow.LAYOUT_OVERVIEW)
-                .createRow(context, inflater, tableLayout, device);
+                .createRow(context, getInflater(), tableLayout, device);
     }
 
     @SuppressWarnings("unchecked")
@@ -104,10 +82,32 @@ public abstract class ToggleableAdapter<D extends ToggleableDevice<D>> extends G
         ToggleableDevice.ButtonHookType buttonHookType = device.getButtonHookType();
         if (device.isSpecialButtonDevice() && buttonHookType != TOGGLE_DEVICE) {
             tableLayout.addView(new OnOffActionRow<T>(device.getAliasOrName(), layoutId)
-                    .createRow(context, inflater, device));
+                    .createRow(context, getInflater(), device));
         } else {
             tableLayout.addView(new ToggleDeviceActionRow<T>(device.getAliasOrName(), layoutId)
-                    .createRow(context, inflater, device));
+                    .createRow(context, getInflater(), device));
+        }
+    }
+
+    @Override
+    protected void afterPropertiesSet() {
+        registerFieldListener("state", new FieldNameAddedToDetailListener<D>(TOGGLEABLE_AND_NOT_DIMMABLE) {
+            @Override
+            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, D device, android.widget.TableRow fieldTableRow) {
+                if (!device.supportsToggle()) {
+                    return;
+                }
+                addDetailSwitchActionRow(context, device, tableLayout);
+            }
+        });
+    }
+
+    protected <T extends ToggleableDevice<T>> void addDetailSwitchActionRow(Context context, T device, TableLayout layout) {
+        ToggleableDevice.ButtonHookType buttonHookType = device.getButtonHookType();
+        if (device.isSpecialButtonDevice() && buttonHookType != TOGGLE_DEVICE) {
+            addSwitchActionRow(context, device, layout, OnOffActionRow.LAYOUT_DETAIL);
+        } else {
+            addSwitchActionRow(context, device, layout, ToggleDeviceActionRow.LAYOUT_DETAIL);
         }
     }
 }

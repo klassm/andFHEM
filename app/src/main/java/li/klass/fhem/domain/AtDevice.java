@@ -32,7 +32,6 @@ import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceFunctionality;
@@ -43,65 +42,15 @@ import static li.klass.fhem.util.NumberUtil.toTwoDecimalDigits;
 @SuppressWarnings("unused")
 public class AtDevice extends Device<AtDevice> {
 
-    public enum AtRepetition {
-        ONCE(R.string.timer_overview_once), EVERY_DAY(R.string.timer_overview_every_day),
-        WEEKEND(R.string.timer_overview_weekend), WEEKDAY(R.string.timer_overview_weekday),
-        MONDAY(R.string.monday, 1), TUESDAY(R.string.tuesday, 2), WEDNESDAY(R.string.wednesday, 3),
-        THURSDAY(R.string.thursday, 4), FRIDAY(R.string.friday, 5), SATURDAY(R.string.saturday, 6), SUNDAY(R.string.sunday, 0);
-
-        private int stringId;
-        private int weekdayOrdinate;
-
-        AtRepetition(int stringId) {
-            this.stringId = stringId;
-            this.weekdayOrdinate = -1;
-        }
-
-        AtRepetition(int stringId, int weekdayOrdinate) {
-            this.stringId = stringId;
-            this.weekdayOrdinate = weekdayOrdinate;
-        }
-
-        public String getText() {
-            return AndFHEMApplication.getContext().getString(stringId);
-        }
-
-        public static AtRepetition getRepetitionForWeekdayOrdinate(int ordinate) {
-            for (AtRepetition atRepetition : values()) {
-                if (atRepetition.weekdayOrdinate == ordinate) {
-                    return atRepetition;
-                }
-            }
-            return null;
-        }
-    }
-
-    public enum TimerType {
-        RELATIVE(R.string.timer_overview_every), ABSOLUTE(R.string.timer_overview_at);
-
-        private int stringId;
-
-        TimerType(int stringId) {
-            this.stringId = stringId;
-        }
-
-        public String getText() {
-            return AndFHEMApplication.getContext().getString(stringId);
-        }
-    }
-
     public static final Pattern FHEM_PATTERN = Pattern.compile("fhem\\(\"set ([\\w\\-,]+) ([\\w%-]+)(?: ([0-9.:]+))?\"\\)(.*)");
     public static final Pattern PREFIX_PATTERN = Pattern.compile("([+*]{0,2})([0-9:]+)(.*)");
     public static final Pattern DEFAULT_PATTERN = Pattern.compile("set ([\\w-]+) ([\\w\\-,%]+)(?: ([0-9:]+))?");
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-
     private int hours;
     private int minutes;
     private int seconds;
     private String nextTrigger;
-
     private boolean isActive = true;
-
     private String targetDevice;
     private String targetState;
     private String targetStateAddtionalInformation;
@@ -112,111 +61,6 @@ public class AtDevice extends Device<AtDevice> {
     public void readDEF(String value) {
         super.readDEF(value);
         definition = parseDefinition(value) ? value : "";
-    }
-
-    public void readSTATE(String value) {
-        nextTrigger = value.replaceAll("Next: ", "");
-    }
-
-    @Override
-    public boolean isSupported() {
-        return super.isSupported() && definition != null && targetDevice != null;
-    }
-
-    public int getHours() {
-        return hours;
-    }
-
-    public int getMinutes() {
-        return minutes;
-    }
-
-    public int getSeconds() {
-        return seconds;
-    }
-
-    public String getTargetDevice() {
-        return targetDevice;
-    }
-
-    public String getTargetState() {
-        return targetState;
-    }
-
-    public String getTargetStateAddtionalInformation() {
-        return targetStateAddtionalInformation;
-    }
-
-    public AtRepetition getRepetition() {
-        return repetition;
-    }
-
-    public TimerType getTimerType() {
-        return timerType;
-    }
-
-    public String getNextTrigger() {
-        return nextTrigger;
-    }
-
-    public void setHour(int hours) {
-        this.hours = hours;
-    }
-
-    public void setMinute(int minutes) {
-        this.minutes = minutes;
-    }
-
-    public void setSecond(int seconds) {
-        this.seconds = seconds;
-    }
-
-    public void setTargetDevice(String targetDevice) {
-        this.targetDevice = targetDevice;
-    }
-
-    public void setTargetState(String targetState) {
-        this.targetState = targetState;
-    }
-
-    public void setTargetStateAddtionalInformation(String targetStateAddtionalInformation) {
-        this.targetStateAddtionalInformation = targetStateAddtionalInformation;
-    }
-
-    public void setRepetition(AtRepetition repetition) {
-        this.repetition = repetition;
-    }
-
-    public void setTimerType(TimerType timerType) {
-        this.timerType = timerType;
-    }
-
-    public String getFormattedSwitchTime() {
-        return toTwoDecimalDigits(hours) + ":" + toTwoDecimalDigits(minutes)
-                + ":" + toTwoDecimalDigits(seconds);
-    }
-
-    public boolean isActive() {
-        return isActive;
-    }
-
-    public void setActive(boolean active) {
-        isActive = active;
-    }
-
-    private void parseDateContent(String dateContent) {
-        if (dateContent.length() < "00:00:00".length()) {
-            dateContent += ":00";
-        }
-        try {
-            Date date = dateFormat.parse(dateContent);
-            hours = date.getHours();
-            minutes = date.getMinutes();
-            seconds = date.getSeconds();
-
-        } catch (ParseException e) {
-            Log.e(AtDevice.class.getName(), "cannot parse dateContent " + dateContent);
-        }
     }
 
     boolean parseDefinition(String nodeContent) {
@@ -233,6 +77,31 @@ public class AtDevice extends Device<AtDevice> {
         String rest = prefixMatcher.group(3).trim();
 
         return parseDeviceSwitchContent(rest);
+    }
+
+    private void handlePrefix(String prefix) {
+        if (prefix.contains("+")) {
+            timerType = TimerType.RELATIVE;
+        }
+
+        if (prefix.contains("*")) {
+            repetition = AtRepetition.EVERY_DAY;
+        }
+    }
+
+    private void parseDateContent(String dateContent) {
+        if (dateContent.length() < "00:00:00".length()) {
+            dateContent += ":00";
+        }
+        try {
+            Date date = dateFormat.parse(dateContent);
+            hours = date.getHours();
+            minutes = date.getMinutes();
+            seconds = date.getSeconds();
+
+        } catch (ParseException e) {
+            Log.e(AtDevice.class.getName(), "cannot parse dateContent " + dateContent);
+        }
     }
 
     private boolean parseDeviceSwitchContent(String rest) {
@@ -284,14 +153,89 @@ public class AtDevice extends Device<AtDevice> {
         }
     }
 
-    private void handlePrefix(String prefix) {
-        if (prefix.contains("+")) {
-            timerType = TimerType.RELATIVE;
-        }
+    public void readSTATE(String value) {
+        nextTrigger = value.replaceAll("Next: ", "");
+    }
 
-        if (prefix.contains("*")) {
-            repetition = AtRepetition.EVERY_DAY;
-        }
+    @Override
+    public boolean isSupported() {
+        return super.isSupported() && definition != null && targetDevice != null;
+    }
+
+    public int getHours() {
+        return hours;
+    }
+
+    public int getMinutes() {
+        return minutes;
+    }
+
+    public int getSeconds() {
+        return seconds;
+    }
+
+    public String getTargetDevice() {
+        return targetDevice;
+    }
+
+    public void setTargetDevice(String targetDevice) {
+        this.targetDevice = targetDevice;
+    }
+
+    public String getTargetState() {
+        return targetState;
+    }
+
+    public void setTargetState(String targetState) {
+        this.targetState = targetState;
+    }
+
+    public String getTargetStateAddtionalInformation() {
+        return targetStateAddtionalInformation;
+    }
+
+    public void setTargetStateAddtionalInformation(String targetStateAddtionalInformation) {
+        this.targetStateAddtionalInformation = targetStateAddtionalInformation;
+    }
+
+    public AtRepetition getRepetition() {
+        return repetition;
+    }
+
+    public void setRepetition(AtRepetition repetition) {
+        this.repetition = repetition;
+    }
+
+    public TimerType getTimerType() {
+        return timerType;
+    }
+
+    public void setTimerType(TimerType timerType) {
+        this.timerType = timerType;
+    }
+
+    public String getNextTrigger() {
+        return nextTrigger;
+    }
+
+    public void setHour(int hours) {
+        this.hours = hours;
+    }
+
+    public void setMinute(int minutes) {
+        this.minutes = minutes;
+    }
+
+    public void setSecond(int seconds) {
+        this.seconds = seconds;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
     }
 
     public String toFHEMDefinition() {
@@ -335,6 +279,11 @@ public class AtDevice extends Device<AtDevice> {
         return command;
     }
 
+    public String getFormattedSwitchTime() {
+        return toTwoDecimalDigits(hours) + ":" + toTwoDecimalDigits(minutes)
+                + ":" + toTwoDecimalDigits(seconds);
+    }
+
     private String addToIf(String ifContent, String newPart) {
         if (StringUtil.isBlank(ifContent)) {
             return newPart;
@@ -360,5 +309,52 @@ public class AtDevice extends Device<AtDevice> {
     @Override
     public DeviceFunctionality getDeviceGroup() {
         return DeviceFunctionality.FHEM;
+    }
+
+    public enum AtRepetition {
+        ONCE(R.string.timer_overview_once), EVERY_DAY(R.string.timer_overview_every_day),
+        WEEKEND(R.string.timer_overview_weekend), WEEKDAY(R.string.timer_overview_weekday),
+        MONDAY(R.string.monday, 1), TUESDAY(R.string.tuesday, 2), WEDNESDAY(R.string.wednesday, 3),
+        THURSDAY(R.string.thursday, 4), FRIDAY(R.string.friday, 5), SATURDAY(R.string.saturday, 6), SUNDAY(R.string.sunday, 0);
+
+        private int stringId;
+        private int weekdayOrdinate;
+
+        AtRepetition(int stringId) {
+            this.stringId = stringId;
+            this.weekdayOrdinate = -1;
+        }
+
+        AtRepetition(int stringId, int weekdayOrdinate) {
+            this.stringId = stringId;
+            this.weekdayOrdinate = weekdayOrdinate;
+        }
+
+        public static AtRepetition getRepetitionForWeekdayOrdinate(int ordinate) {
+            for (AtRepetition atRepetition : values()) {
+                if (atRepetition.weekdayOrdinate == ordinate) {
+                    return atRepetition;
+                }
+            }
+            return null;
+        }
+
+        public int getText() {
+            return stringId;
+        }
+    }
+
+    public enum TimerType {
+        RELATIVE(R.string.timer_overview_every), ABSOLUTE(R.string.timer_overview_at);
+
+        private int stringId;
+
+        TimerType(int stringId) {
+            this.stringId = stringId;
+        }
+
+        public int getText() {
+            return stringId;
+        }
     }
 }

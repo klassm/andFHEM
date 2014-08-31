@@ -66,7 +66,7 @@ public class EnOceanAdapter extends DimmableAdapter<EnOceanDevice> {
                         intent.putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, "stop");
                         context.startService(intent);
                     }
-                }.createRow(inflater));
+                }.createRow(getInflater()));
             }
 
             @Override
@@ -100,7 +100,7 @@ public class EnOceanAdapter extends DimmableAdapter<EnOceanDevice> {
 
                         context.startService(intent);
                     }
-                }.createRow(inflater, device));
+                }.createRow(getInflater(), device));
             }
 
 

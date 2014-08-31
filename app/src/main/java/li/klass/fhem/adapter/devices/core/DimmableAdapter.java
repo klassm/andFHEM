@@ -47,33 +47,6 @@ public class DimmableAdapter<D extends DimmableDevice<D>> extends ToggleableAdap
         super(deviceClass);
     }
 
-    private class DimUpDownRow extends UpDownButtonRow<D> {
-
-        public DimUpDownRow() {
-            super("");
-        }
-
-        @Override
-        public void onUpButtonClick(Context context, D device) {
-            sendTargetDimState(context, device, device.getDimUpPosition());
-        }
-
-        @Override
-        public void onDownButtonClick(Context context, D device) {
-            sendTargetDimState(context, device, device.getDimDownPosition());
-        }
-
-        private void sendTargetDimState(final Context context, D device, int target) {
-
-            Intent intent = new Intent(Actions.DEVICE_DIM);
-            intent.putExtra(BundleExtraKeys.DEVICE_DIM_PROGRESS, target);
-            intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
-            intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver(context));
-
-            context.startService(intent);
-        }
-    }
-
     @Override
     public void fillDeviceOverviewView(View view, final D device, long lastUpdate) {
         if (!device.supportsDim() || device.isSpecialButtonDevice()) {
@@ -85,7 +58,7 @@ public class DimmableAdapter<D extends DimmableDevice<D>> extends ToggleableAdap
         layout.findViewById(R.id.deviceName).setVisibility(View.GONE);
 
         layout.addView(new DimActionRow<D>(device.getAliasOrName(), DimActionRow.LAYOUT_OVERVIEW)
-                .createRow(inflater, device));
+                .createRow(getInflater(), device));
     }
 
     @Override
@@ -96,9 +69,9 @@ public class DimmableAdapter<D extends DimmableDevice<D>> extends ToggleableAdap
             @Override
             public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, D device, TableRow fieldTableRow) {
                 tableLayout.addView(new DimmableDeviceDimActionRowFullWidth<D>(device, R.layout.device_detail_seekbarrow_full_width, fieldTableRow)
-                        .createRow(inflater, device));
+                        .createRow(getInflater(), device));
                 tableLayout.addView(new DimUpDownRow()
-                        .createRow(context, inflater, device));
+                        .createRow(context, getInflater(), device));
             }
 
             @Override
@@ -106,5 +79,32 @@ public class DimmableAdapter<D extends DimmableDevice<D>> extends ToggleableAdap
                 return device.supportsDim();
             }
         });
+    }
+
+    private class DimUpDownRow extends UpDownButtonRow<D> {
+
+        public DimUpDownRow() {
+            super("");
+        }
+
+        @Override
+        public void onUpButtonClick(Context context, D device) {
+            sendTargetDimState(context, device, device.getDimUpPosition());
+        }
+
+        private void sendTargetDimState(final Context context, D device, int target) {
+
+            Intent intent = new Intent(Actions.DEVICE_DIM);
+            intent.putExtra(BundleExtraKeys.DEVICE_DIM_PROGRESS, target);
+            intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
+            intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver(context));
+
+            context.startService(intent);
+        }
+
+        @Override
+        public void onDownButtonClick(Context context, D device) {
+            sendTargetDimState(context, device, device.getDimDownPosition());
+        }
     }
 }

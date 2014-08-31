@@ -1,7 +1,32 @@
+/*
+ * AndFHEM - Open Source Android application to control a FHEM home automation
+ * server.
+ *
+ * Copyright (c) 2011, Matthias Klass or third-party contributors as
+ * indicated by the @author tags or express copyright attribution
+ * statements applied by the authors.  All third-party contributions are
+ * distributed under license by Red Hat Inc.
+ *
+ * This copyrighted material is made available to anyone wishing to use, modify,
+ * copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+ * for more details.
+ *
+ * You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+ * along with this distribution; if not, write to:
+ *   Free Software Foundation, Inc.
+ *   51 Franklin Street, Fifth Floor
+ *   Boston, MA  02110-1301  USA
+ */
+
 package li.klass.fhem.appwidget;
 
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
+import android.app.IntentService;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetHost;
 import android.appwidget.AppWidgetManager;
@@ -27,9 +52,9 @@ import java.util.Set;
 import li.klass.fhem.appwidget.view.WidgetType;
 import li.klass.fhem.appwidget.view.widget.base.AppWidgetView;
 import li.klass.fhem.infra.AndFHEMRobolectricTestRunner;
+import li.klass.fhem.service.SharedPreferencesService;
 import li.klass.fhem.testutil.MockitoTestRule;
 import li.klass.fhem.util.ApplicationProperties;
-import li.klass.fhem.util.SharedPreferencesUtil;
 
 import static li.klass.fhem.appwidget.AppWidgetDataHolder.SAVE_PREFERENCE_NAME;
 import static li.klass.fhem.appwidget.WidgetConfiguration.fromSaveString;
@@ -54,9 +79,9 @@ public class AppWidgetDataHolderTest {
     @Mock
     private SharedPreferences.Editor sharedPreferencesEditor;
     @Mock
-    private SharedPreferencesUtil sharedPreferencesUtil;
+    private SharedPreferencesService sharedPreferencesService;
     @Mock
-    private Context context;
+    private IntentService intentService;
     @Mock
     private AlarmManager alarmManager;
     @Mock
@@ -76,12 +101,12 @@ public class AppWidgetDataHolderTest {
     @SuppressLint("CommitPrefEdits")
     @Before
     public void before() {
-        given(sharedPreferencesUtil.getSharedPreferences(SAVE_PREFERENCE_NAME))
+        given(sharedPreferencesService.getSharedPreferences(SAVE_PREFERENCE_NAME))
                 .willReturn(sharedPreferences);
-        given(sharedPreferencesUtil.getSharedPreferencesEditor(SAVE_PREFERENCE_NAME))
+        given(sharedPreferencesService.getSharedPreferencesEditor(SAVE_PREFERENCE_NAME))
                 .willReturn(sharedPreferencesEditor);
         given(sharedPreferences.edit()).willReturn(sharedPreferencesEditor);
-        given(context.getSystemService(Context.ALARM_SERVICE)).willReturn(alarmManager);
+        given(intentService.getSystemService(Context.ALARM_SERVICE)).willReturn(alarmManager);
     }
 
     @Test
@@ -158,10 +183,10 @@ public class AppWidgetDataHolderTest {
         // given
         given(sharedPreferences.contains("123")).willReturn(true);
         given(sharedPreferencesEditor.remove("123")).willReturn(sharedPreferencesEditor);
-        doReturn(appWidgetHost).when(holder).getAppWidgetHost(context);
+        doReturn(appWidgetHost).when(holder).getAppWidgetHost(intentService);
 
         // when
-        holder.deleteWidget(context, 123);
+        holder.deleteWidget(intentService, 123);
 
         // then
         verify(sharedPreferencesEditor).remove("123");
@@ -174,10 +199,10 @@ public class AppWidgetDataHolderTest {
         // given
         given(sharedPreferences.contains("123")).willReturn(false);
         given(sharedPreferencesEditor.remove("123")).willReturn(sharedPreferencesEditor);
-        doReturn(appWidgetHost).when(holder).getAppWidgetHost(context);
+        doReturn(appWidgetHost).when(holder).getAppWidgetHost(intentService);
 
         // when
-        holder.deleteWidget(context, 123);
+        holder.deleteWidget(intentService, 123);
 
         // then
         verifyNoMoreInteractions(sharedPreferencesEditor);
@@ -190,16 +215,16 @@ public class AppWidgetDataHolderTest {
         // given
         given(sharedPreferences.getString("123", null)).willReturn("123#" + WidgetType.STATUS.name());
         doReturn(appWidgetView).when(holder).getAppWidgetView(any(WidgetConfiguration.class));
-        doReturn(456L).when(holder).getConnectionDependentUpdateInterval(context);
+        doReturn(456L).when(holder).getConnectionDependentUpdateInterval(intentService);
         given(applicationProperties.getBooleanSharedPreference(ALLOW_REMOTE_UPDATE, true)).willReturn(true);
         given(appWidgetView.createView(any(Context.class), any(WidgetConfiguration.class), anyLong()))
                 .willReturn(remoteViews);
 
         // when
-        holder.updateWidgetInCurrentThread(appWidgetManager, context, 123, true);
+        holder.updateWidgetInCurrentThread(appWidgetManager, intentService, 123, true);
 
         // then
-        verify(appWidgetView).createView(eq(context), any(WidgetConfiguration.class), eq(456L));
+        verify(appWidgetView).createView(eq(intentService), any(WidgetConfiguration.class), eq(456L));
         verify(appWidgetManager).updateAppWidget(123, remoteViews);
     }
 
@@ -208,16 +233,16 @@ public class AppWidgetDataHolderTest {
         // given
         given(sharedPreferences.getString("123", null)).willReturn("123#" + WidgetType.STATUS.name());
         doReturn(appWidgetView).when(holder).getAppWidgetView(any(WidgetConfiguration.class));
-        doReturn(456L).when(holder).getConnectionDependentUpdateInterval(context);
+        doReturn(456L).when(holder).getConnectionDependentUpdateInterval(intentService);
         given(applicationProperties.getBooleanSharedPreference(ALLOW_REMOTE_UPDATE, true)).willReturn(true);
         given(appWidgetView.createView(any(Context.class), any(WidgetConfiguration.class), anyLong()))
                 .willReturn(remoteViews);
 
         // when
-        holder.updateWidgetInCurrentThread(appWidgetManager, context, 123, false);
+        holder.updateWidgetInCurrentThread(appWidgetManager, intentService, 123, false);
 
         // then
-        verify(appWidgetView).createView(eq(context), any(WidgetConfiguration.class), eq(NEVER_UPDATE_PERIOD));
+        verify(appWidgetView).createView(eq(intentService), any(WidgetConfiguration.class), eq(NEVER_UPDATE_PERIOD));
         verify(appWidgetManager).updateAppWidget(123, remoteViews);
     }
 
@@ -226,29 +251,29 @@ public class AppWidgetDataHolderTest {
         // given
         given(sharedPreferences.getString("123", null)).willReturn("123#" + WidgetType.STATUS.name());
         doReturn(appWidgetView).when(holder).getAppWidgetView(any(WidgetConfiguration.class));
-        doReturn(456L).when(holder).getConnectionDependentUpdateInterval(context);
+        doReturn(456L).when(holder).getConnectionDependentUpdateInterval(intentService);
         given(applicationProperties.getBooleanSharedPreference(ALLOW_REMOTE_UPDATE, true)).willReturn(false);
         given(appWidgetView.createView(any(Context.class), any(WidgetConfiguration.class), anyLong()))
                 .willReturn(remoteViews);
 
         // when
-        holder.updateWidgetInCurrentThread(appWidgetManager, context, 123, true);
+        holder.updateWidgetInCurrentThread(appWidgetManager, intentService, 123, true);
 
         // then
-        verify(appWidgetView).createView(eq(context), any(WidgetConfiguration.class), eq(NEVER_UPDATE_PERIOD));
+        verify(appWidgetView).createView(eq(intentService), any(WidgetConfiguration.class), eq(NEVER_UPDATE_PERIOD));
         verify(appWidgetManager).updateAppWidget(123, remoteViews);
     }
 
     @Test
     public void should_delete_widget_during_update_widget_if_configuration_cannot_be_found() {
         // given
-        doNothing().when(holder).deleteWidget(context, 123);
+        doNothing().when(holder).deleteWidget(intentService, 123);
         doReturn(Optional.<WidgetConfiguration>absent()).when(holder).getWidgetConfiguration(123);
 
         // when
-        holder.updateWidgetInCurrentThread(appWidgetManager, context, 123, true);
+        holder.updateWidgetInCurrentThread(appWidgetManager, intentService, 123, true);
 
         // then
-        verify(holder).deleteWidget(context, 123);
+        verify(holder).deleteWidget(intentService, 123);
     }
 }

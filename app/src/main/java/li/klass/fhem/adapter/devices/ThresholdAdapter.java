@@ -28,17 +28,23 @@ import android.content.Context;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 
+import javax.inject.Inject;
+
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
 import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
 import li.klass.fhem.adapter.devices.genericui.TemperatureChangeTableRow;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.domain.ThresholdDevice;
+import li.klass.fhem.util.ApplicationProperties;
 
 import static li.klass.fhem.domain.ThresholdDevice.MAXIMUM_TEMPERATURE;
 import static li.klass.fhem.domain.ThresholdDevice.MINIMUM_TEMPERATURE;
 
 public class ThresholdAdapter extends GenericDeviceAdapter<ThresholdDevice> {
+
+    @Inject
+    ApplicationProperties applicationProperties;
 
     public ThresholdAdapter() {
         super(ThresholdDevice.class);
@@ -50,8 +56,9 @@ public class ThresholdAdapter extends GenericDeviceAdapter<ThresholdDevice> {
             @Override
             public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, ThresholdDevice device, TableRow fieldTableRow) {
                 tableLayout.addView(new TemperatureChangeTableRow<ThresholdDevice>(context, device.getDesiredTemp(), fieldTableRow,
-                        Actions.DEVICE_SET_DESIRED_TEMPERATURE, R.string.desiredTemperature, MINIMUM_TEMPERATURE, MAXIMUM_TEMPERATURE)
-                        .createRow(inflater, device));
+                        Actions.DEVICE_SET_DESIRED_TEMPERATURE, R.string.desiredTemperature,
+                        MINIMUM_TEMPERATURE, MAXIMUM_TEMPERATURE, applicationProperties)
+                        .createRow(getInflater(), device));
             }
         });
     }

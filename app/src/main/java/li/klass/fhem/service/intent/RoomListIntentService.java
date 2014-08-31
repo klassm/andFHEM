@@ -32,6 +32,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Map;
 
+import javax.inject.Inject;
+
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
@@ -54,13 +56,15 @@ import static li.klass.fhem.constants.BundleExtraKeys.VIBRATE;
 
 public class RoomListIntentService extends ConvenientIntentService {
 
+    @Inject
+    RoomListService roomListService;
+
     public RoomListIntentService() {
         super(RoomListIntentService.class.getName());
     }
 
     @Override
     protected STATE handleIntent(Intent intent, long updatePeriod, ResultReceiver resultReceiver) {
-        RoomListService roomListService = RoomListService.INSTANCE;
         if (GET_ALL_ROOMS_DEVICE_LIST.equals(intent.getAction())) {
             RoomDeviceList allRoomsDeviceList = roomListService.getAllRoomsDeviceList(updatePeriod);
             sendResultWithLastUpdate(resultReceiver, ResultCodes.SUCCESS, DEVICE_LIST, allRoomsDeviceList);
@@ -94,7 +98,7 @@ public class RoomListIntentService extends ConvenientIntentService {
         if (receiver != null) {
             Bundle bundle = new Bundle();
             bundle.putSerializable(bundleExtrasKey, value);
-            bundle.putLong(BundleExtraKeys.LAST_UPDATE, RoomListService.INSTANCE.getLastUpdate());
+            bundle.putLong(BundleExtraKeys.LAST_UPDATE, roomListService.getLastUpdate());
             receiver.send(resultCode, bundle);
         }
     }

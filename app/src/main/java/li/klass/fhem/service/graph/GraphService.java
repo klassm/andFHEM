@@ -34,17 +34,20 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.log.LogDevice;
 import li.klass.fhem.service.CommandExecutionService;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 
+@Singleton
 public class GraphService {
-    public static final GraphService INSTANCE = new GraphService();
     public static final SimpleDateFormat GRAPH_ENTRY_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
 
-    private GraphService() {
-    }
+    @Inject
+    CommandExecutionService commandExecutionService;
 
     /**
      * Retrieves {@link GraphEntry} objects from FHEM. When the entries are available, the given listener object will
@@ -75,12 +78,10 @@ public class GraphService {
      * Collects FileLog entries from FHEM matching a given column specification. The results will be turned into
      * {@link GraphEntry} objects and be returned.
      *
-     *
-     *
-     * @param device      device to load graph entries from.
+     * @param device            device to load graph entries from.
      * @param seriesDescription chart description
-     * @param startDate   read FileLog entries from the given date
-     * @param endDate     read FileLog entries up to the given date
+     * @param startDate         read FileLog entries from the given date
+     * @param endDate           read FileLog entries up to the given date
      * @return read logDevices entries converted to {@link GraphEntry} objects.
      */
     private List<GraphEntry> getCurrentGraphEntriesFor(Device device,
@@ -104,7 +105,7 @@ public class GraphService {
             String command = logDevice.getGraphCommandFor(device, fromDateFormatted,
                     toDateFormatted, seriesDescription);
 
-            String data = CommandExecutionService.INSTANCE.executeSafely(command);
+            String data = commandExecutionService.executeSafely(command);
             if (data != null) {
                 result.append("\n\r").append(data.replaceAll("#" + seriesDescription, ""));
             }

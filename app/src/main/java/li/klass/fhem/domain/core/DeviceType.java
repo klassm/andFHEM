@@ -140,8 +140,6 @@ import li.klass.fhem.domain.WifiLightDevice;
 import li.klass.fhem.domain.WithingsDevice;
 import li.klass.fhem.domain.YamahaAVRDevice;
 import li.klass.fhem.domain.ZWaveDevice;
-import li.klass.fhem.fhem.connection.ServerType;
-import li.klass.fhem.service.connection.ConnectionService;
 
 public enum DeviceType {
 
@@ -153,70 +151,70 @@ public enum DeviceType {
     HMS("HMS", HMSDevice.class),
     MAX("MAX", MaxDevice.class, new MaxAdapter()),
     WOL("WOL", WOLDevice.class, new WOLAdapter()),
-    IT("IT", IntertechnoDevice.class, new ToggleableAdapterWithSwitchActionRow<IntertechnoDevice>(IntertechnoDevice.class)),
+    IT("IT", IntertechnoDevice.class, new ToggleableAdapterWithSwitchActionRow<>(IntertechnoDevice.class)),
     OWTEMP("OWTEMP", OwtempDevice.class),
     CUL_FHTTK("CUL_FHTTK", CULFHTTKDevice.class),
     RFXX10REC("RFXX10REC", RFXX10RECDevice.class),
     OREGON("OREGON", OregonDevice.class),
     CUL_EM("CUL_EM", CULEMDevice.class),
     OWCOUNT("OWCOUNT", OwcountDevice.class),
-    SIS_PMS("SIS_PMS", SISPMSDevice.class, new ToggleableAdapterWithSwitchActionRow<SISPMSDevice>(SISPMSDevice.class)),
+    SIS_PMS("SIS_PMS", SISPMSDevice.class, new ToggleableAdapterWithSwitchActionRow<>(SISPMSDevice.class)),
     USBWX("USBWX", USBWXDevice.class),
     CUL_WS("CUL_WS", CULWSDevice.class),
-    FS20("FS20", FS20Device.class, new DimmableAdapter<FS20Device>(FS20Device.class)),
-    FILE_LOG("FileLog", FileLogDevice.class, null, DeviceVisibility.NEVER),
-    DB_LOG("DbLog", DbLogDevice.class, null, DeviceVisibility.NEVER),
+    FS20("FS20", FS20Device.class, new DimmableAdapter<>(FS20Device.class)),
+    FILE_LOG("FileLog", FileLogDevice.class),
+    DB_LOG("DbLog", DbLogDevice.class),
     OWFS("OWFS", OWFSDevice.class),
     LGTV("LGTV", LGTVDevice.class),
     RFXCOM("RFXCOM", RFXCOMDevice.class),
     CUL_HM("CUL_HM", CULHMDevice.class, new CULHMAdapter()),
     WATCHDOG("watchdog", WatchdogDevice.class),
-    HOLIDAY("HOL", HOLDevice.class, new ToggleableAdapterWithSwitchActionRow<HOLDevice>(HOLDevice.class)),
+    HOLIDAY("HOL", HOLDevice.class, new ToggleableAdapterWithSwitchActionRow<>(HOLDevice.class)),
     PID("PID", PIDDevice.class, new PidAdapter(PIDDevice.class)),
     FHT8V("FHT8V", FHT8VDevice.class),
     TRX_WEATHER("TRX_WEATHER", TRXWeatherDevice.class),
-    TRX_LIGHT("TRX_LIGHT", TRXLightDevice.class, new DimmableAdapter<TRXLightDevice>(TRXLightDevice.class)),
+    TRX_LIGHT("TRX_LIGHT", TRXLightDevice.class, new DimmableAdapter<>(TRXLightDevice.class)),
     TRX("TRX", TRXDevice.class),
     DUMMY("dummy", DummyDevice.class, new DummyAdapter()),
-    STRUCTURE("structure", StructureDevice.class, new DimmableAdapter<StructureDevice>(StructureDevice.class)),
+    STRUCTURE("structure", StructureDevice.class, new DimmableAdapter<>(StructureDevice.class)),
     TWILIGHT("Twilight", TwilightDevice.class),
     AT("at", AtDevice.class, null, DeviceVisibility.NEVER),
     EN_OCEAN("EnOcean", EnOceanDevice.class, new EnOceanAdapter()),
-    EIB("EIB", EIBDevice.class, new DimmableAdapter<EIBDevice>(EIBDevice.class)),
-    HCS("HCS", HCSDevice.class, new SwitchActionRowAdapter<HCSDevice>(HCSDevice.class)),
+    EIB("EIB", EIBDevice.class, new DimmableAdapter<>(EIBDevice.class)),
+    HCS("HCS", HCSDevice.class, new SwitchActionRowAdapter<>(HCSDevice.class)),
     OWTHERM("OWTHERM", OwthermDevice.class),
-    OWDEVICE("OWDevice", OwDevice.class, new ToggleableAdapterWithSwitchActionRow<OwDevice>(OwDevice.class)),
+    OWDEVICE("OWDevice", OwDevice.class, new ToggleableAdapterWithSwitchActionRow<>(OwDevice.class)),
     UNIROLL("UNIRoll", UniRollDevice.class, new UniRollAdapter()),
-    TRXSecurity("TRX_SECURITY", TRXSecurityDevice.class, new SwitchActionRowAdapter<TRXSecurityDevice>(TRXSecurityDevice.class)),
+    TRXSecurity("TRX_SECURITY", TRXSecurityDevice.class, new SwitchActionRowAdapter<>(TRXSecurityDevice.class)),
     PRESENCE("PRESENCE", PresenceDevice.class),
     EMWZ("EMWZ", EMWZDevice.class),
-    FBDect("FBDECT", FBDectDevice.class, new ToggleableAdapterWithSwitchActionRow<FBDectDevice>(FBDectDevice.class)),
+    FBDect("FBDECT", FBDectDevice.class, new ToggleableAdapterWithSwitchActionRow<>(FBDectDevice.class)),
     SONOS_PLAYER("SONOSPLAYER", SonosPlayerDevice.class, new SonosPlayerAdapter()),
     SONOS("SONOS", SonosDevice.class),
     GPIO4("GPIO4", GPIO4Device.class),
-    FRMOUT("FRM_OUT", FRMOutDevice.class, new ToggleableAdapterWithSwitchActionRow<FRMOutDevice>(FRMOutDevice.class)),
+    FRMOUT("FRM_OUT", FRMOutDevice.class, new ToggleableAdapterWithSwitchActionRow<>(FRMOutDevice.class)),
     ESA2000("ESA2000", ESA2000Device.class),
     HUE("HUEDevice", HUEDevice.class, new HueDeviceAdapter()),
     YAMAHA_AVR("YAMAHA_AVR", YamahaAVRDevice.class, new YamahaAVRAdapter()),
     FRMIN("FRM_IN", FRMInDevice.class),
-    GENSHELLSWITCH("GenShellSwitch", GenShellSwitchDevice.class, new ToggleableAdapterWithSwitchActionRow<GenShellSwitchDevice>(GenShellSwitchDevice.class)),
+    GENSHELLSWITCH("GenShellSwitch", GenShellSwitchDevice.class, new ToggleableAdapterWithSwitchActionRow<>(GenShellSwitchDevice.class)),
     GCM_SEND("gcmsend", GCMSendDevice.class, new GCMSendDeviceAdapter()),
-    ZWAVE("ZWave", ZWaveDevice.class, new DimmableAdapter<ZWaveDevice>(ZWaveDevice.class)),
+    ZWAVE("ZWave", ZWaveDevice.class, new DimmableAdapter<>(ZWaveDevice.class)),
     SWAP("SWAP", SWAPDevice.class, new SwapDeviceAdapter()),
     FB_CALLMONITOR("FB_CALLMONITOR", FBCallmonitorDevice.class),
     FS20_ZDR("fs20_zdr", FS20ZDRDevice.class, new FS20ZDRDeviceAdapter()),
     OPENWEATHERMAP("openweathermap", OpenWeatherMapDevice.class),
     PCA301("PCA301", PCA301Device.class),
     REMOTECONTROL("remotecontrol", RemoteControlDevice.class, new RemoteControlAdapter(), DeviceVisibility.FHEMWEB_ONLY),
-    RPI_GPIO("RPI_GPIO", RPIGPIODevice.class, new ToggleableAdapterWithSwitchActionRow<RPIGPIODevice>(RPIGPIODevice.class)),
+    RPI_GPIO("RPI_GPIO", RPIGPIODevice.class, new ToggleableAdapterWithSwitchActionRow<>(RPIGPIODevice.class)),
     READINGS_PROXY("readingsProxy", ReadingsProxyDevice.class, new ReadingsProxyDeviceAdapter()),
     LACROSSE("LaCrosse", LaCrosseDevice.class),
     WEB_LINK("weblink", WebLinkDevice.class, new WebLinkAdapter()),
-    PILIGHT("pilight", PilightDevice.class, new ToggleableAdapterWithSwitchActionRow<PilightDevice>(PilightDevice.class)),
+    PILIGHT("pilight", PilightDevice.class, new ToggleableAdapterWithSwitchActionRow<>(PilightDevice.class)),
     OWSWITCH("OWSWITCH", OwSwitchDevice.class, new OwSwitchDeviceAdapter()),
-    HM485("HM485", HM485Device.class, new DimmableAdapter<HM485Device>(HM485Device.class)),
+    HM485("HM485", HM485Device.class, new DimmableAdapter<>(HM485Device.class)),
     LIGHT_SCENE("LightScene", LightSceneDevice.class, new LightSceneAdapter()),
-    EPGM("EGPM", EGPMDevice.class, new ToggleableAdapterWithSwitchActionRow<EGPMDevice>(EGPMDevice.class)),
+    EPGM("EGPM", EGPMDevice.class, new ToggleableAdapterWithSwitchActionRow<>(EGPMDevice.class)),
     CM160("CM160", CM160Device.class),
     BMP180("I2C_BMP180", BMP180Device.class),
     SHT21("I2C_SHT21", SHT21Device.class),
@@ -237,7 +235,7 @@ public enum DeviceType {
     private DeviceVisibility visibility = null;
 
     <T extends Device<T>> DeviceType(String xmllistTag, Class<T> deviceClass) {
-        this(xmllistTag, deviceClass, new GenericDeviceAdapter<T>(deviceClass));
+        this(xmllistTag, deviceClass, new GenericDeviceAdapter<>(deviceClass));
     }
 
     DeviceType(String xmllistTag, Class<? extends Device> deviceClass, DeviceAdapter<? extends Device<?>> adapter) {
@@ -262,22 +260,7 @@ public enum DeviceType {
 
     public static <T extends Device> DeviceType getDeviceTypeFor(T device) {
         if (device == null) return null;
-
-        DeviceType[] deviceTypes = DeviceType.values();
-        for (DeviceType deviceType : deviceTypes) {
-            if (deviceType.getDeviceClass().isAssignableFrom(device.getClass())) {
-                return deviceType;
-            }
-        }
-        return null;
-    }
-
-    public String getXmllistTag() {
-        return xmllistTag;
-    }
-
-    public Class<? extends Device> getDeviceClass() {
-        return deviceClass;
+        return getDeviceTypeFor(device.getClass());
     }
 
     @SuppressWarnings("unchecked")
@@ -285,13 +268,27 @@ public enum DeviceType {
         return (DeviceAdapter<T>) adapter;
     }
 
-    public boolean mayShowInCurrentConnectionType() {
-        if (visibility == null) return true;
+    public static <T extends Device> DeviceType getDeviceTypeFor(Class<T> clazz) {
+        if (clazz == null) return null;
 
-        ServerType serverType = ConnectionService.INSTANCE.getCurrentServer().getServerType();
-        if (visibility == DeviceVisibility.NEVER) return false;
+        DeviceType[] deviceTypes = DeviceType.values();
+        for (DeviceType deviceType : deviceTypes) {
+            if (deviceType.getDeviceClass().isAssignableFrom(clazz)) {
+                return deviceType;
+            }
+        }
+        return null;
+    }
 
-        ServerType showOnlyIn = visibility.getShowOnlyIn();
-        return showOnlyIn == null || serverType == showOnlyIn;
+    public Class<? extends Device> getDeviceClass() {
+        return deviceClass;
+    }
+
+    public String getXmllistTag() {
+        return xmllistTag;
+    }
+
+    public DeviceVisibility getVisibility() {
+        return visibility;
     }
 }

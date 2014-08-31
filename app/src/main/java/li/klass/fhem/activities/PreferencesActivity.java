@@ -31,10 +31,13 @@ import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 
+import javax.inject.Inject;
+
+import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.error.ErrorHolder;
-import li.klass.fhem.gcm.GCMIntentService;
+import li.klass.fhem.service.device.GCMSendDeviceService;
 import li.klass.fhem.util.DisplayUtil;
 import li.klass.fhem.widget.preference.SeekBarPreference;
 
@@ -51,13 +54,14 @@ import static li.klass.fhem.service.CommandExecutionService.DEFAULT_NUMBER_OF_RE
 public class PreferencesActivity extends PreferenceActivity
         implements SharedPreferences.OnSharedPreferenceChangeListener {
 
-    private boolean preferencesChanged;
+    @Inject
+    GCMSendDeviceService gcmSendDeviceService;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        preferencesChanged = false;
+        ((AndFHEMApplication) getApplication()).inject(this);
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         preferences.registerOnSharedPreferenceChangeListener(this);
@@ -73,7 +77,7 @@ public class PreferencesActivity extends PreferenceActivity
             @Override
             public boolean onPreferenceChange(Preference preference, Object o) {
                 String projectId = (String) o;
-                GCMIntentService.registerWithGCM(PreferencesActivity.this, projectId);
+                gcmSendDeviceService.registerWithGCM(PreferencesActivity.this, projectId);
                 return true;
             }
         });
@@ -112,6 +116,5 @@ public class PreferencesActivity extends PreferenceActivity
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
-        preferencesChanged = true;
     }
 }

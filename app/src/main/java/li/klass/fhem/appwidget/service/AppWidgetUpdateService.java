@@ -31,6 +31,8 @@ import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
 
+import javax.inject.Inject;
+
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.appwidget.AppWidgetDataHolder;
@@ -45,8 +47,17 @@ public class AppWidgetUpdateService extends IntentService {
 
     public static final String TAG = AppWidgetUpdateService.class.getName();
 
+    @Inject
+    AppWidgetDataHolder appWidgetDataHolder;
+
     public AppWidgetUpdateService() {
         super(AppWidgetUpdateService.class.getName());
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        ((AndFHEMApplication) getApplication()).inject(this);
     }
 
     @Override
@@ -58,12 +69,12 @@ public class AppWidgetUpdateService extends IntentService {
             handleRedrawWidget(intent, allowRemoteUpdates);
         } else if (REDRAW_ALL_WIDGETS.equals(action)) {
             Log.i(TAG, "updating all widgets (received REDRAW_ALL_WIDGETS)");
-            AppWidgetDataHolder.INSTANCE.updateAllWidgets(this, allowRemoteUpdates);
+            appWidgetDataHolder.updateAllWidgets(this, allowRemoteUpdates);
         } else if (WIDGET_REQUEST_UPDATE.equals(action)) {
             new Handler(getMainLooper()).post(new Runnable() {
                 @Override
                 public void run() {
-                    Toast.makeText(AndFHEMApplication.getContext(), R.string.widget_remote_update_started, Toast.LENGTH_LONG).show();
+                    Toast.makeText(AppWidgetUpdateService.this, R.string.widget_remote_update_started, Toast.LENGTH_LONG).show();
                 }
             });
             Intent updateIntent = new Intent(Actions.DO_UPDATE);
@@ -73,7 +84,7 @@ public class AppWidgetUpdateService extends IntentService {
     }
 
     private void handleRedrawWidget(Intent intent, boolean allowRemoteUpdates) {
-        if (! intent.hasExtra(BundleExtraKeys.APP_WIDGET_ID)) {
+        if (!intent.hasExtra(BundleExtraKeys.APP_WIDGET_ID)) {
             return;
         }
 
@@ -82,7 +93,7 @@ public class AppWidgetUpdateService extends IntentService {
 
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
 
-        AppWidgetDataHolder.INSTANCE.updateWidgetInCurrentThread(appWidgetManager, this,
+        appWidgetDataHolder.updateWidgetInCurrentThread(appWidgetManager, this,
                 widgetId, allowRemoteUpdates);
     }
 }

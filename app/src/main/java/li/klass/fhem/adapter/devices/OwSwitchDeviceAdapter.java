@@ -37,26 +37,6 @@ import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.OwSwitchDevice;
 
 public class OwSwitchDeviceAdapter extends GenericDeviceAdapter<OwSwitchDevice> {
-    private abstract class OwSwitchToggleRow extends ToggleActionRow<OwSwitchDevice> {
-
-        public OwSwitchToggleRow(String desc) {
-            super(desc, ToggleActionRow.LAYOUT_DETAIL);
-        }
-
-        @Override
-        protected void onButtonClick(Context context, OwSwitchDevice device, boolean isChecked) {
-            Intent intent = new Intent(Actions.DEVICE_SET_SUB_STATE);
-            intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
-            intent.putExtra(BundleExtraKeys.STATE_NAME, "gpio");
-            intent.putExtra(BundleExtraKeys.STATE_VALUE, "" + setStateFor(device, isChecked));
-            GenericDeviceAdapter.putUpdateExtra(intent);
-
-            context.startService(intent);
-        }
-
-        protected abstract int setStateFor(OwSwitchDevice device, boolean isChecked);
-    }
-
     public OwSwitchDeviceAdapter() {
         super(OwSwitchDevice.class);
     }
@@ -80,7 +60,7 @@ public class OwSwitchDeviceAdapter extends GenericDeviceAdapter<OwSwitchDevice> 
                     protected int setStateFor(OwSwitchDevice device, boolean isChecked) {
                         return device.setStateForA(isChecked);
                     }
-                }.createRow(context, inflater, device));
+                }.createRow(context, getInflater(), device));
 
                 tableLayout.addView(new OwSwitchToggleRow("B") {
 
@@ -93,8 +73,28 @@ public class OwSwitchDeviceAdapter extends GenericDeviceAdapter<OwSwitchDevice> 
                     protected int setStateFor(OwSwitchDevice device, boolean isChecked) {
                         return device.setStateForB(isChecked);
                     }
-                }.createRow(context, inflater, device));
+                }.createRow(context, getInflater(), device));
             }
         });
+    }
+
+    private abstract class OwSwitchToggleRow extends ToggleActionRow<OwSwitchDevice> {
+
+        public OwSwitchToggleRow(String desc) {
+            super(desc, ToggleActionRow.LAYOUT_DETAIL);
+        }
+
+        @Override
+        protected void onButtonClick(Context context, OwSwitchDevice device, boolean isChecked) {
+            Intent intent = new Intent(Actions.DEVICE_SET_SUB_STATE);
+            intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
+            intent.putExtra(BundleExtraKeys.STATE_NAME, "gpio");
+            intent.putExtra(BundleExtraKeys.STATE_VALUE, "" + setStateFor(device, isChecked));
+            putUpdateExtra(intent);
+
+            context.startService(intent);
+        }
+
+        protected abstract int setStateFor(OwSwitchDevice device, boolean isChecked);
     }
 }

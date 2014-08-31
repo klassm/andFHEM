@@ -34,6 +34,7 @@ import android.util.Log;
 import java.io.Serializable;
 import java.util.concurrent.ExecutorService;
 
+import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.service.room.RoomListService;
@@ -44,15 +45,17 @@ import static li.klass.fhem.constants.BundleExtraKeys.RESULT_RECEIVER;
  * Abstract class extending {@link IntentService} to provide some more convenience methods.
  */
 public abstract class ConvenientIntentService extends IntentService {
-    private ExecutorService executorService = null;
     private static boolean outOfMemoryOccurred = false;
+    private ExecutorService executorService = null;
 
     public ConvenientIntentService(String name) {
         super(name);
     }
 
-    protected enum STATE {
-        SUCCESS, ERROR, DONE
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        ((AndFHEMApplication) getApplication()).inject(this);
     }
 
     @Override
@@ -126,4 +129,8 @@ public abstract class ConvenientIntentService extends IntentService {
     }
 
     protected abstract STATE handleIntent(Intent intent, long updatePeriod, ResultReceiver resultReceiver);
+
+    protected enum STATE {
+        SUCCESS, ERROR, DONE
+    }
 }

@@ -24,21 +24,24 @@
 
 package li.klass.fhem.service.device;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import li.klass.fhem.domain.WOLDevice;
 import li.klass.fhem.service.CommandExecutionService;
 
+@Deprecated
+@Singleton
 public class WOLService {
 
-    public static final WOLService INSTANCE = new WOLService();
-
-    private WOLService() {
-    }
+    @Inject
+    CommandExecutionService commandExecutionService;
 
     public void wake(WOLDevice device) {
-        CommandExecutionService.INSTANCE.executeSafely("set " + device.getName() + " on");
+        commandExecutionService.executeSafely("set " + device.getName() + " on");
     }
 
     public void requestRefreshState(WOLDevice device) {
-        CommandExecutionService.INSTANCE.executeSafely("set " + device.getName() + " refresh");
+        commandExecutionService.executeSafely("set " + device.getName() + " refresh");
     }
 }

@@ -69,10 +69,8 @@ public class TimerDetailFragment extends BaseFragment {
     };
 
     private static final String TAG = TimerDetailFragment.class.getName();
-    private transient ArrayAdapter<String> targetStateAdapter;
-
     public AtDevice timerDevice;
-
+    private transient ArrayAdapter<String> targetStateAdapter;
     private String timerDeviceName;
     private boolean isModify = false;
 
@@ -192,7 +190,7 @@ public class TimerDetailFragment extends BaseFragment {
         Spinner timerTypeSpinner = (Spinner) view.findViewById(R.id.timerType);
         ArrayAdapter<String> timerTypeAdapter = new ArrayAdapter<String>(getActivity(), R.layout.spinnercontent);
         for (AtDevice.TimerType type : AtDevice.TimerType.values()) {
-            timerTypeAdapter.add(type.getText());
+            timerTypeAdapter.add(view.getContext().getString(type.getText()));
         }
         timerTypeSpinner.setAdapter(timerTypeAdapter);
         timerTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -242,7 +240,7 @@ public class TimerDetailFragment extends BaseFragment {
         Spinner repetitionSpinner = (Spinner) view.findViewById(R.id.timerRepetition);
         ArrayAdapter<String> repetitionAdapter = new ArrayAdapter<String>(getActivity(), R.layout.spinnercontent);
         for (AtDevice.AtRepetition atRepetition : AtDevice.AtRepetition.values()) {
-            repetitionAdapter.add(atRepetition.getText());
+            repetitionAdapter.add(view.getContext().getString(atRepetition.getText()));
         }
         repetitionSpinner.setAdapter(repetitionAdapter);
         repetitionSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -317,6 +315,38 @@ public class TimerDetailFragment extends BaseFragment {
         updateTargetDevice(selectedTargetDevice);
     }
 
+    private void updateTargetDevice(Device targetDevice) {
+        this.selectedTargetDevice = targetDevice;
+        TextView targetDeviceView = (TextView) getView().findViewById(R.id.targetDeviceName);
+        if (!updateTargetStateRowVisibility()) {
+            targetDeviceView.setText(R.string.unknown);
+            return;
+        }
+        setNewTargetStatesInSpinner();
+        targetDeviceView.setText(targetDevice.getName());
+
+    }
+
+    private boolean updateTargetStateRowVisibility() {
+        View targetDeviceRow = getView().findViewById(R.id.targetStateRow);
+        if (selectedTargetDevice == null) {
+            targetDeviceRow.setVisibility(View.GONE);
+            return false;
+        } else {
+            targetDeviceRow.setVisibility(View.VISIBLE);
+            return true;
+        }
+    }
+
+    private void setNewTargetStatesInSpinner() {
+        List<String> availableTargetStates = selectedTargetDevice.getSetList().getSortedKeys();
+        targetStateAdapter.clear();
+
+        for (String availableTargetState : availableTargetStates) {
+            targetStateAdapter.add(availableTargetState);
+        }
+    }
+
     private void selectTargetDeviceInSpinner(String targetDeviceName, final String targetState) {
         Intent intent = new Intent(Actions.GET_DEVICE_FOR_NAME);
         intent.putExtra(BundleExtraKeys.DEVICE_NAME, targetDeviceName);
@@ -333,19 +363,6 @@ public class TimerDetailFragment extends BaseFragment {
             }
         });
         getActivity().startService(intent);
-    }
-
-
-    private void updateTargetDevice(Device targetDevice) {
-        this.selectedTargetDevice = targetDevice;
-        TextView targetDeviceView = (TextView) getView().findViewById(R.id.targetDeviceName);
-        if (!updateTargetStateRowVisibility()) {
-            targetDeviceView.setText(R.string.unknown);
-            return;
-        }
-        setNewTargetStatesInSpinner();
-        targetDeviceView.setText(targetDevice.getName());
-
     }
 
     private void selectTargetState(String targetState) {
@@ -367,15 +384,6 @@ public class TimerDetailFragment extends BaseFragment {
                 targetStateSpinner.setSelection(i);
                 break;
             }
-        }
-    }
-
-    private void setNewTargetStatesInSpinner() {
-        List<String> availableTargetStates = selectedTargetDevice.getSetList().getSortedKeys();
-        targetStateAdapter.clear();
-
-        for (String availableTargetState : availableTargetStates) {
-            targetStateAdapter.add(availableTargetState);
         }
     }
 
@@ -479,17 +487,6 @@ public class TimerDetailFragment extends BaseFragment {
             stateAppendix.setText("");
         } else {
             stateAppendix.setVisibility(View.VISIBLE);
-        }
-    }
-
-    private boolean updateTargetStateRowVisibility() {
-        View targetDeviceRow = getView().findViewById(R.id.targetStateRow);
-        if (selectedTargetDevice == null) {
-            targetDeviceRow.setVisibility(View.GONE);
-            return false;
-        } else {
-            targetDeviceRow.setVisibility(View.VISIBLE);
-            return true;
         }
     }
 }

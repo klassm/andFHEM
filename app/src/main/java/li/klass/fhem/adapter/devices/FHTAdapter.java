@@ -28,7 +28,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.view.LayoutInflater;
 import android.widget.DatePicker;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -36,6 +35,8 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import java.util.Calendar;
+
+import javax.inject.Inject;
 
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
@@ -49,15 +50,23 @@ import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.FHTDevice;
 import li.klass.fhem.domain.fht.FHTMode;
 import li.klass.fhem.fragments.FragmentType;
+import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.DateFormatUtil;
 import li.klass.fhem.util.DatePickerUtil;
 import li.klass.fhem.util.EnumUtils;
 
+import static li.klass.fhem.constants.Actions.DEVICE_SET_DAY_TEMPERATURE;
+import static li.klass.fhem.constants.Actions.DEVICE_SET_DESIRED_TEMPERATURE;
+import static li.klass.fhem.constants.Actions.DEVICE_SET_NIGHT_TEMPERATURE;
+import static li.klass.fhem.constants.Actions.DEVICE_SET_WINDOW_OPEN_TEMPERATURE;
 import static li.klass.fhem.domain.FHTDevice.MAXIMUM_TEMPERATURE;
 import static li.klass.fhem.domain.FHTDevice.MINIMUM_TEMPERATURE;
 import static li.klass.fhem.util.EnumUtils.toStringList;
 
 public class FHTAdapter extends GenericDeviceAdapter<FHTDevice> {
+
+    @Inject
+    ApplicationProperties applicationProperties;
 
     public FHTAdapter() {
         super(FHTDevice.class);
@@ -69,32 +78,36 @@ public class FHTAdapter extends GenericDeviceAdapter<FHTDevice> {
             @Override
             public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FHTDevice device, TableRow fieldTableRow) {
                 tableLayout.addView(new TemperatureChangeTableRow<FHTDevice>(context, device.getDesiredTemp(), fieldTableRow,
-                        Actions.DEVICE_SET_DESIRED_TEMPERATURE, R.string.desiredTemperature, MINIMUM_TEMPERATURE, MAXIMUM_TEMPERATURE)
-                        .createRow(inflater, device));
+                        DEVICE_SET_DESIRED_TEMPERATURE, R.string.desiredTemperature, MINIMUM_TEMPERATURE,
+                        MAXIMUM_TEMPERATURE, applicationProperties)
+                        .createRow(getInflater(), device));
             }
         });
         registerFieldListener("dayTemperature", new FieldNameAddedToDetailListener<FHTDevice>() {
             @Override
             public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FHTDevice device, TableRow fieldTableRow) {
                 tableLayout.addView(new TemperatureChangeTableRow<FHTDevice>(context, device.getDayTemperature(), fieldTableRow,
-                        Actions.DEVICE_SET_DAY_TEMPERATURE, R.string.dayTemperature, MINIMUM_TEMPERATURE, MAXIMUM_TEMPERATURE)
-                        .createRow(inflater, device));
+                        DEVICE_SET_DAY_TEMPERATURE, R.string.dayTemperature, MINIMUM_TEMPERATURE,
+                        MAXIMUM_TEMPERATURE, applicationProperties)
+                        .createRow(getInflater(), device));
             }
         });
         registerFieldListener("nightTemperature", new FieldNameAddedToDetailListener<FHTDevice>() {
             @Override
             public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FHTDevice device, TableRow fieldTableRow) {
                 tableLayout.addView(new TemperatureChangeTableRow<FHTDevice>(context, device.getNightTemperature(), fieldTableRow,
-                        Actions.DEVICE_SET_NIGHT_TEMPERATURE, R.string.nightTemperature, MINIMUM_TEMPERATURE, MAXIMUM_TEMPERATURE)
-                        .createRow(inflater, device));
+                        DEVICE_SET_NIGHT_TEMPERATURE, R.string.nightTemperature, MINIMUM_TEMPERATURE,
+                        MAXIMUM_TEMPERATURE, applicationProperties)
+                        .createRow(getInflater(), device));
             }
         });
         registerFieldListener("windowOpenTemp", new FieldNameAddedToDetailListener<FHTDevice>() {
             @Override
             public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FHTDevice device, TableRow fieldTableRow) {
                 tableLayout.addView(new TemperatureChangeTableRow<FHTDevice>(context, device.getWindowOpenTemp(), fieldTableRow,
-                        Actions.DEVICE_SET_WINDOW_OPEN_TEMPERATURE, R.string.windowOpenTemp, MINIMUM_TEMPERATURE, MAXIMUM_TEMPERATURE)
-                        .createRow(inflater, device));
+                        DEVICE_SET_WINDOW_OPEN_TEMPERATURE, R.string.windowOpenTemp,
+                        MINIMUM_TEMPERATURE, MAXIMUM_TEMPERATURE, applicationProperties)
+                        .createRow(getInflater(), device));
             }
         });
 
@@ -109,7 +122,7 @@ public class FHTAdapter extends GenericDeviceAdapter<FHTDevice> {
                     @Override
                     public void onItemSelected(Context context, FHTDevice device, String item) {
                         FHTMode mode = FHTMode.valueOf(item);
-                        setMode(context, device, mode, this);
+                        setMode(device, mode, this);
                     }
                 }.createRow(device));
             }
@@ -121,7 +134,7 @@ public class FHTAdapter extends GenericDeviceAdapter<FHTDevice> {
                 Intent intent = new Intent(Actions.SHOW_FRAGMENT);
                 intent.putExtra(BundleExtraKeys.FRAGMENT, FragmentType.FROM_TO_WEEK_PROFILE);
                 intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
-                context.sendBroadcast(intent);
+                getContext().sendBroadcast(intent);
             }
         });
 
@@ -130,42 +143,82 @@ public class FHTAdapter extends GenericDeviceAdapter<FHTDevice> {
             public void onButtonClick(Context context, FHTDevice device) {
                 Intent intent = new Intent(Actions.DEVICE_REFRESH_VALUES);
                 intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
-                context.startService(intent);
+                getContext().startService(intent);
             }
         });
 
         detailActions.add(new AvailableTargetStatesSwitchActionRow<FHTDevice>());
     }
 
-    private void setMode(final Context context, FHTDevice device, FHTMode mode, final SpinnerActionRow<FHTDevice> spinnerActionRow) {
+    private void setMode(FHTDevice device, FHTMode mode, final SpinnerActionRow<FHTDevice> spinnerActionRow) {
         final Intent intent = new Intent(Actions.DEVICE_SET_MODE);
         intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
         intent.putExtra(BundleExtraKeys.DEVICE_MODE, mode);
 
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
         switch (mode) {
             case HOLIDAY:
 
-                handleHolidayMode(context, device, spinnerActionRow, intent, inflater);
+                handleHolidayMode(device, spinnerActionRow, intent);
 
                 break;
 
             case HOLIDAY_SHORT:
 
-                handleHolidayShortMode(context, device, spinnerActionRow, intent, inflater);
+                handleHolidayShortMode(device, spinnerActionRow, intent);
 
                 break;
             default:
-                context.startService(intent);
+                getContext().startService(intent);
                 spinnerActionRow.commitSelection();
         }
     }
 
-    private void handleHolidayShortMode(final Context context, FHTDevice device, final SpinnerActionRow<FHTDevice> spinnerActionRow, final Intent intent, LayoutInflater inflater) {
-        final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
+    private void handleHolidayMode(FHTDevice device, final SpinnerActionRow<FHTDevice> spinnerActionRow, final Intent intent) {
+        final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getContext());
 
-        final TableLayout contentView = (TableLayout) inflater.inflate(R.layout.fht_holiday_short_dialog, null);
+        TableLayout contentView = (TableLayout) getInflater().inflate(R.layout.fht_holiday_dialog, null);
+
+        final DatePicker datePicker = (DatePicker) contentView.findViewById(R.id.datePicker);
+        DatePickerUtil.hideYearField(datePicker);
+
+        TableRow temperatureUpdateRow = (TableRow) contentView.findViewById(R.id.updateRow);
+
+        final TemperatureChangeTableRow<FHTDevice> temperatureChangeTableRow =
+                new TemperatureChangeTableRow<>(getContext(), FHTDevice.MINIMUM_TEMPERATURE, temperatureUpdateRow,
+                        FHTDevice.MINIMUM_TEMPERATURE, FHTDevice.MAXIMUM_TEMPERATURE, applicationProperties);
+        contentView.addView(temperatureChangeTableRow.createRow(getInflater(), device));
+
+        dialogBuilder.setView(contentView);
+
+        dialogBuilder.setNegativeButton(R.string.cancelButton, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                spinnerActionRow.revertSelection();
+                dialogInterface.dismiss();
+            }
+        });
+
+        dialogBuilder.setPositiveButton(R.string.okButton, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int item) {
+                intent.putExtra(BundleExtraKeys.DEVICE_TEMPERATURE, temperatureChangeTableRow.getTemperature());
+                intent.putExtra(BundleExtraKeys.DEVICE_HOLIDAY1, datePicker.getDayOfMonth());
+                intent.putExtra(BundleExtraKeys.DEVICE_HOLIDAY2, datePicker.getMonth() + 1);
+
+                getContext().startService(intent);
+
+                spinnerActionRow.commitSelection();
+                dialogInterface.dismiss();
+            }
+        });
+
+        dialogBuilder.show();
+    }
+
+    private void handleHolidayShortMode(FHTDevice device, final SpinnerActionRow<FHTDevice> spinnerActionRow, final Intent intent) {
+        final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getContext());
+
+        final TableLayout contentView = (TableLayout) getInflater().inflate(R.layout.fht_holiday_short_dialog, null);
         dialogBuilder.setView(contentView);
 
         TableRow temperatureUpdateRow = (TableRow) contentView.findViewById(R.id.updateTemperatureRow);
@@ -211,9 +264,9 @@ public class FHTAdapter extends GenericDeviceAdapter<FHTDevice> {
         });
 
         final TemperatureChangeTableRow<FHTDevice> temperatureChangeTableRow =
-                new TemperatureChangeTableRow<FHTDevice>(context, FHTDevice.MINIMUM_TEMPERATURE, temperatureUpdateRow,
-                        FHTDevice.MINIMUM_TEMPERATURE, FHTDevice.MAXIMUM_TEMPERATURE);
-        contentView.addView(temperatureChangeTableRow.createRow(inflater, device));
+                new TemperatureChangeTableRow<>(getContext(), FHTDevice.MINIMUM_TEMPERATURE, temperatureUpdateRow,
+                        FHTDevice.MINIMUM_TEMPERATURE, FHTDevice.MAXIMUM_TEMPERATURE, applicationProperties);
+        contentView.addView(temperatureChangeTableRow.createRow(getInflater(), device));
 
 
         dialogBuilder.setNegativeButton(R.string.cancelButton, new DialogInterface.OnClickListener() {
@@ -236,24 +289,13 @@ public class FHTAdapter extends GenericDeviceAdapter<FHTDevice> {
                 }
                 intent.putExtra(BundleExtraKeys.DEVICE_HOLIDAY2, now.get(Calendar.DAY_OF_MONTH));
 
-                context.startService(intent);
+                getContext().startService(intent);
 
                 spinnerActionRow.commitSelection();
                 dialogInterface.dismiss();
             }
         });
         dialogBuilder.show();
-    }
-
-    public static int extraxtHolidayShortHoliday1ValueFrom(TimePicker timePicker) {
-        int hour = timePicker.getCurrentHour();
-        int minute = timePicker.getCurrentMinute();
-
-        return caclulateHolidayShortHoliday1ValueFrom(hour, minute);
-    }
-
-    public static int caclulateHolidayShortHoliday1ValueFrom(int hour, int minute) {
-        return hour * 6 + minute / 10;
     }
 
     public static boolean holidayShortIsTomorrow(TimePicker timePicker) {
@@ -267,6 +309,13 @@ public class FHTAdapter extends GenericDeviceAdapter<FHTDevice> {
         return holidayShortIsTomorrow(currentHour, currentMinutes, hour, minute);
     }
 
+    public static int extraxtHolidayShortHoliday1ValueFrom(TimePicker timePicker) {
+        int hour = timePicker.getCurrentHour();
+        int minute = timePicker.getCurrentMinute();
+
+        return caclulateHolidayShortHoliday1ValueFrom(hour, minute);
+    }
+
     public static boolean holidayShortIsTomorrow(int currentHour, int currentMinutes, int selectedHour, int selectedMinutes) {
         if (selectedHour < currentHour) {
             return true;
@@ -277,45 +326,7 @@ public class FHTAdapter extends GenericDeviceAdapter<FHTDevice> {
         return false;
     }
 
-    private void handleHolidayMode(final Context context, FHTDevice device, final SpinnerActionRow<FHTDevice> spinnerActionRow, final Intent intent, LayoutInflater inflater) {
-        final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
-
-        TableLayout contentView = (TableLayout) inflater.inflate(R.layout.fht_holiday_dialog, null);
-
-        final DatePicker datePicker = (DatePicker) contentView.findViewById(R.id.datePicker);
-        DatePickerUtil.hideYearField(datePicker);
-
-        TableRow temperatureUpdateRow = (TableRow) contentView.findViewById(R.id.updateRow);
-
-        final TemperatureChangeTableRow<FHTDevice> temperatureChangeTableRow =
-                new TemperatureChangeTableRow<FHTDevice>(context, FHTDevice.MINIMUM_TEMPERATURE, temperatureUpdateRow,
-                        FHTDevice.MINIMUM_TEMPERATURE, FHTDevice.MAXIMUM_TEMPERATURE);
-        contentView.addView(temperatureChangeTableRow.createRow(inflater, device));
-
-        dialogBuilder.setView(contentView);
-
-        dialogBuilder.setNegativeButton(R.string.cancelButton, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                spinnerActionRow.revertSelection();
-                dialogInterface.dismiss();
-            }
-        });
-
-        dialogBuilder.setPositiveButton(R.string.okButton, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int item) {
-                intent.putExtra(BundleExtraKeys.DEVICE_TEMPERATURE, temperatureChangeTableRow.getTemperature());
-                intent.putExtra(BundleExtraKeys.DEVICE_HOLIDAY1, datePicker.getDayOfMonth());
-                intent.putExtra(BundleExtraKeys.DEVICE_HOLIDAY2, datePicker.getMonth() + 1);
-
-                context.startService(intent);
-
-                spinnerActionRow.commitSelection();
-                dialogInterface.dismiss();
-            }
-        });
-
-        dialogBuilder.show();
+    public static int caclulateHolidayShortHoliday1ValueFrom(int hour, int minute) {
+        return hour * 6 + minute / 10;
     }
 }

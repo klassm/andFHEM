@@ -34,6 +34,8 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
@@ -99,6 +101,31 @@ import static li.klass.fhem.service.intent.ConvenientIntentService.STATE.SUCCESS
 
 public class DeviceIntentService extends ConvenientIntentService {
 
+    @Inject
+    RoomListService roomListService;
+    @Inject
+    FHTService fhtService;
+    @Inject
+    HeatingService heatingService;
+    @Inject
+    DeviceService deviceService;
+    @Inject
+    GenericDeviceService genericDeviceService;
+    @Inject
+    GCMSendDeviceService gcmSendDeviceService;
+    @Inject
+    CommandExecutionService commandExecutionService;
+    @Inject
+    AtService atService;
+    @Inject
+    WOLService wolService;
+    @Inject
+    DimmableDeviceService dimmableDeviceService;
+    @Inject
+    ToggleableService toggleableService;
+    @Inject
+    GraphService graphService;
+
     public DeviceIntentService() {
         super(DeviceIntentService.class.getName());
     }
@@ -107,7 +134,7 @@ public class DeviceIntentService extends ConvenientIntentService {
     protected STATE handleIntent(Intent intent, long updatePeriod, ResultReceiver resultReceiver) {
 
         String deviceName = intent.getStringExtra(BundleExtraKeys.DEVICE_NAME);
-        Device device = RoomListService.INSTANCE.getDeviceForName(deviceName, updatePeriod);
+        Device device = roomListService.getDeviceForName(deviceName, updatePeriod);
         Log.d(DeviceIntentService.class.getName(), intent.getAction());
         String action = intent.getAction();
 
@@ -122,10 +149,10 @@ public class DeviceIntentService extends ConvenientIntentService {
             result = dimIntent(intent, device);
         } else if (DEVICE_SET_DAY_TEMPERATURE.equals(action)) {
             double dayTemperature = intent.getDoubleExtra(BundleExtraKeys.DEVICE_TEMPERATURE, -1);
-            FHTService.INSTANCE.setDayTemperature((FHTDevice) device, dayTemperature);
+            fhtService.setDayTemperature((FHTDevice) device, dayTemperature);
         } else if (DEVICE_SET_NIGHT_TEMPERATURE.equals(action)) {
             double nightTemperature = intent.getDoubleExtra(BundleExtraKeys.DEVICE_TEMPERATURE, -1);
-            FHTService.INSTANCE.setNightTemperature((FHTDevice) device, nightTemperature);
+            fhtService.setNightTemperature((FHTDevice) device, nightTemperature);
         } else if (DEVICE_SET_MODE.equals(action)) {
             if (device instanceof FHTDevice) {
                 FHTMode mode = (FHTMode) intent.getSerializableExtra(BundleExtraKeys.DEVICE_MODE);
@@ -133,69 +160,69 @@ public class DeviceIntentService extends ConvenientIntentService {
                 int holiday1 = intent.getIntExtra(BundleExtraKeys.DEVICE_HOLIDAY1, -1);
                 int holiday2 = intent.getIntExtra(BundleExtraKeys.DEVICE_HOLIDAY2, -1);
 
-                FHTService.INSTANCE.setMode((FHTDevice) device, mode, desiredTemperature, holiday1, holiday2);
+                fhtService.setMode((FHTDevice) device, mode, desiredTemperature, holiday1, holiday2);
             } else if (device instanceof HeatingDevice) {
                 Enum mode = (Enum) intent.getSerializableExtra(BundleExtraKeys.DEVICE_MODE);
                 HeatingDevice heatingDevice = (HeatingDevice) device;
 
-                HeatingService.INSTANCE.setMode(heatingDevice, mode);
+                heatingService.setMode(heatingDevice, mode);
             }
 
         } else if (DEVICE_SET_WEEK_PROFILE.equals(action)) {
             if (!(device instanceof HeatingDevice)) return ERROR;
-            HeatingService.INSTANCE.setWeekProfileFor((HeatingDevice) device);
+            heatingService.setWeekProfileFor((HeatingDevice) device);
 
         } else if (DEVICE_SET_WINDOW_OPEN_TEMPERATURE.equals(action)) {
             if (!(device instanceof WindowOpenTempDevice)) return SUCCESS;
 
             double temperature = intent.getDoubleExtra(BundleExtraKeys.DEVICE_TEMPERATURE, -1);
-            HeatingService.INSTANCE.setWindowOpenTemp((WindowOpenTempDevice) device, temperature);
+            heatingService.setWindowOpenTemp((WindowOpenTempDevice) device, temperature);
 
         } else if (DEVICE_SET_DESIRED_TEMPERATURE.equals(action)) {
             double temperature = intent.getDoubleExtra(BundleExtraKeys.DEVICE_TEMPERATURE, -1);
             if (device instanceof DesiredTempDevice) {
-                HeatingService.INSTANCE.setDesiredTemperature((DesiredTempDevice) device, temperature);
+                heatingService.setDesiredTemperature((DesiredTempDevice) device, temperature);
             }
 
         } else if (DEVICE_SET_COMFORT_TEMPERATURE.equals(action)) {
             double temperature = intent.getDoubleExtra(BundleExtraKeys.DEVICE_TEMPERATURE, -1);
             if (device instanceof DesiredTempDevice) {
-                HeatingService.INSTANCE.setComfortTemperature((ComfortTempDevice) device, temperature);
+                heatingService.setComfortTemperature((ComfortTempDevice) device, temperature);
             }
 
         } else if (DEVICE_SET_ECO_TEMPERATURE.equals(action)) {
             double temperature = intent.getDoubleExtra(BundleExtraKeys.DEVICE_TEMPERATURE, -1);
             if (device instanceof DesiredTempDevice) {
-                HeatingService.INSTANCE.setEcoTemperature((EcoTempDevice) device, temperature);
+                heatingService.setEcoTemperature((EcoTempDevice) device, temperature);
             }
 
         } else if (DEVICE_RESET_WEEK_PROFILE.equals(action)) {
             if (!(device instanceof HeatingDevice)) return ERROR;
-            HeatingService.INSTANCE.resetWeekProfile((HeatingDevice) device);
+            heatingService.resetWeekProfile((HeatingDevice) device);
 
         } else if (DEVICE_REFRESH_VALUES.equals(action)) {
-            FHTService.INSTANCE.refreshValues((FHTDevice) device);
+            fhtService.refreshValues((FHTDevice) device);
 
         } else if (DEVICE_RENAME.equals(action)) {
             String newName = intent.getStringExtra(BundleExtraKeys.DEVICE_NEW_NAME);
-            DeviceService.INSTANCE.renameDevice(device, newName);
+            deviceService.renameDevice(device, newName);
 
         } else if (DEVICE_DELETE.equals(action)) {
-            DeviceService.INSTANCE.deleteDevice(device);
+            deviceService.deleteDevice(device);
 
         } else if (DEVICE_MOVE_ROOM.equals(action)) {
             String newRoom = intent.getStringExtra(BundleExtraKeys.DEVICE_NEW_ROOM);
-            DeviceService.INSTANCE.moveDevice(device, newRoom);
+            deviceService.moveDevice(device, newRoom);
 
         } else if (DEVICE_SET_ALIAS.equals(action)) {
             String newAlias = intent.getStringExtra(BundleExtraKeys.DEVICE_NEW_ALIAS);
-            DeviceService.INSTANCE.setAlias(device, newAlias);
+            deviceService.setAlias(device, newAlias);
 
         } else if (DEVICE_WAKE.equals(action)) {
-            WOLService.INSTANCE.wake((WOLDevice) device);
+            wolService.wake((WOLDevice) device);
 
         } else if (DEVICE_REFRESH_STATE.equals(action)) {
-            WOLService.INSTANCE.requestRefreshState((WOLDevice) device);
+            wolService.requestRefreshState((WOLDevice) device);
         } else if (DEVICE_WIDGET_TOGGLE.equals(action)) {
             result = toggleIntent(device);
 
@@ -209,30 +236,93 @@ public class DeviceIntentService extends ConvenientIntentService {
             String name = intent.getStringExtra(STATE_NAME);
             String value = intent.getStringExtra(STATE_VALUE);
 
-            GenericDeviceService.INSTANCE.setSubState(device, name, value);
+            genericDeviceService.setSubState(device, name, value);
 
         } else if (GCM_ADD_SELF.equals(action)) {
-            GCMSendDeviceService.INSTANCE.addSelf((GCMSendDevice) device);
+            gcmSendDeviceService.addSelf((GCMSendDevice) device);
 
         } else if (GCM_REMOVE_ID.equals(action)) {
             String registrationId = intent.getStringExtra(BundleExtraKeys.GCM_REGISTRATION_ID);
-            GCMSendDeviceService.INSTANCE.removeRegistrationId((GCMSendDevice) device, registrationId);
+            gcmSendDeviceService.removeRegistrationId((GCMSendDevice) device, registrationId);
 
         } else if (RESEND_LAST_FAILED_COMMAND.equals(action)) {
 
-            String lastFailedCommand = CommandExecutionService.INSTANCE.getLastFailedCommand();
+            String lastFailedCommand = commandExecutionService.getLastFailedCommand();
             if ("xmllist".equalsIgnoreCase(lastFailedCommand)) {
                 Intent updateIntent = new Intent(Actions.DO_UPDATE);
                 updateIntent.putExtra(BundleExtraKeys.DO_REFRESH, true);
                 sendBroadcast(updateIntent);
             } else {
-                CommandExecutionService.INSTANCE.resendLastFailedCommand();
+                commandExecutionService.resendLastFailedCommand();
             }
         }
 
         startService(new Intent(Actions.REDRAW_ALL_WIDGETS));
 
         return result;
+    }
+
+    /**
+     * Find out graph data for a given device and notify the result receiver with the read graph data
+     *
+     * @param intent         received intent
+     * @param device         device to read the graph data
+     * @param resultReceiver receiver to notify on result
+     * @return success?
+     */
+    private STATE graphIntent(Intent intent, Device device, ResultReceiver resultReceiver) {
+        ArrayList<ChartSeriesDescription> seriesDescriptions = intent.getParcelableArrayListExtra(BundleExtraKeys.DEVICE_GRAPH_SERIES_DESCRIPTIONS);
+        Calendar startDate = (Calendar) intent.getSerializableExtra(BundleExtraKeys.START_DATE);
+        Calendar endDate = (Calendar) intent.getSerializableExtra(BundleExtraKeys.END_DATE);
+
+        HashMap<ChartSeriesDescription, List<GraphEntry>> graphData = graphService.getGraphData(device, seriesDescriptions, startDate, endDate);
+        sendSingleExtraResult(resultReceiver, ResultCodes.SUCCESS, DEVICE_GRAPH_ENTRY_MAP, graphData);
+        return STATE.DONE;
+    }
+
+    /**
+     * Toggle a device and notify the result receiver
+     *
+     * @param device device to toggle
+     * @return success?
+     */
+    private STATE toggleIntent(Device device) {
+        if (device instanceof ToggleableDevice && ((ToggleableDevice) device).supportsToggle()) {
+            toggleableService.toggleState((ToggleableDevice) device);
+            return SUCCESS;
+        } else {
+            return ERROR;
+        }
+    }
+
+    /**
+     * Set the state of a device and notify the result receiver
+     *
+     * @param intent received intent
+     * @param device device to set the state on
+     * @return success ?
+     */
+    private STATE setStateIntent(Intent intent, Device device) {
+        String targetState = intent.getStringExtra(BundleExtraKeys.DEVICE_TARGET_STATE);
+        genericDeviceService.setState(device, targetState);
+
+        return STATE.SUCCESS;
+    }
+
+    /**
+     * Dim a device and notify the result receiver
+     *
+     * @param intent received intent
+     * @param device device to dim
+     * @return success?
+     */
+    private STATE dimIntent(Intent intent, Device device) {
+        int dimProgress = intent.getIntExtra(BundleExtraKeys.DEVICE_DIM_PROGRESS, -1);
+        if (device instanceof DimmableDevice) {
+            dimmableDeviceService.dim((DimmableDevice) device, dimProgress);
+            return STATE.SUCCESS;
+        }
+        return STATE.ERROR;
     }
 
     private STATE processTimerIntent(Intent intent, boolean isModify) {
@@ -252,74 +342,11 @@ public class DeviceIntentService extends ConvenientIntentService {
         boolean isActive = extras.getBoolean(BundleExtraKeys.TIMER_IS_ACTIVE);
 
         if (isModify) {
-            AtService.INSTANCE.modify(timerName, hour, minute, second, repetition, type, targetDeviceName, targetState, stateAppendix, isActive);
+            atService.modify(timerName, hour, minute, second, repetition, type, targetDeviceName, targetState, stateAppendix, isActive);
         } else {
-            AtService.INSTANCE.createNew(timerName, hour, minute, second, repetition, type, targetDeviceName, targetState, stateAppendix, isActive);
+            atService.createNew(timerName, hour, minute, second, repetition, type, targetDeviceName, targetState, stateAppendix, isActive);
         }
 
         return SUCCESS;
-    }
-
-    /**
-     * Dim a device and notify the result receiver
-     *
-     * @param intent received intent
-     * @param device device to dim
-     * @return success?
-     */
-    private STATE dimIntent(Intent intent, Device device) {
-        int dimProgress = intent.getIntExtra(BundleExtraKeys.DEVICE_DIM_PROGRESS, -1);
-        if (device instanceof DimmableDevice) {
-            DimmableDeviceService.INSTANCE.dim((DimmableDevice) device, dimProgress);
-            return STATE.SUCCESS;
-        }
-        return STATE.ERROR;
-    }
-
-    /**
-     * Set the state of a device and notify the result receiver
-     *
-     * @param intent received intent
-     * @param device device to set the state on
-     * @return success ?
-     */
-    private STATE setStateIntent(Intent intent, Device device) {
-        String targetState = intent.getStringExtra(BundleExtraKeys.DEVICE_TARGET_STATE);
-        GenericDeviceService.INSTANCE.setState(device, targetState);
-
-        return STATE.SUCCESS;
-    }
-
-    /**
-     * Toggle a device and notify the result receiver
-     *
-     * @param device device to toggle
-     * @return success?
-     */
-    private STATE toggleIntent(Device device) {
-        if (device instanceof ToggleableDevice && ((ToggleableDevice) device).supportsToggle()) {
-            ToggleableService.INSTANCE.toggleState((ToggleableDevice) device);
-            return SUCCESS;
-        } else {
-            return ERROR;
-        }
-    }
-
-    /**
-     * Find out graph data for a given device and notify the result receiver with the read graph data
-     *
-     * @param intent         received intent
-     * @param device         device to read the graph data
-     * @param resultReceiver receiver to notify on result
-     * @return success?
-     */
-    private STATE graphIntent(Intent intent, Device device, ResultReceiver resultReceiver) {
-        ArrayList<ChartSeriesDescription> seriesDescriptions = intent.getParcelableArrayListExtra(BundleExtraKeys.DEVICE_GRAPH_SERIES_DESCRIPTIONS);
-        Calendar startDate = (Calendar) intent.getSerializableExtra(BundleExtraKeys.START_DATE);
-        Calendar endDate = (Calendar) intent.getSerializableExtra(BundleExtraKeys.END_DATE);
-
-        HashMap<ChartSeriesDescription, List<GraphEntry>> graphData = GraphService.INSTANCE.getGraphData(device, seriesDescriptions, startDate, endDate);
-        sendSingleExtraResult(resultReceiver, ResultCodes.SUCCESS, DEVICE_GRAPH_ENTRY_MAP, graphData);
-        return STATE.DONE;
     }
 }

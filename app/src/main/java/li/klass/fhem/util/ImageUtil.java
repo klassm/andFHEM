@@ -24,9 +24,12 @@
 
 package li.klass.fhem.util;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.widget.ImageView;
@@ -34,14 +37,22 @@ import android.widget.ImageView;
 import java.io.InputStream;
 import java.net.URL;
 
-import li.klass.fhem.service.CommandExecutionService;
+import li.klass.fhem.constants.Actions;
+import li.klass.fhem.constants.BundleExtraKeys;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 public class ImageUtil {
 
     private static long lastFail = 0;
 
-    public interface ImageLoadedListener {
-        void imageLoaded(Bitmap bitmap);
+    public static void setExternalImageIn(final ImageView imageView, final String imageURL) {
+        loadImageFrom(imageURL, new ImageLoadedListener() {
+            @Override
+            public void imageLoaded(Bitmap bitmap) {
+                imageView.setImageBitmap(bitmap);
+            }
+        });
     }
 
     public static void loadImageFrom(final String imageURL, final ImageLoadedListener callback) {
@@ -84,45 +95,32 @@ public class ImageUtil {
         }
     }
 
-    public static void setExternalImageIn(final ImageView imageView, final String imageURL) {
-        loadImageFrom(imageURL, new ImageLoadedListener() {
+    public static void loadImageFromFHEMAndSetIn(Context context, final ImageView imageView, final String relativeImageUrl,
+                                                 final int scaleHeight, final int scaleWidth) {
+        checkNotNull(context);
+
+        Intent intent = new Intent(Actions.LOAD_IMAGE);
+        intent.putExtra(BundleExtraKeys.IMAGE_RELATIVE_PATH, relativeImageUrl);
+        intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new FhemResultReceiver() {
             @Override
-            public void imageLoaded(Bitmap bitmap) {
+            protected void onReceiveResult(int resultCode, Bundle resultData) {
+                if (!resultData.containsKey(BundleExtraKeys.IMAGE)) {
+                    return;
+                }
+
+                Bitmap bitmap = (Bitmap) resultData.get(BundleExtraKeys.IMAGE);
+                resizeBitmap(bitmap, scaleHeight, scaleWidth);
                 imageView.setImageBitmap(bitmap);
             }
         });
-    }
-
-    public static void loadImageFromFHEMAndSetIn(final ImageView imageView, final String relativeImageUrl,
-                                                 final int scaleHeight, final int scaleWidth) {
-        final Handler handler = new Handler();
-
-        new AsyncTask<Void, Void, Bitmap>() {
-
-            @Override
-            protected Bitmap doInBackground(Void... voids) {
-                Bitmap bitmap = CommandExecutionService.INSTANCE.getBitmap(relativeImageUrl);
-                if (bitmap == null) return null;
-
-                return resizeBitmap(bitmap, scaleHeight, scaleWidth);
-            }
-
-            @Override
-            protected void onPostExecute(final Bitmap bitmap) {
-                super.onPostExecute(bitmap);
-                if (bitmap == null) return;
-
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        imageView.setImageBitmap(bitmap);
-                    }
-                });
-            }
-        }.execute(null, null);
+        context.startService(intent);
     }
 
     public static Bitmap resizeBitmap(Bitmap bitmap, int newHeight, int newWidth) {
         return Bitmap.createScaledBitmap(bitmap, newWidth, newHeight, false);
+    }
+
+    public interface ImageLoadedListener {
+        void imageLoaded(Bitmap bitmap);
     }
 }

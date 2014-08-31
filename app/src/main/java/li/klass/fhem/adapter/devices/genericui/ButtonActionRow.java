@@ -24,32 +24,31 @@
 
 package li.klass.fhem.adapter.devices.genericui;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 
 public abstract class ButtonActionRow {
-    private final String description;
-
     public static final int LAYOUT_DETAIL = R.layout.device_detail_buttonrow;
+    private final String description;
     private String buttonText;
 
-    public ButtonActionRow(int buttonText) {
-        this("", AndFHEMApplication.getContext().getString(buttonText));
-    }
-
-    public ButtonActionRow(String buttonText) {
-        this("", buttonText);
+    public ButtonActionRow(Context context, int buttonText) {
+        this("", context.getString(buttonText));
     }
 
     public ButtonActionRow(String description, String buttonText) {
         this.description = description;
         this.buttonText = buttonText;
+    }
+
+    public ButtonActionRow(String buttonText) {
+        this("", buttonText);
     }
 
     @SuppressWarnings("unchecked")

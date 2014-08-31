@@ -34,23 +34,18 @@ import android.widget.ToggleButton;
 
 import java.util.Map;
 
-import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.domain.core.Device;
 
 public abstract class ToggleActionRow<D extends Device> {
 
-    protected abstract boolean isOn(D device);
-    protected abstract void onButtonClick(final Context context, D device, boolean isChecked);
-
+    public static final int LAYOUT_DETAIL = R.layout.device_detail_togglebuttonrow;
+    public static final int LAYOUT_OVERVIEW = R.layout.device_overview_togglebuttonrow;
     private String description;
     private int layout;
 
-    public static final int LAYOUT_DETAIL = R.layout.device_detail_togglebuttonrow;
-    public static final int LAYOUT_OVERVIEW = R.layout.device_overview_togglebuttonrow;
-
-    public ToggleActionRow(int description, int layout) {
-        this(AndFHEMApplication.getContext().getString(description), layout);
+    public ToggleActionRow(Context context, int description, int layout) {
+        this(context.getString(description), layout);
     }
 
     public ToggleActionRow(String description, int layout) {
@@ -65,11 +60,12 @@ public abstract class ToggleActionRow<D extends Device> {
         ((TextView) row.findViewById(R.id.description)).setText(description);
         ToggleButton button = (ToggleButton) row.findViewById(R.id.toggleButton);
         button.setOnClickListener(createListener(context, device, button));
-        setToogleButtonText(device, button);
+        setToogleButtonText(device, button, context);
         button.setChecked(isOn(device));
 
         return row;
     }
+
     private ToggleButton.OnClickListener createListener(final Context context, final D device, final ToggleButton button) {
         return new Button.OnClickListener() {
             @Override
@@ -80,7 +76,7 @@ public abstract class ToggleActionRow<D extends Device> {
     }
 
     @SuppressWarnings("unchecked")
-    protected void setToogleButtonText(D device, ToggleButton toggleButton) {
+    protected void setToogleButtonText(D device, ToggleButton toggleButton, Context context) {
         Map<String, String> eventMap = device.getEventMap();
         if (eventMap == null) return;
 
@@ -92,4 +88,8 @@ public abstract class ToggleActionRow<D extends Device> {
             toggleButton.setTextOff(eventMap.get("off"));
         }
     }
+
+    protected abstract boolean isOn(D device);
+
+    protected abstract void onButtonClick(final Context context, D device, boolean isChecked);
 }

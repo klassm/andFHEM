@@ -44,7 +44,6 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.timer.TimerListAdapter;
 import li.klass.fhem.constants.Actions;
@@ -110,6 +109,17 @@ public class TimerListFragment extends BaseFragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        if (createNewDeviceCalled) {
+            createNewDeviceCalled = false;
+            update(true);
+        } else {
+            update(false);
+        }
+    }
+
+    @Override
     public void update(boolean doUpdate) {
         Intent intent = new Intent(Actions.GET_ALL_ROOMS_DEVICE_LIST);
         intent.putExtra(BundleExtraKeys.DO_REFRESH, doUpdate);
@@ -132,21 +142,16 @@ public class TimerListFragment extends BaseFragment {
                 adapter.updateData(devices);
 
                 Intent intent = new Intent(Actions.DISMISS_UPDATING_DIALOG);
-                AndFHEMApplication.getContext().sendBroadcast(intent);
+                getActivity().sendBroadcast(intent);
             }
         });
         getActivity().startService(intent);
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (createNewDeviceCalled) {
-            createNewDeviceCalled = false;
-            update(true);
-        } else {
-            update(false);
-        }
+    private TimerListAdapter getAdapter() {
+        if (getView() == null) return null;
+        ListView listView = (ListView) getView().findViewById(R.id.list);
+        return (TimerListAdapter) listView.getAdapter();
     }
 
     @Override
@@ -172,11 +177,5 @@ public class TimerListFragment extends BaseFragment {
         }
 
         return super.onContextItemSelected(item);
-    }
-
-    private TimerListAdapter getAdapter() {
-        if (getView() == null) return null;
-        ListView listView = (ListView) getView().findViewById(R.id.list);
-        return (TimerListAdapter) listView.getAdapter();
     }
 }

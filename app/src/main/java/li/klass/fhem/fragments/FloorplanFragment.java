@@ -35,7 +35,6 @@ import java.net.URL;
 import java.nio.charset.Charset;
 
 import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.service.connection.ConnectionService;
 import li.klass.fhem.util.BuildVersion;
 
 public class FloorplanFragment extends AbstractWebViewFragment {
@@ -79,7 +78,7 @@ public class FloorplanFragment extends AbstractWebViewFragment {
     }
 
     protected String getLoadUrl() {
-        String url = ConnectionService.INSTANCE.getCurrentServer().getUrl();
+        String url = connectionService.getCurrentServer().getUrl();
         return url + "/floorplan/" + deviceName;
     }
 }

@@ -36,6 +36,7 @@ public abstract class FHEMConnection {
     public static final int CONNECTION_TIMEOUT_DEFAULT_SECONDS = 4;
 
     protected FHEMServerSpec serverSpec;
+    protected ApplicationProperties applicationProperties;
 
     public abstract RequestResult<String> executeCommand(String command);
 
@@ -61,8 +62,12 @@ public abstract class FHEMConnection {
     }
 
     protected int getConnectionTimeoutMilliSeconds() {
-        return 1000 * ApplicationProperties.INSTANCE.getIntegerSharedPreference(
+        return 1000 * applicationProperties.getIntegerSharedPreference(
                 PreferenceKeys.CONNECTION_TIMEOUT, CONNECTION_TIMEOUT_DEFAULT_SECONDS
         );
+    }
+
+    public void setApplicationProperties(ApplicationProperties applicationProperties) {
+        this.applicationProperties = applicationProperties;
     }
 }

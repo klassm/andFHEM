@@ -1,4 +1,35 @@
+/*
+ * AndFHEM - Open Source Android application to control a FHEM home automation
+ * server.
+ *
+ * Copyright (c) 2011, Matthias Klass or third-party contributors as
+ * indicated by the @author tags or express copyright attribution
+ * statements applied by the authors.  All third-party contributions are
+ * distributed under license by Red Hat Inc.
+ *
+ * This copyrighted material is made available to anyone wishing to use, modify,
+ * copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+ * for more details.
+ *
+ * You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+ * along with this distribution; if not, write to:
+ *   Free Software Foundation, Inc.
+ *   51 Franklin Street, Fifth Floor
+ *   Boston, MA  02110-1301  USA
+ */
+
 package li.klass.fhem.activities.graph;
+
+import android.content.Context;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 
 import li.klass.fhem.activities.graph.additions.AdditionalChart;
 import li.klass.fhem.activities.graph.additions.RegressionAdditionalChart;
@@ -7,13 +38,9 @@ import li.klass.fhem.service.graph.GraphEntry;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.service.graph.description.SeriesType;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-
 public class ChartData implements Comparable<ChartData>, Iterable<ViewableChartSeries> {
 
+    private final Context context;
     private ChartSeriesDescription seriesDescription;
     private List<GraphEntry> graphData;
     private List<AdditionalChart> additionalCharts = new ArrayList<AdditionalChart>();
@@ -21,20 +48,13 @@ public class ChartData implements Comparable<ChartData>, Iterable<ViewableChartS
     private double minimum = Double.MAX_VALUE;
     private double maximum = Double.MIN_VALUE;
 
-    public ChartData(ChartSeriesDescription seriesDescription, List<GraphEntry> graphData) {
+    public ChartData(ChartSeriesDescription seriesDescription, List<GraphEntry> graphData, Context context) {
         this.seriesDescription = seriesDescription;
         this.graphData = handleShowDiscreteValues(graphData, seriesDescription);
+        this.context = context;
 
         calculateMinMax();
         calculateAdditionalCharts();
-    }
-
-    public ChartSeriesDescription getSeriesDescription() {
-        return seriesDescription;
-    }
-
-    public List<GraphEntry> getGraphData() {
-        return graphData;
     }
 
     private List<GraphEntry> handleShowDiscreteValues(List<GraphEntry> data, ChartSeriesDescription chartSeriesDescription) {
@@ -84,6 +104,10 @@ public class ChartData implements Comparable<ChartData>, Iterable<ViewableChartS
         }
     }
 
+    public List<GraphEntry> getGraphData() {
+        return graphData;
+    }
+
     public double getMinimumY() {
         return minimum;
     }
@@ -107,8 +131,8 @@ public class ChartData implements Comparable<ChartData>, Iterable<ViewableChartS
         return seriesDescription.getColumnName().compareTo(chartData.getSeriesDescription().getColumnName());
     }
 
-    public int getNumberOfContainedSeries() {
-        return additionalCharts.size() + 1;
+    public ChartSeriesDescription getSeriesDescription() {
+        return seriesDescription;
     }
 
     @Override
@@ -145,6 +169,10 @@ public class ChartData implements Comparable<ChartData>, Iterable<ViewableChartS
         };
     }
 
+    public int getNumberOfContainedSeries() {
+        return additionalCharts.size() + 1;
+    }
+
     public void handleMinMax(Date minimumX, Date maximumX, double minimumY, double maximumY) {
         if (seriesDescription.isShowDiscreteValues()) {
             GraphEntry first = graphData.get(0);
@@ -153,5 +181,9 @@ public class ChartData implements Comparable<ChartData>, Iterable<ViewableChartS
             graphData.add(0, new GraphEntry(minimumX, first.getValue()));
             graphData.add(new GraphEntry(maximumX, last.getValue()));
         }
+    }
+
+    public Context getContext() {
+        return context;
     }
 }

@@ -44,6 +44,7 @@ import com.google.common.base.Optional;
 
 import java.io.Serializable;
 
+import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.activities.core.Updateable;
 import li.klass.fhem.constants.Actions;
@@ -68,6 +69,12 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
     private boolean backPressCalled = false;
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        ((AndFHEMApplication) getActivity().getApplication()).inject(this);
+    }
+
+    @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
@@ -83,6 +90,17 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
                 }
             });
         }
+    }
+
+    private void hideConnectionError() {
+        if (isNavigation) return;
+
+        View view = getView();
+        if (view == null) return;
+
+        View errorLayout = view.findViewById(R.id.errorLayout);
+        if (errorLayout == null) return;
+        errorLayout.setVisibility(View.GONE);
     }
 
     @Override
@@ -142,14 +160,6 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
         this.isNavigation = isNavigation;
     }
 
-    protected Optional<ProgressBar> getUpdatingBar(View view) {
-        if (view == null) {
-            return Optional.absent();
-        } else {
-            return Optional.fromNullable((ProgressBar) view.findViewById(R.id.updateProgress));
-        }
-    }
-
     protected void hideEmptyView() {
         View view = getView();
         if (view != null) {
@@ -180,22 +190,19 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
         getActivity().sendBroadcast(intent);
     }
 
+    protected Optional<ProgressBar> getUpdatingBar(View view) {
+        if (view == null) {
+            return Optional.absent();
+        } else {
+            return Optional.fromNullable((ProgressBar) view.findViewById(R.id.updateProgress));
+        }
+    }
+
     protected void showUpdatingBar() {
         Optional<ProgressBar> updatingBar = getUpdatingBar(getView());
         if (updatingBar.isPresent()) {
             updatingBar.get().setVisibility(View.VISIBLE);
         }
-    }
-
-    private void hideConnectionError() {
-        if (isNavigation) return;
-
-        View view = getView();
-        if (view == null) return;
-
-        View errorLayout = view.findViewById(R.id.errorLayout);
-        if (errorLayout == null) return;
-        errorLayout.setVisibility(View.GONE);
     }
 
     protected void fillEmptyView(LinearLayout view, int text) {

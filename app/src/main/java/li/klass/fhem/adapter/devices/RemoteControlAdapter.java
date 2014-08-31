@@ -63,7 +63,7 @@ public class RemoteControlAdapter extends ToggleableAdapter<RemoteControlDevice>
     }
 
     private TableLayout createRemoteControlTable(Context context, RemoteControlDevice device, LayoutInflater layoutInflater) {
-        TableLayout tableLayout = (TableLayout) inflater.inflate(R.layout.remote_control_layout, null);
+        TableLayout tableLayout = (TableLayout) getInflater().inflate(R.layout.remote_control_layout, null);
         assert tableLayout != null;
 
         for (List<RemoteControlDevice.Entry> row : device.getRows()) {
@@ -92,7 +92,7 @@ public class RemoteControlAdapter extends ToggleableAdapter<RemoteControlDevice>
 
 
         int px = (int) DisplayUtil.dpToPx(50);
-        ImageUtil.loadImageFromFHEMAndSetIn(imageButton, entry.getIconPath(), px, px);
+        ImageUtil.loadImageFromFHEMAndSetIn(getContext(), imageButton, entry.getIconPath(), px, px);
 
         assert imageButton != null;
         imageButton.setOnClickListener(new View.OnClickListener() {

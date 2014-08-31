@@ -1,3 +1,27 @@
+/*
+ * AndFHEM - Open Source Android application to control a FHEM home automation
+ * server.
+ *
+ * Copyright (c) 2011, Matthias Klass or third-party contributors as
+ * indicated by the @author tags or express copyright attribution
+ * statements applied by the authors.  All third-party contributions are
+ * distributed under license by Red Hat Inc.
+ *
+ * This copyrighted material is made available to anyone wishing to use, modify,
+ * copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+ * for more details.
+ *
+ * You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+ * along with this distribution; if not, write to:
+ *   Free Software Foundation, Inc.
+ *   51 Franklin Street, Fifth Floor
+ *   Boston, MA  02110-1301  USA
+ */
+
 package li.klass.fhem.gcm;
 
 import android.app.PendingIntent;
@@ -11,9 +35,11 @@ import com.google.android.gcm.GCMBaseIntentService;
 import com.google.android.gcm.GCMRegistrar;
 
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.Map;
 
+import javax.inject.Inject;
+
+import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.activities.AndFHEMMainActivity;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
@@ -22,15 +48,37 @@ import li.klass.fhem.util.NotificationUtil;
 import li.klass.fhem.util.StringUtil;
 import li.klass.fhem.util.Tasker;
 
+import static com.google.common.collect.Maps.newHashMap;
 import static li.klass.fhem.constants.PreferenceKeys.GCM_PROJECT_ID;
 import static li.klass.fhem.constants.PreferenceKeys.GCM_REGISTRATION_ID;
 
 public class GCMIntentService extends GCMBaseIntentService {
     private static final String TAG = GCMIntentService.class.getName();
 
+    @Inject
+    ApplicationProperties applicationProperties;
+
+    private static void registerWithGCMInternal(Context context, String projectId) {
+        if (StringUtil.isBlank(projectId)) return;
+
+        if (!GCMRegistrar.isRegistered(context)) {
+            GCMRegistrar.checkDevice(context);
+            GCMRegistrar.checkManifest(context);
+
+            GCMRegistrar.setRegisterOnServerLifespan(context, 1000L * 60 * 60 * 24 * 30);
+            GCMRegistrar.register(context, projectId);
+        }
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        ((AndFHEMApplication) getApplication()).inject(this);
+    }
+
     @Override
     protected void onRegistered(Context context, String registrationId) {
-        ApplicationProperties.INSTANCE.setSharedPreference(GCM_REGISTRATION_ID, registrationId);
+        applicationProperties.setSharedPreference(GCM_REGISTRATION_ID, registrationId);
         Log.i(TAG, "Device registered: regId = " + registrationId);
 
         Intent intent = new Intent(Actions.GCM_REGISTERED);
@@ -88,10 +136,6 @@ public class GCMIntentService extends GCMBaseIntentService {
                 shouldVibrate(extras));
     }
 
-    private boolean shouldVibrate(Bundle extras) {
-        return extras.containsKey("vibrate") && "true".equalsIgnoreCase(extras.getString("vibrate"));
-    }
-
     private void handleNotify(Bundle extras) {
         if (! extras.containsKey("changes")) return;
 
@@ -102,7 +146,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 
         String[] changes = changesText.split("<\\|>");
 
-        Map<String, String> changeMap = new HashMap<String, String>();
+        Map<String, String> changeMap = newHashMap();
         for (String change : changes) {
             String[] parts = change.split(":");
             if (parts.length != 2) continue;
@@ -122,6 +166,10 @@ public class GCMIntentService extends GCMBaseIntentService {
         startService(parseIntent);
     }
 
+    private boolean shouldVibrate(Bundle extras) {
+        return extras.containsKey("vibrate") && "true".equalsIgnoreCase(extras.getString("vibrate"));
+    }
+
     @Override
     protected void onDeletedMessages(Context context, int total) {
         Log.i(TAG, "Received deleted messages notification");
@@ -139,33 +187,9 @@ public class GCMIntentService extends GCMBaseIntentService {
         return super.onRecoverableError(context, errorId);
     }
 
-    public static void registerWithGCM(Context context) {
-        ApplicationProperties properties = ApplicationProperties.INSTANCE;
-        String projectId = properties.getStringSharedPreference(GCM_PROJECT_ID, null);
-        registerWithGCMInternal(context, projectId);
-    }
-
-    public static void registerWithGCM(Context context, String projectId) {
-        ApplicationProperties.INSTANCE.setSharedPreference(GCM_REGISTRATION_ID, null);
-        GCMRegistrar.unregister(context);
-        registerWithGCMInternal(context, projectId);
-    }
-
-    private static void registerWithGCMInternal(Context context, String projectId) {
-        if (StringUtil.isBlank(projectId)) return;
-
-        if (!GCMRegistrar.isRegistered(context)) {
-            GCMRegistrar.checkDevice(context);
-            GCMRegistrar.checkManifest(context);
-
-            GCMRegistrar.setRegisterOnServerLifespan(context, 1000L * 60 * 60 * 24 * 30);
-            GCMRegistrar.register(context, projectId);
-        }
-    }
-
     @Override
     protected String[] getSenderIds(Context context) {
-        String projectId = ApplicationProperties.INSTANCE.getStringSharedPreference(GCM_PROJECT_ID, null);
+        String projectId = applicationProperties.getStringSharedPreference(GCM_PROJECT_ID, null);
         if (StringUtil.isBlank(projectId)) {
             return new String[]{};
         }

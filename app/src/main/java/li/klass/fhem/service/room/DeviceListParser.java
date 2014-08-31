@@ -28,8 +28,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import com.google.common.collect.Lists;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -38,31 +36,36 @@ import org.xml.sax.InputSource;
 
 import java.io.StringReader;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.inject.Inject;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
+import li.klass.fhem.dagger.ForApplication;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceType;
 import li.klass.fhem.domain.core.RoomDeviceList;
 import li.klass.fhem.domain.core.XmllistAttribute;
+import li.klass.fhem.domain.log.LogDevice;
 import li.klass.fhem.error.ErrorHolder;
 import li.klass.fhem.fhem.RequestResult;
 import li.klass.fhem.fhem.RequestResultError;
+import li.klass.fhem.service.connection.ConnectionService;
 import li.klass.fhem.util.StringEscapeUtil;
 import li.klass.fhem.util.StringUtil;
 import li.klass.fhem.util.XMLUtil;
+
+import static com.google.common.collect.Lists.newArrayList;
+import static com.google.common.collect.Maps.newHashMap;
+import static li.klass.fhem.domain.core.DeviceType.getDeviceTypeFor;
 
 
 /**
@@ -70,17 +73,17 @@ import li.klass.fhem.util.XMLUtil;
  */
 public class DeviceListParser {
 
-    public static final DeviceListParser INSTANCE = new DeviceListParser();
     public static final String TAG = DeviceListParser.class.getName();
-
+    @Inject
+    ConnectionService connectionService;
+    @Inject
+    @ForApplication
+    Context applicationContext;
     private Map<Class<Device>, Map<String, Set<Method>>> deviceClassCache;
-
-    private DeviceListParser() {
-    }
 
     public RoomDeviceList parseAndWrapExceptions(String xmlList) {
         try {
-            return parseXMLList(xmlList);
+            return parseXMLListUnsafe(xmlList);
         } catch (Exception e) {
             Log.e(TAG, "cannot parse xmllist", e);
             ErrorHolder.setError(e, "cannot parse xmllist.");
@@ -90,7 +93,7 @@ public class DeviceListParser {
         }
     }
 
-    private RoomDeviceList parseXMLList(String xmlList) throws Exception {
+    public RoomDeviceList parseXMLListUnsafe(String xmlList) throws Exception {
         if (xmlList != null) {
             xmlList = xmlList.trim();
         }
@@ -110,17 +113,19 @@ public class DeviceListParser {
 
         ReadErrorHolder errorHolder = new ReadErrorHolder();
 
-        Map<String, Device> allDevices = new HashMap<String, Device>();
+        Map<String, Device> allDevices = newHashMap();
 
         DeviceType[] deviceTypes = DeviceType.values();
         for (DeviceType deviceType : deviceTypes) {
-            int localErrorCount = devicesFromDocument(deviceType.getDeviceClass(), document,
-                    deviceType.getXmllistTag(), allDevices);
-            if (localErrorCount > 0) {
-                errorHolder.addErrors(deviceType, localErrorCount);
+            if (connectionService.mayShowInCurrentConnectionType(deviceType)) {
+                int localErrorCount = devicesFromDocument(deviceType.getDeviceClass(), document,
+                        deviceType.getXmllistTag(), allDevices);
+
+                if (localErrorCount > 0) {
+                    errorHolder.addErrors(deviceType, localErrorCount);
+                }
             }
         }
-
 
         performAfterReadOperations(allDevices, errorHolder);
         RoomDeviceList roomDeviceList = buildRoomDeviceList(allDevices);
@@ -130,28 +135,6 @@ public class DeviceListParser {
         Log.i(TAG, "loaded " + allDevices.size() + " devices!");
 
         return roomDeviceList;
-    }
-
-    private RoomDeviceList buildRoomDeviceList(Map<String, Device> allDevices) {
-        RoomDeviceList roomDeviceList = new RoomDeviceList(RoomDeviceList.ALL_DEVICES_ROOM);
-        for (Device device : allDevices.values()) {
-            roomDeviceList.addDevice(device);
-        }
-
-        return roomDeviceList;
-    }
-
-    private void handleErrors(ReadErrorHolder errorHolder) {
-        if (errorHolder.hasErrors()) {
-            Context context = AndFHEMApplication.getContext();
-            String errorMessage = context.getString(R.string.errorDeviceListLoad);
-            String deviceTypesError = StringUtil.concatenate(errorHolder.getErrorDeviceTypeNames(), ",");
-            errorMessage = String.format(errorMessage, "" + errorHolder.getErrorCount(), deviceTypesError);
-
-            Intent intent = new Intent(Actions.SHOW_TOAST);
-            intent.putExtra(BundleExtraKeys.CONTENT, errorMessage);
-            context.sendBroadcast(intent);
-        }
     }
 
     private String validateXmllist(String xmlList) {
@@ -191,43 +174,6 @@ public class DeviceListParser {
         return xmlList;
     }
 
-    private void performAfterReadOperations(Map<String, Device> allDevices, ReadErrorHolder errorHolder) {
-
-        List<Device> allDevicesReadCallbacks = Lists.newArrayList();
-        List<Device> deviceReadCallbacks = Lists.newArrayList();
-
-        for (Device device : allDevices.values()) {
-            try {
-                device.afterAllXMLRead();
-                if (device.getDeviceReadCallback() != null) deviceReadCallbacks.add(device);
-                if (device.getAllDeviceReadCallback() != null) allDevicesReadCallbacks.add(device);
-            } catch (Exception e) {
-                allDevices.remove(device.getName());
-                errorHolder.addError(DeviceType.getDeviceTypeFor(device));
-                Log.e(TAG, "cannot perform after read operations", e);
-            }
-        }
-
-        List<Device> callbackDevices = Lists.newArrayList();
-        callbackDevices.addAll(deviceReadCallbacks);
-        callbackDevices.addAll(allDevicesReadCallbacks);
-
-        for (Device device : callbackDevices) {
-            try {
-                if (device.getDeviceReadCallback() != null) {
-                    device.getDeviceReadCallback().devicesRead(allDevices);
-                }
-                if (device.getAllDeviceReadCallback() != null) {
-                    device.getAllDeviceReadCallback().devicesRead(allDevices);
-                }
-            } catch (Exception e) {
-                allDevices.remove(device.getName());
-                errorHolder.addError(DeviceType.getDeviceTypeFor(device));
-                Log.e(TAG, "cannot handle associated devices callbacks", e);
-            }
-        }
-    }
-
     /**
      * @param deviceClass class of the device to read
      * @param document    xml document to read
@@ -259,14 +205,75 @@ public class DeviceListParser {
         return errorCount;
     }
 
+    private void performAfterReadOperations(Map<String, Device> allDevices, ReadErrorHolder errorHolder) {
+
+        List<Device> allDevicesReadCallbacks = newArrayList();
+        List<Device> deviceReadCallbacks = newArrayList();
+
+        for (Device device : allDevices.values()) {
+            try {
+                device.afterAllXMLRead();
+                if (device.getDeviceReadCallback() != null) deviceReadCallbacks.add(device);
+                if (device.getAllDeviceReadCallback() != null) allDevicesReadCallbacks.add(device);
+            } catch (Exception e) {
+                allDevices.remove(device.getName());
+                errorHolder.addError(getDeviceTypeFor(device));
+                Log.e(TAG, "cannot perform after read operations", e);
+            }
+        }
+
+        List<Device> callbackDevices = newArrayList();
+        callbackDevices.addAll(deviceReadCallbacks);
+        callbackDevices.addAll(allDevicesReadCallbacks);
+
+        for (Device device : callbackDevices) {
+            try {
+                if (device.getDeviceReadCallback() != null) {
+                    device.getDeviceReadCallback().devicesRead(allDevices);
+                }
+                if (device.getAllDeviceReadCallback() != null) {
+                    device.getAllDeviceReadCallback().devicesRead(allDevices);
+                }
+            } catch (Exception e) {
+                allDevices.remove(device.getName());
+                errorHolder.addError(getDeviceTypeFor(device));
+                Log.e(TAG, "cannot handle associated devices callbacks", e);
+            }
+        }
+    }
+
+    private RoomDeviceList buildRoomDeviceList(Map<String, Device> allDevices) {
+        RoomDeviceList roomDeviceList = new RoomDeviceList(RoomDeviceList.ALL_DEVICES_ROOM);
+        for (Device device : allDevices.values()) {
+            // We don't want to show log devices in any kind of view. Log devices
+            // are already associated with their respective devices during after read
+            // operations.
+            if (!(device instanceof LogDevice)) {
+                roomDeviceList.addDevice(device);
+            }
+        }
+
+        return roomDeviceList;
+    }
+
+    private void handleErrors(ReadErrorHolder errorHolder) {
+        if (errorHolder.hasErrors()) {
+            String errorMessage = applicationContext.getString(R.string.errorDeviceListLoad);
+            String deviceTypesError = StringUtil.concatenate(errorHolder.getErrorDeviceTypeNames(), ",");
+            errorMessage = String.format(errorMessage, "" + errorHolder.getErrorCount(), deviceTypesError);
+
+            Intent intent = new Intent(Actions.SHOW_TOAST);
+            intent.putExtra(BundleExtraKeys.CONTENT, errorMessage);
+            applicationContext.sendBroadcast(intent);
+        }
+    }
+
     /**
      * Instantiates a new device from the given device class. The current {@link Node} to read will be provided to
      * the device, so that it can extract any values.
      *
-     * @param deviceClass       class to instantiate
-     * @param node              current xml node
-     * @param <T>               specific device type
-     * @return true if everything went well
+     * @param deviceClass class to instantiate
+     * @param node        current xml node  @return true if everything went well
      */
     private <T extends Device> boolean deviceFromNode(Class<T> deviceClass,
                                                       Node node, Map<String, Device> allDevices) {
@@ -324,6 +331,17 @@ public class DeviceListParser {
         return device;
     }
 
+    @SuppressWarnings("unchecked")
+    private <T extends Device> Map<String, Set<Method>> getDeviceClassCacheEntriesFor(Class<T> deviceClass) {
+        Class<Device> clazz = (Class<Device>) deviceClass;
+        Map<Class<Device>, Map<String, Set<Method>>> cache = getDeviceClassCache();
+        if (!cache.containsKey(clazz)) {
+            cache.put(clazz, initDeviceClassCacheEntries(deviceClass));
+        }
+
+        return cache.get(clazz);
+    }
+
     private <T extends Device> void invokeDeviceAttributeMethod(Map<String, Set<Method>> cache, T device, String key,
                                                                 String value, NamedNodeMap attributes, String tagName) throws Exception {
 
@@ -349,15 +367,12 @@ public class DeviceListParser {
         }
     }
 
-    @SuppressWarnings("unchecked")
-    private <T extends Device> Map<String, Set<Method>> getDeviceClassCacheEntriesFor(Class<T> deviceClass) {
-        Class<Device> clazz = (Class<Device>) deviceClass;
-        Map<Class<Device>, Map<String, Set<Method>>> cache = getDeviceClassCache();
-        if (!cache.containsKey(clazz)) {
-            cache.put(clazz, initDeviceClassCacheEntries(deviceClass));
+    private Map<Class<Device>, Map<String, Set<Method>>> getDeviceClassCache() {
+        if (deviceClassCache == null) {
+            deviceClassCache = newHashMap();
         }
 
-        return cache.get(clazz);
+        return deviceClassCache;
     }
 
     /**
@@ -368,7 +383,7 @@ public class DeviceListParser {
      * @return map of device methods
      */
     private <T extends Device> Map<String, Set<Method>> initDeviceClassCacheEntries(Class<T> deviceClass) {
-        Map<String, Set<Method>> cache = new HashMap<String, Set<Method>>();
+        Map<String, Set<Method>> cache = newHashMap();
         Method[] methods = deviceClass.getMethods();
         for (Method method : methods) {
             if (method.isAnnotationPresent(XmllistAttribute.class)) {
@@ -389,14 +404,6 @@ public class DeviceListParser {
         }
         cache.get(attribute).add(method);
         method.setAccessible(true);
-    }
-
-    private Map<Class<Device>, Map<String, Set<Method>>> getDeviceClassCache() {
-        if (deviceClassCache == null) {
-            deviceClassCache = new HashMap<Class<Device>, Map<String, Set<Method>>>();
-        }
-
-        return deviceClassCache;
     }
 
     public void fillDeviceWith(Device device, Map<String, String> updates) {
@@ -439,7 +446,7 @@ public class DeviceListParser {
     }
 
     private class ReadErrorHolder {
-        private Map<DeviceType, Integer> deviceTypeErrorCount = new HashMap<DeviceType, Integer>();
+        private Map<DeviceType, Integer> deviceTypeErrorCount = newHashMap();
 
         public int getErrorCount() {
             int errors = 0;
@@ -468,7 +475,7 @@ public class DeviceListParser {
         public List<String> getErrorDeviceTypeNames() {
             if (deviceTypeErrorCount.size() == 0) return Collections.emptyList();
 
-            List<String> errorDeviceTypeNames = new ArrayList<String>();
+            List<String> errorDeviceTypeNames = newArrayList();
             for (DeviceType deviceType : deviceTypeErrorCount.keySet()) {
                 errorDeviceTypeNames.add(deviceType.name());
             }

@@ -25,6 +25,7 @@
 package li.klass.fhem.service.connection;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.google.gson.Gson;
@@ -34,28 +35,39 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.UUID;
 
-import li.klass.fhem.AndFHEMApplication;
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+import li.klass.fhem.dagger.ForApplication;
+import li.klass.fhem.domain.core.DeviceType;
+import li.klass.fhem.domain.core.DeviceVisibility;
 import li.klass.fhem.fhem.connection.DummyServerSpec;
 import li.klass.fhem.fhem.connection.FHEMServerSpec;
 import li.klass.fhem.fhem.connection.ServerType;
-import li.klass.fhem.license.LicenseManager;
+import li.klass.fhem.license.LicenseService;
 import li.klass.fhem.util.ApplicationProperties;
 
 import static li.klass.fhem.AndFHEMApplication.PREMIUM_ALLOWED_FREE_CONNECTIONS;
 import static li.klass.fhem.constants.PreferenceKeys.SELECTED_CONNECTION;
 
+@Singleton
 public class ConnectionService {
-    public static final ConnectionService INSTANCE = new ConnectionService();
     public static final String DUMMY_DATA_ID = "-1";
     public static final String TEST_DATA_ID = "-2";
     public static final String MANAGEMENT_DATA_ID = "-3";
     private static final Gson GSON = new Gson();
     private static final String PREFERENCES_NAME = "fhemConnections";
+    @Inject
+    LicenseService licenseService;
+    @Inject
+    ApplicationProperties applicationProperties;
+    @Inject
+    @ForApplication
+    Context applicationContext;
     private FHEMServerSpec dummyData;
     private DummyServerSpec testData;
 
-
-    private ConnectionService() {
+    public ConnectionService() {
         initialiseDummyData();
     }
 
@@ -64,7 +76,7 @@ public class ConnectionService {
         dummyData.setName("DummyData");
         dummyData.setServerType(ServerType.DUMMY);
 
-        if (LicenseManager.INSTANCE.isDebug()) {
+        if (licenseService != null && licenseService.isDebug()) {
             testData = new DummyServerSpec(TEST_DATA_ID, "test.xml");
             testData.setName("TestData");
             testData.setServerType(ServerType.DUMMY);
@@ -77,8 +89,7 @@ public class ConnectionService {
                        final boolean clientCertificateEnabled, final String clientCertificatePassword) {
         if (exists(name)) return;
 
-        LicenseManager licenseManager = LicenseManager.INSTANCE;
-        licenseManager.isPremium(new LicenseManager.IsPremiumListener() {
+        licenseService.isPremium(new LicenseService.IsPremiumListener() {
             @Override
             public void onIsPremiumDetermined(boolean isPremium) {
                 if (isPremium || getCountWithoutDummy() < PREMIUM_ALLOWED_FREE_CONNECTIONS) {
@@ -140,7 +151,7 @@ public class ConnectionService {
     }
 
     private SharedPreferences getPreferences() {
-        return AndFHEMApplication.getContext().getSharedPreferences(PREFERENCES_NAME, Activity.MODE_PRIVATE);
+        return applicationContext.getSharedPreferences(PREFERENCES_NAME, Activity.MODE_PRIVATE);
     }
 
     String serialize(FHEMServerSpec serverSpec) {
@@ -183,13 +194,6 @@ public class ConnectionService {
         return true;
     }
 
-    public boolean nameExists(String name) {
-        for (FHEMServerSpec serverSpec : listAll()) {
-            if (serverSpec.getName().equalsIgnoreCase(name)) return true;
-        }
-        return false;
-    }
-
     public ArrayList<FHEMServerSpec> listAll() {
         ArrayList<FHEMServerSpec> servers = new ArrayList<FHEMServerSpec>();
 
@@ -213,12 +217,23 @@ public class ConnectionService {
         return servers;
     }
 
+    public boolean mayShowInCurrentConnectionType(DeviceType deviceType) {
+        DeviceVisibility visibility = deviceType.getVisibility();
+
+        if (visibility == null) return true;
+
+        ServerType serverType = getCurrentServer().getServerType();
+        if (visibility == DeviceVisibility.NEVER) return false;
+
+        ServerType showOnlyIn = visibility.getShowOnlyIn();
+        return showOnlyIn == null || serverType == showOnlyIn;
+    }
+
     public FHEMServerSpec getCurrentServer() {
         return forId(getSelectedId());
     }
 
     public String getSelectedId() {
-        ApplicationProperties applicationProperties = ApplicationProperties.INSTANCE;
         String id = applicationProperties.getStringSharedPreference(SELECTED_CONNECTION, DUMMY_DATA_ID);
         if (!exists(id)) id = DUMMY_DATA_ID;
 
@@ -227,6 +242,6 @@ public class ConnectionService {
 
     public void setSelectedId(String id) {
         if (!exists(id)) id = DUMMY_DATA_ID;
-        ApplicationProperties.INSTANCE.setSharedPreference(SELECTED_CONNECTION, id);
+        applicationProperties.setSharedPreference(SELECTED_CONNECTION, id);
     }
 }

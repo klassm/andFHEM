@@ -29,18 +29,23 @@ import android.content.Intent;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 
+import javax.inject.Inject;
+
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.DimmableAdapter;
 import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
-import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
 import li.klass.fhem.adapter.devices.genericui.ColorPickerRow;
 import li.klass.fhem.adapter.devices.genericui.StateChangingSeekBar;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.HUEDevice;
+import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.StringUtil;
 
 public class HueDeviceAdapter extends DimmableAdapter<HUEDevice> {
+    @Inject
+    ApplicationProperties applicationProperties;
+
     public HueDeviceAdapter() {
         super(HUEDevice.class);
     }
@@ -57,8 +62,9 @@ public class HueDeviceAdapter extends DimmableAdapter<HUEDevice> {
 
             @Override
             public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, HUEDevice device, TableRow fieldTableRow) {
-                tableLayout.addView(new StateChangingSeekBar<HUEDevice>(context, device.getSaturation(), 254, "sat")
-                        .createRow(inflater, device));
+                tableLayout.addView(new StateChangingSeekBar<HUEDevice>(context,
+                        device.getSaturation(), 254, "sat", applicationProperties)
+                        .createRow(getInflater(), device));
 
             }
         });
@@ -79,11 +85,11 @@ public class HueDeviceAdapter extends DimmableAdapter<HUEDevice> {
                         intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
                         intent.putExtra(BundleExtraKeys.STATE_NAME, "rgb");
                         intent.putExtra(BundleExtraKeys.STATE_VALUE, targetHexString);
-                        GenericDeviceAdapter.putUpdateExtra(intent);
+                        putUpdateExtra(intent);
 
                         context.startService(intent);
                     }
-                } .createRow(context, inflater));
+                }.createRow(context, getInflater()));
             }
         });
     }

@@ -28,11 +28,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.ToggleButton;
 
-import java.util.Map;
-
-import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
-import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
+import li.klass.fhem.adapter.devices.core.UpdatingResultReceiver;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.core.ToggleableDevice;
@@ -41,17 +38,17 @@ public abstract class YesNoToggleDeviceActionRow<D extends ToggleableDevice<D>> 
 
     private final String commandAttribute;
 
-    public YesNoToggleDeviceActionRow(String commandAttribute, int description) {
-        super(description, ToggleDeviceActionRow.LAYOUT_DETAIL);
+    public YesNoToggleDeviceActionRow(Context context, String commandAttribute, int description) {
+        super(context, description, ToggleDeviceActionRow.LAYOUT_DETAIL);
         this.commandAttribute = commandAttribute;
     }
 
     @Override
-    protected void setToogleButtonText(D device, ToggleButton toggleButton) {
-        Context context = AndFHEMApplication.getContext();
+    protected void setToogleButtonText(D device, ToggleButton toggleButton, Context context) {
         toggleButton.setTextOff(context.getString(R.string.no));
         toggleButton.setTextOn(context.getString(R.string.yes));
     }
+
     @Override
     public abstract boolean isOn(D device);
 
@@ -61,7 +58,7 @@ public abstract class YesNoToggleDeviceActionRow<D extends ToggleableDevice<D>> 
         intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
         intent.putExtra(BundleExtraKeys.STATE_NAME, commandAttribute);
         intent.putExtra(BundleExtraKeys.STATE_VALUE, isChecked ? "on" : "off");
-        GenericDeviceAdapter.putUpdateExtra(intent);
+        intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver(context));
 
         context.startService(intent);
     }

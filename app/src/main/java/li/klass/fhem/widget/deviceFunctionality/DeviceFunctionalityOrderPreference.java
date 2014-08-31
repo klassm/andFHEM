@@ -24,6 +24,7 @@
 
 package li.klass.fhem.widget.deviceFunctionality;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.DialogPreference;
@@ -39,27 +40,39 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.inject.Inject;
+
+import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.constants.PreferenceKeys;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.DeviceType;
+import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.ArrayListUtil;
 import li.klass.fhem.util.Filter;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static li.klass.fhem.widget.deviceFunctionality.DeviceFunctionalityOrderAdapter.OrderAction;
 
 @SuppressWarnings("unused")
 public class DeviceFunctionalityOrderPreference extends DialogPreference {
 
-    private ArrayList<DeviceFunctionalityPreferenceWrapper> wrappedDevices =
-            new ArrayList<DeviceFunctionalityPreferenceWrapper>();
+    @Inject
+    ApplicationProperties applicationProperties;
+    private ArrayList<DeviceFunctionalityPreferenceWrapper> wrappedDevices = newArrayList();
 
     public DeviceFunctionalityOrderPreference(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+        inject(context);
+    }
+
+    private void inject(Context context) {
+        ((AndFHEMApplication) ((Activity) context).getApplication()).inject(this);
     }
 
     public DeviceFunctionalityOrderPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
+        inject(context);
     }
 
     @Override
@@ -99,24 +112,11 @@ public class DeviceFunctionalityOrderPreference extends DialogPreference {
     protected void onSetInitialValue(boolean restore, Object defaultValue) {
         super.onSetInitialValue(restore, defaultValue);
 
-        DeviceGroupHolder deviceTypeHolder = new DeviceGroupHolder();
+        DeviceGroupHolder deviceTypeHolder = new DeviceGroupHolder(applicationProperties);
         List<DeviceFunctionality> visible = deviceTypeHolder.getVisible();
         List<DeviceFunctionality> invisible = deviceTypeHolder.getInvisible();
 
         this.wrappedDevices = wrapDevices(visible, invisible);
-    }
-
-    @Override
-    protected void onDialogClosed(boolean positiveResult) {
-        if (! positiveResult) return;
-        save();
-    }
-
-    private List<DeviceType> parsePersistedValue(String persistedValue, DeviceType[] defaultValue) {
-        if (shouldPersist() && persistedValue != null && ! "".equals(persistedValue)) {
-            return Arrays.asList((DeviceType[]) ObjectSerializer.deserialize(persistedValue));
-        }
-        return Arrays.asList(defaultValue);
     }
 
     private ArrayList<DeviceFunctionalityPreferenceWrapper> wrapDevices(
@@ -141,6 +141,12 @@ public class DeviceFunctionalityOrderPreference extends DialogPreference {
         return result;
     }
 
+    @Override
+    protected void onDialogClosed(boolean positiveResult) {
+        if (!positiveResult) return;
+        save();
+    }
+
     private void save() {
         saveVisibleDevices();
         saveInvisibleDevices();
@@ -149,11 +155,11 @@ public class DeviceFunctionalityOrderPreference extends DialogPreference {
     private void saveVisibleDevices() {
         ArrayList<DeviceFunctionalityPreferenceWrapper> visibleDevices =
                 ArrayListUtil.filter(wrappedDevices, new Filter<DeviceFunctionalityPreferenceWrapper>() {
-            @Override
-            public boolean doFilter(DeviceFunctionalityPreferenceWrapper object) {
-                return object.isVisible();
-            }
-        });
+                    @Override
+                    public boolean doFilter(DeviceFunctionalityPreferenceWrapper object) {
+                        return object.isVisible();
+                    }
+                });
         DeviceFunctionality[] toPersist = unwrapDeviceTypes(visibleDevices);
         if (shouldPersist()) persistString(ObjectSerializer.serialize(toPersist));
 
@@ -162,11 +168,11 @@ public class DeviceFunctionalityOrderPreference extends DialogPreference {
     private void saveInvisibleDevices() {
         ArrayList<DeviceFunctionalityPreferenceWrapper> invisibleDevices =
                 ArrayListUtil.filter(wrappedDevices, new Filter<DeviceFunctionalityPreferenceWrapper>() {
-            @Override
-            public boolean doFilter(DeviceFunctionalityPreferenceWrapper object) {
-                return ! object.isVisible();
-            }
-        });
+                    @Override
+                    public boolean doFilter(DeviceFunctionalityPreferenceWrapper object) {
+                        return !object.isVisible();
+                    }
+                });
         DeviceFunctionality[] toPersist = unwrapDeviceTypes(invisibleDevices);
         if (shouldPersist()) {
             SharedPreferences sharedPreferences = getSharedPreferences();
@@ -188,5 +194,12 @@ public class DeviceFunctionalityOrderPreference extends DialogPreference {
     @Override
     protected boolean shouldPersist() {
         return true;
+    }
+
+    private List<DeviceType> parsePersistedValue(String persistedValue, DeviceType[] defaultValue) {
+        if (shouldPersist() && persistedValue != null && !"".equals(persistedValue)) {
+            return Arrays.asList((DeviceType[]) ObjectSerializer.deserialize(persistedValue));
+        }
+        return Arrays.asList(defaultValue);
     }
 }

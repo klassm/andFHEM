@@ -8,7 +8,7 @@
  * distributed under license by Red Hat Inc.
  *
  * This copyrighted material is made available to anyone wishing to use, modify,
- * copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLICLICENSE, as published by the Free Software Foundation.
+ * copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
@@ -33,6 +33,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ScrollView;
 
+import javax.inject.Inject;
+
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.DeviceAdapter;
 import li.klass.fhem.constants.Actions;
@@ -40,10 +42,12 @@ import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceType;
-import li.klass.fhem.util.advertisement.AdvertisementUtil;
+import li.klass.fhem.service.advertisement.AdvertisementService;
 
 public class DeviceDetailFragment extends BaseFragment {
 
+    @Inject
+    AdvertisementService advertisementService;
     private String deviceName;
 
     @Override
@@ -58,7 +62,7 @@ public class DeviceDetailFragment extends BaseFragment {
         if (superView != null) return superView;
 
         View view = inflater.inflate(R.layout.device_detail_view, container, false);
-        AdvertisementUtil.addAd(view, getActivity());
+        advertisementService.addAd(view, getActivity());
 
         return view;
     }
@@ -86,6 +90,7 @@ public class DeviceDetailFragment extends BaseFragment {
                     if (device == null) return;
 
                     DeviceAdapter adapter = DeviceType.getAdapterFor(device);
+                    adapter.attach(DeviceDetailFragment.this.getActivity());
                     ScrollView scrollView = (ScrollView) getView().findViewById(R.id.deviceDetailView);
                     if (scrollView != null) {
                         scrollView.removeAllViews();

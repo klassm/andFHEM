@@ -65,24 +65,20 @@ public class HeatingModeListener<D extends Device<D> & HeatingDevice<M, ?, ?, ?>
         }.createRow(device));
     }
 
-    private void putUpdateIntent(Intent intent) {
-        intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver());
-    }
-
-    protected void changeMode(M newMode, D device, Context context) {
-        final Intent intent = new Intent(Actions.DEVICE_SET_MODE);
-        intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
-        intent.putExtra(BundleExtraKeys.DEVICE_MODE, newMode);
-        putUpdateIntent(intent);
-
-        context.startService(intent);
+    protected boolean doAddField(D device) {
+        return true;
     }
 
     protected M getUnknownMode() {
         return null;
     }
 
-    protected boolean doAddField(D device) {
-        return true;
+    protected void changeMode(M newMode, D device, Context context) {
+        final Intent intent = new Intent(Actions.DEVICE_SET_MODE);
+        intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
+        intent.putExtra(BundleExtraKeys.DEVICE_MODE, newMode);
+        intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver(context));
+
+        context.startService(intent);
     }
 }

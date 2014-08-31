@@ -24,16 +24,22 @@
 
 package li.klass.fhem.service.room;
 
+import android.content.Context;
+
 import org.apache.commons.io.IOUtils;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 
 import java.io.InputStream;
-import java.util.Map;
 
 import li.klass.fhem.domain.core.RoomDeviceList;
 import li.klass.fhem.fhem.DummyDataConnection;
 import li.klass.fhem.infra.AndFHEMRobolectricTestRunner;
+import li.klass.fhem.service.connection.ConnectionService;
+import li.klass.fhem.testutil.MockitoTestRule;
 
 import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.Is.is;
@@ -43,6 +49,14 @@ import static org.junit.Assert.assertThat;
 
 @RunWith(AndFHEMRobolectricTestRunner.class)
 public class DummyDataParseTest {
+    @Rule
+    public MockitoTestRule mockitoTestRule = new MockitoTestRule();
+    @InjectMocks
+    protected DeviceListParser deviceListParser = new DeviceListParser();
+    @Mock
+    ConnectionService connectionService;
+    @Mock
+    Context applicationContext;
 
     @Test
     public void testParseDummyData() throws Exception {
@@ -53,7 +67,6 @@ public class DummyDataParseTest {
             String xmlList = IOUtils.toString(dummyDataStream);
             assertNotNull(xmlList);
 
-            DeviceListParser deviceListParser = DeviceListParser.INSTANCE;
             RoomDeviceList result = deviceListParser.parseAndWrapExceptions(xmlList);
 
             assertNotNull(result);

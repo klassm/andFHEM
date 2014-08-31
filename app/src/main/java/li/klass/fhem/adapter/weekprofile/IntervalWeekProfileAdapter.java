@@ -39,6 +39,7 @@ import li.klass.fhem.adapter.devices.genericui.TemperatureChangeTableRow;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.domain.heating.schedule.DayProfile;
 import li.klass.fhem.domain.heating.schedule.interval.FilledTemperatureInterval;
+import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.DialogUtil;
 
 import static li.klass.fhem.util.ValueDescriptionUtil.appendTemperature;
@@ -46,8 +47,11 @@ import static li.klass.fhem.util.ValueDescriptionUtil.appendTemperature;
 public class IntervalWeekProfileAdapter
         extends BaseWeekProfileAdapter<FilledTemperatureInterval> {
 
-    public IntervalWeekProfileAdapter(Context context) {
+    private final ApplicationProperties applicationProperties;
+
+    public IntervalWeekProfileAdapter(Context context, ApplicationProperties applicationProperties) {
         super(context);
+        this.applicationProperties = applicationProperties;
     }
 
     @Override
@@ -164,12 +168,19 @@ public class IntervalWeekProfileAdapter
                 LinearLayout layout = (LinearLayout) contentView.findViewById(R.id.layout);
 
                 TableRow updateRow = (TableRow) contentView.findViewById(R.id.updateRow);
-                final TemperatureChangeTableRow temperatureChangeTableRow = new TemperatureChangeTableRow(context, interval.getChangedTemperature(), updateRow, 5.5, 30.0) {
-                    @Override
-                    protected boolean showButton() {
-                        return false;
-                    }
-                };
+                final TemperatureChangeTableRow temperatureChangeTableRow = new
+                        TemperatureChangeTableRow(context, interval.getChangedTemperature(),
+                                updateRow, 5.5, 30.0, applicationProperties) {
+                            @Override
+                            protected ApplicationProperties getApplicationProperties() {
+                                return applicationProperties;
+                            }
+
+                            @Override
+                            protected boolean showButton() {
+                                return false;
+                            }
+                        };
 
                 layout.addView(temperatureChangeTableRow.createRow(layoutInflater, null, 8));
 

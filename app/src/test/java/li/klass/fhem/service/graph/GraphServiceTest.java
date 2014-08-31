@@ -24,14 +24,24 @@
 
 package li.klass.fhem.service.graph;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.mockito.InjectMocks;
 
 import java.util.List;
+
+import li.klass.fhem.testutil.MockitoTestRule;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
 public class GraphServiceTest {
+
+    @Rule
+    public MockitoTestRule mockitoTestRule = new MockitoTestRule();
+
+    @InjectMocks
+    private GraphService graphService = new GraphService();
 
     @Test
     public void testFindGraphEntries() {
@@ -45,7 +55,7 @@ public class GraphServiceTest {
                 "\n" +
                 "\n";
 
-        List<GraphEntry> graphEntries = GraphService.INSTANCE.findGraphEntries(content);
+        List<GraphEntry> graphEntries = graphService.findGraphEntries(content);
 
         assertThat(graphEntries.size(), is(5));
     }

@@ -31,30 +31,36 @@ import android.os.Bundle;
 
 import com.actionbarsherlock.view.MenuItem;
 
+import javax.inject.Inject;
+
 import li.klass.fhem.ApplicationUrls;
 import li.klass.fhem.R;
 import li.klass.fhem.activities.core.FragmentBaseActivity;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.fragments.PremiumFragment;
+import li.klass.fhem.service.device.GCMSendDeviceService;
 import li.klass.fhem.update.UpdateHandler;
 import li.klass.fhem.util.DialogUtil;
 
-import static li.klass.fhem.AndFHEMApplication.getContext;
 import static li.klass.fhem.constants.BundleExtraKeys.DO_REFRESH;
-import static li.klass.fhem.gcm.GCMIntentService.registerWithGCM;
 
 public class AndFHEMMainActivity extends FragmentBaseActivity {
 
     public static final String TAG = AndFHEMMainActivity.class.getName();
 
+    @Inject
+    UpdateHandler updateHandler;
+
+    @Inject
+    GCMSendDeviceService gcmSendDeviceService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        UpdateHandler.INSTANCE.onApplicationUpdate();
-        registerWithGCM(this);
+        updateHandler.onApplicationUpdate();
+        gcmSendDeviceService.registerWithGCM(this);
     }
 
     @Override
@@ -88,7 +94,7 @@ public class AndFHEMMainActivity extends FragmentBaseActivity {
                 version = "?";
             }
             DialogUtil.showAlertDialog(this, R.string.about, "Matthias Klass\r\nVersion: " + version + "\r\n" +
-                    "andFHEM.klass.li\r\nandFHEM@klass.li\r\n" + getContext().getPackageName());
+                    "andFHEM.klass.li\r\nandFHEM@klass.li\r\n" + getPackageName());
             return true;
         }
 

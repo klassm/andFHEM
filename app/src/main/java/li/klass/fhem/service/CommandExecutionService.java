@@ -32,8 +32,11 @@ import android.util.Log;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
-import li.klass.fhem.AndFHEMApplication;
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import li.klass.fhem.constants.Actions;
+import li.klass.fhem.dagger.ForApplication;
 import li.klass.fhem.exception.CommandExecutionException;
 import li.klass.fhem.fhem.DataConnectionSwitch;
 import li.klass.fhem.fhem.FHEMConnection;
@@ -51,24 +54,21 @@ import static li.klass.fhem.fhem.RequestResultError.HOST_CONNECTION_ERROR;
 /**
  * Service serving as central interface to FHEM.
  */
+@Singleton
 public class CommandExecutionService extends AbstractService {
-
-    public static final CommandExecutionService INSTANCE = new CommandExecutionService();
 
     public static final int DEFAULT_NUMBER_OF_RETRIES = 3;
     public static final int IMAGE_CACHE_SIZE = 20;
+    @Inject
+    @ForApplication
+    Context applicationContext;
+    @Inject
+    DataConnectionSwitch dataConnectionSwitch;
+    @Inject
+    ApplicationProperties applicationProperties;
     private transient ScheduledExecutorService scheduledExecutorService = null;
-
     private transient String lastFailedCommand = null;
-
     private transient Cache<Bitmap> imageCache = getImageCache();
-
-    private CommandExecutionService() {
-    }
-
-    public static int secondsForTry(int executionTry) {
-        return (int) Math.pow(3, executionTry);
-    }
 
     public void resendLastFailedCommand() {
         if (lastFailedCommand != null) {
@@ -76,10 +76,6 @@ public class CommandExecutionService extends AbstractService {
             lastFailedCommand = null;
             executeSafely(command);
         }
-    }
-
-    public String getLastFailedCommand() {
-        return lastFailedCommand;
     }
 
     /**
@@ -100,6 +96,10 @@ public class CommandExecutionService extends AbstractService {
         return result.content;
     }
 
+    private void showExecutingDialog() {
+        applicationContext.sendBroadcast(new Intent(SHOW_EXECUTING_DIALOG));
+    }
+
     /**
      * Execute a command without catching any exception or showing an update dialog. Executes synchronously.
      *
@@ -110,7 +110,7 @@ public class CommandExecutionService extends AbstractService {
     }
 
     private RequestResult<String> execute(String command, int currentTry) {
-        FHEMConnection currentProvider = DataConnectionSwitch.INSTANCE.getCurrentProvider();
+        FHEMConnection currentProvider = dataConnectionSwitch.getCurrentProvider();
         RequestResult<String> result = currentProvider.executeCommand(command);
 
         try {
@@ -145,6 +145,31 @@ public class CommandExecutionService extends AbstractService {
         return true;
     }
 
+    public static int secondsForTry(int executionTry) {
+        return (int) Math.pow(3, executionTry);
+    }
+
+    private ScheduledExecutorService getScheduledExecutorService() {
+        if (scheduledExecutorService == null) {
+            scheduledExecutorService = Executors.newScheduledThreadPool(1);
+        }
+        return scheduledExecutorService;
+    }
+
+    private void hideExecutingDialog() {
+        applicationContext.sendBroadcast(new Intent(DISMISS_EXECUTING_DIALOG));
+    }
+
+    private int getNumberOfRetries() {
+        return applicationProperties.getIntegerSharedPreference(
+                COMMAND_EXECUTION_RETRIES, DEFAULT_NUMBER_OF_RETRIES
+        );
+    }
+
+    public String getLastFailedCommand() {
+        return lastFailedCommand;
+    }
+
     public Bitmap getBitmap(String relativePath) {
         try {
             Cache<Bitmap> cache = getImageCache();
@@ -153,7 +178,7 @@ public class CommandExecutionService extends AbstractService {
             } else {
                 showExecutingDialog();
 
-                FHEMConnection provider = DataConnectionSwitch.INSTANCE.getCurrentProvider();
+                FHEMConnection provider = dataConnectionSwitch.getCurrentProvider();
                 RequestResult<Bitmap> result = provider.requestBitmap(relativePath);
 
                 if (result.handleErrors()) return null;
@@ -166,32 +191,9 @@ public class CommandExecutionService extends AbstractService {
         }
     }
 
-    private void showExecutingDialog() {
-        Context context = AndFHEMApplication.getContext();
-        context.sendBroadcast(new Intent(SHOW_EXECUTING_DIALOG));
-    }
-
-    private void hideExecutingDialog() {
-        AndFHEMApplication.getContext().sendBroadcast(new Intent(DISMISS_EXECUTING_DIALOG));
-    }
-
-    private ScheduledExecutorService getScheduledExecutorService() {
-        if (scheduledExecutorService == null) {
-            scheduledExecutorService = Executors.newScheduledThreadPool(1);
-        }
-        return scheduledExecutorService;
-    }
-
-    private int getNumberOfRetries() {
-        ApplicationProperties applicationProperties = ApplicationProperties.INSTANCE;
-        return applicationProperties.getIntegerSharedPreference(
-                COMMAND_EXECUTION_RETRIES, DEFAULT_NUMBER_OF_RETRIES
-        );
-    }
-
     private Cache<Bitmap> getImageCache() {
         if (imageCache == null) {
-            imageCache = new Cache<Bitmap>(IMAGE_CACHE_SIZE);
+            imageCache = new Cache<>(IMAGE_CACHE_SIZE);
         }
 
         return imageCache;
@@ -211,6 +213,5 @@ public class CommandExecutionService extends AbstractService {
         public void run() {
             execute(command, currentTry);
         }
-
     }
 }

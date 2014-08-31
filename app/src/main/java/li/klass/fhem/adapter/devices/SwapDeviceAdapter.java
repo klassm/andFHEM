@@ -31,7 +31,6 @@ import android.widget.TableRow;
 
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
-import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
 import li.klass.fhem.adapter.devices.genericui.ColorPickerRow;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
@@ -68,11 +67,11 @@ public class SwapDeviceAdapter extends ToggleableAdapterWithSwitchActionRow<SWAP
                         intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
                         intent.putExtra(BundleExtraKeys.STATE_NAME, "rgb");
                         intent.putExtra(BundleExtraKeys.STATE_VALUE, targetHexString);
-                        GenericDeviceAdapter.putUpdateExtra(intent);
+                        putUpdateExtra(intent);
 
                         context.startService(intent);
                     }
-                } .createRow(context, inflater));
+                }.createRow(context, getInflater()));
             }
         });
     }

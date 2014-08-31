@@ -24,27 +24,48 @@
 
 package li.klass.fhem.domain.core;
 
+import android.content.Context;
+
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.experimental.categories.Category;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 
 import java.io.InputStream;
 
 import li.klass.fhem.infra.basetest.RobolectricBaseTestCase;
+import li.klass.fhem.service.connection.ConnectionService;
 import li.klass.fhem.service.room.DeviceListParser;
 import li.klass.fhem.testsuite.category.DeviceTestBase;
+import li.klass.fhem.testutil.MockitoTestRule;
 import li.klass.fhem.util.CloseableUtil;
+
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.doReturn;
 
 @Category(DeviceTestBase.class)
 public abstract class DeviceXMLParsingBase extends RobolectricBaseTestCase {
 
     public static final String DEFAULT_TEST_ROOM_NAME = "room";
     public static final String DEFAULT_TEST_DEVICE_NAME = "device";
-
+    @Rule
+    public MockitoTestRule mockitoTestRule = new MockitoTestRule();
     protected RoomDeviceList roomDeviceList;
+    @Mock
+    protected ConnectionService connectionService;
+
+    @Mock
+    protected Context applicationContext;
+
+    @InjectMocks
+    protected DeviceListParser deviceListParser;
 
     @Before
     public void loadDevices() throws Exception {
+        doReturn(true).when(connectionService).mayShowInCurrentConnectionType(any(DeviceType.class));
+
         InputStream inputStream = null;
         try {
 
@@ -55,21 +76,11 @@ public abstract class DeviceXMLParsingBase extends RobolectricBaseTestCase {
             }
             String content = IOUtils.toString(inputStream);
 
-            roomDeviceList = DeviceListParser.INSTANCE.parseAndWrapExceptions(content);
+            roomDeviceList = deviceListParser.parseXMLListUnsafe(content);
         } finally {
             CloseableUtil.close(inputStream);
         }
     }
-
-    protected <T extends Device<T>> T getDefaultDevice() {
-        return getDeviceFor(DEFAULT_TEST_DEVICE_NAME);
-    }
-
-    protected <T extends Device<T>> T getDeviceFor(String deviceName) {
-        return roomDeviceList.getDeviceFor(deviceName);
-    }
-
-    protected abstract String getFileName();
 
     /**
      * Base class used as context for loading the input file.
@@ -78,5 +89,15 @@ public abstract class DeviceXMLParsingBase extends RobolectricBaseTestCase {
      */
     protected Class<?> getTestFileBaseClass() {
         return getClass();
+    }
+
+    protected abstract String getFileName();
+
+    protected <T extends Device<T>> T getDefaultDevice() {
+        return getDeviceFor(DEFAULT_TEST_DEVICE_NAME);
+    }
+
+    protected <T extends Device<T>> T getDeviceFor(String deviceName) {
+        return roomDeviceList.getDeviceFor(deviceName);
     }
 }

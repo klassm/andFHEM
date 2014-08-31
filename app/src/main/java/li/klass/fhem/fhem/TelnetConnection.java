@@ -45,10 +45,9 @@ public class TelnetConnection extends FHEMConnection {
     public static final String TELNET_URL = "TELNET_URL";
     public static final String TELNET_PORT = "TELNET_PORT";
     public static final String TELNET_PASSWORD = "TELNET_PASSWORD";
-    private static final String PASSWORD_PROMPT = "Password: ";
     public static final String TAG = TelnetConnection.class.getName();
-
     public static final TelnetConnection INSTANCE = new TelnetConnection();
+    private static final String PASSWORD_PROMPT = "Password: ";
 
     private TelnetConnection() {
     }
@@ -84,8 +83,8 @@ public class TelnetConnection extends FHEMConnection {
 
             writeCommand(printStream, "");
 
-            if (! waitForFilledStream(inputStream, 5000)) {
-                return new RequestResult<String>(RequestResultError.HOST_CONNECTION_ERROR);
+            if (!waitForFilledStream(inputStream, 5000)) {
+                return new RequestResult<>(RequestResultError.HOST_CONNECTION_ERROR);
             }
 
             // to discard
@@ -104,9 +103,9 @@ public class TelnetConnection extends FHEMConnection {
             }
 
             if (result == null && passwordSent) {
-                return new RequestResult<String>(RequestResultError.AUTHENTICATION_ERROR);
+                return new RequestResult<>(RequestResultError.AUTHENTICATION_ERROR);
             } else if (result == null) {
-                return new RequestResult<String>(RequestResultError.INVALID_CONTENT);
+                return new RequestResult<>(RequestResultError.INVALID_CONTENT);
             }
 
             telnetClient.disconnect();
@@ -127,12 +126,12 @@ public class TelnetConnection extends FHEMConnection {
             result = new String(result.getBytes("UTF8"));
             Log.d(TAG, "result is :: " + result);
 
-            return new RequestResult<String>(result);
+            return new RequestResult<>(result);
 
         } catch (SocketTimeoutException e) {
             Log.e(TAG, "timeout", e);
             setErrorInErrorHolderFor(e, errorHost, command);
-            return new RequestResult<String>(RequestResultError.CONNECTION_TIMEOUT);
+            return new RequestResult<>(RequestResultError.CONNECTION_TIMEOUT);
         } catch (UnsupportedEncodingException e) {
             // this may never happen, as UTF8 is known ...
             setErrorInErrorHolderFor(e, errorHost, command);
@@ -143,21 +142,15 @@ public class TelnetConnection extends FHEMConnection {
             // is that the FHEM server ends the connection after receiving an invalid password.
             Log.e(TAG, "SocketException", e);
             setErrorInErrorHolderFor(e, errorHost, command);
-            return new RequestResult<String>(RequestResultError.AUTHENTICATION_ERROR);
+            return new RequestResult<>(RequestResultError.AUTHENTICATION_ERROR);
         } catch (IOException e) {
             Log.e(TAG, "IOException", e);
             setErrorInErrorHolderFor(e, errorHost, command);
-            return new RequestResult<String>(RequestResultError.HOST_CONNECTION_ERROR);
+            return new RequestResult<>(RequestResultError.HOST_CONNECTION_ERROR);
         } finally {
             CloseableUtil.close(printStream, bufferedOutputStream,
                     outputStream, inputStream);
         }
-    }
-
-    @Override
-    public RequestResult<Bitmap> requestBitmap(String relativePath) {
-        Log.e(TAG, "get image: " + relativePath);
-        return new RequestResult<Bitmap>(null, null);
     }
 
     private String readUntil(InputStream inputStream, String... blockers) throws IOException {
@@ -174,6 +167,26 @@ public class TelnetConnection extends FHEMConnection {
         return null;
     }
 
+    private void writeCommand(PrintStream printStream, String command) {
+        printStream.println(command);
+        printStream.flush();
+    }
+
+    private boolean waitForFilledStream(InputStream inputStream, int timeToWait) throws IOException {
+        int initialFill = inputStream.available();
+
+        long startTime = System.currentTimeMillis();
+        while (inputStream.available() == initialFill &&
+                (System.currentTimeMillis() - startTime) < timeToWait) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                Log.e(TAG, "interrupted, ignoring", e);
+            }
+        }
+        return inputStream.available() > 0;
+    }
+
     private String read(InputStream inputStream) throws IOException {
         waitForFilledStream(inputStream, 3000);
 
@@ -185,23 +198,9 @@ public class TelnetConnection extends FHEMConnection {
         return buffer.toString();
     }
 
-    private void writeCommand(PrintStream printStream, String command) {
-        printStream.println(command);
-        printStream.flush();
-    }
-
-    private boolean waitForFilledStream(InputStream inputStream, int timeToWait) throws IOException {
-        int initialFill = inputStream.available();
-
-        long startTime = System.currentTimeMillis();
-        while(inputStream.available() == initialFill &&
-                (System.currentTimeMillis() - startTime) < timeToWait) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                Log.e(TAG, "interrupted, ignoring", e);
-            }
-        }
-        return inputStream.available() > 0;
+    @Override
+    public RequestResult<Bitmap> requestBitmap(String relativePath) {
+        Log.e(TAG, "get image: " + relativePath);
+        return new RequestResult<>(null, null);
     }
 }

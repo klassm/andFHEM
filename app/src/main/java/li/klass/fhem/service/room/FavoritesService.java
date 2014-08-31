@@ -25,21 +25,29 @@
 package li.klass.fhem.service.room;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
 
 import java.util.Set;
 
-import li.klass.fhem.AndFHEMApplication;
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+import li.klass.fhem.dagger.ForApplication;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.RoomDeviceList;
+import li.klass.fhem.service.connection.ConnectionService;
 
+@Singleton
 public class FavoritesService {
-    public static final FavoritesService INSTANCE = new FavoritesService();
-
-    private FavoritesService() {
-    }
-
     private static final String PREFERENCES_NAME = "favorites";
+    @Inject
+    ConnectionService connectionService;
+    @Inject
+    RoomListService roomListService;
+    @Inject
+    @ForApplication
+    Context applicationContext;
 
     /**
      * Adds a new favorite device.
@@ -48,7 +56,14 @@ public class FavoritesService {
      */
     public void addFavorite(Device device) {
         SharedPreferences.Editor editor = getPreferences().edit();
-        editor.putString(device.getName(), device.getName()).commit();
+        editor.putString(device.getName(), device.getName()).apply();
+    }
+
+    /**
+     * @return the {@link android.content.SharedPreferences} object.
+     */
+    private SharedPreferences getPreferences() {
+        return applicationContext.getSharedPreferences(PREFERENCES_NAME, Activity.MODE_PRIVATE);
     }
 
     /**
@@ -58,7 +73,7 @@ public class FavoritesService {
      */
     public void removeFavorite(Device device) {
         SharedPreferences.Editor editor = getPreferences().edit();
-        editor.remove(device.getName()).commit();
+        editor.remove(device.getName()).apply();
     }
 
     /**
@@ -70,7 +85,7 @@ public class FavoritesService {
      */
     public RoomDeviceList getFavorites(long updatePeriod) {
 
-        RoomDeviceList allRoomsDeviceList = RoomListService.INSTANCE.getAllRoomsDeviceList(updatePeriod);
+        RoomDeviceList allRoomsDeviceList = roomListService.getAllRoomsDeviceList(updatePeriod);
         RoomDeviceList favoritesList = new RoomDeviceList("favorites");
         favoritesList.setHiddenGroups(allRoomsDeviceList.getHiddenGroups());
         favoritesList.setHiddenRooms(allRoomsDeviceList.getHiddenRooms());
@@ -88,13 +103,6 @@ public class FavoritesService {
 
     public boolean hasFavorites() {
         return getPreferences().getAll().size() > 0;
-    }
-
-    /**
-     * @return the {@link android.content.SharedPreferences} object.
-     */
-    private SharedPreferences getPreferences() {
-        return AndFHEMApplication.getContext().getSharedPreferences(PREFERENCES_NAME, Activity.MODE_PRIVATE);
     }
 
     public boolean isFavorite(String deviceName) {

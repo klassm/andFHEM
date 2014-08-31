@@ -52,6 +52,8 @@ import com.google.common.base.Optional;
 
 import java.util.Timer;
 
+import javax.inject.Inject;
+
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.activities.DuplicateInstallActivity;
@@ -61,7 +63,7 @@ import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.fragments.FragmentType;
 import li.klass.fhem.fragments.core.BaseFragment;
-import li.klass.fhem.license.LicenseManager;
+import li.klass.fhem.license.LicenseService;
 import li.klass.fhem.service.room.RoomListService;
 import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.DialogUtil;
@@ -91,7 +93,19 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
     public static final String NAVIGATION_TAG = "NAVIGATION_TAG";
     public static final String CONTENT_TAG = "CONTENT_TAG";
     protected Menu optionsMenu;
-    private ApplicationProperties applicationProperties = ApplicationProperties.INSTANCE;
+
+    @Inject
+    ApplicationProperties applicationProperties;
+
+    @Inject
+    BillingService billingService;
+
+    @Inject
+    LicenseService licenseService;
+
+    @Inject
+    RoomListService roomListService;
+
     private Receiver broadcastReceiver;
     private Timer timer;
 
@@ -112,7 +126,11 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
             Log.e(TAG, "error while creating activity", e);
         }
 
-        if (AndFHEMApplication.INSTANCE.isAndFHEMAlreadyInstalled()) {
+        AndFHEMApplication application = (AndFHEMApplication) getApplication();
+
+        application.inject(this);
+
+        if (application.isAndFHEMAlreadyInstalled()) {
             startActivity(new Intent(this, DuplicateInstallActivity.class));
             return;
         }
@@ -121,7 +139,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
 
         setContentView(R.layout.main_view);
         if (findViewById(R.id.tabletIndicator) != null) {
-            AndFHEMApplication.INSTANCE.setIsTablet(true);
+            application.setIsTablet(true);
         }
 
         ActionBar actionBar = getSupportActionBar();
@@ -137,7 +155,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
         initDrawerLayout();
 
         Log.i(TAG, "onCreate => starting BillingService");
-        BillingService.INSTANCE.loadInventory(new BillingService.OnLoadInventoryFinishedListener() {
+        billingService.loadInventory(new BillingService.OnLoadInventoryFinishedListener() {
             @Override
             public void onInventoryLoadFinished() {
                 Log.i(TAG, "Billing initialized, creating initial fragment");
@@ -149,7 +167,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
     }
 
     private void handleStartupFragment() {
-        String startupView = ApplicationProperties.INSTANCE.getStringSharedPreference(STARTUP_VIEW,
+        String startupView = applicationProperties.getStringSharedPreference(STARTUP_VIEW,
                 FragmentType.FAVORITES.name());
         FragmentType preferencesStartupFragment = FragmentType.forEnumName(startupView);
         Log.d(TAG, "startup view is " + preferencesStartupFragment);
@@ -342,7 +360,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
     @Override
     protected void onRestart() {
         super.onRestart();
-        BillingService.INSTANCE.loadInventory(null);
+        billingService.loadInventory(null);
     }
 
     @Override
@@ -420,9 +438,9 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
     protected void onStop() {
         super.onStop();
 
-        BillingService.INSTANCE.stop();
+        billingService.stop();
 
-        RoomListService.INSTANCE.storeDeviceListMap();
+        roomListService.storeDeviceListMap();
 
         try {
             unregisterReceiver(broadcastReceiver);
@@ -474,7 +492,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
 
         if (doFinish) {
             finish();
-            BillingService.INSTANCE.stop();
+            billingService.stop();
             Log.i(TAG, "cannot find more fragments on backstack => exiting");
         } else {
             updateNavigationVisibility();
@@ -586,7 +604,7 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
     @Override
     public boolean onCreatePanelMenu(int featureId, com.actionbarsherlock.view.Menu menu) {
         getSupportMenuInflater().inflate(R.menu.main_menu, menu);
-        if (LicenseManager.INSTANCE.isPremiumApk()) {
+        if (licenseService.isPremiumApk()) {
             menu.removeItem(R.id.menu_premium);
         }
         this.optionsMenu = menu;

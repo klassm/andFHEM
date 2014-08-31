@@ -25,6 +25,7 @@
 package li.klass.fhem.fragments;
 
 import li.klass.fhem.R;
+import li.klass.fhem.appwidget.view.widget.base.otherWidgets.OtherWidgetsFragment;
 import li.klass.fhem.fragments.core.BaseFragment;
 import li.klass.fhem.fragments.core.DeviceDetailFragment;
 import li.klass.fhem.fragments.device.DeviceNameListNavigationFragment;
@@ -51,8 +52,8 @@ public enum FragmentType {
     TIMER_DETAIL(TimerDetailFragment.class),
     CONNECTION_LIST(ConnectionListFragment.class),
     CONNECTION_DETAIL(ConnectionDetailFragment.class, ConnectionListFragment.class),
-    WEB_VIEW(WebViewFragment.class)
-    ;
+    WEB_VIEW(WebViewFragment.class),
+    OTHER_WIDGETS_FRAGMENT(OtherWidgetsFragment.class, R.string.widget_others, null);
 
     private Class<? extends BaseFragment> fragmentClass;
     private Class<? extends BaseFragment> navigationFragment;
@@ -62,10 +63,6 @@ public enum FragmentType {
         this(fragmentClass, -1, null);
     }
 
-    FragmentType(Class<? extends BaseFragment> fragmentClass, Class<? extends BaseFragment> navigationClass) {
-        this(fragmentClass, -1, navigationClass);
-    }
-
     FragmentType(Class<? extends BaseFragment> fragmentClass, int fragmentTitle,
                  Class<? extends BaseFragment> navigationFragment) {
         this.fragmentClass = fragmentClass;
@@ -73,13 +70,8 @@ public enum FragmentType {
         this.navigationFragment = navigationFragment;
     }
 
-    public static FragmentType getFragmentFor(Class<? extends BaseFragment> clazz) {
-        for (FragmentType fragmentType : FragmentType.values()) {
-            if (fragmentType.fragmentClass.isAssignableFrom(clazz)) {
-                return fragmentType;
-            }
-        }
-        return null;
+    FragmentType(Class<? extends BaseFragment> fragmentClass, Class<? extends BaseFragment> navigationClass) {
+        this(fragmentClass, -1, navigationClass);
     }
 
     @SuppressWarnings("unchecked")
@@ -90,6 +82,15 @@ public enum FragmentType {
         } catch (ClassNotFoundException e) {
             return null;
         }
+    }
+
+    public static FragmentType getFragmentFor(Class<? extends BaseFragment> clazz) {
+        for (FragmentType fragmentType : FragmentType.values()) {
+            if (fragmentType.fragmentClass.isAssignableFrom(clazz)) {
+                return fragmentType;
+            }
+        }
+        return null;
     }
 
     public static FragmentType forEnumName(String name) {

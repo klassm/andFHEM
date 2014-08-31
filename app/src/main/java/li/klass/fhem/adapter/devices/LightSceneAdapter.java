@@ -70,35 +70,7 @@ public class LightSceneAdapter extends GenericDeviceAdapter<LightSceneDevice> {
                 setSceneButtonProperties(context, device, scene, button, scene);
                 return button;
             }
-        }.createRow(view.getContext(), inflater, layout, device);
-    }
-
-    @Override
-    protected void afterPropertiesSet() {
-        super.afterPropertiesSet();
-
-        detailActions.add(new DeviceDetailViewAction<LightSceneDevice>() {
-            @Override
-            public View createView(final Context context, LayoutInflater inflater,
-                                   final LightSceneDevice device, LinearLayout parent) {
-                LinearLayout layout = new LinearLayout(context);
-                layout.setOrientation(VERTICAL);
-
-                for (final String scene : device.getScenes()) {
-
-                    Button button = (Button) inflater.inflate(R.layout.button_device_detail, parent, false);
-                    assert(button != null);
-
-                    String buttonText = String.format(context.getString(R.string.activateScene), scene);
-                    setSceneButtonProperties(context, device, scene, button, buttonText);
-
-                    layout.addView(button);
-                }
-
-                return layout;
-            }
-        });
-        detailActions.add(new AvailableTargetStatesSwitchActionRow<LightSceneDevice>());
+        }.createRow(view.getContext(), getInflater(), layout, device);
     }
 
     private void setSceneButtonProperties(final Context context, final LightSceneDevice device, final String scene, Button button, String buttonText) {
@@ -118,5 +90,33 @@ public class LightSceneAdapter extends GenericDeviceAdapter<LightSceneDevice> {
         intent.putExtra(BundleExtraKeys.STATE_VALUE, scene);
         intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver(context));
         context.startService(intent);
+    }
+
+    @Override
+    protected void afterPropertiesSet() {
+        super.afterPropertiesSet();
+
+        detailActions.add(new DeviceDetailViewAction<LightSceneDevice>() {
+            @Override
+            public View createView(final Context context, LayoutInflater inflater,
+                                   final LightSceneDevice device, LinearLayout parent) {
+                LinearLayout layout = new LinearLayout(context);
+                layout.setOrientation(VERTICAL);
+
+                for (final String scene : device.getScenes()) {
+
+                    Button button = (Button) inflater.inflate(R.layout.button_device_detail, parent, false);
+                    assert (button != null);
+
+                    String buttonText = String.format(context.getString(R.string.activateScene), scene);
+                    setSceneButtonProperties(context, device, scene, button, buttonText);
+
+                    layout.addView(button);
+                }
+
+                return layout;
+            }
+        });
+        detailActions.add(new AvailableTargetStatesSwitchActionRow<LightSceneDevice>());
     }
 }

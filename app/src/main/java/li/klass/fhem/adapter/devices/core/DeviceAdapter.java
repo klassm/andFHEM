@@ -33,8 +33,7 @@ import android.widget.Button;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import com.google.common.base.Preconditions;
-
+import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.activities.graph.ChartingActivity;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
@@ -42,7 +41,16 @@ import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.fragments.core.DeviceDetailFragment;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 public abstract class DeviceAdapter<D extends Device> {
+
+    private Context context;
+    private LayoutInflater inflater;
+
+    protected DeviceAdapter() {
+        AndFHEMApplication.getApplication().inject(this);
+    }
 
     /**
      * Indicates whether the current adapter supports the given device class.
@@ -54,6 +62,8 @@ public abstract class DeviceAdapter<D extends Device> {
         return getSupportedDeviceClass().isAssignableFrom(deviceClass);
     }
 
+    public abstract Class<? extends Device> getSupportedDeviceClass();
+
     /**
      * Creates an overview view for the given device. The device has to match the adapter device type, otherwise
      * a cast exception occurs.
@@ -64,6 +74,8 @@ public abstract class DeviceAdapter<D extends Device> {
      */
     @SuppressWarnings("unchecked")
     public View createOverviewView(LayoutInflater layoutInflater, Device rawDevice, long lastUpdate) {
+        checkNotNull(context);
+
         D device = (D) rawDevice;
         View view = layoutInflater.inflate(getOverviewLayout(device), null);
         fillDeviceOverviewView(view, device, lastUpdate);
@@ -81,8 +93,8 @@ public abstract class DeviceAdapter<D extends Device> {
     /**
      * Fills a given device view.
      *
-     * @param view   view to fill
-     * @param device content provider
+     * @param view       view to fill
+     * @param device     content provider
      * @param lastUpdate time when the data was last loaded from the FHEM server.
      */
     protected abstract void fillDeviceOverviewView(View view, D device, long lastUpdate);
@@ -90,8 +102,8 @@ public abstract class DeviceAdapter<D extends Device> {
     /**
      * Creates a filled detail view for a given device.
      *
-     * @param context context used for inflating the layout.
-     * @param device  device used for filling.
+     * @param context    context used for inflating the layout.
+     * @param device     device used for filling.
      * @param lastUpdate time when the data was last loaded from the FHEM server.
      * @return filled view.
      */
@@ -102,6 +114,10 @@ public abstract class DeviceAdapter<D extends Device> {
         }
         return null;
     }
+
+    public abstract boolean supportsDetailView(Device device);
+
+    protected abstract View getDeviceDetailView(Context context, D device, long lastUpdate);
 
     public void gotoDetailView(Context context, Device device) {
         if (!supportsDetailView(device)) {
@@ -120,15 +136,9 @@ public abstract class DeviceAdapter<D extends Device> {
         }
     }
 
-    public abstract boolean supportsDetailView(Device device);
-
-    public abstract int getDetailViewLayout();
-
-    protected abstract View getDeviceDetailView(Context context, D device, long lastUpdate);
-
     protected abstract Intent onFillDeviceDetailIntent(Context context, Device device, Intent intent);
 
-    public abstract Class<? extends Device> getSupportedDeviceClass();
+    public abstract int getDetailViewLayout();
 
     protected void setTextViewOrHideTableRow(View view, int tableRowId, int textFieldLayoutId, String value) {
         TableRow tableRow = (TableRow) view.findViewById(tableRowId);
@@ -140,13 +150,12 @@ public abstract class DeviceAdapter<D extends Device> {
         setTextView(view, textFieldLayoutId, value);
     }
 
-    protected void setTextView(View view, int textFieldLayoutId, int value) {
-        Preconditions.checkNotNull(view);
-
-        Context context = view.getContext();
-        Preconditions.checkNotNull(context);
-
-        setTextView(view, textFieldLayoutId, context.getString(value));
+    protected boolean hideIfNull(View layoutElement, Object valueToCheck) {
+        if (valueToCheck == null || valueToCheck instanceof String && ((String) valueToCheck).length() == 0) {
+            layoutElement.setVisibility(View.GONE);
+            return true;
+        }
+        return false;
     }
 
     protected void setTextView(View view, int textFieldLayoutId, String value) {
@@ -156,12 +165,13 @@ public abstract class DeviceAdapter<D extends Device> {
         }
     }
 
-    protected boolean hideIfNull(View layoutElement, Object valueToCheck) {
-        if (valueToCheck == null || valueToCheck instanceof String && ((String) valueToCheck).length() == 0) {
-            layoutElement.setVisibility(View.GONE);
-            return true;
-        }
-        return false;
+    protected void setTextView(View view, int textFieldLayoutId, int value) {
+        checkNotNull(view);
+
+        Context context = view.getContext();
+        checkNotNull(context);
+
+        setTextView(view, textFieldLayoutId, context.getString(value));
     }
 
     protected void fillGraphButton(final Context context, final D device, final DeviceChart deviceChart, Button button) {
@@ -174,5 +184,20 @@ public abstract class DeviceAdapter<D extends Device> {
                 ChartingActivity.showChart(context, device, deviceChart.chartSeriesDescriptions);
             }
         });
+    }
+
+    public void attach(Context context) {
+        checkNotNull(context);
+
+        this.context = context;
+        inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    }
+
+    public Context getContext() {
+        return context;
+    }
+
+    public LayoutInflater getInflater() {
+        return inflater;
     }
 }

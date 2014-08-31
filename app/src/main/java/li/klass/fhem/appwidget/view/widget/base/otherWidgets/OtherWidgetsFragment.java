@@ -1,3 +1,27 @@
+/*
+ * AndFHEM - Open Source Android application to control a FHEM home automation
+ * server.
+ *
+ * Copyright (c) 2011, Matthias Klass or third-party contributors as
+ * indicated by the @author tags or express copyright attribution
+ * statements applied by the authors.  All third-party contributions are
+ * distributed under license by Red Hat Inc.
+ *
+ * This copyrighted material is made available to anyone wishing to use, modify,
+ * copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+ * for more details.
+ *
+ * You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+ * along with this distribution; if not, write to:
+ *   Free Software Foundation, Inc.
+ *   51 Franklin Street, Fifth Floor
+ *   Boston, MA  02110-1301  USA
+ */
+
 package li.klass.fhem.appwidget.view.widget.base.otherWidgets;
 
 import android.os.Bundle;
@@ -12,6 +36,7 @@ import com.google.common.base.Function;
 
 import org.apache.commons.lang3.tuple.Pair;
 
+import java.io.Serializable;
 import java.util.List;
 
 import li.klass.fhem.R;
@@ -24,16 +49,19 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Iterables.transform;
 import static com.google.common.collect.Lists.newArrayList;
 import static li.klass.fhem.constants.BundleExtraKeys.APP_WIDGET_SIZE;
+import static li.klass.fhem.constants.BundleExtraKeys.ON_CLICKED_CALLBACK;
 
-public abstract class OtherWidgetsFragment extends BaseFragment {
+public class OtherWidgetsFragment extends BaseFragment {
 
     private WidgetSize widgetSize;
+    private OnWidgetClickedCallback widgetClickedCallback;
 
     @Override
     public void setArguments(Bundle args) {
         super.setArguments(args);
 
         widgetSize = (WidgetSize) args.getSerializable(APP_WIDGET_SIZE);
+        widgetClickedCallback = (OnWidgetClickedCallback) args.getSerializable(ON_CLICKED_CALLBACK);
     }
 
     @Override
@@ -56,6 +84,12 @@ public abstract class OtherWidgetsFragment extends BaseFragment {
         fillEmptyView(emptyView, R.string.widgetNoOther);
 
         return view;
+    }
+
+    protected void onClick(WidgetType type) {
+        if (widgetClickedCallback != null) {
+            widgetClickedCallback.onWidgetClicked(type);
+        }
     }
 
     @Override
@@ -82,5 +116,7 @@ public abstract class OtherWidgetsFragment extends BaseFragment {
         adapter.updateData(values);
     }
 
-    protected abstract void onClick(WidgetType type);
+    public interface OnWidgetClickedCallback extends Serializable {
+        void onWidgetClicked(WidgetType widgetType);
+    }
 }

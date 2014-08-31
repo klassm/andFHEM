@@ -41,7 +41,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import li.klass.fhem.AndFHEMApplication;
+import javax.inject.Inject;
+
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.showFieldAnnotation.AnnotatedDeviceClassItem;
 import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewAction;
@@ -60,8 +61,9 @@ import li.klass.fhem.util.StringUtil;
 
 public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> {
     private static final String TAG = GenericDeviceAdapter.class.getName();
-    protected final LayoutInflater inflater;
     protected List<DeviceDetailViewAction<D>> detailActions = new ArrayList<DeviceDetailViewAction<D>>();
+    @Inject
+    DataConnectionSwitch dataConnectionSwitch;
     private Class<D> deviceClass;
     private Map<String, List<FieldNameAddedToDetailListener<D>>> fieldNameAddedListeners = new HashMap<String, List<FieldNameAddedToDetailListener<D>>>();
     /**
@@ -72,23 +74,37 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
     private transient List<AnnotatedDeviceClassItem> sortedAnnotatedClassItems;
 
     public GenericDeviceAdapter(Class<D> deviceClass) {
+        super();
+
         this.deviceClass = deviceClass;
-        inflater = (LayoutInflater) AndFHEMApplication.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         afterPropertiesSet();
         registerFieldListener("state", new FieldNameAddedToDetailListener<D>() {
             @Override
             protected void onFieldNameAdded(Context context, TableLayout tableLayout, String field,
                                             D device, TableRow fieldTableRow) {
-                createWebCmdTableRowIfRequired(inflater, tableLayout, device);
+                createWebCmdTableRowIfRequired(getInflater(), tableLayout, device);
             }
         });
     }
 
-    public static void putUpdateExtra(Intent intent) {
-        intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver());
+    protected void afterPropertiesSet() {
     }
 
-    protected void afterPropertiesSet() {
+    protected void registerFieldListener(String fieldName, FieldNameAddedToDetailListener<D> listener) {
+        if (!fieldNameAddedListeners.containsKey(fieldName)) {
+            fieldNameAddedListeners.put(fieldName, new ArrayList<FieldNameAddedToDetailListener<D>>());
+        }
+
+        fieldNameAddedListeners.get(fieldName).add(listener);
+    }
+
+    private TableRow createWebCmdTableRowIfRequired(LayoutInflater inflater, TableLayout layout,
+                                                    final D device) {
+        if (ArrayUtil.isEmpty(device.getWebCmd())) return null;
+        final Context context = inflater.getContext();
+
+        return new WebCmdActionRow<D>(HolderActionRow.LAYOUT_DETAIL, context)
+                .createRow(context, inflater, layout, device);
     }
 
     @Override
@@ -120,13 +136,13 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
                     }
                 }
                 if (alwaysShow || item.isShowInOverview()) {
-                    createTableRow(device, inflater, layout, item,
+                    createTableRow(device, getInflater(), layout, item,
                             R.layout.device_overview_generic_table_row);
                 }
             }
 
             if (isOverviewError(device, lastUpdate)) {
-                Resources resources = AndFHEMApplication.getContext().getResources();
+                Resources resources = getContext().getResources();
                 int color = resources.getColor(R.color.errorBackground);
                 view.setBackgroundColor(color);
             }
@@ -136,16 +152,6 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
         }
     }
 
-    protected boolean isOverviewError(D device, long lastUpdate) {
-        // It does not make sense to show measure errors for data stemming out of a prestored
-        // XML file.
-        return !(DataConnectionSwitch.INSTANCE.getCurrentProvider() instanceof DummyDataConnection) &&
-                lastUpdate != -1 &&
-                device.isSensorDevice() &&
-                device.isOutdatedData(lastUpdate);
-
-    }
-
     private List<AnnotatedDeviceClassItem> getSortedAnnotatedClassItems(D device) {
         if (sortedAnnotatedClassItems == null) {
             sortedAnnotatedClassItems = DeviceFields.getSortedAnnotatedClassItems(device.getClass());
@@ -153,14 +159,45 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
         return sortedAnnotatedClassItems;
     }
 
-    @Override
-    public boolean supportsDetailView(Device device) {
-        return true;
+    private TableRow createTableRow(D device, LayoutInflater inflater, TableLayout layout,
+                                    AnnotatedDeviceClassItem item, int resource) {
+        String value = item.getValueFor(device);
+        int description = item.getDescriptionStringId();
+        return createTableRow(inflater, layout, resource, value, description);
+    }
+
+    protected boolean isOverviewError(D device, long lastUpdate) {
+        // It does not make sense to show measure errors for data stemming out of a prestored
+        // XML file.
+        return !(dataConnectionSwitch.getCurrentProvider() instanceof DummyDataConnection) &&
+                lastUpdate != -1 &&
+                device.isSensorDevice() &&
+                device.isOutdatedData(lastUpdate);
+
+    }
+
+    private TableRow createTableRow(LayoutInflater inflater, TableLayout layout, int resource,
+                                    Object value, int description) {
+        TableRow tableRow = (TableRow) inflater.inflate(resource, null);
+        assert tableRow != null;
+
+        fillTableRow(description, value, tableRow);
+        layout.addView(tableRow);
+        return tableRow;
+    }
+
+    private void fillTableRow(int description, Object value, TableRow tableRow) {
+        setTextView(tableRow, R.id.description, description);
+        setTextView(tableRow, R.id.value, String.valueOf(value));
+
+        if (value == null || value.equals("")) {
+            tableRow.setVisibility(View.GONE);
+        }
     }
 
     @Override
-    public int getDetailViewLayout() {
-        return R.layout.device_detail_generic;
+    public boolean supportsDetailView(Device device) {
+        return true;
     }
 
     @Override
@@ -177,6 +214,11 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
         }
 
         return view;
+    }
+
+    @Override
+    public int getDetailViewLayout() {
+        return R.layout.device_detail_generic;
     }
 
     protected void fillDeviceDetailView(Context context, View view, D device) {
@@ -220,22 +262,6 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
         updateGeneralDetailsNotificationText(context, view, device);
     }
 
-    @Override
-    protected Intent onFillDeviceDetailIntent(Context context, Device device, Intent intent) {
-        return intent;
-    }
-
-    protected void fillOtherStuffDetailLayout(Context context, LinearLayout layout, D device, LayoutInflater inflater) {
-    }
-
-    protected void registerFieldListener(String fieldName, FieldNameAddedToDetailListener<D> listener) {
-        if (!fieldNameAddedListeners.containsKey(fieldName)) {
-            fieldNameAddedListeners.put(fieldName, new ArrayList<FieldNameAddedToDetailListener<D>>());
-        }
-
-        fieldNameAddedListeners.get(fieldName).add(listener);
-    }
-
     private void notifyFieldListeners(Context context, D device, TableLayout layout, String fieldName, TableRow fieldTableRow) {
         if (!fieldNameAddedListeners.containsKey(fieldName)) {
             return;
@@ -273,6 +299,31 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
         }
     }
 
+    protected void fillOtherStuffDetailLayout(Context context, LinearLayout layout, D device, LayoutInflater inflater) {
+    }
+
+    private void updateGeneralDetailsNotificationText(Context context, View view, D device) {
+        String text = getGeneralDetailsNotificationText(context, device);
+        TextView notificationView = (TextView) view.findViewById(R.id.general_details_notification);
+
+        if (StringUtil.isBlank(text)) {
+            notificationView.setVisibility(View.GONE);
+            return;
+        }
+
+        notificationView.setText(text);
+        notificationView.setVisibility(View.VISIBLE);
+    }
+
+    private void addGraphButton(final Context context, LinearLayout graphLayout,
+                                LayoutInflater inflater, final D device, final DeviceChart chart) {
+        Button button = (Button) inflater.inflate(R.layout.button_device_detail, graphLayout, false);
+        assert button != null;
+
+        fillGraphButton(context, device, chart, button);
+        graphLayout.addView(button);
+    }
+
     private boolean hasDetailActions(D device) {
         if (detailActions.size() == 0) return false;
 
@@ -284,48 +335,13 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
         return false;
     }
 
-    private TableRow createTableRow(D device, LayoutInflater inflater, TableLayout layout,
-                                    AnnotatedDeviceClassItem item, int resource) {
-        String value = item.getValueFor(device);
-        int description = item.getDescriptionStringId();
-        return createTableRow(inflater, layout, resource, value, description);
+    protected String getGeneralDetailsNotificationText(Context context, D device) {
+        return null;
     }
 
-    private TableRow createWebCmdTableRowIfRequired(LayoutInflater inflater, TableLayout layout,
-                                                    final D device) {
-        if (ArrayUtil.isEmpty(device.getWebCmd())) return null;
-        final Context context = inflater.getContext();
-
-        return new WebCmdActionRow<D>(HolderActionRow.LAYOUT_DETAIL)
-                .createRow(context, inflater, layout, device);
-    }
-
-    private TableRow createTableRow(LayoutInflater inflater, TableLayout layout, int resource,
-                                    Object value, int description) {
-        TableRow tableRow = (TableRow) inflater.inflate(resource, null);
-        assert tableRow != null;
-
-        fillTableRow(description, value, tableRow);
-        layout.addView(tableRow);
-        return tableRow;
-    }
-
-    private void fillTableRow(int description, Object value, TableRow tableRow) {
-        setTextView(tableRow, R.id.description, description);
-        setTextView(tableRow, R.id.value, String.valueOf(value));
-
-        if (value == null || value.equals("")) {
-            tableRow.setVisibility(View.GONE);
-        }
-    }
-
-    private void addGraphButton(final Context context, LinearLayout graphLayout,
-                                LayoutInflater inflater, final D device, final DeviceChart chart) {
-        Button button = (Button) inflater.inflate(R.layout.button_device_detail, graphLayout, false);
-        assert button != null;
-
-        fillGraphButton(context, device, chart, button);
-        graphLayout.addView(button);
+    @Override
+    protected Intent onFillDeviceDetailIntent(Context context, Device device, Intent intent) {
+        return intent;
     }
 
     @Override
@@ -342,20 +358,7 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
         context.startService(intent);
     }
 
-    private void updateGeneralDetailsNotificationText(Context context, View view, D device) {
-        String text = getGeneralDetailsNotificationText(context, device);
-        TextView notificationView = (TextView) view.findViewById(R.id.general_details_notification);
-
-        if (StringUtil.isBlank(text)) {
-            notificationView.setVisibility(View.GONE);
-            return;
-        }
-
-        notificationView.setText(text);
-        notificationView.setVisibility(View.VISIBLE);
-    }
-
-    protected String getGeneralDetailsNotificationText(Context context, D device) {
-        return null;
+    public void putUpdateExtra(Intent intent) {
+        intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver(getContext()));
     }
 }

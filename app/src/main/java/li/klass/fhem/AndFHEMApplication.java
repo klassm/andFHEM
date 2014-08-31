@@ -34,9 +34,15 @@ import android.util.Log;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
+import dagger.ObjectGraph;
+import li.klass.fhem.dagger.AndroidModule;
+import li.klass.fhem.dagger.ApplicationModule;
 import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.InstalledApplications;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static li.klass.fhem.constants.PreferenceKeys.APPLICATION_VERSION;
 
 public class AndFHEMApplication extends Application {
@@ -46,13 +52,43 @@ public class AndFHEMApplication extends Application {
     public static final String PUBLIC_KEY_ENCODED = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA1umqueNUDXDqFzXEsRi/kvum6VcI8qiF0OWE7ME6Lm3mHsYHH4W/XIpLWXyh/7FeVpGl36c1UJfBhWCjjLi3d0qechVr/+0RJmXX+r5QZYzE6ZR9jr1g+BUCZj8bB2h+kGL6068pWJJMgzP0mvUBwCxHJioSpdIaBUK4FFyJDz/Nuu8PnThxLJsYEzB6ppyZ8gWYYyeSwg1oNdqcTafLPsh4rAyLJAMOBa9m8cQ7dyEqFXrrM+shYB1JDOJICM6fBNEUDh6kY12QEvh5m6vrAiB7q2eO11rCjZQqSzUEg2Qnd8PFR27ZBQ7CF9mF8VTL71bFOCoM6l/6rIe83SfKWQIDAQAB";
     public static final String PRODUCT_PREMIUM_ID = "li.klass.fhem.premium";
     public static final String PRODUCT_PREMIUM_DONATOR_ID = "li.klass.fhem.premiumdonator";
-    public static final String DEFAULT_PACKAGE = "li.klass.fhem";
     public static final int PREMIUM_ALLOWED_FREE_CONNECTIONS = 1;
-    public static AndFHEMApplication INSTANCE;
+
     private static Context context;
+    private static AndFHEMApplication application;
+    @Inject
+    ApplicationProperties applicationProperties;
     private boolean isUpdate = false;
     private String currentApplicationVersion;
     private boolean isTablet;
+    private ObjectGraph graph;
+
+    public static Context getContext() {
+        return context;
+    }
+
+    public static void setContext(Context newContext) {
+        context = newContext;
+    }
+
+    public static AndFHEMApplication getApplication() {
+        return application;
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        setDefaultUncaughtExceptionHandler();
+        setStrictMode();
+
+        context = getApplicationContext();
+        application = this;
+
+        graph = ObjectGraph.create(getModules().toArray());
+
+        inject(this);
+        setApplicationInformation();
+    }
 
     private static void setDefaultUncaughtExceptionHandler() {
         try {
@@ -65,30 +101,6 @@ public class AndFHEMApplication extends Application {
         } catch (SecurityException e) {
             Log.e(TAG, "Could not set the Default Uncaught Exception Handler", e);
         }
-    }
-
-    public static Context getContext() {
-        return context;
-    }
-
-    public static void setContext(Context newContext) {
-        context = newContext;
-    }
-
-    public static int getAndroidSDKLevel() {
-        return Build.VERSION.SDK_INT;
-    }
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        setDefaultUncaughtExceptionHandler();
-        setStrictMode();
-
-        context = getApplicationContext();
-        INSTANCE = this;
-
-        setApplicationInformation();
     }
 
     @TargetApi(Build.VERSION_CODES.GINGERBREAD)
@@ -107,15 +119,29 @@ public class AndFHEMApplication extends Application {
         }
     }
 
+    protected List<Object> getModules() {
+        return newArrayList(
+                new ApplicationModule(),
+                new AndroidModule(this)
+        );
+    }
+
+    public void inject(Object object) {
+        graph.inject(object);
+    }
+
     private void setApplicationInformation() {
-        ApplicationProperties applicationProperties = ApplicationProperties.INSTANCE;
         String savedVersion = applicationProperties.getStringSharedPreference(APPLICATION_VERSION, null);
         currentApplicationVersion = findOutPackageApplicationVersion();
 
         if (!currentApplicationVersion.equals(savedVersion)) {
             isUpdate = true;
-            ApplicationProperties.INSTANCE.setSharedPreference(APPLICATION_VERSION, currentApplicationVersion);
+            applicationProperties.setSharedPreference(APPLICATION_VERSION, currentApplicationVersion);
         }
+    }
+
+    public static int getAndroidSDKLevel() {
+        return Build.VERSION.SDK_INT;
     }
 
     private String findOutPackageApplicationVersion() {
@@ -143,6 +169,7 @@ public class AndFHEMApplication extends Application {
         return isUpdate;
     }
 
+    @SuppressWarnings("unused")
     public String getCurrentApplicationVersion() {
         return currentApplicationVersion;
     }

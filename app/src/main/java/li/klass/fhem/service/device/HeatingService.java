@@ -25,23 +25,27 @@
 package li.klass.fhem.service.device;
 
 import android.util.Log;
+
+import java.util.List;
+
+import javax.inject.Inject;
+
 import li.klass.fhem.domain.core.Device;
-import li.klass.fhem.domain.heating.*;
+import li.klass.fhem.domain.heating.ComfortTempDevice;
+import li.klass.fhem.domain.heating.DesiredTempDevice;
+import li.klass.fhem.domain.heating.EcoTempDevice;
+import li.klass.fhem.domain.heating.HeatingDevice;
+import li.klass.fhem.domain.heating.WindowOpenTempDevice;
 import li.klass.fhem.domain.heating.schedule.WeekProfile;
 import li.klass.fhem.service.CommandExecutionService;
 import li.klass.fhem.util.ArrayUtil;
 
-import java.util.List;
-
 public class HeatingService {
 
-    public static final HeatingService INSTANCE = new HeatingService();
-
-    private static final String SET_COMMAND = "set %s %s %s";
     public static final String TAG = HeatingService.class.getName();
-
-    private HeatingService() {
-    }
+    private static final String SET_COMMAND = "set %s %s %s";
+    @Inject
+    CommandExecutionService commandExecutionService;
 
     /**
      * Sets the desired temperature. The action will only be executed if the new desired temperature is different to
@@ -53,7 +57,7 @@ public class HeatingService {
     public void setDesiredTemperature(DesiredTempDevice device, double desiredTemperatureToSet) {
         String command = String.format(SET_COMMAND, device.getName(), device.getDesiredTempCommandFieldName(), desiredTemperatureToSet);
         if (desiredTemperatureToSet != device.getDesiredTemp()) {
-            CommandExecutionService.INSTANCE.executeSafely(command);
+            commandExecutionService.executeSafely(command);
             device.setDesiredTemp(desiredTemperatureToSet);
         }
     }
@@ -82,7 +86,7 @@ public class HeatingService {
                 " from " + device.getHeatingMode() + " to " + mode);
 
         String command = String.format(SET_COMMAND, device.getName(), device.getHeatingModeCommandField(), mode.name().toLowerCase());
-        CommandExecutionService.INSTANCE.executeSafely(command);
+        commandExecutionService.executeSafely(command);
         device.setHeatingMode(mode);
     }
 
@@ -101,7 +105,7 @@ public class HeatingService {
 
         Log.e(TAG, "set window open temp of device " + device.getName() + " to " + windowOpenTemp);
         String command = String.format(SET_COMMAND, device.getName(), device.getWindowOpenTempCommandFieldName(), windowOpenTemp);
-        CommandExecutionService.INSTANCE.executeSafely(command);
+        commandExecutionService.executeSafely(command);
         device.setWindowOpenTemp(windowOpenTemp);
     }
 
@@ -112,7 +116,7 @@ public class HeatingService {
 
         Log.e(TAG, "set comfort temp of device " + device.getName() + " to " + temperature);
         String command = String.format(SET_COMMAND, device.getName(), device.getComfortTempCommandFieldName(), temperature);
-        CommandExecutionService.INSTANCE.executeSafely(command);
+        commandExecutionService.executeSafely(command);
         device.setComfortTemp(temperature);
     }
 
@@ -123,7 +127,7 @@ public class HeatingService {
 
         Log.e(TAG, "set eco temp of device " + device.getName() + " to " + temperature);
         String command = String.format(SET_COMMAND, device.getName(), device.getEcoTempCommandFieldName(), temperature);
-        CommandExecutionService.INSTANCE.executeSafely(command);
+        commandExecutionService.executeSafely(command);
         device.setEcoTemp(temperature);
     }
 
@@ -133,7 +137,7 @@ public class HeatingService {
         List<String> commands = weekProfile.getSubmitCommands((Device) device);
 
         for (String command : commands) {
-            CommandExecutionService.INSTANCE.executeSafely(command);
+            commandExecutionService.executeSafely(command);
         }
 
         weekProfile.acceptChanges();

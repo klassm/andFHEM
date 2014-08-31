@@ -2,13 +2,13 @@
  * AndFHEM - Open Source Android application to control a FHEM home automation
  * server.
  *
- * Copyright (c) 2012, Matthias Klass or third-party contributors as
+ * Copyright (c) 2011, Matthias Klass or third-party contributors as
  * indicated by the @author tags or express copyright attribution
  * statements applied by the authors.  All third-party contributions are
  * distributed under license by Red Hat Inc.
  *
  * This copyrighted material is made available to anyone wishing to use, modify,
- * copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLICLICENSE, as published by the Free Software Foundation.
+ * copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
@@ -19,11 +19,13 @@
  * along with this distribution; if not, write to:
  *   Free Software Foundation, Inc.
  *   51 Franklin Street, Fifth Floor
+ *   Boston, MA  02110-1301  USA
  */
 
 package li.klass.fhem.appwidget;
 
 import android.app.AlarmManager;
+import android.app.IntentService;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetHost;
 import android.appwidget.AppWidgetManager;
@@ -38,36 +40,44 @@ import com.google.common.base.Optional;
 import java.util.Map;
 import java.util.Set;
 
+import javax.inject.Inject;
+
 import li.klass.fhem.appwidget.service.AppWidgetUpdateService;
 import li.klass.fhem.appwidget.view.widget.base.AppWidgetView;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
+import li.klass.fhem.service.SharedPreferencesService;
 import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.NetworkState;
-import li.klass.fhem.util.SharedPreferencesUtil;
 
 import static li.klass.fhem.constants.PreferenceKeys.ALLOW_REMOTE_UPDATE;
 import static li.klass.fhem.service.room.RoomListService.NEVER_UPDATE_PERIOD;
-import static li.klass.fhem.util.SharedPreferencesUtil.SHARED_PREFERENCES_UTIL;
 
 public class AppWidgetDataHolder {
     public static final String WIDGET_UPDATE_INTERVAL_PREFERENCES_KEY_WLAN = "WIDGET_UPDATE_INTERVAL_WLAN";
-
     public static final String WIDGET_UPDATE_INTERVAL_PREFERENCES_KEY_MOBILE = "WIDGET_UPDATE_INTERVAL_MOBILE";
-    public static final AppWidgetDataHolder INSTANCE = new AppWidgetDataHolder();
     static final String SAVE_PREFERENCE_NAME = AppWidgetDataHolder.class.getName();
     private static final String TAG = AppWidgetDataHolder.class.getName();
-    private SharedPreferencesUtil sharedPreferencesUtil = SHARED_PREFERENCES_UTIL;
-    private ApplicationProperties applicationProperties = ApplicationProperties.INSTANCE;
+    @Inject
+    ApplicationProperties applicationProperties;
 
-    AppWidgetDataHolder() {
-    }
+    @Inject
+    SharedPreferencesService sharedPreferencesService;
 
     public void updateAllWidgets(final Context context, final boolean allowRemoteUpdate) {
         Set<String> appWidgetIds = getAllAppWidgetIds();
         for (String appWidgetId : appWidgetIds) {
             updateWidget( context, Integer.parseInt(appWidgetId), allowRemoteUpdate);
         }
+    }
+
+    Set<String> getAllAppWidgetIds() {
+        SharedPreferences sharedPreferences = getSavedPreferences();
+        Map<String, ?> allEntries = sharedPreferences.getAll();
+
+        assert allEntries != null;
+
+        return allEntries.keySet();
     }
 
     public void updateWidget(final Context context, final int appWidgetId,
@@ -79,7 +89,11 @@ public class AppWidgetDataHolder {
         context.startService(intent);
     }
 
-    public void updateWidgetInCurrentThread(final AppWidgetManager appWidgetManager, final Context context,
+    SharedPreferences getSavedPreferences() {
+        return sharedPreferencesService.getSharedPreferences(SAVE_PREFERENCE_NAME);
+    }
+
+    public void updateWidgetInCurrentThread(final AppWidgetManager appWidgetManager, final IntentService intentService,
                                             final int appWidgetId, final boolean allowRemoteUpdate) {
         Optional<WidgetConfiguration> widgetConfigurationOptional = getWidgetConfiguration(appWidgetId);
 
@@ -88,12 +102,13 @@ public class AppWidgetDataHolder {
 
             final AppWidgetView widgetView = getAppWidgetView(configuration);
 
-            long updateInterval = getConnectionDependentUpdateInterval(context);
-            scheduleUpdateIntent(context, configuration, false, updateInterval);
+            long updateInterval = getConnectionDependentUpdateInterval(intentService);
+            scheduleUpdateIntent(intentService, configuration, false, updateInterval);
 
             boolean doRemoteWidgetUpdates = applicationProperties.getBooleanSharedPreference(ALLOW_REMOTE_UPDATE, true);
             long viewCreateUpdateInterval = doRemoteWidgetUpdates && allowRemoteUpdate ? updateInterval : NEVER_UPDATE_PERIOD;
-            RemoteViews content = widgetView.createView(context, configuration, viewCreateUpdateInterval);
+            widgetView.attach(intentService.getApplication());
+            RemoteViews content = widgetView.createView(intentService, configuration, viewCreateUpdateInterval);
 
             try {
                 appWidgetManager.updateAppWidget(appWidgetId, content);
@@ -101,7 +116,7 @@ public class AppWidgetDataHolder {
                 Log.e(TAG, "something strange happened during appwidget update", e);
             }
         } else {
-            deleteWidget(context, appWidgetId);
+            deleteWidget(intentService, appWidgetId);
         }
     }
 
@@ -163,7 +178,7 @@ public class AppWidgetDataHolder {
 
         if (!NetworkState.isConnected(context)) {
             updateInterval = NEVER_UPDATE_PERIOD;
-        } else  if (NetworkState.isConnectedMobile(context)) {
+        } else if (NetworkState.isConnectedMobile(context)) {
             updateInterval = getWidgetUpdateIntervalFor(WIDGET_UPDATE_INTERVAL_PREFERENCES_KEY_MOBILE);
         } else {
             updateInterval = getWidgetUpdateIntervalFor(WIDGET_UPDATE_INTERVAL_PREFERENCES_KEY_WLAN);
@@ -189,27 +204,14 @@ public class AppWidgetDataHolder {
     }
 
     public void saveWidgetConfigurationToPreferences(WidgetConfiguration widgetConfiguration) {
-        SharedPreferences.Editor edit = sharedPreferencesUtil.getSharedPreferencesEditor(SAVE_PREFERENCE_NAME);
+        SharedPreferences.Editor edit = sharedPreferencesService.getSharedPreferencesEditor(SAVE_PREFERENCE_NAME);
         String value = widgetConfiguration.toSaveString();
         edit.putString(String.valueOf(widgetConfiguration.widgetId), value);
         edit.apply();
     }
 
-    Set<String> getAllAppWidgetIds() {
-        SharedPreferences sharedPreferences = getSavedPreferences();
-        Map<String,?> allEntries = sharedPreferences.getAll();
-
-        assert allEntries != null;
-
-        return allEntries.keySet();
-    }
-
-    SharedPreferences getSavedPreferences() {
-        return sharedPreferencesUtil.getSharedPreferences(SAVE_PREFERENCE_NAME);
-    }
-
     private int getWidgetUpdateIntervalFor(String key) {
-        String value = ApplicationProperties.INSTANCE.getStringSharedPreference(key, "3600");
+        String value = applicationProperties.getStringSharedPreference(key, "3600");
         int intValue = Integer.parseInt(value);
         return intValue * 1000;
     }

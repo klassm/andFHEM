@@ -1,6 +1,34 @@
+/*
+ * AndFHEM - Open Source Android application to control a FHEM home automation
+ * server.
+ *
+ * Copyright (c) 2011, Matthias Klass or third-party contributors as
+ * indicated by the @author tags or express copyright attribution
+ * statements applied by the authors.  All third-party contributions are
+ * distributed under license by Red Hat Inc.
+ *
+ * This copyrighted material is made available to anyone wishing to use, modify,
+ * copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+ * for more details.
+ *
+ * You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+ * along with this distribution; if not, write to:
+ *   Free Software Foundation, Inc.
+ *   51 Franklin Street, Fifth Floor
+ *   Boston, MA  02110-1301  USA
+ */
+
 package li.klass.fhem.activities.graph;
 
+import android.content.Context;
+
+import org.junit.Rule;
 import org.junit.Test;
+import org.mockito.Mock;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -11,6 +39,7 @@ import li.klass.fhem.R;
 import li.klass.fhem.infra.basetest.RobolectricBaseTestCase;
 import li.klass.fhem.service.graph.GraphEntry;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
+import li.klass.fhem.testutil.MockitoTestRule;
 
 import static li.klass.fhem.activities.graph.ViewableChartSeries.ChartType.NORMAL;
 import static li.klass.fhem.activities.graph.ViewableChartSeries.ChartType.REGRESSION;
@@ -22,6 +51,12 @@ public class ChartDataTest extends RobolectricBaseTestCase {
 
     private static final List<GraphEntry> dummyData = Arrays.asList(new GraphEntry(new Date(1), 0.3f));
 
+    @Rule
+    public MockitoTestRule mockitoTestRule = new MockitoTestRule();
+
+    @Mock
+    private Context context;
+
     @Test
     public void testNumberOfContainedSeries() {
         ChartData data = new ChartData(
@@ -31,8 +66,8 @@ public class ChartDataTest extends RobolectricBaseTestCase {
                         .withDbLogSpec("def")
                         .withSeriesType(TEMPERATURE)
                         .withShowRegression(true)
-                        .build(), dummyData
-        );
+                        .build(), dummyData,
+                context);
         assertThat(data.getNumberOfContainedSeries(), is(2));
 
         data = new ChartData(
@@ -44,8 +79,8 @@ public class ChartDataTest extends RobolectricBaseTestCase {
                         .withShowSum(true)
                         .withSeriesType(TEMPERATURE)
                         .build(),
-                dummyData
-        );
+                dummyData,
+                context);
         assertThat(data.getNumberOfContainedSeries(), is(2));
 
         data = new ChartData(
@@ -55,8 +90,8 @@ public class ChartDataTest extends RobolectricBaseTestCase {
                         .withDbLogSpec("def")
                         .withSeriesType(TEMPERATURE)
                         .build(),
-                dummyData
-        );
+                dummyData,
+                context);
         assertThat(data.getNumberOfContainedSeries(), is(1));
     }
 
@@ -70,8 +105,8 @@ public class ChartDataTest extends RobolectricBaseTestCase {
                         .withSeriesType(TEMPERATURE)
                         .withShowRegression(true)
                         .build(),
-                dummyData
-        );
+                dummyData,
+                context);
 
         Iterator<ViewableChartSeries> iterator = data.iterator();
         assertThat(iterator.hasNext(), is(true));

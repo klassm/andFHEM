@@ -29,11 +29,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.domain.core.Device;
-import li.klass.fhem.service.room.RoomListService;
 
-import static li.klass.fhem.activities.locale.LocaleIntentConstants.*;
+import li.klass.fhem.constants.Actions;
+import li.klass.fhem.constants.BundleExtraKeys;
+import li.klass.fhem.constants.ResultCodes;
+import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.util.FhemResultReceiver;
+
+import static li.klass.fhem.activities.locale.LocaleIntentConstants.RESULT_CONDITION_SATISFIED;
+import static li.klass.fhem.activities.locale.LocaleIntentConstants.RESULT_CONDITION_UNKNOWN;
+import static li.klass.fhem.activities.locale.LocaleIntentConstants.RESULT_CONDITION_UNSATISFIED;
 
 public class ConditionQueryLocaleReceiver extends BroadcastReceiver {
 
@@ -46,16 +51,28 @@ public class ConditionQueryLocaleReceiver extends BroadcastReceiver {
         String deviceName = intent.getStringExtra(BundleExtraKeys.DEVICE_NAME);
         final String targetState = intent.getStringExtra(BundleExtraKeys.DEVICE_TARGET_STATE);
 
-        Device device = RoomListService.INSTANCE.getDeviceForName(deviceName, RoomListService.NEVER_UPDATE_PERIOD);
-        if (device == null) {
-            finishConditionIntent(RESULT_CONDITION_UNKNOWN);
-        } else if (device.getInternalState().equalsIgnoreCase(targetState)) {
-            finishConditionIntent(RESULT_CONDITION_SATISFIED);
-        } else if (device.getInternalState().matches(targetState)) {
-            finishConditionIntent(RESULT_CONDITION_SATISFIED);
-        } else {
-            finishConditionIntent(RESULT_CONDITION_UNSATISFIED);
-        }
+        Intent queryIntent = new Intent(Actions.GET_DEVICE_FOR_NAME);
+        queryIntent.putExtra(BundleExtraKeys.DEVICE_NAME, deviceName);
+        queryIntent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new FhemResultReceiver() {
+            @Override
+            protected void onReceiveResult(int resultCode, Bundle resultData) {
+                if (resultCode != ResultCodes.SUCCESS || !resultData.containsKey(BundleExtraKeys.DEVICE)) {
+                    finishConditionIntent(RESULT_CONDITION_UNSATISFIED);
+                    return;
+                }
+
+                Device device = (Device) resultData.getSerializable(BundleExtraKeys.DEVICE);
+                if (device == null) {
+                    finishConditionIntent(RESULT_CONDITION_UNKNOWN);
+                } else if (device.getInternalState().equalsIgnoreCase(targetState)) {
+                    finishConditionIntent(RESULT_CONDITION_SATISFIED);
+                } else if (device.getInternalState().matches(targetState)) {
+                    finishConditionIntent(RESULT_CONDITION_SATISFIED);
+                } else {
+                    finishConditionIntent(RESULT_CONDITION_UNSATISFIED);
+                }
+            }
+        });
     }
 
     private void finishConditionIntent(int resultCode) {

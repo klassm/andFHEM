@@ -40,17 +40,37 @@ import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.exception.SerializationException;
 import li.klass.fhem.util.ApplicationProperties;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static li.klass.fhem.constants.PreferenceKeys.DEVICE_FUNCTIONALITY_ORDER_VISIBLE;
 import static li.klass.fhem.constants.PreferenceKeys.DEVICE_TYPE_FUNCTIONALITY_ORDER_INVISIBLE;
 
 public class DeviceGroupHolder {
 
     public static final String TAG = DeviceGroupHolder.class.getName();
+    private final ApplicationProperties applicationProperties;
 
     private volatile boolean isLoaded = false;
     private List<DeviceFunctionality> invisible;
     private List<DeviceFunctionality> visible;
     private ArrayList<DeviceFunctionality> available;
+
+    public DeviceGroupHolder(ApplicationProperties applicationProperties) {
+        checkNotNull(applicationProperties);
+        this.applicationProperties = applicationProperties;
+    }
+
+    public List<DeviceFunctionality> getVisible() {
+        if (!isLoaded) load();
+
+        List<DeviceFunctionality> all = getAvailable();
+        all.removeAll(invisible);
+        all.removeAll(visible);
+
+        ArrayList<DeviceFunctionality> result = new ArrayList<DeviceFunctionality>(visible);
+        result.addAll(all);
+
+        return result;
+    }
 
     private synchronized void load() {
         if (isLoaded) return;
@@ -61,19 +81,6 @@ public class DeviceGroupHolder {
         invisible = loadInvisibleDeviceTypes();
 
         isLoaded = true;
-    }
-
-    public List<DeviceFunctionality> getVisible() {
-        if (! isLoaded) load();
-
-        List<DeviceFunctionality> all = getAvailable();
-        all.removeAll(invisible);
-        all.removeAll(visible);
-
-        ArrayList<DeviceFunctionality> result = new ArrayList<DeviceFunctionality>(visible);
-        result.addAll(all);
-
-        return result;
     }
 
     private ArrayList<DeviceFunctionality> getAvailable() {
@@ -91,14 +98,7 @@ public class DeviceGroupHolder {
         return functionalityList;
     }
 
-    public List<DeviceFunctionality> getInvisible() {
-        if (! isLoaded) load();
-
-        return invisible;
-    }
-
     private List<DeviceFunctionality> loadVisibleDeviceTypes() {
-        ApplicationProperties applicationProperties = ApplicationProperties.INSTANCE;
         String persistedValue = applicationProperties
                 .getStringSharedPreference(DEVICE_FUNCTIONALITY_ORDER_VISIBLE, null);
 
@@ -106,7 +106,6 @@ public class DeviceGroupHolder {
     }
 
     private List<DeviceFunctionality> loadInvisibleDeviceTypes() {
-        ApplicationProperties applicationProperties = ApplicationProperties.INSTANCE;
         String persistedValue = applicationProperties
                 .getStringSharedPreference(DEVICE_TYPE_FUNCTIONALITY_ORDER_INVISIBLE, null);
         return parsePersistedValue(persistedValue, new ArrayList<DeviceFunctionality>());
@@ -115,12 +114,18 @@ public class DeviceGroupHolder {
     private List<DeviceFunctionality> parsePersistedValue(String persistedValue,
                                                           ArrayList<DeviceFunctionality> defaultValue) {
         try {
-            if (persistedValue != null && ! "".equals(persistedValue)) {
+            if (persistedValue != null && !"".equals(persistedValue)) {
                 return Arrays.asList((DeviceFunctionality[]) ObjectSerializer.deserialize(persistedValue));
             }
         } catch (SerializationException e) {
             Log.e(TAG, "error during deserialisation", e);
         }
         return defaultValue;
+    }
+
+    public List<DeviceFunctionality> getInvisible() {
+        if (!isLoaded) load();
+
+        return invisible;
     }
 }

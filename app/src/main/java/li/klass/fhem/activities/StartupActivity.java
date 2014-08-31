@@ -31,6 +31,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import javax.inject.Inject;
+
+import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.DialogUtil;
@@ -39,9 +42,15 @@ import static com.google.common.base.Strings.isNullOrEmpty;
 import static li.klass.fhem.constants.PreferenceKeys.STARTUP_PASSWORD;
 
 public class StartupActivity extends Activity {
+    @Inject
+    ApplicationProperties applicationProperties;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        ((AndFHEMApplication) getApplication()).inject(this);
+
         if (isNullOrEmpty(getPassword())) {
             gotoMainActivity();
         } else {
@@ -65,11 +74,11 @@ public class StartupActivity extends Activity {
         }
     }
 
-    private void gotoMainActivity() {
-        startActivity(new Intent(this, AndFHEMMainActivity.class));
+    private String getPassword() {
+        return applicationProperties.getStringSharedPreference(STARTUP_PASSWORD, "");
     }
 
-    private String getPassword() {
-        return ApplicationProperties.INSTANCE.getStringSharedPreference(STARTUP_PASSWORD, "");
+    private void gotoMainActivity() {
+        startActivity(new Intent(this, AndFHEMMainActivity.class));
     }
 }

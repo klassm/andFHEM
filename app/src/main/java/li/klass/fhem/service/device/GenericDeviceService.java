@@ -24,38 +24,46 @@
 
 package li.klass.fhem.service.device;
 
+import android.content.Context;
 import android.util.Log;
 
 import java.lang.reflect.Method;
 
-import li.klass.fhem.AndFHEMApplication;
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+import li.klass.fhem.dagger.ForApplication;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.service.CommandExecutionService;
 import li.klass.fhem.util.Tasker;
 
+@Singleton
 public class GenericDeviceService {
-    public static final GenericDeviceService INSTANCE = new GenericDeviceService();
 
-    private GenericDeviceService() {
-    }
+    @Inject
+    CommandExecutionService commandExecutionService;
+
+    @Inject
+    @ForApplication
+    Context applicationContext;
 
     public void setState(Device<?> device, String targetState) {
         targetState = device.formatTargetState(targetState);
 
-        CommandExecutionService.INSTANCE.executeSafely("set " + device.getName() + " " + targetState);
+        commandExecutionService.executeSafely("set " + device.getName() + " " + targetState);
 
         if (device.shouldUpdateStateOnDevice(targetState)) {
             device.setState(device.formatStateTextToSet(targetState));
         }
 
-        Tasker.sendTaskerNotifyIntent(AndFHEMApplication.getContext(), device.getName(),
+        Tasker.sendTaskerNotifyIntent(applicationContext, device.getName(),
                 "state", targetState);
     }
 
     public void setSubState(Device<?> device, String subStateName, String value) {
-        CommandExecutionService.INSTANCE.executeSafely("set " + device.getName() + " " + subStateName + " " + value);
-        Tasker.sendTaskerNotifyIntent(AndFHEMApplication.getContext(), device.getName(),
+        commandExecutionService.executeSafely("set " + device.getName() + " " + subStateName + " " + value);
+        Tasker.sendTaskerNotifyIntent(applicationContext, device.getName(),
                 subStateName, value);
 
         invokeDeviceUpdateFor(device, subStateName, value);

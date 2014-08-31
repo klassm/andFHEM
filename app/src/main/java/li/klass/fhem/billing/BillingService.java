@@ -25,6 +25,7 @@
 package li.klass.fhem.billing;
 
 import android.app.Activity;
+import android.content.Context;
 import android.util.Log;
 
 import com.android.vending.billing.IabHelper;
@@ -35,7 +36,9 @@ import com.android.vending.billing.Purchase;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 
-import li.klass.fhem.AndFHEMApplication;
+import javax.inject.Inject;
+
+import li.klass.fhem.dagger.ForApplication;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -44,13 +47,12 @@ import static li.klass.fhem.AndFHEMApplication.PUBLIC_KEY_ENCODED;
 public class BillingService {
 
     public static final String TAG = BillingService.class.getName();
-    public static final BillingService INSTANCE = new BillingService();
     IabHelper iabHelper;
-    private AtomicReference<Inventory> inventory = new AtomicReference<Inventory>(Inventory.empty());
+    @Inject
+    @ForApplication
+    Context applicationContext;
+    private AtomicReference<Inventory> inventory = new AtomicReference<>(Inventory.empty());
     private volatile boolean setupInProgress = false;
-
-    BillingService() {
-    }
 
     public synchronized void stop() {
         if (iabHelper != null) {
@@ -136,8 +138,8 @@ public class BillingService {
             waited = true;
             try {
                 Log.d(TAG, "wait for setup completion");
-                synchronized (BillingService.INSTANCE) {
-                    BillingService.INSTANCE.wait();
+                synchronized (this) {
+                    wait();
                 }
             } catch (InterruptedException e) {
                 Log.e(TAG, "interrupted", e);
@@ -179,13 +181,13 @@ public class BillingService {
     }
 
     IabHelper createIabHelper() {
-        return new IabHelper(AndFHEMApplication.getContext(), PUBLIC_KEY_ENCODED);
+        return new IabHelper(applicationContext, PUBLIC_KEY_ENCODED);
     }
 
     private void notifySetupWaitingThreads() {
-        synchronized (BillingService.INSTANCE) {
+        synchronized (this) {
             setupInProgress = false;
-            BillingService.INSTANCE.notifyAll();
+            notifyAll();
             Log.d(TAG, "setup complete => notifying all waiting threads");
         }
     }

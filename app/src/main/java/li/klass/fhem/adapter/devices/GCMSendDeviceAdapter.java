@@ -27,14 +27,20 @@ package li.klass.fhem.adapter.devices;
 import android.content.Context;
 import android.content.Intent;
 
+import javax.inject.Inject;
+
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
 import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewButtonAction;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.GCMSendDevice;
+import li.klass.fhem.service.device.GCMSendDeviceService;
 
 public class GCMSendDeviceAdapter extends GenericDeviceAdapter<GCMSendDevice> {
+    @Inject
+    GCMSendDeviceService gcmSendDeviceService;
+
     public GCMSendDeviceAdapter() {
         super(GCMSendDevice.class);
     }
@@ -53,14 +59,14 @@ public class GCMSendDeviceAdapter extends GenericDeviceAdapter<GCMSendDevice> {
 
             @Override
             public boolean isVisible(GCMSendDevice device) {
-                return ! device.isRegistered();
+                return !gcmSendDeviceService.isDeviceRegistered(device);
             }
         });
     }
 
     @Override
     protected String getGeneralDetailsNotificationText(Context context, GCMSendDevice device) {
-        if (device.isRegistered()) {
+        if (gcmSendDeviceService.isDeviceRegistered(device)) {
             return context.getString(R.string.gcmAlreadyRegistered);
         }
         return null;

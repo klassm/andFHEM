@@ -31,10 +31,11 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.widget.TableRow;
 import android.widget.TextView;
-import li.klass.fhem.AndFHEMApplication;
+
 import li.klass.fhem.R;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.ValueDescriptionUtil;
 import li.klass.fhem.util.device.DeviceActionUtil;
 
@@ -46,15 +47,20 @@ public class TemperatureChangeTableRow<D extends Device<D>> extends SeekBarActio
     private Context context;
     private double minTemperature;
     private boolean sendIntents = true;
+    private ApplicationProperties applicationProperties;
 
     public TemperatureChangeTableRow(Context context, double initialTemperature, TableRow updateTableRow,
-                                     double minTemperature, double maxTemperature) {
-        this(context, initialTemperature, updateTableRow, null, -1, minTemperature, maxTemperature);
+                                     double minTemperature, double maxTemperature,
+                                     ApplicationProperties applicationProperties) {
+        this(context, initialTemperature, updateTableRow, null, -1, minTemperature,
+                maxTemperature, applicationProperties);
         sendIntents = false;
+        this.applicationProperties = applicationProperties;
     }
 
     public TemperatureChangeTableRow(Context context, double initialTemperature, TableRow updateTableRow,
-                                     String intentAction, int valueStringId, double minTemperature, double maxTemperature) {
+                                     String intentAction, int valueStringId, double minTemperature,
+                                     double maxTemperature, ApplicationProperties applicationProperties) {
         super(context, temperatureToDimProgress(initialTemperature, minTemperature),
                 temperatureToDimProgress(maxTemperature, minTemperature));
 
@@ -65,10 +71,18 @@ public class TemperatureChangeTableRow<D extends Device<D>> extends SeekBarActio
         this.context = context;
     }
 
+    public static int temperatureToDimProgress(double temperature, double minTemperature) {
+        return (int) ((temperature - minTemperature) / 0.5);
+    }
+
     @Override
     public void onProgressChanged(Context context, D device, int progress) {
         this.newTemperature = dimProgressToTemperature(progress, minTemperature);
         updateView.setText(ValueDescriptionUtil.appendTemperature(newTemperature));
+    }
+
+    public static double dimProgressToTemperature(double progress, double minTemperature) {
+        return minTemperature + (progress * 0.5);
     }
 
     @Override
@@ -86,9 +100,14 @@ public class TemperatureChangeTableRow<D extends Device<D>> extends SeekBarActio
         }, confirmationMessage);
     }
 
-    @Override
-    public void onButtonSetValue(D device, int value) {
-        setValue(device, value);
+    private String createConfirmationText(int attributeStringId, double newTemperature) {
+        Resources resources = context.getResources();
+
+        String attributeText = resources.getString(attributeStringId);
+        String temperatureText = ValueDescriptionUtil.appendTemperature(newTemperature);
+
+        String text = resources.getString(R.string.areYouSureText);
+        return String.format(text, attributeText, temperatureText);
     }
 
     private void setValue(D device, double newValue) {
@@ -105,26 +124,17 @@ public class TemperatureChangeTableRow<D extends Device<D>> extends SeekBarActio
     protected void onIntentCreation(Intent intent) {
     }
 
-    private String createConfirmationText(int attributeStringId, double newTemperature) {
-        Context context = AndFHEMApplication.getContext();
-        Resources resources = context.getResources();
+    @Override
+    public void onButtonSetValue(D device, int value) {
+        setValue(device, value);
+    }
 
-        String attributeText = resources.getString(attributeStringId);
-        String temperatureText = ValueDescriptionUtil.appendTemperature(newTemperature);
-
-        String text = resources.getString(R.string.areYouSureText);
-        return String.format(text, attributeText, temperatureText);
+    @Override
+    protected ApplicationProperties getApplicationProperties() {
+        return applicationProperties;
     }
 
     public double getTemperature() {
         return newTemperature;
-    }
-
-    public static int temperatureToDimProgress(double temperature, double minTemperature) {
-        return (int) ((temperature - minTemperature) / 0.5);
-    }
-
-    public static double dimProgressToTemperature(double progress, double minTemperature) {
-        return minTemperature + (progress * 0.5);
     }
 }

@@ -36,7 +36,6 @@ import java.util.Calendar;
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.DimmableAdapter;
 import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
-import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
 import li.klass.fhem.adapter.devices.genericui.ButtonActionRow;
 import li.klass.fhem.adapter.devices.genericui.ColorPickerRow;
 import li.klass.fhem.constants.Actions;
@@ -58,7 +57,7 @@ public class DummyAdapter extends DimmableAdapter<DummyDevice> {
             public void onFieldNameAdded(final Context context, TableLayout tableLayout,
                                          String field, final DummyDevice device,
                                          TableRow fieldTableRow) {
-                tableLayout.addView(new ButtonActionRow(R.string.set) {
+                tableLayout.addView(new ButtonActionRow(context, R.string.set) {
 
                     @Override
                     protected void onButtonClick() {
@@ -80,7 +79,7 @@ public class DummyAdapter extends DimmableAdapter<DummyDevice> {
                         }, now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE), true);
                         timePickerDialog.show();
                     }
-                }.createRow(inflater));
+                }.createRow(getInflater()));
             }
 
             @Override
@@ -110,11 +109,11 @@ public class DummyAdapter extends DimmableAdapter<DummyDevice> {
                         intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
                         intent.putExtra(BundleExtraKeys.STATE_NAME, "rgb");
                         intent.putExtra(BundleExtraKeys.STATE_VALUE, targetHexString);
-                        GenericDeviceAdapter.putUpdateExtra(intent);
+                        putUpdateExtra(intent);
 
                         context.startService(intent);
                     }
-                } .createRow(context, inflater));
+                }.createRow(context, getInflater()));
             }
         });
     }

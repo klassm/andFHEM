@@ -32,14 +32,15 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.rooms.RoomListAdapter;
@@ -48,23 +49,34 @@ import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.fragments.core.BaseFragment;
 import li.klass.fhem.fragments.core.TopLevelFragment;
+import li.klass.fhem.service.advertisement.AdvertisementService;
 import li.klass.fhem.util.FhemResultReceiver;
 import li.klass.fhem.util.Reject;
-import li.klass.fhem.util.advertisement.AdvertisementUtil;
 
 import static com.google.common.collect.Lists.newArrayList;
+import static li.klass.fhem.constants.BundleExtraKeys.EMPTY_TEXT_ID;
+import static li.klass.fhem.constants.BundleExtraKeys.ON_CLICKED_CALLBACK;
 import static li.klass.fhem.constants.BundleExtraKeys.RESULT_RECEIVER;
 import static li.klass.fhem.constants.BundleExtraKeys.ROOM_LIST;
 import static li.klass.fhem.constants.BundleExtraKeys.ROOM_NAME;
+import static li.klass.fhem.constants.BundleExtraKeys.ROOM_SELECTABLE_CALLBACK;
 
 public class RoomListFragment extends BaseFragment implements TopLevelFragment {
 
+    @Inject
+    AdvertisementService advertisementService;
     private String roomName;
+    private int emptyTextId;
+    private RoomSelectableCallback roomSelectableCallback;
+    private RoomClickedCallback roomClickedCallback;
 
     @Override
     public void setArguments(Bundle args) {
         super.setArguments(args);
         roomName = args.getString(ROOM_NAME);
+        emptyTextId = args.containsKey(EMPTY_TEXT_ID) ? args.getInt(EMPTY_TEXT_ID) : R.string.noRooms;
+        roomSelectableCallback = (RoomSelectableCallback) args.getSerializable(ROOM_SELECTABLE_CALLBACK);
+        roomClickedCallback = (RoomClickedCallback) args.getSerializable(ON_CLICKED_CALLBACK);
     }
 
     @Override
@@ -74,7 +86,7 @@ public class RoomListFragment extends BaseFragment implements TopLevelFragment {
 
         RoomListAdapter adapter = new RoomListAdapter(getActivity(), R.layout.room_list_name, new ArrayList<String>());
         View layout = inflater.inflate(R.layout.room_list, container, false);
-        AdvertisementUtil.addAd(layout, getActivity());
+        advertisementService.addAd(layout, getActivity());
 
         assert layout != null;
 
@@ -97,12 +109,20 @@ public class RoomListFragment extends BaseFragment implements TopLevelFragment {
         return layout;
     }
 
-    protected void onClick(String roomName) {
-        Intent intent = new Intent(Actions.SHOW_FRAGMENT);
-        intent.putExtra(BundleExtraKeys.FRAGMENT, FragmentType.ROOM_DETAIL);
-        intent.putExtra(ROOM_NAME, roomName);
+    protected int getEmptyTextId() {
+        return emptyTextId;
+    }
 
-        getActivity().sendBroadcast(intent);
+    protected void onClick(String roomName) {
+        if (roomClickedCallback != null) {
+            roomClickedCallback.onRoomClicked(roomName);
+        } else {
+            Intent intent = new Intent(Actions.SHOW_FRAGMENT);
+            intent.putExtra(BundleExtraKeys.FRAGMENT, FragmentType.ROOM_DETAIL);
+            intent.putExtra(ROOM_NAME, roomName);
+
+            getActivity().sendBroadcast(intent);
+        }
     }
 
     @Override
@@ -147,7 +167,12 @@ public class RoomListFragment extends BaseFragment implements TopLevelFragment {
     }
 
     protected boolean isRoomSelectable(String roomName) {
-        return true;
+        return roomSelectableCallback == null || roomSelectableCallback.isRoomSelectable(roomName);
+    }
+
+    private RoomListAdapter getAdapter() {
+        ListView listView = (ListView) getView().findViewById(R.id.roomList);
+        return (RoomListAdapter) listView.getAdapter();
     }
 
     private void scrollToSelectedRoom(String selectedRoom, List<String> roomList) {
@@ -168,21 +193,11 @@ public class RoomListFragment extends BaseFragment implements TopLevelFragment {
         }
     }
 
-    private RoomListAdapter getAdapter() {
-        ListView listView = (ListView) getView().findViewById(R.id.roomList);
-        return (RoomListAdapter) listView.getAdapter();
+    public interface RoomSelectableCallback extends Serializable {
+        boolean isRoomSelectable(String roomName);
     }
 
-    protected void fillEmptyView(LinearLayout view) {
-        View emptyView = LayoutInflater.from(getActivity()).inflate(R.layout.empty_view, null);
-        assert emptyView != null;
-        TextView emptyText = (TextView) emptyView.findViewById(R.id.emptyText);
-        emptyText.setText(getEmptyTextId());
-
-        view.addView(emptyView);
-    }
-
-    protected int getEmptyTextId() {
-        return R.string.noRooms;
+    public interface RoomClickedCallback extends Serializable {
+        void onRoomClicked(String roomName);
     }
 }

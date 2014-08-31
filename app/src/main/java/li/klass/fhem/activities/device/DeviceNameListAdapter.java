@@ -34,17 +34,18 @@ import li.klass.fhem.R;
 import li.klass.fhem.adapter.rooms.DeviceGridAdapter;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.RoomDeviceList;
+import li.klass.fhem.util.ApplicationProperties;
 
 import static android.view.ViewGroup.LayoutParams;
 
 public class DeviceNameListAdapter<DEVICE extends Device<DEVICE>> extends DeviceGridAdapter<DEVICE> {
-    private String selectedDeviceName;
     public static final int DEFAULT_REQUIRED_COLUMN_WIDTH = 250;
-
     private int requiredColumnWidth = DEFAULT_REQUIRED_COLUMN_WIDTH;
+    private String selectedDeviceName;
 
-    public DeviceNameListAdapter(Context context, RoomDeviceList roomDeviceList, int requiredColumnWidth) {
-        super(context, roomDeviceList);
+    public DeviceNameListAdapter(Context context, RoomDeviceList roomDeviceList, int requiredColumnWidth,
+                                 ApplicationProperties applicationProperties) {
+        super(context, roomDeviceList, applicationProperties);
         this.requiredColumnWidth = requiredColumnWidth;
     }
 
@@ -70,7 +71,7 @@ public class DeviceNameListAdapter<DEVICE extends Device<DEVICE>> extends Device
         return view;
     }
 
-    public void updateData(RoomDeviceList roomDeviceList, String selectedDeviceName , long lastUpdate) {
+    public void updateData(RoomDeviceList roomDeviceList, String selectedDeviceName, long lastUpdate) {
         this.selectedDeviceName = selectedDeviceName;
         super.updateData(roomDeviceList, lastUpdate);
     }

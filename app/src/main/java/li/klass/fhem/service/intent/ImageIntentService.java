@@ -28,12 +28,18 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.ResultReceiver;
 
+import javax.inject.Inject;
+
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.service.CommandExecutionService;
 
 public class ImageIntentService extends ConvenientIntentService {
+
+    @Inject
+    CommandExecutionService commandExecutionService;
+
     public ImageIntentService() {
         super(ImageIntentService.class.getName());
     }
@@ -44,7 +50,7 @@ public class ImageIntentService extends ConvenientIntentService {
 
         if (action.equals(Actions.LOAD_IMAGE)) {
             String relativePath = intent.getStringExtra(BundleExtraKeys.IMAGE_RELATIVE_PATH);
-            Bitmap bitmap = CommandExecutionService.INSTANCE.getBitmap(relativePath);
+            Bitmap bitmap = commandExecutionService.getBitmap(relativePath);
             if (bitmap == null) {
                 return STATE.ERROR;
             }

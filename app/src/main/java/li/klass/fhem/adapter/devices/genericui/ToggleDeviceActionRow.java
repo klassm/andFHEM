@@ -26,25 +26,15 @@ package li.klass.fhem.adapter.devices.genericui;
 
 import android.content.Context;
 import android.content.Intent;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TableRow;
-import android.widget.TextView;
-import android.widget.ToggleButton;
 
-import java.util.Map;
-
-import li.klass.fhem.AndFHEMApplication;
-import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.UpdatingResultReceiver;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.core.ToggleableDevice;
 
 public class ToggleDeviceActionRow<T extends ToggleableDevice> extends ToggleActionRow<T> {
-    public ToggleDeviceActionRow(int description, int layout) {
-        super(description, layout);
+    public ToggleDeviceActionRow(Context context, int description, int layout) {
+        super(context, description, layout);
     }
 
     public ToggleDeviceActionRow(String description, int layout) {

@@ -24,11 +24,17 @@
 
 package li.klass.fhem.service.connection;
 
+import android.content.Context;
+
+import org.junit.Rule;
 import org.junit.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 
 import li.klass.fhem.fhem.connection.FHEMServerSpec;
 import li.klass.fhem.fhem.connection.ServerType;
 import li.klass.fhem.infra.basetest.RobolectricBaseTestCase;
+import li.klass.fhem.testutil.MockitoTestRule;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
@@ -36,6 +42,16 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsNot.not;
 
 public class ConnectionServiceTest extends RobolectricBaseTestCase {
+
+    @Rule
+    public MockitoTestRule mockitoTestRule = new MockitoTestRule();
+
+    @InjectMocks
+    private ConnectionService connectionService;
+
+    @Mock
+    private Context applicationContext;
+
     @Test
     public void testFHEMServerSpecSerializeDeserialize() {
         FHEMServerSpec serverSpec = new FHEMServerSpec("test");
@@ -47,10 +63,10 @@ public class ConnectionServiceTest extends RobolectricBaseTestCase {
         serverSpec.setPort(7072);
         serverSpec.setServerType(ServerType.FHEMWEB);
 
-        String json = ConnectionService.INSTANCE.serialize(serverSpec);
+        String json = connectionService.serialize(serverSpec);
         assertThat(json, is(not(nullValue())));
 
-        FHEMServerSpec deserialized = ConnectionService.INSTANCE.deserialize(json);
+        FHEMServerSpec deserialized = connectionService.deserialize(json);
 
         assertThat(deserialized.getUrl(), is("http://test.com"));
         assertThat(deserialized.getUsername(), is("hallowelt"));

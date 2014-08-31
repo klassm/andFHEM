@@ -24,6 +24,7 @@
 
 package li.klass.fhem.fragments;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.http.SslError;
@@ -42,6 +43,8 @@ import android.webkit.WebViewClient;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import javax.inject.Inject;
+
 import li.klass.fhem.R;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
@@ -52,6 +55,10 @@ import li.klass.fhem.service.connection.ConnectionService;
 public abstract class AbstractWebViewFragment extends BaseFragment {
     public static final String TAG = AbstractWebViewFragment.class.getName();
 
+    @Inject
+    ConnectionService connectionService;
+
+    @SuppressLint("SetJavaScriptEnabled")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
@@ -93,7 +100,7 @@ public abstract class AbstractWebViewFragment extends BaseFragment {
 
             @Override
             public void onReceivedHttpAuthRequest(WebView view, HttpAuthHandler handler, String host, String realm) {
-                FHEMServerSpec currentServer = ConnectionService.INSTANCE.getCurrentServer();
+                FHEMServerSpec currentServer = connectionService.getCurrentServer();
                 String url = currentServer.getUrl();
                 try {
                     String fhemHost = new URL(url).getHost();
@@ -130,11 +137,14 @@ public abstract class AbstractWebViewFragment extends BaseFragment {
         return view;
     }
 
+    protected void onPageLoadFinishedCallback(WebView view, String url) {
+    }
+
     @Override
     public void update(boolean doUpdate) {
         WebView webView = (WebView) getView().findViewById(R.id.webView);
 
-        FHEMServerSpec currentServer = ConnectionService.INSTANCE.getCurrentServer();
+        FHEMServerSpec currentServer = connectionService.getCurrentServer();
         String url = currentServer.getUrl();
         try {
             if (url != null) {
@@ -154,9 +164,6 @@ public abstract class AbstractWebViewFragment extends BaseFragment {
             getActivity().sendBroadcast(intent);
             Log.e(TAG, "malformed URL: " + url, e);
         }
-    }
-
-    protected void onPageLoadFinishedCallback(WebView view, String url) {
     }
 
     protected abstract String getLoadUrl();

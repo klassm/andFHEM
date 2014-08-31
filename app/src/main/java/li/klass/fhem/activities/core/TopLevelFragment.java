@@ -41,10 +41,12 @@ import android.view.ViewGroup;
 import java.io.Serializable;
 import java.lang.reflect.Constructor;
 
-import li.klass.fhem.AndFHEMApplication;
+import javax.inject.Inject;
+
 import li.klass.fhem.R;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
+import li.klass.fhem.dagger.ForApplication;
 import li.klass.fhem.fragments.FragmentType;
 import li.klass.fhem.fragments.core.BaseFragment;
 import li.klass.fhem.util.Reject;
@@ -56,11 +58,8 @@ public class TopLevelFragment extends Fragment implements Serializable {
     public static final String LAST_SWITCH_TO_BUNDLE_KEY = "lastBundle";
     public static final String NAVIGATION_TAG = "NAVIGATION";
     public static final String CONTENT_TAG = "CONTENT";
-    private transient FragmentType initialFragmentType;
-
-    private BroadcastReceiver broadcastReceiver;
     public static final IntentFilter FILTER = new IntentFilter();
-
+    private static final String TAG = TopLevelFragment.class.getName();
     private static FragmentType currentTopLevelFragmentType = null;
 
     static {
@@ -69,19 +68,22 @@ public class TopLevelFragment extends Fragment implements Serializable {
         FILTER.addAction(Actions.TOP_LEVEL_BACK);
     }
 
+    @Inject
+    @ForApplication
+    Context applicationContext;
+    private transient FragmentType initialFragmentType;
+    private BroadcastReceiver broadcastReceiver;
     private Bundle lastSwitchToBundle;
     private int contentId;
     private int navigationId;
 
-    private static final String TAG = TopLevelFragment.class.getName();
-
-    public TopLevelFragment() {
-        setRetainInstance(true);
-    }
-
     public TopLevelFragment(FragmentType initialFragmentType) {
         this();
         this.initialFragmentType = initialFragmentType;
+    }
+
+    public TopLevelFragment() {
+        setRetainInstance(true);
     }
 
     @Override
@@ -135,7 +137,7 @@ public class TopLevelFragment extends Fragment implements Serializable {
 
     public void switchToInitialFragment() {
         if (getFragmentManager() == null) {
-            AndFHEMApplication.getContext().sendBroadcast(new Intent(Actions.RELOAD));
+            applicationContext.sendBroadcast(new Intent(Actions.RELOAD));
             return;
         }
         clearBackStack();

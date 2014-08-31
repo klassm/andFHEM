@@ -24,6 +24,8 @@
 
 package li.klass.fhem.billing;
 
+import android.content.Context;
+
 import com.android.vending.billing.IabException;
 import com.android.vending.billing.IabHelper;
 import com.android.vending.billing.IabResult;
@@ -46,6 +48,7 @@ import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -62,9 +65,13 @@ public class BillingServiceTest extends RobolectricBaseTestCase {
     @Mock
     private IabHelper iabHelper;
 
+    @Mock
+    private Context applicationContext;
+
     @Before
     public void setUp() {
-        given(billingService.createIabHelper()).willReturn(iabHelper);
+        given(applicationContext.getApplicationContext()).willReturn(applicationContext);
+        doReturn(iabHelper).when(billingService).createIabHelper();
     }
 
     @Test

@@ -28,7 +28,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.ResultReceiver;
 import android.widget.EditText;
 
 import li.klass.fhem.R;
@@ -38,7 +37,6 @@ import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.core.Device;
 
 public class DeviceActionUtil {
-    private static ResultReceiver updateReceiver = new UpdatingResultReceiver();
 
     public static void renameDevice(final Context context, final Device device) {
         final EditText input = new EditText(context);
@@ -53,7 +51,7 @@ public class DeviceActionUtil {
                         Intent intent = new Intent(Actions.DEVICE_RENAME);
                         intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
                         intent.putExtra(BundleExtraKeys.DEVICE_NEW_NAME, newName);
-                        intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, updateReceiver);
+                        intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver(context));
                         context.startService(intent);
                     }
                 }).setNegativeButton(R.string.cancelButton, new DialogInterface.OnClickListener() {
@@ -68,10 +66,22 @@ public class DeviceActionUtil {
             public void onClick(DialogInterface dialog, int whichButton) {
                 Intent intent = new Intent(Actions.DEVICE_DELETE);
                 intent.putExtra(BundleExtraKeys.DEVICE_NAME, deviceName);
-                intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, updateReceiver);
+                intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver(context));
                 context.startService(intent);
             }
         }, context.getString(R.string.deleteConfirmation));
+    }
+
+    public static void showConfirmation(final Context context, DialogInterface.OnClickListener positiveOnClickListener, String text) {
+        new AlertDialog.Builder(context)
+                .setTitle(R.string.areYouSure)
+                .setMessage(text)
+                .setPositiveButton(R.string.okButton, positiveOnClickListener)
+                .setNegativeButton(R.string.cancelButton, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        context.sendBroadcast(new Intent(Actions.DO_UPDATE));
+                    }
+                }).show();
     }
 
     public static void moveDevice(final Context context, final Device device) {
@@ -87,7 +97,7 @@ public class DeviceActionUtil {
                         Intent intent = new Intent(Actions.DEVICE_MOVE_ROOM);
                         intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
                         intent.putExtra(BundleExtraKeys.DEVICE_NEW_ROOM, newRoom);
-                        intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, updateReceiver);
+                        intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver(context));
                         context.startService(intent);
                     }
                 }).setNegativeButton(R.string.cancelButton, new DialogInterface.OnClickListener() {
@@ -109,28 +119,12 @@ public class DeviceActionUtil {
                         Intent intent = new Intent(Actions.DEVICE_SET_ALIAS);
                         intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
                         intent.putExtra(BundleExtraKeys.DEVICE_NEW_ALIAS, newAlias);
-                        intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, updateReceiver);
+                        intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver(context));
                         context.startService(intent);
                     }
                 }).setNegativeButton(R.string.cancelButton, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
             }
         }).show();
-    }
-
-    public static void showConfirmation(final Context context, DialogInterface.OnClickListener positiveOnClickListener) {
-        showConfirmation(context, positiveOnClickListener, null);
-    }
-
-    public static void showConfirmation(final Context context, DialogInterface.OnClickListener positiveOnClickListener, String text) {
-        new AlertDialog.Builder(context)
-                .setTitle(R.string.areYouSure)
-                .setMessage(text)
-                .setPositiveButton(R.string.okButton, positiveOnClickListener)
-                .setNegativeButton(R.string.cancelButton, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        context.sendBroadcast(new Intent(Actions.DO_UPDATE));
-                    }
-                }).show();
     }
 }

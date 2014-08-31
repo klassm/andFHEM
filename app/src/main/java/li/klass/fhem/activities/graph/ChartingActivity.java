@@ -64,6 +64,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
+import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.activities.core.Updateable;
 import li.klass.fhem.constants.Actions;
@@ -137,6 +138,8 @@ public class ChartingActivity extends SherlockActivity implements Updateable {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        ((AndFHEMApplication) getApplication()).inject(this);
+
         if (savedInstanceState != null && savedInstanceState.containsKey(START_DATE)) {
             startDate = (Calendar) savedInstanceState.getSerializable(START_DATE);
         } else {
@@ -162,51 +165,9 @@ public class ChartingActivity extends SherlockActivity implements Updateable {
         update(false);
     }
 
-    @Override
-    public boolean onCreatePanelMenu(int featureId, Menu menu) {
-        getSupportMenuInflater().inflate(R.menu.graph_menu, menu);
-        return super.onCreatePanelMenu(featureId, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int itemId = item.getItemId();
-        switch (itemId) {
-            case R.id.menu_changeStartEndDate:
-                Intent intent = new Intent(this, ChartingDateSelectionActivity.class);
-                intent.putExtras(new Bundle());
-                intent.putExtra(DEVICE_NAME, deviceName);
-                intent.putExtra(START_DATE, startDate.getTime());
-                intent.putExtra(END_DATE, endDate.getTime());
-                startActivityForResult(intent, REQUEST_TIME_CHANGE);
-                return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent resultIntent) {
-        super.onActivityResult(requestCode, resultCode, resultIntent);
-
-        if (resultIntent != null && resultCode == RESULT_OK) {
-            Bundle bundle = resultIntent.getExtras();
-            switch (requestCode) {
-                case REQUEST_TIME_CHANGE:
-                    startDate.setTime((Date) bundle.getSerializable(START_DATE));
-                    endDate.setTime((Date) bundle.getSerializable(END_DATE));
-
-
-                    update(false);
-            }
-        }
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putSerializable(START_DATE, startDate);
-        outState.putSerializable(END_DATE, endDate);
+    private int getChartingDefaultTimespan() {
+        String timeSpan = PreferenceManager.getDefaultSharedPreferences(this).getString("GRAPH_DEFAULT_TIMESPAN", "24");
+        return Integer.valueOf(timeSpan.trim());
     }
 
     @Override
@@ -325,28 +286,15 @@ public class ChartingActivity extends SherlockActivity implements Updateable {
     }
 
     /**
-     * Create the actual data set for the graph. This means mapping the domain model, especially the amount of
-     * contained {@link YAxis} and its {@link ChartData} to the internal {@link CustomTimeSeries}.
+     * Method mapping all given {@link ChartSeriesDescription}s to a common domain model (from {@link YAxis} outgoing).
+     * In addition, chart entries with less than a specified number of entries are removed.
      *
-     * @param yAxisList list of {@link YAxis} to be mapped on the current data set
-     * @return data set in AChartEngine's format
+     * @param data loaded data for each {@link ChartSeriesDescription}
+     * @return list of {@link YAxis} (internal domain model representation)
      */
-    private XYMultipleSeriesDataset createChartDataSet(List<YAxis> yAxisList) {
-        XYMultipleSeriesDataset dataSet = new XYMultipleSeriesDataset();
-
-        for (int yAxisIndex = 0; yAxisIndex < yAxisList.size(); yAxisIndex++) {
-            YAxis yAxis = yAxisList.get(yAxisIndex);
-
-            for (ViewableChartSeries seriesContainer : yAxis) {
-                CustomTimeSeries timeSeries = new CustomTimeSeries(seriesContainer.getName(), yAxisIndex);
-                for (GraphEntry graphEntry : seriesContainer.getData()) {
-                    timeSeries.add(graphEntry.getDate(), graphEntry.getValue());
-                }
-                dataSet.addSeries(timeSeries);
-            }
-
-        }
-        return dataSet;
+    private List<YAxis> handleChartData(Map<ChartSeriesDescription, List<GraphEntry>> data) {
+        removeChartSeriesWithTooFewEntries(data);
+        return mapToYAxis(data);
     }
 
     /**
@@ -433,16 +381,79 @@ public class ChartingActivity extends SherlockActivity implements Updateable {
         return renderer;
     }
 
-    private int getColorFor(ViewableChartSeries viewableChartSeries, List<Integer> availableColors) {
-        SeriesType seriesType = viewableChartSeries.getSeriesType();
-        if (seriesType != null) {
-            return seriesType.getColor();
+    /**
+     * Create the actual data set for the graph. This means mapping the domain model, especially the amount of
+     * contained {@link YAxis} and its {@link ChartData} to the internal {@link CustomTimeSeries}.
+     *
+     * @param yAxisList list of {@link YAxis} to be mapped on the current data set
+     * @return data set in AChartEngine's format
+     */
+    private XYMultipleSeriesDataset createChartDataSet(List<YAxis> yAxisList) {
+        XYMultipleSeriesDataset dataSet = new XYMultipleSeriesDataset();
+
+        for (int yAxisIndex = 0; yAxisIndex < yAxisList.size(); yAxisIndex++) {
+            YAxis yAxis = yAxisList.get(yAxisIndex);
+
+            for (ViewableChartSeries seriesContainer : yAxis) {
+                CustomTimeSeries timeSeries = new CustomTimeSeries(seriesContainer.getName(), yAxisIndex);
+                for (GraphEntry graphEntry : seriesContainer.getData()) {
+                    timeSeries.add(graphEntry.getDate(), graphEntry.getValue());
+                }
+                dataSet.addSeries(timeSeries);
+            }
+
+        }
+        return dataSet;
+    }
+
+    /**
+     * Remove all graph series with less than 2 entries.
+     *
+     * @param data data to work on (which is also modified here)
+     */
+    private void removeChartSeriesWithTooFewEntries(Map<ChartSeriesDescription, List<GraphEntry>> data) {
+        for (ChartSeriesDescription chartSeriesDescription : new HashSet<ChartSeriesDescription>(data.keySet())) {
+            if (data.get(chartSeriesDescription).size() < 2) {
+                data.remove(chartSeriesDescription);
+            }
+        }
+    }
+
+    /**
+     * Maps the amount of chart description to the internal domain model
+     *
+     * @param data amount of data
+     * @return internal representation
+     */
+    private List<YAxis> mapToYAxis(Map<ChartSeriesDescription, List<GraphEntry>> data) {
+        Map<String, YAxis> yAxisMap = new HashMap<String, YAxis>();
+
+        for (ChartSeriesDescription chartSeriesDescription : data.keySet()) {
+            SeriesType seriesType = chartSeriesDescription.getSeriesType();
+            if (seriesType == null && chartSeriesDescription.getColumnName() == null) {
+                throw new IllegalArgumentException("no series type: " + chartSeriesDescription.getColumnName() + " ; device " + deviceName + "");
+            }
+            String yAxisName;
+            if (seriesType == null) {
+                yAxisName = chartSeriesDescription.getFallBackYAxisName();
+            } else {
+                yAxisName = seriesType.getYAxisName();
+            }
+            if (!yAxisMap.containsKey(yAxisName)) {
+                yAxisMap.put(yAxisName, new YAxis(yAxisName, this));
+            }
+
+            yAxisMap.get(yAxisName).addChart(chartSeriesDescription, data.get(chartSeriesDescription));
         }
 
-        Integer color = availableColors.get(0);
-        availableColors.remove(0);
+        ArrayList<YAxis> yAxisList = new ArrayList<YAxis>(yAxisMap.values());
+        Collections.sort(yAxisList);
 
-        return color;
+        for (YAxis yAxis : yAxisList) {
+            yAxis.afterSeriesSet();
+        }
+
+        return yAxisList;
     }
 
     /**
@@ -490,66 +501,63 @@ public class ChartingActivity extends SherlockActivity implements Updateable {
         renderer.setYLabelsColor(axisNumber, getResources().getColor(android.R.color.white));
     }
 
-    /**
-     * Method mapping all given {@link ChartSeriesDescription}s to a common domain model (from {@link YAxis} outgoing).
-     * In addition, chart entries with less than a specified number of entries are removed.
-     *
-     * @param data loaded data for each {@link ChartSeriesDescription}
-     * @return list of {@link YAxis} (internal domain model representation)
-     */
-    private List<YAxis> handleChartData(Map<ChartSeriesDescription, List<GraphEntry>> data) {
-        removeChartSeriesWithTooFewEntries(data);
-        return mapToYAxis(data);
+    private int getColorFor(ViewableChartSeries viewableChartSeries, List<Integer> availableColors) {
+        SeriesType seriesType = viewableChartSeries.getSeriesType();
+        if (seriesType != null) {
+            return seriesType.getColor();
+        }
+
+        Integer color = availableColors.get(0);
+        availableColors.remove(0);
+
+        return color;
     }
 
-    /**
-     * Remove all graph series with less than 2 entries.
-     *
-     * @param data data to work on (which is also modified here)
-     */
-    private void removeChartSeriesWithTooFewEntries(Map<ChartSeriesDescription, List<GraphEntry>> data) {
-        for (ChartSeriesDescription chartSeriesDescription : new HashSet<ChartSeriesDescription>(data.keySet())) {
-            if (data.get(chartSeriesDescription).size() < 2) {
-                data.remove(chartSeriesDescription);
+    @Override
+    public boolean onCreatePanelMenu(int featureId, Menu menu) {
+        getSupportMenuInflater().inflate(R.menu.graph_menu, menu);
+        return super.onCreatePanelMenu(featureId, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int itemId = item.getItemId();
+        switch (itemId) {
+            case R.id.menu_changeStartEndDate:
+                Intent intent = new Intent(this, ChartingDateSelectionActivity.class);
+                intent.putExtras(new Bundle());
+                intent.putExtra(DEVICE_NAME, deviceName);
+                intent.putExtra(START_DATE, startDate.getTime());
+                intent.putExtra(END_DATE, endDate.getTime());
+                startActivityForResult(intent, REQUEST_TIME_CHANGE);
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent resultIntent) {
+        super.onActivityResult(requestCode, resultCode, resultIntent);
+
+        if (resultIntent != null && resultCode == RESULT_OK) {
+            Bundle bundle = resultIntent.getExtras();
+            switch (requestCode) {
+                case REQUEST_TIME_CHANGE:
+                    startDate.setTime((Date) bundle.getSerializable(START_DATE));
+                    endDate.setTime((Date) bundle.getSerializable(END_DATE));
+
+
+                    update(false);
             }
         }
     }
 
-    /**
-     * Maps the amount of chart description to the internal domain model
-     *
-     * @param data amount of data
-     * @return internal representation
-     */
-    private List<YAxis> mapToYAxis(Map<ChartSeriesDescription, List<GraphEntry>> data) {
-        Map<String, YAxis> yAxisMap = new HashMap<String, YAxis>();
-
-        for (ChartSeriesDescription chartSeriesDescription : data.keySet()) {
-            SeriesType seriesType = chartSeriesDescription.getSeriesType();
-            if (seriesType == null && chartSeriesDescription.getColumnName() == null) {
-                throw new IllegalArgumentException("no series type: " + chartSeriesDescription.getColumnName() + " ; device " + deviceName + "");
-            }
-            String yAxisName;
-            if (seriesType == null) {
-                yAxisName = chartSeriesDescription.getFallBackYAxisName();
-            } else {
-                yAxisName = seriesType.getYAxisName();
-            }
-            if (!yAxisMap.containsKey(yAxisName)) {
-                yAxisMap.put(yAxisName, new YAxis(yAxisName));
-            }
-
-            yAxisMap.get(yAxisName).addChart(chartSeriesDescription, data.get(chartSeriesDescription));
-        }
-
-        ArrayList<YAxis> yAxisList = new ArrayList<YAxis>(yAxisMap.values());
-        Collections.sort(yAxisList);
-
-        for (YAxis yAxis : yAxisList) {
-            yAxis.afterSeriesSet();
-        }
-
-        return yAxisList;
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable(START_DATE, startDate);
+        outState.putSerializable(END_DATE, endDate);
     }
 
     @Override
@@ -561,10 +569,5 @@ public class ChartingActivity extends SherlockActivity implements Updateable {
                 return ProgressDialog.show(this, "", getResources().getString(R.string.executing));
         }
         return null;
-    }
-
-    private int getChartingDefaultTimespan() {
-        String timeSpan = PreferenceManager.getDefaultSharedPreferences(this).getString("GRAPH_DEFAULT_TIMESPAN", "24");
-        return Integer.valueOf(timeSpan.trim());
     }
 }

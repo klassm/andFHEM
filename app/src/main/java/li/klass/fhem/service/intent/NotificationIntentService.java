@@ -26,6 +26,7 @@ package li.klass.fhem.service.intent;
 
 import android.app.Activity;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -37,12 +38,14 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
-import li.klass.fhem.AndFHEMApplication;
+import javax.inject.Inject;
+
 import li.klass.fhem.R;
 import li.klass.fhem.activities.AndFHEMMainActivity;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
+import li.klass.fhem.dagger.ForApplication;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.fragments.core.DeviceDetailFragment;
@@ -53,12 +56,13 @@ import static li.klass.fhem.constants.BundleExtraKeys.NOTIFICATION_UPDATES;
 
 public class NotificationIntentService extends ConvenientIntentService {
 
-    private static final String PREFERENCES_NAME = "deviceNotifications";
-
     public static final int NO_UPDATES = 0;
     public static final int ALL_UPDATES = 1;
     public static final int STATE_UPDATES = 2;
-
+    private static final String PREFERENCES_NAME = "deviceNotifications";
+    @Inject
+    @ForApplication
+    Context applicationContext;
 
     public NotificationIntentService() {
         super(NotificationIntentService.class.getName());
@@ -129,7 +133,7 @@ public class NotificationIntentService extends ConvenientIntentService {
     }
 
     private SharedPreferences getPreferences() {
-        return AndFHEMApplication.getContext().getSharedPreferences(PREFERENCES_NAME, Activity.MODE_PRIVATE);
+        return applicationContext.getSharedPreferences(PREFERENCES_NAME, Activity.MODE_PRIVATE);
     }
 
     private void generateNotification(Device device, Map<String, String> updateMap, boolean vibrate) {

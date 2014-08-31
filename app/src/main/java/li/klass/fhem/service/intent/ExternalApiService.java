@@ -37,9 +37,13 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
+import javax.inject.Inject;
+
+import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.service.CommandExecutionService;
 import li.klass.fhem.service.room.RoomListService;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static li.klass.fhem.service.room.RoomListService.NEVER_UPDATE_PERIOD;
 
 public class ExternalApiService extends Service {
@@ -48,69 +52,13 @@ public class ExternalApiService extends Service {
     public static final int READINGS_VALUE = 2;
     private final Messenger messenger = new Messenger(new IncomingHandler());
 
+    @Inject
+    RoomListService roomListService;
+
+    @Inject
+    CommandExecutionService commandExecutionService;
+
     private Message replyMsg;
-
-    class IncomingHandler extends Handler {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case ROOM_LIST:
-                    ArrayList<String> deviceNames = RoomListService.INSTANCE
-                            .getAvailableDeviceNames(NEVER_UPDATE_PERIOD);
-                    replyTo(msg, deviceNames);
-
-                    break;
-                case READINGS_VALUE:
-                    String deviceName = null;
-                    String readingName = null;
-                    String defaultVal = null;
-                    //FIXME: create a new Message to reply with because we will loose msg somewhere in the AsyncTask below
-                    replyMsg = Message.obtain(null, msg.what);
-                    replyMsg.setData(msg.getData());
-                    replyMsg.replyTo = msg.replyTo;
-                    if (msg.getData() != null) {
-                        if (msg.getData().getString("device") != null) {
-                            deviceName = msg.getData().getString("device");
-                        }
-                        if (msg.getData().getString("reading") != null) {
-                            readingName = msg.getData().getString("reading");
-                        }
-                        if (msg.getData().getString("default") != null) {
-                            defaultVal = msg.getData().getString("default");
-                        }
-                        if (deviceName != null && readingName != null && defaultVal != null) {
-                            final Handler handler = new Handler();
-                            new AsyncTask<String, Void, String>() {
-
-                                @Override
-                                protected String doInBackground(String... params) {
-                                    return CommandExecutionService.INSTANCE.executeSafely(String.format("{ReadingsVal('%s','%s','%s')}", params[0], params[1], params[2]));
-                                }
-
-                                @Override
-                                protected void onPostExecute(final String result) {
-                                    // onPostExecute is run from within the UI thread, but Android allows to run multiple UI threads.
-                                    // We cannot be sure which one is chosen, so we enforce the right UI thread by using an explicit
-                                    // handler.
-                                    // see http://stackoverflow.com/questions/10426120/android-got-calledfromwrongthreadexception-in-onpostexecute-how-could-it-be
-                                    handler.post(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            ArrayList<String> readingsVal = new ArrayList<String>();
-                                            readingsVal.add(result);
-                                            replyTo(readingsVal);
-                                        }
-                                    });
-                                }
-                            }.execute(deviceName, readingName, defaultVal);
-                        }
-                    }
-                    break;
-                default:
-                    super.handleMessage(msg);
-            }
-        }
-    }
 
     private void replyTo(ArrayList<String> outgoing) {
         replyTo(replyMsg, outgoing);
@@ -139,5 +87,72 @@ public class ExternalApiService extends Service {
     @Override
     public IBinder onBind(Intent intent) {
         return messenger.getBinder();
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        ((AndFHEMApplication) getApplication()).inject(this);
+    }
+
+    class IncomingHandler extends Handler {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case ROOM_LIST:
+                    ArrayList<String> deviceNames = roomListService.getAvailableDeviceNames(NEVER_UPDATE_PERIOD);
+                    replyTo(msg, deviceNames);
+
+                    break;
+                case READINGS_VALUE:
+                    String deviceName = null;
+                    String readingName = null;
+                    String defaultVal = null;
+                    //FIXME: create a new Message to reply with because we will loose msg somewhere in the AsyncTask below
+                    replyMsg = Message.obtain(null, msg.what);
+                    replyMsg.setData(msg.getData());
+                    replyMsg.replyTo = msg.replyTo;
+                    if (msg.getData() != null) {
+                        if (msg.getData().getString("device") != null) {
+                            deviceName = msg.getData().getString("device");
+                        }
+                        if (msg.getData().getString("reading") != null) {
+                            readingName = msg.getData().getString("reading");
+                        }
+                        if (msg.getData().getString("default") != null) {
+                            defaultVal = msg.getData().getString("default");
+                        }
+                        if (deviceName != null && readingName != null && defaultVal != null) {
+                            final Handler handler = new Handler();
+                            new AsyncTask<String, Void, String>() {
+
+                                @Override
+                                protected String doInBackground(String... params) {
+                                    return commandExecutionService.executeSafely(String.format("{ReadingsVal('%s','%s','%s')}", params[0], params[1], params[2]));
+                                }
+
+                                @Override
+                                protected void onPostExecute(final String result) {
+                                    // onPostExecute is run from within the UI thread, but Android allows to run multiple UI threads.
+                                    // We cannot be sure which one is chosen, so we enforce the right UI thread by using an explicit
+                                    // handler.
+                                    // see http://stackoverflow.com/questions/10426120/android-got-calledfromwrongthreadexception-in-onpostexecute-how-could-it-be
+                                    handler.post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            ArrayList<String> readingsVal = newArrayList();
+                                            readingsVal.add(result);
+                                            replyTo(readingsVal);
+                                        }
+                                    });
+                                }
+                            }.execute(deviceName, readingName, defaultVal);
+                        }
+                    }
+                    break;
+                default:
+                    super.handleMessage(msg);
+            }
+        }
     }
 }

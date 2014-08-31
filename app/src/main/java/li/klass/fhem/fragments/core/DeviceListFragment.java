@@ -47,7 +47,8 @@ import com.actionbarsherlock.view.MenuInflater;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
-import li.klass.fhem.AndFHEMApplication;
+import javax.inject.Inject;
+
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.DeviceAdapter;
 import li.klass.fhem.adapter.rooms.DeviceGridAdapter;
@@ -59,9 +60,10 @@ import li.klass.fhem.domain.core.DeviceType;
 import li.klass.fhem.domain.core.RoomDeviceList;
 import li.klass.fhem.fhem.DataConnectionSwitch;
 import li.klass.fhem.fhem.DummyDataConnection;
+import li.klass.fhem.service.advertisement.AdvertisementService;
+import li.klass.fhem.service.connection.ConnectionService;
 import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.FhemResultReceiver;
-import li.klass.fhem.util.advertisement.AdvertisementUtil;
 import li.klass.fhem.util.device.DeviceActionUtil;
 import li.klass.fhem.widget.GridViewWithSections;
 import li.klass.fhem.widget.notification.NotificationSettingView;
@@ -77,6 +79,17 @@ import static li.klass.fhem.constants.PreferenceKeys.DEVICE_LIST_RIGHT_PADDING;
 
 public abstract class DeviceListFragment extends BaseFragment {
 
+    protected static AtomicReference<Device> contextMenuClickedDevice = new AtomicReference<>();
+    protected static AtomicReference<DeviceListFragment> currentClickFragment = new AtomicReference<>();
+    protected static AtomicBoolean isClickedDeviceFavorite = new AtomicBoolean(false);
+    @Inject
+    ConnectionService connectionService;
+    @Inject
+    DataConnectionSwitch dataConnectionSwitch;
+    @Inject
+    ApplicationProperties applicationProperties;
+    @Inject
+    AdvertisementService advertisementService;
     private ActionMode.Callback actionModeCallback = new ActionMode.Callback() {
         @Override
         public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
@@ -154,10 +167,6 @@ public abstract class DeviceListFragment extends BaseFragment {
     };
     private ActionMode actionMode;
 
-    protected static AtomicReference<Device> contextMenuClickedDevice = new AtomicReference<Device>();
-    protected static AtomicReference<DeviceListFragment> currentClickFragment = new AtomicReference<DeviceListFragment>();
-    protected static AtomicBoolean isClickedDeviceFavorite = new AtomicBoolean(false);
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View superView = super.onCreateView(inflater, container, savedInstanceState);
@@ -166,7 +175,7 @@ public abstract class DeviceListFragment extends BaseFragment {
 
         View view = inflater.inflate(R.layout.room_detail, container, false);
 
-        AdvertisementUtil.addAd(view, getActivity());
+        advertisementService.addAd(view, getActivity());
 
         assert view != null;
 
@@ -176,13 +185,13 @@ public abstract class DeviceListFragment extends BaseFragment {
         LinearLayout emptyView = (LinearLayout) view.findViewById(R.id.emptyView);
         fillEmptyView(emptyView);
 
-        if (! isNavigation()) {
-            int rightPadding = ApplicationProperties.INSTANCE.getIntegerSharedPreference(DEVICE_LIST_RIGHT_PADDING, 0);
+        if (!isNavigation()) {
+            int rightPadding = applicationProperties.getIntegerSharedPreference(DEVICE_LIST_RIGHT_PADDING, 0);
             nestedListView.setPadding(nestedListView.getPaddingLeft(), nestedListView.getPaddingTop(),
                     rightPadding, nestedListView.getPaddingBottom());
         }
 
-        DeviceGridAdapter adapter = new DeviceGridAdapter(getActivity(), new RoomDeviceList(""));
+        DeviceGridAdapter adapter = new DeviceGridAdapter(getActivity(), new RoomDeviceList(""), applicationProperties);
         nestedListView.setAdapter(adapter);
         nestedListView.setOnLongClickListener(new GridViewWithSections.OnClickListener<String, Device>() {
             @Override
@@ -214,6 +223,7 @@ public abstract class DeviceListFragment extends BaseFragment {
                     DeviceAdapter<? extends Device> adapter = DeviceType.getAdapterFor(child);
                     if (adapter != null && adapter.supportsDetailView(child)) {
                         if (actionMode != null) actionMode.finish();
+                        adapter.attach(DeviceListFragment.this.getActivity());
                         adapter.gotoDetailView(getActivity(), child);
                     }
                     return true;
@@ -225,6 +235,15 @@ public abstract class DeviceListFragment extends BaseFragment {
 
 
         return view;
+    }
+
+    protected void fillEmptyView(LinearLayout view) {
+        View emptyView = LayoutInflater.from(getActivity()).inflate(R.layout.empty_view, null);
+        assert emptyView != null;
+        TextView emptyText = (TextView) emptyView.findViewById(R.id.emptyText);
+        emptyText.setText(R.string.noDevices);
+
+        view.addView(emptyView);
     }
 
     @Override
@@ -268,7 +287,7 @@ public abstract class DeviceListFragment extends BaseFragment {
                 }
 
                 View dummyConnectionNotification = view.findViewById(R.id.dummyConnectionNotification);
-                if (!DataConnectionSwitch.INSTANCE.getCurrentProvider().getClass()
+                if (!dataConnectionSwitch.getCurrentProvider().getClass()
                         .isAssignableFrom(DummyDataConnection.class)) {
                     dummyConnectionNotification.setVisibility(View.GONE);
                 } else {
@@ -279,14 +298,23 @@ public abstract class DeviceListFragment extends BaseFragment {
         fillIntent(intent);
 
         FragmentActivity activity = getActivity();
-        if (activity == null) {
-            AndFHEMApplication.getContext().sendBroadcast(new Intent(Actions.RELOAD));
-        } else {
+        if (activity != null) {
             activity.startService(intent);
         }
     }
 
+    protected abstract String getUpdateAction();
+
+    protected DeviceGridAdapter getAdapter() {
+        GridViewWithSections listView = getDeviceList();
+        return (DeviceGridAdapter) listView.getAdapter();
+    }
+
     protected void fillIntent(Intent intent) {
+    }
+
+    private GridViewWithSections getDeviceList() {
+        return (GridViewWithSections) getView().findViewById(R.id.deviceMap1);
     }
 
     @Override
@@ -309,24 +337,6 @@ public abstract class DeviceListFragment extends BaseFragment {
         new NotificationSettingView(getActivity(), deviceName).show();
     }
 
-    protected DeviceGridAdapter getAdapter() {
-        GridViewWithSections listView = getDeviceList();
-        return (DeviceGridAdapter) listView.getAdapter();
-    }
-
-    private GridViewWithSections getDeviceList() {
-        return (GridViewWithSections) getView().findViewById(R.id.deviceMap1);
-    }
-
-    protected void fillEmptyView(LinearLayout view) {
-        View emptyView = LayoutInflater.from(getActivity()).inflate(R.layout.empty_view, null);
-        assert emptyView != null;
-        TextView emptyText = (TextView) emptyView.findViewById(R.id.emptyText);
-        emptyText.setText(R.string.noDevices);
-
-        view.addView(emptyView);
-    }
-
     @Override
     public void invalidate() {
         super.invalidate();
@@ -336,6 +346,4 @@ public abstract class DeviceListFragment extends BaseFragment {
         getDeviceList().updateNumberOfColumns();
         getAdapter().notifyDataSetInvalidated();
     }
-
-    protected abstract String getUpdateAction();
 }

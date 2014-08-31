@@ -47,6 +47,9 @@ public class BundleExtraKeys {
     public static final String IS_FAVORITE = "IS_FAVORITE";
     public static final String ALLOW_REMOTE_UPDATES = "ALLOW_REMOTE_UPDATES";
     public static final String COLUMN_WIDTH = "COLUMN_WIDTH";
+    public static final String EMPTY_TEXT_ID = "EMPTY_TEXT_ID";
+    public static final String ROOM_SELECTABLE_CALLBACK = "ROOM_SELECTABLE_CALLBACK";
+    public static final String ON_CLICKED_CALLBACK = "ON_CLICKED_CALLBACK";
 
     public static final String DEVICE_GRAPH_ENTRY_MAP = "GRAPHENTRYMAP";
     public static final String DEVICE_GRAPH_SERIES_DESCRIPTIONS = "DEVICEGRAPHSERIESDESCRIPTIONS";

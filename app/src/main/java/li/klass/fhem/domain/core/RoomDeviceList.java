@@ -25,15 +25,15 @@
 package li.klass.fhem.domain.core;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import static com.google.common.collect.Lists.newArrayList;
+import static com.google.common.collect.Maps.newHashMap;
+import static com.google.common.collect.Sets.newHashSet;
 import static li.klass.fhem.domain.core.DeviceType.getDeviceTypeFor;
 
 /**
@@ -42,26 +42,24 @@ import static li.klass.fhem.domain.core.DeviceType.getDeviceTypeFor;
 public class RoomDeviceList implements Serializable, Cloneable {
 
     /**
-     * Name of the room.
-     */
-    private String roomName;
-
-    /**
-     * Actual devices.
-     */
-    private Map<String, HashSet<Device>> deviceMap = new HashMap<String, HashSet<Device>>();
-
-    /**
      * Name of the room that contains _all_ devices.
      */
     public static final String ALL_DEVICES_ROOM = "ALL_DEVICES_LIST";
-
+    /**
+     * Name of the room.
+     */
+    private String roomName;
+    /**
+     * Actual devices.
+     */
+    private Map<String, HashSet<Device>> deviceMap = newHashMap();
     private List<String> hiddenRooms = newArrayList();
 
     private List<String> hiddenGroups = newArrayList();
 
     /**
      * Creates a new holder for a given room name.
+     *
      * @param roomName room.
      */
     public RoomDeviceList(String roomName) {
@@ -74,7 +72,7 @@ public class RoomDeviceList implements Serializable, Cloneable {
      * value.
      *
      * @param functionality device functionality to filter.
-     * @param <T> class of the returned device list.
+     * @param <T>           class of the returned device list.
      * @return list of devices matching the functionality.
      */
     public <T extends Device<T>> List<T> getDevicesOfFunctionality(String functionality) {
@@ -84,20 +82,19 @@ public class RoomDeviceList implements Serializable, Cloneable {
     /**
      * Gets devices of a certain group.
      *
-     * @param group group to filter.
-     * @param respectMayShowAndSupported set the parameter to false to also include devices that
-     *                                   may not be shown within the current connection.
-     * @param <T> class of the returned device list.
+     * @param group            group to filter.
+     * @param respectSupported set the parameter to false to also include devices that
+     *                         are not supported
+     * @param <T>              class of the returned device list.
      * @return list of devices matching the group.
      */
     public <T extends Device> List<T> getDevicesOfFunctionality(String group,
-                                                                boolean respectMayShowAndSupported) {
+                                                                boolean respectSupported) {
         Set<T> deviceSet = getOrCreateDeviceList(group);
-        List<T> deviceList = new ArrayList<T>();
+        List<T> deviceList = newArrayList();
         for (T device : deviceSet) {
-            DeviceType deviceType = getDeviceTypeFor(device);
-            if (! respectMayShowAndSupported ||
-                    (device.isSupported() && deviceType.mayShowInCurrentConnectionType())) {
+            if (!respectSupported ||
+                    (device.isSupported())) {
                 deviceList.add(device);
             }
         }
@@ -107,9 +104,17 @@ public class RoomDeviceList implements Serializable, Cloneable {
     }
 
     @SuppressWarnings("unchecked")
+    private <T extends Device> Set<T> getOrCreateDeviceList(String group) {
+        if (!deviceMap.containsKey(group)) {
+            deviceMap.put(group, new HashSet<Device>());
+        }
+        return (Set<T>) deviceMap.get(group);
+    }
+
+    @SuppressWarnings("unchecked")
     public <T extends Device> List<T> getDevicesOfType(DeviceType deviceType) {
         Set<Device> allDevices = getAllDevices();
-        List<T> deviceList = new ArrayList<T>();
+        List<T> deviceList = newArrayList();
         for (Device device : allDevices) {
             if (getDeviceTypeFor(device) != deviceType) {
                 continue;
@@ -124,15 +129,13 @@ public class RoomDeviceList implements Serializable, Cloneable {
         return deviceList;
     }
 
-    @SuppressWarnings("unchecked")
-    public <T extends Device> void addDevice(T device) {
-        if (device == null) return;
-        if (! device.isSupported()) return;
-
-        List<String> groups = device.getInternalDeviceGroupOrGroupAttributes();
-        for (String group : groups) {
-            getOrCreateDeviceList(group).add(device);
+    public Set<Device> getAllDevices() {
+        Set<Device> devices = newHashSet();
+        List<HashSet<Device>> devicesCollection = newArrayList(deviceMap.values());
+        for (HashSet<Device> deviceHashSet : devicesCollection) {
+            devices.addAll(deviceHashSet);
         }
+        return Collections.unmodifiableSet(devices);
     }
 
     @SuppressWarnings("unchecked")
@@ -141,15 +144,6 @@ public class RoomDeviceList implements Serializable, Cloneable {
         for (String group : groups) {
             deviceMap.get(group).remove(device);
         }
-    }
-
-    public Set<Device> getAllDevices() {
-        Set<Device> devices = new HashSet<Device>();
-        List<HashSet<Device>> devicesCollection = newArrayList(deviceMap.values());
-        for (HashSet<Device> deviceHashSet : devicesCollection) {
-            devices.addAll(deviceHashSet);
-        }
-        return Collections.unmodifiableSet(devices);
     }
 
     @SuppressWarnings("unchecked")
@@ -166,22 +160,13 @@ public class RoomDeviceList implements Serializable, Cloneable {
     public boolean isEmptyOrOnlyContainsDoNotShowDevices() {
         for (HashSet<Device> devices : deviceMap.values()) {
             for (Device device : devices) {
-                if (getDeviceTypeFor(device).mayShowInCurrentConnectionType()
-                        && device.isSupported()) {
+                if (device.isSupported()) {
                     return false;
                 }
             }
         }
 
         return true;
-    }
-
-    @SuppressWarnings("unchecked")
-    private <T extends Device> Set<T> getOrCreateDeviceList(String group) {
-        if (!deviceMap.containsKey(group)) {
-            deviceMap.put(group, new HashSet<Device>());
-        }
-        return (Set<T>) deviceMap.get(group);
     }
 
     public String getRoomName() {
@@ -192,16 +177,16 @@ public class RoomDeviceList implements Serializable, Cloneable {
         return hiddenGroups;
     }
 
+    public void setHiddenGroups(List<String> hiddenGroups) {
+        this.hiddenGroups = hiddenGroups;
+    }
+
     public List<String> getHiddenRooms() {
         return hiddenRooms;
     }
 
     public void setHiddenRooms(List<String> hiddenRooms) {
         this.hiddenRooms = hiddenRooms;
-    }
-
-    public void setHiddenGroups(List<String> hiddenGroups) {
-        this.hiddenGroups = hiddenGroups;
     }
 
     @Override
@@ -213,5 +198,16 @@ public class RoomDeviceList implements Serializable, Cloneable {
         }
 
         return roomDeviceList;
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T extends Device> void addDevice(T device) {
+        if (device == null) return;
+        if (!device.isSupported()) return;
+
+        List<String> groups = device.getInternalDeviceGroupOrGroupAttributes();
+        for (String group : groups) {
+            getOrCreateDeviceList(group).add(device);
+        }
     }
 }

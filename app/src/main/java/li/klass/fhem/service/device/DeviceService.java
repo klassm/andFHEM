@@ -24,11 +24,15 @@
 
 package li.klass.fhem.service.device;
 
+import android.content.Context;
 import android.content.Intent;
-import li.klass.fhem.AndFHEMApplication;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import li.klass.fhem.constants.Actions;
+import li.klass.fhem.dagger.ForApplication;
 import li.klass.fhem.domain.core.Device;
-import li.klass.fhem.domain.core.RoomDeviceList;
 import li.klass.fhem.service.CommandExecutionService;
 import li.klass.fhem.service.room.RoomListService;
 import li.klass.fhem.util.StringUtil;
@@ -38,12 +42,18 @@ import static li.klass.fhem.service.room.RoomListService.NEVER_UPDATE_PERIOD;
 /**
  * Class accumulating all device actions like renaming, moving or deleting.
  */
+@Singleton
 public class DeviceService {
 
-    public static final DeviceService INSTANCE = new DeviceService();
+    @Inject
+    CommandExecutionService commandExecutionService;
 
-    DeviceService() {
-    }
+    @Inject
+    RoomListService roomListService;
+
+    @Inject
+    @ForApplication
+    Context applicationContext;
 
     /**
      * Rename a device.
@@ -52,7 +62,7 @@ public class DeviceService {
      * @param newName new device name
      */
     public void renameDevice(final Device device, final String newName) {
-        CommandExecutionService.INSTANCE.executeSafely("rename " + device.getName() + " " + newName);
+        commandExecutionService.executeSafely("rename " + device.getName() + " " + newName);
         device.setName(newName);
     }
 
@@ -62,8 +72,8 @@ public class DeviceService {
      * @param device concerned device
      */
     public void deleteDevice(final Device device) {
-        CommandExecutionService.INSTANCE.executeSafely("delete " + device.getName());
-        RoomListService.INSTANCE.getAllRoomsDeviceList(NEVER_UPDATE_PERIOD).removeDevice(device);
+        commandExecutionService.executeSafely("delete " + device.getName());
+        roomListService.getAllRoomsDeviceList(NEVER_UPDATE_PERIOD).removeDevice(device);
     }
 
     /**
@@ -74,9 +84,9 @@ public class DeviceService {
      */
     public void setAlias(final Device device, final String alias) {
         if (StringUtil.isBlank(alias)) {
-            CommandExecutionService.INSTANCE.executeSafely("deleteattr " + device.getName() + " alias");
+            commandExecutionService.executeSafely("deleteattr " + device.getName() + " alias");
         } else {
-            CommandExecutionService.INSTANCE.executeSafely("attr " + device.getName() + " alias " + alias);
+            commandExecutionService.executeSafely("attr " + device.getName() + " alias " + alias);
         }
         device.setAlias(alias);
     }
@@ -88,10 +98,10 @@ public class DeviceService {
      * @param newRoomConcatenated new room to move the concerned device to.
      */
     public void moveDevice(final Device device, final String newRoomConcatenated) {
-        CommandExecutionService.INSTANCE.executeSafely("attr " + device.getName() + " room " + newRoomConcatenated);
+        commandExecutionService.executeSafely("attr " + device.getName() + " room " + newRoomConcatenated);
 
         device.setRoomConcatenated(newRoomConcatenated);
 
-        AndFHEMApplication.getContext().sendBroadcast(new Intent(Actions.DO_UPDATE));
+        applicationContext.sendBroadcast(new Intent(Actions.DO_UPDATE));
     }
 }
