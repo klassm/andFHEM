@@ -26,12 +26,11 @@ package li.klass.fhem.fhem;
 
 import android.util.Base64;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.http.conn.ssl.SSLSocketFactory;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -46,6 +45,8 @@ import javax.net.ssl.KeyManager;
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
+
+import static com.google.common.base.Objects.firstNonNull;
 
 public class ClientCertSSLSocketFactory extends SSLSocketFactory {
     SSLContext sslContext = null;
@@ -70,7 +71,7 @@ public class ClientCertSSLSocketFactory extends SSLSocketFactory {
     public SSLContext makeContext(File clientCertificate, String clientCertificatePassword, File serverCertificate) throws Exception {
         final KeyStore keyStore = loadPKCS12KeyStore(clientCertificate, clientCertificatePassword);
         KeyManagerFactory kmf = KeyManagerFactory.getInstance("X509");
-        kmf.init(keyStore, clientCertificatePassword.toCharArray());
+        kmf.init(keyStore, firstNonNull(clientCertificatePassword, "").toCharArray());
         KeyManager[] keyManagers = kmf.getKeyManagers();
 
         final KeyStore trustStore = loadPEMTrustStore(readCaCert(serverCertificate));
@@ -178,27 +179,7 @@ public class ClientCertSSLSocketFactory extends SSLSocketFactory {
             return "";
         }
 
-        BufferedInputStream bufferedInputStream = null;
-        ByteArrayOutputStream byteArrayOutputStream = null;
-
-        try {
-            bufferedInputStream = new BufferedInputStream(inputStream);
-            byteArrayOutputStream = new ByteArrayOutputStream();
-
-            final byte[] buffer = new byte[1024];
-            int available = 0;
-
-            while ((available = bufferedInputStream.read(buffer)) >= 0) {
-                byteArrayOutputStream.write(buffer, 0, available);
-            }
-
-            return byteArrayOutputStream.toString();
-
-        } finally {
-            if (bufferedInputStream != null) {
-                bufferedInputStream.close();
-            }
-        }
+        return IOUtils.toString(inputStream);
     }
 
     @Override

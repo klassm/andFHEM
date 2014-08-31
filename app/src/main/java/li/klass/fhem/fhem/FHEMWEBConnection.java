@@ -66,9 +66,6 @@ public class FHEMWEBConnection extends FHEMConnection {
 
     public static final int SOCKET_TIMEOUT = 20000;
     public static final String TAG = FHEMWEBConnection.class.getName();
-    public static final String FHEMWEB_URL = "FHEMWEB_URL";
-    public static final String FHEMWEB_USERNAME = "FHEMWEB_USERNAME";
-    public static final String FHEMWEB_PASSWORD = "FHEMWEB_PASSWORD";
     public static final FHEMWEBConnection INSTANCE = new FHEMWEBConnection();
     private DefaultHttpClient client = null;
 
