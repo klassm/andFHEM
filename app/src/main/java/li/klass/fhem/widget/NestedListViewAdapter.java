@@ -33,35 +33,22 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ListAdapter;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import static com.google.common.collect.Maps.newHashMap;
+
 public abstract class NestedListViewAdapter<P, C> extends BaseAdapter implements ListAdapter {
 
     protected Set<NestedListView.NestedListViewOnClickObserver> parentChildClickObservers = new HashSet<NestedListView.NestedListViewOnClickObserver>();
-
-    private Map<Integer, P> parentPositions = new HashMap<Integer, P>();
-    private int totalItems = 0;
-
     protected LayoutInflater layoutInflater;
+    private Map<Integer, P> parentPositions = newHashMap();
+    private int totalItems = 0;
 
     public NestedListViewAdapter(Context context) {
         layoutInflater = LayoutInflater.from(context);
-    }
-
-    public void updateParentPositions() {
-        parentPositions = new HashMap<Integer, P>();
-
-        int currentPosition = 0;
-        for (P item : getParents()) {
-            parentPositions.put(currentPosition, item);
-            currentPosition += getChildrenCountForParent(item);
-            currentPosition++;
-        }
-        totalItems = currentPosition;
     }
 
     @Override
@@ -85,6 +72,12 @@ public abstract class NestedListViewAdapter<P, C> extends BaseAdapter implements
         }
     }
 
+    public boolean isParent(int position) {
+        return parentPositions.containsKey(position);
+    }
+
+    protected abstract View getParentView(P parent, View view, ViewGroup viewGroup);
+
     public int findParentPositionForChildPosition(int flatPosition) {
         Set<Integer> keyPositions = parentPositions.keySet();
 
@@ -100,6 +93,10 @@ public abstract class NestedListViewAdapter<P, C> extends BaseAdapter implements
         }
         return bestKeyMatch;
     }
+
+    protected abstract C getChildForParentAndChildPosition(P parent, int childPosition);
+
+    protected abstract View getChildView(P parent, int parentPosition, C child, View view, ViewGroup viewGroup, int relativeChildPosition);
 
     public int findOriginalParentPosition(int flatPosition) {
         P parent;
@@ -118,6 +115,8 @@ public abstract class NestedListViewAdapter<P, C> extends BaseAdapter implements
         return -1;
     }
 
+    protected abstract List<P> getParents();
+
     public int getCount() {
         return totalItems;
     }
@@ -134,10 +133,6 @@ public abstract class NestedListViewAdapter<P, C> extends BaseAdapter implements
         }
     }
 
-    public boolean isParent(int position) {
-        return parentPositions.containsKey(position);
-    }
-
     public long getItemId(int i) {
         return i;
     }
@@ -147,6 +142,19 @@ public abstract class NestedListViewAdapter<P, C> extends BaseAdapter implements
         notifyDataSetChanged();
     }
 
+    public void updateParentPositions() {
+        parentPositions = newHashMap();
+
+        int currentPosition = 0;
+        for (P item : getParents()) {
+            parentPositions.put(currentPosition, item);
+            currentPosition += getChildrenCountForParent(item);
+            currentPosition++;
+        }
+        totalItems = currentPosition;
+    }
+
+    protected abstract int getChildrenCountForParent(P parent);
 
     public void addParentChildObserver(NestedListView.NestedListViewOnClickObserver observer) {
         parentChildClickObservers.add(observer);
@@ -169,14 +177,4 @@ public abstract class NestedListViewAdapter<P, C> extends BaseAdapter implements
             super.unregisterDataSetObserver(observer);
         }
     }
-
-    protected abstract C getChildForParentAndChildPosition(P parent, int childPosition);
-
-    protected abstract int getChildrenCountForParent(P parent);
-
-    protected abstract View getParentView(P parent, View view, ViewGroup viewGroup);
-
-    protected abstract View getChildView(P parent, int parentPosition, C child, View view, ViewGroup viewGroup, int relativeChildPosition);
-
-    protected abstract List<P> getParents();
 }

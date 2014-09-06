@@ -1,17 +1,25 @@
 /*
- * Copyright 2013 Piotr Adamus
+ * AndFHEM - Open Source Android application to control a FHEM home automation
+ * server.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) 2011, Matthias Klass or third-party contributors as
+ * indicated by the @author tags or express copyright attribution
+ * statements applied by the authors.  All third-party contributions are
+ * distributed under license by Red Hat Inc.
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * This copyrighted material is made available to anyone wishing to use, modify,
+ * copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+ * for more details.
+ *
+ * You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+ * along with this distribution; if not, write to:
+ *   Free Software Foundation, Inc.
+ *   51 Franklin Street, Fifth Floor
+ *   Boston, MA  02110-1301  USA
  */
 
 package com.chiralcode.colorpicker;
@@ -40,15 +48,16 @@ import android.view.MotionEvent;
 import android.view.View;
 
 // taken from https://raw.github.com/chiralcode/Android-Color-Picker/master/src/com/chiralcode/colorpicker/ColorPicker.java
+@SuppressLint("ClickableViewAccessibility")
 public class ColorPicker extends View {
 
     /**
      * Customizable display parameters (in percents)
      */
-    private final int paramOuterPadding = 2; // outer padding of the whole color picker view
-    private final int paramInnerPadding = 5; // distance between value slider wheel and inner color wheel
-    private final int paramValueSliderWidth = 10; // width of the value slider
-    private final int paramArrowPointerSize = 4; // size of the arrow pointer; set to 0 to hide the pointer
+    private static final int paramOuterPadding = 2; // outer padding of the whole color picker view
+    private static final int paramInnerPadding = 5; // distance between value slider wheel and inner color wheel
+    private static final int paramValueSliderWidth = 10; // width of the value slider
+    private static final int paramArrowPointerSize = 4; // size of the arrow pointer; set to 0 to hide the pointer
 
     private Paint colorWheelPaint;
     private Paint valueSliderPaint;
@@ -70,10 +79,6 @@ public class ColorPicker extends View {
 
     private Bitmap colorWheelBitmap;
 
-    private int valueSliderWidth;
-    private int innerPadding;
-    private int outerPadding;
-
     private int arrowPointerSize;
     private int outerWheelRadius;
     private int innerWheelRadius;
@@ -81,23 +86,15 @@ public class ColorPicker extends View {
 
     private Matrix gradientRotationMatrix;
 
-    /** Currently selected color */
-    private float[] colorHSV = new float[] { 0f, 0f, 1f };
+    /**
+     * Currently selected color
+     */
+    private float[] colorHSV = new float[]{0f, 0f, 1f};
 
     private ColorPickerListener listener;
 
     public ColorPicker(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        init();
-    }
-
-    public ColorPicker(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init();
-    }
-
-    public ColorPicker(Context context) {
-        super(context);
         init();
     }
 
@@ -136,6 +133,16 @@ public class ColorPicker extends View {
 
     }
 
+    public ColorPicker(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        init();
+    }
+
+    public ColorPicker(Context context) {
+        super(context);
+        init();
+    }
+
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int widthSize = MeasureSpec.getSize(widthMeasureSpec);
@@ -162,9 +169,9 @@ public class ColorPicker extends View {
 
         // drawing value slider
 
-        float[] hsv = new float[] { colorHSV[0], colorHSV[1], 1f };
+        float[] hsv = new float[]{colorHSV[0], colorHSV[1], 1f};
 
-        SweepGradient sweepGradient = new SweepGradient(centerX, centerY, new int[] { Color.BLACK, Color.HSVToColor(hsv), Color.WHITE }, null);
+        SweepGradient sweepGradient = new SweepGradient(centerX, centerY, new int[]{Color.BLACK, Color.HSVToColor(hsv), Color.WHITE}, null);
         sweepGradient.setLocalMatrix(gradientRotationMatrix);
         valueSliderPaint.setShader(sweepGradient);
 
@@ -185,7 +192,7 @@ public class ColorPicker extends View {
 
         // drawing value pointer
 
-        valuePointerPaint.setColor(Color.HSVToColor(new float[] { 0f, 0f, 1f - colorHSV[2] }));
+        valuePointerPaint.setColor(Color.HSVToColor(new float[]{0f, 0f, 1f - colorHSV[2]}));
 
         double valueAngle = (colorHSV[2] - 0.5f) * Math.PI;
         float valueAngleX = (float) Math.cos(valueAngle);
@@ -241,10 +248,10 @@ public class ColorPicker extends View {
         int centerX = width / 2;
         int centerY = height / 2;
 
-        innerPadding = (int) (paramInnerPadding * width / 100);
-        outerPadding = (int) (paramOuterPadding * width / 100);
-        arrowPointerSize = (int) (paramArrowPointerSize * width / 100);
-        valueSliderWidth = (int) (paramValueSliderWidth * width / 100);
+        int innerPadding = paramInnerPadding * width / 100;
+        int outerPadding = paramOuterPadding * width / 100;
+        arrowPointerSize = paramArrowPointerSize * width / 100;
+        int valueSliderWidth = paramValueSliderWidth * width / 100;
 
         outerWheelRadius = width / 2 - outerPadding - arrowPointerSize;
         innerWheelRadius = outerWheelRadius - valueSliderWidth;
@@ -273,7 +280,7 @@ public class ColorPicker extends View {
         int colorCount = 12;
         int colorAngleStep = 360 / 12;
         int colors[] = new int[colorCount + 1];
-        float hsv[] = new float[] { 0f, 1f, 1f };
+        float hsv[] = new float[]{0f, 1f, 1f};
         for (int i = 0; i < colors.length; i++) {
             hsv[0] = (i * colorAngleStep + 180) % 360;
             colors[i] = Color.HSVToColor(hsv);
@@ -290,7 +297,6 @@ public class ColorPicker extends View {
         canvas.drawCircle(width / 2, height / 2, colorWheelRadius, colorWheelPaint);
 
         return bitmap;
-
     }
 
     @Override
@@ -335,12 +341,12 @@ public class ColorPicker extends View {
         }
     }
 
-    public void setColor(int color) {
-        Color.colorToHSV(color, colorHSV);
-    }
-
     public int getColor() {
         return Color.HSVToColor(colorHSV);
+    }
+
+    public void setColor(int color) {
+        Color.colorToHSV(color, colorHSV);
     }
 
     @Override

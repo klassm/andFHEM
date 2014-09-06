@@ -40,14 +40,6 @@ import li.klass.fhem.util.Reject;
 
 public class DeviceFunctionalityOrderAdapter extends DragNDropAdapter<DeviceFunctionalityPreferenceWrapper> {
 
-    enum OrderAction {
-        UP, DOWN, VISIBILITY_CHANGE
-    }
-
-    interface OrderActionListener {
-        void deviceTypeReordered(DeviceFunctionalityPreferenceWrapper wrapper, OrderAction action);
-    }
-
     private OrderActionListener listener;
 
     public DeviceFunctionalityOrderAdapter(Context context, int resource,
@@ -63,20 +55,23 @@ public class DeviceFunctionalityOrderAdapter extends DragNDropAdapter<DeviceFunc
     public View getView(int position, View convertView, ViewGroup parent) {
         final DeviceFunctionalityPreferenceWrapper item = (DeviceFunctionalityPreferenceWrapper) getItem(position);
 
-        View view = inflater.inflate(resource, null);
-        assert view != null;
-        TextView nameView = (TextView) view.findViewById(R.id.name);
+        if (convertView == null) {
+            convertView = inflater.inflate(resource, null);
+        }
+        assert convertView != null;
+
+        TextView nameView = (TextView) convertView.findViewById(R.id.name);
         nameView.setText(item.getDeviceFunctionality().getCaptionText(context));
 
-        ImageButton visibilityButton = (ImageButton) view.findViewById(R.id.change_visibility);
+        ImageButton visibilityButton = (ImageButton) convertView.findViewById(R.id.change_visibility);
         setOnClickAction(visibilityButton, OrderAction.VISIBILITY_CHANGE, item);
 
-        if (! item.isVisible()) {
+        if (!item.isVisible()) {
             nameView.setPaintFlags(nameView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         } else {
             nameView.setPaintFlags(nameView.getPaintFlags() | Paint.FAKE_BOLD_TEXT_FLAG);
         }
-        return view;
+        return convertView;
     }
 
     private void setOnClickAction(ImageButton button, final OrderAction action,
@@ -93,6 +88,14 @@ public class DeviceFunctionalityOrderAdapter extends DragNDropAdapter<DeviceFunc
     @Override
     protected boolean doSort() {
         return false;
+    }
+
+    enum OrderAction {
+        UP, DOWN, VISIBILITY_CHANGE
+    }
+
+    interface OrderActionListener {
+        void deviceTypeReordered(DeviceFunctionalityPreferenceWrapper wrapper, OrderAction action);
     }
 
 }

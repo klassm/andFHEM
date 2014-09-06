@@ -34,7 +34,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
@@ -54,6 +53,9 @@ import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ValueDescriptionUtil;
 
+import static com.google.common.collect.Lists.newArrayList;
+import static com.google.common.collect.Maps.newHashMap;
+import static com.google.common.collect.Sets.newTreeSet;
 import static li.klass.fhem.service.graph.description.SeriesType.HUMIDITY;
 import static li.klass.fhem.service.graph.description.SeriesType.TEMPERATURE;
 
@@ -72,47 +74,13 @@ public class WeatherDevice extends Device<WeatherDevice> {
     @WidgetMediumLine1
     private String temperature;
     private String wind;
-    private Map<Integer, WeatherDeviceForecast> forecastMap = new HashMap<Integer, WeatherDeviceForecast>();
-
-    public static String parseIcon(String icon) {
-        if (icon == null) return null;
-        if (!icon.endsWith(".png") && icon.lastIndexOf(".") != -1) {
-            icon = icon.substring(0, icon.lastIndexOf(".")) + ".png";
-        }
-
-        if (!icon.contains("/")) return icon;
-
-        int lastSlashIndex = icon.lastIndexOf("/");
-        return icon.substring(lastSlashIndex + 1);
-    }
+    private Map<Integer, WeatherDeviceForecast> forecastMap = newHashMap();
 
     @Override
     public void onChildItemRead(String tagName, String key, String value, NamedNodeMap attributes) {
         if (key.startsWith("FC")) {
             parseForecast(key, value, attributes.getNamedItem("measured").getNodeValue());
         }
-    }
-
-    public void readCONDITION(String value, NamedNodeMap attributes) {
-        this.condition = value;
-        String measured = attributes.getNamedItem("measured").getNodeValue();
-        setMeasured(measured);
-    }
-
-    public void readHUMIDITY(String value) {
-        this.humidity = ValueDescriptionUtil.appendPercent(value);
-    }
-
-    public void readICON(String value) {
-        this.icon = value;
-    }
-
-    public void readTEMP_C(String value) {
-        this.temperature = ValueDescriptionUtil.appendTemperature(value);
-    }
-
-    public void readWIND_CONDITION(String value) {
-        this.wind = value.replaceAll("Wind: ", "").trim();
     }
 
     private void parseForecast(String keyValue, String nodeContent, String measured) {
@@ -152,6 +120,28 @@ public class WeatherDevice extends Device<WeatherDevice> {
         }
     }
 
+    public void readCONDITION(String value, NamedNodeMap attributes) {
+        this.condition = value;
+        String measured = attributes.getNamedItem("measured").getNodeValue();
+        setMeasured(measured);
+    }
+
+    public void readHUMIDITY(String value) {
+        this.humidity = ValueDescriptionUtil.appendPercent(value);
+    }
+
+    public void readICON(String value) {
+        this.icon = value;
+    }
+
+    public void readTEMP_C(String value) {
+        this.temperature = ValueDescriptionUtil.appendTemperature(value);
+    }
+
+    public void readWIND_CONDITION(String value) {
+        this.wind = value.replaceAll("Wind: ", "").trim();
+    }
+
     public String getCondition() {
         return condition;
     }
@@ -164,6 +154,18 @@ public class WeatherDevice extends Device<WeatherDevice> {
         return parseIcon(icon);
     }
 
+    public static String parseIcon(String icon) {
+        if (icon == null) return null;
+        if (!icon.endsWith(".png") && icon.lastIndexOf(".") != -1) {
+            icon = icon.substring(0, icon.lastIndexOf(".")) + ".png";
+        }
+
+        if (!icon.contains("/")) return icon;
+
+        int lastSlashIndex = icon.lastIndexOf("/");
+        return icon.substring(lastSlashIndex + 1);
+    }
+
     public String getTemperature() {
         return temperature;
     }
@@ -173,10 +175,10 @@ public class WeatherDevice extends Device<WeatherDevice> {
     }
 
     public List<WeatherDeviceForecast> getForecasts() {
-        TreeSet<Integer> keys = new TreeSet<Integer>();
+        TreeSet<Integer> keys = newTreeSet();
         keys.addAll(forecastMap.keySet());
 
-        ArrayList<WeatherDeviceForecast> result = new ArrayList<WeatherDeviceForecast>();
+        ArrayList<WeatherDeviceForecast> result = newArrayList();
         for (Integer key : keys) {
             result.add(forecastMap.get(key));
         }
@@ -260,12 +262,12 @@ public class WeatherDevice extends Device<WeatherDevice> {
             return lowTemperature;
         }
 
-        public String getIcon() {
-            return parseIcon(icon);
-        }
-
         public String getUrl() {
             return WeatherDevice.IMAGE_URL_PREFIX + getIcon() + ".png";
+        }
+
+        public String getIcon() {
+            return parseIcon(icon);
         }
     }
 }

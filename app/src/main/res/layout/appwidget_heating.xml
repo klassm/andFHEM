@@ -24,33 +24,49 @@
   ~   Boston, MA  02110-1301  USA
   -->
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                style="@style/appwidget_medium">
+<RelativeLayout
+    style="@style/appwidget_medium"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout style="@style/appwidget_content">
 
         <TextView style="@style/appwidget_caption"/>
 
-        <TextView style="@style/appwidget_item"
-                  android:textSize="20dp"
-                  android:id="@+id/temperature"
-                  android:textColor="@android:color/black"
-                  android:text="20°C"/>
-        <LinearLayout android:orientation="horizontal"
-                      android:layout_height="wrap_content"
-                      android:layout_width="fill_parent" android:gravity="center">
-            <ImageView android:id="@+id/windowOpen"
-                       android:layout_height="20dp"
-                       android:layout_width="20dp"
-                       android:layout_marginRight="10dp"
-                       android:src="@drawable/window_open"/>
-            <TextView style="@style/appwidget_subcaption"
-                      android:id="@+id/additional"
-                      android:layout_gravity="center"
-                      android:text="50% humidity"
-                      android:gravity="center"/>
+        <TextView
+            android:id="@+id/temperature"
+            style="@style/appwidget_item"
+            android:text="@string/dummy_temperature"
+            android:textColor="@android:color/black"
+            android:textSize="20sp"/>
+        <!-- CompoundDrawable is not possible here, as we have to change the image using appwidget APIs -->
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            tools:ignore="UseCompoundDrawables">
+
+            <ImageView
+                android:id="@+id/windowOpen"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginRight="10dp"
+                android:contentDescription="@string/windowOpen"
+                android:src="@drawable/window_open"/>
+
+            <TextView
+                android:id="@+id/additional"
+                style="@style/appwidget_subcaption"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="@string/dummy_humidity"/>
         </LinearLayout>
 
     </LinearLayout>
-    <ImageView style="@style/appwidget_logo" android:contentDescription="@string/app_name"/>
+
+    <ImageView
+        style="@style/appwidget_logo"
+        android:contentDescription="@string/app_name"/>
 </RelativeLayout>

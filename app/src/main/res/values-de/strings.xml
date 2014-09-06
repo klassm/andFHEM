@@ -248,9 +248,9 @@
     <string name="switchDevice">Schalte</string>
     <string name="preferences">Einstellungen</string>
     <string name="update">Aktualisieren</string>
-    <string name="updating">Aktualisieren ...</string>
-    <string name="loading">Laden ...</string>
-    <string name="executing">Ausführend ...</string>
+    <string name="updating">Aktualisieren …</string>
+    <string name="loading">Laden …</string>
+    <string name="executing">Ausführend …</string>
     <string name="help">Hilfe</string>
     <string name="donate">Spenden</string>
     <string name="command_execution_result">Kommando Ergebnis</string>
@@ -567,4 +567,16 @@
     <string name="widgetNoDevices">Es wurden keine Geräte für diese Widget-Größe gefunden.</string>
     <string name="widgetNoRooms">Es wurden keine Raum-Widgets für diese Widget-Größe gefunden.</string>
     <string name="widgetNoOther">Es sind keine weiteren Widgets für diese Widget-Größe verfügbar.</string>
+
+    <string name="rewind">zurückrückspulen</string>
+    <string name="pause">pause</string>
+    <string name="play">abspielen</string>
+    <string name="forward">weiter</string>
+
+    <string name="day">Tag</string>
+
+    <string name="windowOpen">Fenster geöffnet</string>
+    <string name="zoom_reset">Zoom zurücksetzen</string>
+    <string name="zoom_in">Zoom +</string>
+    <string name="zoom_out">Zoom -</string>
 </resources>

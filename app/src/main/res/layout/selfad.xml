@@ -25,9 +25,11 @@
   -->
 
 <ImageView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="wrap_content"
-    android:background="@drawable/selfad"
-    android:contentDescription="@string/app_name"
-    android:scaleType="fitCenter"
-    android:layout_height="50dp"/>
+           xmlns:tools="http://schemas.android.com/tools"
+           android:layout_width="wrap_content"
+           android:layout_height="50dp"
+           android:background="@drawable/selfad"
+           android:contentDescription="@string/app_name"
+           android:orientation="vertical"
+           android:scaleType="fitCenter"
+           tools:ignore="Overdraw"/>

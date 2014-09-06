@@ -179,7 +179,7 @@ public enum DeviceType {
     DUMMY("dummy", DummyDevice.class, new DummyAdapter()),
     STRUCTURE("structure", StructureDevice.class, new DimmableAdapter<>(StructureDevice.class)),
     TWILIGHT("Twilight", TwilightDevice.class),
-    AT("at", AtDevice.class, null, DeviceVisibility.NEVER),
+    AT("at", AtDevice.class, null),
     EN_OCEAN("EnOcean", EnOceanDevice.class, new EnOceanAdapter()),
     EIB("EIB", EIBDevice.class, new DimmableAdapter<>(EIBDevice.class)),
     HCS("HCS", HCSDevice.class, new SwitchActionRowAdapter<>(HCSDevice.class)),

@@ -45,7 +45,10 @@ public class ConnectionListAdapter extends ListDataAdapter<FHEMServerSpec> {
     public View getView(int position, View convertView, ViewGroup parent) {
         FHEMServerSpec server = (FHEMServerSpec) getItem(position);
 
-        convertView = inflater.inflate(resource, null);
+        if (convertView == null) {
+            convertView = inflater.inflate(resource, null);
+        }
+
         assert convertView != null;
 
         TextView nameView = (TextView) convertView.findViewById(R.id.name);

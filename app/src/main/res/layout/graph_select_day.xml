@@ -24,72 +24,94 @@
   ~   Boston, MA  02110-1301  USA
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="fill_parent"
-              android:layout_height="fill_parent"
-              android:padding="10dp">
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="fill_parent"
+             android:layout_height="fill_parent"
+             android:layout_marginTop="10dp"
+             android:padding="10dp">
 
-    <TableLayout android:layout_height="wrap_content"
-                 android:layout_width="fill_parent"
-                 android:layout_marginTop="10dp">
-        <TableRow>
-            <TextView android:text="@string/startDate"
-                      style="@style/deviceDetailDescription"/>
-            <TextView android:id="@+id/startDate"
-                      android:text="01.01.2012"
-                      style="@style/deviceDetailContent"/>
-            <Button android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    android:id="@+id/startDateSet"
-                    android:text="@string/change"
-                    style="@style/button"/>
-        </TableRow>
+    <TableRow>
 
-        <TableRow>
-            <TextView android:text="@string/startTime"
-                      style="@style/deviceDetailDescription"/>
-            <TextView android:id="@+id/startTime"
-                      android:text="11:11"
-                      style="@style/deviceDetailContent"/>
-            <Button android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    android:id="@+id/startTimeSet"
-                    android:text="@string/change"
-                    style="@style/button"/>
-        </TableRow>
+        <TextView
+            style="@style/deviceDetailDescription"
+            android:text="@string/startDate"/>
 
-        <TableRow>
-            <TextView android:text="@string/endDate"
-                      style="@style/deviceDetailDescription"/>
-            <TextView android:id="@+id/endDate"
-                      android:text="02.01.2012"
-                      style="@style/deviceDetailContent"/>
-            <Button android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    android:id="@+id/endDateSet"
-                    android:text="@string/change"
-                    style="@style/button"/>
-        </TableRow>
+        <TextView
+            android:id="@+id/startDate"
+            style="@style/deviceDetailContent"
+            android:text="@string/dummy_date"/>
 
-        <TableRow>
-            <TextView android:text="@string/endTime"
-                      style="@style/deviceDetailDescription"/>
-            <TextView android:id="@+id/endTime"
-                      android:text="22:22"
-                      style="@style/deviceDetailContent"/>
-            <Button android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    android:id="@+id/endTimeSet"
-                    android:text="@string/change"
-                    style="@style/button"/>
-        </TableRow>
-        <Button android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:id="@+id/okButton"
-                android:text="@string/okButton"
-                android:layout_marginTop="20dp"
-                style="@style/button"/>
+        <Button
+            android:id="@+id/startDateSet"
+            style="@style/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/change"/>
+    </TableRow>
 
-    </TableLayout>
+    <TableRow>
 
-</LinearLayout>
+        <TextView
+            style="@style/deviceDetailDescription"
+            android:text="@string/startTime"/>
+
+        <TextView
+            android:id="@+id/startTime"
+            style="@style/deviceDetailContent"
+            android:text="@string/dummy_time"/>
+
+        <Button
+            android:id="@+id/startTimeSet"
+            style="@style/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/change"/>
+    </TableRow>
+
+    <TableRow>
+
+        <TextView
+            style="@style/deviceDetailDescription"
+            android:text="@string/endDate"/>
+
+        <TextView
+            android:id="@+id/endDate"
+            style="@style/deviceDetailContent"
+            android:text="@string/dummy_date"/>
+
+        <Button
+            android:id="@+id/endDateSet"
+            style="@style/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/change"/>
+    </TableRow>
+
+    <TableRow>
+
+        <TextView
+            style="@style/deviceDetailDescription"
+            android:text="@string/endTime"/>
+
+        <TextView
+            android:id="@+id/endTime"
+            style="@style/deviceDetailContent"
+            android:text="@string/dummy_time"/>
+
+        <Button
+            android:id="@+id/endTimeSet"
+            style="@style/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/change"/>
+    </TableRow>
+
+    <Button
+        android:id="@+id/okButton"
+        style="@style/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/okButton"/>
+
+</TableLayout>

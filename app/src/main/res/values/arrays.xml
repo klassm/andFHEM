@@ -23,18 +23,6 @@
   -->
 
 <resources>
-    <string-array name="dataOriginEntries">
-        <item>Dummy Data</item>
-        <item>Telnet</item>
-        <item>FHEMWEB</item>
-    </string-array>
-
-    <string-array name="dataOriginValues" translatable="false">
-        <item>DUMMYDATA</item>
-        <item>TELNET</item>
-        <item>FHEMWEB</item>
-    </string-array>
-
     <string-array name="graphDefaultTimespanEntries">
         <item>4 hours</item>
         <item>8 hours</item>
@@ -124,11 +112,6 @@
         <item>86400</item>
         <item>129600</item>
         <item>172800</item>
-    </string-array>
-
-    <string-array name="floorplanDeviceDetail">
-        <item>Details</item>
-        <item>Move</item>
     </string-array>
 
     <string-array name="startupViews">

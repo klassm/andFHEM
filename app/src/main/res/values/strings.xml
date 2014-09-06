@@ -566,4 +566,42 @@
     <string name="widgetNoDevices">No devices are applicable for this widget size.</string>
     <string name="widgetNoRooms">No room widgets are applicable for this widget size.</string>
     <string name="widgetNoOther">No other widgets are available for this widget size.</string>
+
+    <string name="rewind">rewind</string>
+    <string name="pause">pause</string>
+    <string name="play">play</string>
+    <string name="forward">forward</string>
+    <string name="volume_down">Vol-</string>
+    <string name="volume_up">Vol+</string>
+    <string name="left_brace"><![CDATA[&lt;]]></string>
+    <string name="right_brace"><![CDATA[&gt;]]></string>
+    <string name="slp">SLP</string>
+    <string name="m_s">M/S</string>
+    <string name="channel1">1</string>
+    <string name="channel2">2</string>
+    <string name="channel3">3</string>
+    <string name="channel4">4</string>
+    <string name="channel5">5</string>
+    <string name="channel6">6</string>
+    <string name="channel7">7</string>
+    <string name="channel8">8</string>
+
+    <string name="windowOpen">window open</string>
+    <string name="day">day</string>
+    <string name="zoom_reset">Reset zoom</string>
+    <string name="zoom_in">Zoom in</string>
+    <string name="zoom_out">Zoom out</string>
+
+    <string name="dummy_humidity">50% humidity</string>
+    <string name="dummy_temperature">20°C</string>
+    <string name="dummy_percentage">50%</string>
+    <string name="dummy_conversion">000</string>
+    <string name="dummy_text">parent</string>
+    <string name="dummy_date">01.01.2012</string>
+    <string name="dummy_time">11:11</string>
+    <string name="dummy_time_with_seconds">00:00:00</string>
+    <string name="dummy_date_with_day">Mo., xx.xx.xxxx</string>
+    <string name="dummy_temperature_range">xx °C - xx °C</string>
+    <string name="dummy_condition">sunny</string>
+    <string name="icon">icon</string>
 </resources>

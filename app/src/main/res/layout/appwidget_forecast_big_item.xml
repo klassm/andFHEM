@@ -25,49 +25,57 @@
   -->
 
 
-<LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+<RelativeLayout
+    android:id="@+id/forecastItem"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/forecastItem">
-    <RelativeLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="2dp">
+
+    <ImageView
+        android:id="@+id/day_image"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:layout_marginTop="0dp"
+        android:contentDescription="@string/forecast"
+        android:src="@drawable/ic_launcher"
+        />
+
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="2dp">
+        android:layout_gravity="center"
+        android:layout_marginLeft="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_toEndOf="@+id/day_image"
+        android:layout_toRightOf="@+id/day_image"
+        android:orientation="vertical">
 
-        <ImageView android:layout_height="40dp"
-            android:layout_width="40dp"
-            android:id="@+id/day_image"
-            android:layout_marginTop="0dp"
-            android:src="@drawable/ic_launcher"
-            android:contentDescription="image"
-            />
-        <LinearLayout android:layout_height="wrap_content"
+        <TextView
+            android:id="@+id/day_description"
             android:layout_width="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="5dp"
-            android:orientation="vertical"
-            android:layout_toRightOf="@+id/day_image">
+            android:layout_height="wrap_content"
+            android:text="@string/day"
+            android:textColor="@android:color/black"
+            android:textSize="12sp"
+            android:textStyle="bold"/>
 
-            <TextView android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:id="@+id/day_description"
-                android:textStyle="bold"
-                android:textSize="11dp"
-                android:textColor="@android:color/black"
-                android:text="day"/>
-            <TextView android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:textSize="11dp"
-                android:text="day_temperature"
-                android:singleLine="true"
-                android:textColor="@android:color/black"
-                android:id="@+id/day_temperature"/>
-            <TextView android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:singleLine="true"
-                android:textSize="11dp"
-                android:text="day_condition"
-                android:textColor="@android:color/black"
-                android:id="@+id/day_condition"/>
-        </LinearLayout>
-    </RelativeLayout>
-</LinearLayout>
+        <TextView
+            android:id="@+id/day_temperature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:text="@string/temperature"
+            android:textColor="@android:color/black"
+            android:textSize="12sp"/>
+
+        <TextView
+            android:id="@+id/day_condition"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:text="@string/forecast"
+            android:textColor="@android:color/black"
+            android:textSize="12sp"/>
+    </LinearLayout>
+</RelativeLayout>

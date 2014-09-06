@@ -24,7 +24,6 @@
 
 package li.klass.fhem.domain;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import li.klass.fhem.AndFHEMApplication;
@@ -34,53 +33,11 @@ import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.genericview.ShowField;
 
+import static com.google.common.collect.Maps.newHashMap;
+
 @SuppressWarnings("unused")
 public class TwilightDevice extends Device<TwilightDevice> {
-    @ShowField(description = ResourceIdMapper.twilight_next_event, showInOverview = true)
-    private String nextEvent;
-    @ShowField(description = ResourceIdMapper.twilight_next_event_time, showInOverview = true)
-    private String nextEventTime;
-
-    @ShowField(description = ResourceIdMapper.twilight_sunrise)
-    private String sunrise;
-
-    @ShowField(description = ResourceIdMapper.twilight_sunrise_astronomical)
-    private String sunriseAstronomical;
-
-    @ShowField(description = ResourceIdMapper.twilight_sunrise_civil)
-    private String sunriseCivil;
-
-    @ShowField(description = ResourceIdMapper.twilight_sunrise_indoor)
-    private String sunriseIndoor;
-
-    @ShowField(description = ResourceIdMapper.twilight_sunrise_nautical)
-    private String sunriseNautical;
-
-    @ShowField(description = ResourceIdMapper.twilight_sunrise_weather)
-    private String sunriseWeather;
-
-    @ShowField(description = ResourceIdMapper.twilight_sunset)
-    private String sunset;
-
-    @ShowField(description = ResourceIdMapper.twilight_sunset_astronomical)
-    private String sunsetAstronomical;
-
-    @ShowField(description = ResourceIdMapper.twilight_sunset_civil)
-    private String sunsetCivil;
-
-    @ShowField(description = ResourceIdMapper.twilight_sunset_indoor)
-    private String sunsetIndoor;
-
-    @ShowField(description = ResourceIdMapper.twilight_sunset_nautical)
-    private String sunsetNautical;
-
-    @ShowField(description = ResourceIdMapper.twilight_sunset_weather)
-    private String sunsetWeather;
-
-    @ShowField(description = ResourceIdMapper.twilight_light)
-    private String light;
-
-    private static Map<Integer, Integer> lightStringIdMap = new HashMap<Integer, Integer>();
+    private static Map<Integer, Integer> lightStringIdMap = newHashMap();
 
     static {
         lightStringIdMap.put(0, R.string.twilight_light_total_night);
@@ -91,6 +48,37 @@ public class TwilightDevice extends Device<TwilightDevice> {
         lightStringIdMap.put(5, R.string.twilight_light_weather);
         lightStringIdMap.put(6, R.string.twilight_light_daylight);
     }
+
+    @ShowField(description = ResourceIdMapper.twilight_next_event, showInOverview = true)
+    private String nextEvent;
+    @ShowField(description = ResourceIdMapper.twilight_next_event_time, showInOverview = true)
+    private String nextEventTime;
+    @ShowField(description = ResourceIdMapper.twilight_sunrise)
+    private String sunrise;
+    @ShowField(description = ResourceIdMapper.twilight_sunrise_astronomical)
+    private String sunriseAstronomical;
+    @ShowField(description = ResourceIdMapper.twilight_sunrise_civil)
+    private String sunriseCivil;
+    @ShowField(description = ResourceIdMapper.twilight_sunrise_indoor)
+    private String sunriseIndoor;
+    @ShowField(description = ResourceIdMapper.twilight_sunrise_nautical)
+    private String sunriseNautical;
+    @ShowField(description = ResourceIdMapper.twilight_sunrise_weather)
+    private String sunriseWeather;
+    @ShowField(description = ResourceIdMapper.twilight_sunset)
+    private String sunset;
+    @ShowField(description = ResourceIdMapper.twilight_sunset_astronomical)
+    private String sunsetAstronomical;
+    @ShowField(description = ResourceIdMapper.twilight_sunset_civil)
+    private String sunsetCivil;
+    @ShowField(description = ResourceIdMapper.twilight_sunset_indoor)
+    private String sunsetIndoor;
+    @ShowField(description = ResourceIdMapper.twilight_sunset_nautical)
+    private String sunsetNautical;
+    @ShowField(description = ResourceIdMapper.twilight_sunset_weather)
+    private String sunsetWeather;
+    @ShowField(description = ResourceIdMapper.twilight_light)
+    private String light;
 
     public void readNEXTEVENT(String value) {
         nextEvent = value;

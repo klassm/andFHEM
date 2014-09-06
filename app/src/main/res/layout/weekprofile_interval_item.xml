@@ -25,9 +25,14 @@
   -->
 
 <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent" android:stretchColumns="1">
-    <TableRow android:id="@+id/interval">
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="fill_parent"
+             android:layout_height="fill_parent"
+             android:stretchColumns="1">
+
+    <TableRow
+        android:id="@+id/interval"
+        tools:ignore="UselessParent">
 
         <TextView
             android:id="@+id/intervalType"
@@ -37,14 +42,16 @@
         <TextView
             android:id="@+id/time"
             android:padding="5dp"
-            android:text="HH:MM"/>
+            android:text="@string/dummy_time"/>
 
         <TextView
             android:id="@+id/temperature"
             android:padding="5dp"
+            android:paddingEnd="0dp"
             android:paddingLeft="10dp"
             android:paddingRight="0dp"
-            android:text="°C"/>
+            android:paddingStart="10dp"
+            android:text="@string/dummy_temperature"/>
 
         <Button
             android:id="@+id/delete"

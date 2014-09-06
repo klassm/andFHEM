@@ -2,13 +2,13 @@
  * AndFHEM - Open Source Android application to control a FHEM home automation
  * server.
  *
- * Copyright (c) 2012, Matthias Klass or third-party contributors as
+ * Copyright (c) 2011, Matthias Klass or third-party contributors as
  * indicated by the @author tags or express copyright attribution
  * statements applied by the authors.  All third-party contributions are
  * distributed under license by Red Hat Inc.
  *
  * This copyrighted material is made available to anyone wishing to use, modify,
- * copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLICLICENSE, as published by the Free Software Foundation.
+ * copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
@@ -19,6 +19,7 @@
  * along with this distribution; if not, write to:
  *   Free Software Foundation, Inc.
  *   51 Franklin Street, Fifth Floor
+ *   Boston, MA  02110-1301  USA
  */
 
 package li.klass.fhem.adapter.devices;
@@ -61,6 +62,11 @@ public class WeatherAdapter extends GenericDeviceAdapter<WeatherDevice> {
         setWeatherIconIn((ImageView) view.findViewById(R.id.weatherImage), device.getIcon());
     }
 
+    private void setWeatherIconIn(final ImageView imageView, String weatherIcon) {
+        final String imageURL = WeatherDevice.IMAGE_URL_PREFIX + weatherIcon + ".png";
+        ImageUtil.setExternalImageIn(imageView, imageURL);
+    }
+
     @Override
     protected void fillOtherStuffDetailLayout(Context context, LinearLayout layout, WeatherDevice device, LayoutInflater inflater) {
         LinearLayout currentWeatherHolder = (LinearLayout) inflater.inflate(R.layout.device_detail_other_layout, null);
@@ -78,6 +84,19 @@ public class WeatherAdapter extends GenericDeviceAdapter<WeatherDevice> {
         ListViewUtil.setHeightBasedOnChildren(weatherForecastList);
     }
 
+    private RelativeLayout createCurrentWeatherContent(WeatherDevice device, LayoutInflater inflater) {
+        RelativeLayout currentWeather = (RelativeLayout) inflater.inflate(R.layout.weather_current, null);
+
+        setTextViewOrHideTableRow(currentWeather, R.id.tableRowTemperature, R.id.temperature, device.getTemperature());
+        setTextViewOrHideTableRow(currentWeather, R.id.tableRowWind, R.id.wind, device.getWind());
+        setTextViewOrHideTableRow(currentWeather, R.id.tableRowHumidity, R.id.humidity, device.getHumidity());
+        setTextViewOrHideTableRow(currentWeather, R.id.tableRowCondition, R.id.condition, device.getCondition());
+
+        setWeatherIconIn((ImageView) currentWeather.findViewById(R.id.currentWeatherImage), device.getIcon());
+
+        return currentWeather;
+    }
+
     private ListView createWeatherForecastList(final Context context, final WeatherDevice device) {
         final ListView weatherForecastList = new ListView(context);
         ListDataAdapter<WeatherDevice.WeatherDeviceForecast> forecastAdapter = new ListDataAdapter<WeatherDevice.WeatherDeviceForecast>(
@@ -86,19 +105,21 @@ public class WeatherAdapter extends GenericDeviceAdapter<WeatherDevice> {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 WeatherDevice.WeatherDeviceForecast item = data.get(position);
-                View view = inflater.inflate(resource, null);
+                if (convertView == null) {
+                    convertView = inflater.inflate(resource, null);
+                }
 
                 String date = item.getDayOfWeek() + ", " + item.getDate();
-                setTextViewOrHideTableRow(view, R.id.tableRowDate, R.id.date, date);
+                setTextViewOrHideTableRow(convertView, R.id.tableRowDate, R.id.date, date);
 
                 String temperature = item.getLowTemperature() + " - " + item.getHighTemperature();
-                setTextViewOrHideTableRow(view, R.id.tableRowTemperature, R.id.temperature, temperature);
+                setTextViewOrHideTableRow(convertView, R.id.tableRowTemperature, R.id.temperature, temperature);
 
-                setTextViewOrHideTableRow(view, R.id.tableRowCondition, R.id.condition, item.getCondition());
+                setTextViewOrHideTableRow(convertView, R.id.tableRowCondition, R.id.condition, item.getCondition());
 
-                setWeatherIconIn((ImageView) view.findViewById(R.id.forecastWeatherImage), item.getIcon());
+                setWeatherIconIn((ImageView) convertView.findViewById(R.id.forecastWeatherImage), item.getIcon());
 
-                return view;
+                return convertView;
             }
 
             @Override
@@ -113,24 +134,5 @@ public class WeatherAdapter extends GenericDeviceAdapter<WeatherDevice> {
         };
         weatherForecastList.setAdapter(forecastAdapter);
         return weatherForecastList;
-    }
-
-    private RelativeLayout createCurrentWeatherContent(WeatherDevice device, LayoutInflater inflater) {
-        RelativeLayout currentWeather = (RelativeLayout) inflater.inflate(R.layout.weather_current, null);
-
-        setTextViewOrHideTableRow(currentWeather, R.id.tableRowTemperature, R.id.temperature, device.getTemperature());
-        setTextViewOrHideTableRow(currentWeather, R.id.tableRowWind, R.id.wind, device.getWind());
-        setTextViewOrHideTableRow(currentWeather, R.id.tableRowHumidity, R.id.humidity, device.getHumidity());
-        setTextViewOrHideTableRow(currentWeather, R.id.tableRowCondition, R.id.condition, device.getCondition());
-
-        setWeatherIconIn((ImageView) currentWeather.findViewById(R.id.currentWeatherImage), device.getIcon());
-
-        return currentWeather;
-    }
-
-
-    private void setWeatherIconIn(final ImageView imageView, String weatherIcon) {
-        final String imageURL = WeatherDevice.IMAGE_URL_PREFIX + weatherIcon + ".png";
-        ImageUtil.setExternalImageIn(imageView, imageURL);
     }
 }

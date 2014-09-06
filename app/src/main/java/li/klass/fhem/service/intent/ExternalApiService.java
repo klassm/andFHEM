@@ -35,6 +35,7 @@ import android.os.Messenger;
 import android.os.RemoteException;
 import android.util.Log;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 import javax.inject.Inject;
@@ -50,15 +51,18 @@ public class ExternalApiService extends Service {
 
     public static final int ROOM_LIST = 1;
     public static final int READINGS_VALUE = 2;
-    private final Messenger messenger = new Messenger(new IncomingHandler());
+    private final Messenger messenger;
 
     @Inject
     RoomListService roomListService;
 
     @Inject
     CommandExecutionService commandExecutionService;
-
     private Message replyMsg;
+
+    public ExternalApiService() {
+        messenger = new Messenger(new IncomingHandler(new WeakReference<>(this)));
+    }
 
     private void replyTo(ArrayList<String> outgoing) {
         replyTo(replyMsg, outgoing);
@@ -95,13 +99,21 @@ public class ExternalApiService extends Service {
         ((AndFHEMApplication) getApplication()).inject(this);
     }
 
-    class IncomingHandler extends Handler {
+    static class IncomingHandler extends Handler {
+
+        private final WeakReference<ExternalApiService> externalApiServiceWeakReference;
+
+        public IncomingHandler(WeakReference<ExternalApiService> externalApiService) {
+            this.externalApiServiceWeakReference = externalApiService;
+        }
+
         @Override
         public void handleMessage(Message msg) {
+            final ExternalApiService externalApiService = externalApiServiceWeakReference.get();
             switch (msg.what) {
                 case ROOM_LIST:
-                    ArrayList<String> deviceNames = roomListService.getAvailableDeviceNames(NEVER_UPDATE_PERIOD);
-                    replyTo(msg, deviceNames);
+                    ArrayList<String> deviceNames = externalApiService.roomListService.getAvailableDeviceNames(NEVER_UPDATE_PERIOD);
+                    externalApiService.replyTo(msg, deviceNames);
 
                     break;
                 case READINGS_VALUE:
@@ -109,9 +121,9 @@ public class ExternalApiService extends Service {
                     String readingName = null;
                     String defaultVal = null;
                     //FIXME: create a new Message to reply with because we will loose msg somewhere in the AsyncTask below
-                    replyMsg = Message.obtain(null, msg.what);
-                    replyMsg.setData(msg.getData());
-                    replyMsg.replyTo = msg.replyTo;
+                    externalApiService.replyMsg = Message.obtain(null, msg.what);
+                    externalApiService.replyMsg.setData(msg.getData());
+                    externalApiService.replyMsg.replyTo = msg.replyTo;
                     if (msg.getData() != null) {
                         if (msg.getData().getString("device") != null) {
                             deviceName = msg.getData().getString("device");
@@ -128,7 +140,7 @@ public class ExternalApiService extends Service {
 
                                 @Override
                                 protected String doInBackground(String... params) {
-                                    return commandExecutionService.executeSafely(String.format("{ReadingsVal('%s','%s','%s')}", params[0], params[1], params[2]));
+                                    return externalApiService.commandExecutionService.executeSafely(String.format("{ReadingsVal('%s','%s','%s')}", params[0], params[1], params[2]));
                                 }
 
                                 @Override
@@ -142,7 +154,7 @@ public class ExternalApiService extends Service {
                                         public void run() {
                                             ArrayList<String> readingsVal = newArrayList();
                                             readingsVal.add(result);
-                                            replyTo(readingsVal);
+                                            externalApiService.replyTo(readingsVal);
                                         }
                                     });
                                 }

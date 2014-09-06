@@ -31,6 +31,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import li.klass.fhem.domain.AtDevice;
+
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Maps.newHashMap;
 import static com.google.common.collect.Sets.newHashSet;
@@ -80,7 +82,8 @@ public class RoomDeviceList implements Serializable, Cloneable {
     }
 
     /**
-     * Gets devices of a certain group.
+     * Gets devices of a certain group. At-devices are always excluded, as they are not shown
+     * in any kind of normal view.
      *
      * @param group            group to filter.
      * @param respectSupported set the parameter to false to also include devices that
@@ -93,8 +96,8 @@ public class RoomDeviceList implements Serializable, Cloneable {
         Set<T> deviceSet = getOrCreateDeviceList(group);
         List<T> deviceList = newArrayList();
         for (T device : deviceSet) {
-            if (!respectSupported ||
-                    (device.isSupported())) {
+            if (!(device instanceof AtDevice) && (!respectSupported ||
+                    device.isSupported())) {
                 deviceList.add(device);
             }
         }

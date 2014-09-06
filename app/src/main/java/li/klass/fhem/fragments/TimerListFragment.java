@@ -41,7 +41,8 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+import com.google.common.collect.Lists;
+
 import java.util.List;
 
 import li.klass.fhem.R;
@@ -54,6 +55,8 @@ import li.klass.fhem.domain.core.DeviceType;
 import li.klass.fhem.domain.core.RoomDeviceList;
 import li.klass.fhem.fragments.core.BaseFragment;
 import li.klass.fhem.util.device.DeviceActionUtil;
+
+import static com.google.common.collect.Lists.newArrayList;
 
 public class TimerListFragment extends BaseFragment {
 
@@ -72,7 +75,7 @@ public class TimerListFragment extends BaseFragment {
         }
         Context context = getActivity();
 
-        TimerListAdapter listAdapter = new TimerListAdapter(context, R.layout.timer_list_item, new ArrayList<AtDevice>());
+        TimerListAdapter listAdapter = new TimerListAdapter(context, R.layout.timer_list_item, Lists.<AtDevice>newArrayList());
 
         LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.timer_overview, null);
         TextView emptyView = (TextView) layout.findViewById(android.R.id.empty);
@@ -132,7 +135,7 @@ public class TimerListFragment extends BaseFragment {
 
                 RoomDeviceList roomDeviceList = (RoomDeviceList) resultData.getSerializable(BundleExtraKeys.DEVICE_LIST);
                 List<AtDevice> devices = roomDeviceList.getDevicesOfType(DeviceType.AT);
-                for (AtDevice atDevice : new ArrayList<AtDevice>(devices)) {
+                for (AtDevice atDevice : newArrayList(devices)) {
                     if (!atDevice.isSupported()) devices.remove(atDevice);
                 }
 

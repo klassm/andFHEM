@@ -24,42 +24,52 @@
   ~   Boston, MA  02110-1301  USA
   -->
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                style="@style/appwidget_medium">
+<RelativeLayout
+    style="@style/appwidget_medium"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <LinearLayout style="@style/appwidget_content">
 
         <TextView style="@style/appwidget_caption"/>
-        <LinearLayout android:orientation="horizontal"
-                      android:layout_marginTop="5dp"
-                      android:layout_height="wrap_content"
-                      android:layout_width="wrap_content" android:gravity="center_horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
             <TextView
-                    android:layout_width="39dp"
-                    android:layout_height="48dp"
-                    android:id="@+id/dimDown"
-                    android:gravity="center_vertical|center_horizontal"
-                    android:background="@drawable/dim_down"
-                    android:layout_weight="1"/>
+                android:id="@+id/dimDown"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:background="@drawable/dim_down"
+                android:gravity="center_vertical|center_horizontal"/>
+
             <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="20dp"
-                    android:paddingRight="20dp"
-                    android:textStyle="bold"
-                    android:textColor="@android:color/black"
-                    android:id="@+id/state"
-                    android:gravity="center_vertical|center_horizontal"
-                    android:text="50%"/>
+                android:id="@+id/state"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical|center_horizontal"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:text="@string/dummy_percentage"
+                android:textColor="@android:color/black"
+                android:textStyle="bold"/>
+
             <TextView
-                    android:layout_width="39dp"
-                    android:layout_height="48dp"
-                    android:id="@+id/dimUp"
-                    android:gravity="center_vertical|center_horizontal"
-                    android:background="@drawable/dim_up"/>
+                android:id="@+id/dimUp"
+                android:layout_width="39dp"
+                android:layout_height="48dp"
+                android:background="@drawable/dim_up"
+                android:gravity="center_vertical|center_horizontal"/>
         </LinearLayout>
 
 
     </LinearLayout>
-    <ImageView style="@style/appwidget_logo" android:contentDescription="@string/app_name"/>
+
+    <ImageView
+        style="@style/appwidget_logo"
+        android:contentDescription="@string/app_name"/>
 </RelativeLayout>

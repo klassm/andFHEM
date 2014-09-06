@@ -46,7 +46,12 @@ public class TimerListAdapter extends ListDataAdapter<AtDevice> {
     public View getView(int position, View convertView, ViewGroup parent) {
         AtDevice device = data.get(position);
 
-        LinearLayout layout = (LinearLayout) inflater.inflate(resource, null);
+        LinearLayout layout;
+        if (convertView != null && convertView instanceof LinearLayout) {
+            layout = (LinearLayout) convertView;
+        } else {
+            layout = (LinearLayout) inflater.inflate(resource, null);
+        }
 
         TextView timerNameView = (TextView) layout.findViewById(R.id.timerName);
         String timerName = device.getAliasOrName();

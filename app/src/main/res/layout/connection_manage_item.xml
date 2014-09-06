@@ -25,25 +25,31 @@
   -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="3dp"
-    android:paddingTop="6dp"
-    android:paddingBottom="6dp">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="3dp"
+                android:paddingBottom="6dp"
+                android:paddingTop="6dp">
+
     <ImageView
+        android:id="@+id/icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@android:drawable/ic_menu_preferences"
         android:layout_centerVertical="true"
-        android:id="@+id/icon"/>
+        android:contentDescription="@string/icon"
+        android:src="@android:drawable/ic_menu_preferences"/>
+
     <TextView
-        android:layout_marginLeft="10dp"
-        android:textStyle="bold"
-        android:textColor="@color/whitegrey"
-        android:textAlignment="center"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/icon"
         android:layout_centerVertical="true"
-        android:text="@string/connectionManage"/>
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_toEndOf="@id/icon"
+        android:layout_toRightOf="@id/icon"
+        android:gravity="center"
+        android:text="@string/connectionManage"
+        android:textColor="@color/whitegrey"
+        android:textStyle="bold"/>
 </RelativeLayout>

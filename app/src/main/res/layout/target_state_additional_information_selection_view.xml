@@ -25,94 +25,110 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
 
 
     <RelativeLayout
-        android:layout_height="wrap_content"
         android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
-        android:padding="5dp"
-        android:background="@color/holoDark">
+        android:background="@color/holoDark"
+        android:padding="5dp">
 
         <TextView
-            android:layout_height="wrap_content"
-            android:layout_width="fill_parent"
             android:id="@+id/deviceName"
-            android:textSize="20dp"
-            android:padding="5dp"
-            android:text="ahllo"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:layout_toEndOf="@+id/imageView"
             android:layout_toRightOf="@+id/imageView"
-            android:textColor="@color/whitegrey" />
+            android:padding="5dp"
+            android:text="@string/dummy_text"
+            android:textColor="@color/whitegrey"
+            android:textSize="20sp"/>
 
         <ImageView
+            android:id="@+id/imageView"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:id="@+id/imageView"
             android:layout_centerVertical="true"
+            android:layout_marginEnd="10dp"
             android:layout_marginRight="10dp"
+            android:contentDescription="@string/app_name"
             android:src="@drawable/ic_launcher"/>
     </RelativeLayout>
 
     <LinearLayout
-        android:layout_height="wrap_content"
         android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="10dp">
+
         <TableLayout
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content">
-            <TableRow>
-                <TextView
-                    android:layout_height="wrap_content"
-                    android:layout_width="fill_parent"
-                    android:textSize="20dp"
-                    android:textStyle="bold"
-                    android:text="@string/timer_targetState"
-                    android:paddingEnd="10dp" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TableRow tools:ignore="UselessParent">
 
                 <TextView
-                    android:layout_height="wrap_content"
                     android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingEnd="10dp"
+                    android:paddingLeft="0dp"
+                    android:paddingRight="10dp"
+                    android:paddingStart="0dp"
+                    android:text="@string/timer_targetState"
+                    android:textSize="20sp"
+                    android:textStyle="bold"/>
+
+                <TextView
                     android:id="@+id/targetState"
-                    android:textSize="20dp"
-                    android:text="desired-temp"/>
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/desiredTemperature"
+                    android:textSize="20sp"/>
             </TableRow>
         </TableLayout>
 
         <TextView
-            android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:textSize="20dp"
-            android:layout_marginTop="20dp"
-            android:textStyle="bold"
-            android:text="@string/additional_information"/>
-        <EditText
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/additional_information"
+            android:textSize="20sp"
+            android:textStyle="bold"/>
+
+        <EditText
+            android:id="@+id/additionalInformation"
             android:layout_width="fill_parent"
-            android:id="@+id/additionalInformation"/>
+            android:layout_height="wrap_content"
+            android:inputType="text"/>
     </LinearLayout>
 
     <TableLayout
-        android:layout_height="wrap_content"
         android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="10dp">
-        <TableRow>
+
+        <TableRow tools:ignore="UselessParent">
+
             <Button
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="20"
-                style="@style/button"
                 android:id="@+id/cancelButton"
-                android:text="@string/cancelButton"/>
-            <Button
+                style="@style/button"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="20"
-                style="@style/button"
+                android:text="@string/cancelButton"/>
+
+            <Button
                 android:id="@+id/okButton"
+                style="@style/button"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="20"
                 android:text="@string/okButton"/>
         </TableRow>
     </TableLayout>
