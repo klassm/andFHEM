@@ -80,7 +80,7 @@ weight: 4
         <td><b>CustomGraph</b><br>Add a custom graph to a FileLog in andFHEM. You will be required to provide a regexp, a y-axis-name and a name for the graph.</td>
         <td><span class="code">custom_graph</span><br>A custom graph. You can specify any number of custom graphs by adding text after the user attribute. For example, you can use <span class="code">custom_graph1, custom_graph123</span> as user attributes.<br></td>
         <td><span class="code">attr FileLog_mat_heizung custom_graph 4:measured@axis@someText</span><br/>
-            <span class="code">attr FileLog mat_heizung custom_graph 4:measured@axis@someText@0@1000</span></br/>
+            <span class="code">attr FileLog mat_heizung custom_graph 4:measured@axis@someText@0@1000</span><br/>
             <span># and @ (&gt;= 2.4.8) can be used as delimiters.</span><br/>
             <span>The second example specifies a minimum and a maximum y axis value</span>
         </td>
@@ -104,7 +104,7 @@ weight: 4
 
        <tr>
         <td><b>Y-Axis minimum and maximum values</b><br>Configures defaults for min and max values of a chart series</td>
-        <td><span class="code">yaxisminmax</td>
+        <td><span class="code">yaxisminmax</span></td>
         <td><span class="code">attr FileLog_wetterstation yaxisminmax wind,0,50@temperature,0,30</span><br />Multiple definitions are separated by @. The first element of a definition refers to the attribute name the chart series depends on (i.e. temperature). The second value is the default minimum value, the third one the default max value.</td>
         <td>3.0.1</td>
       </tr>
