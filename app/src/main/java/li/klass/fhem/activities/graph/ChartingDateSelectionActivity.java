@@ -31,21 +31,27 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.*;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.TextView;
+import android.widget.TimePicker;
+import android.widget.Toast;
+
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
 import li.klass.fhem.R;
 import li.klass.fhem.constants.BundleExtraKeys;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-
 public class ChartingDateSelectionActivity extends Activity {
 
-    private Calendar startDate = Calendar.getInstance();
-    private Calendar endDate = Calendar.getInstance();
+    public static final String TAG = ChartingDateSelectionActivity.class.getName();
+    private DateTime startDate = new DateTime();
+    private DateTime endDate = new DateTime();
 
-    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-    private static final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormat.forPattern("yyyy-MM-dd");
+    private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormat.forPattern("HH:mm");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,11 +61,12 @@ public class ChartingDateSelectionActivity extends Activity {
         Bundle extras = intent.getExtras();
 
 
-        startDate.setTime((Date) extras.getSerializable(BundleExtraKeys.START_DATE));
-        endDate.setTime((Date) extras.getSerializable(BundleExtraKeys.END_DATE));
+        startDate = (DateTime) extras.getSerializable(BundleExtraKeys.START_DATE);
+        endDate = (DateTime) extras.getSerializable(BundleExtraKeys.END_DATE);
 
-        Log.e(ChartingDateSelectionActivity.class.getName(), "start date " + dateFormat.format(startDate.getTime()) + " " + timeFormat.format(startDate.getTime()));
-        Log.e(ChartingDateSelectionActivity.class.getName(), "end date " + dateFormat.format(endDate.getTime()) + " " + timeFormat.format(endDate.getTime()));
+        Log.i(TAG, "start date " + DATE_FORMATTER.print(startDate) + " " + TIME_FORMATTER.print(startDate));
+        Log.i(TAG, "end date " + DATE_FORMATTER.print(endDate) + " " + TIME_FORMATTER.print(endDate));
+
         setContentView(R.layout.graph_select_day);
 
         updateDateTextField(R.id.startDate, startDate);
@@ -69,18 +76,19 @@ public class ChartingDateSelectionActivity extends Activity {
 
         updateOkButtonVisibility();
 
-        Button startDateButton = (Button) findViewById(R.id.startDateSet);
+        final Button startDateButton = (Button) findViewById(R.id.startDateSet);
         startDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 DatePickerDialog dialog = new DatePickerDialog(ChartingDateSelectionActivity.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker datePicker, int year, int month, int dayOfMonth) {
-                        startDate.set(year, month, dayOfMonth);
+                        startDate = new DateTime(year, month, dayOfMonth, startDate.getHourOfDay(),
+                                startDate.getMinuteOfHour());
                         updateDateTextField(R.id.startDate, startDate);
                         updateOkButtonVisibility();
                     }
-                }, startDate.get(Calendar.YEAR), startDate.get(Calendar.MONTH), startDate.get(Calendar.DAY_OF_MONTH));
+                }, startDate.getYear(), startDate.getMonthOfYear(), startDate.getDayOfMonth());
 
                 dialog.show();
             }
@@ -95,28 +103,29 @@ public class ChartingDateSelectionActivity extends Activity {
 
                     @Override
                     public void onTimeSet(TimePicker timePicker, int hour, int minute) {
-                        startDate.set(startDate.get(Calendar.YEAR), startDate.get(Calendar.MONTH),
-                                startDate.get(Calendar.DAY_OF_MONTH), hour, minute);
+                        startDate = new DateTime(startDate.getYear(), startDate.getMonthOfYear(),
+                                startDate.getDayOfMonth(), hour, minute);
                         updateTimeTextField(R.id.startTime, startDate);
                         updateOkButtonVisibility();
                     }
-                }, startDate.get(Calendar.HOUR_OF_DAY), startDate.get(Calendar.MINUTE), true);
+                }, startDate.getHourOfDay(), startDate.getMinuteOfHour(), true);
                 dialog.show();
             }
         });
 
-        Button endDateButton = (Button) findViewById(R.id.endDateSet);
+        final Button endDateButton = (Button) findViewById(R.id.endDateSet);
         endDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 DatePickerDialog dialog = new DatePickerDialog(ChartingDateSelectionActivity.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker datePicker, int year, int month, int dayOfMonth) {
-                        endDate.set(year, month, dayOfMonth);
+                        endDate = new DateTime(year, month, dayOfMonth, endDate.getHourOfDay(),
+                                endDate.getMinuteOfHour());
                         updateDateTextField(R.id.endDate, endDate);
                         updateOkButtonVisibility();
                     }
-                }, endDate.get(Calendar.YEAR), endDate.get(Calendar.MONTH), endDate.get(Calendar.DAY_OF_MONTH));
+                }, endDate.getYear(), endDate.getMonthOfYear(), endDate.getDayOfMonth());
 
                 dialog.show();
             }
@@ -131,12 +140,12 @@ public class ChartingDateSelectionActivity extends Activity {
 
                     @Override
                     public void onTimeSet(TimePicker timePicker, int hour, int minute) {
-                        endDate.set(endDate.get(Calendar.YEAR), endDate.get(Calendar.MONTH),
-                                endDate.get(Calendar.DAY_OF_MONTH), hour, minute);
+                        endDate = new DateTime(endDate.getYear(), endDate.getMonthOfYear(),
+                                endDate.getDayOfMonth(), hour, minute);
                         updateTimeTextField(R.id.endTime, endDate);
                         updateOkButtonVisibility();
                     }
-                }, endDate.get(Calendar.HOUR_OF_DAY), endDate.get(Calendar.MINUTE), true);
+                }, endDate.getHourOfDay(), endDate.getMinuteOfHour(), true);
                 dialog.show();
             }
         });
@@ -146,8 +155,8 @@ public class ChartingDateSelectionActivity extends Activity {
             @Override
             public void onClick(View view) {
                 setResult(RESULT_OK, getIntent());
-                getIntent().putExtra(BundleExtraKeys.START_DATE, startDate.getTime());
-                getIntent().putExtra(BundleExtraKeys.END_DATE, endDate.getTime());
+                getIntent().putExtra(BundleExtraKeys.START_DATE, startDate);
+                getIntent().putExtra(BundleExtraKeys.END_DATE, endDate);
 
                 finish();
             }
@@ -156,7 +165,7 @@ public class ChartingDateSelectionActivity extends Activity {
 
     private void updateOkButtonVisibility() {
         Button okButton = (Button) findViewById(R.id.okButton);
-        if (endDate.before(startDate)) {
+        if (endDate.isBefore(startDate)) {
             okButton.setVisibility(View.GONE);
             Toast.makeText(this, R.string.startDateAfterEndDateMsg, Toast.LENGTH_SHORT).show();
         } else {
@@ -164,13 +173,13 @@ public class ChartingDateSelectionActivity extends Activity {
         }
     }
 
-    private void updateDateTextField(int textViewLayoutId, Calendar calendarToSet) {
+    private void updateDateTextField(int textViewLayoutId, DateTime calendarToSet) {
         TextView layoutItem = (TextView) findViewById(textViewLayoutId);
-        layoutItem.setText(dateFormat.format(calendarToSet.getTime()));
+        layoutItem.setText(DATE_FORMATTER.print(calendarToSet));
     }
 
-    private void updateTimeTextField(int textViewLayoutId, Calendar calendarToSet) {
+    private void updateTimeTextField(int textViewLayoutId, DateTime calendarToSet) {
         TextView layoutItem = (TextView) findViewById(textViewLayoutId);
-        layoutItem.setText(timeFormat.format(calendarToSet.getTime()));
+        layoutItem.setText(TIME_FORMATTER.print(calendarToSet));
     }
 }

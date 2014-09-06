@@ -26,10 +26,13 @@ package li.klass.fhem.service.graph;
 
 import android.util.Log;
 
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -42,12 +45,16 @@ import li.klass.fhem.domain.log.LogDevice;
 import li.klass.fhem.service.CommandExecutionService;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 
+import static com.google.common.collect.Lists.newArrayList;
+import static com.google.common.collect.Maps.newHashMap;
+
 @Singleton
 public class GraphService {
     public static final SimpleDateFormat GRAPH_ENTRY_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
 
     @Inject
     CommandExecutionService commandExecutionService;
+    public static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormat.forPattern("yyyy-MM-dd_HH:mm");
 
     /**
      * Retrieves {@link GraphEntry} objects from FHEM. When the entries are available, the given listener object will
@@ -61,11 +68,11 @@ public class GraphService {
      */
     @SuppressWarnings("unchecked")
     public HashMap<ChartSeriesDescription, List<GraphEntry>> getGraphData(Device device, ArrayList<ChartSeriesDescription> seriesDescriptions,
-                                                                          final Calendar startDate, final Calendar endDate) {
+                                                                          final DateTime startDate, final DateTime endDate) {
 
         if (device.getLogDevices().isEmpty()) return null;
 
-        HashMap<ChartSeriesDescription, List<GraphEntry>> data = new HashMap<ChartSeriesDescription, List<GraphEntry>>();
+        HashMap<ChartSeriesDescription, List<GraphEntry>> data = newHashMap();
 
         for (ChartSeriesDescription seriesDescription : seriesDescriptions) {
             data.put(seriesDescription, getCurrentGraphEntriesFor(device, seriesDescription, startDate, endDate));
@@ -86,16 +93,15 @@ public class GraphService {
      */
     private List<GraphEntry> getCurrentGraphEntriesFor(Device device,
                                                        ChartSeriesDescription seriesDescription,
-                                                       Calendar startDate, Calendar endDate) {
-        String result = loadLogData(device, startDate.getTime(), endDate.getTime(), seriesDescription);
+                                                       DateTime startDate, DateTime endDate) {
+        String result = loadLogData(device, startDate, endDate, seriesDescription);
         return findGraphEntries(result);
     }
 
-    public String loadLogData(Device device, Date fromDate, Date toDate,
+    public String loadLogData(Device device, DateTime fromDate, DateTime toDate,
                               ChartSeriesDescription seriesDescription) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH:mm");
-        String fromDateFormatted = dateFormat.format(fromDate);
-        String toDateFormatted = dateFormat.format(toDate);
+        String fromDateFormatted = DATE_TIME_FORMATTER.print(fromDate);
+        String toDateFormatted = DATE_TIME_FORMATTER.print(toDate);
 
         StringBuilder result = new StringBuilder();
 
@@ -122,7 +128,7 @@ public class GraphService {
      * @return found {@link GraphEntry} objects.
      */
     List<GraphEntry> findGraphEntries(String content) {
-        List<GraphEntry> result = new ArrayList<GraphEntry>();
+        List<GraphEntry> result = newArrayList();
 
         if (content == null) return result;
 

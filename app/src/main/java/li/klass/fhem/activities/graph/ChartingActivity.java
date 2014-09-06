@@ -35,7 +35,6 @@ import android.os.Handler;
 import android.os.ResultReceiver;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -52,15 +51,14 @@ import org.achartengine.model.XYMultipleSeriesDataset;
 import org.achartengine.renderer.BasicStroke;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import org.achartengine.renderer.XYSeriesRenderer;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -75,6 +73,9 @@ import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.service.graph.description.SeriesType;
 import li.klass.fhem.util.DisplayUtil;
 
+import static com.google.common.collect.Lists.newArrayList;
+import static com.google.common.collect.Maps.newHashMap;
+import static com.google.common.collect.Sets.newHashSet;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_GRAPH_ENTRY_MAP;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_GRAPH_SERIES_DESCRIPTIONS;
@@ -84,6 +85,7 @@ import static li.klass.fhem.constants.BundleExtraKeys.END_DATE;
 import static li.klass.fhem.constants.BundleExtraKeys.RESULT_RECEIVER;
 import static li.klass.fhem.constants.BundleExtraKeys.START_DATE;
 import static li.klass.fhem.util.DisplayUtil.dpToPx;
+import static org.joda.time.Duration.standardHours;
 
 /**
  * Shows a chart.
@@ -95,6 +97,10 @@ public class ChartingActivity extends SherlockActivity implements Updateable {
     public static final int REQUEST_TIME_CHANGE = 1;
     public static final int DIALOG_EXECUTING = 2;
 
+    public static final int CURRENT_DAY_TIMESPAN = -1;
+
+    public static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormat.forPattern("yyyy-MM-dd");
+
     /**
      * Current device graphs are shown for.
      */
@@ -103,17 +109,17 @@ public class ChartingActivity extends SherlockActivity implements Updateable {
     /**
      * {@link ChartSeriesDescription}s to be shown within the current graph.
      */
-    private ArrayList<ChartSeriesDescription> seriesDescriptions = new ArrayList<ChartSeriesDescription>();
+    private ArrayList<ChartSeriesDescription> seriesDescriptions = newArrayList();
 
     /**
      * Start date for the current graph.
      */
-    private Calendar startDate = Calendar.getInstance();
+    private DateTime startDate = new DateTime();
 
     /**
      * End date for the current graph
      */
-    private Calendar endDate = Calendar.getInstance();
+    private DateTime endDate = new DateTime();
 
     /**
      * Jumps to the charting activity.
@@ -125,7 +131,7 @@ public class ChartingActivity extends SherlockActivity implements Updateable {
     @SuppressWarnings("unchecked")
     public static void showChart(Context context, Device device, ChartSeriesDescription... seriesDescriptions) {
 
-        ArrayList<ChartSeriesDescription> seriesList = new ArrayList<ChartSeriesDescription>(Arrays.asList(seriesDescriptions));
+        ArrayList<ChartSeriesDescription> seriesList = newArrayList(seriesDescriptions);
         Intent timeChartIntent = new Intent(context, ChartingActivity.class);
         timeChartIntent.putExtras(new Bundle());
         timeChartIntent.putExtra(DEVICE_NAME, device.getName());
@@ -141,13 +147,18 @@ public class ChartingActivity extends SherlockActivity implements Updateable {
         ((AndFHEMApplication) getApplication()).inject(this);
 
         if (savedInstanceState != null && savedInstanceState.containsKey(START_DATE)) {
-            startDate = (Calendar) savedInstanceState.getSerializable(START_DATE);
+            startDate = (DateTime) savedInstanceState.getSerializable(START_DATE);
         } else {
-            startDate.add(Calendar.HOUR, getChartingDefaultTimespan() * (-1));
+            int defaultTimespan = getChartingDefaultTimespan();
+            if (defaultTimespan == CURRENT_DAY_TIMESPAN) {
+                startDate = new DateTime(startDate.getYear(), startDate.getMonthOfYear(), startDate.getDayOfMonth(), 0, 0);
+            } else {
+                startDate = startDate.minus(standardHours(defaultTimespan));
+            }
         }
 
         if (savedInstanceState != null && savedInstanceState.containsKey(END_DATE)) {
-            endDate = (Calendar) savedInstanceState.getSerializable(END_DATE);
+            endDate = (DateTime) savedInstanceState.getSerializable(END_DATE);
         }
 
         Bundle extras = getIntent().getExtras();
@@ -239,21 +250,19 @@ public class ChartingActivity extends SherlockActivity implements Updateable {
         XYMultipleSeriesRenderer renderer = buildAndFillRenderer(yAxisList);
         XYMultipleSeriesDataset dataSet = createChartDataSet(yAxisList);
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
         String title;
         if (DisplayUtil.getWidthInDP() < 500) {
             title = device.getAliasOrName() + "\n\r" +
-                    dateFormat.format(startDate.getTime()) + " - " + dateFormat.format(endDate.getTime());
+                    DATE_TIME_FORMATTER.print(startDate) + " - " + DATE_TIME_FORMATTER.print(endDate);
             renderer.setMargins(new int[]{(int) dpToPx(50), (int) dpToPx(18), (int) dpToPx(20), (int) dpToPx(18)});
         } else {
             title = device.getAliasOrName() + " " +
-                    dateFormat.format(startDate.getTime()) + " - " + dateFormat.format(endDate.getTime());
+                    DATE_TIME_FORMATTER.print(startDate) + " - " + DATE_TIME_FORMATTER.print(endDate);
             renderer.setMargins(new int[]{(int) dpToPx(30), (int) dpToPx(18), (int) dpToPx(20), (int) dpToPx(18)});
         }
         getSupportActionBar().setTitle(title);
 
-        View view = LayoutInflater.from(this).inflate(R.layout.chart, null);
+        View view = getLayoutInflater().inflate(R.layout.chart, null);
         final LinearLayout chartLayout = (LinearLayout) view.findViewById(R.id.chart);
         final GraphicalView timeChartView = ChartFactory.getTimeChartView(this, dataSet, renderer, "MM-dd HH:mm");
         chartLayout.addView(timeChartView);
@@ -316,8 +325,6 @@ public class ChartingActivity extends SherlockActivity implements Updateable {
         double minY = Double.MAX_VALUE;
         double maxY = Double.MIN_VALUE;
 
-        List<Integer> availableColors = new ArrayList<Integer>(AVAILABLE_COLORS);
-
         for (int axisNumber = 0; axisNumber < yAxisList.size(); axisNumber++) {
             YAxis yAxis = yAxisList.get(axisNumber);
 
@@ -345,7 +352,7 @@ public class ChartingActivity extends SherlockActivity implements Updateable {
                 XYSeriesRenderer seriesRenderer = new XYSeriesRenderer();
 
                 seriesRenderer.setFillPoints(false);
-                int color = getColorFor(chartSeries, availableColors);
+                int color = getColorFor(chartSeries, newArrayList(AVAILABLE_COLORS));
                 seriesRenderer.setColor(color);
                 seriesRenderer.setPointStyle(PointStyle.POINT);
 
@@ -412,7 +419,7 @@ public class ChartingActivity extends SherlockActivity implements Updateable {
      * @param data data to work on (which is also modified here)
      */
     private void removeChartSeriesWithTooFewEntries(Map<ChartSeriesDescription, List<GraphEntry>> data) {
-        for (ChartSeriesDescription chartSeriesDescription : new HashSet<ChartSeriesDescription>(data.keySet())) {
+        for (ChartSeriesDescription chartSeriesDescription : newHashSet(data.keySet())) {
             if (data.get(chartSeriesDescription).size() < 2) {
                 data.remove(chartSeriesDescription);
             }
@@ -426,7 +433,7 @@ public class ChartingActivity extends SherlockActivity implements Updateable {
      * @return internal representation
      */
     private List<YAxis> mapToYAxis(Map<ChartSeriesDescription, List<GraphEntry>> data) {
-        Map<String, YAxis> yAxisMap = new HashMap<String, YAxis>();
+        Map<String, YAxis> yAxisMap = newHashMap();
 
         for (ChartSeriesDescription chartSeriesDescription : data.keySet()) {
             SeriesType seriesType = chartSeriesDescription.getSeriesType();
@@ -446,7 +453,7 @@ public class ChartingActivity extends SherlockActivity implements Updateable {
             yAxisMap.get(yAxisName).addChart(chartSeriesDescription, data.get(chartSeriesDescription));
         }
 
-        ArrayList<YAxis> yAxisList = new ArrayList<YAxis>(yAxisMap.values());
+        ArrayList<YAxis> yAxisList = newArrayList(yAxisMap.values());
         Collections.sort(yAxisList);
 
         for (YAxis yAxis : yAxisList) {
@@ -527,8 +534,8 @@ public class ChartingActivity extends SherlockActivity implements Updateable {
                 Intent intent = new Intent(this, ChartingDateSelectionActivity.class);
                 intent.putExtras(new Bundle());
                 intent.putExtra(DEVICE_NAME, deviceName);
-                intent.putExtra(START_DATE, startDate.getTime());
-                intent.putExtra(END_DATE, endDate.getTime());
+                intent.putExtra(START_DATE, startDate);
+                intent.putExtra(END_DATE, endDate);
                 startActivityForResult(intent, REQUEST_TIME_CHANGE);
                 return true;
         }
@@ -544,8 +551,8 @@ public class ChartingActivity extends SherlockActivity implements Updateable {
             Bundle bundle = resultIntent.getExtras();
             switch (requestCode) {
                 case REQUEST_TIME_CHANGE:
-                    startDate.setTime((Date) bundle.getSerializable(START_DATE));
-                    endDate.setTime((Date) bundle.getSerializable(END_DATE));
+                    startDate = (DateTime) bundle.getSerializable(START_DATE);
+                    endDate = (DateTime) bundle.getSerializable(END_DATE);
 
 
                     update(false);

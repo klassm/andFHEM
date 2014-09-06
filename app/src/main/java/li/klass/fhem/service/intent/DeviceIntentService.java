@@ -29,8 +29,9 @@ import android.os.Bundle;
 import android.os.ResultReceiver;
 import android.util.Log;
 
+import org.joda.time.DateTime;
+
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -272,8 +273,8 @@ public class DeviceIntentService extends ConvenientIntentService {
      */
     private STATE graphIntent(Intent intent, Device device, ResultReceiver resultReceiver) {
         ArrayList<ChartSeriesDescription> seriesDescriptions = intent.getParcelableArrayListExtra(BundleExtraKeys.DEVICE_GRAPH_SERIES_DESCRIPTIONS);
-        Calendar startDate = (Calendar) intent.getSerializableExtra(BundleExtraKeys.START_DATE);
-        Calendar endDate = (Calendar) intent.getSerializableExtra(BundleExtraKeys.END_DATE);
+        DateTime startDate = (DateTime) intent.getSerializableExtra(BundleExtraKeys.START_DATE);
+        DateTime endDate = (DateTime) intent.getSerializableExtra(BundleExtraKeys.END_DATE);
 
         HashMap<ChartSeriesDescription, List<GraphEntry>> graphData = graphService.getGraphData(device, seriesDescriptions, startDate, endDate);
         sendSingleExtraResult(resultReceiver, ResultCodes.SUCCESS, DEVICE_GRAPH_ENTRY_MAP, graphData);

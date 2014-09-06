@@ -149,7 +149,7 @@ public class AndFHEMApplication extends Application {
             String pkg = getPackageName();
             return getPackageManager().getPackageInfo(pkg, 0).versionName;
         } catch (PackageManager.NameNotFoundException e) {
-            Log.e(AndFHEMApplication.class.getName(), "cannot find the application version", e);
+            Log.d(AndFHEMApplication.class.getName(), "cannot find the application version", e);
             return "";
         }
     }

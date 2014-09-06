@@ -30,6 +30,7 @@
         <item>24 Stunden</item>
         <item>36 Stunden</item>
         <item>48 Stunden</item>
+        <item>Aktueller Tag</item>
     </string-array>
 
     <string-array name="widgetUpdateTimeEntries">
