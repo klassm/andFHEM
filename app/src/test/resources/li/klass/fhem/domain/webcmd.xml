@@ -31,7 +31,7 @@
             <INT key="STATE" value="on"/>
             <INT key="TYPE" value="dummy"/>
             <ATTR key="setList" value="on off"/>
-            <ATTR key="webcmddevice" value="1"/>
+            <ATTR key="webcmddevice" value="true"/>
             <ATTR key="room" value="room"/>
             <STATE key="state" value="on" measured="2012-07-23 11:06:31"/>
         </dummy>
@@ -42,7 +42,7 @@
             <INT key="STATE" value="on"/>
             <INT key="TYPE" value="dummy"/>
             <ATTR key="setList" value="on off"/>
-            <ATTR key="webcmddevice" value="1"/>
+            <ATTR key="webcmddevice" value="true"/>
             <ATTR key="room" value="room"/>
             <ATTR key="alias" value="alias"/>
             <STATE key="state" value="on" measured="2012-07-23 11:06:31"/>
