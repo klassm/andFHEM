@@ -29,6 +29,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -46,10 +47,11 @@ import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.fhem.connection.FHEMServerSpec;
 import li.klass.fhem.fhem.connection.ServerType;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static li.klass.fhem.activities.locale.LocaleIntentConstants.EXTRA_BUNDLE;
 import static li.klass.fhem.activities.locale.LocaleIntentConstants.EXTRA_STRING_BLURB;
-import static li.klass.fhem.activities.locale.TaskerPlugin.Setting.hostSupportsOnFireVariableReplacement;
 import static li.klass.fhem.constants.Actions.EXECUTE_COMMAND;
+import static li.klass.fhem.constants.BundleExtraKeys.ACTION;
 import static li.klass.fhem.constants.BundleExtraKeys.COMMAND;
 import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_ID;
 import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_LIST;
@@ -57,6 +59,7 @@ import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_LIST;
 public class SendCommandLocaleSettingActivity extends Activity {
 
     public static final String CURRENT_CONNECTION_ID = "current";
+    private static final String TAG = SendCommandLocaleSettingActivity.class.getName();
     private String selectedId = CURRENT_CONNECTION_ID;
 
     @Override
@@ -99,7 +102,6 @@ public class SendCommandLocaleSettingActivity extends Activity {
                 super.onReceiveResult(resultCode, resultData);
 
                 fillConnectionSpinner(resultCode, resultData, connectionListAdapter);
-
             }
         });
         startService(connectionIntent);
@@ -116,7 +118,7 @@ public class SendCommandLocaleSettingActivity extends Activity {
                 resultIntent.putExtra(EXTRA_STRING_BLURB, command);
 
                 Bundle bundle = new Bundle();
-                bundle.putString(BundleExtraKeys.ACTION, EXECUTE_COMMAND);
+                bundle.putString(ACTION, EXECUTE_COMMAND);
                 bundle.putString(COMMAND, command);
 
                 if (selectedId != null && ! CURRENT_CONNECTION_ID.equals(selectedId)) {
@@ -125,9 +127,11 @@ public class SendCommandLocaleSettingActivity extends Activity {
 
                 resultIntent.putExtra(EXTRA_BUNDLE, bundle);
 
-                if (hostSupportsOnFireVariableReplacement(SendCommandLocaleSettingActivity.this)) {
+                if (TaskerPlugin.Setting.hostSupportsOnFireVariableReplacement(SendCommandLocaleSettingActivity.this)) {
                     TaskerPlugin.Setting.setVariableReplaceKeys( bundle, new String [] { COMMAND } );
                 }
+
+                Log.e(TAG, "command=" + bundle.getString(COMMAND) + ",action=" + bundle.getString(ACTION));
 
                 setResult(RESULT_OK, resultIntent);
                 finish();
@@ -144,7 +148,7 @@ public class SendCommandLocaleSettingActivity extends Activity {
                     resultData.getSerializable(CONNECTION_LIST);
             assert connectionList != null;
 
-            for (FHEMServerSpec serverSpec : new ArrayList<FHEMServerSpec>(connectionList)) {
+            for (FHEMServerSpec serverSpec : newArrayList(connectionList)) {
                 if (serverSpec.getServerType() == ServerType.DUMMY) {
                     connectionList.remove(serverSpec);
                 }

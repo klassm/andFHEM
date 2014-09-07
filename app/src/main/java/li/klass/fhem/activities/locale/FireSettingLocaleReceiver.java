@@ -41,6 +41,8 @@ public class FireSettingLocaleReceiver extends BroadcastReceiver {
         String command = intent.getStringExtra(BundleExtraKeys.COMMAND);
         String connectionId = intent.getStringExtra(BundleExtraKeys.CONNECTION_ID);
 
+        Log.i(TAG, "action=" + action + ",command=" + command + ",connectionId=" + connectionId);
+
         if (Actions.EXECUTE_COMMAND.equals(action)) {
             Intent actionIntent = new Intent(Actions.EXECUTE_COMMAND);
             actionIntent.putExtra(BundleExtraKeys.COMMAND, command);
