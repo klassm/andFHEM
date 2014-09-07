@@ -38,6 +38,11 @@ public class WebCmdTest extends DeviceXMLParsingBase {
         assertThat(device.getWebCmd()).isNull();
     }
 
+    public void should_use_alias_as_name_even_if_webcmddevice_hook_is_set() {
+        DummyDevice device = getDeviceFor("withAlias");
+        assertThat(device.getAliasOrName()).isEqualTo("alias");
+    }
+
     @Override
     protected String getFileName() {
         return "webcmd.xml";

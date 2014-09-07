@@ -26,13 +26,25 @@
     <dummy_LIST>
         <dummy name="withoutWebcmds" state="on" sets="on off"
                attrs="room group comment alias eventMap loglevel:0,1,2,3,4,5,6 setList fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon onOffDevice webCmd">
-            <INT key="NAME" value="device"/>
+            <INT key="NAME" value="withoutWebcmds"/>
             <INT key="NR" value="21"/>
             <INT key="STATE" value="on"/>
             <INT key="TYPE" value="dummy"/>
             <ATTR key="setList" value="on off"/>
             <ATTR key="webcmddevice" value="1"/>
             <ATTR key="room" value="room"/>
+            <STATE key="state" value="on" measured="2012-07-23 11:06:31"/>
+        </dummy>
+        <dummy name="withAlias" state="on" sets="on off"
+               attrs="room group comment alias eventMap loglevel:0,1,2,3,4,5,6 setList fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon onOffDevice webCmd">
+            <INT key="NAME" value="withAlias"/>
+            <INT key="NR" value="21"/>
+            <INT key="STATE" value="on"/>
+            <INT key="TYPE" value="dummy"/>
+            <ATTR key="setList" value="on off"/>
+            <ATTR key="webcmddevice" value="1"/>
+            <ATTR key="room" value="room"/>
+            <ATTR key="alias" value="alias"/>
             <STATE key="state" value="on" measured="2012-07-23 11:06:31"/>
         </dummy>
     </dummy_LIST>
