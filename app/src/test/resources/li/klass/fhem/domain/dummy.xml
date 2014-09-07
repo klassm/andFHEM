@@ -25,7 +25,7 @@
 <FHZINFO>
     <dummy_LIST>
         <dummy name="device" state="on" sets="on off"
-            attrs="room group comment alias eventMap loglevel:0,1,2,3,4,5,6 setList fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon onOffDevice webCmd">
+               attrs="room group comment alias eventMap loglevel:0,1,2,3,4,5,6 setList fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon onOffDevice webCmd">
             <INT key="NAME" value="device"/>
             <INT key="NR" value="21"/>
             <INT key="STATE" value="on"/>
@@ -35,7 +35,7 @@
             <STATE key="state" value="on" measured="2012-07-23 11:06:31"/>
         </dummy>
         <dummy name="device1" state="??" sets=""
-            attrs="room group comment alias eventMap loglevel:0,1,2,3,4,5,6 setList fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon onOffDevice webCmd">
+               attrs="room group comment alias eventMap loglevel:0,1,2,3,4,5,6 setList fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon onOffDevice webCmd">
             <INT key="NAME" value="device1"/>
             <INT key="NR" value="21"/>
             <INT key="STATE" value="??"/>
@@ -44,7 +44,7 @@
             <STATE key="state" value="??" measured="2012-07-23 11:06:31"/>
         </dummy>
         <dummy name="deviceWithSetlist" state="20" sets="state:17,18,19,20,21,21.5,22"
-            attrs="room group comment alias eventMap loglevel:0,1,2,3,4,5,6 setList devStateIcon fp_5WG fp_5WG.image fp_image icon room_map structexclude webCmd">
+               attrs="room group comment alias eventMap loglevel:0,1,2,3,4,5,6 setList devStateIcon fp_5WG fp_5WG.image fp_image icon room_map structexclude webCmd">
             <INT key="CFGFN" value="heiz.cfg"/>
             <INT key="NAME" value="deviceWithSetlist"/>
             <INT key="NR" value="141"/>
@@ -57,7 +57,7 @@
             <STATE key="state" value="20" measured="2013-01-01 20:47:03"/>
         </dummy>
         <dummy name="timerDevice" state="???" sets="state:time"
-            attrs="room group comment alias eventMap userReadings loglevel:0,1,2,3,4,5,6 setList event-on-change-reading event-on-update-reading event-min-interval stateFormat alias_map custom_graph devStateIcon fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon invertState measured-temp offDevice onDevice onOffDevice sortby structexclude toggleDevice webCmd">
+               attrs="room group comment alias eventMap userReadings loglevel:0,1,2,3,4,5,6 setList event-on-change-reading event-on-update-reading event-min-interval stateFormat alias_map custom_graph devStateIcon fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon invertState measured-temp offDevice onDevice onOffDevice sortby structexclude toggleDevice webCmd">
             <INT key="CFGFN" value=""/>
             <INT key="NAME" value="timerDevice"/>
             <INT key="NR" value="290"/>
@@ -67,7 +67,7 @@
             <ATTR key="setList" value="state:time"/>
         </dummy>
         <dummy name="sliderDevice" state="???" sets="state:slider,10,2,50"
-            attrs="room group comment alias eventMap userReadings loglevel:0,1,2,3,4,5,6 setList event-on-change-reading event-on-update-reading event-min-interval stateFormat alias_map custom_graph devStateIcon fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon invertState measured-temp offDevice onDevice onOffDevice sortby structexclude toggleDevice webCmd">
+               attrs="room group comment alias eventMap userReadings loglevel:0,1,2,3,4,5,6 setList event-on-change-reading event-on-update-reading event-min-interval stateFormat alias_map custom_graph devStateIcon fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon invertState measured-temp offDevice onDevice onOffDevice sortby structexclude toggleDevice webCmd">
             <INT key="CFGFN" value=""/>
             <INT key="NAME" value="sliderDevice"/>
             <INT key="NR" value="336"/>
@@ -77,7 +77,7 @@
             <ATTR key="setList" value="state:slider,0,1,10"/>
         </dummy>
         <dummy name="eventMapDevice" state="???" sets="oben unten 65 40  "
-            attrs="room group comment alias eventMap userReadings loglevel:0,1,2,3,4,5,6 setList event-on-change-reading event-on-update-reading event-min-interval stateFormat alias_map custom_graph devStateIcon fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon invertState measured-temp offDevice onDevice onOffDevice sortby structexclude toggleDevice webCmd">
+               attrs="room group comment alias eventMap userReadings loglevel:0,1,2,3,4,5,6 setList event-on-change-reading event-on-update-reading event-min-interval stateFormat alias_map custom_graph devStateIcon fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon invertState measured-temp offDevice onDevice onOffDevice sortby structexclude toggleDevice webCmd">
             <INT key="CFGFN" value=""/>
             <INT key="NAME" value="eventMapDevice"/>
             <INT key="NR" value="450"/>
@@ -99,15 +99,13 @@
             <ATTR key="webCmd" value="rgb:rgb FFAB01:rgb C8FF12:rgb 0000FF:toggle:on:off"/>
             <STATE key="state" value="rgb FFAB01" measured="2013-11-29 13:17:19"/>
         </dummy>
-        <dummy_LIST>
-            <dummy name="onOffEventMap" state="Hoch" sets="Hoch Runter  " attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings setList event-on-change-reading event-on-update-reading event-min-interval stateFormat alias_map always_hidden custom_graph devStateIcon devStateStyle fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon invertState measured-temp offDevice onDevice onOffDevice sortby structexclude toggleDevice webCmd webcmdDevice">
-                <INT key="CFGFN" value=""/>
-                <INT key="NAME" value="onOffEventMap"/>
-                <INT key="NR" value="742"/>
-                <INT key="STATE" value="Hoch"/>
-                <INT key="TYPE" value="dummy"/>
-                <ATTR key="eventMap" value="on:Hoch off:Runter"/>
-            </dummy>
-        </dummy_LIST>
+        <dummy name="onOffEventMap" state="Hoch" sets="Hoch Runter  " attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings setList event-on-change-reading event-on-update-reading event-min-interval stateFormat alias_map always_hidden custom_graph devStateIcon devStateStyle fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon invertState measured-temp offDevice onDevice onOffDevice sortby structexclude toggleDevice webCmd webcmdDevice">
+            <INT key="CFGFN" value=""/>
+            <INT key="NAME" value="onOffEventMap"/>
+            <INT key="NR" value="742"/>
+            <INT key="STATE" value="Hoch"/>
+            <INT key="TYPE" value="dummy"/>
+            <ATTR key="eventMap" value="on:Hoch off:Runter"/>
+        </dummy>
     </dummy_LIST>
 </FHZINFO>
