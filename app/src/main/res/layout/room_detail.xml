@@ -25,7 +25,8 @@
   -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
     <ProgressBar
@@ -47,7 +48,7 @@
         android:listSelector="@drawable/theme_listview_item"
         android:layout_below="@+id/errorHeader"
         android:layout_above="@+id/adContainer"
-        />
+        tools:ignore="UnknownIdInLayout"/>
 
     <LinearLayout android:layout_width="fill_parent"
         android:layout_height="wrap_content"

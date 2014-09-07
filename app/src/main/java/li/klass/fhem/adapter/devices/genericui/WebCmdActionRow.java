@@ -28,6 +28,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ToggleButton;
 
 import java.util.List;
@@ -55,9 +56,9 @@ public class WebCmdActionRow<D extends Device<D>> extends HolderActionRow<D, Str
 
     @Override
     public View viewFor(final String command, final D device, LayoutInflater inflater,
-                        final Context context) {
+                        final Context context, ViewGroup viewGroup) {
 
-        ToggleButton button = (ToggleButton) inflater.inflate(R.layout.device_detail_togglebutton, null);
+        ToggleButton button = (ToggleButton) inflater.inflate(R.layout.device_detail_togglebutton, viewGroup, false);
         assert button != null;
 
         button.setBackgroundDrawable(

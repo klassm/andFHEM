@@ -77,7 +77,7 @@ public class TimerListFragment extends BaseFragment {
 
         TimerListAdapter listAdapter = new TimerListAdapter(context, R.layout.timer_list_item, Lists.<AtDevice>newArrayList());
 
-        LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.timer_overview, null);
+        LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.timer_overview, container, false);
         TextView emptyView = (TextView) layout.findViewById(android.R.id.empty);
         ListView listView = (ListView) layout.findViewById(R.id.list);
 

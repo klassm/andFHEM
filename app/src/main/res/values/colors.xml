@@ -26,16 +26,12 @@
 <resources>
     <color name="android_green">#FFA4C639</color>
     <color name="navigationBarBackground">#FFE1F3E3</color>
-    <color name="tabPressGrey">#FFD9D9D9</color>
-    <color name="tabBackgroundGrey">#FFF6F6F6</color>
 
     <color name="lightGrey">#FFF6F6F6</color>
     <color name="darkGrey">#FFD9D9D9</color>
 
     <color name="focusedColor">#FFFFE748</color>
     <color name="thumbOuterColor">#55FFE748</color>
-
-    <color name="lightBlue">#B5C5FF</color>
 
     <color name="andFHEMDarkGreen">#079400</color>
     <color name="widgetNewBackground">#F0079400</color>

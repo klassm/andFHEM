@@ -27,18 +27,19 @@
 <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
           android:layout_width="fill_parent"
           android:layout_height="wrap_content">
-    <TextView style="@style/deviceOverviewLayoutDeviceName"
-              android:id="@+id/description"
-              android:layout_width="match_parent"
-              android:layout_gravity="center_vertical"
-              android:layout_column="1"
-              android:text="text"/>
 
-    <com.ensequence.socialmediatestharness.ui.FlowLayout android:id="@+id/holder"
+    <TextView
+        android:id="@+id/description"
+        style="@style/deviceOverviewLayoutDeviceName"
+        android:layout_width="match_parent"
+        android:layout_column="1"
+        android:layout_gravity="center_vertical"
+        android:text="@string/dummy_text"/>
+
+    <com.ensequence.socialmediatestharness.ui.FlowLayout
+        android:id="@+id/holder"
         style="@style/deviceDetailContent"
         android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        android:gravity="right"
-        android:paddingRight="0dp"
-        />
+        android:layout_gravity="end"
+        android:gravity="end"/>
 </TableRow>

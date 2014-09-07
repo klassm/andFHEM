@@ -24,6 +24,7 @@
 
 package li.klass.fhem.activities.graph;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -58,7 +59,6 @@ import org.joda.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -262,7 +262,7 @@ public class ChartingActivity extends SherlockActivity implements Updateable {
         }
         getSupportActionBar().setTitle(title);
 
-        View view = getLayoutInflater().inflate(R.layout.chart, null);
+        @SuppressLint("InflateParams") View view = getLayoutInflater().inflate(R.layout.chart, null);
         final LinearLayout chartLayout = (LinearLayout) view.findViewById(R.id.chart);
         final GraphicalView timeChartView = ChartFactory.getTimeChartView(this, dataSet, renderer, "MM-dd HH:mm");
         chartLayout.addView(timeChartView);
@@ -320,19 +320,19 @@ public class ChartingActivity extends SherlockActivity implements Updateable {
         XYMultipleSeriesRenderer renderer = new XYMultipleSeriesRenderer(yAxisList.size());
         setRendererDefaults(renderer);
 
-        Date minDate = null;
-        Date maxDate = null;
+        DateTime minDate = null;
+        DateTime maxDate = null;
         double minY = Double.MAX_VALUE;
         double maxY = Double.MIN_VALUE;
 
         for (int axisNumber = 0; axisNumber < yAxisList.size(); axisNumber++) {
             YAxis yAxis = yAxisList.get(axisNumber);
 
-            if (minDate == null || yAxis.getMinimumX().before(minDate)) {
+            if (minDate == null || yAxis.getMinimumX().isBefore(minDate)) {
                 minDate = yAxis.getMinimumX();
             }
 
-            if (maxDate == null || yAxis.getMaximumX().after(maxDate)) {
+            if (maxDate == null || yAxis.getMaximumX().isAfter(maxDate)) {
                 maxDate = yAxis.getMaximumX();
             }
 
@@ -382,8 +382,8 @@ public class ChartingActivity extends SherlockActivity implements Updateable {
         minY -= 1;
         maxY += 1;
 
-        renderer.setPanLimits(new double[]{minDate.getTime(), maxDate.getTime(), Double.MIN_VALUE, Double.MAX_VALUE});
-        renderer.setZoomLimits(new double[]{minDate.getTime(), maxDate.getTime(), minY, maxY});
+        renderer.setPanLimits(new double[]{minDate.getMillis(), maxDate.getMillis(), Double.MIN_VALUE, Double.MAX_VALUE});
+        renderer.setZoomLimits(new double[]{minDate.getMillis(), maxDate.getMillis(), minY, maxY});
 
         return renderer;
     }
@@ -404,7 +404,7 @@ public class ChartingActivity extends SherlockActivity implements Updateable {
             for (ViewableChartSeries seriesContainer : yAxis) {
                 CustomTimeSeries timeSeries = new CustomTimeSeries(seriesContainer.getName(), yAxisIndex);
                 for (GraphEntry graphEntry : seriesContainer.getData()) {
-                    timeSeries.add(graphEntry.getDate(), graphEntry.getValue());
+                    timeSeries.add(graphEntry.getDate().toDate(), graphEntry.getValue());
                 }
                 dataSet.addSeries(timeSeries);
             }

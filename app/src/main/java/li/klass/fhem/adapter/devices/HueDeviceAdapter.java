@@ -89,7 +89,7 @@ public class HueDeviceAdapter extends DimmableAdapter<HUEDevice> {
 
                         context.startService(intent);
                     }
-                }.createRow(context, getInflater()));
+                }.createRow(context, getInflater(), tableLayout));
             }
         });
     }

@@ -26,12 +26,12 @@ package li.klass.fhem.activities.graph;
 
 import android.content.Context;
 
+import org.joda.time.DateTime;
 import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Mock;
 
 import java.util.Arrays;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -49,7 +49,7 @@ import static org.hamcrest.Matchers.is;
 
 public class ChartDataTest extends RobolectricBaseTestCase {
 
-    private static final List<GraphEntry> dummyData = Arrays.asList(new GraphEntry(new Date(1), 0.3f));
+    private static final List<GraphEntry> DUMMY_DATA = Arrays.asList(new GraphEntry(new DateTime(1), 0.3f));
 
     @Rule
     public MockitoTestRule mockitoTestRule = new MockitoTestRule();
@@ -66,7 +66,7 @@ public class ChartDataTest extends RobolectricBaseTestCase {
                         .withDbLogSpec("def")
                         .withSeriesType(TEMPERATURE)
                         .withShowRegression(true)
-                        .build(), dummyData,
+                        .build(), DUMMY_DATA,
                 context);
         assertThat(data.getNumberOfContainedSeries(), is(2));
 
@@ -79,7 +79,7 @@ public class ChartDataTest extends RobolectricBaseTestCase {
                         .withShowSum(true)
                         .withSeriesType(TEMPERATURE)
                         .build(),
-                dummyData,
+                DUMMY_DATA,
                 context);
         assertThat(data.getNumberOfContainedSeries(), is(2));
 
@@ -90,7 +90,7 @@ public class ChartDataTest extends RobolectricBaseTestCase {
                         .withDbLogSpec("def")
                         .withSeriesType(TEMPERATURE)
                         .build(),
-                dummyData,
+                DUMMY_DATA,
                 context);
         assertThat(data.getNumberOfContainedSeries(), is(1));
     }
@@ -105,7 +105,7 @@ public class ChartDataTest extends RobolectricBaseTestCase {
                         .withSeriesType(TEMPERATURE)
                         .withShowRegression(true)
                         .build(),
-                dummyData,
+                DUMMY_DATA,
                 context);
 
         Iterator<ViewableChartSeries> iterator = data.iterator();

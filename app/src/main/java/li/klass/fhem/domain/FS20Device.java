@@ -29,6 +29,7 @@ import org.w3c.dom.NamedNodeMap;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 import li.klass.fhem.R;
 import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
@@ -60,7 +61,7 @@ public class FS20Device extends DimmableDiscreteStatesDevice<FS20Device> impleme
     private String model;
 
     public void readMODEL(String value) {
-        this.model = value.toUpperCase();
+        this.model = value.toUpperCase(Locale.getDefault());
     }
 
     @Override

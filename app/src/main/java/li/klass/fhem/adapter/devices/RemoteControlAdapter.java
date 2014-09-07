@@ -57,17 +57,18 @@ public class RemoteControlAdapter extends ToggleableAdapter<RemoteControlDevice>
             @Override
             public View createView(Context context, LayoutInflater inflater,
                                    RemoteControlDevice device, LinearLayout parent) {
-                return createRemoteControlTable(context, device, inflater);
+                return createRemoteControlTable(context, device, inflater, parent);
             }
         });
     }
 
-    private TableLayout createRemoteControlTable(Context context, RemoteControlDevice device, LayoutInflater layoutInflater) {
-        TableLayout tableLayout = (TableLayout) getInflater().inflate(R.layout.remote_control_layout, null);
+    private TableLayout createRemoteControlTable(Context context, RemoteControlDevice device,
+                                                 LayoutInflater layoutInflater, LinearLayout parent) {
+        TableLayout tableLayout = (TableLayout) getInflater().inflate(R.layout.remote_control_layout, parent, false);
         assert tableLayout != null;
 
         for (List<RemoteControlDevice.Entry> row : device.getRows()) {
-            tableLayout.addView(createTableRowForRemoteControlRow(row, context, device, layoutInflater));
+            tableLayout.addView(createTableRowForRemoteControlRow(row, context, device, layoutInflater, parent));
         }
 
         return tableLayout;
@@ -75,20 +76,22 @@ public class RemoteControlAdapter extends ToggleableAdapter<RemoteControlDevice>
 
     private TableRow createTableRowForRemoteControlRow(List<RemoteControlDevice.Entry> row,
                                                        Context context, RemoteControlDevice device,
-                                                       LayoutInflater layoutInflater) {
+                                                       LayoutInflater layoutInflater, LinearLayout parent) {
 
         TableRow tableRow = new TableRow(context);
 
         for (RemoteControlDevice.Entry entry : row) {
-            tableRow.addView(createImageViewFor(entry, context, device, layoutInflater));
+            tableRow.addView(createImageViewFor(entry, context, device, layoutInflater, parent));
         }
 
         return tableRow;
     }
 
     private View createImageViewFor(final RemoteControlDevice.Entry entry, final Context context,
-                                    final RemoteControlDevice device, LayoutInflater layoutInflater) {
-        ImageButton imageButton = (ImageButton) layoutInflater.inflate(R.layout.remote_control_view, null);
+                                    final RemoteControlDevice device, LayoutInflater layoutInflater,
+                                    LinearLayout parent) {
+        ImageButton imageButton = (ImageButton) layoutInflater.inflate(R.layout.remote_control_view,
+                parent, false);
 
 
         int px = (int) DisplayUtil.dpToPx(50);

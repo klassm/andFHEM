@@ -22,30 +22,30 @@
   ~   Boston, MA  02110-1301  USA
   -->
 
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- the theme applied to the application or activity -->
     <style name="ApplicationTheme" parent="@style/Theme.Sherlock.Light.DarkActionBar">
         <item name="actionBarTabBarStyle">@style/ApplicationActionBarTabBarStyle</item>
-        <item name="android:actionBarTabBarStyle">@style/ApplicationActionBarTabBarStyle</item>
+        <item name="android:actionBarTabBarStyle" tools:ignore="NewApi">@style/ApplicationActionBarTabBarStyle</item>
 
         <item name="actionBarTabStyle">@style/ApplicationActionBarTabStyle</item>
-        <item name="android:actionBarTabStyle">@style/ApplicationActionBarTabStyle</item>
+        <item name="android:actionBarTabStyle" tools:ignore="NewApi">@style/ApplicationActionBarTabStyle</item>
 
-        <item name="android:actionBarItemBackground">@drawable/actionbar_item_bg_selectable</item>
         <item name="actionBarItemBackground">@drawable/actionbar_item_bg_selectable</item>
+        <item name="android:actionBarItemBackground" tools:ignore="NewApi">@drawable/actionbar_item_bg_selectable</item>
 
         <item name="android:dropDownListViewStyle">@style/ApplicationDropDownListViewStyle</item>
         <item name="dropDownListViewStyle">@style/ApplicationDropDownListViewStyle</item>
 
-        <item name="android:actionDropDownStyle">@style/ApplicationActionDropDownStyle</item>
         <item name="actionDropDownStyle">@style/ApplicationActionDropDownStyle</item>
+        <item name="android:actionDropDownStyle" tools:ignore="NewApi">@style/ApplicationActionDropDownStyle</item>
 
-        <item name="android:popupMenuStyle">@style/ApplicationPopupMenu</item>
         <item name="popupMenuStyle">@style/ApplicationPopupMenu</item>
+        <item name="android:popupMenuStyle" tools:ignore="NewApi">@style/ApplicationPopupMenu</item>
 
-        <item name="android:actionBarWidgetTheme">@style/ApplicationActionBarWidgetTheme</item>
         <item name="actionBarWidgetTheme">@style/ApplicationActionBarWidgetTheme</item>
+        <item name="android:actionBarWidgetTheme" tools:ignore="NewApi">@style/ApplicationActionBarWidgetTheme</item>
 
         <item name="android:spinnerStyle">@style/spinner</item>
     </style>
@@ -72,8 +72,8 @@
     </style>
 
     <style name="ApplicationActionBarWidgetTheme" parent="@style/Theme.Sherlock">
-        <item name="android:popupMenuStyle">@style/ApplicationPopupMenu</item>
         <item name="android:dropDownListViewStyle">@style/ApplicationDropDownListViewStyle</item>
+        <item name="android:popupMenuStyle" tools:ignore="NewApi">@style/ApplicationPopupMenu</item>
     </style>
 
     <style name="Theme.Dialog.Light" parent="@android:style/Theme.Dialog">
@@ -234,7 +234,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">fill_parent</item>
         <item name="android:background">@color/navigationBarBackground</item>
-        <item name="android:textSize">20dp</item>
+        <item name="android:textSize">20sp</item>
         <item name="android:padding">6dp</item>
         <item name="android:gravity">center_horizontal</item>
     </style>

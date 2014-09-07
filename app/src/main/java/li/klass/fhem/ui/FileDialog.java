@@ -33,9 +33,9 @@ import android.util.Log;
 
 import java.io.File;
 import java.io.FilenameFilter;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Lists.newArrayList;
@@ -46,8 +46,8 @@ public class FileDialog {
     private final Context context;
     private String[] fileList;
     private File currentPath;
-    private ListenerList<FileSelectedListener> fileListenerList = new ListenerList<FileDialog.FileSelectedListener>();
-    private ListenerList<DirectorySelectedListener> dirListenerList = new ListenerList<FileDialog.DirectorySelectedListener>();
+    private ListenerList<FileSelectedListener> fileListenerList = new ListenerList<>();
+    private ListenerList<DirectorySelectedListener> dirListenerList = new ListenerList<>();
     private boolean selectDirectoryOption;
     private String fileEndsWith;
 
@@ -76,7 +76,7 @@ public class FileDialog {
                     } else if (selectDirectoryOption) {
                         return sel.isDirectory();
                     } else {
-                        boolean endsWith = fileEndsWith == null || filename.toLowerCase().endsWith(fileEndsWith);
+                        boolean endsWith = fileEndsWith == null || filename.toLowerCase(Locale.getDefault()).endsWith(fileEndsWith);
                         return endsWith || sel.isDirectory();
                     }
                 }
@@ -129,18 +129,22 @@ public class FileDialog {
         fileListenerList.add(listener);
     }
 
+    @SuppressWarnings("unused")
     public void removeFileListener(FileSelectedListener listener) {
         fileListenerList.remove(listener);
     }
 
+    @SuppressWarnings("unused")
     public void setSelectDirectoryOption(boolean selectDirectoryOption) {
         this.selectDirectoryOption = selectDirectoryOption;
     }
 
+    @SuppressWarnings("unused")
     public void addDirectoryListener(DirectorySelectedListener listener) {
         dirListenerList.add(listener);
     }
 
+    @SuppressWarnings("unused")
     public void removeDirectoryListener(DirectorySelectedListener listener) {
         dirListenerList.remove(listener);
     }
@@ -173,8 +177,9 @@ public class FileDialog {
         else return new File(currentPath, fileChosen);
     }
 
+    @SuppressWarnings("unused")
     public void setFileEndsWith(String fileEndsWith) {
-        this.fileEndsWith = fileEndsWith != null ? fileEndsWith.toLowerCase() : null;
+        this.fileEndsWith = fileEndsWith != null ? fileEndsWith.toLowerCase(Locale.getDefault()) : null;
     }
 
     public interface FileSelectedListener {
@@ -197,18 +202,13 @@ public class FileDialog {
         }
 
         public void fireEvent(FireHandler<L> fireHandler) {
-            List<L> copy = new ArrayList<L>(listenerList);
-            for (L l : copy) {
+            for (L l : newArrayList(listenerList)) {
                 fireHandler.fireEvent(l);
             }
         }
 
         public void remove(L listener) {
             listenerList.remove(listener);
-        }
-
-        public List<L> getListenerList() {
-            return listenerList;
         }
     }
 }

@@ -25,19 +25,22 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="horizontal">
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="horizontal"
+              tools:ignore="InconsistentLayout">
 
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <FrameLayout
+        android:id="@+id/navigation"
         android:layout_width="250dp"
         android:layout_height="match_parent"
-        android:id="@+id/navigation"
         android:background="@color/darkGrey">
     </FrameLayout>
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    <FrameLayout
+        android:id="@+id/content"
         android:layout_width="fill_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/content">
+        android:layout_height="match_parent">
     </FrameLayout>
 </LinearLayout>

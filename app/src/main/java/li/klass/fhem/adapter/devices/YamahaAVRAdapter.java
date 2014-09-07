@@ -91,7 +91,7 @@ public class YamahaAVRAdapter extends ToggleableAdapterWithSwitchActionRow<Yamah
 
                         context.startService(intent);
                     }
-                }.createRow(device));
+                }.createRow(device, tableLayout));
             }
         });
     }

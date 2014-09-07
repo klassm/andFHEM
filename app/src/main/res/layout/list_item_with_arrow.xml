@@ -25,25 +25,28 @@
   -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    <TextView
         android:id="@+id/text"
-        android:padding="10dp"
         style="?android:attr/spinnerItemStyle"
-        android:singleLine="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
         android:ellipsize="marquee"
-        android:layout_centerVertical="true"/>
+        android:padding="10dp"
+        android:singleLine="true"/>
 
     <ImageView
         android:id="@+id/image"
         android:layout_width="20dp"
         android:layout_height="20dp"
-        android:src="@drawable/list_item_arrow"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"/>
+        android:layout_centerVertical="true"
+        android:contentDescription="@string/right"
+        android:src="@drawable/list_item_arrow"/>
 
 </RelativeLayout>

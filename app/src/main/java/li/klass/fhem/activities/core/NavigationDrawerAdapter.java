@@ -33,12 +33,13 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import li.klass.fhem.R;
 import li.klass.fhem.fragments.FragmentType;
 import li.klass.fhem.util.Reject;
+
+import static com.google.common.collect.Lists.newArrayList;
 
 public class NavigationDrawerAdapter extends BaseAdapter {
 
@@ -54,7 +55,7 @@ public class NavigationDrawerAdapter extends BaseAdapter {
         }
     }
 
-    private List<NavigationItem> navigationItems = new ArrayList<NavigationItem>();
+    private List<NavigationItem> navigationItems = newArrayList();
 
     public NavigationDrawerAdapter(Context context) {
         this.context = context;
@@ -85,7 +86,7 @@ public class NavigationDrawerAdapter extends BaseAdapter {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         if (view == null) {
-            view = LayoutInflater.from(context).inflate(R.layout.navigation_drawer_item, null);
+            view = LayoutInflater.from(context).inflate(R.layout.navigation_drawer_item, viewGroup, false);
         }
         final NavigationItem item = navigationItems.get(i);
 

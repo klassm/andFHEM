@@ -39,6 +39,7 @@ import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -299,7 +300,7 @@ public class DeviceListParser {
         NamedNodeMap attributes = node.getAttributes();
         for (int i = 0; i < attributes.getLength(); i++) {
             Node item = attributes.item(i);
-            String name = item.getNodeName().toUpperCase().replaceAll("[-.]", "_");
+            String name = item.getNodeName().toUpperCase(Locale.getDefault()).replaceAll("[-.]", "_");
             String value = StringEscapeUtil.unescape(item.getNodeValue());
 
             device.onAttributeRead(name, value);
@@ -318,7 +319,7 @@ public class DeviceListParser {
                 continue;
             }
 
-            String keyValue = originalKey.toUpperCase();
+            String keyValue = originalKey.toUpperCase(Locale.getDefault());
             String nodeContent = StringEscapeUtil.unescape(item.getAttributes().getNamedItem("value").getNodeValue());
 
             if (nodeContent == null || nodeContent.length() == 0) {
@@ -426,7 +427,7 @@ public class DeviceListParser {
             String name = method.getName();
             if (!name.startsWith("read") && !name.startsWith("gcm")) continue;
 
-            name = name.replaceAll("read", "").replaceAll("gcm", "").toUpperCase();
+            name = name.replaceAll("read", "").replaceAll("gcm", "").toUpperCase(Locale.getDefault());
             if (updates.containsKey(name)) {
                 try {
                     Log.i(TAG, "invoke " + method.getName());

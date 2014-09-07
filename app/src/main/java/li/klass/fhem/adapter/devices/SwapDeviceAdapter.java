@@ -71,7 +71,7 @@ public class SwapDeviceAdapter extends ToggleableAdapterWithSwitchActionRow<SWAP
 
                         context.startService(intent);
                     }
-                }.createRow(context, getInflater()));
+                }.createRow(context, getInflater(), tableLayout));
             }
         });
     }

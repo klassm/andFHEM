@@ -34,7 +34,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_span="4"
-        android:stretchColumns="1">
+        android:stretchColumns="1"
+        tools:ignore="UselessParent">
 
         <TableRow tools:ignore="UselessParent">
 

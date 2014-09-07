@@ -41,6 +41,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -332,13 +333,13 @@ public class RoomListService extends AbstractService {
     }
 
     private FHEMWEBDevice findFHEMWEBDevice(RoomDeviceList allRoomDeviceList) {
-        String qualifier = applicationProperties.getStringSharedPreference(DEVICE_NAME, "andFHEM").toUpperCase();
+        String qualifier = applicationProperties.getStringSharedPreference(DEVICE_NAME, "andFHEM").toUpperCase(Locale.getDefault());
         List<Device> devicesOfType = allRoomDeviceList == null ?
                 Lists.<Device>newArrayList() : allRoomDeviceList.getDevicesOfType(DeviceType.FHEMWEB);
         if (!devicesOfType.isEmpty()) {
             FHEMWEBDevice foundDevice = null;
             for (Device device : devicesOfType) {
-                if (device.getName().toUpperCase().contains(qualifier)) {
+                if (device.getName() != null && device.getName().toUpperCase(Locale.getDefault()).contains(qualifier)) {
                     foundDevice = (FHEMWEBDevice) device;
                 }
             }

@@ -10,7 +10,7 @@
   ~ distributed under license by Red Hat Inc.
   ~
   ~ This copyrighted material is made available to anyone wishing to use, modify,
-  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLICLICENSE, as published by the Free Software Foundation.
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
   ~
   ~ This program is distributed in the hope that it will be useful,
   ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
@@ -25,8 +25,10 @@
   -->
 
 <selector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:exitFadeDuration="@android:integer/config_mediumAnimTime" >
-    <item android:state_pressed="true" android:drawable="@color/andFHEMDarkGreen" />
-    <item android:state_focused="true" android:drawable="@color/andFHEMDarkGreen" />
-    <item android:drawable="@android:color/transparent" />
+          xmlns:tools="http://schemas.android.com/tools"
+          android:exitFadeDuration="@android:integer/config_mediumAnimTime"
+          tools:ignore="UnusedAttribute">
+    <item android:drawable="@color/andFHEMDarkGreen" android:state_pressed="true"/>
+    <item android:drawable="@color/andFHEMDarkGreen" android:state_focused="true"/>
+    <item android:drawable="@android:color/transparent"/>
 </selector>

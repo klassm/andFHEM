@@ -27,6 +27,7 @@ package li.klass.fhem.service.device;
 import android.util.Log;
 
 import java.util.List;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -85,7 +86,9 @@ public class HeatingService {
         Log.e(TAG, "changing mode for device " + device.getName() +
                 " from " + device.getHeatingMode() + " to " + mode);
 
-        String command = String.format(SET_COMMAND, device.getName(), device.getHeatingModeCommandField(), mode.name().toLowerCase());
+        String command = String.format(SET_COMMAND, device.getName(),
+                device.getHeatingModeCommandField(),
+                mode.name().toLowerCase(Locale.getDefault()));
         commandExecutionService.executeSafely(command);
         device.setHeatingMode(mode);
     }

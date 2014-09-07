@@ -98,7 +98,7 @@ public class TimerDetailFragment extends BaseFragment {
             return view;
         }
 
-        view = inflater.inflate(R.layout.timer_detail, null);
+        view = inflater.inflate(R.layout.timer_detail, container, false);
 
         TextView timerName = (TextView) view.findViewById(R.id.timerName);
         timerName.setText("");
@@ -166,6 +166,8 @@ public class TimerDetailFragment extends BaseFragment {
         switchTimeChangeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (getView() == null) return;
+
                 new TimePickerWithSecondsDialog(getActivity(), hour, minute, second, new TimePickerWithSecondsDialog.TimePickerWithSecondsListener() {
                     @Override
                     public void onTimeChanged(boolean okClicked, int newHour, int newMinute, int newSecond, String formattedText) {
@@ -188,7 +190,7 @@ public class TimerDetailFragment extends BaseFragment {
         commandAppendix.setText("");
 
         Spinner timerTypeSpinner = (Spinner) view.findViewById(R.id.timerType);
-        ArrayAdapter<String> timerTypeAdapter = new ArrayAdapter<String>(getActivity(), R.layout.spinnercontent);
+        ArrayAdapter<String> timerTypeAdapter = new ArrayAdapter<>(getActivity(), R.layout.spinnercontent);
         for (AtDevice.TimerType type : AtDevice.TimerType.values()) {
             timerTypeAdapter.add(view.getContext().getString(type.getText()));
         }
@@ -207,7 +209,7 @@ public class TimerDetailFragment extends BaseFragment {
 
     private void createTargetStateSpinner(View view) {
         Spinner targetState = (Spinner) view.findViewById(R.id.targetState);
-        targetStateAdapter = new ArrayAdapter<String>(getActivity(), R.layout.spinnercontent);
+        targetStateAdapter = new ArrayAdapter<>(getActivity(), R.layout.spinnercontent);
         targetState.setAdapter(targetStateAdapter);
         view.findViewById(R.id.targetStateRow).setVisibility(View.GONE);
 
@@ -238,7 +240,7 @@ public class TimerDetailFragment extends BaseFragment {
 
     private void createRepetitionSpinner(View view) {
         Spinner repetitionSpinner = (Spinner) view.findViewById(R.id.timerRepetition);
-        ArrayAdapter<String> repetitionAdapter = new ArrayAdapter<String>(getActivity(), R.layout.spinnercontent);
+        ArrayAdapter<String> repetitionAdapter = new ArrayAdapter<>(getActivity(), R.layout.spinnercontent);
         for (AtDevice.AtRepetition atRepetition : AtDevice.AtRepetition.values()) {
             repetitionAdapter.add(view.getContext().getString(atRepetition.getText()));
         }
@@ -256,6 +258,8 @@ public class TimerDetailFragment extends BaseFragment {
     }
 
     private void save() {
+        if (getView() == null) return;
+
         if (selectedTargetDevice == null || selectedTargetState == null) {
             Intent intent = new Intent(Actions.SHOW_TOAST);
             intent.putExtra(BundleExtraKeys.STRING_ID, R.string.incompleteConfigurationError);
@@ -316,6 +320,8 @@ public class TimerDetailFragment extends BaseFragment {
     }
 
     private void updateTargetDevice(Device targetDevice) {
+        if (getView() == null) return;
+
         this.selectedTargetDevice = targetDevice;
         TextView targetDeviceView = (TextView) getView().findViewById(R.id.targetDeviceName);
         if (!updateTargetStateRowVisibility()) {
@@ -328,6 +334,8 @@ public class TimerDetailFragment extends BaseFragment {
     }
 
     private boolean updateTargetStateRowVisibility() {
+        if (getView() == null) return false;
+
         View targetDeviceRow = getView().findViewById(R.id.targetStateRow);
         if (selectedTargetDevice == null) {
             targetDeviceRow.setVisibility(View.GONE);
@@ -366,7 +374,7 @@ public class TimerDetailFragment extends BaseFragment {
     }
 
     private void selectTargetState(String targetState) {
-        if (selectedTargetDevice == null) {
+        if (selectedTargetDevice == null || getView() == null) {
             return;
         }
         this.selectedTargetState = targetState;
@@ -460,6 +468,8 @@ public class TimerDetailFragment extends BaseFragment {
     }
 
     private void setTargetStateAppendix(String stateAppendix) {
+        if (getView() == null) return;
+
         DeviceStateRequiringAdditionalInformation specialDeviceState =
                 DeviceStateRequiringAdditionalInformation.deviceStateForFHEM(selectedTargetState);
         updateStateAppendixVisibility(specialDeviceState);
@@ -481,6 +491,8 @@ public class TimerDetailFragment extends BaseFragment {
     }
 
     private void updateStateAppendixVisibility(DeviceStateRequiringAdditionalInformation specialDeviceState) {
+        if (getView() == null) return;
+
         EditText stateAppendix = (EditText) getView().findViewById(R.id.stateAppendix);
         if (specialDeviceState == null) {
             stateAppendix.setVisibility(View.GONE);

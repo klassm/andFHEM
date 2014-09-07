@@ -91,7 +91,7 @@ public class RoomListFragment extends BaseFragment implements TopLevelFragment {
         assert layout != null;
 
         LinearLayout emptyView = (LinearLayout) layout.findViewById(R.id.emptyView);
-        fillEmptyView(emptyView, getEmptyTextId());
+        fillEmptyView(emptyView, getEmptyTextId(), container);
 
         ListView roomList = (ListView) layout.findViewById(R.id.roomList);
         Reject.ifNull(roomList);
@@ -171,6 +171,8 @@ public class RoomListFragment extends BaseFragment implements TopLevelFragment {
     }
 
     private RoomListAdapter getAdapter() {
+        if (getView() == null) return null;
+
         ListView listView = (ListView) getView().findViewById(R.id.roomList);
         return (RoomListAdapter) listView.getAdapter();
     }

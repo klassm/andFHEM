@@ -29,6 +29,7 @@ import android.util.Log;
 import org.w3c.dom.NamedNodeMap;
 
 import java.util.List;
+import java.util.Locale;
 
 import li.klass.fhem.R;
 import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
@@ -128,7 +129,7 @@ public class WithingsDevice extends Device<WithingsDevice> {
 
     public void readSUBTYPE(String value) {
         try {
-            subType = SubType.valueOf(value.toUpperCase());
+            subType = SubType.valueOf(value.toUpperCase(Locale.getDefault()));
         } catch (IllegalArgumentException e) {
             Log.d(WithingsDevice.class.getName(), "cannot find enum value for " + value);
         }

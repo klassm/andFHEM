@@ -29,8 +29,8 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import li.klass.fhem.adapter.devices.core.showFieldAnnotation.AnnotatedDeviceClassField;
@@ -38,23 +38,26 @@ import li.klass.fhem.adapter.devices.core.showFieldAnnotation.AnnotatedDeviceCla
 import li.klass.fhem.adapter.devices.core.showFieldAnnotation.AnnotatedDeviceClassMethod;
 import li.klass.fhem.domain.genericview.ShowField;
 
+import static com.google.common.collect.Lists.newArrayList;
+import static com.google.common.collect.Maps.newHashMap;
+
 /**
  * <p>DeviceField ordering is somewhat special, as we do not only need to sort by name
  * but also by using the showAfter annotation value.
  * This is especially difficult to handle, as the showAfter values can directly refer to
  * other showAfter annotation values.</p>
- *
+ * <p/>
  * <p>Example: <br />
  * <code>
- *     nightTemp must be after dayTemp
- *     dayTemp must be after temp
+ * nightTemp must be after dayTemp
+ * dayTemp must be after temp
  * </code>
  * </p>
- *
+ * <p/>
  * <p>The following sort method tries to handle this mapping by recursively rewriting the
  * field names to the child's annotation value. For respecting the hierarchy level, we
  * append some underscores.</p>
- *
+ * <p/>
  * <p>After creating the mappings, we can use those to create a "normal" comparator to
  * sort the fields.</p>
  */
@@ -63,7 +66,7 @@ public class DeviceFields {
      * Generates a list of fields and methods annotated by the
      * {@link li.klass.fhem.domain.genericview.ShowField} annotation. All entries are encapsulated
      * by instances of {@link li.klass.fhem.adapter.devices.core.showFieldAnnotation.AnnotatedDeviceClassItem}.
-     *
+     * <p/>
      * The sorting depends on the value of the {@link li.klass.fhem.domain.genericview.ShowField#showAfter()}
      * method and the field / method name.
      *
@@ -86,7 +89,7 @@ public class DeviceFields {
      * @return list of annotated fields and methods.
      */
     private static List<AnnotatedDeviceClassItem> generateAnnotatedClassItemsList(Class<?> clazz) {
-        ArrayList<AnnotatedDeviceClassItem> items = new ArrayList<AnnotatedDeviceClassItem>();
+        ArrayList<AnnotatedDeviceClassItem> items = newArrayList();
         handleClassForAnnotatedClassItems(clazz, items);
 
         return items;
@@ -127,17 +130,17 @@ public class DeviceFields {
      * @param items items to sort
      */
     public static void sort(List<AnnotatedDeviceClassItem> items) {
-        Map<String, String> fieldNameMapping = new HashMap<String, String>();
+        Map<String, String> fieldNameMapping = newHashMap();
         for (AnnotatedDeviceClassItem item : items) {
             String showAfterValue = item.getShowAfterValue();
             if (showAfterValue != null) {
-                String lowerCaseName = item.getName().toLowerCase();
+                String lowerCaseName = item.getName().toLowerCase(Locale.getDefault());
                 if (ShowField.FIRST.equals(showAfterValue)) {
                     // make sure we are the first one!
                     fieldNameMapping.put(lowerCaseName, "___" + lowerCaseName);
                 } else {
                     fieldNameMapping.put(lowerCaseName,
-                            showAfterValue.toLowerCase());
+                            showAfterValue.toLowerCase(Locale.getDefault()));
                 }
             }
         }
@@ -146,8 +149,8 @@ public class DeviceFields {
         Collections.sort(items, new Comparator<AnnotatedDeviceClassItem>() {
             @Override
             public int compare(AnnotatedDeviceClassItem lhs, AnnotatedDeviceClassItem rhs) {
-                String lhsName = lhs.getName().toLowerCase();
-                String rhsName = rhs.getName().toLowerCase();
+                String lhsName = lhs.getName().toLowerCase(Locale.getDefault());
+                String rhsName = rhs.getName().toLowerCase(Locale.getDefault());
 
                 if (fieldNameMappingRecursive.containsKey(lhsName)) {
                     lhsName = fieldNameMappingRecursive.get(lhsName);
@@ -164,14 +167,14 @@ public class DeviceFields {
      * Generates a map of showAfter mappings. We also consider mappings pointing to other mappings
      * and so on. To represent the level, we add an underscore as suffix for each level to each
      * mapping value.
-     *
+     * <p/>
      * Careful: We do not consider round-trip mappings! This will result in an infinite loop!
      *
      * @param fieldNameMapping mapping map.
      * @return new mapping map considering recursive mappings.
      */
     private static Map<String, String> handleRecursiveMappings(Map<String, String> fieldNameMapping) {
-        Map<String, String> newMapping = new HashMap<String, String>();
+        Map<String, String> newMapping = newHashMap();
         for (String key : fieldNameMapping.keySet()) {
             String value = fieldNameMapping.get(key);
 

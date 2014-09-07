@@ -37,7 +37,7 @@
                   android:layout_marginRight="10dp"
                   android:layout_height="25dp"
                   android:gravity="center"
-                  android:text="targetState"
+                  android:text="@string/state"
                   android:textColor="@android:color/black"
                   android:layout_width="fill_parent"
                   android:background="@android:color/white"

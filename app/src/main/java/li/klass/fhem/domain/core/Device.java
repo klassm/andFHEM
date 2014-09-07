@@ -24,12 +24,11 @@
 
 package li.klass.fhem.domain.core;
 
+import org.jetbrains.annotations.NotNull;
+import org.joda.time.DateTime;
 import org.w3c.dom.NamedNodeMap;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -49,6 +48,7 @@ import li.klass.fhem.util.StringUtil;
 
 import static com.google.common.base.Strings.isNullOrEmpty;
 import static com.google.common.collect.Lists.newArrayList;
+import static com.google.common.collect.Maps.newHashMap;
 import static java.util.Arrays.asList;
 
 @SuppressWarnings("unused")
@@ -62,8 +62,8 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
     protected String alias;
     @ShowField(description = ResourceIdMapper.definition, showAfter = "roomConcatenated")
     protected String definition;
-    protected Map<String, String> eventMapReverse = new HashMap<String, String>();
-    protected Map<String, String> eventMap = new HashMap<String, String>();
+    protected Map<String, String> eventMapReverse = newHashMap();
+    protected Map<String, String> eventMap = newHashMap();
     protected SetList setList = new SetList();
     protected volatile List<LogDevice> logDevices = newArrayList();
     @ShowField(description = ResourceIdMapper.state, showAfter = "measured")
@@ -72,7 +72,7 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
     private String measured;
     private long lastMeasureTime = -1;
     private String group;
-    private List<DeviceChart> deviceCharts = new ArrayList<DeviceChart>();
+    private List<DeviceChart> deviceCharts = newArrayList();
     private transient AllDevicesReadCallback allDevicesReadCallback;
     private transient DeviceReadCallback deviceReadCallback;
     private String widgetName;
@@ -102,7 +102,7 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
 
     public void gcmState(String value) {
         state = value;
-        setMeasured(DateFormatUtil.toReadable(new Date()));
+        setMeasured(DateFormatUtil.toReadable(new DateTime()));
     }
 
     public void readDEF(String value) {
@@ -136,8 +136,8 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
     }
 
     private void parseEventMap(String content) {
-        eventMap = new HashMap<String, String>();
-        eventMapReverse = new HashMap<String, String>();
+        eventMap = newHashMap();
+        eventMapReverse = newHashMap();
 
         if (content.startsWith("/")) {
             parseSlashesEventMap(content);
@@ -281,7 +281,7 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
     }
 
     @Override
-    public final int compareTo(T t) {
+    public final int compareTo(@NotNull T t) {
         return getAliasOrName().compareTo(t.getAliasOrName());
     }
 

@@ -28,6 +28,8 @@ import android.content.Context;
 
 import org.w3c.dom.NamedNodeMap;
 
+import java.util.Locale;
+
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
@@ -57,13 +59,18 @@ public class FBCallmonitorDevice extends Device<FBCallmonitorDevice> {
 
     @ShowField(description = ResourceIdMapper.callMonExternalName, showInOverview = true)
     private String externalName;
+
     @ShowField(description = ResourceIdMapper.callMonExternalNumber, showInOverview = true)
     private String externalNumber;
+
     @ShowField(description = ResourceIdMapper.callMonInternalNumber)
     private String internalNumber;
+
     private String missedCallNumber;
+
     @ShowField(description = ResourceIdMapper.callMonEvent, showInOverview = true)
     private String event;
+
     @ShowField(description = ResourceIdMapper.callMonDuration, showInOverview = true)
     private String callDuration;
 
@@ -99,7 +106,7 @@ public class FBCallmonitorDevice extends Device<FBCallmonitorDevice> {
     }
 
     public void readEVENT(String value) {
-        eventInternal = Event.valueOf(value.toUpperCase());
+        eventInternal = Event.valueOf(value.toUpperCase(Locale.getDefault()));
     }
 
     public void readCALL_DURATION(String value) {

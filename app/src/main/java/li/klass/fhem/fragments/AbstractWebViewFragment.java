@@ -40,6 +40,8 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -64,7 +66,7 @@ public abstract class AbstractWebViewFragment extends BaseFragment {
         View view = super.onCreateView(inflater, container, savedInstanceState);
         if (view != null) return view;
 
-        view = inflater.inflate(R.layout.webview, null);
+        view = inflater.inflate(R.layout.webview, container, false);
         assert view != null;
 
         WebView webView = (WebView) view.findViewById(R.id.webView);
@@ -94,12 +96,12 @@ public abstract class AbstractWebViewFragment extends BaseFragment {
 
         webView.setWebViewClient(new WebViewClient() {
             @Override
-            public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+            public void onReceivedSslError(WebView view, @NotNull SslErrorHandler handler, SslError error) {
                 handler.proceed();
             }
 
             @Override
-            public void onReceivedHttpAuthRequest(WebView view, HttpAuthHandler handler, String host, String realm) {
+            public void onReceivedHttpAuthRequest(WebView view, @NotNull HttpAuthHandler handler, String host, String realm) {
                 FHEMServerSpec currentServer = connectionService.getCurrentServer();
                 String url = currentServer.getUrl();
                 try {
@@ -142,6 +144,8 @@ public abstract class AbstractWebViewFragment extends BaseFragment {
 
     @Override
     public void update(boolean doUpdate) {
+        if (getView() == null) return;
+
         WebView webView = (WebView) getView().findViewById(R.id.webView);
 
         FHEMServerSpec currentServer = connectionService.getCurrentServer();

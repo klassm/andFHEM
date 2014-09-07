@@ -25,6 +25,7 @@
 package li.klass.fhem.fragments;
 
 import android.view.LayoutInflater;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import li.klass.fhem.R;
@@ -41,9 +42,9 @@ public class FavoritesFragment extends DeviceListFragment implements TopLevelFra
     }
 
     @Override
-    protected void fillEmptyView(LinearLayout view) {
-        LayoutInflater inflater = LayoutInflater.from(getActivity());
+    protected void fillEmptyView(LinearLayout view, ViewGroup viewGroup) {
+        LayoutInflater inflater = getActivity().getLayoutInflater();
         Reject.ifNull(inflater);
-        view.addView(inflater.inflate(R.layout.favorites_empty_view, null));
+        view.addView(inflater.inflate(R.layout.favorites_empty_view, viewGroup, false));
     }
 }

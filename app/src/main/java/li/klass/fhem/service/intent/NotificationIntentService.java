@@ -34,8 +34,10 @@ import android.os.ResultReceiver;
 import android.os.SystemClock;
 import android.util.Log;
 
+import com.google.common.base.Joiner;
+
 import java.lang.reflect.Field;
-import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -52,6 +54,7 @@ import li.klass.fhem.fragments.core.DeviceDetailFragment;
 import li.klass.fhem.util.NotificationUtil;
 import li.klass.fhem.util.ReflectionUtil;
 
+import static com.google.common.collect.Maps.newHashMap;
 import static li.klass.fhem.constants.BundleExtraKeys.NOTIFICATION_UPDATES;
 
 public class NotificationIntentService extends ConvenientIntentService {
@@ -60,6 +63,7 @@ public class NotificationIntentService extends ConvenientIntentService {
     public static final int ALL_UPDATES = 1;
     public static final int STATE_UPDATES = 2;
     private static final String PREFERENCES_NAME = "deviceNotifications";
+
     @Inject
     @ForApplication
     Context applicationContext;
@@ -100,7 +104,7 @@ public class NotificationIntentService extends ConvenientIntentService {
         SharedPreferences preferences = getPreferences();
         if (preferences.contains(deviceName)) {
             int value = preferences.getInt(deviceName, 0);
-            preferences.edit().remove(deviceName).putInt(deviceNewName, value).commit();
+            preferences.edit().remove(deviceName).putInt(deviceNewName, value).apply();
         }
     }
 
@@ -118,7 +122,7 @@ public class NotificationIntentService extends ConvenientIntentService {
         if (isValueAllUpdates(value)) {
             generateNotification(device, updateMap, vibrate);
         } else if (isValueStateUpdates(value) && updateMap.containsKey("STATE")) {
-            Map<String, String> values = new HashMap<String, String>();
+            Map<String, String> values = newHashMap();
             values.put("STATE", updateMap.get("STATE"));
             generateNotification(device, values, vibrate);
         }
@@ -148,15 +152,12 @@ public class NotificationIntentService extends ConvenientIntentService {
         PendingIntent pendingIntent = PendingIntent.getActivity(this, deviceName.hashCode(), openIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
 
-        String text = "";
+        String text;
         String stateKey = getString(R.string.state);
         if (notificationMap.size() == 1 && notificationMap.containsKey(stateKey)) {
             text = notificationMap.get(stateKey);
         } else {
-            for (Map.Entry<String, String> entry : notificationMap.entrySet()) {
-                if (!text.equals("")) text += ", ";
-                text += entry.getKey() + " : " + entry.getValue();
-            }
+            text = Joiner.on(",").withKeyValueSeparator(" : ").join(notificationMap);
         }
 
         NotificationUtil.notify(this, deviceName.hashCode(), pendingIntent, deviceName, text,
@@ -164,7 +165,7 @@ public class NotificationIntentService extends ConvenientIntentService {
     }
 
     private Map<String, String> rebuildUpdateMap(Device device, Map<String, String> updateMap) {
-        Map<String, String> newMap = new HashMap<String, String>();
+        Map<String, String> newMap = newHashMap();
 
         Class<? extends Device> deviceClass = device.getClass();
         replaceFieldForClass(deviceClass, device, updateMap, newMap);
@@ -176,7 +177,7 @@ public class NotificationIntentService extends ConvenientIntentService {
     private void replaceFieldForClass(Class deviceClass, Device device, Map<String, String> updateMap,
                                       Map<String, String> newMap) {
         for (Field field : deviceClass.getDeclaredFields()) {
-            String fieldName = field.getName().toUpperCase();
+            String fieldName = field.getName().toUpperCase(Locale.getDefault());
             if (updateMap.containsKey(fieldName)) {
 
                 try {
@@ -215,5 +216,4 @@ public class NotificationIntentService extends ConvenientIntentService {
         }
         return name;
     }
-
 }

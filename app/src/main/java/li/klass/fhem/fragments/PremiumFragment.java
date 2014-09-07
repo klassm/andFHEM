@@ -52,7 +52,7 @@ public class PremiumFragment extends BaseFragment implements BillingService.Prod
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.shop_premium, null);
+        View view = inflater.inflate(R.layout.shop_premium, container, false);
         view.findViewById(R.id.shop_premium_bought).setVisibility(View.GONE);
         view.findViewById(R.id.shop_premium_buy).setVisibility(View.GONE);
 

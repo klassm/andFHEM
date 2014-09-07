@@ -25,10 +25,6 @@
 <resources>
     <string name="app_name">andFHEM</string>
 
-    <string name="roomTitlePrefix">Room</string>
-    <string name="allRoomsTitle">All Rooms</string>
-    <string name="deviceDetailPrefix">Details for</string>
-
     <string name="unsortedRoomName">unsorted</string>
 
     <string name="deviceName">Name</string>
@@ -85,7 +81,6 @@
     <string name="input">Input</string>
     <string name="mode">Mode</string>
     <string name="definition">Definition</string>
-    <string name="optional">optional</string>
     <string name="regression">regression</string>
     <string name="sum">Sum</string>
     <string name="mac">MAC address</string>
@@ -97,7 +92,6 @@
     <string name="delta">Delta</string>
     <string name="weather">Weather</string>
     <string name="currentWeather">Current Weather</string>
-    <string name="weatherForecast">Weather Forecast</string>
     <string name="dimUp">Dim +</string>
     <string name="dimDown">Dim -</string>
     <string name="actions">Actions</string>
@@ -116,8 +110,6 @@
     <string name="result">Result</string>
     <string name="set_value">Set value</string>
     <string name="set">Set</string>
-    <string name="floorplan">Floorplan</string>
-    <string name="floorplan_move_confirmation">Do you really want to move %1$s to %2$s?</string>
     <string name="android_version">Android Version</string>
     <string name="feature_requires_android_version">This feature requires a minimum Android version of %1$s.</string>
     <string name="unknown">unknown</string>
@@ -140,7 +132,6 @@
     <string name="deleteConfirmation">Are you sure you want to delete the device from FHEM?</string>
     <string name="isActive">Active?</string>
     <string name="deactivated">deactivated</string>
-    <string name="showPassword">Show password</string>
     <string name="brightness">Brightness</string>
     <string name="motion">Motion</string>
     <string name="thermostatThresholdOn">Thermostat On-Threshold</string>
@@ -221,6 +212,7 @@
     <string name="noise">Noise</string>
     <string name="location">Location</string>
     <string name="mood">Mood</string>
+    <string name="hourMinuteFormat" translatable="false">HH:MM</string>
 
     <string name="connectionManage">Manage</string>
     <string name="connectionCreate">Create a new connection</string>
@@ -248,11 +240,9 @@
     <string name="switchDevice">Switch</string>
     <string name="preferences">Preferences</string>
     <string name="update">Update</string>
-    <string name="updating">Updating ...</string>
-    <string name="loading">Loading ...</string>
-    <string name="executing">Executing ...</string>
+    <string name="loading">Loading …</string>
+    <string name="executing">Executing …</string>
     <string name="help">Help</string>
-    <string name="donate">Donate</string>
     <string name="command_execution_result">Command Result</string>
 
     <string name="context_addtofavorites">Add to favorites</string>
@@ -310,21 +300,17 @@
     <string name="prefApplicationPassword">Password</string>
     <string name="prefApplicationPasswordSummary">Password which will be asked upon application start.</string>
 
-    <string name="notNumericError">Not numeric!</string>
     <string name="error_update">Error while updating.</string>
     <string name="error_timeout">Connection timed out.</string>
-    <string name="error_command_execute">Error while executing command.</string>
     <string name="error_host_connection">Cannot connect to host.</string>
     <string name="error_device_list_parse">Could not parse xml device list.</string>
     <string name="error_authentication">Invalid username or password.</string>
-    <string name="error_graph_load">Error while loading graph data.</string>
     <string name="error_invalid_content">Server returned some invalid content. Are you sure the URL is valid?</string>
     <string name="error_internal_server_error">Internal Server Error (500). Read server logs!</string>
     <string name="error_bad_request">Bad Request (400)!</string>
     <string name="error_not_found">Not found (404)!</string>
     <string name="error_timer_name_spaces">Timer names may not contain spaces!</string>
     <string name="retry">Retry</string>
-    <string name="prefUrlBeginningError">URL has to start with http!</string>
     <string name="incompleteConfigurationError">Incomplete configuration!</string>
     <string name="invalidInput">Invalid input!</string>
 
@@ -332,12 +318,6 @@
     <string name="cancelButton">Cancel</string>
     <string name="save">Save</string>
     <string name="reset">Reset</string>
-
-    <string name="welcomeMessageTitle">Get Started</string>
-    <string name="welcomeMessage">
-        Go to preferences and insert your FHEM server details.
-        \n\nLong click on any item in the device list to add a favorite.
-    </string>
 
     <string name="temperatureGraph">Temperature Graph</string>
     <string name="temperatureHumidityGraph">Temperature &amp; Humidity Graph</string>
@@ -349,8 +329,6 @@
     <string name="windGraph">Wind Graph</string>
     <string name="actuatorGraph">Actuator Graph</string>
     <string name="pressureGraph">Pressure Graph</string>
-    <string name="rainRateGraph">Rain Rate Graph</string>
-    <string name="rainTotalGraph">Rain Total Graph</string>
     <string name="usageGraph">Usage Graph</string>
     <string name="usageGraphCumulative">Usage Graph (cumulated)</string>
     <string name="windSpeedGraph">Wind Speed Graph</string>
@@ -369,8 +347,6 @@
     <string name="yAxisPressure">pressure (hPa)</string>
     <string name="yAxisPressureNN">pressure nn (hPa)</string>
     <string name="yAxisRainRate">rain rate (mm/hr)</string>
-    <string name="yAxisRainTotal">rain toal (l/m2)</string>
-    <string name="yAxisWindSpeed">wind speed (km/h)</string>
     <string name="yAxisCurrentUsageW">current usage (W)</string>
     <string name="yAxisCurrentUsagekW">current usage (kW)</string>
     <string name="yAxisCumulativeUsageKWh">cumulative usage (kWh)</string>
@@ -394,12 +370,6 @@
     <string name="plots">Plots</string>
     <string name="switchSetOptions">Switch Set Options</string>
 
-    <string name="deviceRenameSuccess">Device was renamed.</string>
-    <string name="deviceDeleteSuccess">Device was deleted.</string>
-    <string name="deviceMoveSuccess">Device was moved.</string>
-    <string name="deviceAliasSuccess">Alias was set.</string>
-    <string name="deviceSwitchSuccess">Device %1$s was switched.</string>
-
     <string name="yes">yes</string>
     <string name="no">no</string>
 
@@ -411,14 +381,11 @@
     <string name="saturday">Saturday</string>
     <string name="sunday">Sunday</string>
 
-    <string name="manage">Manage</string>
     <string name="timetable">Timetable</string>
     <string name="from">from</string>
     <string name="until">until</string>
-    <string name="from1">(1) From</string>
-    <string name="from2">(2) From</string>
-    <string name="to1">(1) To</string>
-    <string name="to2">(2) To</string>
+    <string name="fromTimetable">(%1$d) From</string>
+    <string name="toTimetable">(%1$d) To</string>
     <string name="change">change</string>
     <string name="on">on</string>
     <string name="off">off</string>
@@ -428,11 +395,6 @@
     <string name="nightTemperature">Night Temperature</string>
     <string name="windowOpenTemp">Window Open Temp.</string>
 
-    <string name="widgetToggle">AndFHEM Toggle</string>
-    <string name="deviceNotFound">Device %1$s was not found.</string>
-
-    <string name="billing_notSupported">Cannot connect to Google Billing.</string>
-    <string name="billing_restoringTransactions">Restoring transactions &#8230;</string>
     <string name="billing_state_bought">Thanks for buying andFHEM Premium!</string>
     <string name="premium">AndFHEM Premium</string>
     <string name="premium_desc">AndFHEM Premium disables advertisements within the app and enables connection to more than one FHEM server!</string>
@@ -480,7 +442,6 @@
     <string name="target_device">Switch device</string>
     <string name="timer_repetition">Repetition</string>
     <string name="timer_targetState">Target state</string>
-    <string name="timer_commandAppendix">State appendix</string>
     <string name="timer_time">Switch time</string>
     <string name="timer_overview_create_new">Create new timer</string>
     <string name="timer_next_trigger">Next trigger</string>
@@ -571,20 +532,20 @@
     <string name="pause">pause</string>
     <string name="play">play</string>
     <string name="forward">forward</string>
-    <string name="volume_down">Vol-</string>
-    <string name="volume_up">Vol+</string>
-    <string name="left_brace"><![CDATA[&lt;]]></string>
-    <string name="right_brace"><![CDATA[&gt;]]></string>
-    <string name="slp">SLP</string>
-    <string name="m_s">M/S</string>
-    <string name="channel1">1</string>
-    <string name="channel2">2</string>
-    <string name="channel3">3</string>
-    <string name="channel4">4</string>
-    <string name="channel5">5</string>
-    <string name="channel6">6</string>
-    <string name="channel7">7</string>
-    <string name="channel8">8</string>
+    <string name="volume_down" translatable="false">Vol-</string>
+    <string name="volume_up" translatable="false">Vol+</string>
+    <string name="left_brace" translatable="false"><![CDATA[&lt;]]></string>
+    <string name="right_brace" translatable="false"><![CDATA[&gt;]]></string>
+    <string name="slp" translatable="false">SLP</string>
+    <string name="m_s" translatable="false">M/S</string>
+    <string name="channel1" translatable="false">1</string>
+    <string name="channel2" translatable="false">2</string>
+    <string name="channel3" translatable="false">3</string>
+    <string name="channel4" translatable="false">4</string>
+    <string name="channel5" translatable="false">5</string>
+    <string name="channel6" translatable="false">6</string>
+    <string name="channel7" translatable="false">7</string>
+    <string name="channel8" translatable="false">8</string>
 
     <string name="windowOpen">window open</string>
     <string name="day">day</string>
@@ -592,17 +553,26 @@
     <string name="zoom_in">Zoom in</string>
     <string name="zoom_out">Zoom out</string>
 
-    <string name="dummy_humidity">50% humidity</string>
-    <string name="dummy_temperature">20°C</string>
-    <string name="dummy_percentage">50%</string>
-    <string name="dummy_conversion">000</string>
-    <string name="dummy_text">parent</string>
-    <string name="dummy_date">01.01.2012</string>
-    <string name="dummy_time">11:11</string>
-    <string name="dummy_time_with_seconds">00:00:00</string>
-    <string name="dummy_date_with_day">Mo., xx.xx.xxxx</string>
-    <string name="dummy_temperature_range">xx °C - xx °C</string>
-    <string name="dummy_condition">sunny</string>
-    <string name="icon">icon</string>
-    <string name="fhem_command_set">set </string>
+    <string name="dummy_humidity" formatted="false" translatable="false">50% humidity</string>
+    <string name="dummy_temperature" translatable="false">20°C</string>
+    <string name="dummy_percentage" formatted="false" translatable="false">50%</string>
+    <string name="dummy_conversion" translatable="false">000</string>
+    <string name="dummy_text" translatable="false">lorem ipsum</string>
+    <string name="dummy_date" translatable="false">01.01.2012</string>
+    <string name="dummy_time" translatable="false">11:11</string>
+    <string name="dummy_time_with_seconds" translatable="false">00:00:00</string>
+    <string name="dummy_date_with_day" translatable="false">Mo., xx.xx.xxxx</string>
+    <string name="dummy_temperature_range" translatable="false">xx °C - xx °C</string>
+    <string name="dummy_condition" translatable="false">sunny</string>
+    <string name="dummy_weather_state" formatted="false" translatable="false">20°C, 40%, not raining</string>
+    <string name="dummy_serverName" translatable="false">MyServer</string>
+    <string name="dummy_serverType" translatable="false">FHEMWBE</string>
+    <string name="dummy_buttonText" translatable="false">clickMe!</string>
+    <string name="dummy_speed" translatable="false">xx (km/h)</string>
+
+    <string name="icon" translatable="false">icon</string>
+    <string name="fhem_command_set" translatable="false">set </string>
+    <string name="right" translatable="false">right</string>
+    <string name="dp_suffix" translatable="false">dp</string>
+    <string name="s_suffix" translatable="false">s</string>
 </resources>

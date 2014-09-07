@@ -26,6 +26,8 @@ package li.klass.fhem.service.device;
 
 import android.util.Log;
 
+import java.util.Locale;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -57,7 +59,7 @@ public class FHTService {
             Log.e(FHTService.class.getName(), "changing mode for device " + device.getName() +
                     " from " + device.getHeatingMode() + " to " + mode);
 
-            String command = "set " + device.getName() + " " + device.getHeatingModeCommandField() + " " + mode.name().toLowerCase();
+            String command = "set " + device.getName() + " " + device.getHeatingModeCommandField() + " " + mode.name().toLowerCase(Locale.getDefault());
 
             if (mode == FHTMode.HOLIDAY || mode == FHTMode.HOLIDAY_SHORT) {
                 command += " holiday1 " + holiday1 + " holiday2 " + holiday2 + " desired-temp " + desiredTemperature;

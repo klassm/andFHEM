@@ -10,7 +10,7 @@
   ~ distributed under license by Red Hat Inc.
   ~
   ~ This copyrighted material is made available to anyone wishing to use, modify,
-  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLICLICENSE, as published by the Free Software Foundation.
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
   ~
   ~ This program is distributed in the hope that it will be useful,
   ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
@@ -24,20 +24,28 @@
   ~   Boston, MA  02110-1301  USA
   -->
 
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:state_activated="true"
-          android:drawable="@drawable/theme_toggle_on_normal" />
-    <item android:state_checked="true" android:state_pressed="true"
-          android:drawable="@drawable/theme_toggle_on_focused" />
-    <item android:state_checked="true" android:state_focused="true"
-          android:drawable="@drawable/theme_toggle_on_focused" />
-    <item android:state_checked="true" android:state_focused="false"
-          android:drawable="@drawable/theme_toggle_on_normal" />
-    <item android:state_checked="false" android:state_pressed="true"
-          android:drawable="@drawable/theme_toggle_off_focused" />
-    <item android:state_checked="false" android:state_focused="true"
-          android:drawable="@drawable/theme_toggle_off_focused" />
-    <item android:state_checked="false" android:state_focused="false"
-          android:drawable="@drawable/theme_toggle_off_normal" />
-    <item android:drawable="@drawable/theme_toggle_off_normal" />
+<selector xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools">
+    <item android:drawable="@drawable/theme_toggle_on_normal"
+          android:state_activated="true"
+          tools:ignore="UnusedAttribute"/>
+    <item android:drawable="@drawable/theme_toggle_on_focused"
+          android:state_checked="true"
+          android:state_pressed="true"/>
+    <item android:drawable="@drawable/theme_toggle_on_focused"
+          android:state_checked="true"
+          android:state_focused="true"/>
+    <item android:drawable="@drawable/theme_toggle_on_normal"
+          android:state_checked="true"
+          android:state_focused="false"/>
+    <item android:drawable="@drawable/theme_toggle_off_focused"
+          android:state_checked="false"
+          android:state_pressed="true"/>
+    <item android:drawable="@drawable/theme_toggle_off_focused"
+          android:state_checked="false"
+          android:state_focused="true"/>
+    <item android:drawable="@drawable/theme_toggle_off_normal"
+          android:state_checked="false"
+          android:state_focused="false"/>
+    <item android:drawable="@drawable/theme_toggle_off_normal"/>
 </selector>

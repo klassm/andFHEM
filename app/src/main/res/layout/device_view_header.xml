@@ -42,6 +42,7 @@
             android:layout_height="wrap_content"
             style="@style/button"
             android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:id="@+id/retry"
             android:text="@string/retry"/>
@@ -52,8 +53,10 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@+id/retry"
+            android:layout_toStartOf="@+id/retry"
             android:textStyle="bold"
             android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:text="@string/error_authentication"
             />
     </RelativeLayout>

@@ -60,7 +60,7 @@ public class SendCommandFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
-        final View view = inflater.inflate(R.layout.command_execution, null);
+        final View view = inflater.inflate(R.layout.command_execution, container, false);
         Button sendButton = (Button) view.findViewById(R.id.send);
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,7 +73,7 @@ public class SendCommandFragment extends BaseFragment {
         });
 
         ListView recentCommandsList = (ListView) view.findViewById(R.id.command_history);
-        recentCommandsAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1);
+        recentCommandsAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1);
         recentCommandsList.setAdapter(recentCommandsAdapter);
         recentCommandsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 

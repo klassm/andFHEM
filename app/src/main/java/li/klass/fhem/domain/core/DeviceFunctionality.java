@@ -26,50 +26,30 @@ package li.klass.fhem.domain.core;
 
 import android.content.Context;
 
-import static li.klass.fhem.R.string.functionalityCallMonitor;
-import static li.klass.fhem.R.string.functionalityDimmer;
-import static li.klass.fhem.R.string.functionalityDummy;
-import static li.klass.fhem.R.string.functionalityFHEM;
-import static li.klass.fhem.R.string.functionalityFillState;
-import static li.klass.fhem.R.string.functionalityFloorplan;
-import static li.klass.fhem.R.string.functionalityHeating;
-import static li.klass.fhem.R.string.functionalityKey;
-import static li.klass.fhem.R.string.functionalityLog;
-import static li.klass.fhem.R.string.functionalityMotionDetector;
-import static li.klass.fhem.R.string.functionalityNetwork;
-import static li.klass.fhem.R.string.functionalityPresence;
-import static li.klass.fhem.R.string.functionalityRemoteControl;
-import static li.klass.fhem.R.string.functionalitySmokeDetector;
-import static li.klass.fhem.R.string.functionalitySwitch;
-import static li.klass.fhem.R.string.functionalityTemperature;
-import static li.klass.fhem.R.string.functionalityUnknown;
-import static li.klass.fhem.R.string.functionalityUsage;
-import static li.klass.fhem.R.string.functionalityWeather;
-import static li.klass.fhem.R.string.functionalityWebView;
-import static li.klass.fhem.R.string.functionalityWindow;
+import li.klass.fhem.R;
 
 public enum DeviceFunctionality {
-    SWITCH(functionalitySwitch),
-    DIMMER(functionalityDimmer),
-    WEATHER(functionalityWeather),
-    HEATING(functionalityHeating),
-    TEMPERATURE(functionalityTemperature),
-    NETWORK(functionalityNetwork),
-    USAGE(functionalityUsage),
-    WINDOW(functionalityWindow),
-    SMOKE_DETECTOR(functionalitySmokeDetector),
-    FILL_STATE(functionalityFillState),
-    MOTION_DETECTOR(functionalityMotionDetector),
-    KEY(functionalityKey),
-    DUMMY(functionalityDummy),
-    CALL_MONITOR(functionalityCallMonitor),
-    FHEM(functionalityFHEM),
-    LOG(functionalityLog),
-    FLOORPLAN(functionalityFloorplan),
-    REMOTE_CONTROL(functionalityRemoteControl),
-    WEB_LINK(functionalityWebView),
-    UNKNOWN(functionalityUnknown),
-    PRESENCE(functionalityPresence);
+    SWITCH(R.string.functionalitySwitch),
+    DIMMER(R.string.functionalityDimmer),
+    WEATHER(R.string.functionalityWeather),
+    HEATING(R.string.functionalityHeating),
+    TEMPERATURE(R.string.functionalityTemperature),
+    NETWORK(R.string.functionalityNetwork),
+    USAGE(R.string.functionalityUsage),
+    WINDOW(R.string.functionalityWindow),
+    SMOKE_DETECTOR(R.string.functionalitySmokeDetector),
+    FILL_STATE(R.string.functionalityFillState),
+    MOTION_DETECTOR(R.string.functionalityMotionDetector),
+    KEY(R.string.functionalityKey),
+    DUMMY(R.string.functionalityDummy),
+    CALL_MONITOR(R.string.functionalityCallMonitor),
+    FHEM(R.string.functionalityFHEM),
+    LOG(R.string.functionalityLog),
+    FLOORPLAN(R.string.functionalityFloorplan),
+    REMOTE_CONTROL(R.string.functionalityRemoteControl),
+    WEB_LINK(R.string.functionalityWebView),
+    UNKNOWN(R.string.functionalityUnknown),
+    PRESENCE(R.string.functionalityPresence);
 
     private final int captionId;
 

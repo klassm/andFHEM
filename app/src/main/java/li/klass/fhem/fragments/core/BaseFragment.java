@@ -170,7 +170,7 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
     }
 
     protected void showEmptyView() {
-        if (isNavigation) return;
+        if (isNavigation || getView() == null) return;
 
         View emptyView = getView().findViewById(R.id.emptyView);
         if (emptyView == null) return;
@@ -205,8 +205,8 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
         }
     }
 
-    protected void fillEmptyView(LinearLayout view, int text) {
-        View emptyView = LayoutInflater.from(getActivity()).inflate(R.layout.empty_view, null);
+    protected void fillEmptyView(LinearLayout view, int text, ViewGroup container) {
+        View emptyView = LayoutInflater.from(getActivity()).inflate(R.layout.empty_view, container, false);
         assert emptyView != null;
         TextView emptyText = (TextView) emptyView.findViewById(R.id.emptyText);
         emptyText.setText(text);

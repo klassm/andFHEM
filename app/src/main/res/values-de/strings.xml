@@ -25,10 +25,6 @@
 <resources>
     <string name="app_name">@string/app_title</string>
 
-    <string name="roomTitlePrefix">Raum</string>
-    <string name="allRoomsTitle">Alle Räume</string>
-    <string name="deviceDetailPrefix">Details für</string>
-
     <string name="unsortedRoomName">unsortiert</string>
 
     <string name="deviceName">Name</string>
@@ -85,7 +81,6 @@
     <string name="input">Eingang</string>
     <string name="mode">Modus</string>
     <string name="definition">Definition</string>
-    <string name="optional">optional</string>
     <string name="regression">Regression</string>
     <string name="sum">Summe</string>
     <string name="mac">MAC Adresse</string>
@@ -97,7 +92,6 @@
     <string name="delta">Delta</string>
     <string name="weather">Wetter</string>
     <string name="currentWeather">Aktuelles Wetter</string>
-    <string name="weatherForecast">Wetter Vorhersage</string>
     <string name="dimUp">Dim +</string>
     <string name="dimDown">Dim -</string>
     <string name="actions">Aktionen</string>
@@ -116,8 +110,6 @@
     <string name="result">Ergebnis</string>
     <string name="set_value">Wert setzen</string>
     <string name="set">Ändern</string>
-    <string name="floorplan">Grundriss</string>
-    <string name="floorplan_move_confirmation">Soll %1$s wirklich nach %2$s verschoben werden?</string>
     <string name="android_version">Android Version</string>
     <string name="feature_requires_android_version">Dieses Feature benötigt mindestens Android %1$s.</string>
     <string name="unknown">unbekannt</string>
@@ -140,7 +132,6 @@
     <string name="deleteConfirmation">Möchten Sie das Gerät wirklich aus FHEM löschen?</string>
     <string name="isActive">Aktiv?</string>
     <string name="deactivated">deaktiviert</string>
-    <string name="showPassword">Passwort anzeigen</string>
     <string name="brightness">Helligkeit</string>
     <string name="motion">Bewegung</string>
     <string name="thermostatThresholdOn">Thermostat On-Schwelle</string>
@@ -248,11 +239,9 @@
     <string name="switchDevice">Schalte</string>
     <string name="preferences">Einstellungen</string>
     <string name="update">Aktualisieren</string>
-    <string name="updating">Aktualisieren …</string>
     <string name="loading">Laden …</string>
     <string name="executing">Ausführend …</string>
     <string name="help">Hilfe</string>
-    <string name="donate">Spenden</string>
     <string name="command_execution_result">Kommando Ergebnis</string>
 
     <string name="context_addtofavorites">Zu Favoriten hinzufügen</string>
@@ -311,21 +300,17 @@
     <string name="prefApplicationPasswordSummary">Passwort, dass beim Applikationsstart abgefragt wird.</string>
 
 
-    <string name="notNumericError">Nicht numerisch!</string>
     <string name="error_update">Error während Update Vorgang.</string>
     <string name="error_timeout">Zeitüberschreitung der Anforderung.</string>
-    <string name="error_command_execute">Error während Kommando Ausführung.</string>
     <string name="error_host_connection">Keine Verbindung zum FHEM Server.</string>
     <string name="error_device_list_parse">Konnte xml Geräte Liste nicht lesen.</string>
     <string name="error_authentication">Falscher Benutzer / Passwort.</string>
-    <string name="error_graph_load">Graph Daten konnten nicht geladen werden.</string>
     <string name="error_invalid_content">Invalider Inhalt wurde geladen. Ist die URL wirklich richtig?</string>
     <string name="error_internal_server_error">Interner Server-Fehler (500). Bitte Server Logs lesen.</string>
     <string name="error_bad_request">Fehlerhafte Anfrage (400)"</string>
     <string name="error_not_found">Seite nicht gefunden (404)"</string>
     <string name="error_timer_name_spaces">Der Name von Zeitschaltuhren darf keine Leerzeichen enthalten!</string>
     <string name="retry">Wiederholen</string>
-    <string name="prefUrlBeginningError">URL muss mit http beginnen!</string>
     <string name="incompleteConfigurationError">Konfiguration ist nicht vollständig!</string>
     <string name="invalidInput">Ungültige Eingabe!</string>
 
@@ -333,12 +318,6 @@
     <string name="cancelButton">Abbrechen</string>
     <string name="save">Speichern</string>
     <string name="reset">Zurücksetzen</string>
-
-    <string name="welcomeMessageTitle">Erster Start</string>
-    <string name="welcomeMessage">
-        Einstellungsmenü aufrufen und FHEM Server Details eingeben.
-        \n\nUm ein Gerät zu den Favoriten hinzuzufügen, lange darauf klicken
-    </string>
 
     <string name="temperatureGraph">Temperatur Graph</string>
     <string name="temperatureHumidityGraph">Temperatur &amp; Luftfeuchtigkeit Graph</string>
@@ -350,8 +329,6 @@
     <string name="windGraph">Wind Graph</string>
     <string name="actuatorGraph">Regler Graph</string>
     <string name="pressureGraph">Luftdruck Graph</string>
-    <string name="rainRateGraph">Regenstärke Graph</string>
-    <string name="rainTotalGraph">Regenmenge Graph</string>
     <string name="usageGraph">Verbrauch Graph</string>
     <string name="usageGraphCumulative">Verbrauch Graph (kumuliert)</string>
     <string name="windSpeedGraph">Windgeschwindigkeit Graph</string>
@@ -370,8 +347,6 @@
     <string name="yAxisPressure">Luftdruck (hPa)</string>
     <string name="yAxisPressureNN">Luftdruck NN (hPa)</string>
     <string name="yAxisRainRate">Regenstärke (mm/hr)</string>
-    <string name="yAxisRainTotal">Regenmenge (l/m2)</string>
-    <string name="yAxisWindSpeed">Windgeschwindigkeit (km/h)</string>
     <string name="yAxisCurrentUsageW">aktueller Verbrauch (W)</string>
     <string name="yAxisCurrentUsagekW">aktueller Verbrauch (kW)</string>
     <string name="yAxisCumulativeUsageKWh">kumulativer Verbrauch (kWh)</string>
@@ -395,13 +370,6 @@
     <string name="plots">Graphen</string>
     <string name="switchSetOptions">Schaltoptionen</string>
 
-    <string name="deviceRenameSuccess">Gerät wurde umbenannt.</string>
-    <string name="deviceDeleteSuccess">Gerät wurde gelöscht.</string>
-    <string name="deviceMoveSuccess">Geräte wurde verschoben.</string>
-    <string name="deviceAliasSuccess">Alias wurde gesetzt.</string>
-    <string name="deviceSwitchSuccess">Gerät %1$s wurde geschaltet.</string>
-
-
     <string name="yes">ja</string>
     <string name="no">nein</string>
 
@@ -413,14 +381,11 @@
     <string name="saturday">Samstag</string>
     <string name="sunday">Sonntag</string>
 
-    <string name="manage">Verwaltung</string>
     <string name="timetable">Schaltplan</string>
     <string name="from">ab</string>
     <string name="until">bis</string>
-    <string name="from1">(1) Von</string>
-    <string name="from2">(2) Von</string>
-    <string name="to1">(1) Bis</string>
-    <string name="to2">(2) Bis</string>
+    <string name="fromTimetable">(%1$d) Von</string>
+    <string name="toTimetable">(%1$d) Bis</string>
     <string name="change">Ändern</string>
     <string name="on">an</string>
     <string name="off">aus</string>
@@ -430,11 +395,6 @@
     <string name="nightTemperature">Nachttemperatur</string>
     <string name="windowOpenTemp">Fenster geöffnet</string>
 
-    <string name="widgetToggle">AndFHEM Toggle</string>
-    <string name="deviceNotFound">Gerät %1$s wurde nicht gefunden.</string>
-
-    <string name="billing_notSupported">Kann keine Verbindung zu Google Billing herstellen.</string>
-    <string name="billing_restoringTransactions">Stelle Transaktionen wieder her &#8230;</string>
     <string name="billing_state_bought">Vielen Dank für den Kauf von andFHEM Premium!</string>
     <string name="premium">AndFHEM Premium</string>
     <string name="premium_desc">AndFHEM Premium beinhaltet die Abschaltung der Werbung in der Applikation und erlaubt die Verwendung von mehr als einem FHEM-Server!</string>
@@ -481,7 +441,6 @@
     <string name="target_device">Zielgerät</string>
     <string name="timer_repetition">Wiederholung</string>
     <string name="timer_targetState">Ziel-Zustand</string>
-    <string name="timer_commandAppendix">Zustand Zusatz</string>
     <string name="timer_time">Schaltzeit</string>
     <string name="timer_overview_create_new">Neue Zeitschaltuhr erstellen</string>
     <string name="timer_next_trigger">Nächster Schaltvorgang</string>

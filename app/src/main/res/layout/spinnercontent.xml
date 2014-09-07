@@ -24,11 +24,11 @@
   ~   Boston, MA  02110-1301  USA
   -->
 
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-          android:text="@+id/TextView01"
-          android:id="@+id/TextView01"
-          android:layout_width="fill_parent"
-          android:layout_height="wrap_content"
-          android:textSize="14dp"
-          android:padding="10dp"
-        />
+<TextView
+    android:id="@+id/TextView01"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp"
+    android:text="@+id/TextView01"
+    android:textSize="14sp"/>

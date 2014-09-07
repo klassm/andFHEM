@@ -25,39 +25,40 @@
   -->
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:padding="6dp">
 
         <TextView
+            android:id="@+id/dialogMessageTop"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/dialogMessageTop"
-            android:textSize="15dp"/>
+            android:textSize="15sp"/>
 
         <TextView
-            android:layout_marginTop="5dp"
+            android:id="@+id/value"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="32dp"
+            android:layout_marginTop="5dp"
             android:gravity="center_horizontal"
-            android:id="@+id/value"/>
+            android:textSize="32sp"/>
 
         <SeekBar
+            android:id="@+id/seekBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:id="@+id/seekBar"/>
+            android:layout_marginBottom="5dp"/>
 
         <TextView
+            android:id="@+id/dialogMessageBottom"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/dialogMessageBottom"
-            android:textSize="15dp"/>
+            android:textSize="15sp"/>
 
     </LinearLayout>
 </ScrollView>

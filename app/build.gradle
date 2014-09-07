@@ -26,6 +26,8 @@
 
 
 
+
+
 apply plugin: 'com.android.application'
 
 buildscript {
@@ -55,12 +57,12 @@ repositories {
 }
 
 android {
-    compileSdkVersion 19
+    compileSdkVersion 20
     buildToolsVersion '20'
 
     defaultConfig {
         minSdkVersion 9
-        targetSdkVersion 19
+        targetSdkVersion 20
     }
 
     compileOptions {
@@ -79,7 +81,14 @@ android {
 
     buildTypes {
         release {
+            runProguard true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-production.txt'
             signingConfig signingConfigs.release
+        }
+
+        debug {
+            runProguard true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-debug.txt'
         }
     }
 
@@ -110,10 +119,10 @@ android {
 
     // TODO resolve errors and remove this
     lintOptions {
-        checkReleaseBuilds false
-        // Or, if you prefer, you can continue to check for errors in release builds,
-        // but continue the build even when errors are found:
-        abortOnError false
+        disable 'IconColors'
+        disable 'IconDipSize'
+        disable 'IconLocation'
+        disable 'IconDensities'
     }
 }
 
@@ -123,8 +132,9 @@ apply plugin: 'android-unit-test'
 dependencies {
     compile fileTree(dir: './libs', include: '*.jar')
     compile 'com.actionbarsherlock:actionbarsherlock:4.4.0@aar'
-    compile 'com.android.support:support-v4:19.+'
-    compile 'com.google.android.gms:play-services:5.0.+'
+    //noinspection GradleDependency
+    compile 'com.android.support:support-v4:20.+'
+    compile 'com.google.android.gms:play-services:5.2.08'
     compile 'org.apache.commons:commons-io:1.3.2'
     compile 'commons-net:commons-net:3.3'
     compile 'com.google.code.gson:gson:2.2.4'
@@ -134,6 +144,7 @@ dependencies {
     compile 'org.apache.commons:commons-lang3:3.3.2'
     compile 'com.squareup.dagger:dagger-compiler:1.2.2'
     compile 'joda-time:joda-time:2.4'
+    compile 'com.intellij:annotations:12.+@jar'
 
     testCompile 'org.hamcrest:hamcrest-all:1.3'
     testCompile 'junit:junit:4.11'

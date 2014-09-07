@@ -25,28 +25,32 @@
   -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
 
     <ProgressBar
         android:id="@+id/updateProgress"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true" />
+        android:layout_centerVertical="true"/>
 
     <include layout="@layout/device_view_header"/>
 
-    <ListView android:layout_height="fill_parent"
-        android:layout_width="fill_parent"
+    <ListView
         android:id="@+id/roomList"
-        android:layout_below="@+id/errorHeader"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
         android:layout_above="@+id/adContainer"
-        android:listSelector="@drawable/theme_listview_item"/>
+        android:layout_below="@+id/errorHeader"
+        android:listSelector="@drawable/theme_listview_item"
+        tools:ignore="UnknownIdInLayout"/>
 
-    <LinearLayout android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
+    <LinearLayout
         android:id="@+id/adContainer"
-        android:layout_alignParentBottom="true" />
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"/>
 </RelativeLayout>

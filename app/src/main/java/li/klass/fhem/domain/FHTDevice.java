@@ -27,6 +27,7 @@ package li.klass.fhem.domain;
 import org.w3c.dom.NamedNodeMap;
 
 import java.util.List;
+import java.util.Locale;
 
 import li.klass.fhem.R;
 import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
@@ -64,7 +65,7 @@ import static li.klass.fhem.service.graph.description.SeriesType.TEMPERATURE;
 public class FHTDevice extends Device<FHTDevice> implements DesiredTempDevice,
         WindowOpenTempDevice, HeatingDevice<FHTMode, FHTConfiguration, FromToHeatingInterval, FHTDevice>, TemperatureDevice {
     private static final FHTConfiguration heatingConfiguration = new FHTConfiguration();
-    private WeekProfile<FromToHeatingInterval, FHTConfiguration, FHTDevice> weekProfile = new WeekProfile<FromToHeatingInterval, FHTConfiguration, FHTDevice>(heatingConfiguration);
+    private WeekProfile<FromToHeatingInterval, FHTConfiguration, FHTDevice> weekProfile = new WeekProfile<>(heatingConfiguration);
     public static double MAXIMUM_TEMPERATURE = 30.5;
     public static double MINIMUM_TEMPERATURE = 5.5;
     @ShowField(description = ResourceIdMapper.desiredTemperature, showAfter = "temperature")
@@ -124,7 +125,7 @@ public class FHTDevice extends Device<FHTDevice> implements DesiredTempDevice,
 
     public void readMODE(String value) {
         try {
-            this.heatingMode = FHTMode.valueOf(value.toUpperCase());
+            this.heatingMode = FHTMode.valueOf(value.toUpperCase(Locale.getDefault()));
         } catch (IllegalArgumentException e) {
             this.heatingMode = FHTMode.UNKNOWN;
         }

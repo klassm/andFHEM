@@ -50,6 +50,6 @@
         android:maxHeight="250dp"
         android:src="@drawable/favorites_add_hint"
         android:adjustViewBounds="true"
-        android:contentDescription="addFavoritesImage"
+        android:contentDescription="@string/context_addtofavorites"
         android:layout_gravity="center_horizontal" />
 </LinearLayout>

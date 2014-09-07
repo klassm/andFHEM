@@ -28,9 +28,10 @@
              android:layout_width="fill_parent"
              android:layout_height="fill_parent">
     <TableRow android:id="@+id/tableRowFrom">
-        <TextView android:text="@string/from1"
+        <TextView android:text="@string/toTimetable"
+                  android:id="@+id/fromText"
                   style="@style/deviceDetailDescription"/>
-        <TextView android:text="HH:MM"
+        <TextView android:text="@string/hourMinuteFormat"
                   android:id="@+id/from"
                   style="@style/deviceDetailContent"/>
         <Button android:layout_height="wrap_content"
@@ -40,9 +41,10 @@
                 style="@style/button"/>
     </TableRow>
     <TableRow android:id="@+id/tableRowTo">
-        <TextView android:text="@string/to1"
+        <TextView android:text="@string/fromTimetable"
+                  android:id="@+id/toText"
                   style="@style/deviceDetailDescription"/>
-        <TextView android:text="HH:MM"
+        <TextView android:text="@string/hourMinuteFormat"
                   android:id="@+id/to"
                   style="@style/deviceDetailContent"/>
         <Button android:layout_height="wrap_content"

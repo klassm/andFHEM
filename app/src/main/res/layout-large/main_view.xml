@@ -25,14 +25,16 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="horizontal">
 
-    <android.support.v4.widget.RepairedDrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <android.support.v4.widget.RepairedDrawerLayout
         android:id="@+id/drawer_layout"
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent">
 
         <include layout="@layout/content_view"/>
 
@@ -44,11 +46,15 @@
             android:background="#fff"
             android:choiceMode="singleChoice"
             android:divider="#e3e3e3"
-            android:listSelector="@drawable/theme_listview_item"
-            android:dividerHeight="0.1dp" />
+            android:dividerHeight="0.1dp"
+            android:listSelector="@drawable/theme_listview_item"/>
     </android.support.v4.widget.RepairedDrawerLayout>
 
+    <TextView
+        android:id="@+id/tabletIndicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        tools:ignore="InconsistentLayout"/>
 
-    <TextView android:id="@+id/tabletIndicator" android:visibility="gone"
-              android:layout_height="wrap_content" android:layout_width="wrap_content"/>
 </LinearLayout>

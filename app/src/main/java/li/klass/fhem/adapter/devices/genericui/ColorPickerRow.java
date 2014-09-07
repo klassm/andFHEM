@@ -24,9 +24,11 @@
 
 package li.klass.fhem.adapter.devices.genericui;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TableRow;
@@ -49,8 +51,8 @@ public class ColorPickerRow implements ColorPickerListener {
         this.alertDialogTitle = alertDialogTitle;
     }
 
-    public TableRow createRow(final Context context, final LayoutInflater inflater) {
-        View view = inflater.inflate(R.layout.device_detail_colorpicker_row, null);
+    public TableRow createRow(final Context context, final LayoutInflater inflater, ViewGroup viewGroup) {
+        View view = inflater.inflate(R.layout.device_detail_colorpicker_row, viewGroup, false);
         assert view != null;
 
         value |= 0xFF000000;
@@ -67,7 +69,7 @@ public class ColorPickerRow implements ColorPickerListener {
         setButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final View contentView = inflater.inflate(R.layout.colorpicker_dialog, null);
+                @SuppressLint("InflateParams") final View contentView = inflater.inflate(R.layout.colorpicker_dialog, null);
                 assert contentView != null;
 
                 final CheckBox sendEachChangeCheckbox =

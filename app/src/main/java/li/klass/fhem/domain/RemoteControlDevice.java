@@ -27,14 +27,16 @@ package li.klass.fhem.domain;
 import org.w3c.dom.NamedNodeMap;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.ToggleableDevice;
 import li.klass.fhem.domain.genericview.ShowField;
+
+import static com.google.common.collect.Lists.newArrayList;
 
 @SuppressWarnings("unused")
 public class RemoteControlDevice extends ToggleableDevice<RemoteControlDevice> {
@@ -65,7 +67,7 @@ public class RemoteControlDevice extends ToggleableDevice<RemoteControlDevice> {
             showAfter = "channel")
     private String currentTitle;
 
-    private List<List<Entry>> rows = new ArrayList<List<Entry>>();
+    private List<List<Entry>> rows = newArrayList();
 
     public void readRC_ICONPATH(String value) {
         iconPath = value;
@@ -93,12 +95,12 @@ public class RemoteControlDevice extends ToggleableDevice<RemoteControlDevice> {
 
         int rowNr = Integer.valueOf(key.replace("ROW", ""));
         if (rows.size() != rowNr) {
-            String errorString = String.format("invalid row '%s'! (expected size: %d, was: %d)",
+            String errorString = String.format(Locale.getDefault(), "invalid row '%s'! (expected size: %d, was: %d)",
                     key, rowNr - 1, rows.size());
             throw new IllegalArgumentException(errorString);
         }
 
-        List<Entry> row = new ArrayList<Entry>();
+        List<Entry> row = newArrayList();
         String[] rowEntries = value.split(",");
         for (String rowEntry : rowEntries) {
             String[] parts = rowEntry.split(":");

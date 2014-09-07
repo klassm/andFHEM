@@ -30,10 +30,7 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -50,11 +47,11 @@ import static com.google.common.collect.Maps.newHashMap;
 
 @Singleton
 public class GraphService {
-    public static final SimpleDateFormat GRAPH_ENTRY_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+    public static final DateTimeFormatter GRAPH_ENTRY_DATE_FORMATTER = DateTimeFormat.forPattern("yyyy-MM-dd_HH:mm:ss");
+    public static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormat.forPattern("yyyy-MM-dd_HH:mm");
 
     @Inject
     CommandExecutionService commandExecutionService;
-    public static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormat.forPattern("yyyy-MM-dd_HH:mm");
 
     /**
      * Retrieves {@link GraphEntry} objects from FHEM. When the entries are available, the given listener object will
@@ -144,13 +141,13 @@ public class GraphService {
             String entryValue = parts[1];
 
             try {
-                Date entryDate = GRAPH_ENTRY_DATE_FORMAT.parse(entryTime);
+                DateTime entryDate = GRAPH_ENTRY_DATE_FORMATTER.parseDateTime(entryTime);
                 float entryFloatValue = Float.valueOf(entryValue);
 
                 result.add(new GraphEntry(entryDate, entryFloatValue));
-            } catch (ParseException e) {
-                Log.e(GraphService.class.getName(), "cannot parse date " + entryTime, e);
             } catch (NumberFormatException e) {
+                Log.e(GraphService.class.getName(), "cannot parse date " + entryTime, e);
+            } catch (Exception e) {
                 Log.e(GraphService.class.getName(), "cannot parse number " + entryValue, e);
             }
         }

@@ -83,14 +83,14 @@ public class AvailableConnectionDataAdapter extends ListDataAdapter<FHEMServerSp
         FHEMServerSpec server = data.get(position);
 
         if (server instanceof ManagementPill) {
-            return handleManagementView();
+            return handleManagementView(parent);
         } else {
             return handleServerView(server);
         }
     }
 
-    private View handleManagementView() {
-        return inflater.inflate(R.layout.connection_manage_item, null);
+    private View handleManagementView(ViewGroup parent) {
+        return inflater.inflate(R.layout.connection_manage_item, parent, false);
     }
 
     private View handleServerView(FHEMServerSpec server) {

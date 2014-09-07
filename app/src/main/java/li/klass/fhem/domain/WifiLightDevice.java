@@ -24,6 +24,8 @@
 
 package li.klass.fhem.domain;
 
+import java.util.Locale;
+
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.ToggleableDevice;
 import li.klass.fhem.domain.core.XmllistAttribute;
@@ -39,7 +41,7 @@ public class WifiLightDevice extends ToggleableDevice<WifiLightDevice> {
 
     @XmllistAttribute("RGB")
     public void setRGB(String value) {
-        value = value.toUpperCase();
+        value = value.toUpperCase(Locale.getDefault());
         if (value.matches("[0-9A-F]{6}")) {
             rgb = NumberSystemUtil.hexToDecimal(value);
         }

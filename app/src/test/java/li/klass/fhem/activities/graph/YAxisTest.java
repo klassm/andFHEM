@@ -26,6 +26,7 @@ package li.klass.fhem.activities.graph;
 
 import android.content.Context;
 
+import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -33,7 +34,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 
 import java.util.Arrays;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -54,12 +54,15 @@ import static org.mockito.BDDMockito.given;
 
 @RunWith(AndFHEMRobolectricTestRunner.class)
 public class YAxisTest extends RobolectricBaseTestCase {
-    private static final List<GraphEntry> dummyData = Arrays.asList(new GraphEntry(new Date(1), 0.3f));
+    private static final List<GraphEntry> DUMMY_DATA = Arrays.asList(new GraphEntry(new DateTime(1), 0.3f));
+
     @Rule
     public MockitoTestRule mockitoTestRule = new MockitoTestRule();
-    private YAxis yAxis;
+
     @Mock
     private Context context;
+
+    private YAxis yAxis;
 
     @Before
     public void before() {
@@ -76,7 +79,7 @@ public class YAxisTest extends RobolectricBaseTestCase {
                         .withSeriesType(SeriesType.TEMPERATURE)
                         .withShowRegression(true)
                         .build(),
-                dummyData
+                DUMMY_DATA
         );
 
         yAxis.addChart(new ChartSeriesDescription.Builder()
@@ -86,7 +89,7 @@ public class YAxisTest extends RobolectricBaseTestCase {
                 .withSumDivisionFactor((double) 1)
                 .withShowSum(true)
                 .withSeriesType(SeriesType.HUMIDITY)
-                .build(), dummyData);
+                .build(), DUMMY_DATA);
     }
 
     @Test

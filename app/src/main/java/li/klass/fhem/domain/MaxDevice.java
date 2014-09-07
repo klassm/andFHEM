@@ -29,6 +29,7 @@ import android.util.Log;
 import org.w3c.dom.NamedNodeMap;
 
 import java.util.List;
+import java.util.Locale;
 
 import li.klass.fhem.R;
 import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
@@ -67,28 +68,39 @@ public class MaxDevice extends ToggleableDevice<MaxDevice> implements DesiredTem
         WindowOpenTempDevice, EcoTempDevice, ComfortTempDevice {
 
     public static final MAXConfiguration heatingConfiguration = new MAXConfiguration();
-    private WeekProfile<FilledTemperatureInterval, MAXConfiguration, MaxDevice> weekProfile = new WeekProfile<FilledTemperatureInterval, MAXConfiguration, MaxDevice>(heatingConfiguration);
     public static double MAXIMUM_TEMPERATURE = 30.5;
     public static double MINIMUM_TEMPERATURE = 4.5;
+
     private SubType subType;
+    private WeekProfile<FilledTemperatureInterval, MAXConfiguration, MaxDevice> weekProfile = new WeekProfile<>(heatingConfiguration);
+
     @ShowField(description = ResourceIdMapper.type)
     private String type;
+
     @ShowField(description = ResourceIdMapper.battery, showInOverview = true)
     private String battery;
+
     @ShowField(description = ResourceIdMapper.windowOpenTemp)
     private double windowOpenTemp;
+
     @ShowField(description = ResourceIdMapper.temperature, showInOverview = true)
     @WidgetTemperatureField
     private String temperature;
+
     @ShowField(description = ResourceIdMapper.actuator)
     private String actuator;
+
     @ShowField(description = ResourceIdMapper.ecoTemp)
     private double ecoTemp;
+
     @ShowField(description = ResourceIdMapper.comfortTemp)
     private double comfortTemp;
+
     private double desiredTemp;
+
     @ShowField(description = ResourceIdMapper.desiredTemperature, showInOverview = true, showAfter = "temperature")
     private String desiredTempDesc;
+
     private HeatingMode heatingMode;
 
     @Override
@@ -157,7 +169,7 @@ public class MaxDevice extends ToggleableDevice<MaxDevice> implements DesiredTem
 
     public void readMODE(String value) {
         try {
-            heatingMode = HeatingMode.valueOf(value.toUpperCase());
+            heatingMode = HeatingMode.valueOf(value.toUpperCase(Locale.getDefault()));
         } catch (Exception e) {
             Log.e(MaxDevice.class.getName(), "cannot set heating mode from value " + value, e);
         }

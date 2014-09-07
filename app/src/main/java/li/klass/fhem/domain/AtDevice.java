@@ -26,26 +26,29 @@ package li.klass.fhem.domain;
 
 import android.util.Log;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import li.klass.fhem.R;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceFunctionality;
+import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.util.StringUtil;
 
 import static li.klass.fhem.util.NumberUtil.toTwoDecimalDigits;
 
-@SuppressWarnings("unused")
 public class AtDevice extends Device<AtDevice> {
 
     public static final Pattern FHEM_PATTERN = Pattern.compile("fhem\\(\"set ([\\w\\-,]+) ([\\w%-]+)(?: ([0-9.:]+))?\"\\)(.*)");
     public static final Pattern PREFIX_PATTERN = Pattern.compile("([+*]{0,2})([0-9:]+)(.*)");
     public static final Pattern DEFAULT_PATTERN = Pattern.compile("set ([\\w-]+) ([\\w\\-,%]+)(?: ([0-9:]+))?");
-    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+    private static final DateTimeFormatter DATE_TIME_FORMAT = DateTimeFormat.forPattern("HH:mm:ss");
+
     private int hours;
     private int minutes;
     private int seconds;
@@ -94,12 +97,12 @@ public class AtDevice extends Device<AtDevice> {
             dateContent += ":00";
         }
         try {
-            Date date = dateFormat.parse(dateContent);
-            hours = date.getHours();
-            minutes = date.getMinutes();
-            seconds = date.getSeconds();
+            DateTime date = DATE_TIME_FORMAT.parseDateTime(dateContent);
+            hours = date.getHourOfDay();
+            minutes = date.getMinuteOfHour();
+            seconds = date.getSecondOfMinute();
 
-        } catch (ParseException e) {
+        } catch (Exception e) {
             Log.e(AtDevice.class.getName(), "cannot parse dateContent " + dateContent);
         }
     }
@@ -115,7 +118,7 @@ public class AtDevice extends Device<AtDevice> {
             targetState = fhemMatcher.group(2);
             targetStateAddtionalInformation = fhemMatcher.group(3);
 
-            String fhemRest = fhemMatcher.group(4).trim().toLowerCase();
+            String fhemRest = fhemMatcher.group(4).trim().toLowerCase(Locale.getDefault());
             Pattern ifPattern = Pattern.compile("if[ ]?\\(([^\\)]+)\\)");
             Matcher ifMatcher = ifPattern.matcher(fhemRest);
 
@@ -153,7 +156,8 @@ public class AtDevice extends Device<AtDevice> {
         }
     }
 
-    public void readSTATE(String value) {
+    @XmllistAttribute("STATE")
+    public void setState(String value) {
         nextTrigger = value.replaceAll("Next: ", "");
     }
 

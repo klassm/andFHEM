@@ -67,7 +67,7 @@ public class WifiLightDeviceAdapter extends ToggleableAdapterWithSwitchActionRow
 
                         context.startService(intent);
                     }
-                }.createRow(context, getInflater()));
+                }.createRow(context, getInflater(), tableLayout));
             }
         });
     }

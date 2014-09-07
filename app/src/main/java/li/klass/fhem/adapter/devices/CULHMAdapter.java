@@ -72,7 +72,7 @@ public class CULHMAdapter extends DimmableAdapter<CULHMDevice> {
                             public View getContentView() {
                                 return new LitreContentView(context, device.getFillContentPercentageRaw());
                             }
-                        }.createRow(getInflater()));
+                        }.createRow(getInflater(), tableLayout));
                         break;
                 }
             }

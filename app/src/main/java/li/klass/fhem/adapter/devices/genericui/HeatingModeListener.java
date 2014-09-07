@@ -62,7 +62,7 @@ public class HeatingModeListener<D extends Device<D> & HeatingDevice<M, ?, ?, ?>
 
                 changeMode(mode, device, context);
             }
-        }.createRow(device));
+        }.createRow(device, tableLayout));
     }
 
     protected boolean doAddField(D device) {

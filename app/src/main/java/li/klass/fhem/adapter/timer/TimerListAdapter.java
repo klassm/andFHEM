@@ -46,14 +46,14 @@ public class TimerListAdapter extends ListDataAdapter<AtDevice> {
     public View getView(int position, View convertView, ViewGroup parent) {
         AtDevice device = data.get(position);
 
-        LinearLayout layout;
+        LinearLayout view;
         if (convertView != null && convertView instanceof LinearLayout) {
-            layout = (LinearLayout) convertView;
+            view = (LinearLayout) convertView;
         } else {
-            layout = (LinearLayout) inflater.inflate(resource, null);
+            view = (LinearLayout) inflater.inflate(resource, null);
         }
 
-        TextView timerNameView = (TextView) layout.findViewById(R.id.timerName);
+        TextView timerNameView = (TextView) view.findViewById(R.id.timerName);
         String timerName = device.getAliasOrName();
         if (!device.isActive()) {
             timerName += " (" + context.getString(R.string.deactivated) + ")";
@@ -72,18 +72,18 @@ public class TimerListAdapter extends ListDataAdapter<AtDevice> {
         }
 
         String content = String.format(formatString, repetition, interval, date, targetDevice, targetState);
-        TextView timerContent = (TextView) layout.findViewById(R.id.timerContent);
+        TextView timerContent = (TextView) view.findViewById(R.id.timerContent);
         timerContent.setText(content);
 
-        TextView timerNextTrigger = (TextView) layout.findViewById(R.id.timerNextTrigger);
+        TextView timerNextTrigger = (TextView) view.findViewById(R.id.timerNextTrigger);
         timerNextTrigger.setText(context.getString(R.string.timer_next_trigger) + ": " + device.getNextTrigger());
 
         int color = device.isActive() ? R.color.activeGreen : android.R.color.white;
         int colorResource = context.getResources().getColor(color);
-        layout.findViewById(R.id.item).setBackgroundColor(colorResource);
+        view.setBackgroundColor(colorResource);
 
-        layout.setTag(device);
+        view.setTag(device);
 
-        return layout;
+        return view;
     }
 }

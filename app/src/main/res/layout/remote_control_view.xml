@@ -29,4 +29,5 @@
     android:layout_height="20dp"
     android:padding="3dp"
     android:background="@android:color/transparent"
-    android:scaleType="centerCrop"/>
+    android:scaleType="centerCrop"
+    android:contentDescription="@string/functionalityRemoteControl"/>

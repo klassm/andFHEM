@@ -25,20 +25,25 @@
   -->
 
 <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
-    <TextView style="@style/deviceDetailDescription"
+          android:layout_width="fill_parent"
+          android:layout_height="fill_parent">
+
+    <TextView
         android:id="@+id/description"
+        style="@style/deviceDetailDescription"
         android:text=""/>
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="right">
-        <Button android:id="@+id/button"
+        android:gravity="end">
+
+        <Button
+            android:id="@+id/button"
+            style="@style/button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/button"
-            android:text="clickMe!"/>
+            android:text="@string/dummy_buttonText"/>
     </LinearLayout>
 
 </TableRow>

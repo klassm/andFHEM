@@ -69,13 +69,13 @@ public class WeatherAdapter extends GenericDeviceAdapter<WeatherDevice> {
 
     @Override
     protected void fillOtherStuffDetailLayout(Context context, LinearLayout layout, WeatherDevice device, LayoutInflater inflater) {
-        LinearLayout currentWeatherHolder = (LinearLayout) inflater.inflate(R.layout.device_detail_other_layout, null);
+        LinearLayout currentWeatherHolder = (LinearLayout) inflater.inflate(R.layout.device_detail_other_layout, layout, false);
         setTextView(currentWeatherHolder, R.id.caption, R.string.currentWeather);
-        RelativeLayout currentWeatherContent = createCurrentWeatherContent(device, inflater);
+        RelativeLayout currentWeatherContent = createCurrentWeatherContent(device, inflater, layout);
         currentWeatherHolder.addView(currentWeatherContent);
         layout.addView(currentWeatherHolder);
 
-        LinearLayout forecastHolder = (LinearLayout) inflater.inflate(R.layout.device_detail_other_layout, null);
+        LinearLayout forecastHolder = (LinearLayout) inflater.inflate(R.layout.device_detail_other_layout, layout, false);
         setTextView(forecastHolder, R.id.caption, R.string.forecast);
         layout.addView(forecastHolder);
 
@@ -84,8 +84,8 @@ public class WeatherAdapter extends GenericDeviceAdapter<WeatherDevice> {
         ListViewUtil.setHeightBasedOnChildren(weatherForecastList);
     }
 
-    private RelativeLayout createCurrentWeatherContent(WeatherDevice device, LayoutInflater inflater) {
-        RelativeLayout currentWeather = (RelativeLayout) inflater.inflate(R.layout.weather_current, null);
+    private RelativeLayout createCurrentWeatherContent(WeatherDevice device, LayoutInflater inflater, LinearLayout layout) {
+        RelativeLayout currentWeather = (RelativeLayout) inflater.inflate(R.layout.weather_current, layout, false);
 
         setTextViewOrHideTableRow(currentWeather, R.id.tableRowTemperature, R.id.temperature, device.getTemperature());
         setTextViewOrHideTableRow(currentWeather, R.id.tableRowWind, R.id.wind, device.getWind());

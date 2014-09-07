@@ -145,7 +145,7 @@ public class DeviceGridAdapter<T extends Device<T>> extends GridViewWithSections
 
     @Override
     protected View getParentView(String parent, int parentOffset, View view, ViewGroup viewGroup) {
-        view = layoutInflater.inflate(R.layout.room_detail_parent, null);
+        view = layoutInflater.inflate(R.layout.room_detail_parent, viewGroup, false);
         assert view != null;
 
         TextView textView = (TextView) view.findViewById(R.id.deviceType);

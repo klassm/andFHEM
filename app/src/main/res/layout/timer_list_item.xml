@@ -4,13 +4,13 @@
   ~ AndFHEM - Open Source Android application to control a FHEM home automation
   ~ server.
   ~
-  ~ Copyright (c) 2012, Matthias Klass or third-party contributors as
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
   ~ indicated by the @author tags or express copyright attribution
   ~ statements applied by the authors.  All third-party contributions are
   ~ distributed under license by Red Hat Inc.
   ~
   ~ This copyrighted material is made available to anyone wishing to use, modify,
-  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLICLICENSE, as published by the Free Software Foundation.
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
   ~
   ~ This program is distributed in the hope that it will be useful,
   ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
@@ -21,29 +21,38 @@
   ~ along with this distribution; if not, write to:
   ~   Free Software Foundation, Inc.
   ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="fill_parent"
-              android:layout_height="wrap_content"
-              android:orientation="vertical"
-              android:paddingTop="3dp"
-              android:paddingBottom="3dp"
-              android:focusable="false"
-              android:id="@+id/item">
-    <TextView style="@style/deviceOverviewCaption"
-              android:text="timerName"
-              android:id="@+id/timerName"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"/>
-    <TextView android:text="timerContent"
-              android:id="@+id/timerContent"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:layout_marginLeft="5dp"/>
-    <TextView android:text="00:00:00"
-              android:id="@+id/timerNextTrigger"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:layout_marginLeft="5dp"/>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:focusable="false"
+    android:orientation="vertical"
+    android:paddingBottom="3dp"
+    android:paddingTop="3dp">
+
+    <TextView
+        android:id="@+id/timerName"
+        style="@style/deviceOverviewCaption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/dummy_text"/>
+
+    <TextView
+        android:id="@+id/timerContent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginStart="5dp"
+        android:text="@string/dummy_text"/>
+
+    <TextView
+        android:id="@+id/timerNextTrigger"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginStart="5dp"
+        android:text="@string/dummy_time_with_seconds"/>
 </LinearLayout>

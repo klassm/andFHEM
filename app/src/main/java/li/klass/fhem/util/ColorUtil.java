@@ -24,6 +24,8 @@
 
 package li.klass.fhem.util;
 
+import java.util.Locale;
+
 import static java.lang.Math.pow;
 
 public class ColorUtil {
@@ -112,7 +114,7 @@ public class ColorUtil {
     }
 
     public static String toHexString(int color, int digits) {
-        String asHex = Integer.toHexString(color).toUpperCase();
+        String asHex = Integer.toHexString(color).toUpperCase(Locale.getDefault());
         return "0x" + StringUtil.prefixPad(asHex, "0", digits);
     }
 

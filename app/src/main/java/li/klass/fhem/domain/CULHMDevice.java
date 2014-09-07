@@ -30,6 +30,7 @@ import android.util.Log;
 import org.w3c.dom.NamedNodeMap;
 
 import java.util.List;
+import java.util.Locale;
 
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
@@ -99,55 +100,79 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
     private String model;
     private String level;
     private SubType subType = null;
+    private double fillContentLitresRaw;
+    private double fillContentPercentageRaw;
+
     @ShowField(description = ResourceIdMapper.temperature, showInOverview = true)
     @WidgetTemperatureField
     private String measuredTemp;
+
     @ShowField(description = ResourceIdMapper.actuator, showInOverview = true)
     private String actuator;
+
     @ShowField(description = ResourceIdMapper.humidity, showInOverview = true)
     private String humidity;
+
     @ShowField(description = ResourceIdMapper.model, showAfter = "definition")
     private String subTypeRaw;
+
     @ShowField(description = ResourceIdMapper.commandAccepted)
     private String commandAccepted;
+
     @ShowField(description = ResourceIdMapper.rawValue)
     private String rawValue;
-    private double fillContentLitresRaw;
+
     @ShowField(description = ResourceIdMapper.maximumContent)
     private Integer fillContentLitresMaximum;
-    private double fillContentPercentageRaw;
+
     @ShowField(description = ResourceIdMapper.fillPercentage, showInOverview = true, showInDetail = false)
     private String fillContentPercentage;
+
     @ShowField(description = ResourceIdMapper.conversion)
     private String rawToReadable;
+
     @ShowField(description = ResourceIdMapper.battery)
     private String battery;
+
     @ShowField(description = ResourceIdMapper.brightness)
     private String brightness;
+
     @ShowField(description = ResourceIdMapper.motion)
     private String motion;
+
     @ShowField(description = ResourceIdMapper.windSpeed)
     private String windSpeed;
+
     @ShowField(description = ResourceIdMapper.windDirection)
     private String windDirection;
+
     @ShowField(description = ResourceIdMapper.sunshine)
     private String sunshine;
+
     @ShowField(description = ResourceIdMapper.isRaining)
     private String isRaining;
+
     @ShowField(description = ResourceIdMapper.rain)
     private String rain;
+
     @ShowField(description = ResourceIdMapper.currentUsage)
     private String currentUsage;
+
     @ShowField(description = ResourceIdMapper.currentVoltage)
     private String currentVoltage;
+
     @ShowField(description = ResourceIdMapper.cumulativeUsage, showInOverview = true)
     private String cumulativeUsage;
+
     @ShowField(description = ResourceIdMapper.brightness)
     private String luminosity;
+
     @ShowField(description = ResourceIdMapper.batteryVoltage)
     private String batteryVoltage;
+
     @ShowField(description = ResourceIdMapper.pressure)
     private String pressure;
+
     @ShowField(description = ResourceIdMapper.pressureNN)
     private String pressureNN;
 
@@ -230,7 +255,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
     @XmllistAttribute("CONTROLMODE")
     public void setControlMode(String value) {
         try {
-            heatingMode = HeatingMode.valueOf(value.toUpperCase());
+            heatingMode = HeatingMode.valueOf(value.toUpperCase(Locale.getDefault()));
             subType = HEATING;
         } catch (Exception e) {
             Log.e(CULHMDevice.class.getName(), "cannot set heating mode from value " + value, e);

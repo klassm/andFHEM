@@ -24,6 +24,7 @@
 
 package li.klass.fhem.fragments;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -46,7 +47,6 @@ import android.widget.TextView;
 
 import java.io.File;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -60,6 +60,7 @@ import li.klass.fhem.fragments.core.BaseFragment;
 import li.klass.fhem.ui.FileDialog;
 import li.klass.fhem.util.DialogUtil;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION;
 import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_CLIENT_CERTIFICATE_PASSWORD;
 import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_CLIENT_CERTIFICATE_PATH;
@@ -93,7 +94,7 @@ public class ConnectionDetailFragment extends BaseFragment {
             return view;
         }
 
-        view = inflater.inflate(R.layout.connection_detail, null);
+        view = inflater.inflate(R.layout.connection_detail, container, false);
         assert (view != null);
 
         Spinner connectionTypeSpinner = (Spinner) view.findViewById(R.id.connectionType);
@@ -103,7 +104,7 @@ public class ConnectionDetailFragment extends BaseFragment {
 
         final List<ServerType> connectionTypes = getServerTypes();
 
-        ArrayAdapter<ServerType> adapter = new ArrayAdapter<ServerType>(getActivity(),
+        ArrayAdapter<ServerType> adapter = new ArrayAdapter<>(getActivity(),
                 android.R.layout.simple_spinner_dropdown_item, connectionTypes);
         connectionTypeSpinner.setAdapter(adapter);
 
@@ -130,15 +131,18 @@ public class ConnectionDetailFragment extends BaseFragment {
     }
 
     private List<ServerType> getServerTypes() {
-        final List<ServerType> connectionTypes = new ArrayList<ServerType>();
+        final List<ServerType> connectionTypes = newArrayList();
         connectionTypes.addAll(Arrays.asList(ServerType.values()));
         connectionTypes.remove(ServerType.DUMMY);
         return connectionTypes;
     }
 
+    @SuppressLint("InflateParams")
     private void handleConnectionTypeChange(ServerType connectionType) {
+        if (getView() == null) return;
+
         this.connectionType = connectionType;
-        LayoutInflater inflater = LayoutInflater.from(getActivity());
+        LayoutInflater inflater = getActivity().getLayoutInflater();
 
         View view;
         if (connectionType == ServerType.FHEMWEB) {
@@ -169,8 +173,7 @@ public class ConnectionDetailFragment extends BaseFragment {
             });
         }
 
-        View layout = getView();
-        LinearLayout connectionPreferences = (LinearLayout) layout.findViewById(R.id.connectionPreferences);
+        LinearLayout connectionPreferences = (LinearLayout) getView().findViewById(R.id.connectionPreferences);
         connectionPreferences.removeAllViews();
         connectionPreferences.addView(view);
 
@@ -228,6 +231,8 @@ public class ConnectionDetailFragment extends BaseFragment {
         setClientCertificate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (getView() == null) return;
+
                 final TextView clientCertificatePath = (TextView) getView().findViewById(R.id.clientCertificatePath);
                 File initialPath = new File(clientCertificatePath.getText().toString());
 
@@ -246,6 +251,8 @@ public class ConnectionDetailFragment extends BaseFragment {
         setServerCertificate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (getView() == null) return;
+
                 final TextView serverCertificatePath = (TextView) getView().findViewById(R.id.serverCertificatePath);
                 File initialPath = new File(serverCertificatePath.getText().toString());
 
@@ -300,6 +307,8 @@ public class ConnectionDetailFragment extends BaseFragment {
     }
 
     private boolean handleFHEMWEBSave(Intent intent) {
+        if (getView() == null) return false;
+
         String url = getTextViewContent(R.id.url);
         if (enforceNotEmpty(R.string.connectionURL, url)) return false;
         if (enforceUrlStartsWithHttp(url)) return false;

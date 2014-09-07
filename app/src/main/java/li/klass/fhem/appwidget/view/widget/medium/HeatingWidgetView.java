@@ -28,6 +28,8 @@ import android.content.Context;
 import android.view.View;
 import android.widget.RemoteViews;
 
+import java.util.Locale;
+
 import li.klass.fhem.R;
 import li.klass.fhem.appwidget.WidgetConfiguration;
 import li.klass.fhem.appwidget.view.widget.base.DeviceAppWidgetView;
@@ -49,7 +51,7 @@ public class HeatingWidgetView extends DeviceAppWidgetView {
     protected void fillWidgetView(Context context, RemoteViews view, Device<?> device, WidgetConfiguration widgetConfiguration) {
         FHTDevice fhtDevice = (FHTDevice) device;
 
-        if (fhtDevice.getWarnings() != null && fhtDevice.getWarnings().toLowerCase().contains("open")) {
+        if (fhtDevice.getWarnings() != null && fhtDevice.getWarnings().toLowerCase(Locale.getDefault()).contains("open")) {
             view.setViewVisibility(R.id.windowOpen, View.VISIBLE);
         } else {
             view.setViewVisibility(R.id.windowOpen, View.GONE);

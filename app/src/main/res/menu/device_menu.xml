@@ -24,19 +24,48 @@
   ~   Boston, MA  02110-1301  USA
   -->
 
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/menu_favorites_add" android:showAsAction="ifRoom"
-        android:title="@string/context_addtofavorites" android:icon="@drawable/ic_menu_favorites_unselected"/>
-    <item android:id="@+id/menu_favorites_remove" android:showAsAction="ifRoom"
-        android:title="@string/context_removefavorite" android:icon="@drawable/ic_menu_favorites_selected"/>
-    <item android:id="@+id/menu_rename" android:showAsAction="ifRoom"
-        android:title="@string/context_rename" android:icon="@drawable/ic_menu_rename"/>
-    <item android:id="@+id/menu_delete" android:showAsAction="ifRoom"
-        android:title="@string/context_delete" android:icon="@android:drawable/ic_menu_delete"/>
-    <item android:id="@+id/menu_room" android:showAsAction="ifRoom"
-        android:title="@string/context_move" android:icon="@drawable/ic_menu_room"/>
-    <item android:id="@+id/menu_alias" android:showAsAction="ifRoom"
-        android:title="@string/context_alias" android:icon="@drawable/ic_menu_alias"/>
-    <item android:id="@+id/menu_notification" android:showAsAction="ifRoom"
-        android:title="@string/context_notification" android:icon="@drawable/ic_menu_notification"/>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:tools="http://schemas.android.com/tools">
+    <item
+        android:id="@+id/menu_favorites_add"
+        android:icon="@drawable/ic_menu_favorites_unselected"
+        android:showAsAction="ifRoom"
+        android:title="@string/context_addtofavorites"
+        tools:ignore="UnusedAttribute"/>
+    <item
+        android:id="@+id/menu_favorites_remove"
+        android:icon="@drawable/ic_menu_favorites_selected"
+        android:showAsAction="ifRoom"
+        android:title="@string/context_removefavorite"
+        tools:ignore="UnusedAttribute"/>
+    <item
+        android:id="@+id/menu_rename"
+        android:icon="@drawable/ic_menu_rename"
+        android:showAsAction="ifRoom"
+        android:title="@string/context_rename"
+        tools:ignore="UnusedAttribute"/>
+    <item
+        android:id="@+id/menu_delete"
+        android:icon="@android:drawable/ic_menu_delete"
+        android:showAsAction="ifRoom"
+        android:title="@string/context_delete"
+        tools:ignore="UnusedAttribute"/>
+    <item
+        android:id="@+id/menu_room"
+        android:icon="@drawable/ic_menu_room"
+        android:showAsAction="ifRoom"
+        android:title="@string/context_move"
+        tools:ignore="UnusedAttribute"/>
+    <item
+        android:id="@+id/menu_alias"
+        android:icon="@drawable/ic_menu_alias"
+        android:showAsAction="ifRoom"
+        android:title="@string/context_alias"
+        tools:ignore="UnusedAttribute"/>
+    <item
+        android:id="@+id/menu_notification"
+        android:icon="@drawable/ic_menu_notification"
+        android:showAsAction="ifRoom"
+        android:title="@string/context_notification"
+        tools:ignore="UnusedAttribute"/>
 </menu>

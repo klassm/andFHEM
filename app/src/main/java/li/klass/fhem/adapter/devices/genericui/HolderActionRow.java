@@ -45,10 +45,6 @@ public abstract class HolderActionRow<D extends Device<D>, I> {
     public static final int LAYOUT_DETAIL = R.layout.device_detail_holder_row;
     public static final int LAYOUT_OVERVIEW = R.layout.device_overview_holder_row;
 
-    public HolderActionRow(int layout) {
-        this(null, layout);
-    }
-
     public HolderActionRow(String description, int layout) {
         this.description = description;
         this.layout = layout;
@@ -66,7 +62,7 @@ public abstract class HolderActionRow<D extends Device<D>, I> {
         }
 
         for (I item : getItems(device)) {
-            View view = viewFor(item, device, inflater, context);
+            View view = viewFor(item, device, inflater, context, viewGroup);
             if (view != null) {
                 holder.addView(view);
             }
@@ -76,5 +72,5 @@ public abstract class HolderActionRow<D extends Device<D>, I> {
     }
 
     public abstract List<I> getItems(D device);
-    public abstract View viewFor(I item, D device, LayoutInflater inflater, Context context);
+    public abstract View viewFor(I item, D device, LayoutInflater inflater, Context context, ViewGroup viewGroup);
 }

@@ -26,14 +26,14 @@ package li.klass.fhem.domain;
 
 import android.util.Log;
 
+import org.jetbrains.annotations.NotNull;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.w3c.dom.NamedNodeMap;
 
 import java.io.Serializable;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
@@ -63,17 +63,24 @@ import static li.klass.fhem.service.graph.description.SeriesType.TEMPERATURE;
 @SuppressWarnings("unused")
 public class WeatherDevice extends Device<WeatherDevice> {
     public static final String IMAGE_URL_PREFIX = "http://andfhem.klass.li/images/weatherIcons/";
-    private static final SimpleDateFormat parseDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private static final DateTimeFormatter PARSE_DATE_FORMAT = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+
     @WidgetMediumLine3
     private String condition;
+
     @WidgetTemperatureAdditionalField
     @WidgetMediumLine2
+
     private String humidity;
+
     private String icon;
+
     @WidgetTemperatureField
     @WidgetMediumLine1
     private String temperature;
+
     private String wind;
+
     private Map<Integer, WeatherDeviceForecast> forecastMap = newHashMap();
 
     @Override
@@ -92,12 +99,9 @@ public class WeatherDevice extends Device<WeatherDevice> {
             if (((Integer) 1).equals(prefix)) return;
 
             if (!forecastMap.containsKey(prefix)) {
-                Calendar forecastDate = Calendar.getInstance();
-
-                Date measuredDate = parseDateFormat.parse(measured);
-                forecastDate.setTime(measuredDate);
-                forecastDate.add(Calendar.DAY_OF_YEAR, prefix - 1);
-                String forecastTimeString = WeatherDeviceForecast.forecastDateFormat.format(forecastDate.getTime());
+                DateTime measuredDate = PARSE_DATE_FORMAT.parseDateTime(measured);
+                DateTime forecastDate = measuredDate.plusDays(prefix - 1);
+                String forecastTimeString = WeatherDeviceForecast.FORECAST_DATE_FORMAT.print(forecastDate);
 
                 forecastMap.put(prefix, new WeatherDeviceForecast(forecastTimeString));
             }
@@ -115,7 +119,7 @@ public class WeatherDevice extends Device<WeatherDevice> {
             } else if (name.equalsIgnoreCase("ICON")) {
                 forecast.icon = nodeContent;
             }
-        } catch (ParseException e) {
+        } catch (Exception e) {
             Log.e(WeatherDevice.class.getName(), "cannot parse forecast", e);
         }
     }
@@ -223,7 +227,7 @@ public class WeatherDevice extends Device<WeatherDevice> {
     }
 
     public static class WeatherDeviceForecast implements Comparable<WeatherDeviceForecast>, Serializable {
-        private static final SimpleDateFormat forecastDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        private static final DateTimeFormatter FORECAST_DATE_FORMAT = DateTimeFormat.forPattern("yyyy-MM-dd");
 
         private String date;
 
@@ -238,7 +242,7 @@ public class WeatherDevice extends Device<WeatherDevice> {
         }
 
         @Override
-        public int compareTo(WeatherDeviceForecast weatherDeviceForecast) {
+        public int compareTo(@NotNull WeatherDeviceForecast weatherDeviceForecast) {
             return date.compareTo(weatherDeviceForecast.date);
         }
 

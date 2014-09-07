@@ -1,3 +1,27 @@
+/*
+ * AndFHEM - Open Source Android application to control a FHEM home automation
+ * server.
+ *
+ * Copyright (c) 2011, Matthias Klass or third-party contributors as
+ * indicated by the @author tags or express copyright attribution
+ * statements applied by the authors.  All third-party contributions are
+ * distributed under license by Red Hat Inc.
+ *
+ * This copyrighted material is made available to anyone wishing to use, modify,
+ * copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+ * for more details.
+ *
+ * You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+ * along with this distribution; if not, write to:
+ *   Free Software Foundation, Inc.
+ *   51 Franklin Street, Fifth Floor
+ *   Boston, MA  02110-1301  USA
+ */
+
 package com.ensequence.socialmediatestharness.ui;
 
 
@@ -8,8 +32,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import static com.google.common.collect.Lists.newArrayList;
 
 /**
  * Taken from https://gist.github.com/swhite24/3251027/raw/3b059c4dff622456ff51c3e87d05ee2c0967ab20/FlowLayout.java.
@@ -17,30 +42,18 @@ import java.util.List;
  */
 public class FlowLayout extends ViewGroup {
 
-    private final List<Integer> mLineHeights = new ArrayList<Integer>();
-    private final List<Integer> mLineWidths = new ArrayList<Integer>();
+    private final List<Integer> mLineHeights = newArrayList();
+    private final List<Integer> mLineWidths = newArrayList();
 
-    public static class LayoutParams extends LinearLayout.LayoutParams {
+    private static final int HORIZONTAL_SPACING = 2;
+    private static final int VERTICAL_SPACING = 2;
 
-        public final int horizontalSpacing;
-        public final int verticalSpacing;
-
-        /**
-         * @param horizontalSpacing Pixels between items, horizontally
-         * @param verticalSpacing   Pixels between items, vertically
-         */
-        public LayoutParams(final int horizontalSpacing,
-                            final int verticalSpacing) {
-            super(0, 0);
-            this.horizontalSpacing = horizontalSpacing;
-            this.verticalSpacing = verticalSpacing;
-        }
-    }
-
+    @SuppressWarnings("unused")
     public FlowLayout(final Context context) {
         super(context);
     }
 
+    @SuppressWarnings("unused")
     public FlowLayout(final Context context, final AttributeSet attrs) {
         super(context, attrs);
     }
@@ -80,8 +93,6 @@ public class FlowLayout extends ViewGroup {
                 continue;
             }
 
-            final LayoutParams childLayoutParams = (LayoutParams) child.getLayoutParams();
-
             child.measure(MeasureSpec.makeMeasureSpec(maxWidth,
                     MeasureSpec.UNSPECIFIED), childHeightMeasureSpec);
 
@@ -89,7 +100,7 @@ public class FlowLayout extends ViewGroup {
 
             currentHeight = Math.max(
                     currentLineHeight,
-                    child.getMeasuredHeight() + childLayoutParams.verticalSpacing
+                    child.getMeasuredHeight() + VERTICAL_SPACING
             );
 
             if (xpos + childWidth > maxWidth) {
@@ -104,7 +115,7 @@ public class FlowLayout extends ViewGroup {
                 currentLineHeight = currentHeight;
             }
 
-            xpos += childWidth + childLayoutParams.horizontalSpacing;
+            xpos += childWidth + HORIZONTAL_SPACING;
         }
         addLineWidth(width, xpos);
         mLineHeights.add(currentHeight);
@@ -133,19 +144,6 @@ public class FlowLayout extends ViewGroup {
     }
 
     @Override
-    protected ViewGroup.LayoutParams generateDefaultLayoutParams() {
-        return new LayoutParams(1, 1); // default of 1px spacing
-    }
-
-    @Override
-    protected boolean checkLayoutParams(final ViewGroup.LayoutParams p) {
-        if (p instanceof LayoutParams) {
-            return true;
-        }
-        return false;
-    }
-
-    @Override
     protected void onLayout(final boolean changed, final int l, final int t,
                             final int r, final int b) {
         LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) getLayoutParams();
@@ -163,11 +161,11 @@ public class FlowLayout extends ViewGroup {
             int currentWidth = mLineWidths.get(currentLine);
 
             if (child.getVisibility() != GONE) {
-                final int childw = child.getMeasuredWidth();
-                final int childh = child.getMeasuredHeight();
-                final LayoutParams childLayoutParams = (LayoutParams) child.getLayoutParams();
+                final int childWith = child.getMeasuredWidth();
+                final int childHeight = child.getMeasuredHeight();
+                final LinearLayout.LayoutParams childLayoutParams = (LinearLayout.LayoutParams) child.getLayoutParams();
 
-                if (xpos + childw > width) {
+                if (xpos + childWith > width) {
                     // New line
                     xpos = getPaddingLeft();
                     ypos += currentHeight;
@@ -183,19 +181,19 @@ public class FlowLayout extends ViewGroup {
                 if (childLayoutParams.gravity == Gravity.CENTER_VERTICAL
                         || childLayoutParams.gravity == Gravity.CENTER) {
                     // Average of difference in height
-                    yOffset = (currentHeight - childh) / 2;
+                    yOffset = (currentHeight - childHeight) / 2;
                 }
 
-                if (layoutParams.gravity == Gravity.RIGHT) {
+                if (layoutParams.gravity == Gravity.END) {
                     xOffset += width - currentWidth;
                 }
 
                 child.layout(
                         xpos + xOffset,
                         ypos + yOffset,
-                        xpos + childw + xOffset,
-                        ypos + childh + yOffset);
-                xpos += childw + childLayoutParams.horizontalSpacing;
+                        xpos + childWith + xOffset,
+                        ypos + childHeight + yOffset);
+                xpos += childWith + HORIZONTAL_SPACING;
             }
         }
     }

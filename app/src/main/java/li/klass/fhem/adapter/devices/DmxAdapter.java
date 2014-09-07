@@ -53,7 +53,7 @@ public class DmxAdapter extends DimmableAdapter<DMXDevice> {
             }
 
             @Override
-            public void onFieldNameAdded(final Context context, TableLayout tableLayout, String field,
+            public void onFieldNameAdded(final Context context, final TableLayout tableLayout, String field,
                                          final DMXDevice device, TableRow fieldTableRow) {
                 tableLayout.addView(new ColorPickerRow(device.getRGBColor(), R.string.hue) {
                     @Override
@@ -71,7 +71,8 @@ public class DmxAdapter extends DimmableAdapter<DMXDevice> {
 
                         context.startService(intent);
                     }
-                }.createRow(context, getInflater()));
+
+                }.createRow(context, getInflater(), tableLayout));
             }
         });
     }

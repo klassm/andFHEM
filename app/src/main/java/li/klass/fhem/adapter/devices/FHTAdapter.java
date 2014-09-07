@@ -34,6 +34,8 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import org.joda.time.DateTime;
+
 import java.util.Calendar;
 
 import javax.inject.Inject;
@@ -113,7 +115,7 @@ public class FHTAdapter extends GenericDeviceAdapter<FHTDevice> {
 
         registerFieldListener("actuator", new FieldNameAddedToDetailListener<FHTDevice>() {
             @Override
-            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, FHTDevice device, TableRow fieldTableRow) {
+            public void onFieldNameAdded(Context context, final TableLayout tableLayout, String field, FHTDevice device, TableRow fieldTableRow) {
                 FHTMode mode = device.getHeatingMode();
 
                 int selected = EnumUtils.positionOf(FHTMode.values(), mode);
@@ -122,9 +124,9 @@ public class FHTAdapter extends GenericDeviceAdapter<FHTDevice> {
                     @Override
                     public void onItemSelected(Context context, FHTDevice device, String item) {
                         FHTMode mode = FHTMode.valueOf(item);
-                        setMode(device, mode, this);
+                        setMode(device, mode, this, tableLayout);
                     }
-                }.createRow(device));
+                }.createRow(device, tableLayout));
             }
         });
 
@@ -150,21 +152,27 @@ public class FHTAdapter extends GenericDeviceAdapter<FHTDevice> {
         detailActions.add(new AvailableTargetStatesSwitchActionRow<FHTDevice>());
     }
 
-    private void setMode(FHTDevice device, FHTMode mode, final SpinnerActionRow<FHTDevice> spinnerActionRow) {
+    private void setMode(FHTDevice device, FHTMode mode, final SpinnerActionRow<FHTDevice> spinnerActionRow, TableLayout tableLayout) {
         final Intent intent = new Intent(Actions.DEVICE_SET_MODE);
         intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
         intent.putExtra(BundleExtraKeys.DEVICE_MODE, mode);
 
         switch (mode) {
+            case UNKNOWN:
+                break;
+            case AUTO:
+                break;
+            case MANUAL:
+                break;
             case HOLIDAY:
 
-                handleHolidayMode(device, spinnerActionRow, intent);
+                handleHolidayMode(device, spinnerActionRow, intent, tableLayout);
 
                 break;
 
             case HOLIDAY_SHORT:
 
-                handleHolidayShortMode(device, spinnerActionRow, intent);
+                handleHolidayShortMode(device, spinnerActionRow, intent, tableLayout);
 
                 break;
             default:
@@ -173,10 +181,11 @@ public class FHTAdapter extends GenericDeviceAdapter<FHTDevice> {
         }
     }
 
-    private void handleHolidayMode(FHTDevice device, final SpinnerActionRow<FHTDevice> spinnerActionRow, final Intent intent) {
+    private void handleHolidayMode(FHTDevice device, final SpinnerActionRow<FHTDevice> spinnerActionRow,
+                                   final Intent intent, TableLayout tableLayout) {
         final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getContext());
 
-        TableLayout contentView = (TableLayout) getInflater().inflate(R.layout.fht_holiday_dialog, null);
+        TableLayout contentView = (TableLayout) getInflater().inflate(R.layout.fht_holiday_dialog, tableLayout, false);
 
         final DatePicker datePicker = (DatePicker) contentView.findViewById(R.id.datePicker);
         DatePickerUtil.hideYearField(datePicker);
@@ -215,22 +224,22 @@ public class FHTAdapter extends GenericDeviceAdapter<FHTDevice> {
         dialogBuilder.show();
     }
 
-    private void handleHolidayShortMode(FHTDevice device, final SpinnerActionRow<FHTDevice> spinnerActionRow, final Intent intent) {
+    private void handleHolidayShortMode(FHTDevice device, final SpinnerActionRow<FHTDevice> spinnerActionRow, final Intent intent, TableLayout tableLayout) {
         final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getContext());
 
-        final TableLayout contentView = (TableLayout) getInflater().inflate(R.layout.fht_holiday_short_dialog, null);
+        final TableLayout contentView = (TableLayout) getInflater().inflate(R.layout.fht_holiday_short_dialog, tableLayout, false);
         dialogBuilder.setView(contentView);
 
         TableRow temperatureUpdateRow = (TableRow) contentView.findViewById(R.id.updateTemperatureRow);
         final TimePicker timePicker = (TimePicker) contentView.findViewById(R.id.timePicker);
 
-        Calendar now = Calendar.getInstance();
+        DateTime now = new DateTime();
         timePicker.setIs24HourView(true);
         timePicker.setCurrentMinute(0);
-        timePicker.setCurrentHour(now.get(Calendar.HOUR_OF_DAY));
+        timePicker.setCurrentHour(now.getHourOfDay());
 
         TextView endTimeView = (TextView) contentView.findViewById(R.id.endTimeValue);
-        endTimeView.setText(DateFormatUtil.toReadable(now.getTime()));
+        endTimeView.setText(DateFormatUtil.toReadable(now));
 
         timePicker.setIs24HourView(true);
         timePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
@@ -238,14 +247,14 @@ public class FHTAdapter extends GenericDeviceAdapter<FHTDevice> {
 
             @Override
             public void onTimeChanged(TimePicker timePicker, int hourOfDay, int minute) {
-                Calendar calendar = Calendar.getInstance();
+                DateTime switchDate = new DateTime();
                 if (holidayShortIsTomorrow(timePicker)) {
-                    calendar.add(Calendar.DAY_OF_MONTH, 1);
+                    switchDate = switchDate.plusDays(1);
                 }
-                String switchDate = DateFormatUtil.toReadable(calendar.getTime());
+                String switchDateString = DateFormatUtil.toReadable(switchDate);
 
                 TextView endTimeView = (TextView) contentView.findViewById(R.id.endTimeValue);
-                endTimeView.setText(switchDate);
+                endTimeView.setText(switchDateString);
 
                 int rest = minute % 10;
                 if (rest == 0) return;

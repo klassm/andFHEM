@@ -88,7 +88,7 @@ public class SonosPlayerAdapter extends GenericDeviceAdapter<SonosPlayerDevice> 
         detailActions.add(new DeviceDetailViewAction<SonosPlayerDevice>() {
             @Override
             public View createView(Context context, LayoutInflater inflater, SonosPlayerDevice device, LinearLayout parent) {
-                View view = inflater.inflate(R.layout.sonos_player_action, null);
+                View view = inflater.inflate(R.layout.sonos_player_action, parent, false);
 
                 fillImageButtonWithAction(context, view, device, R.id.rewind, "Previous");
                 fillImageButtonWithAction(context, view, device, R.id.pause, "Pause");

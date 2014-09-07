@@ -35,7 +35,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/name"
         android:textStyle="bold"
-        android:text="MyServer"
+        android:text="@string/dummy_serverName"
         android:ellipsize="end"
         android:textColor="@color/whitegrey"/>
 
@@ -45,7 +45,7 @@
         android:id="@+id/type"
         android:layout_marginTop="-4dp"
         android:textColor="@color/whitegrey"
-        android:text="Dummy"
-        android:textSize="10dp" />
+        android:text="@string/dummy_serverType"
+        android:textSize="12sp" />
 
 </LinearLayout>

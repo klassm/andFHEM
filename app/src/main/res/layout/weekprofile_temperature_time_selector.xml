@@ -25,7 +25,7 @@
   -->
 
 <TableLayout
-    android:id="@+id/layout"
+    android:id="@+id/tableLayout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
@@ -45,7 +45,7 @@
     <TableRow>
 
         <TimePicker
-            android:id="@+id/time"
+            android:id="@+id/timePicker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="0"
@@ -69,6 +69,6 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:minWidth="400dp"
-            android:text="123 °C"/>
+            android:text="@string/dummy_temperature"/>
     </TableRow>
 </TableLayout>

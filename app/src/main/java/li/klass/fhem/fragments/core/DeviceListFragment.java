@@ -61,7 +61,6 @@ import li.klass.fhem.domain.core.RoomDeviceList;
 import li.klass.fhem.fhem.DataConnectionSwitch;
 import li.klass.fhem.fhem.DummyDataConnection;
 import li.klass.fhem.service.advertisement.AdvertisementService;
-import li.klass.fhem.service.connection.ConnectionService;
 import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.FhemResultReceiver;
 import li.klass.fhem.util.device.DeviceActionUtil;
@@ -82,14 +81,16 @@ public abstract class DeviceListFragment extends BaseFragment {
     protected static AtomicReference<Device> contextMenuClickedDevice = new AtomicReference<>();
     protected static AtomicReference<DeviceListFragment> currentClickFragment = new AtomicReference<>();
     protected static AtomicBoolean isClickedDeviceFavorite = new AtomicBoolean(false);
-    @Inject
-    ConnectionService connectionService;
+
     @Inject
     DataConnectionSwitch dataConnectionSwitch;
+
     @Inject
     ApplicationProperties applicationProperties;
+
     @Inject
     AdvertisementService advertisementService;
+
     private ActionMode.Callback actionModeCallback = new ActionMode.Callback() {
         @Override
         public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
@@ -183,7 +184,7 @@ public abstract class DeviceListFragment extends BaseFragment {
         assert nestedListView != null;
 
         LinearLayout emptyView = (LinearLayout) view.findViewById(R.id.emptyView);
-        fillEmptyView(emptyView);
+        fillEmptyView(emptyView, container);
 
         if (!isNavigation()) {
             int rightPadding = applicationProperties.getIntegerSharedPreference(DEVICE_LIST_RIGHT_PADDING, 0);
@@ -237,8 +238,8 @@ public abstract class DeviceListFragment extends BaseFragment {
         return view;
     }
 
-    protected void fillEmptyView(LinearLayout view) {
-        View emptyView = LayoutInflater.from(getActivity()).inflate(R.layout.empty_view, null);
+    protected void fillEmptyView(LinearLayout view, ViewGroup viewGroup) {
+        View emptyView = LayoutInflater.from(getActivity()).inflate(R.layout.empty_view, viewGroup, false);
         assert emptyView != null;
         TextView emptyText = (TextView) emptyView.findViewById(R.id.emptyText);
         emptyText.setText(R.string.noDevices);
@@ -314,7 +315,11 @@ public abstract class DeviceListFragment extends BaseFragment {
     }
 
     private GridViewWithSections getDeviceList() {
-        return (GridViewWithSections) getView().findViewById(R.id.deviceMap1);
+        if (getView() == null) {
+            return null;
+        } else {
+            return (GridViewWithSections) getView().findViewById(R.id.deviceMap1);
+        }
     }
 
     @Override

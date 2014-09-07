@@ -35,6 +35,7 @@ import com.google.android.gcm.GCMBaseIntentService;
 import com.google.android.gcm.GCMRegistrar;
 
 import java.io.Serializable;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -57,18 +58,6 @@ public class GCMIntentService extends GCMBaseIntentService {
 
     @Inject
     ApplicationProperties applicationProperties;
-
-    private static void registerWithGCMInternal(Context context, String projectId) {
-        if (StringUtil.isBlank(projectId)) return;
-
-        if (!GCMRegistrar.isRegistered(context)) {
-            GCMRegistrar.checkDevice(context);
-            GCMRegistrar.checkManifest(context);
-
-            GCMRegistrar.setRegisterOnServerLifespan(context, 1000L * 60 * 60 * 24 * 30);
-            GCMRegistrar.register(context, projectId);
-        }
-    }
 
     @Override
     public void onCreate() {
@@ -151,7 +140,7 @@ public class GCMIntentService extends GCMBaseIntentService {
             String[] parts = change.split(":");
             if (parts.length != 2) continue;
 
-            String key = parts[0].trim().toUpperCase();
+            String key = parts[0].trim().toUpperCase(Locale.getDefault());
             String value = parts[1].trim();
 
             Tasker.sendTaskerNotifyIntent(this, deviceName, key, value);

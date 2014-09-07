@@ -24,14 +24,20 @@
 
 package li.klass.fhem.util;
 
-import li.klass.fhem.R;
+import com.google.common.collect.Maps;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
-import static li.klass.fhem.util.DayUtil.Day.*;
+import li.klass.fhem.R;
+
+import static li.klass.fhem.util.DayUtil.Day.FRIDAY;
+import static li.klass.fhem.util.DayUtil.Day.MONDAY;
+import static li.klass.fhem.util.DayUtil.Day.SATURDAY;
+import static li.klass.fhem.util.DayUtil.Day.SUNDAY;
+import static li.klass.fhem.util.DayUtil.Day.THURSDAY;
+import static li.klass.fhem.util.DayUtil.Day.TUESDAY;
+import static li.klass.fhem.util.DayUtil.Day.WEDNESDAY;
 
 public class DayUtil {
     public enum Day {
@@ -53,41 +59,27 @@ public class DayUtil {
         }
     }
 
-    private static Map<String, Day> shortNameToStringIdMap = new HashMap<String, Day>();
+    private static final Map<String, Day> SHORT_NAME_TO_STRING_ID_MAP = Maps.newHashMap();
 
     static {
-        shortNameToStringIdMap.put("MON", MONDAY);
-        shortNameToStringIdMap.put("TUE", TUESDAY);
-        shortNameToStringIdMap.put("WED", WEDNESDAY);
-        shortNameToStringIdMap.put("THU", THURSDAY);
-        shortNameToStringIdMap.put("FRI", FRIDAY);
-        shortNameToStringIdMap.put("SAT", SATURDAY);
-        shortNameToStringIdMap.put("SUN", SUNDAY);
-    }
-
-    public static List<Integer> getSortedDayStringIdList() {
-        return Arrays.asList(R.string.monday, R.string.tuesday, R.string.wednesday, R.string.thursday,
-                R.string.friday, R.string.saturday, R.string.sunday);
+        SHORT_NAME_TO_STRING_ID_MAP.put("MON", MONDAY);
+        SHORT_NAME_TO_STRING_ID_MAP.put("TUE", TUESDAY);
+        SHORT_NAME_TO_STRING_ID_MAP.put("WED", WEDNESDAY);
+        SHORT_NAME_TO_STRING_ID_MAP.put("THU", THURSDAY);
+        SHORT_NAME_TO_STRING_ID_MAP.put("FRI", FRIDAY);
+        SHORT_NAME_TO_STRING_ID_MAP.put("SAT", SATURDAY);
+        SHORT_NAME_TO_STRING_ID_MAP.put("SUN", SUNDAY);
     }
 
     public static Day getDayForShortName(String shortName) {
-        shortName = shortName.toUpperCase();
-        return shortNameToStringIdMap.get(shortName);
-    }
-
-    public static String getShortNameForStringId(Integer stringId) {
-        for (Map.Entry<String, Day> entry : shortNameToStringIdMap.entrySet()) {
-            if (entry.getValue().getStringId() == stringId) {
-                return entry.getKey().toLowerCase();
-            }
-        }
-        return null;
+        shortName = shortName.toUpperCase(Locale.getDefault());
+        return SHORT_NAME_TO_STRING_ID_MAP.get(shortName);
     }
 
     public static String getShortNameFor(Day day) {
-        for (Map.Entry<String, Day> entry : shortNameToStringIdMap.entrySet()) {
+        for (Map.Entry<String, Day> entry : SHORT_NAME_TO_STRING_ID_MAP.entrySet()) {
             if (entry.getValue() == day) {
-                return entry.getKey().toLowerCase();
+                return entry.getKey().toLowerCase(Locale.getDefault());
             }
         }
         return null;

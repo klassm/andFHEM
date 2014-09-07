@@ -31,7 +31,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import li.klass.fhem.R;
@@ -41,6 +40,8 @@ import li.klass.fhem.domain.heating.schedule.WeekProfile;
 import li.klass.fhem.domain.heating.schedule.configuration.HeatingConfiguration;
 import li.klass.fhem.domain.heating.schedule.interval.BaseHeatingInterval;
 import li.klass.fhem.widget.NestedListViewAdapter;
+
+import static com.google.common.collect.Lists.newArrayList;
 
 public abstract class BaseWeekProfileAdapter<H extends BaseHeatingInterval>
         extends NestedListViewAdapter<DayProfile<H, ?, ?>, H> {
@@ -71,7 +72,7 @@ public abstract class BaseWeekProfileAdapter<H extends BaseHeatingInterval>
 
     @Override
     protected View getParentView(DayProfile<H, ?, ?> parent, View view, ViewGroup viewGroup) {
-        view = layoutInflater.inflate(R.layout.weekprofile_parent, null);
+        view = layoutInflater.inflate(R.layout.weekprofile_parent, viewGroup, false);
 
         TextView parentTextView = (TextView) view.findViewById(R.id.parent);
         parentTextView.setText(resources.getText(parent.getDay().getStringId()));
@@ -81,7 +82,7 @@ public abstract class BaseWeekProfileAdapter<H extends BaseHeatingInterval>
 
     @Override
     protected List<DayProfile<H, ?, ?>> getParents() {
-        List<DayProfile<H, ?, ?>> parents = new ArrayList<DayProfile<H, ?, ?>>();
+        List<DayProfile<H, ?, ?>> parents = newArrayList();
         if (weekProfile == null) return parents;
 
         List<? extends DayProfile> sortedDayProfiles = weekProfile.getSortedDayProfiles();

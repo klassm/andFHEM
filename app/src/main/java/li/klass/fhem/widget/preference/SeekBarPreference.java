@@ -1,10 +1,35 @@
-/* The following code was written by Matthew Wiggins 
+/*
+ * AndFHEM - Open Source Android application to control a FHEM home automation
+ * server.
+ *
+ * Copyright (c) 2011, Matthias Klass or third-party contributors as
+ * indicated by the @author tags or express copyright attribution
+ * statements applied by the authors.  All third-party contributions are
+ * distributed under license by Red Hat Inc.
+ *
+ * This copyrighted material is made available to anyone wishing to use, modify,
+ * copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+ * for more details.
+ *
+ * You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+ * along with this distribution; if not, write to:
+ *   Free Software Foundation, Inc.
+ *   51 Franklin Street, Fifth Floor
+ *   Boston, MA  02110-1301  USA
+ */
+
+/* The following code was written by Matthew Wiggins
  * and is released under the APACHE 2.0 license 
  * 
  * http://www.apache.org/licenses/LICENSE-2.0
  */
 package li.klass.fhem.widget.preference;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.preference.DialogPreference;
 import android.util.AttributeSet;
@@ -13,20 +38,25 @@ import android.view.View;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import org.jetbrains.annotations.NotNull;
+
 import li.klass.fhem.R;
+
+import static java.lang.Integer.parseInt;
+import static li.klass.fhem.util.NumberUtil.isNumeric;
 
 /**
  * Preference showing a seek bar as dialog. The minimum, default and maximum values can
  * be configured using the respective getters and (partly) the xml configuration.
- *
+ * <p/>
  * The main layout is overtaken by
  * <a href="http://android.hlidskialf.com/blog/code/android-seekbar-preference">Hlidskialf Codes</a>.
  * However, the source code was heavily refactored and changed to fit the needs of andFHEM.
- *
+ * <p/>
  * As Android's seek bars always handle minimum values to be 0, we recalculate each value
  * to fit Android's needs. Each value is calculated to be <i>value - minimumValue</i>. That
  * way we can handle non 0 minimum values properly.
- *
+ * <p/>
  * This is also why internal values are stored in this recalculated format and not in the original
  * one provided by the using class. This concerns fields such as {@link #defaultValue},
  * {@link #maximumValue}, {@link #minimumValue} and {@link #internalValue}.
@@ -104,13 +134,49 @@ public class SeekBarPreference extends DialogPreference implements SeekBar.OnSee
 
         dialogMessageTop = attrs.getAttributeValue(ANDROID_NS, "dialogMessage");
         suffix = attrs.getAttributeValue(ANDROID_NS, "text");
+        if (suffix.startsWith("@") && isNumeric(suffix.substring(1))) {
+            suffix = context.getString(parseInt(suffix.substring(1)));
+        }
 
         setDefaultValue(attrs.getAttributeIntValue(ANDROID_NS, "defaultValue", 0));
         setMaximumValue(attrs.getAttributeIntValue(ANDROID_NS, "max", 100));
     }
 
     @Override
+    public void setDefaultValue(Object newDefaultValue) {
+        if (!(newDefaultValue instanceof Integer)) {
+            return;
+        }
+
+        int newDefaultValueExternal = (Integer) newDefaultValue;
+        int newDefaultValueInternal = toInternalValue(newDefaultValueExternal, minimumValue);
+
+        // Overwrite the current default.
+        if (defaultValue == internalValue) {
+            setValue(newDefaultValueExternal);
+        }
+
+        this.defaultValue = newDefaultValueInternal;
+
+        super.setDefaultValue(newDefaultValueInternal);
+    }
+
+    public void setMaximumValue(int maximumValue) {
+        this.maximumValue = toInternalValue(maximumValue, minimumValue);
+        if (internalValue > maximumValue) internalValue = maximumValue;
+
+        if (seekBar != null) {
+            seekBar.setMax(maximumValue);
+        }
+    }
+
+    private static int toInternalValue(int value, int minimumValue) {
+        return value - minimumValue;
+    }
+
+    @Override
     protected View onCreateDialogView() {
+        @SuppressLint("InflateParams")
         View view = LayoutInflater.from(context).inflate(R.layout.seekbar_preference_dialog, null);
 
         assert view != null;
@@ -136,8 +202,28 @@ public class SeekBarPreference extends DialogPreference implements SeekBar.OnSee
         return view;
     }
 
+    public void setDialogMessageTop(String dialogMessageTop) {
+        this.dialogMessageTop = dialogMessageTop;
+
+        if (dialogMessageTop != null) {
+            dialogMessageTopTextView.setText(dialogMessageTop);
+        }
+    }
+
+    public void setDialogMessageBottom(String dialogMessageBottom) {
+        this.dialogMessageBottom = dialogMessageBottom;
+
+        if (dialogMessageBottom != null) {
+            dialogMessageBottomTextView.setText(dialogMessageBottom);
+        }
+    }
+
+    private static int toExternalValue(int value, int minimumValue) {
+        return value + minimumValue;
+    }
+
     @Override
-    protected void onBindDialogView(View v) {
+    protected void onBindDialogView(@NotNull View v) {
         super.onBindDialogView(v);
 
         seekBar.setMax(maximumValue);
@@ -163,29 +249,36 @@ public class SeekBarPreference extends DialogPreference implements SeekBar.OnSee
         updateValueText();
     }
 
-    @Override
-    public void setDefaultValue(Object newDefaultValue) {
-        if (! (newDefaultValue instanceof Integer)) {
-            return;
+    /**
+     * Update the {@link #valueText} field to match the current progress.
+     */
+    private void updateValueText() {
+        int persistValue = getValue();
+
+        String text = String.valueOf(persistValue);
+        if (valueText != null) {
+            valueText.setText(suffix == null ? text : text + " " + suffix);
         }
 
-        int newDefaultValueExternal = (Integer) newDefaultValue;
-        int newDefaultValueInternal = toInternalValue(newDefaultValueExternal, minimumValue);
+        callChangeListener(persistValue);
+    }
 
-        // Overwrite the current default.
-        if (defaultValue == internalValue) {
-            setValue(newDefaultValueExternal);
+    public int getValue() {
+        return toExternalValue(internalValue, minimumValue);
+    }
+
+    public void setValue(int value) {
+        internalValue = toInternalValue(value, minimumValue);
+
+        if (seekBar != null) {
+            seekBar.setProgress(internalValue);
         }
-
-        this.defaultValue = newDefaultValueInternal;
-
-        super.setDefaultValue(newDefaultValueInternal);
     }
 
     @Override
     protected void onDialogClosed(boolean positiveResult) {
         super.onDialogClosed(positiveResult);
-        if (! positiveResult) return;
+        if (!positiveResult) return;
 
         if (shouldPersist()) {
             persistInt(toExternalValue(internalValue, minimumValue));
@@ -196,20 +289,6 @@ public class SeekBarPreference extends DialogPreference implements SeekBar.OnSee
     }
 
     public void onStopTrackingTouch(SeekBar seek) {
-    }
-
-    /**
-     * Update the {@link #valueText} field to match the current progress.
-     */
-    private void updateValueText() {
-        int persistValue = getValue();
-
-        String text = String.valueOf(persistValue);
-        if (valueText != null) {
-            valueText.setText(suffix == null ? text : text.concat(suffix));
-        }
-
-        callChangeListener(persistValue);
     }
 
     /**
@@ -228,50 +307,5 @@ public class SeekBarPreference extends DialogPreference implements SeekBar.OnSee
         setMaximumValue(maximumValueExternal);
         setDefaultValue(defaultValueExternal);
         setValue(currentValue);
-    }
-
-    public void setMaximumValue(int maximumValue) {
-        this.maximumValue = toInternalValue(maximumValue, minimumValue);
-        if (internalValue > maximumValue) internalValue = maximumValue;
-
-        if (seekBar != null) {
-            seekBar.setMax(maximumValue);
-        }
-    }
-
-    public int getValue() {
-        return toExternalValue(internalValue, minimumValue);
-    }
-
-    public void setValue(int value) {
-        internalValue = toInternalValue(value, minimumValue);
-
-        if (seekBar != null) {
-            seekBar.setProgress(internalValue);
-        }
-    }
-
-    public void setDialogMessageTop(String dialogMessageTop) {
-        this.dialogMessageTop = dialogMessageTop;
-
-        if (dialogMessageTop != null) {
-            dialogMessageTopTextView.setText(dialogMessageTop);
-        }
-    }
-
-    public void setDialogMessageBottom(String dialogMessageBottom) {
-        this.dialogMessageBottom = dialogMessageBottom;
-
-        if (dialogMessageBottom != null) {
-            dialogMessageBottomTextView.setText(dialogMessageBottom);
-        }
-    }
-
-    private static int toExternalValue(int value, int minimumValue) {
-        return value + minimumValue;
-    }
-
-    private static int toInternalValue(int value, int minimumValue) {
-        return value - minimumValue;
     }
 }

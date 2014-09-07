@@ -54,7 +54,8 @@
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/name"/>
+                    android:id="@+id/name"
+                    android:inputType="textAutoComplete"/>
             </TableRow>
 
             <TableRow>

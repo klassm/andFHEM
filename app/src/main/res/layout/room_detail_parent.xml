@@ -29,8 +29,9 @@
               android:layout_height="fill_parent"
               android:orientation="vertical">
 
-    <TextView style="@style/deviceOverviewParent"
-              android:id="@+id/deviceType"
-              android:text="parent"
-            />
+    <TextView
+        android:id="@+id/deviceType"
+        style="@style/deviceOverviewParent"
+        android:text="@string/dummy_text"/>
+
 </LinearLayout>

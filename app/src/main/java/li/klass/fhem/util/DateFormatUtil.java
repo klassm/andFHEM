@@ -24,30 +24,28 @@
 
 package li.klass.fhem.util;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 public class DateFormatUtil {
 
-    private static SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormat.forPattern("dd.MM.yyyy HH:mm");
 
     public static String toReadable(long ms) {
-        Date date = new Date(ms);
-        return toReadable(date);
+        return toReadable(new DateTime(ms));
     }
 
-    public static String toReadable(Date date) {
+    public static String toReadable(DateTime date) {
         if (date == null) return "--";
 
-        return dateFormat.format(date);
+        return DATE_FORMAT.print(date);
     }
 
     public static long toMilliSeconds(String in) {
         try {
-            Date date = dateFormat.parse(in);
-            return date.getTime();
-        } catch (ParseException e) {
+            return DATE_FORMAT.parseDateTime(in).getMillis();
+        } catch (Exception e) {
             return -1;
         }
     }

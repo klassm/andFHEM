@@ -88,7 +88,7 @@ public abstract class DeviceNameListFragment extends BaseFragment {
         View superView = super.onCreateView(inflater, container, savedInstanceState);
         if (superView != null) return superView;
 
-        View view = inflater.inflate(R.layout.device_name_list, null);
+        View view = inflater.inflate(R.layout.device_name_list, container, false);
         assert view != null;
         GridViewWithSections deviceList = (GridViewWithSections) view.findViewById(R.id.deviceMap1);
 
@@ -105,7 +105,7 @@ public abstract class DeviceNameListFragment extends BaseFragment {
         deviceList.setAdapter(adapter);
 
         LinearLayout emptyView = (LinearLayout) view.findViewById(R.id.emptyView);
-        fillEmptyView(emptyView, getEmptyTextId());
+        fillEmptyView(emptyView, getEmptyTextId(), container);
 
         return view;
     }

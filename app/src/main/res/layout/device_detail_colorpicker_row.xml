@@ -29,14 +29,14 @@
     android:layout_height="fill_parent">
     <TextView style="@style/deviceDetailDescription"
         android:id="@+id/description"
-        android:text="text"
+        android:text="@string/dummy_text"
         android:layout_gravity="center_vertical"/>
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical|right">
+        android:gravity="center_vertical|end">
 
         <LinearLayout
             android:layout_width="30dp"

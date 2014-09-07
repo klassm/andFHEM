@@ -26,25 +26,28 @@ package li.klass.fhem.activities.graph;
 
 import android.content.Context;
 
-import java.util.ArrayList;
+import org.jetbrains.annotations.NotNull;
+import org.joda.time.DateTime;
+
 import java.util.Collections;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
 import li.klass.fhem.service.graph.GraphEntry;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 
+import static com.google.common.collect.Lists.newArrayList;
+
 public class YAxis implements Comparable<YAxis>, Iterable<ViewableChartSeries> {
     private final Context context;
     private String name;
-    private List<ChartData> charts = new ArrayList<ChartData>();
+    private List<ChartData> charts = newArrayList();
 
     private double minimumY = Double.MAX_VALUE;
     private double maximumY = Double.MIN_VALUE;
 
-    private Date minimumX = null;
-    private Date maximumX = null;
+    private DateTime minimumX = null;
+    private DateTime maximumX = null;
 
     public YAxis(String name, Context context) {
         this.context = context;
@@ -73,11 +76,11 @@ public class YAxis implements Comparable<YAxis>, Iterable<ViewableChartSeries> {
             minimumY = chart.getMinimumY();
         }
 
-        if (minimumX == null || chart.getMinimumX().before(minimumX)) {
+        if (minimumX == null || chart.getMinimumX().isBefore(minimumX)) {
             minimumX = chart.getMinimumX();
         }
 
-        if (maximumX == null || chart.getMaximumX().after(maximumX)) {
+        if (maximumX == null || chart.getMaximumX().isAfter(maximumX)) {
             maximumX = chart.getMaximumX();
         }
 
@@ -89,7 +92,7 @@ public class YAxis implements Comparable<YAxis>, Iterable<ViewableChartSeries> {
     }
 
     @Override
-    public int compareTo(YAxis yAxis) {
+    public int compareTo(@NotNull YAxis yAxis) {
         return name.compareTo(yAxis.getName());
     }
 
@@ -101,7 +104,7 @@ public class YAxis implements Comparable<YAxis>, Iterable<ViewableChartSeries> {
         Collections.sort(charts);
 
         for (ChartData chart : charts) {
-            chart.handleMinMax(minimumX, maximumX, minimumY, maximumY);
+            chart.handleMinMax(minimumX, maximumX);
         }
     }
 
@@ -127,11 +130,8 @@ public class YAxis implements Comparable<YAxis>, Iterable<ViewableChartSeries> {
                     return currentChart < charts.size();
                 }
 
-                if (currentIterator.hasNext()) {
-                    return true;
-                }
+                return currentIterator.hasNext() || currentChart + 1 < charts.size();
 
-                return currentChart + 1 < charts.size();
             }
 
             @Override
@@ -159,11 +159,11 @@ public class YAxis implements Comparable<YAxis>, Iterable<ViewableChartSeries> {
         return maximumY;
     }
 
-    public Date getMinimumX() {
+    public DateTime getMinimumX() {
         return minimumX;
     }
 
-    public Date getMaximumX() {
+    public DateTime getMaximumX() {
         return maximumX;
     }
 }

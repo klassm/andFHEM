@@ -57,6 +57,6 @@
         <TextView android:id="@+id/value"
                   style="@style/deviceDetailContent"
                   android:layout_column="1"
-                  android:text="___" />
+                  android:text="@string/dummy_text" />
     </TableRow>
 </TableLayout>

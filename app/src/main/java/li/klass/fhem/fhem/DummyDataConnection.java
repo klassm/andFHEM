@@ -28,11 +28,12 @@ import android.graphics.Bitmap;
 import android.util.Log;
 
 import org.apache.commons.io.IOUtils;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import li.klass.fhem.fhem.connection.DummyServerSpec;
 import li.klass.fhem.util.CloseableUtil;
@@ -40,6 +41,7 @@ import li.klass.fhem.util.CloseableUtil;
 public class DummyDataConnection extends FHEMConnection {
     public static final DummyDataConnection INSTANCE = new DummyDataConnection();
     public static final String TAG = DummyDataConnection.class.getName();
+    public static final DateTimeFormatter FORMATTER = DateTimeFormat.forPattern("yyyy-MM-dd");
 
     private DummyDataConnection() {
     }
@@ -55,7 +57,7 @@ public class DummyDataConnection extends FHEMConnection {
             Log.d(TAG, "ignored", e);
         }
         Log.e(TAG, "execute command: " + command);
-        return new RequestResult<String>("I am a dummy. Do you expect me to answer you?");
+        return new RequestResult<>("I am a dummy. Do you expect me to answer you?");
     }
 
     private RequestResult<String> xmllist() {
@@ -67,7 +69,7 @@ public class DummyDataConnection extends FHEMConnection {
             String content = IOUtils.toString(inputStream);
             content = content.replaceAll("  ", "");
 
-            return new RequestResult<String>(content);
+            return new RequestResult<>(content);
         } catch (IOException e) {
             Log.e(DummyDataConnection.class.getName(), "cannot read file", e);
             throw new RuntimeException(e);
@@ -80,8 +82,7 @@ public class DummyDataConnection extends FHEMConnection {
         int lastSpace = command.lastIndexOf(" ");
         String columnSpec = command.substring(lastSpace + 1);
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String today = simpleDateFormat.format(new Date());
+        String today = FORMATTER.print(new DateTime());
 
         String content = today + "_00:16:48 4.2\r\n" +
                 today + "_01:19:21 5.2\r\n" +
@@ -99,12 +100,12 @@ public class DummyDataConnection extends FHEMConnection {
                 today + "_13:57:28 1.3\r\n" +
                 "#" + columnSpec;
 
-        return new RequestResult<String>(content);
+        return new RequestResult<>(content);
     }
 
     @Override
     public RequestResult<Bitmap> requestBitmap(String relativePath) {
         Log.e(TAG, "get image: " + relativePath);
-        return new RequestResult<Bitmap>(null, null);
+        return new RequestResult<>(null, null);
     }
 }

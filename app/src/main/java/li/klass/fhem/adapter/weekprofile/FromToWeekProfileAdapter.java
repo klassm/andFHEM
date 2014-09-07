@@ -30,7 +30,9 @@ import android.content.Intent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.TimePicker;
+
 import li.klass.fhem.R;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.domain.heating.schedule.DayProfile;
@@ -54,8 +56,9 @@ public class FromToWeekProfileAdapter
     }
 
     @Override
-    protected View getChildView(DayProfile<FromToHeatingInterval, ?, ?> parent, int parentPosition, final FromToHeatingInterval child, View v, ViewGroup viewGroup, int relativeChildPosition) {
-        final View view = layoutInflater.inflate(R.layout.weekprofile_from_to_item, null);
+    protected View getChildView(DayProfile<FromToHeatingInterval, ?, ?> parent, int parentPosition,
+                                final FromToHeatingInterval child, View v, ViewGroup viewGroup, int relativeChildPosition) {
+        final View view = layoutInflater.inflate(R.layout.weekprofile_from_to_item, viewGroup, false);
 
         setDetailTextView(view, R.id.from, child.getChangedFromTime(), child.getFromTime(), false);
         setDetailTextView(view, R.id.to, child.getChangedToTime(), child.getToTime(), false);
@@ -73,6 +76,14 @@ public class FromToWeekProfileAdapter
                 child.setChangedToTime(newTime);
             }
         });
+
+        int position = relativeChildPosition + 1;
+
+        TextView fromText = (TextView) view.findViewById(R.id.fromText);
+        fromText.setText(context.getString(R.string.fromTimetable, position));
+
+        TextView toText = (TextView) view.findViewById(R.id.toText);
+        toText.setText(context.getString(R.string.toTimetable, position));
 
         return view;
     }

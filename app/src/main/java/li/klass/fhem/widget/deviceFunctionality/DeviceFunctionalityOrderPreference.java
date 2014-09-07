@@ -24,6 +24,7 @@
 
 package li.klass.fhem.widget.deviceFunctionality;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -37,7 +38,6 @@ import com.ericharlow.DragNDrop.DragNDropListView;
 import org.apache.pig.impl.util.ObjectSerializer;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -46,7 +46,6 @@ import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.constants.PreferenceKeys;
 import li.klass.fhem.domain.core.DeviceFunctionality;
-import li.klass.fhem.domain.core.DeviceType;
 import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.ArrayListUtil;
 import li.klass.fhem.util.Filter;
@@ -54,15 +53,21 @@ import li.klass.fhem.util.Filter;
 import static com.google.common.collect.Lists.newArrayList;
 import static li.klass.fhem.widget.deviceFunctionality.DeviceFunctionalityOrderAdapter.OrderAction;
 
-@SuppressWarnings("unused")
 public class DeviceFunctionalityOrderPreference extends DialogPreference {
 
     @Inject
     ApplicationProperties applicationProperties;
     private ArrayList<DeviceFunctionalityPreferenceWrapper> wrappedDevices = newArrayList();
 
+    @SuppressWarnings("unused")
     public DeviceFunctionalityOrderPreference(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+        inject(context);
+    }
+
+    @SuppressWarnings("unused")
+    public DeviceFunctionalityOrderPreference(Context context, AttributeSet attrs) {
+        super(context, attrs);
         inject(context);
     }
 
@@ -70,16 +75,15 @@ public class DeviceFunctionalityOrderPreference extends DialogPreference {
         ((AndFHEMApplication) ((Activity) context).getApplication()).inject(this);
     }
 
-    public DeviceFunctionalityOrderPreference(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        inject(context);
-    }
-
     @Override
     protected View onCreateDialogView() {
         LayoutInflater inflater = LayoutInflater.from(getContext());
+
+        @SuppressLint("InflateParams")
         View view = inflater.inflate(R.layout.device_type_order_layout, null);
+
         assert view != null;
+
         DragNDropListView deviceTypeListView = (DragNDropListView) view.findViewById(android.R.id.list);
 
         // dirty hack ... this should be called by Android automatically ...
@@ -122,8 +126,7 @@ public class DeviceFunctionalityOrderPreference extends DialogPreference {
     private ArrayList<DeviceFunctionalityPreferenceWrapper> wrapDevices(
             List<DeviceFunctionality> visible, List<DeviceFunctionality> invisible) {
 
-        ArrayList<DeviceFunctionalityPreferenceWrapper> returnList =
-                new ArrayList<DeviceFunctionalityPreferenceWrapper>();
+        ArrayList<DeviceFunctionalityPreferenceWrapper> returnList = newArrayList();
 
         returnList.addAll(wrapList(visible, true));
         returnList.addAll(wrapList(invisible, false));
@@ -134,7 +137,7 @@ public class DeviceFunctionalityOrderPreference extends DialogPreference {
     private List<DeviceFunctionalityPreferenceWrapper> wrapList(
             List<DeviceFunctionality> toWrap, boolean isVisible) {
 
-        List<DeviceFunctionalityPreferenceWrapper> result = new ArrayList<DeviceFunctionalityPreferenceWrapper>();
+        List<DeviceFunctionalityPreferenceWrapper> result = newArrayList();
         for (DeviceFunctionality deviceType : toWrap) {
             result.add(new DeviceFunctionalityPreferenceWrapper(deviceType, isVisible));
         }
@@ -179,12 +182,12 @@ public class DeviceFunctionalityOrderPreference extends DialogPreference {
             assert sharedPreferences != null;
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putString(PreferenceKeys.DEVICE_TYPE_FUNCTIONALITY_ORDER_INVISIBLE,
-                    ObjectSerializer.serialize(toPersist)).commit();
+                    ObjectSerializer.serialize(toPersist)).apply();
         }
     }
 
     private DeviceFunctionality[] unwrapDeviceTypes(ArrayList<DeviceFunctionalityPreferenceWrapper> toUnwrap) {
-        ArrayList<DeviceFunctionality> finalList = new ArrayList<DeviceFunctionality>();
+        ArrayList<DeviceFunctionality> finalList = newArrayList();
         for (DeviceFunctionalityPreferenceWrapper wrapper : toUnwrap) {
             finalList.add(wrapper.getDeviceFunctionality());
         }
@@ -196,10 +199,4 @@ public class DeviceFunctionalityOrderPreference extends DialogPreference {
         return true;
     }
 
-    private List<DeviceType> parsePersistedValue(String persistedValue, DeviceType[] defaultValue) {
-        if (shouldPersist() && persistedValue != null && !"".equals(persistedValue)) {
-            return Arrays.asList((DeviceType[]) ObjectSerializer.deserialize(persistedValue));
-        }
-        return Arrays.asList(defaultValue);
-    }
 }

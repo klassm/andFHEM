@@ -24,21 +24,22 @@
 
 package li.klass.fhem.service.graph;
 
-import java.util.Date;
+import org.jetbrains.annotations.NotNull;
+import org.joda.time.DateTime;
 
 /**
  * Transfer object representing one dot within a future graph.
  */
 public class GraphEntry implements Comparable<GraphEntry> {
     private float value;
-    private Date date;
+    private DateTime date;
 
-    public GraphEntry(Date date, float value) {
+    public GraphEntry(DateTime date, float value) {
         this.value = value;
         this.date = date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(DateTime date) {
         this.date = date;
     }
 
@@ -46,7 +47,7 @@ public class GraphEntry implements Comparable<GraphEntry> {
         return value;
     }
 
-    public Date getDate() {
+    public DateTime getDate() {
         return date;
     }
 
@@ -77,7 +78,7 @@ public class GraphEntry implements Comparable<GraphEntry> {
     }
 
     @Override
-    public int compareTo(GraphEntry graphEntry) {
+    public int compareTo(@NotNull GraphEntry graphEntry) {
         return (date).compareTo(graphEntry.getDate());
     }
 

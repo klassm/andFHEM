@@ -24,6 +24,7 @@
 
 package li.klass.fhem.widget.notification;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -33,8 +34,8 @@ import android.os.Handler;
 import android.os.ResultReceiver;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.CheckBox;
 import android.widget.RadioButton;
+
 import li.klass.fhem.R;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
@@ -52,6 +53,7 @@ public class NotificationSettingView {
         this.deviceName = deviceName;
     }
 
+    @SuppressLint("InflateParams")
     private View createView(int value) {
         view = LayoutInflater.from(context).inflate(R.layout.notification_device_settings, null);
         RadioButton allUpdates = (RadioButton) view.findViewById(R.id.allUpdates);

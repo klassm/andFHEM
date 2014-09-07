@@ -57,7 +57,7 @@ public class DeviceNameListAdapter<DEVICE extends Device<DEVICE>> extends Device
             return fillerView;
         }
 
-        view = layoutInflater.inflate(R.layout.device_name_selection, null);
+        view = layoutInflater.inflate(R.layout.device_name_selection, viewGroup, false);
 
         TextView content = (TextView) view.findViewById(R.id.name);
         content.setText(child.getAliasOrName());

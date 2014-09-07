@@ -28,6 +28,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
@@ -65,7 +66,7 @@ public class LightSceneAdapter extends GenericDeviceAdapter<LightSceneDevice> {
             }
 
             @Override
-            public View viewFor(String scene, LightSceneDevice device, LayoutInflater inflater, Context context) {
+            public View viewFor(String scene, LightSceneDevice device, LayoutInflater inflater, Context context, ViewGroup viewGroup) {
                 Button button = (Button) inflater.inflate(R.layout.button, null);
                 setSceneButtonProperties(context, device, scene, button, scene);
                 return button;

@@ -35,14 +35,14 @@
         <TextView
             android:id="@+id/temperature"
             style="@style/appwidget_item"
-            android:text="20°C"
+            android:text="@string/dummy_temperature"
                   android:textColor="@android:color/black"
                   android:textSize="17sp"/>
 
         <TextView
             android:id="@+id/additional"
             style="@style/appwidget_subcaption"
-                  android:text="50% humidity"/>
+                  android:text="@string/dummy_humidity"/>
     </LinearLayout>
     <ImageView style="@style/appwidget_logo" android:contentDescription="@string/app_name"/>
 </RelativeLayout>

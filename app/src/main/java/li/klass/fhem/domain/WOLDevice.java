@@ -28,6 +28,8 @@ import android.content.Context;
 
 import org.w3c.dom.NamedNodeMap;
 
+import java.util.Locale;
+
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
@@ -73,7 +75,7 @@ public class WOLDevice extends Device<WOLDevice> {
     }
 
     public void readMAC(String value) {
-        mac = value.toUpperCase();
+        mac = value.toUpperCase(Locale.getDefault());
     }
 
     public String isRunning() {

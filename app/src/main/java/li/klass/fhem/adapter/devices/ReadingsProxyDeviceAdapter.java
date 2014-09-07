@@ -67,7 +67,7 @@ public class ReadingsProxyDeviceAdapter extends DimmableAdapter<ReadingsProxyDev
 
                         context.startService(intent);
                     }
-                }.createRow(context, getInflater()));
+                }.createRow(context, getInflater(), tableLayout));
             }
 
             @Override

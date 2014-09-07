@@ -29,6 +29,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewAction;
 import li.klass.fhem.domain.FS20ZDRDevice;
@@ -45,7 +46,7 @@ public class FS20ZDRDeviceAdapter extends ToggleableAdapterWithSwitchActionRow<F
         detailActions.add(new DeviceDetailViewAction<FS20ZDRDevice>() {
             @Override
             public View createView(Context context, LayoutInflater inflater, FS20ZDRDevice device, LinearLayout parent) {
-                View view = inflater.inflate(R.layout.fs20_zdr_actions, null);
+                View view = inflater.inflate(R.layout.fs20_zdr_actions, parent, false);
 
                 registerActionHandlerFor(context, view, device, R.id.vol_up, "volume_up");
                 registerActionHandlerFor(context, view, device, R.id.vol_down, "volume_down");

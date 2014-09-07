@@ -81,7 +81,7 @@ public class OtherWidgetsFragment extends BaseFragment {
         listView.setAdapter(adapter);
 
         LinearLayout emptyView = (LinearLayout) view.findViewById(R.id.emptyView);
-        fillEmptyView(emptyView, R.string.widgetNoOther);
+        fillEmptyView(emptyView, R.string.widgetNoOther, container);
 
         return view;
     }
@@ -95,6 +95,8 @@ public class OtherWidgetsFragment extends BaseFragment {
     @Override
     public void update(boolean doUpdate) {
         checkNotNull(widgetSize);
+
+        if (getView() == null) return;
 
         ListView listView = (ListView) getView().findViewById(R.id.list);
         OtherWidgetsAdapter adapter = (OtherWidgetsAdapter) listView.getAdapter();

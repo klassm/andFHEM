@@ -64,10 +64,10 @@ public class IntervalWeekProfileAdapter
                                 final FilledTemperatureInterval child, View v, ViewGroup viewGroup, final int relativeChildPosition) {
 
         if (child == null) {
-            return addView(parent);
+            return addView(parent, viewGroup);
         }
 
-        final View view = layoutInflater.inflate(R.layout.weekprofile_interval_item, null);
+        final View view = layoutInflater.inflate(R.layout.weekprofile_interval_item, viewGroup, false);
         assert view != null;
 
         boolean isNew = child.isNew();
@@ -80,7 +80,7 @@ public class IntervalWeekProfileAdapter
         setDetailTextView(view, R.id.temperature, appendTemperature(child.getChangedTemperature()),
                 appendTemperature(child.getTemperature()), isNew);
 
-        setTemperatureAndInterval(view, R.id.set, child, new OnIntervalTemperatureChangedListener() {
+        setTemperatureAndInterval(view, R.id.set, child, viewGroup, new OnIntervalTemperatureChangedListener() {
             @Override
             public void onIntervalTemperatureChanged(String time, double temperature) {
                 child.setChangedTemperature(temperature);
@@ -114,12 +114,12 @@ public class IntervalWeekProfileAdapter
         return view;
     }
 
-    private View addView(final DayProfile<FilledTemperatureInterval, ?, ?> parent) {
-        View view = layoutInflater.inflate(R.layout.weekprofile_interval_add, null);
+    private View addView(final DayProfile<FilledTemperatureInterval, ?, ?> parent, ViewGroup viewGroup) {
+        View view = layoutInflater.inflate(R.layout.weekprofile_interval_add, viewGroup, false);
 
         final FilledTemperatureInterval interval = new FilledTemperatureInterval();
 
-        setTemperatureAndInterval(view, R.id.addInterval, interval, new OnIntervalTemperatureChangedListener() {
+        setTemperatureAndInterval(view, R.id.addInterval, interval, viewGroup, new OnIntervalTemperatureChangedListener() {
             @Override
             public void onIntervalTemperatureChanged(String time, double temperature) {
                 interval.setChangedSwitchTime(time);
@@ -135,7 +135,7 @@ public class IntervalWeekProfileAdapter
     }
 
     private void setTemperatureAndInterval(View view, int buttonId, final FilledTemperatureInterval interval,
-                                           final OnIntervalTemperatureChangedListener listener) {
+                                           final ViewGroup viewGroup, final OnIntervalTemperatureChangedListener listener) {
 
         Button button = (Button) view.findViewById(buttonId);
         button.setOnClickListener(new View.OnClickListener() {
@@ -144,9 +144,9 @@ public class IntervalWeekProfileAdapter
             @SuppressWarnings("unchecked")
             public void onClick(View view) {
 
-                final View contentView = layoutInflater.inflate(R.layout.weekprofile_temperature_time_selector, null);
+                final View contentView = layoutInflater.inflate(R.layout.weekprofile_temperature_time_selector, viewGroup, false);
 
-                final TimePicker timePicker = (TimePicker) contentView.findViewById(R.id.time);
+                final TimePicker timePicker = (TimePicker) contentView.findViewById(R.id.timePicker);
                 timePicker.setIs24HourView(true);
                 String time = interval.getChangedSwitchTime();
 
@@ -165,7 +165,7 @@ public class IntervalWeekProfileAdapter
                     timePicker.setEnabled(false);
                 }
 
-                LinearLayout layout = (LinearLayout) contentView.findViewById(R.id.layout);
+                LinearLayout layout = (LinearLayout) contentView.findViewById(R.id.tableLayout);
 
                 TableRow updateRow = (TableRow) contentView.findViewById(R.id.updateRow);
                 final TemperatureChangeTableRow temperatureChangeTableRow = new

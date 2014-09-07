@@ -26,8 +26,9 @@ package li.klass.fhem.activities.graph;
 
 import android.content.Context;
 
-import java.util.ArrayList;
-import java.util.Date;
+import org.jetbrains.annotations.NotNull;
+import org.joda.time.DateTime;
+
 import java.util.Iterator;
 import java.util.List;
 
@@ -38,12 +39,14 @@ import li.klass.fhem.service.graph.GraphEntry;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.service.graph.description.SeriesType;
 
+import static com.google.common.collect.Lists.newArrayList;
+
 public class ChartData implements Comparable<ChartData>, Iterable<ViewableChartSeries> {
 
     private final Context context;
     private ChartSeriesDescription seriesDescription;
     private List<GraphEntry> graphData;
-    private List<AdditionalChart> additionalCharts = new ArrayList<AdditionalChart>();
+    private List<AdditionalChart> additionalCharts = newArrayList();
 
     private double minimum = Double.MAX_VALUE;
     private double maximum = Double.MIN_VALUE;
@@ -61,19 +64,19 @@ public class ChartData implements Comparable<ChartData>, Iterable<ViewableChartS
         if (!chartSeriesDescription.isShowDiscreteValues()) return data;
 
         float previousValue = -1;
-        List<GraphEntry> newData = new ArrayList<GraphEntry>();
+        List<GraphEntry> newData = newArrayList();
 
         for (GraphEntry entry : data) {
-            Date date = entry.getDate();
+            DateTime date = entry.getDate();
             float value = entry.getValue();
 
             if (previousValue == -1) {
                 previousValue = value;
             }
 
-            newData.add(new GraphEntry(new Date(date.getTime() - 1), previousValue));
+            newData.add(new GraphEntry(date.minusMillis(1), previousValue));
             newData.add(new GraphEntry(date, value));
-            newData.add(new GraphEntry(new Date(date.getTime() + 1), value));
+            newData.add(new GraphEntry(date.plusMillis(1), value));
 
             previousValue = value;
         }
@@ -116,18 +119,18 @@ public class ChartData implements Comparable<ChartData>, Iterable<ViewableChartS
         return maximum;
     }
 
-    public Date getMinimumX() {
+    public DateTime getMinimumX() {
         if (graphData.size() == 0) return null;
         return graphData.get(0).getDate();
     }
 
-    public Date getMaximumX() {
+    public DateTime getMaximumX() {
         if (graphData.size() == 0) return null;
         return graphData.get(graphData.size() - 1).getDate();
     }
 
     @Override
-    public int compareTo(ChartData chartData) {
+    public int compareTo(@NotNull ChartData chartData) {
         return seriesDescription.getColumnName().compareTo(chartData.getSeriesDescription().getColumnName());
     }
 
@@ -173,7 +176,7 @@ public class ChartData implements Comparable<ChartData>, Iterable<ViewableChartS
         return additionalCharts.size() + 1;
     }
 
-    public void handleMinMax(Date minimumX, Date maximumX, double minimumY, double maximumY) {
+    public void handleMinMax(DateTime minimumX, DateTime maximumX) {
         if (seriesDescription.isShowDiscreteValues()) {
             GraphEntry first = graphData.get(0);
             GraphEntry last = graphData.get(graphData.size() - 1);
