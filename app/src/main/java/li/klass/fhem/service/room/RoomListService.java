@@ -328,6 +328,8 @@ public class RoomListService extends AbstractService {
 
     private void fillHiddenRoomsAndHiddenGroups(RoomDeviceList newRoomDeviceList,
                                                 FHEMWEBDevice fhemwebDevice) {
+        if (newRoomDeviceList == null) return;
+
         newRoomDeviceList.setHiddenGroups(fhemwebDevice.getHiddenGroups());
         newRoomDeviceList.setHiddenRooms(fhemwebDevice.getHiddenRooms());
     }

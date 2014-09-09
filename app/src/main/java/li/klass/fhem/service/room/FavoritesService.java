@@ -42,8 +42,6 @@ import li.klass.fhem.service.connection.ConnectionService;
 public class FavoritesService {
     private static final String PREFERENCES_NAME = "favorites";
     @Inject
-    ConnectionService connectionService;
-    @Inject
     RoomListService roomListService;
     @Inject
     @ForApplication

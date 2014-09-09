@@ -118,7 +118,7 @@ public class RoomDeviceList implements Serializable, Cloneable {
     public <T extends Device> List<T> getDevicesOfType(DeviceType deviceType) {
         Set<Device> allDevices = getAllDevices();
         List<T> deviceList = newArrayList();
-        for (Device device : allDevices) {
+        for (Device device : newArrayList(allDevices)) {
             if (getDeviceTypeFor(device) != deviceType) {
                 continue;
             }

@@ -56,17 +56,9 @@ import static li.klass.fhem.constants.PreferenceKeys.GCM_REGISTRATION_ID;
 public class GCMIntentService extends GCMBaseIntentService {
     private static final String TAG = GCMIntentService.class.getName();
 
-    @Inject
-    ApplicationProperties applicationProperties;
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        ((AndFHEMApplication) getApplication()).inject(this);
-    }
-
     @Override
     protected void onRegistered(Context context, String registrationId) {
+        ApplicationProperties applicationProperties = AndFHEMApplication.getApplication().getGraph().get(ApplicationProperties.class);
         applicationProperties.setSharedPreference(GCM_REGISTRATION_ID, registrationId);
         Log.i(TAG, "Device registered: regId = " + registrationId);
 
@@ -171,13 +163,13 @@ public class GCMIntentService extends GCMBaseIntentService {
 
     @Override
     protected boolean onRecoverableError(Context context, String errorId) {
-        // log message
         Log.i(TAG, "Received recoverable error: " + errorId);
         return super.onRecoverableError(context, errorId);
     }
 
     @Override
     protected String[] getSenderIds(Context context) {
+        ApplicationProperties applicationProperties = AndFHEMApplication.getApplication().getGraph().get(ApplicationProperties.class);
         String projectId = applicationProperties.getStringSharedPreference(GCM_PROJECT_ID, null);
         if (StringUtil.isBlank(projectId)) {
             return new String[]{};

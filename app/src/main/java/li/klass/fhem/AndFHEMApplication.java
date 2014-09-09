@@ -165,6 +165,10 @@ public class AndFHEMApplication extends Application {
         return false;
     }
 
+    public ObjectGraph getGraph() {
+        return graph;
+    }
+
     public boolean isUpdate() {
         return isUpdate;
     }
