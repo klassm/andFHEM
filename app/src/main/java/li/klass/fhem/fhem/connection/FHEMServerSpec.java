@@ -24,7 +24,11 @@
 
 package li.klass.fhem.fhem.connection;
 
+import android.util.Log;
+
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 
@@ -142,7 +146,7 @@ public class FHEMServerSpec implements Comparable<FHEMServerSpec>, Serializable 
     }
 
     @Override
-    public int compareTo(FHEMServerSpec fhemServerSpec) {
+    public int compareTo(@NotNull FHEMServerSpec fhemServerSpec) {
         return name.compareTo(fhemServerSpec.name);
     }
 
@@ -158,6 +162,11 @@ public class FHEMServerSpec implements Comparable<FHEMServerSpec>, Serializable 
 
     @Override
     public String toString() {
-        return ToStringBuilder.reflectionToString(this);
+        try {
+            return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE, false, FHEMServerSpec.class);
+        } catch (Exception e) {
+            Log.e(FHEMServerSpec.class.getName(), "cannot build toString()", e);
+            return "";
+        }
     }
 }

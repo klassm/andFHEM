@@ -36,6 +36,8 @@ import android.widget.TextView;
 
 import com.actionbarsherlock.app.ActionBar;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -66,7 +68,7 @@ public class AvailableConnectionDataAdapter extends ListDataAdapter<FHEMServerSp
         }
 
         @Override
-        public int compareTo(FHEMServerSpec fhemServerSpec) {
+        public int compareTo(@NotNull FHEMServerSpec fhemServerSpec) {
             return 1;
         }
     }
@@ -115,7 +117,7 @@ public class AvailableConnectionDataAdapter extends ListDataAdapter<FHEMServerSp
                 if (resultCode == SUCCESS && resultData != null &&
                         resultData.containsKey(CONNECTION_LIST)) {
                     Serializable content = resultData.getSerializable(CONNECTION_LIST);
-                    if (! (content instanceof List)) {
+                    if (!(content instanceof List)) {
                         throw new IllegalArgumentException(CONNECTION_LIST + " always has to be a list!");
                     }
 
