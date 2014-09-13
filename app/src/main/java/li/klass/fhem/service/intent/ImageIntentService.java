@@ -53,8 +53,10 @@ public class ImageIntentService extends ConvenientIntentService {
             Bitmap bitmap = commandExecutionService.getBitmap(relativePath);
             if (bitmap == null) {
                 return STATE.ERROR;
+            } else {
+                sendSingleExtraResult(resultReceiver, ResultCodes.SUCCESS, BundleExtraKeys.IMAGE, bitmap);
+                return STATE.DONE;
             }
-            sendSingleExtraResult(resultReceiver, ResultCodes.SUCCESS, BundleExtraKeys.IMAGE, bitmap);
         }
         return STATE.ERROR;
     }

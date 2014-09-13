@@ -41,10 +41,12 @@ import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewAction;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.RemoteControlDevice;
-import li.klass.fhem.util.DisplayUtil;
 import li.klass.fhem.util.ImageUtil;
 
+import static li.klass.fhem.util.DisplayUtil.dpToPx;
+
 public class RemoteControlAdapter extends ToggleableAdapter<RemoteControlDevice> {
+
     public RemoteControlAdapter() {
         super(RemoteControlDevice.class);
     }
@@ -67,8 +69,10 @@ public class RemoteControlAdapter extends ToggleableAdapter<RemoteControlDevice>
         TableLayout tableLayout = (TableLayout) getInflater().inflate(R.layout.remote_control_layout, parent, false);
         assert tableLayout != null;
 
-        for (List<RemoteControlDevice.Entry> row : device.getRows()) {
-            tableLayout.addView(createTableRowForRemoteControlRow(row, context, device, layoutInflater, parent));
+        List<List<RemoteControlDevice.Entry>> rows = device.getRows();
+
+        for (List<RemoteControlDevice.Entry> row : rows) {
+            tableLayout.addView(createTableRowForRemoteControlRow(row, context, device, layoutInflater));
         }
 
         return tableLayout;
@@ -76,28 +80,25 @@ public class RemoteControlAdapter extends ToggleableAdapter<RemoteControlDevice>
 
     private TableRow createTableRowForRemoteControlRow(List<RemoteControlDevice.Entry> row,
                                                        Context context, RemoteControlDevice device,
-                                                       LayoutInflater layoutInflater, LinearLayout parent) {
+                                                       LayoutInflater layoutInflater) {
 
         TableRow tableRow = new TableRow(context);
 
         for (RemoteControlDevice.Entry entry : row) {
-            tableRow.addView(createImageViewFor(entry, context, device, layoutInflater, parent));
+            tableRow.addView(createImageViewFor(entry, context, device, layoutInflater, tableRow));
         }
 
         return tableRow;
     }
 
     private View createImageViewFor(final RemoteControlDevice.Entry entry, final Context context,
-                                    final RemoteControlDevice device, LayoutInflater layoutInflater,
-                                    LinearLayout parent) {
-        ImageButton imageButton = (ImageButton) layoutInflater.inflate(R.layout.remote_control_view,
-                parent, false);
-
-
-        int px = (int) DisplayUtil.dpToPx(50);
-        ImageUtil.loadImageFromFHEMAndSetIn(getContext(), imageButton, entry.getIconPath(), px, px);
-
+                                    final RemoteControlDevice device, LayoutInflater layoutInflater, TableRow tableRow) {
+        ImageButton imageButton = (ImageButton) layoutInflater.inflate(R.layout.remote_control_view, tableRow, false);
         assert imageButton != null;
+
+        int itemSizeInPx = (int) dpToPx(50);
+        ImageUtil.loadImageFromFHEMAndSetIn(getContext(), imageButton, entry.getIconPath(), itemSizeInPx, itemSizeInPx);
+
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

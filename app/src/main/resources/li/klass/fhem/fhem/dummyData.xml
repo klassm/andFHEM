@@ -47,7 +47,8 @@
 </_internal_>
 </_internal__LIST>
 <weblink_LIST>
-<weblink name="AndFHEM" state="initialized" sets="" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings htmlattr CUL_HM CUL_HM_map PRESENCE PRESENCE_map Presence Presence_map Steffen Steffen_map devStateIcon devStateStyle dummy dummy_map fp_Lindenhof icon ite0m18 item0 item0.4 item1 item10 item11 item12 item13 item14 item15 item16 item17 item19 item2 item20 item21 item22 item23 item24 item25 item26 item27 item28 item29 item3 item30 item31 item32 item4 item4.4 item4.5 item5 item6 item6.1 item7 item7.1 item8 item8.1 item8.2 item8.3 item8.4 item9 item9.1 lightSceneParamsToSave sortby structexclude webCmd">
+<weblink name="AndFHEM" state="initialized" sets=""
+         attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings htmlattr CUL_HM CUL_HM_map PRESENCE PRESENCE_map Presence Presence_map Steffen Steffen_map devStateIcon devStateStyle dummy dummy_map fp_Lindenhof icon ite0m18 item0 item0.4 item1 item10 item11 item12 item13 item14 item15 item16 item17 item19 item2 item20 item21 item22 item23 item24 item25 item26 item27 item28 item29 item3 item30 item31 item32 item4 item4.4 item4.5 item5 item6 item6.1 item7 item7.1 item8 item8.1 item8.2 item8.3 item8.4 item9 item9.1 lightSceneParamsToSave sortby structexclude webCmd">
     <INT key="DEF" value="iframe http://andFHEM.klass.li"/>
     <INT key="LINK" value="http://andFHEM.klass.li"/>
     <INT key="NAME" value="AndFHEM"/>
@@ -55,11 +56,14 @@
     <INT key="STATE" value="initialized"/>
     <INT key="TYPE" value="weblink"/>
     <INT key="WLTYPE" value="iframe"/>
-    <ATTR key="htmlattr" value="width=&quot;900&quot; height=&quot;400&quot; frameborder=&quot;0&quot; marginheight=&quot;400&quot; marginwidth=&quot;900&quot;"/>
+    <ATTR key="htmlattr"
+          value="width=&quot;900&quot; height=&quot;400&quot; frameborder=&quot;0&quot; marginheight=&quot;400&quot; marginwidth=&quot;900&quot;"/>
 </weblink>
 </weblink_LIST>
 <readingsProxy_LIST>
-<readingsProxy name="LED1a" state="Initialized" sets="rgb:colorpicker,RGB on off blink on-for-timer on-till off-for-timer intervals off-till" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings disable:1 getList setList getFn setFn valueFn event-on-change-reading event-on-update-reading event-min-interval stateFormat DMX_B DMX_G DMX_M DMX_R DMX_S devStateIcon devStateStyle fp_Groundfloor icon lightSceneParamsToSave sortby webCmd">
+<readingsProxy name="LED1a" state="Initialized"
+               sets="rgb:colorpicker,RGB on off blink on-for-timer on-till off-for-timer intervals off-till"
+               attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings disable:1 getList setList getFn setFn valueFn event-on-change-reading event-on-update-reading event-min-interval stateFormat DMX_B DMX_G DMX_M DMX_R DMX_S devStateIcon devStateStyle fp_Groundfloor icon lightSceneParamsToSave sortby webCmd">
     <INT key="DEF" value="RGB1:state"/>
     <INT key="DEVICE" value="RGB1"/>
     <INT key="NAME" value="LED1a"/>
@@ -69,16 +73,20 @@
     <INT key="STATE" value="Initialized"/>
     <INT key="TYPE" value="readingsProxy"/>
     <ATTR key="alias" value="Fenster 2"/>
-    <ATTR key="devStateIcon" value="{Color_devStateIcon (ReadingsVal($name,&quot;RGB&quot;,&quot;000000&quot;))}"/>
+    <ATTR key="devStateIcon"
+          value="{Color_devStateIcon (ReadingsVal($name,&quot;RGB&quot;,&quot;000000&quot;))}"/>
     <ATTR key="fp_Groundfloor" value="1000,1000,5"/>
-    <ATTR key="getFn" value="{fhem (&quot;get RGB1 rgb&quot;);fhem (&quot;setreading LED1a RGB &quot;.ReadingsVal(&quot;RGB1&quot;,&quot;rgb&quot;,&quot;000000&quot;));(ReadingsVal($name,&quot;RGB&quot;,&quot;000000&quot;),1) }"/>
+    <ATTR key="getFn"
+          value="{fhem (&quot;get RGB1 rgb&quot;);fhem (&quot;setreading LED1a RGB &quot;.ReadingsVal(&quot;RGB1&quot;,&quot;rgb&quot;,&quot;000000&quot;));(ReadingsVal($name,&quot;RGB&quot;,&quot;000000&quot;),1) }"/>
     <ATTR key="getList" value="rgb"/>
     <ATTR key="group" value="LEDs"/>
     <ATTR key="lightSceneParamsToSave" value="RGB -> rgb"/>
     <ATTR key="room" value="buero"/>
-    <ATTR key="setFn" value="{fhem (&quot;attr RGB1 DMX_R &quot;.hex(substr($ARGS,0,2)));fhem (&quot;attr RGB1 DMX_G &quot;.hex(substr($ARGS,2,2)));fhem (&quot;attr RGB1 DMX_B &quot;.hex(substr($ARGS,4,2)));fhem (&quot;set RGB1 rgb&quot;);fhem (&quot;setreading $name RGB $ARGS&quot;);fhem (&quot;setreading $name rgb $ARGS&quot;);return undef}"/>
+    <ATTR key="setFn"
+          value="{fhem (&quot;attr RGB1 DMX_R &quot;.hex(substr($ARGS,0,2)));fhem (&quot;attr RGB1 DMX_G &quot;.hex(substr($ARGS,2,2)));fhem (&quot;attr RGB1 DMX_B &quot;.hex(substr($ARGS,4,2)));fhem (&quot;set RGB1 rgb&quot;);fhem (&quot;setreading $name RGB $ARGS&quot;);fhem (&quot;setreading $name rgb $ARGS&quot;);return undef}"/>
     <ATTR key="setList" value="rgb:colorpicker,RGB on off"/>
     <ATTR key="webCmd" value="rgb:rgb FF0000:rgb C8FF12:rgb 0000FF:rgb 000000"/>
+    <ATTR key="webcmdDevice" value="true"/>
     <STATE key="RGB" value="000000" measured="2013-12-12 13:57:55"/>
     <STATE key="rgb" value="FF0000" measured="2013-12-11 00:14:30"/>
 </readingsProxy>
@@ -86,7 +94,8 @@
 </readingsProxy_LIST>
 
 <LaCrosse_LIST>
-<LaCrosse name="Temp_Bad" state="T: 22 H: 41" sets="" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev ignore:1 filterThreshold event-on-change-reading event-on-update-reading event-min-interval stateFormat devStateIcon devStateStyle icon sortby webCmd">
+<LaCrosse name="Temp_Bad" state="T: 22 H: 41" sets=""
+          attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev ignore:1 filterThreshold event-on-change-reading event-on-update-reading event-min-interval stateFormat devStateIcon devStateStyle icon sortby webCmd">
     <INT key="DEF" value="A8"/>
     <INT key="JeeLinkTemp_MSGCNT" value="8803"/>
     <INT key="JeeLinkTemp_RAWMSG" value="OK 9 168 1 4 196 41"/>
@@ -113,7 +122,8 @@
 </LaCrosse_LIST>
 
 <RPI_GPIO_LIST>
-<RPI_GPIO name="Pin11" state="on" sets="readValue" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings poll_interval loglevel:0,1,2,3,4,5 direction:input,output pud_resistor:off,up,down interrupt:none,falling,rising,both toggletostate:no,yes DbLogExclude devStateIcon devStateStyle icon item1 item10 item11 item12 item13 item14 item15 item16 item17 item18 item19 item2 item20 item3 item4 item5 item6 item7 item8 item9 sortby webCmd">
+<RPI_GPIO name="Pin11" state="on" sets="readValue"
+          attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings poll_interval loglevel:0,1,2,3,4,5 direction:input,output pud_resistor:off,up,down interrupt:none,falling,rising,both toggletostate:no,yes DbLogExclude devStateIcon devStateStyle icon item1 item10 item11 item12 item13 item14 item15 item16 item17 item18 item19 item2 item20 item3 item4 item5 item6 item7 item8 item9 sortby webCmd">
     <INT key="DEF" value="17"/>
     <INT key="EXCEPT_FD" value="23"/>
     <INT key="NAME" value="Pin11"/>
@@ -161,7 +171,8 @@
 </YAMAHA_AVR>
 </YAMAHA_AVR_LIST>
 <openweathermap_LIST>
-<openweathermap name="herleen" state="active" sets="stationById stationByGeo stationByName send:noArg"
+<openweathermap name="herleen" state="active"
+                sets="stationById stationByGeo stationByName send:noArg"
                 attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings do_not_notify:0,1 owoGetUrl owoSendUrl owoInterval:600,900,1800,3600 owoApiKey owoProxy owoStation owoUser owoUseXml:1,0 owoDebug:0,1 owoRaw:0,1 owoTimestamp:0,1 owoSrc00 owoSrc01 owoSrc02 owoSrc03 owoSrc04 owoSrc05 owoSrc06 owoSrc07 owoSrc08 owoSrc09 owoSrc10 owoSrc11 owoSrc12 owoSrc13 owoSrc14 owoSrc15 owoSrc16 owoSrc17 owoSrc18 owoSrc19 event-on-change-reading event-on-update-reading event-min-interval stateFormat devStateIcon devStateStyle icon invertState onOffDevice sortby toggleDevice webCmd">
     <INT key="NAME" value="herleen"/>
     <INT key="NR" value="38"/>
@@ -228,7 +239,8 @@
 </HUEDevice>
 </HUEDevice_LIST>
 <FBDECT_LIST>
-<FBDECT name="FB_dect1" state="off" sets="off on blink on-for-timer on-till off-for-timer intervals off-till"
+<FBDECT name="FB_dect1" state="off"
+        sets="off on blink on-for-timer on-till off-for-timer intervals off-till"
         attrs="room group comment alias eventMap userReadings IODev do_not_notify:1,0 ignore:1,0 dummy:1,0 showtime:1,0 loglevel:0,1,2,3,4,5,6 event-on-change-reading event-on-update-reading event-min-interval stateFormat model:&quot;AVM,&quot;AVM,200&quot;,546E&quot;,FRITZ!Dect,FRITZ!Dect,Powerline devStateIcon icon sortby webCmd">
     <INT key="DEF" value="16 switch"/>
     <INT key="LASTInputDev" value="fbaha"/>
@@ -255,7 +267,8 @@
 </FBDECT>
 </FBDECT_LIST>
 <FRM_OUT_LIST>
-<FRM_OUT name="Alarm" state="on" sets="Wechseln on off blink on-for-timer on-till off-for-timer intervals off-till"
+<FRM_OUT name="Alarm" state="on"
+         sets="Wechseln on off blink on-for-timer on-till off-for-timer intervals off-till"
          attrs="room group comment alias eventMap userReadings restoreOnReconnect:on,off restoreOnStartup:on,off IODev loglevel:0,1,2,3,4,5 event-on-change-reading event-on-update-reading event-min-interval stateFormat devStateIcon icon sortby webCmd">
     <INT key="DEF" value="18"/>
     <INT key="NAME" value="Alarm"/>
@@ -331,7 +344,8 @@
          value="CNT: 426.16 kWh    -    CUR: 81 W    -    Day: 1.04 (4.79) kWh    -    Month: 5.83 (13.85) kWh   -    T: 591 s"/>
     <INT key="TYPE" value="ESA2000"/>
     <INT key="IODev" value="COC"/>
-    <ATTR key="event-on-update-reading" value="state,actual_ticks,diff_ticks,actual,raw_total,.*_last"/>
+    <ATTR key="event-on-update-reading"
+          value="state,actual_ticks,diff_ticks,actual,raw_total,.*_last"/>
     <ATTR key="model" value="esa2000-led"/>
     <ATTR key="room" value="dach"/>
     <STATE key="actual" value="0.0812182741116751" measured="2013-06-02 15:44:46"/>
@@ -352,11 +366,13 @@
     <STATE key="month_last" value="13.8533333333334" measured="2013-06-01 00:06:55"/>
     <STATE key="month_lr" value="5.82666666666665" measured="2013-06-02 15:44:46"/>
     <STATE key="rate" value="LR" measured="2013-06-02 15:44:46"/>
-    <STATE key="raw" value="CNT: 59- CUM: 31962 CUR: 0  TICKS: 75 LR" measured="2013-06-02 15:44:46"/>
+    <STATE key="raw" value="CNT: 59- CUM: 31962 CUR: 0  TICKS: 75 LR"
+           measured="2013-06-02 15:44:46"/>
     <STATE key="raw_total" value="426.16" measured="2013-06-02 15:44:46"/>
     <STATE key="repeat" value="-" measured="2013-06-02 15:44:46"/>
     <STATE key="sequence" value="59" measured="2013-06-02 15:44:46"/>
-    <STATE key="state" value="CNT: 59- CUM: 19.680 CUR: 0.081 TICKS: 75 LR" measured="2013-06-02 15:44:46"/>
+    <STATE key="state" value="CNT: 59- CUM: 19.680 CUR: 0.081 TICKS: 75 LR"
+           measured="2013-06-02 15:44:46"/>
     <STATE key="ticks" value="75" measured="2013-06-02 15:44:46"/>
     <STATE key="total" value="19.6799999999997" measured="2013-06-02 15:44:46"/>
     <STATE key="total_ticks" value="31962" measured="2013-06-02 15:44:46"/>
@@ -927,7 +943,8 @@
 </UNIRoll_LIST>
 
 <EnOcean_LIST>
-<EnOcean name="Licht_AZ" state="67" sets="dim0% dim100% dim:slider,0,1,100 B0 BI teach" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev do_not_notify:1,0 ignore:0,1 dummy:0,1 showtime:1,0 actualTemp angleMax:slider,-180,20,180 angleMin:slider,-180,20,180 angleTime:0,1,2,3,4,5,6 comMode:biDir,uniDir destinationID devChannel dimValueOn gwCmd:blindCmd,controlVar,dimming,fanStage,setpointBasic,setpointShift,switching humidityRefDev manufID:001,002,003,004,005,006,007,008,009,00A,00B,00C,00D,00E,00F,010,011,012,013,014,015,016,017,018,019,01A,01B,01C,7FF model:other,FAE14,FHK14,FSB14,FSB61,FSB70,FSM12,FSM61,FT55,FTS12 rampTime repeatingAllowed:yes,no scaleDecimals:0,1,2,3,4,5,6,7,8,9 scaleMax scaleMin securityLevel:unencrypted sensorMode:switch,pushbutton shutTime shutTimeCloses subDef subDef0 subDefI subType:COSensor.01,FRW,MD15,PM101,autoMeterReading.00,autoMeterReading.01,autoMeterReading.02,autoMeterReading.03,contact,digitalInput.01,digitalInput.02,environmentApp,gateway,keycard,lightCtrlState.01,lightCtrlState.02,lightSensor.01,lightSensor.02,lightSensor.03,lightTempOccupSensor.01,lightTempOccupSensor.02,lightTempOccupSensor.03,manufProfile,multiFuncSensor,occupSensor.01,occupSensor.02,occupSensor.03,particlesSensor.01,radonSensor.01,raw,roomSensorControl.01,roomSensorControl.02,roomSensorControl.05,roomSensorControl.18,roomSensorControl.19,roomSensorControl.1A,roomSensorControl.1B,roomSensorControl.1C,roomSensorControl.1D,roomSensorControl.1F,sensor,shutterCtrlState.01,switch,tempCtrlState.01,tempHumiCO2Sensor.01,tempHumiSensor.02,tempSensor.01,tempSensor.02,tempSensor.03,tempSensor.04,tempSensor.05,tempSensor.06,tempSensor.07,tempSensor.08,tempSensor.09,tempSensor.0A,tempSensor.0B,tempSensor.10,tempSensor.11,tempSensor.12,tempSensor.13,tempSensor.14,tempSensor.15,temp Sensor.16,tempSensor.17,tempSensor.18,tempSensor.19,tempSensor.1A,tempSensor.1B,tempSensor.20,tempSensor.30,vocSensor.01,windowHandle subTypeSet:COSensor.01,FRW,MD15,PM101,autoMeterReading.00,autoMeterReading.01,autoMeterReading.02,autoMeterReading.03,contact,digitalInput.01,digitalInput.02,environmentApp,gateway,keycard,lightCtrlState.01,lightCtrlState.02,lightSensor.01,lightSensor.02,lightSensor.03,lightTempOccupSensor.01,lightTempOccupSensor.02,lightTempOccupSensor.03,manufProfile,multiFuncSensor,occupSensor.01,occupSensor.02,occupSensor.03,particlesSensor.01,radonSensor.01,raw,roomSensorControl.01,roomSensorControl.02,roomSensorControl.05,roomSensorControl.18,roomSensorControl.19,roomSensorControl.1A,roomSensorControl.1B,roomSensorControl.1C,roomSensorControl.1D,roomSensorControl.1F,sensor,shutterCtrlState.01,switch,tempCtrlState.01,tempHumiCO2Sensor.01,tempHumiSensor.02,tempSensor.01,tempSensor.02,tempSensor.03,tempSensor.04,tempSensor.05,tempSensor.06,tempSensor.07,tempSensor.08,tempSensor.09,tempSensor.0A,tempSensor.0B,tempSensor.10,tempSensor.11,tempSensor.12,tempSensor.13,tempSensor.14,tempSensor.15,t empSensor.16,tempSensor.17,tempSensor.18,tempSensor.19,tempSensor.1A,tempSensor.1B,tempSensor.20,tempSensor.30,vocSensor.01,windowHandle switchMode:switch,pushbutton switchType:direction,universal,central temperatureRefDev event-on-change-reading event-on-update-reading event-min-interval stateFormat devStateIcon devStateStyle fp_Franzel_EG icon room_map sortby structexclude webCmd">
+<EnOcean name="Licht_AZ" state="67" sets="dim0% dim100% dim:slider,0,1,100 B0 BI teach"
+         attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev do_not_notify:1,0 ignore:0,1 dummy:0,1 showtime:1,0 actualTemp angleMax:slider,-180,20,180 angleMin:slider,-180,20,180 angleTime:0,1,2,3,4,5,6 comMode:biDir,uniDir destinationID devChannel dimValueOn gwCmd:blindCmd,controlVar,dimming,fanStage,setpointBasic,setpointShift,switching humidityRefDev manufID:001,002,003,004,005,006,007,008,009,00A,00B,00C,00D,00E,00F,010,011,012,013,014,015,016,017,018,019,01A,01B,01C,7FF model:other,FAE14,FHK14,FSB14,FSB61,FSB70,FSM12,FSM61,FT55,FTS12 rampTime repeatingAllowed:yes,no scaleDecimals:0,1,2,3,4,5,6,7,8,9 scaleMax scaleMin securityLevel:unencrypted sensorMode:switch,pushbutton shutTime shutTimeCloses subDef subDef0 subDefI subType:COSensor.01,FRW,MD15,PM101,autoMeterReading.00,autoMeterReading.01,autoMeterReading.02,autoMeterReading.03,contact,digitalInput.01,digitalInput.02,environmentApp,gateway,keycard,lightCtrlState.01,lightCtrlState.02,lightSensor.01,lightSensor.02,lightSensor.03,lightTempOccupSensor.01,lightTempOccupSensor.02,lightTempOccupSensor.03,manufProfile,multiFuncSensor,occupSensor.01,occupSensor.02,occupSensor.03,particlesSensor.01,radonSensor.01,raw,roomSensorControl.01,roomSensorControl.02,roomSensorControl.05,roomSensorControl.18,roomSensorControl.19,roomSensorControl.1A,roomSensorControl.1B,roomSensorControl.1C,roomSensorControl.1D,roomSensorControl.1F,sensor,shutterCtrlState.01,switch,tempCtrlState.01,tempHumiCO2Sensor.01,tempHumiSensor.02,tempSensor.01,tempSensor.02,tempSensor.03,tempSensor.04,tempSensor.05,tempSensor.06,tempSensor.07,tempSensor.08,tempSensor.09,tempSensor.0A,tempSensor.0B,tempSensor.10,tempSensor.11,tempSensor.12,tempSensor.13,tempSensor.14,tempSensor.15,temp Sensor.16,tempSensor.17,tempSensor.18,tempSensor.19,tempSensor.1A,tempSensor.1B,tempSensor.20,tempSensor.30,vocSensor.01,windowHandle subTypeSet:COSensor.01,FRW,MD15,PM101,autoMeterReading.00,autoMeterReading.01,autoMeterReading.02,autoMeterReading.03,contact,digitalInput.01,digitalInput.02,environmentApp,gateway,keycard,lightCtrlState.01,lightCtrlState.02,lightSensor.01,lightSensor.02,lightSensor.03,lightTempOccupSensor.01,lightTempOccupSensor.02,lightTempOccupSensor.03,manufProfile,multiFuncSensor,occupSensor.01,occupSensor.02,occupSensor.03,particlesSensor.01,radonSensor.01,raw,roomSensorControl.01,roomSensorControl.02,roomSensorControl.05,roomSensorControl.18,roomSensorControl.19,roomSensorControl.1A,roomSensorControl.1B,roomSensorControl.1C,roomSensorControl.1D,roomSensorControl.1F,sensor,shutterCtrlState.01,switch,tempCtrlState.01,tempHumiCO2Sensor.01,tempHumiSensor.02,tempSensor.01,tempSensor.02,tempSensor.03,tempSensor.04,tempSensor.05,tempSensor.06,tempSensor.07,tempSensor.08,tempSensor.09,tempSensor.0A,tempSensor.0B,tempSensor.10,tempSensor.11,tempSensor.12,tempSensor.13,tempSensor.14,tempSensor.15,t empSensor.16,tempSensor.17,tempSensor.18,tempSensor.19,tempSensor.1A,tempSensor.1B,tempSensor.20,tempSensor.30,vocSensor.01,windowHandle switchMode:switch,pushbutton switchType:direction,universal,central temperatureRefDev event-on-change-reading event-on-update-reading event-min-interval stateFormat devStateIcon devStateStyle fp_Franzel_EG icon room_map sortby structexclude webCmd">
     <INT key="DEF" value="FFAABCDE"/>
     <INT key="LASTInputDev" value="RpiTCM"/>
     <INT key="MSGCNT" value="7"/>
@@ -943,7 +960,8 @@
     <INT key="STATE" value="67"/>
     <INT key="TYPE" value="EnOcean"/>
     <INT key="IODev" value="RpiTCM"/>
-    <ATTR key="devStateIcon" value="0.*:FS20.off 18.*:dim18% 2\d.*:dim25% 3\d.*:dim31% 4\d.*:dim43% 5\d.*:dim50% 6\d.*:dim62% 7\d.*:dim75% 8\d.*:dim87% 9\d.*:dim93% 1\d.*:dim100%"/>
+    <ATTR key="devStateIcon"
+          value="0.*:FS20.off 18.*:dim18% 2\d.*:dim25% 3\d.*:dim31% 4\d.*:dim43% 5\d.*:dim50% 6\d.*:dim62% 7\d.*:dim75% 8\d.*:dim87% 9\d.*:dim93% 1\d.*:dim100%"/>
     <ATTR key="eventMap" value="off:dim0% on:dim100%"/>
     <ATTR key="fp_Franzel_EG" value="175,390,5,"/>
     <ATTR key="gwCmd" value="dimming"/>
@@ -976,7 +994,8 @@
     <ATTR key="subType" value="switch"/>
     <STATE key="state" value="on" measured="2012-11-05 19:26:10"/>
 </EnOcean>
-<EnOcean name="Eltako_Switch" state="BI" sets="off on B0 BI teach" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev do_not_notify:1,0 ignore:0,1 dummy:0,1 showtime:1,0 actualTemp angleMax:slider,-180,20,180 angleMin:slider,-180,20,180 angleTime:0,1,2,3,4,5,6 comMode:biDir,uniDir destinationID devChannel dimValueOn gwCmd:blindCmd,controlVar,dimming,fanStage,setpointBasic,setpointShift,switching humidityRefDev manufID:001,002,003,004,005,006,007,008,009,00A,00B,00C,00D,00E,00F,010,011,012,013,014,015,016,017,018,019,01A,01B,01C,7FF model:other,FAE14,FHK14,FSB14,FSB61,FSB70,FSM12,FSM61,FT55,FTS12 rampTime repeatingAllowed:yes,no scaleDecimals:0,1,2,3,4,5,6,7,8,9 scaleMax scaleMin securityLevel:unencrypted sensorMode:switch,pushbutton shutTime shutTimeCloses subDef subDef0 subDefI subType:COSensor.01,FRW,MD15,PM101,autoMeterReading.00,autoMeterReading.01,autoMeterReading.02,autoMeterReading.03,contact,digitalInput.01,digitalInput.02,environmentApp,gateway,keycard,lightCtrlState.01,lightCtrlState.02,lightSensor.01,lightSensor.02,lightSensor.03,lightTempOccupSensor.01,lightTempOccupSensor.02,lightTempOccupSensor.03,manufProfile,multiFuncSensor,occupSensor.01,occupSensor.02,occupSensor.03,particlesSensor.01,radonSensor.01,raw,roomSensorControl.01,roomSensorControl.02,roomSensorControl.05,roomSensorControl.18,roomSensorControl.19,roomSensorControl.1A,roomSensorControl.1B,roomSensorControl.1C,roomSensorControl.1D,roomSensorControl.1F,sensor,shutterCtrlState.01,switch,tempCtrlState.01,tempHumiCO2Sensor.01,tempHumiSensor.02,tempSensor.01,tempSensor.02,tempSensor.03,tempSensor.04,tempSensor.05,tempSensor.06,tempSensor.07,tempSensor.08,tempSensor.09,tempSensor.0A,tempSensor.0B,tempSensor.10,tempSensor.11,tempSensor.12,tempSensor.13,tempSensor.14,tempSensor.15,te mpSensor.16,tempSensor.17,tempSensor.18,tempSensor.19,tempSensor.1A,tempSensor.1B,tempSensor.20,tempSensor.30,vocSensor.01,windowHandle subTypeSet:COSensor.01,FRW,MD15,PM101,autoMeterReading.00,autoMeterReading.01,autoMeterReading.02,autoMeterReading.03,contact,digitalInput.01,digitalInput.02,environmentApp,gateway,keycard,lightCtrlState.01,lightCtrlState.02,lightSensor.01,lightSensor.02,lightSensor.03,lightTempOccupSensor.01,lightTempOccupSensor.02,lightTempOccupSensor.03,manufProfile,multiFuncSensor,occupSensor.01,occupSensor.02,occupSensor.03,particlesSensor.01,radonSensor.01,raw,roomSensorControl.01,roomSensorControl.02,roomSensorControl.05,roomSensorControl.18,roomSensorControl.19,roomSensorControl.1A,roomSensorControl.1B,roomSensorControl.1C,roomSensorControl.1D,roomSensorControl.1F,sensor,shutterCtrlState.01,switch,tempCtrlState.01,tempHumiCO2Sensor.01,tempHumiSensor.02,tempSensor.01,tempSensor.02,tempSensor.03,tempSensor.04,tempSensor.05,tempSensor.06,tempSensor.07,tempSensor.08,tempSensor.09,tempSensor.0A,tempSensor.0B,tempSensor.10,tempSensor.11,tempSensor.12,tempSensor.13,tempSensor.14,tempSensor.15 ,tempSensor.16,tempSensor.17,tempSensor.18,tempSensor.19,tempSensor.1A,tempSensor.1B,tempSensor.20,tempSensor.30,vocSensor.01,windowHandle switchMode:switch,pushbutton switchType:direction,universal,central temperatureRefDev event-on-change-reading event-on-update-reading event-min-interval stateFormat devStateIcon devStateStyle fp_Test_EG icon room_map sortby structexclude webCmd">
+<EnOcean name="Eltako_Switch" state="BI" sets="off on B0 BI teach"
+         attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev do_not_notify:1,0 ignore:0,1 dummy:0,1 showtime:1,0 actualTemp angleMax:slider,-180,20,180 angleMin:slider,-180,20,180 angleTime:0,1,2,3,4,5,6 comMode:biDir,uniDir destinationID devChannel dimValueOn gwCmd:blindCmd,controlVar,dimming,fanStage,setpointBasic,setpointShift,switching humidityRefDev manufID:001,002,003,004,005,006,007,008,009,00A,00B,00C,00D,00E,00F,010,011,012,013,014,015,016,017,018,019,01A,01B,01C,7FF model:other,FAE14,FHK14,FSB14,FSB61,FSB70,FSM12,FSM61,FT55,FTS12 rampTime repeatingAllowed:yes,no scaleDecimals:0,1,2,3,4,5,6,7,8,9 scaleMax scaleMin securityLevel:unencrypted sensorMode:switch,pushbutton shutTime shutTimeCloses subDef subDef0 subDefI subType:COSensor.01,FRW,MD15,PM101,autoMeterReading.00,autoMeterReading.01,autoMeterReading.02,autoMeterReading.03,contact,digitalInput.01,digitalInput.02,environmentApp,gateway,keycard,lightCtrlState.01,lightCtrlState.02,lightSensor.01,lightSensor.02,lightSensor.03,lightTempOccupSensor.01,lightTempOccupSensor.02,lightTempOccupSensor.03,manufProfile,multiFuncSensor,occupSensor.01,occupSensor.02,occupSensor.03,particlesSensor.01,radonSensor.01,raw,roomSensorControl.01,roomSensorControl.02,roomSensorControl.05,roomSensorControl.18,roomSensorControl.19,roomSensorControl.1A,roomSensorControl.1B,roomSensorControl.1C,roomSensorControl.1D,roomSensorControl.1F,sensor,shutterCtrlState.01,switch,tempCtrlState.01,tempHumiCO2Sensor.01,tempHumiSensor.02,tempSensor.01,tempSensor.02,tempSensor.03,tempSensor.04,tempSensor.05,tempSensor.06,tempSensor.07,tempSensor.08,tempSensor.09,tempSensor.0A,tempSensor.0B,tempSensor.10,tempSensor.11,tempSensor.12,tempSensor.13,tempSensor.14,tempSensor.15,te mpSensor.16,tempSensor.17,tempSensor.18,tempSensor.19,tempSensor.1A,tempSensor.1B,tempSensor.20,tempSensor.30,vocSensor.01,windowHandle subTypeSet:COSensor.01,FRW,MD15,PM101,autoMeterReading.00,autoMeterReading.01,autoMeterReading.02,autoMeterReading.03,contact,digitalInput.01,digitalInput.02,environmentApp,gateway,keycard,lightCtrlState.01,lightCtrlState.02,lightSensor.01,lightSensor.02,lightSensor.03,lightTempOccupSensor.01,lightTempOccupSensor.02,lightTempOccupSensor.03,manufProfile,multiFuncSensor,occupSensor.01,occupSensor.02,occupSensor.03,particlesSensor.01,radonSensor.01,raw,roomSensorControl.01,roomSensorControl.02,roomSensorControl.05,roomSensorControl.18,roomSensorControl.19,roomSensorControl.1A,roomSensorControl.1B,roomSensorControl.1C,roomSensorControl.1D,roomSensorControl.1F,sensor,shutterCtrlState.01,switch,tempCtrlState.01,tempHumiCO2Sensor.01,tempHumiSensor.02,tempSensor.01,tempSensor.02,tempSensor.03,tempSensor.04,tempSensor.05,tempSensor.06,tempSensor.07,tempSensor.08,tempSensor.09,tempSensor.0A,tempSensor.0B,tempSensor.10,tempSensor.11,tempSensor.12,tempSensor.13,tempSensor.14,tempSensor.15 ,tempSensor.16,tempSensor.17,tempSensor.18,tempSensor.19,tempSensor.1A,tempSensor.1B,tempSensor.20,tempSensor.30,vocSensor.01,windowHandle switchMode:switch,pushbutton switchType:direction,universal,central temperatureRefDev event-on-change-reading event-on-update-reading event-min-interval stateFormat devStateIcon devStateStyle fp_Test_EG icon room_map sortby structexclude webCmd">
     <INT key="DEF" value="FFABCDEF"/>
     <INT key="LASTInputDev" value="RpiTCM"/>
     <INT key="MSGCNT" value="8"/>
@@ -1006,7 +1025,9 @@
     <STATE key="channelB" value="BI" measured="2013-11-05 22:46:41"/>
     <STATE key="state" value="BI" measured="2013-11-05 22:46:41"/>
 </EnOcean>
-<EnOcean name="Rollo_Test" state="closed" sets="Ab Auf Stop closes down opens position:slider,0,5,100 stop teach up" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev do_not_notify:1,0 ignore:0,1 dummy:0,1 showtime:1,0 actualTemp angleMax:slider,-180,20,180 angleMin:slider,-180,20,180 angleTime:0,1,2,3,4,5,6 comMode:biDir,uniDir destinationID devChannel dimValueOn gwCmd:blindCmd,controlVar,dimming,fanStage,setpointBasic,setpointShift,switching humidityRefDev manufID:001,002,003,004,005,006,007,008,009,00A,00B,00C,00D,00E,00F,010,011,012,013,014,015,016,017,018,019,01A,01B,01C,7FF model:other,FAE14,FHK14,FSB14,FSB61,FSB70,FSM12,FSM61,FT55,FTS12 rampTime repeatingAllowed:yes,no scaleDecimals:0,1,2,3,4,5,6,7,8,9 scaleMax scaleMin securityLevel:unencrypted sensorMode:switch,pushbutton shutTime shutTimeCloses subDef subDef0 subDefI subType:COSensor.01,FRW,MD15,PM101,autoMeterReading.00,autoMeterReading.01,autoMeterReading.02,autoMeterReading.03,contact,digitalInput.01,digitalInput.02,environmentApp,gateway,keycard,lightCtrlState.01,lightCtrlState.02,lightSensor.01,lightSensor.02,lightSensor.03,lightTempOccupSensor.01,lightTempOccupSensor.02,lightTempOccupSensor.03,manufProfile,multiFuncSensor,occupSensor.01,occupSensor.02,occupSensor.03,particlesSensor.01,radonSensor.01,raw,roomSensorControl.01,roomSensorControl.02,roomSensorControl.05,roomSensorControl.18,roomSensorControl.19,roomSensorControl.1A,roomSensorControl.1B,roomSensorControl.1C,roomSensorControl.1D,roomSensorControl.1F,sensor,shutterCtrlState.01,switch,tempCtrlState.01,tempHumiCO2Sensor.01,tempHumiSensor.02,tempSensor.01,tempSensor.02,tempSensor.03,tempSensor.04,tempSensor.05,tempSensor.06,tempSensor.07,tempSensor.08,tempSensor.09,tempSensor.0A,tempSensor.0B,tempSensor.10,tempSensor.11,tempSensor.12,tempSensor.13,tempSensor.14,tempSensor.15,te mpSensor.16,tempSensor.17,tempSensor.18,tempSensor.19,tempSensor.1A,tempSensor.1B,tempSensor.20,tempSensor.30,vocSensor.01,windowHandle subTypeSet:COSensor.01,FRW,MD15,PM101,autoMeterReading.00,autoMeterReading.01,autoMeterReading.02,autoMeterReading.03,contact,digitalInput.01,digitalInput.02,environmentApp,gateway,keycard,lightCtrlState.01,lightCtrlState.02,lightSensor.01,lightSensor.02,lightSensor.03,lightTempOccupSensor.01,lightTempOccupSensor.02,lightTempOccupSensor.03,manufProfile,multiFuncSensor,occupSensor.01,occupSensor.02,occupSensor.03,particlesSensor.01,radonSensor.01,raw,roomSensorControl.01,roomSensorControl.02,roomSensorControl.05,roomSensorControl.18,roomSensorControl.19,roomSensorControl.1A,roomSensorControl.1B,roomSensorControl.1C,roomSensorControl.1D,roomSensorControl.1F,sensor,shutterCtrlState.01,switch,tempCtrlState.01,tempHumiCO2Sensor.01,tempHumiSensor.02,tempSensor.01,tempSensor.02,tempSensor.03,tempSensor.04,tempSensor.05,tempSensor.06,tempSensor.07,tempSensor.08,tempSensor.09,tempSensor.0A,tempSensor.0B,tempSensor.10,tempSensor.11,tempSensor.12,tempSensor.13,tempSensor.14,tempSensor.15 ,tempSensor.16,tempSensor.17,tempSensor.18,tempSensor.19,tempSensor.1A,tempSensor.1B,tempSensor.20,tempSensor.30,vocSensor.01,windowHandle switchMode:switch,pushbutton switchType:direction,universal,central temperatureRefDev event-on-change-reading event-on-update-reading event-min-interval stateFormat devStateIcon devStateStyle fp_Test_EG icon room_map sortby structexclude webCmd">
+<EnOcean name="Rollo_Test" state="closed"
+         sets="Ab Auf Stop closes down opens position:slider,0,5,100 stop teach up"
+         attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev do_not_notify:1,0 ignore:0,1 dummy:0,1 showtime:1,0 actualTemp angleMax:slider,-180,20,180 angleMin:slider,-180,20,180 angleTime:0,1,2,3,4,5,6 comMode:biDir,uniDir destinationID devChannel dimValueOn gwCmd:blindCmd,controlVar,dimming,fanStage,setpointBasic,setpointShift,switching humidityRefDev manufID:001,002,003,004,005,006,007,008,009,00A,00B,00C,00D,00E,00F,010,011,012,013,014,015,016,017,018,019,01A,01B,01C,7FF model:other,FAE14,FHK14,FSB14,FSB61,FSB70,FSM12,FSM61,FT55,FTS12 rampTime repeatingAllowed:yes,no scaleDecimals:0,1,2,3,4,5,6,7,8,9 scaleMax scaleMin securityLevel:unencrypted sensorMode:switch,pushbutton shutTime shutTimeCloses subDef subDef0 subDefI subType:COSensor.01,FRW,MD15,PM101,autoMeterReading.00,autoMeterReading.01,autoMeterReading.02,autoMeterReading.03,contact,digitalInput.01,digitalInput.02,environmentApp,gateway,keycard,lightCtrlState.01,lightCtrlState.02,lightSensor.01,lightSensor.02,lightSensor.03,lightTempOccupSensor.01,lightTempOccupSensor.02,lightTempOccupSensor.03,manufProfile,multiFuncSensor,occupSensor.01,occupSensor.02,occupSensor.03,particlesSensor.01,radonSensor.01,raw,roomSensorControl.01,roomSensorControl.02,roomSensorControl.05,roomSensorControl.18,roomSensorControl.19,roomSensorControl.1A,roomSensorControl.1B,roomSensorControl.1C,roomSensorControl.1D,roomSensorControl.1F,sensor,shutterCtrlState.01,switch,tempCtrlState.01,tempHumiCO2Sensor.01,tempHumiSensor.02,tempSensor.01,tempSensor.02,tempSensor.03,tempSensor.04,tempSensor.05,tempSensor.06,tempSensor.07,tempSensor.08,tempSensor.09,tempSensor.0A,tempSensor.0B,tempSensor.10,tempSensor.11,tempSensor.12,tempSensor.13,tempSensor.14,tempSensor.15,te mpSensor.16,tempSensor.17,tempSensor.18,tempSensor.19,tempSensor.1A,tempSensor.1B,tempSensor.20,tempSensor.30,vocSensor.01,windowHandle subTypeSet:COSensor.01,FRW,MD15,PM101,autoMeterReading.00,autoMeterReading.01,autoMeterReading.02,autoMeterReading.03,contact,digitalInput.01,digitalInput.02,environmentApp,gateway,keycard,lightCtrlState.01,lightCtrlState.02,lightSensor.01,lightSensor.02,lightSensor.03,lightTempOccupSensor.01,lightTempOccupSensor.02,lightTempOccupSensor.03,manufProfile,multiFuncSensor,occupSensor.01,occupSensor.02,occupSensor.03,particlesSensor.01,radonSensor.01,raw,roomSensorControl.01,roomSensorControl.02,roomSensorControl.05,roomSensorControl.18,roomSensorControl.19,roomSensorControl.1A,roomSensorControl.1B,roomSensorControl.1C,roomSensorControl.1D,roomSensorControl.1F,sensor,shutterCtrlState.01,switch,tempCtrlState.01,tempHumiCO2Sensor.01,tempHumiSensor.02,tempSensor.01,tempSensor.02,tempSensor.03,tempSensor.04,tempSensor.05,tempSensor.06,tempSensor.07,tempSensor.08,tempSensor.09,tempSensor.0A,tempSensor.0B,tempSensor.10,tempSensor.11,tempSensor.12,tempSensor.13,tempSensor.14,tempSensor.15 ,tempSensor.16,tempSensor.17,tempSensor.18,tempSensor.19,tempSensor.1A,tempSensor.1B,tempSensor.20,tempSensor.30,vocSensor.01,windowHandle switchMode:switch,pushbutton switchType:direction,universal,central temperatureRefDev event-on-change-reading event-on-update-reading event-min-interval stateFormat devStateIcon devStateStyle fp_Test_EG icon room_map sortby structexclude webCmd">
     <INT key="DEF" value="FFABCDEF"/>
     <INT key="LASTInputDev" value="RpiTCM"/>
     <INT key="MSGCNT" value="6"/>
@@ -1103,7 +1124,8 @@
 </HOL>
 </HOL_LIST>
 <dummy_LIST>
-<dummy name="LED1" state="rgb FF0000" sets="rgb:colorpicker,RGB" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings setList event-on-change-reading event-on-update-reading event-min-interval stateFormat DMX_B DMX_G DMX_M DMX_R DMX_S devStateIcon devStateStyle fp_Groundfloor icon sortby webCmd">
+<dummy name="LED1" state="rgb FF0000" sets="rgb:colorpicker,RGB"
+       attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings setList event-on-change-reading event-on-update-reading event-min-interval stateFormat DMX_B DMX_G DMX_M DMX_R DMX_S devStateIcon devStateStyle fp_Groundfloor icon sortby webCmd">
     <INT key="NAME" value="LED1"/>
     <INT key="NR" value="348"/>
     <INT key="STATE" value="rgb FF0000"/>
@@ -1268,7 +1290,8 @@
 <watchdog_LIST>
 <watchdog name="bad_fenster_open" state="defined" sets=""
           attrs="room comment alias disable:0,1 regexp1WontReactivate:0,1 webCmd eventMap">
-    <INT key="CMD" value="{ fhem &quot;set gang_licht on&quot;; fhem &quot;setstate bad_fenster_open defined&quot; }"/>
+    <INT key="CMD"
+         value="{ fhem &quot;set gang_licht on&quot;; fhem &quot;setstate bad_fenster_open defined&quot; }"/>
     <INT key="DEF"
          value="bad_fenster:Window.*(Open) 00:00:01 bad_fenster:Window.*(Closed) { fhem &quot;set gang_licht on&quot;; fhem &quot;setstate bad_fenster_open defined&quot; }"/>
     <INT key="NAME" value="bad_fenster_open"/>
@@ -1405,7 +1428,9 @@ webCmd">
 </HCS>
 </HCS_LIST>
 <CUL_HM_LIST>
-<CUL_HM name="zisterne1" state="24 %" sets="clear:readings,register,rssi,msgEvents getConfig getRegRaw pair peerBulk raw regBulk regSet reset sign:on,off statusRequest unpair" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev do_not_notify:1,0 ignore:1,0 dummy:1,0 showtime:1,0 serialNr firmware rawToReadable unit peerIDs repPeers actCycle actStatus autoReadReg:0_off,1_restart,2_pon-restart,3_onChange,4_reqStatus,8_stateOnly expert:0_off,1_on,2_full burstAccess:0_off,1_auto param msgRepeat .stc .devInfo event-on-change-reading event-on-update-reading event-min-interval stateFormat model:ASH550,ASH550I,CMM,DORMA_BRC-H,DORMA_RC-H,DORMA_atent,HM-CC-RT-DN,HM-CC-RT-DN-BoM,HM-CC-SCD,HM-CC-TC,HM-CC-VD,HM-Dis-TD-T,HM-ES-PMSw1-Pl,HM-LC-BL1-FM,HM-LC-BL1-PB-FM,HM-LC-BL1-SM,HM-LC-Bl1PBU-FM,HM-LC-DDC1-PCB,HM-LC-DIM1L-CV,HM-LC-DIM1L-PL,HM-LC-DIM1T-CV,HM-LC-DIM1T-FM,HM-LC-DIM1T-PL,HM-LC-DIM2L-CV,HM-LC-DIM2L-SM,HM-LC-DIM2T-SM,HM-LC-Dim1L-CV-2,HM-LC-Dim1L-CV-644,HM-LC-Dim1L-Pl-2,HM-LC-Dim1L-Pl-3,HM-LC-Dim1L-Pl-644,HM-LC-Dim1PWM-CV,HM-LC-Dim1PWM-CV-2,HM-LC-Dim1T-CV-2,HM-LC-Dim1T-CV-644,HM-LC-Dim1T-FM-2,HM-LC-Dim1T-FM-644,HM-LC-Dim1T-Pl-2,HM-LC-Dim1T-Pl-3,HM-LC-Dim1T-Pl-644,HM-LC-Dim1TPBU-FM,HM-LC-Dim1TPBU-FM-2,HM-LC-Dim2L-SM,HM-LC-Dim2L-SM-2,HM-LC-Dim2T-SM,HM-LC-Dim2T-SM-2,HM-LC-SW1-BA-PCB,HM-LC-SW1-FM,HM-LC-SW1-PB-FM,HM-LC-SW1-PL,HM-LC-SW1-PL-OM54,HM-LC-SW1-PL2,HM-LC-SW1-SM,HM-LC-SW1-SM-ATMEGA168,HM-LC-SW2-DR,HM-LC-SW2-FM,HM-LC-SW2-PB-FM,HM-LC-SW2-SM,HM-LC-SW4-BA-PCB,HM-LC-SW4-DR,HM-LC-SW4-PCB,HM-LC-SW4-SM,HM-LC-SW4-SM-ATMEGA168,HM-LC-SW4-WM,HM-LC-Sw1PBU-FM,HM-MOD-RC-8,HM-OU-CF-PL,HM-OU-CFM-PL,HM-OU-CM-PCB,HM-OU-LED16,HM-PB-2-FM,HM-PB-2-WM,HM-PB-2-WM55,HM-PB-2-WM55-2,HM-PB-4-WM,HM-PB-4DIS-WM,HM-PB-6-WM55,HM-PBI-4-FM,HM-RC-12,HM-RC-12-B,HM-RC-12-SW,HM-RC-19,HM-RC-19-B,HM-RC-19-SW,HM-RC-4,HM-RC-4-2,HM-RC-4-B,HM-RC-KEY3,HM-RC-KEY3-B,HM-RC-Key4-2,HM-RC-P1,HM-RC-SEC3,HM-RC-SEC3-B,HM-RC-Sec4-2,HM-SCI-3-FM,HM-SEC-KEY,HM-SEC-KEY-O,HM-SEC-KEY-S,HM-SEC-MDIR,HM-SEC-MDIR-2,HM-SEC-RHS,HM-SEC-SC,HM-SEC-SC-2,HM-SEC-SD,HM-SEC-SFA-SM,HM-SEC-TIS,HM-SEC-WDS,HM-SEC-WDS-2,HM-SEC-WIN,HM-SEN-EP,HM-SEN-MDIR-SM,HM-SWI-3-FM,HM-Sec-Cen,HM-Sen-MDIR-O,HM-Sen-MDIR-O-2,HM-Sen-RD-O,HM-Sen-Wa-Od,HM-Sys-sRP-Pl,HM-TC-IT-WM-W-EU,HM-WDC7000,HM-WDS10-TH-O,HM-WDS100-C6-O,HM-WDS20-TH-O,HM-WDS30-OT2-SM,HM-WDS30-T-O,HM-WDS40-TH-I,HM-WS550,HM-WS550LCB,HM-WS550LCW,HM-WS550Tech,IS-WDS-TH-OD-S-R3,IS-WDS-TH-OD-S-R3,KFM-Display,KFM-Sensor,KS550,KS550LC,KS550TECH,KS888,PS-Th-Sens,PS-switch,ROTO_ZEL-STG-RM-DWT-10,ROTO_ZEL-STG-RM-FDK,ROTO_ZEL-STG-RM-FEP-230V,ROTO_ZEL-STG-RM-FSA,ROTO_ZEL-STG-RM-FST-UP4,ROTO_ZEL-STG-RM-FWT,ROTO_ZEL-STG-RM-FZS,ROTO_ZEL-STG-RM-FZS-2,ROTO_ZEL-STG-RM-HS-4,ROTO_ZEL-STG-RM-WT-2,Roto_ZEL-STG-RM-FFK,Roto_ZEL-STG-RM-FSS-UP3,S550IA,Schueco_263-130,Schueco_263-131,Schueco_263-132,Schueco_263-133,Schueco_263-134,Schueco_263-135,Schueco_263-144,Schueco_263-145,Schueco_263-146,Schueco_263-147,Schueco_263-155,Schueco_263-158,Schueco_263-160,Schueco_263-162,Schueco_263-xxx,WDF-solar,WS888 subType:AlarmControl,KFM100,THSensor,blindActuator,blindActuatorSol,dimmer,keyMatic,motionDetector,outputUnit,powerMeter,pushButton,remote,repeater,sensRain,sensor,singleButton,smokeDetector,swi,switch,thermostat,threeStateSensor,tipTronic,winMatic devStateIcon devStateStyle fp_Grafiken fp_Grundriss fp_Sensoren fp_Speicher fp_Verbrauch icon sortby webCmd">
+<CUL_HM name="zisterne1" state="24 %"
+        sets="clear:readings,register,rssi,msgEvents getConfig getRegRaw pair peerBulk raw regBulk regSet reset sign:on,off statusRequest unpair"
+        attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev do_not_notify:1,0 ignore:1,0 dummy:1,0 showtime:1,0 serialNr firmware rawToReadable unit peerIDs repPeers actCycle actStatus autoReadReg:0_off,1_restart,2_pon-restart,3_onChange,4_reqStatus,8_stateOnly expert:0_off,1_on,2_full burstAccess:0_off,1_auto param msgRepeat .stc .devInfo event-on-change-reading event-on-update-reading event-min-interval stateFormat model:ASH550,ASH550I,CMM,DORMA_BRC-H,DORMA_RC-H,DORMA_atent,HM-CC-RT-DN,HM-CC-RT-DN-BoM,HM-CC-SCD,HM-CC-TC,HM-CC-VD,HM-Dis-TD-T,HM-ES-PMSw1-Pl,HM-LC-BL1-FM,HM-LC-BL1-PB-FM,HM-LC-BL1-SM,HM-LC-Bl1PBU-FM,HM-LC-DDC1-PCB,HM-LC-DIM1L-CV,HM-LC-DIM1L-PL,HM-LC-DIM1T-CV,HM-LC-DIM1T-FM,HM-LC-DIM1T-PL,HM-LC-DIM2L-CV,HM-LC-DIM2L-SM,HM-LC-DIM2T-SM,HM-LC-Dim1L-CV-2,HM-LC-Dim1L-CV-644,HM-LC-Dim1L-Pl-2,HM-LC-Dim1L-Pl-3,HM-LC-Dim1L-Pl-644,HM-LC-Dim1PWM-CV,HM-LC-Dim1PWM-CV-2,HM-LC-Dim1T-CV-2,HM-LC-Dim1T-CV-644,HM-LC-Dim1T-FM-2,HM-LC-Dim1T-FM-644,HM-LC-Dim1T-Pl-2,HM-LC-Dim1T-Pl-3,HM-LC-Dim1T-Pl-644,HM-LC-Dim1TPBU-FM,HM-LC-Dim1TPBU-FM-2,HM-LC-Dim2L-SM,HM-LC-Dim2L-SM-2,HM-LC-Dim2T-SM,HM-LC-Dim2T-SM-2,HM-LC-SW1-BA-PCB,HM-LC-SW1-FM,HM-LC-SW1-PB-FM,HM-LC-SW1-PL,HM-LC-SW1-PL-OM54,HM-LC-SW1-PL2,HM-LC-SW1-SM,HM-LC-SW1-SM-ATMEGA168,HM-LC-SW2-DR,HM-LC-SW2-FM,HM-LC-SW2-PB-FM,HM-LC-SW2-SM,HM-LC-SW4-BA-PCB,HM-LC-SW4-DR,HM-LC-SW4-PCB,HM-LC-SW4-SM,HM-LC-SW4-SM-ATMEGA168,HM-LC-SW4-WM,HM-LC-Sw1PBU-FM,HM-MOD-RC-8,HM-OU-CF-PL,HM-OU-CFM-PL,HM-OU-CM-PCB,HM-OU-LED16,HM-PB-2-FM,HM-PB-2-WM,HM-PB-2-WM55,HM-PB-2-WM55-2,HM-PB-4-WM,HM-PB-4DIS-WM,HM-PB-6-WM55,HM-PBI-4-FM,HM-RC-12,HM-RC-12-B,HM-RC-12-SW,HM-RC-19,HM-RC-19-B,HM-RC-19-SW,HM-RC-4,HM-RC-4-2,HM-RC-4-B,HM-RC-KEY3,HM-RC-KEY3-B,HM-RC-Key4-2,HM-RC-P1,HM-RC-SEC3,HM-RC-SEC3-B,HM-RC-Sec4-2,HM-SCI-3-FM,HM-SEC-KEY,HM-SEC-KEY-O,HM-SEC-KEY-S,HM-SEC-MDIR,HM-SEC-MDIR-2,HM-SEC-RHS,HM-SEC-SC,HM-SEC-SC-2,HM-SEC-SD,HM-SEC-SFA-SM,HM-SEC-TIS,HM-SEC-WDS,HM-SEC-WDS-2,HM-SEC-WIN,HM-SEN-EP,HM-SEN-MDIR-SM,HM-SWI-3-FM,HM-Sec-Cen,HM-Sen-MDIR-O,HM-Sen-MDIR-O-2,HM-Sen-RD-O,HM-Sen-Wa-Od,HM-Sys-sRP-Pl,HM-TC-IT-WM-W-EU,HM-WDC7000,HM-WDS10-TH-O,HM-WDS100-C6-O,HM-WDS20-TH-O,HM-WDS30-OT2-SM,HM-WDS30-T-O,HM-WDS40-TH-I,HM-WS550,HM-WS550LCB,HM-WS550LCW,HM-WS550Tech,IS-WDS-TH-OD-S-R3,IS-WDS-TH-OD-S-R3,KFM-Display,KFM-Sensor,KS550,KS550LC,KS550TECH,KS888,PS-Th-Sens,PS-switch,ROTO_ZEL-STG-RM-DWT-10,ROTO_ZEL-STG-RM-FDK,ROTO_ZEL-STG-RM-FEP-230V,ROTO_ZEL-STG-RM-FSA,ROTO_ZEL-STG-RM-FST-UP4,ROTO_ZEL-STG-RM-FWT,ROTO_ZEL-STG-RM-FZS,ROTO_ZEL-STG-RM-FZS-2,ROTO_ZEL-STG-RM-HS-4,ROTO_ZEL-STG-RM-WT-2,Roto_ZEL-STG-RM-FFK,Roto_ZEL-STG-RM-FSS-UP3,S550IA,Schueco_263-130,Schueco_263-131,Schueco_263-132,Schueco_263-133,Schueco_263-134,Schueco_263-135,Schueco_263-144,Schueco_263-145,Schueco_263-146,Schueco_263-147,Schueco_263-155,Schueco_263-158,Schueco_263-160,Schueco_263-162,Schueco_263-xxx,WDF-solar,WS888 subType:AlarmControl,KFM100,THSensor,blindActuator,blindActuatorSol,dimmer,keyMatic,motionDetector,outputUnit,powerMeter,pushButton,remote,repeater,sensRain,sensor,singleButton,smokeDetector,swi,switch,thermostat,threeStateSensor,tipTronic,winMatic devStateIcon devStateStyle fp_Grafiken fp_Grundriss fp_Sensoren fp_Speicher fp_Verbrauch icon sortby webCmd">
     <INT key="CUL_0_MSGCNT" value="9"/>
     <INT key="CUL_0_RAWMSG" value="A0DECA610226451F1103406013000EE"/>
     <INT key="CUL_0_RSSI" value="-83"/>
@@ -1454,8 +1479,11 @@ webCmd">
     <STATE key="R-useCustom" value="off" measured="2013-12-24 17:52:45"/>
     <STATE key="R-waterUppThr" value="255" measured="2013-12-24 17:52:45"/>
     <STATE key="R-waterlowThr" value="255" measured="2013-12-24 17:52:45"/>
-    <STATE key="RegL_00:" value="02:01 0A:F1 0B:10 0C:34 11:06 14:06 18:00 00:00" measured="2013-12-24 17:52:44"/>
-    <STATE key="RegL_01:" value="06:FF 07:FF 08:00 22:64 30:06 5B:01 5E:00 5F:BE  62:00 63:BE 66:00 67:FA 6A:00 6B:FA 6C:00 6D:F5  6E:00 00:00" measured="2013-12-24 17:52:45"/>
+    <STATE key="RegL_00:" value="02:01 0A:F1 0B:10 0C:34 11:06 14:06 18:00 00:00"
+           measured="2013-12-24 17:52:44"/>
+    <STATE key="RegL_01:"
+           value="06:FF 07:FF 08:00 22:64 30:06 5B:01 5E:00 5F:BE  62:00 63:BE 66:00 67:FA 6A:00 6B:FA 6C:00 6D:F5  6E:00 00:00"
+           measured="2013-12-24 17:52:45"/>
     <STATE key="battery" value="ok" measured="2013-12-29 16:26:38"/>
     <STATE key="level" value="24 %" measured="2013-12-29 16:26:38"/>
     <STATE key="recentStateType" value="info" measured="2013-12-29 16:26:38"/>
@@ -1494,11 +1522,14 @@ webCmd">
     <STATE key=".R-keypressSignal" value="off" measured="2013-02-04 15:39:18"/>
     <STATE key=".R-signal" value="off" measured="2013-02-04 15:39:18"/>
     <STATE key=".R-signalTone" value="veryHigh" measured="2013-02-04 15:39:18"/>
-    <STATE key=".RegL_00:" value="02:01 03:C8 0A:20 0B:33 0C:17 00:00" measured="2013-02-04 15:39:18"/>
+    <STATE key=".RegL_00:" value="02:01 03:C8 0A:20 0B:33 0C:17 00:00"
+           measured="2013-02-04 15:39:18"/>
     <STATE key=".RegL_03:Flur_Wohnungstuer_Fernbedienung_Taste_01"
-           value="03:00 04:32 05:64 07:FF 0B:66 83:00 84:32 85:64  87:FF 8B:66 00:00" measured="2013-02-04 15:39:21"/>
+           value="03:00 04:32 05:64 07:FF 0B:66 83:00 84:32 85:64  87:FF 8B:66 00:00"
+           measured="2013-02-04 15:39:21"/>
     <STATE key=".RegL_03:Flur_Wohnungstuer_Fernbedienung_Taste_02"
-           value="03:00 04:32 05:64 07:FF 0B:33 83:00 84:32 85:64  87:FF 8B:88 00:00" measured="2013-02-04 15:39:20"/>
+           value="03:00 04:32 05:64 07:FF 0B:33 83:00 84:32 85:64  87:FF 8B:88 00:00"
+           measured="2013-02-04 15:39:20"/>
     <STATE key="CommandAccepted" value="no" measured="2013-02-05 09:00:00"/>
     <STATE key="PairedTo" value="0x123456" measured="2013-02-04 15:39:18"/>
     <STATE key="R-pairCentral" value="0x123456" measured="2013-02-04 15:39:18"/>
@@ -1506,7 +1537,8 @@ webCmd">
     <STATE key="error" value="none" measured="2013-02-05 09:00:08"/>
     <STATE key="lock" value="locked" measured="2013-02-05 09:00:08"/>
     <STATE key="noReceiver" value="src:1DCF72 (A001) 0106" measured="2013-02-01 19:55:48"/>
-    <STATE key="peerList" value="Flur_Wohnungstuer_Fernbedienung_Taste_02,Flur_Wohnungstuer_Fernbedienung_Taste_01,"
+    <STATE key="peerList"
+           value="Flur_Wohnungstuer_Fernbedienung_Taste_02,Flur_Wohnungstuer_Fernbedienung_Taste_01,"
            measured="2013-02-04 15:39:19"/>
     <STATE key="state" value="locked" measured="2013-02-05 09:00:08"/>
     <STATE key="uncertain" value="no" measured="2013-02-05 09:00:08"/>
@@ -1642,7 +1674,8 @@ devStateIcon icon webCmd">
     <STATE key="state" value="171.3  l" measured="2012-07-26 21:55:57"/>
     <STATE key="unknownMsg" value="(A453) 01490200308245" measured="2012-07-24 18:36:56"/>
 </CUL_HM>
-<CUL_HM name="Aussenlicht" state="off" sets="off on on-for-timer pair raw reset sign statusRequest toggle unpair"
+<CUL_HM name="Aussenlicht" state="off"
+        sets="off on on-for-timer pair raw reset sign statusRequest toggle unpair"
         attrs="room group comment alias eventMap IODev do_not_notify:1,0 ignore:1,0 dummy:1,0 showtime:1,0 loglevel:0,1,2,3,4,5,6 hmClass:receiver,sender serialNr firmware devInfo rawToReadable unit model:ASH550,ASH550I,CMM,HM-CC-SCD,HM-CC-TC,HM-CC-VD,HM-LC-BL1-FM,HM-LC-BL1-PB-FM,HM-LC-BL1-SM,HM-LC-DDC1-PCB,HM-LC-DIM1L-CV,HM-LC-DIM1L-PL,HM-LC-DIM1T-CV,HM-LC-DIM1T-FM,HM-LC-DIM1T-PL,HM-LC-DIM2L-CV,HM-LC-DIM2L-SM,HM-LC-DIM2T-SM,HM-LC-SW1-BA-PCB,HM-LC-SW1-FM,HM-LC-SW1-PB-FM,HM-LC-SW1-PL,HM-LC-SW1-PL-OM54,HM-LC-SW1-SM,HM-LC-SW1-SM-ATMEGA168,HM-LC-SW2-DR,HM-LC-SW2-FM,HM-LC-SW2-PB-FM,HM-LC-SW2-SM,HM-LC-SW4-DR,HM-LC-SW4-PCB,HM-LC-SW4-SM,HM-LC-SW4-SM-ATMEGA168,HM-LC_Bl1PBU-FM,HM-LC_Dim1PWM-CV,HM-LC_Dim1TPBU-FM,HM-OU-CF-PL,HM-PB-2-WM,HM-PB-4-WM,HM-PB-4DIS-WM,HM-PBI-4-FM,HM-RC-12,HM-RC-12-B,HM-RC-12-SW,HM-RC-19,HM-RC-19-B,HM-RC-19-SW,HM-RC-4,HM-RC-4-B,HM-RC-KEY3,HM-RC-KEY3-B,HM-RC-P1,HM-RC-SEC3,HM-RC-SEC3-B,HM-SCI-3-FM,HM-SEC-KEY,HM-SEC-KEY-O,HM-SEC-KEY-S,HM-SEC-MDIR,HM-SEC-RHS,HM-SEC-SC,HM-SEC-SD,HM-SEC-SFA-SM,HM-SEC-TIS,HM-SEC-WDS,HM-SEC-WIN,HM-SEN-EP,HM-SEN-MDIR-SM,HM-SWI-3-FM,HM-Sec-Cen,HM-WDC7000,HM-WDC7000,HM-WDS10-TH-O,HM-WDS100-C6-O,HM-WDS20-TH-O,HM-WDS30-T-O,HM-WDS40-TH-I,HM_LC_Sw4-WM,IS-WDS-TH-OD-S-R3,KFM-Display,KFM-Sensor,KS550,S550IA,WS888 subType:AlarmControl,KFM100,THSensor,blindActuator,dimmer,keyMatic,motionDetector,pushButton,remote,sensor,smokeDetector,swi,switch,threeStateSensor,winMatic icon structexclude webCmd">
     <INT key="CUL_MSGCNT" value="2"/>
     <INT key="CUL_RAWMSG" value="A0D14A4101B005FF117130601000014"/>
@@ -1726,7 +1759,8 @@ devStateIcon icon webCmd">
     <STATE key="powerOn" value="off" measured="2012-07-19 21:44:18"/>
     <STATE key="state" value="off" measured="2012-07-19 21:44:18"/>
 </CUL_HM>
-<CUL_HM name="Fernseher" state="MISSING ACK" sets="off on on-for-timer pair raw reset sign statusRequest toggle unpair"
+<CUL_HM name="Fernseher" state="MISSING ACK"
+        sets="off on on-for-timer pair raw reset sign statusRequest toggle unpair"
         attrs="room group comment alias eventMap IODev do_not_notify:1,0 ignore:1,0 dummy:1,0 showtime:1,0 loglevel:0,1,2,3,4,5,6 hmClass:receiver,sender serialNr firmware devInfo rawToReadable unit model:ASH550,ASH550I,CMM,HM-CC-SCD,HM-CC-TC,HM-CC-VD,HM-LC-BL1-FM,HM-LC-BL1-PB-FM,HM-LC-BL1-SM,HM-LC-DDC1-PCB,HM-LC-DIM1L-CV,HM-LC-DIM1L-PL,HM-LC-DIM1T-CV,HM-LC-DIM1T-FM,HM-LC-DIM1T-PL,HM-LC-DIM2L-CV,HM-LC-DIM2L-SM,HM-LC-DIM2T-SM,HM-LC-SW1-BA-PCB,HM-LC-SW1-FM,HM-LC-SW1-PB-FM,HM-LC-SW1-PL,HM-LC-SW1-PL-OM54,HM-LC-SW1-SM,HM-LC-SW1-SM-ATMEGA168,HM-LC-SW2-DR,HM-LC-SW2-FM,HM-LC-SW2-PB-FM,HM-LC-SW2-SM,HM-LC-SW4-DR,HM-LC-SW4-PCB,HM-LC-SW4-SM,HM-LC-SW4-SM-ATMEGA168,HM-LC_Bl1PBU-FM,HM-LC_Dim1PWM-CV,HM-LC_Dim1TPBU-FM,HM-OU-CF-PL,HM-PB-2-WM,HM-PB-4-WM,HM-PB-4DIS-WM,HM-PBI-4-FM,HM-RC-12,HM-RC-12-B,HM-RC-12-SW,HM-RC-19,HM-RC-19-B,HM-RC-19-SW,HM-RC-4,HM-RC-4-B,HM-RC-KEY3,HM-RC-KEY3-B,HM-RC-P1,HM-RC-SEC3,HM-RC-SEC3-B,HM-SCI-3-FM,HM-SEC-KEY,HM-SEC-KEY-O,HM-SEC-KEY-S,HM-SEC-MDIR,HM-SEC-RHS,HM-SEC-SC,HM-SEC-SD,HM-SEC-SFA-SM,HM-SEC-TIS,HM-SEC-WDS,HM-SEC-WIN,HM-SEN-EP,HM-SEN-MDIR-SM,HM-SWI-3-FM,HM-Sec-Cen,HM-WDC7000,HM-WDC7000,HM-WDS10-TH-O,HM-WDS100-C6-O,HM-WDS20-TH-O,HM-WDS30-T-O,HM-WDS40-TH-I,HM_LC_Sw4-WM,IS-WDS-TH-OD-S-R3,KFM-Display,KFM-Sensor,KS550,S550IA,WS888 subType:AlarmControl,KFM100,THSensor,blindActuator,dimmer,keyMatic,motionDetector,pushButton,remote,sensor,smokeDetector,swi,switch,threeStateSensor,winMatic icon structexclude webCmd">
     <INT key="DEF" value="1BC7A3"/>
     <INT key="NAME" value="Fernseher"/>
@@ -1747,7 +1781,8 @@ devStateIcon icon webCmd">
     <STATE key="powerOn" value="on" measured="2012-06-27 17:10:10"/>
     <STATE key="state" value="MISSING ACK" measured="2012-06-27 17:16:53"/>
 </CUL_HM>
-<CUL_HM name="Beamer" state="MISSING ACK" sets="off on on-for-timer pair raw reset sign statusRequest toggle unpair"
+<CUL_HM name="Beamer" state="MISSING ACK"
+        sets="off on on-for-timer pair raw reset sign statusRequest toggle unpair"
         attrs="room group comment alias eventMap IODev do_not_notify:1,0 ignore:1,0 dummy:1,0 showtime:1,0 loglevel:0,1,2,3,4,5,6 hmClass:receiver,sender serialNr firmware devInfo rawToReadable unit model:ASH550,ASH550I,CMM,HM-CC-SCD,HM-CC-TC,HM-CC-VD,HM-LC-BL1-FM,HM-LC-BL1-PB-FM,HM-LC-BL1-SM,HM-LC-DDC1-PCB,HM-LC-DIM1L-CV,HM-LC-DIM1L-PL,HM-LC-DIM1T-CV,HM-LC-DIM1T-FM,HM-LC-DIM1T-PL,HM-LC-DIM2L-CV,HM-LC-DIM2L-SM,HM-LC-DIM2T-SM,HM-LC-SW1-BA-PCB,HM-LC-SW1-FM,HM-LC-SW1-PB-FM,HM-LC-SW1-PL,HM-LC-SW1-PL-OM54,HM-LC-SW1-SM,HM-LC-SW1-SM-ATMEGA168,HM-LC-SW2-DR,HM-LC-SW2-FM,HM-LC-SW2-PB-FM,HM-LC-SW2-SM,HM-LC-SW4-DR,HM-LC-SW4-PCB,HM-LC-SW4-SM,HM-LC-SW4-SM-ATMEGA168,HM-LC_Bl1PBU-FM,HM-LC_Dim1PWM-CV,HM-LC_Dim1TPBU-FM,HM-OU-CF-PL,HM-PB-2-WM,HM-PB-4-WM,HM-PB-4DIS-WM,HM-PBI-4-FM,HM-RC-12,HM-RC-12-B,HM-RC-12-SW,HM-RC-19,HM-RC-19-B,HM-RC-19-SW,HM-RC-4,HM-RC-4-B,HM-RC-KEY3,HM-RC-KEY3-B,HM-RC-P1,HM-RC-SEC3,HM-RC-SEC3-B,HM-SCI-3-FM,HM-SEC-KEY,HM-SEC-KEY-O,HM-SEC-KEY-S,HM-SEC-MDIR,HM-SEC-RHS,HM-SEC-SC,HM-SEC-SD,HM-SEC-SFA-SM,HM-SEC-TIS,HM-SEC-WDS,HM-SEC-WIN,HM-SEN-EP,HM-SEN-MDIR-SM,HM-SWI-3-FM,HM-Sec-Cen,HM-WDC7000,HM-WDC7000,HM-WDS10-TH-O,HM-WDS100-C6-O,HM-WDS20-TH-O,HM-WDS30-T-O,HM-WDS40-TH-I,HM_LC_Sw4-WM,IS-WDS-TH-OD-S-R3,KFM-Display,KFM-Sensor,KS550,S550IA,WS888 subType:AlarmControl,KFM100,THSensor,blindActuator,dimmer,keyMatic,motionDetector,pushButton,remote,sensor,smokeDetector,swi,switch,threeStateSensor,winMatic icon structexclude webCmd">
     <INT key="DEF" value="1BC7A302"/>
     <INT key="NAME" value="Beamer"/>
@@ -1787,7 +1822,8 @@ devStateIcon icon webCmd">
     <STATE key="battery" value="ok" measured="2012-06-26 22:23:09"/>
     <STATE key="state" value="Btn2 offLong 5 (to broadcast)" measured="2012-06-26 22:23:09"/>
 </CUL_HM>
-<CUL_HM name="Temp_Feuchte1.Aussen" state="T: 14.6 H: 67" sets="pair raw reset sign statusRequest unpair"
+<CUL_HM name="Temp_Feuchte1.Aussen" state="T: 14.6 H: 67"
+        sets="pair raw reset sign statusRequest unpair"
         attrs="room group comment alias eventMap IODev do_not_notify:1,0 ignore:1,0 dummy:1,0 showtime:1,0 loglevel:0,1,2,3,4,5,6 hmClass:receiver,sender serialNr firmware devInfo rawToReadable unit model:ASH550,ASH550I,CMM,HM-CC-SCD,HM-CC-TC,HM-CC-VD,HM-LC-BL1-FM,HM-LC-BL1-PB-FM,HM-LC-BL1-SM,HM-LC-DDC1-PCB,HM-LC-DIM1L-CV,HM-LC-DIM1L-PL,HM-LC-DIM1T-CV,HM-LC-DIM1T-FM,HM-LC-DIM1T-PL,HM-LC-DIM2L-CV,HM-LC-DIM2L-SM,HM-LC-DIM2T-SM,HM-LC-SW1-BA-PCB,HM-LC-SW1-FM,HM-LC-SW1-PB-FM,HM-LC-SW1-PL,HM-LC-SW1-PL-OM54,HM-LC-SW1-SM,HM-LC-SW1-SM-ATMEGA168,HM-LC-SW2-DR,HM-LC-SW2-FM,HM-LC-SW2-PB-FM,HM-LC-SW2-SM,HM-LC-SW4-DR,HM-LC-SW4-PCB,HM-LC-SW4-SM,HM-LC-SW4-SM-ATMEGA168,HM-LC_Bl1PBU-FM,HM-LC_Dim1PWM-CV,HM-LC_Dim1TPBU-FM,HM-OU-CF-PL,HM-PB-2-WM,HM-PB-4-WM,HM-PB-4DIS-WM,HM-PBI-4-FM,HM-RC-12,HM-RC-12-B,HM-RC-12-SW,HM-RC-19,HM-RC-19-B,HM-RC-19-SW,HM-RC-4,HM-RC-4-B,HM-RC-KEY3,HM-RC-KEY3-B,HM-RC-P1,HM-RC-SEC3,HM-RC-SEC3-B,HM-SCI-3-FM,HM-SEC-KEY,HM-SEC-KEY-O,HM-SEC-KEY-S,HM-SEC-MDIR,HM-SEC-RHS,HM-SEC-SC,HM-SEC-SD,HM-SEC-SFA-SM,HM-SEC-TIS,HM-SEC-WDS,HM-SEC-WIN,HM-SEN-EP,HM-SEN-MDIR-SM,HM-SWI-3-FM,HM-Sec-Cen,HM-WDC7000,HM-WDC7000,HM-WDS10-TH-O,HM-WDS100-C6-O,HM-WDS20-TH-O,HM-WDS30-T-O,HM-WDS40-TH-I,HM_LC_Sw4-WM,IS-WDS-TH-OD-S-R3,KFM-Display,KFM-Sensor,KS550,S550IA,WS888 subType:AlarmControl,KFM100,THSensor,blindActuator,dimmer,keyMatic,motionDetector,pushButton,remote,sensor,smokeDetector,swi,switch,threeStateSensor,winMatic icon structexclude webCmd">
     <INT key="CUL_MSGCNT" value="274"/>
     <INT key="CUL_RAWMSG" value="A0CAB86701B0A3A00000000924300"/>
@@ -1938,12 +1974,16 @@ webCmd eventMap">
     <STATE key="humidity" value="49" measured="2012-01-17 17:19:34"/>
     <STATE key="measured-temp" value="19.8" measured="2012-01-17
 17:19:34"/>
-    <STATE key="tempListSat" value="08:00 16.0 19:30 20.5 24:00 16.0" measured="2012-11-11 21:32:06"/>
-    <STATE key="tempListSun" value="08:00 16.0 19:30 20.5 24:00 16.0" measured="2012-11-11 21:32:06"/>
+    <STATE key="tempListSat" value="08:00 16.0 19:30 20.5 24:00 16.0"
+           measured="2012-11-11 21:32:06"/>
+    <STATE key="tempListSun" value="08:00 16.0 19:30 20.5 24:00 16.0"
+           measured="2012-11-11 21:32:06"/>
     <STATE key="tempListThu" value="06:30 16.0 08:00 20.5 13:30 16.0 19:30 20.5 24:00 16.0"
            measured="2012-11-11 21:32:06"/>
-    <STATE key="tempListTue" value="06:30 16.0 19:30 20.5 24:00 16.0" measured="2012-11-11 21:32:06"/>
-    <STATE key="tempListWed" value="06:30 16.0 19:30 20.5 24:00 16.0" measured="2012-11-11 21:32:06"/>
+    <STATE key="tempListTue" value="06:30 16.0 19:30 20.5 24:00 16.0"
+           measured="2012-11-11 21:32:06"/>
+    <STATE key="tempListWed" value="06:30 16.0 19:30 20.5 24:00 16.0"
+           measured="2012-11-11 21:32:06"/>
     <STATE key="state" value="T: 19.8 H: 49" measured="2012-01-17
 17:19:34"/>
     <STATE key="temperature" value="19.8" measured="2012-01-17
@@ -2114,7 +2154,8 @@ room structexclude webCmd eventMap">
 </CUL_FHTTK>
 </CUL_FHTTK_LIST>
 <WOL_LIST>
-<WOL name="mechanix" state="on" sets="*" attrs="room comment alias loglevel:0,1,2,3,4,5,6 webCmd eventMap">
+<WOL name="mechanix" state="on" sets="*"
+     attrs="room comment alias loglevel:0,1,2,3,4,5,6 webCmd eventMap">
     <INT key="DEF" value="72:75:AD:4A:17:43 192.168.0.24"/>
     <INT key="INTERVAL" value="600"/>
     <INT key="IP" value="192.168.0.24"/>
@@ -2190,7 +2231,8 @@ room structexclude webCmd eventMap">
     <STATE key="Shuffle" value="0" measured="2013-04-12 09:48:27"/>
     <STATE key="Volume" value="24" measured="2013-04-12 17:10:03"/>
     <STATE key="currentAlbum" value="" measured="2013-04-16 08:32:13"/>
-    <STATE key="currentAlbumArtURI" value="./www/images/default/SONOSPLAYER/Sonos_Mobil_AlbumArt.gif"
+    <STATE key="currentAlbumArtURI"
+           value="./www/images/default/SONOSPLAYER/Sonos_Mobil_AlbumArt.gif"
            measured="2013-04-17 07:16:17"/>
     <STATE key="currentAlbumArtist" value="" measured="2013-04-17 07:16:07"/>
     <STATE key="currentArtist" value="" measured="2013-04-17 07:16:07"/>
@@ -2204,11 +2246,13 @@ room structexclude webCmd eventMap">
     <STATE key="currentTrack" value="1" measured="2013-04-17 07:16:17"/>
     <STATE key="currentTrackDuration" value="0:00:00" measured="2013-04-17 07:16:07"/>
     <STATE key="infoSummarize1" value="WDR 2 Rhein und Ruhr:" measured="2013-04-17 07:53:07"/>
-    <STATE key="infoSummarize2" value="STOPPED =&gt; WDR 2 Rhein und Ruhr:" measured="2013-04-17 07:53:07"/>
+    <STATE key="infoSummarize2" value="STOPPED =&gt; WDR 2 Rhein und Ruhr:"
+           measured="2013-04-17 07:53:07"/>
     <STATE key="infoSummarize3" value="Lautstaerke: 24 ~ Ton An ~ Balance: Mitte ~ Kein Kopfhoerer"
            measured="2013-04-15 22:59:14"/>
     <STATE key="infoSummarize4" value="" measured="2013-04-15 23:26:56"/>
-    <STATE key="location" value="http://192.168.178.30:1400/xml/device_description.xml" measured="2013-04-12 08:09:00"/>
+    <STATE key="location" value="http://192.168.178.30:1400/xml/device_description.xml"
+           measured="2013-04-12 08:09:00"/>
     <STATE key="numberOfTracks" value="2" measured="2013-04-17 07:16:17"/>
     <STATE key="playerType" value="S3" measured="2013-04-12 08:09:00"/>
     <STATE key="presence" value="appeared" measured="2013-04-12 08:09:15"/>
@@ -2242,8 +2286,10 @@ room structexclude webCmd eventMap">
     <ATTR key="room" value="garten"/>
     <STATE key="RAW" value="CNT: 62 CUM: 9337  5MIN: 0  TOP: 0" measured="2011-12-29 21:46:16"/>
     <STATE key="basis" value="1245184" measured="2011-12-28 11:31:19"/>
-    <STATE key="cum_day" value="CUM_DAY: 9.490 CUM: 1254.521 COST: 0.00" measured="2011-12-29 00:01:18"/>
-    <STATE key="cum_month" value="CUM_MONTH: 60.385 CUM: 1198.963 COST: 0.00" measured="2011-12-01 00:02:18"/>
+    <STATE key="cum_day" value="CUM_DAY: 9.490 CUM: 1254.521 COST: 0.00"
+           measured="2011-12-29 00:01:18"/>
+    <STATE key="cum_month" value="CUM_MONTH: 60.385 CUM: 1198.963 COST: 0.00"
+           measured="2011-12-01 00:02:18"/>
     <STATE key="current" value="0" measured="2011-12-29 21:46:16"/>
     <STATE key="current_cnt" value="0" measured="2011-12-29 21:46:16"/>
     <STATE key="peak" value="0" measured="2011-12-29 21:46:16"/>
@@ -2276,8 +2322,10 @@ room structexclude webCmd eventMap">
     <ATTR key="SUM_GRAPH_DIVISION_FACTOR" value="2"/>
     <STATE key="RAW" value="CNT: 62 CUM: 9337  5MIN: 0  TOP: 0" measured="2011-12-29 21:46:16"/>
     <STATE key="basis" value="1245184" measured="2011-12-28 11:31:19"/>
-    <STATE key="cum_day" value="CUM_DAY: 9.490 CUM: 1254.521 COST: 0.00" measured="2011-12-29 00:01:18"/>
-    <STATE key="cum_month" value="CUM_MONTH: 60.385 CUM: 1198.963 COST: 0.00" measured="2011-12-01 00:02:18"/>
+    <STATE key="cum_day" value="CUM_DAY: 9.490 CUM: 1254.521 COST: 0.00"
+           measured="2011-12-29 00:01:18"/>
+    <STATE key="cum_month" value="CUM_MONTH: 60.385 CUM: 1198.963 COST: 0.00"
+           measured="2011-12-01 00:02:18"/>
     <STATE key="current" value="0" measured="2011-12-29 21:46:16"/>
     <STATE key="current_cnt" value="0" measured="2011-12-29 21:46:16"/>
     <STATE key="peak" value="0" measured="2011-12-29 21:46:16"/>
@@ -2310,8 +2358,10 @@ room structexclude webCmd eventMap">
     <ATTR key="SUM_GRAPH_DIVISION_FACTOR" value="3"/>
     <STATE key="RAW" value="CNT: 62 CUM: 9337  5MIN: 0  TOP: 0" measured="2011-12-29 21:46:16"/>
     <STATE key="basis" value="1245184" measured="2011-12-28 11:31:19"/>
-    <STATE key="cum_day" value="CUM_DAY: 9.490 CUM: 1254.521 COST: 0.00" measured="2011-12-29 00:01:18"/>
-    <STATE key="cum_month" value="CUM_MONTH: 60.385 CUM: 1198.963 COST: 0.00" measured="2011-12-01 00:02:18"/>
+    <STATE key="cum_day" value="CUM_DAY: 9.490 CUM: 1254.521 COST: 0.00"
+           measured="2011-12-29 00:01:18"/>
+    <STATE key="cum_month" value="CUM_MONTH: 60.385 CUM: 1198.963 COST: 0.00"
+           measured="2011-12-01 00:02:18"/>
     <STATE key="current" value="0" measured="2011-12-29 21:46:16"/>
     <STATE key="current_cnt" value="0" measured="2011-12-29 21:46:16"/>
     <STATE key="peak" value="0" measured="2011-12-29 21:46:16"/>
@@ -2663,7 +2713,8 @@ room structexclude webCmd eventMap">
 
 
 <ECMD_LIST>
-<ECMD name="EMCD1" state="Initialized" sets="Usage: set AVRNETIO classdef &lt;classname&gt; &lt;filename&gt; "
+<ECMD name="EMCD1" state="Initialized"
+      sets="Usage: set AVRNETIO classdef &lt;classname&gt; &lt;filename&gt; "
       attrs="room comment alias classdefs loglevel:0,1,2,3,4,5 eventMap">
     <INT key="DEF" value="telnet 192.168.169.181:2701"/>
     <INT key="DeviceName" value="192.168.169.181:2701"/>
@@ -2730,7 +2781,8 @@ room structexclude webCmd eventMap">
 </USBWX_LIST>
 
 <OWSWITCH_LIST>
-<OWSWITCH name="kueche_licht" state="A: OFF B: OFF" sets="gpio init interval output" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev do_not_notify:0,1 showtime:0,1 model:DS2413,DS2406,DS2408 loglevel:0,1,2,3,4,5 stateS interval event-on-change-reading event-on-update-reading event-min-interval stateFormat AName AUnit BName BUnit CName CUnit DName DUnit EName EUnit FName FUnit GName GUnit HName HUnit devStateIcon devStateStyle icon sortby webCmd">
+<OWSWITCH name="kueche_licht" state="A: OFF B: OFF" sets="gpio init interval output"
+          attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev do_not_notify:0,1 showtime:0,1 model:DS2413,DS2406,DS2408 loglevel:0,1,2,3,4,5 stateS interval event-on-change-reading event-on-update-reading event-min-interval stateFormat AName AUnit BName BUnit CName CUnit DName DUnit EName EUnit FName FUnit GName GUnit HName HUnit devStateIcon devStateStyle icon sortby webCmd">
     <INT key="DEF" value="DS2413 F54303000000"/>
     <INT key="INTERVAL" value="300"/>
     <INT key="NAME" value="kueche_licht"/>
@@ -3717,7 +3769,8 @@ room structexclude webCmd eventMap">
     <STATE key="state" value="off" measured="2012-07-16 09:42:28"/>
 </TRX_LIGHT>
 
-<TRX_LIGHT name="KaKu_Dim1" state="level 15" sets="all_level all_off all_on level:slider,0,1,15 off on"
+<TRX_LIGHT name="KaKu_Dim1" state="level 15"
+           sets="all_level all_off all_on level:slider,0,1,15 off on"
            attrs="room group comment alias eventMap IODev ignore:1,0 do_not_notify:1,0 loglevel:0,1,2,3,4,5,6 icon webCmd">
     <INT key="DEF" value="AC 010A0B0C01 light"/>
     <INT key="NAME" value="KaKu_Dim1"/>
@@ -3836,7 +3889,8 @@ room structexclude webCmd eventMap">
 </TRX_WEATHER>
 </TRX_WEATHER_LIST>
 <OWTEMP_LIST>
-<OWTEMP name="Hz.Ruecklauf" state="T: 24.1250  L: 15  H: 35  P: 1  A: 0  W: none" sets="set needs one parameter"
+<OWTEMP name="Hz.Ruecklauf" state="T: 24.1250  L: 15  H: 35  P: 1  A: 0  W: none"
+        sets="set needs one parameter"
         attrs="room comment alias IODev do_not_notify:0,1 showtime:0,1 model:DS18S20 loglevel:0,1,2,3,4,5 1 advent bundle structexclude">
     <INT key="ALARM" value="0"/>
     <INT key="DEF" value="E09538020000 300 300"/>
@@ -3921,7 +3975,8 @@ room structexclude webCmd eventMap">
     <STATE key="avg_month" value="T: 6.7  H: 38  W: 42.4  R: 10.2" measured="2011-12-05 00:01:01"/>
     <STATE key="cum_day" value="2011-12-05 00:01:01 T: 283802.8  H: 4657934  W: 390585  R: 19.4"
            measured="2011-12-05 16:29:47"/>
-    <STATE key="cum_month" value="4 T: 26.7  H: 152  W: 169.6  R: 10.2" measured="2011-12-05 00:01:01"/>
+    <STATE key="cum_month" value="4 T: 26.7  H: 152  W: 169.6  R: 10.2"
+           measured="2011-12-05 00:01:01"/>
     <STATE key="humidity" value="74" measured="2011-12-05 16:29:47"/>
     <STATE key="israining" value="no (yes/no)" measured="2011-12-05 16:29:47"/>
     <STATE key="rain" value="24.5" measured="2011-12-05 16:29:47"/>
@@ -3957,7 +4012,8 @@ room structexclude webCmd eventMap">
     <STATE key="avg_month" value="T: 6.7  H: 38  W: 42.4  R: 10.2" measured="2011-12-05 00:01:01"/>
     <STATE key="cum_day" value="2011-12-05 00:01:01 T: 283802.8  H: 4657934  W: 390585  R: 19.4"
            measured="2011-12-05 16:29:47"/>
-    <STATE key="cum_month" value="4 T: 26.7  H: 152  W: 169.6  R: 10.2" measured="2011-12-05 00:01:01"/>
+    <STATE key="cum_month" value="4 T: 26.7  H: 152  W: 169.6  R: 10.2"
+           measured="2011-12-05 00:01:01"/>
     <STATE key="humidity" value="74" measured="2011-12-05 16:29:47"/>
     <STATE key="israining" value="no (yes/no)" measured="2011-12-05 16:29:47"/>
     <STATE key="rain" value="24.5" measured="2011-12-05 16:29:47"/>
@@ -4034,7 +4090,8 @@ room structexclude webCmd eventMap">
 </CUL_WS>
 </CUL_WS_LIST>
 <notify_LIST>
-<notify name="setStateOnToggle" state="active" sets="" attrs="room comment alias disable:0,1 eventMap">
+<notify name="setStateOnToggle" state="active" sets=""
+        attrs="room comment alias disable:0,1 eventMap">
     <INT key="DEF"
          value=".*:toggle {&lt;br&gt;#09;if ($value{@} eq &quot;on&quot;) {&lt;br&gt;#09;  fhem &quot;setstate @ off&quot;;&lt;br&gt;#09;} else { &lt;br&gt;#09;  fhem &quot;setstate @ on&quot;; &lt;br&gt;#09;} &lt;br&gt;}"/>
     <INT key="NAME" value="setStateOnToggle"/>
@@ -4047,7 +4104,8 @@ room structexclude webCmd eventMap">
 <FileLog_LIST>
 <FileLog name="FileLog_CUL_HM_KFM100_122334" state="active" sets="reopen"
          attrs="room group comment alias eventMap disable:0,1 logtype nrarchive archivedir archivecmd icon webCmd">
-    <INT key="DEF" value="/var/InternerSpeicher/fhem/log/CUL_HM_KFM100_122334-%Y.log CUL_HM_KFM100_122334"/>
+    <INT key="DEF"
+         value="/var/InternerSpeicher/fhem/log/CUL_HM_KFM100_122334-%Y.log CUL_HM_KFM100_122334"/>
     <INT key="NAME" value="FileLog_CUL_HM_KFM100_122334"/>
     <INT key="NR" value="91"/>
     <INT key="NTFY_ORDER" value="50-FileLog_CUL_HM_KFM100_122334"/>
@@ -4521,10 +4579,11 @@ room structexclude webCmd eventMap">
     <INT key="id" value="02"/>
     <INT key="IODev" value="ZWDongle_0"/>
     <ATTR key="alias" value="Stehlampe"/>
-    <ATTR key="classes" value="MANUFACTURER_SPECIFIC VERSION HAIL INDICATOR PROTECTION SWITCH_ALL SWITCH_MULTILEVEL"/>
+    <ATTR key="classes"
+          value="MANUFACTURER_SPECIFIC VERSION HAIL INDICATOR PROTECTION SWITCH_ALL SWITCH_MULTILEVEL"/>
     <ATTR key="model" value="Everspring_AN1582"/>
     <ATTR key="room" value="schlafzimmer"/>
     <STATE key="state" value="off" measured="2013-07-05 23:29:17"/>
 </ZWave>
 </ZWave_LIST>
-        </FHZINFO>
+    </FHZINFO>

@@ -36,6 +36,7 @@ import li.klass.fhem.fragments.PremiumFragment;
 import li.klass.fhem.fragments.RoomDetailFragment;
 import li.klass.fhem.fragments.RoomListFragment;
 import li.klass.fhem.fragments.SendCommandFragment;
+import li.klass.fhem.fragments.TimerDetailFragment;
 import li.klass.fhem.fragments.TimerListFragment;
 import li.klass.fhem.fragments.WebViewFragment;
 import li.klass.fhem.fragments.core.DeviceDetailFragment;
@@ -63,6 +64,7 @@ import li.klass.fhem.fragments.weekprofile.IntervalWeekProfileFragment;
                 DeviceNameSelectionFragment.class,
                 DeviceNameListNavigationFragment.class,
                 TimerListFragment.class,
+                TimerDetailFragment.class,
                 ConnectionListFragment.class,
                 ConnectionDetailFragment.class,
                 WebViewFragment.class,

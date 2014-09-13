@@ -24,12 +24,6 @@
 
 
 
-
-
-
-
-
-
 apply plugin: 'com.android.application'
 
 buildscript {

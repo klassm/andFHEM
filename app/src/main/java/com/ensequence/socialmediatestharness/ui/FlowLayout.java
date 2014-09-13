@@ -197,4 +197,9 @@ public class FlowLayout extends ViewGroup {
             }
         }
     }
+
+    @Override
+    protected LayoutParams generateDefaultLayoutParams() {
+        return new LinearLayout.LayoutParams(super.generateDefaultLayoutParams());
+    }
 }

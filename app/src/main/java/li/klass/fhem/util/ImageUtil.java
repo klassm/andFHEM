@@ -37,10 +37,13 @@ import android.widget.ImageView;
 import java.io.InputStream;
 import java.net.URL;
 
-import li.klass.fhem.constants.Actions;
-import li.klass.fhem.constants.BundleExtraKeys;
+import li.klass.fhem.constants.ResultCodes;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static li.klass.fhem.constants.Actions.LOAD_IMAGE;
+import static li.klass.fhem.constants.BundleExtraKeys.IMAGE;
+import static li.klass.fhem.constants.BundleExtraKeys.IMAGE_RELATIVE_PATH;
+import static li.klass.fhem.constants.BundleExtraKeys.RESULT_RECEIVER;
 
 public class ImageUtil {
 
@@ -99,16 +102,17 @@ public class ImageUtil {
                                                  final int scaleHeight, final int scaleWidth) {
         checkNotNull(context);
 
-        Intent intent = new Intent(Actions.LOAD_IMAGE);
-        intent.putExtra(BundleExtraKeys.IMAGE_RELATIVE_PATH, relativeImageUrl);
-        intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new FhemResultReceiver() {
+        Intent intent = new Intent(LOAD_IMAGE);
+        intent.putExtra(IMAGE_RELATIVE_PATH, relativeImageUrl);
+        intent.putExtra(RESULT_RECEIVER, new FhemResultReceiver() {
             @Override
             protected void onReceiveResult(int resultCode, Bundle resultData) {
-                if (!resultData.containsKey(BundleExtraKeys.IMAGE)) {
+                Log.e(ImageUtil.class.getName(), relativeImageUrl + " : " + resultCode);
+                if (resultCode != ResultCodes.SUCCESS || !resultData.containsKey(IMAGE)) {
                     return;
                 }
 
-                Bitmap bitmap = (Bitmap) resultData.get(BundleExtraKeys.IMAGE);
+                Bitmap bitmap = (Bitmap) resultData.get(IMAGE);
                 resizeBitmap(bitmap, scaleHeight, scaleWidth);
                 imageView.setImageBitmap(bitmap);
             }

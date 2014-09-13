@@ -47,12 +47,14 @@ import static li.klass.fhem.AndFHEMApplication.PUBLIC_KEY_ENCODED;
 public class BillingService {
 
     public static final String TAG = BillingService.class.getName();
+
     IabHelper iabHelper;
+    private AtomicReference<Inventory> inventory = new AtomicReference<>(Inventory.empty());
+    private volatile boolean setupInProgress = false;
+
     @Inject
     @ForApplication
     Context applicationContext;
-    private AtomicReference<Inventory> inventory = new AtomicReference<>(Inventory.empty());
-    private volatile boolean setupInProgress = false;
 
     public synchronized void stop() {
         if (iabHelper != null) {
