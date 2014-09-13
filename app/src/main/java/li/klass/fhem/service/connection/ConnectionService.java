@@ -47,7 +47,9 @@ import li.klass.fhem.fhem.connection.ServerType;
 import li.klass.fhem.license.LicenseService;
 import li.klass.fhem.util.ApplicationProperties;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static li.klass.fhem.AndFHEMApplication.PREMIUM_ALLOWED_FREE_CONNECTIONS;
+import static li.klass.fhem.AndFHEMApplication.getApplication;
 import static li.klass.fhem.constants.PreferenceKeys.SELECTED_CONNECTION;
 
 @Singleton
@@ -57,17 +59,22 @@ public class ConnectionService {
     public static final String MANAGEMENT_DATA_ID = "-3";
     private static final Gson GSON = new Gson();
     private static final String PREFERENCES_NAME = "fhemConnections";
+
     @Inject
     LicenseService licenseService;
+
     @Inject
     ApplicationProperties applicationProperties;
+
     @Inject
     @ForApplication
     Context applicationContext;
+
     private FHEMServerSpec dummyData;
     private DummyServerSpec testData;
 
     public ConnectionService() {
+        getApplication().inject(this);
         initialiseDummyData();
     }
 
@@ -195,7 +202,7 @@ public class ConnectionService {
     }
 
     public ArrayList<FHEMServerSpec> listAll() {
-        ArrayList<FHEMServerSpec> servers = new ArrayList<FHEMServerSpec>();
+        ArrayList<FHEMServerSpec> servers = newArrayList();
 
         SharedPreferences preferences = getPreferences();
         if (preferences == null) return servers;

@@ -45,6 +45,7 @@ import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.fhem.connection.FHEMServerSpec;
 import li.klass.fhem.fhem.connection.ServerType;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static li.klass.fhem.constants.BundleExtraKeys.COMMAND;
 import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_ID;
 import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_LIST;
@@ -105,7 +106,7 @@ public class ConnectionChangeLocaleSettingActivity extends Activity {
                 bundle.putString(BundleExtraKeys.ACTION, Actions.CONNECTION_UPDATE);
                 resultIntent.putExtra(LocaleIntentConstants.EXTRA_BUNDLE, bundle);
 
-                if (selectedId != null && ! CURRENT_CONNECTION_ID.equals(selectedId)) {
+                if (selectedId != null && !CURRENT_CONNECTION_ID.equals(selectedId)) {
                     bundle.putString(CONNECTION_ID, selectedId);
                 }
 
@@ -129,7 +130,7 @@ public class ConnectionChangeLocaleSettingActivity extends Activity {
                     resultData.getSerializable(CONNECTION_LIST);
             assert connectionList != null;
 
-            for (FHEMServerSpec serverSpec : new ArrayList<FHEMServerSpec>(connectionList)) {
+            for (FHEMServerSpec serverSpec : newArrayList(connectionList)) {
                 if (serverSpec.getServerType() == ServerType.DUMMY) {
                     connectionList.remove(serverSpec);
                 }
