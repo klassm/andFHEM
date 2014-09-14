@@ -26,11 +26,18 @@ package li.klass.fhem.domain;
 
 import org.w3c.dom.NamedNodeMap;
 
+import java.util.List;
+
+import li.klass.fhem.R;
 import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
+import li.klass.fhem.service.graph.description.ChartSeriesDescription;
+
+import static li.klass.fhem.service.graph.description.SeriesType.WINDOW_OPEN;
 
 @SuppressWarnings("unused")
 @OverviewViewSettings(showState = true)
@@ -79,5 +86,21 @@ public class CULFHTTKDevice extends Device<CULFHTTKDevice> {
     @Override
     public boolean isSensorDevice() {
         return true;
+    }
+
+    @Override
+    protected void fillDeviceCharts(List<DeviceChart> chartSeries) {
+        super.fillDeviceCharts(chartSeries);
+
+        addDeviceChartIfNotNull(new DeviceChart(R.string.stateGraph,
+                new ChartSeriesDescription.Builder()
+                        .withColumnName(R.string.windowOpen)
+                        .withFileLogSpec("3:::$fld[2]=~/Open.*/?1:0")
+                        .withDbLogSpec("data:::$val=~s/(Open|Closed).*/$1eq\"Open\"?1:0/eg")
+                        .withSeriesType(WINDOW_OPEN)
+                        .withShowDiscreteValues(true)
+                        .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("state", 0, 0))
+                        .build()
+        ), getState());
     }
 }
