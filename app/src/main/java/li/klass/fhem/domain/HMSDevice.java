@@ -84,7 +84,7 @@ public class HMSDevice extends Device<HMSDevice> {
     }
 
     public void readHUMIDITY(String value) {
-        this.humidity = value;
+        this.humidity = ValueUtil.formatHumidity(value);
     }
 
     public void readTYPE(String value) {
