@@ -45,7 +45,7 @@ public class HMSDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getName(), is(DEFAULT_TEST_DEVICE_NAME));
         assertThat(device.getRoomConcatenated(), is(DEFAULT_TEST_ROOM_NAME));
 
-        assertThat(device.getHumidity(), is("40 (%)"));
+        assertThat(device.getHumidity(), is("40.0 (%)"));
         assertThat(device.getTemperature(), is("12.6 (°C)"));
         assertThat(device.getModel(), is("HMS100T"));
         assertThat(device.getBattery(), is("ok"));
