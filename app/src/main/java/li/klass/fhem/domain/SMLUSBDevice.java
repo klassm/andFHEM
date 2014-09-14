@@ -24,12 +24,19 @@
 
 package li.klass.fhem.domain;
 
+import java.util.List;
+
+import li.klass.fhem.R;
 import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.ShowField;
+import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 
+import static li.klass.fhem.service.graph.description.SeriesType.CUMULATIVE_USAGE_Wh;
+import static li.klass.fhem.service.graph.description.SeriesType.POWER;
 import static li.klass.fhem.util.ValueDescriptionUtil.appendKWh;
 import static li.klass.fhem.util.ValueDescriptionUtil.appendW;
 
@@ -72,4 +79,30 @@ public class SMLUSBDevice extends Device<SMLUSBDevice> {
     public void setCounterReadingTariff1(String counterReadingTariff1) {
         this.counterReadingTariff1 = appendKWh(counterReadingTariff1);
     }
+
+    @Override
+    protected void fillDeviceCharts(List<DeviceChart> chartSeries) {
+        super.fillDeviceCharts(chartSeries);
+
+        addDeviceChartIfNotNull(new DeviceChart(R.string.powerGraph,
+                new ChartSeriesDescription.Builder()
+                        .withColumnName(R.string.power)
+                        .withFileLogSpec("4:Momentanleistung:")
+                        .withDbLogSpec("Momentanleistung::int1")
+                        .withSeriesType(POWER)
+                        .withShowRegression(true)
+                        .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("Momentanleistung", 0, 0))
+                        .build()
+        ), power);
+
+        addDeviceChartIfNotNull(new DeviceChart(R.string.usageGraph,
+                new ChartSeriesDescription.Builder()
+                        .withColumnName(R.string.usageGraph).withFileLogSpec("4:Zählerstand-Tarif-1-Bezug:")
+                        .withDbLogSpec("ZÄHLERSTAND_BEZUG_TOTAL::int")
+                        .withSeriesType(CUMULATIVE_USAGE_Wh)
+                        .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("ZÄHLERSTAND_BEZUG_TOTAL", 0, 0))
+                        .build()
+        ), counterReading);
+    }
+
 }
