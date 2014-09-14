@@ -24,10 +24,6 @@
 
 package li.klass.fhem.fhem.connection;
 
-import android.util.Log;
-
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
@@ -162,11 +158,19 @@ public class FHEMServerSpec implements Comparable<FHEMServerSpec>, Serializable 
 
     @Override
     public String toString() {
-        try {
-            return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE, false, FHEMServerSpec.class);
-        } catch (Exception e) {
-            Log.e(FHEMServerSpec.class.getName(), "cannot build toString()", e);
-            return "";
-        }
+        return "FHEMServerSpec{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", password='" + password + '\'' +
+                ", ip='" + ip + '\'' +
+                ", port=" + port +
+                ", url='" + url + '\'' +
+                ", username='" + username + '\'' +
+                ", clientCertificatePath='" + clientCertificatePath + '\'' +
+                ", serverCertificatePath='" + serverCertificatePath + '\'' +
+                ", clientCertificateEnabled=" + clientCertificateEnabled +
+                ", clientCertificatePassword='" + clientCertificatePassword + '\'' +
+                ", serverType=" + serverType +
+                '}';
     }
 }
