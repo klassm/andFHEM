@@ -129,10 +129,6 @@ public abstract class LogDevice<T extends LogDevice> extends Device<T> {
         return deviceName.matches(concerningDeviceRegexp);
     }
 
-    public String getConcerningDeviceRegexp() {
-        return concerningDeviceRegexp;
-    }
-
     /**
      * Create a graph command for the given parameters.
      *
@@ -150,7 +146,6 @@ public abstract class LogDevice<T extends LogDevice> extends Device<T> {
         super.afterDeviceXMLRead();
 
         setAllDeviceReadCallback(new AllDevicesReadCallback() {
-
             @Override
             public void devicesRead(Map<String, Device> allDevices) {
                 for (Device device : allDevices.values()) {

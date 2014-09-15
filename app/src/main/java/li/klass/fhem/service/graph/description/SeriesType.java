@@ -56,7 +56,11 @@ public enum SeriesType {
     CO2(Color.RED, R.string.yAxisCO2),
     WEIGHT(Color.RED, R.string.yAxisWeight),
     FAT_RATIO(Color.BLUE, R.string.yAxisFatRatio),
-    WINDOW_OPEN(Color.BLUE, R.string.windowOpen)
+    WINDOW_OPEN(Color.BLUE, R.string.windowOpen),
+    AVERAGE_HOUR(Color.CYAN, R.string.average),
+    AVERAGE_DAY(Color.BLUE, R.string.average),
+    AVERAGE_MONTH(Color.RED, R.string.average),
+    AVERAGE_YEAR(Color.GREEN, R.string.average)
     ;
 
     private final int color;

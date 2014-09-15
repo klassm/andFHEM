@@ -22,21 +22,24 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.util;
+package li.klass.fhem.domain;
 
-import android.content.Context;
-import android.content.Intent;
+import org.junit.Test;
 
-import li.klass.fhem.constants.Actions;
-import li.klass.fhem.constants.BundleExtraKeys;
+import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 
-public class Tasker {
-    public static void sendTaskerNotifyIntent(Context context, String deviceName, String key, String value) {
-        Intent taskerNotifyIntent = new Intent(Actions.EXT_DEVICE_STATE_NOTIFY);
-        taskerNotifyIntent.putExtra(BundleExtraKeys.ACTION, "deviceStateChange");
-        taskerNotifyIntent.putExtra(BundleExtraKeys.DEVICE_NAME, deviceName);
-        taskerNotifyIntent.putExtra(BundleExtraKeys.STATE_NAME, key);
-        taskerNotifyIntent.putExtra(BundleExtraKeys.STATE_VALUE, value);
-        context.sendBroadcast(taskerNotifyIntent);
+import static org.fest.assertions.api.Assertions.assertThat;
+
+public class StatisticsDeviceTest extends DeviceXMLParsingBase {
+    @Test
+    public void should_add_statistics_device() {
+        SMLUSBDevice device = getDeviceFor("eg.hw.sz.haushalt");
+
+        assertThat(device.hasStatisticsDevice()).isTrue();
+    }
+
+    @Override
+    protected String getFileName() {
+        return "statistics.xml";
     }
 }

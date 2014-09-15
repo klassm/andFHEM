@@ -41,6 +41,7 @@ import li.klass.fhem.domain.log.CustomGraph;
 import li.klass.fhem.domain.log.LogDevice;
 import li.klass.fhem.domain.setlist.SetList;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
+import li.klass.fhem.service.graph.description.SeriesType;
 import li.klass.fhem.service.room.AllDevicesReadCallback;
 import li.klass.fhem.service.room.DeviceReadCallback;
 import li.klass.fhem.util.DateFormatUtil;
@@ -77,6 +78,7 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
     private transient DeviceReadCallback deviceReadCallback;
     private String widgetName;
     private boolean alwaysHidden = false;
+    private boolean hasStatisticsDevice = false;
 
     public void readROOM(String value) {
         setRoomConcatenated(value);
@@ -312,6 +314,35 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
     protected void fillDeviceCharts(List<DeviceChart> chartSeries) {
         deviceCharts.clear();
 
+        if (hasStatisticsDevice) {
+            deviceCharts.add(new DeviceChart(R.string.averagesGraph,
+                    new ChartSeriesDescription.Builder()
+                            .withSeriesType(SeriesType.AVERAGE_HOUR)
+                            .withColumnName(R.string.avgHour)
+                            .withFileLogSpec("5:Hour\\x3a:0:")
+                            .withDbLogSpec("hour")
+                            .build(),
+                    new ChartSeriesDescription.Builder()
+                            .withSeriesType(SeriesType.AVERAGE_DAY)
+                            .withColumnName(R.string.avgDay)
+                            .withFileLogSpec("7:Day\\x3a:0:")
+                            .withDbLogSpec("day")
+                            .build(),
+                    new ChartSeriesDescription.Builder()
+                            .withSeriesType(SeriesType.AVERAGE_MONTH)
+                            .withColumnName(R.string.avgMonth)
+                            .withFileLogSpec("9:Month\\x3a:0:")
+                            .withDbLogSpec("month")
+                            .build(),
+                    new ChartSeriesDescription.Builder()
+                            .withSeriesType(SeriesType.AVERAGE_YEAR)
+                            .withColumnName(R.string.avgYear)
+                            .withFileLogSpec("11:Year\\x3a:0:")
+                            .withDbLogSpec("year")
+                            .build()
+            ));
+        }
+
         for (LogDevice<?> logDevice : logDevices) {
             List<CustomGraph> customGraphs = logDevice.getCustomGraphs();
 
@@ -530,5 +561,13 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
 
     public boolean isSensorDevice() {
         return false;
+    }
+
+    public boolean hasStatisticsDevice() {
+        return hasStatisticsDevice;
+    }
+
+    public void setHasStatisticsDevice(boolean hasStatisticsDevice) {
+        this.hasStatisticsDevice = hasStatisticsDevice;
     }
 }

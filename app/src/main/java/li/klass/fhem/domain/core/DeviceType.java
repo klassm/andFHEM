@@ -124,6 +124,7 @@ import li.klass.fhem.domain.SMLUSBDevice;
 import li.klass.fhem.domain.SWAPDevice;
 import li.klass.fhem.domain.SonosDevice;
 import li.klass.fhem.domain.SonosPlayerDevice;
+import li.klass.fhem.domain.StatisticsDevice;
 import li.klass.fhem.domain.StructureDevice;
 import li.klass.fhem.domain.TRXDevice;
 import li.klass.fhem.domain.TRXLightDevice;
@@ -165,6 +166,7 @@ public enum DeviceType {
     FS20("FS20", FS20Device.class, new DimmableAdapter<>(FS20Device.class)),
     FILE_LOG("FileLog", FileLogDevice.class),
     DB_LOG("DbLog", DbLogDevice.class),
+    STATISTICS("statistics", StatisticsDevice.class),
     OWFS("OWFS", OWFSDevice.class),
     LGTV("LGTV", LGTVDevice.class),
     RFXCOM("RFXCOM", RFXCOMDevice.class),

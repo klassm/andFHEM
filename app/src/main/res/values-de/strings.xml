@@ -40,6 +40,8 @@
     <string name="warnings">Warnungen</string>
     <string name="time">Zeit</string>
     <string name="avgDay">Tagesschnitt</string>
+    <string name="avgHour">Stundenschnitt</string>
+    <string name="avgYear">Jahresschnitt</string>
     <string name="avgMonth">Monatsschnitt</string>
     <string name="minDay">Tagesminimum</string>
     <string name="minMonth">Monatsminimum</string>
@@ -338,6 +340,7 @@
     <string name="powerGraph">Energie Graph</string>
     <string name="co2Graph">CO2 Graph</string>
     <string name="weightGraph">Gewichtsgraph</string>
+    <string name="averagesGraph">Durchschnittswerte</string>
 
     <string name="yAxisWind">Wind (km/h)</string>
     <string name="yAxisHumidity">Luftfeuchtigkeit (%)</string>
@@ -538,4 +541,5 @@
     <string name="zoom_reset">Zoom zurücksetzen</string>
     <string name="zoom_in">Zoom +</string>
     <string name="zoom_out">Zoom -</string>
+    <string name="average">Durschnitt</string>
 </resources>

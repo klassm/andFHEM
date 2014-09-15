@@ -39,7 +39,9 @@
     <string name="measured">Measured</string>
     <string name="warnings">Warnings</string>
     <string name="time">Time</string>
+    <string name="avgHour">Average Hour</string>
     <string name="avgDay">Average Day</string>
+    <string name="avgYear">Average Year</string>
     <string name="avgMonth">Average Month</string>
     <string name="minDay">Minimum Day</string>
     <string name="minMonth">Minimum Month</string>
@@ -338,6 +340,7 @@
     <string name="powerGraph">Power Graph</string>
     <string name="co2Graph">CO2 Graph</string>
     <string name="weightGraph">Weight Graph</string>
+    <string name="averagesGraph">Averages Graph</string>
 
     <string name="yAxisWind">wind (km/h)</string>
     <string name="yAxisHumidity">humidity (%)</string>
@@ -575,4 +578,5 @@
     <string name="right" translatable="false">right</string>
     <string name="dp_suffix" translatable="false">dp</string>
     <string name="s_suffix" translatable="false">s</string>
+    <string name="average">average</string>
 </resources>

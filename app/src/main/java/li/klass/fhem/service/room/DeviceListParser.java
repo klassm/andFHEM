@@ -28,16 +28,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import com.google.common.collect.Sets;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
+import java.io.Serializable;
 import java.io.StringReader;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -51,6 +54,7 @@ import li.klass.fhem.R;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.dagger.ForApplication;
+import li.klass.fhem.domain.StatisticsDevice;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceType;
 import li.klass.fhem.domain.core.RoomDeviceList;
@@ -64,6 +68,7 @@ import li.klass.fhem.util.StringEscapeUtil;
 import li.klass.fhem.util.StringUtil;
 import li.klass.fhem.util.XMLUtil;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Maps.newHashMap;
 import static li.klass.fhem.domain.core.DeviceType.getDeviceTypeFor;
@@ -75,12 +80,15 @@ import static li.klass.fhem.domain.core.DeviceType.getDeviceTypeFor;
 public class DeviceListParser {
 
     public static final String TAG = DeviceListParser.class.getName();
+
     @Inject
     ConnectionService connectionService;
+
     @Inject
     @ForApplication
     Context applicationContext;
-    private Map<Class<Device>, Map<String, Set<Method>>> deviceClassCache;
+
+    private Map<Class<Device>, Map<String, Set<DeviceClassCacheEntry>>> deviceClassCache = newHashMap();
 
     public RoomDeviceList parseAndWrapExceptions(String xmlList) {
         try {
@@ -249,7 +257,7 @@ public class DeviceListParser {
             // We don't want to show log devices in any kind of view. Log devices
             // are already associated with their respective devices during after read
             // operations.
-            if (!(device instanceof LogDevice)) {
+            if (!(device instanceof LogDevice) && !(device instanceof StatisticsDevice)) {
                 roomDeviceList.addDevice(device);
             }
         }
@@ -295,7 +303,7 @@ public class DeviceListParser {
 
     private <T extends Device> T createAndFillDevice(Class<T> deviceClass, Node node) throws Exception {
         T device = deviceClass.newInstance();
-        Map<String, Set<Method>> cache = getDeviceClassCacheEntriesFor(deviceClass);
+        Map<String, Set<DeviceClassCacheEntry>> cache = getDeviceClassCacheEntriesFor(deviceClass);
 
         NamedNodeMap attributes = node.getAttributes();
         for (int i = 0; i < attributes.getLength(); i++) {
@@ -333,60 +341,31 @@ public class DeviceListParser {
     }
 
     @SuppressWarnings("unchecked")
-    private <T extends Device> Map<String, Set<Method>> getDeviceClassCacheEntriesFor(Class<T> deviceClass) {
+    private <T extends Device> Map<String, Set<DeviceClassCacheEntry>> getDeviceClassCacheEntriesFor(Class<T> deviceClass) {
         Class<Device> clazz = (Class<Device>) deviceClass;
-        Map<Class<Device>, Map<String, Set<Method>>> cache = getDeviceClassCache();
-        if (!cache.containsKey(clazz)) {
-            cache.put(clazz, initDeviceClassCacheEntries(deviceClass));
+        if (!deviceClassCache.containsKey(clazz)) {
+            deviceClassCache.put(clazz, initDeviceMethodCacheEntries(deviceClass));
+            deviceClassCache.put(clazz, initDeviceMethodCacheEntries(deviceClass));
         }
 
-        return cache.get(clazz);
+        return deviceClassCache.get(clazz);
     }
 
-    private <T extends Device> void invokeDeviceAttributeMethod(Map<String, Set<Method>> cache, T device, String key,
+    private <T extends Device> void invokeDeviceAttributeMethod(Map<String, Set<DeviceClassCacheEntry>> cache, T device, String key,
                                                                 String value, NamedNodeMap attributes, String tagName) throws Exception {
 
         device.onChildItemRead(tagName, key, value, attributes);
-        if (!cache.containsKey(key)) return;
-        Set<Method> availableMethods = cache.get(key);
-        for (Method availableMethod : availableMethods) {
-            Class<?>[] parameterTypes = availableMethod.getParameterTypes();
-            if (parameterTypes.length == 1 && parameterTypes[0].equals(String.class)) {
-                availableMethod.invoke(device, value);
-            }
-
-            if (attributes != null && parameterTypes.length == 2 && parameterTypes[0].equals(String.class) &&
-                    parameterTypes[1].equals(NamedNodeMap.class)) {
-                availableMethod.invoke(device, value, attributes);
-            }
-
-            if (tagName != null && attributes != null && parameterTypes.length == 3 &&
-                    parameterTypes[0].equals(String.class) && parameterTypes[1].equals(NamedNodeMap.class) &&
-                    parameterTypes[2].equals(String.class)) {
-                availableMethod.invoke(device, tagName, attributes, value);
+        if (cache.containsKey(key)) {
+            for (DeviceClassCacheEntry entry : cache.get(key)) {
+                entry.invoke(device, attributes, tagName, value);
             }
         }
     }
 
-    private Map<Class<Device>, Map<String, Set<Method>>> getDeviceClassCache() {
-        if (deviceClassCache == null) {
-            deviceClassCache = newHashMap();
-        }
+    private <T extends Device> Map<String, Set<DeviceClassCacheEntry>> initDeviceMethodCacheEntries(Class<T> deviceClass) {
+        Map<String, Set<DeviceClassCacheEntry>> cache = newHashMap();
 
-        return deviceClassCache;
-    }
-
-    /**
-     * Loads an initial map of method names (that are parsed to attribute names) incl. the methods polymorphic
-     * method parameters.
-     *
-     * @param deviceClass class of the device
-     * @return map of device methods
-     */
-    private <T extends Device> Map<String, Set<Method>> initDeviceClassCacheEntries(Class<T> deviceClass) {
-        Map<String, Set<Method>> cache = newHashMap();
-        Method[] methods = deviceClass.getMethods();
-        for (Method method : methods) {
+        for (Method method : deviceClass.getMethods()) {
             if (method.isAnnotationPresent(XmllistAttribute.class)) {
                 XmllistAttribute annotation = method.getAnnotation(XmllistAttribute.class);
                 for (String value : annotation.value()) {
@@ -398,15 +377,27 @@ public class DeviceListParser {
             }
         }
 
+        for (Field field : deviceClass.getDeclaredFields()) {
+            if (field.isAnnotationPresent(XmllistAttribute.class)) {
+                XmllistAttribute annotation = field.getAnnotation(XmllistAttribute.class);
+                checkArgument(annotation.value().length == 1);
+
+                addToCache(cache, new DeviceClassFieldEntry(field, annotation.value()[0]));
+            }
+        }
+
         return cache;
     }
 
-    private void addToCache(Map<String, Set<Method>> cache, Method method, String attribute) {
-        if (!cache.containsKey(attribute)) {
-            cache.put(attribute, new HashSet<Method>());
+    private void addToCache(Map<String, Set<DeviceClassCacheEntry>> cache, Method method, String attribute) {
+        addToCache(cache, new DeviceClassMethodEntry(method, attribute));
+    }
+
+    private void addToCache(Map<String, Set<DeviceClassCacheEntry>> cache, DeviceClassCacheEntry entry) {
+        if (!cache.containsKey(entry.getAttribute())) {
+            cache.put(entry.getAttribute(), Sets.<DeviceClassCacheEntry>newHashSet());
         }
-        cache.get(attribute).add(method);
-        method.setAccessible(true);
+        cache.get(entry.getAttribute()).add(entry);
     }
 
     public void fillDeviceWith(Device device, Map<String, String> updates) {
@@ -484,6 +475,67 @@ public class DeviceListParser {
             }
 
             return errorDeviceTypeNames;
+        }
+    }
+
+    private abstract class DeviceClassCacheEntry implements Serializable {
+        private final String attribute;
+
+        public DeviceClassCacheEntry(String attribute) {
+            this.attribute = attribute;
+        }
+
+        public String getAttribute() {
+            return attribute;
+        }
+
+        public abstract void invoke(Object object, NamedNodeMap attributes, String tagName, String value) throws Exception;
+    }
+
+    private class DeviceClassMethodEntry extends DeviceClassCacheEntry {
+
+        private final Method method;
+
+        public DeviceClassMethodEntry(Method method, String attribute) {
+            super(attribute);
+            this.method = method;
+            method.setAccessible(true);
+        }
+
+        @Override
+        public void invoke(Object object, NamedNodeMap attributes, String tagName, String value) throws Exception {
+            Class<?>[] parameterTypes = method.getParameterTypes();
+            if (parameterTypes.length == 1 && parameterTypes[0].equals(String.class)) {
+                method.invoke(object, value);
+            }
+
+            if (attributes != null && parameterTypes.length == 2 && parameterTypes[0].equals(String.class) &&
+                    parameterTypes[1].equals(NamedNodeMap.class)) {
+                method.invoke(object, value, attributes);
+            }
+
+            if (tagName != null && attributes != null && parameterTypes.length == 3 &&
+                    parameterTypes[0].equals(String.class) && parameterTypes[1].equals(NamedNodeMap.class) &&
+                    parameterTypes[2].equals(String.class)) {
+                method.invoke(object, tagName, attributes, value);
+            }
+        }
+    }
+
+    private class DeviceClassFieldEntry extends DeviceClassCacheEntry {
+        private final Field field;
+
+        public DeviceClassFieldEntry(Field field, String attribute) {
+            super(attribute);
+            this.field = field;
+
+            checkArgument(field.getType().isAssignableFrom(String.class));
+            field.setAccessible(true);
+        }
+
+        @Override
+        public void invoke(Object object, NamedNodeMap attributes, String tagName, String value) throws Exception {
+            field.set(object, value);
         }
     }
 }
