@@ -95,7 +95,7 @@ public class CULFHTTKDevice extends Device<CULFHTTKDevice> {
         addDeviceChartIfNotNull(new DeviceChart(R.string.stateGraph,
                 new ChartSeriesDescription.Builder()
                         .withColumnName(R.string.windowOpen)
-                        .withFileLogSpec("3:::$fld[2]=~/Open.*/?1:0")
+                        .withFileLogSpec("3:Window.*::$fld[3]=~/Open/?1:0 ")
                         .withDbLogSpec("data:::$val=~s/(Open|Closed).*/$1eq\"Open\"?1:0/eg")
                         .withSeriesType(WINDOW_OPEN)
                         .withShowDiscreteValues(true)
