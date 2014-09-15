@@ -24,6 +24,8 @@
 
 
 
+
+
 apply plugin: 'com.android.application'
 
 buildscript {
@@ -136,7 +138,6 @@ dependencies {
     compile 'commons-net:commons-net:3.3'
     compile 'com.google.code.gson:gson:2.2.4'
     compile 'com.google.guava:guava:17.0'
-    compile 'org.apache.commons:commons-lang3:3.2.1'
     compile 'org.achartengine:achartengine:1.2.0'
     compile 'org.apache.commons:commons-lang3:3.3.2'
     compile 'com.squareup.dagger:dagger-compiler:1.2.2'

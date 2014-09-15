@@ -28,9 +28,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 
-import static org.apache.commons.lang3.builder.EqualsBuilder.reflectionEquals;
-import static org.apache.commons.lang3.builder.HashCodeBuilder.reflectionHashCode;
-
 public class FHEMServerSpec implements Comparable<FHEMServerSpec>, Serializable {
     private final String id;
     private String name;
@@ -148,12 +145,18 @@ public class FHEMServerSpec implements Comparable<FHEMServerSpec>, Serializable 
 
     @Override
     public boolean equals(Object o) {
-        return o instanceof FHEMServerSpec && reflectionEquals(o, this);
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        FHEMServerSpec that = (FHEMServerSpec) o;
+
+        return !(id != null ? !id.equals(that.id) : that.id != null);
+
     }
 
     @Override
     public int hashCode() {
-        return reflectionHashCode(this);
+        return id != null ? id.hashCode() : 0;
     }
 
     @Override
