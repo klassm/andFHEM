@@ -66,7 +66,7 @@ public class RoomListFragment extends BaseFragment implements TopLevelFragment {
     @Inject
     AdvertisementService advertisementService;
     private String roomName;
-    private int emptyTextId;
+    private int emptyTextId = R.string.noRooms;
     private RoomSelectableCallback roomSelectableCallback;
     private RoomClickedCallback roomClickedCallback;
 

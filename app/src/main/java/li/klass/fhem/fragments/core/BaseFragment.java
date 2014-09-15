@@ -206,12 +206,14 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
     }
 
     protected void fillEmptyView(LinearLayout view, int text, ViewGroup container) {
-        View emptyView = LayoutInflater.from(getActivity()).inflate(R.layout.empty_view, container, false);
-        assert emptyView != null;
-        TextView emptyText = (TextView) emptyView.findViewById(R.id.emptyText);
-        emptyText.setText(text);
+        if (text != 0) {
+            View emptyView = LayoutInflater.from(getActivity()).inflate(R.layout.empty_view, container, false);
+            assert emptyView != null;
+            TextView emptyText = (TextView) emptyView.findViewById(R.id.emptyText);
+            emptyText.setText(text);
 
-        view.addView(emptyView);
+            view.addView(emptyView);
+        }
     }
 
     private void showConnectionError(String content) {
