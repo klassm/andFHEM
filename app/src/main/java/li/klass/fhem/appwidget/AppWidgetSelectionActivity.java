@@ -181,7 +181,7 @@ public abstract class AppWidgetSelectionActivity extends SherlockFragmentActivit
     }
 
     private void createWidget(WidgetType type, String... payload) {
-        type.createWidgetConfiguration(getApplication(), widgetId, new WidgetConfigurationCreatedCallback() {
+        type.createWidgetConfiguration(getApplication(), this, widgetId, new WidgetConfigurationCreatedCallback() {
             @Override
             public void widgetConfigurationCreated(WidgetConfiguration widgetConfiguration) {
                 appWidgetDataHolder.saveWidgetConfigurationToPreferences(widgetConfiguration);
