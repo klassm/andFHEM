@@ -65,7 +65,7 @@ public class TemperatureChangeTableRow<D extends Device<D>> extends SeekBarActio
         super(context, temperatureToDimProgress(initialTemperature, minTemperature),
                 temperatureToDimProgress(maxTemperature, minTemperature));
 
-        updateView = (TextView) updateTableRow.findViewById(R.id.value);
+        this.updateView = (TextView) updateTableRow.findViewById(R.id.value);
         this.minTemperature = minTemperature;
         this.intentAction = intentAction;
         this.valueStringId = valueStringId;

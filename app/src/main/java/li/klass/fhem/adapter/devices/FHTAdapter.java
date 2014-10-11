@@ -36,8 +36,6 @@ import android.widget.TimePicker;
 
 import org.joda.time.DateTime;
 
-import java.util.Calendar;
-
 import javax.inject.Inject;
 
 import li.klass.fhem.R;
@@ -238,37 +236,13 @@ public class FHTAdapter extends GenericDeviceAdapter<FHTDevice> {
         timePicker.setCurrentMinute(0);
         timePicker.setCurrentHour(now.getHourOfDay());
 
-        TextView endTimeView = (TextView) contentView.findViewById(R.id.endTimeValue);
-        endTimeView.setText(DateFormatUtil.toReadable(now));
+        updateHolidayShortEndTime(timePicker, contentView);
 
         timePicker.setIs24HourView(true);
         timePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
-            private int lastMinute = 0;
-
             @Override
             public void onTimeChanged(TimePicker timePicker, int hourOfDay, int minute) {
-                DateTime switchDate = new DateTime();
-                if (holidayShortIsTomorrow(timePicker)) {
-                    switchDate = switchDate.plusDays(1);
-                }
-                String switchDateString = DateFormatUtil.toReadable(switchDate);
-
-                TextView endTimeView = (TextView) contentView.findViewById(R.id.endTimeValue);
-                endTimeView.setText(switchDateString);
-
-                int rest = minute % 10;
-                if (rest == 0) return;
-
-                int newMinute;
-                if (minute < lastMinute) {
-                    newMinute = minute - rest;
-                } else {
-                    newMinute = minute + (10 - rest);
-                }
-                if (newMinute < 0 || newMinute >= 60) newMinute = 0;
-
-                lastMinute = newMinute;
-                timePicker.setCurrentMinute(newMinute);
+                updateHolidayShortEndTime(timePicker, contentView);
             }
         });
 
@@ -289,15 +263,11 @@ public class FHTAdapter extends GenericDeviceAdapter<FHTDevice> {
         dialogBuilder.setPositiveButton(R.string.okButton, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int item) {
+                DateTime switchDate = holiday1SwitchDateFor(timePicker);
+
                 intent.putExtra(BundleExtraKeys.DEVICE_TEMPERATURE, temperatureChangeTableRow.getTemperature());
-                intent.putExtra(BundleExtraKeys.DEVICE_HOLIDAY1, extraxtHolidayShortHoliday1ValueFrom(timePicker));
-
-                Calendar now = Calendar.getInstance();
-                if (holidayShortIsTomorrow(timePicker)) {
-                    now.add(Calendar.DAY_OF_MONTH, 1);
-                }
-                intent.putExtra(BundleExtraKeys.DEVICE_HOLIDAY2, now.get(Calendar.DAY_OF_MONTH));
-
+                intent.putExtra(BundleExtraKeys.DEVICE_HOLIDAY1, extractHolidayShortHoliday1ValueFrom(switchDate));
+                intent.putExtra(BundleExtraKeys.DEVICE_HOLIDAY2, switchDate.getDayOfMonth());
                 getContext().startService(intent);
 
                 spinnerActionRow.commitSelection();
@@ -307,35 +277,44 @@ public class FHTAdapter extends GenericDeviceAdapter<FHTDevice> {
         dialogBuilder.show();
     }
 
-    public static boolean holidayShortIsTomorrow(TimePicker timePicker) {
-        int hour = timePicker.getCurrentHour();
-        int minute = timePicker.getCurrentMinute();
+    private void updateHolidayShortEndTime(TimePicker timePicker, TableLayout contentView) {
+        DateTime switchDate = holiday1SwitchDateFor(timePicker);
+        String switchDateString = DateFormatUtil.toReadable(switchDate);
 
-        Calendar now = Calendar.getInstance();
-        int currentMinutes = (now.get(Calendar.MINUTE) / 10) * 10;
-        int currentHour = now.get(Calendar.HOUR_OF_DAY);
-
-        return holidayShortIsTomorrow(currentHour, currentMinutes, hour, minute);
+        ((TextView) contentView.findViewById(R.id.endTimeValue)).setText(switchDateString);
     }
 
-    public static int extraxtHolidayShortHoliday1ValueFrom(TimePicker timePicker) {
-        int hour = timePicker.getCurrentHour();
+    DateTime holiday1SwitchDateFor(TimePicker timePicker) {
         int minute = timePicker.getCurrentMinute();
+        int hourOfDay = timePicker.getCurrentHour();
 
-        return caclulateHolidayShortHoliday1ValueFrom(hour, minute);
-    }
-
-    public static boolean holidayShortIsTomorrow(int currentHour, int currentMinutes, int selectedHour, int selectedMinutes) {
-        if (selectedHour < currentHour) {
-            return true;
-        } else if (selectedHour == currentHour) {
-            return currentMinutes > selectedMinutes;
+        int newMinute = (int) ((Math.round(minute / 10.0) * 10) % 60);
+        if (newMinute == 0) {
+            hourOfDay += minute > 30 ? 1 : 0;
         }
+        hourOfDay %= 24;
 
-        return false;
+        DateTime now = new DateTime();
+        DateTime switchTime = new DateTime(now.getYear(), now.getMonthOfYear(), now.getDayOfMonth(), hourOfDay, newMinute);
+
+        if (holidayShortIsTomorrow(switchTime, now)) {
+            switchTime = switchTime.plusDays(1);
+        }
+        return switchTime;
     }
 
-    public static int caclulateHolidayShortHoliday1ValueFrom(int hour, int minute) {
+    int extractHolidayShortHoliday1ValueFrom(DateTime dateTime) {
+        return calculateHolidayShortHoliday1ValueFrom(dateTime.getHourOfDay(), dateTime.getMinuteOfHour());
+    }
+
+    boolean holidayShortIsTomorrow(DateTime switchTime, DateTime baseline) {
+        int currentMinute = baseline.getHourOfDay() * 60 + baseline.getMinuteOfHour();
+        int switchMinute = switchTime.getHourOfDay() * 60 + switchTime.getMinuteOfHour();
+
+        return switchMinute < currentMinute;
+    }
+
+    int calculateHolidayShortHoliday1ValueFrom(int hour, int minute) {
         return hour * 6 + minute / 10;
     }
 }

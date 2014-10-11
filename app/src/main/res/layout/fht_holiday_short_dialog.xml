@@ -27,7 +27,7 @@
 <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"
-             android:stretchColumns="1"
+             android:stretchColumns="0"
              android:padding="10dp">
 
     <TableRow android:id="@+id/targetTime">
@@ -51,12 +51,11 @@
 
     <TableRow android:id="@+id/updateTemperatureRow">
         <TextView android:text="@string/desiredTemperature"
-                  style="@style/deviceDetailDescription"
-                  android:textStyle="bold"
-                  android:layout_column="0"/>
+                  android:textStyle="bold"/>
+
         <TextView android:id="@+id/value"
                   style="@style/deviceDetailContent"
-                  android:layout_column="1"
+                  android:layout_width="wrap_content"
                   android:text="@string/dummy_text" />
     </TableRow>
 </TableLayout>

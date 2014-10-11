@@ -24,14 +24,16 @@
 
 package li.klass.fhem.adapter.devices;
 
-import li.klass.fhem.infra.basetest.RobolectricBaseTestCase;
+import org.joda.time.DateTime;
 import org.junit.Test;
 
-import static li.klass.fhem.adapter.devices.FHTAdapter.caclulateHolidayShortHoliday1ValueFrom;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
+import li.klass.fhem.infra.basetest.RobolectricBaseTestCase;
+
+import static org.fest.assertions.api.Assertions.assertThat;
 
 public class FHTAdapterTest extends RobolectricBaseTestCase {
+
+    private FHTAdapter fhtAdapter = new FHTAdapter();
 
     @Test
     public void testHolidayShortTimeToFHEMHoliday1Time() {
@@ -44,13 +46,12 @@ public class FHTAdapterTest extends RobolectricBaseTestCase {
 
     @Test
     public void testHolidayShortIsTomorrow() {
-         assertThat(FHTAdapter.holidayShortIsTomorrow(12, 12, 11, 10), is(true));
-         assertThat(FHTAdapter.holidayShortIsTomorrow(12, 10, 12, 10), is(false));
-         assertThat(FHTAdapter.holidayShortIsTomorrow(11, 10, 12, 10), is(false));
-         assertThat(FHTAdapter.holidayShortIsTomorrow(9, 0, 9, 50), is(false));
+        DateTime baseline = new DateTime(2014, 5, 10, 12, 0);
+        assertThat(fhtAdapter.holidayShortIsTomorrow(baseline.minusMinutes(1), baseline)).isTrue();
+        assertThat(fhtAdapter.holidayShortIsTomorrow(baseline.plusMinutes(1), baseline)).isFalse();
     }
 
-    private void verifyTimePickerHoliday1Time(int currentHour, int currentMinute, int expextedHoliday1Value) {
-        assertThat(caclulateHolidayShortHoliday1ValueFrom(currentHour, currentMinute), is(expextedHoliday1Value));
+    private void verifyTimePickerHoliday1Time(int currentHour, int currentMinute, int expectedHoliday1Value) {
+        assertThat(fhtAdapter.calculateHolidayShortHoliday1ValueFrom(currentHour, currentMinute)).isEqualTo(expectedHoliday1Value);
     }
 }
