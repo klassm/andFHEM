@@ -83,12 +83,12 @@ public class ChartingDateSelectionActivity extends Activity {
                 DatePickerDialog dialog = new DatePickerDialog(ChartingDateSelectionActivity.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker datePicker, int year, int month, int dayOfMonth) {
-                        startDate = new DateTime(year, month, dayOfMonth, startDate.getHourOfDay(),
+                        startDate = new DateTime(year, month + 1, dayOfMonth, startDate.getHourOfDay(),
                                 startDate.getMinuteOfHour());
                         updateDateTextField(R.id.startDate, startDate);
                         updateOkButtonVisibility();
                     }
-                }, startDate.getYear(), startDate.getMonthOfYear(), startDate.getDayOfMonth());
+                }, startDate.getYear(), startDate.getMonthOfYear() - 1, startDate.getDayOfMonth());
 
                 dialog.show();
             }
@@ -120,12 +120,12 @@ public class ChartingDateSelectionActivity extends Activity {
                 DatePickerDialog dialog = new DatePickerDialog(ChartingDateSelectionActivity.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker datePicker, int year, int month, int dayOfMonth) {
-                        endDate = new DateTime(year, month, dayOfMonth, endDate.getHourOfDay(),
+                        endDate = new DateTime(year, month + 1, dayOfMonth, endDate.getHourOfDay(),
                                 endDate.getMinuteOfHour());
                         updateDateTextField(R.id.endDate, endDate);
                         updateOkButtonVisibility();
                     }
-                }, endDate.getYear(), endDate.getMonthOfYear(), endDate.getDayOfMonth());
+                }, endDate.getYear(), endDate.getMonthOfYear() - 1, endDate.getDayOfMonth());
 
                 dialog.show();
             }
