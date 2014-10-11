@@ -50,7 +50,7 @@ public class WebCmdActionRowTest {
         DummyDevice dummyDevice = new DummyDevice();
 
         // expect
-        assertThat(dummyDevice.getWebCmd()).isNull();
+        assertThat(dummyDevice.getWebCmd()).isEmpty();
 
         // when
         List<String> items = row.getItems(dummyDevice);

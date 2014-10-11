@@ -58,7 +58,7 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
     public static final long OUTDATED_DATA_MS_DEFAULT = 2 * 60 * 60 * 1000;
     public static final long NEVER_OUTDATE_DATA = 0;
     protected List<String> rooms;
-    protected String[] webCmd;
+    protected List<String> webCmd = newArrayList();
     protected String name;
     protected String alias;
     @ShowField(description = ResourceIdMapper.definition, showAfter = "roomConcatenated")
@@ -99,7 +99,7 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
     }
 
     public void readWEBCMD(String value) {
-        webCmd = value.split(":");
+        webCmd = newArrayList(value.split(":"));
     }
 
     public void gcmState(String value) {
@@ -510,7 +510,7 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
         return false;
     }
 
-    public String[] getWebCmd() {
+    public List<String> getWebCmd() {
         return webCmd;
     }
 

@@ -56,7 +56,6 @@ import li.klass.fhem.domain.genericview.DetailViewSettings;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.fhem.DataConnectionSwitch;
 import li.klass.fhem.fhem.DummyDataConnection;
-import li.klass.fhem.util.ArrayUtil;
 import li.klass.fhem.util.StringUtil;
 
 public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> {
@@ -100,7 +99,7 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
 
     private TableRow createWebCmdTableRowIfRequired(LayoutInflater inflater, TableLayout layout,
                                                     final D device) {
-        if (ArrayUtil.isEmpty(device.getWebCmd())) return null;
+        if (device.getWebCmd().isEmpty()) return null;
         final Context context = inflater.getContext();
 
         return new WebCmdActionRow<D>(HolderActionRow.LAYOUT_DETAIL, context)

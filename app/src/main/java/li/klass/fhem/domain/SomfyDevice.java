@@ -24,27 +24,27 @@
 
 package li.klass.fhem.domain;
 
-import org.junit.Test;
+import li.klass.fhem.domain.core.DeviceFunctionality;
+import li.klass.fhem.domain.core.ToggleableDevice;
 
-import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+public class SomfyDevice extends ToggleableDevice<SomfyDevice> {
 
-import static org.fest.assertions.api.Assertions.assertThat;
-
-public class WebCmdTest extends DeviceXMLParsingBase {
-
-    @Test
-    public void should_handle_unset_webcmd_attribute_even_if_webcmddevice_hook_is_set() {
-        DummyDevice device = getDeviceFor("withoutWebcmds");
-        assertThat(device.getWebCmd()).isEmpty();
-    }
-
-    public void should_use_alias_as_name_even_if_webcmddevice_hook_is_set() {
-        DummyDevice device = getDeviceFor("withAlias");
-        assertThat(device.getAliasOrName()).isEqualTo("alias");
+    @Override
+    public void afterDeviceXMLRead() {
+        super.afterDeviceXMLRead();
+        if (!getWebCmd().contains("auf")) {
+            getWebCmd().add("auf");
+        }
+        if (!getWebCmd().contains("stop")) {
+            getWebCmd().add("stop");
+        }
+        if (!getWebCmd().contains("ab")) {
+            getWebCmd().add("ab");
+        }
     }
 
     @Override
-    protected String getFileName() {
-        return "webcmd.xml";
+    public DeviceFunctionality getDeviceGroup() {
+        return DeviceFunctionality.WINDOW;
     }
 }

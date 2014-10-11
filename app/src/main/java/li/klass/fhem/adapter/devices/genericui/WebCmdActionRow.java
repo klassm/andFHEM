@@ -31,17 +31,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ToggleButton;
 
-import com.google.common.collect.Lists;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import li.klass.fhem.R;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.core.Device;
-
-import static com.google.common.collect.Lists.newArrayList;
 
 public class WebCmdActionRow<D extends Device<D>> extends HolderActionRow<D, String> {
     public WebCmdActionRow(int layout, Context context) {
@@ -54,8 +49,7 @@ public class WebCmdActionRow<D extends Device<D>> extends HolderActionRow<D, Str
 
     @Override
     public List<String> getItems(D device) {
-        String[] webCmd = device.getWebCmd();
-        return webCmd == null ? Lists.<String>newArrayList() : newArrayList(webCmd);
+        return device.getWebCmd();
     }
 
     @Override

@@ -24,13 +24,13 @@
 
 package li.klass.fhem.domain.core;
 
+import static com.google.common.collect.Sets.newHashSet;
 import static li.klass.fhem.domain.core.ToggleableDevice.ButtonHookType.NORMAL;
 import static li.klass.fhem.domain.core.ToggleableDevice.ButtonHookType.OFF_DEVICE;
 import static li.klass.fhem.domain.core.ToggleableDevice.ButtonHookType.ON_DEVICE;
 import static li.klass.fhem.domain.core.ToggleableDevice.ButtonHookType.ON_OFF_DEVICE;
 import static li.klass.fhem.domain.core.ToggleableDevice.ButtonHookType.TOGGLE_DEVICE;
 import static li.klass.fhem.domain.core.ToggleableDevice.ButtonHookType.WEBCMD_DEVICE;
-import static li.klass.fhem.util.ArrayUtil.contains;
 
 @SuppressWarnings("unused")
 public abstract class ToggleableDevice<T extends Device> extends Device<T> {
@@ -63,13 +63,12 @@ public abstract class ToggleableDevice<T extends Device> extends Device<T> {
 
     public boolean supportsToggle() {
         return getSetList().contains("on", "off") ||
-                contains(getWebCmd(), "on", "off") ||
-                eventMap.containsKey("on") && eventMap.containsKey("off");
+                getWebCmd().containsAll(newHashSet("on", "off")) ||
+                (eventMap.containsKey("on") && eventMap.containsKey("off"));
     }
 
     public void readONOFFDEVICE(String value) {
-        ButtonHookType target = ON_OFF_DEVICE;
-        readButtonHookType(value, target);
+        readButtonHookType(value, ON_OFF_DEVICE);
     }
 
     public void readONDEVICE(String value) {

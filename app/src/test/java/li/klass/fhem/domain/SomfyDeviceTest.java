@@ -30,21 +30,27 @@ import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 
-public class WebCmdTest extends DeviceXMLParsingBase {
-
+public class SomfyDeviceTest extends DeviceXMLParsingBase {
     @Test
-    public void should_handle_unset_webcmd_attribute_even_if_webcmddevice_hook_is_set() {
-        DummyDevice device = getDeviceFor("withoutWebcmds");
-        assertThat(device.getWebCmd()).isEmpty();
+    @SuppressWarnings("unchecked")
+    public void should_read_device() {
+        SomfyDevice device = getDeviceFor("SOMFY_WZ_EG_1");
+        assertThat(device).isNotNull();
+        assertThat(device.getState()).isEqualTo("stop");
+        assertThat(device.getWebCmd()).containsExactly("auf", "stop", "go-my", "ab");
     }
 
-    public void should_use_alias_as_name_even_if_webcmddevice_hook_is_set() {
-        DummyDevice device = getDeviceFor("withAlias");
-        assertThat(device.getAliasOrName()).isEqualTo("alias");
+    @Test
+    @SuppressWarnings("unchecked")
+    public void should_add_auf_ab_and_stop_as_webcmd_even_if_not_present() {
+        SomfyDevice device = getDeviceFor("SOMFY1");
+        assertThat(device).isNotNull();
+        assertThat(device.getState()).isEqualTo("stop");
+        assertThat(device.getWebCmd()).containsExactly("auf", "stop", "go-my", "ab");
     }
 
     @Override
     protected String getFileName() {
-        return "webcmd.xml";
+        return "somfy.xml";
     }
 }

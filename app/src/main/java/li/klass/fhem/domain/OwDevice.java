@@ -38,7 +38,6 @@ import static li.klass.fhem.domain.OwDevice.SubType.UNKNOWN;
 import static li.klass.fhem.util.ValueDescriptionUtil.appendTemperature;
 import static li.klass.fhem.util.ValueExtractUtil.extractLeadingDouble;
 
-@SuppressWarnings("unused")
 public class OwDevice extends ToggleableDevice<OwDevice> {
 
     enum SubType {

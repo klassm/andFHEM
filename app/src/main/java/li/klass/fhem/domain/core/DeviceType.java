@@ -122,6 +122,7 @@ import li.klass.fhem.domain.SHT21Device;
 import li.klass.fhem.domain.SISPMSDevice;
 import li.klass.fhem.domain.SMLUSBDevice;
 import li.klass.fhem.domain.SWAPDevice;
+import li.klass.fhem.domain.SomfyDevice;
 import li.klass.fhem.domain.SonosDevice;
 import li.klass.fhem.domain.SonosPlayerDevice;
 import li.klass.fhem.domain.StatisticsDevice;
@@ -231,7 +232,8 @@ public enum DeviceType {
     DMX("DMXDevice", DMXDevice.class, new DmxAdapter()),
     NETATMO("netatmo", NetatmoDevice.class),
     ROOMMATE("ROOMMATE", RoommateDevice.class),
-    SMLUSB("SMLUSB", SMLUSBDevice.class),;
+    SMLUSB("SMLUSB", SMLUSBDevice.class),
+    SOMFY("SOMFY", SomfyDevice.class, new ToggleableAdapterWithSwitchActionRow<>(SomfyDevice.class)),;
 
     private String xmllistTag;
     private Class<? extends Device> deviceClass;

@@ -1,0 +1,68 @@
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<FHZINFO>
+    <SOMFY_LIST>
+        <SOMFY name="SOMFY_WZ_EG_1" state="stop"
+               sets="auf ab go-my off off-for-timer on on-for-timer prog stop"
+               attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev symbol-length enc-key rolling-code repetition switch_rfmode:1,0 do_not_notify:1,0 ignore:0,1 dummy:1,0 model:somfyblinds loglevel:0,1,2,3,4,5,6 Rollos_E Rollos_E_map Rollos_F Rollos_F_map Rollos_G Rollos_G_map Steckdosen_A Steckdosen_A_map Steckdosen_B Steckdosen_B_map alle_Rollos alle_Rollos_map alle_Steckdosen alle_Steckdosen_map devStateIcon devStateStyle icon retrycount sortby structexclude webCmd widgetOverride">
+            <INT key="ADDRESS" value="000001"/>
+            <INT key="DEF" value="000001"/>
+            <INT key="IODevMissing" value="1"/>
+            <INT key="NAME" value="SOMFY_WZ_EG_1"/>
+            <INT key="NR" value="184"/>
+            <INT key="STATE" value="stop"/>
+            <INT key="TYPE" value="SOMFY"/>
+            <INT key="IODev" value="CUL433"/>
+            <ATTR key="IODev" value="CUL433"/>
+            <ATTR key="eventMap" value="off:auf on:ab"/>
+            <ATTR key="model" value="somfyblinds"/>
+            <ATTR key="room" value="Somfy_Rollos"/>
+            <ATTR key="webCmd" value="auf:stop:go-my:ab"/>
+            <STATE key="enc_key" value="AF" measured="2014-09-12 21:23:54"/>
+            <STATE key="rolling_code" value="001F" measured="2014-09-12 21:23:54"/>
+            <STATE key="state" value="stop" measured="2014-09-12 21:23:54"/>
+        </SOMFY>
+        <SOMFY name="SOMFY1" state="stop"
+               sets="auf ab go-my off off-for-timer on on-for-timer prog stop"
+               attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev symbol-length enc-key rolling-code repetition switch_rfmode:1,0 do_not_notify:1,0 ignore:0,1 dummy:1,0 model:somfyblinds loglevel:0,1,2,3,4,5,6 Rollos_E Rollos_E_map Rollos_F Rollos_F_map Rollos_G Rollos_G_map Steckdosen_A Steckdosen_A_map Steckdosen_B Steckdosen_B_map alle_Rollos alle_Rollos_map alle_Steckdosen alle_Steckdosen_map devStateIcon devStateStyle icon retrycount sortby structexclude webCmd widgetOverride">
+            <INT key="ADDRESS" value="000001"/>
+            <INT key="DEF" value="000001"/>
+            <INT key="IODevMissing" value="1"/>
+            <INT key="NAME" value="SOMFY1"/>
+            <INT key="NR" value="184"/>
+            <INT key="STATE" value="stop"/>
+            <INT key="TYPE" value="SOMFY"/>
+            <INT key="IODev" value="CUL433"/>
+            <ATTR key="IODev" value="CUL433"/>
+            <ATTR key="eventMap" value="off:auf on:ab"/>
+            <ATTR key="model" value="somfyblinds"/>
+            <ATTR key="room" value="Somfy_Rollos"/>
+            <ATTR key="webCmd" value="auf:stop:go-my:ab"/>
+            <STATE key="enc_key" value="AF" measured="2014-09-12 21:23:54"/>
+            <STATE key="rolling_code" value="001F" measured="2014-09-12 21:23:54"/>
+            <STATE key="state" value="stop" measured="2014-09-12 21:23:54"/>
+        </SOMFY>
+    </SOMFY_LIST>
+</FHZINFO>
