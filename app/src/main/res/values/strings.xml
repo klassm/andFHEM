@@ -66,6 +66,10 @@
     <string name="rooms">Room</string>
     <string name="counterA">Counter A</string>
     <string name="counterB">Counter B</string>
+    <string name="inputA">Input A</string>
+    <string name="inputB">Input B</string>
+    <string name="inputC">Input C</string>
+    <string name="inputD">Input D</string>
     <string name="counterReadingTariff1">Counter reading tariff 1</string>
     <string name="counterReading">Counter reading</string>
     <string name="present">Present</string>

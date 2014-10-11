@@ -36,7 +36,7 @@ import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.service.room.AllDevicesReadCallback;
 
 import static com.google.common.collect.Maps.newHashMap;
-import static li.klass.fhem.util.NumberUtil.isNumeric;
+import static li.klass.fhem.util.NumberUtil.isDecimalNumber;
 import static li.klass.fhem.util.ValueExtractUtil.extractLeadingDouble;
 
 public abstract class LogDevice<T extends LogDevice> extends Device<T> {
@@ -162,7 +162,7 @@ public abstract class LogDevice<T extends LogDevice> extends Device<T> {
         String[] definitions = definition.split("@");
         for (String graphDef : definitions) {
             String[] graphDefParts = graphDef.split(",");
-            if (graphDefParts.length == 3 && isNumeric(graphDefParts[1]) && isNumeric(graphDefParts[2])) {
+            if (graphDefParts.length == 3 && isDecimalNumber(graphDefParts[1]) && isDecimalNumber(graphDefParts[2])) {
                 yAxisConfiguration.put(graphDefParts[0],
                         new YAxisMinMaxValue(extractLeadingDouble(graphDefParts[1]),
                                 extractLeadingDouble(graphDefParts[2])));

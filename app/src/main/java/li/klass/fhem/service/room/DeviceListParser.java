@@ -369,7 +369,7 @@ public class DeviceListParser {
             if (method.isAnnotationPresent(XmllistAttribute.class)) {
                 XmllistAttribute annotation = method.getAnnotation(XmllistAttribute.class);
                 for (String value : annotation.value()) {
-                    addToCache(cache, method, value);
+                    addToCache(cache, method, value.toUpperCase(Locale.getDefault()));
                 }
             } else if (method.getName().startsWith("read")) {
                 String attribute = method.getName().substring("read".length());
@@ -380,9 +380,11 @@ public class DeviceListParser {
         for (Field field : deviceClass.getDeclaredFields()) {
             if (field.isAnnotationPresent(XmllistAttribute.class)) {
                 XmllistAttribute annotation = field.getAnnotation(XmllistAttribute.class);
-                checkArgument(annotation.value().length == 1);
+                checkArgument(annotation.value().length > 0);
 
-                addToCache(cache, new DeviceClassFieldEntry(field, annotation.value()[0]));
+                for (String value : annotation.value()) {
+                    addToCache(cache, new DeviceClassFieldEntry(field, value.toUpperCase(Locale.getDefault())));
+                }
             }
         }
 

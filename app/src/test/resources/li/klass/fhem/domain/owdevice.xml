@@ -153,5 +153,38 @@
             <STATE key="present" value="1" measured="2014-01-05 18:14:27"/>
             <STATE key="state" value="present: 1" measured="2014-01-05 18:14:27"/>
         </OWDevice>
+        <OWDevice name="OWSw" state="PIOBYTE: 0"
+                  sets="interval LCD_H/clear LCD_H/home LCD_H/message LCD_H/onoff LCD_H/screen LCD_H/screenyc LCD_M/clear LCD_M/home LCD_M/message LCD_M/onoff LCD_M/screen LCD_M/screenyc PIO.0 PIO.1 PIO.2 PIO.3 PIO.4 PIO.5 PIO.6 PIO.7 PIO.ALL PIO.BYTE latch.0 latch.1 latch.2 latch.3 latch.4 latch.5 latch.6 latch.7 latch.ALL latch.BYTE por set_alarm strobe"
+                  attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev uncached trimvalues polls interfaces model resolution:9,10,11,12 event-on-change-reading event-on-update-reading event-min-interval stateFormat devStateIcon devStateStyle icon sortby webCmd widgetOverride">
+            <INT key="DEF" value="29.9D0308000000 600"/>
+            <INT key="LAST_READ_FAILED" value="0"/>
+            <INT key="NAME" value="OWSw"/>
+            <INT key="NR" value="163"/>
+            <INT key="NTFY_ORDER" value="50b-OWSw"/>
+            <INT key="STATE" value="PIOBYTE: 0"/>
+            <INT key="TYPE" value="OWDevice"/>
+            <INT key="IODev" value="OWServer"/>
+            <ATTR key="IODev" value="OWServer"/>
+            <ATTR key="model" value="DS2408"/>
+            <ATTR key="room" value="Speicher"/>
+            <ATTR key="stateFormat" value="PIOBYTE: PIO.BYTE"/>
+            <STATE key="PIO.0" value="0" measured="2014-09-17 22:28:57"/>
+            <STATE key="PIO.1" value="1" measured="2014-09-17 22:28:27"/>
+            <STATE key="PIO.2" value="0" measured="2014-09-17 20:09:49"/>
+            <STATE key="PIO.3" value="1" measured="2014-09-17 20:09:39"/>
+            <STATE key="PIO.BYTE" value="0" measured="2014-03-27 01:40:40"/>
+            <STATE key="alarm" value="1" measured="2014-09-18 00:29:21"/>
+            <STATE key="sensed.0" value="1" measured="2014-09-18 00:29:21"/>
+            <STATE key="sensed.1" value="0" measured="2014-09-18 00:29:21"/>
+            <STATE key="sensed.2" value="1" measured="2014-09-18 00:29:21"/>
+            <STATE key="sensed.3" value="0" measured="2014-09-18 00:29:21"/>
+            <STATE key="sensed.4" value="1" measured="2014-09-18 00:29:21"/>
+            <STATE key="sensed.5" value="1" measured="2014-09-18 00:29:21"/>
+            <STATE key="sensed.6" value="1" measured="2014-09-18 00:29:21"/>
+            <STATE key="sensed.7" value="1" measured="2014-09-18 00:29:21"/>
+            <STATE key="state"
+                   value="sensed.0: 1  sensed.1: 0  sensed.2: 1  sensed.3: 0  sensed.4: 1  sensed.5: 1  sensed.6: 1  sensed.7: 1  alarm: 1"
+                   measured="2014-09-18 00:29:21"/>
+        </OWDevice>
     </OWDevice_LIST>
 </FHZINFO>

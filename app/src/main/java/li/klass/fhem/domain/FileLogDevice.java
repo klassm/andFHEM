@@ -34,7 +34,7 @@ import li.klass.fhem.domain.log.CustomGraph;
 import li.klass.fhem.domain.log.LogDevice;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 
-import static li.klass.fhem.util.NumberUtil.isNumeric;
+import static li.klass.fhem.util.NumberUtil.isDecimalNumber;
 import static li.klass.fhem.util.ValueExtractUtil.extractLeadingDouble;
 
 @SuppressWarnings("unused")
@@ -62,7 +62,7 @@ public class FileLogDevice extends LogDevice<FileLogDevice> {
             String description = parts[2];
 
             Optional<YAxisMinMaxValue> minMaxValue;
-            if (parts.length == 5 && isNumeric(parts[3]) && isNumeric(parts[4])) {
+            if (parts.length == 5 && isDecimalNumber(parts[3]) && isDecimalNumber(parts[4])) {
                 minMaxValue = Optional.of(
                         new YAxisMinMaxValue(extractLeadingDouble(parts[3]),
                                 extractLeadingDouble(parts[4]))

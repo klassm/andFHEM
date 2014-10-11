@@ -37,7 +37,7 @@ import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.DialogUtil;
 
 import static li.klass.fhem.constants.PreferenceKeys.SHOW_SET_VALUE_BUTTONS;
-import static li.klass.fhem.util.NumberUtil.isNumeric;
+import static li.klass.fhem.util.NumberUtil.isDecimalNumber;
 
 public abstract class SeekBarActionRowFullWidthAndButton<T extends Device<T>> extends SeekBarActionRowFullWidth<T> {
 
@@ -78,7 +78,7 @@ public abstract class SeekBarActionRowFullWidthAndButton<T extends Device<T>> ex
                 DialogUtil.showInputBox(context, title, "0", new DialogUtil.InputDialogListener() {
                     @Override
                     public void onClick(String text) {
-                        if (isNumeric(text)) {
+                        if (isDecimalNumber(text)) {
                             onButtonSetValue(device, Integer.parseInt(text));
                         } else {
                             DialogUtil.showAlertDialog(context, R.string.error, R.string.invalidInput);

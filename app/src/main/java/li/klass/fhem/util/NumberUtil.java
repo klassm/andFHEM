@@ -32,7 +32,7 @@ public class NumberUtil {
         return "" + value;
     }
 
-    public static boolean isNumeric(String text) {
+    public static boolean isDecimalNumber(String text) {
         return text.matches("[0-9]+(\\.[0-9]+)?");
     }
 }

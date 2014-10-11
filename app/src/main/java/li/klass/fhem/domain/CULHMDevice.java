@@ -384,7 +384,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
 
     @Override
     public String formatStateTextToSet(String stateToSet) {
-        if ((getSubType() == DIMMER || getSubType() == SHUTTER) && NumberUtil.isNumeric(stateToSet)) {
+        if ((getSubType() == DIMMER || getSubType() == SHUTTER) && NumberUtil.isDecimalNumber(stateToSet)) {
             return stateToSet + " %";
         }
         return super.formatStateTextToSet(stateToSet);

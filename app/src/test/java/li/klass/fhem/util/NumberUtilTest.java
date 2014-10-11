@@ -26,7 +26,7 @@ package li.klass.fhem.util;
 
 import org.junit.Test;
 
-import static li.klass.fhem.util.NumberUtil.isNumeric;
+import static li.klass.fhem.util.NumberUtil.isDecimalNumber;
 import static li.klass.fhem.util.NumberUtil.toTwoDecimalDigits;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -44,8 +44,8 @@ public class NumberUtilTest {
 
     @Test
     public void testIsNumeric() {
-        assertThat(isNumeric("123"), is(true));
-        assertThat(isNumeric("123a"), is(false));
-        assertThat(isNumeric(""), is(false));
+        assertThat(isDecimalNumber("123"), is(true));
+        assertThat(isDecimalNumber("123a"), is(false));
+        assertThat(isDecimalNumber(""), is(false));
     }
 }

@@ -28,7 +28,7 @@ import li.klass.fhem.domain.setlist.SetListSliderValue;
 import li.klass.fhem.domain.setlist.SetListValue;
 
 import static li.klass.fhem.domain.core.DeviceFunctionality.functionalityForDimmable;
-import static li.klass.fhem.util.NumberUtil.isNumeric;
+import static li.klass.fhem.util.NumberUtil.isDecimalNumber;
 import static li.klass.fhem.util.ValueExtractUtil.extractLeadingInt;
 
 public abstract class DimmableContinuousStatesDevice<D extends Device<D>> extends DimmableDevice<D> {
@@ -46,9 +46,11 @@ public abstract class DimmableContinuousStatesDevice<D extends Device<D>> extend
     @Override
     public int getPositionForDimState(String dimState) {
         dimState = dimState.replaceAll(getSetListDimStateAttributeName(), "").replaceAll("[% ]", "");
-        if (dimState.equals(getEventMapStateFor("on")) || "on".equals(dimState)) return getDimUpperBound();
-        if (dimState.equals(getEventMapStateFor("off")) || "off".equals(dimState)) return getDimLowerBound();
-        if (!isNumeric(dimState)) return 0;
+        if (dimState.equals(getEventMapStateFor("on")) || "on".equals(dimState))
+            return getDimUpperBound();
+        if (dimState.equals(getEventMapStateFor("off")) || "off".equals(dimState))
+            return getDimLowerBound();
+        if (!isDecimalNumber(dimState)) return 0;
 
         return extractLeadingInt(dimState);
     }

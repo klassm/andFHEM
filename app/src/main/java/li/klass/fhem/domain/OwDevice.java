@@ -24,12 +24,19 @@
 
 package li.klass.fhem.domain;
 
+import java.util.Map;
+
 import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.ToggleableDevice;
+import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.ShowField;
-import li.klass.fhem.util.ValueDescriptionUtil;
-import li.klass.fhem.util.ValueExtractUtil;
+
+import static li.klass.fhem.domain.OwDevice.SubType.SWITCH;
+import static li.klass.fhem.domain.OwDevice.SubType.TEMPERATURE;
+import static li.klass.fhem.domain.OwDevice.SubType.UNKNOWN;
+import static li.klass.fhem.util.ValueDescriptionUtil.appendTemperature;
+import static li.klass.fhem.util.ValueExtractUtil.extractLeadingDouble;
 
 @SuppressWarnings("unused")
 public class OwDevice extends ToggleableDevice<OwDevice> {
@@ -37,7 +44,7 @@ public class OwDevice extends ToggleableDevice<OwDevice> {
     enum SubType {
         TEMPERATURE(DeviceFunctionality.TEMPERATURE),
         SWITCH(DeviceFunctionality.SWITCH),
-        RELAIS(DeviceFunctionality.UNKNOWN);
+        UNKNOWN(DeviceFunctionality.UNKNOWN);
         private final DeviceFunctionality functionality;
 
         SubType(DeviceFunctionality functionality) {
@@ -45,53 +52,37 @@ public class OwDevice extends ToggleableDevice<OwDevice> {
         }
     }
 
-    private SubType subType = null;
+    private SubType subType = UNKNOWN;
 
-    @ShowField(description = ResourceIdMapper.temperature, showInOverview = true)
-    private String temperature;
+    @ShowField(description = ResourceIdMapper.inputA, showInOverview = true)
+    @XmllistAttribute({"PIO_A", "PIO", "PIO_0"})
+    private String inputA;
 
-    @ShowField(description = ResourceIdMapper.counterA, showInOverview = true)
-    private String counterA;
+    @ShowField(description = ResourceIdMapper.inputB, showInOverview = true)
+    @XmllistAttribute({"PIO_B", "PIO_1"})
+    private String inputB;
 
-    @ShowField(description = ResourceIdMapper.counterB, showInOverview = true)
-    private String counterB;
+    @ShowField(description = ResourceIdMapper.inputC, showInOverview = true)
+    @XmllistAttribute({"PIO_C", "PIO_2"})
+    private String inputC;
 
-    public void readMODEL(String value) {
-        if (value.equalsIgnoreCase("DS18S20") || value.equalsIgnoreCase("DS18B20")) {
-            subType = SubType.TEMPERATURE;
-        } else if (value.equalsIgnoreCase("DS2413")) {
-            subType = SubType.RELAIS;
-        } else if (value.equalsIgnoreCase("DS2405")) {
-            subType = SubType.SWITCH;
-        }
-    }
+
+    @ShowField(description = ResourceIdMapper.inputD, showInOverview = true)
+    @XmllistAttribute({"PIO_D", "PIO_3"})
+    private String inputD;
 
     @Override
     public void afterDeviceXMLRead() {
         super.afterDeviceXMLRead();
-        if (subType != SubType.TEMPERATURE) return;
 
-        if (temperature == null && getInternalState().matches("[0-9]+\\.[0-9]+.*")) {
-            readTEMPERATURE(getInternalState());
+        String internalState = getInternalState();
+        Map<String, String> eventMap = getEventMap();
+        if (internalState.contains("°C")) {
+            setState(appendTemperature(extractLeadingDouble(internalState)));
+            subType = TEMPERATURE;
+        } else if (eventMap.containsKey(getOnStateName()) && eventMap.containsKey(getOffStateName())) {
+            subType = SWITCH;
         }
-    }
-
-    public void readTEMPERATURE(String value) {
-        double leading = ValueExtractUtil.extractLeadingDouble(value);
-        this.temperature = ValueDescriptionUtil.appendTemperature(leading);
-    }
-
-    public void readPIO_A(String value) {
-        this.counterA = value;
-    }
-
-    public void readPIO_B(String value) {
-        this.counterB = value;
-    }
-
-    @Override
-    public boolean isSupported() {
-        return super.isSupported() && subType != null;
     }
 
     @Override
@@ -119,16 +110,20 @@ public class OwDevice extends ToggleableDevice<OwDevice> {
         return subType;
     }
 
-    public String getTemperature() {
-        return temperature;
+    public String getInputA() {
+        return inputA;
     }
 
-    public String getCounterA() {
-        return counterA;
+    public String getInputB() {
+        return inputB;
     }
 
-    public String getCounterB() {
-        return counterB;
+    public String getInputC() {
+        return inputC;
+    }
+
+    public String getInputD() {
+        return inputD;
     }
 
     @Override
@@ -142,7 +137,7 @@ public class OwDevice extends ToggleableDevice<OwDevice> {
 
     @Override
     public boolean isSensorDevice() {
-        return ! supportsToggle();
+        return !supportsToggle();
     }
 
     @Override

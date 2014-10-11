@@ -125,7 +125,7 @@ public class EnOceanDevice extends DimmableDevice<EnOceanDevice> {
     @Override
     public int getPositionForDimState(String dimState) {
         dimState = dimState.replaceAll("dim", "").replaceAll("%", "").trim();
-        if (!NumberUtil.isNumeric(dimState)) {
+        if (!NumberUtil.isDecimalNumber(dimState)) {
             return 0;
         }
         return ValueExtractUtil.extractLeadingInt(dimState);

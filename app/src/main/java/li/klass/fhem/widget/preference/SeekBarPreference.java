@@ -43,7 +43,7 @@ import org.jetbrains.annotations.NotNull;
 import li.klass.fhem.R;
 
 import static java.lang.Integer.parseInt;
-import static li.klass.fhem.util.NumberUtil.isNumeric;
+import static li.klass.fhem.util.NumberUtil.isDecimalNumber;
 
 /**
  * Preference showing a seek bar as dialog. The minimum, default and maximum values can
@@ -134,7 +134,7 @@ public class SeekBarPreference extends DialogPreference implements SeekBar.OnSee
 
         dialogMessageTop = attrs.getAttributeValue(ANDROID_NS, "dialogMessage");
         suffix = attrs.getAttributeValue(ANDROID_NS, "text");
-        if (suffix.startsWith("@") && isNumeric(suffix.substring(1))) {
+        if (suffix.startsWith("@") && isDecimalNumber(suffix.substring(1))) {
             suffix = context.getString(parseInt(suffix.substring(1)));
         }
 

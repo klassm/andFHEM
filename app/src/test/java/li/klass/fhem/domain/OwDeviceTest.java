@@ -24,53 +24,64 @@
 
 package li.klass.fhem.domain;
 
-import li.klass.fhem.domain.core.DeviceXMLParsingBase;
-import org.hamcrest.Matchers;
 import org.junit.Test;
 
-import static li.klass.fhem.domain.OwDevice.SubType.*;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
+import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+
+import static org.fest.assertions.api.Assertions.assertThat;
 
 public class OwDeviceTest extends DeviceXMLParsingBase {
     @Test
-    public void testTemperatureDevice() {
+    public void should_read_temperatures_correctly() {
         OwDevice device = getDeviceFor("Aussentemperatur");
 
-        assertThat(device.getName(), is("Aussentemperatur"));
-        assertThat(device.getRoomConcatenated(), is(DEFAULT_TEST_ROOM_NAME));
-
-        assertThat(device.getTemperature(), is("0.0 (°C)"));
-        assertThat(device.getSubType(), is(TEMPERATURE));
+        assertThat(device.getName()).isEqualTo("Aussentemperatur");
+        assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
+        assertThat(device.getSubType()).isEqualTo(OwDevice.SubType.TEMPERATURE);
+        assertThat(device.getState()).isEqualTo("0.0 (°C)");
+        assertThat(device.isSupported()).isTrue();
+        assertThat(device.supportsToggle()).isFalse();
 
         OwDevice device1 = getDeviceFor("Vorlauf");
-        assertThat(device1.getTemperature(), is("19.125 (°C)"));
-        assertThat(device1.getSubType(), is(TEMPERATURE));
-
-        assertThat(device.isSupported(), is(true));
-        assertThat(device1.isSupported(), is(true));
+        assertThat(device1.getSubType()).isEqualTo(OwDevice.SubType.TEMPERATURE);
+        assertThat(device1.getState()).isEqualTo("19.1 (°C)");
+        assertThat(device1.isSupported()).isTrue();
+        assertThat(device1.supportsToggle()).isFalse();
     }
 
     @Test
-    public void testRelaisDevice() {
+    public void should_read_counter_values_correctly() {
         OwDevice device = getDeviceFor("DS2413A");
-        assertThat(device.getSubType(), is(RELAIS));
-        assertThat(device.getCounterA(), Matchers.is("2"));
-        assertThat(device.getCounterB(), Matchers.is("3"));
+        assertThat(device.getInputA()).isEqualTo("2");
+        assertThat(device.getInputB()).isEqualTo("3");
 
-        assertThat(device.isSupported(), is(true));
+        assertThat(device.supportsToggle()).isFalse();
+        assertThat(device.isSupported()).isTrue();
     }
 
     @Test
-    public void testSwitchDevice() {
+    public void should_handle_switch_devices() {
         OwDevice device = getDeviceFor("Relais1");
-        assertThat(device.getSubType(), is(SWITCH));
-        assertThat(device.supportsToggle(), is(true));
-        assertThat(device.getState(), is("ein"));
-        assertThat(device.getInternalState(), is("PIO 1"));
-        assertThat(device.isOnByState(), is(true));
+        assertThat(device.supportsToggle()).isTrue();
+        assertThat(device.getState()).isEqualTo("ein");
+        assertThat(device.getInternalState()).isEqualTo("PIO 1");
+        assertThat(device.isOnByState()).isTrue();
     }
 
+    @Test
+    public void should_handle_single_counter_devices() {
+        OwDevice device = getDeviceFor("Relais2");
+        assertThat(device.getInputA()).isEqualTo("0");
+    }
+
+    @Test
+    public void should_handle_devices_with_more_than_two_PIOs() {
+        OwDevice device = getDeviceFor("OWSw");
+        assertThat(device.getInputA()).isEqualTo("0");
+        assertThat(device.getInputB()).isEqualTo("1");
+        assertThat(device.getInputC()).isEqualTo("0");
+        assertThat(device.getInputD()).isEqualTo("1");
+    }
     @Override
     protected String getFileName() {
         return "owdevice.xml";
