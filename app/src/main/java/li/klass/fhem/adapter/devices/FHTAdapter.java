@@ -50,6 +50,7 @@ import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.FHTDevice;
 import li.klass.fhem.domain.fht.FHTMode;
 import li.klass.fhem.fragments.FragmentType;
+import li.klass.fhem.service.DateService;
 import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.DateFormatUtil;
 import li.klass.fhem.util.DatePickerUtil;
@@ -67,6 +68,9 @@ public class FHTAdapter extends GenericDeviceAdapter<FHTDevice> {
 
     @Inject
     ApplicationProperties applicationProperties;
+
+    @Inject
+    DateService dateService;
 
     public FHTAdapter() {
         super(FHTDevice.class);
@@ -231,7 +235,7 @@ public class FHTAdapter extends GenericDeviceAdapter<FHTDevice> {
         TableRow temperatureUpdateRow = (TableRow) contentView.findViewById(R.id.updateTemperatureRow);
         final TimePicker timePicker = (TimePicker) contentView.findViewById(R.id.timePicker);
 
-        DateTime now = new DateTime();
+        DateTime now = dateService.now();
         timePicker.setIs24HourView(true);
         timePicker.setCurrentMinute(0);
         timePicker.setCurrentHour(now.getHourOfDay());
@@ -263,7 +267,7 @@ public class FHTAdapter extends GenericDeviceAdapter<FHTDevice> {
         dialogBuilder.setPositiveButton(R.string.okButton, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int item) {
-                DateTime switchDate = holiday1SwitchDateFor(timePicker);
+                DateTime switchDate = holiday1SwitchTimeFor(timePicker);
 
                 intent.putExtra(BundleExtraKeys.DEVICE_TEMPERATURE, temperatureChangeTableRow.getTemperature());
                 intent.putExtra(BundleExtraKeys.DEVICE_HOLIDAY1, extractHolidayShortHoliday1ValueFrom(switchDate));
@@ -278,13 +282,13 @@ public class FHTAdapter extends GenericDeviceAdapter<FHTDevice> {
     }
 
     private void updateHolidayShortEndTime(TimePicker timePicker, TableLayout contentView) {
-        DateTime switchDate = holiday1SwitchDateFor(timePicker);
+        DateTime switchDate = holiday1SwitchTimeFor(timePicker);
         String switchDateString = DateFormatUtil.toReadable(switchDate);
 
         ((TextView) contentView.findViewById(R.id.endTimeValue)).setText(switchDateString);
     }
 
-    DateTime holiday1SwitchDateFor(TimePicker timePicker) {
+    DateTime holiday1SwitchTimeFor(TimePicker timePicker) {
         int minute = timePicker.getCurrentMinute();
         int hourOfDay = timePicker.getCurrentHour();
 
@@ -294,7 +298,7 @@ public class FHTAdapter extends GenericDeviceAdapter<FHTDevice> {
         }
         hourOfDay %= 24;
 
-        DateTime now = new DateTime();
+        DateTime now = dateService.now();
         DateTime switchTime = new DateTime(now.getYear(), now.getMonthOfYear(), now.getDayOfMonth(), hourOfDay, newMinute);
 
         if (holidayShortIsTomorrow(switchTime, now)) {

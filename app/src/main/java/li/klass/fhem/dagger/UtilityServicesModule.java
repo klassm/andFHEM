@@ -30,6 +30,7 @@ import li.klass.fhem.fhem.DataConnectionSwitch;
 import li.klass.fhem.gcm.GCMIntentService;
 import li.klass.fhem.license.LicenseService;
 import li.klass.fhem.service.CommandExecutionService;
+import li.klass.fhem.service.DateService;
 import li.klass.fhem.service.SharedPreferencesService;
 import li.klass.fhem.service.advertisement.AdvertisementService;
 import li.klass.fhem.service.connection.ConnectionService;
@@ -69,7 +70,8 @@ import li.klass.fhem.update.UpdateHandler;
                 UpdateHandler.class,
                 AdvertisementService.class,
                 GCMIntentService.class,
-                SharedPreferencesService.class
+                SharedPreferencesService.class,
+                DateService.class
         })
 public class UtilityServicesModule {
 }
