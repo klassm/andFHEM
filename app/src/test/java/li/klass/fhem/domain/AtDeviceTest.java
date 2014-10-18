@@ -89,6 +89,10 @@ public class AtDeviceTest extends DeviceXMLParsingBase {
         device = parse("*07:15:00 { fhem(\"set Badezimmer desired-temp 00.00\") if ($wday == 5 && 0) }", 7, 15, 0, "Badezimmer",
                 "desired-temp", "00.00", FRIDAY, ABSOLUTE, false);
         assemble(device, "*07:15:00 { fhem(\"set Badezimmer desired-temp 00.00\") if ($wday == 5 && 0) }");
+
+        device = parse("19:45:00 { fhem(\"set EZ.Heizung_Clima desired-temp 24.00\") }", 19, 45, 0, "EZ.Heizung_Clima",
+                "desired-temp", "24.00", ONCE, ABSOLUTE, true);
+        assemble(device, "19:45:00 { fhem(\"set EZ.Heizung_Clima desired-temp 24.00\") }");
     }
 
     private AtDevice parse(String definition,
