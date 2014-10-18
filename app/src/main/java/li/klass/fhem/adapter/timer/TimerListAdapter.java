@@ -38,8 +38,8 @@ import li.klass.fhem.domain.AtDevice;
 
 public class TimerListAdapter extends ListDataAdapter<AtDevice> {
 
-    public TimerListAdapter(Context context, int resource, List<AtDevice> data) {
-        super(context, resource, data);
+    public TimerListAdapter(Context context, List<AtDevice> data) {
+        super(context, R.layout.timer_list_item, data);
     }
 
     @Override
@@ -53,12 +53,14 @@ public class TimerListAdapter extends ListDataAdapter<AtDevice> {
             view = (LinearLayout) inflater.inflate(resource, null);
         }
 
-        TextView timerNameView = (TextView) view.findViewById(R.id.timerName);
-        String timerName = device.getAliasOrName();
+        ((TextView) view.findViewById(R.id.timerName)).setText(device.getAliasOrName());
+
+        String timerNameAddition = "";
         if (!device.isActive()) {
-            timerName += " (" + context.getString(R.string.deactivated) + ")";
+            timerNameAddition = "(" + context.getString(R.string.deactivated) + ")";
         }
-        timerNameView.setText(timerName);
+        ((TextView) view.findViewById(R.id.timerNameAddition)).setText(timerNameAddition);
+
 
         String formatString = context.getString(R.string.timer_overview);
         String repetition = context.getString(device.getRepetition().getText());

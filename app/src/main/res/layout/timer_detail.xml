@@ -32,7 +32,7 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        style="@style/timerDetail"
         android:orientation="vertical">
 
         <TableLayout
@@ -84,18 +84,19 @@
                     android:minWidth="200dp"/>
             </TableRow>
 
-            <TableRow android:gravity="center_vertical">
+            <TableRow
+                android:gravity="center_vertical|end">
 
                 <TextView
                     style="@style/deviceOverviewDescription"
                     android:text="@string/isActive"/>
 
                 <CheckBox
-                    android:id="@+id/isActive"
-                    android:layout_gravity="end"/>
+                    android:layout_gravity="end"
+                    android:id="@+id/isActive"/>
             </TableRow>
 
-            <TableRow android:gravity="top">
+            <TableRow android:gravity="center_vertical">
 
                 <TextView
                     style="@style/deviceOverviewDescription"
@@ -105,10 +106,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
-                    android:layout_marginEnd="5dp"
-                    android:layout_marginRight="5dp"
-                    android:gravity="center_vertical"
-                    android:orientation="vertical">
+                    android:gravity="center_vertical|end"
+                    android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/targetDeviceName"
@@ -116,9 +115,8 @@
                         android:layout_height="wrap_content"/>
 
                     <Button
+                        style="@style/button"
                         android:id="@+id/targetDeviceSet"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
                         android:text="@string/change"/>
                 </LinearLayout>
             </TableRow>
@@ -153,15 +151,16 @@
                     <Spinner
                         android:id="@+id/targetState"
                         style="@style/spinner"
-                        android:layout_width="fill_parent"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
 
                     <EditText
                         android:id="@+id/stateAppendix"
                         style="@style/deviceOverviewContent"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:gravity="center"
+                        android:layout_gravity="end"
                         android:inputType="text"/>
                 </LinearLayout>
             </TableRow>
@@ -186,6 +185,7 @@
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:gravity="end"
                         android:layout_gravity="end"
                         android:orientation="horizontal">
 
@@ -197,13 +197,11 @@
 
                         <Button
                             android:id="@+id/switchTimeSet"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            style="@style/button"
                             android:text="@string/change"/>
                     </LinearLayout>
                 </LinearLayout>
             </TableRow>
         </TableLayout>
     </LinearLayout>
-
 </ScrollView>

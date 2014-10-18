@@ -141,6 +141,13 @@
         <item name="android:minHeight">40dp</item>
     </style>
 
+    <style name="fragmentContent">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:layout_marginRight">10dp</item>
+    </style>
+
     <!-- #############################  -->
     <!--       ROOM DEVICE OVERVIEW     -->
     <!-- #############################  -->
@@ -224,9 +231,13 @@
         <item name="android:paddingRight">20dp</item>
     </style>
 
+
     <!-- #############################  -->
     <!--       DEVICE DETAIL            -->
     <!-- #############################  -->
+
+    <style name="deviceDetailSectionContent" parent="fragmentContent">
+    </style>
 
     <style name="deviceDetailCaption">
         <item name="android:layout_height">wrap_content</item>
@@ -247,10 +258,8 @@
         <item name="android:layout_marginTop">6dp</item>
     </style>
 
-
     <style name="deviceDetailDescription" parent="@android:style/TextAppearance.Small">
         <item name="android:layout_gravity">top|left</item>
-        <item name="android:layout_marginLeft">10dp</item>
         <item name="android:textColor">@android:color/black</item>
         <item name="android:ellipsize">end</item>
         <item name="android:singleLine">true</item>
@@ -259,7 +268,8 @@
     <style name="deviceDetailContent" parent="@android:style/TextAppearance.Small">
         <item name="android:layout_gravity">right|center_vertical</item>
         <item name="android:gravity">right</item>
-        <item name="android:paddingRight">10dp</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:singleLine">false</item>
     </style>
 
     <style name="deviceDetailContentSeek" parent="seekBar">
@@ -268,19 +278,26 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_span">2</item>
         <item name="android:layout_marginLeft">20dp</item>
-        <item name="android:paddingLeft">10dp</item>
-        <item name="android:paddingRight">20dp</item>
     </style>
 
     <style name="deviceDetailContentToggle" parent="toggleButton">
     </style>
 
-    <style name="deviceDetailTable">
-        <item name="android:layout_width">fill_parent</item>
-        <item name="android:layout_height">wrap_content</item>
+    <style name="deviceDetailTable" parent="deviceDetailSectionContent">
         <item name="android:stretchColumns">1</item>
-        <item name="android:padding">5dp</item>
-        <item name="android:paddingLeft">20dp</item>
-        <item name="android:paddingRight">20dp</item>
+        <item name="android:shrinkColumns">0,1</item>
+    </style>
+
+
+    <!-- #############################  -->
+    <!--       Timer                    -->
+    <!-- #############################  -->
+
+    <style name="timerListItem">
+        <item name="android:padding">10dp</item>
+    </style>
+
+    <style name="timerDetail" parent="fragmentContent">
+        <item name="android:paddingTop">5dp</item>
     </style>
 </resources>
