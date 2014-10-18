@@ -147,6 +147,12 @@ public class TimePickerWithSeconds extends LinearLayout {
                 TWO_DIGIT_FORMATTER.format(getSeconds());
     }
 
+    public static String getFormattedValue(int hours, int minutes, int seconds) {
+        return TWO_DIGIT_FORMATTER.format(hours) + ":" +
+                TWO_DIGIT_FORMATTER.format(minutes) + ":" +
+                TWO_DIGIT_FORMATTER.format(seconds);
+    }
+
     @SuppressWarnings("unused")
     public void setOnValueChangedListener(OnValueChangedListener listener) {
         this.listener = listener;

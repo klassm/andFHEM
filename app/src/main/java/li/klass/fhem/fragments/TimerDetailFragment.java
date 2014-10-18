@@ -26,8 +26,6 @@ package li.klass.fhem.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.ResultReceiver;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -40,6 +38,8 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import com.google.common.base.Strings;
 
 import java.util.List;
 
@@ -55,8 +55,10 @@ import li.klass.fhem.fragments.core.BaseFragment;
 import li.klass.fhem.fragments.device.DeviceNameSelectionFragment;
 import li.klass.fhem.util.DialogUtil;
 import li.klass.fhem.util.FhemResultReceiver;
+import li.klass.fhem.widget.TimePickerWithSeconds;
 import li.klass.fhem.widget.TimePickerWithSecondsDialog;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static li.klass.fhem.constants.BundleExtraKeys.CLICKED_DEVICE;
 
 public class TimerDetailFragment extends BaseFragment {
@@ -72,22 +74,23 @@ public class TimerDetailFragment extends BaseFragment {
     public AtDevice timerDevice;
     private transient ArrayAdapter<String> targetStateAdapter;
     private String timerDeviceName;
-    private boolean isModify = false;
 
-    private transient Device selectedTargetDevice;
-    private String selectedTargetState;
+    private transient Device targetDevice;
+    private String targetState;
     private int hour = 0;
     private int minute = 0;
     private int second = 0;
     private AtDevice.AtRepetition repetition;
     private AtDevice.TimerType type;
     private boolean requiresStateAppendix;
+    private String stateAppendix;
+    private boolean isActive;
+    private String savedTimerDeviceName;
 
     @Override
     public void setArguments(Bundle args) {
         if (args.containsKey(BundleExtraKeys.DEVICE_NAME)) {
-            timerDeviceName = args.getString(BundleExtraKeys.DEVICE_NAME);
-            isModify = true;
+            savedTimerDeviceName = args.getString(BundleExtraKeys.DEVICE_NAME);
         }
     }
 
@@ -98,10 +101,21 @@ public class TimerDetailFragment extends BaseFragment {
             return view;
         }
 
+        if (isModify()) {
+            setTimerDeviceValuesForName(savedTimerDeviceName);
+        }
+
         view = inflater.inflate(R.layout.timer_detail, container, false);
 
-        TextView timerName = (TextView) view.findViewById(R.id.timerName);
-        timerName.setText("");
+        view.findViewById(R.id.stateAppendix).setVisibility(View.GONE);
+        TextView commandAppendix = (TextView) view.findViewById(R.id.stateAppendix);
+        commandAppendix.setText("");
+
+        EditText timerNameInput = getTimerNameInput(view);
+        timerNameInput.setText("");
+        if (isModify()) {
+            timerNameInput.setEnabled(false);
+        }
 
         TextView targetDeviceName = (TextView) view.findViewById(R.id.targetDeviceName);
         targetDeviceName.setText("");
@@ -112,12 +126,18 @@ public class TimerDetailFragment extends BaseFragment {
         createTimerTypeSpinner(view);
         createSwitchTimeButton(view);
         createSendAndResetButtons(view);
+        createIsActiveCheckbox(view);
 
-        if (isModify) {
-            view.findViewById(R.id.timerName).setEnabled(false);
-        }
 
         return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        updateTargetDevice(targetDevice);
+        updateTimerInformation();
     }
 
     private void createSelectDeviceButton(View view) {
@@ -135,7 +155,7 @@ public class TimerDetailFragment extends BaseFragment {
 
                         if (!resultData.containsKey(CLICKED_DEVICE)) return;
 
-                        selectedTargetDevice = (Device) resultData.get(CLICKED_DEVICE);
+                        updateTargetDevice((Device) resultData.get(CLICKED_DEVICE));
                     }
                 });
                 getActivity().sendBroadcast(intent);
@@ -143,12 +163,22 @@ public class TimerDetailFragment extends BaseFragment {
         });
     }
 
+    private void createIsActiveCheckbox(View view) {
+        getIsActiveCheckbox(view).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                TimerDetailFragment.this.isActive = getIsActiveCheckbox(view).isChecked();
+            }
+        });
+
+    }
+
     private void createSendAndResetButtons(View view) {
         Button resetButton = (Button) view.findViewById(R.id.reset);
         resetButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                update(false);
+                setValuesForCurrentTimerDevice(timerDevice);
             }
         });
 
@@ -161,18 +191,18 @@ public class TimerDetailFragment extends BaseFragment {
         });
     }
 
-    private void createSwitchTimeButton(View view) {
+    private void createSwitchTimeButton(final View view) {
         Button switchTimeChangeButton = (Button) view.findViewById(R.id.switchTimeSet);
         switchTimeChangeButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(final View button) {
                 if (getView() == null) return;
 
                 new TimePickerWithSecondsDialog(getActivity(), hour, minute, second, new TimePickerWithSecondsDialog.TimePickerWithSecondsListener() {
                     @Override
                     public void onTimeChanged(boolean okClicked, int newHour, int newMinute, int newSecond, String formattedText) {
-                        TextView dateText = (TextView) getView().findViewById(R.id.switchTimeContent);
-                        dateText.setText(formattedText);
+                        TextView getSwitchTimeTextView = getSwitchTimeTextView(view);
+                        getSwitchTimeTextView.setText(formattedText);
 
                         TimerDetailFragment.this.hour = newHour;
                         TimerDetailFragment.this.minute = newMinute;
@@ -181,21 +211,19 @@ public class TimerDetailFragment extends BaseFragment {
                 }).show();
             }
         });
-        update(false);
     }
 
     private void createTimerTypeSpinner(View view) {
-        view.findViewById(R.id.stateAppendix).setVisibility(View.GONE);
-        TextView commandAppendix = (TextView) view.findViewById(R.id.stateAppendix);
-        commandAppendix.setText("");
+        Spinner typeSpinner = getTypeSpinner(view);
 
-        Spinner timerTypeSpinner = (Spinner) view.findViewById(R.id.timerType);
         ArrayAdapter<String> timerTypeAdapter = new ArrayAdapter<>(getActivity(), R.layout.spinnercontent);
+
         for (AtDevice.TimerType type : AtDevice.TimerType.values()) {
             timerTypeAdapter.add(view.getContext().getString(type.getText()));
         }
-        timerTypeSpinner.setAdapter(timerTypeAdapter);
-        timerTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        typeSpinner.setAdapter(timerTypeAdapter);
+
+        typeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 TimerDetailFragment.this.type = AtDevice.TimerType.values()[i];
@@ -208,7 +236,7 @@ public class TimerDetailFragment extends BaseFragment {
     }
 
     private void createTargetStateSpinner(View view) {
-        Spinner targetState = (Spinner) view.findViewById(R.id.targetState);
+        Spinner targetState = getTargetStateSpinner(view);
         targetStateAdapter = new ArrayAdapter<>(getActivity(), R.layout.spinnercontent);
         targetState.setAdapter(targetStateAdapter);
         view.findViewById(R.id.targetStateRow).setVisibility(View.GONE);
@@ -216,17 +244,17 @@ public class TimerDetailFragment extends BaseFragment {
         targetState.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if (selectedTargetDevice == null) {
+                if (targetDevice == null) {
                     Log.e(TAG, "cannot select new target state, as new target device is set!");
                     return;
-                } else if (selectedTargetDevice.getSetList().size() == 0) {
+                } else if (targetDevice.getSetList().size() == 0) {
                     Log.e(TAG, "cannot select new target state, as the new device does not contain any target states!");
                     return;
                 }
 
-                String newTargetState = selectedTargetDevice.getSetList().getSortedKeys().get(i);
+                String newTargetState = targetDevice.getSetList().getSortedKeys().get(i);
 
-                if (selectedTargetState == null || !selectedTargetState.equals(newTargetState)) {
+                if (TimerDetailFragment.this.targetState == null || !TimerDetailFragment.this.targetState.equals(newTargetState)) {
                     selectTargetState(newTargetState);
                     setTargetStateAppendix(null);
                 }
@@ -239,7 +267,7 @@ public class TimerDetailFragment extends BaseFragment {
     }
 
     private void createRepetitionSpinner(View view) {
-        Spinner repetitionSpinner = (Spinner) view.findViewById(R.id.timerRepetition);
+        Spinner repetitionSpinner = getRepetitionSpinner(view);
         ArrayAdapter<String> repetitionAdapter = new ArrayAdapter<>(getActivity(), R.layout.spinnercontent);
         for (AtDevice.AtRepetition atRepetition : AtDevice.AtRepetition.values()) {
             repetitionAdapter.add(view.getContext().getString(atRepetition.getText()));
@@ -258,21 +286,19 @@ public class TimerDetailFragment extends BaseFragment {
     }
 
     private void save() {
-        if (getView() == null) return;
+        View view = getView();
+        if (view == null) return;
 
-        if (selectedTargetDevice == null || selectedTargetState == null) {
+        if (targetDevice == null || targetState == null) {
             Intent intent = new Intent(Actions.SHOW_TOAST);
             intent.putExtra(BundleExtraKeys.STRING_ID, R.string.incompleteConfigurationError);
             getActivity().sendBroadcast(intent);
             return;
         }
 
-        CheckBox timerIsActiveCheckbox = (CheckBox) getView().findViewById(R.id.isActive);
-        boolean isActive = timerIsActiveCheckbox.isChecked();
-
         Bundle bundle = new Bundle();
-        bundle.putString(BundleExtraKeys.TIMER_TARGET_DEVICE_NAME, selectedTargetDevice.getName());
-        bundle.putString(BundleExtraKeys.TIMER_TARGET_STATE, selectedTargetState);
+        bundle.putString(BundleExtraKeys.TIMER_TARGET_DEVICE_NAME, targetDevice.getName());
+        bundle.putString(BundleExtraKeys.TIMER_TARGET_STATE, targetState);
         bundle.putInt(BundleExtraKeys.TIMER_HOUR, hour);
         bundle.putInt(BundleExtraKeys.TIMER_MINUTE, minute);
         bundle.putInt(BundleExtraKeys.TIMER_SECOND, second);
@@ -281,12 +307,11 @@ public class TimerDetailFragment extends BaseFragment {
         bundle.putBoolean(BundleExtraKeys.TIMER_IS_ACTIVE, isActive);
 
         if (requiresStateAppendix) {
-            EditText targetStateAppendixView = (EditText) getView().findViewById(R.id.stateAppendix);
+            EditText targetStateAppendixView = (EditText) view.findViewById(R.id.stateAppendix);
             bundle.putString(BundleExtraKeys.TIMER_TARGET_STATE_APPENDIX, targetStateAppendixView.getText().toString());
         }
-        if (!isModify) {
-            EditText timerNameView = (EditText) getView().findViewById(R.id.timerName);
-            timerDeviceName = timerNameView.getText().toString();
+        if (!isModify()) {
+            timerDeviceName = getTimerNameInput(view).getText().toString();
 
             if (timerDeviceName.contains(" ")) {
                 DialogUtil.showAlertDialog(getActivity(), R.string.error, R.string.error_timer_name_spaces);
@@ -295,49 +320,52 @@ public class TimerDetailFragment extends BaseFragment {
         }
         bundle.putString(BundleExtraKeys.TIMER_NAME, timerDeviceName);
 
-        String action = isModify ? Actions.DEVICE_TIMER_MODIFY : Actions.DEVICE_TIMER_NEW;
+        String action = isModify() ? Actions.DEVICE_TIMER_MODIFY : Actions.DEVICE_TIMER_NEW;
         Intent intent = new Intent(action);
         intent.putExtras(bundle);
 
-        intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
+        intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new FhemResultReceiver() {
             @Override
             protected void onReceiveResult(int resultCode, Bundle resultData) {
                 if (resultCode == ResultCodes.SUCCESS) {
-                    Intent intent = new Intent(Actions.BACK);
-                    getActivity().sendBroadcast(intent);
-
-                    isModify = false;
+                    back();
+                    savedTimerDeviceName = timerDeviceName;
                 }
             }
         });
         getActivity().startService(intent);
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        updateTargetDevice(selectedTargetDevice);
+    private void updateTargetDevice(Device targetDevice) {
+        if (targetDevice != null) {
+            this.targetDevice = targetDevice;
+            updateTargetDevice();
+        }
     }
 
-    private void updateTargetDevice(Device targetDevice) {
-        if (getView() == null) return;
+    private void updateTargetDevice() {
+        if (getView() == null || targetDevice == null) {
+            return;
+        }
 
-        this.selectedTargetDevice = targetDevice;
         TextView targetDeviceView = (TextView) getView().findViewById(R.id.targetDeviceName);
         if (!updateTargetStateRowVisibility()) {
             targetDeviceView.setText(R.string.unknown);
             return;
         }
-        setNewTargetStatesInSpinner();
-        targetDeviceView.setText(targetDevice.getName());
 
+        updateTargetStatesSpinner();
+        selectTargetState(targetState);
+        setTargetStateAppendix(stateAppendix);
+
+        targetDeviceView.setText(targetDevice.getName());
     }
 
     private boolean updateTargetStateRowVisibility() {
         if (getView() == null) return false;
 
         View targetDeviceRow = getView().findViewById(R.id.targetStateRow);
-        if (selectedTargetDevice == null) {
+        if (targetDevice == null) {
             targetDeviceRow.setVisibility(View.GONE);
             return false;
         } else {
@@ -346,8 +374,8 @@ public class TimerDetailFragment extends BaseFragment {
         }
     }
 
-    private void setNewTargetStatesInSpinner() {
-        List<String> availableTargetStates = selectedTargetDevice.getSetList().getSortedKeys();
+    private void updateTargetStatesSpinner() {
+        List<String> availableTargetStates = targetDevice.getSetList().getSortedKeys();
         targetStateAdapter.clear();
 
         for (String availableTargetState : availableTargetStates) {
@@ -355,37 +383,19 @@ public class TimerDetailFragment extends BaseFragment {
         }
     }
 
-    private void selectTargetDeviceInSpinner(String targetDeviceName, final String targetState) {
-        Intent intent = new Intent(Actions.GET_DEVICE_FOR_NAME);
-        intent.putExtra(BundleExtraKeys.DEVICE_NAME, targetDeviceName);
-        intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
-            @Override
-            protected void onReceiveResult(int resultCode, Bundle resultData) {
-                if (resultCode != ResultCodes.SUCCESS || !resultData.containsKey(BundleExtraKeys.DEVICE)) {
-                    return;
-                }
-
-                Device device = (Device) resultData.getSerializable(BundleExtraKeys.DEVICE);
-                updateTargetDevice(device);
-                selectTargetState(targetState);
-            }
-        });
-        getActivity().startService(intent);
-    }
-
     private void selectTargetState(String targetState) {
-        if (selectedTargetDevice == null || getView() == null) {
+        if (targetDevice == null || getView() == null) {
             return;
         }
-        this.selectedTargetState = targetState;
+        this.targetState = targetState;
 
-        Spinner targetStateSpinner = (Spinner) getView().findViewById(R.id.targetState);
+        Spinner targetStateSpinner = getTargetStateSpinner(getView());
         if (targetState == null) {
             targetStateSpinner.setSelection(0);
             return;
         }
 
-        List<String> targetStates = selectedTargetDevice.getSetList().getSortedKeys();
+        List<String> targetStates = targetDevice.getSetList().getSortedKeys();
         for (int i = 0; i < targetStates.size(); i++) {
             String availableTargetState = targetStates.get(i);
             if (availableTargetState.equals(targetState)) {
@@ -395,17 +405,12 @@ public class TimerDetailFragment extends BaseFragment {
         }
     }
 
-    @Override
-    public void update(boolean doUpdate) {
-        if (!isModify) {
-            Log.e(TAG, "I can only update if a device is being modified!");
-            return;
-        }
+    private void setTimerDeviceValuesForName(String timerDeviceName) {
+        checkNotNull(timerDeviceName);
 
         Intent intent = new Intent(Actions.GET_DEVICE_FOR_NAME);
         intent.putExtra(BundleExtraKeys.DEVICE_NAME, timerDeviceName);
-        intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
-
+        intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new FhemResultReceiver() {
             @Override
             protected void onReceiveResult(int resultCode, Bundle resultData) {
                 if (resultCode != ResultCodes.SUCCESS || !resultData.containsKey(BundleExtraKeys.DEVICE)) {
@@ -417,9 +422,7 @@ public class TimerDetailFragment extends BaseFragment {
                     return;
                 }
 
-                TimerDetailFragment.this.timerDevice = (AtDevice) device;
-
-                setValuesForCurrentTimerDevice();
+                setValuesForCurrentTimerDevice((AtDevice) device);
 
                 Intent intent = new Intent(Actions.DISMISS_UPDATING_DIALOG);
 
@@ -430,62 +433,72 @@ public class TimerDetailFragment extends BaseFragment {
         getActivity().startService(intent);
     }
 
-    private void setValuesForCurrentTimerDevice() {
-        final View view = getView();
-        if (view == null) return;
+    private void setValuesForCurrentTimerDevice(AtDevice atDevice) {
+        this.timerDevice = atDevice;
 
-        TextView timerName = (TextView) view.findViewById(R.id.timerName);
-        timerName.setText(timerDevice.getAliasOrName());
+        Intent intent = new Intent(Actions.GET_DEVICE_FOR_NAME);
+        intent.putExtra(BundleExtraKeys.DEVICE_NAME, atDevice.getTargetDevice());
+        intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new FhemResultReceiver() {
+            @Override
+            protected void onReceiveResult(int resultCode, Bundle resultData) {
+                if (resultCode == ResultCodes.SUCCESS && resultData.containsKey(BundleExtraKeys.DEVICE)) {
+                    updateTargetDevice((Device) resultData.get(BundleExtraKeys.DEVICE));
+                }
+            }
+        });
+        getActivity().startService(intent);
 
-        TextView targetDeviceName = (TextView) view.findViewById(R.id.targetDeviceName);
-        targetDeviceName.setText(timerDevice.getTargetDevice());
 
-        Spinner repetitionSpinner = (Spinner) view.findViewById(R.id.timerRepetition);
-        repetitionSpinner.setSelection(timerDevice.getRepetition().ordinal());
+        this.stateAppendix = timerDevice.getTargetStateAddtionalInformation();
+        this.targetState = timerDevice.getTargetState();
+
+
         this.repetition = timerDevice.getRepetition();
-
-        Spinner typeSpinner = (Spinner) view.findViewById(R.id.timerType);
-        typeSpinner.setSelection(timerDevice.getTimerType().ordinal());
         this.type = timerDevice.getTimerType();
 
-        TextView switchTimeContent = (TextView) view.findViewById(R.id.switchTimeContent);
-        switchTimeContent.setText(timerDevice.getFormattedSwitchTime());
+        this.isActive = timerDevice.isActive();
 
-        TextView stateAppendix = (TextView) view.findViewById(R.id.stateAppendix);
-        stateAppendix.setText(timerDevice.getTargetStateAddtionalInformation());
+        this.hour = timerDevice.getHours();
+        this.minute = timerDevice.getMinutes();
+        this.second = timerDevice.getSeconds();
+        this.timerDeviceName = timerDevice.getName();
 
-        selectTargetDeviceInSpinner(timerDevice.getTargetDevice(), timerDevice.getTargetState());
-        selectTargetState(timerDevice.getTargetState());
-        selectedTargetState = timerDevice.getTargetState();
-        setTargetStateAppendix(timerDevice.getTargetStateAddtionalInformation());
+        updateTimerInformation();
+    }
 
-        CheckBox isActiveCheckbox = (CheckBox) view.findViewById(R.id.isActive);
-        isActiveCheckbox.setChecked(timerDevice.isActive());
-
-        hour = timerDevice.getHours();
-        minute = timerDevice.getMinutes();
-        second = timerDevice.getSeconds();
+    private void updateTimerInformation() {
+        View view = getView();
+        if (view != null && timerDevice != null) {
+            getTypeSpinner(view).setSelection(timerDevice.getTimerType().ordinal());
+            getRepetitionSpinner(view).setSelection(timerDevice.getRepetition().ordinal());
+            getIsActiveCheckbox(view).setChecked(isActive);
+            getSwitchTimeTextView(view).setText(TimePickerWithSeconds.getFormattedValue(hour, minute, second));
+            getTimerNameInput(view).setText(timerDeviceName);
+        }
     }
 
     private void setTargetStateAppendix(String stateAppendix) {
         if (getView() == null) return;
 
         DeviceStateRequiringAdditionalInformation specialDeviceState =
-                DeviceStateRequiringAdditionalInformation.deviceStateForFHEM(selectedTargetState);
+                DeviceStateRequiringAdditionalInformation.deviceStateForFHEM(targetState);
         updateStateAppendixVisibility(specialDeviceState);
-        if (specialDeviceState == null) {
-            requiresStateAppendix = false;
-            return;
-        }
-        requiresStateAppendix = true;
 
-        EditText appendixView = (EditText) getView().findViewById(R.id.stateAppendix);
-        if (stateAppendix != null) {
-            appendixView.setText(stateAppendix);
+        if (specialDeviceState == null) {
+            this.requiresStateAppendix = false;
+            this.stateAppendix = null;
         } else {
-            DeviceStateAdditionalInformationType[] requiredAppendixType = specialDeviceState.getAdditionalInformationTypes();
-            if (requiredAppendixType != null && requiredAppendixType.length > 0) {
-                appendixView.setText(requiredAppendixType[0].getExample());
+            this.stateAppendix = stateAppendix;
+            this.requiresStateAppendix = true;
+
+            EditText appendixView = (EditText) getView().findViewById(R.id.stateAppendix);
+            if (stateAppendix != null) {
+                appendixView.setText(stateAppendix);
+            } else {
+                DeviceStateAdditionalInformationType[] requiredAppendixType = specialDeviceState.getAdditionalInformationTypes();
+                if (requiredAppendixType != null && requiredAppendixType.length > 0) {
+                    appendixView.setText(requiredAppendixType[0].getExample());
+                }
             }
         }
     }
@@ -500,5 +513,37 @@ public class TimerDetailFragment extends BaseFragment {
         } else {
             stateAppendix.setVisibility(View.VISIBLE);
         }
+    }
+
+    @Override
+    public void update(boolean doUpdate) {
+    }
+
+    private EditText getTimerNameInput(View view) {
+        return (EditText) view.findViewById(R.id.timerNameInput);
+    }
+
+    private Spinner getRepetitionSpinner(View view) {
+        return (Spinner) view.findViewById(R.id.timerRepetition);
+    }
+
+    private CheckBox getIsActiveCheckbox(View view) {
+        return (CheckBox) view.findViewById(R.id.isActive);
+    }
+
+    private Spinner getTypeSpinner(View view) {
+        return (Spinner) view.findViewById(R.id.timerType);
+    }
+
+    private TextView getSwitchTimeTextView(View view) {
+        return (TextView) view.findViewById(R.id.switchTimeContent);
+    }
+
+    private Spinner getTargetStateSpinner(View view) {
+        return (Spinner) view.findViewById(R.id.targetStateSpinner);
+    }
+
+    private boolean isModify() {
+        return !Strings.isNullOrEmpty(savedTimerDeviceName);
     }
 }

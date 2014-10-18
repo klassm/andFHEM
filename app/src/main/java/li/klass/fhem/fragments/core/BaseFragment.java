@@ -319,4 +319,9 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
             }
         }
     }
+
+    protected void back() {
+        Intent intent = new Intent(Actions.BACK);
+        getActivity().sendBroadcast(intent);
+    }
 }
