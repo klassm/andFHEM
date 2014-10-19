@@ -423,6 +423,7 @@
     <string name="widget_heating">Heizung</string>
     <string name="widget_dim">Dim</string>
     <string name="widget_targetstate">Zielzustand</string>
+    <string name="widget_onOff">An / Aus</string>
     <string name="widget_favorites_link">Favoriten</string>
     <string name="widget_room_link">Räume</string>
     <string name="widget_all_devices_link">Alle Geräte</string>

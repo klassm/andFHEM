@@ -41,6 +41,7 @@ import li.klass.fhem.appwidget.view.widget.medium.DimWidgetView;
 import li.klass.fhem.appwidget.view.widget.medium.HeatingWidgetView;
 import li.klass.fhem.appwidget.view.widget.medium.MediumInformationWidgetView;
 import li.klass.fhem.appwidget.view.widget.medium.MediumWeatherForecastWidget;
+import li.klass.fhem.appwidget.view.widget.medium.OnOffWidgetView;
 import li.klass.fhem.appwidget.view.widget.medium.RoomDetailLinkWidget;
 import li.klass.fhem.appwidget.view.widget.medium.StatusWidgetView;
 import li.klass.fhem.appwidget.view.widget.medium.TargetStateWidgetView;
@@ -71,6 +72,7 @@ public enum WidgetType {
     WEATHER_FORECAST_BIG(new BigWeatherForecastWidget(), WidgetSize.BIG),
     DIM(new DimWidgetView(), WidgetSize.MEDIUM),
     TARGET_STATE(new TargetStateWidgetView(), WidgetSize.MEDIUM),
+    ON_OFF(new OnOffWidgetView(), WidgetSize.MEDIUM),
     ROOM_DETAIL_LINK(new RoomDetailLinkWidget(), WidgetSize.MEDIUM),
     FAVORITES_LINK(new FavoritesLinkWidget(), WidgetSize.SMALL),
     ROOMS_LINK(new RoomsLinkWidget(), WidgetSize.SMALL),

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                style="@style/appwidget_medium">
+
+    <LinearLayout style="@style/appwidget_content">
+
+        <TextView style="@style/appwidget_caption"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/widgetOnButton"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="3dp"
+                android:layout_marginRight="3dp"
+                android:layout_height="25dp"
+                android:gravity="center"
+                android:text="@string/on"
+                android:textColor="@android:color/black"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:background="@android:color/white"
+                android:contentDescription="@string/switchDevice"
+                />
+
+            <TextView
+                android:id="@+id/widgetOffButton"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="3dp"
+                android:layout_marginRight="3dp"
+                android:layout_height="25dp"
+                android:gravity="center"
+                android:text="@string/off"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:textColor="@android:color/black"
+                android:background="@android:color/white"
+                android:contentDescription="@string/switchDevice"
+                />
+        </LinearLayout>
+    </LinearLayout>
+
+    <ImageView
+        style="@style/appwidget_logo"
+        android:contentDescription="@string/app_name"/>
+</RelativeLayout>

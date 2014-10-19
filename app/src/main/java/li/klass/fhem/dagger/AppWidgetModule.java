@@ -35,6 +35,7 @@ import li.klass.fhem.appwidget.view.widget.medium.DimWidgetView;
 import li.klass.fhem.appwidget.view.widget.medium.HeatingWidgetView;
 import li.klass.fhem.appwidget.view.widget.medium.MediumInformationWidgetView;
 import li.klass.fhem.appwidget.view.widget.medium.MediumWeatherForecastWidget;
+import li.klass.fhem.appwidget.view.widget.medium.OnOffWidgetView;
 import li.klass.fhem.appwidget.view.widget.medium.RoomDetailLinkWidget;
 import li.klass.fhem.appwidget.view.widget.medium.StatusWidgetView;
 import li.klass.fhem.appwidget.view.widget.medium.TargetStateWidgetView;
@@ -70,6 +71,7 @@ import li.klass.fhem.appwidget.view.widget.small.TimersLinkWidget;
                 SendCommandLinkWidget.class,
                 SendCommandLinkWidget.class,
                 DeviceListUpdateWidget.class,
+                OnOffWidgetView.class,
 
                 AppWidgetListViewUpdateRemoteViewsService.class,
                 AppWidgetDataHolder.class,
