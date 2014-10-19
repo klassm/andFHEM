@@ -27,25 +27,35 @@
     <!-- the theme applied to the application or activity -->
     <style name="ApplicationTheme" parent="@style/Theme.Sherlock.Light.DarkActionBar">
         <item name="actionBarTabBarStyle">@style/ApplicationActionBarTabBarStyle</item>
-        <item name="android:actionBarTabBarStyle" tools:ignore="NewApi">@style/ApplicationActionBarTabBarStyle</item>
+        <item name="android:actionBarTabBarStyle" tools:ignore="NewApi">
+            @style/ApplicationActionBarTabBarStyle
+        </item>
 
         <item name="actionBarTabStyle">@style/ApplicationActionBarTabStyle</item>
-        <item name="android:actionBarTabStyle" tools:ignore="NewApi">@style/ApplicationActionBarTabStyle</item>
+        <item name="android:actionBarTabStyle" tools:ignore="NewApi">
+            @style/ApplicationActionBarTabStyle
+        </item>
 
         <item name="actionBarItemBackground">@drawable/actionbar_item_bg_selectable</item>
-        <item name="android:actionBarItemBackground" tools:ignore="NewApi">@drawable/actionbar_item_bg_selectable</item>
+        <item name="android:actionBarItemBackground" tools:ignore="NewApi">
+            @drawable/actionbar_item_bg_selectable
+        </item>
 
         <item name="android:dropDownListViewStyle">@style/ApplicationDropDownListViewStyle</item>
         <item name="dropDownListViewStyle">@style/ApplicationDropDownListViewStyle</item>
 
         <item name="actionDropDownStyle">@style/ApplicationActionDropDownStyle</item>
-        <item name="android:actionDropDownStyle" tools:ignore="NewApi">@style/ApplicationActionDropDownStyle</item>
+        <item name="android:actionDropDownStyle" tools:ignore="NewApi">
+            @style/ApplicationActionDropDownStyle
+        </item>
 
         <item name="popupMenuStyle">@style/ApplicationPopupMenu</item>
         <item name="android:popupMenuStyle" tools:ignore="NewApi">@style/ApplicationPopupMenu</item>
 
         <item name="actionBarWidgetTheme">@style/ApplicationActionBarWidgetTheme</item>
-        <item name="android:actionBarWidgetTheme" tools:ignore="NewApi">@style/ApplicationActionBarWidgetTheme</item>
+        <item name="android:actionBarWidgetTheme" tools:ignore="NewApi">
+            @style/ApplicationActionBarWidgetTheme
+        </item>
 
         <item name="android:spinnerStyle">@style/spinner</item>
     </style>
@@ -268,7 +278,6 @@
     <style name="deviceDetailContent" parent="@android:style/TextAppearance.Small">
         <item name="android:layout_gravity">right|center_vertical</item>
         <item name="android:gravity">right</item>
-        <item name="android:ellipsize">end</item>
         <item name="android:singleLine">false</item>
     </style>
 

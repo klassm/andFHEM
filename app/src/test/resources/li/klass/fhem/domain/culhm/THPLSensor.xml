@@ -22,6 +22,16 @@
   ~   Boston, MA  02110-1301  USA
   -->
 
+<!--
+2014-09-22_11:34:12 ws_01 temperature: 24.2
+2014-09-22_11:34:12 ws_01 battery: ok
+2014-09-22_11:34:12 ws_01 batVoltage: 2.54
+2014-09-22_11:34:12 ws_01 humidity: 56
+2014-09-22_11:34:12 ws_01 luminosity: 20.01
+2014-09-22_11:34:12 ws_01 pressure: 1013
+2014-09-22_11:34:12 ws_01 pressure-nn: 1041
+2014-09-22_11:34:12 ws_01 T: 24.2 H: 56 L: 20.01 P: 1013 P-NN: 1041
+-->
 <FHZINFO>
     <CUL_HM_LIST>
         <CUL_HM name="default"

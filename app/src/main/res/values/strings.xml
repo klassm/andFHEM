@@ -330,6 +330,7 @@
     <string name="temperatureHumidityDewpointGraph">Temperature &amp; Humidity &amp; Dewpoint Graph</string>
     <string name="temperatureActuatorGraph">Temperature &amp; Actuator Graph</string>
     <string name="brightnessSunshineGraph">Brightness &amp; Sunshine Graph</string>
+    <string name="brightnessGraph">Brightness Graph</string>
     <string name="rainGraph">Rain Graph</string>
     <string name="humidityGraph">Humidity Graph</string>
     <string name="windGraph">Wind Graph</string>

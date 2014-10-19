@@ -75,6 +75,7 @@ import static li.klass.fhem.service.graph.description.SeriesType.CURRENT_USAGE_W
 import static li.klass.fhem.service.graph.description.SeriesType.HUMIDITY;
 import static li.klass.fhem.service.graph.description.SeriesType.IS_RAINING;
 import static li.klass.fhem.service.graph.description.SeriesType.LITRE_CONTENT;
+import static li.klass.fhem.service.graph.description.SeriesType.PRESSURE;
 import static li.klass.fhem.service.graph.description.SeriesType.RAIN;
 import static li.klass.fhem.service.graph.description.SeriesType.RAW;
 import static li.klass.fhem.service.graph.description.SeriesType.TEMPERATURE;
@@ -814,6 +815,54 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
                                 .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("energy", 0, 100))
                                 .build()
                 ), cumulativeUsage);
+                break;
+
+            case THPL:
+                addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureHumidityGraph,
+                        new ChartSeriesDescription.Builder()
+                                .withColumnName(R.string.temperature)
+                                .withFileLogSpec("4:temperature:0")
+                                .withDbLogSpec("temperature")
+                                .withSeriesType(TEMPERATURE)
+                                .withShowRegression(true)
+                                .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("temperature", 0, 30))
+                                .build(),
+                        new ChartSeriesDescription.Builder()
+                                .withColumnName(R.string.humidity).withFileLogSpec("4:humidity:0")
+                                .withDbLogSpec("humidity")
+                                .withSeriesType(HUMIDITY)
+                                .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("humidity", 0, 100))
+                                .build()
+                ), humidity, measuredTemp);
+
+                addDeviceChartIfNotNull(new DeviceChart(R.string.pressureGraph,
+                        new ChartSeriesDescription.Builder()
+                                .withColumnName(R.string.pressure)
+                                .withFileLogSpec("4:pressure:0")
+                                .withDbLogSpec("pressure")
+                                .withSeriesType(PRESSURE)
+                                .withShowRegression(true)
+                                .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("pressure", 0, 0))
+                                .build(),
+                        new ChartSeriesDescription.Builder()
+                                .withColumnName(R.string.pressureNN).withFileLogSpec("4:pressure-nn:0")
+                                .withDbLogSpec("pressure-nn")
+                                .withSeriesType(HUMIDITY)
+                                .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("pressure-nn", 0, 0))
+                                .build()
+                ), pressure, pressureNN);
+
+                addDeviceChartIfNotNull(
+                        new DeviceChart(R.string.brightnessGraph,
+                                new ChartSeriesDescription.Builder()
+                                        .withColumnName(R.string.brightness).withFileLogSpec("4:luminosity:0")
+                                        .withDbLogSpec("luminosity")
+                                        .withSeriesType(BRIGHTNESS)
+                                        .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("luminosity", 0, 0))
+                                        .build()
+                        ), luminosity
+                );
+
                 break;
         }
     }

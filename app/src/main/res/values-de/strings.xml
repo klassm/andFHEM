@@ -330,6 +330,7 @@
     <string name="temperatureHumidityDewpointGraph">Temperatur &amp; Luftfeuchtigkeit &amp; Taupunkt Graph</string>
     <string name="temperatureActuatorGraph">Temperatur &amp; Regler Graph</string>
     <string name="brightnessSunshineGraph">Helligkeit &amp; Sonneneinstrahlung Graph</string>
+    <string name="brightnessGraph">Helligkeit Graph</string>
     <string name="rainGraph">Regen Graph</string>
     <string name="humidityGraph">Luftfeuchtigkeit Graph</string>
     <string name="windGraph">Wind Graph</string>
