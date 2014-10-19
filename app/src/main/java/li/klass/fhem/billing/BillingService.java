@@ -57,9 +57,13 @@ public class BillingService {
     Context applicationContext;
 
     public synchronized void stop() {
-        if (iabHelper != null) {
-            iabHelper.dispose();
-            iabHelper = null;
+        try {
+            if (iabHelper != null) {
+                iabHelper.dispose();
+                iabHelper = null;
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "cannot stop", e);
         }
     }
 
