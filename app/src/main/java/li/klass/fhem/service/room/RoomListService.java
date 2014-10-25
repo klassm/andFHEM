@@ -92,6 +92,7 @@ public class RoomListService extends AbstractService {
 
     public static final long ALWAYS_UPDATE_PERIOD = -1;
     public static final String SORT_ROOMS_DELIMITER = " ";
+    public static final String DEFAULT_FHEMWEB_QUALIFIER = "andFHEM";
 
     private final ReentrantLock updateLock = new ReentrantLock();
 
@@ -336,20 +337,25 @@ public class RoomListService extends AbstractService {
     }
 
     private FHEMWEBDevice findFHEMWEBDevice(RoomDeviceList allRoomDeviceList) {
-        String qualifier = applicationProperties.getStringSharedPreference(DEVICE_NAME, "andFHEM").toUpperCase(Locale.getDefault());
         List<Device> devicesOfType = allRoomDeviceList == null ?
                 Lists.<Device>newArrayList() : allRoomDeviceList.getDevicesOfType(DeviceType.FHEMWEB);
-        if (!devicesOfType.isEmpty()) {
+        return findFHEMWEBDevice(devicesOfType);
+    }
+
+    FHEMWEBDevice findFHEMWEBDevice(List<Device> devices) {
+        String qualifier = applicationProperties.getStringSharedPreference(DEVICE_NAME, DEFAULT_FHEMWEB_QUALIFIER).toUpperCase(Locale.getDefault());
+        if (!devices.isEmpty()) {
             FHEMWEBDevice foundDevice = null;
-            for (Device device : devicesOfType) {
+            for (Device device : devices) {
                 if (device.getName() != null && device.getName().toUpperCase(Locale.getDefault()).contains(qualifier)) {
                     foundDevice = (FHEMWEBDevice) device;
+                    break;
                 }
             }
             if (foundDevice != null) {
                 return foundDevice;
             } else {
-                return (FHEMWEBDevice) devicesOfType.get(0);
+                return (FHEMWEBDevice) devices.get(0);
             }
         } else {
             return new FHEMWEBDevice();

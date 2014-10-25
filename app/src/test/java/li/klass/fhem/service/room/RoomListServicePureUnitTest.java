@@ -24,6 +24,7 @@
 
 package li.klass.fhem.service.room;
 
+import com.google.common.base.Function;
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
@@ -40,14 +41,17 @@ import java.util.List;
 import java.util.Set;
 
 import li.klass.fhem.domain.FHEMWEBDevice;
+import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceType;
 import li.klass.fhem.service.connection.ConnectionService;
 import li.klass.fhem.testutil.MockitoTestRule;
 import li.klass.fhem.util.ApplicationProperties;
 
+import static com.google.common.collect.FluentIterable.from;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
 import static li.klass.fhem.constants.PreferenceKeys.DEVICE_NAME;
+import static li.klass.fhem.service.room.RoomListService.DEFAULT_FHEMWEB_QUALIFIER;
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
@@ -57,6 +61,15 @@ import static org.mockito.Matchers.any;
 @RunWith(DataProviderRunner.class)
 public class RoomListServicePureUnitTest {
 
+    public static final Function<String, Device> TO_FHEMWEB_DEVICE_WITH_NAME = new Function<String, Device>() {
+        @Override
+        public Device apply(String input) {
+            FHEMWEBDevice device = new FHEMWEBDevice();
+            device.readNAME(input);
+            device.readGROUP("someGroup");
+            return device;
+        }
+    };
     @Rule
     public MockitoTestRule mockitoTestRule = new MockitoTestRule();
 
@@ -97,5 +110,31 @@ public class RoomListServicePureUnitTest {
 
         // then
         assertThat(result).isEqualTo(expectedRooms);
+    }
+
+    @DataProvider
+    public static Object[][] dataProvider_FHEMWEB_device_names() {
+        return new Object[][]{
+                {newArrayList("myDevice", "someDevice"), "myDevice", "myDevice"}, // find device with exact name
+                {newArrayList("FHEMWEB_myDevice", "someDevice"), "myDevice", "FHEMWEB_myDevice"}, // finds device containing the qualifier
+                {newArrayList("FHEMWEB_myDevice", "myDevice"), "myDevice", "FHEMWEB_myDevice"}, // takes the first device it finds (containing the qualifier)
+                {newArrayList("FHEMWEB_myDevice", "someDevice"), "", "FHEMWEB_myDevice"}, // takes the first device if no device contains the qualifier
+                {newArrayList("andFHEM_myDevice", "someDevice"), "", "andFHEM_myDevice"}, // defaults to andFHEM as qualifier
+        };
+    }
+
+    @Test
+    @UseDataProvider("dataProvider_FHEMWEB_device_names")
+    public void should_find_the_correct_FHEMWEB_device(List<String> deviceNames, String qualifier, String expectedDeviceName) {
+        // given
+        List<Device> fhemwebDevices = from(deviceNames).transform(TO_FHEMWEB_DEVICE_WITH_NAME).toList();
+        given(applicationProperties.getStringSharedPreference(DEVICE_NAME, DEFAULT_FHEMWEB_QUALIFIER)).willReturn(qualifier);
+
+        // when
+        FHEMWEBDevice foundDevice = service.findFHEMWEBDevice(fhemwebDevices);
+
+        // then
+        assertThat(foundDevice).isNotNull();
+        assertThat(foundDevice.getName()).isEqualTo(expectedDeviceName);
     }
 }
