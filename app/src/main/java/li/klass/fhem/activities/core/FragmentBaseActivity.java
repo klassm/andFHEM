@@ -89,9 +89,91 @@ import static li.klass.fhem.fragments.FragmentType.getFragmentFor;
 
 public abstract class FragmentBaseActivity extends ActionBarActivity implements Updateable {
 
+    private class Receiver extends BroadcastReceiver {
+
+        private final IntentFilter intentFilter;
+
+        private Receiver() {
+            intentFilter = new IntentFilter();
+            intentFilter.addAction(Actions.SHOW_FRAGMENT);
+            intentFilter.addAction(Actions.DISMISS_UPDATING_DIALOG);
+            intentFilter.addAction(Actions.DO_UPDATE);
+            intentFilter.addAction(SHOW_EXECUTING_DIALOG);
+            intentFilter.addAction(DISMISS_EXECUTING_DIALOG);
+            intentFilter.addAction(SHOW_TOAST);
+            intentFilter.addAction(SHOW_ALERT);
+            intentFilter.addAction(DO_UPDATE);
+            intentFilter.addAction(BACK);
+            intentFilter.addAction(RELOAD);
+            intentFilter.addAction(CONNECTIONS_CHANGED);
+            intentFilter.addAction(REDRAW);
+        }
+
+        @Override
+        public void onReceive(Context context, final Intent intent) {
+            if (!saveInstanceStateCalled) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            String action = intent.getAction();
+                            if (action == null) return;
+
+                            if (Actions.SHOW_FRAGMENT.equals(action)) {
+                                Bundle bundle = intent.getExtras();
+                                if (bundle == null)
+                                    throw new IllegalArgumentException("need a content fragment");
+                                FragmentType fragmentType;
+                                if (bundle.containsKey(FRAGMENT)) {
+                                    fragmentType = (FragmentType) bundle.getSerializable(FRAGMENT);
+                                } else {
+                                    String fragmentName = bundle.getString(FRAGMENT_NAME);
+                                    fragmentType = getFragmentFor(fragmentName);
+                                }
+                                switchToFragment(fragmentType, intent.getExtras());
+                            } else if (action.equals(Actions.DISMISS_UPDATING_DIALOG)) {
+                                setShowRefreshProgressIcon(false);
+                            } else if (intent.getBooleanExtra(BundleExtraKeys.DO_REFRESH, false) && action.equals(Actions.DO_UPDATE)) {
+                                setShowRefreshProgressIcon(true);
+                            } else if (action.equals(SHOW_EXECUTING_DIALOG)) {
+                                setShowRefreshProgressIcon(true);
+                            } else if (action.equals(DISMISS_EXECUTING_DIALOG)) {
+                                setShowRefreshProgressIcon(false);
+                            } else if (action.equals(SHOW_TOAST)) {
+                                String content = intent.getStringExtra(BundleExtraKeys.CONTENT);
+                                if (content == null) {
+                                    content = getString(intent.getIntExtra(BundleExtraKeys.STRING_ID, 0));
+                                }
+                                Toast.makeText(FragmentBaseActivity.this, content, Toast.LENGTH_SHORT).show();
+                            } else if (action.equals(SHOW_ALERT)) {
+                                DialogUtil.showAlertDialog(FragmentBaseActivity.this,
+                                        intent.getIntExtra(BundleExtraKeys.ALERT_TITLE_ID, R.string.blank),
+                                        intent.getIntExtra(BundleExtraKeys.ALERT_CONTENT_ID, R.string.blank));
+                            } else if (action.equals(BACK)) {
+                                onBackPressed();
+                            } else if (CONNECTIONS_CHANGED.equals(action)) {
+                                if (availableConnectionDataAdapter != null) {
+                                    availableConnectionDataAdapter.doLoad();
+                                }
+                            } else if (REDRAW.equals(action)) {
+                                redrawContent();
+                            }
+                        } catch (Exception e) {
+                            Log.e(TAG, "exception occurred while receiving broadcast", e);
+                        }
+                    }
+                });
+            }
+        }
+
+        public IntentFilter getIntentFilter() {
+            return intentFilter;
+        }
+    }
     public static final String TAG = FragmentBaseActivity.class.getName();
     public static final String NAVIGATION_TAG = "NAVIGATION_TAG";
     public static final String CONTENT_TAG = "CONTENT_TAG";
+
     protected Menu optionsMenu;
 
     @Inject
@@ -105,14 +187,14 @@ public abstract class FragmentBaseActivity extends ActionBarActivity implements 
 
     @Inject
     RoomListService roomListService;
-
     private Receiver broadcastReceiver;
-    private Timer timer;
 
+    private Timer timer;
     private RepairedDrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private boolean saveInstanceStateCalled;
+
     private AvailableConnectionDataAdapter availableConnectionDataAdapter;
 
     protected FragmentBaseActivity() {
@@ -603,94 +685,12 @@ public abstract class FragmentBaseActivity extends ActionBarActivity implements 
     }
 
     @Override
-    public boolean onCreatePanelMenu(int featureId, Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
         if (licenseService.isPremiumApk()) {
             menu.removeItem(R.id.menu_premium);
         }
         this.optionsMenu = menu;
         return super.onCreateOptionsMenu(menu);
-    }
-
-    private class Receiver extends BroadcastReceiver {
-
-        private final IntentFilter intentFilter;
-
-        private Receiver() {
-            intentFilter = new IntentFilter();
-            intentFilter.addAction(Actions.SHOW_FRAGMENT);
-            intentFilter.addAction(Actions.DISMISS_UPDATING_DIALOG);
-            intentFilter.addAction(Actions.DO_UPDATE);
-            intentFilter.addAction(SHOW_EXECUTING_DIALOG);
-            intentFilter.addAction(DISMISS_EXECUTING_DIALOG);
-            intentFilter.addAction(SHOW_TOAST);
-            intentFilter.addAction(SHOW_ALERT);
-            intentFilter.addAction(DO_UPDATE);
-            intentFilter.addAction(BACK);
-            intentFilter.addAction(RELOAD);
-            intentFilter.addAction(CONNECTIONS_CHANGED);
-            intentFilter.addAction(REDRAW);
-        }
-
-        @Override
-        public void onReceive(Context context, final Intent intent) {
-            if (!saveInstanceStateCalled) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            String action = intent.getAction();
-                            if (action == null) return;
-
-                            if (Actions.SHOW_FRAGMENT.equals(action)) {
-                                Bundle bundle = intent.getExtras();
-                                if (bundle == null)
-                                    throw new IllegalArgumentException("need a content fragment");
-                                FragmentType fragmentType;
-                                if (bundle.containsKey(FRAGMENT)) {
-                                    fragmentType = (FragmentType) bundle.getSerializable(FRAGMENT);
-                                } else {
-                                    String fragmentName = bundle.getString(FRAGMENT_NAME);
-                                    fragmentType = getFragmentFor(fragmentName);
-                                }
-                                switchToFragment(fragmentType, intent.getExtras());
-                            } else if (action.equals(Actions.DISMISS_UPDATING_DIALOG)) {
-                                setShowRefreshProgressIcon(false);
-                            } else if (intent.getBooleanExtra(BundleExtraKeys.DO_REFRESH, false) && action.equals(Actions.DO_UPDATE)) {
-                                setShowRefreshProgressIcon(true);
-                            } else if (action.equals(SHOW_EXECUTING_DIALOG)) {
-                                setShowRefreshProgressIcon(true);
-                            } else if (action.equals(DISMISS_EXECUTING_DIALOG)) {
-                                setShowRefreshProgressIcon(false);
-                            } else if (action.equals(SHOW_TOAST)) {
-                                String content = intent.getStringExtra(BundleExtraKeys.CONTENT);
-                                if (content == null) {
-                                    content = getString(intent.getIntExtra(BundleExtraKeys.STRING_ID, 0));
-                                }
-                                Toast.makeText(FragmentBaseActivity.this, content, Toast.LENGTH_SHORT).show();
-                            } else if (action.equals(SHOW_ALERT)) {
-                                DialogUtil.showAlertDialog(FragmentBaseActivity.this,
-                                        intent.getIntExtra(BundleExtraKeys.ALERT_TITLE_ID, R.string.blank),
-                                        intent.getIntExtra(BundleExtraKeys.ALERT_CONTENT_ID, R.string.blank));
-                            } else if (action.equals(BACK)) {
-                                onBackPressed();
-                            } else if (CONNECTIONS_CHANGED.equals(action)) {
-                                if (availableConnectionDataAdapter != null) {
-                                    availableConnectionDataAdapter.doLoad();
-                                }
-                            } else if (REDRAW.equals(action)) {
-                                redrawContent();
-                            }
-                        } catch (Exception e) {
-                            Log.e(TAG, "exception occurred while receiving broadcast", e);
-                        }
-                    }
-                });
-            }
-        }
-
-        public IntentFilter getIntentFilter() {
-            return intentFilter;
-        }
     }
 }
