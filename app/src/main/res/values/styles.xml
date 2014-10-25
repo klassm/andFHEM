@@ -294,7 +294,7 @@
 
     <style name="deviceDetailTable" parent="deviceDetailSectionContent">
         <item name="android:stretchColumns">1</item>
-        <item name="android:shrinkColumns">0,1</item>
+        <item name="android:shrinkColumns">1</item>
     </style>
 
 
