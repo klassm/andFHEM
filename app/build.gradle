@@ -28,6 +28,8 @@
 
 
 
+
+
 apply plugin: 'com.android.application'
 
 buildscript {
@@ -156,7 +158,9 @@ dependencies {
     testCompile 'com.tngtech.java:junit-dataprovider:1.9.2'
 }
 
-
+// Compile test classes when compiling classes in general
+// Leads to compiled test classes in android studio
+tasks.findByName("assembleDebug").dependsOn("testDebugClasses")
 
 task readSigningPasswordsFromConsole(
         dependsOn: ['readSigningStorePasswordFromConsole', 'readSigningKeyAliasPasswordFromConsole'])
