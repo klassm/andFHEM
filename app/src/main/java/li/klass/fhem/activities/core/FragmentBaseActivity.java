@@ -38,16 +38,16 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.RepairedDrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
 import com.google.common.base.Optional;
 
 import java.util.Timer;
@@ -87,7 +87,7 @@ import static li.klass.fhem.fragments.FragmentType.ALL_DEVICES;
 import static li.klass.fhem.fragments.FragmentType.FAVORITES;
 import static li.klass.fhem.fragments.FragmentType.getFragmentFor;
 
-public abstract class FragmentBaseActivity extends SherlockFragmentActivity implements Updateable {
+public abstract class FragmentBaseActivity extends ActionBarActivity implements Updateable {
 
     public static final String TAG = FragmentBaseActivity.class.getName();
     public static final String NAVIGATION_TAG = "NAVIGATION_TAG";
@@ -143,11 +143,12 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
         }
 
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayShowTitleEnabled(false);
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-        handleConnectionSpinner(actionBar);
-
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        if (actionBar != null) {
+            actionBar.setDisplayShowTitleEnabled(false);
+            actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+            handleConnectionSpinner(actionBar);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
 
         broadcastReceiver = new Receiver();
         registerReceiver(broadcastReceiver, broadcastReceiver.getIntentFilter());
@@ -602,8 +603,8 @@ public abstract class FragmentBaseActivity extends SherlockFragmentActivity impl
     }
 
     @Override
-    public boolean onCreatePanelMenu(int featureId, com.actionbarsherlock.view.Menu menu) {
-        getSupportMenuInflater().inflate(R.menu.main_menu, menu);
+    public boolean onCreatePanelMenu(int featureId, Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
         if (licenseService.isPremiumApk()) {
             menu.removeItem(R.id.menu_premium);
         }

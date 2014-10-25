@@ -29,20 +29,20 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.view.ActionMode;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.ActionMode;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
@@ -110,7 +110,7 @@ public abstract class DeviceListFragment extends BaseFragment {
         }
 
         @Override
-        public boolean onActionItemClicked(ActionMode actionMode, com.actionbarsherlock.view.MenuItem menuItem) {
+        public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
             switch (menuItem.getItemId()) {
                 case R.id.menu_favorites_add:
                     Intent favoriteAddIntent = new Intent(FAVORITE_ADD);
@@ -207,7 +207,7 @@ public abstract class DeviceListFragment extends BaseFragment {
                         protected void onReceiveResult(int resultCode, Bundle resultData) {
                             contextMenuClickedDevice.set(child);
                             isClickedDeviceFavorite.set(resultData.getBoolean(IS_FAVORITE));
-                            actionMode = ((SherlockFragmentActivity) getActivity()).startActionMode(actionModeCallback);
+                            actionMode = ((ActionBarActivity) getActivity()).startSupportActionMode(actionModeCallback);
                         }
                     });
                     DeviceListFragment.this.getActivity().startService(intent);
@@ -334,7 +334,7 @@ public abstract class DeviceListFragment extends BaseFragment {
             contextMenuClickedDevice.set((Device) tag);
             currentClickFragment.set(this);
 
-            ((SherlockFragmentActivity) getActivity()).startActionMode(actionModeCallback);
+            ((ActionBarActivity) getActivity()).startSupportActionMode(actionModeCallback);
         }
     }
 

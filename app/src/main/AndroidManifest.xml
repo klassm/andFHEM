@@ -86,7 +86,7 @@
 
         <activity
             android:name="li.klass.fhem.activities.graph.ChartingActivity"
-            android:theme="@style/Theme.Sherlock"/>
+            android:theme="@style/Theme.AppCompat"/>
         <activity android:name="li.klass.fhem.activities.graph.ChartingDateSelectionActivity"/>
 
         <activity

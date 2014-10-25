@@ -35,15 +35,14 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
 import android.preference.PreferenceManager;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
 
 import org.achartengine.ChartFactory;
 import org.achartengine.GraphicalView;
@@ -87,10 +86,7 @@ import static li.klass.fhem.constants.BundleExtraKeys.START_DATE;
 import static li.klass.fhem.util.DisplayUtil.dpToPx;
 import static org.joda.time.Duration.standardHours;
 
-/**
- * Shows a chart.
- */
-public class ChartingActivity extends SherlockActivity implements Updateable {
+public class ChartingActivity extends ActionBarActivity implements Updateable {
 
     public static final List<Integer> AVAILABLE_COLORS = Arrays.asList(Color.YELLOW, Color.CYAN, Color.GRAY, Color.WHITE);
 
@@ -522,7 +518,7 @@ public class ChartingActivity extends SherlockActivity implements Updateable {
 
     @Override
     public boolean onCreatePanelMenu(int featureId, Menu menu) {
-        getSupportMenuInflater().inflate(R.menu.graph_menu, menu);
+        getMenuInflater().inflate(R.menu.graph_menu, menu);
         return super.onCreatePanelMenu(featureId, menu);
     }
 

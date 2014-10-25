@@ -25,7 +25,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- the theme applied to the application or activity -->
-    <style name="ApplicationTheme" parent="@style/Theme.Sherlock.Light.DarkActionBar">
+    <style name="ApplicationTheme" parent="@style/Theme.AppCompat.Light.DarkActionBar">
         <item name="actionBarTabBarStyle">@style/ApplicationActionBarTabBarStyle</item>
         <item name="android:actionBarTabBarStyle" tools:ignore="NewApi">
             @style/ApplicationActionBarTabBarStyle
@@ -52,38 +52,28 @@
         <item name="popupMenuStyle">@style/ApplicationPopupMenu</item>
         <item name="android:popupMenuStyle" tools:ignore="NewApi">@style/ApplicationPopupMenu</item>
 
-        <item name="actionBarWidgetTheme">@style/ApplicationActionBarWidgetTheme</item>
-        <item name="android:actionBarWidgetTheme" tools:ignore="NewApi">
-            @style/ApplicationActionBarWidgetTheme
-        </item>
-
         <item name="android:spinnerStyle">@style/spinner</item>
     </style>
 
-    <style name="ApplicationActionBarTabBarStyle" parent="Widget.Sherlock.ActionBar.Solid">
+    <style name="ApplicationActionBarTabBarStyle" parent="Widget.AppCompat.ActionBar.Solid">
         <item name="android:background">@color/holoDark</item>
     </style>
 
-    <style name="ApplicationActionBarTabStyle" parent="Widget.Sherlock.ActionBar.TabView">
+    <style name="ApplicationActionBarTabStyle" parent="Widget.AppCompat.ActionBar.TabView">
         <item name="android:background">@drawable/actionbar_tab_bg</item>
         <item name="background">@drawable/actionbar_tab_bg</item>
     </style>
 
-    <style name="ApplicationActionDropDownStyle" parent="Widget.Sherlock.Spinner.DropDown.ActionBar">
+    <style name="ApplicationActionDropDownStyle" parent="Widget.AppCompat.Spinner.DropDown.ActionBar">
         <item name="android:dropDownSelector">@drawable/actionbar_item_bg_selectable</item>
         <item name="android:background">@drawable/theme_spinner_selector_dark</item>
     </style>
 
-    <style name="ApplicationDropDownListViewStyle" parent="Widget.Sherlock.ListView.DropDown">
+    <style name="ApplicationDropDownListViewStyle" parent="Widget.AppCompat.ListView.DropDown">
         <item name="android:listSelector">@drawable/actionbar_item_bg_selectable</item>
     </style>
 
-    <style name="ApplicationPopupMenu" parent="Widget.Sherlock.ListPopupWindow">
-    </style>
-
-    <style name="ApplicationActionBarWidgetTheme" parent="@style/Theme.Sherlock">
-        <item name="android:dropDownListViewStyle">@style/ApplicationDropDownListViewStyle</item>
-        <item name="android:popupMenuStyle" tools:ignore="NewApi">@style/ApplicationPopupMenu</item>
+    <style name="ApplicationPopupMenu" parent="Widget.AppCompat.ListPopupWindow">
     </style>
 
     <style name="Theme.Dialog.Light" parent="@android:style/Theme.Dialog">

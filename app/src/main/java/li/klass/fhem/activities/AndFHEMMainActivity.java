@@ -28,8 +28,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-
-import com.actionbarsherlock.view.MenuItem;
+import android.view.MenuItem;
 
 import javax.inject.Inject;
 

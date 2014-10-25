@@ -29,10 +29,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
-
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
 
 import java.util.List;
 
@@ -64,7 +63,7 @@ import static li.klass.fhem.constants.BundleExtraKeys.ROOM_SELECTABLE_CALLBACK;
 import static li.klass.fhem.fragments.RoomListFragment.RoomClickedCallback;
 import static li.klass.fhem.fragments.RoomListFragment.RoomSelectableCallback;
 
-public abstract class AppWidgetSelectionActivity extends SherlockFragmentActivity implements ActionBar.TabListener {
+public abstract class AppWidgetSelectionActivity extends ActionBarActivity implements ActionBar.TabListener {
 
     public static final int TAG_DEVICES = 0;
     public static final int TAG_ROOMS = 1;

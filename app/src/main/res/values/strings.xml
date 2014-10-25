@@ -575,7 +575,7 @@
     <string name="dummy_condition" translatable="false">sunny</string>
     <string name="dummy_weather_state" formatted="false" translatable="false">20°C, 40%, not raining</string>
     <string name="dummy_serverName" translatable="false">MyServer</string>
-    <string name="dummy_serverType" translatable="false">FHEMWBE</string>
+    <string name="dummy_serverType" translatable="false">FHEMWEB</string>
     <string name="dummy_buttonText" translatable="false">clickMe!</string>
     <string name="dummy_speed" translatable="false">xx (km/h)</string>
 
