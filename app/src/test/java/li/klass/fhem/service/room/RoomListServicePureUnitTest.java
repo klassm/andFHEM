@@ -25,17 +25,22 @@
 package li.klass.fhem.service.room;
 
 import com.tngtech.java.junit.dataprovider.DataProvider;
+import com.tngtech.java.junit.dataprovider.DataProviderRunner;
+import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
-import li.klass.fhem.domain.FS20Device;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
+import li.klass.fhem.domain.FHEMWEBDevice;
 import li.klass.fhem.domain.core.DeviceType;
-import li.klass.fhem.domain.core.RoomDeviceList;
-import li.klass.fhem.infra.basetest.RobolectricBaseTestCase;
 import li.klass.fhem.service.connection.ConnectionService;
 import li.klass.fhem.testutil.MockitoTestRule;
 import li.klass.fhem.util.ApplicationProperties;
@@ -43,13 +48,14 @@ import li.klass.fhem.util.ApplicationProperties;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
 import static li.klass.fhem.constants.PreferenceKeys.DEVICE_NAME;
-import static li.klass.fhem.domain.core.RoomDeviceList.ALL_DEVICES_ROOM;
-import static li.klass.fhem.service.room.RoomListService.NEVER_UPDATE_PERIOD;
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
 
-public class RoomListServiceTest extends RobolectricBaseTestCase {
+// We cannot combine two runners, so we have to create an extra test class for only
+// parametrized unit tests ...
+@RunWith(DataProviderRunner.class)
+public class RoomListServicePureUnitTest {
 
     @Rule
     public MockitoTestRule mockitoTestRule = new MockitoTestRule();
@@ -69,45 +75,27 @@ public class RoomListServiceTest extends RobolectricBaseTestCase {
         given(connectionService.mayShowInCurrentConnectionType(any(DeviceType.class))).willCallRealMethod();
     }
 
-    @Test
-    public void get_room_names_with_supported_devices() throws Exception {
-        service.deviceList = new RoomDeviceList(ALL_DEVICES_ROOM);
-        service.deviceList.addDevice(new TestDevice("a", true, "abc", "def"));
-        service.deviceList.addDevice(new TestDevice("b", true, "def", "fgh"));
-
-        assertThat(service.getRoomNameList(NEVER_UPDATE_PERIOD)).containsExactly("abc", "def", "fgh");
-    }
-
-    @Test
-    public void get_room_names_with_unsupported_devices() throws Exception {
-        service.deviceList = new RoomDeviceList(ALL_DEVICES_ROOM);
-        service.deviceList.addDevice(new TestDevice("a", true, "abc", "def"));
-        service.deviceList.addDevice(new TestDevice("b", false, "def", "fgh"));
-
-        assertThat(service.getRoomNameList(NEVER_UPDATE_PERIOD)).containsExactly("abc", "def");
-    }
-
     @DataProvider
     public static Object[][] dataProviderSortRooms() {
         return new Object[][]{
-                {"A B C", newHashSet("A", "B", "C"), newArrayList("A", "B", "C")}
+                {"A B C", newHashSet("A", "B", "C"), newArrayList("A", "B", "C")},
+                {"Z K", newHashSet("A", "Z", "K"), newArrayList("Z", "K", "A")},
+                {"", newHashSet("Z", "B", "X", "K"), newArrayList("B", "K", "X", "Z")},
+                {"Z", newHashSet("B", "Z", "X", "K"), newArrayList("Z", "B", "K", "X")}
         };
     }
 
-    class TestDevice extends FS20Device {
+    @Test
+    @UseDataProvider("dataProviderSortRooms")
+    public void should_sort_rooms(String sortRoomsAttribute, Set<String> roomNames, List<String> expectedRooms) {
+        // given
+        FHEMWEBDevice device = new FHEMWEBDevice();
+        device.readSORTROOMS(sortRoomsAttribute);
 
-        private final boolean supported;
+        // when
+        ArrayList<String> result = service.sortRooms(roomNames, device);
 
-        TestDevice(String name, boolean supported, String... rooms) {
-            setName(name);
-            setRooms(newArrayList(rooms));
-            readGROUP("TEST");
-            this.supported = supported;
-        }
-
-        @Override
-        public boolean isSupported() {
-            return supported;
-        }
+        // then
+        assertThat(result).isEqualTo(expectedRooms);
     }
 }

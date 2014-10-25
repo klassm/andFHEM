@@ -38,7 +38,6 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
@@ -69,6 +68,7 @@ import li.klass.fhem.service.connection.ConnectionService;
 import li.klass.fhem.util.ApplicationProperties;
 
 import static com.google.common.collect.Lists.newArrayList;
+import static java.util.Collections.sort;
 import static li.klass.fhem.constants.Actions.REDRAW_ALL_WIDGETS;
 import static li.klass.fhem.constants.PreferenceKeys.DEVICE_NAME;
 import static li.klass.fhem.domain.core.DeviceType.getDeviceTypeFor;
@@ -91,6 +91,7 @@ public class RoomListService extends AbstractService {
     public static final long NEVER_UPDATE_PERIOD = 0;
 
     public static final long ALWAYS_UPDATE_PERIOD = -1;
+    public static final String SORT_ROOMS_DELIMITER = " ";
 
     private final ReentrantLock updateLock = new ReentrantLock();
 
@@ -409,32 +410,41 @@ public class RoomListService extends AbstractService {
         roomNames.removeAll(roomDeviceList.getHiddenRooms());
 
         FHEMWEBDevice fhemwebDevice = findFHEMWEBDevice(roomDeviceList);
+        return sortRooms(roomNames, fhemwebDevice);
+    }
+
+    ArrayList<String> sortRooms(Set<String> roomNames, FHEMWEBDevice fhemwebDevice) {
         final List<String> sortRooms = newArrayList();
         if (fhemwebDevice != null && fhemwebDevice.getSortRooms() != null) {
-            sortRooms.addAll(Arrays.asList(fhemwebDevice.getSortRooms().split(",")));
+            sortRooms.addAll(Arrays.asList(fhemwebDevice.getSortRooms().split(SORT_ROOMS_DELIMITER)));
         }
         ArrayList<String> roomNamesCopy = newArrayList(roomNames);
-        Collections.sort(roomNamesCopy, new Comparator<String>() {
+        sort(roomNamesCopy, sortRoomsComparator(sortRooms));
+        return roomNamesCopy;
+    }
+
+    private Comparator<String> sortRoomsComparator(final List<String> sortRooms) {
+        return new Comparator<String>() {
             @Override
             public int compare(String lhs, String rhs) {
                 int lhsIndex = sortRooms.indexOf(lhs);
                 int rhsIndex = sortRooms.indexOf(rhs);
 
-                if (lhsIndex == rhsIndex) {
-                    if (lhsIndex == -1) {
-                        return lhs.compareTo(rhs);
-                    } else {
-                        return ((Integer) lhsIndex).compareTo(rhsIndex);
-                    }
-
+                if (lhsIndex == rhsIndex && lhsIndex == -1) {
+                    // both not in sort list, compare based on names
+                    return lhs.compareTo(rhs);
+                } else if (lhsIndex != rhsIndex && lhsIndex != -1 && rhsIndex != -1) {
+                    // both in sort list, compare indexes
+                    return ((Integer) lhsIndex).compareTo(rhsIndex);
                 } else if (lhsIndex == -1) {
+                    // lhs not in sort list, rhs in sort list
                     return 1;
                 } else {
+                    // rhs not in sort list, lhs in sort list
                     return -1;
                 }
             }
-        });
-        return roomNamesCopy;
+        };
     }
 
     /**
