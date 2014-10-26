@@ -44,6 +44,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -88,6 +89,8 @@ import static li.klass.fhem.fragments.FragmentType.FAVORITES;
 import static li.klass.fhem.fragments.FragmentType.getFragmentFor;
 
 public abstract class FragmentBaseActivity extends ActionBarActivity implements Updateable {
+
+    private boolean showProgressIcon;
 
     private class Receiver extends BroadcastReceiver {
 
@@ -207,6 +210,7 @@ public abstract class FragmentBaseActivity extends ActionBarActivity implements 
         } catch (Exception e) {
             Log.e(TAG, "error while creating activity", e);
         }
+        supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 
         AndFHEMApplication application = (AndFHEMApplication) getApplication();
 
@@ -536,8 +540,11 @@ public abstract class FragmentBaseActivity extends ActionBarActivity implements 
 
     private void setShowRefreshProgressIcon(boolean show) {
         if (optionsMenu == null) return;
-        optionsMenu.findItem(R.id.menu_refresh).setVisible(!show);
-        optionsMenu.findItem(R.id.menu_refresh_progress).setVisible(show);
+        showProgressIcon = show;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            this.invalidateOptionsMenu();
+        }
     }
 
     @Override
@@ -691,6 +698,10 @@ public abstract class FragmentBaseActivity extends ActionBarActivity implements 
             menu.removeItem(R.id.menu_premium);
         }
         this.optionsMenu = menu;
+
+        optionsMenu.findItem(R.id.menu_refresh).setVisible(!showProgressIcon);
+        setSupportProgressBarIndeterminateVisibility(showProgressIcon);
+
         return super.onCreateOptionsMenu(menu);
     }
 }
