@@ -54,6 +54,7 @@ import li.klass.fhem.domain.setlist.SetList;
 import li.klass.fhem.domain.setlist.SetListGroupValue;
 import li.klass.fhem.domain.setlist.SetListSliderValue;
 import li.klass.fhem.domain.setlist.SetListValue;
+import li.klass.fhem.service.intent.DeviceIntentService;
 import li.klass.fhem.util.DialogUtil;
 
 import static android.view.View.GONE;
@@ -69,7 +70,7 @@ public class AvailableTargetStatesDialogUtil {
         public <D extends Device<D>> void onTargetStateSelected(String state, String subState, D device, Context context) {
             if (isBlank(state)) return;
 
-            if (! isBlank(subState)) {
+            if (!isBlank(subState)) {
                 switchDeviceSubState(state, subState, device, context);
             } else {
                 switchDeviceState(state, device, context);
@@ -78,6 +79,7 @@ public class AvailableTargetStatesDialogUtil {
 
         private <D extends Device<D>> void switchDeviceState(String newState, D device, final Context context) {
             Intent intent = new Intent(Actions.DEVICE_SET_STATE);
+            intent.setClass(context, DeviceIntentService.class);
             intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
             intent.putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, newState);
             intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver(context));
@@ -90,6 +92,7 @@ public class AvailableTargetStatesDialogUtil {
                 return;
             }
             Intent intent = new Intent(Actions.DEVICE_SET_SUB_STATE);
+            intent.setClass(context, DeviceIntentService.class);
             intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
             intent.putExtra(BundleExtraKeys.STATE_NAME, newState);
             intent.putExtra(BundleExtraKeys.STATE_VALUE, newSubState);
@@ -143,13 +146,13 @@ public class AvailableTargetStatesDialogUtil {
                                 });
 
                         if (typeHandler.requiresPositiveButton()) {
-                                        builder.setPositiveButton(R.string.okButton, new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface dialog, int whichButton) {
-                                                if (typeHandler.onPositiveButtonClick(view, context, device)) {
-                                                    dialog.dismiss();
-                                                }
-                                            }
-                                        });
+                            builder.setPositiveButton(R.string.okButton, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int whichButton) {
+                                    if (typeHandler.onPositiveButtonClick(view, context, device)) {
+                                        dialog.dismiss();
+                                    }
+                                }
+                            });
                         }
 
                         AlertDialog subDialog = builder.show();
@@ -278,6 +281,7 @@ public class AvailableTargetStatesDialogUtil {
         boolean onPositiveButtonClick(View view, Context context, D device) {
             return true;
         }
+
         boolean requiresPositiveButton() {
             return true;
         }

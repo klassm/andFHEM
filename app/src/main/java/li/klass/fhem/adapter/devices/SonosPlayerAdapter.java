@@ -43,6 +43,7 @@ import li.klass.fhem.adapter.devices.genericui.SeekBarActionRowFullWidthAndButto
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.SonosPlayerDevice;
+import li.klass.fhem.service.intent.DeviceIntentService;
 import li.klass.fhem.util.ApplicationProperties;
 
 public class SonosPlayerAdapter extends GenericDeviceAdapter<SonosPlayerDevice> {
@@ -74,6 +75,7 @@ public class SonosPlayerAdapter extends GenericDeviceAdapter<SonosPlayerDevice> 
                     @Override
                     public void onStopTrackingTouch(Context context, SonosPlayerDevice device, int progress) {
                         Intent intent = new Intent(Actions.DEVICE_SET_SUB_STATE);
+                        intent.setClass(context, DeviceIntentService.class);
                         intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
                         intent.putExtra(BundleExtraKeys.STATE_NAME, "volume");
                         intent.putExtra(BundleExtraKeys.STATE_VALUE, progress + "");

@@ -38,12 +38,11 @@ import java.io.Serializable;
 import java.util.Locale;
 import java.util.Map;
 
-import javax.inject.Inject;
-
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.activities.AndFHEMMainActivity;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
+import li.klass.fhem.service.intent.RoomListIntentService;
 import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.NotificationUtil;
 import li.klass.fhem.util.StringUtil;
@@ -118,7 +117,7 @@ public class GCMIntentService extends GCMBaseIntentService {
     }
 
     private void handleNotify(Bundle extras) {
-        if (! extras.containsKey("changes")) return;
+        if (!extras.containsKey("changes")) return;
 
         String deviceName = extras.getString("deviceName");
 
@@ -141,6 +140,7 @@ public class GCMIntentService extends GCMBaseIntentService {
         }
 
         Intent parseIntent = new Intent(Actions.UPDATE_DEVICE_WITH_UPDATE_MAP);
+        parseIntent.setClass(this, RoomListIntentService.class);
         parseIntent.putExtra(BundleExtraKeys.DEVICE_NAME, deviceName);
         parseIntent.putExtra(BundleExtraKeys.UPDATE_MAP, (Serializable) changeMap);
         parseIntent.putExtra(BundleExtraKeys.VIBRATE, shouldVibrate(extras));

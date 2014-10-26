@@ -39,6 +39,7 @@ import li.klass.fhem.adapter.devices.genericui.YesNoToggleDeviceActionRow;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.YamahaAVRDevice;
+import li.klass.fhem.service.intent.DeviceIntentService;
 import li.klass.fhem.util.ApplicationProperties;
 
 public class YamahaAVRAdapter extends ToggleableAdapterWithSwitchActionRow<YamahaAVRDevice> {
@@ -84,6 +85,7 @@ public class YamahaAVRAdapter extends ToggleableAdapterWithSwitchActionRow<Yamah
                     @Override
                     public void onItemSelected(Context context, YamahaAVRDevice device, String item) {
                         Intent intent = new Intent(Actions.DEVICE_SET_SUB_STATE);
+                        intent.setClass(context, DeviceIntentService.class);
                         intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
                         intent.putExtra(BundleExtraKeys.STATE_NAME, "input");
                         intent.putExtra(BundleExtraKeys.STATE_VALUE, item);

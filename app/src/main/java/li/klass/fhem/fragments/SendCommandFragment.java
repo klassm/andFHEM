@@ -47,6 +47,7 @@ import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.fragments.core.BaseFragment;
+import li.klass.fhem.service.intent.SendCommandIntentService;
 import li.klass.fhem.util.ListViewUtil;
 
 import static org.apache.commons.lang3.StringUtils.isEmpty;
@@ -90,6 +91,7 @@ public class SendCommandFragment extends BaseFragment {
     private void sendCommandIntent(String command) {
         final Context context = getActivity();
         Intent intent = new Intent(Actions.EXECUTE_COMMAND);
+        intent.setClass(getActivity(), SendCommandIntentService.class);
         intent.putExtra(BundleExtraKeys.COMMAND, command);
         intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
             @Override
@@ -121,6 +123,7 @@ public class SendCommandFragment extends BaseFragment {
     @Override
     public void update(boolean doUpdate) {
         Intent intent = new Intent(Actions.RECENT_COMMAND_LIST);
+        intent.setClass(getActivity(), SendCommandIntentService.class);
         intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
             @Override
             protected void onReceiveResult(int resultCode, Bundle resultData) {

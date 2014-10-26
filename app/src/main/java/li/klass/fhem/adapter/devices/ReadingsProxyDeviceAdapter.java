@@ -36,6 +36,7 @@ import li.klass.fhem.adapter.devices.genericui.ColorPickerRow;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.ReadingsProxyDevice;
+import li.klass.fhem.service.intent.DeviceIntentService;
 import li.klass.fhem.util.StringUtil;
 
 public class ReadingsProxyDeviceAdapter extends DimmableAdapter<ReadingsProxyDevice> {
@@ -60,6 +61,7 @@ public class ReadingsProxyDeviceAdapter extends DimmableAdapter<ReadingsProxyDev
                         );
 
                         Intent intent = new Intent(Actions.DEVICE_SET_SUB_STATE);
+                        intent.setClass(context, DeviceIntentService.class);
                         intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
                         intent.putExtra(BundleExtraKeys.STATE_NAME, "rgb");
                         intent.putExtra(BundleExtraKeys.STATE_VALUE, targetHexString);

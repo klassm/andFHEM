@@ -45,6 +45,7 @@ import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.RoomDeviceList;
 import li.klass.fhem.fragments.core.BaseFragment;
+import li.klass.fhem.service.intent.RoomListIntentService;
 import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.widget.GridViewWithSections;
 
@@ -125,6 +126,7 @@ public abstract class DeviceNameListFragment extends BaseFragment {
             loadIntent = new Intent(Actions.GET_ROOM_DEVICE_LIST);
             loadIntent.putExtra(ROOM_NAME, roomName);
         }
+        loadIntent.setClass(getActivity(), RoomListIntentService.class);
         loadIntent.putExtra(BundleExtraKeys.DO_REFRESH, false);
         loadIntent.putExtra(RESULT_RECEIVER, new ResultReceiver(new Handler()) {
             @Override

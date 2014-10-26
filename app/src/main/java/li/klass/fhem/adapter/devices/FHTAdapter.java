@@ -51,6 +51,7 @@ import li.klass.fhem.domain.FHTDevice;
 import li.klass.fhem.domain.fht.FHTMode;
 import li.klass.fhem.fragments.FragmentType;
 import li.klass.fhem.service.DateService;
+import li.klass.fhem.service.intent.DeviceIntentService;
 import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.DateFormatUtil;
 import li.klass.fhem.util.DatePickerUtil;
@@ -146,6 +147,7 @@ public class FHTAdapter extends GenericDeviceAdapter<FHTDevice> {
             @Override
             public void onButtonClick(Context context, FHTDevice device) {
                 Intent intent = new Intent(Actions.DEVICE_REFRESH_VALUES);
+                intent.setClass(context, DeviceIntentService.class);
                 intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
                 getContext().startService(intent);
             }
@@ -156,6 +158,7 @@ public class FHTAdapter extends GenericDeviceAdapter<FHTDevice> {
 
     private void setMode(FHTDevice device, FHTMode mode, final SpinnerActionRow<FHTDevice> spinnerActionRow, TableLayout tableLayout) {
         final Intent intent = new Intent(Actions.DEVICE_SET_MODE);
+        intent.setClass(getContext(), DeviceIntentService.class);
         intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
         intent.putExtra(BundleExtraKeys.DEVICE_MODE, mode);
 

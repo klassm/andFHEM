@@ -54,6 +54,7 @@ import li.klass.fhem.domain.AtDevice;
 import li.klass.fhem.domain.core.DeviceType;
 import li.klass.fhem.domain.core.RoomDeviceList;
 import li.klass.fhem.fragments.core.BaseFragment;
+import li.klass.fhem.service.intent.RoomListIntentService;
 import li.klass.fhem.util.device.DeviceActionUtil;
 
 import static com.google.common.collect.Lists.newArrayList;
@@ -125,6 +126,7 @@ public class TimerListFragment extends BaseFragment {
     @Override
     public void update(boolean doUpdate) {
         Intent intent = new Intent(Actions.GET_ALL_ROOMS_DEVICE_LIST);
+        intent.setClass(getActivity(), RoomListIntentService.class);
         intent.putExtra(BundleExtraKeys.DO_REFRESH, doUpdate);
         intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
             @Override

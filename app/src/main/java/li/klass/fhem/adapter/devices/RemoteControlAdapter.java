@@ -41,6 +41,7 @@ import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewAction;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.RemoteControlDevice;
+import li.klass.fhem.service.intent.DeviceIntentService;
 import li.klass.fhem.util.ImageUtil;
 
 import static li.klass.fhem.util.DisplayUtil.dpToPx;
@@ -103,6 +104,7 @@ public class RemoteControlAdapter extends ToggleableAdapter<RemoteControlDevice>
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Actions.DEVICE_SET_STATE);
+                intent.setClass(context, DeviceIntentService.class);
                 intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
                 intent.putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, entry.command);
                 context.startService(intent);

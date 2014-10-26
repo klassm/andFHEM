@@ -36,6 +36,7 @@ import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.ToggleableDevice;
+import li.klass.fhem.service.intent.DeviceIntentService;
 
 public class OnOffWidgetView extends DeviceAppWidgetView {
     @Override
@@ -61,6 +62,7 @@ public class OnOffWidgetView extends DeviceAppWidgetView {
         view.setInt(R.id.widgetOnButton, "setBackgroundColor", context.getResources().getColor(backgroundColor));
 
         Intent onIntent = new Intent(Actions.DEVICE_SET_STATE);
+        onIntent.setClass(context, DeviceIntentService.class);
         onIntent.putExtra(BundleExtraKeys.DEVICE_NAME, toggleable.getName());
         onIntent.putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, toggleable.getOnStateName());
         PendingIntent onPendingIntent = PendingIntent.getService(context, widgetConfiguration.widgetId,
@@ -68,6 +70,7 @@ public class OnOffWidgetView extends DeviceAppWidgetView {
         view.setOnClickPendingIntent(R.id.widgetOnButton, onPendingIntent);
 
         Intent offIntent = new Intent(Actions.DEVICE_SET_STATE);
+        offIntent.setClass(context, DeviceIntentService.class);
         offIntent.putExtra(BundleExtraKeys.DEVICE_NAME, toggleable.getName());
         offIntent.putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, toggleable.getOffStateName());
         PendingIntent offPendingIntent = PendingIntent.getService(context, -1 * widgetConfiguration.widgetId,

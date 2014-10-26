@@ -36,6 +36,7 @@ import li.klass.fhem.adapter.devices.core.UpdatingResultReceiver;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.core.DimmableDevice;
+import li.klass.fhem.service.intent.DeviceIntentService;
 
 public class DimActionRow<D extends DimmableDevice<D>> {
     private TextView updateView;
@@ -96,6 +97,7 @@ public class DimActionRow<D extends DimmableDevice<D>> {
 
     public void onStopTrackingTouch(final Context context, D device, int progress) {
         Intent intent = new Intent(Actions.DEVICE_DIM);
+        intent.setClass(context, DeviceIntentService.class);
         intent.putExtra(BundleExtraKeys.DEVICE_DIM_PROGRESS, progress);
         intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
         intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver(context));

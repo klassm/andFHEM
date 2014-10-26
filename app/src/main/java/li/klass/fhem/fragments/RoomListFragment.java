@@ -50,6 +50,7 @@ import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.fragments.core.BaseFragment;
 import li.klass.fhem.fragments.core.TopLevelFragment;
 import li.klass.fhem.service.advertisement.AdvertisementService;
+import li.klass.fhem.service.intent.RoomListIntentService;
 import li.klass.fhem.util.FhemResultReceiver;
 import li.klass.fhem.util.Reject;
 
@@ -134,6 +135,7 @@ public class RoomListFragment extends BaseFragment implements TopLevelFragment {
         showUpdatingBar();
 
         Intent intent = new Intent(Actions.GET_ROOM_NAME_LIST);
+        intent.setClass(getActivity(), RoomListIntentService.class);
         intent.putExtras(new Bundle());
         intent.putExtra(BundleExtraKeys.DO_REFRESH, doUpdate);
         intent.putExtra(RESULT_RECEIVER, new FhemResultReceiver() {

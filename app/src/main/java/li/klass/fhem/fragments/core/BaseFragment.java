@@ -49,12 +49,14 @@ import li.klass.fhem.R;
 import li.klass.fhem.activities.core.Updateable;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.error.ErrorHolder;
+import li.klass.fhem.service.intent.DeviceIntentService;
 
 import static li.klass.fhem.constants.Actions.CONNECTION_ERROR;
 import static li.klass.fhem.constants.Actions.CONNECTION_ERROR_HIDE;
 import static li.klass.fhem.constants.Actions.DISMISS_EXECUTING_DIALOG;
 import static li.klass.fhem.constants.Actions.DO_UPDATE;
 import static li.klass.fhem.constants.Actions.REDRAW_ALL_WIDGETS;
+import static li.klass.fhem.constants.Actions.RESEND_LAST_FAILED_COMMAND;
 import static li.klass.fhem.constants.Actions.SHOW_EXECUTING_DIALOG;
 import static li.klass.fhem.constants.Actions.TOP_LEVEL_BACK;
 import static li.klass.fhem.constants.BundleExtraKeys.DO_REFRESH;
@@ -85,7 +87,8 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
                 public void onClick(View view) {
                     hideConnectionError();
 
-                    Intent resendIntent = new Intent(Actions.RESEND_LAST_FAILED_COMMAND);
+                    Intent resendIntent = new Intent(RESEND_LAST_FAILED_COMMAND);
+                    resendIntent.setClass(getActivity(), DeviceIntentService.class);
                     getActivity().startService(resendIntent);
                 }
             });

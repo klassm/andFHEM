@@ -40,6 +40,7 @@ import javax.inject.Inject;
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.activities.core.FragmentBaseActivity;
+import li.klass.fhem.appwidget.service.AppWidgetUpdateService;
 import li.klass.fhem.appwidget.view.WidgetSize;
 import li.klass.fhem.appwidget.view.WidgetType;
 import li.klass.fhem.appwidget.view.widget.base.AppWidgetView;
@@ -186,6 +187,7 @@ public abstract class AppWidgetSelectionActivity extends ActionBarActivity imple
                 appWidgetDataHolder.saveWidgetConfigurationToPreferences(widgetConfiguration);
 
                 Intent intent = new Intent(Actions.REDRAW_WIDGET);
+                intent.setClass(AppWidgetSelectionActivity.this, AppWidgetUpdateService.class);
                 intent.putExtra(BundleExtraKeys.APP_WIDGET_ID, widgetId);
                 startService(intent);
 

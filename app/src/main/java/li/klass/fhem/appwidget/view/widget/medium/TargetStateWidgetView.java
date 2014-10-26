@@ -41,11 +41,10 @@ import li.klass.fhem.appwidget.view.widget.base.DeviceAppWidgetView;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.core.Device;
-import li.klass.fhem.service.room.RoomListService;
+import li.klass.fhem.service.intent.DeviceIntentService;
 
 import static android.app.PendingIntent.FLAG_UPDATE_CURRENT;
 import static li.klass.fhem.domain.core.DeviceStateRequiringAdditionalInformation.requiresAdditionalInformation;
-import static li.klass.fhem.service.room.RoomListService.NEVER_UPDATE_PERIOD;
 
 public class TargetStateWidgetView extends DeviceAppWidgetView {
     @Override
@@ -76,6 +75,7 @@ public class TargetStateWidgetView extends DeviceAppWidgetView {
                     actionIntent, FLAG_UPDATE_CURRENT);
         } else {
             Intent actionIntent = new Intent(Actions.DEVICE_SET_STATE);
+            actionIntent.setClass(context, DeviceIntentService.class);
             actionIntent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
             actionIntent.putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, payload);
 
@@ -117,6 +117,6 @@ public class TargetStateWidgetView extends DeviceAppWidgetView {
 
     @Override
     public boolean supports(Device<?> device) {
-        return ! device.getSetList().getEntries().isEmpty();
+        return !device.getSetList().getEntries().isEmpty();
     }
 }

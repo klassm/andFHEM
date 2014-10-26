@@ -32,6 +32,7 @@ import li.klass.fhem.adapter.devices.core.UpdatingResultReceiver;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.core.DimmableDevice;
+import li.klass.fhem.service.intent.DeviceIntentService;
 
 public class DimmableDeviceDimActionRowFullWidth<D extends DimmableDevice<D>> extends DeviceDimActionRowFullWidth<D> {
 
@@ -44,6 +45,7 @@ public class DimmableDeviceDimActionRowFullWidth<D extends DimmableDevice<D>> ex
         int dimProgress = dimProgressToDimState(progress, device.getDimLowerBound(), device.getDimStep());
 
         Intent intent = new Intent(Actions.DEVICE_DIM);
+        intent.setClass(context, DeviceIntentService.class);
         intent.putExtra(BundleExtraKeys.DEVICE_DIM_PROGRESS, dimProgress);
         intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
         intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver(context));

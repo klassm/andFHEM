@@ -32,6 +32,7 @@ import li.klass.fhem.R;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.fragments.core.DeviceListFragment;
 import li.klass.fhem.fragments.core.TopLevelFragment;
+import li.klass.fhem.service.intent.FavoritesIntentService;
 import li.klass.fhem.util.Reject;
 
 public class FavoritesFragment extends DeviceListFragment implements TopLevelFragment {
@@ -46,5 +47,10 @@ public class FavoritesFragment extends DeviceListFragment implements TopLevelFra
         LayoutInflater inflater = getActivity().getLayoutInflater();
         Reject.ifNull(inflater);
         view.addView(inflater.inflate(R.layout.favorites_empty_view, viewGroup, false));
+    }
+
+    @Override
+    protected Class<?> getUpdateActionIntentTargetClass() {
+        return FavoritesIntentService.class;
     }
 }

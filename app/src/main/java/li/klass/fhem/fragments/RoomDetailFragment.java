@@ -8,7 +8,7 @@
  * distributed under license by Red Hat Inc.
  *
  * This copyrighted material is made available to anyone wishing to use, modify,
- * copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLICLICENSE, as published by the Free Software Foundation.
+ * copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
@@ -30,6 +30,7 @@ import android.os.Bundle;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.fragments.core.DeviceListFragment;
+import li.klass.fhem.service.room.RoomListService;
 
 import static li.klass.fhem.constants.BundleExtraKeys.ROOM_NAME;
 
@@ -47,6 +48,11 @@ public class RoomDetailFragment extends DeviceListFragment {
     protected void fillIntent(Intent intent) {
         super.fillIntent(intent);
         intent.putExtra(ROOM_NAME, roomName);
+    }
+
+    @Override
+    protected Class<?> getUpdateActionIntentTargetClass() {
+        return RoomListService.class;
     }
 
     @Override

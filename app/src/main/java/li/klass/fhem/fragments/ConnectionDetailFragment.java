@@ -57,6 +57,7 @@ import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.fhem.connection.FHEMServerSpec;
 import li.klass.fhem.fhem.connection.ServerType;
 import li.klass.fhem.fragments.core.BaseFragment;
+import li.klass.fhem.service.intent.ConnectionsIntentService;
 import li.klass.fhem.ui.FileDialog;
 import li.klass.fhem.util.DialogUtil;
 
@@ -182,6 +183,7 @@ public class ConnectionDetailFragment extends BaseFragment {
 
     private void handleSave() {
         Intent intent = new Intent();
+        intent.setClass(getActivity(), ConnectionsIntentService.class);
         if (isModify) {
             intent.setAction(Actions.CONNECTION_UPDATE);
             intent.putExtra(BundleExtraKeys.CONNECTION_ID, connectionId);
@@ -353,6 +355,7 @@ public class ConnectionDetailFragment extends BaseFragment {
         }
 
         Intent intent = new Intent(Actions.CONNECTION_GET);
+        intent.setClass(getActivity(), ConnectionsIntentService.class);
         intent.putExtra(BundleExtraKeys.CONNECTION_ID, connectionId);
         intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
 

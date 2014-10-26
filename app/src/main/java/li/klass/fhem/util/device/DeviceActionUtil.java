@@ -35,6 +35,7 @@ import li.klass.fhem.adapter.devices.core.UpdatingResultReceiver;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.service.intent.DeviceIntentService;
 
 public class DeviceActionUtil {
 
@@ -49,6 +50,7 @@ public class DeviceActionUtil {
                         String newName = input.getText().toString();
 
                         Intent intent = new Intent(Actions.DEVICE_RENAME);
+                        intent.setClass(context, DeviceIntentService.class);
                         intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
                         intent.putExtra(BundleExtraKeys.DEVICE_NEW_NAME, newName);
                         intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver(context));
@@ -65,6 +67,7 @@ public class DeviceActionUtil {
         showConfirmation(context, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 Intent intent = new Intent(Actions.DEVICE_DELETE);
+                intent.setClass(context, DeviceIntentService.class);
                 intent.putExtra(BundleExtraKeys.DEVICE_NAME, deviceName);
                 intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver(context));
                 context.startService(intent);
@@ -95,6 +98,7 @@ public class DeviceActionUtil {
                         String newRoom = input.getText().toString();
 
                         Intent intent = new Intent(Actions.DEVICE_MOVE_ROOM);
+                        intent.setClass(context, DeviceIntentService.class);
                         intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
                         intent.putExtra(BundleExtraKeys.DEVICE_NEW_ROOM, newRoom);
                         intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver(context));
@@ -117,6 +121,7 @@ public class DeviceActionUtil {
                         String newAlias = input.getText().toString();
 
                         Intent intent = new Intent(Actions.DEVICE_SET_ALIAS);
+                        intent.setClass(context, DeviceIntentService.class);
                         intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
                         intent.putExtra(BundleExtraKeys.DEVICE_NEW_ALIAS, newAlias);
                         intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver(context));

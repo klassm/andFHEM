@@ -64,6 +64,7 @@ import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.fragments.FragmentType;
 import li.klass.fhem.fragments.core.BaseFragment;
 import li.klass.fhem.license.LicenseService;
+import li.klass.fhem.service.intent.FavoritesIntentService;
 import li.klass.fhem.service.room.RoomListService;
 import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.DialogUtil;
@@ -172,6 +173,7 @@ public abstract class FragmentBaseActivity extends ActionBarActivity implements 
             return intentFilter;
         }
     }
+
     public static final String TAG = FragmentBaseActivity.class.getName();
     public static final String NAVIGATION_TAG = "NAVIGATION_TAG";
     public static final String CONTENT_TAG = "CONTENT_TAG";
@@ -264,6 +266,7 @@ public abstract class FragmentBaseActivity extends ActionBarActivity implements 
             if (preferencesStartupFragment == FAVORITES) {
                 Log.i(TAG, "startup with " + FAVORITES);
                 Intent intent = new Intent(Actions.FAVORITES_PRESENT);
+                intent.setClass(this, FavoritesIntentService.class);
                 intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
                     @Override
                     protected void onReceiveResult(int resultCode, Bundle resultData) {

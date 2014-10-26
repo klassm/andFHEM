@@ -56,6 +56,7 @@ import li.klass.fhem.fragments.core.BaseFragment;
 import li.klass.fhem.fragments.core.TopLevelFragment;
 import li.klass.fhem.license.LicenseService;
 import li.klass.fhem.service.advertisement.AdvertisementService;
+import li.klass.fhem.service.intent.ConnectionsIntentService;
 import li.klass.fhem.util.Reject;
 
 import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_ID;
@@ -204,7 +205,7 @@ public class ConnectionListFragment extends BaseFragment implements TopLevelFrag
         showUpdatingBar();
 
         Intent intent = new Intent(Actions.CONNECTIONS_LIST);
-        intent.putExtras(new Bundle());
+        intent.setClass(getActivity(), ConnectionsIntentService.class);
         intent.putExtra(BundleExtraKeys.DO_REFRESH, doUpdate);
         intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
             @Override

@@ -86,9 +86,6 @@ public class NotificationIntentService extends ConvenientIntentService {
             boolean vibrate = intent.getBooleanExtra(BundleExtraKeys.VIBRATE, false);
 
             deviceNotification(deviceName, updateMap, device, vibrate);
-        } else if (intent.getAction().equals(Actions.DEVICE_RENAME)) {
-            String newName = intent.getStringExtra(BundleExtraKeys.DEVICE_NEW_NAME);
-            rename(deviceName, newName);
         } else if (intent.getAction().equals(Actions.NOTIFICATION_GET_FOR_DEVICE)) {
             int value = getPreferences().getInt(deviceName, 0);
 
@@ -100,7 +97,7 @@ public class NotificationIntentService extends ConvenientIntentService {
         return STATE.SUCCESS;
     }
 
-    private void rename(String deviceName, String deviceNewName) {
+    public void rename(String deviceName, String deviceNewName) {
         SharedPreferences preferences = getPreferences();
         if (preferences.contains(deviceName)) {
             int value = preferences.getInt(deviceName, 0);

@@ -35,6 +35,7 @@ import android.widget.TextView;
 import li.klass.fhem.R;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.service.intent.DeviceIntentService;
 import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.ValueDescriptionUtil;
 import li.klass.fhem.util.device.DeviceActionUtil;
@@ -114,6 +115,7 @@ public class TemperatureChangeTableRow<D extends Device<D>> extends SeekBarActio
 
     private void setValue(D device, double newValue) {
         Intent intent = new Intent(intentAction);
+        intent.setClass(context, DeviceIntentService.class);
         intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
         intent.putExtra(BundleExtraKeys.DEVICE_TEMPERATURE, newValue);
         onIntentCreation(intent);

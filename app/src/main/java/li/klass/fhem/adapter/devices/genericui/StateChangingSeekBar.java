@@ -32,6 +32,7 @@ import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.setlist.SetListSliderValue;
+import li.klass.fhem.service.intent.DeviceIntentService;
 import li.klass.fhem.util.ApplicationProperties;
 
 public class StateChangingSeekBar<D extends Device<D>> extends SeekBarActionRowFullWidthAndButton<D> {
@@ -65,6 +66,7 @@ public class StateChangingSeekBar<D extends Device<D>> extends SeekBarActionRowF
     @Override
     public void onStopTrackingTouch(Context context, D device, int progress) {
         Intent intent = new Intent(Actions.DEVICE_SET_SUB_STATE);
+        intent.setClass(context, DeviceIntentService.class);
         intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
         intent.putExtra(BundleExtraKeys.STATE_NAME, commandAttribute);
         intent.putExtra(BundleExtraKeys.STATE_VALUE, progress + "");

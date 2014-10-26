@@ -65,6 +65,7 @@ import li.klass.fhem.service.AbstractService;
 import li.klass.fhem.service.CommandExecutionService;
 import li.klass.fhem.service.SharedPreferencesService;
 import li.klass.fhem.service.connection.ConnectionService;
+import li.klass.fhem.service.intent.DeviceIntentService;
 import li.klass.fhem.util.ApplicationProperties;
 
 import static com.google.common.collect.Lists.newArrayList;
@@ -142,7 +143,10 @@ public class RoomListService extends AbstractService {
         boolean updateWidgets = applicationProperties.getBooleanSharedPreference(PreferenceKeys.GCM_WIDGET_UPDATE, false);
         if (updateWidgets) {
             sendBroadcastWithAction(REDRAW_ALL_WIDGETS);
-            applicationContext.startService(new Intent(REDRAW_ALL_WIDGETS));
+
+            Intent redrawAllWidgetsServiceIntent = new Intent(REDRAW_ALL_WIDGETS);
+            redrawAllWidgetsServiceIntent.setClass(applicationContext, DeviceIntentService.class);
+            applicationContext.startService(redrawAllWidgetsServiceIntent);
         }
     }
 
@@ -215,7 +219,10 @@ public class RoomListService extends AbstractService {
                             currentlyUpdating.set(false);
                             sendBroadcastWithAction(Actions.DISMISS_UPDATING_DIALOG, null);
                             sendBroadcastWithAction(REDRAW_ALL_WIDGETS, null);
-                            applicationContext.startService(new Intent(REDRAW_ALL_WIDGETS));
+
+                            Intent redrawWidgetServiceIntent = new Intent(REDRAW_ALL_WIDGETS);
+                            redrawWidgetServiceIntent.setClass(applicationContext, DeviceIntentService.class);
+                            applicationContext.startService(redrawWidgetServiceIntent);
 
                             updateLock.unlock();
                             synchronized (currentlyUpdating) {

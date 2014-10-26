@@ -37,6 +37,7 @@ import li.klass.fhem.R;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.service.intent.DeviceIntentService;
 
 public class WebCmdActionRow<D extends Device<D>> extends HolderActionRow<D, String> {
     public WebCmdActionRow(int layout, Context context) {
@@ -70,6 +71,7 @@ public class WebCmdActionRow<D extends Device<D>> extends HolderActionRow<D, Str
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Actions.DEVICE_SET_STATE);
+                intent.setClass(context, DeviceIntentService.class);
                 intent.putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, command);
                 intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
                 context.startService(intent);

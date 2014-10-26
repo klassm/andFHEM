@@ -44,6 +44,7 @@ import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.PCA9532Device;
 import li.klass.fhem.domain.setlist.SetListSliderValue;
+import li.klass.fhem.service.intent.DeviceIntentService;
 import li.klass.fhem.util.ApplicationProperties;
 
 import static java.util.Collections.sort;
@@ -82,6 +83,7 @@ public class PCA9532DeviceAdapter extends GenericDeviceAdapter<PCA9532Device> {
                     @Override
                     protected void onButtonClick(final Context context, final PCA9532Device device, final boolean isChecked) {
                         Intent intent = new Intent(Actions.DEVICE_SET_SUB_STATE);
+                        intent.setClass(context, DeviceIntentService.class);
                         intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
                         intent.putExtra(BundleExtraKeys.STATE_NAME, port);
                         intent.putExtra(BundleExtraKeys.STATE_VALUE, isChecked ? "on" : "off");

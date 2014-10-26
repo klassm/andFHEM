@@ -61,6 +61,7 @@ import li.klass.fhem.domain.core.RoomDeviceList;
 import li.klass.fhem.fhem.DataConnectionSwitch;
 import li.klass.fhem.fhem.DummyDataConnection;
 import li.klass.fhem.service.advertisement.AdvertisementService;
+import li.klass.fhem.service.intent.FavoritesIntentService;
 import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.FhemResultReceiver;
 import li.klass.fhem.util.device.DeviceActionUtil;
@@ -114,6 +115,7 @@ public abstract class DeviceListFragment extends BaseFragment {
             switch (menuItem.getItemId()) {
                 case R.id.menu_favorites_add:
                     Intent favoriteAddIntent = new Intent(FAVORITE_ADD);
+                    favoriteAddIntent.setClass(getActivity(), FavoritesIntentService.class);
                     favoriteAddIntent.putExtra(BundleExtraKeys.DEVICE, contextMenuClickedDevice.get());
                     favoriteAddIntent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
                         @Override
@@ -127,6 +129,7 @@ public abstract class DeviceListFragment extends BaseFragment {
                     break;
                 case R.id.menu_favorites_remove:
                     Intent favoriteRemoveIntent = new Intent(FAVORITE_REMOVE);
+                    favoriteRemoveIntent.setClass(getActivity(), FavoritesIntentService.class);
                     favoriteRemoveIntent.putExtra(BundleExtraKeys.DEVICE, contextMenuClickedDevice.get());
                     favoriteRemoveIntent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
                         @Override
@@ -201,6 +204,7 @@ public abstract class DeviceListFragment extends BaseFragment {
                     return false;
                 } else {
                     Intent intent = new Intent(Actions.FAVORITES_IS_FAVORITES);
+                    intent.setClass(getActivity(), FavoritesIntentService.class);
                     intent.putExtra(BundleExtraKeys.DEVICE_NAME, child.getName());
                     intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new FhemResultReceiver() {
                         @Override
@@ -263,6 +267,7 @@ public abstract class DeviceListFragment extends BaseFragment {
         Log.i(DeviceListFragment.class.getName(), "request device list update (doUpdate=" + doUpdate + ")");
 
         Intent intent = new Intent(getUpdateAction());
+        intent.setClass(getActivity(), getUpdateActionIntentTargetClass());
         intent.putExtras(new Bundle());
         intent.putExtra(DO_REFRESH, doUpdate);
         intent.putExtra(RESULT_RECEIVER, new ResultReceiver(new Handler()) {
@@ -303,6 +308,8 @@ public abstract class DeviceListFragment extends BaseFragment {
             activity.startService(intent);
         }
     }
+
+    protected abstract Class<?> getUpdateActionIntentTargetClass();
 
     protected abstract String getUpdateAction();
 

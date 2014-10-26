@@ -48,6 +48,7 @@ import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.fhem.connection.FHEMServerSpec;
 import li.klass.fhem.fragments.FragmentType;
 import li.klass.fhem.service.connection.ConnectionService;
+import li.klass.fhem.service.intent.ConnectionsIntentService;
 
 import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_ID;
 import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_LIST;
@@ -110,6 +111,7 @@ public class AvailableConnectionDataAdapter extends ListDataAdapter<FHEMServerSp
     @SuppressWarnings("unchecked")
     public void doLoad() {
         Intent intent = new Intent(Actions.CONNECTIONS_LIST);
+        intent.setClass(context, ConnectionsIntentService.class);
         intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
             @Override
             protected void onReceiveResult(int resultCode, Bundle resultData) {
@@ -162,6 +164,7 @@ public class AvailableConnectionDataAdapter extends ListDataAdapter<FHEMServerSp
         }
 
         Intent intent = new Intent(Actions.CONNECTION_SET_SELECTED);
+        intent.setClass(context, ConnectionsIntentService.class);
         intent.putExtra(BundleExtraKeys.CONNECTION_ID, data.get(itemPosition).getId());
         context.startService(intent);
 

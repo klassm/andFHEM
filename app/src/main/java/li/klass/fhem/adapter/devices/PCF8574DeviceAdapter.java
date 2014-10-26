@@ -40,6 +40,7 @@ import li.klass.fhem.adapter.devices.genericui.ToggleActionRow;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.PCF8574Device;
+import li.klass.fhem.service.intent.DeviceIntentService;
 
 import static java.util.Collections.sort;
 
@@ -74,6 +75,7 @@ public class PCF8574DeviceAdapter extends GenericDeviceAdapter<PCF8574Device> {
                     @Override
                     protected void onButtonClick(final Context context, final PCF8574Device device, final boolean isChecked) {
                         Intent intent = new Intent(Actions.DEVICE_SET_SUB_STATE);
+                        intent.setClass(context, DeviceIntentService.class);
                         intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
                         intent.putExtra(BundleExtraKeys.STATE_NAME, port);
                         intent.putExtra(BundleExtraKeys.STATE_VALUE, isChecked ? "on" : "off");

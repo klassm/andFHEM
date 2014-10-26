@@ -41,6 +41,7 @@ import li.klass.fhem.adapter.devices.genericui.ColorPickerRow;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.DummyDevice;
+import li.klass.fhem.service.intent.DeviceIntentService;
 import li.klass.fhem.util.StringUtil;
 
 public class DummyAdapter extends DimmableAdapter<DummyDevice> {
@@ -72,6 +73,7 @@ public class DummyAdapter extends DimmableAdapter<DummyDevice> {
                                 if (minute < 10) minuteOut = "0" + minuteOut;
 
                                 Intent intent = new Intent(Actions.DEVICE_SET_STATE);
+                                intent.setClass(context, DeviceIntentService.class);
                                 intent.putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, hourOut + ":" + minuteOut);
                                 intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
                                 context.startService(intent);
@@ -106,6 +108,7 @@ public class DummyAdapter extends DimmableAdapter<DummyDevice> {
                         );
 
                         Intent intent = new Intent(Actions.DEVICE_SET_SUB_STATE);
+                        intent.setClass(context, DeviceIntentService.class);
                         intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
                         intent.putExtra(BundleExtraKeys.STATE_NAME, "rgb");
                         intent.putExtra(BundleExtraKeys.STATE_VALUE, targetHexString);

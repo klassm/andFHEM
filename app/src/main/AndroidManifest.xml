@@ -30,7 +30,7 @@
     android:versionCode="316"
     android:versionName="3.1.6">
 
-<uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="com.android.vending.BILLING"/>
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE"/>
@@ -236,7 +236,6 @@
                 <action android:name="li.klass.fhem.constants.Actions.DEVICE_DELETE"/>
                 <action android:name="li.klass.fhem.constants.Actions.DEVICE_MOVE_ROOM"/>
                 <action android:name="li.klass.fhem.constants.Actions.DEVICE_SET_ALIAS"/>
-                <action android:name="li.klass.fhem.constants.Actions.DEVICE_WAKE"/>
                 <action android:name="li.klass.fhem.constants.Actions.DEVICE_REFRESH_STATE"/>
                 <action android:name="li.klass.fhem.constants.Actions.DEVICE_REFRESH_VALUES"/>
                 <action android:name="li.klass.fhem.constants.Actions.DEVICE_WIDGET_TOGGLE"/>
@@ -263,7 +262,6 @@
             android:name="li.klass.fhem.service.intent.NotificationIntentService"
             android:exported="false">
             <intent-filter>
-                <action android:name="li.klass.fhem.constants.Actions.DEVICE_RENAME"/>
                 <action android:name="li.klass.fhem.constants.Actions.NOTIFICATION_SET_FOR_DEVICE"/>
                 <action android:name="li.klass.fhem.constants.Actions.NOTIFICATION_GET_FOR_DEVICE"/>
                 <action android:name="li.klass.fhem.constants.Actions.NOTIFICATION_TRIGGER"/>

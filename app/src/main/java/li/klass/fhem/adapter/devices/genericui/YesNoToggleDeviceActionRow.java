@@ -33,6 +33,7 @@ import li.klass.fhem.adapter.devices.core.UpdatingResultReceiver;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.core.ToggleableDevice;
+import li.klass.fhem.service.intent.DeviceIntentService;
 
 public abstract class YesNoToggleDeviceActionRow<D extends ToggleableDevice<D>> extends ToggleDeviceActionRow<D> {
 
@@ -55,6 +56,7 @@ public abstract class YesNoToggleDeviceActionRow<D extends ToggleableDevice<D>> 
     @Override
     public void onButtonClick(Context context, D device, boolean isChecked) {
         Intent intent = new Intent(Actions.DEVICE_SET_SUB_STATE);
+        intent.setClass(context, DeviceIntentService.class);
         intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
         intent.putExtra(BundleExtraKeys.STATE_NAME, commandAttribute);
         intent.putExtra(BundleExtraKeys.STATE_VALUE, isChecked ? "on" : "off");

@@ -70,6 +70,8 @@ import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.service.graph.GraphEntry;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.service.graph.description.SeriesType;
+import li.klass.fhem.service.intent.DeviceIntentService;
+import li.klass.fhem.service.intent.RoomListIntentService;
 import li.klass.fhem.util.DisplayUtil;
 
 import static com.google.common.collect.Lists.newArrayList;
@@ -180,6 +182,7 @@ public class ChartingActivity extends ActionBarActivity implements Updateable {
     @Override
     public void update(final boolean doUpdate) {
         Intent intent = new Intent(Actions.GET_DEVICE_FOR_NAME);
+        intent.setClass(this, RoomListIntentService.class);
         intent.putExtra(DEVICE_NAME, deviceName);
         intent.putExtra(DO_REFRESH, doUpdate);
         intent.putExtra(RESULT_RECEIVER, new ResultReceiver(new Handler()) {
@@ -204,6 +207,7 @@ public class ChartingActivity extends ActionBarActivity implements Updateable {
     private void readDataAndCreateChart(boolean doRefresh, final Device device) {
         showDialog(DIALOG_EXECUTING);
         Intent intent = new Intent(Actions.DEVICE_GRAPH);
+        intent.setClass(this, DeviceIntentService.class);
         intent.putExtra(DO_REFRESH, doRefresh);
         intent.putExtra(DEVICE_NAME, deviceName);
         intent.putExtra(START_DATE, startDate);

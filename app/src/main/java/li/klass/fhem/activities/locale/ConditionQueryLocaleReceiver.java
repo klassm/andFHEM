@@ -34,6 +34,7 @@ import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.service.intent.RoomListIntentService;
 import li.klass.fhem.util.FhemResultReceiver;
 
 import static li.klass.fhem.activities.locale.LocaleIntentConstants.RESULT_CONDITION_SATISFIED;
@@ -52,6 +53,7 @@ public class ConditionQueryLocaleReceiver extends BroadcastReceiver {
         final String targetState = intent.getStringExtra(BundleExtraKeys.DEVICE_TARGET_STATE);
 
         Intent queryIntent = new Intent(Actions.GET_DEVICE_FOR_NAME);
+        queryIntent.setClass(context, RoomListIntentService.class);
         queryIntent.putExtra(BundleExtraKeys.DEVICE_NAME, deviceName);
         queryIntent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new FhemResultReceiver() {
             @Override

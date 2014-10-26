@@ -39,6 +39,7 @@ import li.klass.fhem.adapter.devices.genericui.StateChangingSeekBar;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.HUEDevice;
+import li.klass.fhem.service.intent.DeviceIntentService;
 import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.StringUtil;
 
@@ -82,6 +83,7 @@ public class HueDeviceAdapter extends DimmableAdapter<HUEDevice> {
                         );
 
                         Intent intent = new Intent(Actions.DEVICE_SET_SUB_STATE);
+                        intent.setClass(context, DeviceIntentService.class);
                         intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
                         intent.putExtra(BundleExtraKeys.STATE_NAME, "rgb");
                         intent.putExtra(BundleExtraKeys.STATE_VALUE, targetHexString);

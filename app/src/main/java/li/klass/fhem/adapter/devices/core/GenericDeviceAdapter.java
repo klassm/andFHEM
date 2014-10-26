@@ -56,6 +56,7 @@ import li.klass.fhem.domain.genericview.DetailViewSettings;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.fhem.DataConnectionSwitch;
 import li.klass.fhem.fhem.DummyDataConnection;
+import li.klass.fhem.service.intent.DeviceIntentService;
 import li.klass.fhem.util.StringUtil;
 
 public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> {
@@ -350,6 +351,7 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
 
     protected void sendStateAction(Context context, D device, String action) {
         Intent intent = new Intent(Actions.DEVICE_SET_STATE);
+        intent.setClass(context, DeviceIntentService.class);
         intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
         intent.putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, action);
         putUpdateExtra(intent);

@@ -34,12 +34,14 @@ import android.widget.RemoteViews;
 
 import li.klass.fhem.R;
 import li.klass.fhem.appwidget.WidgetConfiguration;
+import li.klass.fhem.appwidget.service.AppWidgetUpdateService;
 import li.klass.fhem.appwidget.view.widget.base.DeviceAppWidgetView;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DimmableDevice;
+import li.klass.fhem.service.intent.DeviceIntentService;
 
 public class DimWidgetView extends DeviceAppWidgetView {
 
@@ -63,6 +65,7 @@ public class DimWidgetView extends DeviceAppWidgetView {
             protected void onReceiveResult(int resultCode, Bundle resultData) {
                 if (resultCode == ResultCodes.SUCCESS) {
                     Intent intent = new Intent(Actions.REDRAW_WIDGET);
+                    intent.setClass(context, AppWidgetUpdateService.class);
                     intent.putExtra(BundleExtraKeys.APP_WIDGET_ID, widgetConfiguration.widgetId);
                     context.startService(intent);
                 }
@@ -76,11 +79,11 @@ public class DimWidgetView extends DeviceAppWidgetView {
     private void update(Context context, DimmableDevice device, RemoteViews view, int widgetId, ResultReceiver resultReceiver) {
         view.setTextViewText(R.id.state, device.getDimStateForPosition(device.getDimPosition()));
 
-        Intent dimDownIntent = sendTargetDimState(device, "dimdown", resultReceiver);
+        Intent dimDownIntent = sendTargetDimState(context, device, "dimdown", resultReceiver);
         view.setOnClickPendingIntent(R.id.dimDown, PendingIntent.getService(context, (widgetId + "dimDown").hashCode(), dimDownIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT));
 
-        Intent dimUpIntent = sendTargetDimState(device, "dimup", resultReceiver);
+        Intent dimUpIntent = sendTargetDimState(context, device, "dimup", resultReceiver);
         view.setOnClickPendingIntent(R.id.dimUp, PendingIntent.getService(context, (widgetId + "dimUp").hashCode(), dimUpIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT));
     }
@@ -90,9 +93,10 @@ public class DimWidgetView extends DeviceAppWidgetView {
         return (device instanceof DimmableDevice) && ((DimmableDevice) device).supportsDim();
     }
 
-    private Intent sendTargetDimState(DimmableDevice device, String targetState, ResultReceiver resultReceiver) {
+    private Intent sendTargetDimState(Context context, DimmableDevice device, String targetState, ResultReceiver resultReceiver) {
 
         Intent intent = new Intent(Actions.DEVICE_SET_STATE);
+        intent.setClass(context, DeviceIntentService.class);
         intent.putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, targetState);
         intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
         intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, resultReceiver);

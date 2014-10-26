@@ -69,7 +69,6 @@ public class Actions {
     public static final String DEVICE_DELETE = prefix + "DEVICE_DELETE";
     public static final String DEVICE_MOVE_ROOM = prefix + "DEVICE_MOVE_ROOM";
     public static final String DEVICE_SET_ALIAS = prefix + "DEVICE_SET_ALIAS";
-    public static final String DEVICE_WAKE = prefix + "DEVICE_WAKE";
     public static final String DEVICE_REFRESH_STATE = prefix + "DEVICE_REFRESH_STATE";
     public static final String DEVICE_WIDGET_TOGGLE = prefix + "DEVICE_WIDGET_TOGGLE";
 
@@ -95,7 +94,6 @@ public class Actions {
 
     public static final String RELOAD = prefix + "RELOAD";
 
-    public static final String SWITCH_TO_INITIAL_FRAGMENT = prefix + "SWITCH_TO_INITAL_FRAGMENT";
     public static final String TOP_LEVEL_BACK = prefix + "TOP_LEVEL_BACK";
 
     public static final String GCM_REGISTERED = prefix + "GCM_REGISTERED";

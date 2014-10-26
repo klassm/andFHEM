@@ -41,6 +41,7 @@ import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.domain.EnOceanDevice;
+import li.klass.fhem.service.intent.DeviceIntentService;
 
 public class EnOceanAdapter extends DimmableAdapter<EnOceanDevice> {
     public EnOceanAdapter() {
@@ -62,6 +63,7 @@ public class EnOceanAdapter extends DimmableAdapter<EnOceanDevice> {
                     @Override
                     protected void onButtonClick() {
                         Intent intent = new Intent(Actions.DEVICE_SET_STATE);
+                        intent.setClass(context, DeviceIntentService.class);
                         intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
                         intent.putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, "stop");
                         context.startService(intent);
@@ -86,6 +88,7 @@ public class EnOceanAdapter extends DimmableAdapter<EnOceanDevice> {
                     @Override
                     public void onStopTrackingTouch(final Context context, final EnOceanDevice device, final int progress) {
                         Intent intent = new Intent(Actions.DEVICE_SET_STATE);
+                        intent.setClass(context, DeviceIntentService.class);
                         intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
                         intent.putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, "position " + progress);
                         intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {

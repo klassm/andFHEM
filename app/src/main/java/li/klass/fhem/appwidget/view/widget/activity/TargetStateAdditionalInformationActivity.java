@@ -37,6 +37,7 @@ import li.klass.fhem.R;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.core.DeviceStateRequiringAdditionalInformation;
+import li.klass.fhem.service.intent.DeviceIntentService;
 import li.klass.fhem.util.DialogUtil;
 
 import static li.klass.fhem.domain.core.DeviceStateRequiringAdditionalInformation.deviceStateForFHEM;
@@ -91,8 +92,8 @@ public class TargetStateAdditionalInformationActivity extends Activity {
     }
 
     private boolean handleAdditionalInformationValue(String additionalInformation,
-                                                  DeviceStateRequiringAdditionalInformation specialDeviceState,
-                                                  String state, String deviceName) {
+                                                     DeviceStateRequiringAdditionalInformation specialDeviceState,
+                                                     String state, String deviceName) {
 
         if (isValidAdditionalInformationValue(additionalInformation, specialDeviceState)) {
             switchDeviceState(state + " " + additionalInformation, deviceName);
@@ -105,6 +106,7 @@ public class TargetStateAdditionalInformationActivity extends Activity {
 
     private void switchDeviceState(String newState, String deviceName) {
         Intent intent = new Intent(Actions.DEVICE_SET_STATE);
+        intent.setClass(this, DeviceIntentService.class);
         intent.putExtra(BundleExtraKeys.DEVICE_NAME, deviceName);
         intent.putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, newState);
         startService(intent);

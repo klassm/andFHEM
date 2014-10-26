@@ -43,6 +43,7 @@ import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceType;
 import li.klass.fhem.service.advertisement.AdvertisementService;
+import li.klass.fhem.service.intent.RoomListIntentService;
 
 public class DeviceDetailFragment extends BaseFragment {
 
@@ -73,7 +74,7 @@ public class DeviceDetailFragment extends BaseFragment {
         showUpdatingBar();
 
         Intent intent = new Intent(Actions.GET_DEVICE_FOR_NAME);
-        intent.putExtras(new Bundle());
+        intent.setClass(getActivity(), RoomListIntentService.class);
         intent.putExtra(BundleExtraKeys.DO_REFRESH, doUpdate);
         intent.putExtra(BundleExtraKeys.DEVICE_NAME, deviceName);
         intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {

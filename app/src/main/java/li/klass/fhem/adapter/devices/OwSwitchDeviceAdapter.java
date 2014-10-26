@@ -35,6 +35,7 @@ import li.klass.fhem.adapter.devices.genericui.ToggleActionRow;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.OwSwitchDevice;
+import li.klass.fhem.service.intent.DeviceIntentService;
 
 public class OwSwitchDeviceAdapter extends GenericDeviceAdapter<OwSwitchDevice> {
     public OwSwitchDeviceAdapter() {
@@ -87,6 +88,7 @@ public class OwSwitchDeviceAdapter extends GenericDeviceAdapter<OwSwitchDevice> 
         @Override
         protected void onButtonClick(Context context, OwSwitchDevice device, boolean isChecked) {
             Intent intent = new Intent(Actions.DEVICE_SET_SUB_STATE);
+            intent.setClass(context, DeviceIntentService.class);
             intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
             intent.putExtra(BundleExtraKeys.STATE_NAME, "gpio");
             intent.putExtra(BundleExtraKeys.STATE_VALUE, "" + setStateFor(device, isChecked));

@@ -53,6 +53,8 @@ import li.klass.fhem.domain.core.DeviceStateAdditionalInformationType;
 import li.klass.fhem.domain.core.DeviceStateRequiringAdditionalInformation;
 import li.klass.fhem.fragments.core.BaseFragment;
 import li.klass.fhem.fragments.device.DeviceNameSelectionFragment;
+import li.klass.fhem.service.intent.DeviceIntentService;
+import li.klass.fhem.service.intent.RoomListIntentService;
 import li.klass.fhem.util.DialogUtil;
 import li.klass.fhem.util.FhemResultReceiver;
 import li.klass.fhem.widget.TimePickerWithSeconds;
@@ -322,6 +324,7 @@ public class TimerDetailFragment extends BaseFragment {
 
         String action = isModify() ? Actions.DEVICE_TIMER_MODIFY : Actions.DEVICE_TIMER_NEW;
         Intent intent = new Intent(action);
+        intent.setClass(getActivity(), DeviceIntentService.class);
         intent.putExtras(bundle);
 
         intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new FhemResultReceiver() {
@@ -409,6 +412,7 @@ public class TimerDetailFragment extends BaseFragment {
         checkNotNull(timerDeviceName);
 
         Intent intent = new Intent(Actions.GET_DEVICE_FOR_NAME);
+        intent.setClass(getActivity(), RoomListIntentService.class);
         intent.putExtra(BundleExtraKeys.DEVICE_NAME, timerDeviceName);
         intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new FhemResultReceiver() {
             @Override

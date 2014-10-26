@@ -38,6 +38,7 @@ import li.klass.fhem.adapter.devices.genericui.UpDownButtonRow;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.core.DimmableDevice;
+import li.klass.fhem.service.intent.DeviceIntentService;
 
 import static li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener.NotificationDeviceType.DIMMER;
 
@@ -95,6 +96,7 @@ public class DimmableAdapter<D extends DimmableDevice<D>> extends ToggleableAdap
         private void sendTargetDimState(final Context context, D device, int target) {
 
             Intent intent = new Intent(Actions.DEVICE_DIM);
+            intent.setClass(context, DeviceIntentService.class);
             intent.putExtra(BundleExtraKeys.DEVICE_DIM_PROGRESS, target);
             intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
             intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver(context));

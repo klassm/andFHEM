@@ -37,6 +37,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import li.klass.fhem.appwidget.service.AppWidgetUpdateService;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
@@ -89,7 +90,6 @@ import static li.klass.fhem.constants.Actions.DEVICE_SET_WINDOW_OPEN_TEMPERATURE
 import static li.klass.fhem.constants.Actions.DEVICE_TIMER_MODIFY;
 import static li.klass.fhem.constants.Actions.DEVICE_TIMER_NEW;
 import static li.klass.fhem.constants.Actions.DEVICE_TOGGLE_STATE;
-import static li.klass.fhem.constants.Actions.DEVICE_WAKE;
 import static li.klass.fhem.constants.Actions.DEVICE_WIDGET_TOGGLE;
 import static li.klass.fhem.constants.Actions.GCM_ADD_SELF;
 import static li.klass.fhem.constants.Actions.GCM_REMOVE_ID;
@@ -126,6 +126,8 @@ public class DeviceIntentService extends ConvenientIntentService {
     ToggleableService toggleableService;
     @Inject
     GraphService graphService;
+    @Inject
+    NotificationIntentService notificationIntentService;
 
     public DeviceIntentService() {
         super(DeviceIntentService.class.getName());
@@ -207,6 +209,7 @@ public class DeviceIntentService extends ConvenientIntentService {
         } else if (DEVICE_RENAME.equals(action)) {
             String newName = intent.getStringExtra(BundleExtraKeys.DEVICE_NEW_NAME);
             deviceService.renameDevice(device, newName);
+            notificationIntentService.rename(device.getName(), newName);
 
         } else if (DEVICE_DELETE.equals(action)) {
             deviceService.deleteDevice(device);
@@ -218,9 +221,6 @@ public class DeviceIntentService extends ConvenientIntentService {
         } else if (DEVICE_SET_ALIAS.equals(action)) {
             String newAlias = intent.getStringExtra(BundleExtraKeys.DEVICE_NEW_ALIAS);
             deviceService.setAlias(device, newAlias);
-
-        } else if (DEVICE_WAKE.equals(action)) {
-            wolService.wake((WOLDevice) device);
 
         } else if (DEVICE_REFRESH_STATE.equals(action)) {
             wolService.requestRefreshState((WOLDevice) device);
@@ -258,7 +258,9 @@ public class DeviceIntentService extends ConvenientIntentService {
             }
         }
 
-        startService(new Intent(Actions.REDRAW_ALL_WIDGETS));
+        Intent redrawWidgetsIntent = new Intent(Actions.REDRAW_ALL_WIDGETS);
+        redrawWidgetsIntent.setClass(this, AppWidgetUpdateService.class);
+        startService(redrawWidgetsIntent);
 
         return result;
     }

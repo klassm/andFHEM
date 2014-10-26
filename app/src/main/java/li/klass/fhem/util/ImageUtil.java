@@ -38,6 +38,7 @@ import java.io.InputStream;
 import java.net.URL;
 
 import li.klass.fhem.constants.ResultCodes;
+import li.klass.fhem.service.intent.ImageIntentService;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static li.klass.fhem.constants.Actions.LOAD_IMAGE;
@@ -103,6 +104,7 @@ public class ImageUtil {
         checkNotNull(context);
 
         Intent intent = new Intent(LOAD_IMAGE);
+        intent.setClass(context, ImageIntentService.class);
         intent.putExtra(IMAGE_RELATIVE_PATH, relativeImageUrl);
         intent.putExtra(RESULT_RECEIVER, new FhemResultReceiver() {
             @Override

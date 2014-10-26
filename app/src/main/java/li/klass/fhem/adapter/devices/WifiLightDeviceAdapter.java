@@ -35,6 +35,7 @@ import li.klass.fhem.adapter.devices.genericui.ColorPickerRow;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.WifiLightDevice;
+import li.klass.fhem.service.intent.DeviceIntentService;
 import li.klass.fhem.util.StringUtil;
 
 public class WifiLightDeviceAdapter extends ToggleableAdapterWithSwitchActionRow<WifiLightDevice> {
@@ -60,6 +61,7 @@ public class WifiLightDeviceAdapter extends ToggleableAdapterWithSwitchActionRow
                         );
 
                         Intent intent = new Intent(Actions.DEVICE_SET_SUB_STATE);
+                        intent.setClass(context, DeviceIntentService.class);
                         intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
                         intent.putExtra(BundleExtraKeys.STATE_NAME, "RGB");
                         intent.putExtra(BundleExtraKeys.STATE_VALUE, targetHexString);

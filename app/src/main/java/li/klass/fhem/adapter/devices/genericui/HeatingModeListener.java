@@ -36,6 +36,7 @@ import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.heating.HeatingDevice;
+import li.klass.fhem.service.intent.DeviceIntentService;
 import li.klass.fhem.util.EnumUtils;
 
 import static li.klass.fhem.util.EnumUtils.toStringList;
@@ -75,6 +76,7 @@ public class HeatingModeListener<D extends Device<D> & HeatingDevice<M, ?, ?, ?>
 
     protected void changeMode(M newMode, D device, Context context) {
         final Intent intent = new Intent(Actions.DEVICE_SET_MODE);
+        intent.setClass(context, DeviceIntentService.class);
         intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
         intent.putExtra(BundleExtraKeys.DEVICE_MODE, newMode);
         intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver(context));

@@ -26,12 +26,14 @@ package li.klass.fhem.adapter.devices;
 
 import android.content.Context;
 import android.content.Intent;
+
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
 import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewButtonAction;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.WOLDevice;
+import li.klass.fhem.service.intent.DeviceIntentService;
 
 public class WOLAdapter extends GenericDeviceAdapter<WOLDevice> {
     public WOLAdapter() {
@@ -44,6 +46,7 @@ public class WOLAdapter extends GenericDeviceAdapter<WOLDevice> {
             @Override
             public void onButtonClick(Context context, WOLDevice device) {
                 Intent intent = new Intent(Actions.DEVICE_SET_STATE);
+                intent.setClass(context, DeviceIntentService.class);
                 intent.putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, "on");
                 intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
                 context.startService(intent);
@@ -54,6 +57,7 @@ public class WOLAdapter extends GenericDeviceAdapter<WOLDevice> {
             @Override
             public void onButtonClick(Context context, WOLDevice device) {
                 Intent intent = new Intent(Actions.DEVICE_SET_STATE);
+                intent.setClass(context, DeviceIntentService.class);
                 intent.putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, "off");
                 intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
                 context.startService(intent);
@@ -68,6 +72,7 @@ public class WOLAdapter extends GenericDeviceAdapter<WOLDevice> {
             @Override
             public void onButtonClick(Context context, WOLDevice device) {
                 Intent intent = new Intent(Actions.DEVICE_REFRESH_STATE);
+                intent.setClass(context, DeviceIntentService.class);
                 intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
                 context.startService(intent);
 

@@ -44,6 +44,7 @@ import li.klass.fhem.adapter.devices.genericui.HolderActionRow;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.LightSceneDevice;
+import li.klass.fhem.service.intent.DeviceIntentService;
 
 import static android.widget.LinearLayout.VERTICAL;
 
@@ -86,6 +87,7 @@ public class LightSceneAdapter extends GenericDeviceAdapter<LightSceneDevice> {
 
     private void activateScene(LightSceneDevice device, String scene, Context context) {
         Intent intent = new Intent(Actions.DEVICE_SET_SUB_STATE);
+        intent.setClass(context, DeviceIntentService.class);
         intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
         intent.putExtra(BundleExtraKeys.STATE_NAME, "scene");
         intent.putExtra(BundleExtraKeys.STATE_VALUE, scene);
