@@ -33,13 +33,13 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
-import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.RepairedDrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -340,7 +340,7 @@ public abstract class FragmentBaseActivity extends ActionBarActivity implements 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
-        actionBarDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.drawable.ic_drawer,
+        actionBarDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
                 R.string.drawerOpen, R.string.drawerClose) {
             public void onDrawerClosed(View view) {
                 getSupportActionBar().setTitle(R.string.app_name);
@@ -699,10 +699,12 @@ public abstract class FragmentBaseActivity extends ActionBarActivity implements 
 
         MenuItem refreshItem = optionsMenu.findItem(R.id.menu_refresh);
 
-        if (showProgressIcon) {
-            refreshItem.setActionView(R.layout.actionbar_indeterminate_progress);
-        } else {
-            refreshItem.setActionView(null);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            if (showProgressIcon) {
+                refreshItem.setActionView(R.layout.actionbar_indeterminate_progress);
+            } else {
+                refreshItem.setActionView(null);
+            }
         }
 
         return super.onCreateOptionsMenu(menu);
