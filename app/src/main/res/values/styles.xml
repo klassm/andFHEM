@@ -22,58 +22,10 @@
   ~   Boston, MA  02110-1301  USA
   -->
 
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
 
-    <!-- the theme applied to the application or activity -->
+<!-- the theme applied to the application or activity -->
     <style name="ApplicationTheme" parent="@style/Theme.AppCompat.Light.DarkActionBar">
-        <item name="actionBarTabBarStyle">@style/ApplicationActionBarTabBarStyle</item>
-        <item name="android:actionBarTabBarStyle" tools:ignore="NewApi">
-            @style/ApplicationActionBarTabBarStyle
-        </item>
-
-        <item name="actionBarTabStyle">@style/ApplicationActionBarTabStyle</item>
-        <item name="android:actionBarTabStyle" tools:ignore="NewApi">
-            @style/ApplicationActionBarTabStyle
-        </item>
-
-        <item name="actionBarItemBackground">@drawable/actionbar_item_bg_selectable</item>
-        <item name="android:actionBarItemBackground" tools:ignore="NewApi">
-            @drawable/actionbar_item_bg_selectable
-        </item>
-
-        <item name="android:dropDownListViewStyle">@style/ApplicationDropDownListViewStyle</item>
-        <item name="dropDownListViewStyle">@style/ApplicationDropDownListViewStyle</item>
-
-        <item name="actionDropDownStyle">@style/ApplicationActionDropDownStyle</item>
-        <item name="android:actionDropDownStyle" tools:ignore="NewApi">
-            @style/ApplicationActionDropDownStyle
-        </item>
-
-        <item name="popupMenuStyle">@style/ApplicationPopupMenu</item>
-        <item name="android:popupMenuStyle" tools:ignore="NewApi">@style/ApplicationPopupMenu</item>
-
-        <item name="android:spinnerStyle">@style/spinner</item>
-    </style>
-
-    <style name="ApplicationActionBarTabBarStyle" parent="Widget.AppCompat.ActionBar.Solid">
-        <item name="android:background">@color/holoDark</item>
-    </style>
-
-    <style name="ApplicationActionBarTabStyle" parent="Widget.AppCompat.ActionBar.TabView">
-        <item name="android:background">@drawable/actionbar_tab_bg</item>
-        <item name="background">@drawable/actionbar_tab_bg</item>
-    </style>
-
-    <style name="ApplicationActionDropDownStyle" parent="Widget.AppCompat.Spinner.DropDown.ActionBar">
-        <item name="android:dropDownSelector">@drawable/actionbar_item_bg_selectable</item>
-        <item name="android:background">@drawable/theme_spinner_selector_dark</item>
-    </style>
-
-    <style name="ApplicationDropDownListViewStyle" parent="Widget.AppCompat.ListView.DropDown">
-        <item name="android:listSelector">@drawable/actionbar_item_bg_selectable</item>
-    </style>
-
-    <style name="ApplicationPopupMenu" parent="Widget.AppCompat.ListPopupWindow">
     </style>
 
     <style name="Theme.Dialog.Light" parent="@android:style/Theme.Dialog">
