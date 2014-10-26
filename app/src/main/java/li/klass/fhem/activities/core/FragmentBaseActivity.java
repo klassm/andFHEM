@@ -44,7 +44,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -210,7 +209,6 @@ public abstract class FragmentBaseActivity extends ActionBarActivity implements 
         } catch (Exception e) {
             Log.e(TAG, "error while creating activity", e);
         }
-        supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 
         AndFHEMApplication application = (AndFHEMApplication) getApplication();
 
@@ -699,8 +697,13 @@ public abstract class FragmentBaseActivity extends ActionBarActivity implements 
         }
         this.optionsMenu = menu;
 
-        optionsMenu.findItem(R.id.menu_refresh).setVisible(!showProgressIcon);
-        setSupportProgressBarIndeterminateVisibility(showProgressIcon);
+        MenuItem refreshItem = optionsMenu.findItem(R.id.menu_refresh);
+
+        if (showProgressIcon) {
+            refreshItem.setActionView(R.layout.actionbar_indeterminate_progress);
+        } else {
+            refreshItem.setActionView(null);
+        }
 
         return super.onCreateOptionsMenu(menu);
     }
