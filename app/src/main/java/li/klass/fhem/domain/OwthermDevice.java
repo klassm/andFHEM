@@ -24,6 +24,8 @@
 
 package li.klass.fhem.domain;
 
+import java.util.List;
+
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
@@ -31,9 +33,13 @@ import li.klass.fhem.appwidget.annotation.SupportsWidget;
 import li.klass.fhem.appwidget.annotation.WidgetTemperatureField;
 import li.klass.fhem.appwidget.view.widget.medium.TemperatureWidgetView;
 import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.genericview.ShowField;
+import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ValueUtil;
+
+import static li.klass.fhem.service.graph.description.SeriesType.TEMPERATURE;
 
 @SuppressWarnings("unused")
 @SupportsWidget(TemperatureWidgetView.class)
@@ -70,6 +76,22 @@ public class OwthermDevice extends Device<OwthermDevice> {
         if (state.contains("temperature")) {
             setState(temperature);
         }
+    }
+
+    @Override
+    protected void fillDeviceCharts(List<DeviceChart> chartSeries) {
+        super.fillDeviceCharts(chartSeries);
+
+        addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureGraph,
+                new ChartSeriesDescription.Builder()
+                        .withColumnName(R.string.temperature)
+                        .withFileLogSpec("4:temperature")
+                        .withDbLogSpec("temperature::int1")
+                        .withSeriesType(TEMPERATURE)
+                        .withShowRegression(true)
+                        .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("temperature", 0, 0))
+                        .build()
+        ), temperature);
     }
 
     @Override
