@@ -521,9 +521,9 @@ public class ChartingActivity extends ActionBarActivity implements Updateable {
     }
 
     @Override
-    public boolean onCreatePanelMenu(int featureId, Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.graph_menu, menu);
-        return super.onCreatePanelMenu(featureId, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
