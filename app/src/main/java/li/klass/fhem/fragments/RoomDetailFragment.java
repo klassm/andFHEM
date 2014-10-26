@@ -30,7 +30,7 @@ import android.os.Bundle;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.fragments.core.DeviceListFragment;
-import li.klass.fhem.service.room.RoomListService;
+import li.klass.fhem.service.intent.RoomListIntentService;
 
 import static li.klass.fhem.constants.BundleExtraKeys.ROOM_NAME;
 
@@ -52,7 +52,7 @@ public class RoomDetailFragment extends DeviceListFragment {
 
     @Override
     protected Class<?> getUpdateActionIntentTargetClass() {
-        return RoomListService.class;
+        return RoomListIntentService.class;
     }
 
     @Override
