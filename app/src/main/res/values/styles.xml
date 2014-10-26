@@ -26,6 +26,15 @@
 
 <!-- the theme applied to the application or activity -->
     <style name="ApplicationTheme" parent="@style/Theme.AppCompat.Light.DarkActionBar">
+        <!-- colorPrimary is used for the default action bar background -->
+        <item name="colorPrimary">@color/primary</item>
+
+        <!-- colorPrimaryDark is used for the status bar -->
+        <item name="colorPrimaryDark">@color/primaryDark</item>
+
+        <!-- colorAccent is used as the default value for colorControlActivated
+             which is used to tint widgets -->
+        <item name="colorAccent">@color/accent</item>
     </style>
 
     <style name="Theme.Dialog.Light" parent="@android:style/Theme.Dialog">

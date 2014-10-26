@@ -50,4 +50,15 @@
     <color name="whitegrey">#FFF2F2F2</color>
 
     <color name="errorBackground">#FFDB9C</color>
+
+
+    <!-- new color palette-->
+    <color name="primary">#FF079400</color>
+
+    <!-- colorPrimaryDark is used for the status bar -->
+    <color name="primaryDark">#FF0d5302</color>
+
+    <!-- colorAccent is used as the default value for colorControlActivated
+         which is used to tint widgets -->
+    <color name="accent">#FFFFC400</color>
 </resources>
