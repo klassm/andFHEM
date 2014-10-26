@@ -29,7 +29,6 @@ import org.w3c.dom.NamedNodeMap;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 
 import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.domain.core.DeviceFunctionality;
@@ -89,15 +88,8 @@ public class RemoteControlDevice extends ToggleableDevice<RemoteControlDevice> {
     public void onChildItemRead(String tagName, String key, String value, NamedNodeMap attributes) {
         super.onChildItemRead(tagName, key, value, attributes);
 
-        if (! key.startsWith("ROW")) {
+        if (!key.startsWith("ROW")) {
             return;
-        }
-
-        int rowNr = Integer.valueOf(key.replace("ROW", ""));
-        if (rows.size() != rowNr) {
-            String errorString = String.format(Locale.getDefault(), "invalid row '%s'! (expected size: %d, was: %d)",
-                    key, rowNr - 1, rows.size());
-            throw new IllegalArgumentException(errorString);
         }
 
         List<Entry> row = newArrayList();
