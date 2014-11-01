@@ -24,6 +24,8 @@
 
 package li.klass.fhem.fhem.connection;
 
+import com.google.common.base.Strings;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
@@ -190,7 +192,7 @@ public class FHEMServerSpec implements Comparable<FHEMServerSpec>, Serializable 
         return "FHEMServerSpec{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
-                ", password='" + password + '\'' +
+                ", password='" + (Strings.isNullOrEmpty(password) ? "empty" : "set") + '\'' +
                 ", ip='" + ip + '\'' +
                 ", port=" + port +
                 ", url='" + url + '\'' +
