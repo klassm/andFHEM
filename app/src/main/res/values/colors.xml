@@ -61,4 +61,9 @@
     <!-- colorAccent is used as the default value for colorControlActivated
          which is used to tint widgets -->
     <color name="accent">#FFFFC400</color>
+
+    <color name="textColorDefault">#FF000000</color>
+    <color name="textColorSecondary">#FF4e4e4e</color>
+
+    <color name="sectionCaptionColor">#FFB84100</color>
 </resources>

@@ -63,7 +63,7 @@ public class BillingService {
                 iabHelper = null;
             }
         } catch (Exception e) {
-            Log.e(TAG, "cannot stop", e);
+            Log.d(TAG, "cannot stop", e);
         }
     }
 
