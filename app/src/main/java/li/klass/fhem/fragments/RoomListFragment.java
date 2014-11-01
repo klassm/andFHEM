@@ -132,7 +132,7 @@ public class RoomListFragment extends BaseFragment implements TopLevelFragment {
         if (getView() == null) return;
 
         hideEmptyView();
-        showUpdatingBar();
+        if (doUpdate) getActivity().sendBroadcast(new Intent(Actions.SHOW_EXECUTING_DIALOG));
 
         Intent intent = new Intent(Actions.GET_ROOM_NAME_LIST);
         intent.setClass(getActivity(), RoomListIntentService.class);
@@ -143,7 +143,7 @@ public class RoomListFragment extends BaseFragment implements TopLevelFragment {
             protected void onReceiveResult(int resultCode, Bundle resultData) {
                 if (getView() == null) return;
 
-                hideUpdatingBar();
+                getActivity().sendBroadcast(new Intent(Actions.DISMISS_EXECUTING_DIALOG));
 
                 if (resultCode == ResultCodes.SUCCESS) {
                     List<String> roomList = (ArrayList<String>) resultData.getSerializable(ROOM_LIST);

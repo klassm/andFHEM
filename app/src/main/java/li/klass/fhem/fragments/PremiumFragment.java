@@ -85,8 +85,7 @@ public class PremiumFragment extends BaseFragment implements BillingService.Prod
             }
         });
 
-        Intent intent = new Intent(Actions.DISMISS_UPDATING_DIALOG);
-        getActivity().sendBroadcast(intent);
+        getActivity().sendBroadcast(new Intent(Actions.DISMISS_EXECUTING_DIALOG));
     }
 
     @Override

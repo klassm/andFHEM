@@ -71,7 +71,8 @@ public class DeviceDetailFragment extends BaseFragment {
     @Override
     public void update(boolean doUpdate) {
         hideEmptyView();
-        showUpdatingBar();
+
+        if (doUpdate) getActivity().sendBroadcast(new Intent(Actions.SHOW_EXECUTING_DIALOG));
 
         Intent intent = new Intent(Actions.GET_DEVICE_FOR_NAME);
         intent.setClass(getActivity(), RoomListIntentService.class);
@@ -82,7 +83,7 @@ public class DeviceDetailFragment extends BaseFragment {
             protected void onReceiveResult(int resultCode, Bundle resultData) {
                 super.onReceiveResult(resultCode, resultData);
 
-                hideUpdatingBar();
+                getActivity().sendBroadcast(new Intent(Actions.DISMISS_EXECUTING_DIALOG));
 
                 if (resultCode == ResultCodes.SUCCESS && getView() != null) {
                     Device device = (Device) resultData.getSerializable(BundleExtraKeys.DEVICE);

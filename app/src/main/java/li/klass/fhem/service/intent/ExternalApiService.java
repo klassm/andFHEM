@@ -45,7 +45,6 @@ import li.klass.fhem.service.CommandExecutionService;
 import li.klass.fhem.service.room.RoomListService;
 
 import static com.google.common.collect.Lists.newArrayList;
-import static li.klass.fhem.service.room.RoomListService.NEVER_UPDATE_PERIOD;
 
 public class ExternalApiService extends Service {
 
@@ -112,7 +111,7 @@ public class ExternalApiService extends Service {
             final ExternalApiService externalApiService = externalApiServiceWeakReference.get();
             switch (msg.what) {
                 case ROOM_LIST:
-                    ArrayList<String> deviceNames = externalApiService.roomListService.getAvailableDeviceNames(NEVER_UPDATE_PERIOD);
+                    ArrayList<String> deviceNames = externalApiService.roomListService.getAvailableDeviceNames();
                     externalApiService.replyTo(msg, deviceNames);
 
                     break;

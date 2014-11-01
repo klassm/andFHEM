@@ -350,7 +350,7 @@ public class ConnectionDetailFragment extends BaseFragment {
     public void update(boolean doUpdate) {
         if (!isModify) {
             Log.e(TAG, "I can only update if a connection is being modified!");
-            hideUpdatingBar();
+            getActivity().sendBroadcast(new Intent(Actions.DISMISS_EXECUTING_DIALOG));
             return;
         }
 
@@ -373,9 +373,9 @@ public class ConnectionDetailFragment extends BaseFragment {
 
                 setValuesForCurrentConnection((FHEMServerSpec) serializable);
 
-                Intent intent = new Intent(Actions.DISMISS_UPDATING_DIALOG);
                 FragmentActivity activity = getActivity();
-                if (activity != null) activity.sendBroadcast(intent);
+                if (activity != null)
+                    activity.sendBroadcast(new Intent(Actions.DISMISS_EXECUTING_DIALOG));
             }
         });
         getActivity().startService(intent);

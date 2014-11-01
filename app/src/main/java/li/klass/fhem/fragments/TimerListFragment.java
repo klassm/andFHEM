@@ -146,8 +146,7 @@ public class TimerListFragment extends BaseFragment {
 
                 adapter.updateData(devices);
 
-                Intent intent = new Intent(Actions.DISMISS_UPDATING_DIALOG);
-                getActivity().sendBroadcast(intent);
+                getActivity().sendBroadcast(new Intent(Actions.DISMISS_EXECUTING_DIALOG));
             }
         });
         getActivity().startService(intent);

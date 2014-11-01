@@ -202,7 +202,8 @@ public class ConnectionListFragment extends BaseFragment implements TopLevelFrag
         if (getView() == null) return;
 
         hideEmptyView();
-        showUpdatingBar();
+
+        if (doUpdate) getActivity().sendBroadcast(new Intent(Actions.SHOW_EXECUTING_DIALOG));
 
         Intent intent = new Intent(Actions.CONNECTIONS_LIST);
         intent.setClass(getActivity(), ConnectionsIntentService.class);
@@ -214,7 +215,7 @@ public class ConnectionListFragment extends BaseFragment implements TopLevelFrag
 
                 if (getView() == null) return;
 
-                hideUpdatingBar();
+                getActivity().sendBroadcast(new Intent(Actions.DISMISS_EXECUTING_DIALOG));
 
                 if (resultCode == ResultCodes.SUCCESS && resultData != null &&
                         resultData.containsKey(CONNECTION_LIST)) {

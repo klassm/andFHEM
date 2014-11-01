@@ -99,7 +99,6 @@ public abstract class FragmentBaseActivity extends ActionBarActivity implements 
         private Receiver() {
             intentFilter = new IntentFilter();
             intentFilter.addAction(Actions.SHOW_FRAGMENT);
-            intentFilter.addAction(Actions.DISMISS_UPDATING_DIALOG);
             intentFilter.addAction(Actions.DO_UPDATE);
             intentFilter.addAction(SHOW_EXECUTING_DIALOG);
             intentFilter.addAction(DISMISS_EXECUTING_DIALOG);
@@ -134,8 +133,6 @@ public abstract class FragmentBaseActivity extends ActionBarActivity implements 
                                     fragmentType = getFragmentFor(fragmentName);
                                 }
                                 switchToFragment(fragmentType, intent.getExtras());
-                            } else if (action.equals(Actions.DISMISS_UPDATING_DIALOG)) {
-                                setShowRefreshProgressIcon(false);
                             } else if (intent.getBooleanExtra(BundleExtraKeys.DO_REFRESH, false) && action.equals(Actions.DO_UPDATE)) {
                                 setShowRefreshProgressIcon(true);
                             } else if (action.equals(SHOW_EXECUTING_DIALOG)) {
@@ -209,9 +206,17 @@ public abstract class FragmentBaseActivity extends ActionBarActivity implements 
         try {
             super.onCreate(savedInstanceState);
         } catch (Exception e) {
-            Log.e(TAG, "error while creating activity", e);
+            Log.e(TAG, "onCreate() : error while creating activity", e);
         }
 
+        try {
+            initialize(savedInstanceState);
+        } catch (Throwable e) {
+            Log.e(TAG, "onCreate() : error during initialization", e);
+        }
+    }
+
+    private void initialize(final Bundle savedInstanceState) {
         AndFHEMApplication application = (AndFHEMApplication) getApplication();
 
         application.inject(this);
@@ -241,11 +246,11 @@ public abstract class FragmentBaseActivity extends ActionBarActivity implements 
 
         initDrawerLayout();
 
-        Log.i(TAG, "onCreate => starting BillingService");
+        Log.i(TAG, "initialize() : onCreate => starting BillingService");
         billingService.loadInventory(new BillingService.OnLoadInventoryFinishedListener() {
             @Override
             public void onInventoryLoadFinished() {
-                Log.i(TAG, "Billing initialized, creating initial fragment");
+                Log.i(TAG, "initialize() : Billing initialized, creating initial fragment");
                 if (savedInstanceState == null && !saveInstanceStateCalled) {
                     handleStartupFragment();
                 }
@@ -257,7 +262,7 @@ public abstract class FragmentBaseActivity extends ActionBarActivity implements 
         String startupView = applicationProperties.getStringSharedPreference(STARTUP_VIEW,
                 FragmentType.FAVORITES.name());
         FragmentType preferencesStartupFragment = FragmentType.forEnumName(startupView);
-        Log.d(TAG, "startup view is " + preferencesStartupFragment);
+        Log.d(TAG, "handleStartupFragment() : startup view is " + preferencesStartupFragment);
 
         Bundle startupBundle = new Bundle();
 
@@ -287,7 +292,7 @@ public abstract class FragmentBaseActivity extends ActionBarActivity implements 
         }
 
         if (fragmentType != null) {
-            Log.i(TAG, "startup with " + fragmentType + " (extras: " + startupBundle + ")");
+            Log.i(TAG, "handleStartupFragment () : startup with " + fragmentType + " (extras: " + startupBundle + ")");
             switchToFragment(fragmentType, startupBundle);
         }
     }
@@ -304,9 +309,9 @@ public abstract class FragmentBaseActivity extends ActionBarActivity implements 
             boolean hasFavorites = resultData.getBoolean(HAS_FAVORITES, false);
             if (hasFavorites && !saveInstanceStateCalled) {
                 toSwitchTo = FAVORITES;
-                Log.d(TAG, "found favorites, switching");
+                Log.d(TAG, "handleHasFavoritesResponse () : found favorites, switching");
             } else {
-                Log.d(TAG, "no favorites found");
+                Log.d(TAG, "handleHasFavoritesResponse () : no favorites found");
             }
         }
         switchToFragment(toSwitchTo, null);
@@ -428,7 +433,7 @@ public abstract class FragmentBaseActivity extends ActionBarActivity implements 
     protected void onResume() {
         super.onResume();
 
-        Log.i(TAG, "resuming");
+        Log.i(TAG, "onResume() : resuming");
 
         saveInstanceStateCalled = false;
 
@@ -501,11 +506,11 @@ public abstract class FragmentBaseActivity extends ActionBarActivity implements 
                 if (updateInterval != -1) {
                     int initialDelay = updateOnApplicationStart ? updateInterval : 0;
                     timer.scheduleAtFixedRate(new UpdateTimerTask(FragmentBaseActivity.this), initialDelay, updateInterval);
-                    Log.i(TAG, "scheduling update every " + (updateInterval / 1000 / 60) + "min");
+                    Log.i(TAG, "handleTimerUpdates() : scheduling update every " + (updateInterval / 1000 / 60) + "min");
                 }
 
                 if (updateOnApplicationStart) {
-                    Log.i(TAG, "update on application start started");
+                    Log.i(TAG, "handleTimerUpdates() : update on application start started");
                     timer.schedule(new UpdateTimerTask(FragmentBaseActivity.this), 0);
                 }
             }
@@ -533,7 +538,7 @@ public abstract class FragmentBaseActivity extends ActionBarActivity implements 
         try {
             unregisterReceiver(broadcastReceiver);
         } catch (IllegalArgumentException e) {
-            Log.i(TAG, "receiver was not registered, ignore ...");
+            Log.i(TAG, "onStop() : receiver was not registered, ignore ...");
         }
 
         setShowRefreshProgressIcon(false);

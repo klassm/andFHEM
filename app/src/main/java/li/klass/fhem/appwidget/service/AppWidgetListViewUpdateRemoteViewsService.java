@@ -43,7 +43,6 @@ import li.klass.fhem.service.room.RoomListService;
 import static li.klass.fhem.constants.BundleExtraKeys.APP_WIDGET_ID;
 import static li.klass.fhem.constants.BundleExtraKeys.APP_WIDGET_TYPE_NAME;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_NAME;
-import static li.klass.fhem.service.room.RoomListService.NEVER_UPDATE_PERIOD;
 
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class AppWidgetListViewUpdateRemoteViewsService extends RemoteViewsService {
@@ -64,7 +63,7 @@ public class AppWidgetListViewUpdateRemoteViewsService extends RemoteViewsServic
         int appWidgetId = intent.getIntExtra(APP_WIDGET_ID, -1);
         WidgetType widgetType = WidgetType.valueOf(intent.getStringExtra(APP_WIDGET_TYPE_NAME));
         String deviceName = intent.getStringExtra(DEVICE_NAME);
-        Device device = roomListService.getDeviceForName(deviceName, NEVER_UPDATE_PERIOD);
+        Device device = roomListService.getDeviceForName(deviceName);
         if (device == null) {
             Log.e(TAG, "device is null, at least in the current connection");
             return null;

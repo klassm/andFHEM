@@ -145,7 +145,7 @@ public class SendCommandFragment extends BaseFragment {
 
                 ListViewUtil.setHeightBasedOnChildren((ListView) view.findViewById(R.id.command_history));
 
-                getActivity().sendBroadcast(new Intent(Actions.DISMISS_UPDATING_DIALOG));
+                getActivity().sendBroadcast(new Intent(Actions.DISMISS_EXECUTING_DIALOG));
             }
         });
         getActivity().startService(intent);

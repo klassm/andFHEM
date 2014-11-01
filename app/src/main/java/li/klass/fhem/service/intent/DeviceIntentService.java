@@ -97,8 +97,10 @@ import static li.klass.fhem.constants.Actions.RESEND_LAST_FAILED_COMMAND;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_GRAPH_ENTRY_MAP;
 import static li.klass.fhem.constants.BundleExtraKeys.STATE_NAME;
 import static li.klass.fhem.constants.BundleExtraKeys.STATE_VALUE;
+import static li.klass.fhem.service.intent.ConvenientIntentService.STATE.DONE;
 import static li.klass.fhem.service.intent.ConvenientIntentService.STATE.ERROR;
 import static li.klass.fhem.service.intent.ConvenientIntentService.STATE.SUCCESS;
+import static li.klass.fhem.service.room.RoomListService.RemoteUpdateRequired.REQUIRED;
 
 public class DeviceIntentService extends ConvenientIntentService {
 
@@ -136,8 +138,12 @@ public class DeviceIntentService extends ConvenientIntentService {
     @Override
     protected STATE handleIntent(Intent intent, long updatePeriod, ResultReceiver resultReceiver) {
 
+        if (roomListService.updateRoomDeviceListIfRequired(intent, updatePeriod) == REQUIRED) {
+            return DONE;
+        }
+
         String deviceName = intent.getStringExtra(BundleExtraKeys.DEVICE_NAME);
-        Device device = roomListService.getDeviceForName(deviceName, updatePeriod);
+        Device device = roomListService.getDeviceForName(deviceName);
         Log.d(DeviceIntentService.class.getName(), intent.getAction());
         String action = intent.getAction();
 

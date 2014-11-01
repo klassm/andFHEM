@@ -26,6 +26,7 @@ package li.klass.fhem.service.room;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 
 import java.util.Set;
@@ -36,7 +37,6 @@ import javax.inject.Singleton;
 import li.klass.fhem.dagger.ForApplication;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.RoomDeviceList;
-import li.klass.fhem.service.connection.ConnectionService;
 
 @Singleton
 public class FavoritesService {
@@ -77,13 +77,14 @@ public class FavoritesService {
     /**
      * Reads all saved favorite devices. The result will be provided to the given listener.
      *
+     * @param intent
      * @param updatePeriod -1 if the underlying list should always be updated, otherwise do update if the last update is
      *                     longer ago than the given period
      * @return favorite {@link RoomDeviceList}
      */
-    public RoomDeviceList getFavorites(long updatePeriod) {
+    public RoomDeviceList getFavorites(Intent intent, long updatePeriod) {
 
-        RoomDeviceList allRoomsDeviceList = roomListService.getAllRoomsDeviceList(updatePeriod);
+        RoomDeviceList allRoomsDeviceList = roomListService.getAllRoomsDeviceList();
         RoomDeviceList favoritesList = new RoomDeviceList("favorites");
         favoritesList.setHiddenGroups(allRoomsDeviceList.getHiddenGroups());
         favoritesList.setHiddenRooms(allRoomsDeviceList.getHiddenRooms());

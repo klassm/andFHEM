@@ -26,8 +26,6 @@ package li.klass.fhem.service.room;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
-import android.os.Bundle;
 import android.util.Log;
 
 import com.google.common.collect.Lists;
@@ -44,13 +42,11 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.locks.ReentrantLock;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import li.klass.fhem.AndFHEMApplication;
-import li.klass.fhem.R;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.PreferenceKeys;
@@ -59,10 +55,7 @@ import li.klass.fhem.domain.FHEMWEBDevice;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceType;
 import li.klass.fhem.domain.core.RoomDeviceList;
-import li.klass.fhem.exception.AndFHEMException;
-import li.klass.fhem.exception.CommandExecutionException;
 import li.klass.fhem.service.AbstractService;
-import li.klass.fhem.service.CommandExecutionService;
 import li.klass.fhem.service.SharedPreferencesService;
 import li.klass.fhem.service.connection.ConnectionService;
 import li.klass.fhem.service.intent.DeviceIntentService;
@@ -70,7 +63,10 @@ import li.klass.fhem.util.ApplicationProperties;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static java.util.Collections.sort;
+import static li.klass.fhem.constants.Actions.DISMISS_EXECUTING_DIALOG;
 import static li.klass.fhem.constants.Actions.REDRAW_ALL_WIDGETS;
+import static li.klass.fhem.constants.BundleExtraKeys.DO_REFRESH;
+import static li.klass.fhem.constants.BundleExtraKeys.UPDATE_PERIOD;
 import static li.klass.fhem.constants.PreferenceKeys.DEVICE_NAME;
 import static li.klass.fhem.domain.core.DeviceType.getDeviceTypeFor;
 import static li.klass.fhem.util.DateFormatUtil.toReadable;
@@ -82,9 +78,6 @@ public class RoomListService extends AbstractService {
 
     public static final String PREFERENCES_NAME = TAG;
 
-    /**
-     * file name of the current cache object.
-     */
     public static final String CACHE_FILENAME = "cache.obj";
 
     public static final String LAST_UPDATE_PROPERTY = "LAST_UPDATE";
@@ -95,13 +88,10 @@ public class RoomListService extends AbstractService {
     public static final String SORT_ROOMS_DELIMITER = " ";
     public static final String DEFAULT_FHEMWEB_QUALIFIER = "andFHEM";
 
-    private final ReentrantLock updateLock = new ReentrantLock();
+    private final AtomicBoolean remoteUpdateInProgress = new AtomicBoolean(false);
 
-    private final AtomicBoolean currentlyUpdating = new AtomicBoolean(false);
+    private List<Intent> resendIntents = Lists.newArrayList();
 
-    /**
-     * Currently loaded device list map.
-     */
     volatile RoomDeviceList deviceList;
 
     @Inject
@@ -114,9 +104,6 @@ public class RoomListService extends AbstractService {
     ApplicationProperties applicationProperties;
 
     @Inject
-    CommandExecutionService commandExecutionService;
-
-    @Inject
     @ForApplication
     Context applicationContext;
 
@@ -126,12 +113,12 @@ public class RoomListService extends AbstractService {
     public void parseReceivedDeviceStateMap(String deviceName, Map<String, String> updateMap,
                                             boolean vibrateUponNotification) {
 
-        Device device = getDeviceForName(deviceName, NEVER_UPDATE_PERIOD);
+        Device device = getDeviceForName(deviceName);
         if (device == null) return;
 
         deviceListParser.fillDeviceWith(device, updateMap);
 
-        Log.i(TAG, "updated " + device.getName() + " with " + updateMap.size() + " new values!");
+        Log.i(TAG, "parseReceivedDeviceStateMap()  : updated " + device.getName() + " with " + updateMap.size() + " new values!");
 
         Intent intent = new Intent(Actions.NOTIFICATION_TRIGGER);
         intent.putExtra(BundleExtraKeys.DEVICE_NAME, deviceName);
@@ -153,28 +140,23 @@ public class RoomListService extends AbstractService {
     /**
      * Looks for a device with a given name.
      *
-     * @param deviceName   name of the device
-     * @param updatePeriod -1 if the underlying list should always be updated, otherwise do update if the last update is
-     *                     longer ago than the given period
+     * @param deviceName name of the device
      * @return found device or null
      */
-    public Device getDeviceForName(String deviceName, long updatePeriod) {
-        return getAllRoomsDeviceList(updatePeriod).getDeviceFor(deviceName);
+    public Device getDeviceForName(String deviceName) {
+        return getAllRoomsDeviceList().getDeviceFor(deviceName);
     }
 
     /**
      * Retrieves a {@link RoomDeviceList} containing all devices, not only the devices of a specific room.
      *
-     * @param updatePeriod -1 if the underlying list should always be updated, otherwise do update if the last update is
-     *                     longer ago than the given period
      * @return {@link RoomDeviceList} containing all devices
      */
-    public RoomDeviceList getAllRoomsDeviceList(long updatePeriod) {
-        try {
-            return (RoomDeviceList) getRoomDeviceList(updatePeriod).clone();
-        } catch (CloneNotSupportedException e) {
-            throw new RuntimeException(e);
+    public RoomDeviceList getAllRoomsDeviceList() {
+        if (deviceList == null) {
+            deviceList = getCachedRoomDeviceListMap();
         }
+        return new RoomDeviceList(getRoomDeviceList());
     }
 
     /**
@@ -184,88 +166,83 @@ public class RoomListService extends AbstractService {
      * until the current operation has completed. This is especially important, as we are
      * called by a thread pool in {@link li.klass.fhem.service.intent.RoomListIntentService}.
      *
-     * @param updatePeriod -1 if the underlying list should always be updated, otherwise do update
-     *                     if the last update is longer ago than the given period
      * @return current room device list map
      */
-    private RoomDeviceList getRoomDeviceList(long updatePeriod) {
-        boolean refresh = shouldUpdate(updatePeriod);
+    private RoomDeviceList getRoomDeviceList() {
+        return deviceList;
+    }
 
-        if (!refresh && deviceList == null) {
+    public RemoteUpdateRequired updateRoomDeviceListIfRequired(Intent intent, long updatePeriod) {
+        if (deviceList == null) {
             deviceList = getCachedRoomDeviceListMap();
         }
 
-        if (refresh || deviceList == null) {
-
-            try {
-                if (!currentlyUpdating.compareAndSet(false, true)) {
-                    awaitUpdateCompletion();
-
-                    return deviceList;
-                }
-
-                // In any case, make sure that only thread updates at the same time!
-                updateLock.lock();
-
-                new AsyncTask<Void, Void, Void>() {
-
-                    @Override
-                    protected Void doInBackground(Void... voids) {
-                        sendBroadcastWithAction(Actions.SHOW_UPDATING_DIALOG, null);
-                        try {
-                            deviceList = getRemoteRoomDeviceListMap();
-                            fillHiddenRoomsAndHiddenGroups(deviceList, findFHEMWEBDevice(deviceList));
-                        } finally {
-                            currentlyUpdating.set(false);
-                            sendBroadcastWithAction(Actions.DISMISS_UPDATING_DIALOG, null);
-                            sendBroadcastWithAction(REDRAW_ALL_WIDGETS, null);
-
-                            Intent redrawWidgetServiceIntent = new Intent(REDRAW_ALL_WIDGETS);
-                            redrawWidgetServiceIntent.setClass(applicationContext, DeviceIntentService.class);
-                            applicationContext.startService(redrawWidgetServiceIntent);
-
-                            updateLock.unlock();
-                            synchronized (currentlyUpdating) {
-                                currentlyUpdating.notifyAll();
-                            }
-                        }
-                        return null;
-                    }
-                }.doInBackground();
-
-            } catch (AndFHEMException e) {
-                int errorStringId = e.getErrorMessageStringId();
-                sendErrorMessage(errorStringId);
-
-                Log.e(TAG, "error occurred while fetching the remote device list", e);
-            } catch (Exception e) {
-                sendErrorMessage(R.string.error_update);
-                Log.e(TAG, "unknown exception occurred while fetching the remote device list", e);
+        boolean requiresUpdate = shouldUpdate(updatePeriod) || deviceList == null;
+        if (requiresUpdate) {
+            resendIntents.add(createResendIntent(intent));
+            if (remoteUpdateInProgress.compareAndSet(false, true)) {
+                applicationContext.startService(new Intent(Actions.DO_REMOTE_UPDATE));
             }
-        }
 
-        if (deviceList == null) {
-            Log.e(TAG, "deviceList is still null, returning an empty hashMap");
-            deviceList = new RoomDeviceList(RoomDeviceList.ALL_DEVICES_ROOM);
+            return RemoteUpdateRequired.REQUIRED;
+        } else {
+            return RemoteUpdateRequired.NOT_REQUIRED;
         }
+    }
 
-        return deviceList;
+    public void remoteUpdateFinished(Intent intent) {
+        try {
+            RoomDeviceList newDeviceList = (RoomDeviceList) intent.getSerializableExtra(BundleExtraKeys.DEVICE_LIST);
+            setLastUpdateToNow();
+            fillHiddenRoomsAndHiddenGroups(newDeviceList, findFHEMWEBDevice(newDeviceList));
+            if (newDeviceList != null) {
+                deviceList = newDeviceList;
+            }
+
+            if (!deviceList.isEmptyOrOnlyContainsDoNotShowDevices()) {
+                storeDeviceListMap();
+            }
+
+            for (Intent resendIntent : resendIntents) {
+                resend(resendIntent);
+            }
+            resendIntents.clear();
+            Log.i(TAG, "remote update finished, device list is " + deviceList);
+        } finally {
+            remoteUpdateInProgress.set(false);
+            sendBroadcastWithAction(DISMISS_EXECUTING_DIALOG);
+        }
+    }
+
+    private void resend(Intent intent) {
+        Log.i(TAG, "resend() : resending " + intent.getAction());
+        applicationContext.startService(createResendIntent(intent));
+    }
+
+    private Intent createResendIntent(Intent intent) {
+        Intent resendIntent = new Intent(intent);
+        resendIntent.removeExtra(DO_REFRESH);
+        resendIntent.removeExtra(UPDATE_PERIOD);
+
+        resendIntent.putExtra(UPDATE_PERIOD, NEVER_UPDATE_PERIOD);
+
+        return resendIntent;
     }
 
     private boolean shouldUpdate(long updatePeriod) {
         if (updatePeriod == ALWAYS_UPDATE_PERIOD) {
-            Log.d(TAG, "recommend update, as updatePeriod is set to ALWAYS_UPDATE");
+            Log.d(TAG, "shouldUpdate() : recommend update, as updatePeriod is set to ALWAYS_UPDATE");
             return true;
         }
         if (updatePeriod == NEVER_UPDATE_PERIOD) {
-            Log.d(TAG, "recommend no update, as updatePeriod is set to NEVER_UPDATE");
+            Log.d(TAG, "shouldUpdate() : recommend no update, as updatePeriod is set to NEVER_UPDATE");
             return false;
         }
 
         long lastUpdate = getLastUpdate();
         boolean shouldUpdate = lastUpdate + updatePeriod < System.currentTimeMillis();
 
-        Log.d(TAG, "recommend " + (!shouldUpdate ? "no " : "") + "update (lastUpdate: " + toReadable(lastUpdate) +
+        Log.d(TAG, "shouldUpdate() : recommend " + (!shouldUpdate ? "no " : "") + "update (lastUpdate: " + toReadable(lastUpdate) +
                 ", updatePeriod: " + (updatePeriod / 1000 / 60) + " min)");
 
         return shouldUpdate;
@@ -279,60 +256,19 @@ public class RoomListService extends AbstractService {
     @SuppressWarnings("unchecked")
     private RoomDeviceList getCachedRoomDeviceListMap() {
         try {
-            Log.i(TAG, "fetching device list from cache");
+            Log.i(TAG, "getCachedRoomDeviceListMap() : fetching device list from cache");
             long startLoad = System.currentTimeMillis();
 
             ObjectInputStream objectInputStream = new ObjectInputStream(AndFHEMApplication.getContext().openFileInput(CACHE_FILENAME));
             RoomDeviceList roomDeviceListMap = (RoomDeviceList) objectInputStream.readObject();
-            Log.i(TAG, "loading device list from cache completed after "
+            Log.i(TAG, "getCachedRoomDeviceListMap() : loading device list from cache completed after "
                     + (System.currentTimeMillis() - startLoad) + "ms");
 
             return roomDeviceListMap;
         } catch (Exception e) {
-            Log.d(TAG, "error occurred while de-serializing data", e);
-            return null;
+            Log.d(TAG, "getCachedRoomDeviceListMap() : error occurred while de-serializing data", e);
+            return new RoomDeviceList(RoomDeviceList.ALL_DEVICES_ROOM);
         }
-    }
-
-    private void awaitUpdateCompletion() throws InterruptedException {
-        while (currentlyUpdating.get() && deviceList == null) {
-            Log.i(TAG, "Update in progress, still got null device list, waiting ...");
-            synchronized (currentlyUpdating) {
-                currentlyUpdating.wait();
-            }
-        }
-    }
-
-    /**
-     * Execute a "xmllist" request on the configured FHEM server. The result is parsed
-     * by {@link li.klass.fhem.service.room.DeviceListParser} and returned.
-     * <p/>
-     * If the device list parser encounters an exception, null is returned. To make sure
-     * that we do not discard any old device list data upon encountering an error, we return
-     * the old device list map in this case.
-     *
-     * @return device list data.
-     */
-    private synchronized RoomDeviceList getRemoteRoomDeviceListMap() {
-        Log.i(TAG, "fetching device list from remote");
-
-        String result = null;
-        try {
-            result = commandExecutionService.executeSafely("xmllist");
-
-        } catch (CommandExecutionException e) {
-            Log.i(TAG, "error during command execution", e);
-        }
-        if (result == null) return deviceList;
-
-        RoomDeviceList newDeviceList = deviceListParser.parseAndWrapExceptions(result);
-
-        if (newDeviceList != null) {
-            setLastUpdateToNow();
-            return newDeviceList;
-        }
-
-        return deviceList;
     }
 
     private void fillHiddenRoomsAndHiddenGroups(RoomDeviceList newRoomDeviceList,
@@ -369,12 +305,6 @@ public class RoomListService extends AbstractService {
         }
     }
 
-    private void sendErrorMessage(int errorStringId) {
-        Bundle bundle = new Bundle();
-        bundle.putInt(BundleExtraKeys.STRING_ID, errorStringId);
-        sendBroadcastWithAction(Actions.SHOW_TOAST, bundle);
-    }
-
     public long getLastUpdate() {
         return sharedPreferencesService.getSharedPreferences(PREFERENCES_NAME).getLong(LAST_UPDATE_PROPERTY, 0L);
     }
@@ -383,9 +313,9 @@ public class RoomListService extends AbstractService {
         sharedPreferencesService.getSharedPreferencesEditor(PREFERENCES_NAME).putLong(LAST_UPDATE_PROPERTY, System.currentTimeMillis()).commit();
     }
 
-    public ArrayList<String> getAvailableDeviceNames(long updatePeriod) {
+    public ArrayList<String> getAvailableDeviceNames() {
         ArrayList<String> deviceNames = newArrayList();
-        RoomDeviceList allRoomsDeviceList = getAllRoomsDeviceList(updatePeriod);
+        RoomDeviceList allRoomsDeviceList = getAllRoomsDeviceList();
 
         for (Device device : allRoomsDeviceList.getAllDevices()) {
             deviceNames.add(device.getName() + "|" +
@@ -404,12 +334,10 @@ public class RoomListService extends AbstractService {
     /**
      * Retrieves a list of all room names.
      *
-     * @param updatePeriod -1 if the underlying list should always be updated, otherwise do update if the last update is
-     *                     longer ago than the given period
      * @return list of all room names
      */
-    public ArrayList<String> getRoomNameList(long updatePeriod) {
-        RoomDeviceList roomDeviceList = getRoomDeviceList(updatePeriod);
+    public ArrayList<String> getRoomNameList() {
+        RoomDeviceList roomDeviceList = getRoomDeviceList();
         if (roomDeviceList == null) return newArrayList();
 
         Set<String> roomNames = Sets.newHashSet();
@@ -463,15 +391,13 @@ public class RoomListService extends AbstractService {
     /**
      * Retrieves the {@link RoomDeviceList} for a specific room name.
      *
-     * @param roomName     room name used for searching.
-     * @param updatePeriod -1 if the underlying list should always be updated, otherwise do update if the last update is
-     *                     longer ago than the given period
+     * @param roomName room name used for searching.
      * @return found {@link RoomDeviceList} or null
      */
-    public RoomDeviceList getDeviceListForRoom(String roomName, long updatePeriod) {
+    public RoomDeviceList getDeviceListForRoom(String roomName) {
         RoomDeviceList roomDeviceList = new RoomDeviceList(roomName);
 
-        RoomDeviceList allRoomDeviceList = getRoomDeviceList(updatePeriod);
+        RoomDeviceList allRoomDeviceList = getRoomDeviceList();
         for (Device device : allRoomDeviceList.getAllDevices()) {
             if (device.isInRoom(roomName)) {
                 roomDeviceList.addDevice(device);
@@ -487,13 +413,17 @@ public class RoomListService extends AbstractService {
      * Stores the currently loaded room device list map to the cache file.
      */
     public synchronized void storeDeviceListMap() {
-        Log.i(TAG, "storing device list to cache");
+        Log.i(TAG, "storeDeviceListMap() : storing device list to cache");
         Context context = AndFHEMApplication.getContext();
         try {
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(context.openFileOutput(CACHE_FILENAME, Context.MODE_PRIVATE));
             objectOutputStream.writeObject(deviceList);
         } catch (Exception e) {
-            Log.e(TAG, "error occurred while serializing data", e);
+            Log.e(TAG, "storeDeviceListMap() : error occurred while serializing data", e);
         }
+    }
+
+    public enum RemoteUpdateRequired {
+        REQUIRED, NOT_REQUIRED
     }
 }

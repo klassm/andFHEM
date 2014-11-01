@@ -45,8 +45,6 @@ import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.fragments.FragmentType;
 import li.klass.fhem.service.room.RoomListService;
 
-import static li.klass.fhem.service.room.RoomListService.NEVER_UPDATE_PERIOD;
-
 public abstract class DeviceAppWidgetView extends AppWidgetView {
 
     public static final String TAG = DeviceAppWidgetView.class.getName();
@@ -82,7 +80,7 @@ public abstract class DeviceAppWidgetView extends AppWidgetView {
         if (shouldSetDeviceName()) {
             String deviceName = widgetConfiguration.payload.get(0);
 
-            Device device = getDeviceFor(updatePeriod, deviceName);
+            Device device = getDeviceFor(deviceName);
             if (device == null) return null;
 
             views.setTextViewText(R.id.deviceName, device.getWidgetName());
@@ -95,8 +93,8 @@ public abstract class DeviceAppWidgetView extends AppWidgetView {
         return true;
     }
 
-    private Device getDeviceFor(long updatePeriod, String deviceName) {
-        Device device = roomListService.getDeviceForName(deviceName, updatePeriod);
+    private Device getDeviceFor(String deviceName) {
+        Device device = roomListService.getDeviceForName(deviceName);
         if (device == null) {
             return null;
         } else {
@@ -132,7 +130,7 @@ public abstract class DeviceAppWidgetView extends AppWidgetView {
     @Override
     public void createWidgetConfiguration(Context context, WidgetType widgetType, int appWidgetId,
                                           WidgetConfigurationCreatedCallback callback, String... payload) {
-        Device device = roomListService.getDeviceForName(payload[0], NEVER_UPDATE_PERIOD);
+        Device device = roomListService.getDeviceForName(payload[0]);
         createDeviceWidgetConfiguration(context, widgetType, appWidgetId, device, callback);
     }
 
@@ -143,8 +141,9 @@ public abstract class DeviceAppWidgetView extends AppWidgetView {
 
     protected void fillWidgetView(Context context, RemoteViews view,
                                   WidgetConfiguration widgetConfiguration) {
-        Device<?> device = getDeviceFor(NEVER_UPDATE_PERIOD, widgetConfiguration.payload.get(0));
+        Device<?> device = getDeviceFor(widgetConfiguration.payload.get(0));
         if (device != null) {
+            view.setTextViewText(R.id.deviceName, device.getWidgetName());
             fillWidgetView(context, view, device, widgetConfiguration);
         } else {
             Log.i(TAG, "cannot find device for " + widgetConfiguration.payload.get(0));

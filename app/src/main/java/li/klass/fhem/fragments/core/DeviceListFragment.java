@@ -258,9 +258,9 @@ public abstract class DeviceListFragment extends BaseFragment {
         View view = getView();
         if (view == null) return;
 
-        showUpdatingBar();
 
         if (doUpdate) {
+            getActivity().sendBroadcast(new Intent(Actions.SHOW_EXECUTING_DIALOG));
             view.invalidate();
         }
 
@@ -278,7 +278,7 @@ public abstract class DeviceListFragment extends BaseFragment {
                 if (view == null) return;
 
                 if (resultCode == ResultCodes.SUCCESS && resultData.containsKey(DEVICE_LIST)) {
-                    hideUpdatingBar();
+                    getActivity().sendBroadcast(new Intent(Actions.DISMISS_EXECUTING_DIALOG));
 
                     RoomDeviceList deviceList = (RoomDeviceList) resultData.getSerializable(DEVICE_LIST);
                     long lastUpdate = resultData.getLong(LAST_UPDATE);

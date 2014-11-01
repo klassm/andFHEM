@@ -44,7 +44,6 @@ import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
 import static li.klass.fhem.constants.PreferenceKeys.DEVICE_NAME;
 import static li.klass.fhem.domain.core.RoomDeviceList.ALL_DEVICES_ROOM;
-import static li.klass.fhem.service.room.RoomListService.NEVER_UPDATE_PERIOD;
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
@@ -75,7 +74,7 @@ public class RoomListServiceTest extends RobolectricBaseTestCase {
         service.deviceList.addDevice(new TestDevice("a", true, "abc", "def"));
         service.deviceList.addDevice(new TestDevice("b", true, "def", "fgh"));
 
-        assertThat(service.getRoomNameList(NEVER_UPDATE_PERIOD)).containsExactly("abc", "def", "fgh");
+        assertThat(service.getRoomNameList()).containsExactly("abc", "def", "fgh");
     }
 
     @Test
@@ -84,7 +83,7 @@ public class RoomListServiceTest extends RobolectricBaseTestCase {
         service.deviceList.addDevice(new TestDevice("a", true, "abc", "def"));
         service.deviceList.addDevice(new TestDevice("b", false, "def", "fgh"));
 
-        assertThat(service.getRoomNameList(NEVER_UPDATE_PERIOD)).containsExactly("abc", "def");
+        assertThat(service.getRoomNameList()).containsExactly("abc", "def");
     }
 
     @DataProvider

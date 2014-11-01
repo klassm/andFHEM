@@ -215,7 +215,7 @@ public class FHEMWEBConnection extends FHEMConnection {
                 return null;
 
         }
-        Log.i(TAG, "encountered http status code " + statusCode);
+        Log.i(TAG, "handleHttpStatusCode() : encountered http status code " + statusCode);
         return new RequestResult<>(error);
     }
 

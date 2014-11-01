@@ -180,7 +180,7 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
         emptyView.setVisibility(View.VISIBLE);
     }
 
-    protected void hideUpdatingBar() {
+    private void hideUpdatingBar() {
         View view = getView();
         if (view == null) return;
 
@@ -188,9 +188,6 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
         if (updatingBar.isPresent()) {
             updatingBar.get().setVisibility(View.GONE);
         }
-
-        Intent intent = new Intent(Actions.DISMISS_UPDATING_DIALOG);
-        getActivity().sendBroadcast(intent);
     }
 
     protected Optional<ProgressBar> getUpdatingBar(View view) {

@@ -33,6 +33,7 @@ import li.klass.fhem.service.intent.FavoritesIntentService;
 import li.klass.fhem.service.intent.ImageIntentService;
 import li.klass.fhem.service.intent.NotificationIntentService;
 import li.klass.fhem.service.intent.RoomListIntentService;
+import li.klass.fhem.service.intent.RoomListUpdateIntentService;
 import li.klass.fhem.service.intent.SendCommandIntentService;
 
 @Module(complete = false,
@@ -40,6 +41,7 @@ import li.klass.fhem.service.intent.SendCommandIntentService;
                 ConnectionsIntentService.class,
                 SendCommandIntentService.class,
                 RoomListIntentService.class,
+                RoomListUpdateIntentService.class,
                 NotificationIntentService.class,
                 ImageIntentService.class,
                 FavoritesIntentService.class,

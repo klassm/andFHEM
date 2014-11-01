@@ -428,10 +428,9 @@ public class TimerDetailFragment extends BaseFragment {
 
                 setValuesForCurrentTimerDevice((AtDevice) device);
 
-                Intent intent = new Intent(Actions.DISMISS_UPDATING_DIALOG);
-
                 FragmentActivity activity = getActivity();
-                if (activity != null) activity.sendBroadcast(intent);
+                if (activity != null)
+                    activity.sendBroadcast(new Intent(Actions.DISMISS_EXECUTING_DIALOG));
             }
         });
         getActivity().startService(intent);

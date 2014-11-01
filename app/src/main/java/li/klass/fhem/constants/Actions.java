@@ -29,8 +29,6 @@ public class Actions {
 
     public static final String SHOW_FRAGMENT = prefix + "SHOW_FRAGMENT";
 
-    public static final String SHOW_UPDATING_DIALOG = prefix + "SHOW_UPDATING_DIALOG";
-    public static final String DISMISS_UPDATING_DIALOG = prefix + "DISMISS_UPDATING_DIALOG";
     public static final String SHOW_EXECUTING_DIALOG = prefix + "SHOW_EXECUTING_DIALOG";
     public static final String DISMISS_EXECUTING_DIALOG = prefix + "DISMISS_EXECUTING_DIALOG";
     public static final String RESEND_LAST_FAILED_COMMAND = prefix + "RESEND_LAST_FAILED_COMMAND";
@@ -82,6 +80,8 @@ public class Actions {
 
 
     public static final String DO_UPDATE = prefix + "DO_UPDATE";
+    public static final String DO_REMOTE_UPDATE = prefix + "DO_REMOTE_UPDATE";
+    public static final String REMOTE_UPDATE_FINISHED = prefix + "REMOTE_UPDATE_FINISHED";
     public static final String REDRAW = prefix + "REDRAW";
 
 

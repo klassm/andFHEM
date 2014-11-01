@@ -41,7 +41,7 @@ import static li.klass.fhem.domain.core.DeviceType.getDeviceTypeFor;
 /**
  * Class to hold devices for a certain room.
  */
-public class RoomDeviceList implements Serializable, Cloneable {
+public class RoomDeviceList implements Serializable {
 
     /**
      * Name of the room that contains _all_ devices.
@@ -66,6 +66,13 @@ public class RoomDeviceList implements Serializable, Cloneable {
      */
     public RoomDeviceList(String roomName) {
         this.roomName = roomName;
+    }
+
+    public RoomDeviceList(RoomDeviceList roomDeviceList) {
+        this.roomName = roomDeviceList.roomName;
+        for (Device device : roomDeviceList.getAllDevices()) {
+            addDevice(device);
+        }
     }
 
     /**
@@ -190,17 +197,6 @@ public class RoomDeviceList implements Serializable, Cloneable {
 
     public void setHiddenRooms(List<String> hiddenRooms) {
         this.hiddenRooms = hiddenRooms;
-    }
-
-    @Override
-    public Object clone() throws CloneNotSupportedException {
-        RoomDeviceList roomDeviceList = (RoomDeviceList) super.clone();
-        roomDeviceList.roomName = roomName;
-        for (Device device : getAllDevices()) {
-            roomDeviceList.addDevice(device);
-        }
-
-        return roomDeviceList;
     }
 
     @SuppressWarnings("unchecked")

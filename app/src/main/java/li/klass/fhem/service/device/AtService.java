@@ -78,7 +78,7 @@ public class AtService {
 
     public void modify(String timerName, int hour, int minute, int second, String repetition, String type,
                        String targetDeviceName, String targetState, String targetStateAppendix, boolean isActive) {
-        AtDevice device = (AtDevice) roomListService.getDeviceForName(timerName, RoomListService.NEVER_UPDATE_PERIOD);
+        AtDevice device = (AtDevice) roomListService.getDeviceForName(timerName);
 
         setValues(hour, minute, second, repetition, type, targetDeviceName, targetState, targetStateAppendix, device, isActive);
         String definition = device.toFHEMDefinition();

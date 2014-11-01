@@ -37,8 +37,6 @@ import li.klass.fhem.service.CommandExecutionService;
 import li.klass.fhem.service.room.RoomListService;
 import li.klass.fhem.util.StringUtil;
 
-import static li.klass.fhem.service.room.RoomListService.NEVER_UPDATE_PERIOD;
-
 /**
  * Class accumulating all device actions like renaming, moving or deleting.
  */
@@ -73,7 +71,7 @@ public class DeviceService {
      */
     public void deleteDevice(final Device device) {
         commandExecutionService.executeSafely("delete " + device.getName());
-        roomListService.getAllRoomsDeviceList(NEVER_UPDATE_PERIOD).removeDevice(device);
+        roomListService.getAllRoomsDeviceList().removeDevice(device);
     }
 
     /**

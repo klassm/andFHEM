@@ -33,6 +33,7 @@ import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.RoomDeviceList;
 import li.klass.fhem.service.room.FavoritesService;
+import li.klass.fhem.service.room.RoomListService;
 
 import static li.klass.fhem.constants.Actions.FAVORITES_IS_FAVORITES;
 import static li.klass.fhem.constants.Actions.FAVORITES_PRESENT;
@@ -49,20 +50,26 @@ public class FavoritesIntentService extends ConvenientIntentService {
     @Inject
     FavoritesService favoritesService;
 
+    @Inject
+    RoomListService roomListService;
+
     public FavoritesIntentService() {
         super(FavoritesIntentService.class.getName());
     }
 
     @Override
     protected STATE handleIntent(Intent intent, long updatePeriod, ResultReceiver resultReceiver) {
-
         String action = intent.getAction();
         if (action == null) {
             return STATE.ERROR;
         }
 
+        if (roomListService.updateRoomDeviceListIfRequired(intent, updatePeriod) == RoomListService.RemoteUpdateRequired.REQUIRED) {
+            return STATE.DONE;
+        }
+
         if (FAVORITE_ROOM_LIST.equals(action)) {
-            RoomDeviceList favorites = favoritesService.getFavorites(updatePeriod);
+            RoomDeviceList favorites = favoritesService.getFavorites(intent, updatePeriod);
             sendSingleExtraResult(resultReceiver, SUCCESS, DEVICE_LIST, favorites);
         } else if (FAVORITE_ADD.equals(action)) {
             Device device = (Device) intent.getSerializableExtra(DEVICE);

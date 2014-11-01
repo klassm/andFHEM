@@ -45,6 +45,7 @@ import static li.klass.fhem.constants.Actions.GET_ALL_ROOMS_DEVICE_LIST;
 import static li.klass.fhem.constants.Actions.GET_DEVICE_FOR_NAME;
 import static li.klass.fhem.constants.Actions.GET_ROOM_DEVICE_LIST;
 import static li.klass.fhem.constants.Actions.GET_ROOM_NAME_LIST;
+import static li.klass.fhem.constants.Actions.REMOTE_UPDATE_FINISHED;
 import static li.klass.fhem.constants.Actions.UPDATE_DEVICE_WITH_UPDATE_MAP;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_LIST;
@@ -53,6 +54,7 @@ import static li.klass.fhem.constants.BundleExtraKeys.ROOM_LIST;
 import static li.klass.fhem.constants.BundleExtraKeys.ROOM_NAME;
 import static li.klass.fhem.constants.BundleExtraKeys.UPDATE_MAP;
 import static li.klass.fhem.constants.BundleExtraKeys.VIBRATE;
+import static li.klass.fhem.service.room.RoomListService.RemoteUpdateRequired;
 
 public class RoomListIntentService extends ConvenientIntentService {
 
@@ -65,21 +67,26 @@ public class RoomListIntentService extends ConvenientIntentService {
 
     @Override
     protected STATE handleIntent(Intent intent, long updatePeriod, ResultReceiver resultReceiver) {
-        if (GET_ALL_ROOMS_DEVICE_LIST.equals(intent.getAction())) {
-            RoomDeviceList allRoomsDeviceList = roomListService.getAllRoomsDeviceList(updatePeriod);
+        if (roomListService.updateRoomDeviceListIfRequired(intent, updatePeriod) == RemoteUpdateRequired.REQUIRED) {
+            return STATE.DONE;
+        }
+
+        String action = intent.getAction();
+        if (GET_ALL_ROOMS_DEVICE_LIST.equals(action)) {
+            RoomDeviceList allRoomsDeviceList = roomListService.getAllRoomsDeviceList();
             sendResultWithLastUpdate(resultReceiver, ResultCodes.SUCCESS, DEVICE_LIST, allRoomsDeviceList);
-        } else if (GET_ROOM_NAME_LIST.equals(intent.getAction())) {
-            ArrayList<String> roomNameList = roomListService.getRoomNameList(updatePeriod);
+        } else if (GET_ROOM_NAME_LIST.equals(action)) {
+            ArrayList<String> roomNameList = roomListService.getRoomNameList();
             sendResultWithLastUpdate(resultReceiver, ResultCodes.SUCCESS, ROOM_LIST, roomNameList);
-        } else if (GET_ROOM_DEVICE_LIST.equals(intent.getAction())) {
+        } else if (GET_ROOM_DEVICE_LIST.equals(action)) {
             String roomName = intent.getStringExtra(ROOM_NAME);
-            RoomDeviceList roomDeviceList = roomListService.getDeviceListForRoom(roomName, updatePeriod);
+            RoomDeviceList roomDeviceList = roomListService.getDeviceListForRoom(roomName);
             sendResultWithLastUpdate(resultReceiver, ResultCodes.SUCCESS, DEVICE_LIST, roomDeviceList);
-        } else if (GET_DEVICE_FOR_NAME.equals(intent.getAction())) {
+        } else if (GET_DEVICE_FOR_NAME.equals(action)) {
             String deviceName = intent.getStringExtra(DEVICE_NAME);
-            Device device = roomListService.getDeviceForName(deviceName, updatePeriod);
+            Device device = roomListService.getDeviceForName(deviceName);
             sendResultWithLastUpdate(resultReceiver, ResultCodes.SUCCESS, DEVICE, device);
-        } else if (UPDATE_DEVICE_WITH_UPDATE_MAP.equals(intent.getAction())) {
+        } else if (UPDATE_DEVICE_WITH_UPDATE_MAP.equals(action)) {
             String deviceName = intent.getStringExtra(DEVICE_NAME);
             @SuppressWarnings("unchecked")
             Map<String, String> updates = (Map<String, String>) intent.getSerializableExtra(UPDATE_MAP);
@@ -88,6 +95,8 @@ public class RoomListIntentService extends ConvenientIntentService {
             roomListService.parseReceivedDeviceStateMap(deviceName, updates, vibrateUponNotification);
 
             sendBroadcast(new Intent(Actions.DO_UPDATE));
+        } else if (REMOTE_UPDATE_FINISHED.equals(action)) {
+            roomListService.remoteUpdateFinished(intent);
         }
 
         return STATE.DONE;
