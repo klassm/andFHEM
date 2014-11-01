@@ -31,7 +31,6 @@ import li.klass.fhem.service.connection.ConnectionService;
 import li.klass.fhem.util.ApplicationProperties;
 
 public class DataConnectionSwitch {
-    public static final String CONNECTION_TYPE = "CONNECTION_TYPE";
 
     @Inject
     ConnectionService connectionService;

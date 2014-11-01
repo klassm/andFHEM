@@ -150,13 +150,39 @@ public class FHEMServerSpec implements Comparable<FHEMServerSpec>, Serializable 
 
         FHEMServerSpec that = (FHEMServerSpec) o;
 
-        return !(id != null ? !id.equals(that.id) : that.id != null);
+        if (clientCertificateEnabled != that.clientCertificateEnabled) return false;
+        if (port != that.port) return false;
+        if (clientCertificatePassword != null ? !clientCertificatePassword.equals(that.clientCertificatePassword) : that.clientCertificatePassword != null)
+            return false;
+        if (clientCertificatePath != null ? !clientCertificatePath.equals(that.clientCertificatePath) : that.clientCertificatePath != null)
+            return false;
+        if (!id.equals(that.id)) return false;
+        if (ip != null ? !ip.equals(that.ip) : that.ip != null) return false;
+        if (password != null ? !password.equals(that.password) : that.password != null)
+            return false;
+        if (serverCertificatePath != null ? !serverCertificatePath.equals(that.serverCertificatePath) : that.serverCertificatePath != null)
+            return false;
+        if (serverType != that.serverType) {
+            return false;
+        }
+        return !(url != null ? !url.equals(that.url) : that.url != null) && !(username != null ? !username.equals(that.username) : that.username != null);
 
     }
 
     @Override
     public int hashCode() {
-        return id != null ? id.hashCode() : 0;
+        int result = id.hashCode();
+        result = 31 * result + (password != null ? password.hashCode() : 0);
+        result = 31 * result + (ip != null ? ip.hashCode() : 0);
+        result = 31 * result + port;
+        result = 31 * result + (url != null ? url.hashCode() : 0);
+        result = 31 * result + (username != null ? username.hashCode() : 0);
+        result = 31 * result + (clientCertificatePath != null ? clientCertificatePath.hashCode() : 0);
+        result = 31 * result + (serverCertificatePath != null ? serverCertificatePath.hashCode() : 0);
+        result = 31 * result + (clientCertificateEnabled ? 1 : 0);
+        result = 31 * result + (clientCertificatePassword != null ? clientCertificatePassword.hashCode() : 0);
+        result = 31 * result + serverType.hashCode();
+        return result;
     }
 
     @Override

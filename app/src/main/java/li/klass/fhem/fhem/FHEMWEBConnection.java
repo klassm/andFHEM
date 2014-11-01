@@ -127,7 +127,7 @@ public class FHEMWEBConnection extends FHEMConnection {
 
             RequestResult<InputStream> errorResult = handleHttpStatusCode(statusCode);
             if (errorResult != null) {
-                String msg = "found error " + errorResult.error.getClass().getSimpleName() + " for " +
+                String msg = "found error " + errorResult.error.getDeclaringClass().getSimpleName() + " for " +
                         "status code " + statusCode;
                 Log.d(TAG, msg);
                 ErrorHolder.setError(null, msg);
