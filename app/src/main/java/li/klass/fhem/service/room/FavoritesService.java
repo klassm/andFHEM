@@ -26,7 +26,6 @@ package li.klass.fhem.service.room;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 
 import java.util.Set;
@@ -77,12 +76,9 @@ public class FavoritesService {
     /**
      * Reads all saved favorite devices. The result will be provided to the given listener.
      *
-     * @param intent
-     * @param updatePeriod -1 if the underlying list should always be updated, otherwise do update if the last update is
-     *                     longer ago than the given period
      * @return favorite {@link RoomDeviceList}
      */
-    public RoomDeviceList getFavorites(Intent intent, long updatePeriod) {
+    public RoomDeviceList getFavorites() {
 
         RoomDeviceList allRoomsDeviceList = roomListService.getAllRoomsDeviceList();
         RoomDeviceList favoritesList = new RoomDeviceList("favorites");
@@ -101,7 +97,7 @@ public class FavoritesService {
     }
 
     public boolean hasFavorites() {
-        return getPreferences().getAll().size() > 0;
+        return !getFavorites().isEmptyOrOnlyContainsDoNotShowDevices();
     }
 
     public boolean isFavorite(String deviceName) {

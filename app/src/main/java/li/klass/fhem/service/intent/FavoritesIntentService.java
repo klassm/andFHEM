@@ -69,7 +69,7 @@ public class FavoritesIntentService extends ConvenientIntentService {
         }
 
         if (FAVORITE_ROOM_LIST.equals(action)) {
-            RoomDeviceList favorites = favoritesService.getFavorites(intent, updatePeriod);
+            RoomDeviceList favorites = favoritesService.getFavorites();
             sendSingleExtraResult(resultReceiver, SUCCESS, DEVICE_LIST, favorites);
         } else if (FAVORITE_ADD.equals(action)) {
             Device device = (Device) intent.getSerializableExtra(DEVICE);

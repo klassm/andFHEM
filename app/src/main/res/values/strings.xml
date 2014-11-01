@@ -585,4 +585,8 @@
     <string name="dp_suffix" translatable="false">dp</string>
     <string name="s_suffix" translatable="false">s</string>
     <string name="average">average</string>
+
+    <string name="currentStatus_billing">Init connection to Google billing …</string>
+    <string name="currentStatus_loadingDeviceList">Loading device list …</string>
+    <string name="currentStatus_loadingFavorites">Loading favorites …</string>
 </resources>

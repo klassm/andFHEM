@@ -547,5 +547,9 @@
     <string name="zoom_reset">Zoom zurücksetzen</string>
     <string name="zoom_in">Zoom +</string>
     <string name="zoom_out">Zoom -</string>
-    <string name="average">Durschnitt</string>
+    <string name="average">Durchschnitt</string>
+
+    <string name="currentStatus_billing">Initialisiere Verbindung zu Google Billing …</string>
+    <string name="currentStatus_loadingDeviceList">Lade Geräteliste …</string>
+    <string name="currentStatus_loadingFavorites">Lade Favoriten …</string>
 </resources>

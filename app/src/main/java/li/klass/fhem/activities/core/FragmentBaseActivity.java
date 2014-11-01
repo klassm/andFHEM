@@ -32,7 +32,6 @@ import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.ResultReceiver;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
@@ -64,7 +63,6 @@ import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.fragments.FragmentType;
 import li.klass.fhem.fragments.core.BaseFragment;
 import li.klass.fhem.license.LicenseService;
-import li.klass.fhem.service.intent.FavoritesIntentService;
 import li.klass.fhem.service.room.RoomListService;
 import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.DialogUtil;
@@ -218,8 +216,8 @@ public abstract class FragmentBaseActivity extends ActionBarActivity implements 
 
     private void initialize(final Bundle savedInstanceState) {
         AndFHEMApplication application = (AndFHEMApplication) getApplication();
-
         application.inject(this);
+
 
         if (application.isAndFHEMAlreadyInstalled()) {
             startActivity(new Intent(this, DuplicateInstallActivity.class));
@@ -246,19 +244,13 @@ public abstract class FragmentBaseActivity extends ActionBarActivity implements 
 
         initDrawerLayout();
 
-        Log.i(TAG, "initialize() : onCreate => starting BillingService");
-        billingService.loadInventory(new BillingService.OnLoadInventoryFinishedListener() {
-            @Override
-            public void onInventoryLoadFinished() {
-                Log.i(TAG, "initialize() : Billing initialized, creating initial fragment");
-                if (savedInstanceState == null && !saveInstanceStateCalled) {
-                    handleStartupFragment();
-                }
-            }
-        });
+        boolean hasFavorites = getIntent().getBooleanExtra(BundleExtraKeys.HAS_FAVORITES, true);
+        if (savedInstanceState == null && !saveInstanceStateCalled) {
+            handleStartupFragment(hasFavorites);
+        }
     }
 
-    private void handleStartupFragment() {
+    private void handleStartupFragment(boolean hasFavorites) {
         String startupView = applicationProperties.getStringSharedPreference(STARTUP_VIEW,
                 FragmentType.FAVORITES.name());
         FragmentType preferencesStartupFragment = FragmentType.forEnumName(startupView);
@@ -268,33 +260,15 @@ public abstract class FragmentBaseActivity extends ActionBarActivity implements 
 
         FragmentType fragmentType = FragmentType.ALL_DEVICES;
         if (preferencesStartupFragment != null) {
-            if (preferencesStartupFragment == FAVORITES) {
-                Log.i(TAG, "startup with " + FAVORITES);
-                Intent intent = new Intent(Actions.FAVORITES_PRESENT);
-                intent.setClass(this, FavoritesIntentService.class);
-                intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
-                    @Override
-                    protected void onReceiveResult(int resultCode, Bundle resultData) {
-                        super.onReceiveResult(resultCode, resultData);
-
-                        if (resultCode != ResultCodes.SUCCESS || saveInstanceStateCalled) {
-                            Log.e(TAG, "favorites response was " + resultData + " (" + resultCode + ")");
-                        } else {
-                            handleHasFavoritesResponse(resultCode, resultData);
-                        }
-                    }
-                });
-                startService(intent);
-                fragmentType = null;
+            if (preferencesStartupFragment == FAVORITES && hasFavorites) {
+                fragmentType = FAVORITES;
             } else {
                 fragmentType = preferencesStartupFragment;
             }
         }
 
-        if (fragmentType != null) {
-            Log.i(TAG, "handleStartupFragment () : startup with " + fragmentType + " (extras: " + startupBundle + ")");
-            switchToFragment(fragmentType, startupBundle);
-        }
+        Log.i(TAG, "handleStartupFragment () : startup with " + fragmentType + " (extras: " + startupBundle + ")");
+        switchToFragment(fragmentType, startupBundle);
     }
 
     private void handleConnectionSpinner(ActionBar actionBar) {
