@@ -192,7 +192,7 @@ public class FHEMServerSpec implements Comparable<FHEMServerSpec>, Serializable 
         return "FHEMServerSpec{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
-                ", password='" + (Strings.isNullOrEmpty(password) ? "empty" : "set") + '\'' +
+                ", password='" + (Strings.isNullOrEmpty(password) ? "empty" : "*****") + '\'' +
                 ", ip='" + ip + '\'' +
                 ", port=" + port +
                 ", url='" + url + '\'' +
