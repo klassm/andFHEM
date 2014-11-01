@@ -34,6 +34,7 @@ import com.android.vending.billing.Inventory;
 import com.android.vending.billing.Purchase;
 
 import java.util.Set;
+import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicReference;
 
 import javax.inject.Inject;
@@ -50,7 +51,8 @@ public class BillingService {
 
     IabHelper iabHelper;
     private AtomicReference<Inventory> inventory = new AtomicReference<>(Inventory.empty());
-    private volatile boolean setupInProgress = false;
+
+    private final Semaphore setupOverlapSemaphore = new Semaphore(1);
 
     @Inject
     @ForApplication
@@ -128,7 +130,6 @@ public class BillingService {
     }
 
     private synchronized void ensureSetup(SetupFinishedListener listener) {
-        awaitSetupCompletion();
         if (isSetup()) {
             Log.i(TAG, "I am already setup");
             listener.onSetupFinished();
@@ -138,28 +139,10 @@ public class BillingService {
         }
     }
 
-    private void awaitSetupCompletion() {
-        boolean waited = false;
-        while (setupInProgress) {
-            waited = true;
-            try {
-                Log.d(TAG, "wait for setup completion");
-                synchronized (this) {
-                    wait();
-                }
-            } catch (InterruptedException e) {
-                Log.e(TAG, "interrupted", e);
-            }
-        }
-        if (waited) {
-            Log.d(TAG, "notified => setup complete");
-        }
-    }
-
     synchronized void setup(final SetupFinishedListener listener) {
         checkNotNull(listener);
 
-        setupInProgress = true;
+        setupOverlapSemaphore.acquireUninterruptibly();
 
         try {
             Log.d(TAG, "Starting setup");
@@ -175,14 +158,15 @@ public class BillingService {
                         }
                         listener.onSetupFinished();
                     } finally {
-                        notifySetupWaitingThreads();
+                        setupOverlapSemaphore.release();
+                        listener.onSetupFinished();
                     }
                 }
             });
         } catch (Exception e) {
             Log.i(TAG, "Error while trying to start billing", e);
+            setupOverlapSemaphore.release();
             listener.onSetupFinished();
-            notifySetupWaitingThreads();
         }
     }
 
@@ -190,37 +174,28 @@ public class BillingService {
         return new IabHelper(applicationContext, PUBLIC_KEY_ENCODED);
     }
 
-    private void notifySetupWaitingThreads() {
-        synchronized (this) {
-            setupInProgress = false;
-            notifyAll();
-            Log.d(TAG, "setup complete => notifying all waiting threads");
-        }
-    }
-
     private synchronized void loadInternal(final OnLoadInventoryFinishedListener listener) {
         checkNotNull(iabHelper);
 
-        if (!iabHelper.isSetupDone()) {
-            inventory.set(Inventory.empty());
-            Log.e(TAG, "setup was not done, initializing with empty inventory");
-        } else if (isLoaded()) {
-            if (listener != null) listener.onInventoryLoadFinished();
-            Log.d(TAG, "inventory was already loaded, as found to not being empty, skipping load");
-        } else {
-            try {
+        try {
+            if (!iabHelper.isSetupDone()) {
+                inventory.set(Inventory.empty());
+                Log.e(TAG, "setup was not done, initializing with empty inventory");
+            } else if (isLoaded()) {
+                Log.d(TAG, "inventory was already loaded, skipping load");
+            } else {
                 Log.i(TAG, "loading inventory");
                 inventory.set(iabHelper.queryInventory(false, null));
-            } catch (Exception e) {
-                Log.e(TAG, "cannot load inventory", e);
-                inventory.set(Inventory.empty());
-
-            } finally {
-                if (listener != null) {
-                    listener.onInventoryLoadFinished();
-                }
-                BillingService.this.notifyAll();
             }
+        } catch (Exception e) {
+            Log.i(TAG, "cannot load inventory", e);
+            inventory.set(Inventory.empty());
+
+        } finally {
+            if (listener != null) {
+                listener.onInventoryLoadFinished();
+            }
+            BillingService.this.notifyAll();
         }
     }
 
