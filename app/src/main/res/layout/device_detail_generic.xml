@@ -62,23 +62,17 @@
 
     <LinearLayout
         android:id="@+id/graphButtons"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        style="@style/deviceDetailSectionContent"
         android:orientation="vertical">
 
         <TextView
             style="@style/deviceDetailSectionCaption"
             android:text="@string/plots"/>
-
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/actionButtons"
         style="@style/deviceDetailSectionContent"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
         android:orientation="vertical">
 
         <TextView
@@ -89,9 +83,6 @@
     <LinearLayout
         android:id="@+id/otherStuff"
         style="@style/deviceDetailSectionContent"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
         android:orientation="vertical">
     </LinearLayout>
 </LinearLayout>
