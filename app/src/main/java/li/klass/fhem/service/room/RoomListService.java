@@ -207,6 +207,11 @@ public class RoomListService extends AbstractService {
                 resend(resendIntent);
             }
             resendIntents.clear();
+
+            applicationContext.sendBroadcast(new Intent(Actions.REDRAW_ALL_WIDGETS));
+            applicationContext.startService(new Intent(Actions.REDRAW_ALL_WIDGETS));
+
+
             Log.i(TAG, "remote update finished, device list is " + deviceList);
         } finally {
             remoteUpdateInProgress.set(false);

@@ -131,7 +131,7 @@ public class BillingService {
             Log.i(TAG, "I am already setup");
             listener.onSetupFinished();
         } else {
-            Log.i(TAG, "Setting up ... (" + iabHelper + (iabHelper != null ? " " + iabHelper.isSetupDone() : "") + ")");
+            Log.d(TAG, "Setting up ... (helper=" + iabHelper + (iabHelper != null ? " " + iabHelper.isSetupDone() : "") + ")");
             setup(listener);
         }
     }
