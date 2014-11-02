@@ -87,10 +87,10 @@ public class BillingServiceTest extends RobolectricBaseTestCase {
     @Test
     public void should_dispose_null_IABHelper() {
         // given
-        billingService.iabHelper = null;
+        billingService.setIabHelper(null);
 
         // when
-        iabHelper.dispose();
+        billingService.stop();
 
         // then
         // verify no exception

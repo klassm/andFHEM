@@ -71,7 +71,7 @@ public class DeviceService {
      */
     public void deleteDevice(final Device device) {
         commandExecutionService.executeSafely("delete " + device.getName());
-        roomListService.getAllRoomsDeviceList().removeDevice(device);
+        roomListService.getRoomDeviceList().removeDevice(device);
     }
 
     /**

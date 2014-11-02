@@ -26,7 +26,8 @@ package li.klass.fhem.domain.core;
 
 import android.content.Context;
 
-import org.apache.commons.io.IOUtils;
+import com.google.common.io.CharStreams;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.experimental.categories.Category;
@@ -34,6 +35,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import java.io.InputStream;
+import java.io.InputStreamReader;
 
 import li.klass.fhem.infra.basetest.RobolectricBaseTestCase;
 import li.klass.fhem.service.connection.ConnectionService;
@@ -67,6 +69,7 @@ public abstract class DeviceXMLParsingBase extends RobolectricBaseTestCase {
         doReturn(true).when(connectionService).mayShowInCurrentConnectionType(any(DeviceType.class));
 
         InputStream inputStream = null;
+        InputStreamReader inputStreamReader = null;
         try {
 
             inputStream = getTestFileBaseClass().getResourceAsStream(getFileName());
@@ -74,11 +77,13 @@ public abstract class DeviceXMLParsingBase extends RobolectricBaseTestCase {
             if (inputStream == null) {
                 throw new IllegalArgumentException("cannot find " + getFileName());
             }
-            String content = IOUtils.toString(inputStream);
+
+            inputStreamReader = new InputStreamReader(inputStream);
+            String content = CharStreams.toString(inputStreamReader);
 
             roomDeviceList = deviceListParser.parseXMLListUnsafe(content);
         } finally {
-            CloseableUtil.close(inputStream);
+            CloseableUtil.close(inputStream, inputStreamReader);
         }
     }
 

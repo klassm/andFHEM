@@ -83,14 +83,14 @@ public class RoomListService extends AbstractService {
     public static final String LAST_UPDATE_PROPERTY = "LAST_UPDATE";
 
     public static final long NEVER_UPDATE_PERIOD = 0;
-
     public static final long ALWAYS_UPDATE_PERIOD = -1;
+
     public static final String SORT_ROOMS_DELIMITER = " ";
     public static final String DEFAULT_FHEMWEB_QUALIFIER = "andFHEM";
 
     private final AtomicBoolean remoteUpdateInProgress = new AtomicBoolean(false);
 
-    private List<Intent> resendIntents = Lists.newArrayList();
+    private List<Intent> resendIntents = newArrayList();
 
     volatile RoomDeviceList deviceList;
 
@@ -149,29 +149,60 @@ public class RoomListService extends AbstractService {
 
     /**
      * Retrieves a {@link RoomDeviceList} containing all devices, not only the devices of a specific room.
+     * The room device list will be a copy of the actual one. Thus, any modifications will have no effect!
      *
      * @return {@link RoomDeviceList} containing all devices
      */
     public RoomDeviceList getAllRoomsDeviceList() {
-        if (deviceList == null) {
-            deviceList = getCachedRoomDeviceListMap();
-        }
-        return new RoomDeviceList(getRoomDeviceList());
+        RoomDeviceList originalRoomDeviceList = getRoomDeviceList();
+        return new RoomDeviceList(originalRoomDeviceList);
     }
 
     /**
-     * Switch method deciding whether a FHEM has to be contacted, the cached list can be used or
-     * the map already has been loaded to the deviceList attribute.
-     * Note that if a remote update is currently in progress, the calling thread will be locked
-     * until the current operation has completed. This is especially important, as we are
-     * called by a thread pool in {@link li.klass.fhem.service.intent.RoomListIntentService}.
+     * Loads the currently cached {@link li.klass.fhem.domain.core.RoomDeviceList}. If the cached
+     * device list has not yet been loaded, it will be loaded from the cache object.
+     * <p/>
+     * <p>Watch out: Any modifications will be saved within the internal representation. Don't use
+     * this method from client code!</p>
      *
-     * @return current room device list map
+     * @return Currently cached {@link li.klass.fhem.domain.core.RoomDeviceList}.
      */
-    private RoomDeviceList getRoomDeviceList() {
+    public RoomDeviceList getRoomDeviceList() {
+
+        if (deviceList == null) {
+            deviceList = getCachedRoomDeviceListMap();
+        }
         return deviceList;
     }
 
+    /**
+     * Method will check if a remote update of the current device list is required. This is
+     * determined by two indicators:
+     * <ul>
+     * <li>After loading the cached device map, the cached map is still null. Effectively
+     * this means that no devices had been cached.</li>
+     * <li>The update period indicates that we have to update the device map.</li>
+     * </ul>
+     * <p/>
+     * <p>
+     * When finding out that we have to remotely update the device list, the current request
+     * (as intent) is cached and an intent to {@link li.klass.fhem.service.intent.RoomListUpdateIntentService}
+     * is sent. When the remote update completes, we will get an answer effectively calling
+     * {#remoteUpdateFinished}. The method will resent all cached intents, resulting in
+     * answers to waiting requests.
+     * </p>
+     * <p>
+     * By caching calling intents that all want to remotely load device lists, we make
+     * sure that only remote update is concurrently executed. Also, we do not queue
+     * remote requests, as they would load the same content from the server.
+     * </p>
+     *
+     * @param intent       calling intent (that might request a remote update)
+     * @param updatePeriod update period (that might indicate a necessary remote update)
+     * @return {@link li.klass.fhem.service.room.RoomListService.RemoteUpdateRequired#REQUIRED} if the
+     * calling intent will be cached and resend when the remote update has completed, otherwise
+     * {@link li.klass.fhem.service.room.RoomListService.RemoteUpdateRequired#NOT_REQUIRED}
+     */
     public RemoteUpdateRequired updateRoomDeviceListIfRequired(Intent intent, long updatePeriod) {
         if (deviceList == null) {
             deviceList = getCachedRoomDeviceListMap();
@@ -190,6 +221,12 @@ public class RoomListService extends AbstractService {
         }
     }
 
+    /**
+     * Entry point for completed remote updates. See {@link #updateRoomDeviceListIfRequired} for
+     * details on the process.
+     *
+     * @param intent Resulting remote update intent, containing the newly loaded device list.
+     */
     public void remoteUpdateFinished(Intent intent) {
         try {
             RoomDeviceList newDeviceList = (RoomDeviceList) intent.getSerializableExtra(BundleExtraKeys.DEVICE_LIST);

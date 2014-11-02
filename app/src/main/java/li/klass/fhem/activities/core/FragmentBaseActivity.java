@@ -424,7 +424,7 @@ public abstract class FragmentBaseActivity extends ActionBarActivity implements 
     @Override
     protected void onRestart() {
         super.onRestart();
-        billingService.loadInventory(null);
+        startService(new Intent(Actions.IS_PREMIUM).setClass(this, LicenseIntentService.class));
     }
 
     @Override

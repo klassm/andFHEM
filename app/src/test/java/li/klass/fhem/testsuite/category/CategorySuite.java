@@ -24,7 +24,11 @@
 
 package li.klass.fhem.testsuite.category;
 
-import org.apache.commons.io.FileUtils;
+import com.google.common.base.Function;
+import com.google.common.base.Predicate;
+import com.google.common.collect.ImmutableList;
+import com.google.common.io.Files;
+
 import org.junit.experimental.categories.Categories;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.Description;
@@ -38,8 +42,9 @@ import java.io.File;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
+
+import static com.google.common.collect.Lists.newArrayList;
 
 public class CategorySuite extends Suite {
 
@@ -87,7 +92,7 @@ public class CategorySuite extends Suite {
         }
 
         private List<Class<?>> categories(Description description) {
-            ArrayList<Class<?>> categories = new ArrayList<Class<?>>();
+            ArrayList<Class<?>> categories = newArrayList();
             categories.addAll(Arrays.asList(directCategories(description)));
             categories.addAll(Arrays.asList(directCategories(parentDescription(description.getTestClass()))));
             return categories;
@@ -135,25 +140,28 @@ public class CategorySuite extends Suite {
         return annotation == null ? null : annotation.value();
     }
 
-    private static Class<?>[] getSuiteClasses() {
-        String basePath = getBasePath();
+    private static Class[] getSuiteClasses() {
+        final String basePath = getBasePath();
         File basePathFile = new File(basePath);
 
-        Collection javaFiles = FileUtils.listFiles(basePathFile, new String[]{"java"}, true);
-
-        ArrayList<Class<?>> result = new ArrayList<Class<?>>();
-        for (Object fileObject : javaFiles) {
-            File file = (File) fileObject;
-            Class<?> cls = toClass(file, basePath);
-
-            if (cls == null || Modifier.isAbstract(cls.getModifiers())) {
-                continue;
+        ImmutableList<Class<?>> classes = Files.fileTreeTraverser().breadthFirstTraversal(basePathFile).filter(new Predicate<File>() {
+            @Override
+            public boolean apply(File input) {
+                return input.getName().endsWith(".java");
             }
+        }).transform(new Function<File, Class<?>>() {
+            @Override
+            public Class<?> apply(File input) {
+                return toClass(input, basePath);
+            }
+        }).filter(new Predicate<Class<?>>() {
+            @Override
+            public boolean apply(Class<?> input) {
+                return input != null && !Modifier.isAbstract(input.getModifiers());
+            }
+        }).toList();
+        return (classes.toArray(new Class[classes.size()]));
 
-            result.add(cls);
-        }
-
-        return result.toArray(new Class<?>[result.size()]);
     }
 
     protected static Class<?> toClass(File file, String basePath) {

@@ -26,7 +26,8 @@ package li.klass.fhem.service.room;
 
 import android.content.Context;
 
-import org.apache.commons.io.IOUtils;
+import com.google.common.io.CharStreams;
+
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,12 +35,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import java.io.InputStream;
+import java.io.InputStreamReader;
 
 import li.klass.fhem.domain.core.RoomDeviceList;
 import li.klass.fhem.fhem.DummyDataConnection;
 import li.klass.fhem.infra.AndFHEMRobolectricTestRunner;
 import li.klass.fhem.service.connection.ConnectionService;
 import li.klass.fhem.testutil.MockitoTestRule;
+import li.klass.fhem.util.CloseableUtil;
 
 import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.Is.is;
@@ -63,15 +66,17 @@ public class DummyDataParseTest {
         InputStream dummyDataStream = DummyDataConnection.class.getResourceAsStream("dummyData.xml");
         assertThat(dummyDataStream, is(not(nullValue())));
 
+        InputStreamReader reader = null;
         try {
-            String xmlList = IOUtils.toString(dummyDataStream);
+            reader = new InputStreamReader(dummyDataStream);
+            String xmlList = CharStreams.toString(reader);
             assertNotNull(xmlList);
 
             RoomDeviceList result = deviceListParser.parseAndWrapExceptions(xmlList);
 
             assertNotNull(result);
         } finally {
-            dummyDataStream.close();
+            CloseableUtil.close(dummyDataStream, reader);
         }
     }
 }

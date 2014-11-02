@@ -33,7 +33,6 @@ import com.android.vending.billing.IabResult;
 import com.android.vending.billing.Inventory;
 import com.android.vending.billing.Purchase;
 
-import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicReference;
 
 import javax.inject.Inject;
@@ -48,10 +47,8 @@ public class BillingService {
 
     public static final String TAG = BillingService.class.getName();
 
-    IabHelper iabHelper;
+    private IabHelper iabHelper;
     private AtomicReference<Inventory> inventory = new AtomicReference<>(Inventory.empty());
-
-    private final Semaphore setupOverlapSemaphore = new Semaphore(1);
 
     @Inject
     @ForApplication
@@ -139,8 +136,6 @@ public class BillingService {
     synchronized void setup(final SetupFinishedListener listener) {
         checkNotNull(listener);
 
-        setupOverlapSemaphore.acquireUninterruptibly();
-
         try {
             Log.d(TAG, "Starting setup");
             iabHelper = createIabHelper();
@@ -155,14 +150,12 @@ public class BillingService {
                         }
                         listener.onSetupFinished();
                     } finally {
-                        setupOverlapSemaphore.release();
                         listener.onSetupFinished();
                     }
                 }
             });
         } catch (Exception e) {
             Log.i(TAG, "Error while trying to start billing", e);
-            setupOverlapSemaphore.release();
             listener.onSetupFinished();
         }
     }
@@ -202,6 +195,10 @@ public class BillingService {
 
     Inventory getInventory() {
         return inventory.get();
+    }
+
+    void setIabHelper(IabHelper iabHelper) {
+        this.iabHelper = iabHelper;
     }
 
     public interface ProductPurchasedListener {
