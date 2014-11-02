@@ -37,8 +37,11 @@ import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.billing.BillingService;
 import li.klass.fhem.constants.Actions;
+import li.klass.fhem.constants.BundleExtraKeys;
+import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.fragments.core.BaseFragment;
-import li.klass.fhem.license.LicenseService;
+import li.klass.fhem.service.intent.LicenseIntentService;
+import li.klass.fhem.util.FhemResultReceiver;
 
 public class PremiumFragment extends BaseFragment implements BillingService.ProductPurchasedListener {
 
@@ -46,9 +49,6 @@ public class PremiumFragment extends BaseFragment implements BillingService.Prod
 
     @Inject
     BillingService billingService;
-
-    @Inject
-    LicenseService licenseService;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -74,16 +74,20 @@ public class PremiumFragment extends BaseFragment implements BillingService.Prod
         view.findViewById(R.id.shop_premium_bought).setVisibility(View.GONE);
         view.findViewById(R.id.shop_premium_buy).setVisibility(View.GONE);
 
-        licenseService.isPremium(new LicenseService.IsPremiumListener() {
-            @Override
-            public void onIsPremiumDetermined(boolean isPremium) {
-                if (isPremium) {
-                    view.findViewById(R.id.shop_premium_bought).setVisibility(View.VISIBLE);
-                } else {
-                    view.findViewById(R.id.shop_premium_buy).setVisibility(View.VISIBLE);
-                }
-            }
-        });
+        getActivity().startService(new Intent(Actions.IS_PREMIUM)
+                .setClass(getActivity(), LicenseIntentService.class)
+                .putExtra(BundleExtraKeys.RESULT_RECEIVER, new FhemResultReceiver() {
+                    @Override
+                    protected void onReceiveResult(int resultCode, Bundle resultData) {
+                        boolean isPremium = resultCode == ResultCodes.SUCCESS && resultData.getBoolean(BundleExtraKeys.IS_PREMIUM, false);
+
+                        if (isPremium) {
+                            view.findViewById(R.id.shop_premium_bought).setVisibility(View.VISIBLE);
+                        } else {
+                            view.findViewById(R.id.shop_premium_buy).setVisibility(View.VISIBLE);
+                        }
+                    }
+                }));
 
         getActivity().sendBroadcast(new Intent(Actions.DISMISS_EXECUTING_DIALOG));
     }

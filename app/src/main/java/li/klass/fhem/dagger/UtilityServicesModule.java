@@ -28,7 +28,6 @@ import dagger.Module;
 import li.klass.fhem.billing.BillingService;
 import li.klass.fhem.fhem.DataConnectionSwitch;
 import li.klass.fhem.gcm.GCMIntentService;
-import li.klass.fhem.license.LicenseService;
 import li.klass.fhem.service.CommandExecutionService;
 import li.klass.fhem.service.DateService;
 import li.klass.fhem.service.SharedPreferencesService;
@@ -51,7 +50,6 @@ import li.klass.fhem.update.UpdateHandler;
 @Module(complete = false,
         injects = {
                 BillingService.class,
-                LicenseService.class,
                 ConnectionService.class,
                 DataConnectionSwitch.class,
                 DeviceListParser.class,

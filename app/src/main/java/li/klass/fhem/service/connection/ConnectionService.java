@@ -44,7 +44,7 @@ import li.klass.fhem.domain.core.DeviceVisibility;
 import li.klass.fhem.fhem.connection.DummyServerSpec;
 import li.klass.fhem.fhem.connection.FHEMServerSpec;
 import li.klass.fhem.fhem.connection.ServerType;
-import li.klass.fhem.license.LicenseService;
+import li.klass.fhem.service.intent.LicenseIntentService;
 import li.klass.fhem.util.ApplicationProperties;
 
 import static com.google.common.collect.Lists.newArrayList;
@@ -61,14 +61,14 @@ public class ConnectionService {
     private static final String PREFERENCES_NAME = "fhemConnections";
 
     @Inject
-    LicenseService licenseService;
-
-    @Inject
     ApplicationProperties applicationProperties;
 
     @Inject
     @ForApplication
     Context applicationContext;
+
+    @Inject
+    LicenseIntentService licenseIntentService;
 
     private FHEMServerSpec dummyData;
     private DummyServerSpec testData;
@@ -83,7 +83,7 @@ public class ConnectionService {
         dummyData.setName("DummyData");
         dummyData.setServerType(ServerType.DUMMY);
 
-        if (licenseService != null && licenseService.isDebug()) {
+        if (LicenseIntentService.isDebug(applicationContext)) {
             testData = new DummyServerSpec(TEST_DATA_ID, "test.xml");
             testData.setName("TestData");
             testData.setServerType(ServerType.DUMMY);
@@ -96,20 +96,15 @@ public class ConnectionService {
                        final boolean clientCertificateEnabled, final String clientCertificatePassword) {
         if (exists(name)) return;
 
-        licenseService.isPremium(new LicenseService.IsPremiumListener() {
-            @Override
-            public void onIsPremiumDetermined(boolean isPremium) {
-                if (isPremium || getCountWithoutDummy() < PREMIUM_ALLOWED_FREE_CONNECTIONS) {
+        if (licenseIntentService.isPremium() || getCountWithoutDummy() < PREMIUM_ALLOWED_FREE_CONNECTIONS) {
 
-                    FHEMServerSpec server = new FHEMServerSpec(newUniqueId());
+            FHEMServerSpec server = new FHEMServerSpec(newUniqueId());
 
-                    fillServerWith(name, server, serverType, username, password, ip, port, url,
-                            clientCertificatePath, serverCertificatePath, clientCertificateEnabled, clientCertificatePassword);
+            fillServerWith(name, server, serverType, username, password, ip, port, url,
+                    clientCertificatePath, serverCertificatePath, clientCertificateEnabled, clientCertificatePassword);
 
-                    saveToPreferences(server);
-                }
-            }
-        });
+            saveToPreferences(server);
+        }
     }
 
     public boolean exists(String id) {

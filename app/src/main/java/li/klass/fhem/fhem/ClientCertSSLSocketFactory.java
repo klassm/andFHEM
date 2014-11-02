@@ -26,7 +26,8 @@ package li.klass.fhem.fhem;
 
 import android.util.Base64;
 
-import org.apache.commons.io.IOUtils;
+import com.google.common.io.CharStreams;
+
 import org.apache.http.conn.ssl.SSLSocketFactory;
 
 import java.io.BufferedReader;
@@ -45,6 +46,8 @@ import javax.net.ssl.KeyManager;
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
+
+import li.klass.fhem.util.CloseableUtil;
 
 import static com.google.common.base.Objects.firstNonNull;
 
@@ -179,7 +182,13 @@ public class ClientCertSSLSocketFactory extends SSLSocketFactory {
             return "";
         }
 
-        return IOUtils.toString(inputStream);
+        InputStreamReader reader = null;
+        try {
+            reader = new InputStreamReader(inputStream);
+            return CharStreams.toString(reader);
+        } finally {
+            CloseableUtil.close(reader);
+        }
     }
 
     @Override

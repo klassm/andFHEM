@@ -30,13 +30,14 @@ import android.util.Log;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Predicate;
+import com.google.common.io.CharStreams;
 
-import org.apache.commons.io.IOUtils;
-
+import java.io.InputStreamReader;
 import java.util.List;
 
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
+import li.klass.fhem.util.CloseableUtil;
 import li.klass.fhem.util.DialogUtil;
 
 import static com.google.common.collect.Iterables.filter;
@@ -49,10 +50,10 @@ public class ErrorHolder {
         @Override
         public boolean apply(String input) {
             return !input.contains("D/li.klass") &&
-                    ! input.contains("dalvikvm") &&
-                    ! input.contains("W/Resources") &&
-                    ! input.contains("requestLayout() improperly") &&
-                    ! input.contains("V/li.klass");
+                    !input.contains("dalvikvm") &&
+                    !input.contains("W/Resources") &&
+                    !input.contains("requestLayout() improperly") &&
+                    !input.contains("V/li.klass");
         }
     };
 
@@ -67,7 +68,8 @@ public class ErrorHolder {
 
     public static ErrorHolder ERROR_HOLDER = new ErrorHolder();
 
-    private ErrorHolder() {}
+    private ErrorHolder() {
+    }
 
     public static void setError(Exception exception, String errorMessage) {
         ErrorHolder holder = ErrorHolder.ERROR_HOLDER;
@@ -114,16 +116,20 @@ public class ErrorHolder {
 
     @SuppressWarnings("unchecked")
     public static void sendApplicationLogAsMail(Context context) {
+        InputStreamReader reader = null;
         try {
             Process process = Runtime.getRuntime().exec("logcat -d");
-            List<String> logLines = IOUtils.readLines(process.getInputStream());
+            reader = new InputStreamReader(process.getInputStream());
+
+            List<String> logLines = CharStreams.readLines(reader);
             String log = Joiner.on("\r\n").join(filter(logLines, LOG_INCLUDE_PREDICATE));
 
             sendMail(context, context.getString(R.string.application_log_send), "Send app log",
                     log, TailHandling.LAST);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             Log.e(TAG, "Error while reading application log", e);
+        } finally {
+            CloseableUtil.close(reader);
         }
     }
 
@@ -131,7 +137,7 @@ public class ErrorHolder {
                                  TailHandling tailHandling) {
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
-        intent.putExtra(Intent.EXTRA_EMAIL, new String[] {AndFHEMApplication.ANDFHEM_MAIL});
+        intent.putExtra(Intent.EXTRA_EMAIL, new String[]{AndFHEMApplication.ANDFHEM_MAIL});
         intent.putExtra(Intent.EXTRA_SUBJECT, subject);
 
         // we have to limit the transaction size, see http://www.lonestarprod.com/?p=34

@@ -552,4 +552,5 @@
     <string name="currentStatus_billing">Initialisiere Verbindung zu Google Billing …</string>
     <string name="currentStatus_loadingDeviceList">Lade Geräteliste …</string>
     <string name="currentStatus_loadingFavorites">Lade Favoriten …</string>
+    <string name="currentStatus_billingInitError">Kann keine Verbindung zu Google Billing herstellen.</string>
 </resources>

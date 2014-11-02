@@ -189,6 +189,14 @@
         </service>
 
         <service
+            android:name="li.klass.fhem.service.intent.LicenseIntentService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="li.klass.fhem.constants.Actions.IS_PREMIUM"/>
+            </intent-filter>
+        </service>
+
+        <service
             android:name="li.klass.fhem.appwidget.service.AppWidgetListViewUpdateRemoteViewsService"
             android:permission="android.permission.BIND_REMOTEVIEWS"/>
 

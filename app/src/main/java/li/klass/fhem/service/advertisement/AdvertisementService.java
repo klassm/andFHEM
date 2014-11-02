@@ -25,9 +25,11 @@
 package li.klass.fhem.service.advertisement;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -46,64 +48,79 @@ import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
+import li.klass.fhem.dagger.ForApplication;
 import li.klass.fhem.fragments.FragmentType;
-import li.klass.fhem.license.LicenseService;
+import li.klass.fhem.service.intent.LicenseIntentService;
+import li.klass.fhem.util.FhemResultReceiver;
+
+import static li.klass.fhem.constants.BundleExtraKeys.IS_PREMIUM;
+import static li.klass.fhem.constants.ResultCodes.SUCCESS;
 
 public class AdvertisementService {
     private static final String TAG = AdvertisementService.class.getName();
     private static long lastErrorTimestamp = 0;
+
     @Inject
-    LicenseService licenseService;
+    @ForApplication
+    Context applicationContext;
 
     public void addAd(final View view, final Activity activity) {
-        licenseService.isPremium(new LicenseService.IsPremiumListener() {
-            @Override
-            public void onIsPremiumDetermined(boolean isPremium) {
-                boolean showAds = true;
-                final LinearLayout adContainer = (LinearLayout) view.findViewById(R.id.adContainer);
 
-                if (adContainer == null) {
-                    Log.i(TAG, "cannot find adContainer");
-                    return;
-                } else if (isPremium) {
-                    showAds = false;
-                    Log.i(TAG, "found premium version, skipping ads");
-                } else {
-                    Resources resources = activity.getResources();
-                    if (resources.getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE
-                            && !resources.getBoolean(R.bool.isTablet)) {
-                        showAds = false;
-                        Log.i(TAG, "found landscape orientation, skipping ads");
-                    }
-                }
+        applicationContext.startService(new Intent(Actions.IS_PREMIUM)
+                        .setClass(applicationContext, LicenseIntentService.class)
+                        .putExtra(BundleExtraKeys.RESULT_RECEIVER, new FhemResultReceiver() {
+                            @Override
+                            protected void onReceiveResult(int resultCode, Bundle resultData) {
+                                boolean isPremium = resultCode == SUCCESS && resultData.getBoolean(IS_PREMIUM, false);
+                                showAdsBasedOnPremium(isPremium, view, activity);
+                            }
+                        })
+        );
+    }
 
-                if (!showAds) {
-                    adContainer.setVisibility(View.GONE);
-                } else if (GooglePlayServicesUtil.isGooglePlayServicesAvailable(activity) != ConnectionResult.SUCCESS) {
-                    addErrorView(activity, adContainer);
-                    Log.e(TAG, "cannot find PlayServices");
-                } else {
-                    adContainer.setVisibility(View.VISIBLE);
+    private void showAdsBasedOnPremium(boolean isPremium, View view, Activity activity) {
+        boolean showAds = true;
+        final LinearLayout adContainer = (LinearLayout) view.findViewById(R.id.adContainer);
 
-                    if (System.currentTimeMillis() - lastErrorTimestamp < 1000 * 60 * 10) {
-                        addErrorView(activity, adContainer);
-                        Log.i(TAG, "still in timeout, showing error view");
-                        return;
-                    }
-
-                    Log.i(TAG, "showing ad");
-
-                    AdView adView = new AdView(activity);
-                    adView.setAdUnitId(AndFHEMApplication.AD_UNIT_ID);
-                    adView.setAdSize(AdSize.BANNER);
-
-                    addListener(activity, adContainer, adView);
-                    adView.loadAd(new AdRequest.Builder().build());
-                    adContainer.addView(adView);
-                }
+        if (adContainer == null) {
+            Log.i(TAG, "cannot find adContainer");
+            return;
+        } else if (isPremium) {
+            showAds = false;
+            Log.i(TAG, "found premium version, skipping ads");
+        } else {
+            Resources resources = activity.getResources();
+            if (resources.getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE
+                    && !resources.getBoolean(R.bool.isTablet)) {
+                showAds = false;
+                Log.i(TAG, "found landscape orientation, skipping ads");
             }
-        });
+        }
 
+        if (!showAds) {
+            adContainer.setVisibility(View.GONE);
+        } else if (GooglePlayServicesUtil.isGooglePlayServicesAvailable(activity) != ConnectionResult.SUCCESS) {
+            addErrorView(activity, adContainer);
+            Log.e(TAG, "cannot find PlayServices");
+        } else {
+            adContainer.setVisibility(View.VISIBLE);
+
+            if (System.currentTimeMillis() - lastErrorTimestamp < 1000 * 60 * 10) {
+                addErrorView(activity, adContainer);
+                Log.i(TAG, "still in timeout, showing error view");
+                return;
+            }
+
+            Log.i(TAG, "showing ad");
+
+            AdView adView = new AdView(activity);
+            adView.setAdUnitId(AndFHEMApplication.AD_UNIT_ID);
+            adView.setAdSize(AdSize.BANNER);
+
+            addListener(activity, adContainer, adView);
+            adView.loadAd(new AdRequest.Builder().build());
+            adContainer.addView(adView);
+        }
     }
 
     private static void addErrorView(final Activity activity, LinearLayout container) {

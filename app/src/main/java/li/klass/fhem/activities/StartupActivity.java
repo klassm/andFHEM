@@ -42,6 +42,7 @@ import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.service.intent.FavoritesIntentService;
+import li.klass.fhem.service.intent.LicenseIntentService;
 import li.klass.fhem.service.intent.RoomListIntentService;
 import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.DialogUtil;
@@ -52,6 +53,7 @@ import static li.klass.fhem.constants.PreferenceKeys.STARTUP_PASSWORD;
 
 public class StartupActivity extends Activity {
     private static final String TAG = StartupActivity.class.getName();
+
     @Inject
     ApplicationProperties applicationProperties;
 
@@ -106,14 +108,26 @@ public class StartupActivity extends Activity {
         getLoginLayout().setVisibility(View.GONE);
         getLoginStatus().setVisibility(View.VISIBLE);
 
+        initializeGoogleBilling();
+    }
+
+    private void initializeGoogleBilling() {
         setCurrentStatus(R.string.currentStatus_billing);
-        billingService.loadInventory(new BillingService.OnLoadInventoryFinishedListener() {
-            @Override
-            public void onInventoryLoadFinished() {
-                Log.i(TAG, "handleLoginStatus() : Billing initialized");
-                loadDeviceList();
-            }
-        });
+
+        startService(new Intent(Actions.IS_PREMIUM)
+                .setClass(this, LicenseIntentService.class)
+                .putExtra(BundleExtraKeys.RESULT_RECEIVER, new FhemResultReceiver() {
+                    @Override
+                    protected void onReceiveResult(int resultCode, Bundle resultData) {
+                        if (resultCode == ResultCodes.ERROR) {
+                            Log.e(TAG, "initializeGoogleBilling() : cannot initialize connection to Google Billing");
+                            setCurrentStatus(R.string.currentStatus_billingInitError);
+                        } else {
+                            Log.i(TAG, "initializeGoogleBilling() : connection was initialized");
+                            loadDeviceList();
+                        }
+                    }
+                }));
     }
 
     private View getLoginStatus() {

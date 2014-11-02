@@ -589,4 +589,5 @@
     <string name="currentStatus_billing">Init connection to Google billing …</string>
     <string name="currentStatus_loadingDeviceList">Loading device list …</string>
     <string name="currentStatus_loadingFavorites">Loading favorites …</string>
+    <string name="currentStatus_billingInitError">Cannot initialize connection to Google billing!</string>
 </resources>

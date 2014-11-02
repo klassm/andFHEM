@@ -33,7 +33,6 @@ import com.android.vending.billing.IabResult;
 import com.android.vending.billing.Inventory;
 import com.android.vending.billing.Purchase;
 
-import java.util.Set;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -113,12 +112,10 @@ public class BillingService {
         }
     }
 
-    public synchronized void getOwnedItems(final OwnedItemsLoadedListener listener) {
+    public boolean contains(final String sku) {
         checkArgument(inventory.get() != null);
 
-        Set<String> ownedItems = inventory.get().getAllOwnedSkus();
-        Log.i(TAG, "owned items: " + ownedItems);
-        listener.onItemsLoaded(ownedItems, isSetup() && isLoaded());
+        return inventory.get().hasPurchase(sku);
     }
 
     private boolean isSetup() {
@@ -213,10 +210,6 @@ public class BillingService {
 
     public interface OnLoadInventoryFinishedListener {
         void onInventoryLoadFinished();
-    }
-
-    public interface OwnedItemsLoadedListener {
-        void onItemsLoaded(Set<String> items, boolean isInitialized);
     }
 
     public interface SetupFinishedListener {

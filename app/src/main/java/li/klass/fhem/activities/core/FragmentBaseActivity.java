@@ -62,7 +62,7 @@ import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.fragments.FragmentType;
 import li.klass.fhem.fragments.core.BaseFragment;
-import li.klass.fhem.license.LicenseService;
+import li.klass.fhem.service.intent.LicenseIntentService;
 import li.klass.fhem.service.room.RoomListService;
 import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.DialogUtil;
@@ -180,9 +180,6 @@ public abstract class FragmentBaseActivity extends ActionBarActivity implements 
 
     @Inject
     BillingService billingService;
-
-    @Inject
-    LicenseService licenseService;
 
     @Inject
     RoomListService roomListService;
@@ -641,17 +638,25 @@ public abstract class FragmentBaseActivity extends ActionBarActivity implements 
             return;
         }
 
+        // TODO Merge navigation and content transactions, as soon as Google releases
+        // a new version of their support library. Currently putting all in one transaction
+        // breaks the navigation fragment and results in ANRs.
         FragmentTransaction transaction = fragmentManager
                 .beginTransaction()
                 .addToBackStack(contentFragment.getClass().getName())
                 .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right,
-                        android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-        if (hasNavigation) {
-            transaction.replace(R.id.navigation, navigationFragment, NAVIGATION_TAG);
-        }
-        transaction.replace(R.id.content, contentFragment, CONTENT_TAG);
+                        android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+                .replace(R.id.content, contentFragment, CONTENT_TAG);
 
         transaction.commit();
+
+        if (hasNavigation) {
+            fragmentManager.executePendingTransactions();
+            fragmentManager
+                    .beginTransaction()
+                    .replace(R.id.navigation, navigationFragment, NAVIGATION_TAG)
+                    .commit();
+        }
 
         updateNavigationVisibility(navigationFragment, contentFragment);
     }
@@ -674,7 +679,7 @@ public abstract class FragmentBaseActivity extends ActionBarActivity implements 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
-        if (licenseService.isPremiumApk()) {
+        if (LicenseIntentService.isPremiumApk(this)) {
             menu.removeItem(R.id.menu_premium);
         }
         this.optionsMenu = menu;

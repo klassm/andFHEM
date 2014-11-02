@@ -27,16 +27,17 @@ package li.klass.fhem.fhem;
 import android.graphics.Bitmap;
 import android.util.Log;
 
-import org.apache.commons.io.IOUtils;
+import com.google.common.base.Charsets;
+import com.google.common.io.Resources;
+
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import java.io.IOException;
-import java.io.InputStream;
+import java.net.URL;
 
 import li.klass.fhem.fhem.connection.DummyServerSpec;
-import li.klass.fhem.util.CloseableUtil;
 
 public class DummyDataConnection extends FHEMConnection {
     public static final DummyDataConnection INSTANCE = new DummyDataConnection();
@@ -61,20 +62,17 @@ public class DummyDataConnection extends FHEMConnection {
     }
 
     private RequestResult<String> xmllist() {
-        InputStream inputStream = null;
         try {
-            DummyServerSpec dummyServerSpec = (DummyServerSpec) serverSpec;
-            inputStream = DummyDataConnection.class.getResourceAsStream(dummyServerSpec.fileName);
 
-            String content = IOUtils.toString(inputStream);
+            final DummyServerSpec dummyServerSpec = (DummyServerSpec) serverSpec;
+            URL url = Resources.getResource(DummyDataConnection.class, dummyServerSpec.fileName);
+            String content = Resources.toString(url, Charsets.UTF_8);
             content = content.replaceAll("  ", "");
 
             return new RequestResult<>(content);
         } catch (IOException e) {
             Log.e(DummyDataConnection.class.getName(), "cannot read file", e);
             throw new RuntimeException(e);
-        } finally {
-            CloseableUtil.close(inputStream);
         }
     }
 

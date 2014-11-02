@@ -28,7 +28,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
 
-import org.apache.commons.io.IOUtils;
+import com.google.common.io.CharStreams;
+
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
@@ -53,6 +54,7 @@ import org.apache.http.protocol.HTTP;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -61,6 +63,7 @@ import java.security.KeyStore;
 import java.util.zip.GZIPInputStream;
 
 import li.klass.fhem.error.ErrorHolder;
+import li.klass.fhem.util.CloseableUtil;
 
 public class FHEMWEBConnection extends FHEMConnection {
 
@@ -85,8 +88,10 @@ public class FHEMWEBConnection extends FHEMConnection {
             return new RequestResult<>(response.error);
         }
 
+        InputStreamReader reader = null;
         try {
-            String content = IOUtils.toString(response.content);
+            reader = new InputStreamReader(response.content);
+            String content = CharStreams.toString(reader);
             if (content.contains("<title>") || content.contains("<div id=")) {
                 Log.e(TAG, "found strange content: " + content);
                 ErrorHolder.setError("found strange content in URL " + urlSuffix + ": \r\n\r\n" + content);
@@ -96,6 +101,8 @@ public class FHEMWEBConnection extends FHEMConnection {
             return new RequestResult<>(content);
         } catch (IOException e) {
             throw new IllegalArgumentException(e);
+        } finally {
+            CloseableUtil.close(reader);
         }
     }
 

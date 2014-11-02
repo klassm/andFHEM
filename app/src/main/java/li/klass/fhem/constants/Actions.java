@@ -118,4 +118,6 @@ public class Actions {
 
 
     public static final String EXT_DEVICE_STATE_NOTIFY = prefix + "EXT_DEVICE_STATE_NOTIFY";
+
+    public static final String IS_PREMIUM = prefix + "IS_PREMIUM";
 }

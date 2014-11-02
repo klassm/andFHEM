@@ -54,9 +54,10 @@ import li.klass.fhem.fhem.connection.FHEMServerSpec;
 import li.klass.fhem.fhem.connection.ServerType;
 import li.klass.fhem.fragments.core.BaseFragment;
 import li.klass.fhem.fragments.core.TopLevelFragment;
-import li.klass.fhem.license.LicenseService;
 import li.klass.fhem.service.advertisement.AdvertisementService;
 import li.klass.fhem.service.intent.ConnectionsIntentService;
+import li.klass.fhem.service.intent.LicenseIntentService;
+import li.klass.fhem.util.FhemResultReceiver;
 import li.klass.fhem.util.Reject;
 
 import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_ID;
@@ -66,10 +67,10 @@ public class ConnectionListFragment extends BaseFragment implements TopLevelFrag
 
     public static final String TAG = ConnectionListFragment.class.getName();
     public static final int CONTEXT_MENU_DELETE = 1;
-    @Inject
-    LicenseService licenseService;
+
     @Inject
     AdvertisementService advertisementService;
+
     private String clickedConnectionId;
     private String connectionId;
 
@@ -113,23 +114,26 @@ public class ConnectionListFragment extends BaseFragment implements TopLevelFrag
             public void onClick(View view) {
                 final int size = getAdapter().getData().size();
 
-                licenseService.isPremium(new LicenseService.IsPremiumListener() {
-                    @Override
-                    public void onIsPremiumDetermined(boolean isPremium) {
-                        if (!isPremium && size >= AndFHEMApplication.PREMIUM_ALLOWED_FREE_CONNECTIONS) {
-                            Intent intent = new Intent(Actions.SHOW_ALERT);
-                            intent.putExtra(BundleExtraKeys.ALERT_CONTENT_ID, R.string.premium_multipleConnections);
-                            intent.putExtra(BundleExtraKeys.ALERT_TITLE_ID, R.string.premium);
-                            getActivity().sendBroadcast(intent);
-                        } else {
-                            Intent intent = new Intent(Actions.SHOW_FRAGMENT);
-                            intent.putExtra(BundleExtraKeys.FRAGMENT, FragmentType.CONNECTION_DETAIL);
+                getActivity().startService(new Intent(Actions.IS_PREMIUM)
+                        .setClass(getActivity(), LicenseIntentService.class)
+                        .putExtra(BundleExtraKeys.RESULT_RECEIVER, new FhemResultReceiver() {
+                            @Override
+                            protected void onReceiveResult(int resultCode, Bundle resultData) {
+                                boolean isPremium = resultCode == ResultCodes.SUCCESS && resultData.getBoolean(BundleExtraKeys.IS_PREMIUM, false);
 
-                            getActivity().sendBroadcast(intent);
-                        }
-                    }
-                });
+                                if (!isPremium && size >= AndFHEMApplication.PREMIUM_ALLOWED_FREE_CONNECTIONS) {
+                                    Intent intent = new Intent(Actions.SHOW_ALERT);
+                                    intent.putExtra(BundleExtraKeys.ALERT_CONTENT_ID, R.string.premium_multipleConnections);
+                                    intent.putExtra(BundleExtraKeys.ALERT_TITLE_ID, R.string.premium);
+                                    getActivity().sendBroadcast(intent);
+                                } else {
+                                    Intent intent = new Intent(Actions.SHOW_FRAGMENT);
+                                    intent.putExtra(BundleExtraKeys.FRAGMENT, FragmentType.CONNECTION_DETAIL);
 
+                                    getActivity().sendBroadcast(intent);
+                                }
+                            }
+                        }));
             }
         });
 
