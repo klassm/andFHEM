@@ -104,6 +104,7 @@ public class AdvertisementService {
             Log.e(TAG, "cannot find PlayServices");
         } else {
             adContainer.setVisibility(View.VISIBLE);
+            adContainer.removeAllViews();
 
             if (System.currentTimeMillis() - lastErrorTimestamp < 1000 * 60 * 10) {
                 addErrorView(activity, adContainer);
