@@ -59,7 +59,6 @@ import li.klass.fhem.activities.DuplicateInstallActivity;
 import li.klass.fhem.billing.BillingService;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.fragments.FragmentType;
 import li.klass.fhem.fragments.core.BaseFragment;
 import li.klass.fhem.service.intent.LicenseIntentService;
@@ -78,7 +77,6 @@ import static li.klass.fhem.constants.Actions.SHOW_EXECUTING_DIALOG;
 import static li.klass.fhem.constants.Actions.SHOW_TOAST;
 import static li.klass.fhem.constants.BundleExtraKeys.FRAGMENT;
 import static li.klass.fhem.constants.BundleExtraKeys.FRAGMENT_NAME;
-import static li.klass.fhem.constants.BundleExtraKeys.HAS_FAVORITES;
 import static li.klass.fhem.constants.PreferenceKeys.AUTO_UPDATE_TIME_IN_ACTIVITY;
 import static li.klass.fhem.constants.PreferenceKeys.STARTUP_VIEW;
 import static li.klass.fhem.constants.PreferenceKeys.UPDATE_ON_APPLICATION_START;
@@ -253,17 +251,13 @@ public abstract class FragmentBaseActivity extends ActionBarActivity implements 
         FragmentType preferencesStartupFragment = FragmentType.forEnumName(startupView);
         Log.d(TAG, "handleStartupFragment() : startup view is " + preferencesStartupFragment);
 
-        Bundle startupBundle = new Bundle();
 
-        FragmentType fragmentType = FragmentType.ALL_DEVICES;
-        if (preferencesStartupFragment != null) {
-            if (preferencesStartupFragment == FAVORITES && hasFavorites) {
-                fragmentType = FAVORITES;
-            } else {
-                fragmentType = preferencesStartupFragment;
-            }
+        FragmentType fragmentType = preferencesStartupFragment;
+        if (fragmentType == FAVORITES && !hasFavorites) {
+            fragmentType = ALL_DEVICES;
         }
 
+        Bundle startupBundle = new Bundle();
         Log.i(TAG, "handleStartupFragment () : startup with " + fragmentType + " (extras: " + startupBundle + ")");
         switchToFragment(fragmentType, startupBundle);
     }
@@ -272,20 +266,6 @@ public abstract class FragmentBaseActivity extends ActionBarActivity implements 
         availableConnectionDataAdapter = new AvailableConnectionDataAdapter(this, actionBar);
         actionBar.setListNavigationCallbacks(availableConnectionDataAdapter, availableConnectionDataAdapter);
         availableConnectionDataAdapter.doLoad();
-    }
-
-    private void handleHasFavoritesResponse(int resultCode, Bundle resultData) {
-        FragmentType toSwitchTo = ALL_DEVICES;
-        if (resultCode == ResultCodes.SUCCESS && resultData.containsKey(HAS_FAVORITES)) {
-            boolean hasFavorites = resultData.getBoolean(HAS_FAVORITES, false);
-            if (hasFavorites && !saveInstanceStateCalled) {
-                toSwitchTo = FAVORITES;
-                Log.d(TAG, "handleHasFavoritesResponse () : found favorites, switching");
-            } else {
-                Log.d(TAG, "handleHasFavoritesResponse () : no favorites found");
-            }
-        }
-        switchToFragment(toSwitchTo, null);
     }
 
     @Override
