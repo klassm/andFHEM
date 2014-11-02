@@ -59,6 +59,7 @@ import li.klass.fhem.service.AbstractService;
 import li.klass.fhem.service.SharedPreferencesService;
 import li.klass.fhem.service.connection.ConnectionService;
 import li.klass.fhem.service.intent.DeviceIntentService;
+import li.klass.fhem.service.intent.RoomListUpdateIntentService;
 import li.klass.fhem.util.ApplicationProperties;
 
 import static com.google.common.collect.Lists.newArrayList;
@@ -212,7 +213,8 @@ public class RoomListService extends AbstractService {
         if (requiresUpdate) {
             resendIntents.add(createResendIntent(intent));
             if (remoteUpdateInProgress.compareAndSet(false, true)) {
-                applicationContext.startService(new Intent(Actions.DO_REMOTE_UPDATE));
+                applicationContext.startService(new Intent(Actions.DO_REMOTE_UPDATE)
+                        .setClass(applicationContext, RoomListUpdateIntentService.class));
             }
 
             return RemoteUpdateRequired.REQUIRED;
