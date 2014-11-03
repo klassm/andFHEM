@@ -252,11 +252,15 @@ public abstract class FragmentBaseActivity extends ActionBarActivity implements 
         FragmentType preferencesStartupFragment = FragmentType.forEnumName(startupView);
         Log.d(TAG, "handleStartupFragment() : startup view is " + preferencesStartupFragment);
 
+        if (preferencesStartupFragment == null) {
+            preferencesStartupFragment = ALL_DEVICES;
+        }
 
         FragmentType fragmentType = preferencesStartupFragment;
         if (fragmentType == FAVORITES && !hasFavorites) {
             fragmentType = ALL_DEVICES;
         }
+
 
         Bundle startupBundle = new Bundle();
         Log.i(TAG, "handleStartupFragment () : startup with " + fragmentType + " (extras: " + startupBundle + ")");
