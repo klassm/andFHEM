@@ -66,6 +66,7 @@ import li.klass.fhem.service.room.RoomListService;
 import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.DialogUtil;
 
+import static li.klass.fhem.AndFHEMApplication.PREMIUM_PACKAGE;
 import static li.klass.fhem.constants.Actions.BACK;
 import static li.klass.fhem.constants.Actions.CONNECTIONS_CHANGED;
 import static li.klass.fhem.constants.Actions.DISMISS_EXECUTING_DIALOG;
@@ -659,7 +660,7 @@ public abstract class FragmentBaseActivity extends ActionBarActivity implements 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
-        if (LicenseIntentService.isPremiumApk(this)) {
+        if (getPackageName().equals(PREMIUM_PACKAGE)) {
             menu.removeItem(R.id.menu_premium);
         }
         this.optionsMenu = menu;

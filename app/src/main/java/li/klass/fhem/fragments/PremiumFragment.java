@@ -59,8 +59,8 @@ public class PremiumFragment extends BaseFragment implements BillingService.Prod
         view.findViewById(R.id.shop_premium_buy).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.i(TAG, "request purchase for product " + AndFHEMApplication.PRODUCT_PREMIUM_ID);
-                billingService.requestPurchase(getActivity(), AndFHEMApplication.PRODUCT_PREMIUM_ID,
+                Log.i(TAG, "request purchase for product " + AndFHEMApplication.INAPP_PREMIUM_ID);
+                billingService.requestPurchase(getActivity(), AndFHEMApplication.INAPP_PREMIUM_ID,
                         null, PremiumFragment.this);
             }
         });

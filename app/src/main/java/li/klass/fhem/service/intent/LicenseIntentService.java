@@ -41,7 +41,7 @@ import li.klass.fhem.constants.Actions;
 import li.klass.fhem.dagger.ForApplication;
 import li.klass.fhem.util.ApplicationProperties;
 
-import static li.klass.fhem.AndFHEMApplication.PRODUCT_PREMIUM_ID;
+import static li.klass.fhem.AndFHEMApplication.PREMIUM_PACKAGE;
 import static li.klass.fhem.constants.BundleExtraKeys.IS_PREMIUM;
 import static li.klass.fhem.constants.ResultCodes.SUCCESS;
 
@@ -91,24 +91,20 @@ public class LicenseIntentService extends ConvenientIntentService {
         if (applicationProperties.getBooleanApplicationProperty("IS_PREMIUM")) {
             Log.i(TAG, "found IS_PREMIUM application property to be true => premium");
             isPremium = true;
-        } else if (isPremiumApk(applicationContext)) {
-            Log.i(TAG, "found package name to be li.klass.fhempremium => premium");
+        } else if (applicationContext.getPackageName().equals(PREMIUM_PACKAGE)) {
+            Log.i(TAG, "found package name to be " + PREMIUM_PACKAGE + " => premium");
             isPremium = true;
         } else if (isDebug(applicationContext)) {
             Log.i(TAG, "running in debug => premium");
             isPremium = true;
-        } else if (billingService.contains(AndFHEMApplication.PRODUCT_PREMIUM_ID) ||
-                billingService.contains(AndFHEMApplication.PRODUCT_PREMIUM_DONATOR_ID)) {
+        } else if (billingService.contains(AndFHEMApplication.INAPP_PREMIUM_ID) ||
+                billingService.contains(AndFHEMApplication.INAPP_PREMIUM_DONATOR_ID)) {
             Log.i(TAG, "found inapp premium purchase => premium");
             isPremium = true;
         } else {
             Log.i(TAG, "seems that I am not Premium...");
         }
         return isPremium;
-    }
-
-    public static boolean isPremiumApk(Context context) {
-        return context.getPackageName().equals(PRODUCT_PREMIUM_ID);
     }
 
     public static boolean isDebug(Context context) {
