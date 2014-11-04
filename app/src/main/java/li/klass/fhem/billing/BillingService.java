@@ -109,8 +109,10 @@ public class BillingService {
         }
     }
 
-    public boolean contains(final String sku) {
+    public synchronized boolean contains(final String sku) {
         checkArgument(inventory.get() != null);
+        checkArgument(isSetup());
+
 
         return inventory.get().hasPurchase(sku);
     }
@@ -123,7 +125,7 @@ public class BillingService {
         return inventory.get() != null && !inventory.get().getAllOwnedSkus().isEmpty();
     }
 
-    private synchronized void ensureSetup(SetupFinishedListener listener) {
+    private void ensureSetup(SetupFinishedListener listener) {
         if (isSetup()) {
             Log.i(TAG, "I am already setup");
             listener.onSetupFinished();

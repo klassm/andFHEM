@@ -218,7 +218,10 @@ public class ConnectionDetailFragment extends BaseFragment {
             protected void onReceiveResult(int resultCode, Bundle resultData) {
                 super.onReceiveResult(resultCode, resultData);
 
-                if (resultCode != ResultCodes.SUCCESS) return;
+                if (resultCode != ResultCodes.SUCCESS) {
+                    Log.e(TAG, "could not save! resultCode=" + resultCode + ",resultData=" + resultData);
+                    return;
+                }
 
                 Intent intent = new Intent(Actions.BACK);
                 getActivity().sendBroadcast(intent);
