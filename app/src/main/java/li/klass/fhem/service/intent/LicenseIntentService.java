@@ -77,15 +77,26 @@ public class LicenseIntentService extends ConvenientIntentService {
 
     private void handlePremiumRequest(final ResultReceiver resultReceiver) {
 
-        billingService.loadInventory(new BillingService.OnLoadInventoryFinishedListener() {
+        isPremium(new IsPremiumListener() {
             @Override
-            public void onInventoryLoadFinished() {
-                sendSingleExtraResult(resultReceiver, SUCCESS, IS_PREMIUM, isPremium());
+            public void isPremium(boolean isPremium) {
+                sendSingleExtraResult(resultReceiver, SUCCESS, IS_PREMIUM, isPremium);
             }
         });
     }
 
-    public boolean isPremium() {
+    public void isPremium(final IsPremiumListener listener) {
+        billingService.loadInventory(new BillingService.OnLoadInventoryFinishedListener() {
+            @Override
+            public void onInventoryLoadFinished(boolean success) {
+
+                boolean isPremium = isPremiumInternal();
+                listener.isPremium(isPremium);
+            }
+        });
+    }
+
+    private boolean isPremiumInternal() {
         boolean isPremium = false;
 
         if (applicationProperties.getBooleanApplicationProperty("IS_PREMIUM")) {
@@ -122,5 +133,9 @@ public class LicenseIntentService extends ConvenientIntentService {
             Log.e(LicenseIntentService.class.getName(), "isDebug() : some exception occurred while reading app signatures", e);
         }
         return false;
+    }
+
+    public interface IsPremiumListener {
+        void isPremium(boolean isPremium);
     }
 }

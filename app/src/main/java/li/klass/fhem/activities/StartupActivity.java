@@ -57,9 +57,6 @@ public class StartupActivity extends Activity {
     @Inject
     ApplicationProperties applicationProperties;
 
-    @Inject
-    BillingService billingService;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -121,13 +118,15 @@ public class StartupActivity extends Activity {
                     protected void onReceiveResult(int resultCode, Bundle resultData) {
                         if (resultCode == ResultCodes.ERROR) {
                             Log.e(TAG, "initializeGoogleBilling() : cannot initialize connection to Google Billing");
-                            setCurrentStatus(R.string.currentStatus_billingInitError);
                         } else {
                             Log.i(TAG, "initializeGoogleBilling() : connection was initialized");
-                            loadDeviceList();
                         }
+
+                        // we need to continue anyway.
+                        loadDeviceList();
                     }
-                }));
+                })
+        );
     }
 
     private View getLoginStatus() {

@@ -96,15 +96,21 @@ public class ConnectionService {
                        final boolean clientCertificateEnabled, final String clientCertificatePassword) {
         if (exists(name)) return;
 
-        if (licenseIntentService.isPremium() || getCountWithoutDummy() < PREMIUM_ALLOWED_FREE_CONNECTIONS) {
+        licenseIntentService.isPremium(new LicenseIntentService.IsPremiumListener() {
+            @Override
+            public void isPremium(boolean isPremium) {
+                if (isPremium || getCountWithoutDummy() < PREMIUM_ALLOWED_FREE_CONNECTIONS) {
 
-            FHEMServerSpec server = new FHEMServerSpec(newUniqueId());
+                    FHEMServerSpec server = new FHEMServerSpec(newUniqueId());
 
-            fillServerWith(name, server, serverType, username, password, ip, port, url,
-                    clientCertificatePath, serverCertificatePath, clientCertificateEnabled, clientCertificatePassword);
+                    fillServerWith(name, server, serverType, username, password, ip, port, url,
+                            clientCertificatePath, serverCertificatePath, clientCertificateEnabled, clientCertificatePassword);
 
-            saveToPreferences(server);
-        }
+                    saveToPreferences(server);
+                }
+            }
+        });
+
     }
 
     public boolean exists(String id) {

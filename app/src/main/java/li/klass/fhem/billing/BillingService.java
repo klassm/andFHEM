@@ -36,6 +36,7 @@ import com.android.vending.billing.Purchase;
 import java.util.concurrent.atomic.AtomicReference;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import li.klass.fhem.dagger.ForApplication;
 
@@ -43,11 +44,12 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static li.klass.fhem.AndFHEMApplication.PUBLIC_KEY_ENCODED;
 
+@Singleton
 public class BillingService {
 
     public static final String TAG = BillingService.class.getName();
 
-    private IabHelper iabHelper;
+    private AtomicReference<IabHelper> iabHelper = new AtomicReference<>(null);
     private AtomicReference<Inventory> inventory = new AtomicReference<>(Inventory.empty());
 
     @Inject
@@ -56,37 +58,41 @@ public class BillingService {
 
     public synchronized void stop() {
         try {
-            if (iabHelper != null) {
-                iabHelper.dispose();
-                iabHelper = null;
+            if (iabHelper.get() != null) {
+                iabHelper.get().dispose();
+                iabHelper.set(null);
             }
         } catch (Exception e) {
-            Log.d(TAG, "cannot stop", e);
+            Log.d(TAG, "stop() - cannot stop", e);
         }
     }
 
     public synchronized void requestPurchase(final Activity activity, final String itemId,
                                              final String payload,
                                              final ProductPurchasedListener listener) {
-        Log.i(TAG, "requesting purchase of " + itemId);
+        Log.i(TAG, "requestPurchase() - requesting purchase of " + itemId);
         ensureSetup(new SetupFinishedListener() {
             @Override
-            public void onSetupFinished() {
+            public void onSetupFinished(boolean success) {
                 try {
-                    iabHelper.launchPurchaseFlow(activity, itemId, 0, new IabHelper.OnIabPurchaseFinishedListener() {
-                        @Override
-                        public void onIabPurchaseFinished(IabResult result, Purchase info) {
-                            if (result.isSuccess()) {
-                                Log.i(TAG, "purchase result: SUCCESS");
-                                loadInventory();
-                                listener.onProductPurchased(info.getOrderId(), info.getSku());
-                            } else {
-                                Log.e(TAG, "purchase result: " + result.toString());
+                    if (!success) {
+                        Log.e(TAG, "requestPurchase() - cannot initialize purchase flow, setup was not successful");
+                    } else {
+                        iabHelper.get().launchPurchaseFlow(activity, itemId, 0, new IabHelper.OnIabPurchaseFinishedListener() {
+                            @Override
+                            public void onIabPurchaseFinished(IabResult result, Purchase info) {
+                                if (result.isSuccess()) {
+                                    Log.i(TAG, "requestPurchase() - purchase result: SUCCESS");
+                                    loadInventory();
+                                    listener.onProductPurchased(info.getOrderId(), info.getSku());
+                                } else {
+                                    Log.e(TAG, "requestPurchase() - purchase result: " + result.toString());
+                                }
                             }
-                        }
-                    }, payload);
+                        }, payload);
+                    }
                 } catch (Exception e) {
-                    Log.e(TAG, "error while launching purchase flow", e);
+                    Log.e(TAG, "requestPurchase() - error while launching purchase flow", e);
                 }
             }
         });
@@ -98,12 +104,17 @@ public class BillingService {
 
     public synchronized void loadInventory(final OnLoadInventoryFinishedListener listener) {
         if (isSetup() && isLoaded()) {
-            if (listener != null) listener.onInventoryLoadFinished();
+            Log.d(TAG, "loadInventory() - inventory is already setup and loaded, skipping load");
+            if (listener != null) listener.onInventoryLoadFinished(true);
         } else {
             ensureSetup(new SetupFinishedListener() {
                 @Override
-                public void onSetupFinished() {
-                    loadInternal(listener);
+                public void onSetupFinished(boolean success) {
+                    if (success) {
+                        loadInternal(listener);
+                    } else {
+                        Log.d(TAG, "won't load inventory, setup was not successful");
+                    }
                 }
             });
         }
@@ -118,7 +129,7 @@ public class BillingService {
     }
 
     private boolean isSetup() {
-        return iabHelper != null && iabHelper.isSetupDone();
+        return iabHelper.get() != null && iabHelper.get().isSetupDone();
     }
 
     private boolean isLoaded() {
@@ -127,10 +138,11 @@ public class BillingService {
 
     private void ensureSetup(SetupFinishedListener listener) {
         if (isSetup()) {
-            Log.i(TAG, "I am already setup");
-            listener.onSetupFinished();
+            Log.i(TAG, "ensureSetup() - I am already setup");
+            listener.onSetupFinished(true);
         } else {
-            Log.d(TAG, "Setting up ... (helper=" + iabHelper + (iabHelper != null ? " " + iabHelper.isSetupDone() : "") + ")");
+            String isSetupDoneMessage = iabHelper.get() != null ? ",isSetupDone=" + iabHelper.get().isSetupDone() : "";
+            Log.d(TAG, "ensureSetup() - Setting up ... (helper=" + iabHelper + isSetupDoneMessage + ")");
             setup(listener);
         }
     }
@@ -139,26 +151,28 @@ public class BillingService {
         checkNotNull(listener);
 
         try {
-            Log.d(TAG, "Starting setup");
-            iabHelper = createIabHelper();
-            iabHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
+            Log.d(TAG, "setup() - Starting setup " + this);
+            iabHelper.set(createIabHelper());
+            iabHelper.get().startSetup(new IabHelper.OnIabSetupFinishedListener() {
                 @Override
                 public void onIabSetupFinished(IabResult result) {
+                    checkNotNull(iabHelper.get(), "setup() - iabHelper may not be null after setup");
                     try {
                         if (result.isSuccess()) {
-                            Log.d(TAG, "setup => SUCCESS");
+                            Log.d(TAG, "setup() : setup was successful, setupIsDone=" + iabHelper.get().isSetupDone());
                         } else {
-                            Log.e(TAG, "setup => ERROR " + result.toString());
+                            Log.e(TAG, "setup() : ERROR " + result.toString());
                         }
-                        listener.onSetupFinished();
-                    } finally {
-                        listener.onSetupFinished();
+                        listener.onSetupFinished(true);
+                    } catch (Exception e) {
+                        Log.e(TAG, "setup() : error during setup", e);
+                        listener.onSetupFinished(false);
                     }
                 }
             });
         } catch (Exception e) {
-            Log.i(TAG, "Error while trying to start billing", e);
-            listener.onSetupFinished();
+            Log.i(TAG, "setup() - Error while trying to start billing", e);
+            listener.onSetupFinished(false);
         }
     }
 
@@ -167,32 +181,32 @@ public class BillingService {
     }
 
     private synchronized void loadInternal(final OnLoadInventoryFinishedListener listener) {
-        checkNotNull(iabHelper);
+        checkNotNull(iabHelper.get());
 
+        boolean success = false;
         try {
-            if (!iabHelper.isSetupDone()) {
+            if (!iabHelper.get().isSetupDone()) {
                 inventory.set(Inventory.empty());
-                Log.e(TAG, "setup was not done, initializing with empty inventory");
+                Log.e(TAG, "loadInternal() - setup was not done, initializing with empty inventory");
             } else if (isLoaded()) {
-                Log.d(TAG, "inventory was already loaded, skipping load");
+                Log.d(TAG, "loadInternal() - inventory was already loaded, skipping load");
             } else {
-                Log.i(TAG, "loading inventory");
-                inventory.set(iabHelper.queryInventory(false, null));
+                Log.i(TAG, "loadInternal() - loading inventory");
+                inventory.set(iabHelper.get().queryInventory(false, null));
             }
+            success = true;
         } catch (Exception e) {
-            Log.i(TAG, "cannot load inventory", e);
+            Log.e(TAG, "loadInternal() - cannot load inventory", e);
             inventory.set(Inventory.empty());
-
         } finally {
             if (listener != null) {
-                listener.onInventoryLoadFinished();
+                listener.onInventoryLoadFinished(success);
             }
-            BillingService.this.notifyAll();
         }
     }
 
     IabHelper getIabHelper() {
-        return iabHelper;
+        return iabHelper.get();
     }
 
     Inventory getInventory() {
@@ -200,7 +214,7 @@ public class BillingService {
     }
 
     void setIabHelper(IabHelper iabHelper) {
-        this.iabHelper = iabHelper;
+        this.iabHelper.set(iabHelper);
     }
 
     public interface ProductPurchasedListener {
@@ -208,10 +222,10 @@ public class BillingService {
     }
 
     public interface OnLoadInventoryFinishedListener {
-        void onInventoryLoadFinished();
+        void onInventoryLoadFinished(boolean success);
     }
 
     public interface SetupFinishedListener {
-        void onSetupFinished();
+        void onSetupFinished(boolean success);
     }
 }
