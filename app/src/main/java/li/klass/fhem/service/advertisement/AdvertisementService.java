@@ -43,6 +43,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
@@ -56,6 +57,7 @@ import li.klass.fhem.util.FhemResultReceiver;
 import static li.klass.fhem.constants.BundleExtraKeys.IS_PREMIUM;
 import static li.klass.fhem.constants.ResultCodes.SUCCESS;
 
+@Singleton
 public class AdvertisementService {
     private static final String TAG = AdvertisementService.class.getName();
     private static long lastErrorTimestamp = 0;

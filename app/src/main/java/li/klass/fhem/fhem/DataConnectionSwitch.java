@@ -25,11 +25,13 @@
 package li.klass.fhem.fhem;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import li.klass.fhem.fhem.connection.FHEMServerSpec;
 import li.klass.fhem.service.connection.ConnectionService;
 import li.klass.fhem.util.ApplicationProperties;
 
+@Singleton
 public class DataConnectionSwitch {
 
     @Inject

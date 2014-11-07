@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Locale;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.heating.ComfortTempDevice;
@@ -41,6 +42,7 @@ import li.klass.fhem.domain.heating.schedule.WeekProfile;
 import li.klass.fhem.service.CommandExecutionService;
 import li.klass.fhem.util.ArrayUtil;
 
+@Singleton
 public class HeatingService {
 
     public static final String TAG = HeatingService.class.getName();
