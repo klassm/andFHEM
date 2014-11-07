@@ -26,9 +26,13 @@ package li.klass.fhem.adapter.rooms;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -41,6 +45,8 @@ import static li.klass.fhem.constants.PreferenceKeys.SHOW_HIDDEN_DEVICES;
 
 public class RoomListAdapter extends ListDataAdapter<String> {
     private String selectedRoom;
+
+    private static final Logger LOG = LoggerFactory.getLogger(RoomListAdapter.class);
 
     public RoomListAdapter(Context context, int resource, List<String> data) {
         super(context, resource, data);
@@ -61,9 +67,8 @@ public class RoomListAdapter extends ListDataAdapter<String> {
 
         convertView.setTag(roomName);
 
-        if (roomName.equals(selectedRoom)) {
-            convertView.setBackgroundColor(context.getResources().getColor(R.color.android_green));
-        }
+        int backgroundColor = roomName.equals(selectedRoom) ? R.color.android_green : android.R.color.transparent;
+        convertView.setBackgroundColor(context.getResources().getColor(backgroundColor));
 
         return convertView;
     }
@@ -71,7 +76,7 @@ public class RoomListAdapter extends ListDataAdapter<String> {
     public void updateData(List<String> newData, String selectedRoom) {
         if (newData == null) return;
 
-        this.selectedRoom = selectedRoom;
+        setSelectedRoom(selectedRoom);
 
         SharedPreferences preferences = getDefaultSharedPreferences(context);
         boolean showHiddenDevices = preferences.getBoolean(SHOW_HIDDEN_DEVICES, false);
@@ -84,6 +89,11 @@ public class RoomListAdapter extends ListDataAdapter<String> {
         }
 
         updateData(newData);
+    }
+
+    private void setSelectedRoom(String selectedRoom) {
+        LOG.info("set selected room to {}", selectedRoom);
+        this.selectedRoom = selectedRoom;
     }
 
     @Override
