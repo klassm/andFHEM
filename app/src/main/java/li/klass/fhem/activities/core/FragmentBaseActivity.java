@@ -623,9 +623,6 @@ public abstract class FragmentBaseActivity extends ActionBarActivity implements 
             return;
         }
 
-        // TODO Merge navigation and content transactions, as soon as Google releases
-        // a new version of their support library. Currently putting all in one transaction
-        // breaks the navigation fragment and results in ANRs.
         FragmentTransaction transaction = fragmentManager
                 .beginTransaction()
                 .addToBackStack(contentFragment.getClass().getName())
@@ -633,15 +630,10 @@ public abstract class FragmentBaseActivity extends ActionBarActivity implements 
                         android.R.anim.slide_in_left, android.R.anim.slide_out_right)
                 .replace(R.id.content, contentFragment, CONTENT_TAG);
 
-        transaction.commit();
-
         if (hasNavigation) {
-            fragmentManager.executePendingTransactions();
-            fragmentManager
-                    .beginTransaction()
-                    .replace(R.id.navigation, navigationFragment, NAVIGATION_TAG)
-                    .commit();
+            transaction.replace(R.id.navigation, navigationFragment, NAVIGATION_TAG);
         }
+        transaction.commit();
 
         updateNavigationVisibility(navigationFragment, contentFragment);
     }

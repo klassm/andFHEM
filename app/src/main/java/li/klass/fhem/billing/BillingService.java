@@ -136,7 +136,7 @@ public class BillingService {
 
     private void ensureSetup(SetupFinishedListener listener) {
         if (isSetup()) {
-            Log.i(TAG, "ensureSetup() - I am already setup");
+            Log.d(TAG, "ensureSetup() - I am already setup");
             listener.onSetupFinished(true);
         } else {
             String isSetupDoneMessage = iabHelper != null ? ",isSetupDone=" + iabHelper.isSetupDone() : "";
@@ -189,7 +189,7 @@ public class BillingService {
             } else if (isLoaded()) {
                 Log.d(TAG, "loadInternal() - inventory was already loaded, skipping load");
             } else {
-                Log.i(TAG, "loadInternal() - loading inventory");
+                Log.d(TAG, "loadInternal() - loading inventory");
                 inventory = iabHelper.queryInventory(false, null);
             }
             success = true;
