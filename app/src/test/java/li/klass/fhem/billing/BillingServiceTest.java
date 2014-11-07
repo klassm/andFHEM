@@ -32,7 +32,6 @@ import com.android.vending.billing.IabResult;
 import com.android.vending.billing.Inventory;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -54,7 +53,6 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-@Ignore
 public class BillingServiceTest extends RobolectricBaseTestCase {
 
     @Rule
@@ -136,8 +134,6 @@ public class BillingServiceTest extends RobolectricBaseTestCase {
                 return null;
             }
         }).when(iabHelper).startSetup(any(IabHelper.OnIabSetupFinishedListener.class));
-
-        doThrow(new IllegalStateException("some IAB Exception")).when(iabHelper).startSetup(any(IabHelper.OnIabSetupFinishedListener.class));
 
         // when
         billingService.setup(listener);
