@@ -44,6 +44,8 @@ import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.fhem.connection.FHEMServerSpec;
 import li.klass.fhem.fhem.connection.ServerType;
+import li.klass.fhem.service.intent.ConnectionsIntentService;
+import li.klass.fhem.util.FhemResultReceiver;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static li.klass.fhem.constants.BundleExtraKeys.COMMAND;
@@ -84,17 +86,14 @@ public class ConnectionChangeLocaleSettingActivity extends Activity {
             }
         });
 
-        Intent connectionIntent = new Intent(Actions.CONNECTIONS_LIST);
-        connectionIntent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
-            @Override
-            protected void onReceiveResult(int resultCode, Bundle resultData) {
-                super.onReceiveResult(resultCode, resultData);
-
-                fillConnectionSpinner(resultCode, resultData, connectionListAdapter);
-
-            }
-        });
-        startService(connectionIntent);
+        startService(new Intent(Actions.CONNECTIONS_LIST)
+                .setClass(this, ConnectionsIntentService.class)
+                .putExtra(BundleExtraKeys.RESULT_RECEIVER, new FhemResultReceiver() {
+                    @Override
+                    protected void onReceiveResult(int resultCode, Bundle resultData) {
+                        fillConnectionSpinner(resultCode, resultData, connectionListAdapter);
+                    }
+                }));
 
         Button saveButton = (Button) findViewById(R.id.save);
         saveButton.setOnClickListener(new View.OnClickListener() {

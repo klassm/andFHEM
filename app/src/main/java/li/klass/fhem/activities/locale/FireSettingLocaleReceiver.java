@@ -30,6 +30,8 @@ import android.content.Intent;
 import android.util.Log;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
+import li.klass.fhem.service.intent.ConnectionsIntentService;
+import li.klass.fhem.service.intent.SendCommandIntentService;
 
 public class FireSettingLocaleReceiver extends BroadcastReceiver {
 
@@ -44,15 +46,14 @@ public class FireSettingLocaleReceiver extends BroadcastReceiver {
         Log.i(TAG, "action=" + action + ",command=" + command + ",connectionId=" + connectionId);
 
         if (Actions.EXECUTE_COMMAND.equals(action)) {
-            Intent actionIntent = new Intent(Actions.EXECUTE_COMMAND);
-            actionIntent.putExtra(BundleExtraKeys.COMMAND, command);
-            actionIntent.putExtra(BundleExtraKeys.CONNECTION_ID, connectionId);
-
-            context.startService(actionIntent);
+            context.startService(new Intent(Actions.EXECUTE_COMMAND)
+                    .setClass(context, SendCommandIntentService.class)
+                    .putExtra(BundleExtraKeys.COMMAND, command)
+                    .putExtra(BundleExtraKeys.CONNECTION_ID, connectionId));
         } else if (Actions.CONNECTION_UPDATE.equals(action)) {
-            Intent connectionChangeIntent = new Intent(Actions.CONNECTION_SET_SELECTED);
-            connectionChangeIntent.putExtra(BundleExtraKeys.CONNECTION_ID, connectionId);
-            context.startService(connectionChangeIntent);
+            context.startService(new Intent(Actions.CONNECTION_SET_SELECTED)
+                    .setClass(context, ConnectionsIntentService.class)
+                    .putExtra(BundleExtraKeys.CONNECTION_ID, connectionId));
         }
     }
 }

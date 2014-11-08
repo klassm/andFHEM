@@ -36,6 +36,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,6 +49,8 @@ import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.fhem.connection.FHEMServerSpec;
 import li.klass.fhem.fhem.connection.ServerType;
+import li.klass.fhem.service.intent.ConnectionsIntentService;
+import li.klass.fhem.util.FhemResultReceiver;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static li.klass.fhem.activities.locale.LocaleIntentConstants.EXTRA_BUNDLE;
@@ -59,6 +64,7 @@ import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_LIST;
 public class SendCommandLocaleSettingActivity extends Activity {
 
     public static final String CURRENT_CONNECTION_ID = "current";
+    private static final Logger LOG = LoggerFactory.getLogger(SendCommandLocaleSettingActivity.class);
     private static final String TAG = SendCommandLocaleSettingActivity.class.getName();
     private String selectedId = CURRENT_CONNECTION_ID;
 
@@ -95,15 +101,14 @@ public class SendCommandLocaleSettingActivity extends Activity {
             }
         });
 
-        Intent connectionIntent = new Intent(Actions.CONNECTIONS_LIST);
-        connectionIntent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
-            @Override
-            protected void onReceiveResult(int resultCode, Bundle resultData) {
-                super.onReceiveResult(resultCode, resultData);
-
-                fillConnectionSpinner(resultCode, resultData, connectionListAdapter);
-            }
-        });
+        Intent connectionIntent = new Intent(Actions.CONNECTIONS_LIST)
+                .setClass(this, ConnectionsIntentService.class)
+                .putExtra(BundleExtraKeys.RESULT_RECEIVER, new FhemResultReceiver() {
+                    @Override
+                    protected void onReceiveResult(int resultCode, Bundle resultData) {
+                        fillConnectionSpinner(resultCode, resultData, connectionListAdapter);
+                    }
+                });
         startService(connectionIntent);
 
         Button saveButton = (Button) findViewById(R.id.save);
@@ -131,7 +136,7 @@ public class SendCommandLocaleSettingActivity extends Activity {
                     TaskerPlugin.Setting.setVariableReplaceKeys( bundle, new String [] { COMMAND } );
                 }
 
-                Log.e(TAG, "command=" + bundle.getString(COMMAND) + ",action=" + bundle.getString(ACTION));
+                LOG.info("onCreate() - result: command={}, action={}", bundle.getString(COMMAND), bundle.getString(ACTION));
 
                 setResult(RESULT_OK, resultIntent);
                 finish();

@@ -52,10 +52,10 @@ public class ConditionQueryLocaleReceiver extends BroadcastReceiver {
         String deviceName = intent.getStringExtra(BundleExtraKeys.DEVICE_NAME);
         final String targetState = intent.getStringExtra(BundleExtraKeys.DEVICE_TARGET_STATE);
 
-        Intent queryIntent = new Intent(Actions.GET_DEVICE_FOR_NAME);
-        queryIntent.setClass(context, RoomListIntentService.class);
-        queryIntent.putExtra(BundleExtraKeys.DEVICE_NAME, deviceName);
-        queryIntent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new FhemResultReceiver() {
+        context.startService(new Intent(Actions.GET_DEVICE_FOR_NAME)
+                .setClass(context, RoomListIntentService.class)
+                .putExtra(BundleExtraKeys.DEVICE_NAME, deviceName)
+                .putExtra(BundleExtraKeys.RESULT_RECEIVER, new FhemResultReceiver() {
             @Override
             protected void onReceiveResult(int resultCode, Bundle resultData) {
                 if (resultCode != ResultCodes.SUCCESS || !resultData.containsKey(BundleExtraKeys.DEVICE)) {
@@ -74,7 +74,7 @@ public class ConditionQueryLocaleReceiver extends BroadcastReceiver {
                     finishConditionIntent(RESULT_CONDITION_UNSATISFIED);
                 }
             }
-        });
+                }));
     }
 
     private void finishConditionIntent(int resultCode) {

@@ -29,8 +29,12 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.util.Log;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -51,21 +55,24 @@ import static li.klass.fhem.constants.PreferenceKeys.COMMAND_EXECUTION_RETRIES;
 import static li.klass.fhem.fhem.RequestResultError.CONNECTION_TIMEOUT;
 import static li.klass.fhem.fhem.RequestResultError.HOST_CONNECTION_ERROR;
 
-/**
- * Service serving as central interface to FHEM.
- */
 @Singleton
 public class CommandExecutionService extends AbstractService {
 
     public static final int DEFAULT_NUMBER_OF_RETRIES = 3;
     public static final int IMAGE_CACHE_SIZE = 20;
+
+    private static final Logger LOG = LoggerFactory.getLogger(CommandExecutionService.class);
+
     @Inject
     @ForApplication
     Context applicationContext;
+
     @Inject
     DataConnectionSwitch dataConnectionSwitch;
+
     @Inject
     ApplicationProperties applicationProperties;
+
     private transient ScheduledExecutorService scheduledExecutorService = null;
     private transient String lastFailedCommand = null;
     private transient Cache<Bitmap> imageCache = getImageCache();
@@ -78,12 +85,6 @@ public class CommandExecutionService extends AbstractService {
         }
     }
 
-    /**
-     * Executes a command safely by catching exceptions. Shows an update dialog during execution. Shows an update
-     * dialog.
-     *
-     * @param command command to execute
-     */
     public String executeSafely(String command) {
         command = command.replaceAll("  ", " ");
         showExecutingDialog();
@@ -113,18 +114,16 @@ public class CommandExecutionService extends AbstractService {
         FHEMConnection currentProvider = dataConnectionSwitch.getCurrentProvider();
         RequestResult<String> result = currentProvider.executeCommand(command);
 
+        LOG.info("execute() - executing command={}, try={}", command, currentTry);
+
         try {
             if (result.error == null) {
                 sendBroadcastWithAction(Actions.CONNECTION_ERROR_HIDE);
             } else if (shouldTryResend(command, result, currentTry)) {
                 int timeoutForNextTry = secondsForTry(currentTry);
-                Log.e(CommandExecutionService.class.getName(),
-                        String.format("scheduling next resend of '%s' in %d seconds (try %d)",
-                                command, timeoutForNextTry, currentTry)
-                );
 
-                getScheduledExecutorService().schedule(new ResendCommand(command, currentTry + 1),
-                        timeoutForNextTry, SECONDS);
+                ResendCommand resendCommand = new ResendCommand(command, currentTry + 1);
+                schedule(timeoutForNextTry, resendCommand);
             }
         } finally {
             if (!command.equalsIgnoreCase("xmllist")) {
@@ -133,6 +132,12 @@ public class CommandExecutionService extends AbstractService {
         }
 
         return result;
+    }
+
+    private ScheduledFuture<?> schedule(int timeoutForNextTry, ResendCommand resendCommand) {
+        LOG.info("schedule() - schedule {} in {} seconds", resendCommand, timeoutForNextTry);
+        return getScheduledExecutorService().schedule(resendCommand,
+                timeoutForNextTry, SECONDS);
     }
 
     private boolean shouldTryResend(String command, RequestResult<?> result, int currentTry) {
@@ -212,6 +217,14 @@ public class CommandExecutionService extends AbstractService {
         @Override
         public void run() {
             execute(command, currentTry);
+        }
+
+        @Override
+        public String toString() {
+            return "ResendCommand{" +
+                    "currentTry=" + currentTry +
+                    ", command='" + command + '\'' +
+                    '}';
         }
     }
 }
