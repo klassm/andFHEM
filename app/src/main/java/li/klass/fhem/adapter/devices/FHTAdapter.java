@@ -157,28 +157,19 @@ public class FHTAdapter extends GenericDeviceAdapter<FHTDevice> {
     }
 
     private void setMode(FHTDevice device, FHTMode mode, final SpinnerActionRow<FHTDevice> spinnerActionRow, TableLayout tableLayout) {
-        final Intent intent = new Intent(Actions.DEVICE_SET_MODE);
-        intent.setClass(getContext(), DeviceIntentService.class);
-        intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
-        intent.putExtra(BundleExtraKeys.DEVICE_MODE, mode);
+        final Intent intent = new Intent(Actions.DEVICE_SET_MODE)
+                .setClass(getContext(), DeviceIntentService.class)
+                .putExtra(BundleExtraKeys.DEVICE_NAME, device.getName())
+                .putExtra(BundleExtraKeys.DEVICE_MODE, mode);
 
         switch (mode) {
             case UNKNOWN:
                 break;
-            case AUTO:
-                break;
-            case MANUAL:
-                break;
             case HOLIDAY:
-
                 handleHolidayMode(device, spinnerActionRow, intent, tableLayout);
-
                 break;
-
             case HOLIDAY_SHORT:
-
                 handleHolidayShortMode(device, spinnerActionRow, intent, tableLayout);
-
                 break;
             default:
                 getContext().startService(intent);
