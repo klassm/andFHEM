@@ -30,6 +30,9 @@ import android.util.Log;
 
 import com.google.common.base.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.inject.Inject;
 
 import li.klass.fhem.constants.Actions;
@@ -44,7 +47,7 @@ import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_LIST;
 import static li.klass.fhem.domain.core.RoomDeviceList.ALL_DEVICES_ROOM;
 
 public class RoomListUpdateIntentService extends ConvenientIntentService {
-    private static final String TAG = RoomListUpdateIntentService.class.getName();
+    private static final Logger LOG = LoggerFactory.getLogger(RoomListUpdateIntentService.class);
 
     @Inject
     CommandExecutionService commandExecutionService;
@@ -69,6 +72,7 @@ public class RoomListUpdateIntentService extends ConvenientIntentService {
 
     private STATE doRemoteUpdate() {
         Optional<RoomDeviceList> result = getRemoteRoomDeviceListMap();
+        LOG.info("doRemoteUpdate() - remote device list update finished");
         if (result.isPresent()) {
             startService(new Intent(REMOTE_UPDATE_FINISHED).putExtra(DEVICE_LIST, result.get()).setClass(this, RoomListIntentService.class));
             return STATE.DONE;
@@ -79,14 +83,14 @@ public class RoomListUpdateIntentService extends ConvenientIntentService {
     }
 
     private synchronized Optional<RoomDeviceList> getRemoteRoomDeviceListMap() {
-        Log.i(TAG, "getRemoteRoomDeviceListMap() : fetching device list from remote");
+        LOG.info("getRemoteRoomDeviceListMap() - getRemoteRoomDeviceListMap() : fetching device list from remote");
 
         try {
             String result = commandExecutionService.executeSafely("xmllist");
             if (result == null) return absent();
             return Optional.fromNullable(deviceListParser.parseAndWrapExceptions(result));
         } catch (CommandExecutionException e) {
-            Log.i(TAG, "getRemoteRoomDeviceListMap() : error during command execution", e);
+            LOG.info("getRemoteRoomDeviceListMap() - error during command execution", e);
             return Optional.absent();
         }
     }

@@ -47,11 +47,13 @@ import static li.klass.fhem.constants.Actions.GET_ROOM_DEVICE_LIST;
 import static li.klass.fhem.constants.Actions.GET_ROOM_NAME_LIST;
 import static li.klass.fhem.constants.Actions.REMOTE_UPDATE_FINISHED;
 import static li.klass.fhem.constants.Actions.UPDATE_DEVICE_WITH_UPDATE_MAP;
+import static li.klass.fhem.constants.Actions.UPDATE_IF_REQUIRED;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_LIST;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_NAME;
 import static li.klass.fhem.constants.BundleExtraKeys.ROOM_LIST;
 import static li.klass.fhem.constants.BundleExtraKeys.ROOM_NAME;
+import static li.klass.fhem.constants.BundleExtraKeys.SENDER;
 import static li.klass.fhem.constants.BundleExtraKeys.UPDATE_MAP;
 import static li.klass.fhem.constants.BundleExtraKeys.VIBRATE;
 import static li.klass.fhem.service.room.RoomListService.RemoteUpdateRequired;
@@ -97,6 +99,17 @@ public class RoomListIntentService extends ConvenientIntentService {
             sendBroadcast(new Intent(Actions.DO_UPDATE));
         } else if (REMOTE_UPDATE_FINISHED.equals(action)) {
             roomListService.remoteUpdateFinished(intent);
+        } else if (UPDATE_IF_REQUIRED.equals(action)) {
+            // If required, the device list will be updated by now. The resend intent will reach us
+            // here. The only thing we have to do is notify the receiver that we have
+            // updated the device list.
+            if (resultReceiver != null) {
+                sendNoResult(resultReceiver, ResultCodes.SUCCESS);
+            } else if (intent.hasExtra(SENDER)) {
+                startService(new Intent(intent)
+                        .setAction(REMOTE_UPDATE_FINISHED)
+                        .setClass(this, (Class<?>) intent.getSerializableExtra(SENDER)));
+            }
         }
 
         return STATE.DONE;

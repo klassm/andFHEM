@@ -50,6 +50,7 @@ import li.klass.fhem.service.SharedPreferencesService;
 import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.NetworkState;
 
+import static java.lang.Integer.parseInt;
 import static li.klass.fhem.constants.PreferenceKeys.ALLOW_REMOTE_UPDATE;
 import static li.klass.fhem.service.room.RoomListService.NEVER_UPDATE_PERIOD;
 
@@ -58,6 +59,7 @@ public class AppWidgetDataHolder {
     public static final String WIDGET_UPDATE_INTERVAL_PREFERENCES_KEY_MOBILE = "WIDGET_UPDATE_INTERVAL_MOBILE";
     static final String SAVE_PREFERENCE_NAME = AppWidgetDataHolder.class.getName();
     private static final String TAG = AppWidgetDataHolder.class.getName();
+
     @Inject
     ApplicationProperties applicationProperties;
 
@@ -67,7 +69,7 @@ public class AppWidgetDataHolder {
     public void updateAllWidgets(final Context context, final boolean allowRemoteUpdate) {
         Set<String> appWidgetIds = getAllAppWidgetIds();
         for (String appWidgetId : appWidgetIds) {
-            updateWidget( context, Integer.parseInt(appWidgetId), allowRemoteUpdate);
+            context.startService(getRedrawWidgetIntent(context, parseInt(appWidgetId), allowRemoteUpdate));
         }
     }
 
@@ -80,47 +82,19 @@ public class AppWidgetDataHolder {
         return allEntries.keySet();
     }
 
-    public void updateWidget(final Context context, final int appWidgetId,
-                             final boolean allowRemoteUpdate) {
-        Intent intent = new Intent(Actions.REDRAW_WIDGET);
-        intent.setClass(context, AppWidgetUpdateService.class);
-        intent.putExtra(BundleExtraKeys.APP_WIDGET_ID, appWidgetId);
-        intent.putExtra(BundleExtraKeys.ALLOW_REMOTE_UPDATES, allowRemoteUpdate);
-        context.startService(intent);
+    private Intent getRedrawWidgetIntent(Context context, int appWidgetId, boolean allowRemoteUpdate) {
+        return new Intent(Actions.REDRAW_WIDGET)
+                .setClass(context, AppWidgetUpdateService.class)
+                .putExtra(BundleExtraKeys.APP_WIDGET_ID, appWidgetId)
+                .putExtra(BundleExtraKeys.ALLOW_REMOTE_UPDATES, allowRemoteUpdate);
     }
 
     SharedPreferences getSavedPreferences() {
         return sharedPreferencesService.getSharedPreferences(SAVE_PREFERENCE_NAME);
     }
 
-    public void updateWidgetInCurrentThread(final AppWidgetManager appWidgetManager, final IntentService intentService,
-                                            final int appWidgetId, final boolean allowRemoteUpdate) {
-        Optional<WidgetConfiguration> widgetConfigurationOptional = getWidgetConfiguration(appWidgetId);
 
-        if (widgetConfigurationOptional.isPresent()) {
-            WidgetConfiguration configuration = widgetConfigurationOptional.get();
-
-            final AppWidgetView widgetView = getAppWidgetView(configuration);
-
-            long updateInterval = getConnectionDependentUpdateInterval(intentService);
-            scheduleUpdateIntent(intentService, configuration, false, updateInterval);
-
-            boolean doRemoteWidgetUpdates = applicationProperties.getBooleanSharedPreference(ALLOW_REMOTE_UPDATE, true);
-            long viewCreateUpdateInterval = doRemoteWidgetUpdates && allowRemoteUpdate ? updateInterval : NEVER_UPDATE_PERIOD;
-            widgetView.attach(intentService.getApplication());
-            RemoteViews content = widgetView.createView(intentService, configuration, viewCreateUpdateInterval);
-
-            try {
-                appWidgetManager.updateAppWidget(appWidgetId, content);
-            } catch (Exception e) {
-                Log.e(TAG, "something strange happened during appwidget update", e);
-            }
-        } else {
-            deleteWidget(intentService, appWidgetId);
-        }
-    }
-
-    AppWidgetView getAppWidgetView(WidgetConfiguration configuration) {
+    public AppWidgetView getAppWidgetView(WidgetConfiguration configuration) {
         return configuration.widgetType.widgetView;
     }
 
@@ -149,8 +123,8 @@ public class AppWidgetDataHolder {
         alarmManager.cancel(updatePendingIntent);
     }
 
-    private void scheduleUpdateIntent(Context context, WidgetConfiguration widgetConfiguration,
-                                      boolean updateImmediately, long widgetUpdateInterval) {
+    public void scheduleUpdateIntent(Context context, WidgetConfiguration widgetConfiguration,
+                                     boolean updateImmediately, long widgetUpdateInterval) {
         if (widgetUpdateInterval > 0) {
             Log.d(TAG, String.format("scheduling widget update %s => %s ", widgetConfiguration.toString(), (widgetUpdateInterval / 1000) + "s"));
 
@@ -165,15 +139,13 @@ public class AppWidgetDataHolder {
     }
 
     private PendingIntent updatePendingIndentForWidgetId(Context context, int widgetId) {
-        Intent updateIntent = new Intent(Actions.REDRAW_WIDGET);
-        updateIntent.putExtra(BundleExtraKeys.APP_WIDGET_ID, widgetId);
-        updateIntent.putExtra(BundleExtraKeys.ALLOW_REMOTE_UPDATES, true);
+        Intent updateIntent = getRedrawWidgetIntent(context, widgetId, true);
 
         return PendingIntent.getService(context, widgetId * (-1),
                 updateIntent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
-    long getConnectionDependentUpdateInterval(Context context) {
+    public long getConnectionDependentUpdateInterval(Context context) {
         long updateInterval;
 
         if (!NetworkState.isConnected(context)) {
@@ -187,7 +159,7 @@ public class AppWidgetDataHolder {
         return updateInterval;
     }
 
-    Optional<WidgetConfiguration> getWidgetConfiguration(int widgetId) {
+    public Optional<WidgetConfiguration> getWidgetConfiguration(int widgetId) {
         SharedPreferences sharedPreferences = getSavedPreferences();
         String value = sharedPreferences.getString(String.valueOf(widgetId), null);
 
@@ -212,7 +184,7 @@ public class AppWidgetDataHolder {
 
     private int getWidgetUpdateIntervalFor(String key) {
         String value = applicationProperties.getStringSharedPreference(key, "3600");
-        int intValue = Integer.parseInt(value);
+        int intValue = parseInt(value);
         return intValue * 1000;
     }
 }

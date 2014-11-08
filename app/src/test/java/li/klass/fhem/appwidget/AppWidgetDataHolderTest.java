@@ -59,11 +59,9 @@ import li.klass.fhem.util.ApplicationProperties;
 import static li.klass.fhem.appwidget.AppWidgetDataHolder.SAVE_PREFERENCE_NAME;
 import static li.klass.fhem.appwidget.WidgetConfiguration.fromSaveString;
 import static li.klass.fhem.constants.PreferenceKeys.ALLOW_REMOTE_UPDATE;
-import static li.klass.fhem.service.room.RoomListService.NEVER_UPDATE_PERIOD;
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
@@ -217,14 +215,14 @@ public class AppWidgetDataHolderTest {
         doReturn(appWidgetView).when(holder).getAppWidgetView(any(WidgetConfiguration.class));
         doReturn(456L).when(holder).getConnectionDependentUpdateInterval(intentService);
         given(applicationProperties.getBooleanSharedPreference(ALLOW_REMOTE_UPDATE, true)).willReturn(true);
-        given(appWidgetView.createView(any(Context.class), any(WidgetConfiguration.class), anyLong()))
+        given(appWidgetView.createView(any(Context.class), any(WidgetConfiguration.class)))
                 .willReturn(remoteViews);
 
         // when
         holder.updateWidgetInCurrentThread(appWidgetManager, intentService, 123, true);
 
         // then
-        verify(appWidgetView).createView(eq(intentService), any(WidgetConfiguration.class), eq(456L));
+        verify(appWidgetView).createView(eq(intentService), any(WidgetConfiguration.class));
         verify(appWidgetManager).updateAppWidget(123, remoteViews);
     }
 
@@ -235,14 +233,14 @@ public class AppWidgetDataHolderTest {
         doReturn(appWidgetView).when(holder).getAppWidgetView(any(WidgetConfiguration.class));
         doReturn(456L).when(holder).getConnectionDependentUpdateInterval(intentService);
         given(applicationProperties.getBooleanSharedPreference(ALLOW_REMOTE_UPDATE, true)).willReturn(true);
-        given(appWidgetView.createView(any(Context.class), any(WidgetConfiguration.class), anyLong()))
+        given(appWidgetView.createView(any(Context.class), any(WidgetConfiguration.class)))
                 .willReturn(remoteViews);
 
         // when
         holder.updateWidgetInCurrentThread(appWidgetManager, intentService, 123, false);
 
         // then
-        verify(appWidgetView).createView(eq(intentService), any(WidgetConfiguration.class), eq(NEVER_UPDATE_PERIOD));
+        verify(appWidgetView).createView(eq(intentService), any(WidgetConfiguration.class));
         verify(appWidgetManager).updateAppWidget(123, remoteViews);
     }
 
@@ -253,14 +251,14 @@ public class AppWidgetDataHolderTest {
         doReturn(appWidgetView).when(holder).getAppWidgetView(any(WidgetConfiguration.class));
         doReturn(456L).when(holder).getConnectionDependentUpdateInterval(intentService);
         given(applicationProperties.getBooleanSharedPreference(ALLOW_REMOTE_UPDATE, true)).willReturn(false);
-        given(appWidgetView.createView(any(Context.class), any(WidgetConfiguration.class), anyLong()))
+        given(appWidgetView.createView(any(Context.class), any(WidgetConfiguration.class)))
                 .willReturn(remoteViews);
 
         // when
         holder.updateWidgetInCurrentThread(appWidgetManager, intentService, 123, true);
 
         // then
-        verify(appWidgetView).createView(eq(intentService), any(WidgetConfiguration.class), eq(NEVER_UPDATE_PERIOD));
+        verify(appWidgetView).createView(eq(intentService), any(WidgetConfiguration.class));
         verify(appWidgetManager).updateAppWidget(123, remoteViews);
     }
 

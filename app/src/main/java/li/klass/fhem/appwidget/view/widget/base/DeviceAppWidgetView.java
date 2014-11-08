@@ -27,9 +27,13 @@ package li.klass.fhem.appwidget.view.widget.base;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
 import android.widget.RemoteViews;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 
@@ -39,11 +43,14 @@ import li.klass.fhem.appwidget.WidgetConfiguration;
 import li.klass.fhem.appwidget.WidgetConfigurationCreatedCallback;
 import li.klass.fhem.appwidget.annotation.SupportsWidget;
 import li.klass.fhem.appwidget.view.WidgetType;
+import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
+import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.dagger.ForApplication;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.fragments.FragmentType;
 import li.klass.fhem.service.room.RoomListService;
+import li.klass.fhem.util.FhemResultReceiver;
 
 public abstract class DeviceAppWidgetView extends AppWidgetView {
 
@@ -55,6 +62,8 @@ public abstract class DeviceAppWidgetView extends AppWidgetView {
     @Inject
     @ForApplication
     Context applicationContext;
+
+    public static final Logger LOG = LoggerFactory.getLogger(DeviceAppWidgetView.class);
 
     public boolean supports(Device<?> device) {
         if (!device.getClass().isAnnotationPresent(SupportsWidget.class)) return false;
@@ -73,12 +82,12 @@ public abstract class DeviceAppWidgetView extends AppWidgetView {
     }
 
     @Override
-    public RemoteViews createView(Context context, WidgetConfiguration widgetConfiguration, long updatePeriod) {
-        RemoteViews views = super.createView(context, widgetConfiguration, updatePeriod);
+    public RemoteViews createView(Context context, WidgetConfiguration widgetConfiguration) {
+        RemoteViews views = super.createView(context, widgetConfiguration);
         Log.i(TAG, "creating appwidget view for " + widgetConfiguration);
 
         if (shouldSetDeviceName()) {
-            String deviceName = widgetConfiguration.payload.get(0);
+            String deviceName = deviceNameFrom(widgetConfiguration);
 
             Device device = getDeviceFor(deviceName);
             if (device == null) return null;
@@ -87,6 +96,10 @@ public abstract class DeviceAppWidgetView extends AppWidgetView {
         }
 
         return views;
+    }
+
+    private String deviceNameFrom(WidgetConfiguration widgetConfiguration) {
+        return widgetConfiguration.payload.get(0);
     }
 
     public boolean shouldSetDeviceName() {
@@ -141,12 +154,12 @@ public abstract class DeviceAppWidgetView extends AppWidgetView {
 
     protected void fillWidgetView(Context context, RemoteViews view,
                                   WidgetConfiguration widgetConfiguration) {
-        Device<?> device = getDeviceFor(widgetConfiguration.payload.get(0));
+        Device<?> device = getDeviceFor(deviceNameFrom(widgetConfiguration));
         if (device != null) {
             view.setTextViewText(R.id.deviceName, device.getWidgetName());
             fillWidgetView(context, view, device, widgetConfiguration);
         } else {
-            Log.i(TAG, "cannot find device for " + widgetConfiguration.payload.get(0));
+            Log.i(TAG, "cannot find device for " + deviceNameFrom(widgetConfiguration));
         }
     }
 

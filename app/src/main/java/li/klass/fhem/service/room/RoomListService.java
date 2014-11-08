@@ -26,10 +26,12 @@ package li.klass.fhem.service.room;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -47,6 +49,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import li.klass.fhem.AndFHEMApplication;
+import li.klass.fhem.appwidget.service.AppWidgetUpdateService;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.PreferenceKeys;
@@ -75,9 +78,9 @@ import static li.klass.fhem.util.DateFormatUtil.toReadable;
 @Singleton
 public class RoomListService extends AbstractService {
 
-    public static final String TAG = RoomListService.class.getName();
+    private static final Logger LOG = LoggerFactory.getLogger(RoomListService.class);
 
-    public static final String PREFERENCES_NAME = TAG;
+    public static final String PREFERENCES_NAME = RoomListService.class.getName();
 
     public static final String CACHE_FILENAME = "cache.obj";
 
@@ -119,7 +122,7 @@ public class RoomListService extends AbstractService {
 
         deviceListParser.fillDeviceWith(device, updateMap);
 
-        Log.i(TAG, "parseReceivedDeviceStateMap()  : updated " + device.getName() + " with " + updateMap.size() + " new values!");
+        LOG.info("parseReceivedDeviceStateMap()  : updated {} with {} new values!", device.getName(), updateMap.size());
 
         Intent intent = new Intent(Actions.NOTIFICATION_TRIGGER);
         intent.putExtra(BundleExtraKeys.DEVICE_NAME, deviceName);
@@ -248,10 +251,11 @@ public class RoomListService extends AbstractService {
             resendIntents.clear();
 
             applicationContext.sendBroadcast(new Intent(Actions.REDRAW_ALL_WIDGETS));
-            applicationContext.startService(new Intent(Actions.REDRAW_ALL_WIDGETS));
+            applicationContext.startService(new Intent(Actions.REDRAW_ALL_WIDGETS)
+                    .setClass(applicationContext, AppWidgetUpdateService.class)
+                    .putExtra(BundleExtraKeys.ALLOW_REMOTE_UPDATES, false));
 
-
-            Log.i(TAG, "remote update finished, device list is " + deviceList);
+            LOG.info("remote update finished, device list is {}");
         } finally {
             remoteUpdateInProgress.set(false);
             sendBroadcastWithAction(DISMISS_EXECUTING_DIALOG);
@@ -259,7 +263,7 @@ public class RoomListService extends AbstractService {
     }
 
     private void resend(Intent intent) {
-        Log.i(TAG, "resend() : resending " + intent.getAction());
+        LOG.info("resend() : resending {}", intent.getAction());
         applicationContext.startService(createResendIntent(intent));
     }
 
@@ -275,19 +279,18 @@ public class RoomListService extends AbstractService {
 
     private boolean shouldUpdate(long updatePeriod) {
         if (updatePeriod == ALWAYS_UPDATE_PERIOD) {
-            Log.d(TAG, "shouldUpdate() : recommend update, as updatePeriod is set to ALWAYS_UPDATE");
+            LOG.debug("shouldUpdate() : recommend update, as updatePeriod is set to ALWAYS_UPDATE");
             return true;
         }
         if (updatePeriod == NEVER_UPDATE_PERIOD) {
-            Log.d(TAG, "shouldUpdate() : recommend no update, as updatePeriod is set to NEVER_UPDATE");
+            LOG.debug("shouldUpdate() : recommend no update, as updatePeriod is set to NEVER_UPDATE");
             return false;
         }
 
         long lastUpdate = getLastUpdate();
         boolean shouldUpdate = lastUpdate + updatePeriod < System.currentTimeMillis();
 
-        Log.d(TAG, "shouldUpdate() : recommend " + (!shouldUpdate ? "no " : "") + "update (lastUpdate: " + toReadable(lastUpdate) +
-                ", updatePeriod: " + (updatePeriod / 1000 / 60) + " min)");
+        LOG.debug("shouldUpdate() : recommend {} update (lastUpdate: {}, updatePeriod: {} min)", (!shouldUpdate ? "no " : "to"), toReadable(lastUpdate), (updatePeriod / 1000 / 60));
 
         return shouldUpdate;
     }
@@ -300,17 +303,17 @@ public class RoomListService extends AbstractService {
     @SuppressWarnings("unchecked")
     private RoomDeviceList getCachedRoomDeviceListMap() {
         try {
-            Log.i(TAG, "getCachedRoomDeviceListMap() : fetching device list from cache");
+            LOG.info("getCachedRoomDeviceListMap() : fetching device list from cache");
             long startLoad = System.currentTimeMillis();
 
             ObjectInputStream objectInputStream = new ObjectInputStream(AndFHEMApplication.getContext().openFileInput(CACHE_FILENAME));
             RoomDeviceList roomDeviceListMap = (RoomDeviceList) objectInputStream.readObject();
-            Log.i(TAG, "getCachedRoomDeviceListMap() : loading device list from cache completed after "
-                    + (System.currentTimeMillis() - startLoad) + "ms");
+            LOG.info("getCachedRoomDeviceListMap() : loading device list from cache completed after {} ms",
+                    (System.currentTimeMillis() - startLoad));
 
             return roomDeviceListMap;
         } catch (Exception e) {
-            Log.d(TAG, "getCachedRoomDeviceListMap() : error occurred while de-serializing data", e);
+            LOG.info("getCachedRoomDeviceListMap() : error occurred while de-serializing data", e);
             return new RoomDeviceList(RoomDeviceList.ALL_DEVICES_ROOM);
         }
     }
@@ -457,13 +460,13 @@ public class RoomListService extends AbstractService {
      * Stores the currently loaded room device list map to the cache file.
      */
     public synchronized void storeDeviceListMap() {
-        Log.i(TAG, "storeDeviceListMap() : storing device list to cache");
+        LOG.info("storeDeviceListMap() : storing device list to cache");
         Context context = AndFHEMApplication.getContext();
         try {
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(context.openFileOutput(CACHE_FILENAME, Context.MODE_PRIVATE));
             objectOutputStream.writeObject(deviceList);
         } catch (Exception e) {
-            Log.e(TAG, "storeDeviceListMap() : error occurred while serializing data", e);
+            LOG.error("storeDeviceListMap() : error occurred while writing data to disk", e);
         }
     }
 

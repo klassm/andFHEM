@@ -42,6 +42,7 @@ public class Actions {
     public static final String GET_ROOM_NAME_LIST = prefix + "GET_ROOM_NAME_LIST";
     public static final String GET_DEVICE_FOR_NAME = prefix + "GET_DEVICE_FOR_NAME";
     public static final String UPDATE_DEVICE_WITH_UPDATE_MAP = prefix + "UPDATE_DEVICE_WITH_UPDATE_MAP";
+    public static final String UPDATE_IF_REQUIRED = prefix + "UPDATE_IF_REQUIRED";
 
     public static final String FAVORITE_ROOM_LIST = prefix + "GET_FAVORITE_LIST";
     public static final String FAVORITE_ADD = prefix + "ADD_FAVORITE";
@@ -77,7 +78,6 @@ public class Actions {
 
 
     public static final String LOAD_IMAGE = prefix + "LOAD_IMAGE";
-
 
     public static final String DO_UPDATE = prefix + "DO_UPDATE";
     public static final String DO_REMOTE_UPDATE = prefix + "DO_REMOTE_UPDATE";

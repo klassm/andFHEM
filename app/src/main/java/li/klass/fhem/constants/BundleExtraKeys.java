@@ -119,4 +119,6 @@ public class BundleExtraKeys {
     public static final String CONNECTION_ENABLE_CLIENT_CERTIFICATE = "CONNECTION_ENABLE_CLIENT_CERTIFICATE";
 
     public static final String IS_PREMIUM = "IS_PREMIUM";
+
+    public static final String SENDER = "SENDER";
 }

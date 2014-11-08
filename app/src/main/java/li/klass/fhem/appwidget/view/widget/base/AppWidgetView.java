@@ -31,22 +31,29 @@ import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.appwidget.WidgetConfiguration;
 import li.klass.fhem.appwidget.WidgetConfigurationCreatedCallback;
 import li.klass.fhem.appwidget.view.WidgetType;
 import li.klass.fhem.util.ImageUtil;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 public abstract class AppWidgetView {
 
-    public static final String TAG = AppWidgetView.class.getName();
     private boolean daggerAttached = false;
+
+    public static final Logger LOG = LoggerFactory.getLogger(AppWidgetView.class);
 
     public abstract void createWidgetConfiguration(Context context, WidgetType widgetType, int appWidgetId,
                                                    WidgetConfigurationCreatedCallback callback, String... payload);
 
-    public RemoteViews createView(Context context, WidgetConfiguration widgetConfiguration, long updatePeriod) {
-        Log.d(TAG, String.format("creating widget view for %s, period %s", widgetConfiguration.toString(), (updatePeriod / 1000) + "s"));
+
+    public RemoteViews createView(Context context, WidgetConfiguration widgetConfiguration) {
+        LOG.debug("creating widget view for configuration {}", widgetConfiguration);
 
         RemoteViews views = new RemoteViews(context.getPackageName(), getContentView());
 
