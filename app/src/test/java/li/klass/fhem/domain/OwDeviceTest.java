@@ -82,6 +82,13 @@ public class OwDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getInputC()).isEqualTo("0");
         assertThat(device.getInputD()).isEqualTo("1");
     }
+
+    @Test
+    public void should_infer_temperature_subtype_from_temperature_in_state() {
+        OwDevice device = getDeviceFor("Wohnzimmer");
+        assertThat(device.getSubType()).isEqualTo(OwDevice.SubType.TEMPERATURE);
+    }
+
     @Override
     protected String getFileName() {
         return "owdevice.xml";

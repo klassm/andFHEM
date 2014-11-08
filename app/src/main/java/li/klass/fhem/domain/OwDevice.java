@@ -79,6 +79,8 @@ public class OwDevice extends ToggleableDevice<OwDevice> {
         if (internalState.contains("°C")) {
             setState(appendTemperature(extractLeadingDouble(internalState)));
             subType = TEMPERATURE;
+        } else if (internalState.contains("temperature")) {
+            subType = TEMPERATURE;
         } else if (eventMap.containsKey(getOnStateName()) && eventMap.containsKey(getOffStateName())) {
             subType = SWITCH;
         }
