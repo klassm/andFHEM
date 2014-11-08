@@ -64,6 +64,7 @@
 
     <color name="textColorDefault">#FF000000</color>
     <color name="textColorSecondary">#FF4e4e4e</color>
+    <color name="textColorTertiary">#FF8a8a8a</color>
 
     <color name="sectionCaptionColor">#FFB84100</color>
 </resources>
