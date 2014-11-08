@@ -24,11 +24,17 @@
 
 package li.klass.fhem.widget.deviceFunctionality;
 
+import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import li.klass.fhem.domain.core.DeviceFunctionality;
 
 public class DeviceFunctionalityPreferenceWrapper implements Comparable<DeviceFunctionalityPreferenceWrapper> {
     private final DeviceFunctionality deviceFunctionality;
     private boolean isVisible = true;
+
+    private static final Logger LOG = LoggerFactory.getLogger(DeviceFunctionalityPreferenceWrapper.class);
 
     public DeviceFunctionalityPreferenceWrapper(DeviceFunctionality deviceFunctionality, boolean visible) {
         this.deviceFunctionality = deviceFunctionality;
@@ -48,11 +54,12 @@ public class DeviceFunctionalityPreferenceWrapper implements Comparable<DeviceFu
     }
 
     public void invertVisibility() {
-        isVisible = ! isVisible;
+        isVisible = !isVisible;
+        LOG.info("changed visibility for {} to {}", deviceFunctionality.name(), isVisible);
     }
 
     @Override
-    public int compareTo(DeviceFunctionalityPreferenceWrapper other) {
+    public int compareTo(@NotNull DeviceFunctionalityPreferenceWrapper other) {
         return deviceFunctionality.name().compareTo(other.getDeviceFunctionality().name());
     }
 
@@ -63,9 +70,8 @@ public class DeviceFunctionalityPreferenceWrapper implements Comparable<DeviceFu
 
         DeviceFunctionalityPreferenceWrapper that = (DeviceFunctionalityPreferenceWrapper) o;
 
-        if (deviceFunctionality != that.deviceFunctionality) return false;
+        return deviceFunctionality == that.deviceFunctionality;
 
-        return true;
     }
 
     @Override

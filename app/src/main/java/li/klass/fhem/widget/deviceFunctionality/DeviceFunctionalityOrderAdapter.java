@@ -33,14 +33,20 @@ import android.widget.TextView;
 
 import com.ericharlow.DragNDrop.DragNDropAdapter;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.ArrayList;
 
 import li.klass.fhem.R;
-import li.klass.fhem.util.Reject;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 public class DeviceFunctionalityOrderAdapter extends DragNDropAdapter<DeviceFunctionalityPreferenceWrapper> {
 
     private OrderActionListener listener;
+
+    private static final Logger LOG = LoggerFactory.getLogger(DeviceFunctionalityOrderAdapter.class);
 
     public DeviceFunctionalityOrderAdapter(Context context, int resource,
                                            ArrayList<DeviceFunctionalityPreferenceWrapper> data) {
@@ -60,29 +66,43 @@ public class DeviceFunctionalityOrderAdapter extends DragNDropAdapter<DeviceFunc
         }
         assert convertView != null;
 
-        TextView nameView = (TextView) convertView.findViewById(R.id.name);
-        nameView.setText(item.getDeviceFunctionality().getCaptionText(context));
+        setOnClickAction(OrderAction.VISIBILITY_CHANGE, item, convertView);
 
-        ImageButton visibilityButton = (ImageButton) convertView.findViewById(R.id.change_visibility);
-        setOnClickAction(visibilityButton, OrderAction.VISIBILITY_CHANGE, item);
+        updateContent(item, convertView);
 
-        if (!item.isVisible()) {
-            nameView.setPaintFlags(nameView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-        } else {
-            nameView.setPaintFlags(nameView.getPaintFlags() | Paint.FAKE_BOLD_TEXT_FLAG);
-        }
         return convertView;
     }
 
-    private void setOnClickAction(ImageButton button, final OrderAction action,
-                                  final DeviceFunctionalityPreferenceWrapper item) {
+    private void setOnClickAction(final OrderAction action,
+                                  final DeviceFunctionalityPreferenceWrapper item, final View convertView) {
+        ImageButton button = (ImageButton) convertView.findViewById(R.id.change_visibility);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Reject.ifNull(listener);
+                checkNotNull(view);
                 listener.deviceTypeReordered(item, action);
+                notifyDataSetChanged();
             }
         });
+    }
+
+    private void updateContent(DeviceFunctionalityPreferenceWrapper item, View view) {
+        TextView nameView = (TextView) view.findViewById(R.id.name);
+        nameView.setText(item.getDeviceFunctionality().getCaptionText(context));
+
+        ImageButton visibilityButton = (ImageButton) view.findViewById(R.id.change_visibility);
+
+        LOG.debug("updateContent() - drawing content for {}, visiblity is {}", item.getDeviceFunctionality().name(), item.isVisible());
+
+        if (!item.isVisible()) {
+            nameView.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.FAKE_BOLD_TEXT_FLAG);
+            nameView.setTextColor(context.getResources().getColor(R.color.textColorSecondary));
+            visibilityButton.setImageResource(R.drawable.invisible);
+        } else {
+            nameView.setPaintFlags(Paint.FAKE_BOLD_TEXT_FLAG);
+            nameView.setTextColor(context.getResources().getColor(R.color.textColorDefault));
+            visibilityButton.setImageResource(R.drawable.visible);
+        }
     }
 
     @Override
@@ -97,5 +117,4 @@ public class DeviceFunctionalityOrderAdapter extends DragNDropAdapter<DeviceFunc
     interface OrderActionListener {
         void deviceTypeReordered(DeviceFunctionalityPreferenceWrapper wrapper, OrderAction action);
     }
-
 }

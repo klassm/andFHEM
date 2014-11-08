@@ -144,7 +144,7 @@
     <!-- #############################  -->
 
     <style name="deviceOverviewParent" parent="text">
-        <item name="android:textColor">#b84100</item>
+        <item name="android:textColor">@color/accent</item>
         <item name="android:textSize">20sp</item>
         <item name="android:padding">3dp</item>
         <item name="android:layout_marginBottom">3dp</item>
@@ -223,7 +223,7 @@
     <!-- #############################  -->
 
     <style name="deviceDetailSectionContent">
-    <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginTop">10dp</item>
     </style>
@@ -238,7 +238,7 @@
     <style name="deviceDetailSectionCaption" parent="text">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
-        <item name="android:textColor">@color/sectionCaptionColor</item>
+        <item name="android:textColor">@color/accent</item>
         <item name="android:textSize">20sp</item>
         <item name="android:layout_margin">3dp</item>
         <item name="android:layout_marginTop">6dp</item>

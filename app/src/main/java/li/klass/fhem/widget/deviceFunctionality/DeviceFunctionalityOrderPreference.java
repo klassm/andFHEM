@@ -104,7 +104,6 @@ public class DeviceFunctionalityOrderPreference extends DialogPreference {
                         break;
                 }
                 callChangeListener(wrappedDevices);
-                adapter.updateData(wrappedDevices);
             }
         });
         deviceTypeListView.setAdapter(adapter);

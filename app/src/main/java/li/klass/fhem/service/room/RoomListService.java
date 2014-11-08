@@ -72,6 +72,7 @@ import static li.klass.fhem.constants.Actions.REDRAW_ALL_WIDGETS;
 import static li.klass.fhem.constants.BundleExtraKeys.DO_REFRESH;
 import static li.klass.fhem.constants.BundleExtraKeys.UPDATE_PERIOD;
 import static li.klass.fhem.constants.PreferenceKeys.DEVICE_NAME;
+import static li.klass.fhem.domain.core.DeviceType.AT;
 import static li.klass.fhem.domain.core.DeviceType.getDeviceTypeFor;
 import static li.klass.fhem.util.DateFormatUtil.toReadable;
 
@@ -389,7 +390,8 @@ public class RoomListService extends AbstractService {
 
         Set<String> roomNames = Sets.newHashSet();
         for (Device device : roomDeviceList.getAllDevices()) {
-            if (device.isSupported() && connectionService.mayShowInCurrentConnectionType(getDeviceTypeFor(device))) {
+            DeviceType type = getDeviceTypeFor(device);
+            if (device.isSupported() && connectionService.mayShowInCurrentConnectionType(type) && type != AT) {
                 @SuppressWarnings("unchecked")
                 List<String> deviceRooms = device.getRooms();
                 roomNames.addAll(deviceRooms);

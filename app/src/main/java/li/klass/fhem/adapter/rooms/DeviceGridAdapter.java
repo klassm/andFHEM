@@ -60,6 +60,7 @@ public class DeviceGridAdapter<T extends Device<T>> extends GridViewWithSections
     private int lastParentHeight;
     private List<String> deviceGroupParents = newArrayList();
     private List<String> parents = newArrayList();
+    private Set<String> hiddenParents = newHashSet();
     private Map<String, List<T>> parentChildMap = newHashMap();
     private long lastUpdate;
 
@@ -80,8 +81,11 @@ public class DeviceGridAdapter<T extends Device<T>> extends GridViewWithSections
     public void restoreParents() {
         DeviceGroupHolder holder = new DeviceGroupHolder(applicationProperties);
 
-        for (DeviceFunctionality deviceFunctionality : holder.getVisible()) {
-            deviceGroupParents.add(deviceFunctionality.getCaptionText(context));
+        for (DeviceFunctionality visible : holder.getVisible()) {
+            deviceGroupParents.add(visible.getCaptionText(context));
+        }
+        for (DeviceFunctionality invisible : holder.getInvisible()) {
+            hiddenParents.add(invisible.getCaptionText(context));
         }
 
         Log.v(TAG, "set visible deviceGroupParents: " + deviceGroupParents);
@@ -114,6 +118,7 @@ public class DeviceGridAdapter<T extends Device<T>> extends GridViewWithSections
 
         parents.addAll(customParents);
         parents.removeAll(roomDeviceList.getHiddenGroups());
+        parents.removeAll(hiddenParents);
         parentChildMap = newHashMap();
 
         this.roomDeviceList = roomDeviceList;
@@ -146,6 +151,7 @@ public class DeviceGridAdapter<T extends Device<T>> extends GridViewWithSections
     @Override
     protected View getParentView(String parent, int parentOffset, View view, ViewGroup viewGroup) {
         view = layoutInflater.inflate(R.layout.room_detail_parent, viewGroup, false);
+
         assert view != null;
 
         TextView textView = (TextView) view.findViewById(R.id.deviceType);
