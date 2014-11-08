@@ -215,14 +215,16 @@ public class RoomListService extends AbstractService {
 
         boolean requiresUpdate = shouldUpdate(updatePeriod) || deviceList == null;
         if (requiresUpdate) {
+            LOG.info("updateRoomDeviceListIfRequired() - requiring update");
             resendIntents.add(createResendIntent(intent));
             if (remoteUpdateInProgress.compareAndSet(false, true)) {
                 applicationContext.startService(new Intent(Actions.DO_REMOTE_UPDATE)
                         .setClass(applicationContext, RoomListUpdateIntentService.class));
             }
-
+            LOG.debug("updateRoomDeviceListIfRequired() - remote update is required");
             return RemoteUpdateRequired.REQUIRED;
         } else {
+            LOG.debug("updateRoomDeviceListIfRequired() - remote update is not required");
             return RemoteUpdateRequired.NOT_REQUIRED;
         }
     }
@@ -235,6 +237,8 @@ public class RoomListService extends AbstractService {
      */
     public void remoteUpdateFinished(Intent intent) {
         try {
+            LOG.info("remoteUpdateFinished() - starting after actions");
+
             RoomDeviceList newDeviceList = (RoomDeviceList) intent.getSerializableExtra(BundleExtraKeys.DEVICE_LIST);
             setLastUpdateToNow();
             fillHiddenRoomsAndHiddenGroups(newDeviceList, findFHEMWEBDevice(newDeviceList));
@@ -315,7 +319,7 @@ public class RoomListService extends AbstractService {
             return roomDeviceListMap;
         } catch (Exception e) {
             LOG.info("getCachedRoomDeviceListMap() : error occurred while de-serializing data", e);
-            return new RoomDeviceList(RoomDeviceList.ALL_DEVICES_ROOM);
+            return null;
         }
     }
 

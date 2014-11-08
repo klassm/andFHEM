@@ -33,6 +33,8 @@ import com.google.common.io.Resources;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.URL;
@@ -41,7 +43,7 @@ import li.klass.fhem.fhem.connection.DummyServerSpec;
 
 public class DummyDataConnection extends FHEMConnection {
     public static final DummyDataConnection INSTANCE = new DummyDataConnection();
-    public static final String TAG = DummyDataConnection.class.getName();
+    private static final Logger LOG = LoggerFactory.getLogger(DummyDataConnection.class);
     public static final DateTimeFormatter FORMATTER = DateTimeFormat.forPattern("yyyy-MM-dd");
 
     private DummyDataConnection() {
@@ -49,21 +51,17 @@ public class DummyDataConnection extends FHEMConnection {
 
     @Override
     public RequestResult<String> executeCommand(String command) {
+        LOG.error("executeCommand() - execute command {}", command);
+
         if (command.equalsIgnoreCase("xmllist")) return xmllist();
         if (command.startsWith("get")) return fileLogData(command);
 
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            Log.d(TAG, "ignored", e);
-        }
-        Log.e(TAG, "execute command: " + command);
         return new RequestResult<>("I am a dummy. Do you expect me to answer you?");
     }
 
     private RequestResult<String> xmllist() {
         try {
-
+            LOG.info("xmllist() - loading xmllist");
             final DummyServerSpec dummyServerSpec = (DummyServerSpec) serverSpec;
             URL url = Resources.getResource(DummyDataConnection.class, dummyServerSpec.fileName);
             String content = Resources.toString(url, Charsets.UTF_8);
@@ -71,7 +69,7 @@ public class DummyDataConnection extends FHEMConnection {
 
             return new RequestResult<>(content);
         } catch (IOException e) {
-            Log.e(DummyDataConnection.class.getName(), "cannot read file", e);
+            LOG.error("xmllist() - cannot read file", e);
             throw new RuntimeException(e);
         }
     }
@@ -103,7 +101,7 @@ public class DummyDataConnection extends FHEMConnection {
 
     @Override
     public RequestResult<Bitmap> requestBitmap(String relativePath) {
-        Log.e(TAG, "get image: " + relativePath);
+        LOG.error("requestBitmap() - get image from {}", relativePath);
         return new RequestResult<>(null, null);
     }
 }

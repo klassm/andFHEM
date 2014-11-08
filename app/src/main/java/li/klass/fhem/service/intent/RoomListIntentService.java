@@ -69,11 +69,13 @@ public class RoomListIntentService extends ConvenientIntentService {
 
     @Override
     protected STATE handleIntent(Intent intent, long updatePeriod, ResultReceiver resultReceiver) {
-        if (roomListService.updateRoomDeviceListIfRequired(intent, updatePeriod) == RemoteUpdateRequired.REQUIRED) {
+        String action = intent.getAction();
+
+        if (!REMOTE_UPDATE_FINISHED.equals(action) &&
+                roomListService.updateRoomDeviceListIfRequired(intent, updatePeriod) == RemoteUpdateRequired.REQUIRED) {
             return STATE.DONE;
         }
 
-        String action = intent.getAction();
         if (GET_ALL_ROOMS_DEVICE_LIST.equals(action)) {
             RoomDeviceList allRoomsDeviceList = roomListService.getAllRoomsDeviceList();
             sendResultWithLastUpdate(resultReceiver, ResultCodes.SUCCESS, DEVICE_LIST, allRoomsDeviceList);
