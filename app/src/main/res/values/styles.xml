@@ -97,10 +97,7 @@
         <item name="android:paddingLeft">10dp</item>
         <item name="android:paddingRight">10dp</item>
 
-        <item name="android:layout_marginTop">2dp</item>
-        <item name="android:layout_marginBottom">2dp</item>
-        <item name="android:layout_marginLeft">10dp</item>
-        <item name="android:layout_marginRight">2dp</item>
+        <item name="android:layout_margin">2dp</item>
 
         <item name="android:textSize">12sp</item>
     </style>
@@ -124,8 +121,8 @@
     <style name="fragmentContent">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginLeft">10dp</item>
-        <item name="android:layout_marginRight">10dp</item>
+        <item name="android:paddingLeft">6dp</item>
+        <item name="android:paddingRight">6dp</item>
     </style>
 
     <style name="text" parent="@android:style/TextAppearance.Small">
@@ -225,8 +222,8 @@
     <!--       DEVICE DETAIL            -->
     <!-- #############################  -->
 
-    <style name="deviceDetailSectionContent" parent="fragmentContent">
-        <item name="android:layout_width">match_parent</item>
+    <style name="deviceDetailSectionContent">
+    <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginTop">10dp</item>
     </style>
@@ -236,8 +233,6 @@
         <item name="android:layout_width">fill_parent</item>
         <item name="android:background">@color/navigationBarBackground</item>
         <item name="android:textSize">20sp</item>
-        <item name="android:padding">6dp</item>
-        <item name="android:gravity">center_horizontal</item>
     </style>
 
     <style name="deviceDetailSectionCaption" parent="text">
@@ -245,7 +240,6 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:textColor">@color/sectionCaptionColor</item>
         <item name="android:textSize">20sp</item>
-        <item name="android:paddingLeft">3dp</item>
         <item name="android:layout_margin">3dp</item>
         <item name="android:layout_marginTop">6dp</item>
     </style>

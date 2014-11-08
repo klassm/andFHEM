@@ -27,7 +27,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="fill_parent"
               android:layout_height="fill_parent"
-              android:orientation="vertical">
+              android:orientation="vertical"
+              style="@style/fragmentContent">
 
     <TextView
         style="@style/deviceDetailSectionCaption"
@@ -60,11 +61,11 @@
         style="@style/deviceDetailTable">
     </TableLayout>
 
+
     <LinearLayout
         android:id="@+id/graphButtons"
         style="@style/deviceDetailSectionContent"
         android:orientation="vertical">
-
         <TextView
             style="@style/deviceDetailSectionCaption"
             android:text="@string/plots"/>
