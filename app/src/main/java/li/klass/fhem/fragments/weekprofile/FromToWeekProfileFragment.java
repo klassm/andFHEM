@@ -24,6 +24,7 @@
 
 package li.klass.fhem.fragments.weekprofile;
 
+import li.klass.fhem.adapter.weekprofile.BaseWeekProfileAdapter;
 import li.klass.fhem.adapter.weekprofile.FromToWeekProfileAdapter;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.heating.schedule.WeekProfile;
@@ -45,7 +46,7 @@ public class FromToWeekProfileFragment extends BaseWeekProfileFragment<FromToHea
     }
 
     @Override
-    protected NestedListViewAdapter getAdapter() {
+    protected BaseWeekProfileAdapter getAdapter() {
         return adapter;
     }
 }

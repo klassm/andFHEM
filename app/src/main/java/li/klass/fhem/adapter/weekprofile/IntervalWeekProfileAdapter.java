@@ -88,8 +88,7 @@ public class IntervalWeekProfileAdapter
                 if (!child.isTimeFixed()) {
                     child.setChangedSwitchTime(time);
                 }
-
-                context.sendBroadcast(new Intent(Actions.DO_UPDATE));
+                notifyWeekProfileChangedListener();
             }
         });
 
@@ -101,7 +100,7 @@ public class IntervalWeekProfileAdapter
                     @Override
                     public void onClick() {
                         parent.deleteHeatingIntervalAt(relativeChildPosition);
-                        context.sendBroadcast(new Intent(Actions.DO_UPDATE));
+                        notifyWeekProfileChangedListener();
                     }
                 });
             }
@@ -127,7 +126,7 @@ public class IntervalWeekProfileAdapter
                 interval.setNew(true);
 
                 parent.addHeatingInterval(interval);
-                context.sendBroadcast(new Intent(Actions.DO_UPDATE));
+                notifyWeekProfileChangedListener();
             }
         });
 
@@ -197,6 +196,7 @@ public class IntervalWeekProfileAdapter
                         if (listener != null) {
                             listener.onIntervalTemperatureChanged(time, temperature);
                         }
+                        notifyWeekProfileChangedListener();
                     }
                 });
             }

@@ -51,6 +51,7 @@ public abstract class BaseWeekProfileAdapter<H extends BaseHeatingInterval>
 
     protected final Resources resources;
     protected final Context context;
+    private WeekProfileChangedListener listener;
 
     public BaseWeekProfileAdapter(Context context) {
         super(context);
@@ -118,4 +119,18 @@ public abstract class BaseWeekProfileAdapter<H extends BaseHeatingInterval>
         }
     }
 
+    public void registerWeekProfileChangedListener(WeekProfileChangedListener listener) {
+        this.listener = listener;
+    }
+
+    protected void notifyWeekProfileChangedListener() {
+        notifyDataSetChanged();
+        if (listener != null) {
+            listener.onWeekProfileChanged(weekProfile);
+        }
+    }
+
+    public interface WeekProfileChangedListener {
+        void onWeekProfileChanged(WeekProfile weekProfile);
+    }
 }

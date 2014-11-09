@@ -36,6 +36,7 @@ import android.widget.Button;
 import com.google.common.base.Preconditions;
 
 import li.klass.fhem.R;
+import li.klass.fhem.adapter.weekprofile.BaseWeekProfileAdapter;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
@@ -47,7 +48,6 @@ import li.klass.fhem.fragments.core.BaseFragment;
 import li.klass.fhem.service.intent.DeviceIntentService;
 import li.klass.fhem.service.intent.RoomListIntentService;
 import li.klass.fhem.widget.NestedListView;
-import li.klass.fhem.widget.NestedListViewAdapter;
 
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_NAME;
 import static li.klass.fhem.constants.BundleExtraKeys.DO_REFRESH;
@@ -113,7 +113,16 @@ public abstract class BaseWeekProfileFragment<H extends BaseHeatingInterval> ext
         });
 
         NestedListView nestedListView = (NestedListView) view.findViewById(R.id.weekprofile);
-        nestedListView.setAdapter(getAdapter());
+        BaseWeekProfileAdapter adapter = getAdapter();
+        adapter.registerWeekProfileChangedListener(new BaseWeekProfileAdapter.WeekProfileChangedListener() {
+            @Override
+            public void onWeekProfileChanged(WeekProfile weekProfile) {
+                updateChangeButtonsHolderVisibility(weekProfile);
+            }
+        });
+
+
+        nestedListView.setAdapter(adapter);
 
         return view;
     }
@@ -139,26 +148,33 @@ public abstract class BaseWeekProfileFragment<H extends BaseHeatingInterval> ext
                     @SuppressWarnings("unchecked")
                     HeatingDevice<?, ?, H, ? extends Device> heatingDevice = (HeatingDevice) device;
 
-                    View holder = getView().findViewById(R.id.changeValueButtonHolder);
-                    if (holder == null) return;
-
-                    WeekProfile<H, ?, ? extends Device> weekProfile = heatingDevice.getWeekProfile();
-                    updateAdapterWith(weekProfile);
-
-                    if (weekProfile.getChangedDayProfiles().size() > 0) {
-                        holder.setVisibility(View.VISIBLE);
-                    } else {
-                        holder.setVisibility(View.GONE);
-                    }
+                    updateChangeButtonsHolderVisibility(heatingDevice.getWeekProfile());
                 }
             }
         });
         getActivity().startService(intent);
     }
 
+    @SuppressWarnings("unchecked")
+    private void updateChangeButtonsHolderVisibility(WeekProfile weekProfile) {
+        View view = getView();
+        if (view == null) return;
+
+        View holder = view.findViewById(R.id.changeValueButtonHolder);
+        if (holder == null) return;
+
+        updateAdapterWith(weekProfile);
+
+        if (weekProfile.getChangedDayProfiles().size() > 0) {
+            holder.setVisibility(View.VISIBLE);
+        } else {
+            holder.setVisibility(View.GONE);
+        }
+    }
+
     protected abstract void updateAdapterWith(WeekProfile<H, ?, ? extends Device> weekProfile);
 
-    protected abstract NestedListViewAdapter getAdapter();
+    protected abstract BaseWeekProfileAdapter getAdapter();
 
     protected void beforeCreateView() {
     }

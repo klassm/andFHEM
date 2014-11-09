@@ -67,6 +67,7 @@ public class FromToWeekProfileAdapter
             @Override
             public void onTimeChanged(String newTime) {
                 child.setChangedFromTime(newTime);
+                notifyWeekProfileChangedListener();
             }
         });
 
@@ -74,6 +75,7 @@ public class FromToWeekProfileAdapter
             @Override
             public void onTimeChanged(String newTime) {
                 child.setChangedToTime(newTime);
+                notifyWeekProfileChangedListener();
             }
         });
 
