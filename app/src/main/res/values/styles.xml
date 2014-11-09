@@ -70,7 +70,7 @@
         <item name="android:textSize">12sp</item>
     </style>
 
-    <style name="seekBar">
+    <style name="seekBarGeneric">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:paddingTop">5dp</item>
@@ -80,9 +80,12 @@
         <item name="android:layout_marginLeft">10dp</item>
         <item name="android:max">100</item>
         <item name="android:focusable">false</item>
-        <item name="android:progressDrawable">@drawable/theme_seekbar</item>
-        <item name="android:thumb">@drawable/theme_seekbar_thumb_selector</item>
         <item name="android:minWidth">90dp</item>
+    </style>
+
+    <style name="seekBar" parent="seekBarGeneric">
+    <item name="android:progressDrawable">@drawable/theme_seekbar</item>
+        <item name="android:thumb">@drawable/theme_seekbar_thumb_selector</item>
     </style>
 
     <style name="button" parent="android:style/Widget.Button">
@@ -111,10 +114,13 @@
         <item name="android:layout_marginBottom">0dp</item>
     </style>
 
-    <style name="spinner" parent="android:style/Widget.Spinner">
-        <item name="android:background">@drawable/theme_spinner_selector</item>
-        <item name="android:layout_margin">3dp</item>
+    <style name="spinnerGeneric" parent="android:style/Widget.Spinner">
+    <item name="android:layout_margin">3dp</item>
         <item name="android:padding">3dp</item>
+    </style>
+
+    <style name="spinner" parent="spinner">
+        <item name="android:background">@drawable/theme_spinner_selector</item>
         <item name="android:minHeight">40dp</item>
     </style>
 

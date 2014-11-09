@@ -268,7 +268,7 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
                 @Override
                 public void run() {
 
-                    Log.d(UIBroadcastReceiver.class.getName(), "received action " + action);
+                    Log.v(UIBroadcastReceiver.class.getName(), "received action " + action);
 
                     if (action == null) return;
 
