@@ -115,7 +115,7 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
     public void onResume() {
         super.onResume();
         if (broadcastReceiver == null) {
-            broadcastReceiver = new UIBroadcastReceiver(getActivity(), this);
+            broadcastReceiver = new UIBroadcastReceiver(getActivity());
         }
         broadcastReceiver.attach();
 
@@ -241,15 +241,23 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
         errorView.setText(content);
     }
 
+    protected boolean mayUpdateFromBroadcast() {
+        return true;
+    }
+
+    private void updateInternal(boolean doRefresh) {
+        if (mayUpdateFromBroadcast()) {
+            update(doRefresh);
+        }
+    }
+
     public class UIBroadcastReceiver extends BroadcastReceiver {
 
         private final IntentFilter intentFilter;
         private FragmentActivity activity;
-        private Updateable updateable;
 
-        public UIBroadcastReceiver(FragmentActivity activity, Updateable updateable) {
+        public UIBroadcastReceiver(FragmentActivity activity) {
             this.activity = activity;
-            this.updateable = updateable;
 
             intentFilter = new IntentFilter();
             intentFilter.addAction(DO_UPDATE);
@@ -275,8 +283,7 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
                     try {
                         if (action.equals(DO_UPDATE)) {
                             hideConnectionError();
-                            boolean doUpdate = intent.getBooleanExtra(DO_REFRESH, false);
-                            updateable.update(doUpdate);
+                            updateInternal(intent.getBooleanExtra(DO_REFRESH, false));
                         } else if (action.equals(TOP_LEVEL_BACK)) {
                             if (!isVisible()) return;
                             if (!backPressCalled) {
@@ -284,7 +291,7 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
                                 onBackPressResult();
                             }
                         } else if (action.equals(REDRAW_ALL_WIDGETS)) {
-                            update(false);
+                            updateInternal(false);
                         } else if (action.equals(CONNECTION_ERROR)) {
                             String content;
                             if (intent.hasExtra(STRING_ID)) {
