@@ -65,6 +65,7 @@ import li.klass.fhem.service.connection.ConnectionService;
 import li.klass.fhem.service.intent.DeviceIntentService;
 import li.klass.fhem.service.intent.RoomListUpdateIntentService;
 import li.klass.fhem.util.ApplicationProperties;
+import li.klass.fhem.util.CloseableUtil;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static java.util.Collections.sort;
@@ -312,11 +313,12 @@ public class RoomListService extends AbstractService {
      */
     @SuppressWarnings("unchecked")
     private RoomDeviceList getCachedRoomDeviceListMap() {
+        ObjectInputStream objectInputStream = null;
         try {
             LOG.info("getCachedRoomDeviceListMap() : fetching device list from cache");
             long startLoad = System.currentTimeMillis();
 
-            ObjectInputStream objectInputStream = new ObjectInputStream(AndFHEMApplication.getContext().openFileInput(CACHE_FILENAME));
+            objectInputStream = new ObjectInputStream(AndFHEMApplication.getContext().openFileInput(CACHE_FILENAME));
             RoomDeviceList roomDeviceListMap = (RoomDeviceList) objectInputStream.readObject();
             LOG.info("getCachedRoomDeviceListMap() : loading device list from cache completed after {} ms",
                     (System.currentTimeMillis() - startLoad));
@@ -329,6 +331,8 @@ public class RoomListService extends AbstractService {
         } catch (Exception e) {
             LOG.info("getCachedRoomDeviceListMap() : error occurred while de-serializing data", e);
             return null;
+        } finally {
+            CloseableUtil.close(objectInputStream);
         }
     }
 
@@ -479,11 +483,14 @@ public class RoomListService extends AbstractService {
     public synchronized void storeDeviceListMap() {
         LOG.info("storeDeviceListMap() : storing device list to cache");
         Context context = AndFHEMApplication.getContext();
+        ObjectOutputStream objectOutputStream = null;
         try {
-            ObjectOutputStream objectOutputStream = new ObjectOutputStream(context.openFileOutput(CACHE_FILENAME, Context.MODE_PRIVATE));
+            objectOutputStream = new ObjectOutputStream(context.openFileOutput(CACHE_FILENAME, Context.MODE_PRIVATE));
             objectOutputStream.writeObject(deviceList);
         } catch (Exception e) {
             LOG.error("storeDeviceListMap() : error occurred while writing data to disk", e);
+        } finally {
+            CloseableUtil.close(objectOutputStream);
         }
     }
 

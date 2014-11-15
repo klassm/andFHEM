@@ -452,22 +452,15 @@ public abstract class FragmentBaseActivity extends ActionBarActivity implements 
         new Handler().post(new Runnable() {
             @Override
             public void run() {
-                boolean updateOnApplicationStart = applicationProperties.getBooleanSharedPreference(UPDATE_ON_APPLICATION_START, false);
                 int updateInterval = Integer.valueOf(applicationProperties.getStringSharedPreference(AUTO_UPDATE_TIME_IN_ACTIVITY, "-1"));
 
-                if (timer == null && (updateOnApplicationStart || updateInterval != -1)) {
+                if (timer == null && updateInterval != -1) {
                     timer = new Timer();
                 }
 
                 if (updateInterval != -1) {
-                    int initialDelay = updateOnApplicationStart ? updateInterval : 0;
-                    timer.scheduleAtFixedRate(new UpdateTimerTask(FragmentBaseActivity.this), initialDelay, updateInterval);
+                    timer.scheduleAtFixedRate(new UpdateTimerTask(FragmentBaseActivity.this), updateInterval, updateInterval);
                     Log.i(TAG, "handleTimerUpdates() : scheduling update every " + (updateInterval / 1000 / 60) + "min");
-                }
-
-                if (updateOnApplicationStart) {
-                    Log.i(TAG, "handleTimerUpdates() : update on application start started");
-                    timer.schedule(new UpdateTimerTask(FragmentBaseActivity.this), 0);
                 }
             }
         });
@@ -537,7 +530,7 @@ public abstract class FragmentBaseActivity extends ActionBarActivity implements 
 
             FragmentType currentFragmentType = getFragmentFor(current.getClass());
             if (currentFragmentType != contentFragmentType) {
-                Log.i(TAG, "backpress => switched to " + currentFragmentType);
+                Log.i(TAG, "back press => switched to " + currentFragmentType);
                 break;
             }
         }

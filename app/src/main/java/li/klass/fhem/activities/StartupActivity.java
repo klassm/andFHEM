@@ -44,12 +44,14 @@ import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.service.intent.FavoritesIntentService;
 import li.klass.fhem.service.intent.LicenseIntentService;
 import li.klass.fhem.service.intent.RoomListIntentService;
+import li.klass.fhem.service.room.RoomListService;
 import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.DialogUtil;
 import li.klass.fhem.util.FhemResultReceiver;
 
 import static com.google.common.base.Strings.isNullOrEmpty;
 import static li.klass.fhem.constants.PreferenceKeys.STARTUP_PASSWORD;
+import static li.klass.fhem.constants.PreferenceKeys.UPDATE_ON_APPLICATION_START;
 
 public class StartupActivity extends Activity {
     private static final String TAG = StartupActivity.class.getName();
@@ -136,7 +138,7 @@ public class StartupActivity extends Activity {
     private void loadDeviceList() {
         setCurrentStatus(R.string.currentStatus_loadingDeviceList);
 
-        startService(new Intent(Actions.GET_ALL_ROOMS_DEVICE_LIST)
+        Intent intent = new Intent(Actions.GET_ALL_ROOMS_DEVICE_LIST)
                 .setClass(this, RoomListIntentService.class)
                 .putExtra(BundleExtraKeys.RESULT_RECEIVER, new FhemResultReceiver() {
                     @Override
@@ -147,9 +149,14 @@ public class StartupActivity extends Activity {
                             Log.d(TAG, "loadDeviceList : device list was loaded");
                             loadFavorites();
                         }
-
                     }
-                }));
+                });
+        boolean updateOnApplicationStart = applicationProperties.getBooleanSharedPreference(UPDATE_ON_APPLICATION_START, false);
+        if (updateOnApplicationStart) {
+            intent.putExtra(BundleExtraKeys.UPDATE_PERIOD, RoomListService.ALWAYS_UPDATE_PERIOD);
+        }
+
+        startService(intent);
     }
 
     private void loadFavorites() {
