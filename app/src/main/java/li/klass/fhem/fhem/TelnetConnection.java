@@ -28,10 +28,13 @@ import android.graphics.Bitmap;
 import android.util.Log;
 
 import org.apache.commons.net.telnet.TelnetClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
@@ -42,33 +45,30 @@ import li.klass.fhem.util.CloseableUtil;
 import li.klass.fhem.util.StringUtil;
 
 public class TelnetConnection extends FHEMConnection {
-    public static final String TELNET_URL = "TELNET_URL";
-    public static final String TELNET_PORT = "TELNET_PORT";
-    public static final String TELNET_PASSWORD = "TELNET_PASSWORD";
     public static final String TAG = TelnetConnection.class.getName();
     public static final TelnetConnection INSTANCE = new TelnetConnection();
     private static final String PASSWORD_PROMPT = "Password: ";
+
+    private static final Logger LOG = LoggerFactory.getLogger(TelnetConnection.class.getName());
 
     private TelnetConnection() {
     }
 
     public RequestResult<String> executeCommand(String command) {
-        Log.i(TAG, "executeTask command " + command);
+        LOG.info("executeTask command {}", command);
 
         final TelnetClient telnetClient = new TelnetClient();
         telnetClient.setConnectTimeout(getConnectionTimeoutMilliSeconds());
 
-        OutputStream outputStream = null;
         BufferedOutputStream bufferedOutputStream = null;
         PrintStream printStream = null;
-        InputStream inputStream = null;
 
         String errorHost = serverSpec.getIp() + ":" + serverSpec.getPort();
         try {
             telnetClient.connect(serverSpec.getIp(), serverSpec.getPort());
 
-            outputStream = telnetClient.getOutputStream();
-            inputStream = telnetClient.getInputStream();
+            OutputStream outputStream = telnetClient.getOutputStream();
+            InputStream inputStream = telnetClient.getInputStream();
 
             bufferedOutputStream = new BufferedOutputStream(outputStream);
             printStream = new PrintStream(outputStream);
@@ -76,19 +76,20 @@ public class TelnetConnection extends FHEMConnection {
             boolean passwordSent = false;
             String passwordRead = readUntil(inputStream, PASSWORD_PROMPT);
             if (passwordRead != null && passwordRead.contains(PASSWORD_PROMPT)) {
-                Log.i(TAG, "sending password");
+                LOG.info("sending password");
                 writeCommand(printStream, serverSpec.getPassword());
                 passwordSent = true;
             }
 
-            writeCommand(printStream, "");
+            writeCommand(printStream, "\n\n");
 
             if (!waitForFilledStream(inputStream, 5000)) {
                 return new RequestResult<>(RequestResultError.HOST_CONNECTION_ERROR);
             }
 
             // to discard
-            read(inputStream);
+            String toDiscard = read(inputStream);
+            LOG.debug("discarding {}", toDiscard);
 
             writeCommand(printStream, command);
 
@@ -124,12 +125,12 @@ public class TelnetConnection extends FHEMConnection {
                     .replaceAll("Bye...", "")
                     .replaceAll("fhem>", "");
             result = new String(result.getBytes("UTF8"));
-            Log.d(TAG, "result is :: " + result);
+            LOG.debug("result is {}", result);
 
             return new RequestResult<>(result);
 
         } catch (SocketTimeoutException e) {
-            Log.e(TAG, "timeout", e);
+            LOG.error("timeout", e);
             setErrorInErrorHolderFor(e, errorHost, command);
             return new RequestResult<>(RequestResultError.CONNECTION_TIMEOUT);
         } catch (UnsupportedEncodingException e) {
@@ -140,16 +141,15 @@ public class TelnetConnection extends FHEMConnection {
             // We handle host connection errors directly after connecting to the server by waiting
             // for some token for some seconds. Afterwards, the only possibility for an error
             // is that the FHEM server ends the connection after receiving an invalid password.
-            Log.e(TAG, "SocketException", e);
+            LOG.error("SocketException", e);
             setErrorInErrorHolderFor(e, errorHost, command);
             return new RequestResult<>(RequestResultError.AUTHENTICATION_ERROR);
         } catch (IOException e) {
-            Log.e(TAG, "IOException", e);
+            LOG.error("IOException", e);
             setErrorInErrorHolderFor(e, errorHost, command);
             return new RequestResult<>(RequestResultError.HOST_CONNECTION_ERROR);
         } finally {
-            CloseableUtil.close(printStream, bufferedOutputStream,
-                    outputStream, inputStream);
+            CloseableUtil.close(printStream, bufferedOutputStream);
         }
     }
 
@@ -157,13 +157,14 @@ public class TelnetConnection extends FHEMConnection {
         waitForFilledStream(inputStream, 3000);
 
         StringBuilder buffer = new StringBuilder();
-        while (inputStream.available() > 0 || waitForFilledStream(inputStream, 100)) {
+        while (inputStream.available() > 0 || waitForFilledStream(inputStream, 300)) {
             char readChar = (char) inputStream.read();
             buffer.append(readChar);
             for (String blocker : blockers) {
                 if (StringUtil.endsWith(buffer, blocker)) return buffer.toString();
             }
         }
+        LOG.error("read data, but did not find end token, read content was '{}'");
         return null;
     }
 
@@ -181,7 +182,7 @@ public class TelnetConnection extends FHEMConnection {
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
-                Log.e(TAG, "interrupted, ignoring", e);
+                LOG.debug("interrupted, ignoring", e);
             }
         }
         return inputStream.available() > 0;
@@ -200,7 +201,7 @@ public class TelnetConnection extends FHEMConnection {
 
     @Override
     public RequestResult<Bitmap> requestBitmap(String relativePath) {
-        Log.e(TAG, "get image: " + relativePath);
+        LOG.debug("get image from relative path '{}'", relativePath);
         return new RequestResult<>(null, null);
     }
 }

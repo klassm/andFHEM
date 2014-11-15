@@ -26,6 +26,7 @@ package li.klass.fhem.dagger;
 
 import dagger.Module;
 import li.klass.fhem.appwidget.service.AppWidgetUpdateService;
+import li.klass.fhem.service.intent.AppActionsIntentService;
 import li.klass.fhem.service.intent.ConnectionsIntentService;
 import li.klass.fhem.service.intent.DeviceIntentService;
 import li.klass.fhem.service.intent.ExternalApiService;
@@ -49,7 +50,8 @@ import li.klass.fhem.service.intent.SendCommandIntentService;
                 ExternalApiService.class,
                 DeviceIntentService.class,
                 AppWidgetUpdateService.class,
-                LicenseIntentService.class
+                LicenseIntentService.class,
+                AppActionsIntentService.class
         })
 public class ServicesModule {
 }

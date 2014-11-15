@@ -54,8 +54,13 @@ public class ApplicationProperties {
     @ForApplication
     Context applicationContext;
 
-    public ApplicationProperties() {
-        load("/application.properties");
+    private boolean isLoaded = false;
+
+    public void load() {
+        if (!isLoaded) {
+            load("/application.properties");
+            isLoaded = true;
+        }
     }
 
     private void load(String fileName) {
@@ -87,11 +92,13 @@ public class ApplicationProperties {
     }
 
     public boolean getBooleanApplicationProperty(String key) {
+        load();
         String value = getStringApplicationProperty(key);
         return value != null ? Boolean.valueOf(value) : false;
     }
 
     public String getStringApplicationProperty(String key) {
+        load();
         return properties.getProperty(key);
     }
 
