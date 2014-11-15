@@ -25,6 +25,8 @@
 package li.klass.fhem.domain.core;
 
 
+import java.util.Locale;
+
 import static li.klass.fhem.domain.core.DeviceStateAdditionalInformationType.ANY;
 import static li.klass.fhem.domain.core.DeviceStateAdditionalInformationType.DEC_QUARTER;
 import static li.klass.fhem.domain.core.DeviceStateAdditionalInformationType.NUMERIC;
@@ -49,6 +51,7 @@ public enum DeviceStateRequiringAdditionalInformation {
     AUDIO("audio", ANY),
     DAY_TEMP("day-temp", TEMPERATURE),
     DESIRED_TEMP("desired-temp", TEMPERATURE),
+    GENERAL_TEMP(".*temperature", TEMPERATURE),
     FRI_FROM1("fri-from1", TIME),
     FRI_FROM2("fri-from2", TIME),
     FRI_TO1("fri-to1", TIME),
@@ -89,23 +92,19 @@ public enum DeviceStateRequiringAdditionalInformation {
     WINDOWOPEN_TEMP("windowopen-temp", TEMPERATURE),
     YEAR("year", NUMERIC);
 
-    private String fhemState = null;
+    private String fhemStateRegexp = null;
     private DeviceStateAdditionalInformationType[] additionalInformationTypes;
 
-    private DeviceStateRequiringAdditionalInformation(String fhemState, DeviceStateAdditionalInformationType... additionalInformationTypes) {
-        this.fhemState = fhemState;
+    private DeviceStateRequiringAdditionalInformation(String fhemStateRegexp, DeviceStateAdditionalInformationType... additionalInformationTypes) {
+        this.fhemStateRegexp = fhemStateRegexp;
         this.additionalInformationTypes = additionalInformationTypes;
-    }
-
-    public String getFhemState() {
-        return fhemState;
     }
 
     public static DeviceStateRequiringAdditionalInformation deviceStateForFHEM(String state) {
         if (state == null) return null;
-
+        state = state.toLowerCase(Locale.getDefault());
         for (DeviceStateRequiringAdditionalInformation deviceState : values()) {
-            if (deviceState.getFhemState().equalsIgnoreCase(state)) {
+            if (state.matches(deviceState.fhemStateRegexp)) {
                 return deviceState;
             }
         }
@@ -121,10 +120,10 @@ public enum DeviceStateRequiringAdditionalInformation {
     }
 
     public static boolean isValidAdditionalInformationValue(String value,
-                                                      DeviceStateRequiringAdditionalInformation specialDeviceState) {
+                                                            DeviceStateRequiringAdditionalInformation specialDeviceState) {
 
         for (DeviceStateAdditionalInformationType type : specialDeviceState.getAdditionalInformationTypes()) {
-            if (type.matches(value)) {
+            if (type.matches(value.toLowerCase())) {
                 return true;
             }
         }
