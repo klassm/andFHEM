@@ -295,6 +295,20 @@
             </intent-filter>
         </service>
 
+        <service
+            android:name="li.klass.fhem.service.intent.RoomListIntentService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="li.klass.fhem.constants.Actions.REMOTE_UPDATE_FINISHED"/>
+                <action android:name="li.klass.fhem.constants.Actions.GET_ALL_ROOMS_DEVICE_LIST"/>
+                <action android:name="li.klass.fhem.constants.Actions.GET_ROOM_NAME_LIST"/>
+                <action android:name="li.klass.fhem.constants.Actions.GET_ROOM_DEVICE_LIST"/>
+                <action android:name="li.klass.fhem.constants.Actions.GET_DEVICE_FOR_NAME"/>
+                <action android:name="li.klass.fhem.constants.Actions.UPDATE_DEVICE_WITH_UPDATE_MAP"/>
+                <action android:name="li.klass.fhem.constants.Actions.UPDATE_IF_REQUIRED"/>
+            </intent-filter>
+        </service>
+
         <activity android:name="li.klass.fhem.activities.base.DeviceNameSelectionActivity"/>
 
         <activity

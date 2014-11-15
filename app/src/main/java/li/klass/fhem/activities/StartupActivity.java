@@ -37,7 +37,6 @@ import javax.inject.Inject;
 
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
-import li.klass.fhem.billing.BillingService;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
@@ -70,6 +69,11 @@ public class StartupActivity extends Activity {
         ((AndFHEMApplication) getApplication()).inject(this);
 
         setContentView(R.layout.startup);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
 
         if (!isNullOrEmpty(getPassword())) {
             showLoginDialog();
@@ -114,20 +118,20 @@ public class StartupActivity extends Activity {
         setCurrentStatus(R.string.currentStatus_billing);
 
         startService(new Intent(Actions.IS_PREMIUM)
-                .setClass(this, LicenseIntentService.class)
-                .putExtra(BundleExtraKeys.RESULT_RECEIVER, new FhemResultReceiver() {
-                    @Override
-                    protected void onReceiveResult(int resultCode, Bundle resultData) {
-                        if (resultCode == ResultCodes.ERROR) {
-                            Log.e(TAG, "initializeGoogleBilling() : cannot initialize connection to Google Billing");
-                        } else {
-                            Log.i(TAG, "initializeGoogleBilling() : connection was initialized");
-                        }
+                        .setClass(this, LicenseIntentService.class)
+                        .putExtra(BundleExtraKeys.RESULT_RECEIVER, new FhemResultReceiver() {
+                            @Override
+                            protected void onReceiveResult(int resultCode, Bundle resultData) {
+                                if (resultCode == ResultCodes.ERROR) {
+                                    Log.e(TAG, "initializeGoogleBilling() : cannot initialize connection to Google Billing");
+                                } else {
+                                    Log.i(TAG, "initializeGoogleBilling() : connection was initialized");
+                                }
 
-                        // we need to continue anyway.
-                        loadDeviceList();
-                    }
-                })
+                                // we need to continue anyway.
+                                loadDeviceList();
+                            }
+                        })
         );
     }
 
@@ -144,9 +148,9 @@ public class StartupActivity extends Activity {
                     @Override
                     protected void onReceiveResult(int resultCode, Bundle resultData) {
                         if (resultCode == ResultCodes.ERROR) {
-                            Log.e(TAG, "loadDeviceList : cannot load device list: " + resultData);
+                            Log.e(TAG, "loadDeviceList() : cannot load device list: " + resultData);
                         } else {
-                            Log.d(TAG, "loadDeviceList : device list was loaded");
+                            Log.d(TAG, "loadDeviceList() : device list was loaded");
                             loadFavorites();
                         }
                     }
@@ -190,10 +194,5 @@ public class StartupActivity extends Activity {
 
         startActivity(new Intent(this, AndFHEMMainActivity.class)
                 .putExtra(BundleExtraKeys.HAS_FAVORITES, favoritesPresent));
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
     }
 }

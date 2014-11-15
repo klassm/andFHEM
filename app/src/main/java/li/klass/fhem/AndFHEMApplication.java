@@ -37,6 +37,8 @@ import java.util.List;
 import javax.inject.Inject;
 
 import dagger.ObjectGraph;
+import li.klass.fhem.activities.AndFHEMMainActivity;
+import li.klass.fhem.activities.StartupActivity;
 import li.klass.fhem.activities.graph.ChartingActivity;
 import li.klass.fhem.dagger.AndroidModule;
 import li.klass.fhem.dagger.ApplicationModule;
@@ -111,6 +113,8 @@ public class AndFHEMApplication extends Application {
             StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
                     .detectAll()
                     .setClassInstanceLimit(ChartingActivity.class, 3)
+                    .setClassInstanceLimit(StartupActivity.class, 3)
+                    .setClassInstanceLimit(AndFHEMMainActivity.class, 3)
                     .penaltyLog()
                     .penaltyDeath()
                     .build());
@@ -120,6 +124,8 @@ public class AndFHEMApplication extends Application {
             StrictMode.setThreadPolicy(builder
                     .detectDiskReads()
                     .detectDiskWrites()
+                    .permitDiskReads()
+                    .permitDiskWrites()
                     .detectCustomSlowCalls()
                     .detectNetwork()
                     .penaltyFlashScreen()
@@ -189,9 +195,5 @@ public class AndFHEMApplication extends Application {
 
     public void setIsTablet(boolean tablet) {
         isTablet = tablet;
-    }
-
-    public boolean isTablet() {
-        return isTablet;
     }
 }
