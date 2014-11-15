@@ -35,7 +35,9 @@ import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewButtonAction;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.GCMSendDevice;
+import li.klass.fhem.gcm.GCMIntentService;
 import li.klass.fhem.service.device.GCMSendDeviceService;
+import li.klass.fhem.service.intent.DeviceIntentService;
 
 public class GCMSendDeviceAdapter extends GenericDeviceAdapter<GCMSendDevice> {
     @Inject
@@ -52,8 +54,9 @@ public class GCMSendDeviceAdapter extends GenericDeviceAdapter<GCMSendDevice> {
         detailActions.add(new DeviceDetailViewButtonAction<GCMSendDevice>(R.string.gcmRegisterThis) {
             @Override
             public void onButtonClick(Context context, GCMSendDevice device) {
-                Intent intent = new Intent(Actions.GCM_ADD_SELF);
-                intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
+                Intent intent = new Intent(Actions.GCM_ADD_SELF)
+                        .setClass(context, DeviceIntentService.class)
+                        .putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
                 context.startService(intent);
             }
 

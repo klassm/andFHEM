@@ -37,16 +37,13 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
 import com.google.common.base.Strings;
-import com.google.common.collect.Lists;
 
 import java.util.List;
 
 import li.klass.fhem.R;
-import li.klass.fhem.adapter.DetailSpinnerAdapter;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
