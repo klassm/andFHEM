@@ -32,6 +32,8 @@ import android.os.SystemClock;
 import android.util.Log;
 import android.widget.RemoteViews;
 
+import com.google.common.base.Optional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -107,12 +109,7 @@ public abstract class DeviceAppWidgetView extends AppWidgetView {
     }
 
     private Device getDeviceFor(String deviceName) {
-        Device device = roomListService.getDeviceForName(deviceName);
-        if (device == null) {
-            return null;
-        } else {
-            return device;
-        }
+        return roomListService.getDeviceForName(deviceName).orNull();
     }
 
     protected void openDeviceDetailPageWhenClicking(int viewId, RemoteViews view, Device device, WidgetConfiguration widgetConfiguration) {
@@ -143,8 +140,12 @@ public abstract class DeviceAppWidgetView extends AppWidgetView {
     @Override
     public void createWidgetConfiguration(Context context, WidgetType widgetType, int appWidgetId,
                                           WidgetConfigurationCreatedCallback callback, String... payload) {
-        Device device = roomListService.getDeviceForName(payload[0]);
-        createDeviceWidgetConfiguration(context, widgetType, appWidgetId, device, callback);
+        Optional<Device> device = roomListService.getDeviceForName(payload[0]);
+        if (device.isPresent()) {
+            createDeviceWidgetConfiguration(context, widgetType, appWidgetId, device.get(), callback);
+        } else {
+            Log.i(TAG, "cannot find device for " + payload[0]);
+        }
     }
 
     protected void createDeviceWidgetConfiguration(Context context, WidgetType widgetType, int appWidgetId,

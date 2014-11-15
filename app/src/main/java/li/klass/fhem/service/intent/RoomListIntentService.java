@@ -28,6 +28,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.ResultReceiver;
 
+import com.google.common.base.Optional;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Map;
@@ -63,6 +68,8 @@ public class RoomListIntentService extends ConvenientIntentService {
     @Inject
     RoomListService roomListService;
 
+    private static final Logger LOG = LoggerFactory.getLogger(RoomListIntentService.class);
+
     public RoomListIntentService() {
         super(RoomListIntentService.class.getName());
     }
@@ -88,8 +95,12 @@ public class RoomListIntentService extends ConvenientIntentService {
             sendResultWithLastUpdate(resultReceiver, ResultCodes.SUCCESS, DEVICE_LIST, roomDeviceList);
         } else if (GET_DEVICE_FOR_NAME.equals(action)) {
             String deviceName = intent.getStringExtra(DEVICE_NAME);
-            Device device = roomListService.getDeviceForName(deviceName);
-            sendResultWithLastUpdate(resultReceiver, ResultCodes.SUCCESS, DEVICE, device);
+            Optional<Device> device = roomListService.getDeviceForName(deviceName);
+            if (!device.isPresent()) {
+                LOG.info("cannot find device for {}", deviceName);
+                return STATE.ERROR;
+            }
+            sendResultWithLastUpdate(resultReceiver, ResultCodes.SUCCESS, DEVICE, device.get());
         } else if (UPDATE_DEVICE_WITH_UPDATE_MAP.equals(action)) {
             String deviceName = intent.getStringExtra(DEVICE_NAME);
             @SuppressWarnings("unchecked")

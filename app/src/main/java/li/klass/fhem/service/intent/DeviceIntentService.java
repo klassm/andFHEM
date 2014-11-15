@@ -29,7 +29,11 @@ import android.os.Bundle;
 import android.os.ResultReceiver;
 import android.util.Log;
 
+import com.google.common.base.Optional;
+
 import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -131,6 +135,8 @@ public class DeviceIntentService extends ConvenientIntentService {
     @Inject
     NotificationIntentService notificationIntentService;
 
+    private static final Logger LOG = LoggerFactory.getLogger(DeviceIntentService.class);
+
     public DeviceIntentService() {
         super(DeviceIntentService.class.getName());
     }
@@ -143,7 +149,13 @@ public class DeviceIntentService extends ConvenientIntentService {
         }
 
         String deviceName = intent.getStringExtra(BundleExtraKeys.DEVICE_NAME);
-        Device device = roomListService.getDeviceForName(deviceName);
+        Optional<Device> deviceOptional = roomListService.getDeviceForName(deviceName);
+        if (!deviceOptional.isPresent()) {
+            LOG.info("cannot find device for {}", deviceName);
+            return ERROR;
+        }
+        Device device = deviceOptional.get();
+
         Log.d(DeviceIntentService.class.getName(), intent.getAction());
         String action = intent.getAction();
 

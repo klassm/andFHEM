@@ -27,6 +27,11 @@ package li.klass.fhem.service.device;
 import android.content.Context;
 import android.content.Intent;
 
+import com.google.common.base.Optional;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -48,6 +53,8 @@ public class AtService {
     @Inject
     @ForApplication
     Context applicationContext;
+
+    private static final Logger LOG = LoggerFactory.getLogger(AtService.class);
 
     public void createNew(String timerName, int hour, int minute, int second, String repetition, String type,
                           String targetDeviceName, String targetState, String targetStateAppendix, boolean isActive) {
@@ -78,8 +85,14 @@ public class AtService {
 
     public void modify(String timerName, int hour, int minute, int second, String repetition, String type,
                        String targetDeviceName, String targetState, String targetStateAppendix, boolean isActive) {
-        AtDevice device = (AtDevice) roomListService.getDeviceForName(timerName);
+        Optional<AtDevice> deviceOptional = roomListService.getDeviceForName(timerName);
 
+        if (!deviceOptional.isPresent()) {
+            LOG.info("cannot find device for {}", timerName);
+            return;
+        }
+
+        AtDevice device = deviceOptional.get();
         setValues(hour, minute, second, repetition, type, targetDeviceName, targetState, targetStateAppendix, device, isActive);
         String definition = device.toFHEMDefinition();
         String command = "modify " + timerName + " " + definition;

@@ -37,13 +37,16 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
 
 import java.util.List;
 
 import li.klass.fhem.R;
+import li.klass.fhem.adapter.DetailSpinnerAdapter;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
@@ -61,7 +64,11 @@ import li.klass.fhem.widget.TimePickerWithSeconds;
 import li.klass.fhem.widget.TimePickerWithSecondsDialog;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static li.klass.fhem.constants.Actions.GET_DEVICE_FOR_NAME;
 import static li.klass.fhem.constants.BundleExtraKeys.CLICKED_DEVICE;
+import static li.klass.fhem.constants.BundleExtraKeys.DEVICE;
+import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_NAME;
+import static li.klass.fhem.constants.BundleExtraKeys.RESULT_RECEIVER;
 
 public class TimerDetailFragment extends BaseFragment {
 
@@ -91,8 +98,8 @@ public class TimerDetailFragment extends BaseFragment {
 
     @Override
     public void setArguments(Bundle args) {
-        if (args.containsKey(BundleExtraKeys.DEVICE_NAME)) {
-            savedTimerDeviceName = args.getString(BundleExtraKeys.DEVICE_NAME);
+        if (args.containsKey(DEVICE_NAME)) {
+            savedTimerDeviceName = args.getString(DEVICE_NAME);
         }
     }
 
@@ -150,7 +157,7 @@ public class TimerDetailFragment extends BaseFragment {
                 Intent intent = new Intent(Actions.SHOW_FRAGMENT);
                 intent.putExtra(BundleExtraKeys.FRAGMENT, FragmentType.DEVICE_SELECTION);
                 intent.putExtra(BundleExtraKeys.DEVICE_FILTER, deviceFilter);
-                intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new FhemResultReceiver() {
+                intent.putExtra(RESULT_RECEIVER, new FhemResultReceiver() {
                     @Override
                     protected void onReceiveResult(int resultCode, Bundle resultData) {
                         if (resultCode != ResultCodes.SUCCESS) return;
@@ -323,20 +330,18 @@ public class TimerDetailFragment extends BaseFragment {
         bundle.putString(BundleExtraKeys.TIMER_NAME, timerDeviceName);
 
         String action = isModify() ? Actions.DEVICE_TIMER_MODIFY : Actions.DEVICE_TIMER_NEW;
-        Intent intent = new Intent(action);
-        intent.setClass(getActivity(), DeviceIntentService.class);
-        intent.putExtras(bundle);
-
-        intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new FhemResultReceiver() {
-            @Override
-            protected void onReceiveResult(int resultCode, Bundle resultData) {
-                if (resultCode == ResultCodes.SUCCESS) {
-                    back();
-                    savedTimerDeviceName = timerDeviceName;
-                }
-            }
-        });
-        getActivity().startService(intent);
+        getActivity().startService(new Intent(action)
+                .setClass(getActivity(), DeviceIntentService.class)
+                .putExtras(bundle)
+                .putExtra(RESULT_RECEIVER, new FhemResultReceiver() {
+                    @Override
+                    protected void onReceiveResult(int resultCode, Bundle resultData) {
+                        if (resultCode == ResultCodes.SUCCESS) {
+                            back();
+                            savedTimerDeviceName = timerDeviceName;
+                        }
+                    }
+                }));
     }
 
     private void updateTargetDevice(Device targetDevice) {
@@ -411,45 +416,44 @@ public class TimerDetailFragment extends BaseFragment {
     private void setTimerDeviceValuesForName(String timerDeviceName) {
         checkNotNull(timerDeviceName);
 
-        Intent intent = new Intent(Actions.GET_DEVICE_FOR_NAME);
-        intent.setClass(getActivity(), RoomListIntentService.class);
-        intent.putExtra(BundleExtraKeys.DEVICE_NAME, timerDeviceName);
-        intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new FhemResultReceiver() {
-            @Override
-            protected void onReceiveResult(int resultCode, Bundle resultData) {
-                if (resultCode != ResultCodes.SUCCESS || !resultData.containsKey(BundleExtraKeys.DEVICE)) {
-                    return;
-                }
-                Device device = (Device) resultData.getSerializable(BundleExtraKeys.DEVICE);
-                if (!(device instanceof AtDevice)) {
-                    Log.e(TAG, "expected an AtDevice, but got " + device);
-                    return;
-                }
+        getActivity().startService(new Intent(GET_DEVICE_FOR_NAME)
+                .setClass(getActivity(), RoomListIntentService.class)
+                .putExtra(DEVICE_NAME, timerDeviceName)
+                .putExtra(RESULT_RECEIVER, new FhemResultReceiver() {
+                    @Override
+                    protected void onReceiveResult(int resultCode, Bundle resultData) {
+                        if (resultCode != ResultCodes.SUCCESS || !resultData.containsKey(DEVICE)) {
+                            return;
+                        }
+                        Device device = (Device) resultData.getSerializable(DEVICE);
+                        if (!(device instanceof AtDevice)) {
+                            Log.e(TAG, "expected an AtDevice, but got " + device);
+                            return;
+                        }
 
-                setValuesForCurrentTimerDevice((AtDevice) device);
+                        setValuesForCurrentTimerDevice((AtDevice) device);
 
-                FragmentActivity activity = getActivity();
-                if (activity != null)
-                    activity.sendBroadcast(new Intent(Actions.DISMISS_EXECUTING_DIALOG));
-            }
-        });
-        getActivity().startService(intent);
+                        FragmentActivity activity = getActivity();
+                        if (activity != null)
+                            activity.sendBroadcast(new Intent(Actions.DISMISS_EXECUTING_DIALOG));
+                    }
+                }));
     }
 
     private void setValuesForCurrentTimerDevice(AtDevice atDevice) {
         this.timerDevice = atDevice;
 
-        Intent intent = new Intent(Actions.GET_DEVICE_FOR_NAME);
-        intent.putExtra(BundleExtraKeys.DEVICE_NAME, atDevice.getTargetDevice());
-        intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new FhemResultReceiver() {
-            @Override
-            protected void onReceiveResult(int resultCode, Bundle resultData) {
-                if (resultCode == ResultCodes.SUCCESS && resultData.containsKey(BundleExtraKeys.DEVICE)) {
-                    updateTargetDevice((Device) resultData.get(BundleExtraKeys.DEVICE));
-                }
-            }
-        });
-        getActivity().startService(intent);
+        getActivity().startService(new Intent(GET_DEVICE_FOR_NAME)
+                .setClass(getActivity(), RoomListIntentService.class)
+                .putExtra(DEVICE_NAME, atDevice.getTargetDevice())
+                .putExtra(RESULT_RECEIVER, new FhemResultReceiver() {
+                    @Override
+                    protected void onReceiveResult(int resultCode, Bundle resultData) {
+                        if (resultCode == ResultCodes.SUCCESS && resultData.containsKey(DEVICE)) {
+                            updateTargetDevice((Device) resultData.get(DEVICE));
+                        }
+                    }
+                }));
 
 
         this.stateAppendix = timerDevice.getTargetStateAddtionalInformation();

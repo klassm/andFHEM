@@ -33,6 +33,7 @@ import javax.inject.Singleton;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.dagger.ForApplication;
 import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.RoomDeviceList;
 import li.klass.fhem.service.CommandExecutionService;
 import li.klass.fhem.service.room.RoomListService;
 import li.klass.fhem.util.StringUtil;
@@ -71,7 +72,10 @@ public class DeviceService {
      */
     public void deleteDevice(final Device device) {
         commandExecutionService.executeSafely("delete " + device.getName());
-        roomListService.getRoomDeviceList().removeDevice(device);
+        RoomDeviceList roomDeviceList = roomListService.getRoomDeviceList();
+        if (roomDeviceList != null) {
+            roomDeviceList.removeDevice(device);
+        }
     }
 
     /**

@@ -84,7 +84,7 @@
     </style>
 
     <style name="seekBar" parent="seekBarGeneric">
-    <item name="android:progressDrawable">@drawable/theme_seekbar</item>
+        <item name="android:progressDrawable">@drawable/theme_seekbar</item>
         <item name="android:thumb">@drawable/theme_seekbar_thumb_selector</item>
     </style>
 
@@ -114,12 +114,12 @@
         <item name="android:layout_marginBottom">0dp</item>
     </style>
 
-    <style name="spinnerGeneric" parent="android:style/Widget.Spinner">
-    <item name="android:layout_margin">3dp</item>
+    <style name="spinnerGeneric"> <!-- parent="android:style/Widget.Spinner" -->
+        <item name="android:layout_margin">3dp</item>
         <item name="android:padding">3dp</item>
     </style>
 
-    <style name="spinner" parent="spinner">
+    <style name="spinner" parent="spinnerGeneric">
         <item name="android:background">@drawable/theme_spinner_selector</item>
         <item name="android:minHeight">40dp</item>
     </style>

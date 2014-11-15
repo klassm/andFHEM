@@ -27,6 +27,7 @@ package li.klass.fhem.service.room;
 import android.content.Context;
 import android.content.Intent;
 
+import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
@@ -118,16 +119,19 @@ public class RoomListService extends AbstractService {
     public void parseReceivedDeviceStateMap(String deviceName, Map<String, String> updateMap,
                                             boolean vibrateUponNotification) {
 
-        Device device = getDeviceForName(deviceName);
-        if (device == null) return;
+        Optional<Device> deviceOptional = getDeviceForName(deviceName);
+        if (!deviceOptional.isPresent()) {
+            return;
+        }
 
+        Device device = deviceOptional.get();
         deviceListParser.fillDeviceWith(device, updateMap);
 
         LOG.info("parseReceivedDeviceStateMap()  : updated {} with {} new values!", device.getName(), updateMap.size());
 
         Intent intent = new Intent(Actions.NOTIFICATION_TRIGGER);
         intent.putExtra(BundleExtraKeys.DEVICE_NAME, deviceName);
-        intent.putExtra(BundleExtraKeys.DEVICE, device);
+        intent.putExtra(BundleExtraKeys.DEVICE, deviceOptional);
         intent.putExtra(BundleExtraKeys.UPDATE_MAP, (Serializable) updateMap);
         intent.putExtra(BundleExtraKeys.VIBRATE, vibrateUponNotification);
         applicationContext.startService(intent);
@@ -148,8 +152,9 @@ public class RoomListService extends AbstractService {
      * @param deviceName name of the device
      * @return found device or null
      */
-    public Device getDeviceForName(String deviceName) {
-        return getAllRoomsDeviceList().getDeviceFor(deviceName);
+    @SuppressWarnings("unchecked")
+    public <T extends Device<T>> Optional<T> getDeviceForName(String deviceName) {
+        return Optional.<T>fromNullable((T) getAllRoomsDeviceList().getDeviceFor(deviceName));
     }
 
     /**
@@ -316,7 +321,11 @@ public class RoomListService extends AbstractService {
             LOG.info("getCachedRoomDeviceListMap() : loading device list from cache completed after {} ms",
                     (System.currentTimeMillis() - startLoad));
 
-            return roomDeviceListMap;
+            if (roomDeviceListMap != null && roomDeviceListMap.isEmptyOrOnlyContainsDoNotShowDevices()) {
+                return null;
+            } else {
+                return roomDeviceListMap;
+            }
         } catch (Exception e) {
             LOG.info("getCachedRoomDeviceListMap() : error occurred while de-serializing data", e);
             return null;
@@ -451,13 +460,15 @@ public class RoomListService extends AbstractService {
         RoomDeviceList roomDeviceList = new RoomDeviceList(roomName);
 
         RoomDeviceList allRoomDeviceList = getRoomDeviceList();
-        for (Device device : allRoomDeviceList.getAllDevices()) {
-            if (device.isInRoom(roomName)) {
-                roomDeviceList.addDevice(device);
+        if (allRoomDeviceList != null) {
+            for (Device device : allRoomDeviceList.getAllDevices()) {
+                if (device.isInRoom(roomName)) {
+                    roomDeviceList.addDevice(device);
+                }
             }
+            roomDeviceList.setHiddenGroups(allRoomDeviceList.getHiddenGroups());
+            roomDeviceList.setHiddenRooms(allRoomDeviceList.getHiddenRooms());
         }
-        roomDeviceList.setHiddenGroups(allRoomDeviceList.getHiddenGroups());
-        roomDeviceList.setHiddenRooms(allRoomDeviceList.getHiddenRooms());
 
         return roomDeviceList;
     }

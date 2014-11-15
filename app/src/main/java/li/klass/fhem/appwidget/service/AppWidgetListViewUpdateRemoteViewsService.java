@@ -30,6 +30,8 @@ import android.os.Build;
 import android.util.Log;
 import android.widget.RemoteViewsService;
 
+import com.google.common.base.Optional;
+
 import javax.inject.Inject;
 
 import li.klass.fhem.AndFHEMApplication;
@@ -63,8 +65,8 @@ public class AppWidgetListViewUpdateRemoteViewsService extends RemoteViewsServic
         int appWidgetId = intent.getIntExtra(APP_WIDGET_ID, -1);
         WidgetType widgetType = WidgetType.valueOf(intent.getStringExtra(APP_WIDGET_TYPE_NAME));
         String deviceName = intent.getStringExtra(DEVICE_NAME);
-        Device device = roomListService.getDeviceForName(deviceName);
-        if (device == null) {
+        Optional<Device> device = roomListService.getDeviceForName(deviceName);
+        if (!device.isPresent()) {
             Log.e(TAG, "device is null, at least in the current connection");
             return null;
         }
@@ -89,6 +91,6 @@ public class AppWidgetListViewUpdateRemoteViewsService extends RemoteViewsServic
 
         DeviceListAppWidgetView listView = (DeviceListAppWidgetView) view;
 
-        return listView.getRemoteViewsFactory(this, device, appWidgetId);
+        return listView.getRemoteViewsFactory(this, device.get(), appWidgetId);
     }
 }

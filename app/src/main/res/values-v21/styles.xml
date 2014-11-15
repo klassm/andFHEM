@@ -39,8 +39,7 @@
         <item name="android:minWidth">90dp</item>
     </style>
 
-    <style name="spinner" parent="spinner">
+    <style name="spinner" parent="spinnerGeneric">
         <item name="android:spinnerMode">dropdown</item>
-        <item name="android:layout_gravity">right</item>
     </style>
 </resources>

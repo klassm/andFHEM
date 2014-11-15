@@ -69,9 +69,11 @@ public class RoomDeviceList implements Serializable {
     }
 
     public RoomDeviceList(RoomDeviceList roomDeviceList) {
-        this.roomName = roomDeviceList.roomName;
-        for (Device device : roomDeviceList.getAllDevices()) {
-            addDevice(device);
+        if (roomDeviceList != null) {
+            this.roomName = roomDeviceList.roomName;
+            for (Device device : roomDeviceList.getAllDevices()) {
+                addDevice(device);
+            }
         }
     }
 
