@@ -84,7 +84,8 @@ public class AndFHEMApplication extends Application {
     public void onCreate() {
         super.onCreate();
         setDefaultUncaughtExceptionHandler();
-        setStrictMode();
+//        setStrictMode();
+        setLaxMode();
 
         context = getApplicationContext();
         application = this;
@@ -105,6 +106,22 @@ public class AndFHEMApplication extends Application {
             });
         } catch (SecurityException e) {
             Log.e(TAG, "Could not set the Default Uncaught Exception Handler", e);
+        }
+    }
+
+    @TargetApi(Build.VERSION_CODES.GINGERBREAD)
+    private void setLaxMode() {
+        try {
+            // We are trying to do as much as possible in worker threads. However, at some places,
+            // i.e. updating list widgets, using background threads is not possible.
+            // We therefore deactivate the NetworkOnMainThread exception here.
+            if (getAndroidSDKLevel() > Build.VERSION_CODES.GINGERBREAD) {
+                StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+                StrictMode.setThreadPolicy(policy);
+            }
+        } catch (Throwable e) {
+            // this is not important ...
+            Log.d(AndFHEMApplication.class.getName(), "cannot disable strict mode", e);
         }
     }
 
