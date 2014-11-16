@@ -315,6 +315,7 @@
     <string name="error_internal_server_error">Internal Server Error (500). Read server logs!</string>
     <string name="error_bad_request">Bad Request (400)!</string>
     <string name="error_not_found">Not found (404)!</string>
+    <string name="error_internal">Internal error. Please try again!</string>
     <string name="error_timer_name_spaces">Timer names may not contain spaces!</string>
     <string name="retry">Retry</string>
     <string name="incompleteConfigurationError">Incomplete configuration!</string>
@@ -590,4 +591,8 @@
     <string name="currentStatus_loadingDeviceList">Loading device list …</string>
     <string name="currentStatus_loadingFavorites">Loading favorites …</string>
     <string name="currentStatus_billingInitError">Cannot initialize connection to Google billing!</string>
+
+    <string name="androidBugDialogDatePickerTitle">Feature deactivated</string>
+    <string name="androidBugDialogDatePickerContent">Lollipop currently contains a bug preventing the use of special UI elements like the ones used in this dialog. Thus, the feature is disabled until Google has released an update repairing this issue. Effectively, Google has already accepted the fix but has not released an update yet.</string>
+
 </resources>
