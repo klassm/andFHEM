@@ -38,7 +38,7 @@ import javax.inject.Inject;
 
 import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
 import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
-import li.klass.fhem.adapter.devices.genericui.StateChangingSeekBar;
+import li.klass.fhem.adapter.devices.genericui.StateChangingSeekBarFullWidth;
 import li.klass.fhem.adapter.devices.genericui.ToggleActionRow;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
@@ -97,7 +97,7 @@ public class PCA9532DeviceAdapter extends GenericDeviceAdapter<PCA9532Device> {
         registerFieldListener("pwm0", new FieldNameAddedToDetailListener<PCA9532Device>() {
             @Override
             public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, PCA9532Device device, TableRow fieldTableRow) {
-                tableLayout.addView(new StateChangingSeekBar<PCA9532Device>(
+                tableLayout.addView(new StateChangingSeekBarFullWidth<PCA9532Device>(
                         context, device.getPwm0(),
                         (SetListSliderValue) device.getSetList().get("PWM0"), "PWM0", applicationProperties)
                         .createRow(getInflater(), device));
@@ -107,7 +107,7 @@ public class PCA9532DeviceAdapter extends GenericDeviceAdapter<PCA9532Device> {
         registerFieldListener("pwm1", new FieldNameAddedToDetailListener<PCA9532Device>() {
             @Override
             public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, PCA9532Device device, TableRow fieldTableRow) {
-                tableLayout.addView(new StateChangingSeekBar<PCA9532Device>(
+                tableLayout.addView(new StateChangingSeekBarFullWidth<PCA9532Device>(
                         context, device.getPwm1(),
                         (SetListSliderValue) device.getSetList().get("PWM1"), "PWM1", applicationProperties)
                         .createRow(getInflater(), device));

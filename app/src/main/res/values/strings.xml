@@ -219,6 +219,7 @@
     <string name="location">Location</string>
     <string name="mood">Mood</string>
     <string name="hourMinuteFormat" translatable="false">HH:MM</string>
+    <string name="sleep">Sleep</string>
 
     <string name="connectionManage">Manage</string>
     <string name="connectionCreate">Create a new connection</string>

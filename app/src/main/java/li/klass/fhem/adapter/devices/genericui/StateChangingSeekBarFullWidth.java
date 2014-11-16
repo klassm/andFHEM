@@ -26,6 +26,7 @@ package li.klass.fhem.adapter.devices.genericui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.widget.TableRow;
 
 import li.klass.fhem.adapter.devices.core.UpdatingResultReceiver;
 import li.klass.fhem.constants.Actions;
@@ -35,28 +36,37 @@ import li.klass.fhem.domain.setlist.SetListSliderValue;
 import li.klass.fhem.service.intent.DeviceIntentService;
 import li.klass.fhem.util.ApplicationProperties;
 
-public class StateChangingSeekBar<D extends Device<D>> extends SeekBarActionRowFullWidthAndButton<D> {
+public class StateChangingSeekBarFullWidth<D extends Device<D>> extends SeekBarActionRowFullWidthAndButton<D> {
 
     private String commandAttribute;
     private ApplicationProperties applicationProperties;
 
-    public StateChangingSeekBar(Context context, int initialProgress, int maximumProgress,
-                                String commandAttribute, ApplicationProperties applicationProperties) {
+    public StateChangingSeekBarFullWidth(Context context, int initialProgress, int maximumProgress,
+                                         String commandAttribute, ApplicationProperties applicationProperties) {
         this(context, initialProgress, 0, maximumProgress, commandAttribute, applicationProperties);
     }
 
-    public StateChangingSeekBar(Context context, int initialProgress, int minimumProgress, int maximumProgress, String commandAttribute,
-                                ApplicationProperties applicationProperties) {
+    public StateChangingSeekBarFullWidth(Context context, int initialProgress, int minimumProgress, int maximumProgress, String commandAttribute,
+                                         ApplicationProperties applicationProperties) {
         super(context, initialProgress, minimumProgress, maximumProgress);
         this.commandAttribute = commandAttribute;
         this.applicationProperties = applicationProperties;
     }
 
-    public StateChangingSeekBar(Context context, int initialProgress, SetListSliderValue sliderValue,
-                                String commandAttribute, ApplicationProperties applicationProperties) {
+    public StateChangingSeekBarFullWidth(Context context, int initialProgress, SetListSliderValue sliderValue,
+                                         String commandAttribute, ApplicationProperties applicationProperties) {
         this(context, initialProgress, sliderValue.getStart(), sliderValue.getStop(),
                 commandAttribute, applicationProperties);
     }
+
+    public StateChangingSeekBarFullWidth(Context context, int initialProgress, SetListSliderValue sliderValue,
+                                         String commandAttribute, TableRow updateRow,
+                                         ApplicationProperties applicationProperties) {
+        this(context, initialProgress, sliderValue.getStart(), sliderValue.getStop(),
+                commandAttribute, applicationProperties);
+        setUpdateRow(updateRow);
+    }
+
 
     @Override
     public void onButtonSetValue(D device, int value) {

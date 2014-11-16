@@ -32,6 +32,8 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.google.common.base.Optional;
+
 import java.util.Map;
 
 import li.klass.fhem.R;
@@ -80,13 +82,23 @@ public abstract class ToggleActionRow<D extends Device> {
         Map<String, String> eventMap = device.getEventMap();
         if (eventMap == null) return;
 
-        if (eventMap.containsKey("on")) {
-            toggleButton.setTextOn(eventMap.get("on"));
+        Optional<String> onStateText = getOnStateText(eventMap);
+        if (onStateText.isPresent()) {
+            toggleButton.setTextOn(onStateText.get());
         }
 
-        if (eventMap.containsKey("off")) {
-            toggleButton.setTextOff(eventMap.get("off"));
+        Optional<String> offStateText = getOffStateText(eventMap);
+        if (offStateText.isPresent()) {
+            toggleButton.setTextOff(offStateText.get());
         }
+    }
+
+    protected Optional<String> getOnStateText(Map<String, String> eventMap) {
+        return Optional.fromNullable(eventMap.get("on"));
+    }
+
+    protected Optional<String> getOffStateText(Map<String, String> eventMap) {
+        return Optional.fromNullable(eventMap.get("off"));
     }
 
     protected abstract boolean isOn(D device);

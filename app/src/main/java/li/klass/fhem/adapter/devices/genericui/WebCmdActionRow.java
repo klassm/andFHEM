@@ -24,6 +24,7 @@
 
 package li.klass.fhem.adapter.devices.genericui;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -34,10 +35,15 @@ import android.widget.ToggleButton;
 import java.util.List;
 
 import li.klass.fhem.R;
+import li.klass.fhem.adapter.devices.core.UpdatingResultReceiver;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.service.intent.DeviceIntentService;
+
+import static li.klass.fhem.adapter.devices.genericui.AvailableTargetStatesDialogUtil.STATE_SENDING_CALLBACK;
+import static li.klass.fhem.adapter.devices.genericui.AvailableTargetStatesDialogUtil.TypeHandler;
+import static li.klass.fhem.adapter.devices.genericui.AvailableTargetStatesDialogUtil.handleSelectedOption;
 
 public class WebCmdActionRow<D extends Device<D>> extends HolderActionRow<D, String> {
     public WebCmdActionRow(int layout, Context context) {
@@ -67,14 +73,12 @@ public class WebCmdActionRow<D extends Device<D>> extends HolderActionRow<D, Str
         button.setTextOn(command);
         button.setTextOff(command);
 
+
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Actions.DEVICE_SET_STATE);
-                intent.setClass(context, DeviceIntentService.class);
-                intent.putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, command);
-                intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
-                context.startService(intent);
+
+                handleSelectedOption(context, device, command, STATE_SENDING_CALLBACK);
             }
         });
 

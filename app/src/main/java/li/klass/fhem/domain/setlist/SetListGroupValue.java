@@ -25,18 +25,21 @@
 package li.klass.fhem.domain.setlist;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.Lists;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static org.apache.commons.lang3.StringUtils.join;
 
 public class SetListGroupValue implements SetListValue {
-    private final String[] groupStates;
+    private final List<String> groupStates;
 
     public SetListGroupValue(String... groupStates) {
         checkNotNull(groupStates);
-        this.groupStates = groupStates;
+        this.groupStates = Lists.newArrayList(groupStates);
     }
 
     @Override
@@ -44,13 +47,13 @@ public class SetListGroupValue implements SetListValue {
         return join(groupStates, ",");
     }
 
-    public String[] getGroupStates() {
-        return groupStates;
+    public List<String> getGroupStates() {
+        return Collections.unmodifiableList(groupStates);
     }
 
     public String asType() {
-        Preconditions.checkArgument(groupStates.length == 1);
-        return groupStates[0];
+        Preconditions.checkArgument(groupStates.size() == 1);
+        return groupStates.get(0);
     }
 
     @Override
@@ -60,13 +63,13 @@ public class SetListGroupValue implements SetListValue {
 
         SetListGroupValue that = (SetListGroupValue) o;
 
-        if (!Arrays.equals(groupStates, that.groupStates)) return false;
+        if (!groupStates.equals(that.groupStates)) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        return groupStates != null ? Arrays.hashCode(groupStates) : 0;
+        return groupStates != null ? groupStates.hashCode() : 0;
     }
 }

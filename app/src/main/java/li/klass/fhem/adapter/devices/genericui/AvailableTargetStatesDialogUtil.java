@@ -107,68 +107,45 @@ public class AvailableTargetStatesDialogUtil {
         final List<String> setOptions = device.getSetList().getSortedKeys();
         final String[] eventMapOptions = device.getAvailableTargetStatesEventMapTexts();
 
-        contextMenu.setAdapter(
-                new ArrayAdapter<String>(context, R.layout.list_item_with_arrow, eventMapOptions) {
-                    @Override
-                    public View getView(int position, View convertView, ViewGroup parent) {
-                        if (convertView == null) {
-                            convertView = View.inflate(context, R.layout.list_item_with_arrow, null);
-                        }
-                        TextView textView = (TextView) convertView.findViewById(R.id.text);
-                        ImageView imageView = (ImageView) convertView.findViewById(R.id.image);
+        DialogInterface.OnClickListener clickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int position) {
+                final String option = setOptions.get(position);
 
-                        textView.setText(getItem(position));
+                if (handleSelectedOption(context, device, option, callback)) return;
 
-                        String setOption = setOptions.get(position);
-                        SetList setList = device.getSetList();
-                        final SetListValue setListValue = setList.get(setOption);
+                dialog.dismiss();
+            }
+        };
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, R.layout.list_item_with_arrow, eventMapOptions) {
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                if (convertView == null) {
+                    convertView = View.inflate(context, R.layout.list_item_with_arrow, null);
+                }
+                TextView textView = (TextView) convertView.findViewById(R.id.text);
+                ImageView imageView = (ImageView) convertView.findViewById(R.id.image);
 
-                        imageView.setVisibility(setListValue instanceof SetListGroupValue ? VISIBLE : GONE);
+                textView.setText(getItem(position));
 
-                        return convertView;
-                    }
-                }, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int position) {
-                        final String option = setOptions.get(position);
+                String setOption = setOptions.get(position);
+                SetList setList = device.getSetList();
+                final SetListValue setListValue = setList.get(setOption);
 
-                        final TypeHandler<D> typeHandler = handleSelectedOption(device, context, option, callback);
-                        if (typeHandler == null) {
-                            return;
-                        }
-                        final View view = typeHandler.getContentViewFor(context, device);
-                        AlertDialog.Builder builder = new AlertDialog.Builder(context)
-                                .setTitle(R.string.stateAppendix)
-                                .setView(view)
-                                .setNegativeButton(R.string.cancelButton, new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int whichButton) {
-                                    }
-                                });
+                imageView.setVisibility(setListValue instanceof SetListGroupValue ? VISIBLE : GONE);
 
-                        if (typeHandler.requiresPositiveButton()) {
-                            builder.setPositiveButton(R.string.okButton, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int whichButton) {
-                                    if (typeHandler.onPositiveButtonClick(view, context, device)) {
-                                        dialog.dismiss();
-                                    }
-                                }
-                            });
-                        }
-
-                        AlertDialog subDialog = builder.show();
-                        typeHandler.setDialog(subDialog);
-
-                        dialog.dismiss();
-                    }
-                });
+                return convertView;
+            }
+        };
+        contextMenu.setAdapter(adapter, clickListener);
 
         contextMenu.show();
     }
 
-    private static <D extends Device<D>> TypeHandler<D>
-    handleSelectedOption(D device, Context context,
-                         final String option,
-                         final TargetStateSelectedCallback callback) {
+    public static <D extends Device<D>> TypeHandler<D>
+    handlerForSelectedOption(D device, Context context,
+                             final String option,
+                             final TargetStateSelectedCallback callback) {
 
         SetList setList = device.getSetList();
         final SetListValue setListValue = setList.get(option);
@@ -219,12 +196,12 @@ public class AvailableTargetStatesDialogUtil {
                 @Override
                 public View getContentViewFor(final Context context, final D device) {
                     ListView listView = new ListView(context);
-                    listView.setAdapter(new ArrayAdapter<String>(context,
+                    listView.setAdapter(new ArrayAdapter<>(context,
                             android.R.layout.simple_list_item_1, groupValue.getGroupStates()));
                     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                            String selection = groupValue.getGroupStates()[position];
+                            String selection = groupValue.getGroupStates().get(position);
                             callback.onTargetStateSelected(option, selection, device, context);
                             dialog.dismiss();
                         }
@@ -269,11 +246,41 @@ public class AvailableTargetStatesDialogUtil {
         }
     }
 
+
+    public static <D extends Device<D>> boolean handleSelectedOption(final Context context, final D device, String option, TargetStateSelectedCallback callback) {
+        final TypeHandler<D> typeHandler = handlerForSelectedOption(device, context, option, callback);
+        if (typeHandler == null) {
+            return true;
+        }
+        final View view = typeHandler.getContentViewFor(context, device);
+        AlertDialog.Builder builder = new AlertDialog.Builder(context)
+                .setTitle(R.string.stateAppendix)
+                .setView(view)
+                .setNegativeButton(R.string.cancelButton, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                    }
+                });
+
+        if (typeHandler.requiresPositiveButton()) {
+            builder.setPositiveButton(R.string.okButton, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    if (typeHandler.onPositiveButtonClick(view, context, device)) {
+                        dialog.dismiss();
+                    }
+                }
+            });
+        }
+
+        AlertDialog subDialog = builder.show();
+        typeHandler.setDialog(subDialog);
+        return false;
+    }
+
     public static interface TargetStateSelectedCallback {
         <D extends Device<D>> void onTargetStateSelected(String state, String subState, D device, Context context);
     }
 
-    private static abstract class TypeHandler<D> {
+    public static abstract class TypeHandler<D> {
         Dialog dialog;
 
         abstract View getContentViewFor(Context context, D device);

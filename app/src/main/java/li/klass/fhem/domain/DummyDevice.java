@@ -59,7 +59,7 @@ public class DummyDevice extends DimmableContinuousStatesDevice<DummyDevice> {
 
         if (value instanceof SetListGroupValue) {
             SetListGroupValue groupValue = (SetListGroupValue) value;
-            if (groupValue.getGroupStates().length == 1 && groupValue.asType().equalsIgnoreCase("time")) {
+            if (groupValue.getGroupStates().size() == 1 && groupValue.asType().equalsIgnoreCase("time")) {
                 timerDevice = true;
             }
         }
@@ -87,7 +87,7 @@ public class DummyDevice extends DimmableContinuousStatesDevice<DummyDevice> {
     }
 
     private String getRgb() {
-        if (! getSetList().contains("rgb")) return null;
+        if (!getSetList().contains("rgb")) return null;
         String state = getInternalState();
         if (!state.startsWith("rgb")) return null;
 

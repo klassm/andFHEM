@@ -24,29 +24,30 @@
 
 package li.klass.fhem.domain;
 
-import java.util.List;
+import org.junit.Test;
 
-import li.klass.fhem.domain.core.Device;
-import li.klass.fhem.domain.core.DeviceFunctionality;
-import li.klass.fhem.domain.genericview.DetailViewSettings;
-import li.klass.fhem.domain.setlist.SetListGroupValue;
+import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 
-import static com.google.common.collect.Lists.newArrayList;
+import static org.fest.assertions.api.Assertions.assertThat;
 
-@SuppressWarnings("unused")
-@DetailViewSettings(showMeasured = true, showState = true)
-public class LightSceneDevice extends Device<LightSceneDevice> {
+public class OnkyoAvrDeviceTest extends DeviceXMLParsingBase {
+
+    @Test
+    public void should_read_avr_device() {
+        OnkyoAvrDevice device = getDeviceFor("avr");
+
+        assertThat(device).isNotNull();
+        assertThat(device.getState()).isEqualTo("on");
+        assertThat(device.isOnByState()).isTrue();
+        assertThat(device.getVolume()).isEqualTo("29");
+        assertThat(device.getVolumeProgress()).isEqualTo(29);
+        assertThat(device.getMute()).isEqualTo("off");
+        assertThat(device.isMuted()).isFalse();
+        assertThat(device.getSleep()).isEqualTo("off");
+    }
+
     @Override
-    public DeviceFunctionality getDeviceGroup() {
-        return DeviceFunctionality.SWITCH;
-    }
-
-    public void readSET(String value) {
-        // ignore
-    }
-
-    public List<String> getScenes() {
-        SetListGroupValue sceneGroup = (SetListGroupValue) getSetList().get("scene");
-        return sceneGroup.getGroupStates();
+    protected String getFileName() {
+        return "onkyo_avr.xml";
     }
 }

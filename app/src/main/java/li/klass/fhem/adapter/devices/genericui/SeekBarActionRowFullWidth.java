@@ -51,6 +51,10 @@ public abstract class SeekBarActionRowFullWidth<T extends Device> {
         this.minimumProgress = minimumProgress;
         this.layoutId = layoutId;
 
+        setUpdateRow(updateRow);
+    }
+
+    protected void setUpdateRow(TableRow updateRow) {
         if (updateRow != null) {
             updateView = (TextView) updateRow.findViewById(R.id.value);
         }

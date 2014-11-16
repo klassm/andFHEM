@@ -35,7 +35,7 @@ import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.DimmableAdapter;
 import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
 import li.klass.fhem.adapter.devices.genericui.ColorPickerRow;
-import li.klass.fhem.adapter.devices.genericui.StateChangingSeekBar;
+import li.klass.fhem.adapter.devices.genericui.StateChangingSeekBarFullWidth;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.HUEDevice;
@@ -63,7 +63,7 @@ public class HueDeviceAdapter extends DimmableAdapter<HUEDevice> {
 
             @Override
             public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, HUEDevice device, TableRow fieldTableRow) {
-                tableLayout.addView(new StateChangingSeekBar<HUEDevice>(context,
+                tableLayout.addView(new StateChangingSeekBarFullWidth<HUEDevice>(context,
                         device.getSaturation(), 254, "sat", applicationProperties)
                         .createRow(getInflater(), device));
 

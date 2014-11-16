@@ -24,29 +24,53 @@
 
 package li.klass.fhem.domain;
 
-import java.util.List;
-
-import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.domain.core.DeviceFunctionality;
-import li.klass.fhem.domain.genericview.DetailViewSettings;
-import li.klass.fhem.domain.setlist.SetListGroupValue;
+import li.klass.fhem.domain.core.ToggleableDevice;
+import li.klass.fhem.domain.core.XmllistAttribute;
+import li.klass.fhem.domain.genericview.ShowField;
+import li.klass.fhem.util.ValueExtractUtil;
 
-import static com.google.common.collect.Lists.newArrayList;
+public class OnkyoAvrDevice extends ToggleableDevice<OnkyoAvrDevice> {
+    @XmllistAttribute("volume")
+    @ShowField(description = ResourceIdMapper.musicVolume, showInOverview = true)
+    private String volume;
 
-@SuppressWarnings("unused")
-@DetailViewSettings(showMeasured = true, showState = true)
-public class LightSceneDevice extends Device<LightSceneDevice> {
+    @XmllistAttribute("mute")
+    private String mute;
+
+    @XmllistAttribute("input")
+    private String input;
+
+    @XmllistAttribute("sleep")
+    private String sleep;
+
     @Override
     public DeviceFunctionality getDeviceGroup() {
-        return DeviceFunctionality.SWITCH;
+        return DeviceFunctionality.REMOTE_CONTROL;
     }
 
-    public void readSET(String value) {
-        // ignore
+    public String getVolume() {
+        return volume;
     }
 
-    public List<String> getScenes() {
-        SetListGroupValue sceneGroup = (SetListGroupValue) getSetList().get("scene");
-        return sceneGroup.getGroupStates();
+    public int getVolumeProgress() {
+        return ValueExtractUtil.extractLeadingInt(volume);
+    }
+
+    public String getMute() {
+        return mute;
+    }
+
+    public boolean isMuted() {
+        return "on".equalsIgnoreCase(mute);
+    }
+
+    public String getInput() {
+        return input;
+    }
+
+    public String getSleep() {
+        return sleep;
     }
 }

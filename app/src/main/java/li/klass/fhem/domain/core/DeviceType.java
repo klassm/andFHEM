@@ -35,6 +35,7 @@ import li.klass.fhem.adapter.devices.GCMSendDeviceAdapter;
 import li.klass.fhem.adapter.devices.HueDeviceAdapter;
 import li.klass.fhem.adapter.devices.LightSceneAdapter;
 import li.klass.fhem.adapter.devices.MaxAdapter;
+import li.klass.fhem.adapter.devices.OnkyoAvrDeviceAdapter;
 import li.klass.fhem.adapter.devices.OwSwitchDeviceAdapter;
 import li.klass.fhem.adapter.devices.PCA9532DeviceAdapter;
 import li.klass.fhem.adapter.devices.PCF8574DeviceAdapter;
@@ -99,6 +100,7 @@ import li.klass.fhem.domain.LightSceneDevice;
 import li.klass.fhem.domain.MaxDevice;
 import li.klass.fhem.domain.NetatmoDevice;
 import li.klass.fhem.domain.OWFSDevice;
+import li.klass.fhem.domain.OnkyoAvrDevice;
 import li.klass.fhem.domain.OpenWeatherMapDevice;
 import li.klass.fhem.domain.OregonDevice;
 import li.klass.fhem.domain.OwDevice;
@@ -233,7 +235,8 @@ public enum DeviceType {
     NETATMO("netatmo", NetatmoDevice.class),
     ROOMMATE("ROOMMATE", RoommateDevice.class),
     SMLUSB("SMLUSB", SMLUSBDevice.class),
-    SOMFY("SOMFY", SomfyDevice.class, new ToggleableAdapterWithSwitchActionRow<>(SomfyDevice.class)),;
+    SOMFY("SOMFY", SomfyDevice.class, new ToggleableAdapterWithSwitchActionRow<>(SomfyDevice.class)),
+    ONKYO_AVR("ONKYO_AVR", OnkyoAvrDevice.class, new OnkyoAvrDeviceAdapter()),;
 
     private String xmllistTag;
     private Class<? extends Device> deviceClass;

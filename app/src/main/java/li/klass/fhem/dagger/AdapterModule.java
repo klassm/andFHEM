@@ -36,6 +36,7 @@ import li.klass.fhem.adapter.devices.GCMSendDeviceAdapter;
 import li.klass.fhem.adapter.devices.HueDeviceAdapter;
 import li.klass.fhem.adapter.devices.LightSceneAdapter;
 import li.klass.fhem.adapter.devices.MaxAdapter;
+import li.klass.fhem.adapter.devices.OnkyoAvrDeviceAdapter;
 import li.klass.fhem.adapter.devices.OwSwitchDeviceAdapter;
 import li.klass.fhem.adapter.devices.PCA9532DeviceAdapter;
 import li.klass.fhem.adapter.devices.PCF8574DeviceAdapter;
@@ -88,6 +89,7 @@ import li.klass.fhem.adapter.devices.core.ToggleableAdapter;
                 WifiLightDeviceAdapter.class,
                 WOLAdapter.class,
                 YamahaAVRAdapter.class,
+                OnkyoAvrDeviceAdapter.class,
 
                 DeviceAdapter.class,
                 GenericDeviceAdapter.class,

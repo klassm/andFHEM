@@ -218,6 +218,7 @@
     <string name="noise">Lärm</string>
     <string name="location">Ort</string>
     <string name="mood">Laune</string>
+    <string name="sleep">Schlafen</string>
 
     <string name="connectionManage">Verwalten</string>
     <string name="connectionCreate">Neue Verbindung erstellen</string>

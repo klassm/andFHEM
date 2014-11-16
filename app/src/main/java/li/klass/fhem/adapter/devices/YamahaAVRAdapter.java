@@ -34,7 +34,7 @@ import javax.inject.Inject;
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
 import li.klass.fhem.adapter.devices.genericui.SpinnerActionRow;
-import li.klass.fhem.adapter.devices.genericui.StateChangingSeekBar;
+import li.klass.fhem.adapter.devices.genericui.StateChangingSeekBarFullWidth;
 import li.klass.fhem.adapter.devices.genericui.YesNoToggleDeviceActionRow;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
@@ -57,7 +57,7 @@ public class YamahaAVRAdapter extends ToggleableAdapterWithSwitchActionRow<Yamah
         registerFieldListener("volumeDesc", new FieldNameAddedToDetailListener<YamahaAVRDevice>() {
             @Override
             public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, YamahaAVRDevice device, TableRow fieldTableRow) {
-                tableLayout.addView(new StateChangingSeekBar<YamahaAVRDevice>(context,
+                tableLayout.addView(new StateChangingSeekBarFullWidth<YamahaAVRDevice>(context,
                         device.getVolume(), -80, 16, "volume", applicationProperties)
                         .createRow(getInflater(), device));
             }
