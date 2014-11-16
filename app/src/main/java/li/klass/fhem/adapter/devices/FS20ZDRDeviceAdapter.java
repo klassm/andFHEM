@@ -78,6 +78,4 @@ public class FS20ZDRDeviceAdapter extends ToggleableAdapterWithSwitchActionRow<F
             }
         });
     }
-
-
 }

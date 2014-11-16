@@ -544,8 +544,8 @@
     <string name="forward">forward</string>
     <string name="volume_down" translatable="false">Vol-</string>
     <string name="volume_up" translatable="false">Vol+</string>
-    <string name="left_brace" translatable="false"><![CDATA[&lt;]]></string>
-    <string name="right_brace" translatable="false"><![CDATA[&gt;]]></string>
+    <string name="left_brace" translatable="false"><![CDATA[<]]></string>
+    <string name="right_brace" translatable="false"><![CDATA[>]]></string>
     <string name="slp" translatable="false">SLP</string>
     <string name="m_s" translatable="false">M/S</string>
     <string name="channel1" translatable="false">1</string>

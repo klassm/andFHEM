@@ -39,6 +39,7 @@ import javax.inject.Inject;
 import dagger.ObjectGraph;
 import li.klass.fhem.activities.AndFHEMMainActivity;
 import li.klass.fhem.activities.StartupActivity;
+import li.klass.fhem.activities.base.DeviceNameSelectionActivity;
 import li.klass.fhem.activities.graph.ChartingActivity;
 import li.klass.fhem.dagger.AndroidModule;
 import li.klass.fhem.dagger.ApplicationModule;
@@ -116,6 +117,7 @@ public class AndFHEMApplication extends Application {
                         .setClassInstanceLimit(ChartingActivity.class, 3)
                         .setClassInstanceLimit(StartupActivity.class, 3)
                         .setClassInstanceLimit(AndFHEMMainActivity.class, 3)
+                        .setClassInstanceLimit(DeviceNameSelectionActivity.class, 3)
                         .penaltyLog()
                         .penaltyDeath()
                         .build());
