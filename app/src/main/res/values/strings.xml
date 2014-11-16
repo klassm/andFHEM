@@ -361,6 +361,7 @@
     <string name="yAxisRainRate">rain rate (mm/hr)</string>
     <string name="yAxisCurrentUsageW">current usage (W)</string>
     <string name="yAxisCurrentUsagekW">current usage (kW)</string>
+    <string name="yAxisCurrentPowerW">current power(W)</string>
     <string name="yAxisCumulativeUsageKWh">cumulative usage (kWh)</string>
     <string name="yAxisCumulativeUsageWh">cumulative usage (Wh)</string>
     <string name="yAxisToggleState">on (1) / off (0)</string>
