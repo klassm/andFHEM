@@ -34,8 +34,8 @@ public enum RequestResultError {
     BAD_REQUEST(R.string.error_bad_request),
     NOT_FOUND(R.string.error_not_found),
     INVALID_CONTENT(R.string.error_invalid_content),
-    DEVICE_LIST_PARSE(R.string.error_device_list_parse)
-    ;
+    DEVICE_LIST_PARSE(R.string.error_device_list_parse),
+    INTERNAL_ERROR(R.string.error_internal),;
 
     public final int errorStringId;
 

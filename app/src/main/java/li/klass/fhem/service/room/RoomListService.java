@@ -63,6 +63,7 @@ import li.klass.fhem.service.AbstractService;
 import li.klass.fhem.service.SharedPreferencesService;
 import li.klass.fhem.service.connection.ConnectionService;
 import li.klass.fhem.service.intent.DeviceIntentService;
+import li.klass.fhem.service.intent.NotificationIntentService;
 import li.klass.fhem.service.intent.RoomListUpdateIntentService;
 import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.CloseableUtil;
@@ -130,20 +131,19 @@ public class RoomListService extends AbstractService {
 
         LOG.info("parseReceivedDeviceStateMap()  : updated {} with {} new values!", device.getName(), updateMap.size());
 
-        Intent intent = new Intent(Actions.NOTIFICATION_TRIGGER);
-        intent.putExtra(BundleExtraKeys.DEVICE_NAME, deviceName);
-        intent.putExtra(BundleExtraKeys.DEVICE, deviceOptional);
-        intent.putExtra(BundleExtraKeys.UPDATE_MAP, (Serializable) updateMap);
-        intent.putExtra(BundleExtraKeys.VIBRATE, vibrateUponNotification);
-        applicationContext.startService(intent);
+        applicationContext.startService(new Intent(Actions.NOTIFICATION_TRIGGER)
+                .setClass(applicationContext, NotificationIntentService.class)
+                .putExtra(BundleExtraKeys.DEVICE_NAME, deviceName)
+                .putExtra(BundleExtraKeys.DEVICE, deviceOptional)
+                .putExtra(BundleExtraKeys.UPDATE_MAP, (Serializable) updateMap)
+                .putExtra(BundleExtraKeys.VIBRATE, vibrateUponNotification));
 
         boolean updateWidgets = applicationProperties.getBooleanSharedPreference(PreferenceKeys.GCM_WIDGET_UPDATE, false);
         if (updateWidgets) {
             sendBroadcastWithAction(REDRAW_ALL_WIDGETS);
 
-            Intent redrawAllWidgetsServiceIntent = new Intent(REDRAW_ALL_WIDGETS);
-            redrawAllWidgetsServiceIntent.setClass(applicationContext, DeviceIntentService.class);
-            applicationContext.startService(redrawAllWidgetsServiceIntent);
+            applicationContext.startService(new Intent(REDRAW_ALL_WIDGETS)
+                    .setClass(applicationContext, DeviceIntentService.class));
         }
     }
 

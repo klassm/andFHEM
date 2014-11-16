@@ -83,13 +83,14 @@ public class FHEMWEBConnection extends FHEMConnection {
             Log.e(TAG, "unsupported encoding", e);
         }
 
-        RequestResult<InputStream> response = executeRequest(urlSuffix, client, command);
-        if (response.error != null) {
-            return new RequestResult<>(response.error);
-        }
 
         InputStreamReader reader = null;
         try {
+            RequestResult<InputStream> response = executeRequest(urlSuffix, client, command);
+            if (response.error != null) {
+                return new RequestResult<>(response.error);
+            }
+
             reader = new InputStreamReader(response.content);
             String content = CharStreams.toString(reader);
             if (content.contains("<title>") || content.contains("<div id=")) {
@@ -99,8 +100,9 @@ public class FHEMWEBConnection extends FHEMConnection {
             }
 
             return new RequestResult<>(content);
-        } catch (IOException e) {
-            throw new IllegalArgumentException(e);
+        } catch (Exception e) {
+            Log.e(TAG, "cannot handle result", e);
+            return new RequestResult<>(RequestResultError.INTERNAL_ERROR);
         } finally {
             CloseableUtil.close(reader);
         }
@@ -112,6 +114,7 @@ public class FHEMWEBConnection extends FHEMConnection {
         if (client == null) {
             client = createNewHTTPClient(getConnectionTimeoutMilliSeconds(), SOCKET_TIMEOUT);
         }
+        InputStream contentStream;
         try {
             HttpGet request = new HttpGet();
             request.addHeader("Accept-Encoding", "gzip");
@@ -141,7 +144,7 @@ public class FHEMWEBConnection extends FHEMConnection {
                 return errorResult;
             }
 
-            InputStream contentStream = response.getEntity().getContent();
+            contentStream = response.getEntity().getContent();
             Header contentEncoding = response.getFirstHeader("Content-Encoding");
             if (contentEncoding != null && contentEncoding.getValue().equalsIgnoreCase("gzip")) {
                 contentStream = new GZIPInputStream(contentStream);
@@ -250,8 +253,12 @@ public class FHEMWEBConnection extends FHEMConnection {
         if (response.error != null) {
             return new RequestResult<>(response.error);
         }
-        Bitmap bitmap = BitmapFactory.decodeStream(response.content);
-        return new RequestResult<>(bitmap);
+        try {
+            Bitmap bitmap = BitmapFactory.decodeStream(response.content);
+            return new RequestResult<>(bitmap);
+        } finally {
+            CloseableUtil.close(response.content);
+        }
     }
 
     @Override
