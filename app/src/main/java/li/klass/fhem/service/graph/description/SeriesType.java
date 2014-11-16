@@ -35,6 +35,7 @@ public enum SeriesType {
     HUMIDITY(Color.GREEN, R.string.yAxisHumidity),
     CURRENT_USAGE_WATT(Color.RED, R.string.yAxisCurrentUsageW),
     CURRENT_USAGE_KILOWATT(Color.RED, R.string.yAxisCurrentUsagekW),
+    CURRENT_POWER_WATT(Color.BLUE, R.string.yAxisCurrentUsagekW),
     DAY_USAGE(Color.BLUE, R.string.yAxisCumulativeUsageKWh),
     CUMULATIVE_USAGE_KWh(Color.GREEN, R.string.yAxisCumulativeUsageKWh),
     CUMULATIVE_USAGE_Wh(Color.GREEN, R.string.yAxisCumulativeUsageWh),

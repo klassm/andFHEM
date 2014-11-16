@@ -85,6 +85,10 @@ public class ValueDescriptionUtil {
         return append(power, "W");
     }
 
+    public static String appendHz(String frequency) {
+        return append(frequency, "Hz");
+    }
+
     public static String desiredTemperatureToString(double temperature, double minTemp, double maxTemp) {
         if (temperature == minTemp) {
             return "off";

@@ -1,0 +1,57 @@
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<FHZINFO>
+    <Revolt_LIST>
+        <Revolt name="Revolt_Kueche" state="P: 113.3 E:   1.25 V: 232 C:   0.50 F: 50 Pf: 0.98"
+                sets=""
+                attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev event-on-change-reading event-on-update-reading event-min-interval stateFormat devStateIcon devStateStyle icon sortby webCmd widgetOverride custom_graph userattr">
+            <INT key="CULduino_MSGCNT" value="2"/>
+            <INT key="CULduino_RAWMSG" value="r0bcee8003232046d62007d"/>
+            <INT key="CULduino_RSSI" value="-75"/>
+            <INT key="CULduino_TIME" value="2014-11-13 14:09:32"/>
+            <INT key="DEF" value="0bce"/>
+            <INT key="ID" value="0bce"/>
+            <INT key="LASTInputDev" value="CULduino"/>
+            <INT key="MSGCNT" value="2"/>
+            <INT key="NAME" value="Revolt_Kueche"/>
+            <INT key="NR" value="94"/>
+            <INT key="STATE" value="P: 113.3 E:   1.25 V: 232 C:   0.50 F: 50 Pf: 0.98"/>
+            <INT key="TYPE" value="Revolt"/>
+            <INT key="IODev" value="CULduino"/>
+            <ATTR key="IODev" value="CULduino"/>
+            <ATTR key="event-min-interval" value="state:30"/>
+            <ATTR key="room" value="Küche"/>
+            <STATE key="avgpower" value="120.90" measured="2014-11-13 14:06:57"/>
+            <STATE key="current" value="0.5" measured="2014-11-13 14:09:32"/>
+            <STATE key="energy" value="1.25" measured="2014-11-13 14:09:32"/>
+            <STATE key="frequency" value="50" measured="2014-11-13 14:09:32"/>
+            <STATE key="pf" value="0.98" measured="2014-11-13 14:09:32"/>
+            <STATE key="power" value="113.3" measured="2014-11-13 14:09:32"/>
+            <STATE key="state" value="P: 113.3 E:   1.25 V: 232 C:   0.50 F: 50 Pf: 0.98"
+                   measured="2014-11-13 14:09:32"/>
+            <STATE key="voltage" value="232" measured="2014-11-13 14:09:32"/>
+        </Revolt>
+    </Revolt_LIST>
+</FHZINFO>

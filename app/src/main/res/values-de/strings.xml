@@ -191,6 +191,8 @@
     <string name="devicelist_empty">Entschuldigung! Keine Geräte verfügbar!</string>
     <string name="energy_current">Stromverbrauch</string>
     <string name="energy_power">Leistung</string>
+    <string name="energy_powerFactor">Leistungsfaktor</string>
+    <string name="energy_frequency">Frequenz</string>
     <string name="energy_consumption">Verbrauch</string>
     <string name="additional_information">Zusatzinformationen</string>
     <string name="channel">Sender</string>
@@ -359,6 +361,7 @@
     <string name="yAxisRainRate">Regenstärke (mm/hr)</string>
     <string name="yAxisCurrentUsageW">aktueller Verbrauch (W)</string>
     <string name="yAxisCurrentUsagekW">aktueller Verbrauch (kW)</string>
+    <string name="yAxisCurrentPowerW">aktueller Leistung (W)</string>
     <string name="yAxisCumulativeUsageKWh">kumulativer Verbrauch (kWh)</string>
     <string name="yAxisCumulativeUsageWh">kumulativer Verbrauch (Wh)</string>
     <string name="yAxisToggleState">an (1) / aus(0)</string>

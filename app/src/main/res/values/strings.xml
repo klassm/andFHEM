@@ -191,6 +191,8 @@
     <string name="devicelist_empty">Sorry! No devices found!</string>
     <string name="energy_current">Current</string>
     <string name="energy_power">Power</string>
+    <string name="energy_powerFactor">Power factor</string>
+    <string name="energy_frequency">Frequenz</string>
     <string name="energy_consumption">Consumption</string>
     <string name="additional_information">Additional information</string>
     <string name="channel">Channel</string>

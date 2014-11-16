@@ -119,6 +119,7 @@ import li.klass.fhem.domain.RFXX10RECDevice;
 import li.klass.fhem.domain.RPIGPIODevice;
 import li.klass.fhem.domain.ReadingsProxyDevice;
 import li.klass.fhem.domain.RemoteControlDevice;
+import li.klass.fhem.domain.RevoltDevice;
 import li.klass.fhem.domain.RoommateDevice;
 import li.klass.fhem.domain.SHT21Device;
 import li.klass.fhem.domain.SISPMSDevice;
@@ -236,7 +237,8 @@ public enum DeviceType {
     ROOMMATE("ROOMMATE", RoommateDevice.class),
     SMLUSB("SMLUSB", SMLUSBDevice.class),
     SOMFY("SOMFY", SomfyDevice.class, new ToggleableAdapterWithSwitchActionRow<>(SomfyDevice.class)),
-    ONKYO_AVR("ONKYO_AVR", OnkyoAvrDevice.class, new OnkyoAvrDeviceAdapter()),;
+    ONKYO_AVR("ONKYO_AVR", OnkyoAvrDevice.class, new OnkyoAvrDeviceAdapter()),
+    REVOLT("Revolt", RevoltDevice.class);
 
     private String xmllistTag;
     private Class<? extends Device> deviceClass;
