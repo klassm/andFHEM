@@ -346,7 +346,7 @@ public abstract class DeviceListFragment extends BaseFragment {
     }
 
     private void handleNotifications(String deviceName) {
-        new NotificationSettingView(getActivity(), deviceName).show();
+        new NotificationSettingView(getActivity(), deviceName).show(getActivity());
     }
 
     @Override

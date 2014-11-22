@@ -134,7 +134,7 @@ public class RoomListService extends AbstractService {
         applicationContext.startService(new Intent(Actions.NOTIFICATION_TRIGGER)
                 .setClass(applicationContext, NotificationIntentService.class)
                 .putExtra(BundleExtraKeys.DEVICE_NAME, deviceName)
-                .putExtra(BundleExtraKeys.DEVICE, deviceOptional)
+                .putExtra(BundleExtraKeys.DEVICE, device)
                 .putExtra(BundleExtraKeys.UPDATE_MAP, (Serializable) updateMap)
                 .putExtra(BundleExtraKeys.VIBRATE, vibrateUponNotification));
 
@@ -186,6 +186,11 @@ public class RoomListService extends AbstractService {
         return deviceList;
     }
 
+    public void resetUpdateProgress() {
+        remoteUpdateInProgress.set(false);
+        resendIntents = newArrayList();
+    }
+
     /**
      * Method will check if a remote update of the current device list is required. This is
      * determined by two indicators:
@@ -204,7 +209,7 @@ public class RoomListService extends AbstractService {
      * </p>
      * <p>
      * By caching calling intents that all want to remotely load device lists, we make
-     * sure that only remote update is concurrently executed. Also, we do not queue
+     * sure that only one remote update is concurrently executed. Also, we do not queue
      * remote requests, as they would load the same content from the server.
      * </p>
      *

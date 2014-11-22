@@ -84,8 +84,7 @@ public class AndFHEMApplication extends Application {
     public void onCreate() {
         super.onCreate();
         setDefaultUncaughtExceptionHandler();
-//        setStrictMode();
-        setLaxMode();
+        setStrictMode();
 
         context = getApplicationContext();
         application = this;
@@ -109,22 +108,6 @@ public class AndFHEMApplication extends Application {
         }
     }
 
-    @TargetApi(Build.VERSION_CODES.GINGERBREAD)
-    private void setLaxMode() {
-        try {
-            // We are trying to do as much as possible in worker threads. However, at some places,
-            // i.e. updating list widgets, using background threads is not possible.
-            // We therefore deactivate the NetworkOnMainThread exception here.
-            if (getAndroidSDKLevel() > Build.VERSION_CODES.GINGERBREAD) {
-                StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-                StrictMode.setThreadPolicy(policy);
-            }
-        } catch (Throwable e) {
-            // this is not important ...
-            Log.d(AndFHEMApplication.class.getName(), "cannot disable strict mode", e);
-        }
-    }
-
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     private void setStrictMode() {
         try {
@@ -136,7 +119,6 @@ public class AndFHEMApplication extends Application {
                         .setClassInstanceLimit(AndFHEMMainActivity.class, 3)
                         .setClassInstanceLimit(DeviceNameSelectionActivity.class, 3)
                         .penaltyLog()
-                        .penaltyDeath()
                         .build());
 
                 StrictMode.ThreadPolicy.Builder builder = new StrictMode.ThreadPolicy.Builder();
@@ -148,7 +130,6 @@ public class AndFHEMApplication extends Application {
                         .permitDiskWrites()
                         .detectCustomSlowCalls()
                         .detectNetwork()
-                        .penaltyFlashScreen()
                         .penaltyLog()
                         .build());
             }

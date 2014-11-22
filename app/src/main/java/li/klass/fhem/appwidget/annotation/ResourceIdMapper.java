@@ -158,6 +158,7 @@ public enum ResourceIdMapper {
     energyCurrent(R.string.energy_current),
     channel(R.string.channel),
     currentTitle(R.string.currentTitle),
+    serviceName(R.string.serviceName),
     shutterPosition(R.string.shutterPosition),
     room(R.string.rooms),
     deviceName(R.string.deviceName),
@@ -182,6 +183,15 @@ public enum ResourceIdMapper {
     mood(R.string.mood),
     counterReading(R.string.counterReading),
     counterReadingTariff1(R.string.counterReadingTariff1),
+    event_duration_current_title(R.string.event_duration_current_title),
+    event_duration_next_title(R.string.event_duration_next_title),
+    event_name_next_title(R.string.event_name_next_title),
+    event_rest_current_title(R.string.event_rest_current_title),
+    event_starting_time(R.string.event_starting_time),
+    event_starting_time_next_title(R.string.event_starting_time_next_title),
+    hdd_capacity(R.string.hdd_capacity),
+    hdd_free(R.string.hdd_free),
+    video_size(R.string.video_size),
 
     blank(R.string.blank),
     none(-1);

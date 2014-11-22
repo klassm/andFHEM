@@ -197,6 +197,7 @@
     <string name="additional_information">Zusatzinformationen</string>
     <string name="channel">Sender</string>
     <string name="currentTitle">Aktueller Titel</string>
+    <string name="serviceName">Service-Name</string>
     <string name="shutterPosition">Rolladen-Position</string>
     <string name="sendEachColorChange">Sende jede Farbänderung</string>
     <string name="level">Level</string>
@@ -221,6 +222,16 @@
     <string name="location">Ort</string>
     <string name="mood">Laune</string>
     <string name="sleep">Schlafen</string>
+
+    <string name="event_duration_current_title">Laufzeit aktueller Titel</string>
+    <string name="event_duration_next_title">Laufzeit folgender Titel</string>
+    <string name="event_name_next_title">Nächster Titel</string>
+    <string name="event_rest_current_title">Restzeit aktueller Titel</string>
+    <string name="event_starting_time">Startzeit aktueller Titel</string>
+    <string name="event_starting_time_next_title">Startzeit nächster Titel</string>
+    <string name="hdd_capacity">Kapazität HDD</string>
+    <string name="hdd_free">Freier Speicher</string>
+    <string name="video_size">Videogröße</string>
 
     <string name="connectionManage">Verwalten</string>
     <string name="connectionCreate">Neue Verbindung erstellen</string>

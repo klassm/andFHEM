@@ -66,6 +66,15 @@ import static li.klass.fhem.constants.BundleExtraKeys.CLICKED_DEVICE;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_NAME;
 import static li.klass.fhem.constants.BundleExtraKeys.RESULT_RECEIVER;
+import static li.klass.fhem.constants.BundleExtraKeys.TIMER_HOUR;
+import static li.klass.fhem.constants.BundleExtraKeys.TIMER_IS_ACTIVE;
+import static li.klass.fhem.constants.BundleExtraKeys.TIMER_MINUTE;
+import static li.klass.fhem.constants.BundleExtraKeys.TIMER_REPETITION;
+import static li.klass.fhem.constants.BundleExtraKeys.TIMER_SECOND;
+import static li.klass.fhem.constants.BundleExtraKeys.TIMER_TARGET_DEVICE_NAME;
+import static li.klass.fhem.constants.BundleExtraKeys.TIMER_TARGET_STATE;
+import static li.klass.fhem.constants.BundleExtraKeys.TIMER_TARGET_STATE_APPENDIX;
+import static li.klass.fhem.constants.BundleExtraKeys.TIMER_TYPE;
 
 public class TimerDetailFragment extends BaseFragment {
 
@@ -302,20 +311,6 @@ public class TimerDetailFragment extends BaseFragment {
             return;
         }
 
-        Bundle bundle = new Bundle();
-        bundle.putString(BundleExtraKeys.TIMER_TARGET_DEVICE_NAME, targetDevice.getName());
-        bundle.putString(BundleExtraKeys.TIMER_TARGET_STATE, targetState);
-        bundle.putInt(BundleExtraKeys.TIMER_HOUR, hour);
-        bundle.putInt(BundleExtraKeys.TIMER_MINUTE, minute);
-        bundle.putInt(BundleExtraKeys.TIMER_SECOND, second);
-        bundle.putString(BundleExtraKeys.TIMER_REPETITION, repetition.name());
-        bundle.putString(BundleExtraKeys.TIMER_TYPE, type.name());
-        bundle.putBoolean(BundleExtraKeys.TIMER_IS_ACTIVE, isActive);
-
-        if (requiresStateAppendix) {
-            EditText targetStateAppendixView = (EditText) view.findViewById(R.id.stateAppendix);
-            bundle.putString(BundleExtraKeys.TIMER_TARGET_STATE_APPENDIX, targetStateAppendixView.getText().toString());
-        }
         if (!isModify()) {
             timerDeviceName = getTimerNameInput(view).getText().toString();
 
@@ -324,12 +319,10 @@ public class TimerDetailFragment extends BaseFragment {
                 return;
             }
         }
-        bundle.putString(BundleExtraKeys.TIMER_NAME, timerDeviceName);
 
         String action = isModify() ? Actions.DEVICE_TIMER_MODIFY : Actions.DEVICE_TIMER_NEW;
-        getActivity().startService(new Intent(action)
+        Intent intent = new Intent(action)
                 .setClass(getActivity(), DeviceIntentService.class)
-                .putExtras(bundle)
                 .putExtra(RESULT_RECEIVER, new FhemResultReceiver() {
                     @Override
                     protected void onReceiveResult(int resultCode, Bundle resultData) {
@@ -338,7 +331,26 @@ public class TimerDetailFragment extends BaseFragment {
                             savedTimerDeviceName = timerDeviceName;
                         }
                     }
-                }));
+                })
+                .putExtra(TIMER_TARGET_DEVICE_NAME, targetDevice.getName())
+                .putExtra(TIMER_TARGET_STATE, targetState)
+                .putExtra(TIMER_TARGET_STATE, targetState)
+                .putExtra(TIMER_HOUR, hour)
+                .putExtra(TIMER_MINUTE, minute)
+                .putExtra(TIMER_SECOND, second)
+                .putExtra(TIMER_REPETITION, repetition.name())
+                .putExtra(TIMER_TYPE, type.name())
+                .putExtra(TIMER_IS_ACTIVE, isActive)
+                .putExtra(DEVICE_NAME, timerDeviceName);
+
+
+        if (requiresStateAppendix) {
+            EditText targetStateAppendixView = (EditText) view.findViewById(R.id.stateAppendix);
+            intent.putExtra(TIMER_TARGET_STATE_APPENDIX, targetStateAppendixView.getText().toString());
+        }
+
+
+        getActivity().startService(intent);
     }
 
     private void updateTargetDevice(Device targetDevice) {

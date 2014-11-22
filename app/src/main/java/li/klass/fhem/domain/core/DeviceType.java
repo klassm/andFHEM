@@ -28,6 +28,7 @@ import li.klass.fhem.adapter.devices.CULHMAdapter;
 import li.klass.fhem.adapter.devices.DmxAdapter;
 import li.klass.fhem.adapter.devices.DummyAdapter;
 import li.klass.fhem.adapter.devices.EnOceanAdapter;
+import li.klass.fhem.adapter.devices.EnigmaDeviceAdapter;
 import li.klass.fhem.adapter.devices.FHTAdapter;
 import li.klass.fhem.adapter.devices.FS20ZDRDeviceAdapter;
 import li.klass.fhem.adapter.devices.FloorplanAdapter;
@@ -73,6 +74,7 @@ import li.klass.fhem.domain.EIBDevice;
 import li.klass.fhem.domain.EMWZDevice;
 import li.klass.fhem.domain.ESA2000Device;
 import li.klass.fhem.domain.EnOceanDevice;
+import li.klass.fhem.domain.EnigmaDevice;
 import li.klass.fhem.domain.FBCallmonitorDevice;
 import li.klass.fhem.domain.FBDectDevice;
 import li.klass.fhem.domain.FHEMWEBDevice;
@@ -238,7 +240,8 @@ public enum DeviceType {
     SMLUSB("SMLUSB", SMLUSBDevice.class),
     SOMFY("SOMFY", SomfyDevice.class, new ToggleableAdapterWithSwitchActionRow<>(SomfyDevice.class)),
     ONKYO_AVR("ONKYO_AVR", OnkyoAvrDevice.class, new OnkyoAvrDeviceAdapter()),
-    REVOLT("Revolt", RevoltDevice.class);
+    REVOLT("Revolt", RevoltDevice.class),
+    ENIGMA2("ENIGMA2", EnigmaDevice.class, new EnigmaDeviceAdapter());
 
     private String xmllistTag;
     private Class<? extends Device> deviceClass;

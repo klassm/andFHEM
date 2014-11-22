@@ -151,10 +151,9 @@ public class DeviceIntentService extends ConvenientIntentService {
         String deviceName = intent.getStringExtra(BundleExtraKeys.DEVICE_NAME);
         Optional<Device> deviceOptional = roomListService.getDeviceForName(deviceName);
         if (!deviceOptional.isPresent()) {
-            LOG.info("cannot find device for {}", deviceName);
-            return ERROR;
+            LOG.info("handleIntent() - cannot find device for {}", deviceName);
         }
-        Device device = deviceOptional.get();
+        Device device = deviceOptional.orNull();
 
         Log.d(DeviceIntentService.class.getName(), intent.getAction());
         String action = intent.getAction();
@@ -359,7 +358,7 @@ public class DeviceIntentService extends ConvenientIntentService {
         String repetition = extras.getString(BundleExtraKeys.TIMER_REPETITION);
         String type = extras.getString(BundleExtraKeys.TIMER_TYPE);
         String stateAppendix = extras.getString(BundleExtraKeys.TIMER_TARGET_STATE_APPENDIX);
-        String timerName = extras.getString(BundleExtraKeys.TIMER_NAME);
+        String timerName = extras.getString(BundleExtraKeys.DEVICE_NAME);
         boolean isActive = extras.getBoolean(BundleExtraKeys.TIMER_IS_ACTIVE);
 
         if (isModify) {
