@@ -75,6 +75,9 @@ public class StartupActivity extends Activity {
     protected void onResume() {
         super.onResume();
 
+        startService(new Intent(Actions.REMOTE_UPDATE_RESET)
+                .setClass(this, RoomListIntentService.class));
+
         if (!isNullOrEmpty(getPassword())) {
             showLoginDialog();
         } else {

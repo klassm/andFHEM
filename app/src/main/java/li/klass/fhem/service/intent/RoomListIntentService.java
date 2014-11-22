@@ -51,6 +51,7 @@ import static li.klass.fhem.constants.Actions.GET_DEVICE_FOR_NAME;
 import static li.klass.fhem.constants.Actions.GET_ROOM_DEVICE_LIST;
 import static li.klass.fhem.constants.Actions.GET_ROOM_NAME_LIST;
 import static li.klass.fhem.constants.Actions.REMOTE_UPDATE_FINISHED;
+import static li.klass.fhem.constants.Actions.REMOTE_UPDATE_RESET;
 import static li.klass.fhem.constants.Actions.UPDATE_DEVICE_WITH_UPDATE_MAP;
 import static li.klass.fhem.constants.Actions.UPDATE_IF_REQUIRED;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE;
@@ -77,6 +78,11 @@ public class RoomListIntentService extends ConvenientIntentService {
     @Override
     protected STATE handleIntent(Intent intent, long updatePeriod, ResultReceiver resultReceiver) {
         String action = intent.getAction();
+
+        if (REMOTE_UPDATE_RESET.equals(action)) {
+            roomListService.resetUpdateProgress();
+            return STATE.SUCCESS;
+        }
 
         if (!REMOTE_UPDATE_FINISHED.equals(action) &&
                 roomListService.updateRoomDeviceListIfRequired(intent, updatePeriod) == RemoteUpdateRequired.REQUIRED) {

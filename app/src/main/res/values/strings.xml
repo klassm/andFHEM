@@ -197,6 +197,7 @@
     <string name="additional_information">Additional information</string>
     <string name="channel">Channel</string>
     <string name="currentTitle">Current title</string>
+    <string name="serviceName">Service name</string>
     <string name="shutterPosition">Shutter position</string>
     <string name="sendEachColorChange">Send each color change</string>
     <string name="level">Level</string>
@@ -222,6 +223,16 @@
     <string name="mood">Mood</string>
     <string name="hourMinuteFormat" translatable="false">HH:MM</string>
     <string name="sleep">Sleep</string>
+
+    <string name="event_duration_current_title">Runtime current title</string>
+    <string name="event_duration_next_title">Runtime next title</string>
+    <string name="event_name_next_title">Next title</string>
+    <string name="event_rest_current_title">Rest current title</string>
+    <string name="event_starting_time">Start time current title</string>
+    <string name="event_starting_time_next_title">Start time next title</string>
+    <string name="hdd_capacity">Capacity HDD</string>
+    <string name="hdd_free">Free space</string>
+    <string name="video_size">Video size</string>
 
     <string name="connectionManage">Manage</string>
     <string name="connectionCreate">Create a new connection</string>

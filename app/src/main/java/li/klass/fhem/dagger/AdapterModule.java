@@ -29,6 +29,7 @@ import li.klass.fhem.adapter.devices.CULHMAdapter;
 import li.klass.fhem.adapter.devices.DmxAdapter;
 import li.klass.fhem.adapter.devices.DummyAdapter;
 import li.klass.fhem.adapter.devices.EnOceanAdapter;
+import li.klass.fhem.adapter.devices.EnigmaDeviceAdapter;
 import li.klass.fhem.adapter.devices.FHTAdapter;
 import li.klass.fhem.adapter.devices.FS20ZDRDeviceAdapter;
 import li.klass.fhem.adapter.devices.FloorplanAdapter;
@@ -58,6 +59,7 @@ import li.klass.fhem.adapter.devices.core.DeviceAdapter;
 import li.klass.fhem.adapter.devices.core.DimmableAdapter;
 import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
 import li.klass.fhem.adapter.devices.core.ToggleableAdapter;
+import li.klass.fhem.domain.EnigmaDevice;
 
 @Module(complete = false,
         injects = {
@@ -90,6 +92,7 @@ import li.klass.fhem.adapter.devices.core.ToggleableAdapter;
                 WOLAdapter.class,
                 YamahaAVRAdapter.class,
                 OnkyoAvrDeviceAdapter.class,
+                EnigmaDeviceAdapter.class,
 
                 DeviceAdapter.class,
                 GenericDeviceAdapter.class,

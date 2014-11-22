@@ -306,6 +306,7 @@
                 <action android:name="li.klass.fhem.constants.Actions.GET_DEVICE_FOR_NAME"/>
                 <action android:name="li.klass.fhem.constants.Actions.UPDATE_DEVICE_WITH_UPDATE_MAP"/>
                 <action android:name="li.klass.fhem.constants.Actions.UPDATE_IF_REQUIRED"/>
+                <action android:name="li.klass.fhem.constants.Actions.REMOTE_UPDATE_RESET"/>
             </intent-filter>
         </service>
 

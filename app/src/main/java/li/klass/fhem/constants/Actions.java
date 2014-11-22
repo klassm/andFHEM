@@ -121,4 +121,6 @@ public class Actions {
 
     public static final String IS_PREMIUM = prefix + "IS_PREMIUM";
     public static final String LOAD_PROPERTIES = prefix + "LOAD_PROPERTIES";
+
+    public static final String REMOTE_UPDATE_RESET = prefix + "REMOTE_UDPATE_RESET";
 }
