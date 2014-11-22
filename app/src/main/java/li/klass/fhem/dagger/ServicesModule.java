@@ -37,6 +37,7 @@ import li.klass.fhem.service.intent.NotificationIntentService;
 import li.klass.fhem.service.intent.RoomListIntentService;
 import li.klass.fhem.service.intent.RoomListUpdateIntentService;
 import li.klass.fhem.service.intent.SendCommandIntentService;
+import li.klass.fhem.service.intent.VoiceCommandIntentService;
 
 @Module(complete = false,
         injects = {
@@ -51,7 +52,8 @@ import li.klass.fhem.service.intent.SendCommandIntentService;
                 DeviceIntentService.class,
                 AppWidgetUpdateService.class,
                 LicenseIntentService.class,
-                AppActionsIntentService.class
+                AppActionsIntentService.class,
+                VoiceCommandIntentService.class
         })
 public class ServicesModule {
 }

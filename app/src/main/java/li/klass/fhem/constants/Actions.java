@@ -84,7 +84,6 @@ public class Actions {
     public static final String REMOTE_UPDATE_FINISHED = prefix + "REMOTE_UPDATE_FINISHED";
     public static final String REDRAW = prefix + "REDRAW";
 
-
     public static final String EXECUTE_COMMAND = prefix + "EXECUTE_COMMAND";
     public static final String RECENT_COMMAND_LIST = prefix + "RECENT_COMMANDS_LIST";
 
@@ -121,4 +120,6 @@ public class Actions {
 
     public static final String IS_PREMIUM = prefix + "IS_PREMIUM";
     public static final String LOAD_PROPERTIES = prefix + "LOAD_PROPERTIES";
+
+    public static final String RECOGNIZE_VOICE_COMMAND = prefix + "RECOGNIZE_VOICE_COMMAND";
 }

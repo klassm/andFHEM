@@ -291,4 +291,10 @@
     <style name="timerDetail" parent="fragmentContent">
         <item name="android:paddingTop">5dp</item>
     </style>
+
+    <style name="transparentDialogTheme" parent="android:Theme.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">false</item>
+    </style>
 </resources>
