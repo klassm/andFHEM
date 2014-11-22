@@ -28,30 +28,16 @@ import android.content.Intent;
 import android.os.ResultReceiver;
 
 import com.google.common.base.Optional;
-import com.google.common.base.Predicate;
-import com.google.common.base.Strings;
-import com.google.common.collect.FluentIterable;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Iterables;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.domain.core.Device;
-import li.klass.fhem.domain.core.RoomDeviceList;
+import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.service.intent.voice.VoiceCommandService;
 import li.klass.fhem.service.intent.voice.VoiceResult;
 import li.klass.fhem.service.room.RoomListService;
 
-import static com.google.common.collect.FluentIterable.from;
 import static li.klass.fhem.service.room.RoomListService.RemoteUpdateRequired.REQUIRED;
 
 public class VoiceCommandIntentService extends ConvenientIntentService {
@@ -62,26 +48,38 @@ public class VoiceCommandIntentService extends ConvenientIntentService {
     @Inject
     VoiceCommandService voiceCommandService;
 
+    @Inject
+    LicenseIntentService licenseIntentService;
+
     public VoiceCommandIntentService() {
         super(VoiceCommandIntentService.class.getName());
     }
 
     @Override
-    protected STATE handleIntent(Intent intent, long updatePeriod, ResultReceiver resultReceiver) {
-        String action = intent.getAction();
+    protected STATE handleIntent(final Intent intent, long updatePeriod, final ResultReceiver resultReceiver) {
+        final String action = intent.getAction();
 
         if (roomListService.updateRoomDeviceListIfRequired(intent, updatePeriod) == REQUIRED) {
             return STATE.DONE;
         }
 
-        if (action.equalsIgnoreCase(Actions.RECOGNIZE_VOICE_COMMAND)) {
-            String command = intent.getStringExtra(BundleExtraKeys.COMMAND);
-            if (handleCommand(command)) {
-                return STATE.SUCCESS;
-            } else {
-                return STATE.ERROR;
+        LicenseIntentService.IsPremiumListener listener = new LicenseIntentService.IsPremiumListener() {
+            @Override
+            public void isPremium(boolean isPremium) {
+                if (!isPremium) return;
+
+                if (action.equalsIgnoreCase(Actions.RECOGNIZE_VOICE_COMMAND)) {
+                    String command = intent.getStringExtra(BundleExtraKeys.COMMAND);
+                    if (handleCommand(command)) {
+                        sendNoResult(resultReceiver, ResultCodes.SUCCESS);
+                    } else {
+                        sendNoResult(resultReceiver, ResultCodes.ERROR);
+                    }
+                }
             }
-        }
+        };
+
+        licenseIntentService.isPremium(listener);
 
         return STATE.DONE;
     }
@@ -103,6 +101,4 @@ public class VoiceCommandIntentService extends ConvenientIntentService {
 
         return true;
     }
-
-
 }
