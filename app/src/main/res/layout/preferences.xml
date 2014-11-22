@@ -189,5 +189,10 @@
             android:summary="@string/prefApplicationPasswordSummary"
             android:title="@string/prefApplicationPassword"
             tools:ignore="Deprecated"/>
+
+        <Preference
+            android:title="@string/prefVoiceCommand"
+            android:key="VOICE_COMMANDS"
+            android:summary="@string/prefVoiceCommandSummary"/>
     </PreferenceCategory>
 </PreferenceScreen>

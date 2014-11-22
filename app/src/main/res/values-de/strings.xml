@@ -318,6 +318,8 @@
     <string name="prefDeviceNameSummary">Passt ein FHEMWEB-Gerätename zu dem Inhalt dieser Einstellung, so wird das FHEMWEB-Gerät bevorzugt verwendet. Damit können gerätespezifisch Räume ausgeblendet oder anders sortiert werden.</string>
     <string name="prefApplicationPassword">Passwort</string>
     <string name="prefApplicationPasswordSummary">Passwort, dass beim Applikationsstart abgefragt wird.</string>
+    <string name="prefVoiceCommand">Sprachkommandos</string>
+    <string name="prefVoiceCommandSummary">Aktiviere andFHEM als Eingabehilfe um Sprachkommandos zu verwenden. Sprachkommandos funktionieren nur in andFHEM Premium!</string>
 
 
     <string name="error_update">Error während Update Vorgang.</string>

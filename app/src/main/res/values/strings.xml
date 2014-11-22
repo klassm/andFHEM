@@ -319,6 +319,8 @@
     <string name="prefDeviceNameSummary">If a FHEMWEB device name matches this value, the respective FHEMWEB device will be preferred. This can be used to hide or sort rooms for specific devices.</string>
     <string name="prefApplicationPassword">Password</string>
     <string name="prefApplicationPasswordSummary">Password which will be asked upon application start.</string>
+    <string name="prefVoiceCommand">Voice commands</string>
+    <string name="prefVoiceCommandSummary">Enable andFHEM as accessibility service to enable voice recognition. This is a Premium only feature.</string>
 
     <string name="error_update">Error while updating.</string>
     <string name="error_timeout">Connection timed out.</string>

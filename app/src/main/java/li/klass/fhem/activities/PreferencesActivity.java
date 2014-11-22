@@ -36,6 +36,7 @@ import javax.inject.Inject;
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.constants.Actions;
+import li.klass.fhem.constants.PreferenceKeys;
 import li.klass.fhem.error.ErrorHolder;
 import li.klass.fhem.service.device.GCMSendDeviceService;
 import li.klass.fhem.util.DisplayUtil;
@@ -104,6 +105,16 @@ public class PreferencesActivity extends PreferenceActivity
 
         SeekBarPreference commandExecutionRetriesPreference = (SeekBarPreference) findPreference(COMMAND_EXECUTION_RETRIES);
         commandExecutionRetriesPreference.setDefaultValue(DEFAULT_NUMBER_OF_RETRIES);
+
+        Preference voiceCommands = findPreference(PreferenceKeys.VOICE_COMMANDS);
+        voiceCommands.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference arg0) {
+                Intent intent = new Intent(android.provider.Settings.ACTION_ACCESSIBILITY_SETTINGS);
+                startActivity(intent);
+                return true;
+            }
+        });
     }
 
     @Override
