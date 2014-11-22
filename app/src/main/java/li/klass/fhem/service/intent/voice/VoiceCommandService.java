@@ -28,9 +28,11 @@ import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Sets;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -52,11 +54,13 @@ public class VoiceCommandService {
             .put("an|[n]?ein|1", "on")
             .put("aus", "off").build();
 
+    private Set<String> ARTICLES_TO_REPLACE = Sets.newHashSet("der", "die", "das", "den", "the");
+
     @Inject
     RoomListService roomListService;
 
     public Optional<VoiceResult> resultFor(String voiceCommand) {
-        voiceCommand = voiceCommand.toLowerCase();
+        voiceCommand = replaceArticles(voiceCommand.toLowerCase());
 
         String[] parts = voiceCommand.split(" ");
         if (parts.length != 3) return Optional.absent();
@@ -77,6 +81,13 @@ public class VoiceCommandService {
 
         Device device = deviceMatches.get(0);
         return Optional.<VoiceResult>of(new VoiceResult.Success(device.getName(), state));
+    }
+
+    private String replaceArticles(String command) {
+        for (String article : ARTICLES_TO_REPLACE) {
+            command = command.replaceAll(" " + article + " ", " ");
+        }
+        return command;
     }
 
     private Predicate<Device> filterDevicePredicate(final String deviceName, final String state) {

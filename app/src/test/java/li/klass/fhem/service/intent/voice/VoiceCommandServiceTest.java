@@ -68,6 +68,11 @@ public class VoiceCommandServiceTest {
                 {"schalte lampe aus", new VoiceResult.Success("lampe", "off")},
                 {"switch lampe on", new VoiceResult.Success("lampe", "on")},
                 {"switch lampe off", new VoiceResult.Success("lampe", "off")},
+                {"schalte den lampe ein", new VoiceResult.Success("lampe", "on")},
+                {"schalte der lampe ein", new VoiceResult.Success("lampe", "on")},
+                {"schalte die lampe ein", new VoiceResult.Success("lampe", "on")},
+                {"schalte das lampe ein", new VoiceResult.Success("lampe", "on")},
+                {"schalte the lampe ein", new VoiceResult.Success("lampe", "on")},
         };
     }
 
