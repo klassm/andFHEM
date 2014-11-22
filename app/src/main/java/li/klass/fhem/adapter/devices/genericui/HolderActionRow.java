@@ -31,7 +31,7 @@ import android.view.ViewGroup;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import com.ensequence.socialmediatestharness.ui.FlowLayout;
+import org.apmem.tools.layouts.FlowLayout;
 
 import java.util.List;
 
@@ -72,5 +72,6 @@ public abstract class HolderActionRow<D extends Device<D>, I> {
     }
 
     public abstract List<I> getItems(D device);
+
     public abstract View viewFor(I item, D device, LayoutInflater inflater, Context context, ViewGroup viewGroup);
 }

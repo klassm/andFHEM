@@ -68,7 +68,7 @@ public class LightSceneAdapter extends GenericDeviceAdapter<LightSceneDevice> {
 
             @Override
             public View viewFor(String scene, LightSceneDevice device, LayoutInflater inflater, Context context, ViewGroup viewGroup) {
-                Button button = (Button) inflater.inflate(R.layout.button, null);
+                Button button = (Button) inflater.inflate(R.layout.on_button, null);
                 setSceneButtonProperties(context, device, scene, button, scene);
                 return button;
             }
@@ -77,6 +77,7 @@ public class LightSceneAdapter extends GenericDeviceAdapter<LightSceneDevice> {
 
     private void setSceneButtonProperties(final Context context, final LightSceneDevice device, final String scene, Button button, String buttonText) {
         button.setText(buttonText);
+        button.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.theme_toggle_default_normal));
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -86,13 +87,12 @@ public class LightSceneAdapter extends GenericDeviceAdapter<LightSceneDevice> {
     }
 
     private void activateScene(LightSceneDevice device, String scene, Context context) {
-        Intent intent = new Intent(Actions.DEVICE_SET_SUB_STATE);
-        intent.setClass(context, DeviceIntentService.class);
-        intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
-        intent.putExtra(BundleExtraKeys.STATE_NAME, "scene");
-        intent.putExtra(BundleExtraKeys.STATE_VALUE, scene);
-        intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver(context));
-        context.startService(intent);
+        context.startService(new Intent(Actions.DEVICE_SET_SUB_STATE)
+                .setClass(context, DeviceIntentService.class)
+                .putExtra(BundleExtraKeys.DEVICE_NAME, device.getName())
+                .putExtra(BundleExtraKeys.STATE_NAME, "scene")
+                .putExtra(BundleExtraKeys.STATE_VALUE, scene)
+                .putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver(context)));
     }
 
     @Override
@@ -108,7 +108,7 @@ public class LightSceneAdapter extends GenericDeviceAdapter<LightSceneDevice> {
 
                 for (final String scene : device.getScenes()) {
 
-                    Button button = (Button) inflater.inflate(R.layout.button_device_detail, parent, false);
+                    Button button = (Button) inflater.inflate(R.layout.togglebutton, parent, false);
                     assert (button != null);
 
                     String buttonText = String.format(context.getString(R.string.activateScene), scene);

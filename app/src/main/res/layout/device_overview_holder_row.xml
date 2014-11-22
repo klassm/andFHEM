@@ -25,8 +25,10 @@
   -->
 
 <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:f="http://schemas.android.com/apk/res-auto"
           android:layout_width="fill_parent"
-          android:layout_height="wrap_content">
+          android:layout_height="wrap_content"
+          style="@style/deviceOverviewLayout">
 
     <TextView
         android:id="@+id/description"
@@ -36,10 +38,11 @@
         android:layout_gravity="center_vertical"
         android:text="@string/dummy_text"/>
 
-    <com.ensequence.socialmediatestharness.ui.FlowLayout
+    <org.apmem.tools.layouts.FlowLayout
         android:id="@+id/holder"
-        style="@style/deviceDetailContent"
         android:layout_height="wrap_content"
+        f:horizontalSpacing="@dimen/button_horizontal_separator"
+
         android:layout_gravity="end"
         android:gravity="end"/>
 </TableRow>

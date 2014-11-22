@@ -35,7 +35,7 @@
         style="@style/deviceDetailDescription"
         android:text="@string/dummy_text"/>
 
-    <com.ensequence.socialmediatestharness.ui.FlowLayout
+    <org.apmem.tools.layouts.FlowLayout
         android:id="@+id/holder"
         style="@style/deviceDetailContent"
         android:layout_width="match_parent"

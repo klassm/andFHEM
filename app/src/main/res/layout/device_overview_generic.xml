@@ -32,6 +32,7 @@
 
     <TableRow
         android:id="@+id/overviewRow"
+        style="@style/deviceOverviewLayout"
         tools:ignore="UselessParent">
 
         <TextView android:id="@+id/deviceName"
