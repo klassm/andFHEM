@@ -27,12 +27,18 @@ package li.klass.fhem.service.intent;
 import android.content.Intent;
 import android.os.ResultReceiver;
 
+import com.google.common.base.Optional;
+import com.google.common.base.Predicate;
 import com.google.common.base.Strings;
+import com.google.common.collect.FluentIterable;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Iterables;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -41,23 +47,20 @@ import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.RoomDeviceList;
+import li.klass.fhem.service.intent.voice.VoiceCommandService;
+import li.klass.fhem.service.intent.voice.VoiceResult;
 import li.klass.fhem.service.room.RoomListService;
 
+import static com.google.common.collect.FluentIterable.from;
 import static li.klass.fhem.service.room.RoomListService.RemoteUpdateRequired.REQUIRED;
 
 public class VoiceCommandIntentService extends ConvenientIntentService {
 
-    public static final String COMMAND_START = "schalte|switch|set";
-    private Map<String, String> START_REPLACE = ImmutableMap.<String, String>builder()
-            .put(COMMAND_START, "set").build();
-
-    private Map<String, String> STATE_REPLACE = ImmutableMap.<String, String>builder()
-            .put("an|[n]?ein|1", "on")
-            .put("aus", "off").build();
     @Inject
     RoomListService roomListService;
 
-    private static final Logger LOG = LoggerFactory.getLogger(VoiceCommandIntentService.class);
+    @Inject
+    VoiceCommandService voiceCommandService;
 
     public VoiceCommandIntentService() {
         super(VoiceCommandIntentService.class.getName());
@@ -86,36 +89,20 @@ public class VoiceCommandIntentService extends ConvenientIntentService {
     private boolean handleCommand(String command) {
         command = command.toLowerCase();
 
-        String[] parts = command.split(" ");
-        if (parts.length != 3) return false;
-
-        String starter = replace(parts[0], START_REPLACE);
-        if (!starter.equals("set")) return false;
-
-        String deviceName = parts[1];
-        String state = replace(parts[2], STATE_REPLACE);
-
-        RoomDeviceList devices = roomListService.getAllRoomsDeviceList();
-        for (Device device : devices.getAllDevices()) {
-            String alias = device.getAlias();
-            if ((!Strings.isNullOrEmpty(alias) && alias.equalsIgnoreCase(deviceName)
-                    || device.getName().equalsIgnoreCase(deviceName)) && device.getSetList().contains(state)) {
-
-                LOG.info("switch {} to {}", device.getName(), state);
-                startService(new Intent(Actions.DEVICE_SET_STATE)
-                        .setClass(this, DeviceIntentService.class)
-                        .putExtra(BundleExtraKeys.DEVICE_NAME, device.getName())
-                        .putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, state));
-                return true;
-            }
+        Optional<VoiceResult> result = voiceCommandService.resultFor(command);
+        if (!result.isPresent() || !(result.get() instanceof VoiceResult.Success)) {
+            return false;
         }
-        return false;
+
+        VoiceResult.Success success = (VoiceResult.Success) result.get();
+
+        startService(new Intent(Actions.DEVICE_SET_STATE)
+                .setClass(this, DeviceIntentService.class)
+                .putExtra(BundleExtraKeys.DEVICE_NAME, success.deviceName)
+                .putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, success.targetState));
+
+        return true;
     }
 
-    private String replace(String in, Map<String, String> toReplace) {
-        for (Map.Entry<String, String> entry : toReplace.entrySet()) {
-            in = in.replaceAll(entry.getKey(), entry.getValue());
-        }
-        return in;
-    }
+
 }

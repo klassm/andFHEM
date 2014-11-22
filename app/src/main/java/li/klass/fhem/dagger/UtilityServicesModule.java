@@ -42,6 +42,7 @@ import li.klass.fhem.service.device.HeatingService;
 import li.klass.fhem.service.device.ToggleableService;
 import li.klass.fhem.service.device.WOLService;
 import li.klass.fhem.service.graph.GraphService;
+import li.klass.fhem.service.intent.voice.VoiceCommandService;
 import li.klass.fhem.service.room.DeviceListParser;
 import li.klass.fhem.service.room.FavoritesService;
 import li.klass.fhem.service.room.RoomListService;
@@ -69,7 +70,8 @@ import li.klass.fhem.update.UpdateHandler;
                 AdvertisementService.class,
                 GCMIntentService.class,
                 SharedPreferencesService.class,
-                DateService.class
+                DateService.class,
+                VoiceCommandService.class
         })
 public class UtilityServicesModule {
 }
