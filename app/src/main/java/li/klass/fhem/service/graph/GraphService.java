@@ -29,6 +29,8 @@ import android.util.Log;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,8 +49,11 @@ import static com.google.common.collect.Maps.newHashMap;
 
 @Singleton
 public class GraphService {
-    public static final DateTimeFormatter GRAPH_ENTRY_DATE_FORMATTER = DateTimeFormat.forPattern("yyyy-MM-dd_HH:mm:ss");
+    public static final String ENTRY_FORMAT = "yyyy-MM-dd_HH:mm:ss";
+    public static final DateTimeFormatter GRAPH_ENTRY_DATE_FORMATTER = DateTimeFormat.forPattern(ENTRY_FORMAT);
     public static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormat.forPattern("yyyy-MM-dd_HH:mm");
+
+    private static final Logger LOG = LoggerFactory.getLogger(GraphService.class);
 
     @Inject
     CommandExecutionService commandExecutionService;
@@ -141,10 +146,14 @@ public class GraphService {
             String entryValue = parts[1];
 
             try {
-                DateTime entryDate = GRAPH_ENTRY_DATE_FORMATTER.parseDateTime(entryTime);
-                float entryFloatValue = Float.valueOf(entryValue);
+                if (ENTRY_FORMAT.length() == entryTime.length()) {
+                    DateTime entryDate = GRAPH_ENTRY_DATE_FORMATTER.parseDateTime(entryTime);
+                    float entryFloatValue = Float.valueOf(entryValue);
 
-                result.add(new GraphEntry(entryDate, entryFloatValue));
+                    result.add(new GraphEntry(entryDate, entryFloatValue));
+                } else {
+                    LOG.trace("silent ignore of {}, as having a wrong time format", entryTime);
+                }
             } catch (NumberFormatException e) {
                 Log.e(GraphService.class.getName(), "cannot parse date " + entryTime, e);
             } catch (Exception e) {

@@ -30,8 +30,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.ResultReceiver;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.RadioButton;
@@ -41,6 +39,7 @@ import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.service.intent.NotificationIntentService;
+import li.klass.fhem.util.FhemResultReceiver;
 
 public class NotificationSettingView {
 
@@ -76,21 +75,20 @@ public class NotificationSettingView {
     }
 
 
-    public void show() {
-        Intent intent = new Intent(Actions.NOTIFICATION_GET_FOR_DEVICE);
-        intent.putExtra(BundleExtraKeys.DEVICE_NAME, deviceName);
-        intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
-            @Override
-            protected void onReceiveResult(int resultCode, Bundle resultData) {
-                super.onReceiveResult(resultCode, resultData);
-                if (resultCode == ResultCodes.SUCCESS && resultData != null &&
-                        resultData.containsKey(BundleExtraKeys.NOTIFICATION_UPDATES)) {
-                    int value = resultData.getInt(BundleExtraKeys.NOTIFICATION_UPDATES);
-                    showWith(value);
-                }
-            }
-        });
-        context.startService(intent);
+    public void show(Context context) {
+        context.startService(new Intent(Actions.NOTIFICATION_GET_FOR_DEVICE)
+                .setClass(context, NotificationIntentService.class)
+                .putExtra(BundleExtraKeys.DEVICE_NAME, deviceName)
+                .putExtra(BundleExtraKeys.RESULT_RECEIVER, new FhemResultReceiver() {
+                    @Override
+                    protected void onReceiveResult(int resultCode, Bundle resultData) {
+                        if (resultCode == ResultCodes.SUCCESS && resultData != null &&
+                                resultData.containsKey(BundleExtraKeys.NOTIFICATION_UPDATES)) {
+                            int value = resultData.getInt(BundleExtraKeys.NOTIFICATION_UPDATES);
+                            showWith(value);
+                        }
+                    }
+                }));
     }
 
     private void showWith(int value) {
@@ -104,11 +102,10 @@ public class NotificationSettingView {
                                 dialog.dismiss();
                                 int updateType = getUpdateType();
 
-                                Intent intent = new Intent(Actions.NOTIFICATION_SET_FOR_DEVICE);
-                                intent.putExtra(BundleExtraKeys.DEVICE_NAME, deviceName);
-                                intent.putExtra(BundleExtraKeys.NOTIFICATION_UPDATES, updateType);
-
-                                context.startService(intent);
+                                context.startService(new Intent(Actions.NOTIFICATION_SET_FOR_DEVICE)
+                                        .setClass(context, NotificationIntentService.class)
+                                        .putExtra(BundleExtraKeys.DEVICE_NAME, deviceName)
+                                        .putExtra(BundleExtraKeys.NOTIFICATION_UPDATES, updateType));
                             }
                         }
                 )

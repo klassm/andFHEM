@@ -134,7 +134,7 @@ public class RoomListService extends AbstractService {
         applicationContext.startService(new Intent(Actions.NOTIFICATION_TRIGGER)
                 .setClass(applicationContext, NotificationIntentService.class)
                 .putExtra(BundleExtraKeys.DEVICE_NAME, deviceName)
-                .putExtra(BundleExtraKeys.DEVICE, deviceOptional)
+                .putExtra(BundleExtraKeys.DEVICE, device)
                 .putExtra(BundleExtraKeys.UPDATE_MAP, (Serializable) updateMap)
                 .putExtra(BundleExtraKeys.VIBRATE, vibrateUponNotification));
 
