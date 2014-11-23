@@ -201,7 +201,7 @@
     <string name="shutterPosition">Shutter position</string>
     <string name="sendEachColorChange">Send each color change</string>
     <string name="level">Level</string>
-    <string name="activateScene">Scene %s</string>
+    <string name="scene">Scene</string>
     <string name="cost">Cost</string>
     <string name="co2">CO2</string>
     <string name="hiddenRooms">Hidden rooms</string>

@@ -31,11 +31,12 @@ import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.genericview.DetailViewSettings;
 import li.klass.fhem.domain.setlist.SetListGroupValue;
 
-import static com.google.common.collect.Lists.newArrayList;
-
 @SuppressWarnings("unused")
 @DetailViewSettings(showMeasured = true, showState = true)
 public class LightSceneDevice extends Device<LightSceneDevice> {
+
+    private String scene;
+
     @Override
     public DeviceFunctionality getDeviceGroup() {
         return DeviceFunctionality.SWITCH;
@@ -45,8 +46,16 @@ public class LightSceneDevice extends Device<LightSceneDevice> {
         // ignore
     }
 
+    public void readSCENE(String scene) {
+        this.scene = scene;
+    }
+
     public List<String> getScenes() {
         SetListGroupValue sceneGroup = (SetListGroupValue) getSetList().get("scene");
         return sceneGroup.getGroupStates();
+    }
+
+    public String getScene() {
+        return scene;
     }
 }
