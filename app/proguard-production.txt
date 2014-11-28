@@ -1,0 +1,47 @@
+-dontwarn javax.**
+-dontwarn sun.misc.Unsafe
+-dontwarn com.actionbarsherlock.BuildConfig
+-dontwarn dagger.**
+-keepattributes *Annotation*
+-keepattributes Signature
+-keep class li.klass.** { *; }
+-keep class android.** { *; }
+
+# Dagger
+
+-dontwarn dagger.internal.codegen.**
+-keepclassmembers,allowobfuscation class * {
+    @javax.inject.* *;
+    @dagger.* *;
+    <init>();
+}
+-keep class javax.inject.* { *; }
+-keep class * extends dagger.internal.Binding
+-keep class * extends dagger.internal.ModuleAdapter
+-keep class * extends dagger.internal.StaticInjection
+-keep class **$$ModuleAdapter
+-keep class **$$InjectAdapter
+-keep class **$$StaticInjection
+-keep class dagger.** { *; }
+
+# ActionBarSherlock
+
+-keep class android.support.** { *; }
+-keep interface android.support.** { *; }
+-keep class com.actionbarsherlock.** { *; }
+-keep interface com.actionbarsherlock.** { *; }
+
+# Joda-Time
+
+-keepnames class * implements java.io.Serializable
+-keepclassmembers class * implements java.io.Serializable {
+    static final long serialVersionUID;
+    private static final java.io.ObjectStreamField[] serialPersistentFields;
+    !static !transient *;
+    private void writeObject(java.io.ObjectOutputStream);
+    private void readObject(java.io.ObjectInputStream);
+    java.lang.Object writeReplace();
+    java.lang.Object readResolve();
+}
+-keep class org.joda.time.** { *; }
+-dontwarn org.joda.**
