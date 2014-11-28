@@ -187,8 +187,10 @@ public class RoomListService extends AbstractService {
     }
 
     public void resetUpdateProgress() {
+        LOG.debug("resetUpdateProgress()");
         remoteUpdateInProgress.set(false);
         resendIntents = newArrayList();
+        sendBroadcastWithAction(DISMISS_EXECUTING_DIALOG);
     }
 
     /**
@@ -226,7 +228,7 @@ public class RoomListService extends AbstractService {
 
         boolean requiresUpdate = shouldUpdate(updatePeriod) || deviceList == null;
         if (requiresUpdate) {
-            LOG.info("updateRoomDeviceListIfRequired() - requiring update");
+            LOG.info("updateRoomDeviceListIfRequired() - requiring update, add pending action: {}", intent.getAction());
             resendIntents.add(createResendIntent(intent));
             if (remoteUpdateInProgress.compareAndSet(false, true)) {
                 applicationContext.startService(new Intent(Actions.DO_REMOTE_UPDATE)
@@ -266,15 +268,17 @@ public class RoomListService extends AbstractService {
             }
             resendIntents.clear();
 
+            LOG.info("remoteUpdateFinished() - requesting redraw of all appwidgets");
+
             applicationContext.sendBroadcast(new Intent(Actions.REDRAW_ALL_WIDGETS));
             applicationContext.startService(new Intent(Actions.REDRAW_ALL_WIDGETS)
                     .setClass(applicationContext, AppWidgetUpdateService.class)
                     .putExtra(BundleExtraKeys.ALLOW_REMOTE_UPDATES, false));
 
-            LOG.info("remote update finished, device list is {}");
+            LOG.info("remoteUpdateFinished() - remote update finished, device list is {}");
         } finally {
-            remoteUpdateInProgress.set(false);
-            sendBroadcastWithAction(DISMISS_EXECUTING_DIALOG);
+            LOG.info("remoteUpdateFinished() - finished, dismissing executing dialog");
+            resetUpdateProgress();
         }
     }
 
