@@ -29,6 +29,7 @@ import android.content.Intent;
 
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
+import li.klass.fhem.adapter.devices.core.UpdatingResultReceiver;
 import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewButtonAction;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
@@ -45,22 +46,20 @@ public class WOLAdapter extends GenericDeviceAdapter<WOLDevice> {
         detailActions.add(new DeviceDetailViewButtonAction<WOLDevice>(R.string.wake) {
             @Override
             public void onButtonClick(Context context, WOLDevice device) {
-                Intent intent = new Intent(Actions.DEVICE_SET_STATE);
-                intent.setClass(context, DeviceIntentService.class);
-                intent.putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, "on");
-                intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
-                context.startService(intent);
+                context.startService(new Intent(Actions.DEVICE_SET_STATE)
+                        .setClass(context, DeviceIntentService.class)
+                        .putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, "on")
+                        .putExtra(BundleExtraKeys.DEVICE_NAME, device.getName()));
             }
         });
 
         detailActions.add(new DeviceDetailViewButtonAction<WOLDevice>(R.string.shutdown) {
             @Override
             public void onButtonClick(Context context, WOLDevice device) {
-                Intent intent = new Intent(Actions.DEVICE_SET_STATE);
-                intent.setClass(context, DeviceIntentService.class);
-                intent.putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, "off");
-                intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
-                context.startService(intent);
+                context.startService(new Intent(Actions.DEVICE_SET_STATE)
+                        .setClass(context, DeviceIntentService.class)
+                        .putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, "off")
+                        .putExtra(BundleExtraKeys.DEVICE_NAME, device.getName()));
             }
 
             @Override
@@ -71,12 +70,10 @@ public class WOLAdapter extends GenericDeviceAdapter<WOLDevice> {
         detailActions.add(new DeviceDetailViewButtonAction<WOLDevice>(R.string.requestRefresh) {
             @Override
             public void onButtonClick(Context context, WOLDevice device) {
-                Intent intent = new Intent(Actions.DEVICE_REFRESH_STATE);
-                intent.setClass(context, DeviceIntentService.class);
-                intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
-                context.startService(intent);
-
-                context.startService(new Intent(Actions.DO_UPDATE));
+                context.startService(new Intent(Actions.DEVICE_REFRESH_STATE)
+                        .setClass(context, DeviceIntentService.class)
+                        .putExtra(BundleExtraKeys.DEVICE_NAME, device.getName())
+                        .putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver(context)));
             }
         });
     }
