@@ -9,7 +9,6 @@ gen/*
 *.swp
 *.class
 *.log
-*.txt
 out/
 test/build
 local.properties
