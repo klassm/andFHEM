@@ -49,6 +49,7 @@ public class BundleExtraKeys {
     public static final String EMPTY_TEXT_ID = "EMPTY_TEXT_ID";
     public static final String ROOM_SELECTABLE_CALLBACK = "ROOM_SELECTABLE_CALLBACK";
     public static final String ON_CLICKED_CALLBACK = "ON_CLICKED_CALLBACK";
+    public static final String TEXT = "TEXT";
 
     public static final String DEVICE_GRAPH_ENTRY_MAP = "GRAPHENTRYMAP";
     public static final String DEVICE_GRAPH_SERIES_DESCRIPTIONS = "DEVICEGRAPHSERIESDESCRIPTIONS";

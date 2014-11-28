@@ -31,13 +31,18 @@ import com.google.common.base.Optional;
 
 import javax.inject.Inject;
 
+import li.klass.fhem.activities.CommandIndicatorActivity;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
+import li.klass.fhem.service.TextToSpeechService;
 import li.klass.fhem.service.intent.voice.VoiceCommandService;
 import li.klass.fhem.service.intent.voice.VoiceResult;
 import li.klass.fhem.service.room.RoomListService;
 
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_NAME;
+import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_TARGET_STATE;
 import static li.klass.fhem.service.room.RoomListService.RemoteUpdateRequired.REQUIRED;
 
 public class VoiceCommandIntentService extends ConvenientIntentService {
@@ -88,17 +93,38 @@ public class VoiceCommandIntentService extends ConvenientIntentService {
         command = command.toLowerCase();
 
         Optional<VoiceResult> result = voiceCommandService.resultFor(command);
-        if (!result.isPresent() || !(result.get() instanceof VoiceResult.Success)) {
+
+        if (!result.isPresent()) {
             return false;
         }
 
-        VoiceResult.Success success = (VoiceResult.Success) result.get();
+        VoiceResult voiceResult = result.get();
+
+        if (voiceResult instanceof VoiceResult.Success) {
+            handleSuccess((VoiceResult.Success) voiceResult);
+            return true;
+        } else {
+            handleError((VoiceResult.Error) voiceResult);
+            return false;
+        }
+    }
+
+    private void handleError(VoiceResult.Error voiceResult) {
+        speak(getString(voiceResult.errorType.stringId));
+    }
+
+    private void speak(String text) {
+        startService(new Intent(Actions.SAY).putExtra(BundleExtraKeys.TEXT, text).setClass(this, TextToSpeechService.class));
+    }
+
+    private void handleSuccess(VoiceResult.Success success) {
 
         startService(new Intent(Actions.DEVICE_SET_STATE)
                 .setClass(this, DeviceIntentService.class)
-                .putExtra(BundleExtraKeys.DEVICE_NAME, success.deviceName)
-                .putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, success.targetState));
+                .putExtra(DEVICE_NAME, success.deviceName)
+                .putExtra(DEVICE_TARGET_STATE, success.targetState));
 
-        return true;
+        startActivity(new Intent(VoiceCommandIntentService.this, CommandIndicatorActivity.class)
+                .setFlags(FLAG_ACTIVITY_NEW_TASK));
     }
 }

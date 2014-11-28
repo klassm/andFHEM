@@ -24,11 +24,19 @@
 
 package li.klass.fhem.service.intent.voice;
 
+import li.klass.fhem.R;
+
 public abstract class VoiceResult {
 
     public enum ErrorType {
-        MORE_THAN_ONE_DEVICE_MATCHES,
-        NO_DEVICE_MATCHED
+        MORE_THAN_ONE_DEVICE_MATCHES(R.string.voiceMoreThanOneDeviceMatches),
+        NO_DEVICE_MATCHED(R.string.voiceNoDeviceMatches);
+
+        public final int stringId;
+
+        ErrorType(int stringId) {
+            this.stringId = stringId;
+        }
     }
 
     public static class Error extends VoiceResult {

@@ -123,4 +123,5 @@ public class Actions {
 
     public static final String RECOGNIZE_VOICE_COMMAND = prefix + "RECOGNIZE_VOICE_COMMAND";
     public static final String REMOTE_UPDATE_RESET = prefix + "REMOTE_UDPATE_RESET";
+    public static final String SAY = prefix + "SAY";
 }

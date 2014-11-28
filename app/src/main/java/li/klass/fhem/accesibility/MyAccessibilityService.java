@@ -59,21 +59,10 @@ public class MyAccessibilityService extends AccessibilityService {
 
         String command = texts.get(0).toString();
         command = command.toLowerCase();
-        Intent intent = new Intent(Actions.RECOGNIZE_VOICE_COMMAND)
+        startService(new Intent(Actions.RECOGNIZE_VOICE_COMMAND)
                 .setClass(this, VoiceCommandIntentService.class)
-                .putExtra(BundleExtraKeys.COMMAND, command)
-                .putExtra(BundleExtraKeys.RESULT_RECEIVER, new FhemResultReceiver() {
-                    @Override
-                    protected void onReceiveResult(int resultCode, Bundle resultData) {
-                        if (resultCode == ResultCodes.SUCCESS) {
-                            Log.e(MyAccessibilityService.class.getName(), "command success");
-                            startActivity(new Intent(MyAccessibilityService.this, CommandIndicatorActivity.class)
-                                    .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-                        }
-                    }
-                });
-        startService(intent);
-        Log.e(MyAccessibilityService.class.getName(), command);
+                .putExtra(BundleExtraKeys.COMMAND, command));
+        Log.d(MyAccessibilityService.class.getName(), command);
     }
 
     @Override

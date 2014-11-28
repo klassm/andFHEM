@@ -172,6 +172,13 @@
                 android:resource="@xml/accessibility_service_config"/>
         </service>
 
+        <service
+            android:name="li.klass.fhem.service.TextToSpeechService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.SAY"/>
+            </intent-filter>
+        </service>
 
         <service
             android:name="li.klass.fhem.service.intent.VoiceCommandIntentService"
