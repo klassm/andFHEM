@@ -24,6 +24,7 @@
 
 package li.klass.fhem.domain.core;
 
+import li.klass.fhem.FHEMduinoEnvDevice;
 import li.klass.fhem.adapter.devices.CULHMAdapter;
 import li.klass.fhem.adapter.devices.DmxAdapter;
 import li.klass.fhem.adapter.devices.DummyAdapter;
@@ -243,6 +244,7 @@ public enum DeviceType {
     ONKYO_AVR("ONKYO_AVR", OnkyoAvrDevice.class, new OnkyoAvrDeviceAdapter()),
     REVOLT("Revolt", RevoltDevice.class),
     ENIGMA2("ENIGMA2", EnigmaDevice.class, new EnigmaDeviceAdapter()),
+    FHEMduino_Env("FHEMduino_Env", FHEMduinoEnvDevice.class),
     FHEMduino_PT2262("FHEMduino_PT2262", FHEMduinoPT2262Device.class, new ToggleableAdapterWithSwitchActionRow<>(FHEMduinoPT2262Device.class));
 
     private String xmllistTag;
