@@ -127,7 +127,7 @@ public class RoomListIntentService extends ConvenientIntentService {
             sendBroadcast(new Intent(Actions.DO_UPDATE));
         } else if (REMOTE_UPDATE_FINISHED.equals(action)) {
             LOG.trace("handleIntent() - remote update finished");
-            roomListService.remoteUpdateFinished(intent);
+            roomListService.remoteUpdateFinished();
         } else if (UPDATE_IF_REQUIRED.equals(action)) {
             // If required, the device list will be updated by now. The resend intent will reach us
             // here. The only thing we have to do is notify the receiver that we have

@@ -39,11 +39,11 @@ import li.klass.fhem.domain.core.RoomDeviceList;
 import li.klass.fhem.exception.CommandExecutionException;
 import li.klass.fhem.service.CommandExecutionService;
 import li.klass.fhem.service.room.DeviceListParser;
+import li.klass.fhem.service.room.RoomListHolderService;
+import li.klass.fhem.service.room.RoomListService;
 
 import static com.google.common.base.Optional.absent;
 import static li.klass.fhem.constants.Actions.REMOTE_UPDATE_FINISHED;
-import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_LIST;
-import static li.klass.fhem.domain.core.RoomDeviceList.ALL_DEVICES_ROOM;
 
 public class RoomListUpdateIntentService extends ConvenientIntentService {
     private static final Logger LOG = LoggerFactory.getLogger(RoomListUpdateIntentService.class);
@@ -53,6 +53,12 @@ public class RoomListUpdateIntentService extends ConvenientIntentService {
 
     @Inject
     DeviceListParser deviceListParser;
+
+    @Inject
+    RoomListService roomListService;
+
+    @Inject
+    RoomListHolderService roomListHolderService;
 
     public RoomListUpdateIntentService() {
         super(RoomListUpdateIntentService.class.getName());
@@ -72,13 +78,14 @@ public class RoomListUpdateIntentService extends ConvenientIntentService {
     private STATE doRemoteUpdate() {
         LOG.info("doRemoteUpdate() - starting remote update");
         Optional<RoomDeviceList> result = getRemoteRoomDeviceListMap();
-        LOG.info("doRemoteUpdate() - remote device list update finished, result is {} present");
+        LOG.info("doRemoteUpdate() - remote device list update finished");
         if (result.isPresent()) {
-            startService(new Intent(REMOTE_UPDATE_FINISHED).putExtra(DEVICE_LIST, result.get()).setClass(this, RoomListIntentService.class));
+            roomListHolderService.storeDeviceListMap(result.get());
+            startService(new Intent(REMOTE_UPDATE_FINISHED).setClass(this, RoomListIntentService.class));
             LOG.info("doRemoteUpdate() - update was successful, sending result");
             return STATE.DONE;
         } else {
-            startService(new Intent(REMOTE_UPDATE_FINISHED).putExtra(DEVICE_LIST, new RoomDeviceList(ALL_DEVICES_ROOM)).setClass(this, RoomListIntentService.class));
+            startService(new Intent(REMOTE_UPDATE_FINISHED).setClass(this, RoomListIntentService.class));
             LOG.info("doRemoteUpdate() - update was not successful, sending empty device list");
             return STATE.DONE;
         }

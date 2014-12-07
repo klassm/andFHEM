@@ -28,20 +28,16 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.google.common.base.Optional;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -49,7 +45,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.appwidget.service.AppWidgetUpdateService;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
@@ -66,7 +61,6 @@ import li.klass.fhem.service.intent.DeviceIntentService;
 import li.klass.fhem.service.intent.NotificationIntentService;
 import li.klass.fhem.service.intent.RoomListUpdateIntentService;
 import li.klass.fhem.util.ApplicationProperties;
-import li.klass.fhem.util.CloseableUtil;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static java.util.Collections.sort;
@@ -74,7 +68,6 @@ import static li.klass.fhem.constants.Actions.DISMISS_EXECUTING_DIALOG;
 import static li.klass.fhem.constants.Actions.REDRAW_ALL_WIDGETS;
 import static li.klass.fhem.constants.BundleExtraKeys.DO_REFRESH;
 import static li.klass.fhem.constants.BundleExtraKeys.UPDATE_PERIOD;
-import static li.klass.fhem.constants.PreferenceKeys.DEVICE_NAME;
 import static li.klass.fhem.domain.core.DeviceType.AT;
 import static li.klass.fhem.domain.core.DeviceType.getDeviceTypeFor;
 import static li.klass.fhem.util.DateFormatUtil.toReadable;
@@ -86,15 +79,12 @@ public class RoomListService extends AbstractService {
 
     public static final String PREFERENCES_NAME = RoomListService.class.getName();
 
-    public static final String CACHE_FILENAME = "cache.obj";
-
     public static final String LAST_UPDATE_PROPERTY = "LAST_UPDATE";
 
     public static final long NEVER_UPDATE_PERIOD = 0;
     public static final long ALWAYS_UPDATE_PERIOD = -1;
 
     public static final String SORT_ROOMS_DELIMITER = " ";
-    public static final String DEFAULT_FHEMWEB_QUALIFIER = "andFHEM";
 
     private final AtomicBoolean remoteUpdateInProgress = new AtomicBoolean(false);
 
@@ -117,6 +107,9 @@ public class RoomListService extends AbstractService {
 
     @Inject
     SharedPreferencesService sharedPreferencesService;
+
+    @Inject
+    RoomListHolderService roomListHolderService;
 
     public void parseReceivedDeviceStateMap(String deviceName, Map<String, String> updateMap,
                                             boolean vibrateUponNotification) {
@@ -155,7 +148,7 @@ public class RoomListService extends AbstractService {
      */
     @SuppressWarnings("unchecked")
     public <T extends Device<T>> Optional<T> getDeviceForName(String deviceName) {
-        return Optional.<T>fromNullable((T) getAllRoomsDeviceList().getDeviceFor(deviceName));
+        return Optional.fromNullable((T) getAllRoomsDeviceList().getDeviceFor(deviceName));
     }
 
     /**
@@ -181,7 +174,7 @@ public class RoomListService extends AbstractService {
     public RoomDeviceList getRoomDeviceList() {
 
         if (deviceList == null) {
-            deviceList = getCachedRoomDeviceListMap();
+            deviceList = roomListHolderService.getCachedRoomDeviceListMap();
         }
         return deviceList;
     }
@@ -223,7 +216,7 @@ public class RoomListService extends AbstractService {
      */
     public RemoteUpdateRequired updateRoomDeviceListIfRequired(Intent intent, long updatePeriod) {
         if (deviceList == null) {
-            deviceList = getCachedRoomDeviceListMap();
+            deviceList = roomListHolderService.getCachedRoomDeviceListMap();
         }
 
         boolean requiresUpdate = shouldUpdate(updatePeriod) || deviceList == null;
@@ -245,23 +238,12 @@ public class RoomListService extends AbstractService {
     /**
      * Entry point for completed remote updates. See {@link #updateRoomDeviceListIfRequired} for
      * details on the process.
-     *
-     * @param intent Resulting remote update intent, containing the newly loaded device list.
      */
-    public void remoteUpdateFinished(Intent intent) {
+    public void remoteUpdateFinished() {
         try {
             LOG.info("remoteUpdateFinished() - starting after actions");
 
-            RoomDeviceList newDeviceList = (RoomDeviceList) intent.getSerializableExtra(BundleExtraKeys.DEVICE_LIST);
-            setLastUpdateToNow();
-            fillHiddenRoomsAndHiddenGroups(newDeviceList, findFHEMWEBDevice(newDeviceList));
-            if (newDeviceList != null) {
-                deviceList = newDeviceList;
-            }
-
-            if (!deviceList.isEmptyOrOnlyContainsDoNotShowDevices()) {
-                storeDeviceListMap();
-            }
+            deviceList = roomListHolderService.getCachedRoomDeviceListMap();
 
             for (Intent resendIntent : resendIntents) {
                 resend(resendIntent);
@@ -315,76 +297,8 @@ public class RoomListService extends AbstractService {
         return shouldUpdate;
     }
 
-    /**
-     * Loads the currently cached room device list map data from the file storage.
-     *
-     * @return cached room device list map
-     */
-    @SuppressWarnings("unchecked")
-    private RoomDeviceList getCachedRoomDeviceListMap() {
-        ObjectInputStream objectInputStream = null;
-        try {
-            LOG.info("getCachedRoomDeviceListMap() : fetching device list from cache");
-            long startLoad = System.currentTimeMillis();
-
-            objectInputStream = new ObjectInputStream(AndFHEMApplication.getContext().openFileInput(CACHE_FILENAME));
-            RoomDeviceList roomDeviceListMap = (RoomDeviceList) objectInputStream.readObject();
-            LOG.info("getCachedRoomDeviceListMap() : loading device list from cache completed after {} ms",
-                    (System.currentTimeMillis() - startLoad));
-
-            if (roomDeviceListMap != null && roomDeviceListMap.isEmptyOrOnlyContainsDoNotShowDevices()) {
-                return null;
-            } else {
-                return roomDeviceListMap;
-            }
-        } catch (Exception e) {
-            LOG.info("getCachedRoomDeviceListMap() : error occurred while de-serializing data", e);
-            return null;
-        } finally {
-            CloseableUtil.close(objectInputStream);
-        }
-    }
-
-    private void fillHiddenRoomsAndHiddenGroups(RoomDeviceList newRoomDeviceList,
-                                                FHEMWEBDevice fhemwebDevice) {
-        if (newRoomDeviceList == null) return;
-
-        newRoomDeviceList.setHiddenGroups(fhemwebDevice.getHiddenGroups());
-        newRoomDeviceList.setHiddenRooms(fhemwebDevice.getHiddenRooms());
-    }
-
-    private FHEMWEBDevice findFHEMWEBDevice(RoomDeviceList allRoomDeviceList) {
-        List<Device> devicesOfType = allRoomDeviceList == null ?
-                Lists.<Device>newArrayList() : allRoomDeviceList.getDevicesOfType(DeviceType.FHEMWEB);
-        return findFHEMWEBDevice(devicesOfType);
-    }
-
-    FHEMWEBDevice findFHEMWEBDevice(List<Device> devices) {
-        String qualifier = applicationProperties.getStringSharedPreference(DEVICE_NAME, DEFAULT_FHEMWEB_QUALIFIER).toUpperCase(Locale.getDefault());
-        if (!devices.isEmpty()) {
-            FHEMWEBDevice foundDevice = null;
-            for (Device device : devices) {
-                if (device.getName() != null && device.getName().toUpperCase(Locale.getDefault()).contains(qualifier)) {
-                    foundDevice = (FHEMWEBDevice) device;
-                    break;
-                }
-            }
-            if (foundDevice != null) {
-                return foundDevice;
-            } else {
-                return (FHEMWEBDevice) devices.get(0);
-            }
-        } else {
-            return new FHEMWEBDevice();
-        }
-    }
-
     public long getLastUpdate() {
         return sharedPreferencesService.getSharedPreferences(PREFERENCES_NAME).getLong(LAST_UPDATE_PROPERTY, 0L);
-    }
-
-    private void setLastUpdateToNow() {
-        sharedPreferencesService.getSharedPreferencesEditor(PREFERENCES_NAME).putLong(LAST_UPDATE_PROPERTY, System.currentTimeMillis()).commit();
     }
 
     public ArrayList<String> getAvailableDeviceNames() {
@@ -425,7 +339,7 @@ public class RoomListService extends AbstractService {
         }
         roomNames.removeAll(roomDeviceList.getHiddenRooms());
 
-        FHEMWEBDevice fhemwebDevice = findFHEMWEBDevice(roomDeviceList);
+        FHEMWEBDevice fhemwebDevice = roomListHolderService.findFHEMWEBDevice(roomDeviceList);
         return sortRooms(roomNames, fhemwebDevice);
     }
 
@@ -484,23 +398,6 @@ public class RoomListService extends AbstractService {
         }
 
         return roomDeviceList;
-    }
-
-    /**
-     * Stores the currently loaded room device list map to the cache file.
-     */
-    public synchronized void storeDeviceListMap() {
-        LOG.info("storeDeviceListMap() : storing device list to cache");
-        Context context = AndFHEMApplication.getContext();
-        ObjectOutputStream objectOutputStream = null;
-        try {
-            objectOutputStream = new ObjectOutputStream(context.openFileOutput(CACHE_FILENAME, Context.MODE_PRIVATE));
-            objectOutputStream.writeObject(deviceList);
-        } catch (Exception e) {
-            LOG.error("storeDeviceListMap() : error occurred while writing data to disk", e);
-        } finally {
-            CloseableUtil.close(objectOutputStream);
-        }
     }
 
     public enum RemoteUpdateRequired {

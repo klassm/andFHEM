@@ -80,7 +80,6 @@ import static li.klass.fhem.constants.BundleExtraKeys.FRAGMENT;
 import static li.klass.fhem.constants.BundleExtraKeys.FRAGMENT_NAME;
 import static li.klass.fhem.constants.PreferenceKeys.AUTO_UPDATE_TIME_IN_ACTIVITY;
 import static li.klass.fhem.constants.PreferenceKeys.STARTUP_VIEW;
-import static li.klass.fhem.constants.PreferenceKeys.UPDATE_ON_APPLICATION_START;
 import static li.klass.fhem.fragments.FragmentType.ALL_DEVICES;
 import static li.klass.fhem.fragments.FragmentType.FAVORITES;
 import static li.klass.fhem.fragments.FragmentType.getFragmentFor;
@@ -481,8 +480,6 @@ public abstract class FragmentBaseActivity extends ActionBarActivity implements 
         super.onStop();
 
         billingService.stop();
-
-        roomListService.storeDeviceListMap();
 
         try {
             unregisterReceiver(broadcastReceiver);
