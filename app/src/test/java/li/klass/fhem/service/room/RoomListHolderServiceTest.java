@@ -24,79 +24,76 @@
 
 package li.klass.fhem.service.room;
 
+import com.google.common.base.Function;
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import li.klass.fhem.domain.FHEMWEBDevice;
-import li.klass.fhem.domain.core.DeviceType;
-import li.klass.fhem.service.connection.ConnectionService;
+import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.testutil.MockitoTestRule;
 import li.klass.fhem.util.ApplicationProperties;
 
+import static com.google.common.collect.FluentIterable.from;
 import static com.google.common.collect.Lists.newArrayList;
-import static com.google.common.collect.Sets.newHashSet;
 import static li.klass.fhem.constants.PreferenceKeys.DEVICE_NAME;
+import static li.klass.fhem.service.room.RoomListHolderService.DEFAULT_FHEMWEB_QUALIFIER;
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Matchers.any;
 
-// We cannot combine two runners, so we have to create an extra test class for only
-// parametrized unit tests ...
 @RunWith(DataProviderRunner.class)
-public class RoomListServicePureUnitTest {
+public class RoomListHolderServiceTest {
+
+    public static final Function<String, Device> TO_FHEMWEB_DEVICE_WITH_NAME = new Function<String, Device>() {
+        @Override
+        public Device apply(String input) {
+            FHEMWEBDevice device = new FHEMWEBDevice();
+            device.readNAME(input);
+            device.readGROUP("someGroup");
+            return device;
+        }
+    };
 
     @Rule
     public MockitoTestRule mockitoTestRule = new MockitoTestRule();
 
     @Mock
-    private ConnectionService connectionService;
-
-    @Mock
     private ApplicationProperties applicationProperties;
 
     @InjectMocks
-    private RoomListService service;
-
-    @Before
-    public void before() {
-        given(applicationProperties.getStringSharedPreference(DEVICE_NAME, "andFHEM")).willReturn("abc");
-        given(connectionService.mayShowInCurrentConnectionType(any(DeviceType.class))).willCallRealMethod();
-    }
+    private RoomListHolderService service;
 
     @DataProvider
-    public static Object[][] dataProviderSortRooms() {
+    public static Object[][] dataProvider_FHEMWEB_device_names() {
         return new Object[][]{
-                {"A B C", newHashSet("A", "B", "C"), newArrayList("A", "B", "C")},
-                {"Z K", newHashSet("A", "Z", "K"), newArrayList("Z", "K", "A")},
-                {"", newHashSet("Z", "B", "X", "K"), newArrayList("B", "K", "X", "Z")},
-                {"Z", newHashSet("B", "Z", "X", "K"), newArrayList("Z", "B", "K", "X")}
+                {newArrayList("myDevice", "someDevice"), "myDevice", "myDevice"}, // find device with exact name
+                {newArrayList("FHEMWEB_myDevice", "someDevice"), "myDevice", "FHEMWEB_myDevice"}, // finds device containing the qualifier
+                {newArrayList("FHEMWEB_myDevice", "myDevice"), "myDevice", "FHEMWEB_myDevice"}, // takes the first device it finds (containing the qualifier)
+                {newArrayList("FHEMWEB_myDevice", "someDevice"), "", "FHEMWEB_myDevice"}, // takes the first device if no device contains the qualifier
+                {newArrayList("andFHEM_myDevice", "someDevice"), "", "andFHEM_myDevice"}, // defaults to andFHEM as qualifier
         };
     }
 
     @Test
-    @UseDataProvider("dataProviderSortRooms")
-    public void should_sort_rooms(String sortRoomsAttribute, Set<String> roomNames, List<String> expectedRooms) {
+    @UseDataProvider("dataProvider_FHEMWEB_device_names")
+    public void should_find_the_correct_FHEMWEB_device(List<String> deviceNames, String qualifier, String expectedDeviceName) {
         // given
-        FHEMWEBDevice device = new FHEMWEBDevice();
-        device.readSORTROOMS(sortRoomsAttribute);
+        List<Device> fhemwebDevices = from(deviceNames).transform(TO_FHEMWEB_DEVICE_WITH_NAME).toList();
+        given(applicationProperties.getStringSharedPreference(DEVICE_NAME, DEFAULT_FHEMWEB_QUALIFIER)).willReturn(qualifier);
 
         // when
-        ArrayList<String> result = service.sortRooms(roomNames, device);
+        FHEMWEBDevice foundDevice = service.findFHEMWEBDevice(fhemwebDevices);
 
         // then
-        assertThat(result).isEqualTo(expectedRooms);
+        assertThat(foundDevice).isNotNull();
+        assertThat(foundDevice.getName()).isEqualTo(expectedDeviceName);
     }
-
 }

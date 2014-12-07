@@ -49,7 +49,10 @@ public abstract class DeviceAdapter<D extends Device> {
     private LayoutInflater inflater;
 
     protected DeviceAdapter() {
-        AndFHEMApplication.getApplication().inject(this);
+        AndFHEMApplication application = AndFHEMApplication.getApplication();
+        if (application != null) {
+            application.inject(this);
+        }
     }
 
     /**

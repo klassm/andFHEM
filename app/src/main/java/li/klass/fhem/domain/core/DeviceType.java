@@ -24,6 +24,7 @@
 
 package li.klass.fhem.domain.core;
 
+import li.klass.fhem.FHEMduinoEnvDevice;
 import li.klass.fhem.adapter.devices.CULHMAdapter;
 import li.klass.fhem.adapter.devices.DmxAdapter;
 import li.klass.fhem.adapter.devices.DummyAdapter;
@@ -41,6 +42,7 @@ import li.klass.fhem.adapter.devices.OwSwitchDeviceAdapter;
 import li.klass.fhem.adapter.devices.PCA9532DeviceAdapter;
 import li.klass.fhem.adapter.devices.PCF8574DeviceAdapter;
 import li.klass.fhem.adapter.devices.PidAdapter;
+import li.klass.fhem.adapter.devices.PioneerAvrDeviceAdapter;
 import li.klass.fhem.adapter.devices.ReadingsProxyDeviceAdapter;
 import li.klass.fhem.adapter.devices.RemoteControlAdapter;
 import li.klass.fhem.adapter.devices.SonosPlayerAdapter;
@@ -78,6 +80,7 @@ import li.klass.fhem.domain.EnigmaDevice;
 import li.klass.fhem.domain.FBCallmonitorDevice;
 import li.klass.fhem.domain.FBDectDevice;
 import li.klass.fhem.domain.FHEMWEBDevice;
+import li.klass.fhem.domain.FHEMduinoPT2262Device;
 import li.klass.fhem.domain.FHT8VDevice;
 import li.klass.fhem.domain.FHTDevice;
 import li.klass.fhem.domain.FRMInDevice;
@@ -115,6 +118,7 @@ import li.klass.fhem.domain.PCA9532Device;
 import li.klass.fhem.domain.PCF8574Device;
 import li.klass.fhem.domain.PIDDevice;
 import li.klass.fhem.domain.PilightDevice;
+import li.klass.fhem.domain.PioneerAvrDevice;
 import li.klass.fhem.domain.PresenceDevice;
 import li.klass.fhem.domain.RFXCOMDevice;
 import li.klass.fhem.domain.RFXX10RECDevice;
@@ -146,6 +150,7 @@ import li.klass.fhem.domain.WeatherDevice;
 import li.klass.fhem.domain.WebLinkDevice;
 import li.klass.fhem.domain.WifiLightDevice;
 import li.klass.fhem.domain.WithingsDevice;
+import li.klass.fhem.domain.X10Device;
 import li.klass.fhem.domain.YamahaAVRDevice;
 import li.klass.fhem.domain.ZWaveDevice;
 
@@ -235,13 +240,17 @@ public enum DeviceType {
     EC3000("EC3000", EC3000Device.class),
     WITHINGS("withings", WithingsDevice.class),
     DMX("DMXDevice", DMXDevice.class, new DmxAdapter()),
+    X10("X10", X10Device.class, new ToggleableAdapterWithSwitchActionRow<>(X10Device.class)),
     NETATMO("netatmo", NetatmoDevice.class),
     ROOMMATE("ROOMMATE", RoommateDevice.class),
     SMLUSB("SMLUSB", SMLUSBDevice.class),
     SOMFY("SOMFY", SomfyDevice.class, new ToggleableAdapterWithSwitchActionRow<>(SomfyDevice.class)),
     ONKYO_AVR("ONKYO_AVR", OnkyoAvrDevice.class, new OnkyoAvrDeviceAdapter()),
     REVOLT("Revolt", RevoltDevice.class),
-    ENIGMA2("ENIGMA2", EnigmaDevice.class, new EnigmaDeviceAdapter());
+    ENIGMA2("ENIGMA2", EnigmaDevice.class, new EnigmaDeviceAdapter()),
+    PIONEER("PIONEERAVR", PioneerAvrDevice.class, new PioneerAvrDeviceAdapter()),
+    FHEMduino_Env("FHEMduino_Env", FHEMduinoEnvDevice.class),
+    FHEMduino_PT2262("FHEMduino_PT2262", FHEMduinoPT2262Device.class, new ToggleableAdapterWithSwitchActionRow<>(FHEMduinoPT2262Device.class));
 
     private String xmllistTag;
     private Class<? extends Device> deviceClass;

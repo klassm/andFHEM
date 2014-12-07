@@ -1,0 +1,60 @@
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<FHZINFO>
+    <FHEMduino_Env_LIST>
+        <FHEMduino_Env name="Aussentemperatur" state="1.4°C / 81%" sets=""
+                       attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev do_not_notify:0,1 showtime:0,1 ignore:0,1 event-on-change-reading event-on-update-reading event-min-interval stateFormat Heizung Heizung_map Licht Licht_map devStateIcon devStateStyle fp_Grundriss icon sortby structexclude webCmd widgetOverride userattr">
+            <INT key="CODE" value="85_2"/>
+            <INT key="DEF" value="85_2 600 1"/>
+            <INT key="FHEMduino_MSGCNT" value="777"/>
+            <INT key="FHEMduino_RAWMSG" value="W03585a00e51"/>
+            <INT key="FHEMduino_TIME" value="2014-11-27 09:11:51"/>
+            <INT key="LASTInputDev" value="FHEMduino"/>
+            <INT key="MSGCNT" value="777"/>
+            <INT key="NAME" value="Aussentemperatur"/>
+            <INT key="NR" value="200"/>
+            <INT key="STATE" value="1.4°C / 81%"/>
+            <INT key="TYPE" value="FHEMduino_Env"/>
+            <INT key="bitMSG" value="010110000101101000000000111001010001"/>
+            <INT key="equalMSG" value="1"/>
+            <INT key="lastMSG" value="W03585A00E51"/>
+            <INT key="lastReceive" value="1417075911.82845"/>
+            <INT key="minsecs" value="600"/>
+            <INT key="IODev" value="FHEMduino"/>
+            <ATTR key="IODev" value="FHEMduino"/>
+            <ATTR key="group" value="Aussentemperatur"/>
+            <ATTR key="icon" value="temp_outside"/>
+            <ATTR key="room" value="Wetter"/>
+            <ATTR key="stateFormat" value="temperature°C / humidity%"/>
+            <STATE key="abshum" value="4.3" measured="2014-11-27 09:11:51"/>
+            <STATE key="battery" value="ok" measured="2014-11-27 09:11:51"/>
+            <STATE key="humidity" value="81" measured="2014-11-27 09:11:51"/>
+            <STATE key="sendMode" value="automatic" measured="2014-11-27 09:11:51"/>
+            <STATE key="state" value="T: 1.4 H: 81 B: ok" measured="2014-11-27 09:11:51"/>
+            <STATE key="taupunkttemp" value="-1.5" measured="2014-11-27 09:11:51"/>
+            <STATE key="temperature" value="1.4" measured="2014-11-27 09:11:51"/>
+        </FHEMduino_Env>
+    </FHEMduino_Env_LIST>
+</FHZINFO>

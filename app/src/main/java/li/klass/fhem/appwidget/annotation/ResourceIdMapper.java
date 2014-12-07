@@ -192,9 +192,10 @@ public enum ResourceIdMapper {
     hdd_capacity(R.string.hdd_capacity),
     hdd_free(R.string.hdd_free),
     video_size(R.string.video_size),
+    ioDev(R.string.ioDev),
 
-    blank(R.string.blank),
-    none(-1);
+    none(-1),
+    blank(R.string.blank);
 
     private int id;
 

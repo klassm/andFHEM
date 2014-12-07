@@ -45,6 +45,7 @@ import li.klass.fhem.service.graph.GraphService;
 import li.klass.fhem.service.intent.voice.VoiceCommandService;
 import li.klass.fhem.service.room.DeviceListParser;
 import li.klass.fhem.service.room.FavoritesService;
+import li.klass.fhem.service.room.RoomListHolderService;
 import li.klass.fhem.service.room.RoomListService;
 import li.klass.fhem.update.UpdateHandler;
 
@@ -56,6 +57,7 @@ import li.klass.fhem.update.UpdateHandler;
                 DeviceListParser.class,
                 FavoritesService.class,
                 RoomListService.class,
+                RoomListHolderService.class,
                 CommandExecutionService.class,
                 FHTService.class,
                 HeatingService.class,

@@ -47,6 +47,7 @@ import static li.klass.fhem.domain.core.RoomDeviceList.ALL_DEVICES_ROOM;
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.doCallRealMethod;
 
 public class RoomListServiceTest extends RobolectricBaseTestCase {
 
@@ -59,6 +60,9 @@ public class RoomListServiceTest extends RobolectricBaseTestCase {
     @Mock
     private ApplicationProperties applicationProperties;
 
+    @Mock
+    private RoomListHolderService roomListHolderService;
+
     @InjectMocks
     private RoomListService service;
 
@@ -66,6 +70,7 @@ public class RoomListServiceTest extends RobolectricBaseTestCase {
     public void before() {
         given(applicationProperties.getStringSharedPreference(DEVICE_NAME, "andFHEM")).willReturn("abc");
         given(connectionService.mayShowInCurrentConnectionType(any(DeviceType.class))).willCallRealMethod();
+        doCallRealMethod().when(roomListHolderService).findFHEMWEBDevice(any(RoomDeviceList.class));
     }
 
     @Test

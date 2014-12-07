@@ -43,6 +43,7 @@ import li.klass.fhem.fragments.core.DeviceDetailFragment;
 import li.klass.fhem.fragments.device.DeviceNameListFragment;
 import li.klass.fhem.fragments.device.DeviceNameListNavigationFragment;
 import li.klass.fhem.fragments.device.DeviceNameSelectionFragment;
+import li.klass.fhem.fragments.device.DeviceNameSelectionNavigationFragment;
 import li.klass.fhem.fragments.weekprofile.FromToWeekProfileFragment;
 import li.klass.fhem.fragments.weekprofile.IntervalWeekProfileFragment;
 
@@ -68,7 +69,8 @@ import li.klass.fhem.fragments.weekprofile.IntervalWeekProfileFragment;
                 ConnectionListFragment.class,
                 ConnectionDetailFragment.class,
                 WebViewFragment.class,
-                OtherWidgetsFragment.class
+                OtherWidgetsFragment.class,
+                DeviceNameSelectionNavigationFragment.class
         })
 public class FragmentsModule {
 }
