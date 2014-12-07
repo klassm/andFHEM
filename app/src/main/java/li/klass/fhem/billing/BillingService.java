@@ -111,6 +111,7 @@ public class BillingService {
                     if (success) {
                         loadInternal(listener);
                     } else {
+                        listener.onInventoryLoadFinished(false);
                         Log.d(TAG, "won't load inventory, setup was not successful");
                     }
                 }
