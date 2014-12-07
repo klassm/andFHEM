@@ -111,6 +111,7 @@
     <string name="errorOutdatedData">Sensor data seems to be outdated. Make sure the device sends data.</string>
     <string name="errorDuplicateInstall">The application was installed twice. Have you installed the Premium version and the normal version in parallel? Please make sure you have only one AndFHEM version installed.</string>
     <string name="application_log_send">Send application log</string>
+    <string name="errorExternalStorageNotPresent">File system not accessible.</string>
     <string name="hex2quat">Hex -> Quat</string>
     <string name="quat2hex">Quat -> Hex</string>
     <string name="result">Result</string>
