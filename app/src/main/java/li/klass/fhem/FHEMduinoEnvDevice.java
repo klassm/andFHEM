@@ -24,14 +24,21 @@
 
 package li.klass.fhem;
 
+import java.util.List;
+
 import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.domain.heating.TemperatureDevice;
+import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 
+import static li.klass.fhem.service.graph.description.SeriesType.DEWPOINT;
+import static li.klass.fhem.service.graph.description.SeriesType.HUMIDITY;
+import static li.klass.fhem.service.graph.description.SeriesType.TEMPERATURE;
 import static li.klass.fhem.util.ValueDescriptionUtil.appendPercent;
 import static li.klass.fhem.util.ValueDescriptionUtil.appendTemperature;
 import static li.klass.fhem.util.ValueExtractUtil.extractLeadingDouble;
@@ -96,5 +103,33 @@ public class FHEMduinoEnvDevice extends Device<FHEMduinoEnvDevice> implements Te
 
     public String getIoDev() {
         return ioDev;
+    }
+
+    @Override
+    protected void fillDeviceCharts(List<DeviceChart> chartSeries) {
+        super.fillDeviceCharts(chartSeries);
+
+        addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureHumidityDewpointGraph,
+                new ChartSeriesDescription.Builder()
+                        .withColumnName(R.string.temperature)
+                        .withFileLogSpec("4:temperature:0")
+                        .withDbLogSpec("temperature")
+                        .withSeriesType(TEMPERATURE)
+                        .withShowRegression(true)
+                        .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("temperature", 0, 30))
+                        .build(),
+                new ChartSeriesDescription.Builder()
+                        .withColumnName(R.string.humidity).withFileLogSpec("4:humidity:0")
+                        .withDbLogSpec("humidity")
+                        .withSeriesType(HUMIDITY)
+                        .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("humidity", 0, 100))
+                        .build(),
+                new ChartSeriesDescription.Builder()
+                        .withColumnName(R.string.dewpoint).withFileLogSpec("4:taupunkttemp:0")
+                        .withDbLogSpec("taupunkttemp")
+                        .withSeriesType(DEWPOINT)
+                        .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("taupunkttemp", -10, 10))
+                        .build()
+        ), temperature, humidity, dewpoint);
     }
 }

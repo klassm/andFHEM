@@ -41,6 +41,7 @@ public class FHEMduinoEnvDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getHumidity()).isEqualTo("81 (%)");
         assertThat(device.getBattery()).isEqualTo("ok");
         assertThat(device.getDewpoint()).isEqualTo("-1.5 (°C)");
+        assertThat(device.getIoDev()).isEqualTo("FHEMduino");
     }
 
     @Override
