@@ -223,6 +223,7 @@
     <string name="location">Ort</string>
     <string name="mood">Laune</string>
     <string name="sleep">Schlafen</string>
+    <string name="ioDev">IO-Gerät</string>
 
     <string name="event_duration_current_title">Laufzeit aktueller Titel</string>
     <string name="event_duration_next_title">Laufzeit folgender Titel</string>

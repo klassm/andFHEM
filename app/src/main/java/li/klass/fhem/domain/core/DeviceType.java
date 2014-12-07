@@ -78,6 +78,7 @@ import li.klass.fhem.domain.EnigmaDevice;
 import li.klass.fhem.domain.FBCallmonitorDevice;
 import li.klass.fhem.domain.FBDectDevice;
 import li.klass.fhem.domain.FHEMWEBDevice;
+import li.klass.fhem.domain.FHEMduinoPT2262Device;
 import li.klass.fhem.domain.FHT8VDevice;
 import li.klass.fhem.domain.FHTDevice;
 import li.klass.fhem.domain.FRMInDevice;
@@ -241,7 +242,8 @@ public enum DeviceType {
     SOMFY("SOMFY", SomfyDevice.class, new ToggleableAdapterWithSwitchActionRow<>(SomfyDevice.class)),
     ONKYO_AVR("ONKYO_AVR", OnkyoAvrDevice.class, new OnkyoAvrDeviceAdapter()),
     REVOLT("Revolt", RevoltDevice.class),
-    ENIGMA2("ENIGMA2", EnigmaDevice.class, new EnigmaDeviceAdapter());
+    ENIGMA2("ENIGMA2", EnigmaDevice.class, new EnigmaDeviceAdapter()),
+    FHEMduino_PT2262("FHEMduino_PT2262", FHEMduinoPT2262Device.class, new ToggleableAdapterWithSwitchActionRow<>(FHEMduinoPT2262Device.class));
 
     private String xmllistTag;
     private Class<? extends Device> deviceClass;
