@@ -150,6 +150,7 @@ import li.klass.fhem.domain.WeatherDevice;
 import li.klass.fhem.domain.WebLinkDevice;
 import li.klass.fhem.domain.WifiLightDevice;
 import li.klass.fhem.domain.WithingsDevice;
+import li.klass.fhem.domain.X10Device;
 import li.klass.fhem.domain.YamahaAVRDevice;
 import li.klass.fhem.domain.ZWaveDevice;
 
@@ -239,6 +240,7 @@ public enum DeviceType {
     EC3000("EC3000", EC3000Device.class),
     WITHINGS("withings", WithingsDevice.class),
     DMX("DMXDevice", DMXDevice.class, new DmxAdapter()),
+    X10("X10", X10Device.class, new ToggleableAdapterWithSwitchActionRow<>(X10Device.class)),
     NETATMO("netatmo", NetatmoDevice.class),
     ROOMMATE("ROOMMATE", RoommateDevice.class),
     SMLUSB("SMLUSB", SMLUSBDevice.class),
