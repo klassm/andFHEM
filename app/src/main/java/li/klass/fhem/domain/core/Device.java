@@ -413,6 +413,10 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
         return state;
     }
 
+    public String getReverseEventMapStateFor(String state) {
+        return eventMapReverse.containsKey(state) ? eventMapReverse.get(state) : state;
+    }
+
     public Map<String, String> getEventMap() {
         return eventMap;
     }

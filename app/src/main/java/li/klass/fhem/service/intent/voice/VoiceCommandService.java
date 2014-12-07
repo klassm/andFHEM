@@ -80,7 +80,7 @@ public class VoiceCommandService {
         }
 
         Device device = deviceMatches.get(0);
-        return Optional.<VoiceResult>of(new VoiceResult.Success(device.getName(), state));
+        return Optional.<VoiceResult>of(new VoiceResult.Success(device.getName(), device.getReverseEventMapStateFor(state)));
     }
 
     private String replaceArticles(String command) {
@@ -94,9 +94,10 @@ public class VoiceCommandService {
         return new Predicate<Device>() {
             @Override
             public boolean apply(Device device) {
+                String stateToLookFor = device.getReverseEventMapStateFor(state);
                 String alias = device.getAlias();
                 return (!Strings.isNullOrEmpty(alias) && alias.equalsIgnoreCase(deviceName)
-                        || device.getName().equalsIgnoreCase(deviceName)) && device.getSetList().contains(state);
+                        || device.getName().equalsIgnoreCase(deviceName)) && device.getSetList().contains(stateToLookFor);
             }
         };
     }

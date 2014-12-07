@@ -94,6 +94,23 @@ public class VoiceCommandServiceTest {
     }
 
     @Test
+    public void should_handle_event_maps() {
+        // given
+        TestDummy device = new TestDummy("lampe");
+        device.getSetList().parse("on off");
+        device.readEVENTMAP("on:hallo");
+        RoomDeviceList deviceList = new RoomDeviceList("").addDevice(device);
+        doReturn(deviceList).when(roomListService).getAllRoomsDeviceList();
+
+        // when
+        Optional<VoiceResult> result = service.resultFor("schalte lampe hallo");
+
+        // then
+        assertThat(result.isPresent()).isTrue();
+        assertThat(result.get()).isEqualTo(new VoiceResult.Success("lampe", "on"));
+    }
+
+    @Test
     public void should_ignore_devices_not_containing_the_target_state_in_the_setlist() {
         // given
         TestDummy device = new TestDummy("lampe");
