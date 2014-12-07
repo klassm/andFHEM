@@ -42,6 +42,7 @@ import li.klass.fhem.adapter.devices.OwSwitchDeviceAdapter;
 import li.klass.fhem.adapter.devices.PCA9532DeviceAdapter;
 import li.klass.fhem.adapter.devices.PCF8574DeviceAdapter;
 import li.klass.fhem.adapter.devices.PidAdapter;
+import li.klass.fhem.adapter.devices.PioneerAvrDeviceAdapter;
 import li.klass.fhem.adapter.devices.ReadingsProxyDeviceAdapter;
 import li.klass.fhem.adapter.devices.RemoteControlAdapter;
 import li.klass.fhem.adapter.devices.SonosPlayerAdapter;
@@ -117,6 +118,7 @@ import li.klass.fhem.domain.PCA9532Device;
 import li.klass.fhem.domain.PCF8574Device;
 import li.klass.fhem.domain.PIDDevice;
 import li.klass.fhem.domain.PilightDevice;
+import li.klass.fhem.domain.PioneerAvrDevice;
 import li.klass.fhem.domain.PresenceDevice;
 import li.klass.fhem.domain.RFXCOMDevice;
 import li.klass.fhem.domain.RFXX10RECDevice;
@@ -244,6 +246,7 @@ public enum DeviceType {
     ONKYO_AVR("ONKYO_AVR", OnkyoAvrDevice.class, new OnkyoAvrDeviceAdapter()),
     REVOLT("Revolt", RevoltDevice.class),
     ENIGMA2("ENIGMA2", EnigmaDevice.class, new EnigmaDeviceAdapter()),
+    PIONEER("PIONEERAVR", PioneerAvrDevice.class, new PioneerAvrDeviceAdapter()),
     FHEMduino_Env("FHEMduino_Env", FHEMduinoEnvDevice.class),
     FHEMduino_PT2262("FHEMduino_PT2262", FHEMduinoPT2262Device.class, new ToggleableAdapterWithSwitchActionRow<>(FHEMduinoPT2262Device.class));
 

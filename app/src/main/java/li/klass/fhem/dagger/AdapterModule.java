@@ -42,6 +42,7 @@ import li.klass.fhem.adapter.devices.OwSwitchDeviceAdapter;
 import li.klass.fhem.adapter.devices.PCA9532DeviceAdapter;
 import li.klass.fhem.adapter.devices.PCF8574DeviceAdapter;
 import li.klass.fhem.adapter.devices.PidAdapter;
+import li.klass.fhem.adapter.devices.PioneerAvrDeviceAdapter;
 import li.klass.fhem.adapter.devices.ReadingsProxyDeviceAdapter;
 import li.klass.fhem.adapter.devices.RemoteControlAdapter;
 import li.klass.fhem.adapter.devices.SonosPlayerAdapter;
@@ -59,7 +60,6 @@ import li.klass.fhem.adapter.devices.core.DeviceAdapter;
 import li.klass.fhem.adapter.devices.core.DimmableAdapter;
 import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
 import li.klass.fhem.adapter.devices.core.ToggleableAdapter;
-import li.klass.fhem.domain.EnigmaDevice;
 
 @Module(complete = false,
         injects = {
@@ -93,6 +93,7 @@ import li.klass.fhem.domain.EnigmaDevice;
                 YamahaAVRAdapter.class,
                 OnkyoAvrDeviceAdapter.class,
                 EnigmaDeviceAdapter.class,
+                PioneerAvrDeviceAdapter.class,
 
                 DeviceAdapter.class,
                 GenericDeviceAdapter.class,
