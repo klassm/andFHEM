@@ -54,6 +54,17 @@ public class VoiceCommandService {
             .put("an|[n]?ein|1", "on")
             .put("aus", "off").build();
 
+    private static final Map<String, String> SHORTCUTS = ImmutableMap.<String, String>builder()
+            .put("starte", "on")
+            .put("beginne", "on")
+            .put("start", "on")
+            .put("begin", "on")
+            .put("end", "off")
+            .put("beende", "off")
+            .put("stoppe", "off")
+            .put("stop", "off")
+            .build();
+
     private Set<String> ARTICLES_TO_REPLACE = Sets.newHashSet("der", "die", "das", "den", "the");
 
     @Inject
@@ -63,8 +74,24 @@ public class VoiceCommandService {
         voiceCommand = replaceArticles(voiceCommand.toLowerCase());
 
         String[] parts = voiceCommand.split(" ");
-        if (parts.length != 3) return Optional.absent();
 
+        if (parts.length == 3) {
+            return handleSetCommand(parts);
+        } else if (parts.length == 2) {
+            return handleShortcut(parts);
+        }
+
+        return Optional.absent();
+    }
+
+    private Optional<VoiceResult> handleShortcut(String[] parts) {
+        if (!SHORTCUTS.containsKey(parts[0])) {
+            return Optional.absent();
+        }
+        return handleSetCommand(new String[]{"set", parts[1], SHORTCUTS.get(parts[0])});
+    }
+
+    private Optional<VoiceResult> handleSetCommand(String[] parts) {
         String starter = replace(parts[0], START_REPLACE);
         if (!starter.equals("set")) return Optional.absent();
 

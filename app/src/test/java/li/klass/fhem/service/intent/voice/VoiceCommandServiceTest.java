@@ -160,6 +160,38 @@ public class VoiceCommandServiceTest {
         assertThat(result.get()).isEqualTo(new VoiceResult.Error(VoiceResult.ErrorType.MORE_THAN_ONE_DEVICE_MATCHES));
     }
 
+    @DataProvider
+    public static Object[][] shortcutCommandsForDevice() {
+        return new Object[][]{
+                {"starte lampe", new VoiceResult.Success("lampe", "on")},
+                {"stoppe lampe", new VoiceResult.Success("lampe", "off")},
+                {"beende lampe", new VoiceResult.Success("lampe", "off")},
+                {"beginne lampe", new VoiceResult.Success("lampe", "on")},
+                {"start lampe", new VoiceResult.Success("lampe", "on")},
+                {"stop lampe", new VoiceResult.Success("lampe", "off")},
+                {"end lampe", new VoiceResult.Success("lampe", "off")},
+                {"begin lampe", new VoiceResult.Success("lampe", "on")}
+        };
+    }
+
+
+    @Test
+    @UseDataProvider("shortcutCommandsForDevice")
+    public void should_handle_shortcuts(String shortcut, VoiceResult expectedResult) {
+        // given
+        TestDummy device = new TestDummy("lampe");
+        device.getSetList().parse("on off");
+        RoomDeviceList deviceList = new RoomDeviceList("").addDevice(device);
+        doReturn(deviceList).when(roomListService).getAllRoomsDeviceList();
+
+        // when
+        Optional<VoiceResult> result = service.resultFor(shortcut);
+
+        // then
+        assertThat(result.isPresent()).isTrue();
+        assertThat(result.get()).isEqualTo(expectedResult);
+    }
+
     public class TestDummy extends FS20Device {
         public TestDummy(String name) {
             setName(name);
