@@ -36,6 +36,7 @@ public class BundleExtraKeys {
     public static final String DEVICE_NEW_NAME = "DEVICENEWNAME";
     public static final String DEVICE_NEW_ROOM = "DEVICENEWROOM";
     public static final String DEVICE_NEW_ALIAS = "DEVICENEWALIAS";
+    public static final String TIMES_TO_SEND = "TIMES_TO_SEND";
     public static final String DEVICE_LIST = "DEVICELIST";
     public static final String RESULT_RECEIVER = "RESULTRECEIVER";
     public static final String STRING_ID = "STRINGID";

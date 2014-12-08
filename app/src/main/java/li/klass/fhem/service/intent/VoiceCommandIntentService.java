@@ -43,6 +43,7 @@ import li.klass.fhem.service.room.RoomListService;
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_NAME;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_TARGET_STATE;
+import static li.klass.fhem.constants.BundleExtraKeys.TIMES_TO_SEND;
 import static li.klass.fhem.service.room.RoomListService.RemoteUpdateRequired.REQUIRED;
 
 public class VoiceCommandIntentService extends ConvenientIntentService {
@@ -122,6 +123,7 @@ public class VoiceCommandIntentService extends ConvenientIntentService {
         startService(new Intent(Actions.DEVICE_SET_STATE)
                 .setClass(this, DeviceIntentService.class)
                 .putExtra(DEVICE_NAME, success.deviceName)
+                .putExtra(TIMES_TO_SEND, 2)
                 .putExtra(DEVICE_TARGET_STATE, success.targetState));
 
         startActivity(new Intent(VoiceCommandIntentService.this, CommandIndicatorActivity.class)

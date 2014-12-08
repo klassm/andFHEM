@@ -324,7 +324,11 @@ public class DeviceIntentService extends ConvenientIntentService {
      */
     private STATE setStateIntent(Intent intent, Device device) {
         String targetState = intent.getStringExtra(BundleExtraKeys.DEVICE_TARGET_STATE);
-        genericDeviceService.setState(device, targetState);
+        int timesToSend = intent.getIntExtra(BundleExtraKeys.TIMES_TO_SEND, 1);
+
+        for (int i = 0; i < timesToSend; i++) {
+            genericDeviceService.setState(device, targetState);
+        }
 
         return STATE.SUCCESS;
     }
