@@ -34,14 +34,14 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.13.+'
+        classpath 'com.android.tools.build:gradle:1.0.+'
 
         // google sites dependencies ...
         classpath 'com.google.gdata.gdata-java-client:gdata-sites-2.0:1.47.1'
         classpath 'javax.mail:mail:1.4.7'
         classpath 'com.google.oauth-client:google-oauth-client:1.17.0-rc'
 
-        classpath 'com.github.jcandksolutions.gradle:android-unit-test:1.6.+'
+        classpath 'com.github.jcandksolutions.gradle:android-unit-test:2.0.+'
     }
 }
 
@@ -54,7 +54,7 @@ repositories {
 
 android {
     compileSdkVersion 21
-    buildToolsVersion '21.0.2'
+    buildToolsVersion '21.1.1'
 
     defaultConfig {
         minSdkVersion 9
@@ -77,13 +77,13 @@ android {
 
     buildTypes {
         release {
-            runProguard true
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-production.txt'
             signingConfig signingConfigs.release
         }
 
         debug {
-            runProguard true
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-debug.txt'
         }
     }
@@ -106,10 +106,10 @@ android {
 
     productFlavors {
         inapp {
-            packageName "li.klass.fhem"
+            applicationId "li.klass.fhem"
         }
         premium {
-            packageName "li.klass.fhempremium"
+            applicationId "li.klass.fhempremium"
         }
     }
 
@@ -156,7 +156,7 @@ dependencies {
 
 // Compile test classes when compiling classes in general
 // Leads to compiled test classes in android studio
-tasks.findByName("assembleDebug").dependsOn("testDebugClasses")
+// tasks.findByName("assembleDebug").dependsOn("testDebugClasses")
 
 task readSigningPasswordsFromConsole(
         dependsOn: ['readSigningStorePasswordFromConsole', 'readSigningKeyAliasPasswordFromConsole'])
