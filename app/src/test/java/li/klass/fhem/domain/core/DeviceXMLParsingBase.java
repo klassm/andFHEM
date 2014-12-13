@@ -26,6 +26,7 @@ package li.klass.fhem.domain.core;
 
 import android.content.Context;
 
+import com.google.common.base.Charsets;
 import com.google.common.io.CharStreams;
 
 import org.junit.Before;
@@ -78,7 +79,7 @@ public abstract class DeviceXMLParsingBase extends RobolectricBaseTestCase {
                 throw new IllegalArgumentException("cannot find " + getFileName());
             }
 
-            inputStreamReader = new InputStreamReader(inputStream);
+            inputStreamReader = new InputStreamReader(inputStream, Charsets.UTF_8);
             String content = CharStreams.toString(inputStreamReader);
 
             roomDeviceList = deviceListParser.parseXMLListUnsafe(content);

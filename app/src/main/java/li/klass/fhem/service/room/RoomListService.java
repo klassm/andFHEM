@@ -147,7 +147,7 @@ public class RoomListService extends AbstractService {
      * @return found device or null
      */
     @SuppressWarnings("unchecked")
-    public <T extends Device<T>> Optional<T> getDeviceForName(String deviceName) {
+    public <T extends Device> Optional<T> getDeviceForName(String deviceName) {
         return Optional.fromNullable((T) getAllRoomsDeviceList().getDeviceFor(deviceName));
     }
 
