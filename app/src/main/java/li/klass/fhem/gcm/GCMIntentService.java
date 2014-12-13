@@ -124,20 +124,7 @@ public class GCMIntentService extends GCMBaseIntentService {
         String changesText = extras.getString("changes");
         if (changesText == null) return;
 
-        String[] changes = changesText.split("<\\|>");
-
-        Map<String, String> changeMap = newHashMap();
-        for (String change : changes) {
-            String[] parts = change.split(":");
-            if (parts.length != 2) continue;
-
-            String key = parts[0].trim().toUpperCase(Locale.getDefault());
-            String value = parts[1].trim();
-
-            Tasker.sendTaskerNotifyIntent(this, deviceName, key, value);
-
-            changeMap.put(key, value);
-        }
+        Map<String, String> changeMap = extractChanges(deviceName, changesText);
 
         Intent parseIntent = new Intent(Actions.UPDATE_DEVICE_WITH_UPDATE_MAP);
         parseIntent.setClass(this, RoomListIntentService.class);
@@ -145,6 +132,30 @@ public class GCMIntentService extends GCMBaseIntentService {
         parseIntent.putExtra(BundleExtraKeys.UPDATE_MAP, (Serializable) changeMap);
         parseIntent.putExtra(BundleExtraKeys.VIBRATE, shouldVibrate(extras));
         startService(parseIntent);
+    }
+
+    Map<String, String> extractChanges(String deviceName, String changesText) {
+        String[] changes = changesText.split("<\\|>");
+
+        Map<String, String> changeMap = newHashMap();
+        for (String change : changes) {
+            String[] parts = change.split(":");
+            if (parts.length < 2) continue;
+
+            String key, value;
+            if (parts.length > 2) {
+                key = "STATE";
+                value = change;
+            } else {
+                key = parts[0].trim().toUpperCase(Locale.getDefault());
+                value = parts[1].trim();
+            }
+
+            Tasker.sendTaskerNotifyIntent(this, deviceName, key, value);
+
+            changeMap.put(key, value);
+        }
+        return changeMap;
     }
 
     private boolean shouldVibrate(Bundle extras) {
