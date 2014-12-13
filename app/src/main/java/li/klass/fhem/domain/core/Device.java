@@ -79,6 +79,7 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
     private String widgetName;
     private boolean alwaysHidden = false;
     private boolean hasStatisticsDevice = false;
+    private String voicePronunciation;
 
     public void readROOM(String value) {
         setRoomConcatenated(value);
@@ -125,6 +126,10 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
 
     public void readALWAYS_HIDDEN(String value) {
         alwaysHidden = "true".equalsIgnoreCase(value);
+    }
+
+    public void readVOICE_PRONUNCIATION(String value) {
+        this.voicePronunciation = value;
     }
 
     public void readGROUP(String value) {
@@ -399,6 +404,10 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
 
     public boolean isSupported() {
         return !alwaysHidden;
+    }
+
+    public String getVoicePronunciation() {
+        return voicePronunciation;
     }
 
     public String getEventMapStateForCurrentState() {

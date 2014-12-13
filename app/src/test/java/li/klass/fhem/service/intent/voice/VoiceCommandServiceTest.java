@@ -192,6 +192,23 @@ public class VoiceCommandServiceTest {
         assertThat(result.get()).isEqualTo(expectedResult);
     }
 
+    @Test
+    public void should_treat_voice_pronunciation_attribute() {
+        // given
+        TestDummy device = new TestDummy("lampe");
+        device.getSetList().parse("on off");
+        device.readVOICE_PRONUNCIATION("voice");
+        RoomDeviceList deviceList = new RoomDeviceList("").addDevice(device);
+        doReturn(deviceList).when(roomListService).getAllRoomsDeviceList();
+
+        // when
+        Optional<VoiceResult> result = service.resultFor("set voice on");
+
+        // then
+        assertThat(result.isPresent()).isTrue();
+        assertThat(result.get()).isEqualTo(new VoiceResult.Success("lampe", "on"));
+    }
+
     public class TestDummy extends FS20Device {
         public TestDummy(String name) {
             setName(name);

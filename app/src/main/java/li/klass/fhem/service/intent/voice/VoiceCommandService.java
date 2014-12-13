@@ -124,7 +124,9 @@ public class VoiceCommandService {
                 String stateToLookFor = device.getReverseEventMapStateFor(state);
                 String alias = device.getAlias();
                 return (!Strings.isNullOrEmpty(alias) && alias.equalsIgnoreCase(deviceName)
-                        || device.getName().equalsIgnoreCase(deviceName)) && device.getSetList().contains(stateToLookFor);
+                        || device.getName().equalsIgnoreCase(deviceName)
+                        || (device.getVoicePronunciation() != null && device.getVoicePronunciation().equalsIgnoreCase(deviceName)))
+                        && device.getSetList().contains(stateToLookFor);
             }
         };
     }
