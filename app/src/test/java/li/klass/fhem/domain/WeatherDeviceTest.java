@@ -80,8 +80,6 @@ public class WeatherDeviceTest extends DeviceXMLParsingBase {
 
         assertThat(device.getLogDevices(), is(notNullValue()));
         assertThat(device.getDeviceCharts().size(), is(1));
-
-        device.readICON("");
     }
 
     @Override
