@@ -28,55 +28,60 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         style="@style/fragmentContent">
-
-        <Button
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/nameLabel"
+            android:layout_alignParentTop="true"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/save"
-            android:id="@+id/save"
-            style="@style/button"/>
+            android:text="@string/connectionName"
+            style="@style/formLabel"/>
 
-        <TableLayout
-            android:layout_width="match_parent"
+        <EditText
+            android:id="@+id/name"
+            android:layout_width="fill_parent"
+            android:layout_toLeftOf="@+id/connectionType"
+            android:layout_toStartOf="@+id/connectionType"
             android:layout_height="wrap_content"
-            android:stretchColumns="*">
+            android:layout_below="@+id/nameLabel"
+            android:inputType="textAutoComplete" />
 
-            <TableRow>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:text="@string/connectionName"/>
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/name"
-                    android:inputType="textAutoComplete"/>
-            </TableRow>
+        <TextView
+            android:id="@+id/connectionTypeLabel"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/nameLabel"
+            android:layout_alignLeft="@+id/connectionType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/connectionType"
+            style="@style/formLabel"
+            android:layout_below="@+id/save" />
 
-            <TableRow>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:text="@string/connectionType"/>
-                <Spinner
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/connectionType"/>
-            </TableRow>
-        </TableLayout>
+        <Spinner
+            android:id="@+id/connectionType"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/nameLabel"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
 
-        <LinearLayout
-            android:layout_marginTop="15dp"
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:id="@+id/connectionPreferences"/>
-    </LinearLayout>
+            android:id="@+id/connectionPreferences"
+            android:layout_below="@id/connectionType" />
+
+        <Button
+            android:id="@+id/save"
+            style="@style/button"
+            android:layout_below="@id/connectionPreferences"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/save" />
+    </RelativeLayout>
 </ScrollView>

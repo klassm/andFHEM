@@ -258,9 +258,9 @@
     <string name="connectionUrlHttp">URL muss mit "http" beginnen!</string>
     <string name="connectionCurrent">Aktuelle Verbindung</string>
     <string name="connectionClientCertificate">Client-Zertifikat</string>
-    <string name="connectionClientCertificatePassword">Client-Passwort</string>
-    <string name="connectionServerCertificate">Server-Zertifikat</string>
-    <string name="connectionCertificateAuthentication">Authentifizierung durch Zertifikat (optional)</string>
+    <string name="connectionClientCertificatePassword">Client-Zertifikat Passwort</string>
+    <string name="connectionClientCertificatePasswordDesc">(optional)</string>
+    <string name="connectionClientCertificateDesc">(optional)</string>
 
     <string name="switchDevice">Schalte</string>
     <string name="preferences">Einstellungen</string>
@@ -324,7 +324,9 @@
     <string name="prefDeviceNameSummary">Passt ein FHEMWEB-Gerätename zu dem Inhalt dieser Einstellung, so wird das FHEMWEB-Gerät bevorzugt verwendet. Damit können gerätespezifisch Räume ausgeblendet oder anders sortiert werden.</string>
     <string name="prefApplicationPassword">Passwort</string>
     <string name="prefApplicationPasswordSummary">Passwort, dass beim Applikationsstart abgefragt wird.</string>
-
+    <string name="prefClearTrustedCertificatesSummary">Entferne alle Zertifikate aus dem Applikations Trust-Store</string>
+    <string name="prefClearTrustedCertificatesFinished">Zertifikate zurückgesetzt</string>
+    <string name="prefClearTrustedCertificates">Vertrauenswürdige Zertifikate zurücksetzen</string>
 
     <string name="error_update">Error während Update Vorgang.</string>
     <string name="error_timeout">Zeitüberschreitung der Anforderung.</string>
@@ -578,9 +580,5 @@
 
     <string name="androidBugDialogDatePickerTitle">Feature deaktiviert</string>
     <string name="androidBugDialogDatePickerContent">Lollipop beinhaltet aktuell einen Bug, der den nachfolgenden Dialog zum Absturz bringt. Deshalb ist dieser bis zu einer Reperatur seitens Google deaktiviert. Google hat den Fehler bereits behoben, bisher aber noch keinen neuen Android Update freigegeben.</string>
-    <string name="prefClearTrustedCertificates">Vertrauenswürdige Zertifikate zurücksetzen</string>
-    <string name="connectionClientCertificatePasswordDesc">(optional)</string>
-    <string name="connectionClientCertificateDesc">(optional)</string>
-    <string name="prefClearTrustedCertificatesSummary">Entferne alle Zertifikate aus dem Applikations Trust-Store</string>
-    <string name="prefClearTrustedCertificatesFinished">Zertifikate zurückgesetzt</string>
+
 </resources>

@@ -92,8 +92,7 @@ public class ConnectionService {
 
     public void create(final String name, final ServerType serverType, final String username,
                        final String password, final String ip, final int port, final String url,
-                       final String clientCertificatePath, final String serverCertificatePath,
-                       final boolean clientCertificateEnabled, final String clientCertificatePassword) {
+                       final String clientCertificatePath, final String clientCertificatePassword) {
         if (exists(name)) return;
 
         licenseIntentService.isPremium(new LicenseIntentService.IsPremiumListener() {
@@ -104,7 +103,7 @@ public class ConnectionService {
                     FHEMServerSpec server = new FHEMServerSpec(newUniqueId());
 
                     fillServerWith(name, server, serverType, username, password, ip, port, url,
-                            clientCertificatePath, serverCertificatePath, clientCertificateEnabled, clientCertificatePassword);
+                            clientCertificatePath, clientCertificatePassword);
 
                     saveToPreferences(server);
                 }
@@ -136,8 +135,7 @@ public class ConnectionService {
 
     private void fillServerWith(String name, FHEMServerSpec server, ServerType serverType, String username,
                                 String password, String ip, int port, String url,
-                                String clientCertificatePath, String serverCertificatePath,
-                                boolean clientCertificateEnabled, String clientCertificatePassword) {
+                                String clientCertificatePath, String clientCertificatePassword) {
         server.setName(name);
         server.setServerType(serverType);
         server.setUsername(username);
@@ -146,8 +144,6 @@ public class ConnectionService {
         server.setIp(ip);
         server.setUrl(url);
         server.setClientCertificatePath(clientCertificatePath);
-        server.setServerCertificatePath(serverCertificatePath);
-        server.setClientCertificateEnabled(clientCertificateEnabled);
         server.setClientCertificatePassword(clientCertificatePassword);
     }
 
@@ -167,14 +163,13 @@ public class ConnectionService {
     }
 
     public boolean update(String id, String name, ServerType serverType, String username, String password,
-                          String ip, int port, String url, String clientCertificatePath, String serverCertificatePath, boolean clientCertificateEnabled, String clientCertificatePassword) {
+                          String ip, int port, String url, String clientCertificatePath, String clientCertificatePassword) {
 
         FHEMServerSpec server = forId(id);
         if (server == null) return false;
 
         fillServerWith(name, server, serverType, username, password, ip, port, url,
-                clientCertificatePath, serverCertificatePath, clientCertificateEnabled,
-                clientCertificatePassword);
+                clientCertificatePath, clientCertificatePassword);
 
         saveToPreferences(server);
 

@@ -24,75 +24,74 @@
   ~   Boston, MA  02110-1301  USA
   -->
 
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:stretchColumns="*">
 
-    <TableRow>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/connectionIP"
-            android:textStyle="bold"/>
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="text"
-            android:id="@+id/ip"/>
-    </TableRow>
+    <TextView
+        android:id="@+id/ipLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/connectionIP"
+        android:layout_alignParentTop="true"
+        style="@style/formLabel"/>
 
-    <TableRow>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/connectionIPDesc"
-            android:layout_span="2"/>
-    </TableRow>
+    <EditText
+        android:id="@+id/ip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:layout_below="@id/ipLabel"
+        android:hint="@string/connectionIPDesc"
+        style="@style/formInput"/>
 
-    <TableRow android:layout_marginTop="8dp">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:text="@string/connectionPort"/>
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:id="@+id/port"/>
-    </TableRow>
 
-    <TableRow>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/connectionPortDesc"
-            android:layout_span="2"/>
-    </TableRow>
+    <TextView
+        android:id="@+id/portLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ip"
+        android:text="@string/connectionPort"
+        style="@style/formLabel"/>
 
-    <TableRow android:layout_marginTop="8dp">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:text="@string/connectionPassword" />
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPassword"
-                android:id="@+id/password"/>
-    </TableRow>
+    <EditText
+        android:id="@+id/port"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/portLabel"
+        android:inputType="number"
+        android:hint="@string/connectionPortDesc"
+        style="@style/formInput"/>
 
-    <TableRow>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/connectionPasswordDesc"/>
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/showPasswordCheckbox"
-            android:text="@string/connectionShowPassword"/>
-    </TableRow>
-</TableLayout>
+    <TextView
+        android:id="@+id/passwordLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/port"
+        android:text="@string/connectionPassword"
+        style="@style/formLabel"/>
+
+    <EditText
+        android:id="@+id/password"
+        android:layout_below="@id/passwordLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:layout_toLeftOf="@+id/showPasswordCheckbox"
+        android:layout_toStartOf="@+id/showPasswordCheckbox"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:hint="@string/connectionPasswordDesc"
+        style="@style/formInput"/>
+
+    <CheckBox
+        android:id="@+id/showPasswordCheckbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/passwordLabel"
+        android:text="@string/connectionShowPassword"
+        style="@style/formInput"/>
+</RelativeLayout>
