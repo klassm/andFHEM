@@ -30,6 +30,7 @@
     <string name="deviceName">Name</string>
     <string name="temperature">Temperatur</string>
     <string name="wind">Wind</string>
+    <string name="windChill">Windkälte</string>
     <string name="rain">Regen</string>
     <string name="humidity">Luftfeuchtigkeit</string>
     <string name="actuator">Regler</string>
@@ -97,6 +98,7 @@
     <string name="requestRefresh">Update anfordern</string>
     <string name="delta">Delta</string>
     <string name="weather">Wetter</string>
+    <string name="visibilityCondition">Sichtverhältnisse</string>
     <string name="currentWeather">Aktuelles Wetter</string>
     <string name="dimUp">Dim +</string>
     <string name="dimDown">Dim -</string>

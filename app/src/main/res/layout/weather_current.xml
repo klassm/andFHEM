@@ -59,6 +59,18 @@
                       style="@style/deviceDetailContent"/>
         </TableRow>
 
+        <TableRow android:id="@+id/tableRowWindChill">
+
+            <TextView
+                android:text="@string/windchill"
+                style="@style/deviceDetailDescription"/>
+
+            <TextView
+                android:id="@+id/windChill"
+                android:text="@string/dummy_temperature"
+                style="@style/deviceDetailContent"/>
+        </TableRow>
+
         <TableRow android:id="@+id/tableRowHumidity">
             <TextView android:text="@string/humidity"
                       style="@style/deviceDetailDescription"/>
@@ -71,6 +83,18 @@
             <TextView android:text="@string/weather"
                       style="@style/deviceDetailDescription"/>
             <TextView android:id="@+id/condition"
+                      style="@style/deviceDetailContent"
+                      android:text="@string/dummy_condition"/>
+        </TableRow>
+
+        <TableRow android:id="@+id/tableRowVisibilityCondition">
+
+            <TextView
+                android:text="@string/visibilityCondition"
+                style="@style/deviceDetailDescription"/>
+
+            <TextView
+                android:id="@+id/visibilityCondition"
                       style="@style/deviceDetailContent"
                       android:text="@string/dummy_condition"/>
         </TableRow>
