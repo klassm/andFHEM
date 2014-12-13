@@ -50,6 +50,7 @@ import li.klass.fhem.appwidget.view.widget.medium.TemperatureWidgetView;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.DeviceFunctionality;
+import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ValueDescriptionUtil;
 
@@ -73,6 +74,7 @@ public class WeatherDevice extends Device<WeatherDevice> {
 
     private String humidity;
 
+    @XmllistAttribute("icon")
     private String icon;
 
     @WidgetTemperatureField
@@ -80,6 +82,11 @@ public class WeatherDevice extends Device<WeatherDevice> {
     private String temperature;
 
     private String wind;
+
+    @XmllistAttribute("visibility")
+    private String visibilityConditions;
+
+    private String windChill;
 
     private Map<Integer, WeatherDeviceForecast> forecastMap = newHashMap();
 
@@ -134,16 +141,17 @@ public class WeatherDevice extends Device<WeatherDevice> {
         this.humidity = ValueDescriptionUtil.appendPercent(value);
     }
 
-    public void readICON(String value) {
-        this.icon = value;
-    }
-
     public void readTEMP_C(String value) {
         this.temperature = ValueDescriptionUtil.appendTemperature(value);
     }
 
     public void readWIND_CONDITION(String value) {
         this.wind = value.replaceAll("Wind: ", "").trim();
+    }
+
+    @XmllistAttribute("wind_chill")
+    public void setWindChill(String value) {
+        this.windChill = ValueDescriptionUtil.appendTemperature(value);
     }
 
     public String getCondition() {
@@ -156,6 +164,14 @@ public class WeatherDevice extends Device<WeatherDevice> {
 
     public String getIcon() {
         return parseIcon(icon);
+    }
+
+    public String getWindChill() {
+        return windChill;
+    }
+
+    public String getVisibilityConditions() {
+        return visibilityConditions;
     }
 
     public static String parseIcon(String icon) {

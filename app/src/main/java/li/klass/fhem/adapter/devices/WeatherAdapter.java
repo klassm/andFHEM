@@ -91,6 +91,8 @@ public class WeatherAdapter extends GenericDeviceAdapter<WeatherDevice> {
         setTextViewOrHideTableRow(currentWeather, R.id.tableRowWind, R.id.wind, device.getWind());
         setTextViewOrHideTableRow(currentWeather, R.id.tableRowHumidity, R.id.humidity, device.getHumidity());
         setTextViewOrHideTableRow(currentWeather, R.id.tableRowCondition, R.id.condition, device.getCondition());
+        setTextViewOrHideTableRow(currentWeather, R.id.tableRowWindChill, R.id.windChill, device.getWindChill());
+        setTextViewOrHideTableRow(currentWeather, R.id.tableRowVisibilityCondition, R.id.visibilityCondition, device.getVisibilityConditions());
 
         setWeatherIconIn((ImageView) currentWeather.findViewById(R.id.currentWeatherImage), device.getIcon());
 

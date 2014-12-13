@@ -89,14 +89,13 @@ public class LicenseIntentService extends ConvenientIntentService {
         billingService.loadInventory(new BillingService.OnLoadInventoryFinishedListener() {
             @Override
             public void onInventoryLoadFinished(boolean success) {
-
-                boolean isPremium = isPremiumInternal();
+                boolean isPremium = isPremiumInternal(success);
                 listener.isPremium(isPremium);
             }
         });
     }
 
-    private boolean isPremiumInternal() {
+    private boolean isPremiumInternal(boolean loadSuccessful) {
         boolean isPremium = false;
 
         if (applicationProperties.getBooleanApplicationProperty("IS_PREMIUM")) {
@@ -108,8 +107,8 @@ public class LicenseIntentService extends ConvenientIntentService {
         } else if (isDebug(applicationContext)) {
             Log.i(TAG, "running in debug => premium");
             isPremium = true;
-        } else if (billingService.contains(AndFHEMApplication.INAPP_PREMIUM_ID) ||
-                billingService.contains(AndFHEMApplication.INAPP_PREMIUM_DONATOR_ID)) {
+        } else if (loadSuccessful && (billingService.contains(AndFHEMApplication.INAPP_PREMIUM_ID) ||
+                billingService.contains(AndFHEMApplication.INAPP_PREMIUM_DONATOR_ID))) {
             Log.i(TAG, "found inapp premium purchase => premium");
             isPremium = true;
         } else {
