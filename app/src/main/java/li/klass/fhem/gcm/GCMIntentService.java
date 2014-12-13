@@ -29,10 +29,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.util.Log;
 
 import com.google.android.gcm.GCMBaseIntentService;
 import com.google.android.gcm.GCMRegistrar;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 import java.util.Locale;
@@ -53,13 +55,13 @@ import static li.klass.fhem.constants.PreferenceKeys.GCM_PROJECT_ID;
 import static li.klass.fhem.constants.PreferenceKeys.GCM_REGISTRATION_ID;
 
 public class GCMIntentService extends GCMBaseIntentService {
-    private static final String TAG = GCMIntentService.class.getName();
+    private static final Logger LOG = LoggerFactory.getLogger(GCMIntentService.class);
 
     @Override
     protected void onRegistered(Context context, String registrationId) {
         ApplicationProperties applicationProperties = AndFHEMApplication.getApplication().getGraph().get(ApplicationProperties.class);
         applicationProperties.setSharedPreference(GCM_REGISTRATION_ID, registrationId);
-        Log.i(TAG, "Device registered: regId = " + registrationId);
+        LOG.info("onRegistered - device registered with regId {}", registrationId);
 
         Intent intent = new Intent(Actions.GCM_REGISTERED);
         intent.putExtra(BundleExtraKeys.GCM_REGISTRATION_ID, registrationId);
@@ -68,11 +70,11 @@ public class GCMIntentService extends GCMBaseIntentService {
 
     @Override
     protected void onUnregistered(Context context, String registrationId) {
-        Log.i(TAG, "Device unregistered");
+        LOG.info("onUnregistered - device unregistered");
         if (GCMRegistrar.isRegisteredOnServer(context)) {
             GCMRegistrar.unregister(this);
         } else {
-            Log.i(TAG, "Ignoring unregister callback");
+            LOG.info("onUnregistered - Ignoring unregister callback");
         }
     }
 
@@ -80,8 +82,11 @@ public class GCMIntentService extends GCMBaseIntentService {
     protected void onMessage(Context context, Intent intent) {
         Bundle extras = intent.getExtras();
         if (extras == null) return;
+
+        LOG.info(TAG, "onMessage - received GCM message with content: {}", extras);
+
         if (!extras.containsKey("type") || !extras.containsKey("source")) {
-            Log.i(TAG, "received GCM message, but doesn't fit required fields");
+            LOG.info(TAG, "onMessage - received GCM message, but doesn't fit required fields");
             return;
         }
 
@@ -91,7 +96,7 @@ public class GCMIntentService extends GCMBaseIntentService {
         } else if ("notify".equalsIgnoreCase(type) || StringUtil.isBlank(type)) {
             handleNotify(extras);
         } else {
-            Log.e(TAG, "unknown type: " + type);
+            LOG.error("onMessage - unknown type: {}", type);
         }
     }
 
@@ -102,7 +107,7 @@ public class GCMIntentService extends GCMBaseIntentService {
                 notifyId = Integer.valueOf(extras.getString("notifyId"));
             }
         } catch (Exception e) {
-            Log.e(TAG, "invalid notify id: " + extras.getString("notifyId"));
+            LOG.error("handleMessage - invalid notify id: {}", extras.getString("notifyId"));
         }
 
         Intent openIntent = new Intent(this, AndFHEMMainActivity.class);
@@ -122,6 +127,7 @@ public class GCMIntentService extends GCMBaseIntentService {
         String deviceName = extras.getString("deviceName");
 
         String changesText = extras.getString("changes");
+
         if (changesText == null) return;
 
         Map<String, String> changeMap = extractChanges(deviceName, changesText);
@@ -164,17 +170,17 @@ public class GCMIntentService extends GCMBaseIntentService {
 
     @Override
     protected void onDeletedMessages(Context context, int total) {
-        Log.i(TAG, "Received deleted messages notification");
+        LOG.info("onDeletedMessages - Received deleted messages notification");
     }
 
     @Override
     public void onError(Context context, String errorId) {
-        Log.i(TAG, "Received error: " + errorId);
+        LOG.info("onError - received error: " + errorId);
     }
 
     @Override
     protected boolean onRecoverableError(Context context, String errorId) {
-        Log.i(TAG, "Received recoverable error: " + errorId);
+        LOG.info("onRecoverableError - errorId={}", errorId);
         return super.onRecoverableError(context, errorId);
     }
 
