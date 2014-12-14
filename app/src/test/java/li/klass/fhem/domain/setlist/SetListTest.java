@@ -100,4 +100,11 @@ public class SetListTest {
         setList.parse("");
         assertThat(setList.size()).isEqualTo(0);
     }
+
+    @Test
+    public void testNoArgEntry() {
+        setList.parse("on:noArg");
+        assertThat(setList.getEntries()).hasSize(1);
+        assertThat(setList.getEntries().get("on")).isEqualTo(SetListEmptyValue.INSTANCE);
+    }
 }

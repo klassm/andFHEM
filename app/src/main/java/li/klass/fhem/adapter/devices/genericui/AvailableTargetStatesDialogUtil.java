@@ -191,17 +191,18 @@ public class AvailableTargetStatesDialogUtil {
             };
         } else if (setListValue instanceof SetListGroupValue) {
             final SetListGroupValue groupValue = (SetListGroupValue) setListValue;
+            final List<String> groupStates = groupValue.getGroupStates();
             return new TypeHandler<D>() {
 
                 @Override
                 public View getContentViewFor(final Context context, final D device) {
                     ListView listView = new ListView(context);
                     listView.setAdapter(new ArrayAdapter<>(context,
-                            android.R.layout.simple_list_item_1, groupValue.getGroupStates()));
+                            android.R.layout.simple_list_item_1, groupStates));
                     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                            String selection = groupValue.getGroupStates().get(position);
+                            String selection = groupStates.get(position);
                             callback.onTargetStateSelected(option, selection, device, context);
                             dialog.dismiss();
                         }
