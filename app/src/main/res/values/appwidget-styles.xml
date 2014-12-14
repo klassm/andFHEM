@@ -1,0 +1,115 @@
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<resources>
+    <style name="appwidget">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:layout_margin">0dp</item>
+    </style>
+
+    <style name="appwidget_small" parent="appwidget"/>
+    <style name="appwidget_medium" parent="appwidget"/>
+
+    <style name="appwidget_content">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:layout_marginLeft">15dp</item>
+        <item name="android:layout_marginRight">15dp</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:background">@drawable/appwidget_background</item>
+        <item name="android:gravity">center</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:id">@id/main</item>
+    </style>
+
+    <style name="appwidget_item">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:text">item</item>
+    </style>
+
+    <style name="appwidget_caption" parent="appwidget_item">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:id">@id/deviceName</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:text">deviceName</item>
+    </style>
+
+    <style name="appwidget_subcaption" parent="appwidget_item">
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="appwidget_logo">
+        <item name="android:src">@drawable/ic_launcher</item>
+        <item name="android:layout_height">30dp</item>
+        <item name="android:layout_width">30dp</item>
+    </style>
+
+
+
+    <style name="appwidget_big" parent="appwidget_item">
+        <item name="android:background">@drawable/appwidget_big_background</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:id">@id/main</item>
+    </style>
+
+    <style name="appwidget_big_content" parent="appwidget_item">
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:background">@drawable/appwidget_big_content</item>
+        <item name="android:layout_marginLeft">3dp</item>
+        <item name="android:layout_marginRight">3dp</item>
+        <item name="android:layout_marginBottom">3dp</item>
+    </style>
+
+    <style name="appwidget_big_caption" parent="appwidget_item">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">3dp</item>
+        <item name="android:layout_marginLeft">3dp</item>
+        <item name="android:layout_marginRight">3dp</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:background">@drawable/appwidget_big_caption</item>
+        <item name="android:id">@id/deviceName</item>
+        <item name="android:textColor">@color/whitegrey</item>
+        <item name="android:text">caption</item>
+    </style>
+
+    <style name="appwidget_big_caption_content_separator">
+        <item name="android:background">@drawable/appwidget_big_caption_content_separator</item>
+        <item name="android:layout_height">3dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_marginLeft">3dp</item>
+        <item name="android:layout_marginRight">3dp</item>
+    </style>
+</resources>

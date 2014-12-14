@@ -1,0 +1,70 @@
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<FHZINFO>
+    <CUL_WS_LIST>
+        <CUL_WS name="device" state="T: 13.6  H: 45.8" sets=""
+                attrs="room comment alias IODev do_not_notify:0,1 showtime:0,1 model:S300TH,KS300 loglevel ignore:0,1 month day hz_month hz_day eventMap">
+            <INT key="CODE" value="4"/>
+            <INT key="CUL_MSGCNT" value="1876"/>
+            <INT key="CUL_RAWMSG" value="K31368145E0"/>
+            <INT key="CUL_RSSI" value="-90"/>
+            <INT key="CUL_TIME" value="2011-12-11 22:16:39"/>
+            <INT key="DEF" value="4"/>
+            <INT key="LASTIODev" value="CUL"/>
+            <INT key="MSGCNT" value="1876"/>
+            <INT key="NAME" value="device"/>
+            <INT key="NR" value="27"/>
+            <INT key="STATE" value="T: 13.6  H: 45.8"/>
+            <INT key="TYPE" value="CUL_WS"/>
+            <INT key="corr1" value="0"/>
+            <INT key="corr2" value="0"/>
+            <INT key="corr3" value="0"/>
+            <INT key="corr4" value="0"/>
+            <INT key="IODev" value="CUL"/>
+            <STATE key="DEVFAMILY" value="WS300" measured="2011-12-11 22:16:39"/>
+            <STATE key="DEVTYPE" value="S300TH" measured="2011-12-11 22:16:39"/>
+            <STATE key="humidity" value="45.8" measured="2011-12-11 22:16:39"/>
+            <STATE key="state" value="T: 13.6  H: 45.8" measured="2011-12-11 22:16:39"/>
+            <STATE key="temperature" value="13.6" measured="2011-12-11 22:16:39"/>
+            <ATTR key="room" value="room"/>
+        </CUL_WS>
+    </CUL_WS_LIST>
+
+    <FileLog_LIST>
+        <FileLog name="FileLog_device" state="active" sets="reopen"
+                 attrs="room comment alias disable:0,1 logtype nrarchive archivedir archivecmd eventMap">
+            <INT key="DEF" value="./log/device-%Y.log CUL_WS_1"/>
+            <INT key="NAME" value="FileLog_device"/>
+            <INT key="NR" value="88"/>
+            <INT key="REGEXP" value="device"/>
+            <INT key="STATE" value="active"/>
+            <INT key="TYPE" value="FileLog"/>
+            <INT key="currentlogfile" value="./log/device-2011.log"/>
+            <INT key="logfile" value="./log/device-%Y.log"/>
+            <ATTR key="logtype" value="device:Temp/Hum,text"/>
+            <ATTR key="room" value="unknown"/>
+        </FileLog>
+    </FileLog_LIST>
+</FHZINFO>

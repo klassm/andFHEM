@@ -1,0 +1,72 @@
+<structure_LIST>
+    <structure name="deviceWithSetlist" state="undefined" sets="state:17,18,19,20,21,21.5,22"
+               attrs="room group comment alias eventMap clientstate_priority clientstate_behavior:relative,absolute loglevel:0,5 devStateIcon fp_5WG fp_5WG.image fp_image icon room_map structexclude webCmd">
+        <INT key="ATTR" value="room"/>
+        <INT key="CFGFN" value="structure.cfg"/>
+        <INT key="DEF" value="room HZ_2 HZ_3 HZ_5 HZ_6"/>
+        <INT key="NAME" value="deviceWithSetlist"/>
+        <INT key="NR" value="171"/>
+        <INT key="NTFY_ORDER" value="50-AllFHT8V"/>
+        <INT key="STATE" value="undefined"/>
+        <INT key="TYPE" value="structure"/>
+        <ATTR key="room" value="room"/>
+        <STATE key="state" value="undefined" measured="2013-01-06 10:27:32"/>
+    </structure>
+    <structure name="device" state="on" sets="off on"
+               attrs="room group comment alias eventMap clientstate_priority clientstate_behavior:relative,absolute loglevel:0,5 devStateIcon fp_5WG fp_5WG.image fp_image icon room_map structexclude webCmd">
+        <INT key="ATTR" value="room"/>
+        <INT key="CFGFN" value="structure.cfg"/>
+        <INT key="DEF" value="room FunkAu1 FunkAu2"/>
+        <INT key="NAME" value="device"/>
+        <INT key="NR" value="168"/>
+        <INT key="NTFY_ORDER" value="50-WBalkon"/>
+        <INT key="STATE" value="on"/>
+        <INT key="TYPE" value="structure"/>
+        <ATTR key="room" value="room"/>
+        <STATE key="state" value="on" measured="2013-01-06 17:00:00"/>
+    </structure>
+    <structure name="WDeko" state="undefined" sets="off on"
+               attrs="room group comment alias eventMap clientstate_priority clientstate_behavior:relative,absolute loglevel:0,5 devStateIcon fp_5WG fp_5WG.image fp_image icon room_map structexclude webCmd">
+        <INT key="ATTR" value="room"/>
+        <INT key="CFGFN" value="structure.cfg"/>
+        <INT key="DEF" value="room FunkDo3 FunkDo5"/>
+        <INT key="NAME" value="WDeko"/>
+        <INT key="NR" value="169"/>
+        <INT key="NTFY_ORDER" value="50-WDeko"/>
+        <INT key="STATE" value="undefined"/>
+        <INT key="TYPE" value="structure"/>
+        <ATTR key="room" value="room"/>
+        <STATE key="state" value="undefined" measured="2013-01-06 10:28:10"/>
+    </structure>
+    <structure name="WLicht" state="on" sets="off on"
+               attrs="room group comment alias eventMap clientstate_priority clientstate_behavior:relative,absolute loglevel:0,5 devStateIcon fp_5WG fp_5WG.image fp_image icon room_map structexclude webCmd">
+        <INT key="ATTR" value="room"/>
+        <INT key="CFGFN" value="structure.cfg"/>
+        <INT key="DEF" value="room FunkDo1 FunkDo2 FunkDo4 FunkDo6 FunkDo7 FunkDo8"/>
+        <INT key="NAME" value="WLicht"/>
+        <INT key="NR" value="170"/>
+        <INT key="NTFY_ORDER" value="50-WLicht"/>
+        <INT key="STATE" value="on"/>
+        <INT key="TYPE" value="structure"/>
+        <ATTR key="room" value="room"/>
+        <STATE key="state" value="on" measured="2013-01-06 16:00:02"/>
+    </structure>
+    <structure name="slider" state="state 100" sets="clear:readings,register,rssi,msgEvents down getConfig getRegRaw getSerial inhibit:on,off off on pair pct:slider,10,2,110 peerBulk press raw regBulk regSet reset sign:on,off statusRequest stop toggle unpair up" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings clientstate_priority clientstate_behavior:relative,relativeKnown,absolute,last event-on-change-reading event-on-update-reading event-min-interval stateFormat devStateIcon devStateStyle fp_Grundriss icon lightSceneParamsToSave room_map sortby structexclude webCmd">
+        <INT key="ATTR" value="room"/>
+        <INT key="DEF" value="room AZ_Rollladen_links AZ_Rollladen_rechts"/>
+        <INT key="NAME" value="slider"/>
+        <INT key="NR" value="139"/>
+        <INT key="NTFY_ORDER" value="50-AZ_Rollladen"/>
+        <INT key="STATE" value="state 100"/>
+        <INT key="TYPE" value="structure"/>
+        <ATTR key="alias" value="Arbeitszimmer: Rollladen"/>
+        <ATTR key="clientstate_behavior" value="relativeKnown"/>
+        <ATTR key="devStateIcon" value="pct.0:shutter_closed pct.\d:shutter_closed pct.1\d:shutter_7 pct.2\d:shutter_6 pct.3\d:shutter_5 pct.4\d:shutter_5 pct.5\d:shutter_4 pct.6\d:shutter_3 pct.7\d:shutter_2 pct.8\d:shutter_2 pct.9\d:shutter_1 pct.100:shutter_open"/>
+        <ATTR key="group" value="Rollladen"/>
+        <ATTR key="room" value="room"/>
+        <ATTR key="webCmd" value="pct:pct 100:pct 85:pct 60:pct 30:pct 15:pct 0"/>
+        <STATE key="LastDevice" value="AZ_Rollladen_rechts" measured="2014-02-02 07:37:45"/>
+        <STATE key="LastDevice_Abs" value="AZ_Rollladen_rechts" measured="2014-02-02 07:37:45"/>
+        <STATE key="state" value="pct 100" measured="2014-02-02 07:37:45"/>
+    </structure>
+</structure_LIST>

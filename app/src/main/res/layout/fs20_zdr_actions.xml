@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:gravity="center">
+
+    <TableLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:orientation="vertical"
+        tools:ignore="UselessParent">
+
+        <TableRow>
+
+            <Button
+                android:id="@+id/vol_down"
+                style="@style/button"
+                android:layout_width="wrap_content"
+                android:text="@string/volume_down"/>
+
+            <Button
+                android:id="@+id/vol_up"
+                style="@style/button"
+                android:layout_width="wrap_content"
+                android:text="@string/volume_up"/>
+        </TableRow>
+
+        <TableRow>
+
+            <Button
+                android:id="@+id/left"
+                style="@style/button"
+                android:layout_width="wrap_content"
+                android:text="@string/left_brace"/>
+
+            <Button
+                android:id="@+id/right"
+                style="@style/button"
+                android:layout_width="wrap_content"
+                android:text="@string/right_brace"/>
+        </TableRow>
+
+        <TableRow>
+
+            <Button
+                android:id="@+id/slp"
+                style="@style/button"
+                android:layout_width="wrap_content"
+                android:text="@string/slp"/>
+
+            <Button
+                android:id="@+id/ms"
+                style="@style/button"
+                android:layout_width="wrap_content"
+                android:text="@string/m_s"/>
+        </TableRow>
+
+        <TableRow>
+
+            <Button
+                android:id="@+id/prog_1"
+                style="@style/button"
+                android:layout_width="wrap_content"
+                android:text="@string/channel1"/>
+
+            <Button
+                android:id="@+id/prog_2"
+                style="@style/button"
+                android:layout_width="wrap_content"
+                android:text="@string/channel2"/>
+        </TableRow>
+
+        <TableRow>
+
+            <Button
+                android:id="@+id/prog_3"
+                style="@style/button"
+                android:layout_width="wrap_content"
+                android:text="@string/channel3"/>
+
+            <Button
+                android:id="@+id/prog_4"
+                style="@style/button"
+                android:layout_width="wrap_content"
+                android:text="@string/channel4"/>
+        </TableRow>
+
+        <TableRow>
+
+            <Button
+                android:id="@+id/prog_5"
+                style="@style/button"
+                android:layout_width="wrap_content"
+                android:text="@string/channel5"/>
+
+            <Button
+                android:id="@+id/prog_6"
+                style="@style/button"
+                android:layout_width="wrap_content"
+                android:text="@string/channel6"/>
+        </TableRow>
+
+        <TableRow>
+
+            <Button
+                android:id="@+id/prog_7"
+                style="@style/button"
+                android:layout_width="wrap_content"
+                android:text="@string/channel7"/>
+
+            <Button
+                android:id="@+id/prog_8"
+                style="@style/button"
+                android:layout_width="wrap_content"
+                android:text="@string/channel8"/>
+        </TableRow>
+    </TableLayout>
+</LinearLayout>

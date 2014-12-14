@@ -1,0 +1,48 @@
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<FHZINFO>
+    <LightScene_LIST>
+        <LightScene name="device" state="off" sets="remove:off,on save set scene:off,on" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings alias_map always_hidden custom_graph devStateIcon devStateStyle fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon invertState measured-temp offDevice onDevice onOffDevice sortby structexclude toggleDevice webCmd webcmdDevice">
+            <INT key="CFGFN" value=""/>
+            <INT key="DEF" value="mat_halogen"/>
+            <INT key="NAME" value="device"/>
+            <INT key="NR" value="1379"/>
+            <INT key="NTFY_ORDER" value="50-a"/>
+            <INT key="STATE" value="off"/>
+            <INT key="TYPE" value="LightScene"/>
+        </LightScene>
+        <LightScene name="device1" state="absent" sets="remove:absent save set setcmd scene:absent" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings switchingOrder DbLogExclude Florian Florian_map Zuhause Zuhause_map building building_map devStateIcon devStateStyle fp_Wohnung fs20.Balkon fs20.Balkon_map icon lightSceneParamsToSave lightSceneRestoreOnlyIfChanged:1,0 onOffDevice room_map sortby structexclude webCmd webcmdDevice zuhause zuhause_map">
+            <INT key="DEF" value="fs20.Kueche,fs20.Balkon"/>
+            <INT key="HAS_DataDumper" value="1"/>
+            <INT key="HAS_JSON" value="0"/>
+            <INT key="NAME" value="device1"/>
+            <INT key="NR" value="150"/>
+            <INT key="NTFY_ORDER" value="50-light_group"/>
+            <INT key="STATE" value="absent"/>
+            <INT key="TYPE" value="LightScene"/>
+            <ATTR key="room" value="System"/>
+        </LightScene>
+    </LightScene_LIST>
+</FHZINFO>

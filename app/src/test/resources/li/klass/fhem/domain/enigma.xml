@@ -1,0 +1,116 @@
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<FHZINFO>
+    <ENIGMA2_LIST>
+        <ENIGMA2 name="Wz.TvReceiver" state="absent"
+                 sets="statusRequest:noArg toggle:noArg on:noArg off:noArg reboot:noArg restartGui:noArg shutdown:noArg volume:slider,0,1,100 volumeUp:noArg volumeDown:noArg msg remoteControl channelUp:noArg channelDown:noArg play:noArg pause:noArg stop:noArg record:noArg showText channel:-,SAT.1_HD,RTL_HD,RTLII_HD,VOX_HD,kabel_eins_HD,SUPER_RTL_HD,ProSieben_HD,RTLNITRO_HD,ProSieben_MAXX_HD,SAT.1_Gold,N24,n-tv,3sat_HD,Das_Erste_HD,ZDF_HD,WDR_HD_Düsseldorf,Einsfestival_HD,tagesschau24_HD,EinsPlus_HD,PHOENIX_HD,arte_HD,ANIXE_HD,TecTime_TV,SIXX_HD,TELE_5_HD,N24_HD,n-tv_HD,DMAX_HD,Disney_Channel_HD,TLC_HD,hr-fernsehen_HD,ORF1_HD,ORF2W_HD,Disney_Channel,joiz,Comedy_Central/VIVA,MTV_HD,Welt_der_Wunder,eUrotic mute:-,on,off input:-,tv,radio"
+                 attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings https:0,1 http-method:GET,POST disable:0,1 bouquet-tv bouquet-radio timeout remotecontrol:standard,advanced,keyboard lightMode:0,1 event-on-change-reading event-on-update-reading event-min-interval stateFormat devStateIcon devStateStyle icon sortby webCmd widgetOverride userattr">
+            <INT key="CHANGED" value=""/>
+            <INT key="DEF" value="192.168.1.23"/>
+            <INT key="INTERVAL" value="45"/>
+            <INT key="NAME" value="Wz.TvReceiver"/>
+            <INT key="NR" value="20"/>
+            <INT key="STATE" value="absent"/>
+            <INT key="TYPE" value="ENIGMA2"/>
+            <INT key="model" value="duo2"/>
+            <ATTR key="bouquet-radio"
+                  value="1:7:2:0:0:0:0:0:0:0:FROM BOUQUET &quot;userbouquet.favourites.radio&quot; ORDER BY bouquet"/>
+            <ATTR key="bouquet-tv"
+                  value="1:7:1:0:0:0:0:0:0:0:FROM BOUQUET &quot;userbouquet.favourites.tv&quot; ORDER BY bouquet"/>
+            <ATTR key="devStateIcon" value="on:rc_GREEN:off off:rc_YELLOW:on absent:rc_STOP:on"/>
+            <ATTR key="http-method" value="GET"/>
+            <ATTR key="icon" value="dreambox"/>
+            <ATTR key="room" value="Wohnzimmer"/>
+            <ATTR key="webCmd" value="channel:input"/>
+            <STATE key="acg" value="0" measured="2014-11-14 22:31:31"/>
+            <STATE key="apid" value="-" measured="2014-11-14 22:31:31"/>
+            <STATE key="ber" value="0" measured="2014-11-14 22:30:47"/>
+            <STATE key="channel" value="a" measured="2014-11-14 22:31:31"/>
+            <STATE key="currentMedia" value="-" measured="2014-11-14 22:31:31"/>
+            <STATE key="currentTitle" value="b" measured="2014-11-14 22:31:31"/>
+            <STATE key="enigmaversion" value="2014-11-03-vti-master"
+                   measured="2014-11-09 09:38:40"/>
+            <STATE key="eventcurrenttime" value="-" measured="2014-11-14 22:31:31"/>
+            <STATE key="eventcurrenttime_hr" value="-" measured="2014-11-14 22:31:31"/>
+            <STATE key="eventcurrenttime_next" value="-" measured="2014-11-14 22:31:31"/>
+            <STATE key="eventcurrenttime_next_hr" value="-" measured="2014-11-14 22:31:31"/>
+            <STATE key="eventdescription" value="-" measured="2014-11-14 22:31:31"/>
+            <STATE key="eventdescription_next" value="-" measured="2014-11-14 22:31:31"/>
+            <STATE key="eventduration" value="-" measured="2014-11-14 22:31:31"/>
+            <STATE key="eventduration_hr" value="edh" measured="2014-11-14 22:31:31"/>
+            <STATE key="eventduration_next" value="-" measured="2014-11-14 22:31:31"/>
+            <STATE key="eventduration_next_hr" value="ednh" measured="2014-11-14 22:31:31"/>
+            <STATE key="eventname" value="-" measured="2014-11-14 22:31:31"/>
+            <STATE key="eventname_next" value="enn" measured="2014-11-14 22:31:31"/>
+            <STATE key="eventremaining" value="-" measured="2014-11-14 22:31:31"/>
+            <STATE key="eventremaining_hr" value="30" measured="2014-11-14 22:31:31"/>
+            <STATE key="eventremaining_next" value="-" measured="2014-11-14 22:31:31"/>
+            <STATE key="eventremaining_next_hr" value="-" measured="2014-11-14 22:31:31"/>
+            <STATE key="eventstart" value="20:15" measured="2014-11-14 22:31:31"/>
+            <STATE key="eventstart_hr" value="-" measured="2014-11-14 22:31:31"/>
+            <STATE key="eventstart_next" value="-" measured="2014-11-14 22:31:31"/>
+            <STATE key="eventstart_next_hr" value="21:15" measured="2014-11-14 22:31:31"/>
+            <STATE key="eventtitle" value="-" measured="2014-11-14 22:31:31"/>
+            <STATE key="eventtitle_next" value="-" measured="2014-11-14 22:31:31"/>
+            <STATE key="fpversion" value="0" measured="2014-11-06 21:38:22"/>
+            <STATE key="hdd1_capacity" value="750.156" measured="2014-11-06 21:38:22"/>
+            <STATE key="hdd1_free" value="695.119" measured="2014-11-14 22:24:01"/>
+            <STATE key="hdd1_model" value="ATA(WDC WD7500L12X-5)" measured="2014-11-06 21:38:22"/>
+            <STATE key="imageversion" value="VTi-Team Image Release v. 7.0.1"
+                   measured="2014-11-09 09:38:40"/>
+            <STATE key="input" value="audio" measured="2014-11-14 23:03:05"/>
+            <STATE key="iswidescreen" value="-" measured="2014-11-14 22:31:31"/>
+            <STATE key="lanmac" value="53:15:ed:16:c0:75" measured="2014-11-06 21:38:22"/>
+            <STATE key="model" value="duo2" measured="2014-11-06 21:38:22"/>
+            <STATE key="mute" value="-" measured="2014-11-14 22:31:31"/>
+            <STATE key="nextTitle" value="-" measured="2014-11-14 22:31:31"/>
+            <STATE key="onid" value="-" measured="2014-11-14 22:31:31"/>
+            <STATE key="pcrpid" value="-" measured="2014-11-14 22:31:31"/>
+            <STATE key="pmtpid" value="-" measured="2014-11-14 22:31:31"/>
+            <STATE key="power" value="off" measured="2014-11-14 22:31:31"/>
+            <STATE key="presence" value="absent" measured="2014-11-14 23:03:05"/>
+            <STATE key="providername" value="-" measured="2014-11-14 22:31:31"/>
+            <STATE key="recordings" value="0" measured="2014-11-14 22:24:46"/>
+            <STATE key="servicename" value="s" measured="2014-11-14 22:31:31"/>
+            <STATE key="servicereference" value="-" measured="2014-11-14 22:31:31"/>
+            <STATE key="servicevideosize" value="1024x768" measured="2014-11-14 22:31:31"/>
+            <STATE key="sid" value="-" measured="2014-11-14 22:31:31"/>
+            <STATE key="snr" value="0" measured="2014-11-14 22:31:31"/>
+            <STATE key="snrdb" value="0" measured="2014-11-14 22:31:31"/>
+            <STATE key="state" value="absent" measured="2014-11-14 23:03:05"/>
+            <STATE key="tsid" value="-" measured="2014-11-14 22:31:31"/>
+            <STATE key="tuner_a" value="Vuplus DVB-S NIM(AVL6211) (DVB-S2)"
+                   measured="2014-11-06 21:38:22"/>
+            <STATE key="tuner_b" value="Vuplus DVB-S NIM(AVL6211) (DVB-S2)"
+                   measured="2014-11-06 21:38:22"/>
+            <STATE key="txtpid" value="-" measured="2014-11-14 22:31:31"/>
+            <STATE key="videoheight" value="-" measured="2014-11-14 22:31:31"/>
+            <STATE key="videowidth" value="-" measured="2014-11-14 22:31:31"/>
+            <STATE key="volume" value="40" measured="2014-11-14 22:31:31"/>
+            <STATE key="vpid" value="-" measured="2014-11-14 22:31:31"/>
+            <STATE key="webifversion" value="OWIF 0.4.2" measured="2014-11-09 09:38:40"/>
+        </ENIGMA2>
+    </ENIGMA2_LIST>
+</FHZINFO>

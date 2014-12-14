@@ -1,0 +1,51 @@
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<FHZINFO>
+    <OWTHERM_LIST>
+        <OWTHERM name="device" state="13.62 &amp;deg;C" sets="interval tempHigh tempLow"
+                 attrs="room group comment alias eventMap IODev do_not_notify:0,1 showtime:0,1 loglevel:0,1,2,3,4,5 event:on-update,on-change stateAL stateAH tempOffset tempUnit:C,Celsius,F,Fahrenheit,K,Kelvin tempLow tempHigh icon webCmd">
+            <INT key="ALARM" value="0"/>
+            <INT key="DEF" value="DS18B20 970D56040000"/>
+            <INT key="INTERVAL" value="300"/>
+            <INT key="NAME" value="device"/>
+            <INT key="NR" value="31"/>
+            <INT key="OW_FAMILY" value="28"/>
+            <INT key="OW_ID" value="970D56040000"/>
+            <INT key="PRESENT" value="1"/>
+            <INT key="ROM_ID" value="28.970D56040000.89"/>
+            <INT key="STATE" value="temperature: 13.62 &amp;deg;C"/>
+            <INT key="TYPE" value="OWTHERM"/>
+            <INT key="IODev" value="OWio2"/>
+            <ATTR key="IODev" value="OWio2"/>
+            <ATTR key="alias" value="alias"/>
+            <ATTR key="room" value="room"/>
+            <ATTR key="stateAH" value="&lt;span style=&quot;color:red&quot;&gt;&amp;"/>
+            <ATTR key="stateAL" value="&lt;span style=&quot;color:red&quot;&gt;&amp;"/>
+            <STATE key="tempHigh" value="100" measured="2012-11-17 20:36:33"/>
+            <STATE key="tempLow" value="0" measured="2012-11-17 20:36:33"/>
+            <STATE key="temperature" value="13.625" measured="2012-11-17 20:36:33"/>
+        </OWTHERM>
+    </OWTHERM_LIST>
+</FHZINFO>

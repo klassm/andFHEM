@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="fill_parent"
+             android:layout_height="fill_parent"
+             android:stretchColumns="1">
+
+    <TableRow
+        android:id="@+id/interval"
+        tools:ignore="UselessParent">
+
+        <TextView
+            android:id="@+id/intervalType"
+            android:padding="5dp"
+            android:text="@string/from"/>
+
+        <TextView
+            android:id="@+id/time"
+            android:padding="5dp"
+            android:text="@string/dummy_time"/>
+
+        <TextView
+            android:id="@+id/temperature"
+            android:padding="5dp"
+            android:paddingEnd="0dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="0dp"
+            android:paddingStart="10dp"
+            android:text="@string/dummy_temperature"/>
+
+        <Button
+            android:id="@+id/delete"
+            style="@style/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/delete"/>
+
+        <Button
+            android:id="@+id/set"
+            style="@style/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/change"/>
+    </TableRow>
+</TableLayout>

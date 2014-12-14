@@ -1,0 +1,145 @@
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<FHZINFO>
+    <TRX_WEATHER_LIST>
+        <TRX_WEATHER name="device" state="T: 21.1 BAT: ok" sets=""
+                     attrs="room comment alias IODev do_not_notify:1,0 loglevel:0,1,2,3,4,5,6 icon webCmd eventMap">
+            <INT key="CODE" value="TX3_T_05"/>
+            <INT key="DEF" value="TX3_T_05"/>
+            <INT key="NAME" value="device"/>
+            <INT key="NR" value="31"/>
+            <INT key="STATE" value="T: 21.1 BAT: ok"/>
+            <INT key="TIME" value="2012-04-10 16:29:33"/>
+            <INT key="TYPE" value="TRX_WEATHER"/>
+            <INT key="IODev" value="RFXTRXUSB"/>
+            <ATTR key="alias" value="Außentemperatur"/>
+            <ATTR key="room" value="room"/>
+            <STATE key="battery" value="ok" measured="2012-04-10 16:29:33"/>
+            <STATE key="temperature" value="21.1" measured="2012-04-10 16:29:33"/>
+        </TRX_WEATHER>
+
+        <TRX_WEATHER name="device1" state="T: 19.3 H: 59 D: 11.1 BAT: ok" sets="" attrs="room group comment alias eventMap IODev ignore:1,0 do_not_notify:1,0 loglevel:0,1,2,3,4,5,6 fp_0_Keller fp_1_Erdgeschoss fp_2_Obergeschoss icon webCmd">
+            <INT key="CFGFN" value="./FHEM/0_Proberaum.cfg"/>
+            <INT key="CODE" value="TFATS34C_5d_14"/>
+            <INT key="DEF" value="TFATS34C_5d_14"/>
+            <INT key="NAME" value="device1"/>
+            <INT key="NR" value="32"/>
+            <INT key="STATE" value="T: 19.3 H: 59 D: 11.1 BAT: ok"/>
+            <INT key="TIME" value="2012-10-02 11:36:13"/>
+            <INT key="TYPE" value="TRX_WEATHER"/>
+            <INT key="IODev" value="RFXTRXUSB"/>
+            <ATTR key="alias" value="PR_TemperaturAktuell"/>
+            <ATTR key="fp_0_Keller" value="620,610,4,Proberaum"/>
+            <ATTR key="group" value="PR_Temperaturen"/>
+            <ATTR key="icon" value="icoTemp"/>
+            <ATTR key="room" value="room"/>
+            <STATE key="battery" value="ok" measured="2012-10-02 11:36:13"/>
+            <STATE key="dewpoint" value="11.1" measured="2012-10-02 11:36:13"/>
+            <STATE key="fan" value="off" measured="2012-10-01 11:09:13"/>
+            <STATE key="humidity" value="59" measured="2012-10-02 11:36:13"/>
+            <STATE key="humidity_avg_day" value="59.0" measured="2012-10-02 11:36:13"/>
+            <STATE key="humidity_avg_month" value="58.4" measured="2012-10-02 11:36:13"/>
+            <STATE key="humidity_cum_day" value="2464607" measured="2012-10-02 11:36:13"/>
+            <STATE key="humidity_cum_month" value="12523624" measured="2012-10-02 11:36:13"/>
+            <STATE key="humidity_max_day" value="59.0" measured="2012-10-02 09:27:13"/>
+            <STATE key="humidity_max_month" value="59.0" measured="2012-10-01 17:21:13"/>
+            <STATE key="humidity_min_day" value="59.0" measured="2012-10-02 09:27:13"/>
+            <STATE key="humidity_min_month" value="58.0" measured="2012-10-01 09:30:14"/>
+            <STATE key="temperature" value="19.3" measured="2012-10-02 11:36:13"/>
+            <STATE key="temperature_avg_day" value="19.3" measured="2012-10-02 11:36:13"/>
+            <STATE key="temperature_avg_month" value="18.9" measured="2012-10-02 11:36:13"/>
+            <STATE key="temperature_cum_day" value="806101.9" measured="2012-10-02 11:36:13"/>
+            <STATE key="temperature_cum_month" value="4054990.5" measured="2012-10-02 11:36:13"/>
+            <STATE key="temperature_max_day" value="19.3" measured="2012-10-02 09:27:13"/>
+            <STATE key="temperature_max_month" value="19.3" measured="2012-10-02 09:27:13"/>
+            <STATE key="temperature_min_day" value="19.2" measured="2012-10-02 09:51:58"/>
+            <STATE key="temperature_min_month" value="18.6" measured="2012-10-01 09:32:29"/>
+        </TRX_WEATHER>
+
+        <TRX_WEATHER name="rain" state="TR: 343 BAT: ok" sets="" attrs="room group comment alias eventMap IODev ignore:1,0 do_not_notify:1,0 loglevel:0,1,2,3,4,5,6 fp_0_Keller fp_1_Erdgeschoss fp_2_Obergeschoss icon webCmd">
+            <INT key="CFGFN" value="./FHEM/Wetter.cfg"/>
+            <INT key="CODE" value="TFA_RAIN_80_12"/>
+            <INT key="DEF" value="TFA_RAIN_80_12"/>
+            <INT key="NAME" value="rain"/>
+            <INT key="NR" value="199"/>
+            <INT key="STATE" value="TR: 343 BAT: ok"/>
+            <INT key="TIME" value="2012-10-04 09:30:34"/>
+            <INT key="TYPE" value="TRX_WEATHER"/>
+            <INT key="IODev" value="RFXTRXUSB"/>
+            <ATTR key="alias" value="Regensensor"/>
+            <ATTR key="group" value="Wetter"/>
+            <ATTR key="icon" value="icoAUSSEN"/>
+            <ATTR key="room" value="room"/>
+            <STATE key="battery" value="ok 100%" measured="2012-10-04 09:30:34"/>
+            <STATE key="rain_total" value="343" measured="2012-10-04 09:30:34"/>
+        </TRX_WEATHER>
+
+        <TRX_WEATHER name="wind" state="T: 10.4 CT: 10.4 W: 0 WA: 3 WD: 180 WDN: S BAT: ok" sets="" attrs="room group comment alias eventMap IODev ignore:1,0 do_not_notify:1,0 loglevel:0,1,2,3,4,5,6 fp_0_Keller fp_1_Erdgeschoss fp_2_Obergeschoss icon webCmd">
+            <INT key="CFGFN" value="./FHEM/Wetter.cfg"/>
+            <INT key="CODE" value="TFA_WIND_99_22"/>
+            <INT key="DEF" value="TFA_WIND_99_22"/>
+            <INT key="NAME" value="wind"/>
+            <INT key="NR" value="192"/>
+            <INT key="STATE" value="T: 10.4 CT: 10.4 W: 0 WA: 3 WD: 180 WDN: S BAT: ok"/>
+            <INT key="TIME" value="2012-10-04 09:32:29"/>
+            <INT key="TYPE" value="TRX_WEATHER"/>
+            <INT key="IODev" value="RFXTRXUSB"/>
+            <ATTR key="alias" value="Windsensor"/>
+            <ATTR key="group" value="Wetter"/>
+            <ATTR key="icon" value="icoAUSSEN"/>
+            <ATTR key="room" value="room"/>
+            <STATE key="battery" value="ok" measured="2012-10-04 09:32:29"/>
+            <STATE key="temperature" value="10.4" measured="2012-10-04 09:32:29"/>
+            <STATE key="temperature_avg_day" value="10.1" measured="2012-10-04 09:32:29"/>
+            <STATE key="temperature_avg_month" value="12.5" measured="2012-10-04 09:32:29"/>
+            <STATE key="temperature_cum_day" value="347056.6" measured="2012-10-04 09:32:29"/>
+            <STATE key="temperature_cum_month" value="4761891.80000001" measured="2012-10-04 09:32:29"/>
+            <STATE key="temperature_max_day" value="10.4" measured="2012-10-04 09:30:51"/>
+            <STATE key="temperature_max_month" value="18.4" measured="2012-10-02 15:27:20"/>
+            <STATE key="temperature_min_day" value="10.1" measured="2012-10-04 09:09:56"/>
+            <STATE key="temperature_min_month" value="10.1" measured="2012-10-04 09:09:56"/>
+            <STATE key="wind_avspeed" value="3" measured="2012-10-04 09:32:29"/>
+            <STATE key="wind_dir" value="180 S" measured="2012-10-04 09:32:29"/>
+            <STATE key="wind_speed" value="0" measured="2012-10-04 09:32:29"/>
+            <STATE key="windchill" value="10.4" measured="2012-10-04 09:32:29"/>
+        </TRX_WEATHER>
+    </TRX_WEATHER_LIST>
+
+    <FileLog_LIST>
+        <FileLog name="FileLog_device1" state="active" sets="reopen"
+                 attrs="room comment alias disable:0,1 logtype nrarchive archivedir archivecmd eventMap">
+            <INT key="DEF" value="./log/device-%Y.log device1:T:.*"/>
+            <INT key="NAME" value="FileLog_device1"/>
+            <INT key="NR" value="49"/>
+            <INT key="REGEXP" value="device1:T:.*"/>
+            <INT key="STATE" value="active"/>
+            <INT key="TYPE" value="FileLog"/>
+            <INT key="currentlogfile" value="./log/device1-2011.log"/>
+            <INT key="logfile" value="./log/device1-%Y.log"/>
+            <ATTR key="logtype" value="device:Temp/Rain,device:Wind/Hum,text"/>
+            <ATTR key="room" value="unknown"/>
+        </FileLog>
+    </FileLog_LIST>
+</FHZINFO>

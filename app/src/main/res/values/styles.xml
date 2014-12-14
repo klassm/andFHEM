@@ -1,0 +1,294 @@
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<resources>
+    <!-- the theme applied to the application or activity -->
+    <style name="ApplicationTheme" parent="@style/Theme.AppCompat.Light.DarkActionBar">
+        <!-- colorPrimary is used for the default action bar background -->
+        <item name="colorPrimary">@color/primary</item>
+
+        <!-- colorPrimaryDark is used for the status bar -->
+        <item name="colorPrimaryDark">@color/primaryDark</item>
+
+        <!-- colorAccent is used as the default value for colorControlActivated
+             which is used to tint widgets -->
+        <item name="colorAccent">@color/accent</item>
+
+        <item name="android:textColor">@color/textColorDefault</item>
+        <item name="android:textColorPrimary">@color/textColorDefault</item>
+        <item name="android:textColorSecondary">@color/textColorSecondary</item>
+        <item name="android:textColorTertiary">@color/textColorTertiary</item>
+
+        <item name="android:textColorPrimaryInverse">@android:color/primary_text_light</item>
+        <item name="android:textColorSecondaryInverse">@android:color/secondary_text_light</item>
+        <item name="android:textColorTertiaryInverse">@android:color/tertiary_text_light</item>
+        <item name="android:textColorPrimaryNoDisable">@android:color/primary_text_dark_nodisable
+        </item>
+        <item name="android:textColorSecondaryNoDisable">
+            @android:color/secondary_text_dark_nodisable
+        </item>
+        <item name="android:textColorPrimaryInverseNoDisable">
+            @android:color/primary_text_light_nodisable
+        </item>
+        <item name="android:textColorSecondaryInverseNoDisable">
+            @android:color/secondary_text_light_nodisable
+        </item>
+    </style>
+
+    <style name="Theme.Dialog.Light" parent="@android:style/Theme.Dialog">
+        <item name="@android:windowBackground">@color/whitegrey</item>
+        <item name="@android:textColor">@color/black</item>
+    </style>
+
+    <style name="toggleButton">
+        <item name="android:layout_height">50dp</item>
+        <item name="android:layout_width">60dp</item>
+        <item name="android:focusable">false</item>
+        <item name="android:background">@drawable/theme_toggle_button</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="seekBarGeneric">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingBottom">5dp</item>
+        <item name="android:paddingLeft">20dp</item>
+        <item name="android:paddingRight">20dp</item>
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:max">100</item>
+        <item name="android:focusable">false</item>
+        <item name="android:minWidth">90dp</item>
+    </style>
+
+    <style name="seekBar" parent="seekBarGeneric">
+        <item name="android:progressDrawable">@drawable/theme_seekbar</item>
+        <item name="android:thumb">@drawable/theme_seekbar_thumb_selector</item>
+    </style>
+
+    <style name="button" parent="android:style/Widget.Button">
+        <item name="android:focusable">false</item>
+
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/theme_button</item>
+
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">10dp</item>
+
+        <item name="android:layout_margin">2dp</item>
+
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="button_device_detail" parent="button">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:layout_marginRight">5dp</item>
+        <item name="android:layout_marginBottom">0dp</item>
+    </style>
+
+    <style name="spinnerGeneric"> <!-- parent="android:style/Widget.Spinner" -->
+        <item name="android:layout_margin">3dp</item>
+        <item name="android:padding">3dp</item>
+    </style>
+
+    <style name="spinner" parent="spinnerGeneric">
+        <item name="android:background">@drawable/theme_spinner_selector</item>
+        <item name="android:minHeight">40dp</item>
+    </style>
+
+    <style name="fragmentContent">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingLeft">6dp</item>
+        <item name="android:paddingRight">6dp</item>
+    </style>
+
+    <style name="text" parent="@android:style/TextAppearance.Small">
+        <item name="android:textColor">@color/textColorDefault</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+    </style>
+
+    <style name="textPrimary" parent="text">
+        <item name="android:textColor">@color/textColorDefault</item>
+    </style>
+
+    <style name="textSecondary" parent="text">
+        <item name="android:textColor">@color/textColorSecondary</item>
+    </style>
+
+    <!-- #############################  -->
+    <!--       ROOM DEVICE OVERVIEW     -->
+    <!-- #############################  -->
+
+    <style name="deviceOverviewParent" parent="text">
+        <item name="android:textColor">@color/accent</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:padding">3dp</item>
+        <item name="android:layout_marginBottom">3dp</item>
+    </style>
+
+    <style name="deviceOverviewDescription" parent="textPrimary">
+        <item name="android:layout_weight">5</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
+    <style name="deviceOverviewCaption" parent="deviceOverviewDescription">
+        <item name="android:layout_marginLeft">10dp</item>
+    </style>
+
+    <style name="deviceOverviewContent" parent="textSecondary">
+        <item name="android:textSize">13sp</item>
+        <item name="android:maxWidth">150dp</item>
+        <item name="android:minWidth">100dp</item>
+        <item name="android:paddingRight">5dp</item>
+        <item name="android:gravity">right</item>
+    </style>
+
+    <style name="deviceOverviewTable">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:padding">2dp</item>
+        <item name="android:paddingLeft">20dp</item>
+        <item name="android:paddingRight">20dp</item>
+    </style>
+
+    <style name="deviceOverviewLayout">
+        <item name="android:orientation">horizontal</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:paddingBottom">5dp</item>
+    </style>
+
+    <style name="deviceOverviewLayoutDeviceName" parent="textPrimary">
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:maxWidth">120dp</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <style name="deviceOverviewToggleButton" parent="toggleButton">
+        <item name="android:layout_weight">0</item>
+        <item name="android:layout_gravity">right</item>
+        <item name="android:width">90dp</item>
+        <item name="android:layout_marginRight">5dp</item>
+
+    </style>
+
+    <style name="deviceOverviewSeekBar" parent="seekBar">
+
+        <!--<item name="android:layout_alignParentRight">true</item>-->
+        <item name="android:layout_weight">2</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">20dp</item>
+    </style>
+
+
+    <!-- #############################  -->
+    <!--       DEVICE DETAIL            -->
+    <!-- #############################  -->
+
+    <style name="deviceDetailSectionContent">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">10dp</item>
+    </style>
+
+    <style name="deviceDetailCaption">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:background">@color/navigationBarBackground</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="deviceDetailSectionCaption" parent="text">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:textColor">@color/accent</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:layout_margin">3dp</item>
+        <item name="android:layout_marginTop">6dp</item>
+    </style>
+
+    <style name="deviceDetailDescription" parent="textPrimary">
+        <item name="android:layout_gravity">top|left</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
+    <style name="deviceDetailContent" parent="textSecondary">
+        <item name="android:layout_gravity">right|center_vertical</item>
+        <item name="android:gravity">right</item>
+        <item name="android:singleLine">false</item>
+        <item name="android:textColor">@color/textColorSecondary</item>
+    </style>
+
+    <style name="deviceDetailContentSeek" parent="seekBar">
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_span">2</item>
+        <item name="android:layout_marginLeft">20dp</item>
+    </style>
+
+    <style name="deviceDetailContentToggle" parent="toggleButton">
+    </style>
+
+    <style name="deviceDetailTable" parent="deviceDetailSectionContent">
+        <item name="android:stretchColumns">1</item>
+        <item name="android:shrinkColumns">1</item>
+    </style>
+
+
+    <!-- #############################  -->
+    <!--       Timer                    -->
+    <!-- #############################  -->
+
+    <style name="timerListItem">
+        <item name="android:padding">10dp</item>
+    </style>
+
+    <style name="timerDetail" parent="fragmentContent">
+        <item name="android:paddingTop">5dp</item>
+    </style>
+</resources>

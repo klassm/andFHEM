@@ -1,0 +1,46 @@
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<FHZINFO>
+    <fs20_zdr_LIST>
+        <fs20_zdr name="device" state="on" sets="on off volume_up volume_down left right sleep ms 1 2 3 4 5 6 7 8"
+                  attrs="room group comment alias eventMap userReadings loglevel:0,1,2,3,4,5 powerDev volumeDev leftRightDev sleepMSDev 1_2_dev 3_4_dev 5_6_dev 7_8_dev alias_map custom_graph devStateIcon devStateStyle fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon invertState measured-temp offDevice onDevice onOffDevice sortby structexclude toggleDevice webCmd">
+            <INT key="CFGFN" value=""/>
+            <INT key="NAME" value="device"/>
+            <INT key="NR" value="305"/>
+            <INT key="STATE" value="on"/>
+            <INT key="TYPE" value="fs20_zdr"/>
+            <ATTR key="1_2_dev" value="wg_radio_1_2"/>
+            <ATTR key="3_4_dev" value="wg_radio_3_4"/>
+            <ATTR key="5_6_dev" value="wg_radio_5_6"/>
+            <ATTR key="7_8_dev" value="wg_radio_7_8"/>
+            <ATTR key="leftRightDev" value="wg_radio_leftright"/>
+            <ATTR key="powerDev" value="wg_radio_power"/>
+            <ATTR key="sleepMSDev" value="wg_radio_sleep_ms"/>
+            <ATTR key="volumeDev" value="wg_radio_volume"/>
+            <ATTR key="room" value="room"/>
+            <STATE key="state" value="on" measured="2013-08-25 13:28:33"/>
+        </fs20_zdr>
+    </fs20_zdr_LIST>
+</FHZINFO>

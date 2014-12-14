@@ -1,0 +1,94 @@
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<FHZINFO>
+    <FHZINFO>
+        <HUEDevice_LIST>
+            <HUEDevice name="device" state="off"
+                       sets="off on toggle statusRequest pct:slider,0,1,100 bri:slider,0,1,254 rgb:colorpicker,RGB color:slider,2000,1,6500 ct:slider,154,1,500 hue:slider,0,1,65535 sat:slider,0,1,254 xy effect:none,colorloop blink on-for-timer on-till off-for-timer intervals off-till"
+                       attrs="room group comment alias eventMap userReadings IODev event-on-change-reading event-on-update-reading event-min-interval stateFormat model:LCT001,LLC001,LLC005,LLC006,LLC007,LWB001,LWL001 subType:colordimmer,dimmer,switch CUL_HM_switch_19BBEE_Sw_01 CUL_HM_switch_19BBEE_Sw_01_map RXV671 RXV671Zone2 RXV671Zone2_map RXV671_map a a_map alleGeraete alleGeraete_map alleGeräte alleGeräte_map devStateIcon fp_Groundfloor icon room_map webCmd">
+                <INT key="CHANGED" value=""/>
+                <INT key="DEF" value="4"/>
+                <INT key="INTERVAL" value="60"/>
+                <INT key="NAME" value="device"/>
+                <INT key="NR" value="159"/>
+                <INT key="NTFY_TRIGGERTIME" value="2013-06-04 22:45:40"/>
+                <INT key="STATE" value="off"/>
+                <INT key="TYPE" value="HUEDevice"/>
+                <INT key="modelid" value="LCT001"/>
+                <INT key="name" value="bridgeName"/>
+                <INT key="swversion" value="65003148"/>
+                <INT key="type" value="Extended color light"/>
+                <INT key="IODev" value="Hue"/>
+                <ATTR key="alias" value="Extended color light 1"/>
+                <ATTR key="alleGeraete" value="alleGeraete"/>
+                <ATTR key="fp_Groundfloor" value="180,370"/>
+                <ATTR key="model" value="LCT001"/>
+                <ATTR key="room" value="room"/>
+                <ATTR key="subType" value="colordimmer"/>
+                <ATTR key="webCmd" value="rgb:toggle:on:off"/>
+                <STATE key="bri" value="254" measured="2013-06-04 21:36:39"/>
+                <STATE key="colormode" value="ct" measured="2013-06-04 21:36:39"/>
+                <STATE key="ct" value="369 (2710K)" measured="2013-06-04 21:36:39"/>
+                <STATE key="hue" value="14922" measured="2013-06-04 21:36:39"/>
+                <STATE key="level" value="100 %" measured="2013-06-04 21:36:39"/>
+                <STATE key="onoff" value="0" measured="2013-06-04 22:45:40"/>
+                <STATE key="pct" value="100" measured="2013-06-04 21:36:39"/>
+                <STATE key="sat" value="144" measured="2013-06-04 21:36:39"/>
+                <STATE key="state" value="off" measured="2013-06-04 22:45:40"/>
+                <STATE key="xy" value="0.4595,0.4105" measured="2013-06-04 21:36:39"/>
+            </HUEDevice>
+
+            <HUEDevice name="device1" state="off" sets="off:noArg on:noArg toggle:noArg statusRequest:noArg pct:slider,0,1,100 bri:slider,0,1,254 alert:none,select,lselect dimUp:noArg dimDown:noArg blink on-for-timer on-till off-for-timer intervals off-till" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev delayedUpdate:1 realtimePicker:1 color-icons:1,2 model:LCT001,LLC001,LLC005,LLC006,LLC007,LST001,LWB001,LWL001 subType:colordimmer,dimmer,switch event-on-change-reading event-on-update-reading event-min-interval stateFormat devStateIcon devStateStyle fp_Grundriss icon lightSceneParamsToSave sortby webCmd">
+                <INT key="DEF" value="3 "/>
+                <INT key="ID" value="3"/>
+                <INT key="INTERVAL" value="60"/>
+                <INT key="NAME" value="device1"/>
+                <INT key="NR" value="89"/>
+                <INT key="STATE" value="off"/>
+                <INT key="TYPE" value="HUEDevice"/>
+                <INT key="modelid" value="LWL001"/>
+                <INT key="name" value="Dimmable plug-in unit 2"/>
+                <INT key="swversion" value="1.0.1.4591"/>
+                <INT key="type" value="Dimmable plug-in unit"/>
+                <INT key="IODev" value="HUEbridge"/>
+                <ATTR key="IODev" value="HUEbridge"/>
+                <ATTR key="alias" value="Lichterkette"/>
+                <ATTR key="group" value="Licht"/>
+                <ATTR key="model" value="LWL001"/>
+                <ATTR key="room" value="room"/>
+                <ATTR key="subType" value="dimmer"/>
+                <ATTR key="webCmd" value="pct:toggle:on:off"/>
+                <STATE key="alert" value="none" measured="2014-01-08 21:30:08"/>
+                <STATE key="bri" value="0" measured="2014-01-08 21:30:08"/>
+                <STATE key="effect" value="none" measured="2014-01-08 21:30:08"/>
+                <STATE key="level" value="0 %" measured="2014-01-08 21:30:08"/>
+                <STATE key="onoff" value="0" measured="2014-01-08 21:30:08"/>
+                <STATE key="pct" value="0" measured="2014-01-08 21:30:08"/>
+                <STATE key="reachable" value="true" measured="2014-01-08 21:30:08"/>
+                <STATE key="state" value="off" measured="2014-01-08 21:30:08"/>
+            </HUEDevice>
+        </HUEDevice_LIST>
+    </FHZINFO>
+</FHZINFO>

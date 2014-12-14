@@ -1,0 +1,55 @@
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<FHZINFO>
+    <remotecontrol_LIST>
+        <remotecontrol name="device" state="channelDown" sets="makeweblink makenotify state .remotecontrol:remotecontrol layout:ENIGMA2_DreamMultimedia_DM500_DM800,ENIGMA2_DreamMultimedia_DM500_DM800_SVG,ENIGMA2_DreamMultimedia_DM8000_DM800se,ENIGMA2_DreamMultimedia_DM8000_DM800se_SVG,ENIGMA2_DreamMultimedia_RC10,ENIGMA2_DreamMultimedia_RC10_SVG,ENIGMA2_VUplus_Duo2,ENIGMA2_VUplus_Duo2_SVG,itunes,samsung" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings rc_iconpath rc_iconprefix loglevel:0,1,2,3,4,5,6 rc_devStateIcon:0,1 row00 row01 row02 row03 row04 row05 row06 row07 row08 row09 row10 row11 row12 row13 row14 row15 row16 row17 row18 row19 LichtEG LichtEG_map building building_map devStateIcon devStateStyle floor floor_map fp_Dach fp_EG fp_Keller fp_OG icon sortby structexclude webCmd">
+            <INT key="CFGFN" value="./FHEM/remote.cfg"/>
+            <INT key="NAME" value="device"/>
+            <INT key="NR" value="128"/>
+            <INT key="STATE" value="channelDown"/>
+            <INT key="TYPE" value="remotecontrol"/>
+            <ATTR key="rc_iconpath" value="icons/remotecontrol"/>
+            <ATTR key="rc_iconprefix" value="black_btn_"/>
+            <ATTR key="room" value="room"/>
+            <ATTR key="row00" value="POWEROFF,TV,HDMI"/>
+            <ATTR key="row01" value=":blank,:blank,:blank"/>
+            <ATTR key="row02" value="1,2,3"/>
+            <ATTR key="row03" value="4,5,6"/>
+            <ATTR key="row04" value="7,8,9"/>
+            <ATTR key="row05" value=":blank,0,PRECH"/>
+            <ATTR key="row06" value=":blank,:blank,:blank"/>
+            <ATTR key="row07" value="VOLUP,MUTE,channelUP:CHUP"/>
+            <ATTR key="row08" value="VOLDOWN,CH_LIST,channelDown:CHDOWN"/>
+            <ATTR key="row09" value="MENU,:blank,GUIDE"/>
+            <ATTR key="row10" value=":blank,:blank,:blank"/>
+            <ATTR key="row11" value="TOOLS,UP,INFO"/>
+            <ATTR key="row12" value="LEFT,ENTER,RIGHT"/>
+            <ATTR key="row13" value="RETURN,DOWN,EXIT"/>
+            <STATE key="channel" value="kabel eins" measured="2013-10-27 20:23:10"/>
+            <STATE key="currentTitle" value="Cold Case - Kein Opfer ist je vergessen" measured="2013-10-28 11:57:02"/>
+            <STATE key="state" value="channelDown" measured="2013-10-28 12:25:07"/>
+        </remotecontrol>
+    </remotecontrol_LIST>
+</FHZINFO>

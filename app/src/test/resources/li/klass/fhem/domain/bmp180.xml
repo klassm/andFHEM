@@ -1,0 +1,76 @@
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<FHZINFO>
+    <I2C_BMP180_LIST>
+        <I2C_BMP180 name="BMP180" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev do_not_notify:0,1 showtime:0,1 model:BMP180,BMP085 poll_interval:1,2,5,10,20,30 oversampling_settings:0,1,2,3 roundPressureDecimal:0,1,2 roundTemperatureDecimal:0,1,2 event-on-change-reading event-on-update-reading event-min-interval stateFormat useHiPiLib:0,1 DbLogExclude devStateIcon devStateStyle icon sortby webCmd" sets="readValues" state="T: 21.9 P: 1006.3 P-NN: 1019.5">
+            <INT key="HiPi_exists" value="1" />
+            <INT key="I2C_Address" value="119" />
+            <INT key="NAME" value="BMP180" />
+            <INT key="NR" value="160" />
+            <INT key="RPiI2C_RAWMSG" value="32" />
+            <INT key="RPiI2C_SENDSTAT" value="Ok" />
+            <INT key="STATE" value="T: 21.9 P: 1006.3 P-NN: 1019.5" />
+            <INT key="TYPE" value="I2C_BMP180" />
+            <INT key="IODev" value="RPiI2C" />
+            <ATTR key="IODev" value="RPiI2C" />
+            <ATTR key="alias" value="Luftdruck" />
+            <ATTR key="group" value="Klima" />
+            <ATTR key="icon" value="weather_baraometric_pressure" />
+            <ATTR key="oversampling_settings" value="3" />
+            <ATTR key="poll_interval" value="5" />
+            <ATTR key="room" value="GPIO4" />
+            <ATTR key="sortby" value="B00" />
+            <STATE key="altitude" measured="2014-03-28 17:02:15" value="112" />
+            <STATE key="pressure" measured="2014-04-06 14:21:30" value="1006.3" />
+            <STATE key="pressure-nn" measured="2014-04-06 14:21:30" value="1019.5" />
+            <STATE key="pressure-nn_avg_day" measured="2014-04-06 14:21:30" value="1019.8" />
+            <STATE key="pressure-nn_avg_month" measured="2014-04-06 14:21:30" value="1012.2" />
+            <STATE key="pressure-nn_cum_day" measured="2014-04-06 14:21:30" value="52713177.4" />
+            <STATE key="pressure-nn_cum_month" measured="2014-04-06 14:21:30" value="577047721.2" />
+            <STATE key="pressure-nn_max_day" measured="2014-04-06 09:21:21" value="1020.6" />
+            <STATE key="pressure-nn_max_month" measured="2014-04-06 09:21:21" value="1020.6" />
+            <STATE key="pressure-nn_min_day" measured="2014-04-06 00:01:05" value="1019.1" />
+            <STATE key="pressure-nn_min_month" measured="2014-04-04 20:14:11" value="1008.3" />
+            <STATE key="pressure_avg_day" measured="2014-04-06 14:21:30" value="1006.6" />
+            <STATE key="pressure_avg_month" measured="2014-04-06 14:21:30" value="999.0" />
+            <STATE key="pressure_cum_day" measured="2014-04-06 14:21:30" value="52030869.4" />
+            <STATE key="pressure_cum_month" measured="2014-04-06 14:21:30" value="569522533.2" />
+            <STATE key="pressure_max_day" measured="2014-04-06 09:21:21" value="1007.4" />
+            <STATE key="pressure_max_month" measured="2014-04-06 09:21:21" value="1007.4" />
+            <STATE key="pressure_min_day" measured="2014-04-06 00:01:05" value="1005.9" />
+            <STATE key="pressure_min_month" measured="2014-04-04 20:14:11" value="995.1" />
+            <STATE key="state" measured="2014-04-06 14:21:30" value="T: 21.9 P: 1006.3 P-NN: 1019.5" />
+            <STATE key="temperature" measured="2014-04-06 14:21:30" value="21.9" />
+            <STATE key="temperature_avg_day" measured="2014-04-06 14:21:30" value="22.1" />
+            <STATE key="temperature_avg_month" measured="2014-04-06 14:21:30" value="22.2" />
+            <STATE key="temperature_cum_day" measured="2014-04-06 14:21:30" value="1143513.9" />
+            <STATE key="temperature_cum_month" measured="2014-04-06 14:21:30" value="12643734.7" />
+            <STATE key="temperature_max_day" measured="2014-04-06 12:11:26" value="23.0" />
+            <STATE key="temperature_max_month" measured="2014-04-01 01:29:27" value="24.0" />
+            <STATE key="temperature_min_day" measured="2014-04-06 11:06:24" value="21.4" />
+            <STATE key="temperature_min_month" measured="2014-04-01 10:54:47" value="18.6" />
+        </I2C_BMP180>
+    </I2C_BMP180_LIST>
+</FHZINFO>

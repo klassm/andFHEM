@@ -1,0 +1,46 @@
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<FHZINFO>
+    <SIS_PMS_LIST>
+        <SIS_PMS name="device" state="off" sets="off on on-till off-till toggle"
+                 attrs="room comment IODev model:sis_pms,fs20st loglevel:0,1,2,3,4,5,6">
+            <INT key="DEF" value="01:0b:52:00:94 3"/>
+            <INT key="LASTIODev" value="Wohnz_PMS"/>
+            <INT key="MSGCNT" value="17570"/>
+            <INT key="NAME" value="device"/>
+            <INT key="NR" value="92"/>
+            <INT key="SERIAL" value="01:0b:52:00:94"/>
+            <INT key="SOCKET" value="3"/>
+            <INT key="STATE" value="off"/>
+            <INT key="TYPE" value="SIS_PMS"/>
+            <INT key="Wohnz_PMS_MSGCNT" value="17570"/>
+            <INT key="Wohnz_PMS_TIME" value="2011-12-11 19:22:42"/>
+            <INT key="IODev" value="Wohnz_PMS"/>
+            <ATTR key="room" value="room"/>
+            <STATE key="PREVSTATE" value="on" measured="2011-12-11 18:30:00"/>
+            <STATE key="state" value="off" measured="2011-12-11 19:22:42"/>
+        </SIS_PMS>
+    </SIS_PMS_LIST>
+</FHZINFO>

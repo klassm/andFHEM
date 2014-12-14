@@ -1,0 +1,50 @@
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<FHZINFO>
+    <EGPM_LIST>
+        <EGPM name="device" state="Aus" sets="An Aus off:noArg on:noArg
+toggle:noArg" attrs="verbose:0,1,2,3,4,5 room group comment alias
+eventMap userReadings loglevel:0,1,2,3,4,5,6event-on-change-reading
+event-on-update-reading event-min-interval stateFormat building
+building_map devStateIcon devStateStyle icon room_map sortby
+structexclude webCmd">
+            <INT key="DEF" value="PowerWZ 2"/>
+            <INT key="DEVICENAME" value="PowerWZ"/>
+            <INT key="IODEV" value="PowerWZ"/>
+            <INT key="NAME" value="device"/>
+            <INT key="NR" value="32"/>
+            <INT key="SOCKETNAME" value="Socket_2"/>
+            <INT key="SOCKETNR" value="2"/>
+            <INT key="STATE" value="Aus"/>
+            <INT key="TYPE" value="EGPM"/>
+            <ATTR key="devStateIcon" value="An:black_Steckdose.on:off Aus:black_Steckdose.off:on"/>
+            <ATTR key="eventMap" value="on:An off:Aus"/>
+            <ATTR key="group" value="Steckdosen"/>
+            <ATTR key="icon" value="ge_wht_steckdose"/>
+            <ATTR key="room" value="Wohnen,Wohnung"/>
+            <STATE key="state" value="off" measured="2014-03-19 21:23:55"/>
+        </EGPM>
+    </EGPM_LIST>
+</FHZINFO>

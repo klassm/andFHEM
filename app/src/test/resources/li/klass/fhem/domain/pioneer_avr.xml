@@ -1,0 +1,60 @@
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<FHZINFO>
+    <PIONEERAVR_LIST>
+        <PIONEERAVR name="VSX922" state="off"
+                    sets="reopen:noArg on:noArg off:noArg toggle:noArg input:bd,cblSat,cd,cdrTape,dvd,favorites,hdmi2,hdmi6,hdmi7,hdmi8,hdmiCyclic,homeMediaGallery,internetRadio,mhl,multiChIn,napster,pandora,pc,phono,sirius,siriusxm,spotify,tuner,tvSat,usbDac,video1,video2,wiiu,xmRadio inputUp:noArg inputDown:noArg channelUp:noArg channelDown:noArg channelStraight channel:1,2,3,4,5,6,7,8,9 listeningMode:2chSource,action,advancedGame,advancedSurroundCyclic,autoLevelControlAlC,autoSurrStreamDirectCyclic,autoSurround,classical,direct,drama,entertainmentShow,es8chDiscreteThxCinemaForMultiCh,es8chDiscreteThxGamesForMultiCh,es8chDiscreteThxMusicForMultiCh,esDiscreteThxCinemaForMultiCh,esDiscreteThxGamesForMultiCh,esDiscreteThxMusicForMultiCh,esMatrixThxCinemaForMultiCh,esMatrixThxGamesForMultiCh,esMatrixThxMusicForMultiCh,esNeo6thxCinemaForMultiCh,exThxGamesForMultiCh,expandedTheater,extendedStereo,frontStageSurroundAdvanceFocus,frontStageSurroundAdvanceWide,monoFilm,multiChSource,multiChSourceDolbyEx,multiChSourceDtsEs8chDiscrete,multiChSourceDtsEsDiscrete,multiChSourceDtsEsMatrix,multiChSourceDtsEsNeo6,multiChSourceNeoXcinema,multiChSourceNeoXgame,multiChSourceNeoXmusic,multiChSourceProLogic2xMovie,multiChSourceProLogic2xMusic,multiChSourceProLogic2zHeight,multiChSourceWideSurroundMovie,multiChSourceWideSurroundMusic,neo6cinema,neo6cinemaThxCinema,neo6music,neo6musicThxMusic,neo6thxGamesForMultiCh,neo6thxMusicForMultiCh,neoXcinema,neoXcinemaThxCinema,neoXcinemaThxCinemaForMultiCh,neoXgame,neoXgameThxGames,neoXgameThxGamesForMultiCh,neoXmusic,neoXmusicThxMusic,neoXmusicThxMusicForMultiCh,neuralSurround,neuralSurroundNeoXcinema,neuralSurroundNeoXgame,neuralSurroundNeoXmusic,optimumSurround,phonesSurround,pl2gameThxGames,pl2movieThxCinema,pl2musicThxMusic,pl2xGameThxGames,pl2xMovieThxCinema,pl2xMovieThxCinemaForMultiCh,pl2xMusicThxMusic,pl2xMusicThxMusicForMultiCh,pl2zHeightThxCinema,pl2zHeightThxCinemaForMultiCh,pl2zHeightThxGames,pl2zHeightThxGamesForMultiCh,pl2zHeightThxMusic,pl2zHeightThxMusicForMultiCh,proLogic,proLogic2game,proLogic2movie,proLogic2music,proLogic2xGame,proLogic2xMovie,proLogic2xMusic,proLogic2zHeight,prologicThxCinema,prologicThxGames,prologicThxMusic,pureDirect,retrieverAir,rockPop,sciFi,sports,standard,stereoCyclic,stereoDirectSet,thxCinemaFor2ch,thxCinemaForMultiCh,thxCyclic,thxGamesFor2ch,thxGamesForMultiCh,thxMusicFor2ch,thxMusicForMultiCh,thxSelect2cinemaForMultiCh,thxSelect2games,thxSelect2gamesForMultiCh,thxSelect2musicForMultiCh,thxSurroundExForMultiCh,thxUltra2cinemaForMultiCh,thxUltra2games,thxUltra2gamesForMultiCh,thxUltra2musicForMultiCh,tvSurround,unplugged,wideSurroundMovie,wideSurroundMusic,xmHdSurround volumeUp:noArg volumeDown:noArg mute:on,off,toggle tone:on,bypass bass:slider,-6,1,6 treble:slider,-6,1,6 statusRequest:noArg volume:slider,0,1,100 volumeStraight:slider,-80,1,12 speakers:off,A,B,A+B raw remoteControl:audioParameter,cursorDown,cursorEnter,cursorLeft,cursorReturn,cursorRight,cursorUp,hdmiOutputParameter,homeMenu,statusDisplay,videoParameter blink on-for-timer on-till off-for-timer intervals off-till"
+                    attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings logTraffic:0,1,2,3,4,5 checkConnection:enable,disable event-on-change-reading event-on-update-reading event-min-interval stateFormat Heizung Heizung_map Licht Licht_map devStateIcon devStateStyle fp_Grundriss icon sortby structexclude webCmd widgetOverride userattr">
+            <INT key="CHANGED" value=""/>
+            <INT key="DEF" value="telnet 192.168.0.184:23"/>
+            <INT key="DeviceName" value="192.168.0.184:23"/>
+            <INT key="FD" value="14"/>
+            <INT key="NAME" value="VSX922"/>
+            <INT key="NR" value="66"/>
+            <INT key="PARTIAL" value=""/>
+            <INT key="Protocol" value="telnet"/>
+            <INT key="STATE" value="off"/>
+            <INT key="TYPE" value="PIONEERAVR"/>
+            <ATTR key="devStateIcon" value="on:rc_GREEN:off off:rc_YELLOW:on absent:rc_RED"/>
+            <ATTR key="fp_Grundriss" value="317,854,0,"/>
+            <ATTR key="group" value="Multimedia"/>
+            <ATTR key="icon" value="it_radio"/>
+            <ATTR key="room" value="Wohnzimmer"/>
+            <ATTR key="webCmd" value="volume:input"/>
+            <STATE key="display" value=" " measured="2014-11-24 21:02:12"/>
+            <STATE key="displayPrevious" value=" VU+ " measured="2014-11-24 21:02:12"/>
+            <STATE key="input" value="cblSat" measured="2014-11-24 21:02:03"/>
+            <STATE key="listeningMode" value="standard" measured="2014-07-13 21:04:02"/>
+            <STATE key="listeningModePlaying" value="[)(]PLII GAME" measured="2014-11-26 23:35:55"/>
+            <STATE key="model" value="VSX-922" measured="2014-11-23 22:57:51"/>
+            <STATE key="mute" value="off" measured="2014-11-23 22:57:51"/>
+            <STATE key="power" value="off" measured="2014-11-24 21:02:03"/>
+            <STATE key="presence" value="present" measured="2014-11-23 22:57:10"/>
+            <STATE key="state" value="off" measured="2014-11-24 21:02:02"/>
+            <STATE key="volume" value="46" measured="2014-11-23 22:57:51"/>
+            <STATE key="volumeStraight" value="-37" measured="2014-11-23 22:57:51"/>
+        </PIONEERAVR>
+    </PIONEERAVR_LIST>
+</FHZINFO>

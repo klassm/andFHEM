@@ -1,0 +1,73 @@
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+<FHZINFO>
+    <ArtNet_LIST>
+        <ArtNet name="ArtNet0" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings do_not_notify:1,0 LichtEG L
+ichtEG_map building building_map devStateIcon devStateStyle floor floor_map fp_Dach fp_EG fp_Keller fp_OG icon sortby structexclude webCmd widgetOverride"
+            sets="" state="Initialized">
+            <INT key="CFGFN" value="./FHEM/dmx.cfg" />
+            <INT key="DEF" value="192.168.10.90 0" />
+            <INT key="NAME" value="ArtNet0" />
+            <INT key="NR" value="196" />
+            <INT key="STATE" value="Initialized" />
+            <INT key="TYPE" value="ArtNet" />
+            <ATTR key="room" value="14SZ" />
+        </ArtNet>
+    </ArtNet_LIST>
+
+    <DMXBridge_LIST>
+        <DMXBridge name="DMX0"
+            attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev do_not_notify:1,0 ignore:0,1 dummy:0,1  LichtEG LichtEG_map building building_map devStateIcon devStateStyle floor floor_map fp_Dach fp_EG fp_Keller fp_OG icon sortby structexclude webCmd widgetOverride"
+            sets="Usage: set DMX0 &lt;channel&gt; &lt;value&gt;" state="Initialized">
+            <INT key="CFGFN" value="./FHEM/dmx.cfg" />
+            <INT key="INTERVAL" value="1" />
+            <INT key="NAME" value="DMX0" />
+            <INT key="NR" value="198" />
+            <INT key="STATE" value="Initialized" />
+            <INT key="TYPE" value="DMXBridge" />
+            <INT key="IODev" value="ArtNet0" />
+            <ATTR key="IODev" value="ArtNet0" />
+            <ATTR key="room" value="14SZ" />
+        </DMXBridge>
+    </DMXBridge_LIST>
+    <DMXDevice_LIST>
+        <DMXDevice name="LedBett"
+            attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev do_not_notify:1,0 ignore:0,1 dummy:0,1 color-icons:1,2 subType:colordimmer,dimmer,switch event-on-change-reading event-on-update-reading event-min-interval stateFormat LichtEG LichtEG_map building building_map devStateIcon devStateStyle floor floor_map fp_Dach fp_EG fp_Keller fp_OG icon sortby structexclude webCmd widgetOverride"
+            sets="on toggle pct:slider,0,1,255 off rgb:colorpicker,RGB flash blink on-for-timer on-till off-for-timer intervals off-till"
+            state="Initialized">
+            <INT key="CFGFN" value="./FHEM/dmx.cfg" />
+            <INT key="DEF" value="rgba 13,12,11,15" />
+            <INT key="NAME" value="LedBett" />
+            <INT key="NR" value="200" />
+            <INT key="STATE" value="Initialized" />
+            <INT key="TYPE" value="DMXDevice" />
+            <INT key="IODev" value="DMX0" />
+            <ATTR key="IODev" value="DMX0" />
+            <ATTR key="room" value="14SZ" />
+            <ATTR key="webCmd" value="rgb:rgb ff0000:rgb 00ff00:rgb 0000ff:rgb ffffff:on:off" />
+            <STATE key="pct" measured="2014-07-08 09:08:40" value="10" />
+            <STATE key="rgb" measured="2014-07-08 09:08:19" value="ffffff" />
+        </DMXDevice>
+    </DMXDevice_LIST>
+</FHZINFO>

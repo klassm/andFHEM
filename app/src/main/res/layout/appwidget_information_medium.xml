@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2012, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLICLICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                style="@style/appwidget_medium">
+
+    <LinearLayout style="@style/appwidget_content">
+
+        <TextView style="@style/appwidget_caption"/>
+
+        <TextView style="@style/appwidget_item"
+                  android:id="@+id/line1" />
+        <TextView style="@style/appwidget_item"
+                  android:id="@+id/line2" />
+        <TextView style="@style/appwidget_item"
+                  android:id="@+id/line3" />
+    </LinearLayout>
+    <ImageView style="@style/appwidget_logo" android:contentDescription="@string/app_name"/>
+</RelativeLayout>

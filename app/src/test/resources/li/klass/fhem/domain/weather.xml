@@ -1,0 +1,92 @@
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<FHZINFO>
+    <Weather_LIST>
+        <Weather name="device" state="T: 19  H: 43  W: 11" sets=""
+                 attrs="room comment alias loglevel:0,1,2,3,4,5 event-on-update-reading event-on-change-reading fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon webCmd eventMap">
+            <INT key="DEF" value="Augsburg 3000 de"/>
+            <INT key="INTERVAL" value="3000"/>
+            <INT key="LANG" value="de"/>
+            <INT key="LOCATION" value="Augsburg"/>
+            <INT key="NAME" value="device"/>
+            <INT key="NR" value="20"/>
+            <INT key="STATE" value="T: 19  H: 43  W: 11"/>
+            <INT key="TYPE" value="Weather"/>
+            <ATTR key="room" value="room"/>
+            <STATE key="city" value="Augsburg, Bavaria" measured="2012-05-01 14:56:22"/>
+            <STATE key="condition" value="Bewölkt" measured="2012-05-01 14:56:22"/>
+            <STATE key="current_date_time" value="1970-01-01 00:00:00 +0000" measured="2012-05-01 14:56:22"/>
+            <STATE key="fc1_condition" value="Klar" measured="2012-05-01 14:56:22"/>
+            <STATE key="fc1_day_of_week" value="Di." measured="2012-05-01 14:56:22"/>
+            <STATE key="fc1_high_c" value="22" measured="2012-05-01 14:56:22"/>
+            <STATE key="fc1_icon" value="/ig/images/weather/sunny.gif" measured="2012-05-01 14:56:22"/>
+            <STATE key="fc1_low_c" value="13" measured="2012-05-01 14:56:22"/>
+            <STATE key="fc2_condition" value="Vereinzelt Regen" measured="2012-05-01 14:56:22"/>
+            <STATE key="fc2_day_of_week" value="Mi." measured="2012-05-01 14:56:22"/>
+            <STATE key="fc2_high_c" value="20" measured="2012-05-01 14:56:22"/>
+            <STATE key="fc2_icon" value="/ig/images/weather/chance_of_rain.gif" measured="2012-05-01 14:56:22"/>
+            <STATE key="fc2_low_c" value="9" measured="2012-05-01 14:56:22"/>
+            <STATE key="fc3_condition" value="Meist sonnig" measured="2012-05-01 14:56:22"/>
+            <STATE key="fc3_day_of_week" value="Do." measured="2012-05-01 14:56:22"/>
+            <STATE key="fc3_high_c" value="19" measured="2012-05-01 14:56:22"/>
+            <STATE key="fc3_icon" value="/ig/images/weather/mostly_sunny.gif" measured="2012-05-01 14:56:22"/>
+            <STATE key="fc3_low_c" value="8" measured="2012-05-01 14:56:22"/>
+            <STATE key="fc4_condition" value="Klar" measured="2012-05-01 14:56:22"/>
+            <STATE key="fc4_day_of_week" value="Fr." measured="2012-05-01 14:56:22"/>
+            <STATE key="fc4_high_c" value="19" measured="2012-05-01 14:56:22"/>
+            <STATE key="fc4_icon" value="/ig/images/weather/sunny.gif" measured="2012-05-01 14:56:22"/>
+            <STATE key="fc4_low_c" value="10" measured="2012-05-01 14:56:22"/>
+            <STATE key="forecast_date" value="2012-05-01" measured="2012-05-01 14:56:22"/>
+            <STATE key="humidity" value="43" measured="2012-05-01 14:56:22"/>
+            <STATE key="icon" value="/ig/images/weather/cloudy.gif" measured="2012-05-01 14:56:22"/>
+            <STATE key="latitude_e6" value="" measured="2012-05-01 14:56:22"/>
+            <STATE key="longitude_e6" value="" measured="2012-05-01 14:56:22"/>
+            <STATE key="postal_code" value="Augsburg" measured="2012-05-01 14:56:22"/>
+            <STATE key="temp_c" value="19" measured="2012-05-01 14:56:22"/>
+            <STATE key="temp_f" value="67" measured="2012-05-01 14:56:22"/>
+            <STATE key="temperature" value="19" measured="2012-05-01 14:56:22"/>
+            <STATE key="unit_system" value="SI" measured="2012-05-01 14:56:22"/>
+            <STATE key="wind" value="11" measured="2012-05-01 14:56:22"/>
+            <STATE key="wind_condition" value="Wind: NW mit 11 km/h" measured="2012-05-01 14:56:22"/>
+        </Weather>
+    </Weather_LIST>
+
+    <FileLog_LIST>
+        <FileLog name="FileLog_device" state="active" sets="reopen"
+                 attrs="room group comment alias eventMap disable:0,1 logtype nrarchive archivedir archivecmd fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon onOffDevice webCmd">
+            <INT key="DEF" value="./log/device-%Y.log device:(temp_c|humidity):.*"/>
+            <INT key="NAME" value="FileLog_device"/>
+            <INT key="NR" value="43"/>
+            <INT key="NTFY_ORDER" value="50-FileLog_device"/>
+            <INT key="REGEXP" value="device:(temp_c|humidity):.*"/>
+            <INT key="STATE" value="active"/>
+            <INT key="TYPE" value="FileLog"/>
+            <INT key="currentlogfile" value="./log/device-2012.log"/>
+            <INT key="logfile" value="./log/device-%Y.log"/>
+            <ATTR key="logtype" value="temp4hum4:temp_c/humidity,text"/>
+            <ATTR key="room" value="logs"/>
+        </FileLog>
+    </FileLog_LIST>
+</FHZINFO>

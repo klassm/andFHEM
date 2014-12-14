@@ -1,0 +1,78 @@
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<FHZINFO>
+    <PID_LIST>
+        <PID name="device" state="16.8 (delta -0.800000000000001)" sets="factors desired"
+             attrs="room comment alias disable:0,1 loglevel:0,1,2,3,4,5,6 armed fm_fav fm_groups fm_name fm_order icon triggered webCmd eventMap">
+            <INT key="DEF" value="tempslaap:temperature:([\d\.]*) thermostaat_slaap"/>
+            <INT key="NAME" value="device"/>
+            <INT key="NR" value="91"/>
+            <INT key="NTFY_ORDER" value="50-thermostaat_slaapkamer"/>
+            <INT key="STATE" value="16.8 (delta -0.800000000000001)"/>
+            <INT key="TYPE" value="PID"/>
+            <INT key="actor" value="thermostaat_slaap"/>
+            <INT key="command" value="valve"/>
+            <INT key="dFactor" value="5.88235294117647"/>
+            <INT key="iFactor" value="3.05882352941176"/>
+            <INT key="pFactor" value="25.4901960784314"/>
+            <INT key="reading" value="temperature"/>
+            <INT key="regexp" value="([\d\.]*)"/>
+            <INT key="satMax" value="100"/>
+            <INT key="satMin" value="0"/>
+            <INT key="sensor" value="tempslaap"/>
+            <ATTR key="room" value="room"/>
+            <STATE key="actuation" value="0" measured="2012-03-20 20:39:02"/>
+            <STATE key="delta" value="-0.800000000000001" measured="2012-03-20 20:39:02"/>
+            <STATE key="desired" value="16" measured="2012-03-20 18:00:00"/>
+            <STATE key="integrator" value="0" measured="2012-03-20 20:39:02"/>
+            <STATE key="state" value="desired 21.5" measured="2013-01-14 08:02:39"/>
+        </PID>
+
+        <PID name="device1" state="initialized" sets="factors desired"
+             attrs="room group comment alias eventMap disable:0,1 loglevel:0,1,2,3,4,5,6 icon webCmd">
+            <INT key="DEF" value="FHT_462b:measured-temp:([\d\.]*)  8vBed"/>
+            <INT key="NAME" value="device1"/>
+            <INT key="NR" value="39"/>
+            <INT key="NTFY_ORDER" value="50-TcBed"/>
+            <INT key="STATE" value="initialized"/>
+            <INT key="TYPE" value="PID"/>
+            <INT key="actor" value="8vBed"/>
+            <INT key="command" value="valve"/>
+            <INT key="dFactor" value="5.88235294117647"/>
+            <INT key="iFactor" value="3.05882352941176"/>
+            <INT key="pFactor" value="25.4901960784314"/>
+            <INT key="reading" value="measured-temp"/>
+            <INT key="regexp" value="([\d\.]*)"/>
+            <INT key="satMax" value="100"/>
+            <INT key="satMin" value="0"/>
+            <INT key="sensor" value="FHT_462b"/>
+            <ATTR key="room" value="room"/>
+            <STATE key="actuation" value="0" measured="2012-10-31 23:26:00"/>
+            <STATE key="delta" value="0" measured="2012-10-31 23:26:00"/>
+            <STATE key="desired" value="16.5" measured="2012-02-21 23:26:49"/>
+            <STATE key="integrator" value="0" measured="2012-10-31 23:26:00"/>
+        </PID>
+    </PID_LIST>
+</FHZINFO>

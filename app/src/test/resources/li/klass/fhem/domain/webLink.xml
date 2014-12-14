@@ -1,0 +1,39 @@
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<FHZINFO>
+    <weblink_LIST>
+        <weblink name="device" state="initialized" sets="" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings htmlattr CUL_HM CUL_HM_map PRESENCE PRESENCE_map Presence Presence_map Steffen Steffen_map devStateIcon devStateStyle dummy dummy_map fp_Lindenhof icon ite0m18 item0 item0.4 item1 item10 item11 item12 item13 item14 item15 item16 item17 item19 item2 item20 item21 item22 item23 item24 item25 item26 item27 item28 item29 item3 item30 item31 item32 item4 item4.4 item4.5 item5 item6 item6.1 item7 item7.1 item8 item8.1 item8.2 item8.3 item8.4 item9 item9.1 lightSceneParamsToSave sortby structexclude webCmd">
+            <INT key="DEF" value="iframe http://www.sbazv.de/frames/termin_2013/hm4.php?ortnr=184&amp;strnr=100"/>
+            <INT key="LINK" value="http://www.sbazv.de/frames/termin_2013/hm4.php?ortnr=184&amp;strnr=100"/>
+            <INT key="NAME" value="device"/>
+            <INT key="NR" value="389"/>
+            <INT key="STATE" value="initialized"/>
+            <INT key="TYPE" value="weblink"/>
+            <INT key="WLTYPE" value="iframe"/>
+            <ATTR key="htmlattr" value="width=&quot;900&quot; height=&quot;400&quot; frameborder=&quot;0&quot; marginheight=&quot;400&quot; marginwidth=&quot;900&quot;"/>
+            <ATTR key="room" value="room"/>
+        </weblink>
+    </weblink_LIST>
+</FHZINFO>

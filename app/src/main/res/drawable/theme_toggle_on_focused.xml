@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~  
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLICLICENSE, as published by the Free Software Foundation.
+  ~  
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~  
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:bottom="5dp">
+        <shape xmlns:android="http://schemas.android.com/apk/res/android">
+            <corners android:radius="3dp" />
+            <solid android:color="@color/focusedColor" />
+            <stroke android:color="@color/darkGrey" android:width="1dp" />
+        </shape>
+    </item>
+    <item android:right="10dp" android:left="10dp" android:top="30dp" android:bottom="3dp">
+        <shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="line">
+            <corners android:radius="3dp" />
+            <stroke android:width="5dp" android:color="@color/darkGrey" />
+        </shape>
+    </item>
+</layer-list>

@@ -1,0 +1,60 @@
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<FHZINFO>
+    <Twilight_LIST>
+        <Twilight name="device" state="6" sets=""
+                  attrs="room group comment alias eventMap loglevel:0,1,2,3,4,5 event-on-update-reading event-on-change-reading fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon onOffDevice webCmd">
+            <INT key="CONDITION" value="-1"/>
+            <INT key="DEF" value="48.371667 10.898333"/>
+            <INT key="INDOOR_HORIZON" value="4"/>
+            <INT key="LATITUDE" value="48.371667"/>
+            <INT key="LONGITUDE" value="10.898333"/>
+            <INT key="NAME" value="device"/>
+            <INT key="NR" value="17"/>
+            <INT key="STATE" value="6"/>
+            <INT key="TYPE" value="Twilight"/>
+            <INT key="WEATHER" value=""/>
+            <INT key="WEATHER_HORIZON" value="0"/>
+            <STATE key="condition" value="-1" measured="2012-07-18 11:08:00"/>
+            <STATE key="light" value="6" measured="2012-07-18 11:08:00"/>
+            <STATE key="nextEvent" value="ss_weather" measured="2012-07-18 11:08:00"/>
+            <STATE key="nextEventTime" value="21:05:07" measured="2012-07-18 11:08:00"/>
+            <STATE key="nextUpdate" value="11:23:00" measured="2012-07-18 11:08:00"/>
+            <STATE key="sr" value="05:39:59" measured="2012-07-18 11:08:00"/>
+            <STATE key="sr_astro" value="02:48:05" measured="2012-07-18 11:08:00"/>
+            <STATE key="sr_civil" value="04:54:41" measured="2012-07-18 11:08:00"/>
+            <STATE key="sr_indoor" value="06:07:50" measured="2012-07-18 11:08:00"/>
+            <STATE key="sr_naut" value="04:01:49" measured="2012-07-18 11:08:00"/>
+            <STATE key="sr_weather" value="05:39:59" measured="2012-07-18 11:08:00"/>
+            <STATE key="ss" value="21:05:07" measured="2012-07-18 11:08:00"/>
+            <STATE key="ss_astro" value="23:57:00" measured="2012-07-18 11:08:00"/>
+            <STATE key="ss_civil" value="21:50:24" measured="2012-07-18 11:08:00"/>
+            <STATE key="ss_indoor" value="20:37:15" measured="2012-07-18 11:08:00"/>
+            <STATE key="ss_naut" value="22:43:16" measured="2012-07-18 11:08:00"/>
+            <STATE key="ss_weather" value="21:05:07" measured="2012-07-18 11:08:00"/>
+            <STATE key="room" value="room"/>
+        </Twilight>
+    </Twilight_LIST>
+</FHZINFO>

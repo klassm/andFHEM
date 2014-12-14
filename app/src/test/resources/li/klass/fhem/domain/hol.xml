@@ -1,0 +1,48 @@
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<FHZINFO>
+    <HOL_LIST>
+        <HOL name="device" state="off" sets="on off" attrs="room group comment alias eventMap fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon onOffDevice webCmd">
+            <INT key="NAME" value="device"/>
+            <INT key="NR" value="189"/>
+            <INT key="STATE" value="off"/>
+            <INT key="TYPE" value="HOL"/>
+            <INT key="currentSwitchDevice" value="mat_halogen"/>
+            <INT key="currentSwitchTime" value="600"/>
+            <INT key="lastTrigger" value="2012-09-09 20:05:17"/>
+            <INT key="nextTrigger" value="2012-09-09 20:15:22"/>
+            <ATTR key="room" value="room"/>
+        </HOL>
+
+        <HOL name="device1" state="on" sets="on off"
+             attrs="room group comment alias eventMap fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon onOffDevice webCmd">
+            <INT key="NAME" value="device1"/>
+            <INT key="NR" value="184"/>
+            <INT key="STATE" value="on"/>
+            <INT key="TYPE" value="HOL"/>
+            <ATTR key="room" value="room"/>
+        </HOL>
+    </HOL_LIST>
+</FHZINFO>

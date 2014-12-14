@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<resources>
+    <color name="android_green">#FFA4C639</color>
+    <color name="navigationBarBackground">#FFE1F3E3</color>
+
+    <color name="lightGrey">#FFF6F6F6</color>
+    <color name="darkGrey">#FFD9D9D9</color>
+
+    <color name="focusedColor">#FFFFE748</color>
+    <color name="thumbOuterColor">#55FFE748</color>
+
+    <color name="andFHEMDarkGreen">#079400</color>
+    <color name="widgetNewBackground">#F0079400</color>
+    <color name="widgetNewCaptionBackground">#BB242424</color>
+    <color name="widgetNewContentBackground">#BBFFFFFF</color>
+
+    <color name="widgetBackground">#AAE1E1E1</color>
+
+    <color name="activeGreen">#E0FFD4</color>
+    <color name="offRed">#44FF0000</color>
+    <color name="red">#FF0000</color>
+
+    <color name="holoDark">#242424</color>
+
+    <color name="black">#FF000000</color>
+    <color name="whitegrey">#FFF2F2F2</color>
+
+    <color name="errorBackground">#FFDB9C</color>
+
+
+    <!-- new color palette-->
+    <color name="primary">#FF079400</color>
+
+    <!-- colorPrimaryDark is used for the status bar -->
+    <color name="primaryDark">#FF0d5302</color>
+
+    <!-- colorAccent is used as the default value for colorControlActivated
+         which is used to tint widgets -->
+    <color name="accent">#FFB84100</color>
+
+    <color name="textColorDefault">#FF000000</color>
+    <color name="textColorSecondary">#FF4e4e4e</color>
+    <color name="textColorTertiary">#FF8a8a8a</color>
+</resources>

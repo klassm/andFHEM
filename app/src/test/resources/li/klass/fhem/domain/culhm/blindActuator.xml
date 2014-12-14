@@ -1,0 +1,103 @@
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<FHZINFO>
+    <CUL_HM_LIST>
+        <CUL_HM name="device" state="75 %" sets="pair raw reset sign
+statusRequest unpair off on on-for-timer 0 1 2 3 4 5 6 7 8 9 10 11 12
+13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35
+36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58
+59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81
+82 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97 98 99 100 toggle"
+                attrs="room comment alias IODev do_not_notify:1,0 ignore:0,1 showtime:
+1,0 loglevel:0,1,2,3,4,5,6 model
+subType:switch,dimmer,blindActuator,remote,sensor,swi,pushButton,threeStateSensor,motionDetector,keyMatic,winMatic,smokeDetector
+hmClass:receiver,sender serialNr firmware devInfo rawToReadable unit
+room structexclude webCmd eventMap">
+            <INT key="DEF" value="18541E"/>
+            <INT key="LASTIODev" value="Zentrale"/>
+            <INT key="MSGCNT" value="12"/>
+            <INT key="NAME" value="device"/>
+            <INT key="NR" value="12"/>
+            <INT key="STATE" value="75 %"/>
+            <INT key="TYPE" value="CUL_HM"/>
+            <INT key="Zentrale_MSGCNT" value="12"/>
+            <INT key="Zentrale_RAWMSG" value="E18541E,0000,2CB78D21,FF,FFBC,
+0F841018541E00000006019600"/>
+            <INT key="Zentrale_RSSI" value="-68"/>
+            <INT key="Zentrale_TIME" value="2012-01-09 07:30:09"/>
+            <INT key="lastMsg" value="0D0FA01018541E00000006019600"/>
+            <INT key="IODev" value="Zentrale"/>
+            <ATTR key="devInfo" value="010100"/>
+            <ATTR key="firmware" value="1.5"/>
+            <ATTR key="hmClass" value="receiver"/>
+            <ATTR key="room" value="room"/>
+            <ATTR key="serialNr" value="IEQ0496916"/>
+            <ATTR key="subType" value="blindActuator"/>
+            <STATE key="CommandAccepted" value="yes" measured="2012-01-09
+07:30:01"/>
+            <STATE key="deviceMsg" value="75 % (to broadcast)"
+                   measured="2012-01-09 07:30:09"/>
+            <STATE key="state" value="75 %" measured="2012-01-09 07:30:09"/>
+        </CUL_HM>
+
+        <CUL_HM name="device1" state="zu" sets="on:zu off:offen actiondetect getConfig getRegRaw getdevicepair getpair off on pair pct:slider,0,1,100 raw regRaw regSet reset sign statusRequest stop toggle unpair virtual" attrs="room group comment alias eventMap IODev do_not_notify:1,0 ignore:1,0 dummy:1,0 showtime:1,0 loglevel:0,1,2,3,4,5,6 hmClass:receiver,sender serialNr firmware devInfo rawToReadable unit chanNo device peerList actCycle actStatus protCmdPend protLastRcv protSndCnt protSndLast protCmdDel protNackCnt protNackLast protResndFailLast protResndLast protResndFailCnt protResndCnt protToutRespLast protToutRespCnt channel_01 channel_02 channel_03 channel_04 channel_05 channel_06 channel_07 channel_08 channel_09 channel_0A channel_0B channel_0C channel_0D channel_0E channel_0F channel_10 channel_11 channel_12 channel_13 channel_14 channel_15 channel_16 channel_17 channel_18  model:ASH550,ASH550I,CMM,DORMA_BRC-H,DORMA_RC-H,DORMA_atent,HM-CC-SCD,HM-CC-TC,HM-CC-VD,HM-Dis-TD-T,HM-LC-BL1-FM,HM-LC-BL1-PB-FM,HM-LC-BL1-SM,HM-LC-Bl1PBU-FM,HM-LC-DDC1-PCB,HM-LC-DIM1L-CV,HM-LC-DIM1L-PL,HM-LC-DIM1T-CV,HM-LC-DIM1T-FM,HM-LC-DIM1T-PL,HM-LC-DIM2L-CV,HM-LC-DIM2L-SM,HM-LC-DIM2T-SM,HM-LC-Dim1PWM-CV,HM-LC-Dim1TPBU-FM,HM-LC-SW1-BA-PCB,HM-LC-SW1-FM,HM-LC-SW1-PB-FM,HM-LC-SW1-PL,HM-LC-SW1-PL-OM54,HM-LC-SW1-SM,HM-LC-SW1-SM-ATMEGA168,HM-LC-SW2-DR,HM-LC-SW2-FM,HM-LC-SW2-PB-FM,HM-LC-SW2-SM,HM-LC-SW4-DR,HM-LC-SW4-PCB,HM-LC-SW4-SM,HM-LC-SW4-SM-ATMEGA168,HM-LC-SW4-WM,HM-LC-Sw1PBU-FM,HM-OU-CF-PL,HM-OU-CFM-PL,HM-OU-LED16,HM-PB-2-WM,HM-PB-2-WM55,HM-PB-4-WM,HM-PB-4DIS-WM,HM-PBI-4-FM,HM-RC-12,HM-RC-12-B,HM-RC-12-SW,HM-RC-19,HM-RC-19-B,HM-RC-19-SW,HM-RC-4,HM-RC-4-B,HM-RC-KEY3,HM-RC-KEY3-B,HM-RC-P1,HM-RC-SEC3,HM-RC-SEC3-B,HM-SCI-3-FM,HM-SEC-KEY,HM-SEC-KEY-O,HM-SEC-KEY-S,HM-SEC-MDIR,HM-SEC-RHS,HM-SEC-SC,HM-SEC-SD,HM-SEC-SFA-SM,HM-SEC-TIS,HM-SEC-WDS,HM-SEC-WIN,HM-SEN-EP,HM-SEN-MDIR-SM,HM-SWI-3-FM,HM-Sec-Cen,HM-Sen-MDIR-O,HM-WDC7000,HM-WDC7000,HM-WDS10-TH-O,HM-WDS100-C6-O,HM-WDS20-TH-O,HM-WDS30-T-O,HM-WDS40-TH-I,IS-WDS-TH-OD-S-R3,KFM-Display,KFM-Sensor,KS550,ROTO_ZEL-STG-RM-DWT-10,ROTO_ZEL-STG-RM-FDK,ROTO_ZEL-STG-RM-FEP-230V,ROTO_ZEL-STG-RM-FSA,ROTO_ZEL-STG-RM-FST-UP4,ROTO_ZEL-STG-RM-FWT,ROTO_ZEL-STG-RM-HS-4,ROTO_ZEL-STG-RM-WT-2,Roto_ZEL-STG-RM-FFK,Roto_ZEL-STG-RM-FSS-UP3,S550IA,Schueco_263-1350,Schueco_263-144,Schueco_263-145,Schueco_263-146,Schueco_263-155,Schueco_263-157,Schueco_263-158,Schueco_263-160,Schueco_263-162,WS888 subType:AlarmControl,ClimateControl,KFM100,THSensor,blindActuator,dimmer,keyMatic,motionDetector,outputUnit,pushButton,remote,sensor,smokeDetector,swi,switch,thermostat,threeStateSensor,winMatic alias_map icon structexclude webCmd">
+            <INT key="DEF" value="193EC9"/>
+            <INT key="HMLAN1_MSGCNT" value="1"/>
+            <INT key="HMLAN1_RAWMSG" value="E193EC9,0000,47FAA987,FF,FFB7,5F8410193EC90000000601C800"/>
+            <INT key="HMLAN1_RSSI" value="65463"/>
+            <INT key="HMLAN1_TIME" value="2012-12-02 16:57:19"/>
+            <INT key="LASTIODev" value="HMLAN1"/>
+            <INT key="MSGCNT" value="1"/>
+            <INT key="NAME" value="device1"/>
+            <INT key="NR" value="48"/>
+            <INT key="STATE" value="zu"/>
+            <INT key="TYPE" value="CUL_HM"/>
+            <INT key="lastMsg" value="No:5F - t:10 s:193EC9 d:000000 0601C800"/>
+            <INT key="IODev" value="HMLAN1"/>
+            <ATTR key="devInfo" value="010100"/>
+            <ATTR key="eventMap" value="on:zu off:offen"/>
+            <ATTR key="firmware" value="1.5"/>
+            <ATTR key="hmClass" value="receiver"/>
+            <ATTR key="protCmdDel" value="0"/>
+            <ATTR key="protLastRcv" value="2012-12-02 16:57:19"/>
+            <ATTR key="protResndCnt" value="2"/>
+            <ATTR key="protResndFailCnt" value="1"/>
+            <ATTR key="protResndFailLast" value="2012-12-02 16:56:13"/>
+            <ATTR key="protResndLast" value="2012-12-02 16:56:12"/>
+            <ATTR key="protSndCnt" value="1"/>
+            <ATTR key="protSndLast" value="2012-12-02 16:56:09"/>
+            <ATTR key="room" value="room"/>
+            <ATTR key="serialNr" value="JEQ0048864"/>
+            <ATTR key="subType" value="blindActuator"/>
+            <STATE key="CommandAccepted" value="yes" measured="2012-12-02 07:41:41"/>
+            <STATE key="deviceMsg" value="on (to broadcast)" measured="2012-12-02 16:57:19"/>
+            <STATE key="motor" value="stop:on" measured="2012-12-02 16:57:19"/>
+            <STATE key="state" value="zu" measured="2012-12-02 16:57:19"/>
+        </CUL_HM>
+    </CUL_HM_LIST>
+
+    <FileLog_LIST>
+    </FileLog_LIST>
+</FHZINFO>

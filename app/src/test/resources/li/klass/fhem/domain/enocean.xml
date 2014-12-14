@@ -1,0 +1,125 @@
+<EnOcean_LIST>
+    <EnOcean name="device" state="on" sets="BI:off B0:on A0 AI B0 BI C0 CI D0 DI released" attrs="room group comment alias eventMap IODev do_not_notify:1,0 ignore:0,1 dummy:0,1 showtime:1,0 loglevel:0,1,2,3,4,5,6 model:other,MD15-FtL-HE,SR04,SR04P,SR04PT,SR04PST,SR04PMS,FAH60,FAH63,FIH63,FABH63,FBH63,FIBH63,PM101,FTF55,FSB61,FSM61 subType:dimmCtrl,sensor,FAH,FTF,contact,FBH,MD15,switch,windowHandle,SR04,dimmer actualTemp fp_Erdgeschoss icon webCmd">
+        <INT key="DEF" value="FFB2D381"/>
+        <INT key="NAME" value="device"/>
+        <INT key="NR" value="70"/>
+        <INT key="STATE" value="on"/>
+        <INT key="TYPE" value="EnOcean"/>
+        <INT key="IODev" value="TCM310"/>
+        <ATTR key="eventMap" value="BI:off B0:on"/>
+        <ATTR key="loglevel" value="2"/>
+        <ATTR key="room" value="room"/>
+        <ATTR key="subType" value="switch"/>
+        <STATE key="state" value="on" measured="2012-11-05 19:26:10"/>
+    </EnOcean>
+    <EnOcean name="device1" state="153" sets="A0 AI B0 BI C0 CI D0 DI released" attrs="room group comment alias eventMap IODev do_not_notify:1,0 ignore:0,1 dummy:0,1 showtime:1,0 loglevel:0,1,2,3,4,5,6 model:other,MD15-FtL-HE,SR04,SR04P,SR04PT,SR04PST,SR04PMS,FAH60,FAH63,FIH63,FABH63,FBH63,FIBH63,PM101,FTF55,FSB61,FSM61 subType:dimmCtrl,sensor,FAH,FTF,contact,FBH,MD15,switch,windowHandle,SR04,dimmer actualTemp fp_Erdgeschoss icon webCmd">
+        <INT key="CFGFN" value=""/>
+        <INT key="DEF" value="0103915C"/>
+        <INT key="LASTIODev" value="TCM310"/>
+        <INT key="MSGCNT" value="10"/>
+        <INT key="NAME" value="device1"/>
+        <INT key="NR" value="81"/>
+        <INT key="STATE" value="153"/>
+        <INT key="TCM310_DestinationID" value="FFFFFFFF"/>
+        <INT key="TCM310_MSGCNT" value="10"/>
+        <INT key="TCM310_RSSI" value="92"/>
+        <INT key="TCM310_SecurityLevel" value="0"/>
+        <INT key="TCM310_SubTelNum" value="1"/>
+        <INT key="TCM310_TIME" value="2012-11-04 23:55:11"/>
+        <INT key="TYPE" value="EnOcean"/>
+        <INT key="IODev" value="TCM310"/>
+        <ATTR key="room" value="room"/>
+        <ATTR key="subType" value="sensor"/>
+        <STATE key="D0" value="1" measured="2012-11-04 23:55:11"/>
+        <STATE key="D1" value="1" measured="2012-11-04 23:55:11"/>
+        <STATE key="D2" value="1" measured="2012-11-04 23:55:11"/>
+        <STATE key="D3" value="1" measured="2012-11-04 23:55:11"/>
+        <STATE key="sensor1" value="153" measured="2012-11-04 23:55:11"/>
+        <STATE key="sensor2" value="0" measured="2012-11-04 23:55:11"/>
+        <STATE key="sensor3" value="0" measured="2012-11-04 23:55:11"/>
+        <STATE key="state" value="153" measured="2012-11-04 23:55:11"/>
+    </EnOcean>
+    <EnOcean name="device2" state="on" sets="BI:off B0:on A0 AI B0 BI C0 CI D0 DI released" attrs="room group comment alias eventMap IODev do_not_notify:1,0 ignore:0,1 dummy:0,1 showtime:1,0 loglevel:0,1,2,3,4,5,6 model:other,MD15-FtL-HE,SR04,SR04P,SR04PT,SR04PST,SR04PMS,FAH60,FAH63,FIH63,FABH63,FBH63,FIBH63,PM101,FTF55,FSB61,FSM61 subType:dimmCtrl,sensor,FAH,FTF,contact,FBH,MD15,switch,windowHandle,SR04,dimmer actualTemp fp_Erdgeschoss icon webCmd">
+        <INT key="DEF" value="01039779"/>
+        <INT key="LASTIODev" value="TCM310"/>
+        <INT key="MSGCNT" value="230"/>
+        <INT key="NAME" value="device2"/>
+        <INT key="NR" value="75"/>
+        <INT key="STATE" value="on"/>
+        <INT key="TCM310_DestinationID" value="FFFFFFFF"/>
+        <INT key="TCM310_MSGCNT" value="230"/>
+        <INT key="TCM310_RSSI" value="80"/>
+        <INT key="TCM310_SecurityLevel" value="0"/>
+        <INT key="TCM310_SubTelNum" value="1"/>
+        <INT key="TCM310_TIME" value="2012-11-05 19:41:52"/>
+        <INT key="TYPE" value="EnOcean"/>
+        <INT key="IODev" value="TCM310"/>
+        <ATTR key="eventMap" value="released:off B0:on"/>
+        <ATTR key="room" value="room"/>
+        <ATTR key="subType" value="switch"/>
+        <STATE key="state" value="on" measured="2012-11-05 19:41:52"/>
+    </EnOcean>
+    <EnOcean name="device3" state="BI" sets="off on B0 BI teach" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev do_not_notify:1,0 ignore:0,1 dummy:0,1 showtime:1,0 actualTemp angleMax:slider,-180,20,180 angleMin:slider,-180,20,180 angleTime:0,1,2,3,4,5,6 comMode:biDir,uniDir destinationID devChannel dimValueOn gwCmd:blindCmd,controlVar,dimming,fanStage,setpointBasic,setpointShift,switching humidityRefDev manufID:001,002,003,004,005,006,007,008,009,00A,00B,00C,00D,00E,00F,010,011,012,013,014,015,016,017,018,019,01A,01B,01C,7FF model:other,FAE14,FHK14,FSB14,FSB61,FSB70,FSM12,FSM61,FT55,FTS12 rampTime repeatingAllowed:yes,no scaleDecimals:0,1,2,3,4,5,6,7,8,9 scaleMax scaleMin securityLevel:unencrypted sensorMode:switch,pushbutton shutTime shutTimeCloses subDef subDef0 subDefI subType:COSensor.01,FRW,MD15,PM101,autoMeterReading.00,autoMeterReading.01,autoMeterReading.02,autoMeterReading.03,contact,digitalInput.01,digitalInput.02,environmentApp,gateway,keycard,lightCtrlState.01,lightCtrlState.02,lightSensor.01,lightSensor.02,lightSensor.03,lightTempOccupSensor.01,lightTempOccupSensor.02,lightTempOccupSensor.03,manufProfile,multiFuncSensor,occupSensor.01,occupSensor.02,occupSensor.03,particlesSensor.01,radonSensor.01,raw,roomSensorControl.01,roomSensorControl.02,roomSensorControl.05,roomSensorControl.18,roomSensorControl.19,roomSensorControl.1A,roomSensorControl.1B,roomSensorControl.1C,roomSensorControl.1D,roomSensorControl.1F,sensor,shutterCtrlState.01,switch,tempCtrlState.01,tempHumiCO2Sensor.01,tempHumiSensor.02,tempSensor.01,tempSensor.02,tempSensor.03,tempSensor.04,tempSensor.05,tempSensor.06,tempSensor.07,tempSensor.08,tempSensor.09,tempSensor.0A,tempSensor.0B,tempSensor.10,tempSensor.11,tempSensor.12,tempSensor.13,tempSensor.14,tempSensor.15,te mpSensor.16,tempSensor.17,tempSensor.18,tempSensor.19,tempSensor.1A,tempSensor.1B,tempSensor.20,tempSensor.30,vocSensor.01,windowHandle subTypeSet:COSensor.01,FRW,MD15,PM101,autoMeterReading.00,autoMeterReading.01,autoMeterReading.02,autoMeterReading.03,contact,digitalInput.01,digitalInput.02,environmentApp,gateway,keycard,lightCtrlState.01,lightCtrlState.02,lightSensor.01,lightSensor.02,lightSensor.03,lightTempOccupSensor.01,lightTempOccupSensor.02,lightTempOccupSensor.03,manufProfile,multiFuncSensor,occupSensor.01,occupSensor.02,occupSensor.03,particlesSensor.01,radonSensor.01,raw,roomSensorControl.01,roomSensorControl.02,roomSensorControl.05,roomSensorControl.18,roomSensorControl.19,roomSensorControl.1A,roomSensorControl.1B,roomSensorControl.1C,roomSensorControl.1D,roomSensorControl.1F,sensor,shutterCtrlState.01,switch,tempCtrlState.01,tempHumiCO2Sensor.01,tempHumiSensor.02,tempSensor.01,tempSensor.02,tempSensor.03,tempSensor.04,tempSensor.05,tempSensor.06,tempSensor.07,tempSensor.08,tempSensor.09,tempSensor.0A,tempSensor.0B,tempSensor.10,tempSensor.11,tempSensor.12,tempSensor.13,tempSensor.14,tempSensor.15 ,tempSensor.16,tempSensor.17,tempSensor.18,tempSensor.19,tempSensor.1A,tempSensor.1B,tempSensor.20,tempSensor.30,vocSensor.01,windowHandle switchMode:switch,pushbutton switchType:direction,universal,central temperatureRefDev event-on-change-reading event-on-update-reading event-min-interval stateFormat devStateIcon devStateStyle fp_Test_EG icon room_map sortby structexclude webCmd">
+        <INT key="DEF" value="FFABCDEF"/>
+        <INT key="LASTInputDev" value="RpiTCM"/>
+        <INT key="MSGCNT" value="8"/>
+        <INT key="NAME" value="device3"/>
+        <INT key="NR" value="87"/>
+        <INT key="RpiTCM_DestinationID" value="FFFFFFFF"/>
+        <INT key="RpiTCM_MSGCNT" value="8"/>
+        <INT key="RpiTCM_PacketType" value="1"/>
+        <INT key="RpiTCM_RSSI" value="-73"/>
+        <INT key="RpiTCM_SecurityLevel" value="0"/>
+        <INT key="RpiTCM_SubTelNum" value="1"/>
+        <INT key="RpiTCM_TIME" value="2013-11-05 22:46:41"/>
+        <INT key="STATE" value="BI"/>
+        <INT key="TYPE" value="EnOcean"/>
+        <INT key="IODev" value="RpiTCM"/>
+        <ATTR key="devStateIcon" value="B0:on BI:off"/>
+        <ATTR key="eventMap" value="off on"/>
+        <ATTR key="gwCmd" value="switching"/>
+        <ATTR key="manufID" value="00D"/>
+        <ATTR key="model" value="FSR14"/>
+        <ATTR key="room" value="room"/>
+        <ATTR key="subDef" value="FFFABCDE"/>
+        <ATTR key="subType" value="gateway"/>
+        <ATTR key="webCmd" value="on:off"/>
+        <STATE key="block" value="unlock" measured="2013-11-04 22:15:40"/>
+        <STATE key="buttons" value="pressed" measured="2013-11-05 22:46:41"/>
+        <STATE key="channelB" value="BI" measured="2013-11-05 22:46:41"/>
+        <STATE key="state" value="BI" measured="2013-11-05 22:46:41"/>
+    </EnOcean>
+    <EnOcean name="shutter" state="closed" sets="Ab Auf Stop closes down opens position:slider,0,5,100 stop teach up" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev do_not_notify:1,0 ignore:0,1 dummy:0,1 showtime:1,0 actualTemp angleMax:slider,-180,20,180 angleMin:slider,-180,20,180 angleTime:0,1,2,3,4,5,6 comMode:biDir,uniDir destinationID devChannel dimValueOn gwCmd:blindCmd,controlVar,dimming,fanStage,setpointBasic,setpointShift,switching humidityRefDev manufID:001,002,003,004,005,006,007,008,009,00A,00B,00C,00D,00E,00F,010,011,012,013,014,015,016,017,018,019,01A,01B,01C,7FF model:other,FAE14,FHK14,FSB14,FSB61,FSB70,FSM12,FSM61,FT55,FTS12 rampTime repeatingAllowed:yes,no scaleDecimals:0,1,2,3,4,5,6,7,8,9 scaleMax scaleMin securityLevel:unencrypted sensorMode:switch,pushbutton shutTime shutTimeCloses subDef subDef0 subDefI subType:COSensor.01,FRW,MD15,PM101,autoMeterReading.00,autoMeterReading.01,autoMeterReading.02,autoMeterReading.03,contact,digitalInput.01,digitalInput.02,environmentApp,gateway,keycard,lightCtrlState.01,lightCtrlState.02,lightSensor.01,lightSensor.02,lightSensor.03,lightTempOccupSensor.01,lightTempOccupSensor.02,lightTempOccupSensor.03,manufProfile,multiFuncSensor,occupSensor.01,occupSensor.02,occupSensor.03,particlesSensor.01,radonSensor.01,raw,roomSensorControl.01,roomSensorControl.02,roomSensorControl.05,roomSensorControl.18,roomSensorControl.19,roomSensorControl.1A,roomSensorControl.1B,roomSensorControl.1C,roomSensorControl.1D,roomSensorControl.1F,sensor,shutterCtrlState.01,switch,tempCtrlState.01,tempHumiCO2Sensor.01,tempHumiSensor.02,tempSensor.01,tempSensor.02,tempSensor.03,tempSensor.04,tempSensor.05,tempSensor.06,tempSensor.07,tempSensor.08,tempSensor.09,tempSensor.0A,tempSensor.0B,tempSensor.10,tempSensor.11,tempSensor.12,tempSensor.13,tempSensor.14,tempSensor.15,te mpSensor.16,tempSensor.17,tempSensor.18,tempSensor.19,tempSensor.1A,tempSensor.1B,tempSensor.20,tempSensor.30,vocSensor.01,windowHandle subTypeSet:COSensor.01,FRW,MD15,PM101,autoMeterReading.00,autoMeterReading.01,autoMeterReading.02,autoMeterReading.03,contact,digitalInput.01,digitalInput.02,environmentApp,gateway,keycard,lightCtrlState.01,lightCtrlState.02,lightSensor.01,lightSensor.02,lightSensor.03,lightTempOccupSensor.01,lightTempOccupSensor.02,lightTempOccupSensor.03,manufProfile,multiFuncSensor,occupSensor.01,occupSensor.02,occupSensor.03,particlesSensor.01,radonSensor.01,raw,roomSensorControl.01,roomSensorControl.02,roomSensorControl.05,roomSensorControl.18,roomSensorControl.19,roomSensorControl.1A,roomSensorControl.1B,roomSensorControl.1C,roomSensorControl.1D,roomSensorControl.1F,sensor,shutterCtrlState.01,switch,tempCtrlState.01,tempHumiCO2Sensor.01,tempHumiSensor.02,tempSensor.01,tempSensor.02,tempSensor.03,tempSensor.04,tempSensor.05,tempSensor.06,tempSensor.07,tempSensor.08,tempSensor.09,tempSensor.0A,tempSensor.0B,tempSensor.10,tempSensor.11,tempSensor.12,tempSensor.13,tempSensor.14,tempSensor.15 ,tempSensor.16,tempSensor.17,tempSensor.18,tempSensor.19,tempSensor.1A,tempSensor.1B,tempSensor.20,tempSensor.30,vocSensor.01,windowHandle switchMode:switch,pushbutton switchType:direction,universal,central temperatureRefDev event-on-change-reading event-on-update-reading event-min-interval stateFormat devStateIcon devStateStyle fp_Test_EG icon room_map sortby structexclude webCmd">
+        <INT key="DEF" value="FFABCDEF"/>
+        <INT key="LASTInputDev" value="RpiTCM"/>
+        <INT key="MSGCNT" value="6"/>
+        <INT key="NAME" value="shutter"/>
+        <INT key="NR" value="101"/>
+        <INT key="RpiTCM_DestinationID" value="FFFFFFFF"/>
+        <INT key="RpiTCM_MSGCNT" value="6"/>
+        <INT key="RpiTCM_PacketType" value="1"/>
+        <INT key="RpiTCM_RSSI" value="-73"/>
+        <INT key="RpiTCM_SecurityLevel" value="0"/>
+        <INT key="RpiTCM_SubTelNum" value="1"/>
+        <INT key="RpiTCM_TIME" value="2013-11-05 21:45:21"/>
+        <INT key="STATE" value="closed"/>
+        <INT key="TYPE" value="EnOcean"/>
+        <INT key="IODev" value="RpiTCM"/>
+        <ATTR key="devStateIcon" value="B0.*:shutter_open BI.*:shutter_closed released.*:shutter_3"/>
+        <ATTR key="eventMap" value="closes:Ab opens:Auf stop:Stop"/>
+        <ATTR key="fp_Test_EG" value="480,752,5,"/>
+        <ATTR key="manufID" value="00D"/>
+        <ATTR key="model" value="FSB14"/>
+        <ATTR key="room" value="room"/>
+        <ATTR key="shutTime" value="18"/>
+        <ATTR key="shutTimeCloses" value="20"/>
+        <ATTR key="subDef" value="FFFABCDE"/>
+        <ATTR key="subType" value="manufProfile"/>
+        <ATTR key="webCmd" value="Auf:Stop:Ab"/>
+        <STATE key="anglePos" value="90" measured="2013-11-05 21:45:00"/>
+        <STATE key="buttons" value="pressed" measured="2013-11-05 21:45:21"/>
+        <STATE key="endPosition" value="closed" measured="2013-11-05 21:45:21"/>
+        <STATE key="position" value="100" measured="2013-11-05 21:45:00"/>
+        <STATE key="state" value="closed" measured="2013-11-05 21:45:21"/>
+    </EnOcean>
+</EnOcean_LIST>

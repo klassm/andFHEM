@@ -1,0 +1,45 @@
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<FHZINFO>
+    <FHEMduino_PT2262_LIST>
+        <FHEMduino_PT2262 name="Elro_FB1_B" state="off"
+                          sets="off:noArg on:noArg on-till on-for-timer blink toggle off-for-timer intervals off-till"
+                          attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev ITrepetition do_not_notify:0,1 showtime:0,1 ignore:0,1 model:itremote,itswitch,itdimmerevent-on-change-reading event-on-update-reading event-min-interval stateFormat Heizung Heizung_map Licht Licht_map devStateIcon devStateStyle fp_Grundriss icon sortby structexclude webCmd widgetOverride userattr">
+            <INT key="CODE" value="0FFFFF0FFF"/>
+            <INT key="DEF" value="0FFFFF0FFF 0F F0"/>
+            <INT key="NAME" value="Elro_FB1_B"/>
+            <INT key="NR" value="98"/>
+            <INT key="STATE" value="off"/>
+            <INT key="TYPE" value="FHEMduino_PT2262"/>
+            <INT key="XMIT" value="0fffff0fff"/>
+            <INT key="XMIToff" value="f0"/>
+            <INT key="XMITon" value="0f"/>
+            <INT key="IODev" value="FHEMduino"/>
+            <ATTR key="IODev" value="FHEMduino"/>
+            <ATTR key="group" value="Fernbedienung"/>
+            <STATE key="state" value="off" measured="2014-11-12 23:06:02"/>
+        </FHEMduino_PT2262>
+    </FHEMduino_PT2262_LIST>
+</FHZINFO>

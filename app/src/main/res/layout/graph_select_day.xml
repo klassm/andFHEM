@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             style="@style/deviceDetailTable"
+             android:layout_marginTop="10dp"
+             android:padding="10dp">
+
+    <TableRow>
+
+        <TextView
+            style="@style/deviceDetailDescription"
+            android:text="@string/startDate"/>
+
+        <TextView
+            android:id="@+id/startDate"
+            style="@style/deviceDetailContent"
+            android:text="@string/dummy_date"/>
+
+        <Button
+            android:id="@+id/startDateSet"
+            style="@style/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/change"/>
+    </TableRow>
+
+    <TableRow>
+
+        <TextView
+            style="@style/deviceDetailDescription"
+            android:text="@string/startTime"/>
+
+        <TextView
+            android:id="@+id/startTime"
+            style="@style/deviceDetailContent"
+            android:text="@string/dummy_time"/>
+
+        <Button
+            android:id="@+id/startTimeSet"
+            style="@style/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/change"/>
+    </TableRow>
+
+    <TableRow>
+
+        <TextView
+            style="@style/deviceDetailDescription"
+            android:text="@string/endDate"/>
+
+        <TextView
+            android:id="@+id/endDate"
+            style="@style/deviceDetailContent"
+            android:text="@string/dummy_date"/>
+
+        <Button
+            android:id="@+id/endDateSet"
+            style="@style/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/change"/>
+    </TableRow>
+
+    <TableRow>
+
+        <TextView
+            style="@style/deviceDetailDescription"
+            android:text="@string/endTime"/>
+
+        <TextView
+            android:id="@+id/endTime"
+            style="@style/deviceDetailContent"
+            android:text="@string/dummy_time"/>
+
+        <Button
+            android:id="@+id/endTimeSet"
+            style="@style/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/change"/>
+    </TableRow>
+
+    <Button
+        android:id="@+id/okButton"
+        style="@style/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/okButton"/>
+
+</TableLayout>

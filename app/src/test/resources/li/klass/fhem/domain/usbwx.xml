@@ -1,0 +1,65 @@
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<FHZINFO>
+    <USBWX_LIST>
+        <USBWX name="device" state="T: 18.2  H: 60  " sets="USBWX_1 =&gt; No Set function (?) implemented"
+               attrs="room comment alias loglevel:0,1,2,3,4,5,6 eventMap">
+            <INT key="CODE" value="1"/>
+            <INT key="DEF" value="1 0 0"/>
+            <INT key="NAME" value="device"/>
+            <INT key="NR" value="219"/>
+            <INT key="STATE" value="T: 18.2  H: 60  "/>
+            <INT key="TIME" value="2011-12-29 21:47:24"/>
+            <INT key="TYPE" value="USBWX"/>
+            <INT key="corr1" value="0"/>
+            <INT key="corr2" value="0"/>
+            <INT key="corr3" value="0"/>
+            <INT key="corr4" value="0"/>
+            <ATTR key="room" value="keller"/>
+            <STATE key="dewpoint" value="10.3" measured="2011-12-29 21:47:24"/>
+            <STATE key="dewpoint2" value="8.9" measured="2011-03-21 19:27:07"/>
+            <STATE key="humidity" value="60" measured="2011-12-29 21:47:24"/>
+            <STATE key="temperature" value="18.2" measured="2011-12-29 21:47:24"/>
+            <STATE key="room" value="room"/>
+        </USBWX>
+    </USBWX_LIST>
+
+    <!-- this is not a real log file, but just a dummy to testFunctionalityIsSetOnAllDevices whether graphs are shown! -->
+    <FileLog_LIST>
+        <FileLog name="FileLog_device" state="active" sets="reopen"
+                 attrs="room comment alias disable:0,1 logtype nrarchive archivedir archivecmd eventMap">
+            <INT key="DEF" value="./log/device-%Y.log device:T:.*"/>
+            <INT key="NAME" value="FileLog_device"/>
+            <INT key="NR" value="49"/>
+            <INT key="REGEXP" value="device:T:.*"/>
+            <INT key="STATE" value="active"/>
+            <INT key="TYPE" value="FileLog"/>
+            <INT key="currentlogfile" value="./log/FileLog_device-2011.log"/>
+            <INT key="logfile" value="./log/FileLog_device-%Y.log"/>
+            <ATTR key="logtype" value="FileLog_device:Temp/Rain,wetterstation:Wind/Hum,text"/>
+            <ATTR key="room" value="room"/>
+        </FileLog>
+    </FileLog_LIST>
+</FHZINFO>

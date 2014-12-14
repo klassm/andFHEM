@@ -1,0 +1,72 @@
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<FHZINFO>
+    <SMLUSB_LIST>
+        <SMLUSB name="eg.hw.sz.haushalt" state="W: 210.00 - Bezug" sets=""
+                attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings loglevel:0,1,2,3,4,5,6event-on-change-reading event-on-update-reading event-min-interval stateFormat custom_graph devStateIcon devStateStyle icon sortby webCmd widgetOverride">
+            <INT key="CHANGED" value=""/>
+            <INT key="DEF" value="/dev/ttyUSB0"/>
+            <INT key="DeviceName" value="/dev/ttyUSB0"/>
+            <INT key="FD" value="12"/>
+            <INT key="NAME" value="eg.hw.sz.haushalt"/>
+            <INT key="NR" value="65"/>
+            <INT key="PARTIAL" value=""/>
+            <INT key="STATE" value="W: 210.00 - Bezug"/>
+            <INT key="TYPE" value="SMLUSB"/>
+            <ATTR key="event-min-interval" value="*:600"/>
+            <ATTR key="room" value="HWR"/>
+            <STATE key="Momentanleistung" value="210.00" measured="2014-09-14 12:07:33"/>
+            <STATE key="Zählerstand-Bezug-Total" value="6519.68" measured="2014-09-14 12:07:33"/>
+            <STATE key="Zählerstand-Tarif-1-Bezug" value="6519.68" measured="2014-09-14 12:07:33"/>
+            <STATE key="statZählerstand-Bezug-Total"
+                   value="Hour: 0.0 Day: 1.0 Month: 54.9 Year: 54.9 (since: 2014-09-05 )"
+                   measured="2014-09-14 12:02:44"/>
+            <STATE key="statZählerstand-Bezug-TotalLast" value="Hour: 0.2 Day: 6.4 Month: - Year: -"
+                   measured="2014-09-14 11:59:55"/>
+        </SMLUSB>
+    </SMLUSB_LIST>
+
+    <statistics_LIST>
+        <statistics name="eg.hw.sz.haushalt.stat" state="Updated stats for: eg.hw.sz.haushalt"
+                    sets="resetStatistics:all,eg.hw.sz.haushalt doStatistics:noArg"
+                    attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings disable:0,1 dayChangeTime deltaReadings durationReadings excludedReadings minAvgMaxReadings periodChangePreset specialDeltaPeriodHours singularReadings tendencyReadings event-on-change-reading event-on-update-reading event-min-interval stateFormat custom_graph devStateIcon devStateStyle icon sortby webCmd widgetOverride">
+            <INT key="DEF" value="eg.hw.sz.haushalt"/>
+            <INT key="DEV_REGEXP" value="eg.hw.sz.haushalt"/>
+            <INT key="NAME" value="eg.hw.sz.haushalt.stat"/>
+            <INT key="NR" value="85"/>
+            <INT key="NTFY_ORDER" value="10-eg.hw.sz.haushalt.stat"/>
+            <INT key="PREFIX" value="stat"/>
+            <INT key="STATE" value="Updated stats for: eg.hw.sz.haushalt"/>
+            <INT key="TYPE" value="statistics"/>
+            <ATTR key="deltaReadings" value="Zählerstand-Bezug-Total"/>
+            <STATE key="monitoredDevicesSMLUSB" value="eg.hw.sz.haushalt"
+                   measured="2014-09-12 21:17:51"/>
+            <STATE key="nextPeriodChangeCalc" value="2014-09-14 12:59:55"
+                   measured="2014-09-14 11:59:55"/>
+            <STATE key="state" value="Updated stats for: eg.hw.sz.haushalt"
+                   measured="2014-09-14 12:12:45"/>
+        </statistics>
+    </statistics_LIST>
+</FHZINFO>

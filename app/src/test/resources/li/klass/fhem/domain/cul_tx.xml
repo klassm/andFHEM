@@ -1,0 +1,68 @@
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<FHZINFO>
+    <CUL_TX_LIST>
+        <CUL_TX name="device" state="T: 16.5 H: 73.0" sets=""
+                attrs="room group comment alias eventMap IODev do_not_notify:1,0 ignore:0,1 showtime:1,0 loglevel:0,1,2,3,4,5,6 icon webCmd">
+            <INT key="CODE" value="10"/>
+            <INT key="CUL_0_MSGCNT" value="4751"/>
+            <INT key="CUL_0_RAWMSG" value="tA01466566CFB"/>
+            <INT key="CUL_0_RSSI" value="-76.5"/>
+            <INT key="CUL_0_TIME" value="2012-06-13 23:02:56"/>
+            <INT key="DEF" value="10"/>
+            <INT key="LASTIODev" value="CUL_0"/>
+            <INT key="MSGCNT" value="4751"/>
+            <INT key="NAME" value="device"/>
+            <INT key="NR" value="79"/>
+            <INT key="STATE" value="T: 16.5 H: 73.0"/>
+            <INT key="TYPE" value="CUL_TX"/>
+            <INT key="corr" value="0"/>
+            <INT key="lastH" value="1339621320"/>
+            <INT key="lastT" value="1339621376"/>
+            <INT key="minsecs" value="0"/>
+            <ATTR key="room" value="room"/>
+            <STATE key="humidity" value="73.0" measured="2012-06-13 23:02:00"/>
+            <STATE key="state" value="T: 16.5 H: 73.0" measured="2012-06-13 23:02:56"/>
+            <STATE key="temperature" value="16.5" measured="2012-06-13 23:02:56"/>
+        </CUL_TX>
+    </CUL_TX_LIST>
+
+    <!-- this is not a real log file, but just a dummy to testFunctionalityIsSetOnAllDevices whether graphs are shown! -->
+    <FileLog_LIST>
+        <FileLog name="FileLog_device" state="active" sets="reopen"
+                 attrs="room comment alias disable:0,1 logtype nrarchive archivedir archivecmd eventMap">
+            <INT key="DEF" value="./log/device-%Y.log CUL_TX_116:T:.*"/>
+            <INT key="NAME" value="FileLog_device"/>
+            <INT key="NR" value="49"/>
+            <INT key="REGEXP" value="device:T:.*"/>
+            <INT key="STATE" value="active"/>
+            <INT key="TYPE" value="FileLog"/>
+            <INT key="currentlogfile" value="./log/device-2011.log"/>
+            <INT key="logfile" value="./log/device-%Y.log"/>
+            <ATTR key="logtype" value="device:Temp/Rain,wetterstation:Wind/Hum,text"/>
+            <ATTR key="room" value="room"/>
+        </FileLog>
+    </FileLog_LIST>
+</FHZINFO>

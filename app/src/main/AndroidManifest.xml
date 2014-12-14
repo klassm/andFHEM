@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<manifest
+    xmlns:tools="http://schemas.android.com/tools"
+    package="li.klass.fhem"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:versionCode="330"
+    android:versionName="3.3.0">
+
+<uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="com.android.vending.BILLING"/>
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE"/>
+    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
+    <permission android:name="li.klass.fhem.permissions.EXTERNAL"/>
+    <permission android:name="li.klass.fhem.permissions.SEND_COMMAND"/>
+
+    <uses-feature android:name="android.hardware.touchscreen"/>
+
+    <supports-screens
+        android:anyDensity="true"
+        android:largeScreens="true"
+        android:normalScreens="true"
+        android:smallScreens="true"
+        android:xlargeScreens="true"/>
+
+    <application
+        android:name="li.klass.fhem.AndFHEMApplication"
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/ApplicationTheme">
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version"/>
+
+        <activity android:name="li.klass.fhem.activities.DuplicateInstallActivity"/>
+        <activity
+            android:name="li.klass.fhem.activities.StartupActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/app_name"
+            android:launchMode="singleTask"
+            android:noHistory="true"
+            android:alwaysRetainTaskState="true"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="li.klass.fhem.activities.AndFHEMMainActivity"
+            android:alwaysRetainTaskState="true"
+            android:launchMode="singleTask"
+            android:configChanges="orientation|keyboardHidden|screenSize"/>
+
+        <activity android:name="li.klass.fhem.activities.PreferencesActivity"/>
+
+        <activity
+            android:name="li.klass.fhem.activities.graph.ChartingActivity"
+            android:theme="@style/Theme.AppCompat"/>
+        <activity android:name="li.klass.fhem.activities.graph.ChartingDateSelectionActivity"/>
+
+        <activity
+            android:name="com.google.android.gms.ads.AdActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"/>
+
+        <activity android:name="li.klass.fhem.appwidget.type.small.SmallWidgetSelectionActivity">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
+            </intent-filter>
+        </activity>
+
+        <activity android:name="li.klass.fhem.appwidget.type.medium.MediumWidgetSelectionActivity">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
+            </intent-filter>
+        </activity>
+
+        <activity android:name="li.klass.fhem.appwidget.type.big.BigWidgetSelectionActivity">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="li.klass.fhem.appwidget.view.widget.activity.TargetStateAdditionalInformationActivity"
+            android:launchMode="singleInstance"
+            android:noHistory="true"
+            android:theme="@style/Theme.Dialog.Light"/>
+
+        <receiver
+            android:name="li.klass.fhem.appwidget.type.small.SmallAppWidgetProvider"
+            android:exported="true"
+            android:label="@string/widget_small">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/andfhem_appwidget_small"/>
+        </receiver>
+
+        <receiver
+            android:name="li.klass.fhem.appwidget.type.medium.MediumAppWidgetProvider"
+            android:exported="true"
+            android:label="@string/widget_medium">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/andfhem_appwidget_medium"/>
+        </receiver>
+
+        <receiver
+            android:name="li.klass.fhem.appwidget.type.big.BigAppWidgetProvider"
+            android:exported="true"
+            android:label="@string/widget_big">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/andfhem_appwidget_big"/>
+        </receiver>
+
+        <service
+            android:name="li.klass.fhem.appwidget.service.AppWidgetUpdateService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="li.klass.fhem.constants.Actions.REDRAW_WIDGET"/>
+                <action android:name="li.klass.fhem.constants.Actions.WIDGET_UPDATE"/>
+                <action android:name="li.klass.fhem.constants.Actions.REDRAW_ALL_WIDGETS"/>
+                <action android:name="li.klass.fhem.constants.Actions.WIDGET_REQUEST_UPDATE"/>
+                <action android:name="li.klass.fhem.constants.Actions.REMOTE_UPDATE_FINISHED"/>
+            </intent-filter>
+        </service>
+
+        <service
+            android:name="li.klass.fhem.service.intent.ConnectionsIntentService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="li.klass.fhem.constants.Actions.CONNECTIONS_LIST"/>
+                <action android:name="li.klass.fhem.constants.Actions.CONNECTION_GET"/>
+                <action android:name="li.klass.fhem.constants.Actions.CONNECTION_UPDATE"/>
+                <action android:name="li.klass.fhem.constants.Actions.CONNECTION_CREATE"/>
+                <action android:name="li.klass.fhem.constants.Actions.CONNECTION_DELETE"/>
+                <action android:name="li.klass.fhem.constants.Actions.CONNECTION_SET_SELECTED"/>
+                <action android:name="li.klass.fhem.constants.Actions.CONNECTION_GET_SELECTED"/>
+            </intent-filter>
+        </service>
+
+        <service
+            android:name="li.klass.fhem.service.intent.ExternalApiService"
+            android:exported="true"
+            android:permission="li.klass.fhem.permissions.EXTERNAL">
+            <intent-filter>
+                <action android:name="li.klass.fhem.constants.Actions.EXT_DEVICE_NAMES"/>
+            </intent-filter>
+        </service>
+
+        <service
+            android:name="li.klass.fhem.service.intent.LicenseIntentService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="li.klass.fhem.constants.Actions.IS_PREMIUM"/>
+            </intent-filter>
+        </service>
+
+        <service
+            android:name="li.klass.fhem.appwidget.service.AppWidgetListViewUpdateRemoteViewsService"
+            android:permission="android.permission.BIND_REMOTEVIEWS"/>
+
+        <service
+            android:name="li.klass.fhem.appwidget.service.AppWidgetListViewUpdateRemoteViewsService"
+            android:permission="android.permission.BIND_REMOTEVIEWS"/>
+
+        <service
+            android:name="li.klass.fhem.service.intent.AppActionsIntentService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="li.klass.fhem.constants.Actions.LOAD_PROPERTIES"/>
+            </intent-filter>
+        </service>
+
+
+        <service
+            android:name="li.klass.fhem.service.intent.RoomListUpdateIntentService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="li.klass.fhem.constants.Actions.DO_REMOTE_UPDATE"/>
+            </intent-filter>
+        </service>
+
+        <service
+            android:name="li.klass.fhem.service.intent.FavoritesIntentService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="li.klass.fhem.constants.Actions.GET_FAVORITE_LIST"/>
+                <action android:name="li.klass.fhem.constants.Actions.ADD_FAVORITE"/>
+                <action android:name="li.klass.fhem.constants.Actions.REMOVE_FAVORITE"/>
+                <action android:name="li.klass.fhem.constants.Actions.FAVORITES_PRESENT"/>
+                <action android:name="li.klass.fhem.constants.Actions.FAVORITES_IS_FAVORITE"/>
+            </intent-filter>
+        </service>
+
+        <service
+            android:name="li.klass.fhem.service.intent.DeviceIntentService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="li.klass.fhem.constants.Actions.DEVICE_GRAPH"/>
+                <action android:name="li.klass.fhem.constants.Actions.TOGGLE_STATE"/>
+                <action android:name="li.klass.fhem.constants.Actions.SET_STATE"/>
+                <action android:name="li.klass.fhem.constants.Actions.DEVICE_DIM"/>
+                <action android:name="li.klass.fhem.constants.Actions.DEVICE_SET_MODE"/>
+                <action android:name="li.klass.fhem.constants.Actions.DEVICE_SET_DAY_TEMPERATURE"/>
+                <action android:name="li.klass.fhem.constants.Actions.DEVICE_SET_NIGHT_TEMPERATURE"/>
+                <action android:name="li.klass.fhem.constants.Actions.DEVICE_SET_WINDOW_OPEN_TEMPERATURE"/>
+                <action android:name="li.klass.fhem.constants.Actions.DEVICE_SET_ECO_TEMPERATURE"/>
+                <action android:name="li.klass.fhem.constants.Actions.DEVICE_SET_COMFORT_TEMPERATURE"/>
+                <action android:name="li.klass.fhem.constants.Actions.DEVICE_RESET_WEEK_PROFILE"/>
+                <action android:name="li.klass.fhem.constants.Actions.DEVICE_SET_WEEK_PROFILE"/>
+                <action android:name="li.klass.fhem.constants.Actions.DEVICE_SET_DESIRED_TEMPERATURE"/>
+                <action android:name="li.klass.fhem.constants.Actions.DEVICE_RENAME"/>
+                <action android:name="li.klass.fhem.constants.Actions.DEVICE_DELETE"/>
+                <action android:name="li.klass.fhem.constants.Actions.DEVICE_MOVE_ROOM"/>
+                <action android:name="li.klass.fhem.constants.Actions.DEVICE_SET_ALIAS"/>
+                <action android:name="li.klass.fhem.constants.Actions.DEVICE_REFRESH_STATE"/>
+                <action android:name="li.klass.fhem.constants.Actions.DEVICE_REFRESH_VALUES"/>
+                <action android:name="li.klass.fhem.constants.Actions.DEVICE_WIDGET_TOGGLE"/>
+                <action android:name="li.klass.fhem.constants.Actions.DEVICE_TIMER_NEW"/>
+                <action android:name="li.klass.fhem.constants.Actions.DEVICE_TIMER_MODIFY"/>
+                <action android:name="li.klass.fhem.constants.Actions.DEVICE_SET_SUB_STATE"/>
+                <action android:name="li.klass.fhem.constants.Actions.GCM_REMOVE_ID"/>
+                <action android:name="li.klass.fhem.constants.Actions.GCM_ADD_SELF"/>
+                <action android:name="li.klass.fhem.constants.Actions.RESEND_LAST_FAILED_COMMAND"/>
+            </intent-filter>
+        </service>
+
+        <service
+            android:name="li.klass.fhem.service.intent.SendCommandIntentService"
+            android:exported="true"
+            android:permission="li.klass.fhem.permissions.SEND_COMMAND">
+            <intent-filter>
+                <action android:name="li.klass.fhem.constants.Actions.EXECUTE_COMMAND"/>
+                <action android:name="li.klass.fhem.constants.Actions.RECENT_COMMANDS_LIST"/>
+            </intent-filter>
+        </service>
+
+        <service
+            android:name="li.klass.fhem.service.intent.NotificationIntentService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="li.klass.fhem.constants.Actions.NOTIFICATION_SET_FOR_DEVICE"/>
+                <action android:name="li.klass.fhem.constants.Actions.NOTIFICATION_GET_FOR_DEVICE"/>
+                <action android:name="li.klass.fhem.constants.Actions.NOTIFICATION_TRIGGER"/>
+            </intent-filter>
+        </service>
+
+        <service
+            android:name="li.klass.fhem.service.intent.ImageIntentService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="li.klass.fhem.constants.Actions.LOAD_IMAGE"/>
+            </intent-filter>
+        </service>
+
+        <service
+            android:name="li.klass.fhem.service.intent.RoomListIntentService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="li.klass.fhem.constants.Actions.REMOTE_UPDATE_FINISHED"/>
+                <action android:name="li.klass.fhem.constants.Actions.GET_ALL_ROOMS_DEVICE_LIST"/>
+                <action android:name="li.klass.fhem.constants.Actions.GET_ROOM_NAME_LIST"/>
+                <action android:name="li.klass.fhem.constants.Actions.GET_ROOM_DEVICE_LIST"/>
+                <action android:name="li.klass.fhem.constants.Actions.GET_DEVICE_FOR_NAME"/>
+                <action android:name="li.klass.fhem.constants.Actions.UPDATE_DEVICE_WITH_UPDATE_MAP"/>
+                <action android:name="li.klass.fhem.constants.Actions.UPDATE_IF_REQUIRED"/>
+                <action android:name="li.klass.fhem.constants.Actions.REMOTE_UPDATE_RESET"/>
+            </intent-filter>
+        </service>
+
+        <activity android:name="li.klass.fhem.activities.base.DeviceNameSelectionActivity"/>
+
+        <activity
+            android:name="li.klass.fhem.activities.locale.ConditionQueryLocaleSettingActivity"
+            android:exported="true"
+            android:icon="@drawable/ic_launcher"
+            android:label="@string/localeDeviceState">
+            <intent-filter>
+                <action android:name="com.twofortyfouram.locale.intent.action.EDIT_CONDITION"/>
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="li.klass.fhem.activities.locale.SendCommandLocaleSettingActivity"
+            android:exported="true"
+            android:icon="@drawable/ic_launcher"
+            android:label="@string/localeSendCommandPlugin">
+            <intent-filter>
+                <action android:name="com.twofortyfouram.locale.intent.action.EDIT_SETTING"/>
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="li.klass.fhem.activities.locale.ConnectionChangeLocaleSettingActivity"
+            android:exported="true"
+            android:icon="@drawable/ic_launcher"
+            android:label="@string/localeConnectionChangePlugin">
+            <intent-filter>
+                <action android:name="com.twofortyfouram.locale.intent.action.EDIT_SETTING"/>
+            </intent-filter>
+        </activity>
+
+        <receiver
+            android:name="li.klass.fhem.activities.locale.ConditionQueryLocaleReceiver"
+            android:exported="true"
+            tools:ignore="ExportedReceiver">
+            <intent-filter>
+                <action android:name="com.twofortyfouram.locale.intent.action.QUERY_CONDITION"/>
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name="li.klass.fhem.activities.locale.FireSettingLocaleReceiver"
+            android:exported="true"
+            tools:ignore="ExportedReceiver">
+            <intent-filter>
+                <action android:name="com.twofortyfouram.locale.intent.action.FIRE_SETTING"/>
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name="li.klass.fhem.gcm.AndFHEMGCMBroadcastReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION"/>
+
+                <category android:name="li.klass.fhem"/>
+            </intent-filter>
+        </receiver>
+
+        <service android:name="li.klass.fhem.gcm.GCMIntentService"/>
+
+        <activity
+            android:name="li.klass.fhem.activities.FHEMUrlActivity"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.NoDisplay">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+
+                <data android:scheme="fhem"/>
+            </intent-filter>
+        </activity>
+    </application>
+</manifest>

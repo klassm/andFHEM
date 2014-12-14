@@ -1,0 +1,78 @@
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<FHZINFO>
+    <CUL_EM_LIST>
+        <CUL_EM name="device" state="CNT: 62 CUM: 1254.521  5MIN: 0.000  TOP: 0.000" sets=""
+                attrs="room comment alias IODev do_not_notify:0,1 showtime:0,1 model:EMEM,EMWZ,EMGZ loglevel ignore:0,1 eventMap">
+            <INT key="BasicFeePerMonth" value="0"/>
+            <INT key="CODE" value="5"/>
+            <INT key="CUL_MSGCNT" value="3111"/>
+            <INT key="CUL_RSSI" value="-76.5"/>
+            <INT key="CUL_TIME" value="2011-12-29 21:46:16"/>
+            <INT key="CostPerUnit" value="0"/>
+            <INT key="DEF" value="5"/>
+            <INT key="LASTIODev" value="CUL"/>
+            <INT key="MSGCNT" value="3111"/>
+            <INT key="NAME" value="device"/>
+            <INT key="NR" value="45"/>
+            <INT key="STATE" value="CNT: 62 CUM: 1254.521  5MIN: 0.000  TOP: 0.000"/>
+            <INT key="TYPE" value="CUL_EM"/>
+            <INT key="corr1" value="0.01"/>
+            <INT key="corr2" value="0.001"/>
+            <INT key="IODev" value="CUL"/>
+            <ATTR key="room" value="room"/>
+            <ATTR key="SUM_GRAPH_DIVISION_FACTOR" value="2"/>
+            <STATE key="RAW" value="CNT: 62 CUM: 9337  5MIN: 0  TOP: 0" measured="2011-12-29 21:46:16"/>
+            <STATE key="basis" value="1245184" measured="2011-12-28 11:31:19"/>
+            <STATE key="cum_day" value="CUM_DAY: 9.490 CUM: 1254.521 COST: 0.00" measured="2011-12-29 00:01:18"/>
+            <STATE key="cum_month" value="CUM_MONTH: 60.385 CUM: 1198.963 COST: 0.00" measured="2011-12-01 00:02:18"/>
+            <STATE key="current" value="0" measured="2011-12-29 21:46:16"/>
+            <STATE key="current_cnt" value="0" measured="2011-12-29 21:46:16"/>
+            <STATE key="peak" value="0" measured="2011-12-29 21:46:16"/>
+            <STATE key="peak_cnt" value="0" measured="2011-12-29 21:46:16"/>
+            <STATE key="seqno" value="62" measured="2011-12-29 21:46:16"/>
+            <STATE key="total" value="1254.521" measured="2011-12-29 21:46:16"/>
+            <STATE key="total_cnt" value="9337" measured="2011-12-29 21:46:16"/>
+            <STATE key="tsecs" value="1325191576" measured="2011-12-29 21:46:16"/>
+        </CUL_EM>
+    </CUL_EM_LIST>
+
+    <!-- this is not a real log file, but just a dummy to testFunctionalityIsSetOnAllDevices whether graphs are shown! -->
+    <FileLog_LIST>
+        <FileLog name="FileLog_device" state="active" sets="reopen"
+                 attrs="room comment alias disable:0,1 logtype nrarchive archivedir archivecmd eventMap">
+            <INT key="DEF" value="./log/device-%Y.log device:T:.*"/>
+            <INT key="NAME" value="FileLog_device"/>
+            <INT key="NR" value="49"/>
+            <INT key="REGEXP" value="device:T:.*"/>
+            <INT key="STATE" value="active"/>
+            <INT key="TYPE" value="FileLog"/>
+            <INT key="currentlogfile" value="./log/FileLog_device-2011.log"/>
+            <INT key="logfile" value="./log/FileLog_device-%Y.log"/>
+            <ATTR key="logtype" value="FileLog_device:Temp/Rain,wetterstation:Wind/Hum,text"/>
+            <ATTR key="room" value="room"/>
+        </FileLog>
+    </FileLog_LIST>
+</FHZINFO>

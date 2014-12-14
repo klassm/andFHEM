@@ -1,0 +1,95 @@
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<FHZINFO>
+    <SONOSPLAYER_LIST>
+        <SONOSPLAYER name="device" state="STOPPED =&gt; WDR 2 Rhein und Ruhr:"
+                     sets="AddURIToQueue Balance:slider,-100,1,100 CrossfadeMode CurrentTrackPosition EmptyPlaylist LoadPlaylist LoadRadio Mute MuteT Next Pause Play PlayURI PlayURITemp Previous Repeat SavePlaylist Shuffle Speak Stop Track Volume:slider,0,1,100 VolumeD VolumeRestore VolumeSave VolumeU"
+                     attrs="room group comment alias eventMap userReadings disable:0,1 generateVolumeSlider:0,1 generateVolumeEvent:0,1 generateInfoAnswerOnSet:0,1 generateSomethingChangedEvent:0,1 generateInfoSummarize1 generateInfoSummarize2 generateInfoSummarize3 generateInfoSummarize4 stateVariable:TransportState,NumberOfTracks,Track,TrackDuration,Title,Artist,Album,OriginalTrackNumber,AlbumArtist,Sender,SenderCurrent,SenderInfo,StreamAudio,NormalAudio,AlbumArtURI,Volume,Mute,Shuffle,Repeat,CrossfadeMode,Balance,HeadphoneConnected,Presence,RoomName,SaveRoomName,PlayerType,Location,SoftwareRevision,SerialNum,InfoSummarize1,InfoSummarize2,InfoSummarize3,InfoSummarize4 model minVolume maxVolume minVolumeHeadphone maxVolumeHeadphone devStateIcon icon sortby webCmd">
+            <INT key="DEF" value="RINCON_000E5876CAE201400_MR"/>
+            <INT key="NAME" value="device"/>
+            <INT key="NR" value="31"/>
+            <INT key="STATE" value="STOPPED =&gt; WDR 2 Rhein und Ruhr:"/>
+            <INT key="TRIGGERTIME" value="2013-04-17 07:53:07"/>
+            <INT key="TYPE" value="SONOSPLAYER"/>
+            <INT key="UDN" value="RINCON_000E5876CAE201400_MR"/>
+            <ATTR key="devStateIcon" value=".*:icoSONOSPLAYER_icon-S3"/>
+            <ATTR key="generateInfoSummarize1"
+                  value="&lt;NormalAudio&gt;&lt;Artist prefix=&quot;(&quot; suffix=&quot;)&quot;/&gt;&lt;Title prefix=&quot; '&quot; suffix=&quot;'&quot; ifempty=&quot;[Keine Musikdatei]&quot;/&gt;&lt;Album prefix=&quot; vom Album '&quot; suffix=&quot;'&quot;/&gt;&lt;/NormalAudio&gt; &lt;StreamAudio&gt;&lt;Sender suffix=&quot;:&quot;/&gt;&lt;SenderCurrent prefix=&quot; '&quot; suffix=&quot;' -&quot;/&gt;&lt;SenderInfo prefix=&quot; &quot;/&gt;&lt;/StreamAudio&gt;"/>
+            <ATTR key="generateInfoSummarize2"
+                  value="&lt;TransportState/&gt;&lt;InfoSummarize1 prefix=&quot; =&gt; &quot;/&gt;"/>
+            <ATTR key="generateInfoSummarize3"
+                  value="&lt;Volume prefix=&quot;Lautstaerke: &quot;/&gt;&lt;Mute instead=&quot; ~ Kein Ton&quot; ifempty=&quot; ~ Ton An&quot; emptyval=&quot;0&quot;/&gt; ~ Balance: &lt;Balance ifempty=&quot;Mitte&quot; emptyval=&quot;0&quot;/&gt;&lt;HeadphoneConnected instead=&quot; ~ Kopfhoerer aktiv&quot; ifempty=&quot; ~ Kein Kopfhoerer&quot; emptyval=&quot;0&quot;/&gt;"/>
+            <ATTR key="generateVolumeSlider" value="1"/>
+            <ATTR key="group" value="Mobil"/>
+            <ATTR key="icon" value="icoSONOSPLAYER_icon-S3"/>
+            <ATTR key="model" value="Sonos_S3"/>
+            <ATTR key="room" value="room"/>
+            <ATTR key="stateVariable" value="InfoSummarize2"/>
+            <ATTR key="webCmd" value="Play:Pause:Previous:Next:VolumeD:VolumeU:MuteT"/>
+            <STATE key="Balance" value="0" measured="2013-04-12 08:09:00"/>
+            <STATE key="CrossfadeMode" value="0" measured="2013-04-12 09:48:27"/>
+            <STATE key="CurrentTempPlaying" value="0" measured="2013-04-15 23:26:43"/>
+            <STATE key="LastGetActionName" value="INITIALIZE" measured="2013-04-15 23:26:43"/>
+            <STATE key="LastGetActionResult" value="" measured="2013-04-15 23:26:43"/>
+            <STATE key="LastSetActionName" value="INITIALIZE" measured="2013-04-15 23:26:43"/>
+            <STATE key="LastSetActionResult" value="" measured="2013-04-15 23:26:43"/>
+            <STATE key="LastSubscriptionsRenew" value="Renewed: 1" measured="2013-04-17 10:40:01"/>
+            <STATE key="Mute" value="0" measured="2013-04-12 10:25:53"/>
+            <STATE key="Repeat" value="0" measured="2013-04-12 09:48:27"/>
+            <STATE key="Shuffle" value="0" measured="2013-04-12 09:48:27"/>
+            <STATE key="Volume" value="24" measured="2013-04-12 17:10:03"/>
+            <STATE key="currentAlbum" value="" measured="2013-04-16 08:32:13"/>
+            <STATE key="currentAlbumArtURI" value="./www/images/default/SONOSPLAYER/Sonos_Mobil_AlbumArt.gif"
+                   measured="2013-04-17 07:16:17"/>
+            <STATE key="currentAlbumArtist" value="" measured="2013-04-17 07:16:07"/>
+            <STATE key="currentArtist" value="" measured="2013-04-17 07:16:07"/>
+            <STATE key="currentNormalAudio" value="" measured="2013-04-17 07:16:17"/>
+            <STATE key="currentOriginalTrackNumber" value="" measured="2013-04-16 00:17:25"/>
+            <STATE key="currentSender" value="WDR 2 Rhein und Ruhr" measured="2013-04-17 07:16:17"/>
+            <STATE key="currentSenderCurrent" value="" measured="2013-04-15 23:26:56"/>
+            <STATE key="currentSenderInfo" value="" measured="2013-04-17 07:53:07"/>
+            <STATE key="currentStreamAudio" value="1" measured="2013-04-17 07:16:17"/>
+            <STATE key="currentTitle" value="" measured="2013-04-17 07:16:07"/>
+            <STATE key="currentTrack" value="1" measured="2013-04-17 07:16:17"/>
+            <STATE key="currentTrackDuration" value="0:00:00" measured="2013-04-17 07:16:07"/>
+            <STATE key="infoSummarize1" value="WDR 2 Rhein und Ruhr:" measured="2013-04-17 07:53:07"/>
+            <STATE key="infoSummarize2" value="STOPPED =&gt; WDR 2 Rhein und Ruhr:" measured="2013-04-17 07:53:07"/>
+            <STATE key="infoSummarize3" value="Lautstaerke: 24 ~ Ton An ~ Balance: Mitte ~ Kein Kopfhoerer"
+                   measured="2013-04-15 22:59:14"/>
+            <STATE key="infoSummarize4" value="" measured="2013-04-15 23:26:56"/>
+            <STATE key="location" value="http://192.168.178.30:1400/xml/device_description.xml"
+                   measured="2013-04-12 08:09:00"/>
+            <STATE key="numberOfTracks" value="2" measured="2013-04-17 07:16:17"/>
+            <STATE key="playerType" value="S3" measured="2013-04-12 08:09:00"/>
+            <STATE key="presence" value="appeared" measured="2013-04-12 08:09:15"/>
+            <STATE key="roomName" value="Mobil" measured="2013-04-12 08:09:00"/>
+            <STATE key="saveRoomName" value="Mobil" measured="2013-04-12 08:09:00"/>
+            <STATE key="serialNum" value="00-0E-58-76-CA-E2:5" measured="2013-04-12 08:09:00"/>
+            <STATE key="softwareRevision" value="4.0" measured="2013-04-12 08:09:00"/>
+            <STATE key="state" value="STOPPED =&gt; WDR 2 Rhein und Ruhr:" measured="2013-04-17 07:53:07"/>
+            <STATE key="transportState" value="STOPPED" measured="2013-04-17 07:53:07"/>
+        </SONOSPLAYER>
+    </SONOSPLAYER_LIST>
+</FHZINFO>

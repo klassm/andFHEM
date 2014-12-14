@@ -1,0 +1,52 @@
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+
+<FHZINFO>
+    <WifiLight_LIST>
+        <WifiLight name="WZ_Stehlampen" state="on" sets="on off dim dimup dimdown HSV RGB sync pair unpair" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings widget:0,1 gamma dimStep defaultColor">
+            <INT key="CONNECTION" value="bridge-V3"/>
+            <INT key="DEF" value="RGBW2 bridge-V3:192.168.1.9"/>
+            <INT key="IP" value="192.168.1.9"/>
+            <INT key="LEDTYPE" value="RGBW2"/>
+            <INT key="NAME" value="WZ_Stehlampen"/>
+            <INT key="NR" value="187"/>
+            <INT key="PORT" value="8899"/>
+            <INT key="SLOT" value="5"/>
+            <INT key="STATE" value="on"/>
+            <INT key="TYPE" value="WifiLight"/>
+            <ATTR key="Licht" value="Licht"/>
+            <ATTR key="fp_Grundriss" value="120,938,0,"/>
+            <ATTR key="group" value="Licht"/>
+            <ATTR key="icon" value="light_floor_lamp"/>
+            <ATTR key="room" value="Wohnzimmer"/>
+            <ATTR key="webCmd" value="on:off"/>
+            <STATE key="BRIGHTNESS" value="100" measured="2014-04-07 22:47:50"/>
+            <STATE key="HUE" value="180" measured="2014-04-07 22:47:50"/>
+            <STATE key="RGB" value="00FFFF" measured="2014-04-07 22:47:50"/>
+            <STATE key="SATURATION" value="100" measured="2014-04-07 22:47:50"/>
+            <STATE key="state" value="on" measured="2014-04-07 22:47:50"/>
+        </WifiLight>
+    </WifiLight_LIST>
+</FHZINFO>

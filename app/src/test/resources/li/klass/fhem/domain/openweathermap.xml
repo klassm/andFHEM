@@ -1,0 +1,61 @@
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<FHZINFO>
+    <openweathermap_LIST>
+        <openweathermap name="device" state="active" sets="stationById stationByGeo stationByName send:noArg"
+                        attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings do_not_notify:0,1 owoGetUrl owoSendUrl owoInterval:600,900,1800,3600 owoApiKey owoProxy owoStation owoUser owoUseXml:1,0 owoDebug:0,1 owoRaw:0,1 owoTimestamp:0,1 owoSrc00 owoSrc01 owoSrc02 owoSrc03 owoSrc04 owoSrc05 owoSrc06 owoSrc07 owoSrc08 owoSrc09 owoSrc10 owoSrc11 owoSrc12 owoSrc13 owoSrc14 owoSrc15 owoSrc16 owoSrc17 owoSrc18 owoSrc19 event-on-change-reading event-on-update-reading event-min-interval stateFormat devStateIcon devStateStyle icon invertState onOffDevice sortby toggleDevice webCmd">
+            <INT key="NAME" value="device"/>
+            <INT key="NR" value="38"/>
+            <INT key="STATE" value="active"/>
+            <INT key="TYPE" value="openweathermap"/>
+            <ATTR key="owoDebug" value="1"/>
+            <ATTR key="room" value="room"/>
+            <ATTR key="owoGetUrl" value="http://api.openweathermap.org/data/2.5/weather"/>
+            <ATTR key="owoInterval" value="1800"/>
+            <ATTR key="owoSendUrl" value="http://openweathermap.org/data/post"/>
+            <ATTR key="owoUseXml" value="1"/>
+            <STATE key="_dataSource" value="www.openweathermap.org" measured="2013-09-11 14:51:03"/>
+            <STATE key="_decodedWith" value="XML" measured="2013-09-11 14:51:03"/>
+            <STATE key="_httpResponse_g" value="200 OK" measured="2013-09-11 14:51:02"/>
+            <STATE key="c_clouds" value="92" measured="2013-09-11 14:51:03"/>
+            <STATE key="c_humidity" value="94" measured="2013-09-11 14:51:03"/>
+            <STATE key="c_lastWx" value="2013-09-11T12:37:07" measured="2013-09-11 14:51:03"/>
+            <STATE key="c_pressure" value="1012" measured="2013-09-11 14:51:03"/>
+            <STATE key="c_stationCountry" value="NL" measured="2013-09-11 14:51:03"/>
+            <STATE key="c_stationId" value="2754652" measured="2013-09-11 14:51:03"/>
+            <STATE key="c_stationLat" value="50.8837" measured="2013-09-11 14:51:03"/>
+            <STATE key="c_stationLon" value="5.9815" measured="2013-09-11 14:51:03"/>
+            <STATE key="c_stationName" value="Heerlen" measured="2013-09-11 14:51:03"/>
+            <STATE key="c_sunrise" value="2013-09-11T05:06:19" measured="2013-09-11 14:51:03"/>
+            <STATE key="c_sunset" value="2013-09-11T17:58:36" measured="2013-09-11 14:51:03"/>
+            <STATE key="c_tempMax" value="20.6" measured="2013-09-11 14:51:03"/>
+            <STATE key="c_tempMin" value="16.7" measured="2013-09-11 14:51:03"/>
+            <STATE key="c_temperature" value="18.1" measured="2013-09-11 14:51:03"/>
+            <STATE key="c_windDir" value="326.5" measured="2013-09-11 14:51:03"/>
+            <STATE key="c_windSpeed" value="5.31" measured="2013-09-11 14:51:03"/>
+            <STATE key="state" value="active" measured="2013-09-11 14:51:03"/>
+        </openweathermap>
+    </openweathermap_LIST>
+</FHZINFO>

@@ -1,0 +1,47 @@
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<FHZINFO>
+    <IT_LIST>
+        <IT name="device" state="on" sets="off on" attrs="room comment alias
+    IODev switch_rfmode:1,0 do_not_notify:1,0 ignore:0,1 dummy:1,0
+    model:itremote,itswitch,itdimmer loglevel:0,1,2,3,4,5,6 eventMap">
+            <INT key="DEF" value="F00000000F FF F0"/>
+            <INT key="NAME" value="device"/>
+            <INT key="NR" value="6"/>
+            <INT key="STATE" value="on"/>
+            <INT key="TYPE" value="IT"/>
+            <INT key="XMIT" value="f00000000f"/>
+            <INT key="XMITdimdown" value="00"/>
+            <INT key="XMITdimup" value="00"/>
+            <INT key="XMIToff" value="f0"/>
+            <INT key="XMITon" value="ff"/>
+            <INT key="IODev" value="mycul"/>
+            <ATTR key="IODev" value="mycul"/>
+            <ATTR key="model" value="itswitch"/>
+            <ATTR key="room" value="room"/>
+            <STATE key="state" value="on" measured="2012-05-06 19:40:03"/>
+        </IT>
+    </IT_LIST>
+</FHZINFO>

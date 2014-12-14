@@ -1,0 +1,65 @@
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<!--
+Log file 01.02.2014
+2014-01-12_21:15:22 Raumfuehler T: 21 H: 34 P: 967 BAT: ok
+2014-01-12_21:25:30 Raumfuehler temperature: 21.1
+2014-01-12_21:25:30 Raumfuehler humidity: 34
+2014-01-12_21:25:30 Raumfuehler pressure: 967
+2014-01-12_21:25:30 Raumfuehler forecast: rain
+2014-01-12_21:25:30 Raumfuehler battery: ok
+2014-01-12_21:25:30 Raumfuehler T: 21.1 H: 34 P: 967 BAT: ok
+2014-01-12_21:35:38 Raumfuehler temperature: 21.2
+2014-01-12_21:35:38 Raumfuehler humidity: 34
+2014-01-12_21:35:38 Raumfuehler pressure: 967
+2014-01-12_21:35:38 Raumfuehler forecast: rain
+2014-01-12_21:35:38 Raumfuehler battery: ok
+2014-01-12_21:35:38 Raumfuehler T: 21.2 H: 34 P: 967 BAT: ok
+2014-01-12_21:45:46 Raumfuehler temperature: 21.2
+2014-01-12_21:45:46 Raumfuehler humidity: 34
+2014-01-12_21:45:46 Raumfuehler pressure: 967
+2014-01-12_21:45:46 Raumfuehler forecast: rain
+2014-01-12_21:45:46 Raumfuehler battery: ok
+-->
+<FHZINFO>
+    <TRX_LIST>
+        <TRX name="device" state="opened" sets="RFXTRXUSB => No Set function (?) implemented"
+            attrs="room comment alias do_not_notify:1,0 dummy:1,0 do_not_init:1:0 addvaltrigger:1:0 longids loglevel:0,1,2,3,4,5,6 icon webCmd eventMap">
+            <INT key="DEF" value="COM3@38400 noinit"/>
+            <INT key="DeviceName" value="COM3@38400"/>
+            <INT key="NAME" value="device"/>
+            <INT key="NR" value="18"/>
+            <INT key="PARTIAL" value=""/>
+            <INT key="RAWMSG" value="085005682f00003c59"/>
+            <INT key="RFXTRXUSB_MSGCNT" value="2409"/>
+            <INT key="RFXTRXUSB_TIME" value="2012-04-10 16:29:48"/>
+            <INT key="STATE" value="opened"/>
+            <INT key="TYPE" value="TRX"/>
+            <ATTR key="do_not_init" value="1"/>
+            <ATTR key="longids" value="TX3_T"/>
+            <ATTR key="room" value="room"/>
+        </TRX>
+    </TRX_LIST>
+</FHZINFO>

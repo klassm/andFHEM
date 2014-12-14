@@ -1,0 +1,141 @@
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<FHZINFO>
+    <FHT_LIST>
+        <FHT name="device" state="???"
+             sets="day day-temp:on,off,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,10.0,10.5,11.0,11.5,12.0,12.5,13.0,13.5,14.0,14.5,15.0,15.5,16.0,16.5,17.0,17.5,18.0,18.5,19.0,19.5,20.0,20.5,21.0,21.5,22.0,22.5,23.0,23.5,24.0,24.5,25.0,25.5,26.0,26.5,27.0,27.5,28.0,28.5,29.0,29.5,30.0 desired-temp:on,off,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,10.0,10.5,11.0,11.5,12.0,12.5,13.0,13.5,14.0,14.5,15.0,15.5,16.0,16.5,17.0,17.5,18.0,18.5,19.0,19.5,20.0,20.5,21.0,21.5,22.0,22.5,23.0,23.5,24.0,24.5,25.0,25.5,26.0,26.5,27.0,27.5,28.0,28.5,29.0,29.5,30.0 fri-from1 fri-from2 fri-to1 fri-to2 holiday1 holiday2 hour lowtemp-offset manu-temp:on,off,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,10.0,10.5,11.0,11.5,12.0,12.5,13.0,13.5,14.0,14.5,15.0,15.5,16.0,16.5,17.0,17.5,18.0,18.5,19.0,19.5,20.0,20.5,21.0,21.5,22.0,22.5,23.0,23.5,24.0,24.5,25.0,25.5,26.0,26.5,27.0,27.5,28.0,28.5,29.0,29.5,30.0 minute mode mon-from1 mon-from2 mon-to1 mon-to2 month night-temp:on,off,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,10.0,10.5,11.0,11.5,12.0,12.5,13.0,13.5,14.0,14.5,15.0,15.5,16.0,16.5,17.0,17.5,18.0,18.5,19.0,19.5,20.0,20.5,21.0,21.5,22.0,22.5,23.0,23.5,24.0,24.5,25.0,25.5,26.0,26.5,27.0,27.5,28.0,28.5,29.0,29.5,30.0 report1 report2 sat-from1 sat-from2 sat-to1 sat-to2 sun-from1 sun-from2 sun-to1 sun-to2 thu-from1 thu-from2 thu-to1 thu-to2 tue-from1 tue-from2 tue-to1 tue-to2 wed-from1 wed-from2 wed-to1 wed-to2 windowopen-temp:on,off,6.0,6.5,7.0,7.5,8.0,8.5,9.0,9.5,10.0,10.5,11.0,11.5,12.0,12.5,13.0,13.5,14.0,14.5,15.0,15.5,16.0,16.5,17.0,17.5,18.0,18.5,19.0,19.5,20.0,20.5,21.0,21.5,22.0,22.5,23.0,23.5,24.0,24.5,25.0,25.5,26.0,26.5,27.0,27.5,28.0,28.5,29.0,29.5,30.0 year"
+             attrs="room group comment alias eventMap IODev do_not_notify:1,0 model:fht80b dummy:1,0 showtime:1,0 loglevel:0,1,2,3,4,5,6 retrycount minfhtbuffer lazy tmpcorr ignore:1,0 event-on-update-reading event-on-change-reading fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon onOffDevice webCmd">
+            <INT key="CODE" value="194c"/>
+            <INT key="CUL_MSGCNT" value="11290"/>
+            <INT key="CUL_RAWMSG" value="T194C00A600E5"/>
+            <INT key="CUL_RSSI" value="-87.5"/>
+            <INT key="CUL_TIME" value="2011-12-05 16:33:11"/>
+            <INT key="DEF" value="194c"/>
+            <INT key="LASTIODev" value="CUL"/>
+            <INT key="MSGCNT" value="11290"/>
+            <INT key="NAME" value="device"/>
+            <INT key="NR" value="47"/>
+            <INT key="STATE" value="???"/>
+            <INT key="TYPE" value="FHT"/>
+            <INT key="IODev" value="CUL"/>
+            <ATTR key="mode" value="auto"/>
+            <ATTR key="retrycount" value="3"/>
+            <ATTR key="room" value="room"/>
+            <STATE key="3at-from1" value="06:00" measured="2012-05-02 17:31:41"/>
+            <STATE key="sun-from1" value="10:00" measured="2011-12-24 13:21:17"/>
+            <STATE key="sun-from2" value="13:00" measured="2011-12-24 13:21:18"/>
+            <STATE key="sun-to1" value="17:00" measured="2011-12-24 13:21:18"/>
+            <STATE key="sun-to2" value="24:00" measured="2011-12-24 13:21:18"/>
+            <STATE key="sat-from1" value="09:00" measured="2011-12-24 13:21:17"/>
+            <STATE key="sat-from2" value="24:00" measured="2011-12-24 13:21:18"/>
+            <STATE key="sat-to1" value="17:00" measured="2011-12-24 13:21:18"/>
+            <STATE key="sat-to2" value="24:00" measured="2011-12-24 13:21:18"/>
+            <STATE key="fri-from1" value="10:00" measured="2011-12-24 13:21:17"/>
+            <STATE key="fri-from2" value="24:00" measured="2011-12-24 13:21:18"/>
+            <STATE key="fri-to1" value="17:30" measured="2011-12-24 13:21:18"/>
+            <STATE key="fri-to2" value="24:00" measured="2011-12-24 13:21:18"/>
+            <STATE key="thu-from1" value="10:00" measured="2011-12-24 13:21:17"/>
+            <STATE key="thu-from2" value="24:00" measured="2011-12-24 13:21:18"/>
+            <STATE key="thu-to1" value="17:00" measured="2011-12-24 13:21:18"/>
+            <STATE key="thu-to2" value="24:00" measured="2011-12-24 13:21:18"/>
+            <STATE key="wed-from1" value="10:00" measured="2011-12-24 13:21:17"/>
+            <STATE key="wed-from2" value="24:00" measured="2011-12-24 13:21:18"/>
+            <STATE key="wed-to1" value="17:00" measured="2011-12-24 13:21:18"/>
+            <STATE key="wed-to2" value="24:00" measured="2011-12-24 13:21:18"/>
+            <STATE key="tue-from1" value="10:00" measured="2011-12-24 13:21:17"/>
+            <STATE key="tue-from2" value="24:00" measured="2011-12-24 13:21:18"/>
+            <STATE key="tue-to1" value="17:00" measured="2011-12-24 13:21:18"/>
+            <STATE key="tue-to2" value="24:00" measured="2011-12-24 13:21:18"/>
+            <STATE key="mon-from1" value="10:00" measured="2011-12-24 13:21:17"/>
+            <STATE key="mon-from2" value="24:00" measured="2011-12-24 13:21:18"/>
+            <STATE key="mon-to1" value="17:00" measured="2011-12-24 13:21:18"/>
+            <STATE key="mon-to2" value="09:00" measured="2011-12-24 13:21:18"/>
+            <STATE key="warnings" value="Window open" measured="2012-08-15 11:58:52"/>
+
+            <STATE key="battery" value="ok" measured="2012-08-15 11:58:52"/>
+            <STATE key="day-temp" value="22.0" measured="2012-08-08 22:04:39"/>
+            <STATE key="desired-temp" value="6.5" measured="2012-08-14 23:08:35"/>
+            <STATE key="night-temp" value="6.5" measured="2012-08-08 22:04:40"/>
+            <STATE key="windowopen-temp" value="6.5" measured="2012-08-08 22:04:40"/>
+            <STATE key="measured-temp" value="23.1" measured="2012-08-15 12:00:00"/>
+
+            <STATE key="actuator" value="0%" measured="2011-12-05 16:33:11"/>
+        </FHT>
+
+        <FHT name="fht_multi_actuators" state="???"
+             sets="day day-temp desired-temp fri-from1 fri-from2 fri-to1 fri-to2 holiday1 holiday2 hour lowtemp-offset manu-temp minute mode mon-from1 mon-from2 mon-to1 mon-to2 month night-temp report1 report2 sat-from1 sat-from2 sat-to1 sat-to2 sun-from1 sun-from2 sun-to1 sun-to2 thu-from1 thu-from2 thu-to1 thu-to2 tue-from1 tue-from2 tue-to1 tue-to2 wed-from1 wed-from2 wed-to1 wed-to2 windowopen-temp year"
+             attrs="room comment alias IODev do_not_notify:0,1 model;fht80b dummy:0,1 showtime:0,1 loglevel:0,1,2,3,4,5,6 retrycount minfhtbuffer lazy tmpcorr ignore:0,1 icon webCmd eventMap">
+            <INT key="CODE" value="0b0c"/>
+            <INT key="CUL_0_MSGCNT" value="2828"/>
+            <INT key="CUL_0_RAWMSG" value="T0B0C00A600F3"/>
+            <INT key="CUL_0_RSSI" value="-80.5"/>
+            <INT key="CUL_0_TIME" value="2013-09-05 22:41:08"/>
+            <INT key="DEF" value="0b0c"/>
+            <INT key="LASTIODev" value="CUL_0"/>
+            <INT key="MSGCNT" value="2828"/>
+            <INT key="NAME" value="fht_multi_actuators"/>
+            <INT key="NR" value="52"/>
+            <INT key="STATE" value="???"/>
+            <INT key="TYPE" value="FHT"/>
+            <INT key="IODev" value="CUL_0"/>
+            <ATTR key="alias" value="Heizung Eßzimmer"/>
+            <ATTR key="retrycount" value="3"/>
+            <ATTR key="room" value="room"/>
+            <STATE key="actuator" value="0%" measured="2013-09-05 22:41:08"/>
+            <STATE key="actuator1" value="pair" measured="2013-01-08 19:40:07"/>
+            <STATE key="actuator2" value="pair" measured="2013-01-08 19:40:08"/>
+        </FHT>
+    </FHT_LIST>
+
+    <FileLog_LIST>
+        <FileLog name="FileLog_device" state="active" sets="reopen"
+                 attrs="room comment alias disable:0,1 logtype nrarchive archivedir archivecmd eventMap">
+            <INT key="DEF" value="./log/FHT_194c-%Y.log device"/>
+            <INT key="NAME" value="FileLog_device"/>
+            <INT key="NR" value="48"/>
+            <INT key="REGEXP" value="device"/>
+            <INT key="STATE" value="active"/>
+            <INT key="TYPE" value="FileLog"/>
+            <INT key="currentlogfile" value="./log/device-2011.log"/>
+            <INT key="logfile" value="./log/device-%Y.log"/>
+            <ATTR key="logtype" value="fht:Temp/Act,text"/>
+            <ATTR key="room" value="room"/>
+        </FileLog>
+
+        <FileLog name="FileLog_fht_multi_actuators" state="active" sets="reopen"
+                 attrs="room comment alias disable:0,1 logtype nrarchive archivedir archivecmd eventMap">
+            <INT key="DEF" value="./log/FHT_194c-%Y.log device"/>
+            <INT key="NAME" value="FileLog_fht_multi_actuators"/>
+            <INT key="NR" value="48"/>
+            <INT key="REGEXP" value="fht_multi_actuators"/>
+            <INT key="STATE" value="active"/>
+            <INT key="TYPE" value="FileLog"/>
+            <INT key="currentlogfile" value="./log/device-2011.log"/>
+            <INT key="logfile" value="./log/device-%Y.log"/>
+            <ATTR key="logtype" value="fht:Temp/Act,text"/>
+            <ATTR key="room" value="room"/>
+        </FileLog>
+    </FileLog_LIST>
+</FHZINFO>

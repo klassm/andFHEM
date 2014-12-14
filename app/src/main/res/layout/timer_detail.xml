@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        style="@style/timerDetail"
+        android:orientation="vertical">
+
+        <TableLayout
+            android:id="@+id/changeValueButtonHolder"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TableRow tools:ignore="UselessParent">
+
+                <Button
+                    android:id="@+id/save"
+                    style="@style/button"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:text="@string/save"
+                    />
+
+                <Button
+                    android:id="@+id/reset"
+                    style="@style/button"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/reset"
+                    />
+            </TableRow>
+        </TableLayout>
+
+
+        <TableLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:stretchColumns="0">
+
+            <TableRow android:gravity="center_vertical">
+
+                <TextView
+                    style="@style/deviceOverviewDescription"
+                    android:text="@string/timer_name"/>
+
+                <EditText
+                    android:id="@+id/timerNameInput"
+                    style="@style/deviceOverviewContent"
+                    android:gravity="center"
+                    android:inputType="text"
+                    android:maxWidth="300dp"
+                    android:minWidth="200dp"/>
+            </TableRow>
+
+            <TableRow
+                android:gravity="center_vertical|end">
+
+                <TextView
+                    style="@style/deviceOverviewDescription"
+                    android:text="@string/isActive"/>
+
+                <CheckBox
+                    android:layout_gravity="end"
+                    android:id="@+id/isActive"/>
+            </TableRow>
+
+            <TableRow android:gravity="center_vertical">
+
+                <TextView
+                    style="@style/deviceOverviewDescription"
+                    android:text="@string/target_device"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:gravity="center_vertical|end"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/targetDeviceName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <Button
+                        style="@style/button"
+                        android:id="@+id/targetDeviceSet"
+                        android:text="@string/change"/>
+                </LinearLayout>
+            </TableRow>
+
+            <TableRow android:gravity="center_vertical">
+
+                <TextView
+                    style="@style/deviceOverviewDescription"
+                    android:text="@string/timer_repetition"/>
+
+                <Spinner
+                    android:id="@+id/timerRepetition"
+                    style="@style/spinner"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    />
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/targetStateRow"
+                android:gravity="center_vertical">
+
+                <TextView
+                    style="@style/deviceOverviewDescription"
+                    android:text="@string/timer_targetState"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <Spinner
+                        android:id="@+id/targetStateSpinner"
+                        style="@style/spinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+                    <EditText
+                        android:id="@+id/stateAppendix"
+                        style="@style/deviceOverviewContent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:layout_gravity="end"
+                        android:inputType="text"/>
+                </LinearLayout>
+            </TableRow>
+
+            <TableRow android:gravity="top">
+
+                <TextView
+                    style="@style/deviceOverviewDescription"
+                    android:text="@string/timer_time"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <Spinner
+                        android:id="@+id/timerType"
+                        style="@style/spinner"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="end"
+                        android:layout_gravity="end"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/switchTimeContent"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/dummy_time_with_seconds"/>
+
+                        <Button
+                            android:id="@+id/switchTimeSet"
+                            style="@style/button"
+                            android:text="@string/change"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </TableRow>
+        </TableLayout>
+    </LinearLayout>
+</ScrollView>

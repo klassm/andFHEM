@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:key="first_preferencescreen">
+
+    <PreferenceCategory android:title="@string/prefAppearancePreferencesCategory">
+
+        <ListPreference
+            android:id="@+id/prefStartupView"
+            android:defaultValue="24"
+            android:entries="@array/startupViews"
+            android:entryValues="@array/startupViewsValues"
+            android:key="STARTUP_VIEW"
+            android:summary="@string/prefStartupViewSummary"
+            android:title="@string/prefStartupView"/>
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="SHOW_SET_VALUE_BUTTONS"
+            android:title="@string/prefShowSetValueButtons"/>
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="prefShowHiddenDevices"
+            android:title="@string/prefShowHiddenDevices"/>
+
+        <li.klass.fhem.widget.preference.SeekBarPreference
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:defaultValue="5"
+            android:dialogMessage=""
+            android:key="DEVICE_COLUMN_WIDTH"
+            android:max="1000"
+            android:summary="@string/prefDeviceColumnWidthSummary"
+            android:text="@string/dp_suffix"
+            android:title="@string/prefDeviceColumnWidth"/>
+
+        <li.klass.fhem.widget.preference.SeekBarPreference
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:defaultValue="0"
+            android:dialogMessage=""
+            android:key="DEVICE_LIST_PADDING_RIGHT"
+            android:max="1000"
+            android:summary="@string/prefDeviceListPaddingRightSummary"
+            android:text="@string/dp_suffix"
+            android:title="@string/prefDeviceListPaddingRight"/>
+
+        <li.klass.fhem.widget.deviceFunctionality.DeviceFunctionalityOrderPreference
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:key="DEVICE_FUNCTIONALITY_ORDER_VISIBLE"
+            android:summary="@string/prefDeviceFunctionalityOrderSummary"
+            android:title="@string/prefDeviceFunctionalityOrder"/>
+
+        <ListPreference
+            android:id="@+id/graphDefaultTimespanSelector"
+            android:defaultValue="24"
+            android:entries="@array/graphDefaultTimespanEntries"
+            android:entryValues="@array/graphDefaultTimespanValues"
+            android:key="GRAPH_DEFAULT_TIMESPAN"
+            android:summary=""
+            android:title="@string/prefDefaultTimespan"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/prefWidgetCategory">
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="prefWidgetRemoteUpdate"
+            android:title="@string/prefWidgetRemoteUpdate"/>
+
+        <ListPreference
+            android:defaultValue="3600"
+            android:entries="@array/widgetUpdateTimeEntries"
+            android:entryValues="@array/widgetUpdateTimeValues"
+            android:key="WIDGET_UPDATE_INTERVAL_WLAN"
+            android:summary="@string/prefWidgetUpdateTimeSummary"
+            android:title="@string/prefWidgetUpdateTimeWLAN"/>
+
+        <ListPreference
+            android:defaultValue="3600"
+            android:entries="@array/widgetUpdateTimeEntries"
+            android:entryValues="@array/widgetUpdateTimeValues"
+            android:key="WIDGET_UPDATE_INTERVAL_MOBILE"
+            android:summary="@string/prefWidgetUpdateTimeSummary"
+            android:title="@string/prefWidgetUpdateTimeMobile"/>
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="GCM_WIDGET_UPDATE"
+            android:title="@string/prefGcmWidgetUpdate"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/prefErrorsPreferencesCategory">
+
+        <Preference
+            android:key="SEND_LAST_ERROR"
+            android:title="@string/error_send"/>
+
+        <Preference
+            android:key="SEND_APP_LOG"
+            android:title="@string/application_log_send"/>
+    </PreferenceCategory>
+
+
+    <PreferenceCategory android:title="@string/prefOtherPreferencesCategory">
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="UPDATE_ON_APPLICATION_START"
+            android:title="@string/prefUpdateOnApplicationStart"/>
+
+        <EditTextPreference
+            android:defaultValue=""
+            android:inputType="number"
+            android:key="GCM_PROJECT_ID"
+            android:title="@string/prefGCMProjectId"/>
+
+        <ListPreference
+            android:id="@+id/autoUpdateTime"
+            android:defaultValue="-1"
+            android:entries="@array/updateRoomListTimeEntries"
+            android:entryValues="@array/updateRoomListTimeValues"
+            android:key="AUTO_UPDATE_TIME"
+            android:summary="@string/prefAutoUpdateSummary"
+            android:title="@string/prefAutoUpdate"/>
+
+        <li.klass.fhem.widget.preference.SeekBarPreference
+            min="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:dialogMessage=""
+            android:key="CONNECTION_TIMEOUT"
+            android:max="20"
+            android:text="@string/s_suffix"
+            android:title="@string/prefConnectionTimeout"/>
+
+        <li.klass.fhem.widget.preference.NumberOfRetriesSeekBarPreference
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:dialogMessage=""
+            android:key="COMMAND_EXECUTION_RETRIES"
+            android:max="20"
+            android:summary="@string/prefCommandExecutionRetriesSummary"
+            android:text=""
+            android:title="@string/prefCommandExecutionRetries"/>
+
+        <EditTextPreference
+            android:defaultValue=""
+            android:inputType="text"
+            android:key="DEVICE_NAME"
+            android:summary="@string/prefDeviceNameSummary"
+            android:title="@string/prefDeviceName"/>
+
+        <EditTextPreference
+            android:defaultValue=""
+            android:key="PASSWORD"
+            android:password="true"
+            android:summary="@string/prefApplicationPasswordSummary"
+            android:title="@string/prefApplicationPassword"
+            tools:ignore="Deprecated"/>
+    </PreferenceCategory>
+</PreferenceScreen>

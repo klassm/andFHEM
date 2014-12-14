@@ -1,0 +1,46 @@
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<FHZINFO>
+    <X10_LIST>
+        <X10 name="X10.wohnzimmer_erker" state="off"
+             sets="dimdown dimto dimup off on on-for-timer on-till"
+             attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev do_not_notify:1,0 dummy:1,0 showtime:1,0 model:lm12,lm15,am12,tm13 devStateIcon devStateStyle icon onOffDevice sortby webCmd widgetOverride userattr">
+            <INT key="DEF" value="lm15 A 5"/>
+            <INT key="HOUSE" value="A"/>
+            <INT key="MODEL" value="lm15"/>
+            <INT key="NAME" value="X10.wohnzimmer_erker"/>
+            <INT key="NR" value="53"/>
+            <INT key="STATE" value="off"/>
+            <INT key="TYPE" value="X10"/>
+            <INT key="UNIT" value="5"/>
+            <INT key="IODev" value="x10if"/>
+            <ATTR key="IODev" value="x10if"/>
+            <ATTR key="room" value="X10"/>
+            <STATE key="dimmer" value="100" measured="2014-12-06 09:28:11"/>
+            <STATE key="onoff" value="0" measured="2014-12-06 09:28:11"/>
+            <STATE key="state" value="off" measured="2014-12-06 09:28:11"/>
+        </X10>
+    </X10_LIST>
+</FHZINFO>

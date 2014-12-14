@@ -1,0 +1,57 @@
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<FHZINFO>
+    <YAMAHA_AVR_LIST>
+        <YAMAHA_AVR name="device" state="off"
+                    sets="on off volume:slider,-80,1,16 input:audio1,audio2,av5,av6,bluetooth,netradio,napster,pc,phono,tuner,uaw,usb,v-aux,ipod,ipod_usb mute:on,off remoteControl:setup,up,down,left,right,return,option,display,enter scene: statusRequest"
+                    attrs="room group comment alias eventMap userReadings do_not_notify:0,1 loglevel:0,1,2,3,4,5 volume-smooth-change:0,1 volume-smooth-time:0,1,2,3,4,5 volume-smooth-steps:1,2,3,4,5,6,7,8,9,10 event-on-change-reading event-on-update-reading event-min-interval stateFormat CUL_HM_switch_19BBEE_Sw_01 CUL_HM_switch_19BBEE_Sw_01_map RXV671 RXV671Zone2 RXV671Zone2_map RXV671_map a a_map alleGeraete alleGeraete_map alleGeräte alleGeräte_map devStateIcon fp_Groundfloor icon room_map webCmd">
+            <INT key=".updateTime" value="1370445636.21906"/>
+            <INT key=".updateTimestamp" value="2013-06-05 17:20:36"/>
+            <INT key="ACTIVE_ZONE" value="zone2"/>
+            <INT key="CHANGED" value=""/>
+            <INT key="DEF" value="192.168.1.32 zone2"/>
+            <INT key="FIRMWARE" value="1.39/2.01"/>
+            <INT key="MODEL" value="RX-V671"/>
+            <INT key="NAME" value="device"/>
+            <INT key="NR" value="64"/>
+            <INT key="NTFY_TRIGGERTIME" value="2013-06-05 17:20:09"/>
+            <INT key="STATE" value="off"/>
+            <INT key="SYSTEM_ID" value="044A2F03"/>
+            <INT key="TYPE" value="YAMAHA_AVR"/>
+            <INT key="ZONES_AVAILABLE" value="mainzone,zone2"/>
+            <ATTR key="alleGeraete" value="alleGeraete"/>
+            <ATTR key="alleGeräte" value="alleGeraete"/>
+            <ATTR key="fp_Groundfloor" value="490,487"/>
+            <ATTR key="room" value="room"/>
+            <ATTR key="volume-smooth-change" value="1"/>
+            <STATE key="input" value="netradio" measured="2013-06-05 17:20:09"/>
+            <STATE key="input_name" value="NET RADIO" measured="2013-06-05 17:20:09"/>
+            <STATE key="mute" value="on" measured="2013-06-05 17:20:09"/>
+            <STATE key="output" value="variable" measured="2013-06-05 17:20:09"/>
+            <STATE key="power" value="standby" measured="2013-06-05 17:20:09"/>
+            <STATE key="volume_level" value="-53" measured="2013-06-05 17:20:09"/>
+        </YAMAHA_AVR>
+    </YAMAHA_AVR_LIST>
+</FHZINFO>

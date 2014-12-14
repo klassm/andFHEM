@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:paddingEnd="0dp"
+              android:paddingLeft="20dp"
+              android:paddingRight="0dp"
+              android:paddingStart="20dp">
+    <!-- the outer linear layout is some kind of a hack to avoid a NullpointerException when
+    measuring the listView height-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:ignore="UselessParent">
+
+        <ImageView
+            android:id="@+id/forecastWeatherImage"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:contentDescription="@string/weather"
+            android:gravity="center"/>
+
+        <TableLayout
+            android:id="@+id/forecastTable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_marginLeft="44dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginStart="44dp"
+            android:stretchColumns="1">
+
+            <TableRow android:id="@+id/tableRowDate">
+
+                <TextView
+                    android:id="@+id/date"
+                    android:layout_width="fill_parent"
+                    android:layout_span="2"
+                    android:text="@string/dummy_date_with_day"
+                    android:textStyle="bold"/>
+            </TableRow>
+
+            <TableRow android:id="@+id/tableRowTemperature">
+
+                <TextView android:text="@string/temperature"/>
+
+                <TextView
+                    android:id="@+id/temperature"
+                    style="@style/deviceDetailContent"
+                    android:text="@string/dummy_temperature_range"/>
+            </TableRow>
+
+            <TableRow android:id="@+id/tableRowCondition">
+
+                <TextView android:text="@string/weather"/>
+
+                <TextView
+                    android:id="@+id/condition"
+                    style="@style/deviceDetailContent"
+                    android:text="@string/dummy_condition"/>
+            </TableRow>
+        </TableLayout>
+    </RelativeLayout>
+</LinearLayout>

@@ -1,0 +1,93 @@
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<FHZINFO>
+    <HCS_LIST>
+        <HCS name="device" state="demand" sets="eco interval
+mode off on" attrs="room group comment alias eventMap deviceCmdOn
+deviceCmdOff exclude ecoTemperatureOn ecoTemperatureOff interval
+idleperiod mode:thermostat,valve sensor sensorThresholdOn
+sensorThresholdOff sensorReading thermostatThresholdOn
+thermostatThresholdOff valveThresholdOn valveThresholdOff
+do_not_notify:1,0 event-on-update-reading event-on-change-reading
+loglevel:0,1,2,3,4,5,6 disable:0,1 _map building building_map devStateIcon
+fp_Grundriss_Browser fp_Touchpad_Grundriss icon room_map structexclude
+webCmd">
+            <INT key="CHANGED" value=""/>
+            <INT key="DEF" value="Heizung_Sperre 15 30 20"/>
+            <INT key="NAME" value="device"/>
+            <INT key="NEXTCHECK" value="23:26:52"/>
+            <INT key="NR" value="96"/>
+            <INT key="STATE" value="demand"/>
+            <INT key="TYPE" value="HCS"/>
+            <ATTR key="deviceCmdOff" value="off"/>
+            <ATTR key="deviceCmdOn" value="on"/>
+            <ATTR key="ecoTemperatureOff" value="23"/>
+            <ATTR key="ecoTemperatureOn" value="12"/>
+            <ATTR key="event-on-change-reading"
+                  value="state,devicestate,eco,overdrive"/>
+            <ATTR key="exclude"
+                  value="FHT_Badezimmer,FHT_Flur,FHT_Kueche"/>
+            <ATTR key="fp_Touchpad_Grundriss"
+                  value="280,650,3,state,Heizung"/>
+            <ATTR key="idleperiod" value="15"/>
+            <ATTR key="interval" value="5"/>
+            <ATTR key="loglevel" value="5"/>
+            <ATTR key="mode" value="valve"/>
+            <ATTR key="room" value="room"/>
+            <ATTR key="thermostatThresholdOff" value="0.5"/>
+            <ATTR key="thermostatThresholdOn" value="0.5"/>
+            <ATTR key="valveThresholdOff" value="25"/>
+            <ATTR key="valveThresholdOn" value="30"/>
+            <STATE key="FHT_Badezimmer" value="excluded"
+                   measured="2013-01-14 23:21:52"/>
+            <STATE key="FHT_Buero" value="idle"
+                   measured="2013-01-14 23:21:52"/>
+            <STATE key="FHT_Flur" value="excluded"
+                   measured="2013-01-14 23:21:52"/>
+            <STATE key="FHT_Kinderzimmer" value="idle"
+                   measured="2013-01-14 23:21:52"/>
+            <STATE key="FHT_Kueche" value="excluded"
+                   measured="2013-01-14 23:21:52"/>
+            <STATE key="FHT_Schlafzimmer" value="idle"
+                   measured="2013-01-14 23:21:52"/>
+            <STATE key="FHT_Wohnzimmer" value="demand"
+                   measured="2013-01-14 23:21:52"/>
+            <STATE key="FHT_Wohnzimmer1" value="demand"
+                   measured="2013-01-14 23:21:52"/>
+            <STATE key="device" value="Heizung_Sperre"
+                   measured="2013-01-14 22:03:38"/>
+            <STATE key="devicestate" value="on"
+                   measured="2013-01-14 13:03:08"/>
+            <STATE key="eco" value="off" measured="2013-01-14
+23:21:52"/>
+            <STATE key="locked" value="00:00:00"
+                   measured="2013-01-14 23:21:52"/>
+            <STATE key="overdrive" value="off"
+                   measured="2013-01-14 23:21:52"/>
+            <STATE key="state" value="demand"
+                   measured="2013-01-14 23:21:52"/>
+        </HCS>
+    </HCS_LIST>
+</FHZINFO>

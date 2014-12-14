@@ -1,0 +1,148 @@
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<FHZINFO>
+    <SWAP_LIST>
+        <SWAP name="device" state="27.3°C" sets="regGet regSet
+statusRequest readDeviceXML clearUnconfirmed" attrs="room group
+comment alias eventMap userReadings IODev ignore:1,0
+loglevel:0,1,2,3,4,5,6 event-on-change-reading event-on-update-reading
+event-min-interval stateFormat
+ProductCode:0000000100000001,0000000100000002,0000000100000003,0000000100000004,0000000100000005,0000000100000006,0000000100000007,0000000100000008,0000000100000009,000000010000000A,000000010000000B,000000010000000C,000000010000000D,000000010000000E,0000001100000001,0000001100000002,0000001100000003,0000001100000004,0000001100000005,0000001600000001,0000001900000001,0000001B00000001,0000001D00000001,0000002200000003,000000220000000F,00000022FFFFFFFF
+devStateIcon icon sortby webCmd">
+            <INT key="CFGFN" value=""/>
+            <INT key="DEF" value="A0"/>
+            <INT key="Developer" value="panStamp"/>
+            <INT key="LASTInputDev" value="panStick"/>
+            <INT key="MSGCNT" value="19313"/>
+            <INT key="NAME" value="device"/>
+            <INT key="NR" value="49"/>
+            <INT key="Product" value="Temperature sensor"/>
+            <INT key="STATE" value="27.3°C"/>
+            <INT key="SWAP_00-ProductCode" value="0000000100000004"/>
+            <INT key="SWAP_00.1-ManufacturerID" value="00000001"/>
+            <INT key="SWAP_00.2-ProductID" value="00000004"/>
+            <INT key="SWAP_01-HardwareVersion" value="00000200"/>
+            <INT key="SWAP_02-FirmwareVersion" value="00000101"/>
+            <INT key="SWAP_03-SystemState" value="02"/>
+            <INT key="SWAP_04-FrequencyChannel" value="00"/>
+            <INT key="SWAP_05-SecurityOption" value="00"/>
+            <INT key="SWAP_06-SecurityPassword" value="00"/>
+            <INT key="SWAP_07-SecurityNonce" value="E0"/>
+            <INT key="SWAP_08-NetworkID" value="B547"/>
+            <INT key="SWAP_09-DeviceAddress" value="A0"/>
+            <INT key="SWAP_0A-PeriodicTxInterval" value="FFFF"/>
+            <INT key="SWAP_MISSED" value="0"/>
+            <INT key="SWAP_Sent_unconfirmed" value="2 Sent_unconfirmed"/>
+            <INT key="SWAP_lastRcv" value="2013-07-29 20:44:20"/>
+            <INT key="SWAP_lastSend" value="2013-07-29 20:19:34"/>
+            <INT key="SWAP_nonce" value="15"/>
+            <INT key="TRIGGERTIME" value="2013-07-29 20:44:20"/>
+            <INT key="TYPE" value="SWAP"/>
+            <INT key="addr" value="A0"/>
+            <INT key="devices" value=""/>
+            <INT key="nonce" value="2"/>
+            <INT key="panStick_LQI" value="49"/>
+            <INT key="panStick_MSGCNT" value="19313"/>
+            <INT key="panStick_RAWMSG" value="(F131)00A0001500A00B0C76"/>
+            <INT key="panStick_RSSI" value="-81.5"/>
+            <INT key="panStick_TIME" value="2013-07-29 20:44:20"/>
+            <INT key="IODev" value="panStick"/>
+            <ATTR key="alias" value="TempPhilipp"/>
+            <ATTR key="room" value="room"/>
+            <ATTR key="stateFormat"
+                value="{sprintf(&quot;%.1f&quot;,hex(ReadingsVal($name,&quot;0C.0-Temperature&quot;,&quot;0&quot;))*0.1-50).&quot;°C&quot;}"/>
+            <ATTR key="userReadings"
+                value="voltage:0B-Voltage {hex(ReadingsVal($name,&quot;0B-Voltage&quot;,&quot;0&quot;))*0.001}, temperature:0C.0-Temperature {hex(ReadingsVal($name,&quot;0C.0-Temperature&quot;,&quot;0&quot;))*0.1-50}"/>
+            <STATE key="0B-Voltage" value="0C76" measured="2013-07-29 20:44:20"/>
+            <STATE key="0C.0-Temperature" value="0305"
+                measured="2013-07-29 20:44:20"/>
+            <STATE key="state" value="set-readDeviceXML"
+                measured="2013-07-29 20:21:40"/>
+        </SWAP>
+    </SWAP_LIST>
+    <SWAP_0000002200000003_LIST>
+        <SWAP_0000002200000003 name="SWAP_05" state="off" sets="regGet regSet statusRequest:noArg readDeviceXML:noArg clearUnconfirmed:noArg dimDown:noArg dimUp:noArg fadeTo getFade getIR learnIR off:noArg on:noArg on-for-timer reset:noArg rgb:colorpicker,RGB sendIR setFade setIR startFade storeIR toggle:noArg blink on-till off-for-timer intervals off-till" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev ignore:1,0 event-on-change-reading event-on-update-reading event-min-interval stateFormat ProductCode:0000000100000001,0000000100000002,0000000100000003,0000000100000004,0000000100000005,0000000100000006,0000000100000007,0000000100000008,0000000100000009,000000010000000A,000000010000000B,000000010000000C,000000010000000D,000000010000000E,0000001100000001,0000001100000002,0000001100000003,0000001100000004,0000001100000005,0000001600000001,0000001900000001,0000001B00000001,0000001D00000001,0000002200000003,0000002200000007,000000220000000F,0000002200000010,00000022FFFFFFFF color-icons:1,2 defaultFadeTime Anwesenheit Anwesenheit_map CUL_HM_HM_LC_SW4_PCB_19BBEE_Sw_01 CUL_HM_HM_LC_SW4_PCB_19BBEE_Sw_01_map RXV671 RXV671Zone2 RXV671Zone2_map RXV671_map a a_map alleGeraete alleGeraete_map alleGeräte alleGeräte_map devStateIcon devStateStyle fp_Groundfloor icon licht_szs licht_szs_map licht_wzs licht_wzs_map raum1 raum1_map raum2 raum2_map room_map sortby structexclude webCmd">
+            <INT key="CHANNELS" value="4"/>
+            <INT key="CMD_SIZE" value="10"/>
+            <INT key="DEF" value="05 0000002200000003"/>
+            <INT key="LASTInputDev" value="panStick1"/>
+            <INT key="MSGCNT" value="43"/>
+            <INT key="NAME" value="SWAP_05"/>
+            <INT key="NR" value="313"/>
+            <INT key="STATE" value="off"/>
+            <INT key="SWAP_00-ProductCode" value="0000002200000003"/>
+            <INT key="SWAP_00.1-ManufacturerID" value="00000022"/>
+            <INT key="SWAP_00.2-ProductID" value="00000003"/>
+            <INT key="SWAP_01-HardwareVersion" value="00100056"/>
+            <INT key="SWAP_02-FirmwareVersion" value="00020003"/>
+            <INT key="SWAP_03-SystemState" value="01"/>
+            <INT key="SWAP_04-FrequencyChannel" value="00"/>
+            <INT key="SWAP_05-SecurityOption" value="00"/>
+            <INT key="SWAP_06-SecurityPassword" value="00"/>
+            <INT key="SWAP_07-SecurityNonce" value="BA"/>
+            <INT key="SWAP_08-NetworkID" value="B547"/>
+            <INT key="SWAP_09-DeviceAddress" value="05"/>
+            <INT key="SWAP_0A-PeriodicTxInterval" value="FFFF"/>
+            <INT key="SWAP_MISSED" value="0"/>
+            <INT key="SWAP_Sent_unconfirmed" value="0 Sent_unconfirmed"/>
+            <INT key="SWAP_lastRcv" value="2014-02-06 13:03:42"/>
+            <INT key="SWAP_lastSend" value="2014-02-06 13:03:40"/>
+            <INT key="SWAP_nonce" value="C6"/>
+            <INT key="TYPE" value="SWAP_0000002200000003"/>
+            <INT key="addr" value="05"/>
+            <INT key="devices" value=""/>
+            <INT key="panStick1_LQI" value="47"/>
+            <INT key="panStick1_MSGCNT" value="43"/>
+            <INT key="panStick1_RAWMSG" value="(EF2F)000500C600050200020003"/>
+            <INT key="panStick1_RSSI" value="-82.5"/>
+            <INT key="panStick1_TIME" value="2014-02-06 13:03:42"/>
+            <INT key="IODev" value="panStick1"/>
+            <ATTR key="ProductCode" value="0000002200000003"/>
+            <ATTR key="alias" value="LED_Bad"/>
+            <ATTR key="room" value="HUEDevice"/>
+            <ATTR key="webCmd" value="rgb:rgb ff0000:rgb 00ff00:rgb 0000ff:toggle:on:off:dimUp:dimDown"/>
+            <STATE key="0B-RGBlevel" value="FFFF00F0" measured="2014-02-06 13:03:41"/>
+            <STATE key="0B.1-Red" value="00" measured="2014-02-06 13:03:41"/>
+            <STATE key="0B.2-Green" value="00" measured="2014-02-06 13:03:41"/>
+            <STATE key="0B.3-Blue" value="00" measured="2014-02-06 13:03:41"/>
+            <STATE key="0B.4-White" value="00" measured="2014-02-06 13:03:41"/>
+            <STATE key="0C-IRCommand" value="FF4CB0FADF" measured="2014-02-06 13:03:41"/>
+            <STATE key="0C.1-Type" value="FF" measured="2014-02-06 13:03:41"/>
+            <STATE key="0C.2-Value" value="4CB0FADF" measured="2014-02-06 13:03:41"/>
+            <STATE key="0D-InternalTemperature" value="00000015" measured="2014-02-06 13:03:41"/>
+            <STATE key="0E-PowerOnState" value="08FF777777" measured="2014-02-06 13:03:41"/>
+            <STATE key="0E.1-State" value="08" measured="2014-02-06 13:03:41"/>
+            <STATE key="0E.2-Brightness" value="FF" measured="2014-02-06 13:03:41"/>
+            <STATE key="0E.3-Color" value="777777" measured="2014-02-06 13:03:41"/>
+            <STATE key="0F-Command" value="20000000000000000000" measured="2014-02-06 13:03:41"/>
+            <STATE key="0F.1-Cmd" value="20" measured="2014-02-06 13:03:41"/>
+            <STATE key="0F.2-Args" value="000000000000000000" measured="2014-02-06 13:03:41"/>
+            <STATE key="12-DMX_Base" value="01" measured="2014-02-06 13:03:42"/>
+            <STATE key="13-LedPower" value="01A2" measured="2014-02-06 13:03:42"/>
+            <STATE key="internaltemperature" value="21" measured="2014-02-06 13:03:41"/>
+            <STATE key="state" value="off" measured="2014-02-06 13:03:41"/>
+        </SWAP_0000002200000003>
+    </SWAP_0000002200000003_LIST>
+</FHZINFO>

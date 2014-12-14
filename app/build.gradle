@@ -1,0 +1,295 @@
+/*
+ * AndFHEM - Open Source Android application to control a FHEM home automation
+ * server.
+ *
+ * Copyright (c) 2011, Matthias Klass or third-party contributors as
+ * indicated by the @author tags or express copyright attribution
+ * statements applied by the authors.  All third-party contributions are
+ * distributed under license by Red Hat Inc.
+ *
+ * This copyrighted material is made available to anyone wishing to use, modify,
+ * copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+ * for more details.
+ *
+ * You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+ * along with this distribution; if not, write to:
+ *   Free Software Foundation, Inc.
+ *   51 Franklin Street, Fifth Floor
+ *   Boston, MA  02110-1301  USA
+ */
+
+
+
+apply plugin: 'com.android.application'
+
+buildscript {
+    repositories {
+        mavenCentral()
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
+        maven { url 'https://raw.github.com/eburtsev/gdata-maven/master' }
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:0.13.+'
+
+        // google sites dependencies ...
+        classpath 'com.google.gdata.gdata-java-client:gdata-sites-2.0:1.47.1'
+        classpath 'javax.mail:mail:1.4.7'
+        classpath 'com.google.oauth-client:google-oauth-client:1.17.0-rc'
+
+        classpath 'com.github.jcandksolutions.gradle:android-unit-test:1.6.+'
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
+    maven { url 'http://partnerdemo.artifactoryonline.com/partnerdemo/snapshots' }
+    maven { url 'https://repository-achartengine.forge.cloudbees.com/snapshot' }
+}
+
+android {
+    compileSdkVersion 21
+    buildToolsVersion '21.0.2'
+
+    defaultConfig {
+        minSdkVersion 9
+        targetSdkVersion 21
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+
+    signingConfigs {
+        release {
+            storeFile file("release.keystore")
+            keyAlias "android"
+            storePassword ""
+            keyPassword ""
+        }
+    }
+
+    buildTypes {
+        release {
+            runProguard true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-production.txt'
+            signingConfig signingConfigs.release
+        }
+
+        debug {
+            runProguard true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-debug.txt'
+        }
+    }
+
+    sourceSets {
+        androidTest {
+            java.srcDirs = ['src/test/java', 'src/instrumentTest/java']
+            resources.srcDir file('src/test/resources')
+        }
+        main {
+            aidl.srcDirs = ['src/main/aidl']
+            java.srcDir file('src/main/java')
+        }
+    }
+
+    packagingOptions {
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/LICENSE.txt'
+    }
+
+    productFlavors {
+        inapp {
+            packageName "li.klass.fhem"
+        }
+        premium {
+            packageName "li.klass.fhempremium"
+        }
+    }
+
+    // TODO resolve errors and remove this
+    lintOptions {
+        disable 'IconColors'
+        disable 'IconDipSize'
+        disable 'IconLocation'
+        disable 'IconDensities'
+    }
+}
+
+apply plugin: 'android-unit-test'
+
+
+dependencies {
+    compile fileTree(dir: './libs', include: '*.jar')
+    //noinspection GradleDependency
+    compile 'com.android.support:support-v4:21.0.+@aar'
+    //noinspection GradleDependency
+    compile 'com.android.support:appcompat-v7:21.0.+'
+    //noinspection GradleDependency
+    compile 'com.google.android.gms:play-services:6.1.+'
+    compile 'commons-net:commons-net:3.3'
+    compile 'com.google.code.gson:gson:2.2.4'
+    compile 'com.google.guava:guava:17.0'
+    compile 'org.achartengine:achartengine:1.2.0'
+    compile 'org.apache.commons:commons-lang3:3.3.2'
+    compile 'com.squareup.dagger:dagger-compiler:1.2.2'
+    compile 'joda-time:joda-time:2.4'
+    //noinspection GradleDependency
+    compile 'com.intellij:annotations:12.+@jar'
+    compile 'org.slf4j:slf4j-android:1.7.7'
+
+    testCompile 'org.hamcrest:hamcrest-all:1.3'
+    testCompile 'junit:junit:4.11'
+    testCompile 'org.robolectric:robolectric:2.3'
+    testCompile('com.squareup:fest-android:1.0.+') {
+        exclude group: 'com.android.support', module: 'support-v4'
+    }
+    testCompile 'org.mockito:mockito-core:1.9.5'
+    testCompile 'com.tngtech.java:junit-dataprovider:1.9.2'
+}
+
+// Compile test classes when compiling classes in general
+// Leads to compiled test classes in android studio
+tasks.findByName("assembleDebug").dependsOn("testDebugClasses")
+
+task readSigningPasswordsFromConsole(
+        dependsOn: ['readSigningStorePasswordFromConsole', 'readSigningKeyAliasPasswordFromConsole'])
+
+task readSigningStorePasswordFromConsole << {
+    def storePassword = getBuildProperty("storePassword");
+    if (!storePassword) {
+        storePassword = readFromConsole("Store password")
+    }
+    android.signingConfigs.release.storePassword = storePassword
+}
+
+task readSigningKeyAliasPasswordFromConsole << {
+    def aliasPassword = getBuildProperty("aliasPassword");
+    if (!aliasPassword) {
+        aliasPassword = readFromConsole("Alias / Google Sites password")
+    }
+    android.signingConfigs.release.keyPassword = aliasPassword
+}
+
+tasks.whenTaskAdded { task ->
+    if (task.name == 'packageInappRelease' || task.name == 'packagePremiumRelease') {
+        task.dependsOn readSigningPasswordsFromConsole
+    }
+}
+
+task release(dependsOn: ['testInappDebug', 'assembleRelease', 'uploadToGoogleSites']) << {}
+
+def readFromConsole(String prompt) {
+    def console = System.console()
+    return new String(console.readPassword('\n\n' + prompt + '\n> '))
+}
+
+task artifacts {
+    group = "Help"
+    description = "Displays the artifacts associated with each configuration of " + project
+    doFirst {
+        println "  Project:" + project.name
+        project.configurations.each { conf ->
+            println "    Configuration: ${conf.name}"
+            conf.allDependencies.each { dep ->
+                println "      ${dep.group}:${dep.name}:${dep.version}"
+            }
+        }
+    }
+}
+
+def getBuildProperty(String key) {
+    return getBuildProperties().get(key)
+}
+
+def getBuildProperties() {
+    def props = new Properties()
+    new File(System.getProperty("user.home") + "/andFHEM.properties").withInputStream {
+        stream -> props.load(stream)
+    }
+    return props
+}
+
+/*************************************
+ * GOOGLE SITES
+ *********************************** */
+
+task uploadToGoogleSites(dependsOn: 'readSigningKeyAliasPasswordFromConsole') << {
+    uploadApkToGoogleSites();
+}
+
+import com.google.gdata.client.sites.SitesService
+import com.google.gdata.data.PlainTextConstruct
+import com.google.gdata.data.media.MediaFileSource
+import com.google.gdata.data.sites.AttachmentEntry
+import com.google.gdata.data.sites.ContentFeed
+import com.google.gdata.data.sites.FileCabinetPageEntry
+
+import javax.activation.MimetypesFileTypeMap
+
+def uploadApkToGoogleSites() {
+    def attachmentContentFeedUrl = "https://sites.google.com/feeds/content/site/andfhem/"
+
+    def service = new SitesService("li.klass-andFHEM-v1");
+    service.setUserCredentials("andFHEM@klass.li", '' + android.signingConfigs.release.keyPassword);
+
+
+    def contentFeed = service.getFeed(new URL(attachmentContentFeedUrl), ContentFeed.class)
+
+    def entries = contentFeed.getEntries()
+
+    for (e in entries) {
+        def href = e.getRevisionLink().getHref()
+        def id = href.substring(href.lastIndexOf("/") + 1)
+
+        def fileTitle = e.getTitle().getText()
+        if (fileTitle.equals("google-release.apk")) {
+            deleteGoogleSitesAttachment(service, id)
+        }
+    }
+
+    updateGoogleSitesAPK(service)
+}
+
+def deleteGoogleSitesAttachment(service, id) {
+    def attachment = service.getEntry(new URL("https://sites.google.com/feeds/content/site/andfhem/" + id + "?with-mappings=true"), FileCabinetPageEntry.class)
+    attachment.delete();
+}
+
+def updateGoogleSitesAPK(service) {
+    def title = "google-release.apk"
+    def description = ""
+
+    def mediaTypes = new MimetypesFileTypeMap()
+    mediaTypes.addMimeTypes("application/vnd.android.package-archive")
+
+    def file = new File("app/build/outputs/apk/app-inapp-release.apk")
+
+    def newAttachment = new AttachmentEntry();
+    newAttachment.setMediaSource(new MediaFileSource(file, mediaTypes.getContentType(file)));
+    newAttachment.setTitle(new PlainTextConstruct(title));
+    newAttachment.setSummary(new PlainTextConstruct(description));
+
+    service.insert(new URL("https://sites.google.com/feeds/content/site/andfhem/"), newAttachment);
+}
+
+/*************************************
+ * Javadoc
+ *********************************** */
+
+android.applicationVariants.all { variant ->
+    task("javadoc${variant.name}", type: Javadoc) {
+        description "Generates Javadoc for $variant.name."
+        source = variant.javaCompile.source
+        ext.androidJar = "${android.sdkDirectory}/platforms/${android.compileSdkVersion}/android.jar"
+        classpath = files(variant.javaCompile.classpath.files) + files(ext.androidJar)
+        options.links("http://docs.oracle.com/javase/7/docs/api/");
+        options.links("http://d.android.com/reference/");
+    }
+}

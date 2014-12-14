@@ -1,0 +1,223 @@
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<FHZINFO>
+    <EIB_LIST>
+        <EIB name="device" state="on" sets="off on on-for-timer on-till value"
+             attrs="room group comment alias eventMap IODev do_not_notify:1,0 ignore:0,1 dummy:1,0 showtime:1,0 model:EIB loglevel:0,1,2,3,4,5,6">
+            <INT key="DEF" value="0/0/200"/>
+            <INT key="GROUP" value="00c8"/>
+            <INT key="NAME" value="device"/>
+            <INT key="NR" value="44"/>
+            <INT key="STATE" value="on"/>
+            <INT key="TYPE" value="EIB"/>
+            <INT key="IODev" value="tul1"/>
+            <ATTR key="room" value="room"/>
+        </EIB>
+
+        <EIB name="speedsensor" state="1.7 m/s" sets="No ? for dummies"
+             attrs="room group comment alias eventMap userReadings IODev do_not_notify:1,0 ignore:0,1 dummy:1,0 showtime:1,0 loglevel:0,1,2,3,4,5,6 model:voltage-mV,pressuresensor,date,percent,power,powerdensity,percent255,current-mA2,dpt5,dpt12,dpt11,timeperiod-min,brightness,dpt10,speedsensor,dpt9,speedsensor-km/h,time,tempsensor,rainsensor,dpt5.003,lightsensor,time1sensor,dpt14,time2sensor,timeperiod-ms,dpt5.004,angle,dpt7,current-mA,humiditysensor,airqualitysensor,timeperiod-h,length-mm devStateIcon fm_fav fm_groups fm_name fm_order fp_Erdgeschoss icon structexclude webCmd">
+            <INT key="DEF" value="0/1/2"/>
+            <INT key="GROUP" value="0102"/>
+            <INT key="KNX_MSGCNT" value="13"/>
+            <INT key="KNX_RAWMSG" value="B1104w010200aa"/>
+            <INT key="KNX_TIME" value="2013-02-04 11:09:39"/>
+            <INT key="LASTGROUP" value="0102"/>
+            <INT key="LASTIODev" value="KNX"/>
+            <INT key="MSGCNT" value="13"/>
+            <INT key="NAME" value="speedsensor"/>
+            <INT key="NR" value="153"/>
+            <INT key="RAWSTATE" value="00aa"/>
+            <INT key="STATE" value="1.7 m/s"/>
+            <INT key="TYPE" value="EIB"/>
+            <INT key="IODev" value="KNX"/>
+            <ATTR key="dummy" value="0"/>
+            <ATTR key="model" value="speedsensor"/>
+            <ATTR key="room" value="room"/>
+            <STATE key="state" value="1.7 m/s" measured="2013-02-04 11:09:39"/>
+        </EIB>
+
+        <EIB name="tempsensor" state="0.9 &amp;deg;C" sets="No ? for dummies"
+             attrs="room group comment alias eventMap userReadings IODev do_not_notify:1,0 ignore:0,1 dummy:1,0 showtime:1,0 loglevel:0,1,2,3,4,5,6 model:voltage-mV,pressuresensor,date,percent,power,powerdensity,percent255,current-mA2,dpt5,dpt12,dpt11,timeperiod-min,brightness,dpt10,speedsensor,dpt9,speedsensor-km/h,time,tempsensor,rainsensor,dpt5.003,lightsensor,time1sensor,dpt14,time2sensor,timeperiod-ms,dpt5.004,angle,dpt7,current-mA,humiditysensor,airqualitysensor,timeperiod-h,length-mm devStateIcon fm_fav fm_groups fm_name fm_order fp_Erdgeschoss icon structexclude webCmd">
+            <INT key="DEF" value="0/1/1"/>
+            <INT key="GROUP" value="0101"/>
+            <INT key="KNX_MSGCNT" value="1"/>
+            <INT key="KNX_RAWMSG" value="B1104w0101005a"/>
+            <INT key="KNX_TIME" value="2013-02-04 11:07:43"/>
+            <INT key="LASTGROUP" value="0101"/>
+            <INT key="LASTIODev" value="KNX"/>
+            <INT key="MSGCNT" value="1"/>
+            <INT key="NAME" value="tempsensor"/>
+            <INT key="NR" value="151"/>
+            <INT key="RAWSTATE" value="005a"/>
+            <INT key="STATE" value="0.9 &amp;deg;C"/>
+            <INT key="TYPE" value="EIB"/>
+            <INT key="IODev" value="KNX"/>
+            <ATTR key="dummy" value="0"/>
+            <ATTR key="model" value="tempsensor"/>
+            <ATTR key="room" value="room"/>
+            <STATE key="state" value="0.9 &amp;deg;C" measured="2013-02-04 11:07:43"/>
+        </EIB>
+
+        <EIB name="rainsensor" state="???" sets="No ? for dummies"
+             attrs="room group comment alias eventMap userReadings IODev do_not_notify:1,0 ignore:0,1 dummy:1,0 showtime:1,0 loglevel:0,1,2,3,4,5,6 model:voltage-mV,pressuresensor,date,percent,power,powerdensity,percent255,current-mA2,dpt5,dpt12,dpt11,timeperiod-min,brightness,dpt10,speedsensor,dpt9,speedsensor-km/h,time,tempsensor,rainsensor,dpt5.003,lightsensor,time1sensor,dpt14,time2sensor,timeperiod-ms,dpt5.004,angle,dpt7,current-mA,humiditysensor,airqualitysensor,timeperiod-h,length-mm devStateIcon fm_fav fm_groups fm_name fm_order fp_Erdgeschoss icon structexclude webCmd">
+            <INT key="DEF" value="0/1/3"/>
+            <INT key="GROUP" value="0103"/>
+            <INT key="NAME" value="rainsensor"/>
+            <INT key="NR" value="155"/>
+            <INT key="STATE" value="???"/>
+            <INT key="TYPE" value="EIB"/>
+            <INT key="IODev" value="KNX"/>
+            <ATTR key="dummy" value="0"/>
+            <ATTR key="model" value="rainsensor"/>
+            <ATTR key="room" value="room"/>
+        </EIB>
+
+        <EIB name="lightsensor" state="1158.4 Lux" sets="No ? for dummies"
+             attrs="room group comment alias eventMap userReadings IODev do_not_notify:1,0 ignore:0,1 dummy:1,0 showtime:1,0 loglevel:0,1,2,3,4,5,6 model:voltage-mV,pressuresensor,date,percent,power,powerdensity,percent255,current-mA2,dpt5,dpt12,dpt11,timeperiod-min,brightness,dpt10,speedsensor,dpt9,speedsensor-km/h,time,tempsensor,rainsensor,dpt5.003,lightsensor,time1sensor,dpt14,time2sensor,timeperiod-ms,dpt5.004,angle,dpt7,current-mA,humiditysensor,airqualitysensor,timeperiod-h,length-mm devStateIcon fm_fav fm_groups fm_name fm_order fp_Erdgeschoss icon structexclude webCmd">
+            <INT key="DEF" value="0/1/4"/>
+            <INT key="GROUP" value="0104"/>
+            <INT key="NAME" value="lightsensor"/>
+            <INT key="NR" value="157"/>
+            <INT key="STATE" value="1158.4 Lux"/>
+            <INT key="TYPE" value="EIB"/>
+            <INT key="IODev" value="KNX"/>
+            <ATTR key="dummy" value="0"/>
+            <ATTR key="model" value="lightsensor"/>
+            <ATTR key="room" value="room"/>
+        </EIB>
+
+        <EIB name="brightness" state="13338 lux" sets="No ? for dummies"
+             attrs="room group comment alias eventMap userReadings IODev do_not_notify:1,0 ignore:0,1 dummy:1,0 showtime:1,0 loglevel:0,1,2,3,4,5,6 model:voltage-mV,pressuresensor,date,percent,power,powerdensity,percent255,current-mA2,dpt5,dpt12,dpt11,timeperiod-min,brightness,dpt10,speedsensor,dpt9,speedsensor-km/h,time,tempsensor,rainsensor,dpt5.003,lightsensor,time1sensor,dpt14,time2sensor,timeperiod-ms,dpt5.004,angle,dpt7,current-mA,humiditysensor,airqualitysensor,timeperiod-h,length-mm devStateIcon fm_fav fm_groups fm_name fm_order fp_Erdgeschoss icon structexclude webCmd">
+            <INT key="DEF" value="0/1/0"/>
+            <INT key="GROUP" value="0100"/>
+            <INT key="NAME" value="brightness"/>
+            <INT key="NR" value="149"/>
+            <INT key="STATE" value="13338 lux"/>
+            <INT key="TYPE" value="EIB"/>
+            <INT key="IODev" value="KNX"/>
+            <ATTR key="dummy" value="0"/>
+            <ATTR key="model" value="brightness"/>
+            <ATTR key="room" value="room"/>
+        </EIB>
+
+        <EIB name="time" state="13:34:00 " sets="off on on-for-timer on-till value"
+             attrs="room group comment alias eventMap userReadings IODev do_not_notify:1,0 ignore:0,1 dummy:1,0 showtime:1,0 loglevel:0,1,2,3,4,5,6 model:voltage-mV,pressuresensor,date,percent,power,powerdensity,percent255,current-mA2,dpt5,dpt12,dpt11,timeperiod-min,brightness,dpt10,speedsensor,dpt9,speedsensor-km/h,time,tempsensor,rainsensor,dpt5.003,lightsensor,time1sensor,dpt14,time2sensor,timeperiod-ms,dpt5.004,angle,dpt7,current-mA,humiditysensor,airqualitysensor,timeperiod-h,length-mm building building_map devStateIcon fp_Erdgeschoss icon structexclude webCmd">
+            <INT key="DEF" value="0001"/>
+            <INT key="GROUP" value="0001"/>
+            <INT key="LASTGROUP" value="0001"/>
+            <INT key="LASTIODev" value="tul"/>
+            <INT key="MSGCNT" value="275"/>
+            <INT key="NAME" value="time"/>
+            <INT key="NR" value="35"/>
+            <INT key="RAWSTATE" value="2d2200"/>
+            <INT key="STATE" value="13:34:00 "/>
+            <INT key="TYPE" value="EIB"/>
+            <INT key="tul_MSGCNT" value="275"/>
+            <INT key="tul_RAWMSG" value="B1102w00012d2200"/>
+            <INT key="tul_TIME" value="2013-02-18 13:34:09"/>
+            <INT key="IODev" value="tul"/>
+            <ATTR key="alias" value="EIB-Time"/>
+            <ATTR key="fp_Erdgeschoss" value="98,263,1,"/>
+            <ATTR key="icon" value="icoUhr"/>
+            <ATTR key="model" value="time"/>
+            <ATTR key="room" value="room"/>
+            <STATE key="state" value="13:34:00 " measured="2013-02-18 13:34:09"/>
+        </EIB>
+
+        <EIB name="dpt10" state="18:44:33" sets="now off on on-for-timer on-till raw value"
+             attrs="room group comment alias eventMap userReadings IODev do_not_notify:1,0 ignore:0,1 dummy:1,0 showtime:1,0 loglevel:0,1,2,3,4,5,6 model:voltage-mV,pressuresensor,date,percent,power,powerdensity,percent255,current-mA2,dpt5,dpt12,dpt11,timeperiod-min,brightness,dpt10,speedsensor,dpt9,speedsensor-km/h,time,tempsensor,rainsensor,dpt5.003,lightsensor,time1sensor,dpt14,time2sensor,timeperiod-ms,dpt5.004,angle,dpt7,current-mA,humiditysensor,airqualitysensor,timeperiod-h,length-mm devStateIcon fp_Oben fp_Unten icon sortby webCmd">
+            <INT key="DEF" value="0700"/>
+            <INT key="GROUP" value="0700"/>
+            <INT key="NAME" value="dpt10"/>
+            <INT key="NR" value="73"/>
+            <INT key="STATE" value="18:44:33"/>
+            <INT key="TYPE" value="EIB"/>
+            <INT key="IODev" value="EIB"/>
+            <ATTR key="eventMap" value="/value now:now/"/>
+            <ATTR key="model" value="dpt10"/>
+            <ATTR key="room" value="room"/>
+            <ATTR key="webCmd" value="now"/>
+        </EIB>
+
+        <EIB name="dimmer" state="20 %" sets="off on on-for-timer on-till raw value:slider,0,1,100"
+             attrs="room group comment alias eventMap userReadings IODev do_not_notify:1,0 ignore:0,1 dummy:1,0 showtime:1,0 loglevel:0,1,2,3,4,5,6 model:voltage-mV,pressuresensor,date,percent,power,powerdensity,percent255,current-mA2,dpt5,dpt12,dpt11,timeperiod-min,brightness,dpt10,speedsensor,dpt9,speedsensor-km/h,time,tempsensor,rainsensor,dpt5.003,lightsensor,time1sensor,dpt14,time2sensor,timeperiod-ms,dpt5.004,angle,dpt7,current-mA,humiditysensor,airqualitysensor,timeperiod-h,length-mm devStateIcon fp_Oben fp_Unten icon sortby webCmd custom_graph">
+            <INT key="DEF" value="1008 1713"/>
+            <INT key="EIB_MSGCNT" value="1"/>
+            <INT key="EIB_RAWMSG" value="B1007w171300"/>
+            <INT key="EIB_TIME" value="2013-05-25 23:30:42"/>
+            <INT key="GROUP" value="1008"/>
+            <INT key="LASTGROUP" value="1713"/>
+            <INT key="LASTInputDev" value="EIB"/>
+            <INT key="MSGCNT" value="1"/>
+            <INT key="NAME" value="dimmer"/>
+            <INT key="NR" value="285"/>
+            <INT key="NTFY_TRIGGERTIME" value="2013-05-25 23:30:42"/>
+            <INT key="RAWSTATE" value="off"/>
+            <INT key="STATE" value="20 %"/>
+            <INT key="TYPE" value="EIB"/>
+            <INT key="IODev" value="EIB"/>
+            <ATTR key="alias" value="WZ Licht Indirekt Dim"/>
+            <ATTR key="model" value="percent"/>
+            <ATTR key="room" value="room"/>
+            <ATTR key="webCmd" value="value"/>
+            <STATE key="state" value="20 %" measured="2013-05-25 23:30:42"/>
+        </EIB>
+
+        <EIB name="date" state="13.10.2013 " sets="off on on-for-timer on-till raw value" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev do_not_notify:1,0 ignore:0,1 dummy:1,0 showtime:1,0 loglevel:0,1,2,3,4,5,6 model:voltage-mV,pressuresensor,date,percent,power,powerdensity,percent255,current-mA2,dpt5,dpt12,dpt11,timeperiod-min,brightness,dpt10,speedsensor,dpt9,speedsensor-km/h,time,tempsensor,rainsensor,dpt5.003,lightsensor,time1sensor,dpt14,time2sensor,timeperiod-ms,dpt5.004,angle,dpt7,current-mA,humiditysensor,airqualitysensor,timeperiod-h,length-mm devStateIcon devStateStyle fp_Speicher icon sortby webCmd">
+            <INT key="DEF" value="3100"/>
+            <INT key="GROUP" value="3100"/>
+            <INT key="KNX_MSGCNT" value="7"/>
+            <INT key="KNX_RAWMSG" value="B1113w31000d0a0d"/>
+            <INT key="KNX_TIME" value="2013-10-13 00:00:00"/>
+            <INT key="LASTGROUP" value="3100"/>
+            <INT key="LASTInputDev" value="KNX"/>
+            <INT key="MSGCNT" value="7"/>
+            <INT key="NAME" value="date"/>
+            <INT key="NR" value="160"/>
+            <INT key="RAWSTATE" value="0d0a0d"/>
+            <INT key="STATE" value="13.10.2013 "/>
+            <INT key="TYPE" value="EIB"/>
+            <INT key="IODev" value="KNX"/>
+            <ATTR key="alias" value="Datum"/>
+            <ATTR key="model" value="date"/>
+            <ATTR key="room" value="room"/>
+            <STATE key="state" value="13.10.2013 " measured="2013-10-13 00:00:00"/>
+        </EIB>
+
+        <EIB name="percent_with_unset_state" state="???" sets="off on on-for-timer on-till raw value:slider,0,1,100" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev do_not_notify:1,0 ignore:0,1 dummy:1,0 showtime:1,0 loglevel:0,1,2,3,4,5,6 model:voltage-mV,pressuresensor,date,percent,power,powerdensity,percent255,current-mA2,dpt5,dpt12,dpt11,timeperiod-min,brightness,dpt10,speedsensor,dpt9,speedsensor-km/h,time,tempsensor,rainsensor,dpt5.003,lightsensor,time1sensor,dpt14,time2sensor,timeperiod-ms,dpt5.004,angle,current-mA,dpt7,humiditysensor,airqualitysensor,timeperiod-h,length-mm devStateIcon devStateStyle fp_Wohnzimmer icon onOffDevice sortby webCmd">
+            <INT key="DEF" value="1/0/10"/>
+            <INT key="GROUP" value="100a"/>
+            <INT key="NAME" value="percent_with_unset_state"/>
+            <INT key="NR" value="8"/>
+            <INT key="STATE" value="???"/>
+            <INT key="TYPE" value="EIB"/>
+            <INT key="IODev" value="tul"/>
+            <ATTR key="model" value="percent"/>
+            <ATTR key="room" value="room"/>
+            <STATE key="state" value="???" measured="2014-01-05 12:05:06"/>
+        </EIB>
+
+    </EIB_LIST>
+</FHZINFO>

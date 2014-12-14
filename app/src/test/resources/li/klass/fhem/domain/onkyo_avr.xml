@@ -1,0 +1,69 @@
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<FHZINFO>
+    <ONKYO_AVR_LIST>
+        <ONKYO_AVR name="avr" state="on"
+                   sets="statusRequest:noArg toggle:noArg on:noArg off:noArg volume:slider,0,1,100 volumeUp:noArg volumeDown:noArg remoteControl input:am,aux1,aux2,bd,cbl,cd,dlna,dvd,dvr,fm,game,internet-radio,iradio-favorite,multi-ch,music-server,net,network,p4s,pc,phono,sat,sirius,tape,tape-1,tape2,tuner,tv,tv-cd,universal-port,usb,usb-rear,usb-toggle,vcr,video1,video2,video3,video4,video5,video6,video7,xm sleep:off,5,10,15,30,60,90 mute:off,on"
+                   attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings volumeSteps:1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20 inputs disable:0,1 model event-on-change-reading event-on-update-reading event-min-interval stateFormat Floor InputNumber devStateIcon devStateStyle fp_Erdgeschoss icon sortby webCmd widgetOverride userattr">
+            <INT key="CHANGED" value=""/>
+            <INT key="DEF" value="192.168.178.42 pre2013"/>
+            <INT key="INTERVAL" value="75"/>
+            <INT key="NAME" value="avr"/>
+            <INT key="NR" value="119"/>
+            <INT key="STATE" value="on"/>
+            <INT key="TYPE" value="ONKYO_AVR"/>
+            <INT key="ZONE" value="main"/>
+            <ATTR key="devStateIcon" value="on:rc_GREEN:off off:rc_STOP:on absent:rc_RED"/>
+            <ATTR key="group" value="Onkyo"/>
+            <ATTR key="model" value="pre2013"/>
+            <ATTR key="room" value="ONKYO"/>
+            <ATTR key="verbose" value="3"/>
+            <ATTR key="webCmd" value="volume:mute:input"/>
+            <STATE key="audin_ch" value="" measured="2014-11-11 07:07:58"/>
+            <STATE key="audin_enc" value="PCM" measured="2014-11-11 07:07:58"/>
+            <STATE key="audin_srate" value="" measured="2014-11-11 07:07:58"/>
+            <STATE key="audin_src" value="HDMI 3" measured="2014-11-11 07:07:58"/>
+            <STATE key="audout_ch" value="2.1ch" measured="2014-11-11 07:07:58"/>
+            <STATE key="audout_mode" value="Stereo" measured="2014-11-11 07:07:58"/>
+            <STATE key="deviceyear" value="pre2013" measured="2014-11-03 21:01:54"/>
+            <STATE key="input" value="video2" measured="2014-11-11 07:07:58"/>
+            <STATE key="mute" value="off" measured="2014-11-11 07:07:58"/>
+            <STATE key="power" value="on" measured="2014-11-11 07:07:58"/>
+            <STATE key="presence" value="present" measured="2014-11-11 07:07:58"/>
+            <STATE key="sleep" value="off" measured="2014-11-11 07:07:58"/>
+            <STATE key="state" value="on" measured="2014-11-11 07:07:58"/>
+            <STATE key="vidin_cdepth" value="" measured="2014-11-11 07:07:58"/>
+            <STATE key="vidin_cspace" value="" measured="2014-11-11 07:07:58"/>
+            <STATE key="vidin_res" value="" measured="2014-11-11 07:07:58"/>
+            <STATE key="vidin_src" value="V(CBL/SAT)" measured="2014-11-11 07:07:58"/>
+            <STATE key="vidout_cdepth" value="" measured="2014-11-11 07:07:58"/>
+            <STATE key="vidout_cspace" value="" measured="2014-11-11 07:07:58"/>
+            <STATE key="vidout_dst" value="Analog" measured="2014-11-11 07:07:58"/>
+            <STATE key="vidout_mode" value="custom" measured="2014-11-11 07:07:58"/>
+            <STATE key="vidout_res" value="" measured="2014-11-11 07:07:58"/>
+            <STATE key="volume" value="29" measured="2014-11-11 07:07:58"/>
+        </ONKYO_AVR>
+    </ONKYO_AVR_LIST>
+</FHZINFO>

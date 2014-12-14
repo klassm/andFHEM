@@ -1,0 +1,57 @@
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<FHZINFO>
+    <PCA301_LIST>
+        <PCA301 name="device" state="off"
+                sets="identify:noArg reset:noArg statusRequest:noArg off:noArg on:noArg toggle:noArg blink on-for-timer on-till off-for-timer intervals off-till"
+                attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev readonly:1 forceOn:1 event-on-change-reading event-on-update-reading event-min-interval stateFormat devStateIcon devStateStyle icon sortby webCmd">
+            <INT key="CFGFN" value="./steckdosen_pca301.cfg"/>
+            <INT key="DEF" value="061F90 05"/>
+            <INT key="LASTInputDev" value="jeelink"/>
+            <INT key="MSGCNT" value="15703"/>
+            <INT key="NAME" value="device"/>
+            <INT key="NR" value="30"/>
+            <INT key="PCA301_lastRcv" value="2013-10-21 12:06:08"/>
+            <INT key="PCA301_lastSend" value="2013-10-20 15:15:42"/>
+            <INT key="STATE" value="off"/>
+            <INT key="TYPE" value="PCA301"/>
+            <INT key="addr" value="061F90"/>
+            <INT key="channel" value="05"/>
+            <INT key="jeelink_MSGCNT" value="15746"/>
+            <INT key="jeelink_RAWMSG" value="OK 24 5 4 6 31 144 0 0 0 0 0"/>
+            <INT key="jeelink_TIME" value="2013-10-21 12:06:08"/>
+            <INT key="IODev" value="jeelink"/>
+            <ATTR key="devStateIcon" value="on:on:toggle off:off:toggle set.*:light_question:off"/>
+            <ATTR key="room" value="room"/>
+            <ATTR key="userReadings"
+                  value="consumptionTotal:consumption monotonic {ReadingsVal($name,'consumption',0)}"/>
+            <ATTR key="webCmd" value="on:off:toggle:statusRequest"/>
+            <STATE key="consumption" value="5" measured="2013-10-20 15:15:38"/>
+            <STATE key="consumptionTotal" value="8" measured="2013-10-20 15:15:38"/>
+            <STATE key="power" value="3.7" measured="2013-10-20 15:15:38"/>
+            <STATE key="state" value="off" measured="2013-10-20 15:15:42"/>
+        </PCA301>
+    </PCA301_LIST>
+</FHZINFO>

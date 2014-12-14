@@ -1,0 +1,71 @@
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<FHZINFO>
+    <HMS_LIST>
+        <HMS name="device" state="T: 12.6  Bat: ok" sets=""
+             attrs="room comment alias IODev do_not_notify:0,1 showtime:0,1 model;hms100-t,hms100-tf,hms100-wd,hms100-mg,hms100-tfk,rm100-2,hms100-co,hms100-fit loglevel:0,1,2,3,4,5,6 ignore:0,1 1 advent bundle structexclude">
+            <INT key="CODE" value="1362"/>
+            <INT key="CUL_MSGCNT" value="1133"/>
+            <INT key="CUL_RAWMSG" value="H136201870000DA"/>
+            <INT key="CUL_RSSI" value="-93"/>
+            <INT key="CUL_TIME" value="2010-03-29 21:30:17"/>
+            <INT key="CUN_MSGCNT" value="2544"/>
+            <INT key="CUN_RAWMSG" value="H136201260100DB"/>
+            <INT key="CUN_RSSI" value="-92.5"/>
+            <INT key="CUN_TIME" value="2010-04-05 14:06:52"/>
+            <INT key="DEF" value="1362"/>
+            <INT key="LASTIODev" value="CUN"/>
+            <INT key="MSGCNT" value="3168"/>
+            <INT key="NAME" value="device"/>
+            <INT key="NR" value="14"/>
+            <INT key="STATE" value="T: 12.6  Bat: ok"/>
+            <INT key="TYPE" value="HMS"/>
+            <INT key="IODev" value="CUN"/>
+            <ATTR key="room" value="room"/>
+            <STATE key="switch_detect" value="on" measured="2012-06-26 15:36:39"/>
+            <STATE key="battery" value="ok" measured="2010-04-05 14:06:52"/>
+            <STATE key="temperature" value="12.6 (Celsius)" measured="2010-04-05 14:06:52"/>
+            <STATE key="humidity" value="40 (%)" measured="2010-04-05 18:52:31"/>
+            <STATE key="type" value="HMS100T" measured="2010-04-05 14:06:52"/>
+        </HMS>
+    </HMS_LIST>
+
+    <FileLog_LIST>
+        <FileLog name="FileLog_device" state="active" sets="reopen"
+                 attrs="room group comment alias eventMap disable:0,1 logtype nrarchive archivedir archivecmd fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon onOffDevice webCmd">
+            <INT key="DEF" value="./log/device-%Y.log wg_temp"/>
+            <INT key="NAME" value="FileLog_device"/>
+            <INT key="NR" value="143"/>
+            <INT key="NTFY_ORDER" value="50-FileLog_device"/>
+            <INT key="REGEXP" value="device"/>
+            <INT key="STATE" value="active"/>
+            <INT key="TYPE" value="FileLog"/>
+            <INT key="currentlogfile" value="./log/device-2012.log"/>
+            <INT key="logfile" value="./log/device-%Y.log"/>
+            <ATTR key="logtype" value="text"/>
+            <ATTR key="room" value="logs"/>
+        </FileLog>
+    </FileLog_LIST>
+</FHZINFO>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:tools="http://schemas.android.com/tools">
+    <item
+        android:id="@+id/menu_favorites_add"
+        android:icon="@drawable/ic_menu_favorites_unselected"
+        android:showAsAction="ifRoom"
+        android:title="@string/context_addtofavorites"
+        tools:ignore="UnusedAttribute"/>
+    <item
+        android:id="@+id/menu_favorites_remove"
+        android:icon="@drawable/ic_menu_favorites_selected"
+        android:showAsAction="ifRoom"
+        android:title="@string/context_removefavorite"
+        tools:ignore="UnusedAttribute"/>
+    <item
+        android:id="@+id/menu_rename"
+        android:icon="@drawable/ic_menu_rename"
+        android:showAsAction="ifRoom"
+        android:title="@string/context_rename"
+        tools:ignore="UnusedAttribute"/>
+    <item
+        android:id="@+id/menu_delete"
+        android:icon="@android:drawable/ic_menu_delete"
+        android:showAsAction="ifRoom"
+        android:title="@string/context_delete"
+        tools:ignore="UnusedAttribute"/>
+    <item
+        android:id="@+id/menu_room"
+        android:icon="@drawable/ic_menu_room"
+        android:showAsAction="ifRoom"
+        android:title="@string/context_move"
+        tools:ignore="UnusedAttribute"/>
+    <item
+        android:id="@+id/menu_alias"
+        android:icon="@drawable/ic_menu_alias"
+        android:showAsAction="ifRoom"
+        android:title="@string/context_alias"
+        tools:ignore="UnusedAttribute"/>
+    <item
+        android:id="@+id/menu_notification"
+        android:icon="@drawable/ic_menu_notification"
+        android:showAsAction="ifRoom"
+        android:title="@string/context_notification"
+        tools:ignore="UnusedAttribute"/>
+</menu>

@@ -1,0 +1,149 @@
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<FHZINFO>
+    <RESIDENTS_LIST>
+        <RESIDENTS name="rgr_Residents"
+            attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings rgr_showAllStates:0,1 rgr_states event-on-change-reading event-on-update-reading event-min-interval stateFormat devStateIcon devStateStyle fm_fav fm_groups fm_name fm_order fm_type fp_Wohnung fp_image icon sortby structexclude webCmd widgetOverride wzFlutlicht wzFlutlicht_map"
+            sets="addRoommate addGuest state:home,gotosleep,absent,gone removeRoommate:rr_Markus,rr_Elena"
+            state="home">
+            <INT key="NAME" value="rgr_Residents" />
+            <INT key="NR" value="97" />
+            <INT key="NTFY_ORDER" value="50-rgr_Residents" />
+            <INT key="ROOMMATES" value="rr_Markus,rr_Elena" />
+            <INT key="STATE" value="home" />
+            <INT key="TYPE" value="RESIDENTS" />
+            <ATTR key="alias" value="Residents" />
+            <ATTR key="devStateIcon"
+                value=".*home:status_available:absent .*absent:status_away_1:home .*gone:status_standby:home .*none:control_building_empty .*gotosleep:status_night:asleep .*asleep:status_night:awoken .*awoken:status_available:home" />
+            <ATTR key="group" value="Home State" />
+            <ATTR key="icon" value="control_building_filled" />
+            <ATTR key="room" value="Wohnung" />
+            <ATTR key="sortby" value="1" />
+            <ATTR key="webCmd" value="state" />
+            <STATE key="lastActivity" measured="2014-08-10 18:27:58" value="absent" />
+            <STATE key="lastActivityBy" measured="2014-08-10 18:27:58" value="Home State" />
+            <STATE key="lastArrival" measured="2014-08-09 23:07:40" value="2014-08-09 23:07:40" />
+            <STATE key="lastDeparture" measured="2014-08-09 20:33:00" value="2014-08-09 20:33:00" />
+            <STATE key="lastDurAbsence" measured="2014-08-09 23:07:40" value="02:34:40" />
+            <STATE key="lastDurAbsence_cr" measured="2014-08-09 23:07:40" value="155" />
+            <STATE key="lastDurPresence" measured="2014-08-09 20:33:00" value="19:03:57" />
+            <STATE key="lastDurPresence_cr" measured="2014-08-09 20:33:00" value="1144" />
+            <STATE key="lastState" measured="2014-08-09 23:07:40" value="absent" />
+            <STATE key="presence" measured="2014-08-09 23:07:40" value="present" />
+            <STATE key="residentsAbsent" measured="2014-08-10 18:27:58" value="1" />
+            <STATE key="residentsAsleep" measured="2014-07-24 14:37:16" value="0" />
+            <STATE key="residentsAwoken" measured="2014-07-24 14:37:16" value="0" />
+            <STATE key="residentsGone" measured="2014-07-24 14:37:16" value="0" />
+            <STATE key="residentsGotosleep" measured="2014-07-24 14:37:16" value="0" />
+            <STATE key="residentsGuests" measured="2014-07-24 14:37:16" value="0" />
+            <STATE key="residentsHome" measured="2014-08-10 18:27:58" value="1" />
+            <STATE key="residentsTotal" measured="2014-07-24 14:37:16" value="2" />
+            <STATE key="residentsTotalAbsent" measured="2014-08-10 18:27:58" value="1" />
+            <STATE key="residentsTotalPresent" measured="2014-08-10 18:27:58" value="1" />
+            <STATE key="residentsTotalWayhome" measured="2014-07-24 14:37:16" value="0" />
+            <STATE key="state" measured="2014-08-09 23:07:40" value="home" />
+        </RESIDENTS>
+    </RESIDENTS_LIST>
+    <ROOMMATE_LIST>
+        <ROOMMATE name="rr_Elena"
+            attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings rr_locationHome rr_locationWayhome rr_locationUnderway rr_autoGoneAfter:12,16,24,26,28,30,36,48,60 rr_showAllStates:0,1 rr_realname:group,alias rr_states rr_locations rr_moods rr_moodDefault rr_moodSleepy rr_passPresenceTo event-on-change-reading event-on-update-reading event-min-interval stateFormat devStateIcon devStateStyle fm_fav fm_groups fm_name fm_order fm_type fp_Wohnung fp_image icon sortby structexclude webCmd widgetOverride wzFlutlicht wzFlutlicht_map"
+            sets="state:home,gotosleep,absent,gone mood:calm,relaxed,happy,excited,lonely,sad,bored,stressed,uncomfortable,sleepy,angry,toggle location"
+            state="home">
+            <INT key="DEF" value="rgr_Residents" />
+            <INT key="NAME" value="rr_Elena" />
+            <INT key="NR" value="100" />
+            <INT key="RESIDENTGROUPS" value="rgr_Residents," />
+            <INT key="STATE" value="home" />
+            <INT key="TYPE" value="ROOMMATE" />
+            <ATTR key="alias" value="Elena" />
+            <ATTR key="devStateIcon"
+                value=".*home:user_available:absent .*absent:user_away:home .*gone:user_ext_away:home .*gotosleep:scene_toilet:asleep .*asleep:scene_sleeping:awoken .*awoken:scene_sleeping_alternat:home .*:user_unknown" />
+            <ATTR key="group" value="Home State" />
+            <ATTR key="icon" value="people_sensor" />
+            <ATTR key="room" value="Wohnung" />
+            <ATTR key="sortby" value="0" />
+            <ATTR key="webCmd" value="state:mood" />
+            <STATE key="durTimerAbsence" measured="2014-08-10 00:57:45" value="00:00:00" />
+            <STATE key="durTimerAbsence_cr" measured="2014-08-10 00:57:45" value="0" />
+            <STATE key="durTimerPresence" measured="2014-08-10 18:00:33" value="17:02:48" />
+            <STATE key="durTimerPresence_cr" measured="2014-08-10 18:00:33" value="1023" />
+            <STATE key="durTimerSleep" measured="2014-07-24 11:29:00" value="00:00:00" />
+            <STATE key="durTimerSleep_cr" measured="2014-07-24 11:29:00" value="0" />
+            <STATE key="lastArrival" measured="2014-08-10 00:57:45" value="2014-08-10 00:57:45" />
+            <STATE key="lastDeparture" measured="2014-08-09 20:33:00" value="2014-08-09 20:33:00" />
+            <STATE key="lastDurAbsence" measured="2014-08-10 00:57:45" value="04:24:45" />
+            <STATE key="lastDurAbsence_cr" measured="2014-08-10 00:57:45" value="265" />
+            <STATE key="lastDurPresence" measured="2014-08-09 20:33:00" value="19:03:55" />
+            <STATE key="lastDurPresence_cr" measured="2014-08-09 20:33:00" value="1144" />
+            <STATE key="lastLocation" measured="2014-08-09 20:33:00" value="home" />
+            <STATE key="lastMood" measured="2014-08-09 20:33:00" value="calm" />
+            <STATE key="lastState" measured="2014-08-10 00:57:45" value="absent" />
+            <STATE key="location" measured="2014-08-10 00:57:45" value="home" />
+            <STATE key="mood" measured="2014-08-10 00:57:45" value="calm" />
+            <STATE key="presence" measured="2014-08-10 00:57:45" value="present" />
+            <STATE key="state" measured="2014-08-10 00:57:45" value="home" />
+            <STATE key="wayhome" measured="2014-07-24 14:37:16" value="0" />
+        </ROOMMATE>
+        <ROOMMATE name="rr_Markus"
+            attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings rr_locationHome rr_locationWayhome rr_locationUnderway rr_autoGoneAfter:12,16,24,26,28,30,36,48,60 rr_showAllStates:0,1 rr_realname:group,alias rr_states rr_locations rr_moods rr_moodDefault rr_moodSleepy rr_passPresenceTo event-on-change-reading event-on-update-reading event-min-interval stateFormat devStateIcon devStateStyle fm_fav fm_groups fm_name fm_order fm_type fp_Wohnung fp_image icon sortby structexclude webCmd widgetOverride wzFlutlicht wzFlutlicht_map"
+            sets="state:home,gotosleep,absent,gone mood:calm,relaxed,happy,excited,lonely,sad,bored,stressed,uncomfortable,sleepy,angry,toggle location"
+            state="home">
+            <INT key="DEF" value="rgr_Residents" />
+            <INT key="NAME" value="rr_Markus" />
+            <INT key="NR" value="99" />
+            <INT key="RESIDENTGROUPS" value="rgr_Residents," />
+            <INT key="STATE" value="home" />
+            <INT key="TYPE" value="ROOMMATE" />
+            <ATTR key="alias" value="Markus" />
+            <ATTR key="devStateIcon"
+                value=".*home:user_available:absent .*absent:user_away:home .*gone:user_ext_away:home .*gotosleep:scene_toilet:asleep .*asleep:scene_sleeping:awoken .*awoken:scene_sleeping_alternat:home .*:user_unknown" />
+            <ATTR key="group" value="Home State" />
+            <ATTR key="icon" value="people_sensor" />
+            <ATTR key="room" value="Wohnung" />
+            <ATTR key="sortby" value="0" />
+            <ATTR key="webCmd" value="state:mood" />
+            <STATE key="durTimerAbsence" measured="2014-08-10 13:27:35" value="00:00:00" />
+            <STATE key="durTimerAbsence_cr" measured="2014-08-10 13:27:35" value="0" />
+            <STATE key="durTimerPresence" measured="2014-08-10 18:00:37" value="04:33:02" />
+            <STATE key="durTimerPresence_cr" measured="2014-08-10 18:00:37" value="273" />
+            <STATE key="durTimerSleep" measured="2014-07-24 11:29:00" value="00:00:00" />
+            <STATE key="durTimerSleep_cr" measured="2014-07-24 11:29:00" value="0" />
+            <STATE key="lastArrival" measured="2014-08-10 13:27:35" value="2014-08-10 13:27:35" />
+            <STATE key="lastDeparture" measured="2014-08-10 12:03:38" value="2014-08-10 12:03:38" />
+            <STATE key="lastDurAbsence" measured="2014-08-10 13:27:35" value="01:23:57" />
+            <STATE key="lastDurAbsence_cr" measured="2014-08-10 13:27:35" value="84" />
+            <STATE key="lastDurPresence" measured="2014-08-10 12:03:38" value="02:12:02" />
+            <STATE key="lastDurPresence_cr" measured="2014-08-10 12:03:38" value="132" />
+            <STATE key="lastLocation" measured="2014-08-10 12:03:38" value="home" />
+            <STATE key="lastMood" measured="2014-08-10 12:03:38" value="calm" />
+            <STATE key="lastState" measured="2014-08-10 13:27:35" value="absent" />
+            <STATE key="location" measured="2014-08-10 13:27:35" value="home" />
+            <STATE key="mood" measured="2014-08-10 13:27:35" value="calm" />
+            <STATE key="presence" measured="2014-08-10 13:27:35" value="present" />
+            <STATE key="state" measured="2014-08-10 13:27:35" value="home" />
+            <STATE key="wayhome" measured="2014-07-24 14:39:06" value="0" />
+        </ROOMMATE>
+    </ROOMMATE_LIST>
+</FHZINFO>

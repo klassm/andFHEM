@@ -1,0 +1,60 @@
+
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<FHZINFO>
+    <THRESHOLD_LIST>
+        <THRESHOLD name="ThermostatWozi" state="active 18 off" sets="desired active external deactivated hysteresis offset cmd1_gt cmd2_lt" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings disable:0,1 loglevel:0,1,2,3,4,5,6 state_format state_cmd1_gt state_cmd2_lt devStateIcon devStateStyle fm_fav fm_groups fm_name fm_order fp_Wohnung icon sortby structexclude webCmd">
+            <INT key="CHANGED" value=""/>
+            <INT key="DEF" value="Temp_Wozi HeizungWozi"/>
+            <INT key="NAME" value="ThermostatWozi"/>
+            <INT key="NR" value="60"/>
+            <INT key="NTFY_ORDER" value="50-ThermostatWozi"/>
+            <INT key="STATE" value="active 18 off"/>
+            <INT key="TYPE" value="THRESHOLD"/>
+            <INT key="cmd1_gt" value="set HeizungWozi off"/>
+            <INT key="cmd2_lt" value="set HeizungWozi on"/>
+            <INT key="cmd_default" value="2"/>
+            <INT key="hysteresis" value="1"/>
+            <INT key="offset" value="0"/>
+            <INT key="sensor" value="Temp_Wozi"/>
+            <INT key="sensor_reading" value="temperature"/>
+            <ATTR key="group" value="Thermostate"/>
+            <ATTR key="icon" value="temp_control"/>
+            <ATTR key="room" value="Wohnzimmer"/>
+            <ATTR key="state_cmd1_gt" value="off"/>
+            <ATTR key="state_cmd2_lt" value="on"/>
+            <ATTR key="state_format" value="_m _dv _sc"/>
+            <ATTR key="webCmd" value="desired"/>
+            <STATE key="cmd" value="cmd1_gt" measured="2014-04-01 19:02:32"/>
+            <STATE key="desired_value" value="18" measured="2014-04-01 19:00:00"/>
+            <STATE key="mode" value="active" measured="2014-04-01 19:00:00"/>
+            <STATE key="sensor_value" value="21.8" measured="2014-04-14 06:05:12"/>
+            <STATE key="state" value="active 18 off" measured="2014-04-01 19:02:32"/>
+            <STATE key="threshold_max" value="18" measured="2014-04-01 19:00:00"/>
+            <STATE key="threshold_min" value="17" measured="2014-04-01 19:00:00"/>
+        </THRESHOLD>
+    </THRESHOLD_LIST>
+</FHZINFO>
+

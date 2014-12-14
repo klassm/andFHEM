@@ -1,0 +1,53 @@
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<FHZINFO>
+    <CUL_FHTTK_LIST>
+        <CUL_FHTTK name="device" state="Open" sets=""
+                   attrs="room group comment alias eventMap IODev do_not_notify:1,0 ignore:0,1 showtime:0,1 model:FHT80TF loglevel:0,1,2,3,4,5,6 fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon onOffDevice webCmd">
+            <INT key="CODE" value="230fd0"/>
+            <INT key="CUL_MSGCNT" value="1009"/>
+            <INT key="CUL_RAWMSG" value="T230FD001FC"/>
+            <INT key="CUL_RSSI" value="-76"/>
+            <INT key="CUL_TIME" value="2012-08-15 11:59:13"/>
+            <INT key="DEF" value="230fd0"/>
+            <INT key="LASTIODev" value="CUL"/>
+            <INT key="MSGCNT" value="1009"/>
+            <INT key="NAME" value="device"/>
+            <INT key="NR" value="148"/>
+            <INT key="OPEN" value="1"/>
+            <INT key="PREVSTATE" value="Closed"/>
+            <INT key="PREVTIMESTAMP" value="1345024497"/>
+            <INT key="STATE" value="Open"/>
+            <INT key="TYPE" value="CUL_FHTTK"/>
+            <INT key="IODev" value="CUL"/>
+            <ATTR key="fp_obergeschoss" value="50,680,1,"/>
+            <ATTR key="room" value="room"/>
+            <STATE key="Battery" value="ok" measured="2012-08-15 11:59:13"/>
+            <STATE key="Previous" value="Closed" measured="2012-08-14 23:05:51"/>
+            <STATE key="Reliability" value="ok" measured="2012-08-15 11:59:13"/>
+            <STATE key="Window" value="Open" measured="2012-08-15 11:59:13"/>
+        </CUL_FHTTK>
+    </CUL_FHTTK_LIST>
+</FHZINFO>

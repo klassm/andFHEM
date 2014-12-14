@@ -1,0 +1,130 @@
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<resources>
+    <string-array name="graphDefaultTimespanEntries">
+        <item>4 hours</item>
+        <item>8 hours</item>
+        <item>12 hours</item>
+        <item>24 hours</item>
+        <item>36 hours</item>
+        <item>48 hours</item>
+        <item>Current day</item>
+    </string-array>
+    <string-array name="graphDefaultTimespanValues" translatable="false">
+        <item>4</item>
+        <item>8</item>
+        <item>12</item>
+        <item>24</item>
+        <item>36</item>
+        <item>48</item>
+        <item>-1</item>
+    </string-array>
+
+    <string-array name="widgetUpdateTimeEntries">
+        <item>5 minutes</item>
+        <item>10 minutes</item>
+        <item>20 minutes</item>
+        <item>30 minutes</item>
+        <item>1 hour</item>
+        <item>2 hours</item>
+        <item>4 hours</item>
+        <item>8 hours</item>
+        <item>12 hours</item>
+        <item>24 hours</item>
+        <item>36 hours</item>
+        <item>48 hours</item>
+        <item>never</item>
+    </string-array>
+
+    <string-array name="widgetUpdateTimeValues" translatable="false">
+        <item>300</item>
+        <!-- 5 minutes -->
+        <item>600</item>
+        <!-- 10 minutes -->
+        <item>1200</item>
+        <!-- 20 minutes -->
+        <item>1800</item>
+        <!-- 30 minutes -->
+        <item>3600</item>
+        <!-- 1 hour -->
+        <item>7200</item>
+        <!-- 2 hours -->
+        <item>14400</item>
+        <!-- 4 hours -->
+        <item>28800</item>
+        <!-- 8 hours -->
+        <item>43200</item>
+        <!-- 12 hours -->
+        <item>86400</item>
+        <!-- 24 hours -->
+        <item>129600</item>
+        <!-- 36 hours -->
+        <item>172800</item>
+        <!-- 48 hours -->
+        <item>0</item>
+        <!-- never -->
+    </string-array>
+
+    <string-array name="updateRoomListTimeEntries">
+        <item>never</item>
+        <item>1 minute</item>
+        <item>5 minutes</item>
+        <item>30 minutes</item>
+        <item>1 hour</item>
+        <item>2 hours</item>
+        <item>4 hours</item>
+        <item>8 hours</item>
+        <item>12 hours</item>
+        <item>24 hours</item>
+        <item>36 hours</item>
+        <item>48 hours</item>
+    </string-array>
+
+    <string-array name="updateRoomListTimeValues" translatable="false">
+        <item>-1</item>
+        <item>60000</item>
+        <item>300000</item>
+        <item>1800000</item>
+        <item>3600000</item>
+        <item>14400</item>
+        <item>28800</item>
+        <item>43200</item>
+        <item>86400</item>
+        <item>129600</item>
+        <item>172800</item>
+    </string-array>
+
+    <string-array name="startupViews">
+        <item>Favorites</item>
+        <item>All Devices</item>
+        <item>Room List</item>
+    </string-array>
+
+    <string-array name="startupViewsValues" translatable="false">
+        <item>FAVORITES</item>
+        <item>ALL_DEVICES</item>
+        <item>ROOM_LIST</item>
+    </string-array>
+</resources>

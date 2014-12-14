@@ -1,0 +1,86 @@
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<FHZINFO>
+    <CUL_HM_LIST>
+        <CUL_HM name="device" state="24 %" sets="clear:readings,register,rssi,msgEvents getConfig getRegRaw pair peerBulk raw regBulk regSet reset sign:on,off statusRequest unpair" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev do_not_notify:1,0 ignore:1,0 dummy:1,0 showtime:1,0 serialNr firmware rawToReadable unit peerIDs repPeers actCycle actStatus autoReadReg:0_off,1_restart,2_pon-restart,3_onChange,4_reqStatus,8_stateOnly expert:0_off,1_on,2_full burstAccess:0_off,1_auto param msgRepeat .stc .devInfo event-on-change-reading event-on-update-reading event-min-interval stateFormat model:ASH550,ASH550I,CMM,DORMA_BRC-H,DORMA_RC-H,DORMA_atent,HM-CC-RT-DN,HM-CC-RT-DN-BoM,HM-CC-SCD,HM-CC-TC,HM-CC-VD,HM-Dis-TD-T,HM-ES-PMSw1-Pl,HM-LC-BL1-FM,HM-LC-BL1-PB-FM,HM-LC-BL1-SM,HM-LC-Bl1PBU-FM,HM-LC-DDC1-PCB,HM-LC-DIM1L-CV,HM-LC-DIM1L-PL,HM-LC-DIM1T-CV,HM-LC-DIM1T-FM,HM-LC-DIM1T-PL,HM-LC-DIM2L-CV,HM-LC-DIM2L-SM,HM-LC-DIM2T-SM,HM-LC-Dim1L-CV-2,HM-LC-Dim1L-CV-644,HM-LC-Dim1L-Pl-2,HM-LC-Dim1L-Pl-3,HM-LC-Dim1L-Pl-644,HM-LC-Dim1PWM-CV,HM-LC-Dim1PWM-CV-2,HM-LC-Dim1T-CV-2,HM-LC-Dim1T-CV-644,HM-LC-Dim1T-FM-2,HM-LC-Dim1T-FM-644,HM-LC-Dim1T-Pl-2,HM-LC-Dim1T-Pl-3,HM-LC-Dim1T-Pl-644,HM-LC-Dim1TPBU-FM,HM-LC-Dim1TPBU-FM-2,HM-LC-Dim2L-SM,HM-LC-Dim2L-SM-2,HM-LC-Dim2T-SM,HM-LC-Dim2T-SM-2,HM-LC-SW1-BA-PCB,HM-LC-SW1-FM,HM-LC-SW1-PB-FM,HM-LC-SW1-PL,HM-LC-SW1-PL-OM54,HM-LC-SW1-PL2,HM-LC-SW1-SM,HM-LC-SW1-SM-ATMEGA168,HM-LC-SW2-DR,HM-LC-SW2-FM,HM-LC-SW2-PB-FM,HM-LC-SW2-SM,HM-LC-SW4-BA-PCB,HM-LC-SW4-DR,HM-LC-SW4-PCB,HM-LC-SW4-SM,HM-LC-SW4-SM-ATMEGA168,HM-LC-SW4-WM,HM-LC-Sw1PBU-FM,HM-MOD-RC-8,HM-OU-CF-PL,HM-OU-CFM-PL,HM-OU-CM-PCB,HM-OU-LED16,HM-PB-2-FM,HM-PB-2-WM,HM-PB-2-WM55,HM-PB-2-WM55-2,HM-PB-4-WM,HM-PB-4DIS-WM,HM-PB-6-WM55,HM-PBI-4-FM,HM-RC-12,HM-RC-12-B,HM-RC-12-SW,HM-RC-19,HM-RC-19-B,HM-RC-19-SW,HM-RC-4,HM-RC-4-2,HM-RC-4-B,HM-RC-KEY3,HM-RC-KEY3-B,HM-RC-Key4-2,HM-RC-P1,HM-RC-SEC3,HM-RC-SEC3-B,HM-RC-Sec4-2,HM-SCI-3-FM,HM-SEC-KEY,HM-SEC-KEY-O,HM-SEC-KEY-S,HM-SEC-MDIR,HM-SEC-MDIR-2,HM-SEC-RHS,HM-SEC-SC,HM-SEC-SC-2,HM-SEC-SD,HM-SEC-SFA-SM,HM-SEC-TIS,HM-SEC-WDS,HM-SEC-WDS-2,HM-SEC-WIN,HM-SEN-EP,HM-SEN-MDIR-SM,HM-SWI-3-FM,HM-Sec-Cen,HM-Sen-MDIR-O,HM-Sen-MDIR-O-2,HM-Sen-RD-O,HM-Sen-Wa-Od,HM-Sys-sRP-Pl,HM-TC-IT-WM-W-EU,HM-WDC7000,HM-WDS10-TH-O,HM-WDS100-C6-O,HM-WDS20-TH-O,HM-WDS30-OT2-SM,HM-WDS30-T-O,HM-WDS40-TH-I,HM-WS550,HM-WS550LCB,HM-WS550LCW,HM-WS550Tech,IS-WDS-TH-OD-S-R3,IS-WDS-TH-OD-S-R3,KFM-Display,KFM-Sensor,KS550,KS550LC,KS550TECH,KS888,PS-Th-Sens,PS-switch,ROTO_ZEL-STG-RM-DWT-10,ROTO_ZEL-STG-RM-FDK,ROTO_ZEL-STG-RM-FEP-230V,ROTO_ZEL-STG-RM-FSA,ROTO_ZEL-STG-RM-FST-UP4,ROTO_ZEL-STG-RM-FWT,ROTO_ZEL-STG-RM-FZS,ROTO_ZEL-STG-RM-FZS-2,ROTO_ZEL-STG-RM-HS-4,ROTO_ZEL-STG-RM-WT-2,Roto_ZEL-STG-RM-FFK,Roto_ZEL-STG-RM-FSS-UP3,S550IA,Schueco_263-130,Schueco_263-131,Schueco_263-132,Schueco_263-133,Schueco_263-134,Schueco_263-135,Schueco_263-144,Schueco_263-145,Schueco_263-146,Schueco_263-147,Schueco_263-155,Schueco_263-158,Schueco_263-160,Schueco_263-162,Schueco_263-xxx,WDF-solar,WS888 subType:AlarmControl,KFM100,THSensor,blindActuator,blindActuatorSol,dimmer,keyMatic,motionDetector,outputUnit,powerMeter,pushButton,remote,repeater,sensRain,sensor,singleButton,smokeDetector,swi,switch,thermostat,threeStateSensor,tipTronic,winMatic devStateIcon devStateStyle fp_Grafiken fp_Grundriss fp_Sensoren fp_Speicher fp_Verbrauch icon sortby webCmd">
+            <INT key="CUL_0_MSGCNT" value="9"/>
+            <INT key="CUL_0_RAWMSG" value="A0DECA610226451F1103406013000EE"/>
+            <INT key="CUL_0_RSSI" value="-83"/>
+            <INT key="CUL_0_TIME" value="2013-12-29 16:26:38"/>
+            <INT key="DEF" value="226451"/>
+            <INT key="LASTInputDev" value="CUL_0"/>
+            <INT key="MSGCNT" value="9"/>
+            <INT key="NAME" value="device"/>
+            <INT key="NR" value="107"/>
+            <INT key="STATE" value="24 %"/>
+            <INT key="TYPE" value="CUL_HM"/>
+            <INT key="lastMsg" value="No:EC - t:10 s:226451 d:F11034 06013000"/>
+            <INT key="protLastRcv" value="2013-12-29 16:26:38"/>
+            <INT key="protSnd" value="9 last_at:2013-12-29 16:26:38"/>
+            <INT key="protState" value="CMDs_done"/>
+            <INT key="rssi_at_CUL_0" value="avg:-83.66 min:-84.5 max:-83 lst:-83 cnt:9 "/>
+            <INT key="IODev" value="CUL_0"/>
+            <ATTR key="actCycle" value="028:00"/>
+            <ATTR key="actStatus" value="alive"/>
+            <ATTR key="autoReadReg" value="4_reqStatus"/>
+            <ATTR key="expert" value="2_full"/>
+            <ATTR key="firmware" value="1.2"/>
+            <ATTR key="fp_Grundriss" value="30,380,1,Zisterne vorne"/>
+            <ATTR key="icon" value="scene_pool"/>
+            <ATTR key="model" value="HM-Sen-Wa-Od"/>
+            <ATTR key="peerIDs" value=""/>
+            <ATTR key="room" value="room"/>
+            <ATTR key="serialNr" value="KEQ0365462"/>
+            <ATTR key="subType" value="sensor"/>
+            <STATE key="Activity" value="alive" measured="2013-12-29 13:52:01"/>
+            <STATE key="CommandAccepted" value="no" measured="2013-12-24 10:40:00"/>
+            <STATE key="PairedTo" value="0xF11034" measured="2013-12-24 17:52:44"/>
+            <STATE key="R-caseDesign" value="set_verticalBarrel" measured="2013-11-19 18:08:32"/>
+            <STATE key="R-caseHigh" value="190 cm" measured="2013-12-06 18:32:17"/>
+            <STATE key="R-caseLength" value="250 cm" measured="2013-12-06 18:32:17"/>
+            <STATE key="R-caseWidth" value="250 cm" measured="2013-12-06 18:32:17"/>
+            <STATE key="R-cyclicInfoMsgDis" value="6" measured="2013-12-24 17:52:44"/>
+            <STATE key="R-fillLevel" value="190 cm" measured="2013-12-06 18:32:17"/>
+            <STATE key="R-intKeyVisib" value="invisib" measured="2013-12-06 18:53:46"/>
+            <STATE key="R-ledOnTime" value="0.5 s" measured="2013-11-18 18:27:23"/>
+            <STATE key="R-localResDis" value="off" measured="2013-12-24 17:52:44"/>
+            <STATE key="R-meaLength" value="245 cm" measured="2013-12-06 18:32:17"/>
+            <STATE key="R-pairCentral" value="0xF11034" measured="2013-12-24 17:52:44"/>
+            <STATE key="R-transmDevTryMax" value="6" measured="2013-12-24 17:52:44"/>
+            <STATE key="R-transmitTryMax" value="6" measured="2013-12-24 17:52:45"/>
+            <STATE key="R-useCustom" value="off" measured="2013-12-24 17:52:45"/>
+            <STATE key="R-waterUppThr" value="255" measured="2013-12-24 17:52:45"/>
+            <STATE key="R-waterlowThr" value="255" measured="2013-12-24 17:52:45"/>
+            <STATE key="RegL_00:" value="02:01 0A:F1 0B:10 0C:34 11:06 14:06 18:00 00:00" measured="2013-12-24 17:52:44"/>
+            <STATE key="RegL_01:" value="06:FF 07:FF 08:00 22:64 30:06 5B:01 5E:00 5F:BE  62:00 63:BE 66:00 67:FA 6A:00 6B:FA 6C:00 6D:F5  6E:00 00:00" measured="2013-12-24 17:52:45"/>
+            <STATE key="battery" value="ok" measured="2013-12-29 16:26:38"/>
+            <STATE key="level" value="24 %" measured="2013-12-29 16:26:38"/>
+            <STATE key="recentStateType" value="info" measured="2013-12-29 16:26:38"/>
+            <STATE key="state" value="24 %" measured="2013-12-29 16:26:38"/>
+        </CUL_HM>
+    </CUL_HM_LIST>
+</FHZINFO>
+
+

@@ -1,0 +1,148 @@
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<FHZINFO>
+    <GPIO4_LIST>
+        <!--
+        Plot data, 08.06.2013
+        2013-06-04_21:18:15 GPIO4_DS1820_000516468fcd T: 23.562
+        2013-06-04_21:18:15 GPIO4_DS1820_000516468fcd temperature: 23.562
+        2013-06-04_21:19:15 GPIO4_DS1820_000516468fcd T: 23.437
+        2013-06-04_21:19:15 GPIO4_DS1820_000516468fcd temperature: 23.437
+        2013-06-04_21:20:16 GPIO4_DS1820_000516468fcd T: 23.5
+        2013-06-04_21:20:16 GPIO4_DS1820_000516468fcd temperature: 23.5
+        2013-06-04_21:21:17 GPIO4_DS1820_000516468fcd T: 23.375
+        2013-06-04_21:21:17 GPIO4_DS1820_000516468fcd temperature: 23.375
+        2013-06-04_21:22:18 GPIO4_DS1820_000516468fcd T: 23.5
+        2013-06-04_21:22:18 GPIO4_DS1820_000516468fcd temperature: 23.5
+        2013-06-04_21:23:19 GPIO4_DS1820_000516468fcd failures: 1
+        2013-06-04_21:24:20 GPIO4_DS1820_000516468fcd T: 23.375
+        2013-06-04_21:24:20 GPIO4_DS1820_000516468fcd temperature: 23.375
+        2013-06-04_21:25:20 GPIO4_DS1820_000516468fcd T: 23.5
+        2013-06-04_21:25:20 GPIO4_DS1820_000516468fcd temperature: 23.5
+        2013-06-04_21:26:21 GPIO4_DS1820_000516468fcd T: 23.437
+        2013-06-04_21:26:21 GPIO4_DS1820_000516468fcd temperature: 23.437
+        2013-06-04_21:27:22 GPIO4_DS1820_000516468fcd T: 23.437
+        2013-06-04_21:27:22 GPIO4_DS1820_000516468fcd temperature: 23.437
+        2013-06-04_21:28:23 GPIO4_DS1820_000516468fcd T: 23.437
+        2013-06-04_21:28:23 GPIO4_DS1820_000516468fcd temperature: 23.437
+        2013-06-04_21:29:24 GPIO4_DS1820_000516468fcd T: 23.375
+        2013-06-04_21:29:24 GPIO4_DS1820_000516468fcd temperature: 23.375
+        2013-06-04_21:30:25 GPIO4_DS1820_000516468fcd T: 23.437
+        2013-06-04_21:30:25 GPIO4_DS1820_000516468fcd temperature: 23.437
+        -->
+        <GPIO4 name="temp" state="22.937 °C (Mittelwert: 22.7 °C)" sets=""
+               attrs="room group comment alias eventMap userReadings tempOffset pollingInterval model loglevel:0,1,2,3,4,5,6 event-on-change-reading event-on-update-reading event-min-interval stateFormat devStateIcon icon sortby webCmd">
+            <INT key="DEF" value="10-000802299fdc"/>
+            <INT key="NAME" value="temp"/>
+            <INT key="NR" value="56"/>
+            <INT key="NTFY_TRIGGERTIME" value="2013-06-05 13:19:36"/>
+            <INT key="STATE" value="22.937 °C (Mittelwert: 22.7 °C)"/>
+            <INT key="TYPE" value="GPIO4"/>
+            <ATTR key="alias" value="WZ_Temp"/>
+            <ATTR key="group" value="Temperatur"/>
+            <ATTR key="icon" value="icoTemp"/>
+            <ATTR key="model" value="DS1820"/>
+            <ATTR key="room" value="room"/>
+            <ATTR key="stateFormat" value="temperature °C (Mittelwert: T_avg_day °C)"/>
+            <STATE key="T_avg_day" value="22.7" measured="2013-06-05 13:19:36"/>
+            <STATE key="T_avg_month" value="23.3" measured="2013-06-05 13:19:36"/>
+            <STATE key="T_cum_day" value="1090862.58" measured="2013-06-05 13:19:36"/>
+            <STATE key="T_cum_month" value="11160913.4479999" measured="2013-06-05 13:19:36"/>
+            <STATE key="T_max_day" value="23.6" measured="2013-06-05 01:24:08"/>
+            <STATE key="T_max_month" value="24.1" measured="2013-06-04 21:56:48"/>
+            <STATE key="T_min_day" value="20.6" measured="2013-06-05 07:59:46"/>
+            <STATE key="T_min_month" value="20.6" measured="2013-06-05 07:59:46"/>
+            <STATE key="failures" value="0" measured="2013-06-05 11:24:56"/>
+            <STATE key="state" value="T: 22.937" measured="2013-06-05 13:19:36"/>
+            <STATE key="temperature" value="22.937" measured="2013-06-05 13:19:36"/>
+            <STATE key="temperature_avg_day" value="23.3" measured="2013-06-04 16:50:49"/>
+            <STATE key="temperature_avg_month" value="23.3" measured="2013-06-04 16:50:49"/>
+            <STATE key="temperature_cum_day" value="1413849.486" measured="2013-06-04 16:50:49"/>
+            <STATE key="temperature_cum_month" value="9470476.686" measured="2013-06-04 16:50:49"/>
+            <STATE key="temperature_max_day" value="23.4" measured="2013-06-04 16:50:49"/>
+            <STATE key="temperature_max_month" value="23.4" measured="2013-06-04 16:50:49"/>
+            <STATE key="temperature_min_day" value="23.2" measured="2013-06-04 16:48:48"/>
+            <STATE key="temperature_min_month" value="23.2" measured="2013-06-04 16:48:48"/>
+        </GPIO4>
+
+        <GPIO4 name="RPi" state="Initialized" sets=""
+               attrs="room group comment alias eventMap userReadings tempOffset pollingInterval model loglevel:0,1,2,3,4,5,6 event-on-change-reading event-on-update-reading event-min-interval stateFormat devStateIcon icon sortby webCmd">
+            <INT key="DEF" value="BUSMASTER"/>
+            <ATTR key="room" value="room"/>
+            <INT key="NAME" value="RPi"/>
+            <INT key="NR" value="53"/>
+            <INT key="STATE" value="Initialized"/>
+            <INT key="TYPE" value="GPIO4"/>
+        </GPIO4>
+
+        <GPIO4 name="DS18B20" state="T: 20.437" sets="" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings tempOffset pollingInterval model loglevel:0,1,2,3,4,5,6 event-on-change-reading event-on-update-reading event-min-interval stateFormat custom_graph devStateIcon devStateStyle icon sortby webCmd">
+            <INT key="DEF" value="28-0000050b3960"/>
+            <INT key="NAME" value="DS18B20"/>
+            <INT key="NR" value="35"/>
+            <INT key="NTFY_ORDER" value="50-GPIO4_DS18B20_0000050b3960"/>
+            <INT key="STATE" value="T: 20.437"/>
+            <INT key="TYPE" value="GPIO4"/>
+            <ATTR key="model" value="DS18B20"/>
+            <ATTR key="room" value="room"/>
+            <STATE key="failures" value="7" measured="2013-11-01 06:47:06"/>
+            <STATE key="state" value="T: 20.437" measured="2013-11-01 06:46:05"/>
+            <STATE key="temperature" value="20.437" measured="2013-11-01 06:46:05"/>
+        </GPIO4>
+
+        <GPIO4 name="additionalAttributes" state="20.937 °C (Mittelwert:
+20.6 °C)" sets="" attrs="verbose:0,1,2,3,4,5 room group comment alias
+eventMap userReadings tempOffset pollingInterval model
+loglevel:0,1,2,3,4,5,6 event-on-change-reading event-on-update-reading
+event-min-interval stateFormat DbLogExclude devStateIcon devStateStyle
+icon item1 item10 item11 item12 item13 item14 item15 item16 item17
+item18 item19 item2 item20 item3 item4 item5 item6 item7 item8 item9
+sortby webCmd">
+            <INT key="DEF" value="10-000802299fdc"/>
+            <INT key="NAME" value="additionalAttributes"/>
+            <INT key="NR" value="102"/>
+            <INT key="STATE" value="20.937 °C (Mittelwert: 20.6 °C)"/>
+            <INT key="TYPE" value="GPIO4"/>
+            <ATTR key="alias" value="Aktuell"/>
+            <ATTR key="group" value="Temperatur"/>
+            <ATTR key="icon" value="icoTemp"/>
+            <ATTR key="model" value="DS1820"/>
+            <ATTR key="room" value="room"/>
+            <ATTR key="sortby" value="B00"/>
+            <ATTR key="stateFormat" value="temperature °C (Mittelwert: T_avg_day °C)"/>
+            <STATE key="T_avg_day" value="20.6" measured="2013-11-29 15:56:09"/>
+            <STATE key="T_avg_month" value="20.3" measured="2013-11-29 15:56:09"/>
+            <STATE key="T_cum_day" value="1180986.216" measured="2013-11-29 15:56:09"/>
+            <STATE key="T_cum_month" value="52150296.5679963" measured="2013-11-29
+15:56:09"/>
+            <STATE key="T_max_day" value="22.2" measured="2013-11-29 00:07:58"/>
+            <STATE key="T_max_month" value="22.6" measured="2013-11-26 14:42:16"/>
+            <STATE key="T_min_day" value="20.1" measured="2013-11-29 12:24:23"/>
+            <STATE key="T_min_month" value="0.0" measured="2013-11-27 22:38:09"/>
+            <STATE key="failures" value="0" measured="2013-11-29 14:27:36"/>
+            <STATE key="state" value="T: 20.937" measured="2013-11-29 15:56:09"/>
+            <STATE key="temperature" value="20.937" measured="2013-11-29 15:56:09"/>
+        </GPIO4>
+    </GPIO4_LIST>
+</FHZINFO>

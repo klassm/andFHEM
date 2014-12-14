@@ -1,0 +1,64 @@
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<FHZINFO>
+    <I2C_PCA9532_LIST>
+        <I2C_PCA9532 name="PCA9532" state="Ok"
+            sets="Port3:off,on,PWM0,PWM1 Port4:off,on,PWM0,PWM1
+Port5:off,on,PWM0,PWM1 Port6:off,on,PWM0,PWM1 Port7:off,on,PWM0,PWM1
+Port8:off,on,PWM0,PWM1 Port9:off,on,PWM0,PWM1 Port10:off,on,PWM0,PWM1
+Port11:off,on,PWM0,PWM1 Port12:off,on,PWM0,PWM1
+Port13:off,on,PWM0,PWM1 Port14:off,on,PWM0,PWM1
+Port15:off,on,PWM0,PWM1 PWM0:slider,0,1,255 PWM1:slider,0,1,255 "
+            attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap
+userReadings IODev do_not_notify:1,0 ignore:1,0
+showtime:1,0poll_interval T0:slider,0,1,255 T1:slider,0,1,255
+InputPorts event-on-change-reading event-on-update-reading
+event-min-interval stateFormat DbLogExclude devStateIcon devStateStyle
+icon sortby webCmd">
+            <INT key="DEF" value="0x60"/>
+            <INT key="Frequency_0" value="152.000 Hz"/>
+            <INT key="Frequency_1" value="152.000 Hz"/>
+            <INT key="I2C_Address" value="96"/>
+            <INT key="NAME" value="PCA9532"/>
+            <INT key="NR" value="148"/>
+            <INT key="RPiI2C_RAWMSG" value="0"/>
+            <INT key="RPiI2C_SENDSTAT" value="Ok"/>
+            <INT key="STATE" value="Ok"/>
+            <INT key="TYPE" value="I2C_PCA9532"/>
+            <INT key="IODev" value="RPiI2C"/>
+            <ATTR key="IODev" value="RPiI2C"/>
+            <ATTR key="InputPorts" value="0 1 2"/>
+            <STATE key="PWM0" value="128" measured="2014-04-06 23:37:29"/>
+            <STATE key="PWM1" value="129" measured="2014-04-06 23:37:29"/>
+            <STATE key="Port0" value="1" measured="2014-04-06 23:37:29"/>
+            <STATE key="Port1" value="0" measured="2014-04-06 23:37:29"/>
+            <STATE key="Port2" value="1" measured="2014-04-06 23:37:29"/>
+            <STATE key="Port3" value="on" measured="2014-02-23 23:46:08"/>
+            <STATE key="Port4" value="off" measured="2014-02-22 20:39:30"/>
+            <STATE key="Port5" value="off" measured="2014-02-22 20:39:30"/>
+            <STATE key="state" value="Ok" measured="2014-04-06 23:37:29"/>
+        </I2C_PCA9532>
+    </I2C_PCA9532_LIST>
+</FHZINFO>

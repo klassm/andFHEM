@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:paddingEnd="0dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="0dp"
+                android:paddingStart="20dp">
+
+    <ImageView
+        android:id="@+id/weatherImage"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:contentDescription="@string/weather"
+        android:gravity="center"/>
+
+    <TableLayout
+        android:id="@+id/weatherTable"
+        style="@style/deviceOverviewTable"
+        android:layout_marginLeft="42dp"
+        android:layout_marginStart="42dp"
+        android:paddingTop="0dp">
+
+        <TableRow>
+
+            <TextView
+                android:id="@+id/deviceName"
+                style="@style/deviceOverviewCaption"/>
+        </TableRow>
+
+        <TableRow android:id="@+id/tableRowTemperature">
+
+            <TextView
+                style="@style/deviceOverviewDescription"
+                android:text="@string/temperature"/>
+
+            <TextView
+                android:id="@+id/temperature"
+                style="@style/deviceOverviewContent"
+                android:text="@string/dummy_temperature"/>
+        </TableRow>
+
+        <TableRow android:id="@+id/tableRowWind">
+
+            <TextView
+                style="@style/deviceOverviewDescription"
+                android:text="@string/wind"/>
+
+            <TextView
+                android:id="@+id/wind"
+                style="@style/deviceOverviewContent"
+                android:text="@string/dummy_speed"/>
+        </TableRow>
+
+        <TableRow android:id="@+id/tableRowHumidity">
+
+            <TextView
+                style="@style/deviceOverviewDescription"
+                android:text="@string/humidity"/>
+
+            <TextView
+                android:id="@+id/humidity"
+                style="@style/deviceOverviewContent"
+                android:text="@string/dummy_percentage"/>
+        </TableRow>
+
+        <TableRow android:id="@+id/tableRowCondition">
+
+            <TextView
+                style="@style/deviceOverviewDescription"
+                android:text="@string/weather"/>
+
+            <TextView
+                android:id="@+id/condition"
+                style="@style/deviceOverviewContent"
+                android:text="@string/dummy_condition"/>
+        </TableRow>
+    </TableLayout>
+</RelativeLayout>

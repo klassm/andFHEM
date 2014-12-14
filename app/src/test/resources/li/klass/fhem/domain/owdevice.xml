@@ -1,0 +1,208 @@
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<FHZINFO>
+    <OWDevice_LIST>
+        <OWDevice name="Aussentemperatur" state="0.0°C" sets="templow temphigh alias"
+                  attrs="room group comment alias eventMap trimvalues polls interfaces model loglevel:0,1,2,3,4,5 event-on-change-reading:0,1 event-on-update-reading:0,1 stateFormat devStateIcon fp_Obergeschoss fp_obergeschoss icon room_map structexclude webCmd">
+            <INT key="CFGFN" value="/usr/share/fhem/FHEM/Keller.cfg"/>
+            <INT key="CHANGED" value=""/>
+            <INT key="DEF" value="10.ECED54020800 60"/>
+            <INT key="NAME" value="Aussentemperatur"/>
+            <INT key="NR" value="23"/>
+            <INT key="STATE" value="0.0°C"/>
+            <INT key="TYPE" value="OWDevice"/>
+            <INT key="IODev" value=""/>
+            <ATTR key="icon" value="icoTempBaum"/>
+            <ATTR key="model" value="DS18S20"/>
+            <ATTR key="room" value="room"/>
+        </OWDevice>
+        <OWDevice name="DS2413A" state="???" sets="PIO.A PIO.B alias"
+                  attrs="room group comment alias eventMap trimvalues polls interfaces model loglevel:0,1,2,3,4,5 event-on-change-reading:0,1 event-on-update-reading:0,1 stateFormat devStateIcon fp_Obergeschoss fp_obergeschoss icon room_map structexclude webCmd">
+            <INT key="DEF" value="3A.6D850C000000"/>
+            <INT key="NAME" value="DS2413A"/>
+            <INT key="NR" value="83"/>
+            <INT key="STATE" value="???"/>
+            <INT key="TYPE" value="OWDevice"/>
+            <INT key="IODev" value="OWSERVER"/>
+            <ATTR key="model" value="DS2413"/>
+            <ATTR key="webCmd" value="PIO.A 1:PIO.A 0:PIO.B 1:PIO.B 0"/>
+            <STATE key="PIO.A" value="2" measured="2013-03-03 11:56:39"/>
+            <STATE key="PIO.B" value="3" measured="2013-03-03 11:56:41"/>
+            <ATTR key="room" value="room"/>
+        </OWDevice>
+        <OWDevice name="Relais1" state="ein" sets="PIO 1:ein PIO 0:aus PIO alias"
+                  attrs="room group comment alias eventMap trimvalues polls interfaces model loglevel:0,1,2,3,4,5 event-on-change-reading:0,1 event-on-update-reading:0,1 stateFormat devStateIcon fp_Obergeschoss fp_obergeschoss icon room_map structexclude webCmd">
+            <INT key="DEF" value="05.DD8933000000"/>
+            <INT key="NAME" value="Relais1"/>
+            <INT key="NR" value="75"/>
+            <INT key="STATE" value="ein"/>
+            <INT key="TYPE" value="OWDevice"/>
+            <INT key="IODev" value="OWSERVER"/>
+            <ATTR key="eventMap" value="PIO 1:ein PIO 0:aus"/>
+            <ATTR key="model" value="DS2405"/>
+            <ATTR key="webCmd" value="PIO 1:PIO 0"/>
+            <STATE key="PIO" value="1" measured="2013-02-21 21:20:09"/>
+            <ATTR key="room" value="room"/>
+        </OWDevice>
+        <OWDevice name="Relais2" state="aus" sets="PIO 1:ein PIO 0:aus PIO alias"
+                  attrs="room group comment alias eventMap trimvalues polls interfaces model loglevel:0,1,2,3,4,5 event-on-change-reading:0,1 event-on-update-reading:0,1 stateFormat devStateIcon fp_Obergeschoss fp_obergeschoss icon room_map structexclude webCmd">
+            <INT key="DEF" value="05.197533000000"/>
+            <INT key="NAME" value="Relais2"/>
+            <INT key="NR" value="77"/>
+            <INT key="STATE" value="aus"/>
+            <INT key="TYPE" value="OWDevice"/>
+            <INT key="IODev" value="OWSERVER"/>
+            <ATTR key="eventMap" value="PIO 1:ein PIO 0:aus"/>
+            <ATTR key="model" value="DS2405"/>
+            <ATTR key="webCmd" value="PIO 1:PIO 0"/>
+            <STATE key="PIO" value="0" measured="2013-02-06 18:42:06"/>
+            <ATTR key="room" value="room"/>
+        </OWDevice>
+        <OWDevice name="Relais3" state="aus" sets="PIO 1:ein PIO 0:aus PIO alias"
+                  attrs="room group comment alias eventMap trimvalues polls interfaces model loglevel:0,1,2,3,4,5 event-on-change-reading:0,1 event-on-update-reading:0,1 stateFormat devStateIcon fp_Obergeschoss fp_obergeschoss icon room_map structexclude webCmd">
+            <INT key="DEF" value="05.5A7633000000"/>
+            <INT key="NAME" value="Relais3"/>
+            <INT key="NR" value="79"/>
+            <INT key="STATE" value="aus"/>
+            <INT key="TYPE" value="OWDevice"/>
+            <INT key="IODev" value="OWSERVER"/>
+            <ATTR key="eventMap" value="PIO 1:ein PIO 0:aus"/>
+            <ATTR key="model" value="DS2405"/>
+            <ATTR key="webCmd" value="PIO 1:PIO 0"/>
+            <STATE key="PIO" value="0" measured="2013-02-06 18:42:25"/>
+            <ATTR key="room" value="room"/>
+        </OWDevice>
+        <OWDevice name="Relais4" state="???" sets="PIO 1:ein PIO 0:aus PIO alias"
+                  attrs="room group comment alias eventMap trimvalues polls interfaces model loglevel:0,1,2,3,4,5 event-on-change-reading:0,1 event-on-update-reading:0,1 stateFormat devStateIcon fp_Obergeschoss fp_obergeschoss icon room_map structexclude webCmd">
+            <INT key="DEF" value="05.197533000002"/>
+            <INT key="NAME" value="Relais4"/>
+            <INT key="NR" value="81"/>
+            <INT key="STATE" value="???"/>
+            <INT key="TYPE" value="OWDevice"/>
+            <INT key="IODev" value="OWSERVER"/>
+            <ATTR key="eventMap" value="PIO 1:ein PIO 0:aus"/>
+            <ATTR key="model" value="DS2405"/>
+            <ATTR key="webCmd" value="PIO 1:PIO 0"/>
+            <ATTR key="room" value="room"/>
+        </OWDevice>
+        <OWDevice name="Schalter1" state="aus" sets="PIO 1:ein PIO 0:aus PIO alias"
+                  attrs="room group comment alias eventMap trimvalues polls interfaces model loglevel:0,1,2,3,4,5 event-on-change-reading:0,1 event-on-update-reading:0,1 stateFormat devStateIcon fp_Obergeschoss fp_obergeschoss icon room_map structexclude webCmd">
+            <INT key="DEF" value="05.998D33000000"/>
+            <INT key="NAME" value="Schalter1"/>
+            <INT key="NR" value="72"/>
+            <INT key="STATE" value="aus"/>
+            <INT key="TYPE" value="OWDevice"/>
+            <INT key="IODev" value="OWSERVER"/>
+            <ATTR key="eventMap" value="PIO 1:ein PIO 0:aus"/>
+            <ATTR key="model" value="DS2405"/>
+            <ATTR key="webCmd" value="PIO 1:PIO 0"/>
+            <STATE key="PIO" value="0" measured="2013-02-06 18:42:31"/>
+            <STATE key="id" value="998D33000000" measured="2013-01-14 20:42:29"/>
+            <ATTR key="room" value="room"/>
+        </OWDevice>
+        <OWDevice name="Vorlauf" state="19.1°C" sets="templow temphigh alias"
+                  attrs="room group comment alias eventMap trimvalues polls interfaces model loglevel:0,1,2,3,4,5 event-on-change-reading:0,1 event-on-update-reading:0,1 stateFormat devStateIcon fp_Obergeschoss fp_obergeschoss icon room_map structexclude webCmd">
+            <INT key="CHANGED" value=""/>
+            <INT key="DEF" value="28.F8FC33020000 60"/>
+            <INT key="NAME" value="Vorlauf"/>
+            <INT key="NR" value="68"/>
+            <INT key="STATE" value="19.1°C"/>
+            <INT key="TYPE" value="OWDevice"/>
+            <INT key="IODev" value="OWSERVER"/>
+            <ATTR key="fp_Obergeschoss" value="350,500"/>
+            <ATTR key="model" value="DS18B20"/>
+            <ATTR key="room" value="Wohnzimmer"/>
+            <STATE key="state" value="temperature: 19.125" measured="2013-02-23 17:00:12"/>
+            <STATE key="temperature" value="19.125" measured="2013-02-23 17:00:12"/>
+            <ATTR key="room" value="room"/>
+        </OWDevice>
+        <OWDevice name="OWDongle" state="present: 1" sets="interval " attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev uncached trimvalues polls interfaces model resolution:9,10,11,12 event-on-change-reading event-on-update-reading event-min-interval stateFormat DbLogExclude devStateIcon devStateStyle icon onOffDevice sortby webCmd widget_name yaf_1">
+            <INT key="DEF" value="81.8E0E2F000000"/>
+            <INT key="NAME" value="OWDongle"/>
+            <INT key="NR" value="78"/>
+            <INT key="NTFY_ORDER" value="50b-OWDongle"/>
+            <INT key="STATE" value="present: 1"/>
+            <INT key="TYPE" value="OWDevice"/>
+            <INT key="IODev" value="OWServer"/>
+            <ATTR key="model" value="DS1420"/>
+            <ATTR key="room" value="hidden"/>
+            <STATE key="id" value="8E0E2F000000" measured="2014-01-05 18:14:27"/>
+            <STATE key="location" value="bus.0" measured="2014-01-05 18:14:27"/>
+            <STATE key="present" value="1" measured="2014-01-05 18:14:27"/>
+            <STATE key="state" value="present: 1" measured="2014-01-05 18:14:27"/>
+        </OWDevice>
+        <OWDevice name="OWSw" state="PIOBYTE: 0"
+                  sets="interval LCD_H/clear LCD_H/home LCD_H/message LCD_H/onoff LCD_H/screen LCD_H/screenyc LCD_M/clear LCD_M/home LCD_M/message LCD_M/onoff LCD_M/screen LCD_M/screenyc PIO.0 PIO.1 PIO.2 PIO.3 PIO.4 PIO.5 PIO.6 PIO.7 PIO.ALL PIO.BYTE latch.0 latch.1 latch.2 latch.3 latch.4 latch.5 latch.6 latch.7 latch.ALL latch.BYTE por set_alarm strobe"
+                  attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev uncached trimvalues polls interfaces model resolution:9,10,11,12 event-on-change-reading event-on-update-reading event-min-interval stateFormat devStateIcon devStateStyle icon sortby webCmd widgetOverride">
+            <INT key="DEF" value="29.9D0308000000 600"/>
+            <INT key="LAST_READ_FAILED" value="0"/>
+            <INT key="NAME" value="OWSw"/>
+            <INT key="NR" value="163"/>
+            <INT key="NTFY_ORDER" value="50b-OWSw"/>
+            <INT key="STATE" value="PIOBYTE: 0"/>
+            <INT key="TYPE" value="OWDevice"/>
+            <INT key="IODev" value="OWServer"/>
+            <ATTR key="IODev" value="OWServer"/>
+            <ATTR key="model" value="DS2408"/>
+            <ATTR key="room" value="Speicher"/>
+            <ATTR key="stateFormat" value="PIOBYTE: PIO.BYTE"/>
+            <STATE key="PIO.0" value="0" measured="2014-09-17 22:28:57"/>
+            <STATE key="PIO.1" value="1" measured="2014-09-17 22:28:27"/>
+            <STATE key="PIO.2" value="0" measured="2014-09-17 20:09:49"/>
+            <STATE key="PIO.3" value="1" measured="2014-09-17 20:09:39"/>
+            <STATE key="PIO.BYTE" value="0" measured="2014-03-27 01:40:40"/>
+            <STATE key="alarm" value="1" measured="2014-09-18 00:29:21"/>
+            <STATE key="sensed.0" value="1" measured="2014-09-18 00:29:21"/>
+            <STATE key="sensed.1" value="0" measured="2014-09-18 00:29:21"/>
+            <STATE key="sensed.2" value="1" measured="2014-09-18 00:29:21"/>
+            <STATE key="sensed.3" value="0" measured="2014-09-18 00:29:21"/>
+            <STATE key="sensed.4" value="1" measured="2014-09-18 00:29:21"/>
+            <STATE key="sensed.5" value="1" measured="2014-09-18 00:29:21"/>
+            <STATE key="sensed.6" value="1" measured="2014-09-18 00:29:21"/>
+            <STATE key="sensed.7" value="1" measured="2014-09-18 00:29:21"/>
+            <STATE key="state"
+                   value="sensed.0: 1  sensed.1: 0  sensed.2: 1  sensed.3: 0  sensed.4: 1  sensed.5: 1  sensed.6: 1  sensed.7: 1  alarm: 1"
+                   measured="2014-09-18 00:29:21"/>
+        </OWDevice>
+        <OWDevice name="Wohnzimmer" state="temperature: 23.5  alarm: 0"
+                  sets="interval temphigh templow"
+                  attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev uncached trimvalues polls interfaces model resolution:9,10,11,12 event-on-change-reading event-on-update-reading event-min-interval stateFormat devStateIcon devStateStyle icon sortby webCmd widgetOverride">
+            <INT key="DEF" value="10.C8219C010800 300"/>
+            <INT key="LAST_READ_FAILED" value="0"/>
+            <INT key="NAME" value="Wohnzimmer"/>
+            <INT key="NR" value="153"/>
+            <INT key="NTFY_ORDER" value="50b-Wohnzimmer"/>
+            <INT key="STATE" value="temperature: 23.5  alarm: 0"/>
+            <INT key="TYPE" value="OWDevice"/>
+            <INT key="IODev" value="OWServer"/>
+            <ATTR key="IODev" value="OWServer"/>
+            <ATTR key="model" value="DS18S20"/>
+            <ATTR key="room" value="Wohnzimmer"/>
+            <STATE key="alarm" value="0" measured="2014-09-18 00:29:18"/>
+            <STATE key="state" value="temperature: 23.5  alarm: 0" measured="2014-09-18 00:29:18"/>
+            <STATE key="temperature" value="23.5" measured="2014-09-18 00:29:18"/>
+        </OWDevice>
+    </OWDevice_LIST>
+</FHZINFO>

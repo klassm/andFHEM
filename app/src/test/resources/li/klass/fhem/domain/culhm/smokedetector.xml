@@ -1,0 +1,63 @@
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<FHZINFO>
+    <CUL_HM_LIST>
+        <CUL_HM name="device" state="NACK" sets="pair raw reset sign
+statusRequest unpair " attrs="room comment alias IODev do_not_notify:
+1,0 ignore:0,1 showtime:1,0 loglevel:0,1,2,3,4,5,6 model
+subType:switch,dimmer,blindActuator,remote,sensor,swi,pushButton,threeStateSensor,motionDetector,keyMatic,winMatic,smokeDetector
+hmClass:receiver,sender serialNr firmware devInfo rawToReadable unit
+webCmd eventMap">
+            <INT key="CUL1_MSGCNT" value="11"/>
+            <INT key="CUL1_RAWMSG"
+                 value="A1005A0011656541656340102165654010040"/>
+            <INT key="CUL1_RSSI" value="-42"/>
+            <INT key="CUL1_TIME" value="2012-01-17 14:59:09"/>
+            <INT key="DEF" value="165654"/>
+            <INT key="LASTIODev" value="CUL1"/>
+            <INT key="MSGCNT" value="11"/>
+            <INT key="NAME" value="device"/>
+            <INT key="NR" value="21"/>
+            <INT key="STATE" value="NACK"/>
+            <INT key="TYPE" value="CUL_HM"/>
+            <INT key="lastMsg" value="1005A00116565416563401021656540100"/>
+            <INT key="IODev" value="CUL1"/>
+            <ATTR key="devInfo" value="000100"/>
+            <ATTR key="firmware" value="1.0"/>
+            <ATTR key="hmClass" value="sender"/>
+            <ATTR key="model" value="HM-SEC-SD"/>
+            <ATTR key="room" value="room"/>
+            <ATTR key="serialNr" value="IEQ0082711"/>
+            <ATTR key="subType" value="smokeDetector"/>
+            <STATE key="CommandAccepted" value="yes" measured="2012-01-17
+14:59:08"/>
+            <STATE key="state" value="NACK" measured="2012-01-17 14:59:07"/>
+            <STATE key="unknownMsg" value="01021656540100" measured="2012-01-17
+14:59:09"/>
+        </CUL_HM>
+    </CUL_HM_LIST>
+    <FileLog_LIST>
+    </FileLog_LIST>
+</FHZINFO>
