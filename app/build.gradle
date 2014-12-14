@@ -157,7 +157,14 @@ dependencies {
 
 // Compile test classes when compiling classes in general
 // Leads to compiled test classes in android studio
-// tasks.findByName("assembleDebug").dependsOn("testDebugClasses")
+tasks.findByName("assembleDebug").dependsOn("testDebugClasses")
+
+//Copy test resources to classpath folder. See https://code.google.com/p/android/issues/detail?id=74443
+tasks.findByName("assembleDebug").dependsOn("copyTestResources")
+task copyTestResources(type: Copy) {
+    from "${projectDir}/src/testDebug/resources"
+    into "${buildDir}/test-classes/debug/resources"
+}
 
 task readSigningPasswordsFromConsole(
         dependsOn: ['readSigningStorePasswordFromConsole', 'readSigningKeyAliasPasswordFromConsole'])

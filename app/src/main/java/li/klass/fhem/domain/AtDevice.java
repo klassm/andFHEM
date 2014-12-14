@@ -66,6 +66,11 @@ public class AtDevice extends Device<AtDevice> {
         definition = parseDefinition(value) ? value : "";
     }
 
+    @XmllistAttribute("DISABLE")
+    public void readDISABLED(String value) {
+        isActive = value.equals("0");
+    }
+
     boolean parseDefinition(String nodeContent) {
         Matcher prefixMatcher = PREFIX_PATTERN.matcher(nodeContent);
 
@@ -149,6 +154,7 @@ public class AtDevice extends Device<AtDevice> {
         } else if (part.matches("(NOT|not|!)[ ]?\\$we")) {
             repetition = AtRepetition.WEEKDAY;
         } else if (part.equals("0")) {
+            // TODO remove me in a few versions, was replaced by disable at device attribute
             isActive = false;
         } else if (part.matches("\\$wday[ ]?==[ ]?[0-6]")) {
             int weekdayOrdinate = Integer.parseInt(part.substring(part.length() - 1));
@@ -259,18 +265,14 @@ public class AtDevice extends Device<AtDevice> {
         }
         command += "\")";
 
-        if (repetition != null || !isActive) {
+        if (repetition != null) {
             String ifContent = "";
             if (repetition == AtRepetition.WEEKEND) {
                 ifContent = addToIf(ifContent, "$we");
             } else if (repetition == AtRepetition.WEEKDAY) {
                 ifContent = addToIf(ifContent, "!$we");
-            } else if (repetition != null && repetition.weekdayOrdinate != -1) {
+            } else if (repetition.weekdayOrdinate != -1) {
                 ifContent = addToIf(ifContent, "$wday == " + repetition.weekdayOrdinate);
-            }
-
-            if (!isActive) {
-                ifContent = addToIf(ifContent, "0");
             }
 
             if (!StringUtil.isBlank(ifContent)) {

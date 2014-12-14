@@ -35,5 +35,18 @@
             <INT key="TYPE" value="at"/>
             <INT key="room" value="room"/>
         </at>
+
+        <at name="device1" state="Next: 23:00:00" sets=""
+            attrs="room group comment alias eventMap disable:0,1 skip_next:0,1 loglevel:0,1,2,3,4,5,6 alignTime fp_dach fp_erdgeschoss fp_obergeschoss holidaySwitchFollowUp holidaySwitchTime icon onOffDevice webCmd">
+            <INT key="DEF" value="*23:00:00 { fhem(&quot;set lamp off&quot;) if ($we) }"/>
+            <INT key="NAME" value="device1"/>
+            <INT key="NR" value="172"/>
+            <INT key="REP" value="-1"/>
+            <INT key="STATE" value="Next: 23:00:00"/>
+            <INT key="TRIGGERTIME" value="1341090000"/>
+            <INT key="TYPE" value="at"/>
+            <INT key="room" value="room"/>
+            <ATTR key="disable" value="1"/>
+        </at>
     </at_LIST>
 </FHZINFO>
