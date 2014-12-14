@@ -64,11 +64,11 @@ public class AtDeviceTest extends DeviceXMLParsingBase {
 
         device = parse("*23:00:00 { fhem(\"set lamp off-for-timer 200\") if (0 && !$we) }", 23, 0, 0, "lamp", "off-for-timer", "200",
                 WEEKDAY, ABSOLUTE, false);
-        assemble(device, "*23:00:00 { fhem(\"set lamp off-for-timer 200\") if (!$we && 0) }");
+        assemble(device, "*23:00:00 { fhem(\"set lamp off-for-timer 200\") if (!$we) }");
 
         device = parse("*23:00:00 { fhem(\"set lamp off-for-timer 200\") if (!$we && 0) }", 23, 0, 0, "lamp", "off-for-timer", "200",
                 WEEKDAY, ABSOLUTE, false);
-        assemble(device, "*23:00:00 { fhem(\"set lamp off-for-timer 200\") if (!$we && 0) }");
+        assemble(device, "*23:00:00 { fhem(\"set lamp off-for-timer 200\") if (!$we) }");
 
         device = parse("*23:00:00 { fhem(\"set lamp off-for-timer 200\") if (!$we && 1) }", 23, 0, 0, "lamp", "off-for-timer", "200",
                 WEEKDAY, ABSOLUTE, true);
@@ -76,11 +76,11 @@ public class AtDeviceTest extends DeviceXMLParsingBase {
 
         device = parse("*23:00:00 { fhem(\"set lamp off-for-timer 200\") if (!$we && 0) }", 23, 0, 0, "lamp", "off-for-timer", "200",
                 WEEKDAY, ABSOLUTE, false);
-        assemble(device, "*23:00:00 { fhem(\"set lamp off-for-timer 200\") if (!$we && 0) }");
+        assemble(device, "*23:00:00 { fhem(\"set lamp off-for-timer 200\") if (!$we) }");
 
         device = parse("*07:15:00 { fhem(\"set Badezimmer desired-temp 00.00\") if (!$we && 0) }", 7, 15, 0, "Badezimmer",
                 "desired-temp", "00.00", WEEKDAY, ABSOLUTE, false);
-        assemble(device, "*07:15:00 { fhem(\"set Badezimmer desired-temp 00.00\") if (!$we && 0) }");
+        assemble(device, "*07:15:00 { fhem(\"set Badezimmer desired-temp 00.00\") if (!$we) }");
 
         device = parse("*07:15:00 { fhem(\"set Badezimmer desired-temp 00.00\") if ($wday == 5) }", 7, 15, 0, "Badezimmer",
                 "desired-temp", "00.00", FRIDAY, ABSOLUTE, true);
@@ -88,7 +88,7 @@ public class AtDeviceTest extends DeviceXMLParsingBase {
 
         device = parse("*07:15:00 { fhem(\"set Badezimmer desired-temp 00.00\") if ($wday == 5 && 0) }", 7, 15, 0, "Badezimmer",
                 "desired-temp", "00.00", FRIDAY, ABSOLUTE, false);
-        assemble(device, "*07:15:00 { fhem(\"set Badezimmer desired-temp 00.00\") if ($wday == 5 && 0) }");
+        assemble(device, "*07:15:00 { fhem(\"set Badezimmer desired-temp 00.00\") if ($wday == 5) }");
 
         device = parse("19:45:00 { fhem(\"set EZ.Heizung_Clima desired-temp 24.00\") }", 19, 45, 0, "EZ.Heizung_Clima",
                 "desired-temp", "24.00", ONCE, ABSOLUTE, true);
@@ -141,6 +141,12 @@ public class AtDeviceTest extends DeviceXMLParsingBase {
 
         assertThat(device.getLogDevices()).isEmpty();
         assertThat(device.getDeviceCharts().size()).isEqualTo(0);
+    }
+
+    @Test
+    public void testReadDisableAttribute() {
+        AtDevice device = getDeviceFor("device1");
+        assertThat(device.isActive()).isFalse();
     }
 
     @Override

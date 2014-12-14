@@ -3,10 +3,10 @@ package li.klass.fhem.domain;
 import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.ToggleableDevice;
+import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.util.ValueDescriptionUtil;
 
-@SuppressWarnings("unused")
 public class PCA301Device extends ToggleableDevice<PCA301Device> {
 
     @ShowField(description = ResourceIdMapper.energyConsumption)
@@ -14,17 +14,19 @@ public class PCA301Device extends ToggleableDevice<PCA301Device> {
     @ShowField(description = ResourceIdMapper.energyPower)
     private String power;
 
+    @XmllistAttribute("CONSUMPTION")
     public void readCONSUMPTION(String value) {
         consumption = ValueDescriptionUtil.append(value, "kWh");
     }
 
-    public void readPOWER(String value) {
-        power = ValueDescriptionUtil.append(value, "W");
+    @Override
+    public String formatTargetState(String targetState) {
+        return super.formatTargetState(targetState).replace("set-", "");
     }
 
-    @Override
-    public boolean supportsToggle() {
-        return true;
+    @XmllistAttribute("POWER")
+    public void readPOWER(String value) {
+        power = ValueDescriptionUtil.append(value, "W");
     }
 
     public String getConsumption() {

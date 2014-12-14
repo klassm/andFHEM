@@ -218,7 +218,7 @@ public enum DeviceType {
     FB_CALLMONITOR("FB_CALLMONITOR", FBCallmonitorDevice.class),
     FS20_ZDR("fs20_zdr", FS20ZDRDevice.class, new FS20ZDRDeviceAdapter()),
     OPENWEATHERMAP("openweathermap", OpenWeatherMapDevice.class),
-    PCA301("PCA301", PCA301Device.class),
+    PCA301("PCA301", PCA301Device.class, new ToggleableAdapterWithSwitchActionRow<>(PCA301Device.class)),
     REMOTECONTROL("remotecontrol", RemoteControlDevice.class, new RemoteControlAdapter(), DeviceVisibility.FHEMWEB_ONLY),
     RPI_GPIO("RPI_GPIO", RPIGPIODevice.class, new ToggleableAdapterWithSwitchActionRow<>(RPIGPIODevice.class)),
     READINGS_PROXY("readingsProxy", ReadingsProxyDevice.class, new ReadingsProxyDeviceAdapter()),

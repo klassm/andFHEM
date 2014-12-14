@@ -110,5 +110,15 @@ public class PioneerAvrDeviceAdapter extends ToggleableAdapterWithSwitchActionRo
                         .createRow(getInflater(), device));
             }
         });
+
+        registerFieldListener("state", new FieldNameAddedToDetailListener<PioneerAvrDevice>() {
+            @Override
+            protected void onFieldNameAdded(Context context, TableLayout tableLayout, String field, PioneerAvrDevice device, TableRow fieldTableRow) {
+                SetListGroupValue listeningModeSetList = (SetListGroupValue) device.getSetList().get("listeningMode");
+                tableLayout.addView(new StateChangingSpinnerActionRow<PioneerAvrDevice>(context,
+                        R.string.audioMode, R.string.audioMode, listeningModeSetList.getGroupStates(), device.getListeningMode(), "listeningMode")
+                        .createRow(device, tableLayout));
+            }
+        });
     }
 }

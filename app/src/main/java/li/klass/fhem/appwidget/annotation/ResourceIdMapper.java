@@ -69,6 +69,7 @@ public enum ResourceIdMapper {
     isRaining(R.string.isRaining),
     power(R.string.power),
     audio(R.string.audio),
+    audioMode(R.string.audioMode),
     input(R.string.input),
     forecast(R.string.forecast),
     dewpoint(R.string.dewpoint),
@@ -193,6 +194,7 @@ public enum ResourceIdMapper {
     hdd_free(R.string.hdd_free),
     video_size(R.string.video_size),
     ioDev(R.string.ioDev),
+    trepetition(R.string.trepetition),
 
     none(-1),
     blank(R.string.blank);

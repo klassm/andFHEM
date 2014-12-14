@@ -51,6 +51,9 @@ public class SetList implements Serializable  {
     }
 
     private void handlePart(String part) {
+        if (part.matches("[^:]+:noArg$")) {
+            part = part.replaceAll(":noArg$", "");
+        }
         if (! part.contains(":")) {
             entries.put(part, SetListEmptyValue.INSTANCE);
             return;

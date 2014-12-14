@@ -31,9 +31,13 @@ import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.ShowField;
 
 public class FHEMduinoPT2262Device extends ToggleableDevice<FHEMduinoPT2262Device> {
-    @ShowField(description = ResourceIdMapper.ioDev, showInOverview = false, showInDetail = true)
+    @ShowField(description = ResourceIdMapper.ioDev)
     @XmllistAttribute("IODev")
     private String ioDev;
+
+    @XmllistAttribute("ITrepetition")
+    @ShowField(description = ResourceIdMapper.trepetition)
+    private String iTrepetition;
 
     @Override
     public DeviceFunctionality getDeviceGroup() {
