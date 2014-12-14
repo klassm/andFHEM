@@ -85,6 +85,7 @@
     <string name="lastState">Letzter Zustand</string>
     <string name="power">Strom</string>
     <string name="audio">Audio</string>
+    <string name="audioMode">Audio-Modus</string>
     <string name="input">Eingang</string>
     <string name="mode">Modus</string>
     <string name="definition">Definition</string>

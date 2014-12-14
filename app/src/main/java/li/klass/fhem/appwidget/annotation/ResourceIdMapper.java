@@ -69,6 +69,7 @@ public enum ResourceIdMapper {
     isRaining(R.string.isRaining),
     power(R.string.power),
     audio(R.string.audio),
+    audioMode(R.string.audioMode),
     input(R.string.input),
     forecast(R.string.forecast),
     dewpoint(R.string.dewpoint),

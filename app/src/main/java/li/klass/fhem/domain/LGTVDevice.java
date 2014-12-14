@@ -32,7 +32,7 @@ import li.klass.fhem.domain.genericview.ShowField;
 public class LGTVDevice extends Device<LGTVDevice> {
     @ShowField(description = ResourceIdMapper.power, showInOverview = true)
     private String power;
-    @ShowField(description = ResourceIdMapper.audio, showInOverview = true)
+    @ShowField(description = ResourceIdMapper.musicMute, showInOverview = true)
     private String audio;
     @ShowField(description = ResourceIdMapper.input, showInOverview = true)
     private String input;

@@ -42,6 +42,9 @@ public class PioneerAvrDevice extends ToggleableDevice<PioneerAvrDevice> {
     @XmllistAttribute("input")
     private String input;
 
+    @XmllistAttribute("listeningMode")
+    private String listeningMode;
+
     @Override
     public DeviceFunctionality getDeviceGroup() {
         return DeviceFunctionality.REMOTE_CONTROL;
@@ -65,5 +68,9 @@ public class PioneerAvrDevice extends ToggleableDevice<PioneerAvrDevice> {
 
     public String getInput() {
         return input;
+    }
+
+    public String getListeningMode() {
+        return listeningMode;
     }
 }
