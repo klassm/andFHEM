@@ -194,6 +194,7 @@ public enum ResourceIdMapper {
     hdd_free(R.string.hdd_free),
     video_size(R.string.video_size),
     ioDev(R.string.ioDev),
+    trepetition(R.string.trepetition),
 
     none(-1),
     blank(R.string.blank);
