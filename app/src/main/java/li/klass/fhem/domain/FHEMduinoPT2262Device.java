@@ -35,6 +35,10 @@ public class FHEMduinoPT2262Device extends ToggleableDevice<FHEMduinoPT2262Devic
     @XmllistAttribute("IODev")
     private String ioDev;
 
+    @XmllistAttribute("ITrepetition")
+    @ShowField(description = ResourceIdMapper.ioDev, showInOverview = false, showInDetail = true)
+    private String iTrepetition;
+
     @Override
     public DeviceFunctionality getDeviceGroup() {
         return DeviceFunctionality.SWITCH;
