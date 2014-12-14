@@ -37,6 +37,7 @@ import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import li.klass.fhem.domain.LightSceneDevice;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.RoomDeviceList;
 import li.klass.fhem.service.room.RoomListService;
@@ -107,7 +108,11 @@ public class VoiceCommandService {
         }
 
         Device device = deviceMatches.get(0);
-        return Optional.<VoiceResult>of(new VoiceResult.Success(device.getName(), device.getReverseEventMapStateFor(state)));
+        String targetState = device.getReverseEventMapStateFor(state);
+        if (device instanceof LightSceneDevice) {
+            targetState = "scene " + targetState;
+        }
+        return Optional.<VoiceResult>of(new VoiceResult.Success(device.getName(), targetState));
     }
 
     private String replaceArticles(String command) {
@@ -125,8 +130,9 @@ public class VoiceCommandService {
                 String alias = device.getAlias();
                 return (!Strings.isNullOrEmpty(alias) && alias.equalsIgnoreCase(deviceName)
                         || device.getName().equalsIgnoreCase(deviceName)
-                        || (device.getVoicePronunciation() != null && device.getVoicePronunciation().equalsIgnoreCase(deviceName)))
-                        && device.getSetList().contains(stateToLookFor);
+                        || (device.getPronunciation() != null && device.getPronunciation().equalsIgnoreCase(deviceName)))
+                        && (device.getSetList().contains(stateToLookFor)
+                        || (device instanceof LightSceneDevice && ((LightSceneDevice) device).getScenes().contains(state)));
             }
         };
     }

@@ -39,6 +39,7 @@ import org.mockito.Mock;
 import java.util.List;
 
 import li.klass.fhem.domain.FS20Device;
+import li.klass.fhem.domain.LightSceneDevice;
 import li.klass.fhem.domain.core.RoomDeviceList;
 import li.klass.fhem.service.room.RoomListService;
 import li.klass.fhem.testutil.MockitoTestRule;
@@ -197,7 +198,7 @@ public class VoiceCommandServiceTest {
         // given
         TestDummy device = new TestDummy("lampe");
         device.getSetList().parse("on off");
-        device.readVOICE_PRONUNCIATION("voice");
+        device.readPRONUNCIATION("voice");
         RoomDeviceList deviceList = new RoomDeviceList("").addDevice(device);
         doReturn(deviceList).when(roomListService).getAllRoomsDeviceList();
 
@@ -207,6 +208,35 @@ public class VoiceCommandServiceTest {
         // then
         assertThat(result.isPresent()).isTrue();
         assertThat(result.get()).isEqualTo(new VoiceResult.Success("lampe", "on"));
+    }
+
+    @Test
+    public void should_handle_light_scenes() {
+        // given
+        LightSceneDevice lightSceneDevice = new LightSceneDevice() {
+            @Override
+            public List<String> getInternalDeviceGroupOrGroupAttributes() {
+                return Lists.newArrayList("group");
+            }
+        };
+        lightSceneDevice.readNAME("device");
+        lightSceneDevice.getSetList().parse("scene:off,on");
+        RoomDeviceList deviceList = new RoomDeviceList("").addDevice(lightSceneDevice);
+        doReturn(deviceList).when(roomListService).getAllRoomsDeviceList();
+
+        // when
+        Optional<VoiceResult> result = service.resultFor("set device on");
+
+        // then
+        assertThat(result.isPresent()).isTrue();
+        assertThat(result.get()).isEqualTo(new VoiceResult.Success("device", "scene on"));
+
+        // when
+        result = service.resultFor("set device off");
+
+        // then
+        assertThat(result.isPresent()).isTrue();
+        assertThat(result.get()).isEqualTo(new VoiceResult.Success("device", "scene off"));
     }
 
     public class TestDummy extends FS20Device {
