@@ -578,4 +578,9 @@
 
     <string name="androidBugDialogDatePickerTitle">Feature deaktiviert</string>
     <string name="androidBugDialogDatePickerContent">Lollipop beinhaltet aktuell einen Bug, der den nachfolgenden Dialog zum Absturz bringt. Deshalb ist dieser bis zu einer Reperatur seitens Google deaktiviert. Google hat den Fehler bereits behoben, bisher aber noch keinen neuen Android Update freigegeben.</string>
+    <string name="prefClearTrustedCertificates">Vertrauenswürdige Zertifikate zurücksetzen</string>
+    <string name="connectionClientCertificatePasswordDesc">(optional)</string>
+    <string name="connectionClientCertificateDesc">(optional)</string>
+    <string name="prefClearTrustedCertificatesSummary">Entferne alle Zertifikate aus dem Applikations Trust-Store</string>
+    <string name="prefClearTrustedCertificatesFinished">Zertifikate zurückgesetzt</string>
 </resources>

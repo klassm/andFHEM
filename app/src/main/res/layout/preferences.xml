@@ -189,5 +189,11 @@
             android:summary="@string/prefApplicationPasswordSummary"
             android:title="@string/prefApplicationPassword"
             tools:ignore="Deprecated"/>
+
+        <Preference
+            android:key="CLEAR_TRUSTED_CERTIFICATES"
+            android:title="@string/prefClearTrustedCertificates"
+            android:summary="@string/prefClearTrustedCertificatesSummary"/>
+
     </PreferenceCategory>
 </PreferenceScreen>

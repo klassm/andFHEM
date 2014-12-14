@@ -62,6 +62,7 @@ import java.net.URLEncoder;
 import java.security.KeyStore;
 import java.util.zip.GZIPInputStream;
 
+import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.error.ErrorHolder;
 import li.klass.fhem.util.CloseableUtil;
 
@@ -174,12 +175,7 @@ public class FHEMWEBConnection extends FHEMConnection {
         try {
             SSLSocketFactory socketFactory;
 
-            if (serverSpec.isClientCertificateEnabled()) {
-                socketFactory = createClientCertSocketFactory();
-            } else {
-                socketFactory = createDefaultSocketFactory();
-            }
-
+            socketFactory = createDefaultSocketFactory();
             HttpParams params = new BasicHttpParams();
             HttpProtocolParams.setVersion(params, HttpVersion.HTTP_1_1);
             HttpProtocolParams.setContentCharset(params, HTTP.UTF_8);
@@ -229,21 +225,14 @@ public class FHEMWEBConnection extends FHEMConnection {
         return new RequestResult<>(error);
     }
 
-    private SSLSocketFactory createClientCertSocketFactory() throws Exception {
-        return new ClientCertSSLSocketFactory(null,
-                new File(serverSpec.getClientCertificatePath()),
-                serverSpec.getClientCertificatePassword(),
-                new File(serverSpec.getServerCertificatePath())
-        );
-    }
-
     private SSLSocketFactory createDefaultSocketFactory() throws Exception {
+
         KeyStore trustStore;
         SSLSocketFactory socketFactory;
         trustStore = KeyStore.getInstance(KeyStore.getDefaultType());
         trustStore.load(null, null);
-
-        socketFactory = new TrustAllSSLSocketFactory(trustStore);
+        socketFactory = new MemorizingTrustManagerSSLSocketFactory(trustStore,  new File(serverSpec.getClientCertificatePath()),
+                serverSpec.getClientCertificatePassword(), AndFHEMApplication.getContext());
         return socketFactory;
     }
 

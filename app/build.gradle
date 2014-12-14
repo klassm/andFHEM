@@ -47,6 +47,7 @@ buildscript {
 
 repositories {
     mavenCentral()
+    maven { url 'https://dl.bintray.com/mamohr/maven'}
     maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
     maven { url 'http://partnerdemo.artifactoryonline.com/partnerdemo/snapshots' }
     maven { url 'https://repository-achartengine.forge.cloudbees.com/snapshot' }
@@ -143,6 +144,7 @@ dependencies {
     //noinspection GradleDependency
     compile 'com.intellij:annotations:12.+@jar'
     compile 'org.slf4j:slf4j-android:1.7.7'
+    compile 'de.duenndns:memorizing-trust-manager:0.9@aar'
 
 
     testCompile 'org.hamcrest:hamcrest-all:1.3'

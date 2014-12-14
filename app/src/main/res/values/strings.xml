@@ -325,6 +325,9 @@
     <string name="prefDeviceNameSummary">If a FHEMWEB device name matches this value, the respective FHEMWEB device will be preferred. This can be used to hide or sort rooms for specific devices.</string>
     <string name="prefApplicationPassword">Password</string>
     <string name="prefApplicationPasswordSummary">Password which will be asked upon application start.</string>
+    <string name="prefClearTrustedCertificates">Clear trusted certificates</string>
+    <string name="prefClearTrustedCertificatesSummary">Remove all manually trusted certificates from the application trust store</string>
+    <string name="prefClearTrustedCertificatesFinished">Certificates removed</string>
 
     <string name="error_update">Error while updating.</string>
     <string name="error_timeout">Connection timed out.</string>
