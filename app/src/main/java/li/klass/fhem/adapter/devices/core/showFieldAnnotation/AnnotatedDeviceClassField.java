@@ -29,11 +29,13 @@ import java.lang.reflect.Field;
 import li.klass.fhem.domain.genericview.ShowField;
 
 public class AnnotatedDeviceClassField extends AnnotatedDeviceClassItem {
-    public final Field field;
+    protected final Field field;
+    private final ShowField showField;
 
     public AnnotatedDeviceClassField(Field field) {
         this.field = field;
         field.setAccessible(true);
+        this.showField = field.getAnnotation(ShowField.class);
     }
 
     @Override
@@ -56,7 +58,6 @@ public class AnnotatedDeviceClassField extends AnnotatedDeviceClassItem {
 
     @Override
     public ShowField getShowFieldAnnotation() {
-        if (! field.isAnnotationPresent(ShowField.class)) return null;
-        return field.getAnnotation(ShowField.class);
+        return showField;
     }
 }

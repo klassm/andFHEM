@@ -31,6 +31,7 @@ import li.klass.fhem.domain.genericview.ShowField;
 public class AnnotatedDeviceClassMethod extends AnnotatedDeviceClassItem {
     public final Method method;
     private final String sortName;
+    private final ShowField showField;
 
     public AnnotatedDeviceClassMethod(Method method) {
         this.method = method;
@@ -40,6 +41,8 @@ public class AnnotatedDeviceClassMethod extends AnnotatedDeviceClassItem {
         name = getterNameToName(name);
 
         this.sortName = name;
+        this.showField = method.getAnnotation(ShowField.class);
+
     }
 
     static String getterNameToName(String name) {
@@ -75,7 +78,6 @@ public class AnnotatedDeviceClassMethod extends AnnotatedDeviceClassItem {
 
     @Override
     public ShowField getShowFieldAnnotation() {
-        if (! method.isAnnotationPresent(ShowField.class)) return null;
-        return method.getAnnotation(ShowField.class);
+        return showField;
     }
 }
