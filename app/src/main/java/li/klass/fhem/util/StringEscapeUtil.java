@@ -24,22 +24,48 @@
 
 package li.klass.fhem.util;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 public class StringEscapeUtil {
 
-    public static String unescape(String content) {
+    private static Map<String, String> replacements = null;
 
-        // We replace UTF characters.
-        // The underlying table can be found on various pages, i.e.
-        // http://www.utf8-zeichentabelle.de/
-        content = content
-                .replaceAll("\u00c3\u00bc", "ü")
-                .replaceAll("\u00c3\u00a4", "ä")
-                .replaceAll("\u00c3\u00b6", "ö")
-                .replaceAll("\u00c3\u0096", "Ö")
-                .replaceAll("\u00c3\u0084", "Ä")
-                .replaceAll("\u00c3\u009c", "Ü")
-                .replaceAll("\u00c3\u009f", "ß")
-        ;
+    public static String unescape(String content) {
+        if(replacements == null) {
+            synchronized(StringEscapeUtil.class) {
+                if(replacements == null) {
+                    LinkedHashMap<String, String> temp = new LinkedHashMap<>(7);
+                    temp.put("\u00c3\u00bc", "ü");
+                    temp.put("\u00c3\u00a4", "ä");
+                    temp.put("\u00c3\u00b6", "ö");
+                    temp.put("\u00c3\u0096", "Ö");
+                    temp.put("\u00c3\u0084", "Ä");
+                    temp.put("\u00c3\u009c", "Ü");
+                    temp.put("\u00c3\u009f", "ß");
+                    replacements = temp;
+                }
+            }
+        }
+        content = replaceFromMap(content,replacements);
         return content.trim();
+    }
+
+    public static String replaceFromMap(String string,
+                                        Map<String, String> replacements) {
+        StringBuilder sb = new StringBuilder(string);
+        for (Map.Entry<String, String> entry : replacements.entrySet()) {
+            String key = entry.getKey();
+            String value = entry.getValue();
+
+            int start = sb.indexOf(key, 0);
+            while (start > -1) {
+                int end = start + key.length();
+                int nextSearchStart = start + value.length();
+                sb.replace(start, end, value);
+                start = sb.indexOf(key, nextSearchStart);
+            }
+        }
+        return sb.toString();
     }
 }
