@@ -90,8 +90,6 @@ public class RoomListService extends AbstractService {
 
     private List<Intent> resendIntents = newArrayList();
 
-    volatile RoomDeviceList deviceList;
-
     @Inject
     ConnectionService connectionService;
 
@@ -172,11 +170,7 @@ public class RoomListService extends AbstractService {
      * @return Currently cached {@link li.klass.fhem.domain.core.RoomDeviceList}.
      */
     public RoomDeviceList getRoomDeviceList() {
-
-        if (deviceList == null) {
-            deviceList = roomListHolderService.getCachedRoomDeviceListMap();
-        }
-        return deviceList;
+        return roomListHolderService.getCachedRoomDeviceListMap();
     }
 
     public void resetUpdateProgress() {
@@ -215,10 +209,7 @@ public class RoomListService extends AbstractService {
      * {@link li.klass.fhem.service.room.RoomListService.RemoteUpdateRequired#NOT_REQUIRED}
      */
     public RemoteUpdateRequired updateRoomDeviceListIfRequired(Intent intent, long updatePeriod) {
-        if (deviceList == null) {
-            deviceList = roomListHolderService.getCachedRoomDeviceListMap();
-        }
-
+        RoomDeviceList deviceList = roomListHolderService.getCachedRoomDeviceListMap();
         boolean requiresUpdate = shouldUpdate(updatePeriod) || deviceList == null;
         if (requiresUpdate) {
             LOG.info("updateRoomDeviceListIfRequired() - requiring update, add pending action: {}", intent.getAction());
@@ -242,8 +233,6 @@ public class RoomListService extends AbstractService {
     public void remoteUpdateFinished() {
         try {
             LOG.info("remoteUpdateFinished() - starting after actions");
-
-            deviceList = roomListHolderService.getCachedRoomDeviceListMap();
 
             for (Intent resendIntent : resendIntents) {
                 resend(resendIntent);
