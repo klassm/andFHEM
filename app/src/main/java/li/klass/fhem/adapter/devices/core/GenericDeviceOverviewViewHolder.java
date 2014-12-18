@@ -6,8 +6,10 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 import java.util.List;
+import java.util.Map;
 
 import li.klass.fhem.R;
 
@@ -30,6 +32,7 @@ public class GenericDeviceOverviewViewHolder {
     TableRow deviceNameRow;
     TextView deviceName;
     List<GenericDeviceTableRowHolder> tableRows = Lists.newArrayList() ;
+    Map<String,Object> additionalHolders = Maps.newHashMap();
 
     public void resetHolder() {
         deviceName.setVisibility(View.VISIBLE);
