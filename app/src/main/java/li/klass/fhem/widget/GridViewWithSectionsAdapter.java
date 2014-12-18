@@ -143,7 +143,9 @@ public abstract class GridViewWithSectionsAdapter<P, C> extends BaseAdapter {
                 C child = getChildForParentAndChildPosition(parent, relativeChildPosition);
 
                 View childView = getChildView(parent, parentPosition, child, view, viewGroup);
-                updateChildrenRowHeight(getNumberOfColumns(), parentPosition, relativeChildPosition, childView);
+                if(getNumberOfColumns() > 1) {
+                    updateChildrenRowHeight(getNumberOfColumns(), parentPosition, relativeChildPosition, childView);
+                }
 
                 return childView;
             }
@@ -159,7 +161,6 @@ public abstract class GridViewWithSectionsAdapter<P, C> extends BaseAdapter {
             currentRowViews.clear();
             currentRowHeight = 0;
         }
-
         int widthMeasureSpec = View.MeasureSpec.makeMeasureSpec(500, View.MeasureSpec.EXACTLY);
         int heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
         childView.measure(widthMeasureSpec, heightMeasureSpec);
