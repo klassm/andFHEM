@@ -26,6 +26,8 @@ package li.klass.fhem.adapter.devices.genericui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.text.Layout;
+import android.view.LayoutInflater;
 
 import li.klass.fhem.adapter.devices.core.UpdatingResultReceiver;
 import li.klass.fhem.constants.Actions;
@@ -34,12 +36,11 @@ import li.klass.fhem.domain.core.ToggleableDevice;
 import li.klass.fhem.service.intent.DeviceIntentService;
 
 public class ToggleDeviceActionRow<T extends ToggleableDevice> extends ToggleActionRow<T> {
-    public ToggleDeviceActionRow(Context context, int description, int layout) {
-        super(context, description, layout);
-    }
 
-    public ToggleDeviceActionRow(String description, int layout) {
-        super(description, layout);
+    public static final String HOLDER_KEY = "ToggleDeviceActionRow";
+
+    public ToggleDeviceActionRow(LayoutInflater inflater, int layout) {
+        super(inflater, layout);
     }
 
     @Override

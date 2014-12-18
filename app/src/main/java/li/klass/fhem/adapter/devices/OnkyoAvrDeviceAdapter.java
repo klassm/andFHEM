@@ -64,7 +64,7 @@ public class OnkyoAvrDeviceAdapter extends ToggleableAdapterWithSwitchActionRow<
         registerFieldListener("state", new FieldNameAddedToDetailListener<OnkyoAvrDevice>() {
             @Override
             public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, OnkyoAvrDevice device, TableRow fieldTableRow) {
-                tableLayout.addView(new ToggleActionRow<OnkyoAvrDevice>(context, R.string.musicMute, ToggleActionRow.LAYOUT_DETAIL) {
+                tableLayout.addView(new ToggleActionRow<OnkyoAvrDevice>(getInflater(), ToggleActionRow.LAYOUT_DETAIL) {
                     @Override
                     protected Optional<String> getOnStateText(Map<String, String> eventMap) {
                         return Optional.of(getContext().getString(R.string.yes));
@@ -92,7 +92,7 @@ public class OnkyoAvrDeviceAdapter extends ToggleableAdapterWithSwitchActionRow<
                         context.startService(intent);
                     }
                 }
-                        .createRow(context, getInflater(), device));
+                        .createRow(context, device, context.getString(R.string.musicMute)));
 
                 SetListGroupValue inputSetList = (SetListGroupValue) device.getSetList().get("input");
                 tableLayout.addView(new StateChangingSpinnerActionRow<OnkyoAvrDevice>(context,
