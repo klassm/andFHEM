@@ -43,38 +43,44 @@ import li.klass.fhem.domain.core.ToggleableDevice;
 import li.klass.fhem.service.intent.DeviceIntentService;
 
 public class OnOffActionRow<T extends ToggleableDevice> {
-    private String description;
-    private int layout;
 
+    public static final String HOLDER_KEY = "OnOffActionRow";
     public static final int LAYOUT_DETAIL = R.layout.device_detail_onoffbuttonrow;
     public static final int LAYOUT_OVERVIEW = R.layout.device_overview_onoffbuttonrow;
+    private TableRow tableRow;
+    private TextView descriptionView;
+    private Button onButton;
+    private Button offButton;
 
-    public OnOffActionRow(String description, int layout) {
-        this.description = description;
-        this.layout = layout;
+
+    public OnOffActionRow(LayoutInflater inflater, int layoutId) {
+        tableRow = (TableRow) inflater.inflate(layoutId, null);
+        descriptionView = ((TextView) tableRow.findViewById(R.id.description));
+        onButton = (Button) tableRow.findViewById(R.id.onButton);
+        offButton = (Button) tableRow.findViewById(R.id.offButton);
     }
 
     @SuppressWarnings("unchecked")
-    public TableRow createRow(Context context, LayoutInflater inflater, T device) {
+    public void fillWith(final T device, Context context) {
+        descriptionView.setText(device.getAliasOrName());
         Map<String, String> eventMap = device.getEventMap();
 
-        TableRow row = (TableRow) inflater.inflate(layout, null);
-        ((TextView) row.findViewById(R.id.description)).setText(description);
-
-        Button onButton = (Button) row.findViewById(R.id.onButton);
         String onStateName = device.getOnStateName();
         onButton.setOnClickListener(createListener(context, device, onStateName));
         if (eventMap.containsKey(onStateName)) {
             onButton.setText(eventMap.get(onStateName));
+        } else {
+            onButton.setText(context.getString(R.string.on));
         }
 
-        Button offButton = (Button) row.findViewById(R.id.offButton);
+
         String offStateName = device.getOffStateName();
         offButton.setOnClickListener(createListener(context, device, offStateName));
         if (eventMap.containsKey(offStateName)) {
             offButton.setText(eventMap.get(offStateName));
+        } else {
+            onButton.setText(context.getString(R.string.off));
         }
-
 
         if (device.isOnRespectingInvertHook()) {
             onButton.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.theme_toggle_on_normal));
@@ -87,13 +93,17 @@ public class OnOffActionRow<T extends ToggleableDevice> {
         switch (device.getButtonHookType()) {
             case ON_DEVICE:
                 offButton.setVisibility(View.GONE);
+                onButton.setVisibility(View.VISIBLE);
                 break;
             case OFF_DEVICE:
                 onButton.setVisibility(View.GONE);
+                offButton.setVisibility(View.VISIBLE);
                 break;
         }
+    }
 
-        return row;
+    public TableRow getView() {
+        return tableRow;
     }
 
     private ToggleButton.OnClickListener createListener(final Context context, final T device, final String targetState) {
