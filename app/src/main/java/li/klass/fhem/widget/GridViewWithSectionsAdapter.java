@@ -50,7 +50,7 @@ public abstract class GridViewWithSectionsAdapter<P, C> extends BaseAdapter {
     private int currentRowIndex;
     private int currentRowParentIndex;
     private int currentRowHeight;
-    private List<View> currentRowViews = new ArrayList<View>();
+    private List<View> currentRowViews = new ArrayList<>();
     private int numberOfColumns = -1;
 
     public GridViewWithSectionsAdapter(Context context) {
@@ -123,6 +123,8 @@ public abstract class GridViewWithSectionsAdapter<P, C> extends BaseAdapter {
     public long getItemId(int i) {
         return i;
     }
+
+
 
     @Override
     public View getView(int flatPosition, View view, ViewGroup viewGroup) {

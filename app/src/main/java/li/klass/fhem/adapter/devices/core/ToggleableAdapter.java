@@ -25,6 +25,7 @@
 package li.klass.fhem.adapter.devices.core;
 
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TableLayout;
 
@@ -33,6 +34,7 @@ import li.klass.fhem.adapter.devices.genericui.HolderActionRow;
 import li.klass.fhem.adapter.devices.genericui.OnOffActionRow;
 import li.klass.fhem.adapter.devices.genericui.ToggleDeviceActionRow;
 import li.klass.fhem.adapter.devices.genericui.WebCmdActionRow;
+import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.ToggleableDevice;
 
 import static li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener.NotificationDeviceType.TOGGLEABLE_AND_NOT_DIMMABLE;
@@ -45,16 +47,21 @@ public abstract class ToggleableAdapter<D extends ToggleableDevice<D>> extends G
     }
 
     @Override
-    public void fillDeviceOverviewView(View view, final D device, long lastUpdate) {
-        if (!device.supportsToggle()) {
-            super.fillDeviceOverviewView(view, device, lastUpdate);
-            return;
+    public View createOverviewView(LayoutInflater layoutInflater, View convertView, Device rawDevice, long lastUpdate) {
+        ToggleableDevice device = (ToggleableDevice) rawDevice;
+        if(!device.supportsToggle()) {
+            return super.createOverviewView(layoutInflater, convertView, rawDevice,lastUpdate);
         }
-
-        TableLayout layout = (TableLayout) view.findViewById(R.id.device_overview_generic);
-        layout.findViewById(R.id.deviceName).setVisibility(View.GONE);
-
-        addOverviewSwitchActionRow(view.getContext(), device, layout);
+        if(convertView == null || convertView.getTag() == null) {
+            convertView = layoutInflater.inflate(R.layout.device_overview_generic, null);
+            GenericDeviceOverviewViewHolder holder = new GenericDeviceOverviewViewHolder(convertView);
+            convertView.setTag(holder);
+        }
+        GenericDeviceOverviewViewHolder holder = (GenericDeviceOverviewViewHolder) convertView.getTag();
+        holder.resetHolder();
+        holder.deviceName.setVisibility(View.GONE);
+        addOverviewSwitchActionRow(holder.tableLayout.getContext(), device, holder.tableLayout);
+        return convertView;
     }
 
     protected <T extends ToggleableDevice<T>> void addOverviewSwitchActionRow(Context context, T device, TableLayout layout) {
@@ -109,5 +116,10 @@ public abstract class ToggleableAdapter<D extends ToggleableDevice<D>> extends G
         } else {
             addSwitchActionRow(context, device, layout, ToggleDeviceActionRow.LAYOUT_DETAIL);
         }
+    }
+
+    @Override
+    public Class getOverviewViewHolderClass() {
+        return GenericDeviceOverviewViewHolder.class;
     }
 }
