@@ -36,6 +36,8 @@ import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.appwidget.view.widget.base.DeviceAppWidgetView;
+import li.klass.fhem.domain.genericview.OverviewViewSettings;
+import li.klass.fhem.domain.genericview.OverviewViewSettingsCache;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.domain.log.CustomGraph;
 import li.klass.fhem.domain.log.LogDevice;
@@ -79,6 +81,19 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
     private String widgetName;
     private boolean alwaysHidden = false;
     private boolean hasStatisticsDevice = false;
+    private OverviewViewSettings overviewViewSettings;
+
+    public Device() {
+        //Optimization to prevent the expensive calls to Annotations in getView()
+        overviewViewSettings = getClass().getAnnotation(OverviewViewSettings.class);
+        if(overviewViewSettings != null) {
+            overviewViewSettings = new OverviewViewSettingsCache(overviewViewSettings);
+        }
+    }
+
+    public OverviewViewSettings getOverviewViewSettings() {
+        return overviewViewSettings;
+    }
 
     public void readROOM(String value) {
         setRoomConcatenated(value);

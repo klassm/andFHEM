@@ -118,7 +118,7 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
         setTextView(view, R.id.deviceName, device.getAliasOrName());
 
         try {
-            OverviewViewSettings annotation = device.getClass().getAnnotation(OverviewViewSettings.class);
+            OverviewViewSettings annotation = device.getOverviewViewSettings();
             List<AnnotatedDeviceClassItem> items = getSortedAnnotatedClassItems(device);
 
             for (AnnotatedDeviceClassItem item : items) {

@@ -27,11 +27,12 @@ package li.klass.fhem.adapter.devices.core.showFieldAnnotation;
 import java.lang.reflect.Method;
 
 import li.klass.fhem.domain.genericview.ShowField;
+import li.klass.fhem.domain.genericview.ShowFieldCache;
 
 public class AnnotatedDeviceClassMethod extends AnnotatedDeviceClassItem {
     public final Method method;
     private final String sortName;
-    private final ShowField showField;
+    private ShowField showField;
 
     public AnnotatedDeviceClassMethod(Method method) {
         this.method = method;
@@ -42,6 +43,9 @@ public class AnnotatedDeviceClassMethod extends AnnotatedDeviceClassItem {
 
         this.sortName = name;
         this.showField = method.getAnnotation(ShowField.class);
+        if(showField != null) {
+            showField = new ShowFieldCache(showField);
+        }
 
     }
 
