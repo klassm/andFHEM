@@ -73,7 +73,7 @@ public class PCA9532DeviceAdapter extends GenericDeviceAdapter<PCA9532Device> {
             }
 
             private void createPortRow(Context context, TableLayout tableLayout, final String port, PCA9532Device device) {
-                tableLayout.addView(new ToggleActionRow<PCA9532Device>(port, ToggleActionRow.LAYOUT_DETAIL) {
+                tableLayout.addView(new ToggleActionRow<PCA9532Device>(LayoutInflater.from(context), ToggleActionRow.LAYOUT_DETAIL) {
 
                     @Override
                     protected boolean isOn(PCA9532Device device) {
@@ -90,7 +90,7 @@ public class PCA9532DeviceAdapter extends GenericDeviceAdapter<PCA9532Device> {
                         putUpdateExtra(intent);
                         context.startService(intent);
                     }
-                }.createRow(context, LayoutInflater.from(context), device));
+                }.createRow(context, device, port));
             }
         });
 

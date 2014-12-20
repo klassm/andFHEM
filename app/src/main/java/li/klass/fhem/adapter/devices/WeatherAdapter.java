@@ -36,7 +36,9 @@ import android.widget.RelativeLayout;
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.ListDataAdapter;
 import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
+import li.klass.fhem.adapter.devices.core.GenericDeviceOverviewViewHolder;
 import li.klass.fhem.domain.WeatherDevice;
+import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.util.ImageUtil;
 import li.klass.fhem.util.ListViewUtil;
 
@@ -47,12 +49,14 @@ public class WeatherAdapter extends GenericDeviceAdapter<WeatherDevice> {
     }
 
     @Override
-    protected int getOverviewLayout(WeatherDevice device) {
-        return R.layout.device_overview_weather;
+    public View createOverviewView(LayoutInflater layoutInflater, View convertView, Device rawDevice, long lastUpdate) {
+        RelativeLayout layout = (RelativeLayout) layoutInflater.inflate(R.layout.device_overview_weather,null);
+        fillDeviceOverviewView(layout, (WeatherDevice) rawDevice, lastUpdate,null);
+        return layout;
     }
 
-    @Override
-    protected void fillDeviceOverviewView(final View view, WeatherDevice device, long lastUpdate) {
+
+    protected void fillDeviceOverviewView(final View view, WeatherDevice device, long lastUpdate, GenericDeviceOverviewViewHolder viewHolder) {
         setTextView(view, R.id.deviceName, device.getAliasOrName());
         setTextViewOrHideTableRow(view, R.id.tableRowTemperature, R.id.temperature, device.getTemperature());
         setTextViewOrHideTableRow(view, R.id.tableRowWind, R.id.wind, device.getWind());
@@ -136,5 +140,10 @@ public class WeatherAdapter extends GenericDeviceAdapter<WeatherDevice> {
         };
         weatherForecastList.setAdapter(forecastAdapter);
         return weatherForecastList;
+    }
+
+    @Override
+    public Class getOverviewViewHolderClass() {
+        return null;
     }
 }

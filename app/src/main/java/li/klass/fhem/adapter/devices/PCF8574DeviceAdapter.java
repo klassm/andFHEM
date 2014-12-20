@@ -65,7 +65,7 @@ public class PCF8574DeviceAdapter extends GenericDeviceAdapter<PCF8574Device> {
             }
 
             private void createPortRow(Context context, TableLayout tableLayout, final String port, PCF8574Device device) {
-                tableLayout.addView(new ToggleActionRow<PCF8574Device>(port, ToggleActionRow.LAYOUT_DETAIL) {
+                tableLayout.addView(new ToggleActionRow<PCF8574Device>(LayoutInflater.from(context), ToggleActionRow.LAYOUT_DETAIL) {
 
                     @Override
                     protected boolean isOn(PCF8574Device device) {
@@ -82,7 +82,7 @@ public class PCF8574DeviceAdapter extends GenericDeviceAdapter<PCF8574Device> {
                         putUpdateExtra(intent);
                         context.startService(intent);
                     }
-                }.createRow(context, LayoutInflater.from(context), device));
+                }.createRow(context, device, port));
             }
         });
     }

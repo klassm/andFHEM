@@ -72,35 +72,11 @@ public abstract class DeviceAdapter<D extends Device> {
      * a cast exception occurs.
      *
      * @param layoutInflater layoutInflater to create the view
-     * @param rawDevice      device used for filling the view
-     * @return overview view
+     * @param convertView the view that can be reused
+     *@param rawDevice      device used for filling the view  @return overview view
      */
     @SuppressWarnings("unchecked")
-    public View createOverviewView(LayoutInflater layoutInflater, Device rawDevice, long lastUpdate) {
-        checkNotNull(context);
-
-        D device = (D) rawDevice;
-        View view = layoutInflater.inflate(getOverviewLayout(device), null);
-        fillDeviceOverviewView(view, device, lastUpdate);
-        return view;
-    }
-
-    /**
-     * Gets the overview layout id for the given device.
-     *
-     * @param device device
-     * @return layout id
-     */
-    protected abstract int getOverviewLayout(D device);
-
-    /**
-     * Fills a given device view.
-     *
-     * @param view       view to fill
-     * @param device     content provider
-     * @param lastUpdate time when the data was last loaded from the FHEM server.
-     */
-    protected abstract void fillDeviceOverviewView(View view, D device, long lastUpdate);
+    public abstract View createOverviewView(LayoutInflater layoutInflater, View convertView, Device rawDevice, long lastUpdate);
 
     /**
      * Creates a filled detail view for a given device.
@@ -168,6 +144,18 @@ public abstract class DeviceAdapter<D extends Device> {
         }
     }
 
+    protected void setTextView(TextView textView, String value) {
+        if(textView != null) {
+            textView.setText(value);
+        }
+    }
+
+    protected void setTextView(TextView textView, int valueRes) {
+        Context context = textView.getContext();
+        checkNotNull(context);
+        setTextView(textView, context.getString(valueRes));
+    }
+
     protected void setTextView(View view, int textFieldLayoutId, int value) {
         checkNotNull(view);
 
@@ -202,5 +190,9 @@ public abstract class DeviceAdapter<D extends Device> {
 
     public LayoutInflater getInflater() {
         return inflater;
+    }
+
+    public Class getOverviewViewHolderClass() {
+        return null;
     }
 }

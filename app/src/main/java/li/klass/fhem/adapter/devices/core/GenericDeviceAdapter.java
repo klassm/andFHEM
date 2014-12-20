@@ -59,13 +59,15 @@ import li.klass.fhem.fhem.DummyDataConnection;
 import li.klass.fhem.service.intent.DeviceIntentService;
 import li.klass.fhem.util.StringUtil;
 
+import static li.klass.fhem.adapter.devices.core.GenericDeviceOverviewViewHolder.GenericDeviceTableRowHolder;
+
 public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> {
     private static final String TAG = GenericDeviceAdapter.class.getName();
-    protected List<DeviceDetailViewAction<D>> detailActions = new ArrayList<DeviceDetailViewAction<D>>();
+    protected List<DeviceDetailViewAction<D>> detailActions = new ArrayList<>();
     @Inject
     DataConnectionSwitch dataConnectionSwitch;
     private Class<D> deviceClass;
-    private Map<String, List<FieldNameAddedToDetailListener<D>>> fieldNameAddedListeners = new HashMap<String, List<FieldNameAddedToDetailListener<D>>>();
+    private Map<String, List<FieldNameAddedToDetailListener<D>>> fieldNameAddedListeners = new HashMap<>();
     /**
      * Field to cache our sorted and annotated class members. This is especially useful as
      * recreating this list on each view creation is really really expensive (involves reflection,
@@ -107,20 +109,30 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
                 .createRow(context, inflater, layout, device);
     }
 
-    @Override
-    protected int getOverviewLayout(D device) {
+    public View createOverviewView(LayoutInflater layoutInflater, View convertView, Device rawDevice, long lastUpdate) {
+        if(convertView == null || convertView.getTag() == null) {
+            convertView = layoutInflater.inflate(getOverviewLayout(), null);
+            GenericDeviceOverviewViewHolder viewHolder = new GenericDeviceOverviewViewHolder(convertView);
+            convertView.setTag(viewHolder);
+        } else {
+            Log.i(TAG,"Reusing generic device overview view");
+        }
+        GenericDeviceOverviewViewHolder viewHolder = (GenericDeviceOverviewViewHolder) convertView.getTag();
+        fillDeviceOverviewView(convertView, (D) rawDevice, lastUpdate, viewHolder);
+        return convertView;
+    }
+
+    private int getOverviewLayout() {
         return R.layout.device_overview_generic;
     }
 
-    @Override
-    protected void fillDeviceOverviewView(View view, D device, long lastUpdate) {
-        TableLayout layout = (TableLayout) view.findViewById(R.id.device_overview_generic);
-        setTextView(view, R.id.deviceName, device.getAliasOrName());
-
+    private void fillDeviceOverviewView(View view, D device, long lastUpdate, GenericDeviceOverviewViewHolder viewHolder) {
+        viewHolder.resetHolder();
+        setTextView(viewHolder.deviceName, device.getAliasOrName());
         try {
             OverviewViewSettings annotation = device.getOverviewViewSettings();
             List<AnnotatedDeviceClassItem> items = getSortedAnnotatedClassItems(device);
-
+            int currentGenericRow = 0;
             for (AnnotatedDeviceClassItem item : items) {
                 String name = item.getName();
                 boolean alwaysShow = false;
@@ -136,8 +148,16 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
                     }
                 }
                 if (alwaysShow || item.isShowInOverview()) {
-                    createTableRow(device, getInflater(), layout, item,
-                            R.layout.device_overview_generic_table_row);
+                    currentGenericRow++;
+                    GenericDeviceTableRowHolder rowHolder;
+                    if(currentGenericRow <= viewHolder.tableRows.size()) {
+                        rowHolder = viewHolder.tableRows.get(currentGenericRow-1);
+                    } else {
+                        rowHolder = createTableRow(getInflater(), R.layout.device_overview_generic_table_row);
+                        viewHolder.tableRows.add(rowHolder);
+                    }
+                    fillTableRow(rowHolder, item, device);
+                    viewHolder.tableLayout.addView(rowHolder.row);
                 }
             }
 
@@ -159,11 +179,14 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
         return sortedAnnotatedClassItems;
     }
 
-    private TableRow createTableRow(D device, LayoutInflater inflater, TableLayout layout,
-                                    AnnotatedDeviceClassItem item, int resource) {
-        String value = item.getValueFor(device);
-        int description = item.getDescriptionStringId();
-        return createTableRow(inflater, layout, resource, value, description);
+    private GenericDeviceTableRowHolder createTableRow( LayoutInflater inflater,  int resource) {
+        GenericDeviceTableRowHolder holder = new GenericDeviceTableRowHolder();
+        TableRow tableRow = (TableRow) inflater.inflate(resource, null);
+        assert tableRow != null;
+        holder.row = tableRow;
+        holder.description = (TextView) tableRow.findViewById(R.id.description);
+        holder.value = (TextView) tableRow.findViewById(R.id.value);
+        return holder;
     }
 
     protected boolean isOverviewError(D device, long lastUpdate) {
@@ -176,22 +199,15 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
 
     }
 
-    private TableRow createTableRow(LayoutInflater inflater, TableLayout layout, int resource,
-                                    Object value, int description) {
-        TableRow tableRow = (TableRow) inflater.inflate(resource, null);
-        assert tableRow != null;
-
-        fillTableRow(description, value, tableRow);
-        layout.addView(tableRow);
-        return tableRow;
-    }
-
-    private void fillTableRow(int description, Object value, TableRow tableRow) {
-        setTextView(tableRow, R.id.description, description);
-        setTextView(tableRow, R.id.value, String.valueOf(value));
-
+    private void fillTableRow(GenericDeviceTableRowHolder holder,  AnnotatedDeviceClassItem item, D device) {
+        String value = item.getValueFor(device);
+        int description = item.getDescriptionStringId();
+        setTextView(holder.description, description);
+        setTextView(holder.value, String.valueOf(value));
         if (value == null || value.equals("")) {
-            tableRow.setVisibility(View.GONE);
+            holder.row.setVisibility(View.GONE);
+        } else {
+            holder.row.setVisibility(View.VISIBLE);
         }
     }
 
@@ -244,8 +260,10 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
                 }
 
                 if (item.isShowInDetail()) {
-                    TableRow row = createTableRow(device, inflater, layout, item, R.layout.device_detail_generic_table_row);
-                    notifyFieldListeners(context, device, layout, name, row);
+                    GenericDeviceTableRowHolder holder = createTableRow(inflater,R.layout.device_detail_generic_table_row);
+                    fillTableRow(holder,item,device);
+                    layout.addView(holder.row);
+                    notifyFieldListeners(context, device, layout, name, holder.row);
                 }
             }
         } catch (Exception e) {
@@ -333,6 +351,11 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
             }
         }
         return false;
+    }
+
+    @Override
+    public Class getOverviewViewHolderClass() {
+        return GenericDeviceOverviewViewHolder.class;
     }
 
     protected String getGeneralDetailsNotificationText(Context context, D device) {
