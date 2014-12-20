@@ -22,8 +22,6 @@
  *   Boston, MA  02110-1301  USA
  */
 
-
-
 apply plugin: 'com.android.application'
 
 buildscript {
@@ -124,7 +122,6 @@ android {
 }
 
 apply plugin: 'android-unit-test'
-
 
 dependencies {
     compile fileTree(dir: './libs', include: '*.jar')
@@ -280,7 +277,7 @@ def updateGoogleSitesAPK(service) {
 }
 
 /*************************************
- * Javadoc
+ * Build variants
  *********************************** */
 
 task prepareAndroidStudioTests {}
@@ -297,11 +294,11 @@ android.applicationVariants.all { variant ->
 
     //This helps to run the unit tests in Anroid studio. Just call prepareAndroidStudioTests before the unit test
     if(variant.buildType.name.equals("debug")) {
-        task("copyAndroidStudio${variant.name.capitalize()}TestResources",type: Copy) {
+        task("copyAndroidStudio${variant.name.capitalize()}TestResources",type: Copy) << {
                 from "${projectDir}/src/test/resources"
                 into "${buildDir}/test-classes/${variant.productFlavors[0].name}/${variant.buildType.name}"
         }
-        task("prepareAndroidStudio${variant.name.capitalize()}Tests") {
+        task("prepareAndroidStudio${variant.name.capitalize()}Tests") << {
             dependsOn("test${variant.name.capitalize()}Classes")
             dependsOn("copy${variant.name.capitalize()}TestResources")
             dependsOn("copyAndroidStudio${variant.name.capitalize()}TestResources")
