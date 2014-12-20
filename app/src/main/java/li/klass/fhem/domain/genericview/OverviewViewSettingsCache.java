@@ -7,33 +7,33 @@ import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 
 public class OverviewViewSettingsCache implements OverviewViewSettings, Serializable {
 
-    private final boolean _showState;
-    private final boolean _showMeaured;
-    private final ResourceIdMapper _stateStringId;
-    private final ResourceIdMapper _measuredStringId;
+    private final boolean showState;
+    private final boolean showMeasured;
+    private final ResourceIdMapper stateStringId;
+    private final ResourceIdMapper measuredStringId;
 
     public OverviewViewSettingsCache(OverviewViewSettings settings) {
-        _showState = settings.showState();
-        _showMeaured = settings.showMeasured();
-        _stateStringId = settings.stateStringId();
-        _measuredStringId = settings.measuredStringId();
+        showState = settings.showState();
+        showMeasured = settings.showMeasured();
+        stateStringId = settings.stateStringId();
+        measuredStringId = settings.measuredStringId();
     }
 
     public boolean showState() {
-        return _showState;
+        return showState;
     }
 
     public boolean showMeasured() {
-        return _showMeaured;
+        return showMeasured;
     }
 
     public ResourceIdMapper stateStringId() {
-        return _stateStringId;
+        return stateStringId;
     }
 
 
     public ResourceIdMapper measuredStringId() {
-        return _measuredStringId;
+        return measuredStringId;
     }
 
     @Override

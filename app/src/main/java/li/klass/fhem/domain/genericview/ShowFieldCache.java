@@ -7,36 +7,36 @@ import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 
 public class ShowFieldCache implements ShowField, Serializable {
 
-    private final ResourceIdMapper _description;
-    private final boolean _showInOverview;
-    private final boolean _showInDetail;
-    private final String _showAfter;
+    private final ResourceIdMapper description;
+    private final boolean showInOverview;
+    private final boolean showInDetail;
+    private final String showAfter;
 
     public ShowFieldCache(ShowField showField) {
-        _description = showField.description();
-        _showInOverview = showField.showInOverview();
-        _showInDetail = showField.showInDetail();
-        _showAfter = showField.showAfter();
+        description = showField.description();
+        showInOverview = showField.showInOverview();
+        showInDetail = showField.showInDetail();
+        showAfter = showField.showAfter();
     }
 
     @Override
     public ResourceIdMapper description() {
-        return _description;
+        return description;
     }
 
     @Override
     public boolean showInOverview() {
-        return _showInOverview;
+        return showInOverview;
     }
 
     @Override
     public boolean showInDetail() {
-        return _showInDetail;
+        return showInDetail;
     }
 
     @Override
     public String showAfter() {
-        return _showAfter;
+        return showAfter;
     }
 
     @Override
