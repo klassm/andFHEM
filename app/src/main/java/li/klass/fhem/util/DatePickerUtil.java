@@ -46,8 +46,7 @@ public class DatePickerUtil {
             }
         } catch (SecurityException e) {
             Log.d("ERROR", e.getMessage());
-        }
-        catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             Log.d("ERROR", e.getMessage());
         } catch (IllegalAccessException e) {
             Log.d("ERROR", e.getMessage());

@@ -66,7 +66,7 @@ public class SetListSliderValue implements SetListValue {
 
     @Override
     public String asText() {
-        return "slider," + start + "," + step + "," +stop;
+        return "slider," + start + "," + step + "," + stop;
     }
 
     @Override

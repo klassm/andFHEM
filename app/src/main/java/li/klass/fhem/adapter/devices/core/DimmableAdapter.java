@@ -56,7 +56,7 @@ public class DimmableAdapter<D extends DimmableDevice<D>> extends ToggleableAdap
         if (!device.supportsDim() || device.isSpecialButtonDevice()) {
             return super.createOverviewView(layoutInflater, convertView, rawDevice, lastUpdate);
         }
-        if(convertView == null || convertView.getTag() == null) {
+        if (convertView == null || convertView.getTag() == null) {
             convertView = layoutInflater.inflate(R.layout.device_overview_generic, null);
             GenericDeviceOverviewViewHolder holder = new GenericDeviceOverviewViewHolder(convertView);
             convertView.setTag(holder);
@@ -65,7 +65,7 @@ public class DimmableAdapter<D extends DimmableDevice<D>> extends ToggleableAdap
         holder.resetHolder();
         holder.getDeviceName().setVisibility(View.GONE);
         DimActionRow<D> row = holder.getAdditionalHolderFor(DimActionRow.HOLDER_KEY);
-        if(row == null) {
+        if (row == null) {
             row = new DimActionRow<>(layoutInflater);
             holder.putAdditionalHolder(DimActionRow.HOLDER_KEY, row);
         }

@@ -39,6 +39,6 @@ public abstract class AndFHEMException extends RuntimeException {
     public AndFHEMException(Throwable throwable) {
         super(throwable);
     }
-    
+
     public abstract int getErrorMessageStringId();
 }

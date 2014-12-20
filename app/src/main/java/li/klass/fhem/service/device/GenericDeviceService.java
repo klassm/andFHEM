@@ -26,9 +26,6 @@ package li.klass.fhem.service.device;
 
 import android.content.Context;
 import android.util.Log;
-import android.util.Xml;
-
-import org.apache.commons.lang3.ArrayUtils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;

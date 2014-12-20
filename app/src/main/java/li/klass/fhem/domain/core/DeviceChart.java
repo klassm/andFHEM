@@ -23,10 +23,10 @@
 
 package li.klass.fhem.domain.core;
 
+import java.io.Serializable;
+
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
-
-import java.io.Serializable;
 
 public class DeviceChart implements Serializable {
     public final String buttonText;

@@ -27,9 +27,6 @@ package li.klass.fhem.activities.locale;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.ResultReceiver;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -126,14 +123,14 @@ public class SendCommandLocaleSettingActivity extends Activity {
                 bundle.putString(ACTION, EXECUTE_COMMAND);
                 bundle.putString(COMMAND, command);
 
-                if (selectedId != null && ! CURRENT_CONNECTION_ID.equals(selectedId)) {
+                if (selectedId != null && !CURRENT_CONNECTION_ID.equals(selectedId)) {
                     bundle.putString(CONNECTION_ID, selectedId);
                 }
 
                 resultIntent.putExtra(EXTRA_BUNDLE, bundle);
 
                 if (TaskerPlugin.Setting.hostSupportsOnFireVariableReplacement(SendCommandLocaleSettingActivity.this)) {
-                    TaskerPlugin.Setting.setVariableReplaceKeys( bundle, new String [] { COMMAND } );
+                    TaskerPlugin.Setting.setVariableReplaceKeys(bundle, new String[]{COMMAND});
                 }
 
                 LOG.info("onCreate() - result: command={}, action={}", bundle.getString(COMMAND), bundle.getString(ACTION));

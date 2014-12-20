@@ -35,7 +35,6 @@ import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewButtonAction;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.GCMSendDevice;
-import li.klass.fhem.gcm.GCMIntentService;
 import li.klass.fhem.service.device.GCMSendDeviceService;
 import li.klass.fhem.service.intent.DeviceIntentService;
 

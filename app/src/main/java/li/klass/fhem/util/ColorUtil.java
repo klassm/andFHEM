@@ -47,8 +47,8 @@ public class ColorUtil {
      * @param rgb given RGB value.
      * @return array of doubles containing the x and y values. xy is also called the
      * "color point" (see <a href="http://www.everyhue.com/vanilla/discussion/94/rgb-to-xy-or-hue-sat-values/p1">
-     *     everyhue</a> for details. Note that the returned array has size 3, as the third
-     *     element represents the brightness of the color (step 7 within the algorithm).
+     * everyhue</a> for details. Note that the returned array has size 3, as the third
+     * element represents the brightness of the color (step 7 within the algorithm).
      */
     public static XYColor rgbToXY(int rgb) {
         // Extract colors normed to 0...1
@@ -71,7 +71,7 @@ public class ColorUtil {
         double y = Y / (X + Y + Z);
 
         // Return the color point and the brightness.
-        return new XYColor(new double[] {x, y}, (int) (Y * 255));
+        return new XYColor(new double[]{x, y}, (int) (Y * 255));
     }
 
     /**
@@ -79,7 +79,7 @@ public class ColorUtil {
      * <a href="https://github.com/PhilipsHue/PhilipsHueSDK-iOS-OSX/blob/master/ApplicationDesignNotes/RGB%20to%20xy%20Color%20conversion.md"
      * PhilipsHueSDK</a> for the algorithm.
      *
-     * @param xy given x and y values.
+     * @param xy         given x and y values.
      * @param brightness brightness of the colour.
      * @return an rgb colour matching xy and brightness.
      */

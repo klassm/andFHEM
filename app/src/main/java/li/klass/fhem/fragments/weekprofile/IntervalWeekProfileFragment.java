@@ -32,7 +32,6 @@ import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.heating.schedule.WeekProfile;
 import li.klass.fhem.domain.heating.schedule.interval.FilledTemperatureInterval;
 import li.klass.fhem.util.ApplicationProperties;
-import li.klass.fhem.widget.NestedListViewAdapter;
 
 public class IntervalWeekProfileFragment extends BaseWeekProfileFragment<FilledTemperatureInterval> {
 

@@ -27,7 +27,8 @@ package li.klass.fhem.domain.setlist;
 public class SetListEmptyValue implements SetListValue {
     public static final SetListEmptyValue INSTANCE = new SetListEmptyValue();
 
-    private SetListEmptyValue() {}
+    private SetListEmptyValue() {
+    }
 
     @Override
     public String asText() {

@@ -80,8 +80,7 @@ public enum WidgetType {
     CONVERSION_LINK(new ConversionLinkWidget(), WidgetSize.SMALL),
     TIMERS_LINK(new TimersLinkWidget(), WidgetSize.SMALL),
     SEND_COMMAND_LINK(new SendCommandLinkWidget(), WidgetSize.SMALL),
-    UPDATE_WIDGET(new DeviceListUpdateWidget(), WidgetSize.SMALL),
-    ;
+    UPDATE_WIDGET(new DeviceListUpdateWidget(), WidgetSize.SMALL),;
 
     public final AppWidgetView widgetView;
     public final WidgetSize widgetSize;

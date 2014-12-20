@@ -37,14 +37,14 @@ public class OwSwitchDevice extends Device<OwSwitchDevice> {
     private boolean onB;
 
     public void readA(String value) {
-        this.onA = ! "OFF".equalsIgnoreCase(value);
+        this.onA = !"OFF".equalsIgnoreCase(value);
     }
 
     public void readB(String value) {
-        onB = ! "OFF".equalsIgnoreCase(value);
+        onB = !"OFF".equalsIgnoreCase(value);
     }
 
-    public void readGPIO(String value)  {
+    public void readGPIO(String value) {
         int s = ValueExtractUtil.extractLeadingInt(value);
 
         //Set values for channels (For 2 channels: 3 = A and B off, 1 = B on 2 = A on 0 = both on)
@@ -93,7 +93,7 @@ public class OwSwitchDevice extends Device<OwSwitchDevice> {
         //Set values for channels (For 2 channels: 3 = A and B off, 1 = B on 2 = A on 0 = both on)
 
         // a and b off
-        if (! a && ! b) return 3;
+        if (!a && !b) return 3;
 
         // a and b on
         if (a && b) return 0;

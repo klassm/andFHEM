@@ -32,7 +32,8 @@ public class ViewUtil {
         int id;
         do {
             id = (int) (Math.random() * 1000 + 1000);
-        } while (view.findViewById(id) != null || (group != null && group.findViewById(id) != null));
+        }
+        while (view.findViewById(id) != null || (group != null && group.findViewById(id) != null));
 
         return id;
     }

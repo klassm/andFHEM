@@ -68,10 +68,10 @@ public class DeviceGridAdapter<T extends Device<T>> extends GridViewWithSections
     public DeviceGridAdapter(Context context, RoomDeviceList roomDeviceList, ApplicationProperties applicationProperties) {
         super(context);
         int currentViewType = 1;
-        for(DeviceType type: DeviceType.values()) {
-            if(type.getAdapter() != null && type.getAdapter().getOverviewViewHolderClass() != null) {
+        for (DeviceType type : DeviceType.values()) {
+            if (type.getAdapter() != null && type.getAdapter().getOverviewViewHolderClass() != null) {
                 Class viewTypeHolderClass = type.getAdapter().getOverviewViewHolderClass();
-                if(!viewTypeMap.containsKey(viewTypeHolderClass)) {
+                if (!viewTypeMap.containsKey(viewTypeHolderClass)) {
                     viewTypeMap.put(viewTypeHolderClass, currentViewType++);
                 }
             }
@@ -160,7 +160,7 @@ public class DeviceGridAdapter<T extends Device<T>> extends GridViewWithSections
 
     @Override
     protected View getParentView(String parent, int parentOffset, View view, ViewGroup viewGroup) {
-        if(view == null) {
+        if (view == null) {
             view = layoutInflater.inflate(R.layout.room_detail_parent, viewGroup, false);
 
             assert view != null;
@@ -193,11 +193,11 @@ public class DeviceGridAdapter<T extends Device<T>> extends GridViewWithSections
     @Override
     public int getItemViewType(int position) {
         int parentBasePosition = getParentBasePosition(position);
-        if(parentBasePosition != -1) {
+        if (parentBasePosition != -1) {
             return 0;
         } else {
             DeviceAdapter adapter = DeviceType.getAdapterFor((Device) getItem(position));
-            if(adapter != null && adapter.getOverviewViewHolderClass() != null) {
+            if (adapter != null && adapter.getOverviewViewHolderClass() != null) {
                 return viewTypeMap.get(adapter.getOverviewViewHolderClass());
             }
         }
@@ -234,7 +234,7 @@ public class DeviceGridAdapter<T extends Device<T>> extends GridViewWithSections
 
         deviceAdapter.attach(context);
 
-        view = deviceAdapter.createOverviewView(layoutInflater,view, child, lastUpdate);
+        view = deviceAdapter.createOverviewView(layoutInflater, view, child, lastUpdate);
         //view.setTag(child);
         view.setLayoutParams(new AbsListView.LayoutParams(
                         ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)

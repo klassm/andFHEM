@@ -29,13 +29,11 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 
-import li.klass.fhem.R;
 import li.klass.fhem.activities.core.FragmentBaseActivity;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.fragments.device.DeviceNameSelectionFragment;
-import li.klass.fhem.util.DialogUtil;
 import li.klass.fhem.util.FhemResultReceiver;
 
 public class DeviceNameSelectionActivity extends FragmentActivity {

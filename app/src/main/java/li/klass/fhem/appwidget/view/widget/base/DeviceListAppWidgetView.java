@@ -97,6 +97,7 @@ public abstract class DeviceListAppWidgetView extends DeviceAppWidgetView {
     }
 
     protected abstract int getListItemCount(Device<?> device);
+
     protected abstract RemoteViews getRemoteViewAt(Context context, Device<?> device,
                                                    int position, int widgetId);
 }

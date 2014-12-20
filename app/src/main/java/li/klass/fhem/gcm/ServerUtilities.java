@@ -17,10 +17,10 @@
 
 package li.klass.fhem.gcm;
 
-import com.google.android.gcm.GCMRegistrar;
-
 import android.content.Context;
 import android.util.Log;
+
+import com.google.android.gcm.GCMRegistrar;
 
 import java.io.IOException;
 import java.io.OutputStream;

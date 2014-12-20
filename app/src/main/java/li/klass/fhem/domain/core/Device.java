@@ -86,7 +86,7 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
     public Device() {
         //Optimization to prevent the expensive calls to Annotations in getView()
         overviewViewSettings = getClass().getAnnotation(OverviewViewSettings.class);
-        if(overviewViewSettings != null) {
+        if (overviewViewSettings != null) {
             overviewViewSettings = new OverviewViewSettingsCache(overviewViewSettings);
         }
     }

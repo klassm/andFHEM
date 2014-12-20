@@ -1,9 +1,9 @@
 package li.klass.fhem.activities.graph;
 
+import java.util.List;
+
 import li.klass.fhem.service.graph.GraphEntry;
 import li.klass.fhem.service.graph.description.SeriesType;
-
-import java.util.List;
 
 public class ViewableChartSeries {
     public enum ChartType {

@@ -72,8 +72,8 @@ public abstract class DeviceAdapter<D extends Device> {
      * a cast exception occurs.
      *
      * @param layoutInflater layoutInflater to create the view
-     * @param convertView the view that can be reused
-     *@param rawDevice      device used for filling the view  @return overview view
+     * @param convertView    the view that can be reused
+     * @param rawDevice      device used for filling the view  @return overview view
      */
     @SuppressWarnings("unchecked")
     public abstract View createOverviewView(LayoutInflater layoutInflater, View convertView, Device rawDevice, long lastUpdate);
@@ -145,7 +145,7 @@ public abstract class DeviceAdapter<D extends Device> {
     }
 
     protected void setTextView(TextView textView, String value) {
-        if(textView != null) {
+        if (textView != null) {
             textView.setText(value);
         }
     }

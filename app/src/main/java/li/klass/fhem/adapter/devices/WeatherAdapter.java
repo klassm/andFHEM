@@ -50,8 +50,8 @@ public class WeatherAdapter extends GenericDeviceAdapter<WeatherDevice> {
 
     @Override
     public View createOverviewView(LayoutInflater layoutInflater, View convertView, Device rawDevice, long lastUpdate) {
-        RelativeLayout layout = (RelativeLayout) layoutInflater.inflate(R.layout.device_overview_weather,null);
-        fillDeviceOverviewView(layout, (WeatherDevice) rawDevice, lastUpdate,null);
+        RelativeLayout layout = (RelativeLayout) layoutInflater.inflate(R.layout.device_overview_weather, null);
+        fillDeviceOverviewView(layout, (WeatherDevice) rawDevice, lastUpdate, null);
         return layout;
     }
 

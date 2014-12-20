@@ -25,15 +25,12 @@
 package li.klass.fhem.appwidget;
 
 import android.app.AlarmManager;
-import android.app.IntentService;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetHost;
-import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
-import android.widget.RemoteViews;
 
 import com.google.common.base.Optional;
 
@@ -51,7 +48,6 @@ import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.NetworkState;
 
 import static java.lang.Integer.parseInt;
-import static li.klass.fhem.constants.PreferenceKeys.ALLOW_REMOTE_UPDATE;
 import static li.klass.fhem.service.room.RoomListService.NEVER_UPDATE_PERIOD;
 
 public class AppWidgetDataHolder {

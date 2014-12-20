@@ -28,6 +28,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+
 import li.klass.fhem.R;
 import li.klass.fhem.domain.core.Device;
 

@@ -29,6 +29,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TableRow;
 import android.widget.TextView;
+
 import li.klass.fhem.R;
 import li.klass.fhem.domain.core.Device;
 
@@ -67,5 +68,6 @@ public abstract class UpDownButtonRow<T extends Device> {
     }
 
     public abstract void onUpButtonClick(Context context, T device);
+
     public abstract void onDownButtonClick(Context context, T device);
 }

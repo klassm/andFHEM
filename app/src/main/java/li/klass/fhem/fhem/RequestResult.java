@@ -49,7 +49,7 @@ public class RequestResult<CONTENT> {
     }
 
     public boolean handleErrors() {
-        if (error  == null) return false;
+        if (error == null) return false;
 
         Context context = AndFHEMApplication.getContext();
 

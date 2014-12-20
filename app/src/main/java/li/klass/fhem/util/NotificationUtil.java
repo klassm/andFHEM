@@ -56,7 +56,7 @@ public class NotificationUtil {
                 .setContentIntent(pendingIntent);
 
         if (vibrate) {
-            notificationBuilder.setVibrate(new long[] {100, 400});
+            notificationBuilder.setVibrate(new long[]{100, 400});
         }
 
         Notification notification = notificationBuilder.build();

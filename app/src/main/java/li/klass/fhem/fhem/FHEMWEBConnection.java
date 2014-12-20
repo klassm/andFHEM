@@ -196,7 +196,7 @@ public class FHEMWEBConnection extends FHEMConnection {
             SSLContext sc = SSLContext.getInstance("TLS");
             MemorizingTrustManager mtm = new MemorizingTrustManager(AndFHEMApplication.getContext());
             KeyManager[] clientKeys = null;
-            if(serverSpec.getClientCertificatePath() != null) {
+            if (serverSpec.getClientCertificatePath() != null) {
                 File clientCertificate = new File(serverSpec.getClientCertificatePath());
                 String clientCertificatePassword = serverSpec.getClientCertificatePassword();
                 if (clientCertificate.exists()) {

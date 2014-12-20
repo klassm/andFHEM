@@ -46,11 +46,11 @@ public class OwtempDevice extends Device<OwtempDevice> {
     @ShowField(description = ResourceIdMapper.warnings, showInOverview = true)
     private String warnings;
 
-    public void readTEMPERATURE(String value)  {
+    public void readTEMPERATURE(String value) {
         this.temperature = ValueUtil.formatTemperature(value);
     }
 
-    public void readWARNINGS(String value, NamedNodeMap attributes)  {
+    public void readWARNINGS(String value, NamedNodeMap attributes) {
         this.warnings = value;
         String measured = attributes.getNamedItem("measured").getNodeValue();
         setMeasured(measured);

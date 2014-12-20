@@ -43,8 +43,8 @@ public class GenericDeviceOverviewViewHolder {
     private TableLayout tableLayout;
     private TableRow deviceNameRow;
     private TextView deviceName;
-    private List<GenericDeviceTableRowHolder> tableRows = Lists.newArrayList() ;
-    private Map<String,Object> additionalHolders = Maps.newHashMap();
+    private List<GenericDeviceTableRowHolder> tableRows = Lists.newArrayList();
+    private Map<String, Object> additionalHolders = Maps.newHashMap();
 
     public GenericDeviceOverviewViewHolder(View convertView) {
         tableLayout = (TableLayout) convertView.findViewById(R.id.device_overview_generic);

@@ -29,7 +29,6 @@ import li.klass.fhem.adapter.weekprofile.FromToWeekProfileAdapter;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.heating.schedule.WeekProfile;
 import li.klass.fhem.domain.heating.schedule.interval.FromToHeatingInterval;
-import li.klass.fhem.widget.NestedListViewAdapter;
 
 public class FromToWeekProfileFragment extends BaseWeekProfileFragment<FromToHeatingInterval> {
 

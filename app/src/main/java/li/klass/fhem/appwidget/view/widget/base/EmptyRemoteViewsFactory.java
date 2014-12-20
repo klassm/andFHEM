@@ -34,7 +34,8 @@ public class EmptyRemoteViewsFactory implements RemoteViewsService.RemoteViewsFa
 
     public static final EmptyRemoteViewsFactory INSTANCE = new EmptyRemoteViewsFactory();
 
-    private EmptyRemoteViewsFactory() {}
+    private EmptyRemoteViewsFactory() {
+    }
 
     @Override
     public void onCreate() {

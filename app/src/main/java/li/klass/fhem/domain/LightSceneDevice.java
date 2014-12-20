@@ -31,8 +31,6 @@ import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.genericview.DetailViewSettings;
 import li.klass.fhem.domain.setlist.SetListGroupValue;
 
-import static com.google.common.collect.Lists.newArrayList;
-
 @SuppressWarnings("unused")
 @DetailViewSettings(showMeasured = true, showState = true)
 public class LightSceneDevice extends Device<LightSceneDevice> {

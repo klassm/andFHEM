@@ -43,14 +43,14 @@ public class AnnotatedDeviceClassMethod extends AnnotatedDeviceClassItem {
 
         this.sortName = name;
         this.showField = method.getAnnotation(ShowField.class);
-        if(showField != null) {
+        if (showField != null) {
             showField = new ShowFieldCache(showField);
         }
 
     }
 
     static String getterNameToName(String name) {
-        if (! name.startsWith("get")) return name;
+        if (!name.startsWith("get")) return name;
 
         name = name.replace("get", "");
 

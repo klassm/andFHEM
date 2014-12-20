@@ -29,6 +29,7 @@ import android.content.DialogInterface;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+
 import li.klass.fhem.R;
 
 public class DialogUtil {

@@ -25,7 +25,6 @@
 package li.klass.fhem.fhem;
 
 import android.graphics.Bitmap;
-import android.util.Log;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;

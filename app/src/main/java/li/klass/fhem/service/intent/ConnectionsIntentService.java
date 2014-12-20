@@ -93,7 +93,7 @@ public class ConnectionsIntentService extends ConvenientIntentService {
 
             if (Actions.CONNECTION_CREATE.equals(action)) {
                 connectionService.create(name, serverType, username,
-                        password, ip, port, url, clientCertificatePath,clientCertificatePassword);
+                        password, ip, port, url, clientCertificatePath, clientCertificatePassword);
             } else {
                 connectionService.update(id, name, serverType, username, password, ip,
                         port, url, clientCertificatePath, clientCertificatePassword);

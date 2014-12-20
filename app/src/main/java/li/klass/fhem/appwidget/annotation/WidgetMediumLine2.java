@@ -28,5 +28,5 @@ import java.lang.annotation.RetentionPolicy;
 
 @Retention(RetentionPolicy.RUNTIME)
 public @interface WidgetMediumLine2 {
-	ResourceIdMapper description() default ResourceIdMapper.none;
+    ResourceIdMapper description() default ResourceIdMapper.none;
 }

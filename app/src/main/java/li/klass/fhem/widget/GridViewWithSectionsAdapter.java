@@ -126,7 +126,6 @@ public abstract class GridViewWithSectionsAdapter<P, C> extends BaseAdapter {
     }
 
 
-
     @Override
     public View getView(int flatPosition, View view, ViewGroup viewGroup) {
         Log.v(TAG, "drawing flatPosition " + flatPosition + "/" + totalNumberOfItems);
@@ -144,7 +143,7 @@ public abstract class GridViewWithSectionsAdapter<P, C> extends BaseAdapter {
                 C child = getChildForParentAndChildPosition(parent, relativeChildPosition);
 
                 View childView = getChildView(parent, parentPosition, child, view, viewGroup);
-                if(getNumberOfColumns() > 1) {
+                if (getNumberOfColumns() > 1) {
                     updateChildrenRowHeight(getNumberOfColumns(), parentPosition, relativeChildPosition, childView);
                 }
 

@@ -82,7 +82,7 @@ public class NestedListView extends ListView {
         if (childDivider != null && !isParent) {
             childDivider.setBounds(bounds);
             childDivider.draw(canvas);
-        } else if (isParent && getDivider() != null){
+        } else if (isParent && getDivider() != null) {
             getDivider().setBounds(bounds);
             getDivider().draw(canvas);
         }
