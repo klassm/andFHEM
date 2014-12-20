@@ -26,7 +26,8 @@
 
 <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
           android:layout_width="fill_parent"
-          android:layout_height="wrap_content">
+          android:layout_height="wrap_content"
+          style="@style/deviceOverviewLayout">
 
     <TextView
         android:id="@+id/description"
@@ -43,6 +44,8 @@
 
     <Button
         android:id="@+id/offButton"
+        android:layout_marginLeft="@dimen/button_horizontal_separator"
+        android:layout_marginStart="@dimen/button_horizontal_separator"
         style="@style/deviceOverviewToggleButton"
         android:text="@string/OFF"/>
 </TableRow>

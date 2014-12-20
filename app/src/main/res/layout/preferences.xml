@@ -195,5 +195,9 @@
             android:title="@string/prefClearTrustedCertificates"
             android:summary="@string/prefClearTrustedCertificatesSummary"/>
 
+        <Preference
+            android:title="@string/prefVoiceCommand"
+            android:key="VOICE_COMMANDS"
+            android:summary="@string/prefVoiceCommandSummary"/>
     </PreferenceCategory>
 </PreferenceScreen>

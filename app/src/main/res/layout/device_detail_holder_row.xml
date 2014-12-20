@@ -27,6 +27,7 @@
 <TableRow
     android:id="@+id/tableRowDeviceName"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:f="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -35,8 +36,9 @@
         style="@style/deviceDetailDescription"
         android:text="@string/dummy_text"/>
 
-    <com.ensequence.socialmediatestharness.ui.FlowLayout
+    <org.apmem.tools.layouts.FlowLayout
         android:id="@+id/holder"
+        f:horizontalSpacing="@dimen/button_horizontal_separator"
         style="@style/deviceDetailContent"
         android:layout_width="match_parent"
         android:layout_gravity="end"

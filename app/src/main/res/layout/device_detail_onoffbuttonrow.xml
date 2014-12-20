@@ -33,9 +33,9 @@
     <LinearLayout android:layout_height="wrap_content"
                   android:layout_width="wrap_content"
                   android:gravity="end">
-        <Button android:id="@+id/onButton"
-                style="@style/deviceOverviewToggleButton"
-                android:text="@string/ON"/>
+
+        <include layout="@layout/on_button"/>
+
         <Button android:id="@+id/offButton"
                 style="@style/deviceOverviewToggleButton"
                 android:text="@string/OFF"/>

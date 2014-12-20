@@ -205,7 +205,7 @@
     <string name="shutterPosition">Rolladen-Position</string>
     <string name="sendEachColorChange">Sende jede Farbänderung</string>
     <string name="level">Level</string>
-    <string name="activateScene">Szene %s</string>
+    <string name="scene">Szene</string>
     <string name="cost">Kosten</string>
     <string name="co2">CO2</string>
     <string name="hiddenRooms">Versteckte Räume</string>
@@ -327,6 +327,8 @@
     <string name="prefClearTrustedCertificatesSummary">Entferne alle Zertifikate aus dem Applikations Trust-Store</string>
     <string name="prefClearTrustedCertificatesFinished">Zertifikate zurückgesetzt</string>
     <string name="prefClearTrustedCertificates">Vertrauenswürdige Zertifikate zurücksetzen</string>
+    <string name="prefVoiceCommand">Sprachkommandos</string>
+    <string name="prefVoiceCommandSummary">Aktiviere andFHEM als Eingabehilfe um Sprachkommandos zu verwenden. Sprachkommandos funktionieren nur in andFHEM Premium!</string>
 
     <string name="error_update">Error während Update Vorgang.</string>
     <string name="error_timeout">Zeitüberschreitung der Anforderung.</string>
@@ -581,4 +583,8 @@
     <string name="androidBugDialogDatePickerTitle">Feature deaktiviert</string>
     <string name="androidBugDialogDatePickerContent">Lollipop beinhaltet aktuell einen Bug, der den nachfolgenden Dialog zum Absturz bringt. Deshalb ist dieser bis zu einer Reperatur seitens Google deaktiviert. Google hat den Fehler bereits behoben, bisher aber noch keinen neuen Android Update freigegeben.</string>
 
+    <string name="accessibility_description">Dieser Bedienungshilfe-Service erlaubt es andFHEM jedes Google Now Sprachkommando mitzuhören. AndFHEM speichert diese Daten nicht, versucht aber daraus FHEM Kommandos zu generieren.</string>
+
+    <string name="voiceMoreThanOneDeviceMatches">Mehr als ein Gerät passt zu diesem Kommando.</string>
+    <string name="voiceNoDeviceMatches">Kein Gerät passt zu diesem Kommando.</string>
 </resources>

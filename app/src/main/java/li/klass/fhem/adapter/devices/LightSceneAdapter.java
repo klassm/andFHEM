@@ -30,16 +30,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TableLayout;
+import android.widget.TableRow;
 
 import java.util.List;
 
 import li.klass.fhem.R;
+import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
 import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
 import li.klass.fhem.adapter.devices.core.UpdatingResultReceiver;
 import li.klass.fhem.adapter.devices.genericui.AvailableTargetStatesSwitchActionRow;
-import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewAction;
 import li.klass.fhem.adapter.devices.genericui.HolderActionRow;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
@@ -47,20 +47,18 @@ import li.klass.fhem.domain.LightSceneDevice;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.service.intent.DeviceIntentService;
 
-import static android.widget.LinearLayout.VERTICAL;
-
 public class LightSceneAdapter extends GenericDeviceAdapter<LightSceneDevice> {
     public LightSceneAdapter() {
         super(LightSceneDevice.class);
     }
 
-
     @Override
     public View createOverviewView(LayoutInflater layoutInflater, View convertView, Device rawDevice, long lastUpdate) {
         TableLayout layout = (TableLayout) layoutInflater.inflate(R.layout.device_overview_generic, null);
         layout.removeAllViews();
+
         LightSceneDevice device = (LightSceneDevice) rawDevice;
-        new HolderActionRow<LightSceneDevice, String>(device.getAliasOrName(),
+        layout.addView(new HolderActionRow<LightSceneDevice, String>(device.getAliasOrName(),
                 HolderActionRow.LAYOUT_OVERVIEW) {
 
             @Override
@@ -70,17 +68,43 @@ public class LightSceneAdapter extends GenericDeviceAdapter<LightSceneDevice> {
 
             @Override
             public View viewFor(String scene, LightSceneDevice device, LayoutInflater inflater, Context context, ViewGroup viewGroup) {
-                Button button = (Button) inflater.inflate(R.layout.button, null);
-                setSceneButtonProperties(context, device, scene, button, scene);
+                Button button = (Button) inflater.inflate(R.layout.default_button, viewGroup, false);
+                setSceneButtonProperties(context, device, scene, button);
                 return button;
             }
-        }.createRow(layout.getContext(), getInflater(), layout, device);
+        }.createRow(layout.getContext(), getInflater(), layout, device));
         return layout;
     }
 
 
-    private void setSceneButtonProperties(final Context context, final LightSceneDevice device, final String scene, Button button, String buttonText) {
-        button.setText(buttonText);
+    @Override
+    protected void afterPropertiesSet() {
+        super.afterPropertiesSet();
+        registerFieldListener("state", new FieldNameAddedToDetailListener<LightSceneDevice>() {
+            @Override
+            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, LightSceneDevice device, TableRow fieldTableRow) {
+                tableLayout.addView(new HolderActionRow<LightSceneDevice, String>(context.getString(R.string.scene), HolderActionRow.LAYOUT_DETAIL) {
+
+                    @Override
+                    public List<String> getItems(LightSceneDevice device) {
+                        return device.getScenes();
+                    }
+
+                    @Override
+                    public View viewFor(String scene, LightSceneDevice device, LayoutInflater inflater, Context context, ViewGroup viewGroup) {
+                        Button button = (Button) inflater.inflate(R.layout.default_button, viewGroup, false);
+                        setSceneButtonProperties(context, device, scene, button);
+                        return button;
+                    }
+                }.createRow(context, getInflater(), tableLayout, device));
+            }
+        });
+
+        detailActions.add(new AvailableTargetStatesSwitchActionRow<LightSceneDevice>());
+    }
+
+    private void setSceneButtonProperties(final Context context, final LightSceneDevice device, final String scene, Button button) {
+        button.setText(scene);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -90,45 +114,11 @@ public class LightSceneAdapter extends GenericDeviceAdapter<LightSceneDevice> {
     }
 
     private void activateScene(LightSceneDevice device, String scene, Context context) {
-        Intent intent = new Intent(Actions.DEVICE_SET_SUB_STATE);
-        intent.setClass(context, DeviceIntentService.class);
-        intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
-        intent.putExtra(BundleExtraKeys.STATE_NAME, "scene");
-        intent.putExtra(BundleExtraKeys.STATE_VALUE, scene);
-        intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver(context));
-        context.startService(intent);
-    }
-
-    @Override
-    protected void afterPropertiesSet() {
-        super.afterPropertiesSet();
-
-        detailActions.add(new DeviceDetailViewAction<LightSceneDevice>() {
-            @Override
-            public View createView(final Context context, LayoutInflater inflater,
-                                   final LightSceneDevice device, LinearLayout parent) {
-                LinearLayout layout = new LinearLayout(context);
-                layout.setOrientation(VERTICAL);
-
-                for (final String scene : device.getScenes()) {
-
-                    Button button = (Button) inflater.inflate(R.layout.button_device_detail, parent, false);
-                    assert (button != null);
-
-                    String buttonText = String.format(context.getString(R.string.activateScene), scene);
-                    setSceneButtonProperties(context, device, scene, button, buttonText);
-
-                    layout.addView(button);
-                }
-
-                return layout;
-            }
-        });
-        detailActions.add(new AvailableTargetStatesSwitchActionRow<LightSceneDevice>());
-    }
-
-    @Override
-    public Class getOverviewViewHolderClass() {
-        return null;
+        context.startService(new Intent(Actions.DEVICE_SET_SUB_STATE)
+                .setClass(context, DeviceIntentService.class)
+                .putExtra(BundleExtraKeys.DEVICE_NAME, device.getName())
+                .putExtra(BundleExtraKeys.STATE_NAME, "scene")
+                .putExtra(BundleExtraKeys.STATE_VALUE, scene)
+                .putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver(context)));
     }
 }

@@ -83,8 +83,8 @@ public abstract class ToggleableAdapter<D extends ToggleableDevice<D>> extends G
 
     private <T extends ToggleableDevice<T>> void addWebCmdOverviewActionRow(Context context, T device,
                                                                             TableLayout tableLayout) {
-        new WebCmdActionRow<T>(device.getAliasOrName(), HolderActionRow.LAYOUT_OVERVIEW)
-                .createRow(context, getInflater(), tableLayout, device);
+        tableLayout.addView(new WebCmdActionRow<T>(device.getAliasOrName(), HolderActionRow.LAYOUT_OVERVIEW)
+                .createRow(context, getInflater(), tableLayout, device));
     }
 
     private <T extends ToggleableDevice<T>> void addToggleDeviceActionRow(GenericDeviceOverviewViewHolder holder, T device, int layoutId) {

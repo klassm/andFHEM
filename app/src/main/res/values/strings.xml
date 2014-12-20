@@ -205,7 +205,7 @@
     <string name="shutterPosition">Shutter position</string>
     <string name="sendEachColorChange">Send each color change</string>
     <string name="level">Level</string>
-    <string name="activateScene">Scene %s</string>
+    <string name="scene">Scene</string>
     <string name="cost">Cost</string>
     <string name="co2">CO2</string>
     <string name="hiddenRooms">Hidden rooms</string>
@@ -328,6 +328,8 @@
     <string name="prefClearTrustedCertificates">Clear trusted certificates</string>
     <string name="prefClearTrustedCertificatesSummary">Remove all manually trusted certificates from the application trust store</string>
     <string name="prefClearTrustedCertificatesFinished">Certificates removed</string>
+    <string name="prefVoiceCommand">Voice commands</string>
+    <string name="prefVoiceCommandSummary">Enable andFHEM as accessibility service to enable voice recognition. This is a Premium only feature.</string>
 
     <string name="error_update">Error while updating.</string>
     <string name="error_timeout">Connection timed out.</string>
@@ -619,4 +621,8 @@
     <string name="androidBugDialogDatePickerTitle">Feature deactivated</string>
     <string name="androidBugDialogDatePickerContent">Lollipop currently contains a bug preventing the use of special UI elements like the ones used in this dialog. Thus, the feature is disabled until Google has released an update repairing this issue. Effectively, Google has already accepted the fix but has not released an update yet.</string>
 
+    <string name="accessibility_description">This accessibility service will allow andFHEM to listen to any text entered in Google Now. andFHEM will not store any information and will only try to send FHEM commands based on your input.</string>
+
+    <string name="voiceMoreThanOneDeviceMatches">More than one device matches the command.</string>
+    <string name="voiceNoDeviceMatches">No device matches the command.</string>
 </resources>

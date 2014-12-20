@@ -202,13 +202,15 @@ public class RoomDeviceList implements Serializable {
     }
 
     @SuppressWarnings("unchecked")
-    public <T extends Device> void addDevice(T device) {
-        if (device == null) return;
-        if (!device.isSupported()) return;
+    public <T extends Device> RoomDeviceList addDevice(T device) {
+        if (device == null) return this;
+        if (!device.isSupported()) return this;
 
         List<String> groups = device.getInternalDeviceGroupOrGroupAttributes();
         for (String group : groups) {
             getOrCreateDeviceList(group).add(device);
         }
+
+        return this;
     }
 }

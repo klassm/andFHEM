@@ -142,6 +142,7 @@ dependencies {
     //noinspection GradleDependency
     compile 'com.intellij:annotations:12.+@jar'
     compile 'org.slf4j:slf4j-android:1.7.7'
+    compile 'org.apmem.tools:layouts:1.4@aar'
     compile 'de.duenndns:memorizing-trust-manager:0.9@aar'
 
 

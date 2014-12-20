@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <!--
   ~ AndFHEM - Open Source Android application to control a FHEM home automation
   ~ server.
@@ -24,16 +23,6 @@
   ~   Boston, MA  02110-1301  USA
   -->
 
-<TableRow
-    android:id="@+id/tableRow"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    style="@style/deviceOverviewLayout">
-
-<TextView android:id="@+id/description"
-              style="@style/deviceOverviewDescription"/>
-
-    <TextView android:id="@+id/value"
-              style="@style/deviceOverviewContent"/>
-</TableRow>
+<resources>
+    <dimen name="button_horizontal_separator">5dp</dimen>
+</resources>

@@ -31,7 +31,7 @@ import android.view.ViewGroup;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import com.ensequence.socialmediatestharness.ui.FlowLayout;
+import org.apmem.tools.layouts.FlowLayout;
 
 import java.util.List;
 
@@ -51,8 +51,7 @@ public abstract class HolderActionRow<D extends Device<D>, I> {
     }
 
     public TableRow createRow(final Context context, LayoutInflater inflater, ViewGroup viewGroup, final D device) {
-        TableRow row = (TableRow) inflater.inflate(layout, null);
-        viewGroup.addView(row);
+        TableRow row = (TableRow) inflater.inflate(layout, viewGroup, false);
 
         FlowLayout holder = (FlowLayout) row.findViewById(R.id.holder);
 
@@ -62,7 +61,7 @@ public abstract class HolderActionRow<D extends Device<D>, I> {
         }
 
         for (I item : getItems(device)) {
-            View view = viewFor(item, device, inflater, context, viewGroup);
+            View view = viewFor(item, device, inflater, context, holder);
             if (view != null) {
                 holder.addView(view);
             }

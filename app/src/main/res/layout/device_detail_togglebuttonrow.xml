@@ -39,10 +39,6 @@
         android:layout_weight="0"
         android:gravity="end">
 
-        <ToggleButton
-            android:id="@+id/toggleButton"
-            style="@style/toggleButton"
-            android:background="@drawable/theme_toggle_button"
-            />
+        <include layout="@layout/togglebutton"/>
     </LinearLayout>
 </TableRow>

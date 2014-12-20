@@ -22,40 +22,32 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.domain;
+package li.klass.fhem.activities;
 
-import java.util.List;
+import android.app.Activity;
+import android.os.Bundle;
+import android.os.Handler;
+import android.view.Window;
 
-import li.klass.fhem.domain.core.Device;
-import li.klass.fhem.domain.core.DeviceFunctionality;
-import li.klass.fhem.domain.genericview.DetailViewSettings;
-import li.klass.fhem.domain.setlist.SetListGroupValue;
+import li.klass.fhem.R;
 
-@SuppressWarnings("unused")
-@DetailViewSettings(showMeasured = true, showState = true)
-public class LightSceneDevice extends Device<LightSceneDevice> {
+public class CommandIndicatorActivity extends Activity {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-    private String scene;
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        setContentView(R.layout.command_indicator);
+    }
 
     @Override
-    public DeviceFunctionality getDeviceGroup() {
-        return DeviceFunctionality.SWITCH;
-    }
-
-    public void readSET(String value) {
-        // ignore
-    }
-
-    public void readSCENE(String scene) {
-        this.scene = scene;
-    }
-
-    public List<String> getScenes() {
-        SetListGroupValue sceneGroup = (SetListGroupValue) getSetList().get("scene");
-        return sceneGroup.getGroupStates();
-    }
-
-    public String getScene() {
-        return scene;
+    protected void onResume() {
+        super.onResume();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                finish();
+            }
+        }, 1000);
     }
 }

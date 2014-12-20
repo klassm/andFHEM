@@ -30,7 +30,7 @@
     android:versionCode="331"
     android:versionName="3.3.1">
 
-<uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="com.android.vending.BILLING"/>
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE"/>
@@ -85,6 +85,10 @@
             android:configChanges="orientation|keyboardHidden|screenSize"/>
 
         <activity android:name="li.klass.fhem.activities.PreferencesActivity"/>
+
+        <activity
+            android:name="li.klass.fhem.activities.CommandIndicatorActivity"
+            android:theme="@style/transparentDialogTheme"/>
 
         <activity
             android:name="li.klass.fhem.activities.graph.ChartingActivity"
@@ -154,6 +158,36 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/andfhem_appwidget_big"/>
         </receiver>
+
+        <service
+            android:name="li.klass.fhem.accesibility.MyAccessibilityService"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService"/>
+            </intent-filter>
+
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/accessibility_service_config"/>
+        </service>
+
+        <service
+            android:name="li.klass.fhem.service.TextToSpeechService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.SAY"/>
+            </intent-filter>
+        </service>
+
+        <service
+            android:name="li.klass.fhem.service.intent.VoiceCommandIntentService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="li.klass.fhem.constants.Actions.RECOGNIZE_VOICE_COMMAND"/>
+            </intent-filter>
+        </service>
 
         <service
             android:name="li.klass.fhem.appwidget.service.AppWidgetUpdateService"

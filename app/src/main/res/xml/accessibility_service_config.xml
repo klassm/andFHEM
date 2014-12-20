@@ -24,16 +24,10 @@
   ~   Boston, MA  02110-1301  USA
   -->
 
-<TableRow
-    android:id="@+id/tableRow"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    style="@style/deviceOverviewLayout">
-
-<TextView android:id="@+id/description"
-              style="@style/deviceOverviewDescription"/>
-
-    <TextView android:id="@+id/value"
-              style="@style/deviceOverviewContent"/>
-</TableRow>
+<accessibility-service xmlns:android="http://schemas.android.com/apk/res/android"
+                       android:accessibilityEventTypes="typeViewTextSelectionChanged"
+                       android:accessibilityFeedbackType="feedbackGeneric"
+                       android:description="@string/accessibility_description"
+                       android:notificationTimeout="100"
+                       android:packageNames="com.google.android.googlequicksearchbox"
+                       android:settingsActivity="li.klass.fhem.activities.AndFHEMMainActivity"/>

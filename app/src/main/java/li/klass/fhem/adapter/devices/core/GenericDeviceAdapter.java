@@ -100,13 +100,13 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
         fieldNameAddedListeners.get(fieldName).add(listener);
     }
 
-    private TableRow createWebCmdTableRowIfRequired(LayoutInflater inflater, TableLayout layout,
+    private void createWebCmdTableRowIfRequired(LayoutInflater inflater, TableLayout layout,
                                                     final D device) {
-        if (device.getWebCmd().isEmpty()) return null;
+        if (device.getWebCmd().isEmpty()) return;
         final Context context = inflater.getContext();
 
-        return new WebCmdActionRow<D>(HolderActionRow.LAYOUT_DETAIL, context)
-                .createRow(context, inflater, layout, device);
+        layout.addView(new WebCmdActionRow<D>(HolderActionRow.LAYOUT_DETAIL, context)
+                .createRow(context, inflater, layout, device));
     }
 
     public View createOverviewView(LayoutInflater layoutInflater, View convertView, Device rawDevice, long lastUpdate) {

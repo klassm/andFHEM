@@ -81,6 +81,7 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
     private String widgetName;
     private boolean alwaysHidden = false;
     private boolean hasStatisticsDevice = false;
+    private String pronunciation;
     private OverviewViewSettings overviewViewSettings;
 
     public Device() {
@@ -140,6 +141,10 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
 
     public void readALWAYS_HIDDEN(String value) {
         alwaysHidden = "true".equalsIgnoreCase(value);
+    }
+
+    public void readPRONUNCIATION(String value) {
+        this.pronunciation = value;
     }
 
     public void readGROUP(String value) {
@@ -416,6 +421,10 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
         return !alwaysHidden;
     }
 
+    public String getPronunciation() {
+        return pronunciation;
+    }
+
     public String getEventMapStateForCurrentState() {
         return getEventMapStateFor(getState());
     }
@@ -426,6 +435,10 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
         }
 
         return state;
+    }
+
+    public String getReverseEventMapStateFor(String state) {
+        return eventMapReverse.containsKey(state) ? eventMapReverse.get(state) : state;
     }
 
     public Map<String, String> getEventMap() {

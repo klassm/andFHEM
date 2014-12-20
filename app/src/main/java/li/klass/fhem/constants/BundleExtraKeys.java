@@ -36,6 +36,7 @@ public class BundleExtraKeys {
     public static final String DEVICE_NEW_NAME = "DEVICENEWNAME";
     public static final String DEVICE_NEW_ROOM = "DEVICENEWROOM";
     public static final String DEVICE_NEW_ALIAS = "DEVICENEWALIAS";
+    public static final String TIMES_TO_SEND = "TIMES_TO_SEND";
     public static final String DEVICE_LIST = "DEVICELIST";
     public static final String RESULT_RECEIVER = "RESULTRECEIVER";
     public static final String STRING_ID = "STRINGID";
@@ -49,6 +50,7 @@ public class BundleExtraKeys {
     public static final String EMPTY_TEXT_ID = "EMPTY_TEXT_ID";
     public static final String ROOM_SELECTABLE_CALLBACK = "ROOM_SELECTABLE_CALLBACK";
     public static final String ON_CLICKED_CALLBACK = "ON_CLICKED_CALLBACK";
+    public static final String TEXT = "TEXT";
 
     public static final String DEVICE_GRAPH_ENTRY_MAP = "GRAPHENTRYMAP";
     public static final String DEVICE_GRAPH_SERIES_DESCRIPTIONS = "DEVICEGRAPHSERIESDESCRIPTIONS";
