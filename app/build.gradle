@@ -41,7 +41,7 @@ buildscript {
         classpath 'javax.mail:mail:1.4.7'
         classpath 'com.google.oauth-client:google-oauth-client:1.17.0-rc'
 
-        classpath 'com.github.jcandksolutions.gradle:android-unit-test:2.0.2'
+        classpath 'com.github.jcandksolutions.gradle:android-unit-test:2.1.1'
     }
 }
 
