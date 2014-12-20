@@ -29,24 +29,18 @@ import java.util.Map;
 
 public class StringEscapeUtil {
 
-    private static Map<String, String> replacements = null;
+    private static Map<String, String> replacements = new LinkedHashMap<>(7);
+    static {
+        replacements.put("\u00c3\u00bc", "ü");
+        replacements.put("\u00c3\u00a4", "ä");
+        replacements.put("\u00c3\u00b6", "ö");
+        replacements.put("\u00c3\u0096", "Ö");
+        replacements.put("\u00c3\u0084", "Ä");
+        replacements.put("\u00c3\u009c", "Ü");
+        replacements.put("\u00c3\u009f", "ß");
+    }
 
     public static String unescape(String content) {
-        if(replacements == null) {
-            synchronized(StringEscapeUtil.class) {
-                if(replacements == null) {
-                    LinkedHashMap<String, String> temp = new LinkedHashMap<>(7);
-                    temp.put("\u00c3\u00bc", "ü");
-                    temp.put("\u00c3\u00a4", "ä");
-                    temp.put("\u00c3\u00b6", "ö");
-                    temp.put("\u00c3\u0096", "Ö");
-                    temp.put("\u00c3\u0084", "Ä");
-                    temp.put("\u00c3\u009c", "Ü");
-                    temp.put("\u00c3\u009f", "ß");
-                    replacements = temp;
-                }
-            }
-        }
         content = replaceFromMap(content,replacements);
         return content.trim();
     }
