@@ -66,27 +66,28 @@ public class RoomListServiceTest extends RobolectricBaseTestCase {
     @InjectMocks
     private RoomListService service;
 
+    private RoomDeviceList roomDeviceList = new RoomDeviceList(ALL_DEVICES_ROOM);
+
     @Before
     public void before() {
         given(applicationProperties.getStringSharedPreference(DEVICE_NAME, "andFHEM")).willReturn("abc");
         given(connectionService.mayShowInCurrentConnectionType(any(DeviceType.class))).willCallRealMethod();
+        given(roomListHolderService.getCachedRoomDeviceListMap()).willReturn(roomDeviceList);
         doCallRealMethod().when(roomListHolderService).findFHEMWEBDevice(any(RoomDeviceList.class));
     }
 
     @Test
     public void get_room_names_with_supported_devices() throws Exception {
-        service.deviceList = new RoomDeviceList(ALL_DEVICES_ROOM);
-        service.deviceList.addDevice(new TestDevice("a", true, "abc", "def"));
-        service.deviceList.addDevice(new TestDevice("b", true, "def", "fgh"));
+        roomDeviceList.addDevice(new TestDevice("a", true, "abc", "def"));
+        roomDeviceList.addDevice(new TestDevice("b", true, "def", "fgh"));
 
         assertThat(service.getRoomNameList()).containsExactly("abc", "def", "fgh");
     }
 
     @Test
     public void get_room_names_with_unsupported_devices() throws Exception {
-        service.deviceList = new RoomDeviceList(ALL_DEVICES_ROOM);
-        service.deviceList.addDevice(new TestDevice("a", true, "abc", "def"));
-        service.deviceList.addDevice(new TestDevice("b", false, "def", "fgh"));
+        roomDeviceList.addDevice(new TestDevice("a", true, "abc", "def"));
+        roomDeviceList.addDevice(new TestDevice("b", false, "def", "fgh"));
 
         assertThat(service.getRoomNameList()).containsExactly("abc", "def");
     }

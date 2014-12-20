@@ -24,22 +24,42 @@
 
 package li.klass.fhem.util;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 public class StringEscapeUtil {
 
-    public static String unescape(String content) {
+    private static Map<String, String> replacements = new LinkedHashMap<>(7);
+    static {
+        replacements.put("\u00c3\u00bc", "ü");
+        replacements.put("\u00c3\u00a4", "ä");
+        replacements.put("\u00c3\u00b6", "ö");
+        replacements.put("\u00c3\u0096", "Ö");
+        replacements.put("\u00c3\u0084", "Ä");
+        replacements.put("\u00c3\u009c", "Ü");
+        replacements.put("\u00c3\u009f", "ß");
+    }
 
-        // We replace UTF characters.
-        // The underlying table can be found on various pages, i.e.
-        // http://www.utf8-zeichentabelle.de/
-        content = content
-                .replaceAll("\u00c3\u00bc", "ü")
-                .replaceAll("\u00c3\u00a4", "ä")
-                .replaceAll("\u00c3\u00b6", "ö")
-                .replaceAll("\u00c3\u0096", "Ö")
-                .replaceAll("\u00c3\u0084", "Ä")
-                .replaceAll("\u00c3\u009c", "Ü")
-                .replaceAll("\u00c3\u009f", "ß")
-        ;
+    public static String unescape(String content) {
+        content = replaceFromMap(content,replacements);
         return content.trim();
+    }
+
+    public static String replaceFromMap(String string,
+                                        Map<String, String> replacements) {
+        StringBuilder sb = new StringBuilder(string);
+        for (Map.Entry<String, String> entry : replacements.entrySet()) {
+            String key = entry.getKey();
+            String value = entry.getValue();
+
+            int start = sb.indexOf(key, 0);
+            while (start > -1) {
+                int end = start + key.length();
+                int nextSearchStart = start + value.length();
+                sb.replace(start, end, value);
+                start = sb.indexOf(key, nextSearchStart);
+            }
+        }
+        return sb.toString();
     }
 }

@@ -31,6 +31,8 @@ import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.List;
@@ -58,19 +60,26 @@ public class RoomListHolderService {
     @Inject
     ApplicationProperties applicationProperties;
 
+    private volatile RoomDeviceList cachedRoomList;
+    private volatile boolean fileStoreNotFilled = false;
+
     public synchronized void storeDeviceListMap(RoomDeviceList roomDeviceList) {
         if (roomDeviceList == null || roomDeviceList.isEmptyOrOnlyContainsDoNotShowDevices()) {
             LOG.info("storeDeviceListMap() : won't store device list, as empty");
             return;
         }
         fillHiddenRoomsAndHiddenGroups(roomDeviceList, findFHEMWEBDevice(roomDeviceList));
-
+        cachedRoomList = roomDeviceList;
         LOG.info("storeDeviceListMap() : storing device list to cache");
+        long startLoad = System.currentTimeMillis();
         Context context = AndFHEMApplication.getContext();
         ObjectOutputStream objectOutputStream = null;
         try {
-            objectOutputStream = new ObjectOutputStream(context.openFileOutput(CACHE_FILENAME, Context.MODE_PRIVATE));
+            objectOutputStream = new ObjectOutputStream(new BufferedOutputStream(context.openFileOutput(CACHE_FILENAME, Context.MODE_PRIVATE)));
             objectOutputStream.writeObject(roomDeviceList);
+            fileStoreNotFilled = false;
+            LOG.info("storeDeviceListMap() : storing device list to cache completed after {} ms",
+                    (System.currentTimeMillis() - startLoad));
         } catch (Exception e) {
             LOG.error("storeDeviceListMap() : error occurred while writing data to disk", e);
         } finally {
@@ -120,26 +129,32 @@ public class RoomListHolderService {
      */
     @SuppressWarnings("unchecked")
     RoomDeviceList getCachedRoomDeviceListMap() {
-        ObjectInputStream objectInputStream = null;
-        try {
-            LOG.info("getCachedRoomDeviceListMap() : fetching device list from cache");
-            long startLoad = System.currentTimeMillis();
+        if(cachedRoomList == null && !fileStoreNotFilled) {
+            synchronized (this) {
+                if(cachedRoomList == null&& !fileStoreNotFilled) {
+                    ObjectInputStream objectInputStream = null;
+                    try {
+                        LOG.info("getCachedRoomDeviceListMap() : fetching device list from cache");
+                        long startLoad = System.currentTimeMillis();
 
-            objectInputStream = new ObjectInputStream(AndFHEMApplication.getContext().openFileInput(CACHE_FILENAME));
-            RoomDeviceList roomDeviceListMap = (RoomDeviceList) objectInputStream.readObject();
-            LOG.info("getCachedRoomDeviceListMap() : loading device list from cache completed after {} ms",
-                    (System.currentTimeMillis() - startLoad));
-
-            if (roomDeviceListMap != null && roomDeviceListMap.isEmptyOrOnlyContainsDoNotShowDevices()) {
-                return null;
-            } else {
-                return roomDeviceListMap;
+                        objectInputStream = new ObjectInputStream(new BufferedInputStream(AndFHEMApplication.getContext().openFileInput(CACHE_FILENAME)));
+                        cachedRoomList = (RoomDeviceList) objectInputStream.readObject();
+                        LOG.info("getCachedRoomDeviceListMap() : loading device list from cache completed after {} ms",
+                                (System.currentTimeMillis() - startLoad));
+                        if (cachedRoomList != null && cachedRoomList.isEmptyOrOnlyContainsDoNotShowDevices()) {
+                            cachedRoomList = null;
+                            fileStoreNotFilled = true;
+                        }
+                    } catch (Exception e) {
+                        LOG.info("getCachedRoomDeviceListMap() : error occurred while de-serializing data", e);
+                        fileStoreNotFilled = true;
+                        return null;
+                    } finally {
+                        CloseableUtil.close(objectInputStream);
+                    }
+                }
             }
-        } catch (Exception e) {
-            LOG.info("getCachedRoomDeviceListMap() : error occurred while de-serializing data", e);
-            return null;
-        } finally {
-            CloseableUtil.close(objectInputStream);
         }
+        return cachedRoomList;
     }
 }
