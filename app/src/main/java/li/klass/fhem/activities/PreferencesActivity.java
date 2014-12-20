@@ -117,7 +117,7 @@ public class PreferencesActivity extends PreferenceActivity
                     String alias = aliases.nextElement();
                     try {
                         mtm.deleteCertificate(alias);
-                        LOGGER.log(Level.INFO, "Deleting certificate for: " +alias);
+                        LOGGER.log(Level.INFO, "Deleting certificate for {} ", alias);
                     } catch (KeyStoreException e) {
                         LOGGER.log(Level.SEVERE, "Could not delete certificate", e);
                     }
