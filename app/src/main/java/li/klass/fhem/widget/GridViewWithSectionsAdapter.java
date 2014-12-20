@@ -33,10 +33,11 @@ import android.widget.BaseAdapter;
 
 import com.google.common.collect.Maps;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import static com.google.common.collect.Lists.newArrayList;
 
 public abstract class GridViewWithSectionsAdapter<P, C> extends BaseAdapter {
 
@@ -50,7 +51,7 @@ public abstract class GridViewWithSectionsAdapter<P, C> extends BaseAdapter {
     private int currentRowIndex;
     private int currentRowParentIndex;
     private int currentRowHeight;
-    private List<View> currentRowViews = new ArrayList<>();
+    private List<View> currentRowViews = newArrayList();
     private int numberOfColumns = -1;
 
     public GridViewWithSectionsAdapter(Context context) {

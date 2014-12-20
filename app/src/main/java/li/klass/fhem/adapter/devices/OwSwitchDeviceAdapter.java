@@ -75,7 +75,7 @@ public class OwSwitchDeviceAdapter extends GenericDeviceAdapter<OwSwitchDevice> 
                     protected int setStateFor(OwSwitchDevice device, boolean isChecked) {
                         return device.setStateForB(isChecked);
                     }
-                }.createRow(context, device,"B"));
+                }.createRow(context, device, "B"));
             }
         });
     }

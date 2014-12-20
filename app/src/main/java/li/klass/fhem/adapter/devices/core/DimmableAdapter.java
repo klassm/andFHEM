@@ -63,14 +63,14 @@ public class DimmableAdapter<D extends DimmableDevice<D>> extends ToggleableAdap
         }
         GenericDeviceOverviewViewHolder holder = (GenericDeviceOverviewViewHolder) convertView.getTag();
         holder.resetHolder();
-        holder.deviceName.setVisibility(View.GONE);
-        DimActionRow<D> row = (DimActionRow<D>) holder.additionalHolders.get(DimActionRow.HOLDER_KEY);
+        holder.getDeviceName().setVisibility(View.GONE);
+        DimActionRow<D> row = holder.getAdditionalHolderFor(DimActionRow.HOLDER_KEY);
         if(row == null) {
             row = new DimActionRow<>(layoutInflater);
-            holder.additionalHolders.put(DimActionRow.HOLDER_KEY, row);
+            holder.putAdditionalHolder(DimActionRow.HOLDER_KEY, row);
         }
         row.fillWith(device, null);
-        holder.tableLayout.addView(row.getView());
+        holder.getTableLayout().addView(row.getView());
         return convertView;
     }
 

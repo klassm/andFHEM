@@ -110,12 +110,12 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
     }
 
     public View createOverviewView(LayoutInflater layoutInflater, View convertView, Device rawDevice, long lastUpdate) {
-        if(convertView == null || convertView.getTag() == null) {
+        if (convertView == null || convertView.getTag() == null) {
             convertView = layoutInflater.inflate(getOverviewLayout(), null);
             GenericDeviceOverviewViewHolder viewHolder = new GenericDeviceOverviewViewHolder(convertView);
             convertView.setTag(viewHolder);
         } else {
-            Log.i(TAG,"Reusing generic device overview view");
+            Log.i(TAG, "Reusing generic device overview view");
         }
         GenericDeviceOverviewViewHolder viewHolder = (GenericDeviceOverviewViewHolder) convertView.getTag();
         fillDeviceOverviewView(convertView, (D) rawDevice, lastUpdate, viewHolder);
@@ -128,7 +128,7 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
 
     private void fillDeviceOverviewView(View view, D device, long lastUpdate, GenericDeviceOverviewViewHolder viewHolder) {
         viewHolder.resetHolder();
-        setTextView(viewHolder.deviceName, device.getAliasOrName());
+        setTextView(viewHolder.getDeviceName(), device.getAliasOrName());
         try {
             OverviewViewSettings annotation = device.getOverviewViewSettings();
             List<AnnotatedDeviceClassItem> items = getSortedAnnotatedClassItems(device);
@@ -150,14 +150,14 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
                 if (alwaysShow || item.isShowInOverview()) {
                     currentGenericRow++;
                     GenericDeviceTableRowHolder rowHolder;
-                    if(currentGenericRow <= viewHolder.tableRows.size()) {
-                        rowHolder = viewHolder.tableRows.get(currentGenericRow-1);
+                    if (currentGenericRow <= viewHolder.getTableRowCount()) {
+                        rowHolder = viewHolder.getTableRowAt(currentGenericRow - 1);
                     } else {
                         rowHolder = createTableRow(getInflater(), R.layout.device_overview_generic_table_row);
-                        viewHolder.tableRows.add(rowHolder);
+                        viewHolder.addTableRow(rowHolder);
                     }
                     fillTableRow(rowHolder, item, device);
-                    viewHolder.tableLayout.addView(rowHolder.row);
+                    viewHolder.getTableLayout().addView(rowHolder.row);
                 }
             }
 
@@ -179,7 +179,7 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
         return sortedAnnotatedClassItems;
     }
 
-    private GenericDeviceTableRowHolder createTableRow( LayoutInflater inflater,  int resource) {
+    private GenericDeviceTableRowHolder createTableRow(LayoutInflater inflater, int resource) {
         GenericDeviceTableRowHolder holder = new GenericDeviceTableRowHolder();
         TableRow tableRow = (TableRow) inflater.inflate(resource, null);
         assert tableRow != null;
@@ -199,7 +199,7 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
 
     }
 
-    private void fillTableRow(GenericDeviceTableRowHolder holder,  AnnotatedDeviceClassItem item, D device) {
+    private void fillTableRow(GenericDeviceTableRowHolder holder, AnnotatedDeviceClassItem item, D device) {
         String value = item.getValueFor(device);
         int description = item.getDescriptionStringId();
         setTextView(holder.description, description);
@@ -260,8 +260,8 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
                 }
 
                 if (item.isShowInDetail()) {
-                    GenericDeviceTableRowHolder holder = createTableRow(inflater,R.layout.device_detail_generic_table_row);
-                    fillTableRow(holder,item,device);
+                    GenericDeviceTableRowHolder holder = createTableRow(inflater, R.layout.device_detail_generic_table_row);
+                    fillTableRow(holder, item, device);
                     layout.addView(holder.row);
                     notifyFieldListeners(context, device, layout, name, holder.row);
                 }

@@ -32,13 +32,15 @@ import android.widget.TableLayout;
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.genericui.HolderActionRow;
 import li.klass.fhem.adapter.devices.genericui.OnOffActionRow;
-import li.klass.fhem.adapter.devices.genericui.ToggleActionRow;
 import li.klass.fhem.adapter.devices.genericui.ToggleDeviceActionRow;
 import li.klass.fhem.adapter.devices.genericui.WebCmdActionRow;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.ToggleableDevice;
 
 import static li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener.NotificationDeviceType.TOGGLEABLE_AND_NOT_DIMMABLE;
+import static li.klass.fhem.adapter.devices.genericui.ToggleDeviceActionRow.HOLDER_KEY;
+import static li.klass.fhem.adapter.devices.genericui.ToggleDeviceActionRow.LAYOUT_DETAIL;
+import static li.klass.fhem.adapter.devices.genericui.ToggleDeviceActionRow.LAYOUT_OVERVIEW;
 import static li.klass.fhem.domain.core.ToggleableDevice.ButtonHookType.TOGGLE_DEVICE;
 import static li.klass.fhem.domain.core.ToggleableDevice.ButtonHookType.WEBCMD_DEVICE;
 
@@ -60,13 +62,13 @@ public abstract class ToggleableAdapter<D extends ToggleableDevice<D>> extends G
         }
         GenericDeviceOverviewViewHolder holder = (GenericDeviceOverviewViewHolder) convertView.getTag();
         holder.resetHolder();
-        holder.deviceName.setVisibility(View.GONE);
+        holder.getDeviceName().setVisibility(View.GONE);
         addOverviewSwitchActionRow(holder, device);
         return convertView;
     }
 
     protected <T extends ToggleableDevice<T>> void addOverviewSwitchActionRow(GenericDeviceOverviewViewHolder holder, T device) {
-        TableLayout layout = holder.tableLayout;
+        TableLayout layout = holder.getTableLayout();
         ToggleableDevice.ButtonHookType buttonHookType = device.getButtonHookType();
         if (device.isSpecialButtonDevice() && buttonHookType != TOGGLE_DEVICE) {
             if (buttonHookType == WEBCMD_DEVICE) {
@@ -75,7 +77,7 @@ public abstract class ToggleableAdapter<D extends ToggleableDevice<D>> extends G
                 addOnOffActionRow(holder, device, OnOffActionRow.LAYOUT_OVERVIEW);
             }
         } else {
-            addToggleDeviceActionRow(holder, device,ToggleDeviceActionRow.LAYOUT_OVERVIEW);
+            addToggleDeviceActionRow(holder, device, LAYOUT_OVERVIEW);
         }
     }
 
@@ -86,13 +88,13 @@ public abstract class ToggleableAdapter<D extends ToggleableDevice<D>> extends G
     }
 
     private <T extends ToggleableDevice<T>> void addToggleDeviceActionRow(GenericDeviceOverviewViewHolder holder, T device, int layoutId) {
-        ToggleDeviceActionRow<T> actionRow = (ToggleDeviceActionRow<T>) holder.additionalHolders.get(ToggleDeviceActionRow.HOLDER_KEY);
+        ToggleDeviceActionRow<T> actionRow = holder.getAdditionalHolderFor(HOLDER_KEY);
         if(actionRow == null) {
             actionRow = new ToggleDeviceActionRow<>(getInflater(), layoutId);
-            holder.additionalHolders.put(ToggleDeviceActionRow.HOLDER_KEY, actionRow);
+            holder.putAdditionalHolder(HOLDER_KEY, actionRow);
         }
         actionRow.fillWith(getContext(),device, device.getAliasOrName());
-        holder.tableLayout.addView(actionRow.getView());
+        holder.getTableLayout().addView(actionRow.getView());
     }
 
     @SuppressWarnings("unchecked")
@@ -110,13 +112,13 @@ public abstract class ToggleableAdapter<D extends ToggleableDevice<D>> extends G
 
     @SuppressWarnings("unchecked")
     private <T extends ToggleableDevice<T>> void addOnOffActionRow(GenericDeviceOverviewViewHolder holder, T device, int layoutId) {
-        OnOffActionRow<T> onOffActionRow = (OnOffActionRow<T>) holder.additionalHolders.get(OnOffActionRow.HOLDER_KEY);
+        OnOffActionRow<T> onOffActionRow = holder.getAdditionalHolderFor(OnOffActionRow.HOLDER_KEY);
         if (onOffActionRow == null) {
             onOffActionRow = new OnOffActionRow<>(getInflater(), layoutId);
-            holder.additionalHolders.put(OnOffActionRow.HOLDER_KEY, onOffActionRow);
+            holder.putAdditionalHolder(OnOffActionRow.HOLDER_KEY, onOffActionRow);
         }
-        onOffActionRow.fillWith(device, holder.tableLayout.getContext());
-        holder.tableLayout.addView(onOffActionRow.getView());
+        onOffActionRow.fillWith(device, holder.getTableLayout().getContext());
+        holder.getTableLayout().addView(onOffActionRow.getView());
     }
 
     @Override
@@ -137,7 +139,7 @@ public abstract class ToggleableAdapter<D extends ToggleableDevice<D>> extends G
         if (device.isSpecialButtonDevice() && buttonHookType != TOGGLE_DEVICE) {
             addOnOffActionRow(context, device, layout, OnOffActionRow.LAYOUT_DETAIL);
         } else {
-            addToggleDeviceActionRow(context, device, layout, ToggleDeviceActionRow.LAYOUT_DETAIL);
+            addToggleDeviceActionRow(context, device, layout, LAYOUT_DETAIL);
         }
     }
 
