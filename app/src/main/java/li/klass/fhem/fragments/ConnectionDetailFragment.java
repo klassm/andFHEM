@@ -189,6 +189,11 @@ public class ConnectionDetailFragment extends BaseFragment {
             });
         }
 
+        if  (isModify) {
+            showPasswordCheckbox.setEnabled(false);
+            showCertificatePasswordCheckbox.setEnabled(false);
+        }
+
         ViewGroup connectionPreferences = (ViewGroup) getView().findViewById(R.id.connectionPreferences);
         connectionPreferences.removeAllViews();
         connectionPreferences.addView(view);
