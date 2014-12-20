@@ -72,5 +72,6 @@ public abstract class HolderActionRow<D extends Device<D>, I> {
     }
 
     public abstract List<I> getItems(D device);
+
     public abstract View viewFor(I item, D device, LayoutInflater inflater, Context context, ViewGroup viewGroup);
 }

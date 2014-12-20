@@ -26,8 +26,12 @@ package li.klass.fhem.domain.heating;
 
 public interface ComfortTempDevice {
     void setComfortTemp(double ecoTemp);
+
     Double getComfortTemp();
+
     String getComfortTempDesc();
+
     String getComfortTempCommandFieldName();
+
     String getName();
 }

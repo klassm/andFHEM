@@ -41,6 +41,7 @@ public class StackTraceUtil {
             return exceptionAsString(e);
         }
     }
+
     public static String exceptionAsString(Exception exception) {
         if (exception == null) return null;
 

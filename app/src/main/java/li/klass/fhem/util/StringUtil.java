@@ -69,7 +69,7 @@ public class StringUtil {
 
     public static String prefixPad(String toPad, String padLetter, int targetLength) {
         if (toPad == null) toPad = "";
-        while(toPad.length() < targetLength) {
+        while (toPad.length() < targetLength) {
             toPad = padLetter + toPad;
         }
 

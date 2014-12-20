@@ -27,7 +27,6 @@ package li.klass.fhem.appwidget.view.widget.base;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
 import android.widget.RemoteViews;
@@ -45,14 +44,11 @@ import li.klass.fhem.appwidget.WidgetConfiguration;
 import li.klass.fhem.appwidget.WidgetConfigurationCreatedCallback;
 import li.klass.fhem.appwidget.annotation.SupportsWidget;
 import li.klass.fhem.appwidget.view.WidgetType;
-import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.dagger.ForApplication;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.fragments.FragmentType;
 import li.klass.fhem.service.room.RoomListService;
-import li.klass.fhem.util.FhemResultReceiver;
 
 public abstract class DeviceAppWidgetView extends AppWidgetView {
 

@@ -27,14 +27,11 @@ package li.klass.fhem.appwidget.service;
 import android.app.IntentService;
 import android.appwidget.AppWidgetManager;
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
 import com.google.common.base.Optional;
-import com.google.common.base.Preconditions;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,7 +47,6 @@ import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.service.intent.RoomListIntentService;
 import li.klass.fhem.util.ApplicationProperties;
-import li.klass.fhem.util.FhemResultReceiver;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static li.klass.fhem.constants.Actions.REDRAW_ALL_WIDGETS;

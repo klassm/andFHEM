@@ -56,24 +56,24 @@ public class ConditionQueryLocaleReceiver extends BroadcastReceiver {
                 .setClass(context, RoomListIntentService.class)
                 .putExtra(BundleExtraKeys.DEVICE_NAME, deviceName)
                 .putExtra(BundleExtraKeys.RESULT_RECEIVER, new FhemResultReceiver() {
-            @Override
-            protected void onReceiveResult(int resultCode, Bundle resultData) {
-                if (resultCode != ResultCodes.SUCCESS || !resultData.containsKey(BundleExtraKeys.DEVICE)) {
-                    finishConditionIntent(RESULT_CONDITION_UNSATISFIED);
-                    return;
-                }
+                    @Override
+                    protected void onReceiveResult(int resultCode, Bundle resultData) {
+                        if (resultCode != ResultCodes.SUCCESS || !resultData.containsKey(BundleExtraKeys.DEVICE)) {
+                            finishConditionIntent(RESULT_CONDITION_UNSATISFIED);
+                            return;
+                        }
 
-                Device device = (Device) resultData.getSerializable(BundleExtraKeys.DEVICE);
-                if (device == null) {
-                    finishConditionIntent(RESULT_CONDITION_UNKNOWN);
-                } else if (device.getInternalState().equalsIgnoreCase(targetState)) {
-                    finishConditionIntent(RESULT_CONDITION_SATISFIED);
-                } else if (device.getInternalState().matches(targetState)) {
-                    finishConditionIntent(RESULT_CONDITION_SATISFIED);
-                } else {
-                    finishConditionIntent(RESULT_CONDITION_UNSATISFIED);
-                }
-            }
+                        Device device = (Device) resultData.getSerializable(BundleExtraKeys.DEVICE);
+                        if (device == null) {
+                            finishConditionIntent(RESULT_CONDITION_UNKNOWN);
+                        } else if (device.getInternalState().equalsIgnoreCase(targetState)) {
+                            finishConditionIntent(RESULT_CONDITION_SATISFIED);
+                        } else if (device.getInternalState().matches(targetState)) {
+                            finishConditionIntent(RESULT_CONDITION_SATISFIED);
+                        } else {
+                            finishConditionIntent(RESULT_CONDITION_UNSATISFIED);
+                        }
+                    }
                 }));
     }
 

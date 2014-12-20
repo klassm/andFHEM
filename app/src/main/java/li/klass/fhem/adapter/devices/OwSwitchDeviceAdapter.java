@@ -26,6 +26,7 @@ package li.klass.fhem.adapter.devices;
 
 import android.content.Context;
 import android.content.Intent;
+import android.view.LayoutInflater;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 
@@ -50,7 +51,7 @@ public class OwSwitchDeviceAdapter extends GenericDeviceAdapter<OwSwitchDevice> 
             @Override
             protected void onFieldNameAdded(Context context, TableLayout tableLayout, String field,
                                             OwSwitchDevice device, TableRow fieldTableRow) {
-                tableLayout.addView(new OwSwitchToggleRow("A") {
+                tableLayout.addView(new OwSwitchToggleRow(getInflater()) {
 
                     @Override
                     protected boolean isOn(OwSwitchDevice device) {
@@ -61,9 +62,9 @@ public class OwSwitchDeviceAdapter extends GenericDeviceAdapter<OwSwitchDevice> 
                     protected int setStateFor(OwSwitchDevice device, boolean isChecked) {
                         return device.setStateForA(isChecked);
                     }
-                }.createRow(context, getInflater(), device));
+                }.createRow(context, device, "A"));
 
-                tableLayout.addView(new OwSwitchToggleRow("B") {
+                tableLayout.addView(new OwSwitchToggleRow(getInflater()) {
 
                     @Override
                     protected boolean isOn(OwSwitchDevice device) {
@@ -74,15 +75,15 @@ public class OwSwitchDeviceAdapter extends GenericDeviceAdapter<OwSwitchDevice> 
                     protected int setStateFor(OwSwitchDevice device, boolean isChecked) {
                         return device.setStateForB(isChecked);
                     }
-                }.createRow(context, getInflater(), device));
+                }.createRow(context, device, "B"));
             }
         });
     }
 
     private abstract class OwSwitchToggleRow extends ToggleActionRow<OwSwitchDevice> {
 
-        public OwSwitchToggleRow(String desc) {
-            super(desc, ToggleActionRow.LAYOUT_DETAIL);
+        public OwSwitchToggleRow(LayoutInflater inflater) {
+            super(inflater, ToggleActionRow.LAYOUT_DETAIL);
         }
 
         @Override

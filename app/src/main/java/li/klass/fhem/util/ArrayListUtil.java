@@ -44,8 +44,10 @@ public class ArrayListUtil {
 
     public static <T> void swap(ArrayList<T> list, int firstIndex, int secondIndex) {
         Reject.ifNull(list);
-        if (! isInRange(list, firstIndex)) throw new IllegalArgumentException("firstIndex " + firstIndex + " is not in range");
-        if (! isInRange(list, secondIndex)) throw new IllegalArgumentException("secondIndex " + secondIndex + " is not in range");
+        if (!isInRange(list, firstIndex))
+            throw new IllegalArgumentException("firstIndex " + firstIndex + " is not in range");
+        if (!isInRange(list, secondIndex))
+            throw new IllegalArgumentException("secondIndex " + secondIndex + " is not in range");
 
         T firstElement = list.get(firstIndex);
         T secondElement = list.get(secondIndex);

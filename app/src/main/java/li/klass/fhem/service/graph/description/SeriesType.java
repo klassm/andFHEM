@@ -61,8 +61,7 @@ public enum SeriesType {
     AVERAGE_HOUR(Color.CYAN, R.string.average),
     AVERAGE_DAY(Color.BLUE, R.string.average),
     AVERAGE_MONTH(Color.RED, R.string.average),
-    AVERAGE_YEAR(Color.GREEN, R.string.average)
-    ;
+    AVERAGE_YEAR(Color.GREEN, R.string.average);
 
     private final int color;
     private final int yAxis;

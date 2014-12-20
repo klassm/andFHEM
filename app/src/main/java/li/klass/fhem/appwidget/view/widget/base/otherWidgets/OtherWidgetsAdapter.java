@@ -19,11 +19,11 @@ public class OtherWidgetsAdapter extends ListDataAdapter<Pair<WidgetType, String
     public OtherWidgetsAdapter(Context context) {
         super(context, R.layout.simple_list_item, Lists.<Pair<WidgetType, String>>newArrayList(),
                 new Comparator<Pair<WidgetType, String>>() {
-            @Override
-            public int compare(Pair<WidgetType, String> pair1, Pair<WidgetType, String> pair2) {
-                return pair1.getValue().compareTo(pair2.getValue());
-            }
-        });
+                    @Override
+                    public int compare(Pair<WidgetType, String> pair1, Pair<WidgetType, String> pair2) {
+                        return pair1.getValue().compareTo(pair2.getValue());
+                    }
+                });
     }
 
     @Override

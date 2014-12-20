@@ -41,11 +41,11 @@ public class RFXX10RECDevice extends Device<RFXX10RECDevice> {
     @ShowField(description = ResourceIdMapper.lastState, showInOverview = true)
     private String lastState;
 
-    public void readTIME(String value)  {
+    public void readTIME(String value) {
         setMeasured(value);
     }
 
-    public void readSTATECHANGE(String value, NamedNodeMap attributes)  {
+    public void readSTATECHANGE(String value, NamedNodeMap attributes) {
         lastStateChangeTime = attributes.getNamedItem("measured").getNodeValue();
         lastState = value;
     }

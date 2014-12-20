@@ -64,7 +64,7 @@ public class PioneerAvrDeviceAdapter extends ToggleableAdapterWithSwitchActionRo
         registerFieldListener("state", new FieldNameAddedToDetailListener<PioneerAvrDevice>() {
             @Override
             public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, PioneerAvrDevice device, TableRow fieldTableRow) {
-                tableLayout.addView(new ToggleActionRow<PioneerAvrDevice>(context, R.string.musicMute, ToggleActionRow.LAYOUT_DETAIL) {
+                tableLayout.addView(new ToggleActionRow<PioneerAvrDevice>(getInflater(), ToggleActionRow.LAYOUT_DETAIL) {
                     @Override
                     protected Optional<String> getOnStateText(Map<String, String> eventMap) {
                         return Optional.of(getContext().getString(R.string.yes));
@@ -92,7 +92,7 @@ public class PioneerAvrDeviceAdapter extends ToggleableAdapterWithSwitchActionRo
                         context.startService(intent);
                     }
                 }
-                        .createRow(context, getInflater(), device));
+                        .createRow(context, device, context.getString(R.string.musicMute)));
 
                 SetListGroupValue inputSetList = (SetListGroupValue) device.getSetList().get("input");
                 tableLayout.addView(new StateChangingSpinnerActionRow<PioneerAvrDevice>(context,

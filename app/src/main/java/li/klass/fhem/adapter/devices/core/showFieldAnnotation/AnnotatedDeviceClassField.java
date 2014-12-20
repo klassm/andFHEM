@@ -37,7 +37,7 @@ public class AnnotatedDeviceClassField extends AnnotatedDeviceClassItem {
         this.field = field;
         field.setAccessible(true);
         this.showField = field.getAnnotation(ShowField.class);
-        if(showField != null) {
+        if (showField != null) {
             this.showField = new ShowFieldCache(showField);
         }
     }
@@ -52,7 +52,7 @@ public class AnnotatedDeviceClassField extends AnnotatedDeviceClassItem {
         try {
             Object value = field.get(object);
             if (value == null) return null;
-            
+
             return String.valueOf(value);
         } catch (IllegalAccessException e) {
             // this may never happen as we set the field as being accessible!

@@ -39,6 +39,7 @@ public class InstalledApplications {
         private String packageName = "";
         private String versionName = "";
         private int versionCode = 0;
+
         public String toString() {
             return packageName + "\t" + versionName + "\t" + versionCode;
         }

@@ -142,7 +142,7 @@ public class TimePickerWithSeconds extends LinearLayout {
     }
 
     public String getFormattedValue() {
-        return  TWO_DIGIT_FORMATTER.format(getHours()) + ":" +
+        return TWO_DIGIT_FORMATTER.format(getHours()) + ":" +
                 TWO_DIGIT_FORMATTER.format(getMinutes()) + ":" +
                 TWO_DIGIT_FORMATTER.format(getSeconds());
     }

@@ -44,6 +44,7 @@ import li.klass.fhem.adapter.devices.genericui.HolderActionRow;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.LightSceneDevice;
+import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.service.intent.DeviceIntentService;
 
 import static android.widget.LinearLayout.VERTICAL;
@@ -53,11 +54,12 @@ public class LightSceneAdapter extends GenericDeviceAdapter<LightSceneDevice> {
         super(LightSceneDevice.class);
     }
 
-    @Override
-    protected void fillDeviceOverviewView(final View view, LightSceneDevice device, long lastUpdate) {
-        TableLayout layout = (TableLayout) view.findViewById(R.id.device_overview_generic);
-        layout.removeAllViews();
 
+    @Override
+    public View createOverviewView(LayoutInflater layoutInflater, View convertView, Device rawDevice, long lastUpdate) {
+        TableLayout layout = (TableLayout) layoutInflater.inflate(R.layout.device_overview_generic, null);
+        layout.removeAllViews();
+        LightSceneDevice device = (LightSceneDevice) rawDevice;
         new HolderActionRow<LightSceneDevice, String>(device.getAliasOrName(),
                 HolderActionRow.LAYOUT_OVERVIEW) {
 
@@ -72,8 +74,10 @@ public class LightSceneAdapter extends GenericDeviceAdapter<LightSceneDevice> {
                 setSceneButtonProperties(context, device, scene, button, scene);
                 return button;
             }
-        }.createRow(view.getContext(), getInflater(), layout, device);
+        }.createRow(layout.getContext(), getInflater(), layout, device);
+        return layout;
     }
+
 
     private void setSceneButtonProperties(final Context context, final LightSceneDevice device, final String scene, Button button, String buttonText) {
         button.setText(buttonText);
@@ -121,5 +125,10 @@ public class LightSceneAdapter extends GenericDeviceAdapter<LightSceneDevice> {
             }
         });
         detailActions.add(new AvailableTargetStatesSwitchActionRow<LightSceneDevice>());
+    }
+
+    @Override
+    public Class getOverviewViewHolderClass() {
+        return null;
     }
 }

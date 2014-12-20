@@ -29,7 +29,9 @@ import li.klass.fhem.util.StringUtil;
 
 public abstract class AnnotatedDeviceClassItem {
     public abstract String getName();
+
     public abstract String getValueFor(Object object);
+
     public abstract ShowField getShowFieldAnnotation();
 
     public String getShowAfterValue() {

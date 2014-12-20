@@ -26,6 +26,7 @@ package li.klass.fhem.adapter.devices.genericui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.view.LayoutInflater;
 import android.widget.ToggleButton;
 
 import li.klass.fhem.R;
@@ -39,8 +40,8 @@ public abstract class YesNoToggleDeviceActionRow<D extends ToggleableDevice<D>> 
 
     private final String commandAttribute;
 
-    public YesNoToggleDeviceActionRow(Context context, String commandAttribute, int description) {
-        super(context, description, ToggleDeviceActionRow.LAYOUT_DETAIL);
+    public YesNoToggleDeviceActionRow(LayoutInflater inflater, Context context, String commandAttribute) {
+        super(inflater, ToggleDeviceActionRow.LAYOUT_DETAIL);
         this.commandAttribute = commandAttribute;
     }
 

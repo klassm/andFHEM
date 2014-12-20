@@ -34,7 +34,7 @@ public class HM485Device extends DimmableContinuousStatesDevice<HM485Device> {
 
     @Override
     public int getPositionForDimState(String dimState) {
-        if (! dimState.matches("level_[0-9]+")) return 0;
+        if (!dimState.matches("level_[0-9]+")) return 0;
 
         return Integer.valueOf(dimState.replaceAll("level_", ""));
     }

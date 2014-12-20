@@ -43,7 +43,7 @@ public class ReadingsProxyDevice extends DimmableContinuousStatesDevice<Readings
     }
 
     private String getRgb() {
-        if (! getSetList().contains("rgb")) return null;
+        if (!getSetList().contains("rgb")) return null;
         String state = getInternalState();
         if (!state.startsWith("rgb")) return null;
 

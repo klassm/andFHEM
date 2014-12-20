@@ -33,10 +33,11 @@ import android.widget.BaseAdapter;
 
 import com.google.common.collect.Maps;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import static com.google.common.collect.Lists.newArrayList;
 
 public abstract class GridViewWithSectionsAdapter<P, C> extends BaseAdapter {
 
@@ -50,7 +51,7 @@ public abstract class GridViewWithSectionsAdapter<P, C> extends BaseAdapter {
     private int currentRowIndex;
     private int currentRowParentIndex;
     private int currentRowHeight;
-    private List<View> currentRowViews = new ArrayList<View>();
+    private List<View> currentRowViews = newArrayList();
     private int numberOfColumns = -1;
 
     public GridViewWithSectionsAdapter(Context context) {
@@ -124,6 +125,7 @@ public abstract class GridViewWithSectionsAdapter<P, C> extends BaseAdapter {
         return i;
     }
 
+
     @Override
     public View getView(int flatPosition, View view, ViewGroup viewGroup) {
         Log.v(TAG, "drawing flatPosition " + flatPosition + "/" + totalNumberOfItems);
@@ -141,7 +143,9 @@ public abstract class GridViewWithSectionsAdapter<P, C> extends BaseAdapter {
                 C child = getChildForParentAndChildPosition(parent, relativeChildPosition);
 
                 View childView = getChildView(parent, parentPosition, child, view, viewGroup);
-                updateChildrenRowHeight(getNumberOfColumns(), parentPosition, relativeChildPosition, childView);
+                if (getNumberOfColumns() > 1) {
+                    updateChildrenRowHeight(getNumberOfColumns(), parentPosition, relativeChildPosition, childView);
+                }
 
                 return childView;
             }
@@ -157,7 +161,6 @@ public abstract class GridViewWithSectionsAdapter<P, C> extends BaseAdapter {
             currentRowViews.clear();
             currentRowHeight = 0;
         }
-
         int widthMeasureSpec = View.MeasureSpec.makeMeasureSpec(500, View.MeasureSpec.EXACTLY);
         int heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
         childView.measure(widthMeasureSpec, heightMeasureSpec);

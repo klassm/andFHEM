@@ -30,6 +30,7 @@ import java.util.Map;
 public class StringEscapeUtil {
 
     private static Map<String, String> replacements = new LinkedHashMap<>(7);
+
     static {
         replacements.put("\u00c3\u00bc", "ü");
         replacements.put("\u00c3\u00a4", "ä");
@@ -41,7 +42,7 @@ public class StringEscapeUtil {
     }
 
     public static String unescape(String content) {
-        content = replaceFromMap(content,replacements);
+        content = replaceFromMap(content, replacements);
         return content.trim();
     }
 

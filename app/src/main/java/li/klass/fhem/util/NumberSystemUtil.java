@@ -29,7 +29,7 @@ import java.util.Locale;
 public class NumberSystemUtil {
     public static String hexToQuaternary(String input, int padding) {
         input = input.toUpperCase(Locale.getDefault());
-        if (! validateHex(input)) throw new IllegalArgumentException("hex may only contain 0-9A-F");
+        if (!validateHex(input)) throw new IllegalArgumentException("hex may only contain 0-9A-F");
 
         int totalDecimal = toDecimal(input, 16);
         String result = toNumberSystem(totalDecimal, 4);
@@ -43,7 +43,7 @@ public class NumberSystemUtil {
     private static boolean validateHex(String input) {
         for (int i = 0; i < input.length(); i++) {
             char c = input.charAt(i);
-            if (! (c >= '0' && c <= '9' || c >= 'A' && c <= 'F')) {
+            if (!(c >= '0' && c <= '9' || c >= 'A' && c <= 'F')) {
                 return false;
             }
         }
@@ -52,7 +52,8 @@ public class NumberSystemUtil {
     }
 
     public static String quaternaryToHex(String input) {
-        if (! validateQuaternary(input)) throw new IllegalArgumentException("quaternary may only contain 0-3");
+        if (!validateQuaternary(input))
+            throw new IllegalArgumentException("quaternary may only contain 0-3");
 
         int totalDecimal = toDecimal(input, 4);
         return toNumberSystem(totalDecimal, 16);
@@ -77,7 +78,7 @@ public class NumberSystemUtil {
     private static boolean validateQuaternary(String input) {
         for (int i = 0; i < input.length(); i++) {
             char c = input.charAt(i);
-            if (! (c >= '0' && c <= '3')) {
+            if (!(c >= '0' && c <= '3')) {
                 return false;
             }
         }

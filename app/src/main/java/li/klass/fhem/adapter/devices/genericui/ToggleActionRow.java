@@ -43,29 +43,31 @@ public abstract class ToggleActionRow<D extends Device> {
 
     public static final int LAYOUT_DETAIL = R.layout.device_detail_togglebuttonrow;
     public static final int LAYOUT_OVERVIEW = R.layout.device_overview_togglebuttonrow;
-    private String description;
-    private int layout;
+    private TableRow tableRow;
+    private TextView descriptionView;
+    private ToggleButton toggleButton;
 
-    public ToggleActionRow(Context context, int description, int layout) {
-        this(context.getString(description), layout);
+    public ToggleActionRow(LayoutInflater inflater, int layout) {
+        tableRow = (TableRow) inflater.inflate(layout, null);
+        assert tableRow != null;
+        descriptionView = (TextView) tableRow.findViewById(R.id.description);
+        toggleButton = (ToggleButton) tableRow.findViewById(R.id.toggleButton);
     }
 
-    public ToggleActionRow(String description, int layout) {
-        this.description = description;
-        this.layout = layout;
+    public TableRow getView() {
+        return tableRow;
     }
 
-    public TableRow createRow(Context context, LayoutInflater inflater, D device) {
-        TableRow row = (TableRow) inflater.inflate(layout, null);
-        assert row != null;
+    public TableRow createRow(Context context, D device, String description) {
+        fillWith(context, device, description);
+        return tableRow;
+    }
 
-        ((TextView) row.findViewById(R.id.description)).setText(description);
-        ToggleButton button = (ToggleButton) row.findViewById(R.id.toggleButton);
-        button.setOnClickListener(createListener(context, device, button));
-        setToogleButtonText(device, button, context);
-        button.setChecked(isOn(device));
-
-        return row;
+    public void fillWith(Context context, D device, String description) {
+        descriptionView.setText(description);
+        toggleButton.setOnClickListener(createListener(context, device, toggleButton));
+        setToogleButtonText(device, toggleButton, context);
+        toggleButton.setChecked(isOn(device));
     }
 
     private ToggleButton.OnClickListener createListener(final Context context, final D device, final ToggleButton button) {

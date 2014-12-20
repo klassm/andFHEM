@@ -131,7 +131,7 @@ public class ValueDescriptionUtil {
     }
 
     private static String appendToString(String string, String toAppend) {
-        if (! StringUtil.isBlank(string)) {
+        if (!StringUtil.isBlank(string)) {
             string += " ";
         }
 

@@ -7,13 +7,10 @@ import android.os.SystemClock;
 import android.widget.RemoteViews;
 
 import li.klass.fhem.R;
-import li.klass.fhem.activities.AndFHEMMainActivity;
 import li.klass.fhem.appwidget.WidgetConfiguration;
 import li.klass.fhem.appwidget.WidgetConfigurationCreatedCallback;
 import li.klass.fhem.appwidget.view.WidgetType;
 import li.klass.fhem.appwidget.view.widget.base.OtherAppWidgetView;
-import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.fragments.FragmentType;
 
 import static li.klass.fhem.constants.Actions.WIDGET_REQUEST_UPDATE;
 

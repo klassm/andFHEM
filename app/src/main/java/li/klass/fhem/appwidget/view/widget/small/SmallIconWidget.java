@@ -14,7 +14,6 @@ import li.klass.fhem.appwidget.view.WidgetType;
 import li.klass.fhem.appwidget.view.widget.base.OtherAppWidgetView;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.fragments.FragmentType;
-import li.klass.fhem.fragments.core.DeviceDetailFragment;
 
 public abstract class SmallIconWidget extends OtherAppWidgetView {
     @Override

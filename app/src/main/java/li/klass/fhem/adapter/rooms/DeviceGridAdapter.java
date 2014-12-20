@@ -62,10 +62,20 @@ public class DeviceGridAdapter<T extends Device<T>> extends GridViewWithSections
     private List<String> parents = newArrayList();
     private Set<String> hiddenParents = newHashSet();
     private Map<String, List<T>> parentChildMap = newHashMap();
+    private Map<Class, Integer> viewTypeMap = newHashMap();
     private long lastUpdate;
 
     public DeviceGridAdapter(Context context, RoomDeviceList roomDeviceList, ApplicationProperties applicationProperties) {
         super(context);
+        int currentViewType = 1;
+        for (DeviceType type : DeviceType.values()) {
+            if (type.getAdapter() != null && type.getAdapter().getOverviewViewHolderClass() != null) {
+                Class viewTypeHolderClass = type.getAdapter().getOverviewViewHolderClass();
+                if (!viewTypeMap.containsKey(viewTypeHolderClass)) {
+                    viewTypeMap.put(viewTypeHolderClass, currentViewType++);
+                }
+            }
+        }
         this.applicationProperties = applicationProperties;
         restoreParents();
         if (roomDeviceList != null) {
@@ -150,11 +160,17 @@ public class DeviceGridAdapter<T extends Device<T>> extends GridViewWithSections
 
     @Override
     protected View getParentView(String parent, int parentOffset, View view, ViewGroup viewGroup) {
-        view = layoutInflater.inflate(R.layout.room_detail_parent, viewGroup, false);
+        if (view == null) {
+            view = layoutInflater.inflate(R.layout.room_detail_parent, viewGroup, false);
 
-        assert view != null;
+            assert view != null;
 
-        TextView textView = (TextView) view.findViewById(R.id.deviceType);
+            ParentViewHolder viewHolder = new ParentViewHolder();
+            viewHolder.setDeviceType((TextView) view.findViewById(R.id.deviceType));
+            view.setTag(viewHolder);
+        }
+        ParentViewHolder holder = (ParentViewHolder) view.getTag();
+        TextView textView = holder.getDeviceType();
         if (parentOffset != 0) {
             textView.setText("");
         } else {
@@ -172,6 +188,25 @@ public class DeviceGridAdapter<T extends Device<T>> extends GridViewWithSections
         view.setLayoutParams(new AbsListView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, lastParentHeight));
 
         return view;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        int parentBasePosition = getParentBasePosition(position);
+        if (parentBasePosition != -1) {
+            return 0;
+        } else {
+            DeviceAdapter adapter = DeviceType.getAdapterFor((Device) getItem(position));
+            if (adapter != null && adapter.getOverviewViewHolderClass() != null) {
+                return viewTypeMap.get(adapter.getOverviewViewHolderClass());
+            }
+        }
+        return IGNORE_ITEM_VIEW_TYPE;
+    }
+
+    @Override
+    public int getViewTypeCount() {
+        return viewTypeMap.size() + 1;
     }
 
     @Override
@@ -199,8 +234,8 @@ public class DeviceGridAdapter<T extends Device<T>> extends GridViewWithSections
 
         deviceAdapter.attach(context);
 
-        view = deviceAdapter.createOverviewView(layoutInflater, child, lastUpdate);
-        view.setTag(child);
+        view = deviceAdapter.createOverviewView(layoutInflater, view, child, lastUpdate);
+        //view.setTag(child);
         view.setLayoutParams(new AbsListView.LayoutParams(
                         ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
         );

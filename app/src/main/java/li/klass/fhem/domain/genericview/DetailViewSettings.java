@@ -31,8 +31,11 @@ import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 
 @Retention(RetentionPolicy.RUNTIME)
 public @interface DetailViewSettings {
-	boolean showState() default true;
-	boolean showMeasured() default true;
-	ResourceIdMapper stateStringId() default ResourceIdMapper.state;
-	ResourceIdMapper measuredStringId() default ResourceIdMapper.measured;
+    boolean showState() default true;
+
+    boolean showMeasured() default true;
+
+    ResourceIdMapper stateStringId() default ResourceIdMapper.state;
+
+    ResourceIdMapper measuredStringId() default ResourceIdMapper.measured;
 }

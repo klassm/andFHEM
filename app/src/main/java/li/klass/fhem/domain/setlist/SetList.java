@@ -36,7 +36,7 @@ import java.util.Map;
 import static com.google.common.collect.Lists.newArrayList;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 
-public class SetList implements Serializable  {
+public class SetList implements Serializable {
     private Map<String, SetListValue> entries = Maps.newHashMap();
 
     public void parse(String text) {
@@ -54,7 +54,7 @@ public class SetList implements Serializable  {
         if (part.matches("[^:]+:noArg$")) {
             part = part.replaceAll(":noArg$", "");
         }
-        if (! part.contains(":")) {
+        if (!part.contains(":")) {
             entries.put(part, SetListEmptyValue.INSTANCE);
             return;
         }
@@ -91,11 +91,11 @@ public class SetList implements Serializable  {
         return entries.get(key);
     }
 
-    public boolean contains(String ... keys) {
+    public boolean contains(String... keys) {
         if (keys == null) return false;
 
         for (String key : keys) {
-            if (! entries.containsKey(key)) {
+            if (!entries.containsKey(key)) {
                 return false;
             }
         }

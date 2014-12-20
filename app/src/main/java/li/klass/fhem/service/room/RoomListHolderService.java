@@ -129,9 +129,9 @@ public class RoomListHolderService {
      */
     @SuppressWarnings("unchecked")
     RoomDeviceList getCachedRoomDeviceListMap() {
-        if(cachedRoomList == null && !fileStoreNotFilled) {
+        if (cachedRoomList == null && !fileStoreNotFilled) {
             synchronized (this) {
-                if(cachedRoomList == null&& !fileStoreNotFilled) {
+                if (cachedRoomList == null && !fileStoreNotFilled) {
                     ObjectInputStream objectInputStream = null;
                     try {
                         LOG.info("getCachedRoomDeviceListMap() : fetching device list from cache");

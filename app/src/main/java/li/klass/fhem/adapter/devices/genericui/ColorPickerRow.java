@@ -65,7 +65,6 @@ public class ColorPickerRow implements ColorPickerListener {
         description.setText("");
 
 
-
         setButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -80,7 +79,7 @@ public class ColorPickerRow implements ColorPickerListener {
                 picker.setListener(new ColorPickerListener() {
                     @Override
                     public void onColorChange(int color) {
-                        if (! sendEachChangeCheckbox.isChecked()) return;
+                        if (!sendEachChangeCheckbox.isChecked()) return;
 
                         // remove alpha channel first!
                         ColorPickerRow.this.onColorChange(color & 0x00FFFFFF);

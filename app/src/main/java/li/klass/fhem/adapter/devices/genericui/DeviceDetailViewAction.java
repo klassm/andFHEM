@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
+
 import li.klass.fhem.domain.core.Device;
 
 public abstract class DeviceDetailViewAction<D extends Device> {

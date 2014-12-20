@@ -24,9 +24,7 @@
 
 package li.klass.fhem.adapter.devices.genericui;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,14 +33,9 @@ import android.widget.ToggleButton;
 import java.util.List;
 
 import li.klass.fhem.R;
-import li.klass.fhem.adapter.devices.core.UpdatingResultReceiver;
-import li.klass.fhem.constants.Actions;
-import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.core.Device;
-import li.klass.fhem.service.intent.DeviceIntentService;
 
 import static li.klass.fhem.adapter.devices.genericui.AvailableTargetStatesDialogUtil.STATE_SENDING_CALLBACK;
-import static li.klass.fhem.adapter.devices.genericui.AvailableTargetStatesDialogUtil.TypeHandler;
 import static li.klass.fhem.adapter.devices.genericui.AvailableTargetStatesDialogUtil.handleSelectedOption;
 
 public class WebCmdActionRow<D extends Device<D>> extends HolderActionRow<D, String> {

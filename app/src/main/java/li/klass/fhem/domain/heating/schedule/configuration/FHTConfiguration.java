@@ -24,16 +24,16 @@
 
 package li.klass.fhem.domain.heating.schedule.configuration;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import li.klass.fhem.domain.FHTDevice;
 import li.klass.fhem.domain.heating.schedule.DayProfile;
 import li.klass.fhem.domain.heating.schedule.WeekProfile;
 import li.klass.fhem.domain.heating.schedule.interval.FromToHeatingInterval;
 import li.klass.fhem.util.DayUtil;
 import li.klass.fhem.util.Reject;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 public class FHTConfiguration extends HeatingConfiguration<FromToHeatingInterval, FHTDevice, FHTConfiguration> {
     public static final String OFF_TIME = "00:00";

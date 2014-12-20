@@ -65,7 +65,7 @@ public abstract class DimmableDevice<D extends Device<D>> extends ToggleableDevi
 
     @Override
     public String formatStateTextToSet(String stateToSet) {
-        if (! supportsDim()) return super.formatStateTextToSet(stateToSet);
+        if (!supportsDim()) return super.formatStateTextToSet(stateToSet);
 
         int position = getPositionForDimStateInternal(stateToSet);
         if (position == getDimUpperBound()) {

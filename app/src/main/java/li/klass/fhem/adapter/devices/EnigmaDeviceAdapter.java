@@ -44,7 +44,6 @@ import li.klass.fhem.adapter.devices.genericui.ToggleActionRow;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.EnigmaDevice;
-import li.klass.fhem.domain.OnkyoAvrDevice;
 import li.klass.fhem.domain.setlist.SetListGroupValue;
 import li.klass.fhem.domain.setlist.SetListSliderValue;
 import li.klass.fhem.service.intent.DeviceIntentService;
@@ -65,7 +64,7 @@ public class EnigmaDeviceAdapter extends ToggleableAdapterWithSwitchActionRow<En
         registerFieldListener("state", new FieldNameAddedToDetailListener<EnigmaDevice>() {
             @Override
             public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, EnigmaDevice device, TableRow fieldTableRow) {
-                tableLayout.addView(new ToggleActionRow<EnigmaDevice>(context, R.string.musicMute, ToggleActionRow.LAYOUT_DETAIL) {
+                tableLayout.addView(new ToggleActionRow<EnigmaDevice>(getInflater(), ToggleActionRow.LAYOUT_DETAIL) {
                     @Override
                     protected Optional<String> getOnStateText(Map<String, String> eventMap) {
                         return Optional.of(getContext().getString(R.string.yes));
@@ -93,7 +92,7 @@ public class EnigmaDeviceAdapter extends ToggleableAdapterWithSwitchActionRow<En
                         context.startService(intent);
                     }
                 }
-                        .createRow(context, getInflater(), device));
+                        .createRow(context, device, context.getString(R.string.musicMute)));
 
                 SetListGroupValue inputSetList = (SetListGroupValue) device.getSetList().get("input");
                 tableLayout.addView(new StateChangingSpinnerActionRow<EnigmaDevice>(context,

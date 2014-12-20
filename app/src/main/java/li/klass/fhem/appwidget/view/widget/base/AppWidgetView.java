@@ -27,7 +27,6 @@ package li.klass.fhem.appwidget.view.widget.base;
 import android.app.Application;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
 
@@ -39,8 +38,6 @@ import li.klass.fhem.appwidget.WidgetConfiguration;
 import li.klass.fhem.appwidget.WidgetConfigurationCreatedCallback;
 import li.klass.fhem.appwidget.view.WidgetType;
 import li.klass.fhem.util.ImageUtil;
-
-import static com.google.common.base.Preconditions.checkNotNull;
 
 public abstract class AppWidgetView {
 

@@ -26,8 +26,12 @@ package li.klass.fhem.domain.heating;
 
 public interface WindowOpenTempDevice {
     void setWindowOpenTemp(double windowOpenTemp);
+
     Double getWindowOpenTemp();
+
     String getWindowOpenTempDesc();
+
     String getWindowOpenTempCommandFieldName();
+
     String getName();
 }

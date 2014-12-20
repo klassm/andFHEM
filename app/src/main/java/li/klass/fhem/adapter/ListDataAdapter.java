@@ -112,7 +112,7 @@ public class ListDataAdapter<T extends Comparable<T>> extends BaseAdapter {
     }
 
     private void sortData() {
-        if (! doSort()) return;
+        if (!doSort()) return;
 
         if (data == null || data.size() == 0) return;
         if (comparator != null) {

@@ -26,7 +26,6 @@ package li.klass.fhem.adapter.rooms;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -80,7 +79,7 @@ public class RoomListAdapter extends ListDataAdapter<String> {
 
         SharedPreferences preferences = getDefaultSharedPreferences(context);
         boolean showHiddenDevices = preferences.getBoolean(SHOW_HIDDEN_DEVICES, false);
-        if (! showHiddenDevices) {
+        if (!showHiddenDevices) {
             for (String roomName : newArrayList(newData)) {
                 if (roomName.equalsIgnoreCase("hidden")) {
                     newData.remove(roomName);

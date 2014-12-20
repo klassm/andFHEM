@@ -40,34 +40,31 @@ import li.klass.fhem.service.intent.DeviceIntentService;
 
 public class DimActionRow<D extends DimmableDevice<D>> {
     private TextView updateView;
-    private String description;
-    private int layout;
+    private TextView description;
 
     public static final int LAYOUT_OVERVIEW = R.layout.device_overview_seekbarrow;
+    public static final String HOLDER_KEY = "DimActionRow";
+    private SeekBar seekBar;
+    private TableRow tableRow;
 
-    public DimActionRow(String description, int layout) {
-        this(description, layout, null);
+    public DimActionRow(LayoutInflater inflater) {
+        tableRow = (TableRow) inflater.inflate(LAYOUT_OVERVIEW, null);
+        description = (TextView) tableRow.findViewById(R.id.description);
+        seekBar = (SeekBar) tableRow.findViewById(R.id.seekBar);
     }
 
-    public DimActionRow(String description, int layout, TableRow updateRow) {
-        this.description = description;
-        this.layout = layout;
-
-        if (updateRow != null) {
-            updateView = (TextView) updateRow.findViewById(R.id.value);
-        }
+    public TableRow getView() {
+        return tableRow;
     }
 
-    public TableRow createRow(LayoutInflater inflater, D device) {
-        TableRow row = (TableRow) inflater.inflate(layout, null);
-        ((TextView) row.findViewById(R.id.description)).setText(description);
-
-        SeekBar seekBar = (SeekBar) row.findViewById(R.id.seekBar);
+    public void fillWith(final D device, TableRow updateRow) {
         seekBar.setOnSeekBarChangeListener(createListener(device));
         seekBar.setMax(device.getDimUpperBound());
         seekBar.setProgress(device.getDimPosition());
-
-        return row;
+        description.setText(device.getAliasOrName());
+        if (updateRow != null) {
+            updateView = (TextView) updateRow.findViewById(R.id.value);
+        }
     }
 
     private SeekBar.OnSeekBarChangeListener createListener(final D device) {

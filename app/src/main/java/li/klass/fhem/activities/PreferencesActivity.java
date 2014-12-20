@@ -113,7 +113,7 @@ public class PreferencesActivity extends PreferenceActivity
             public boolean onPreferenceClick(Preference preference) {
                 MemorizingTrustManager mtm = new MemorizingTrustManager(AndFHEMApplication.getContext());
                 Enumeration<String> aliases = mtm.getCertificates();
-                while(aliases.hasMoreElements()) {
+                while (aliases.hasMoreElements()) {
                     String alias = aliases.nextElement();
                     try {
                         mtm.deleteCertificate(alias);

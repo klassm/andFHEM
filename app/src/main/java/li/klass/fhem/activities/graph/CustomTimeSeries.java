@@ -1,10 +1,12 @@
 package li.klass.fhem.activities.graph;
 
 import android.util.Log;
-import li.klass.fhem.util.ReflectionUtil;
+
 import org.achartengine.model.TimeSeries;
 
 import java.lang.reflect.Field;
+
+import li.klass.fhem.util.ReflectionUtil;
 
 public class CustomTimeSeries extends TimeSeries {
 
