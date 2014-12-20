@@ -27,13 +27,19 @@ package li.klass.fhem.adapter.devices.core.showFieldAnnotation;
 import java.lang.reflect.Field;
 
 import li.klass.fhem.domain.genericview.ShowField;
+import li.klass.fhem.domain.genericview.ShowFieldCache;
 
 public class AnnotatedDeviceClassField extends AnnotatedDeviceClassItem {
-    public final Field field;
+    protected final Field field;
+    private ShowField showField;
 
     public AnnotatedDeviceClassField(Field field) {
         this.field = field;
         field.setAccessible(true);
+        this.showField = field.getAnnotation(ShowField.class);
+        if(showField != null) {
+            this.showField = new ShowFieldCache(showField);
+        }
     }
 
     @Override
@@ -56,7 +62,6 @@ public class AnnotatedDeviceClassField extends AnnotatedDeviceClassItem {
 
     @Override
     public ShowField getShowFieldAnnotation() {
-        if (! field.isAnnotationPresent(ShowField.class)) return null;
-        return field.getAnnotation(ShowField.class);
+        return showField;
     }
 }

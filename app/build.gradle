@@ -41,7 +41,7 @@ buildscript {
         classpath 'javax.mail:mail:1.4.7'
         classpath 'com.google.oauth-client:google-oauth-client:1.17.0-rc'
 
-        classpath 'com.github.jcandksolutions.gradle:android-unit-test:2.0.+'
+        classpath 'com.github.jcandksolutions.gradle:android-unit-test:2.0.2'
     }
 }
 
@@ -140,6 +140,7 @@ dependencies {
     compile 'org.achartengine:achartengine:1.2.0'
     compile 'org.apache.commons:commons-lang3:3.3.2'
     compile 'com.squareup.dagger:dagger-compiler:1.2.2'
+    compile 'com.squareup.dagger:dagger:1.2.2'
     compile 'joda-time:joda-time:2.4'
     //noinspection GradleDependency
     compile 'com.intellij:annotations:12.+@jar'
@@ -149,23 +150,12 @@ dependencies {
 
     testCompile 'org.hamcrest:hamcrest-all:1.3'
     testCompile 'junit:junit:4.11'
-    testCompile 'org.robolectric:robolectric:2.3'
+    testCompile 'org.robolectric:robolectric:2.4'
     testCompile('com.squareup:fest-android:1.0.+') {
         exclude group: 'com.android.support', module: 'support-v4'
     }
     testCompile 'org.mockito:mockito-core:1.9.5'
     testCompile 'com.tngtech.java:junit-dataprovider:1.9.2'
-}
-
-// Compile test classes when compiling classes in general
-// Leads to compiled test classes in android studio
-tasks.findByName("assembleDebug").dependsOn("testDebugClasses")
-
-//Copy test resources to classpath folder. See https://code.google.com/p/android/issues/detail?id=74443
-tasks.findByName("assembleDebug").dependsOn("copyTestResources")
-task copyTestResources(type: Copy) {
-    from "${projectDir}/src/testDebug/resources"
-    into "${buildDir}/test-classes/debug/resources"
 }
 
 task readSigningPasswordsFromConsole(
@@ -293,6 +283,8 @@ def updateGoogleSitesAPK(service) {
  * Javadoc
  *********************************** */
 
+task prepareAndroidStudioTests {}
+
 android.applicationVariants.all { variant ->
     task("javadoc${variant.name}", type: Javadoc) {
         description "Generates Javadoc for $variant.name."
@@ -302,4 +294,20 @@ android.applicationVariants.all { variant ->
         options.links("http://docs.oracle.com/javase/7/docs/api/");
         options.links("http://d.android.com/reference/");
     }
+
+    //This helps to run the unit tests in Anroid studio. Just call prepareAndroidStudioTests before the unit test
+    if(variant.buildType.name.equals("debug")) {
+        task("copyAndroidStudio${variant.name.capitalize()}TestResources",type: Copy) {
+                from "${projectDir}/src/test/resources"
+                into "${buildDir}/test-classes/${variant.productFlavors[0].name}/${variant.buildType.name}"
+        }
+        task("prepareAndroidStudio${variant.name.capitalize()}Tests") {
+            dependsOn("test${variant.name.capitalize()}Classes")
+            dependsOn("copy${variant.name.capitalize()}TestResources")
+            dependsOn("copyAndroidStudio${variant.name.capitalize()}TestResources")
+        }
+        tasks["prepareAndroidStudioTests"].dependsOn("prepareAndroidStudio${variant.name.capitalize()}Tests")
+    }
+
 }
+
