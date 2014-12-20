@@ -24,170 +24,128 @@
   ~   Boston, MA  02110-1301  USA
   -->
 
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
              android:stretchColumns="*">
 
-    <TableRow>
+    <TextView
+        android:id="@+id/urlLabel"
+        style="@style/formLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/connectionURL" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/connectionURL"
-            android:textStyle="bold"/>
+    <EditText
+        android:id="@+id/url"
+        android:layout_width="match_parent"
+        style="@style/formInput"
+        android:layout_below="@+id/urlLabel"
+        android:hint="@string/connectionURLDesc"
+        android:inputType="textUri"/>
 
-        <EditText
-            android:id="@+id/url"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textUri"/>
-    </TableRow>
+    <TextView
+        android:id="@+id/usernameLabel"
+        style="@style/formLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/url"
+        android:text="@string/connectionUsername"/>
 
-    <TableRow>
+    <EditText
+        android:id="@+id/username"
+        android:layout_width="match_parent"
+        style="@style/formInput"
+        android:inputType="text"
+        android:layout_below="@id/usernameLabel"
+        android:hint="@string/connectionUsernameDesc"/>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_span="2"
-            android:text="@string/connectionURLDesc"/>
-    </TableRow>
+    <TextView
+        android:id="@+id/passwordLabel"
+        style="@style/formLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/connectionPassword"
+        android:layout_below="@id/username"/>
 
-    <TableRow android:layout_marginTop="8dp">
+    <EditText
+        android:id="@+id/password"
+        android:layout_width="fill_parent"
+        style="@style/formInput"
+        android:layout_below="@id/passwordLabel"
+        android:inputType="textPassword"
+        android:layout_toLeftOf="@+id/showPasswordCheckbox"
+        android:layout_toStartOf="@+id/showPasswordCheckbox"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:hint="@string/connectionPasswordDesc"/>
+    <CheckBox
+        android:id="@+id/showPasswordCheckbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/passwordLabel"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:text="@string/connectionShowPassword"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/connectionUsername"
-            android:textStyle="bold"/>
+    <TextView
+        android:id="@+id/clientCertificatePathLabel"
+        style="@style/formLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/password"
+        android:text="@string/connectionClientCertificate" />
 
-        <EditText
-            android:id="@+id/username"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="text"/>
-    </TableRow>
+    <EditText
+        android:id="@+id/clientCertificatePath"
+        android:layout_width="fill_parent"
+        style="@style/formInput"
+        android:layout_below="@+id/clientCertificatePathLabel"
+        android:layout_toLeftOf="@+id/setClientCertificatePath"
+        android:layout_toStartOf="@+id/setClientCertificatePath"
+        android:ellipsize="start"
+        android:singleLine="true"
+        android:hint="@string/connectionClientCertificateDesc"/>
 
-    <TableRow>
+    <ImageButton
+        android:id="@+id/setClientCertificatePath"
+        style="@style/button"
+        android:layout_width="@dimen/abc_action_button_min_width_material"
+        android:layout_height="@dimen/abc_action_button_min_width_material"
+        android:src="@drawable/ic_action_search"
+        android:text="@string/change"
+        android:layout_above="@+id/clientCertificatePasswordLabel"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:contentDescription="@string/connectionClientCertificateDesc"/>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_span="2"
-            android:text="@string/connectionUsernameDesc"/>
-    </TableRow>
+    <TextView
+        android:id="@+id/clientCertificatePasswordLabel"
+        style="@style/formLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/clientCertificatePath"
+        android:text="@string/connectionClientCertificatePassword" />
 
-    <TableRow android:layout_marginTop="8dp">
+    <EditText
+        android:id="@+id/clientCertificatePassword"
+        style="@style/formInput"
+        android:layout_width="fill_parent"
+        android:layout_below="@+id/clientCertificatePasswordLabel"
+        android:layout_toLeftOf="@+id/showCertificatePasswordCheckbox"
+        android:layout_toStartOf="@+id/showCertificatePasswordCheckbox"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:inputType="textPassword"
+        android:hint="@string/connectionClientCertificatePasswordDesc"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/connectionPassword"
-            android:textStyle="bold"/>
+    <CheckBox
+        android:id="@+id/showCertificatePasswordCheckbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/clientCertificatePasswordLabel"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:text="@string/connectionShowPassword"/>
 
-        <EditText
-            android:id="@+id/password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textPassword"/>
-    </TableRow>
-
-    <TableRow>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/connectionPasswordDesc"/>
-
-        <CheckBox
-            android:id="@+id/showPasswordCheckbox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/connectionShowPassword"/>
-    </TableRow>
-
-    <TableRow android:layout_marginTop="15dp">
-
-        <CheckBox
-            android:id="@+id/enableCertificateAuthentication"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_span="2"
-            android:text="@string/connectionCertificateAuthentication"
-            android:textSize="14sp"
-            android:textStyle="bold"/>
-    </TableRow>
-
-    <TableRow>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/connectionClientCertificate"
-            android:textStyle="bold"/>
-
-        <LinearLayout
-            android:layout_gravity="end|center_vertical"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/clientCertificatePath"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ellipsize="start"
-                android:maxWidth="130dp"
-                android:singleLine="true"/>
-
-            <Button
-                android:id="@+id/setClientCertificatePath"
-                style="@style/button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/change"/>
-        </LinearLayout>
-    </TableRow>
-
-    <TableRow android:layout_marginTop="8dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/connectionClientCertificatePassword"
-            android:textStyle="bold"/>
-
-        <EditText
-            android:id="@+id/clientCertificatePassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textPassword"/>
-    </TableRow>
-
-    <TableRow>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/connectionServerCertificate"
-            android:textStyle="bold"/>
-
-        <LinearLayout
-            android:layout_gravity="end|center_vertical"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/serverCertificatePath"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ellipsize="start"
-                android:maxWidth="130dp"
-                android:singleLine="true"/>
-
-            <Button
-                android:id="@+id/setServerCertificatePath"
-                style="@style/button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/change"/>
-        </LinearLayout>
-    </TableRow>
-</TableLayout>
+</RelativeLayout>

@@ -127,8 +127,8 @@
     <style name="fragmentContent">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:paddingLeft">6dp</item>
-        <item name="android:paddingRight">6dp</item>
+        <item name="android:paddingLeft">8dp</item>
+        <item name="android:paddingRight">8dp</item>
     </style>
 
     <style name="text" parent="@android:style/TextAppearance.Small">
@@ -290,5 +290,16 @@
 
     <style name="timerDetail" parent="fragmentContent">
         <item name="android:paddingTop">5dp</item>
+    </style>
+
+    <style name="formLabel">
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/accent</item>
+    </style>
+
+    <style name="formInput">
+        <item name="android:layout_height">wrap_content</item>
+
     </style>
 </resources>

@@ -248,7 +248,7 @@
     <string name="connectionUsernameDesc">(optional)</string>
     <string name="connectionPassword">Password</string>
     <string name="connectionPasswordDesc">(optional)</string>
-    <string name="connectionShowPassword">Show password</string>
+    <string name="connectionShowPassword">Show</string>
     <string name="connectionURL">URL</string>
     <string name="connectionURLDesc">i.e. http://192.168.0.1:8083/fhem</string>
     <string name="connectionIP">IP</string>
@@ -259,9 +259,9 @@
     <string name="connectionUrlHttp">URL must start with "http"!</string>
     <string name="connectionCurrent">Current connection</string>
     <string name="connectionClientCertificate">Client certificate</string>
-    <string name="connectionClientCertificatePassword">Client password</string>
-    <string name="connectionServerCertificate">Server certificate</string>
-    <string name="connectionCertificateAuthentication">Certificate authentication (optional)</string>
+    <string name="connectionClientCertificateDesc">(optional)</string>
+    <string name="connectionClientCertificatePassword">Client Certificate password</string>
+    <string name="connectionClientCertificatePasswordDesc">(optional)</string>
 
     <string name="switchDevice">Switch</string>
     <string name="preferences">Preferences</string>
@@ -325,6 +325,9 @@
     <string name="prefDeviceNameSummary">If a FHEMWEB device name matches this value, the respective FHEMWEB device will be preferred. This can be used to hide or sort rooms for specific devices.</string>
     <string name="prefApplicationPassword">Password</string>
     <string name="prefApplicationPasswordSummary">Password which will be asked upon application start.</string>
+    <string name="prefClearTrustedCertificates">Clear trusted certificates</string>
+    <string name="prefClearTrustedCertificatesSummary">Remove all manually trusted certificates from the application trust store</string>
+    <string name="prefClearTrustedCertificatesFinished">Certificates removed</string>
 
     <string name="error_update">Error while updating.</string>
     <string name="error_timeout">Connection timed out.</string>

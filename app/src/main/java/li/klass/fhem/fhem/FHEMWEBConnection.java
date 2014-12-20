@@ -26,51 +26,48 @@ package li.klass.fhem.fhem;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.util.Log;
 
 import com.google.common.io.CharStreams;
 
-import org.apache.http.Header;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpVersion;
-import org.apache.http.auth.AuthScope;
-import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.conn.ClientConnectionManager;
 import org.apache.http.conn.ConnectTimeoutException;
-import org.apache.http.conn.scheme.PlainSocketFactory;
-import org.apache.http.conn.scheme.Scheme;
-import org.apache.http.conn.scheme.SchemeRegistry;
-import org.apache.http.conn.ssl.SSLSocketFactory;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
-import org.apache.http.params.HttpProtocolParams;
-import org.apache.http.protocol.HTTP;
 
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
-import java.net.URI;
-import java.net.URISyntaxException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.net.URLEncoder;
 import java.security.KeyStore;
-import java.util.zip.GZIPInputStream;
 
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.KeyManager;
+import javax.net.ssl.KeyManagerFactory;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.X509TrustManager;
+
+import de.duenndns.ssl.MemorizingTrustManager;
+import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.error.ErrorHolder;
 import li.klass.fhem.util.CloseableUtil;
+
+import static com.google.common.base.Objects.firstNonNull;
 
 public class FHEMWEBConnection extends FHEMConnection {
 
     public static final int SOCKET_TIMEOUT = 20000;
     public static final String TAG = FHEMWEBConnection.class.getName();
     public static final FHEMWEBConnection INSTANCE = new FHEMWEBConnection();
-    private DefaultHttpClient client = null;
+
+    public FHEMWEBConnection() {
+
+    }
 
     @Override
     public RequestResult<String> executeCommand(String command) {
@@ -86,7 +83,7 @@ public class FHEMWEBConnection extends FHEMConnection {
 
         InputStreamReader reader = null;
         try {
-            RequestResult<InputStream> response = executeRequest(urlSuffix, client, command);
+            RequestResult<InputStream> response = executeRequest(urlSuffix, command);
             if (response.error != null) {
                 return new RequestResult<>(response.error);
             }
@@ -109,32 +106,20 @@ public class FHEMWEBConnection extends FHEMConnection {
     }
 
     private RequestResult<InputStream> executeRequest(String urlSuffix,
-                                                      DefaultHttpClient client, String command) {
+                                                      String command) {
         String url = null;
-        if (client == null) {
-            client = createNewHTTPClient(getConnectionTimeoutMilliSeconds(), SOCKET_TIMEOUT);
-        }
-        InputStream contentStream;
         try {
-            HttpGet request = new HttpGet();
-            request.addHeader("Accept-Encoding", "gzip");
-
             url = serverSpec.getUrl() + urlSuffix;
-
+            URL requestUrl = new URL(url);
+            HttpURLConnection connection = (HttpURLConnection) requestUrl.openConnection();
+            connection.setConnectTimeout(SOCKET_TIMEOUT);
+            connection.setReadTimeout(SOCKET_TIMEOUT);
+            String authString = (serverSpec.getUsername() + ":" + serverSpec.getPassword());
+            connection.addRequestProperty("Authorization", "Basic " +
+                    Base64.encodeToString(authString.getBytes(), Base64.NO_WRAP));
             Log.i(TAG, "accessing URL " + url);
-            URI uri = new URI(url);
-
-            client.getCredentialsProvider().setCredentials(
-                    new AuthScope(uri.getHost(), uri.getPort()),
-                    new UsernamePasswordCredentials(serverSpec.getUsername(),
-                            getPassword()));
-
-            request.setURI(uri);
-
-            HttpResponse response = client.execute(request);
-            int statusCode = response.getStatusLine().getStatusCode();
+            int statusCode = connection.getResponseCode();
             Log.d(TAG, "response status code is " + statusCode);
-
             RequestResult<InputStream> errorResult = handleHttpStatusCode(statusCode);
             if (errorResult != null) {
                 String msg = "found error " + errorResult.error.getDeclaringClass().getSimpleName() + " for " +
@@ -143,12 +128,7 @@ public class FHEMWEBConnection extends FHEMConnection {
                 ErrorHolder.setError(null, msg);
                 return errorResult;
             }
-
-            contentStream = response.getEntity().getContent();
-            Header contentEncoding = response.getFirstHeader("Content-Encoding");
-            if (contentEncoding != null && contentEncoding.getValue().equalsIgnoreCase("gzip")) {
-                contentStream = new GZIPInputStream(contentStream);
-            }
+            InputStream contentStream = new BufferedInputStream(connection.getInputStream());
             return new RequestResult<>(contentStream);
         } catch (ConnectTimeoutException e) {
             Log.i(TAG, "connection timed out", e);
@@ -163,39 +143,6 @@ public class FHEMWEBConnection extends FHEMConnection {
             Log.i(TAG, "cannot connect to host", e);
             setErrorInErrorHolderFor(e, url, command);
             return new RequestResult<>(RequestResultError.HOST_CONNECTION_ERROR);
-        } catch (URISyntaxException e) {
-            Log.i(TAG, "invalid URL syntax", e);
-            setErrorInErrorHolderFor(e, url, command);
-            throw new IllegalStateException("cannot parse URL " + urlSuffix, e);
-        }
-    }
-
-    private DefaultHttpClient createNewHTTPClient(int connectionTimeout, int socketTimeout) {
-        try {
-            SSLSocketFactory socketFactory;
-
-            if (serverSpec.isClientCertificateEnabled()) {
-                socketFactory = createClientCertSocketFactory();
-            } else {
-                socketFactory = createDefaultSocketFactory();
-            }
-
-            HttpParams params = new BasicHttpParams();
-            HttpProtocolParams.setVersion(params, HttpVersion.HTTP_1_1);
-            HttpProtocolParams.setContentCharset(params, HTTP.UTF_8);
-            HttpConnectionParams.setConnectionTimeout(params, connectionTimeout);
-            HttpConnectionParams.setSoTimeout(params, socketTimeout);
-
-            SchemeRegistry registry = new SchemeRegistry();
-            registry.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
-            registry.register(new Scheme("https", socketFactory, 443));
-
-            ClientConnectionManager ccm = new ThreadSafeClientConnManager(params, registry);
-
-            return new DefaultHttpClient(ccm, params);
-        } catch (Exception e) {
-            Log.e(TAG, "error while creating client", e);
-            return new DefaultHttpClient();
         }
     }
 
@@ -229,27 +176,9 @@ public class FHEMWEBConnection extends FHEMConnection {
         return new RequestResult<>(error);
     }
 
-    private SSLSocketFactory createClientCertSocketFactory() throws Exception {
-        return new ClientCertSSLSocketFactory(null,
-                new File(serverSpec.getClientCertificatePath()),
-                serverSpec.getClientCertificatePassword(),
-                new File(serverSpec.getServerCertificatePath())
-        );
-    }
-
-    private SSLSocketFactory createDefaultSocketFactory() throws Exception {
-        KeyStore trustStore;
-        SSLSocketFactory socketFactory;
-        trustStore = KeyStore.getInstance(KeyStore.getDefaultType());
-        trustStore.load(null, null);
-
-        socketFactory = new TrustAllSSLSocketFactory(trustStore);
-        return socketFactory;
-    }
-
     @Override
     public RequestResult<Bitmap> requestBitmap(String relativePath) {
-        RequestResult<InputStream> response = executeRequest(relativePath, client, "request bitmap");
+        RequestResult<InputStream> response = executeRequest(relativePath, "request bitmap");
         if (response.error != null) {
             return new RequestResult<>(response.error);
         }
@@ -263,8 +192,39 @@ public class FHEMWEBConnection extends FHEMConnection {
 
     @Override
     protected void onSetServerSpec() {
-        // Reset the client, so that it will be recreated upon the next request. This
-        // enables us to change between client cert and not client cert support.
-        client = null;
+        try {
+            SSLContext sc = SSLContext.getInstance("TLS");
+            MemorizingTrustManager mtm = new MemorizingTrustManager(AndFHEMApplication.getContext());
+            KeyManager[] clientKeys = null;
+            if(serverSpec.getClientCertificatePath() != null) {
+                File clientCertificate = new File(serverSpec.getClientCertificatePath());
+                String clientCertificatePassword = serverSpec.getClientCertificatePassword();
+                if (clientCertificate.exists()) {
+                    final KeyStore keyStore = loadPKCS12KeyStore(clientCertificate, clientCertificatePassword);
+                    KeyManagerFactory kmf = KeyManagerFactory.getInstance("X509");
+                    kmf.init(keyStore, firstNonNull(clientCertificatePassword, "").toCharArray());
+                    clientKeys = kmf.getKeyManagers();
+                }
+            }
+            sc.init(clientKeys, new X509TrustManager[]{mtm}, new java.security.SecureRandom());
+            HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+            HttpsURLConnection.setDefaultHostnameVerifier(
+                    mtm.wrapHostnameVerifier(HttpsURLConnection.getDefaultHostnameVerifier()));
+        } catch (Exception e) {
+            Log.e(TAG, "Error initializing HttpsUrlConnection", e);
+        }
+    }
+
+    private KeyStore loadPKCS12KeyStore(File certificateFile, String clientCertPassword) throws Exception {
+        KeyStore keyStore = null;
+        FileInputStream fis = null;
+        try {
+            keyStore = KeyStore.getInstance("PKCS12");
+            fis = new FileInputStream(certificateFile);
+            keyStore.load(fis, clientCertPassword.toCharArray());
+        } finally {
+            CloseableUtil.close(fis);
+        }
+        return keyStore;
     }
 }

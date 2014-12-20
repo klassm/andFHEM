@@ -30,9 +30,16 @@ import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
+import android.widget.Toast;
+
+import java.security.KeyStoreException;
+import java.util.Enumeration;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.inject.Inject;
 
+import de.duenndns.ssl.MemorizingTrustManager;
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.constants.Actions;
@@ -42,6 +49,7 @@ import li.klass.fhem.util.DisplayUtil;
 import li.klass.fhem.widget.preference.SeekBarPreference;
 
 import static li.klass.fhem.adapter.rooms.DeviceGridAdapter.DEFAULT_COLUMN_WIDTH;
+import static li.klass.fhem.constants.PreferenceKeys.CLEAR_TRUSTED_CERTIFICATES;
 import static li.klass.fhem.constants.PreferenceKeys.COMMAND_EXECUTION_RETRIES;
 import static li.klass.fhem.constants.PreferenceKeys.CONNECTION_TIMEOUT;
 import static li.klass.fhem.constants.PreferenceKeys.DEVICE_COLUMN_WIDTH;
@@ -53,6 +61,8 @@ import static li.klass.fhem.service.CommandExecutionService.DEFAULT_NUMBER_OF_RE
 
 public class PreferencesActivity extends PreferenceActivity
         implements SharedPreferences.OnSharedPreferenceChangeListener {
+
+    private final static Logger LOGGER = Logger.getLogger(PreferencesActivity.class.getName());
 
     @Inject
     GCMSendDeviceService gcmSendDeviceService;
@@ -94,6 +104,25 @@ public class PreferencesActivity extends PreferenceActivity
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 ErrorHolder.sendApplicationLogAsMail(PreferencesActivity.this);
+                return true;
+            }
+        });
+
+        findPreference(CLEAR_TRUSTED_CERTIFICATES).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                MemorizingTrustManager mtm = new MemorizingTrustManager(AndFHEMApplication.getContext());
+                Enumeration<String> aliases = mtm.getCertificates();
+                while(aliases.hasMoreElements()) {
+                    String alias = aliases.nextElement();
+                    try {
+                        mtm.deleteCertificate(alias);
+                        LOGGER.log(Level.INFO, "Deleting certificate for {} ", alias);
+                    } catch (KeyStoreException e) {
+                        LOGGER.log(Level.SEVERE, "Could not delete certificate", e);
+                    }
+                }
+                Toast.makeText(getApplicationContext(), getString(R.string.prefClearTrustedCertificatesFinished), Toast.LENGTH_SHORT).show();
                 return true;
             }
         });

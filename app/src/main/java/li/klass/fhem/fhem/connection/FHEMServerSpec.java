@@ -39,8 +39,6 @@ public class FHEMServerSpec implements Comparable<FHEMServerSpec>, Serializable 
     private String url;
     private String username;
     private String clientCertificatePath;
-    private String serverCertificatePath;
-    private boolean clientCertificateEnabled = false;
     private String clientCertificatePassword;
     private ServerType serverType;
 
@@ -104,22 +102,6 @@ public class FHEMServerSpec implements Comparable<FHEMServerSpec>, Serializable 
         this.clientCertificatePath = clientCertificatePath;
     }
 
-    public String getServerCertificatePath() {
-        return serverCertificatePath;
-    }
-
-    public void setServerCertificatePath(String serverCertificatePath) {
-        this.serverCertificatePath = serverCertificatePath;
-    }
-
-    public boolean isClientCertificateEnabled() {
-        return clientCertificateEnabled;
-    }
-
-    public void setClientCertificateEnabled(boolean clientCertificateEnabled) {
-        this.clientCertificateEnabled = clientCertificateEnabled;
-    }
-
     public String getClientCertificatePassword() {
         return clientCertificatePassword;
     }
@@ -152,7 +134,6 @@ public class FHEMServerSpec implements Comparable<FHEMServerSpec>, Serializable 
 
         FHEMServerSpec that = (FHEMServerSpec) o;
 
-        if (clientCertificateEnabled != that.clientCertificateEnabled) return false;
         if (port != that.port) return false;
         if (clientCertificatePassword != null ? !clientCertificatePassword.equals(that.clientCertificatePassword) : that.clientCertificatePassword != null)
             return false;
@@ -161,8 +142,6 @@ public class FHEMServerSpec implements Comparable<FHEMServerSpec>, Serializable 
         if (!id.equals(that.id)) return false;
         if (ip != null ? !ip.equals(that.ip) : that.ip != null) return false;
         if (password != null ? !password.equals(that.password) : that.password != null)
-            return false;
-        if (serverCertificatePath != null ? !serverCertificatePath.equals(that.serverCertificatePath) : that.serverCertificatePath != null)
             return false;
         if (serverType != that.serverType) {
             return false;
@@ -180,8 +159,6 @@ public class FHEMServerSpec implements Comparable<FHEMServerSpec>, Serializable 
         result = 31 * result + (url != null ? url.hashCode() : 0);
         result = 31 * result + (username != null ? username.hashCode() : 0);
         result = 31 * result + (clientCertificatePath != null ? clientCertificatePath.hashCode() : 0);
-        result = 31 * result + (serverCertificatePath != null ? serverCertificatePath.hashCode() : 0);
-        result = 31 * result + (clientCertificateEnabled ? 1 : 0);
         result = 31 * result + (clientCertificatePassword != null ? clientCertificatePassword.hashCode() : 0);
         result = 31 * result + serverType.hashCode();
         return result;
@@ -198,8 +175,6 @@ public class FHEMServerSpec implements Comparable<FHEMServerSpec>, Serializable 
                 ", url='" + url + '\'' +
                 ", username='" + username + '\'' +
                 ", clientCertificatePath='" + clientCertificatePath + '\'' +
-                ", serverCertificatePath='" + serverCertificatePath + '\'' +
-                ", clientCertificateEnabled=" + clientCertificateEnabled +
                 ", clientCertificatePassword='" + clientCertificatePassword + '\'' +
                 ", serverType=" + serverType +
                 '}';
