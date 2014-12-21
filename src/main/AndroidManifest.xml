@@ -237,10 +237,6 @@
             android:permission="android.permission.BIND_REMOTEVIEWS"/>
 
         <service
-            android:name="li.klass.fhem.appwidget.service.AppWidgetListViewUpdateRemoteViewsService"
-            android:permission="android.permission.BIND_REMOTEVIEWS"/>
-
-        <service
             android:name="li.klass.fhem.service.intent.AppActionsIntentService"
             android:exported="false">
             <intent-filter>
