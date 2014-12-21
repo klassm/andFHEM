@@ -7,4 +7,8 @@ dependencies:
     - ~/android
   override:
     - ci/install-dependencies.sh
+test:
+  override:
+    - ./gradlew test
       
+

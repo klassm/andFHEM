@@ -249,7 +249,7 @@ def uploadApkToGoogleSites() {
         def href = e.getRevisionLink().getHref()
         def id = href.substring(href.lastIndexOf("/") + 1)
 
-        def fileTitle = e.getTitle().getText()
+        def fileTitle = e.getTitle().getTefxt()
         if (fileTitle.equals("google-release.apk")) {
             deleteGoogleSitesAttachment(service, id)
         }
@@ -270,7 +270,7 @@ def updateGoogleSitesAPK(service) {
     def mediaTypes = new MimetypesFileTypeMap()
     mediaTypes.addMimeTypes("application/vnd.android.package-archive")
 
-    def file = new File("app/build/outputs/apk/app-inapp-release.apk")
+    def file = new File("build/outputs/apk/app-inapp-release.apk")
 
     def newAttachment = new AttachmentEntry();
     newAttachment.setMediaSource(new MediaFileSource(file, mediaTypes.getContentType(file)));
