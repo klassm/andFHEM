@@ -6,4 +6,4 @@ dependencies:
     - ~/.android
     - ~/android
   override:
-    - ./bin/install_dependencies.sh
+    - ./ci/install_dependencies.sh
