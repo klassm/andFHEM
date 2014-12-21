@@ -5,3 +5,5 @@ dependencies:
   cache_directories:
     - ~/.android
     - ~/android
+  override:
+    - ./bin/install_dependencies.sh
