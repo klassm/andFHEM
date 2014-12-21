@@ -87,11 +87,15 @@ public abstract class ToggleActionRow<D extends Device> {
         Optional<String> onStateText = getOnStateText(eventMap);
         if (onStateText.isPresent()) {
             toggleButton.setTextOn(onStateText.get());
+        } else {
+            toggleButton.setTextOn(context.getString(R.string.on));
         }
 
         Optional<String> offStateText = getOffStateText(eventMap);
         if (offStateText.isPresent()) {
             toggleButton.setTextOff(offStateText.get());
+        } else {
+            toggleButton.setTextOff(context.getString(R.string.off));
         }
     }
 

@@ -79,7 +79,7 @@ public class OnOffActionRow<T extends ToggleableDevice> {
         if (eventMap.containsKey(offStateName)) {
             offButton.setText(eventMap.get(offStateName));
         } else {
-            onButton.setText(context.getString(R.string.off));
+            offButton.setText(context.getString(R.string.off));
         }
 
         if (device.isOnRespectingInvertHook()) {
