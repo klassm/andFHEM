@@ -3,8 +3,6 @@ machine:
       ANDROID_HOME: /usr/local/android-sdk-linux 
 dependencies:
   cache_directories:
-    - ~/.android
-    - ~/android
   override:
     - ci/install-dependencies.sh
 test:

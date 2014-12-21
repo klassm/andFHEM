@@ -249,7 +249,7 @@ def uploadApkToGoogleSites() {
         def href = e.getRevisionLink().getHref()
         def id = href.substring(href.lastIndexOf("/") + 1)
 
-        def fileTitle = e.getTitle().getTefxt()
+        def fileTitle = e.getTitle().getText()
         if (fileTitle.equals("google-release.apk")) {
             deleteGoogleSitesAttachment(service, id)
         }
