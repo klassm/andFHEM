@@ -1,0 +1,144 @@
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<FHZINFO>
+    <ECMD_LIST>
+        <ECMD name="NETIO_01"
+            attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings classdefs split logTraffic:0,1,2,3,4,5 timeout partial userattr"
+            sets="reopen classdef" state="opened">
+            <INT key="DEF" value="telnet 192.168.2.249:2701" />
+            <INT key="DeviceName" value="192.168.2.249:2701" />
+            <INT key="FD" value="9" />
+            <INT key="NAME" value="NETIO_01" />
+            <INT key="NR" value="25" />
+            <INT key="PARTIAL" value="" />
+            <INT key="Protocol" value="telnet" />
+            <INT key="STATE" value="opened" />
+            <INT key="TYPE" value="ECMD" />
+            <ATTR key="classdefs"
+                value="ONEWIRE=/opt/fhem/onewire.classdef:RFM12=/opt/fhem/intertechno.classdef:RELAIS=/opt/fhem/relais.classdef" />
+            <ATTR key="room" value="Interfaces" />
+            <STATE key="state" measured="2014-12-23 16:01:07" value="opened" />
+        </ECMD>
+    </ECMD_LIST>
+    <ECMDDevice_LIST>
+        <ECMDDevice name="Relais1"
+            attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev class event-on-change-reading event-on-update-reading event-min-interval stateFormat userattr"
+            sets="off on" state="???">
+            <INT key="DEF" value="RELAIS 01" />
+            <INT key="NAME" value="Relais1" />
+            <INT key="NR" value="27" />
+            <INT key="STATE" value="???" />
+            <INT key="TYPE" value="ECMDDevice" />
+            <INT key="IODev" value="NETIO_01" />
+            <ATTR key="IODev" value="NETIO_01" />
+            <ATTR key="alias" value="Schalter1" />
+            <ATTR key="room" value="Schalten1,GPIO" />
+        </ECMDDevice>
+        <ECMDDevice name="Relais2"
+            attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev class event-on-change-reading event-on-update-reading event-min-interval stateFormat userattr"
+            sets="off on" state="???">
+            <INT key="DEF" value="RELAIS 02" />
+            <INT key="NAME" value="Relais2" />
+            <INT key="NR" value="28" />
+            <INT key="STATE" value="???" />
+            <INT key="TYPE" value="ECMDDevice" />
+            <INT key="IODev" value="NETIO_01" />
+            <ATTR key="IODev" value="NETIO_01" />
+            <ATTR key="room" value="Schalten1" />
+        </ECMDDevice>
+        <ECMDDevice name="Relais3"
+            attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev class event-on-change-reading event-on-update-reading event-min-interval stateFormat userattr"
+            sets="off on" state="???">
+            <INT key="DEF" value="RELAIS 04" />
+            <INT key="NAME" value="Relais3" />
+            <INT key="NR" value="29" />
+            <INT key="STATE" value="???" />
+            <INT key="TYPE" value="ECMDDevice" />
+            <INT key="IODev" value="NETIO_01" />
+            <ATTR key="IODev" value="NETIO_01" />
+            <ATTR key="room" value="Schalten1" />
+        </ECMDDevice>
+        <ECMDDevice name="Relais4"
+            attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev class event-on-change-reading event-on-update-reading event-min-interval stateFormat userattr"
+            sets="off on" state="???">
+            <INT key="DEF" value="RELAIS 08" />
+            <INT key="NAME" value="Relais4" />
+            <INT key="NR" value="30" />
+            <INT key="STATE" value="???" />
+            <INT key="TYPE" value="ECMDDevice" />
+            <INT key="IODev" value="NETIO_01" />
+            <ATTR key="IODev" value="NETIO_01" />
+            <ATTR key="room" value="Schalten1" />
+        </ECMDDevice>
+        <ECMDDevice name="Relais5"
+            attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev class event-on-change-reading event-on-update-reading event-min-interval stateFormat userattr"
+            sets="off on" state="???">
+            <INT key="DEF" value="RELAIS 10" />
+            <INT key="NAME" value="Relais5" />
+            <INT key="NR" value="31" />
+            <INT key="STATE" value="???" />
+            <INT key="TYPE" value="ECMDDevice" />
+            <INT key="IODev" value="NETIO_01" />
+            <ATTR key="IODev" value="NETIO_01" />
+            <ATTR key="room" value="Schalten1" />
+        </ECMDDevice>
+        <ECMDDevice name="Relais6"
+            attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev class event-on-change-reading event-on-update-reading event-min-interval stateFormat userattr"
+            sets="off on" state="???">
+            <INT key="DEF" value="RELAIS 20" />
+            <INT key="NAME" value="Relais6" />
+            <INT key="NR" value="32" />
+            <INT key="STATE" value="???" />
+            <INT key="TYPE" value="ECMDDevice" />
+            <INT key="IODev" value="NETIO_01" />
+            <ATTR key="IODev" value="NETIO_01" />
+            <ATTR key="room" value="Schalten1" />
+        </ECMDDevice>
+        <ECMDDevice name="Relais7"
+            attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev class event-on-change-reading event-on-update-reading event-min-interval stateFormat userattr"
+            sets="off on" state="???">
+            <INT key="DEF" value="RELAIS 40" />
+            <INT key="NAME" value="Relais7" />
+            <INT key="NR" value="33" />
+            <INT key="STATE" value="???" />
+            <INT key="TYPE" value="ECMDDevice" />
+            <INT key="IODev" value="NETIO_01" />
+            <ATTR key="IODev" value="NETIO_01" />
+            <ATTR key="room" value="Schalten1" />
+        </ECMDDevice>
+        <ECMDDevice name="Relais8"
+            attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev class event-on-change-reading event-on-update-reading event-min-interval stateFormat userattr"
+            sets="off on" state="???">
+            <INT key="DEF" value="RELAIS 80" />
+            <INT key="NAME" value="Relais8" />
+            <INT key="NR" value="34" />
+            <INT key="STATE" value="???" />
+            <INT key="TYPE" value="ECMDDevice" />
+            <INT key="IODev" value="NETIO_01" />
+            <ATTR key="IODev" value="NETIO_01" />
+            <ATTR key="room" value="Schalten1" />
+        </ECMDDevice>
+    </ECMDDevice_LIST>
+</FHZINFO>

@@ -24,6 +24,7 @@
 
 package li.klass.fhem.domain.core;
 
+import li.klass.fhem.domain.EMCDDevice;
 import li.klass.fhem.domain.FHEMduinoEnvDevice;
 import li.klass.fhem.adapter.devices.CULHMAdapter;
 import li.klass.fhem.adapter.devices.DmxAdapter;
@@ -252,7 +253,8 @@ public enum DeviceType {
     PIONEER("PIONEERAVR", PioneerAvrDevice.class, new PioneerAvrDeviceAdapter()),
     FHEMduino_Env("FHEMduino_Env", FHEMduinoEnvDevice.class),
     FHEMduino_PT2262("FHEMduino_PT2262", FHEMduinoPT2262Device.class, new ToggleableAdapterWithSwitchActionRow<>(FHEMduinoPT2262Device.class)),
-    SOLARVIEW("SolarView", SolarViewDevice.class)
+    SOLARVIEW("SolarView", SolarViewDevice.class),
+    EMCDDEVICE("ECMDDevice", EMCDDevice.class, new ToggleableAdapterWithSwitchActionRow<>(EMCDDevice.class))
     ;
 
     private String xmllistTag;
