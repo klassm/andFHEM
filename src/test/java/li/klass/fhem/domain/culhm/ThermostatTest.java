@@ -68,7 +68,7 @@ public class ThermostatTest extends DeviceXMLParsingBase {
         CULHMDevice device2 = getDeviceFor("device2");
         assertThat(device2).isNotNull();
         assertThat(device2.isSupported()).isEqualTo(true);
-        assertThat(device2.getSubType()).isEqualTo(CULHMDevice.SubType.HEATING);
+        assertThat(device2.getSubType()).isEqualTo(CULHMDevice.SubType.THERMOSTAT);
         assertThat(device2.getDesiredTemp()).isEqualTo(16, offset(0.01));
         assertThat(device2.getDesiredTempDesc()).isEqualTo("16.0 (°C)");
         assertThat(device2.getActuator()).isEqualTo("86 (%)");

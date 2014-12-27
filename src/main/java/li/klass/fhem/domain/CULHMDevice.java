@@ -60,7 +60,6 @@ import li.klass.fhem.util.ValueExtractUtil;
 
 import static li.klass.fhem.domain.CULHMDevice.SubType.DIMMER;
 import static li.klass.fhem.domain.CULHMDevice.SubType.FILL_STATE;
-import static li.klass.fhem.domain.CULHMDevice.SubType.HEATING;
 import static li.klass.fhem.domain.CULHMDevice.SubType.KEYMATIC;
 import static li.klass.fhem.domain.CULHMDevice.SubType.MOTION;
 import static li.klass.fhem.domain.CULHMDevice.SubType.POWERMETER;
@@ -257,7 +256,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
     public void setControlMode(String value) {
         try {
             heatingMode = HeatingMode.valueOf(value.toUpperCase(Locale.getDefault()));
-            subType = HEATING;
+            subType = THERMOSTAT;
         } catch (Exception e) {
             Log.e(CULHMDevice.class.getName(), "cannot set heating mode from value " + value, e);
         }
@@ -285,6 +284,9 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
 
     @Override
     public void afterDeviceXMLRead() {
+        if (actuator != null) {
+            subType = THERMOSTAT;
+        }
         if (getDeviceGroup() == DeviceFunctionality.HEATING) {
             weekProfile.afterXMLRead();
         }
@@ -393,7 +395,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
 
     @ShowField(description = ResourceIdMapper.desiredTemperature, showInOverview = true)
     public String getDesiredTempDesc() {
-        if (subType != HEATING) return null;
+        if (subType != THERMOSTAT) return null;
 
         return ValueDescriptionUtil.desiredTemperatureToString(desiredTemp, MINIMUM_TEMPERATURE, MAXIMUM_TEMPERATURE);
     }
@@ -427,7 +429,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
 
     @XmllistAttribute("ACTUATOR")
     public void setActuator(String value) {
-        subType = HEATING;
+        subType = THERMOSTAT;
         if (value != null && value.endsWith("%")) {
             value = appendPercent(extractLeadingInt(value));
         }
@@ -747,20 +749,6 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
 
             case THERMOSTAT:
 
-                addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureGraph,
-                        new ChartSeriesDescription.Builder()
-                                .withColumnName(R.string.temperature)
-                                .withFileLogSpec("4:measured-temp:0")
-                                .withDbLogSpec("measured-temp")
-                                .withSeriesType(TEMPERATURE)
-                                .withShowRegression(true)
-                                .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("measured-temp", 0, 30))
-                                .build()
-                ), measuredTemp);
-
-                break;
-
-            case HEATING:
                 addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureHumidityGraph,
                         new ChartSeriesDescription.Builder()
                                 .withColumnName(R.string.temperature)
@@ -874,7 +862,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
     @Override
     public boolean supportsWidget(Class<? extends DeviceAppWidgetView> appWidgetClass) {
         return !(appWidgetClass.equals(TemperatureWidgetView.class) &&
-                !(subType == SubType.TH || subType == HEATING)) &&
+                !(subType == SubType.TH || subType == THERMOSTAT)) &&
                 super.supportsWidget(appWidgetClass);
     }
 
@@ -909,7 +897,6 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
     public enum SubType {
         DIMMER(DeviceFunctionality.DIMMER),
         SWITCH(DeviceFunctionality.SWITCH),
-        HEATING(DeviceFunctionality.HEATING),
         SMOKE_DETECTOR(DeviceFunctionality.SMOKE_DETECTOR),
         THREE_STATE(DeviceFunctionality.WINDOW),
         TH(DeviceFunctionality.TEMPERATURE),

@@ -49,7 +49,7 @@ import li.klass.fhem.widget.LitreContentView;
 
 import static li.klass.fhem.domain.CULHMDevice.MAXIMUM_TEMPERATURE;
 import static li.klass.fhem.domain.CULHMDevice.MINIMUM_TEMPERATURE;
-import static li.klass.fhem.domain.CULHMDevice.SubType.HEATING;
+import static li.klass.fhem.domain.CULHMDevice.SubType.THERMOSTAT;
 
 public class CULHMAdapter extends DimmableAdapter<CULHMDevice> {
     @Inject
@@ -81,7 +81,7 @@ public class CULHMAdapter extends DimmableAdapter<CULHMDevice> {
         registerFieldListener("state", new HeatingModeListener<CULHMDevice, CULHMDevice.HeatingMode>() {
             @Override
             protected boolean doAddField(CULHMDevice device) {
-                return device.getSubType() == HEATING;
+                return device.getSubType() == THERMOSTAT;
             }
 
             @Override
@@ -93,7 +93,7 @@ public class CULHMAdapter extends DimmableAdapter<CULHMDevice> {
         registerFieldListener("desiredTempDesc", new FieldNameAddedToDetailListener<CULHMDevice>() {
             @Override
             public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, CULHMDevice device, TableRow fieldTableRow) {
-                if (device.getSubType() != HEATING) return;
+                if (device.getSubType() != THERMOSTAT) return;
 
                 tableLayout.addView(new TemperatureChangeTableRow<CULHMDevice>(context, device.getDesiredTemp(), fieldTableRow,
                         Actions.DEVICE_SET_DESIRED_TEMPERATURE, R.string.desiredTemperature,
@@ -124,7 +124,7 @@ public class CULHMAdapter extends DimmableAdapter<CULHMDevice> {
 
             @Override
             public boolean isVisible(CULHMDevice device) {
-                return device.getSubType() == HEATING;
+                return device.getSubType() == THERMOSTAT;
             }
         });
     }
