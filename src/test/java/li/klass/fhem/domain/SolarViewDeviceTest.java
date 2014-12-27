@@ -30,21 +30,24 @@ import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 
-public class FHEMduinoEnvDeviceTest extends DeviceXMLParsingBase {
+public class SolarViewDeviceTest extends DeviceXMLParsingBase {
+
     @Test
     public void should_read_device_attributes() {
-        FHEMduinoEnvDevice device = getDeviceFor("Aussentemperatur");
-        assertThat(device).isNotNull();
-        assertThat(device.getState()).isEqualTo("1.4°C / 81%");
-        assertThat(device.getTemperature()).isEqualTo("1.4 (°C)");
-        assertThat(device.getHumidity()).isEqualTo("81 (%)");
-        assertThat(device.getBattery()).isEqualTo("ok");
-        assertThat(device.getDewpoint()).isEqualTo("-1.5 (°C)");
-        assertThat(device.getIoDev()).isEqualTo("FHEMduino");
+        SolarViewDevice device = getDeviceFor("Solar");
+
+        assertThat(device.getCurrentPower()).isEqualTo("4 (W)");
+        assertThat(device.getGridCurrent()).isEqualTo("3 (A)");
+        assertThat(device.getGridVoltage()).isEqualTo("2 (V)");
+        assertThat(device.getTemperature()).isEqualTo("10 (°C)");
+        assertThat(device.getTotalEnergy()).isEqualTo("533 (kWh)");
+        assertThat(device.getTotalEnergyDay()).isEqualTo("1.2 (kWh)");
+        assertThat(device.getTotalEnergyMonth()).isEqualTo("36 (kWh)");
+        assertThat(device.getTotalEnergyYear()).isEqualTo("533 (kWh)");
     }
 
     @Override
     protected String getFileName() {
-        return "FHEMduinoEnv.xml";
+        return "solarview.xml";
     }
 }

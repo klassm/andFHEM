@@ -1,0 +1,121 @@
+<!--
+  ~ AndFHEM - Open Source Android application to control a FHEM home automation
+  ~ server.
+  ~
+  ~ Copyright (c) 2011, Matthias Klass or third-party contributors as
+  ~ indicated by the @author tags or express copyright attribution
+  ~ statements applied by the authors.  All third-party contributions are
+  ~ distributed under license by Red Hat Inc.
+  ~
+  ~ This copyrighted material is made available to anyone wishing to use, modify,
+  ~ copy, or redistribute it subject to the terms and conditions of the GNU GENERAL PUBLIC LICENSE, as published by the Free Software Foundation.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  ~ or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GENERAL PUBLIC LICENSE
+  ~ for more details.
+  ~
+  ~ You should have received a copy of the GNU GENERAL PUBLIC LICENSE
+  ~ along with this distribution; if not, write to:
+  ~   Free Software Foundation, Inc.
+  ~   51 Franklin Street, Fifth Floor
+  ~   Boston, MA  02110-1301  USA
+  -->
+
+<FHZINFO>
+    <SolarView_LIST>
+        <SolarView name="Solar" state="0 W, 1.2 kWh" sets="" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings loglevel:0,1,2,3,4,5 event-on-update-reading event-on-change-reading devStateIcon devStateStyle icon sortby webCmd">
+            <INT key="DEF" value="localhost 15000 wr1 60"/>
+            <INT key="Debounce" value="50"/>
+            <INT key="Debounced" value="0"/>
+            <INT key="Host" value="localhost"/>
+            <INT key="Interval" value="60"/>
+            <INT key="Invalid" value="-1"/>
+            <INT key="NAME" value="Solar"/>
+            <INT key="NR" value="35"/>
+            <INT key="NightOff" value="no"/>
+            <INT key="Port" value="15000"/>
+            <INT key="STATE" value="0 W, 1.2 kWh"/>
+            <INT key="TYPE" value="SolarView"/>
+            <INT key="Timeout" value="4"/>
+            <INT key="UseSVNight" value="yes"/>
+            <ATTR key="room" value="Solar"/>
+            <STATE key="IDC" value="0" measured="2014-12-15 23:25:44"/>
+            <STATE key="IDCB" value="0" measured="2014-12-15 23:25:44"/>
+            <STATE key="IDCC" value="0" measured="2014-12-15 23:25:44"/>
+            <STATE key="UDC" value="0" measured="2014-12-15 23:25:44"/>
+            <STATE key="UDCB" value="0" measured="2014-12-15 23:25:44"/>
+            <STATE key="UDCC" value="0" measured="2014-12-15 23:25:44"/>
+            <STATE key="currentPower" value="4" measured="2014-12-15 23:25:44"/>
+            <STATE key="gridCurrent" value="3" measured="2014-12-15 23:25:44"/>
+            <STATE key="gridVoltage" value="2" measured="2014-12-15 23:25:44"/>
+            <STATE key="temperature" value="10" measured="2014-12-15 23:25:44"/>
+            <STATE key="totalEnergy" value="533" measured="2014-12-15 23:25:44"/>
+            <STATE key="totalEnergyDay" value="1.2" measured="2014-12-15 23:25:44"/>
+            <STATE key="totalEnergyMonth" value="36" measured="2014-12-15 23:25:44"/>
+            <STATE key="totalEnergyYear" value="533" measured="2014-12-15 23:25:44"/>
+        </SolarView>
+        <SolarView name="Strom" state="0 W, 0 kWh" sets="" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings loglevel:0,1,2,3,4,5 event-on-update-reading event-on-change-reading devStateIcon devStateStyle icon sortby webCmd">
+            <INT key="DEF" value="localhost 15000 wr21 60"/>
+            <INT key="Debounce" value="50"/>
+            <INT key="Debounced" value="0"/>
+            <INT key="Host" value="localhost"/>
+            <INT key="Interval" value="60"/>
+            <INT key="Invalid" value="-1"/>
+            <INT key="NAME" value="Strom"/>
+            <INT key="NR" value="36"/>
+            <INT key="NightOff" value="no"/>
+            <INT key="Port" value="15000"/>
+            <INT key="STATE" value="0 W, 0 kWh"/>
+            <INT key="TYPE" value="SolarView"/>
+            <INT key="Timeout" value="4"/>
+            <INT key="UseSVNight" value="yes"/>
+            <ATTR key="room" value="Solar"/>
+            <STATE key="IDC" value="0" measured="2014-12-15 23:25:46"/>
+            <STATE key="IDCB" value="0" measured="2014-12-15 23:25:46"/>
+            <STATE key="IDCC" value="0" measured="2014-12-15 23:25:46"/>
+            <STATE key="UDC" value="0" measured="2014-12-15 23:25:46"/>
+            <STATE key="UDCB" value="0" measured="2014-12-15 23:25:46"/>
+            <STATE key="UDCC" value="0" measured="2014-12-15 23:25:46"/>
+            <STATE key="currentPower" value="0" measured="2014-12-15 23:25:46"/>
+            <STATE key="gridCurrent" value="0" measured="2014-12-15 23:25:46"/>
+            <STATE key="gridVoltage" value="0" measured="2014-12-15 23:25:46"/>
+            <STATE key="temperature" value="0" measured="2014-12-15 23:25:46"/>
+            <STATE key="totalEnergy" value="105" measured="2014-12-15 23:25:46"/>
+            <STATE key="totalEnergyDay" value="0" measured="2014-12-15 23:25:46"/>
+            <STATE key="totalEnergyMonth" value="10" measured="2014-12-15 23:25:46"/>
+            <STATE key="totalEnergyYear" value="105" measured="2014-12-15 23:25:46"/>
+        </SolarView>
+        <SolarView name="Verbrauch" state="0 W, 8.6 kWh" sets="" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings loglevel:0,1,2,3,4,5 event-on-update-reading event-on-change-reading devStateIcon devStateStyle icon sortby webCmd">
+            <INT key="DEF" value="localhost 15000 wr11 60"/>
+            <INT key="Debounce" value="50"/>
+            <INT key="Debounced" value="0"/>
+            <INT key="Host" value="localhost"/>
+            <INT key="Interval" value="60"/>
+            <INT key="Invalid" value="-1"/>
+            <INT key="NAME" value="Verbrauch"/>
+            <INT key="NR" value="37"/>
+            <INT key="NightOff" value="no"/>
+            <INT key="Port" value="15000"/>
+            <INT key="STATE" value="0 W, 8.6 kWh"/>
+            <INT key="TYPE" value="SolarView"/>
+            <INT key="Timeout" value="4"/>
+            <INT key="UseSVNight" value="yes"/>
+            <ATTR key="room" value="Solar"/>
+            <STATE key="IDC" value="0" measured="2014-12-15 23:25:48"/>
+            <STATE key="IDCB" value="0" measured="2014-12-15 23:25:48"/>
+            <STATE key="IDCC" value="0" measured="2014-12-15 23:25:48"/>
+            <STATE key="UDC" value="0" measured="2014-12-15 23:25:48"/>
+            <STATE key="UDCB" value="0" measured="2014-12-15 23:25:48"/>
+            <STATE key="UDCC" value="0" measured="2014-12-15 23:25:48"/>
+            <STATE key="currentPower" value="0" measured="2014-12-15 23:25:48"/>
+            <STATE key="gridCurrent" value="0" measured="2014-12-15 23:25:48"/>
+            <STATE key="gridVoltage" value="0" measured="2014-12-15 23:25:48"/>
+            <STATE key="temperature" value="0" measured="2014-12-15 23:25:48"/>
+            <STATE key="totalEnergy" value="6148" measured="2014-12-15 23:25:48"/>
+            <STATE key="totalEnergyDay" value="8.6" measured="2014-12-15 23:25:48"/>
+            <STATE key="totalEnergyMonth" value="204" measured="2014-12-15 23:25:48"/>
+            <STATE key="totalEnergyYear" value="6148" measured="2014-12-15 23:25:48"/>
+        </SolarView>
+    </SolarView_LIST>
+</FHZINFO>

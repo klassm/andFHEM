@@ -228,6 +228,11 @@
     <string name="sleep">Schlafen</string>
     <string name="ioDev">IO-Gerät</string>
     <string name="trepetition">#-Schaltbefehle</string>
+    <string name="currentPower">Leistung</string>
+    <string name="totalEnergy">Energie (total)</string>
+    <string name="totalEnergyDay">Energie (Tag)</string>
+    <string name="totalEnergyMonth">Energie (Monat)</string>
+    <string name="totalEnergyYear">Energie (Jahr)</string>
 
     <string name="event_duration_current_title">Laufzeit aktueller Titel</string>
     <string name="event_duration_next_title">Laufzeit folgender Titel</string>

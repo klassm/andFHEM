@@ -22,10 +22,11 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem;
+package li.klass.fhem.domain;
 
 import java.util.List;
 
+import li.klass.fhem.R;
 import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceChart;

@@ -195,6 +195,11 @@ public enum ResourceIdMapper {
     video_size(R.string.video_size),
     ioDev(R.string.ioDev),
     trepetition(R.string.trepetition),
+    currentPower(R.string.currentPower),
+    totalEnergy(R.string.totalEnergy),
+    totalEnergyDay(R.string.totalEnergyDay),
+    totalEnergyMonth(R.string.totalEnergyMonth),
+    totalEnergyYear(R.string.totalEnergyYear),
 
     none(-1),
     blank(R.string.blank);

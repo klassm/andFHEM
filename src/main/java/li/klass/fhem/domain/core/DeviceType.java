@@ -24,7 +24,7 @@
 
 package li.klass.fhem.domain.core;
 
-import li.klass.fhem.FHEMduinoEnvDevice;
+import li.klass.fhem.domain.FHEMduinoEnvDevice;
 import li.klass.fhem.adapter.devices.CULHMAdapter;
 import li.klass.fhem.adapter.devices.DmxAdapter;
 import li.klass.fhem.adapter.devices.DummyAdapter;
@@ -131,6 +131,7 @@ import li.klass.fhem.domain.SHT21Device;
 import li.klass.fhem.domain.SISPMSDevice;
 import li.klass.fhem.domain.SMLUSBDevice;
 import li.klass.fhem.domain.SWAPDevice;
+import li.klass.fhem.domain.SolarViewDevice;
 import li.klass.fhem.domain.SomfyDevice;
 import li.klass.fhem.domain.SonosDevice;
 import li.klass.fhem.domain.SonosPlayerDevice;
@@ -250,7 +251,9 @@ public enum DeviceType {
     ENIGMA2("ENIGMA2", EnigmaDevice.class, new EnigmaDeviceAdapter()),
     PIONEER("PIONEERAVR", PioneerAvrDevice.class, new PioneerAvrDeviceAdapter()),
     FHEMduino_Env("FHEMduino_Env", FHEMduinoEnvDevice.class),
-    FHEMduino_PT2262("FHEMduino_PT2262", FHEMduinoPT2262Device.class, new ToggleableAdapterWithSwitchActionRow<>(FHEMduinoPT2262Device.class));
+    FHEMduino_PT2262("FHEMduino_PT2262", FHEMduinoPT2262Device.class, new ToggleableAdapterWithSwitchActionRow<>(FHEMduinoPT2262Device.class)),
+    SOLARVIEW("SolarView", SolarViewDevice.class)
+    ;
 
     private String xmllistTag;
     private Class<? extends Device> deviceClass;

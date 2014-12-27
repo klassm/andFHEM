@@ -229,6 +229,11 @@
     <string name="sleep">Sleep</string>
     <string name="ioDev">IO-Device</string>
     <string name="trepetition">Trepetition</string>
+    <string name="currentPower">Power</string>
+    <string name="totalEnergy">Energy (total)</string>
+    <string name="totalEnergyDay">Energy (day)</string>
+    <string name="totalEnergyMonth">Energy (month)</string>
+    <string name="totalEnergyYear">Energy (year)</string>
 
     <string name="event_duration_current_title">Runtime current title</string>
     <string name="event_duration_next_title">Runtime next title</string>
