@@ -66,7 +66,7 @@ public class VoiceCommandService {
             .put("stop", "off")
             .build();
 
-    private Set<String> ARTICLES_TO_REPLACE = Sets.newHashSet("der", "die", "das", "den", "the");
+    private Set<String> FILL_WORDS_TO_REPLACE = Sets.newHashSet("der", "die", "das", "den", "the", "doch", "bitte", "please");
 
     @Inject
     RoomListService roomListService;
@@ -116,7 +116,7 @@ public class VoiceCommandService {
     }
 
     private String replaceArticles(String command) {
-        for (String article : ARTICLES_TO_REPLACE) {
+        for (String article : FILL_WORDS_TO_REPLACE) {
             command = command.replaceAll(" " + article + " ", " ");
         }
         return command;
