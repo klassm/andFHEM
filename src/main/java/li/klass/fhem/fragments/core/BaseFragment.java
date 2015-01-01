@@ -199,10 +199,15 @@ public abstract class BaseFragment extends Fragment implements Updateable, Seria
     }
 
     protected void showUpdatingBar() {
-        Optional<ProgressBar> updatingBar = getUpdatingBar(getView());
-        if (updatingBar.isPresent()) {
-            updatingBar.get().setVisibility(View.VISIBLE);
-        }
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Optional<ProgressBar> updatingBar = getUpdatingBar(getView());
+                if (updatingBar.isPresent()) {
+                    updatingBar.get().setVisibility(View.VISIBLE);
+                }
+            }
+        });
     }
 
     protected void fillEmptyView(LinearLayout view, int text, ViewGroup container) {

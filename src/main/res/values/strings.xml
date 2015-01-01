@@ -603,6 +603,7 @@
     <string name="channel6" translatable="false">6</string>
     <string name="channel7" translatable="false">7</string>
     <string name="channel8" translatable="false">8</string>
+    <string name="programChannelSuccess">Programming channel %1$s</string>
 
     <string name="windowOpen">window open</string>
     <string name="day">day</string>
