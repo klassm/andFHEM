@@ -20,4 +20,5 @@ tmp
 *.*~
 gradle-app.setting
 images/*/*.png
-app/src/main/resources/li/klass/fhem/fhem/test.xml
+src/main/resources/li/klass/fhem/fhem/test.xml
+gradle.properties

@@ -25,11 +25,13 @@
 package li.klass.fhem.adapter.rooms;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.TextView;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Collections;
 import java.util.List;
@@ -53,8 +55,8 @@ import static li.klass.fhem.constants.PreferenceKeys.DEVICE_COLUMN_WIDTH;
 import static li.klass.fhem.constants.PreferenceKeys.SHOW_HIDDEN_DEVICES;
 
 public class DeviceGridAdapter<T extends Device<T>> extends GridViewWithSectionsAdapter<String, T> {
-    public static final String TAG = DeviceGridAdapter.class.getName();
     public static final int DEFAULT_COLUMN_WIDTH = 355;
+
     private final ApplicationProperties applicationProperties;
     protected RoomDeviceList roomDeviceList;
     private int lastParentHeight;
@@ -64,6 +66,8 @@ public class DeviceGridAdapter<T extends Device<T>> extends GridViewWithSections
     private Map<String, List<T>> parentChildMap = newHashMap();
     private Map<Class, Integer> viewTypeMap = newHashMap();
     private long lastUpdate;
+
+    private static final Logger LOG = LoggerFactory.getLogger(DeviceGridAdapter.class);
 
     public DeviceGridAdapter(Context context, RoomDeviceList roomDeviceList, ApplicationProperties applicationProperties) {
         super(context);
@@ -89,6 +93,7 @@ public class DeviceGridAdapter<T extends Device<T>> extends GridViewWithSections
      * property.
      */
     public void restoreParents() {
+        deviceGroupParents.clear();
         DeviceGroupHolder holder = new DeviceGroupHolder(applicationProperties);
 
         for (DeviceFunctionality visible : holder.getVisible()) {
@@ -98,13 +103,14 @@ public class DeviceGridAdapter<T extends Device<T>> extends GridViewWithSections
             hiddenParents.add(invisible.getCaptionText(context));
         }
 
-        Log.v(TAG, "set visible deviceGroupParents: " + deviceGroupParents);
+        LOG.trace("restoreParents - set visible deviceGroupParents: {}" + deviceGroupParents);
     }
 
     @SuppressWarnings("unchecked")
     public void updateData(RoomDeviceList roomDeviceList, long lastUpdate) {
         if (roomDeviceList == null) return;
 
+        LOG.info(TAG, "updateData(lastUpdate={})", lastUpdate);
         this.lastUpdate = lastUpdate;
         parents.clear();
         parents.addAll(deviceGroupParents);
@@ -115,6 +121,7 @@ public class DeviceGridAdapter<T extends Device<T>> extends GridViewWithSections
 
         Set<Device> allDevices = roomDeviceList.getAllDevices();
         for (Device device : allDevices) {
+            LOG.trace("updateData - contained device {}", device.getName());
             if (device.isInRoom("hidden") && !showHiddenDevices ||
                     device.isInAnyRoomOf(roomDeviceList.getHiddenRooms())) {
                 roomDeviceList.removeDevice(device);
@@ -216,7 +223,7 @@ public class DeviceGridAdapter<T extends Device<T>> extends GridViewWithSections
         final DeviceAdapter<? extends Device<?>> deviceAdapter = DeviceType.getAdapterFor(child);
 
         if (deviceAdapter == null) {
-            Log.d(DeviceGridAdapter.class.getName(), "unsupported device type " + child);
+            LOG.debug("getChildView - unsupported device type {}", child);
             View ret = layoutInflater.inflate(android.R.layout.simple_list_item_1, null);
             assert ret != null;
 
@@ -226,16 +233,15 @@ public class DeviceGridAdapter<T extends Device<T>> extends GridViewWithSections
         }
 
         if (!deviceAdapter.supports(child.getClass())) {
-            String text = "adapter was found for device type, but it will not support the device: "
+            String text = "getChildView - adapter was found for device type, but it will not support the device: "
                     + child;
-            Log.e(TAG, text);
+            LOG.error(text);
             throw new IllegalArgumentException(text);
         }
 
         deviceAdapter.attach(context);
 
         view = deviceAdapter.createOverviewView(layoutInflater, view, child, lastUpdate);
-        //view.setTag(child);
         view.setLayoutParams(new AbsListView.LayoutParams(
                         ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
         );
@@ -248,7 +254,7 @@ public class DeviceGridAdapter<T extends Device<T>> extends GridViewWithSections
         List<String> viewableParents = newArrayList();
         for (String group : parents) {
             if (getChildrenCountForParent(group) <= 0) {
-                Log.v(TAG, "group " + group + " has no children, filtered!");
+                LOG.trace("getDeviceGroupParents - group {} has no children, filtered!", group);
             } else {
                 viewableParents.add(group);
             }
@@ -264,7 +270,7 @@ public class DeviceGridAdapter<T extends Device<T>> extends GridViewWithSections
     @Override
     protected int getRequiredColumnWidth() {
         int width = applicationProperties.getIntegerSharedPreference(DEVICE_COLUMN_WIDTH, DEFAULT_COLUMN_WIDTH);
-        Log.d(TAG, "column width: " + width);
+        LOG.debug("getRequiredColumnWidth - column width: {}", width);
         return width;
     }
 }
