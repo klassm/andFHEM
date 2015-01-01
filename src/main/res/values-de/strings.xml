@@ -587,6 +587,7 @@
     <string name="pause">pause</string>
     <string name="play">abspielen</string>
     <string name="forward">weiter</string>
+    <string name="programChannelSuccess">Programmiere Kanal %1$s</string>
 
     <string name="day">Tag</string>
 

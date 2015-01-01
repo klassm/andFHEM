@@ -29,6 +29,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.Toast;
+
+import org.apache.commons.lang3.math.NumberUtils;
 
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewAction;
@@ -77,5 +80,15 @@ public class FS20ZDRDeviceAdapter extends ToggleableAdapterWithSwitchActionRow<F
                 sendStateAction(context, device, state);
             }
         });
+        if (NumberUtils.isNumber(state)) {
+            button.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    sendStateAction(context, device, "program_" + state);
+                    Toast.makeText(context, String.format(context.getString(R.string.programChannelSuccess), state), Toast.LENGTH_SHORT).show();
+                    return true;
+                }
+            });
+        }
     }
 }
