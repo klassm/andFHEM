@@ -126,6 +126,10 @@ public class ApplicationProperties {
         }
     }
 
+    public String getStringSharedPreference(String key) {
+        return getStringSharedPreference(key, null);
+    }
+
     public void setSharedPreference(String key, String value) {
         SharedPreferences preferences = getPreferences();
         preferences.edit().putString(key, value).apply();

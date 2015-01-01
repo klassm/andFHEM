@@ -45,6 +45,10 @@ public class PreferenceKeys {
     public static final String ALLOW_REMOTE_UPDATE = "prefWidgetRemoteUpdate";
     public static final String VOICE_COMMANDS = "VOICE_COMMANDS";
     public static final String CLEAR_TRUSTED_CERTIFICATES = "CLEAR_TRUSTED_CERTIFICATES";
+    public static final String GRAPH_DEFAULT_TIMESPAN = "GRAPH_DEFAULT_TIMESPAN";
+    public static final String WIDGET_UPDATE_INTERVAL_WLAN = "WIDGET_UPDATE_INTERVAL_WLAN";
+    public static final String WIDGET_UPDATE_INTERVAL_MOBILE = "WIDGET_UPDATE_INTERVAL_MOBILE";
+    public static final String AUTO_UPDATE_TIME = "AUTO_UPDATE_TIME";
 
     public static final String DEVICE_FUNCTIONALITY_ORDER_VISIBLE = "DEVICE_FUNCTIONALITY_ORDER_VISIBLE";
     public static final String DEVICE_TYPE_FUNCTIONALITY_ORDER_INVISIBLE = "DEVICE_TYPE_FUNCTIONALITY_ORDER_INVISIBLE";

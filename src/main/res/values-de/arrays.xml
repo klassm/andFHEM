@@ -51,17 +51,17 @@
 
     <string-array name="updateRoomListTimeEntries">
         <item>nie</item>
-        <item>1 Minute</item>
-        <item>5 Minuten</item>
-        <item>30 Minuten</item>
-        <item>1 Stunde</item>
-        <item>2 Stunden</item>
-        <item>4 Stunden</item>
-        <item>8 Stunden</item>
-        <item>12 Stunden</item>
-        <item>24 Stunden</item>
-        <item>36 Stunden</item>
-        <item>48 Stunden</item>
+        <item>jede Minute</item>
+        <item>alle 5 Minuten</item>
+        <item>alle 30 Minuten</item>
+        <item>jede Stunde</item>
+        <item>alle 2 Stunden</item>
+        <item>alle 4 Stunden</item>
+        <item>alle 8 Stunden</item>
+        <item>alle 12 Stunden</item>
+        <item>alle 24 Stunden</item>
+        <item>alle 36 Stunden</item>
+        <item>alle 48 Stunden</item>
     </string-array>
 
     <string-array name="startupViews">

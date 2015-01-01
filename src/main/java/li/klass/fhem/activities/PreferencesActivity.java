@@ -32,6 +32,10 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.widget.Toast;
 
+import com.google.common.base.Objects;
+
+import org.apache.commons.lang3.ArrayUtils;
+
 import java.security.KeyStoreException;
 import java.util.Enumeration;
 import java.util.logging.Level;
@@ -46,9 +50,11 @@ import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.PreferenceKeys;
 import li.klass.fhem.error.ErrorHolder;
 import li.klass.fhem.service.device.GCMSendDeviceService;
+import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.DisplayUtil;
 import li.klass.fhem.widget.preference.SeekBarPreference;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static li.klass.fhem.adapter.rooms.DeviceGridAdapter.DEFAULT_COLUMN_WIDTH;
 import static li.klass.fhem.constants.PreferenceKeys.CLEAR_TRUSTED_CERTIFICATES;
 import static li.klass.fhem.constants.PreferenceKeys.COMMAND_EXECUTION_RETRIES;
@@ -68,6 +74,9 @@ public class PreferencesActivity extends PreferenceActivity
     @Inject
     GCMSendDeviceService gcmSendDeviceService;
 
+    @Inject
+    ApplicationProperties applicationProperties;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,6 +87,18 @@ public class PreferencesActivity extends PreferenceActivity
         preferences.registerOnSharedPreferenceChangeListener(this);
 
         addPreferencesFromResource(R.layout.preferences);
+
+        attachListSummaryListenerTo(PreferenceKeys.STARTUP_VIEW, R.array.startupViewsValues, R.array.startupViews, R.string.prefStartupViewSummary);
+        attachIntSummaryListenerTo(PreferenceKeys.DEVICE_COLUMN_WIDTH, R.string.prefDeviceColumnWidthSummary);
+        attachIntSummaryListenerTo(PreferenceKeys.DEVICE_LIST_RIGHT_PADDING, R.string.prefDeviceListPaddingRightSummary);
+        attachListSummaryListenerTo(PreferenceKeys.GRAPH_DEFAULT_TIMESPAN, R.array.graphDefaultTimespanValues, R.array.graphDefaultTimespanEntries, R.string.prefDefaultTimespanSummary);
+        attachListSummaryListenerTo(PreferenceKeys.WIDGET_UPDATE_INTERVAL_WLAN, R.array.widgetUpdateTimeValues, R.array.widgetUpdateTimeEntries, R.string.prefWidgetUpdateTimeWLANSummary);
+        attachListSummaryListenerTo(PreferenceKeys.WIDGET_UPDATE_INTERVAL_MOBILE, R.array.widgetUpdateTimeValues, R.array.widgetUpdateTimeEntries, R.string.prefWidgetUpdateTimeMobileSummary);
+        attachStringSummaryListenerTo(PreferenceKeys.GCM_PROJECT_ID, R.string.prefGCMProjectIdSummary);
+        attachListSummaryListenerTo(PreferenceKeys.AUTO_UPDATE_TIME, R.array.updateRoomListTimeValues, R.array.updateRoomListTimeEntries, R.string.prefAutoUpdateSummary);
+        attachIntSummaryListenerTo(PreferenceKeys.CONNECTION_TIMEOUT, R.string.prefConnectionTimeoutSummary);
+        attachIntSummaryListenerTo(PreferenceKeys.COMMAND_EXECUTION_RETRIES, R.string.prefCommandExecutionRetriesSummary);
+        attachStringSummaryListenerTo(PreferenceKeys.DEVICE_NAME, R.string.prefDeviceNameSummary);
 
         SeekBarPreference deviceColumnWidthPreference = (SeekBarPreference) findPreference(DEVICE_COLUMN_WIDTH);
         deviceColumnWidthPreference.setMinimumValue(200);
@@ -156,5 +177,53 @@ public class PreferencesActivity extends PreferenceActivity
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
+    }
+
+    private void attachIntSummaryListenerTo(String preferenceKey, final int summaryTemplate) {
+        Preference preference = findPreference(preferenceKey);
+        preference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                preference.setSummary(String.format(getString(summaryTemplate), newValue));
+                return true;
+            }
+        });
+        preference.setSummary(String.format(getString(summaryTemplate), applicationProperties.getIntegerSharedPreference(preferenceKey, 0)));
+    }
+
+    private void attachStringSummaryListenerTo(String preferenceKey, final int summaryTemplate) {
+        Preference preference = findPreference(preferenceKey);
+        preference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                preference.setSummary(String.format(getString(summaryTemplate), newValue));
+                return true;
+            }
+        });
+        preference.setSummary(String.format(getString(summaryTemplate), Objects.firstNonNull(applicationProperties.getStringSharedPreference(preferenceKey, null), "")));
+    }
+
+    private void attachListSummaryListenerTo(String preferenceKey, final int valuesArrayResource, final int textArrayResource, final int summaryTemplate) {
+        Preference preference = findPreference(preferenceKey);
+        preference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                preference.setSummary(nameForArrayValueFormatted(valuesArrayResource, textArrayResource, newValue.toString(), summaryTemplate));
+                return true;
+            }
+        });
+        preference.setSummary(nameForArrayValueFormatted(valuesArrayResource, textArrayResource,
+                applicationProperties.getStringSharedPreference(preferenceKey), summaryTemplate));
+    }
+
+    private String nameForArrayValueFormatted(int valuesArrayResource, int textArrayResource, String value, int summaryTemplate) {
+        return String.format(getString(summaryTemplate), nameForArrayValue(valuesArrayResource, textArrayResource, value));
+    }
+
+    private String nameForArrayValue(int valuesArrayResource, int textArrayResource, String value) {
+        int index = ArrayUtils.indexOf(getResources().getStringArray(valuesArrayResource), value);
+        checkArgument(index >= 0);
+
+        return getResources().getStringArray(textArrayResource)[index];
     }
 }

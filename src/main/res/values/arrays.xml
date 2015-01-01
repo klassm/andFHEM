@@ -89,17 +89,17 @@
 
     <string-array name="updateRoomListTimeEntries">
         <item>never</item>
-        <item>1 minute</item>
-        <item>5 minutes</item>
-        <item>30 minutes</item>
-        <item>1 hour</item>
-        <item>2 hours</item>
-        <item>4 hours</item>
-        <item>8 hours</item>
-        <item>12 hours</item>
-        <item>24 hours</item>
-        <item>36 hours</item>
-        <item>48 hours</item>
+        <item>every minute</item>
+        <item>every 5 minutes</item>
+        <item>every 30 minutes</item>
+        <item>every hour</item>
+        <item>every 2 hours</item>
+        <item>every 4 hours</item>
+        <item>every 8 hours</item>
+        <item>every 12 hours</item>
+        <item>every 24 hours</item>
+        <item>every 36 hours</item>
+        <item>every 48 hours</item>
     </string-array>
 
     <string-array name="updateRoomListTimeValues" translatable="false">

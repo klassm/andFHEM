@@ -31,7 +31,9 @@ package li.klass.fhem.widget.preference;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.preference.DialogPreference;
+import android.preference.PreferenceManager;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -140,6 +142,12 @@ public class SeekBarPreference extends DialogPreference implements SeekBar.OnSee
 
         setDefaultValue(attrs.getAttributeIntValue(ANDROID_NS, "defaultValue", 0));
         setMaximumValue(attrs.getAttributeIntValue(ANDROID_NS, "max", 100));
+        String key = attrs.getAttributeValue(ANDROID_NS, "key");
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        if (! preferences.contains(key)) {
+            preferences.edit().putInt(key, defaultValue).apply();
+        }
     }
 
     @Override
