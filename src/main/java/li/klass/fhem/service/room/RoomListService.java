@@ -389,6 +389,10 @@ public class RoomListService extends AbstractService {
         return roomDeviceList;
     }
 
+    public void clearDeviceList() {
+        roomListHolderService.clearRoomDeviceList();
+    }
+
     public enum RemoteUpdateRequired {
         REQUIRED, NOT_REQUIRED
     }

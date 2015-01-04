@@ -118,6 +118,8 @@ public class ConnectionsIntentService extends ConvenientIntentService {
 
             if (currentlySelected.equals(id)) return STATE.SUCCESS;
 
+            startService(new Intent(Actions.CLEAR_DEVICE_LIST).setClass(this, RoomListIntentService.class));
+
             connectionService.setSelectedId(id);
 
             Intent updateIntent = new Intent(Actions.DO_UPDATE);

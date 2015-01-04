@@ -68,6 +68,14 @@ public class RoomListHolderService {
             LOG.info("storeDeviceListMap() : won't store device list, as empty");
             return;
         }
+        storeDeviceListMapInternal(roomDeviceList);
+    }
+
+    public synchronized void clearRoomDeviceList() {
+        storeDeviceListMapInternal(new RoomDeviceList(RoomDeviceList.ALL_DEVICES_ROOM));
+    }
+
+    private void storeDeviceListMapInternal(RoomDeviceList roomDeviceList) {
         fillHiddenRoomsAndHiddenGroups(roomDeviceList, findFHEMWEBDevice(roomDeviceList));
         cachedRoomList = roomDeviceList;
         LOG.info("storeDeviceListMap() : storing device list to cache");

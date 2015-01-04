@@ -46,6 +46,7 @@ import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.RoomDeviceList;
 import li.klass.fhem.service.room.RoomListService;
 
+import static li.klass.fhem.constants.Actions.CLEAR_DEVICE_LIST;
 import static li.klass.fhem.constants.Actions.GET_ALL_ROOMS_DEVICE_LIST;
 import static li.klass.fhem.constants.Actions.GET_DEVICE_FOR_NAME;
 import static li.klass.fhem.constants.Actions.GET_ROOM_DEVICE_LIST;
@@ -143,6 +144,8 @@ public class RoomListIntentService extends ConvenientIntentService {
                         .setAction(REMOTE_UPDATE_FINISHED)
                         .setClass(this, sender));
             }
+        } else if (CLEAR_DEVICE_LIST.equals(action)) {
+            roomListService.clearDeviceList();
         }
 
         return STATE.DONE;
