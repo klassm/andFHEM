@@ -24,121 +24,125 @@
 
 <FHZINFO>
     <ECMD_LIST>
-        <ECMD name="NETIO_01"
-            attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings classdefs split logTraffic:0,1,2,3,4,5 timeout partial userattr"
-            sets="reopen classdef" state="opened">
-            <INT key="DEF" value="telnet 192.168.2.249:2701" />
-            <INT key="DeviceName" value="192.168.2.249:2701" />
-            <INT key="FD" value="9" />
-            <INT key="NAME" value="NETIO_01" />
-            <INT key="NR" value="25" />
-            <INT key="PARTIAL" value="" />
-            <INT key="Protocol" value="telnet" />
-            <INT key="STATE" value="opened" />
-            <INT key="TYPE" value="ECMD" />
-            <ATTR key="classdefs"
-                value="ONEWIRE=/opt/fhem/onewire.classdef:RFM12=/opt/fhem/intertechno.classdef:RELAIS=/opt/fhem/relais.classdef" />
-            <ATTR key="room" value="Interfaces" />
-            <STATE key="state" measured="2014-12-23 16:01:07" value="opened" />
+        <ECMD name="NETIO_01" state="opened" sets="reopen classdef" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings classdefs split logTraffic:0,1,2,3,4,5 timeout partial userattr">
+            <INT key="DEF" value="telnet 192.168.2.249:2701"/>
+            <INT key="DeviceName" value="192.168.2.249:2701"/>
+            <INT key="FD" value="4"/>
+            <INT key="NAME" value="NETIO_01"/>
+            <INT key="NR" value="25"/>
+            <INT key="PARTIAL" value=""/>
+            <INT key="Protocol" value="telnet"/>
+            <INT key="STATE" value="opened"/>
+            <INT key="TYPE" value="ECMD"/>
+            <ATTR key="classdefs" value="ONEWIRE=/opt/fhem/onewire.classdef:RFM12=/opt/fhem/intertechno.classdef:RELAIS=/opt/fhem/relais.classdef"/>
+            <ATTR key="room" value="Interfaces"/>
+            <STATE key="state" value="opened" measured="2014-12-29 14:31:55"/>
         </ECMD>
     </ECMD_LIST>
     <ECMDDevice_LIST>
-        <ECMDDevice name="Relais1"
-            attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev class event-on-change-reading event-on-update-reading event-min-interval stateFormat userattr"
-            sets="off on" state="???">
-            <INT key="DEF" value="RELAIS 01" />
-            <INT key="NAME" value="Relais1" />
-            <INT key="NR" value="27" />
-            <INT key="STATE" value="???" />
-            <INT key="TYPE" value="ECMDDevice" />
-            <INT key="IODev" value="NETIO_01" />
-            <ATTR key="IODev" value="NETIO_01" />
-            <ATTR key="alias" value="Schalter1" />
-            <ATTR key="room" value="Schalten1,GPIO" />
+        <ECMDDevice name="Relais1" state="on ok" sets="off on" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev class event-on-change-reading event-on-update-reading event-min-interval stateFormat userattr">
+            <INT key="DEF" value="RELAIS 01"/>
+            <INT key="NAME" value="Relais1"/>
+            <INT key="NR" value="27"/>
+            <INT key="STATE" value="on ok"/>
+            <INT key="TYPE" value="ECMDDevice"/>
+            <INT key="IODev" value="NETIO_01"/>
+            <ATTR key="IODev" value="NETIO_01"/>
+            <ATTR key="room" value="Schalten1"/>
+            <STATE key="off" value="ok" measured="2014-12-29 16:32:47"/>
+            <STATE key="on" value="ok" measured="2014-12-29 16:38:16"/>
+            <STATE key="state" value="on ok" measured="2014-12-29 16:38:16"/>
         </ECMDDevice>
-        <ECMDDevice name="Relais2"
-            attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev class event-on-change-reading event-on-update-reading event-min-interval stateFormat userattr"
-            sets="off on" state="???">
-            <INT key="DEF" value="RELAIS 02" />
-            <INT key="NAME" value="Relais2" />
-            <INT key="NR" value="28" />
-            <INT key="STATE" value="???" />
-            <INT key="TYPE" value="ECMDDevice" />
-            <INT key="IODev" value="NETIO_01" />
-            <ATTR key="IODev" value="NETIO_01" />
-            <ATTR key="room" value="Schalten1" />
+        <ECMDDevice name="Relais2" state="off ok" sets="off on" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev class event-on-change-reading event-on-update-reading event-min-interval stateFormat userattr">
+            <INT key="DEF" value="RELAIS 02"/>
+            <INT key="NAME" value="Relais2"/>
+            <INT key="NR" value="29"/>
+            <INT key="STATE" value="off ok"/>
+            <INT key="TYPE" value="ECMDDevice"/>
+            <INT key="IODev" value="NETIO_01"/>
+            <ATTR key="IODev" value="NETIO_01"/>
+            <ATTR key="room" value="Schalten1"/>
+            <STATE key="off" value="ok" measured="2014-12-29 11:34:45"/>
+            <STATE key="on" value="ok" measured="2014-12-29 11:34:26"/>
+            <STATE key="state" value="off ok" measured="2014-12-29 11:34:45"/>
         </ECMDDevice>
-        <ECMDDevice name="Relais3"
-            attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev class event-on-change-reading event-on-update-reading event-min-interval stateFormat userattr"
-            sets="off on" state="???">
-            <INT key="DEF" value="RELAIS 04" />
-            <INT key="NAME" value="Relais3" />
-            <INT key="NR" value="29" />
-            <INT key="STATE" value="???" />
-            <INT key="TYPE" value="ECMDDevice" />
-            <INT key="IODev" value="NETIO_01" />
-            <ATTR key="IODev" value="NETIO_01" />
-            <ATTR key="room" value="Schalten1" />
+        <ECMDDevice name="Relais3" state="off ok" sets="off on" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev class event-on-change-reading event-on-update-reading event-min-interval stateFormat userattr">
+            <INT key="DEF" value="RELAIS 04"/>
+            <INT key="NAME" value="Relais3"/>
+            <INT key="NR" value="30"/>
+            <INT key="STATE" value="off ok"/>
+            <INT key="TYPE" value="ECMDDevice"/>
+            <INT key="IODev" value="NETIO_01"/>
+            <ATTR key="IODev" value="NETIO_01"/>
+            <ATTR key="room" value="Schalten1"/>
+            <STATE key="off" value="ok" measured="2014-12-29 11:34:46"/>
+            <STATE key="on" value="ok" measured="2014-12-29 11:34:33"/>
+            <STATE key="state" value="off ok" measured="2014-12-29 11:34:46"/>
         </ECMDDevice>
-        <ECMDDevice name="Relais4"
-            attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev class event-on-change-reading event-on-update-reading event-min-interval stateFormat userattr"
-            sets="off on" state="???">
-            <INT key="DEF" value="RELAIS 08" />
-            <INT key="NAME" value="Relais4" />
-            <INT key="NR" value="30" />
-            <INT key="STATE" value="???" />
-            <INT key="TYPE" value="ECMDDevice" />
-            <INT key="IODev" value="NETIO_01" />
-            <ATTR key="IODev" value="NETIO_01" />
-            <ATTR key="room" value="Schalten1" />
+        <ECMDDevice name="Relais4" state="off ok" sets="off on" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev class event-on-change-reading event-on-update-reading event-min-interval stateFormat userattr">
+            <INT key="DEF" value="RELAIS 08"/>
+            <INT key="NAME" value="Relais4"/>
+            <INT key="NR" value="31"/>
+            <INT key="STATE" value="off ok"/>
+            <INT key="TYPE" value="ECMDDevice"/>
+            <INT key="IODev" value="NETIO_01"/>
+            <ATTR key="IODev" value="NETIO_01"/>
+            <ATTR key="room" value="Schalten1"/>
+            <STATE key="off" value="ok" measured="2014-12-29 11:34:45"/>
+            <STATE key="on" value="ok" measured="2014-12-29 11:34:31"/>
+            <STATE key="state" value="off ok" measured="2014-12-29 11:34:45"/>
         </ECMDDevice>
-        <ECMDDevice name="Relais5"
-            attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev class event-on-change-reading event-on-update-reading event-min-interval stateFormat userattr"
-            sets="off on" state="???">
-            <INT key="DEF" value="RELAIS 10" />
-            <INT key="NAME" value="Relais5" />
-            <INT key="NR" value="31" />
-            <INT key="STATE" value="???" />
-            <INT key="TYPE" value="ECMDDevice" />
-            <INT key="IODev" value="NETIO_01" />
-            <ATTR key="IODev" value="NETIO_01" />
-            <ATTR key="room" value="Schalten1" />
+        <ECMDDevice name="Relais5" state="off ok" sets="off on" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev class event-on-change-reading event-on-update-reading event-min-interval stateFormat userattr">
+            <INT key="DEF" value="RELAIS 10"/>
+            <INT key="NAME" value="Relais5"/>
+            <INT key="NR" value="32"/>
+            <INT key="STATE" value="off ok"/>
+            <INT key="TYPE" value="ECMDDevice"/>
+            <INT key="IODev" value="NETIO_01"/>
+            <ATTR key="IODev" value="NETIO_01"/>
+            <ATTR key="room" value="Schalten1"/>
+            <STATE key="off" value="ok" measured="2014-12-29 11:34:46"/>
+            <STATE key="on" value="ok" measured="2014-12-29 11:34:33"/>
+            <STATE key="state" value="off ok" measured="2014-12-29 11:34:46"/>
         </ECMDDevice>
-        <ECMDDevice name="Relais6"
-            attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev class event-on-change-reading event-on-update-reading event-min-interval stateFormat userattr"
-            sets="off on" state="???">
-            <INT key="DEF" value="RELAIS 20" />
-            <INT key="NAME" value="Relais6" />
-            <INT key="NR" value="32" />
-            <INT key="STATE" value="???" />
-            <INT key="TYPE" value="ECMDDevice" />
-            <INT key="IODev" value="NETIO_01" />
-            <ATTR key="IODev" value="NETIO_01" />
-            <ATTR key="room" value="Schalten1" />
+        <ECMDDevice name="Relais6" state="off ok" sets="off on" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev class event-on-change-reading event-on-update-reading event-min-interval stateFormat userattr">
+            <INT key="DEF" value="RELAIS 20"/>
+            <INT key="NAME" value="Relais6"/>
+            <INT key="NR" value="33"/>
+            <INT key="STATE" value="off ok"/>
+            <INT key="TYPE" value="ECMDDevice"/>
+            <INT key="IODev" value="NETIO_01"/>
+            <ATTR key="IODev" value="NETIO_01"/>
+            <ATTR key="room" value="Schalten1"/>
+            <STATE key="off" value="ok" measured="2014-12-29 11:34:45"/>
+            <STATE key="on" value="ok" measured="2014-12-29 11:34:32"/>
+            <STATE key="state" value="off ok" measured="2014-12-29 11:34:45"/>
         </ECMDDevice>
-        <ECMDDevice name="Relais7"
-            attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev class event-on-change-reading event-on-update-reading event-min-interval stateFormat userattr"
-            sets="off on" state="???">
-            <INT key="DEF" value="RELAIS 40" />
-            <INT key="NAME" value="Relais7" />
-            <INT key="NR" value="33" />
-            <INT key="STATE" value="???" />
-            <INT key="TYPE" value="ECMDDevice" />
-            <INT key="IODev" value="NETIO_01" />
-            <ATTR key="IODev" value="NETIO_01" />
-            <ATTR key="room" value="Schalten1" />
+        <ECMDDevice name="Relais7" state="off ok" sets="off on" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev class event-on-change-reading event-on-update-reading event-min-interval stateFormat userattr">
+            <INT key="DEF" value="RELAIS 40"/>
+            <INT key="NAME" value="Relais7"/>
+            <INT key="NR" value="34"/>
+            <INT key="STATE" value="off ok"/>
+            <INT key="TYPE" value="ECMDDevice"/>
+            <INT key="IODev" value="NETIO_01"/>
+            <ATTR key="IODev" value="NETIO_01"/>
+            <ATTR key="room" value="Schalten1"/>
+            <STATE key="off" value="ok" measured="2014-12-29 11:35:01"/>
+            <STATE key="on" value="ok" measured="2014-12-29 11:34:34"/>
+            <STATE key="state" value="off ok" measured="2014-12-29 11:35:01"/>
         </ECMDDevice>
-        <ECMDDevice name="Relais8"
-            attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev class event-on-change-reading event-on-update-reading event-min-interval stateFormat userattr"
-            sets="off on" state="???">
-            <INT key="DEF" value="RELAIS 80" />
-            <INT key="NAME" value="Relais8" />
-            <INT key="NR" value="34" />
-            <INT key="STATE" value="???" />
-            <INT key="TYPE" value="ECMDDevice" />
-            <INT key="IODev" value="NETIO_01" />
-            <ATTR key="IODev" value="NETIO_01" />
-            <ATTR key="room" value="Schalten1" />
+        <ECMDDevice name="Relais8" state="off ok" sets="off on" attrs="verbose:0,1,2,3,4,5 room group comment alias eventMap userReadings IODev class event-on-change-reading event-on-update-reading event-min-interval stateFormat userattr">
+            <INT key="DEF" value="RELAIS 80"/>
+            <INT key="NAME" value="Relais8"/>
+            <INT key="NR" value="35"/>
+            <INT key="STATE" value="off ok"/>
+            <INT key="TYPE" value="ECMDDevice"/>
+            <INT key="IODev" value="NETIO_01"/>
+            <ATTR key="IODev" value="NETIO_01"/>
+            <ATTR key="room" value="Schalten1"/>
+            <STATE key="off" value="ok" measured="2014-12-29 11:34:46"/>
+            <STATE key="on" value="ok" measured="2014-12-29 11:34:32"/>
+            <STATE key="state" value="off ok" measured="2014-12-29 11:34:46"/>
         </ECMDDevice>
     </ECMDDevice_LIST>
 </FHZINFO>

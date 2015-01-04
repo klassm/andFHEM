@@ -24,6 +24,8 @@
 
 package li.klass.fhem.domain;
 
+import org.w3c.dom.NamedNodeMap;
+
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.ToggleableDevice;
 
@@ -31,5 +33,10 @@ public class EMCDDevice extends ToggleableDevice<EMCDDevice> {
     @Override
     public DeviceFunctionality getDeviceGroup() {
         return DeviceFunctionality.SWITCH;
+    }
+
+    @Override
+    public void readSTATE(String tagName, NamedNodeMap attributes, String value) {
+        super.readSTATE(tagName, attributes, value.replaceAll("ok", "").trim());
     }
 }
