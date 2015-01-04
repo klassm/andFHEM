@@ -46,7 +46,7 @@
                 <ATTR key="fp_Groundfloor" value="180,370"/>
                 <ATTR key="model" value="LCT001"/>
                 <ATTR key="room" value="room"/>
-                <ATTR key="subType" value="colordimmer"/>
+                <ATTR key="subType" value="extcolordimmer"/>
                 <ATTR key="webCmd" value="rgb:toggle:on:off"/>
                 <STATE key="bri" value="254" measured="2013-06-04 21:36:39"/>
                 <STATE key="colormode" value="ct" measured="2013-06-04 21:36:39"/>

@@ -28,6 +28,7 @@ import java.util.Locale;
 
 import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.domain.core.DimmableContinuousStatesDevice;
+import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.util.ColorUtil;
@@ -35,7 +36,6 @@ import li.klass.fhem.util.NumberSystemUtil;
 import li.klass.fhem.util.ValueDescriptionUtil;
 import li.klass.fhem.util.ValueExtractUtil;
 
-@SuppressWarnings("unused")
 @OverviewViewSettings(showState = true)
 public class HUEDevice extends DimmableContinuousStatesDevice<HUEDevice> {
 
@@ -55,43 +55,52 @@ public class HUEDevice extends DimmableContinuousStatesDevice<HUEDevice> {
     private Integer saturation;
     private int pct;
 
+    @XmllistAttribute("SUBTYPE")
     public void readSUBTYPE(String value) {
         try {
-            subType = SubType.valueOf(value.toUpperCase(Locale.getDefault()));
+            subType = SubType.valueOf(value.toUpperCase(Locale.getDefault()).replaceAll("EXT", ""));
         } catch (Exception e) {
             subType = null;
         }
     }
 
+    @XmllistAttribute("MODEL")
     public void readMODEL(String value) {
         model = value;
     }
 
+    @XmllistAttribute("BRI")
     public void readBRI(String value) {
         brightness = ValueExtractUtil.extractLeadingInt(value);
     }
 
+    @XmllistAttribute("HUE")
     public void readHUE(String value) {
         Integer hue = ValueExtractUtil.extractLeadingInt(value);
     }
 
+    @XmllistAttribute("SAT")
     public void readSAT(String value) {
         saturation = ValueExtractUtil.extractLeadingInt(value);
     }
 
+    @XmllistAttribute("PCT")
     public void readPCT(String value) {
         pct = ValueExtractUtil.extractLeadingInt(value);
     }
 
+    @XmllistAttribute("STATE")
     public void readSTATE(String value) {
         setState(value);
     }
 
+    @XmllistAttribute("XY")
     public void readXY(String value) {
         String[] parts = value.split(",");
         xy = new double[]{Double.valueOf(parts[0]), Double.valueOf(parts[1])};
     }
 
+    @XmllistAttribute("RGB")
     public void readRGB(String value) {
         rgb = NumberSystemUtil.hexToDecimal(value);
 
