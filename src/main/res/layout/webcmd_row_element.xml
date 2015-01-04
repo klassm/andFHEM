@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <!--
   ~ AndFHEM - Open Source Android application to control a FHEM home automation
   ~ server.
@@ -24,30 +23,9 @@
   ~   Boston, MA  02110-1301  USA
   -->
 
-<TableRow
-    android:id="@+id/tableRowDeviceName"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:f="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <TextView
-        android:id="@+id/description"
-        style="@style/deviceDetailDescription"
-        android:text="@string/dummy_text"/>
-
-    <LinearLayout
-        android:orientation="vertical"
-        style="@style/deviceDetailContent"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:layout_weight="1">
-        <org.apmem.tools.layouts.FlowLayout
-            android:id="@+id/holder"
-            f:layoutDirection="ltr"
-            android:layout_height="match_parent"
-            android:layout_width="match_parent"
-            android:orientation="horizontal"
-            android:gravity="end" />
-    </LinearLayout>
-</TableRow>
+<ToggleButton xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/toggleButton"
+    android:layout_width="wrap_content"
+    android:layout_marginLeft="@dimen/button_horizontal_separator"
+    android:layout_marginStart="@dimen/button_horizontal_separator"
+    />

@@ -25,19 +25,26 @@
   -->
 
 <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
-          android:layout_width="fill_parent"
-          android:layout_height="fill_parent">
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
     <TextView style="@style/deviceDetailDescription"
-              android:id="@+id/description"
-              android:text="@string/dummy_text"/>
-    <LinearLayout android:layout_height="wrap_content"
-                  android:layout_width="wrap_content"
-                  android:gravity="end">
+        android:id="@+id/description"
+        android:text="@string/dummy_text"/>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        style="@style/deviceOverviewContent"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:padding="0dp"
+        android:layout_weight="1">
 
         <include layout="@layout/on_button"/>
 
         <Button android:id="@+id/offButton"
-                style="@style/deviceOverviewToggleButton"
-                android:text="@string/OFF"/>
+            android:layout_marginLeft="@dimen/button_horizontal_separator"
+            android:layout_marginStart="@dimen/button_horizontal_separator"
+            style="@style/deviceOverviewToggleButton"
+            android:text="@string/OFF"/>
     </LinearLayout>
 </TableRow>

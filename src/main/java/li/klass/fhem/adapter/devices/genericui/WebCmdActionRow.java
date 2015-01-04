@@ -56,7 +56,7 @@ public class WebCmdActionRow<D extends Device<D>> extends HolderActionRow<D, Str
     public View viewFor(final String command, final D device, LayoutInflater inflater,
                         final Context context, ViewGroup viewGroup) {
 
-        ToggleButton button = (ToggleButton) inflater.inflate(R.layout.device_detail_togglebutton, viewGroup, false);
+        ToggleButton button = (ToggleButton) inflater.inflate(R.layout.webcmd_row_element, viewGroup, false);
         assert button != null;
 
         button.setBackgroundDrawable(

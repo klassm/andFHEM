@@ -25,9 +25,9 @@
   -->
 
 <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
-          android:layout_width="fill_parent"
-          android:layout_height="wrap_content"
-          style="@style/deviceOverviewLayout">
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    style="@style/deviceOverviewLayout">
 
     <TextView
         android:id="@+id/description"
@@ -37,15 +37,23 @@
         android:layout_gravity="center_vertical"
         android:text="@string/dummy_text"/>
 
-    <Button
-        android:id="@+id/onButton"
-        style="@style/deviceOverviewToggleButton"
-        android:text="@string/ON"/>
+    <LinearLayout
+        android:orientation="horizontal"
+        style="@style/deviceOverviewContent"
+        android:padding="0dp"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_weight="1">
+        <Button
+            android:id="@+id/onButton"
+            style="@style/deviceOverviewToggleButton"
+            android:text="@string/ON"/>
 
-    <Button
-        android:id="@+id/offButton"
-        android:layout_marginLeft="@dimen/button_horizontal_separator"
-        android:layout_marginStart="@dimen/button_horizontal_separator"
-        style="@style/deviceOverviewToggleButton"
-        android:text="@string/OFF"/>
+        <Button
+            android:id="@+id/offButton"
+            android:layout_marginLeft="@dimen/button_horizontal_separator"
+            android:layout_marginStart="@dimen/button_horizontal_separator"
+            style="@style/deviceOverviewToggleButton"
+            android:text="@string/OFF"/>
+    </LinearLayout>
 </TableRow>
