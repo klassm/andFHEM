@@ -609,4 +609,11 @@
 
     <string name="voiceMoreThanOneDeviceMatches">Mehr als ein Gerät passt zu diesem Kommando.</string>
     <string name="voiceNoDeviceMatches">Kein Gerät passt zu diesem Kommando.</string>
+
+    <string name="importPreferences">Import</string>
+    <string name="importPreferencesSummary">Importiert von einem bestehenden Backup die Applikationseinstellungen</string>
+    <string name="exportPreferences">Export</string>
+    <string name="exportPreferencesSummary">Erstellt ein neues Backup der Applikationseinstellungen (inklusive Verbindungen zu FHEM, Favoriten usw.)</string>
+    <string name="exportSuccess">Erfolg</string>
+    <string name="exportSuccessLocation">Der Backup erfolgte nach</string>
 </resources>

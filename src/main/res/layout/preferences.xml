@@ -209,11 +209,13 @@
             android:summary="@string/prefVoiceCommandSummary"/>
 
         <Preference
-            android:title="Export"
-            android:key="EXPORT_SETTINGS"/>
+            android:title="@string/exportPreferences"
+            android:key="EXPORT_SETTINGS"
+            android:summary="@string/exportPreferencesSummary"/>
 
         <Preference
-            android:title="Import"
-            android:key="IMPORT_SETTINGS"/>
+            android:title="@string/importPreferences"
+            android:key="IMPORT_SETTINGS"
+            android:summary="@string/importPreferencesSummary"/>
     </PreferenceCategory>
 </PreferenceScreen>

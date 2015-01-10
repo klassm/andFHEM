@@ -649,9 +649,9 @@
     <string name="voiceNoDeviceMatches">No device matches the command.</string>
 
     <string name="importPreferences">Import</string>
-    <string name="importPreferencesSummary">Importiert von einem bestehenden Backup die Applikationseinstellungen</string>
+    <string name="importPreferencesSummary">Imports an existing backup of application preferences.</string>
     <string name="exportPreferences">Export</string>
-    <string name="exportPreferencesSummary">Erstellt ein neues Backup der Applikationseinstellungen</string>
+    <string name="exportPreferencesSummary">Creates a new backup of all application preferences (including FHEM connections, favorites and so on)</string>
     <string name="exportSuccess">Success</string>
-    <string name="exportSuccessLocation">Der Backup erfolgte nach</string>
+    <string name="exportSuccessLocation">Backup was written to</string>
 </resources>
