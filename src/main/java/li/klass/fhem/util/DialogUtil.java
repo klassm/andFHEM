@@ -33,6 +33,13 @@ import android.widget.TextView;
 import li.klass.fhem.R;
 
 public class DialogUtil {
+    public static final DialogInterface.OnClickListener DISMISSING_LISTENER = new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            dialog.dismiss();
+        }
+    };
+
     public interface InputDialogListener {
         void onClick(String text);
     }

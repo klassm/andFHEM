@@ -614,6 +614,7 @@
     <string name="importPreferencesSummary">Importiert von einem bestehenden Backup die Applikationseinstellungen</string>
     <string name="exportPreferences">Export</string>
     <string name="exportPreferencesSummary">Erstellt ein neues Backup der Applikationseinstellungen (inklusive Verbindungen zu FHEM, Favoriten usw.)</string>
-    <string name="exportSuccess">Erfolg</string>
+    <string name="exportImportSuccess">Erfolg</string>
     <string name="exportSuccessLocation">Der Backup erfolgte nach</string>
+    <string name="importSuccess">Der Backup wurde erfolgreich angewendet.</string>
 </resources>

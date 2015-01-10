@@ -652,6 +652,7 @@
     <string name="importPreferencesSummary">Imports an existing backup of application preferences.</string>
     <string name="exportPreferences">Export</string>
     <string name="exportPreferencesSummary">Creates a new backup of all application preferences (including FHEM connections, favorites and so on)</string>
-    <string name="exportSuccess">Success</string>
+    <string name="exportImportSuccess">Success</string>
     <string name="exportSuccessLocation">Backup was written to</string>
+    <string name="importSuccess">The backup was applied successfully.</string>
 </resources>

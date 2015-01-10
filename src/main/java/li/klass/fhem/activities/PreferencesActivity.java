@@ -60,6 +60,7 @@ import li.klass.fhem.service.device.GCMSendDeviceService;
 import li.klass.fhem.service.importexport.ImportExportService;
 import li.klass.fhem.ui.FileDialog;
 import li.klass.fhem.util.ApplicationProperties;
+import li.klass.fhem.util.DialogUtil;
 import li.klass.fhem.util.DisplayUtil;
 import li.klass.fhem.util.io.FileSystemService;
 import li.klass.fhem.widget.preference.SeekBarPreference;
@@ -176,12 +177,7 @@ public class PreferencesActivity extends PreferenceActivity
                 ((TextView) layout.findViewById(R.id.export_location)).setText(file.getAbsolutePath());
                 new AlertDialog.Builder(PreferencesActivity.this)
                         .setView(layout).setCancelable(false)
-                        .setPositiveButton(R.string.okButton, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }).show();
+                        .setPositiveButton(R.string.okButton, DialogUtil.DISMISSING_LISTENER).show();
                 return true;
             }
         });
@@ -196,9 +192,18 @@ public class PreferencesActivity extends PreferenceActivity
                 new FileDialog(PreferencesActivity.this, importExportService.getExportDirectory()).addFileListener(new FileDialog.FileSelectedListener() {
                     @Override
                     public void fileSelected(File file) {
-                        finish();
                         importExportService.importSettings(file);
-                        startActivity(getIntent());
+                        @SuppressLint("InflateParams") View layout = getLayoutInflater().inflate(R.layout.import_success, null);
+                        new AlertDialog.Builder(PreferencesActivity.this)
+                                .setView(layout).setCancelable(false)
+                                .setPositiveButton(R.string.okButton, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        finish();
+                                        startActivity(getIntent());
+                                        dialog.dismiss();
+                                    }
+                                }).show();
                     }
                 }).showDialog();
                 return true;
