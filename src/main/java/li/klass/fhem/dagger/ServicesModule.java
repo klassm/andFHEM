@@ -26,6 +26,7 @@ package li.klass.fhem.dagger;
 
 import dagger.Module;
 import li.klass.fhem.appwidget.service.AppWidgetUpdateService;
+import li.klass.fhem.service.importexport.ImportExportService;
 import li.klass.fhem.service.intent.AppActionsIntentService;
 import li.klass.fhem.service.intent.ConnectionsIntentService;
 import li.klass.fhem.service.intent.DeviceIntentService;
@@ -53,7 +54,8 @@ import li.klass.fhem.service.intent.VoiceCommandIntentService;
                 AppWidgetUpdateService.class,
                 LicenseIntentService.class,
                 AppActionsIntentService.class,
-                VoiceCommandIntentService.class
+                VoiceCommandIntentService.class,
+                ImportExportService.class
         })
 public class ServicesModule {
 }

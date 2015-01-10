@@ -647,4 +647,11 @@
 
     <string name="voiceMoreThanOneDeviceMatches">More than one device matches the command.</string>
     <string name="voiceNoDeviceMatches">No device matches the command.</string>
+
+    <string name="importPreferences">Import</string>
+    <string name="importPreferencesSummary">Importiert von einem bestehenden Backup die Applikationseinstellungen</string>
+    <string name="exportPreferences">Export</string>
+    <string name="exportPreferencesSummary">Erstellt ein neues Backup der Applikationseinstellungen</string>
+    <string name="exportSuccess">Success</string>
+    <string name="exportSuccessLocation">Der Backup erfolgte nach</string>
 </resources>

@@ -62,7 +62,7 @@ public class NotificationIntentService extends ConvenientIntentService {
     public static final int NO_UPDATES = 0;
     public static final int ALL_UPDATES = 1;
     public static final int STATE_UPDATES = 2;
-    private static final String PREFERENCES_NAME = "deviceNotifications";
+    public static final String PREFERENCES_NAME = "deviceNotifications";
 
     @Inject
     @ForApplication

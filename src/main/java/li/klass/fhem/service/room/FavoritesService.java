@@ -39,7 +39,7 @@ import li.klass.fhem.domain.core.RoomDeviceList;
 
 @Singleton
 public class FavoritesService {
-    private static final String PREFERENCES_NAME = "favorites";
+    public static final String PREFERENCES_NAME = "favorites";
     @Inject
     RoomListService roomListService;
     @Inject

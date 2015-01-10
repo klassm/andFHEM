@@ -207,5 +207,13 @@
             android:title="@string/prefVoiceCommand"
             android:key="VOICE_COMMANDS"
             android:summary="@string/prefVoiceCommandSummary"/>
+
+        <Preference
+            android:title="Export"
+            android:key="EXPORT_SETTINGS"/>
+
+        <Preference
+            android:title="Import"
+            android:key="IMPORT_SETTINGS"/>
     </PreferenceCategory>
 </PreferenceScreen>

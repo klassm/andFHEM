@@ -116,6 +116,10 @@ public class ApplicationProperties {
         return preferences.getInt(key, defaultValue);
     }
 
+    public String getApplicationSharedPreferencesName() {
+        return applicationContext.getPackageName() + "_preferences";
+    }
+
     public String getStringSharedPreference(String key, String defaultValue) {
         SharedPreferences preferences = getPreferences();
         String value = preferences.getString(key, defaultValue);

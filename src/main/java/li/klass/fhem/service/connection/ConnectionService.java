@@ -58,7 +58,7 @@ public class ConnectionService {
     public static final String TEST_DATA_ID = "-2";
     public static final String MANAGEMENT_DATA_ID = "-3";
     private static final Gson GSON = new Gson();
-    private static final String PREFERENCES_NAME = "fhemConnections";
+    public static final String PREFERENCES_NAME = "fhemConnections";
 
     @Inject
     ApplicationProperties applicationProperties;

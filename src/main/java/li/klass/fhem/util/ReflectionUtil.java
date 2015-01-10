@@ -153,4 +153,12 @@ public class ReflectionUtil {
         }
         return null;
     }
+
+    public static Class<?> classForName(String className) {
+        try {
+            return Class.forName(className);
+        } catch (ClassNotFoundException e) {
+            throw new IllegalArgumentException("cannot find " + className, e);
+        }
+    }
 }

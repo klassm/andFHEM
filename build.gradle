@@ -147,6 +147,7 @@ dependencies {
     compile 'org.slf4j:slf4j-android:1.7.7'
     compile 'org.apmem.tools:layouts:1.6@aar'
     compile 'de.duenndns:memorizing-trust-manager:0.9@aar'
+    compile 'net.lingala.zip4j:zip4j:1.3.2'
 
 
     testCompile 'org.hamcrest:hamcrest-all:1.3'

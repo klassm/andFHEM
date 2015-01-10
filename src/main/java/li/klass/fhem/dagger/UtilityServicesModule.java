@@ -48,6 +48,7 @@ import li.klass.fhem.service.room.FavoritesService;
 import li.klass.fhem.service.room.RoomListHolderService;
 import li.klass.fhem.service.room.RoomListService;
 import li.klass.fhem.update.UpdateHandler;
+import li.klass.fhem.util.io.FileSystemService;
 
 @Module(complete = false,
         injects = {
@@ -73,7 +74,9 @@ import li.klass.fhem.update.UpdateHandler;
                 GCMIntentService.class,
                 SharedPreferencesService.class,
                 DateService.class,
-                VoiceCommandService.class
+                VoiceCommandService.class,
+                SharedPreferencesService.class,
+                FileSystemService.class
         })
 public class UtilityServicesModule {
 }

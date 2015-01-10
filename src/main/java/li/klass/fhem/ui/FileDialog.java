@@ -125,8 +125,9 @@ public class FileDialog {
         return dialog;
     }
 
-    public void addFileListener(FileSelectedListener listener) {
+    public FileDialog addFileListener(FileSelectedListener listener) {
         fileListenerList.add(listener);
+        return this;
     }
 
     @SuppressWarnings("unused")

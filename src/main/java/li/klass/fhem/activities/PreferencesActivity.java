@@ -24,18 +24,25 @@
 
 package li.klass.fhem.activities;
 
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.common.base.Objects;
 
 import org.apache.commons.lang3.ArrayUtils;
 
+import java.io.File;
 import java.security.KeyStoreException;
 import java.util.Enumeration;
 import java.util.logging.Level;
@@ -50,8 +57,11 @@ import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.PreferenceKeys;
 import li.klass.fhem.error.ErrorHolder;
 import li.klass.fhem.service.device.GCMSendDeviceService;
+import li.klass.fhem.service.importexport.ImportExportService;
+import li.klass.fhem.ui.FileDialog;
 import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.DisplayUtil;
+import li.klass.fhem.util.io.FileSystemService;
 import li.klass.fhem.widget.preference.SeekBarPreference;
 
 import static com.google.common.base.Preconditions.checkArgument;
@@ -60,7 +70,9 @@ import static li.klass.fhem.constants.PreferenceKeys.CLEAR_TRUSTED_CERTIFICATES;
 import static li.klass.fhem.constants.PreferenceKeys.COMMAND_EXECUTION_RETRIES;
 import static li.klass.fhem.constants.PreferenceKeys.CONNECTION_TIMEOUT;
 import static li.klass.fhem.constants.PreferenceKeys.DEVICE_COLUMN_WIDTH;
+import static li.klass.fhem.constants.PreferenceKeys.EXPORT_SETTINGS;
 import static li.klass.fhem.constants.PreferenceKeys.GCM_PROJECT_ID;
+import static li.klass.fhem.constants.PreferenceKeys.IMPORT_SETTINGS;
 import static li.klass.fhem.constants.PreferenceKeys.SEND_APP_LOG;
 import static li.klass.fhem.constants.PreferenceKeys.SEND_LAST_ERROR;
 import static li.klass.fhem.fhem.FHEMConnection.CONNECTION_TIMEOUT_DEFAULT_SECONDS;
@@ -76,6 +88,12 @@ public class PreferencesActivity extends PreferenceActivity
 
     @Inject
     ApplicationProperties applicationProperties;
+
+    @Inject
+    ImportExportService importExportService;
+
+    @Inject
+    FileSystemService fileSystemService;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -148,6 +166,47 @@ public class PreferencesActivity extends PreferenceActivity
                 return true;
             }
         });
+
+        Preference exportPreference = findPreference(EXPORT_SETTINGS);
+        exportPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                File file = importExportService.exportSettings();
+                @SuppressLint("InflateParams") View layout = getLayoutInflater().inflate(R.layout.export_success, null);
+                ((TextView) layout.findViewById(R.id.export_location)).setText(file.getAbsolutePath());
+                new AlertDialog.Builder(PreferencesActivity.this)
+                        .setView(layout).setCancelable(false)
+                        .setPositiveButton(R.string.okButton, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }).show();
+                return true;
+            }
+        });
+        if (AndFHEMApplication.getAndroidSDKLevel() <= Build.VERSION_CODES.KITKAT) {
+            getPreferenceScreen().removePreference(exportPreference);
+        }
+
+        Preference importPreference = findPreference(IMPORT_SETTINGS);
+        importPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                new FileDialog(PreferencesActivity.this, importExportService.getExportDirectory()).addFileListener(new FileDialog.FileSelectedListener() {
+                    @Override
+                    public void fileSelected(File file) {
+                        finish();
+                        importExportService.importSettings(file);
+                        startActivity(getIntent());
+                    }
+                }).showDialog();
+                return true;
+            }
+        });
+        if (AndFHEMApplication.getAndroidSDKLevel() <= Build.VERSION_CODES.KITKAT) {
+            getPreferenceScreen().removePreference(importPreference);
+        }
 
         SeekBarPreference connectionTimeoutPreference = (SeekBarPreference) findPreference(CONNECTION_TIMEOUT);
         connectionTimeoutPreference.setMinimumValue(1);

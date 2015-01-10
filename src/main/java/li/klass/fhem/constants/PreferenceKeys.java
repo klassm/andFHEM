@@ -49,6 +49,8 @@ public class PreferenceKeys {
     public static final String WIDGET_UPDATE_INTERVAL_WLAN = "WIDGET_UPDATE_INTERVAL_WLAN";
     public static final String WIDGET_UPDATE_INTERVAL_MOBILE = "WIDGET_UPDATE_INTERVAL_MOBILE";
     public static final String AUTO_UPDATE_TIME = "AUTO_UPDATE_TIME";
+    public static final String EXPORT_SETTINGS = "EXPORT_SETTINGS";
+    public static final String IMPORT_SETTINGS = "IMPORT_SETTINGS";
 
     public static final String DEVICE_FUNCTIONALITY_ORDER_VISIBLE = "DEVICE_FUNCTIONALITY_ORDER_VISIBLE";
     public static final String DEVICE_TYPE_FUNCTIONALITY_ORDER_INVISIBLE = "DEVICE_TYPE_FUNCTIONALITY_ORDER_INVISIBLE";
