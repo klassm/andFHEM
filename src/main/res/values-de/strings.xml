@@ -615,6 +615,12 @@
     <string name="exportPreferences">Export</string>
     <string name="exportPreferencesSummary">Erstellt ein neues Backup der Applikationseinstellungen (inklusive Verbindungen zu FHEM, Favoriten usw.)</string>
     <string name="exportImportSuccess">Erfolg</string>
+    <string name="exportImportError">Fehler</string>
     <string name="exportSuccessLocation">Der Backup erfolgte nach</string>
     <string name="importSuccess">Der Backup wurde erfolgreich angewendet.</string>
+    <string name="importExportPassword">Backup-Passwort</string>
+    <string name="exportPasswordDescription">Bitte gib ein Password für die Verschlüsselung des Backups ein. Bitte stelle sicher, dass du das Passwort bei einem späteren Import wieder weißt! Das Feld darf auch leer bleiben.</string>
+    <string name="importPasswordDescription">Bitte gib ein Password für die Entschlüsselung des Backups ein. Bitte stelle sicher, dass das Passwort mit dem Passwort übereinstimmt, das du bei der Erstellung des Backups angegeben hast! Das Feld darf auch leer bleiben.Please enter a password to decrypt the backup. The value must match the value you entered to create the backup. The value may also be empty.</string>
+    <string name="importErrorWrongPassword">Falsches Passwort</string>
+    <string name="importErrorInvalidFile">Diese Datei sieht nicht wie eine valide andFHEM Backup-Datei aus.</string>
 </resources>

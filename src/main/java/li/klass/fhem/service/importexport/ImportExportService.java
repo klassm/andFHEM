@@ -25,12 +25,15 @@
 package li.klass.fhem.service.importexport;
 
 import com.google.common.base.Charsets;
+import com.google.common.base.Objects;
+import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.google.gson.Gson;
 
 import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
+import net.lingala.zip4j.exception.ZipExceptionConstants;
 import net.lingala.zip4j.model.ZipParameters;
 import net.lingala.zip4j.util.Zip4jConstants;
 
@@ -57,7 +60,12 @@ import li.klass.fhem.util.ReflectionUtil;
 import li.klass.fhem.util.io.FileSystemService;
 import li.klass.fhem.util.preferences.SharedPreferencesService;
 
+import static com.google.common.base.Preconditions.checkArgument;
+
 public class ImportExportService {
+    public enum ImportStatus{
+        SUCCESS, INVALID_FILE, WRONG_PASSWORD
+    }
 
     private final Map<String, String> sharedPreferencesExportKeys;
 
@@ -80,7 +88,7 @@ public class ImportExportService {
                 .build();
     }
 
-    public File exportSettings() {
+    public File exportSettings(String password) {
         Map<String, Map<String, ?>> toExport = Maps.newHashMap();
 
         for (Map.Entry<String, String> exportValue : sharedPreferencesExportKeys.entrySet()) {
@@ -88,7 +96,7 @@ public class ImportExportService {
             toExport.put(exportValue.getKey(), toExportValues(values));
         }
 
-        return createZipFrom(toExport);
+        return createZipFrom(toExport, Optional.fromNullable(password));
     }
 
     public Map<String, String> toExportValues(Map<String, ?> values) {
@@ -125,13 +133,42 @@ public class ImportExportService {
         }
     }
 
+    public boolean isValidZipFile(File file) {
+        try {
+            ZipFile zipFile = new ZipFile(file);
+            return zipFile.isValidZipFile();
+        } catch (ZipException e) {
+            LOGGER.error("error while reading zip file", e);
+            return false;
+        }
+    }
+
+    public boolean isEncryptedFile(File file) {
+        try {
+            ZipFile zipFile = new ZipFile(file);
+            checkArgument(zipFile.isValidZipFile());
+            return zipFile.isEncrypted();
+        } catch (ZipException e) {
+            LOGGER.error("error while reading zip file", e);
+            throw new IllegalArgumentException(e);
+        }
+    }
+
     @SuppressWarnings("unchecked")
-    public void importSettings(File file) {
+    public ImportStatus importSettings(File file, String password) {
         ZipFile zipFile;
         InputStreamReader importReader = null;
 
         try {
             zipFile = new ZipFile(file);
+            if (zipFile.isEncrypted()) {
+                zipFile.setPassword(Objects.firstNonNull(password, ""));
+            }
+
+            if (zipFile.getFileHeader(SHARED_PREFERENCES_FILE_NAME) == null) {
+                return ImportStatus.INVALID_FILE;
+            }
+
             zipFile.extractFile(SHARED_PREFERENCES_FILE_NAME, fileSystemService.getCacheDir().getAbsolutePath());
 
             importReader = new InputStreamReader(new FileInputStream(new File(fileSystemService.getCacheDir(), SHARED_PREFERENCES_FILE_NAME)));
@@ -139,14 +176,24 @@ public class ImportExportService {
             for (Map.Entry<String, Map<String, String>> entry : content.entrySet()) {
                 sharedPreferencesService.writeAllIn(sharedPreferencesExportKeys.get(entry.getKey()), toImportValues(entry.getValue()));
             }
+            return ImportStatus.SUCCESS;
+
+        } catch (ZipException e) {
+            LOGGER.error("importSettings(" + file.getAbsolutePath() + ") - cannot import", e);
+            if (e.getCode() == ZipExceptionConstants.WRONG_PASSWORD || e.getMessage().contains("Wrong Password")) {
+                return ImportStatus.WRONG_PASSWORD;
+            } else {
+                return ImportStatus.INVALID_FILE;
+            }
         } catch (Exception e) {
             LOGGER.error("importSettings(" + file.getAbsolutePath() + ") - cannot import", e);
+            return ImportStatus.INVALID_FILE;
         } finally {
             CloseableUtil.close(importReader);
         }
     }
 
-    private File createZipFrom(Map<String, Map<String, ?>> toExport) {
+    private File createZipFrom(Map<String, Map<String, ?>> toExport, Optional<String> password) {
 
         try {
             String exportedJson = new Gson().toJson(toExport);
@@ -155,10 +202,16 @@ public class ImportExportService {
             LOGGER.info("export file location is {}", exportFile.getAbsolutePath());
             ZipFile zipFile = new ZipFile(exportFile);
 
+
             ZipParameters parameters = new ZipParameters();
             parameters.setCompressionMethod(Zip4jConstants.COMP_DEFLATE);
             parameters.setFileNameInZip(SHARED_PREFERENCES_FILE_NAME);
             parameters.setSourceExternalStream(true);
+            if (password.isPresent()) {
+                parameters.setEncryptFiles(true);
+                parameters.setEncryptionMethod(Zip4jConstants.ENC_METHOD_STANDARD);
+                parameters.setPassword(password.get());
+            }
 
             zipFile.addStream(new ByteArrayInputStream(exportedJson.getBytes(Charsets.UTF_8)), parameters);
 

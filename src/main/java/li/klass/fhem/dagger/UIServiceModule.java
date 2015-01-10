@@ -25,18 +25,11 @@
 package li.klass.fhem.dagger;
 
 import dagger.Module;
+import li.klass.fhem.ui.service.importExport.ImportExportUIService;
 
 @Module(complete = false,
-        includes = {
-                UtilityModule.class,
-                UtilityServicesModule.class,
-                ServicesModule.class,
-                ActivityModule.class,
-                FragmentsModule.class,
-                AppWidgetModule.class,
-                AdapterModule.class,
-                UIServiceModule.class
-        }
-)
-public class ApplicationModule {
+        injects = {
+                ImportExportUIService.class
+        })
+public class UIServiceModule {
 }

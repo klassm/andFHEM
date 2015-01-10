@@ -24,9 +24,6 @@
 
 package li.klass.fhem.activities;
 
-import android.annotation.SuppressLint;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -34,15 +31,12 @@ import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
-import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.common.base.Objects;
 
 import org.apache.commons.lang3.ArrayUtils;
 
-import java.io.File;
 import java.security.KeyStoreException;
 import java.util.Enumeration;
 import java.util.logging.Level;
@@ -57,12 +51,9 @@ import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.PreferenceKeys;
 import li.klass.fhem.error.ErrorHolder;
 import li.klass.fhem.service.device.GCMSendDeviceService;
-import li.klass.fhem.service.importexport.ImportExportService;
-import li.klass.fhem.ui.FileDialog;
+import li.klass.fhem.ui.service.importExport.ImportExportUIService;
 import li.klass.fhem.util.ApplicationProperties;
-import li.klass.fhem.util.DialogUtil;
 import li.klass.fhem.util.DisplayUtil;
-import li.klass.fhem.util.io.FileSystemService;
 import li.klass.fhem.widget.preference.SeekBarPreference;
 
 import static com.google.common.base.Preconditions.checkArgument;
@@ -91,10 +82,7 @@ public class PreferencesActivity extends PreferenceActivity
     ApplicationProperties applicationProperties;
 
     @Inject
-    ImportExportService importExportService;
-
-    @Inject
-    FileSystemService fileSystemService;
+    ImportExportUIService importExportUIService;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -172,12 +160,7 @@ public class PreferencesActivity extends PreferenceActivity
         exportPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                File file = importExportService.exportSettings();
-                @SuppressLint("InflateParams") View layout = getLayoutInflater().inflate(R.layout.export_success, null);
-                ((TextView) layout.findViewById(R.id.export_location)).setText(file.getAbsolutePath());
-                new AlertDialog.Builder(PreferencesActivity.this)
-                        .setView(layout).setCancelable(false)
-                        .setPositiveButton(R.string.okButton, DialogUtil.DISMISSING_LISTENER).show();
+                importExportUIService.handleExport(PreferencesActivity.this);
                 return true;
             }
         });
@@ -189,23 +172,7 @@ public class PreferencesActivity extends PreferenceActivity
         importPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                new FileDialog(PreferencesActivity.this, importExportService.getExportDirectory()).addFileListener(new FileDialog.FileSelectedListener() {
-                    @Override
-                    public void fileSelected(File file) {
-                        importExportService.importSettings(file);
-                        @SuppressLint("InflateParams") View layout = getLayoutInflater().inflate(R.layout.import_success, null);
-                        new AlertDialog.Builder(PreferencesActivity.this)
-                                .setView(layout).setCancelable(false)
-                                .setPositiveButton(R.string.okButton, new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        finish();
-                                        startActivity(getIntent());
-                                        dialog.dismiss();
-                                    }
-                                }).show();
-                    }
-                }).showDialog();
+                importExportUIService.handleImport(PreferencesActivity.this);
                 return true;
             }
         });

@@ -31,6 +31,10 @@ import android.content.DialogInterface;
 import android.os.Environment;
 import android.util.Log;
 
+import com.google.common.base.Optional;
+import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
+
 import java.io.File;
 import java.io.FilenameFilter;
 import java.util.Collections;
@@ -50,6 +54,8 @@ public class FileDialog {
     private ListenerList<DirectorySelectedListener> dirListenerList = new ListenerList<>();
     private boolean selectDirectoryOption;
     private String fileEndsWith;
+    private Optional<Predicate<File>> fileFilter = Optional.absent();
+
 
     public FileDialog(Context context, File initialPath) {
         this.context = context;
@@ -65,20 +71,30 @@ public class FileDialog {
     private void loadFileList(File path) {
         this.currentPath = path;
 
+        Predicate<File> predicate = new Predicate<File>() {
+            @Override
+            public boolean apply(File sel) {
+                if (!sel.canRead()) {
+                    return false;
+                } else if (selectDirectoryOption) {
+                    return sel.isDirectory();
+                } else {
+                    boolean endsWith = fileEndsWith == null || sel.getName().toLowerCase(Locale.getDefault()).endsWith(fileEndsWith);
+                    return endsWith || sel.isDirectory();
+                }
+            }
+        };
+        if (fileFilter.isPresent()) {
+            predicate = Predicates.and(predicate, fileFilter.get());
+        }
+
         List<String> result = newArrayList();
         if (path.exists()) {
             if (path.getParentFile() != null) result.add(PARENT_DIR);
+            final Predicate<File> finalPredicate = predicate;
             FilenameFilter filter = new FilenameFilter() {
                 public boolean accept(File dir, String filename) {
-                    File sel = new File(dir, filename);
-                    if (!sel.canRead()) {
-                        return false;
-                    } else if (selectDirectoryOption) {
-                        return sel.isDirectory();
-                    } else {
-                        boolean endsWith = fileEndsWith == null || filename.toLowerCase(Locale.getDefault()).endsWith(fileEndsWith);
-                        return endsWith || sel.isDirectory();
-                    }
+                    return finalPredicate.apply(new File(dir, filename));
                 }
             };
             String[] files = path.list(filter);
@@ -123,6 +139,11 @@ public class FileDialog {
 
         dialog = builder.show();
         return dialog;
+    }
+
+    public FileDialog setFileFilter(Predicate<File> fileFilter) {
+        this.fileFilter = Optional.fromNullable(fileFilter);
+        return this;
     }
 
     public FileDialog addFileListener(FileSelectedListener listener) {

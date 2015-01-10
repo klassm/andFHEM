@@ -653,6 +653,12 @@
     <string name="exportPreferences">Export</string>
     <string name="exportPreferencesSummary">Creates a new backup of all application preferences (including FHEM connections, favorites and so on)</string>
     <string name="exportImportSuccess">Success</string>
+    <string name="exportImportError">Error</string>
     <string name="exportSuccessLocation">Backup was written to</string>
     <string name="importSuccess">The backup was applied successfully.</string>
+    <string name="importExportPassword">encryption password</string>
+    <string name="exportPasswordDescription">Please enter a password to encrypt the backup. Make sure you remember the password when trying to import the backup later on. The value may also be empty.</string>
+    <string name="importPasswordDescription">Please enter a password to decrypt the backup. The value must match the value you entered to create the backup. The value may also be empty.</string>
+    <string name="importErrorWrongPassword">Wrong password</string>
+    <string name="importErrorInvalidFile">The file does not seem to be contain a valid andFHEM backup.</string>
 </resources>
