@@ -128,6 +128,8 @@ public class ImportExportService {
             return Boolean.parseBoolean(value);
         } else if (type.isAssignableFrom(String.class)) {
             return value;
+        } else if (type.isAssignableFrom(Double.class)) {
+            return Double.parseDouble(value);
         } else {
             throw new IllegalArgumentException("don't know how to handle " + type.getName());
         }
