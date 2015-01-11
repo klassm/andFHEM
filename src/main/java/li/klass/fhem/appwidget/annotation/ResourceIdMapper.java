@@ -200,6 +200,7 @@ public enum ResourceIdMapper {
     totalEnergyDay(R.string.totalEnergyDay),
     totalEnergyMonth(R.string.totalEnergyMonth),
     totalEnergyYear(R.string.totalEnergyYear),
+    waterDetect(R.string.waterDetect),
 
     none(-1),
     blank(R.string.blank);

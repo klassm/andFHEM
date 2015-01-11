@@ -28,9 +28,7 @@ import org.junit.Test;
 
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.hamcrest.core.Is.is;
+import static org.fest.assertions.api.Assertions.assertThat;
 
 public class HMSDeviceTest extends DeviceXMLParsingBase {
     @Override
@@ -39,24 +37,35 @@ public class HMSDeviceTest extends DeviceXMLParsingBase {
     }
 
     @Test
-    public void testForCorrectlySetAttributes() {
+    public void should_read_temperature_humidity_device_correctly() {
         HMSDevice device = getDefaultDevice();
 
-        assertThat(device.getName(), is(DEFAULT_TEST_DEVICE_NAME));
-        assertThat(device.getRoomConcatenated(), is(DEFAULT_TEST_ROOM_NAME));
+        assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
+        assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
 
-        assertThat(device.getHumidity(), is("40.0 (%)"));
-        assertThat(device.getTemperature(), is("12.6 (°C)"));
-        assertThat(device.getModel(), is("HMS100T"));
-        assertThat(device.getBattery(), is("ok"));
-        assertThat(device.getSwitchDetect(), is("on"));
-        assertThat(device.getState(), is("T: 12.6  Bat: ok"));
-        assertThat(device.getMeasured(), is("2010-04-05 14:06:52"));
+        assertThat(device.getHumidity()).isEqualTo("40.0 (%)");
+        assertThat(device.getTemperature()).isEqualTo("12.6 (°C)");
+        assertThat(device.getModel()).isEqualTo("HMS100T");
+        assertThat(device.getBattery()).isEqualTo("ok");
+        assertThat(device.getSwitchDetect()).isEqualTo("on");
+        assertThat(device.getState()).isEqualTo("T: 12.6  Bat: ok");
+        assertThat(device.getMeasured()).isEqualTo("2010-04-05 14:06:52");
 
-        assertThat(device.getSetList().getEntries().size(), is(0));
+        assertThat(device.getSetList().getEntries()).isEmpty();
 
-        assertThat(device.getLogDevices(), is(notNullValue()));
-        assertThat(device.getDeviceCharts().size(), is(2));
+        assertThat(device.getLogDevices()).isNotNull();
+        assertThat(device.getDeviceCharts()).hasSize(2);
+    }
+
+    @Test
+    public void should_read_waterDetect_device_correctly() {
+        HMSDevice device = getDeviceFor("water");
+
+        assertThat(device.getTemperature()).isNull();
+        assertThat(device.getHumidity()).isNull();
+
+        assertThat(device.getWaterDetect()).isEqualTo("no");
+        assertThat(device.getDeviceCharts()).isEmpty();
     }
 
     @Override

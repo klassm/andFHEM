@@ -45,6 +45,7 @@ import li.klass.fhem.appwidget.view.widget.medium.TemperatureWidgetView;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.DeviceFunctionality;
+import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ValueUtil;
@@ -52,7 +53,6 @@ import li.klass.fhem.util.ValueUtil;
 import static li.klass.fhem.service.graph.description.SeriesType.HUMIDITY;
 import static li.klass.fhem.service.graph.description.SeriesType.TEMPERATURE;
 
-@SuppressWarnings("unused")
 @SupportsWidget({TemperatureWidgetView.class, MediumInformationWidgetView.class})
 public class HMSDevice extends Device<HMSDevice> {
     @ShowField(description = ResourceIdMapper.temperature, showInOverview = true)
@@ -62,6 +62,7 @@ public class HMSDevice extends Device<HMSDevice> {
 
     @ShowField(description = ResourceIdMapper.battery)
     @WidgetMediumLine3
+    @XmllistAttribute("battery")
     private String battery;
 
     @ShowField(description = ResourceIdMapper.humidity, showInOverview = true)
@@ -70,31 +71,35 @@ public class HMSDevice extends Device<HMSDevice> {
     private String humidity;
 
     @ShowField(description = ResourceIdMapper.model)
+    @XmllistAttribute("type")
     private String model;
 
     @ShowField(description = ResourceIdMapper.state, showInOverview = true)
     private String switchDetect;
 
-    public void readTEMPERATURE(String value) {
+    @ShowField(description = ResourceIdMapper.waterDetect, showInOverview = true)
+    private String waterDetect;
+
+    @XmllistAttribute("temperature")
+    public void setTemperature(String value) {
         temperature = ValueUtil.formatTemperature(value);
     }
 
-    public void readBATTERY(String value) {
-        this.battery = value;
-    }
-
-    public void readHUMIDITY(String value) {
+    @XmllistAttribute("humidity")
+    public void setHumidity(String value) {
         this.humidity = ValueUtil.formatHumidity(value);
     }
 
-    public void readTYPE(String value) {
-        this.model = value;
-    }
-
-    public void readSWITCH_DETECT(String value) {
+    @XmllistAttribute("switch_detect")
+    public void setSwitchDetect(String value) {
         Context context = AndFHEMApplication.getContext();
         this.switchDetect = value.equalsIgnoreCase("ON")
                 ? context.getString(R.string.on) : context.getString(R.string.off);
+    }
+
+    @XmllistAttribute("water_detect")
+    public void setWaterDetect(String value) {
+        waterDetect = value.equalsIgnoreCase("ON") ? "yes" : "no";
     }
 
     @Override
@@ -125,6 +130,10 @@ public class HMSDevice extends Device<HMSDevice> {
 
     public String getSwitchDetect() {
         return switchDetect;
+    }
+
+    public String getWaterDetect() {
+        return waterDetect;
     }
 
     @Override
