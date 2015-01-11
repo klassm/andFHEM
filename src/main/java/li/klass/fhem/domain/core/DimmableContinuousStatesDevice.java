@@ -46,9 +46,9 @@ public abstract class DimmableContinuousStatesDevice<D extends Device<D>> extend
     @Override
     public int getPositionForDimState(String dimState) {
         dimState = dimState.replaceAll(getSetListDimStateAttributeName(), "").replaceAll("[% ]", "");
-        if (dimState.equals(getEventMapStateFor("on")) || "on".equals(dimState))
+        if (dimState.equals(getEventMapStateFor("on")) || "on".equals(dimState) || getOnStateName().equals(dimState))
             return getDimUpperBound();
-        if (dimState.equals(getEventMapStateFor("off")) || "off".equals(dimState))
+        if (dimState.equals(getEventMapStateFor("off")) || "off".equals(dimState) || getOffStateName().equals(dimState))
             return getDimLowerBound();
         if (!isDecimalNumber(dimState)) return 0;
 

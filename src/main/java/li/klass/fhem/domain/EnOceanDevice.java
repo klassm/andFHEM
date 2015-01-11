@@ -24,31 +24,24 @@
 
 package li.klass.fhem.domain;
 
-import android.util.Log;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.appwidget.view.widget.base.DeviceAppWidgetView;
 import li.klass.fhem.appwidget.view.widget.medium.ToggleWidgetView;
 import li.klass.fhem.domain.core.DeviceFunctionality;
-import li.klass.fhem.domain.core.DimmableDevice;
+import li.klass.fhem.domain.core.DimmableContinuousStatesDevice;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
-import li.klass.fhem.domain.genericview.ShowField;
-import li.klass.fhem.util.NumberUtil;
-import li.klass.fhem.util.ValueDescriptionUtil;
-import li.klass.fhem.util.ValueExtractUtil;
 
 import static li.klass.fhem.util.Equals.ignoreCaseEither;
 
 @SuppressWarnings("unused")
 @OverviewViewSettings(showState = true)
-public class EnOceanDevice extends DimmableDevice<EnOceanDevice> {
+public class EnOceanDevice extends DimmableContinuousStatesDevice<EnOceanDevice> {
+    private static final Logger LOGGER = LoggerFactory.getLogger(EnOceanDevice.class);
 
     private String model;
     private String manufacturerId;
-    private int shutterPosition;
-
-    @ShowField(showAfter = "state", description = ResourceIdMapper.shutterPosition)
-    private String shutterPositionText;
 
     public enum SubType {
         SWITCH, SENSOR, DIMMER, SHUTTER
@@ -56,8 +49,6 @@ public class EnOceanDevice extends DimmableDevice<EnOceanDevice> {
 
     private SubType subType;
     private String gwCmd;
-
-    private static final String TAG = EnOceanDevice.class.getName();
 
     public void readSUBTYPE(String value) {
         if (value.equalsIgnoreCase("switch")) {
@@ -67,7 +58,7 @@ public class EnOceanDevice extends DimmableDevice<EnOceanDevice> {
         } else if (value.equalsIgnoreCase("gateway")) {
             // handled in #afterDeviceXMLRead
         } else {
-            Log.e(TAG, "unknown subtype " + value);
+            LOGGER.error("readSUBTYPE() - unknown subtype {}", value);
             subType = null;
         }
     }
@@ -84,9 +75,11 @@ public class EnOceanDevice extends DimmableDevice<EnOceanDevice> {
         this.gwCmd = value;
     }
 
-    public void readPOSITION(String value) {
-        shutterPosition = ValueExtractUtil.extractLeadingInt(value);
-        shutterPositionText = ValueDescriptionUtil.appendPercent(value);
+
+    @Override
+    protected String getSetListDimStateAttributeName() {
+        if (setList.contains("position")) return "position";
+        return super.getSetListDimStateAttributeName();
     }
 
     @Override
@@ -101,39 +94,19 @@ public class EnOceanDevice extends DimmableDevice<EnOceanDevice> {
             }
         }
 
-        if (ignoreCaseEither(model, "FSB14", "FSB61", "FSB70")) {
+        if (setList.contains("up", "down") || ignoreCaseEither(model, "FSB14", "FSB61", "FSB70")) {
             subType = SubType.SHUTTER;
-            readONOFFDEVICE("true");
         }
     }
 
     @Override
     public boolean supportsToggle() {
-        return subType == SubType.SWITCH || subType == SubType.SHUTTER;
-    }
-
-    @Override
-    public int getDimUpperBound() {
-        return 100;
-    }
-
-    @Override
-    public String getDimStateForPosition(int position) {
-        return "dim " + position;
-    }
-
-    @Override
-    public int getPositionForDimState(String dimState) {
-        dimState = dimState.replaceAll("dim", "").replaceAll("%", "").trim();
-        if (!NumberUtil.isDecimalNumber(dimState)) {
-            return 0;
-        }
-        return ValueExtractUtil.extractLeadingInt(dimState);
+        return setList.contains("on", "off") && subType == SubType.SWITCH;
     }
 
     @Override
     public boolean supportsDim() {
-        return subType == SubType.DIMMER;
+        return subType == SubType.DIMMER || subType == SubType.SHUTTER;
     }
 
     public SubType getSubType() {
@@ -175,20 +148,11 @@ public class EnOceanDevice extends DimmableDevice<EnOceanDevice> {
         return "B0";
     }
 
-    public void setShutterPosition(int shutterPosition) {
-        this.shutterPosition = shutterPosition;
-        this.shutterPositionText = ValueDescriptionUtil.appendPercent(shutterPosition);
-    }
-
     public String getModel() {
         return model;
     }
 
     public String getManufacturerId() {
         return manufacturerId;
-    }
-
-    public int getShutterPosition() {
-        return shutterPosition;
     }
 }

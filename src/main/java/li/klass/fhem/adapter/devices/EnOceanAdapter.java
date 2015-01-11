@@ -24,93 +24,11 @@
 
 package li.klass.fhem.adapter.devices;
 
-import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.ResultReceiver;
-import android.widget.TableLayout;
-import android.widget.TableRow;
-
-import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.DimmableAdapter;
-import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
-import li.klass.fhem.adapter.devices.genericui.ButtonActionRow;
-import li.klass.fhem.adapter.devices.genericui.SeekBarActionRowFullWidth;
-import li.klass.fhem.constants.Actions;
-import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.domain.EnOceanDevice;
-import li.klass.fhem.service.intent.DeviceIntentService;
 
 public class EnOceanAdapter extends DimmableAdapter<EnOceanDevice> {
     public EnOceanAdapter() {
         super(EnOceanDevice.class);
-    }
-
-    @Override
-    protected void afterPropertiesSet() {
-        super.afterPropertiesSet();
-
-        registerFieldListener("state", new FieldNameAddedToDetailListener<EnOceanDevice>() {
-            @Override
-            protected void onFieldNameAdded(final Context context, TableLayout tableLayout,
-                                            String field, final EnOceanDevice device,
-                                            TableRow fieldTableRow) {
-
-                tableLayout.addView(new ButtonActionRow(device.getEventMapStateFor("stop")) {
-
-                    @Override
-                    protected void onButtonClick() {
-                        Intent intent = new Intent(Actions.DEVICE_SET_STATE);
-                        intent.setClass(context, DeviceIntentService.class);
-                        intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
-                        intent.putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, "stop");
-                        context.startService(intent);
-                    }
-                }.createRow(getInflater()));
-            }
-
-            @Override
-            public boolean supportsDevice(EnOceanDevice device) {
-                return device.getSubType() == EnOceanDevice.SubType.SHUTTER;
-            }
-        });
-
-        registerFieldListener("shutterPositionText", new FieldNameAddedToDetailListener<EnOceanDevice>() {
-            @Override
-            protected void onFieldNameAdded(Context context, TableLayout tableLayout, String field,
-                                            EnOceanDevice device, TableRow fieldTableRow) {
-
-                tableLayout.addView(new SeekBarActionRowFullWidth<EnOceanDevice>(
-                        device.getShutterPosition(), 100, R.layout.device_detail_seekbarrow_full_width
-                ) {
-                    @Override
-                    public void onStopTrackingTouch(final Context context, final EnOceanDevice device, final int progress) {
-                        Intent intent = new Intent(Actions.DEVICE_SET_STATE);
-                        intent.setClass(context, DeviceIntentService.class);
-                        intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
-                        intent.putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, "position " + progress);
-                        intent.putExtra(BundleExtraKeys.RESULT_RECEIVER, new ResultReceiver(new Handler()) {
-                            @Override
-                            protected void onReceiveResult(int resultCode, Bundle resultData) {
-                                if (resultCode != ResultCodes.SUCCESS) return;
-
-                                device.setShutterPosition(progress);
-                                context.sendBroadcast(new Intent(Actions.DO_UPDATE));
-                            }
-                        });
-
-                        context.startService(intent);
-                    }
-                }.createRow(getInflater(), device));
-            }
-
-
-            @Override
-            public boolean supportsDevice(EnOceanDevice device) {
-                return device.getSubType() == EnOceanDevice.SubType.SHUTTER;
-            }
-        });
     }
 }

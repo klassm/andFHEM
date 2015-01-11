@@ -76,7 +76,6 @@ public class EnOceanDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getDeviceGroup(), is(WINDOW));
         assertThat(device.getSubType(), is(EnOceanDevice.SubType.SHUTTER));
 
-        assertThat(device.getShutterPosition(), is(100));
         assertThat(device.getModel(), is("FSB14"));
         assertThat(device.getManufacturerId(), is("00D"));
     }
