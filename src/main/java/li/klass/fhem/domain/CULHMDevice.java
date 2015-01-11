@@ -314,7 +314,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
             fillContentPercentage = appendPercent((int) (fillContentPercentageRaw * 100));
         }
 
-        if (model != null && model.equalsIgnoreCase("HM-Sen-Wa-Od")) {
+        if ("HM-Sen-Wa-Od".equals(model)) {
             subType = FILL_STATE;
 
 
@@ -330,7 +330,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
             fillContentPercentage = ValueDescriptionUtil.appendPercent((int) (fillContentPercentageRaw * 100));
         }
 
-        if ("HM-LC-BL1-FM".equals(model)) {
+        if ("HM-LC-BL1-FM".equals(model) || "HM-LC-Bl1PBU-FM".equals(model)) {
             subType = SHUTTER;
         }
 
