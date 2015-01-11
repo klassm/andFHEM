@@ -88,6 +88,8 @@
             <STATE key="R-txThrVlt" value="10 V" measured="2013-12-29 11:34:36"/>
             <STATE key="boot" value="on" measured="2013-12-29 16:43:18"/>
             <STATE key="current" value="33" measured="2013-12-29 16:43:18"/>
+            <STATE key="frequency" value="49.98" measured="2014-12-20 10:24:42"/>
+            <STATE key="current" value="376" measured="2014-12-20 10:24:42"/>
             <STATE key="energy" value="5" measured="2013-12-29 16:43:18"/>
             <STATE key="power" value="3" measured="2013-12-29 16:43:18"/>
             <STATE key="voltage" value="228.7" measured="2013-12-29 16:43:18"/>

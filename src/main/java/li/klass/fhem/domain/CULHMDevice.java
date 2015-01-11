@@ -155,10 +155,10 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
     @ShowField(description = ResourceIdMapper.rain)
     private String rain;
 
-    @ShowField(description = ResourceIdMapper.currentUsage)
-    private String currentUsage;
+    @ShowField(description = ResourceIdMapper.currentPower)
+    private String power;
 
-    @ShowField(description = ResourceIdMapper.currentVoltage)
+    @ShowField(description = ResourceIdMapper.voltage)
     private String currentVoltage;
 
     @ShowField(description = ResourceIdMapper.cumulativeUsage, showInOverview = true)
@@ -175,6 +175,12 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
 
     @ShowField(description = ResourceIdMapper.pressureNN)
     private String pressureNN;
+
+    @ShowField(description = ResourceIdMapper.energyFrequency)
+    private String frequency;
+
+    @ShowField(description = ResourceIdMapper.current)
+    private String current;
 
     @Override
     public void onChildItemRead(String tagName, String key, String value, NamedNodeMap attributes) {
@@ -264,17 +270,27 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
 
     @XmllistAttribute("POWER")
     public void setPower(String value) {
-        currentUsage = ValueDescriptionUtil.append(value, "W");
+        power = ValueDescriptionUtil.appendW(value);
     }
 
     @XmllistAttribute("ENERGY")
     public void setEnergy(String value) {
-        cumulativeUsage = ValueDescriptionUtil.append(value, "W");
+        cumulativeUsage = ValueDescriptionUtil.appendKWh(Math.round(Double.parseDouble(value) / 1000));
     }
 
     @XmllistAttribute("VOLTAGE")
     public void setVoltage(String value) {
-        currentVoltage = ValueDescriptionUtil.append(value, "A");
+        currentVoltage = ValueDescriptionUtil.appendV(value);
+    }
+
+    @XmllistAttribute("FREQUENCY")
+    public void setFrequency(String value) {
+        frequency = ValueDescriptionUtil.appendHz(value);
+    }
+
+    @XmllistAttribute("CURRENT")
+    public void setCurrent(String value) {
+        current = ValueDescriptionUtil.appendmA(value);
     }
 
     @XmllistAttribute("LEVEL")
@@ -584,12 +600,20 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
         return HeatingMode.values();
     }
 
-    public String getCurrentUsage() {
-        return currentUsage;
+    public String getPower() {
+        return power;
     }
 
     public String getCurrentVoltage() {
         return currentVoltage;
+    }
+
+    public String getFrequency() {
+        return frequency;
+    }
+
+    public String getCurrent() {
+        return current;
     }
 
     @Override
@@ -793,7 +817,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
                                 .withSeriesType(CURRENT_USAGE_WATT)
                                 .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("current", 0, 200))
                                 .build()
-                ), currentUsage);
+                ), power);
 
                 addDeviceChartIfNotNull(new DeviceChart(R.string.usageGraphCumulative,
                         new ChartSeriesDescription.Builder()

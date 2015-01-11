@@ -161,7 +161,7 @@
     <string name="deleteConfirmIntervalText">Möchten Sie das Intervall wirklich löschen?</string>
     <string name="newInterval">Neues Intervall</string>
     <string name="price">Preis</string>
-    <string name="energy">Energie</string>
+    <string name="energy">Zählerstand</string>
     <string name="voltage">Spannung</string>
     <string name="current">Stromstärke</string>
     <string name="cumulativeUsage">Gesamtzählerstand</string>

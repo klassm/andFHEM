@@ -29,31 +29,31 @@ import org.junit.Test;
 import li.klass.fhem.domain.CULHMDevice;
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
+import static org.fest.assertions.api.Assertions.assertThat;
 
 public class PowerMeterTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
         CULHMDevice device = getDefaultDevice();
 
-        assertThat(device.getName(), is(DEFAULT_TEST_DEVICE_NAME));
-        assertThat(device.getRoomConcatenated(), is(DEFAULT_TEST_ROOM_NAME));
+        assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
+        assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
 
-        assertThat(device.getSubType(), is(CULHMDevice.SubType.POWERMETER));
-        assertThat(device.getState(), is("on"));
-        assertThat(device.isOnByState(), is(true));
-        assertThat(device.supportsToggle(), is(false));
+        assertThat(device.getSubType()).isEqualTo(CULHMDevice.SubType.POWERMETER);
+        assertThat(device.getState()).isEqualTo("on");
+        assertThat(device.isOnByState()).isTrue();
+        assertThat(device.supportsToggle()).isFalse();
 
-        assertThat(device.getCurrentUsage(), is("3 (W)"));
-        assertThat(device.getCurrentVoltage(), is("228.7 (A)"));
-        assertThat(device.getCumulativeUsage(), is("5 (W)"));
+        assertThat(device.getPower()).isEqualTo("3 (W)");
+        assertThat(device.getCurrentVoltage()).isEqualTo("228.7 (V)");
+        assertThat(device.getCumulativeUsage()).isEqualTo("0 (kWh)");
+        assertThat(device.getFrequency()).isEqualTo("49.98 (Hz)");
+        assertThat(device.getCurrent()).isEqualTo("376 (mA)");
 
-        assertThat(device.getLogDevices(), is(notNullValue()));
-        assertThat(device.getDeviceCharts().size(), is(2));
+        assertThat(device.getLogDevices()).isNotNull();
+        assertThat(device.getDeviceCharts()).hasSize(2);
 
-        assertThat(device.isSupported(), is(true));
+        assertThat(device.isSupported()).isTrue();
     }
 
     @Override

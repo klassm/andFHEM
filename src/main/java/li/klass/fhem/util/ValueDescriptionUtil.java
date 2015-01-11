@@ -99,6 +99,10 @@ public class ValueDescriptionUtil {
         }
     }
 
+    public static String appendmA(String value) {
+        return append(value, "mA");
+    }
+
     public static String appendTemperature(Object text) {
         return append(text, C);
     }
