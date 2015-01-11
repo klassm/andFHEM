@@ -24,7 +24,9 @@
   -->
 
 <Button xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/onButton"
-        style="@style/deviceOverviewToggleButton"
-        android:background="@drawable/theme_toggle_default_normal"
-        android:text="@string/ON"/>
+    android:id="@+id/onButton"
+    style="@style/deviceOverviewToggleButton"
+    android:background="@drawable/theme_toggle_default_normal"
+    android:layout_marginRight="@dimen/button_horizontal_separator"
+    android:layout_marginEnd="@dimen/button_horizontal_separator"
+    android:text="@string/ON"/>

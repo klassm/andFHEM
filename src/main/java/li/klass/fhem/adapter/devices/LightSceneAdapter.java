@@ -68,7 +68,7 @@ public class LightSceneAdapter extends GenericDeviceAdapter<LightSceneDevice> {
 
             @Override
             public View viewFor(String scene, LightSceneDevice device, LayoutInflater inflater, Context context, ViewGroup viewGroup) {
-                Button button = (Button) inflater.inflate(R.layout.default_button, viewGroup, false);
+                Button button = (Button) inflater.inflate(R.layout.lightscene_button, viewGroup, false);
                 setSceneButtonProperties(context, device, scene, button);
                 return button;
             }
@@ -92,7 +92,7 @@ public class LightSceneAdapter extends GenericDeviceAdapter<LightSceneDevice> {
 
                     @Override
                     public View viewFor(String scene, LightSceneDevice device, LayoutInflater inflater, Context context, ViewGroup viewGroup) {
-                        Button button = (Button) inflater.inflate(R.layout.default_button, viewGroup, false);
+                        Button button = (Button) inflater.inflate(R.layout.lightscene_button, viewGroup, false);
                         setSceneButtonProperties(context, device, scene, button);
                         return button;
                     }

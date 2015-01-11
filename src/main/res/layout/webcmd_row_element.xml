@@ -26,6 +26,6 @@
 <ToggleButton xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/toggleButton"
     android:layout_width="wrap_content"
-    android:layout_marginLeft="@dimen/button_horizontal_separator"
-    android:layout_marginStart="@dimen/button_horizontal_separator"
+    android:layout_marginRight="@dimen/button_horizontal_separator"
+    android:layout_marginEnd="@dimen/button_horizontal_separator"
     />
