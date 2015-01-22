@@ -90,7 +90,7 @@ public class FS20Device extends DimmableDiscreteStatesDevice<FS20Device> impleme
         if (internalState == null) return false;
 
         for (String offState : offStates) {
-            if (internalState.equals(offState) || internalState.equals(eventMap.get(offState))) {
+            if (internalState.contains(offState) || internalState.contains(eventMap.get(offState))) {
                 return false;
             }
         }

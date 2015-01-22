@@ -46,13 +46,15 @@ public abstract class ToggleableDevice<T extends Device> extends Device<T> {
     private ButtonHookType buttonHookType = NORMAL;
 
     public boolean isOnByState() {
+        return ! isOffByState();
+    }
+
+    public boolean isOffByState() {
         String internalState = getInternalState();
-        if (internalState == null) return false;
-
-        return ! (internalState.equalsIgnoreCase(getOffStateName())
+        return internalState == null
+                || internalState.toLowerCase().contains(getOffStateName().toLowerCase())
                 || internalState.equalsIgnoreCase(eventMapReverse.get(getOffStateName()))
-                || internalState.equals("???"));
-
+                || internalState.equals("???");
     }
 
     public boolean isOnRespectingInvertHook() {
