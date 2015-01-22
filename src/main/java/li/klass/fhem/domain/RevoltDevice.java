@@ -27,12 +27,12 @@ package li.klass.fhem.domain;
 import java.util.List;
 
 import li.klass.fhem.R;
-import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.ShowField;
+import li.klass.fhem.resources.ResourceIdMapper;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ValueDescriptionUtil;
 
@@ -44,16 +44,16 @@ public class RevoltDevice extends Device<RevoltDevice> {
     @ShowField(description = ResourceIdMapper.power, showInOverview = true)
     private String power;
 
-    @ShowField(description = ResourceIdMapper.energyPower, showInOverview = true)
+    @ShowField(description = ResourceIdMapper.energy_power, showInOverview = true)
     private String energy;
 
     @ShowField(description = ResourceIdMapper.voltage)
     private String voltage;
 
-    @ShowField(description = ResourceIdMapper.energyFrequency)
+    @ShowField(description = ResourceIdMapper.energy_frequency)
     private String frequency;
 
-    @ShowField(description = ResourceIdMapper.energyPowerFactor)
+    @ShowField(description = ResourceIdMapper.energy_powerFactor)
     @XmllistAttribute("pf")
     private String powerFactor;
 

@@ -30,10 +30,10 @@ import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 
-import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.ToggleableDevice;
 import li.klass.fhem.domain.genericview.ShowField;
+import li.klass.fhem.resources.ResourceIdMapper;
 
 import static com.google.common.collect.Lists.newArrayList;
 

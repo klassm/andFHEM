@@ -3,7 +3,7 @@ package li.klass.fhem.domain.genericview;
 import java.io.Serializable;
 import java.lang.annotation.Annotation;
 
-import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
+import li.klass.fhem.resources.ResourceIdMapper;
 
 public class ShowFieldCache implements ShowField, Serializable {
 

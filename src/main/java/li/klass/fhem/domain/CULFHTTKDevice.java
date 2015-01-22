@@ -29,12 +29,12 @@ import org.w3c.dom.NamedNodeMap;
 import java.util.List;
 
 import li.klass.fhem.R;
-import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
+import li.klass.fhem.resources.ResourceIdMapper;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 
 import static li.klass.fhem.service.graph.description.SeriesType.WINDOW_OPEN;

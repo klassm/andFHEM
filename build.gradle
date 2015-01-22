@@ -39,12 +39,14 @@ buildscript {
 
         classpath 'com.github.jcandksolutions.gradle:android-unit-test:2.1.1'
         classpath 'com.jakewharton.sdkmanager:gradle-plugin:0.12.+'
+
+        classpath 'com.google.guava:guava:18.0'
     }
 }
 
 repositories {
     mavenCentral()
-    maven { url 'https://dl.bintray.com/mamohr/maven'}
+    maven { url 'https://dl.bintray.com/mamohr/maven' }
     maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
     maven { url 'http://partnerdemo.artifactoryonline.com/partnerdemo/snapshots' }
     maven { url 'https://repository-achartengine.forge.cloudbees.com/snapshot' }
@@ -97,7 +99,7 @@ android {
         }
         main {
             aidl.srcDirs = ['src/main/aidl']
-            java.srcDir file('src/main/java')
+            java.srcDirs = ['src/main/java', 'src/gen/java']
         }
     }
 
@@ -124,6 +126,11 @@ android {
     }
 }
 
+task generateResourceIdMapper << {
+    generateResourceIdMapperGenerator()
+}
+tasks["preBuild"].dependsOn('generateResourceIdMapper')
+
 apply plugin: 'android-unit-test'
 
 dependencies {
@@ -136,7 +143,7 @@ dependencies {
     compile 'com.google.android.gms:play-services:6.1.+'
     compile 'commons-net:commons-net:3.3'
     compile 'com.google.code.gson:gson:2.2.4'
-    compile 'com.google.guava:guava:17.0'
+    compile 'com.google.guava:guava:18.0'
     compile 'org.achartengine:achartengine:1.2.0'
     compile 'org.apache.commons:commons-lang3:3.3.2'
     compile 'com.squareup.dagger:dagger-compiler:1.2.2'
@@ -226,6 +233,12 @@ task uploadToGoogleSites(dependsOn: 'readSigningKeyAliasPasswordFromConsole') <<
     uploadApkToGoogleSites();
 }
 
+
+import com.google.common.base.Charsets
+import com.google.common.base.Function
+import com.google.common.base.Joiner
+import com.google.common.collect.Lists
+import com.google.common.io.Files
 import com.google.gdata.client.sites.SitesService
 import com.google.gdata.data.PlainTextConstruct
 import com.google.gdata.data.media.MediaFileSource
@@ -298,10 +311,10 @@ android.applicationVariants.all { variant ->
     }
 
     //This helps to run the unit tests in Anroid studio. Just call prepareAndroidStudioTests before the unit test
-    if(variant.buildType.name.equals("debug")) {
-        task("copyAndroidStudio${variant.name.capitalize()}TestResources",type: Copy) << {
-                from "${projectDir}/src/test/resources"
-                into "${buildDir}/test-classes/${variant.productFlavors[0].name}/${variant.buildType.name}"
+    if (variant.buildType.name.equals("debug")) {
+        task("copyAndroidStudio${variant.name.capitalize()}TestResources", type: Copy) << {
+            from "${projectDir}/src/test/resources"
+            into "${buildDir}/test-classes/${variant.productFlavors[0].name}/${variant.buildType.name}"
         }
         task("prepareAndroidStudio${variant.name.capitalize()}Tests") << {
             dependsOn("test${variant.name.capitalize()}Classes")
@@ -315,4 +328,43 @@ android.applicationVariants.all { variant ->
 
 task wrapper(type: Wrapper) {
     gradleVersion = '2.2.1'
+}
+
+
+/*************************************
+ * Generate resources
+ *********************************** */
+import java.util.regex.Matcher
+import java.util.regex.Pattern
+
+import static com.google.common.collect.FluentIterable.from
+
+def generateResourceIdMapperGenerator() {
+    String content = Resources.toString(new File("src/main/res/values/strings.xml").getAbsoluteFile().toURI().toURL(), Charsets.UTF_8);
+
+    List<String> matches = Lists.newArrayList();
+    Pattern pattern = Pattern.compile("<string name=\"([^\"]+)");
+    Matcher matcher = pattern.matcher(content);
+
+    while (matcher.find()) {
+        matches.add(matcher.group(1));
+    }
+
+    String toWrite = "package li.klass.fhem.resources;\n" + "import li.klass.fhem.R;\n" + "public enum ResourceIdMapper {" + from(matches).transform(new Function<String, String>() {
+        @Override
+        public String apply(String input) {
+            return input + "(R.string." + input + ")";
+        }
+    }).join(Joiner.on(",\n")) + ",none(-1);\n" +
+            "private int id;\n" +
+            "private ResourceIdMapper(int id) {\n" +
+            "this.id = id;\n" +
+            "}\n" +
+            "public int getId() {\n" +
+            "return id;\n" +
+            "}}";
+    File mapperFile = new File("src/gen/java/li/klass/fhem/resources/ResourceIdMapper.java");
+    mapperFile.getParentFile().mkdirs()
+
+    Files.write(toWrite.getBytes(Charsets.UTF_8), mapperFile);
 }

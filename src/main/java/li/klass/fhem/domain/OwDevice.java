@@ -26,11 +26,11 @@ package li.klass.fhem.domain;
 
 import java.util.Map;
 
-import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.ToggleableDevice;
 import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.ShowField;
+import li.klass.fhem.resources.ResourceIdMapper;
 
 import static li.klass.fhem.domain.OwDevice.SubType.SWITCH;
 import static li.klass.fhem.domain.OwDevice.SubType.TEMPERATURE;

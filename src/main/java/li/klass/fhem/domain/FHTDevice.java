@@ -30,7 +30,6 @@ import java.util.List;
 import java.util.Locale;
 
 import li.klass.fhem.R;
-import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.appwidget.annotation.SupportsWidget;
 import li.klass.fhem.appwidget.annotation.WidgetMediumLine1;
 import li.klass.fhem.appwidget.annotation.WidgetMediumLine2;
@@ -51,6 +50,7 @@ import li.klass.fhem.domain.heating.WindowOpenTempDevice;
 import li.klass.fhem.domain.heating.schedule.WeekProfile;
 import li.klass.fhem.domain.heating.schedule.configuration.FHTConfiguration;
 import li.klass.fhem.domain.heating.schedule.interval.FromToHeatingInterval;
+import li.klass.fhem.resources.ResourceIdMapper;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ValueDescriptionUtil;
 import li.klass.fhem.util.ValueExtractUtil;

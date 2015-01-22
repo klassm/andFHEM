@@ -26,7 +26,7 @@ package li.klass.fhem.domain.genericview;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
+import li.klass.fhem.resources.ResourceIdMapper;
 
 @Retention(RetentionPolicy.RUNTIME)
 public @interface OverviewViewSettings {

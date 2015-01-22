@@ -29,11 +29,11 @@ import org.w3c.dom.NamedNodeMap;
 import java.util.ArrayList;
 import java.util.List;
 
-import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.DimmableDiscreteStatesDevice;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
+import li.klass.fhem.resources.ResourceIdMapper;
 
 @SuppressWarnings("unused")
 @OverviewViewSettings(showState = true)

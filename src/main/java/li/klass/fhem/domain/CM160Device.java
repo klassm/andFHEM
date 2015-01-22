@@ -26,10 +26,10 @@ package li.klass.fhem.domain;
 
 import org.w3c.dom.NamedNodeMap;
 
-import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.genericview.ShowField;
+import li.klass.fhem.resources.ResourceIdMapper;
 
 import static li.klass.fhem.util.ValueDescriptionUtil.append;
 import static li.klass.fhem.util.ValueExtractUtil.extractLeadingDouble;
@@ -37,9 +37,9 @@ import static li.klass.fhem.util.ValueExtractUtil.extractLeadingDouble;
 @SuppressWarnings("unused")
 public class CM160Device extends Device<CM160Device> {
 
-    @ShowField(description = ResourceIdMapper.energyCurrent, showInOverview = true)
+    @ShowField(description = ResourceIdMapper.energy_current, showInOverview = true)
     private String current;
-    @ShowField(description = ResourceIdMapper.energyPower, showInOverview = true)
+    @ShowField(description = ResourceIdMapper.energy_power, showInOverview = true)
     private String power;
     @ShowField(description = ResourceIdMapper.cost, showInOverview = true)
     private String cost;

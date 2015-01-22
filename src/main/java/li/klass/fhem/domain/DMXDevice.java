@@ -26,10 +26,10 @@ package li.klass.fhem.domain;
 
 import java.util.Locale;
 
-import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.domain.core.DimmableContinuousStatesDevice;
 import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.ShowField;
+import li.klass.fhem.resources.ResourceIdMapper;
 
 import static li.klass.fhem.util.NumberSystemUtil.hexToDecimal;
 

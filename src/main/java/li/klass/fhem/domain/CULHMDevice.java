@@ -34,7 +34,6 @@ import java.util.Locale;
 
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
-import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.appwidget.annotation.SupportsWidget;
 import li.klass.fhem.appwidget.annotation.WidgetTemperatureField;
 import li.klass.fhem.appwidget.view.widget.base.DeviceAppWidgetView;
@@ -50,6 +49,7 @@ import li.klass.fhem.domain.heating.HeatingDevice;
 import li.klass.fhem.domain.heating.schedule.WeekProfile;
 import li.klass.fhem.domain.heating.schedule.configuration.CULHMConfiguration;
 import li.klass.fhem.domain.heating.schedule.interval.FilledTemperatureInterval;
+import li.klass.fhem.resources.ResourceIdMapper;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.service.graph.description.SeriesType;
 import li.klass.fhem.service.room.DeviceReadCallback;
@@ -176,7 +176,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
     @ShowField(description = ResourceIdMapper.pressureNN)
     private String pressureNN;
 
-    @ShowField(description = ResourceIdMapper.energyFrequency)
+    @ShowField(description = ResourceIdMapper.energy_frequency)
     private String frequency;
 
     @ShowField(description = ResourceIdMapper.current)

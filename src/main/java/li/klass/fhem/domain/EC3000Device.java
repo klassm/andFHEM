@@ -26,7 +26,6 @@ package li.klass.fhem.domain;
 
 import org.w3c.dom.NamedNodeMap;
 
-import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.appwidget.annotation.SupportsWidget;
 import li.klass.fhem.appwidget.annotation.WidgetMediumLine1;
 import li.klass.fhem.appwidget.annotation.WidgetMediumLine2;
@@ -35,6 +34,7 @@ import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
+import li.klass.fhem.resources.ResourceIdMapper;
 
 import static li.klass.fhem.domain.core.DeviceFunctionality.USAGE;
 import static li.klass.fhem.util.ValueDescriptionUtil.append;
@@ -45,14 +45,14 @@ import static li.klass.fhem.util.ValueExtractUtil.extractLeadingDouble;
 @SupportsWidget(MediumInformationWidgetView.class)
 @SuppressWarnings("unused")
 public class EC3000Device extends Device<EC3000Device> {
-    @ShowField(description = ResourceIdMapper.energyConsumption, showInOverview = true)
+    @ShowField(description = ResourceIdMapper.energy_consumption, showInOverview = true)
     private String consumption;
 
-    @ShowField(description = ResourceIdMapper.energyPower, showInOverview = true)
-    @WidgetMediumLine1(description = ResourceIdMapper.energyPower)
+    @ShowField(description = ResourceIdMapper.energy_power, showInOverview = true)
+    @WidgetMediumLine1(description = ResourceIdMapper.energy_power)
     private String power;
 
-    @WidgetMediumLine2(description = ResourceIdMapper.energyConsumption)
+    @WidgetMediumLine2(description = ResourceIdMapper.energy_consumption)
     private String widgetInfoLine;
 
     @ShowField(description = ResourceIdMapper.price)

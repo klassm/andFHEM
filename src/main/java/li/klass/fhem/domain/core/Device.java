@@ -34,7 +34,6 @@ import java.util.Map;
 
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
-import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.appwidget.view.widget.base.DeviceAppWidgetView;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.domain.genericview.OverviewViewSettingsCache;
@@ -42,6 +41,7 @@ import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.domain.log.CustomGraph;
 import li.klass.fhem.domain.log.LogDevice;
 import li.klass.fhem.domain.setlist.SetList;
+import li.klass.fhem.resources.ResourceIdMapper;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.service.graph.description.SeriesType;
 import li.klass.fhem.service.room.AllDevicesReadCallback;
@@ -222,7 +222,7 @@ public abstract class Device<T extends Device> implements Serializable, Comparab
         this.rooms = rooms;
     }
 
-    @ShowField(description = ResourceIdMapper.room, showAfter = "aliasOrName")
+    @ShowField(description = ResourceIdMapper.rooms, showAfter = "aliasOrName")
     public String getRoomConcatenated() {
         return StringUtil.concatenate(getRooms(), ",");
     }

@@ -32,7 +32,6 @@ import java.util.List;
 import java.util.Locale;
 
 import li.klass.fhem.R;
-import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.appwidget.annotation.SupportsWidget;
 import li.klass.fhem.appwidget.annotation.WidgetTemperatureField;
 import li.klass.fhem.appwidget.view.widget.base.DeviceAppWidgetView;
@@ -51,6 +50,7 @@ import li.klass.fhem.domain.heating.WindowOpenTempDevice;
 import li.klass.fhem.domain.heating.schedule.WeekProfile;
 import li.klass.fhem.domain.heating.schedule.configuration.MAXConfiguration;
 import li.klass.fhem.domain.heating.schedule.interval.FilledTemperatureInterval;
+import li.klass.fhem.resources.ResourceIdMapper;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.ValueDescriptionUtil;
 import li.klass.fhem.util.ValueExtractUtil;
@@ -90,10 +90,10 @@ public class MaxDevice extends ToggleableDevice<MaxDevice> implements DesiredTem
     @ShowField(description = ResourceIdMapper.actuator)
     private String actuator;
 
-    @ShowField(description = ResourceIdMapper.ecoTemp)
+    @ShowField(description = ResourceIdMapper.ecoTemperature)
     private double ecoTemp;
 
-    @ShowField(description = ResourceIdMapper.comfortTemp)
+    @ShowField(description = ResourceIdMapper.comfortTemperature)
     private double comfortTemp;
 
     private double desiredTemp;

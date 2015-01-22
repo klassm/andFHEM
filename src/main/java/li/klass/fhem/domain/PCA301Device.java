@@ -1,17 +1,17 @@
 package li.klass.fhem.domain;
 
-import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.ToggleableDevice;
 import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.ShowField;
+import li.klass.fhem.resources.ResourceIdMapper;
 import li.klass.fhem.util.ValueDescriptionUtil;
 
 public class PCA301Device extends ToggleableDevice<PCA301Device> {
 
-    @ShowField(description = ResourceIdMapper.energyConsumption)
+    @ShowField(description = ResourceIdMapper.energy_consumption)
     private String consumption;
-    @ShowField(description = ResourceIdMapper.energyPower)
+    @ShowField(description = ResourceIdMapper.energy_power)
     private String power;
 
     @XmllistAttribute("CONSUMPTION")

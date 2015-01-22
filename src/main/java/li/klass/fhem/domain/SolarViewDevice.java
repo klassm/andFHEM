@@ -24,15 +24,17 @@
 
 package li.klass.fhem.domain;
 
-import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.ShowField;
+import li.klass.fhem.resources.ResourceIdMapper;
 
 import static li.klass.fhem.domain.core.DeviceFunctionality.USAGE;
-import static li.klass.fhem.util.ValueDescriptionUtil.*;
 import static li.klass.fhem.util.ValueDescriptionUtil.append;
+import static li.klass.fhem.util.ValueDescriptionUtil.appendKWh;
+import static li.klass.fhem.util.ValueDescriptionUtil.appendTemperature;
+import static li.klass.fhem.util.ValueDescriptionUtil.appendW;
 
 public class SolarViewDevice extends Device<SolarViewDevice> {
     @ShowField(description = ResourceIdMapper.currentPower, showInOverview = true)

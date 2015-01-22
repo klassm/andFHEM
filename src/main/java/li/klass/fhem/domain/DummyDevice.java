@@ -26,13 +26,13 @@ package li.klass.fhem.domain;
 
 import org.w3c.dom.NamedNodeMap;
 
-import li.klass.fhem.appwidget.annotation.ResourceIdMapper;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.DimmableContinuousStatesDevice;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.domain.setlist.SetListGroupValue;
 import li.klass.fhem.domain.setlist.SetListValue;
+import li.klass.fhem.resources.ResourceIdMapper;
 
 import static li.klass.fhem.util.NumberSystemUtil.hexToDecimal;
 
