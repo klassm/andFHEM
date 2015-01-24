@@ -34,12 +34,12 @@ import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.UpdatingResultReceiver;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.service.intent.DeviceIntentService;
 
 public class DeviceActionUtil {
 
-    public static void renameDevice(final Context context, final Device device) {
+    public static void renameDevice(final Context context, final FhemDevice device) {
         final EditText input = new EditText(context);
         input.setText(device.getName());
         new AlertDialog.Builder(context)
@@ -62,7 +62,7 @@ public class DeviceActionUtil {
         }).show();
     }
 
-    public static void deleteDevice(final Context context, final Device device) {
+    public static void deleteDevice(final Context context, final FhemDevice device) {
         final String deviceName = device.getName();
         showConfirmation(context, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
@@ -87,7 +87,7 @@ public class DeviceActionUtil {
                 }).show();
     }
 
-    public static void moveDevice(final Context context, final Device device) {
+    public static void moveDevice(final Context context, final FhemDevice device) {
         final EditText input = new EditText(context);
         input.setText(device.getRoomConcatenated());
         new AlertDialog.Builder(context)
@@ -110,7 +110,7 @@ public class DeviceActionUtil {
         }).show();
     }
 
-    public static void setAlias(final Context context, final Device device) {
+    public static void setAlias(final Context context, final FhemDevice device) {
         final EditText input = new EditText(context);
         input.setText(device.getAlias());
         new AlertDialog.Builder(context)

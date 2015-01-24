@@ -31,9 +31,9 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import li.klass.fhem.R;
-import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.FhemDevice;
 
-public abstract class UpDownButtonRow<T extends Device> {
+public abstract class UpDownButtonRow<T extends FhemDevice> {
     private String description;
 
     public static final int LAYOUT_DETAIL = R.layout.device_detail_updownbuttonrow;

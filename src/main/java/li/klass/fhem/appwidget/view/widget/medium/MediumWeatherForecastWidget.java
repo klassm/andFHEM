@@ -32,7 +32,7 @@ import li.klass.fhem.R;
 import li.klass.fhem.appwidget.WidgetConfiguration;
 import li.klass.fhem.appwidget.view.widget.base.DeviceAppWidgetView;
 import li.klass.fhem.domain.WeatherDevice;
-import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.FhemDevice;
 
 public class MediumWeatherForecastWidget extends DeviceAppWidgetView {
     @Override
@@ -46,7 +46,7 @@ public class MediumWeatherForecastWidget extends DeviceAppWidgetView {
     }
 
     @Override
-    protected void fillWidgetView(Context context, RemoteViews view, Device<?> device, WidgetConfiguration widgetConfiguration) {
+    protected void fillWidgetView(Context context, RemoteViews view, FhemDevice<?> device, WidgetConfiguration widgetConfiguration) {
         WeatherDevice weatherDevice = (WeatherDevice) device;
         List<WeatherDevice.WeatherDeviceForecast> forecasts = weatherDevice.getForecasts();
         WeatherDevice.WeatherDeviceForecast forecast = forecasts.get(0);
@@ -61,7 +61,7 @@ public class MediumWeatherForecastWidget extends DeviceAppWidgetView {
     }
 
     @Override
-    public boolean supports(Device<?> device) {
+    public boolean supports(FhemDevice<?> device) {
         return device instanceof WeatherDevice;
     }
 }

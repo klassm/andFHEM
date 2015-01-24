@@ -28,13 +28,13 @@ import android.content.Context;
 
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
-import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceFunctionality;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.resources.ResourceIdMapper;
 
 @SuppressWarnings("unused")
-public class SonosPlayerDevice extends Device<SonosPlayerDevice> {
+public class SonosPlayerDevice extends FhemDevice<SonosPlayerDevice> {
 
     @ShowField(description = ResourceIdMapper.musicMute)
     private String mute;

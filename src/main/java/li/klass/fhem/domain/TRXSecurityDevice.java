@@ -24,12 +24,12 @@
 
 package li.klass.fhem.domain;
 
-import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceFunctionality;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
 
 @OverviewViewSettings(showState = true, showMeasured = true)
-public class TRXSecurityDevice extends Device<TRXSecurityDevice> {
+public class TRXSecurityDevice extends FhemDevice<TRXSecurityDevice> {
     @Override
     public DeviceFunctionality getDeviceGroup() {
         return DeviceFunctionality.SMOKE_DETECTOR;

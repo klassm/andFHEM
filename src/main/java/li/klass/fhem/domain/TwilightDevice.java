@@ -28,15 +28,15 @@ import java.util.Map;
 
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
-import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceFunctionality;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.resources.ResourceIdMapper;
 
 import static com.google.common.collect.Maps.newHashMap;
 
 @SuppressWarnings("unused")
-public class TwilightDevice extends Device<TwilightDevice> {
+public class TwilightDevice extends FhemDevice<TwilightDevice> {
     private static Map<Integer, Integer> lightStringIdMap = newHashMap();
 
     static {

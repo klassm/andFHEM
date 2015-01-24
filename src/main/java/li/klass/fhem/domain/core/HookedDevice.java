@@ -22,30 +22,46 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.fragments.weekprofile;
+package li.klass.fhem.domain.core;
 
-import li.klass.fhem.adapter.weekprofile.BaseWeekProfileAdapter;
-import li.klass.fhem.adapter.weekprofile.FromToWeekProfileAdapter;
-import li.klass.fhem.domain.core.FhemDevice;
-import li.klass.fhem.domain.heating.schedule.WeekProfile;
-import li.klass.fhem.domain.heating.schedule.interval.FromToHeatingInterval;
+public abstract class HookedDevice<T extends HookedDevice<T>> extends Device<T> {
 
-public class FromToWeekProfileFragment extends BaseWeekProfileFragment<FromToHeatingInterval> {
+    /**
+     * Contains a name only used in widgets.
+     */
+    protected String widgetName;
 
-    private FromToWeekProfileAdapter adapter;
+    /**
+     * Hides or shows a devices everywhere within this application.
+     */
+    protected boolean alwaysHidden = false;
 
-    @Override
-    protected void updateAdapterWith(WeekProfile<FromToHeatingInterval, ?, ? extends FhemDevice> weekProfile) {
-        adapter.updateData(weekProfile);
+    /**
+     * Provides some pronunciation for only this device.
+     */
+    protected String pronunciation;
+
+    @XmllistAttribute("WIDGET_NAME")
+    public void setWidgetName(String value) {
+        this.widgetName = value;
     }
 
-    @Override
-    protected void beforeCreateView() {
-        adapter = new FromToWeekProfileAdapter(getActivity());
+    @XmllistAttribute("ALWAYS_HIDDEN")
+    public void setAlwaysHidden(String value) {
+        alwaysHidden = "true".equalsIgnoreCase(value);
     }
 
-    @Override
-    protected BaseWeekProfileAdapter getAdapter() {
-        return adapter;
+    @XmllistAttribute("PRONUNCIATION")
+    public void setPronunciation(String value) {
+        this.pronunciation = value;
+    }
+
+    public String getPronunciation() {
+        return pronunciation;
+    }
+
+
+    public boolean isSupported() {
+        return !alwaysHidden;
     }
 }

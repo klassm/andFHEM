@@ -30,11 +30,11 @@ import android.os.Bundle;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
-import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.FhemDevice;
 
 public class DeviceNameSelectionFragment extends DeviceNameListFragment {
     @Override
-    protected void onDeviceNameClick(String parent, Device<?> child) {
+    protected void onDeviceNameClick(String parent, FhemDevice<?> child) {
         if (child == null) return;
 
         if (resultReceiver != null) {

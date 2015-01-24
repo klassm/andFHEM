@@ -32,7 +32,7 @@ import android.util.Log;
 import li.klass.fhem.activities.core.FragmentBaseActivity;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
-import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.fragments.device.DeviceNameSelectionFragment;
 import li.klass.fhem.util.FhemResultReceiver;
 
@@ -48,7 +48,7 @@ public class DeviceNameSelectionActivity extends FragmentActivity {
         Bundle bundle = new Bundle();
         bundle.putSerializable(BundleExtraKeys.DEVICE_FILTER, new DeviceNameSelectionFragment.DeviceFilter() {
             @Override
-            public boolean isSelectable(Device<?> device) {
+            public boolean isSelectable(FhemDevice<?> device) {
                 return DeviceNameSelectionActivity.this.isSelectable(device);
             }
         });
@@ -59,7 +59,7 @@ public class DeviceNameSelectionActivity extends FragmentActivity {
                 if (resultCode != ResultCodes.SUCCESS ||
                         !resultData.containsKey(BundleExtraKeys.CLICKED_DEVICE)) return;
 
-                Device<?> clickedDevice = (Device<?>) resultData.getSerializable(BundleExtraKeys.CLICKED_DEVICE);
+                FhemDevice<?> clickedDevice = (FhemDevice<?>) resultData.getSerializable(BundleExtraKeys.CLICKED_DEVICE);
                 deviceClicked(clickedDevice);
             }
         });
@@ -78,11 +78,11 @@ public class DeviceNameSelectionActivity extends FragmentActivity {
         }
     }
 
-    protected boolean isSelectable(Device<?> device) {
+    protected boolean isSelectable(FhemDevice<?> device) {
         return true;
     }
 
-    protected void deviceClicked(final Device<?> device) {
+    protected void deviceClicked(final FhemDevice<?> device) {
         Intent result = new Intent();
         result.putExtra(BundleExtraKeys.DEVICE, device);
         setResult(RESULT_OK, result);

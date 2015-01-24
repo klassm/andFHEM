@@ -27,9 +27,9 @@ package li.klass.fhem.domain;
 import java.util.List;
 
 import li.klass.fhem.R;
-import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.DeviceFunctionality;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.resources.ResourceIdMapper;
@@ -40,7 +40,7 @@ import static li.klass.fhem.service.graph.description.SeriesType.POWER;
 import static li.klass.fhem.util.ValueDescriptionUtil.appendKWh;
 import static li.klass.fhem.util.ValueDescriptionUtil.appendW;
 
-public class SMLUSBDevice extends Device<SMLUSBDevice> {
+public class SMLUSBDevice extends FhemDevice<SMLUSBDevice> {
 
     @ShowField(showInOverview = true, description = ResourceIdMapper.currentUsage)
     private String power;

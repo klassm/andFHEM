@@ -32,9 +32,9 @@ import li.klass.fhem.appwidget.annotation.WidgetMediumLine1;
 import li.klass.fhem.appwidget.annotation.WidgetMediumLine2;
 import li.klass.fhem.appwidget.annotation.WidgetMediumLine3;
 import li.klass.fhem.appwidget.view.widget.medium.MediumInformationWidgetView;
-import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.DeviceFunctionality;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.resources.ResourceIdMapper;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
@@ -45,7 +45,7 @@ import static li.klass.fhem.service.graph.description.SeriesType.CURRENT_USAGE_K
 
 @SupportsWidget(MediumInformationWidgetView.class)
 @SuppressWarnings("unused")
-public class CULEMDevice extends Device<CULEMDevice> {
+public class CULEMDevice extends FhemDevice<CULEMDevice> {
 
     @ShowField(description = ResourceIdMapper.currentUsage, showInOverview = true)
     @WidgetMediumLine1

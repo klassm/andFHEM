@@ -32,10 +32,10 @@ import java.util.List;
 import li.klass.fhem.adapter.devices.core.UpdatingResultReceiver;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.service.intent.DeviceIntentService;
 
-public class StateChangingSpinnerActionRow<T extends Device<T>> extends SpinnerActionRow<T> {
+public class StateChangingSpinnerActionRow<T extends FhemDevice<T>> extends SpinnerActionRow<T> {
 
     private final String commandAttribute;
 

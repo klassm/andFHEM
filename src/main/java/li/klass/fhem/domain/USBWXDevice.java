@@ -31,9 +31,9 @@ import li.klass.fhem.appwidget.annotation.SupportsWidget;
 import li.klass.fhem.appwidget.annotation.WidgetTemperatureAdditionalField;
 import li.klass.fhem.appwidget.annotation.WidgetTemperatureField;
 import li.klass.fhem.appwidget.view.widget.medium.TemperatureWidgetView;
-import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.DeviceFunctionality;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.resources.ResourceIdMapper;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
@@ -44,7 +44,7 @@ import static li.klass.fhem.service.graph.description.SeriesType.TEMPERATURE;
 
 @SupportsWidget(TemperatureWidgetView.class)
 @SuppressWarnings("unused")
-public class USBWXDevice extends Device<USBWXDevice> {
+public class USBWXDevice extends FhemDevice<USBWXDevice> {
 
     @ShowField(description = ResourceIdMapper.humidity, showInOverview = true)
     @WidgetTemperatureAdditionalField

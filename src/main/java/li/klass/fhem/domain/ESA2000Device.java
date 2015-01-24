@@ -27,9 +27,9 @@ package li.klass.fhem.domain;
 import java.util.List;
 
 import li.klass.fhem.R;
-import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.DeviceFunctionality;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.resources.ResourceIdMapper;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
@@ -40,7 +40,7 @@ import static li.klass.fhem.service.graph.description.SeriesType.CURRENT_USAGE_K
 import static li.klass.fhem.service.graph.description.SeriesType.DAY_USAGE;
 
 @SuppressWarnings("unused")
-public class ESA2000Device extends Device<ESA2000Device> {
+public class ESA2000Device extends FhemDevice<ESA2000Device> {
     @ShowField(description = ResourceIdMapper.currentUsage, showInOverview = true)
     private String current;
     @ShowField(description = ResourceIdMapper.dayUsage, showInOverview = true)

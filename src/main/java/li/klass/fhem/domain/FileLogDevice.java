@@ -28,8 +28,8 @@ import com.google.common.base.Optional;
 
 import org.w3c.dom.NamedNodeMap;
 
-import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceFunctionality;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.log.CustomGraph;
 import li.klass.fhem.domain.log.LogDevice;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
@@ -76,7 +76,7 @@ public class FileLogDevice extends LogDevice<FileLogDevice> {
     }
 
     @Override
-    public String getGraphCommandFor(Device device, String fromDateFormatted, String toDateFormatted,
+    public String getGraphCommandFor(FhemDevice device, String fromDateFormatted, String toDateFormatted,
                                      ChartSeriesDescription seriesDescription) {
         return String.format(COMMAND_TEMPLATE, name, fromDateFormatted, toDateFormatted,
                 seriesDescription.getFileLogSpec());

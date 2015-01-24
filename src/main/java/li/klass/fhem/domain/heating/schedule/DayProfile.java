@@ -30,12 +30,12 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.heating.schedule.configuration.HeatingConfiguration;
 import li.klass.fhem.domain.heating.schedule.interval.BaseHeatingInterval;
 import li.klass.fhem.util.DayUtil;
 
-public class DayProfile<H extends BaseHeatingInterval, D extends Device<D>, C extends HeatingConfiguration<H, D, C>> implements Serializable {
+public class DayProfile<H extends BaseHeatingInterval, D extends FhemDevice<D>, C extends HeatingConfiguration<H, D, C>> implements Serializable {
     private DayUtil.Day day;
     private List<H> heatingIntervals = new ArrayList<H>();
     private List<H> deletedIntervals = new ArrayList<H>();

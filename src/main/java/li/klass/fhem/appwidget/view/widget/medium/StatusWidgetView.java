@@ -29,7 +29,7 @@ import android.widget.RemoteViews;
 import li.klass.fhem.R;
 import li.klass.fhem.appwidget.WidgetConfiguration;
 import li.klass.fhem.appwidget.view.widget.base.DeviceAppWidgetView;
-import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.FhemDevice;
 
 public class StatusWidgetView extends DeviceAppWidgetView {
     @Override
@@ -43,13 +43,13 @@ public class StatusWidgetView extends DeviceAppWidgetView {
     }
 
     @Override
-    protected void fillWidgetView(Context context, RemoteViews view, Device<?> device, WidgetConfiguration widgetConfiguration) {
+    protected void fillWidgetView(Context context, RemoteViews view, FhemDevice<?> device, WidgetConfiguration widgetConfiguration) {
         setTextViewOrHide(view, R.id.status, device.getState());
         openDeviceDetailPageWhenClicking(R.id.main, view, device, widgetConfiguration);
     }
 
     @Override
-    public boolean supports(Device<?> device) {
+    public boolean supports(FhemDevice<?> device) {
         return true;
     }
 }

@@ -28,7 +28,7 @@ import android.os.Bundle;
 
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.fragments.FragmentType;
 
 import static li.klass.fhem.constants.BundleExtraKeys.ROOM_NAME;
@@ -47,7 +47,7 @@ public class DeviceNameListNavigationFragment extends DeviceNameListFragment {
     }
 
     @Override
-    protected void onDeviceNameClick(String parent, Device<?> child) {
+    protected void onDeviceNameClick(String parent, FhemDevice<?> child) {
         if (child == null) return;
 
         Intent intent = new Intent(Actions.SHOW_FRAGMENT);

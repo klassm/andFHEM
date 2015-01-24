@@ -28,7 +28,7 @@ import javax.inject.Inject;
 
 import li.klass.fhem.adapter.weekprofile.BaseWeekProfileAdapter;
 import li.klass.fhem.adapter.weekprofile.IntervalWeekProfileAdapter;
-import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.heating.schedule.WeekProfile;
 import li.klass.fhem.domain.heating.schedule.interval.FilledTemperatureInterval;
 import li.klass.fhem.util.ApplicationProperties;
@@ -40,7 +40,7 @@ public class IntervalWeekProfileFragment extends BaseWeekProfileFragment<FilledT
     private IntervalWeekProfileAdapter adapter;
 
     @Override
-    protected void updateAdapterWith(WeekProfile<FilledTemperatureInterval, ?, ? extends Device> weekProfile) {
+    protected void updateAdapterWith(WeekProfile<FilledTemperatureInterval, ?, ? extends FhemDevice> weekProfile) {
         adapter.updateData(weekProfile);
     }
 

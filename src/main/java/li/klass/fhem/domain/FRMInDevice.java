@@ -24,15 +24,15 @@
 
 package li.klass.fhem.domain;
 
-import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceFunctionality;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.resources.ResourceIdMapper;
 
 @SuppressWarnings("unused")
 @OverviewViewSettings(showState = true, showMeasured = true)
-public class FRMInDevice extends Device<FRMInDevice> {
+public class FRMInDevice extends FhemDevice<FRMInDevice> {
     @ShowField(description = ResourceIdMapper.alarm)
     private String alarm;
 

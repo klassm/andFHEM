@@ -33,7 +33,7 @@ import static li.klass.fhem.domain.core.ToggleableDevice.ButtonHookType.TOGGLE_D
 import static li.klass.fhem.domain.core.ToggleableDevice.ButtonHookType.WEBCMD_DEVICE;
 
 @SuppressWarnings("unused")
-public abstract class ToggleableDevice<T extends Device> extends Device<T> {
+public abstract class ToggleableDevice<T extends FhemDevice<T>> extends FhemDevice<T> {
 
     private boolean doInvertOnState = false;
     private String onStateName = "on";

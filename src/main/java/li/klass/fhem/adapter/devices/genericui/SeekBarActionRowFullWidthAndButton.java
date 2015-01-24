@@ -32,14 +32,14 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 
 import li.klass.fhem.R;
-import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.DialogUtil;
 
 import static li.klass.fhem.constants.PreferenceKeys.SHOW_SET_VALUE_BUTTONS;
 import static li.klass.fhem.util.NumberUtil.isDecimalNumber;
 
-public abstract class SeekBarActionRowFullWidthAndButton<T extends Device<T>> extends SeekBarActionRowFullWidth<T> {
+public abstract class SeekBarActionRowFullWidthAndButton<T extends FhemDevice<T>> extends SeekBarActionRowFullWidth<T> {
 
     protected Context context;
 

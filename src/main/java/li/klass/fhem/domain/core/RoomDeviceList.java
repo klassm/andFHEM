@@ -54,7 +54,7 @@ public class RoomDeviceList implements Serializable {
     /**
      * Actual devices.
      */
-    private Map<String, HashSet<Device>> deviceMap = newHashMap();
+    private Map<String, HashSet<FhemDevice>> deviceMap = newHashMap();
     private List<String> hiddenRooms = newArrayList();
 
     private List<String> hiddenGroups = newArrayList();
@@ -71,7 +71,7 @@ public class RoomDeviceList implements Serializable {
     public RoomDeviceList(RoomDeviceList roomDeviceList) {
         if (roomDeviceList != null) {
             this.roomName = roomDeviceList.roomName;
-            for (Device device : roomDeviceList.getAllDevices()) {
+            for (FhemDevice device : roomDeviceList.getAllDevices()) {
                 addDevice(device);
             }
         }
@@ -86,7 +86,7 @@ public class RoomDeviceList implements Serializable {
      * @param <T>           class of the returned device list.
      * @return list of devices matching the functionality.
      */
-    public <T extends Device<T>> List<T> getDevicesOfFunctionality(String functionality) {
+    public <T extends FhemDevice<T>> List<T> getDevicesOfFunctionality(String functionality) {
         return getDevicesOfFunctionality(functionality, true);
     }
 
@@ -100,7 +100,7 @@ public class RoomDeviceList implements Serializable {
      * @param <T>              class of the returned device list.
      * @return list of devices matching the group.
      */
-    public <T extends Device> List<T> getDevicesOfFunctionality(String group,
+    public <T extends FhemDevice> List<T> getDevicesOfFunctionality(String group,
                                                                 boolean respectSupported) {
         Set<T> deviceSet = getOrCreateDeviceList(group);
         List<T> deviceList = newArrayList();
@@ -116,18 +116,18 @@ public class RoomDeviceList implements Serializable {
     }
 
     @SuppressWarnings("unchecked")
-    private <T extends Device> Set<T> getOrCreateDeviceList(String group) {
+    private <T extends FhemDevice> Set<T> getOrCreateDeviceList(String group) {
         if (!deviceMap.containsKey(group)) {
-            deviceMap.put(group, new HashSet<Device>());
+            deviceMap.put(group, new HashSet<FhemDevice>());
         }
         return (Set<T>) deviceMap.get(group);
     }
 
     @SuppressWarnings("unchecked")
-    public <T extends Device> List<T> getDevicesOfType(DeviceType deviceType) {
-        Set<Device> allDevices = getAllDevices();
+    public <T extends FhemDevice> List<T> getDevicesOfType(DeviceType deviceType) {
+        Set<FhemDevice> allDevices = getAllDevices();
         List<T> deviceList = newArrayList();
-        for (Device device : newArrayList(allDevices)) {
+        for (FhemDevice device : newArrayList(allDevices)) {
             if (getDeviceTypeFor(device) != deviceType) {
                 continue;
             }
@@ -141,17 +141,17 @@ public class RoomDeviceList implements Serializable {
         return deviceList;
     }
 
-    public Set<Device> getAllDevices() {
-        Set<Device> devices = newHashSet();
-        List<HashSet<Device>> devicesCollection = newArrayList(deviceMap.values());
-        for (HashSet<Device> deviceHashSet : devicesCollection) {
+    public Set<FhemDevice> getAllDevices() {
+        Set<FhemDevice> devices = newHashSet();
+        List<HashSet<FhemDevice>> devicesCollection = newArrayList(deviceMap.values());
+        for (HashSet<FhemDevice> deviceHashSet : devicesCollection) {
             devices.addAll(deviceHashSet);
         }
         return Collections.unmodifiableSet(devices);
     }
 
     @SuppressWarnings("unchecked")
-    public <T extends Device> void removeDevice(T device) {
+    public <T extends FhemDevice> void removeDevice(T device) {
         List<String> groups = device.getInternalDeviceGroupOrGroupAttributes();
         for (String group : groups) {
             deviceMap.get(group).remove(device);
@@ -159,9 +159,9 @@ public class RoomDeviceList implements Serializable {
     }
 
     @SuppressWarnings("unchecked")
-    public <D extends Device> D getDeviceFor(String deviceName) {
-        Set<Device> allDevices = getAllDevices();
-        for (Device allDevice : allDevices) {
+    public <D extends FhemDevice> D getDeviceFor(String deviceName) {
+        Set<FhemDevice> allDevices = getAllDevices();
+        for (FhemDevice allDevice : allDevices) {
             if (allDevice.getName().equals(deviceName)) {
                 return (D) allDevice;
             }
@@ -170,8 +170,8 @@ public class RoomDeviceList implements Serializable {
     }
 
     public boolean isEmptyOrOnlyContainsDoNotShowDevices() {
-        for (HashSet<Device> devices : deviceMap.values()) {
-            for (Device device : devices) {
+        for (HashSet<FhemDevice> devices : deviceMap.values()) {
+            for (FhemDevice device : devices) {
                 if (device.isSupported()) {
                     return false;
                 }
@@ -202,7 +202,7 @@ public class RoomDeviceList implements Serializable {
     }
 
     @SuppressWarnings("unchecked")
-    public <T extends Device> RoomDeviceList addDevice(T device) {
+    public <T extends FhemDevice> RoomDeviceList addDevice(T device) {
         if (device == null) return this;
         if (!device.isSupported()) return this;
 

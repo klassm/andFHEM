@@ -30,8 +30,8 @@ import li.klass.fhem.appwidget.annotation.SupportsWidget;
 import li.klass.fhem.appwidget.annotation.WidgetMediumLine1;
 import li.klass.fhem.appwidget.annotation.WidgetMediumLine2;
 import li.klass.fhem.appwidget.view.widget.medium.MediumInformationWidgetView;
-import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceFunctionality;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.resources.ResourceIdMapper;
@@ -44,7 +44,7 @@ import static li.klass.fhem.util.ValueExtractUtil.extractLeadingDouble;
 @OverviewViewSettings(showState = false)
 @SupportsWidget(MediumInformationWidgetView.class)
 @SuppressWarnings("unused")
-public class EC3000Device extends Device<EC3000Device> {
+public class EC3000Device extends FhemDevice<EC3000Device> {
     @ShowField(description = ResourceIdMapper.energy_consumption, showInOverview = true)
     private String consumption;
 

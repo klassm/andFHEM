@@ -34,7 +34,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import li.klass.fhem.R;
-import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.heating.schedule.DayProfile;
 import li.klass.fhem.domain.heating.schedule.WeekProfile;
 import li.klass.fhem.domain.heating.schedule.configuration.HeatingConfiguration;
@@ -46,7 +46,7 @@ import static com.google.common.collect.Lists.newArrayList;
 public abstract class BaseWeekProfileAdapter<H extends BaseHeatingInterval>
         extends NestedListViewAdapter<DayProfile<H, ?, ?>, H> {
 
-    protected WeekProfile<H, ?, ? extends Device> weekProfile;
+    protected WeekProfile<H, ?, ? extends FhemDevice> weekProfile;
 
 
     protected final Resources resources;
@@ -103,7 +103,7 @@ public abstract class BaseWeekProfileAdapter<H extends BaseHeatingInterval>
         return String.format("%02d", hourOfDay) + ":" + String.format("%02d", minutes);
     }
 
-    public void updateData(WeekProfile<H, ?, ? extends Device> weekProfile) {
+    public void updateData(WeekProfile<H, ?, ? extends FhemDevice> weekProfile) {
         if (weekProfile == null) return;
         this.weekProfile = weekProfile;
         super.updateData();

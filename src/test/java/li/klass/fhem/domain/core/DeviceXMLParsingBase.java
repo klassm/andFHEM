@@ -99,11 +99,11 @@ public abstract class DeviceXMLParsingBase extends RobolectricBaseTestCase {
 
     protected abstract String getFileName();
 
-    protected <T extends Device<T>> T getDefaultDevice() {
+    protected <T extends FhemDevice<T>> T getDefaultDevice() {
         return getDeviceFor(DEFAULT_TEST_DEVICE_NAME);
     }
 
-    protected <T extends Device<T>> T getDeviceFor(String deviceName) {
+    protected <T extends FhemDevice<T>> T getDeviceFor(String deviceName) {
         return roomDeviceList.getDeviceFor(deviceName);
     }
 }

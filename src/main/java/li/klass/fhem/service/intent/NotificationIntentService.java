@@ -48,7 +48,7 @@ import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.dagger.ForApplication;
-import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.fragments.core.DeviceDetailFragment;
 import li.klass.fhem.util.NotificationUtil;
@@ -82,7 +82,7 @@ public class NotificationIntentService extends ConvenientIntentService {
         } else if (intent.getAction().equals(Actions.NOTIFICATION_TRIGGER)) {
             @SuppressWarnings("unchecked")
             Map<String, String> updateMap = (Map<String, String>) intent.getSerializableExtra(BundleExtraKeys.UPDATE_MAP);
-            Device<?> device = (Device<?>) intent.getSerializableExtra(BundleExtraKeys.DEVICE);
+            FhemDevice<?> device = (FhemDevice<?>) intent.getSerializableExtra(BundleExtraKeys.DEVICE);
             boolean vibrate = intent.getBooleanExtra(BundleExtraKeys.VIBRATE, false);
 
             deviceNotification(deviceName, updateMap, device, vibrate);
@@ -109,7 +109,7 @@ public class NotificationIntentService extends ConvenientIntentService {
         getPreferences().edit().putInt(deviceName, updateType).commit();
     }
 
-    private void deviceNotification(String deviceName, Map<String, String> updateMap, Device<?> device, boolean vibrate) {
+    private void deviceNotification(String deviceName, Map<String, String> updateMap, FhemDevice<?> device, boolean vibrate) {
         int value = getPreferences().getInt(deviceName, 0);
         if (device.triggerStateNotificationOnAttributeChange()) {
             updateMap.clear();
@@ -137,7 +137,7 @@ public class NotificationIntentService extends ConvenientIntentService {
         return applicationContext.getSharedPreferences(PREFERENCES_NAME, Activity.MODE_PRIVATE);
     }
 
-    private void generateNotification(Device device, Map<String, String> updateMap, boolean vibrate) {
+    private void generateNotification(FhemDevice device, Map<String, String> updateMap, boolean vibrate) {
         Map<String, String> notificationMap = rebuildUpdateMap(device, updateMap);
         String deviceName = device.getAliasOrName();
 
@@ -161,17 +161,17 @@ public class NotificationIntentService extends ConvenientIntentService {
                 deviceName, vibrate);
     }
 
-    private Map<String, String> rebuildUpdateMap(Device device, Map<String, String> updateMap) {
+    private Map<String, String> rebuildUpdateMap(FhemDevice device, Map<String, String> updateMap) {
         Map<String, String> newMap = newHashMap();
 
-        Class<? extends Device> deviceClass = device.getClass();
+        Class<? extends FhemDevice> deviceClass = device.getClass();
         replaceFieldForClass(deviceClass, device, updateMap, newMap);
 
         newMap.putAll(updateMap);
         return newMap;
     }
 
-    private void replaceFieldForClass(Class deviceClass, Device device, Map<String, String> updateMap,
+    private void replaceFieldForClass(Class deviceClass, FhemDevice device, Map<String, String> updateMap,
                                       Map<String, String> newMap) {
         for (Field field : deviceClass.getDeclaredFields()) {
             String fieldName = field.getName().toUpperCase(Locale.getDefault());
@@ -191,7 +191,7 @@ public class NotificationIntentService extends ConvenientIntentService {
         }
 
         Class<?> superclass = deviceClass.getSuperclass();
-        if (superclass != null && Device.class.isAssignableFrom(superclass) && updateMap.size() > 0) {
+        if (superclass != null && FhemDevice.class.isAssignableFrom(superclass) && updateMap.size() > 0) {
             replaceFieldForClass(superclass, device, updateMap, newMap);
         }
     }

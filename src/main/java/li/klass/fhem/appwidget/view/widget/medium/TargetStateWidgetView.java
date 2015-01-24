@@ -40,7 +40,7 @@ import li.klass.fhem.appwidget.view.widget.activity.TargetStateAdditionalInforma
 import li.klass.fhem.appwidget.view.widget.base.DeviceAppWidgetView;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.service.intent.DeviceIntentService;
 
 import static android.app.PendingIntent.FLAG_UPDATE_CURRENT;
@@ -58,7 +58,7 @@ public class TargetStateWidgetView extends DeviceAppWidgetView {
     }
 
     @Override
-    protected void fillWidgetView(Context context, RemoteViews view, Device<?> device, WidgetConfiguration widgetConfiguration) {
+    protected void fillWidgetView(Context context, RemoteViews view, FhemDevice<?> device, WidgetConfiguration widgetConfiguration) {
         String payload = widgetConfiguration.payload.get(1);
         String state = device.getEventMapStateFor(payload);
 
@@ -91,12 +91,12 @@ public class TargetStateWidgetView extends DeviceAppWidgetView {
 
     @Override
     protected void createDeviceWidgetConfiguration(Context context, final WidgetType widgetType,
-                                                   final int appWidgetId, Device device,
+                                                   final int appWidgetId, FhemDevice device,
                                                    final WidgetConfigurationCreatedCallback callback) {
         AvailableTargetStatesDialogUtil.showSwitchOptionsMenu(context, device,
                 new AvailableTargetStatesDialogUtil.TargetStateSelectedCallback() {
                     @Override
-                    public <D extends Device<D>> void onTargetStateSelected(String state, String subState,
+                    public <D extends FhemDevice<D>> void onTargetStateSelected(String state, String subState,
                                                                             D device, Context context) {
                         if (state.equals("state")) {
                             state = subState;
@@ -116,7 +116,7 @@ public class TargetStateWidgetView extends DeviceAppWidgetView {
     }
 
     @Override
-    public boolean supports(Device<?> device) {
+    public boolean supports(FhemDevice<?> device) {
         return !device.getSetList().getEntries().isEmpty();
     }
 }

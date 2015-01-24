@@ -38,7 +38,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import li.klass.fhem.domain.LightSceneDevice;
-import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.RoomDeviceList;
 import li.klass.fhem.service.room.RoomListService;
 
@@ -100,14 +100,14 @@ public class VoiceCommandService {
         final String state = replace(parts[2], STATE_REPLACE);
 
         RoomDeviceList devices = roomListService.getAllRoomsDeviceList();
-        List<Device> deviceMatches = from(devices.getAllDevices()).filter(filterDevicePredicate(deviceName, state)).toList();
+        List<FhemDevice> deviceMatches = from(devices.getAllDevices()).filter(filterDevicePredicate(deviceName, state)).toList();
         if (deviceMatches.isEmpty()) {
             return Optional.<VoiceResult>of(new VoiceResult.Error(VoiceResult.ErrorType.NO_DEVICE_MATCHED));
         } else if (deviceMatches.size() > 1) {
             return Optional.<VoiceResult>of(new VoiceResult.Error(VoiceResult.ErrorType.MORE_THAN_ONE_DEVICE_MATCHES));
         }
 
-        Device device = deviceMatches.get(0);
+        FhemDevice device = deviceMatches.get(0);
         String targetState = device.getReverseEventMapStateFor(state);
         if (device instanceof LightSceneDevice) {
             targetState = "scene " + targetState;
@@ -122,10 +122,10 @@ public class VoiceCommandService {
         return command;
     }
 
-    private Predicate<Device> filterDevicePredicate(final String deviceName, final String state) {
-        return new Predicate<Device>() {
+    private Predicate<FhemDevice> filterDevicePredicate(final String deviceName, final String state) {
+        return new Predicate<FhemDevice>() {
             @Override
-            public boolean apply(Device device) {
+            public boolean apply(FhemDevice device) {
                 String stateToLookFor = device.getReverseEventMapStateFor(state);
                 String alias = device.getAlias();
                 return (!Strings.isNullOrEmpty(alias) && alias.equalsIgnoreCase(deviceName)

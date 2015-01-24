@@ -42,7 +42,7 @@ import javax.inject.Inject;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
-import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.RoomDeviceList;
 import li.klass.fhem.service.room.RoomListService;
 
@@ -110,7 +110,7 @@ public class RoomListIntentService extends ConvenientIntentService {
         } else if (GET_DEVICE_FOR_NAME.equals(action)) {
             String deviceName = intent.getStringExtra(DEVICE_NAME);
             LOG.trace("handleIntent() - resolving device for name={}", deviceName);
-            Optional<Device> device = roomListService.getDeviceForName(deviceName);
+            Optional<FhemDevice> device = roomListService.getDeviceForName(deviceName);
             if (!device.isPresent()) {
                 LOG.info("cannot find device for {}", deviceName);
                 return STATE.ERROR;

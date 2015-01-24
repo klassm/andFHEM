@@ -50,8 +50,8 @@ import li.klass.fhem.adapter.devices.genericui.HolderActionRow;
 import li.klass.fhem.adapter.devices.genericui.WebCmdActionRow;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceChart;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.genericview.DetailViewSettings;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.fhem.DataConnectionSwitch;
@@ -61,7 +61,7 @@ import li.klass.fhem.util.StringUtil;
 
 import static li.klass.fhem.adapter.devices.core.GenericDeviceOverviewViewHolder.GenericDeviceTableRowHolder;
 
-public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> {
+public class GenericDeviceAdapter<D extends FhemDevice<D>> extends DeviceAdapter<D> {
     private static final String TAG = GenericDeviceAdapter.class.getName();
     protected List<DeviceDetailViewAction<D>> detailActions = new ArrayList<>();
     @Inject
@@ -109,7 +109,7 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
                 .createRow(context, inflater, layout, device));
     }
 
-    public View createOverviewView(LayoutInflater layoutInflater, View convertView, Device rawDevice, long lastUpdate) {
+    public View createOverviewView(LayoutInflater layoutInflater, View convertView, FhemDevice rawDevice, long lastUpdate) {
         if (convertView == null || convertView.getTag() == null) {
             convertView = layoutInflater.inflate(getOverviewLayout(), null);
             GenericDeviceOverviewViewHolder viewHolder = new GenericDeviceOverviewViewHolder(convertView);
@@ -212,7 +212,7 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
     }
 
     @Override
-    public boolean supportsDetailView(Device device) {
+    public boolean supportsDetailView(FhemDevice device) {
         return true;
     }
 
@@ -363,12 +363,12 @@ public class GenericDeviceAdapter<D extends Device<D>> extends DeviceAdapter<D> 
     }
 
     @Override
-    protected Intent onFillDeviceDetailIntent(Context context, Device device, Intent intent) {
+    protected Intent onFillDeviceDetailIntent(Context context, FhemDevice device, Intent intent) {
         return intent;
     }
 
     @Override
-    public Class<? extends Device> getSupportedDeviceClass() {
+    public Class<? extends FhemDevice> getSupportedDeviceClass() {
         return deviceClass;
     }
 

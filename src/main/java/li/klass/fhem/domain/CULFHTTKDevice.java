@@ -29,9 +29,9 @@ import org.w3c.dom.NamedNodeMap;
 import java.util.List;
 
 import li.klass.fhem.R;
-import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.DeviceFunctionality;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.resources.ResourceIdMapper;
@@ -41,7 +41,7 @@ import static li.klass.fhem.service.graph.description.SeriesType.WINDOW_OPEN;
 
 @SuppressWarnings("unused")
 @OverviewViewSettings(showState = true)
-public class CULFHTTKDevice extends Device<CULFHTTKDevice> {
+public class CULFHTTKDevice extends FhemDevice<CULFHTTKDevice> {
     private String lastWindowState;
     private String windowState = "???";
     @ShowField(description = ResourceIdMapper.lastStateChange, showInOverview = true)

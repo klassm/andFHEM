@@ -24,12 +24,12 @@
 
 package li.klass.fhem.domain.heating;
 
-import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.heating.schedule.WeekProfile;
 import li.klass.fhem.domain.heating.schedule.configuration.HeatingConfiguration;
 import li.klass.fhem.domain.heating.schedule.interval.BaseHeatingInterval;
 
-public interface HeatingDevice<MODE extends Enum<MODE>, C extends HeatingConfiguration<H, D, C>, H extends BaseHeatingInterval, D extends Device<D>> {
+public interface HeatingDevice<MODE extends Enum<MODE>, C extends HeatingConfiguration<H, D, C>, H extends BaseHeatingInterval, D extends FhemDevice<D>> {
     void setHeatingMode(MODE mode);
 
     MODE getHeatingMode();

@@ -33,12 +33,12 @@ import android.widget.ToggleButton;
 import java.util.List;
 
 import li.klass.fhem.R;
-import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.FhemDevice;
 
 import static li.klass.fhem.adapter.devices.genericui.AvailableTargetStatesDialogUtil.STATE_SENDING_CALLBACK;
 import static li.klass.fhem.adapter.devices.genericui.AvailableTargetStatesDialogUtil.handleSelectedOption;
 
-public class WebCmdActionRow<D extends Device<D>> extends HolderActionRow<D, String> {
+public class WebCmdActionRow<D extends FhemDevice<D>> extends HolderActionRow<D, String> {
     public WebCmdActionRow(int layout, Context context) {
         super(context.getString(R.string.webcmd), layout);
     }

@@ -114,10 +114,10 @@ public class FS20DeviceTest extends DeviceXMLParsingBase {
         FS20Device device = new FS20Device();
         assertThat(device.isSupported()).isEqualTo(true);
 
-        device.readALWAYS_HIDDEN("true");
+        device.setAlwaysHidden("true");
         assertThat(device.isSupported()).isEqualTo(false);
 
-        device.readALWAYS_HIDDEN("false");
+        device.setAlwaysHidden("false");
         assertThat(device.isSupported()).isEqualTo(true);
     }
 

@@ -26,14 +26,14 @@ package li.klass.fhem.domain;
 
 import java.util.List;
 
-import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceFunctionality;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.genericview.DetailViewSettings;
 import li.klass.fhem.domain.setlist.SetListGroupValue;
 
 @SuppressWarnings("unused")
 @DetailViewSettings(showMeasured = true, showState = true)
-public class LightSceneDevice extends Device<LightSceneDevice> {
+public class LightSceneDevice extends FhemDevice<LightSceneDevice> {
 
     private String scene;
 

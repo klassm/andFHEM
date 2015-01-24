@@ -34,7 +34,7 @@ import android.widget.TextView;
 
 import li.klass.fhem.R;
 import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.service.intent.DeviceIntentService;
 import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.ValueDescriptionUtil;
@@ -42,7 +42,7 @@ import li.klass.fhem.util.device.DeviceActionUtil;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public class TemperatureChangeTableRow<D extends Device<D>> extends SeekBarActionRowFullWidthAndButton<D> {
+public class TemperatureChangeTableRow<D extends FhemDevice<D>> extends SeekBarActionRowFullWidthAndButton<D> {
     private final TextView updateView;
     private double newTemperature;
     private String intentAction;

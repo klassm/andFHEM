@@ -40,7 +40,7 @@ import li.klass.fhem.adapter.weekprofile.BaseWeekProfileAdapter;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
-import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.heating.HeatingDevice;
 import li.klass.fhem.domain.heating.schedule.WeekProfile;
 import li.klass.fhem.domain.heating.schedule.interval.BaseHeatingInterval;
@@ -140,13 +140,13 @@ public abstract class BaseWeekProfileFragment<H extends BaseHeatingInterval> ext
                 super.onReceiveResult(resultCode, resultData);
 
                 if (resultCode == ResultCodes.SUCCESS && getView() != null) {
-                    Device device = (Device) resultData.getSerializable(BundleExtraKeys.DEVICE);
+                    FhemDevice device = (FhemDevice) resultData.getSerializable(BundleExtraKeys.DEVICE);
                     if (device == null || !(device instanceof HeatingDevice)) {
                         return;
                     }
 
                     @SuppressWarnings("unchecked")
-                    HeatingDevice<?, ?, H, ? extends Device> heatingDevice = (HeatingDevice) device;
+                    HeatingDevice<?, ?, H, ? extends FhemDevice> heatingDevice = (HeatingDevice) device;
 
                     updateChangeButtonsHolderVisibility(heatingDevice.getWeekProfile());
                 }
@@ -172,7 +172,7 @@ public abstract class BaseWeekProfileFragment<H extends BaseHeatingInterval> ext
         }
     }
 
-    protected abstract void updateAdapterWith(WeekProfile<H, ?, ? extends Device> weekProfile);
+    protected abstract void updateAdapterWith(WeekProfile<H, ?, ? extends FhemDevice> weekProfile);
 
     protected abstract BaseWeekProfileAdapter getAdapter();
 

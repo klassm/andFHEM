@@ -34,7 +34,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import li.klass.fhem.dagger.ForApplication;
-import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.RoomDeviceList;
 
 @Singleton
@@ -51,7 +51,7 @@ public class FavoritesService {
      *
      * @param device device to add.
      */
-    public void addFavorite(Device device) {
+    public void addFavorite(FhemDevice device) {
         SharedPreferences.Editor editor = getPreferences().edit();
         editor.putString(device.getName(), device.getName()).apply();
     }
@@ -68,7 +68,7 @@ public class FavoritesService {
      *
      * @param device favorite to remove.
      */
-    public void removeFavorite(Device device) {
+    public void removeFavorite(FhemDevice device) {
         SharedPreferences.Editor editor = getPreferences().edit();
         editor.remove(device.getName()).apply();
     }
@@ -87,7 +87,7 @@ public class FavoritesService {
 
         Set<String> favoriteDeviceNames = getPreferences().getAll().keySet();
         for (String favoriteDeviceName : favoriteDeviceNames) {
-            Device device = allRoomsDeviceList.getDeviceFor(favoriteDeviceName);
+            FhemDevice device = allRoomsDeviceList.getDeviceFor(favoriteDeviceName);
             if (device != null) {
                 favoritesList.addDevice(device);
             }

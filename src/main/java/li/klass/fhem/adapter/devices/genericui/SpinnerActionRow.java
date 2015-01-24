@@ -37,9 +37,9 @@ import android.widget.TextView;
 import java.util.List;
 
 import li.klass.fhem.R;
-import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.FhemDevice;
 
-public abstract class SpinnerActionRow<T extends Device> {
+public abstract class SpinnerActionRow<T extends FhemDevice> {
     private int description;
     private int prompt;
     private List<String> spinnerValues;

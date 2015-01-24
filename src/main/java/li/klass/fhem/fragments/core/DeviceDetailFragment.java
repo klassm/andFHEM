@@ -40,8 +40,8 @@ import li.klass.fhem.adapter.devices.core.DeviceAdapter;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
-import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceType;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.service.advertisement.AdvertisementService;
 import li.klass.fhem.service.intent.RoomListIntentService;
 
@@ -86,7 +86,7 @@ public class DeviceDetailFragment extends BaseFragment {
                 getActivity().sendBroadcast(new Intent(Actions.DISMISS_EXECUTING_DIALOG));
 
                 if (resultCode == ResultCodes.SUCCESS && getView() != null) {
-                    Device device = (Device) resultData.getSerializable(BundleExtraKeys.DEVICE);
+                    FhemDevice device = (FhemDevice) resultData.getSerializable(BundleExtraKeys.DEVICE);
                     long lastUpdate = resultData.getLong(BundleExtraKeys.LAST_UPDATE);
 
                     if (device == null) return;

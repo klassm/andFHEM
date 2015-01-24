@@ -33,7 +33,7 @@ import android.util.Log;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
-import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.service.intent.RoomListIntentService;
 import li.klass.fhem.util.FhemResultReceiver;
 
@@ -63,7 +63,7 @@ public class ConditionQueryLocaleReceiver extends BroadcastReceiver {
                             return;
                         }
 
-                        Device device = (Device) resultData.getSerializable(BundleExtraKeys.DEVICE);
+                        FhemDevice device = (FhemDevice) resultData.getSerializable(BundleExtraKeys.DEVICE);
                         if (device == null) {
                             finishConditionIntent(RESULT_CONDITION_UNKNOWN);
                         } else if (device.getInternalState().equalsIgnoreCase(targetState)) {

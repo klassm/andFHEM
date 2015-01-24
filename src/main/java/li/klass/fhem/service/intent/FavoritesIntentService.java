@@ -30,7 +30,7 @@ import android.os.ResultReceiver;
 import javax.inject.Inject;
 
 import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.RoomDeviceList;
 import li.klass.fhem.service.room.FavoritesService;
 import li.klass.fhem.service.room.RoomListService;
@@ -72,11 +72,11 @@ public class FavoritesIntentService extends ConvenientIntentService {
             RoomDeviceList favorites = favoritesService.getFavorites();
             sendSingleExtraResult(resultReceiver, SUCCESS, DEVICE_LIST, favorites);
         } else if (FAVORITE_ADD.equals(action)) {
-            Device device = (Device) intent.getSerializableExtra(DEVICE);
+            FhemDevice device = (FhemDevice) intent.getSerializableExtra(DEVICE);
             favoritesService.addFavorite(device);
             if (resultReceiver != null) sendNoResult(resultReceiver, SUCCESS);
         } else if (FAVORITE_REMOVE.equals(action)) {
-            Device device = (Device) intent.getSerializableExtra(DEVICE);
+            FhemDevice device = (FhemDevice) intent.getSerializableExtra(DEVICE);
             favoritesService.removeFavorite(device);
             if (resultReceiver != null) sendNoResult(resultReceiver, SUCCESS);
         } else if (FAVORITES_PRESENT.equals(action)) {

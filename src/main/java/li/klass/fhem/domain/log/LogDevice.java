@@ -30,8 +30,8 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceFunctionality;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.service.room.AllDevicesReadCallback;
 
@@ -39,7 +39,7 @@ import static com.google.common.collect.Maps.newHashMap;
 import static li.klass.fhem.util.NumberUtil.isDecimalNumber;
 import static li.klass.fhem.util.ValueExtractUtil.extractLeadingDouble;
 
-public abstract class LogDevice<T extends LogDevice> extends Device<T> {
+public abstract class LogDevice<T extends LogDevice<T>> extends FhemDevice<T> {
 
     protected List<CustomGraph> customGraphs = Lists.newArrayList();
     private String concerningDeviceRegexp;
@@ -138,7 +138,7 @@ public abstract class LogDevice<T extends LogDevice> extends Device<T> {
      * @param seriesDescription series specification.
      * @return command
      */
-    public abstract String getGraphCommandFor(Device device, String fromDateFormatted,
+    public abstract String getGraphCommandFor(FhemDevice device, String fromDateFormatted,
                                               String toDateFormatted, ChartSeriesDescription seriesDescription);
 
     @Override
@@ -147,8 +147,8 @@ public abstract class LogDevice<T extends LogDevice> extends Device<T> {
 
         setAllDeviceReadCallback(new AllDevicesReadCallback() {
             @Override
-            public void devicesRead(Map<String, Device> allDevices) {
-                for (Device device : allDevices.values()) {
+            public void devicesRead(Map<String, FhemDevice> allDevices) {
+                for (FhemDevice device : allDevices.values()) {
                     if (concernsDevice(device.getName())) {
                         device.addLogDevice(LogDevice.this);
                     }

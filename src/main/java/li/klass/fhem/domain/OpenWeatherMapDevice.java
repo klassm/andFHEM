@@ -7,15 +7,15 @@ import li.klass.fhem.appwidget.annotation.WidgetTemperatureAdditionalField;
 import li.klass.fhem.appwidget.annotation.WidgetTemperatureField;
 import li.klass.fhem.appwidget.view.widget.medium.MediumInformationWidgetView;
 import li.klass.fhem.appwidget.view.widget.medium.TemperatureWidgetView;
-import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceFunctionality;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.resources.ResourceIdMapper;
 import li.klass.fhem.util.ValueDescriptionUtil;
 
 @SuppressWarnings("unused")
 @SupportsWidget({TemperatureWidgetView.class, MediumInformationWidgetView.class})
-public class OpenWeatherMapDevice extends Device<OpenWeatherMapDevice> {
+public class OpenWeatherMapDevice extends FhemDevice<OpenWeatherMapDevice> {
     @ShowField(description = ResourceIdMapper.temperature, showInOverview = true)
     @WidgetTemperatureField
     @WidgetMediumLine1

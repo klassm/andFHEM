@@ -55,7 +55,7 @@ import li.klass.fhem.appwidget.view.widget.small.RoomsLinkWidget;
 import li.klass.fhem.appwidget.view.widget.small.SendCommandLinkWidget;
 import li.klass.fhem.appwidget.view.widget.small.SmallToggleWidget;
 import li.klass.fhem.appwidget.view.widget.small.TimersLinkWidget;
-import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.FhemDevice;
 
 import static com.google.common.collect.Iterables.filter;
 import static com.google.common.collect.Lists.newArrayList;
@@ -90,7 +90,7 @@ public enum WidgetType {
         this.widgetSize = widgetSize;
     }
 
-    public static List<WidgetType> getSupportedDeviceWidgetsFor(final WidgetSize size, final Device<?> device) {
+    public static List<WidgetType> getSupportedDeviceWidgetsFor(final WidgetSize size, final FhemDevice<?> device) {
         return newArrayList(filter(newArrayList(WidgetType.values()), new Predicate<WidgetType>() {
             @Override
             public boolean apply(WidgetType widgetType) {

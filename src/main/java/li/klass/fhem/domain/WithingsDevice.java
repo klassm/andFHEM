@@ -32,9 +32,9 @@ import java.util.List;
 import java.util.Locale;
 
 import li.klass.fhem.R;
-import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.DeviceFunctionality;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.genericview.DetailViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.resources.ResourceIdMapper;
@@ -50,7 +50,7 @@ import static li.klass.fhem.util.ValueExtractUtil.extractLeadingInt;
 
 @SuppressWarnings("unused")
 @DetailViewSettings(showState = false)
-public class WithingsDevice extends Device<WithingsDevice> {
+public class WithingsDevice extends FhemDevice<WithingsDevice> {
     @ShowField(description = ResourceIdMapper.fatFreeMass)
     private String fatFreeMass;
     @ShowField(description = ResourceIdMapper.fatMass)

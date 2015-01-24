@@ -55,8 +55,8 @@ import li.klass.fhem.adapter.rooms.DeviceGridAdapter;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
-import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceType;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.RoomDeviceList;
 import li.klass.fhem.fhem.DataConnectionSwitch;
 import li.klass.fhem.fhem.DummyDataConnection;
@@ -79,7 +79,7 @@ import static li.klass.fhem.constants.PreferenceKeys.DEVICE_LIST_RIGHT_PADDING;
 
 public abstract class DeviceListFragment extends BaseFragment {
 
-    protected static AtomicReference<Device> contextMenuClickedDevice = new AtomicReference<>();
+    protected static AtomicReference<FhemDevice> contextMenuClickedDevice = new AtomicReference<>();
     protected static AtomicReference<DeviceListFragment> currentClickFragment = new AtomicReference<>();
     protected static AtomicBoolean isClickedDeviceFavorite = new AtomicBoolean(false);
 
@@ -197,9 +197,9 @@ public abstract class DeviceListFragment extends BaseFragment {
 
         DeviceGridAdapter adapter = new DeviceGridAdapter(getActivity(), new RoomDeviceList(""), applicationProperties);
         nestedListView.setAdapter(adapter);
-        nestedListView.setOnLongClickListener(new GridViewWithSections.OnClickListener<String, Device>() {
+        nestedListView.setOnLongClickListener(new GridViewWithSections.OnClickListener<String, FhemDevice>() {
             @Override
-            public boolean onItemClick(View view, String parent, final Device child, int parentPosition, int childPosition) {
+            public boolean onItemClick(View view, String parent, final FhemDevice child, int parentPosition, int childPosition) {
                 if (child == null) {
                     return false;
                 } else {
@@ -221,11 +221,11 @@ public abstract class DeviceListFragment extends BaseFragment {
             }
         });
 
-        nestedListView.setOnClickListener(new GridViewWithSections.OnClickListener<String, Device>() {
+        nestedListView.setOnClickListener(new GridViewWithSections.OnClickListener<String, FhemDevice>() {
             @Override
-            public boolean onItemClick(View view, String parent, Device child, int parentPosition, int childPosition) {
+            public boolean onItemClick(View view, String parent, FhemDevice child, int parentPosition, int childPosition) {
                 if (child != null) {
-                    DeviceAdapter<? extends Device> adapter = DeviceType.getAdapterFor(child);
+                    DeviceAdapter<? extends FhemDevice> adapter = DeviceType.getAdapterFor(child);
                     if (adapter != null && adapter.supportsDetailView(child)) {
                         if (actionMode != null) actionMode.finish();
                         adapter.attach(DeviceListFragment.this.getActivity());
@@ -337,8 +337,8 @@ public abstract class DeviceListFragment extends BaseFragment {
         Object tag = info.targetView.getTag();
 
         if (tag == null) return;
-        if (tag instanceof Device) {
-            contextMenuClickedDevice.set((Device) tag);
+        if (tag instanceof FhemDevice) {
+            contextMenuClickedDevice.set((FhemDevice) tag);
             currentClickFragment.set(this);
 
             ((ActionBarActivity) getActivity()).startSupportActionMode(actionModeCallback);

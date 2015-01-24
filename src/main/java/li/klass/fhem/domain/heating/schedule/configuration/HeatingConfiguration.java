@@ -27,7 +27,7 @@ package li.klass.fhem.domain.heating.schedule.configuration;
 import java.io.Serializable;
 import java.util.List;
 
-import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.heating.schedule.DayProfile;
 import li.klass.fhem.domain.heating.schedule.WeekProfile;
 import li.klass.fhem.domain.heating.schedule.interval.BaseHeatingInterval;
@@ -35,7 +35,7 @@ import li.klass.fhem.util.DayUtil;
 
 import static li.klass.fhem.util.DayUtil.Day;
 
-public abstract class HeatingConfiguration<H extends BaseHeatingInterval, D extends Device<D>, C extends HeatingConfiguration<H, D, C>>
+public abstract class HeatingConfiguration<H extends BaseHeatingInterval, D extends FhemDevice<D>, C extends HeatingConfiguration<H, D, C>>
         implements Serializable {
 
     public enum NumberOfIntervalsType {

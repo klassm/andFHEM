@@ -27,9 +27,9 @@ package li.klass.fhem.domain;
 import java.util.List;
 
 import li.klass.fhem.R;
-import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.DeviceFunctionality;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.resources.ResourceIdMapper;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
@@ -41,7 +41,7 @@ import static li.klass.fhem.util.ValueDescriptionUtil.append;
 import static li.klass.fhem.util.ValueDescriptionUtil.appendTemperature;
 
 @SuppressWarnings("unused")
-public class BMP180Device extends Device<BMP180Device> {
+public class BMP180Device extends FhemDevice<BMP180Device> {
     @ShowField(description = ResourceIdMapper.pressure, showInOverview = true)
     private String pressure;
     @ShowField(description = ResourceIdMapper.pressureNN, showInOverview = true)

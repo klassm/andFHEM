@@ -35,7 +35,7 @@ import li.klass.fhem.appwidget.WidgetConfiguration;
 import li.klass.fhem.appwidget.view.widget.base.DeviceAppWidgetView;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.ToggleableDevice;
 import li.klass.fhem.service.intent.DeviceIntentService;
 
@@ -53,7 +53,7 @@ public class ToggleWidgetView extends DeviceAppWidgetView {
     }
 
     @Override
-    protected void fillWidgetView(Context context, RemoteViews view, Device<?> device, WidgetConfiguration widgetConfiguration) {
+    protected void fillWidgetView(Context context, RemoteViews view, FhemDevice<?> device, WidgetConfiguration widgetConfiguration) {
         ToggleableDevice toggleable = (ToggleableDevice) device;
 
         boolean isOn = toggleable.isOnRespectingInvertHook();
@@ -103,7 +103,7 @@ public class ToggleWidgetView extends DeviceAppWidgetView {
     }
 
     @Override
-    public boolean supports(Device<?> device) {
+    public boolean supports(FhemDevice<?> device) {
         return (device instanceof ToggleableDevice) && ((ToggleableDevice) device).supportsToggle();
     }
 }

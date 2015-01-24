@@ -26,9 +26,9 @@ package li.klass.fhem.adapter.devices;
 
 import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
 import li.klass.fhem.adapter.devices.genericui.AvailableTargetStatesSwitchActionRow;
-import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.FhemDevice;
 
-public class SwitchActionRowAdapter<D extends Device<D>> extends GenericDeviceAdapter<D> {
+public class SwitchActionRowAdapter<D extends FhemDevice<D>> extends GenericDeviceAdapter<D> {
     public SwitchActionRowAdapter(Class<D> deviceClass) {
         super(deviceClass);
     }

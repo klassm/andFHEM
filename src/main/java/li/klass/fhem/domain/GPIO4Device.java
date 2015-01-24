@@ -27,9 +27,9 @@ package li.klass.fhem.domain;
 import java.util.List;
 
 import li.klass.fhem.R;
-import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.DeviceFunctionality;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.resources.ResourceIdMapper;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
@@ -38,7 +38,7 @@ import li.klass.fhem.util.ValueDescriptionUtil;
 import static li.klass.fhem.service.graph.description.SeriesType.TEMPERATURE;
 
 @SuppressWarnings("unused")
-public class GPIO4Device extends Device<GPIO4Device> {
+public class GPIO4Device extends FhemDevice<GPIO4Device> {
 
     private SubType subType = null;
 

@@ -43,8 +43,8 @@ import javax.inject.Singleton;
 
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.domain.FHEMWEBDevice;
-import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceType;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.RoomDeviceList;
 import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.CloseableUtil;
@@ -105,16 +105,16 @@ public class RoomListHolderService {
 
 
     FHEMWEBDevice findFHEMWEBDevice(RoomDeviceList allRoomDeviceList) {
-        List<Device> devicesOfType = allRoomDeviceList == null ?
-                Lists.<Device>newArrayList() : allRoomDeviceList.getDevicesOfType(DeviceType.FHEMWEB);
+        List<FhemDevice> devicesOfType = allRoomDeviceList == null ?
+                Lists.<FhemDevice>newArrayList() : allRoomDeviceList.getDevicesOfType(DeviceType.FHEMWEB);
         return findFHEMWEBDevice(devicesOfType);
     }
 
-    FHEMWEBDevice findFHEMWEBDevice(List<Device> devices) {
+    FHEMWEBDevice findFHEMWEBDevice(List<FhemDevice> devices) {
         String qualifier = applicationProperties.getStringSharedPreference(DEVICE_NAME, DEFAULT_FHEMWEB_QUALIFIER).toUpperCase(Locale.getDefault());
         if (!devices.isEmpty()) {
             FHEMWEBDevice foundDevice = null;
-            for (Device device : devices) {
+            for (FhemDevice device : devices) {
                 if (device.getName() != null && device.getName().toUpperCase(Locale.getDefault()).contains(qualifier)) {
                     foundDevice = (FHEMWEBDevice) device;
                     break;

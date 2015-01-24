@@ -106,7 +106,7 @@ public class RoomListServiceTest extends RobolectricBaseTestCase {
         TestDevice(String name, boolean supported, String... rooms) {
             setName(name);
             setRooms(newArrayList(rooms));
-            readGROUP("TEST");
+            setGroup("TEST");
             this.supported = supported;
         }
 

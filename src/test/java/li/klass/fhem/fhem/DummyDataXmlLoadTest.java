@@ -8,8 +8,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 
-import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+import li.klass.fhem.domain.core.FhemDevice;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -19,7 +19,7 @@ import static org.hamcrest.core.IsNull.nullValue;
 public class DummyDataXmlLoadTest extends DeviceXMLParsingBase {
     @Test
     public void testFunctionalityIsSetOnAllDevices() {
-        for (Device device : roomDeviceList.getAllDevices()) {
+        for (FhemDevice device : roomDeviceList.getAllDevices()) {
             assertThat(device.getDeviceGroup(), is(not(nullValue())));
         }
     }

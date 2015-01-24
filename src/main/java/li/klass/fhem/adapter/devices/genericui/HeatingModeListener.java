@@ -34,14 +34,14 @@ import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
 import li.klass.fhem.adapter.devices.core.UpdatingResultReceiver;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.heating.HeatingDevice;
 import li.klass.fhem.service.intent.DeviceIntentService;
 import li.klass.fhem.util.EnumUtils;
 
 import static li.klass.fhem.util.EnumUtils.toStringList;
 
-public class HeatingModeListener<D extends Device<D> & HeatingDevice<M, ?, ?, ?>, M extends Enum<M>> extends FieldNameAddedToDetailListener<D> {
+public class HeatingModeListener<D extends FhemDevice<D> & HeatingDevice<M, ?, ?, ?>, M extends Enum<M>> extends FieldNameAddedToDetailListener<D> {
 
     @Override
     public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, D device, TableRow fieldTableRow) {

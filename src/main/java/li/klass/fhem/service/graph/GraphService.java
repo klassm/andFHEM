@@ -39,7 +39,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.log.LogDevice;
 import li.klass.fhem.service.CommandExecutionService;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
@@ -69,7 +69,7 @@ public class GraphService {
      * @return read graph data or null (if the device does not have a FileLog device)
      */
     @SuppressWarnings("unchecked")
-    public HashMap<ChartSeriesDescription, List<GraphEntry>> getGraphData(Device device, ArrayList<ChartSeriesDescription> seriesDescriptions,
+    public HashMap<ChartSeriesDescription, List<GraphEntry>> getGraphData(FhemDevice device, ArrayList<ChartSeriesDescription> seriesDescriptions,
                                                                           final DateTime startDate, final DateTime endDate) {
 
         if (device.getLogDevices().isEmpty()) return null;
@@ -93,14 +93,14 @@ public class GraphService {
      * @param endDate           read FileLog entries up to the given date
      * @return read logDevices entries converted to {@link GraphEntry} objects.
      */
-    private List<GraphEntry> getCurrentGraphEntriesFor(Device device,
+    private List<GraphEntry> getCurrentGraphEntriesFor(FhemDevice device,
                                                        ChartSeriesDescription seriesDescription,
                                                        DateTime startDate, DateTime endDate) {
         String result = loadLogData(device, startDate, endDate, seriesDescription);
         return findGraphEntries(result);
     }
 
-    public String loadLogData(Device device, DateTime fromDate, DateTime toDate,
+    public String loadLogData(FhemDevice device, DateTime fromDate, DateTime toDate,
                               ChartSeriesDescription seriesDescription) {
         String fromDateFormatted = DATE_TIME_FORMATTER.print(fromDate);
         String toDateFormatted = DATE_TIME_FORMATTER.print(toDate);

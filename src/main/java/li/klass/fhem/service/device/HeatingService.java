@@ -32,7 +32,7 @@ import java.util.Locale;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.heating.ComfortTempDevice;
 import li.klass.fhem.domain.heating.DesiredTempDevice;
 import li.klass.fhem.domain.heating.EcoTempDevice;
@@ -139,7 +139,7 @@ public class HeatingService {
     @SuppressWarnings("unchecked")
     public void setWeekProfileFor(HeatingDevice device) {
         WeekProfile weekProfile = device.getWeekProfile();
-        List<String> commands = weekProfile.getSubmitCommands((Device) device);
+        List<String> commands = weekProfile.getSubmitCommands((FhemDevice) device);
 
         for (String command : commands) {
             commandExecutionService.executeSafely(command);

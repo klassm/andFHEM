@@ -28,15 +28,15 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceFunctionality;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.resources.ResourceIdMapper;
 
 import static li.klass.fhem.domain.core.DeviceFunctionality.FHEM;
 
 @SuppressWarnings("unused")
-public class FHEMWEBDevice extends Device<FHEMWEBDevice> {
+public class FHEMWEBDevice extends FhemDevice<FHEMWEBDevice> {
 
     @ShowField(description = ResourceIdMapper.hiddenRooms)
     private String hiddenRoom;

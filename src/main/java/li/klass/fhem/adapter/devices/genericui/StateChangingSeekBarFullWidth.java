@@ -31,12 +31,12 @@ import android.widget.TableRow;
 import li.klass.fhem.adapter.devices.core.UpdatingResultReceiver;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.setlist.SetListSliderValue;
 import li.klass.fhem.service.intent.DeviceIntentService;
 import li.klass.fhem.util.ApplicationProperties;
 
-public class StateChangingSeekBarFullWidth<D extends Device<D>> extends SeekBarActionRowFullWidthAndButton<D> {
+public class StateChangingSeekBarFullWidth<D extends FhemDevice<D>> extends SeekBarActionRowFullWidthAndButton<D> {
 
     private String commandAttribute;
     private ApplicationProperties applicationProperties;

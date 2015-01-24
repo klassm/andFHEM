@@ -26,15 +26,15 @@ package li.klass.fhem.domain;
 
 import org.w3c.dom.NamedNodeMap;
 
-import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceFunctionality;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.resources.ResourceIdMapper;
 
 @OverviewViewSettings(showState = true)
 @SuppressWarnings("unused")
-public class RFXX10RECDevice extends Device<RFXX10RECDevice> {
+public class RFXX10RECDevice extends FhemDevice<RFXX10RECDevice> {
     @ShowField(description = ResourceIdMapper.lastStateChange, showInOverview = true)
     private String lastStateChangeTime;
 

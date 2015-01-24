@@ -37,13 +37,13 @@ import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.activities.graph.ChartingActivity;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceChart;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.fragments.core.DeviceDetailFragment;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public abstract class DeviceAdapter<D extends Device> {
+public abstract class DeviceAdapter<D extends FhemDevice> {
 
     private Context context;
     private LayoutInflater inflater;
@@ -61,11 +61,11 @@ public abstract class DeviceAdapter<D extends Device> {
      * @param deviceClass class to check
      * @return true if device class is supported
      */
-    public boolean supports(Class<? extends Device> deviceClass) {
+    public boolean supports(Class<? extends FhemDevice> deviceClass) {
         return getSupportedDeviceClass().isAssignableFrom(deviceClass);
     }
 
-    public abstract Class<? extends Device> getSupportedDeviceClass();
+    public abstract Class<? extends FhemDevice> getSupportedDeviceClass();
 
     /**
      * Creates an overview view for the given device. The device has to match the adapter device type, otherwise
@@ -76,7 +76,7 @@ public abstract class DeviceAdapter<D extends Device> {
      * @param rawDevice      device used for filling the view  @return overview view
      */
     @SuppressWarnings("unchecked")
-    public abstract View createOverviewView(LayoutInflater layoutInflater, View convertView, Device rawDevice, long lastUpdate);
+    public abstract View createOverviewView(LayoutInflater layoutInflater, View convertView, FhemDevice rawDevice, long lastUpdate);
 
     /**
      * Creates a filled detail view for a given device.
@@ -87,18 +87,18 @@ public abstract class DeviceAdapter<D extends Device> {
      * @return filled view.
      */
     @SuppressWarnings("unchecked")
-    public View createDetailView(Context context, Device device, long lastUpdate) {
+    public View createDetailView(Context context, FhemDevice device, long lastUpdate) {
         if (supportsDetailView(device)) {
             return getDeviceDetailView(context, (D) device, lastUpdate);
         }
         return null;
     }
 
-    public abstract boolean supportsDetailView(Device device);
+    public abstract boolean supportsDetailView(FhemDevice device);
 
     protected abstract View getDeviceDetailView(Context context, D device, long lastUpdate);
 
-    public void gotoDetailView(Context context, Device device) {
+    public void gotoDetailView(Context context, FhemDevice device) {
         if (!supportsDetailView(device)) {
             return;
         }
@@ -115,7 +115,7 @@ public abstract class DeviceAdapter<D extends Device> {
         }
     }
 
-    protected abstract Intent onFillDeviceDetailIntent(Context context, Device device, Intent intent);
+    protected abstract Intent onFillDeviceDetailIntent(Context context, FhemDevice device, Intent intent);
 
     public abstract int getDetailViewLayout();
 

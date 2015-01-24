@@ -40,9 +40,9 @@ import java.util.Set;
 
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.DeviceAdapter;
-import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.DeviceType;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.RoomDeviceList;
 import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.widget.GridViewWithSectionsAdapter;
@@ -54,7 +54,7 @@ import static com.google.common.collect.Sets.newHashSet;
 import static li.klass.fhem.constants.PreferenceKeys.DEVICE_COLUMN_WIDTH;
 import static li.klass.fhem.constants.PreferenceKeys.SHOW_HIDDEN_DEVICES;
 
-public class DeviceGridAdapter<T extends Device<T>> extends GridViewWithSectionsAdapter<String, T> {
+public class DeviceGridAdapter<T extends FhemDevice<T>> extends GridViewWithSectionsAdapter<String, T> {
     public static final int DEFAULT_COLUMN_WIDTH = 355;
 
     private final ApplicationProperties applicationProperties;
@@ -119,8 +119,8 @@ public class DeviceGridAdapter<T extends Device<T>> extends GridViewWithSections
 
         boolean showHiddenDevices = applicationProperties.getBooleanSharedPreference(SHOW_HIDDEN_DEVICES, false);
 
-        Set<Device> allDevices = roomDeviceList.getAllDevices();
-        for (Device device : allDevices) {
+        Set<FhemDevice> allDevices = roomDeviceList.getAllDevices();
+        for (FhemDevice device : allDevices) {
             LOG.trace("updateData - contained device {}", device.getName());
             if (device.isInRoom("hidden") && !showHiddenDevices ||
                     device.isInAnyRoomOf(roomDeviceList.getHiddenRooms())) {
@@ -203,7 +203,7 @@ public class DeviceGridAdapter<T extends Device<T>> extends GridViewWithSections
         if (parentBasePosition != -1) {
             return 0;
         } else {
-            DeviceAdapter adapter = DeviceType.getAdapterFor((Device) getItem(position));
+            DeviceAdapter adapter = DeviceType.getAdapterFor((FhemDevice) getItem(position));
             if (adapter != null && adapter.getOverviewViewHolderClass() != null) {
                 return viewTypeMap.get(adapter.getOverviewViewHolderClass());
             }
@@ -220,7 +220,7 @@ public class DeviceGridAdapter<T extends Device<T>> extends GridViewWithSections
     protected View getChildView(final String parent, int parentPosition,
                                 T child, View view, ViewGroup viewGroup) {
 
-        final DeviceAdapter<? extends Device<?>> deviceAdapter = DeviceType.getAdapterFor(child);
+        final DeviceAdapter<? extends FhemDevice<?>> deviceAdapter = DeviceType.getAdapterFor(child);
 
         if (deviceAdapter == null) {
             LOG.debug("getChildView - unsupported device type {}", child);

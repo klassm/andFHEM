@@ -27,9 +27,9 @@ package li.klass.fhem.domain;
 import java.util.List;
 
 import li.klass.fhem.R;
-import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.DeviceFunctionality;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.resources.ResourceIdMapper;
@@ -39,7 +39,7 @@ import li.klass.fhem.util.ValueDescriptionUtil;
 import static li.klass.fhem.service.graph.description.SeriesType.CURRENT_POWER_WATT;
 import static li.klass.fhem.service.graph.description.SeriesType.CURRENT_USAGE_KILOWATT;
 
-public class RevoltDevice extends Device<RevoltDevice> {
+public class RevoltDevice extends FhemDevice<RevoltDevice> {
 
     @ShowField(description = ResourceIdMapper.power, showInOverview = true)
     private String power;

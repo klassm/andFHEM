@@ -37,9 +37,9 @@ import com.google.common.base.Optional;
 import java.util.Map;
 
 import li.klass.fhem.R;
-import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.FhemDevice;
 
-public abstract class ToggleActionRow<D extends Device> {
+public abstract class ToggleActionRow<D extends FhemDevice> {
 
     public static final int LAYOUT_DETAIL = R.layout.device_detail_togglebuttonrow;
     public static final int LAYOUT_OVERVIEW = R.layout.device_overview_togglebuttonrow;

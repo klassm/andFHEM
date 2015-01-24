@@ -55,8 +55,8 @@ import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.dagger.ForApplication;
 import li.klass.fhem.domain.StatisticsDevice;
-import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceType;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.RoomDeviceList;
 import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.log.LogDevice;
@@ -88,7 +88,7 @@ public class DeviceListParser {
     @ForApplication
     Context applicationContext;
 
-    private Map<Class<Device>, Map<String, Set<DeviceClassCacheEntry>>> deviceClassCache = newHashMap();
+    private Map<Class<FhemDevice>, Map<String, Set<DeviceClassCacheEntry>>> deviceClassCache = newHashMap();
 
     public RoomDeviceList parseAndWrapExceptions(String xmlList) {
         try {
@@ -122,7 +122,7 @@ public class DeviceListParser {
 
         ReadErrorHolder errorHolder = new ReadErrorHolder();
 
-        Map<String, Device> allDevices = newHashMap();
+        Map<String, FhemDevice> allDevices = newHashMap();
 
         DeviceType[] deviceTypes = DeviceType.values();
         for (DeviceType deviceType : deviceTypes) {
@@ -190,8 +190,8 @@ public class DeviceListParser {
      * @param <T>         type of device
      * @return error count while parsing the device list
      */
-    private <T extends Device> int devicesFromDocument(Class<T> deviceClass, Document document,
-                                                       String tagName, Map<String, Device> allDevices) {
+    private <T extends FhemDevice> int devicesFromDocument(Class<T> deviceClass, Document document,
+                                                       String tagName, Map<String, FhemDevice> allDevices) {
 
         int errorCount = 0;
 
@@ -214,12 +214,12 @@ public class DeviceListParser {
         return errorCount;
     }
 
-    private void performAfterReadOperations(Map<String, Device> allDevices, ReadErrorHolder errorHolder) {
+    private void performAfterReadOperations(Map<String, FhemDevice> allDevices, ReadErrorHolder errorHolder) {
 
-        List<Device> allDevicesReadCallbacks = newArrayList();
-        List<Device> deviceReadCallbacks = newArrayList();
+        List<FhemDevice> allDevicesReadCallbacks = newArrayList();
+        List<FhemDevice> deviceReadCallbacks = newArrayList();
 
-        for (Device device : allDevices.values()) {
+        for (FhemDevice device : allDevices.values()) {
             try {
                 device.afterAllXMLRead();
                 if (device.getDeviceReadCallback() != null) deviceReadCallbacks.add(device);
@@ -231,11 +231,11 @@ public class DeviceListParser {
             }
         }
 
-        List<Device> callbackDevices = newArrayList();
+        List<FhemDevice> callbackDevices = newArrayList();
         callbackDevices.addAll(deviceReadCallbacks);
         callbackDevices.addAll(allDevicesReadCallbacks);
 
-        for (Device device : callbackDevices) {
+        for (FhemDevice device : callbackDevices) {
             try {
                 if (device.getDeviceReadCallback() != null) {
                     device.getDeviceReadCallback().devicesRead(allDevices);
@@ -251,9 +251,9 @@ public class DeviceListParser {
         }
     }
 
-    private RoomDeviceList buildRoomDeviceList(Map<String, Device> allDevices) {
+    private RoomDeviceList buildRoomDeviceList(Map<String, FhemDevice> allDevices) {
         RoomDeviceList roomDeviceList = new RoomDeviceList(RoomDeviceList.ALL_DEVICES_ROOM);
-        for (Device device : allDevices.values()) {
+        for (FhemDevice device : allDevices.values()) {
             // We don't want to show log devices in any kind of view. Log devices
             // are already associated with their respective devices during after read
             // operations.
@@ -284,8 +284,8 @@ public class DeviceListParser {
      * @param deviceClass class to instantiate
      * @param node        current xml node  @return true if everything went well
      */
-    private <T extends Device> boolean deviceFromNode(Class<T> deviceClass,
-                                                      Node node, Map<String, Device> allDevices) {
+    private <T extends FhemDevice> boolean deviceFromNode(Class<T> deviceClass,
+                                                      Node node, Map<String, FhemDevice> allDevices) {
         try {
             T device = createAndFillDevice(deviceClass, node);
             device.afterDeviceXMLRead();
@@ -301,7 +301,7 @@ public class DeviceListParser {
         }
     }
 
-    private <T extends Device> T createAndFillDevice(Class<T> deviceClass, Node node) throws Exception {
+    private <T extends FhemDevice> T createAndFillDevice(Class<T> deviceClass, Node node) throws Exception {
         T device = deviceClass.newInstance();
         Map<String, Set<DeviceClassCacheEntry>> cache = getDeviceClassCacheEntriesFor(deviceClass);
 
@@ -341,8 +341,8 @@ public class DeviceListParser {
     }
 
     @SuppressWarnings("unchecked")
-    private <T extends Device> Map<String, Set<DeviceClassCacheEntry>> getDeviceClassCacheEntriesFor(Class<T> deviceClass) {
-        Class<Device> clazz = (Class<Device>) deviceClass;
+    private <T extends FhemDevice> Map<String, Set<DeviceClassCacheEntry>> getDeviceClassCacheEntriesFor(Class<T> deviceClass) {
+        Class<FhemDevice> clazz = (Class<FhemDevice>) deviceClass;
         if (!deviceClassCache.containsKey(clazz)) {
             deviceClassCache.put(clazz, initDeviceMethodCacheEntries(deviceClass));
             deviceClassCache.put(clazz, initDeviceMethodCacheEntries(deviceClass));
@@ -351,7 +351,7 @@ public class DeviceListParser {
         return deviceClassCache.get(clazz);
     }
 
-    private <T extends Device> void invokeDeviceAttributeMethod(Map<String, Set<DeviceClassCacheEntry>> cache, T device, String key,
+    private <T extends FhemDevice> void invokeDeviceAttributeMethod(Map<String, Set<DeviceClassCacheEntry>> cache, T device, String key,
                                                                 String value, NamedNodeMap attributes, String tagName) throws Exception {
 
         device.onChildItemRead(tagName, key, value, attributes);
@@ -362,7 +362,7 @@ public class DeviceListParser {
         }
     }
 
-    private <T extends Device> Map<String, Set<DeviceClassCacheEntry>> initDeviceMethodCacheEntries(Class<T> deviceClass) {
+    private <T extends FhemDevice> Map<String, Set<DeviceClassCacheEntry>> initDeviceMethodCacheEntries(Class<T> deviceClass) {
         Map<String, Set<DeviceClassCacheEntry>> cache = newHashMap();
 
         for (Method method : deviceClass.getMethods()) {
@@ -402,14 +402,14 @@ public class DeviceListParser {
         cache.get(entry.getAttribute()).add(entry);
     }
 
-    public void fillDeviceWith(Device device, Map<String, String> updates) {
-        Class<? extends Device> deviceClass = device.getClass();
+    public void fillDeviceWith(FhemDevice device, Map<String, String> updates) {
+        Class<? extends FhemDevice> deviceClass = device.getClass();
 
         fillDeviceWith(device, updates, deviceClass);
         device.afterDeviceXMLRead();
     }
 
-    private boolean fillDeviceWith(Device device, Map<String, String> updates, Class<?> deviceClass) {
+    private boolean fillDeviceWith(FhemDevice device, Map<String, String> updates, Class<?> deviceClass) {
         Method[] methods = deviceClass.getDeclaredMethods();
 
         boolean changed = false;

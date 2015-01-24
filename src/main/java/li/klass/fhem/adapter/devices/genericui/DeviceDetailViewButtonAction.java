@@ -30,9 +30,9 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import li.klass.fhem.R;
-import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.FhemDevice;
 
-public abstract class DeviceDetailViewButtonAction<D extends Device> extends DeviceDetailViewAction<D> {
+public abstract class DeviceDetailViewButtonAction<D extends FhemDevice> extends DeviceDetailViewAction<D> {
     private int buttonText;
 
     protected DeviceDetailViewButtonAction(int buttonText) {

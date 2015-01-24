@@ -32,14 +32,14 @@ import java.util.Map;
 
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
-import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.heating.schedule.configuration.HeatingConfiguration;
 import li.klass.fhem.domain.heating.schedule.configuration.IntervalType;
 import li.klass.fhem.domain.heating.schedule.interval.BaseHeatingInterval;
 
 import static li.klass.fhem.util.DayUtil.Day;
 
-public class WeekProfile<H extends BaseHeatingInterval, C extends HeatingConfiguration<H, D, C>, D extends Device<D>>
+public class WeekProfile<H extends BaseHeatingInterval, C extends HeatingConfiguration<H, D, C>, D extends FhemDevice<D>>
         implements Serializable {
 
     private final C configuration;

@@ -23,10 +23,10 @@
 
 package li.klass.fhem.domain;
 
-import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceFunctionality;
+import li.klass.fhem.domain.core.FhemDevice;
 
-public class FloorplanDevice extends Device<FloorplanDevice> {
+public class FloorplanDevice extends FhemDevice<FloorplanDevice> {
     @Override
     public DeviceFunctionality getDeviceGroup() {
         return DeviceFunctionality.FLOORPLAN;

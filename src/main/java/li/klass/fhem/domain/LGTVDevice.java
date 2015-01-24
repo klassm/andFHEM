@@ -24,12 +24,12 @@
 
 package li.klass.fhem.domain;
 
-import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceFunctionality;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.resources.ResourceIdMapper;
 
-public class LGTVDevice extends Device<LGTVDevice> {
+public class LGTVDevice extends FhemDevice<LGTVDevice> {
     @ShowField(description = ResourceIdMapper.power, showInOverview = true)
     private String power;
     @ShowField(description = ResourceIdMapper.musicMute, showInOverview = true)

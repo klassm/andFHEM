@@ -32,7 +32,7 @@ import javax.inject.Singleton;
 
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.dagger.ForApplication;
-import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.RoomDeviceList;
 import li.klass.fhem.service.CommandExecutionService;
 import li.klass.fhem.service.room.RoomListService;
@@ -60,7 +60,7 @@ public class DeviceService {
      * @param device  concerned device
      * @param newName new device name
      */
-    public void renameDevice(final Device device, final String newName) {
+    public void renameDevice(final FhemDevice device, final String newName) {
         commandExecutionService.executeSafely("rename " + device.getName() + " " + newName);
         device.setName(newName);
     }
@@ -70,7 +70,7 @@ public class DeviceService {
      *
      * @param device concerned device
      */
-    public void deleteDevice(final Device device) {
+    public void deleteDevice(final FhemDevice device) {
         commandExecutionService.executeSafely("delete " + device.getName());
         RoomDeviceList roomDeviceList = roomListService.getRoomDeviceList();
         if (roomDeviceList != null) {
@@ -84,7 +84,7 @@ public class DeviceService {
      * @param device concerned device
      * @param alias  new alias to set
      */
-    public void setAlias(final Device device, final String alias) {
+    public void setAlias(final FhemDevice device, final String alias) {
         if (StringUtil.isBlank(alias)) {
             commandExecutionService.executeSafely("deleteattr " + device.getName() + " alias");
         } else {
@@ -99,7 +99,7 @@ public class DeviceService {
      * @param device              concerned device
      * @param newRoomConcatenated new room to move the concerned device to.
      */
-    public void moveDevice(final Device device, final String newRoomConcatenated) {
+    public void moveDevice(final FhemDevice device, final String newRoomConcatenated) {
         commandExecutionService.executeSafely("attr " + device.getName() + " room " + newRoomConcatenated);
 
         device.setRoomConcatenated(newRoomConcatenated);

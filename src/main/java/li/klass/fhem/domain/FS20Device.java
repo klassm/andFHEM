@@ -65,8 +65,8 @@ public class FS20Device extends DimmableDiscreteStatesDevice<FS20Device> impleme
     }
 
     @Override
-    public void readDEF(String value) {
-        super.readDEF(value);
+    public void setDefinition(String value) {
+        super.setDefinition(value);
 
         String[] parts = value.split(" ");
         if (parts.length == 2 && parts[0].length() == 4 && parts[1].length() == 2) {

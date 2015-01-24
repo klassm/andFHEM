@@ -30,7 +30,7 @@ import android.content.Intent;
 import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.FloorplanDevice;
-import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.fragments.FragmentType;
 
 public class FloorplanAdapter extends GenericDeviceAdapter<FloorplanDevice> {
@@ -39,7 +39,7 @@ public class FloorplanAdapter extends GenericDeviceAdapter<FloorplanDevice> {
     }
 
     @Override
-    protected Intent onFillDeviceDetailIntent(Context context, Device device, Intent intent) {
+    protected Intent onFillDeviceDetailIntent(Context context, FhemDevice device, Intent intent) {
         intent.putExtra(BundleExtraKeys.FRAGMENT, FragmentType.FLOORPLAN);
         intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
         return intent;

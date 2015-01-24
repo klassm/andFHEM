@@ -30,18 +30,18 @@ import android.os.Build;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
-import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.FhemDevice;
 
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public abstract class DeviceListAppWidgetView extends DeviceAppWidgetView {
 
     public class ListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 
-        private final Device<?> device;
+        private final FhemDevice<?> device;
         private final Context context;
         private final int widgetId;
 
-        public ListRemoteViewsFactory(Context context, Device<?> device, int widgetId) {
+        public ListRemoteViewsFactory(Context context, FhemDevice<?> device, int widgetId) {
             this.context = context;
             this.device = device;
             this.widgetId = widgetId;
@@ -91,13 +91,13 @@ public abstract class DeviceListAppWidgetView extends DeviceAppWidgetView {
     }
 
     public RemoteViewsService.RemoteViewsFactory getRemoteViewsFactory(Context context,
-                                                                       Device<?> device,
+                                                                       FhemDevice<?> device,
                                                                        int widgetId) {
         return new ListRemoteViewsFactory(context, device, widgetId);
     }
 
-    protected abstract int getListItemCount(Device<?> device);
+    protected abstract int getListItemCount(FhemDevice<?> device);
 
-    protected abstract RemoteViews getRemoteViewAt(Context context, Device<?> device,
+    protected abstract RemoteViews getRemoteViewAt(Context context, FhemDevice<?> device,
                                                    int position, int widgetId);
 }

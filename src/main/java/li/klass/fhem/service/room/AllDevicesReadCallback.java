@@ -26,7 +26,7 @@ package li.klass.fhem.service.room;
 
 import java.util.Map;
 
-import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.FhemDevice;
 
 public abstract class AllDevicesReadCallback {
 
@@ -34,5 +34,5 @@ public abstract class AllDevicesReadCallback {
     }
 
     @SuppressWarnings("unchecked")
-    public abstract void devicesRead(Map<String, Device> allDevices);
+    public abstract void devicesRead(Map<String, FhemDevice> allDevices);
 }

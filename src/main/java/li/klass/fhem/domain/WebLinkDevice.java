@@ -24,10 +24,10 @@
 
 package li.klass.fhem.domain;
 
-import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceFunctionality;
+import li.klass.fhem.domain.core.FhemDevice;
 
-public class WebLinkDevice extends Device<WebLinkDevice> {
+public class WebLinkDevice extends FhemDevice<WebLinkDevice> {
 
     private String link;
 

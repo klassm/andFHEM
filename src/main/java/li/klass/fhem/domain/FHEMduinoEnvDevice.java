@@ -27,9 +27,9 @@ package li.klass.fhem.domain;
 import java.util.List;
 
 import li.klass.fhem.R;
-import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceChart;
 import li.klass.fhem.domain.core.DeviceFunctionality;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
@@ -46,7 +46,7 @@ import static li.klass.fhem.util.ValueExtractUtil.extractLeadingDouble;
 import static li.klass.fhem.util.ValueExtractUtil.extractLeadingInt;
 
 @OverviewViewSettings(showState = true, showMeasured = true)
-public class FHEMduinoEnvDevice extends Device<FHEMduinoEnvDevice> implements TemperatureDevice {
+public class FHEMduinoEnvDevice extends FhemDevice<FHEMduinoEnvDevice> implements TemperatureDevice {
     @XmllistAttribute("battery")
     @ShowField(description = ResourceIdMapper.battery)
     private String battery;

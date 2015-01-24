@@ -38,7 +38,7 @@ import org.mockito.Mock;
 import java.util.List;
 
 import li.klass.fhem.domain.FHEMWEBDevice;
-import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.testutil.MockitoTestRule;
 import li.klass.fhem.util.ApplicationProperties;
 
@@ -52,12 +52,12 @@ import static org.mockito.BDDMockito.given;
 @RunWith(DataProviderRunner.class)
 public class RoomListHolderServiceTest {
 
-    public static final Function<String, Device> TO_FHEMWEB_DEVICE_WITH_NAME = new Function<String, Device>() {
+    public static final Function<String, FhemDevice> TO_FHEMWEB_DEVICE_WITH_NAME = new Function<String, FhemDevice>() {
         @Override
-        public Device apply(String input) {
+        public FhemDevice apply(String input) {
             FHEMWEBDevice device = new FHEMWEBDevice();
             device.readNAME(input);
-            device.readGROUP("someGroup");
+            device.setGroup("someGroup");
             return device;
         }
     };
@@ -86,7 +86,7 @@ public class RoomListHolderServiceTest {
     @UseDataProvider("dataProvider_FHEMWEB_device_names")
     public void should_find_the_correct_FHEMWEB_device(List<String> deviceNames, String qualifier, String expectedDeviceName) {
         // given
-        List<Device> fhemwebDevices = from(deviceNames).transform(TO_FHEMWEB_DEVICE_WITH_NAME).toList();
+        List<FhemDevice> fhemwebDevices = from(deviceNames).transform(TO_FHEMWEB_DEVICE_WITH_NAME).toList();
         given(applicationProperties.getStringSharedPreference(DEVICE_NAME, DEFAULT_FHEMWEB_QUALIFIER)).willReturn(qualifier);
 
         // when

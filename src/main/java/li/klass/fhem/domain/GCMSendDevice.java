@@ -24,14 +24,14 @@
 
 package li.klass.fhem.domain;
 
-import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceFunctionality;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.resources.ResourceIdMapper;
 
 @OverviewViewSettings(showState = true)
-public class GCMSendDevice extends Device<GCMSendDevice> {
+public class GCMSendDevice extends FhemDevice<GCMSendDevice> {
 
     @ShowField(description = ResourceIdMapper.apiKey)
     private String apiKey;

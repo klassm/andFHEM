@@ -26,12 +26,12 @@ package li.klass.fhem.domain;
 
 import java.util.Map;
 
-import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceFunctionality;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.service.room.AllDevicesReadCallback;
 
-public class StatisticsDevice extends Device<StatisticsDevice> {
+public class StatisticsDevice extends FhemDevice<StatisticsDevice> {
 
     @XmllistAttribute("DEV_REGEXP")
     private String regexp;
@@ -46,8 +46,8 @@ public class StatisticsDevice extends Device<StatisticsDevice> {
 
         setAllDeviceReadCallback(new AllDevicesReadCallback() {
             @Override
-            public void devicesRead(Map<String, Device> allDevices) {
-                for (Map.Entry<String, Device> entry : allDevices.entrySet()) {
+            public void devicesRead(Map<String, FhemDevice> allDevices) {
+                for (Map.Entry<String, FhemDevice> entry : allDevices.entrySet()) {
                     if (entry.getKey().matches(regexp)) {
                         entry.getValue().setHasStatisticsDevice(true);
                     }

@@ -28,15 +28,15 @@ import org.w3c.dom.NamedNodeMap;
 
 import java.util.Map;
 
-import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceFunctionality;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.resources.ResourceIdMapper;
 
 import static com.google.common.collect.Maps.newHashMap;
 import static li.klass.fhem.util.ValueExtractUtil.extractLeadingInt;
 
-public class PCA9532Device extends Device<PCA9532Device> {
+public class PCA9532Device extends FhemDevice<PCA9532Device> {
 
     private Map<String, Boolean> portsIsOnMap = newHashMap();
 

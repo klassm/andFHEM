@@ -99,7 +99,7 @@ public class VoiceCommandServiceTest {
         // given
         TestDummy device = new TestDummy("lampe");
         device.getSetList().parse("on off");
-        device.readEVENTMAP("on:hallo");
+        device.setEventmap("on:hallo");
         RoomDeviceList deviceList = new RoomDeviceList("").addDevice(device);
         doReturn(deviceList).when(roomListService).getAllRoomsDeviceList();
 
@@ -198,7 +198,7 @@ public class VoiceCommandServiceTest {
         // given
         TestDummy device = new TestDummy("lampe");
         device.getSetList().parse("on off");
-        device.readPRONUNCIATION("voice");
+        device.setPronunciation("voice");
         RoomDeviceList deviceList = new RoomDeviceList("").addDevice(device);
         doReturn(deviceList).when(roomListService).getAllRoomsDeviceList();
 

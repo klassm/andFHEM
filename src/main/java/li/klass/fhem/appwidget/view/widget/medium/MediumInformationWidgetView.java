@@ -32,7 +32,7 @@ import li.klass.fhem.appwidget.annotation.WidgetMediumLine1;
 import li.klass.fhem.appwidget.annotation.WidgetMediumLine2;
 import li.klass.fhem.appwidget.annotation.WidgetMediumLine3;
 import li.klass.fhem.appwidget.view.widget.base.DeviceAppWidgetView;
-import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.FhemDevice;
 
 import static li.klass.fhem.util.ReflectionUtil.getValueAndDescriptionForAnnotation;
 
@@ -48,7 +48,7 @@ public class MediumInformationWidgetView extends DeviceAppWidgetView {
     }
 
     @Override
-    protected void fillWidgetView(Context context, RemoteViews view, Device<?> device, WidgetConfiguration widgetConfiguration) {
+    protected void fillWidgetView(Context context, RemoteViews view, FhemDevice<?> device, WidgetConfiguration widgetConfiguration) {
         String line1 = getValueAndDescriptionForAnnotation(device, WidgetMediumLine1.class);
         String line2 = getValueAndDescriptionForAnnotation(device, WidgetMediumLine2.class);
         String line3 = getValueAndDescriptionForAnnotation(device, WidgetMediumLine3.class);

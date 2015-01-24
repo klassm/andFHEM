@@ -48,7 +48,7 @@ import li.klass.fhem.appwidget.view.widget.base.otherWidgets.OtherWidgetsFragmen
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
-import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.fragments.RoomListFragment;
 import li.klass.fhem.fragments.core.BaseFragment;
 import li.klass.fhem.fragments.device.DeviceNameSelectionFragment;
@@ -119,7 +119,7 @@ public abstract class AppWidgetSelectionActivity extends ActionBarActivity imple
 
         bundle.putSerializable(BundleExtraKeys.DEVICE_FILTER, new DeviceNameSelectionFragment.DeviceFilter() {
             @Override
-            public boolean isSelectable(Device<?> device) {
+            public boolean isSelectable(FhemDevice<?> device) {
                 return !WidgetType.getSupportedDeviceWidgetsFor(widgetSize, device).isEmpty();
             }
         });
@@ -130,7 +130,7 @@ public abstract class AppWidgetSelectionActivity extends ActionBarActivity imple
                 if (resultCode != ResultCodes.SUCCESS ||
                         !resultData.containsKey(BundleExtraKeys.CLICKED_DEVICE)) return;
 
-                Device<?> clickedDevice = (Device<?>) resultData.getSerializable(BundleExtraKeys.CLICKED_DEVICE);
+                FhemDevice<?> clickedDevice = (FhemDevice<?>) resultData.getSerializable(BundleExtraKeys.CLICKED_DEVICE);
                 deviceClicked(clickedDevice);
             }
         });
@@ -143,7 +143,7 @@ public abstract class AppWidgetSelectionActivity extends ActionBarActivity imple
         switchTo(deviceSelectionFragment);
     }
 
-    private void deviceClicked(Device<?> device) {
+    private void deviceClicked(FhemDevice<?> device) {
         final List<WidgetType> widgetTypes = WidgetType.getSupportedDeviceWidgetsFor(widgetSize, device);
         openWidgetTypeSelection(widgetTypes, device.getName());
     }

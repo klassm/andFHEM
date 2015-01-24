@@ -66,7 +66,7 @@ import li.klass.fhem.R;
 import li.klass.fhem.activities.core.Updateable;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.ResultCodes;
-import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.service.graph.GraphEntry;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.service.graph.description.SeriesType;
@@ -127,7 +127,7 @@ public class ChartingActivity extends ActionBarActivity implements Updateable {
      * @param seriesDescriptions series descriptions each representing one series in the resulting chart
      */
     @SuppressWarnings("unchecked")
-    public static void showChart(Context context, Device device, ChartSeriesDescription... seriesDescriptions) {
+    public static void showChart(Context context, FhemDevice device, ChartSeriesDescription... seriesDescriptions) {
 
         ArrayList<ChartSeriesDescription> seriesList = newArrayList(seriesDescriptions);
         Intent timeChartIntent = new Intent(context, ChartingActivity.class);
@@ -190,7 +190,7 @@ public class ChartingActivity extends ActionBarActivity implements Updateable {
             protected void onReceiveResult(int resultCode, Bundle resultData) {
                 if (resultCode != ResultCodes.SUCCESS) return;
 
-                Device device = (Device) resultData.getSerializable(DEVICE);
+                FhemDevice device = (FhemDevice) resultData.getSerializable(DEVICE);
                 readDataAndCreateChart(doUpdate, device);
             }
         });
@@ -204,7 +204,7 @@ public class ChartingActivity extends ActionBarActivity implements Updateable {
      * @param device    concerned device
      */
     @SuppressWarnings("unchecked")
-    private void readDataAndCreateChart(boolean doRefresh, final Device device) {
+    private void readDataAndCreateChart(boolean doRefresh, final FhemDevice device) {
         showDialog(DIALOG_EXECUTING);
         Intent intent = new Intent(Actions.DEVICE_GRAPH);
         intent.setClass(this, DeviceIntentService.class);
@@ -239,7 +239,7 @@ public class ChartingActivity extends ActionBarActivity implements Updateable {
      * @param graphData used graph data
      */
     @SuppressWarnings("unchecked")
-    private void createChart(Device device, Map<ChartSeriesDescription, List<GraphEntry>> graphData) {
+    private void createChart(FhemDevice device, Map<ChartSeriesDescription, List<GraphEntry>> graphData) {
 
         List<YAxis> yAxisList = handleChartData(graphData);
         if (graphData.size() == 0) {

@@ -24,7 +24,7 @@
 
 package li.klass.fhem.domain.core;
 
-public abstract class DimmableDevice<D extends Device<D>> extends ToggleableDevice<D> {
+public abstract class DimmableDevice<D extends FhemDevice<D>> extends ToggleableDevice<D> {
     public int getDimPosition() {
         int position = getPositionForDimStateInternal(getDimStateFieldValue());
         if (position == -1) {

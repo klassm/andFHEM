@@ -31,7 +31,7 @@ import static li.klass.fhem.domain.core.DeviceFunctionality.functionalityForDimm
 import static li.klass.fhem.util.NumberUtil.isDecimalNumber;
 import static li.klass.fhem.util.ValueExtractUtil.extractLeadingInt;
 
-public abstract class DimmableContinuousStatesDevice<D extends Device<D>> extends DimmableDevice<D> {
+public abstract class DimmableContinuousStatesDevice<D extends FhemDevice<D>> extends DimmableDevice<D> {
     @Override
     public String getDimStateForPosition(int position) {
         if (supportsOnOffDimMapping()) {

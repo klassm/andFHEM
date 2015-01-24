@@ -28,12 +28,12 @@ import org.w3c.dom.NamedNodeMap;
 
 import java.util.Map;
 
-import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceFunctionality;
+import li.klass.fhem.domain.core.FhemDevice;
 
 import static com.google.common.collect.Maps.newHashMap;
 
-public class PCF8574Device extends Device<PCF8574Device> {
+public class PCF8574Device extends FhemDevice<PCF8574Device> {
 
     private Map<String, Boolean> portsIsOnMap = newHashMap();
 

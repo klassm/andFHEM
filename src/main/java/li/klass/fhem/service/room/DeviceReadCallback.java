@@ -2,9 +2,9 @@ package li.klass.fhem.service.room;
 
 import java.util.Map;
 
-import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.FhemDevice;
 
-public abstract class DeviceReadCallback<D extends Device<D>> extends AllDevicesReadCallback {
+public abstract class DeviceReadCallback<D extends FhemDevice<D>> extends AllDevicesReadCallback {
     private String deviceName;
 
     public DeviceReadCallback(String callbackDevice) {
@@ -12,7 +12,7 @@ public abstract class DeviceReadCallback<D extends Device<D>> extends AllDevices
     }
 
     @SuppressWarnings("unchecked")
-    public void devicesRead(Map<String, Device> allDevices) {
+    public void devicesRead(Map<String, FhemDevice> allDevices) {
         onCallbackDeviceRead((D) allDevices.get(deviceName));
     }
 

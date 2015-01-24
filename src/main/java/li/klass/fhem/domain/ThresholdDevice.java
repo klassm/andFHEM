@@ -24,8 +24,8 @@
 
 package li.klass.fhem.domain;
 
-import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceFunctionality;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.domain.heating.DesiredTempDevice;
 import li.klass.fhem.resources.ResourceIdMapper;
@@ -33,7 +33,7 @@ import li.klass.fhem.util.ValueExtractUtil;
 
 import static li.klass.fhem.util.ValueDescriptionUtil.appendTemperature;
 
-public class ThresholdDevice extends Device<ThresholdDevice> implements DesiredTempDevice {
+public class ThresholdDevice extends FhemDevice<ThresholdDevice> implements DesiredTempDevice {
     @ShowField(description = ResourceIdMapper.desiredTemperature)
     private double desiredTemp;
 

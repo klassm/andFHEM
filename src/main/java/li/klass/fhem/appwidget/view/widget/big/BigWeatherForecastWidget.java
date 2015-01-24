@@ -40,7 +40,7 @@ import li.klass.fhem.appwidget.service.AppWidgetListViewUpdateRemoteViewsService
 import li.klass.fhem.appwidget.view.widget.base.DeviceListAppWidgetView;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.WeatherDevice;
-import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.FhemDevice;
 
 public class BigWeatherForecastWidget extends DeviceListAppWidgetView {
     @Override
@@ -55,7 +55,7 @@ public class BigWeatherForecastWidget extends DeviceListAppWidgetView {
 
     @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     @Override
-    protected void fillWidgetView(Context context, RemoteViews view, Device<?> device,
+    protected void fillWidgetView(Context context, RemoteViews view, FhemDevice<?> device,
                                   WidgetConfiguration widgetConfiguration) {
 
         Intent listIntent = new Intent(context, AppWidgetListViewUpdateRemoteViewsService.class);
@@ -77,7 +77,7 @@ public class BigWeatherForecastWidget extends DeviceListAppWidgetView {
     }
 
     @Override
-    public boolean supports(Device<?> device) {
+    public boolean supports(FhemDevice<?> device) {
         if (AndFHEMApplication.getAndroidSDKLevel() < Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
             return false;
         }
@@ -85,14 +85,14 @@ public class BigWeatherForecastWidget extends DeviceListAppWidgetView {
     }
 
     @Override
-    protected int getListItemCount(Device<?> device) {
+    protected int getListItemCount(FhemDevice<?> device) {
         WeatherDevice weatherDevice = (WeatherDevice) device;
         return weatherDevice.getForecasts().size();
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
-    protected RemoteViews getRemoteViewAt(Context context, Device<?> device, int position, int widgetId) {
+    protected RemoteViews getRemoteViewAt(Context context, FhemDevice<?> device, int position, int widgetId) {
         WeatherDevice weatherDevice = (WeatherDevice) device;
 
         RemoteViews view = new RemoteViews(context.getPackageName(),

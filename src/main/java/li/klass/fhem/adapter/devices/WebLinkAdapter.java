@@ -30,7 +30,7 @@ import android.content.Intent;
 import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.WebLinkDevice;
-import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.fragments.FragmentType;
 
 public class WebLinkAdapter extends GenericDeviceAdapter<WebLinkDevice> {
@@ -39,7 +39,7 @@ public class WebLinkAdapter extends GenericDeviceAdapter<WebLinkDevice> {
     }
 
     @Override
-    protected Intent onFillDeviceDetailIntent(Context context, Device device, Intent intent) {
+    protected Intent onFillDeviceDetailIntent(Context context, FhemDevice device, Intent intent) {
         intent.putExtra(BundleExtraKeys.FRAGMENT, FragmentType.WEB_VIEW);
         intent.putExtra(BundleExtraKeys.LOAD_URL, ((WebLinkDevice) device).getLink());
         return intent;

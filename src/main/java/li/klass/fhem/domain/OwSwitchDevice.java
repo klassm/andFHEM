@@ -24,14 +24,14 @@
 
 package li.klass.fhem.domain;
 
-import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceFunctionality;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.util.ValueExtractUtil;
 
 @OverviewViewSettings(showState = true, showMeasured = true)
 @SuppressWarnings("unused")
-public class OwSwitchDevice extends Device<OwSwitchDevice> {
+public class OwSwitchDevice extends FhemDevice<OwSwitchDevice> {
 
     private boolean onA;
     private boolean onB;

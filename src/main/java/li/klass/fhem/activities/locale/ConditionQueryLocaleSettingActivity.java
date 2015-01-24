@@ -35,7 +35,7 @@ import android.widget.TextView;
 
 import li.klass.fhem.R;
 import li.klass.fhem.activities.base.DeviceNameSelectionActivity;
-import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.FhemDevice;
 
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE;
 import static li.klass.fhem.constants.BundleExtraKeys.DEVICE_NAME;
@@ -95,7 +95,7 @@ public class ConditionQueryLocaleSettingActivity extends Activity {
 
         if (resultCode != RESULT_OK || !data.hasExtra(DEVICE)) return;
 
-        Device<?> device = (Device<?>) data.getSerializableExtra(DEVICE);
+        FhemDevice<?> device = (FhemDevice<?>) data.getSerializableExtra(DEVICE);
         setDeviceName(device.getName());
     }
 

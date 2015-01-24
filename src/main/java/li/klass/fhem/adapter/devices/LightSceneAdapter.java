@@ -44,7 +44,7 @@ import li.klass.fhem.adapter.devices.genericui.HolderActionRow;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.LightSceneDevice;
-import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.service.intent.DeviceIntentService;
 
 public class LightSceneAdapter extends GenericDeviceAdapter<LightSceneDevice> {
@@ -53,7 +53,7 @@ public class LightSceneAdapter extends GenericDeviceAdapter<LightSceneDevice> {
     }
 
     @Override
-    public View createOverviewView(LayoutInflater layoutInflater, View convertView, Device rawDevice, long lastUpdate) {
+    public View createOverviewView(LayoutInflater layoutInflater, View convertView, FhemDevice rawDevice, long lastUpdate) {
         TableLayout layout = (TableLayout) layoutInflater.inflate(R.layout.device_overview_generic, null);
         layout.removeAllViews();
 

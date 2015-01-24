@@ -31,9 +31,9 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import li.klass.fhem.R;
-import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.FhemDevice;
 
-public abstract class SeekBarActionRowFullWidth<T extends Device> {
+public abstract class SeekBarActionRowFullWidth<T extends FhemDevice> {
     protected int initialProgress;
     private int layoutId;
     protected int maximumProgress;

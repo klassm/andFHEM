@@ -39,8 +39,8 @@ import li.klass.fhem.appwidget.view.widget.base.DeviceAppWidgetView;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
-import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DimmableDevice;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.service.intent.DeviceIntentService;
 
 public class DimWidgetView extends DeviceAppWidgetView {
@@ -57,7 +57,7 @@ public class DimWidgetView extends DeviceAppWidgetView {
     }
 
     @Override
-    protected void fillWidgetView(final Context context, final RemoteViews view, final Device<?> device, final WidgetConfiguration widgetConfiguration) {
+    protected void fillWidgetView(final Context context, final RemoteViews view, final FhemDevice<?> device, final WidgetConfiguration widgetConfiguration) {
         final DimmableDevice dimmableDevice = (DimmableDevice) device;
 
         ResultReceiver resultReceiver = new ResultReceiver(new Handler()) {
@@ -89,7 +89,7 @@ public class DimWidgetView extends DeviceAppWidgetView {
     }
 
     @Override
-    public boolean supports(Device<?> device) {
+    public boolean supports(FhemDevice<?> device) {
         return (device instanceof DimmableDevice) && ((DimmableDevice) device).supportsDim();
     }
 

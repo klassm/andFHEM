@@ -48,8 +48,8 @@ import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.domain.FHTDevice;
 import li.klass.fhem.domain.GCMSendDevice;
 import li.klass.fhem.domain.WOLDevice;
-import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DimmableDevice;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.ToggleableDevice;
 import li.klass.fhem.domain.fht.FHTMode;
 import li.klass.fhem.domain.heating.ComfortTempDevice;
@@ -149,11 +149,11 @@ public class DeviceIntentService extends ConvenientIntentService {
         }
 
         String deviceName = intent.getStringExtra(BundleExtraKeys.DEVICE_NAME);
-        Optional<Device> deviceOptional = roomListService.getDeviceForName(deviceName);
+        Optional<FhemDevice> deviceOptional = roomListService.getDeviceForName(deviceName);
         if (!deviceOptional.isPresent()) {
             LOG.info("handleIntent() - cannot find device for {}", deviceName);
         }
-        Device device = deviceOptional.orNull();
+        FhemDevice device = deviceOptional.orNull();
 
         Log.d(DeviceIntentService.class.getName(), intent.getAction());
         String action = intent.getAction();
@@ -290,7 +290,7 @@ public class DeviceIntentService extends ConvenientIntentService {
      * @param resultReceiver receiver to notify on result
      * @return success?
      */
-    private STATE graphIntent(Intent intent, Device device, ResultReceiver resultReceiver) {
+    private STATE graphIntent(Intent intent, FhemDevice device, ResultReceiver resultReceiver) {
         ArrayList<ChartSeriesDescription> seriesDescriptions = intent.getParcelableArrayListExtra(BundleExtraKeys.DEVICE_GRAPH_SERIES_DESCRIPTIONS);
         DateTime startDate = (DateTime) intent.getSerializableExtra(BundleExtraKeys.START_DATE);
         DateTime endDate = (DateTime) intent.getSerializableExtra(BundleExtraKeys.END_DATE);
@@ -306,7 +306,7 @@ public class DeviceIntentService extends ConvenientIntentService {
      * @param device device to toggle
      * @return success?
      */
-    private STATE toggleIntent(Device device) {
+    private STATE toggleIntent(FhemDevice device) {
         if (device instanceof ToggleableDevice && ((ToggleableDevice) device).supportsToggle()) {
             toggleableService.toggleState((ToggleableDevice) device);
             return SUCCESS;
@@ -322,7 +322,7 @@ public class DeviceIntentService extends ConvenientIntentService {
      * @param device device to set the state on
      * @return success ?
      */
-    private STATE setStateIntent(Intent intent, Device device) {
+    private STATE setStateIntent(Intent intent, FhemDevice device) {
         String targetState = intent.getStringExtra(BundleExtraKeys.DEVICE_TARGET_STATE);
         int timesToSend = intent.getIntExtra(BundleExtraKeys.TIMES_TO_SEND, 1);
 
@@ -340,7 +340,7 @@ public class DeviceIntentService extends ConvenientIntentService {
      * @param device device to dim
      * @return success?
      */
-    private STATE dimIntent(Intent intent, Device device) {
+    private STATE dimIntent(Intent intent, FhemDevice device) {
         int dimProgress = intent.getIntExtra(BundleExtraKeys.DEVICE_DIM_PROGRESS, -1);
         if (device instanceof DimmableDevice) {
             dimmableDeviceService.dim((DimmableDevice) device, dimProgress);

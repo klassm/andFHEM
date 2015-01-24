@@ -24,12 +24,12 @@
 
 package li.klass.fhem.domain;
 
-import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceFunctionality;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
 
 @OverviewViewSettings(showMeasured = true, showState = true)
-public class UniRollDevice extends Device<UniRollDevice> {
+public class UniRollDevice extends FhemDevice<UniRollDevice> {
     @Override
     public DeviceFunctionality getDeviceGroup() {
         return DeviceFunctionality.WINDOW;

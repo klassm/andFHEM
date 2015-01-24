@@ -36,9 +36,9 @@ import org.apmem.tools.layouts.FlowLayout;
 import java.util.List;
 
 import li.klass.fhem.R;
-import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.FhemDevice;
 
-public abstract class HolderActionRow<D extends Device<D>, I> {
+public abstract class HolderActionRow<D extends FhemDevice<D>, I> {
     private String description;
     private int layout;
 

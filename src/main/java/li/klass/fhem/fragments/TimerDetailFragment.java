@@ -48,9 +48,9 @@ import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.domain.AtDevice;
-import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceStateAdditionalInformationType;
 import li.klass.fhem.domain.core.DeviceStateRequiringAdditionalInformation;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.fragments.core.BaseFragment;
 import li.klass.fhem.fragments.device.DeviceNameSelectionFragment;
 import li.klass.fhem.service.intent.DeviceIntentService;
@@ -80,7 +80,7 @@ public class TimerDetailFragment extends BaseFragment {
 
     private static final DeviceNameSelectionFragment.DeviceFilter deviceFilter = new DeviceNameSelectionFragment.DeviceFilter() {
         @Override
-        public boolean isSelectable(Device<?> device) {
+        public boolean isSelectable(FhemDevice<?> device) {
             return device.getSetList().size() > 0;
         }
     };
@@ -90,7 +90,7 @@ public class TimerDetailFragment extends BaseFragment {
     private transient ArrayAdapter<String> targetStateAdapter;
     private String timerDeviceName;
 
-    private transient Device targetDevice;
+    private transient FhemDevice targetDevice;
     private String targetState;
     private int hour = 0;
     private int minute = 0;
@@ -170,7 +170,7 @@ public class TimerDetailFragment extends BaseFragment {
 
                         if (!resultData.containsKey(CLICKED_DEVICE)) return;
 
-                        updateTargetDevice((Device) resultData.get(CLICKED_DEVICE));
+                        updateTargetDevice((FhemDevice) resultData.get(CLICKED_DEVICE));
                     }
                 });
                 getActivity().sendBroadcast(intent);
@@ -353,7 +353,7 @@ public class TimerDetailFragment extends BaseFragment {
         getActivity().startService(intent);
     }
 
-    private void updateTargetDevice(Device targetDevice) {
+    private void updateTargetDevice(FhemDevice targetDevice) {
         if (targetDevice != null) {
             this.targetDevice = targetDevice;
             updateTargetDevice();
@@ -434,7 +434,7 @@ public class TimerDetailFragment extends BaseFragment {
                         if (resultCode != ResultCodes.SUCCESS || !resultData.containsKey(DEVICE)) {
                             return;
                         }
-                        Device device = (Device) resultData.getSerializable(DEVICE);
+                        FhemDevice device = (FhemDevice) resultData.getSerializable(DEVICE);
                         if (!(device instanceof AtDevice)) {
                             Log.e(TAG, "expected an AtDevice, but got " + device);
                             return;
@@ -459,7 +459,7 @@ public class TimerDetailFragment extends BaseFragment {
                     @Override
                     protected void onReceiveResult(int resultCode, Bundle resultData) {
                         if (resultCode == ResultCodes.SUCCESS && resultData.containsKey(DEVICE)) {
-                            updateTargetDevice((Device) resultData.get(DEVICE));
+                            updateTargetDevice((FhemDevice) resultData.get(DEVICE));
                         }
                     }
                 }));

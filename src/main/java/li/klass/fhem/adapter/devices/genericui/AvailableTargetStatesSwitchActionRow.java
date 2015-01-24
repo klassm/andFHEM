@@ -26,11 +26,11 @@ package li.klass.fhem.adapter.devices.genericui;
 import android.content.Context;
 
 import li.klass.fhem.R;
-import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.FhemDevice;
 
 import static li.klass.fhem.adapter.devices.genericui.AvailableTargetStatesDialogUtil.STATE_SENDING_CALLBACK;
 
-public class AvailableTargetStatesSwitchActionRow<D extends Device<D>> extends DeviceDetailViewButtonAction<D> {
+public class AvailableTargetStatesSwitchActionRow<D extends FhemDevice<D>> extends DeviceDetailViewButtonAction<D> {
     public AvailableTargetStatesSwitchActionRow() {
         super(R.string.switchSetOptions);
     }

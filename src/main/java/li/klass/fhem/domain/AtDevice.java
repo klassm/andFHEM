@@ -35,14 +35,14 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import li.klass.fhem.R;
-import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceFunctionality;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.util.StringUtil;
 
 import static li.klass.fhem.util.NumberUtil.toTwoDecimalDigits;
 
-public class AtDevice extends Device<AtDevice> {
+public class AtDevice extends FhemDevice<AtDevice> {
 
     public static final Pattern FHEM_PATTERN = Pattern.compile("fhem\\(\"set ([\\w\\-,\\\\.]+) ([\\w%-]+)(?: ([0-9.:]+))?\"\\)(.*)");
     public static final Pattern PREFIX_PATTERN = Pattern.compile("([+*]{0,2})([0-9:]+)(.*)");
@@ -61,8 +61,8 @@ public class AtDevice extends Device<AtDevice> {
     private TimerType timerType = TimerType.ABSOLUTE;
 
     @Override
-    public void readDEF(String value) {
-        super.readDEF(value);
+    public void setDefinition(String value) {
+        super.setDefinition(value);
         definition = parseDefinition(value) ? value : "";
     }
 

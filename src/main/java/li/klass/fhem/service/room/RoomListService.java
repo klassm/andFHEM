@@ -51,8 +51,8 @@ import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.PreferenceKeys;
 import li.klass.fhem.dagger.ForApplication;
 import li.klass.fhem.domain.FHEMWEBDevice;
-import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceType;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.RoomDeviceList;
 import li.klass.fhem.service.AbstractService;
 import li.klass.fhem.service.SharedPreferencesService;
@@ -112,12 +112,12 @@ public class RoomListService extends AbstractService {
     public void parseReceivedDeviceStateMap(String deviceName, Map<String, String> updateMap,
                                             boolean vibrateUponNotification) {
 
-        Optional<Device> deviceOptional = getDeviceForName(deviceName);
+        Optional<FhemDevice> deviceOptional = getDeviceForName(deviceName);
         if (!deviceOptional.isPresent()) {
             return;
         }
 
-        Device device = deviceOptional.get();
+        FhemDevice device = deviceOptional.get();
         deviceListParser.fillDeviceWith(device, updateMap);
 
         LOG.info("parseReceivedDeviceStateMap()  : updated {} with {} new values!", device.getName(), updateMap.size());
@@ -145,7 +145,7 @@ public class RoomListService extends AbstractService {
      * @return found device or null
      */
     @SuppressWarnings("unchecked")
-    public <T extends Device> Optional<T> getDeviceForName(String deviceName) {
+    public <T extends FhemDevice> Optional<T> getDeviceForName(String deviceName) {
         return Optional.fromNullable((T) getAllRoomsDeviceList().getDeviceFor(deviceName));
     }
 
@@ -294,7 +294,7 @@ public class RoomListService extends AbstractService {
         ArrayList<String> deviceNames = newArrayList();
         RoomDeviceList allRoomsDeviceList = getAllRoomsDeviceList();
 
-        for (Device device : allRoomsDeviceList.getAllDevices()) {
+        for (FhemDevice device : allRoomsDeviceList.getAllDevices()) {
             deviceNames.add(device.getName() + "|" +
                     emptyOrValue(device.getAlias()) + "|" +
                     emptyOrValue(device.getWidgetName()));
@@ -318,7 +318,7 @@ public class RoomListService extends AbstractService {
         if (roomDeviceList == null) return newArrayList();
 
         Set<String> roomNames = Sets.newHashSet();
-        for (Device device : roomDeviceList.getAllDevices()) {
+        for (FhemDevice device : roomDeviceList.getAllDevices()) {
             DeviceType type = getDeviceTypeFor(device);
             if (device.isSupported() && connectionService.mayShowInCurrentConnectionType(type) && type != AT) {
                 @SuppressWarnings("unchecked")
@@ -377,7 +377,7 @@ public class RoomListService extends AbstractService {
 
         RoomDeviceList allRoomDeviceList = getRoomDeviceList();
         if (allRoomDeviceList != null) {
-            for (Device device : allRoomDeviceList.getAllDevices()) {
+            for (FhemDevice device : allRoomDeviceList.getAllDevices()) {
                 if (device.isInRoom(roomName)) {
                     roomDeviceList.addDevice(device);
                 }

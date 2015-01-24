@@ -31,7 +31,7 @@ import li.klass.fhem.appwidget.WidgetConfiguration;
 import li.klass.fhem.appwidget.annotation.WidgetTemperatureAdditionalField;
 import li.klass.fhem.appwidget.annotation.WidgetTemperatureField;
 import li.klass.fhem.appwidget.view.widget.base.DeviceAppWidgetView;
-import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.util.ReflectionUtil;
 
 import static li.klass.fhem.util.ReflectionUtil.getStringForAnnotation;
@@ -48,7 +48,7 @@ public class TemperatureWidgetView extends DeviceAppWidgetView {
     }
 
     @Override
-    public void fillWidgetView(Context context, RemoteViews view, Device<?> device, WidgetConfiguration widgetConfiguration) {
+    public void fillWidgetView(Context context, RemoteViews view, FhemDevice<?> device, WidgetConfiguration widgetConfiguration) {
         if (device != null) {
             String temperature = getStringForAnnotation(device, WidgetTemperatureField.class);
             String additionalFieldValue = ReflectionUtil.getValueAndDescriptionForAnnotation(device, WidgetTemperatureAdditionalField.class);

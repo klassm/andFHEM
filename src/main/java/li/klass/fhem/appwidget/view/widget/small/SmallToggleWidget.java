@@ -29,11 +29,11 @@ import android.widget.RemoteViews;
 import li.klass.fhem.R;
 import li.klass.fhem.appwidget.WidgetConfiguration;
 import li.klass.fhem.appwidget.view.widget.medium.ToggleWidgetView;
-import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.FhemDevice;
 
 public class SmallToggleWidget extends ToggleWidgetView {
     @Override
-    protected void fillWidgetView(Context context, RemoteViews view, Device<?> device, WidgetConfiguration widgetConfiguration) {
+    protected void fillWidgetView(Context context, RemoteViews view, FhemDevice<?> device, WidgetConfiguration widgetConfiguration) {
         super.fillWidgetView(context, view, device, widgetConfiguration);
 
         view.setTextViewText(R.id.toggleOff, device.getWidgetName());

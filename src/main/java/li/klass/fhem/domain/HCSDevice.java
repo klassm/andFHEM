@@ -26,8 +26,8 @@ package li.klass.fhem.domain;
 
 import org.w3c.dom.NamedNodeMap;
 
-import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DeviceFunctionality;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.resources.ResourceIdMapper;
@@ -35,7 +35,7 @@ import li.klass.fhem.util.ValueDescriptionUtil;
 
 @OverviewViewSettings(showState = true)
 @SuppressWarnings("unused")
-public class HCSDevice extends Device<HCSDevice> {
+public class HCSDevice extends FhemDevice<HCSDevice> {
 
     @ShowField(description = ResourceIdMapper.ecoThresholdOn)
     private String thermostatThresholdOn;

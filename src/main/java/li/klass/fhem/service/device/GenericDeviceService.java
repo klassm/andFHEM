@@ -34,7 +34,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import li.klass.fhem.dagger.ForApplication;
-import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.service.CommandExecutionService;
 import li.klass.fhem.util.ArrayUtil;
@@ -51,7 +51,7 @@ public class GenericDeviceService {
     @ForApplication
     Context applicationContext;
 
-    public void setState(Device<?> device, String targetState) {
+    public void setState(FhemDevice<?> device, String targetState) {
         targetState = device.formatTargetState(targetState);
 
         commandExecutionService.executeSafely("set " + device.getName() + " " + targetState);
@@ -64,7 +64,7 @@ public class GenericDeviceService {
                 "state", targetState);
     }
 
-    public void setSubState(Device<?> device, String subStateName, String value) {
+    public void setSubState(FhemDevice<?> device, String subStateName, String value) {
         commandExecutionService.executeSafely("set " + device.getName() + " " + subStateName + " " + value);
         Tasker.sendTaskerNotifyIntent(applicationContext, device.getName(),
                 subStateName, value);
@@ -72,15 +72,15 @@ public class GenericDeviceService {
         invokeDeviceUpdateFor(device, subStateName, value);
     }
 
-    private void invokeDeviceUpdateFor(Device<?> device, String subStateName, String value) {
+    private void invokeDeviceUpdateFor(FhemDevice<?> device, String subStateName, String value) {
 
-        Class<? extends Device> clazz = device.getClass();
+        Class<? extends FhemDevice> clazz = device.getClass();
         if (!invokeDeviceUpdateForMethods(device, subStateName, value, clazz)) {
             invokeDeviceUpdateForFields(device, subStateName, value, clazz);
         }
     }
 
-    private boolean invokeDeviceUpdateForMethods(Device<?> device, String subStateName, String value, Class<? extends Device> clazz) {
+    private boolean invokeDeviceUpdateForMethods(FhemDevice<?> device, String subStateName, String value, Class<? extends FhemDevice> clazz) {
         for (Method method : clazz.getMethods()) {
             if (invokeDeviceUpdateForMethod(device, subStateName, value, clazz, method)) {
                 return true;
@@ -89,7 +89,7 @@ public class GenericDeviceService {
         return false;
     }
 
-    private boolean invokeDeviceUpdateForMethod(Device<?> device, String subStateName, String value, Class<? extends Device> clazz, Method method) {
+    private boolean invokeDeviceUpdateForMethod(FhemDevice<?> device, String subStateName, String value, Class<? extends FhemDevice> clazz, Method method) {
         try {
             if (method.getParameterTypes().length != 1 || !method.getParameterTypes()[0].isAssignableFrom(String.class)) {
                 return false;
@@ -112,7 +112,7 @@ public class GenericDeviceService {
         return false;
     }
 
-    private boolean invokeDeviceUpdateForFields(Device<?> device, String subStateName, String value, Class<? extends Device> clazz) {
+    private boolean invokeDeviceUpdateForFields(FhemDevice<?> device, String subStateName, String value, Class<? extends FhemDevice> clazz) {
         for (Field field : clazz.getDeclaredFields()) {
             if (invokeDeviceUpdateForField(device, subStateName, value, clazz, field)) {
                 return true;
@@ -121,7 +121,7 @@ public class GenericDeviceService {
         return false;
     }
 
-    private boolean invokeDeviceUpdateForField(Device<?> device, String subStateName, String value, Class<? extends Device> clazz, Field field) {
+    private boolean invokeDeviceUpdateForField(FhemDevice<?> device, String subStateName, String value, Class<? extends FhemDevice> clazz, Field field) {
         XmllistAttribute annotation = field.getAnnotation(XmllistAttribute.class);
         if (annotation == null || !ArrayUtil.contains(annotation.value(), subStateName))
             return false;

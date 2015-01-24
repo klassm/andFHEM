@@ -24,8 +24,6 @@
 
 package li.klass.fhem.domain.core;
 
-import li.klass.fhem.domain.EMCDDevice;
-import li.klass.fhem.domain.FHEMduinoEnvDevice;
 import li.klass.fhem.adapter.devices.CULHMAdapter;
 import li.klass.fhem.adapter.devices.DmxAdapter;
 import li.klass.fhem.adapter.devices.DummyAdapter;
@@ -74,6 +72,7 @@ import li.klass.fhem.domain.DummyDevice;
 import li.klass.fhem.domain.EC3000Device;
 import li.klass.fhem.domain.EGPMDevice;
 import li.klass.fhem.domain.EIBDevice;
+import li.klass.fhem.domain.EMCDDevice;
 import li.klass.fhem.domain.EMWZDevice;
 import li.klass.fhem.domain.ESA2000Device;
 import li.klass.fhem.domain.EnOceanDevice;
@@ -81,6 +80,7 @@ import li.klass.fhem.domain.EnigmaDevice;
 import li.klass.fhem.domain.FBCallmonitorDevice;
 import li.klass.fhem.domain.FBDectDevice;
 import li.klass.fhem.domain.FHEMWEBDevice;
+import li.klass.fhem.domain.FHEMduinoEnvDevice;
 import li.klass.fhem.domain.FHEMduinoPT2262Device;
 import li.klass.fhem.domain.FHT8VDevice;
 import li.klass.fhem.domain.FHTDevice;
@@ -258,26 +258,26 @@ public enum DeviceType {
     ;
 
     private String xmllistTag;
-    private Class<? extends Device> deviceClass;
-    private DeviceAdapter<? extends Device<?>> adapter;
+    private Class<? extends FhemDevice> deviceClass;
+    private DeviceAdapter<? extends FhemDevice<?>> adapter;
     private DeviceVisibility visibility = null;
 
-    <T extends Device<T>> DeviceType(String xmllistTag, Class<T> deviceClass) {
+    <T extends FhemDevice<T>> DeviceType(String xmllistTag, Class<T> deviceClass) {
         this(xmllistTag, deviceClass, new GenericDeviceAdapter<>(deviceClass));
     }
 
-    DeviceType(String xmllistTag, Class<? extends Device> deviceClass, DeviceAdapter<? extends Device<?>> adapter) {
+    DeviceType(String xmllistTag, Class<? extends FhemDevice> deviceClass, DeviceAdapter<? extends FhemDevice<?>> adapter) {
         this.xmllistTag = xmllistTag;
         this.deviceClass = deviceClass;
         this.adapter = adapter;
     }
 
-    DeviceType(String xmllistTag, Class<? extends Device> deviceClass, DeviceAdapter<? extends Device<?>> adapter, DeviceVisibility visibility) {
+    DeviceType(String xmllistTag, Class<? extends FhemDevice> deviceClass, DeviceAdapter<? extends FhemDevice<?>> adapter, DeviceVisibility visibility) {
         this(xmllistTag, deviceClass, adapter);
         this.visibility = visibility;
     }
 
-    public static <T extends Device<T>> DeviceAdapter<T> getAdapterFor(T device) {
+    public static <T extends FhemDevice<T>> DeviceAdapter<T> getAdapterFor(T device) {
         DeviceType deviceType = getDeviceTypeFor(device);
         if (deviceType == null) {
             return null;
@@ -286,17 +286,17 @@ public enum DeviceType {
         }
     }
 
-    public static <T extends Device> DeviceType getDeviceTypeFor(T device) {
+    public static <T extends FhemDevice> DeviceType getDeviceTypeFor(T device) {
         if (device == null) return null;
         return getDeviceTypeFor(device.getClass());
     }
 
     @SuppressWarnings("unchecked")
-    public <T extends Device<T>> DeviceAdapter<T> getAdapter() {
+    public <T extends FhemDevice<T>> DeviceAdapter<T> getAdapter() {
         return (DeviceAdapter<T>) adapter;
     }
 
-    public static <T extends Device> DeviceType getDeviceTypeFor(Class<T> clazz) {
+    public static <T extends FhemDevice> DeviceType getDeviceTypeFor(Class<T> clazz) {
         if (clazz == null) return null;
 
         DeviceType[] deviceTypes = DeviceType.values();
@@ -308,7 +308,7 @@ public enum DeviceType {
         return null;
     }
 
-    public Class<? extends Device> getDeviceClass() {
+    public Class<? extends FhemDevice> getDeviceClass() {
         return deviceClass;
     }
 

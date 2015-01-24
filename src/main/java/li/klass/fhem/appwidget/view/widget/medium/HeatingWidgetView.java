@@ -34,7 +34,7 @@ import li.klass.fhem.R;
 import li.klass.fhem.appwidget.WidgetConfiguration;
 import li.klass.fhem.appwidget.view.widget.base.DeviceAppWidgetView;
 import li.klass.fhem.domain.FHTDevice;
-import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.FhemDevice;
 
 public class HeatingWidgetView extends DeviceAppWidgetView {
     @Override
@@ -48,7 +48,7 @@ public class HeatingWidgetView extends DeviceAppWidgetView {
     }
 
     @Override
-    protected void fillWidgetView(Context context, RemoteViews view, Device<?> device, WidgetConfiguration widgetConfiguration) {
+    protected void fillWidgetView(Context context, RemoteViews view, FhemDevice<?> device, WidgetConfiguration widgetConfiguration) {
         FHTDevice fhtDevice = (FHTDevice) device;
 
         if (fhtDevice.getWarnings() != null && fhtDevice.getWarnings().toLowerCase(Locale.getDefault()).contains("open")) {
@@ -73,7 +73,7 @@ public class HeatingWidgetView extends DeviceAppWidgetView {
     }
 
     @Override
-    public boolean supports(Device<?> device) {
+    public boolean supports(FhemDevice<?> device) {
         return device instanceof FHTDevice;
     }
 }

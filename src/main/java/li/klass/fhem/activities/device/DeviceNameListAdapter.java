@@ -32,13 +32,13 @@ import android.widget.TextView;
 
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.rooms.DeviceGridAdapter;
-import li.klass.fhem.domain.core.Device;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.RoomDeviceList;
 import li.klass.fhem.util.ApplicationProperties;
 
 import static android.view.ViewGroup.LayoutParams;
 
-public class DeviceNameListAdapter<DEVICE extends Device<DEVICE>> extends DeviceGridAdapter<DEVICE> {
+public class DeviceNameListAdapter<DEVICE extends FhemDevice<DEVICE>> extends DeviceGridAdapter<DEVICE> {
     public static final int DEFAULT_REQUIRED_COLUMN_WIDTH = 250;
     private int requiredColumnWidth = DEFAULT_REQUIRED_COLUMN_WIDTH;
     private String selectedDeviceName;

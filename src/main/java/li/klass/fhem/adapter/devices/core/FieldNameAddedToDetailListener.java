@@ -28,13 +28,13 @@ import android.content.Context;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 
-import li.klass.fhem.domain.core.Device;
 import li.klass.fhem.domain.core.DimmableDevice;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.ToggleableDevice;
 
 import static li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener.NotificationDeviceType.ALL;
 
-public abstract class FieldNameAddedToDetailListener<T extends Device> {
+public abstract class FieldNameAddedToDetailListener<T extends FhemDevice> {
     protected enum NotificationDeviceType {
         ALL,
         TOGGLEABLE_AND_NOT_DIMMABLE,
