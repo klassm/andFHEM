@@ -89,7 +89,7 @@ public class DeviceListParser {
     @ForApplication
     Context applicationContext;
 
-    private Map<Class<FhemDevice>, Map<String, Set<DeviceClassCacheEntry>>> deviceClassCache = newHashMap();
+    private Map<Class<?>, Map<String, Set<DeviceClassCacheEntry>>> deviceClassCache = newHashMap();
 
     public RoomDeviceList parseAndWrapExceptions(String xmlList) {
         try {
@@ -192,7 +192,7 @@ public class DeviceListParser {
      * @return error count while parsing the device list
      */
     private <T extends FhemDevice> int devicesFromDocument(Class<T> deviceClass, Document document,
-                                                       String tagName, Map<String, FhemDevice> allDevices) {
+                                                           String tagName, Map<String, FhemDevice> allDevices) {
 
         int errorCount = 0;
 
@@ -286,7 +286,7 @@ public class DeviceListParser {
      * @param node        current xml node  @return true if everything went well
      */
     private <T extends FhemDevice> boolean deviceFromNode(Class<T> deviceClass,
-                                                      Node node, Map<String, FhemDevice> allDevices) {
+                                                          Node node, Map<String, FhemDevice> allDevices) {
         try {
             T device = createAndFillDevice(deviceClass, node);
             device.afterDeviceXMLRead();
@@ -353,9 +353,24 @@ public class DeviceListParser {
     }
 
     private <T extends FhemDevice> void invokeDeviceAttributeMethod(Map<String, Set<DeviceClassCacheEntry>> cache, T device, String key,
-                                                                String value, NamedNodeMap attributes, String tagName) throws Exception {
+                                                                    String value, NamedNodeMap attributes, String tagName) throws Exception {
 
         device.onChildItemRead(tagName, key, value, attributes);
+        handleCacheEntryFor(cache, device, key, value, attributes, tagName);
+    }
+
+    private <T extends FhemDevice> void handleCacheEntryFor(Map<String, Set<DeviceClassCacheEntry>> cache, T device,
+                                                            String key, String value) throws Exception {
+        if (cache.containsKey(key)) {
+            for (DeviceClassCacheEntry entry : cache.get(key)) {
+                entry.invoke(device, null, null, value);
+            }
+        }
+    }
+
+    private <T extends FhemDevice> void handleCacheEntryFor(Map<String, Set<DeviceClassCacheEntry>> cache, T device,
+                                                            String key, String value, NamedNodeMap attributes,
+                                                            String tagName) throws Exception {
         if (cache.containsKey(key)) {
             for (DeviceClassCacheEntry entry : cache.get(key)) {
                 entry.invoke(device, attributes, tagName, value);
@@ -411,26 +426,18 @@ public class DeviceListParser {
     }
 
     private boolean fillDeviceWith(FhemDevice device, Map<String, String> updates, Class<?> deviceClass) {
-        Method[] methods = deviceClass.getDeclaredMethods();
+        Map<String, Set<DeviceClassCacheEntry>> cache = deviceClassCache.get(deviceClass);
+        if (cache == null) return false;
 
         boolean changed = false;
 
-        for (Method method : methods) {
-            if (method.getParameterTypes().length != 1) continue;
-
-            String name = method.getName();
-            if (!name.startsWith("read") && !name.startsWith("gcm")) continue;
-
-            name = name.replaceAll("read", "").replaceAll("gcm", "").toUpperCase(Locale.getDefault());
-            if (updates.containsKey(name)) {
+        for (Map.Entry<String, String> entry : updates.entrySet()) {
+            if (cache.containsKey(entry.getKey())) {
                 try {
-                    Log.i(TAG, "invoke " + method.getName());
-                    method.setAccessible(true);
-                    method.invoke(device, updates.get(name));
-
+                    handleCacheEntryFor(cache, device, entry.getKey(), entry.getValue());
                     changed = true;
                 } catch (Exception e) {
-                    Log.e(TAG, "cannot invoke " + method.getName() + " for argument " + updates.get(name));
+                    Log.e(TAG, "fillDeviceWith - handle " + entry, e);
                 }
             }
         }

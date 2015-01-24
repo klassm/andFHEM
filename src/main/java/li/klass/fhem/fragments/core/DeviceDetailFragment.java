@@ -28,6 +28,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
+import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -83,7 +84,10 @@ public class DeviceDetailFragment extends BaseFragment {
             protected void onReceiveResult(int resultCode, Bundle resultData) {
                 super.onReceiveResult(resultCode, resultData);
 
-                getActivity().sendBroadcast(new Intent(Actions.DISMISS_EXECUTING_DIALOG));
+                FragmentActivity activity = getActivity();
+                if (activity == null) return;
+
+                activity.sendBroadcast(new Intent(Actions.DISMISS_EXECUTING_DIALOG));
 
                 if (resultCode == ResultCodes.SUCCESS && getView() != null) {
                     FhemDevice device = (FhemDevice) resultData.getSerializable(BundleExtraKeys.DEVICE);
@@ -96,7 +100,7 @@ public class DeviceDetailFragment extends BaseFragment {
                     ScrollView scrollView = (ScrollView) getView().findViewById(R.id.deviceDetailView);
                     if (scrollView != null) {
                         scrollView.removeAllViews();
-                        scrollView.addView(adapter.createDetailView(getActivity(), device, lastUpdate));
+                        scrollView.addView(adapter.createDetailView(activity, device, lastUpdate));
                     }
                 }
             }
