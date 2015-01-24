@@ -26,25 +26,27 @@ package li.klass.fhem.adapter.devices;
 
 import android.app.TimePickerDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TimePicker;
 
 import java.util.Calendar;
 
+import javax.inject.Inject;
+
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.DimmableAdapter;
 import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
 import li.klass.fhem.adapter.devices.genericui.ButtonActionRow;
 import li.klass.fhem.adapter.devices.genericui.ColorPickerRow;
-import li.klass.fhem.constants.Actions;
-import li.klass.fhem.constants.BundleExtraKeys;
+import li.klass.fhem.adapter.uiservice.StateUiService;
 import li.klass.fhem.domain.DummyDevice;
-import li.klass.fhem.service.intent.DeviceIntentService;
 import li.klass.fhem.util.StringUtil;
 
 public class DummyAdapter extends DimmableAdapter<DummyDevice> {
+    @Inject
+    StateUiService stateUiService;
+
     public DummyAdapter() {
         super(DummyDevice.class);
     }
@@ -72,11 +74,7 @@ public class DummyAdapter extends DimmableAdapter<DummyDevice> {
                                 String minuteOut = "" + minute;
                                 if (minute < 10) minuteOut = "0" + minuteOut;
 
-                                Intent intent = new Intent(Actions.DEVICE_SET_STATE);
-                                intent.setClass(context, DeviceIntentService.class);
-                                intent.putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, hourOut + ":" + minuteOut);
-                                intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
-                                context.startService(intent);
+                                stateUiService.setState(device, hourOut + ":" + minuteOut);
                             }
                         }, now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE), true);
                         timePickerDialog.show();
@@ -107,14 +105,7 @@ public class DummyAdapter extends DimmableAdapter<DummyDevice> {
                                 "0", 6
                         );
 
-                        Intent intent = new Intent(Actions.DEVICE_SET_SUB_STATE);
-                        intent.setClass(context, DeviceIntentService.class);
-                        intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
-                        intent.putExtra(BundleExtraKeys.STATE_NAME, "rgb");
-                        intent.putExtra(BundleExtraKeys.STATE_VALUE, targetHexString);
-                        putUpdateExtra(intent);
-
-                        context.startService(intent);
+                        stateUiService.setSubState(device, "rgb", targetHexString);
                     }
                 }.createRow(context, getInflater(), tableLayout));
             }

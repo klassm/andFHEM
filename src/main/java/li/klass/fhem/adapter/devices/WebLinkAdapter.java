@@ -40,8 +40,8 @@ public class WebLinkAdapter extends GenericDeviceAdapter<WebLinkDevice> {
 
     @Override
     protected Intent onFillDeviceDetailIntent(Context context, FhemDevice device, Intent intent) {
-        intent.putExtra(BundleExtraKeys.FRAGMENT, FragmentType.WEB_VIEW);
-        intent.putExtra(BundleExtraKeys.LOAD_URL, ((WebLinkDevice) device).getLink());
-        return intent;
+        return intent
+                .putExtra(BundleExtraKeys.FRAGMENT, FragmentType.WEB_VIEW)
+                .putExtra(BundleExtraKeys.LOAD_URL, ((WebLinkDevice) device).getLink());
     }
 }

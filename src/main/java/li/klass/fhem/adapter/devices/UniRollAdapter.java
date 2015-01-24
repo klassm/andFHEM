@@ -25,17 +25,19 @@
 package li.klass.fhem.adapter.devices;
 
 import android.content.Context;
-import android.content.Intent;
+
+import javax.inject.Inject;
 
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
 import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewButtonAction;
-import li.klass.fhem.constants.Actions;
-import li.klass.fhem.constants.BundleExtraKeys;
+import li.klass.fhem.adapter.uiservice.StateUiService;
 import li.klass.fhem.domain.UniRollDevice;
-import li.klass.fhem.service.intent.DeviceIntentService;
 
 public class UniRollAdapter extends GenericDeviceAdapter<UniRollDevice> {
+    @Inject
+    StateUiService stateUiService;
+
     public UniRollAdapter() {
         super(UniRollDevice.class);
     }
@@ -45,33 +47,21 @@ public class UniRollAdapter extends GenericDeviceAdapter<UniRollDevice> {
         detailActions.add(new DeviceDetailViewButtonAction<UniRollDevice>(R.string.up) {
             @Override
             public void onButtonClick(Context context, UniRollDevice device) {
-                Intent intent = new Intent(Actions.DEVICE_SET_STATE);
-                intent.setClass(context, DeviceIntentService.class);
-                intent.putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, "up");
-                intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
-                context.startService(intent);
+                stateUiService.setState(device, "up");
             }
         });
 
         detailActions.add(new DeviceDetailViewButtonAction<UniRollDevice>(R.string.stop) {
             @Override
             public void onButtonClick(Context context, UniRollDevice device) {
-                Intent intent = new Intent(Actions.DEVICE_SET_STATE);
-                intent.setClass(context, DeviceIntentService.class);
-                intent.putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, "stop");
-                intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
-                context.startService(intent);
+                stateUiService.setState(device, "stop");
             }
         });
 
         detailActions.add(new DeviceDetailViewButtonAction<UniRollDevice>(R.string.down) {
             @Override
             public void onButtonClick(Context context, UniRollDevice device) {
-                Intent intent = new Intent(Actions.DEVICE_SET_STATE);
-                intent.setClass(context, DeviceIntentService.class);
-                intent.putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, "down");
-                intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
-                context.startService(intent);
+                stateUiService.setState(device, "down");
             }
         });
     }

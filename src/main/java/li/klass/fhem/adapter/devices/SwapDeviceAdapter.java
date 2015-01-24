@@ -25,20 +25,22 @@
 package li.klass.fhem.adapter.devices;
 
 import android.content.Context;
-import android.content.Intent;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+
+import javax.inject.Inject;
 
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
 import li.klass.fhem.adapter.devices.genericui.ColorPickerRow;
-import li.klass.fhem.constants.Actions;
-import li.klass.fhem.constants.BundleExtraKeys;
+import li.klass.fhem.adapter.uiservice.StateUiService;
 import li.klass.fhem.domain.SWAPDevice;
-import li.klass.fhem.service.intent.DeviceIntentService;
 import li.klass.fhem.util.StringUtil;
 
 public class SwapDeviceAdapter extends ToggleableAdapterWithSwitchActionRow<SWAPDevice> {
+    @Inject
+    StateUiService stateUiService;
+
     public SwapDeviceAdapter() {
         super(SWAPDevice.class);
     }
@@ -64,14 +66,7 @@ public class SwapDeviceAdapter extends ToggleableAdapterWithSwitchActionRow<SWAP
                                 "0", 6
                         );
 
-                        Intent intent = new Intent(Actions.DEVICE_SET_SUB_STATE);
-                        intent.setClass(context, DeviceIntentService.class);
-                        intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
-                        intent.putExtra(BundleExtraKeys.STATE_NAME, "rgb");
-                        intent.putExtra(BundleExtraKeys.STATE_VALUE, targetHexString);
-                        putUpdateExtra(intent);
-
-                        context.startService(intent);
+                        stateUiService.setSubState(device, "rgb", targetHexString);
                     }
                 }.createRow(context, getInflater(), tableLayout));
             }

@@ -25,7 +25,6 @@
 package li.klass.fhem.adapter.devices;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -40,11 +39,9 @@ import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
 import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
 import li.klass.fhem.adapter.devices.genericui.StateChangingSeekBarFullWidth;
 import li.klass.fhem.adapter.devices.genericui.ToggleActionRow;
-import li.klass.fhem.constants.Actions;
-import li.klass.fhem.constants.BundleExtraKeys;
+import li.klass.fhem.adapter.uiservice.StateUiService;
 import li.klass.fhem.domain.PCA9532Device;
 import li.klass.fhem.domain.setlist.SetListSliderValue;
-import li.klass.fhem.service.intent.DeviceIntentService;
 import li.klass.fhem.util.ApplicationProperties;
 
 import static java.util.Collections.sort;
@@ -52,6 +49,9 @@ import static java.util.Collections.sort;
 public class PCA9532DeviceAdapter extends GenericDeviceAdapter<PCA9532Device> {
     @Inject
     ApplicationProperties applicationProperties;
+
+    @Inject
+    StateUiService stateUiService;
 
     public PCA9532DeviceAdapter() {
         super(PCA9532Device.class);
@@ -82,13 +82,7 @@ public class PCA9532DeviceAdapter extends GenericDeviceAdapter<PCA9532Device> {
 
                     @Override
                     protected void onButtonClick(final Context context, final PCA9532Device device, final boolean isChecked) {
-                        Intent intent = new Intent(Actions.DEVICE_SET_SUB_STATE);
-                        intent.setClass(context, DeviceIntentService.class);
-                        intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
-                        intent.putExtra(BundleExtraKeys.STATE_NAME, port);
-                        intent.putExtra(BundleExtraKeys.STATE_VALUE, isChecked ? "on" : "off");
-                        putUpdateExtra(intent);
-                        context.startService(intent);
+                        stateUiService.setSubState(device, port, isChecked ? "on" : "off");
                     }
                 }.createRow(context, device, port));
             }

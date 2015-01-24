@@ -25,7 +25,6 @@
 package li.klass.fhem.adapter.devices;
 
 import android.content.Context;
-import android.content.Intent;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 
@@ -36,15 +35,16 @@ import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
 import li.klass.fhem.adapter.devices.genericui.SpinnerActionRow;
 import li.klass.fhem.adapter.devices.genericui.StateChangingSeekBarFullWidth;
 import li.klass.fhem.adapter.devices.genericui.YesNoToggleDeviceActionRow;
-import li.klass.fhem.constants.Actions;
-import li.klass.fhem.constants.BundleExtraKeys;
+import li.klass.fhem.adapter.uiservice.StateUiService;
 import li.klass.fhem.domain.YamahaAVRDevice;
-import li.klass.fhem.service.intent.DeviceIntentService;
 import li.klass.fhem.util.ApplicationProperties;
 
 public class YamahaAVRAdapter extends ToggleableAdapterWithSwitchActionRow<YamahaAVRDevice> {
     @Inject
     ApplicationProperties applicationProperties;
+
+    @Inject
+    StateUiService stateUiService;
 
     public YamahaAVRAdapter() {
         super(YamahaAVRDevice.class);
@@ -84,14 +84,7 @@ public class YamahaAVRAdapter extends ToggleableAdapterWithSwitchActionRow<Yamah
 
                     @Override
                     public void onItemSelected(Context context, YamahaAVRDevice device, String item) {
-                        Intent intent = new Intent(Actions.DEVICE_SET_SUB_STATE);
-                        intent.setClass(context, DeviceIntentService.class);
-                        intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
-                        intent.putExtra(BundleExtraKeys.STATE_NAME, "input");
-                        intent.putExtra(BundleExtraKeys.STATE_VALUE, item);
-                        putUpdateExtra(intent);
-
-                        context.startService(intent);
+                        stateUiService.setSubState(device, "input", item);
                     }
                 }.createRow(device, tableLayout));
             }

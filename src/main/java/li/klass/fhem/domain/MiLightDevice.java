@@ -22,18 +22,36 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.dagger;
+package li.klass.fhem.domain;
 
-import dagger.Module;
-import li.klass.fhem.adapter.uiservice.FragmentUiService;
-import li.klass.fhem.adapter.uiservice.StateUiService;
-import li.klass.fhem.ui.service.importExport.ImportExportUIService;
+import li.klass.fhem.domain.core.DimmableContinuousStatesDevice;
+import li.klass.fhem.domain.core.XmllistAttribute;
+import li.klass.fhem.domain.genericview.ShowField;
+import li.klass.fhem.resources.ResourceIdMapper;
 
-@Module(complete = false,
-        injects = {
-                ImportExportUIService.class,
-                StateUiService.class,
-                FragmentUiService.class
-        })
-public class UIServiceModule {
+import static li.klass.fhem.util.NumberSystemUtil.hexToDecimal;
+
+public class MiLightDevice extends DimmableContinuousStatesDevice<MiLightDevice> {
+
+    @ShowField(description = ResourceIdMapper.color)
+    private String rgb;
+
+    @Override
+    protected String getSetListDimStateAttributeName() {
+        return "dim";
+    }
+
+    public String getRgb() {
+        return rgb;
+    }
+
+    public int getRgbColor() {
+        if (rgb == null) return 0;
+        return hexToDecimal(rgb);
+    }
+
+    @XmllistAttribute("RGB")
+    public void setRGB(String rgb) {
+        this.rgb = rgb;
+    }
 }

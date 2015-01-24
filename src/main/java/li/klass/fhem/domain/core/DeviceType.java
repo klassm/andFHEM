@@ -36,6 +36,7 @@ import li.klass.fhem.adapter.devices.GCMSendDeviceAdapter;
 import li.klass.fhem.adapter.devices.HueDeviceAdapter;
 import li.klass.fhem.adapter.devices.LightSceneAdapter;
 import li.klass.fhem.adapter.devices.MaxAdapter;
+import li.klass.fhem.adapter.devices.MiLightDeviceAdapter;
 import li.klass.fhem.adapter.devices.OnkyoAvrDeviceAdapter;
 import li.klass.fhem.adapter.devices.OwSwitchDeviceAdapter;
 import li.klass.fhem.adapter.devices.PCA9532DeviceAdapter;
@@ -104,6 +105,7 @@ import li.klass.fhem.domain.LGTVDevice;
 import li.klass.fhem.domain.LaCrosseDevice;
 import li.klass.fhem.domain.LightSceneDevice;
 import li.klass.fhem.domain.MaxDevice;
+import li.klass.fhem.domain.MiLightDevice;
 import li.klass.fhem.domain.NetatmoDevice;
 import li.klass.fhem.domain.OWFSDevice;
 import li.klass.fhem.domain.OnkyoAvrDevice;
@@ -254,7 +256,8 @@ public enum DeviceType {
     FHEMduino_Env("FHEMduino_Env", FHEMduinoEnvDevice.class),
     FHEMduino_PT2262("FHEMduino_PT2262", FHEMduinoPT2262Device.class, new ToggleableAdapterWithSwitchActionRow<>(FHEMduinoPT2262Device.class)),
     SOLARVIEW("SolarView", SolarViewDevice.class),
-    EMCDDEVICE("ECMDDevice", EMCDDevice.class, new ToggleableAdapterWithSwitchActionRow<>(EMCDDevice.class))
+    EMCDDEVICE("ECMDDevice", EMCDDevice.class, new ToggleableAdapterWithSwitchActionRow<>(EMCDDevice.class)),
+    MILIGHT("MilightDevice", MiLightDevice.class, new MiLightDeviceAdapter())
     ;
 
     private String xmllistTag;

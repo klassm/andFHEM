@@ -25,20 +25,22 @@
 package li.klass.fhem.adapter.devices;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 
+import javax.inject.Inject;
+
 import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
 import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
 import li.klass.fhem.adapter.devices.genericui.ToggleActionRow;
-import li.klass.fhem.constants.Actions;
-import li.klass.fhem.constants.BundleExtraKeys;
+import li.klass.fhem.adapter.uiservice.StateUiService;
 import li.klass.fhem.domain.OwSwitchDevice;
-import li.klass.fhem.service.intent.DeviceIntentService;
 
 public class OwSwitchDeviceAdapter extends GenericDeviceAdapter<OwSwitchDevice> {
+    @Inject
+    StateUiService stateUiService;
+
     public OwSwitchDeviceAdapter() {
         super(OwSwitchDevice.class);
     }
@@ -88,14 +90,7 @@ public class OwSwitchDeviceAdapter extends GenericDeviceAdapter<OwSwitchDevice> 
 
         @Override
         protected void onButtonClick(Context context, OwSwitchDevice device, boolean isChecked) {
-            Intent intent = new Intent(Actions.DEVICE_SET_SUB_STATE);
-            intent.setClass(context, DeviceIntentService.class);
-            intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
-            intent.putExtra(BundleExtraKeys.STATE_NAME, "gpio");
-            intent.putExtra(BundleExtraKeys.STATE_VALUE, "" + setStateFor(device, isChecked));
-            putUpdateExtra(intent);
-
-            context.startService(intent);
+            stateUiService.setSubState(device, "gpio", "" + setStateFor(device, isChecked));
         }
 
         protected abstract int setStateFor(OwSwitchDevice device, boolean isChecked);

@@ -53,10 +53,9 @@ public class GCMSendDeviceAdapter extends GenericDeviceAdapter<GCMSendDevice> {
         detailActions.add(new DeviceDetailViewButtonAction<GCMSendDevice>(R.string.gcmRegisterThis) {
             @Override
             public void onButtonClick(Context context, GCMSendDevice device) {
-                Intent intent = new Intent(Actions.GCM_ADD_SELF)
+                context.startService(new Intent(Actions.GCM_ADD_SELF)
                         .setClass(context, DeviceIntentService.class)
-                        .putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
-                context.startService(intent);
+                        .putExtra(BundleExtraKeys.DEVICE_NAME, device.getName()));
             }
 
             @Override

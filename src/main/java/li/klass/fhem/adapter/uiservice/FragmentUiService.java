@@ -22,18 +22,29 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.dagger;
+package li.klass.fhem.adapter.uiservice;
 
-import dagger.Module;
-import li.klass.fhem.adapter.uiservice.FragmentUiService;
-import li.klass.fhem.adapter.uiservice.StateUiService;
-import li.klass.fhem.ui.service.importExport.ImportExportUIService;
+import android.content.Context;
+import android.content.Intent;
 
-@Module(complete = false,
-        injects = {
-                ImportExportUIService.class,
-                StateUiService.class,
-                FragmentUiService.class
-        })
-public class UIServiceModule {
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+import li.klass.fhem.constants.Actions;
+import li.klass.fhem.constants.BundleExtraKeys;
+import li.klass.fhem.dagger.ForApplication;
+import li.klass.fhem.domain.core.FhemDevice;
+import li.klass.fhem.fragments.FragmentType;
+
+@Singleton
+public class FragmentUiService {
+    @Inject
+    @ForApplication
+    Context context;
+
+    public void showIntervalWeekProfileFor(FhemDevice<?> device) {
+        context.sendBroadcast(new Intent(Actions.SHOW_FRAGMENT)
+                .putExtra(BundleExtraKeys.FRAGMENT, FragmentType.INTERVAL_WEEK_PROFILE)
+                .putExtra(BundleExtraKeys.DEVICE_NAME, device.getName()));
+    }
 }

@@ -25,7 +25,6 @@
 package li.klass.fhem.adapter.devices;
 
 import android.content.Context;
-import android.content.Intent;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 
@@ -37,21 +36,21 @@ import javax.inject.Inject;
 
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
-import li.klass.fhem.adapter.devices.core.UpdatingResultReceiver;
 import li.klass.fhem.adapter.devices.genericui.StateChangingSeekBarFullWidth;
 import li.klass.fhem.adapter.devices.genericui.StateChangingSpinnerActionRow;
 import li.klass.fhem.adapter.devices.genericui.ToggleActionRow;
-import li.klass.fhem.constants.Actions;
-import li.klass.fhem.constants.BundleExtraKeys;
+import li.klass.fhem.adapter.uiservice.StateUiService;
 import li.klass.fhem.domain.OnkyoAvrDevice;
 import li.klass.fhem.domain.setlist.SetListGroupValue;
 import li.klass.fhem.domain.setlist.SetListSliderValue;
-import li.klass.fhem.service.intent.DeviceIntentService;
 import li.klass.fhem.util.ApplicationProperties;
 
 public class OnkyoAvrDeviceAdapter extends ToggleableAdapterWithSwitchActionRow<OnkyoAvrDevice> {
     @Inject
     ApplicationProperties applicationProperties;
+
+    @Inject
+    StateUiService stateUiService;
 
     public OnkyoAvrDeviceAdapter() {
         super(OnkyoAvrDevice.class);
@@ -82,14 +81,7 @@ public class OnkyoAvrDeviceAdapter extends ToggleableAdapterWithSwitchActionRow<
 
                     @Override
                     protected void onButtonClick(Context context, OnkyoAvrDevice device, boolean isChecked) {
-                        Intent intent = new Intent(Actions.DEVICE_SET_SUB_STATE)
-                                .setClass(context, DeviceIntentService.class)
-                                .putExtra(BundleExtraKeys.DEVICE_NAME, device.getName())
-                                .putExtra(BundleExtraKeys.STATE_NAME, "mute")
-                                .putExtra(BundleExtraKeys.STATE_VALUE, isChecked ? "on" : "off")
-                                .putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver(context));
-
-                        context.startService(intent);
+                        stateUiService.setSubState(device, "mute", isChecked ? "on" : "off");
                     }
                 }
                         .createRow(context, device, context.getString(R.string.musicMute)));

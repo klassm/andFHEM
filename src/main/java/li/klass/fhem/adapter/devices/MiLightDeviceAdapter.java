@@ -34,47 +34,32 @@ import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.DimmableAdapter;
 import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
 import li.klass.fhem.adapter.devices.genericui.ColorPickerRow;
-import li.klass.fhem.adapter.devices.genericui.StateChangingSeekBarFullWidth;
 import li.klass.fhem.adapter.uiservice.StateUiService;
-import li.klass.fhem.domain.HUEDevice;
-import li.klass.fhem.util.ApplicationProperties;
+import li.klass.fhem.domain.MiLightDevice;
 import li.klass.fhem.util.StringUtil;
 
-public class HueDeviceAdapter extends DimmableAdapter<HUEDevice> {
-    @Inject
-    ApplicationProperties applicationProperties;
-
+public class MiLightDeviceAdapter extends DimmableAdapter<MiLightDevice> {
     @Inject
     StateUiService stateUiService;
 
-    public HueDeviceAdapter() {
-        super(HUEDevice.class);
+    public MiLightDeviceAdapter() {
+        super(MiLightDevice.class);
     }
 
     @Override
     protected void afterPropertiesSet() {
         super.afterPropertiesSet();
 
-        registerFieldListener("saturationDesc", new FieldNameAddedToDetailListener<HUEDevice>() {
+        registerFieldListener("rgb", new FieldNameAddedToDetailListener<MiLightDevice>() {
             @Override
-            public boolean supportsDevice(HUEDevice device) {
-                return device.getSaturationDesc() != null;
+            public boolean supportsDevice(MiLightDevice device) {
+                return device.getRgb() != null;
             }
 
-            @Override
-            public void onFieldNameAdded(Context context, TableLayout tableLayout, String field, HUEDevice device, TableRow fieldTableRow) {
-                tableLayout.addView(new StateChangingSeekBarFullWidth<HUEDevice>(context,
-                        device.getSaturation(), 254, "sat", applicationProperties)
-                        .createRow(getInflater(), device));
-
-            }
-        });
-
-        registerFieldListener("rgbDesc", new FieldNameAddedToDetailListener<HUEDevice>() {
             @Override
             public void onFieldNameAdded(final Context context, TableLayout tableLayout, String field,
-                                         final HUEDevice device, TableRow fieldTableRow) {
-                tableLayout.addView(new ColorPickerRow(device.getRgb(), R.string.hue) {
+                                         final MiLightDevice device, TableRow fieldTableRow) {
+                tableLayout.addView(new ColorPickerRow(device.getRgbColor(), R.string.hue) {
                     @Override
                     public void onColorChange(int color) {
                         String targetHexString = StringUtil.prefixPad(

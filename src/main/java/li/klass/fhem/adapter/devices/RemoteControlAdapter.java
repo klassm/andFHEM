@@ -25,7 +25,6 @@
 package li.klass.fhem.adapter.devices;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
@@ -35,18 +34,21 @@ import android.widget.TableRow;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.ToggleableAdapter;
 import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewAction;
-import li.klass.fhem.constants.Actions;
-import li.klass.fhem.constants.BundleExtraKeys;
+import li.klass.fhem.adapter.uiservice.StateUiService;
 import li.klass.fhem.domain.RemoteControlDevice;
-import li.klass.fhem.service.intent.DeviceIntentService;
 import li.klass.fhem.util.ImageUtil;
 
 import static li.klass.fhem.util.DisplayUtil.dpToPx;
 
 public class RemoteControlAdapter extends ToggleableAdapter<RemoteControlDevice> {
+
+    @Inject
+    StateUiService stateUiService;
 
     public RemoteControlAdapter() {
         super(RemoteControlDevice.class);
@@ -86,13 +88,13 @@ public class RemoteControlAdapter extends ToggleableAdapter<RemoteControlDevice>
         TableRow tableRow = new TableRow(context);
 
         for (RemoteControlDevice.Entry entry : row) {
-            tableRow.addView(createImageViewFor(entry, context, device, layoutInflater, tableRow));
+            tableRow.addView(createImageViewFor(entry, device, layoutInflater, tableRow));
         }
 
         return tableRow;
     }
 
-    private View createImageViewFor(final RemoteControlDevice.Entry entry, final Context context,
+    private View createImageViewFor(final RemoteControlDevice.Entry entry,
                                     final RemoteControlDevice device, LayoutInflater layoutInflater, TableRow tableRow) {
         ImageButton imageButton = (ImageButton) layoutInflater.inflate(R.layout.remote_control_view, tableRow, false);
         assert imageButton != null;
@@ -103,11 +105,7 @@ public class RemoteControlAdapter extends ToggleableAdapter<RemoteControlDevice>
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Actions.DEVICE_SET_STATE);
-                intent.setClass(context, DeviceIntentService.class);
-                intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
-                intent.putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, entry.command);
-                context.startService(intent);
+                stateUiService.setState(device, entry.command);
             }
         });
 

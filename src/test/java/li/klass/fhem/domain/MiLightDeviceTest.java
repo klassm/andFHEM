@@ -22,18 +22,26 @@
  *   Boston, MA  02110-1301  USA
  */
 
-package li.klass.fhem.dagger;
+package li.klass.fhem.domain;
 
-import dagger.Module;
-import li.klass.fhem.adapter.uiservice.FragmentUiService;
-import li.klass.fhem.adapter.uiservice.StateUiService;
-import li.klass.fhem.ui.service.importExport.ImportExportUIService;
+import org.junit.Test;
 
-@Module(complete = false,
-        injects = {
-                ImportExportUIService.class,
-                StateUiService.class,
-                FragmentUiService.class
-        })
-public class UIServiceModule {
+import li.klass.fhem.domain.core.DeviceXMLParsingBase;
+
+import static org.fest.assertions.api.Assertions.assertThat;
+
+public class MiLightDeviceTest extends DeviceXMLParsingBase {
+
+    @Test
+    public void should_read_device() {
+        MiLightDevice device = getDeviceFor("LEDBulb1");
+        assertThat(device).isNotNull();
+        assertThat(device.getRgb()).isEqualTo("FFFFFF");
+        assertThat(device.getRgbColor()).isEqualTo(16777215);
+    }
+
+    @Override
+    protected String getFileName() {
+        return "milight.xml";
+    }
 }

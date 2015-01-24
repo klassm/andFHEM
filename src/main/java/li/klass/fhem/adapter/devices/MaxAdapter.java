@@ -38,10 +38,10 @@ import li.klass.fhem.adapter.devices.core.UpdatingResultReceiver;
 import li.klass.fhem.adapter.devices.genericui.DeviceDetailViewButtonAction;
 import li.klass.fhem.adapter.devices.genericui.HeatingModeListener;
 import li.klass.fhem.adapter.devices.genericui.TemperatureChangeTableRow;
+import li.klass.fhem.adapter.uiservice.FragmentUiService;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.domain.MaxDevice;
-import li.klass.fhem.fragments.FragmentType;
 import li.klass.fhem.util.ApplicationProperties;
 
 import static li.klass.fhem.domain.FHTDevice.MAXIMUM_TEMPERATURE;
@@ -51,6 +51,9 @@ import static li.klass.fhem.domain.MaxDevice.HeatingMode;
 public class MaxAdapter extends GenericDeviceAdapter<MaxDevice> {
     @Inject
     ApplicationProperties applicationProperties;
+
+    @Inject
+    FragmentUiService fragmentUiService;
 
     public MaxAdapter() {
         super(MaxDevice.class);
@@ -121,10 +124,7 @@ public class MaxAdapter extends GenericDeviceAdapter<MaxDevice> {
         detailActions.add(new DeviceDetailViewButtonAction<MaxDevice>(R.string.timetable) {
             @Override
             public void onButtonClick(Context context, MaxDevice device) {
-                Intent intent = new Intent(Actions.SHOW_FRAGMENT);
-                intent.putExtra(BundleExtraKeys.FRAGMENT, FragmentType.INTERVAL_WEEK_PROFILE);
-                intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
-                context.sendBroadcast(intent);
+                fragmentUiService.showIntervalWeekProfileFor(device);
             }
 
             @Override

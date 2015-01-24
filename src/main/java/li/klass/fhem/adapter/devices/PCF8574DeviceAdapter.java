@@ -25,7 +25,6 @@
 package li.klass.fhem.adapter.devices;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -34,17 +33,20 @@ import com.google.common.collect.Lists;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener;
 import li.klass.fhem.adapter.devices.core.GenericDeviceAdapter;
 import li.klass.fhem.adapter.devices.genericui.ToggleActionRow;
-import li.klass.fhem.constants.Actions;
-import li.klass.fhem.constants.BundleExtraKeys;
+import li.klass.fhem.adapter.uiservice.StateUiService;
 import li.klass.fhem.domain.PCF8574Device;
-import li.klass.fhem.service.intent.DeviceIntentService;
 
 import static java.util.Collections.sort;
 
 public class PCF8574DeviceAdapter extends GenericDeviceAdapter<PCF8574Device> {
+    @Inject
+    StateUiService stateUiService;
+
     public PCF8574DeviceAdapter() {
         super(PCF8574Device.class);
     }
@@ -74,13 +76,7 @@ public class PCF8574DeviceAdapter extends GenericDeviceAdapter<PCF8574Device> {
 
                     @Override
                     protected void onButtonClick(final Context context, final PCF8574Device device, final boolean isChecked) {
-                        Intent intent = new Intent(Actions.DEVICE_SET_SUB_STATE);
-                        intent.setClass(context, DeviceIntentService.class);
-                        intent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
-                        intent.putExtra(BundleExtraKeys.STATE_NAME, port);
-                        intent.putExtra(BundleExtraKeys.STATE_VALUE, isChecked ? "on" : "off");
-                        putUpdateExtra(intent);
-                        context.startService(intent);
+                        stateUiService.setSubState(device, port, isChecked ? "on" : "off");
                     }
                 }.createRow(context, device, port));
             }
