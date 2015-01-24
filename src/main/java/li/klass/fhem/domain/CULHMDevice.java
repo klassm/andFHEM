@@ -35,6 +35,7 @@ import java.util.Locale;
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.appwidget.annotation.SupportsWidget;
+import li.klass.fhem.appwidget.annotation.WidgetTemperatureAdditionalField;
 import li.klass.fhem.appwidget.annotation.WidgetTemperatureField;
 import li.klass.fhem.appwidget.view.widget.base.DeviceAppWidgetView;
 import li.klass.fhem.appwidget.view.widget.medium.TemperatureWidgetView;
@@ -111,6 +112,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
     private String actuator;
 
     @ShowField(description = ResourceIdMapper.humidity, showInOverview = true)
+    @WidgetTemperatureAdditionalField
     private String humidity;
 
     @ShowField(description = ResourceIdMapper.model, showAfter = "definition")
