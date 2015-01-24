@@ -52,6 +52,7 @@ import li.klass.fhem.domain.heating.schedule.configuration.MAXConfiguration;
 import li.klass.fhem.domain.heating.schedule.interval.FilledTemperatureInterval;
 import li.klass.fhem.resources.ResourceIdMapper;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
+import li.klass.fhem.util.NumberUtil;
 import li.klass.fhem.util.ValueDescriptionUtil;
 import li.klass.fhem.util.ValueExtractUtil;
 
@@ -168,10 +169,27 @@ public class MaxDevice extends ToggleableDevice<MaxDevice> implements DesiredTem
     }
 
     public void readMODE(String value) {
-        try {
-            heatingMode = HeatingMode.valueOf(value.toUpperCase(Locale.getDefault()));
-        } catch (Exception e) {
-            Log.e(MaxDevice.class.getName(), "cannot set heating mode from value " + value, e);
+        if (NumberUtil.isDecimalNumber(value)) {
+            int mode = ValueExtractUtil.extractLeadingInt(value);
+            switch (mode) {
+                case 0:
+                    heatingMode = HeatingMode.AUTO;
+                    break;
+                case 1:
+                    heatingMode = HeatingMode.MANUAL;
+                    break;
+                case 2:
+                    heatingMode = HeatingMode.TEMPORARY;
+                    break;
+                default:
+                    throw new IllegalArgumentException("don't know how to handle heating mode " + mode);
+            }
+        } else {
+            try {
+                heatingMode = HeatingMode.valueOf(value.toUpperCase(Locale.getDefault()));
+            } catch (Exception e) {
+                Log.e(MaxDevice.class.getName(), "cannot set heating mode from value " + value, e);
+            }
         }
     }
 
@@ -392,7 +410,7 @@ public class MaxDevice extends ToggleableDevice<MaxDevice> implements DesiredTem
     }
 
     public enum HeatingMode {
-        ECO, COMFORT, BOOST, AUTO, MANUAL
+        ECO, COMFORT, BOOST, AUTO, TEMPORARY, MANUAL
     }
 
     public enum SubType {
