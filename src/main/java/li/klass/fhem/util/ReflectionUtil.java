@@ -27,19 +27,23 @@ package li.klass.fhem.util;
 import android.content.Context;
 import android.util.Log;
 
+import com.google.common.collect.Lists;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import li.klass.fhem.AndFHEMApplication;
+
+import static com.google.common.collect.Lists.newArrayList;
 
 public class ReflectionUtil {
     public static final String TAG = ReflectionUtil.class.getName();
 
     public static List<Field> getFieldsWithAnnotation(Class<?> clazz, Class<? extends Annotation> annotation) {
-        List<Field> result = new ArrayList<Field>();
+        List<Field> result = newArrayList();
         for (Field field : clazz.getDeclaredFields()) {
             field.setAccessible(true);
             if (field.isAnnotationPresent(annotation)) {
@@ -114,16 +118,6 @@ public class ReflectionUtil {
         }
     }
 
-    public static Object getMethodReturnValue(Object object, Method method) {
-        try {
-            method.setAccessible(true);
-            return method.invoke(object);
-        } catch (Exception e) {
-            Log.e(TAG, "exception while invoking " + method.getName(), e);
-            return null;
-        }
-    }
-
     public static String getFieldValueAsString(Object object, Field field) {
         Object value = getFieldValue(object, field);
         return String.valueOf(value);
@@ -153,6 +147,36 @@ public class ReflectionUtil {
         }
         return null;
     }
+
+    public static List<Field> getAllDeclaredFields(Class<?> type) {
+        return getAllDeclaredFields(Lists.<Field>newArrayList(), type);
+    }
+
+    private static List<Field> getAllDeclaredFields(List<Field> fields, Class<?> type) {
+        fields.addAll(Arrays.asList(type.getDeclaredFields()));
+
+        if (type.getSuperclass() != null) {
+            fields = getAllDeclaredFields(fields, type.getSuperclass());
+        }
+
+        return fields;
+    }
+
+
+    public static List<Method> getAllDeclaredMethods(Class<?> type) {
+        return getAllDeclaredMethods(Lists.<Method>newArrayList(), type);
+    }
+
+    private static List<Method> getAllDeclaredMethods(List<Method> methods, Class<?> type) {
+        methods.addAll(Arrays.asList(type.getDeclaredMethods()));
+
+        if (type.getSuperclass() != null) {
+            methods = getAllDeclaredMethods(methods, type.getSuperclass());
+        }
+
+        return methods;
+    }
+
 
     public static Class<?> classForName(String className) {
         try {

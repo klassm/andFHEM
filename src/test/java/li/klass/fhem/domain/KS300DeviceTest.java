@@ -63,13 +63,13 @@ public class KS300DeviceTest extends DeviceXMLParsingBase {
 
         long now = System.currentTimeMillis();
 
-        device.readMEASURED(DateFormatUtil.toReadable(now));
+        device.setMeasured(DateFormatUtil.toReadable(now));
         long outdateTime = device.getTimeRequiredForStateError();
 
         assertThat(device.isOutdatedData(device.getLastMeasureTime() + outdateTime + 10000), is(true));
         assertThat(device.isOutdatedData(device.getLastMeasureTime() + outdateTime - 10000), is(false));
 
-        device.readMEASURED("abc");
+        device.setMeasured("abc");
         assertThat(device.isOutdatedData(1), is(false));
     }
 

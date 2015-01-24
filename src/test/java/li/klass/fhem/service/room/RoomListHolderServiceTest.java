@@ -56,7 +56,7 @@ public class RoomListHolderServiceTest {
         @Override
         public FhemDevice apply(String input) {
             FHEMWEBDevice device = new FHEMWEBDevice();
-            device.readNAME(input);
+            device.setName(input);
             device.setGroup("someGroup");
             return device;
         }

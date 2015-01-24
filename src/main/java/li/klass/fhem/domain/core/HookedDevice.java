@@ -29,6 +29,7 @@ public abstract class HookedDevice<T extends HookedDevice<T>> extends Device<T> 
     /**
      * Contains a name only used in widgets.
      */
+    @XmllistAttribute("WIDGET_NAME")
     protected String widgetName;
 
     /**
@@ -39,29 +40,37 @@ public abstract class HookedDevice<T extends HookedDevice<T>> extends Device<T> 
     /**
      * Provides some pronunciation for only this device.
      */
+    @XmllistAttribute("PRONUNCIATION")
     protected String pronunciation;
 
-    @XmllistAttribute("WIDGET_NAME")
-    public void setWidgetName(String value) {
-        this.widgetName = value;
-    }
+    /**
+     * Optionally contains some sortBy attribute that is used for device ordering.
+     */
+    @XmllistAttribute("SORTBY")
+    protected String sortBy;
 
     @XmllistAttribute("ALWAYS_HIDDEN")
     public void setAlwaysHidden(String value) {
         alwaysHidden = "true".equalsIgnoreCase(value);
     }
 
-    @XmllistAttribute("PRONUNCIATION")
-    public void setPronunciation(String value) {
-        this.pronunciation = value;
-    }
-
     public String getPronunciation() {
         return pronunciation;
     }
 
+    public String getSortBy() {
+        return sortBy;
+    }
 
     public boolean isSupported() {
         return !alwaysHidden;
+    }
+
+    public void setSortBy(String sortBy) {
+        this.sortBy = sortBy;
+    }
+
+    public void setPronunciation(String pronunciation) {
+        this.pronunciation = pronunciation;
     }
 }

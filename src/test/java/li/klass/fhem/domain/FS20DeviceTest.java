@@ -52,6 +52,8 @@ public class FS20DeviceTest extends DeviceXMLParsingBase {
 
         assertThat(device.getLogDevices()).isEmpty();
         assertThat(device.getDeviceCharts().size()).isEqualTo(0);
+
+        assertThat(device.getSortBy()).isEqualTo("1");
     }
 
     @Test

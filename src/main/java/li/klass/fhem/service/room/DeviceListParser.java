@@ -64,6 +64,7 @@ import li.klass.fhem.error.ErrorHolder;
 import li.klass.fhem.fhem.RequestResult;
 import li.klass.fhem.fhem.RequestResultError;
 import li.klass.fhem.service.connection.ConnectionService;
+import li.klass.fhem.util.ReflectionUtil;
 import li.klass.fhem.util.StringEscapeUtil;
 import li.klass.fhem.util.StringUtil;
 import li.klass.fhem.util.XMLUtil;
@@ -365,7 +366,7 @@ public class DeviceListParser {
     private <T extends FhemDevice> Map<String, Set<DeviceClassCacheEntry>> initDeviceMethodCacheEntries(Class<T> deviceClass) {
         Map<String, Set<DeviceClassCacheEntry>> cache = newHashMap();
 
-        for (Method method : deviceClass.getMethods()) {
+        for (Method method : ReflectionUtil.getAllDeclaredMethods(deviceClass)) {
             if (method.isAnnotationPresent(XmllistAttribute.class)) {
                 XmllistAttribute annotation = method.getAnnotation(XmllistAttribute.class);
                 for (String value : annotation.value()) {
@@ -377,7 +378,7 @@ public class DeviceListParser {
             }
         }
 
-        for (Field field : deviceClass.getDeclaredFields()) {
+        for (Field field : ReflectionUtil.getAllDeclaredFields(deviceClass)) {
             if (field.isAnnotationPresent(XmllistAttribute.class)) {
                 XmllistAttribute annotation = field.getAnnotation(XmllistAttribute.class);
                 checkArgument(annotation.value().length > 0);

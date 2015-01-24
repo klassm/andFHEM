@@ -24,8 +24,6 @@
 
 package li.klass.fhem.domain.core;
 
-import com.google.common.base.MoreObjects;
-
 import org.jetbrains.annotations.NotNull;
 import org.joda.time.DateTime;
 import org.w3c.dom.NamedNodeMap;
@@ -46,6 +44,7 @@ import li.klass.fhem.service.graph.description.SeriesType;
 import li.klass.fhem.util.DateFormatUtil;
 import li.klass.fhem.util.StringUtil;
 
+import static com.google.common.base.MoreObjects.firstNonNull;
 import static com.google.common.base.Strings.isNullOrEmpty;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Maps.newHashMap;
@@ -61,6 +60,7 @@ public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T
     protected List<String> webCmd = newArrayList();
     protected String name;
     protected String alias;
+
     @ShowField(description = ResourceIdMapper.definition, showAfter = "roomConcatenated")
     protected String definition;
     protected Map<String, String> eventMapReverse = newHashMap();
@@ -115,6 +115,7 @@ public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T
     }
 
     public void afterDeviceXMLRead() {
+        this.definition = getDefinition();
     }
 
     public void afterAllXMLRead() {
@@ -268,8 +269,11 @@ public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T
     }
 
     @Override
-    public final int compareTo(@NotNull T t) {
-        return getAliasOrName().compareTo(t.getAliasOrName());
+    public final int compareTo(@NotNull T other) {
+        String comparableAttribute = firstNonNull(sortBy, getAliasOrName());
+        String otherComparableAttribute = firstNonNull(other.sortBy, other.getAliasOrName());
+
+        return comparableAttribute.compareTo(otherComparableAttribute);
     }
 
     public List<LogDevice> getLogDevices() {
@@ -459,7 +463,7 @@ public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T
     }
 
     public String getWidgetName() {
-        return MoreObjects.firstNonNull(widgetName, getAliasOrName());
+        return firstNonNull(widgetName, getAliasOrName());
     }
 
     public List<String> getInternalDeviceGroupOrGroupAttributes() {

@@ -219,7 +219,7 @@ public class VoiceCommandServiceTest {
                 return Lists.newArrayList("group");
             }
         };
-        lightSceneDevice.readNAME("device");
+        lightSceneDevice.setName("device");
         lightSceneDevice.getSetList().parse("scene:off,on");
         RoomDeviceList deviceList = new RoomDeviceList("").addDevice(lightSceneDevice);
         doReturn(deviceList).when(roomListService).getAllRoomsDeviceList();
