@@ -61,6 +61,7 @@ import li.klass.fhem.service.intent.ConnectionsIntentService;
 import li.klass.fhem.ui.FileDialog;
 import li.klass.fhem.util.DialogUtil;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Lists.newArrayList;
 import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION;
 import static li.klass.fhem.constants.BundleExtraKeys.CONNECTION_CLIENT_CERTIFICATE_PASSWORD;
@@ -140,8 +141,9 @@ public class ConnectionDetailFragment extends BaseFragment {
     private void handleConnectionTypeChange(ServerType connectionType) {
         if (getView() == null) return;
 
-        this.connectionType = connectionType;
-        LayoutInflater inflater = getActivity().getLayoutInflater();
+        this.connectionType = checkNotNull(connectionType);
+        FragmentActivity activity = checkNotNull(getActivity());
+        LayoutInflater inflater = checkNotNull(activity.getLayoutInflater());
 
         View view;
         if (connectionType == ServerType.FHEMWEB) {
@@ -170,11 +172,13 @@ public class ConnectionDetailFragment extends BaseFragment {
                     }
                 }
             });
+
+            if (isModify) showPasswordCheckbox.setEnabled(false);
         }
 
         CheckBox showCertificatePasswordCheckbox = (CheckBox) view.findViewById(R.id.showCertificatePasswordCheckbox);
         final EditText passwordClientCertificateView = (EditText) view.findViewById(R.id.clientCertificatePassword);
-        if (showCertificatePasswordCheckbox != null && passwordView != null) {
+        if (showCertificatePasswordCheckbox != null && passwordClientCertificateView != null) {
             showCertificatePasswordCheckbox.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -187,14 +191,12 @@ public class ConnectionDetailFragment extends BaseFragment {
                     }
                 }
             });
+
+            if (isModify) showCertificatePasswordCheckbox.setEnabled(false);
         }
 
-        if  (isModify) {
-            showPasswordCheckbox.setEnabled(false);
-            showCertificatePasswordCheckbox.setEnabled(false);
-        }
-
-        ViewGroup connectionPreferences = (ViewGroup) getView().findViewById(R.id.connectionPreferences);
+        ViewGroup connectionPreferences = (ViewGroup) checkNotNull(getView()).findViewById(R.id.connectionPreferences);
+        checkNotNull(connectionPreferences);
         connectionPreferences.removeAllViews();
         connectionPreferences.addView(view);
 
