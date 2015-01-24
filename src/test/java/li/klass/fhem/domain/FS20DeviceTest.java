@@ -99,14 +99,14 @@ public class FS20DeviceTest extends DeviceXMLParsingBase {
 
         assertThat(device.getDimPosition()).isEqualTo(2);
 
-        assertThat(device.getDimDownPosition()).isEqualTo(FS20Device.dimStates.indexOf("dim6%"));
-        assertThat(device.getDimUpPosition()).isEqualTo(FS20Device.dimStates.indexOf("dim18%"));
+        assertThat(device.getDimDownPosition()).isEqualTo(FS20Device.DIM_STATES.indexOf("dim6%"));
+        assertThat(device.getDimUpPosition()).isEqualTo(FS20Device.DIM_STATES.indexOf("dim18%"));
 
         device.setState("on");
-        assertThat(device.getDimUpPosition()).isEqualTo(FS20Device.dimStates.indexOf("dim100%"));
+        assertThat(device.getDimUpPosition()).isEqualTo(FS20Device.DIM_STATES.indexOf("dim100%"));
 
         device.setState("off");
-        assertThat(device.getDimDownPosition()).isEqualTo(FS20Device.dimStates.indexOf("off"));
+        assertThat(device.getDimDownPosition()).isEqualTo(FS20Device.DIM_STATES.indexOf("off"));
     }
 
     @Test
@@ -125,6 +125,17 @@ public class FS20DeviceTest extends DeviceXMLParsingBase {
     public void testAlwaysHiddenDevice() {
         FS20Device device = getDeviceFor("device3");
         assertThat(device).isNull();
+    }
+
+    @Test
+    public void should_handle_OFF_STATES_as_off() {
+
+        FS20Device device = new FS20Device();
+        for (String offState : FS20Device.OFF_STATES) {
+            device.setState(offState);
+            assertThat(device.isOffByState()).isTrue();
+            assertThat(device.isOnByState()).isFalse();
+        }
     }
 
     @Override

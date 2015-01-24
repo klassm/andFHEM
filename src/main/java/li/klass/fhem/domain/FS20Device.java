@@ -27,7 +27,6 @@ package li.klass.fhem.domain;
 import org.w3c.dom.NamedNodeMap;
 
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -41,6 +40,7 @@ import li.klass.fhem.resources.ResourceIdMapper;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.util.NumberSystemUtil;
 
+import static java.util.Arrays.asList;
 import static li.klass.fhem.service.graph.description.SeriesType.TOGGLE_STATE;
 
 @OverviewViewSettings(showState = true)
@@ -51,11 +51,11 @@ public class FS20Device extends DimmableDiscreteStatesDevice<FS20Device> impleme
      * List of dim states available for FS20 devices. Careful: this list has to be ordered, to make dim up and
      * down work!
      */
-    public static final List<String> dimStates =
-            Arrays.asList("off", "dim6%", "dim12%", "dim18%", "dim25%", "dim31%", "dim37%", "dim43%", "dim50%", "dim56%",
+    public static final List<String> DIM_STATES =
+            asList("off", "dim6%", "dim12%", "dim18%", "dim25%", "dim31%", "dim37%", "dim43%", "dim50%", "dim56%",
                     "dim62%", "dim68%", "dim75%", "dim81%", "dim87%", "dim93%", "dim100%");
-    public static final List<String> dimModels = Arrays.asList("FS20DI", "FS20DI10", "FS20DU");
-    public static final List<String> offStates = Arrays.asList("off", "off-for-timer", "reset", "timer");
+    public static final List<String> DIM_MODELS = asList("FS20DI", "FS20DI10", "FS20DU");
+    public static final List<String> OFF_STATES = asList("off", "off-for-timer", "reset", "timer");
 
     @ShowField(description = ResourceIdMapper.model, showAfter = "definition")
     private String model;
@@ -83,19 +83,19 @@ public class FS20Device extends DimmableDiscreteStatesDevice<FS20Device> impleme
         }
     }
 
-    public boolean isOnByState() {
-        if (super.isOnByState()) return true;
-
-        String internalState = getInternalState();
-        if (internalState == null) return false;
-
-        for (String offState : offStates) {
-            if (internalState.contains(offState) || internalState.contains(eventMap.get(offState))) {
-                return false;
-            }
+    @Override
+    public boolean isOffByState() {
+        if (super.isOffByState()) {
+            return true;
         }
 
-        return true;
+        String internalState = getInternalState() + "";
+        for (String offState : OFF_STATES) {
+            if (internalState.contains(offState)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -105,12 +105,12 @@ public class FS20Device extends DimmableDiscreteStatesDevice<FS20Device> impleme
 
     @Override
     public boolean supportsDim() {
-        return dimModels.contains(model);
+        return DIM_MODELS.contains(model);
     }
 
     @Override
     public List<String> getDimStates() {
-        return dimStates;
+        return DIM_STATES;
     }
 
     @Override

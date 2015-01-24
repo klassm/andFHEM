@@ -27,11 +27,15 @@ package li.klass.fhem.adapter.devices.core;
 import android.content.Context;
 import android.widget.TableLayout;
 import android.widget.TableRow;
-import li.klass.fhem.domain.FS20Device;
+
 import org.junit.Before;
 import org.junit.Test;
 
-import static li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener.NotificationDeviceType.*;
+import li.klass.fhem.domain.FS20Device;
+
+import static li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener.NotificationDeviceType.ALL;
+import static li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener.NotificationDeviceType.DIMMER;
+import static li.klass.fhem.adapter.devices.core.FieldNameAddedToDetailListener.NotificationDeviceType.TOGGLEABLE_AND_NOT_DIMMABLE;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
@@ -51,7 +55,7 @@ public class FieldNameAddedToDetailTest {
         };
 
         dimmableFS20Device = new FS20Device();
-        dimmableFS20Device.readMODEL(FS20Device.dimModels.get(0));
+        dimmableFS20Device.readMODEL(FS20Device.DIM_MODELS.get(0));
 
         toggleableFS20Device = new FS20Device();
         toggleableFS20Device.readMODEL("NOT_DIMMABLE");
