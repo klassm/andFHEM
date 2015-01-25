@@ -28,7 +28,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Build;
 import android.widget.DatePicker;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -53,10 +52,10 @@ import li.klass.fhem.domain.fht.FHTMode;
 import li.klass.fhem.fragments.FragmentType;
 import li.klass.fhem.service.DateService;
 import li.klass.fhem.service.intent.DeviceIntentService;
+import li.klass.fhem.ui.AndroidBug;
 import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.DateFormatUtil;
 import li.klass.fhem.util.DatePickerUtil;
-import li.klass.fhem.util.DialogUtil;
 import li.klass.fhem.util.EnumUtils;
 
 import static li.klass.fhem.constants.Actions.DEVICE_SET_DAY_TEMPERATURE;
@@ -181,7 +180,7 @@ public class FHTAdapter extends GenericDeviceAdapter<FHTDevice> {
 
     private void handleHolidayMode(FHTDevice device, final SpinnerActionRow<FHTDevice> spinnerActionRow,
                                    final Intent intent, TableLayout tableLayout) {
-        if (showAndroidBugDialogIfRequired()) {
+        if (AndroidBug.handleColorStateBugIfRequired(getContext())) {
             return;
         }
         final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getContext());
@@ -226,7 +225,7 @@ public class FHTAdapter extends GenericDeviceAdapter<FHTDevice> {
     }
 
     private void handleHolidayShortMode(FHTDevice device, final SpinnerActionRow<FHTDevice> spinnerActionRow, final Intent intent, TableLayout tableLayout) {
-        if (showAndroidBugDialogIfRequired()) {
+        if (AndroidBug.handleColorStateBugIfRequired(getContext())) {
             return;
         }
         final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getContext());
@@ -324,11 +323,4 @@ public class FHTAdapter extends GenericDeviceAdapter<FHTDevice> {
         return hour * 6 + minute / 10;
     }
 
-    private boolean showAndroidBugDialogIfRequired() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            DialogUtil.showAlertDialog(getContext(), R.string.androidBugDialogDatePickerTitle, R.string.androidBugDialogDatePickerContent);
-            return true;
-        }
-        return false;
-    }
 }

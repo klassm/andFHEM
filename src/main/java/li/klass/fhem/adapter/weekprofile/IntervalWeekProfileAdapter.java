@@ -37,6 +37,7 @@ import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.genericui.TemperatureChangeTableRow;
 import li.klass.fhem.domain.heating.schedule.DayProfile;
 import li.klass.fhem.domain.heating.schedule.interval.FilledTemperatureInterval;
+import li.klass.fhem.ui.AndroidBug;
 import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.DialogUtil;
 
@@ -140,6 +141,9 @@ public class IntervalWeekProfileAdapter
             @Override
             @SuppressWarnings("unchecked")
             public void onClick(View view) {
+                if (AndroidBug.handleColorStateBugIfRequired(context)) {
+                    return;
+                }
 
                 final View contentView = layoutInflater.inflate(R.layout.weekprofile_temperature_time_selector, viewGroup, false);
 
