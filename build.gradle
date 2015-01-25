@@ -302,6 +302,7 @@ android.applicationVariants.all { variant ->
         classpath = files(variant.javaCompile.classpath.files) + files(ext.androidJar)
         options.links("http://docs.oracle.com/javase/7/docs/api/");
         options.links("http://d.android.com/reference/");
+        failOnError false
     }
 
     //This helps to run the unit tests in Anroid studio. Just call prepareAndroidStudioTests before the unit test
