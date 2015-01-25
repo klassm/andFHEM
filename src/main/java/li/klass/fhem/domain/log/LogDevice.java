@@ -48,7 +48,7 @@ public abstract class LogDevice<T extends LogDevice<T>> extends FhemDevice<T> {
     /**
      * We extract the device names from the current log regexp. As the regexp always concerns
      * device name and reading, we have to skip the reading.
-     * <p/>
+     * 
      * The default format is <i>deviceName:reading </i>, so we have to skip the reading part and
      * the colon. In addition, we have to make sure that we can still write regexp style expression,
      * including OR expressions on different levels.

@@ -163,7 +163,7 @@ public class RoomListService extends AbstractService {
     /**
      * Loads the currently cached {@link li.klass.fhem.domain.core.RoomDeviceList}. If the cached
      * device list has not yet been loaded, it will be loaded from the cache object.
-     * <p/>
+     * 
      * <p>Watch out: Any modifications will be saved within the internal representation. Don't use
      * this method from client code!</p>
      *
@@ -188,7 +188,7 @@ public class RoomListService extends AbstractService {
      * this means that no devices had been cached.</li>
      * <li>The update period indicates that we have to update the device map.</li>
      * </ul>
-     * <p/>
+     * 
      * <p>
      * When finding out that we have to remotely update the device list, the current request
      * (as intent) is cached and an intent to {@link li.klass.fhem.service.intent.RoomListUpdateIntentService}

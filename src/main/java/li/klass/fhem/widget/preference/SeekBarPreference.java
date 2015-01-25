@@ -50,15 +50,15 @@ import static li.klass.fhem.util.NumberUtil.isDecimalNumber;
 /**
  * Preference showing a seek bar as dialog. The minimum, default and maximum values can
  * be configured using the respective getters and (partly) the xml configuration.
- * <p/>
+ * 
  * The main layout is overtaken by
  * <a href="http://android.hlidskialf.com/blog/code/android-seekbar-preference">Hlidskialf Codes</a>.
  * However, the source code was heavily refactored and changed to fit the needs of andFHEM.
- * <p/>
+ * 
  * As Android's seek bars always handle minimum values to be 0, we recalculate each value
  * to fit Android's needs. Each value is calculated to be <i>value - minimumValue</i>. That
  * way we can handle non 0 minimum values properly.
- * <p/>
+ * 
  * This is also why internal values are stored in this recalculated format and not in the original
  * one provided by the using class. This concerns fields such as {@link #defaultValue},
  * {@link #maximumValue}, {@link #minimumValue} and {@link #internalValue}.

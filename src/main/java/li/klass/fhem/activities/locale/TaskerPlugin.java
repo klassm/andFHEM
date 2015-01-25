@@ -133,7 +133,7 @@ public class TaskerPlugin {
 
     /**
      * Specifies to host which variables might be used by the plugin.
-     * <p/>
+     * 
      * Used in EditActivity, before setResult().
      *
      * @param intentToHost  the intent being returned to the host
@@ -145,7 +145,7 @@ public class TaskerPlugin {
 
     /**
      * Validate a variable name.
-     * <p/>
+     * 
      * The basic requirement for variables from a plugin is that they must be all lower-case.
      *
      * @param varName name to check
@@ -193,9 +193,9 @@ public class TaskerPlugin {
 
     /**
      * Used by: plugin QueryReceiver, FireReceiver
-     * <p/>
+     * 
      * Add a bundle of variable name/value pairs.
-     * <p/>
+     * 
      * Names must be valid Tasker local variable names.
      * Values must be String, String [] or ArrayList<String>
      * Null values cause deletion of possible already-existing variables.
@@ -265,9 +265,9 @@ public class TaskerPlugin {
 
         /**
          * Used by: plugin EditActivity.
-         * <p/>
+         * 
          * Indicates to plugin that host will replace variables in specified bundle keys.
-         * <p/>
+         * 
          * Replacement takes place every time the setting is fired, before the bundle is
          * passed to the plugin FireReceiver.
          *
@@ -280,9 +280,9 @@ public class TaskerPlugin {
 
         /**
          * Used by: plugin EditActivity.
-         * <p/>
+         * 
          * Description as above.
-         * <p/>
+         * 
          * This version also includes backwards compatibility with pre 4.2 Tasker versions.
          * At some point this function will be deprecated.
          *
@@ -313,12 +313,12 @@ public class TaskerPlugin {
         /**
          * Request the host to wait the specified number of milliseconds before continuing.
          * Note that the host may choose to ignore the request.
-         * <p/>
+         * 
          * Maximum value is REQUESTED_TIMEOUT_MS_MAX.
          * Also available are REQUESTED_TIMEOUT_MS_NONE (continue immediately without waiting
          * for the plugin to finish) and REQUESTED_TIMEOUT_MS_NEVER (wait forever for
          * a result).
-         * <p/>
+         * 
          * Used in EditActivity, before setResult().
          *
          * @param intentToHost the intent being returned to the host
@@ -340,7 +340,7 @@ public class TaskerPlugin {
 
         /**
          * Used by: plugin EditActivity
-         * <p/>
+         * 
          * Indicates to host which bundle keys should be replaced.
          *
          * @param resultBundleToHost the bundle being returned to the host
@@ -372,7 +372,7 @@ public class TaskerPlugin {
 
         /**
          * Used by: plugin FireReceiver
-         * <p/>
+         * 
          * Indicates to plugin whether the host will process variables which it passes back
          *
          * @param extrasFromHost intent extras from the intent received by the FireReceiver
@@ -384,9 +384,9 @@ public class TaskerPlugin {
 
         /**
          * Used by: plugin FireReceiver
-         * <p/>
+         * 
          * Tell the host that the plugin has finished execution.
-         * <p/>
+         * 
          * This should only be used if RESULT_CODE_PENDING was returned by FireReceiver.onReceive().
          *
          * @param originalFireIntent the intent received from the host (via onReceive())
@@ -438,7 +438,7 @@ public class TaskerPlugin {
 
         /**
          * Used by: plugin QueryReceiver
-         * <p/>
+         * 
          * Indicates to plugin whether the host will process variables which it passes back
          *
          * @param extrasFromHost intent extras from the intent received by the QueryReceiver
