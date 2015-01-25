@@ -1,3 +1,6 @@
+general:
+  artifacts:
+    - "build/docs/javadoc"
 machine:
   environment:
       ANDROID_HOME: /usr/local/android-sdk-linux 
@@ -9,6 +12,6 @@ test:
   override:
     - ./gradlew test
   post:
-    - ./gradlew javadocinappdebug && mv build/docs/javadoc $CIRCLE_ARTIFACTS
+    - ./gradlew javadocinappdebug
       
 
