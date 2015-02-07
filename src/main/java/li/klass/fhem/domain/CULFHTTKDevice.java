@@ -36,6 +36,7 @@ import li.klass.fhem.domain.genericview.OverviewViewSettings;
 import li.klass.fhem.domain.genericview.ShowField;
 import li.klass.fhem.resources.ResourceIdMapper;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
+import li.klass.fhem.util.DateFormatUtil;
 
 import static li.klass.fhem.service.graph.description.SeriesType.WINDOW_OPEN;
 
@@ -53,7 +54,7 @@ public class CULFHTTKDevice extends FhemDevice<CULFHTTKDevice> {
 
     public void readPREVIOUS(String value, NamedNodeMap attributes) {
         lastWindowState = value;
-        lastStateChangeTime = attributes.getNamedItem("measured").getNodeValue();
+        lastStateChangeTime = DateFormatUtil.formatTime(attributes.getNamedItem("measured").getNodeValue());
     }
 
     @Override

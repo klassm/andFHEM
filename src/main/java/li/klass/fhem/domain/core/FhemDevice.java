@@ -26,6 +26,9 @@ package li.klass.fhem.domain.core;
 
 import org.jetbrains.annotations.NotNull;
 import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.w3c.dom.NamedNodeMap;
 
 import java.io.Serializable;
@@ -52,7 +55,6 @@ import static java.util.Arrays.asList;
 
 @SuppressWarnings("unused")
 public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T> implements Serializable, Comparable<T> {
-
     public static final long OUTDATED_DATA_MS_DEFAULT = 2 * 60 * 60 * 1000;
     public static final long NEVER_OUTDATE_DATA = 0;
 
@@ -221,7 +223,7 @@ public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T
 
     @XmllistAttribute("MEASURED")
     public void setMeasured(String measured) {
-        this.measured = measured;
+        this.measured = DateFormatUtil.formatTime(measured);
         this.lastMeasureTime = DateFormatUtil.toMilliSeconds(measured);
     }
 
