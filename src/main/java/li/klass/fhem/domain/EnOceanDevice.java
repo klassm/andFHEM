@@ -79,6 +79,7 @@ public class EnOceanDevice extends DimmableContinuousStatesDevice<EnOceanDevice>
     @Override
     protected String getSetListDimStateAttributeName() {
         if (setList.contains("position")) return "position";
+        if (setList.contains("dim")) return "dim";
         return super.getSetListDimStateAttributeName();
     }
 
@@ -147,6 +148,7 @@ public class EnOceanDevice extends DimmableContinuousStatesDevice<EnOceanDevice>
         }
         return "B0";
     }
+
 
     public String getModel() {
         return model;

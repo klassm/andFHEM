@@ -942,6 +942,6 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
     }
 
     public enum HeatingMode {
-        MANUAL, AUTO, CENTRAL, UNKNOWN
+        MANUAL, AUTO, CENTRAL, BOOST, UNKNOWN
     }
 }
