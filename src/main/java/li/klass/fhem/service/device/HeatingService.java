@@ -26,6 +26,9 @@ package li.klass.fhem.service.device;
 
 import android.util.Log;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.List;
 import java.util.Locale;
 
@@ -49,6 +52,8 @@ public class HeatingService {
     private static final String SET_COMMAND = "set %s %s %s";
     @Inject
     CommandExecutionService commandExecutionService;
+
+    public static final Logger LOGGER = LoggerFactory.getLogger(HeatingService.class);
 
     /**
      * Sets the desired temperature. The action will only be executed if the new desired temperature is different to
@@ -130,7 +135,7 @@ public class HeatingService {
             return;
         }
 
-        Log.e(TAG, "set eco temp of device " + device.getName() + " to " + temperature);
+        Log.i(TAG, "set eco temp of device " + device.getName() + " to " + temperature);
         String command = String.format(SET_COMMAND, device.getName(), device.getEcoTempCommandFieldName(), temperature);
         commandExecutionService.executeSafely(command);
         device.setEcoTemp(temperature);
@@ -140,6 +145,7 @@ public class HeatingService {
     public void setWeekProfileFor(HeatingDevice device) {
         WeekProfile weekProfile = device.getWeekProfile();
         List<String> commands = weekProfile.getSubmitCommands((FhemDevice) device);
+        LOGGER.info("setWeekProfileFor - generated {}", commands);
 
         for (String command : commands) {
             commandExecutionService.executeSafely(command);
