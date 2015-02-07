@@ -114,17 +114,18 @@ public class GenericDeviceService {
 
     private boolean invokeDeviceUpdateForFields(FhemDevice<?> device, String subStateName, String value, Class<? extends FhemDevice> clazz) {
         for (Field field : clazz.getDeclaredFields()) {
-            if (invokeDeviceUpdateForField(device, subStateName, value, clazz, field)) {
+            if (invokeDeviceUpdateForField(device, subStateName, value, field)) {
                 return true;
             }
         }
         return false;
     }
 
-    private boolean invokeDeviceUpdateForField(FhemDevice<?> device, String subStateName, String value, Class<? extends FhemDevice> clazz, Field field) {
+    private boolean invokeDeviceUpdateForField(FhemDevice<?> device, String subStateName, String value, Field field) {
         XmllistAttribute annotation = field.getAnnotation(XmllistAttribute.class);
-        if (annotation == null || !ArrayUtil.contains(annotation.value(), subStateName))
+        if (annotation == null || ! ArrayUtil.containsIgnoreCase(annotation.value(), subStateName)) {
             return false;
+        }
 
         field.setAccessible(true);
         ReflectionUtil.setFieldValue(device, field, value);

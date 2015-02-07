@@ -40,7 +40,7 @@ public abstract class YesNoToggleDeviceActionRow<D extends ToggleableDevice<D>> 
 
     private final String commandAttribute;
 
-    public YesNoToggleDeviceActionRow(LayoutInflater inflater, Context context, String commandAttribute) {
+    public YesNoToggleDeviceActionRow(LayoutInflater inflater, String commandAttribute) {
         super(inflater, ToggleDeviceActionRow.LAYOUT_DETAIL);
         this.commandAttribute = commandAttribute;
     }

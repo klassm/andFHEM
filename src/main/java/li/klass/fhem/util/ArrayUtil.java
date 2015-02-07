@@ -49,6 +49,17 @@ public class ArrayUtil {
         return false;
     }
 
+    public static boolean containsIgnoreCase(String[] array, String value) {
+        if (array == null) return false;
+
+        for (String element : array) {
+            if (value == null && element == null || element != null && element.equalsIgnoreCase(value)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static String join(String[] array, String delimiter) {
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < array.length; i++) {

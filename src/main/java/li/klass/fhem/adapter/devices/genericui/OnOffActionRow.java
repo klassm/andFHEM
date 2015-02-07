@@ -26,6 +26,7 @@ package li.klass.fhem.adapter.devices.genericui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -33,56 +34,58 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.google.common.base.Optional;
+
 import java.util.Map;
 
 import li.klass.fhem.R;
 import li.klass.fhem.adapter.devices.core.UpdatingResultReceiver;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.domain.core.ToggleableDevice;
+import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.service.intent.DeviceIntentService;
 
-public class OnOffActionRow<T extends ToggleableDevice> {
+public class OnOffActionRow<T extends FhemDevice> {
 
     public static final String HOLDER_KEY = "OnOffActionRow";
     public static final int LAYOUT_DETAIL = R.layout.device_detail_onoffbuttonrow;
     public static final int LAYOUT_OVERVIEW = R.layout.device_overview_onoffbuttonrow;
-    private TableRow tableRow;
-    private TextView descriptionView;
-    private Button onButton;
-    private Button offButton;
+    private final int layoutId;
+    private final Optional<Integer> description;
 
 
-    public OnOffActionRow(LayoutInflater inflater, int layoutId) {
-        tableRow = (TableRow) inflater.inflate(layoutId, null);
-        descriptionView = ((TextView) tableRow.findViewById(R.id.description));
-        onButton = (Button) tableRow.findViewById(R.id.onButton);
-        offButton = (Button) tableRow.findViewById(R.id.offButton);
+    public OnOffActionRow(int layoutId) {
+        this(layoutId, Optional.<Integer>absent());
+    }
+
+    public OnOffActionRow(int layoutId, int description) {
+        this(layoutId, Optional.of(description));
+    }
+
+    public OnOffActionRow(int layoutId, Optional<Integer> description) {
+        this.layoutId = layoutId;
+        this.description = description;
     }
 
     @SuppressWarnings("unchecked")
-    public void fillWith(final T device, Context context) {
-        descriptionView.setText(device.getAliasOrName());
-        Map<String, String> eventMap = device.getEventMap();
+    public TableRow createRow(LayoutInflater inflater, final T device, Context context) {
+        TableRow tableRow = (TableRow) inflater.inflate(layoutId, null);
+        TextView descriptionView = ((TextView) tableRow.findViewById(R.id.description));
+        Button onButton = findOnButton(tableRow);
+        Button offButton = findOffButton(tableRow);
 
-        String onStateName = device.getOnStateName();
+        String text = description.isPresent() ? context.getString(description.get()) : device.getAliasOrName();
+        descriptionView.setText(text);
+
+        String onStateName = getOnStateName(device, context);
         onButton.setOnClickListener(createListener(context, device, onStateName));
-        if (eventMap.containsKey(onStateName)) {
-            onButton.setText(eventMap.get(onStateName));
-        } else {
-            onButton.setText(context.getString(R.string.on));
-        }
+        onButton.setText(getOnStateText(device, context));
 
-
-        String offStateName = device.getOffStateName();
+        String offStateName = getOffStateName(device, context);
         offButton.setOnClickListener(createListener(context, device, offStateName));
-        if (eventMap.containsKey(offStateName)) {
-            offButton.setText(eventMap.get(offStateName));
-        } else {
-            offButton.setText(context.getString(R.string.off));
-        }
+        offButton.setText(getOffStateText(device, context));
 
-        if (device.isOnRespectingInvertHook()) {
+        if (isOn(device)) {
             onButton.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.theme_toggle_on_normal));
             offButton.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.theme_toggle_default_normal));
         } else {
@@ -90,20 +93,43 @@ public class OnOffActionRow<T extends ToggleableDevice> {
             offButton.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.theme_toggle_off_normal));
         }
 
-        switch (device.getButtonHookType()) {
-            case ON_DEVICE:
-                offButton.setVisibility(View.GONE);
-                onButton.setVisibility(View.VISIBLE);
-                break;
-            case OFF_DEVICE:
-                onButton.setVisibility(View.GONE);
-                offButton.setVisibility(View.VISIBLE);
-                break;
-        }
+        return tableRow;
     }
 
-    public TableRow getView() {
-        return tableRow;
+    protected Button findOffButton(TableRow tableRow) {
+        return (Button) tableRow.findViewById(R.id.offButton);
+    }
+
+    protected Button findOnButton(TableRow tableRow) {
+        return (Button) tableRow.findViewById(R.id.onButton);
+    }
+
+    protected String getOnStateName(T device, Context context) {
+        return "on";
+    }
+
+    protected String getOffStateName(T device, Context context) {
+        return "off";
+    }
+
+    protected String getOnStateText(T device, Context context) {
+        @SuppressWarnings("unchecked")
+        Map<String, String> eventMap = device.getEventMap();
+
+        String onStateName = getOnStateName(device, context);
+        return eventMap.containsKey(onStateName) ? eventMap.get(onStateName) : context.getString(R.string.on);
+    }
+
+    protected String getOffStateText(T device, Context context) {
+        @SuppressWarnings("unchecked")
+        Map<String, String> eventMap = device.getEventMap();
+
+        String offStateName = getOffStateName(device, context);
+        return eventMap.containsKey(offStateName) ? eventMap.get(offStateName) : context.getString(R.string.off);
+    }
+
+    protected boolean isOn(T device) {
+        return false;
     }
 
     private ToggleButton.OnClickListener createListener(final Context context, final T device, final String targetState) {

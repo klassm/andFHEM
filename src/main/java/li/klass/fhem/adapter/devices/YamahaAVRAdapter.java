@@ -66,7 +66,7 @@ public class YamahaAVRAdapter extends ToggleableAdapterWithSwitchActionRow<Yamah
         registerFieldListener("state", new FieldNameAddedToDetailListener<YamahaAVRDevice>() {
             @Override
             protected void onFieldNameAdded(Context context, TableLayout tableLayout, String field, YamahaAVRDevice device, TableRow fieldTableRow) {
-                tableLayout.addView(new YesNoToggleDeviceActionRow<YamahaAVRDevice>(getInflater(), context, "mute") {
+                tableLayout.addView(new YesNoToggleDeviceActionRow<YamahaAVRDevice>(getInflater(), "mute") {
 
                     @Override
                     public boolean isOn(YamahaAVRDevice device) {

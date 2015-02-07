@@ -46,6 +46,7 @@ import li.klass.fhem.adapter.devices.PidAdapter;
 import li.klass.fhem.adapter.devices.PioneerAvrDeviceAdapter;
 import li.klass.fhem.adapter.devices.ReadingsProxyDeviceAdapter;
 import li.klass.fhem.adapter.devices.RemoteControlAdapter;
+import li.klass.fhem.adapter.devices.STVDeviceAdapter;
 import li.klass.fhem.adapter.devices.SonosPlayerAdapter;
 import li.klass.fhem.adapter.devices.SwapDeviceAdapter;
 import li.klass.fhem.adapter.devices.SwitchActionRowAdapter;
@@ -96,6 +97,7 @@ import li.klass.fhem.adapter.devices.core.ToggleableAdapter;
                 EnigmaDeviceAdapter.class,
                 PioneerAvrDeviceAdapter.class,
                 MiLightDeviceAdapter.class,
+                STVDeviceAdapter.class,
 
                 DeviceAdapter.class,
                 GenericDeviceAdapter.class,
