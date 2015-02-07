@@ -93,6 +93,8 @@ public class TemperatureChangeTableRow<D extends FhemDevice<D>> extends SeekBarA
         if (!sendIntents) return;
         if (progress == initialProgress) return;
 
+        initialProgress = progress;
+
         String confirmationMessage = createConfirmationText(valueStringId, newTemperature);
         DeviceActionUtil.showConfirmation(context, new Dialog.OnClickListener() {
 
