@@ -43,7 +43,7 @@ public class WeekProfile<H extends BaseHeatingInterval, C extends HeatingConfigu
         implements Serializable {
 
     private final C configuration;
-    private Map<Day, DayProfile<H, D, C>> dayProfiles = new HashMap<Day, DayProfile<H, D, C>>();
+    private Map<Day, DayProfile<H, D, C>> dayProfiles = new HashMap<>();
 
     public WeekProfile(C configuration) {
         for (Day day : Day.values()) {
@@ -54,7 +54,7 @@ public class WeekProfile<H extends BaseHeatingInterval, C extends HeatingConfigu
     }
 
     public List<DayProfile<H, D, C>> getChangedDayProfiles() {
-        List<DayProfile<H, D, C>> changedDayProfiles = new ArrayList<DayProfile<H, D, C>>();
+        List<DayProfile<H, D, C>> changedDayProfiles = new ArrayList<>();
 
         for (DayProfile<H, D, C> dayProfile : dayProfiles.values()) {
             if (dayProfile.isModified()) {
@@ -66,7 +66,7 @@ public class WeekProfile<H extends BaseHeatingInterval, C extends HeatingConfigu
     }
 
     public List<DayProfile<H, D, C>> getSortedDayProfiles() {
-        List<DayProfile<H, D, C>> result = new ArrayList<DayProfile<H, D, C>>();
+        List<DayProfile<H, D, C>> result = new ArrayList<>();
 
         for (Day day : Day.values()) {
             result.add(dayProfiles.get(day));

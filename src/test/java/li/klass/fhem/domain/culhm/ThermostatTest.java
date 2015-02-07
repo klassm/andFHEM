@@ -103,8 +103,36 @@ public class ThermostatTest extends DeviceXMLParsingBase {
                 Pair.of("04:50", 20.0), Pair.of("23:00", 22.0), Pair.of("24:00", 20.0));
     }
 
-    private void assertWeekProfileContainsExactly(WeekProfile<FilledTemperatureInterval, CULHMConfiguration, CULHMDevice> weekProfile,
-                                                  DayUtil.Day day, Pair<String, Double>... switchTimeTemperature) {
+    @Test
+    @SuppressWarnings("unchecked")
+    public void should_use_first_device_when_finding_multiple_prefixes() {
+        CULHMDevice device = getDeviceFor("deviceWithMorePrefix");
+
+        assertThat(device).isNotNull();
+
+        WeekProfile<FilledTemperatureInterval, CULHMConfiguration, CULHMDevice> weekProfile =
+                device.getWeekProfile();
+        assertThat(weekProfile).isNotNull();
+
+        assertWeekProfileContainsExactly(weekProfile, SATURDAY,
+                Pair.of("08:00", 20.0), Pair.of("23:00", 22.0), Pair.of("24:00", 20.0));
+        assertWeekProfileContainsExactly(weekProfile, SUNDAY,
+                Pair.of("08:00", 20.0), Pair.of("22:00", 22.0), Pair.of("24:00", 20.0));
+        assertWeekProfileContainsExactly(weekProfile, MONDAY,
+                Pair.of("04:50", 20.0), Pair.of("22:00", 22.0), Pair.of("24:00", 20.0));
+        assertWeekProfileContainsExactly(weekProfile, TUESDAY,
+                Pair.of("04:50", 20.0), Pair.of("22:00", 22.0), Pair.of("24:00", 20.0));
+        assertWeekProfileContainsExactly(weekProfile, WEDNESDAY,
+                Pair.of("04:50", 20.0), Pair.of("22:00", 22.0), Pair.of("24:00", 20.0));
+        assertWeekProfileContainsExactly(weekProfile, THURSDAY,
+                Pair.of("04:50", 20.0), Pair.of("22:00", 22.0), Pair.of("24:00", 20.0));
+        assertWeekProfileContainsExactly(weekProfile, FRIDAY,
+                Pair.of("04:50", 20.0), Pair.of("23:00", 22.0), Pair.of("24:00", 20.0));
+    }
+
+    @SafeVarargs
+    private final void assertWeekProfileContainsExactly(WeekProfile<FilledTemperatureInterval, CULHMConfiguration, CULHMDevice> weekProfile,
+                                                        DayUtil.Day day, Pair<String, Double>... switchTimeTemperature) {
         DayProfile<FilledTemperatureInterval, CULHMDevice, CULHMConfiguration> dayProfile = weekProfile.getDayProfileFor(day);
         List<FilledTemperatureInterval> heatingIntervals = dayProfile.getHeatingIntervals();
         assertThat(heatingIntervals.size()).isEqualTo(switchTimeTemperature.length);

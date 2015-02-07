@@ -24,7 +24,9 @@
 
 package li.klass.fhem.domain.heating.schedule.configuration;
 
-import java.util.ArrayList;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -34,6 +36,8 @@ import li.klass.fhem.domain.heating.schedule.WeekProfile;
 import li.klass.fhem.domain.heating.schedule.interval.FilledTemperatureInterval;
 import li.klass.fhem.util.DayUtil;
 
+import static com.google.common.collect.Lists.newArrayList;
+
 public class CULHMConfiguration extends HeatingConfiguration<FilledTemperatureInterval, CULHMDevice, CULHMConfiguration> {
 
     public static final int MAXIMUM_NUMBER_OF_HEATING_INTERVALS = 24;
@@ -42,11 +46,13 @@ public class CULHMConfiguration extends HeatingConfiguration<FilledTemperatureIn
         super("", MAXIMUM_NUMBER_OF_HEATING_INTERVALS, NumberOfIntervalsType.DYNAMIC);
     }
 
+    private static final Logger LOG = LoggerFactory.getLogger(CULHMConfiguration.class);
+
     @Override
     public void readNode(WeekProfile<FilledTemperatureInterval, CULHMConfiguration, CULHMDevice> weekProfile, String key, String value) {
-        if (!key.matches("(R_[0-9]_)?TEMPLIST([A-Z]{3})")) return;
+        if (!key.matches("(R_(P1_)?[0-9]_)?TEMPLIST([A-Z]{3})")) return;
 
-        String shortName = key.replaceAll("(R_[0-9]_)?TEMPLIST", "");
+        String shortName = key.replaceAll("(R_(P1_)?[0-9]_)?TEMPLIST", "");
         DayUtil.Day day = DayUtil.getDayForShortName(shortName);
         if (day == null) return;
 
@@ -71,13 +77,15 @@ public class CULHMConfiguration extends HeatingConfiguration<FilledTemperatureIn
     public DayProfile<FilledTemperatureInterval, CULHMDevice, CULHMConfiguration>
     createDayProfileFor(DayUtil.Day day, CULHMConfiguration configuration) {
 
-        return new DayProfile<FilledTemperatureInterval, CULHMDevice, CULHMConfiguration>(day, configuration);
+        return new DayProfile<>(day, configuration);
     }
 
     @Override
     public List<String> generateScheduleCommands(CULHMDevice device, WeekProfile<FilledTemperatureInterval, CULHMConfiguration, CULHMDevice> weekProfile) {
-        List<String> result = new ArrayList<String>();
-        for (DayProfile<FilledTemperatureInterval, CULHMDevice, CULHMConfiguration> dayProfile : weekProfile.getChangedDayProfiles()) {
+        List<String> result = newArrayList();
+        List<DayProfile<FilledTemperatureInterval, CULHMDevice, CULHMConfiguration>> changedDayProfiles = weekProfile.getChangedDayProfiles();
+        LOG.info("generateScheduleCommands - {} day(s) contain changes", changedDayProfiles.size());
+        for (DayProfile<FilledTemperatureInterval, CULHMDevice, CULHMConfiguration> dayProfile : changedDayProfiles) {
             result.add(generateCommandFor(device, dayProfile));
         }
 
@@ -87,7 +95,7 @@ public class CULHMConfiguration extends HeatingConfiguration<FilledTemperatureIn
     public String generateCommandFor(CULHMDevice device, DayProfile<FilledTemperatureInterval, CULHMDevice, CULHMConfiguration> dayProfile) {
         StringBuilder command = new StringBuilder();
 
-        List<FilledTemperatureInterval> heatingIntervals = new ArrayList<FilledTemperatureInterval>(dayProfile.getHeatingIntervals());
+        List<FilledTemperatureInterval> heatingIntervals = newArrayList(dayProfile.getHeatingIntervals());
         Collections.sort(heatingIntervals);
 
         for (int i = 0; i < dayProfile.getNumberOfHeatingIntervals(); i++) {

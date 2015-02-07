@@ -26,6 +26,8 @@ package li.klass.fhem.domain.heating.schedule.configuration;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
 
 import java.util.List;
 
@@ -33,18 +35,20 @@ import li.klass.fhem.domain.CULHMDevice;
 import li.klass.fhem.domain.heating.schedule.DayProfile;
 import li.klass.fhem.domain.heating.schedule.WeekProfile;
 import li.klass.fhem.domain.heating.schedule.interval.FilledTemperatureInterval;
+import li.klass.fhem.infra.AndFHEMRobolectricTestRunner;
 import li.klass.fhem.util.DayUtil;
 import li.klass.fhem.util.Reject;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 
+@RunWith(AndFHEMRobolectricTestRunner.class)
 public class CULHMConfigurationTest {
     private CULHMConfiguration configuration = new CULHMConfiguration();
     private WeekProfile<FilledTemperatureInterval, CULHMConfiguration, CULHMDevice> weekProfile;
 
     @Before
     public void before() {
-        weekProfile = new WeekProfile<FilledTemperatureInterval, CULHMConfiguration, CULHMDevice>(configuration);
+        weekProfile = new WeekProfile<>(configuration);
     }
 
     @Test
