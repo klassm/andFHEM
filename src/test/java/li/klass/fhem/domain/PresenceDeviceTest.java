@@ -37,7 +37,6 @@ public class PresenceDeviceTest extends DeviceXMLParsingBase {
         PresenceDevice device = getDefaultDevice();
         assertThat(device.getState(), is("present"));
         assertThat(device.getMode(), is("fritzbox"));
-        assertThat(device.getMeasured(), is("2013-03-31 14:23:10"));
     }
 
     @Override

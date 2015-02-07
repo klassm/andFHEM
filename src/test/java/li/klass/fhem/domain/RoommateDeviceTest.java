@@ -37,7 +37,6 @@ public class RoommateDeviceTest extends DeviceXMLParsingBase {
 
         assertThat(device.getLocation()).isEqualTo("home");
         assertThat(device.getMood()).isEqualTo("calm");
-        assertThat(device.getMeasured()).isEqualTo("2014-08-10 00:57:45");
     }
 
     @Override

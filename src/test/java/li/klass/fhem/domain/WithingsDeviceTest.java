@@ -21,8 +21,6 @@ public class WithingsDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getHeartPulse()).isEqualTo("70");
         assertThat(device.getWeight()).isEqualTo("85.0 (kg)");
         assertThat(device.getHeight()).isEqualTo("1.9 (m)");
-
-        assertThat(device.getMeasured()).isEqualTo("2014-07-13 13:18:55");
     }
 
     @Test
@@ -36,8 +34,6 @@ public class WithingsDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getBatteryLevel()).isEqualTo("91 (%)");
         assertThat(device.getCo2()).isEqualTo("967 (ppm)");
         assertThat(device.getTemperature()).isEqualTo("23.6 (°C)");
-
-        assertThat(device.getMeasured()).isEqualTo("2014-07-13 16:23:13");
     }
 
     @Test

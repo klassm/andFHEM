@@ -38,7 +38,7 @@ public class CULFHTTKDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
         assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
 
-        assertThat(device.getLastStateChangeTime()).isEqualTo("2012-08-14 23:05:51");
+        assertThat(device.getLastStateChangeTime()).isEqualTo("14.08.2012 23:05");
         assertThat(device.getLastWindowState()).isEqualTo("Closed");
         assertThat(device.getWindowState()).isEqualTo("Open");
         assertThat(device.getState()).isEqualTo("Closed => Open");

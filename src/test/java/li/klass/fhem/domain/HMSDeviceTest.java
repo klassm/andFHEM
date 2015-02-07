@@ -49,7 +49,6 @@ public class HMSDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getBattery()).isEqualTo("ok");
         assertThat(device.getSwitchDetect()).isEqualTo("on");
         assertThat(device.getState()).isEqualTo("T: 12.6  Bat: ok");
-        assertThat(device.getMeasured()).isEqualTo("2010-04-05 14:06:52");
 
         assertThat(device.getSetList().getEntries()).isEmpty();
 

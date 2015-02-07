@@ -52,7 +52,7 @@ public class EnOceanDeviceTest extends DeviceXMLParsingBase {
         EnOceanDevice device1 = getDeviceFor("device1");
         assertThat(device1.getSubType(), is(EnOceanDevice.SubType.SENSOR));
         assertThat(device1.getState(), is("153"));
-        assertThat(device1.getMeasured(), is("2012-11-04 23:55:11"));
+        assertThat(device1.getMeasured(), is("04.11.2012 23:55"));
 
         EnOceanDevice device2 = getDeviceFor("device2");
         assertThat(device2.getOffStateName(), is("released"));

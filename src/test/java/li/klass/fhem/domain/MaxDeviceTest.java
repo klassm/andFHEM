@@ -99,8 +99,6 @@ public class MaxDeviceTest extends DeviceXMLParsingBase {
     public void testJournalDevice() {
         MaxDevice device = getDeviceFor("journalDevice");
 
-        assertThat(device.getMeasured(), is("2013-02-27 22:00:03"));
-
         WeekProfile<FilledTemperatureInterval, MAXConfiguration, MaxDevice> weekProfile = device.getWeekProfile();
         assertThat(weekProfile, is(notNullValue()));
 

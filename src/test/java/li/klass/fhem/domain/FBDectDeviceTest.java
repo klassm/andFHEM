@@ -41,7 +41,6 @@ public class FBDectDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getEnergy(), is("13837 (Wh)"));
         assertThat(device.getPower(), is("13.08 (W)"));
         assertThat(device.getVoltage(), is("230.014 (V)"));
-        assertThat(device.getMeasured(), is("2013-04-07 20:55:29"));
     }
 
     @Override

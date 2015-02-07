@@ -39,7 +39,7 @@ public class EC3000DeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getState()).isEqualTo("68 (W)");
         assertThat(device.getConsumption()).isEqualTo("13.782 (kWh)");
         assertThat(device.getPower()).isEqualTo("68 (W)");
-        assertThat(device.getMeasured()).isEqualTo("2014-05-04 14:14:37");
+        assertThat(device.getMeasured()).isEqualTo("04.05.2014 14:14");
         assertThat(device.getPrice()).isEqualTo("3.29 (€)");
         assertThat(device.getWidgetInfoLine()).isEqualTo("3.29 (€), 13.782 (kWh)");
     }

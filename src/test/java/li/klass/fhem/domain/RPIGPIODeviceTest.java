@@ -40,7 +40,6 @@ public class RPIGPIODeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getRoomConcatenated(), is(DEFAULT_TEST_ROOM_NAME));
 
         assertThat(device.getState(), is("on"));
-        assertThat(device.getMeasured(), is("2013-11-14 14:58:27"));
 
         assertThat(device.getPinLevel(), is("high"));
     }
