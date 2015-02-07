@@ -181,6 +181,8 @@ public class MaxDevice extends ToggleableDevice<MaxDevice> implements DesiredTem
                 case 2:
                     heatingMode = HeatingMode.TEMPORARY;
                     break;
+                case 3:
+                    heatingMode = HeatingMode.BOOST;
                 default:
                     throw new IllegalArgumentException("don't know how to handle heating mode " + mode);
             }
