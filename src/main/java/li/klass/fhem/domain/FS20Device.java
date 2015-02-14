@@ -55,7 +55,7 @@ public class FS20Device extends DimmableDiscreteStatesDevice<FS20Device> impleme
             asList("off", "dim6%", "dim12%", "dim18%", "dim25%", "dim31%", "dim37%", "dim43%", "dim50%", "dim56%",
                     "dim62%", "dim68%", "dim75%", "dim81%", "dim87%", "dim93%", "dim100%");
     public static final List<String> DIM_MODELS = asList("FS20DI", "FS20DI10", "FS20DU");
-    public static final List<String> OFF_STATES = asList("off", "off-for-timer", "reset", "timer");
+    public static final List<String> OFF_STATES = asList("off", "off-for-timer", "reset");
 
     @ShowField(description = ResourceIdMapper.model, showAfter = "definition")
     private String model;

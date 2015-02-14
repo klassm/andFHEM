@@ -44,7 +44,8 @@ public class ToggleableDeviceTest {
                 {"on", true},
                 {"off", false},
                 {"dim20%", true},
-                {"off-for-timer 2000", false}
+                {"off-for-timer 2000", false},
+                {"on-for-timer 2000", true}
         };
     }
 
