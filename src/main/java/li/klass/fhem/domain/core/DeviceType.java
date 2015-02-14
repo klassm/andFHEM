@@ -162,7 +162,8 @@ public enum DeviceType {
     SOLARVIEW("SolarView", SolarViewDevice.class),
     EMCDDEVICE("ECMDDevice", EMCDDevice.class, new ToggleableAdapterWithSwitchActionRow<>(EMCDDevice.class)),
     MILIGHT("MilightDevice", MiLightDevice.class, new MiLightDeviceAdapter()),
-    STV("STV", STVDevice.class, new STVDeviceAdapter())
+    STV("STV", STVDevice.class, new STVDeviceAdapter()),
+    CO20("CO20", CO20Device.class)
     ;
 
     private String xmllistTag;
