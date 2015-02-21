@@ -26,11 +26,17 @@ package li.klass.fhem.ui;
 
 import android.content.Context;
 import android.os.Build;
+import android.view.View;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import li.klass.fhem.R;
 import li.klass.fhem.util.DialogUtil;
 
 public class AndroidBug {
+    private static final Logger LOG = LoggerFactory.getLogger(AndroidBug.class);
+
     /**
      * Android contains a bug causing an {@link java.lang.ArrayIndexOutOfBoundsException} when
      * inflating {@link android.widget.TimePicker}s.
@@ -42,17 +48,45 @@ public class AndroidBug {
      * Caused by: java.lang.ArrayIndexOutOfBoundsException: length=1; index=1
      * at android.content.res.ColorStateList.addFirstIfMissing(ColorStateList.java:356)
      * </code>
-     *
+     * <p/>
      * Current status:
      * Google has acknowledged the bug but has not yet released a fix (see <a href="https://code.google.com/p/android/issues/detail?id=78984">Google Code</a>)
-     *
-     * @return true if the bug was handled
      */
-    public static boolean handleColorStateBugIfRequired(Context context) {
+    public static View handleColorStateBug(BugHandler bugHandler) {
+        try {
+            return bugHandler.defaultAction();
+        } catch (Exception e) {
+            LOG.error("color state bug encountered", e);
+            return bugHandler.bugEncountered();
+        }
+    }
+
+    public static void showMessageIfColorStateBugIsEncountered(final Context context, final MessageBugHandler messageBugHandler) {
+        handleColorStateBug(new BugHandler() {
+            @Override
+            public View bugEncountered() {
+                DialogUtil.showAlertDialog(context, R.string.androidBugDialogDatePickerTitle, R.string.androidBugDialogDatePickerContent);
+                return null;
+            }
+
+            @Override
+            public View defaultAction() {
+                messageBugHandler.defaultAction();
+                return null;
+            }
+        });
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             DialogUtil.showAlertDialog(context, R.string.androidBugDialogDatePickerTitle, R.string.androidBugDialogDatePickerContent);
-            return true;
         }
-        return false;
+    }
+
+    public interface BugHandler {
+        View bugEncountered();
+
+        View defaultAction();
+    }
+
+    public interface MessageBugHandler {
+        void defaultAction();
     }
 }

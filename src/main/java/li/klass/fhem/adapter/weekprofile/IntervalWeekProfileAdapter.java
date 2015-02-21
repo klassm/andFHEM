@@ -40,6 +40,7 @@ import li.klass.fhem.domain.heating.schedule.interval.FilledTemperatureInterval;
 import li.klass.fhem.ui.AndroidBug;
 import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.DialogUtil;
+import li.klass.fhem.widget.FallbackTimePicker;
 
 import static li.klass.fhem.util.ValueDescriptionUtil.appendTemperature;
 
@@ -141,68 +142,107 @@ public class IntervalWeekProfileAdapter
             @Override
             @SuppressWarnings("unchecked")
             public void onClick(View view) {
-                if (AndroidBug.handleColorStateBugIfRequired(context)) {
-                    return;
-                }
-
-                final View contentView = layoutInflater.inflate(R.layout.weekprofile_temperature_time_selector, viewGroup, false);
-
-                final TimePicker timePicker = (TimePicker) contentView.findViewById(R.id.timePicker);
-                timePicker.setIs24HourView(true);
-                String time = interval.getChangedSwitchTime();
-
-                String minutePart = time == null ? "0" : time.substring(0, 2);
-                String hourPart = time == null ? "0" : time.substring(3, 5);
-
-                int hours = Integer.valueOf(minutePart);
-                if (hours == 24) hours = 0;
-
-                final int minutes = Integer.valueOf(hourPart);
-
-                timePicker.setCurrentHour(hours);
-                timePicker.setCurrentMinute(minutes);
-
-                if (interval.isTimeFixed()) {
-                    timePicker.setEnabled(false);
-                }
-
-                LinearLayout layout = (LinearLayout) contentView.findViewById(R.id.tableLayout);
-
-                TableRow updateRow = (TableRow) contentView.findViewById(R.id.updateRow);
-                final TemperatureChangeTableRow temperatureChangeTableRow = new
-                        TemperatureChangeTableRow(context, interval.getChangedTemperature(),
-                                updateRow, 5.5, 30.0, applicationProperties) {
-                            @Override
-                            protected ApplicationProperties getApplicationProperties() {
-                                return applicationProperties;
-                            }
-
-                            @Override
-                            protected boolean showButton() {
-                                return false;
-                            }
-                        };
-
-                layout.addView(temperatureChangeTableRow.createRow(layoutInflater, null, 8));
-
-                DialogUtil.showContentDialog(context, null, contentView, new DialogUtil.AlertOnClickListener() {
-                    @Override
-                    public void onClick() {
-                        double temperature = temperatureChangeTableRow.getTemperature();
-
-                        Integer currentHour = timePicker.getCurrentHour();
-                        Integer currentMinute = timePicker.getCurrentMinute();
-
-                        String time = timeToTimeString(currentHour, currentMinute);
-
-                        if (listener != null) {
-                            listener.onIntervalTemperatureChanged(time, temperature);
-                        }
-                        notifyWeekProfileChangedListener();
-                    }
-                });
+                new IntervalEditHolder(interval, listener).showDialog(context, viewGroup);
             }
         });
+    }
+
+    private class IntervalEditHolder {
+        private final OnIntervalTemperatureChangedListener listener;
+        FilledTemperatureInterval interval;
+
+        private int hours;
+        private int minutes;
+
+        private IntervalEditHolder(FilledTemperatureInterval interval, OnIntervalTemperatureChangedListener listener) {
+            this.interval = interval;
+            this.listener = listener;
+
+            String time = interval.getChangedSwitchTime();
+
+            String hoursPart = time == null ? "0" : time.substring(0, 2);
+            String minutesPart = time == null ? "0" : time.substring(3, 5);
+
+            hours = hoursPart.equals("24") ? 0 : Integer.valueOf(hoursPart);
+            minutes = Integer.valueOf(minutesPart);
+        }
+
+        public void showDialog(Context context, final ViewGroup viewGroup) {
+            View contentView = AndroidBug.handleColorStateBug(new AndroidBug.BugHandler() {
+                @Override
+                public View bugEncountered() {
+                    final View contentView = layoutInflater.inflate(R.layout.weekprofile_temperature_time_selector_android_bug, viewGroup, false);
+                    final FallbackTimePicker timePicker = (FallbackTimePicker) contentView.findViewById(R.id.timePicker);
+                    timePicker.setHours(hours);
+                    timePicker.setMinutes(minutes);
+                    timePicker.setOnValueChangedListener(new FallbackTimePicker.OnValueChangedListener() {
+                        @Override
+                        public void onValueChanged(int hours, int minutes) {
+                            IntervalEditHolder.this.hours = hours;
+                            IntervalEditHolder.this.minutes = minutes;
+                        }
+                    });
+                    timePicker.setEnabled(! interval.isTimeFixed());
+                    return contentView;
+                }
+
+                @Override
+                public View defaultAction() {
+                    final View contentView = layoutInflater.inflate(R.layout.weekprofile_temperature_time_selector, viewGroup, false);
+                    final TimePicker timePicker = (TimePicker) contentView.findViewById(R.id.timePicker);
+                    timePicker.setIs24HourView(true);
+
+                    timePicker.setCurrentHour(hours);
+                    timePicker.setCurrentMinute(minutes);
+
+                    timePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
+                        @Override
+                        public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
+                            IntervalEditHolder.this.hours = hourOfDay;
+                            IntervalEditHolder.this.minutes = minute;
+                        }
+                    });
+
+                    timePicker.setEnabled(! interval.isTimeFixed());
+
+                    return contentView;
+                }
+            });
+
+            LinearLayout layout = (LinearLayout) contentView.findViewById(R.id.tableLayout);
+
+            TableRow updateRow = (TableRow) contentView.findViewById(R.id.updateRow);
+            final TemperatureChangeTableRow temperatureChangeTableRow = new
+                    TemperatureChangeTableRow(context, interval.getChangedTemperature(),
+                            updateRow, 5.5, 30.0, applicationProperties) {
+                        @Override
+                        protected ApplicationProperties getApplicationProperties() {
+                            return applicationProperties;
+                        }
+
+                        @Override
+                        protected boolean showButton() {
+                            return false;
+                        }
+                    };
+
+            //noinspection unchecked
+            layout.addView(temperatureChangeTableRow.createRow(layoutInflater, null, 8));
+
+            DialogUtil.showContentDialog(context, null, contentView, new DialogUtil.AlertOnClickListener() {
+                @Override
+                public void onClick() {
+                    double temperature = temperatureChangeTableRow.getTemperature();
+
+                    String time = timeToTimeString(hours, minutes);
+
+                    if (listener != null) {
+                        listener.onIntervalTemperatureChanged(time, temperature);
+                    }
+                    notifyWeekProfileChangedListener();
+                }
+            });
+        }
     }
 
     private interface OnIntervalTemperatureChangedListener {
