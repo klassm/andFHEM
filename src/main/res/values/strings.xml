@@ -235,7 +235,7 @@
     <string name="totalEnergyMonth">Energy (month)</string>
     <string name="totalEnergyYear">Energy (year)</string>
     <string name="waterDetect">Water detected?</string>
-    <string name="VOC">VOC</string>
+    <string name="VOC" translatable="false">VOC</string>
 
     <string name="event_duration_current_title">Runtime current title</string>
     <string name="event_duration_next_title">Runtime next title</string>

@@ -139,7 +139,7 @@ public class CULHMConfiguration extends HeatingConfiguration<FilledTemperatureIn
 
         boolean found = false;
         for (FilledTemperatureInterval interval : intervals) {
-            if (interval.getSwitchTime().equals("24:00")) {
+            if ("24:00".equals(interval.getSwitchTime())) {
                 found = true;
                 break;
             }

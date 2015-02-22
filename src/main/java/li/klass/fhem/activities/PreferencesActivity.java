@@ -33,6 +33,7 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.widget.Toast;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -56,6 +57,7 @@ import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.DisplayUtil;
 import li.klass.fhem.widget.preference.SeekBarPreference;
 
+import static com.google.common.base.MoreObjects.firstNonNull;
 import static com.google.common.base.Preconditions.checkArgument;
 import static li.klass.fhem.adapter.rooms.DeviceGridAdapter.DEFAULT_COLUMN_WIDTH;
 import static li.klass.fhem.constants.PreferenceKeys.CLEAR_TRUSTED_CERTIFICATES;
@@ -101,7 +103,14 @@ public class PreferencesActivity extends PreferenceActivity
         attachListSummaryListenerTo(PreferenceKeys.GRAPH_DEFAULT_TIMESPAN, R.array.graphDefaultTimespanValues, R.array.graphDefaultTimespanEntries, R.string.prefDefaultTimespanSummary);
         attachListSummaryListenerTo(PreferenceKeys.WIDGET_UPDATE_INTERVAL_WLAN, R.array.widgetUpdateTimeValues, R.array.widgetUpdateTimeEntries, R.string.prefWidgetUpdateTimeWLANSummary);
         attachListSummaryListenerTo(PreferenceKeys.WIDGET_UPDATE_INTERVAL_MOBILE, R.array.widgetUpdateTimeValues, R.array.widgetUpdateTimeEntries, R.string.prefWidgetUpdateTimeMobileSummary);
-        attachStringSummaryListenerTo(PreferenceKeys.GCM_PROJECT_ID, R.string.prefGCMProjectIdSummary);
+        attachStringSummaryListenerTo(PreferenceKeys.GCM_PROJECT_ID, R.string.prefGCMProjectIdSummary, new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                String projectId = (String) newValue;
+                gcmSendDeviceService.registerWithGCM(PreferencesActivity.this, projectId);
+                return true;
+            }
+        });
         attachListSummaryListenerTo(PreferenceKeys.AUTO_UPDATE_TIME, R.array.updateRoomListTimeValues, R.array.updateRoomListTimeEntries, R.string.prefAutoUpdateSummary);
         attachIntSummaryListenerTo(PreferenceKeys.CONNECTION_TIMEOUT, R.string.prefConnectionTimeoutSummary);
         attachIntSummaryListenerTo(PreferenceKeys.COMMAND_EXECUTION_RETRIES, R.string.prefCommandExecutionRetriesSummary);
@@ -111,15 +120,6 @@ public class PreferencesActivity extends PreferenceActivity
         deviceColumnWidthPreference.setMinimumValue(200);
         deviceColumnWidthPreference.setDefaultValue(DEFAULT_COLUMN_WIDTH);
         deviceColumnWidthPreference.setMaximumValue(DisplayUtil.getLargestDimensionInDP());
-
-        findPreference(GCM_PROJECT_ID).setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object o) {
-                String projectId = (String) o;
-                gcmSendDeviceService.registerWithGCM(PreferencesActivity.this, projectId);
-                return true;
-            }
-        });
 
         findPreference(SEND_LAST_ERROR).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
@@ -223,15 +223,20 @@ public class PreferencesActivity extends PreferenceActivity
     }
 
     private void attachStringSummaryListenerTo(String preferenceKey, final int summaryTemplate) {
+        attachStringSummaryListenerTo(preferenceKey, summaryTemplate, null);
+    }
+
+    private void attachStringSummaryListenerTo(String preferenceKey, final int summaryTemplate, final Preference.OnPreferenceChangeListener listener) {
         Preference preference = findPreference(preferenceKey);
         preference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 preference.setSummary(String.format(getString(summaryTemplate), newValue));
-                return true;
+
+                return listener == null || listener.onPreferenceChange(preference, newValue);
             }
         });
-        preference.setSummary(String.format(getString(summaryTemplate), Objects.firstNonNull(applicationProperties.getStringSharedPreference(preferenceKey, null), "")));
+        preference.setSummary(String.format(getString(summaryTemplate), firstNonNull(applicationProperties.getStringSharedPreference(preferenceKey, null), "")));
     }
 
     private void attachListSummaryListenerTo(String preferenceKey, final int valuesArrayResource, final int textArrayResource, final int summaryTemplate) {
