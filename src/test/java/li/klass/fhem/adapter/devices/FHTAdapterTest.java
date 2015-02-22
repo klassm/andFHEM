@@ -82,7 +82,7 @@ public class FHTAdapterTest extends RobolectricBaseTestCase {
         given(dateService.now()).willReturn(new DateTime(2014, JANUARY, 1, 12, 0));
 
         // when
-        DateTime time = fhtAdapter.holiday1SwitchTimeFor(timePicker);
+        DateTime time = fhtAdapter.holiday1SwitchTimeFor(13, 50);
 
         // then
         assertThat(time).isEqualTo(new DateTime(2014, JANUARY, 1, 13, 50));
@@ -96,7 +96,7 @@ public class FHTAdapterTest extends RobolectricBaseTestCase {
         given(dateService.now()).willReturn(new DateTime(2014, JANUARY, 1, 12, 0));
 
         // when
-        DateTime time = fhtAdapter.holiday1SwitchTimeFor(timePicker);
+        DateTime time = fhtAdapter.holiday1SwitchTimeFor(13, 46);
 
         // then
         assertThat(time).isEqualTo(new DateTime(2014, JANUARY, 1, 13, 50));
@@ -110,7 +110,7 @@ public class FHTAdapterTest extends RobolectricBaseTestCase {
         given(dateService.now()).willReturn(new DateTime(2014, JANUARY, 1, 12, 0));
 
         // when
-        DateTime time = fhtAdapter.holiday1SwitchTimeFor(timePicker);
+        DateTime time = fhtAdapter.holiday1SwitchTimeFor(13, 44);
 
         // then
         assertThat(time).isEqualTo(new DateTime(2014, JANUARY, 1, 13, 40));
@@ -124,7 +124,7 @@ public class FHTAdapterTest extends RobolectricBaseTestCase {
         given(dateService.now()).willReturn(new DateTime(2014, JANUARY, 1, 12, 0));
 
         // when
-        DateTime time = fhtAdapter.holiday1SwitchTimeFor(timePicker);
+        DateTime time = fhtAdapter.holiday1SwitchTimeFor(13, 60);
 
         // then
         assertThat(time).isEqualTo(new DateTime(2014, JANUARY, 1, 14, 0));
@@ -138,7 +138,7 @@ public class FHTAdapterTest extends RobolectricBaseTestCase {
         given(dateService.now()).willReturn(new DateTime(2014, JANUARY, 1, 12, 0));
 
         // when
-        DateTime time = fhtAdapter.holiday1SwitchTimeFor(timePicker);
+        DateTime time = fhtAdapter.holiday1SwitchTimeFor(24, 30);
 
         // then
         assertThat(time).isEqualTo(new DateTime(2014, JANUARY, 2, 0, 30));
