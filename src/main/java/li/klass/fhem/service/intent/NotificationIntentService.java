@@ -50,6 +50,7 @@ import li.klass.fhem.constants.ResultCodes;
 import li.klass.fhem.dagger.ForApplication;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.genericview.ShowField;
+import li.klass.fhem.fragments.FragmentType;
 import li.klass.fhem.fragments.core.DeviceDetailFragment;
 import li.klass.fhem.util.NotificationUtil;
 import li.klass.fhem.util.ReflectionUtil;
@@ -139,13 +140,13 @@ public class NotificationIntentService extends ConvenientIntentService {
 
     private void generateNotification(FhemDevice device, Map<String, String> updateMap, boolean vibrate) {
         Map<String, String> notificationMap = rebuildUpdateMap(device, updateMap);
-        String deviceName = device.getAliasOrName();
+        String deviceName = device.getName();
 
-        Intent openIntent = new Intent(this, AndFHEMMainActivity.class);
-        openIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        openIntent.putExtra(BundleExtraKeys.FRAGMENT_NAME, DeviceDetailFragment.class.getName());
-        openIntent.putExtra(BundleExtraKeys.DEVICE_NAME, deviceName);
-        openIntent.putExtra("unique", "foobar://" + SystemClock.elapsedRealtime());
+        Intent openIntent = new Intent(this, AndFHEMMainActivity.class)
+                .setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+                .putExtra(BundleExtraKeys.FRAGMENT, FragmentType.DEVICE_DETAIL)
+                .putExtra(BundleExtraKeys.DEVICE_NAME, deviceName)
+                .putExtra("unique", "foobar://" + SystemClock.elapsedRealtime());
         PendingIntent pendingIntent = PendingIntent.getActivity(this, deviceName.hashCode(), openIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
 

@@ -33,6 +33,7 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.widget.Toast;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -56,6 +57,7 @@ import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.DisplayUtil;
 import li.klass.fhem.widget.preference.SeekBarPreference;
 
+import static com.google.common.base.MoreObjects.firstNonNull;
 import static com.google.common.base.Preconditions.checkArgument;
 import static li.klass.fhem.adapter.rooms.DeviceGridAdapter.DEFAULT_COLUMN_WIDTH;
 import static li.klass.fhem.constants.PreferenceKeys.CLEAR_TRUSTED_CERTIFICATES;
@@ -231,7 +233,7 @@ public class PreferencesActivity extends PreferenceActivity
                 return true;
             }
         });
-        preference.setSummary(String.format(getString(summaryTemplate), Objects.firstNonNull(applicationProperties.getStringSharedPreference(preferenceKey, null), "")));
+        preference.setSummary(String.format(getString(summaryTemplate), firstNonNull(applicationProperties.getStringSharedPreference(preferenceKey, null), "")));
     }
 
     private void attachListSummaryListenerTo(String preferenceKey, final int valuesArrayResource, final int textArrayResource, final int summaryTemplate) {
