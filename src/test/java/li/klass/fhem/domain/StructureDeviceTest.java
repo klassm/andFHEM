@@ -36,7 +36,7 @@ import static org.fest.assertions.api.Assertions.assertThat;
 public class StructureDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributesInOnOffDummy() {
-        StructureDevice device = getDefaultDevice();
+        StructureDevice device = getDefaultDevice(StructureDevice.class);
 
         assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
         assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
@@ -54,14 +54,14 @@ public class StructureDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void testDeviceWithSetList() {
-        StructureDevice device = getDeviceFor("deviceWithSetlist");
+        StructureDevice device = getDeviceFor("deviceWithSetlist", StructureDevice.class);
 
         assertThat((SetListGroupValue) device.getSetList().get("state")).isEqualTo(new SetListGroupValue("17", "18", "19", "20", "21", "21.5", "22"));
     }
 
     @Test
     public void testSlider() {
-        StructureDevice device = getDeviceFor("slider");
+        StructureDevice device = getDeviceFor("slider", StructureDevice.class);
         assertThat(device).isNotNull();
 
         SetListValue value = device.getSetList().get("pct");

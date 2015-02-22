@@ -33,7 +33,7 @@ import static org.fest.assertions.api.Assertions.assertThat;
 public class TwilightDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
-        TwilightDevice device = getDefaultDevice();
+        TwilightDevice device = getDefaultDevice(TwilightDevice.class);
 
         assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
         assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);

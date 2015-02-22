@@ -38,43 +38,43 @@ public class ChannelsTest extends DeviceXMLParsingBase {
     @Test
     public void testChannelsAreFoundAndRecognisedAsVisible() {
 
-        CULHMDevice heizung = getDeviceFor("Buero.Heizung");
+        CULHMDevice heizung = getDeviceFor("Buero.Heizung", CULHMDevice.class);
         assertThat(heizung, is(notNullValue()));
         assertThat(heizung.isSupported(), is(true));
         assertThat(heizung.getSubType(), is(CULHMDevice.SubType.THERMOSTAT));
         assertThat(heizung.getDeviceGroup(), is(HEATING));
 
-        CULHMDevice wetter = getDeviceFor("Buero.Heiz_IN_Wetter");
+        CULHMDevice wetter = getDeviceFor("Buero.Heiz_IN_Wetter", CULHMDevice.class);
         assertThat(wetter, is(notNullValue()));
         assertThat(wetter.isSupported(), is(true));
         assertThat(wetter.getSubType(), is(CULHMDevice.SubType.THERMOSTAT));
         assertThat(wetter.getDeviceGroup(), is(HEATING));
 
-        CULHMDevice klima = getDeviceFor("Buero.Heiz_IN_Klima");
+        CULHMDevice klima = getDeviceFor("Buero.Heiz_IN_Klima", CULHMDevice.class);
         assertThat(klima, is(notNullValue()));
         assertThat(klima.isSupported(), is(true));
         assertThat(klima.getSubType(), is(CULHMDevice.SubType.THERMOSTAT));
         assertThat(klima.getDeviceGroup(), is(HEATING));
 
-        CULHMDevice fenster = getDeviceFor("Buero.Heiz_IN_Fenster");
+        CULHMDevice fenster = getDeviceFor("Buero.Heiz_IN_Fenster", CULHMDevice.class);
         assertThat(fenster, is(notNullValue()));
         assertThat(fenster.isSupported(), is(true));
         assertThat(fenster.getSubType(), is(CULHMDevice.SubType.THERMOSTAT));
         assertThat(fenster.getDeviceGroup(), is(HEATING));
 
-        CULHMDevice steuerung = getDeviceFor("Buero.Heiz_Steuerung");
+        CULHMDevice steuerung = getDeviceFor("Buero.Heiz_Steuerung", CULHMDevice.class);
         assertThat(steuerung, is(notNullValue()));
         assertThat(steuerung.isSupported(), is(true));
         assertThat(steuerung.getSubType(), is(CULHMDevice.SubType.THERMOSTAT));
         assertThat(steuerung.getDeviceGroup(), is(HEATING));
 
-        CULHMDevice team = getDeviceFor("Buero.Heiz_Team");
+        CULHMDevice team = getDeviceFor("Buero.Heiz_Team", CULHMDevice.class);
         assertThat(team, is(notNullValue()));
         assertThat(team.isSupported(), is(true));
         assertThat(team.getSubType(), is(CULHMDevice.SubType.THERMOSTAT));
         assertThat(team.getDeviceGroup(), is(HEATING));
 
-        CULHMDevice fernbedienung = getDeviceFor("Buero.Heiz_Fernbedienung");
+        CULHMDevice fernbedienung = getDeviceFor("Buero.Heiz_Fernbedienung", CULHMDevice.class);
         assertThat(fernbedienung, is(notNullValue()));
         assertThat(fernbedienung.isSupported(), is(true));
         assertThat(fernbedienung.getSubType(), is(CULHMDevice.SubType.THERMOSTAT));

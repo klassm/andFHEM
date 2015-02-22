@@ -24,12 +24,29 @@
 
 package li.klass.fhem.infra.basetest;
 
+import android.content.Context;
+
+import org.junit.Before;
+import org.junit.Rule;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.robolectric.annotation.Config;
 
+import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.infra.AndFHEMRobolectricTestRunner;
+import li.klass.fhem.testutil.MockitoTestRule;
 
 @RunWith(AndFHEMRobolectricTestRunner.class)
 @Config(emulateSdk = 18)
 public abstract class RobolectricBaseTestCase {
+    @Rule
+    public MockitoTestRule mockitoTestRule = new MockitoTestRule();
+
+    @Mock
+    protected Context context;
+
+    @Before
+    public void mockApplicationContext() {
+        AndFHEMApplication.setContext(context);
+    }
 }

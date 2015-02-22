@@ -26,11 +26,13 @@ package li.klass.fhem.service.connection;
 
 import android.content.Context;
 
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
+import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.fhem.connection.FHEMServerSpec;
 import li.klass.fhem.fhem.connection.ServerType;
 import li.klass.fhem.infra.basetest.RobolectricBaseTestCase;
@@ -51,6 +53,11 @@ public class ConnectionServiceTest extends RobolectricBaseTestCase {
 
     @Mock
     private Context applicationContext;
+
+    @Before
+    public void setUp() throws Exception {
+        connectionService = new ConnectionService();
+    }
 
     @Test
     public void testFHEMServerSpecSerializeDeserialize() {

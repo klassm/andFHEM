@@ -35,7 +35,7 @@ public class KeyMaticTest extends DeviceXMLParsingBase {
 
     @Test
     public void testForCorrectlySetAttributes() {
-        CULHMDevice device = getDefaultDevice();
+        CULHMDevice device = getDefaultDevice(CULHMDevice.class);
 
         assertThat(device.getName(), is(DEFAULT_TEST_DEVICE_NAME));
         assertThat(device.getRoomConcatenated(), is(DEFAULT_TEST_ROOM_NAME));

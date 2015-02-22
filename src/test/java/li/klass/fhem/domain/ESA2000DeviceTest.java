@@ -35,7 +35,7 @@ import static org.hamcrest.core.Is.is;
 public class ESA2000DeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
-        ESA2000Device device = getDefaultDevice();
+        ESA2000Device device = getDefaultDevice(ESA2000Device.class);
 
         assertThat(device.getCurrent(), is("81 (W)"));
         assertThat(device.getDay(), is("1.04 (kWh)"));

@@ -35,7 +35,7 @@ public class LaCrosseDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void testDeviceAttributesProperlySet() {
-        LaCrosseDevice device = getDefaultDevice();
+        LaCrosseDevice device = getDefaultDevice(LaCrosseDevice.class);
 
         assertThat(device.getTemperature(), is("22 (°C)"));
         assertThat(device.getHumidity(), is("41 (%)"));

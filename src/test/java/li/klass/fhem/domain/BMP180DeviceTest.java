@@ -34,7 +34,7 @@ public class BMP180DeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void all_properties_read() {
-        BMP180Device device = getDeviceFor("BMP180");
+        BMP180Device device = getDeviceFor("BMP180", BMP180Device.class);
         assertThat(device.getName()).isEqualTo("BMP180");
         assertThat(device.getAlias()).isEqualTo("Luftdruck");
 

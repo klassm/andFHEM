@@ -36,7 +36,7 @@ public class GCMSendDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void testAttributesProperlySet() {
-        GCMSendDevice device = getDeviceFor("gcm");
+        GCMSendDevice device = getDeviceFor("gcm", GCMSendDevice.class);
         assertThat(device.getApiKey(), is("AIzaSyCs7OxUcPp5"));
         assertThat(device.getRegIds(), hasItemInArray("APA91bHTAy8Xp4uE4FyCJuMnAn"));
         assertThat(device.getRegIds(), hasItemInArray("BAPA91bHTGy8Xp5uE4FyCJuMnAn"));

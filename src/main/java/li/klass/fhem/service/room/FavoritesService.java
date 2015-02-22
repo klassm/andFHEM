@@ -42,25 +42,22 @@ public class FavoritesService {
     public static final String PREFERENCES_NAME = "favorites";
     @Inject
     RoomListService roomListService;
-    @Inject
-    @ForApplication
-    Context applicationContext;
 
     /**
      * Adds a new favorite device.
      *
      * @param device device to add.
      */
-    public void addFavorite(FhemDevice device) {
-        SharedPreferences.Editor editor = getPreferences().edit();
+    public void addFavorite(FhemDevice device, Context context) {
+        SharedPreferences.Editor editor = getPreferences(context).edit();
         editor.putString(device.getName(), device.getName()).apply();
     }
 
     /**
      * @return the {@link android.content.SharedPreferences} object.
      */
-    private SharedPreferences getPreferences() {
-        return applicationContext.getSharedPreferences(PREFERENCES_NAME, Activity.MODE_PRIVATE);
+    private SharedPreferences getPreferences(Context context) {
+        return context.getSharedPreferences(PREFERENCES_NAME, Activity.MODE_PRIVATE);
     }
 
     /**
@@ -68,8 +65,8 @@ public class FavoritesService {
      *
      * @param device favorite to remove.
      */
-    public void removeFavorite(FhemDevice device) {
-        SharedPreferences.Editor editor = getPreferences().edit();
+    public void removeFavorite(FhemDevice device, Context context) {
+        SharedPreferences.Editor editor = getPreferences(context).edit();
         editor.remove(device.getName()).apply();
     }
 
@@ -78,14 +75,14 @@ public class FavoritesService {
      *
      * @return favorite {@link RoomDeviceList}
      */
-    public RoomDeviceList getFavorites() {
+    public RoomDeviceList getFavorites(Context context) {
 
-        RoomDeviceList allRoomsDeviceList = roomListService.getAllRoomsDeviceList();
-        RoomDeviceList favoritesList = new RoomDeviceList("favorites");
+        RoomDeviceList allRoomsDeviceList = roomListService.getAllRoomsDeviceList(context);
+        RoomDeviceList favoritesList = new RoomDeviceList("favorites", context);
         favoritesList.setHiddenGroups(allRoomsDeviceList.getHiddenGroups());
         favoritesList.setHiddenRooms(allRoomsDeviceList.getHiddenRooms());
 
-        Set<String> favoriteDeviceNames = getPreferences().getAll().keySet();
+        Set<String> favoriteDeviceNames = getPreferences(context).getAll().keySet();
         for (String favoriteDeviceName : favoriteDeviceNames) {
             FhemDevice device = allRoomsDeviceList.getDeviceFor(favoriteDeviceName);
             if (device != null) {
@@ -96,11 +93,11 @@ public class FavoritesService {
         return favoritesList;
     }
 
-    public boolean hasFavorites() {
-        return !getFavorites().isEmptyOrOnlyContainsDoNotShowDevices();
+    public boolean hasFavorites(Context context) {
+        return !getFavorites(context).isEmptyOrOnlyContainsDoNotShowDevices();
     }
 
-    public boolean isFavorite(String deviceName) {
-        return getPreferences().getAll().keySet().contains(deviceName);
+    public boolean isFavorite(String deviceName, Context context) {
+        return getPreferences(context).getAll().keySet().contains(deviceName);
     }
 }

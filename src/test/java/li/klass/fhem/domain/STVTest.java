@@ -33,7 +33,7 @@ import static org.fest.assertions.api.Assertions.assertThat;
 public class STVTest extends DeviceXMLParsingBase {
     @Test
     public void should_read_device_correctly() {
-        STVDevice device = getDeviceFor("samsung");
+        STVDevice device = getDeviceFor("samsung", STVDevice.class);
         assertThat(device).isNotNull();
     }
 

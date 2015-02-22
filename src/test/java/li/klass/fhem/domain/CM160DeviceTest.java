@@ -33,7 +33,7 @@ import static org.fest.assertions.api.Assertions.assertThat;
 public class CM160DeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testPropertiesSet() {
-        CM160Device device = getDefaultDevice();
+        CM160Device device = getDefaultDevice(CM160Device.class);
 
         assertThat(device.getCurrent()).isEqualTo("3.92 (A)");
         assertThat(device.getPower()).isEqualTo("901.6 (W)");

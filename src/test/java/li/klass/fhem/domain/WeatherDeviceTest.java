@@ -37,7 +37,7 @@ import static org.hamcrest.core.Is.is;
 public class WeatherDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
-        WeatherDevice device = getDefaultDevice();
+        WeatherDevice device = getDefaultDevice(WeatherDevice.class);
 
         assertThat(device.getName(), is(DEFAULT_TEST_DEVICE_NAME));
         assertThat(device.getRoomConcatenated(), is(DEFAULT_TEST_ROOM_NAME));

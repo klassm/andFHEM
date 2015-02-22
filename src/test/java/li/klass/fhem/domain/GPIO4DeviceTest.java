@@ -36,19 +36,19 @@ import static org.hamcrest.core.Is.is;
 public class GPIO4DeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
-        GPIO4Device device = getDeviceFor("temp");
+        GPIO4Device device = getDeviceFor("temp", GPIO4Device.class);
 
         assertThat(device.getTemperature(), is("22.937 (°C)"));
         assertThat(device.getState(), is("22.937 °C (Mittelwert: 22.7 °C)"));
 
         // this is not supported and, thus, removed
-        GPIO4Device rPi = getDeviceFor("RPi");
+        GPIO4Device rPi = getDeviceFor("RPi", GPIO4Device.class);
         assertThat(rPi, is(nullValue()));
     }
 
     @Test
     public void testDS18B20Device() {
-        GPIO4Device device = getDeviceFor("DS18B20");
+        GPIO4Device device = getDeviceFor("DS18B20", GPIO4Device.class);
         assertThat(device, is(notNullValue()));
 
         assertThat(device.isSupported(), is(true));
@@ -57,7 +57,7 @@ public class GPIO4DeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void testAdditionalAttributesDevice() {
-        GPIO4Device device = getDeviceFor("additionalAttributes");
+        GPIO4Device device = getDeviceFor("additionalAttributes", GPIO4Device.class);
         assertThat(device, is(notNullValue()));
 
         assertThat(device.getAverageDay(), is("20.6 (°C)"));

@@ -36,7 +36,7 @@ import static org.fest.assertions.api.Assertions.assertThat;
 public class TRXLightDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
-        TRXLightDevice device = getDefaultDevice();
+        TRXLightDevice device = getDefaultDevice(TRXLightDevice.class);
 
         assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
         assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
@@ -53,17 +53,17 @@ public class TRXLightDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.supportsToggle()).isEqualTo(true);
         assertThat(device.supportsDim()).isEqualTo(false);
 
-        TRXLightDevice device1 = getDeviceFor("device1");
+        TRXLightDevice device1 = getDeviceFor("device1", TRXLightDevice.class);
         assertThat(device1.isOnByState()).isEqualTo(true);
         assertThat(device.supportsDim()).isEqualTo(false);
 
-        TRXLightDevice device2 = getDeviceFor("device2");
+        TRXLightDevice device2 = getDeviceFor("device2", TRXLightDevice.class);
         assertThat(device2.getState()).isEqualTo("level 15");
         assertThat(device2.isOnByState()).isEqualTo(true);
         assertThat(device2.supportsDim()).isEqualTo(true);
         assertThat(device2.getDimPosition()).isEqualTo(16);
 
-        TRXLightDevice device3 = getDeviceFor("device3");
+        TRXLightDevice device3 = getDeviceFor("device3", TRXLightDevice.class);
         assertThat(device3.getState()).isEqualTo("level 12");
         assertThat(device3.isOnByState()).isEqualTo(true);
         assertThat(device3.supportsDim()).isEqualTo(true);
@@ -72,7 +72,7 @@ public class TRXLightDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void testFormatTargetState() {
-        TRXLightDevice device3 = getDeviceFor("device3");
+        TRXLightDevice device3 = getDeviceFor("device3", TRXLightDevice.class);
 
         device3.setState("off");
         assertThat(device3.formatTargetState("level 13")).isEqualTo("level 13");
@@ -85,7 +85,7 @@ public class TRXLightDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void testSetState() {
-        TRXLightDevice device3 = getDeviceFor("device3");
+        TRXLightDevice device3 = getDeviceFor("device3", TRXLightDevice.class);
 
         device3.setState("level 5");
         assertThat(device3.getState()).isEqualTo("level 5");

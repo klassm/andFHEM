@@ -100,19 +100,15 @@ public class RoomListService extends AbstractService {
     ApplicationProperties applicationProperties;
 
     @Inject
-    @ForApplication
-    Context applicationContext;
-
-    @Inject
     SharedPreferencesService sharedPreferencesService;
 
     @Inject
     RoomListHolderService roomListHolderService;
 
     public void parseReceivedDeviceStateMap(String deviceName, Map<String, String> updateMap,
-                                            boolean vibrateUponNotification) {
+                                            boolean vibrateUponNotification, Context context) {
 
-        Optional<FhemDevice> deviceOptional = getDeviceForName(deviceName);
+        Optional<FhemDevice> deviceOptional = getDeviceForName(deviceName, context);
         if (!deviceOptional.isPresent()) {
             return;
         }
@@ -122,8 +118,8 @@ public class RoomListService extends AbstractService {
 
         LOG.info("parseReceivedDeviceStateMap()  : updated {} with {} new values!", device.getName(), updateMap.size());
 
-        applicationContext.startService(new Intent(Actions.NOTIFICATION_TRIGGER)
-                .setClass(applicationContext, NotificationIntentService.class)
+        context.startService(new Intent(Actions.NOTIFICATION_TRIGGER)
+                .setClass(context, NotificationIntentService.class)
                 .putExtra(BundleExtraKeys.DEVICE_NAME, deviceName)
                 .putExtra(BundleExtraKeys.DEVICE, device)
                 .putExtra(BundleExtraKeys.UPDATE_MAP, (Serializable) updateMap)
@@ -133,8 +129,8 @@ public class RoomListService extends AbstractService {
         if (updateWidgets) {
             sendBroadcastWithAction(REDRAW_ALL_WIDGETS);
 
-            applicationContext.startService(new Intent(REDRAW_ALL_WIDGETS)
-                    .setClass(applicationContext, DeviceIntentService.class));
+            context.startService(new Intent(REDRAW_ALL_WIDGETS)
+                    .setClass(context, DeviceIntentService.class));
         }
     }
 
@@ -145,8 +141,8 @@ public class RoomListService extends AbstractService {
      * @return found device or null
      */
     @SuppressWarnings("unchecked")
-    public <T extends FhemDevice> Optional<T> getDeviceForName(String deviceName) {
-        return Optional.fromNullable((T) getAllRoomsDeviceList().getDeviceFor(deviceName));
+    public <T extends FhemDevice> Optional<T> getDeviceForName(String deviceName, Context context) {
+        return Optional.fromNullable((T) getAllRoomsDeviceList(context).getDeviceFor(deviceName));
     }
 
     /**
@@ -155,9 +151,9 @@ public class RoomListService extends AbstractService {
      *
      * @return {@link RoomDeviceList} containing all devices
      */
-    public RoomDeviceList getAllRoomsDeviceList() {
+    public RoomDeviceList getAllRoomsDeviceList(Context context) {
         RoomDeviceList originalRoomDeviceList = getRoomDeviceList();
-        return new RoomDeviceList(originalRoomDeviceList);
+        return new RoomDeviceList(originalRoomDeviceList, context);
     }
 
     /**
@@ -208,15 +204,15 @@ public class RoomListService extends AbstractService {
      * calling intent will be cached and resend when the remote update has completed, otherwise
      * {@link li.klass.fhem.service.room.RoomListService.RemoteUpdateRequired#NOT_REQUIRED}
      */
-    public RemoteUpdateRequired updateRoomDeviceListIfRequired(Intent intent, long updatePeriod) {
+    public RemoteUpdateRequired updateRoomDeviceListIfRequired(Intent intent, long updatePeriod, Context context) {
         RoomDeviceList deviceList = roomListHolderService.getCachedRoomDeviceListMap();
         boolean requiresUpdate = shouldUpdate(updatePeriod) || deviceList == null;
         if (requiresUpdate) {
             LOG.info("updateRoomDeviceListIfRequired() - requiring update, add pending action: {}", intent.getAction());
             resendIntents.add(createResendIntent(intent));
             if (remoteUpdateInProgress.compareAndSet(false, true)) {
-                applicationContext.startService(new Intent(Actions.DO_REMOTE_UPDATE)
-                        .setClass(applicationContext, RoomListUpdateIntentService.class));
+                context.startService(new Intent(Actions.DO_REMOTE_UPDATE)
+                        .setClass(context, RoomListUpdateIntentService.class));
             }
             LOG.debug("updateRoomDeviceListIfRequired() - remote update is required");
             return RemoteUpdateRequired.REQUIRED;
@@ -230,20 +226,20 @@ public class RoomListService extends AbstractService {
      * Entry point for completed remote updates. See {@link #updateRoomDeviceListIfRequired} for
      * details on the process.
      */
-    public void remoteUpdateFinished() {
+    public void remoteUpdateFinished(Context context) {
         try {
             LOG.info("remoteUpdateFinished() - starting after actions");
 
             for (Intent resendIntent : resendIntents) {
-                resend(resendIntent);
+                resend(resendIntent, context);
             }
             resendIntents.clear();
 
             LOG.info("remoteUpdateFinished() - requesting redraw of all appwidgets");
 
-            applicationContext.sendBroadcast(new Intent(Actions.REDRAW_ALL_WIDGETS));
-            applicationContext.startService(new Intent(Actions.REDRAW_ALL_WIDGETS)
-                    .setClass(applicationContext, AppWidgetUpdateService.class)
+            context.sendBroadcast(new Intent(Actions.REDRAW_ALL_WIDGETS));
+            context.startService(new Intent(Actions.REDRAW_ALL_WIDGETS)
+                    .setClass(context, AppWidgetUpdateService.class)
                     .putExtra(BundleExtraKeys.ALLOW_REMOTE_UPDATES, false));
 
             LOG.info("remoteUpdateFinished() - remote update finished, device list is {}");
@@ -253,9 +249,9 @@ public class RoomListService extends AbstractService {
         }
     }
 
-    private void resend(Intent intent) {
+    private void resend(Intent intent, Context context) {
         LOG.info("resend() : resending {}", intent.getAction());
-        applicationContext.startService(createResendIntent(intent));
+        context.startService(createResendIntent(intent));
     }
 
     private Intent createResendIntent(Intent intent) {
@@ -290,9 +286,9 @@ public class RoomListService extends AbstractService {
         return sharedPreferencesService.getSharedPreferences(PREFERENCES_NAME).getLong(LAST_UPDATE_PROPERTY, 0L);
     }
 
-    public ArrayList<String> getAvailableDeviceNames() {
+    public ArrayList<String> getAvailableDeviceNames(Context context) {
         ArrayList<String> deviceNames = newArrayList();
-        RoomDeviceList allRoomsDeviceList = getAllRoomsDeviceList();
+        RoomDeviceList allRoomsDeviceList = getAllRoomsDeviceList(context);
 
         for (FhemDevice device : allRoomsDeviceList.getAllDevices()) {
             deviceNames.add(device.getName() + "|" +
@@ -372,8 +368,8 @@ public class RoomListService extends AbstractService {
      * @param roomName room name used for searching.
      * @return found {@link RoomDeviceList} or null
      */
-    public RoomDeviceList getDeviceListForRoom(String roomName) {
-        RoomDeviceList roomDeviceList = new RoomDeviceList(roomName);
+    public RoomDeviceList getDeviceListForRoom(String roomName, Context context) {
+        RoomDeviceList roomDeviceList = new RoomDeviceList(roomName, context);
 
         RoomDeviceList allRoomDeviceList = getRoomDeviceList();
         if (allRoomDeviceList != null) {
@@ -389,8 +385,8 @@ public class RoomListService extends AbstractService {
         return roomDeviceList;
     }
 
-    public void clearDeviceList() {
-        roomListHolderService.clearRoomDeviceList();
+    public void clearDeviceList(Context context) {
+        roomListHolderService.clearRoomDeviceList(context);
     }
 
     public enum RemoteUpdateRequired {

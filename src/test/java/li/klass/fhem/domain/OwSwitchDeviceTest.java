@@ -37,7 +37,7 @@ import static org.hamcrest.core.Is.is;
 public class OwSwitchDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
-        OwSwitchDevice device = getDefaultDevice();
+        OwSwitchDevice device = getDefaultDevice(OwSwitchDevice.class);
 
         assertThat(device.getName(), is(DEFAULT_TEST_DEVICE_NAME));
         assertThat(device.getRoomConcatenated(), is(DEFAULT_TEST_ROOM_NAME));

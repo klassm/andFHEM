@@ -38,7 +38,7 @@ public class HMSDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void should_read_temperature_humidity_device_correctly() {
-        HMSDevice device = getDefaultDevice();
+        HMSDevice device = getDefaultDevice(HMSDevice.class);
 
         assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
         assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
@@ -58,7 +58,7 @@ public class HMSDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void should_read_waterDetect_device_correctly() {
-        HMSDevice device = getDeviceFor("water");
+        HMSDevice device = getDeviceFor("water", HMSDevice.class);
 
         assertThat(device.getTemperature()).isNull();
         assertThat(device.getHumidity()).isNull();

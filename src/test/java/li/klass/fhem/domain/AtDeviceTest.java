@@ -123,7 +123,7 @@ public class AtDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void testForCorrectlySetAttributes() {
-        AtDevice device = getDefaultDevice();
+        AtDevice device = getDefaultDevice(AtDevice.class);
 
         assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
         assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
@@ -145,7 +145,7 @@ public class AtDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void testReadDisableAttribute() {
-        AtDevice device = getDeviceFor("device1");
+        AtDevice device = getDeviceFor("device1", AtDevice.class);
         assertThat(device.isActive()).isFalse();
     }
 

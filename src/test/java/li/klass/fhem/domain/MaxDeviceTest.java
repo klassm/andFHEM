@@ -54,7 +54,7 @@ public class MaxDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void testShutterContactDevice() {
-        MaxDevice device = getDeviceFor("device");
+        MaxDevice device = getDeviceFor("device", MaxDevice.class);
 
         assertThat(device.getBattery(), is("ok"));
         assertThat(device.getState(), is("closed"));
@@ -63,7 +63,7 @@ public class MaxDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void testCubeDevice() {
-        MaxDevice device = getDeviceFor("device1");
+        MaxDevice device = getDeviceFor("device1", MaxDevice.class);
 
         assertThat(device.getState(), is("connected"));
         assertThat(device.getSubType(), is(MaxDevice.SubType.CUBE));
@@ -71,7 +71,7 @@ public class MaxDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void testPushButtonDevice() {
-        MaxDevice device = getDeviceFor("device2");
+        MaxDevice device = getDeviceFor("device2", MaxDevice.class);
 
         assertThat(device.getState(), is("waiting for data"));
         assertThat(device.getSubType(), is(MaxDevice.SubType.SWITCH));
@@ -79,7 +79,7 @@ public class MaxDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void testHeatingThermostatDevice() {
-        MaxDevice device = getDeviceFor("device3");
+        MaxDevice device = getDeviceFor("device3", MaxDevice.class);
 
         assertThat(device.getState(), is("17.0 °C"));
         assertThat(device.getSubType(), is(MaxDevice.SubType.TEMPERATURE));
@@ -97,7 +97,7 @@ public class MaxDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void testJournalDevice() {
-        MaxDevice device = getDeviceFor("journalDevice");
+        MaxDevice device = getDeviceFor("journalDevice", MaxDevice.class);
 
         WeekProfile<FilledTemperatureInterval, MAXConfiguration, MaxDevice> weekProfile = device.getWeekProfile();
         assertThat(weekProfile, is(notNullValue()));
@@ -110,7 +110,7 @@ public class MaxDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void testOnOffTemperatureDevice() {
-        MaxDevice device = getDeviceFor("on_off");
+        MaxDevice device = getDeviceFor("on_off", MaxDevice.class);
 
         assertThat(device.getDesiredTemp(), is(closeTo(30.5, 0.01)));
         assertThat(device.getWindowOpenTemp(), is(closeTo(4.5, 0.01)));

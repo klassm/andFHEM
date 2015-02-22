@@ -33,7 +33,7 @@ import static org.fest.assertions.api.Assertions.assertThat;
 public class FHEMduinoEnvDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void should_read_device_attributes() {
-        FHEMduinoEnvDevice device = getDeviceFor("Aussentemperatur");
+        FHEMduinoEnvDevice device = getDeviceFor("Aussentemperatur", FHEMduinoEnvDevice.class);
         assertThat(device).isNotNull();
         assertThat(device.getState()).isEqualTo("1.4°C / 81%");
         assertThat(device.getTemperature()).isEqualTo("1.4 (°C)");

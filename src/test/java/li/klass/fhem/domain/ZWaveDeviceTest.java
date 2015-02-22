@@ -35,7 +35,7 @@ public class ZWaveDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void testForCorrectlySetAttributes() {
-        ZWaveDevice device = getDefaultDevice();
+        ZWaveDevice device = getDefaultDevice(ZWaveDevice.class);
         assertThat(device, is(notNullValue()));
 
         assertThat(device.getState(), is("off"));

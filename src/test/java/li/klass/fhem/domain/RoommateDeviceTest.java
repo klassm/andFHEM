@@ -33,7 +33,7 @@ import static org.fest.assertions.api.Assertions.assertThat;
 public class RoommateDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void should_read_device_attributes_correctly() {
-        RoommateDevice device = getDeviceFor("rr_Elena");
+        RoommateDevice device = getDeviceFor("rr_Elena", RoommateDevice.class);
 
         assertThat(device.getLocation()).isEqualTo("home");
         assertThat(device.getMood()).isEqualTo("calm");

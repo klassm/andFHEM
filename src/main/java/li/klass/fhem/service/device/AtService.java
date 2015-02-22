@@ -37,7 +37,6 @@ import javax.inject.Singleton;
 
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.dagger.ForApplication;
 import li.klass.fhem.domain.AtDevice;
 import li.klass.fhem.service.CommandExecutionService;
 import li.klass.fhem.service.room.RoomListService;
@@ -50,14 +49,11 @@ public class AtService {
     @Inject
     RoomListService roomListService;
 
-    @Inject
-    @ForApplication
-    Context applicationContext;
-
     private static final Logger LOG = LoggerFactory.getLogger(AtService.class);
 
     public void createNew(String timerName, int hour, int minute, int second, String repetition, String type,
-                          String targetDeviceName, String targetState, String targetStateAppendix, boolean isActive) {
+                          String targetDeviceName, String targetState, String targetStateAppendix, boolean isActive,
+                          Context context) {
         AtDevice device = new AtDevice();
 
         setValues(hour, minute, second, repetition, type, targetDeviceName, targetState, targetStateAppendix, device, isActive);
@@ -69,7 +65,7 @@ public class AtService {
 
         Intent intent = new Intent(Actions.DO_UPDATE);
         intent.putExtra(BundleExtraKeys.DO_REFRESH, true);
-        applicationContext.sendBroadcast(intent);
+        context.sendBroadcast(intent);
     }
 
     private void setValues(int hour, int minute, int second, String repetition, String type, String targetDeviceName, String targetState, String targetStateAppendix, AtDevice device, boolean isActive) {
@@ -85,8 +81,8 @@ public class AtService {
     }
 
     public void modify(String timerName, int hour, int minute, int second, String repetition, String type,
-                       String targetDeviceName, String targetState, String targetStateAppendix, boolean isActive) {
-        Optional<AtDevice> deviceOptional = roomListService.getDeviceForName(timerName);
+                       String targetDeviceName, String targetState, String targetStateAppendix, boolean isActive, Context context) {
+        Optional<AtDevice> deviceOptional = roomListService.getDeviceForName(timerName, context);
 
         if (!deviceOptional.isPresent()) {
             LOG.info("cannot find device for {}", timerName);

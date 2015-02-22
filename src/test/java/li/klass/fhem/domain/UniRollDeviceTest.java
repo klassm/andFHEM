@@ -33,7 +33,7 @@ import static org.hamcrest.core.Is.is;
 public class UniRollDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributesInFirstDevice() {
-        UniRollDevice device = getDefaultDevice();
+        UniRollDevice device = getDefaultDevice(UniRollDevice.class);
 
         assertThat(device.getName(), is(DEFAULT_TEST_DEVICE_NAME));
         assertThat(device.getRoomConcatenated(), is(DEFAULT_TEST_ROOM_NAME));

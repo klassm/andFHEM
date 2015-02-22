@@ -27,7 +27,9 @@ package li.klass.fhem.domain.core;
 import android.content.Context;
 
 import com.google.common.base.Charsets;
+import com.google.common.collect.Maps;
 import com.google.common.io.CharStreams;
+import com.google.common.io.Resources;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -35,35 +37,72 @@ import org.junit.experimental.categories.Category;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
+import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Field;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-import li.klass.fhem.infra.basetest.RobolectricBaseTestCase;
+import li.klass.fhem.AndFHEMApplication;
+import li.klass.fhem.R;
 import li.klass.fhem.service.connection.ConnectionService;
 import li.klass.fhem.service.room.DeviceListParser;
 import li.klass.fhem.testsuite.category.DeviceTestBase;
 import li.klass.fhem.testutil.MockitoTestRule;
 import li.klass.fhem.util.CloseableUtil;
 
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doReturn;
 
 @Category(DeviceTestBase.class)
-public abstract class DeviceXMLParsingBase extends RobolectricBaseTestCase {
+public abstract class DeviceXMLParsingBase {
 
     public static final String DEFAULT_TEST_ROOM_NAME = "room";
     public static final String DEFAULT_TEST_DEVICE_NAME = "device";
-    @Rule
-    public MockitoTestRule mockitoTestRule = new MockitoTestRule();
+
     protected RoomDeviceList roomDeviceList;
+
     @Mock
     protected ConnectionService connectionService;
 
-    @Mock
-    protected Context applicationContext;
-
     @InjectMocks
     protected DeviceListParser deviceListParser;
+
+    @Rule
+    public MockitoTestRule mockitoTestRule = new MockitoTestRule();
+
+    @Mock
+    protected Context context;
+
+    @Before
+    public void mockApplicationContext() {
+        AndFHEMApplication.setContext(context);
+
+        mockStrings();
+    }
+
+    protected void mockStrings() {
+        try {
+            String content = Resources.toString(new File("src/main/res/values/strings.xml").getAbsoluteFile().toURI().toURL(), Charsets.UTF_8);
+            Pattern pattern = Pattern.compile("<string name=\"([^\"]+)\">([^<]+)</string>");
+            Matcher matcher = pattern.matcher(content);
+
+            Map<String, String> values = Maps.newHashMap();
+            while (matcher.find()) {
+                values.put(matcher.group(1), matcher.group(2));
+            }
+
+            for (Field field : R.string.class.getDeclaredFields()) {
+                int value = (int) field.get(R.string.class);
+                given(context.getString(value)).willReturn(values.get(field.getName()));
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     @Before
     public void loadDevices() throws Exception {
@@ -99,11 +138,12 @@ public abstract class DeviceXMLParsingBase extends RobolectricBaseTestCase {
 
     protected abstract String getFileName();
 
-    protected <T extends FhemDevice<T>> T getDefaultDevice() {
-        return getDeviceFor(DEFAULT_TEST_DEVICE_NAME);
+    protected <T extends FhemDevice<T>> T getDefaultDevice(Class<T> clazz) {
+        return getDeviceFor(DEFAULT_TEST_DEVICE_NAME, clazz);
     }
 
-    protected <T extends FhemDevice<T>> T getDeviceFor(String deviceName) {
+    // Careful: The Java-Compiler needs some class instance of <T> here to infer the type correctly!
+    protected <T extends FhemDevice<T>> T getDeviceFor(String deviceName, @SuppressWarnings("unused") Class<T> clazz) {
         return roomDeviceList.getDeviceFor(deviceName);
     }
 }

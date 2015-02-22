@@ -36,7 +36,7 @@ import static org.hamcrest.core.IsNot.not;
 public class USBWXDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
-        USBWXDevice device = getDefaultDevice();
+        USBWXDevice device = getDefaultDevice(USBWXDevice.class);
 
         assertThat(device.getName(), is(DEFAULT_TEST_DEVICE_NAME));
         assertThat(device.getRoomConcatenated(), is(DEFAULT_TEST_ROOM_NAME));

@@ -34,7 +34,7 @@ public class FBDectDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void testForCorrectlySetAttributes() {
-        FBDectDevice device = getDefaultDevice();
+        FBDectDevice device = getDefaultDevice(FBDectDevice.class);
 
         assertThat(device.getName(), is("device"));
         assertThat(device.getCurrent(), is("0.1039 (A)"));

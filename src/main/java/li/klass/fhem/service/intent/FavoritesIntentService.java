@@ -64,26 +64,26 @@ public class FavoritesIntentService extends ConvenientIntentService {
             return STATE.ERROR;
         }
 
-        if (roomListService.updateRoomDeviceListIfRequired(intent, updatePeriod) == RoomListService.RemoteUpdateRequired.REQUIRED) {
+        if (roomListService.updateRoomDeviceListIfRequired(intent, updatePeriod, this) == RoomListService.RemoteUpdateRequired.REQUIRED) {
             return STATE.DONE;
         }
 
         if (FAVORITE_ROOM_LIST.equals(action)) {
-            RoomDeviceList favorites = favoritesService.getFavorites();
+            RoomDeviceList favorites = favoritesService.getFavorites(this);
             sendSingleExtraResult(resultReceiver, SUCCESS, DEVICE_LIST, favorites);
         } else if (FAVORITE_ADD.equals(action)) {
             FhemDevice device = (FhemDevice) intent.getSerializableExtra(DEVICE);
-            favoritesService.addFavorite(device);
+            favoritesService.addFavorite(device, this);
             if (resultReceiver != null) sendNoResult(resultReceiver, SUCCESS);
         } else if (FAVORITE_REMOVE.equals(action)) {
             FhemDevice device = (FhemDevice) intent.getSerializableExtra(DEVICE);
-            favoritesService.removeFavorite(device);
+            favoritesService.removeFavorite(device, this);
             if (resultReceiver != null) sendNoResult(resultReceiver, SUCCESS);
         } else if (FAVORITES_PRESENT.equals(action)) {
-            boolean hasFavorites = favoritesService.hasFavorites();
+            boolean hasFavorites = favoritesService.hasFavorites(this);
             sendSingleExtraResult(resultReceiver, SUCCESS, HAS_FAVORITES, hasFavorites);
         } else if (FAVORITES_IS_FAVORITES.equalsIgnoreCase(action)) {
-            boolean isFavorite = favoritesService.isFavorite(intent.getStringExtra(BundleExtraKeys.DEVICE_NAME));
+            boolean isFavorite = favoritesService.isFavorite(intent.getStringExtra(BundleExtraKeys.DEVICE_NAME), this);
             sendSingleExtraResult(resultReceiver, SUCCESS, IS_FAVORITE, isFavorite);
         }
 

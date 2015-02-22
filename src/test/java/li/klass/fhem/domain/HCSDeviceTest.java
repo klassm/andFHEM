@@ -34,7 +34,7 @@ import static org.fest.assertions.api.Assertions.assertThat;
 public class HCSDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
-        HCSDevice device = getDefaultDevice();
+        HCSDevice device = getDefaultDevice(HCSDevice.class);
 
         assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
         assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);

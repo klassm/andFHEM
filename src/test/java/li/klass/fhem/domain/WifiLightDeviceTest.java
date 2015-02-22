@@ -35,7 +35,7 @@ public class WifiLightDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void all_properties_read() {
-        WifiLightDevice device = getDeviceFor("WZ_Stehlampen");
+        WifiLightDevice device = getDeviceFor("WZ_Stehlampen", WifiLightDevice.class);
 
         assertThat(device.getState()).isEqualTo("on");
         assertThat(device.isOnByState()).isTrue();

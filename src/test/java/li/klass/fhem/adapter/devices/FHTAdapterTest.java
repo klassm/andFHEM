@@ -77,12 +77,10 @@ public class FHTAdapterTest extends RobolectricBaseTestCase {
     @Test
     public void should_calculate_the_holiday_short_switch_time() {
         // given
-        given(timePicker.getCurrentHour()).willReturn(13);
-        given(timePicker.getCurrentMinute()).willReturn(50);
         given(dateService.now()).willReturn(new DateTime(2014, JANUARY, 1, 12, 0));
 
         // when
-        DateTime time = fhtAdapter.holiday1SwitchTimeFor(timePicker);
+        DateTime time = fhtAdapter.holiday1SwitchTimeFor(13, 50);
 
         // then
         assertThat(time).isEqualTo(new DateTime(2014, JANUARY, 1, 13, 50));
@@ -91,12 +89,10 @@ public class FHTAdapterTest extends RobolectricBaseTestCase {
     @Test
     public void should_round_up_minutes_in_holiday_short_switch_time() {
         // given
-        given(timePicker.getCurrentHour()).willReturn(13);
-        given(timePicker.getCurrentMinute()).willReturn(46);
         given(dateService.now()).willReturn(new DateTime(2014, JANUARY, 1, 12, 0));
 
         // when
-        DateTime time = fhtAdapter.holiday1SwitchTimeFor(timePicker);
+        DateTime time = fhtAdapter.holiday1SwitchTimeFor(13, 46);
 
         // then
         assertThat(time).isEqualTo(new DateTime(2014, JANUARY, 1, 13, 50));
@@ -105,12 +101,10 @@ public class FHTAdapterTest extends RobolectricBaseTestCase {
     @Test
     public void should_floor_minutes_in_holiday_short_switch_time() {
         // given
-        given(timePicker.getCurrentHour()).willReturn(13);
-        given(timePicker.getCurrentMinute()).willReturn(44);
         given(dateService.now()).willReturn(new DateTime(2014, JANUARY, 1, 12, 0));
 
         // when
-        DateTime time = fhtAdapter.holiday1SwitchTimeFor(timePicker);
+        DateTime time = fhtAdapter.holiday1SwitchTimeFor(13, 44);
 
         // then
         assertThat(time).isEqualTo(new DateTime(2014, JANUARY, 1, 13, 40));
@@ -119,12 +113,10 @@ public class FHTAdapterTest extends RobolectricBaseTestCase {
     @Test
     public void should_handle_60_minutes_as_1_hour_when_creating_the_DateTime_object() {
         // given
-        given(timePicker.getCurrentHour()).willReturn(13);
-        given(timePicker.getCurrentMinute()).willReturn(60);
         given(dateService.now()).willReturn(new DateTime(2014, JANUARY, 1, 12, 0));
 
         // when
-        DateTime time = fhtAdapter.holiday1SwitchTimeFor(timePicker);
+        DateTime time = fhtAdapter.holiday1SwitchTimeFor(13, 60);
 
         // then
         assertThat(time).isEqualTo(new DateTime(2014, JANUARY, 1, 14, 0));
@@ -138,7 +130,7 @@ public class FHTAdapterTest extends RobolectricBaseTestCase {
         given(dateService.now()).willReturn(new DateTime(2014, JANUARY, 1, 12, 0));
 
         // when
-        DateTime time = fhtAdapter.holiday1SwitchTimeFor(timePicker);
+        DateTime time = fhtAdapter.holiday1SwitchTimeFor(24, 30);
 
         // then
         assertThat(time).isEqualTo(new DateTime(2014, JANUARY, 2, 0, 30));

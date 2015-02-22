@@ -34,7 +34,7 @@ public class SMLUSBDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void should_read_all_device_properties() {
-        SMLUSBDevice device = getDeviceFor("device");
+        SMLUSBDevice device = getDeviceFor("device", SMLUSBDevice.class);
 
         assertThat(device).isNotNull();
 

@@ -52,8 +52,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
 
-@RunWith(AndFHEMRobolectricTestRunner.class)
-public class YAxisTest extends RobolectricBaseTestCase {
+public class YAxisTest {
     private static final List<GraphEntry> DUMMY_DATA = Arrays.asList(new GraphEntry(new DateTime(1), 0.3f));
 
     @Rule
@@ -62,18 +61,18 @@ public class YAxisTest extends RobolectricBaseTestCase {
     @Mock
     private Context context;
 
-    private YAxis yAxis;
-
     @Before
     public void before() {
         given(context.getString(R.string.regression)).willReturn("regression");
         given(context.getString(R.string.sum)).willReturn("Sum");
+    }
 
-        yAxis = new YAxis("someName", context);
+    protected YAxis axis() {
+        YAxis yAxis = new YAxis("someName", context);
 
         yAxis.addChart(
                 new ChartSeriesDescription.Builder()
-                        .withColumnName(R.string.temperature)
+                        .withColumnName("Temperature")
                         .withFileLogSpec("abc")
                         .withDbLogSpec("def")
                         .withSeriesType(SeriesType.TEMPERATURE)
@@ -83,22 +82,35 @@ public class YAxisTest extends RobolectricBaseTestCase {
         );
 
         yAxis.addChart(new ChartSeriesDescription.Builder()
-                .withColumnName(R.string.humidity)
+                .withColumnName("Humidity")
                 .withFileLogSpec("abc1")
                 .withDbLogSpec("def")
                 .withSumDivisionFactor((double) 1)
                 .withShowSum(true)
                 .withSeriesType(SeriesType.HUMIDITY)
                 .build(), DUMMY_DATA);
+
+        return yAxis;
     }
 
     @Test
     public void testNumberOfContainedSeries() {
-        assertThat(yAxis.getTotalNumberOfSeries(), is(4));
+        // given
+        YAxis yAxis = axis();
+
+        // when
+        int totalNumberOfSeries = yAxis.getTotalNumberOfSeries();
+
+        // then
+        assertThat(totalNumberOfSeries, is(4));
     }
 
     @Test
     public void testIterator() {
+        // given
+        YAxis yAxis = axis();
+
+        // then
         Iterator<ViewableChartSeries> iterator = yAxis.iterator();
 
         assertThat(iterator.hasNext(), is(true));

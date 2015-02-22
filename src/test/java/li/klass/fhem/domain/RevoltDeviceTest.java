@@ -33,7 +33,7 @@ import static org.fest.assertions.api.Assertions.assertThat;
 public class RevoltDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void should_read_device_attributes() {
-        RevoltDevice device = getDeviceFor("Revolt_Kueche");
+        RevoltDevice device = getDeviceFor("Revolt_Kueche", RevoltDevice.class);
         assertThat(device).isNotNull();
         assertThat(device.getPower()).isEqualTo("113.3 (W)");
         assertThat(device.getEnergy()).isEqualTo("1.25 (kWh)");

@@ -37,7 +37,7 @@ public class EnOceanDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void testForCorrectlySetAttributes() {
-        EnOceanDevice device = getDefaultDevice();
+        EnOceanDevice device = getDefaultDevice(EnOceanDevice.class);
         assertThat(device.getSubType(), is(EnOceanDevice.SubType.SWITCH));
         assertThat(device.getState(), is("on"));
         assertThat(device.isOnByState(), is(true));
@@ -49,12 +49,12 @@ public class EnOceanDeviceTest extends DeviceXMLParsingBase {
         device.setState("B0");
         assertThat(device.getState(), is("on"));
 
-        EnOceanDevice device1 = getDeviceFor("device1");
+        EnOceanDevice device1 = getDeviceFor("device1", EnOceanDevice.class);
         assertThat(device1.getSubType(), is(EnOceanDevice.SubType.SENSOR));
         assertThat(device1.getState(), is("153"));
         assertThat(device1.getMeasured(), is("04.11.2012 23:55"));
 
-        EnOceanDevice device2 = getDeviceFor("device2");
+        EnOceanDevice device2 = getDeviceFor("device2", EnOceanDevice.class);
         assertThat(device2.getOffStateName(), is("released"));
         assertThat(device2.getOnStateName(), is("B0"));
 
@@ -64,14 +64,14 @@ public class EnOceanDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void testGatewaySwitchDevice() {
-        EnOceanDevice device = getDeviceFor("device3");
+        EnOceanDevice device = getDeviceFor("device3", EnOceanDevice.class);
         assertThat(device.getSubType(), is(EnOceanDevice.SubType.SWITCH));
         assertThat(device.getDeviceGroup(), is(SWITCH));
     }
 
     @Test
     public void testShutterDevice() {
-        EnOceanDevice device = getDeviceFor("shutter");
+        EnOceanDevice device = getDeviceFor("shutter", EnOceanDevice.class);
 
         assertThat(device.getDeviceGroup(), is(WINDOW));
         assertThat(device.getSubType(), is(EnOceanDevice.SubType.SHUTTER));

@@ -34,14 +34,14 @@ import static org.fest.assertions.api.Assertions.assertThat;
 public class LightSceneDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
-        LightSceneDevice device = getDefaultDevice();
+        LightSceneDevice device = getDefaultDevice(LightSceneDevice.class);
 
         assertThat(device.getScenes()).contains("on", "off");
     }
 
     @Test
     public void testDeviceWithOnlyOneScene() {
-        LightSceneDevice device = getDeviceFor("device1");
+        LightSceneDevice device = getDeviceFor("device1", LightSceneDevice.class);
 
         assertThat(device.getScenes()).contains("absent");
     }

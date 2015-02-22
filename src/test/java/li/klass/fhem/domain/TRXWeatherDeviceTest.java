@@ -33,7 +33,7 @@ import static org.fest.assertions.api.Assertions.assertThat;
 public class TRXWeatherDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
-        TRXWeatherDevice device = getDefaultDevice();
+        TRXWeatherDevice device = getDefaultDevice(TRXWeatherDevice.class);
 
         assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
         assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
@@ -50,7 +50,7 @@ public class TRXWeatherDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void testForCorrectlySetAttributesInHumidityDevice() {
-        TRXWeatherDevice device = getDeviceFor("device1");
+        TRXWeatherDevice device = getDeviceFor("device1", TRXWeatherDevice.class);
 
         assertThat(device.getHumidity()).isEqualTo("59 (%)");
         assertThat(device.getDewpoint()).isEqualTo("11.1 (°C)");
@@ -61,13 +61,13 @@ public class TRXWeatherDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void testRainAttributes() {
-        TRXWeatherDevice device = getDeviceFor("rain");
+        TRXWeatherDevice device = getDeviceFor("rain", TRXWeatherDevice.class);
         assertThat(device.getRain()).isEqualTo("343 (l/m2)");
     }
 
     @Test
     public void testWindAttributes() {
-        TRXWeatherDevice device = getDeviceFor("wind");
+        TRXWeatherDevice device = getDeviceFor("wind", TRXWeatherDevice.class);
         assertThat(device.getWindAverageSpeed()).isEqualTo("3 (km/h)");
         assertThat(device.getWindDirection()).isEqualTo("180 S");
         assertThat(device.getWindSpeed()).isEqualTo("0 (km/h)");

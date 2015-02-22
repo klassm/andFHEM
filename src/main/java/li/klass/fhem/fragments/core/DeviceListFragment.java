@@ -195,7 +195,7 @@ public abstract class DeviceListFragment extends BaseFragment {
                     rightPadding, nestedListView.getPaddingBottom());
         }
 
-        DeviceGridAdapter adapter = new DeviceGridAdapter(getActivity(), new RoomDeviceList(""), applicationProperties);
+        DeviceGridAdapter adapter = new DeviceGridAdapter(getActivity(), new RoomDeviceList("", getActivity()), applicationProperties);
         nestedListView.setAdapter(adapter);
         nestedListView.setOnLongClickListener(new GridViewWithSections.OnClickListener<String, FhemDevice>() {
             @Override

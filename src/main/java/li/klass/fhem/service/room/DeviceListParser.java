@@ -108,7 +108,7 @@ public class DeviceListParser {
             xmlList = xmlList.trim();
         }
 
-        RoomDeviceList allDevicesRoom = new RoomDeviceList(RoomDeviceList.ALL_DEVICES_ROOM);
+        RoomDeviceList allDevicesRoom = new RoomDeviceList(RoomDeviceList.ALL_DEVICES_ROOM, applicationContext);
 
         if (xmlList == null || "".equals(xmlList)) {
             Log.e(TAG, "xmlList is null or blank");
@@ -253,7 +253,7 @@ public class DeviceListParser {
     }
 
     private RoomDeviceList buildRoomDeviceList(Map<String, FhemDevice> allDevices) {
-        RoomDeviceList roomDeviceList = new RoomDeviceList(RoomDeviceList.ALL_DEVICES_ROOM);
+        RoomDeviceList roomDeviceList = new RoomDeviceList(RoomDeviceList.ALL_DEVICES_ROOM, applicationContext);
         for (FhemDevice device : allDevices.values()) {
             // We don't want to show log devices in any kind of view. Log devices
             // are already associated with their respective devices during after read

@@ -94,7 +94,7 @@ public abstract class DeviceNameListFragment extends BaseFragment {
         GridViewWithSections deviceList = (GridViewWithSections) view.findViewById(R.id.deviceMap1);
 
         DeviceNameListAdapter adapter = new DeviceNameListAdapter(inflater.getContext(),
-                new RoomDeviceList(""), columnWidth, applicationProperties);
+                new RoomDeviceList("", getActivity()), columnWidth, applicationProperties);
         deviceList.setOnClickListener(new GridViewWithSections.OnClickListener<String, FhemDevice<?>>() {
             @Override
             public boolean onItemClick(View view, String parent, FhemDevice<?> child, int parentPosition, int childPosition) {
@@ -172,7 +172,7 @@ public abstract class DeviceNameListFragment extends BaseFragment {
     }
 
     private RoomDeviceList filterDevices(RoomDeviceList roomDeviceList) {
-        RoomDeviceList filteredList = new RoomDeviceList(roomDeviceList.getRoomName());
+        RoomDeviceList filteredList = new RoomDeviceList(roomDeviceList.getRoomName(), getActivity());
 
         for (FhemDevice<?> device : roomDeviceList.getAllDevices()) {
             if (deviceFilter == null || deviceFilter.isSelectable(device)) {

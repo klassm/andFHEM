@@ -33,7 +33,7 @@ import static org.fest.assertions.api.Assertions.assertThat;
 public class HOLDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
-        HOLDevice device = getDefaultDevice();
+        HOLDevice device = getDefaultDevice(HOLDevice.class);
 
         assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
         assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
@@ -51,7 +51,7 @@ public class HOLDeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getLogDevices()).isEmpty();
         assertThat(device.getDeviceCharts().size()).isEqualTo(0);
 
-        HOLDevice device1 = getDeviceFor("device1");
+        HOLDevice device1 = getDeviceFor("device1", HOLDevice.class);
         assertThat(device1.getState()).isEqualTo("on");
         assertThat(device1.isOnByState()).isEqualTo(true);
     }

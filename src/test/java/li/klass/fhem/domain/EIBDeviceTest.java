@@ -33,7 +33,7 @@ import static org.fest.assertions.api.Assertions.assertThat;
 public class EIBDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
-        EIBDevice device = getDefaultDevice();
+        EIBDevice device = getDefaultDevice(EIBDevice.class);
 
         assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
         assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
@@ -52,8 +52,8 @@ public class EIBDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void testTimeDevice() {
-        EIBDevice timeDevice = getDeviceFor("time");
-        EIBDevice dpt10Device = getDeviceFor("dpt10");
+        EIBDevice timeDevice = getDeviceFor("time", EIBDevice.class);
+        EIBDevice dpt10Device = getDeviceFor("dpt10", EIBDevice.class);
 
         assertThat(timeDevice.getModel()).isEqualTo("time");
         assertThat(dpt10Device.getModel()).isEqualTo("time");
@@ -61,7 +61,7 @@ public class EIBDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void testDimmerDevice() {
-        EIBDevice device = getDeviceFor("dimmer");
+        EIBDevice device = getDeviceFor("dimmer", EIBDevice.class);
 
         assertThat(device.supportsDim()).isEqualTo(true);
         assertThat(device.getDimPosition()).isEqualTo(20);
@@ -83,13 +83,13 @@ public class EIBDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void testPercentDeviceWithUnsetState() {
-        EIBDevice device = getDeviceFor("percent_with_unset_state");
+        EIBDevice device = getDeviceFor("percent_with_unset_state", EIBDevice.class);
         assertThat(device.getState()).isNotNull();
         assertThat(device.getState()).isEqualTo("0 (%)");
     }
 
     private void assertDeviceState(String deviceName, String expectedState) {
-        EIBDevice device = getDeviceFor(deviceName);
+        EIBDevice device = getDeviceFor(deviceName, EIBDevice.class);
         assertThat(device.getState()).isEqualTo(expectedState);
         assertThat(device.supportsToggle()).isEqualTo(false);
     }

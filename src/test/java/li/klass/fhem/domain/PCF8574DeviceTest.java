@@ -37,7 +37,7 @@ public class PCF8574DeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void all_properties_read() {
-        PCF8574Device device = getDeviceFor("test03");
+        PCF8574Device device = getDeviceFor("test03", PCF8574Device.class);
 
         Map<String, Boolean> portsMap = device.getPortsIsOnMap();
         assertThat(portsMap).contains(

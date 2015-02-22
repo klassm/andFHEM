@@ -34,7 +34,7 @@ import static org.fest.assertions.data.Offset.offset;
 public class PIDDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
-        PIDDevice device = getDefaultDevice();
+        PIDDevice device = getDefaultDevice(PIDDevice.class);
 
         assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
         assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);

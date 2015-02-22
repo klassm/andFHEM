@@ -34,7 +34,7 @@ public class OnkyoAvrDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void should_read_avr_device() {
-        OnkyoAvrDevice device = getDeviceFor("avr");
+        OnkyoAvrDevice device = getDeviceFor("avr", OnkyoAvrDevice.class);
 
         assertThat(device).isNotNull();
         assertThat(device.getState()).isEqualTo("on");

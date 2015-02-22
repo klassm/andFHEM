@@ -35,7 +35,7 @@ import static org.hamcrest.core.Is.is;
 public class HUEDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
-        HUEDevice device = getDefaultDevice();
+        HUEDevice device = getDefaultDevice(HUEDevice.class);
 
         assertThat(device.getName(), is(DEFAULT_TEST_DEVICE_NAME));
         assertThat(device.getRoomConcatenated(), is(DEFAULT_TEST_ROOM_NAME));
@@ -57,7 +57,7 @@ public class HUEDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void testDeviceWithoutXYAttribute() {
-        HUEDevice device = getDeviceFor("device1");
+        HUEDevice device = getDeviceFor("device1", HUEDevice.class);
         assertThat(device.getXy(), is(nullValue()));
     }
 

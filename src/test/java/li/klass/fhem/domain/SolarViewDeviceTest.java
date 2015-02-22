@@ -34,7 +34,7 @@ public class SolarViewDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void should_read_device_attributes() {
-        SolarViewDevice device = getDeviceFor("Solar");
+        SolarViewDevice device = getDeviceFor("Solar", SolarViewDevice.class);
 
         assertThat(device.getCurrentPower()).isEqualTo("4 (W)");
         assertThat(device.getGridCurrent()).isEqualTo("3 (A)");

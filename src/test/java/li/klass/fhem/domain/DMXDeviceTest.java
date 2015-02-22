@@ -10,7 +10,7 @@ import static org.fest.assertions.api.Assertions.assertThat;
 public class DMXDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void device_is_properly_read() {
-        DMXDevice device = getDeviceFor("LedBett");
+        DMXDevice device = getDeviceFor("LedBett", DMXDevice.class);
         assertThat(device).isNotNull();
 
         assertThat(device.getRgb()).isEqualTo("FFFFFF");

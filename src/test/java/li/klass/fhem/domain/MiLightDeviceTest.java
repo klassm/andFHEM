@@ -34,7 +34,7 @@ public class MiLightDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void should_read_device() {
-        MiLightDevice device = getDeviceFor("LEDBulb1");
+        MiLightDevice device = getDeviceFor("LEDBulb1", MiLightDevice.class);
         assertThat(device).isNotNull();
         assertThat(device.getRgb()).isEqualTo("FFFFFF");
         assertThat(device.getRgbColor()).isEqualTo(16777215);

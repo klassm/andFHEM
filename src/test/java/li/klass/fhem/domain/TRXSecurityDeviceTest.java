@@ -33,7 +33,7 @@ import static org.hamcrest.core.Is.is;
 public class TRXSecurityDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributesInFirstDevice() {
-        TRXSecurityDevice device = getDefaultDevice();
+        TRXSecurityDevice device = getDefaultDevice(TRXSecurityDevice.class);
 
         assertThat(device.getName(), is(DEFAULT_TEST_DEVICE_NAME));
         assertThat(device.getRoomConcatenated(), is(DEFAULT_TEST_ROOM_NAME));

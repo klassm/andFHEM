@@ -33,7 +33,7 @@ import static org.hamcrest.core.Is.is;
 public class OwthermDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
-        OwthermDevice device = getDefaultDevice();
+        OwthermDevice device = getDefaultDevice(OwthermDevice.class);
 
         assertThat(device.getTemperature(), is("13.625 (°C)"));
         assertThat(device.getPresent(), is("yes"));

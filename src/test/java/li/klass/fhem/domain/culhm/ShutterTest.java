@@ -38,7 +38,7 @@ import static org.hamcrest.core.Is.is;
 public class ShutterTest extends DeviceXMLParsingBase {
     @Test
     public void testShutterIsReadCorrectly() {
-        CULHMDevice device = getDefaultDevice();
+        CULHMDevice device = getDefaultDevice(CULHMDevice.class);
         assertThat(device, is(notNullValue()));
         assertThat(device.getSubType(), is(SHUTTER));
         assertThat(device.getDeviceGroup(), is(WINDOW));

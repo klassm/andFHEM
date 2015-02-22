@@ -34,7 +34,7 @@ public class EMWZDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void testForCorrectlySetAttributes() {
-        EMWZDevice device = getDefaultDevice();
+        EMWZDevice device = getDefaultDevice(EMWZDevice.class);
 
         assertThat(device.getCumulativeKwh(), is("0.120 (kWh)"));
         assertThat(device.getPower(), is("0.480 (W)"));

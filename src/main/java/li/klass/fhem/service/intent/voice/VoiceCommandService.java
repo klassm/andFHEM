@@ -24,6 +24,8 @@
 
 package li.klass.fhem.service.intent.voice;
 
+import android.content.Context;
+
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.base.Strings;
@@ -71,35 +73,35 @@ public class VoiceCommandService {
     @Inject
     RoomListService roomListService;
 
-    public Optional<VoiceResult> resultFor(String voiceCommand) {
+    public Optional<VoiceResult> resultFor(String voiceCommand, Context context) {
         voiceCommand = replaceArticles(voiceCommand.toLowerCase());
 
         String[] parts = voiceCommand.split(" ");
 
         if (parts.length == 3) {
-            return handleSetCommand(parts);
+            return handleSetCommand(parts, context);
         } else if (parts.length == 2) {
-            return handleShortcut(parts);
+            return handleShortcut(parts, context);
         }
 
         return Optional.absent();
     }
 
-    private Optional<VoiceResult> handleShortcut(String[] parts) {
+    private Optional<VoiceResult> handleShortcut(String[] parts, Context context) {
         if (!SHORTCUTS.containsKey(parts[0])) {
             return Optional.absent();
         }
-        return handleSetCommand(new String[]{"set", parts[1], SHORTCUTS.get(parts[0])});
+        return handleSetCommand(new String[]{"set", parts[1], SHORTCUTS.get(parts[0])}, context);
     }
 
-    private Optional<VoiceResult> handleSetCommand(String[] parts) {
+    private Optional<VoiceResult> handleSetCommand(String[] parts, Context context) {
         String starter = replace(parts[0], START_REPLACE);
         if (!starter.equals("set")) return Optional.absent();
 
         final String deviceName = parts[1];
         final String state = replace(parts[2], STATE_REPLACE);
 
-        RoomDeviceList devices = roomListService.getAllRoomsDeviceList();
+        RoomDeviceList devices = roomListService.getAllRoomsDeviceList(context);
         List<FhemDevice> deviceMatches = from(devices.getAllDevices()).filter(filterDevicePredicate(deviceName, state)).toList();
         if (deviceMatches.isEmpty()) {
             return Optional.<VoiceResult>of(new VoiceResult.Error(VoiceResult.ErrorType.NO_DEVICE_MATCHED));

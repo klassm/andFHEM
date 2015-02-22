@@ -34,12 +34,12 @@ public class WebCmdTest extends DeviceXMLParsingBase {
 
     @Test
     public void should_handle_unset_webcmd_attribute_even_if_webcmddevice_hook_is_set() {
-        DummyDevice device = getDeviceFor("withoutWebcmds");
+        DummyDevice device = getDeviceFor("withoutWebcmds", DummyDevice.class);
         assertThat(device.getWebCmd()).isEmpty();
     }
 
     public void should_use_alias_as_name_even_if_webcmddevice_hook_is_set() {
-        DummyDevice device = getDeviceFor("withAlias");
+        DummyDevice device = getDeviceFor("withAlias", DummyDevice.class);
         assertThat(device.getAliasOrName()).isEqualTo("alias");
     }
 

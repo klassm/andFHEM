@@ -144,12 +144,12 @@ public class DeviceIntentService extends ConvenientIntentService {
     @Override
     protected STATE handleIntent(Intent intent, long updatePeriod, ResultReceiver resultReceiver) {
 
-        if (roomListService.updateRoomDeviceListIfRequired(intent, updatePeriod) == REQUIRED) {
+        if (roomListService.updateRoomDeviceListIfRequired(intent, updatePeriod, this) == REQUIRED) {
             return DONE;
         }
 
         String deviceName = intent.getStringExtra(BundleExtraKeys.DEVICE_NAME);
-        Optional<FhemDevice> deviceOptional = roomListService.getDeviceForName(deviceName);
+        Optional<FhemDevice> deviceOptional = roomListService.getDeviceForName(deviceName, this);
         if (!deviceOptional.isPresent()) {
             LOG.info("handleIntent() - cannot find device for {}", deviceName);
         }
@@ -366,9 +366,9 @@ public class DeviceIntentService extends ConvenientIntentService {
         boolean isActive = extras.getBoolean(BundleExtraKeys.TIMER_IS_ACTIVE);
 
         if (isModify) {
-            atService.modify(timerName, hour, minute, second, repetition, type, targetDeviceName, targetState, stateAppendix, isActive);
+            atService.modify(timerName, hour, minute, second, repetition, type, targetDeviceName, targetState, stateAppendix, isActive, this);
         } else {
-            atService.createNew(timerName, hour, minute, second, repetition, type, targetDeviceName, targetState, stateAppendix, isActive);
+            atService.createNew(timerName, hour, minute, second, repetition, type, targetDeviceName, targetState, stateAppendix, isActive, this);
         }
 
         return SUCCESS;

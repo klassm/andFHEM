@@ -35,7 +35,7 @@ import static org.hamcrest.core.Is.is;
 public class CULTXDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
-        CULTXDevice device = getDefaultDevice();
+        CULTXDevice device = getDefaultDevice(CULTXDevice.class);
 
         assertThat(device.getName(), is(DEFAULT_TEST_DEVICE_NAME));
         assertThat(device.getRoomConcatenated(), is(DEFAULT_TEST_ROOM_NAME));

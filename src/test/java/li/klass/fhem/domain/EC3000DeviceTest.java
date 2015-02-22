@@ -34,7 +34,7 @@ public class EC3000DeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void should_read_device_correctly() {
-        EC3000Device device = getDefaultDevice();
+        EC3000Device device = getDefaultDevice(EC3000Device.class);
 
         assertThat(device.getState()).isEqualTo("68 (W)");
         assertThat(device.getConsumption()).isEqualTo("13.782 (kWh)");

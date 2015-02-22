@@ -105,7 +105,7 @@ public abstract class DeviceAppWidgetView extends AppWidgetView {
     }
 
     private FhemDevice getDeviceFor(String deviceName) {
-        return roomListService.getDeviceForName(deviceName).orNull();
+        return roomListService.getDeviceForName(deviceName, applicationContext).orNull();
     }
 
     protected void openDeviceDetailPageWhenClicking(int viewId, RemoteViews view, FhemDevice device, WidgetConfiguration widgetConfiguration) {
@@ -136,7 +136,7 @@ public abstract class DeviceAppWidgetView extends AppWidgetView {
     @Override
     public void createWidgetConfiguration(Context context, WidgetType widgetType, int appWidgetId,
                                           WidgetConfigurationCreatedCallback callback, String... payload) {
-        Optional<FhemDevice> device = roomListService.getDeviceForName(payload[0]);
+        Optional<FhemDevice> device = roomListService.getDeviceForName(payload[0], applicationContext);
         if (device.isPresent()) {
             createDeviceWidgetConfiguration(context, widgetType, appWidgetId, device.get(), callback);
         } else {

@@ -33,7 +33,7 @@ import static org.fest.assertions.api.Assertions.assertThat;
 public class WOLDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
-        WOLDevice device = getDefaultDevice();
+        WOLDevice device = getDefaultDevice(WOLDevice.class);
 
         assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
         assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);

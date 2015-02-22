@@ -34,10 +34,10 @@ public class GenShellSwitchDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void testForCorrectlySetAttributes() {
-        GenShellSwitchDevice device1 = getDeviceFor("device1");
+        GenShellSwitchDevice device1 = getDeviceFor("device1", GenShellSwitchDevice.class);
         assertThat(device1.isOnByState(), is(true));
 
-        GenShellSwitchDevice device2 = getDeviceFor("device2");
+        GenShellSwitchDevice device2 = getDeviceFor("device2", GenShellSwitchDevice.class);
         assertThat(device2.isOnByState(), is(false));
     }
 

@@ -34,7 +34,7 @@ import static org.fest.assertions.api.Assertions.assertThat;
 public class THSensorTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
-        CULHMDevice device = getDefaultDevice();
+        CULHMDevice device = getDefaultDevice(CULHMDevice.class);
 
         assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
         assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
@@ -54,7 +54,7 @@ public class THSensorTest extends DeviceXMLParsingBase {
 
     @Test
     public void testOC3Sensor() {
-        CULHMDevice device = getDeviceFor("oc3");
+        CULHMDevice device = getDeviceFor("oc3", CULHMDevice.class);
 
         assertThat(device).isNotNull();
         assertThat(device.getMeasuredTemp()).isEqualTo("5.1 (°C)");

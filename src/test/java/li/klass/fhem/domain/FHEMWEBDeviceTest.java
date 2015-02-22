@@ -34,7 +34,7 @@ public class FHEMWEBDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void all_properties_read() {
-        FHEMWEBDevice device = getDeviceFor("fhemweb");
+        FHEMWEBDevice device = getDeviceFor("fhemweb", FHEMWEBDevice.class);
 
         assertThat(device.getHiddenGroup()).isEqualTo("schalter,dimmer");
         assertThat(device.getHiddenRoom()).isEqualTo("haus,garten");

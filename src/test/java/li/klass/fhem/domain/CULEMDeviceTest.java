@@ -34,7 +34,7 @@ import static org.fest.assertions.data.Offset.offset;
 public class CULEMDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
-        CULEMDevice device = getDefaultDevice();
+        CULEMDevice device = getDefaultDevice(CULEMDevice.class);
 
         assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
         assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);

@@ -50,7 +50,7 @@ import static org.fest.assertions.data.Offset.offset;
 public class ThermostatTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
-        CULHMDevice device = getDefaultDevice();
+        CULHMDevice device = getDefaultDevice(CULHMDevice.class);
 
         assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
         assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
@@ -60,12 +60,12 @@ public class ThermostatTest extends DeviceXMLParsingBase {
 
         assertThat(device.isSupported()).isEqualTo(true);
 
-        CULHMDevice device1 = getDeviceFor("device1");
+        CULHMDevice device1 = getDeviceFor("device1", CULHMDevice.class);
         assertThat(device1).isNotNull();
         assertThat(device1.isSupported()).isEqualTo(true);
         assertThat(device.getSubType()).isEqualTo(CULHMDevice.SubType.THERMOSTAT);
 
-        CULHMDevice device2 = getDeviceFor("device2");
+        CULHMDevice device2 = getDeviceFor("device2", CULHMDevice.class);
         assertThat(device2).isNotNull();
         assertThat(device2.isSupported()).isEqualTo(true);
         assertThat(device2.getSubType()).isEqualTo(CULHMDevice.SubType.THERMOSTAT);
@@ -79,7 +79,7 @@ public class ThermostatTest extends DeviceXMLParsingBase {
     @Test
     @SuppressWarnings("unchecked")
     public void should_read_weekday_profile_with_weekday_prefixes() {
-        CULHMDevice device = getDeviceFor("deviceWithPrefix");
+        CULHMDevice device = getDeviceFor("deviceWithPrefix", CULHMDevice.class);
 
         assertThat(device).isNotNull();
 
@@ -106,7 +106,7 @@ public class ThermostatTest extends DeviceXMLParsingBase {
     @Test
     @SuppressWarnings("unchecked")
     public void should_use_first_device_when_finding_multiple_prefixes() {
-        CULHMDevice device = getDeviceFor("deviceWithMorePrefix");
+        CULHMDevice device = getDeviceFor("deviceWithMorePrefix", CULHMDevice.class);
 
         assertThat(device).isNotNull();
 

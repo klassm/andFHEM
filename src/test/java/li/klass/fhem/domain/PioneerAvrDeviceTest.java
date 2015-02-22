@@ -34,7 +34,7 @@ public class PioneerAvrDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void should_read_avr_device() {
-        PioneerAvrDevice device = getDeviceFor("VSX922");
+        PioneerAvrDevice device = getDeviceFor("VSX922", PioneerAvrDevice.class);
 
         assertThat(device).isNotNull();
         assertThat(device.getState()).isEqualTo("off");

@@ -35,7 +35,7 @@ import static org.fest.assertions.api.Assertions.assertThat;
 public class FS20DeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributesInFirstDevice() {
-        FS20Device device = getDefaultDevice();
+        FS20Device device = getDefaultDevice(FS20Device.class);
 
         assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
         assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
@@ -58,7 +58,7 @@ public class FS20DeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void testForCorrectlySetAttributesInSecondDevice() {
-        FS20Device device = getDeviceFor("device1");
+        FS20Device device = getDeviceFor("device1", FS20Device.class);
 
         assertThat(device.getName()).isEqualTo("device1");
         assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
@@ -79,15 +79,15 @@ public class FS20DeviceTest extends DeviceXMLParsingBase {
         assertThat(device.getLogDevices()).isNotEmpty();
         assertThat(device.getDeviceCharts().size()).isEqualTo(1);
 
-        assertThat(device.getInternalDeviceGroupOrGroupAttributes()).contains("dimmer", "switch", "temperature");
-        assertThat(device.getInternalDeviceGroupOrGroupAttributes()).hasSize(3);
+        assertThat(device.getInternalDeviceGroupOrGroupAttributes(context)).contains("dimmer", "switch", "temperature");
+        assertThat(device.getInternalDeviceGroupOrGroupAttributes(context)).hasSize(3);
 
         assertThat(device.getWidgetName()).isEqualTo("myAlias");
     }
 
     @Test
     public void testForCorrectlySetAttributesInThirdDevice() {
-        FS20Device device = getDeviceFor("device2");
+        FS20Device device = getDeviceFor("device2", FS20Device.class);
 
         assertThat(device.isOnRespectingInvertHook()).isEqualTo(true);
         assertThat(device.isOnByState()).isEqualTo(false);
@@ -125,7 +125,7 @@ public class FS20DeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void testAlwaysHiddenDevice() {
-        FS20Device device = getDeviceFor("device3");
+        FS20Device device = getDeviceFor("device3", FS20Device.class);
         assertThat(device).isNull();
     }
 

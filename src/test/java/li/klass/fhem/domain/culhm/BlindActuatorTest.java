@@ -34,7 +34,7 @@ import static org.fest.assertions.api.Assertions.assertThat;
 public class BlindActuatorTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
-        CULHMDevice device = getDefaultDevice();
+        CULHMDevice device = getDefaultDevice(CULHMDevice.class);
 
         assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
         assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
@@ -57,7 +57,7 @@ public class BlindActuatorTest extends DeviceXMLParsingBase {
 
     @Test
     public void testEventMap() {
-        CULHMDevice device = getDeviceFor("device1");
+        CULHMDevice device = getDeviceFor("device1", CULHMDevice.class);
         device.setState("on");
         assertThat(device.getDimPosition()).isEqualTo(device.getDimUpperBound());
     }

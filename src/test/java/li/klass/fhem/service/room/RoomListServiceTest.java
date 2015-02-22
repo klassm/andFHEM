@@ -24,6 +24,8 @@
 
 package li.klass.fhem.service.room;
 
+import android.content.Context;
+
 import com.tngtech.java.junit.dataprovider.DataProvider;
 
 import org.junit.Before;
@@ -63,13 +65,17 @@ public class RoomListServiceTest extends RobolectricBaseTestCase {
     @Mock
     private RoomListHolderService roomListHolderService;
 
+    @Mock
+    private Context context;
+
     @InjectMocks
     private RoomListService service;
 
-    private RoomDeviceList roomDeviceList = new RoomDeviceList(ALL_DEVICES_ROOM);
+    private RoomDeviceList roomDeviceList;
 
     @Before
     public void before() {
+        roomDeviceList = new RoomDeviceList(ALL_DEVICES_ROOM, context);
         given(applicationProperties.getStringSharedPreference(DEVICE_NAME, "andFHEM")).willReturn("abc");
         given(connectionService.mayShowInCurrentConnectionType(any(DeviceType.class))).willCallRealMethod();
         given(roomListHolderService.getCachedRoomDeviceListMap()).willReturn(roomDeviceList);

@@ -38,7 +38,7 @@ import static org.hamcrest.core.IsNot.not;
 public class FHTDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
-        FHTDevice device = getDefaultDevice();
+        FHTDevice device = getDefaultDevice(FHTDevice.class);
 
         assertThat(device.getName(), is(DEFAULT_TEST_DEVICE_NAME));
         assertThat(device.getRoomConcatenated(), is(DEFAULT_TEST_ROOM_NAME));
@@ -68,7 +68,7 @@ public class FHTDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void testDeviceWithMultipleActors() {
-        FHTDevice device = getDeviceFor("fht_multi_actuators");
+        FHTDevice device = getDeviceFor("fht_multi_actuators", FHTDevice.class);
         assertThat(device, is(notNullValue()));
 
         assertThat(device.getLogDevices(), is(notNullValue()));

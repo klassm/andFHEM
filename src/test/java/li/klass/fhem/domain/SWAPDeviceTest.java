@@ -36,7 +36,7 @@ import static org.hamcrest.core.Is.is;
 public class SWAPDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
-        SWAPDevice device = getDefaultDevice();
+        SWAPDevice device = getDefaultDevice(SWAPDevice.class);
 
         assertThat(device.getName(), is(DEFAULT_TEST_DEVICE_NAME));
         assertThat(device.getRoomConcatenated(), is(DEFAULT_TEST_ROOM_NAME));
@@ -46,7 +46,7 @@ public class SWAPDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void testSwapDeviceWithExtendedXmllistTagAndRGB() {
-        SWAPDevice device = getDeviceFor("SWAP_05");
+        SWAPDevice device = getDeviceFor("SWAP_05", SWAPDevice.class);
         assertThat(device, is(notNullValue()));
         assertThat(device.supportsRGB(), is(true));
         assertThat(device.getRgb(), is(hexToDecimal("FF00F0")));

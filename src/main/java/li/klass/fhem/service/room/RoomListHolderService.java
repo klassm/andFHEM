@@ -71,8 +71,8 @@ public class RoomListHolderService {
         storeDeviceListMapInternal(roomDeviceList);
     }
 
-    public synchronized void clearRoomDeviceList() {
-        storeDeviceListMapInternal(new RoomDeviceList(RoomDeviceList.ALL_DEVICES_ROOM));
+    public synchronized void clearRoomDeviceList(Context context) {
+        storeDeviceListMapInternal(new RoomDeviceList(RoomDeviceList.ALL_DEVICES_ROOM, context));
     }
 
     private void storeDeviceListMapInternal(RoomDeviceList roomDeviceList) {

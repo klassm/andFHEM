@@ -33,7 +33,7 @@ import static org.fest.assertions.api.Assertions.assertThat;
 public class EGPMDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
-        EGPMDevice device = getDefaultDevice();
+        EGPMDevice device = getDefaultDevice(EGPMDevice.class);
 
         assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
 

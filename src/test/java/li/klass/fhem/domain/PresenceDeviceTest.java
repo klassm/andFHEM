@@ -34,7 +34,7 @@ public class PresenceDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void testForCorrectlySetAttributes() {
-        PresenceDevice device = getDefaultDevice();
+        PresenceDevice device = getDefaultDevice(PresenceDevice.class);
         assertThat(device.getState(), is("present"));
         assertThat(device.getMode(), is("fritzbox"));
     }

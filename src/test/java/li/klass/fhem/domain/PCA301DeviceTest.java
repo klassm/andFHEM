@@ -34,7 +34,7 @@ import static org.hamcrest.core.Is.is;
 public class PCA301DeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
-        PCA301Device device = getDefaultDevice();
+        PCA301Device device = getDefaultDevice(PCA301Device.class);
 
         assertThat(device.getName(), is(DEFAULT_TEST_DEVICE_NAME));
         assertThat(device.getRoomConcatenated(), is(DEFAULT_TEST_ROOM_NAME));

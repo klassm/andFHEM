@@ -33,7 +33,7 @@ import static org.fest.assertions.api.Assertions.assertThat;
 public class StatisticsDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void should_add_statistics_device() {
-        SMLUSBDevice device = getDeviceFor("eg.hw.sz.haushalt");
+        SMLUSBDevice device = getDeviceFor("eg.hw.sz.haushalt", SMLUSBDevice.class);
 
         assertThat(device.hasStatisticsDevice()).isTrue();
     }

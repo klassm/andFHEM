@@ -80,7 +80,7 @@ public class DeviceNameListAdapter<DEVICE extends FhemDevice<DEVICE>> extends De
         DEVICE device = roomDeviceList.getDeviceFor(selectedDeviceName);
         if (device == null) return 0;
 
-        return getFlatPositionForParentAndChild(device.getInternalDeviceGroupOrGroupAttributes().get(0), device);
+        return getFlatPositionForParentAndChild(device.getInternalDeviceGroupOrGroupAttributes(context).get(0), device);
     }
 
     @Override

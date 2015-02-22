@@ -30,7 +30,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:1.0.+'
+        classpath 'com.android.tools.build:gradle:1.1.0'
 
         // google sites dependencies ...
         classpath 'com.google.gdata.gdata-java-client:gdata-sites-2.0:1.47.1'
@@ -58,6 +58,10 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 21
     buildToolsVersion '21.1.1'
+
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
 
     defaultConfig {
         minSdkVersion 9
@@ -93,8 +97,12 @@ android {
     }
 
     sourceSets {
-        androidTest {
-            java.srcDirs = ['src/test/java', 'src/instrumentTest/java']
+//        androidTest {
+//            java.srcDirs = ['src/instrumentTest/java']
+//            resources.srcDir file('src/test/resources')
+//        }
+        test {
+            java.srcDirs = ['src/test/java']
             resources.srcDir file('src/test/resources')
         }
         main {
@@ -130,8 +138,6 @@ task generateResourceIdMapper << {
     generateResourceIdMapperGenerator()
 }
 tasks["preBuild"].dependsOn('generateResourceIdMapper')
-
-apply plugin: 'android-unit-test'
 
 dependencies {
     compile fileTree(dir: './libs', include: '*.jar')
@@ -292,8 +298,6 @@ def updateGoogleSitesAPK(service) {
  * Build variants
  *********************************** */
 
-task prepareAndroidStudioTests {}
-
 android.applicationVariants.all { variant ->
     task("javadoc${variant.name}", type: Javadoc) {
         description "Generates Javadoc for $variant.name."
@@ -304,27 +308,13 @@ android.applicationVariants.all { variant ->
         options.links("http://d.android.com/reference/");
         failOnError false
     }
-
-    //This helps to run the unit tests in Anroid studio. Just call prepareAndroidStudioTests before the unit test
-    if (variant.buildType.name.equals("debug")) {
-        task("copyAndroidStudio${variant.name.capitalize()}TestResources", type: Copy) << {
-            from "${projectDir}/src/test/resources"
-            into "${buildDir}/test-classes/${variant.productFlavors[0].name}/${variant.buildType.name}"
-        }
-        task("prepareAndroidStudio${variant.name.capitalize()}Tests") << {
-            dependsOn("test${variant.name.capitalize()}Classes")
-            dependsOn("copy${variant.name.capitalize()}TestResources")
-            dependsOn("copyAndroidStudio${variant.name.capitalize()}TestResources")
-        }
-        tasks["prepareAndroidStudioTests"].dependsOn("prepareAndroidStudio${variant.name.capitalize()}Tests")
-    }
-
 }
 
 task wrapper(type: Wrapper) {
     gradleVersion = '2.2.1'
 }
 
+apply from: 'test-resources.gradle'
 
 /*************************************
  * Generate resources
@@ -345,7 +335,10 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.collect.FluentIterable.from;
 
 def generateResourceIdMapperGenerator() {
-    String content = Resources.toString(new File("src/main/res/values/strings.xml").getAbsoluteFile().toURI().toURL(), Charsets.UTF_8);
+    if (! project.buildDir.exists()) {
+        project.buildDir.mkdir();
+    }
+    String content = Resources.toString(new File(project.buildDir.getAbsolutePath() + "/../src/main/res/values/strings.xml").getAbsoluteFile().toURI().toURL(), Charsets.UTF_8);
 
     List<String> matches = Lists.newArrayList();
     Pattern pattern = Pattern.compile("<string name=\"([^\"]+)");

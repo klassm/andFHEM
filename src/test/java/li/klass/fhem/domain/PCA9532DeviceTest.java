@@ -37,7 +37,7 @@ public class PCA9532DeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void all_properties_read() {
-        PCA9532Device device = getDeviceFor("PCA9532");
+        PCA9532Device device = getDeviceFor("PCA9532", PCA9532Device.class);
 
         Map<String, Boolean> portsMap = device.getPortsIsOnMap();
         assertThat(portsMap).contains(

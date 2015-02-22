@@ -33,11 +33,11 @@ import org.slf4j.LoggerFactory;
 
 public class DateFormatUtil {
 
-    private static final DateTimeFormatter FHEM_DATE_FORMAT = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
-    private static final DateTimeFormatter ANDFHEM_TIME_FORMAT = DateTimeFormat.forPattern("HH:mm");
-    private static final DateTimeFormatter ANDFHEM_DATE_FORMAT = DateTimeFormat.forPattern("dd.MM.yyyy HH:mm");
+    public static final DateTimeFormatter FHEM_DATE_FORMAT = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+    public static final DateTimeFormatter ANDFHEM_TIME_FORMAT = DateTimeFormat.forPattern("HH:mm");
+    public static final DateTimeFormatter ANDFHEM_DATE_FORMAT = DateTimeFormat.forPattern("dd.MM.yyyy HH:mm");
 
-    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormat.forPattern("dd.MM.yyyy HH:mm");
+    public static final DateTimeFormatter DATE_FORMAT = DateTimeFormat.forPattern("dd.MM.yyyy HH:mm");
 
     private static Logger LOGGER = LoggerFactory.getLogger(DateFormatUtil.class);
 
@@ -68,7 +68,7 @@ public class DateFormatUtil {
 
     public static long toMilliSeconds(String in) {
         try {
-            return DATE_FORMAT.parseDateTime(in).getMillis();
+            return FHEM_DATE_FORMAT.parseDateTime(in).getMillis();
         } catch (Exception e) {
             return -1;
         }

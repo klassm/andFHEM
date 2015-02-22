@@ -34,7 +34,7 @@ public class EnigmaDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void should_read_device_attributes() {
-        EnigmaDevice device = getDeviceFor("Wz.TvReceiver");
+        EnigmaDevice device = getDeviceFor("Wz.TvReceiver", EnigmaDevice.class);
         assertThat(device).isNotNull();
         assertThat(device.getChannel()).isEqualTo("a");
         assertThat(device.getCurrentTitle()).isEqualTo("b");

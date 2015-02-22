@@ -26,6 +26,7 @@ package li.klass.fhem.domain.core;
 
 import android.content.Context;
 
+import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 
 public enum DeviceFunctionality {
@@ -69,6 +70,7 @@ public enum DeviceFunctionality {
     }
 
     public String getCaptionText(Context context) {
+        if (context == null) context = AndFHEMApplication.getContext();
         return context.getString(captionId);
     }
 }

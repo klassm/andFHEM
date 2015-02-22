@@ -33,7 +33,7 @@ import static org.fest.assertions.api.Assertions.assertThat;
 public class CO20DeviceTest extends DeviceXMLParsingBase {
     @Test
     public void should_read_CO20_device() {
-        CO20Device device = getDeviceFor("myCO20");
+        CO20Device device = getDeviceFor("myCO20", CO20Device.class);
 
         assertThat(device).isNotNull();
         assertThat(device.getVoc()).isEqualTo("1009 (ppm)");

@@ -65,7 +65,7 @@ public class AppWidgetListViewUpdateRemoteViewsService extends RemoteViewsServic
         int appWidgetId = intent.getIntExtra(APP_WIDGET_ID, -1);
         WidgetType widgetType = WidgetType.valueOf(intent.getStringExtra(APP_WIDGET_TYPE_NAME));
         String deviceName = intent.getStringExtra(DEVICE_NAME);
-        Optional<FhemDevice> device = roomListService.getDeviceForName(deviceName);
+        Optional<FhemDevice> device = roomListService.getDeviceForName(deviceName, this);
         if (!device.isPresent()) {
             Log.e(TAG, "device is null, at least in the current connection");
             return null;

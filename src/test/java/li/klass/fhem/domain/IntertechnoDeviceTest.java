@@ -33,7 +33,7 @@ import static org.fest.assertions.api.Assertions.assertThat;
 public class IntertechnoDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
-        IntertechnoDevice device = getDefaultDevice();
+        IntertechnoDevice device = getDefaultDevice(IntertechnoDevice.class);
 
         assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
         assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);

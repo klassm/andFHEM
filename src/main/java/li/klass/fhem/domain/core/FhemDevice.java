@@ -24,6 +24,8 @@
 
 package li.klass.fhem.domain.core;
 
+import android.content.Context;
+
 import org.jetbrains.annotations.NotNull;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
@@ -222,9 +224,9 @@ public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T
     }
 
     @XmllistAttribute("MEASURED")
-    public void setMeasured(String measured) {
-        this.measured = DateFormatUtil.formatTime(measured);
-        this.lastMeasureTime = DateFormatUtil.toMilliSeconds(measured);
+    public void setMeasured(String measuredIn) {
+        this.measured = DateFormatUtil.formatTime(measuredIn);
+        this.lastMeasureTime = DateFormatUtil.toMilliSeconds(measuredIn);
     }
 
     public long getLastMeasureTime() {
@@ -468,12 +470,12 @@ public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T
         return firstNonNull(widgetName, getAliasOrName());
     }
 
-    public List<String> getInternalDeviceGroupOrGroupAttributes() {
+    public List<String> getInternalDeviceGroupOrGroupAttributes(Context context) {
         List<String> groups = newArrayList();
         if (!isNullOrEmpty(group)) {
             groups.addAll(asList(group.split(",")));
         } else {
-            groups.add(getDeviceGroup().getCaptionText(AndFHEMApplication.getContext()));
+            groups.add(getDeviceGroup().getCaptionText(context));
         }
         return groups;
     }

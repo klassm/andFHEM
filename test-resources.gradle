@@ -1,0 +1,56 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'org.apache.commons:commons-lang3:3.3.2'
+    }
+}
+
+// workaround, see https://code.google.com/p/android/issues/detail?id=136013
+import org.apache.commons.lang3.StringUtils
+gradle.projectsEvaluated {
+    def variants = android.applicationVariants.collect()
+
+    tasks.withType(Test) { task ->
+        try {
+            variants.each { variant ->
+                def buildTypeName = variant.buildType.name.capitalize()
+
+                def productFlavorNames = variant.productFlavors.collect { it.name.capitalize() }
+                if (productFlavorNames.isEmpty()) {
+                    productFlavorNames = [""]
+                }
+                def productFlavorName = productFlavorNames.join('')
+                def flavor = StringUtils.uncapitalize(productFlavorName)
+
+                def variationName = "${productFlavorName}${buildTypeName}"
+
+                if (task.name.contains(variationName)) {
+                    def variationPath = variant.buildType.name;
+
+                    if (StringUtils.isNotEmpty(productFlavorName)) {
+                        variationPath = StringUtils.uncapitalize(productFlavorName) + "/" + variationPath
+                    }
+
+                    def copyTestResourcesTask = project.tasks.create("copyTest${variationName}Resources", Copy)
+                    copyTestResourcesTask.from("${projectDir}/src/test/resources")
+                    copyTestResourcesTask.into("${buildDir}/intermediates/classes/test/${variationPath}")
+
+                    // Makes the test task depend on the copy test resource variation task
+                    task.dependsOn(copyTestResourcesTask)
+
+                    def copyResourcesTask = project.tasks.create("copy${variationName}Resources", Copy)
+                    copyResourcesTask.from("${projectDir}/src/main/resources")
+                    copyResourcesTask.into("${buildDir}/intermediates/classes/${variationPath}")
+
+                    task.dependsOn(copyResourcesTask)
+
+                    variants.remove(variant)
+
+                    throw new Exception("Break") // Breaking the loop
+                }
+            }
+        } catch (Exception e) {} // Just drop the exception
+    }
+}

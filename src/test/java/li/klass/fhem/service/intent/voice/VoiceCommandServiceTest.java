@@ -24,6 +24,8 @@
 
 package li.klass.fhem.service.intent.voice;
 
+import android.content.Context;
+
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 import com.tngtech.java.junit.dataprovider.DataProvider;
@@ -59,6 +61,9 @@ public class VoiceCommandServiceTest {
     @Mock
     RoomListService roomListService;
 
+    @Mock
+    Context context;
+
     @DataProvider
     public static Object[][] voiceCommandsForDevice() {
         return new Object[][]{
@@ -83,7 +88,7 @@ public class VoiceCommandServiceTest {
         // given
         TestDummy device = new TestDummy("lampe");
         device.getSetList().parse("on off");
-        RoomDeviceList deviceList = new RoomDeviceList("").addDevice(device);
+        RoomDeviceList deviceList = new RoomDeviceList("", context).addDevice(device);
         doReturn(deviceList).when(roomListService).getAllRoomsDeviceList();
 
         // when
@@ -100,7 +105,7 @@ public class VoiceCommandServiceTest {
         TestDummy device = new TestDummy("lampe");
         device.getSetList().parse("on off");
         device.setEventmap("on:hallo");
-        RoomDeviceList deviceList = new RoomDeviceList("").addDevice(device);
+        RoomDeviceList deviceList = new RoomDeviceList("", context).addDevice(device);
         doReturn(deviceList).when(roomListService).getAllRoomsDeviceList();
 
         // when
@@ -116,7 +121,7 @@ public class VoiceCommandServiceTest {
         // given
         TestDummy device = new TestDummy("lampe");
         device.getSetList().parse("off");
-        RoomDeviceList deviceList = new RoomDeviceList("").addDevice(device);
+        RoomDeviceList deviceList = new RoomDeviceList("", context).addDevice(device);
         doReturn(deviceList).when(roomListService).getAllRoomsDeviceList();
 
         // when
@@ -132,7 +137,7 @@ public class VoiceCommandServiceTest {
         // given
         TestDummy device = new TestDummy("lampe1");
         device.getSetList().parse("on off");
-        RoomDeviceList deviceList = new RoomDeviceList("").addDevice(device);
+        RoomDeviceList deviceList = new RoomDeviceList("", context).addDevice(device);
         doReturn(deviceList).when(roomListService).getAllRoomsDeviceList();
 
         // when
@@ -150,7 +155,7 @@ public class VoiceCommandServiceTest {
         TestDummy device1 = new TestDummy("lampe2", "lampe");
         device.getSetList().parse("on off");
         device1.getSetList().parse("on off");
-        RoomDeviceList deviceList = new RoomDeviceList("").addDevice(device).addDevice(device1);
+        RoomDeviceList deviceList = new RoomDeviceList("", context).addDevice(device).addDevice(device1);
         doReturn(deviceList).when(roomListService).getAllRoomsDeviceList();
 
         // when
@@ -182,7 +187,7 @@ public class VoiceCommandServiceTest {
         // given
         TestDummy device = new TestDummy("lampe");
         device.getSetList().parse("on off");
-        RoomDeviceList deviceList = new RoomDeviceList("").addDevice(device);
+        RoomDeviceList deviceList = new RoomDeviceList("", context).addDevice(device);
         doReturn(deviceList).when(roomListService).getAllRoomsDeviceList();
 
         // when
@@ -199,7 +204,7 @@ public class VoiceCommandServiceTest {
         TestDummy device = new TestDummy("lampe");
         device.getSetList().parse("on off");
         device.setPronunciation("voice");
-        RoomDeviceList deviceList = new RoomDeviceList("").addDevice(device);
+        RoomDeviceList deviceList = new RoomDeviceList("", context).addDevice(device);
         doReturn(deviceList).when(roomListService).getAllRoomsDeviceList();
 
         // when
@@ -215,13 +220,13 @@ public class VoiceCommandServiceTest {
         // given
         LightSceneDevice lightSceneDevice = new LightSceneDevice() {
             @Override
-            public List<String> getInternalDeviceGroupOrGroupAttributes() {
+            public List<String> getInternalDeviceGroupOrGroupAttributes(Context context) {
                 return Lists.newArrayList("group");
             }
         };
         lightSceneDevice.setName("device");
         lightSceneDevice.getSetList().parse("scene:off,on");
-        RoomDeviceList deviceList = new RoomDeviceList("").addDevice(lightSceneDevice);
+        RoomDeviceList deviceList = new RoomDeviceList("", context).addDevice(lightSceneDevice);
         doReturn(deviceList).when(roomListService).getAllRoomsDeviceList();
 
         // when
@@ -250,7 +255,7 @@ public class VoiceCommandServiceTest {
         }
 
         @Override
-        public List<String> getInternalDeviceGroupOrGroupAttributes() {
+        public List<String> getInternalDeviceGroupOrGroupAttributes(Context context) {
             return Lists.newArrayList("group");
         }
     }

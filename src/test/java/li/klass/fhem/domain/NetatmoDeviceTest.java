@@ -34,7 +34,7 @@ public class NetatmoDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void should_read_Netatmo_DEVICE() {
-        NetatmoDevice device = getDeviceFor("netatmo_device");
+        NetatmoDevice device = getDeviceFor("netatmo_device", NetatmoDevice.class);
 
         assertThat(device.getAlias()).isEqualTo("Indoor");
         assertThat(device.getCo2()).isEqualTo("650 (ppm)");
@@ -49,7 +49,7 @@ public class NetatmoDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void should_read_Netatmo_MODULE() {
-        NetatmoDevice device = getDeviceFor("netatmo_module");
+        NetatmoDevice device = getDeviceFor("netatmo_module", NetatmoDevice.class);
 
         assertThat(device.getAlias()).isEqualTo("Outdoor");
         assertThat(device.getHumidity()).isEqualTo("60 (%)");
@@ -61,7 +61,7 @@ public class NetatmoDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void should_ignore_Netatmo_ACCOUNT() {
-        NetatmoDevice device = getDeviceFor("netatmo");
+        NetatmoDevice device = getDeviceFor("netatmo", NetatmoDevice.class);
         assertThat(device).isNull();
     }
 

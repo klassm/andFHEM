@@ -35,7 +35,7 @@ import static org.hamcrest.core.Is.is;
 public class YamahaAVRDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
-        YamahaAVRDevice device = getDefaultDevice();
+        YamahaAVRDevice device = getDefaultDevice(YamahaAVRDevice.class);
 
         assertThat(device.isMuted(), is(true));
         assertThat(device.isOnByState(), is(false));

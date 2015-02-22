@@ -36,7 +36,7 @@ import static org.hamcrest.core.Is.is;
 public class KS300DeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
-        KS300Device device = getDefaultDevice();
+        KS300Device device = getDefaultDevice(KS300Device.class);
 
         assertThat(device.getName(), is(DEFAULT_TEST_DEVICE_NAME));
         assertThat(device.getRoomConcatenated(), is(DEFAULT_TEST_ROOM_NAME));
@@ -63,14 +63,11 @@ public class KS300DeviceTest extends DeviceXMLParsingBase {
 
         long now = System.currentTimeMillis();
 
-        device.setMeasured(DateFormatUtil.toReadable(now));
+        device.setMeasured(DateFormatUtil.FHEM_DATE_FORMAT.print(now));
         long outdateTime = device.getTimeRequiredForStateError();
 
         assertThat(device.isOutdatedData(device.getLastMeasureTime() + outdateTime + 10000), is(true));
         assertThat(device.isOutdatedData(device.getLastMeasureTime() + outdateTime - 10000), is(false));
-
-        device.setMeasured("abc");
-        assertThat(device.isOutdatedData(1), is(false));
     }
 
 

@@ -89,14 +89,14 @@ public class RoomListIntentService extends ConvenientIntentService {
         }
 
         if (!REMOTE_UPDATE_FINISHED.equals(action) &&
-                roomListService.updateRoomDeviceListIfRequired(intent, updatePeriod) == RemoteUpdateRequired.REQUIRED) {
+                roomListService.updateRoomDeviceListIfRequired(intent, updatePeriod, this) == RemoteUpdateRequired.REQUIRED) {
             LOG.trace("handleIntent() - need to update room device list, intent is pending, so stopped here");
             return STATE.DONE;
         }
 
         if (GET_ALL_ROOMS_DEVICE_LIST.equals(action)) {
             LOG.trace("handleIntent() - handling all rooms device list");
-            RoomDeviceList allRoomsDeviceList = roomListService.getAllRoomsDeviceList();
+            RoomDeviceList allRoomsDeviceList = roomListService.getAllRoomsDeviceList(this);
             sendResultWithLastUpdate(resultReceiver, ResultCodes.SUCCESS, DEVICE_LIST, allRoomsDeviceList);
         } else if (GET_ROOM_NAME_LIST.equals(action)) {
             LOG.trace("handleIntent() - resolving room name list");
@@ -105,12 +105,12 @@ public class RoomListIntentService extends ConvenientIntentService {
         } else if (GET_ROOM_DEVICE_LIST.equals(action)) {
             String roomName = intent.getStringExtra(ROOM_NAME);
             LOG.trace("handleIntent() - resolving device list for room={}", roomName);
-            RoomDeviceList roomDeviceList = roomListService.getDeviceListForRoom(roomName);
+            RoomDeviceList roomDeviceList = roomListService.getDeviceListForRoom(roomName, this);
             sendResultWithLastUpdate(resultReceiver, ResultCodes.SUCCESS, DEVICE_LIST, roomDeviceList);
         } else if (GET_DEVICE_FOR_NAME.equals(action)) {
             String deviceName = intent.getStringExtra(DEVICE_NAME);
             LOG.trace("handleIntent() - resolving device for name={}", deviceName);
-            Optional<FhemDevice> device = roomListService.getDeviceForName(deviceName);
+            Optional<FhemDevice> device = roomListService.getDeviceForName(deviceName, this);
             if (!device.isPresent()) {
                 LOG.info("cannot find device for {}", deviceName);
                 return STATE.ERROR;
@@ -123,12 +123,12 @@ public class RoomListIntentService extends ConvenientIntentService {
             Map<String, String> updates = (Map<String, String>) intent.getSerializableExtra(UPDATE_MAP);
             boolean vibrateUponNotification = intent.getBooleanExtra(VIBRATE, false);
 
-            roomListService.parseReceivedDeviceStateMap(deviceName, updates, vibrateUponNotification);
+            roomListService.parseReceivedDeviceStateMap(deviceName, updates, vibrateUponNotification, this);
 
             sendBroadcast(new Intent(Actions.DO_UPDATE));
         } else if (REMOTE_UPDATE_FINISHED.equals(action)) {
             LOG.trace("handleIntent() - remote update finished");
-            roomListService.remoteUpdateFinished();
+            roomListService.remoteUpdateFinished(this);
         } else if (UPDATE_IF_REQUIRED.equals(action)) {
             // If required, the device list will be updated by now. The resend intent will reach us
             // here. The only thing we have to do is notify the receiver that we have
@@ -145,7 +145,7 @@ public class RoomListIntentService extends ConvenientIntentService {
                         .setClass(this, sender));
             }
         } else if (CLEAR_DEVICE_LIST.equals(action)) {
-            roomListService.clearDeviceList();
+            roomListService.clearDeviceList(this);
         }
 
         return STATE.DONE;

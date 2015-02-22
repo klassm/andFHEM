@@ -31,18 +31,17 @@ import org.mockito.InjectMocks;
 
 import java.util.Map;
 
-import li.klass.fhem.infra.basetest.RobolectricBaseTestCase;
 import li.klass.fhem.testutil.MockitoTestRule;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 
-public class GCMIntentServiceTest extends RobolectricBaseTestCase {
-
-    @Rule
-    public MockitoTestRule mockitoTestRule = new MockitoTestRule();
+public class GCMIntentServiceTest {
 
     @InjectMocks
     GCMIntentService service;
+
+    @Rule
+    public MockitoTestRule mockitoTestRule = new MockitoTestRule();
 
     @Test
     public void should_read_device_state_updates_with_multiple_colons() {

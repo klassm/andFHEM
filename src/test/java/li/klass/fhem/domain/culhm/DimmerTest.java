@@ -34,7 +34,7 @@ import static org.fest.assertions.api.Assertions.assertThat;
 public class DimmerTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
-        CULHMDevice device = getDefaultDevice();
+        CULHMDevice device = getDefaultDevice(CULHMDevice.class);
 
         assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
         assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
@@ -54,7 +54,7 @@ public class DimmerTest extends DeviceXMLParsingBase {
 
     @Test
     public void testDim() {
-        CULHMDevice device = getDefaultDevice();
+        CULHMDevice device = getDefaultDevice(CULHMDevice.class);
         device.setState("5 %");
 
         assertThat(device.getDimPosition()).isEqualTo(5);

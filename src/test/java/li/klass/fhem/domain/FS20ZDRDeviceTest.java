@@ -34,7 +34,7 @@ import static org.hamcrest.Matchers.notNullValue;
 public class FS20ZDRDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testPropertiesSet() {
-        FS20ZDRDevice device = getDefaultDevice();
+        FS20ZDRDevice device = getDefaultDevice(FS20ZDRDevice.class);
         assertThat(device, is(notNullValue()));
 
         assertThat(device.supportsToggle(), is(true));

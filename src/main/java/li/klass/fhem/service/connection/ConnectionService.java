@@ -74,7 +74,6 @@ public class ConnectionService {
     private DummyServerSpec testData;
 
     public ConnectionService() {
-        getApplication().inject(this);
         initialiseDummyData();
     }
 

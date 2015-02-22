@@ -9,7 +9,7 @@ import static org.fest.assertions.api.Assertions.assertThat;
 public class WithingsDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void body_device_is_read_correctly() {
-        WithingsDevice device = getDeviceFor("body");
+        WithingsDevice device = getDeviceFor("body", WithingsDevice.class);
         assertThat(device).isNotNull();
 
         assertThat(device.getName()).isEqualTo("body");
@@ -25,7 +25,7 @@ public class WithingsDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void scale_device_is_read_correctly() {
-        WithingsDevice device = getDeviceFor("scale");
+        WithingsDevice device = getDeviceFor("scale", WithingsDevice.class);
         assertThat(device).isNotNull();
 
         assertThat(device.getName()).isEqualTo("scale");
@@ -38,7 +38,7 @@ public class WithingsDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void withings_account_device_is_ignored() {
-        WithingsDevice device = getDeviceFor("withings");
+        WithingsDevice device = getDeviceFor("withings", WithingsDevice.class);
         assertThat(device).isNull();
     }
 

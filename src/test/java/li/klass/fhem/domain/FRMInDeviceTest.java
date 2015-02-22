@@ -34,7 +34,7 @@ public class FRMInDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void testForCorrectlySetAttributes() {
-        FRMInDevice device = getDefaultDevice();
+        FRMInDevice device = getDefaultDevice(FRMInDevice.class);
         assertThat(device.getAlarm(), is("on"));
         assertThat(device.getState(), is("off"));
     }

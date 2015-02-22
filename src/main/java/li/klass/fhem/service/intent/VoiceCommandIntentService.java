@@ -65,7 +65,7 @@ public class VoiceCommandIntentService extends ConvenientIntentService {
     protected STATE handleIntent(final Intent intent, long updatePeriod, final ResultReceiver resultReceiver) {
         final String action = intent.getAction();
 
-        if (roomListService.updateRoomDeviceListIfRequired(intent, updatePeriod) == REQUIRED) {
+        if (roomListService.updateRoomDeviceListIfRequired(intent, updatePeriod, this) == REQUIRED) {
             return STATE.DONE;
         }
 
@@ -93,7 +93,7 @@ public class VoiceCommandIntentService extends ConvenientIntentService {
     private boolean handleCommand(String command) {
         command = command.toLowerCase();
 
-        Optional<VoiceResult> result = voiceCommandService.resultFor(command);
+        Optional<VoiceResult> result = voiceCommandService.resultFor(command, this);
 
         if (!result.isPresent()) {
             return false;

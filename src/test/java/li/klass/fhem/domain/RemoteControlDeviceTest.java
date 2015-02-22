@@ -39,7 +39,7 @@ public class RemoteControlDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void testAttributesDefaultDevice() {
-        RemoteControlDevice device = getDefaultDevice();
+        RemoteControlDevice device = getDefaultDevice(RemoteControlDevice.class);
 
         assertThat(device, is(not(nullValue())));
 

@@ -34,7 +34,7 @@ import static org.fest.assertions.api.Assertions.assertThat;
 public class SwitchTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
-        CULHMDevice device = getDefaultDevice();
+        CULHMDevice device = getDefaultDevice(CULHMDevice.class);
 
         assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
         assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);
@@ -51,7 +51,7 @@ public class SwitchTest extends DeviceXMLParsingBase {
 
     @Test
     public void testRelaxedEventMap() {
-        CULHMDevice relaxedEventMapDevice = getDeviceFor("device_relaxedEventMap");
+        CULHMDevice relaxedEventMapDevice = getDeviceFor("device_relaxedEventMap", CULHMDevice.class);
         assertThat(relaxedEventMapDevice.getEventMapStateFor("off")).isEqualTo("off");
     }
 

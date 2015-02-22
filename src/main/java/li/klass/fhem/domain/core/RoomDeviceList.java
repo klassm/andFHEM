@@ -24,6 +24,8 @@
 
 package li.klass.fhem.domain.core;
 
+import android.content.Context;
+
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashSet;
@@ -58,17 +60,19 @@ public class RoomDeviceList implements Serializable {
     private List<String> hiddenRooms = newArrayList();
 
     private List<String> hiddenGroups = newArrayList();
+    private Context context;
 
     /**
      * Creates a new holder for a given room name.
      *
      * @param roomName room.
      */
-    public RoomDeviceList(String roomName) {
+    public RoomDeviceList(String roomName, Context context) {
         this.roomName = roomName;
+        this.context = context;
     }
 
-    public RoomDeviceList(RoomDeviceList roomDeviceList) {
+    public RoomDeviceList(RoomDeviceList roomDeviceList, Context context) {
         if (roomDeviceList != null) {
             this.roomName = roomDeviceList.roomName;
             for (FhemDevice device : roomDeviceList.getAllDevices()) {
@@ -152,7 +156,7 @@ public class RoomDeviceList implements Serializable {
 
     @SuppressWarnings("unchecked")
     public <T extends FhemDevice> void removeDevice(T device) {
-        List<String> groups = device.getInternalDeviceGroupOrGroupAttributes();
+        List<String> groups = device.getInternalDeviceGroupOrGroupAttributes(context);
         for (String group : groups) {
             deviceMap.get(group).remove(device);
         }
@@ -206,7 +210,7 @@ public class RoomDeviceList implements Serializable {
         if (device == null) return this;
         if (!device.isSupported()) return this;
 
-        List<String> groups = device.getInternalDeviceGroupOrGroupAttributes();
+        List<String> groups = device.getInternalDeviceGroupOrGroupAttributes(context);
         for (String group : groups) {
             getOrCreateDeviceList(group).add(device);
         }

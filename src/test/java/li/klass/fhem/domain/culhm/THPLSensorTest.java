@@ -34,7 +34,7 @@ import static org.fest.assertions.api.Assertions.assertThat;
 public class THPLSensorTest extends DeviceXMLParsingBase {
     @Test
     public void should_set_default_device_attributes() {
-        CULHMDevice device = getDeviceFor("default");
+        CULHMDevice device = getDeviceFor("default", CULHMDevice.class);
 
         assertThat(device.getName()).isEqualTo("default");
 
@@ -56,7 +56,7 @@ public class THPLSensorTest extends DeviceXMLParsingBase {
 
     @Test
     public void should_set_pressure_device_attributes() {
-        CULHMDevice device = getDeviceFor("pressure");
+        CULHMDevice device = getDeviceFor("pressure", CULHMDevice.class);
 
         assertThat(device.getName()).isEqualTo("pressure");
 

@@ -33,7 +33,7 @@ import static org.fest.assertions.api.Assertions.assertThat;
 public class RFXX10RECDeviceTest extends DeviceXMLParsingBase {
     @Test
     public void testForCorrectlySetAttributes() {
-        RFXX10RECDevice device = getDefaultDevice();
+        RFXX10RECDevice device = getDefaultDevice(RFXX10RECDevice.class);
 
         assertThat(device.getName()).isEqualTo(DEFAULT_TEST_DEVICE_NAME);
         assertThat(device.getRoomConcatenated()).isEqualTo(DEFAULT_TEST_ROOM_NAME);

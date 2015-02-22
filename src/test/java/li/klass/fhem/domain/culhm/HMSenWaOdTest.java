@@ -16,7 +16,7 @@ public class HMSenWaOdTest extends DeviceXMLParsingBase {
 
     @Test
     public void testDeviceAttributesRead() {
-        CULHMDevice device = getDefaultDevice();
+        CULHMDevice device = getDefaultDevice(CULHMDevice.class);
         assertThat(device, is(not(nullValue())));
 
         assertThat(device.getState(), is("24 (%)"));
