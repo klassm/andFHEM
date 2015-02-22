@@ -24,14 +24,16 @@
 
 package li.klass.fhem.domain;
 
+import android.content.Context;
+
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.ToggleableDevice;
 
 public class SomfyDevice extends ToggleableDevice<SomfyDevice> {
 
     @Override
-    public void afterDeviceXMLRead() {
-        super.afterDeviceXMLRead();
+    public void afterDeviceXMLRead(Context context) {
+        super.afterDeviceXMLRead(context);
         if (!getWebCmd().contains("auf")) {
             getWebCmd().add("auf");
         }

@@ -30,54 +30,55 @@ import li.klass.fhem.domain.core.DeviceXMLParsingBase;
 
 import static li.klass.fhem.domain.core.DeviceFunctionality.SWITCH;
 import static li.klass.fhem.domain.core.DeviceFunctionality.WINDOW;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
+import static org.fest.assertions.api.Assertions.assertThat;
 
 public class EnOceanDeviceTest extends DeviceXMLParsingBase {
 
     @Test
     public void testForCorrectlySetAttributes() {
         EnOceanDevice device = getDefaultDevice(EnOceanDevice.class);
-        assertThat(device.getSubType(), is(EnOceanDevice.SubType.SWITCH));
-        assertThat(device.getState(), is("on"));
-        assertThat(device.isOnByState(), is(true));
-        assertThat(device.getEventMapStateFor("BI"), is("off"));
-        assertThat(device.getEventMapStateFor("B0"), is("on"));
-        assertThat(device.getOffStateName(), is("BI"));
-        assertThat(device.getOnStateName(), is("B0"));
+        assertThat(device.getSubType()).isEqualTo((EnOceanDevice.SubType.SWITCH));
+        assertThat(device.getState()).isEqualTo(("on"));
+        assertThat(device.isOnByState()).isEqualTo((true));
+        assertThat(device.getEventMapStateFor("BI")).isEqualTo(("off"));
+        assertThat(device.getEventMapStateFor("B0")).isEqualTo(("on"));
+        assertThat(device.getOffStateName()).isEqualTo(("BI"));
+        assertThat(device.getOnStateName()).isEqualTo(("B0"));
 
         device.setState("B0");
-        assertThat(device.getState(), is("on"));
+        assertThat(device.getState()).isEqualTo(("on"));
 
         EnOceanDevice device1 = getDeviceFor("device1", EnOceanDevice.class);
-        assertThat(device1.getSubType(), is(EnOceanDevice.SubType.SENSOR));
-        assertThat(device1.getState(), is("153"));
-        assertThat(device1.getMeasured(), is("04.11.2012 23:55"));
+        assertThat(device1.getSubType()).isEqualTo((EnOceanDevice.SubType.SENSOR));
+        assertThat(device1.getState()).isEqualTo(("153"));
+        assertThat(device1.getMeasured()).isEqualTo(("04.11.2012 23:55"));
 
         EnOceanDevice device2 = getDeviceFor("device2", EnOceanDevice.class);
-        assertThat(device2.getOffStateName(), is("released"));
-        assertThat(device2.getOnStateName(), is("B0"));
+        assertThat(device2.getOffStateName()).isEqualTo(("released"));
+        assertThat(device2.getOnStateName()).isEqualTo(("B0"));
 
         device.readSUBTYPE("");
-        assertThat(device.compareTo(device1), is(-1));
+        assertThat(device.compareTo(device1)).isEqualTo((-1));
     }
 
     @Test
     public void testGatewaySwitchDevice() {
         EnOceanDevice device = getDeviceFor("device3", EnOceanDevice.class);
-        assertThat(device.getSubType(), is(EnOceanDevice.SubType.SWITCH));
-        assertThat(device.getDeviceGroup(), is(SWITCH));
+        assertThat(device.getSubType()).isEqualTo((EnOceanDevice.SubType.SWITCH));
+        assertThat(device.getDeviceGroup()).isEqualTo((SWITCH));
     }
 
     @Test
     public void testShutterDevice() {
         EnOceanDevice device = getDeviceFor("shutter", EnOceanDevice.class);
 
-        assertThat(device.getDeviceGroup(), is(WINDOW));
-        assertThat(device.getSubType(), is(EnOceanDevice.SubType.SHUTTER));
+        assertThat(device).isNotNull();
 
-        assertThat(device.getModel(), is("FSB14"));
-        assertThat(device.getManufacturerId(), is("00D"));
+        assertThat(device.getSubType()).isEqualTo((EnOceanDevice.SubType.SHUTTER));
+        assertThat(device.getDeviceGroup()).isEqualTo((WINDOW));
+
+        assertThat(device.getModel()).isEqualTo(("FSB14"));
+        assertThat(device.getManufacturerId()).isEqualTo(("00D"));
     }
 
     @Override

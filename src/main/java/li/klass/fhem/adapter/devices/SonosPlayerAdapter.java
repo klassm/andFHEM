@@ -74,7 +74,7 @@ public class SonosPlayerAdapter extends GenericDeviceAdapter<SonosPlayerDevice> 
 
                     @Override
                     public void onStopTrackingTouch(Context context, SonosPlayerDevice device, int progress) {
-                        stateUiService.setSubState(device, "volume", progress + "");
+                        stateUiService.setSubState(device, "volume", progress + "", context);
                     }
                 }.createRow(getInflater(), device));
             }

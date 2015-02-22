@@ -24,6 +24,8 @@
 
 package li.klass.fhem.domain;
 
+import android.content.Context;
+
 import java.util.List;
 
 import li.klass.fhem.R;
@@ -70,18 +72,18 @@ public class CULTXDevice extends FhemDevice<CULTXDevice> {
     }
 
     @Override
-    protected void fillDeviceCharts(List<DeviceChart> chartSeries) {
-        super.fillDeviceCharts(chartSeries);
+    protected void fillDeviceCharts(List<DeviceChart> chartSeries, Context context) {
+        super.fillDeviceCharts(chartSeries, context);
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureHumidityGraph,
                 new ChartSeriesDescription.Builder()
-                        .withColumnName(R.string.humidity).withFileLogSpec("4:humidity:0:")
+                        .withColumnName(R.string.humidity, context).withFileLogSpec("4:humidity:0:")
                         .withDbLogSpec("humidity")
                         .withSeriesType(HUMIDITY)
                         .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("humidity", 0, 100))
                         .build(),
                 new ChartSeriesDescription.Builder()
-                        .withColumnName(R.string.temperature).withFileLogSpec("4:temperature:0:")
+                        .withColumnName(R.string.temperature, context).withFileLogSpec("4:temperature:0:")
                         .withDbLogSpec("temperature")
                         .withSeriesType(TEMPERATURE)
                         .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("temperature", 0, 30))

@@ -78,7 +78,7 @@ public class FloorplanFragment extends AbstractWebViewFragment {
     }
 
     protected String getLoadUrl() {
-        String url = connectionService.getCurrentServer().getUrl();
+        String url = connectionService.getCurrentServer(getActivity()).getUrl();
         return url + "/floorplan/" + deviceName;
     }
 }

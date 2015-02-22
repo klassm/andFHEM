@@ -24,6 +24,8 @@
 
 package li.klass.fhem.service.device;
 
+import android.content.Context;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -43,11 +45,12 @@ public class DimmableDeviceService {
      *
      * @param device      concerned device
      * @param dimProgress dim state to set. The progress will be matched against the available FS20 dim options.
+     * @param context
      */
-    public void dim(DimmableDevice device, int dimProgress) {
+    public void dim(DimmableDevice device, int dimProgress, Context context) {
         if (!device.supportsDim()) return;
         String newState = device.getDimStateForPosition(dimProgress);
 
-        genericDeviceService.setState(device, newState);
+        genericDeviceService.setState(device, newState, context);
     }
 }

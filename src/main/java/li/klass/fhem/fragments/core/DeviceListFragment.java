@@ -190,12 +190,12 @@ public abstract class DeviceListFragment extends BaseFragment {
         fillEmptyView(emptyView, container);
 
         if (!isNavigation()) {
-            int rightPadding = applicationProperties.getIntegerSharedPreference(DEVICE_LIST_RIGHT_PADDING, 0);
+            int rightPadding = applicationProperties.getIntegerSharedPreference(DEVICE_LIST_RIGHT_PADDING, 0, getActivity());
             nestedListView.setPadding(nestedListView.getPaddingLeft(), nestedListView.getPaddingTop(),
                     rightPadding, nestedListView.getPaddingBottom());
         }
 
-        DeviceGridAdapter adapter = new DeviceGridAdapter(getActivity(), new RoomDeviceList("", getActivity()), applicationProperties);
+        DeviceGridAdapter adapter = new DeviceGridAdapter(getActivity(), new RoomDeviceList(""), applicationProperties);
         nestedListView.setAdapter(adapter);
         nestedListView.setOnLongClickListener(new GridViewWithSections.OnClickListener<String, FhemDevice>() {
             @Override
@@ -293,7 +293,7 @@ public abstract class DeviceListFragment extends BaseFragment {
                 }
 
                 View dummyConnectionNotification = view.findViewById(R.id.dummyConnectionNotification);
-                if (!dataConnectionSwitch.getCurrentProvider().getClass()
+                if (!dataConnectionSwitch.getCurrentProvider(getActivity()).getClass()
                         .isAssignableFrom(DummyDataConnection.class)) {
                     dummyConnectionNotification.setVisibility(View.GONE);
                 } else {

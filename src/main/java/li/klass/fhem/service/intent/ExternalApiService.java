@@ -139,7 +139,7 @@ public class ExternalApiService extends Service {
 
                                 @Override
                                 protected String doInBackground(String... params) {
-                                    return externalApiService.commandExecutionService.executeSafely(String.format("{ReadingsVal('%s','%s','%s')}", params[0], params[1], params[2]));
+                                    return externalApiService.commandExecutionService.executeSafely(String.format("{ReadingsVal('%s','%s','%s')}", params[0], params[1], params[2]), externalApiService);
                                 }
 
                                 @Override

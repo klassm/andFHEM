@@ -27,7 +27,6 @@ package li.klass.fhem.appwidget;
 import org.junit.Test;
 
 import li.klass.fhem.appwidget.view.WidgetType;
-import li.klass.fhem.infra.basetest.RobolectricBaseTestCase;
 
 import static li.klass.fhem.appwidget.WidgetConfiguration.escape;
 import static li.klass.fhem.appwidget.WidgetConfiguration.unescape;
@@ -37,7 +36,7 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 
-public class WidgetConfigurationTest extends RobolectricBaseTestCase {
+public class WidgetConfigurationTest {
 
     @Test
     public void should_serialize_correctly() {

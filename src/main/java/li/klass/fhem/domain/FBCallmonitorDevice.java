@@ -30,7 +30,6 @@ import org.w3c.dom.NamedNodeMap;
 
 import java.util.Locale;
 
-import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.domain.core.DeviceFunctionality;
 import li.klass.fhem.domain.core.FhemDevice;
@@ -115,9 +114,8 @@ public class FBCallmonitorDevice extends FhemDevice<FBCallmonitorDevice> {
     }
 
     @Override
-    public void afterDeviceXMLRead() {
-        super.afterDeviceXMLRead();
-        Context context = AndFHEMApplication.getContext();
+    public void afterDeviceXMLRead(Context context) {
+        super.afterDeviceXMLRead(context);
 
         int eventStringId;
         if (eventInternal == null) {

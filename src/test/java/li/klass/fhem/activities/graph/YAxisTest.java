@@ -30,7 +30,6 @@ import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.Mock;
 
 import java.util.Arrays;
@@ -38,8 +37,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import li.klass.fhem.R;
-import li.klass.fhem.infra.AndFHEMRobolectricTestRunner;
-import li.klass.fhem.infra.basetest.RobolectricBaseTestCase;
 import li.klass.fhem.service.graph.GraphEntry;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.service.graph.description.SeriesType;

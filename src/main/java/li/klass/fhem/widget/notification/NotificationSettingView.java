@@ -38,6 +38,7 @@ import li.klass.fhem.R;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
+import li.klass.fhem.service.NotificationService;
 import li.klass.fhem.service.intent.NotificationIntentService;
 import li.klass.fhem.util.FhemResultReceiver;
 
@@ -60,13 +61,13 @@ public class NotificationSettingView {
         RadioButton noUpdates = (RadioButton) view.findViewById(R.id.noUpdates);
 
         switch (value) {
-            case NotificationIntentService.ALL_UPDATES:
+            case NotificationService.ALL_UPDATES:
                 allUpdates.setChecked(true);
                 break;
-            case NotificationIntentService.STATE_UPDATES:
+            case NotificationService.STATE_UPDATES:
                 stateUpdates.setChecked(true);
                 break;
-            case NotificationIntentService.NO_UPDATES:
+            case NotificationService.NO_UPDATES:
                 noUpdates.setChecked(true);
                 break;
         }
@@ -125,9 +126,9 @@ public class NotificationSettingView {
         RadioButton stateUpdates = (RadioButton) view.findViewById(R.id.stateUpdates);
         RadioButton noUpdates = (RadioButton) view.findViewById(R.id.noUpdates);
 
-        if (allUpdates.isChecked()) return NotificationIntentService.ALL_UPDATES;
-        if (stateUpdates.isChecked()) return NotificationIntentService.STATE_UPDATES;
-        if (noUpdates.isChecked()) return NotificationIntentService.NO_UPDATES;
+        if (allUpdates.isChecked()) return NotificationService.ALL_UPDATES;
+        if (stateUpdates.isChecked()) return NotificationService.STATE_UPDATES;
+        if (noUpdates.isChecked()) return NotificationService.NO_UPDATES;
         return 0;
     }
 }

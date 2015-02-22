@@ -24,6 +24,8 @@
 
 package li.klass.fhem.domain;
 
+import android.content.Context;
+
 import java.util.Map;
 
 import li.klass.fhem.domain.core.DeviceFunctionality;
@@ -71,8 +73,8 @@ public class OwDevice extends ToggleableDevice<OwDevice> {
     private String inputD;
 
     @Override
-    public void afterDeviceXMLRead() {
-        super.afterDeviceXMLRead();
+    public void afterDeviceXMLRead(Context context) {
+        super.afterDeviceXMLRead(context);
 
         String internalState = getInternalState();
         Map<String, String> eventMap = getEventMap();

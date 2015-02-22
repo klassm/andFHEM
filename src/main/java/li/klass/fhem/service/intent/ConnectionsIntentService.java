@@ -68,11 +68,11 @@ public class ConnectionsIntentService extends ConvenientIntentService {
         String action = intent.getAction();
 
         if (Actions.CONNECTIONS_LIST.equals(action)) {
-            ArrayList<FHEMServerSpec> serverSpecs = connectionService.listAll();
+            ArrayList<FHEMServerSpec> serverSpecs = connectionService.listAll(this);
 
             Bundle bundle = new Bundle();
             bundle.putSerializable(CONNECTION_LIST, serverSpecs);
-            bundle.putString(CONNECTION_ID, connectionService.getSelectedId());
+            bundle.putString(CONNECTION_ID, connectionService.getSelectedId(this));
             sendResult(resultReceiver, SUCCESS, bundle);
         } else if (Actions.CONNECTION_CREATE.equals(action)
                 || Actions.CONNECTION_UPDATE.equals(action)) {
@@ -93,10 +93,10 @@ public class ConnectionsIntentService extends ConvenientIntentService {
 
             if (Actions.CONNECTION_CREATE.equals(action)) {
                 connectionService.create(name, serverType, username,
-                        password, ip, port, url, clientCertificatePath, clientCertificatePassword);
+                        password, ip, port, url, clientCertificatePath, clientCertificatePassword, this);
             } else {
                 connectionService.update(id, name, serverType, username, password, ip,
-                        port, url, clientCertificatePath, clientCertificatePassword);
+                        port, url, clientCertificatePath, clientCertificatePassword, this);
             }
 
             sendChangedBroadcast();
@@ -105,22 +105,22 @@ public class ConnectionsIntentService extends ConvenientIntentService {
         } else if (Actions.CONNECTION_GET.equals(action)) {
             String id = intent.getStringExtra(CONNECTION_ID);
             sendSingleExtraResult(resultReceiver, ResultCodes.SUCCESS, CONNECTION,
-                    connectionService.forId(id));
+                    connectionService.forId(id, this));
         } else if (Actions.CONNECTION_DELETE.equals(action)) {
             String id = intent.getStringExtra(CONNECTION_ID);
-            connectionService.delete(id);
+            connectionService.delete(id, this);
 
             sendChangedBroadcast();
             return STATE.SUCCESS;
         } else if (Actions.CONNECTION_SET_SELECTED.equals(action)) {
-            String currentlySelected = connectionService.getSelectedId();
+            String currentlySelected = connectionService.getSelectedId(this);
             String id = intent.getStringExtra(CONNECTION_ID);
 
             if (currentlySelected.equals(id)) return STATE.SUCCESS;
 
             startService(new Intent(Actions.CLEAR_DEVICE_LIST).setClass(this, RoomListIntentService.class));
 
-            connectionService.setSelectedId(id);
+            connectionService.setSelectedId(id, this);
 
             Intent updateIntent = new Intent(Actions.DO_UPDATE);
             updateIntent.putExtra(BundleExtraKeys.DO_REFRESH, true);
@@ -129,9 +129,9 @@ public class ConnectionsIntentService extends ConvenientIntentService {
             return STATE.SUCCESS;
         } else if (Actions.CONNECTION_GET_SELECTED.equals(action)) {
             Bundle bundle = new Bundle();
-            String selectedId = connectionService.getSelectedId();
+            String selectedId = connectionService.getSelectedId(this);
             bundle.putString(CONNECTION_ID, selectedId);
-            bundle.putSerializable(CONNECTION, connectionService.forId(selectedId));
+            bundle.putSerializable(CONNECTION, connectionService.forId(selectedId, this));
 
             sendResult(resultReceiver, SUCCESS, bundle);
         }

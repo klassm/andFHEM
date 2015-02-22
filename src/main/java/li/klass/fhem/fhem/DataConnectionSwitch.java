@@ -24,6 +24,8 @@
 
 package li.klass.fhem.fhem;
 
+import android.content.Context;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -40,8 +42,8 @@ public class DataConnectionSwitch {
     @Inject
     ApplicationProperties applicationProperties;
 
-    public FHEMConnection getCurrentProvider() {
-        FHEMServerSpec selectedServer = connectionService.getCurrentServer();
+    public FHEMConnection getCurrentProvider(Context context) {
+        FHEMServerSpec selectedServer = connectionService.getCurrentServer(context);
         FHEMConnection currentConnection = selectedServer.getServerType().getConnection();
         currentConnection.setApplicationProperties(applicationProperties);
 

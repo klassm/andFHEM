@@ -24,6 +24,7 @@
 
 package li.klass.fhem.fhem;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 
 import li.klass.fhem.constants.PreferenceKeys;
@@ -38,7 +39,7 @@ public abstract class FHEMConnection {
     protected FHEMServerSpec serverSpec;
     protected ApplicationProperties applicationProperties;
 
-    public abstract RequestResult<String> executeCommand(String command);
+    public abstract RequestResult<String> executeCommand(String command, Context context);
 
     public abstract RequestResult<Bitmap> requestBitmap(String relativePath);
 
@@ -61,10 +62,10 @@ public abstract class FHEMConnection {
         ErrorHolder.setError(e, text);
     }
 
-    protected int getConnectionTimeoutMilliSeconds() {
+    protected int getConnectionTimeoutMilliSeconds(Context context) {
         return 1000 * applicationProperties.getIntegerSharedPreference(
-                PreferenceKeys.CONNECTION_TIMEOUT, CONNECTION_TIMEOUT_DEFAULT_SECONDS
-        );
+                PreferenceKeys.CONNECTION_TIMEOUT, CONNECTION_TIMEOUT_DEFAULT_SECONDS,
+                context);
     }
 
     public void setApplicationProperties(ApplicationProperties applicationProperties) {

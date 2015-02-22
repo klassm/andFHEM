@@ -24,6 +24,7 @@
 
 package li.klass.fhem.fhem;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
@@ -70,7 +71,7 @@ public class FHEMWEBConnection extends FHEMConnection {
     }
 
     @Override
-    public RequestResult<String> executeCommand(String command) {
+    public RequestResult<String> executeCommand(String command, Context context) {
         Log.i(TAG, "executeTask command " + command);
 
         String urlSuffix = null;

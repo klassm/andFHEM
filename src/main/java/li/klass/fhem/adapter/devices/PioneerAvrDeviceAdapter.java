@@ -81,7 +81,7 @@ public class PioneerAvrDeviceAdapter extends ToggleableAdapterWithSwitchActionRo
 
                     @Override
                     protected void onButtonClick(Context context, PioneerAvrDevice device, boolean isChecked) {
-                        stateUiService.setSubState(device, "mute", isChecked ? "on" : "off");
+                        stateUiService.setSubState(device, "mute", isChecked ? "on" : "off", context);
                     }
                 }
                         .createRow(context, device, context.getString(R.string.musicMute)));

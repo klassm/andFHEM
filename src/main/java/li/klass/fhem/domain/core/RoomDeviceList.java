@@ -60,23 +60,21 @@ public class RoomDeviceList implements Serializable {
     private List<String> hiddenRooms = newArrayList();
 
     private List<String> hiddenGroups = newArrayList();
-    private Context context;
 
     /**
      * Creates a new holder for a given room name.
      *
      * @param roomName room.
      */
-    public RoomDeviceList(String roomName, Context context) {
+    public RoomDeviceList(String roomName) {
         this.roomName = roomName;
-        this.context = context;
     }
 
     public RoomDeviceList(RoomDeviceList roomDeviceList, Context context) {
         if (roomDeviceList != null) {
             this.roomName = roomDeviceList.roomName;
             for (FhemDevice device : roomDeviceList.getAllDevices()) {
-                addDevice(device);
+                addDevice(device, context);
             }
         }
     }
@@ -105,7 +103,7 @@ public class RoomDeviceList implements Serializable {
      * @return list of devices matching the group.
      */
     public <T extends FhemDevice> List<T> getDevicesOfFunctionality(String group,
-                                                                boolean respectSupported) {
+                                                                    boolean respectSupported) {
         Set<T> deviceSet = getOrCreateDeviceList(group);
         List<T> deviceList = newArrayList();
         for (T device : deviceSet) {
@@ -155,7 +153,7 @@ public class RoomDeviceList implements Serializable {
     }
 
     @SuppressWarnings("unchecked")
-    public <T extends FhemDevice> void removeDevice(T device) {
+    public <T extends FhemDevice> void removeDevice(T device, Context context) {
         List<String> groups = device.getInternalDeviceGroupOrGroupAttributes(context);
         for (String group : groups) {
             deviceMap.get(group).remove(device);
@@ -206,7 +204,7 @@ public class RoomDeviceList implements Serializable {
     }
 
     @SuppressWarnings("unchecked")
-    public <T extends FhemDevice> RoomDeviceList addDevice(T device) {
+    public <T extends FhemDevice> RoomDeviceList addDevice(T device, Context context) {
         if (device == null) return this;
         if (!device.isSupported()) return this;
 

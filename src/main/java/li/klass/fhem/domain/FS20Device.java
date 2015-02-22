@@ -24,6 +24,8 @@
 
 package li.klass.fhem.domain;
 
+import android.content.Context;
+
 import org.w3c.dom.NamedNodeMap;
 
 import java.io.Serializable;
@@ -114,12 +116,12 @@ public class FS20Device extends DimmableDiscreteStatesDevice<FS20Device> impleme
     }
 
     @Override
-    protected void fillDeviceCharts(List<DeviceChart> chartSeries) {
-        super.fillDeviceCharts(chartSeries);
+    protected void fillDeviceCharts(List<DeviceChart> chartSeries, Context context) {
+        super.fillDeviceCharts(chartSeries, context);
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.stateGraph,
                 new ChartSeriesDescription.Builder()
-                        .withColumnName(R.string.state)
+                        .withColumnName(R.string.state, context)
                         .withFileLogSpec("3:::$fld[2]=~/on.*/?1:0")
                         .withDbLogSpec("data:::$val=~s/(on|off).*/$1eq\"on\"?1:0/eg")
                         .withShowDiscreteValues(true)

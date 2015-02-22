@@ -72,7 +72,7 @@ public class STVDeviceAdapter extends GenericDeviceAdapter<STVDevice> {
 
                     @Override
                     public void onButtonClick(Context context, STVDevice device, String targetState) {
-                        stateUiService.setSubState(device, "mute", targetState);
+                        stateUiService.setSubState(device, "mute", targetState, context);
                     }
 
                     @Override

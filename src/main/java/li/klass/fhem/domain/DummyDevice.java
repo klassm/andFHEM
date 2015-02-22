@@ -24,6 +24,8 @@
 
 package li.klass.fhem.domain;
 
+import android.content.Context;
+
 import org.w3c.dom.NamedNodeMap;
 
 import li.klass.fhem.domain.core.DeviceFunctionality;
@@ -52,8 +54,8 @@ public class DummyDevice extends DimmableContinuousStatesDevice<DummyDevice> {
     }
 
     @Override
-    public void afterDeviceXMLRead() {
-        super.afterDeviceXMLRead();
+    public void afterDeviceXMLRead(Context context) {
+        super.afterDeviceXMLRead(context);
 
         SetListValue value = getSetList().get("state");
 

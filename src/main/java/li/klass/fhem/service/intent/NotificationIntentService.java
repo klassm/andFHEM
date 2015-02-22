@@ -24,50 +24,27 @@
 
 package li.klass.fhem.service.intent;
 
-import android.app.Activity;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.ResultReceiver;
-import android.os.SystemClock;
-import android.util.Log;
 
-import com.google.common.base.Joiner;
-
-import java.lang.reflect.Field;
-import java.util.Locale;
 import java.util.Map;
 
 import javax.inject.Inject;
 
-import li.klass.fhem.R;
-import li.klass.fhem.activities.AndFHEMMainActivity;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.ResultCodes;
-import li.klass.fhem.dagger.ForApplication;
 import li.klass.fhem.domain.core.FhemDevice;
-import li.klass.fhem.domain.genericview.ShowField;
-import li.klass.fhem.fragments.FragmentType;
-import li.klass.fhem.fragments.core.DeviceDetailFragment;
-import li.klass.fhem.util.NotificationUtil;
-import li.klass.fhem.util.ReflectionUtil;
+import li.klass.fhem.service.NotificationService;
 
-import static com.google.common.collect.Maps.newHashMap;
 import static li.klass.fhem.constants.BundleExtraKeys.NOTIFICATION_UPDATES;
 
 public class NotificationIntentService extends ConvenientIntentService {
 
-    public static final int NO_UPDATES = 0;
-    public static final int ALL_UPDATES = 1;
-    public static final int STATE_UPDATES = 2;
-    public static final String PREFERENCES_NAME = "deviceNotifications";
-
     @Inject
-    @ForApplication
-    Context applicationContext;
+    NotificationService notificationService;
+
 
     public NotificationIntentService() {
         super(NotificationIntentService.class.getName());
@@ -79,16 +56,16 @@ public class NotificationIntentService extends ConvenientIntentService {
 
         if (intent.getAction().equals(Actions.NOTIFICATION_SET_FOR_DEVICE)) {
             int updateType = intent.getIntExtra(BundleExtraKeys.NOTIFICATION_UPDATES, 0);
-            setDeviceNotification(deviceName, updateType);
+            notificationService.setDeviceNotification(deviceName, updateType, this);
         } else if (intent.getAction().equals(Actions.NOTIFICATION_TRIGGER)) {
             @SuppressWarnings("unchecked")
             Map<String, String> updateMap = (Map<String, String>) intent.getSerializableExtra(BundleExtraKeys.UPDATE_MAP);
             FhemDevice<?> device = (FhemDevice<?>) intent.getSerializableExtra(BundleExtraKeys.DEVICE);
             boolean vibrate = intent.getBooleanExtra(BundleExtraKeys.VIBRATE, false);
 
-            deviceNotification(deviceName, updateMap, device, vibrate);
+            notificationService.deviceNotification(deviceName, updateMap, device, vibrate, this);
         } else if (intent.getAction().equals(Actions.NOTIFICATION_GET_FOR_DEVICE)) {
-            int value = getPreferences().getInt(deviceName, 0);
+            int value = notificationService.forDevice(this, deviceName);
 
             Bundle result = new Bundle();
             result.putInt(NOTIFICATION_UPDATES, value);
@@ -96,122 +73,5 @@ public class NotificationIntentService extends ConvenientIntentService {
             resultReceiver.send(ResultCodes.SUCCESS, result);
         }
         return STATE.SUCCESS;
-    }
-
-    public void rename(String deviceName, String deviceNewName) {
-        SharedPreferences preferences = getPreferences();
-        if (preferences.contains(deviceName)) {
-            int value = preferences.getInt(deviceName, 0);
-            preferences.edit().remove(deviceName).putInt(deviceNewName, value).apply();
-        }
-    }
-
-    private void setDeviceNotification(String deviceName, int updateType) {
-        getPreferences().edit().putInt(deviceName, updateType).commit();
-    }
-
-    private void deviceNotification(String deviceName, Map<String, String> updateMap, FhemDevice<?> device, boolean vibrate) {
-        int value = getPreferences().getInt(deviceName, 0);
-        if (device.triggerStateNotificationOnAttributeChange()) {
-            updateMap.clear();
-            updateMap.put("STATE", "updateMe");
-        }
-
-        if (isValueAllUpdates(value)) {
-            generateNotification(device, updateMap, vibrate);
-        } else if (isValueStateUpdates(value) && updateMap.containsKey("STATE")) {
-            Map<String, String> values = newHashMap();
-            values.put("STATE", updateMap.get("STATE"));
-            generateNotification(device, values, vibrate);
-        }
-    }
-
-    private boolean isValueAllUpdates(int value) {
-        return value == ALL_UPDATES;
-    }
-
-    private boolean isValueStateUpdates(int value) {
-        return value == STATE_UPDATES;
-    }
-
-    private SharedPreferences getPreferences() {
-        return applicationContext.getSharedPreferences(PREFERENCES_NAME, Activity.MODE_PRIVATE);
-    }
-
-    private void generateNotification(FhemDevice device, Map<String, String> updateMap, boolean vibrate) {
-        Map<String, String> notificationMap = rebuildUpdateMap(device, updateMap);
-        String deviceName = device.getName();
-
-        Intent openIntent = new Intent(this, AndFHEMMainActivity.class)
-                .setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
-                .putExtra(BundleExtraKeys.FRAGMENT, FragmentType.DEVICE_DETAIL)
-                .putExtra(BundleExtraKeys.DEVICE_NAME, deviceName)
-                .putExtra("unique", "foobar://" + SystemClock.elapsedRealtime());
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, deviceName.hashCode(), openIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT);
-
-        String text;
-        String stateKey = getString(R.string.state);
-        if (notificationMap.size() == 1 && notificationMap.containsKey(stateKey)) {
-            text = notificationMap.get(stateKey);
-        } else {
-            text = Joiner.on(",").withKeyValueSeparator(" : ").join(notificationMap);
-        }
-
-        NotificationUtil.notify(this, deviceName.hashCode(), pendingIntent, deviceName, text,
-                deviceName, vibrate);
-    }
-
-    private Map<String, String> rebuildUpdateMap(FhemDevice device, Map<String, String> updateMap) {
-        Map<String, String> newMap = newHashMap();
-
-        Class<? extends FhemDevice> deviceClass = device.getClass();
-        replaceFieldForClass(deviceClass, device, updateMap, newMap);
-
-        newMap.putAll(updateMap);
-        return newMap;
-    }
-
-    private void replaceFieldForClass(Class deviceClass, FhemDevice device, Map<String, String> updateMap,
-                                      Map<String, String> newMap) {
-        for (Field field : deviceClass.getDeclaredFields()) {
-            String fieldName = field.getName().toUpperCase(Locale.getDefault());
-            if (updateMap.containsKey(fieldName)) {
-
-                try {
-                    field.setAccessible(true);
-                    String fieldValue = ReflectionUtil.getFieldValueAsString(device, field);
-                    String name = figureOutNewName(field, fieldName);
-                    newMap.put(name, fieldValue);
-
-                    updateMap.remove(fieldName);
-                } catch (Exception e) {
-                    Log.e(NotificationIntentService.class.getName(), "cannot access " + field.getName(), e);
-                }
-            }
-        }
-
-        Class<?> superclass = deviceClass.getSuperclass();
-        if (superclass != null && FhemDevice.class.isAssignableFrom(superclass) && updateMap.size() > 0) {
-            replaceFieldForClass(superclass, device, updateMap, newMap);
-        }
-    }
-
-    private String figureOutNewName(Field field, String fieldName) {
-        ShowField annotation = field.getAnnotation(ShowField.class);
-        int id = -1;
-        if (annotation == null && fieldName.equals("STATE")) {
-            id = R.string.state;
-        } else if (annotation != null) {
-            id = annotation.description().getId();
-        }
-
-        String name;
-        if (id == -1) {
-            name = fieldName;
-        } else {
-            name = getString(id);
-        }
-        return name;
     }
 }

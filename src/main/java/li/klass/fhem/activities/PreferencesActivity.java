@@ -33,9 +33,6 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.widget.Toast;
 
-import com.google.common.base.MoreObjects;
-import com.google.common.base.Objects;
-
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.security.KeyStoreException;
@@ -65,7 +62,6 @@ import static li.klass.fhem.constants.PreferenceKeys.COMMAND_EXECUTION_RETRIES;
 import static li.klass.fhem.constants.PreferenceKeys.CONNECTION_TIMEOUT;
 import static li.klass.fhem.constants.PreferenceKeys.DEVICE_COLUMN_WIDTH;
 import static li.klass.fhem.constants.PreferenceKeys.EXPORT_SETTINGS;
-import static li.klass.fhem.constants.PreferenceKeys.GCM_PROJECT_ID;
 import static li.klass.fhem.constants.PreferenceKeys.IMPORT_SETTINGS;
 import static li.klass.fhem.constants.PreferenceKeys.SEND_APP_LOG;
 import static li.klass.fhem.constants.PreferenceKeys.SEND_LAST_ERROR;
@@ -140,7 +136,7 @@ public class PreferencesActivity extends PreferenceActivity
         findPreference(CLEAR_TRUSTED_CERTIFICATES).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                MemorizingTrustManager mtm = new MemorizingTrustManager(AndFHEMApplication.getContext());
+                MemorizingTrustManager mtm = new MemorizingTrustManager(PreferencesActivity.this);
                 Enumeration<String> aliases = mtm.getCertificates();
                 while (aliases.hasMoreElements()) {
                     String alias = aliases.nextElement();
@@ -219,7 +215,7 @@ public class PreferencesActivity extends PreferenceActivity
                 return true;
             }
         });
-        preference.setSummary(String.format(getString(summaryTemplate), applicationProperties.getIntegerSharedPreference(preferenceKey, 0)));
+        preference.setSummary(String.format(getString(summaryTemplate), applicationProperties.getIntegerSharedPreference(preferenceKey, 0, this)));
     }
 
     private void attachStringSummaryListenerTo(String preferenceKey, final int summaryTemplate) {
@@ -236,7 +232,7 @@ public class PreferencesActivity extends PreferenceActivity
                 return listener == null || listener.onPreferenceChange(preference, newValue);
             }
         });
-        preference.setSummary(String.format(getString(summaryTemplate), firstNonNull(applicationProperties.getStringSharedPreference(preferenceKey, null), "")));
+        preference.setSummary(String.format(getString(summaryTemplate), firstNonNull(applicationProperties.getStringSharedPreference(preferenceKey, null, this), "")));
     }
 
     private void attachListSummaryListenerTo(String preferenceKey, final int valuesArrayResource, final int textArrayResource, final int summaryTemplate) {
@@ -249,7 +245,7 @@ public class PreferencesActivity extends PreferenceActivity
             }
         });
         preference.setSummary(nameForArrayValueFormatted(valuesArrayResource, textArrayResource,
-                applicationProperties.getStringSharedPreference(preferenceKey), summaryTemplate));
+                applicationProperties.getStringSharedPreference(preferenceKey, this), summaryTemplate));
     }
 
     private String nameForArrayValueFormatted(int valuesArrayResource, int textArrayResource, String value, int summaryTemplate) {

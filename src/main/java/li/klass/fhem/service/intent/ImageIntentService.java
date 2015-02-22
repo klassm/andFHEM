@@ -50,7 +50,7 @@ public class ImageIntentService extends ConvenientIntentService {
 
         if (action.equals(Actions.LOAD_IMAGE)) {
             String relativePath = intent.getStringExtra(BundleExtraKeys.IMAGE_RELATIVE_PATH);
-            Bitmap bitmap = commandExecutionService.getBitmap(relativePath);
+            Bitmap bitmap = commandExecutionService.getBitmap(relativePath, this);
             if (bitmap == null) {
                 return STATE.ERROR;
             } else {

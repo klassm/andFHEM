@@ -30,7 +30,6 @@ import com.google.common.io.CharStreams;
 
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
@@ -39,7 +38,6 @@ import java.io.InputStreamReader;
 
 import li.klass.fhem.domain.core.RoomDeviceList;
 import li.klass.fhem.fhem.DummyDataConnection;
-import li.klass.fhem.infra.AndFHEMRobolectricTestRunner;
 import li.klass.fhem.service.connection.ConnectionService;
 import li.klass.fhem.testutil.MockitoTestRule;
 import li.klass.fhem.util.CloseableUtil;
@@ -50,7 +48,6 @@ import static org.hamcrest.core.IsNot.not;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
-@RunWith(AndFHEMRobolectricTestRunner.class)
 public class DummyDataParseTest {
     @Rule
     public MockitoTestRule mockitoTestRule = new MockitoTestRule();
@@ -59,7 +56,7 @@ public class DummyDataParseTest {
     @Mock
     ConnectionService connectionService;
     @Mock
-    Context applicationContext;
+    Context context;
 
     @Test
     public void testParseDummyData() throws Exception {
@@ -72,7 +69,7 @@ public class DummyDataParseTest {
             String xmlList = CharStreams.toString(reader);
             assertNotNull(xmlList);
 
-            RoomDeviceList result = deviceListParser.parseAndWrapExceptions(xmlList);
+            RoomDeviceList result = deviceListParser.parseAndWrapExceptions(xmlList, context);
 
             assertNotNull(result);
         } finally {

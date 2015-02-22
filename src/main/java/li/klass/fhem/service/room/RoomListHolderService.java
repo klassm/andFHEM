@@ -63,24 +63,23 @@ public class RoomListHolderService {
     private volatile RoomDeviceList cachedRoomList;
     private volatile boolean fileStoreNotFilled = false;
 
-    public synchronized void storeDeviceListMap(RoomDeviceList roomDeviceList) {
+    public synchronized void storeDeviceListMap(RoomDeviceList roomDeviceList, Context context) {
         if (roomDeviceList == null || roomDeviceList.isEmptyOrOnlyContainsDoNotShowDevices()) {
             LOG.info("storeDeviceListMap() : won't store device list, as empty");
             return;
         }
-        storeDeviceListMapInternal(roomDeviceList);
+        storeDeviceListMapInternal(roomDeviceList, context);
     }
 
     public synchronized void clearRoomDeviceList(Context context) {
-        storeDeviceListMapInternal(new RoomDeviceList(RoomDeviceList.ALL_DEVICES_ROOM, context));
+        storeDeviceListMapInternal(new RoomDeviceList(RoomDeviceList.ALL_DEVICES_ROOM), context);
     }
 
-    private void storeDeviceListMapInternal(RoomDeviceList roomDeviceList) {
-        fillHiddenRoomsAndHiddenGroups(roomDeviceList, findFHEMWEBDevice(roomDeviceList));
+    private void storeDeviceListMapInternal(RoomDeviceList roomDeviceList, Context context) {
+        fillHiddenRoomsAndHiddenGroups(roomDeviceList, findFHEMWEBDevice(roomDeviceList, context));
         cachedRoomList = roomDeviceList;
         LOG.info("storeDeviceListMap() : storing device list to cache");
         long startLoad = System.currentTimeMillis();
-        Context context = AndFHEMApplication.getContext();
         ObjectOutputStream objectOutputStream = null;
         try {
             objectOutputStream = new ObjectOutputStream(new BufferedOutputStream(context.openFileOutput(CACHE_FILENAME, Context.MODE_PRIVATE)));
@@ -104,14 +103,14 @@ public class RoomListHolderService {
     }
 
 
-    FHEMWEBDevice findFHEMWEBDevice(RoomDeviceList allRoomDeviceList) {
+    FHEMWEBDevice findFHEMWEBDevice(RoomDeviceList allRoomDeviceList, Context context) {
         List<FhemDevice> devicesOfType = allRoomDeviceList == null ?
                 Lists.<FhemDevice>newArrayList() : allRoomDeviceList.getDevicesOfType(DeviceType.FHEMWEB);
-        return findFHEMWEBDevice(devicesOfType);
+        return findFHEMWEBDevice(devicesOfType, context);
     }
 
-    FHEMWEBDevice findFHEMWEBDevice(List<FhemDevice> devices) {
-        String qualifier = applicationProperties.getStringSharedPreference(DEVICE_NAME, DEFAULT_FHEMWEB_QUALIFIER).toUpperCase(Locale.getDefault());
+    FHEMWEBDevice findFHEMWEBDevice(List<FhemDevice> devices, Context context) {
+        String qualifier = applicationProperties.getStringSharedPreference(DEVICE_NAME, DEFAULT_FHEMWEB_QUALIFIER, context).toUpperCase(Locale.getDefault());
         if (!devices.isEmpty()) {
             FHEMWEBDevice foundDevice = null;
             for (FhemDevice device : devices) {

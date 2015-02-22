@@ -37,7 +37,6 @@ import org.mockito.Mock;
 import li.klass.fhem.domain.FS20Device;
 import li.klass.fhem.domain.core.DeviceType;
 import li.klass.fhem.domain.core.RoomDeviceList;
-import li.klass.fhem.infra.basetest.RobolectricBaseTestCase;
 import li.klass.fhem.service.connection.ConnectionService;
 import li.klass.fhem.testutil.MockitoTestRule;
 import li.klass.fhem.util.ApplicationProperties;
@@ -49,9 +48,10 @@ import static li.klass.fhem.domain.core.RoomDeviceList.ALL_DEVICES_ROOM;
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doCallRealMethod;
 
-public class RoomListServiceTest extends RobolectricBaseTestCase {
+public class RoomListServiceTest {
 
     @Rule
     public MockitoTestRule mockitoTestRule = new MockitoTestRule();
@@ -75,27 +75,27 @@ public class RoomListServiceTest extends RobolectricBaseTestCase {
 
     @Before
     public void before() {
-        roomDeviceList = new RoomDeviceList(ALL_DEVICES_ROOM, context);
-        given(applicationProperties.getStringSharedPreference(DEVICE_NAME, "andFHEM")).willReturn("abc");
-        given(connectionService.mayShowInCurrentConnectionType(any(DeviceType.class))).willCallRealMethod();
+        roomDeviceList = new RoomDeviceList(ALL_DEVICES_ROOM);
+        given(applicationProperties.getStringSharedPreference(eq(DEVICE_NAME), eq("andFHEM"), eq(context))).willReturn("abc");
+        given(connectionService.mayShowInCurrentConnectionType(any(DeviceType.class), eq(context))).willCallRealMethod();
         given(roomListHolderService.getCachedRoomDeviceListMap()).willReturn(roomDeviceList);
-        doCallRealMethod().when(roomListHolderService).findFHEMWEBDevice(any(RoomDeviceList.class));
+        doCallRealMethod().when(roomListHolderService).findFHEMWEBDevice(any(RoomDeviceList.class), eq(context));
     }
 
     @Test
     public void get_room_names_with_supported_devices() throws Exception {
-        roomDeviceList.addDevice(new TestDevice("a", true, "abc", "def"));
-        roomDeviceList.addDevice(new TestDevice("b", true, "def", "fgh"));
+        roomDeviceList.addDevice(new TestDevice("a", true, "abc", "def"), context);
+        roomDeviceList.addDevice(new TestDevice("b", true, "def", "fgh"), context);
 
-        assertThat(service.getRoomNameList()).containsExactly("abc", "def", "fgh");
+        assertThat(service.getRoomNameList(context)).containsExactly("abc", "def", "fgh");
     }
 
     @Test
     public void get_room_names_with_unsupported_devices() throws Exception {
-        roomDeviceList.addDevice(new TestDevice("a", true, "abc", "def"));
-        roomDeviceList.addDevice(new TestDevice("b", false, "def", "fgh"));
+        roomDeviceList.addDevice(new TestDevice("a", true, "abc", "def"), context);
+        roomDeviceList.addDevice(new TestDevice("b", false, "def", "fgh"), context);
 
-        assertThat(service.getRoomNameList()).containsExactly("abc", "def");
+        assertThat(service.getRoomNameList(context)).containsExactly("abc", "def");
     }
 
     @DataProvider

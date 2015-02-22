@@ -24,6 +24,8 @@
 
 package li.klass.fhem.service.device;
 
+import android.content.Context;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -37,11 +39,7 @@ public class WOLService {
     @Inject
     CommandExecutionService commandExecutionService;
 
-    public void wake(WOLDevice device) {
-        commandExecutionService.executeSafely("set " + device.getName() + " on");
-    }
-
-    public void requestRefreshState(WOLDevice device) {
-        commandExecutionService.executeSafely("set " + device.getName() + " refresh");
+    public void requestRefreshState(WOLDevice device, Context context) {
+        commandExecutionService.executeSafely("set " + device.getName() + " refresh", context);
     }
 }

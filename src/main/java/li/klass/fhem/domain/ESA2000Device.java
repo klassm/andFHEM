@@ -24,6 +24,8 @@
 
 package li.klass.fhem.domain;
 
+import android.content.Context;
+
 import java.util.List;
 
 import li.klass.fhem.R;
@@ -101,18 +103,18 @@ public class ESA2000Device extends FhemDevice<ESA2000Device> {
     }
 
     @Override
-    protected void fillDeviceCharts(List<DeviceChart> chartSeries) {
-        super.fillDeviceCharts(chartSeries);
+    protected void fillDeviceCharts(List<DeviceChart> chartSeries, Context context) {
+        super.fillDeviceCharts(chartSeries, context);
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.usageGraph,
-                new ChartSeriesDescription.Builder().withColumnName(R.string.currentUsage)
+                new ChartSeriesDescription.Builder().withColumnName(R.string.currentUsage, context)
                         .withFileLogSpec("8:CUR\\x3a\\s[0-9]::")
                         .withDbLogSpec("actual::int4")
                         .withSeriesType(CURRENT_USAGE_KILOWATT)
                         .withShowDiscreteValues(true)
                         .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("actual", 0, 10))
                         .build(),
-                new ChartSeriesDescription.Builder().withColumnName(R.string.dayUsage)
+                new ChartSeriesDescription.Builder().withColumnName(R.string.dayUsage, context)
                         .withFileLogSpec("4:day\\x3a\\s[0-9]:0:")
                         .withDbLogSpec("day::int2")
                         .withSeriesType(DAY_USAGE)

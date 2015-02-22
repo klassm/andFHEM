@@ -40,7 +40,6 @@ import org.mockito.Spy;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
-import li.klass.fhem.infra.basetest.RobolectricBaseTestCase;
 import li.klass.fhem.testutil.MockitoTestRule;
 
 import static li.klass.fhem.billing.BillingService.OnLoadInventoryFinishedListener;
@@ -53,7 +52,7 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-public class BillingServiceTest extends RobolectricBaseTestCase {
+public class BillingServiceTest {
 
     @Rule
     public MockitoTestRule mockitoTestRule = new MockitoTestRule();
@@ -66,12 +65,12 @@ public class BillingServiceTest extends RobolectricBaseTestCase {
     private IabHelper iabHelper;
 
     @Mock
-    private Context applicationContext;
+    private Context context;
 
     @Before
     public void setUp() {
-        given(applicationContext.getApplicationContext()).willReturn(applicationContext);
-        doReturn(iabHelper).when(billingService).createIabHelper();
+        given(context.getApplicationContext()).willReturn(context);
+        doReturn(iabHelper).when(billingService).createIabHelper(context);
     }
 
     @Test
@@ -102,7 +101,7 @@ public class BillingServiceTest extends RobolectricBaseTestCase {
         given(iabHelper.isSetupDone()).willReturn(false);
 
         // when
-        billingService.loadInventory(mock(OnLoadInventoryFinishedListener.class));
+        billingService.loadInventory(mock(OnLoadInventoryFinishedListener.class), context);
 
         // then
         verify(iabHelper).startSetup(any(IabHelper.OnIabSetupFinishedListener.class));
@@ -115,7 +114,7 @@ public class BillingServiceTest extends RobolectricBaseTestCase {
         doThrow(new IllegalStateException("some IAB Exception")).when(iabHelper).startSetup(any(IabHelper.OnIabSetupFinishedListener.class));
 
         // when
-        billingService.setup(listener);
+        billingService.setup(listener, context);
 
         // then
         verify(iabHelper).startSetup(any(IabHelper.OnIabSetupFinishedListener.class));
@@ -136,7 +135,7 @@ public class BillingServiceTest extends RobolectricBaseTestCase {
         }).when(iabHelper).startSetup(any(IabHelper.OnIabSetupFinishedListener.class));
 
         // when
-        billingService.setup(listener);
+        billingService.setup(listener, context);
 
         // then
         verify(iabHelper).startSetup(any(IabHelper.OnIabSetupFinishedListener.class));
@@ -152,7 +151,7 @@ public class BillingServiceTest extends RobolectricBaseTestCase {
         OnLoadInventoryFinishedListener listener = mock(OnLoadInventoryFinishedListener.class);
 
         // when
-        billingService.loadInventory(listener);
+        billingService.loadInventory(listener, context);
 
         // then
         verify(iabHelper).queryInventory(false, null);
@@ -171,7 +170,7 @@ public class BillingServiceTest extends RobolectricBaseTestCase {
         given(iabHelper.queryInventory(false, null)).willReturn(inventory);
 
         // when
-        billingService.loadInventory(listener);
+        billingService.loadInventory(listener, context);
 
         // then
         verify(iabHelper).queryInventory(false, null);

@@ -57,6 +57,6 @@ public class MediumInformationWidgetView extends DeviceAppWidgetView {
         setTextViewOrHide(view, R.id.line2, line2);
         setTextViewOrHide(view, R.id.line3, line3);
 
-        openDeviceDetailPageWhenClicking(R.id.main, view, device, widgetConfiguration);
+        openDeviceDetailPageWhenClicking(R.id.main, view, device, widgetConfiguration, context);
     }
 }

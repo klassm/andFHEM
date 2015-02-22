@@ -24,6 +24,8 @@
 
 package li.klass.fhem.domain;
 
+import android.content.Context;
+
 import java.util.List;
 
 import li.klass.fhem.AndFHEMApplication;
@@ -69,8 +71,8 @@ public class OwthermDevice extends FhemDevice<OwthermDevice> {
     }
 
     @Override
-    public void afterDeviceXMLRead() {
-        super.afterDeviceXMLRead();
+    public void afterDeviceXMLRead(Context context) {
+        super.afterDeviceXMLRead(context);
 
         String state = getInternalState();
         if (state.contains("temperature")) {
@@ -79,12 +81,12 @@ public class OwthermDevice extends FhemDevice<OwthermDevice> {
     }
 
     @Override
-    protected void fillDeviceCharts(List<DeviceChart> chartSeries) {
-        super.fillDeviceCharts(chartSeries);
+    protected void fillDeviceCharts(List<DeviceChart> chartSeries, Context context) {
+        super.fillDeviceCharts(chartSeries, context);
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureGraph,
                 new ChartSeriesDescription.Builder()
-                        .withColumnName(R.string.temperature)
+                        .withColumnName(R.string.temperature, context)
                         .withFileLogSpec("4:temperature")
                         .withDbLogSpec("temperature::int1")
                         .withSeriesType(TEMPERATURE)

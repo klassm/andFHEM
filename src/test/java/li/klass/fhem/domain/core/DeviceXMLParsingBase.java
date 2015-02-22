@@ -55,6 +55,7 @@ import li.klass.fhem.util.CloseableUtil;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doReturn;
 
 @Category(DeviceTestBase.class)
@@ -78,10 +79,30 @@ public abstract class DeviceXMLParsingBase {
     protected Context context;
 
     @Before
-    public void mockApplicationContext() {
+    public void before() throws Exception {
         AndFHEMApplication.setContext(context);
 
         mockStrings();
+
+        doReturn(true).when(connectionService).mayShowInCurrentConnectionType(any(DeviceType.class), eq(context));
+
+        InputStream inputStream = null;
+        InputStreamReader inputStreamReader = null;
+        try {
+
+            inputStream = getTestFileBaseClass().getResourceAsStream(getFileName());
+
+            if (inputStream == null) {
+                throw new IllegalArgumentException("cannot find " + getFileName());
+            }
+
+            inputStreamReader = new InputStreamReader(inputStream, Charsets.UTF_8);
+            String content = CharStreams.toString(inputStreamReader);
+
+            roomDeviceList = deviceListParser.parseXMLListUnsafe(content, context);
+        } finally {
+            CloseableUtil.close(inputStream, inputStreamReader);
+        }
     }
 
     protected void mockStrings() {
@@ -101,29 +122,6 @@ public abstract class DeviceXMLParsingBase {
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
-        }
-    }
-
-    @Before
-    public void loadDevices() throws Exception {
-        doReturn(true).when(connectionService).mayShowInCurrentConnectionType(any(DeviceType.class));
-
-        InputStream inputStream = null;
-        InputStreamReader inputStreamReader = null;
-        try {
-
-            inputStream = getTestFileBaseClass().getResourceAsStream(getFileName());
-
-            if (inputStream == null) {
-                throw new IllegalArgumentException("cannot find " + getFileName());
-            }
-
-            inputStreamReader = new InputStreamReader(inputStream, Charsets.UTF_8);
-            String content = CharStreams.toString(inputStreamReader);
-
-            roomDeviceList = deviceListParser.parseXMLListUnsafe(content);
-        } finally {
-            CloseableUtil.close(inputStream, inputStreamReader);
         }
     }
 

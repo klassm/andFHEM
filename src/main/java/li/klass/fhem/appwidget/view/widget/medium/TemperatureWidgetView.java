@@ -56,7 +56,7 @@ public class TemperatureWidgetView extends DeviceAppWidgetView {
 
             view.setTextViewText(R.id.temperature, temperature);
 
-            openDeviceDetailPageWhenClicking(R.id.main, view, device, widgetConfiguration);
+            openDeviceDetailPageWhenClicking(R.id.main, view, device, widgetConfiguration, context);
         }
     }
 }

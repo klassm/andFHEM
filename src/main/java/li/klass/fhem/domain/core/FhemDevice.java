@@ -28,9 +28,6 @@ import android.content.Context;
 
 import org.jetbrains.annotations.NotNull;
 import org.joda.time.DateTime;
-import org.joda.time.LocalDate;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import org.w3c.dom.NamedNodeMap;
 
 import java.io.Serializable;
@@ -118,7 +115,7 @@ public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T
         group = value;
     }
 
-    public void afterDeviceXMLRead() {
+    public void afterDeviceXMLRead(Context context) {
         this.definition = getDefinition();
     }
 
@@ -284,14 +281,14 @@ public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T
         return logDevices;
     }
 
-    public void addLogDevice(LogDevice logDevice) {
+    public void addLogDevice(LogDevice logDevice, Context context) {
         logDevices.add(logDevice);
 
         // Unfortunately, this is called multiple times (whenever a log devices registers
         // itself for the device. However, we have no idea in which order the callbacks are
         // called, so we cannot register a listeners when all devices have been read ...
         if (!logDevices.isEmpty()) {
-            fillDeviceCharts(deviceCharts);
+            fillDeviceCharts(deviceCharts, context);
         }
     }
 
@@ -303,33 +300,34 @@ public abstract class FhemDevice<T extends FhemDevice<T>> extends HookedDevice<T
      * Override me if you want to provide charts for a device
      *
      * @param chartSeries fill me with chart descriptions
+     * @param context context
      */
-    protected void fillDeviceCharts(List<DeviceChart> chartSeries) {
+    protected void fillDeviceCharts(List<DeviceChart> chartSeries, Context context) {
         deviceCharts.clear();
 
         if (hasStatisticsDevice) {
             deviceCharts.add(new DeviceChart(R.string.averagesGraph,
                     new ChartSeriesDescription.Builder()
                             .withSeriesType(SeriesType.AVERAGE_HOUR)
-                            .withColumnName(R.string.avgHour)
+                            .withColumnName(R.string.avgHour, context)
                             .withFileLogSpec("5:Hour\\x3a:0:")
                             .withDbLogSpec("hour")
                             .build(),
                     new ChartSeriesDescription.Builder()
                             .withSeriesType(SeriesType.AVERAGE_DAY)
-                            .withColumnName(R.string.avgDay)
+                            .withColumnName(R.string.avgDay, context)
                             .withFileLogSpec("7:Day\\x3a:0:")
                             .withDbLogSpec("day")
                             .build(),
                     new ChartSeriesDescription.Builder()
                             .withSeriesType(SeriesType.AVERAGE_MONTH)
-                            .withColumnName(R.string.avgMonth)
+                            .withColumnName(R.string.avgMonth, context)
                             .withFileLogSpec("9:Month\\x3a:0:")
                             .withDbLogSpec("month")
                             .build(),
                     new ChartSeriesDescription.Builder()
                             .withSeriesType(SeriesType.AVERAGE_YEAR)
-                            .withColumnName(R.string.avgYear)
+                            .withColumnName(R.string.avgYear, context)
                             .withFileLogSpec("11:Year\\x3a:0:")
                             .withDbLogSpec("year")
                             .build()

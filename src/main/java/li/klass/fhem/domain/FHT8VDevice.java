@@ -24,6 +24,8 @@
 
 package li.klass.fhem.domain;
 
+import android.content.Context;
+
 import java.util.List;
 
 import li.klass.fhem.R;
@@ -40,11 +42,11 @@ import static li.klass.fhem.service.graph.description.SeriesType.ACTUATOR;
 public class FHT8VDevice extends FhemDevice<FHT8VDevice> {
 
     @Override
-    protected void fillDeviceCharts(List<DeviceChart> chartSeries) {
-        super.fillDeviceCharts(chartSeries);
+    protected void fillDeviceCharts(List<DeviceChart> chartSeries, Context context) {
+        super.fillDeviceCharts(chartSeries, context);
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.actuatorGraph,
-                new ChartSeriesDescription.Builder().withColumnName(R.string.actuator)
+                new ChartSeriesDescription.Builder().withColumnName(R.string.actuator, context)
                         .withFileLogSpec("4:actuator.*[0-9]+%:0:int")
                         .withDbLogSpec("state::int")
                         .withSeriesType(ACTUATOR)

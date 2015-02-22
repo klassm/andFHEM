@@ -47,21 +47,21 @@ public class UniRollAdapter extends GenericDeviceAdapter<UniRollDevice> {
         detailActions.add(new DeviceDetailViewButtonAction<UniRollDevice>(R.string.up) {
             @Override
             public void onButtonClick(Context context, UniRollDevice device) {
-                stateUiService.setState(device, "up");
+                stateUiService.setState(device, "up", context);
             }
         });
 
         detailActions.add(new DeviceDetailViewButtonAction<UniRollDevice>(R.string.stop) {
             @Override
             public void onButtonClick(Context context, UniRollDevice device) {
-                stateUiService.setState(device, "stop");
+                stateUiService.setState(device, "stop", context);
             }
         });
 
         detailActions.add(new DeviceDetailViewButtonAction<UniRollDevice>(R.string.down) {
             @Override
             public void onButtonClick(Context context, UniRollDevice device) {
-                stateUiService.setState(device, "down");
+                stateUiService.setState(device, "down", context);
             }
         });
     }

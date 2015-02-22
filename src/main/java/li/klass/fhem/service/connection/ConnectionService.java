@@ -38,7 +38,6 @@ import java.util.UUID;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import li.klass.fhem.dagger.ForApplication;
 import li.klass.fhem.domain.core.DeviceType;
 import li.klass.fhem.domain.core.DeviceVisibility;
 import li.klass.fhem.fhem.connection.DummyServerSpec;
@@ -49,7 +48,6 @@ import li.klass.fhem.util.ApplicationProperties;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static li.klass.fhem.AndFHEMApplication.PREMIUM_ALLOWED_FREE_CONNECTIONS;
-import static li.klass.fhem.AndFHEMApplication.getApplication;
 import static li.klass.fhem.constants.PreferenceKeys.SELECTED_CONNECTION;
 
 @Singleton
@@ -64,67 +62,61 @@ public class ConnectionService {
     ApplicationProperties applicationProperties;
 
     @Inject
-    @ForApplication
-    Context applicationContext;
-
-    @Inject
     LicenseIntentService licenseIntentService;
 
-    private FHEMServerSpec dummyData;
-    private DummyServerSpec testData;
-
-    public ConnectionService() {
-        initialiseDummyData();
-    }
-
-    private void initialiseDummyData() {
-        dummyData = new DummyServerSpec(DUMMY_DATA_ID, "dummyData.xml");
-        dummyData.setName("DummyData");
-        dummyData.setServerType(ServerType.DUMMY);
-
-        if (LicenseIntentService.isDebug(applicationContext)) {
+    private FHEMServerSpec getTestData(Context context) {
+        FHEMServerSpec testData = null;
+        if (LicenseIntentService.isDebug(context)) {
             testData = new DummyServerSpec(TEST_DATA_ID, "test.xml");
             testData.setName("TestData");
             testData.setServerType(ServerType.DUMMY);
         }
+        return testData;
+    }
+
+    private FHEMServerSpec getDummyData() {
+        FHEMServerSpec dummyData = new DummyServerSpec(DUMMY_DATA_ID, "dummyData.xml");
+        dummyData.setName("DummyData");
+        dummyData.setServerType(ServerType.DUMMY);
+        return dummyData;
     }
 
     public void create(final String name, final ServerType serverType, final String username,
                        final String password, final String ip, final int port, final String url,
-                       final String clientCertificatePath, final String clientCertificatePassword) {
-        if (exists(name)) return;
+                       final String clientCertificatePath, final String clientCertificatePassword, final Context context) {
+        if (exists(name, context)) return;
 
         licenseIntentService.isPremium(new LicenseIntentService.IsPremiumListener() {
             @Override
             public void isPremium(boolean isPremium) {
-                if (isPremium || getCountWithoutDummy() < PREMIUM_ALLOWED_FREE_CONNECTIONS) {
+                if (isPremium || getCountWithoutDummy(context) < PREMIUM_ALLOWED_FREE_CONNECTIONS) {
 
-                    FHEMServerSpec server = new FHEMServerSpec(newUniqueId());
+                    FHEMServerSpec server = new FHEMServerSpec(newUniqueId(context));
 
                     fillServerWith(name, server, serverType, username, password, ip, port, url,
                             clientCertificatePath, clientCertificatePassword);
 
-                    saveToPreferences(server);
+                    saveToPreferences(server, context);
                 }
             }
         });
 
     }
 
-    public boolean exists(String id) {
+    public boolean exists(String id, Context context) {
         return DUMMY_DATA_ID.equals(id) || TEST_DATA_ID.equals(id)
-                || getPreferences().contains(id);
+                || getPreferences(context).contains(id);
     }
 
-    private int getCountWithoutDummy() {
-        Map<String, ?> all = getPreferences().getAll();
+    private int getCountWithoutDummy(Context context) {
+        Map<String, ?> all = getPreferences(context).getAll();
         if (all == null) return 0;
         return all.size();
     }
 
-    private String newUniqueId() {
+    private String newUniqueId(Context context) {
         String id = null;
-        while (id == null || exists(id) || DUMMY_DATA_ID.equals(id)
+        while (id == null || exists(id, context) || DUMMY_DATA_ID.equals(id)
                 || TEST_DATA_ID.equals(id) || MANAGEMENT_DATA_ID.equals(id)) {
             id = UUID.randomUUID().toString();
         }
@@ -146,15 +138,15 @@ public class ConnectionService {
         server.setClientCertificatePassword(clientCertificatePassword);
     }
 
-    private void saveToPreferences(FHEMServerSpec server) {
+    private void saveToPreferences(FHEMServerSpec server, Context context) {
         if (server.getServerType() == ServerType.DUMMY) return;
 
         String json = serialize(server);
-        getPreferences().edit().putString(server.getId(), json).commit();
+        getPreferences(context).edit().putString(server.getId(), json).commit();
     }
 
-    private SharedPreferences getPreferences() {
-        return applicationContext.getSharedPreferences(PREFERENCES_NAME, Activity.MODE_PRIVATE);
+    private SharedPreferences getPreferences(Context context) {
+        return context.getSharedPreferences(PREFERENCES_NAME, Activity.MODE_PRIVATE);
     }
 
     String serialize(FHEMServerSpec serverSpec) {
@@ -162,24 +154,25 @@ public class ConnectionService {
     }
 
     public boolean update(String id, String name, ServerType serverType, String username, String password,
-                          String ip, int port, String url, String clientCertificatePath, String clientCertificatePassword) {
+                          String ip, int port, String url, String clientCertificatePath, String clientCertificatePassword, Context context) {
 
-        FHEMServerSpec server = forId(id);
+        FHEMServerSpec server = forId(id, context);
         if (server == null) return false;
 
         fillServerWith(name, server, serverType, username, password, ip, port, url,
                 clientCertificatePath, clientCertificatePassword);
 
-        saveToPreferences(server);
+        saveToPreferences(server, context);
 
         return true;
     }
 
-    public FHEMServerSpec forId(String id) {
-        if (DUMMY_DATA_ID.equals(id)) return dummyData;
+    public FHEMServerSpec forId(String id, Context context) {
+        if (DUMMY_DATA_ID.equals(id)) return getDummyData();
+        FHEMServerSpec testData = getTestData(context);
         if (TEST_DATA_ID.equals(id) && testData != null) return testData;
 
-        String json = getPreferences().getString(id, null);
+        String json = getPreferences(context).getString(id, null);
         if (json == null) return null;
         return deserialize(json);
     }
@@ -188,18 +181,18 @@ public class ConnectionService {
         return GSON.fromJson(json, FHEMServerSpec.class);
     }
 
-    public boolean delete(String id) {
-        if (!exists(id)) return false;
+    public boolean delete(String id, Context context) {
+        if (!exists(id, context)) return false;
 
-        getPreferences().edit().remove(id).commit();
+        getPreferences(context).edit().remove(id).commit();
 
         return true;
     }
 
-    public ArrayList<FHEMServerSpec> listAll() {
+    public ArrayList<FHEMServerSpec> listAll(Context context) {
         ArrayList<FHEMServerSpec> servers = newArrayList();
 
-        SharedPreferences preferences = getPreferences();
+        SharedPreferences preferences = getPreferences(context);
         if (preferences == null) return servers;
 
         Map<String, ?> all = preferences.getAll();
@@ -213,37 +206,38 @@ public class ConnectionService {
             servers.add(server);
         }
 
-        servers.add(dummyData);
+        servers.add(getDummyData());
+        FHEMServerSpec testData = getTestData(context);
         if (testData != null) servers.add(testData);
 
         return servers;
     }
 
-    public boolean mayShowInCurrentConnectionType(DeviceType deviceType) {
+    public boolean mayShowInCurrentConnectionType(DeviceType deviceType, Context context) {
         DeviceVisibility visibility = deviceType.getVisibility();
 
         if (visibility == null) return true;
 
-        ServerType serverType = getCurrentServer().getServerType();
+        ServerType serverType = getCurrentServer(context).getServerType();
         if (visibility == DeviceVisibility.NEVER) return false;
 
         ServerType showOnlyIn = visibility.getShowOnlyIn();
         return showOnlyIn == null || serverType == showOnlyIn;
     }
 
-    public FHEMServerSpec getCurrentServer() {
-        return forId(getSelectedId());
+    public FHEMServerSpec getCurrentServer(Context context) {
+        return forId(getSelectedId(context), context);
     }
 
-    public String getSelectedId() {
-        String id = applicationProperties.getStringSharedPreference(SELECTED_CONNECTION, DUMMY_DATA_ID);
-        if (!exists(id)) id = DUMMY_DATA_ID;
+    public String getSelectedId(Context context) {
+        String id = applicationProperties.getStringSharedPreference(SELECTED_CONNECTION, DUMMY_DATA_ID, context);
+        if (!exists(id, context)) id = DUMMY_DATA_ID;
 
         return id;
     }
 
-    public void setSelectedId(String id) {
-        if (!exists(id)) id = DUMMY_DATA_ID;
-        applicationProperties.setSharedPreference(SELECTED_CONNECTION, id);
+    public void setSelectedId(String id, Context context) {
+        if (!exists(id, context)) id = DUMMY_DATA_ID;
+        applicationProperties.setSharedPreference(SELECTED_CONNECTION, id, context);
     }
 }

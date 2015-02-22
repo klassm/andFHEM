@@ -24,6 +24,8 @@
 
 package li.klass.fhem.domain;
 
+import android.content.Context;
+
 import java.util.List;
 
 import li.klass.fhem.R;
@@ -81,12 +83,12 @@ public class SMLUSBDevice extends FhemDevice<SMLUSBDevice> {
     }
 
     @Override
-    protected void fillDeviceCharts(List<DeviceChart> chartSeries) {
-        super.fillDeviceCharts(chartSeries);
+    protected void fillDeviceCharts(List<DeviceChart> chartSeries, Context context) {
+        super.fillDeviceCharts(chartSeries, context);
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.powerGraph,
                 new ChartSeriesDescription.Builder()
-                        .withColumnName(R.string.power)
+                        .withColumnName(R.string.power, context)
                         .withFileLogSpec("4:Momentanleistung:")
                         .withDbLogSpec("Momentanleistung::int1")
                         .withSeriesType(POWER)
@@ -97,7 +99,7 @@ public class SMLUSBDevice extends FhemDevice<SMLUSBDevice> {
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.usageGraph,
                 new ChartSeriesDescription.Builder()
-                        .withColumnName(R.string.usageGraph).withFileLogSpec("4:Zählerstand-Tarif-1-Bezug:")
+                        .withColumnName(R.string.usageGraph, context).withFileLogSpec("4:Zählerstand-Tarif-1-Bezug:")
                         .withDbLogSpec("ZÄHLERSTAND_BEZUG_TOTAL::int")
                         .withSeriesType(CUMULATIVE_USAGE_Wh)
                         .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("ZÄHLERSTAND_BEZUG_TOTAL", 0, 0))

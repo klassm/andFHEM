@@ -56,53 +56,53 @@ public class GCMSendDeviceService extends AbstractService {
     @Inject
     ApplicationProperties applicationProperties;
 
-    public void addSelf(GCMSendDevice device) {
+    public void addSelf(GCMSendDevice device, Context context) {
 
-        String registrationId = applicationProperties.getStringSharedPreference(GCM_REGISTRATION_ID, null);
+        String registrationId = applicationProperties.getStringSharedPreference(GCM_REGISTRATION_ID, null, context);
         if (StringUtil.isBlank(registrationId)) {
-            showToast(R.string.gcmRegistrationNotActive);
+            showToast(R.string.gcmRegistrationNotActive, context);
             return;
         }
 
         if (ArrayUtil.contains(device.getRegIds(), registrationId)) {
-            showToast(R.string.gcmAlreadyRegistered);
+            showToast(R.string.gcmAlreadyRegistered, context);
             return;
         }
 
         String[] newRegIds = ArrayUtil.addToArray(device.getRegIds(), registrationId);
-        setRegIdsAttributeFor(device, newRegIds);
+        setRegIdsAttributeFor(device, newRegIds, context);
 
         Intent intent = new Intent(Actions.DO_UPDATE);
         intent.putExtra(BundleExtraKeys.DO_REFRESH, true);
-        applicationContext.sendBroadcast(intent);
+        context.sendBroadcast(intent);
 
-        showToast(R.string.gcmSuccessfullyRegistered);
+        showToast(R.string.gcmSuccessfullyRegistered, context);
     }
 
-    private void setRegIdsAttributeFor(GCMSendDevice device, String[] newRegIds) {
+    private void setRegIdsAttributeFor(GCMSendDevice device, String[] newRegIds, Context context) {
         String regIdsAttribute = ArrayUtil.join(newRegIds, "|");
 
-        commandExecutionService.executeSafely(String.format(ATTR_REG_IDS_COMMAND, device.getName(), regIdsAttribute));
+        commandExecutionService.executeSafely(String.format(ATTR_REG_IDS_COMMAND, device.getName(), regIdsAttribute), context);
         device.readREGIDS(regIdsAttribute);
     }
 
-    public void removeRegistrationId(GCMSendDevice device, String registrationId) {
+    public void removeRegistrationId(GCMSendDevice device, String registrationId, Context context) {
         if (!ArrayUtil.contains(device.getRegIds(), registrationId)) {
             return;
         }
 
         String[] newRegIds = ArrayUtil.removeFromArray(device.getRegIds(), registrationId);
-        setRegIdsAttributeFor(device, newRegIds);
+        setRegIdsAttributeFor(device, newRegIds, context);
     }
 
-    public boolean isDeviceRegistered(GCMSendDevice device) {
-        String registrationId = applicationProperties.getStringSharedPreference(GCM_REGISTRATION_ID, null);
+    public boolean isDeviceRegistered(GCMSendDevice device, Context context) {
+        String registrationId = applicationProperties.getStringSharedPreference(GCM_REGISTRATION_ID, null, context);
 
         return (registrationId != null && ArrayUtil.contains(device.getRegIds(), registrationId));
     }
 
     public void registerWithGCM(Context context) {
-        String projectId = applicationProperties.getStringSharedPreference(GCM_PROJECT_ID, null);
+        String projectId = applicationProperties.getStringSharedPreference(GCM_PROJECT_ID, null, context);
         registerWithGCMInternal(context, projectId);
     }
 
@@ -119,7 +119,7 @@ public class GCMSendDeviceService extends AbstractService {
     }
 
     public void registerWithGCM(Context context, String projectId) {
-        applicationProperties.setSharedPreference(GCM_REGISTRATION_ID, null);
+        applicationProperties.setSharedPreference(GCM_REGISTRATION_ID, null, context);
         GCMRegistrar.unregister(context);
         registerWithGCMInternal(context, projectId);
     }

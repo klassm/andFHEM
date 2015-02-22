@@ -74,7 +74,7 @@ public class DummyAdapter extends DimmableAdapter<DummyDevice> {
                                 String minuteOut = "" + minute;
                                 if (minute < 10) minuteOut = "0" + minuteOut;
 
-                                stateUiService.setState(device, hourOut + ":" + minuteOut);
+                                stateUiService.setState(device, hourOut + ":" + minuteOut, context);
                             }
                         }, now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE), true);
                         timePickerDialog.show();
@@ -105,7 +105,7 @@ public class DummyAdapter extends DimmableAdapter<DummyDevice> {
                                 "0", 6
                         );
 
-                        stateUiService.setSubState(device, "rgb", targetHexString);
+                        stateUiService.setSubState(device, "rgb", targetHexString, context);
                     }
                 }.createRow(context, getInflater(), tableLayout));
             }

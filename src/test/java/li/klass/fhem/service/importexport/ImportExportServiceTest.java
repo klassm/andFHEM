@@ -24,11 +24,14 @@
 
 package li.klass.fhem.service.importexport;
 
+import android.content.Context;
+
 import com.google.common.collect.ImmutableMap;
 
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import java.util.Map;
@@ -46,12 +49,15 @@ public class ImportExportServiceTest {
     @Mock
     ApplicationProperties applicationProperties;
 
+    @Mock
+    Context applicationContext;
+
+    @InjectMocks
     ImportExportService importExportService;
 
     @Before
     public void setUp() {
-        given(applicationProperties.getApplicationSharedPreferencesName()).willReturn("abc");
-        importExportService = new ImportExportService(applicationProperties);
+        given(applicationProperties.getApplicationSharedPreferencesName(applicationContext)).willReturn("abc");
     }
 
     @Test

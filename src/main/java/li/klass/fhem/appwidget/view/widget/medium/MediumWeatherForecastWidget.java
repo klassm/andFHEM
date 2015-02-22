@@ -57,7 +57,7 @@ public class MediumWeatherForecastWidget extends DeviceAppWidgetView {
 
         loadImageAndSetIn(view, R.id.day_image, forecast.getUrl(), false);
 
-        openDeviceDetailPageWhenClicking(R.id.main, view, device, widgetConfiguration);
+        openDeviceDetailPageWhenClicking(R.id.main, view, device, widgetConfiguration, context);
     }
 
     @Override

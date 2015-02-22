@@ -24,6 +24,7 @@
 
 package li.klass.fhem.fhem;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 
 import com.google.common.base.Charsets;
@@ -49,7 +50,7 @@ public class DummyDataConnection extends FHEMConnection {
     }
 
     @Override
-    public RequestResult<String> executeCommand(String command) {
+    public RequestResult<String> executeCommand(String command, Context context) {
         LOG.error("executeCommand() - execute command {}", command);
 
         if (command.equalsIgnoreCase("xmllist")) return xmllist();

@@ -25,7 +25,6 @@
 package li.klass.fhem.service.advertisement;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -49,7 +48,6 @@ import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.R;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.dagger.ForApplication;
 import li.klass.fhem.fragments.FragmentType;
 import li.klass.fhem.service.intent.LicenseIntentService;
 import li.klass.fhem.util.FhemResultReceiver;
@@ -60,16 +58,16 @@ import static li.klass.fhem.constants.ResultCodes.SUCCESS;
 @Singleton
 public class AdvertisementService {
     private static final String TAG = AdvertisementService.class.getName();
-    private static long lastErrorTimestamp = 0;
+    private long lastErrorTimestamp = 0;
 
     @Inject
-    @ForApplication
-    Context applicationContext;
+    public AdvertisementService() {
+    }
 
     public void addAd(final View view, final Activity activity) {
 
-        applicationContext.startService(new Intent(Actions.IS_PREMIUM)
-                        .setClass(applicationContext, LicenseIntentService.class)
+        activity.startService(new Intent(Actions.IS_PREMIUM)
+                        .setClass(activity, LicenseIntentService.class)
                         .putExtra(BundleExtraKeys.RESULT_RECEIVER, new FhemResultReceiver() {
                             @Override
                             protected void onReceiveResult(int resultCode, Bundle resultData) {
@@ -139,7 +137,7 @@ public class AdvertisementService {
         container.addView(selfAd);
     }
 
-    private static void addListener(final Activity activity, final LinearLayout adContainer, AdView adView) {
+    private void addListener(final Activity activity, final LinearLayout adContainer, AdView adView) {
         adView.setAdListener(new AdListener() {
             @Override
             public void onAdFailedToLoad(int errorCode) {

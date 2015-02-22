@@ -30,7 +30,6 @@ import li.klass.fhem.fhem.DataConnectionSwitch;
 import li.klass.fhem.gcm.GCMIntentService;
 import li.klass.fhem.service.CommandExecutionService;
 import li.klass.fhem.service.DateService;
-import li.klass.fhem.service.SharedPreferencesService;
 import li.klass.fhem.service.advertisement.AdvertisementService;
 import li.klass.fhem.service.connection.ConnectionService;
 import li.klass.fhem.service.device.AtService;
@@ -49,6 +48,7 @@ import li.klass.fhem.service.room.RoomListHolderService;
 import li.klass.fhem.service.room.RoomListService;
 import li.klass.fhem.update.UpdateHandler;
 import li.klass.fhem.util.io.FileSystemService;
+import li.klass.fhem.util.preferences.SharedPreferencesService;
 
 @Module(complete = false,
         injects = {
@@ -72,7 +72,6 @@ import li.klass.fhem.util.io.FileSystemService;
                 UpdateHandler.class,
                 AdvertisementService.class,
                 GCMIntentService.class,
-                SharedPreferencesService.class,
                 DateService.class,
                 VoiceCommandService.class,
                 SharedPreferencesService.class,

@@ -78,11 +78,11 @@ public class SendCommandIntentService extends ConvenientIntentService {
         String command = intent.getStringExtra(BundleExtraKeys.COMMAND);
         String connectionId = intent.getStringExtra(BundleExtraKeys.CONNECTION_ID);
 
-        if (!StringUtil.isBlank(connectionId) && connectionService.exists(connectionId)) {
-            connectionService.setSelectedId(connectionId);
+        if (!StringUtil.isBlank(connectionId) && connectionService.exists(connectionId, this)) {
+            connectionService.setSelectedId(connectionId, this);
         }
 
-        String result = commandExecutionService.executeSafely(command);
+        String result = commandExecutionService.executeSafely(command, this);
 
         sendSingleExtraResult(resultReceiver, ResultCodes.SUCCESS, BundleExtraKeys.COMMAND_RESULT, result);
         storeRecentCommand(command);

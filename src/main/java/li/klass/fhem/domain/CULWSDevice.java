@@ -24,6 +24,8 @@
 
 package li.klass.fhem.domain;
 
+import android.content.Context;
+
 import java.util.List;
 
 import li.klass.fhem.R;
@@ -77,13 +79,13 @@ public class CULWSDevice extends FhemDevice<CULWSDevice> {
     }
 
     @Override
-    protected void fillDeviceCharts(List<DeviceChart> chartSeries) {
-        super.fillDeviceCharts(chartSeries);
+    protected void fillDeviceCharts(List<DeviceChart> chartSeries, Context context) {
+        super.fillDeviceCharts(chartSeries, context);
 
         if (temperature != null && humidity != null && dewpoint != null) {
             addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureHumidityDewpointGraph,
                     new ChartSeriesDescription.Builder()
-                            .withColumnName(R.string.temperature)
+                            .withColumnName(R.string.temperature, context)
                             .withFileLogSpec("4:T:0:")
                             .withDbLogSpec("temperature")
                             .withSeriesType(TEMPERATURE)
@@ -91,13 +93,13 @@ public class CULWSDevice extends FhemDevice<CULWSDevice> {
                             .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("temperature", 0, 30))
                             .build(),
                     new ChartSeriesDescription.Builder()
-                            .withColumnName(R.string.humidity).withFileLogSpec("6:H:0")
+                            .withColumnName(R.string.humidity, context).withFileLogSpec("6:H:0")
                             .withDbLogSpec("humidity")
                             .withSeriesType(HUMIDITY)
                             .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("humidity", 0, 100))
                             .build(),
                     new ChartSeriesDescription.Builder()
-                            .withColumnName(R.string.dewpoint).withFileLogSpec("8:D\\x3a:0:")
+                            .withColumnName(R.string.dewpoint, context).withFileLogSpec("8:D\\x3a:0:")
                             .withDbLogSpec("dewpoint")
                             .withSeriesType(DEWPOINT)
                             .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("dewpoint", -10, 10))
@@ -106,7 +108,7 @@ public class CULWSDevice extends FhemDevice<CULWSDevice> {
         } else if (temperature != null && humidity != null) {
             addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureHumidityGraph,
                     new ChartSeriesDescription.Builder()
-                            .withColumnName(R.string.temperature)
+                            .withColumnName(R.string.temperature, context)
                             .withFileLogSpec("4:T:0:")
                             .withDbLogSpec("temperature")
                             .withSeriesType(TEMPERATURE)
@@ -114,7 +116,7 @@ public class CULWSDevice extends FhemDevice<CULWSDevice> {
                             .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("temperature", 0, 30))
                             .build(),
                     new ChartSeriesDescription.Builder()
-                            .withColumnName(R.string.humidity).withFileLogSpec("6:H:0")
+                            .withColumnName(R.string.humidity, context).withFileLogSpec("6:H:0")
                             .withDbLogSpec("humidity")
                             .withSeriesType(HUMIDITY)
                             .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("humidity", 0, 30))
@@ -123,7 +125,7 @@ public class CULWSDevice extends FhemDevice<CULWSDevice> {
         } else {
             addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureGraph,
                     new ChartSeriesDescription.Builder()
-                            .withColumnName(R.string.temperature)
+                            .withColumnName(R.string.temperature, context)
                             .withFileLogSpec("4:T:0:")
                             .withDbLogSpec("temperature")
                             .withSeriesType(TEMPERATURE)

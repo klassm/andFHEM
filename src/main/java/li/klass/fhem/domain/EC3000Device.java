@@ -24,6 +24,8 @@
 
 package li.klass.fhem.domain;
 
+import android.content.Context;
+
 import org.w3c.dom.NamedNodeMap;
 
 import li.klass.fhem.appwidget.annotation.SupportsWidget;
@@ -90,8 +92,8 @@ public class EC3000Device extends FhemDevice<EC3000Device> {
     }
 
     @Override
-    public void afterDeviceXMLRead() {
-        super.afterDeviceXMLRead();
+    public void afterDeviceXMLRead(Context context) {
+        super.afterDeviceXMLRead(context);
         widgetInfoLine = price + ", " + consumption;
     }
 

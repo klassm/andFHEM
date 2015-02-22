@@ -102,7 +102,7 @@ public abstract class AbstractWebViewFragment extends BaseFragment {
 
             @Override
             public void onReceivedHttpAuthRequest(WebView view, @NotNull HttpAuthHandler handler, String host, String realm) {
-                FHEMServerSpec currentServer = connectionService.getCurrentServer();
+                FHEMServerSpec currentServer = connectionService.getCurrentServer(getActivity());
                 String url = currentServer.getUrl();
                 try {
                     String fhemHost = new URL(url).getHost();
@@ -148,7 +148,7 @@ public abstract class AbstractWebViewFragment extends BaseFragment {
 
         WebView webView = (WebView) getView().findViewById(R.id.webView);
 
-        FHEMServerSpec currentServer = connectionService.getCurrentServer();
+        FHEMServerSpec currentServer = connectionService.getCurrentServer(getActivity());
         String url = currentServer.getUrl();
         try {
             if (url != null) {

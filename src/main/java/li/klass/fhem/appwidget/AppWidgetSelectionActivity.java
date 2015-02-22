@@ -25,6 +25,7 @@
 package li.klass.fhem.appwidget;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -145,7 +146,7 @@ public abstract class AppWidgetSelectionActivity extends ActionBarActivity imple
 
     private void deviceClicked(FhemDevice<?> device) {
         final List<WidgetType> widgetTypes = WidgetType.getSupportedDeviceWidgetsFor(widgetSize, device);
-        openWidgetTypeSelection(widgetTypes, device.getName());
+        openWidgetTypeSelection(widgetTypes, this, device.getName());
     }
 
     private void switchTo(BaseFragment fragment) {
@@ -160,7 +161,7 @@ public abstract class AppWidgetSelectionActivity extends ActionBarActivity imple
         }
     }
 
-    private void openWidgetTypeSelection(final List<WidgetType> widgetTypes, final String... payload) {
+    private void openWidgetTypeSelection(final List<WidgetType> widgetTypes, final Context context, final String... payload) {
         String[] widgetNames = new String[widgetTypes.size()];
         for (int i = 0; i < widgetTypes.size(); i++) {
             AppWidgetView widgetView = widgetTypes.get(i).widgetView;
@@ -175,16 +176,16 @@ public abstract class AppWidgetSelectionActivity extends ActionBarActivity imple
                         dialogInterface.dismiss();
 
                         WidgetType type = widgetTypes.get(position);
-                        createWidget(type, payload);
+                        createWidget(type, context, payload);
                     }
                 }).show();
     }
 
-    private void createWidget(WidgetType type, String... payload) {
+    private void createWidget(WidgetType type, final Context context, String... payload) {
         type.createWidgetConfiguration(getApplication(), this, widgetId, new WidgetConfigurationCreatedCallback() {
             @Override
             public void widgetConfigurationCreated(WidgetConfiguration widgetConfiguration) {
-                appWidgetDataHolder.saveWidgetConfigurationToPreferences(widgetConfiguration);
+                appWidgetDataHolder.saveWidgetConfigurationToPreferences(widgetConfiguration, context);
 
                 Intent intent = new Intent(Actions.REDRAW_WIDGET);
                 intent.setClass(AppWidgetSelectionActivity.this, AppWidgetUpdateService.class);
@@ -210,7 +211,7 @@ public abstract class AppWidgetSelectionActivity extends ActionBarActivity imple
                 switchToRooms();
                 break;
             case TAG_OTHER:
-                switchToOthers();
+                switchToOthers(this);
                 break;
             default:
                 throw new IllegalStateException("don't know about " + tag);
@@ -248,13 +249,13 @@ public abstract class AppWidgetSelectionActivity extends ActionBarActivity imple
         switchTo(fragment);
     }
 
-    private void switchToOthers() {
+    private void switchToOthers(final Context context) {
         Bundle arguments = new Bundle();
         arguments.putSerializable(APP_WIDGET_SIZE, widgetSize);
         arguments.putSerializable(ON_CLICKED_CALLBACK, new OtherWidgetsFragment.OnWidgetClickedCallback() {
             @Override
             public void onWidgetClicked(WidgetType widgetType) {
-                createWidget(widgetType);
+                createWidget(widgetType, context);
             }
         });
 
@@ -266,6 +267,6 @@ public abstract class AppWidgetSelectionActivity extends ActionBarActivity imple
 
     private void roomClicked(String roomName) {
         final List<WidgetType> widgetTypes = WidgetType.getSupportedRoomWidgetsFor(widgetSize);
-        openWidgetTypeSelection(widgetTypes, roomName);
+        openWidgetTypeSelection(widgetTypes, this, roomName);
     }
 }

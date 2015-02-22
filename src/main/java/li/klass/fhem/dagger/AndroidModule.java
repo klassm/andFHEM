@@ -26,10 +26,7 @@ package li.klass.fhem.dagger;
 
 import android.content.Context;
 
-import javax.inject.Singleton;
-
 import dagger.Module;
-import dagger.Provides;
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.widget.deviceFunctionality.DeviceFunctionalityOrderPreference;
 
@@ -38,31 +35,10 @@ import li.klass.fhem.widget.deviceFunctionality.DeviceFunctionalityOrderPreferen
  * {@link android.app.Application} to create.
  */
 @Module(library = true,
+        complete = false,
         injects = {
                 DeviceFunctionalityOrderPreference.class,
                 AndFHEMApplication.class
         })
 public class AndroidModule {
-    private final AndFHEMApplication application;
-
-    public AndroidModule(AndFHEMApplication application) {
-        this.application = application;
-    }
-
-    /**
-     * Allow the application context to be injected but require that it be annotated with
-     * {@link ForApplication @Annotation} to explicitly differentiate it from an activity context.
-     */
-    @Provides
-    @Singleton
-    @ForApplication
-    Context provideApplicationContext() {
-        return application;
-    }
-
-    @Provides
-    @Singleton
-    AndFHEMApplication provideAndFHEMApplication() {
-        return application;
-    }
 }

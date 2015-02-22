@@ -43,9 +43,9 @@ import li.klass.fhem.appwidget.service.AppWidgetUpdateService;
 import li.klass.fhem.appwidget.view.widget.base.AppWidgetView;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.service.SharedPreferencesService;
 import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.NetworkState;
+import li.klass.fhem.util.preferences.SharedPreferencesService;
 
 import static java.lang.Integer.parseInt;
 import static li.klass.fhem.service.room.RoomListService.NEVER_UPDATE_PERIOD;
@@ -63,14 +63,14 @@ public class AppWidgetDataHolder {
     SharedPreferencesService sharedPreferencesService;
 
     public void updateAllWidgets(final Context context, final boolean allowRemoteUpdate) {
-        Set<String> appWidgetIds = getAllAppWidgetIds();
+        Set<String> appWidgetIds = getAllAppWidgetIds(context);
         for (String appWidgetId : appWidgetIds) {
             context.startService(getRedrawWidgetIntent(context, parseInt(appWidgetId), allowRemoteUpdate));
         }
     }
 
-    Set<String> getAllAppWidgetIds() {
-        SharedPreferences sharedPreferences = getSavedPreferences();
+    Set<String> getAllAppWidgetIds(Context context) {
+        SharedPreferences sharedPreferences = getSavedPreferences(context);
         Map<String, ?> allEntries = sharedPreferences.getAll();
 
         assert allEntries != null;
@@ -85,8 +85,8 @@ public class AppWidgetDataHolder {
                 .putExtra(BundleExtraKeys.ALLOW_REMOTE_UPDATES, allowRemoteUpdate);
     }
 
-    SharedPreferences getSavedPreferences() {
-        return sharedPreferencesService.getSharedPreferences(SAVE_PREFERENCE_NAME);
+    SharedPreferences getSavedPreferences(Context context) {
+        return sharedPreferencesService.getPreferences(SAVE_PREFERENCE_NAME, context);
     }
 
 
@@ -97,7 +97,7 @@ public class AppWidgetDataHolder {
     public void deleteWidget(Context context, int appWidgetId) {
         Log.d(AppWidgetDataHolder.class.getName(), String.format("deleting widget for id %d", appWidgetId));
 
-        SharedPreferences preferences = getSavedPreferences();
+        SharedPreferences preferences = getSavedPreferences(context);
         String key = String.valueOf(appWidgetId);
         if (preferences.contains(key)) {
             preferences.edit().remove(key).apply();
@@ -147,16 +147,16 @@ public class AppWidgetDataHolder {
         if (!NetworkState.isConnected(context)) {
             updateInterval = NEVER_UPDATE_PERIOD;
         } else if (NetworkState.isConnectedMobile(context)) {
-            updateInterval = getWidgetUpdateIntervalFor(WIDGET_UPDATE_INTERVAL_PREFERENCES_KEY_MOBILE);
+            updateInterval = getWidgetUpdateIntervalFor(WIDGET_UPDATE_INTERVAL_PREFERENCES_KEY_MOBILE, context);
         } else {
-            updateInterval = getWidgetUpdateIntervalFor(WIDGET_UPDATE_INTERVAL_PREFERENCES_KEY_WLAN);
+            updateInterval = getWidgetUpdateIntervalFor(WIDGET_UPDATE_INTERVAL_PREFERENCES_KEY_WLAN, context);
         }
 
         return updateInterval;
     }
 
-    public Optional<WidgetConfiguration> getWidgetConfiguration(int widgetId) {
-        SharedPreferences sharedPreferences = getSavedPreferences();
+    public Optional<WidgetConfiguration> getWidgetConfiguration(int widgetId, Context context) {
+        SharedPreferences sharedPreferences = getSavedPreferences(context);
         String value = sharedPreferences.getString(String.valueOf(widgetId), null);
 
         if (value == null) {
@@ -165,21 +165,21 @@ public class AppWidgetDataHolder {
             WidgetConfiguration configuration = WidgetConfiguration.fromSaveString(value);
             if (configuration.isOld) {
                 Log.e(TAG, "updated widget " + configuration);
-                saveWidgetConfigurationToPreferences(configuration);
+                saveWidgetConfigurationToPreferences(configuration, context);
             }
             return Optional.fromNullable(configuration);
         }
     }
 
-    public void saveWidgetConfigurationToPreferences(WidgetConfiguration widgetConfiguration) {
-        SharedPreferences.Editor edit = sharedPreferencesService.getSharedPreferencesEditor(SAVE_PREFERENCE_NAME);
+    public void saveWidgetConfigurationToPreferences(WidgetConfiguration widgetConfiguration, Context context) {
+        SharedPreferences.Editor edit = sharedPreferencesService.getSharedPreferencesEditor(SAVE_PREFERENCE_NAME, context);
         String value = widgetConfiguration.toSaveString();
         edit.putString(String.valueOf(widgetConfiguration.widgetId), value);
         edit.apply();
     }
 
-    private int getWidgetUpdateIntervalFor(String key) {
-        String value = applicationProperties.getStringSharedPreference(key, "3600");
+    private int getWidgetUpdateIntervalFor(String key, Context context) {
+        String value = applicationProperties.getStringSharedPreference(key, "3600", context);
         int intValue = parseInt(value);
         return intValue * 1000;
     }

@@ -62,7 +62,6 @@ import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.fragments.FragmentType;
 import li.klass.fhem.fragments.core.BaseFragment;
 import li.klass.fhem.service.intent.LicenseIntentService;
-import li.klass.fhem.service.room.RoomListService;
 import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.DialogUtil;
 
@@ -179,8 +178,6 @@ public abstract class FragmentBaseActivity extends ActionBarActivity implements 
     @Inject
     BillingService billingService;
 
-    @Inject
-    RoomListService roomListService;
     private Receiver broadcastReceiver;
 
     private Timer timer;
@@ -222,9 +219,6 @@ public abstract class FragmentBaseActivity extends ActionBarActivity implements 
         saveInstanceStateCalled = false;
 
         setContentView(R.layout.main_view);
-        if (findViewById(R.id.tabletIndicator) != null) {
-            application.setIsTablet(true);
-        }
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -247,7 +241,7 @@ public abstract class FragmentBaseActivity extends ActionBarActivity implements 
 
     private void handleStartupFragment(boolean hasFavorites) {
         String startupView = applicationProperties.getStringSharedPreference(STARTUP_VIEW,
-                FragmentType.FAVORITES.name());
+                FragmentType.FAVORITES.name(), this);
         FragmentType preferencesStartupFragment = FragmentType.forEnumName(startupView);
         Log.d(TAG, "handleStartupFragment() : startup view is " + preferencesStartupFragment);
 
@@ -451,7 +445,7 @@ public abstract class FragmentBaseActivity extends ActionBarActivity implements 
         new Handler().post(new Runnable() {
             @Override
             public void run() {
-                int updateInterval = Integer.valueOf(applicationProperties.getStringSharedPreference(AUTO_UPDATE_TIME_IN_ACTIVITY, "-1"));
+                int updateInterval = Integer.valueOf(applicationProperties.getStringSharedPreference(AUTO_UPDATE_TIME_IN_ACTIVITY, "-1", FragmentBaseActivity.this));
 
                 if (timer == null && updateInterval != -1) {
                     timer = new Timer();

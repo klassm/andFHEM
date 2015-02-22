@@ -24,6 +24,8 @@
 
 package li.klass.fhem.domain;
 
+import android.content.Context;
+
 import org.w3c.dom.NamedNodeMap;
 
 import java.util.List;
@@ -58,7 +60,7 @@ public class CULFHTTKDevice extends FhemDevice<CULFHTTKDevice> {
     }
 
     @Override
-    public void afterDeviceXMLRead() {
+    public void afterDeviceXMLRead(Context context) {
         String stateChangeText = "";
         if (getLastWindowState() != null) {
             stateChangeText += getLastWindowState() + " => ";
@@ -90,12 +92,12 @@ public class CULFHTTKDevice extends FhemDevice<CULFHTTKDevice> {
     }
 
     @Override
-    protected void fillDeviceCharts(List<DeviceChart> chartSeries) {
-        super.fillDeviceCharts(chartSeries);
+    protected void fillDeviceCharts(List<DeviceChart> chartSeries, Context context) {
+        super.fillDeviceCharts(chartSeries, context);
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.stateGraph,
                 new ChartSeriesDescription.Builder()
-                        .withColumnName(R.string.windowOpen)
+                        .withColumnName(R.string.windowOpen, context)
                         .withFileLogSpec("3:Open|Closed::$fld[2]=~/Open.*/?1:0")
                         .withDbLogSpec("data:::$val=~s/(Open|Closed).*/$1eq\"Open\"?1:0/eg")
                         .withSeriesType(WINDOW_OPEN)

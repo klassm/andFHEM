@@ -88,11 +88,11 @@ public class VoiceCommandServiceTest {
         // given
         TestDummy device = new TestDummy("lampe");
         device.getSetList().parse("on off");
-        RoomDeviceList deviceList = new RoomDeviceList("", context).addDevice(device);
-        doReturn(deviceList).when(roomListService).getAllRoomsDeviceList();
+        RoomDeviceList deviceList = new RoomDeviceList("").addDevice(device, context);
+        doReturn(deviceList).when(roomListService).getAllRoomsDeviceList(context);
 
         // when
-        Optional<VoiceResult> result = service.resultFor(voiceCommand);
+        Optional<VoiceResult> result = service.resultFor(voiceCommand, context);
 
         // then
         assertThat(result.isPresent()).isTrue();
@@ -105,11 +105,11 @@ public class VoiceCommandServiceTest {
         TestDummy device = new TestDummy("lampe");
         device.getSetList().parse("on off");
         device.setEventmap("on:hallo");
-        RoomDeviceList deviceList = new RoomDeviceList("", context).addDevice(device);
-        doReturn(deviceList).when(roomListService).getAllRoomsDeviceList();
+        RoomDeviceList deviceList = new RoomDeviceList("").addDevice(device, context);
+        doReturn(deviceList).when(roomListService).getAllRoomsDeviceList(context);
 
         // when
-        Optional<VoiceResult> result = service.resultFor("schalte lampe hallo");
+        Optional<VoiceResult> result = service.resultFor("schalte lampe hallo", context);
 
         // then
         assertThat(result.isPresent()).isTrue();
@@ -121,11 +121,11 @@ public class VoiceCommandServiceTest {
         // given
         TestDummy device = new TestDummy("lampe");
         device.getSetList().parse("off");
-        RoomDeviceList deviceList = new RoomDeviceList("", context).addDevice(device);
-        doReturn(deviceList).when(roomListService).getAllRoomsDeviceList();
+        RoomDeviceList deviceList = new RoomDeviceList("").addDevice(device, context);
+        doReturn(deviceList).when(roomListService).getAllRoomsDeviceList(context);
 
         // when
-        Optional<VoiceResult> result = service.resultFor("schalte lampe on");
+        Optional<VoiceResult> result = service.resultFor("schalte lampe on", context);
 
         // then
         assertThat(result.isPresent()).isTrue();
@@ -137,11 +137,11 @@ public class VoiceCommandServiceTest {
         // given
         TestDummy device = new TestDummy("lampe1");
         device.getSetList().parse("on off");
-        RoomDeviceList deviceList = new RoomDeviceList("", context).addDevice(device);
-        doReturn(deviceList).when(roomListService).getAllRoomsDeviceList();
+        RoomDeviceList deviceList = new RoomDeviceList("").addDevice(device, context);
+        doReturn(deviceList).when(roomListService).getAllRoomsDeviceList(context);
 
         // when
-        Optional<VoiceResult> result = service.resultFor("schalte lampe 1");
+        Optional<VoiceResult> result = service.resultFor("schalte lampe 1", context);
 
         // then
         assertThat(result.isPresent()).isTrue();
@@ -155,11 +155,11 @@ public class VoiceCommandServiceTest {
         TestDummy device1 = new TestDummy("lampe2", "lampe");
         device.getSetList().parse("on off");
         device1.getSetList().parse("on off");
-        RoomDeviceList deviceList = new RoomDeviceList("", context).addDevice(device).addDevice(device1);
-        doReturn(deviceList).when(roomListService).getAllRoomsDeviceList();
+        RoomDeviceList deviceList = new RoomDeviceList("").addDevice(device, context).addDevice(device1, context);
+        doReturn(deviceList).when(roomListService).getAllRoomsDeviceList(context);
 
         // when
-        Optional<VoiceResult> result = service.resultFor("schalte lampe 1");
+        Optional<VoiceResult> result = service.resultFor("schalte lampe 1", context);
 
         // then
         assertThat(result.isPresent()).isTrue();
@@ -187,11 +187,11 @@ public class VoiceCommandServiceTest {
         // given
         TestDummy device = new TestDummy("lampe");
         device.getSetList().parse("on off");
-        RoomDeviceList deviceList = new RoomDeviceList("", context).addDevice(device);
-        doReturn(deviceList).when(roomListService).getAllRoomsDeviceList();
+        RoomDeviceList deviceList = new RoomDeviceList("").addDevice(device, context);
+        doReturn(deviceList).when(roomListService).getAllRoomsDeviceList(context);
 
         // when
-        Optional<VoiceResult> result = service.resultFor(shortcut);
+        Optional<VoiceResult> result = service.resultFor(shortcut, context);
 
         // then
         assertThat(result.isPresent()).isTrue();
@@ -204,11 +204,11 @@ public class VoiceCommandServiceTest {
         TestDummy device = new TestDummy("lampe");
         device.getSetList().parse("on off");
         device.setPronunciation("voice");
-        RoomDeviceList deviceList = new RoomDeviceList("", context).addDevice(device);
-        doReturn(deviceList).when(roomListService).getAllRoomsDeviceList();
+        RoomDeviceList deviceList = new RoomDeviceList("").addDevice(device, context);
+        doReturn(deviceList).when(roomListService).getAllRoomsDeviceList(context);
 
         // when
-        Optional<VoiceResult> result = service.resultFor("set voice on");
+        Optional<VoiceResult> result = service.resultFor("set voice on", context);
 
         // then
         assertThat(result.isPresent()).isTrue();
@@ -226,18 +226,18 @@ public class VoiceCommandServiceTest {
         };
         lightSceneDevice.setName("device");
         lightSceneDevice.getSetList().parse("scene:off,on");
-        RoomDeviceList deviceList = new RoomDeviceList("", context).addDevice(lightSceneDevice);
-        doReturn(deviceList).when(roomListService).getAllRoomsDeviceList();
+        RoomDeviceList deviceList = new RoomDeviceList("").addDevice(lightSceneDevice, context);
+        doReturn(deviceList).when(roomListService).getAllRoomsDeviceList(context);
 
         // when
-        Optional<VoiceResult> result = service.resultFor("set device on");
+        Optional<VoiceResult> result = service.resultFor("set device on", context);
 
         // then
         assertThat(result.isPresent()).isTrue();
         assertThat(result.get()).isEqualTo(new VoiceResult.Success("device", "scene on"));
 
         // when
-        result = service.resultFor("set device off");
+        result = service.resultFor("set device off", context);
 
         // then
         assertThat(result.isPresent()).isTrue();

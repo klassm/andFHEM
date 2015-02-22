@@ -38,7 +38,6 @@ import javax.security.cert.X509Certificate;
 import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.billing.BillingService;
 import li.klass.fhem.constants.Actions;
-import li.klass.fhem.dagger.ForApplication;
 import li.klass.fhem.util.ApplicationProperties;
 
 import static li.klass.fhem.AndFHEMApplication.PREMIUM_PACKAGE;
@@ -48,10 +47,6 @@ import static li.klass.fhem.constants.ResultCodes.SUCCESS;
 public class LicenseIntentService extends ConvenientIntentService {
 
     private static final String TAG = LicenseIntentService.class.getName();
-
-    @Inject
-    @ForApplication
-    Context applicationContext;
 
     @Inject
     BillingService billingService;
@@ -92,7 +87,7 @@ public class LicenseIntentService extends ConvenientIntentService {
                 boolean isPremium = isPremiumInternal(success);
                 listener.isPremium(isPremium);
             }
-        });
+        }, this);
     }
 
     private boolean isPremiumInternal(boolean loadSuccessful) {
@@ -101,10 +96,10 @@ public class LicenseIntentService extends ConvenientIntentService {
         if (applicationProperties.getBooleanApplicationProperty("IS_PREMIUM")) {
             Log.i(TAG, "found IS_PREMIUM application property to be true => premium");
             isPremium = true;
-        } else if (applicationContext.getPackageName().equals(PREMIUM_PACKAGE)) {
+        } else if (this.getPackageName().equals(PREMIUM_PACKAGE)) {
             Log.i(TAG, "found package name to be " + PREMIUM_PACKAGE + " => premium");
             isPremium = true;
-        } else if (isDebug(applicationContext)) {
+        } else if (isDebug(this)) {
             Log.i(TAG, "running in debug => premium");
             isPremium = true;
         } else if (loadSuccessful && (billingService.contains(AndFHEMApplication.INAPP_PREMIUM_ID) ||

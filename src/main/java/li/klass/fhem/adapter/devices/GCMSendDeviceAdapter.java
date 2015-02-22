@@ -60,14 +60,14 @@ public class GCMSendDeviceAdapter extends GenericDeviceAdapter<GCMSendDevice> {
 
             @Override
             public boolean isVisible(GCMSendDevice device) {
-                return !gcmSendDeviceService.isDeviceRegistered(device);
+                return !gcmSendDeviceService.isDeviceRegistered(device, getContext());
             }
         });
     }
 
     @Override
     protected String getGeneralDetailsNotificationText(Context context, GCMSendDevice device) {
-        if (gcmSendDeviceService.isDeviceRegistered(device)) {
+        if (gcmSendDeviceService.isDeviceRegistered(device, context)) {
             return context.getString(R.string.gcmAlreadyRegistered);
         }
         return null;

@@ -24,6 +24,7 @@
 
 package li.klass.fhem.domain;
 
+import android.content.Context;
 import android.util.Log;
 
 import org.w3c.dom.NamedNodeMap;
@@ -176,12 +177,12 @@ public class WithingsDevice extends FhemDevice<WithingsDevice> {
     }
 
     @Override
-    protected void fillDeviceCharts(List<DeviceChart> chartSeries) {
-        super.fillDeviceCharts(chartSeries);
+    protected void fillDeviceCharts(List<DeviceChart> chartSeries, Context context) {
+        super.fillDeviceCharts(chartSeries, context);
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureGraph,
                 new ChartSeriesDescription.Builder()
-                        .withColumnName(R.string.temperature)
+                        .withColumnName(R.string.temperature, context)
                         .withFileLogSpec("4:temperature")
                         .withDbLogSpec("temperature")
                         .withSeriesType(TEMPERATURE)
@@ -192,7 +193,7 @@ public class WithingsDevice extends FhemDevice<WithingsDevice> {
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.co2Graph,
                 new ChartSeriesDescription.Builder()
-                        .withColumnName(R.string.co2)
+                        .withColumnName(R.string.co2, context)
                         .withFileLogSpec("4:co2")
                         .withDbLogSpec("co2")
                         .withSeriesType(CO2)
@@ -203,7 +204,7 @@ public class WithingsDevice extends FhemDevice<WithingsDevice> {
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.weightGraph,
                         new ChartSeriesDescription.Builder()
-                                .withColumnName(R.string.weight)
+                                .withColumnName(R.string.weight, context)
                                 .withFileLogSpec("4:weight")
                                 .withDbLogSpec("weight")
                                 .withSeriesType(WEIGHT)
@@ -211,7 +212,7 @@ public class WithingsDevice extends FhemDevice<WithingsDevice> {
                                 .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("weight", 0, 70))
                                 .build(),
                         new ChartSeriesDescription.Builder()
-                                .withColumnName(R.string.fatRatio)
+                                .withColumnName(R.string.fatRatio, context)
                                 .withFileLogSpec("4:fatRatio")
                                 .withDbLogSpec("fatRatio")
                                 .withSeriesType(FAT_RATIO)

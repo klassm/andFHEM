@@ -24,6 +24,7 @@
 
 package li.klass.fhem.service.graph.description;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -32,7 +33,6 @@ import com.google.common.base.Optional;
 
 import java.io.Serializable;
 
-import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.domain.log.LogDevice;
 
 public class ChartSeriesDescription implements Parcelable, Serializable {
@@ -176,8 +176,8 @@ public class ChartSeriesDescription implements Parcelable, Serializable {
             return this;
         }
 
-        public Builder withColumnName(int columName) {
-            description.columnName = AndFHEMApplication.getContext().getString(columName);
+        public Builder withColumnName(int columName, Context context) {
+            description.columnName = context.getString(columName);
             return this;
         }
 

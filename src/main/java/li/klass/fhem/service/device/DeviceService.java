@@ -31,7 +31,6 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import li.klass.fhem.constants.Actions;
-import li.klass.fhem.dagger.ForApplication;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.RoomDeviceList;
 import li.klass.fhem.service.CommandExecutionService;
@@ -50,18 +49,15 @@ public class DeviceService {
     @Inject
     RoomListService roomListService;
 
-    @Inject
-    @ForApplication
-    Context applicationContext;
-
     /**
      * Rename a device.
      *
      * @param device  concerned device
      * @param newName new device name
+     * @param context context
      */
-    public void renameDevice(final FhemDevice device, final String newName) {
-        commandExecutionService.executeSafely("rename " + device.getName() + " " + newName);
+    public void renameDevice(final FhemDevice device, final String newName, Context context) {
+        commandExecutionService.executeSafely("rename " + device.getName() + " " + newName, context);
         device.setName(newName);
     }
 
@@ -70,25 +66,26 @@ public class DeviceService {
      *
      * @param device concerned device
      */
-    public void deleteDevice(final FhemDevice device) {
-        commandExecutionService.executeSafely("delete " + device.getName());
+    public void deleteDevice(final FhemDevice device, Context context) {
+        commandExecutionService.executeSafely("delete " + device.getName(), context);
         RoomDeviceList roomDeviceList = roomListService.getRoomDeviceList();
         if (roomDeviceList != null) {
-            roomDeviceList.removeDevice(device);
+            roomDeviceList.removeDevice(device, context);
         }
     }
 
     /**
      * Sets an alias for a device.
      *
-     * @param device concerned device
-     * @param alias  new alias to set
+     * @param device  concerned device
+     * @param alias   new alias to set
+     * @param context context
      */
-    public void setAlias(final FhemDevice device, final String alias) {
+    public void setAlias(final FhemDevice device, final String alias, Context context) {
         if (StringUtil.isBlank(alias)) {
-            commandExecutionService.executeSafely("deleteattr " + device.getName() + " alias");
+            commandExecutionService.executeSafely("deleteattr " + device.getName() + " alias", context);
         } else {
-            commandExecutionService.executeSafely("attr " + device.getName() + " alias " + alias);
+            commandExecutionService.executeSafely("attr " + device.getName() + " alias " + alias, context);
         }
         device.setAlias(alias);
     }
@@ -98,12 +95,13 @@ public class DeviceService {
      *
      * @param device              concerned device
      * @param newRoomConcatenated new room to move the concerned device to.
+     * @param context             context
      */
-    public void moveDevice(final FhemDevice device, final String newRoomConcatenated) {
-        commandExecutionService.executeSafely("attr " + device.getName() + " room " + newRoomConcatenated);
+    public void moveDevice(final FhemDevice device, final String newRoomConcatenated, Context context) {
+        commandExecutionService.executeSafely("attr " + device.getName() + " room " + newRoomConcatenated, context);
 
         device.setRoomConcatenated(newRoomConcatenated);
 
-        applicationContext.sendBroadcast(new Intent(Actions.DO_UPDATE));
+        context.sendBroadcast(new Intent(Actions.DO_UPDATE));
     }
 }

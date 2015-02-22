@@ -26,7 +26,6 @@ package li.klass.fhem.appwidget;
 
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
-import android.app.IntentService;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetHost;
 import android.appwidget.AppWidgetManager;
@@ -40,7 +39,6 @@ import com.google.common.collect.ImmutableMap;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -51,24 +49,20 @@ import java.util.Set;
 
 import li.klass.fhem.appwidget.view.WidgetType;
 import li.klass.fhem.appwidget.view.widget.base.AppWidgetView;
-import li.klass.fhem.infra.AndFHEMRobolectricTestRunner;
-import li.klass.fhem.service.SharedPreferencesService;
 import li.klass.fhem.testutil.MockitoTestRule;
 import li.klass.fhem.util.ApplicationProperties;
+import li.klass.fhem.util.preferences.SharedPreferencesService;
 
 import static li.klass.fhem.appwidget.AppWidgetDataHolder.SAVE_PREFERENCE_NAME;
 import static li.klass.fhem.appwidget.WidgetConfiguration.fromSaveString;
-import static li.klass.fhem.constants.PreferenceKeys.ALLOW_REMOTE_UPDATE;
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
-@RunWith(AndFHEMRobolectricTestRunner.class)
 public class AppWidgetDataHolderTest {
     @Rule
     public MockitoTestRule mockitoTestRule = new MockitoTestRule();
@@ -78,8 +72,6 @@ public class AppWidgetDataHolderTest {
     private SharedPreferences.Editor sharedPreferencesEditor;
     @Mock
     private SharedPreferencesService sharedPreferencesService;
-    @Mock
-    private IntentService intentService;
     @Mock
     private AlarmManager alarmManager;
     @Mock
@@ -92,6 +84,9 @@ public class AppWidgetDataHolderTest {
     private ApplicationProperties applicationProperties;
     @Mock
     private RemoteViews remoteViews;
+
+    private Context context;
+
     @InjectMocks
     @Spy
     private AppWidgetDataHolder holder;
@@ -99,12 +94,13 @@ public class AppWidgetDataHolderTest {
     @SuppressLint("CommitPrefEdits")
     @Before
     public void before() {
-        given(sharedPreferencesService.getSharedPreferences(SAVE_PREFERENCE_NAME))
+        context = mock(Context.class);
+        given(sharedPreferencesService.getPreferences(SAVE_PREFERENCE_NAME, context))
                 .willReturn(sharedPreferences);
-        given(sharedPreferencesService.getSharedPreferencesEditor(SAVE_PREFERENCE_NAME))
+        given(sharedPreferencesService.getSharedPreferencesEditor(SAVE_PREFERENCE_NAME, context))
                 .willReturn(sharedPreferencesEditor);
         given(sharedPreferences.edit()).willReturn(sharedPreferencesEditor);
-        given(intentService.getSystemService(Context.ALARM_SERVICE)).willReturn(alarmManager);
+        given(context.getSystemService(Context.ALARM_SERVICE)).willReturn(alarmManager);
     }
 
     @Test
@@ -113,7 +109,7 @@ public class AppWidgetDataHolderTest {
         BDDMockito.<Map<String, ?>>given(sharedPreferences.getAll()).willReturn(ImmutableMap.of("a", 1, "b", 2));
 
         // when
-        Set<String> ids = holder.getAllAppWidgetIds();
+        Set<String> ids = holder.getAllAppWidgetIds(context);
 
         // then
         assertThat(ids).containsExactly("a", "b");
@@ -125,7 +121,7 @@ public class AppWidgetDataHolderTest {
         BDDMockito.<Map<String, ?>>given(sharedPreferences.getAll()).willReturn(ImmutableMap.of("1", 1, "2", 2));
 
         // when
-        Optional<WidgetConfiguration> widgetConfiguration = holder.getWidgetConfiguration(3);
+        Optional<WidgetConfiguration> widgetConfiguration = holder.getWidgetConfiguration(3, context);
 
         // then
         assertThat(widgetConfiguration).isEqualTo(Optional.<WidgetConfiguration>absent());
@@ -139,7 +135,7 @@ public class AppWidgetDataHolderTest {
         given(sharedPreferences.getString("1", null)).willReturn(saveString);
 
         // when
-        Optional<WidgetConfiguration> result = holder.getWidgetConfiguration(1);
+        Optional<WidgetConfiguration> result = holder.getWidgetConfiguration(1, context);
 
         // then
         assertThat(result.isPresent()).isTrue();
@@ -154,7 +150,7 @@ public class AppWidgetDataHolderTest {
         given(sharedPreferences.getString("123", null)).willReturn(saveString);
 
         // when
-        Optional<WidgetConfiguration> result = holder.getWidgetConfiguration(123);
+        Optional<WidgetConfiguration> result = holder.getWidgetConfiguration(123, context);
 
         // then
         assertThat(result.isPresent()).isTrue();
@@ -170,7 +166,7 @@ public class AppWidgetDataHolderTest {
         WidgetConfiguration widgetConfiguration = fromSaveString(saveString);
 
         // when
-        holder.saveWidgetConfigurationToPreferences(widgetConfiguration);
+        holder.saveWidgetConfigurationToPreferences(widgetConfiguration, context);
 
         // then
         verify(sharedPreferencesEditor).putString("123", widgetConfiguration.toSaveString());
@@ -181,10 +177,10 @@ public class AppWidgetDataHolderTest {
         // given
         given(sharedPreferences.contains("123")).willReturn(true);
         given(sharedPreferencesEditor.remove("123")).willReturn(sharedPreferencesEditor);
-        doReturn(appWidgetHost).when(holder).getAppWidgetHost(intentService);
+        doReturn(appWidgetHost).when(holder).getAppWidgetHost(context);
 
         // when
-        holder.deleteWidget(intentService, 123);
+        holder.deleteWidget(context, 123);
 
         // then
         verify(sharedPreferencesEditor).remove("123");
@@ -197,10 +193,10 @@ public class AppWidgetDataHolderTest {
         // given
         given(sharedPreferences.contains("123")).willReturn(false);
         given(sharedPreferencesEditor.remove("123")).willReturn(sharedPreferencesEditor);
-        doReturn(appWidgetHost).when(holder).getAppWidgetHost(intentService);
+        doReturn(appWidgetHost).when(holder).getAppWidgetHost(context);
 
         // when
-        holder.deleteWidget(intentService, 123);
+        holder.deleteWidget(context, 123);
 
         // then
         verifyNoMoreInteractions(sharedPreferencesEditor);

@@ -105,7 +105,7 @@ public class RemoteControlAdapter extends ToggleableAdapter<RemoteControlDevice>
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                stateUiService.setState(device, entry.command);
+                stateUiService.setState(device, entry.command, getContext());
             }
         });
 

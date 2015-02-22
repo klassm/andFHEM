@@ -24,6 +24,8 @@
 
 package li.klass.fhem.domain;
 
+import android.content.Context;
+
 import org.w3c.dom.NamedNodeMap;
 
 import java.util.List;
@@ -106,8 +108,8 @@ public class FHTDevice extends FhemDevice<FHTDevice> implements DesiredTempDevic
     }
 
     @Override
-    public void afterDeviceXMLRead() {
-        super.afterDeviceXMLRead();
+    public void afterDeviceXMLRead(Context context) {
+        super.afterDeviceXMLRead(context);
         weekProfile.afterXMLRead();
     }
 
@@ -270,27 +272,27 @@ public class FHTDevice extends FhemDevice<FHTDevice> implements DesiredTempDevic
     }
 
     @Override
-    protected void fillDeviceCharts(List<DeviceChart> chartSeries) {
-        super.fillDeviceCharts(chartSeries);
+    protected void fillDeviceCharts(List<DeviceChart> chartSeries, Context context) {
+        super.fillDeviceCharts(chartSeries, context);
 
         if (temperature != null && actuator != null) {
             addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureActuatorGraph,
                             new ChartSeriesDescription.Builder()
-                                    .withColumnName(R.string.temperature)
+                                    .withColumnName(R.string.temperature, context)
                                     .withFileLogSpec("4:measured")
                                     .withDbLogSpec("measured-temp::int1")
                                     .withSeriesType(TEMPERATURE)
                                     .withShowRegression(true)
                                     .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("measured-temp", 0, 30))
                                     .build(),
-                            new ChartSeriesDescription.Builder().withColumnName(R.string.desiredTemperature)
+                            new ChartSeriesDescription.Builder().withColumnName(R.string.desiredTemperature, context)
                                     .withFileLogSpec("4:desired-temp")
                                     .withDbLogSpec("desired-temp::int1")
                                     .withSeriesType(DESIRED_TEMPERATURE)
                                     .withShowDiscreteValues(true)
                                     .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("desired-temp", 0, 30))
                                     .build(),
-                            new ChartSeriesDescription.Builder().withColumnName(R.string.actuator)
+                            new ChartSeriesDescription.Builder().withColumnName(R.string.actuator, context)
                                     .withFileLogSpec("4:actuator.*[0-9]+%:0:int")
                                     .withDbLogSpec("actuator::int")
                                     .withSeriesType(ACTUATOR)
@@ -302,14 +304,14 @@ public class FHTDevice extends FhemDevice<FHTDevice> implements DesiredTempDevic
             );
         } else if (temperature == null && actuator != null) {
             addDeviceChartIfNotNull(new DeviceChart(R.string.actuatorGraph,
-                            new ChartSeriesDescription.Builder().withColumnName(R.string.desiredTemperature)
+                            new ChartSeriesDescription.Builder().withColumnName(R.string.desiredTemperature, context)
                                     .withFileLogSpec("4:desired-temp")
                                     .withDbLogSpec("desired-temp::int1")
                                     .withSeriesType(DESIRED_TEMPERATURE)
                                     .withShowDiscreteValues(true)
                                     .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("desired-temp", 0, 100))
                                     .build(),
-                            new ChartSeriesDescription.Builder().withColumnName(R.string.actuator)
+                            new ChartSeriesDescription.Builder().withColumnName(R.string.actuator, context)
                                     .withFileLogSpec("4:actuator.*[0-9]+%:0:int")
                                     .withDbLogSpec("actuator::int")
                                     .withSeriesType(ACTUATOR)

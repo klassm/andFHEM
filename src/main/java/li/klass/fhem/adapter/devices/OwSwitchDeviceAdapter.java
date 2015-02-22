@@ -90,7 +90,7 @@ public class OwSwitchDeviceAdapter extends GenericDeviceAdapter<OwSwitchDevice> 
 
         @Override
         protected void onButtonClick(Context context, OwSwitchDevice device, boolean isChecked) {
-            stateUiService.setSubState(device, "gpio", "" + setStateFor(device, isChecked));
+            stateUiService.setSubState(device, "gpio", "" + setStateFor(device, isChecked), context);
         }
 
         protected abstract int setStateFor(OwSwitchDevice device, boolean isChecked);

@@ -81,7 +81,7 @@ public class EnigmaDeviceAdapter extends ToggleableAdapterWithSwitchActionRow<En
 
                     @Override
                     protected void onButtonClick(Context context, EnigmaDevice device, boolean isChecked) {
-                        stateUiService.setSubState(device, "mute", isChecked ? "on" : "off");
+                        stateUiService.setSubState(device, "mute", isChecked ? "on" : "off", context);
                     }
                 }
                         .createRow(context, device, context.getString(R.string.musicMute)));

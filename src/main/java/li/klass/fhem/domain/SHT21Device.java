@@ -24,6 +24,8 @@
 
 package li.klass.fhem.domain;
 
+import android.content.Context;
+
 import java.util.List;
 
 import li.klass.fhem.R;
@@ -67,12 +69,12 @@ public class SHT21Device extends FhemDevice<SHT21Device> {
     }
 
     @Override
-    protected void fillDeviceCharts(List<DeviceChart> chartSeries) {
-        super.fillDeviceCharts(chartSeries);
+    protected void fillDeviceCharts(List<DeviceChart> chartSeries, Context context) {
+        super.fillDeviceCharts(chartSeries, context);
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureGraph,
                 new ChartSeriesDescription.Builder()
-                        .withColumnName(R.string.temperature)
+                        .withColumnName(R.string.temperature, context)
                         .withFileLogSpec("4::")
                         .withDbLogSpec("temperature::int1")
                         .withSeriesType(TEMPERATURE)
@@ -83,7 +85,7 @@ public class SHT21Device extends FhemDevice<SHT21Device> {
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.humidityGraph,
                 new ChartSeriesDescription.Builder()
-                        .withColumnName(R.string.humidity).withFileLogSpec("6::")
+                        .withColumnName(R.string.humidity, context).withFileLogSpec("6::")
                         .withDbLogSpec("humidity::int1")
                         .withSeriesType(HUMIDITY)
                         .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("humidity", 0, 100))
@@ -92,7 +94,7 @@ public class SHT21Device extends FhemDevice<SHT21Device> {
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.dewpointGraph,
                 new ChartSeriesDescription.Builder()
-                        .withColumnName(R.string.dewpoint).withFileLogSpec("8::")
+                        .withColumnName(R.string.dewpoint, context).withFileLogSpec("8::")
                         .withDbLogSpec("humidity::int1")
                         .withSeriesType(DEWPOINT)
                         .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("humidity", 0, 100))

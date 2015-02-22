@@ -24,6 +24,8 @@
 
 package li.klass.fhem.service.room;
 
+import android.content.Context;
+
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
@@ -51,6 +53,7 @@ import static li.klass.fhem.constants.PreferenceKeys.DEVICE_NAME;
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
 
 // We cannot combine two runners, so we have to create an extra test class for only
 // parametrized unit tests ...
@@ -66,13 +69,16 @@ public class RoomListServicePureUnitTest {
     @Mock
     private ApplicationProperties applicationProperties;
 
+    @Mock
+    private Context context;
+
     @InjectMocks
     private RoomListService service;
 
     @Before
     public void before() {
-        given(applicationProperties.getStringSharedPreference(DEVICE_NAME, "andFHEM")).willReturn("abc");
-        given(connectionService.mayShowInCurrentConnectionType(any(DeviceType.class))).willCallRealMethod();
+        given(applicationProperties.getStringSharedPreference(eq(DEVICE_NAME), eq("andFHEM"), eq(context))).willReturn("abc");
+        given(connectionService.mayShowInCurrentConnectionType(any(DeviceType.class), eq(context))).willCallRealMethod();
     }
 
     @DataProvider

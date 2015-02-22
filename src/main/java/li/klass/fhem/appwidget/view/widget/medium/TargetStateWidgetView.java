@@ -85,7 +85,7 @@ public class TargetStateWidgetView extends DeviceAppWidgetView {
 
         view.setOnClickPendingIntent(R.id.button, pendingIntent);
 
-        openDeviceDetailPageWhenClicking(R.id.main, view, device, widgetConfiguration);
+        openDeviceDetailPageWhenClicking(R.id.main, view, device, widgetConfiguration, context);
     }
 
 
@@ -97,7 +97,7 @@ public class TargetStateWidgetView extends DeviceAppWidgetView {
                 new AvailableTargetStatesDialogUtil.TargetStateSelectedCallback() {
                     @Override
                     public <D extends FhemDevice<D>> void onTargetStateSelected(String state, String subState,
-                                                                            D device, Context context) {
+                                                                                D device, Context context) {
                         if (state.equals("state")) {
                             state = subState;
                             subState = null;

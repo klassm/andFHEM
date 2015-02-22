@@ -24,6 +24,8 @@
 
 package li.klass.fhem.domain.log;
 
+import android.content.Context;
+
 import com.google.common.collect.Lists;
 
 import java.io.Serializable;
@@ -142,15 +144,15 @@ public abstract class LogDevice<T extends LogDevice<T>> extends FhemDevice<T> {
                                               String toDateFormatted, ChartSeriesDescription seriesDescription);
 
     @Override
-    public void afterDeviceXMLRead() {
-        super.afterDeviceXMLRead();
+    public void afterDeviceXMLRead(final Context context) {
+        super.afterDeviceXMLRead(context);
 
         setAllDeviceReadCallback(new AllDevicesReadCallback() {
             @Override
             public void devicesRead(Map<String, FhemDevice> allDevices) {
                 for (FhemDevice device : allDevices.values()) {
                     if (concernsDevice(device.getName())) {
-                        device.addLogDevice(LogDevice.this);
+                        device.addLogDevice(LogDevice.this, context);
                     }
                 }
             }

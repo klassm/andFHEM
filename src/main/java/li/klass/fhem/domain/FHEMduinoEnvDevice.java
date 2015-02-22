@@ -24,6 +24,8 @@
 
 package li.klass.fhem.domain;
 
+import android.content.Context;
+
 import java.util.List;
 
 import li.klass.fhem.R;
@@ -107,12 +109,12 @@ public class FHEMduinoEnvDevice extends FhemDevice<FHEMduinoEnvDevice> implement
     }
 
     @Override
-    protected void fillDeviceCharts(List<DeviceChart> chartSeries) {
-        super.fillDeviceCharts(chartSeries);
+    protected void fillDeviceCharts(List<DeviceChart> chartSeries, Context context) {
+        super.fillDeviceCharts(chartSeries, context);
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureHumidityDewpointGraph,
                 new ChartSeriesDescription.Builder()
-                        .withColumnName(R.string.temperature)
+                        .withColumnName(R.string.temperature, context)
                         .withFileLogSpec("4:temperature:0")
                         .withDbLogSpec("temperature")
                         .withSeriesType(TEMPERATURE)
@@ -120,13 +122,13 @@ public class FHEMduinoEnvDevice extends FhemDevice<FHEMduinoEnvDevice> implement
                         .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("temperature", 0, 30))
                         .build(),
                 new ChartSeriesDescription.Builder()
-                        .withColumnName(R.string.humidity).withFileLogSpec("4:humidity:0")
+                        .withColumnName(R.string.humidity, context).withFileLogSpec("4:humidity:0")
                         .withDbLogSpec("humidity")
                         .withSeriesType(HUMIDITY)
                         .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("humidity", 0, 100))
                         .build(),
                 new ChartSeriesDescription.Builder()
-                        .withColumnName(R.string.dewpoint).withFileLogSpec("4:taupunkttemp:0")
+                        .withColumnName(R.string.dewpoint, context).withFileLogSpec("4:taupunkttemp:0")
                         .withDbLogSpec("taupunkttemp")
                         .withSeriesType(DEWPOINT)
                         .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("taupunkttemp", -10, 10))

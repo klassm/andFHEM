@@ -28,38 +28,32 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import javax.inject.Inject;
-
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.dagger.ForApplication;
 
 public class AbstractService {
-    @Inject
-    @ForApplication
-    protected Context applicationContext;
-
-    protected void sendBroadcastWithAction(String action) {
-        sendBroadcastWithAction(action, null);
+    protected void sendBroadcastWithAction(String action, Context context) {
+        sendBroadcastWithAction(action, null, context);
     }
 
     /**
      * Sends a broadcast message containing a specified action. Context is the application context.
      *
-     * @param action action to use for sending the broadcast intent.
-     * @param bundle parameters to set
+     * @param action  action to use for sending the broadcast intent.
+     * @param bundle  parameters to set
+     * @param context context
      */
-    protected void sendBroadcastWithAction(String action, Bundle bundle) {
+    protected void sendBroadcastWithAction(String action, Bundle bundle, Context context) {
         if (bundle == null) bundle = new Bundle();
 
         Intent broadcastIntent = new Intent(action);
         broadcastIntent.putExtras(bundle);
-        applicationContext.sendBroadcast(broadcastIntent);
+        context.sendBroadcast(broadcastIntent);
     }
 
-    protected void showToast(int stringId) {
+    protected void showToast(int stringId, Context context) {
         Intent intent = new Intent(Actions.SHOW_TOAST);
         intent.putExtra(BundleExtraKeys.STRING_ID, stringId);
-        applicationContext.sendBroadcast(intent);
+        context.sendBroadcast(intent);
     }
 }

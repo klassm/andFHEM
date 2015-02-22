@@ -24,6 +24,8 @@
 
 package li.klass.fhem.domain;
 
+import android.content.Context;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -84,8 +86,8 @@ public class EnOceanDevice extends DimmableContinuousStatesDevice<EnOceanDevice>
     }
 
     @Override
-    public void afterDeviceXMLRead() {
-        super.afterDeviceXMLRead();
+    public void afterDeviceXMLRead(Context context) {
+        super.afterDeviceXMLRead(context);
 
         if (gwCmd != null) {
             if (gwCmd.equalsIgnoreCase("DIMMING")) {

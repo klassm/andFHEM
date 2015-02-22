@@ -67,7 +67,7 @@ public class BigWeatherForecastWidget extends DeviceListAppWidgetView {
 
         view.setRemoteAdapter(R.id.forecastList, listIntent);
 
-        PendingIntent pendingIntent = createOpenDeviceDetailPagePendingIntent(device, widgetConfiguration.widgetId);
+        PendingIntent pendingIntent = createOpenDeviceDetailPagePendingIntent(device, widgetConfiguration.widgetId, context);
         view.setOnClickPendingIntent(R.id.main, pendingIntent);
         view.setPendingIntentTemplate(R.id.forecastList, pendingIntent);
 

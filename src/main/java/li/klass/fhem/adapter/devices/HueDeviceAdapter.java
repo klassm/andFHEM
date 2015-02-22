@@ -82,7 +82,7 @@ public class HueDeviceAdapter extends DimmableAdapter<HUEDevice> {
                                 "0", 6
                         );
 
-                        stateUiService.setSubState(device, "rgb", targetHexString);
+                        stateUiService.setSubState(device, "rgb", targetHexString, context);
                     }
                 }.createRow(context, getInflater(), tableLayout));
             }

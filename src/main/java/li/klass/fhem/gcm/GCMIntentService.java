@@ -60,7 +60,7 @@ public class GCMIntentService extends GCMBaseIntentService {
     @Override
     protected void onRegistered(Context context, String registrationId) {
         ApplicationProperties applicationProperties = AndFHEMApplication.getApplication().getGraph().get(ApplicationProperties.class);
-        applicationProperties.setSharedPreference(GCM_REGISTRATION_ID, registrationId);
+        applicationProperties.setSharedPreference(GCM_REGISTRATION_ID, registrationId, context);
         LOG.info("onRegistered - device registered with regId {}", registrationId);
 
         Intent intent = new Intent(Actions.GCM_REGISTERED);
@@ -187,7 +187,7 @@ public class GCMIntentService extends GCMBaseIntentService {
     @Override
     protected String[] getSenderIds(Context context) {
         ApplicationProperties applicationProperties = AndFHEMApplication.getApplication().getGraph().get(ApplicationProperties.class);
-        String projectId = applicationProperties.getStringSharedPreference(GCM_PROJECT_ID, null);
+        String projectId = applicationProperties.getStringSharedPreference(GCM_PROJECT_ID, null, context);
         if (StringUtil.isBlank(projectId)) {
             return new String[]{};
         }

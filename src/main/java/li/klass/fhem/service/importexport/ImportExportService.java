@@ -24,8 +24,10 @@
 
 package li.klass.fhem.service.importexport;
 
+import android.content.Context;
+
 import com.google.common.base.Charsets;
-import com.google.common.base.Objects;
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
@@ -51,8 +53,8 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
+import li.klass.fhem.service.NotificationService;
 import li.klass.fhem.service.connection.ConnectionService;
-import li.klass.fhem.service.intent.NotificationIntentService;
 import li.klass.fhem.service.room.FavoritesService;
 import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.CloseableUtil;
@@ -63,11 +65,9 @@ import li.klass.fhem.util.preferences.SharedPreferencesService;
 import static com.google.common.base.Preconditions.checkArgument;
 
 public class ImportExportService {
-    public enum ImportStatus{
+    public enum ImportStatus {
         SUCCESS, INVALID_FILE, WRONG_PASSWORD
     }
-
-    private final Map<String, String> sharedPreferencesExportKeys;
 
     public static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormat.forPattern("yyyy-MM-dd_HH-mm");
     public static final String SHARED_PREFERENCES_FILE_NAME = "sharedPreferences.json";
@@ -79,20 +79,23 @@ public class ImportExportService {
     @Inject
     FileSystemService fileSystemService;
 
-    @Inject public ImportExportService(ApplicationProperties applicationProperties) {
-        sharedPreferencesExportKeys = ImmutableMap.<String, String>builder()
+    @Inject
+    ApplicationProperties applicationProperties;
+
+    protected Map<String, String> getSharedPreferencesExportKeys(Context context) {
+        return ImmutableMap.<String, String>builder()
                 .put("CONNECTIONS", ConnectionService.PREFERENCES_NAME)
                 .put("FAVORITES", FavoritesService.PREFERENCES_NAME)
-                .put("NOTIFICATIONS", NotificationIntentService.PREFERENCES_NAME)
-                .put("DEFAULT", applicationProperties.getApplicationSharedPreferencesName())
+                .put("NOTIFICATIONS", NotificationService.PREFERENCES_NAME)
+                .put("DEFAULT", applicationProperties.getApplicationSharedPreferencesName(context))
                 .build();
     }
 
-    public File exportSettings(String password) {
+    public File exportSettings(String password, Context context) {
         Map<String, Map<String, ?>> toExport = Maps.newHashMap();
 
-        for (Map.Entry<String, String> exportValue : sharedPreferencesExportKeys.entrySet()) {
-            Map<String, ?> values = sharedPreferencesService.listAllFrom(exportValue.getValue());
+        for (Map.Entry<String, String> exportValue : getSharedPreferencesExportKeys(context).entrySet()) {
+            Map<String, ?> values = sharedPreferencesService.listAllFrom(exportValue.getValue(), context);
             toExport.put(exportValue.getKey(), toExportValues(values));
         }
 
@@ -122,7 +125,7 @@ public class ImportExportService {
     private Object typedValueFor(String value, Class<?> type) {
         if (type.isAssignableFrom(Integer.class)) {
             return Integer.parseInt(value);
-        } else if  (type.isAssignableFrom(Float.class)) {
+        } else if (type.isAssignableFrom(Float.class)) {
             return Float.parseFloat(value);
         } else if (type.isAssignableFrom(Boolean.class)) {
             return Boolean.parseBoolean(value);
@@ -157,26 +160,26 @@ public class ImportExportService {
     }
 
     @SuppressWarnings("unchecked")
-    public ImportStatus importSettings(File file, String password) {
+    public ImportStatus importSettings(File file, String password, Context context) {
         ZipFile zipFile;
         InputStreamReader importReader = null;
 
         try {
             zipFile = new ZipFile(file);
             if (zipFile.isEncrypted()) {
-                zipFile.setPassword(Objects.firstNonNull(password, ""));
+                zipFile.setPassword(MoreObjects.firstNonNull(password, ""));
             }
 
             if (zipFile.getFileHeader(SHARED_PREFERENCES_FILE_NAME) == null) {
                 return ImportStatus.INVALID_FILE;
             }
 
-            zipFile.extractFile(SHARED_PREFERENCES_FILE_NAME, fileSystemService.getCacheDir().getAbsolutePath());
+            zipFile.extractFile(SHARED_PREFERENCES_FILE_NAME, fileSystemService.getCacheDir(context).getAbsolutePath());
 
-            importReader = new InputStreamReader(new FileInputStream(new File(fileSystemService.getCacheDir(), SHARED_PREFERENCES_FILE_NAME)));
+            importReader = new InputStreamReader(new FileInputStream(new File(fileSystemService.getCacheDir(context), SHARED_PREFERENCES_FILE_NAME)));
             Map<String, Map<String, String>> content = new Gson().fromJson(importReader, Map.class);
             for (Map.Entry<String, Map<String, String>> entry : content.entrySet()) {
-                sharedPreferencesService.writeAllIn(sharedPreferencesExportKeys.get(entry.getKey()), toImportValues(entry.getValue()));
+                sharedPreferencesService.writeAllIn(getSharedPreferencesExportKeys(context).get(entry.getKey()), toImportValues(entry.getValue()), context);
             }
             return ImportStatus.SUCCESS;
 

@@ -82,7 +82,7 @@ public class PCA9532DeviceAdapter extends GenericDeviceAdapter<PCA9532Device> {
 
                     @Override
                     protected void onButtonClick(final Context context, final PCA9532Device device, final boolean isChecked) {
-                        stateUiService.setSubState(device, port, isChecked ? "on" : "off");
+                        stateUiService.setSubState(device, port, isChecked ? "on" : "off", context);
                     }
                 }.createRow(context, device, port));
             }

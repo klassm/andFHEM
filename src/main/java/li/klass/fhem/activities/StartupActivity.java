@@ -158,7 +158,7 @@ public class StartupActivity extends Activity {
                         }
                     }
                 });
-        boolean updateOnApplicationStart = applicationProperties.getBooleanSharedPreference(UPDATE_ON_APPLICATION_START, false);
+        boolean updateOnApplicationStart = applicationProperties.getBooleanSharedPreference(UPDATE_ON_APPLICATION_START, false, this);
         if (updateOnApplicationStart) {
             intent.putExtra(BundleExtraKeys.UPDATE_PERIOD, RoomListService.ALWAYS_UPDATE_PERIOD);
         }
@@ -190,7 +190,7 @@ public class StartupActivity extends Activity {
     }
 
     private String getPassword() {
-        return applicationProperties.getStringSharedPreference(STARTUP_PASSWORD, "");
+        return applicationProperties.getStringSharedPreference(STARTUP_PASSWORD, "", this);
     }
 
     private void gotoMainActivity(boolean favoritesPresent) {

@@ -96,10 +96,10 @@ public class DeviceGridAdapter<T extends FhemDevice<T>> extends GridViewWithSect
         deviceGroupParents.clear();
         DeviceGroupHolder holder = new DeviceGroupHolder(applicationProperties);
 
-        for (DeviceFunctionality visible : holder.getVisible()) {
+        for (DeviceFunctionality visible : holder.getVisible(context)) {
             deviceGroupParents.add(visible.getCaptionText(context));
         }
-        for (DeviceFunctionality invisible : holder.getInvisible()) {
+        for (DeviceFunctionality invisible : holder.getInvisible(context)) {
             hiddenParents.add(invisible.getCaptionText(context));
         }
 
@@ -117,14 +117,14 @@ public class DeviceGridAdapter<T extends FhemDevice<T>> extends GridViewWithSect
 
         Set<String> customParents = newHashSet();
 
-        boolean showHiddenDevices = applicationProperties.getBooleanSharedPreference(SHOW_HIDDEN_DEVICES, false);
+        boolean showHiddenDevices = applicationProperties.getBooleanSharedPreference(SHOW_HIDDEN_DEVICES, false, context);
 
         Set<FhemDevice> allDevices = roomDeviceList.getAllDevices();
         for (FhemDevice device : allDevices) {
             LOG.trace("updateData - contained device {}", device.getName());
             if (device.isInRoom("hidden") && !showHiddenDevices ||
                     device.isInAnyRoomOf(roomDeviceList.getHiddenRooms())) {
-                roomDeviceList.removeDevice(device);
+                roomDeviceList.removeDevice(device, context);
             } else {
                 customParents.addAll(device.getInternalDeviceGroupOrGroupAttributes(context));
             }
@@ -269,7 +269,7 @@ public class DeviceGridAdapter<T extends FhemDevice<T>> extends GridViewWithSect
 
     @Override
     protected int getRequiredColumnWidth() {
-        int width = applicationProperties.getIntegerSharedPreference(DEVICE_COLUMN_WIDTH, DEFAULT_COLUMN_WIDTH);
+        int width = applicationProperties.getIntegerSharedPreference(DEVICE_COLUMN_WIDTH, DEFAULT_COLUMN_WIDTH, context);
         LOG.debug("getRequiredColumnWidth - column width: {}", width);
         return width;
     }

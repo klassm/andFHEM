@@ -24,6 +24,8 @@
 
 package li.klass.fhem.domain;
 
+import android.content.Context;
+
 import java.util.List;
 
 import li.klass.fhem.R;
@@ -149,12 +151,12 @@ public class TRXWeatherDevice extends FhemDevice<TRXWeatherDevice> {
     }
 
     @Override
-    protected void fillDeviceCharts(List<DeviceChart> chartSeries) {
-        super.fillDeviceCharts(chartSeries);
+    protected void fillDeviceCharts(List<DeviceChart> chartSeries, Context context) {
+        super.fillDeviceCharts(chartSeries, context);
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureGraph,
                 new ChartSeriesDescription.Builder()
-                        .withColumnName(R.string.temperature)
+                        .withColumnName(R.string.temperature, context)
                         .withFileLogSpec("4:temperature:")
                         .withDbLogSpec("temperature::int2")
                         .withSeriesType(TEMPERATURE)
@@ -162,7 +164,7 @@ public class TRXWeatherDevice extends FhemDevice<TRXWeatherDevice> {
                         .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("temperature", 0, 30))
                         .build(),
                 new ChartSeriesDescription.Builder()
-                        .withColumnName(R.string.dewpoint).withFileLogSpec("4:dewpoint:0:")
+                        .withColumnName(R.string.dewpoint, context).withFileLogSpec("4:dewpoint:0:")
                         .withDbLogSpec("dewpoint::int1")
                         .withSeriesType(DEWPOINT)
                         .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("dewpoint", -10, 10))
@@ -171,7 +173,7 @@ public class TRXWeatherDevice extends FhemDevice<TRXWeatherDevice> {
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.humidityGraph,
                 new ChartSeriesDescription.Builder()
-                        .withColumnName(R.string.humidity).withFileLogSpec("4:humidity:0:")
+                        .withColumnName(R.string.humidity, context).withFileLogSpec("4:humidity:0:")
                         .withDbLogSpec("humidity")
                         .withSeriesType(HUMIDITY)
                         .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("humidity", 0, 100))
@@ -180,7 +182,7 @@ public class TRXWeatherDevice extends FhemDevice<TRXWeatherDevice> {
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.pressureGraph,
                 new ChartSeriesDescription.Builder()
-                        .withColumnName(R.string.pressure).withFileLogSpec("4:pressure:0:")
+                        .withColumnName(R.string.pressure, context).withFileLogSpec("4:pressure:0:")
                         .withDbLogSpec("pressure")
                         .withSeriesType(PRESSURE)
                         .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("pressure", 700, 1200))

@@ -24,6 +24,8 @@
 
 package li.klass.fhem.domain;
 
+import android.content.Context;
+
 import java.util.Locale;
 
 import li.klass.fhem.domain.core.DimmableContinuousStatesDevice;
@@ -123,8 +125,8 @@ public class HUEDevice extends DimmableContinuousStatesDevice<HUEDevice> {
     }
 
     @Override
-    public void afterDeviceXMLRead() {
-        super.afterDeviceXMLRead();
+    public void afterDeviceXMLRead(Context context) {
+        super.afterDeviceXMLRead(context);
 
         if (xy != null) {
             this.rgb = ColorUtil.xyToRgb(xy, brightness);

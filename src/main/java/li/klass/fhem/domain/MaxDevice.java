@@ -24,6 +24,7 @@
 
 package li.klass.fhem.domain;
 
+import android.content.Context;
 import android.util.Log;
 
 import org.w3c.dom.NamedNodeMap;
@@ -111,8 +112,8 @@ public class MaxDevice extends ToggleableDevice<MaxDevice> implements DesiredTem
     }
 
     @Override
-    public void afterDeviceXMLRead() {
-        super.afterDeviceXMLRead();
+    public void afterDeviceXMLRead(Context context) {
+        super.afterDeviceXMLRead(context);
         weekProfile.afterXMLRead();
     }
 
@@ -289,20 +290,20 @@ public class MaxDevice extends ToggleableDevice<MaxDevice> implements DesiredTem
     }
 
     @Override
-    protected void fillDeviceCharts(List<DeviceChart> chartSeries) {
-        super.fillDeviceCharts(chartSeries);
+    protected void fillDeviceCharts(List<DeviceChart> chartSeries, Context context) {
+        super.fillDeviceCharts(chartSeries, context);
 
         if (actuator != null) {
             addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureActuatorGraph,
                     new ChartSeriesDescription.Builder()
-                            .withColumnName(R.string.temperature)
+                            .withColumnName(R.string.temperature, context)
                             .withFileLogSpec("4:temperature")
                             .withDbLogSpec("temperature::int1")
                             .withSeriesType(TEMPERATURE)
                             .withShowRegression(true)
                             .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("temperature", 0, 30))
                             .build(),
-                    new ChartSeriesDescription.Builder().withColumnName(R.string.desiredTemperature)
+                    new ChartSeriesDescription.Builder().withColumnName(R.string.desiredTemperature, context)
                             .withFileLogSpec("4:desiredTemperature")
                             .withDbLogSpec("desiredTemperature::int")
                             .withSeriesType(DESIRED_TEMPERATURE)
@@ -310,7 +311,7 @@ public class MaxDevice extends ToggleableDevice<MaxDevice> implements DesiredTem
                             .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("desiredTemperature", 0, 30))
                             .build(),
                     new ChartSeriesDescription.Builder()
-                            .withColumnName(R.string.actuator).withFileLogSpec("4:valveposition")
+                            .withColumnName(R.string.actuator, context).withFileLogSpec("4:valveposition")
                             .withDbLogSpec("valveposition::int")
                             .withSeriesType(ACTUATOR)
                             .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("valveposition", 0, 100))
@@ -319,7 +320,7 @@ public class MaxDevice extends ToggleableDevice<MaxDevice> implements DesiredTem
         } else {
             addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureGraph,
                     new ChartSeriesDescription.Builder()
-                            .withColumnName(R.string.temperature)
+                            .withColumnName(R.string.temperature, context)
                             .withFileLogSpec("4:temperature")
                             .withDbLogSpec("temperature::int1")
                             .withSeriesType(TEMPERATURE)

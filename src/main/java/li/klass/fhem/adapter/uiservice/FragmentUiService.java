@@ -32,17 +32,17 @@ import javax.inject.Singleton;
 
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.dagger.ForApplication;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.fragments.FragmentType;
 
 @Singleton
 public class FragmentUiService {
-    @Inject
-    @ForApplication
-    Context context;
 
-    public void showIntervalWeekProfileFor(FhemDevice<?> device) {
+    @Inject
+    public FragmentUiService() {
+    }
+
+    public void showIntervalWeekProfileFor(FhemDevice<?> device, Context context) {
         context.sendBroadcast(new Intent(Actions.SHOW_FRAGMENT)
                 .putExtra(BundleExtraKeys.FRAGMENT, FragmentType.INTERVAL_WEEK_PROFILE)
                 .putExtra(BundleExtraKeys.DEVICE_NAME, device.getName()));

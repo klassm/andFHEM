@@ -115,7 +115,7 @@ public class AppWidgetUpdateService extends IntentService {
 
     public void updateWidget(final IntentService intentService,
                              final int appWidgetId, final boolean allowRemoteUpdate) {
-        Optional<WidgetConfiguration> widgetConfigurationOptional = appWidgetDataHolder.getWidgetConfiguration(appWidgetId);
+        Optional<WidgetConfiguration> widgetConfigurationOptional = appWidgetDataHolder.getWidgetConfiguration(appWidgetId, this);
 
         if (!widgetConfigurationOptional.isPresent()) {
             appWidgetDataHolder.deleteWidget(intentService, appWidgetId);
@@ -126,7 +126,7 @@ public class AppWidgetUpdateService extends IntentService {
 
         final long updateInterval = appWidgetDataHolder.getConnectionDependentUpdateInterval(intentService);
 
-        boolean doRemoteWidgetUpdates = applicationProperties.getBooleanSharedPreference(ALLOW_REMOTE_UPDATE, true);
+        boolean doRemoteWidgetUpdates = applicationProperties.getBooleanSharedPreference(ALLOW_REMOTE_UPDATE, true, this);
         final long viewCreateUpdateInterval = doRemoteWidgetUpdates && allowRemoteUpdate ? updateInterval : NEVER_UPDATE_PERIOD;
 
         appWidgetDataHolder.scheduleUpdateIntent(intentService, configuration, false, updateInterval);
@@ -140,7 +140,7 @@ public class AppWidgetUpdateService extends IntentService {
 
     private void updateWidgetAfterDeviceListReload(int appWidgetId) {
 
-        Optional<WidgetConfiguration> optional = appWidgetDataHolder.getWidgetConfiguration(appWidgetId);
+        Optional<WidgetConfiguration> optional = appWidgetDataHolder.getWidgetConfiguration(appWidgetId, this);
         checkArgument(optional.isPresent());
 
         final WidgetConfiguration configuration = optional.get();

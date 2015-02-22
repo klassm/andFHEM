@@ -52,14 +52,14 @@ public class WOLAdapter extends GenericDeviceAdapter<WOLDevice> {
         detailActions.add(new DeviceDetailViewButtonAction<WOLDevice>(R.string.wake) {
             @Override
             public void onButtonClick(Context context, WOLDevice device) {
-                stateUiService.setState(device, "on");
+                stateUiService.setState(device, "on", context);
             }
         });
 
         detailActions.add(new DeviceDetailViewButtonAction<WOLDevice>(R.string.shutdown) {
             @Override
             public void onButtonClick(Context context, WOLDevice device) {
-                stateUiService.setState(device, "off");
+                stateUiService.setState(device, "off", context);
             }
 
             @Override

@@ -24,6 +24,8 @@
 
 package li.klass.fhem.domain;
 
+import android.content.Context;
+
 import java.util.List;
 
 import li.klass.fhem.R;
@@ -67,12 +69,12 @@ public class BMP180Device extends FhemDevice<BMP180Device> {
     }
 
     @Override
-    protected void fillDeviceCharts(List<DeviceChart> chartSeries) {
-        super.fillDeviceCharts(chartSeries);
+    protected void fillDeviceCharts(List<DeviceChart> chartSeries, Context context) {
+        super.fillDeviceCharts(chartSeries, context);
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureGraph,
                 new ChartSeriesDescription.Builder()
-                        .withColumnName(R.string.temperature)
+                        .withColumnName(R.string.temperature, context)
                         .withFileLogSpec("4::")
                         .withDbLogSpec("temperature::int1")
                         .withSeriesType(TEMPERATURE)
@@ -83,13 +85,13 @@ public class BMP180Device extends FhemDevice<BMP180Device> {
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.pressureGraph,
                 new ChartSeriesDescription.Builder()
-                        .withColumnName(R.string.pressure).withFileLogSpec("6::")
+                        .withColumnName(R.string.pressure, context).withFileLogSpec("6::")
                         .withDbLogSpec("pressure::int1")
                         .withSeriesType(PRESSURE)
                         .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("pressure", 700, 1200))
                         .build(),
                 new ChartSeriesDescription.Builder()
-                        .withColumnName(R.string.pressure).withFileLogSpec("8::")
+                        .withColumnName(R.string.pressure, context).withFileLogSpec("8::")
                         .withDbLogSpec("pressure-nn::int1")
                         .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("pressure-nn", 700, 1200))
                         .withSeriesType(PRESSURE_NN)

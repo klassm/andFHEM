@@ -35,7 +35,8 @@ import dagger.Module;
                 FragmentsModule.class,
                 AppWidgetModule.class,
                 AdapterModule.class,
-                UIServiceModule.class
+                UIServiceModule.class,
+                AndroidModule.class
         }
 )
 public class ApplicationModule {

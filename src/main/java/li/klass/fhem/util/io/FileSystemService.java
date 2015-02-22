@@ -34,15 +34,13 @@ import java.io.File;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import li.klass.fhem.dagger.ForApplication;
-
 import static com.google.common.base.Preconditions.checkArgument;
 
 @Singleton
 public class FileSystemService {
     @Inject
-    @ForApplication
-    Context context;
+    public FileSystemService() {
+    }
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
     public File getDocumentsFolder() {
@@ -57,13 +55,13 @@ public class FileSystemService {
         checkArgument(file.exists() && file.isDirectory());
         File newFile = new File(file, directoryName);
 
-        if (! newFile.exists()) {
+        if (!newFile.exists()) {
             checkArgument(newFile.mkdir());
         }
         return newFile;
     }
 
-    public File getCacheDir() {
+    public File getCacheDir(Context context) {
         return context.getCacheDir();
     }
 }

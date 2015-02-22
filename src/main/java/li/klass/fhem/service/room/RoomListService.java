@@ -49,18 +49,17 @@ import li.klass.fhem.appwidget.service.AppWidgetUpdateService;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
 import li.klass.fhem.constants.PreferenceKeys;
-import li.klass.fhem.dagger.ForApplication;
 import li.klass.fhem.domain.FHEMWEBDevice;
 import li.klass.fhem.domain.core.DeviceType;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.RoomDeviceList;
 import li.klass.fhem.service.AbstractService;
-import li.klass.fhem.service.SharedPreferencesService;
 import li.klass.fhem.service.connection.ConnectionService;
 import li.klass.fhem.service.intent.DeviceIntentService;
 import li.klass.fhem.service.intent.NotificationIntentService;
 import li.klass.fhem.service.intent.RoomListUpdateIntentService;
 import li.klass.fhem.util.ApplicationProperties;
+import li.klass.fhem.util.preferences.SharedPreferencesService;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static java.util.Collections.sort;
@@ -114,7 +113,7 @@ public class RoomListService extends AbstractService {
         }
 
         FhemDevice device = deviceOptional.get();
-        deviceListParser.fillDeviceWith(device, updateMap);
+        deviceListParser.fillDeviceWith(device, updateMap, context);
 
         LOG.info("parseReceivedDeviceStateMap()  : updated {} with {} new values!", device.getName(), updateMap.size());
 
@@ -125,9 +124,9 @@ public class RoomListService extends AbstractService {
                 .putExtra(BundleExtraKeys.UPDATE_MAP, (Serializable) updateMap)
                 .putExtra(BundleExtraKeys.VIBRATE, vibrateUponNotification));
 
-        boolean updateWidgets = applicationProperties.getBooleanSharedPreference(PreferenceKeys.GCM_WIDGET_UPDATE, false);
+        boolean updateWidgets = applicationProperties.getBooleanSharedPreference(PreferenceKeys.GCM_WIDGET_UPDATE, false, context);
         if (updateWidgets) {
-            sendBroadcastWithAction(REDRAW_ALL_WIDGETS);
+            sendBroadcastWithAction(REDRAW_ALL_WIDGETS, context);
 
             context.startService(new Intent(REDRAW_ALL_WIDGETS)
                     .setClass(context, DeviceIntentService.class));
@@ -159,7 +158,7 @@ public class RoomListService extends AbstractService {
     /**
      * Loads the currently cached {@link li.klass.fhem.domain.core.RoomDeviceList}. If the cached
      * device list has not yet been loaded, it will be loaded from the cache object.
-     * 
+     * <p/>
      * <p>Watch out: Any modifications will be saved within the internal representation. Don't use
      * this method from client code!</p>
      *
@@ -169,11 +168,11 @@ public class RoomListService extends AbstractService {
         return roomListHolderService.getCachedRoomDeviceListMap();
     }
 
-    public void resetUpdateProgress() {
+    public void resetUpdateProgress(Context context) {
         LOG.debug("resetUpdateProgress()");
         remoteUpdateInProgress.set(false);
         resendIntents = newArrayList();
-        sendBroadcastWithAction(DISMISS_EXECUTING_DIALOG);
+        sendBroadcastWithAction(DISMISS_EXECUTING_DIALOG, context);
     }
 
     /**
@@ -184,7 +183,7 @@ public class RoomListService extends AbstractService {
      * this means that no devices had been cached.</li>
      * <li>The update period indicates that we have to update the device map.</li>
      * </ul>
-     * 
+     * <p/>
      * <p>
      * When finding out that we have to remotely update the device list, the current request
      * (as intent) is cached and an intent to {@link li.klass.fhem.service.intent.RoomListUpdateIntentService}
@@ -206,7 +205,7 @@ public class RoomListService extends AbstractService {
      */
     public RemoteUpdateRequired updateRoomDeviceListIfRequired(Intent intent, long updatePeriod, Context context) {
         RoomDeviceList deviceList = roomListHolderService.getCachedRoomDeviceListMap();
-        boolean requiresUpdate = shouldUpdate(updatePeriod) || deviceList == null;
+        boolean requiresUpdate = shouldUpdate(updatePeriod, context) || deviceList == null;
         if (requiresUpdate) {
             LOG.info("updateRoomDeviceListIfRequired() - requiring update, add pending action: {}", intent.getAction());
             resendIntents.add(createResendIntent(intent));
@@ -245,7 +244,7 @@ public class RoomListService extends AbstractService {
             LOG.info("remoteUpdateFinished() - remote update finished, device list is {}");
         } finally {
             LOG.info("remoteUpdateFinished() - finished, dismissing executing dialog");
-            resetUpdateProgress();
+            resetUpdateProgress(context);
         }
     }
 
@@ -264,7 +263,7 @@ public class RoomListService extends AbstractService {
         return resendIntent;
     }
 
-    private boolean shouldUpdate(long updatePeriod) {
+    private boolean shouldUpdate(long updatePeriod, Context context) {
         if (updatePeriod == ALWAYS_UPDATE_PERIOD) {
             LOG.debug("shouldUpdate() : recommend update, as updatePeriod is set to ALWAYS_UPDATE");
             return true;
@@ -274,7 +273,7 @@ public class RoomListService extends AbstractService {
             return false;
         }
 
-        long lastUpdate = getLastUpdate();
+        long lastUpdate = getLastUpdate(context);
         boolean shouldUpdate = lastUpdate + updatePeriod < System.currentTimeMillis();
 
         LOG.debug("shouldUpdate() : recommend {} update (lastUpdate: {}, updatePeriod: {} min)", (!shouldUpdate ? "no " : "to"), toReadable(lastUpdate), (updatePeriod / 1000 / 60));
@@ -282,8 +281,8 @@ public class RoomListService extends AbstractService {
         return shouldUpdate;
     }
 
-    public long getLastUpdate() {
-        return sharedPreferencesService.getSharedPreferences(PREFERENCES_NAME).getLong(LAST_UPDATE_PROPERTY, 0L);
+    public long getLastUpdate(Context context) {
+        return sharedPreferencesService.getPreferences(PREFERENCES_NAME, context).getLong(LAST_UPDATE_PROPERTY, 0L);
     }
 
     public ArrayList<String> getAvailableDeviceNames(Context context) {
@@ -307,16 +306,17 @@ public class RoomListService extends AbstractService {
     /**
      * Retrieves a list of all room names.
      *
+     * @param context context
      * @return list of all room names
      */
-    public ArrayList<String> getRoomNameList() {
+    public ArrayList<String> getRoomNameList(Context context) {
         RoomDeviceList roomDeviceList = getRoomDeviceList();
         if (roomDeviceList == null) return newArrayList();
 
         Set<String> roomNames = Sets.newHashSet();
         for (FhemDevice device : roomDeviceList.getAllDevices()) {
             DeviceType type = getDeviceTypeFor(device);
-            if (device.isSupported() && connectionService.mayShowInCurrentConnectionType(type) && type != AT) {
+            if (device.isSupported() && connectionService.mayShowInCurrentConnectionType(type, context) && type != AT) {
                 @SuppressWarnings("unchecked")
                 List<String> deviceRooms = device.getRooms();
                 roomNames.addAll(deviceRooms);
@@ -324,7 +324,7 @@ public class RoomListService extends AbstractService {
         }
         roomNames.removeAll(roomDeviceList.getHiddenRooms());
 
-        FHEMWEBDevice fhemwebDevice = roomListHolderService.findFHEMWEBDevice(roomDeviceList);
+        FHEMWEBDevice fhemwebDevice = roomListHolderService.findFHEMWEBDevice(roomDeviceList, context);
         return sortRooms(roomNames, fhemwebDevice);
     }
 
@@ -369,13 +369,13 @@ public class RoomListService extends AbstractService {
      * @return found {@link RoomDeviceList} or null
      */
     public RoomDeviceList getDeviceListForRoom(String roomName, Context context) {
-        RoomDeviceList roomDeviceList = new RoomDeviceList(roomName, context);
+        RoomDeviceList roomDeviceList = new RoomDeviceList(roomName);
 
         RoomDeviceList allRoomDeviceList = getRoomDeviceList();
         if (allRoomDeviceList != null) {
             for (FhemDevice device : allRoomDeviceList.getAllDevices()) {
                 if (device.isInRoom(roomName)) {
-                    roomDeviceList.addDevice(device);
+                    roomDeviceList.addDevice(device, context);
                 }
             }
             roomDeviceList.setHiddenGroups(allRoomDeviceList.getHiddenGroups());

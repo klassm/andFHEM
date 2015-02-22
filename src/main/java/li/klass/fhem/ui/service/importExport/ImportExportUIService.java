@@ -27,6 +27,7 @@ package li.klass.fhem.ui.service.importExport;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.view.View;
 import android.widget.EditText;
@@ -79,16 +80,16 @@ public class ImportExportUIService {
             selectPasswordWith(activity, new OnBackupPasswordSelected() {
                 @Override
                 public void backupPasswordSelected(String password) {
-                    importWith(activity, file, password);
+                    importWith(activity, file, password, activity);
                 }
             }, R.string.importPasswordDescription);
         } else {
-            importWith(activity, file, null);
+            importWith(activity, file, null, activity);
         }
     }
 
-    private void importWith(Activity activity, File file, String password) {
-        ImportExportService.ImportStatus status = importExportService.importSettings(file, password);
+    private void importWith(Activity activity, File file, String password, Context context) {
+        ImportExportService.ImportStatus status = importExportService.importSettings(file, password, context);
         if (status == ImportExportService.ImportStatus.SUCCESS) {
             onImportSuccess(activity);
         } else {
@@ -123,7 +124,7 @@ public class ImportExportUIService {
         selectPasswordWith(activity, new OnBackupPasswordSelected() {
             @Override
             public void backupPasswordSelected(String password) {
-                File file = importExportService.exportSettings(password);
+                File file = importExportService.exportSettings(password, activity);
 
                 @SuppressLint("InflateParams") View layout = activity.getLayoutInflater().inflate(R.layout.export_success, null);
                 ((TextView) layout.findViewById(R.id.export_location)).setText(file.getAbsolutePath());

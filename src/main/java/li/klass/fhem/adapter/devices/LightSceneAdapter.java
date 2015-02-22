@@ -115,6 +115,6 @@ public class LightSceneAdapter extends GenericDeviceAdapter<LightSceneDevice> {
     }
 
     private void activateScene(LightSceneDevice device, String scene) {
-        stateUiService.setSubState(device, "scene", scene);
+        stateUiService.setSubState(device, "scene", scene, getContext());
     }
 }

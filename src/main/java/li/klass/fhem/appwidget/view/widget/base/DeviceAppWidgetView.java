@@ -45,7 +45,6 @@ import li.klass.fhem.appwidget.WidgetConfigurationCreatedCallback;
 import li.klass.fhem.appwidget.annotation.SupportsWidget;
 import li.klass.fhem.appwidget.view.WidgetType;
 import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.dagger.ForApplication;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.fragments.FragmentType;
 import li.klass.fhem.service.room.RoomListService;
@@ -56,10 +55,6 @@ public abstract class DeviceAppWidgetView extends AppWidgetView {
 
     @Inject
     RoomListService roomListService;
-
-    @Inject
-    @ForApplication
-    Context applicationContext;
 
     public static final Logger LOG = LoggerFactory.getLogger(DeviceAppWidgetView.class);
 
@@ -87,7 +82,7 @@ public abstract class DeviceAppWidgetView extends AppWidgetView {
         if (shouldSetDeviceName()) {
             String deviceName = deviceNameFrom(widgetConfiguration);
 
-            FhemDevice device = getDeviceFor(deviceName);
+            FhemDevice device = getDeviceFor(deviceName, context);
             if (device == null) return null;
 
             views.setTextViewText(R.id.deviceName, device.getWidgetName());
@@ -104,39 +99,38 @@ public abstract class DeviceAppWidgetView extends AppWidgetView {
         return true;
     }
 
-    private FhemDevice getDeviceFor(String deviceName) {
-        return roomListService.getDeviceForName(deviceName, applicationContext).orNull();
+    private FhemDevice getDeviceFor(String deviceName, Context context) {
+        return roomListService.getDeviceForName(deviceName, context).orNull();
     }
 
-    protected void openDeviceDetailPageWhenClicking(int viewId, RemoteViews view, FhemDevice device, WidgetConfiguration widgetConfiguration) {
-        openDeviceDetailPageWhenClicking(viewId, view, device, widgetConfiguration.widgetId);
+    protected void openDeviceDetailPageWhenClicking(int viewId, RemoteViews view, FhemDevice device, WidgetConfiguration widgetConfiguration, Context context) {
+        openDeviceDetailPageWhenClicking(viewId, view, device, widgetConfiguration.widgetId, context);
     }
 
-    protected void openDeviceDetailPageWhenClicking(int viewId, RemoteViews view, FhemDevice device, int widgetId) {
-        PendingIntent pendingIntent = createOpenDeviceDetailPagePendingIntent(device, widgetId);
+    protected void openDeviceDetailPageWhenClicking(int viewId, RemoteViews view, FhemDevice device, int widgetId, Context context) {
+        PendingIntent pendingIntent = createOpenDeviceDetailPagePendingIntent(device, widgetId, context);
 
         view.setOnClickPendingIntent(viewId, pendingIntent);
     }
 
-    protected PendingIntent createOpenDeviceDetailPagePendingIntent(FhemDevice device, int widgetId) {
-        Intent openIntent = createOpenDeviceDetailPageIntent(device, applicationContext);
-        return PendingIntent.getActivity(applicationContext, widgetId, openIntent,
+    protected PendingIntent createOpenDeviceDetailPagePendingIntent(FhemDevice device, int widgetId, Context context) {
+        Intent openIntent = createOpenDeviceDetailPageIntent(device, context);
+        return PendingIntent.getActivity(context, widgetId, openIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     protected Intent createOpenDeviceDetailPageIntent(FhemDevice device, Context context) {
-        Intent openIntent = new Intent(context, AndFHEMMainActivity.class);
-        openIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        openIntent.putExtra(BundleExtraKeys.FRAGMENT, FragmentType.DEVICE_DETAIL);
-        openIntent.putExtra(BundleExtraKeys.DEVICE_NAME, device.getName());
-        openIntent.putExtra("unique", "foobar://" + SystemClock.elapsedRealtime());
-        return openIntent;
+        return new Intent(context, AndFHEMMainActivity.class)
+                .setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+                .putExtra(BundleExtraKeys.FRAGMENT, FragmentType.DEVICE_DETAIL)
+                .putExtra(BundleExtraKeys.DEVICE_NAME, device.getName())
+                .putExtra("unique", "foobar://" + SystemClock.elapsedRealtime());
     }
 
     @Override
     public void createWidgetConfiguration(Context context, WidgetType widgetType, int appWidgetId,
                                           WidgetConfigurationCreatedCallback callback, String... payload) {
-        Optional<FhemDevice> device = roomListService.getDeviceForName(payload[0], applicationContext);
+        Optional<FhemDevice> device = roomListService.getDeviceForName(payload[0], context);
         if (device.isPresent()) {
             createDeviceWidgetConfiguration(context, widgetType, appWidgetId, device.get(), callback);
         } else {
@@ -151,7 +145,7 @@ public abstract class DeviceAppWidgetView extends AppWidgetView {
 
     protected void fillWidgetView(Context context, RemoteViews view,
                                   WidgetConfiguration widgetConfiguration) {
-        FhemDevice<?> device = getDeviceFor(deviceNameFrom(widgetConfiguration));
+        FhemDevice<?> device = getDeviceFor(deviceNameFrom(widgetConfiguration), context);
         if (device != null) {
             view.setTextViewText(R.id.deviceName, device.getWidgetName());
             fillWidgetView(context, view, device, widgetConfiguration);

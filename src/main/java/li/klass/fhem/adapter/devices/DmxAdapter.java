@@ -66,7 +66,7 @@ public class DmxAdapter extends DimmableAdapter<DMXDevice> {
                                 "0", 6
                         );
 
-                        stateUiService.setSubState(device, "rgb", targetHexString);
+                        stateUiService.setSubState(device, "rgb", targetHexString, context);
                     }
 
                 }.createRow(context, getInflater(), tableLayout));

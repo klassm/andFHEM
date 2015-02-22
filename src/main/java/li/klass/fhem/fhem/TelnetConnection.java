@@ -24,6 +24,7 @@
 
 package li.klass.fhem.fhem;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 
 import org.apache.commons.net.telnet.TelnetClient;
@@ -52,11 +53,11 @@ public class TelnetConnection extends FHEMConnection {
     private TelnetConnection() {
     }
 
-    public RequestResult<String> executeCommand(String command) {
+    public RequestResult<String> executeCommand(String command, Context context) {
         LOG.info("executeTask command {}", command);
 
         final TelnetClient telnetClient = new TelnetClient();
-        telnetClient.setConnectTimeout(getConnectionTimeoutMilliSeconds());
+        telnetClient.setConnectTimeout(getConnectionTimeoutMilliSeconds(context));
 
         BufferedOutputStream bufferedOutputStream = null;
         PrintStream printStream = null;

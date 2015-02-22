@@ -24,6 +24,8 @@
 
 package li.klass.fhem.domain;
 
+import android.content.Context;
+
 import java.util.List;
 
 import li.klass.fhem.R;
@@ -84,12 +86,12 @@ public class USBWXDevice extends FhemDevice<USBWXDevice> {
     }
 
     @Override
-    protected void fillDeviceCharts(List<DeviceChart> chartSeries) {
-        super.fillDeviceCharts(chartSeries);
+    protected void fillDeviceCharts(List<DeviceChart> chartSeries, Context context) {
+        super.fillDeviceCharts(chartSeries, context);
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureGraph,
                 new ChartSeriesDescription.Builder()
-                        .withColumnName(R.string.temperature)
+                        .withColumnName(R.string.temperature, context)
                         .withFileLogSpec("4:temperature:0:")
                         .withDbLogSpec("temperature::int1")
                         .withSeriesType(TEMPERATURE)
@@ -100,7 +102,7 @@ public class USBWXDevice extends FhemDevice<USBWXDevice> {
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.humidityGraph,
                 new ChartSeriesDescription.Builder()
-                        .withColumnName(R.string.humidity).withFileLogSpec("4:humidity:0:")
+                        .withColumnName(R.string.humidity, context).withFileLogSpec("4:humidity:0:")
                         .withDbLogSpec("humidity::int")
                         .withSeriesType(HUMIDITY)
                         .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("humidity", 0, 100))

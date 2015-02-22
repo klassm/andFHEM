@@ -73,7 +73,7 @@ public class DimWidgetView extends DeviceAppWidgetView {
         };
         update(context, dimmableDevice, view, widgetConfiguration.widgetId, resultReceiver);
 
-        openDeviceDetailPageWhenClicking(R.id.main, view, device, widgetConfiguration);
+        openDeviceDetailPageWhenClicking(R.id.main, view, device, widgetConfiguration, context);
     }
 
     private void update(Context context, DimmableDevice device, RemoteViews view, int widgetId, ResultReceiver resultReceiver) {

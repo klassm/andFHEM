@@ -32,8 +32,8 @@ import static org.fest.assertions.api.Assertions.assertThat;
 
 public class HMSDeviceTest extends DeviceXMLParsingBase {
     @Override
-    public void loadDevices() throws Exception {
-        super.loadDevices();
+    public void before() throws Exception {
+        super.before();
     }
 
     @Test

@@ -99,7 +99,7 @@ public class ToggleWidgetView extends DeviceAppWidgetView {
         view.setOnClickPendingIntent(R.id.toggleOff, pendingIntent);
         view.setOnClickPendingIntent(R.id.toggleOn, pendingIntent);
 
-        openDeviceDetailPageWhenClicking(R.id.main, view, device, widgetConfiguration);
+        openDeviceDetailPageWhenClicking(R.id.main, view, device, widgetConfiguration, context);
     }
 
     @Override

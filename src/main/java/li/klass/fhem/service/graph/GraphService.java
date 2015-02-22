@@ -24,6 +24,7 @@
 
 package li.klass.fhem.service.graph;
 
+import android.content.Context;
 import android.util.Log;
 
 import org.joda.time.DateTime;
@@ -66,18 +67,19 @@ public class GraphService {
      * @param seriesDescriptions series descriptions each representing one series in the resulting chart
      * @param startDate          read FileLog entries from the given date
      * @param endDate            read FileLog entries up to the given date
+     * @param context            context
      * @return read graph data or null (if the device does not have a FileLog device)
      */
     @SuppressWarnings("unchecked")
     public HashMap<ChartSeriesDescription, List<GraphEntry>> getGraphData(FhemDevice device, ArrayList<ChartSeriesDescription> seriesDescriptions,
-                                                                          final DateTime startDate, final DateTime endDate) {
+                                                                          final DateTime startDate, final DateTime endDate, Context context) {
 
         if (device.getLogDevices().isEmpty()) return null;
 
         HashMap<ChartSeriesDescription, List<GraphEntry>> data = newHashMap();
 
         for (ChartSeriesDescription seriesDescription : seriesDescriptions) {
-            data.put(seriesDescription, getCurrentGraphEntriesFor(device, seriesDescription, startDate, endDate));
+            data.put(seriesDescription, getCurrentGraphEntriesFor(device, seriesDescription, startDate, endDate, context));
         }
 
         return data;
@@ -91,17 +93,18 @@ public class GraphService {
      * @param seriesDescription chart description
      * @param startDate         read FileLog entries from the given date
      * @param endDate           read FileLog entries up to the given date
+     * @param context           context
      * @return read logDevices entries converted to {@link GraphEntry} objects.
      */
     private List<GraphEntry> getCurrentGraphEntriesFor(FhemDevice device,
                                                        ChartSeriesDescription seriesDescription,
-                                                       DateTime startDate, DateTime endDate) {
-        String result = loadLogData(device, startDate, endDate, seriesDescription);
+                                                       DateTime startDate, DateTime endDate, Context context) {
+        String result = loadLogData(device, startDate, endDate, seriesDescription, context);
         return findGraphEntries(result);
     }
 
     public String loadLogData(FhemDevice device, DateTime fromDate, DateTime toDate,
-                              ChartSeriesDescription seriesDescription) {
+                              ChartSeriesDescription seriesDescription, Context context) {
         String fromDateFormatted = DATE_TIME_FORMATTER.print(fromDate);
         String toDateFormatted = DATE_TIME_FORMATTER.print(toDate);
 
@@ -113,7 +116,7 @@ public class GraphService {
             String command = logDevice.getGraphCommandFor(device, fromDateFormatted,
                     toDateFormatted, seriesDescription);
 
-            String data = commandExecutionService.executeSafely(command);
+            String data = commandExecutionService.executeSafely(command, context);
             if (data != null) {
                 result.append("\n\r").append(data.replaceAll("#" + seriesDescription, ""));
             }

@@ -32,6 +32,8 @@ import android.os.Build;
 import android.os.StrictMode;
 import android.util.Log;
 
+import com.google.common.collect.Lists;
+
 import java.util.List;
 
 import javax.inject.Inject;
@@ -41,12 +43,10 @@ import li.klass.fhem.activities.AndFHEMMainActivity;
 import li.klass.fhem.activities.StartupActivity;
 import li.klass.fhem.activities.base.DeviceNameSelectionActivity;
 import li.klass.fhem.activities.graph.ChartingActivity;
-import li.klass.fhem.dagger.AndroidModule;
 import li.klass.fhem.dagger.ApplicationModule;
 import li.klass.fhem.util.ApplicationProperties;
 import li.klass.fhem.util.InstalledApplications;
 
-import static com.google.common.collect.Lists.newArrayList;
 import static li.klass.fhem.constants.PreferenceKeys.APPLICATION_VERSION;
 
 public class AndFHEMApplication extends Application {
@@ -65,7 +65,6 @@ public class AndFHEMApplication extends Application {
     ApplicationProperties applicationProperties;
     private boolean isUpdate = false;
     private String currentApplicationVersion;
-    private boolean isTablet;
     private ObjectGraph graph;
 
     public static Context getContext() {
@@ -140,9 +139,8 @@ public class AndFHEMApplication extends Application {
     }
 
     protected List<Object> getModules() {
-        return newArrayList(
-                new ApplicationModule(),
-                new AndroidModule(this)
+        return Lists.<Object>newArrayList(
+                new ApplicationModule()
         );
     }
 
@@ -151,12 +149,12 @@ public class AndFHEMApplication extends Application {
     }
 
     private void setApplicationInformation() {
-        String savedVersion = applicationProperties.getStringSharedPreference(APPLICATION_VERSION, null);
+        String savedVersion = applicationProperties.getStringSharedPreference(APPLICATION_VERSION, null, context);
         currentApplicationVersion = findOutPackageApplicationVersion();
 
         if (!currentApplicationVersion.equals(savedVersion)) {
             isUpdate = true;
-            applicationProperties.setSharedPreference(APPLICATION_VERSION, currentApplicationVersion);
+            applicationProperties.setSharedPreference(APPLICATION_VERSION, currentApplicationVersion, context);
         }
     }
 
@@ -196,9 +194,5 @@ public class AndFHEMApplication extends Application {
     @SuppressWarnings("unused")
     public String getCurrentApplicationVersion() {
         return currentApplicationVersion;
-    }
-
-    public void setIsTablet(boolean tablet) {
-        isTablet = tablet;
     }
 }

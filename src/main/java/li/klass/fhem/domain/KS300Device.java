@@ -24,6 +24,8 @@
 
 package li.klass.fhem.domain;
 
+import android.content.Context;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -151,12 +153,12 @@ public class KS300Device extends FhemDevice<KS300Device> implements Serializable
     }
 
     @Override
-    protected void fillDeviceCharts(List<DeviceChart> chartSeries) {
-        super.fillDeviceCharts(chartSeries);
+    protected void fillDeviceCharts(List<DeviceChart> chartSeries, Context context) {
+        super.fillDeviceCharts(chartSeries, context);
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureHumidityGraph,
                 new ChartSeriesDescription.Builder()
-                        .withColumnName(R.string.temperature)
+                        .withColumnName(R.string.temperature, context)
                         .withFileLogSpec("4::")
                         .withDbLogSpec("temperature::int1")
                         .withSeriesType(TEMPERATURE)
@@ -164,7 +166,7 @@ public class KS300Device extends FhemDevice<KS300Device> implements Serializable
                         .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("temperature", 0, 30))
                         .build(),
                 new ChartSeriesDescription.Builder()
-                        .withColumnName(R.string.humidity).withFileLogSpec("6::")
+                        .withColumnName(R.string.humidity, context).withFileLogSpec("6::")
                         .withDbLogSpec("humidity")
                         .withSeriesType(HUMIDITY)
                         .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("humidity", 0, 100))
@@ -173,7 +175,7 @@ public class KS300Device extends FhemDevice<KS300Device> implements Serializable
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.windGraph,
                 new ChartSeriesDescription.Builder()
-                        .withColumnName(R.string.wind).withFileLogSpec("8::")
+                        .withColumnName(R.string.wind, context).withFileLogSpec("8::")
                         .withDbLogSpec("wind::int1")
                         .withSeriesType(WIND)
                         .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("wind", 0, 100))
@@ -182,7 +184,7 @@ public class KS300Device extends FhemDevice<KS300Device> implements Serializable
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.rainGraph,
                 new ChartSeriesDescription.Builder()
-                        .withColumnName(R.string.rain).withFileLogSpec("10::")
+                        .withColumnName(R.string.rain, context).withFileLogSpec("10::")
                         .withDbLogSpec("rain::int1")
                         .withSeriesType(RAIN)
                         .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("rain", 0, 100))

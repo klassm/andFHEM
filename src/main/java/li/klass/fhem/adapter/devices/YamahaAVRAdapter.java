@@ -84,7 +84,7 @@ public class YamahaAVRAdapter extends ToggleableAdapterWithSwitchActionRow<Yamah
 
                     @Override
                     public void onItemSelected(Context context, YamahaAVRDevice device, String item) {
-                        stateUiService.setSubState(device, "input", item);
+                        stateUiService.setSubState(device, "input", item, context);
                     }
                 }.createRow(device, tableLayout));
             }

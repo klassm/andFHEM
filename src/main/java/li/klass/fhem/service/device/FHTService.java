@@ -24,6 +24,7 @@
 
 package li.klass.fhem.service.device;
 
+import android.content.Context;
 import android.util.Log;
 
 import java.util.Locale;
@@ -53,8 +54,9 @@ public class FHTService {
      * @param desiredTemperature temperature to set (only holiday and holiday_short
      * @param holiday1           holiday attribute one (only holiday and holiday_short
      * @param holiday2           holiday attribute two (only holiday and holiday_short
+     * @param context            context
      */
-    public void setMode(FHTDevice device, FHTMode mode, double desiredTemperature, int holiday1, int holiday2) {
+    public void setMode(FHTDevice device, FHTMode mode, double desiredTemperature, int holiday1, int holiday2, Context context) {
         if (mode != FHTMode.UNKNOWN && device.getHeatingMode() != mode) {
             Log.e(FHTService.class.getName(), "changing mode for device " + device.getName() +
                     " from " + device.getHeatingMode() + " to " + mode);
@@ -65,7 +67,7 @@ public class FHTService {
                 command += " holiday1 " + holiday1 + " holiday2 " + holiday2 + " desired-temp " + desiredTemperature;
             }
 
-            commandExecutionService.executeSafely(command);
+            commandExecutionService.executeSafely(command, context);
             device.setHeatingMode(mode);
         }
     }
@@ -76,11 +78,12 @@ public class FHTService {
      *
      * @param device         concerned device
      * @param dayTemperature new day temperature to set
+     * @param context        context
      */
-    public void setDayTemperature(FHTDevice device, double dayTemperature) {
+    public void setDayTemperature(FHTDevice device, double dayTemperature, Context context) {
         if (device.getDayTemperature() != dayTemperature) {
             String command = "set " + device.getName() + " day-temp " + dayTemperature;
-            commandExecutionService.executeSafely(command);
+            commandExecutionService.executeSafely(command, context);
             device.setDayTemperature(dayTemperature);
         }
     }
@@ -91,16 +94,17 @@ public class FHTService {
      *
      * @param device           concerned device
      * @param nightTemperature new night temperature to set
+     * @param context          context
      */
-    public void setNightTemperature(FHTDevice device, double nightTemperature) {
+    public void setNightTemperature(FHTDevice device, double nightTemperature, Context context) {
         if (device.getNightTemperature() != nightTemperature) {
             String command = "set " + device.getName() + " night-temp " + nightTemperature;
-            commandExecutionService.executeSafely(command);
+            commandExecutionService.executeSafely(command, context);
             device.setNightTemperature(nightTemperature);
         }
     }
 
-    public void refreshValues(FHTDevice device) {
-        commandExecutionService.executeSafely("set " + device.getName() + " refreshvalues");
+    public void refreshValues(FHTDevice device, Context context) {
+        commandExecutionService.executeSafely("set " + device.getName() + " refreshvalues", context);
     }
 }

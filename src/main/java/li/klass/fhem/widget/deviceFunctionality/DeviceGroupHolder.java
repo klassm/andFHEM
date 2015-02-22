@@ -59,26 +59,26 @@ public class DeviceGroupHolder {
         this.applicationProperties = applicationProperties;
     }
 
-    public List<DeviceFunctionality> getVisible() {
-        if (!isLoaded) load();
+    public List<DeviceFunctionality> getVisible(Context context) {
+        if (!isLoaded) load(context);
 
         List<DeviceFunctionality> all = getAvailable();
         all.removeAll(invisible);
         all.removeAll(visible);
 
-        ArrayList<DeviceFunctionality> result = new ArrayList<DeviceFunctionality>(visible);
+        ArrayList<DeviceFunctionality> result = new ArrayList<>(visible);
         result.addAll(all);
 
         return result;
     }
 
-    private synchronized void load() {
+    private synchronized void load(Context context) {
         if (isLoaded) return;
 
         available = getAvailable();
 
-        visible = loadVisibleDeviceTypes();
-        invisible = loadInvisibleDeviceTypes();
+        visible = loadVisibleDeviceTypes(context);
+        invisible = loadInvisibleDeviceTypes(context);
 
         isLoaded = true;
     }
@@ -86,7 +86,7 @@ public class DeviceGroupHolder {
     private ArrayList<DeviceFunctionality> getAvailable() {
         final Context context = AndFHEMApplication.getContext();
 
-        ArrayList<DeviceFunctionality> functionalityList = new ArrayList<DeviceFunctionality>(
+        ArrayList<DeviceFunctionality> functionalityList = new ArrayList<>(
                 Arrays.asList(DeviceFunctionality.values()));
         Collections.sort(functionalityList, new Comparator<DeviceFunctionality>() {
             @Override
@@ -98,16 +98,16 @@ public class DeviceGroupHolder {
         return functionalityList;
     }
 
-    private List<DeviceFunctionality> loadVisibleDeviceTypes() {
+    private List<DeviceFunctionality> loadVisibleDeviceTypes(Context context) {
         String persistedValue = applicationProperties
-                .getStringSharedPreference(DEVICE_FUNCTIONALITY_ORDER_VISIBLE, null);
+                .getStringSharedPreference(DEVICE_FUNCTIONALITY_ORDER_VISIBLE, null, context);
 
         return parsePersistedValue(persistedValue, available);
     }
 
-    private List<DeviceFunctionality> loadInvisibleDeviceTypes() {
+    private List<DeviceFunctionality> loadInvisibleDeviceTypes(Context context) {
         String persistedValue = applicationProperties
-                .getStringSharedPreference(DEVICE_TYPE_FUNCTIONALITY_ORDER_INVISIBLE, null);
+                .getStringSharedPreference(DEVICE_TYPE_FUNCTIONALITY_ORDER_INVISIBLE, null, context);
         return parsePersistedValue(persistedValue, new ArrayList<DeviceFunctionality>());
     }
 
@@ -123,8 +123,8 @@ public class DeviceGroupHolder {
         return defaultValue;
     }
 
-    public List<DeviceFunctionality> getInvisible() {
-        if (!isLoaded) load();
+    public List<DeviceFunctionality> getInvisible(Context context) {
+        if (!isLoaded) load(context);
 
         return invisible;
     }

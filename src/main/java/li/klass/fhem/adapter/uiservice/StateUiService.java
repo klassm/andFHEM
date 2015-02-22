@@ -33,18 +33,17 @@ import javax.inject.Singleton;
 import li.klass.fhem.adapter.devices.core.UpdatingResultReceiver;
 import li.klass.fhem.constants.Actions;
 import li.klass.fhem.constants.BundleExtraKeys;
-import li.klass.fhem.dagger.ForApplication;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.service.intent.DeviceIntentService;
 
 @Singleton
 public class StateUiService {
     @Inject
-    @ForApplication
-    Context context;
+    public StateUiService() {
+    }
 
     public void setSubState(FhemDevice<?> device,
-                            String stateName, String value) {
+                            String stateName, String value, Context context) {
         context.startService(new Intent(Actions.DEVICE_SET_SUB_STATE)
                 .setClass(context, DeviceIntentService.class)
                 .putExtra(BundleExtraKeys.DEVICE_NAME, device.getName())
@@ -53,7 +52,7 @@ public class StateUiService {
                 .putExtra(BundleExtraKeys.RESULT_RECEIVER, new UpdatingResultReceiver(context)));
     }
 
-    public void setState(FhemDevice<?> device, String value) {
+    public void setState(FhemDevice<?> device, String value, Context context) {
         context.startService(new Intent(Actions.DEVICE_SET_STATE)
                 .setClass(context, DeviceIntentService.class)
                 .putExtra(BundleExtraKeys.DEVICE_TARGET_STATE, value)

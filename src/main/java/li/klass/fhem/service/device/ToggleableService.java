@@ -24,6 +24,8 @@
 
 package li.klass.fhem.service.device;
 
+import android.content.Context;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -36,16 +38,17 @@ public class ToggleableService {
     CommandExecutionService commandExecutionService;
 
     /**
-     * Toggles the state of a HOL device.
+     * Toggles the state of a toggleable device.
      *
-     * @param device concerned device
+     * @param device  concerned device
+     * @param context context
      */
-    public <D extends ToggleableDevice> void toggleState(D device) {
+    public <D extends ToggleableDevice> void toggleState(D device, Context context) {
         if (device.isOnByState()) {
-            commandExecutionService.executeSafely("set " + device.getName() + " " + device.getOffStateName());
+            commandExecutionService.executeSafely("set " + device.getName() + " " + device.getOffStateName(), context);
             device.setState(device.getOffStateName());
         } else {
-            commandExecutionService.executeSafely("set " + device.getName() + " " + device.getOnStateName());
+            commandExecutionService.executeSafely("set " + device.getName() + " " + device.getOnStateName(), context);
             device.setState(device.getOnStateName());
         }
     }

@@ -24,6 +24,8 @@
 
 package li.klass.fhem.domain;
 
+import android.content.Context;
+
 import java.util.List;
 
 import li.klass.fhem.R;
@@ -108,12 +110,12 @@ public class CULEMDevice extends FhemDevice<CULEMDevice> {
     }
 
     @Override
-    protected void fillDeviceCharts(List<DeviceChart> chartSeries) {
-        super.fillDeviceCharts(chartSeries);
+    protected void fillDeviceCharts(List<DeviceChart> chartSeries, Context context) {
+        super.fillDeviceCharts(chartSeries, context);
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.usageGraph,
                 new ChartSeriesDescription.Builder()
-                        .withColumnName(R.string.currentUsage)
+                        .withColumnName(R.string.currentUsage, context)
                         .withFileLogSpec("8::0:")
                         .withDbLogSpec("current")
                         .withSumDivisionFactor(getSumGraphDivisionFactor())

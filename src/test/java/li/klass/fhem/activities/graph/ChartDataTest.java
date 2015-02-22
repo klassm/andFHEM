@@ -36,7 +36,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import li.klass.fhem.R;
-import li.klass.fhem.infra.basetest.RobolectricBaseTestCase;
 import li.klass.fhem.service.graph.GraphEntry;
 import li.klass.fhem.service.graph.description.ChartSeriesDescription;
 import li.klass.fhem.testutil.MockitoTestRule;
@@ -47,7 +46,7 @@ import static li.klass.fhem.service.graph.description.SeriesType.TEMPERATURE;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
-public class ChartDataTest extends RobolectricBaseTestCase {
+public class ChartDataTest {
 
     private static final List<GraphEntry> DUMMY_DATA = Arrays.asList(new GraphEntry(new DateTime(1), 0.3f));
 
@@ -61,7 +60,7 @@ public class ChartDataTest extends RobolectricBaseTestCase {
     public void testNumberOfContainedSeries() {
         ChartData data = new ChartData(
                 new ChartSeriesDescription.Builder()
-                        .withColumnName(R.string.temperature)
+                        .withColumnName(R.string.temperature, context)
                         .withFileLogSpec("abc")
                         .withDbLogSpec("def")
                         .withSeriesType(TEMPERATURE)
@@ -72,7 +71,7 @@ public class ChartDataTest extends RobolectricBaseTestCase {
 
         data = new ChartData(
                 new ChartSeriesDescription.Builder()
-                        .withColumnName(R.string.temperature)
+                        .withColumnName(R.string.temperature, context)
                         .withFileLogSpec("abc")
                         .withDbLogSpec("def")
                         .withSumDivisionFactor((double) 1)
@@ -85,7 +84,7 @@ public class ChartDataTest extends RobolectricBaseTestCase {
 
         data = new ChartData(
                 new ChartSeriesDescription.Builder()
-                        .withColumnName(R.string.temperature)
+                        .withColumnName(R.string.temperature, context)
                         .withFileLogSpec("abc")
                         .withDbLogSpec("def")
                         .withSeriesType(TEMPERATURE)
@@ -99,7 +98,7 @@ public class ChartDataTest extends RobolectricBaseTestCase {
     public void testIterator() {
         ChartData data = new ChartData(
                 new ChartSeriesDescription.Builder()
-                        .withColumnName(R.string.temperature)
+                        .withColumnName(R.string.temperature, context)
                         .withFileLogSpec("abc")
                         .withDbLogSpec("def")
                         .withSeriesType(TEMPERATURE)

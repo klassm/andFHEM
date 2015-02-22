@@ -24,6 +24,8 @@
 
 package li.klass.fhem.service.room;
 
+import android.content.Context;
+
 import com.google.common.base.Function;
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
@@ -68,6 +70,9 @@ public class RoomListHolderServiceTest {
     @Mock
     private ApplicationProperties applicationProperties;
 
+    @Mock
+    private Context context;
+
     @InjectMocks
     private RoomListHolderService service;
 
@@ -87,10 +92,10 @@ public class RoomListHolderServiceTest {
     public void should_find_the_correct_FHEMWEB_device(List<String> deviceNames, String qualifier, String expectedDeviceName) {
         // given
         List<FhemDevice> fhemwebDevices = from(deviceNames).transform(TO_FHEMWEB_DEVICE_WITH_NAME).toList();
-        given(applicationProperties.getStringSharedPreference(DEVICE_NAME, DEFAULT_FHEMWEB_QUALIFIER)).willReturn(qualifier);
+        given(applicationProperties.getStringSharedPreference(DEVICE_NAME, DEFAULT_FHEMWEB_QUALIFIER, context)).willReturn(qualifier);
 
         // when
-        FHEMWEBDevice foundDevice = service.findFHEMWEBDevice(fhemwebDevices);
+        FHEMWEBDevice foundDevice = service.findFHEMWEBDevice(fhemwebDevices, context);
 
         // then
         assertThat(foundDevice).isNotNull();

@@ -12,22 +12,20 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
 import li.klass.fhem.billing.BillingService;
-import li.klass.fhem.infra.basetest.RobolectricBaseTestCase;
 import li.klass.fhem.testutil.MockitoTestRule;
 import li.klass.fhem.util.ApplicationProperties;
 
-import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
 
-public class LicenseIntentServiceTest extends RobolectricBaseTestCase {
+public class LicenseIntentServiceTest {
 
     @Mock
     BillingService billingService;
@@ -36,7 +34,7 @@ public class LicenseIntentServiceTest extends RobolectricBaseTestCase {
     ApplicationProperties applicationProperties;
 
     @Mock
-    Context applicationContext;
+    Context context;
 
     @InjectMocks
     LicenseIntentService licenseIntentService;
@@ -49,8 +47,8 @@ public class LicenseIntentServiceTest extends RobolectricBaseTestCase {
         // given
         PackageManager packageManager = mock(PackageManager.class);
         given(packageManager.getPackageInfo(anyString(), anyInt())).willReturn(new PackageInfo());
-        given(applicationContext.getPackageName()).willReturn("li.klass.fhem");
-        given(applicationContext.getPackageManager()).willReturn(packageManager);
+        given(context.getPackageName()).willReturn("li.klass.fhem");
+        given(context.getPackageManager()).willReturn(packageManager);
         LicenseIntentService.IsPremiumListener listener = mock(LicenseIntentService.IsPremiumListener.class);
         doAnswer(new Answer() {
             @Override
@@ -59,15 +57,12 @@ public class LicenseIntentServiceTest extends RobolectricBaseTestCase {
                 finishedListener.onInventoryLoadFinished(false);
                 return null;
             }
-        }).when(billingService).loadInventory(any(BillingService.OnLoadInventoryFinishedListener.class));
+        }).when(billingService).loadInventory(any(BillingService.OnLoadInventoryFinishedListener.class), eq(context));
 
         // when
         licenseIntentService.isPremium(listener);
 
         // then
-//        verify(billingService).loadInventory(any(BillingService.OnLoadInventoryFinishedListener.class));
         verify(billingService, times(0)).contains(anyString());
-//        verifyNoMoreInteractions(billingService); // especially no contains method call!
-
     }
 }

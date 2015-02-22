@@ -137,12 +137,12 @@ public class HMSDevice extends FhemDevice<HMSDevice> {
     }
 
     @Override
-    protected void fillDeviceCharts(List<DeviceChart> chartSeries) {
-        super.fillDeviceCharts(chartSeries);
+    protected void fillDeviceCharts(List<DeviceChart> chartSeries, Context context) {
+        super.fillDeviceCharts(chartSeries, context);
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureGraph,
                 new ChartSeriesDescription.Builder()
-                        .withColumnName(R.string.temperature)
+                        .withColumnName(R.string.temperature, context)
                         .withFileLogSpec("4:T\\x3a:0:")
                         .withDbLogSpec("temperature::int1")
                         .withSeriesType(TEMPERATURE)
@@ -153,7 +153,7 @@ public class HMSDevice extends FhemDevice<HMSDevice> {
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.humidityGraph,
                 new ChartSeriesDescription.Builder()
-                        .withColumnName(R.string.temperature).withFileLogSpec("6:H\\x3a:0:")
+                        .withColumnName(R.string.temperature, context).withFileLogSpec("6:H\\x3a:0:")
                         .withDbLogSpec("humidity::int")
                         .withSeriesType(HUMIDITY)
                         .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("humidity", 0, 100))

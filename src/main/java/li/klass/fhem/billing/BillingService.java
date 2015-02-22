@@ -36,8 +36,6 @@ import com.android.vending.billing.Purchase;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import li.klass.fhem.dagger.ForApplication;
-
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static li.klass.fhem.AndFHEMApplication.PUBLIC_KEY_ENCODED;
@@ -51,8 +49,8 @@ public class BillingService {
     private Inventory inventory = Inventory.empty();
 
     @Inject
-    @ForApplication
-    Context applicationContext;
+    public BillingService() {
+    }
 
     public synchronized void stop() {
         try {
@@ -81,7 +79,7 @@ public class BillingService {
                             public void onIabPurchaseFinished(IabResult result, Purchase info) {
                                 if (result.isSuccess()) {
                                     Log.i(TAG, "requestPurchase() - purchase result: SUCCESS");
-                                    loadInventory();
+                                    loadInventory(activity);
                                     listener.onProductPurchased(info.getOrderId(), info.getSku());
                                 } else {
                                     Log.e(TAG, "requestPurchase() - purchase result: " + result.toString());
@@ -93,14 +91,14 @@ public class BillingService {
                     Log.e(TAG, "requestPurchase() - error while launching purchase flow", e);
                 }
             }
-        });
+        }, activity);
     }
 
-    private synchronized void loadInventory() {
-        loadInventory(null);
+    private synchronized void loadInventory(Context context) {
+        loadInventory(null, context);
     }
 
-    public synchronized void loadInventory(final OnLoadInventoryFinishedListener listener) {
+    public synchronized void loadInventory(final OnLoadInventoryFinishedListener listener, Context context) {
         if (isSetup() && isLoaded()) {
             Log.d(TAG, "loadInventory() - inventory is already setup and loaded, skipping load");
             if (listener != null) listener.onInventoryLoadFinished(true);
@@ -115,7 +113,7 @@ public class BillingService {
                         Log.d(TAG, "won't load inventory, setup was not successful");
                     }
                 }
-            });
+            }, context);
         }
     }
 
@@ -135,23 +133,23 @@ public class BillingService {
         return inventory != null && !inventory.getAllOwnedSkus().isEmpty();
     }
 
-    private void ensureSetup(SetupFinishedListener listener) {
+    private void ensureSetup(SetupFinishedListener listener, Context context) {
         if (isSetup()) {
             Log.d(TAG, "ensureSetup() - I am already setup");
             listener.onSetupFinished(true);
         } else {
             String isSetupDoneMessage = iabHelper != null ? ",isSetupDone=" + iabHelper.isSetupDone() : "";
             Log.d(TAG, "ensureSetup() - Setting up ... (helper=" + iabHelper + isSetupDoneMessage + ")");
-            setup(listener);
+            setup(listener, context);
         }
     }
 
-    synchronized void setup(final SetupFinishedListener listener) {
+    synchronized void setup(final SetupFinishedListener listener, Context context) {
         checkNotNull(listener);
 
         try {
             Log.d(TAG, "setup() - Starting setup " + this);
-            iabHelper = createIabHelper();
+            iabHelper = createIabHelper(context);
             iabHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
                 @Override
                 public void onIabSetupFinished(IabResult result) {
@@ -175,8 +173,8 @@ public class BillingService {
         }
     }
 
-    IabHelper createIabHelper() {
-        return new IabHelper(applicationContext, PUBLIC_KEY_ENCODED);
+    IabHelper createIabHelper(Context context) {
+        return new IabHelper(context, PUBLIC_KEY_ENCODED);
     }
 
     private synchronized void loadInternal(final OnLoadInventoryFinishedListener listener) {

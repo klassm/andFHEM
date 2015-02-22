@@ -33,7 +33,6 @@ import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import li.klass.fhem.dagger.ForApplication;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.RoomDeviceList;
 
@@ -78,7 +77,7 @@ public class FavoritesService {
     public RoomDeviceList getFavorites(Context context) {
 
         RoomDeviceList allRoomsDeviceList = roomListService.getAllRoomsDeviceList(context);
-        RoomDeviceList favoritesList = new RoomDeviceList("favorites", context);
+        RoomDeviceList favoritesList = new RoomDeviceList("favorites");
         favoritesList.setHiddenGroups(allRoomsDeviceList.getHiddenGroups());
         favoritesList.setHiddenRooms(allRoomsDeviceList.getHiddenRooms());
 
@@ -86,7 +85,7 @@ public class FavoritesService {
         for (String favoriteDeviceName : favoriteDeviceNames) {
             FhemDevice device = allRoomsDeviceList.getDeviceFor(favoriteDeviceName);
             if (device != null) {
-                favoritesList.addDevice(device);
+                favoritesList.addDevice(device, context);
             }
         }
 

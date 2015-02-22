@@ -124,7 +124,7 @@ public class MaxAdapter extends GenericDeviceAdapter<MaxDevice> {
         detailActions.add(new DeviceDetailViewButtonAction<MaxDevice>(R.string.timetable) {
             @Override
             public void onButtonClick(Context context, MaxDevice device) {
-                fragmentUiService.showIntervalWeekProfileFor(device);
+                fragmentUiService.showIntervalWeekProfileFor(device, context);
             }
 
             @Override

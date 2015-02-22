@@ -24,6 +24,7 @@
 
 package li.klass.fhem.service.device;
 
+import android.content.Context;
 import android.util.Log;
 
 import org.slf4j.Logger;
@@ -61,11 +62,12 @@ public class HeatingService {
      *
      * @param device                  concerned device
      * @param desiredTemperatureToSet new desired temperature value
+     * @param context                 context
      */
-    public void setDesiredTemperature(DesiredTempDevice device, double desiredTemperatureToSet) {
+    public void setDesiredTemperature(DesiredTempDevice device, double desiredTemperatureToSet, Context context) {
         String command = String.format(SET_COMMAND, device.getName(), device.getDesiredTempCommandFieldName(), desiredTemperatureToSet);
         if (desiredTemperatureToSet != device.getDesiredTemp()) {
-            commandExecutionService.executeSafely(command);
+            commandExecutionService.executeSafely(command, context);
             device.setDesiredTemp(desiredTemperatureToSet);
         }
     }
@@ -74,11 +76,12 @@ public class HeatingService {
      * Sets the mode attribute of a given HeatingDevice device. The action will only be executed if the new mode is different to
      * the already set one.
      *
-     * @param device concerned device
-     * @param mode   new mode to set.
+     * @param device  concerned device
+     * @param mode    new mode to set.
+     * @param context context
      */
     @SuppressWarnings("unchecked")
-    public <MODE extends Enum<MODE>, D extends HeatingDevice<MODE, ?, ?, ?>> void setMode(D device, MODE mode) {
+    public <MODE extends Enum<MODE>, D extends HeatingDevice<MODE, ?, ?, ?>> void setMode(D device, MODE mode, Context context) {
         if (mode == device.getHeatingMode()) {
             Log.e(TAG, "won't change heating mode, as it is already set!");
             return;
@@ -96,7 +99,7 @@ public class HeatingService {
         String command = String.format(SET_COMMAND, device.getName(),
                 device.getHeatingModeCommandField(),
                 mode.name().toLowerCase(Locale.getDefault()));
-        commandExecutionService.executeSafely(command);
+        commandExecutionService.executeSafely(command, context);
         device.setHeatingMode(mode);
     }
 
@@ -107,48 +110,49 @@ public class HeatingService {
      *
      * @param device         concerned device
      * @param windowOpenTemp new window open temperature to set
+     * @param context        context
      */
-    public void setWindowOpenTemp(WindowOpenTempDevice device, double windowOpenTemp) {
+    public void setWindowOpenTemp(WindowOpenTempDevice device, double windowOpenTemp, Context context) {
         if (device.getWindowOpenTemp() == windowOpenTemp) {
             return;
         }
 
         Log.e(TAG, "set window open temp of device " + device.getName() + " to " + windowOpenTemp);
         String command = String.format(SET_COMMAND, device.getName(), device.getWindowOpenTempCommandFieldName(), windowOpenTemp);
-        commandExecutionService.executeSafely(command);
+        commandExecutionService.executeSafely(command, context);
         device.setWindowOpenTemp(windowOpenTemp);
     }
 
-    public void setComfortTemperature(ComfortTempDevice device, double temperature) {
+    public void setComfortTemperature(ComfortTempDevice device, double temperature, Context context) {
         if (device.getComfortTemp() == temperature) {
             return;
         }
 
         Log.e(TAG, "set comfort temp of device " + device.getName() + " to " + temperature);
         String command = String.format(SET_COMMAND, device.getName(), device.getComfortTempCommandFieldName(), temperature);
-        commandExecutionService.executeSafely(command);
+        commandExecutionService.executeSafely(command, context);
         device.setComfortTemp(temperature);
     }
 
-    public void setEcoTemperature(EcoTempDevice device, double temperature) {
+    public void setEcoTemperature(EcoTempDevice device, double temperature, Context context) {
         if (device.getEcoTemp() == temperature) {
             return;
         }
 
         Log.i(TAG, "set eco temp of device " + device.getName() + " to " + temperature);
         String command = String.format(SET_COMMAND, device.getName(), device.getEcoTempCommandFieldName(), temperature);
-        commandExecutionService.executeSafely(command);
+        commandExecutionService.executeSafely(command, context);
         device.setEcoTemp(temperature);
     }
 
     @SuppressWarnings("unchecked")
-    public void setWeekProfileFor(HeatingDevice device) {
+    public void setWeekProfileFor(HeatingDevice device, Context context) {
         WeekProfile weekProfile = device.getWeekProfile();
         List<String> commands = weekProfile.getSubmitCommands((FhemDevice) device);
         LOGGER.info("setWeekProfileFor - generated {}", commands);
 
         for (String command : commands) {
-            commandExecutionService.executeSafely(command);
+            commandExecutionService.executeSafely(command, context);
         }
 
         weekProfile.acceptChanges();

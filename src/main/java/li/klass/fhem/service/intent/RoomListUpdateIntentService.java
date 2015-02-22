@@ -40,7 +40,6 @@ import li.klass.fhem.exception.CommandExecutionException;
 import li.klass.fhem.service.CommandExecutionService;
 import li.klass.fhem.service.room.DeviceListParser;
 import li.klass.fhem.service.room.RoomListHolderService;
-import li.klass.fhem.service.room.RoomListService;
 
 import static com.google.common.base.Optional.absent;
 import static li.klass.fhem.constants.Actions.REMOTE_UPDATE_FINISHED;
@@ -53,9 +52,6 @@ public class RoomListUpdateIntentService extends ConvenientIntentService {
 
     @Inject
     DeviceListParser deviceListParser;
-
-    @Inject
-    RoomListService roomListService;
 
     @Inject
     RoomListHolderService roomListHolderService;
@@ -80,7 +76,7 @@ public class RoomListUpdateIntentService extends ConvenientIntentService {
         Optional<RoomDeviceList> result = getRemoteRoomDeviceListMap();
         LOG.info("doRemoteUpdate() - remote device list update finished");
         if (result.isPresent()) {
-            roomListHolderService.storeDeviceListMap(result.get());
+            roomListHolderService.storeDeviceListMap(result.get(), this);
             startService(new Intent(REMOTE_UPDATE_FINISHED).setClass(this, RoomListIntentService.class));
             LOG.info("doRemoteUpdate() - update was successful, sending result");
             return STATE.DONE;
@@ -95,9 +91,9 @@ public class RoomListUpdateIntentService extends ConvenientIntentService {
         LOG.info("getRemoteRoomDeviceListMap() - getRemoteRoomDeviceListMap() : fetching device list from remote");
 
         try {
-            String result = commandExecutionService.executeSafely("xmllist");
+            String result = commandExecutionService.executeSafely("xmllist", this);
             if (result == null) return absent();
-            return Optional.fromNullable(deviceListParser.parseAndWrapExceptions(result));
+            return Optional.fromNullable(deviceListParser.parseAndWrapExceptions(result, this));
         } catch (CommandExecutionException e) {
             LOG.info("getRemoteRoomDeviceListMap() - error during command execution", e);
             return Optional.absent();

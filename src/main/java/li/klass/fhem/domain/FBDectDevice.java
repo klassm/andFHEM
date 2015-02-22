@@ -24,6 +24,8 @@
 
 package li.klass.fhem.domain;
 
+import android.content.Context;
+
 import java.util.List;
 
 import li.klass.fhem.R;
@@ -92,12 +94,12 @@ public class FBDectDevice extends ToggleableDevice<FBDectDevice> {
     }
 
     @Override
-    protected void fillDeviceCharts(List<DeviceChart> chartSeries) {
-        super.fillDeviceCharts(chartSeries);
+    protected void fillDeviceCharts(List<DeviceChart> chartSeries, Context context) {
+        super.fillDeviceCharts(chartSeries, context);
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.powerGraph,
                 new ChartSeriesDescription.Builder()
-                        .withColumnName(R.string.power).withFileLogSpec("4:power")
+                        .withColumnName(R.string.power, context).withFileLogSpec("4:power")
                         .withDbLogSpec("power::int2")
                         .withSeriesType(POWER)
                         .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("power", 0, 100))

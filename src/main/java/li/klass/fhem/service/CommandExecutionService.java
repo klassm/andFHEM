@@ -39,7 +39,6 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import li.klass.fhem.constants.Actions;
-import li.klass.fhem.dagger.ForApplication;
 import li.klass.fhem.exception.CommandExecutionException;
 import li.klass.fhem.fhem.DataConnectionSwitch;
 import li.klass.fhem.fhem.FHEMConnection;
@@ -63,10 +62,6 @@ public class CommandExecutionService extends AbstractService {
     private static final Logger LOG = LoggerFactory.getLogger(CommandExecutionService.class);
 
     @Inject
-    @ForApplication
-    Context applicationContext;
-
-    @Inject
     DataConnectionSwitch dataConnectionSwitch;
 
     @Inject
@@ -76,19 +71,19 @@ public class CommandExecutionService extends AbstractService {
     private transient String lastFailedCommand = null;
     private transient Cache<Bitmap> imageCache = getImageCache();
 
-    public void resendLastFailedCommand() {
+    public void resendLastFailedCommand(Context context) {
         if (lastFailedCommand != null) {
             String command = lastFailedCommand;
             lastFailedCommand = null;
-            executeSafely(command);
+            executeSafely(command, context);
         }
     }
 
-    public String executeSafely(String command) {
+    public String executeSafely(String command, Context context) {
         command = command.replaceAll("  ", " ");
-        showExecutingDialog();
+        showExecutingDialog(context);
 
-        RequestResult<String> result = execute(command);
+        RequestResult<String> result = execute(command, context);
         if (result.handleErrors()) {
             lastFailedCommand = command;
             throw new CommandExecutionException();
@@ -96,37 +91,38 @@ public class CommandExecutionService extends AbstractService {
         return result.content;
     }
 
-    private void showExecutingDialog() {
-        applicationContext.sendBroadcast(new Intent(SHOW_EXECUTING_DIALOG));
+    private void showExecutingDialog(Context context) {
+        context.sendBroadcast(new Intent(SHOW_EXECUTING_DIALOG));
     }
 
     /**
      * Execute a command without catching any exception or showing an update dialog. Executes synchronously.
      *
      * @param command command to execute
+     * @param context context
      */
-    private RequestResult<String> execute(String command) {
-        return execute(command, 0);
+    private RequestResult<String> execute(String command, Context context) {
+        return execute(command, 0, context);
     }
 
-    private RequestResult<String> execute(String command, int currentTry) {
-        FHEMConnection currentProvider = dataConnectionSwitch.getCurrentProvider();
-        RequestResult<String> result = currentProvider.executeCommand(command);
+    private RequestResult<String> execute(String command, int currentTry, Context context) {
+        FHEMConnection currentProvider = dataConnectionSwitch.getCurrentProvider(context);
+        RequestResult<String> result = currentProvider.executeCommand(command, context);
 
         LOG.info("execute() - executing command={}, try={}", command, currentTry);
 
         try {
             if (result.error == null) {
-                sendBroadcastWithAction(Actions.CONNECTION_ERROR_HIDE);
-            } else if (shouldTryResend(command, result, currentTry)) {
+                sendBroadcastWithAction(Actions.CONNECTION_ERROR_HIDE, context);
+            } else if (shouldTryResend(command, result, currentTry, context)) {
                 int timeoutForNextTry = secondsForTry(currentTry);
 
-                ResendCommand resendCommand = new ResendCommand(command, currentTry + 1);
+                ResendCommand resendCommand = new ResendCommand(command, currentTry + 1, context);
                 schedule(timeoutForNextTry, resendCommand);
             }
         } finally {
             if (!command.equalsIgnoreCase("xmllist")) {
-                hideExecutingDialog();
+                hideExecutingDialog(context);
             }
         }
 
@@ -139,12 +135,12 @@ public class CommandExecutionService extends AbstractService {
                 timeoutForNextTry, SECONDS);
     }
 
-    private boolean shouldTryResend(String command, RequestResult<?> result, int currentTry) {
+    private boolean shouldTryResend(String command, RequestResult<?> result, int currentTry, Context context) {
         if (!command.startsWith("set") && !command.startsWith("attr")) return false;
         if (result.error == null) return false;
         if (result.error != CONNECTION_TIMEOUT &&
                 result.error != HOST_CONNECTION_ERROR) return false;
-        if (currentTry > getNumberOfRetries()) return false;
+        if (currentTry > getNumberOfRetries(context)) return false;
 
         return true;
     }
@@ -160,29 +156,29 @@ public class CommandExecutionService extends AbstractService {
         return scheduledExecutorService;
     }
 
-    private void hideExecutingDialog() {
-        applicationContext.sendBroadcast(new Intent(DISMISS_EXECUTING_DIALOG));
+    private void hideExecutingDialog(Context context) {
+        context.sendBroadcast(new Intent(DISMISS_EXECUTING_DIALOG));
     }
 
-    private int getNumberOfRetries() {
+    private int getNumberOfRetries(Context context) {
         return applicationProperties.getIntegerSharedPreference(
-                COMMAND_EXECUTION_RETRIES, DEFAULT_NUMBER_OF_RETRIES
-        );
+                COMMAND_EXECUTION_RETRIES, DEFAULT_NUMBER_OF_RETRIES,
+                context);
     }
 
     public String getLastFailedCommand() {
         return lastFailedCommand;
     }
 
-    public Bitmap getBitmap(String relativePath) {
+    public Bitmap getBitmap(String relativePath, Context context) {
         try {
             Cache<Bitmap> cache = getImageCache();
             if (cache.containsKey(relativePath)) {
                 return cache.get(relativePath);
             } else {
-                showExecutingDialog();
+                showExecutingDialog(context);
 
-                FHEMConnection provider = dataConnectionSwitch.getCurrentProvider();
+                FHEMConnection provider = dataConnectionSwitch.getCurrentProvider(context);
                 RequestResult<Bitmap> result = provider.requestBitmap(relativePath);
 
                 if (result.handleErrors()) return null;
@@ -191,7 +187,7 @@ public class CommandExecutionService extends AbstractService {
                 return bitmap;
             }
         } finally {
-            hideExecutingDialog();
+            hideExecutingDialog(context);
         }
     }
 
@@ -205,17 +201,19 @@ public class CommandExecutionService extends AbstractService {
 
     private class ResendCommand implements Runnable {
 
+        private final Context context;
         int currentTry;
         String command;
 
-        protected ResendCommand(String command, int currentTry) {
+        protected ResendCommand(String command, int currentTry, Context context) {
             this.command = command;
             this.currentTry = currentTry;
+            this.context = context;
         }
 
         @Override
         public void run() {
-            execute(command, currentTry);
+            execute(command, currentTry, context);
         }
 
         @Override

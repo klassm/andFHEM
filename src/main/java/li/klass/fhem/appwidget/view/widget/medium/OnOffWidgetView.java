@@ -77,7 +77,7 @@ public class OnOffWidgetView extends DeviceAppWidgetView {
                 offIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         view.setOnClickPendingIntent(R.id.widgetOffButton, offPendingIntent);
 
-        openDeviceDetailPageWhenClicking(R.id.deviceName, view, device, widgetConfiguration);
+        openDeviceDetailPageWhenClicking(R.id.deviceName, view, device, widgetConfiguration, context);
     }
 
     @Override

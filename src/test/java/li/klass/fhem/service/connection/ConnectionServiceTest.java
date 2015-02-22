@@ -32,10 +32,8 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
-import li.klass.fhem.AndFHEMApplication;
 import li.klass.fhem.fhem.connection.FHEMServerSpec;
 import li.klass.fhem.fhem.connection.ServerType;
-import li.klass.fhem.infra.basetest.RobolectricBaseTestCase;
 import li.klass.fhem.testutil.MockitoTestRule;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -43,7 +41,7 @@ import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsNot.not;
 
-public class ConnectionServiceTest extends RobolectricBaseTestCase {
+public class ConnectionServiceTest {
 
     @Rule
     public MockitoTestRule mockitoTestRule = new MockitoTestRule();

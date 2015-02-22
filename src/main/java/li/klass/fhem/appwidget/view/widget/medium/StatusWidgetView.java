@@ -45,7 +45,7 @@ public class StatusWidgetView extends DeviceAppWidgetView {
     @Override
     protected void fillWidgetView(Context context, RemoteViews view, FhemDevice<?> device, WidgetConfiguration widgetConfiguration) {
         setTextViewOrHide(view, R.id.status, device.getState());
-        openDeviceDetailPageWhenClicking(R.id.main, view, device, widgetConfiguration);
+        openDeviceDetailPageWhenClicking(R.id.main, view, device, widgetConfiguration, context);
     }
 
     @Override

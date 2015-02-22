@@ -24,6 +24,8 @@
 
 package li.klass.fhem.domain;
 
+import android.content.Context;
+
 import java.util.List;
 
 import li.klass.fhem.R;
@@ -103,19 +105,19 @@ public class RevoltDevice extends FhemDevice<RevoltDevice> {
     }
 
     @Override
-    protected void fillDeviceCharts(List<DeviceChart> chartSeries) {
-        super.fillDeviceCharts(chartSeries);
+    protected void fillDeviceCharts(List<DeviceChart> chartSeries, Context context) {
+        super.fillDeviceCharts(chartSeries, context);
 
         addDeviceChartIfNotNull(new DeviceChart(R.string.usageGraph,
                 new ChartSeriesDescription.Builder()
-                        .withColumnName(R.string.energy_power)
+                        .withColumnName(R.string.energy_power, context)
                         .withFileLogSpec("4::0:")
                         .withDbLogSpec("power")
                         .withSeriesType(CURRENT_POWER_WATT)
                         .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("power", 0, 1))
                         .build(),
                 new ChartSeriesDescription.Builder()
-                        .withColumnName(R.string.currentUsage)
+                        .withColumnName(R.string.currentUsage, context)
                         .withFileLogSpec("6::0:")
                         .withDbLogSpec("energy")
                         .withSeriesType(CURRENT_USAGE_KILOWATT)

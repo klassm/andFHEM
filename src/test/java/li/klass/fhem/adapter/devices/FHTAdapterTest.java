@@ -32,7 +32,6 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
-import li.klass.fhem.infra.basetest.RobolectricBaseTestCase;
 import li.klass.fhem.service.DateService;
 import li.klass.fhem.testutil.MockitoTestRule;
 
@@ -40,7 +39,7 @@ import static org.fest.assertions.api.Assertions.assertThat;
 import static org.joda.time.DateTimeConstants.JANUARY;
 import static org.mockito.BDDMockito.given;
 
-public class FHTAdapterTest extends RobolectricBaseTestCase {
+public class FHTAdapterTest {
 
     @Mock
     private DateService dateService;

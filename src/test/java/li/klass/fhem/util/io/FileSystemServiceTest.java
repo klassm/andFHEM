@@ -30,13 +30,12 @@ import org.mockito.InjectMocks;
 
 import java.io.File;
 
-import li.klass.fhem.infra.basetest.RobolectricBaseTestCase;
 import li.klass.fhem.testutil.MockitoTestRule;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static org.fest.assertions.api.Assertions.assertThat;
 
-public class FileSystemServiceTest extends RobolectricBaseTestCase {
+public class FileSystemServiceTest {
 
     @Rule
     public MockitoTestRule mockitoTestRule = new MockitoTestRule();

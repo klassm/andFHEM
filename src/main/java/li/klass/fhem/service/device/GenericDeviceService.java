@@ -33,7 +33,6 @@ import java.lang.reflect.Method;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import li.klass.fhem.dagger.ForApplication;
 import li.klass.fhem.domain.core.FhemDevice;
 import li.klass.fhem.domain.core.XmllistAttribute;
 import li.klass.fhem.service.CommandExecutionService;
@@ -47,26 +46,22 @@ public class GenericDeviceService {
     @Inject
     CommandExecutionService commandExecutionService;
 
-    @Inject
-    @ForApplication
-    Context applicationContext;
-
-    public void setState(FhemDevice<?> device, String targetState) {
+    public void setState(FhemDevice<?> device, String targetState, Context context) {
         targetState = device.formatTargetState(targetState);
 
-        commandExecutionService.executeSafely("set " + device.getName() + " " + targetState);
+        commandExecutionService.executeSafely("set " + device.getName() + " " + targetState, context);
 
         if (device.shouldUpdateStateOnDevice(targetState)) {
             device.setState(device.formatStateTextToSet(targetState));
         }
 
-        Tasker.sendTaskerNotifyIntent(applicationContext, device.getName(),
+        Tasker.sendTaskerNotifyIntent(context, device.getName(),
                 "state", targetState);
     }
 
-    public void setSubState(FhemDevice<?> device, String subStateName, String value) {
-        commandExecutionService.executeSafely("set " + device.getName() + " " + subStateName + " " + value);
-        Tasker.sendTaskerNotifyIntent(applicationContext, device.getName(),
+    public void setSubState(FhemDevice<?> device, String subStateName, String value, Context context) {
+        commandExecutionService.executeSafely("set " + device.getName() + " " + subStateName + " " + value, context);
+        Tasker.sendTaskerNotifyIntent(context, device.getName(),
                 subStateName, value);
 
         invokeDeviceUpdateFor(device, subStateName, value);
@@ -123,7 +118,7 @@ public class GenericDeviceService {
 
     private boolean invokeDeviceUpdateForField(FhemDevice<?> device, String subStateName, String value, Field field) {
         XmllistAttribute annotation = field.getAnnotation(XmllistAttribute.class);
-        if (annotation == null || ! ArrayUtil.containsIgnoreCase(annotation.value(), subStateName)) {
+        if (annotation == null || !ArrayUtil.containsIgnoreCase(annotation.value(), subStateName)) {
             return false;
         }
 

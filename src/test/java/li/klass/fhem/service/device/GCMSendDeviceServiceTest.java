@@ -24,6 +24,8 @@
 
 package li.klass.fhem.service.device;
 
+import android.content.Context;
+
 import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -46,6 +48,9 @@ public class GCMSendDeviceServiceTest {
     @Mock
     private ApplicationProperties applicationProperties;
 
+    @Mock
+    private Context context;
+
     @InjectMocks
     private GCMSendDeviceService service;
 
@@ -53,15 +58,15 @@ public class GCMSendDeviceServiceTest {
     public void testIsDeviceRegistered() {
         GCMSendDevice device = new GCMSendDevice();
 
-        assertThat(service.isDeviceRegistered(device)).isFalse();
+        assertThat(service.isDeviceRegistered(device, context)).isFalse();
 
         device.readREGIDS("abc|def");
-        assertThat(service.isDeviceRegistered(device)).isFalse();
+        assertThat(service.isDeviceRegistered(device, context)).isFalse();
 
-        given(applicationProperties.getStringSharedPreference(eq(GCM_REGISTRATION_ID), anyString())).willReturn("abc");
-        assertThat(service.isDeviceRegistered(device)).isTrue();
+        given(applicationProperties.getStringSharedPreference(eq(GCM_REGISTRATION_ID), anyString(), eq(context))).willReturn("abc");
+        assertThat(service.isDeviceRegistered(device, context)).isTrue();
 
-        given(applicationProperties.getStringSharedPreference(eq(GCM_REGISTRATION_ID), anyString())).willReturn("def");
-        assertThat(service.isDeviceRegistered(device)).isTrue();
+        given(applicationProperties.getStringSharedPreference(eq(GCM_REGISTRATION_ID), anyString(), eq(context))).willReturn("def");
+        assertThat(service.isDeviceRegistered(device, context)).isTrue();
     }
 }

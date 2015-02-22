@@ -36,23 +36,21 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import li.klass.fhem.dagger.ForApplication;
-
 @Singleton
 public class SharedPreferencesService {
-    @Inject
-    @ForApplication
-    Context context;
-
     private static final Logger LOGGER = LoggerFactory.getLogger(SharedPreferencesService.class);
 
-    public Map<String, ?> listAllFrom(String fileName) {
-        return getPreferences(fileName).getAll();
+    @Inject
+    public SharedPreferencesService() {
     }
 
-    public void writeAllIn(String preferenceName, Map<String, ?> toWrite) {
+    public Map<String, ?> listAllFrom(String fileName, Context context) {
+        return getPreferences(fileName, context).getAll();
+    }
+
+    public void writeAllIn(String preferenceName, Map<String, ?> toWrite, Context context) {
         LOGGER.info("writeAllIn({}) - containing {} entries", preferenceName, toWrite.size());
-        SharedPreferences preferences = getPreferences(preferenceName);
+        SharedPreferences preferences = getPreferences(preferenceName, context);
         SharedPreferences.Editor editor = preferences.edit();
         editor.clear();
         for (Map.Entry<String, ?> entry : toWrite.entrySet()) {
@@ -74,7 +72,12 @@ public class SharedPreferencesService {
         editor.apply();
     }
 
-    private SharedPreferences getPreferences(String preferenceName) {
+    public SharedPreferences.Editor getSharedPreferencesEditor(String preferencesName, Context context) {
+        SharedPreferences sharedPreferences = getPreferences(preferencesName, context);
+        return sharedPreferences.edit();
+    }
+
+    public SharedPreferences getPreferences(String preferenceName, Context context) {
         return context.getSharedPreferences(preferenceName, Activity.MODE_PRIVATE);
     }
 }

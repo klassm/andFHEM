@@ -84,7 +84,7 @@ public class RoomListIntentService extends ConvenientIntentService {
 
         if (REMOTE_UPDATE_RESET.equals(action)) {
             LOG.trace("handleIntent() - resetting update progress");
-            roomListService.resetUpdateProgress();
+            roomListService.resetUpdateProgress(this);
             return STATE.SUCCESS;
         }
 
@@ -100,7 +100,7 @@ public class RoomListIntentService extends ConvenientIntentService {
             sendResultWithLastUpdate(resultReceiver, ResultCodes.SUCCESS, DEVICE_LIST, allRoomsDeviceList);
         } else if (GET_ROOM_NAME_LIST.equals(action)) {
             LOG.trace("handleIntent() - resolving room name list");
-            ArrayList<String> roomNameList = roomListService.getRoomNameList();
+            ArrayList<String> roomNameList = roomListService.getRoomNameList(this);
             sendResultWithLastUpdate(resultReceiver, ResultCodes.SUCCESS, ROOM_LIST, roomNameList);
         } else if (GET_ROOM_DEVICE_LIST.equals(action)) {
             String roomName = intent.getStringExtra(ROOM_NAME);
@@ -156,7 +156,7 @@ public class RoomListIntentService extends ConvenientIntentService {
         if (receiver != null) {
             Bundle bundle = new Bundle();
             bundle.putSerializable(bundleExtrasKey, value);
-            bundle.putLong(BundleExtraKeys.LAST_UPDATE, roomListService.getLastUpdate());
+            bundle.putLong(BundleExtraKeys.LAST_UPDATE, roomListService.getLastUpdate(this));
             receiver.send(resultCode, bundle);
         }
     }

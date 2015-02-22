@@ -101,7 +101,7 @@ public class GenericDeviceAdapter<D extends FhemDevice<D>> extends DeviceAdapter
     }
 
     private void createWebCmdTableRowIfRequired(LayoutInflater inflater, TableLayout layout,
-                                                    final D device) {
+                                                final D device) {
         if (device.getWebCmd().isEmpty()) return;
         final Context context = inflater.getContext();
 
@@ -192,7 +192,7 @@ public class GenericDeviceAdapter<D extends FhemDevice<D>> extends DeviceAdapter
     protected boolean isOverviewError(D device, long lastUpdate) {
         // It does not make sense to show measure errors for data stemming out of a prestored
         // XML file.
-        return !(dataConnectionSwitch.getCurrentProvider() instanceof DummyDataConnection) &&
+        return !(dataConnectionSwitch.getCurrentProvider(getContext()) instanceof DummyDataConnection) &&
                 lastUpdate != -1 &&
                 device.isSensorDevice() &&
                 device.isOutdatedData(lastUpdate);

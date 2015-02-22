@@ -116,8 +116,8 @@ public class DeviceFunctionalityOrderPreference extends DialogPreference {
         super.onSetInitialValue(restore, defaultValue);
 
         DeviceGroupHolder deviceTypeHolder = new DeviceGroupHolder(applicationProperties);
-        List<DeviceFunctionality> visible = deviceTypeHolder.getVisible();
-        List<DeviceFunctionality> invisible = deviceTypeHolder.getInvisible();
+        List<DeviceFunctionality> visible = deviceTypeHolder.getVisible(getContext());
+        List<DeviceFunctionality> invisible = deviceTypeHolder.getInvisible(getContext());
 
         this.wrappedDevices = wrapDevices(visible, invisible);
     }

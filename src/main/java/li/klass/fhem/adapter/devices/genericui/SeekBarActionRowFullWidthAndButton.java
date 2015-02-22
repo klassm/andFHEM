@@ -95,7 +95,7 @@ public abstract class SeekBarActionRowFullWidthAndButton<T extends FhemDevice<T>
     public abstract void onButtonSetValue(T device, int value);
 
     protected boolean showButton() {
-        return getApplicationProperties().getBooleanSharedPreference(SHOW_SET_VALUE_BUTTONS, false);
+        return getApplicationProperties().getBooleanSharedPreference(SHOW_SET_VALUE_BUTTONS, false, context);
     }
 
     protected abstract ApplicationProperties getApplicationProperties();

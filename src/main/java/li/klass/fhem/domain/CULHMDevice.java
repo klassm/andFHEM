@@ -301,7 +301,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
     }
 
     @Override
-    public void afterDeviceXMLRead() {
+    public void afterDeviceXMLRead(Context context) {
         if (actuator != null) {
             subType = THERMOSTAT;
         }
@@ -309,7 +309,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
             weekProfile.afterXMLRead();
         }
 
-        super.afterDeviceXMLRead();
+        super.afterDeviceXMLRead(context);
     }
 
     @Override
@@ -665,8 +665,8 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
     }
 
     @Override
-    protected void fillDeviceCharts(List<DeviceChart> chartSeries) {
-        super.fillDeviceCharts(chartSeries);
+    protected void fillDeviceCharts(List<DeviceChart> chartSeries, Context context) {
+        super.fillDeviceCharts(chartSeries, context);
 
         if (subType == null) return;
 
@@ -675,7 +675,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
 
                 addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureHumidityGraph,
                         new ChartSeriesDescription.Builder()
-                                .withColumnName(R.string.temperature)
+                                .withColumnName(R.string.temperature, context)
                                 .withFileLogSpec("4:T\\x3a:0:")
                                 .withDbLogSpec("measured-temp")
                                 .withSeriesType(TEMPERATURE)
@@ -683,7 +683,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
                                 .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("measured-temp", 0, 30))
                                 .build(),
                         new ChartSeriesDescription.Builder()
-                                .withColumnName(R.string.humidity).withFileLogSpec("6:H\\x3a:0:")
+                                .withColumnName(R.string.humidity, context).withFileLogSpec("6:H\\x3a:0:")
                                 .withDbLogSpec("humidity")
                                 .withSeriesType(HUMIDITY)
                                 .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("humidity", 0, 100))
@@ -693,7 +693,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
                 if (humidity == null) {
                     addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureGraph,
                             new ChartSeriesDescription.Builder()
-                                    .withColumnName(R.string.temperature)
+                                    .withColumnName(R.string.temperature, context)
                                     .withFileLogSpec("4:T\\x3a:0:")
                                     .withDbLogSpec("measured-temp")
                                     .withSeriesType(TEMPERATURE)
@@ -706,13 +706,13 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
                 addDeviceChartIfNotNull(
                         new DeviceChart(R.string.brightnessSunshineGraph,
                                 new ChartSeriesDescription.Builder()
-                                        .withColumnName(R.string.brightness).withFileLogSpec("4:brightness")
+                                        .withColumnName(R.string.brightness, context).withFileLogSpec("4:brightness")
                                         .withDbLogSpec("brightness")
                                         .withSeriesType(BRIGHTNESS)
                                         .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("brightness", 0, 1000))
                                         .build(),
                                 new ChartSeriesDescription.Builder()
-                                        .withColumnName(R.string.sunshine).withFileLogSpec("4:sunshine")
+                                        .withColumnName(R.string.sunshine, context).withFileLogSpec("4:sunshine")
                                         .withDbLogSpec("sunshine")
                                         .withSeriesType(SeriesType.SUNSHINE)
                                         .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("sunshine", 0, 0))
@@ -723,7 +723,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
                 addDeviceChartIfNotNull(
                         new DeviceChart(R.string.rainGraph,
                                 new ChartSeriesDescription.Builder()
-                                        .withColumnName(R.string.isRaining)
+                                        .withColumnName(R.string.isRaining, context)
                                         .withFileLogSpec("4:isRaining")
                                         .withDbLogSpec("isRaining")
                                         .withSeriesType(IS_RAINING)
@@ -731,7 +731,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
                                         .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("isRaining", 0, 1))
                                         .build(),
                                 new ChartSeriesDescription.Builder()
-                                        .withColumnName(R.string.rain).withFileLogSpec("4:rain")
+                                        .withColumnName(R.string.rain, context).withFileLogSpec("4:rain")
                                         .withDbLogSpec("rain")
                                         .withSeriesType(RAIN)
                                         .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("rain", 0, 70))
@@ -742,7 +742,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
                 addDeviceChartIfNotNull(
                         new DeviceChart(R.string.windSpeedGraph,
                                 new ChartSeriesDescription.Builder()
-                                        .withColumnName(R.string.windSpeed)
+                                        .withColumnName(R.string.windSpeed, context)
                                         .withFileLogSpec("4:windSpeed")
                                         .withDbLogSpec("windSpeed")
                                         .withSeriesType(SeriesType.WIND)
@@ -756,7 +756,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
             case FILL_STATE:
                 addDeviceChartIfNotNull(new DeviceChart(R.string.contentGraph,
                         new ChartSeriesDescription.Builder()
-                                .withColumnName(R.string.content)
+                                .withColumnName(R.string.content, context)
                                 .withFileLogSpec("4:content:0:")
                                 .withDbLogSpec("content")
                                 .withSeriesType(LITRE_CONTENT)
@@ -764,7 +764,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
                                 .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("content", 0, 1000))
                                 .build(),
                         new ChartSeriesDescription.Builder()
-                                .withColumnName(R.string.rawValue).withFileLogSpec("4:rawValue:0:")
+                                .withColumnName(R.string.rawValue, context).withFileLogSpec("4:rawValue:0:")
                                 .withDbLogSpec("rawValue")
                                 .withSeriesType(RAW)
                                 .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("rawValue", 0, 300))
@@ -777,7 +777,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
 
                 addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureHumidityGraph,
                         new ChartSeriesDescription.Builder()
-                                .withColumnName(R.string.temperature)
+                                .withColumnName(R.string.temperature, context)
                                 .withFileLogSpec("4:T\\x3a:0:")
                                 .withDbLogSpec("measured-temp")
                                 .withSeriesType(TEMPERATURE)
@@ -785,7 +785,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
                                 .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("measured-temp", 0, 30))
                                 .build(),
                         new ChartSeriesDescription.Builder()
-                                .withColumnName(R.string.humidity).withFileLogSpec("6:H\\x3a:0:")
+                                .withColumnName(R.string.humidity, context).withFileLogSpec("6:H\\x3a:0:")
                                 .withDbLogSpec("humidity")
                                 .withSeriesType(HUMIDITY)
                                 .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("humidity", 0, 100))
@@ -794,7 +794,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
 
                 addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureActuatorGraph,
                         new ChartSeriesDescription.Builder()
-                                .withColumnName(R.string.temperature)
+                                .withColumnName(R.string.temperature, context)
                                 .withFileLogSpec("4:measured-temp:0")
                                 .withDbLogSpec("measured-temp")
                                 .withSeriesType(TEMPERATURE)
@@ -802,7 +802,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
                                 .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("measured-temp", 0, 30))
                                 .build(),
                         new ChartSeriesDescription.Builder()
-                                .withColumnName(R.string.actuator).withFileLogSpec("4:actuator")
+                                .withColumnName(R.string.actuator, context).withFileLogSpec("4:actuator")
                                 .withDbLogSpec("actuator::int")
                                 .withSeriesType(ACTUATOR)
                                 .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("actuator", 0, 100))
@@ -814,7 +814,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
             case POWERMETER:
                 addDeviceChartIfNotNull(new DeviceChart(R.string.usageGraph,
                         new ChartSeriesDescription.Builder()
-                                .withColumnName(R.string.currentUsage).withFileLogSpec("4:current:0")
+                                .withColumnName(R.string.currentUsage, context).withFileLogSpec("4:current:0")
                                 .withDbLogSpec("current")
                                 .withSeriesType(CURRENT_USAGE_WATT)
                                 .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("current", 0, 200))
@@ -823,7 +823,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
 
                 addDeviceChartIfNotNull(new DeviceChart(R.string.usageGraphCumulative,
                         new ChartSeriesDescription.Builder()
-                                .withColumnName(R.string.cumulativeUsage).withFileLogSpec("4:energy")
+                                .withColumnName(R.string.cumulativeUsage, context).withFileLogSpec("4:energy")
                                 .withDbLogSpec("energy")
                                 .withSeriesType(CUMULATIVE_USAGE_Wh)
                                 .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("energy", 0, 100))
@@ -834,7 +834,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
             case THPL:
                 addDeviceChartIfNotNull(new DeviceChart(R.string.temperatureHumidityGraph,
                         new ChartSeriesDescription.Builder()
-                                .withColumnName(R.string.temperature)
+                                .withColumnName(R.string.temperature, context)
                                 .withFileLogSpec("4:temperature:0")
                                 .withDbLogSpec("temperature")
                                 .withSeriesType(TEMPERATURE)
@@ -842,7 +842,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
                                 .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("temperature", 0, 30))
                                 .build(),
                         new ChartSeriesDescription.Builder()
-                                .withColumnName(R.string.humidity).withFileLogSpec("4:humidity:0")
+                                .withColumnName(R.string.humidity, context).withFileLogSpec("4:humidity:0")
                                 .withDbLogSpec("humidity")
                                 .withSeriesType(HUMIDITY)
                                 .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("humidity", 0, 100))
@@ -851,7 +851,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
 
                 addDeviceChartIfNotNull(new DeviceChart(R.string.pressureGraph,
                         new ChartSeriesDescription.Builder()
-                                .withColumnName(R.string.pressure)
+                                .withColumnName(R.string.pressure, context)
                                 .withFileLogSpec("4:pressure:0")
                                 .withDbLogSpec("pressure")
                                 .withSeriesType(PRESSURE)
@@ -859,7 +859,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
                                 .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("pressure", 0, 0))
                                 .build(),
                         new ChartSeriesDescription.Builder()
-                                .withColumnName(R.string.pressureNN).withFileLogSpec("4:pressure-nn:0")
+                                .withColumnName(R.string.pressureNN, context).withFileLogSpec("4:pressure-nn:0")
                                 .withDbLogSpec("pressure-nn")
                                 .withSeriesType(HUMIDITY)
                                 .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("pressure-nn", 0, 0))
@@ -869,7 +869,7 @@ public class CULHMDevice extends DimmableContinuousStatesDevice<CULHMDevice>
                 addDeviceChartIfNotNull(
                         new DeviceChart(R.string.brightnessGraph,
                                 new ChartSeriesDescription.Builder()
-                                        .withColumnName(R.string.brightness).withFileLogSpec("4:luminosity:0")
+                                        .withColumnName(R.string.brightness, context).withFileLogSpec("4:luminosity:0")
                                         .withDbLogSpec("luminosity")
                                         .withSeriesType(BRIGHTNESS)
                                         .withYAxisMinMaxValue(getLogDevices().get(0).getYAxisMinMaxValueFor("luminosity", 0, 0))

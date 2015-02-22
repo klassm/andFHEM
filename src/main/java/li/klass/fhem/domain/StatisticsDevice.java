@@ -24,6 +24,8 @@
 
 package li.klass.fhem.domain;
 
+import android.content.Context;
+
 import java.util.Map;
 
 import li.klass.fhem.domain.core.DeviceFunctionality;
@@ -41,8 +43,8 @@ public class StatisticsDevice extends FhemDevice<StatisticsDevice> {
     }
 
     @Override
-    public void afterDeviceXMLRead() {
-        super.afterDeviceXMLRead();
+    public void afterDeviceXMLRead(Context context) {
+        super.afterDeviceXMLRead(context);
 
         setAllDeviceReadCallback(new AllDevicesReadCallback() {
             @Override
